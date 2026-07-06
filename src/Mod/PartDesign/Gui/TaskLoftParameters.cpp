@@ -25,11 +25,12 @@
 
 #include <QAction>
 
-
 #include <App/Application.h>
 #include <App/Document.h>
+#include <Gui/AsyncPreviewSession.h>
 #include <Gui/Application.h>
 #include <Gui/CommandT.h>
+#include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Tools.h>
@@ -37,6 +38,7 @@
 
 #include "ui_TaskLoftParameters.h"
 #include "TaskLoftParameters.h"
+#include "DeferredDialogRejectUtils.h"
 #include "TaskSketchBasedParameters.h"
 
 Q_DECLARE_METATYPE(App::PropertyLinkSubList::SubSet)
@@ -45,6 +47,12 @@ using namespace PartDesignGui;
 using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskLoftParameters */
+
+namespace
+{
+constexpr int AsyncInteractivePreviewDebounceMs = 150;
+
+}
 
 TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj*/, QWidget* parent)
     : TaskSketchBasedParameters(LoftView, parent, "PartDesign_AdditiveLoft", tr("Loft Parameters"))
@@ -127,9 +135,116 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
     }
 
     updateUI();
+
+    AsyncPreviewController::Callbacks callbacks;
+    callbacks.makeRequest = [this]() {
+        auto* object = getObject<PartDesign::Loft>();
+        return object ? App::RecomputeRequest::fromDocumentObject(*object) : App::RecomputeRequest {};
+    };
+    callbacks.runSync = [this]() {
+        if (auto* loft = getObject<PartDesign::Loft>()) {
+            loft->recomputeFeature();
+            loft->recomputePreview();
+        }
+    };
+    callbacks.onAppliedResult = [this](bool success, bool canceled) {
+        if (!canceled && success) {
+            updateUI();
+        }
+    };
+    asyncPreviewSession = std::make_unique<Gui::AsyncPreviewSession>(std::move(callbacks), this);
+    connect(
+        asyncPreviewSession->controller(),
+        &AsyncPreviewController::recomputeSettled,
+        this,
+        &TaskLoftParameters::recomputeSettled
+    );
+    asyncPreviewSession->bindWidgets(
+        {
+            ui->previewStatusWidget,
+            ui->progressBarPreview,
+            ui->labelPreviewStatus,
+            ui->buttonCancelPreview,
+        },
+        [](const char* text) { return TaskLoftParameters::tr(text); },
+        proxy
+    );
+    asyncPreviewSession->setSchedulerInterval(
+        App::GetApplication().isAsyncRecomputeEnabled() ? AsyncInteractivePreviewDebounceMs : 0
+    );
 }
 
-TaskLoftParameters::~TaskLoftParameters() = default;
+TaskLoftParameters::~TaskLoftParameters()
+{
+    stopPendingRecompute();
+}
+
+void TaskLoftParameters::schedulePendingRecompute()
+{
+    if (!isUpdateBlocked() && asyncPreviewSession) {
+        asyncPreviewSession->scheduleRecompute();
+    }
+}
+
+void TaskLoftParameters::updateRecomputeUi()
+{
+    if (!ui || !asyncPreviewSession) {
+        return;
+    }
+    asyncPreviewSession->updateUi();
+}
+
+void TaskLoftParameters::runImmediateRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->stopScheduledRecompute();
+    }
+
+    try {
+        requestRecompute(/*waitForCompletion=*/false);
+    }
+    catch (const Base::Exception& e) {
+        e.reportException();
+    }
+}
+
+void TaskLoftParameters::flushPendingRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->flushPendingRecompute();
+    }
+}
+
+void TaskLoftParameters::stopPendingRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->stopPendingRecompute();
+    }
+}
+
+bool TaskLoftParameters::hasOutstandingRecompute() const
+{
+    return asyncPreviewSession && asyncPreviewSession->hasOutstandingRecompute();
+}
+
+void TaskLoftParameters::setDeferredClosePending(bool pending)
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->setDeferredClosePending(pending);
+    }
+}
+
+Gui::AsyncPreviewSession* TaskLoftParameters::getAcceptedRecomputeProgressSession()
+{
+    return asyncPreviewSession.get();
+}
+
+void TaskLoftParameters::requestRecompute(bool waitForCompletion)
+{
+    if (!isUpdateBlocked() && asyncPreviewSession) {
+        asyncPreviewSession->requestRecompute(waitForCompletion);
+    }
+}
 
 void TaskLoftParameters::updateUI()
 {
@@ -175,7 +290,7 @@ void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             }
 
             clearButtons();
-            recomputeFeature();
+            schedulePendingRecompute();
         }
 
         clearButtons();
@@ -271,7 +386,7 @@ void TaskLoftParameters::onDeleteSection()
             if (const auto f = std::ranges::find(refs, obj); f != refs.end()) {
                 loft->Sections.removeValue(obj);
 
-                recomputeFeature();
+                schedulePendingRecompute();
                 updateUI();
             }
         }
@@ -295,7 +410,7 @@ void TaskLoftParameters::indexesMoved()
         }
 
         loft->Sections.setSubListValues(originals);
-        recomputeFeature();
+        schedulePendingRecompute();
         updateUI();
     }
 }
@@ -320,14 +435,35 @@ void TaskLoftParameters::exitSelectionMode()
     this->blockSelection(true);
 }
 
+void TaskLoftParameters::clearInteractiveSelection()
+{
+    clearButtons();
+    exitSelectionMode();
+
+    if (auto* view = getViewObject<ViewProviderLoft>()) {
+        view->highlightReferences(ViewProviderLoft::Both, false);
+    }
+}
+
 void TaskLoftParameters::changeEvent(QEvent* /*e*/)
 {}
+
+void TaskLoftParameters::onUpdateView(bool on)
+{
+    setUpdateBlocked(!on);
+    if (on) {
+        runImmediateRecompute();
+    }
+    else {
+        stopPendingRecompute();
+    }
+}
 
 void TaskLoftParameters::onClosed(bool val)
 {
     if (auto loft = getObject<PartDesign::Loft>()) {
         loft->Closed.setValue(val);
-        recomputeFeature();
+        schedulePendingRecompute();
     }
 }
 
@@ -335,7 +471,7 @@ void TaskLoftParameters::onRuled(bool val)
 {
     if (auto loft = getObject<PartDesign::Loft>()) {
         loft->Ruled.setValue(val);
-        recomputeFeature();
+        schedulePendingRecompute();
     }
 }
 
@@ -389,10 +525,26 @@ TaskDlgLoftParameters::TaskDlgLoftParameters(ViewProviderLoft* LoftView, bool ne
 
 TaskDlgLoftParameters::~TaskDlgLoftParameters() = default;
 
+bool TaskDlgLoftParameters::performReject()
+{
+    if (parameter) {
+        parameter->clearInteractiveSelection();
+    }
+
+    return TaskDlgSketchBasedParameters::reject();
+}
+
 bool TaskDlgLoftParameters::accept()
 {
+    if (!parameter || hasDeferredRejectPending()) {
+        return false;
+    }
+
     if (auto loft = getObject<PartDesign::Loft>()) {
-        getViewObject<ViewProviderLoft>()->highlightReferences(ViewProviderLoft::Both, false);
+        prepareDeferredReject(parameter, &TaskLoftParameters::recomputeSettled, [this]() {
+            return performReject();
+        });
+        parameter->clearInteractiveSelection();
 
         // First verify that the loft can be built and then hide the sections as otherwise
         // they will remain hidden if the loft's recompute fails
@@ -408,7 +560,23 @@ bool TaskDlgLoftParameters::accept()
     return false;
 }
 
-//==== calls from the TaskView ===============================================================
+bool TaskDlgLoftParameters::reject()
+{
+    if (!parameter) {
+        return false;
+    }
 
+    prepareDeferredReject(parameter, &TaskLoftParameters::recomputeSettled, [this]() {
+        return performReject();
+    });
+    parameter->clearInteractiveSelection();
+    parameter->stopPendingRecompute();
+    return finishRejectOrDefer(getObject<PartDesign::Loft>());
+}
+
+void TaskDlgLoftParameters::onParameterRecomputeSettled()
+{
+    finishRejectOrDefer(getObject<PartDesign::Loft>());
+}
 
 #include "moc_TaskLoftParameters.cpp"

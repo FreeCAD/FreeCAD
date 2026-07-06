@@ -1754,8 +1754,7 @@ TopoDS_Shape TopoShape::cut(TopoDS_Shape shape) const
     if (shape.IsNull()) {
         return this->_Shape;
     }
-    FCBRepAlgoAPI_Cut mkCut(this->_Shape, shape);
-    return makeShell(mkCut.Shape());
+    return cut(std::vector<TopoDS_Shape> {shape});
 }
 
 TopoDS_Shape TopoShape::cut(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
@@ -1763,6 +1762,9 @@ TopoDS_Shape TopoShape::cut(const std::vector<TopoDS_Shape>& shapes, Standard_Re
     if (this->_Shape.IsNull()) {
         return this->_Shape;
     }
+    constexpr std::size_t totalPhases = 3;
+    ScopedRecomputeProgress progressScope("Cut");
+    auto prepareScope = progressScope.makeStepScope(0, totalPhases, "Preparing cut...");
     FCBRepAlgoAPI_Cut mkCut;
     mkCut.SetRunParallel(true);
     TopTools_ListOfShape shapeArguments, shapeTools;
@@ -1782,17 +1784,22 @@ TopoDS_Shape TopoShape::cut(const std::vector<TopoDS_Shape>& shapes, Standard_Re
     else if (tolerance < 0.0) {
         mkCut.setAutoFuzzy();
     }
-#if OCC_VERSION_HEX >= 0x070600
-    mkCut.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mkCut.Build();
-#endif
+    prepareScope.complete();
+
+    auto buildScope = progressScope.makeStepScope(1, totalPhases, "Building cut...");
+    buildScope.throwIfCanceled();
+    Part::buildWithProgress(mkCut);
+    buildScope.complete();
     if (!mkCut.IsDone()) {
         throw Base::RuntimeError("Multi cut failed");
     }
 
+    auto shellScope = progressScope.makeStepScope(2, totalPhases, "Building shell...");
+    shellScope.throwIfCanceled();
     TopoDS_Shape resShape = mkCut.Shape();
-    return makeShell(resShape);
+    auto result = makeShell(resShape);
+    shellScope.complete();
+    return result;
 }
 
 TopoDS_Shape TopoShape::common(TopoDS_Shape shape) const
@@ -1803,8 +1810,7 @@ TopoDS_Shape TopoShape::common(TopoDS_Shape shape) const
     if (shape.IsNull()) {
         return shape;
     }
-    FCBRepAlgoAPI_Common mkCommon(this->_Shape, shape);
-    return makeShell(mkCommon.Shape());
+    return common(std::vector<TopoDS_Shape> {shape});
 }
 
 TopoDS_Shape TopoShape::common(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
@@ -1812,6 +1818,9 @@ TopoDS_Shape TopoShape::common(const std::vector<TopoDS_Shape>& shapes, Standard
     if (this->_Shape.IsNull()) {
         return this->_Shape;
     }
+    constexpr std::size_t totalPhases = 3;
+    ScopedRecomputeProgress progressScope("Common");
+    auto prepareScope = progressScope.makeStepScope(0, totalPhases, "Preparing common...");
     FCBRepAlgoAPI_Common mkCommon;
     mkCommon.SetRunParallel(true);
     TopTools_ListOfShape shapeArguments, shapeTools;
@@ -1831,17 +1840,22 @@ TopoDS_Shape TopoShape::common(const std::vector<TopoDS_Shape>& shapes, Standard
     else if (tolerance < 0.0) {
         mkCommon.setAutoFuzzy();
     }
-#if OCC_VERSION_HEX >= 0x070600
-    mkCommon.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mkCommon.Build();
-#endif
+    prepareScope.complete();
+
+    auto buildScope = progressScope.makeStepScope(1, totalPhases, "Building common...");
+    buildScope.throwIfCanceled();
+    Part::buildWithProgress(mkCommon);
+    buildScope.complete();
     if (!mkCommon.IsDone()) {
         throw Base::RuntimeError("Multi common failed");
     }
 
+    auto shellScope = progressScope.makeStepScope(2, totalPhases, "Building shell...");
+    shellScope.throwIfCanceled();
     TopoDS_Shape resShape = mkCommon.Shape();
-    return makeShell(resShape);
+    auto result = makeShell(resShape);
+    shellScope.complete();
+    return result;
 }
 
 TopoDS_Shape TopoShape::fuse(TopoDS_Shape shape) const
@@ -1852,8 +1866,7 @@ TopoDS_Shape TopoShape::fuse(TopoDS_Shape shape) const
     if (shape.IsNull()) {
         return this->_Shape;
     }
-    FCBRepAlgoAPI_Fuse mkFuse(this->_Shape, shape);
-    return makeShell(mkFuse.Shape());
+    return fuse(std::vector<TopoDS_Shape> {shape});
 }
 
 TopoDS_Shape TopoShape::fuse(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
@@ -1861,7 +1874,9 @@ TopoDS_Shape TopoShape::fuse(const std::vector<TopoDS_Shape>& shapes, Standard_R
     if (this->_Shape.IsNull()) {
         throw Standard_Failure("Base shape is null");
     }
-
+    constexpr std::size_t totalPhases = 3;
+    ScopedRecomputeProgress progressScope("Fuse");
+    auto prepareScope = progressScope.makeStepScope(0, totalPhases, "Preparing fuse...");
     FCBRepAlgoAPI_Fuse mkFuse;
     mkFuse.SetRunParallel(true);
     TopTools_ListOfShape shapeArguments, shapeTools;
@@ -1880,17 +1895,22 @@ TopoDS_Shape TopoShape::fuse(const std::vector<TopoDS_Shape>& shapes, Standard_R
     else if (tolerance < 0.0) {
         mkFuse.setAutoFuzzy();
     }
-#if OCC_VERSION_HEX >= 0x070600
-    mkFuse.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mkFuse.Build();
-#endif
+    prepareScope.complete();
+
+    auto buildScope = progressScope.makeStepScope(1, totalPhases, "Building fuse...");
+    buildScope.throwIfCanceled();
+    Part::buildWithProgress(mkFuse);
+    buildScope.complete();
     if (!mkFuse.IsDone()) {
         throw Base::RuntimeError("Multi fuse failed");
     }
 
+    auto shellScope = progressScope.makeStepScope(2, totalPhases, "Building shell...");
+    shellScope.throwIfCanceled();
     TopoDS_Shape resShape = mkFuse.Shape();
-    return makeShell(resShape);
+    auto result = makeShell(resShape);
+    shellScope.complete();
+    return result;
 }
 
 
@@ -1902,19 +1922,9 @@ TopoDS_Shape TopoShape::section(TopoDS_Shape shape, Standard_Boolean approximate
     if (shape.IsNull()) {
         throw Standard_Failure("Tool shape is null");
     }
-    FCBRepAlgoAPI_Section mkSection;
-    mkSection.Init1(this->_Shape);
-    mkSection.Init2(shape);
-    mkSection.Approximation(approximate);
-#if OCC_VERSION_HEX >= 0x070600
-    mkSection.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mkSection.Build();
-#endif
-    if (!mkSection.IsDone()) {
-        throw Base::RuntimeError("Section failed");
-    }
-    return mkSection.Shape();
+    // Preserve the historic single-shape section behavior: unlike the multi-shape
+    // overload default, this path did not enable automatic fuzzy tolerance.
+    return section(std::vector<TopoDS_Shape> {shape}, 0.0, approximate);
 }
 
 TopoDS_Shape TopoShape::section(
@@ -1926,7 +1936,9 @@ TopoDS_Shape TopoShape::section(
     if (this->_Shape.IsNull()) {
         throw Standard_Failure("Base shape is null");
     }
-
+    constexpr std::size_t totalPhases = 2;
+    ScopedRecomputeProgress progressScope("Section");
+    auto prepareScope = progressScope.makeStepScope(0, totalPhases, "Preparing section...");
     FCBRepAlgoAPI_Section mkSection;
     mkSection.SetRunParallel(true);
     mkSection.Approximation(approximate);
@@ -1947,11 +1959,12 @@ TopoDS_Shape TopoShape::section(
     else if (tolerance < 0.0) {
         mkSection.setAutoFuzzy();
     }
-#if OCC_VERSION_HEX >= 0x070600
-    mkSection.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mkSection.Build();
-#endif
+    prepareScope.complete();
+
+    auto buildScope = progressScope.makeStepScope(1, totalPhases, "Building section...");
+    buildScope.throwIfCanceled();
+    Part::buildWithProgress(mkSection);
+    buildScope.complete();
     if (!mkSection.IsDone()) {
         throw Base::RuntimeError("Multi section failed");
     }
@@ -2000,7 +2013,9 @@ TopoDS_Shape TopoShape::generalFuse(
     if (this->_Shape.IsNull()) {
         throw Standard_Failure("Base shape is null");
     }
-
+    const std::size_t totalPhases = mapInOut ? 3 : 2;
+    ScopedRecomputeProgress progressScope("GeneralFuse");
+    auto prepareScope = progressScope.makeStepScope(0, totalPhases, "Preparing general fuse...");
     BRepAlgoAPI_BuilderAlgo mkGFA;
     mkGFA.SetRunParallel(true);
     TopTools_ListOfShape GFAArguments;
@@ -2020,19 +2035,24 @@ TopoDS_Shape TopoShape::generalFuse(
         FCBRepAlgoAPIHelper::setAutoFuzzy(&mkGFA);
     }
     mkGFA.SetNonDestructive(Standard_True);
-#if OCC_VERSION_HEX >= 0x070600
-    mkGFA.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mkGFA.Build();
-#endif
+    prepareScope.complete();
+
+    auto buildScope = progressScope.makeStepScope(1, totalPhases, "Building general fuse...");
+    buildScope.throwIfCanceled();
+    Part::buildWithProgress(mkGFA);
+    buildScope.complete();
     if (!mkGFA.IsDone()) {
         throw BooleanException("MultiFusion failed");
     }
     TopoDS_Shape resShape = mkGFA.Shape();
     if (mapInOut) {
+        auto historyScope
+            = progressScope.makeStepScope(2, totalPhases, "Collecting general fuse history...");
+        historyScope.throwIfCanceled();
         for (TopTools_ListIteratorOfListOfShape it(GFAArguments); it.More(); it.Next()) {
             mapInOut->push_back(mkGFA.Modified(it.Value()));
         }
+        historyScope.complete();
     }
     return resShape;
 }
@@ -2066,6 +2086,9 @@ TopoDS_Shape TopoShape::makePipeShell(
         throw Standard_Failure("Spine shape is not a wire");
     }
 
+    const std::size_t totalPhases = make_solid ? 3 : 2;
+    ScopedRecomputeProgress progressScope("PipeShell");
+    auto prepareScope = progressScope.makeStepScope(0, totalPhases, "Preparing pipe shell...");
     BRepOffsetAPI_MakePipeShell mkPipeShell(TopoDS::Wire(this->_Shape));
     BRepBuilderAPI_TransitionMode transMode;
     switch (transition) {
@@ -2090,13 +2113,17 @@ TopoDS_Shape TopoShape::makePipeShell(
         throw Standard_Failure("shape is not ready to build");
     }
 
-#if OCC_VERSION_HEX >= 0x070600
-    mkPipeShell.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mkPipeShell.Build();
-#endif
+    prepareScope.complete();
+
+    auto buildScope = progressScope.makeStepScope(1, totalPhases, "Building pipe shell...");
+    buildScope.throwIfCanceled();
+    Part::buildWithProgress(mkPipeShell);
+    buildScope.complete();
     if (make_solid) {
+        auto solidScope = progressScope.makeStepScope(2, totalPhases, "Making solid...");
+        solidScope.throwIfCanceled();
         mkPipeShell.MakeSolid();
+        solidScope.complete();
     }
 
     return mkPipeShell.Shape();
@@ -2590,6 +2617,9 @@ TopoDS_Shape TopoShape::makeLoft(
 ) const
 {
     // http://opencascade.blogspot.com/2010/01/surface-modeling-part5.html
+    constexpr std::size_t totalPhases = 2;
+    ScopedRecomputeProgress progressScope("Loft");
+    auto prepareScope = progressScope.makeStepScope(0, totalPhases, "Preparing loft...");
     BRepOffsetAPI_ThruSections aGenerator(isSolid, isRuled);
     aGenerator.SetMaxDegree(maxDegree);
 
@@ -2649,11 +2679,12 @@ TopoDS_Shape TopoShape::makeLoft(
     Standard_Boolean anIsCheck = Standard_True;
     aGenerator.CheckCompatibility(anIsCheck);  // use BRepFill_CompatibleWires on profiles. force
                                                // #edges, orientation, "origin" to match.
-#if OCC_VERSION_HEX >= 0x070600
-    aGenerator.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    aGenerator.Build();
-#endif
+    prepareScope.complete();
+
+    auto buildScope = progressScope.makeStepScope(1, totalPhases, "Building loft...");
+    buildScope.throwIfCanceled();
+    Part::buildWithProgress(aGenerator);
+    buildScope.complete();
     if (!aGenerator.IsDone()) {
         throw Standard_Failure("Failed to create loft face");
     }
@@ -2727,6 +2758,10 @@ TopoDS_Shape TopoShape::makeOffsetShape(
     bool fill
 ) const
 {
+    const std::size_t totalPhases = fill ? 4 : 1;
+    ScopedRecomputeProgress progressScope("Offset");
+    auto offsetScope = progressScope.makeStepScope(0, totalPhases, "Building offset shape...");
+    offsetScope.throwIfCanceled();
     // If the input shape is a compound with a single solid then the offset
     // algorithm creates only a shell instead of a solid which causes errors
     // when using it e.g. for boolean operations. (#0003571)
@@ -2757,6 +2792,7 @@ TopoDS_Shape TopoShape::makeOffsetShape(
         selfInter ? Standard_True : Standard_False,
         GeomAbs_JoinType(join)
     );
+    offsetScope.complete();
 
     if (!mkOffset.IsDone()) {
         throw Standard_Failure("BRepOffsetAPI_MakeOffsetShape not done");
@@ -2766,6 +2802,7 @@ TopoDS_Shape TopoShape::makeOffsetShape(
         return res;
     }
 
+    auto wallScope = progressScope.makeStepScope(1, totalPhases, "Building offset walls...");
     // get perimeter wire of original shape.
     // Wires returned seem to have edges in connection order.
     ShapeAnalysis_FreeBoundsProperties freeCheck(this->_Shape);
@@ -2777,7 +2814,10 @@ TopoDS_Shape TopoShape::makeOffsetShape(
     BRep_Builder builder;
     TopoDS_Compound perimeterCompound;
     builder.MakeCompound(perimeterCompound);
-    for (int index = 1; index <= freeCheck.NbClosedFreeBounds(); ++index) {
+    int freeBounds = freeCheck.NbClosedFreeBounds();
+    for (int index = 1; index <= freeBounds; ++index) {
+        auto sectionScope = wallScope.makeStepScope(index - 1, freeBounds, "Building offset wall...");
+        sectionScope.throwIfCanceled();
         TopoDS_Wire originalWire = freeCheck.ClosedFreeBound(index)->FreeBound();
         const BRepAlgo_Image& img = mkOffset.MakeOffset().OffsetEdgesFromShapes();
 
@@ -2815,11 +2855,8 @@ TopoDS_Shape TopoShape::makeOffsetShape(
         BRepOffsetAPI_ThruSections aGenerator;
         aGenerator.AddWire(originalWire);
         aGenerator.AddWire(offsetWire);
-#if OCC_VERSION_HEX >= 0x070600
-        aGenerator.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-        aGenerator.Build();
-#endif
+        Part::buildWithProgress(aGenerator);
+        sectionScope.complete();
         if (!aGenerator.IsDone()) {
             throw Standard_Failure("ThruSections failed");
         }
@@ -2829,13 +2866,19 @@ TopoDS_Shape TopoShape::makeOffsetShape(
 
     // still had to sew. not using the passed in parameter for sew.
     // Sew has it's own default tolerance. Opinions?
+    wallScope.complete();
+    auto sewScope = progressScope.makeStepScope(2, totalPhases, "Sewing offset result...");
+    sewScope.throwIfCanceled();
     BRepBuilderAPI_Sewing sewTool;
     sewTool.Add(this->_Shape);
     sewTool.Add(perimeterCompound);
     sewTool.Add(res);
     sewTool.Perform();  // Perform Sewing
+    sewScope.complete();
 
     TopoDS_Shape outputShape = sewTool.SewedShape();
+    auto finalizeScope = progressScope.makeStepScope(3, totalPhases, "Finalizing offset result...");
+    finalizeScope.throwIfCanceled();
     if ((outputShape.ShapeType() == TopAbs_SHELL) && (outputShape.Closed())) {
         BRepBuilderAPI_MakeSolid solidMaker(TopoDS::Shell(outputShape));
         if (solidMaker.IsDone()) {
@@ -2849,6 +2892,7 @@ TopoDS_Shape TopoShape::makeOffsetShape(
         }
     }
 
+    finalizeScope.complete();
     return outputShape;
 }
 
@@ -3180,11 +3224,7 @@ TopoDS_Shape TopoShape::makeOffset2D(
                 // add final joining edge
                 mkWire.Add(BRepBuilderAPI_MakeEdge(v3, v1).Edge());
 
-#if OCC_VERSION_HEX >= 0x070600
-                mkWire.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-                mkWire.Build();
-#endif
+                Part::buildWithProgress(mkWire);
                 wiresForMakingFaces.push_front(mkWire.Wire());
             }
         }
@@ -3196,11 +3236,7 @@ TopoDS_Shape TopoShape::makeOffset2D(
             for (TopoDS_Wire& w : wiresForMakingFaces) {
                 mkFace.addWire(w);
             }
-#if OCC_VERSION_HEX >= 0x070600
-            mkFace.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-            mkFace.Build();
-#endif
+            Part::buildWithProgress(mkFace);
             if (mkFace.Shape().IsNull()) {
                 throw Base::CADKernelError("makeOffset2D: making face failed (null shape returned).");
             }
@@ -4051,17 +4087,21 @@ TopoDS_Shape TopoShape::defeaturing(const std::vector<TopoDS_Shape>& s) const
     if (this->_Shape.IsNull()) {
         throw Standard_Failure("Base shape is null");
     }
+    constexpr std::size_t totalPhases = 2;
+    ScopedRecomputeProgress progressScope("Defeaturing");
+    auto prepareScope = progressScope.makeStepScope(0, totalPhases, "Preparing defeaturing...");
     BRepAlgoAPI_Defeaturing defeat;
     defeat.SetRunParallel(true);
     defeat.SetShape(this->_Shape);
     for (const auto& it : s) {
         defeat.AddFaceToRemove(it);
     }
-#if OCC_VERSION_HEX >= 0x070600
-    defeat.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    defeat.Build();
-#endif
+    prepareScope.complete();
+
+    auto buildScope = progressScope.makeStepScope(1, totalPhases, "Building defeaturing...");
+    buildScope.throwIfCanceled();
+    Part::buildWithProgress(defeat);
+    buildScope.complete();
     if (!defeat.IsDone()) {
         // error treatment
         Standard_SStream aSStream;
@@ -4304,11 +4344,7 @@ TopoShape& TopoShape::makeFace(const std::vector<TopoShape>& shapes, const char*
             mkFace->addShape(s.getShape());
         }
     }
-#if OCC_VERSION_HEX >= 0x070600
-    mkFace->Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mkFace->Build();
-#endif
+    Part::buildWithProgress(*mkFace);
     _Shape = mkFace->Shape();
     return *this;
 }
@@ -4325,7 +4361,11 @@ TopoShape& TopoShape::makeRefine(const TopoShape& shape, const char* op, RefineF
         return *this;
     }
     try {
-        BRepBuilderAPI_RefineModel mkRefine(shape.getShape());
+        BRepBuilderAPI_RefineModel mkRefine(
+            shape.getShape(),
+            BRepBuilderAPI_RefineModel::BuildMode::Deferred
+        );
+        Part::buildWithProgress(mkRefine);
         _Shape = mkRefine.Shape();
         return *this;
     }

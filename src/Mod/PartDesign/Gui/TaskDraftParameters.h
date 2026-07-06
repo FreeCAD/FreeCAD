@@ -40,7 +40,7 @@ class GizmoContainer;
 namespace PartDesignGui
 {
 
-class TaskDraftParameters: public TaskDressUpParameters
+class PartDesignGuiExport TaskDraftParameters: public TaskDressUpParameters
 {
     Q_OBJECT
 
@@ -67,6 +67,8 @@ protected:
     void setButtons(selectionModes mode) override;
     void changeEvent(QEvent* e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    bool shouldRestoreReferenceHighlightAfterRecompute() const override;
+    void onDressUpRecomputeFinished(bool canceled) override;
 
 private:
     std::unique_ptr<Ui_TaskDraftParameters> ui;
@@ -78,7 +80,7 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgDraftParameters: public TaskDlgDressUpParameters
+class PartDesignGuiExport TaskDlgDraftParameters: public TaskDlgDressUpParameters
 {
     Q_OBJECT
 

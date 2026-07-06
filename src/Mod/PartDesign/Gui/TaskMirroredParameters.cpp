@@ -117,16 +117,8 @@ void TaskMirroredParameters::updateUI()
     }
     blockUpdate = true;
 
-    auto pcMirrored = getObject<PartDesign::Mirrored>();
-
-    if (planeLinks.setCurrentLink(pcMirrored->MirrorPlane) == -1) {
-        // failed to set current, because the link isn't in the list yet
-        planeLinks.addLink(
-            pcMirrored->MirrorPlane,
-            getRefStr(pcMirrored->MirrorPlane.getValue(), pcMirrored->MirrorPlane.getSubValues())
-        );
-        planeLinks.setCurrentLink(pcMirrored->MirrorPlane);
-    }
+    syncStagedMirrorPlaneFromObject();
+    syncPlaneComboToStagedMirrorPlane();
 
     blockUpdate = false;
 }
@@ -153,23 +145,20 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
     }
 
     if (selectionMode == SelectionMode::Reference || selObj->isDerivedFrom<App::Plane>()) {
-        setupTransaction();
-        pcMirrored->MirrorPlane.setValue(selObj, mirrorPlanes);
-        recomputeFeature();
-        updateUI();
+        App::PropertyLinkSub mirrorPlane;
+        mirrorPlane.setValue(selObj, mirrorPlanes);
+        setStagedMirrorPlane(mirrorPlane);
+        requestStagedPreviewUpdate();
     }
     exitSelectionMode();
 }
 
 void TaskMirroredParameters::onPlaneChanged(int /*num*/)
 {
-    if (blockUpdate) {
-        return;
-    }
-    setupTransaction();
-    auto pcMirrored = getObject<PartDesign::Mirrored>();
     try {
-        if (!planeLinks.getCurrentLink().getValue()) {
+        const auto& currentLink = planeLinks.getCurrentLink();
+        if (!currentLink.getValue()) {
+            syncPlaneComboToStagedMirrorPlane();
             // enter reference selection mode
             hideObject();
             showBase();
@@ -179,38 +168,74 @@ void TaskMirroredParameters::onPlaneChanged(int /*num*/)
         }
         else {
             exitSelectionMode();
-            pcMirrored->MirrorPlane.Paste(planeLinks.getCurrentLink());
+            setStagedMirrorPlane(currentLink);
+            requestStagedPreviewUpdate();
         }
     }
     catch (Base::Exception& e) {
         QMessageBox::warning(nullptr, tr("Error"), QApplication::translate("Exception", e.what()));
     }
-
-    recomputeFeature();
 }
 
 void TaskMirroredParameters::onUpdateView(bool on)
 {
-    blockUpdate = !on;
+    setUpdateViewEnabled(on);
     if (on) {
-        setupTransaction();
-        // Do the same like in TaskDlgMirroredParameters::accept() but without doCommand
-        auto pcMirrored = getObject<PartDesign::Mirrored>();
-        std::vector<std::string> mirrorPlanes;
-        App::DocumentObject* obj = nullptr;
-
-        getMirrorPlane(obj, mirrorPlanes);
-        pcMirrored->MirrorPlane.setValue(obj, mirrorPlanes);
-
-        recomputeFeature();
+        requestStagedPreviewUpdate();
     }
 }
 
 void TaskMirroredParameters::getMirrorPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const
 {
-    const App::PropertyLinkSub& lnk = planeLinks.getCurrentLink();
+    const App::PropertyLinkSub& lnk = stagedMirrorPlane;
     obj = lnk.getValue();
     sub = lnk.getSubValues();
+}
+
+void TaskMirroredParameters::syncStagedMirrorPlaneFromObject()
+{
+    auto pcMirrored = getObject<PartDesign::Mirrored>();
+    stagedMirrorPlane.Paste(pcMirrored->MirrorPlane);
+}
+
+void TaskMirroredParameters::setStagedMirrorPlane(const App::PropertyLinkSub& lnk)
+{
+    stagedMirrorPlane.Paste(lnk);
+    syncPlaneComboToStagedMirrorPlane();
+}
+
+void TaskMirroredParameters::syncPlaneComboToStagedMirrorPlane()
+{
+    if (planeLinks.setCurrentLink(stagedMirrorPlane) != -1) {
+        return;
+    }
+
+    auto* object = stagedMirrorPlane.getValue();
+    if (!object) {
+        return;
+    }
+
+    QString label = getRefStr(object, stagedMirrorPlane.getSubValues());
+    if (label.isEmpty()) {
+        label = QString::fromLatin1(object->getNameInDocument());
+    }
+
+    for (int i = 0; i < planeLinks.count(); ++i) {
+        if (!planeLinks.getLink(i).getValue()) {
+            planeLinks.addLinkBefore(stagedMirrorPlane, label, planeLinks.getUserData(i));
+            planeLinks.setCurrentLink(stagedMirrorPlane);
+            return;
+        }
+    }
+
+    planeLinks.addLink(stagedMirrorPlane, label);
+    planeLinks.setCurrentLink(stagedMirrorPlane);
+}
+
+void TaskMirroredParameters::applyStagedPreviewStateToObject()
+{
+    auto pcMirrored = getObject<PartDesign::Mirrored>();
+    pcMirrored->MirrorPlane.Paste(stagedMirrorPlane);
 }
 
 void TaskMirroredParameters::apply()

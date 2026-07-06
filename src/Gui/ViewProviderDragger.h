@@ -23,12 +23,14 @@
 
 #pragma once
 
+#include <functional>
+
+#include "DraggerInteraction.h"
 #include "ViewProviderDocumentObject.h"
 #include <Base/Placement.h>
 #include <App/PropertyGeo.h>
 #include <Base/Bitmask.h>
 
-class SoDragger;
 class SoTransform;
 
 namespace Gui
@@ -102,10 +104,15 @@ public:
         All = XPos | YPos | ZPos | XRot | YRot | ZRot
     };
     using DraggerComponents = Base::Flags<DraggerComponent>;
+    /// previews object movement from the current dragger placement without committing it
+    void previewPlacementFromDragger();
+    /// commits object movement from the current dragger placement
+    void commitPlacementFromDragger(DraggerComponents components = DraggerComponent::All);
     /// updates placement of object based on dragger position and chosen axes components
     void updatePlacementFromDragger(DraggerComponents components = DraggerComponent::All);
     /// updates transform of object based on dragger position, can be used to preview movement
     void updateTransformFromDragger();
+    void setDraggerInteractionHandler(std::function<void(DraggerInteraction)> handler);
 
     /// Gets object placement relative to its coordinate system
     Base::Placement getObjectPlacement() const;
@@ -132,6 +139,7 @@ protected:
      * Must be reimplemented in subclasses.
      */
     virtual TaskView::TaskDialog* getTransformDialog();
+    virtual void onDraggerInteraction(DraggerInteraction interaction);
 
     CoinPtr<SoTransformDragger> transformDragger;
     ViewProvider* forwardedViewProvider = nullptr;
@@ -139,9 +147,8 @@ protected:
     CoinPtr<SoSwitch> pcPlacement;
 
 private:
-    static void dragStartCallback(void* data, SoDragger* d);
-    static void dragFinishCallback(void* data, SoDragger* d);
-    static void dragMotionCallback(void* data, SoDragger* d);
+    void handleDraggerInteraction(DraggerInteraction interaction, SoDragger* dragger);
+    void notifyDraggerInteraction(DraggerInteraction interaction);
 
     void updateDraggerPosition();
 
@@ -156,6 +163,7 @@ private:
     );
 
     GizmoContainer* gizmoContainer = nullptr;
+    std::function<void(DraggerInteraction)> draggerInteractionHandler;
 };
 
 }  // namespace Gui

@@ -39,12 +39,17 @@
 #include <App/Application.h>
 #include <App/Part.h>
 #include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <Base/Rotation.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
+#include <Gui/AsyncPreviewSession.h>
 #include <Gui/Document.h>
 #include <Gui/Command.h>
+#include <Gui/CommandT.h>
+#include <Gui/DeferredDialogRejectUtils.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
@@ -123,6 +128,44 @@ static QString safeQuantityQString(Gui::QuantitySpinBox* qs)
     return QString::fromStdString(qs->value().getSafeUserString());
 }
 
+static bool runPrimitiveDocumentRecompute(
+    QWidget* widget,
+    const QString& title,
+    const QString& fallbackLabel,
+    App::Document* document
+)
+{
+    const auto recomputeDocument = [document]() {
+        if (document) {
+            document->recompute();
+        }
+    };
+
+    const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
+        widget,
+        title,
+        fallbackLabel,
+        document,
+        /*force=*/false,
+        recomputeDocument
+    );
+    if (!outcome.success) {
+        if (!outcome.canceled) {
+            QMessageBox::warning(
+                widget,
+                title,
+                QCoreApplication::translate(
+                    "Exception",
+                    outcome.message.empty() ? "Primitive recompute failed" : outcome.message.c_str()
+                )
+            );
+        }
+        return false;
+    }
+
+    return true;
+}
+
 void Picker::createPrimitive(QWidget* widget, const QString& descr, Gui::Document* doc)
 {
     try {
@@ -133,7 +176,9 @@ void Picker::createPrimitive(QWidget* widget, const QString& descr, Gui::Documen
         doc->openCommand(descr.toUtf8());
         Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
         doc->commitCommand();
-        Gui::Command::runCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        if (!runPrimitiveDocumentRecompute(widget, descr, QObject::tr("Computing primitive..."), app)) {
+            return;
+        }
         Gui::Command::runCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
     }
     catch (const Base::Exception& e) {
@@ -223,7 +268,13 @@ bool AbstractPrimitive::hasValidPrimitive() const
 
 void AbstractPrimitive::connectSignalMapper(QSignalMapper* mapper)
 {
-    connect(mapper, &QSignalMapper::mappedObject, this, &AbstractPrimitive::changeValue);
+    connect(mapper, &QSignalMapper::mappedObject, this, &AbstractPrimitive::onMappedObject);
+}
+
+void AbstractPrimitive::onMappedObject(QObject* widget)
+{
+    changeValue(widget);
+    Q_EMIT previewMutated();
 }
 
 namespace PartGui
@@ -326,8 +377,6 @@ void PlanePrimitive::changeValue(QObject* widget)
     else if (widget == ui->planeWidth) {
         plane->Width.setValue(ui->planeWidth->value().getValue());
     }
-
-    plane->recomputeFeature();
 }
 
 // ----------------------------------------------------------------------------
@@ -425,8 +474,6 @@ void BoxPrimitive::changeValue(QObject* widget)
     else if (widget == ui->boxHeight) {
         box->Height.setValue(ui->boxHeight->value().getValue());
     }
-
-    box->recomputeFeature();
 }
 
 // ----------------------------------------------------------------------------
@@ -552,8 +599,6 @@ void CylinderPrimitive::changeValue(QObject* widget)
     else if (widget == ui->cylinderYSkew) {
         cyl->SecondAngle.setValue(ui->cylinderYSkew->value().getValue());
     }
-
-    cyl->recomputeFeature();
 }
 
 // ----------------------------------------------------------------------------
@@ -666,8 +711,6 @@ void ConePrimitive::changeValue(QObject* widget)
     else if (widget == ui->coneAngle) {
         cone->Angle.setValue(ui->coneAngle->value().getValue());
     }
-
-    cone->recomputeFeature();
 }
 
 // ----------------------------------------------------------------------------
@@ -780,8 +823,6 @@ void SpherePrimitive::changeValue(QObject* widget)
     else if (widget == ui->sphereAngle3) {
         sphere->Angle3.setValue(ui->sphereAngle3->value().getValue());
     }
-
-    sphere->recomputeFeature();
 }
 
 // ----------------------------------------------------------------------------
@@ -924,8 +965,6 @@ void EllipsoidPrimitive::changeValue(QObject* widget)
     else if (widget == ui->ellipsoidAngle3) {
         ell->Angle3.setValue(ui->ellipsoidAngle3->value().getValue());
     }
-
-    ell->recomputeFeature();
 }
 
 // ----------------------------------------------------------------------------
@@ -1053,8 +1092,6 @@ void TorusPrimitive::changeValue(QObject* widget)
     else if (widget == ui->torusAngle3) {
         torus->Angle3.setValue(ui->torusAngle3->value().getValue());
     }
-
-    torus->recomputeFeature();
 }
 
 // ----------------------------------------------------------------------------
@@ -1174,8 +1211,6 @@ void PrismPrimitive::changeValue(QObject* widget)
     else if (widget == ui->prismYSkew) {
         prism->SecondAngle.setValue(ui->prismYSkew->value().getValue());
     }
-
-    prism->recomputeFeature();
 }
 
 // ----------------------------------------------------------------------------
@@ -1390,8 +1425,6 @@ void WedgePrimitive::changeValue(QObject* widget)
     else if (widget == ui->wedgeZ2max) {
         wedge->Z2max.setValue(ui->wedgeZ2max->value().getValue());
     }
-
-    wedge->recomputeFeature();
 }
 
 // ----------------------------------------------------------------------------
@@ -1514,8 +1547,6 @@ void HelixPrimitive::changeValue(QObject* widget)
     else if (widget == ui->helixLocalCS) {
         helix->LocalCoord.setValue(ui->helixLocalCS->currentIndex());
     }
-
-    helix->recomputeFeature();
 }
 
 // ----------------------------------------------------------------------------
@@ -1612,8 +1643,6 @@ void SpiralPrimitive::changeValue(QObject* widget)
     else if (widget == ui->spiralRadius) {
         spiral->Radius.setValue(ui->spiralRadius->value().getValue());
     }
-
-    spiral->recomputeFeature();
 }
 
 // ----------------------------------------------------------------------------
@@ -1711,8 +1740,6 @@ void CirclePrimitive::changeValue(QObject* widget)
     else if (widget == ui->circleAngle2) {
         circle->Angle2.setValue(ui->circleAngle2->value().getValue());
     }
-
-    circle->recomputeFeature();
 }
 
 // ----------------------------------------------------------------------------
@@ -1825,8 +1852,6 @@ void EllipsePrimitive::changeValue(QObject* widget)
     else if (widget == ui->ellipseAngle2) {
         ell->Angle2.setValue(ui->ellipseAngle2->value().getValue());
     }
-
-    ell->recomputeFeature();
 }
 
 // ----------------------------------------------------------------------------
@@ -1903,8 +1928,6 @@ void PolygonPrimitive::changeValue(QObject* widget)
     else if (widget == ui->regularPolygonCircumradius) {
         poly->Circumradius.setValue(ui->regularPolygonCircumradius->value().getValue());
     }
-
-    poly->recomputeFeature();
 }
 
 // ----------------------------------------------------------------------------
@@ -2031,8 +2054,6 @@ void LinePrimitive::changeValue(QObject* widget)
     else if (widget == ui->edgeZ2) {
         line->Z2.setValue(ui->edgeZ2->value().getValue());
     }
-
-    line->recomputeFeature();
 }
 
 // ----------------------------------------------------------------------------
@@ -2135,8 +2156,6 @@ void VertexPrimitive::changeValue(QObject* widget)
     else if (widget == ui->vertexZ) {
         v->Z.setValue(ui->vertexZ->value().getValue());
     }
-
-    v->recomputeFeature();
 }
 
 // ----------------------------------------------------------------------------
@@ -2157,6 +2176,42 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
     );
     Gui::Command::doCommand(Gui::Command::Doc, "from FreeCAD import Base");
     Gui::Command::doCommand(Gui::Command::Doc, "import Part,PartGui");
+
+    if (feature) {
+        static constexpr int AsyncPreviewDebounceMs = 150;
+
+        Gui::AsyncPreviewController::Callbacks callbacks;
+        callbacks.makeRequest = [this]() {
+            auto* object = featurePtr.get<App::DocumentObject>();
+            return object ? App::RecomputeRequest::fromDocumentObject(*object)
+                          : App::RecomputeRequest {};
+        };
+        callbacks.runSync = [this]() {
+            if (auto* primitive = featurePtr.get<Part::Primitive>()) {
+                primitive->recomputeFeature();
+            }
+        };
+        asyncPreviewSession = std::make_unique<Gui::AsyncPreviewSession>(std::move(callbacks), this);
+        asyncPreviewSession->setSchedulerInterval(
+            App::GetApplication().isAsyncRecomputeEnabled() ? AsyncPreviewDebounceMs : 0
+        );
+        connect(
+            asyncPreviewSession->controller(),
+            &Gui::AsyncPreviewController::recomputeSettled,
+            this,
+            &DlgPrimitives::recomputeSettled
+        );
+        asyncPreviewSession->bindWidgets(
+            {
+                ui->previewStatusWidget,
+                ui->progressBarPreview,
+                ui->labelPreviewStatus,
+                ui->buttonCancelPreview,
+            },
+            [](const char* text) { return DlgPrimitives::tr(text); }
+        );
+    }
+    updateRecomputeUi();
 
     // must be in the same order as of the stacked widget
     addPrimitive(std::make_shared<PlanePrimitive>(ui, dynamic_cast<Part::Plane*>(feature)));
@@ -2186,6 +2241,11 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
  */
 DlgPrimitives::~DlgPrimitives() = default;
 
+Part::Primitive* DlgPrimitives::getObject() const
+{
+    return featurePtr.get<Part::Primitive>();
+}
+
 void DlgPrimitives::activatePage()
 {
     int index = findIndexOfValidPrimitive();
@@ -2196,6 +2256,7 @@ void DlgPrimitives::activatePage()
 
 void DlgPrimitives::addPrimitive(std::shared_ptr<AbstractPrimitive> prim)
 {
+    connect(prim.get(), &AbstractPrimitive::previewMutated, this, &DlgPrimitives::schedulePreviewRecompute);
     primitive.push_back(prim);
 }
 
@@ -2310,7 +2371,9 @@ void DlgPrimitives::tryCreatePrimitive(const QString& placement)
     Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
     Gui::Command::runCommand(Gui::Command::Doc, getAutoGroupCommandStr(name).toUtf8());
     Gui::Application::Instance->activeDocument()->commitCommand();
-    Gui::Command::runCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    if (!runPrimitiveDocumentRecompute(this, prim, tr("Computing primitive..."), doc)) {
+        return;
+    }
     Gui::Command::runCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
 }
 
@@ -2335,6 +2398,53 @@ void DlgPrimitives::createPrimitive(const QString& placement)
     }
 }
 
+void DlgPrimitives::schedulePreviewRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->scheduleRecompute();
+    }
+}
+
+void DlgPrimitives::flushPendingRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->flushPendingRecompute();
+    }
+}
+
+void DlgPrimitives::stopPendingRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->stopPendingRecompute();
+    }
+}
+
+bool DlgPrimitives::hasOutstandingRecompute() const
+{
+    return asyncPreviewSession && asyncPreviewSession->hasOutstandingRecompute();
+}
+
+void DlgPrimitives::setDeferredClosePending(bool pending)
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->setDeferredClosePending(pending);
+    }
+}
+
+void DlgPrimitives::requestPreviewRecompute(bool waitForCompletion)
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->requestRecompute(waitForCompletion);
+    }
+}
+
+void DlgPrimitives::updateRecomputeUi()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->updateUi();
+    }
+}
+
 void DlgPrimitives::acceptChanges(const QString& placement)
 {
     App::Document* doc = featurePtr->getDocument();
@@ -2352,33 +2462,48 @@ void DlgPrimitives::acceptChanges(const QString& placement)
     Gui::Command::runCommand(Gui::Command::App, command.toUtf8());
 }
 
-void DlgPrimitives::accept(const QString& placement)
+bool DlgPrimitives::accept(const QString& placement)
 {
     if (featurePtr.expired()) {
-        return;
+        return false;
     }
     App::Document* doc = featurePtr->getDocument();
+    auto* object = getObject();
+    if (!doc || !object) {
+        return false;
+    }
+    flushPendingRecompute();
     acceptChanges(placement);
-    doc->recompute();
+    Gui::cmdAppObject(object, "purgeTouched()");
+    for (auto parent : object->getInList()) {
+        parent->touch();
+    }
+    if (!runPrimitiveDocumentRecompute(this, tr("Input error"), tr("Computing primitive..."), doc)) {
+        return false;
+    }
     // commit undo command
     doc->commitTransaction();
+    return true;
 }
 
-void DlgPrimitives::reject()
+bool DlgPrimitives::reject()
 {
     if (featurePtr.expired()) {
-        return;
+        return false;
     }
+    stopPendingRecompute();
     App::Document* doc = featurePtr->getDocument();
     doc->abortTransaction();
+    return true;
 }
 
 // ----------------------------------------------
 
 /* TRANSLATOR PartGui::Location */
 
-Location::Location(QWidget* parent, Part::Feature* feature)
+Location::Location(QWidget* parent, Part::Feature* feature, DlgPrimitives* previewDialog)
     : QWidget(parent)
+    , previewDialog(previewDialog)
     , ui(new Ui_Location)
     , featurePtr(feature)
 {
@@ -2527,7 +2652,12 @@ void Location::onPlacementChanged()
 
     // apply new placement to the feature
     geom->Placement.setValue(placement);
-    geom->recomputeFeature();
+    if (previewDialog) {
+        previewDialog->schedulePreviewRecompute();
+    }
+    else {
+        geom->recomputeFeature();
+    }
 }
 
 void Location::onViewPositionButton()
@@ -2673,8 +2803,10 @@ TaskPrimitivesEdit::TaskPrimitivesEdit(Part::Primitive* feature)
     addTaskBox(widget);
 
     // create and show dialog for the location
-    location = new Location(nullptr, feature);
+    location = new Location(nullptr, feature, widget);
     addTaskBox(location);
+
+    connect(widget, &DlgPrimitives::recomputeSettled, this, &TaskPrimitivesEdit::onRecomputeSettled);
 }
 
 QDialogButtonBox::StandardButtons TaskPrimitivesEdit::getStandardButtons() const
@@ -2684,7 +2816,13 @@ QDialogButtonBox::StandardButtons TaskPrimitivesEdit::getStandardButtons() const
 
 bool TaskPrimitivesEdit::accept()
 {
-    widget->accept(location->toPlacement());
+    if (!widget || !location || deferredReject.pending) {
+        return false;
+    }
+
+    if (!widget->accept(location->toPlacement())) {
+        return false;
+    }
     std::string document = getDocumentName();  // needed because resetEdit() deletes this instance
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.getDocument('%s').resetEdit()", document.c_str());
     return true;
@@ -2692,10 +2830,67 @@ bool TaskPrimitivesEdit::accept()
 
 bool TaskPrimitivesEdit::reject()
 {
-    widget->reject();
+    if (!widget) {
+        return false;
+    }
+
+    ensureDeferredRejectConnection();
+    widget->stopPendingRecompute();
+    if (!widget->hasOutstandingRecompute()) {
+        return rejectNow();
+    }
+
+    if (!deferredReject.pending) {
+        auto* object = widget->getObject();
+        deferredReject.documentName = object && object->getDocument()
+            ? std::string(object->getDocument()->getName())
+            : std::string();
+        setDeferredRejectPending(true);
+    }
+
+    return false;
+}
+
+void TaskPrimitivesEdit::ensureDeferredRejectConnection()
+{
+    Gui::ensureDeferredDialogRejectConnection(
+        deferredReject,
+        widget,
+        &DlgPrimitives::recomputeSettled,
+        this,
+        &TaskPrimitivesEdit::onRecomputeSettled
+    );
+}
+
+void TaskPrimitivesEdit::setDeferredRejectPending(bool pending)
+{
+    Gui::setDeferredDialogRejectPending(deferredReject, pending, buttonBox, [this](bool pending) {
+        if (widget) {
+            widget->setDeferredClosePending(pending);
+        }
+    });
+}
+
+bool TaskPrimitivesEdit::rejectNow()
+{
+    if (!widget || !widget->reject()) {
+        return false;
+    }
+
     std::string document = getDocumentName();  // needed because resetEdit() deletes this instance
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.getDocument('%s').resetEdit()", document.c_str());
     return true;
+}
+
+void TaskPrimitivesEdit::onRecomputeSettled()
+{
+    Gui::finishDeferredDialogReject(
+        this,
+        deferredReject,
+        widget && !widget->hasOutstandingRecompute(),
+        [this]() { return rejectNow(); },
+        [this](bool pending) { setDeferredRejectPending(pending); }
+    );
 }
 
 #include "moc_DlgPrimitives.cpp"

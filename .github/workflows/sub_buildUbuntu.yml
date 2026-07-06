@@ -205,6 +205,13 @@ jobs:
           name: ${{ inputs.artifactBasename }}-CoinNodeSnapshots
           path: /tmp/FreeCADTesting/CoinNodeSnapshots
 
+      - name: C++ Qt tests
+        uses: ./.github/workflows/actions/runCPPTests/runQtTests
+        with:
+          builddir: ${{ env.builddir }}
+          testLogFile: ${{ env.reportdir }}qt_ctest_log.txt
+          reportFile: ${{ env.reportdir }}${{ env.reportfilename }}
+
       - name: C++ tests
         timeout-minutes: 1
         uses: ./.github/workflows/actions/runCPPTests/runAllTests

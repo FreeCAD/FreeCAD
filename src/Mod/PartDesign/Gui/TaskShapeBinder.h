@@ -25,14 +25,20 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
+
+#include <QMetaObject>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/DocumentObserver.h>
 
+#include "DeferredDialogRejectUtils.h"
 #include "ViewProviderShapeBinder.h"
 
 class Ui_TaskShapeBinder;
 class QListWidget;
+class QDialogButtonBox;
 
 namespace App
 {
@@ -43,13 +49,15 @@ namespace Gui
 {
 class ButtonGroup;
 class ViewProvider;
+class AsyncPreviewSession;
+struct AsyncInlineRecomputeProgressTarget;
 }  // namespace Gui
 
 namespace PartDesignGui
 {
 
 
-class TaskShapeBinder: public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class PartDesignGuiExport TaskShapeBinder: public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -62,6 +70,19 @@ public:
     ~TaskShapeBinder() override;
 
     void accept();
+    void flushPendingRecompute();
+    void stopPendingRecompute();
+    bool hasOutstandingRecompute() const;
+    bool canReuseAcceptedPreviewResult() const;
+    void setDeferredClosePending(bool pending);
+    Gui::AsyncInlineRecomputeProgressTarget makeAcceptedRecomputeProgressTarget(
+        QDialogButtonBox* dialogButtonBox,
+        const QString& statusText
+    );
+    void clearInteractiveSelection();
+
+Q_SIGNALS:
+    void recomputeSettled();
 
 protected:
     enum selectionModes
@@ -87,19 +108,20 @@ private:
     void clearButtons();
     void deleteItem();
     void exitSelectionMode();
-
-    bool supportShow = false;
+    void requestRecompute(bool waitForCompletion);
+    void updateRecomputeUi();
 
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskShapeBinder> ui;
     Gui::ButtonGroup* buttonGroup;
     Gui::WeakPtrT<ViewProviderShapeBinder> vp;
+    std::unique_ptr<Gui::AsyncPreviewSession> asyncPreviewSession;
 };
 
 
 /// simulation dialog for the TaskView
-class TaskDlgShapeBinder: public Gui::TaskView::TaskDialog
+class PartDesignGuiExport TaskDlgShapeBinder: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -116,6 +138,17 @@ public:
 protected:
     TaskShapeBinder* parameter;
     Gui::WeakPtrT<ViewProviderShapeBinder> vp;
+
+private:
+    void ensureDeferredRejectConnection();
+    void setDeferredRejectPending(bool pending);
+    bool rejectNow();
+
+private Q_SLOTS:
+    void onParameterRecomputeSettled();
+
+private:
+    DeferredDialogRejectState deferredReject;
 };
 
 }  // namespace PartDesignGui

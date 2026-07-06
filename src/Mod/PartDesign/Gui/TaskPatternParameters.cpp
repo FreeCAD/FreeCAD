@@ -23,7 +23,6 @@
  ******************************************************************************/
 
 #include <QMessageBox>
-#include <QTimer>
 #include <QVBoxLayout>
 #include <Bnd_Box.hxx>
 #include <BRepBndLib.hxx>
@@ -153,11 +152,6 @@ void TaskPatternParameters::setupParameterUI(QWidget* widget)
 
     // --- Task Specific Setup ---
     showOriginAxes(true);  // Show origin helper axes
-
-    updateViewTimer = new QTimer(this);
-    updateViewTimer->setSingleShot(true);
-    updateViewTimer->setInterval(getUpdateViewTimeout());
-    connect(updateViewTimer, &QTimer::timeout, this, &TaskPatternParameters::onUpdateViewTimer);
 }
 
 void TaskPatternParameters::bindProperties()
@@ -277,19 +271,7 @@ void TaskPatternParameters::exitReferenceSelectionMode()
     activeDirectionWidget = nullptr;
 }
 
-
 // --- SLOTS ---
-
-void TaskPatternParameters::onUpdateViewTimer()
-{
-    // Recompute is triggered when parameters change and this timer fires
-    setupTransaction();  // Group potential property changes
-    recomputeFeature();
-
-    updateSpacingLabels();
-
-    updateUI();
-}
 
 void TaskPatternParameters::onParameterWidgetRequestReferenceSelection()
 {
@@ -309,25 +291,32 @@ void TaskPatternParameters::onParameterWidgetRequestReferenceSelection2()
 
 void TaskPatternParameters::onParameterWidgetParametersChanged()
 {
-    // A parameter in the embedded widget changed, trigger a recompute
-    if (blockUpdate) {
-        return;  // Avoid loops if change originated from Task update
-    }
-    kickUpdateViewTimer();  // Debounce recompute
+    requestStagedPreviewUpdate();
 }
 
 void TaskPatternParameters::onUpdateView(bool on)
 {
     // This might be less relevant now if recomputes are triggered by parametersChanged
-    blockUpdate = !on;
+    setUpdateViewEnabled(on);
     if (on) {
-        kickUpdateViewTimer();
+        scheduleUpdateView();
     }
 }
 
-void TaskPatternParameters::kickUpdateViewTimer() const
+void TaskPatternParameters::scheduleUpdateView()
 {
-    updateViewTimer->start();
+    setupTransaction();
+    scheduleRecomputeFeature();
+}
+
+void TaskPatternParameters::applyStagedPreviewStateToObject()
+{
+    if (parametersWidget) {
+        parametersWidget->applyToBoundProperties();
+    }
+    if (parametersWidget2) {
+        parametersWidget2->applyToBoundProperties();
+    }
 }
 
 void TaskPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -374,7 +363,7 @@ void TaskPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             auto* polarPattern = static_cast<PartDesign::PolarPattern*>(patternObj);
             polarPattern->Axis.setValue(selObj, directions);
         }
-        recomputeFeature();
+        scheduleUpdateView();
         updateUI();
     }
     exitReferenceSelectionMode();
@@ -420,15 +409,6 @@ void TaskPatternParameters::apply()
         parametersWidget2->applyQuantitySpinboxes();
 
         FCMD_OBJ_CMD(pattern, "SpacingPattern2 = " << parametersWidget2->getSpacingPatternsAsString());
-    }
-
-    // The user may have changed a value and immediately hit 'OK' or Enter.
-    // This triggers accept() before the update timer for the 3D view has a
-    // chance to fire. If the timer is active, it means a recompute is
-    // pending.
-    if (updateViewTimer && updateViewTimer->isActive()) {
-        updateViewTimer->stop();
-        recomputeFeature();
     }
 }
 

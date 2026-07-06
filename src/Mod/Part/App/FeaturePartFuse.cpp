@@ -179,8 +179,11 @@ App::DocumentObjectExecReturn* MultiFuse::execute()
                         jt = joinHistory(jt, hist);
                     }
                 }
-                catch (Standard_Failure&) {
-                    // do nothing
+                catch (Standard_Failure& e) {
+                    if (Part::isUserAbortFailure(e)) {
+                        throw;
+                    }
+                    // Non-fatal refine failures keep the successful fuse result.
                 }
             }
 

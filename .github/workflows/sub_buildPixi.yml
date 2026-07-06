@@ -214,6 +214,14 @@ jobs:
       if: "!inputs.skipBuild"
       run: python3 -m unittest discover -s src/Tools/tests -p "test_*.py"
 
+    - name: C++ Qt tests
+      if: runner.os != 'Windows' && !inputs.skipBuild
+      uses: ./.github/workflows/actions/runCPPTests/runQtTests
+      with:
+        builddir: ${{ env.builddir }}
+        testLogFile: ${{ env.reportdir }}qt_ctest_log.txt
+        reportFile: ${{ env.reportdir }}${{ env.reportfilename }}
+
     - name: C++ tests
       timeout-minutes: 10
       if: runner.os != 'Windows' && !inputs.skipBuild

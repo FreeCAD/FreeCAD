@@ -27,7 +27,9 @@
 #include <Inventor/errors/SoError.h>
 #include <QCheckBox>
 #include <QCloseEvent>
+#include <QCoreApplication>
 #include <QDir>
+#include <QEvent>
 #include <QFileInfo>
 #include <QLocale>
 #include <QMessageBox>
@@ -443,6 +445,16 @@ void qtInvokeOnMain(std::function<void()>&& fn, bool blocking)
     );
 }
 
+void qtPumpMainThreadEvents()
+{
+    if (!qApp || QThread::currentThread() != qApp->thread()) {
+        return;
+    }
+
+    // Drain only the queued main-thread invocations used by MainThreadSignal.
+    QCoreApplication::sendPostedEvents(MainThreadInvoker::instance(), QEvent::MetaCall);
+}
+
 }  // namespace Gui
 
 void Application::initStyleParameterManager()
@@ -529,7 +541,11 @@ Application::Application(bool GUIenabled)
 {
     // App::GetApplication().Attach(this);
     if (GUIenabled) {
-        App::MainThreadSignalConfig::setHooks(&qtIsMainThread, &qtInvokeOnMain);
+        App::MainThreadSignalConfig::setHooks(
+            &qtIsMainThread,
+            &qtInvokeOnMain,
+            &qtPumpMainThreadEvents
+        );
 
         // NOLINTBEGIN
         App::GetApplication().signalNewDocument.connect(

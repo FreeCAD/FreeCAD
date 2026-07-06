@@ -24,50 +24,154 @@
 
 #include "PreCompiled.h"
 
+#include <string>
+
+#include <App/Application.h>
+#include <App/AsyncRecomputeDebug.h>
+
 #include "ProgressIndicator.h"
 
 
 using namespace Part;
-/*!
-  \code
-  #include <XSControl_WorkSession.hxx>
-  #include <Transfer_TransientProcess.hxx>
 
-  STEPControl_Reader aReader;
-  Handle(Message_ProgressIndicator) pi = new ProgressIndicator();
+namespace
+{
 
-  aReader.ReadFile("myfile.stp");
-  aReader.TransferRoots(pi->Start());
+void appendProgressIndicatorDebugLog(const char* event, std::size_t currentStep)
+{
+    App::appendAsyncRecomputeDebugLog(
+        std::string("[Part::ProgressIndicator] ") + event
+        + " current_step=" + std::to_string(currentStep)
+    );
+}
 
-  \endcode
- */
+}  // namespace
+
+ScopedRecomputeProgress::ScopedRecomputeProgress() = default;
+
+ScopedRecomputeProgress::ScopedRecomputeProgress(const char* text, ProgressFallback fallback)
+{
+    App::RecomputeProgressHandle* progress = App::currentRecomputeProgress();
+    if (!progress) {
+        if (fallback != ProgressFallback::createHandle) {
+            return;
+        }
+
+        ownedProgress = std::make_unique<App::RecomputeProgressHandle>();
+        progress = ownedProgress.get();
+    }
+
+    scope = std::make_unique<App::RecomputeProgressScope>(progress->makeScope(text));
+}
+
+ScopedRecomputeProgress::ScopedRecomputeProgress(
+    std::unique_ptr<App::RecomputeProgressHandle> ownedProgress,
+    std::unique_ptr<App::RecomputeProgressScope> scope
+)
+    : ownedProgress(std::move(ownedProgress))
+    , scope(std::move(scope))
+{}
+
+ScopedRecomputeProgress::ScopedRecomputeProgress(ScopedRecomputeProgress&& other) noexcept = default;
+
+ScopedRecomputeProgress& ScopedRecomputeProgress::operator=(
+    ScopedRecomputeProgress&& other
+) noexcept = default;
+
+ScopedRecomputeProgress::~ScopedRecomputeProgress() = default;
+
+ScopedRecomputeProgress::operator bool() const
+{
+    return static_cast<bool>(scope);
+}
+
+ScopedRecomputeProgress ScopedRecomputeProgress::makeScope(const char* text)
+{
+    if (!scope) {
+        return {};
+    }
+
+    return ScopedRecomputeProgress(
+        nullptr,
+        std::make_unique<App::RecomputeProgressScope>(scope->makeScope(text))
+    );
+}
+
+ScopedRecomputeProgress ScopedRecomputeProgress::makeStepScope(
+    std::size_t stepIndex,
+    std::size_t totalSteps,
+    const char* text
+)
+{
+    if (!scope) {
+        return {};
+    }
+
+    return ScopedRecomputeProgress(
+        nullptr,
+        std::make_unique<App::RecomputeProgressScope>(scope->makeStepScope(stepIndex, totalSteps, text))
+    );
+}
+
+void ScopedRecomputeProgress::setText(const char* text)
+{
+    if (scope) {
+        scope->setText(text);
+    }
+}
+
+void ScopedRecomputeProgress::setProgress(std::size_t progress)
+{
+    if (scope) {
+        scope->setProgress(progress);
+    }
+}
+
+void ScopedRecomputeProgress::complete()
+{
+    setProgress(100);
+}
+
+bool ScopedRecomputeProgress::wasCanceled() const
+{
+    return scope ? scope->wasCanceled() : App::currentRecomputeWasCanceled();
+}
+
+void ScopedRecomputeProgress::throwIfCanceled() const
+{
+    App::throwIfRecomputeCanceled();
+}
 
 ProgressIndicator::ProgressIndicator()
-{
-    progress = std::make_unique<Base::SequencerLauncher>("Processing...", 100);
-}
+    : scope("Processing...", ProgressFallback::createHandle)
+{}
 
-ProgressIndicator::~ProgressIndicator()
-{
-    progress->stop();
-}
+ProgressIndicator::~ProgressIndicator() = default;
 
 void ProgressIndicator::Show(const Message_ProgressScope& theScope, const Standard_Boolean isForce)
 {
     (void)isForce;
     const char* name = theScope.Name();
-    progress->setText(name ? name : "Processing...");
+    scope.setText(name ? name : "Processing...");
     std::size_t current = static_cast<std::size_t>(100. * theScope.Value() / theScope.MaxValue());
     if (current != currentStep) {
         currentStep = current;
-        progress->setProgress(currentStep);
+        scope.setProgress(currentStep);
     }
 }
 
 Standard_Boolean ProgressIndicator::UserBreak()
 {
-    return progress->wasCanceled();
+    const bool canceled = scope.wasCanceled();
+    if (canceled && !loggedCanceledUserBreak) {
+        loggedCanceledUserBreak = true;
+        appendProgressIndicatorDebugLog("user_break", currentStep);
+    }
+    return canceled;
 }
 
 void ProgressIndicator::Reset()
-{}
+{
+    currentStep = 0;
+    scope.complete();
+}

@@ -34,6 +34,7 @@
 #include <list>
 #include <set>
 #include <map>
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <optional>
@@ -58,6 +59,7 @@ namespace Base
 {
 class ConsoleObserverStd;
 class ConsoleObserverFile;
+class SequencerLauncher;
 }
 
 namespace App
@@ -102,9 +104,154 @@ struct DocumentInitFlags {
 enum class RecomputeFailure
 {
     None,
+    Canceled,
     DependencyCycle,
     Exception
 };
+
+enum class RecomputeOption : int
+{
+    InteractivePreview = 1 << 0
+};
+
+struct AppExport RecomputeProgressDisplayState
+{
+    std::string text;
+    int percent {0};
+    bool determinate {false};
+};
+
+/**
+ * @brief Progress and cancellation bridge backed by the legacy Sequencer UI.
+ *
+ * Recompute requests own one of these handles while they are executing, and
+ * legacy App/Part code can also create a local instance when there is no
+ * request context. This keeps modeling code off the global Sequencer
+ * singleton while preserving the existing GUI progress surface.
+ */
+class RecomputeProgressHandle;
+
+class AppExport ScopedRecomputeOptions
+{
+public:
+    explicit ScopedRecomputeOptions(int options);
+    explicit ScopedRecomputeOptions(RecomputeOption option);
+    ~ScopedRecomputeOptions();
+
+    ScopedRecomputeOptions(const ScopedRecomputeOptions&) = delete;
+    ScopedRecomputeOptions& operator=(const ScopedRecomputeOptions&) = delete;
+
+private:
+    int _previous {0};
+};
+
+class AppExport RecomputeProgressScope
+{
+public:
+    RecomputeProgressScope(RecomputeProgressScope&& other) noexcept;
+    RecomputeProgressScope& operator=(RecomputeProgressScope&&) = delete;
+    ~RecomputeProgressScope();
+
+    void setText(const char* text);
+    void setProgress(std::size_t progress);
+    bool wasCanceled() const;
+
+    RecomputeProgressScope makeScope(const char* text = nullptr);
+    RecomputeProgressScope makeStepScope(
+        std::size_t stepIndex,
+        std::size_t totalSteps,
+        const char* text = nullptr
+    );
+
+private:
+    friend class RecomputeProgressHandle;
+
+    RecomputeProgressScope(
+        RecomputeProgressHandle& handle,
+        RecomputeProgressScope* parent,
+        std::uint64_t rangeStart,
+        std::uint64_t rangeEnd,
+        const char* text
+    );
+
+    RecomputeProgressScope(const RecomputeProgressScope&) = delete;
+    RecomputeProgressScope& operator=(const RecomputeProgressScope&) = delete;
+
+    std::uint64_t mapProgress(std::size_t progress) const;
+    void release();
+
+    RecomputeProgressHandle* _handle {nullptr};
+    RecomputeProgressScope* _parent {nullptr};
+    std::uint64_t _rangeStart {0};
+    std::uint64_t _rangeEnd {0};
+    std::uint64_t _displayProgress {0};
+    std::string _text;
+};
+
+class AppExport RecomputeProgressHandle
+{
+public:
+    using DisplayObserver = std::function<void(const RecomputeProgressDisplayState&)>;
+
+    RecomputeProgressHandle();
+    ~RecomputeProgressHandle();
+
+    void activate();
+    void cancel();
+    bool wasCanceled() const;
+    RecomputeProgressScope makeScope(const char* text = nullptr);
+    RecomputeProgressScope makeStepScope(
+        std::size_t stepIndex,
+        std::size_t totalSteps,
+        const char* text = nullptr
+    );
+    void setText(const char* text);
+    void setProgress(std::size_t progress);
+    void setDisplayObserver(DisplayObserver observer);
+    RecomputeProgressDisplayState displayState() const;
+
+private:
+    friend class RecomputeProgressScope;
+
+    static constexpr std::uint64_t ProgressScale = 10000;
+
+    void ensureSequencer();
+    RecomputeProgressScope makeScope(
+        RecomputeProgressScope* parent,
+        std::uint64_t rangeStart,
+        std::uint64_t rangeEnd,
+        const char* text
+    );
+    RecomputeProgressScope makeStepScope(
+        RecomputeProgressScope* parent,
+        std::size_t stepIndex,
+        std::size_t totalSteps,
+        const char* text
+    );
+    void activateScope(RecomputeProgressScope& scope);
+    void releaseScope(RecomputeProgressScope& scope);
+    void resetDisplayState();
+    void syncDisplay();
+
+    std::atomic<bool> _canceled {false};
+    bool _hasStandaloneState {false};
+    RecomputeProgressScope* _activeScope {nullptr};
+    std::uint64_t _standaloneProgress {0};
+    std::string _standaloneText;
+    std::string _lastDisplayedText;
+    int _lastDisplayedProgress {-1};
+    std::unique_ptr<Base::SequencerLauncher> _sequencer;
+    mutable std::mutex _displayMutex;
+    RecomputeProgressDisplayState _displayState;
+    int _displayStateTextDepth {0};
+    DisplayObserver _displayObserver;
+};
+
+AppExport RecomputeProgressHandle* currentRecomputeProgress();
+AppExport bool currentRecomputeWasCanceled();
+AppExport void throwIfRecomputeCanceled();
+AppExport int currentRecomputeOptions();
+AppExport bool currentRecomputeHasOption(RecomputeOption option);
 
 /// Result returned by processing a recompute request.
 struct AppExport RecomputeResult
@@ -114,13 +261,22 @@ struct AppExport RecomputeResult
     std::unique_ptr<Base::Exception> exception;
 };
 
+struct AppExport RecomputeCancellationResult
+{
+    bool canceledInProgress {false};
+    bool removedQueued {false};
+};
+
 /// Stable, queueable work item for document or object recompute.
 struct AppExport RecomputeRequest
 {
+    using Callback = std::function<void(RecomputeRequest&, RecomputeResult&)>;
+
     static RecomputeRequest fromDocument(const Document& document, bool force = false, int options = 0);
     static RecomputeRequest fromDocumentObject(
         const DocumentObject& documentObject,
-        bool recursive = false
+        bool recursive = false,
+        int options = 0
     );
 
     Document* resolveDocument() const;
@@ -136,8 +292,9 @@ struct AppExport RecomputeRequest
     bool force {false};
     int options {0};
     bool recursive {false};
+    std::shared_ptr<RecomputeProgressHandle> progress;
     // Callback to be invoked when recompute is complete.
-    std::function<void(RecomputeRequest&, RecomputeResult&)> callback {};
+    Callback callback {};
 };
 
 /**
@@ -398,6 +555,7 @@ public:
 
     // Adds a recompute request to the processing queue.
     void queueRecomputeRequest(RecomputeRequest req);
+    RecomputeCancellationResult cancelRecomputeRequest(const RecomputeRequest& req);
 
     // NOLINTBEGIN
     // clang-format off
@@ -1047,9 +1205,17 @@ private:
 
     // Worker thread for processing pending recompute requests
     std::thread _recomputeThread;
+    struct RecomputeQueueEntry
+    {
+        RecomputeRequest request;
+        std::vector<RecomputeRequest::Callback> callbacks;
+        bool rerunRequested {false};
+        std::vector<RecomputeRequest::Callback> rerunCallbacks;
+    };
     // Protects the queued/in-progress recompute state below
     std::mutex _recomputeMutex;
-    std::deque<RecomputeRequest> _recomputeRequests;
+    std::deque<RecomputeQueueEntry> _recomputeRequests;
+    std::optional<RecomputeQueueEntry> _recomputeRequestInProgress;
     std::set<std::string> _recomputeDocumentsInProgress;
     std::condition_variable _recomputeRequestAvailable;
     std::condition_variable _recomputeStateChanged;
@@ -1059,6 +1225,17 @@ private:
 
     // Worker thread function that processes _recomputeRequests
     void recomputeWorker();
+    static bool recomputeRequestsMatch(const RecomputeRequest& lhs, const RecomputeRequest& rhs);
+    static RecomputeQueueEntry makeRecomputeQueueEntry(RecomputeRequest request);
+    static void collectRecomputeCallback(
+        RecomputeRequest& request,
+        std::vector<RecomputeRequest::Callback>& callbacks
+    );
+    static void invokeRecomputeCallbacks(
+        std::vector<RecomputeRequest::Callback>& callbacks,
+        RecomputeRequest& request,
+        RecomputeResult& result
+    );
     // Helper to notify the worker thread when new requests are available
     void notifyRecomputeWorker();
     // Drop queued requests for a document and wait for any active recompute of

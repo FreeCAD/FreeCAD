@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include <Gui/DeferredDialogRejectUtils.h>
+
 #include <memory>
 #include <QEventLoop>
 #include <QPointer>
@@ -42,7 +44,8 @@ class Document;
 namespace Gui
 {
 class Document;
-}
+class AsyncPreviewSession;
+}  // namespace Gui
 namespace Part
 {
 class Feature;
@@ -99,6 +102,10 @@ public:
 
 protected:
     void connectSignalMapper(QSignalMapper* mapper);
+    void onMappedObject(QObject* widget);
+
+Q_SIGNALS:
+    void previewMutated();
 
 protected:
     App::DocumentObjectWeakPtrT featurePtr;
@@ -402,8 +409,17 @@ public:
     explicit DlgPrimitives(QWidget* parent = nullptr, Part::Primitive* feature = nullptr);
     ~DlgPrimitives() override;
     void createPrimitive(const QString&);
-    void accept(const QString&);
-    void reject();
+    bool accept(const QString&);
+    bool reject();
+    Part::Primitive* getObject() const;
+    void schedulePreviewRecompute();
+    void flushPendingRecompute();
+    void stopPendingRecompute();
+    bool hasOutstandingRecompute() const;
+    void setDeferredClosePending(bool pending);
+
+Q_SIGNALS:
+    void recomputeSettled();
 
 private:
     void buttonCircleFromThreePoints();
@@ -418,12 +434,15 @@ private:
     std::shared_ptr<AbstractPrimitive> getPrimitive(int index) const;
     int findIndexOfValidPrimitive() const;
     void activatePage();
+    void requestPreviewRecompute(bool waitForCompletion);
+    void updateRecomputeUi();
 
 private:
     using AbstractPrimitivePtr = std::shared_ptr<AbstractPrimitive>;
     std::vector<AbstractPrimitivePtr> primitive;
     std::shared_ptr<Ui_DlgPrimitives> ui;
     App::DocumentObjectWeakPtrT featurePtr;
+    std::unique_ptr<Gui::AsyncPreviewSession> asyncPreviewSession;
 };
 
 class Ui_Location;
@@ -432,7 +451,11 @@ class Location: public QWidget
     Q_OBJECT
 
 public:
-    explicit Location(QWidget* parent = nullptr, Part::Feature* feature = nullptr);
+    explicit Location(
+        QWidget* parent = nullptr,
+        Part::Feature* feature = nullptr,
+        DlgPrimitives* previewDialog = nullptr
+    );
     ~Location() override;
     QString toPlacement() const;
 
@@ -448,6 +471,7 @@ private:
 
     int mode;
     QPointer<QWidget> activeView;
+    QPointer<DlgPrimitives> previewDialog;
     std::unique_ptr<Ui_Location> ui;
     App::DocumentObjectWeakPtrT featurePtr;
 };
@@ -483,8 +507,17 @@ public:
     QDialogButtonBox::StandardButtons getStandardButtons() const override;
 
 private:
+    void ensureDeferredRejectConnection();
+    void setDeferredRejectPending(bool pending);
+    bool rejectNow();
+
+private Q_SLOTS:
+    void onRecomputeSettled();
+
+private:
     DlgPrimitives* widget;
     Location* location;
+    Gui::DeferredDialogRejectState deferredReject;
 };
 
 }  // namespace PartGui

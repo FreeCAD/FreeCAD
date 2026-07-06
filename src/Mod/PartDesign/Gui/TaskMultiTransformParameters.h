@@ -50,7 +50,7 @@ namespace PartDesignGui
 {
 
 
-class TaskMultiTransformParameters: public TaskTransformedParameters
+class PartDesignGuiExport TaskMultiTransformParameters: public TaskTransformedParameters
 {
     Q_OBJECT
 
@@ -62,6 +62,7 @@ public:
     ~TaskMultiTransformParameters() override;
 
     void apply() override;
+    void flushPendingRecompute() override;
 
     /// Return the currently active subFeature
     PartDesign::Transformed* getSubFeature()
@@ -93,7 +94,8 @@ private:
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
 
     void updateUI();
-    void closeSubTask();
+    void commitSubTaskEdits();
+    void closeSubTask(bool shuttingDown = false);
     void moveTransformFeature(int increment);
     void finishAdd(std::string& newFeatName);
 
@@ -107,7 +109,7 @@ private:
 
 
 /// simulation dialog for the TaskView
-class TaskDlgMultiTransformParameters: public TaskDlgTransformedParameters
+class PartDesignGuiExport TaskDlgMultiTransformParameters: public TaskDlgTransformedParameters
 {
     Q_OBJECT
 

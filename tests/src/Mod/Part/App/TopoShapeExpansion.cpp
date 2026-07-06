@@ -2023,6 +2023,45 @@ TEST_F(TopoShapeExpansionTest, makeElementGeneralFuse)
     ));
 }
 
+TEST_F(TopoShapeExpansionTest, makeElementBooleanXorSingleThreaded)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    auto tr {gp_Trsf()};
+    tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
+    cube2.Move(TopLoc_Location(tr));
+    TopoShape topoShape1 {cube1, 1L};
+    TopoShape topoShape2 {cube2, 2L};
+
+    // Act
+    TopoShape& result = topoShape1.makeElementBoolean(
+        Part::OpCodes::Xor,
+        {topoShape1, topoShape2},
+        BooleanRunMode::singleThreaded
+    );
+
+    // Assert
+    EXPECT_NEAR(getVolume(result.getShape()), 1.5, 1e-7);
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementXorSingleThreaded)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    auto tr {gp_Trsf()};
+    tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
+    cube2.Move(TopLoc_Location(tr));
+    TopoShape topoShape1 {cube1, 1L};
+    TopoShape topoShape2 {cube2, 2L};
+
+    // Act
+    TopoShape& result
+        = topoShape1.makeElementXor({topoShape1, topoShape2}, BooleanRunMode::singleThreaded);
+
+    // Assert
+    EXPECT_NEAR(getVolume(result.getShape()), 1.5, 1e-7);
+}
+
 TEST_F(TopoShapeExpansionTest, makeElementFuse)
 {
     // Arrange

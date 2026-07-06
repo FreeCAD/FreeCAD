@@ -23,7 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Origin.h>
@@ -31,10 +31,11 @@
 #include <Base/Converter.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncPreviewSession.h>
 #include <Gui/CommandT.h>
+#include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
-#include <Gui/WaitCursor.h>
 #include <Mod/Part/App/Tools.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
 #include <Gui/Inventor/Draggers/SoLinearDragger.h>
@@ -45,6 +46,7 @@
 #include "ReferenceSelection.h"
 #include "ui_TaskHelixParameters.h"
 #include "TaskHelixParameters.h"
+#include "DeferredDialogRejectUtils.h"
 
 using namespace PartDesignGui;
 using PartDesign::HelixMode;
@@ -52,6 +54,11 @@ using namespace Gui;
 
 
 /* TRANSLATOR PartDesignGui::TaskHelixParameters */
+
+namespace
+{
+constexpr int AsyncInteractivePreviewDebounceMs = 150;
+}
 
 TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix* HelixView, QWidget* parent)
     : TaskSketchBasedParameters(HelixView, parent, "PartDesign_AdditiveHelix", tr("Helix Parameters"))
@@ -77,6 +84,44 @@ TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix* Helix
     showCoordinateAxes();
 
     setupGizmos(HelixView);
+
+    AsyncPreviewController::Callbacks callbacks;
+    callbacks.makeRequest = [this]() {
+        auto* object = getObject<PartDesign::Helix>();
+        return object ? App::RecomputeRequest::fromDocumentObject(*object) : App::RecomputeRequest {};
+    };
+    callbacks.runSync = [this]() {
+        if (auto* helix = getObject<PartDesign::Helix>()) {
+            helix->recomputeFeature();
+            helix->recomputePreview();
+        }
+    };
+    callbacks.onAppliedResult = [this](bool success, bool canceled) {
+        if (!canceled && success) {
+            updateUI();
+            setGizmoPositions();
+        }
+    };
+    asyncPreviewSession = std::make_unique<Gui::AsyncPreviewSession>(std::move(callbacks), this);
+    connect(
+        asyncPreviewSession->controller(),
+        &AsyncPreviewController::recomputeSettled,
+        this,
+        &TaskHelixParameters::recomputeSettled
+    );
+    asyncPreviewSession->bindWidgets(
+        {
+            ui->previewStatusWidget,
+            ui->progressBarPreview,
+            ui->labelPreviewStatus,
+            ui->buttonCancelPreview,
+        },
+        [](const char* text) { return TaskHelixParameters::tr(text); },
+        proxy
+    );
+    asyncPreviewSession->setSchedulerInterval(
+        App::GetApplication().isAsyncRecomputeEnabled() ? AsyncInteractivePreviewDebounceMs : 0
+    );
 }
 
 void TaskHelixParameters::initializeHelix()
@@ -184,6 +229,64 @@ void TaskHelixParameters::showCoordinateAxes()
             ex.reportException();
         }
     }
+}
+
+void TaskHelixParameters::schedulePendingRecompute()
+{
+    if (!isUpdateBlocked() && asyncPreviewSession) {
+        asyncPreviewSession->scheduleRecompute();
+    }
+}
+
+void TaskHelixParameters::runImmediateRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->stopScheduledRecompute();
+    }
+
+    try {
+        requestRecompute(/*waitForCompletion=*/false);
+    }
+    catch (const Base::Exception& e) {
+        e.reportException();
+    }
+}
+
+void TaskHelixParameters::flushPendingRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->flushPendingRecompute();
+    }
+}
+
+void TaskHelixParameters::stopPendingRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->stopPendingRecompute();
+    }
+}
+
+bool TaskHelixParameters::hasOutstandingRecompute() const
+{
+    return asyncPreviewSession && asyncPreviewSession->hasOutstandingRecompute();
+}
+
+void TaskHelixParameters::setDeferredClosePending(bool pending)
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->setDeferredClosePending(pending);
+    }
+}
+
+Gui::AsyncPreviewSession* TaskHelixParameters::getAcceptedRecomputeProgressSession()
+{
+    return asyncPreviewSession.get();
+}
+
+void TaskHelixParameters::clearInteractiveSelection()
+{
+    TaskSketchBasedParameters::exitSelectionMode();
+    Gui::Selection().clearSelection();
 }
 
 void TaskHelixParameters::fillAxisCombo(bool forceRefill)
@@ -305,12 +408,32 @@ void TaskHelixParameters::updateStatus()
     ui->labelMessage->setText(translatedStatus);
 }
 
+void TaskHelixParameters::updateUiControls(bool forceRefillAxis)
+{
+    fillAxisCombo(forceRefillAxis);
+    assignToolTipsFromPropertyDocs();
+    adaptVisibilityToMode();
+}
+
 void TaskHelixParameters::updateUI()
 {
-    fillAxisCombo();
-    assignToolTipsFromPropertyDocs();
+    updateUiControls();
     updateStatus();
-    adaptVisibilityToMode();
+}
+
+void TaskHelixParameters::updateRecomputeUi()
+{
+    if (!ui || !asyncPreviewSession) {
+        return;
+    }
+    asyncPreviewSession->updateUi();
+}
+
+void TaskHelixParameters::requestRecompute(bool waitForCompletion)
+{
+    if (!isUpdateBlocked() && asyncPreviewSession) {
+        asyncPreviewSession->requestRecompute(waitForCompletion);
+    }
 }
 
 void TaskHelixParameters::adaptVisibilityToMode()
@@ -425,8 +548,8 @@ void TaskHelixParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (getReferencedSelection(getObject(), msg, selObj, axis) && selObj) {
             exitSelectionMode();
             propReferenceAxis->setValue(selObj, axis);
-            recomputeFeature();
-            updateUI();
+            updateUiControls();
+            schedulePendingRecompute();
         }
     }
 }
@@ -435,8 +558,7 @@ void TaskHelixParameters::onPitchChanged(double len)
 {
     if (getObject()) {
         propPitch->setValue(len);
-        recomputeFeature();
-        updateUI();
+        schedulePendingRecompute();
     }
 }
 
@@ -444,8 +566,7 @@ void TaskHelixParameters::onHeightChanged(double len)
 {
     if (getObject()) {
         propHeight->setValue(len);
-        recomputeFeature();
-        updateUI();
+        schedulePendingRecompute();
     }
 }
 
@@ -453,8 +574,7 @@ void TaskHelixParameters::onTurnsChanged(double len)
 {
     if (getObject()) {
         propTurns->setValue(len);
-        recomputeFeature();
-        updateUI();
+        schedulePendingRecompute();
     }
 }
 
@@ -462,8 +582,7 @@ void TaskHelixParameters::onAngleChanged(double len)
 {
     if (getObject()) {
         propAngle->setValue(len);
-        recomputeFeature();
-        updateUI();
+        schedulePendingRecompute();
     }
 }
 
@@ -471,8 +590,7 @@ void TaskHelixParameters::onGrowthChanged(double len)
 {
     if (getObject()) {
         propGrowth->setValue(len);
-        recomputeFeature();
-        updateUI();
+        schedulePendingRecompute();
     }
 }
 
@@ -533,10 +651,8 @@ void TaskHelixParameters::onAxisChanged(int num)
             }
         }
 
-        recomputeFeature();
-        updateStatus();
-
-        setGizmoPositions();
+        updateUiControls();
+        schedulePendingRecompute();
     }
     catch (const Base::Exception& e) {
         e.reportException();
@@ -553,16 +669,15 @@ void TaskHelixParameters::onModeChanged(int index)
     ui->coneAngle->setValue(propAngle->getValue());
     ui->growth->setValue(propGrowth->getValue());
 
-    recomputeFeature();
-    updateUI();
+    updateUiControls();
+    schedulePendingRecompute();
 }
 
 void TaskHelixParameters::onLeftHandedChanged(bool on)
 {
     if (getObject()) {
         propLeftHanded->setValue(on);
-        recomputeFeature();
-        updateUI();
+        schedulePendingRecompute();
     }
 }
 
@@ -570,10 +685,7 @@ void TaskHelixParameters::onReversedChanged(bool on)
 {
     if (getObject()) {
         propReversed->setValue(on);
-        recomputeFeature();
-        updateUI();
-
-        setGizmoPositions();
+        schedulePendingRecompute();
     }
 }
 
@@ -581,14 +693,14 @@ void TaskHelixParameters::onOutsideChanged(bool on)
 {
     if (getObject()) {
         propOutside->setValue(on);
-        recomputeFeature();
-        updateUI();
+        schedulePendingRecompute();
     }
 }
 
 
 TaskHelixParameters::~TaskHelixParameters()
 {
+    stopPendingRecompute();
     try {
         // hide the parts coordinate system axis for selection
         auto obj = getObject();
@@ -607,6 +719,29 @@ TaskHelixParameters::~TaskHelixParameters()
     }
 }
 
+void TaskHelixParameters::triggerPreviewRecompute()
+{
+    schedulePendingRecompute();
+}
+
+bool TaskHelixParameters::updateView() const
+{
+    return ui && ui->checkBoxUpdateView->isChecked();
+}
+
+void TaskHelixParameters::onUpdateView(bool on)
+{
+    setUpdateBlocked(!on);
+    if (on) {
+        if (!asyncPreviewSession || !asyncPreviewSession->triggerScheduledRecomputeNow()) {
+            runImmediateRecompute();
+        }
+    }
+    else {
+        stopPendingRecompute();
+    }
+}
+
 void TaskHelixParameters::changeEvent(QEvent* e)
 {
     TaskBox::changeEvent(e);
@@ -618,7 +753,9 @@ void TaskHelixParameters::changeEvent(QEvent* e)
         assignToolTipsFromPropertyDocs();
 
         // Axes added by the user cannot be restored
-        fillAxisCombo(true);
+        updateUiControls(true);
+        updateStatus();
+        updateRecomputeUi();
 
         // restore the indexes
         if (axis < ui->axis->count()) {
@@ -721,6 +858,9 @@ void TaskHelixParameters::setupGizmos(ViewProviderHelix* vp)
     }
 
     heightGizmo = new Gui::LinearGizmo(ui->height);
+    heightGizmo->setDeferredUpdateHandler([this]() {
+        onHeightChanged(ui->height->value().getValue());
+    });
 
     connect(ui->inputMode, qOverload<int>(&QComboBox::currentIndexChanged), [this](int index) {
         bool isPitchTurnsAngle = index == static_cast<int>(HelixMode::pitch_turns_angle);
@@ -769,9 +909,41 @@ TaskDlgHelixParameters::TaskDlgHelixParameters(ViewProviderHelix* HelixView)
     : TaskDlgSketchBasedParameters(HelixView)
 {
     assert(HelixView);
-    Content.push_back(new TaskHelixParameters(HelixView));
+    parameter = new TaskHelixParameters(HelixView);
+    Content.push_back(parameter);
     Content.push_back(preview);
 }
 
+bool TaskDlgHelixParameters::accept()
+{
+    if (!parameter || hasDeferredRejectPending()) {
+        return false;
+    }
+
+    prepareDeferredReject(parameter, &TaskHelixParameters::recomputeSettled, [this]() {
+        return TaskDlgSketchBasedParameters::reject();
+    });
+    parameter->clearInteractiveSelection();
+    return TaskDlgSketchBasedParameters::accept();
+}
+
+bool TaskDlgHelixParameters::reject()
+{
+    if (!parameter) {
+        return false;
+    }
+
+    prepareDeferredReject(parameter, &TaskHelixParameters::recomputeSettled, [this]() {
+        return TaskDlgSketchBasedParameters::reject();
+    });
+    parameter->clearInteractiveSelection();
+    parameter->stopPendingRecompute();
+    return finishRejectOrDefer(getObject<PartDesign::Helix>());
+}
+
+void TaskDlgHelixParameters::onParameterRecomputeSettled()
+{
+    finishRejectOrDefer(getObject<PartDesign::Helix>());
+}
 
 #include "moc_TaskHelixParameters.cpp"

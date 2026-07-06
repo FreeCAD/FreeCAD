@@ -109,6 +109,11 @@ void ViewProviderDragger::setGizmoContainer(Gui::GizmoContainer* gizmoContainer)
     this->gizmoContainer = gizmoContainer;
 }
 
+void ViewProviderDragger::setDraggerInteractionHandler(std::function<void(DraggerInteraction)> handler)
+{
+    draggerInteractionHandler = std::move(handler);
+}
+
 void ViewProviderDragger::onChanged(const App::Property* property)
 {
     if (property == &TransformOrigin) {
@@ -127,6 +132,9 @@ TaskView::TaskDialog* ViewProviderDragger::getTransformDialog()
 {
     return new TaskTransformDialog(this, transformDragger);
 }
+
+void ViewProviderDragger::onDraggerInteraction([[maybe_unused]] DraggerInteraction interaction)
+{}
 
 bool ViewProviderDragger::doubleClicked()
 {
@@ -211,10 +219,10 @@ bool ViewProviderDragger::setEdit(int ModNum)
         Gui::ViewParams::instance()->getAxisZColor()
     );
     transformDragger->draggerSize.setValue(ViewParams::instance()->getDraggerScale());
-
-    transformDragger->addStartCallback(dragStartCallback, this);
-    transformDragger->addFinishCallback(dragFinishCallback, this);
-    transformDragger->addMotionCallback(dragMotionCallback, this);
+    Gui::installDraggerInteractionCallbacks<ViewProviderDragger, &ViewProviderDragger::handleDraggerInteraction>(
+        transformDragger.get(),
+        this
+    );
 
     Gui::Control().showDialog(getTransformDialog(), getDocument()->getDocument());
 
@@ -261,31 +269,36 @@ void ViewProviderDragger::setEditViewer(Gui::View3DInventorViewer* viewer, int M
 void ViewProviderDragger::unsetEditViewer([[maybe_unused]] Gui::View3DInventorViewer* viewer)
 {}
 
-void ViewProviderDragger::dragStartCallback(void* data, [[maybe_unused]] SoDragger* d)
+void ViewProviderDragger::handleDraggerInteraction(
+    DraggerInteraction interaction,
+    [[maybe_unused]] SoDragger* dragger
+)
 {
-    // This is called when a manipulator has done manipulating
-    auto vp = static_cast<ViewProviderDragger*>(data);
+    switch (interaction) {
+        case DraggerInteraction::Start:
+            draggerPlacement = getDraggerPlacement();
+            transformDragger->clearIncrementCounts();
+            break;
+        case DraggerInteraction::Motion:
+            previewPlacementFromDragger();
+            break;
+        case DraggerInteraction::Finish:
+            draggerPlacement = getDraggerPlacement();
+            transformDragger->clearIncrementCounts();
+            commitPlacementFromDragger();
+            break;
+    }
 
-    vp->draggerPlacement = vp->getDraggerPlacement();
-    vp->transformDragger->clearIncrementCounts();
+    notifyDraggerInteraction(interaction);
 }
 
-void ViewProviderDragger::dragFinishCallback(void* data, [[maybe_unused]] SoDragger* d)
+void ViewProviderDragger::notifyDraggerInteraction(DraggerInteraction interaction)
 {
-    // This is called when a manipulator has done manipulating
-    auto vp = static_cast<ViewProviderDragger*>(data);
+    if (draggerInteractionHandler) {
+        draggerInteractionHandler(interaction);
+    }
 
-    vp->draggerPlacement = vp->getDraggerPlacement();
-    vp->transformDragger->clearIncrementCounts();
-
-    vp->updatePlacementFromDragger();
-}
-
-void ViewProviderDragger::dragMotionCallback(void* data, [[maybe_unused]] SoDragger* d)
-{
-    auto vp = static_cast<ViewProviderDragger*>(data);
-
-    vp->updateTransformFromDragger();
+    onDraggerInteraction(interaction);
 }
 
 void ViewProviderDragger::updatePlacementFromDragger(DraggerComponents components)
@@ -352,6 +365,17 @@ void ViewProviderDragger::updatePlacementFromDragger(DraggerComponents component
 
     placement->setValue((finalDraggerPlacement * getTransformOrigin().inverse()));
     updateDraggerPosition();
+}
+
+void ViewProviderDragger::previewPlacementFromDragger()
+{
+    updateTransformFromDragger();
+}
+
+void ViewProviderDragger::commitPlacementFromDragger(DraggerComponents components)
+{
+    previewPlacementFromDragger();
+    updatePlacementFromDragger(components);
 }
 
 Base::Rotation Gui::ViewProviderDragger::orthonormalize(

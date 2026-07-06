@@ -25,15 +25,19 @@
 
 
 #include <QAction>
-#include <QApplication>
+#include <QCoreApplication>
 #include <QMessageBox>
 
-
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
+#include <Gui/AsyncPreviewSession.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
+#include <Gui/CommandT.h>
+#include <Gui/Control.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Tools.h>
 #include <Gui/ViewProvider.h>
@@ -42,12 +46,33 @@
 
 #include "ui_TaskBooleanParameters.h"
 #include "TaskBooleanParameters.h"
+#include "DeferredDialogRejectUtils.h"
 
 
 using namespace PartDesignGui;
 using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskBooleanParameters */
+
+namespace
+{
+void setDocumentObjectVisible(App::DocumentObject* object, bool visible)
+{
+    auto* viewProvider = dynamic_cast<Gui::ViewProviderDocumentObject*>(
+        Gui::Application::Instance->getViewProvider(object)
+    );
+    if (!viewProvider) {
+        return;
+    }
+
+    if (visible) {
+        viewProvider->show();
+    }
+    else {
+        viewProvider->hide();
+    }
+}
+}  // namespace
 
 TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean* BooleanView, QWidget* parent)
     : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Boolean"), tr("Boolean Parameters"), true, parent)
@@ -61,13 +86,42 @@ TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean* BooleanView, Q
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
+    AsyncPreviewController::Callbacks callbacks;
+    callbacks.makeRequest = [this]() {
+        auto* object = this->BooleanView ? this->BooleanView->getObject() : nullptr;
+        return object ? App::RecomputeRequest::fromDocumentObject(*object) : App::RecomputeRequest {};
+    };
+    callbacks.runSync = [this]() {
+        if (auto* boolean = this->BooleanView ? this->BooleanView->getObject<PartDesign::Boolean>()
+                                              : nullptr) {
+            boolean->getDocument()->recomputeFeature(boolean);
+        }
+    };
+    callbacks.onAppliedResult = [](bool, bool) {
+    };
+    asyncPreviewSession = std::make_unique<Gui::AsyncPreviewSession>(std::move(callbacks), this);
+    connect(
+        asyncPreviewSession->controller(),
+        &AsyncPreviewController::recomputeSettled,
+        this,
+        &TaskBooleanParameters::recomputeSettled
+    );
+    asyncPreviewSession->bindWidgets(
+        {
+            ui->previewStatusWidget,
+            ui->progressBarPreview,
+            ui->labelPreviewStatus,
+            ui->buttonCancelPreview,
+        },
+        [](const char* text) { return TaskBooleanParameters::tr(text); },
+        proxy
+    );
+
     // clang-format off
     connect(ui->buttonBodyAdd, &QToolButton::toggled,
             this, &TaskBooleanParameters::onButtonBodyAdd);
     connect(ui->buttonBodyRemove, &QToolButton::toggled,
             this, &TaskBooleanParameters::onButtonBodyRemove);
-    connect(ui->comboType, qOverload<int>(&QComboBox::currentIndexChanged),
-            this, &TaskBooleanParameters::onTypeChanged);
     // clang-format on
 
     this->groupLayout()->addWidget(proxy);
@@ -93,6 +147,13 @@ TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean* BooleanView, Q
 
     int index = pcBoolean->Type.getValue();
     ui->comboType->setCurrentIndex(index);
+
+    connect(
+        ui->comboType,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &TaskBooleanParameters::onTypeChanged
+    );
 }
 
 void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -138,36 +199,19 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 item->setText(QString::fromUtf8(pcBody->Label.getValue()));
                 item->setData(Qt::UserRole, QString::fromLatin1(pcBody->getNameInDocument()));
 
-                pcBoolean->getDocument()->recomputeFeature(pcBoolean);
+                requestRecompute(/*waitForCompletion=*/false);
                 ui->buttonBodyAdd->setChecked(false);
-                exitSelectionMode();
 
                 // Hide the bodies
                 if (bodies.size() == 1) {
                     // Hide base body and added body
-                    Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                        Gui::Application::Instance->getViewProvider(pcBoolean->BaseFeature.getValue())
-                    );
-                    if (vp) {
-                        vp->hide();
-                    }
-                    vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                        Gui::Application::Instance->getViewProvider(bodies.front())
-                    );
-                    if (vp) {
-                        vp->hide();
-                    }
+                    setDocumentObjectVisible(pcBoolean->BaseFeature.getValue(), false);
+                    setDocumentObjectVisible(bodies.front(), false);
                     BooleanView->show();
                 }
                 else {
                     // Hide newly added body
-                    Gui::ViewProviderDocumentObject* vp
-                        = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                            Gui::Application::Instance->getViewProvider(bodies.back())
-                        );
-                    if (vp) {
-                        vp->hide();
-                    }
+                    setDocumentObjectVisible(bodies.back(), false);
                 }
             }
         }
@@ -187,24 +231,13 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                     }
                 }
 
-                pcBoolean->getDocument()->recomputeFeature(pcBoolean);
+                requestRecompute(/*waitForCompletion=*/false);
                 ui->buttonBodyRemove->setChecked(false);
-                exitSelectionMode();
 
                 // Make bodies visible again
-                Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                    Gui::Application::Instance->getViewProvider(pcBody)
-                );
-                if (vp) {
-                    vp->show();
-                }
+                setDocumentObjectVisible(pcBody, true);
                 if (bodies.empty()) {
-                    Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                        Gui::Application::Instance->getViewProvider(pcBoolean->BaseFeature.getValue())
-                    );
-                    if (vp) {
-                        vp->show();
-                    }
+                    setDocumentObjectVisible(pcBoolean->BaseFeature.getValue(), true);
                     BooleanView->hide();
                 }
             }
@@ -227,6 +260,8 @@ void TaskBooleanParameters::onButtonBodyAdd(bool checked)
     else {
         exitSelectionMode();
     }
+
+    ui->buttonBodyRemove->setDisabled(checked);
 }
 
 void TaskBooleanParameters::onButtonBodyRemove(bool checked)
@@ -242,6 +277,8 @@ void TaskBooleanParameters::onButtonBodyRemove(bool checked)
     else {
         exitSelectionMode();
     }
+
+    ui->buttonBodyAdd->setDisabled(checked);
 }
 
 void TaskBooleanParameters::onTypeChanged(int index)
@@ -262,10 +299,7 @@ void TaskBooleanParameters::onTypeChanged(int index)
             pcBoolean->Type.setValue("Fuse");
     }
 
-    // Force UI update before starting heavy computation to show user's selection immediately
-    QApplication::processEvents();
-
-    pcBoolean->getDocument()->recomputeFeature(pcBoolean);
+    requestRecompute(/*waitForCompletion=*/false);
 }
 
 const std::vector<std::string> TaskBooleanParameters::getBodies() const
@@ -287,7 +321,7 @@ void TaskBooleanParameters::onBodyDeleted()
     PartDesign::Boolean* pcBoolean = BooleanView->getObject<PartDesign::Boolean>();
     std::vector<App::DocumentObject*> bodies = pcBoolean->Group.getValues();
     int index = ui->listWidgetBodies->currentRow();
-    if (index < 0 && (size_t)index > bodies.size()) {
+    if (index < 0 || static_cast<size_t>(index) >= bodies.size()) {
         return;
     }
 
@@ -303,27 +337,78 @@ void TaskBooleanParameters::onBodyDeleted()
 
     ui->listWidgetBodies->model()->removeRow(index);
     pcBoolean->setObjects(bodies);
-    pcBoolean->getDocument()->recomputeFeature(pcBoolean);
+    requestRecompute(/*waitForCompletion=*/false);
 
     // Make bodies visible again
-    Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-        Gui::Application::Instance->getViewProvider(body)
-    );
-    if (vp) {
-        vp->show();
-    }
+    setDocumentObjectVisible(body, true);
     if (bodies.empty()) {
-        Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-            Gui::Application::Instance->getViewProvider(pcBoolean->BaseFeature.getValue())
-        );
-        if (vp) {
-            vp->show();
-        }
+        setDocumentObjectVisible(pcBoolean->BaseFeature.getValue(), true);
         BooleanView->hide();
     }
 }
 
-TaskBooleanParameters::~TaskBooleanParameters() = default;
+TaskBooleanParameters::~TaskBooleanParameters()
+{
+    stopPendingRecompute();
+}
+
+bool TaskBooleanParameters::hasOutstandingRecompute() const
+{
+    return asyncPreviewSession && asyncPreviewSession->hasOutstandingRecompute();
+}
+
+bool TaskBooleanParameters::canReuseAcceptedPreviewResult() const
+{
+    return asyncPreviewSession && asyncPreviewSession->didLastRecomputeSucceed();
+}
+
+void TaskBooleanParameters::setDeferredClosePending(bool pending)
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->setDeferredClosePending(pending);
+    }
+}
+
+Gui::AsyncInlineRecomputeProgressTarget TaskBooleanParameters::makeAcceptedRecomputeProgressTarget(
+    QDialogButtonBox* dialogButtonBox,
+    const QString& statusText
+)
+{
+    if (!asyncPreviewSession) {
+        return {};
+    }
+
+    return asyncPreviewSession->makeInlineRecomputeProgressTarget(this, dialogButtonBox, statusText);
+}
+
+void TaskBooleanParameters::updateRecomputeUi()
+{
+    if (!ui || !asyncPreviewSession) {
+        return;
+    }
+    asyncPreviewSession->updateUi();
+}
+
+void TaskBooleanParameters::flushPendingRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->flushPendingRecompute();
+    }
+}
+
+void TaskBooleanParameters::stopPendingRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->stopPendingRecompute();
+    }
+}
+
+void TaskBooleanParameters::requestRecompute(bool waitForCompletion)
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->requestRecompute(waitForCompletion);
+    }
+}
 
 void TaskBooleanParameters::changeEvent(QEvent* e)
 {
@@ -333,6 +418,8 @@ void TaskBooleanParameters::changeEvent(QEvent* e)
         int index = ui->comboType->currentIndex();
         ui->retranslateUi(proxy);
         ui->comboType->setCurrentIndex(index);
+        ui->comboType->blockSignals(false);
+        updateRecomputeUi();
     }
 }
 
@@ -372,10 +459,36 @@ void TaskDlgBooleanParameters::open()
 void TaskDlgBooleanParameters::clicked(int)
 {}
 
+void TaskDlgBooleanParameters::ensureDeferredRejectConnection()
+{
+    ensureDeferredDialogRejectConnection(
+        deferredReject,
+        parameter,
+        &TaskBooleanParameters::recomputeSettled,
+        this,
+        &TaskDlgBooleanParameters::onParameterRecomputeSettled
+    );
+}
+
+void TaskDlgBooleanParameters::setDeferredRejectPending(bool pending)
+{
+    setDeferredDialogRejectPending(deferredReject, pending, buttonBox, [this](bool pending) {
+        if (parameter) {
+            parameter->setDeferredClosePending(pending);
+        }
+    });
+}
+
 bool TaskDlgBooleanParameters::accept()
 {
+    if (deferredReject.pending) {
+        return false;
+    }
+
+    ensureDeferredRejectConnection();
     auto obj = BooleanView->getObject();
-    if (!obj || !obj->isAttachedToDocument()) {
+    App::Document* document = obj ? obj->getDocument() : nullptr;
+    if (!obj || !obj->isAttachedToDocument() || !document) {
         return false;
     }
     BooleanView->Visibility.setValue(true);
@@ -383,8 +496,16 @@ bool TaskDlgBooleanParameters::accept()
     try {
         std::vector<std::string> bodies = parameter->getBodies();
         if (bodies.empty()) {
-            QMessageBox::warning(parameter, tr("Empty Body List"), tr("The body list cannot be empty"));
+            QMessageBox::warning(parameter, tr("Empty body list"), tr("The body list cannot be empty"));
             return false;
+        }
+        const bool previewSettled = !parameter->hasOutstandingRecompute()
+            && parameter->canReuseAcceptedPreviewResult();
+        if (!previewSettled) {
+            parameter->stopPendingRecompute();
+        }
+        else {
+            parameter->flushPendingRecompute();
         }
         std::stringstream str;
         str << Gui::Command::getObjectCmd(obj) << ".setObjects( [";
@@ -396,12 +517,31 @@ bool TaskDlgBooleanParameters::accept()
         Gui::Command::runCommand(Gui::Command::Doc, str.str().c_str());
         FCMD_OBJ_CMD(obj, "Type = " << parameter->getType());
 
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-        obj->getDocument()->commitTransaction();
+        if (previewSettled) {
+            // The async preview already settled the latest boolean state. Clear the
+            // redundant touch from the command serialization above so the final
+            // document recompute only updates downstream dependents.
+            Gui::cmdAppObject(obj, "purgeTouched()");
+            for (auto parent : obj->getInList()) {
+                parent->touch();
+            }
+        }
+
+        auto progressTarget
+            = parameter->makeAcceptedRecomputeProgressTarget(buttonBox, tr("Applying changes..."));
+        Gui::AsyncRecomputeDialogOptions options;
+        options.cancelable = false;
+        options.dynamicLabel = false;
+        options.forceIndeterminate = true;
+        options.inlineProgressTarget = progressTarget;
+        if (!runAsyncAcceptDocumentRecompute(document, options)) {
+            return false;
+        }
+        Gui::cmdGuiDocument(document, "resetEdit()");
+        document->commitTransaction();
     }
     catch (const Base::Exception& e) {
-        obj->getDocument()->abortTransaction();
+        document->abortTransaction();
         QMessageBox::warning(
             parameter,
             tr("Boolean: Accept: Input error"),
@@ -412,8 +552,12 @@ bool TaskDlgBooleanParameters::accept()
     return true;
 }
 
-bool TaskDlgBooleanParameters::reject()
+bool TaskDlgBooleanParameters::performReject()
 {
+    if (!parameter) {
+        return false;
+    }
+
     // Show the bodies again
     PartDesign::Boolean* obj = BooleanView->getObject<PartDesign::Boolean>();
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
@@ -431,6 +575,40 @@ bool TaskDlgBooleanParameters::reject()
     }
 
     return true;
+}
+
+bool TaskDlgBooleanParameters::reject()
+{
+    if (!parameter) {
+        return false;
+    }
+
+    ensureDeferredRejectConnection();
+    parameter->stopPendingRecompute();
+    if (!parameter->hasOutstandingRecompute()) {
+        return performReject();
+    }
+
+    if (!deferredReject.pending) {
+        auto* object = BooleanView ? BooleanView->getObject() : nullptr;
+        deferredReject.documentName = object && object->getDocument()
+            ? std::string(object->getDocument()->getName())
+            : std::string();
+        setDeferredRejectPending(true);
+    }
+
+    return false;
+}
+
+void TaskDlgBooleanParameters::onParameterRecomputeSettled()
+{
+    finishDeferredDialogReject(
+        this,
+        deferredReject,
+        parameter && !parameter->hasOutstandingRecompute(),
+        [this]() { return performReject(); },
+        [this](bool pending) { setDeferredRejectPending(pending); }
+    );
 }
 
 #include "moc_TaskBooleanParameters.cpp"

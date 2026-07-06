@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include <App/PropertyLinks.h>
+
 #include "TaskTransformedParameters.h"
 #include "ViewProviderMirrored.h"
 
@@ -45,7 +47,7 @@ namespace PartDesignGui
 
 class TaskMultiTransformParameters;
 
-class TaskMirroredParameters: public TaskTransformedParameters
+class PartDesignGuiExport TaskMirroredParameters: public TaskTransformedParameters
 {
     Q_OBJECT
 
@@ -71,15 +73,20 @@ private:
     void retranslateParameterUI(QWidget* widget) override;
     void updateUI();
     void getMirrorPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
+    void syncStagedMirrorPlaneFromObject();
+    void setStagedMirrorPlane(const App::PropertyLinkSub& lnk);
+    void syncPlaneComboToStagedMirrorPlane();
+    void applyStagedPreviewStateToObject() override;
 
 private:
     Gui::ComboLinks planeLinks;
+    App::PropertyLinkSub stagedMirrorPlane;
     std::unique_ptr<Ui_TaskMirroredParameters> ui;
 };
 
 
 /// simulation dialog for the TaskView
-class TaskDlgMirroredParameters: public TaskDlgTransformedParameters
+class PartDesignGuiExport TaskDlgMirroredParameters: public TaskDlgTransformedParameters
 {
     Q_OBJECT
 

@@ -43,8 +43,8 @@ namespace PartDesignGui
 
 
 /// Convenience class to collect common methods for all SketchBased features
-class TaskSketchBasedParameters: public PartDesignGui::TaskFeatureParameters,
-                                 public Gui::SelectionObserver
+class PartDesignGuiExport TaskSketchBasedParameters: public PartDesignGui::TaskFeatureParameters,
+                                                     public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -60,6 +60,7 @@ public:
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override = 0;
     const QString onAddSelection(const Gui::SelectionChanges& msg, App::PropertyLinkSub& prop);
+    virtual void triggerPreviewRecompute();
     virtual void startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base);
     virtual void finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base);
     /*!
@@ -84,7 +85,7 @@ private:
     Gui::ViewProvider* previouslyVisibleViewProvider {nullptr};
 };
 
-class TaskDlgSketchBasedParameters: public PartDesignGui::TaskDlgFeatureParameters
+class PartDesignGuiExport TaskDlgSketchBasedParameters: public PartDesignGui::TaskDlgFeatureParameters
 {
     Q_OBJECT
 
@@ -97,6 +98,9 @@ public:
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
+
+protected:
+    AcceptPendingRecomputeAction acceptPendingRecomputeAction() const override;
 };
 
 }  // namespace PartDesignGui

@@ -46,7 +46,7 @@ class Thickness;
 namespace PartDesignGui
 {
 
-class TaskThicknessParameters: public TaskDressUpParameters
+class PartDesignGuiExport TaskThicknessParameters: public TaskDressUpParameters
 {
     Q_OBJECT
 
@@ -74,13 +74,14 @@ protected:
     void setButtons(const selectionModes mode) override;
     void changeEvent(QEvent* e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    void onDressUpRecomputeFinished(bool canceled) override;
 
 private:
     void addContainerWidget();
     void initControls();
     void setupConnections();
     PartDesign::Thickness* onBeforeChange();
-    void onAfterChange(PartDesign::Thickness* obj);
+    void onAfterChange();
 
 private:
     std::unique_ptr<Ui_TaskThicknessParameters> ui;
@@ -92,7 +93,7 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgThicknessParameters: public TaskDlgDressUpParameters
+class PartDesignGuiExport TaskDlgThicknessParameters: public TaskDlgDressUpParameters
 {
     Q_OBJECT
 

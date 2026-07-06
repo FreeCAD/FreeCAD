@@ -59,6 +59,12 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp* DressUpView, QWidg
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+    setupPreviewWidgets(
+        ui->previewStatusWidget,
+        ui->progressBarPreview,
+        ui->labelPreviewStatus,
+        ui->buttonCancelPreview
+    );
 
     this->groupLayout()->addWidget(proxy);
 
@@ -147,12 +153,7 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             pcDraft->NeutralPlane.setValue(selObj, planes);
             ui->linePlane->setText(getRefStr(selObj, planes));
 
-            pcDraft->getDocument()->recomputeFeature(pcDraft);
-            // highlight existing references for possible further selections
-            getDressUpView()->highlightReferences(true);
-            // hide the draft if there was a computation error
-            hideOnError();
-            setGizmoPositions();
+            schedulePendingRecompute();
         }
         else if (selectionMode == line) {
             auto pcDraft = getObject<PartDesign::Draft>();
@@ -166,12 +167,7 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             pcDraft->PullDirection.setValue(selObj, edges);
             ui->lineLine->setText(getRefStr(selObj, edges));
 
-            pcDraft->getDocument()->recomputeFeature(pcDraft);
-            // highlight existing references for possible further selections
-            getDressUpView()->highlightReferences(true);
-            // hide the draft if there was a computation error
-            hideOnError();
-            setGizmoPositions();
+            schedulePendingRecompute();
         }
     }
     else if (msg.Type == Gui::SelectionChanges::ClrSelection) {
@@ -201,6 +197,9 @@ void TaskDraftParameters::onButtonPlane(bool checked)
             AllowSelection::EDGE | AllowSelection::FACE | AllowSelection::PLANAR
         ));
     }
+    else if (selectionMode == plane) {
+        setSelectionMode(none);
+    }
 }
 
 void TaskDraftParameters::onButtonLine(bool checked)
@@ -213,6 +212,9 @@ void TaskDraftParameters::onButtonLine(bool checked)
         Gui::Selection().addSelectionGate(
             new ReferenceSelection(this->getBase(), AllowSelection::EDGE | AllowSelection::PLANAR)
         );
+    }
+    else if (selectionMode == line) {
+        setSelectionMode(none);
     }
 }
 
@@ -244,12 +246,10 @@ void TaskDraftParameters::getLine(App::DocumentObject*& obj, std::vector<std::st
 void TaskDraftParameters::onAngleChanged(double angle)
 {
     if (auto draft = getObject<PartDesign::Draft>()) {
-        setButtons(none);
+        setSelectionMode(none);
         setupTransaction();
         draft->Angle.setValue(angle);
-        draft->recomputeFeature();
-        // hide the draft if there was a computation error
-        hideOnError();
+        schedulePendingRecompute();
     }
 }
 
@@ -261,14 +261,10 @@ double TaskDraftParameters::getAngle() const
 void TaskDraftParameters::onReversedChanged(const bool reversed)
 {
     if (auto draft = getObject<PartDesign::Draft>()) {
-        setButtons(none);
+        setSelectionMode(none);
         setupTransaction();
         draft->Reversed.setValue(reversed);
-        draft->recomputeFeature();
-        // hide the draft if there was a computation error
-        hideOnError();
-
-        setGizmoPositions();
+        schedulePendingRecompute();
     }
 }
 
@@ -297,6 +293,18 @@ void TaskDraftParameters::changeEvent(QEvent* e)
     }
 }
 
+bool TaskDraftParameters::shouldRestoreReferenceHighlightAfterRecompute() const
+{
+    return selectionMode == refSel || selectionMode == plane || selectionMode == line;
+}
+
+void TaskDraftParameters::onDressUpRecomputeFinished(bool canceled)
+{
+    if (!canceled) {
+        setGizmoPositions();
+    }
+}
+
 void TaskDraftParameters::apply()
 {
     // Alert user if he created an empty feature
@@ -315,6 +323,9 @@ void TaskDraftParameters::setupGizmos(ViewProvider* vp)
     }
 
     angleGizmo = new Gui::RotationGizmo(ui->draftAngle);
+    angleGizmo->setDeferredUpdateHandler([this]() {
+        onAngleChanged(ui->draftAngle->value().getValue());
+    });
 
     gizmoContainer = GizmoContainer::create({angleGizmo}, vp);
 

@@ -220,6 +220,16 @@ public:
     PyObject* getPyExceptionType() const override;
 };
 
+class BaseExport UserAbortException: public AbortException
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    explicit UserAbortException(const std::string& message = "User aborted");
+};
+
+BaseExport bool isUserAbortException(const Exception& exception);
+
 class BaseExport XMLBaseException: public Exception
 {
 public:

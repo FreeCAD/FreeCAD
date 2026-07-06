@@ -23,6 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <cstring>
 #include <utility>
 
 #include <FCConfig.h>
@@ -167,6 +168,21 @@ const char* AbortException::what() const noexcept
 PyObject* AbortException::getPyExceptionType() const
 {
     return PyExc_FC_FreeCADAbort;
+}
+
+// ---------------------------------------------------------
+
+TYPESYSTEM_SOURCE(Base::UserAbortException, Base::AbortException)
+
+UserAbortException::UserAbortException(const std::string& message)
+    : AbortException(message)
+{}
+
+bool Base::isUserAbortException(const Exception& exception)
+{
+    return dynamic_cast<const UserAbortException*>(&exception) != nullptr
+        || (dynamic_cast<const AbortException*>(&exception) != nullptr && exception.what()
+            && std::strcmp(exception.what(), "User aborted") == 0);
 }
 
 // ---------------------------------------------------------

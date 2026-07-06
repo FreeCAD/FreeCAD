@@ -45,7 +45,7 @@ namespace PartDesignGui
 
 class TaskMultiTransformParameters;
 
-class TaskScaledParameters: public TaskTransformedParameters
+class PartDesignGuiExport TaskScaledParameters: public TaskTransformedParameters
 {
     Q_OBJECT
 
@@ -54,6 +54,7 @@ public:
     explicit TaskScaledParameters(ViewProviderTransformed* TransformedView, QWidget* parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
     TaskScaledParameters(TaskMultiTransformParameters* parentTask, QWidget* parameterWidget);
+    ~TaskScaledParameters() override;
 
     void apply() override;
 
@@ -67,6 +68,7 @@ private:
     void setupParameterUI(QWidget* widget) override;
     void retranslateParameterUI(QWidget* widget) override;
     void updateUI();
+    void applyStagedPreviewStateToObject() override;
 
     double getFactor() const;
     unsigned getOccurrences() const;
@@ -77,7 +79,7 @@ private:
 
 
 /// simulation dialog for the TaskView
-class TaskDlgScaledParameters: public TaskDlgTransformedParameters
+class PartDesignGuiExport TaskDlgScaledParameters: public TaskDlgTransformedParameters
 {
     Q_OBJECT
 

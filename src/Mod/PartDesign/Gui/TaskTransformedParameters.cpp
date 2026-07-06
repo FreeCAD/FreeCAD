@@ -24,8 +24,12 @@
 
 
 #include <QAction>
+#include <QDialogButtonBox>
+#include <QEvent>
 #include <QListWidget>
+#include <QWidget>
 
+#include <sstream>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -33,8 +37,11 @@
 #include <App/Transactions.h>
 #include <App/Origin.h>
 #include <Base/Console.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
+#include <Gui/AsyncPreviewSession.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Control.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Command.h>
@@ -45,11 +52,10 @@
 
 #include "ui_TaskTransformedParameters.h"
 #include "TaskTransformedParameters.h"
+#include "DeferredDialogRejectUtils.h"
 #include "TaskMultiTransformParameters.h"
 #include "ReferenceSelection.h"
 
-
-FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -71,20 +77,95 @@ TaskTransformedParameters::TaskTransformedParameters(
 {
     Gui::Document* doc = TransformedView->getDocument();
     this->attachDocument(doc);
+    setupAsyncPreviewController();
 }
 
 TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameters* parentTask)
     : TaskBox(QPixmap(), tr(""), true, parentTask)
     , parentTask(parentTask)
     , insideMultiTransform(true)
-{}
+{
+    connectPreviewControllerSignals();
+}
 
 TaskTransformedParameters::~TaskTransformedParameters()
 {
     // make sure to remove selection gate in all cases
     Gui::Selection().rmvSelectionGate();
+    stopPendingRecompute();
 
     delete proxy;
+}
+
+void TaskTransformedParameters::setupAsyncPreviewController()
+{
+    AsyncPreviewController::Callbacks callbacks;
+    callbacks.makeRequest = [this]() {
+        auto* object = getTopTransformedObject();
+        return object ? App::RecomputeRequest::fromDocumentObject(
+                            *object,
+                            true,
+                            static_cast<int>(App::RecomputeOption::InteractivePreview)
+                        )
+                      : App::RecomputeRequest {};
+    };
+    callbacks.runSync = [this]() {
+        if (auto* view = getTopTransformedView()) {
+            view->recomputeFeature();
+        }
+    };
+    callbacks.onAppliedResult = [this](bool, bool canceled) {
+        if (!canceled) {
+            if (auto* view = getTopTransformedView()) {
+                view->refreshPreviewResult();
+            }
+        }
+    };
+    asyncPreviewSession = std::make_unique<Gui::AsyncPreviewSession>(std::move(callbacks), this);
+    asyncPreviewSession->setSchedulerInterval(getUpdateViewTimeout());
+    connectPreviewControllerSignals();
+}
+
+void TaskTransformedParameters::connectPreviewControllerSignals()
+{
+    if (auto* previewController = getAsyncPreviewController()) {
+        connect(
+            previewController,
+            &AsyncPreviewController::recomputeSettled,
+            this,
+            &TaskTransformedParameters::onPreviewControllerRecomputeSettled
+        );
+    }
+}
+
+Gui::AsyncPreviewSession* TaskTransformedParameters::getAsyncPreviewSession()
+{
+    if (insideMultiTransform && parentTask) {
+        return parentTask->getAsyncPreviewSession();
+    }
+
+    return asyncPreviewSession.get();
+}
+
+const Gui::AsyncPreviewSession* TaskTransformedParameters::getAsyncPreviewSession() const
+{
+    if (insideMultiTransform && parentTask) {
+        return parentTask->getAsyncPreviewSession();
+    }
+
+    return asyncPreviewSession.get();
+}
+
+AsyncPreviewController* TaskTransformedParameters::getAsyncPreviewController()
+{
+    auto* previewSession = getAsyncPreviewSession();
+    return previewSession ? previewSession->controller() : nullptr;
+}
+
+const AsyncPreviewController* TaskTransformedParameters::getAsyncPreviewController() const
+{
+    auto* previewSession = getAsyncPreviewSession();
+    return previewSession ? previewSession->controller() : nullptr;
 }
 
 void TaskTransformedParameters::setupUI()
@@ -116,8 +197,26 @@ void TaskTransformedParameters::setupUI()
     ui->listWidgetFeatures->addAction(action);
     connect(action, &QAction::triggered, this, &TaskTransformedParameters::onFeatureDeleted);
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
+    connect(
+        ui->listWidgetFeatures->model(),
+        &QAbstractListModel::rowsMoved,
+        this,
+        &TaskTransformedParameters::indexesMoved
+    );
 
     connect(ui->checkBoxUpdateView, &QCheckBox::toggled, this, &TaskTransformedParameters::onUpdateView);
+    if (auto* previewSession = getAsyncPreviewSession()) {
+        previewSession->bindWidgets(
+            {
+                ui->previewStatusWidget,
+                ui->progressBarPreview,
+                ui->labelPreviewStatus,
+                ui->buttonCancelPreview,
+            },
+            [](const char* text) { return TaskTransformedParameters::tr(text); },
+            proxy
+        );
+    }
 
     // Get the feature data
     auto pcTransformed = getObject<PartDesign::Transformed>();
@@ -168,6 +267,7 @@ void TaskTransformedParameters::changeEvent(QEvent* event)
     if (event->type() == QEvent::LanguageChange && proxy) {
         ui->retranslateUi(proxy);
         retranslateParameterUI(ui->featureUI);
+        updateRecomputeUi();
     }
 }
 
@@ -192,6 +292,17 @@ void TaskTransformedParameters::clearButtons()
 int TaskTransformedParameters::getUpdateViewTimeout() const
 {
     return 500;
+}
+
+void TaskTransformedParameters::updateRecomputeUi()
+{
+    if (!ui) {
+        return;
+    }
+
+    if (auto* previewSession = getAsyncPreviewSession()) {
+        previewSession->updateUi();
+    }
 }
 
 void TaskTransformedParameters::addObject(App::DocumentObject* obj)
@@ -248,7 +359,7 @@ bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& ms
             }
             setupTransaction();
             pcTransformed->Originals.setValues(originals);
-            recomputeFeature();
+            scheduleRecomputeFeature();
 
             return true;
         }
@@ -274,7 +385,7 @@ void TaskTransformedParameters::setupTransaction()
     }
 
     // open a transaction if none is active
-    // where is this transaction committed - theo-vt?
+    // where is this transaction commited - theo-vt?
     std::string name("Edit ");
     name += obj->Label.getValue();
     transactionID = obj->getDocument()->openTransaction(name.c_str());
@@ -288,6 +399,84 @@ void TaskTransformedParameters::setEnabledTransaction(bool on)
 bool TaskTransformedParameters::isEnabledTransaction() const
 {
     return enableTransaction;
+}
+
+void TaskTransformedParameters::setUpdateViewEnabled(bool on)
+{
+    blockUpdate = !on;
+    if (!on) {
+        stopPendingRecompute();
+    }
+}
+
+void TaskTransformedParameters::flushPendingRecompute()
+{
+    const bool hadPendingStagedPreviewUpdate = pendingStagedPreviewUpdate;
+    flushingStagedPreviewUpdate = hadPendingStagedPreviewUpdate;
+
+    if (auto* previewSession = getAsyncPreviewSession()) {
+        previewSession->flushPendingRecompute();
+    }
+
+    flushingStagedPreviewUpdate = false;
+
+    if (!hadPendingStagedPreviewUpdate || blockUpdate || !pendingStagedPreviewUpdate) {
+        return;
+    }
+
+    pendingStagedPreviewUpdate = false;
+    applyStagedPreviewStateToObject();
+    setupTransaction();
+    requestImmediateRecompute(/*waitForCompletion=*/true);
+}
+
+void TaskTransformedParameters::stopPendingRecompute()
+{
+    if (auto* previewSession = getAsyncPreviewSession()) {
+        previewSession->stopPendingRecompute();
+    }
+}
+
+bool TaskTransformedParameters::hasOutstandingRecompute() const
+{
+    auto* previewSession = getAsyncPreviewSession();
+    return previewSession && previewSession->hasOutstandingRecompute();
+}
+
+bool TaskTransformedParameters::canReuseAcceptedPreviewResult() const
+{
+    auto* previewSession = getAsyncPreviewSession();
+    return previewSession && previewSession->didLastRecomputeSucceed();
+}
+
+void TaskTransformedParameters::setDeferredClosePending(bool pending)
+{
+    if (insideMultiTransform && parentTask) {
+        parentTask->setDeferredClosePending(pending);
+        return;
+    }
+
+    if (auto* previewSession = getAsyncPreviewSession()) {
+        previewSession->setDeferredClosePending(pending);
+    }
+}
+
+Gui::AsyncInlineRecomputeProgressTarget TaskTransformedParameters::makeAcceptedRecomputeProgressTarget(
+    QDialogButtonBox* dialogButtonBox,
+    const QString& statusText
+)
+{
+    auto* previewSession = getAsyncPreviewSession();
+    if (!previewSession) {
+        return {};
+    }
+
+    return previewSession->makeInlineRecomputeProgressTarget(this, dialogButtonBox, statusText);
+}
+
+void TaskTransformedParameters::cancelPendingRecompute()
+{
+    stopPendingRecompute();
 }
 
 void TaskTransformedParameters::onModeChanged(int mode_id)
@@ -307,7 +496,14 @@ void TaskTransformedParameters::onModeChanged(int mode_id)
         ui->listWidgetFeatures->clear();
     }
     setupTransaction();
-    recomputeFeature();
+    scheduleRecomputeFeature();
+}
+
+void TaskTransformedParameters::requestRecompute(bool waitForCompletion)
+{
+    if (auto* previewSession = getAsyncPreviewSession()) {
+        previewSession->requestRecompute(waitForCompletion);
+    }
 }
 
 void TaskTransformedParameters::onButtonAddFeature(bool checked)
@@ -374,7 +570,7 @@ void TaskTransformedParameters::onFeatureDeleted()
     setupTransaction();
     pcTransformed->Originals.setValues(originals);
     ui->listWidgetFeatures->model()->removeRow(currentRow);
-    recomputeFeature();
+    scheduleRecomputeFeature();
 }
 
 void TaskTransformedParameters::removeItemFromListWidget(QListWidget* widget, const QString& itemstr)
@@ -462,7 +658,61 @@ void TaskTransformedParameters::fillPlanesCombo(Gui::ComboLinks& combolinks, Par
 
 void TaskTransformedParameters::recomputeFeature()
 {
-    getTopTransformedView()->recomputeFeature();
+    if (blockUpdate) {
+        return;
+    }
+
+    requestRecompute(/*waitForCompletion=*/false);
+}
+
+void TaskTransformedParameters::scheduleRecomputeFeature()
+{
+    if (!blockUpdate) {
+        if (auto* previewSession = getAsyncPreviewSession()) {
+            previewSession->scheduleRecompute();
+        }
+    }
+}
+
+void TaskTransformedParameters::requestImmediateRecompute(bool waitForCompletion)
+{
+    if (blockUpdate) {
+        return;
+    }
+
+    requestRecompute(waitForCompletion);
+}
+
+void TaskTransformedParameters::requestStagedPreviewUpdate()
+{
+    if (blockUpdate) {
+        return;
+    }
+
+    if (hasOutstandingRecompute()) {
+        pendingStagedPreviewUpdate = true;
+        return;
+    }
+
+    pendingStagedPreviewUpdate = false;
+    applyStagedPreviewStateToObject();
+    setupTransaction();
+    scheduleRecomputeFeature();
+}
+
+void TaskTransformedParameters::applyStagedPreviewStateToObject()
+{}
+
+void TaskTransformedParameters::onPreviewControllerRecomputeSettled()
+{
+    if (!blockUpdate && !flushingStagedPreviewUpdate && pendingStagedPreviewUpdate) {
+        pendingStagedPreviewUpdate = false;
+        applyStagedPreviewStateToObject();
+        setupTransaction();
+        scheduleRecomputeFeature();
+    }
+
+    Q_EMIT recomputeSettled();
 }
 
 PartDesignGui::ViewProviderTransformed* TaskTransformedParameters::getTopTransformedView() const
@@ -580,6 +830,35 @@ void TaskTransformedParameters::addReferenceSelectionGate(AllowSelectionFlags al
     Gui::Selection().addSelectionGate(new CombineSelectionFilterGates(gateRefPtr, gateDepPtr));
 }
 
+void TaskTransformedParameters::indexesMoved()
+{
+    auto model = qobject_cast<QAbstractItemModel*>(sender());
+    if (!model) {
+        return;
+    }
+
+    PartDesign::Transformed* pcTransformed = getObject();
+    std::vector<App::DocumentObject*> originals = pcTransformed->getSortedOriginals();
+
+    QByteArray name;
+    int rows = model->rowCount();
+    for (int i = 0; i < rows; i++) {
+        QModelIndex index = model->index(i, 0);
+        name = index.data(Qt::UserRole).toByteArray().constData();
+        originals[i] = pcTransformed->getDocument()->getObject(name.constData());
+    }
+
+    setupTransaction();
+    pcTransformed->Originals.setValues(originals);
+    scheduleRecomputeFeature();
+}
+
+void TaskTransformedParameters::onCancelPreview()
+{
+    stopPendingRecompute();
+}
+
+
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
@@ -589,21 +868,101 @@ TaskDlgTransformedParameters::TaskDlgTransformedParameters(ViewProviderTransform
     : TaskDlgFeatureParameters(viewProvider)
 {}
 
+TaskDlgFeatureParameters::AcceptRecomputeMode TaskDlgTransformedParameters::acceptRecomputeMode(
+    bool,
+    AcceptPendingRecomputeAction
+) const
+{
+    // Transformed previews run with InteractivePreview and can intentionally skip
+    // final-only work such as refinement. Accept must always recompute the final
+    // feature instead of reusing the settled preview shape.
+    return AcceptRecomputeMode::AsyncDocument;
+}
+
 //==== calls from the TaskView ===============================================================
 
 bool TaskDlgTransformedParameters::accept()
 {
-    parameter->exitSelectionMode();
-    parameter->apply();
+    if (!parameter || hasDeferredRejectPending()) {
+        return false;
+    }
 
-    return TaskDlgFeatureParameters::accept();
+    prepareDeferredReject(parameter, &TaskTransformedParameters::recomputeSettled, [this]() {
+        return TaskDlgFeatureParameters::reject();
+    });
+    parameter->exitSelectionMode();
+
+    auto* feature = getObject();
+    if (!feature) {
+        return false;
+    }
+
+    bool isUpdateBlocked = false;
+    try {
+        const bool canReusePreviewResult = !parameter->hasOutstandingRecompute()
+            && parameter->canReuseAcceptedPreviewResult();
+        if (canReusePreviewResult) {
+            parameter->flushPendingRecompute();
+        }
+        else {
+            // When a heavy preview is already in flight, or the last settled preview
+            // was canceled, do not replay preview work on the GUI thread. Stop the
+            // preview path, serialize the final UI state, and let the accepted
+            // document recompute produce the final feature result.
+            parameter->stopPendingRecompute();
+        }
+        parameter->apply();
+        isUpdateBlocked = parameter->isUpdateBlocked();
+
+        if (!feature->isDerivedFrom<PartDesign::Feature>()) {
+            throw Base::TypeError("Bad object processed in the feature dialog.");
+        }
+
+        App::Document* document = feature->getDocument();
+        if (!document) {
+            throw Base::RuntimeError("Feature document is not available.");
+        }
+
+        const auto pendingRecomputeAction = AcceptPendingRecomputeAction::Stop;
+        prepareAcceptedFeatureForDocumentRecompute(feature, isUpdateBlocked, pendingRecomputeAction);
+        auto progressTarget
+            = parameter->makeAcceptedRecomputeProgressTarget(buttonBox, tr("Applying changes..."));
+        if (!runAcceptedFeatureRecompute(
+                document,
+                acceptRecomputeMode(isUpdateBlocked, pendingRecomputeAction),
+                progressTarget
+            )) {
+            return false;
+        }
+
+        finalizeAcceptedFeature(feature);
+    }
+    catch (const Base::Exception& e) {
+        return reportAcceptException(e);
+    }
+
+    return true;
 }
 
 bool TaskDlgTransformedParameters::reject()
 {
+    if (!parameter) {
+        return false;
+    }
+
+    prepareDeferredReject(parameter, &TaskTransformedParameters::recomputeSettled, [this]() {
+        return TaskDlgFeatureParameters::reject();
+    });
+
     // ensure that we are not in selection mode
     parameter->exitSelectionMode();
-    return TaskDlgFeatureParameters::reject();
+    parameter->cancelPendingRecompute();
+    return finishRejectOrDefer(getObject<PartDesign::Feature>());
+}
+
+void TaskDlgTransformedParameters::onParameterRecomputeSettled()
+{
+    finishRejectOrDefer(getObject<PartDesign::Feature>());
 }
 
 #include "moc_TaskTransformedParameters.cpp"

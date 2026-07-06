@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include <functional>
 #include <initializer_list>
 #include <memory>
 #include <vector>
@@ -75,6 +76,9 @@ public:
     virtual void setGeometryScale(float scale) = 0;
     virtual void orientAlongCamera([[maybe_unused]] SoCamera* camera) {};
     bool isDelayedUpdateEnabled();
+    void setDeferredUpdateHandler(std::function<void()> handler);
+    static bool isAnyDragActive();
+    static int activeDragPreviewDebounceMs();
 
     double getMultFactor();
     double getAddFactor();
@@ -82,6 +86,7 @@ public:
     bool getVisibility();
 
 protected:
+    void setDragInteractionActive(bool active);
     double multFactor = 1.0f;
     double addFactor = 0.0f;
 
@@ -89,6 +94,8 @@ protected:
     double initialValue;
 
     bool visible = true;
+    bool dragInteractionActive = false;
+    std::function<void()> deferredUpdateHandler;
 };
 
 class GuiExport LinearGizmo: public Gizmo
@@ -125,6 +132,9 @@ private:
     void draggingStarted();
     void draggingFinished();
     void draggingContinued();
+    static void startDragCB(void* data, SoDragger*);
+    static void finishDragCB(void* data, SoDragger*);
+    static void motionDragCB(void* data, SoDragger*);
 
     using inherited = Gizmo;
 };
@@ -175,6 +185,9 @@ private:
     void draggingStarted();
     void draggingFinished();
     void draggingContinued();
+    static void startDragCB(void* data, SoDragger*);
+    static void finishDragCB(void* data, SoDragger*);
+    static void motionDragCB(void* data, SoDragger*);
     static void translationSensorCB(void* data, SoSensor* sensor);
 
     using inherited = Gizmo;
