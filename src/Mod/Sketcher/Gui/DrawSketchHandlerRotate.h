@@ -25,6 +25,8 @@
 
 #pragma once
 
+#include <algorithm>
+
 #include <QApplication>
 
 #include <Gui/BitmapFactory.h>
@@ -36,7 +38,6 @@
 #include "DrawSketchControllableHandler.h"
 #include "SketcherTransformationExpressionHelper.h"
 
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 
 using namespace Sketcher;
@@ -78,7 +79,7 @@ public:
         , endAngle(0.0)
         , totalAngle(0.0)
         , individualAngle(0.0)
-        , numberOfCopies(0)
+        , numberOfCopies(1)
     {}
 
     DrawSketchHandlerRotate(const DrawSketchHandlerRotate&) = delete;
@@ -210,7 +211,9 @@ private:
                 sketchgui->getSketchObject(),
                 listOfGeoIds,
                 ShapeGeometry.size(),
-                numberOfCopies,
+                listOfGeoIds.empty()
+                    ? 0
+                    : static_cast<int>(ShapeGeometry.size() / listOfGeoIds.size()),
                 1
             );
 
@@ -339,39 +342,41 @@ private:
             return;
         }
 
-        int numberOfCopiesToMake = numberOfCopies;
-        if (numberOfCopies == 0) {
-            numberOfCopiesToMake = 1;
-            deleteOriginal = true;
-        }
-        else {
-            deleteOriginal = false;
-        }
+        int numberOfElements = std::max(numberOfCopies, 1);
+        bool transformOriginal = numberOfElements == 1;
+        int numberOfCopiesToMake =
+            transformOriginal ? 1 : (symmetric ? numberOfElements / 2 : numberOfElements - 1);
+        deleteOriginal = transformOriginal || (symmetric && numberOfElements % 2 == 0);
 
         double shapeAngle = angleForShapeCreation(totalAngle);
 
-        int angleDivisor = numberOfCopiesToMake;
-        if (numberOfCopies > 0 && isOneFullTurn(shapeAngle)) {
-            // In a full-turn pattern, the original occupies the final occurrence.
-            angleDivisor++;
+        double angleDivisor = deleteOriginal && symmetric && !transformOriginal
+            ? numberOfCopiesToMake - 0.5
+            : numberOfCopiesToMake;
+        if (numberOfCopiesToMake > 0 && isOneFullTurn(shapeAngle)) {
+            // Full-turn patterns use the total element count to avoid duplicating the original.
+            angleDivisor = transformOriginal ? 1 : numberOfElements;
+        }
+
+        if (angleDivisor == 0) {
+            individualAngle = 0.0;
+            return;
         }
 
         individualAngle = shapeAngle / angleDivisor;
 
-        std::vector<int> copyFactors;
-        copyFactors.reserve(
-            symmetric && numberOfCopies > 0 ? 2 * numberOfCopiesToMake : numberOfCopiesToMake
-        );
+        std::vector<double> copyFactors;
+        copyFactors.reserve(symmetric ? 2 * numberOfCopiesToMake : numberOfCopiesToMake);
         for (int i = 1; i <= numberOfCopiesToMake; i++) {
-            copyFactors.push_back(i);
+            copyFactors.push_back(transformOriginal ? i : (deleteOriginal ? i - 0.5 : i));
         }
-        if (symmetric && numberOfCopies > 0) {
+        if (symmetric && !transformOriginal) {
             for (int i = 1; i <= numberOfCopiesToMake; i++) {
-                copyFactors.push_back(-i);
+                copyFactors.push_back(deleteOriginal ? 0.5 - i : -i);
             }
         }
 
-        for (int copyFactor : copyFactors) {
+        for (double copyFactor : copyFactors) {
             for (auto& geoId : listOfGeoIds) {
                 const Part::Geometry* pGeo = Obj->getGeometry(geoId);
                 auto geoUniquePtr = std::unique_ptr<Part::Geometry>(pGeo->copy());
@@ -536,7 +541,7 @@ template<>
 void DSHRotateController::secondKeyShortcut()
 {
     auto value = toolWidget->getParameter(WParameter::First);
-    if (value > 0.0) {
+    if (value > 1.0) {
         toolWidget->setParameterWithoutPassingFocus(WParameter::First, value - 1);
     }
 }
@@ -569,7 +574,7 @@ void DSHRotateController::configureToolWidget()
             WCheckbox::SecondBox,
             QApplication::translate(
                 "TaskSketcherTool_c2_rotate",
-                "Create additional copies in the opposite rotation direction."
+                "Distribute the elements symmetrically around the original position."
             )
         );
     }
@@ -587,11 +592,11 @@ void DSHRotateController::configureToolWidget()
 
     toolWidget->setParameterLabel(
         WParameter::First,
-        QApplication::translate("TaskSketcherTool_p4_rotate", "Copies (+'U'/ -'J')")
+        QApplication::translate("TaskSketcherTool_p4_rotate", "Elements (+'U'/ -'J')")
     );
-    toolWidget->setParameter(OnViewParameter::First, 0.0);
+    toolWidget->setParameter(OnViewParameter::First, 1.0);
     toolWidget->configureParameterUnit(OnViewParameter::First, Base::Unit());
-    toolWidget->configureParameterMin(OnViewParameter::First, 0.0);     // NOLINT
+    toolWidget->configureParameterMin(OnViewParameter::First, 1.0);     // NOLINT
     toolWidget->configureParameterMax(OnViewParameter::First, 9999.0);  // NOLINT
     toolWidget->configureParameterDecimals(OnViewParameter::First, 0);
 }
@@ -601,7 +606,7 @@ void DSHRotateController::adaptDrawingToParameterChange(int parameterindex, doub
 {
     switch (parameterindex) {
         case WParameter::First:
-            handler->numberOfCopies = floor(abs(value));
+            handler->numberOfCopies = std::max(1, static_cast<int>(floor(abs(value))));
             break;
     }
 }
