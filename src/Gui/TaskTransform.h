@@ -35,11 +35,15 @@
 #include <App/Services.h>
 
 #include <array>
+#include <limits>
 #include <optional>
 #include <string>
+#include <utility>
+#include <vector>
 
 class SoDragger;
 class SoTransform;
+class QString;
 
 namespace Gui
 {
@@ -60,7 +64,9 @@ public:
         None,
         SelectTransformOrigin,
         SelectAlignTarget,
-        SelectCustomCS
+        SelectCustomCS,
+        SelectCumulativeSnapReference,
+        SelectCumulativeSnapTarget
     };
     enum class PlacementMode
     {
@@ -109,6 +115,11 @@ private Q_SLOTS:
 
     void onAlignToOtherObject();
     void onFlip();
+    void onCumulativeSnap();
+    void onUndoCumulativeSnap();
+    void onClearCumulativeSnap();
+    void onInvertCumulativeSnapU();
+    void onInvertCumulativeSnapV();
 
     void onCoordinateSystemChange(int mode);
 
@@ -116,6 +127,8 @@ private Q_SLOTS:
     void onRotationChange(QuantitySpinBox* changed);
 
 private:
+    struct CumulativeSnapStep;
+
     static inline bool firstDrag = true;
     static void dragStartCallback(void* data, SoDragger* d);
     static void dragMotionCallback(void* data, SoDragger* d);
@@ -153,6 +166,44 @@ private:
     void moveObjectToDragger(
         ViewProviderDragger::DraggerComponents components = ViewProviderDragger::DraggerComponent::All
     );
+    App::SubObjectPlacementProvider::SnapGeometryType snapGeometryType(
+        const SelectionChanges& msg
+    ) const;
+    bool isCumulativeSnapMovingObjectSelection(
+        const SelectionChanges& msg,
+        const App::DocumentObject* object,
+        const App::DocumentObject* originalObject
+    ) const;
+    bool isCompatibleCumulativeSnapTarget(
+        App::SubObjectPlacementProvider::SnapGeometryType referenceType,
+        App::SubObjectPlacementProvider::SnapGeometryType targetType
+    ) const;
+    std::optional<Base::Placement> solveCumulativeSnapObjectPlacement(
+        const Base::Placement& candidate,
+        const Base::Placement& currentReferenceLocalPlacement,
+        const Base::Placement& currentReferenceTargetPlacement,
+        App::SubObjectPlacementProvider::SnapGeometryType currentReferenceType,
+        App::SubObjectPlacementProvider::SnapGeometryType currentTargetType,
+        bool currentTargetDirectionFixed = false,
+        std::size_t historySize = std::numeric_limits<std::size_t>::max()
+    ) const;
+    void startCumulativeSnap();
+    void stopCumulativeSnap();
+    void appendCumulativeSnapStep(
+        const QString& referenceLabel,
+        const QString& targetLabel,
+        const Base::Placement& referenceLocalPlacement,
+        const Base::Placement& targetPlacement,
+        App::SubObjectPlacementProvider::SnapGeometryType referenceType,
+        App::SubObjectPlacementProvider::SnapGeometryType targetType
+    );
+    void restoreCumulativeSnapPlacement(const Base::Placement& placement);
+    bool isCumulativeSnapStepInvertible(const CumulativeSnapStep& step) const;
+    std::optional<std::size_t> cumulativeSnapInvertTargetIndex() const;
+    bool canInvertCumulativeSnapDirection() const;
+    void invertCumulativeSnapDirection(const Base::Vector3d& localAxis);
+    bool updateCumulativeSnapHistoryPlacements();
+    void updateCumulativeSnapUi() const;
 
     bool isDraggerAlignedToCoordinateSystem() const;
 
@@ -177,9 +228,29 @@ private:
 
     std::optional<Base::Placement> customTransformOrigin {};
     std::optional<Base::Placement> customCoordinateSystemPlacement {};
+    std::optional<Base::Placement> cumulativeSnapStartPlacement {};
     Base::Placement referencePlacement {};
     Base::Placement globalOrigin {};
     Base::Rotation referenceRotation {};
+    bool cumulativeSnapActive {false};
+    struct CumulativeSnapReference
+    {
+        std::string label;
+        Base::Placement localPlacement;
+        App::SubObjectPlacementProvider::SnapGeometryType type;
+    };
+    struct CumulativeSnapStep
+    {
+        std::string label;
+        Base::Placement objectPlacement;
+        Base::Placement referenceLocalPlacement;
+        Base::Placement targetPlacement;
+        App::SubObjectPlacementProvider::SnapGeometryType referenceType;
+        App::SubObjectPlacementProvider::SnapGeometryType targetType;
+        bool targetDirectionFixed {false};
+    };
+    std::optional<CumulativeSnapReference> currentCumulativeSnapReference {};
+    std::vector<CumulativeSnapStep> cumulativeSnapHistory;
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/History/Dragger"
