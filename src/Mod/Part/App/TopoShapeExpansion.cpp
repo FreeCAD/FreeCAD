@@ -865,15 +865,16 @@ void TopoShape::mapSubElementTypeForShape(
         if (mappedNames.empty()) {
             if (historyVersion == App::HistoryAlgorithm::V1) {
                 mappedNames.push_back({Data::MappedName(element), {}});
-            } else if (historyVersion == App::HistoryAlgorithm::V2) {
+            }
+            else if (historyVersion == App::HistoryAlgorithm::V2) {
                 mappedNames.push_back(
                     {Data::MappedName::makeUnmappedName(
-                        {element.toString()},
-                        other.Tag,
-                        op,
-                        (*element.getType())
-                    ),
-                    {}}
+                         {element.toString()},
+                         other.Tag,
+                         op,
+                         (*element.getType())
+                     ),
+                     {}}
                 );
             }
         }
@@ -1013,15 +1014,16 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
             if (mappedNames.empty()) {
                 if (historyVersion == App::HistoryAlgorithm::V1) {
                     mappedNames.push_back({Data::MappedName(otherElement), {}});
-                } else if (historyVersion == App::HistoryAlgorithm::V2) {
+                }
+                else if (historyVersion == App::HistoryAlgorithm::V2) {
                     mappedNames.push_back(
                         {Data::MappedName::makeUnmappedName(
-                            {otherElement.toString()},
-                            other.Tag,
-                            op,
-                            (*element.getType())
-                        ),
-                        {}}
+                             {otherElement.toString()},
+                             other.Tag,
+                             op,
+                             (*element.getType())
+                         ),
+                         {}}
                     );
                 }
             }
@@ -2722,11 +2724,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         Data::MappedName ancestorMappedName = getMappedName(ancestorIndexName);
 
                         if (ancestorMappedName
-                            && std::find(
-                                   linkedUpperNames.begin(),
-                                   linkedUpperNames.end(),
-                                   ancestorMappedName
-                               ) == linkedUpperNames.end()) {
+                            && std::find(linkedUpperNames.begin(), linkedUpperNames.end(), ancestorMappedName)
+                                == linkedUpperNames.end()) {
                             linkedUpperNames.push_back(ancestorMappedName);
                         }
                     }
@@ -2798,8 +2797,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                            linkedLowerNames.begin(),
                                            linkedLowerNames.end(),
                                            lowerSubshapeName
-                                       ) == linkedLowerNames.end())
-                                {
+                                       ) == linkedLowerNames.end()) {
                                     linkedLowerNames.push_back(lowerSubshapeName);
                                 }
                             }

@@ -249,14 +249,14 @@ void Part::FaceMaker::postBuild()
     if (!op) {
         op = Part::OpCodes::Face;
     }
-    
+
     const std::vector<TopoShape>& faces = this->myTopoShape.getSubTopoShapes(TopAbs_FACE);
 
     // name the face using the edges of its outer wire
     if (historyVersion == App::HistoryAlgorithm::V1) {
         int index = 0;
         std::set<Data::MappedName> namesUsed;
-        
+
         for (auto& face : faces) {
             ++index;
             TopoShape wire = face.splitWires();
@@ -300,9 +300,11 @@ void Part::FaceMaker::postBuild()
                 &sids
             );
         }
-    } else if (historyVersion == App::HistoryAlgorithm::V2) {
+    }
+    else if (historyVersion == App::HistoryAlgorithm::V2) {
         std::unordered_multiset<Data::MappedName, Data::MappedNameHasher> allLinkedNames;
-        std::unordered_map<Data::IndexedName, std::vector<Data::MappedName>, Data::IndexedNameHasher> linkedNameMap;
+        std::unordered_map<Data::IndexedName, std::vector<Data::MappedName>, Data::IndexedNameHasher>
+            linkedNameMap;
 
         for (size_t faceIndex = 0; faceIndex < faces.size(); faceIndex++) {
             Data::IndexedName faceIndexName = Data::IndexedName::fromConst("Face", faceIndex + 1);
@@ -310,9 +312,11 @@ void Part::FaceMaker::postBuild()
             TopoShape wire = face.splitWires();
             wire.mapSubElement(face);
 
-            for (unsigned long edgeIndex = 1; edgeIndex <= wire.countSubShapes(TopAbs_EDGE); edgeIndex++) {
-                Data::MappedName edgeMappedName
-                    = wire.getMappedName(Data::IndexedName::fromConst("Edge", edgeIndex));
+            for (unsigned long edgeIndex = 1; edgeIndex <= wire.countSubShapes(TopAbs_EDGE);
+                 edgeIndex++) {
+                Data::MappedName edgeMappedName = wire.getMappedName(
+                    Data::IndexedName::fromConst("Edge", edgeIndex)
+                );
 
                 if (edgeMappedName) {
                     linkedNameMap[faceIndexName].push_back(edgeMappedName);
