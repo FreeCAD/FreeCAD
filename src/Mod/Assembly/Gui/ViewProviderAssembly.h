@@ -267,6 +267,7 @@ private:
 
     void slotAboutToOpenTransaction(const std::string& cmdName);
     void slotStartSave(const App::Document& doc, const std::string& filename);
+    void slotDeletedObject(const App::DocumentObject& obj);
     void slotActivatedVP(const Gui::ViewProviderDocumentObject* vp, const char* name);
 
     void onWorkbenchActivated(const QString& name);
@@ -303,6 +304,7 @@ private:
     fastsignals::connection connectSolverUpdate;
     fastsignals::scoped_connection m_preTransactionConn;
     fastsignals::scoped_connection m_startSaveConn;
+    fastsignals::scoped_connection m_deletedObjectConn;
 };
 
 }  // namespace AssemblyGui

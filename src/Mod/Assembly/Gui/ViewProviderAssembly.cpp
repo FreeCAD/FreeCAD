@@ -127,12 +127,16 @@ ViewProviderAssembly::ViewProviderAssembly()
     m_startSaveConn = App::GetApplication().signalStartSaveDocument.connect(
         std::bind(&ViewProviderAssembly::slotStartSave, this, std::placeholders::_1, std::placeholders::_2)
     );
+    m_deletedObjectConn = App::GetApplication().signalDeletedObject.connect(
+        std::bind(&ViewProviderAssembly::slotDeletedObject, this, std::placeholders::_1)
+    );
 }
 
 ViewProviderAssembly::~ViewProviderAssembly()
 {
     m_preTransactionConn.disconnect();
     m_startSaveConn.disconnect();
+    m_deletedObjectConn.disconnect();
     QObject::disconnect(workbenchConnection);
 
     updateTaskPanel(false);
@@ -1677,6 +1681,26 @@ void ViewProviderAssembly::slotStartSave(const App::Document& doc, const std::st
     }
     this->clearIsolate();
     this->clearTemporaryExplosion();
+}
+
+void ViewProviderAssembly::slotDeletedObject(const App::DocumentObject& obj)
+{
+    // Isolation and temporary explosion hold raw DocumentObject restore targets, and
+    // objects can be deleted without a transaction opening (undo/redo, removeObject,
+    // document close). Drop stale references so a later clear does not dereference
+    // freed memory. Pointer identity only -- obj may already be half-destroyed.
+    auto* deleted = const_cast<App::DocumentObject*>(&obj);
+
+    stateBackup.erase(deleted);
+
+    if (isolatedJoint == deleted) {
+        clearJointElementHighlight();
+        isolatedJoint = nullptr;
+    }
+
+    if (temporaryExplosion == deleted) {
+        temporaryExplosion = nullptr;
+    }
 }
 
 bool ViewProviderAssembly::explodeTemporarily(App::DocumentObject* explodedView)
