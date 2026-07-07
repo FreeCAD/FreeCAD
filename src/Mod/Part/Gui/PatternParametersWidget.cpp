@@ -572,12 +572,8 @@ void PatternParametersWidget::updateSpacingLabels(
         size_t requiredLabels = (mode == PatternMode::Extent) ? 1 : m_occurrencesProp->getValue() - 1;
         Base::Rotation rotation(Base::Vector3d(1.0, 0.0, 0.0), direction);
         if (planeNormal.Length() > 1e-7 && direction.Cross(planeNormal).Length() > 1e-7) {
-            rotation = Base::Rotation::makeRotationByAxes(
-                direction,
-                Base::Vector3d(),
-                planeNormal,
-                "XZY"
-            );
+            rotation
+                = Base::Rotation::makeRotationByAxes(direction, Base::Vector3d(), planeNormal, "XZY");
         }
 
         if (spacingLabels.size() > requiredLabels) {

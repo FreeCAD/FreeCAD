@@ -248,9 +248,7 @@ Base::Vector3d TaskPatternParameters::transformLinearPatternDirection(
     return transformedVector(direction, transformed->getLocation().Transformation());
 }
 
-Base::Vector3d TaskPatternParameters::getLinearPatternLabelPlaneNormal(
-    Part::LinearPatternDirection
-) const
+Base::Vector3d TaskPatternParameters::getLinearPatternLabelPlaneNormal(Part::LinearPatternDirection) const
 {
     return transformLinearPatternDirection(Base::Vector3d(0.0, 0.0, 1.0));
 }
@@ -335,9 +333,7 @@ void TaskPatternParameters::updateInstanceControls()
         if (index > 0) {
             Base::Vector3d center = transformedPoint(*sourceCenter, transformation);
             center = transformedPoint(center, patternLocation);
-            instances.push_back(
-                {index, center, pattern->isTransformationSuppressed(index)}
-            );
+            instances.push_back({index, center, pattern->isTransformationSuppressed(index)});
         }
         ++index;
     }
