@@ -26,13 +26,13 @@
 #include <cstdint>
 
 #include <Inventor/SbColor.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <FCGlobal.h>
 
+#include "SoFCScreenSpaceGroup.h"
+
 
 class SbColor;
-class SoGLRenderAction;
 class SoSeparator;
 class SoSwitch;
 class SoFaceSet;
@@ -41,9 +41,11 @@ class SoVertexProperty;
 namespace Gui
 {
 
-class GuiExport SoFCBackgroundGradient: public SoNode
+using SoFCScreenSpaceGroup = Inventor::SoFCScreenSpaceGroup;
+
+class GuiExport SoFCBackgroundGradient: public SoFCScreenSpaceGroup
 {
-    using inherited = SoNode;
+    using inherited = SoFCScreenSpaceGroup;
 
     SO_NODE_HEADER(Gui::SoFCBackgroundGradient);
 
@@ -57,7 +59,6 @@ public:
     static void finish();
     SoFCBackgroundGradient();
 
-    void GLRender(SoGLRenderAction* action) override;
     void setGradient(Gradient grad);
     Gradient getGradient() const;
     void setColorGradient(const SbColor& fromColor, const SbColor& toColor);

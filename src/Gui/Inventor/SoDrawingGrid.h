@@ -24,11 +24,11 @@
 #pragma once
 
 #include <Inventor/SbVec2s.h>
-#include <Inventor/nodes/SoShape.h>
 #include <FCGlobal.h>
 
+#include "SoFCScreenSpaceGroup.h"
+
 class SoLineSet;
-class SoSeparator;
 class SoState;
 class SoVertexProperty;
 
@@ -37,9 +37,9 @@ namespace Gui
 namespace Inventor
 {
 
-class GuiExport SoDrawingGrid: public SoShape
+class GuiExport SoDrawingGrid: public SoFCScreenSpaceGroup
 {
-    using inherited = SoShape;
+    using inherited = SoFCScreenSpaceGroup;
 
     SO_NODE_HEADER(SoDrawingGrid);
 
@@ -48,21 +48,17 @@ public:
     SoDrawingGrid();
 
 public:
-    void GLRender(SoGLRenderAction* action) override;
     void GLRenderBelowPath(SoGLRenderAction* action) override;
     void GLRenderInPath(SoGLRenderAction* action) override;
     void GLRenderOffPath(SoGLRenderAction* action) override;
-    void computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center) override;
-    void generatePrimitives(SoAction* action) override;
+    void doAction(SoAction* action) override;
 
 private:
-    void renderGrid(SoGLRenderAction* action);
     void ensureGeometry(SoState* state);
     // Force using the reference count mechanism.
     ~SoDrawingGrid() override;
 
 private:
-    SoSeparator* m_Root {nullptr};
     SoVertexProperty* m_VertexProperty {nullptr};
     SoLineSet* m_LineSet {nullptr};
     SbVec2s m_CachedViewportSize {0, 0};

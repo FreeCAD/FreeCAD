@@ -21,24 +21,13 @@
  *                                                                            *
  ******************************************************************************/
 
-#include <FCConfig.h>
-
+#include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoDepthBufferElement.h>
 #include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoMultiTextureEnabledElement.h>
-#include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/details/SoLineDetail.h>
 
 #include <Inventor/nodes/SoBaseColor.h>
 #include <Inventor/nodes/SoLineSet.h>
-#include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 
 #include <algorithm>
@@ -60,62 +49,34 @@ SO_NODE_SOURCE(SoDrawingGrid)
 
 void SoDrawingGrid::initClass()
 {
-    SO_NODE_INIT_CLASS(SoDrawingGrid, SoShape, "Shape");
+    SO_NODE_INIT_CLASS(SoDrawingGrid, SoFCScreenSpaceGroup, "SoFCScreenSpaceGroup");
 }
 
 SoDrawingGrid::SoDrawingGrid()
 {
     SO_NODE_CONSTRUCTOR(SoDrawingGrid);
 
-    m_Root = new SoSeparator;
-    m_Root->ref();
+    setCoordinateSpace(CoordinateSpace::ClipSpace);
+    setBaseColorLightModel(true);
+    setTexturesEnabled(false);
+    setMultiTexturesEnabled(false);
+    setDepthBuffer(false, false, SoDepthBufferElement::ALWAYS);
 
-    constexpr float legacyGridChannel = 10.0f / 255.0f;
+    constexpr float gridChannel = 10.0f / 255.0f;
     auto* color = new SoBaseColor;
-    color->rgb.setValue(legacyGridChannel, legacyGridChannel, legacyGridChannel);
-    m_Root->addChild(color);
+    color->rgb.setValue(gridChannel, gridChannel, gridChannel);
+    addChild(color);
 
     m_VertexProperty = new SoVertexProperty;
     m_LineSet = new SoLineSet;
     m_LineSet->vertexProperty.setValue(m_VertexProperty);
-    m_Root->addChild(m_LineSet);
+    addChild(m_LineSet);
 }
 
 SoDrawingGrid::~SoDrawingGrid()
 {
-    if (m_Root) {
-        m_Root->unref();
-        m_Root = nullptr;
-    }
     m_VertexProperty = nullptr;
     m_LineSet = nullptr;
-}
-
-void SoDrawingGrid::renderGrid(SoGLRenderAction* action)
-{
-    if (!shouldGLRender(action)) {
-        return;
-    }
-
-    SoState* state = action->getState();
-    state->push();
-    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-
-    ensureGeometry(state);
-
-    SoModelMatrixElement::set(state, this, SbMatrix::identity());
-    SoViewingMatrixElement::set(state, this, SbMatrix::identity());
-    SoProjectionMatrixElement::set(state, this, SbMatrix::identity());
-
-    SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
-    SoGLTextureEnabledElement::set(state, this, FALSE);
-    SoMultiTextureEnabledElement::set(state, this, FALSE);
-
-    if (m_Root) {
-        m_Root->GLRender(action);
-    }
-
-    state->pop();
 }
 
 void SoDrawingGrid::ensureGeometry(SoState* state)
@@ -126,6 +87,9 @@ void SoDrawingGrid::ensureGeometry(SoState* state)
 
     const SbViewportRegion& vp = SoViewportRegionElement::get(state);
     const SbVec2s viewportSize = vp.getViewportSizePixels();
+    if (viewportSize[0] <= 0 || viewportSize[1] <= 0) {
+        return;
+    }
     if (viewportSize == m_CachedViewportSize && m_VertexProperty->vertex.getNum() > 0) {
         return;
     }
@@ -133,7 +97,8 @@ void SoDrawingGrid::ensureGeometry(SoState* state)
     m_CachedViewportSize = viewportSize;
 
     constexpr int numX = 20;
-    const float aspectRatio = vp.getViewportAspectRatio();
+    const float aspectRatio = static_cast<float>(viewportSize[0])
+        / static_cast<float>(viewportSize[1]);
     int numY = static_cast<int>(static_cast<float>(numX) / aspectRatio);
     numY = std::max(1, numY);
 
@@ -163,30 +128,15 @@ void SoDrawingGrid::ensureGeometry(SoState* state)
     m_LineSet->numVertices.setValues(0, static_cast<int>(numVertices.size()), numVertices.data());
 }
 
-void SoDrawingGrid::GLRender(SoGLRenderAction* action)
-{
-    // renderGrid(action);
-    // return;
-    switch (action->getCurPathCode()) {
-        case SoAction::NO_PATH:
-        case SoAction::BELOW_PATH:
-            this->GLRenderBelowPath(action);
-            break;
-        case SoAction::OFF_PATH:
-            // do nothing. Separator will reset state.
-            break;
-        case SoAction::IN_PATH:
-            this->GLRenderInPath(action);
-            break;
-    }
-}
-
 void SoDrawingGrid::GLRenderBelowPath(SoGLRenderAction* action)
 {
-    // inherited::GLRenderBelowPath(action);
-    // return;
+    if (!action) {
+        return;
+    }
+
     if (action->isRenderingDelayedPaths()) {
-        renderGrid(action);
+        ensureGeometry(action->getState());
+        inherited::GLRenderBelowPath(action);
     }
     else {
         SoCacheElement::invalidate(action->getState());
@@ -196,10 +146,13 @@ void SoDrawingGrid::GLRenderBelowPath(SoGLRenderAction* action)
 
 void SoDrawingGrid::GLRenderInPath(SoGLRenderAction* action)
 {
-    // inherited::GLRenderInPath(action);
-    // return;
+    if (!action) {
+        return;
+    }
+
     if (action->isRenderingDelayedPaths()) {
-        renderGrid(action);
+        ensureGeometry(action->getState());
+        inherited::GLRenderInPath(action);
     }
     else {
         SoCacheElement::invalidate(action->getState());
@@ -210,57 +163,7 @@ void SoDrawingGrid::GLRenderInPath(SoGLRenderAction* action)
 void SoDrawingGrid::GLRenderOffPath(SoGLRenderAction*)
 {}
 
-void SoDrawingGrid::generatePrimitives(SoAction* action)
+void SoDrawingGrid::doAction(SoAction* action)
 {
-    SoState* state = action ? action->getState() : nullptr;
-    if (!state || !m_LineSet) {
-        return;
-    }
-
-    state->push();
-    ensureGeometry(state);
-    SoModelMatrixElement::set(state, this, SbMatrix::identity());
-    SoViewingMatrixElement::set(state, this, SbMatrix::identity());
-    SoProjectionMatrixElement::set(state, this, SbMatrix::identity());
-
-    const int numLines = m_LineSet->numVertices.getNum();
-    const int32_t* counts = m_LineSet->numVertices.getValues(0);
-    const int numVerts = m_VertexProperty->vertex.getNum();
-    const SbVec3f* verts = m_VertexProperty->vertex.getValues(0);
-
-    SoLineDetail lineDetail;
-    SoPrimitiveVertex pv;
-
-    int vIndex = 0;
-    for (int lineIdx = 0; lineIdx < numLines; lineIdx++) {
-        const int count = counts[lineIdx];
-        if (count < 2) {
-            vIndex += count;
-            continue;
-        }
-        if (vIndex + count > numVerts) {
-            break;
-        }
-
-        lineDetail.setLineIndex(lineIdx);
-        lineDetail.setPartIndex(0);
-
-        beginShape(action, LINE_STRIP, &lineDetail);
-        for (int i = 0; i < count; i++) {
-            pv.setPoint(verts[vIndex + i]);
-            shapeVertex(&pv);
-        }
-        endShape();
-
-        vIndex += count;
-    }
-    state->pop();
-}
-
-void SoDrawingGrid::computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center)
-{
-    (void)action;
-    // Overlay grid rendered in clip/screen space: do not contribute a world-space bbox.
-    box.makeEmpty();
-    center.setValue(0.0f, 0.0f, 0.0f);
+    inherited::doAction(action);
 }

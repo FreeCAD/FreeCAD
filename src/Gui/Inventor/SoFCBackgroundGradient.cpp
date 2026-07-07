@@ -25,19 +25,7 @@
 #include <cmath>
 #include <numbers>
 
-#include <Inventor/SbMatrix.h>
-#include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec3f.h>
-#include <Inventor/SbViewVolume.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoDepthBufferElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoMultiTextureEnabledElement.h>
-#include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/nodes/SoFaceSet.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShapeHints.h>
@@ -58,13 +46,21 @@ void SoFCBackgroundGradient::finish()
 SoFCBackgroundGradient::SoFCBackgroundGradient()
 {
     SO_NODE_CONSTRUCTOR(SoFCBackgroundGradient);
+
+    setCoordinateSpace(CoordinateSpace::Normalized);
+    setBaseColorLightModel(true);
+    setTexturesEnabled(false);
+    setMultiTexturesEnabled(false);
+    setDepthBuffer(false, false, SoDepthBufferElement::ALWAYS);
+
     fCol.setValue(0.5f, 0.5f, 0.8f);
     tCol.setValue(0.7f, 0.7f, 0.9f);
     mCol.setValue(1.0f, 1.0f, 1.0f);
     gradient = Gradient::LINEAR;
 
     gradientSwitch = new SoSwitch;
-    gradientSwitch->ref();
+    gradientSwitch->whichChild = 0;
+    addChild(gradientSwitch);
 
     // Linear gradient geometry
     linearSeparator = new SoSeparator;
@@ -99,56 +95,25 @@ SoFCBackgroundGradient::SoFCBackgroundGradient()
 
     gradientSwitch->addChild(linearSeparator);
     gradientSwitch->addChild(radialSeparator);
-    gradientSwitch->whichChild = 0;
+    ensureGeometry();
 }
 
 SoFCBackgroundGradient::~SoFCBackgroundGradient()
 {
-    if (gradientSwitch) {
-        gradientSwitch->unref();
-        gradientSwitch = nullptr;
-    }
+    gradientSwitch = nullptr;
+    linearSeparator = nullptr;
+    linearFaces = nullptr;
+    linearVertexProperty = nullptr;
+    radialSeparator = nullptr;
+    radialFan = nullptr;
+    radialFanVertexProperty = nullptr;
+    radialRing = nullptr;
+    radialRingVertexProperty = nullptr;
 }
 
 void SoFCBackgroundGradient::initClass()
 {
-    SO_NODE_INIT_CLASS(SoFCBackgroundGradient, SoNode, "Node");
-}
-
-void SoFCBackgroundGradient::GLRender(SoGLRenderAction* action)
-{
-    if (!action || !gradientSwitch) {
-        return;
-    }
-
-    SoState* state = action->getState();
-    if (!state) {
-        return;
-    }
-
-    state->push();
-
-    SoModelMatrixElement::set(state, this, SbMatrix::identity());
-    SoViewingMatrixElement::set(state, this, SbMatrix::identity());
-
-    SbViewVolume viewVolume;
-    viewVolume.ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
-    SbMatrix affine;
-    SbMatrix projection;
-    viewVolume.getMatrices(affine, projection);
-    SoProjectionMatrixElement::set(state, this, projection);
-    SoViewVolumeElement::set(state, this, viewVolume);
-
-    SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
-    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-    SoGLTextureEnabledElement::set(state, this, FALSE);
-    SoMultiTextureEnabledElement::set(state, this, FALSE);
-
-    ensureGeometry();
-    gradientSwitch->whichChild = (gradient == Gradient::LINEAR) ? 0 : 1;
-    gradientSwitch->GLRender(action);
-
-    state->pop();
+    SO_NODE_INIT_CLASS(SoFCBackgroundGradient, SoFCScreenSpaceGroup, "SoFCScreenSpaceGroup");
 }
 
 void SoFCBackgroundGradient::setGradient(SoFCBackgroundGradient::Gradient grad)
@@ -157,6 +122,7 @@ void SoFCBackgroundGradient::setGradient(SoFCBackgroundGradient::Gradient grad)
         gradient = grad;
         geometryDirty = true;
         this->touch();
+        ensureGeometry();
     }
 }
 
@@ -172,6 +138,7 @@ void SoFCBackgroundGradient::setColorGradient(const SbColor& fromColor, const Sb
     mCol[0] = -1.0f;
     geometryDirty = true;
     this->touch();
+    ensureGeometry();
 }
 
 void SoFCBackgroundGradient::setColorGradient(
@@ -185,6 +152,7 @@ void SoFCBackgroundGradient::setColorGradient(
     mCol = midColor;
     geometryDirty = true;
     this->touch();
+    ensureGeometry();
 }
 
 void SoFCBackgroundGradient::ensureGeometry()
@@ -194,6 +162,9 @@ void SoFCBackgroundGradient::ensureGeometry()
     }
 
     geometryDirty = false;
+    if (gradientSwitch) {
+        gradientSwitch->whichChild = (gradient == Gradient::LINEAR) ? 0 : 1;
+    }
 
     if (gradient == Gradient::LINEAR) {
         updateLinearGeometry();
