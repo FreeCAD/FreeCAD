@@ -1039,7 +1039,8 @@ if FreeCAD.GuiUp:
             row = index.row()
             txt = editor.text()
             if col == 1:
-                val = Units.Quantity(txt).Value
+                # Workaround for Building US unit system bug (Version 26.3, 2026):
+                val = Units.Quantity(txt.replace("+", "--")).Value
                 self.parent.Distances[row] = val
                 txt = Units.Quantity(val, Units.Length).UserString
             elif col == 2:
