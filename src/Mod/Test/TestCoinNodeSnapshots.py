@@ -324,6 +324,13 @@ def _instantiate(coin, type_name: str):
     return node
 
 
+def _configure_background_gradient(grad, from_color, to_color):
+    grad.gradientMode.setValue(0)
+    grad.fromColor.setValue(from_color)
+    grad.toColor.setValue(to_color)
+    grad.useMidColor.setValue(False)
+
+
 def _make_scene_for_node(coin, type_name: str):
     root = coin.SoSeparator()
 
@@ -439,11 +446,11 @@ def _make_scene_for_node(coin, type_name: str):
 
     if type_name == "SoFCBackgroundGradient":
         grad = _instantiate(coin, "SoFCBackgroundGradient")
-        if hasattr(grad, "setColorGradient"):
-            grad.setColorGradient(
-                coin.SbColor(0.2, 0.2, 0.6),
-                coin.SbColor(0.9, 0.9, 1.0),
-            )
+        _configure_background_gradient(
+            grad,
+            coin.SbColor(0.2, 0.2, 0.6),
+            coin.SbColor(0.9, 0.9, 1.0),
+        )
         root.addChild(grad)
         return root
 
@@ -451,10 +458,11 @@ def _make_scene_for_node(coin, type_name: str):
         if type_name == "SoNaviCubeTranslucent":
             # Provide visible background so translucency can be verified.
             grad = _instantiate(coin, "SoFCBackgroundGradient")
-            if hasattr(grad, "setColorGradient"):
-                top = coin.SbColor(0.15, 0.15, 0.20)
-                bottom = coin.SbColor(0.45, 0.45, 0.55)
-                grad.setColorGradient(top, bottom)
+            _configure_background_gradient(
+                grad,
+                coin.SbColor(0.15, 0.15, 0.20),
+                coin.SbColor(0.45, 0.45, 0.55),
+            )
             root.addChild(grad)
 
         cube = _instantiate(coin, "SoNaviCube")

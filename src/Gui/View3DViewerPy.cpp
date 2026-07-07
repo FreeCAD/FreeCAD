@@ -664,14 +664,15 @@ Py::Object View3DInventorViewerPy::setGradientBackgroundColor(const Py::Tuple& a
     };
 
     try {
-        SbColor midColor(-1, -1, -1);
         SbColor fromColor = tupleToColor(col1);
         SbColor toColor = tupleToColor(col2);
         if (col3) {
-            midColor = tupleToColor(col3);
+            const SbColor midColor = tupleToColor(col3);
+            _viewer->setGradientBackgroundColor(fromColor, toColor, midColor);
         }
-
-        _viewer->setGradientBackgroundColor(fromColor, toColor, midColor);
+        else {
+            _viewer->setGradientBackgroundColor(fromColor, toColor);
+        }
         _viewer->redraw();
         return Py::None();
     }

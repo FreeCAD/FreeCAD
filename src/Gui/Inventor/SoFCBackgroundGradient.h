@@ -26,16 +26,21 @@
 #include <cstdint>
 
 #include <Inventor/SbColor.h>
+#include <Inventor/fields/SoSFBool.h>
+#include <Inventor/fields/SoSFColor.h>
+#include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <FCGlobal.h>
 
 #include "SoFCScreenSpaceGroup.h"
 
 
+class SoAction;
 class SbColor;
+class SoFaceSet;
+class SoGLRenderAction;
 class SoSeparator;
 class SoSwitch;
-class SoFaceSet;
 class SoVertexProperty;
 
 namespace Gui
@@ -59,20 +64,36 @@ public:
     static void finish();
     SoFCBackgroundGradient();
 
+    SoSFEnum gradientMode;
+    SoSFColor fromColor;
+    SoSFColor toColor;
+    SoSFColor midColor;
+    SoSFBool useMidColor;
+
     void setGradient(Gradient grad);
     Gradient getGradient() const;
     void setColorGradient(const SbColor& fromColor, const SbColor& toColor);
     void setColorGradient(const SbColor& fromColor, const SbColor& toColor, const SbColor& midColor);
 
 private:
+    struct GeometryState
+    {
+        Gradient gradient {LINEAR};
+        uint32_t fromColor {0};
+        uint32_t toColor {0};
+        uint32_t midColor {0};
+        bool useMidColor {true};
+    };
+
     void ensureGeometry();
-    void updateLinearGeometry();
-    void updateRadialGeometry();
+    GeometryState currentGeometryState() const;
+    void updateLinearGeometry(const GeometryState& state);
+    void updateRadialGeometry(const GeometryState& state);
 
     static constexpr int CircleSegments = 32;
 
-    Gradient gradient;
-    bool geometryDirty {true};
+    bool geometryInitialized {false};
+    GeometryState appliedGeometryState;
 
     SoSwitch* gradientSwitch {nullptr};
     SoSeparator* linearSeparator {nullptr};
@@ -87,8 +108,9 @@ private:
 
 protected:
     ~SoFCBackgroundGradient() override;
-
-    SbColor fCol, tCol, mCol;
+    void doAction(SoAction* action) override;
+    void GLRenderBelowPath(SoGLRenderAction* action) override;
+    void GLRenderInPath(SoGLRenderAction* action) override;
 };
 
 }  // namespace Gui
