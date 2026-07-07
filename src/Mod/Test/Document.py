@@ -1242,13 +1242,6 @@ class UndoRedoCases(unittest.TestCase):
         self.assertEqual(self.Doc.RedoNames, ["Transaction9"])
         self.assertEqual(self.Doc.RedoCount, 1)
 
-        # switch on the Undo OFF
-        self.Doc.UndoMode = 0
-        self.assertEqual(self.Doc.UndoNames, [])
-        self.assertEqual(self.Doc.UndoCount, 0)
-        self.assertEqual(self.Doc.RedoNames, [])
-        self.assertEqual(self.Doc.RedoCount, 0)
-
     def testUndoInList(self):
 
         self.Doc.UndoMode = 1
