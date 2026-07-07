@@ -33,6 +33,8 @@
         <file>icons/Navigation_Touchpad_ShiftTouch.svg</file>
         <file>icons/NavigationBlender_light.svg</file>
         <file>icons/NavigationBlender_dark.svg</file>
+        <file>icons/NavigationGodot_light.svg</file>
+        <file>icons/NavigationGodot_dark.svg</file>
         <file>icons/NavigationCAD_light.svg</file>
         <file>icons/NavigationCAD_dark.svg</file>
         <file>icons/NavigationGesture_light.svg</file>
