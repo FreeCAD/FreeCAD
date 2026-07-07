@@ -106,6 +106,13 @@ Base::Vector3d transformedPoint(const Base::Vector3d& point, const gp_Trsf& tran
     return Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z());
 }
 
+Base::Vector3d transformedVector(const Base::Vector3d& vector, const gp_Trsf& transform)
+{
+    gp_Vec vec(vector.x, vector.y, vector.z);
+    vec.Transform(transform);
+    return Base::Vector3d(vec.X(), vec.Y(), vec.Z());
+}
+
 }  // namespace
 
 /* TRANSLATOR PartDesignGui::TaskPatternParameters */
@@ -229,6 +236,25 @@ Base::Vector3d TaskPatternParameters::getLinearPatternFallbackDirection(
     return Base::Vector3d(0.0, 0.0, 1.0);
 }
 
+Base::Vector3d TaskPatternParameters::transformLinearPatternDirection(
+    const Base::Vector3d& direction
+) const
+{
+    auto* transformed = dynamic_cast<PartDesign::Transformed*>(getObject());
+    if (!transformed) {
+        return direction;
+    }
+
+    return transformedVector(direction, transformed->getLocation().Transformation());
+}
+
+Base::Vector3d TaskPatternParameters::getLinearPatternLabelPlaneNormal(
+    Part::LinearPatternDirection
+) const
+{
+    return transformLinearPatternDirection(Base::Vector3d(0.0, 0.0, 1.0));
+}
+
 void TaskPatternParameters::transformPolarPatternAxis(gp_Ax2& axis) const
 {
     auto* transformed = dynamic_cast<PartDesign::Transformed*>(getObject());
@@ -304,12 +330,13 @@ void TaskPatternParameters::updateInstanceControls()
 
     std::vector<PartGui::PatternInstanceControls::Instance> instances;
     int index = 0;
+    const gp_Trsf patternLocation = pattern->getLocation().Transformation();
     for (const auto& transformation : transformations) {
         if (index > 0) {
+            Base::Vector3d center = transformedPoint(*sourceCenter, transformation);
+            center = transformedPoint(center, patternLocation);
             instances.push_back(
-                {index,
-                 transformedPoint(*sourceCenter, transformation),
-                 pattern->isTransformationSuppressed(index)}
+                {index, center, pattern->isTransformationSuppressed(index)}
             );
         }
         ++index;

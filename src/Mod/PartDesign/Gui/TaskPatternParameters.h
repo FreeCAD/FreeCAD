@@ -76,6 +76,10 @@ private:
     Base::Vector3d getLinearPatternFallbackDirection(
         Part::LinearPatternDirection direction
     ) const override;
+    Base::Vector3d transformLinearPatternDirection(const Base::Vector3d& direction) const override;
+    Base::Vector3d getLinearPatternLabelPlaneNormal(
+        Part::LinearPatternDirection direction
+    ) const override;
     void transformPolarPatternAxis(gp_Ax2& axis) const override;
     std::string buildDirectionReferencePythonString(
         const App::DocumentObject* obj,

@@ -459,7 +459,11 @@ void TaskPatternParameters::updatePatternSpacingLabels()
             }
 
             direction = transformLinearPatternDirection(direction);
-            widget->updateSpacingLabels(startPoint, direction);
+            widget->updateSpacingLabels(
+                startPoint,
+                direction,
+                getLinearPatternLabelPlaneNormal(dir)
+            );
         };
 
         updateLinearLabels(
@@ -568,6 +572,13 @@ Base::Vector3d TaskPatternParameters::transformLinearPatternDirection(
 ) const
 {
     return direction;
+}
+
+Base::Vector3d TaskPatternParameters::getLinearPatternLabelPlaneNormal(
+    Part::LinearPatternDirection
+) const
+{
+    return Base::Vector3d();
 }
 
 void TaskPatternParameters::transformPolarPatternAxis(gp_Ax2&) const
