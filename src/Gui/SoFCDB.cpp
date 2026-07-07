@@ -78,6 +78,7 @@
 #include "Inventor/SoAutoZoomTranslation.h"
 #include "Inventor/SoAxisCrossKit.h"
 #include "Inventor/SoDrawingGrid.h"
+#include "Inventor/SoFCScreenSpaceGroup.h"
 #include "Inventor/SoFCBackgroundGradient.h"
 #include "Inventor/SoFCBoundingBox.h"
 #include "Inventor/SoNaviCube.h"
@@ -113,6 +114,7 @@ void Gui::SoFCDB::init()
     SoFCColorBar ::initClass();
     SoFCColorLegend ::initClass();
     SoFCColorGradient ::initClass();
+    SoFCScreenSpaceGroup ::initClass();
     SoFCBackgroundGradient ::initClass();
     SoFCBoundingBox ::initClass();
     SoFCSelection ::initClass();

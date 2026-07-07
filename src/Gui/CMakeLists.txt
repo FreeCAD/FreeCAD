@@ -1064,6 +1064,7 @@ SET(Inventor_CPP_SRCS
     Inventor/SoAxisCrossKit.cpp
     Inventor/SoFCPlacementIndicatorKit.cpp
     Inventor/SoDrawingGrid.cpp
+    Inventor/SoFCScreenSpaceGroup.cpp
     Inventor/SoFCBackgroundGradient.cpp
     Inventor/SoFCBoundingBox.cpp
     Inventor/SoNaviCube.cpp
@@ -1105,6 +1106,7 @@ SET(Inventor_SRCS
     Inventor/SoAxisCrossKit.h
     Inventor/SoFCPlacementIndicatorKit.h
     Inventor/SoDrawingGrid.h
+    Inventor/SoFCScreenSpaceGroup.h
     Inventor/SoFCBackgroundGradient.h
     Inventor/SoFCBoundingBox.h
     Inventor/SoNaviCube.h
