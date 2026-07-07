@@ -516,30 +516,15 @@ void DSHPolygonController::addConstraints()
     using namespace Sketcher;
 
     auto constraintx0 = [&]() {
-        ConstraintToAttachment(
-            GeoElementId(lastCurve, PointPos::mid),
-            GeoElementId::VAxis,
-            x0,
-            obj
-        );
+        ConstraintToAttachment(GeoElementId(lastCurve, PointPos::mid), GeoElementId::VAxis, x0, obj);
     };
 
     auto constrainty0 = [&]() {
-        ConstraintToAttachment(
-            GeoElementId(lastCurve, PointPos::mid),
-            GeoElementId::HAxis,
-            y0,
-            obj
-        );
+        ConstraintToAttachment(GeoElementId(lastCurve, PointPos::mid), GeoElementId::HAxis, y0, obj);
     };
 
     auto constraintradius = [&]() {
-        Gui::cmdAppObjectArgs(
-            obj,
-            "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-            lastCurve,
-            radius
-        );
+        Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ", lastCurve, radius);
     };
 
     auto constraintAngle = [&]() {
