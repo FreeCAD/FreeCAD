@@ -39,9 +39,9 @@ jobs:
           script: |
             const { execFileSync } = require('node:child_process');
             const protectedPrefixes = [
-              'src/Mod/Agent/',
-              'src/Mod/Auth/',
-              'src/Mod/Bridge/',
+              'src/Mod/agent/',
+              'src/Mod/auth/',
+              'src/Mod/bridge/',
             ];
             const commentMarker = '<!-- parashell-protected-module-guard -->';
             const owner = context.repo.owner;
