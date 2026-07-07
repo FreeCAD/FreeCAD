@@ -136,8 +136,10 @@ private:
                 sketchgui->getSketchObject(),
                 listOfGeoIds,
                 ShapeGeometry.size(),
-                numberOfCopies,
-                secondNumberOfCopies
+                listOfGeoIds.empty()
+                    ? 0
+                    : static_cast<int>(ShapeGeometry.size() / listOfGeoIds.size()),
+                1
             );
 
             if (deleteOriginal) {
@@ -278,52 +280,53 @@ private:
 
         ShapeGeometry.clear();
 
-        auto buildFactors = [](int elementCount, bool symmetric) {
-            elementCount = std::max(elementCount, 1);
-            std::vector<double> factors;
-            factors.reserve(elementCount);
-
-            if (!symmetric) {
-                for (int i = 0; i < elementCount; i++) {
-                    factors.push_back(i);
-                }
-                return factors;
-            }
-
-            int sideCount = elementCount / 2;
-            bool hasOriginal = elementCount % 2 == 1;
-            if (hasOriginal) {
-                factors.push_back(0.0);
-            }
-
-            for (int i = 1; i <= sideCount; i++) {
-                factors.push_back(hasOriginal ? i : i - 0.5);
-            }
-
-            for (int i = 1; i <= sideCount; i++) {
-                factors.push_back(hasOriginal ? -i : 0.5 - i);
-            }
-
-            return factors;
-        };
-
-        auto hasOriginalFactor = [](const std::vector<double>& factors) {
-            return std::any_of(factors.begin(), factors.end(), [](double factor) {
-                return std::abs(factor) < Precision::Confusion();
-            });
-        };
-
-        std::vector<double> firstFactors = buildFactors(numberOfCopies, firstDirectionSymmetric);
-        std::vector<double> secondFactors =
-            buildFactors(secondNumberOfCopies, secondDirectionSymmetric);
-
         std::vector<std::pair<double, double>> copyOffsets;
         bool transformOriginal = numberOfCopies == 1 && secondNumberOfCopies == 1;
         if (transformOriginal) {
             deleteOriginal = true;
             copyOffsets.emplace_back(1.0, 0.0);
         }
-        else {
+
+        if (!transformOriginal) {
+            auto buildFactors = [](int elementCount, bool symmetric) {
+                elementCount = std::max(elementCount, 1);
+                std::vector<double> factors;
+                factors.reserve(elementCount);
+
+                if (!symmetric) {
+                    for (int i = 0; i < elementCount; i++) {
+                        factors.push_back(i);
+                    }
+                    return factors;
+                }
+
+                int sideCount = elementCount / 2;
+                bool hasOriginal = elementCount % 2 == 1;
+                if (hasOriginal) {
+                    factors.push_back(0.0);
+                }
+
+                for (int i = 1; i <= sideCount; i++) {
+                    factors.push_back(hasOriginal ? i : i - 0.5);
+                }
+
+                for (int i = 1; i <= sideCount; i++) {
+                    factors.push_back(hasOriginal ? -i : 0.5 - i);
+                }
+
+                return factors;
+            };
+
+            auto hasOriginalFactor = [](const std::vector<double>& factors) {
+                return std::any_of(factors.begin(), factors.end(), [](double factor) {
+                    return std::abs(factor) < Precision::Confusion();
+                });
+            };
+
+            std::vector<double> firstFactors = buildFactors(numberOfCopies, firstDirectionSymmetric);
+            std::vector<double> secondFactors =
+                buildFactors(secondNumberOfCopies, secondDirectionSymmetric);
+
             deleteOriginal = !(hasOriginalFactor(firstFactors) && hasOriginalFactor(secondFactors));
 
             if (!firstFactors.empty() && !secondFactors.empty()) {
