@@ -26,7 +26,6 @@
 #include <numbers>
 
 #include <Inventor/SbVec3f.h>
-#include <Inventor/actions/SoAction.h>
 #include <Inventor/nodes/SoFaceSet.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShapeHints.h>
@@ -120,22 +119,9 @@ void SoFCBackgroundGradient::initClass()
     SO_NODE_INIT_CLASS(SoFCBackgroundGradient, SoFCScreenSpaceGroup, "SoFCScreenSpaceGroup");
 }
 
-void SoFCBackgroundGradient::doAction(SoAction* action)
+void SoFCBackgroundGradient::prepareScreenSpaceGeometry(SoAction*)
 {
     ensureGeometry();
-    inherited::doAction(action);
-}
-
-void SoFCBackgroundGradient::GLRenderBelowPath(SoGLRenderAction* action)
-{
-    ensureGeometry();
-    inherited::GLRenderBelowPath(action);
-}
-
-void SoFCBackgroundGradient::GLRenderInPath(SoGLRenderAction* action)
-{
-    ensureGeometry();
-    inherited::GLRenderInPath(action);
 }
 
 void SoFCBackgroundGradient::setGradient(SoFCBackgroundGradient::Gradient grad)

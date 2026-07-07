@@ -118,6 +118,7 @@ void SoFCScreenSpaceGroup::setDepthBuffer(
 
 void SoFCScreenSpaceGroup::doAction(SoAction* action)
 {
+    prepareScreenSpaceGeometry(action);
     inherited::doAction(action);
 }
 
@@ -130,6 +131,7 @@ void SoFCScreenSpaceGroup::GLRenderBelowPath(SoGLRenderAction* action)
 
     state->push();
     applyScreenSpaceState(state);
+    prepareScreenSpaceGeometry(action);
     inherited::GLRenderBelowPath(action);
     state->pop();
 }
@@ -143,6 +145,7 @@ void SoFCScreenSpaceGroup::GLRenderInPath(SoGLRenderAction* action)
 
     state->push();
     applyScreenSpaceState(state);
+    prepareScreenSpaceGeometry(action);
     inherited::GLRenderInPath(action);
     state->pop();
 }
@@ -164,7 +167,27 @@ void SoFCScreenSpaceGroup::rayPick(SoRayPickAction*)
     // Intentionally empty: overlays are not part of normal 3D ray picking.
 }
 
+void SoFCScreenSpaceGroup::prepareScreenSpaceGeometry(SoAction*)
+{}
+
 void SoFCScreenSpaceGroup::applyScreenSpaceState(SoState* state)
+{
+    if (!state) {
+        return;
+    }
+
+    applyScreenSpaceGeometryState(state);
+
+    SoGLTextureEnabledElement::set(state, this, texturesEnabled ? TRUE : FALSE);
+    if (multiTexturesEnabled) {
+        SoMultiTextureEnabledElement::set(state, this, TRUE);
+    }
+    else {
+        SoMultiTextureEnabledElement::disableAll(state);
+    }
+}
+
+void SoFCScreenSpaceGroup::applyScreenSpaceGeometryState(SoState* state)
 {
     if (!state) {
         return;
@@ -216,13 +239,5 @@ void SoFCScreenSpaceGroup::applyScreenSpaceState(SoState* state)
     // lighting derived from the active scene.
     if (useBaseColorLightModel) {
         SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-    }
-
-    SoGLTextureEnabledElement::set(state, this, texturesEnabled ? TRUE : FALSE);
-    if (multiTexturesEnabled) {
-        SoMultiTextureEnabledElement::set(state, this, TRUE);
-    }
-    else {
-        SoMultiTextureEnabledElement::disableAll(state);
     }
 }

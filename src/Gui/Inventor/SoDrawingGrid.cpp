@@ -135,7 +135,6 @@ void SoDrawingGrid::GLRenderBelowPath(SoGLRenderAction* action)
     }
 
     if (action->isRenderingDelayedPaths()) {
-        ensureGeometry(action->getState());
         inherited::GLRenderBelowPath(action);
     }
     else {
@@ -151,7 +150,6 @@ void SoDrawingGrid::GLRenderInPath(SoGLRenderAction* action)
     }
 
     if (action->isRenderingDelayedPaths()) {
-        ensureGeometry(action->getState());
         inherited::GLRenderInPath(action);
     }
     else {
@@ -160,10 +158,12 @@ void SoDrawingGrid::GLRenderInPath(SoGLRenderAction* action)
     }
 }
 
-void SoDrawingGrid::GLRenderOffPath(SoGLRenderAction*)
-{}
-
-void SoDrawingGrid::doAction(SoAction* action)
+void SoDrawingGrid::prepareScreenSpaceGeometry(SoAction* action)
 {
-    inherited::doAction(action);
+    SoState* state = action ? action->getState() : nullptr;
+    if (!state || !state->isElementEnabled(SoViewportRegionElement::getClassStackIndex())) {
+        return;
+    }
+
+    ensureGeometry(state);
 }

@@ -35,10 +35,8 @@
 #include "SoFCScreenSpaceGroup.h"
 
 
-class SoAction;
 class SbColor;
 class SoFaceSet;
-class SoGLRenderAction;
 class SoSeparator;
 class SoSwitch;
 class SoVertexProperty;
@@ -108,9 +106,7 @@ private:
 
 protected:
     ~SoFCBackgroundGradient() override;
-    void doAction(SoAction* action) override;
-    void GLRenderBelowPath(SoGLRenderAction* action) override;
-    void GLRenderInPath(SoGLRenderAction* action) override;
+    void prepareScreenSpaceGeometry(SoAction* action) override;
 };
 
 }  // namespace Gui

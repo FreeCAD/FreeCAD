@@ -168,14 +168,35 @@ protected:
     ~SoFCScreenSpaceGroup() override;
 
     /**
+     * Give derived nodes a chance to refresh retained child geometry before
+     * the screen-space subtree is traversed.
+     *
+     * The hook runs from the GLRender entry points and the generic doAction()
+     * traversal. Most subclasses do not need it; those that lazily rebuild
+     * viewport-dependent or field-driven child geometry can override it
+     * instead of open-coding several traversal entry points.
+     */
+    virtual void prepareScreenSpaceGeometry(SoAction* action);
+
+    /**
      * Apply the configured screen-space traversal state to \a state.
      *
      * Derived classes normally do not need to call this directly because the
      * wrapper already handles the common GLRender entry points. It remains
-     * protected so specialized subclasses can build additional rendering
-     * behavior on top of the shared state setup.
+     * protected so specialized subclasses and additional render traversals can
+     * build on the shared state setup.
      */
     void applyScreenSpaceState(SoState* state);
+
+    /**
+     * Apply the renderer-independent matrix, view-volume, depth, and light
+     * state used by this screen-space subtree.
+     *
+     * The GL-specific texture enable state remains in applyScreenSpaceState().
+     * A renderer with a different texture-state element can reuse this part
+     * without making the screen-space policy depend on OpenGL.
+     */
+    void applyScreenSpaceGeometryState(SoState* state);
 
 private:
     CoordinateSpace coordinateSpace {CoordinateSpace::Normalized};

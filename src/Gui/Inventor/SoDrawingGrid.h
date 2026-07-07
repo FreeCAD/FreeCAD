@@ -50,11 +50,12 @@ public:
 public:
     void GLRenderBelowPath(SoGLRenderAction* action) override;
     void GLRenderInPath(SoGLRenderAction* action) override;
-    void GLRenderOffPath(SoGLRenderAction* action) override;
-    void doAction(SoAction* action) override;
 
 private:
     void ensureGeometry(SoState* state);
+
+protected:
+    void prepareScreenSpaceGeometry(SoAction* action) override;
     // Force using the reference count mechanism.
     ~SoDrawingGrid() override;
 
