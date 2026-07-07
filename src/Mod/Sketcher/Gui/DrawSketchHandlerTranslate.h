@@ -136,9 +136,8 @@ private:
                 sketchgui->getSketchObject(),
                 listOfGeoIds,
                 ShapeGeometry.size(),
-                listOfGeoIds.empty()
-                    ? 0
-                    : static_cast<int>(ShapeGeometry.size() / listOfGeoIds.size()),
+                listOfGeoIds.empty() ? 0
+                                     : static_cast<int>(ShapeGeometry.size() / listOfGeoIds.size()),
                 1
             );
 
@@ -324,8 +323,8 @@ private:
             };
 
             std::vector<double> firstFactors = buildFactors(numberOfCopies, firstDirectionSymmetric);
-            std::vector<double> secondFactors =
-                buildFactors(secondNumberOfCopies, secondDirectionSymmetric);
+            std::vector<double> secondFactors
+                = buildFactors(secondNumberOfCopies, secondDirectionSymmetric);
 
             deleteOriginal = !(hasOriginalFactor(firstFactors) && hasOriginalFactor(secondFactors));
 
@@ -370,9 +369,7 @@ private:
                     aoe->setCenter(aoe->getCenter() + vec);
                 }
                 else if (isArcOfHyperbola(*geo)) {
-                    Part::GeomArcOfHyperbola* aoh = static_cast<Part::GeomArcOfHyperbola*>(
-                        geo
-                    );  // NOLINT
+                    Part::GeomArcOfHyperbola* aoh = static_cast<Part::GeomArcOfHyperbola*>(geo);  // NOLINT
                     aoh->setCenter(aoh->getCenter() + vec);
                 }
                 else if (isArcOfParabola(*geo)) {
@@ -473,8 +470,7 @@ private:
                         }
                     }
                     else if (
-                        (cstr->Type == Distance || cstr->Type == DistanceX
-                         || cstr->Type == DistanceY)
+                        (cstr->Type == Distance || cstr->Type == DistanceX || cstr->Type == DistanceY)
                         && firstIndex >= 0 && secondIndex >= 0
                     ) {
                         if (!deleteOriginal && cloneConstraints
