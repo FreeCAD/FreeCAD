@@ -835,6 +835,7 @@ void TopoShape::mapSubElementTypeForShape(
     bool& warned
 )
 {
+    App::HistoryAlgorithm historyVersion = App::getSelectedHistoryAlgorithm();
     auto& shapeMap = _cache->getAncestry(type);
     auto& otherMap = other._cache->getAncestry(type);
     const char* shapeType = shapeName(type).c_str();
@@ -862,15 +863,19 @@ void TopoShape::mapSubElementTypeForShape(
             = other.getElementMappedNames(element);  // don't get unmapped.
 
         if (mappedNames.empty()) {
-            mappedNames.push_back(
-                {Data::MappedName::makeUnmappedName(
-                     {element.toString()},
-                     other.Tag,
-                     op,
-                     (*element.getType())
-                 ),
-                 {}}
-            );
+            if (historyVersion == App::HistoryAlgorithm::V1) {
+                mappedNames.push_back({Data::MappedName(element), {}});
+            } else if (historyVersion == App::HistoryAlgorithm::V2) {
+                mappedNames.push_back(
+                    {Data::MappedName::makeUnmappedName(
+                        {element.toString()},
+                        other.Tag,
+                        op,
+                        (*element.getType())
+                    ),
+                    {}}
+                );
+            }
         }
 
         for (auto& mappedName : mappedNames) {
@@ -939,6 +944,7 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
 
     bool warned = false;
     static const std::array<TopAbs_ShapeEnum, 3> types = {TopAbs_VERTEX, TopAbs_EDGE, TopAbs_FACE};
+    App::HistoryAlgorithm historyVersion = App::getSelectedHistoryAlgorithm();
 
     auto checkHasher = [this](const TopoShape& other) {
         if (Hasher) {
@@ -1005,15 +1011,19 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
                 = other.getElementMappedNames(otherElement);  // don't get unmapped.
 
             if (mappedNames.empty()) {
-                mappedNames.push_back(
-                    {Data::MappedName::makeUnmappedName(
-                         {otherElement.toString()},
-                         other.Tag,
-                         op,
-                         (*element.getType())
-                     ),
-                     {}}
-                );
+                if (historyVersion == App::HistoryAlgorithm::V1) {
+                    mappedNames.push_back({Data::MappedName(otherElement), {}});
+                } else if (historyVersion == App::HistoryAlgorithm::V2) {
+                    mappedNames.push_back(
+                        {Data::MappedName::makeUnmappedName(
+                            {otherElement.toString()},
+                            other.Tag,
+                            op,
+                            (*element.getType())
+                        ),
+                        {}}
+                    );
+                }
             }
 
             for (auto& v : mappedNames) {
@@ -2702,7 +2712,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                 if (!wasMapped && upperMapTypeEntry != upperMapTypes.end()) {
                     std::vector<int> ancestors = findAncestors(mainElement, upperMapTypeEntry->second);
-                    std::vector<Data::MappedName> linkedAncestorNames {};
+                    std::vector<Data::MappedName> linkedUpperNames {};
 
                     for (const auto& ancestorIndex : ancestors) {
                         Data::IndexedName ancestorIndexName = Data::IndexedName::fromConst(
@@ -2713,22 +2723,22 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                         if (ancestorMappedName
                             && std::find(
-                                   linkedAncestorNames.begin(),
-                                   linkedAncestorNames.end(),
+                                   linkedUpperNames.begin(),
+                                   linkedUpperNames.end(),
                                    ancestorMappedName
-                               ) == linkedAncestorNames.end()) {
-                            linkedAncestorNames.push_back(ancestorMappedName);
+                               ) == linkedUpperNames.end()) {
+                            linkedUpperNames.push_back(ancestorMappedName);
                         }
                     }
 
-                    if (linkedAncestorNames.size()) {
+                    if (linkedUpperNames.size()) {
                         Data::MappedName newName = Data::MappedName(
                             Data::MappedName::makeSection(
                                 {},
-                                linkedAncestorNames,
+                                linkedUpperNames,
                                 masterTag,
                                 op,
-                                usedUpperNames.count(linkedAncestorNames),
+                                usedUpperNames.count(linkedUpperNames),
                                 (*info->shapetype),
                                 0,
                                 {"UPP"}
@@ -2736,7 +2746,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                 .c_str()
                         );
 
-                        usedUpperNames.insert(linkedAncestorNames);
+                        usedUpperNames.insert(linkedUpperNames);
                         ensureElementMap()->setElementName(mainElementIndexedName, newName, masterTag);
 
                         continue;
@@ -2745,7 +2755,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                     auto lowerMapTypeEntry = lowerMapTypes.find(stringSubshapeType);
 
                     if (lowerMapTypeEntry != lowerMapTypes.end()) {
-                        std::vector<Data::MappedName> linkedConnectedNames {};
+                        std::vector<Data::MappedName> linkedLowerNames {};
 
                         TopExp_Explorer xp;
                         if (stringSubshapeType == "Face") {
@@ -2765,13 +2775,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                             std::string stringLowerSubshapeType = shapeName(lowerMapTypeEntry->second);
                             const char* lowerSubshapeType = stringLowerSubshapeType.c_str();
 
-                            if (stringLowerSubshapeType == "Face") {
-                                lowerSubshapeIndexName = Data::IndexedName::fromConst(
-                                    lowerSubshapeType,
-                                    faceInfo.find(foundLowerSubshape)
-                                );
-                            }
-                            else if (stringLowerSubshapeType == "Edge") {
+                            if (stringLowerSubshapeType == "Edge") {
                                 lowerSubshapeIndexName = Data::IndexedName::fromConst(
                                     lowerSubshapeType,
                                     edgeInfo.find(foundLowerSubshape)
@@ -2791,23 +2795,24 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                                 if (lowerSubshapeName
                                     && std::find(
-                                           linkedConnectedNames.begin(),
-                                           linkedConnectedNames.end(),
+                                           linkedLowerNames.begin(),
+                                           linkedLowerNames.end(),
                                            lowerSubshapeName
-                                       ) == linkedConnectedNames.end()) {
-                                    linkedConnectedNames.push_back(lowerSubshapeName);
+                                       ) == linkedLowerNames.end())
+                                {
+                                    linkedLowerNames.push_back(lowerSubshapeName);
                                 }
                             }
                         }
 
-                        if (linkedConnectedNames.size()) {
+                        if (linkedLowerNames.size()) {
                             Data::MappedName newName = Data::MappedName(
                                 Data::MappedName::makeSection(
                                     {},
-                                    linkedConnectedNames,
+                                    linkedLowerNames,
                                     masterTag,
                                     op,
-                                    usedLowerNames.count(linkedConnectedNames),
+                                    usedLowerNames.count(linkedLowerNames),
                                     (*info->shapetype),
                                     0,
                                     {"LOW"}
@@ -2815,7 +2820,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                     .c_str()
                             );
 
-                            usedLowerNames.insert(linkedConnectedNames);
+                            usedLowerNames.insert(linkedLowerNames);
                             ensureElementMap()->setElementName(mainElementIndexedName, newName, masterTag);
                             continue;
                         }
@@ -7117,6 +7122,7 @@ long TopoShape::isElementGenerated(const Data::MappedName& _name, int depth) con
 
 void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const char* postfix, bool force)
 {
+    ZoneScoped;
     if (!tag) {
         FC_WARN("invalid shape tag for re-tagging");
         return;

@@ -37,6 +37,7 @@
 #include "TopoShape.h"
 #include "TopoShapeOpCode.h"
 #include <App/ElementNamingUtils.h>
+#include <unordered_set>
 
 
 TYPESYSTEM_SOURCE_ABSTRACT(Part::FaceMaker, Base::BaseClass)
@@ -220,6 +221,8 @@ void Part::FaceMaker::postBuild()
     this->myTopoShape.Hasher = this->MyHasher;
     this->myTopoShape.mapSubElement(this->mySourceShapes);
 
+    App::HistoryAlgorithm historyVersion = App::getSelectedHistoryAlgorithm();
+
     // Some makers modify edges before the splitter runs (e.g. splitting
     // self-intersecting B-splines).  If myPreSplitHistory is set, build an
     // intermediate mapping so the splitter's output traces back through both
@@ -242,20 +245,23 @@ void Part::FaceMaker::postBuild()
         splitInputShape.makeShapeWithElementMap(mySplitter.Shape(), mapper, splitterSources);
         myTopoShape.mapSubElement(splitInputShape);
     }
-    int index = 0;
     const char* op = this->MyOp;
     if (!op) {
         op = Part::OpCodes::Face;
     }
-    const auto& faces = this->myTopoShape.getSubTopoShapes(TopAbs_FACE);
-    std::set<Data::MappedName> namesUsed;
-    // name the face using the edges of its outer wire
-    for (auto& face : faces) {
-        ++index;
-        TopoShape wire = face.splitWires();
-        wire.mapSubElement(face);
+    
+    const std::vector<TopoShape>& faces = this->myTopoShape.getSubTopoShapes(TopAbs_FACE);
 
-        if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+    // name the face using the edges of its outer wire
+    if (historyVersion == App::HistoryAlgorithm::V1) {
+        int index = 0;
+        std::set<Data::MappedName> namesUsed;
+        
+        for (auto& face : faces) {
+            ++index;
+            TopoShape wire = face.splitWires();
+            wire.mapSubElement(face);
+
             std::set<ElementName> edgeNames;
             int count = wire.countSubShapes(TopAbs_EDGE);
             for (int index2 = 1; index2 <= count; ++index2) {
@@ -294,45 +300,58 @@ void Part::FaceMaker::postBuild()
                 &sids
             );
         }
-        else if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
-            std::vector<Data::MappedName> edgeNames;
+    } else if (historyVersion == App::HistoryAlgorithm::V2) {
+        std::unordered_multiset<Data::MappedName, Data::MappedNameHasher> allLinkedNames;
+        std::unordered_map<Data::IndexedName, std::vector<Data::MappedName>, Data::IndexedNameHasher> linkedNameMap;
 
-            int count = wire.countSubShapes(TopAbs_EDGE);
+        for (size_t faceIndex = 0; faceIndex < faces.size(); faceIndex++) {
+            Data::IndexedName faceIndexName = Data::IndexedName::fromConst("Face", faceIndex + 1);
+            const TopoShape& face = faces[faceIndex];
+            TopoShape wire = face.splitWires();
+            wire.mapSubElement(face);
 
-            // cap the number of names to 10 to improve performance and document size.
-            for (int edgeIndex = 1; (edgeIndex <= count && edgeIndex <= 10); ++edgeIndex) {
-                Data::MappedName name
-                    = face.getMappedName(Data::IndexedName::fromConst("Edge", edgeIndex), false);
+            for (unsigned long edgeIndex = 1; edgeIndex <= wire.countSubShapes(TopAbs_EDGE); edgeIndex++) {
+                Data::MappedName edgeMappedName
+                    = wire.getMappedName(Data::IndexedName::fromConst("Edge", edgeIndex));
 
-                if (name) {
-                    edgeNames.push_back(name);
+                if (edgeMappedName) {
+                    linkedNameMap[faceIndexName].push_back(edgeMappedName);
+                    allLinkedNames.insert(edgeMappedName);
+                }
+            }
+        }
+
+        for (auto& linkedNameEntry : linkedNameMap) {
+            std::vector<Data::MappedName> fixedNameVector;
+
+            for (const Data::MappedName& mappedName : linkedNameEntry.second) {
+                if (allLinkedNames.count(mappedName) == 1) {
+                    fixedNameVector.push_back(mappedName);
                 }
             }
 
-            if (edgeNames.empty()) {
-                continue;
+            linkedNameEntry.second = fixedNameVector;
+        }
+
+        for (const auto& linkedNameEntry : linkedNameMap) {
+            if (linkedNameEntry.second.size()) {
+                this->myTopoShape.setElementName(
+                    linkedNameEntry.first,
+                    Data::MappedName(
+                        Data::MappedName::makeSection(
+                            {},
+                            linkedNameEntry.second,
+                            this->myTopoShape.Tag,
+                            op,
+                            0,
+                            'F',
+                            0,
+                            {"LOW"}
+                        )
+                    ),
+                    this->myTopoShape.Tag
+                );
             }
-
-            int masterTag = this->myTopoShape.Tag;
-
-            if (masterTag == 0) {
-                for (auto& sourceShape : this->mySourceShapes) {
-                    if (sourceShape.Tag != 0) {
-                        masterTag = sourceShape.Tag;
-                        break;
-                    }
-                }
-            }
-
-
-            std::string faceString
-                = Data::MappedName::makeSection({}, edgeNames, masterTag, op, 0, 'F', 0, {"LOW"});
-
-            this->myTopoShape.setElementName(
-                Data::IndexedName::fromConst("Face", index),
-                Data::MappedName(faceString, this->myTopoShape.getHistoryAlgorithm()),
-                this->myTopoShape.Tag
-            );
         }
     }
     this->myTopoShape.initCache(true);

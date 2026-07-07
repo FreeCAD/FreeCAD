@@ -32,6 +32,7 @@
 #include <QVector>
 #include <utility>
 #include <boost/algorithm/string/predicate.hpp>
+#include <Base/Profiler.h>
 
 #include "ElementNamingUtils.h"
 #include "IndexedName.h"
@@ -656,6 +657,8 @@ public:
      */
     const char* appendToBuffer(std::string& buffer, int startPosition = 0, int len = -1) const
     {
+        ZoneScoped;
+
         std::size_t offset = buffer.size();
         int count = this->size();
         if (startPosition < 0) {
@@ -1079,7 +1082,7 @@ public:
     /**
      * @brief Check if this mapped name ends with the search target.
      *
-     * If there is a postfix, only the postfix is considered. If not, then only
+     * If there is a postfix, only the postfix is con   sidered. If not, then only
      * the data is considered. A search string that overlaps the two will not
      * be found.
      *
@@ -1192,54 +1195,54 @@ public:
     };
 
     // we use a static here for caching reasons.
-    static DecodedMappedName getDecodedMappedName(std::string mappedNameString);
+    static DecodedMappedName getDecodedMappedName(const std::string& mappedNameString);
 
     DecodedMappedName getDecodedMappedName() const;
     
     static MappedName fromDecodedMappedName(const DecodedMappedName& name);
 
-    static std::vector<std::string> splitToSections(const std::string data, const char deliminator);
+    static std::vector<std::string> splitToSections(const std::string& data, const char deliminator);
 
-    static std::vector<std::string> splitToSections(const std::string data, const char* deliminator);
+    static std::vector<std::string> splitToSections(const std::string& data, const char* deliminator);
 
-    static std::string escapeString(const std::string stringToEscape);
+    static std::string escapeString(const std::string& stringToEscape);
 
-    static std::string makeSection(std::vector<std::string> referenceIDs = { },
-                                   std::vector<MappedName> linkedNames = { },
-                                   int iterationTag = 0,
+    static std::string makeSection(const std::vector<std::string>& referenceIDs = { },
+                                   const std::vector<MappedName>& linkedNames = { },
+                                   const int&  iterationTag = 0,
                                    const char* opCode = "MKR",
-                                   int index = 0,
-                                   char elementType = 'E',
-                                   int duplicateCount = 0,
-                                   std::vector<std::string> mapperFlags = { },
-                                   std::vector<MappedName> connectedElements = { });
+                                   const int& index = 0,
+                                   const char& elementType = 'E',
+                                   const int& duplicateCount = 0,
+                                   const std::vector<std::string>& mapperFlags = { },
+                                   const std::vector<MappedName>& connectedElements = { });
     
-    static std::string makeSection(std::vector<std::string> referenceIDs = { },
-                                   std::vector<MappedName> linkedNames = { },
-                                   std::string iterationTag = 0,
+    static std::string makeSection(const std::vector<std::string>& referenceIDs = { },
+                                   const std::vector<MappedName>& linkedNames = { },
+                                   const std::string& iterationTag = 0,
                                    const char* opCode = "MKR",
-                                   std::string index = 0,
-                                   char elementType = 'E',
-                                   std::string duplicateCount = 0,
-                                   std::vector<std::string> mapperFlags = { },
-                                   std::vector<MappedName> connectedElements = { });
+                                   const std::string& index = 0,
+                                   const char& elementType = 'E',
+                                   const std::string& duplicateCount = 0,
+                                   const std::vector<std::string>& mapperFlags = { },
+                                   const  std::vector<MappedName>& connectedElements = { });
 
-    static std::string makeSection(std::vector<std::string> referenceIDs = { },
-                                   std::vector<std::string> linkedNames = { },
-                                   std::string iterationTag = 0,
+    static std::string makeSection(const std::vector<std::string>& referenceIDs = { },
+                                   const std::vector<std::string>& linkedNames = { },
+                                   const std::string& iterationTag = 0,
                                    const char* opCode = "MKR",
-                                   std::string index = 0,
-                                   char elementType = 'E',
-                                   std::string duplicateCount = 0,
-                                   std::vector<std::string> mapperFlags = { },
-                                   std::vector<std::string> connectedElements = { });
+                                   const std::string& index = 0,
+                                   const char& elementType = 'E',
+                                   const std::string& duplicateCount = 0,
+                                   const std::vector<std::string>& mapperFlags = { },
+                                   const std::vector<std::string>& connectedElements = { });
 
     static std::string makeSection(const DecodedMappedSection& decodedSection);
 
-    static MappedName makeUnmappedName(std::vector<std::string> indexedNames = { },
-                                       int iterationTag = 0,
+    static MappedName makeUnmappedName(const std::vector<std::string>& indexedNames = { },
+                                       const int& iterationTag = 0,
                                        const char* opCode = "MKR",
-                                       char elementType = 'E');
+                                       const char& elementType = 'E');
     
 private:
     QByteArray data;
