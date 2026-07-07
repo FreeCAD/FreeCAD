@@ -25,6 +25,9 @@
 
 #pragma once
 
+#include <algorithm>
+#include <cmath>
+
 #include <QApplication>
 #include <map>
 #include <utility>
@@ -43,7 +46,6 @@
 #include "DrawSketchControllableHandler.h"
 #include "SketcherTransformationExpressionHelper.h"
 
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 
 
@@ -82,7 +84,7 @@ public:
         , cloneConstraints(false)
         , firstDirectionSymmetric(false)
         , secondDirectionSymmetric(false)
-        , numberOfCopies(0)
+        , numberOfCopies(1)
         , secondNumberOfCopies(1)
     {}
 
@@ -276,58 +278,66 @@ private:
 
         ShapeGeometry.clear();
 
-        int numberOfCopiesToMake = numberOfCopies;
-        if (numberOfCopies == 0) {
-            numberOfCopiesToMake = 1;
-            deleteOriginal = 1;
+        auto buildFactors = [](int elementCount, bool symmetric) {
+            elementCount = std::max(elementCount, 1);
+            std::vector<double> factors;
+            factors.reserve(elementCount);
+
+            if (!symmetric) {
+                for (int i = 0; i < elementCount; i++) {
+                    factors.push_back(i);
+                }
+                return factors;
+            }
+
+            int sideCount = elementCount / 2;
+            bool hasOriginal = elementCount % 2 == 1;
+            if (hasOriginal) {
+                factors.push_back(0.0);
+            }
+
+            for (int i = 1; i <= sideCount; i++) {
+                factors.push_back(hasOriginal ? i : i - 0.5);
+            }
+
+            for (int i = 1; i <= sideCount; i++) {
+                factors.push_back(hasOriginal ? -i : 0.5 - i);
+            }
+
+            return factors;
+        };
+
+        auto hasOriginalFactor = [](const std::vector<double>& factors) {
+            return std::any_of(factors.begin(), factors.end(), [](double factor) {
+                return std::abs(factor) < Precision::Confusion();
+            });
+        };
+
+        std::vector<double> firstFactors = buildFactors(numberOfCopies, firstDirectionSymmetric);
+        std::vector<double> secondFactors =
+            buildFactors(secondNumberOfCopies, secondDirectionSymmetric);
+
+        std::vector<std::pair<double, double>> copyOffsets;
+        bool transformOriginal = numberOfCopies == 1 && secondNumberOfCopies == 1;
+        if (transformOriginal) {
+            deleteOriginal = true;
+            copyOffsets.emplace_back(1.0, 0.0);
         }
         else {
-            deleteOriginal = 0;
-        }
+            deleteOriginal = !(hasOriginalFactor(firstFactors) && hasOriginalFactor(secondFactors));
 
-        std::vector<int> firstFactors;
-        firstFactors.reserve(
-            numberOfCopiesToMake + 1
-            + (firstDirectionSymmetric && numberOfCopies > 0 ? numberOfCopiesToMake : 0)
-        );
-
-        for (int i = 0; i <= numberOfCopiesToMake; i++) {
-            firstFactors.push_back(i);
-        }
-
-        if (firstDirectionSymmetric && numberOfCopies > 0) {
-            for (int i = 1; i <= numberOfCopiesToMake; i++) {
-                firstFactors.push_back(-i);
+            if (!firstFactors.empty() && !secondFactors.empty()) {
+                copyOffsets.reserve(firstFactors.size() * secondFactors.size() - 1);
             }
-        }
 
-        std::vector<int> secondFactors;
-        secondFactors.reserve(
-            secondNumberOfCopies
-            + (secondDirectionSymmetric && secondNumberOfCopies > 1 ? secondNumberOfCopies - 1 : 0)
-        );
-
-        for (int k = 0; k < secondNumberOfCopies; k++) {
-            secondFactors.push_back(k);
-        }
-
-        if (secondDirectionSymmetric && secondNumberOfCopies > 1) {
-            for (int k = 1; k < secondNumberOfCopies; k++) {
-                secondFactors.push_back(-k);
-            }
-        }
-
-        std::vector<std::pair<int, int>> copyOffsets;
-        if (!firstFactors.empty() && !secondFactors.empty()) {
-            copyOffsets.reserve(firstFactors.size() * secondFactors.size() - 1);
-        }
-
-        for (int secondFactor : secondFactors) {
-            for (int firstFactor : firstFactors) {
-                if (firstFactor == 0 && secondFactor == 0) {
-                    continue;
+            for (double secondFactor : secondFactors) {
+                for (double firstFactor : firstFactors) {
+                    if (std::abs(firstFactor) < Precision::Confusion()
+                        && std::abs(secondFactor) < Precision::Confusion()) {
+                        continue;
+                    }
+                    copyOffsets.emplace_back(firstFactor, secondFactor);
                 }
-                copyOffsets.emplace_back(firstFactor, secondFactor);
             }
         }
 
@@ -357,7 +367,9 @@ private:
                     aoe->setCenter(aoe->getCenter() + vec);
                 }
                 else if (isArcOfHyperbola(*geo)) {
-                    Part::GeomArcOfHyperbola* aoh = static_cast<Part::GeomArcOfHyperbola*>(geo);  // NOLINT
+                    Part::GeomArcOfHyperbola* aoh = static_cast<Part::GeomArcOfHyperbola*>(
+                        geo
+                    );  // NOLINT
                     aoh->setCenter(aoh->getCenter() + vec);
                 }
                 else if (isArcOfParabola(*geo)) {
@@ -458,7 +470,8 @@ private:
                         }
                     }
                     else if (
-                        (cstr->Type == Distance || cstr->Type == DistanceX || cstr->Type == DistanceY)
+                        (cstr->Type == Distance || cstr->Type == DistanceX
+                         || cstr->Type == DistanceY)
                         && firstIndex >= 0 && secondIndex >= 0
                     ) {
                         if (!deleteOriginal && cloneConstraints
@@ -542,7 +555,7 @@ template<>
 void DSHTranslateController::secondKeyShortcut()
 {
     auto value = toolWidget->getParameter(WParameter::First);
-    if (value > 0.0) {
+    if (value > 1.0) {
         toolWidget->setParameterWithoutPassingFocus(WParameter::First, value - 1);
     }
 }
@@ -589,7 +602,7 @@ void DSHTranslateController::configureToolWidget()
             WCheckbox::SecondBox,
             QApplication::translate(
                 "TaskSketcherTool_c2_translate",
-                "Create additional copies in the opposite translation direction."
+                "Distribute the elements symmetrically around the original position."
             )
         );
     }
@@ -616,18 +629,18 @@ void DSHTranslateController::configureToolWidget()
 
     toolWidget->setParameterLabel(
         WParameter::First,
-        QApplication::translate("TaskSketcherTool_p3_translate", "Copies (+'U'/-'J')")
+        QApplication::translate("TaskSketcherTool_p3_translate", "Elements (+'U'/-'J')")
     );
     toolWidget->setParameterLabel(
         WParameter::Second,
         QApplication::translate("TaskSketcherTool_p5_translate", "Rows (+'R'/-'F')")
     );
 
-    toolWidget->setParameter(OnViewParameter::First, 0.0);
+    toolWidget->setParameter(OnViewParameter::First, 1.0);
     toolWidget->setParameter(OnViewParameter::Second, 1.0);
     toolWidget->configureParameterUnit(OnViewParameter::First, Base::Unit());
     toolWidget->configureParameterUnit(OnViewParameter::Second, Base::Unit());
-    toolWidget->configureParameterMin(OnViewParameter::First, 0.0);      // NOLINT
+    toolWidget->configureParameterMin(OnViewParameter::First, 1.0);      // NOLINT
     toolWidget->configureParameterMin(OnViewParameter::Second, 1.0);     // NOLINT
     toolWidget->configureParameterMax(OnViewParameter::First, 9999.0);   // NOLINT
     toolWidget->configureParameterMax(OnViewParameter::Second, 9999.0);  // NOLINT
@@ -640,7 +653,7 @@ void DSHTranslateController::adaptDrawingToParameterChange(int parameterindex, d
 {
     switch (parameterindex) {
         case WParameter::First:
-            handler->numberOfCopies = floor(abs(value));
+            handler->numberOfCopies = std::max(1, static_cast<int>(floor(abs(value))));
             break;
         case WParameter::Second:
             handler->secondNumberOfCopies = floor(abs(value));
