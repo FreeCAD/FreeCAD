@@ -211,8 +211,9 @@ private:
                 sketchgui->getSketchObject(),
                 listOfGeoIds,
                 ShapeGeometry.size(),
-                listOfGeoIds.empty() ? 0
-                                     : static_cast<int>(ShapeGeometry.size() / listOfGeoIds.size()),
+                listOfGeoIds.empty()
+                    ? 0
+                    : static_cast<int>(ShapeGeometry.size() / listOfGeoIds.size()),
                 1
             );
 
@@ -343,9 +344,8 @@ private:
 
         int numberOfElements = std::max(numberOfCopies, 1);
         bool transformOriginal = numberOfElements == 1;
-        int numberOfCopiesToMake = transformOriginal
-            ? 1
-            : (symmetric ? numberOfElements / 2 : numberOfElements - 1);
+        int numberOfCopiesToMake =
+            transformOriginal ? 1 : (symmetric ? numberOfElements / 2 : numberOfElements - 1);
         deleteOriginal = transformOriginal || (symmetric && numberOfElements % 2 == 0);
 
         double shapeAngle = angleForShapeCreation(totalAngle);
@@ -358,15 +358,12 @@ private:
             angleDivisor = transformOriginal ? 1 : numberOfElements;
         }
 
-        if (angleDivisor == 0) {
-            individualAngle = 0.0;
-            return;
-        }
-
         individualAngle = shapeAngle / angleDivisor;
 
         std::vector<double> copyFactors;
-        copyFactors.reserve(symmetric ? 2 * numberOfCopiesToMake : numberOfCopiesToMake);
+        copyFactors.reserve(
+            transformOriginal ? 1 : (symmetric ? 2 * numberOfCopiesToMake : numberOfCopiesToMake)
+        );
         for (int i = 1; i <= numberOfCopiesToMake; i++) {
             copyFactors.push_back(transformOriginal ? i : (deleteOriginal ? i - 0.5 : i));
         }
