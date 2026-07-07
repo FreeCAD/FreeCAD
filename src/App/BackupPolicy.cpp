@@ -23,6 +23,7 @@
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/regex.hpp>
+#include <filesystem>
 #include <string>
 
 #include <Base/TimeInfo.h>
@@ -71,8 +72,9 @@ void BackupPolicy::applyStandard(const std::string& sourcename, const std::strin
     if (Base::FileInfo fi(targetname); fi.exists()) {
         if (numberOfFiles > 0) {
             int nSuff = 0;
+            std::string backupDirPath = ensureBackupDirectory(fi);
             std::string fn = fi.fileName();
-            Base::FileInfo di(fi.dirPath());
+            Base::FileInfo di(backupDirPath);
             std::vector<Base::FileInfo> backup;
             std::vector<Base::FileInfo> files = di.getDirectoryContent();
             for (const Base::FileInfo& it : files) {
@@ -106,7 +108,7 @@ void BackupPolicy::applyStandard(const std::string& sourcename, const std::strin
             else {
                 // create a new backup file
                 std::stringstream str;
-                str << fi.filePath() << (nSuff + 1);
+                str << getBackupFilePath(backupDirPath, fi.fileName()) << (nSuff + 1);
                 fn = str.str();
             }
 
@@ -133,13 +135,25 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
     std::string ext = fi.extension();
     std::string bn;   // full path with no extension but with "."
     std::string pbn;  // base name of the project + "."
+    std::string backupDirPath;
     if (!ext.empty()) {
-        bn = fi.filePath().substr(0, fi.filePath().length() - ext.length());
+        bn = fi.fileName().substr(0, fi.fileName().length() - ext.length());
         pbn = fi.fileName().substr(0, fi.fileName().length() - ext.length());
     }
     else {
-        bn = fi.filePath() + ".";
+        bn = fi.fileName() + ".";
         pbn = fi.fileName() + ".";
+    }
+
+    if (fi.exists() && numberOfFiles > 0) {
+        backupDirPath = ensureBackupDirectory(fi);
+        bn = getBackupFilePath(backupDirPath, bn);
+    }
+    else if (!ext.empty()) {
+        bn = fi.filePath().substr(0, fi.filePath().length() - ext.length());
+    }
+    else {
+        bn = fi.filePath() + ".";
     }
 
     bool backupManagementError = false;  // Note error and report at the end
@@ -150,7 +164,7 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
             {
                 // Remove all extra backups
                 std::string filename = fi.fileName();
-                Base::FileInfo di(fi.dirPath());
+                Base::FileInfo di(backupDirPath);
                 std::vector<Base::FileInfo> backup;
                 std::vector<Base::FileInfo> files = di.getDirectoryContent();
                 for (const Base::FileInfo& it : files) {
@@ -372,4 +386,34 @@ bool BackupPolicy::renameFileNoErase(Base::FileInfo fi, const std::string& newNa
         return fi.renameFile(newName.c_str());
     }
     return false;
+}
+
+std::string BackupPolicy::getBackupDirectoryPath(const Base::FileInfo& target)
+{
+    auto backupDir = Base::FileInfo::stringToPath(target.dirPath()) / "freecad-backups";
+    return Base::FileInfo::pathToString(backupDir);
+}
+
+std::string BackupPolicy::getBackupFilePath(const std::string& backupDir,
+                                            const std::string& fileName)
+{
+    auto backupPath = Base::FileInfo::stringToPath(backupDir) / fileName;
+    return Base::FileInfo::pathToString(backupPath);
+}
+
+std::string BackupPolicy::ensureBackupDirectory(const Base::FileInfo& target)
+{
+    std::string backupDirPath = getBackupDirectoryPath(target);
+    Base::FileInfo backupDir(backupDirPath);
+
+    if (backupDir.exists()) {
+        if (!backupDir.isDir()) {
+            throw Base::FileException("Backup path is not a directory", backupDir);
+        }
+    }
+    else if (!backupDir.createDirectories()) {
+        throw Base::FileException("Cannot create backup directory", backupDir);
+    }
+
+    return backupDirPath;
 }
