@@ -1095,13 +1095,11 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         open = Path.Command("(begin probe ...)", {}, {"probe_open": file})
         gcode = self.post._convert_probe_open(open)
 
+        self.assertIn("CaptureZPos:", gcode, "Has subroutines once/job")
         self.assertRegex(
             gcode,
             r'OPEN "probe_results\.txt" FOR OUTPUT as',
             "OPEN statement, and correct filename",
-        )
-        self.assertIn(
-            "CaptureZPos:", self.post.values["POST_JOB"], "Has subroutines once/job in POST_JOB"
         )
 
         # Second probe open (check subroutines added only once)
@@ -1114,7 +1112,7 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         self.assertEqual(
             1,
             len(subroutine_markers),
-            "probe subroutines added to POST_JOB only once ('CaptureZPos'):---\n{self.post.values['POST_JOB']}\n---",
+            "probe subroutines added only once ('CaptureZPos')",
         )
 
     def test_convert_probe(self):
