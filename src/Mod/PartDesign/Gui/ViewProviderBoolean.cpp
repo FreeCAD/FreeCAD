@@ -148,10 +148,9 @@ void ViewProviderBoolean::syncActiveBodyVisibility()
     auto* activeView = getDocument()->getActiveView();
     auto* activeBody = activeView ? activeView->getActiveObject<App::DocumentObject*>(PDBODYKEY)
                                   : nullptr;
-    auto* activeBodyVP = activeBody ? dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                                          Gui::Application::Instance->getViewProvider(activeBody)
-                                      )
-                                    : nullptr;
+    auto* activeBodyVP = activeBody
+        ? Gui::Application::Instance->getViewProvider<Gui::ViewProviderDocumentObject>(activeBody)
+        : nullptr;
     onBodyActivated(activeBodyVP, PDBODYKEY);
 }
 
