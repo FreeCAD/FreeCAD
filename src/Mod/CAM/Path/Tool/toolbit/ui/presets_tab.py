@@ -30,17 +30,24 @@ import math
 from typing import List, Optional
 
 import FreeCAD
+import FreeCADGui
 from PySide import QtCore, QtGui
 
 from ...FeedsSpeeds import (
     OP_TYPES,
-    derive_preset_label,
     get_presets,
     make_preset,
     set_presets,
 )
 
 translate = FreeCAD.Qt.translate
+
+# ``Gui::QuantitySpinBox`` stores its ``rawValue`` in the quantity's base
+# unit: mm/s for a velocity, mm for a length. The engineering math below
+# works in m/min (surface speed), mm/min (feed) and mm (chipload), so we
+# convert at the widget boundary. Chipload is already in mm = base unit.
+_MM_S_PER_M_MIN = 1000.0 / 60.0  # 1 m/min expressed in mm/s
+_MM_S_PER_MM_MIN = 1.0 / 60.0  # 1 mm/min expressed in mm/s
 
 
 def _fmt(value: Optional[float], unit: str = "") -> str:
@@ -49,6 +56,51 @@ def _fmt(value: Optional[float], unit: str = "") -> str:
     if unit:
         return f"{value:g} {unit}"
     return f"{value:g}"
+
+
+def _preferred_unit(unit_expr: str) -> str:
+    """
+    The user's schema-preferred unit string for the dimension of
+    ``unit_expr`` (e.g. "mm/s" -> "mm/min" or "in/min", "mm" -> "mm" or
+    "in"). Falls back to ``unit_expr`` if the preference can't be resolved.
+    """
+    try:
+        pref = FreeCAD.Units.Quantity(1.0, unit_expr).getUserPreferred()
+        if pref and len(pref) > 2 and pref[2]:
+            return pref[2]
+    except Exception:
+        pass
+    return unit_expr
+
+
+def _fmt_quantity(value: Optional[float], unit_expr: str) -> str:
+    """
+    Format a magnitude (given in ``unit_expr`` units) as a schema-aware
+    display string, so table columns honor the user's unit preference.
+    """
+    if value is None:
+        return ""
+    try:
+        return FreeCAD.Units.Quantity(float(value), unit_expr).UserString
+    except Exception:
+        return _fmt(value)
+
+
+def _spin_raw(widget) -> float:
+    """Read a ``Gui::QuantitySpinBox`` value in its base unit (mm/s, mm)."""
+    try:
+        return float(widget.property("rawValue"))
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def _set_spin_raw(widget, base_value: float) -> None:
+    """Set a ``Gui::QuantitySpinBox`` from a base-unit value, muted."""
+    widget.blockSignals(True)
+    try:
+        widget.setProperty("rawValue", float(base_value))
+    finally:
+        widget.blockSignals(False)
 
 
 def _surface_speed_from_rpm(rpm: float, diameter_mm: float) -> Optional[float]:
@@ -79,15 +131,21 @@ def _feed_from_chipload(chipload: float, rpm: float, flutes: int) -> Optional[fl
     return chipload * rpm * flutes
 
 
-class _EditPresetDialog(QtGui.QDialog):
+class _EditPresetDialog:
     """Sub-dialog for adding or editing a single preset row.
 
-    The dialog accepts the tool's current ``diameter_mm`` and ``flutes`` so
-    it can keep the engineering inputs (surface speed, chipload) and the
-    direct inputs (spindle rpm, horiz feed mm/min) in sync as the user
-    types. Storage is engineering-only: only surface_speed, chipload and
-    vert_feed_ratio are persisted; the rpm/feed spinboxes are display
-    affordances derived from those plus the tool's geometry.
+    Wraps the ``FeedsSpeedsPresetEdit.ui`` panel. The dialog accepts the
+    tool's current ``diameter_mm`` and ``flutes`` so it can keep the
+    engineering inputs (surface speed, chipload) and the direct inputs
+    (spindle rpm, horiz feed) in sync as the user types. Storage is
+    engineering-only: only surface_speed, chipload and vert_feed_ratio are
+    persisted; the rpm/feed spinboxes are display affordances derived from
+    those plus the tool's geometry.
+
+    All feed/speed spinboxes are ``Gui::QuantitySpinBox`` widgets so their
+    display honors the user's unit schema (metric, imperial, …). Values are
+    read/written in the base unit via ``rawValue`` and converted to the
+    engineering units the math works in (m/min, mm/min, mm).
     """
 
     def __init__(
@@ -95,111 +153,109 @@ class _EditPresetDialog(QtGui.QDialog):
         preset: Optional[dict],
         diameter_mm: float = 0.0,
         flutes: Optional[int] = None,
+        tool_chipload_mm: Optional[float] = None,
         parent=None,
     ):
-        super().__init__(parent)
-        self.setWindowTitle(translate("CAM_FeedsSpeeds", "Edit preset"))
-        layout = QtGui.QFormLayout(self)
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/FeedsSpeedsPresetEdit.ui")
+        if parent is not None:
+            self.form.setParent(parent, QtCore.Qt.Dialog)
 
+        # A new preset (preset is None) seeds its chipload from the tool's
+        # own ``Chipload`` property; an existing preset keeps its saved value.
+        self._is_new = preset is None
         self._initial = preset or make_preset()
         self._material_uuid: Optional[str] = None
         self._material_name: Optional[str] = None
         self._diameter_mm = float(diameter_mm) if diameter_mm else 0.0
         self._flutes = int(flutes) if flutes else 0
+        self._tool_chipload_mm = float(tool_chipload_mm) if tool_chipload_mm else 0.0
         self._syncing = False  # guards against feedback loops
 
-        # Preset name — user-given label, optional but encouraged.
-        self.name_edit = QtGui.QLineEdit()
+        f = self.form
+        self.name_edit = f.nameEdit
+        self.material_label = f.materialLabel
+        self.browse_button = f.browseButton
+        self.generic_check = f.genericCheck
+        self.op_type_combo = f.opTypeCombo
+        self.surface_speed_spin = f.surfaceSpeedSpin
+        self.chipload_spin = f.chiploadSpin
+        self.vert_ratio_spin = f.vertRatioSpin
+        self.raw_feed_spin = f.rawFeedSpin
+        self.raw_speed_spin = f.rawSpeedSpin
+
         self.name_edit.setPlaceholderText(
             translate("CAM_FeedsSpeeds", "Optional, e.g. 'Aluminum aggressive'")
         )
-        layout.addRow(translate("CAM_FeedsSpeeds", "Name:"), self.name_edit)
 
-        # Material row: read-only label, Browse button opens the
-        # Machinability-filtered MaterialDialog. UUID is the authoritative
-        # identifier; name is for display + as a fallback when the UUID
-        # can't be resolved on a different machine.
-        mat_row = QtGui.QHBoxLayout()
-        self.material_label = QtGui.QLabel(translate("CAM_FeedsSpeeds", "(none)"))
-        mat_row.addWidget(self.material_label, 1)
-        self.browse_button = QtGui.QPushButton(translate("CAM_FeedsSpeeds", "Browse…"))
-        self.browse_button.clicked.connect(self._on_browse)
-        mat_row.addWidget(self.browse_button)
-        self.generic_check = QtGui.QCheckBox(translate("CAM_FeedsSpeeds", "Generic (any material)"))
-        self.generic_check.toggled.connect(self._on_generic_toggled)
-        mat_row.addWidget(self.generic_check)
-        layout.addRow(translate("CAM_FeedsSpeeds", "Material:"), mat_row)
+        # Display units follow the user's unit schema. Surface speed and
+        # horiz feed are velocities; chipload is a length (per tooth).
+        vel_unit = _preferred_unit("mm/s")
+        self.surface_speed_spin.setProperty("unit", vel_unit)
+        self.raw_feed_spin.setProperty("unit", vel_unit)
+        self.chipload_spin.setProperty("unit", _preferred_unit("mm"))
+        # Chipload needs finer resolution than the default spinbox decimals.
+        # Gui::QuantitySpinBox comes through PySide as a bare QAbstractSpinBox
+        # (no typed setters), so drive it through the Qt property system —
+        # the same way its ``unit`` and ``rawValue`` are set.
+        self.chipload_spin.setProperty("decimals", 4)
 
         # Op type
-        self.op_type_combo = QtGui.QComboBox()
         self.op_type_combo.addItem(translate("CAM_FeedsSpeeds", "(any)"), None)
         for op in OP_TYPES:
             self.op_type_combo.addItem(op, op)
-        layout.addRow(translate("CAM_FeedsSpeeds", "Op type:"), self.op_type_combo)
 
-        # Engineering values
-        self.surface_speed_spin = QtGui.QDoubleSpinBox()
-        self.surface_speed_spin.setRange(0, 100000)
-        self.surface_speed_spin.setDecimals(2)
-        self.surface_speed_spin.setSuffix(" m/min")
-        layout.addRow(translate("CAM_FeedsSpeeds", "Surface speed:"), self.surface_speed_spin)
-
-        self.chipload_spin = QtGui.QDoubleSpinBox()
-        self.chipload_spin.setRange(0, 10)
-        self.chipload_spin.setDecimals(4)
-        self.chipload_spin.setSuffix(" mm/tooth")
-        layout.addRow(translate("CAM_FeedsSpeeds", "Chipload:"), self.chipload_spin)
-
-        self.vert_ratio_spin = QtGui.QDoubleSpinBox()
-        self.vert_ratio_spin.setRange(0, 1)
-        self.vert_ratio_spin.setDecimals(3)
-        self.vert_ratio_spin.setValue(0.33)
-        layout.addRow(translate("CAM_FeedsSpeeds", "Vert feed ratio:"), self.vert_ratio_spin)
-
-        # Raw values: entered directly as feed/speed. When tool geometry
-        # is known, these stay in sync with surface_speed/chipload above
-        # (editing either side updates the other).
-        raw_box = QtGui.QGroupBox(translate("CAM_FeedsSpeeds", "Direct feed and speed"))
-        raw_form = QtGui.QFormLayout(raw_box)
-        self.raw_feed_spin = QtGui.QDoubleSpinBox()
-        self.raw_feed_spin.setRange(0, 100000)
-        self.raw_feed_spin.setSuffix(" mm/min")
-        raw_form.addRow(translate("CAM_FeedsSpeeds", "Horiz feed:"), self.raw_feed_spin)
-        self.raw_speed_spin = QtGui.QDoubleSpinBox()
-        self.raw_speed_spin.setRange(0, 200000)
-        self.raw_speed_spin.setSuffix(" rpm")
-        raw_form.addRow(translate("CAM_FeedsSpeeds", "Spindle speed:"), self.raw_speed_spin)
-        layout.addRow(raw_box)
-
-        # Wire up bidirectional sync. Each handler reads geometry; when
-        # geometry is missing, that direction silently no-ops.
-        self.surface_speed_spin.valueChanged.connect(self._on_surface_speed_changed)
-        self.chipload_spin.valueChanged.connect(self._on_chipload_changed)
+        # Wire up bidirectional sync. Each handler re-reads the widgets it
+        # needs (via unit-aware accessors) and ignores the signal payload,
+        # so it doesn't matter whether the signal carries a str or a float.
+        self.browse_button.clicked.connect(self._on_browse)
+        self.generic_check.toggled.connect(self._on_generic_toggled)
+        self.surface_speed_spin.textChanged.connect(self._on_surface_speed_changed)
+        self.chipload_spin.textChanged.connect(self._on_chipload_changed)
+        self.raw_feed_spin.textChanged.connect(self._on_raw_feed_changed)
         self.raw_speed_spin.valueChanged.connect(self._on_raw_speed_changed)
-        self.raw_feed_spin.valueChanged.connect(self._on_raw_feed_changed)
 
-        # Inform the user when sync is unavailable.
-        if self._diameter_mm <= 0 or self._flutes <= 0:
-            hint = QtGui.QLabel(
-                translate(
-                    "CAM_FeedsSpeeds",
-                    "Tool diameter and/or flute count missing — surface speed "
-                    "and chipload won't auto-sync with direct feed/speed.",
-                )
-            )
-            hint.setWordWrap(True)
-            hint.setStyleSheet("color: #888;")
-            layout.addRow(hint)
-
-        # Buttons
-        button_box = QtGui.QDialogButtonBox(
-            QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
-        )
-        button_box.accepted.connect(self.accept)
-        button_box.rejected.connect(self.reject)
-        layout.addRow(button_box)
+        # The hint is only relevant when geometry is missing and sync can't
+        # run; hide it otherwise.
+        self.form.geometryHint.setVisible(self._diameter_mm <= 0 or self._flutes <= 0)
 
         self._populate_from_preset(self._initial)
+
+    def exec_(self) -> int:
+        return self.form.exec_()
+
+    # ------------------------------------------------------------------
+    # Unit-aware accessors. Getters return the engineering unit the math
+    # uses (surface speed m/min, feed mm/min, chipload mm, spindle rpm);
+    # setters take the same and push the base-unit value into the widget.
+    # ------------------------------------------------------------------
+
+    def _get_surface_speed(self) -> float:  # m/min
+        return _spin_raw(self.surface_speed_spin) / _MM_S_PER_M_MIN
+
+    def _set_surface_speed(self, ss_m_min: float) -> None:
+        _set_spin_raw(self.surface_speed_spin, ss_m_min * _MM_S_PER_M_MIN)
+
+    def _get_feed(self) -> float:  # mm/min
+        return _spin_raw(self.raw_feed_spin) / _MM_S_PER_MM_MIN
+
+    def _set_feed(self, feed_mm_min: float) -> None:
+        _set_spin_raw(self.raw_feed_spin, feed_mm_min * _MM_S_PER_MM_MIN)
+
+    def _get_chipload(self) -> float:  # mm (== base unit)
+        return _spin_raw(self.chipload_spin)
+
+    def _set_chipload(self, cl_mm: float) -> None:
+        _set_spin_raw(self.chipload_spin, cl_mm)
+
+    def _get_rpm(self) -> float:
+        return self.raw_speed_spin.value()
+
+    def _set_rpm(self, rpm: float) -> None:
+        self.raw_speed_spin.blockSignals(True)
+        try:
+            self.raw_speed_spin.setValue(rpm)
+        finally:
+            self.raw_speed_spin.blockSignals(False)
 
     def _populate_from_preset(self, preset: dict) -> None:
         if preset.get("name"):
@@ -224,20 +280,26 @@ class _EditPresetDialog(QtGui.QDialog):
         try:
             ss = preset.get("surface_speed")
             cl = preset.get("chipload")
+            # Seed a brand-new preset's chipload from the tool's own
+            # Chipload property. This is a one-time convenience at creation:
+            # it never overwrites an existing preset's value, and the saved
+            # preset stays independent of the tool afterward.
+            if cl is None and self._is_new and self._tool_chipload_mm > 0:
+                cl = self._tool_chipload_mm
             if ss is not None:
-                self.surface_speed_spin.setValue(ss)
+                self._set_surface_speed(ss)
             if cl is not None:
-                self.chipload_spin.setValue(cl)
+                self._set_chipload(cl)
             self.vert_ratio_spin.setValue(preset.get("vert_feed_ratio", 0.33))
 
             # Compute raw display values from engineering + geometry.
             rpm = _rpm_from_surface_speed(ss, self._diameter_mm) if ss is not None else None
             if rpm is not None:
-                self.raw_speed_spin.setValue(rpm)
+                self._set_rpm(rpm)
                 if cl is not None and self._flutes > 0:
                     rf = _feed_from_chipload(cl, rpm, self._flutes)
                     if rf is not None:
-                        self.raw_feed_spin.setValue(rf)
+                        self._set_feed(rf)
         finally:
             self._syncing = False
 
@@ -247,65 +309,57 @@ class _EditPresetDialog(QtGui.QDialog):
     # when self._syncing is set, breaking feedback loops.
     # ------------------------------------------------------------------
 
-    def _set_silently(self, spinbox, value: float) -> None:
-        spinbox.blockSignals(True)
-        try:
-            spinbox.setValue(value)
-        finally:
-            spinbox.blockSignals(False)
-
-    def _on_surface_speed_changed(self, ss: float) -> None:
+    def _on_surface_speed_changed(self, *_) -> None:
         if self._syncing:
             return
         self._syncing = True
         try:
-            rpm = _rpm_from_surface_speed(ss, self._diameter_mm)
+            rpm = _rpm_from_surface_speed(self._get_surface_speed(), self._diameter_mm)
             if rpm is not None:
-                self._set_silently(self.raw_speed_spin, rpm)
-                cl = self.chipload_spin.value()
+                self._set_rpm(rpm)
+                cl = self._get_chipload()
                 if cl > 0 and self._flutes > 0:
                     rf = _feed_from_chipload(cl, rpm, self._flutes)
                     if rf is not None:
-                        self._set_silently(self.raw_feed_spin, rf)
+                        self._set_feed(rf)
         finally:
             self._syncing = False
 
-    def _on_chipload_changed(self, cl: float) -> None:
+    def _on_chipload_changed(self, *_) -> None:
         if self._syncing:
             return
         self._syncing = True
         try:
-            rpm = self.raw_speed_spin.value()
-            rf = _feed_from_chipload(cl, rpm, self._flutes)
+            rpm = self._get_rpm()
+            rf = _feed_from_chipload(self._get_chipload(), rpm, self._flutes)
             if rf is not None:
-                self._set_silently(self.raw_feed_spin, rf)
+                self._set_feed(rf)
         finally:
             self._syncing = False
 
-    def _on_raw_speed_changed(self, rpm: float) -> None:
+    def _on_raw_speed_changed(self, *_) -> None:
         if self._syncing:
             return
         self._syncing = True
         try:
+            rpm = self._get_rpm()
             ss = _surface_speed_from_rpm(rpm, self._diameter_mm)
             if ss is not None:
-                self._set_silently(self.surface_speed_spin, ss)
-            rf = self.raw_feed_spin.value()
-            cl = _chipload_from_feed(rf, rpm, self._flutes)
+                self._set_surface_speed(ss)
+            cl = _chipload_from_feed(self._get_feed(), rpm, self._flutes)
             if cl is not None:
-                self._set_silently(self.chipload_spin, cl)
+                self._set_chipload(cl)
         finally:
             self._syncing = False
 
-    def _on_raw_feed_changed(self, rf: float) -> None:
+    def _on_raw_feed_changed(self, *_) -> None:
         if self._syncing:
             return
         self._syncing = True
         try:
-            rpm = self.raw_speed_spin.value()
-            cl = _chipload_from_feed(rf, rpm, self._flutes)
+            cl = _chipload_from_feed(self._get_feed(), self._get_rpm(), self._flutes)
             if cl is not None:
-                self._set_silently(self.chipload_spin, cl)
+                self._set_chipload(cl)
         finally:
             self._syncing = False
 
@@ -316,7 +370,7 @@ class _EditPresetDialog(QtGui.QDialog):
     def _on_browse(self) -> None:
         from Path.Tool.Gui.MaterialPicker import pick_machinability_material
 
-        result = pick_machinability_material(self)
+        result = pick_machinability_material(self.form)
         if result is None:
             return
         self._material_uuid, self._material_name = result
@@ -347,8 +401,8 @@ class _EditPresetDialog(QtGui.QDialog):
             material_uuid=uuid,
             material_name=name,
             op_type=self.op_type_combo.currentData(),
-            surface_speed=self.surface_speed_spin.value() or None,
-            chipload=self.chipload_spin.value() or None,
+            surface_speed=self._get_surface_speed() or None,
+            chipload=self._get_chipload() or None,
             vert_feed_ratio=self.vert_ratio_spin.value(),
         )
 
@@ -416,8 +470,10 @@ class PresetsTab(QtGui.QWidget):
             self.table.setItem(i, 0, QtGui.QTableWidgetItem(name_text))
             self.table.setItem(i, 1, QtGui.QTableWidgetItem(mat_text))
             self.table.setItem(i, 2, QtGui.QTableWidgetItem(op_text))
-            self.table.setItem(i, 3, QtGui.QTableWidgetItem(_fmt(p.get("surface_speed"))))
-            self.table.setItem(i, 4, QtGui.QTableWidgetItem(_fmt(p.get("chipload"))))
+            self.table.setItem(
+                i, 3, QtGui.QTableWidgetItem(_fmt_quantity(p.get("surface_speed"), "m/min"))
+            )
+            self.table.setItem(i, 4, QtGui.QTableWidgetItem(_fmt_quantity(p.get("chipload"), "mm")))
             notes = []
             if p.get("raw_feed") is not None or p.get("raw_speed") is not None:
                 notes.append(translate("CAM_FeedsSpeeds", "raw fallback"))
@@ -446,9 +502,26 @@ class PresetsTab(QtGui.QWidget):
             flutes = 0
         return diameter_mm, flutes
 
+    def _tool_chipload(self) -> Optional[float]:
+        """Read the ToolBit's ``Chipload`` (mm/tooth), or None if unset or zero."""
+        try:
+            c = getattr(self._obj, "Chipload", None)
+            if c is None:
+                return None
+            value = float(c.Value) if hasattr(c, "Value") else float(c)
+            return value if value > 0 else None
+        except (AttributeError, TypeError, ValueError):
+            return None
+
     def _on_add(self) -> None:
         d, f = self._tool_geometry()
-        dlg = _EditPresetDialog(None, diameter_mm=d, flutes=f, parent=self)
+        dlg = _EditPresetDialog(
+            None,
+            diameter_mm=d,
+            flutes=f,
+            tool_chipload_mm=self._tool_chipload(),
+            parent=self,
+        )
         if dlg.exec_() != QtGui.QDialog.Accepted:
             return
         presets = self._presets()
