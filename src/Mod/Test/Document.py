@@ -186,7 +186,6 @@ class DocumentBasicCases(unittest.TestCase):
         # call members to check for errors in ref counting
         self.Doc.ActiveObject
         self.Doc.Objects
-        self.Doc.UndoMode
         self.Doc.UndoRedoMemSize
         self.Doc.UndoCount
         # test read only mechanismus
@@ -1021,15 +1020,11 @@ class DocumentRecomputeCases(unittest.TestCase):
 class UndoRedoCases(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("UndoTest")
-        self.Doc.UndoMode = 0
         self.Doc.addObject("App::FeatureTest", "Base")
         self.Doc.addObject("App::FeatureTest", "Del")
         self.Doc.getObject("Del").Integer = 2
 
     def testUndoProperties(self):
-        # switch on the Undo
-        self.Doc.UndoMode = 1
-
         # first transaction
         self.Doc.openTransaction("Transaction1")
         self.Doc.addObject("App::FeatureTest", "test1")
@@ -1051,12 +1046,8 @@ class UndoRedoCases(unittest.TestCase):
         self.Doc.getObject("test1").Float = 2.0
         self.Doc.getObject("test1").Bool = 0
 
-        # switch on the Undo OFF
-        self.Doc.UndoMode = 0
-
     def testUndoClear(self):
         # switch on the Undo
-        self.Doc.UndoMode = 1
         self.assertEqual(self.Doc.UndoNames, [])
         self.assertEqual(self.Doc.UndoCount, 0)
         self.assertEqual(self.Doc.RedoNames, [])
@@ -1075,7 +1066,6 @@ class UndoRedoCases(unittest.TestCase):
 
     def testUndo(self):
         # switch on the Undo
-        self.Doc.UndoMode = 1
         self.assertEqual(self.Doc.UndoNames, [])
         self.assertEqual(self.Doc.UndoCount, 0)
         self.assertEqual(self.Doc.RedoNames, [])
@@ -1243,9 +1233,6 @@ class UndoRedoCases(unittest.TestCase):
         self.assertEqual(self.Doc.RedoCount, 1)
 
     def testUndoInList(self):
-
-        self.Doc.UndoMode = 1
-
         self.Doc.openTransaction("Box")
         self.Box = self.Doc.addObject("App::FeatureTest")
         self.Doc.commitTransaction()
@@ -1270,9 +1257,6 @@ class UndoRedoCases(unittest.TestCase):
         self.assertTrue(self.Cylinder.InList[0] == self.Doc.Fuse)
 
     def testUndoIssue0003150Part1(self):
-
-        self.Doc.UndoMode = 1
-
         self.Doc.openTransaction("Box")
         self.Box = self.Doc.addObject("App::FeatureTest")
         self.Doc.commitTransaction()
@@ -1335,8 +1319,6 @@ class DocumentGroupCases(unittest.TestCase):
         else:
             self.fail("Adding the group to itself must not be possible")
 
-        self.Doc.UndoMode = 1
-
         # Remove object from group
         self.Doc.openTransaction("Remove")
         self.Doc.removeObject("Label_2")
@@ -1388,8 +1370,6 @@ class DocumentGroupCases(unittest.TestCase):
         self.Doc.undo()
         self.assertTrue(G1.getObject("Label_3") is not None)
         self.assertTrue(G1.getObject("Label_2") is not None)
-
-        self.Doc.UndoMode = 0
 
         # Cleanup
         self.Doc.removeObject("Group")
@@ -1604,7 +1584,6 @@ class DocumentBacklinks(unittest.TestCase):
         self.Doc = FreeCAD.newDocument("BackLinks")
 
     def testIssue0003323(self):
-        self.Doc.UndoMode = 1
         self.Doc.openTransaction("Create object")
         obj1 = self.Doc.addObject("App::FeatureTest", "Test1")
         obj2 = self.Doc.addObject("App::FeatureTest", "Test2")
@@ -1621,8 +1600,6 @@ class DocumentBacklinks(unittest.TestCase):
 class DocumentFileIncludeCases(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("FileIncludeTests")
-        # testing with undo
-        self.Doc.UndoMode = 1
 
     def testApplyFiles(self):
         self.Doc.openTransaction("Transaction0")
@@ -1866,7 +1843,6 @@ class DocumentExpressionCases(unittest.TestCase):
 
         obj = self.Doc.addObject("App::DocumentObjectGroupPython", "Obj")
         Cls(obj)
-        self.Doc.UndoMode = 1
         self.Doc.openTransaction("Expression")
         obj.setExpression("propA", "42")
         self.Doc.recompute()
@@ -2140,9 +2116,6 @@ class DocumentObserverCases(unittest.TestCase):
         self.assertTrue(self.Obs.parameter.pop() is self.Doc1)
         self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
-        # undo/redo is not enabled in cmd line mode by default
-        self.Doc2.UndoMode = 1
-
         # Must set Doc2 as active document before start transaction test. If not,
         # then a transaction will be auto created inside the active document if a
         # new transaction is triggered from a non active document
@@ -2294,7 +2267,6 @@ class DocumentObserverCases(unittest.TestCase):
 
         # testing document level signals
         self.Doc1 = FreeCAD.newDocument("Observer1")
-        self.Doc1.UndoMode = 0
         self.Obs.clear()
 
         self.Doc1.openTransaction("test")
@@ -2693,7 +2665,6 @@ class FeatureTestAbsAddress(unittest.TestCase):
 class FeatureTestAttribute(unittest.TestCase):
     def setUp(self):
         self.doc = FreeCAD.newDocument("TestAttribute")
-        self.doc.UndoMode = 0
 
     def testValidAttribute(self):
         obj = self.doc.addObject("App::FeatureTestAttribute", "Attribute")
@@ -2768,8 +2739,6 @@ class MultiDocumentUndo(unittest.TestCase):
     def setUp(self):
         self.Doc1 = FreeCAD.newDocument("Doc1")
         self.Doc2 = FreeCAD.newDocument("Doc2")
-        self.Doc1.UndoMode = 1
-        self.Doc2.UndoMode = 1
 
     def testAddObjects(self):
         self.Doc1.openTransaction("transact1")
