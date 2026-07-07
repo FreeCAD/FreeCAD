@@ -23,8 +23,6 @@
 
 import FreeCAD
 
-import Part
-import Fem
 import ObjectsFem
 
 from . import manager
