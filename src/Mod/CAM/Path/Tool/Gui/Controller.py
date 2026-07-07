@@ -236,7 +236,7 @@ class ToolControllerEditor(object):
         self.editor = None
 
     def _injectFeedsSpeedsButton(self):
-        from PySide import QtWidgets
+        from PySide import QtCore, QtGui, QtWidgets
 
         self.feedsSpeedsButton = None
         layout = self.controller.layout()
@@ -244,12 +244,11 @@ class ToolControllerEditor(object):
             return
         row = QtWidgets.QHBoxLayout()
         row.addStretch()
-        self.feedsSpeedsButton = QtWidgets.QPushButton(translate("CAM_ToolController", "F&&S…"))
+        self.feedsSpeedsButton = QtWidgets.QPushButton()
+        self.feedsSpeedsButton.setIcon(QtGui.QIcon(":/icons/CAM_FeedsSpeeds.svg"))
+        self.feedsSpeedsButton.setIconSize(QtCore.QSize(24, 24))
         self.feedsSpeedsButton.setToolTip(
-            translate(
-                "CAM_ToolController",
-                "Suggest feeds and speeds for this tool controller",
-            )
+            translate("CAM_ToolController", "Feeds and Speeds Wizard")
         )
         self.feedsSpeedsButton.clicked.connect(self._onFeedsSpeedsClicked)
         row.addWidget(self.feedsSpeedsButton)

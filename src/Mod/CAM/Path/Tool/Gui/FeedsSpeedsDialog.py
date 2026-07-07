@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# SPDX-FileCopyrightText: 2026 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileCopyrightText: 2024 sliptonic <shopinthewoods@gmail.com>
 # SPDX-FileNotice: Part of the FreeCAD project.
 
 ################################################################################
@@ -35,8 +35,7 @@ the library browser. Job-side flows only consume presets.
 from typing import Optional, Tuple
 
 import FreeCAD
-import FreeCADGui
-from PySide import QtCore, QtGui, QtWidgets
+from PySide import QtGui, QtWidgets
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import Path
@@ -235,17 +234,18 @@ def write_result_to_tc(tc, result: FeedSpeedResult) -> None:
     ensure_tc_properties(tc)
     provenance = dict(getattr(tc, TC_PROVENANCE, {}) or {})
 
-    if result.horiz_feed is not None:
-        tc.HorizFeed = result.horiz_feed / 60.0  # mm/min -> mm/s
-        provenance["HorizFeed"] = result.source
-    if result.vert_feed is not None:
-        tc.VertFeed = result.vert_feed / 60.0  # mm/min -> mm/s
-        provenance["VertFeed"] = result.source
-    if result.spindle_speed is not None:
-        tc.SpindleSpeed = float(result.spindle_speed)
-        provenance["SpindleSpeed"] = result.source
-
-    setattr(tc, TC_PROVENANCE, provenance)
+    try:
+        if result.horiz_feed is not None:
+            tc.HorizFeed = result.horiz_feed / 60.0  # mm/min -> mm/s
+            provenance["HorizFeed"] = result.source
+        if result.vert_feed is not None:
+            tc.VertFeed = result.vert_feed / 60.0  # mm/min -> mm/s
+            provenance["VertFeed"] = result.source
+        if result.spindle_speed is not None:
+            tc.SpindleSpeed = float(result.spindle_speed)
+            provenance["SpindleSpeed"] = result.source
+    finally:
+        setattr(tc, TC_PROVENANCE, provenance)
 
 
 def _format_speed(value: Optional[float], unit: str) -> str:
@@ -260,6 +260,50 @@ def _delta_label(current: float, suggested: Optional[float]) -> str:
     delta = suggested - current
     sign = "+" if delta >= 0 else ""
     return f"({sign}{delta:.1f})"
+
+
+def doc_unit_schema(obj) -> int:
+    """
+    The unit-schema index of ``obj``'s document, so feeds display in the
+    document's unit system (e.g. in/min for an imperial project) rather
+    than a hardcoded unit. Falls back to the active/global schema when the
+    document has no explicit ``UnitSystem`` set.
+    """
+    try:
+        doc = getattr(obj, "Document", None)
+        if doc is not None:
+            # The document's ``UnitSystem`` enumeration lists the schemas in
+            # schema-index order, so the position of the current value is the
+            # schema number ``schemaTranslate`` expects.
+            names = doc.getEnumerationsOfProperty("UnitSystem")
+            if names and doc.UnitSystem in names:
+                return names.index(doc.UnitSystem)
+    except Exception:
+        pass
+    try:
+        return FreeCAD.Units.getSchema()
+    except Exception:
+        return 0
+
+
+def _format_feed(value: Optional[float], schema: int) -> str:
+    """Format a feed (given in mm/min) in the given document unit schema."""
+    if value is None:
+        return "—"
+    try:
+        quantity = FreeCAD.Units.Quantity(float(value), "mm/min")
+        return FreeCAD.Units.schemaTranslate(quantity, schema)[0]
+    except Exception:
+        return f"{value:.1f} mm/min"
+
+
+def _delta_feed(current: float, suggested: Optional[float], schema: int) -> str:
+    """Signed feed delta (mm/min) formatted in the document unit schema."""
+    if suggested is None:
+        return ""
+    delta = suggested - current
+    sign = "+" if delta >= 0 else "-"
+    return f"({sign}{_format_feed(abs(delta), schema)})"
 
 
 class FeedsSpeedsDialog(QtWidgets.QDialog):
@@ -279,6 +323,8 @@ class FeedsSpeedsDialog(QtWidgets.QDialog):
         self.machine_ctx = adapt_machine_from_job(self.job)
         self.tool_ctx = adapt_toolbit(tc)
         self._result: Optional[FeedSpeedResult] = None
+        # Feeds are shown in the document's unit schema, not a hardcoded unit.
+        self._schema = doc_unit_schema(tc)
 
         self.setWindowTitle(translate("CAM_FeedsSpeeds", "Suggest Feeds & Speeds"))
         self._build_ui()
@@ -465,8 +511,8 @@ class FeedsSpeedsDialog(QtWidgets.QDialog):
         cur_vert = self._current_vert()
 
         self._row_labels[0][0].setText(_format_speed(cur_spindle, "rpm"))
-        self._row_labels[1][0].setText(_format_speed(cur_horiz, "mm/min"))
-        self._row_labels[2][0].setText(_format_speed(cur_vert, "mm/min"))
+        self._row_labels[1][0].setText(_format_feed(cur_horiz, self._schema))
+        self._row_labels[2][0].setText(_format_feed(cur_vert, self._schema))
 
         if not result.source:
             self.source_label.setText(translate("CAM_FeedsSpeeds", "No suggestion available"))
@@ -491,13 +537,13 @@ class FeedsSpeedsDialog(QtWidgets.QDialog):
         self._row_labels[0][2].setText(
             _delta_label(cur_spindle, result.spindle_speed) if result.spindle_speed else ""
         )
-        self._row_labels[1][1].setText(_format_speed(result.horiz_feed, "mm/min"))
+        self._row_labels[1][1].setText(_format_feed(result.horiz_feed, self._schema))
         self._row_labels[1][2].setText(
-            _delta_label(cur_horiz, result.horiz_feed) if result.horiz_feed else ""
+            _delta_feed(cur_horiz, result.horiz_feed, self._schema) if result.horiz_feed else ""
         )
-        self._row_labels[2][1].setText(_format_speed(result.vert_feed, "mm/min"))
+        self._row_labels[2][1].setText(_format_feed(result.vert_feed, self._schema))
         self._row_labels[2][2].setText(
-            _delta_label(cur_vert, result.vert_feed) if result.vert_feed else ""
+            _delta_feed(cur_vert, result.vert_feed, self._schema) if result.vert_feed else ""
         )
 
         self.warnings_label.setText("\n".join(result.warnings))

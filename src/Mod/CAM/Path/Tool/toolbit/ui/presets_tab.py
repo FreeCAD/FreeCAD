@@ -42,12 +42,26 @@ from ...FeedsSpeeds import (
 
 translate = FreeCAD.Qt.translate
 
-# ``Gui::QuantitySpinBox`` stores its ``rawValue`` in the quantity's base
-# unit: mm/s for a velocity, mm for a length. The engineering math below
-# works in m/min (surface speed), mm/min (feed) and mm (chipload), so we
-# convert at the widget boundary. Chipload is already in mm = base unit.
-_MM_S_PER_M_MIN = 1000.0 / 60.0  # 1 m/min expressed in mm/s
+# Feed and chipload use ``Gui::QuantitySpinBox``, which stores its
+# ``rawValue`` in the quantity's base unit: mm/s for a velocity, mm for a
+# length. The engineering math works in mm/min (feed) and mm (chipload), so
+# feed is converted at the widget boundary; chipload is already in mm.
 _MM_S_PER_MM_MIN = 1.0 / 60.0  # 1 mm/min expressed in mm/s
+
+# Surface speed (cutting speed Vc) is the exception. Machining convention
+# expresses it in ft/min (imperial) or m/min (metric) — not what FreeCAD's
+# generic velocity schema produces (in/min for imperial), so it uses a plain
+# spinbox with an explicit unit. The math works in m/min.
+_M_MIN_PER_FT_MIN = 0.3048  # 1 ft/min expressed in m/min
+
+
+def _is_imperial_length() -> bool:
+    """True when the user's unit schema displays lengths in imperial units."""
+    try:
+        unit = FreeCAD.Units.Quantity(1.0, "mm").getUserPreferred()[2]
+    except Exception:
+        return False
+    return any(token in unit for token in ("in", "ft", "thou", '"', "'"))
 
 
 def _fmt(value: Optional[float], unit: str = "") -> str:
@@ -56,6 +70,18 @@ def _fmt(value: Optional[float], unit: str = "") -> str:
     if unit:
         return f"{value:g} {unit}"
     return f"{value:g}"
+
+
+def _fmt_surface_speed(value: Optional[float]) -> str:
+    """
+    Format a surface speed (stored in m/min) using machining convention:
+    ft/min for an imperial schema, m/min for metric.
+    """
+    if value is None:
+        return ""
+    if _is_imperial_length():
+        return f"{value / _M_MIN_PER_FT_MIN:g} ft/min"
+    return f"{value:g} m/min"
 
 
 def _preferred_unit(unit_expr: str) -> str:
@@ -187,17 +213,27 @@ class _EditPresetDialog:
             translate("CAM_FeedsSpeeds", "Optional, e.g. 'Aluminum aggressive'")
         )
 
-        # Display units follow the user's unit schema. Surface speed and
-        # horiz feed are velocities; chipload is a length (per tooth).
-        vel_unit = _preferred_unit("mm/s")
-        self.surface_speed_spin.setProperty("unit", vel_unit)
-        self.raw_feed_spin.setProperty("unit", vel_unit)
+        # Horiz feed (velocity) and chipload (length) map onto FreeCAD's
+        # unit schema, so their Gui::QuantitySpinBox display follows the
+        # user's preference automatically (mm/min or in/min; mm or in).
+        self.raw_feed_spin.setProperty("unit", _preferred_unit("mm/s"))
         self.chipload_spin.setProperty("unit", _preferred_unit("mm"))
         # Chipload needs finer resolution than the default spinbox decimals.
         # Gui::QuantitySpinBox comes through PySide as a bare QAbstractSpinBox
         # (no typed setters), so drive it through the Qt property system —
         # the same way its ``unit`` and ``rawValue`` are set.
         self.chipload_spin.setProperty("decimals", 4)
+
+        # Surface speed follows machining convention, not the velocity schema:
+        # ft/min for imperial, m/min for metric. It is a plain QDoubleSpinBox
+        # holding the value in that display unit; ``_ss_to_m_min`` converts
+        # to the m/min the math uses.
+        if _is_imperial_length():
+            self._ss_to_m_min = _M_MIN_PER_FT_MIN
+            self.surface_speed_spin.setSuffix(" ft/min")
+        else:
+            self._ss_to_m_min = 1.0
+            self.surface_speed_spin.setSuffix(" m/min")
 
         # Op type
         self.op_type_combo.addItem(translate("CAM_FeedsSpeeds", "(any)"), None)
@@ -209,7 +245,7 @@ class _EditPresetDialog:
         # so it doesn't matter whether the signal carries a str or a float.
         self.browse_button.clicked.connect(self._on_browse)
         self.generic_check.toggled.connect(self._on_generic_toggled)
-        self.surface_speed_spin.textChanged.connect(self._on_surface_speed_changed)
+        self.surface_speed_spin.valueChanged.connect(self._on_surface_speed_changed)
         self.chipload_spin.textChanged.connect(self._on_chipload_changed)
         self.raw_feed_spin.textChanged.connect(self._on_raw_feed_changed)
         self.raw_speed_spin.valueChanged.connect(self._on_raw_speed_changed)
@@ -230,10 +266,16 @@ class _EditPresetDialog:
     # ------------------------------------------------------------------
 
     def _get_surface_speed(self) -> float:  # m/min
-        return _spin_raw(self.surface_speed_spin) / _MM_S_PER_M_MIN
+        # Plain spinbox holding the value in the display unit (ft/min or
+        # m/min); convert to the m/min the math uses.
+        return self.surface_speed_spin.value() * self._ss_to_m_min
 
     def _set_surface_speed(self, ss_m_min: float) -> None:
-        _set_spin_raw(self.surface_speed_spin, ss_m_min * _MM_S_PER_M_MIN)
+        self.surface_speed_spin.blockSignals(True)
+        try:
+            self.surface_speed_spin.setValue(ss_m_min / self._ss_to_m_min)
+        finally:
+            self.surface_speed_spin.blockSignals(False)
 
     def _get_feed(self) -> float:  # mm/min
         return _spin_raw(self.raw_feed_spin) / _MM_S_PER_MM_MIN
@@ -471,7 +513,7 @@ class PresetsTab(QtGui.QWidget):
             self.table.setItem(i, 1, QtGui.QTableWidgetItem(mat_text))
             self.table.setItem(i, 2, QtGui.QTableWidgetItem(op_text))
             self.table.setItem(
-                i, 3, QtGui.QTableWidgetItem(_fmt_quantity(p.get("surface_speed"), "m/min"))
+                i, 3, QtGui.QTableWidgetItem(_fmt_surface_speed(p.get("surface_speed")))
             )
             self.table.setItem(i, 4, QtGui.QTableWidgetItem(_fmt_quantity(p.get("chipload"), "mm")))
             notes = []
