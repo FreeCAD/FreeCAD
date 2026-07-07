@@ -147,11 +147,21 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'>""" + icon("Navigation_Mouse_Left") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Scroll") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Middle") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_ShiftMiddle") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_LeftRight") + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Left")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Scroll")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Middle")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_ShiftMiddle")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_LeftRight")
+        + """</td>
      </tr>
     </table>
     <b>"""
@@ -185,11 +195,21 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'>""" + icon("Navigation_Mouse_Left") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Scroll") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_MiddleLeft") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_MiddleRight") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Middle") + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Left")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Scroll")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_MiddleLeft")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_MiddleRight")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Middle")
+        + """</td>
      </tr>
     </table>
     <b>"""
@@ -226,12 +246,24 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'>""" + icon("Navigation_Mouse_Left") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Scroll") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_LeftMove") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_AltLeft") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Right") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_LeftRight") + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Left")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Scroll")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_LeftMove")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_AltLeft")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Right")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_LeftRight")
+        + """</td>
      </tr>
      <tr>
       <th><small>"""
@@ -254,12 +286,24 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'>""" + icon("Navigation_Gesture_SelectTouch") + """</td>
-      <td align='center'>""" + icon("Navigation_Gesture_ZoomTouch") + """</td>
-      <td align='center'>""" + icon("Navigation_Gesture_RotateTouch") + """</td>
-      <td align='center'>""" + icon("Navigation_Gesture_PanTouch") + """</td>
-      <td align='center'>""" + icon("Navigation_Gesture_PanTouchAlt") + """</td>
-      <td align='center'>""" + icon("Navigation_Gesture_TiltTouch") + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Gesture_SelectTouch")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Gesture_ZoomTouch")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Gesture_RotateTouch")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Gesture_PanTouch")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Gesture_PanTouchAlt")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Gesture_TiltTouch")
+        + """</td>
      </tr>
     </table>
     <p><small><b>"""
@@ -301,12 +345,24 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'>""" + icon("Navigation_Mouse_Left") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Scroll") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_AltRight") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_AltLeft") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_AltMiddle") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_AltLeftRight") + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Left")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Scroll")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_AltRight")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_AltLeft")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_AltMiddle")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_AltLeftRight")
+        + """</td>
      </tr>
      <tr>
       <th><small>"""
@@ -329,12 +385,24 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'>""" + icon("Navigation_Gesture_SelectTouch") + """</td>
-      <td align='center'>""" + icon("Navigation_Gesture_ZoomTouch") + """</td>
-      <td align='center'>""" + icon("Navigation_Gesture_RotateTouch") + """</td>
-      <td align='center'>""" + icon("Navigation_Gesture_PanTouch") + """</td>
-      <td align='center'>""" + icon("Navigation_Gesture_PanTouchAlt") + """</td>
-      <td align='center'>""" + icon("Navigation_Gesture_TiltTouch") + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Gesture_SelectTouch")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Gesture_ZoomTouch")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Gesture_RotateTouch")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Gesture_PanTouch")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Gesture_PanTouchAlt")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Gesture_TiltTouch")
+        + """</td>
      </tr>
     </table>
     <p><small><b>"""
@@ -376,12 +444,24 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'>""" + icon("Navigation_Mouse_Left") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Scroll") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_CtrlLeft") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_CtrlRight") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_CtrlMiddle") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Middle") + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Left")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Scroll")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_CtrlLeft")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_CtrlRight")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_CtrlMiddle")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Middle")
+        + """</td>
      </tr>
     </table>"""
     )
@@ -410,11 +490,21 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'>""" + icon("Navigation_Mouse_ShiftLeft") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Scroll") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_MiddleLeft") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Left") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Middle") + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_ShiftLeft")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Scroll")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_MiddleLeft")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Left")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Middle")
+        + """</td>
      </tr>
     </table>
     <b>"""
@@ -451,12 +541,24 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'>""" + icon("Navigation_Mouse_Left") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Scroll") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Middle") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Left") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_MiddleRight") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Right") + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Left")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Scroll")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Middle")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Left")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_MiddleRight")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Right")
+        + """</td>
      </tr>
     </table>"""
     )
@@ -485,11 +587,21 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'>""" + icon("Navigation_Mouse_Left") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Scroll") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_ShiftMiddle") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Middle") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_LeftRight") + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Left")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Scroll")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_ShiftMiddle")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Middle")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_LeftRight")
+        + """</td>
      </tr>
     </table>
     <b>"""
@@ -526,12 +638,24 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'>""" + icon("Navigation_Mouse_Left") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Scroll") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_MiddleLeft") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Middle") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_MiddleRight") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_ShiftMiddle") + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Left")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Scroll")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_MiddleLeft")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Middle")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_MiddleRight")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_ShiftMiddle")
+        + """</td>
      </tr>
     </table>
     <b>"""
@@ -565,11 +689,21 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'>""" + icon("Navigation_Mouse_Left") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Scroll") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_ShiftMiddle") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Middle") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_CtrlMiddle") + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Left")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Scroll")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_ShiftMiddle")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Middle")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_CtrlMiddle")
+        + """</td>
      </tr>
     </table>
     <b>"""
@@ -600,10 +734,18 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'>""" + icon("Navigation_Mouse_Left") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Scroll") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Right") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Middle") + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Left")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Scroll")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Right")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Middle")
+        + """</td>
      </tr>
     </table>"""
     )
@@ -635,12 +777,24 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'>""" + icon("Navigation_Mouse_Left") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_Scroll") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_ShiftCtrlMove") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_AltMove") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_ShiftLeft") + """</td>
-      <td align='center'>""" + icon("Navigation_Mouse_ShiftMove") + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Left")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_Scroll")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_ShiftCtrlMove")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_AltMove")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_ShiftLeft")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Mouse_ShiftMove")
+        + """</td>
      </tr>
      <tr>
       <th><small>"""
@@ -660,11 +814,21 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'>""" + icon("Navigation_Touchpad_Left") + """</td>
-      <td align='center'>""" + icon("Navigation_Touchpad_ShiftCtrlTouch") + """</td>
-      <td align='center'>""" + icon("Navigation_Touchpad_AltTouch") + """</td>
-      <td align='center'>""" + icon("Navigation_Touchpad_ShiftLeftTouch") + """</td>
-      <td align='center'>""" + icon("Navigation_Touchpad_ShiftTouch") + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Touchpad_Left")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Touchpad_ShiftCtrlTouch")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Touchpad_AltTouch")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Touchpad_ShiftLeftTouch")
+        + """</td>
+      <td align='center'>"""
+        + icon("Navigation_Touchpad_ShiftTouch")
+        + """</td>
      </tr>
     </table>
     <p><small><b>"""
