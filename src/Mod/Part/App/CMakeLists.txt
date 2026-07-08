@@ -548,6 +548,8 @@ SET(Part_SRCS
     BRepMesh.h
     BRepOffsetAPI_MakeOffsetFix.cpp
     BRepOffsetAPI_MakeOffsetFix.h
+    ShapeAnalysis_FreeBoundsFix.cpp
+    ShapeAnalysis_FreeBoundsFix.h
     BSplineCurveBiArcs.cpp
     BSplineCurveBiArcs.h
     CrossSection.cpp

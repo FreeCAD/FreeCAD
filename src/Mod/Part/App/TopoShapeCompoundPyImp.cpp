@@ -28,6 +28,7 @@
 #include <BRep_Builder.hxx>
 #include <Precision.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
+#include <Mod/Part/App/ShapeAnalysis_FreeBoundsFix.h>
 #include <Standard_Failure.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
@@ -145,7 +146,7 @@ PyObject* TopoShapeCompoundPy::connectEdgesToWires(PyObject* args) const
             hEdges->Append(xp.Current());
         }
 
-        ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, tol, Base::asBoolean(shared), hWires);
+        Part::Fix_ShapeAnalysis_FreeBounds_ConnectEdgesToWires(hEdges, tol, Base::asBoolean(shared), hWires);
 
         TopoDS_Compound comp;
         BRep_Builder builder;

@@ -35,6 +35,7 @@
 #include <gp_Ax1.hxx>
 #include <ShapeAnalysis.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
+#include <Mod/Part/App/ShapeAnalysis_FreeBoundsFix.h>
 #include <ShapeFix_Face.hxx>
 #include <ShapeFix_Wire.hxx>
 #include <ShapeFix_Wireframe.hxx>
@@ -942,8 +943,8 @@ TopoDS_Wire PartGui::DlgProjectionOnSurface::sort_and_heal_wire(
     }
 
     const double tolerance = 0.0001;
-    ShapeAnalysis_FreeBounds::ConnectEdgesToWires(shapeList, tolerance, false, aWireHandle);
-    ShapeAnalysis_FreeBounds::ConnectWiresToWires(aWireHandle, tolerance, false, aWireWireHandle);
+    Part::Fix_ShapeAnalysis_FreeBounds_ConnectEdgesToWires(shapeList, tolerance, false, aWireHandle);
+    Part::Fix_ShapeAnalysis_FreeBounds_ConnectWiresToWires(aWireHandle, tolerance, false, aWireWireHandle);
     if (!aWireWireHandle) {
         return {};
     }

@@ -34,6 +34,7 @@
 #include <gp_Pln.hxx>
 #include <Precision.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
+#include <Mod/Part/App/ShapeAnalysis_FreeBoundsFix.h>
 #include <ShapeFix_Wire.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
@@ -215,7 +216,7 @@ void CrossSection::connectWires(
     }
 
     Handle(TopTools_HSequenceOfShape) hSorted = new TopTools_HSequenceOfShape();
-    ShapeAnalysis_FreeBounds::ConnectWiresToWires(hWires, Precision::Confusion(), false, hSorted);
+    Part::Fix_ShapeAnalysis_FreeBounds_ConnectWiresToWires(hWires, Precision::Confusion(), false, hSorted);
 
     for (int i = 1; i <= hSorted->Length(); i++) {
         const TopoDS_Wire& new_wire = TopoDS::Wire(hSorted->Value(i));

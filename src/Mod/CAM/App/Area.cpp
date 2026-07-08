@@ -58,6 +58,7 @@
 #include <HLRBRep_HLRToShape.hxx>
 #include <Precision.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
+#include <Mod/Part/App/ShapeAnalysis_FreeBoundsFix.h>
 #include <ShapeExtend_WireData.hxx>
 #include <ShapeFix_ShapeTolerance.hxx>
 #include <ShapeFix_Wire.hxx>
@@ -2832,7 +2833,12 @@ TopoDS_Shape Area::toShape(const CCurve& _c, const gp_Trsf* trsf, int reorient)
         pt = pnext;
     }
 
-    ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, Precision::Confusion(), Standard_False, hWires);
+    Part::Fix_ShapeAnalysis_FreeBounds_ConnectEdgesToWires(
+        hEdges,
+        Precision::Confusion(),
+        Standard_False,
+        hWires
+    );
     if (!hWires->Length()) {
         return shape;
     }
