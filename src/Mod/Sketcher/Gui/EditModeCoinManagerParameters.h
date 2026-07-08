@@ -159,7 +159,7 @@ struct DrawingParameters
     unsigned int InternalPattern = 0b1111110011111100;          // pattern of internal edges
     unsigned int ExternalPattern = 0b1111110011111100;          // pattern of external edges
     unsigned int ExternalDefiningPattern = 0b1111111111111111;  // pattern of external defining edges
-    unsigned int InformationPattern = 0b1111110011111100;       // pattern of information layer edges
+    unsigned int InformationPattern = 0b1111110011111100;  // pattern of information layer edges
     //@}
 
     DrawingParameters()

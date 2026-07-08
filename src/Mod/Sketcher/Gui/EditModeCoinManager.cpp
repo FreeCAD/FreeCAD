@@ -2061,14 +2061,14 @@ void EditModeCoinManager::createEditModeInventorNodes()
     editModeScenegraphNodes.ParallelPerpendicularHintMaterials->setName(
         "ParallelPerpendicularHintMaterials"
     );
-    parallelPerpendicularHintRoot->addChild(editModeScenegraphNodes.ParallelPerpendicularHintMaterials
-    );
+    parallelPerpendicularHintRoot->addChild(editModeScenegraphNodes.ParallelPerpendicularHintMaterials);
 
     editModeScenegraphNodes.ParallelPerpendicularHintCoordinate = new SoCoordinate3;
     editModeScenegraphNodes.ParallelPerpendicularHintCoordinate->setName(
         "ParallelPerpendicularHintCoordinate"
     );
-    parallelPerpendicularHintRoot->addChild(editModeScenegraphNodes.ParallelPerpendicularHintCoordinate
+    parallelPerpendicularHintRoot->addChild(
+        editModeScenegraphNodes.ParallelPerpendicularHintCoordinate
     );
 
     editModeScenegraphNodes.ParallelPerpendicularHintSet = new SoLineSet;

@@ -853,10 +853,8 @@ bool DrawSketchHandler::isDirectionCloseToTangentHint(const Base::Vector2d& dire
         return false;
     }
 
-    const double tangentAngle = atan2(
-        tangentAutoConstraintHint.direction.y,
-        tangentAutoConstraintHint.direction.x
-    );
+    const double tangentAngle
+        = atan2(tangentAutoConstraintHint.direction.y, tangentAutoConstraintHint.direction.x);
     const double directionAngle = atan2(direction.y, direction.x);
 
     return isParallelAngle(tangentAngle, directionAngle);
@@ -906,9 +904,7 @@ bool DrawSketchHandler::seekAlignmentAutoConstraint(
         // Suggest vertical constraint
         constr.Type = Sketcher::Vertical;
     }
-    else if (
-        !tangentAutoConstraintHint.isValid && parallelPerpendicularRefGeoId != GeoEnum::GeoUndef
-    ) {
+    else if (!tangentAutoConstraintHint.isValid && parallelPerpendicularRefGeoId != GeoEnum::GeoUndef) {
         SketchObject* obj = sketchgui->getSketchObject();
 
         const Part::Geometry* geometry = obj->getGeometry(parallelPerpendicularRefGeoId);
@@ -934,8 +930,9 @@ bool DrawSketchHandler::seekAlignmentAutoConstraint(
                     constr.Type = candidateConstraint;
                     constr.GeoId = parallelPerpendicularRefGeoId;
                     constr.PosId = PointPos::none;
-                    parallelPerpendicularActiveHintLine = candidateConstraint == Sketcher::Parallel ? 0
-                                                                                                    : 1;
+                    parallelPerpendicularActiveHintLine = candidateConstraint == Sketcher::Parallel
+                        ? 0
+                        : 1;
                 }
             }
         }
@@ -1942,10 +1939,8 @@ bool DrawSketchHandler::updateParallelPerpendicularEndpointHint()
             auto* line = static_cast<const Part::GeomLineSegment*>(geometry);
             const Base::Vector2d lineStart = toVector2d(line->getStartPoint());
             const Base::Vector2d lineEnd = toVector2d(line->getEndPoint());
-            if (
-                (lineStart - startPoint).Sqr() < Precision::SquareConfusion()
-                || (lineEnd - startPoint).Sqr() < Precision::SquareConfusion()
-            ) {
+            if ((lineStart - startPoint).Sqr() < Precision::SquareConfusion()
+                || (lineEnd - startPoint).Sqr() < Precision::SquareConfusion()) {
                 return true;
             }
         }
@@ -1975,10 +1970,8 @@ bool DrawSketchHandler::updateParallelPerpendicularEndpointHint()
             continue;
         }
 
-        if (
-            (lineStart - startPoint).Sqr() < Precision::SquareConfusion()
-            || (lineEnd - startPoint).Sqr() < Precision::SquareConfusion()
-        ) {
+        if ((lineStart - startPoint).Sqr() < Precision::SquareConfusion()
+            || (lineEnd - startPoint).Sqr() < Precision::SquareConfusion()) {
             parallelPerpendicularRefGeoId = geoId;
             lastHoveredGeoId = geoId;
             parallelPerpendicularRefFromEndpoint = true;
