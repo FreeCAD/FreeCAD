@@ -23,7 +23,6 @@
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/regex.hpp>
-#include <filesystem>
 #include <string>
 
 #include <Base/TimeInfo.h>
@@ -299,12 +298,15 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                     }
                 }
                 else {
+                    const std::string backupBasePath =
+                        getBackupFilePath(backupDirPath, fi.fileName());
+
                     // changed but simpler and solves also the delay sometimes introduced by
                     // google drive
                     while (ext2 < numberOfFiles + 10) {
                         // linux just replace the file if exists, and then the existence is to
                         // be tested before rename
-                        if (renameFileNoErase(fi, fi.filePath() + std::to_string(ext2))) {
+                        if (renameFileNoErase(fi, backupBasePath + std::to_string(ext2))) {
                             break;
                         }
                         ext2++;
