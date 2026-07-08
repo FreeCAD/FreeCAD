@@ -55,6 +55,18 @@ void BackupPolicy::setDateFormat(const std::string& fmt)
 }
 void BackupPolicy::apply(const std::string& sourcename, const std::string& targetname)
 {
+    if (numberOfFiles <= 0) {
+        if (Base::FileInfo fi(targetname); fi.exists()) {
+            fi.deleteFile();
+        }
+
+        if (Base::FileInfo tmp(sourcename); !tmp.renameFile(targetname.c_str())) {
+            throw Base::FileException("Cannot rename tmp save file to project file",
+                                      Base::FileInfo(targetname));
+        }
+        return;
+    }
+
     switch (policy) {
         case Standard:
             applyStandard(sourcename, targetname);
@@ -69,71 +81,66 @@ void BackupPolicy::applyStandard(const std::string& sourcename, const std::strin
 {
     // if saving the project data succeeded rename to the actual file name
     if (Base::FileInfo fi(targetname); fi.exists()) {
-        if (numberOfFiles > 0) {
-            bool backupManagementError = false;
-            try {
-                int nSuff = 0;
-                std::string backupDirPath = ensureBackupDirectory(fi);
-                std::string fn = fi.fileName();
-                Base::FileInfo di(backupDirPath);
-                std::vector<Base::FileInfo> backup;
-                std::vector<Base::FileInfo> files = di.getDirectoryContent();
-                for (const Base::FileInfo& it : files) {
-                    if (std::string file = it.fileName(); file.substr(0, fn.length()) == fn) {
-                        // starts with the same file name
-                        std::string suf(file.substr(fn.length()));
-                        if (!suf.empty()) {
-                            std::string::size_type nPos = suf.find_first_not_of("0123456789");
-                            if (nPos == std::string::npos) {
-                                // store all backup files
-                                backup.push_back(it);
-                                nSuff =
-                                    std::max<int>(nSuff, static_cast<int>(std::atol(suf.c_str())));
-                            }
+        bool backupManagementError = false;
+        try {
+            int nSuff = 0;
+            std::string backupDirPath = ensureBackupDirectory(fi);
+            std::string fn = fi.fileName();
+            Base::FileInfo di(backupDirPath);
+            std::vector<Base::FileInfo> backup;
+            std::vector<Base::FileInfo> files = di.getDirectoryContent();
+            for (const Base::FileInfo& it : files) {
+                if (std::string file = it.fileName(); file.substr(0, fn.length()) == fn) {
+                    // starts with the same file name
+                    std::string suf(file.substr(fn.length()));
+                    if (!suf.empty()) {
+                        std::string::size_type nPos = suf.find_first_not_of("0123456789");
+                        if (nPos == std::string::npos) {
+                            // store all backup files
+                            backup.push_back(it);
+                            nSuff =
+                                std::max<int>(nSuff, static_cast<int>(std::atol(suf.c_str())));
                         }
                     }
-                }
-
-                if (!backup.empty() && static_cast<int>(backup.size()) >= numberOfFiles) {
-                    // delete the oldest backup file we found
-                    Base::FileInfo del = backup.front();
-                    for (const Base::FileInfo& it : backup) {
-                        if (it.lastModified() < del.lastModified()) {
-                            del = it;
-                        }
-                    }
-
-                    del.deleteFile();
-                    fn = del.filePath();
-                }
-                else {
-                    // create a new backup file
-                    std::stringstream str;
-                    str << getBackupFilePath(backupDirPath, fi.fileName()) << (nSuff + 1);
-                    fn = str.str();
-                }
-
-                if (!fi.renameFile(fn.c_str())) {
-                    backupManagementError = true;
-                    Base::Console().warning("Cannot rename project file to backup file\n");
                 }
             }
-            catch (...) {
+
+            if (!backup.empty() && static_cast<int>(backup.size()) >= numberOfFiles) {
+                // delete the oldest backup file we found
+                Base::FileInfo del = backup.front();
+                for (const Base::FileInfo& it : backup) {
+                    if (it.lastModified() < del.lastModified()) {
+                        del = it;
+                    }
+                }
+
+                del.deleteFile();
+                fn = del.filePath();
+            }
+            else {
+                // create a new backup file
+                std::stringstream str;
+                str << getBackupFilePath(backupDirPath, fi.fileName()) << (nSuff + 1);
+                fn = str.str();
+            }
+
+            if (!fi.renameFile(fn.c_str())) {
                 backupManagementError = true;
-                Base::Console().warning("Cannot manage backup file history\n");
-            }
-
-            if (backupManagementError && fi.exists()) {
-                try {
-                    fi.deleteFile();
-                }
-                catch (...) {
-                    Base::Console().warning("Cannot remove existing project file before save\n");
-                }
+                Base::Console().warning("Cannot rename project file to backup file\n");
             }
         }
-        else {
-            fi.deleteFile();
+        catch (...) {
+            backupManagementError = true;
+            Base::Console().warning("Cannot manage backup file history\n");
+        }
+
+        if (backupManagementError && fi.exists()) {
+            try {
+                fi.deleteFile();
+            }
+            catch (...) {
+                Base::Console().warning("Cannot remove existing project file before save\n");
+            }
         }
     }
 
@@ -153,6 +160,7 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
     std::string bn;   // full path with no extension but with "."
     std::string pbn;  // base name of the project + "."
     std::string backupDirPath;
+    
     if (!ext.empty()) {
         bn = fi.fileName().substr(0, fi.fileName().length() - ext.length());
         pbn = fi.fileName().substr(0, fi.fileName().length() - ext.length());
@@ -162,7 +170,7 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
         pbn = fi.fileName() + ".";
     }
 
-    if (fi.exists() && numberOfFiles > 0) {
+    if (fi.exists()) {
         try {
             backupDirPath = ensureBackupDirectory(fi);
         }
@@ -172,19 +180,12 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
         }
         bn = getBackupFilePath(backupDirPath, bn);
     }
-    else if (!ext.empty()) {
-        bn = fi.filePath().substr(0, fi.filePath().length() - ext.length());
-    }
-    else {
-        bn = fi.filePath() + ".";
-    }
 
     if (fi.exists()) {
-        if (numberOfFiles > 0) {
-            try {
-                // replace . by - in format to avoid . between base name and extension
-                boost::replace_all(saveBackupDateFormat, ".", "-");
-                {
+        try {
+            // replace . by - in format to avoid . between base name and extension
+            boost::replace_all(saveBackupDateFormat, ".", "-");
+            {
                 // Remove all extra backups
                 std::string filename = fi.fileName();
                 Base::FileInfo di(backupDirPath);
@@ -207,7 +208,7 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                         if ((startsWith(file, filename) && (file.length() > filename.length())
                              && checkDigits(file.substr(filename.length())))
                             ||
-                            // .FCBak case : The bame starts with the base name of the project +
+                            // .FCBak case : The name starts with the base name of the project +
                             // "."
                             // + complement with no "." + ".FCBak"
                             ((fextUp == "FCBAK") && startsWith(file, pbn)
@@ -240,10 +241,10 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                         }
                     }
                 }
-                }  // end remove backup
+            }  // end remove backup
 
-                // create a new backup file
-                {
+            // create a new backup file
+            {
                 int ext2 = 1;
                 if (useFCBakExtension) {
                     std::stringstream str;
@@ -344,22 +345,11 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                     // throw Base::FileException("File not saved: Cannot rename project file to
                     // backup file", fi);
                 }
-                }
-            }
-            catch (...) {
-                backupManagementError = true;
-                Base::Console().warning("Cannot manage backup file history\n");
             }
         }
-        else {
-            try {
-                fi.deleteFile();
-            }
-            catch (...) {
-                Base::Console().warning("Cannot remove backup file: %s\n",
-                                        fi.fileName().c_str());
-                backupManagementError = true;
-            }
+        catch (...) {
+            backupManagementError = true;
+            Base::Console().warning("Cannot manage backup file history\n");
         }
     }
 
