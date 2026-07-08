@@ -26,19 +26,67 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/MeasureManager.h>
+#include <Base/Console.h>
 #include <Base/Tools.h>
+#include <Bnd_Box.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
+#include <BRepBndLib.hxx>
+#include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
+#include <gp_Ax1.hxx>
 #include <gp_Circ.hxx>
+#include <gp_Dir.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
+#include <TopoDS_Vertex.hxx>
 #include <TopoDS_Wire.hxx>
 
 #include "MeasureDistance.h"
+#include "MeasureSnap.h"
 
 
 using namespace Measure;
+
+namespace
+{
+
+enum class SnapKind
+{
+    Point,
+    Axis,
+    Unresolved
+};
+
+struct SnapResult
+{
+    SnapKind kind;
+    gp_Pnt point;
+    gp_Ax1 axis;
+};
+
+// Auto and None resolve to nothing by intent; a requested snap that cannot apply
+// warns and resolves to nothing (the pair then uses nearest points).
+SnapResult resolveSnap(const TopoDS_Shape& shape, MeasureSnapMode mode)
+{
+    if (mode == MeasureSnapMode::Auto || mode == MeasureSnapMode::None) {
+        return {SnapKind::Unresolved, {}, {}};
+    }
+    gp_Pnt point;
+    gp_Dir dir;
+    if (!MeasureSnap::computeSnapPoint(shape, mode, nullptr, point, &dir)) {
+        Base::Console().warning(
+            "Measure: the chosen snap does not apply here; using nearest points.\n"
+        );
+        return {SnapKind::Unresolved, {}, {}};
+    }
+    if (mode == MeasureSnapMode::Axis) {
+        return {SnapKind::Axis, point, gp_Ax1(point, dir)};
+    }
+    return {SnapKind::Point, point, {}};
+}
+
+}  // namespace
 
 PROPERTY_SOURCE(Measure::MeasureDistance, Measure::MeasureBase)
 
@@ -58,6 +106,11 @@ MeasureDistance::MeasureDistance()
     );
     Element2.setScope(App::LinkScope::Global);
     Element2.setAllowExternal(true);
+
+    ADD_PROPERTY_TYPE(Snap1, (0L), "Measurement", App::Prop_None, "Snap mode for the first element");
+    Snap1.setEnums(Measure::MeasureSnap::snapModeEnums());
+    ADD_PROPERTY_TYPE(Snap2, (0L), "Measurement", App::Prop_None, "Snap mode for the second element");
+    Snap2.setEnums(Measure::MeasureSnap::snapModeEnums());
 
     ADD_PROPERTY_TYPE(
         Distance,
@@ -222,6 +275,112 @@ void MeasureDistance::distanceGeneric(const TopoDS_Shape& shape1, const TopoDS_S
     setValues(p1, p2);
 }
 
+void MeasureDistance::distanceSnapped(
+    const TopoDS_Shape& shape1,
+    const TopoDS_Shape& shape2,
+    MeasureSnapMode snap1,
+    MeasureSnapMode snap2
+)
+{
+    const SnapResult r1 = resolveSnap(shape1, snap1);
+    const SnapResult r2 = resolveSnap(shape2, snap2);
+
+    if (r1.kind == SnapKind::Point && r2.kind == SnapKind::Point) {
+        setValues(r1.point, r2.point);
+        return;
+    }
+    if (r1.kind == SnapKind::Point && r2.kind == SnapKind::Unresolved) {
+        distancePointToShape(r1.point, shape2, true);
+        return;
+    }
+    if (r1.kind == SnapKind::Unresolved && r2.kind == SnapKind::Point) {
+        distancePointToShape(r2.point, shape1, false);
+        return;
+    }
+    if (r1.kind == SnapKind::Point && r2.kind == SnapKind::Axis) {
+        distancePointToAxis(r1.point, r2.axis, true);
+        return;
+    }
+    if (r1.kind == SnapKind::Axis && r2.kind == SnapKind::Point) {
+        distancePointToAxis(r2.point, r1.axis, false);
+        return;
+    }
+    if (r1.kind == SnapKind::Axis && r2.kind == SnapKind::Axis) {
+        gp_Pnt onA;
+        gp_Pnt onB;
+        if (MeasureSnap::closestPointsOnAxes(r1.axis, r2.axis, onA, onB)) {
+            setValues(onA, onB);
+            return;
+        }
+    }
+    if (r1.kind == SnapKind::Axis || r2.kind == SnapKind::Axis) {
+        Bnd_Box pairBounds;
+        BRepBndLib::Add(shape1, pairBounds);
+        BRepBndLib::Add(shape2, pairBounds);
+        if (!pairBounds.IsVoid()) {
+            if (r1.kind == SnapKind::Axis) {
+                distanceAxisToShape(r1.axis, shape2, pairBounds, true);
+            }
+            else {
+                distanceAxisToShape(r2.axis, shape1, pairBounds, false);
+            }
+            return;
+        }
+    }
+
+    // Any pair not handled above uses nearest-point extrema on the raw shapes.
+    distanceGeneric(shape1, shape2);
+}
+
+void MeasureDistance::distancePointToShape(const gp_Pnt& point, const TopoDS_Shape& other, bool pointIsFirst)
+{
+    const TopoDS_Vertex vertex = BRepBuilderAPI_MakeVertex(point);
+    BRepExtrema_DistShapeShape measure(vertex, other);
+    if (!measure.IsDone() || measure.NbSolution() < 1) {
+        throw Base::RuntimeError("Could not get extrema");
+    }
+    const gp_Pnt foot = measure.PointOnShape2(1);
+    if (pointIsFirst) {
+        setValues(point, foot);
+    }
+    else {
+        setValues(foot, point);
+    }
+}
+
+void MeasureDistance::distancePointToAxis(const gp_Pnt& point, const gp_Ax1& axis, bool pointIsFirst)
+{
+    const gp_Pnt foot = MeasureSnap::projectOntoAxis(axis, point);
+    if (pointIsFirst) {
+        setValues(point, foot);
+    }
+    else {
+        setValues(foot, point);
+    }
+}
+
+void MeasureDistance::distanceAxisToShape(
+    const gp_Ax1& axis,
+    const TopoDS_Shape& other,
+    const Bnd_Box& pairBounds,
+    bool axisIsFirst
+)
+{
+    const TopoDS_Edge axisEdge = MeasureSnap::boundedAxisEdge(axis, pairBounds);
+    BRepExtrema_DistShapeShape measure(axisEdge, other);
+    if (!measure.IsDone() || measure.NbSolution() < 1) {
+        throw Base::RuntimeError("Could not get extrema");
+    }
+    const gp_Pnt onAxis = measure.PointOnShape1(1);
+    const gp_Pnt onOther = measure.PointOnShape2(1);
+    if (axisIsFirst) {
+        setValues(onAxis, onOther);
+    }
+    else {
+        setValues(onOther, onAxis);
+    }
+}
+
 void MeasureDistance::setValues(const gp_Pnt& p1, const gp_Pnt& p2)
 {
     Position1.setValue(p1.X(), p1.Y(), p1.Z());
@@ -262,18 +421,25 @@ App::DocumentObjectExecReturn* MeasureDistance::execute()
         return new App::DocumentObjectExecReturn("Could not get shape");
     }
 
-    if (distanceCircleCircle(shape1, shape2)) {
+    const MeasureSnapMode snap1 = MeasureSnap::snapModeFromIndex(Snap1.getValue());
+    const MeasureSnapMode snap2 = MeasureSnap::snapModeFromIndex(Snap2.getValue());
+
+    if (snap1 == MeasureSnapMode::Auto && snap2 == MeasureSnapMode::Auto) {
+        if (distanceCircleCircle(shape1, shape2)) {
+            return DocumentObject::StdReturn;
+        }
+        distanceGeneric(shape1, shape2);
         return DocumentObject::StdReturn;
     }
 
-    distanceGeneric(shape1, shape2);
+    distanceSnapped(shape1, shape2, snap1, snap2);
     return DocumentObject::StdReturn;
 }
 
 void MeasureDistance::onChanged(const App::Property* prop)
 {
 
-    if (prop == &Element1 || prop == &Element2) {
+    if (prop == &Element1 || prop == &Element2 || prop == &Snap1 || prop == &Snap2) {
         if (!isRestoring()) {
             App::DocumentObjectExecReturn* ret = recompute();
             delete ret;

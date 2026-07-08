@@ -31,6 +31,7 @@
 
 #include <App/PropertyGeo.h>
 #include <App/PropertyLinks.h>
+#include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 
 #include <Mod/Part/App/MeasureInfo.h>
@@ -39,9 +40,13 @@
 
 class TopoDS_Edge;
 class TopoDS_Wire;
+class gp_Ax1;
+class Bnd_Box;
 
 namespace Measure
 {
+
+enum class MeasureSnapMode : int;
 
 class MeasureDistanceType: public Base::BaseClass
 {
@@ -67,6 +72,8 @@ public:
 
     App::PropertyLinkSub Element1;
     App::PropertyLinkSub Element2;
+    App::PropertyEnumeration Snap1;
+    App::PropertyEnumeration Snap2;
     App::PropertyDistance Distance;
     App::PropertyDistance DistanceX;
     App::PropertyDistance DistanceY;
@@ -89,7 +96,7 @@ public:
 
     std::vector<std::string> getInputProps() override
     {
-        return {"Element1", "Element2"};
+        return {"Element1", "Element2", "Snap1", "Snap2"};
     }
     App::Property* getResultProp() override
     {
@@ -105,6 +112,20 @@ public:
 private:
     bool distanceCircleCircle(const TopoDS_Shape& shape1, const TopoDS_Shape& shape2);
     void distanceGeneric(const TopoDS_Shape& shape1, const TopoDS_Shape& shape2);
+    void distanceSnapped(
+        const TopoDS_Shape& shape1,
+        const TopoDS_Shape& shape2,
+        MeasureSnapMode snap1,
+        MeasureSnapMode snap2
+    );
+    void distancePointToShape(const gp_Pnt& point, const TopoDS_Shape& other, bool pointIsFirst);
+    void distancePointToAxis(const gp_Pnt& point, const gp_Ax1& axis, bool pointIsFirst);
+    void distanceAxisToShape(
+        const gp_Ax1& axis,
+        const TopoDS_Shape& other,
+        const Bnd_Box& pairBounds,
+        bool axisIsFirst
+    );
     void setValues(const gp_Pnt& p1, const gp_Pnt& p2);
     void onChanged(const App::Property* prop) override;
     Handle(Geom_Circle) asCircle(const TopoDS_Shape& shape) const;
