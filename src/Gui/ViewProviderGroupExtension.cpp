@@ -240,10 +240,9 @@ bool ViewProviderGroupExtension::extensionOnDelete(const std::vector<std::string
 
     QString message;
     if (allDescendants.size() == directChildren.size()) {
-        message
-            = QObject::tr("The group '%1' contains %2 object(s). Delete them as well?")
-                  .arg(QString::fromUtf8(getExtendedViewProvider()->getObject()->Label.getValue()))
-                  .arg(allDescendants.size());
+        message = QObject::tr("The group '%1' contains %2 object(s). Delete them as well?")
+                      .arg(QString::fromUtf8(getExtendedViewProvider()->getObject()->Label.getValue()))
+                      .arg(allDescendants.size());
     }
     else {
         // if we have nested groups
