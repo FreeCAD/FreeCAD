@@ -25,6 +25,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <QApplication>
 #include <QClipboard>
+#include <QComboBox>
 #include <QCompleter>
 #include <QInputDialog>
 #include <QHeaderView>
@@ -483,6 +484,15 @@ void PropertyEditor::releaseEditorFocus()
     if (!activeEditor) {
         return;
     }
+
+    // An enum property is edited with a QComboBox whose drop-down is auto-opened by
+    // PropertyItemDelegate. Destroying the combo with the popup still open skips Qt's
+    // closePopup() teardown and leaves queued mouse events aimed at the freed popup,
+    // so close it while the combo is alive.
+    if (auto* combo = qobject_cast<QComboBox*>(activeEditor.data())) {
+        combo->hidePopup();
+    }
+
     for (QWidget* w = qApp->focusWidget(); w; w = w->parentWidget()) {
         if (w == activeEditor) {
             // setFocus() delivers a synchronous FocusOut that would otherwise cascade
