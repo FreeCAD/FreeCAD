@@ -151,6 +151,27 @@ class TestFCTBSerializer(_BaseToolBitSerializerTestCase):
             deserialized_bit.get_length(), FreeCAD.Units.Quantity(15.0, FreeCAD.Units.Length)
         )
 
+    def test_unknown_keys_preserved_on_roundtrip(self):
+        """Unknown top-level keys must survive deserialize -> serialize."""
+        fctb_data = (
+            b'{"name": "Test Tool", "pocket": null, "my_ext": {"foo": 1}, '
+            b'"shape": "endmill", '
+            b'"parameter": {"Diameter": "4.12 mm", "Length": "15.0 mm"}, "attribute": {}}'
+        )
+        shape = ToolBitShapeEndmill("endmill")
+        dependencies: Mapping[AssetUri, Asset] = {AssetUri.build("toolbitshape", "endmill"): shape}
+
+        toolbit = self.serializer_class.deserialize(
+            fctb_data, id="test_id", dependencies=dependencies
+        )
+        serialized = self.serializer_class.serialize(toolbit)
+        data = json.loads(serialized.decode("utf-8"))
+
+        self.assertIn("pocket", data)
+        self.assertIsNone(data["pocket"])
+        self.assertIn("my_ext", data)
+        self.assertEqual(data["my_ext"], {"foo": 1})
+
 
 class TestYamlToolBitSerializer(_BaseToolBitSerializerTestCase):
     serializer_class = YamlToolBitSerializer

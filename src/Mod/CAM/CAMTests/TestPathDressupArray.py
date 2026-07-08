@@ -24,7 +24,7 @@
 
 import FreeCAD
 import Path
-from Path.Dressup.Array import DressupArray
+from Path.Dressup.Array import DressupArray, PathArray
 import Path.Main.Job as PathJob
 import Path.Op.Profile as PathProfile
 
@@ -33,10 +33,11 @@ from CAMTests.PathTestUtils import PathTestBase
 
 class _TestEngrave:
     def __init__(self, path):
-        self.Path = Path.Path(path)
+        self.Path = Path.Path([Path.Command(x) for x in path.split("\n")])
         self.ToolController = None  # default tool 5mm
         self.CoolantMode = "None"
         self.Name = "Engrave"
+        self.Active = True
 
     def isDerivedFrom(self, type):
         if type == "Path::Feature":
@@ -64,13 +65,15 @@ class TestDressupArray(PathTestBase):
 
         source_gcode = "G0 X0 Y0 Z0\n" "G1 X10 Y10 Z0\n"
 
-        expected_gcode = "G0 X0.000000 Y0.000000 Z0.000000\n" "G1 X10.000000 Y10.000000 Z0.000000\n"
+        expected_gcode = (
+            "G0 X0.000000 Y0.000000 Z0.000000\n" "G1 X10.000000 Y10.000000 Z0.000000\n\n"
+        )
 
         base = _TestEngrave(source_gcode)
         obj = _TestFeature()
         da = DressupArray(obj, base, None)
         da.execute(obj)
-        self.assertTrue(obj.Path.toGCode() == expected_gcode, "Incorrect g-code generated")
+        self.assertEqual(obj.Path.toGCode(), expected_gcode, "Incorrect g-code generated")
 
     def test01(self):
         """Verify linear x/y/z 1D array with 1 copy."""
@@ -79,9 +82,9 @@ class TestDressupArray(PathTestBase):
 
         expected_gcode = (
             "G0 X0.000000 Y0.000000 Z0.000000\n"
-            "G1 X10.000000 Y10.000000 Z0.000000\n"
+            "G1 X10.000000 Y10.000000 Z0.000000\n\n"
             "G0 X12.000000 Y12.000000 Z5.000000\n"
-            "G1 X22.000000 Y22.000000 Z5.000000\n"
+            "G1 X22.000000 Y22.000000 Z5.000000\n\n"
         )
 
         base = _TestEngrave(source_gcode)
@@ -91,7 +94,10 @@ class TestDressupArray(PathTestBase):
         obj.Offset = FreeCAD.Vector(12, 12, 5)
 
         da.execute(obj)
-        self.assertTrue(obj.Path.toGCode() == expected_gcode, "Incorrect g-code generated")
+        gcode = obj.Path.toGCode()
+        self.assertEqual(
+            gcode, expected_gcode, f"Incorrect g-code generated---\n{expected_gcode}---\n{gcode}"
+        )
 
     def test02(self):
         """Verify linear x/y/z 2D array."""
@@ -100,17 +106,17 @@ class TestDressupArray(PathTestBase):
 
         expected_gcode = (
             "G0 X0.000000 Y0.000000 Z0.000000\n"
-            "G1 X10.000000 Y10.000000 Z0.000000\n"
+            "G1 X10.000000 Y10.000000 Z0.000000\n\n"
             "G0 X0.000000 Y6.000000 Z0.000000\n"
-            "G1 X10.000000 Y16.000000 Z0.000000\n"
+            "G1 X10.000000 Y16.000000 Z0.000000\n\n"
             "G0 X12.000000 Y6.000000 Z0.000000\n"
-            "G1 X22.000000 Y16.000000 Z0.000000\n"
+            "G1 X22.000000 Y16.000000 Z0.000000\n\n"
             "G0 X12.000000 Y0.000000 Z0.000000\n"
-            "G1 X22.000000 Y10.000000 Z0.000000\n"
+            "G1 X22.000000 Y10.000000 Z0.000000\n\n"
             "G0 X24.000000 Y0.000000 Z0.000000\n"
-            "G1 X34.000000 Y10.000000 Z0.000000\n"
+            "G1 X34.000000 Y10.000000 Z0.000000\n\n"
             "G0 X24.000000 Y6.000000 Z0.000000\n"
-            "G1 X34.000000 Y16.000000 Z0.000000\n"
+            "G1 X34.000000 Y16.000000 Z0.000000\n\n"
         )
 
         base = _TestEngrave(source_gcode)
@@ -124,4 +130,45 @@ class TestDressupArray(PathTestBase):
         obj.Offset = FreeCAD.Vector(12, 6, 0)
 
         da.execute(obj)
-        self.assertTrue(obj.Path.toGCode() == expected_gcode, "Incorrect g-code generated")
+        gcode = obj.Path.toGCode()
+        self.assertEqual(
+            gcode, expected_gcode, f"Incorrect g-code generated---\n{expected_gcode}---\n{gcode}"
+        )
+
+    def test03(self):
+        """Tolerate annotations in getPath()
+        Some operations make gcode with annotations, e.g. Drill
+        """
+        # This gcode has several characteristics that cause problems if given to Path.Path():
+        # 'M' in RetractMode will be seen as the start of an M-code,
+        # G98 in the annotation value will be seen as separate G-code.
+        # e.g. Path.Path(source_gcode) will throw Base::BadFormatError("Badly formatted GCode command")
+        # But, if things are left as Path.Command, things should be fine.
+        source_gcode = "G81 F6 R0 X7 Y9 Z-3 ; RetractMode:'G98'"
+
+        base = _TestEngrave(source_gcode)
+        obj = _TestFeature()
+        obj.Copies = 1
+        obj.CopiesX = 2
+        obj.CopiesY = 1
+        obj.Offset = FreeCAD.Vector(12, 12, 5)
+        pa = PathArray(
+            base,
+            "Linear1D",
+            obj.Copies,
+            obj.Offset,
+            obj.CopiesX,
+            obj.CopiesY,
+            angle=None,
+            centre=None,
+            swapDirection=False,
+            jitterMagnitude=0,
+            jitterPercent=0,
+            seed=obj.Name,
+        )
+
+        path = pa.getPath()
+        gcode = "\n".join(x.toGCode() for x in path.Commands)
+
+        # And we kept the annotation
+        self.assertIn("; RetractMode:'G98'", gcode)

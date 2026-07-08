@@ -247,6 +247,12 @@ class OpenSBPPost(PostProcessor):
         ):
             self.values[property_name.upper()] = schema[property_name]["default"]
 
+    def _convert_start_section(self, section_name, sublist):
+        # need to note that we are starting a section (file), so "per section" stuff...
+        self._first_probe_open = True
+
+        super()._convert_start_section(section_name, sublist)
+
     def convert_command_to_gcode(self, command: Path.Command) -> str:
 
         # FIXME: should be in Processor class
@@ -545,31 +551,38 @@ class OpenSBPPost(PostProcessor):
             filename += ".txt"
         filename = self._quote(filename)
 
-        rez = [
-            # we already handled the probe-open comment
-            "C#,90",  # Loads "my variables", notably &my_ZzeroInput
-            f'OPEN "{filename}" FOR OUTPUT as #1',
-        ]
+        rez = []
 
-        # only insert subroutines once
+        # only insert subroutines once per section FIXME: need to be told when starting a section
         if self._first_probe_open:
             self._first_probe_open = False
-            self.values["POST_JOB"] += textwrap.dedent("""\
-                GOTO SkipProbeSubRoutines
-                CaptureZPos:
-                  ' for g38.2 probe, write the data on probe-contact
-                  ' and set flag for didn't-fail
-                  ' xyzab
-                  WRITE #1; %(1); " "; %(2); " "; %(3); " "; %(4); " "; %(5)
-                  &hit = 1
-                  RETURN
-                FailedToTouch:
-                  ' for g38.2 probe, when
-                  ' failed to trigger w/in movement
-                  MSGBOX(Failed to touch...Exiting,16,Probe Failed) # fixme: which job/op label, and file?
-                  END
-                SkipProbeSubRoutines:
-            """).rstrip()
+            rez.extend(textwrap.dedent("""\
+                    ' Loads my-variables, notably my_ZzeroInput
+                    C#,90
+                    ' PROBE SUBROUTINE
+                    GOTO SkipProbeSubRoutines
+                    CaptureZPos:
+                      ' for g38.2 probe, write the data on probe-contact
+                      ' and set flag for didn't-fail
+                      ' xyzab
+                      WRITE #1; %(1); " "; %(2); " "; %(3); " "; %(4); " "; %(5)
+                      &hit = 1
+                      RETURN
+                    FailedToTouch:
+                      ' for g38.2 probe, when
+                      ' failed to trigger w/in movement
+                      MSGBOX(Failed to touch...Exiting,16,Probe Failed) # fixme: which job/op label, and file?
+                      END
+                    SkipProbeSubRoutines:
+                    ' ------
+                """).rstrip().split("\n"))
+
+        rez.extend(
+            [
+                # we already handled the probe-open comment
+                f'OPEN "{filename}" FOR OUTPUT as #1',
+            ]
+        )
 
         return "\n".join(rez)
 

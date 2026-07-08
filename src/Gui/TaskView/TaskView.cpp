@@ -195,13 +195,13 @@ void TaskBox::hideGroupBox()
     myGroup->hide();
 
     m_foldPixmap = QPixmap();
-    setFixedHeight(myHeader->height());
+    setFixedHeight(myScheme->headerSize);
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 }
 
 bool TaskBox::isGroupVisible() const
 {
-    return myGroup->isVisible();
+    return !myGroup->isHidden() || m_foldDirection == 1;
 }
 
 void TaskBox::actionEvent(QActionEvent* e)
@@ -855,6 +855,7 @@ void TaskView::addTaskWatcher()
 {
     if (!showTaskWatcher) {
         setShownTaskInfo(-1);  // Switch to the empty taskwatcher panel
+        Q_EMIT taskUpdate();
         return;
     }
     // add all widgets for all watcher to the task view
