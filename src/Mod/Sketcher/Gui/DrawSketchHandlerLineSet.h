@@ -1828,6 +1828,7 @@ void DSHPolyLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSke
                 if (handler->constructionMethod() == ConstructionMethod::Arc) {
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
                 }
+                getKeyManager()->resetMode();
                 setFocusToOnViewParameter(OnViewParameter::Third);
                 return;
             }

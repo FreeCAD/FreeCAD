@@ -73,6 +73,9 @@ public:
     /// returns which entity will currently receive the event.
     KeyboardEventHandlingMode getMode();
 
+    /// resets the mode to ViewProvider
+    void resetMode();
+
     bool eventFilter(QObject* object, QEvent* event);
 
 private:
