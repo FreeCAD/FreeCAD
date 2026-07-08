@@ -337,7 +337,8 @@ void Part::FaceMaker::postBuild()
 
             if (fixedNameVector.size()) {
                 linkedNameEntry.second.first = fixedNameVector;
-            } else {
+            }
+            else {
                 linkedNameEntry.second.second = false;
             }
         }
@@ -347,7 +348,7 @@ void Part::FaceMaker::postBuild()
         for (const auto& linkedNameEntry : linkedNameMap) {
             if (linkedNameEntry.second.first.size()) {
                 if (linkedNameEntry.second.second) {
-                    mapperFlags.push_back("NDU"); // no duplicate.
+                    mapperFlags.push_back("NDU");  // no duplicate.
                 }
 
                 this->myTopoShape.setElementName(
