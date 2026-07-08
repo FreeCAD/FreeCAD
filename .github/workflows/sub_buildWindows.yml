@@ -39,7 +39,7 @@ on:
 
 jobs:
   Build:
-    runs-on: windows-latest
+    runs-on: windows-2022
     continue-on-error: ${{ inputs.allowedToFail }}
     env:
       CCACHE_COMPILERCHECK: "%compiler%" # default:mtime
