@@ -531,34 +531,63 @@ void DSHPolygonController::addConstraints()
         int circleGeoId = lastCurve;
         int lastSideGeoId = lastCurve - 1;
 
-        Gui::cmdAppObjectArgs(
-            obj,
-            "addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),True)",
-            handler->centerPoint.x,
-            handler->centerPoint.y,
-            handler->firstCorner.x,
-            handler->firstCorner.y
-        );
+        using std::numbers::pi;
+        // for horizontal/vertical angles add according constraint instead of angle constraint
+        if (fabs(std::remainder(angle, pi)) < Precision::Confusion()) {
+            Gui::cmdAppObjectArgs(
+                obj,
+                "addConstraint(Sketcher.Constraint('Horizontal',%d,%d,%d,%d)) ",
+                circleGeoId,
+                static_cast<int>(PointPos::mid),
+                lastSideGeoId,
+                static_cast<int>(PointPos::end)
+            );
+        }
+        else if (fabs(std::remainder(angle, pi / 2)) < Precision::Confusion()) {
+            Gui::cmdAppObjectArgs(
+                obj,
+                "addConstraint(Sketcher.Constraint('Vertical',%d,%d,%d,%d)) ",
+                circleGeoId,
+                static_cast<int>(PointPos::mid),
+                lastSideGeoId,
+                static_cast<int>(PointPos::end)
+            );
+        }
+        else {
+            Gui::cmdAppObjectArgs(
+                obj,
+                "addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),True)",
+                handler->centerPoint.x,
+                handler->centerPoint.y,
+                handler->firstCorner.x,
+                handler->firstCorner.y
+            );
 
-        int radialGeoId = handler->getHighestCurveIndex();
-        Gui::cmdAppObjectArgs(
-            obj,
-            "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d))",
-            radialGeoId,
-            static_cast<int>(PointPos::start),
-            circleGeoId,
-            static_cast<int>(PointPos::mid)
-        );
-        Gui::cmdAppObjectArgs(
-            obj,
-            "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d))",
-            radialGeoId,
-            static_cast<int>(PointPos::end),
-            lastSideGeoId,
-            static_cast<int>(PointPos::end)
-        );
+            int radialGeoId = handler->getHighestCurveIndex();
+            Gui::cmdAppObjectArgs(
+                obj,
+                "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d))",
+                radialGeoId,
+                static_cast<int>(PointPos::start),
+                circleGeoId,
+                static_cast<int>(PointPos::mid)
+            );
+            Gui::cmdAppObjectArgs(
+                obj,
+                "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d))",
+                radialGeoId,
+                static_cast<int>(PointPos::end),
+                lastSideGeoId,
+                static_cast<int>(PointPos::end)
+            );
 
-        Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('Angle',%d,%f))", radialGeoId, angle);
+            Gui::cmdAppObjectArgs(
+                obj,
+                "addConstraint(Sketcher.Constraint('Angle',%d,%f))",
+                radialGeoId,
+                angle
+            );
+        }
     };
 
     // NOTE: if AutoConstraints is empty, we can add constraints directly without any diagnose. No
