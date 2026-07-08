@@ -207,6 +207,13 @@ private:
     void selectAllGroupLevel(const QTreeWidgetItem* targetNode, bool isGroup);
     void clearSelectAllContext();
 
+    // Shared menu builder used by contextMenuEvent() and showContextMenuForSelection()
+    void buildAndExecContextMenu();
+
+public Q_SLOTS:
+    /// Build and show the tree context menu for the current selection at the cursor
+    void showContextMenuForSelection();
+
 protected Q_SLOTS:
     void onCreateGroup();
     void onRelabelObject();

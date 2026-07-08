@@ -1181,6 +1181,21 @@ void TreeWidget::_updateStatus(bool delay)
 
 void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
 {
+    // Resolve the context item from the event position, then build the menu.
+    this->contextItem = itemAt(e->pos());
+    buildAndExecContextMenu();
+}
+
+void TreeWidget::showContextMenuForSelection()
+{
+    // Resolve the context item from the current selection, then build the menu.
+    const QList<QTreeWidgetItem*> sel = selectedItems();
+    this->contextItem = sel.isEmpty() ? nullptr : sel.front();
+    buildAndExecContextMenu();
+}
+
+void TreeWidget::buildAndExecContextMenu()
+{
     // ask workbenches and view provider, ...
     MenuItem view;
     Gui::Application::Instance->setupContextMenu("Tree", &view);
@@ -1196,9 +1211,6 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     subMenuGroup.setExclusive(true);
     connect(&subMenuGroup, &QActionGroup::triggered, this, &TreeWidget::onActivateDocument);
     MenuManager::getInstance()->setupContextMenu(&view, contextMenu);
-
-    // get the current item
-    this->contextItem = itemAt(e->pos());
 
     if (this->contextItem && this->contextItem->type() == DocumentType) {
         auto docitem = static_cast<DocumentItem*>(this->contextItem);
