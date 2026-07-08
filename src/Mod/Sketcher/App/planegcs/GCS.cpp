@@ -53,6 +53,7 @@
 #include <iostream>
 #include <limits>
 #include <numbers>
+#include <numeric>
 
 #include "GCS.h"
 #include "qp_eq.h"
@@ -537,6 +538,7 @@ void System::clear()
     clearSubSystems();
     deleteAllContent(clist);
     drivenConstraints.clear();
+    drivingConstraints.clear();
     c2p.clear();
     p2c.clear();
 }
@@ -570,6 +572,9 @@ int System::addConstraint(Constraint* constr)
     if (!constr->isDriving()) {
         drivenConstraints.push_back(constr);
     }
+    else {
+        drivingConstraints.push_back(constr);
+    }
 
     clist.push_back(constr);
     VEC_pD constr_params = constr->params();
@@ -587,6 +592,7 @@ void System::removeConstraint(Constraint* constr)
         return;
     }
     std::erase(drivenConstraints, constr);
+    std::erase(drivingConstraints, constr);
 
     if (constr->getTag() >= 0) {
         hasDiagnosis = false;
@@ -1806,7 +1812,16 @@ void System::initSolution(Algorithm alg)
     reductionmaps.clear();                 // destroy any maps
     reductionmaps.resize(componentsSize);  // create empty maps to be filled in
     {
-        VEC_pD reducedParams = plist;
+        std::vector<int> parent(plist.size());
+        std::iota(parent.begin(), parent.end(), 0);
+
+        auto find = [&parent](int i) {
+            while (parent[i] != i) {
+                parent[i] = parent[parent[i]];
+                i = parent[i];
+            }
+            return i;
+        };
 
         for (const auto& constr : clistR) {
             if (!(constr->getTag() >= 0 && constr->getTypeId() == Equal)) {
@@ -1818,14 +1833,17 @@ void System::initSolution(Algorithm alg)
                 continue;
             }
             reducedConstrs.insert(constr);
-            double* p_kept = reducedParams[it1->second];
-            double* p_replaced = reducedParams[it2->second];
-            std::ranges::replace(reducedParams, p_replaced, p_kept);
+            int root1 = find(it1->second);
+            int root2 = find(it2->second);
+            if (root1 != root2) {
+                parent[root2] = root1;
+            }
         }
         for (size_t i = 0; i < plist.size(); ++i) {
-            if (plist[i] != reducedParams[i]) {
+            double* reduced = plist[find(int(i))];
+            if (plist[i] != reduced) {
                 int cid = components[i];
-                reductionmaps[cid][plist[i]] = reducedParams[i];
+                reductionmaps[cid][plist[i]] = reduced;
             }
         }
     }
@@ -4725,6 +4743,9 @@ void System::undoSolution()
 }
 
 void System::makeReducedJacobian(
+    const VEC_pD& plist,
+    const VEC_pD& pdrivenlist,
+    const std::vector<Constraint*>& clist,
     Eigen::MatrixXd& J,
     std::map<int, int>& jacobianconstraintmap,
     GCS::VEC_pD& pdiagnoselist,
@@ -4799,21 +4820,89 @@ int System::diagnose(Algorithm alg)
     // pdrivenlist      =>  list of the parameters that are driven by other parameters
     //                      (e.g. value of driven constraints)
 
+    emptyDiagnoseMatrix = true;
+    redundant.clear();
+    conflictingTags.clear();
+    redundantTags.clear();
+    partiallyRedundantTags.clear();
+    pDependentParametersGroups.clear();
+
+    // Build a graph connecting each driving constraint to the parameters it
+    // touches to find independent components to diagnose separately
+    Graph graph(plist.size() + drivingConstraints.size());
+    int cvtid = int(plist.size());
+    for (const auto constr : drivingConstraints) {
+        VEC_pD& cparams = c2p[constr];
+        for (const auto param : cparams) {
+            MAP_pD_I::const_iterator it = pIndex.find(param);
+            if (it != pIndex.end()) {
+                boost::add_edge(cvtid, it->second, graph);
+            }
+        }
+        ++cvtid;
+    }
+
+    VEC_I components(boost::num_vertices(graph));
+    int componentsSize = 0;
+    if (!components.empty()) {
+        componentsSize = boost::connected_components(graph, &components[0]);
+    }
+
+    if (componentsSize <= 1) {
+        dofs = diagnoseComponent(alg, plist, pdrivenlist, clist);
+        hasDiagnosis = true;
+        return dofs;
+    }
+
+    std::vector<VEC_pD> plists(componentsSize);
+    for (std::size_t i = 0; i < plist.size(); ++i) {
+        plists[components[i]].push_back(plist[i]);
+    }
+    std::vector<std::vector<Constraint*>> clists(componentsSize);
+    for (std::size_t i = 0; i < drivingConstraints.size(); ++i) {
+        clists[components[int(plist.size()) + int(i)]].push_back(drivingConstraints[i]);
+    }
+    std::vector<VEC_pD> pdrivenlists(componentsSize);
+    for (const auto& param : pdrivenlist) {
+        MAP_pD_I::const_iterator it = pIndex.find(param);
+        if (it != pIndex.end()) {
+            pdrivenlists[components[it->second]].push_back(param);
+        }
+    }
+
+    dofs = 0;
+
+    for (int i = 0; i < componentsSize; ++i) {
+        if (plists[i].empty() && clists[i].empty()) {
+            continue;
+        }
+
+        int d = diagnoseComponent(alg, plists[i], pdrivenlists[i], clists[i]);
+        if (d < 0) {
+            dofs = -1;
+            break;
+        }
+        dofs += d;
+    }
+
+    hasDiagnosis = true;
+    return dofs;
+}
+
+int System::diagnoseComponent(
+    Algorithm alg,
+    const VEC_pD& plist,
+    const VEC_pD& pdrivenlist,
+    const std::vector<Constraint*>& clist
+)
+{
     // When adding an external geometry or a constraint on an external geometry the array
     // 'plist' is empty.
     // So, we must abort here because otherwise we would create an invalid matrix and make
     // the application eventually crash. This fixes issues #0002372/#0002373.
     if (plist.empty() || (plist.size() - pdrivenlist.size()) == 0) {
-        hasDiagnosis = true;
-        emptyDiagnoseMatrix = true;
-        dofs = 0;
-        return dofs;
+        return 0;
     }
-
-    redundant.clear();
-    conflictingTags.clear();
-    redundantTags.clear();
-    partiallyRedundantTags.clear();
 
     // This QR diagnosis uses a reduced Jacobian matrix to calculate the rank of the system
     // and identify conflicting and redundant constraints.
@@ -4837,12 +4926,9 @@ int System::diagnose(Algorithm alg)
     // like 0 and -1.
     std::map<int, int> tagmultiplicity;
 
-    makeReducedJacobian(J, jacobianconstraintmap, pdiagnoselist, tagmultiplicity);
+    makeReducedJacobian(plist, pdrivenlist, clist, J, jacobianconstraintmap, pdiagnoselist, tagmultiplicity);
 
-    // this function will exit with a diagnosis and, unless overridden by functions below, with full
-    // DoFs
-    hasDiagnosis = true;
-    dofs = pdiagnoselist.size();
+    int dofs = pdiagnoselist.size();
 
     // Use DenseQR for small to medium systems to avoid SparseQR rank issues.
     // SparseQR is known to fail rank detection on specific geometric structures (e.g. aligned slots).
@@ -4966,6 +5052,7 @@ int System::diagnose(Algorithm alg)
             int nonredundantconstrNum;
             identifyConflictingRedundantConstraints(
                 alg,
+                clist,
                 qrJT,
                 jacobianconstraintmap,
                 tagmultiplicity,
@@ -5045,6 +5132,7 @@ int System::diagnose(Algorithm alg)
 
             identifyConflictingRedundantConstraints(
                 alg,
+                clist,
                 SqrJT,
                 jacobianconstraintmap,
                 tagmultiplicity,
@@ -5318,19 +5406,20 @@ void System::identifyDependentParameters(
     }
 #endif
 
-    pDependentParametersGroups.resize(qrJ.cols() - rank);
+    std::size_t groupBase = pDependentParametersGroups.size();
+    pDependentParametersGroups.resize(groupBase + (qrJ.cols() - rank));
     for (int j = rank; j < qrJ.cols(); j++) {
         for (int row = 0; row < rank; row++) {
             if (fabs(Rparams(row, j)) > 1e-10) {
                 int origCol = qrJ.colsPermutation().indices()[row];
 
-                pDependentParametersGroups[j - rank].push_back(pdiagnoselist[origCol]);
+                pDependentParametersGroups[groupBase + j - rank].push_back(pdiagnoselist[origCol]);
                 pDependentParameters.push_back(pdiagnoselist[origCol]);
             }
         }
         int origCol = qrJ.colsPermutation().indices()[j];
 
-        pDependentParametersGroups[j - rank].push_back(pdiagnoselist[origCol]);
+        pDependentParametersGroups[groupBase + j - rank].push_back(pdiagnoselist[origCol]);
         pDependentParameters.push_back(pdiagnoselist[origCol]);
     }
 
@@ -5459,6 +5548,7 @@ void System::eliminateNonZerosOverPivotInUpperTriangularMatrix(Eigen::MatrixXd& 
 template<typename T>
 void System::identifyConflictingRedundantConstraints(
     Algorithm alg,
+    const std::vector<Constraint*>& clist,
     const T& qrJT,
     const std::map<int, int>& jacobianconstraintmap,
     const std::map<int, int>& tagmultiplicity,
@@ -5676,14 +5766,15 @@ void System::identifyConflictingRedundantConstraints(
     // exclude constraints tagged with zero
     conflictingTagsSet.erase(0);
 
-    conflictingTags.resize(conflictingTagsSet.size());
-    std::ranges::copy(conflictingTagsSet, conflictingTags.begin());
+    conflictingTags.insert(conflictingTags.end(), conflictingTagsSet.begin(), conflictingTagsSet.end());
 
     // output of redundant tags
     SET_I redundantTagsSet, partiallyRedundantTagsSet;
-    for (const auto& constr : redundant) {
-        redundantTagsSet.insert(constr->getTag());
-        partiallyRedundantTagsSet.insert(constr->getTag());
+    for (const auto& constr : clist) {
+        if (redundant.count(constr) != 0) {
+            redundantTagsSet.insert(constr->getTag());
+            partiallyRedundantTagsSet.insert(constr->getTag());
+        }
     }
 
     // remove tags represented at least in one non-redundant constraint
@@ -5693,15 +5784,17 @@ void System::identifyConflictingRedundantConstraints(
         }
     }
 
-    redundantTags.resize(redundantTagsSet.size());
-    std::ranges::copy(redundantTagsSet, redundantTags.begin());
+    redundantTags.insert(redundantTags.end(), redundantTagsSet.begin(), redundantTagsSet.end());
 
     for (auto r : redundantTagsSet) {
         partiallyRedundantTagsSet.erase(r);
     }
 
-    partiallyRedundantTags.resize(partiallyRedundantTagsSet.size());
-    std::ranges::copy(partiallyRedundantTagsSet, partiallyRedundantTags.begin());
+    partiallyRedundantTags.insert(
+        partiallyRedundantTags.end(),
+        partiallyRedundantTagsSet.begin(),
+        partiallyRedundantTagsSet.end()
+    );
 
     nonredundantconstrNum = constrNum;
 }
