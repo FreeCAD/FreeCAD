@@ -299,6 +299,7 @@ protected:
         const std::vector<Base::Vector2d>& HintLines,
         int activeLineIndex = -1
     ) const;
+    bool areDirectionalAutoConstraintHintsVisible() const;
     void resetParallelPerpendicularHint();
     void clearParallelPerpendicularHintDrawing() const;
     void renderParallelPerpendicularHint() const;
