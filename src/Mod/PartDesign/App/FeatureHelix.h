@@ -56,9 +56,13 @@ public:
     App::PropertyAngle Angle;
     App::PropertyDistance Growth;
     App::PropertyEnumeration Mode;
-    App::PropertyBool Outside;
     App::PropertyBool HasBeenEdited;
     App::PropertyFloatConstraint Tolerance;
+
+    /** DEPRECATED but kept for forward compatibility,
+     *  the changes of this property are not tracked
+     */
+    App::PropertyBool Outside;
 
     /** if this property is set to a valid link, both Axis and Base properties
      *  are calculated according to the linked line
@@ -78,6 +82,8 @@ public:
 
     void proposeParameters(bool force = false);
     double safePitch();
+
+    void onDocumentRestored() override;
 
 protected:
     /// updates Axis from ReferenceAxis

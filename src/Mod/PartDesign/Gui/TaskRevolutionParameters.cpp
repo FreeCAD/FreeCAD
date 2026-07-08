@@ -69,7 +69,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(
 
     // bind property mirrors
     if (auto rev = getObject<PartDesign::Revolved>()) {
-        isGroove = rev->getAddSubType() == PartDesign::Revolved::Subtractive;
+        isGroove = rev->getAddSubType() == PartDesign::Revolved::Type::Subtractive;
         this->propAngle = &(rev->Angle);
         this->propAngle2 = &(rev->Angle2);
         this->propMidPlane = &(rev->Midplane);

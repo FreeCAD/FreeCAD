@@ -161,7 +161,7 @@ QIcon ViewProviderPipe::getIcon() const
 {
     QString str = QStringLiteral("PartDesign_");
     auto* prim = getObject<PartDesign::Pipe>();
-    if (prim->getAddSubType() == PartDesign::FeatureAddSub::Additive) {
+    if (prim->getAddSubType() == PartDesign::FeatureAddSub::Type::Additive) {
         str += QStringLiteral("Additive");
     }
     else {
