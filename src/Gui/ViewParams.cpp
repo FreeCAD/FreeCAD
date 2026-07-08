@@ -298,6 +298,87 @@ void ViewParams::setup()
         "Mismatching signature"
     );
 
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getViewSelectionExtend), Bool::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setViewSelectionExtend), Bool::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getViewSelectionExtendFactor), Double::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setViewSelectionExtendFactor), Double::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getSelectionLineThicken), Double::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setSelectionLineThicken), Double::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getSelectionLineMaxWidth), Double::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setSelectionLineMaxWidth), Double::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getSelectionBBoxLineWidth), Double::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setSelectionBBoxLineWidth), Double::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getMaxViewSelections), Int::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setMaxViewSelections), Int::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getSelectionColor), Unsigned::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setSelectionColor), Unsigned::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getUseTightBoundingBox), Bool::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setUseTightBoundingBox), Bool::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getRenderProjectedBBox), Bool::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setRenderProjectedBBox), Bool::value_type>,
+        "Mismatching signature"
+    );
+
     addParameter("UseNewSelection", Bool {true});
     addParameter("UseSelectionRoot", Bool {true});
     addParameter("EnableSelection", Bool {true});
@@ -307,7 +388,7 @@ void ViewParams::setup()
     addParameter("AnnotationTextColor", Unsigned {4294967295UL});
     addParameter("MarkerSize", Int {9});
     addParameter("DefaultLinkColor", Unsigned {0x66FFFF00});
-    addParameter("DefaultShapeLineColor", Unsigned {421075455UL});
+    addParameter("DefaultShapeLineColor", Unsigned {255UL});
     addParameter("DefaultShapeVertexColor", Unsigned {421075455UL});
     addParameter("DefaultShapeColor", Unsigned {0xCCCCCC00});
     addParameter("DefaultShapeTransparency", Int {0});
@@ -328,6 +409,15 @@ void ViewParams::setup()
     addParameter("DatumPlaneSize", Double {62.0});
     addParameter("DatumLineSize", Double {70.0});
     addParameter("DatumTemporaryScaleFactor", Double {2.0});
+    addParameter("ViewSelectionExtend", Bool {false});
+    addParameter("ViewSelectionExtendFactor", Double {0.5});
+    addParameter("SelectionLineThicken", Double {1.0});
+    addParameter("SelectionLineMaxWidth", Double {4.0});
+    addParameter("SelectionBBoxLineWidth", Double {3.0});
+    addParameter("MaxViewSelections", Int {100});
+    addParameter("SelectionColor", Unsigned {0x1cad1cff});
+    addParameter("UseTightBoundingBox", Bool {true});
+    addParameter("RenderProjectedBBox", Bool {true});
 }
 
 ViewParams::ViewParams()
@@ -643,4 +733,94 @@ double ViewParams::getDatumTemporaryScaleFactor() const
 void ViewParams::setDatumTemporaryScaleFactor(double v)
 {
     setValue("DatumTemporaryScaleFactor", v);
+}
+
+bool ViewParams::getViewSelectionExtend() const
+{
+    return getValue<bool>("ViewSelectionExtend");
+}
+
+void ViewParams::setViewSelectionExtend(bool v)
+{
+    setValue("ViewSelectionExtend", v);
+}
+
+double ViewParams::getViewSelectionExtendFactor() const
+{
+    return getValue<double>("ViewSelectionExtendFactor");
+}
+
+void ViewParams::setViewSelectionExtendFactor(double v)
+{
+    setValue("ViewSelectionExtendFactor", v);
+}
+
+double ViewParams::getSelectionLineThicken() const
+{
+    return getValue<double>("SelectionLineThicken");
+}
+
+void ViewParams::setSelectionLineThicken(double v)
+{
+    setValue("SelectionLineThicken", v);
+}
+
+double ViewParams::getSelectionLineMaxWidth() const
+{
+    return getValue<double>("SelectionLineMaxWidth");
+}
+
+void ViewParams::setSelectionLineMaxWidth(double v)
+{
+    setValue("SelectionLineMaxWidth", v);
+}
+
+double ViewParams::getSelectionBBoxLineWidth() const
+{
+    return getValue<double>("SelectionBBoxLineWidth");
+}
+
+void ViewParams::setSelectionBBoxLineWidth(double v)
+{
+    setValue("SelectionBBoxLineWidth", v);
+}
+
+long ViewParams::getMaxViewSelections() const
+{
+    return getValue<long>("MaxViewSelections");
+}
+
+void ViewParams::setMaxViewSelections(long v)
+{
+    setValue("MaxViewSelections", v);
+}
+
+unsigned long ViewParams::getSelectionColor() const
+{
+    return getValue<unsigned long>("SelectionColor");
+}
+
+void ViewParams::setSelectionColor(unsigned long v)
+{
+    setValue("SelectionColor", v);
+}
+
+bool ViewParams::getUseTightBoundingBox() const
+{
+    return getValue<bool>("UseTightBoundingBox");
+}
+
+void ViewParams::setUseTightBoundingBox(bool v)
+{
+    setValue("UseTightBoundingBox", v);
+}
+
+bool ViewParams::getRenderProjectedBBox() const
+{
+    return getValue<bool>("RenderProjectedBBox");
+}
+
+void ViewParams::setRenderProjectedBBox(bool v)
+{
+    setValue("RenderProjectedBBox", v);
 }

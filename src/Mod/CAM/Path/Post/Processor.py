@@ -1948,6 +1948,10 @@ class PostProcessor:
         else:
             Path.Log.debug("No bCNC postamble commands to process")
 
+    def _convert_start_section(self, section_name, sublist):
+        """Override if your PP needs to notice when each section (file) starts"""
+        pass
+
     def _convert_job_sections(self, postables):
         """Convert each section to output-code"""
 
@@ -1957,6 +1961,7 @@ class PostProcessor:
             self._optimize_start = None
 
             self._operation = None
+            self._convert_start_section(section_name, sublist)
 
             for item in sublist:
                 # for error context

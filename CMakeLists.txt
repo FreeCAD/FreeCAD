@@ -36,6 +36,9 @@ if(POLICY CMP0177)
     cmake_policy(SET CMP0177 NEW)
 endif()
 
+# Make CMake output a bit more focused
+set(CMAKE_REQUIRED_QUIET TRUE)
+
 
 option(FREECAD_USE_CCACHE "Auto detect and use ccache during compilation" ON)
 
