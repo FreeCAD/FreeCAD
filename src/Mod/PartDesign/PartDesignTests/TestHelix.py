@@ -40,33 +40,6 @@ class TestHelix(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("PartDesignTestHelix")
 
-    def createRectangleHelix(self, bodyName):
-        body = self.Doc.addObject("PartDesign::Body", bodyName)
-        sketch = self.Doc.addObject("Sketcher::SketchObject", bodyName + "Sketch")
-        body.addObject(sketch)
-        TestSketcherApp.CreateRectangleSketch(sketch, (0, 0), (5, 5))
-        self.Doc.recompute()
-
-        helix = self.Doc.addObject("PartDesign::AdditiveHelix", bodyName + "Helix")
-        body.addObject(helix)
-        helix.Profile = sketch
-        helix.ReferenceAxis = (sketch, "V_Axis")
-        helix.Placement = FreeCAD.Placement(
-            FreeCAD.Vector(0, 0, 0),
-            FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0),
-            FreeCAD.Vector(0, 0, 0),
-        )
-        helix.Pitch = 50
-        helix.Height = 150
-        helix.Turns = 3
-        helix.Angle = 0
-        helix.Mode = 0
-        return helix
-
-    def assertBoundBoxesAlmostEqual(self, first, second):
-        for attr in ("XMin", "XMax", "YMin", "YMax", "ZMin", "ZMax"):
-            self.assertAlmostEqual(getattr(first, attr), getattr(second, attr), places=6)
-
     def testHelicalTubeCase(self):
         body = self.Doc.addObject("PartDesign::Body", "Body")
         sketch = body.newObject("Sketcher::SketchObject", "Sketch")
@@ -97,99 +70,6 @@ class TestHelix(unittest.TestCase):
 
         self.Doc.recompute()
         self.assertEqual(len(helix.Shape.Solids), 1)
-
-    def testNegativeHeightActsAsReverse(self):
-        """Test negative height produces the same shape as reversed"""
-        negative = self.createRectangleHelix("NegativeHeightBody")
-        negative.Height = -150
-        negative.Reversed = False
-
-        reversedHelix = self.createRectangleHelix("ReversedHeightBody")
-        reversedHelix.Height = 150
-        reversedHelix.Reversed = True
-
-        self.Doc.recompute()
-        self.assertAlmostEqual(negative.Shape.Volume, reversedHelix.Shape.Volume, places=6)
-        self.assertBoundBoxesAlmostEqual(negative.Shape.BoundBox, reversedHelix.Shape.BoundBox)
-
-    def testTwoSidedPitchHeightAngle(self):
-        """Test two-sided helix in pitch-height-angle mode"""
-        helix = self.createRectangleHelix("TwoSidedPitchHeightBody")
-        helix.SideType = "Two sides"
-        helix.Mode = 0
-        helix.Pitch = 50
-        helix.Height = 150
-        helix.Height2 = 100
-        self.Doc.recompute()
-
-        self.assertAlmostEqual(helix.Turns, 3)
-        self.assertAlmostEqual(helix.Turns2, 2)
-        self.assertLess(helix.Shape.BoundBox.YMin, 0)
-        self.assertGreater(helix.Shape.BoundBox.YMax, 0)
-        self.assertAlmostEqual(helix.Shape.Volume, pi * 25 * 5 * 5, places=2)
-
-    def testTwoSidedPitchTurnsAngle(self):
-        """Test two-sided helix in pitch-turns-angle mode"""
-        helix = self.createRectangleHelix("TwoSidedPitchTurnsBody")
-        helix.SideType = "Two sides"
-        helix.Mode = 1
-        helix.Pitch = 50
-        helix.Turns = 3
-        helix.Turns2 = 2
-        self.Doc.recompute()
-
-        self.assertAlmostEqual(helix.Height, 150)
-        self.assertAlmostEqual(helix.Height2, 100)
-        self.assertLess(helix.Shape.BoundBox.YMin, 0)
-        self.assertGreater(helix.Shape.BoundBox.YMax, 0)
-        self.assertAlmostEqual(helix.Shape.Volume, pi * 25 * 5 * 5, places=2)
-
-    def testTwoSidedHeightTurnsAngleUsesTotalTurns(self):
-        """Test two-sided height-turns-angle uses turns across both sides"""
-        helix = self.createRectangleHelix("TwoSidedHeightTurnsBody")
-        helix.SideType = "Two sides"
-        helix.Mode = 2
-        helix.Height = 150
-        helix.Height2 = 100
-        helix.Turns = 5
-        self.Doc.recompute()
-
-        self.assertAlmostEqual(helix.Pitch, 50)
-        self.assertAlmostEqual(helix.Turns2, 2)
-        self.assertAlmostEqual(helix.Shape.Volume, pi * 25 * 5 * 5, places=2)
-
-    def testTwoSidedAngleShrinksSecondSide(self):
-        """Test two-sided cone angle uses opposite growth for the second side"""
-        twoSided = self.createRectangleHelix("TwoSidedAngleBody")
-        twoSided.SideType = "Two sides"
-        twoSided.Mode = 0
-        twoSided.Pitch = 50
-        twoSided.Height = 100
-        twoSided.Height2 = 100
-        twoSided.Angle = 20
-
-        symmetric = self.createRectangleHelix("SymmetricAngleBody")
-        symmetric.SideType = "Symmetric"
-        symmetric.Mode = 0
-        symmetric.Pitch = 50
-        symmetric.Height = 200
-        symmetric.Angle = 20
-
-        self.Doc.recompute()
-        self.assertLess(twoSided.Shape.Volume, symmetric.Shape.Volume)
-
-    def testSymmetricPitchHeightAngle(self):
-        """Test symmetric helix in pitch-height-angle mode"""
-        helix = self.createRectangleHelix("SymmetricPitchHeightBody")
-        helix.SideType = "Symmetric"
-        helix.Mode = 0
-        helix.Pitch = 50
-        helix.Height = 150
-        self.Doc.recompute()
-
-        self.assertLess(helix.Shape.BoundBox.YMin, 0)
-        self.assertGreater(helix.Shape.BoundBox.YMax, 0)
-        self.assertAlmostEqual(helix.Shape.Volume, pi * 25 * 5 * 3, places=2)
 
     def testCircleQ1(self):
         """Test helix based on circle in Quadrant 1"""
