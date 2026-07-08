@@ -1041,9 +1041,11 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
         return !allConstraints[i]->involvesGeoIdAndPosId(GeoId, PointPos::none);
     });
 
+    std::vector<const Part::Geometry*> newGeosConst(newGeos.begin(), newGeos.end());
+
     for (const auto& oldConstrId : idsOfOldConstraints) {
         Constraint* con = allConstraints[oldConstrId];
-        deriveConstraintsForPieces(GeoId, newIds, con, newConstraints);
+        deriveConstraintsForPieces(GeoId, newIds, newGeosConst, con, newConstraints);
     }
 
     // This also seems to reset SketchObject::Geometry.
