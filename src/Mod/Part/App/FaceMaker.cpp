@@ -303,7 +303,7 @@ void Part::FaceMaker::postBuild()
     }
     else if (historyVersion == App::HistoryAlgorithm::V2) {
         std::unordered_multiset<Data::MappedName, Data::MappedNameHasher> allLinkedNames;
-        std::unordered_map<Data::IndexedName, std::vector<Data::MappedName>, Data::IndexedNameHasher>
+        std::unordered_map<Data::IndexedName, std::pair<std::vector<Data::MappedName>, bool>, Data::IndexedNameHasher>
             linkedNameMap;
 
         for (size_t faceIndex = 0; faceIndex < faces.size(); faceIndex++) {
@@ -319,7 +319,8 @@ void Part::FaceMaker::postBuild()
                 );
 
                 if (edgeMappedName) {
-                    linkedNameMap[faceIndexName].push_back(edgeMappedName);
+                    linkedNameMap[faceIndexName].first.push_back(edgeMappedName);
+                    linkedNameMap[faceIndexName].second = true;
                     allLinkedNames.insert(edgeMappedName);
                 }
             }
@@ -328,33 +329,47 @@ void Part::FaceMaker::postBuild()
         for (auto& linkedNameEntry : linkedNameMap) {
             std::vector<Data::MappedName> fixedNameVector;
 
-            for (const Data::MappedName& mappedName : linkedNameEntry.second) {
+            for (const Data::MappedName& mappedName : linkedNameEntry.second.first) {
                 if (allLinkedNames.count(mappedName) == 1) {
                     fixedNameVector.push_back(mappedName);
                 }
             }
 
-            linkedNameEntry.second = fixedNameVector;
+            if (fixedNameVector.size()) {
+                linkedNameEntry.second.first = fixedNameVector;
+            } else {
+                linkedNameEntry.second.second = false;
+            }
         }
 
+        std::vector<std::string> mapperFlags {"LOW"};
+
         for (const auto& linkedNameEntry : linkedNameMap) {
-            if (linkedNameEntry.second.size()) {
+            if (linkedNameEntry.second.first.size()) {
+                if (linkedNameEntry.second.second) {
+                    mapperFlags.push_back("NDU"); // no duplicate.
+                }
+
                 this->myTopoShape.setElementName(
                     linkedNameEntry.first,
                     Data::MappedName(
                         Data::MappedName::makeSection(
                             {},
-                            linkedNameEntry.second,
+                            linkedNameEntry.second.first,
                             this->myTopoShape.Tag,
                             op,
                             0,
                             'F',
                             0,
-                            {"LOW"}
+                            mapperFlags
                         )
                     ),
                     this->myTopoShape.Tag
                 );
+
+                if (mapperFlags.size() >= 2) {
+                    mapperFlags.pop_back();
+                }
             }
         }
     }
