@@ -112,7 +112,8 @@ private:
     );
     static inline void drawParallelPerpendicularHint(
         ViewProviderSketch& vp,
-        const std::vector<Base::Vector2d>& HintLines
+        const std::vector<Base::Vector2d>& HintLines,
+        int activeLineIndex
     );
     static inline void drawLineExtensionAutoConstraintHint(
         ViewProviderSketch& vp,
@@ -294,10 +295,15 @@ protected:
     ) const;
 
     virtual bool getStartPointOfCurrentSegment(Base::Vector2d& point) const;
-    void drawParallelPerpendicularHint(const std::vector<Base::Vector2d>& HintLines) const;
+    void drawParallelPerpendicularHint(
+        const std::vector<Base::Vector2d>& HintLines,
+        int activeLineIndex = -1
+    ) const;
     void resetParallelPerpendicularHint();
     void clearParallelPerpendicularHintDrawing() const;
     void renderParallelPerpendicularHint() const;
+    bool updateParallelPerpendicularEndpointHint();
+    bool snapToParallelPerpendicularHint(Base::Vector2d& point);
     void startHoverTimer();
     void stopHoverTimer();
     void onHoverTimeout();
@@ -365,6 +371,18 @@ protected:
         Base::Vector2d end;
     };
 
+    struct TangentAutoConstraintHint
+    {
+        bool isValid = false;
+        bool isActive = false;
+        int geoId = Sketcher::GeoEnum::GeoUndef;
+        Sketcher::PointPos posId = Sketcher::PointPos::none;
+        Base::Vector2d start;
+        Base::Vector2d direction;
+        Base::Vector2d center;
+        double radius = 0.0;
+    };
+
     PreselectionData getPreselectionData() const;
 
     double getAutoConstraintSearchDistance() const;
@@ -390,6 +408,12 @@ protected:
         const Base::Vector2d& end
     ) const;
     bool getLineExtensionAutoConstraintSnapPoint(Base::Vector2d& point) const;
+
+    void resetTangentAutoConstraintHint();
+    bool updateTangentAutoConstraintHint();
+    bool renderTangentAutoConstraintHint() const;
+    bool isDirectionCloseToTangentHint(const Base::Vector2d& direction) const;
+    bool snapToTangentHint(Base::Vector2d& point);
 
     bool isLineCenterAutoConstraint(int GeoId, const Base::Vector2d& Pos) const;
 
@@ -422,7 +446,10 @@ protected:
 
 private:
     LineExtensionAutoConstraintHint lineExtensionAutoConstraintHint;
+    TangentAutoConstraintHint tangentAutoConstraintHint;
     int parallelPerpendicularRefGeoId {Sketcher::GeoEnum::GeoUndef};
+    int parallelPerpendicularActiveHintLine {-1};
+    bool parallelPerpendicularRefFromEndpoint {false};
     int lastHoveredGeoId {Sketcher::GeoEnum::GeoUndef};
     QTimer* hoverTimer {nullptr};
 };

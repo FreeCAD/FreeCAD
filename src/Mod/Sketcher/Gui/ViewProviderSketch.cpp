@@ -3784,10 +3784,11 @@ void ViewProviderSketch::drawLineExtensionAutoConstraintHint(
 }
 
 void ViewProviderSketch::drawParallelPerpendicularHint(
-    const std::vector<Base::Vector2d>& HintLines
+    const std::vector<Base::Vector2d>& HintLines,
+    int activeLineIndex
 )
 {
-    editCoinManager->drawParallelPerpendicularHint(HintLines);
+    editCoinManager->drawParallelPerpendicularHint(HintLines, activeLineIndex);
 }
 
 bool ViewProviderSketch::isLineExtensionAutoConstraintHintVisible(

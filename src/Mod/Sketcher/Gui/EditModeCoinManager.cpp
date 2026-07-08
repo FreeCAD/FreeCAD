@@ -662,6 +662,10 @@ void EditModeCoinManager::ParameterObserver::initParameters()
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {
              updateColor(drawingParameters.InformationColor, param);
          }},
+        {"GridLineColor",
+         [this, drawingParameters = Client.drawingParameters](const std::string& param) {
+             updateSketcherGridColor(drawingParameters.GridLineColor, param);
+         }},
         {"UserSchema", [this](const std::string& param) { updateUnit(param); }},
     };
 
@@ -834,6 +838,23 @@ void EditModeCoinManager::ParameterObserver::updateColor(SbColor& sbcolor, const
     unsigned long color = (unsigned long)(sbcolor.getPackedValue());
     color = hGrp->GetUnsigned(parametername.c_str(), color);
     sbcolor.setPackedValue((uint32_t)color, transparency);
+
+    Client.updateInventorColors();
+}
+
+void EditModeCoinManager::ParameterObserver::updateSketcherGridColor(
+    SbColor& sbcolor,
+    const std::string& parametername
+)
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General"
+    );
+
+    float transparency = 0.f;
+    unsigned long color = static_cast<unsigned long>(sbcolor.getPackedValue());
+    color = hGrp->GetUnsigned(parametername.c_str(), color);
+    sbcolor.setPackedValue(static_cast<uint32_t>(color), transparency);
 
     Client.updateInventorColors();
 }
@@ -1134,24 +1155,34 @@ void EditModeCoinManager::drawLineExtensionAutoConstraintHint(
     }
 }
 
-void EditModeCoinManager::drawParallelPerpendicularHint(const std::vector<Base::Vector2d>& HintLines)
+void EditModeCoinManager::drawParallelPerpendicularHint(
+    const std::vector<Base::Vector2d>& HintLines,
+    int activeLineIndex
+)
 {
     const int numPoints = static_cast<int>(HintLines.size());
 
-    if (numPoints < 4) {
+    if (numPoints < 2) {
         editModeScenegraphNodes.ParallelPerpendicularHintSet->numVertices.setNum(0);
         editModeScenegraphNodes.ParallelPerpendicularHintCoordinate->point.setNum(0);
+        editModeScenegraphNodes.ParallelPerpendicularHintMaterials->diffuseColor.setNum(0);
         return;
     }
 
-    editModeScenegraphNodes.ParallelPerpendicularHintSet->numVertices.setNum(2);
-    editModeScenegraphNodes.ParallelPerpendicularHintSet->numVertices.set1Value(0, 2);
-    editModeScenegraphNodes.ParallelPerpendicularHintSet->numVertices.set1Value(1, 2);
-    editModeScenegraphNodes.ParallelPerpendicularHintCoordinate->point.setNum(numPoints);
-    editModeScenegraphNodes.ParallelPerpendicularHintMaterials->diffuseColor.setNum(numPoints);
+    const int numLines = numPoints / 2;
+
+    editModeScenegraphNodes.ParallelPerpendicularHintSet->numVertices.setNum(numLines);
+    for (int lineIndex = 0; lineIndex < numLines; ++lineIndex) {
+        editModeScenegraphNodes.ParallelPerpendicularHintSet->numVertices.set1Value(lineIndex, 2);
+    }
+    editModeScenegraphNodes.ParallelPerpendicularHintCoordinate->point.setNum(numLines * 2);
+    editModeScenegraphNodes.ParallelPerpendicularHintMaterials->diffuseColor.setNum(numLines);
 
     int i = 0;
     for (const auto& point : HintLines) {
+        if (i >= numLines * 2) {
+            break;
+        }
         editModeScenegraphNodes.ParallelPerpendicularHintCoordinate->point.set1Value(
             i,
             SbVec3f(
@@ -1163,11 +1194,15 @@ void EditModeCoinManager::drawParallelPerpendicularHint(const std::vector<Base::
                 )
             )
         );
-        editModeScenegraphNodes.ParallelPerpendicularHintMaterials->diffuseColor.set1Value(
-            i,
-            drawingParameters.InformationColor
-        );
         ++i;
+    }
+
+    for (int lineIndex = 0; lineIndex < numLines; ++lineIndex) {
+        editModeScenegraphNodes.ParallelPerpendicularHintMaterials->diffuseColor.set1Value(
+            lineIndex,
+            lineIndex == activeLineIndex ? drawingParameters.InformationColor
+                                         : drawingParameters.GridLineColor
+        );
     }
 }
 
@@ -1976,7 +2011,7 @@ void EditModeCoinManager::createEditModeInventorNodes()
     editModeScenegraphNodes.infoGroup = new SoGroup();
     editModeScenegraphNodes.infoGroup->setName("InformationGroup");
     infoLayerRoot->addChild(editModeScenegraphNodes.infoGroup);
-        
+
     // Extension line for autoconstraint ++++++++++++++++++++++++
     SoSeparator* lineExtensionAutoConstraintHintRoot = new SoSeparator;
     infoLayerRoot->addChild(lineExtensionAutoConstraintHintRoot);
@@ -2016,6 +2051,11 @@ void EditModeCoinManager::createEditModeInventorNodes()
     SoPickStyle* parallelPerpendicularHintPickStyle = new SoPickStyle;
     parallelPerpendicularHintPickStyle->style = SoPickStyle::UNPICKABLE;
     parallelPerpendicularHintRoot->addChild(parallelPerpendicularHintPickStyle);
+
+    auto parallelPerpendicularHintMaterialBinding = new SoMaterialBinding;
+    parallelPerpendicularHintMaterialBinding->setName("ParallelPerpendicularHintMaterialBinding");
+    parallelPerpendicularHintMaterialBinding->value = SoMaterialBinding::PER_FACE;
+    parallelPerpendicularHintRoot->addChild(parallelPerpendicularHintMaterialBinding);
 
     editModeScenegraphNodes.ParallelPerpendicularHintMaterials = new SoMaterial;
     editModeScenegraphNodes.ParallelPerpendicularHintMaterials->setName(

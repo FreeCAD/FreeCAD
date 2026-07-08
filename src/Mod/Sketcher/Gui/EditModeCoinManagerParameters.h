@@ -103,6 +103,7 @@ struct DrawingParameters
     /** @name Rendering Coin Colors **/
     //@{
     static SbColor InformationColor;                       // Information Overlay Color
+    static SbColor GridLineColor;                          // Color used for inactive hint lines
     static SbColor CrossColorH;                            // Color for the Horizontal Axis
     static SbColor CrossColorV;                            // Color for the Vertical Axis
     static SbColor InvalidSketchColor;                     // Color for rendering an invalid sketch

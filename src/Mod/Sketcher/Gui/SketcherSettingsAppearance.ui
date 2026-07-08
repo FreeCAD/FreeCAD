@@ -768,6 +768,42 @@
         </property>
        </widget>
       </item>
+      <item row="15" column="0">
+       <widget class="QLabel" name="labelGridLineColor">
+        <property name="text">
+         <string>Grid and inactive helpers</string>
+        </property>
+        <property name="buddy">
+         <cstring>GridLineColor</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="15" column="1">
+       <widget class="Gui::PrefColorButton" name="GridLineColor">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Color of sketch grid lines and inactive helper lines</string>
+        </property>
+        <property name="color" stdset="0">
+         <color>
+          <red>178</red>
+          <green>178</green>
+          <blue>178</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>GridLineColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

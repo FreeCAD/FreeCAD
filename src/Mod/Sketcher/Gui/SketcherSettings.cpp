@@ -741,6 +741,7 @@ void SketcherSettingsAppearance::saveSettings()
     ui->FullyConstraintConstructionElementColor->onSave();
     ui->FullyConstraintInternalAlignmentColor->onSave();
     ui->InformationColor->onSave();
+    ui->GridLineColor->onSave();
 
     ui->ConstrainedColor->onSave();
     ui->NonDrivingConstraintColor->onSave();
@@ -805,6 +806,7 @@ void SketcherSettingsAppearance::loadSettings()
     ui->FullyConstraintConstructionElementColor->onRestore();
     ui->FullyConstraintInternalAlignmentColor->onRestore();
     ui->InformationColor->onRestore();
+    ui->GridLineColor->onRestore();
 
     ui->ConstrainedColor->onRestore();
     ui->NonDrivingConstraintColor->onRestore();
