@@ -25,6 +25,7 @@
 
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <QMenu>
+#include <unordered_set>
 
 #include <App/Document.h>
 #include <App/Origin.h>
@@ -311,6 +312,31 @@ void ViewProviderBody::updateData(const App::Property* prop)
     if (prop == &body->Group || prop == &body->BaseFeature) {
         // ensure all model features are in visual body mode
         setVisualBodyMode(true);
+
+        // Detect which features are genuinely new (present in current group but absent
+        // from our previous snapshot). We apply the Body's visual properties only to
+        // those new features so that existing features with individually-customised
+        // colours are never overwritten.
+        //
+        // The snapshot is updated even during restore so that after a document loads,
+        // m_previousGroup already contains all the restored features and only features
+        // added by the user afterwards are treated as new.
+        const auto& currentGroup = body->Group.getValues();
+
+        if (!isRestoring()) {
+            std::unordered_set<App::DocumentObject*> previousSet(
+                m_previousGroup.begin(), m_previousGroup.end());
+
+            for (auto* feature : currentGroup) {
+                if (feature && feature->isDerivedFrom<PartDesign::Feature>()
+                    && previousSet.find(feature) == previousSet.end()) {
+                    // This feature was not in the group before — apply Body's visuals to it.
+                    applyBodyVisualPropsToFeature(feature);
+                }
+            }
+        }
+
+        m_previousGroup = currentGroup;
     }
 
     if (prop == &body->Tip) {
@@ -419,6 +445,51 @@ void ViewProviderBody::unifyVisualProperty(const App::Property* prop)
         if (Gui::ViewProvider* vp = gdoc->getViewProvider(feature)) {
             if (auto fprop = vp->getPropertyByName(prop->getName())) {
                 fprop->Paste(*prop);
+            }
+        }
+    }
+}
+
+void ViewProviderBody::applyBodyVisualPropsToFeature(App::DocumentObject* feature)
+{
+    if (!pcObject || !feature) {
+        return;
+    }
+
+    Gui::Document* gdoc = Gui::Application::Instance->getDocument(pcObject->getDocument());
+    if (!gdoc) {
+        return;
+    }
+
+    Gui::ViewProvider* vp = gdoc->getViewProvider(feature);
+    if (!vp) {
+        return;
+    }
+
+    // List of visual properties that should be inherited from the Body when a new
+    // feature is first added. Deliberately excludes Visibility, Selectable, etc.
+    // which are managed separately.
+    static const char* propNames[] = {
+        "ShapeColor",
+        "ShapeAppearance",
+        "Transparency",
+        "LineColor",
+        "LineMaterial",
+        "LineWidth",
+        "PointColor",
+        "PointMaterial",
+        "PointSize",
+        "DrawStyle",
+        "Lighting",
+        "Deviation",
+        "AngularDeflection",
+        nullptr
+    };
+
+    for (int i = 0; propNames[i]; ++i) {
+        if (App::Property* bodyProp = this->getPropertyByName(propNames[i])) {
+            if (App::Property* featureProp = vp->getPropertyByName(propNames[i])) {
+                featureProp->Paste(*bodyProp);
             }
         }
     }

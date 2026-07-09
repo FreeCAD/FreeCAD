@@ -110,9 +110,14 @@ protected:
     void unifyVisualProperty(const App::Property* prop);
     /// Set Feature viewprovider into visual body mode
     void setVisualBodyMode(bool bodymode);
+    /// Apply the Body's current visual properties to a single newly-added feature
+    void applyBodyVisualPropsToFeature(App::DocumentObject* feature);
 
 private:
     static const char* BodyModeEnum[];
+
+    /// Snapshot of body->Group from the previous updateData() call, used to detect newly-added features
+    std::vector<App::DocumentObject*> m_previousGroup;
 
     void afterRecompute(const App::Document&, const std::vector<App::DocumentObject*>& recomputedObjs);
     fastsignals::scoped_connection m_RecomputedConn;
