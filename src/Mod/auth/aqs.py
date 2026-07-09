@@ -40,6 +40,7 @@ from PySide6 import QtCore, QtWidgets
 
 import auth_config
 import auth_core
+import parashell_telemetry
 
 _singleton = None
 
@@ -147,6 +148,7 @@ class AuthStatusSlot(QtCore.QObject):
             FreeCAD.Console.PrintError(
                 "Parashell Auth: could not start the sign-in flow: %s\n" % exc
             )
+            parashell_telemetry.capture_exception(exc)
             return
         self._flow = flow
         self._deadline = time.monotonic() + auth_config.CALLBACK_TIMEOUT
@@ -159,6 +161,7 @@ class AuthStatusSlot(QtCore.QObject):
             FreeCAD.Console.PrintWarning(
                 "Parashell Auth: could not open the browser: %s\n" % exc
             )
+            parashell_telemetry.capture_exception(exc)
         timer = QtCore.QTimer(self)
         timer.setInterval(200)
         timer.timeout.connect(self._poll_login)
@@ -198,6 +201,9 @@ class AuthStatusSlot(QtCore.QObject):
                 flow.set_state(auth_config.STATUS_FAILURE)
                 self._schedule_flow_close(flow)
             FreeCAD.Console.PrintWarning("Parashell Auth: sign-in failed: %s\n" % error)
+            parashell_telemetry.capture_message(
+                "Auth: sign-in failed: %s" % error, level="error"
+            )
             self._refresh()
             main_window = FreeCADGui.getMainWindow()
             if main_window is not None:
@@ -261,6 +267,7 @@ class AuthStatusSlot(QtCore.QObject):
             payload = auth_core.fetch_mecontrol(token)
             self._mecontrol_ready.emit(payload)
         except Exception as exc:
+            parashell_telemetry.capture_exception(exc)
             self._mecontrol_ready.emit({"_error": str(exc)})
 
     def _on_mecontrol(self, payload):
@@ -330,6 +337,7 @@ class AuthStatusSlot(QtCore.QObject):
             FreeCAD.Console.PrintWarning(
                 "Parashell Auth: could not open the browser: %s\n" % exc
             )
+            parashell_telemetry.capture_exception(exc)
 
     def _start_pulse(self):
         if self._button is None:
