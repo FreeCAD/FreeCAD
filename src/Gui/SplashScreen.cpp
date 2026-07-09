@@ -436,8 +436,6 @@ QPixmap SplashScreen::splashImage()
                 // Parashell's Splashscreen already contains the EXE name, no need to draw it
                 painter.drawText(x, y, title);
             }
-            painter.setFont(fontVer);
-            painter.drawText(x + (l + 235), y - 7, version);
             QColor warningColor(QString::fromStdString(wc->second));
             if (suffix == QLatin1String("dev") && warningColor.isValid()) {
                 fontVer.setPointSizeF(14.0);
