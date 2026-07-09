@@ -22,7 +22,9 @@ class CUSTOMTITLEBARKIT_EXPORT CustomTitleBarWindow : public QMainWindow {
 public:
     enum class Mode { Native, Custom };
 
-    explicit CustomTitleBarWindow(Mode mode = Mode::Custom, QWidget *parent = nullptr);
+    explicit CustomTitleBarWindow(Mode mode = Mode::Custom,
+                                  QWidget *parent = nullptr,
+                                  Qt::WindowFlags flags = Qt::WindowFlags());
 
     Mode mode() const;
     QString backendName() const;

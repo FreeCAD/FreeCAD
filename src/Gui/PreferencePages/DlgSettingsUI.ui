@@ -531,7 +531,7 @@
       <item row="1" column="0">
        <widget class="Gui::PrefCheckBox" name="customTitleBarCheckBox">
         <property name="toolTip">
-         <string>Hide native title bar and implement a custom one</string>
+         <string>Hides the native title bar and implements a custom one</string>
         </property>
         <property name="text">
          <string>Custom title bar</string>

@@ -166,15 +166,18 @@ bool WinTitleBarBackend::handleNativeEvent(const QByteArray& eventType, void* me
 
                 // Assume the area is draggable unless we hit an interactive widget
                 bool isDragArea = true;
-                if (child) {
-                    if (child->property("titleBarDragArea").isValid()) {
-                        isDragArea = child->property("titleBarDragArea").toBool();
+                for (auto *widget = child; widget; widget = widget->parentWidget()) {
+                    if (widget->property("titleBarDragArea").isValid()) {
+                        isDragArea = widget->property("titleBarDragArea").toBool();
+                        break;
                     }
-                    else if (child->inherits("QAbstractButton") || child->inherits("QTabBar")
-                             || child->inherits("QMenuBar") || child->inherits("QComboBox")
-                             || child->inherits("QSpinBox") || child->inherits("QLineEdit")
-                             || child->inherits("QSlider") || child->inherits("QScrollBar")) {
+                    if (widget->inherits("QAbstractButton") || widget->inherits("QTabBar")
+                        || widget->inherits("QMenuBar") || widget->inherits("QComboBox")
+                        || widget->inherits("QSpinBox") || widget->inherits("QLineEdit")
+                        || widget->inherits("QSlider") || widget->inherits("QScrollBar")
+                        || widget->inherits("QToolBar")) {
                         isDragArea = false;  // Block drag so the widget can receive mouse clicks
+                        break;
                     }
                 }
 

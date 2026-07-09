@@ -260,6 +260,7 @@ void FoldableMenuBar::setBrandWidget(QWidget *brand)
     d->brandWidget = brand;
     if (brand) {
         brand->setParent(this);
+        brand->setAttribute(Qt::WA_NoMousePropagation, true);
         brand->installEventFilter(this);
         d->layout->insertWidget(0, brand);
     }
@@ -416,6 +417,15 @@ void FoldableMenuBar::resizeEvent(QResizeEvent *event)
 
 bool FoldableMenuBar::eventFilter(QObject *obj, QEvent *event)
 {
+    if (obj == d->brandWidget && event->type() == QEvent::MouseButtonPress) {
+        auto *mouseEvent = static_cast<QMouseEvent *>(event);
+        if (mouseEvent->button() == Qt::LeftButton && d->foldable) {
+            d->collapseTimer->stop();
+            mouseEvent->accept();
+            return true;
+        }
+    }
+
     if (obj == d->brandWidget && event->type() == QEvent::MouseButtonRelease) {
         auto *mouseEvent = static_cast<QMouseEvent *>(event);
         if (mouseEvent->button() == Qt::LeftButton
@@ -423,6 +433,8 @@ bool FoldableMenuBar::eventFilter(QObject *obj, QEvent *event)
             && d->foldable) {
             d->collapseTimer->stop();
             setExpanded(!d->expanded);
+            mouseEvent->accept();
+            return true;
         }
     }
 
