@@ -2523,6 +2523,10 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                 Data::DecodedMappedSection newNameSection;
                 size_t generatedShapes = generatedShapeEntry.first.size();
 
+                for (const Data::MappedName& linkedName : linkedNames) {
+                    newNameSection.linkedNames.push_back(linkedName.toString());
+                }
+
                 for (size_t i = 0; i < generatedShapes; i++) {
                     const Data::IndexedName& generatedElementName
                         = generatedShapeEntry.first[i].newElementName;
@@ -2531,10 +2535,6 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                     if (getMappedName(generatedElementName)) {
                         continue;
-                    }
-
-                    for (const Data::MappedName& linkedName : linkedNames) {
-                        newNameSection.linkedNames.push_back(linkedName.toString());
                     }
 
                     if (i == 0) {

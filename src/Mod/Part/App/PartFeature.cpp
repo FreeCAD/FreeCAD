@@ -225,7 +225,6 @@ bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName
         if (pairedCheckSections.size()) {
             for (const auto& checkSections : pairedCheckSections) {
                 const Data::DecodedMappedSection& mainCheckSection = checkSections.first;
-
                 bool pass = false;
 
                 for (const Data::DecodedMappedSection& loopCheckSection : checkSections.second) {
