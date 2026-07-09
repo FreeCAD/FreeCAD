@@ -160,6 +160,8 @@ xorg-xproto = "*"
 
 ## macOS Dependencies (Apple Silicon)
 [target.osx-arm64.dependencies]
+coin3d = ">=4.0.8,<4.1.0a0"
+pivy = "*"
 qt6-webengine = ">=6.11,<6.12"
 sed = "*"
 uvloop = "*"
