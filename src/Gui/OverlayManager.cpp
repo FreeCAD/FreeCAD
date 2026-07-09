@@ -1699,7 +1699,7 @@ void OverlayManager::onTaskViewUpdate()
             || it->second->tabWidget->getAutoMode() != OverlayTabWidget::AutoMode::TaskShow) {
             return;
         }
-        d->onToggleDockWidget(dock, taskview->isEmpty() ? -2 : 2);
+        d->onToggleDockWidget(dock, taskview->isEmpty(false) ? -2 : 2);
     }
 }
 

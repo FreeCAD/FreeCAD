@@ -2327,6 +2327,11 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
                     "Direction = (" << Gui::Command::getObjectCmd(pcActiveBody->getOrigin()->getX())
                                     << ",[''])"
                 );
+                FCMD_OBJ_CMD(
+                    Feat,
+                    "Direction2 = ("
+                        << Gui::Command::getObjectCmd(pcActiveBody->getOrigin()->getY()) << ",[''])"
+                );
             }
             FCMD_OBJ_CMD(Feat, "Length = 100");
             FCMD_OBJ_CMD(Feat, "Occurrences = 2");

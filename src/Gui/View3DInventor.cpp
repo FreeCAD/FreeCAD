@@ -73,6 +73,7 @@
 #include "SoFCVectorizeSVGAction.h"
 #include "View3DInventorViewer.h"
 #include "View3DPy.h"
+#include "ViewParams.h"
 #include "ViewProvider.h"
 #include "ViewProviderDocumentObject.h"
 #include "WaitCursor.h"
@@ -374,7 +375,11 @@ bool View3DInventor::onMsg(const char* pMsg)
         return true;
     }
     else if (strcmp("ViewSelection", pMsg) == 0) {
-        _viewer->viewSelection();
+        _viewer->viewSelection(ViewParams::instance()->getViewSelectionExtend());
+        return true;
+    }
+    else if (strcmp("ViewSelectionExtend", pMsg) == 0) {
+        _viewer->viewSelection(true);
         return true;
     }
     else if (strncmp("Dump", pMsg, 4) == 0) {
@@ -383,37 +388,30 @@ bool View3DInventor::onMsg(const char* pMsg)
     }
     else if (strcmp("ViewBottom", pMsg) == 0) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Bottom));
-        _viewer->viewAll();
         return true;
     }
     else if (strcmp("ViewFront", pMsg) == 0) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Front));
-        _viewer->viewAll();
         return true;
     }
     else if (strcmp("ViewLeft", pMsg) == 0) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Left));
-        _viewer->viewAll();
         return true;
     }
     else if (strcmp("ViewRear", pMsg) == 0) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Rear));
-        _viewer->viewAll();
         return true;
     }
     else if (strcmp("ViewRight", pMsg) == 0) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Right));
-        _viewer->viewAll();
         return true;
     }
     else if (strcmp("ViewTop", pMsg) == 0) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Top));
-        _viewer->viewAll();
         return true;
     }
     else if (strcmp("ViewAxo", pMsg) == 0) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Isometric));
-        _viewer->viewAll();
         return true;
     }
     else if (strcmp("ViewDimetric", pMsg) == 0) {
