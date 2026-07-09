@@ -429,7 +429,7 @@ App::DocumentObjectExecReturn* Helix::execute()
         }
 
         Part::TopoShape boolOp(0, getDocument()->getStringHasher());
-        boolOp.makeElementBoolean(getBooleanMaker(), {base, result}, nullptr, FuzzyTolerance.getValue());
+        boolOp.makeElementBoolean(getBooleanMaker(), {base, result});
 
         if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
