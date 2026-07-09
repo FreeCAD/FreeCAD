@@ -109,8 +109,25 @@ constexpr const char* SUB_SECTION_LIST_DELIMINATOR      = ",";
 constexpr const char* SECTION_SUB_DELIMINATOR           = ";";
 /// Name section deliminator.
 constexpr const char* NAME_SECTION_DELIMINATOR          = "|";
-/// Escape character for mapped names in sub-sections
+/// Escape character for mapped names in sub-sections.
 constexpr const char* SUB_SECTION_ESCAPE_CHAR           = "^";
+
+/// Mapper flag that designates that an element is mapped by its subelements.
+constexpr const char* MAPPER_FLAG_LOWER                 = "LOW";
+/// Mapper flag that designates that an element is mapped by other, higher-level, connected elements.
+constexpr const char* MAPPER_FLAG_UPPER                 = "UPP";
+/// Mapper flag that designates that an element is mapped with the `Generated` history method.
+constexpr const char* MAPPER_FLAG_GENERATED             = "GEN";
+/// Mapper flag that designates that an element is mapped with the `Modified` history method.
+constexpr const char* MAPPER_FLAG_MODIFIED              = "MOD";
+/// Mapper flag that designates that an element is mapped with `TopoDS_Shape`'s `IsPartner` method.
+constexpr const char* MAPPER_FLAG_PARTNER               = "PTN";
+/// Mapper flag that designates that an element is a source of `ReferenceIDs`.
+constexpr const char* MAPPER_FLAG_SOURCE                = "SRC";
+/// Mapper flag that designates that an element relies on unreliable, unstable, `IndexedName` mapping.
+constexpr const char* MAPPER_FLAG_INDEX                 = "IDX";
+/// Mapper flag that designates that an element's `LinkedNames` do not share common entries with other names that also have this flag.
+constexpr const char* MAPPER_FLAG_NON_DUPLICATE         = "NDU";
 
 // Placement indexes of data in sections of MappedNames used by the V2 Topological Naming System.
 // DO NOT CHANGE THESE VALUES EVER!!! Data should only be added to sections, not removed or otherwise altered.

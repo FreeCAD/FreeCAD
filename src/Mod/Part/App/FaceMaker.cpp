@@ -342,12 +342,16 @@ void Part::FaceMaker::postBuild()
             }
         }
 
-        std::vector<std::string> mapperFlags {"LOW"};
+        std::vector<std::string> mapperFlags {Data::MAPPER_FLAG_LOWER};
 
         for (const auto& linkedNameEntry : linkedNameMap) {
             if (linkedNameEntry.second.first.size()) {
                 if (linkedNameEntry.second.second) {
-                    mapperFlags.push_back("NDU"); // no duplicate.
+                    if (mapperFlags.size() == 1) {
+                        mapperFlags.push_back(Data::MAPPER_FLAG_NON_DUPLICATE); // no duplicate.
+                    }
+                } else if (mapperFlags.size() > 1) {
+                    mapperFlags.pop_back();
                 }
 
                 this->myTopoShape.setElementName(
@@ -366,10 +370,6 @@ void Part::FaceMaker::postBuild()
                     ),
                     this->myTopoShape.Tag
                 );
-
-                if (mapperFlags.size() >= 2) {
-                    mapperFlags.pop_back();
-                }
             }
         }
     }

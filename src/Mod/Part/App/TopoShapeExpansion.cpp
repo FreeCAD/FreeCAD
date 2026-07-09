@@ -2429,7 +2429,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                         index,
                                         (*info->shapetype),
                                         0,
-                                        {"MOD"},
+                                        {Data::MAPPER_FLAG_MODIFIED},
                                         newConnectedElementNames
                                     )
                                         .c_str()
@@ -2543,7 +2543,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         newNameSection.index = "0";
                         newNameSection.elementType = (*generatedElementName.getType());
                         newNameSection.duplicateCount = "0";
-                        newNameSection.mapperFlags = {"GEN"};
+                        newNameSection.mapperFlags = {Data::MAPPER_FLAG_GENERATED};
                     }
 
                     // we put all generated elements in here, even if it was just mapped above.
@@ -2696,7 +2696,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                         usedPartnerNames.count(incomingShapeMapName),
                                         (*info->shapetype),
                                         0,
-                                        {"PTN"}
+                                        {Data::MAPPER_FLAG_PARTNER}
                                     )
                                         .c_str()
                                 );
@@ -2740,7 +2740,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                 usedUpperNames.count(linkedUpperNames),
                                 (*info->shapetype),
                                 0,
-                                {"UPP"}
+                                {Data::MAPPER_FLAG_UPPER}
                             )
                                 .c_str()
                         );
@@ -2813,7 +2813,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                     usedLowerNames.count(linkedLowerNames),
                                     (*info->shapetype),
                                     0,
-                                    {"LOW"}
+                                    {Data::MAPPER_FLAG_LOWER}
                                 )
                                     .c_str()
                             );
@@ -7109,7 +7109,8 @@ long TopoShape::isElementGenerated(const Data::MappedName& _name, int depth) con
             Data::DecodedMappedSection lastSection = _decodedName.back();
 
             if (lastSection.iterationTag == std::to_string(Tag)
-                && lastSection.hasMapperFlag("GEN")) {  // TODO: globablize mapper flag
+                && lastSection.hasMapperFlag(Data::MAPPER_FLAG_GENERATED))
+            {
                 return true;
             }
         }

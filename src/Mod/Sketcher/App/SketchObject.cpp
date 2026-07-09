@@ -274,8 +274,16 @@ void SketchObject::buildShape()
             builtName = name;
         }
         else if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
-            builtName
-                = Data::MappedName::makeSection({name}, {}, tag, Part::OpCodes::Sketch, 0, 'V', 0, {"SRC"});
+            builtName = Data::MappedName::makeSection(
+                {name},
+                {},
+                tag,
+                Part::OpCodes::Sketch,
+                0,
+                'V',
+                0,
+                {Data::MAPPER_FLAG_SOURCE}
+            );
         }
 
         vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1), builtName, 0L);

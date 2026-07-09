@@ -1631,14 +1631,16 @@ Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *nam
     if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
         builtName = name;
     } else if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
-        builtName = Data::MappedName::makeSection({name},
-                                                  {},
-                                                  getID(),
-                                                  Part::OpCodes::Sketch,
-                                                  0,
-                                                  'E',
-                                                  0,
-                                                  {"SRC"});
+        builtName = Data::MappedName::makeSection(
+            {name},
+            {},
+            getID(),
+            Part::OpCodes::Sketch,
+            0,
+            'E',
+            0,
+            {Data::MAPPER_FLAG_SOURCE}
+        );
     }
     // Originally in ComplexGeoData::setElementName
     // LinkStable/src/App/ComplexGeoData.cpp#L1631
@@ -1662,14 +1664,16 @@ Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *nam
                 if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
                     builtVertexName = ss.str();
                 } else if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
-                    builtVertexName = Data::MappedName::makeSection({ss.str()},
-                                                                    {},
-                                                                    getID(),
-                                                                    Part::OpCodes::Sketch,
-                                                                    0,
-                                                                    'V',
-                                                                    0,
-                                                                    {"SRC"});
+                    builtVertexName = Data::MappedName::makeSection(
+                        {ss.str()},
+                        {},
+                        getID(),
+                        Part::OpCodes::Sketch,
+                        0,
+                        'V',
+                        0,
+                        {Data::MAPPER_FLAG_SOURCE}
+                    );
                 }
                 shape.setElementName(Data::IndexedName::fromConst("Vertex", i),
                                      builtVertexName,0L);

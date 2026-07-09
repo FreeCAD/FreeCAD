@@ -443,7 +443,7 @@ MappedName MappedName::makeUnmappedName(const std::vector<std::string>& indexedN
             0,
             elementType,
             0,
-            {"IDX", "SRC"},
+            {Data::MAPPER_FLAG_INDEX, Data::MAPPER_FLAG_SOURCE},
             {}
         )
     );
