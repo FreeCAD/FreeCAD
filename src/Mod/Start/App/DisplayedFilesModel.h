@@ -83,3 +83,5 @@ private:
 };
 
 }  // namespace Start
+
+Q_DECLARE_METATYPE(Start::FileStats)
