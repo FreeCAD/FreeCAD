@@ -191,8 +191,8 @@ bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName
     Data::DecodedMappedName decodedName2 = name2.getDecodedMappedName();
 
     if (decodedName1.size() && decodedName2.size()) {
-        std::vector<std::pair<Data::DecodedMappedSection, std::vector<Data::DecodedMappedSection>>> pairedCheckSections
-            = {};
+        std::vector<std::pair<Data::DecodedMappedSection, std::vector<Data::DecodedMappedSection>>>
+            pairedCheckSections = {};
 
         pairedCheckSections.push_back({decodedName1.front(), {decodedName2.front()}});
 
@@ -208,17 +208,14 @@ bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName
             for (const Data::DecodedMappedSection& name2Section : decodedName2) {
                 if ((name1Section.iterationTag != Data::EMPTY_VALUE
                      && name2Section.iterationTag == name1Section.iterationTag)
-                    && (name1Section.opCode != Data::EMPTY_VALUE && name2Section.opCode == name1Section.opCode)) 
-                {
+                    && (name1Section.opCode != Data::EMPTY_VALUE
+                        && name2Section.opCode == name1Section.opCode)) {
                     entry.push_back(name2Section);
                 }
             }
 
             if (entry.size()) {
-                pairedCheckSections.push_back({
-                    name1Section,
-                    entry
-                });
+                pairedCheckSections.push_back({name1Section, entry});
             }
         }
 
@@ -244,15 +241,14 @@ bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName
 
                     for (const std::string& name1LinkedName : mainCheckSection.linkedNames) {
                         Data::MappedName name1LinkedMappedName {name1LinkedName};
-                        
+
                         for (const std::string& name2LinkedName : loopCheckSection.linkedNames) {
                             if ((name1LinkedName == name2LinkedName)
                                 || (name1LinkedName != "_" && name2LinkedName != "_"
                                     && doNamesMatch(
                                         name1LinkedMappedName,
                                         Data::MappedName(name2LinkedName)
-                                    ))) 
-                            {
+                                    ))) {
                                 linkedNameInterference++;
                             }
                         }
@@ -262,15 +258,14 @@ bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName
                         Data::MappedName name1ConnectedMappedName {name1ConnectedName};
 
                         for (const std::string& name2ConnectedName :
-                            loopCheckSection.connectedElements)
-                        {
+                             loopCheckSection.connectedElements) {
                             if ((name1ConnectedName == name2ConnectedName)
-                                || (name1ConnectedName != Data::EMPTY_VALUE && name2ConnectedName != Data::EMPTY_VALUE
+                                || (name1ConnectedName != Data::EMPTY_VALUE
+                                    && name2ConnectedName != Data::EMPTY_VALUE
                                     && doNamesMatch(
                                         name1ConnectedMappedName,
                                         Data::MappedName(name2ConnectedName)
-                                    ))) 
-                            {
+                                    ))) {
                                 connectedNameInterference++;
                             }
                         }
@@ -280,9 +275,8 @@ bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName
                     bool connectedElementPass = false;
 
                     if (mainCheckSection.hasMapperFlag(Data::MAPPER_FLAG_LOWER)) {
-                        if (mainCheckSection.hasMapperFlag(Data::MAPPER_FLAG_NON_DUPLICATE) 
-                            && linkedNameInterference >= 1) 
-                        {
+                        if (mainCheckSection.hasMapperFlag(Data::MAPPER_FLAG_NON_DUPLICATE)
+                            && linkedNameInterference >= 1) {
                             linkedNamePass = true;
                         }
                         else if (linkedNameInterference >= 2) {
@@ -291,8 +285,7 @@ bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName
                     }
 
                     if (linkedNameInterference == mainCheckSection.linkedNames.size()
-                        && linkedNameInterference == loopCheckSection.linkedNames.size()) 
-                    {
+                        && linkedNameInterference == loopCheckSection.linkedNames.size()) {
                         linkedNamePass = true;
                     }
 
@@ -301,16 +294,13 @@ bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName
                     }
 
                     if (connectedNameInterference == mainCheckSection.connectedElements.size()
-                        && connectedNameInterference == loopCheckSection.connectedElements.size())
-                    {
+                        && connectedNameInterference == loopCheckSection.connectedElements.size()) {
                         connectedElementPass = true;
                     }
 
-                    if (linkedNamePass
-                        && connectedElementPass
+                    if (linkedNamePass && connectedElementPass
                         && (refIDInterference >= 2
-                            || mainCheckSection.referenceIDs == loopCheckSection.referenceIDs))
-                    {
+                            || mainCheckSection.referenceIDs == loopCheckSection.referenceIDs)) {
                         Data::DecodedMappedSection modifiedFirstSection(mainCheckSection);
                         Data::DecodedMappedSection modifiedSecondSection(loopCheckSection);
 
