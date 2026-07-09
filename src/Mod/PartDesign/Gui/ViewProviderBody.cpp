@@ -325,7 +325,9 @@ void ViewProviderBody::updateData(const App::Property* prop)
 
         if (!isRestoring()) {
             std::unordered_set<App::DocumentObject*> previousSet(
-                m_previousGroup.begin(), m_previousGroup.end());
+                m_previousGroup.begin(),
+                m_previousGroup.end()
+            );
 
             for (auto* feature : currentGroup) {
                 if (feature && feature->isDerivedFrom<PartDesign::Feature>()
