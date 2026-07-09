@@ -177,6 +177,10 @@
             "type": "STRING",
             "value": "Both"
           },
+          "FREECAD_USE_EXTERNAL_COIN_PIVY": {
+            "type": "BOOL",
+            "value": "ON"
+          },
           "OCC_INCLUDE_DIR": {
             "type": "FILEPATH",
             "value": "$env{CONDA_PREFIX}/include/opencascade"
