@@ -8,6 +8,7 @@
 
 #include <QEvent>
 #include <QMenuBar>
+#include <QPointer>
 #include <QResizeEvent>
 #include <QShowEvent>
 #include <QVariantAnimation>
@@ -15,11 +16,11 @@
 
 struct CustomTitleBarWindow::Impl {
     CustomTitleBarWindow::Mode mode = Mode::Custom;
-    TitleBarWidget *titleBar = nullptr;
-    QWidget *menuSpacer = nullptr;   // plain spacer used as setMenuWidget()
+    QPointer<TitleBarWidget> titleBar;
+    QPointer<QWidget> menuSpacer;   // plain spacer used as setMenuWidget()
     std::unique_ptr<PlatformTitleBarBackend> backend;
-    QMenuBar *appMenuBar = nullptr;
-    MenuIntegration *menuIntegration = nullptr;
+    QPointer<QMenuBar> appMenuBar;
+    QPointer<MenuIntegration> menuIntegration;
     int titleBarHeight = 0;
     bool titleBarVisible = true;
     bool attached = false;
@@ -27,7 +28,21 @@ struct CustomTitleBarWindow::Impl {
     int cachedSpacerWidth = 0;
     QVariantAnimation *spacerAnim = nullptr;
 
+    void ensureMenuSpacer(CustomTitleBarWindow* window)
+    {
+        if (menuSpacer) {
+            return;
+        }
+
+        menuSpacer = new QWidget(window);
+        window->setMenuWidget(menuSpacer);
+    }
+
     void updateNativeControlsSpacer() {
+        if (!backend || !titleBar) {
+            return;
+        }
+
         int w = backend->nativeControlsAreaSize().width();
         // Only grow, never shrink — button positions can fluctuate during layout
         if (w > cachedSpacerWidth)
@@ -37,9 +52,15 @@ struct CustomTitleBarWindow::Impl {
 
     void layoutOverlay(CustomTitleBarWindow* window)
     {
-        if (!titleBar) {
+        if (!backend || !titleBar) {
             return;
         }
+
+        ensureMenuSpacer(window);
+        if (!menuSpacer) {
+            return;
+        }
+
         int overlayH = backend->snapTitleBarHeight(titleBar->minimumHeight());
         int spacerH = titleBarVisible ? overlayH : 0;
         // Spacer reserves space in QMainWindow's internal layout
@@ -50,6 +71,10 @@ struct CustomTitleBarWindow::Impl {
     }
 
     void animateSpacerWidth(int targetWidth) {
+        if (!spacerAnim || !titleBar) {
+            return;
+        }
+
         if (spacerAnim->state() == QAbstractAnimation::Running)
             spacerAnim->stop();
         spacerAnim->setStartValue(titleBar->nativeControlsSpacer()->width());
@@ -143,6 +168,7 @@ int CustomTitleBarWindow::titleBarHeight() const
 void CustomTitleBarWindow::setTitleBarHeight(int height)
 {
     if (d->mode == Mode::Native) return;
+    if (!d->backend || !d->titleBar) return;
     if (d->titleBarHeight == height)
         return;
 
@@ -155,24 +181,29 @@ void CustomTitleBarWindow::setTitleBarHeight(int height)
 QWidget *CustomTitleBarWindow::leftArea() const
 {
     if (d->mode == Mode::Native) return nullptr;
+    if (!d->titleBar) return nullptr;
     return d->titleBar->leftArea();
 }
 
 QWidget *CustomTitleBarWindow::rightArea() const
 {
     if (d->mode == Mode::Native) return nullptr;
+    if (!d->titleBar) return nullptr;
     return d->titleBar->rightArea();
 }
 
 QWidget *CustomTitleBarWindow::nativeControlsWidget() const
 {
     if (d->mode == Mode::Native) return nullptr;
+    if (!d->titleBar) return nullptr;
     return d->titleBar->nativeControlsSpacer();
 }
 
 QMenuBar *CustomTitleBarWindow::menuBar()
 {
     if (d->mode == Mode::Native)
+        return QMainWindow::menuBar();
+    if (!d->menuIntegration)
         return QMainWindow::menuBar();
     if (!d->appMenuBar) {
         d->appMenuBar = new QMenuBar(this);
@@ -187,6 +218,8 @@ void CustomTitleBarWindow::setMenuBar(QMenuBar *mb)
         QMainWindow::setMenuBar(mb);
         return;
     }
+    if (!d->menuIntegration)
+        return;
     if (d->appMenuBar) {
         d->menuIntegration->uninstall(this);
         if (d->appMenuBar->parent() == this)
@@ -200,6 +233,10 @@ void CustomTitleBarWindow::setMenuBar(QMenuBar *mb)
 void CustomTitleBarWindow::setMenuIntegration(MenuIntegration *integration)
 {
     if (d->mode == Mode::Native) {
+        delete integration;
+        return;
+    }
+    if (!d->backend) {
         delete integration;
         return;
     }
@@ -221,6 +258,7 @@ bool CustomTitleBarWindow::isTitleBarVisible() const
 void CustomTitleBarWindow::setTitleBarVisible(bool visible)
 {
     if (d->mode == Mode::Native) return;
+    if (!d->backend || !d->titleBar) return;
     if (d->titleBarVisible == visible)
         return;
 
@@ -250,7 +288,7 @@ void CustomTitleBarWindow::showEvent(QShowEvent *event)
     if (!d->safeAreaConnected) {
         if (auto *wh = windowHandle()) {
             connect(wh, &QWindow::safeAreaMarginsChanged, this, [this]() {
-                if (!d->backend->isFullscreen())
+                if (d->backend && !d->backend->isFullscreen())
                     d->updateNativeControlsSpacer();
             });
             d->safeAreaConnected = true;
@@ -279,7 +317,8 @@ bool CustomTitleBarWindow::eventFilter(QObject *obj, QEvent *event)
 {
     if (d->mode == Mode::Native)
         return QMainWindow::eventFilter(obj, event);
-    if (obj == d->titleBar && event->type() == QEvent::Resize && !d->backend->isFullscreen()) {
+    if (obj == d->titleBar && d->backend && event->type() == QEvent::Resize
+        && !d->backend->isFullscreen()) {
         d->backend->setTitleBarHeight(d->titleBar->height());
         d->updateNativeControlsSpacer();
     }
