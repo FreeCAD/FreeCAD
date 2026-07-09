@@ -214,10 +214,12 @@ static void renderDevBuildWarning(
     int boxHeight = static_cast<int>(lineHeight * lineExpansionFactor);
 
     // Draw the background rectangle and the text
+    int boxX = startPosition.x() + std::max(0, (maxSize.width() - boxWidth) / 2);
+    int boxY = startPosition.y() + std::max(0, (maxSize.height() - boxHeight) / 2);
     painter.setPen(color);
-    painter.drawRect(startPosition.x(), startPosition.y(), boxWidth, boxHeight);
-    painter.drawText(startPosition.x() + padding, startPosition.y() + lineHeight, devWarningLine1);
-    painter.drawText(startPosition.x() + padding, startPosition.y() + 2 * lineHeight, devWarningLine2);
+    painter.drawRect(boxX, boxY, boxWidth, boxHeight);
+    painter.drawText(boxX + padding, boxY + lineHeight, devWarningLine1);
+    painter.drawText(boxX + padding, boxY + 2 * lineHeight, devWarningLine2);
 }
 
 }  // namespace Gui
@@ -440,10 +442,9 @@ QPixmap SplashScreen::splashImage()
             if (suffix == QLatin1String("dev") && warningColor.isValid()) {
                 fontVer.setPointSizeF(14.0);
                 painter.setFont(fontVer);
-                const int lineHeight = metricVer.lineSpacing();
                 const int padding {45};  // Distance from the edge of the graphic's bounding box
-                QPoint startPosition(padding, y + lineHeight * 2);
-                QSize maxSize(w / pixelRatio - 2 * padding, lineHeight * 3);
+                QPoint startPosition(padding, 0);
+                QSize maxSize(w / pixelRatio - 2 * padding, h / pixelRatio);
                 renderDevBuildWarning(painter, startPosition, maxSize, warningColor);
             }
             painter.end();
