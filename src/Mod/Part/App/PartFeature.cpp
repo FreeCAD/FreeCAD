@@ -191,107 +191,147 @@ bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName
     Data::DecodedMappedName decodedName2 = name2.getDecodedMappedName();
 
     if (decodedName1.size() && decodedName2.size()) {
-        std::vector<std::pair<Data::DecodedMappedSection, Data::DecodedMappedSection>> pairedCheckSections
+        std::vector<std::pair<Data::DecodedMappedSection, std::vector<Data::DecodedMappedSection>>> pairedCheckSections
             = {};
 
-        pairedCheckSections.push_back({decodedName1[0], decodedName2[0]});
+        pairedCheckSections.push_back({decodedName1.front(), {decodedName2.front()}});
 
         decodedName1.erase(decodedName1.begin());
         decodedName2.erase(decodedName2.begin());
 
+        std::vector<Data::DecodedMappedSection> entry;
+
         // This loop pairs sections together for checking later.
         for (const Data::DecodedMappedSection& name1Section : decodedName1) {
+            entry.clear();
+
             for (const Data::DecodedMappedSection& name2Section : decodedName2) {
-                if ((name1Section.iterationTag != "_"
+                if ((name1Section.iterationTag != Data::EMPTY_VALUE
                      && name2Section.iterationTag == name1Section.iterationTag)
-                    && (name1Section.opCode != "_" && name2Section.opCode == name1Section.opCode)) {
-                    pairedCheckSections.push_back({name1Section, name2Section});
+                    && (name1Section.opCode != Data::EMPTY_VALUE && name2Section.opCode == name1Section.opCode)) 
+                {
+                    entry.push_back(name2Section);
                 }
+            }
+
+            if (entry.size()) {
+                pairedCheckSections.push_back({
+                    name1Section,
+                    entry
+                });
             }
         }
 
         if (pairedCheckSections.size()) {
             for (const auto& checkSections : pairedCheckSections) {
-                // first we need to check reference IDs
-                int refIDInterference = 0;
-                size_t linkedNameInterference = 0;
-                size_t connectedNameInterference = 0;
+                const Data::DecodedMappedSection& mainCheckSection = checkSections.first;
 
-                for (const std::string& name1ListID : checkSections.first.referenceIDs) {
-                    for (const std::string& name2ListID : checkSections.second.referenceIDs) {
-                        if (name1ListID == name2ListID) {
-                            refIDInterference++;
+                bool pass = false;
+
+                for (const Data::DecodedMappedSection& loopCheckSection : checkSections.second) {
+                    // first we need to check reference IDs
+                    int refIDInterference = 0;
+                    size_t linkedNameInterference = 0;
+                    size_t connectedNameInterference = 0;
+
+                    for (const std::string& name1ListID : mainCheckSection.referenceIDs) {
+                        for (const std::string& name2ListID : loopCheckSection.referenceIDs) {
+                            if (name1ListID == name2ListID) {
+                                refIDInterference++;
+                            }
                         }
                     }
-                }
 
-                for (const std::string& name1LinkedName : checkSections.first.linkedNames) {
-                    for (const std::string& name2LinkedName : checkSections.second.linkedNames) {
-                        if ((name1LinkedName == name2LinkedName)
-                            || (name1LinkedName != "_" && name2LinkedName != "_"
-                                && doNamesMatch(
-                                    Data::MappedName(name1LinkedName),
-                                    Data::MappedName(name2LinkedName)
-                                ))) {
-                            linkedNameInterference++;
+                    for (const std::string& name1LinkedName : mainCheckSection.linkedNames) {
+                        Data::MappedName name1LinkedMappedName {name1LinkedName};
+                        
+                        for (const std::string& name2LinkedName : loopCheckSection.linkedNames) {
+                            if ((name1LinkedName == name2LinkedName)
+                                || (name1LinkedName != "_" && name2LinkedName != "_"
+                                    && doNamesMatch(
+                                        name1LinkedMappedName,
+                                        Data::MappedName(name2LinkedName)
+                                    ))) 
+                            {
+                                linkedNameInterference++;
+                            }
                         }
                     }
-                }
 
-                for (const std::string& name1ConnectedName : checkSections.first.connectedElements) {
-                    for (const std::string& name2ConnectedName :
-                         checkSections.second.connectedElements) {
-                        if ((name1ConnectedName == name2ConnectedName)
-                            || (name1ConnectedName != "_" && name2ConnectedName != "_"
-                                && doNamesMatch(
-                                    Data::MappedName(name1ConnectedName),
-                                    Data::MappedName(name2ConnectedName)
-                                ))) {
-                            connectedNameInterference++;
+                    for (const std::string& name1ConnectedName : mainCheckSection.connectedElements) {
+                        Data::MappedName name1ConnectedMappedName {name1ConnectedName};
+
+                        for (const std::string& name2ConnectedName :
+                            loopCheckSection.connectedElements)
+                        {
+                            if ((name1ConnectedName == name2ConnectedName)
+                                || (name1ConnectedName != Data::EMPTY_VALUE && name2ConnectedName != Data::EMPTY_VALUE
+                                    && doNamesMatch(
+                                        name1ConnectedMappedName,
+                                        Data::MappedName(name2ConnectedName)
+                                    ))) 
+                            {
+                                connectedNameInterference++;
+                            }
                         }
                     }
-                }
 
-                bool linkedNamePass = false;
+                    bool linkedNamePass = false;
+                    bool connectedElementPass = false;
 
-                if (checkSections.first.hasMapperFlag(Data::MAPPER_FLAG_LOWER)) {
-                    if (checkSections.first.hasMapperFlag(Data::MAPPER_FLAG_NON_DUPLICATE) && linkedNameInterference >= 1) {
+                    if (mainCheckSection.hasMapperFlag(Data::MAPPER_FLAG_LOWER)) {
+                        if (mainCheckSection.hasMapperFlag(Data::MAPPER_FLAG_NON_DUPLICATE) 
+                            && linkedNameInterference >= 1) 
+                        {
+                            linkedNamePass = true;
+                        }
+                        else if (linkedNameInterference >= 2) {
+                            linkedNamePass = true;
+                        }
+                    }
+
+                    if (linkedNameInterference == mainCheckSection.linkedNames.size()
+                        && linkedNameInterference == loopCheckSection.linkedNames.size()) 
+                    {
                         linkedNamePass = true;
                     }
-                    else if (linkedNameInterference >= 2) {
-                        linkedNamePass = true;
+
+                    if (connectedNameInterference >= 1) {
+                        connectedElementPass = true;
+                    }
+
+                    if (connectedNameInterference == mainCheckSection.connectedElements.size()
+                        && connectedNameInterference == loopCheckSection.connectedElements.size())
+                    {
+                        connectedElementPass = true;
+                    }
+
+                    if (linkedNamePass
+                        && connectedElementPass
+                        && (refIDInterference >= 2
+                            || mainCheckSection.referenceIDs == loopCheckSection.referenceIDs))
+                    {
+                        Data::DecodedMappedSection modifiedFirstSection(mainCheckSection);
+                        Data::DecodedMappedSection modifiedSecondSection(loopCheckSection);
+
+                        // remove the reference ID and linked names lists to make a direct equality
+                        // check much easier.
+                        modifiedFirstSection.referenceIDs.clear();
+                        modifiedFirstSection.linkedNames.clear();
+                        modifiedFirstSection.connectedElements.clear();
+
+                        modifiedSecondSection.referenceIDs.clear();
+                        modifiedSecondSection.linkedNames.clear();
+                        modifiedSecondSection.connectedElements.clear();
+
+                        if (modifiedFirstSection == modifiedSecondSection) {
+                            pass = true;
+                            break;
+                        }
                     }
                 }
 
-                if (linkedNameInterference == checkSections.first.linkedNames.size()
-                    && linkedNameInterference == checkSections.second.linkedNames.size()) {
-                    linkedNamePass = true;
-                }
-
-                if (linkedNamePass
-                    && (connectedNameInterference >= 1
-                        || checkSections.first.connectedElements
-                            == checkSections.second.connectedElements)
-                    && (refIDInterference >= 2
-                        || checkSections.first.referenceIDs == checkSections.second.referenceIDs)) {
-                    Data::DecodedMappedSection modifiedFirstSection(checkSections.first);
-                    Data::DecodedMappedSection modifiedSecondSection(checkSections.second);
-
-                    // remove the reference ID and linked names lists to make a direct equality
-                    // check much easier.
-                    modifiedFirstSection.referenceIDs.clear();
-                    modifiedFirstSection.linkedNames.clear();
-                    modifiedFirstSection.connectedElements.clear();
-
-                    modifiedSecondSection.referenceIDs.clear();
-                    modifiedSecondSection.linkedNames.clear();
-                    modifiedSecondSection.connectedElements.clear();
-
-                    if (modifiedFirstSection != modifiedSecondSection) {
-                        return false;
-                    }
-                }
-                else {
+                if (!pass) {
                     return false;
                 }
             }
