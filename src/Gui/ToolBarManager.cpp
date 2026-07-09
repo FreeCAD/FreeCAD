@@ -963,7 +963,18 @@ bool ToolBarManager::addToolBarToArea(QObject* source, QMouseEvent* ev)
 
     QWidget* menuBar = getMainWindow()->isCustomTitleBar() ? getMainWindow()->menuWidget()
                                                            : getMainWindow()->menuBar();
-    if (!menuBar || !menuBar->isVisible()) {
+    QRect titleBarDropRect;
+    if (auto* mainWin = qobject_cast<CustomTitleBarWindow*>(getMainWindow())) {
+        if (mainWin->mode() == CustomTitleBarWindow::Mode::Custom) {
+            if (auto* leftArea = mainWin->leftArea()) {
+                if (auto* titleBar = leftArea->parentWidget()) {
+                    titleBarDropRect = QRect(titleBar->mapToGlobal(QPoint(0, 0)), titleBar->size());
+                }
+            }
+        }
+    }
+
+    if ((!menuBar || !menuBar->isVisible()) && titleBarDropRect.isEmpty()) {
         if (!statusBar) {
             return false;
         }
@@ -1005,12 +1016,14 @@ bool ToolBarManager::addToolBarToArea(QObject* source, QMouseEvent* ev)
         }
     }
     if (!area) {
-        if (!menuBar) {
+        if (!menuBar && titleBarDropRect.isEmpty()) {
             return false;
         }
-        QRect rect(menuBar->mapToGlobal(QPoint(0, 0)), menuBar->size());
+        QRect rect = !titleBarDropRect.isEmpty()
+            ? titleBarDropRect
+            : QRect(menuBar->mapToGlobal(QPoint(0, 0)), menuBar->size());
         if (rect.contains(pos)) {
-            if (pos.x() - rect.left() < menuBar->width() / 2) {
+            if (pos.x() - rect.left() < rect.width() / 2) {
                 area = menuBarLeftAreaWidget;
             }
             else {
@@ -1096,8 +1109,10 @@ bool ToolBarManager::showContextMenu(QObject* source)
         area = statusBarAreaWidget;
         layout = findLayoutOfObject(source, area);
     }
-    else if ((customTitleBar && getMainWindow()->menuWidget() == source)
-             || (!customTitleBar && getMainWindow()->menuBar() == source)) {
+    else if (
+        (customTitleBar && getMainWindow()->menuWidget() == source)
+        || (!customTitleBar && getMainWindow()->menuBar() == source)
+    ) {
         area = findToolBarAreaWidget();
         if (!area) {
             return false;

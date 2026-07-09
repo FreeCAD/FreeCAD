@@ -370,7 +370,8 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
                   ->GetBool("CustomTitleBar", false)
               ? Mode::Custom
               : Mode::Native,
-          parent
+          parent,
+          f
       )
 {
     d = new MainWindowP;
