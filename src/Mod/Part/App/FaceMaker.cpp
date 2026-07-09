@@ -337,7 +337,8 @@ void Part::FaceMaker::postBuild()
 
             if (fixedNameVector.size()) {
                 linkedNameEntry.second.first = fixedNameVector;
-            } else {
+            }
+            else {
                 linkedNameEntry.second.second = false;
             }
         }
@@ -348,9 +349,10 @@ void Part::FaceMaker::postBuild()
             if (linkedNameEntry.second.first.size()) {
                 if (linkedNameEntry.second.second) {
                     if (mapperFlags.size() == 1) {
-                        mapperFlags.push_back(Data::MAPPER_FLAG_NON_DUPLICATE); // no duplicate.
+                        mapperFlags.push_back(Data::MAPPER_FLAG_NON_DUPLICATE);  // no duplicate.
                     }
-                } else if (mapperFlags.size() > 1) {
+                }
+                else if (mapperFlags.size() > 1) {
                     mapperFlags.pop_back();
                 }
 

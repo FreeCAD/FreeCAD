@@ -7109,8 +7109,7 @@ long TopoShape::isElementGenerated(const Data::MappedName& _name, int depth) con
             Data::DecodedMappedSection lastSection = _decodedName.back();
 
             if (lastSection.iterationTag == std::to_string(Tag)
-                && lastSection.hasMapperFlag(Data::MAPPER_FLAG_GENERATED))
-            {
+                && lastSection.hasMapperFlag(Data::MAPPER_FLAG_GENERATED)) {
                 return true;
             }
         }
