@@ -19,6 +19,24 @@ struct TitleBarWidget::Impl {
     WindowDecorationButton* maximizeBtn = nullptr;
     WindowDecorationButton* restoreBtn = nullptr;
     WindowDecorationButton *closeBtn = nullptr;
+
+    bool blocksWindowDrag(QWidget *child, const TitleBarWidget *titleBar) const
+    {
+        for (auto *widget = child; widget && widget != titleBar; widget = widget->parentWidget()) {
+            if (widget->property("titleBarDragArea").isValid()) {
+                return !widget->property("titleBarDragArea").toBool();
+            }
+            if (widget->inherits("QAbstractButton") || widget->inherits("QTabBar")
+                || widget->inherits("QMenuBar") || widget->inherits("QComboBox")
+                || widget->inherits("QSpinBox") || widget->inherits("QLineEdit")
+                || widget->inherits("QSlider") || widget->inherits("QScrollBar")
+                || widget->inherits("QToolBar")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 };
 
 TitleBarWidget::TitleBarWidget(QWidget *parent)
@@ -168,6 +186,10 @@ void TitleBarWidget::setWindowControlsVisible(bool visible)
 void TitleBarWidget::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
+        if (d->blocksWindowDrag(childAt(event->pos()), this)) {
+            QWidget::mousePressEvent(event);
+            return;
+        }
         if (auto *wh = window()->windowHandle()) {
             wh->startSystemMove();
             return;
@@ -179,6 +201,10 @@ void TitleBarWidget::mousePressEvent(QMouseEvent *event)
 void TitleBarWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
+        if (d->blocksWindowDrag(childAt(event->pos()), this)) {
+            QWidget::mouseDoubleClickEvent(event);
+            return;
+        }
         if (auto* w = window()) {
             if (w->isMaximized()) {
                 w->showNormal();
