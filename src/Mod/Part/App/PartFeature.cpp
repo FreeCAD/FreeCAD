@@ -257,7 +257,8 @@ bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName
                 if (checkSections.first.hasMapperFlag(Data::MAPPER_FLAG_LOWER)) {
                     if (checkSections.first.hasMapperFlag(Data::MAPPER_FLAG_NON_DUPLICATE) && linkedNameInterference >= 1) {
                         linkedNamePass = true;
-                    } else if (linkedNameInterference >= 2) {
+                    }
+                    else if (linkedNameInterference >= 2) {
                         linkedNamePass = true;
                     }
                 }

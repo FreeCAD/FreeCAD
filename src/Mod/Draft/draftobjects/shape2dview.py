@@ -200,11 +200,6 @@ class Shape2DView(DraftObject):
                     nedges.append(e)
         return nedges
 
-    def excludeNames(self, obj, objs):
-        if hasattr(obj, "ExclusionNames"):
-            objs = [o for o in objs if not (o.Name in obj.ExclusionNames)]
-            return objs
-
     def _get_shapes(self, shape, onlysolids=False):
         if onlysolids:
             return shape.Solids
@@ -227,14 +222,13 @@ class Shape2DView(DraftObject):
             if utils.get_type(obj.Base) in ["BuildingPart", "SectionPlane", "IfcAnnotation"]:
                 objs = []
                 if utils.get_type(obj.Base) == "SectionPlane":
-                    objs = self.excludeNames(obj, obj.Base.Objects)
+                    objs = obj.Base.Objects
                     cutplane = obj.Base.Shape
                 elif utils.get_type(obj.Base) == "IfcAnnotation":
                     # this is a NativeIFC section plane
                     objs, cutplane = obj.Base.Proxy.get_section_data(obj.Base)
-                    objs = self.excludeNames(obj, objs)
                 else:
-                    objs = self.excludeNames(obj, obj.Base.Group)
+                    objs = obj.Base.Group
                     cutplane = Part.makePlane(1000, 1000, App.Vector(-500, -500, 0))
                     m = 1
                     if obj.Base.ViewObject and hasattr(obj.Base.ViewObject, "CutMargin"):
@@ -253,7 +247,15 @@ class Shape2DView(DraftObject):
                     except:
                         print("Shape2DView: BIM not present, unable to recompute")
                         return
-                    objs = groups.get_group_contents(objs, walls=True)
+                    excluded = (
+                        set(obj.ExclusionNames)
+                        if hasattr(obj, "ExclusionNames") and obj.ExclusionNames
+                        else None
+                    )
+                    objs = groups.get_group_contents(objs, walls=True, exclude_names=excluded)
+                    if not objs:
+                        obj.Shape = Part.Shape()
+                        return
                     if getattr(obj, "VisibleOnly", True):
                         objs = gui_utils.remove_hidden(objs)
                     shapes = []
@@ -386,7 +388,12 @@ class Shape2DView(DraftObject):
 
             elif obj.Base.isDerivedFrom("App::DocumentObjectGroup"):
                 shapes = []
-                objs = self.excludeNames(obj, groups.get_group_contents(obj.Base))
+                excluded = (
+                    set(obj.ExclusionNames)
+                    if hasattr(obj, "ExclusionNames") and obj.ExclusionNames
+                    else None
+                )
+                objs = groups.get_group_contents(obj.Base, exclude_names=excluded)
                 for o in objs:
                     if hasattr(o, "Shape"):
                         shapes.extend(self._get_shapes(o.Shape))

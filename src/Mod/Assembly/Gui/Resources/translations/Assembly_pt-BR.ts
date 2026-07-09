@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1888"/>
+      <location filename="../../../JointObject.py" line="1896"/>
       <source>Distance</source>
       <translation>Distância</translation>
     </message>
@@ -175,22 +175,27 @@
       <translation>Vinculo quebrado em: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1696"/>
+      <location filename="../../../JointObject.py" line="1238"/>
+      <source>Edit Joint</source>
+      <translation type="unfinished">Edit Joint</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="1704"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Selecione 2 elementos de 2 partes distintas</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1890"/>
+      <location filename="../../../JointObject.py" line="1898"/>
       <source>Radius 1</source>
       <translation>Raio 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1892"/>
+      <location filename="../../../JointObject.py" line="1900"/>
       <source>Thread pitch</source>
       <translation>Passo da rosca</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1894"/>
+      <location filename="../../../JointObject.py" line="1902"/>
       <source>Pitch radius</source>
       <translation>Raio de inclinação</translation>
     </message>
@@ -482,44 +487,39 @@ SLOPE define a firmeza da transição entre 0 e H1 e H2 para 0 sobre tempo = T1 
       <translation>Não há quadros suficientes para criar uma animação.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1053"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1068"/>
       <source>Save Animation</source>
       <translation>Salvar animação</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1075"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1093"/>
+      <source>Pillow (PIL) is not installed. It is required for video export.</source>
+      <translation type="unfinished">Pillow (PIL) is not installed. It is required for video export.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1100"/>
       <source>Generating Frames…</source>
       <translation type="unfinished">Generating Frames…</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1076"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1101"/>
       <source>Cancel</source>
       <translation>Cancelar</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1103"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1128"/>
       <source>Assembling animation…</source>
       <translation type="unfinished">Assembling animation…</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1119"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1150"/>
       <source>An error occurred while saving the animation</source>
       <translation>Ocorreu um erro ao salvar a animação</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1137"/>
-      <source>Pillow (PIL) is not installed. It is required for GIF export.</source>
-      <translation>Pillow (PIL) não está instalado. É necessário para a exportação de GIF.</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1160"/>
-      <source>OpenCV is not installed. It is required for video export.</source>
-      <translation>OpenCV não está instalado. É necessário para a exportação de vídeo.</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1177"/>
-      <source>Could not open video writer. Check codecs.</source>
-      <translation>Não foi possível abrir o escritor de vídeo. Verifique os codecs.</translation>
+      <location filename="../../../CommandCreateSimulation.py" line="1184"/>
+      <source>PyAv is not installed. It is required for video export.</source>
+      <translation type="unfinished">PyAv is not installed. It is required for video export.</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="160"/>
@@ -677,7 +677,7 @@ SLOPE define a firmeza da transição entre 0 e H1 e H2 para 0 sobre tempo = T1 
       <translation type="unfinished">The {order} reference of the joint</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1280"/>
+      <location filename="../../../JointObject.py" line="1288"/>
       <source>The object to ground</source>
       <translation>Fixar objeto</translation>
     </message>

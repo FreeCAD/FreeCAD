@@ -1273,6 +1273,8 @@ class Snapper:
         provider = self.pointConstraintProvider
         if provider is None:
             return point
+        if hasattr(provider, "has_point_constraints") and not provider.has_point_constraints():
+            return point
         locked = provider.constrain_point(point, lastpoint)
         if noTracker or locked is None:
             return locked
@@ -1636,6 +1638,11 @@ class Snapper:
             self.radiusTracker.update(self.radius)
             self.radiusTracker.on()
 
+    def hideRadius(self):
+        """Hide the snap radius indicator."""
+        if self.radiusTracker:
+            self.radiusTracker.off()
+
     def isEnabled(self, snap):
         """Returns true if the given snap is on"""
         if "Lock" in self.active_snaps and snap in self.active_snaps:
@@ -1754,6 +1761,8 @@ class Snapper:
                 self.trackers[8].append(self.extLine2)
                 self.trackers[9].append(self.holdTracker)
             self.activeview = v
+
+        self.hideRadius()
 
         if not update_grid:
             return

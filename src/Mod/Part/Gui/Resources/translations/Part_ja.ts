@@ -1245,7 +1245,7 @@
     <message>
       <location filename="../../Command.cpp" line="1405"/>
       <source>Applies a boolean operation with the selected shapes</source>
-      <translation type="unfinished">Applies a boolean operation with the selected shapes</translation>
+      <translation>選択したシェイプにブール演算を適用</translation>
     </message>
   </context>
   <context>
@@ -3367,7 +3367,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="23"/>
       <source>Select the type of geometric primitive to create</source>
-      <translation type="unfinished">Select the type of geometric primitive to create</translation>
+      <translation>作成する幾何プリミティブの種類を選択</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="36"/>
@@ -3478,7 +3478,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="250"/>
       <source>Length of the plane in the local X direction</source>
-      <translation type="unfinished">Length of the plane in the local X direction</translation>
+      <translation>平面のローカルX方向の長さ</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="266"/>
@@ -3489,17 +3489,17 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="273"/>
       <source>Width of the plane in the local Y direction</source>
-      <translation type="unfinished">Width of the plane in the local Y direction</translation>
+      <translation>平面のローカルY方向の幅</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="347"/>
       <source>Length of the box in the local X direction</source>
-      <translation type="unfinished">Length of the box in the local X direction</translation>
+      <translation>ボックスのローカルX方向の長さ</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="370"/>
       <source>Width of the box in the local Y direction</source>
-      <translation type="unfinished">Width of the box in the local Y direction</translation>
+      <translation>ボックスのローカルY方向の幅</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="386"/>
@@ -3513,7 +3513,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="393"/>
       <source>Height of the box in the local Z direction</source>
-      <translation type="unfinished">Height of the box in the local Z direction</translation>
+      <translation>ボックスのローカルZ方向の高さ</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="463"/>
@@ -4854,7 +4854,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../Location.ui" line="114"/>
       <source>Pick Position</source>
-      <translation type="unfinished">Pick Position</translation>
+      <translation>位置を選択</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="244"/>
@@ -6121,7 +6121,7 @@ Continue?</source>
       <location filename="../../Command.cpp" line="1082"/>
       <location filename="../../Command.cpp" line="1152"/>
       <source>IGES with colors</source>
-      <translation type="unfinished">IGES with colors</translation>
+      <translation>色付きIGES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1201"/>
@@ -6543,7 +6543,7 @@ Continue?</source>
     <message>
       <location filename="../../ViewProviderAttachExtension.cpp" line="101"/>
       <source>Edit Attachment</source>
-      <translation type="unfinished">Edit Attachment</translation>
+      <translation>アタッチメントを編集</translation>
     </message>
   </context>
   <context>
@@ -7150,12 +7150,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part::FaceMakerExtrusion</name>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="421"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="427"/>
       <source>Part Extrude facemaker</source>
       <translation>パーツ押し出しフェイスメーカー</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="426"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="432"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation>サポートされている穴を作成する面では、入れ子をサポートしていません。</translation>
     </message>
@@ -7678,13 +7678,13 @@ Overlapping volumes of the shapes will be removed.</source>
       <location filename="../../PatternParametersWidget.cpp" line="79"/>
       <location filename="../../PatternParametersWidget.cpp" line="81"/>
       <source>Total Angle</source>
-      <translation type="unfinished">Total Angle</translation>
+      <translation>合計角度</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="80"/>
       <location filename="../../PatternParametersWidget.cpp" line="82"/>
       <source>Angular Spacing</source>
-      <translation type="unfinished">Angular Spacing</translation>
+      <translation>角度間隔</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="423"/>
@@ -7700,7 +7700,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="940"/>
       <source>Reset spacing</source>
-      <translation type="unfinished">Reset spacing</translation>
+      <translation>間隔をリセット</translation>
     </message>
   </context>
   <context>
@@ -7718,6 +7718,19 @@ Overlapping volumes of the shapes will be removed.</source>
       <source>STEP with colors</source>
       <extracomment>Translation note: "STEP" is a file type end should not be translated</extracomment>
       <translation>色付きSTEP</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerUnified</name>
+    <message>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
+      <source>Unified facemaker</source>
+      <translation type="unfinished">Unified facemaker</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
+      <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
+      <translation type="unfinished">Unified: handles nested holes, overlapping wires, and curved surfaces</translation>
     </message>
   </context>
   <context>
