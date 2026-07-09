@@ -480,11 +480,6 @@ void StartupPostProcess::showMainWindow()
         throw;
     }
 
-    // Finish processing all events, including initializations, before
-    // hiding the splash and showing the main window
-    QCoreApplication::processEvents(QEventLoop::AllEvents);
-    QCoreApplication::sendPostedEvents();
-
     // stop splash screen and set immediately the active window that may be of interest
     // for scripts using Python binding for Qt
     mainWindow->stopSplasher();

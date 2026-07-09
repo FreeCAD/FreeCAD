@@ -20,19 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include <cstdlib>
 #include <QApplication>
 #include <QClipboard>
 #include <QDir>
+#include <QElapsedTimer>
 #include <QFile>
 #include <QFileInfo>
 #include <QMutex>
 #include <QPainter>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
+#include <QThread>
 #include <QWaitCondition>
-
+#include <QWindow>
 
 #include <App/Application.h>
 #include <App/Metadata.h>
@@ -239,19 +240,6 @@ SplashScreen::~SplashScreen()
     delete messages;
 }
 
-// Whenever QSplashScreen gets a QEvent::Show or is about to be finish()ed, it will start
-// waiting for its window to be displayed and puts the main thread to sleep repeatedly as
-// long as it isn't reported as such. (see qtbase@52a4103 src/widgets/widgets/qsplashscreen.cpp:214)
-// Problem is QWidget::show() triggers QWidgetPrivate::setVisible() in turn sending a QEvent::Show,
-// but by that point the underlying QWindow may not have been flagged as visible yet.
-// On Linux with either X11 or Wayland, this disturbs the event loop, and QWindow visibility
-// will never be reported as these protocols require explicit flushing and event pulling from said
-// event loop, thus making the QSplashScreen waitForWidgetMapped() function wait for its default
-// timeout of 1000 ms, delaying the entire app's startup by a whole second or more.
-// Override SplashScreen::event() and QSplashScreen::finish() to bypass this entirely.
-// The window's visibility status is up to the event loops and compositors, it is out of our
-// control, so don't bother.
-
 void SplashScreen::finish(QWidget* w)
 {
     Q_UNUSED(w);
@@ -265,6 +253,33 @@ bool SplashScreen::event(QEvent* e)
         return QWidget::event(e);  // NOLINT(bugprone-parent-virtual-call)
     }
     return QSplashScreen::event(e);
+}
+
+void SplashScreen::show()
+{
+    QSplashScreen::show();
+
+    // Our repaint will call processEvents later on, no need to waste time here
+    if (messages->bErr) {
+        return;
+    }
+
+    // Show events are bypassed and splash window is already created by the above show()
+    // call. Now process pending events from underlying OS which actually brings splash
+    // into existence (such as X' MapNotify/Expose events or Wayland's xdg_surface
+    // configuration acknowledgement)
+    constexpr int TimeOut = 250;
+    constexpr int TimeSlice = 20;
+    QElapsedTimer timer;
+    timer.start();
+    while (timer.elapsed() < TimeOut) {
+        QCoreApplication::processEvents(QEventLoop::AllEvents, TimeSlice);
+        QCoreApplication::sendPostedEvents();
+        if (windowHandle()->isExposed()) {
+            break;
+        }
+        QThread::msleep(TimeSlice);
+    }
 }
 
 /**
