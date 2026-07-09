@@ -461,15 +461,15 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(
         case TopAbs_VERTEX:
             // Vertex search will do comparison with tolerance to account for
             // rounding error inccured through transformation.
-            for (auto& shape : getSubTopoShapes(TopAbs_VERTEX)) {
+            for (auto& shape : getSubShapes(TopAbs_VERTEX)) {
                 ++index;
-                if (BRep_Tool::Pnt(TopoDS::Vertex(shape.getShape()))
+                if (BRep_Tool::Pnt(TopoDS::Vertex(shape))
                         .SquareDistance(BRep_Tool::Pnt(TopoDS::Vertex(subshape.getShape())))
                     <= tol2) {
                     if (names) {
                         names->push_back(std::string("Vertex") + std::to_string(index));
                     }
-                    res.push_back(shape);
+                    res.push_back(getSubTopoShape(TopAbs_VERTEX, index));
                     if (singleSearch) {
                         return res;
                     }
