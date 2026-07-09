@@ -222,6 +222,12 @@ std::string Base::Tools::escapeEncodeString(const std::string& s)
             case '\'':
                 result += "\\\'";
                 break;
+            case '\n':
+                result += "\\n";
+                break;
+            case '\r':
+                result += "\\r";
+                break;
             default:
                 result += s.at(i);
                 break;

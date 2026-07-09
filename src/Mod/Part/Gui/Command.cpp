@@ -1269,7 +1269,8 @@ void CmdPartMakeSolid::activated(int iMsg)
         nullptr,
         Gui::ResolveMode::FollowLink
     );
-    runCommand(Doc, "import Part");
+    addModule(Doc, "Part");
+    openCommand("Make solid");
     for (auto it : objs) {
         const TopoDS_Shape& shape = Part::Feature::getShape(
             it,
@@ -1278,6 +1279,9 @@ void CmdPartMakeSolid::activated(int iMsg)
         if (!shape.IsNull()) {
             TopAbs_ShapeEnum type = shape.ShapeType();
             QString str;
+            QString name = QString::fromLatin1(it->getNameInDocument());
+            std::string label = it->Label.getValue();
+            label = Base::Tools::escapeEncodeString(label);
             if (type == TopAbs_SOLID) {
                 Base::Console().message(
                     "%s is ignored because it is already a solid.\n",
@@ -1293,10 +1297,7 @@ void CmdPartMakeSolid::activated(int iMsg)
                           "__o__.Shape=__s__\n"
                           "del __s__, __o__"
                 )
-                          .arg(
-                              QLatin1String(it->getNameInDocument()),
-                              QLatin1String(it->Label.getValue())
-                          );
+                          .arg(name, QString::fromUtf8(label.c_str()));
             }
             else if (type == TopAbs_SHELL) {
                 str = QStringLiteral(
@@ -1307,10 +1308,7 @@ void CmdPartMakeSolid::activated(int iMsg)
                           "__o__.Shape=__s__\n"
                           "del __s__, __o__"
                 )
-                          .arg(
-                              QLatin1String(it->getNameInDocument()),
-                              QLatin1String(it->Label.getValue())
-                          );
+                          .arg(name, QString::fromUtf8(label.c_str()));
             }
             else {
                 Base::Console().message(
@@ -1321,7 +1319,7 @@ void CmdPartMakeSolid::activated(int iMsg)
 
             try {
                 if (!str.isEmpty()) {
-                    runCommand(Doc, str.toLatin1());
+                    runCommand(Doc, str.toUtf8());
                 }
             }
             catch (const Base::Exception& e) {
@@ -1329,6 +1327,8 @@ void CmdPartMakeSolid::activated(int iMsg)
             }
         }
     }
+
+    commitCommand();
 }
 
 bool CmdPartMakeSolid::isActive()
@@ -1371,6 +1371,8 @@ void CmdPartReverseShape::activated(int iMsg)
             name += "_rev";
             name = getUniqueObjectName(name.c_str());
 
+            std::string label = it->Label.getValue();
+            label = Base::Tools::escapeEncodeString(label);
             QString str = QStringLiteral(
                               "__o__=App.ActiveDocument.addObject(\"Part::Reverse\",\"%1\")\n"
                               "__o__.Source=App.ActiveDocument.%2\n"
@@ -1380,11 +1382,11 @@ void CmdPartReverseShape::activated(int iMsg)
                               .arg(
                                   QString::fromLatin1(name.c_str()),
                                   QString::fromLatin1(it->getNameInDocument()),
-                                  QString::fromLatin1(it->Label.getValue())
+                                  QString::fromUtf8(label.c_str())
                               );
 
             try {
-                runCommand(Doc, str.toLatin1());
+                runCommand(Doc, str.toUtf8());
                 copyVisual(name.c_str(), "ShapeAppearance", it->getNameInDocument());
                 copyVisual(name.c_str(), "LineColor", it->getNameInDocument());
                 copyVisual(name.c_str(), "PointColor", it->getNameInDocument());
