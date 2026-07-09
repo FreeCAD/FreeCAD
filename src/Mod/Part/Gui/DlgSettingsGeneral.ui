@@ -116,7 +116,7 @@
         <item>
          <widget class="Gui::PrefComboBox" name="selectedHistoryAlgorithmEnum">
           <property name="toolTip">
-           <string>The Topological Naming Algorithm version used across FreeCAD.</string>
+           <string>Sets the topological naming algorithm version used across FreeCAD</string>
           </property>
           <property name="editable">
            <bool>false</bool>
