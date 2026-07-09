@@ -108,6 +108,8 @@ class ToolBit(Asset, ABC):
         # This is what the user selected and should be saved back to disk
         # If not provided, default to the class name (e.g., "Endmill")
         self._shape_type = attrs.get("shape-type") if attrs else tool_bit_shape.name
+        # Unknown top-level keys; merged back on save so third-party extensions survive round-trips.
+        self._extra_attrs: dict = {}
 
     def __eq__(self, other):
         """Compare ToolBit objects based on their unique ID."""
@@ -229,6 +231,8 @@ class ToolBit(Asset, ABC):
                 )
 
         toolbit._update_tool_properties()
+        # Snapshot all keys; to_dict() lets native keys take precedence, unknown ones pass through.
+        toolbit._extra_attrs = dict(attrs)
         return toolbit
 
     @classmethod
@@ -979,6 +983,12 @@ class ToolBit(Asset, ABC):
                     f"(type {type(value).__name__}, value {value}): {e}"
                 )
 
+        # Merge unrecognised keys back so they aren't dropped on save.
+        extra = getattr(self, "_extra_attrs", {})
+        for k, v in extra.items():
+            if k not in attrs:
+                attrs[k] = v
+
         Path.Log.debug(f"to_dict output for {self.obj.Label}: {attrs}")
         return attrs
 
@@ -1011,6 +1021,11 @@ class ToolBit(Asset, ABC):
         }
 
         return state
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+        # Seed _extra_attrs from _obj_data so unrecognised keys survive round-trips.
+        self._extra_attrs = state.get("_obj_data", {})
 
     def get_spindle_direction(self) -> toolchange.SpindleDirection:
         """

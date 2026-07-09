@@ -359,6 +359,7 @@ Command Command::transform(const Base::Placement& other)
         }
         c.Parameters[k] = v;
     }
+    c.Annotations = Annotations;
     return c;
 }
 

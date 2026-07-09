@@ -46,7 +46,6 @@ add_executable(Base_tests_run
 setup_qt_test(InventorBuilder)
 
 target_link_libraries(Base_tests_run PRIVATE
-    GTest::gtest_main
     GTest::gmock_main
     FreeCADApp
     ${Python3_LIBRARIES}

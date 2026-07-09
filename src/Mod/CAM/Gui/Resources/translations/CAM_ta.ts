@@ -3346,7 +3346,7 @@ See the file save policy below on how to deal with name conflicts.</source>
       <translation>அச்சுவரைபடம் மைப்பூசு</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="94"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="288"/>
       <location filename="../panels/AxisMapEdit.ui" line="20"/>
       <source>Radius</source>
       <translation>ஆரம்</translation>
@@ -3553,142 +3553,142 @@ See the file save policy below on how to deal with name conflicts.</source>
       <translation>குறிச்சொற்களை வைத்திருத்தல்</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="28"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="224"/>
       <source>Width</source>
       <translation>அகலம்</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="80"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="274"/>
       <source>Height</source>
       <translation>உயரம்</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="42"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="238"/>
       <source>Angle</source>
       <translation>கோணம்</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="35"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="231"/>
       <source>Width of the resulting holding tag</source>
       <translation>இதன் விளைவாக வைத்திருக்கும் குறிச்சொல்லின் அகலம்</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="49"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="245"/>
       <source>Plunge angle for ascent and descent of holding tag</source>
       <translation>ஓல்டிங் டேக் ஏறுவதற்கும் இறங்குவதற்குமான கோணம்</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="52"/>
-      <source> °</source>
-      <translation>°</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="136"/>
-      <source>Remove all tags from list</source>
-      <translation type="unfinished">Remove all tags from list</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="139"/>
-      <source>Clear</source>
-      <translation>தெளிவு</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="146"/>
-      <source>Remove selected tag from list</source>
-      <translation type="unfinished">Remove selected tag from list</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="149"/>
-      <source>Remove</source>
-      <translation>அகற்று</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="156"/>
-      <source>Edit position of selected tag</source>
-      <translation type="unfinished">Edit position of selected tag</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="159"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="124"/>
       <source>Edit</source>
       <translation>திருத்து</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="166"/>
-      <source>Add new tags</source>
-      <translation type="unfinished">Add new tags</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="101"/>
+      <source>Remove all tags from list</source>
+      <translation type="unfinished">Remove all tags from list</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="169"/>
-      <source>Add</source>
-      <translation>சேர்</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="104"/>
+      <source>Clear</source>
+      <translation>தெளிவு</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="176"/>
-      <source>Enable/disable all tags</source>
-      <translation type="unfinished">Enable/disable all tags</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="111"/>
+      <source>Remove selected tag from list</source>
+      <translation type="unfinished">Remove selected tag from list</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="179"/>
-      <source>Enable All</source>
-      <translation type="unfinished">Enable All</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="114"/>
+      <source>Remove</source>
+      <translation>அகற்று</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="186"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="121"/>
+      <source>Edit position of selected tag</source>
+      <translation type="unfinished">Edit position of selected tag</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="131"/>
       <source>Replace all tags by tags from another DressupTag</source>
       <translation type="unfinished">Replace all tags by tags from another DressupTag</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="189"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="134"/>
       <source>Copy</source>
       <translation>நகலெடு</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="206"/>
-      <source>Min</source>
-      <translation type="unfinished">Min</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="141"/>
+      <source>Enable/disable all tags</source>
+      <translation type="unfinished">Enable/disable all tags</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="213"/>
-      <source>Minimum number of tags per short wire</source>
-      <translation type="unfinished">Minimum number of tags per short wire</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="144"/>
+      <source>Enable All</source>
+      <translation type="unfinished">Enable All</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="229"/>
-      <source>Max</source>
-      <translation type="unfinished">Max</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="177"/>
+      <source>Add new tags</source>
+      <translation type="unfinished">Add new tags</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="236"/>
-      <source>Maximum number of tags per long wire</source>
-      <translation type="unfinished">Maximum number of tags per long wire</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="180"/>
+      <source>Add</source>
+      <translation>சேர்</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="252"/>
-      <source>Create the specified number of tags for each bottom wire</source>
-      <translation type="unfinished">Create the specified number of tags for each bottom wire</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="248"/>
+      <source> °</source>
+      <translation>°</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="255"/>
-      <source>Replace Existing Tags</source>
-      <translation type="unfinished">Replace Existing Tags</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="87"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="281"/>
       <source>Height of holding tag. Note that resulting tag might be smaller if the tag&apos;s width and angle result in a triangular shape.</source>
       <translation>வைத்திருக்கும் குறிச்சொல்லின் உயரம். குறிச்சொல்லின் அகலம் மற்றும் கோணம் முக்கோண வடிவத்தில் இருந்தால், விளைந்த குறிச்சொல் சிறியதாக இருக்கலாம் என்பதை நினைவில் கொள்ளவும்.</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="101"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="295"/>
       <source>Radius of the fillet at the top. If the radius is too big for the tag shape it gets reduced to the maximum possible radius - resulting in a spherical shape.</source>
       <translation>மேலே உள்ள ஃபில்லட்டின் ஆரம். குறிச்சொல் வடிவத்திற்கு ஆரம் மிகப் பெரியதாக இருந்தால், அது சாத்தியமான அதிகபட்ச ஆரமாகக் குறைக்கப்படும் - இதன் விளைவாக ஒரு கோள வடிவம் கிடைக்கும்.</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="121"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="312"/>
+      <source>Min</source>
+      <translation type="unfinished">Min</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="325"/>
+      <source>Minimum number of tags per short wire</source>
+      <translation type="unfinished">Minimum number of tags per short wire</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="335"/>
+      <source>Max</source>
+      <translation type="unfinished">Max</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="348"/>
+      <source>Maximum number of tags per long wire</source>
+      <translation type="unfinished">Maximum number of tags per long wire</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="358"/>
+      <source>Create the specified number of tags for each bottom wire</source>
+      <translation type="unfinished">Create the specified number of tags for each bottom wire</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="361"/>
+      <source>Replace Existing Tags</source>
+      <translation type="unfinished">Replace Existing Tags</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="34"/>
       <source>List of current tags. Edit coordinates by double click or Edit button. Tags are automatically disabled if they overlap with the previous tag, or don&apos;t lie on the base wire.</source>
       <translation>தற்போதைய குறிச்சொற்களின் பட்டியல். இருமுறை சொடுக்கு அல்லது திருத்து பொத்தான் மூலம் ஆயங்களைத் திருத்தவும். குறிச்சொற்கள் முந்தைய குறிச்சொல்லுடன் ஒன்றுடன் ஒன்று சேர்ந்தாலோ அல்லது அடிப்படை கம்பியில் படாமலோ தானாக முடக்கப்படும்.</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="200"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="306"/>
       <source>Auto Generate</source>
       <translation>தானாக உருவாக்கு</translation>
     </message>
@@ -4638,7 +4638,7 @@ Default: 3 mm</source>
       <translation>சுகாதார சரிபார்ப்பு அறிக்கையைச் சேமிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
+      <location filename="../../../PathScripts/PathUtilsGui.py" line="90"/>
       <source>Choose a CAM Job</source>
       <translation>CAM வேலையைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
@@ -5236,35 +5236,35 @@ Only for styles: Arc, Line, Perpendicular and Tangent</translation>
       <translation>குறியீட்டை உருவாக்குவதிலிருந்து செயல்பாட்டைத் தடுக்க, தவறு செய்யுங்கள்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1544"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1547"/>
       <source>Side of selected faces that tool should cut</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட முகங்களின் பக்கம் அந்த கருவி வெட்டப்பட வேண்டும்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1553"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1556"/>
       <source>Type of adaptive operation</source>
       <translation>தழுவல் செயல்பாட்டின் வகை</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1571"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1955"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1574"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1958"/>
       <location filename="../../../Path/Op/PocketBase.py" line="159"/>
       <location filename="../../../Path/Op/Helix.py" line="164"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>ஒவ்வொரு பாசிலும் அடியெடுத்து வைக்க கட்டர் விட்டத்தின் விழுக்காடு</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1580"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1583"/>
       <source>Lift distance for rapid moves</source>
       <translation>விரைவான நகர்வுகளுக்கு தூரத்தை உயர்த்தவும்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1589"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1592"/>
       <source>Max length of keep tool down path compared to direct distance between points</source>
       <translation>புள்ளிகளுக்கு இடையே உள்ள நேரடி தூரத்துடன் ஒப்பிடும்போது கீப் டூல் பேரூர் பாத்தின் அதிகபட்ச நீளம்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1562"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1565"/>
       <source>Influences calculation performance vs stability and accuracy.
 
 Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</source>
@@ -5273,24 +5273,24 @@ Larger values (further to the right) will calculate faster; smaller values (furt
 பெரிய மதிப்புகள் (மேலும் வலதுபுறம்) வேகமாக கணக்கிடும்; சிறிய மதிப்புகள் (மேலும் இடதுபுறம்) மிகவும் துல்லியமான கருவிப்பாதைகளை ஏற்படுத்தும்.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1598"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1601"/>
       <source>How much stock to leave in the XY plane (eg for finishing operation)</source>
       <translation>XY விமானத்தில் எவ்வளவு இருப்பு வைக்க வேண்டும் (எ.கா. செயல்பாட்டை முடிக்க)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1607"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1610"/>
       <source>How much stock to leave along the Z axis (eg for finishing operation). This property is only used if the ModelAwareExperiment is enabled.</source>
       <translation>சட் அச்சில் எவ்வளவு இருப்பு வைக்க வேண்டும் (எ.கா. செயல்பாட்டை முடிக்க). ModelAwareExperiment இயக்கப்பட்டிருந்தால் மட்டுமே இந்த சொத்து பயன்படுத்தப்படும்.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1672"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1675"/>
       <source>The maximum allowable helix ramp entry angle (degrees)
 Set to zero to disable limitation by ramp angle</source>
       <translation type="unfinished">The maximum allowable helix ramp entry angle (degrees)
 Set to zero to disable limitation by ramp angle</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1682"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1685"/>
       <location filename="../../../Path/Op/Helix.py" line="288"/>
       <location filename="../../../Path/Op/Helix.py" line="507"/>
       <source>The maximum allowable descent in a single revolution of the helix
@@ -5299,77 +5299,77 @@ Set to zero to disable limitation by pitch</source>
 Set to zero to disable limitation by pitch</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1700"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1894"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1703"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1897"/>
       <source>Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter</source>
       <translation type="unfinished">Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1709"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1903"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1712"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1906"/>
       <source>Minimum acceptable helix entry diameter, as a percentage of the tool diameter</source>
       <translation type="unfinished">Minimum acceptable helix entry diameter, as a percentage of the tool diameter</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1736"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1739"/>
       <source>Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</source>
       <translation>ஆர்டர்கள் ஆழத்திற்குப் பதிலாக பகுதி வாரியாக வெட்டப்படுகின்றன. ModelAwareExperiment இயக்கப்பட்டிருந்தால் மட்டுமே இந்த சொத்து பயன்படுத்தப்படும்.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1751"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1875"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1754"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1878"/>
       <source>Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</source>
       <translation>3டி வடிவவியலுக்கு மதிப்பளித்து, ஓவர்ஆங்கின் கீழ் வெட்டப்படுவதைத் தடுக்க, சோதனை மாதிரி விழிப்புணர்வு அம்சத்தை இயக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1864"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1867"/>
       <source>How much stock to leave along the Z axis (eg for finishing operation)</source>
       <translation>சட் அச்சில் எவ்வளவு இருப்பு வைக்க வேண்டும் (எ.கா. செயல்பாட்டை முடிக்க)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1925"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1928"/>
       <source>The maximum allowable descent in a single revolution of the helix. Set to 0 to disable the pitch limit.</source>
       <translation type="unfinished">The maximum allowable descent in a single revolution of the helix. Set to 0 to disable the pitch limit.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1616"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1619"/>
       <source>Force plunging into material inside and clearing towards the edges</source>
       <translation>உள்ளே உள்ள பொருட்களில் மூழ்கி, விளிம்புகளை நோக்கி சுத்தப்படுத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1625"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1628"/>
       <source>To take a finishing profile path at the end</source>
       <translation>முடிவில் ஒரு இறுதி சுயவிவர பாதையை எடுக்க</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1631"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1641"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1634"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1644"/>
       <source>Stop processing</source>
       <translation>செயலாக்கத்தை நிறுத்து</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1651"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1654"/>
       <source>Internal input state</source>
       <translation>உள் உள்ளீட்டு நிலை</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1660"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1663"/>
       <source>Internal output state</source>
       <translation>உள் வெளியீட்டு நிலை</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1691"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1694"/>
       <source>Helix cone angle (degrees)</source>
       <translation>எலிக்ச் கூம்பு கோணம் (டிகிரி)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1718"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1721"/>
       <location filename="../../../Path/Op/PocketShape.py" line="168"/>
       <source>Uses the outline of the base geometry.</source>
       <translation>அடிப்படை வடிவவியலின் வெளிப்புறத்தைப் பயன்படுத்துகிறது.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1853"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1856"/>
       <source>Orders cuts by region instead of depth.</source>
       <translation>ஆர்டர்கள் ஆழத்திற்குப் பதிலாக பகுதி வாரியாக வெட்டப்படுகின்றன.</translation>
     </message>
@@ -5928,8 +5928,8 @@ For External profile - profile radius</translation>
       <translation>பாதையின் 3D வரிசையாக்கத்தைப் பயன்படுத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1727"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1842"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1730"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1845"/>
       <location filename="../../../Path/Op/PocketBase.py" line="195"/>
       <location filename="../../../Path/Op/PocketBase.py" line="271"/>
       <source>Skips machining regions that have already been cleared by previous operations.</source>
@@ -7347,71 +7347,71 @@ If selection without sub elements:
       <translation>அடிப்படை வடிவியல்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="932"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="934"/>
       <source>Multiple operations are labeled as</source>
       <translation>பல செயல்பாடுகள் என பெயரிடப்பட்டுள்ளன</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1006"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1008"/>
       <source>Base Location</source>
       <translation>அடிப்படை இடம்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1134"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1136"/>
       <source>Heights</source>
       <translation>உயரங்கள்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1224"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1226"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>இந்த செயல்பாட்டிற்காக FinalDepth ஐ மாற்ற முடியாது. 
 FinalDepth ஐ கைமுறையாக அமைக்க வேண்டும் என்றால், வேறு ஒரு செயல்பாட்டைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1247"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1249"/>
       <source>Depths</source>
       <translation>ஆழங்கள்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1348"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1350"/>
       <source>Diameters</source>
       <translation>விட்டம்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1380"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1382"/>
       <source>AreaOp Operation</source>
       <translation>AreaOp செயல்பாடு</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1441"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1443"/>
       <source>Operation</source>
       <translation>செயல்பாடு</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1506"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1508"/>
       <source>Uncreate AreaOp Operation</source>
       <translation>AreaOp செயல்பாட்டை உருவாக்காதே</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1643"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1645"/>
       <source>Start Point Selection</source>
       <translation>தொடக்க புள்ளி தேர்வு</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1644"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1646"/>
       <source>Selects the start point</source>
       <translation>தொடக்கப் புள்ளியைத் தேர்ந்தெடுக்கிறது</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1694"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1696"/>
       <source>No suitable tool controller found.
 Aborting op creation</source>
       <translation>பொருத்தமான கருவி கட்டுப்படுத்தி இல்லை. 
 op உருவாக்கத்தை நிறுத்துகிறது</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1698"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1700"/>
       <source>No tool controller, aborting op creation</source>
       <translation>கருவி கட்டுப்படுத்தி இல்லை, op உருவாக்கத்தை நிறுத்துகிறது</translation>
     </message>
@@ -7742,12 +7742,12 @@ Without sub selection all edges of the shape will be selected.</translation>
       <translation>வைத்திருக்கும் குறிச்சொல்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Tags.py" line="575"/>
+      <location filename="../../../Path/Dressup/Gui/Tags.py" line="579"/>
       <source>Tag</source>
       <translation>குறியிடவும்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Tags.py" line="578"/>
+      <location filename="../../../Path/Dressup/Gui/Tags.py" line="582"/>
       <source>Creates a tag dress-up object from a selected toolpath</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட டூல்பாத்தில் இருந்து டேக் டிரச்-அப் பொருளை உருவாக்குகிறது</translation>
     </message>
@@ -8529,22 +8529,22 @@ Without sub selection all edges of the shape will be selected.</translation>
   <context>
     <name>CAM_Simulator</name>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="366"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="364"/>
       <source>CAM Simulator</source>
       <translation>CAM சிமுலேட்டர்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="315"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="313"/>
       <source>High</source>
       <translation>உயர்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="317"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="315"/>
       <source>Low</source>
       <translation>குறைந்த</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="319"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="317"/>
       <source>Medium</source>
       <translation>சராசரி</translation>
     </message>
@@ -8555,7 +8555,7 @@ Without sub selection all edges of the shape will be selected.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Simulator.py" line="625"/>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="368"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="366"/>
       <source>Simulates G-code on stock</source>
       <translation>பங்குகளில் சி-குறியீட்டை உருவகப்படுத்துகிறது</translation>
     </message>
@@ -8563,22 +8563,22 @@ Without sub selection all edges of the shape will be selected.</translation>
   <context>
     <name>CAM_Adaptive</name>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1511"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1514"/>
       <source>Outside</source>
       <translation>வெளியே</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1512"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1515"/>
       <source>Inside</source>
       <translation>உள்ளே</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1515"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1518"/>
       <source>Clearing</source>
       <translation>அழிக்கிறது</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1516"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1519"/>
       <source>Profiling</source>
       <translation>விவரக்குறிப்பு</translation>
     </message>
@@ -9035,7 +9035,7 @@ This will not delete the toolbits contained within it.</source>
       <translation>{diameter} {pitch} {rotation} தட்டு, {flutes}-flute, {cutting_edge_length} வெட்டு விளிம்பு</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="373"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="375"/>
       <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
       <translation>அடாப்டிவ் ஆபரேசன் மூலம் எல்லை கம்பியை தீர்மானிக்க முடியவில்லை. அடிப்படை வடிவவியலைத் தேர்ந்தெடுத்தீர்களா?</translation>
     </message>
@@ -9061,264 +9061,264 @@ This will not delete the toolbits contained within it.</source>
       <translation>கைவிடு</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="311"/>
+      <location filename="../../../Path/Post/Processor.py" line="317"/>
       <source>File Extension</source>
       <translation type="unfinished">File Extension</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="317"/>
+      <location filename="../../../Path/Post/Processor.py" line="323"/>
       <source>Default file extension for output files (without the dot). Common extensions: nc, gcode, tap, ngc, sbp, etc.</source>
       <translation type="unfinished">Default file extension for output files (without the dot). Common extensions: nc, gcode, tap, ngc, sbp, etc.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="322"/>
+      <location filename="../../../Path/Post/Processor.py" line="328"/>
       <source>Tool Radius Compensation (G41/G42)</source>
       <translation type="unfinished">Tool Radius Compensation (G41/G42)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="328"/>
+      <location filename="../../../Path/Post/Processor.py" line="334"/>
       <source>Enable if this postprocessor supports G41/G42 tool radius compensation commands. When enabled, the postprocessor can output cutter compensation codes.</source>
       <translation type="unfinished">Enable if this postprocessor supports G41/G42 tool radius compensation commands. When enabled, the postprocessor can output cutter compensation codes.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="333"/>
+      <location filename="../../../Path/Post/Processor.py" line="339"/>
       <source>Supported G-code Commands</source>
       <translation type="unfinished">Supported G-code Commands</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="339"/>
+      <location filename="../../../Path/Post/Processor.py" line="345"/>
       <source>List of G-code commands supported by this postprocessor (one per line). Commands not in this list will be filtered out or cause warnings.</source>
       <translation type="unfinished">List of G-code commands supported by this postprocessor (one per line). Commands not in this list will be filtered out or cause warnings.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="344"/>
+      <location filename="../../../Path/Post/Processor.py" line="350"/>
       <source>Drill Cycles to Translate</source>
       <translation type="unfinished">Drill Cycles to Translate</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="351"/>
+      <location filename="../../../Path/Post/Processor.py" line="357"/>
       <source>List of drill cycle commands to translate to G0/G1 moves (one per line). Standard drill cycles: {&apos;, &apos;.join(Constants.GCODE_MOVE_DRILL)}. Leave empty if postprocessor supports drill cycles natively.</source>
       <translation type="unfinished">List of drill cycle commands to translate to G0/G1 moves (one per line). Standard drill cycles: {&apos;, &apos;.join(Constants.GCODE_MOVE_DRILL)}. Leave empty if postprocessor supports drill cycles natively.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="356"/>
+      <location filename="../../../Path/Post/Processor.py" line="362"/>
       <source>Preamble</source>
       <translation type="unfinished">Preamble</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="360"/>
+      <location filename="../../../Path/Post/Processor.py" line="366"/>
       <source>G-code commands inserted at the start of the program after the header.</source>
       <translation type="unfinished">G-code commands inserted at the start of the program after the header.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="365"/>
+      <location filename="../../../Path/Post/Processor.py" line="371"/>
       <source>Postamble</source>
       <translation type="unfinished">Postamble</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="367"/>
+      <location filename="../../../Path/Post/Processor.py" line="373"/>
       <source>G-code commands inserted at the end of the program.</source>
       <translation type="unfinished">G-code commands inserted at the end of the program.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="372"/>
+      <location filename="../../../Path/Post/Processor.py" line="378"/>
       <source>Safety Block</source>
       <translation type="unfinished">Safety Block</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="377"/>
+      <location filename="../../../Path/Post/Processor.py" line="383"/>
       <source>Safety commands to reset machine to known safe condition (e.g., G40, G49, G80).</source>
       <translation type="unfinished">Safety commands to reset machine to known safe condition (e.g., G40, G49, G80).</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="382"/>
+      <location filename="../../../Path/Post/Processor.py" line="388"/>
       <source>Pre-Job</source>
       <translation type="unfinished">Pre-Job</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="384"/>
+      <location filename="../../../Path/Post/Processor.py" line="390"/>
       <source>G-code commands inserted before each Job.</source>
       <translation type="unfinished">G-code commands inserted before each Job.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="389"/>
+      <location filename="../../../Path/Post/Processor.py" line="395"/>
       <source>Post-Job</source>
       <translation type="unfinished">Post-Job</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="391"/>
+      <location filename="../../../Path/Post/Processor.py" line="397"/>
       <source>G-code commands inserted after each Job.</source>
       <translation type="unfinished">G-code commands inserted after each Job.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="396"/>
+      <location filename="../../../Path/Post/Processor.py" line="402"/>
       <source>Pre-Fixture</source>
       <translation type="unfinished">Pre-Fixture</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="398"/>
+      <location filename="../../../Path/Post/Processor.py" line="404"/>
       <source>G-code commands inserted before fixture change.</source>
       <translation type="unfinished">G-code commands inserted before fixture change.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="403"/>
+      <location filename="../../../Path/Post/Processor.py" line="409"/>
       <source>Post-Fixture</source>
       <translation type="unfinished">Post-Fixture</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="405"/>
+      <location filename="../../../Path/Post/Processor.py" line="411"/>
       <source>G-code commands inserted after fixture change.</source>
       <translation type="unfinished">G-code commands inserted after fixture change.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="410"/>
+      <location filename="../../../Path/Post/Processor.py" line="416"/>
       <source>Pre-Operation</source>
       <translation type="unfinished">Pre-Operation</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="412"/>
+      <location filename="../../../Path/Post/Processor.py" line="418"/>
       <source>G-code commands inserted before each operation.</source>
       <translation type="unfinished">G-code commands inserted before each operation.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="417"/>
+      <location filename="../../../Path/Post/Processor.py" line="423"/>
       <source>Post-Operation</source>
       <translation type="unfinished">Post-Operation</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="419"/>
+      <location filename="../../../Path/Post/Processor.py" line="425"/>
       <source>G-code commands inserted after each operation.</source>
       <translation type="unfinished">G-code commands inserted after each operation.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="424"/>
+      <location filename="../../../Path/Post/Processor.py" line="430"/>
       <source>Pre-Tool Change</source>
       <translation type="unfinished">Pre-Tool Change</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="426"/>
+      <location filename="../../../Path/Post/Processor.py" line="432"/>
       <source>G-code commands inserted before tool changes.</source>
       <translation type="unfinished">G-code commands inserted before tool changes.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="431"/>
+      <location filename="../../../Path/Post/Processor.py" line="437"/>
       <source>Post-Tool Change</source>
       <translation type="unfinished">Post-Tool Change</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="433"/>
-      <location filename="../../../Path/Post/Processor.py" line="440"/>
+      <location filename="../../../Path/Post/Processor.py" line="439"/>
+      <location filename="../../../Path/Post/Processor.py" line="446"/>
       <source>G-code commands inserted after tool changes.</source>
       <translation type="unfinished">G-code commands inserted after tool changes.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="438"/>
+      <location filename="../../../Path/Post/Processor.py" line="444"/>
       <source>Tool Return after tool changes</source>
       <translation type="unfinished">Tool Return after tool changes</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="445"/>
+      <location filename="../../../Path/Post/Processor.py" line="451"/>
       <source>Pre-Rotary Move</source>
       <translation type="unfinished">Pre-Rotary Move</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="447"/>
+      <location filename="../../../Path/Post/Processor.py" line="453"/>
       <source>G-code commands inserted before rotary axis moves.</source>
       <translation type="unfinished">G-code commands inserted before rotary axis moves.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="452"/>
+      <location filename="../../../Path/Post/Processor.py" line="458"/>
       <source>Post-Rotary Move</source>
       <translation type="unfinished">Post-Rotary Move</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="454"/>
+      <location filename="../../../Path/Post/Processor.py" line="460"/>
       <source>G-code commands inserted after rotary axis moves.</source>
       <translation type="unfinished">G-code commands inserted after rotary axis moves.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="459"/>
+      <location filename="../../../Path/Post/Processor.py" line="465"/>
       <source>Show Pre-processing Dialogs</source>
       <translation type="unfinished">Show Pre-processing Dialogs</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="465"/>
+      <location filename="../../../Path/Post/Processor.py" line="471"/>
       <source>Show interactive dialogs during post-processing. Disable for automated operation or testing.</source>
       <translation type="unfinished">Show interactive dialogs during post-processing. Disable for automated operation or testing.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="470"/>
+      <location filename="../../../Path/Post/Processor.py" line="476"/>
       <source>Generated Parameter Order for GCode</source>
       <translation type="unfinished">Generated Parameter Order for GCode</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="472"/>
+      <location filename="../../../Path/Post/Processor.py" line="478"/>
       <source>Generated Parameter Order for GCode for output</source>
       <translation type="unfinished">Generated Parameter Order for GCode for output</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="477"/>
+      <location filename="../../../Path/Post/Processor.py" line="483"/>
       <source>TLO after tool-change</source>
       <translation type="unfinished">TLO after tool-change</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="482"/>
+      <location filename="../../../Path/Post/Processor.py" line="488"/>
       <source>Output a G43 TLO after tool-change</source>
       <translation type="unfinished">Output a G43 TLO after tool-change</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="487"/>
+      <location filename="../../../Path/Post/Processor.py" line="493"/>
       <source>Expand drill-cycles</source>
       <translation type="unfinished">Expand drill-cycles</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="492"/>
+      <location filename="../../../Path/Post/Processor.py" line="498"/>
       <source>Expand drill-cycles (cf. &apos;Drill Cycles to Translate&apos;) to moves</source>
       <translation type="unfinished">Expand drill-cycles (cf. &apos;Drill Cycles to Translate&apos;) to moves</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="497"/>
+      <location filename="../../../Path/Post/Processor.py" line="503"/>
       <source>Allow tool-change</source>
       <translation type="unfinished">Allow tool-change</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="502"/>
+      <location filename="../../../Path/Post/Processor.py" line="508"/>
       <source>Unchecked to suppress tool-change (M6)</source>
       <translation type="unfinished">Unchecked to suppress tool-change (M6)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="507"/>
-      <location filename="../../../Path/Post/Processor.py" line="512"/>
+      <location filename="../../../Path/Post/Processor.py" line="513"/>
+      <location filename="../../../Path/Post/Processor.py" line="518"/>
       <source>Unit-command in output</source>
       <translation type="unfinished">Unit-command in output</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="517"/>
-      <source>Axis precision in ouptput</source>
-      <translation type="unfinished">Axis precision in ouptput</translation>
+      <location filename="../../../Path/Post/Processor.py" line="523"/>
+      <source>Axis precision in output</source>
+      <translation type="unfinished">Axis precision in output</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="522"/>
+      <location filename="../../../Path/Post/Processor.py" line="528"/>
       <source>Decimals of precision for axis motion</source>
       <translation type="unfinished">Decimals of precision for axis motion</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="527"/>
-      <source>Feedrate precision in ouptput</source>
-      <translation type="unfinished">Feedrate precision in ouptput</translation>
+      <location filename="../../../Path/Post/Processor.py" line="533"/>
+      <source>Feedrate precision in output</source>
+      <translation type="unfinished">Feedrate precision in output</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="532"/>
+      <location filename="../../../Path/Post/Processor.py" line="538"/>
       <source>Decimals of precision for feedrate (F)</source>
       <translation type="unfinished">Decimals of precision for feedrate (F)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="537"/>
-      <source>Spindle-speed precision in ouptput</source>
-      <translation type="unfinished">Spindle-speed precision in ouptput</translation>
+      <location filename="../../../Path/Post/Processor.py" line="543"/>
+      <source>Spindle-speed precision in output</source>
+      <translation type="unfinished">Spindle-speed precision in output</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="542"/>
+      <location filename="../../../Path/Post/Processor.py" line="548"/>
       <source>Decimals of precision for spindle-speed</source>
       <translation type="unfinished">Decimals of precision for spindle-speed</translation>
     </message>
@@ -10223,17 +10223,17 @@ Allowed selection only from one model:
   <context>
     <name>CAM_Custom</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Custom.py" line="112"/>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="120"/>
       <source>Select file containing the gcode</source>
       <translation type="unfinished">Select file containing the gcode</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Custom.py" line="127"/>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="135"/>
       <source>Custom</source>
       <translation>தனிப்பயன்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Custom.py" line="128"/>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="136"/>
       <source>Create custom G-code snippet</source>
       <translation>தனிப்பயன் சி-குறியீடு துணுக்கை உருவாக்கவும்</translation>
     </message>
@@ -10714,12 +10714,12 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_OpActiveToggle</name>
     <message>
-      <location filename="../../../PathCommands.py" line="148"/>
+      <location filename="../../../PathCommands.py" line="149"/>
       <source>Toggle Operation</source>
       <translation>மாற்று செயல்பாடு</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="152"/>
+      <location filename="../../../PathCommands.py" line="153"/>
       <source>Toggles the active state of the operation</source>
       <translation>செயல்பாட்டின் செயலில் உள்ள நிலையை மாற்றுகிறது</translation>
     </message>
@@ -10727,12 +10727,12 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_OperationCopy</name>
     <message>
-      <location filename="../../../PathCommands.py" line="218"/>
+      <location filename="../../../PathCommands.py" line="219"/>
       <source>Copy Operation</source>
       <translation>நகல் செயல்பாடு</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="219"/>
+      <location filename="../../../PathCommands.py" line="220"/>
       <source>Copies the operation in the job</source>
       <translation>பணியில் உள்ள செயல்பாட்டை நகலெடுக்கிறது</translation>
     </message>

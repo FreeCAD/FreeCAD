@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1888"/>
+      <location filename="../../../JointObject.py" line="1896"/>
       <source>Distance</source>
       <translation>Távolság</translation>
     </message>
@@ -175,22 +175,27 @@
       <translation>Hibás kapcsolat itt </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1696"/>
+      <location filename="../../../JointObject.py" line="1238"/>
+      <source>Edit Joint</source>
+      <translation type="unfinished">Edit Joint</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="1704"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>2 elemet kiválasztása 2 különálló részből</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1890"/>
+      <location filename="../../../JointObject.py" line="1898"/>
       <source>Radius 1</source>
       <translation>Sugár 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1892"/>
+      <location filename="../../../JointObject.py" line="1900"/>
       <source>Thread pitch</source>
       <translation>Menetemelkedés</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1894"/>
+      <location filename="../../../JointObject.py" line="1902"/>
       <source>Pitch radius</source>
       <translation>Meredekség sugara</translation>
     </message>
@@ -678,7 +683,7 @@ Ezt csak a fogaskerék csatlakozás használja a második sugár megtartására.
       <translation>Csatlakozás {order} hivatkozása</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1280"/>
+      <location filename="../../../JointObject.py" line="1288"/>
       <source>The object to ground</source>
       <translation>A rögzitendő objektum</translation>
     </message>

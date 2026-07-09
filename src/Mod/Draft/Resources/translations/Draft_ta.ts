@@ -3050,48 +3050,48 @@ if they match the X, Y or Z axis of the global coordinate system</source>
   <context>
     <name>draft</name>
     <message>
-      <location filename="../../DraftGui.py" line="713"/>
+      <location filename="../../DraftGui.py" line="716"/>
       <source>Relative</source>
       <translation>உறவினர்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="723"/>
+      <location filename="../../DraftGui.py" line="726"/>
       <source>Global</source>
       <translation>உலகளாவிய</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="749"/>
-      <location filename="../../DraftGui.py" line="1138"/>
+      <location filename="../../DraftGui.py" line="752"/>
+      <location filename="../../DraftGui.py" line="1142"/>
       <source>Continue</source>
       <translation>தொடரவும்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="757"/>
+      <location filename="../../DraftGui.py" line="760"/>
       <source>If checked, the command will not finish until pressing the command button again</source>
       <translation>சரிபார்க்கப்பட்டால், கட்டளை பொத்தானை மீண்டும் அழுத்தும் வரை கட்டளை முடிவடையாது</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="765"/>
+      <location filename="../../DraftGui.py" line="768"/>
       <source>If checked, the next dimension will be placed in a chain with the previously placed Dimension</source>
       <translation>சரிபார்க்கப்பட்டால், அடுத்த பரிமாணம் முன்பு வைக்கப்பட்ட பரிமாணத்துடன் ஒரு சங்கிலியில் வைக்கப்படும்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="779"/>
+      <location filename="../../DraftGui.py" line="782"/>
       <source>Close</source>
       <translation>மூடு</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="792"/>
+      <location filename="../../DraftGui.py" line="795"/>
       <source>Set Working Plane</source>
       <translation>வேலை செய்யும் விமானத்தை அமைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="798"/>
+      <location filename="../../DraftGui.py" line="801"/>
       <source>Select Edge</source>
       <translation>விளிம்பைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="806"/>
+      <location filename="../../DraftGui.py" line="809"/>
       <location filename="../../draftguitools/gui_scale.py" line="226"/>
       <location filename="../../draftguitools/gui_rotate.py" line="289"/>
       <location filename="../../draftguitools/gui_move.py" line="218"/>
@@ -3099,7 +3099,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <translation>நகலெடு</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="783"/>
+      <location filename="../../DraftGui.py" line="786"/>
       <source>Wipe</source>
       <translation>துடைக்கவும்</translation>
     </message>
@@ -3180,283 +3180,283 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <translation>நிலை:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="666"/>
-      <location filename="../../DraftGui.py" line="695"/>
-      <location filename="../../DraftGui.py" line="1841"/>
-      <location filename="../../DraftGui.py" line="1859"/>
+      <location filename="../../DraftGui.py" line="669"/>
+      <location filename="../../DraftGui.py" line="698"/>
+      <location filename="../../DraftGui.py" line="1849"/>
+      <location filename="../../DraftGui.py" line="1867"/>
       <location filename="../../draftguitools/gui_groups.py" line="273"/>
       <source>None</source>
       <translation>எதுவுமில்லை</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="694"/>
+      <location filename="../../DraftGui.py" line="697"/>
       <source>active command:</source>
       <translation>செயலில் உள்ள கட்டளை:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="696"/>
+      <location filename="../../DraftGui.py" line="699"/>
       <source>Active Draft command</source>
       <translation>செயலில் உள்ள வரைவு கட்டளை</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="697"/>
+      <location filename="../../DraftGui.py" line="700"/>
       <source>X coordinate of the point</source>
       <translation>புள்ளியின் ஃச் ஒருங்கிணைப்பு</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="698"/>
+      <location filename="../../DraftGui.py" line="701"/>
       <source>X</source>
       <translation>ஃச்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="699"/>
+      <location filename="../../DraftGui.py" line="702"/>
       <source>Y</source>
       <translation>ஒய்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="700"/>
+      <location filename="../../DraftGui.py" line="703"/>
       <source>Z</source>
       <translation>சட்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="705"/>
+      <location filename="../../DraftGui.py" line="708"/>
       <source>Length</source>
       <translation>நீளம்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="706"/>
+      <location filename="../../DraftGui.py" line="709"/>
       <location filename="../../draftguitools/gui_trimex.py" line="228"/>
       <source>Angle</source>
       <translation>கோணம்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="710"/>
-      <location filename="../../DraftGui.py" line="1121"/>
+      <location filename="../../DraftGui.py" line="713"/>
+      <location filename="../../DraftGui.py" line="1125"/>
       <source>Radius</source>
       <translation>ஆரம்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="822"/>
+      <location filename="../../DraftGui.py" line="825"/>
       <source>Creates the text object and finishes the command</source>
       <translation>உரை பொருளை உருவாக்கி கட்டளையை முடிக்கிறது</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="844"/>
+      <location filename="../../DraftGui.py" line="847"/>
       <source>Changes the default style for new objects</source>
       <translation>புதிய பொருள்களுக்கான இயல்புநிலை பாணியை மாற்றுகிறது</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="845"/>
+      <location filename="../../DraftGui.py" line="848"/>
       <source>Toggles construction mode</source>
       <translation>கட்டுமானப் பயன்முறையை மாற்றுகிறது</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1072"/>
+      <location filename="../../DraftGui.py" line="1076"/>
       <source>Label Type</source>
       <translation>சிட்டை வகை</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1122"/>
+      <location filename="../../DraftGui.py" line="1126"/>
       <source>Radius of Circle</source>
       <translation>வட்டத்தின் ஆரம்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="721"/>
+      <location filename="../../DraftGui.py" line="724"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
       <translation>கடைசி புள்ளியுடன் தொடர்புடைய ஆயத்தொகுப்புகள் அல்லது அமைப்பின் தோற்றத்தை ஒருங்கிணைக்க 
 அமைக்க முதல் புள்ளி என்றால்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="701"/>
+      <location filename="../../DraftGui.py" line="704"/>
       <source>Y coordinate of the point</source>
       <translation>புள்ளியின் ஒய் ஒருங்கிணைப்பு</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="702"/>
+      <location filename="../../DraftGui.py" line="705"/>
       <source>Z coordinate of the point</source>
       <translation>புள்ளியின் சட் ஒருங்கிணைப்பு</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="703"/>
+      <location filename="../../DraftGui.py" line="706"/>
       <source>Enter Point</source>
       <translation>புள்ளியை உள்ளிடவும்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="708"/>
+      <location filename="../../DraftGui.py" line="711"/>
       <source>Length of the current segment</source>
       <translation>தற்போதைய பிரிவின் நீளம்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="709"/>
+      <location filename="../../DraftGui.py" line="712"/>
       <source>Angle of the current segment</source>
       <translation>தற்போதைய பிரிவின் கோணம்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="711"/>
+      <location filename="../../DraftGui.py" line="714"/>
       <source>Radius of the circle</source>
       <translation>வட்டத்தின் ஆரம்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="731"/>
+      <location filename="../../DraftGui.py" line="734"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
       <translation>உலகளாவிய ஒருங்கிணைப்பு அமைப்புடன் தொடர்புடைய ஒருங்கிணைப்புகள். 
 வேலை செய்யும் விமான ஒருங்கிணைப்பு அமைப்பைப் பயன்படுத்த தேர்வுநீக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="743"/>
+      <location filename="../../DraftGui.py" line="746"/>
       <source>Finish</source>
       <translation>முடிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="747"/>
+      <location filename="../../DraftGui.py" line="750"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation>தற்போதைய வரைதல் அல்லது திருத்துதல் செயல்பாட்டை முடிக்கிறது</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2074"/>
+      <location filename="../../DraftGui.py" line="2082"/>
       <source>Modify Objects</source>
       <translation>பொருட்களை மாற்றவும்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2232"/>
+      <location filename="../../DraftGui.py" line="2240"/>
       <source>Facebinder Elements</source>
       <translation>ஃபேச்பைண்டர் கூறுகள்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="773"/>
+      <location filename="../../DraftGui.py" line="776"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
       <translation>சரிபார்க்கப்பட்டால், கிளாசிக் ஆஃப்செட்டுக்குப் பதிலாக OCC-பாணி ஆஃப்செட் செய்யப்படும்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="766"/>
+      <location filename="../../DraftGui.py" line="769"/>
       <source>OCC-style offset</source>
       <translation>OCC பாணி ஆஃப்செட்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="775"/>
+      <location filename="../../DraftGui.py" line="778"/>
       <source>Undo</source>
       <translation>செயல்தவிர்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="809"/>
+      <location filename="../../DraftGui.py" line="812"/>
       <source>If checked, objects will be copied instead of moved</source>
       <translation>சரிபார்த்தால், பொருள்கள் நகர்த்தப்படுவதற்குப் பதிலாக நகலெடுக்கப்படும்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="777"/>
+      <location filename="../../DraftGui.py" line="780"/>
       <source>Undo the last segment</source>
       <translation>கடைசி பிரிவை செயல்தவிர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="704"/>
+      <location filename="../../DraftGui.py" line="707"/>
       <source>Enter a point with given coordinates</source>
       <translation>கொடுக்கப்பட்ட ஆயங்களுடன் ஒரு புள்ளியை உள்ளிடவும்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="733"/>
+      <location filename="../../DraftGui.py" line="736"/>
       <source>Make face</source>
       <translation>முகத்தை உருவாக்குங்கள்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="741"/>
+      <location filename="../../DraftGui.py" line="744"/>
       <source>If checked, the object will be filled with a face.
 Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>சரிபார்த்தால், பொருள் முகத்தால் நிரப்பப்படும். 
 'பகுதி முதன்மைகளைப் பயன்படுத்து' விருப்பம் இயக்கப்பட்டிருந்தால் கிடைக்காது</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="758"/>
+      <location filename="../../DraftGui.py" line="761"/>
       <source>Chained mode</source>
       <translation>சங்கிலி முறை</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="781"/>
+      <location filename="../../DraftGui.py" line="784"/>
       <source>Finishes and closes the current line</source>
       <translation>தற்போதைய வரியை முடித்து மூடுகிறது</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="790"/>
+      <location filename="../../DraftGui.py" line="793"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
       <translation>இந்த வரியின் ஏற்கனவே உள்ள பகுதிகளைத் துடைத்து, கடைசி புள்ளியிலிருந்து மீண்டும் தொடங்குகிறது</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="796"/>
+      <location filename="../../DraftGui.py" line="799"/>
       <source>Reorients the working plane on the last segment</source>
       <translation>கடைசி பிரிவில் வேலை செய்யும் விமானத்தை மறுசீரமைக்கிறது</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="802"/>
+      <location filename="../../DraftGui.py" line="805"/>
       <source>Selects an existing edge to be measured by this dimension</source>
       <translation>இந்த பரிமாணத்தால் அளக்க ஏற்கனவே இருக்கும் விளிம்பைத் தேர்ந்தெடுக்கிறது</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="803"/>
+      <location filename="../../DraftGui.py" line="806"/>
       <source>Sides</source>
       <translation>பக்கங்கள்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="804"/>
+      <location filename="../../DraftGui.py" line="807"/>
       <source>Number of sides</source>
       <translation>பக்கங்களின் எண்ணிக்கை</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="812"/>
+      <location filename="../../DraftGui.py" line="815"/>
       <source>Modify subelements</source>
       <translation>துணை உறுப்புகளை மாற்றவும்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="818"/>
+      <location filename="../../DraftGui.py" line="821"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
       <translation>சரிபார்க்கப்பட்டால், முழுப் பொருட்களுக்குப் பதிலாக துணை உறுப்புகள் மாற்றியமைக்கப்படும்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="846"/>
-      <location filename="../../DraftGui.py" line="1847"/>
-      <location filename="../../DraftGui.py" line="1865"/>
+      <location filename="../../DraftGui.py" line="849"/>
+      <location filename="../../DraftGui.py" line="1855"/>
+      <location filename="../../DraftGui.py" line="1873"/>
       <source>Autogroup off</source>
       <translation>ஆட்டோகுரூப் ஆஃப்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="979"/>
+      <location filename="../../DraftGui.py" line="983"/>
       <location filename="../../draftguitools/gui_lines.py" line="73"/>
       <source>Line</source>
       <translation>வரி</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="994"/>
+      <location filename="../../DraftGui.py" line="998"/>
       <source>DWire</source>
       <translation>ட்வயர்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1017"/>
+      <location filename="../../DraftGui.py" line="1021"/>
       <source>Circle</source>
       <translation>வட்டம்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1022"/>
+      <location filename="../../DraftGui.py" line="1026"/>
       <source>Arc</source>
       <translation>பரிதி</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1027"/>
+      <location filename="../../DraftGui.py" line="1031"/>
       <location filename="../../draftguitools/gui_rotate.py" line="291"/>
       <source>Rotate</source>
       <translation>சுழற்று</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1033"/>
+      <location filename="../../DraftGui.py" line="1037"/>
       <source>Point</source>
       <translation>புள்ளியம்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1070"/>
+      <location filename="../../DraftGui.py" line="1074"/>
       <source>Label</source>
       <translation>சிட்டை</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1089"/>
+      <location filename="../../DraftGui.py" line="1093"/>
       <location filename="../../draftguitools/gui_offset.py" line="247"/>
       <location filename="../../draftguitools/gui_offset.py" line="262"/>
       <location filename="../../draftguitools/gui_offset.py" line="325"/>
@@ -3464,31 +3464,31 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>ஆஃப்செட்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1094"/>
-      <location filename="../../DraftGui.py" line="1114"/>
+      <location filename="../../DraftGui.py" line="1098"/>
+      <location filename="../../DraftGui.py" line="1118"/>
       <location filename="../../draftguitools/gui_trimex.py" line="224"/>
       <source>Distance</source>
       <translation>தூரம்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1095"/>
-      <location filename="../../DraftGui.py" line="1115"/>
+      <location filename="../../DraftGui.py" line="1099"/>
+      <location filename="../../DraftGui.py" line="1119"/>
       <location filename="../../draftguitools/gui_trimex.py" line="225"/>
       <source>Offset distance</source>
       <translation>ஆஃப்செட் தூரம்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1111"/>
+      <location filename="../../DraftGui.py" line="1115"/>
       <source>Trimex</source>
       <translation>டிரிமெக்ச்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1215"/>
-      <location filename="../../DraftGui.py" line="1217"/>
-      <location filename="../../DraftGui.py" line="1218"/>
-      <location filename="../../DraftGui.py" line="1220"/>
+      <location filename="../../DraftGui.py" line="1219"/>
       <location filename="../../DraftGui.py" line="1221"/>
       <location filename="../../DraftGui.py" line="1222"/>
+      <location filename="../../DraftGui.py" line="1224"/>
+      <location filename="../../DraftGui.py" line="1225"/>
+      <location filename="../../DraftGui.py" line="1226"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="123"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="124"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="125"/>
@@ -3496,12 +3496,12 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>உள்ளக {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1224"/>
-      <location filename="../../DraftGui.py" line="1225"/>
-      <location filename="../../DraftGui.py" line="1226"/>
       <location filename="../../DraftGui.py" line="1228"/>
       <location filename="../../DraftGui.py" line="1229"/>
       <location filename="../../DraftGui.py" line="1230"/>
+      <location filename="../../DraftGui.py" line="1232"/>
+      <location filename="../../DraftGui.py" line="1233"/>
+      <location filename="../../DraftGui.py" line="1234"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="119"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="120"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="121"/>
@@ -3509,22 +3509,22 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>உலகளாவிய {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1855"/>
+      <location filename="../../DraftGui.py" line="1863"/>
       <source>Autogroup:</source>
       <translation>தன்னியக்க குழு:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2229"/>
+      <location filename="../../DraftGui.py" line="2237"/>
       <source>Faces</source>
       <translation>முகங்கள்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2230"/>
+      <location filename="../../DraftGui.py" line="2238"/>
       <source>Remove</source>
       <translation>அகற்று</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2231"/>
+      <location filename="../../DraftGui.py" line="2239"/>
       <source>Add</source>
       <translation>சேர்</translation>
     </message>
@@ -3822,50 +3822,50 @@ DWG கோப்பை இடைவெளிகள் மற்றும் ஆ�
       <translation>விளிம்புகள் வெட்டுவதில்லை!</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="183"/>
+      <location filename="../../draftguitools/gui_lines.py" line="184"/>
       <source>Create Line</source>
       <translation>வரியை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="206"/>
+      <location filename="../../draftguitools/gui_lines.py" line="207"/>
       <source>Create Wire</source>
       <translation>கம்பியை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="315"/>
+      <location filename="../../draftguitools/gui_lines.py" line="327"/>
       <source>%1 pick next point, snap to first point to close</source>
       <translation>% 1 அடுத்த புள்ளியைத் தேர்ந்தெடுங்கள், மூடுவதற்கு முதல் புள்ளிக்குச் செல்லவும்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="321"/>
+      <location filename="../../draftguitools/gui_lines.py" line="333"/>
       <source>%1 pick next point</source>
       <translation>% 1 அடுத்த புள்ளியைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="374"/>
+      <location filename="../../draftguitools/gui_lines.py" line="386"/>
       <source>Unable to create a wire from the selected objects</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருட்களிலிருந்து கம்பியை உருவாக்க முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="406"/>
+      <location filename="../../draftguitools/gui_lines.py" line="418"/>
       <source>Polyline</source>
       <translation>பாலிலைன்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="160"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="163"/>
-      <location filename="../../draftguitools/gui_lines.py" line="239"/>
-      <location filename="../../draftguitools/gui_lines.py" line="249"/>
-      <location filename="../../draftguitools/gui_lines.py" line="256"/>
-      <location filename="../../draftguitools/gui_lines.py" line="264"/>
-      <location filename="../../draftguitools/gui_lines.py" line="275"/>
-      <location filename="../../draftguitools/gui_splines.py" line="152"/>
-      <location filename="../../draftguitools/gui_splines.py" line="157"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="158"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="161"/>
+      <location filename="../../draftguitools/gui_lines.py" line="240"/>
+      <location filename="../../draftguitools/gui_lines.py" line="259"/>
+      <location filename="../../draftguitools/gui_lines.py" line="266"/>
+      <location filename="../../draftguitools/gui_lines.py" line="274"/>
+      <location filename="../../draftguitools/gui_lines.py" line="285"/>
+      <location filename="../../draftguitools/gui_splines.py" line="153"/>
+      <location filename="../../draftguitools/gui_splines.py" line="158"/>
       <source>Pick next point</source>
       <translation>அடுத்த புள்ளியைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="398"/>
+      <location filename="../../draftguitools/gui_lines.py" line="410"/>
       <source>Convert to Wire</source>
       <translation>கம்பியாக மாற்றவும்</translation>
     </message>
@@ -3895,7 +3895,7 @@ DWG கோப்பை இடைவெளிகள் மற்றும் ஆ�
       <translation>இருப்பிடப் புள்ளியைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="819"/>
+      <location filename="../../DraftGui.py" line="822"/>
       <location filename="../../draftguitools/gui_texts.py" line="133"/>
       <source>Create Text</source>
       <translation>உரையை உருவாக்கவும்</translation>
@@ -4126,7 +4126,7 @@ DWG கோப்பை இடைவெளிகள் மற்றும் ஆ�
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="658"/>
-      <location filename="../../draftguitools/gui_lines.py" line="306"/>
+      <location filename="../../draftguitools/gui_lines.py" line="318"/>
       <location filename="../../draftguitools/gui_ellipses.py" line="221"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="219"/>
       <source>%1 pick first point</source>
@@ -4134,7 +4134,7 @@ DWG கோப்பை இடைவெளிகள் மற்றும் ஆ�
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="662"/>
-      <location filename="../../draftguitools/gui_lines.py" line="310"/>
+      <location filename="../../draftguitools/gui_lines.py" line="322"/>
       <source>%1 pick second point</source>
       <translation>% 1 இரண்டாவது புள்ளியைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
@@ -4581,7 +4581,7 @@ The final angle will be the base angle plus this amount.</source>
       <translation>பி-ச்ப்லைன்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_splines.py" line="198"/>
+      <location filename="../../draftguitools/gui_splines.py" line="199"/>
       <source>Create B-Spline</source>
       <translation>பி-ச்ப்லைனை உருவாக்கவும்</translation>
     </message>
@@ -4724,29 +4724,29 @@ The final angle will be the base angle plus this amount.</source>
       <translation>பெசியர் வளைவு</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="228"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="487"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="226"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="485"/>
       <source>Create Bézier Curve</source>
       <translation>பெசியர் வளைவை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="285"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="283"/>
       <source>Cubic Bézier Curve</source>
       <translation>கன பெசியர் வளைவு</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="405"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="409"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="403"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="407"/>
       <source>Click and drag to define next knot</source>
       <translation>அடுத்த முடிச்சை வரையறுக்க சொடுக்கு செய்து இழுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="505"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="503"/>
       <source>%1 click and drag to define first point and knot</source>
       <translation>முதல் புள்ளி மற்றும் முடிச்சை வரையறுக்க % 1 சொடுக்கு செய்து இழுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="511"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="509"/>
       <source>%1 click and drag to define next point and knot</source>
       <translation>அடுத்த புள்ளி மற்றும் முடிச்சை வரையறுக்க % 1 சொடுக்கு செய்து இழுக்கவும்</translation>
     </message>
@@ -5032,9 +5032,9 @@ The final angle will be the base angle plus this amount.</source>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="185"/>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="338"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="341"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="200"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="361"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="364"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="235"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="406"/>
       <source>Object:</source>
@@ -5066,30 +5066,30 @@ The final angle will be the base angle plus this amount.</source>
       <translation>போலார் அரேயை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="309"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="332"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="312"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="335"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="377"/>
       <source>Fuse:</source>
       <translation>உருகி:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="345"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="348"/>
       <source>Create Link array:</source>
       <translation>இணைப்பு வரிசையை உருவாக்கவும்:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="339"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="342"/>
       <source>Number of elements:</source>
       <translation>உறுப்புகளின் எண்ணிக்கை:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="340"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="343"/>
       <source>Polar angle:</source>
       <translation>துருவ கோணம்:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="343"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="368"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="346"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="371"/>
       <source>Center of rotation:</source>
       <translation>சுழற்சி மையம்:</translation>
     </message>
@@ -5114,7 +5114,7 @@ The final angle will be the base angle plus this amount.</source>
       <translation>ஆர்த்தோகனல் வரிசையை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="322"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="325"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="390"/>
       <source>Create link array:</source>
       <translation>இணைப்பு வரிசையை உருவாக்கவும்:</translation>
@@ -5247,22 +5247,22 @@ The final angle will be the base angle plus this amount.</source>
       <translation>வட்ட வரிசையை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="362"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="365"/>
       <source>Radial distance:</source>
       <translation>ரேடியல் தூரம்:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="363"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="366"/>
       <source>Tangential distance:</source>
       <translation>தொடு தூரம்:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="364"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="367"/>
       <source>Number of concentric circles:</source>
       <translation>மைய வட்டங்களின் எண்ணிக்கை:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="365"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="368"/>
       <source>Symmetry parameter:</source>
       <translation>சமச்சீர் அளவுரு:</translation>
     </message>
@@ -6103,24 +6103,36 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
 இந்த நூலகங்களைப் பதிவிறக்க FreeCAD ஐ இயக்க, ஆம் என்று பதிலளிக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/hatch.py" line="140"/>
+      <location filename="../../draftobjects/hatch.py" line="149"/>
       <source>PAT file not found</source>
       <translation>PAT கோப்பு கிடைக்கவில்லை</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/hatch.py" line="144"/>
+      <location filename="../../draftobjects/hatch.py" line="152"/>
       <source>Specified PAT file is not a file</source>
       <translation>குறிப்பிடப்பட்ட PAT கோப்பு ஒரு கோப்பு அல்ல</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/hatch.py" line="148"/>
+      <location filename="../../draftobjects/hatch.py" line="155"/>
       <source>Specified file type is not supported</source>
       <translation>குறிப்பிட்ட கோப்பு வகை ஆதரிக்கப்படவில்லை</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/hatch.py" line="152"/>
+      <location filename="../../draftobjects/hatch.py" line="158"/>
       <source>Pattern not found in PAT file</source>
       <translation>PAT கோப்பில் பேட்டர்ன் இல்லை</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/hatch.py" line="243"/>
+      <source>No valid faces for hatch</source>
+      <translation type="unfinished">No valid faces for hatch</translation>
+    </message>
+    <message>
+      <location filename="../../drafttests/test_lines_gui.py" line="56"/>
+      <location filename="../../drafttests/test_lines_gui.py" line="94"/>
+      <location filename="../../draftguitools/gui_lines.py" line="246"/>
+      <source>Point identical to previous point</source>
+      <translation type="unfinished">Point identical to previous point</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_field_locks.py" line="90"/>
@@ -6426,11 +6438,6 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>நகலியை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_hatch.py" line="61"/>
-      <source>Choose a base object before using this command</source>
-      <translation>இந்த கட்டளையைப் பயன்படுத்துவதற்கு முன் ஒரு அடிப்படை பொருளைத் தேர்ந்தெடுக்கவும்</translation>
-    </message>
-    <message>
       <location filename="../../draftguitools/gui_offset.py" line="333"/>
       <source>Offset direction is not defined. Move the mouse on either side of the object first to indicate a direction.</source>
       <translation>ஆஃப்செட் திசை வரையறுக்கப்படவில்லை. ஒரு திசையைக் குறிக்க முதலில் பொருளின் இருபுறமும் சுட்டியை நகர்த்தவும்.</translation>
@@ -6513,12 +6520,12 @@ DXF லைப்ரரி addon ஐ கைமுறையாக நிறுவ�
   <context>
     <name>Draft_Wire</name>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="351"/>
+      <location filename="../../draftguitools/gui_lines.py" line="363"/>
       <source>Polyline</source>
       <translation>பாலிலைன்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="352"/>
+      <location filename="../../draftguitools/gui_lines.py" line="364"/>
       <source>Creates a polyline</source>
       <translation>ஒரு பாலிலைனை உருவாக்குகிறது</translation>
     </message>
@@ -6969,8 +6976,8 @@ It is a list of strings; each element in the list will be displayed in its own l
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="55"/>
-      <source>The base object used by this object</source>
-      <translation>இந்த பொருளால் பயன்படுத்தப்படும் அடிப்படை பொருள்</translation>
+      <source>The objects and faces used by this object</source>
+      <translation type="unfinished">The objects and faces used by this object</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="63"/>
@@ -8235,12 +8242,12 @@ beyond the dimension line</source>
   <context>
     <name>Draft_CubicBezCurve</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="267"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="265"/>
       <source>Cubic Bézier Curve</source>
       <translation>கன பெசியர் வளைவு</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="271"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="269"/>
       <source>Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Clicking and dragging allows to define segments.
 Control points and properties of each knot can be edited after creation.</source>
       <translation>2வது டிகிரி (குவாட்ராடிக்) மற்றும் 3வது டிகிரி (கனசதுரம்) பிரிவுகளால் செய்யப்பட்ட பெசியர் வளைவை உருவாக்குகிறது. சொடுக்கு செய்து இழுப்பது பிரிவுகளை வரையறுக்க அனுமதிக்கிறது. 
@@ -8250,12 +8257,12 @@ Control points and properties of each knot can be edited after creation.</source
   <context>
     <name>Draft_BezierTools</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="526"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="524"/>
       <source>Bézier Tools</source>
       <translation>பெசியர் கருவிகள்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="529"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="527"/>
       <source>Tools to create various types of Bézier curves</source>
       <translation>பல்வேறு வகையான Bézier வளைவுகளை உருவாக்குவதற்கான கருவிகள்</translation>
     </message>

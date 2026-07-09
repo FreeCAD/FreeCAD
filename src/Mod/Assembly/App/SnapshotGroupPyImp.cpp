@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
- *   Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
+ *   Copyright (c) 2024 Ondsel <development@ondsel.com>                     *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
  *                                                                          *
@@ -21,31 +21,25 @@
  *                                                                          *
  ***************************************************************************/
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/FeaturePythonPyImp.h>
-#include <App/PropertyPythonObject.h>
-#include <Base/Console.h>
-#include <Base/Tools.h>
 
-#include "BomGroup.h"
-#include "BomGroupPy.h"
+// inclusion of the generated files (generated out of SnapshotGroup.pyi)
+#include "SnapshotGroupPy.h"
+#include "SnapshotGroupPy.cpp"
 
 using namespace Assembly;
 
-
-PROPERTY_SOURCE(Assembly::BomGroup, App::DocumentObjectGroup)
-
-BomGroup::BomGroup()
-{}
-
-BomGroup::~BomGroup() = default;
-
-PyObject* BomGroup::getPyObject()
+// returns a string which represents the object e.g. when printed in python
+std::string SnapshotGroupPy::representation() const
 {
-    if (PythonObject.is(Py::_None())) {
-        // ref counter is set to 1
-        PythonObject = Py::Object(new BomGroupPy(this), true);
-    }
-    return Py::new_reference_to(PythonObject);
+    return {"<Snapshot Group>"};
+}
+
+PyObject* SnapshotGroupPy::getCustomAttributes(const char* /*attr*/) const
+{
+    return nullptr;
+}
+
+int SnapshotGroupPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+{
+    return 0;
 }

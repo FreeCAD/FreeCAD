@@ -357,7 +357,7 @@
       <translation>Imposta proprieta cella</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="628"/>
+      <location filename="../../SheetModel.cpp" line="623"/>
       <source>Edit cell</source>
       <translation>Modifica cella</translation>
     </message>
@@ -382,32 +382,32 @@
       <translation>Cancella colore di sfondo</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="326"/>
+      <location filename="../../SheetTableView.cpp" line="328"/>
       <source>Insert Rows</source>
       <translation>Inserisci righe</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="353"/>
+      <location filename="../../SheetTableView.cpp" line="355"/>
       <source>Remove Rows</source>
       <translation>Rimuovi righe</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="339"/>
+      <location filename="../../SheetTableView.cpp" line="341"/>
       <source>Insert Columns</source>
       <translation>Inserisci colonne</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="224"/>
+      <location filename="../../SheetTableView.cpp" line="226"/>
       <source>Recompute Cells</source>
       <translation>Ricalcolo celle</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="366"/>
+      <location filename="../../SheetTableView.cpp" line="368"/>
       <source>Remove Columns</source>
       <translation>Rimuovi colonne</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="581"/>
+      <location filename="../../SheetTableView.cpp" line="583"/>
       <location filename="../../SpreadsheetView.cpp" line="179"/>
       <source>Clear Cells</source>
       <translation>Cancella celle</translation>
@@ -749,12 +749,12 @@ Spreadsheet.my_alias_name invece di Spreadsheet.B1</translation>
       <translation>Foglio di calcolo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="112"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="108"/>
       <source>Export File</source>
       <translation>Esporta File</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="133"/>
       <source>Show Spreadsheet</source>
       <translation>Mostra foglio di calcolo</translation>
     </message>
@@ -781,7 +781,7 @@ Spreadsheet.my_alias_name invece di Spreadsheet.B1</translation>
       <translation>Imposta il colore di sfondo nelle celle del foglio di calcolo</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="719"/>
+      <location filename="../../SheetTableView.cpp" line="721"/>
       <source>Copy &amp; Paste Failed</source>
       <translation>Copia &amp; Incolla fallita</translation>
     </message>
@@ -962,22 +962,47 @@ Continuare?</translation>
       <translation>Foglio di calcolo</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="26"/>
+      <location filename="../../DlgSettings.ui" line="156"/>
+      <source>Cells</source>
+      <translation type="unfinished">Cells</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="165"/>
+      <source>Maximum number of columns</source>
+      <translation type="unfinished">Maximum number of columns</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="175"/>
+      <source>Maximum number of rows</source>
+      <translation type="unfinished">Maximum number of rows</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="185"/>
       <source>Display Settings</source>
       <translation>Impostazioni Schermo</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="35"/>
+      <location filename="../../DlgSettings.ui" line="191"/>
+      <source>Displays the cell alias using the custom format.</source>
+      <translation type="unfinished">Displays the cell alias using the custom format.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="194"/>
       <source>Show alias in cell with format</source>
       <translation>Mostra alias nella cella con formato</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="51"/>
+      <location filename="../../DlgSettings.ui" line="207"/>
+      <source>Sets the table view zoom level from 60% to 160%.</source>
+      <translation type="unfinished">Sets the table view zoom level from 60% to 160%.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="210"/>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="83"/>
+      <location filename="../../DlgSettings.ui" line="242"/>
       <source>The format of the custom cell string presentation.
 Defaults to: %V = %A
 
@@ -990,57 +1015,47 @@ Predefinito a: %V = %A
 %V - valore cella</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="119"/>
+      <location filename="../../DlgSettings.ui" line="26"/>
       <source>Import/Export Settings</source>
       <translation>Importa/Esporta impostazioni</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="32"/>
-      <source>Uses the custom presentation to display cell string</source>
-      <translation>Utilizza un formato personalizzato per visualizzare la stringa della cella</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="48"/>
-      <source>Defines a default zoom level for table view from 60% to 160%</source>
-      <translation>Definisce un livello di zoom predefinito per la visualizzazione delle tabelle dal 60% al 160%</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="76"/>
+      <location filename="../../DlgSettings.ui" line="235"/>
       <source>Default zoom level</source>
       <translation>Livello di zoom predefinito</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="131"/>
+      <location filename="../../DlgSettings.ui" line="38"/>
       <source>Delimiter character</source>
       <translation>Carattere delimitatore</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="151"/>
+      <location filename="../../DlgSettings.ui" line="58"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Carattere da usare come delimitatore di campo. Di default è il tab, ma anche comunemente usati sono virgole (,) e punti e virgola (;). Selezionare dalla lista o immettere il proprio nel campo. Deve essere un singolo carattere o le parole &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;virgola&lt;/span&gt;virgola &lt;span style=" font-style:italic;"&gt;punto e virgola&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="167"/>
+      <location filename="../../DlgSettings.ui" line="74"/>
       <source>tab</source>
       <translation>tab</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="191"/>
+      <location filename="../../DlgSettings.ui" line="98"/>
       <source>Quote character</source>
       <translation>Carattere citazione</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="198"/>
+      <location filename="../../DlgSettings.ui" line="105"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Il carattere utilizzato per delimitare le stringhe, in genere è un singolo apice (') o un doppio apice (&amp;quot;). Deve essere un singolo carattere.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="223"/>
+      <location filename="../../DlgSettings.ui" line="130"/>
       <source>Escape character</source>
       <translation>Carattere di escape</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="230"/>
+      <location filename="../../DlgSettings.ui" line="137"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Il carattere Escape, tipicamente il backslash (\), utilizzato per indicare caratteri speciali non stampabili, e.. \t = tab. Deve essere un singolo carattere.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -1048,13 +1063,13 @@ Predefinito a: %V = %A
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <location filename="../../SheetTableView.cpp" line="186"/>
-      <location filename="../../SheetTableView.cpp" line="563"/>
+      <location filename="../../SheetTableView.cpp" line="188"/>
+      <location filename="../../SheetTableView.cpp" line="565"/>
       <source>Recompute</source>
       <translation>Ricalcola</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="147"/>
+      <location filename="../../SheetTableView.cpp" line="149"/>
       <source>Insert %n Non-Contiguous Rows</source>
       <translation>
         <numerusform>Inserisci %n riga non contigua</numerusform>
@@ -1062,12 +1077,12 @@ Predefinito a: %V = %A
       </translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="150"/>
+      <location filename="../../SheetTableView.cpp" line="152"/>
       <source>Remove Rows</source>
       <translation>Rimuovi righe</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="167"/>
+      <location filename="../../SheetTableView.cpp" line="169"/>
       <source>Insert %n Non-Contiguous Columns</source>
       <translation>
         <numerusform>Inserisci %n colonna non contigua</numerusform>
@@ -1075,29 +1090,29 @@ Predefinito a: %V = %A
       </translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="562"/>
+      <location filename="../../SheetTableView.cpp" line="564"/>
       <source>Properties…</source>
       <translation>Proprietà…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="187"/>
-      <location filename="../../SheetTableView.cpp" line="571"/>
+      <location filename="../../SheetTableView.cpp" line="189"/>
+      <location filename="../../SheetTableView.cpp" line="573"/>
       <source>Bind…</source>
       <translation>Collega…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="564"/>
+      <location filename="../../SheetTableView.cpp" line="566"/>
       <source>Configuration Table…</source>
       <translation>Tabella configurazioni…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="192"/>
-      <location filename="../../SheetTableView.cpp" line="565"/>
+      <location filename="../../SheetTableView.cpp" line="194"/>
+      <location filename="../../SheetTableView.cpp" line="567"/>
       <source>Merge Cells</source>
       <translation>Unisci celle</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="141"/>
+      <location filename="../../SheetTableView.cpp" line="143"/>
       <source>Insert %n Rows Above</source>
       <translation>
         <numerusform>Inserisci una riga sopra</numerusform>
@@ -1105,7 +1120,7 @@ Predefinito a: %V = %A
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="143"/>
+      <location filename="../../SheetTableView.cpp" line="145"/>
       <source>Insert %n Rows Below</source>
       <translation>
         <numerusform>Inserisci una riga sotto</numerusform>
@@ -1113,7 +1128,7 @@ Predefinito a: %V = %A
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="161"/>
+      <location filename="../../SheetTableView.cpp" line="163"/>
       <source>Insert %n Columns Left</source>
       <translation>
         <numerusform>Inserisci una colonna a sinistra</numerusform>
@@ -1121,7 +1136,7 @@ Predefinito a: %V = %A
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="163"/>
+      <location filename="../../SheetTableView.cpp" line="165"/>
       <source>Insert %n Columns Right</source>
       <translation>
         <numerusform>Inserisci una colonna a destra</numerusform>
@@ -1129,47 +1144,47 @@ Predefinito a: %V = %A
       </translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="170"/>
+      <location filename="../../SheetTableView.cpp" line="172"/>
       <source>Remove Columns</source>
       <translation>Rimuovi colonne</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="183"/>
+      <location filename="../../SheetTableView.cpp" line="185"/>
       <source>Properties</source>
       <translation>Proprietà</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="188"/>
+      <location filename="../../SheetTableView.cpp" line="190"/>
       <source>Configuration Table</source>
       <translation>Tabella configurazioni</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="197"/>
-      <location filename="../../SheetTableView.cpp" line="566"/>
+      <location filename="../../SheetTableView.cpp" line="199"/>
+      <location filename="../../SheetTableView.cpp" line="568"/>
       <source>Split Cell</source>
       <translation>Dividi cella</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="201"/>
-      <location filename="../../SheetTableView.cpp" line="569"/>
+      <location filename="../../SheetTableView.cpp" line="203"/>
+      <location filename="../../SheetTableView.cpp" line="571"/>
       <source>Cut</source>
       <translation>Taglio</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="202"/>
-      <location filename="../../SheetTableView.cpp" line="567"/>
+      <location filename="../../SheetTableView.cpp" line="204"/>
+      <location filename="../../SheetTableView.cpp" line="569"/>
       <source>Copy</source>
       <translation>Copia</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="203"/>
-      <location filename="../../SheetTableView.cpp" line="568"/>
+      <location filename="../../SheetTableView.cpp" line="205"/>
+      <location filename="../../SheetTableView.cpp" line="570"/>
       <source>Paste</source>
       <translation>Incolla</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="204"/>
-      <location filename="../../SheetTableView.cpp" line="570"/>
+      <location filename="../../SheetTableView.cpp" line="206"/>
+      <location filename="../../SheetTableView.cpp" line="572"/>
       <source>Delete</source>
       <translation>Elimina</translation>
     </message>

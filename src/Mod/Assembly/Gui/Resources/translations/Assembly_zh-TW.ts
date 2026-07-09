@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1888"/>
+      <location filename="../../../JointObject.py" line="1896"/>
       <source>Distance</source>
       <translation>距離</translation>
     </message>
@@ -175,22 +175,27 @@
       <translation>錯誤的連結在： </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1696"/>
+      <location filename="../../../JointObject.py" line="1238"/>
+      <source>Edit Joint</source>
+      <translation type="unfinished">Edit Joint</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="1704"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>您需要自 2 個分離的零件選擇 2 個元件</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1890"/>
+      <location filename="../../../JointObject.py" line="1898"/>
       <source>Radius 1</source>
       <translation>半徑 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1892"/>
+      <location filename="../../../JointObject.py" line="1900"/>
       <source>Thread pitch</source>
       <translation type="unfinished">Thread pitch</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1894"/>
+      <location filename="../../../JointObject.py" line="1902"/>
       <source>Pitch radius</source>
       <translation>螺距半徑</translation>
     </message>
@@ -677,7 +682,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
       <translation>配合的第 {order} 參考</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1280"/>
+      <location filename="../../../JointObject.py" line="1288"/>
       <source>The object to ground</source>
       <translation>物件接地</translation>
     </message>
