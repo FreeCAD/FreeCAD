@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, constmethod, deprecated_attributes
+from Base.Metadata import deprecated, deprecated_attributes, export, constmethod
 from Base.Vector import Vector
 from TopoShape import TopoShape
 from typing import Final, Tuple, Dict, Optional, List, Sequence, overload
-from typing_extensions import deprecated
 
 @export(
     PythonName="Part.Face",
@@ -17,7 +16,11 @@ from typing_extensions import deprecated
     Constructor=True,
 )
 @deprecated_attributes(
-    Wire="Use OuterWire instead.",
+    Wire={
+        "deprecated_in": "26.3",
+        "removed_in": "27.2",
+        "replacement": "OuterWire",
+    },
 )
 class TopoShapeFace(TopoShape):
     """
@@ -112,7 +115,7 @@ class TopoShapeFace(TopoShape):
         """
         ...
 
-    @deprecated("Use makeOffset2D instead.")
+    @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="makeOffset2D")
     @constmethod
     def makeOffset(self, dist: float, /) -> object:
         """
