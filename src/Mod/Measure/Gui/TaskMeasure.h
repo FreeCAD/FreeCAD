@@ -45,8 +45,12 @@
 
 #include <fastsignals/connection.h>
 
+#include <memory>
+
 namespace MeasureGui
 {
+
+class MeasureSnapManager;
 
 class TaskMeasure: public Gui::TaskView::TaskDialog, public Gui::SelectionObserver
 {
@@ -80,6 +84,7 @@ private:
     void tryUpdate();
     void updateUnitDropdown(const App::MeasureType* measureType);
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    bool snapEnabled() const;
     void onObjectDeleted(const App::DocumentObject& obj);
     void saveMeasurement();
     void quitMeasurement();
@@ -122,6 +127,8 @@ private:
     bool mAutoSave = false;
     bool mGreedySelection = false;
     Gui::Document* mTargetDoc;
+
+    std::unique_ptr<MeasureSnapManager> mSnapManager;
 };
 
 }  // namespace MeasureGui
