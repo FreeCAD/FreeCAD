@@ -1023,6 +1023,8 @@ class ToolBit(Asset, ABC):
         return state
 
     def __setstate__(self, state):
+        if not state:
+            return
         self.__dict__.update(state)
         # Seed _extra_attrs from _obj_data so unrecognised keys survive round-trips.
         self._extra_attrs = state.get("_obj_data", {})
