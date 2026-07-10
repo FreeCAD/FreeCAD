@@ -337,11 +337,11 @@ def makeWorkplane(shape):
 def getEnvelope(partshape, subshape=None, depthparams=None):
     """
     getEnvelope(partshape, stockheight=None)
-    returns a shape corresponding to the partshape silhouette extruded to height.
-    if stockheight is given, the returned shape is extruded to that height otherwise the returned shape
+    Returns a shape corresponding to the partshape silhouette extruded to height.
+    If depthparams is given, the returned shape is extruded to that height otherwise the returned shape
     is the height of the original shape boundbox
     partshape = solid object
-    stockheight = float - Absolute Z height of the top of material before cutting.
+    To get flat face at height z use getEnvelope(shape, depthparams=depth_params(0, z, z, 0, 0, z)
     """
     Path.Log.track(partshape, subshape, depthparams)
 
