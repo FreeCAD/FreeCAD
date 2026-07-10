@@ -23,6 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <cassert>
 #include <sstream>
 #include <boost/regex.hpp>
 
@@ -41,6 +42,46 @@ char format2[1024];  // Warning! Can't go over 512 characters!!!
 unsigned int format2_len = 1024;
 
 using namespace Base;
+
+bool Base::warnDeprecatedPythonApi(
+    const char* apiKind,
+    const char* qualifiedName,
+    const PythonApiDeprecation& deprecation
+)
+{
+    PyGILStateLocker locker;
+    assert(apiKind && *apiKind);
+    assert(qualifiedName && *qualifiedName);
+    assert(deprecation.deprecatedIn && *deprecation.deprecatedIn);
+    assert(deprecation.removedIn && *deprecation.removedIn);
+
+    std::string message = apiKind;
+    message += " '";
+    message += qualifiedName;
+    message += "' is deprecated since FreeCAD ";
+    message += deprecation.deprecatedIn;
+    message += " and will be removed in FreeCAD ";
+    message += deprecation.removedIn;
+    if (deprecation.replacement && *deprecation.replacement) {
+        message += "; use ";
+        message += deprecation.replacement;
+        message += " instead";
+    }
+    if (deprecation.details && *deprecation.details) {
+        message += "; ";
+        message += deprecation.details;
+    }
+    if (message.back() != '.' && message.back() != '!' && message.back() != '?') {
+        message += '.';
+    }
+
+    int warningResult = PyErr_WarnEx(PyExc_DeprecationWarning, message.c_str(), 1);
+    if (warningResult < 0) {
+        return false;
+    }
+
+    return true;
+}
 
 PyException::PyException(const Py::Object& obj)
 {

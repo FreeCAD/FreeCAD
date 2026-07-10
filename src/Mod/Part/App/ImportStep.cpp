@@ -70,8 +70,6 @@ int Part::ImportStepParts(App::Document* pcDoc, const char* Name)
     TopoDS_Shape aShape;
     Base::FileInfo fi(Name);
 
-    FC_WARN("Importing STEP via 'Part' is deprecated. Use 'ImportGui' instead.");
-
     if (!fi.exists()) {
         std::stringstream str;
         str << "File '" << Name << "' does not exist!";
