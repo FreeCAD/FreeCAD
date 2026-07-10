@@ -33,13 +33,11 @@
 #include <QPen>
 #include <QStringList>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/misc/SoState.h>
 
 #include <Inventor/SbVec2f.h>
 #include <Inventor/C/basic.h>
-#include <Inventor/elements/SoCullElement.h>
 #include <Inventor/elements/SoDepthBufferElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
@@ -49,282 +47,15 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 
-#include <cstdint>
-#include <cstring>
 #include <algorithm>
 
-#include "SoTextLabel.h"
+#include "SoLabelNodes.h"
 #include "SoFCInteractiveElement.h"
 #include "Tools.h"
 
 
 using namespace Gui;
 
-
-SO_NODE_SOURCE(SoTextLabel)
-
-void SoTextLabel::initClass()
-{
-    SO_NODE_INIT_CLASS(SoTextLabel, SoText2, "Text2");
-}
-
-SoTextLabel::SoTextLabel()
-{
-    SO_NODE_CONSTRUCTOR(SoTextLabel);
-    SO_NODE_ADD_FIELD(backgroundColor, (SbVec3f(1.0f, 1.0f, 1.0f)));
-    SO_NODE_ADD_FIELD(background, (true));
-    SO_NODE_ADD_FIELD(frameSize, (10.0f));
-
-    backgroundSwitch = new SoSwitch;
-    backgroundSwitch->ref();
-
-    backgroundSeparator = new SoSeparator;
-    auto* hints = new SoShapeHints;
-    hints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
-    hints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
-    backgroundSeparator->addChild(hints);
-
-    backgroundVertexProperty = new SoVertexProperty;
-    backgroundVertexProperty->materialBinding = SoVertexProperty::PER_VERTEX;
-    backgroundFaceSet = new SoFaceSet;
-    backgroundFaceSet->vertexProperty.setValue(backgroundVertexProperty);
-    backgroundFaceSet->numVertices.set1Value(0, 4);
-    backgroundSeparator->addChild(backgroundFaceSet);
-
-    backgroundSwitch->addChild(backgroundSeparator);
-    backgroundSwitch->whichChild = SO_SWITCH_ALL;
-}
-
-/**
- * Renders the label.
- */
-void SoTextLabel::GLRender(SoGLRenderAction* action)
-{
-    if (!this->shouldGLRender(action)) {
-        return;
-    }
-
-    // only draw text without background
-    if (!this->background.getValue()) {
-        if (backgroundSwitch) {
-            backgroundSwitch->whichChild = SO_SWITCH_NONE;
-        }
-        inherited::GLRender(action);
-        return;
-    }
-
-    if (!backgroundSwitch) {
-        return;
-    }
-
-    SoState* state = action->getState();
-
-    state->push();
-    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-
-    SbBox3f box;
-    SbVec3f center;
-    this->computeBBox(action, box, center);
-
-    if (!SoCullElement::cullTest(state, box, true)) {
-        SoMaterialBundle mb(action);
-        mb.sendFirst();
-        const SbViewportRegion& vp = SoViewportRegionElement::get(state);
-        SbVec2s vpsize = vp.getViewportSizePixels();
-
-        int lines = this->string.getNum();
-
-        // Unfortunately, the size of the label is stored in the pimpl class of
-        // SoText2 which cannot be accessed directly. However, there is a trick
-        // to get the required information: set model, viewing and projection
-        // matrix to the identity matrix and also view volume to some default
-        // values. SoText2::computeBBox() then calls SoText2P::getQuad which
-        // returns the sizes in form of the bounding box. These values can be
-        // reverse-engineered to get width and height.
-        state->push();
-        SoModelMatrixElement::set(state, this, SbMatrix::identity());
-        SoViewingMatrixElement::set(state, this, SbMatrix::identity());
-        SoProjectionMatrixElement::set(state, this, SbMatrix::identity());
-        SbViewVolume vv;
-        vv.ortho(-1, 1, -1, 1, -1, 1);
-        SoViewVolumeElement::set(state, this, vv);
-
-        SbBox3f textBox;
-        SbVec3f textCenter;
-        this->computeBBox(action, textBox, textCenter);
-        state->pop();
-
-        ensureBackgroundGeometry(state, textBox, lines);
-
-        state->push();
-
-        SbViewVolume orthoVolume;
-        orthoVolume.ortho(
-            0.0f,
-            static_cast<float>(vpsize[0]),
-            0.0f,
-            static_cast<float>(vpsize[1]),
-            -1.0f,
-            1.0f
-        );
-        SbMatrix affine;
-        SbMatrix projection;
-        orthoVolume.getMatrices(affine, projection);
-
-        SoModelMatrixElement::set(state, this, SbMatrix::identity());
-        SoViewingMatrixElement::set(state, this, SbMatrix::identity());
-        SoProjectionMatrixElement::set(state, this, projection);
-        SoViewVolumeElement::set(state, this, orthoVolume);
-
-        SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
-        SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-        SoGLTextureEnabledElement::set(state, this, FALSE);
-        SoMultiTextureEnabledElement::set(state, this, FALSE);
-
-        backgroundSwitch->whichChild = 0;
-        backgroundSwitch->GLRender(action);
-
-        state->pop();
-    }
-
-    state->pop();
-
-    inherited::GLRender(action);
-}
-
-SoTextLabel::~SoTextLabel()
-{
-    if (backgroundSwitch) {
-        backgroundSwitch->unref();
-        backgroundSwitch = nullptr;
-    }
-    backgroundSeparator = nullptr;
-    backgroundFaceSet = nullptr;
-    backgroundVertexProperty = nullptr;
-}
-
-void SoTextLabel::notify(SoNotList* list)
-{
-    if (list) {
-        SoField* f = list->getLastField();
-        if (f == &this->backgroundColor || f == &this->background || f == &this->frameSize
-            || f == &this->string || f == &this->justification) {
-            geometryDirty = true;
-        }
-    }
-
-    inherited::notify(list);
-}
-
-void SoTextLabel::ensureBackgroundGeometry(SoState* state, const SbBox3f& objectBounds, int lineCount)
-{
-    if (!state || !backgroundVertexProperty || !backgroundFaceSet) {
-        return;
-    }
-
-    const SbMatrix& model = SoModelMatrixElement::get(state);
-    const SbMatrix& viewing = SoViewingMatrixElement::get(state);
-    const SbMatrix& projection = SoProjectionMatrixElement::get(state);
-    const SbViewportRegion& viewport = SoViewportRegionElement::get(state);
-
-    SbVec2s viewportSize = viewport.getViewportSizePixels();
-
-    SbVec3f boundsMin;
-    SbVec3f boundsMax;
-    objectBounds
-        .getBounds(boundsMin[0], boundsMin[1], boundsMin[2], boundsMax[0], boundsMax[1], boundsMax[2]);
-
-    bool dirty = geometryDirty;
-    dirty = dirty || !model.equals(cachedModelMatrix, 0.0f)
-        || !viewing.equals(cachedViewingMatrix, 0.0f)
-        || !projection.equals(cachedProjectionMatrix, 0.0f) || cachedViewportSize != viewportSize
-        || cachedBBoxMin != boundsMin || cachedBBoxMax != boundsMax || cachedLineCount != lineCount;
-
-    const float frame = this->frameSize.getValue();
-    dirty = dirty || cachedFrameSize != frame;
-
-    SbColor color = this->backgroundColor.getValue();
-    dirty = dirty || cachedBackgroundColor != color;
-
-    if (!dirty) {
-        return;
-    }
-
-    geometryDirty = false;
-
-    cachedModelMatrix = model;
-    cachedViewingMatrix = viewing;
-    cachedProjectionMatrix = projection;
-    cachedViewportSize = viewportSize;
-    cachedBBoxMin = boundsMin;
-    cachedBBoxMax = boundsMax;
-    cachedLineCount = lineCount;
-    cachedFrameSize = frame;
-    cachedBackgroundColor = color;
-
-    SbMatrix combined = model * viewing * projection;
-
-    SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
-    combined.multVecMatrix(nilpoint, nilpoint);
-    nilpoint[0] = (nilpoint[0] + 1.0f) * 0.5f * viewportSize[0];
-    nilpoint[1] = (nilpoint[1] + 1.0f) * 0.5f * viewportSize[1];
-
-    SbViewVolume localVolume;
-    localVolume.ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
-
-    SbVec3f v0(boundsMin[0], boundsMax[1], boundsMax[2]);
-    SbVec3f v1(boundsMax[0], boundsMax[1], boundsMax[2]);
-    SbVec3f v2(boundsMax[0], boundsMin[1], boundsMax[2]);
-    SbVec3f v3(boundsMin[0], boundsMin[1], boundsMax[2]);
-    localVolume.projectToScreen(v0, v0);
-    localVolume.projectToScreen(v1, v1);
-    localVolume.projectToScreen(v2, v2);
-    localVolume.projectToScreen(v3, v3);
-
-    float width = (v1[0] - v0[0]) * viewportSize[0];
-    float height = (v1[1] - v3[1]) * viewportSize[1];
-
-    switch (this->justification.getValue()) {
-        case SoText2::RIGHT:
-            nilpoint[0] -= width;
-            break;
-        case SoText2::CENTER:
-            nilpoint[0] -= 0.5f * width;
-            break;
-        default:
-            break;
-    }
-
-    if (lineCount > 1) {
-        nilpoint[1] -= (static_cast<float>(lineCount - 1) / static_cast<float>(lineCount) * height);
-    }
-
-    SbVec3f toppoint = nilpoint;
-    toppoint[0] += width;
-    toppoint[1] += height;
-
-    float left = nilpoint[0] - frame;
-    float right = toppoint[0] + frame;
-    float bottom = nilpoint[1] - frame;
-    float top = toppoint[1] + frame;
-
-    backgroundVertexProperty->vertex.setNum(4);
-    backgroundVertexProperty->vertex.set1Value(0, SbVec3f(left, bottom, 0.0f));
-    backgroundVertexProperty->vertex.set1Value(1, SbVec3f(right, bottom, 0.0f));
-    backgroundVertexProperty->vertex.set1Value(2, SbVec3f(right, top, 0.0f));
-    backgroundVertexProperty->vertex.set1Value(3, SbVec3f(left, top, 0.0f));
-
-    const uint32_t packedColor = color.getPackedValue();
-    backgroundVertexProperty->orderedRGBA.setNum(4);
-    backgroundVertexProperty->orderedRGBA.set1Value(0, packedColor);
-    backgroundVertexProperty->orderedRGBA.set1Value(1, packedColor);
-    backgroundVertexProperty->orderedRGBA.set1Value(2, packedColor);
-    backgroundVertexProperty->orderedRGBA.set1Value(3, packedColor);
-
-    backgroundFaceSet->numVertices.set1Value(0, 4);
-}
-
-// ------------------------------------------------------
 
 SO_NODE_SOURCE(SoColorBarLabel)
 
@@ -723,7 +454,6 @@ void SoFrameLabel::drawImage()
  */
 void SoFrameLabel::GLRender(SoGLRenderAction* action)
 {
-
     if (backgroundUseBaseColor.getValue()) {
         SoState* state = action->getState();
         const SbColor& diffuse = SoLazyElement::getDiffuse(state, 0);

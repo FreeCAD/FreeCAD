@@ -418,21 +418,6 @@ def _make_scene_for_node(coin, type_name: str):
         root.addChild(label)
         return root
 
-    if type_name == "SoTextLabel":
-        # Ensure the label isn't white-on-white (SoTextLabel background defaults to white and the
-        # inherited material may also be white depending on state defaults).
-        mat = coin.SoMaterial()
-        mat.diffuseColor.setValue(0.05, 0.05, 0.05)
-        root.addChild(mat)
-
-        label = _instantiate(coin, "SoTextLabel")
-        label.string.setValues(0, 2, ["SoTextLabel", "Coin geometry"])
-        label.background.setValue(True)
-        label.backgroundColor.setValue(0.95, 0.95, 0.85)
-        label.frameSize.setValue(8.0)
-        root.addChild(label)
-        return root
-
     if type_name == "SoStringLabel":
         label = _instantiate(coin, "SoStringLabel")
         label.string.setValue("SoStringLabel")
@@ -1041,7 +1026,7 @@ def _render_png(
             parent.insertChild(label, idx)
             label.unref()
         # `SoCamera::viewAll()` can choose a near plane that clips geometry located near the origin.
-        # This shows up particularly with `SoText2`/`SoTextLabel` (text draws, but gets clipped away).
+        # This shows up particularly with `SoText2` (text draws, but gets clipped away).
         cam.nearDistance.setValue(min(cam.nearDistance.getValue(), 0.1))
 
     harness.render(root, out_path)
@@ -1714,7 +1699,6 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
                 "SoDrawingGrid",
                 "SoRegPoint",
                 "SoDatumLabel",
-                "SoTextLabel",
                 "SoStringLabel",
                 "SoFCBackgroundGradient",
                 "SoNaviCube",

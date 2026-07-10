@@ -26,18 +26,15 @@
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoSFName.h>
 #include <Inventor/SbColor.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec2s.h>
-#include <Inventor/SbVec3f.h>
 #include <Inventor/nodes/SoImage.h>
 #include <Inventor/nodes/SoFaceSet.h>
 #include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/nodes/SoVertexProperty.h>
@@ -49,48 +46,6 @@
 
 namespace Gui
 {
-
-/**
- * A text label with a background color.
- * @author Werner Mayer
- */
-class GuiExport SoTextLabel: public SoText2
-{
-    using inherited = SoText2;
-
-    SO_NODE_HEADER(SoTextLabel);
-
-public:
-    static void initClass();
-    SoTextLabel();
-
-    SoSFColor backgroundColor;
-    SoSFBool background;
-    SoSFFloat frameSize;
-
-protected:
-    ~SoTextLabel() override;
-    void GLRender(SoGLRenderAction* action) override;
-    void notify(SoNotList* list) override;
-
-private:
-    void ensureBackgroundGeometry(SoState* state, const SbBox3f& objectBounds, int lineCount);
-
-    mutable SoSwitch* backgroundSwitch {nullptr};
-    mutable SoSeparator* backgroundSeparator {nullptr};
-    mutable SoFaceSet* backgroundFaceSet {nullptr};
-    mutable SoVertexProperty* backgroundVertexProperty {nullptr};
-    mutable bool geometryDirty {true};
-    mutable SbMatrix cachedModelMatrix;
-    mutable SbMatrix cachedViewingMatrix;
-    mutable SbMatrix cachedProjectionMatrix;
-    mutable SbVec2s cachedViewportSize;
-    mutable SbVec3f cachedBBoxMin;
-    mutable SbVec3f cachedBBoxMax;
-    mutable int cachedLineCount {0};
-    mutable float cachedFrameSize {0.0f};
-    mutable SbColor cachedBackgroundColor;
-};
 
 /**
  * A text label for the color bar.

@@ -70,7 +70,7 @@
 #include "SoFCUnifiedSelection.h"
 #include "SoFCVectorizeSVGAction.h"
 #include "SoFCVectorizeU3DAction.h"
-#include "SoTextLabel.h"
+#include "SoLabelNodes.h"
 #include "SoDatumLabel.h"
 #include "TranslateManip.h"
 #include "Inventor/MarkerBitmaps.h"
@@ -141,7 +141,6 @@ void Gui::SoFCDB::init()
     SoVRMLAction ::initClass();
     SoSkipBoundingGroup ::initClass();
     SoSkipBoundingBoxElement ::initClass();
-    SoTextLabel ::initClass();
     SoDatumLabel ::initClass();
     SoColorBarLabel ::initClass();
     SoStringLabel ::initClass();

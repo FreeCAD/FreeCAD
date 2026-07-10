@@ -36,7 +36,7 @@
 
 #include <Base/Parameter.h>
 #include "SoFCColorGradient.h"
-#include "SoTextLabel.h"
+#include "SoLabelNodes.h"
 #include "Dialogs/DlgSettingsColorGradientImp.h"
 #include "MainWindow.h"
 #include "MDIView.h"

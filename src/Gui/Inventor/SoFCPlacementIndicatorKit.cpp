@@ -43,7 +43,7 @@
 #include "So3DAnnotation.h"
 #include "SoAxisCrossKit.h"
 
-#include <Gui/SoTextLabel.h>
+#include <Gui/SoLabelNodes.h>
 #include <Utilities.h>
 #include <ViewParams.h>
 #include <ViewProvider.h>
