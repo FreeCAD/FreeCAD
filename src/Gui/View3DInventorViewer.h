@@ -228,16 +228,22 @@ public:
     static int getNumSamples();
     void setRenderType(RenderType type);
     RenderType getRenderType() const;
-    void renderToFramebuffer(QOpenGLFramebufferObject*);
+
+    /** Options for rendering the scene into a fresh image. */
+    struct RenderImageOptions
+    {
+        int width = 0;
+        int height = 0;
+        int samples = -1;
+        QColor background;
+        RenderIntent intent = RenderIntent::RasterCapture;
+    };
+
+    /** Render the scene into a new image using the requested capture policy. */
+    QImage renderToImage(const RenderImageOptions& options);
+
+    /** Capture the live viewport framebuffer. */
     QImage grabFramebuffer();
-    void imageFromFramebuffer(
-        int width,
-        int height,
-        int samples,
-        const QColor& bgcolor,
-        QImage& img,
-        RenderIntent intent = RenderIntent::LiveInteractive
-    );
 
     void setViewing(bool enable) override;
     virtual void setCursorEnabled(bool enable);
@@ -624,6 +630,7 @@ private:
     void drawSingleBackground(const QColor&);
     void recoverFromRenderMemoryException();
     void renderGLActionScene(const QColor& backgroundColor, SoGLRenderAction* glra);
+    bool renderToFramebuffer(QOpenGLFramebufferObject*);
     void setCursorRepresentation(int mode);
     void aboutToDestroyGLContext();
     void createStandardCursors();

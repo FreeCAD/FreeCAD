@@ -100,6 +100,7 @@
 #include <QMimeData>
 #include <QOpenGLFramebufferObject>
 #include <QOpenGLWidget>
+#include <QScopeGuard>
 #include <QSurfaceFormat>
 #include <QTimer>
 #include <QVariantAnimation>
@@ -2362,10 +2363,15 @@ void View3DInventorViewer::savePicture(
     }
 
     auto self = const_cast<View3DInventorViewer*>(this);  // NOLINT
-    ScopedRenderIntent scopedIntent(*self, intent);
 
     if (useFramebufferObject) {
-        self->imageFromFramebuffer(width, height, sample, bg, img, intent);
+        RenderImageOptions options;
+        options.width = width;
+        options.height = height;
+        options.samples = sample;
+        options.background = bg;
+        options.intent = intent;
+        img = self->renderToImage(options);
         return;
     }
 
@@ -2942,25 +2948,29 @@ QImage View3DInventorViewer::grabFramebuffer()
     return res;
 }
 
-void View3DInventorViewer::imageFromFramebuffer(
-    int width,
-    int height,
-    int samples,
-    const QColor& bgcolor,
-    QImage& img,
-    RenderIntent intent
-)
+QImage View3DInventorViewer::renderToImage(const RenderImageOptions& options)
 {
-    auto self = const_cast<View3DInventorViewer*>(this);  // NOLINT
-    ScopedRenderIntent scopedIntent(*self, intent);
+    const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
+    const SbVec2s size = vp.getViewportSizePixels();
+    const int width = options.width > 0 ? options.width : size[0];
+    const int height = options.height > 0 ? options.height : size[1];
+
+    if (width <= 0 || height <= 0) {
+        Base::Console().warning("renderToImage failed because the viewport is empty\n");
+        return {};
+    }
+
+    const int samples = options.samples >= 0 ? options.samples : getNumSamples();
+    QImage img;
+    ScopedRenderIntent scopedIntent(*this, options.intent);
 
     auto gl = static_cast<QOpenGLWidget*>(this->viewport());  // NOLINT
     gl->makeCurrent();
 
     const QOpenGLContext* context = QOpenGLContext::currentContext();
     if (!context) {
-        Base::Console().warning("imageFromFramebuffer failed because no context is active\n");
-        return;
+        Base::Console().warning("renderToImage failed because no context is active\n");
+        return {};
     }
 
     QOpenGLFramebufferObjectFormat fboFormat;
@@ -2974,34 +2984,56 @@ void View3DInventorViewer::imageFromFramebuffer(
     fboFormat.setInternalTextureFormat(getInternalTextureFormat());
 
     QOpenGLFramebufferObject fbo(width, height, fboFormat);
-
-    const QColor col = backgroundColor();
-    auto grad = getGradientBackground();
+    if (!fbo.isValid()) {
+        Base::Console().warning(
+            "renderToImage failed to create a %dx%d framebuffer with %d samples\n",
+            width,
+            height,
+            samples
+        );
+        return {};
+    }
 
     constexpr const int maxAlpha = 255;
     int alpha = maxAlpha;
-    QColor bgopaque = bgcolor;
-    if (bgopaque.isValid()) {
-        // force an opaque background color
-        alpha = bgopaque.alpha();
-        if (alpha < maxAlpha) {
-            bgopaque.setRgb(maxAlpha, maxAlpha, maxAlpha);
+    QColor opaqueBackground = options.background;
+    const bool overrideBackground = opaqueBackground.isValid();
+    const QColor previousBackground = backgroundColor();
+    const Background previousGradient = getGradientBackground();
+    auto restoreBackground = qScopeGuard(
+        [this, overrideBackground, previousBackground, previousGradient]() {
+            if (overrideBackground) {
+                setBackgroundColor(previousBackground);
+                setGradientBackground(previousGradient);
+            }
         }
-        setBackgroundColor(bgopaque);
+    );
+
+    if (overrideBackground) {
+        // force an opaque background color
+        alpha = opaqueBackground.alpha();
+        if (alpha < maxAlpha) {
+            opaqueBackground.setRgb(maxAlpha, maxAlpha, maxAlpha);
+        }
+        setBackgroundColor(opaqueBackground);
         setGradientBackground(Background::NoGradient);
     }
 
-    renderToFramebuffer(&fbo);
-    setBackgroundColor(col);
-    setGradientBackground(grad);
+    if (!renderToFramebuffer(&fbo)) {
+        return {};
+    }
     img = fbo.toImage();
+    if (img.isNull()) {
+        Base::Console().warning("renderToImage failed to read the framebuffer\n");
+        return {};
+    }
 
     // if background color isn't opaque manipulate the image
     if (alpha < maxAlpha) {
         QImage image(img.constBits(), img.width(), img.height(), QImage::Format_ARGB32);
         img = image.copy();
-        QRgb rgba = bgcolor.rgba();
-        QRgb rgb = bgopaque.rgb();
+        QRgb rgba = options.background.rgba();
+        QRgb rgb = opaqueBackground.rgb();
         QRgb* bits = (QRgb*)img.bits();
         for (int yy = 0; yy < height; yy++) {
             for (int xx = 0; xx < width; xx++) {
@@ -3020,12 +3052,18 @@ void View3DInventorViewer::imageFromFramebuffer(
         painter.end();
         img = image;
     }
+
+    return img;
 }
 
-void View3DInventorViewer::renderToFramebuffer(QOpenGLFramebufferObject* fbo)
+bool View3DInventorViewer::renderToFramebuffer(QOpenGLFramebufferObject* fbo)
 {
     static_cast<QOpenGLWidget*>(this->viewport())->makeCurrent();  // NOLINT
-    fbo->bind();
+    if (!fbo->bind()) {
+        Base::Console().warning("renderToFramebuffer failed to bind the framebuffer\n");
+        return false;
+    }
+    auto releaseFramebuffer = qScopeGuard([fbo]() { fbo->release(); });
     int width = fbo->size().width();
     int height = fbo->size().height();
 
@@ -3064,7 +3102,7 @@ void View3DInventorViewer::renderToFramebuffer(QOpenGLFramebufferObject* fbo)
         this->drawAxisCross();
     }
 
-    fbo->release();
+    return true;
 }
 
 void View3DInventorViewer::actualRedraw()
