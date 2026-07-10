@@ -140,7 +140,13 @@ protected:
     void GLRender(SoGLRenderAction* action) override;
 
 private:
-    void drawImage();
+    void prepareImage(SoState* state);
+    void drawImage(const SbColor& effectiveBackground, const SbColor& effectiveText);
+
+    bool imageDirty {true};
+    bool effectiveColorsValid {false};
+    SbColor cachedEffectiveBackground;
+    SbColor cachedEffectiveText;
 };
 
 }  // namespace Gui

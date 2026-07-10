@@ -345,7 +345,8 @@ SoFrameLabel::SoFrameLabel()
 void SoFrameLabel::setIcon(const QPixmap& pixMap)
 {
     iconPixmap = pixMap;
-    drawImage();
+    imageDirty = true;
+    touch();
 }
 
 void SoFrameLabel::notify(SoNotList* list)
@@ -353,14 +354,14 @@ void SoFrameLabel::notify(SoNotList* list)
     SoField* f = list->getLastField();
     if (f == &this->string || f == &this->textColor || f == &this->backgroundColor
         || f == &this->justification || f == &this->name || f == &this->size || f == &this->frame
-        || f == &this->border) {
-        drawImage();
+        || f == &this->border || f == &this->backgroundUseBaseColor || f == &this->textUseBaseColor) {
+        imageDirty = true;
     }
 
     inherited::notify(list);
 }
 
-void SoFrameLabel::drawImage()
+void SoFrameLabel::drawImage(const SbColor& effectiveBackground, const SbColor& effectiveText)
 {
     const SbString* s = string.getValues(0);
     int num = string.getNum();
@@ -373,12 +374,10 @@ void SoFrameLabel::drawImage()
     QFontMetrics fm(font);
     int w = 0;
     int h = fm.height() * num;
-    const SbColor& b = backgroundColor.getValue();
     QColor backgroundBrush;
-    backgroundBrush.setRgbF(b[0], b[1], b[2]);
-    const SbColor& t = textColor.getValue();
+    backgroundBrush.setRgbF(effectiveBackground[0], effectiveBackground[1], effectiveBackground[2]);
     QColor front;
-    front.setRgbF(t[0], t[1], t[2]);
+    front.setRgbF(effectiveText[0], effectiveText[1], effectiveText[2]);
     const QPen borderPen(QColor(0, 0, 127), 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 
     QStringList lines;
@@ -449,28 +448,33 @@ void SoFrameLabel::drawImage()
     this->image = sfimage;
 }
 
+void SoFrameLabel::prepareImage(SoState* state)
+{
+    if (!state) {
+        return;
+    }
+
+    const SbColor& diffuse = SoLazyElement::getDiffuse(state, 0);
+    const SbColor effectiveBackground = backgroundUseBaseColor.getValue()
+        ? diffuse
+        : backgroundColor.getValue();
+    const SbColor effectiveText = textUseBaseColor.getValue() ? diffuse : textColor.getValue();
+
+    if (imageDirty || !effectiveColorsValid || effectiveBackground != cachedEffectiveBackground
+        || effectiveText != cachedEffectiveText) {
+        drawImage(effectiveBackground, effectiveText);
+        cachedEffectiveBackground = effectiveBackground;
+        cachedEffectiveText = effectiveText;
+        effectiveColorsValid = true;
+        imageDirty = false;
+    }
+}
+
 /**
  * Renders the open edges only.
  */
 void SoFrameLabel::GLRender(SoGLRenderAction* action)
 {
-    if (backgroundUseBaseColor.getValue()) {
-        SoState* state = action->getState();
-        const SbColor& diffuse = SoLazyElement::getDiffuse(state, 0);
-
-        if (diffuse != this->backgroundColor.getValue()) {
-            this->backgroundColor.setValue(diffuse);
-        }
-    }
-
-    if (textUseBaseColor.getValue()) {
-        SoState* state = action->getState();
-        const SbColor& diffuse = SoLazyElement::getDiffuse(state, 0);
-
-        if (diffuse != this->textColor.getValue()) {
-            this->textColor.setValue(diffuse);
-        }
-    }
-
+    prepareImage(action ? action->getState() : nullptr);
     inherited::GLRender(action);
 }
