@@ -35,12 +35,15 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Builder.hxx>
 
+#include <set>
+#include <vector>
 
 #include "App/Datums.h"
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/ElementNamingUtils.h>
 #include <App/FeaturePythonPyImp.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include <Base/Console.h>
 
 #include "Feature.h"
@@ -55,6 +58,45 @@ FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
 namespace PartDesign
 {
+
+namespace
+{
+
+Base::Placement getObjectPlacement(const App::DocumentObject* object)
+{
+    if (!object) {
+        return {};
+    }
+
+    auto placement = object->getPropertyByName<App::PropertyPlacement>("Placement");
+    return placement ? placement->getValue() : Base::Placement();
+}
+
+Base::Placement getContainingGeoFeatureGroupPlacement(const App::DocumentObject* object)
+{
+    Base::Placement placement;
+    std::set<const App::DocumentObject*> visited;
+    std::vector<const App::DocumentObject*> groups;
+
+    for (auto group = App::GeoFeatureGroupExtension::getGroupOfObject(object);
+         group && visited.insert(group).second;
+         group = App::GeoFeatureGroupExtension::getGroupOfObject(group)) {
+        groups.push_back(group);
+    }
+
+    for (auto it = groups.rbegin(); it != groups.rend(); ++it) {
+        placement = placement * getObjectPlacement(*it);
+    }
+
+    return placement;
+}
+
+Base::Placement getDisplayedObjectPlacement(const App::DocumentObject* object)
+{
+    return getContainingGeoFeatureGroupPlacement(object) * getObjectPlacement(object);
+}
+
+}  // namespace
 
 bool getPDRefineModelParameter()
 {
@@ -453,6 +495,36 @@ Part::TopoShape Feature::getBaseTopoShape(bool silent) const
         result.setShape(TopoDS_Shape());
     }
     return result;
+}
+
+Part::TopoShape Feature::getTopoShapeInLocalCoordinates(const App::DocumentObject* object) const
+{
+    if (!object) {
+        return {};
+    }
+
+    auto body = getFeatureBody();
+    const bool isSameBodyFeature = body && object->isDerivedFrom<PartDesign::Feature>()
+        && PartDesign::Body::findBodyOf(object) == body;
+
+    if (isSameBodyFeature) {
+        return static_cast<const Part::Feature*>(object)->Shape.getShape();
+    }
+
+    Part::ShapeOptions options = Part::ShapeOption::ResolveLink;
+    if (!body) {
+        return Part::Feature::getTopoShape(object, options | Part::ShapeOption::Transform);
+    }
+
+    Base::Matrix4D shapePlacement;
+    auto shape = Part::Feature::getTopoShape(object, options, nullptr, &shapePlacement);
+    if (!shape.isNull()) {
+        Base::Matrix4D placement = getDisplayedObjectPlacement(body).inverse().toMatrix();
+        placement *= getDisplayedObjectPlacement(object).toMatrix();
+        placement *= shapePlacement;
+        shape.transformShape(placement, false, true);
+    }
+    return shape;
 }
 
 void Feature::getGeneratedShapes(
