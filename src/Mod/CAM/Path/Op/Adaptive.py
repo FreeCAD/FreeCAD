@@ -69,7 +69,7 @@ else:
 
 translate = FreeCAD.Qt.translate
 
-ADAPTIVE_GENERATOR_VERSION = "1.0.2"
+ADAPTIVE_GENERATOR_VERSION = "1.0.3"
 
 
 def convertTo2d(pathArray):
