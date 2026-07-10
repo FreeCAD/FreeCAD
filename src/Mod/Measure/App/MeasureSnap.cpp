@@ -172,6 +172,39 @@ MeasureSnapMode MeasureSnap::snapModeFromIndex(long index)
     return static_cast<MeasureSnapMode>(index);
 }
 
+MeasureSnapMode MeasureSnap::pickPreviewType(int availableFlags, MeasureSnapMode activeMode)
+{
+    auto has = [availableFlags](MeasureSnapFlag flag) {
+        return (availableFlags & static_cast<int>(flag)) != 0;
+    };
+
+    switch (activeMode) {
+        case MeasureSnapMode::Vertex:
+            return has(MeasureSnapFlag::FlagVertex) ? MeasureSnapMode::Vertex : MeasureSnapMode::None;
+        case MeasureSnapMode::Center:
+            return has(MeasureSnapFlag::FlagCenter) ? MeasureSnapMode::Center : MeasureSnapMode::None;
+        case MeasureSnapMode::Midpoint:
+            return has(MeasureSnapFlag::FlagMidpoint) ? MeasureSnapMode::Midpoint
+                                                      : MeasureSnapMode::None;
+        case MeasureSnapMode::Axis:
+            return has(MeasureSnapFlag::FlagAxis) ? MeasureSnapMode::Axis : MeasureSnapMode::None;
+        case MeasureSnapMode::Auto:
+            if (has(MeasureSnapFlag::FlagCenter)) {
+                return MeasureSnapMode::Center;
+            }
+            if (has(MeasureSnapFlag::FlagMidpoint)) {
+                return MeasureSnapMode::Midpoint;
+            }
+            if (has(MeasureSnapFlag::FlagVertex)) {
+                return MeasureSnapMode::Vertex;
+            }
+            return MeasureSnapMode::None;
+        case MeasureSnapMode::None:
+            return MeasureSnapMode::None;
+    }
+    return MeasureSnapMode::None;
+}
+
 bool MeasureSnap::computeSnapPoint(
     const TopoDS_Shape& shape,
     MeasureSnapMode mode,

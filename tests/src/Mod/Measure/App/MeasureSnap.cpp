@@ -721,4 +721,39 @@ TEST_F(MeasureSnap, testSnapModeFromIndexClampsOutOfRange)
     EXPECT_EQ(Measure::MeasureSnap::snapModeFromIndex(-1), Measure::MeasureSnapMode::Auto);
 }
 
+// Auto prefers Center, then Midpoint, then Vertex; an explicit mode needs its own flag;
+// Axis is never auto-selected and only previews when explicitly requested.
+TEST_F(MeasureSnap, testPickPreviewType)
+{
+    using Measure::MeasureSnap;
+    using Measure::MeasureSnapFlag;
+    using Measure::MeasureSnapMode;
+
+    const int vertexOnly = static_cast<int>(MeasureSnapFlag::FlagVertex);
+    const int lineFlags = static_cast<int>(MeasureSnapFlag::FlagVertex)
+        | static_cast<int>(MeasureSnapFlag::FlagMidpoint);
+    const int circleFlags = static_cast<int>(MeasureSnapFlag::FlagVertex)
+        | static_cast<int>(MeasureSnapFlag::FlagMidpoint)
+        | static_cast<int>(MeasureSnapFlag::FlagCenter);
+    const int axisOnly = static_cast<int>(MeasureSnapFlag::FlagAxis);
+
+    // Auto picks the highest-priority available point snap.
+    EXPECT_EQ(MeasureSnap::pickPreviewType(circleFlags, MeasureSnapMode::Auto), MeasureSnapMode::Center);
+    EXPECT_EQ(MeasureSnap::pickPreviewType(lineFlags, MeasureSnapMode::Auto), MeasureSnapMode::Midpoint);
+    EXPECT_EQ(MeasureSnap::pickPreviewType(vertexOnly, MeasureSnapMode::Auto), MeasureSnapMode::Vertex);
+    EXPECT_EQ(MeasureSnap::pickPreviewType(0, MeasureSnapMode::Auto), MeasureSnapMode::None);
+    EXPECT_EQ(MeasureSnap::pickPreviewType(axisOnly, MeasureSnapMode::Auto), MeasureSnapMode::None);
+
+    // An explicit mode previews only when its flag is present.
+    EXPECT_EQ(MeasureSnap::pickPreviewType(circleFlags, MeasureSnapMode::Center), MeasureSnapMode::Center);
+    EXPECT_EQ(MeasureSnap::pickPreviewType(lineFlags, MeasureSnapMode::Center), MeasureSnapMode::None);
+    EXPECT_EQ(MeasureSnap::pickPreviewType(lineFlags, MeasureSnapMode::Midpoint), MeasureSnapMode::Midpoint);
+    EXPECT_EQ(MeasureSnap::pickPreviewType(vertexOnly, MeasureSnapMode::Vertex), MeasureSnapMode::Vertex);
+
+    // None never previews; Axis previews only when explicitly requested.
+    EXPECT_EQ(MeasureSnap::pickPreviewType(circleFlags, MeasureSnapMode::None), MeasureSnapMode::None);
+    EXPECT_EQ(MeasureSnap::pickPreviewType(axisOnly, MeasureSnapMode::Axis), MeasureSnapMode::Axis);
+    EXPECT_EQ(MeasureSnap::pickPreviewType(vertexOnly, MeasureSnapMode::Axis), MeasureSnapMode::None);
+}
+
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
