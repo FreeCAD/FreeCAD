@@ -76,9 +76,8 @@ protected:
         return mkVertex.Vertex();
     }
 
-    // A straight segment on the X axis with collinear but unevenly spaced poles:
-    // geometrically the line [0,10], but its parameterization is non-uniform, so
-    // the arc-length middle (5,0,0) and the parameter middle (3.125,0,0) diverge.
+    // The line [0,10] with non-uniform parameterization: arc-length middle (5,0,0)
+    // diverges from the parameter middle (3.125,0,0).
     TopoDS_Edge makeNonUniformStraightEdge() const
     {
         TColgp_Array1OfPnt poles(1, 4);
@@ -520,9 +519,8 @@ TEST_F(MeasureSnap, testProjectBehindAxisOriginStaysOnInfiniteLine)
     EXPECT_DOUBLE_EQ(foot.Z(), -3.0);
 }
 
-// A non-axis-aligned direction: projecting (1,0,0) onto the line through the origin
-// along (1,1,0) gives the midpoint (0.5,0.5,0). gp_Dir normalizes the direction, so
-// the sqrt(2) factor makes this inexact; assert within tolerance.
+// Projecting (1,0,0) onto the (1,1,0) line through the origin gives (0.5,0.5,0);
+// gp_Dir normalization makes this inexact.
 TEST_F(MeasureSnap, testProjectOntoDiagonalAxis)
 {
     const gp_Ax1 axis(gp_Pnt(0.0, 0.0, 0.0), gp_Dir(1.0, 1.0, 0.0));
@@ -532,9 +530,7 @@ TEST_F(MeasureSnap, testProjectOntoDiagonalAxis)
     EXPECT_NEAR(foot.Z(), 0.0, 1e-9);
 }
 
-// Skew axes: an X-directed line at the origin and a Y-directed line through
-// (3,0,5). Their common perpendicular runs along Z, joining (3,0,0) on the first
-// to (3,0,5) on the second.
+// Skew X and Y axes; common perpendicular joins (3,0,0) to (3,0,5).
 TEST_F(MeasureSnap, testClosestPointsSkew)
 {
     const gp_Ax1 a(gp_Pnt(0.0, 0.0, 0.0), gp_Dir(1.0, 0.0, 0.0));
@@ -551,9 +547,7 @@ TEST_F(MeasureSnap, testClosestPointsSkew)
     EXPECT_NEAR(onA.Distance(onB), 5.0, 1e-6);
 }
 
-// Determinism rule under an along-axis origin offset: both origins sit at
-// different heights, yet the returned pair is pinned at A's origin height (z=10),
-// not B's. The perpendicular gap stays the 4-unit XY separation.
+// Parallel axes at different heights: the pair pins to A's height (z=10), not B's.
 TEST_F(MeasureSnap, testClosestPointsParallelIndependentOfOriginHeight)
 {
     const gp_Ax1 a(gp_Pnt(0.0, 0.0, 10.0), gp_Dir(0.0, 0.0, 1.0));
@@ -600,9 +594,7 @@ TEST_F(MeasureSnap, testClosestPointsNearParallelStaysSkew)
     EXPECT_NEAR(onA.Distance(onB), 5.0, 1e-4);
 }
 
-// A trimmed (angular wedge) cylindrical face still reports GeomAbs_Cylinder, so the
-// full infinite axis is recovered from a partial patch, not only from a closed
-// primitive. The axis is unchanged by the angular trim.
+// A trimmed (wedge) cylindrical face still reports GeomAbs_Cylinder.
 TEST_F(MeasureSnap, testAxisOfTrimmedCylinderFace)
 {
     const TopoDS_Face face = makePartialCylinderFace(2.0, 5.0, 2.0);
@@ -623,9 +615,8 @@ TEST_F(MeasureSnap, testAvailableSnapTypesOnCylinderFace)
     EXPECT_EQ(Measure::MeasureSnap::getAvailableSnapTypes(face), expected);
 }
 
-// No cursor: the preview point is the face bounding-box centre projected onto the
-// axis, never the raw gp_Ax1 origin. For a height-5 cylinder on Z that centre sits at
-// z=2.5, mid-height, and its projection stays on the axis line at (0,0,2.5).
+// No cursor: preview point is the bbox centre projected onto the axis, not the
+// raw gp_Ax1 origin; a height-5 cylinder gives (0,0,2.5).
 TEST_F(MeasureSnap, testAxisSnapNoCursorProjectsBboxCentre)
 {
     const TopoDS_Face face = makeCylinderFace(2.0, 5.0);
@@ -677,9 +668,7 @@ TEST_F(MeasureSnap, testAxisSnapOnPlaneFaceReturnsFalse)
     );
 }
 
-// The stand-in edge is centred on the projected box centre and spans twice the box
-// diagonal. A box of diagonal 10 centred at z=5 on the Z axis yields a length-20 edge
-// straddling z=5.
+// Spans twice the box diagonal: a diagonal-10 box at z=5 gives a length-20 edge.
 TEST_F(MeasureSnap, testBoundedAxisEdgeSpansTwiceDiagonal)
 {
     Bnd_Box bounds;
