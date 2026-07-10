@@ -90,6 +90,10 @@ public:
 
     // Convert a stored index to a mode; out-of-range values fall back to Auto.
     static MeasureSnapMode snapModeFromIndex(long index);
+
+    // Preview type for a hovered element: the active mode if its flag is set, else None;
+    // Auto returns the best available point snap (Center, then Midpoint, then Vertex).
+    static MeasureSnapMode pickPreviewType(int availableFlags, MeasureSnapMode activeMode);
 };
 
 }  // namespace Measure
