@@ -7,6 +7,7 @@ from TopoShape import TopoShape
 from typing import Dict, List, Final, overload, Optional, Sequence
 
 @export(
+    PythonName="Part.Wire",
     Twin="TopoShape",
     TwinPointer="TopoShape",
     FatherInclude="Mod/Part/App/TopoShapePy.h",

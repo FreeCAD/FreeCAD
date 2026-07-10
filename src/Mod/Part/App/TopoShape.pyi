@@ -8,8 +8,10 @@ from Base.Matrix import Matrix
 from Base.BoundBox import BoundBox
 from App.ComplexGeoData import ComplexGeoData
 from typing import Final, List, Tuple, Union, overload
+from typing_extensions import deprecated
 
 @export(
+    PythonName="Part.Shape",
     Include="Mod/Part/App/TopoShape.h",
     FatherInclude="App/ComplexGeoDataPy.h",
     FatherNamespace="Data",
@@ -269,6 +271,7 @@ class TopoShape(ComplexGeoData):
         """
         ...
 
+    @deprecated("Use fuse() instead.")
     @constmethod
     def multiFuse(
         self,

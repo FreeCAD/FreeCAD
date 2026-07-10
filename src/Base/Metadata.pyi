@@ -11,6 +11,7 @@ This file keeps auxiliary metadata to be used by the Python API stubs.
 
 _ClassT = TypeVar("_ClassT")
 _FuncT = TypeVar("_FuncT", bound=Callable[..., Any])
+_T = TypeVar("_T")
 
 def export(**kwargs: Any) -> Callable[[_ClassT], _ClassT]:
     """
@@ -49,4 +50,20 @@ def sequence_protocol(**kwargs: Any) -> Callable[[_ClassT], _ClassT]:
     """
     A decorator to attach sequence protocol metadata to a class.
     """
+    ...
+
+def deprecated_attributes(**kwargs: str | dict[str, str]):
+    """
+    A decorator to attach per-attribute deprecation messages to a class.
+    """
+    ...
+
+def deprecated(
+    *,
+    deprecated_in: str,
+    removed_in: str,
+    replacement: str | None = None,
+    details: str | None = None,
+) -> Callable[[_T], _T]:
+    """Attach structured lifecycle metadata to a deprecated Python API."""
     ...
