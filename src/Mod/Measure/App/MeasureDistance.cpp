@@ -67,7 +67,7 @@ struct SnapResult
 
 // Auto and None resolve to nothing by intent; a requested snap that cannot apply
 // warns and resolves to nothing (the pair then uses nearest points).
-SnapResult resolveSnap(const TopoDS_Shape& shape, MeasureSnapMode mode)
+SnapResult resolveSnap(const TopoDS_Shape& shape, MeasureSnapMode mode, const char* fullName, const char* elementName)
 {
     if (mode == MeasureSnapMode::Auto || mode == MeasureSnapMode::None) {
         return {SnapKind::Unresolved, {}, {}};
@@ -76,7 +76,10 @@ SnapResult resolveSnap(const TopoDS_Shape& shape, MeasureSnapMode mode)
     gp_Dir dir;
     if (!MeasureSnap::computeSnapPoint(shape, mode, nullptr, point, &dir)) {
         Base::Console().warning(
-            "Measure: the chosen snap does not apply here; using nearest points.\n"
+            "%s: %s mode does not apply to %s; using nearest points for that element.\n",
+            fullName,
+            MeasureSnap::snapModeEnums()[static_cast<int>(mode)],
+            elementName
         );
         return {SnapKind::Unresolved, {}, {}};
     }
@@ -282,8 +285,9 @@ void MeasureDistance::distanceSnapped(
     MeasureSnapMode snap2
 )
 {
-    const SnapResult r1 = resolveSnap(shape1, snap1);
-    const SnapResult r2 = resolveSnap(shape2, snap2);
+    const std::string fullName = getFullName();
+    const SnapResult r1 = resolveSnap(shape1, snap1, fullName.c_str(), "Snap1");
+    const SnapResult r2 = resolveSnap(shape2, snap2, fullName.c_str(), "Snap2");
 
     if (r1.kind == SnapKind::Point && r2.kind == SnapKind::Point) {
         setValues(r1.point, r2.point);
@@ -312,6 +316,14 @@ void MeasureDistance::distanceSnapped(
             setValues(onA, onB);
             return;
         }
+        // Extrema failed; avoid falling through to the mixed branch below,
+        // which would silently measure a different pair.
+        Base::Console().warning(
+            "%s: could not resolve the axis-to-axis snap; using nearest points instead.\n",
+            fullName.c_str()
+        );
+        distanceGeneric(shape1, shape2);
+        return;
     }
     if (r1.kind == SnapKind::Axis || r2.kind == SnapKind::Axis) {
         Bnd_Box pairBounds;
