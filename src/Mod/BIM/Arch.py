@@ -53,6 +53,7 @@ __author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
 
 import FreeCAD
+from freecad.deprecation import deprecated
 from typing import Optional
 
 if FreeCAD.GuiUp:
@@ -883,12 +884,13 @@ def makeProfile(profile=[0, "REC", "REC100x100", "R", 100, 100]):
     return obj
 
 
+@deprecated(deprecated_in="26.3", removed_in="27.2")
 def makeProject(sites=None, name=None):
     """Create an Arch project.
 
     If sites are provided, add them as children of the new project.
 
-    .. deprecated:: 1.0.0
+    .. deprecated:: 26.3
 
     Parameters
     ----------
