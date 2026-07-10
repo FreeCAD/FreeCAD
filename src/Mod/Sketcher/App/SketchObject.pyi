@@ -10,6 +10,7 @@ from Part.App.Part2DObject import Part2DObject
 from Part.App.Geometry import Geometry
 from Sketcher.App.Constraint import Constraint
 from typing import List, Tuple, Union, Final, overload
+from typing_extensions import deprecated
 
 @export(
     Include="Mod/Sketcher/App/SketchObject.h",
@@ -745,12 +746,14 @@ class SketchObject(Part2DObject):
         """
         ...
 
+    @deprecated("Use exposeInternalGeometry instead.")
     def ExposeInternalGeometry(self) -> None:
         """
         Deprecated -- use exposeInternalGeometry
         """
         ...
 
+    @deprecated("Use deleteUnusedInternalGeometry instead.")
     def DeleteUnusedInternalGeometry(self) -> None:
         """
         Deprecated -- use deleteUnusedInternalGeometry
