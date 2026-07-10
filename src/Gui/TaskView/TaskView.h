@@ -26,7 +26,6 @@
 
 #include <vector>
 #include <optional>
-#include <QLabel>
 #include <QScrollArea>
 #include <QStackedWidget>
 
