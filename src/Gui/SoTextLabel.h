@@ -34,7 +34,6 @@
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbVec3f.h>
-#include <Inventor/manips/SoTransformManip.h>
 #include <Inventor/nodes/SoImage.h>
 #include <Inventor/nodes/SoFaceSet.h>
 #include <Inventor/nodes/SoSeparator.h>
@@ -187,20 +186,6 @@ protected:
 
 private:
     void drawImage();
-};
-
-class GuiExport TranslateManip: public SoTransformManip
-{
-    SO_NODE_HEADER(TranslateManip);
-
-public:
-    // Constructor
-    TranslateManip();
-    static void initClass();
-
-private:
-    // Destructor
-    ~TranslateManip() override;
 };
 
 }  // namespace Gui

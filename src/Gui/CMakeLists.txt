@@ -1094,6 +1094,7 @@ SET(Inventor_CPP_SRCS
     SoFCVectorizeU3DAction.cpp
     SoDevicePixelRatioElement.cpp
     SoTextLabel.cpp
+    TranslateManip.cpp
     SoDatumLabel.cpp
     SoTouchEvents.cpp
     ArcEngine.cpp
@@ -1137,6 +1138,7 @@ SET(Inventor_SRCS
     SoFCVectorizeU3DAction.h
     SoDevicePixelRatioElement.h
     SoTextLabel.h
+    TranslateManip.h
     SoDatumLabel.h
     SoTouchEvents.h
     ArcEngine.h

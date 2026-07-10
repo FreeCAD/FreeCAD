@@ -72,6 +72,7 @@
 #include "SoFCVectorizeU3DAction.h"
 #include "SoTextLabel.h"
 #include "SoDatumLabel.h"
+#include "TranslateManip.h"
 #include "Inventor/MarkerBitmaps.h"
 #include "Inventor/SmSwitchboard.h"
 #include "Inventor/So3DAnnotation.h"

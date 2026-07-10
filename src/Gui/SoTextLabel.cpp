@@ -39,7 +39,6 @@
 
 #include <Inventor/SbVec2f.h>
 #include <Inventor/C/basic.h>
-#include <Inventor/draggers/SoTranslate2Dragger.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/elements/SoDepthBufferElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
@@ -745,22 +744,3 @@ void SoFrameLabel::GLRender(SoGLRenderAction* action)
 
     inherited::GLRender(action);
 }
-
-// ------------------------------------------------------
-
-SO_NODE_SOURCE(TranslateManip)
-
-void TranslateManip::initClass()
-{
-    SO_NODE_INIT_CLASS(TranslateManip, SoTransformManip, "TransformManip");
-}
-
-TranslateManip::TranslateManip()
-{
-    SO_NODE_CONSTRUCTOR(TranslateManip);
-
-    auto myDrag = new SoTranslate2Dragger;
-    setDragger(myDrag);
-}
-
-TranslateManip::~TranslateManip() = default;
