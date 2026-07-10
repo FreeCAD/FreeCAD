@@ -1687,21 +1687,33 @@ void writePreprocessingSVG(const PreprocessingSVGInfo& svgInfo)
             for (size_t i = 0; i < paths.size(); i++) {
                 const Path& ip = paths[i];
                 if (!ip.empty()) {
-                    // Draw each edge as a separate line, solid if both endpoints have Z=1, dashed
-                    // otherwise
+                    // Merge consecutive edges of the same dashedness into one <path> so that
+                    // stroke-dasharray renders continuously across short segments.
+                    bool inPath = false;
+                    bool curDash = false;
                     for (size_t j = 0; j < ip.size(); j++) {
                         const IntPoint& p1 = ip[j];
                         const IntPoint& p2 = (j + 1 < ip.size()) ? ip[j + 1] : ip[0];
+                        bool edgeDash = !(p1.Z == 1 && p2.Z == 1);
 
-                        bool edgeHasZ1 = (p1.Z == 1 && p2.Z == 1);
-                        svg << "<line x1=\"" << p1.X << "\" y1=\"" << -p1.Y << "\" x2=\"" << p2.X
-                            << "\" y2=\"" << -p2.Y << "\" stroke=\"" << strokeColor
-                            << "\" stroke-width=\"" << (padding / 100) << "\"";
-                        if (!edgeHasZ1) {
-                            svg << " stroke-dasharray=\"" << (padding / 8) << "," << (padding / 8)
-                                << "\"";
+                        if (!inPath || edgeDash != curDash) {
+                            if (inPath) {
+                                svg << "\"/>\n";
+                            }
+                            curDash = edgeDash;
+                            inPath = true;
+                            svg << "<path stroke=\"" << strokeColor << "\" stroke-width=\""
+                                << (padding / 100) << "\" fill=\"none\"";
+                            if (curDash) {
+                                svg << " stroke-dasharray=\"" << (padding / 8) << ","
+                                    << (padding / 8) << "\"";
+                            }
+                            svg << " d=\"M" << p1.X << "," << -p1.Y;
                         }
-                        svg << "/>\n";
+                        svg << " L" << p2.X << "," << -p2.Y;
+                    }
+                    if (inPath) {
+                        svg << "\"/>\n";
                     }
                     // Add markers for Z=1 vertices
                     for (const auto& pt : ip) {
