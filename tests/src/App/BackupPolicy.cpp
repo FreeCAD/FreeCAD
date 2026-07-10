@@ -72,8 +72,8 @@ protected:
     std::filesystem::path createTempFile(const std::string& filename)
     {
         std::filesystem::path p = _tempDir.path() / filename;
-        std::ofstream fileStream(p.string()); 
-       fileStream << "Test data";
+        std::ofstream fileStream(p.string());
+        fileStream << "Test data";
         fileStream.close();
         return p;
     }
@@ -203,7 +203,7 @@ TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackupUnexpectedSuffix)
     auto source = createTempFile("source.fcstd");
     auto backupDir = source.parent_path() / "freecad-backups";
     std::filesystem::create_directories(backupDir);
-    
+
     auto target = createTempFile("target.fcstd");
     auto backup = createTempFile(backupDir / "target.fcstd1");
     auto weird = createTempFile(backupDir / "target.fcstd2a");
@@ -214,7 +214,8 @@ TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackupUnexpectedSuffix)
     // Assert
     EXPECT_TRUE(std::filesystem::exists(backup));
     EXPECT_TRUE(std::filesystem::exists(backupDir / (backup.filename().string() + "2")));
-    EXPECT_TRUE(std::filesystem::exists(backupDir / weird.filename())); // What is this doing if not testing the test?
+    EXPECT_TRUE(std::filesystem::exists(backupDir / weird.filename()));  // What is this doing if
+                                                                         // not testing the test?
 }
 
 TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackupOutOfSequenceNumber)
@@ -235,7 +236,7 @@ TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackupOutOfSequenceNumbe
     // Assert
     EXPECT_TRUE(std::filesystem::exists(backup));
     bool check1 = std::filesystem::exists(backupDir / (target.filename().string() + "2"));
-    bool check2 = std::filesystem::exists(backupDir / weird.filename()); 
+    bool check2 = std::filesystem::exists(backupDir / weird.filename());
     EXPECT_NE(check1, check2);  // Only one or the other can exist (we don't know which because it
                                 // depends on file modification date)
 }
@@ -253,7 +254,7 @@ TEST_F(BackupPolicyTest, StandardWithFCBakSet)
     // Assert
     EXPECT_TRUE(std::filesystem::exists(target.string() + "1"));  // No FCBak extension for Standard
 }
- 
+
 TEST_F(BackupPolicyTest, TimestampSourceDoesNotExist)
 {
     // Arrange
