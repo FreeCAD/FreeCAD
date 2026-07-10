@@ -31,6 +31,7 @@
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Wire.hxx>
+#include <cmath>
 
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
@@ -85,6 +86,21 @@ protected:
         poles(2) = gp_Pnt(2.0, 0.0, 0.0);
         poles(3) = gp_Pnt(3.0, 0.0, 0.0);
         poles(4) = gp_Pnt(10.0, 0.0, 0.0);
+        Handle(Geom_BezierCurve) curve = new Geom_BezierCurve(poles);
+        BRepBuilderAPI_MakeEdge mkEdge(curve);
+        return mkEdge.Edge();
+    }
+
+    // A cubic Bezier approximating a unit quarter circle: geometrically circular,
+    // but its adaptor type is GeomAbs_BezierCurve, not GeomAbs_Circle.
+    TopoDS_Edge makeCircularBezierEdge() const
+    {
+        const double k = 4.0 / 3.0 * (std::sqrt(2.0) - 1.0);
+        TColgp_Array1OfPnt poles(1, 4);
+        poles(1) = gp_Pnt(1.0, 0.0, 0.0);
+        poles(2) = gp_Pnt(1.0, k, 0.0);
+        poles(3) = gp_Pnt(k, 1.0, 0.0);
+        poles(4) = gp_Pnt(0.0, 1.0, 0.0);
         Handle(Geom_BezierCurve) curve = new Geom_BezierCurve(poles);
         BRepBuilderAPI_MakeEdge mkEdge(curve);
         return mkEdge.Edge();
@@ -233,6 +249,17 @@ TEST_F(MeasureSnap, testCenterOnCircularWireReturnsFalse)
     gp_Pnt out;
     EXPECT_FALSE(
         Measure::MeasureSnap::computeSnapPoint(wire, Measure::MeasureSnapMode::Center, nullptr, out)
+    );
+}
+
+// Detection is by adaptor type, not geometric shape, so a circular-looking
+// BSpline/Bezier edge (e.g. a STEP import) does not center-snap.
+TEST_F(MeasureSnap, testCenterOnCircularBezierEdgeReturnsFalse)
+{
+    const TopoDS_Edge edge = makeCircularBezierEdge();
+    gp_Pnt out;
+    EXPECT_FALSE(
+        Measure::MeasureSnap::computeSnapPoint(edge, Measure::MeasureSnapMode::Center, nullptr, out)
     );
 }
 
@@ -471,17 +498,6 @@ TEST_F(MeasureSnap, testAxisOfNullFaceReturnsFalse)
     EXPECT_FALSE(Measure::MeasureSnap::axisOfFace(nullFace, axis));
 }
 
-// The foot of the perpendicular from (3,4,7) onto the Z axis drops the X and Y
-// components, leaving the axis origin's frame with the point's height.
-TEST_F(MeasureSnap, testProjectOntoZAxisAtOrigin)
-{
-    const gp_Ax1 axis(gp_Pnt(0.0, 0.0, 0.0), gp_Dir(0.0, 0.0, 1.0));
-    const gp_Pnt foot = Measure::MeasureSnap::projectOntoAxis(axis, gp_Pnt(3.0, 4.0, 7.0));
-    EXPECT_DOUBLE_EQ(foot.X(), 0.0);
-    EXPECT_DOUBLE_EQ(foot.Y(), 0.0);
-    EXPECT_DOUBLE_EQ(foot.Z(), 7.0);
-}
-
 // A Z axis shifted to (1,2,0): the foot keeps the axis line's X/Y and the point's
 // height, independent of the axis origin's own Z.
 TEST_F(MeasureSnap, testProjectOntoOffsetZAxis)
@@ -566,11 +582,8 @@ TEST_F(MeasureSnap, testClosestPointsCoincident)
     EXPECT_DOUBLE_EQ(onA.Distance(onB), 0.0);
 }
 
-// A near-parallel pair (0.001 rad apart) must stay on the skew branch, not collapse
-// to the parallel rule. The common perpendicular sits at z=20 on both lines; the
-// parallel rule would instead anchor A at its origin (z=0), so the z=20 result
-// proves the correct branch was taken. Extrema on near-parallel lines is touchy, so
-// a looser tolerance is used.
+// Near-parallel (0.001 rad) must take the skew branch, not the parallel rule:
+// z=20 proves it (the parallel rule would anchor A at its origin, z=0).
 TEST_F(MeasureSnap, testClosestPointsNearParallelStaysSkew)
 {
     const gp_Ax1 a(gp_Pnt(0.0, 0.0, 0.0), gp_Dir(0.0, 0.0, 1.0));
@@ -684,10 +697,8 @@ TEST_F(MeasureSnap, testBoundedAxisEdgeSpansTwiceDiagonal)
     EXPECT_NEAR((p1.Z() + p2.Z()) / 2.0, 5.0, 1e-6);
 }
 
-// The arbitrary-origin trap: a tall cylinder whose surface frame origin sits at the
-// base, and a probe point near the top offset 5 from the axis. The bounded edge must
-// span far enough that the nearest point is the perpendicular foot on the axis line
-// (distance 5), not the far-away gp_Ax1 origin at the base (~95 away).
+// A probe near the top, offset 5 from the axis, must measure to the nearby
+// perpendicular foot (5), not the far gp_Ax1 origin at the base (~95).
 TEST_F(MeasureSnap, testBoundedAxisEdgeIgnoresArbitraryOrigin)
 {
     const TopoDS_Face cylinder = makeCylinderFace(1.0, 100.0);

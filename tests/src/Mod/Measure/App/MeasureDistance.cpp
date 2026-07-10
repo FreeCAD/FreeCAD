@@ -10,6 +10,7 @@
 #include <Mod/Measure/App/MeasureSnap.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Base/Placement.h>
+#include <Base/Reader.h>
 #include <Base/Rotation.h>
 #include <Base/Vector3D.h>
 #include <gtest/gtest.h>
@@ -27,6 +28,7 @@
 #include <TopoDS_Wire.hxx>
 #include <algorithm>
 #include <cstdio>
+#include <sstream>
 
 class MeasureDistance: public ::testing::Test
 {
@@ -366,6 +368,36 @@ TEST_F(MeasureDistance, testSnapSetValueRoundTrip)
     md->Snap2.setValue(static_cast<long>(Measure::MeasureSnapMode::Midpoint));
     EXPECT_EQ(md->Snap2.getValue(), static_cast<long>(Measure::MeasureSnapMode::Midpoint));
     EXPECT_STREQ(md->Snap2.getValueAsString(), "Midpoint");
+}
+
+// Restore() accepts an out-of-range index (setValue() would reject it); it
+// must still dispatch as Auto (#27404).
+TEST_F(MeasureDistance, testRestoredOutOfRangeSnapIndexDispatchesAsAuto)
+{
+    App::Document* doc = getDocument();
+    auto p1 = doc->addObject<Part::Feature>("Shape1");
+    p1->Shape.setValue(makeCircle(gp_Pnt(0.0, 0.0, 0.0)));
+    auto p2 = doc->addObject<Part::Feature>("Shape2");
+    p2->Shape.setValue(makeCircle(gp_Pnt(3.0, 4.0, 0.0)));
+
+    auto md = doc->addObject<Measure::MeasureDistance>("Distance");
+    md->Element1.setValue(p1, {"Edge1"});
+    md->Element2.setValue(p2, {"Edge1"});
+
+    std::string str = "<?xml version='1.0' encoding='utf-8'?>\n";
+    str += "<Property name='Snap1' type='App::PropertyEnumeration'>\n";
+    str += "<Integer value=\"99\"/>\n";
+    str += "</Property>\n";
+    std::stringstream data(str);
+    Base::XMLReader reader("Document.xml", data);
+    md->Snap1.Restore(reader);
+
+    doc->recompute();
+
+    EXPECT_EQ(md->Snap1.getValue(), -1L);
+    EXPECT_DOUBLE_EQ(md->Distance.getValue(), 5.0);
+    EXPECT_EQ(md->Position1.getValue(), Base::Vector3d(0.0, 0.0, 0.0));
+    EXPECT_EQ(md->Position2.getValue(), Base::Vector3d(3.0, 4.0, 0.0));
 }
 
 // An explicit snap choice survives save and reload, and the reloaded document

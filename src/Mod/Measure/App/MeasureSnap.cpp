@@ -24,7 +24,6 @@
 
 #include "MeasureSnap.h"
 
-#include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepBndLib.hxx>
@@ -46,7 +45,6 @@
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Vertex.hxx>
-#include <TopoDS_Wire.hxx>
 
 
 using namespace Measure;
@@ -66,8 +64,8 @@ static bool edgeHasCurve(const TopoDS_Edge& edge)
     return !BRep_Tool::Curve(edge, first, last).IsNull();
 }
 
-// Circle center of a circular edge or wire; a single circular-edge wire is not
-// recognized by BRepAdaptor_CompCurve.
+// Circle center of a circular edge; a single circular-edge wire is not
+// recognized as a circle by BRepAdaptor_CompCurve, so wires are not handled.
 static bool centerOf(const TopoDS_Shape& shape, gp_Pnt& out)
 {
     if (shape.IsNull()) {
@@ -75,14 +73,6 @@ static bool centerOf(const TopoDS_Shape& shape, gp_Pnt& out)
     }
     if (shape.ShapeType() == TopAbs_EDGE) {
         BRepAdaptor_Curve adapt(TopoDS::Edge(shape));
-        if (adapt.GetType() == GeomAbs_Circle) {
-            out = adapt.Circle().Location();
-            return true;
-        }
-        return false;
-    }
-    if (shape.ShapeType() == TopAbs_WIRE) {
-        BRepAdaptor_CompCurve adapt(TopoDS::Wire(shape));
         if (adapt.GetType() == GeomAbs_Circle) {
             out = adapt.Circle().Location();
             return true;
@@ -194,8 +184,6 @@ bool MeasureSnap::computeSnapPoint(
         return false;
     }
 
-    // Reject degenerate edges up front so no snap mode constructs an adaptor on a
-    // curveless edge.
     if (shape.ShapeType() == TopAbs_EDGE && !edgeHasCurve(TopoDS::Edge(shape))) {
         return false;
     }
@@ -238,11 +226,8 @@ int MeasureSnap::getAvailableSnapTypes(const TopoDS_Shape& shape)
         return flags;
     }
 
+    // Wires offer no flags; see centerOf.
     if (shape.ShapeType() == TopAbs_WIRE) {
-        BRepAdaptor_CompCurve adapt(TopoDS::Wire(shape));
-        if (adapt.GetType() == GeomAbs_Circle) {
-            return static_cast<int>(MeasureSnapFlag::FlagCenter);
-        }
         return 0;
     }
 
@@ -289,12 +274,15 @@ bool MeasureSnap::closestPointsOnAxes(const gp_Ax1& a, const gp_Ax1& b, gp_Pnt& 
     const gp_Lin lineA(a);
     const gp_Lin lineB(b);
     Extrema_ExtElC ext(lineA, lineB, Precision::Angular());
+    if (!ext.IsDone()) {
+        return false;
+    }
     if (ext.IsParallel()) {
         onA = a.Location();
         onB = projectOntoAxis(b, onA);
         return true;
     }
-    if (!ext.IsDone() || ext.NbExt() < 1) {
+    if (ext.NbExt() < 1) {
         return false;
     }
     Extrema_POnCurv pOnA;
