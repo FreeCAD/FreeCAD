@@ -72,8 +72,8 @@ protected:
     std::filesystem::path createTempFile(const std::string& filename)
     {
         std::filesystem::path p = _tempDir.path() / filename;
-        std::ofstream fileStream(p.string());
-        fileStream << "Test data";
+        std::ofstream fileStream(p.string()); 
+       fileStream << "Test data";
         fileStream.close();
         return p;
     }
@@ -149,12 +149,13 @@ TEST_F(BackupPolicyTest, StandardWithOneFileNoPreviousBackups)
     setPolicyTerms(App::BackupPolicy::Policy::Standard, 1, false, "%Y-%m-%d_%H-%M-%S");
     auto source = createTempFile("source.fcstd");
     auto target = createTempFile("target.fcstd");
+    auto backupDir = target.parent_path() / "freecad-backups";
 
     // Act
     apply(source.string(), target.string());
 
     // Assert
-    EXPECT_TRUE(std::filesystem::exists(target.string() + "1"));
+    EXPECT_TRUE(std::filesystem::exists(backupDir / (target.filename().string() + "1")));
 }
 
 TEST_F(BackupPolicyTest, StandardWithOneFileOnePreviousBackup)
@@ -162,15 +163,18 @@ TEST_F(BackupPolicyTest, StandardWithOneFileOnePreviousBackup)
     // Arrange
     setPolicyTerms(App::BackupPolicy::Policy::Standard, 1, false, "%Y-%m-%d_%H-%M-%S");
     auto source = createTempFile("source.fcstd");
+    auto backupDir = source.parent_path() / "freecad-backups";
+    std::filesystem::create_directories(backupDir);
+
     auto target = createTempFile("target.fcstd");
-    auto backup = createTempFile("target.fcstd1");
+    auto backup = createTempFile(backupDir / "target.fcstd1");
 
     // Act
     apply(source.string(), target.string());
 
     // Assert
-    EXPECT_TRUE(std::filesystem::exists(backup));
-    EXPECT_FALSE(std::filesystem::exists(target.string() + "2"));
+    EXPECT_TRUE(std::filesystem::exists(backupDir / backup.filename()));
+    EXPECT_FALSE(std::filesystem::exists(backupDir / (target.filename().string() + "2")));
 }
 
 TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackup)
@@ -178,15 +182,18 @@ TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackup)
     // Arrange
     setPolicyTerms(App::BackupPolicy::Policy::Standard, 2, false, "%Y-%m-%d_%H-%M-%S");
     auto source = createTempFile("source.fcstd");
+    auto backupDir = source.parent_path() / "freecad-backups";
+    std::filesystem::create_directories(backupDir);
+
     auto target = createTempFile("target.fcstd");
-    auto backup = createTempFile("target.fcstd1");
+    auto backup = createTempFile(backupDir / "target.fcstd1");
 
     // Act
     apply(source.string(), target.string());
 
     // Assert
-    EXPECT_TRUE(std::filesystem::exists(backup));
-    EXPECT_TRUE(std::filesystem::exists(target.string() + "2"));
+    EXPECT_TRUE(std::filesystem::exists(backupDir / backup.filename()));
+    EXPECT_TRUE(std::filesystem::exists(backupDir / (target.filename().string() + "2")));
 }
 
 TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackupUnexpectedSuffix)
@@ -194,17 +201,20 @@ TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackupUnexpectedSuffix)
     // Arrange
     setPolicyTerms(App::BackupPolicy::Policy::Standard, 2, false, "%Y-%m-%d_%H-%M-%S");
     auto source = createTempFile("source.fcstd");
+    auto backupDir = source.parent_path() / "freecad-backups";
+    std::filesystem::create_directories(backupDir);
+    
     auto target = createTempFile("target.fcstd");
-    auto backup = createTempFile("target.fcstd1");
-    auto weird = createTempFile("target.fcstd2a");
+    auto backup = createTempFile(backupDir / "target.fcstd1");
+    auto weird = createTempFile(backupDir / "target.fcstd2a");
 
     // Act
     apply(source.string(), target.string());
 
     // Assert
     EXPECT_TRUE(std::filesystem::exists(backup));
-    EXPECT_TRUE(std::filesystem::exists(target.string() + "2"));
-    EXPECT_TRUE(std::filesystem::exists(weird));
+    EXPECT_TRUE(std::filesystem::exists(backupDir / (backup.filename().string() + "2")));
+    EXPECT_TRUE(std::filesystem::exists(backupDir / weird.filename())); // What is this doing if not testing the test?
 }
 
 TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackupOutOfSequenceNumber)
@@ -212,17 +222,20 @@ TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackupOutOfSequenceNumbe
     // Arrange
     setPolicyTerms(App::BackupPolicy::Policy::Standard, 2, false, "%Y-%m-%d_%H-%M-%S");
     auto source = createTempFile("source.fcstd");
+    auto backupDir = source.parent_path() / "freecad-backups";
+    std::filesystem::create_directories(backupDir);
+
     auto target = createTempFile("target.fcstd");
-    auto backup = createTempFile("target.fcstd1");
-    auto weird = createTempFile("target.fcstd999");
+    auto backup = createTempFile(backupDir / "target.fcstd1");
+    auto weird = createTempFile(backupDir / "target.fcstd999");
 
     // Act
     apply(source.string(), target.string());
 
     // Assert
     EXPECT_TRUE(std::filesystem::exists(backup));
-    bool check1 = std::filesystem::exists(target.string() + "2");
-    bool check2 = std::filesystem::exists(weird);
+    bool check1 = std::filesystem::exists(backupDir / (target.filename().string() + "2"));
+    bool check2 = std::filesystem::exists(backupDir / weird.filename()); 
     EXPECT_NE(check1, check2);  // Only one or the other can exist (we don't know which because it
                                 // depends on file modification date)
 }
@@ -240,7 +253,7 @@ TEST_F(BackupPolicyTest, StandardWithFCBakSet)
     // Assert
     EXPECT_TRUE(std::filesystem::exists(target.string() + "1"));  // No FCBak extension for Standard
 }
-
+ 
 TEST_F(BackupPolicyTest, TimestampSourceDoesNotExist)
 {
     // Arrange
