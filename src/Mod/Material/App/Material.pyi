@@ -15,11 +15,35 @@ from typing import Final
 )
 @sequence_protocol(sq_length=True, sq_item=True, sq_contains=True, mp_subscript=True)
 @deprecated_attributes(
-    AuthorAndLicense="Use Author and License instead.",
-    Properties="Legacy compatibility API. Prefer PropertyObjects.",
-    PhysicalProperties="Legacy compatibility API. Prefer PropertyObjects.",
-    AppearanceProperties="Legacy compatibility API. Prefer PropertyObjects.",
-    LegacyProperties="Legacy compatibility API. Prefer PropertyObjects.",
+    AuthorAndLicense={
+        "deprecated_in": "26.3",
+        "removed_in": "27.2",
+        "replacement": "Author and License",
+    },
+    Properties={
+        "deprecated_in": "26.3",
+        "removed_in": "27.2",
+        "replacement": "PropertyObjects",
+        "details": "Legacy compatibility API.",
+    },
+    PhysicalProperties={
+        "deprecated_in": "26.3",
+        "removed_in": "27.2",
+        "replacement": "PropertyObjects",
+        "details": "Legacy compatibility API.",
+    },
+    AppearanceProperties={
+        "deprecated_in": "26.3",
+        "removed_in": "27.2",
+        "replacement": "PropertyObjects",
+        "details": "Legacy compatibility API.",
+    },
+    LegacyProperties={
+        "deprecated_in": "26.3",
+        "removed_in": "27.2",
+        "replacement": "PropertyObjects",
+        "details": "Legacy compatibility API.",
+    },
 )
 class Material(BaseClass):
     """

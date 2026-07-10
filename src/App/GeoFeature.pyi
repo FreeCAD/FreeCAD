@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 from DocumentObject import DocumentObject
+from Base.Metadata import deprecated
 from Base.Placement import Placement
 from typing import Any, Final, Optional
-from typing_extensions import deprecated
 
 
 class GeoFeature(DocumentObject):
@@ -30,7 +30,10 @@ class GeoFeature(DocumentObject):
         ...
 
     @deprecated(
-        "This method does not handle Links correctly. Use getGlobalPlacementOf instead."
+        deprecated_in="26.3",
+        removed_in="27.2",
+        replacement="getGlobalPlacementOf",
+        details="This method does not handle Links correctly.",
     )
     def getGlobalPlacement(self) -> Placement:
         """

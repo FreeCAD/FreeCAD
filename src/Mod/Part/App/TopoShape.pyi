@@ -2,13 +2,12 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, constmethod
+from Base.Metadata import deprecated, export, constmethod
 from Base.Vector import Vector
 from Base.Matrix import Matrix
 from Base.BoundBox import BoundBox
 from App.ComplexGeoData import ComplexGeoData
 from typing import Final, List, Tuple, Union, overload
-from typing_extensions import deprecated
 
 @export(
     PythonName="Part.Shape",
@@ -271,7 +270,7 @@ class TopoShape(ComplexGeoData):
         """
         ...
 
-    @deprecated("Use fuse() instead.")
+    @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="fuse")
     @constmethod
     def multiFuse(
         self,

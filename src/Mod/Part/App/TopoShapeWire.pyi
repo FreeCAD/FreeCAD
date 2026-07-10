@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, constmethod
+from Base.Metadata import deprecated, export, constmethod
 from TopoShape import TopoShape
 from typing import Dict, List, Final, overload, Optional, Sequence
 
@@ -91,6 +91,7 @@ class TopoShapeWire(TopoShape):
     """List of ordered vertexes in this shape."""
 
     @constmethod
+    @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="makeOffset2D")
     def makeOffset(self) -> object:
         """
         Offset the shape by a given amount. DEPRECATED - use makeOffset2D instead.

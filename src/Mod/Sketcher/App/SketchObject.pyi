@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, constmethod, no_args
+from Base.Metadata import deprecated, export, constmethod, no_args
 from Base.Quantity import Quantity
 from Base.Vector import Vector
 from Base.Axis import Axis
@@ -10,7 +10,6 @@ from Part.App.Part2DObject import Part2DObject
 from Part.App.Geometry import Geometry
 from Sketcher.App.Constraint import Constraint
 from typing import List, Tuple, Union, Final, overload
-from typing_extensions import deprecated
 
 @export(
     Include="Mod/Sketcher/App/SketchObject.h",
@@ -746,14 +745,22 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    @deprecated("Use exposeInternalGeometry instead.")
+    @deprecated(
+        deprecated_in="26.3",
+        removed_in="27.2",
+        replacement="exposeInternalGeometry",
+    )
     def ExposeInternalGeometry(self) -> None:
         """
         Deprecated -- use exposeInternalGeometry
         """
         ...
 
-    @deprecated("Use deleteUnusedInternalGeometry instead.")
+    @deprecated(
+        deprecated_in="26.3",
+        removed_in="27.2",
+        replacement="deleteUnusedInternalGeometry",
+    )
     def DeleteUnusedInternalGeometry(self) -> None:
         """
         Deprecated -- use deleteUnusedInternalGeometry

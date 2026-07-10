@@ -16,7 +16,11 @@ from typing import Final
     Constructor=True,
 )
 @deprecated_attributes(
-    Center="Use Location instead.",
+    Center={
+        "deprecated_in": "26.3",
+        "removed_in": "27.2",
+        "replacement": "Location",
+    },
 )
 class Conic(GeometryCurve):
     """
