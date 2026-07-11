@@ -337,7 +337,7 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
 
     // faceNormals are not in the same order as the faces(sometimes??).
     TopExp_Explorer expFaces(m_toolFaceShape, TopAbs_FACE);
-    for (int iPiece = 0; expFaces.More(); expFaces.Next(), iPiece++) {
+    for (; expFaces.More(); expFaces.Next()) {
         TopoDS_Face face = TopoDS::Face(expFaces.Current());
         if (!isFacePlanar(face)) {
             // TODO: continue blocks curved profile segments (which doesn't work right).
@@ -1034,7 +1034,7 @@ std::vector<TopoDS_Face> DrawComplexSection::faceShapeIntersect(const TopoDS_Fac
     }
     std::vector<TopoDS_Face> intersectFaceList;
     TopExp_Explorer expFaces(intersect, TopAbs_FACE);
-    for (int i = 1; expFaces.More(); expFaces.Next(), i++) {
+    for (; expFaces.More(); expFaces.Next()) {
         intersectFaceList.push_back(TopoDS::Face(expFaces.Current()));
     }
     return intersectFaceList;
@@ -1409,7 +1409,7 @@ DrawComplexSection::getSegmentViewDirections(const TopoDS_Wire& profileWire,
     // are all these shenanigans necessary?
     // no guarantee of order from TopExp_Explorer.  Need to match faces to the profile segment that
     // generated it?
-    for (int iFace = 0; expFaces.More(); expFaces.Next(), iFace++) {
+    for (; expFaces.More(); expFaces.Next()) {
         auto shape = expFaces.Current();
         auto face = TopoDS::Face(shape);
         auto normal = Base::convertTo<Base::Vector3d>(getFaceNormal(face));

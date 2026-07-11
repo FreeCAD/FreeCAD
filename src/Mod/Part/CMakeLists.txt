@@ -1,5 +1,9 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+if(OCC_VERSION_STRING VERSION_GREATER_EQUAL "8.0.0")
+    add_definitions(-DOCCT_NO_DEPRECATED)
+endif()
+
 if(BUILD_TRACY_FRAME_PROFILER)
     add_definitions(-DBUILD_TRACY_FRAME_PROFILER)
 endif()
