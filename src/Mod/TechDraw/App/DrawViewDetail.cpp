@@ -406,13 +406,18 @@ void DrawViewDetail::postHlrTasks(void)
     overrideKeepUpdated(false);
 }
 
+TopoDS_Shape DrawViewDetail::getShapeForGeometryBuild() const
+{
+    return m_scaledShape;
+}
+
 //continue processing after makeDetailShape thread is finished
 void DrawViewDetail::onMakeDetailFinished(void)
 {
     waitingForDetail(false);
     QObject::disconnect(connectDetailWatcher);
 
-    m_tempGeometryObject = buildGeometryObject(m_scaledShape, m_viewAxis);
+    m_tempGeometryObject = buildGeometryObject(getShapeForGeometryBuild(), m_viewAxis);
     if (!DU::isGuiUp()) {
         onHlrFinished();
     }

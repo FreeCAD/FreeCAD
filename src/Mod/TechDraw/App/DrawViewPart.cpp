@@ -35,7 +35,9 @@
 // actual drawing routines in Gui
 
 
+#include <BOPAlgo_Builder.hxx>
 #include <BRepAlgo_NormalProjection.hxx>
+#include <BRepClass_FaceClassifier.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
@@ -319,27 +321,26 @@ GeometryObjectPtr DrawViewPart::makeGeometryForShape(const TopoDS_Shape& shape)
 
     gp_Pnt gCentroid = ShapeUtils::findCentroid(localShape, getProjectionCS());
     m_saveCentroid = Base::convertTo<Base::Vector3d>(gCentroid);
-    m_saveShape = centerScaleRotate(this, localShape, m_saveCentroid);
+    m_saveShape = ShapeUtils::centerShape(localShape, m_saveCentroid);
 
-    return buildGeometryObject(localShape, getProjectionCS());
+    return buildGeometryObject(getShapeForGeometryBuild(), getProjectionCS());
 }
 
-//! Modify a shape by centering, scaling and rotating and return the centered (but not rotated) shape
-TopoDS_Shape DrawViewPart::centerScaleRotate(const DrawViewPart *dvp, TopoDS_Shape& inOutShape,
-                                             Base::Vector3d centroid)
+//! Return the shape modified by scaling and rotating
+TopoDS_Shape DrawViewPart::scaleAndRotate(const TopoDS_Shape& input) const
 {
-    gp_Ax2 viewAxis = dvp->getProjectionCS();
-
-    //center shape on origin
-    TopoDS_Shape centeredShape = ShapeUtils::moveShape(inOutShape, centroid * -1.0);
-
-    inOutShape = ShapeUtils::scaleShape(centeredShape, dvp->getScale());
-    if (!DrawUtil::fpCompare(dvp->Rotation.getValue(), 0.0)) {
-        inOutShape = ShapeUtils::rotateShape(inOutShape, viewAxis,
-                                           dvp->Rotation.getValue());//conventional rotation
+    TopoDS_Shape result = ShapeUtils::scaleShape(input, getScale());
+    if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
+        result = ShapeUtils::rotateShape(result, getProjectionCS(), Rotation.getValue());//conventional rotation
     }
     //    BRepTools::Write(inOutShape, "DVPScaled.brep");            //debug
-    return centeredShape;
+
+    return result;
+}
+
+TopoDS_Shape DrawViewPart::getShapeForGeometryBuild() const
+{
+    return scaleAndRotate(m_saveShape);
 }
 
 //! create a geometry object and trigger the HLR process in another thread
@@ -514,15 +515,107 @@ void DrawViewPart::extractFaces()
         return;
     }
 
-    if (newFaceFinder()) {
-        findFacesNew(goEdges);
-    } else {
-        findFacesOld(goEdges);
+    switch (faceFinderVersion()) {
+        case FaceFinderVersion::v0_17:
+            findFacesV0_17(goEdges);
+            break;
+        case FaceFinderVersion::v0_21:
+            findFacesV0_21(goEdges);
+            break;
+        case FaceFinderVersion::v1_2:
+            findFacesV1_2(goEdges);
+            break;
+        default:
+            Base::Console().warning("DVP::extractFaces - Unsupported algorithm id %d\n",
+                                    static_cast<int>(faceFinderVersion()));
+            return;
+    }
+}
+
+void DrawViewPart::findFacesV1_2(const std::vector<BaseGeomPtr> &goEdges)
+{
+    geometryObject->clearFaceGeom();
+
+    // Run the General Fuse algorithm on unbounded planar face and use our edges to split it into smaller faces
+    BOPAlgo_Builder builder;
+    builder.SetFuzzyValue(FUZZYADJUST*EWTOLERANCE);
+    builder.SetNonDestructive(Standard_False); // Allow in-place modifications
+    builder.SetGlue(BOPAlgo_GlueOff);          // No gluing needed as all intersections are real
+    builder.SetCheckInverted(Standard_False);  // No solids in the input list
+    builder.SetUseOBB(Standard_True);          // Use oriented bound boxes
+    builder.SetRunParallel(Standard_True);     // Speed up the process, if possible
+
+    builder.AddArgument(BRepBuilderAPI_MakeFace(gp_Pln()));
+    for (auto edge : goEdges) {
+        builder.AddArgument(edge->getOCCEdge());
+    }
+
+    builder.Perform();
+    if (builder.HasErrors()) {
+        Standard_SStream errStream;
+        builder.DumpErrors(errStream);
+        const std::string &errStr = errStream.str();
+        Base::Console().error("FaceFinder v1.2: OCC General Fuse algorithm failed with error(s):\n%s\n", errStr.c_str());
+        return;
+    }
+    if (builder.HasWarnings()) {
+        Standard_SStream warnStream;
+        builder.DumpWarnings(warnStream);
+        const std::string &warnStr = warnStream.str();
+        Base::Console().warning("FaceFinder v1.2: OCC General Fuse algorithm raised warning(s):\n%s\n", warnStr.c_str());
+    }
+
+    // Go through the resulting faces while discarding the hole-in-plane face and the really tiny ones
+    const TopoDS_Shape& resultShape = builder.Shape();
+    if (resultShape.IsNull()) {
+        Base::Console().warning("FaceFinder v1.2: OCC General Fuse resulting shape is null\n");
+        return;
+    }
+
+    constexpr double minimumArea = 0.000001; // Arbitrary throwaway face area, taken from Face Finder v0.21
+    gp_Pnt2d infinityPoint(Precision::Infinite(), Precision::Infinite());
+    BRepClass_FaceClassifier classifier;
+    std::vector<TopoDS_Face> faces;
+
+    for (TopExp_Explorer explorer(resultShape, TopAbs_FACE); explorer.More(); explorer.Next()) {
+        TopoDS_Face face = TopoDS::Face(explorer.Current());
+
+        classifier.Perform(face, infinityPoint, Precision::Confusion());
+        if (classifier.State() == TopAbs_IN) {
+            // Infinity point is a part of this face, i.e. this is the hole-in-plane face
+            continue;
+        }
+
+        TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(face);
+        double faceArea = ShapeAnalysis::ContourArea(outerWire);
+        if (faceArea <= minimumArea) {
+            // This face is just too small, we will not include it in the result
+            continue;
+        }
+
+        faces.push_back(face);
+    }
+
+    for (unsigned int i = 0; i < faces.size(); ++i) {
+        geometryObject->addFaceGeom(std::make_shared<Face>(faces[i]));
+    }
+
+    const std::vector<FacePtr>& faceGeoms = geometryObject->getFaceGeometry();
+    if (identifyVoids()) {
+        assignFaceRepresentations(faceGeoms, faces);
+    }
+
+    // Report possible face representation problems, were there any
+    for (unsigned int i = 0; i < faceGeoms.size(); ++i) {
+        if (faceGeoms[i]->getRepresentation() == FaceRepresentation::Failed) {
+            Base::Console().warning("FaceFinder v1.2: Failed to determine how to display face %s.Face%d\n",
+                                    getNameInDocument(), i);
+        }
     }
 }
 
 // use the revised face finder algo
-void DrawViewPart::findFacesNew(const std::vector<BaseGeomPtr> &goEdges)
+void DrawViewPart::findFacesV0_21(const std::vector<BaseGeomPtr> &goEdges)
 {
     std::vector<TopoDS_Edge> closedEdges;
     std::vector<TopoDS_Edge> cleanEdges = DrawProjectSplit::scrubEdges(goEdges, closedEdges);
@@ -592,7 +685,7 @@ void DrawViewPart::findFacesNew(const std::vector<BaseGeomPtr> &goEdges)
 
 // original face finding method.  This is retained only to produce the same face geometry in older
 // documents.
-void DrawViewPart::findFacesOld(const std::vector<BaseGeomPtr> &goEdges)
+void DrawViewPart::findFacesV0_17(const std::vector<BaseGeomPtr> &goEdges)
 {
     //make a copy of the input edges so the loose tolerances of face finding are
     //not applied to the real edge geometry.  See TopoDS_Shape::TShape().
@@ -722,6 +815,47 @@ void DrawViewPart::onFacesFinished()
     requestPaint();
 }
 
+void DrawViewPart::assignFaceRepresentations(const std::vector<TechDraw::FacePtr>& faces,
+                                             const std::vector<TopoDS_Face>& occFaces)
+{
+    showProgressMessage(getNameInDocument(), "is identifying faces representing voids");
+
+    // Take the very same projector and shape used for HLR when building the geometry
+    HLRAlgo_Projector projector = geometryObject->getProjector(getProjectionCS());
+    TopoDS_Shape shape = getShapeForGeometryBuild();
+
+    // Collect all 3D faces of the source shape we have projected
+    std::vector<TopoDS_Face> shapeFaces;
+    for (TopExp_Explorer explorer(shape, TopAbs_FACE); explorer.More(); explorer.Next()) {
+        shapeFaces.push_back(TopoDS::Face(explorer.Current()));
+    }
+
+    // Collect all unmarked 2D faces into a new vector
+    std::vector<TopoDS_Face> unmarkedFaces;
+    for (unsigned int i = 0; i < faces.size(); ++i) {
+        if (faces[i]->getRepresentation() == FaceRepresentation::Common) {
+            unmarkedFaces.push_back(occFaces[i]);
+        }
+    }
+
+    // Attempt to map the drawing faces to shape faces and then mark the geometry faces accordingly
+    auto mapping = ShapeUtils::mapImageFacesToModelFaces(unmarkedFaces, shapeFaces, projector, false);
+    unsigned int j = 0;
+    for (unsigned int i = 0; i < faces.size(); ++i) {
+        if (faces[i]->getRepresentation() == FaceRepresentation::Common) {
+            auto it = mapping.find(j);
+            if (it == mapping.end()) {
+                // 2D faces with no 3D face assigned are the voids
+                faces[i]->setRepresentation(FaceRepresentation::Hollow);
+            }
+            else {
+                // The faces in the result were either mapped or flagged as problematic
+                faces[i]->setRepresentation(it->second < 0 ? FaceRepresentation::Failed : FaceRepresentation::Opaque);
+            }
+            j++;
+        }
+    }
+}
 
 //! returns the position of the first visible vertex within snap radius of newAnchorPoint.  newAnchorPoint
 //! should be unscaled in conventional coordinates.  if no suitable vertex is found, newAnchorPoint
@@ -1228,9 +1362,18 @@ bool DrawViewPart::handleFaces()
     return Preferences::getPreferenceGroup("General")->GetBool("HandleFaces", true);
 }
 
-bool DrawViewPart::newFaceFinder()
+FaceFinderVersion DrawViewPart::faceFinderVersion()
 {
-    return Preferences::getPreferenceGroup("General")->GetBool("NewFaceFinder", false);
+    if (!handleFaces()) {
+        return FaceFinderVersion::Off;
+    }
+
+    return Preferences::faceFinderVersion();
+ }
+
+bool DrawViewPart::identifyVoids()
+{
+    return Preferences::getPreferenceGroup("General")->GetBool("IdentifyVoids", true);
 }
 
 //! remove features that are useless without this DVP

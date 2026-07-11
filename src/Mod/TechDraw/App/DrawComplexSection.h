@@ -163,10 +163,12 @@ private:
                            const gp_Vec& gMovementVector,
                            double baseDistance);
 
-
     std::vector<std::pair<int, Base::Vector3d> >
                     getSegmentViewDirections(const TopoDS_Wire& profileWire,
                                            Base::Vector3d sectionNormal) const;
+    void assignFaceRepresentations(const std::vector<TechDraw::FacePtr>& faces,
+                                   const std::vector<TopoDS_Face>& occFaces) override;
+
     static gp_Dir getFaceNormal(TopoDS_Face& face);
     static bool faceContainsEndpoints(const TopoDS_Edge& edgeToMatch,
                                       const TopoDS_Face& faceToSearch);

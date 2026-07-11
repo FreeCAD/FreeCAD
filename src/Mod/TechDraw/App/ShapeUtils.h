@@ -27,7 +27,9 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <unordered_map>
 
+#include <HLRAlgo_Projector.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
@@ -82,7 +84,7 @@ public:
     static TopoDS_Shape moveShape(const TopoDS_Shape& input, const Base::Vector3d& motion);
 
 //! move a shape such that its centroid is aligned with the origin point of a CoordinateSystem
-    static TopoDS_Shape centerShapeXY(const TopoDS_Shape& inShape, const gp_Ax2& coordSys);
+    static TopoDS_Shape centerShape(const TopoDS_Shape& input, const Base::Vector3d& centroid);
 
 //! Returns the centroid of shape, as viewed according to direction
     static gp_Pnt findCentroid(const TopoDS_Shape& shape);
@@ -92,6 +94,12 @@ public:
                                               const Base::Vector3d& direction);
     static Base::Vector3d findCentroidVec(const TopoDS_Shape& shape, const gp_Ax2& cs);
 
+//! Tries to find a point inside the given face
+    static std::optional<gp_Pnt> findPointInsideFace(const TopoDS_Face& face);
+
+//! Returns a mapping from 2D drawing faces (key indices) to 3D model faces (value indices), errors being values < 0
+    static std::unordered_map<int, int> mapImageFacesToModelFaces(const std::vector<TopoDS_Face>& image,
+                    const std::vector<TopoDS_Face>& model, const HLRAlgo_Projector& projector, bool topmost = true);
 
 //! creates a RH coordinate system with the origin at origin and the Z axis along direction.
 //  the flip will cause the Z axis to be the reversed of direction
@@ -112,6 +120,7 @@ public:
 
     static bool edgesAreParallel(TopoDS_Edge edge0, TopoDS_Edge edge1);
 
+    static gp_Pnt fromQt(gp_Pnt point);
     static TopoDS_Shape fromQt(const TopoDS_Shape& inShape);
     static TopoDS_Shape toQt(const TopoDS_Shape& inShape);
     static TopoDS_Wire fromQtAsWire(const TopoDS_Shape& inShape);

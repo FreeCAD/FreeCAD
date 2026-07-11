@@ -633,10 +633,60 @@ void DrawViewSection::onSectionCutFinished()
     postSectionCutTasks();
 
     // display geometry for cut shape is in geometryObject as in DVP
-    m_tempGeometryObject = buildGeometryObject(m_preparedShape, getProjectionCS());
+    m_tempGeometryObject = buildGeometryObject(getShapeForGeometryBuild(), getProjectionCS());
     if (!DU::isGuiUp()) {
         onHlrFinished();
     }
+}
+
+TopoDS_Shape DrawViewSection::getShapeForGeometryBuild() const
+{
+    return m_preparedShape;
+}
+
+void DrawViewSection::assignFaceRepresentations(const std::vector<TechDraw::FacePtr>& faces,
+                                                const std::vector<TopoDS_Face>& occFaces)
+{
+    showProgressMessage(getNameInDocument(), "is mapping section faces");
+
+    // Take the projector used for HLR when building the geometry
+    HLRAlgo_Projector projector = geometryObject->getProjector(getProjectionCS());
+
+    // Collect the 3D faces identified as sections
+    std::vector<TopoDS_Face> sectionFaces;
+    for (TopExp_Explorer explorer(unprojectedSectionFaces, TopAbs_FACE); explorer.More(); explorer.Next()) {
+        sectionFaces.push_back(TopoDS::Face(explorer.Current()));
+    }
+
+    // Clear the unprojected 3D faces compound, it is no longer needed
+    unprojectedSectionFaces.Nullify();
+
+    // Map the 2D drawing faces to the 3D model section faces
+    auto mapping = ShapeUtils::mapImageFacesToModelFaces(occFaces, sectionFaces, projector, false);
+
+    // Process the mapping result and mark sections + errors
+    BRep_Builder builder;
+    builder.MakeCompound(m_sectionTopoDSFaces);
+    for (auto it = mapping.cbegin(); it != mapping.cend(); it++) {
+        if (it->second < 0) {
+            // Mark the mapping failure for this face
+            faces[it->first]->setRepresentation(FaceRepresentation::Failed);
+        }
+        else {
+            // This face was identified as 2D projection od a 3D section face
+            faces[it->first]->setRepresentation(FaceRepresentation::Sliced);
+            builder.Add(m_sectionTopoDSFaces, occFaces[it->first]);
+        }
+    }
+
+    // Finally, create all geometry section faces from the OCC section faces
+    for (TopExp_Explorer explorer(m_sectionTopoDSFaces, TopAbs_FACE); explorer.More(); explorer.Next()) {
+        TechDraw::FacePtr sectionFace = std::make_shared<TechDraw::Face>(TopoDS::Face(explorer.Current()));
+        m_tdSectionFaces.push_back(sectionFace);
+    }
+
+    // Once the section faces were marked, process the rest of 2D faces in a standard way
+    DrawViewPart::assignFaceRepresentations(faces, occFaces);
 }
 
 // activities that depend on updated geometry object
@@ -660,14 +710,6 @@ void DrawViewSection::postHlrTasks()
     }
     if (debugSection()) {
         BRepTools::Write(faceIntersections, "DVSFaceIntersections.brep");// debug
-    }
-
-    TopoDS_Shape centeredFaces = ShapeUtils::moveShape(faceIntersections, m_saveCentroid * -1.0);
-
-    TopoDS_Shape scaledSection = ShapeUtils::scaleShape(centeredFaces, getScale());
-    if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
-        scaledSection =
-            ShapeUtils::rotateShape(scaledSection, getProjectionCS(), Rotation.getValue());
     }
 
     m_sectionTopoDSFaces = alignSectionFaces(faceIntersections);
@@ -757,18 +799,16 @@ TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shap
 // move section faces to line up with cut shape
 TopoDS_Compound DrawViewSection::alignSectionFaces(const TopoDS_Shape& faceIntersections)
 {
-    TopoDS_Compound sectionFaces;
-    TopoDS_Shape centeredShape =
-        ShapeUtils::moveShape(faceIntersections, getOriginalCentroid() * -1.0);
-
-    TopoDS_Shape scaledSection = ShapeUtils::scaleShape(centeredShape, getScale());
-    if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
-        scaledSection =
-            ShapeUtils::rotateShape(scaledSection, getProjectionCS(), Rotation.getValue());
-    }
-
+    TopoDS_Shape scaledSection = scaleAndRotate(ShapeUtils::centerShape(faceIntersections, getOriginalCentroid()));
     if (debugSection()) {
         BRepTools::Write(scaledSection, "DVSScaledSectionFaces.brep");
+    }
+
+    if (faceFinderVersion() == FaceFinderVersion::v1_2 && identifyVoids()) {
+        // Face Finder v1.2 with voids identification active constructs projected section faces once all drawing faces
+        // are extracted, thus here we will only store the 3D section faces for later use and return an empty compound
+        unprojectedSectionFaces = TopoDS::Compound(scaledSection);
+        return TopoDS_Compound();
     }
 
     return mapToPage(scaledSection);
@@ -915,24 +955,9 @@ std::vector<TechDraw::FacePtr> DrawViewSection::makeTDSectionFaces(const TopoDS_
 {
     //    Base::Console().message("DVS::makeTDSectionFaces()\n");
     std::vector<TechDraw::FacePtr> tdSectionFaces;
-    TopExp_Explorer sectionExpl(topoDSFaces, TopAbs_FACE);
-    for (; sectionExpl.More(); sectionExpl.Next()) {
-        const TopoDS_Face& face = TopoDS::Face(sectionExpl.Current());
-        TechDraw::FacePtr sectionFace(std::make_shared<TechDraw::Face>());
-        TopExp_Explorer expFace(face, TopAbs_WIRE);
-        for (; expFace.More(); expFace.Next()) {
-            auto* w = new TechDraw::Wire();
-            const TopoDS_Wire& wire = TopoDS::Wire(expFace.Current());
-            TopExp_Explorer expWire(wire, TopAbs_EDGE);
-            for (; expWire.More(); expWire.Next()) {
-                const TopoDS_Edge& edge = TopoDS::Edge(expWire.Current());
-                TechDraw::BaseGeomPtr e = BaseGeom::baseFactory(edge);
-                if (e) {
-                    w->geoms.push_back(e);
-                }
-            }
-            sectionFace->wires.push_back(w);
-        }
+
+    for (TopExp_Explorer sectionExpl(topoDSFaces, TopAbs_FACE); sectionExpl.More(); sectionExpl.Next()) {
+        TechDraw::FacePtr sectionFace = std::make_shared<TechDraw::Face>(TopoDS::Face(sectionExpl.Current()));
         tdSectionFaces.push_back(sectionFace);
     }
 

@@ -42,6 +42,13 @@ namespace TechDraw
 {
 enum class ArrowType : int;
 
+enum class FaceFinderVersion {
+    Off   = 0,
+    v0_17 = 1,
+    v0_21 = 2,
+    v1_2  = 3
+};
+
 //getters for parameters used in multiple places.
 class TechDrawExport Preferences
 {
@@ -174,6 +181,9 @@ public:
     static bool printCenterMarks();
 
     static bool fixColorAlphaOnLoad();
+
+    static FaceFinderVersion faceFinderVersion();
+    static void setFaceFinderVersion(FaceFinderVersion version);
 
 };
 
