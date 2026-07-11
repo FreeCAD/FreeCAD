@@ -67,7 +67,7 @@ class Path(Persistence):
     def getCycleTime(
         self, h_feed: float, v_feed: float, h_rapid: float, v_rapid: float, /
     ) -> float:
-        """return the cycle time estimation for this path in s"""
+        """Return the cycle time estimation for this path in s. Parameter F from command overrides feeds from arguments."""
         ...
     Length: Final[float]
     """the total length of this path in mm"""

@@ -149,6 +149,8 @@ double Toolpath::getLength()
 
 double Toolpath::getCycleTime(double hFeed, double vFeed, double hRapid, double vRapid)
 {
+    (void)vRapid;
+
     // check the feedrates are set
     if ((hFeed == 0) || (vFeed == 0)) {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -164,51 +166,48 @@ double Toolpath::getCycleTime(double hFeed, double vFeed, double hRapid, double 
         hRapid = hFeed;
     }
 
-    if (vRapid == 0) {
-        vRapid = vFeed;
-    }
-
     if (vpcCommands.empty()) {
         return 0;
     }
-    double l = 0;
+
     double time = 0;
-    bool verticalMove = false;
+    double fG0 = hRapid;
+    double fG1 = hFeed;
     Vector3d last(0, 0, 0);
-    Vector3d next;
-    for (std::vector<Command*>::const_iterator it = vpcCommands.begin(); it != vpcCommands.end();
-         ++it) {
-        std::string name = (*it)->Name;
-        float feedrate = (*it)->getParam("F");
+    for (const Command* cmd : vpcCommands) {
+        std::string name = cmd->Name;
+        double fCommand = cmd->getParam("F");
+        Vector3d next = cmd->getPlacement(last).getPosition();
 
-        l = 0;
-        verticalMove = false;
-        feedrate = hFeed;
-        next = (*it)->getPlacement(last).getPosition();
-
-        if (last.z != next.z) {
-            verticalMove = true;
-            feedrate = vFeed;
-        }
+        double l = 0;
+        double feedrate = hFeed;
 
         if ((name == "G0") || (name == "G00")) {
             // Rapid Move
-            l += (next - last).Length();
-            feedrate = hRapid;
-            if (verticalMove) {
-                feedrate = vRapid;
+            l = (next - last).Length();
+            if (fCommand) {
+                fG0 = fCommand;
             }
+            feedrate = fG0;
         }
         else if ((name == "G1") || (name == "G01")) {
             // Feed Move
-            l += (next - last).Length();
+            l = (next - last).Length();
+            if (fCommand) {
+                fG1 = fCommand;
+            }
+            feedrate = fG1;
         }
         else if ((name == "G2") || (name == "G02") || (name == "G3") || (name == "G03")) {
             // Arc Move
-            Vector3d center = (*it)->getCenter();
+            Vector3d center = cmd->getCenter();
             double radius = center.Length();
             double angle = (next - last - center).GetAngle(-center);
-            l += angle * radius;
+            l = angle * radius;
+            if (fCommand) {
+                fG1 = fCommand;
+            }
+            feedrate = fG1;
         }
 
         time += l / feedrate;

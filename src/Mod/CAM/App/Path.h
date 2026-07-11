@@ -26,6 +26,7 @@
 #include <Base/BoundBox.h>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
+#include <Base/Precision.h>
 
 #include "Command.h"
 
