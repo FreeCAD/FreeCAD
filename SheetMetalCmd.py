@@ -176,6 +176,7 @@ def GetSMComparisonFace(smObj, smSelItemName):
                             # the reference face.
                             extFace = otherParFace
                     except:
+                        FreeCAD.Console.PrintLog("Skip wrong offset")
                         continue
 
         newParFaces = [oneParFace, otherParFace]

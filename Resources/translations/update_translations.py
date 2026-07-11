@@ -24,7 +24,7 @@
 #***************************************************************************
 
 import glob
-import subprocess
+import subprocess # nosec
 
 
 updater = "lupdate"
@@ -40,7 +40,7 @@ for f in files:
     print(f" - {f}")
 
 cmd = [updater] + files + ["-ts", f"{workbench}.ts"]
-result = subprocess.run(
+result = subprocess.run( # nosec
     cmd,
     capture_output=True,
     text=True,

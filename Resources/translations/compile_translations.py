@@ -24,7 +24,7 @@
 #***************************************************************************
 
 import glob
-import subprocess
+import subprocess # nosec
 import re
 from pathlib import Path
 
@@ -84,7 +84,7 @@ def compile_ts_file(f):
         print(f"{Path(f).stem} Not supported locale, skipping.")
         return
     cmd = [compiler, f, "-nounfinished", "-qm", compfile]
-    result = subprocess.run(
+    result = subprocess.run( # nosec
         cmd,
         capture_output=True,
         text=True,

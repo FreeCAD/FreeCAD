@@ -108,10 +108,7 @@ import Draft
 import FreeCAD
 import Part
 
-try:
-    from TechDraw import projectEx
-except ImportError:
-    from Drawing import projectEx
+from TechDraw import projectEx
 
 import SheetMetalTools
 from lookup import get_val_from_range

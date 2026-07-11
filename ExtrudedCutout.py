@@ -196,6 +196,7 @@ class ExtrudedCutout:
                             # rounded surfaces offset can lead to errors
                             # if offset is bigger than its radius.
                             except:
+                                FreeCAD.Console.PrintLog("Skip wrong offset")
                                 continue
 
             if min_distance == float("inf"):
