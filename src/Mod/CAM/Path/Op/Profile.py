@@ -526,26 +526,25 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         else:
             models = self.model
         for base in models:
+            error = False
             if not hasattr(base, "Shape"):
                 continue
-            if isinstance(base.Shape, Part.Compound):
-                shapes = [shape for shape in base.Shape.SubShapes]
-            else:
-                shapes = [base.Shape]
-            for shape in shapes:
-                env = PathUtils.getEnvelope(
-                    partshape=shape, subshape=None, depthparams=self.depthparams
-                )
-                if env:
-                    shapeTups.append((env, False))
+            for shape in Path.Geom.uncompound(base.Shape):
+                try:
+                    if env := PathUtils.getEnvelope(partshape=shape, depthparams=self.depthparams):
+                        shapeTups.append((env, False))
+                except Exception:
+                    error = True
+            if error:
+                Path.Log.warning(f"Error while create envelope from {base.Label}")
         return shapeTups
 
     def _processBase(self, obj):
         """_preprocessBase(obj) ... returns envelope of selected shapes"""
         shapeTups = []
 
-        self.solids = [base.Shape for base in self.model]
-        self.tol = self.job.GeometryTolerance.Value
+        self.solids = [base.Shape for base in self.model if base.Shape.Faces]
+        self.tol = self.job.GeometryTolerance.Value or 0.01
 
         bases = []
         edgeslist = []
@@ -568,33 +567,36 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                         vertFaces.append(sub)
 
         for face in horFaces:
-            for base in bases:
-                if base.Shape.isInside(face.Vertexes[0].Point, self.tol, True):
-                    shapeTups.extend(self._processHorFace(obj, base, face))
-                    break
+            shapeTups.extend(self._processHorFace(obj, face))
 
-        # extend list of selected edges by bottom edges from vertical faces
-        for face in vertFaces:
-            fzMin = min(e.BoundBox.ZMin for e in face.Edges)
-            bEs = [e for e in face.Edges if Path.Geom.isRoughly(e.BoundBox.ZMax, fzMin)]
-            edgeslist.extend(bEs)
+        for vertCon in Path.Geom.combineConnectedShapes(vertFaces):
+            try:
+                if shapeEnv := PathUtils.getEnvelope(vertCon, depthparams=self.depthparams):
+                    shapeTups.append((shapeEnv, False, "pathProfile"))
+            except Exception:
+                # getEnvelope failed, probably this is open wall
+                # try to process edges
+                for face in vertCon.Faces:
+                    fzMin = min(e.BoundBox.ZMin for e in face.Edges)
+                    bEs = [e for e in face.Edges if Path.Geom.isRoughly(e.BoundBox.ZMax, fzMin)]
+                    edgeslist.extend(bEs)
 
         for se in Part.getSortedClusters(edgeslist):
-            for base in bases:
-                if any(base.Shape.isInside(e.Vertexes[0].Point, self.tol, True) for e in se):
-                    shapeTups.extend(self._processWire(obj, base, se))
-                    break
+            wire = Part.Wire(Part.__sortEdges__(se))
+            if wire.isClosed():
+                shapeTups.extend(self._processClosedWire(obj, None, wire))
             else:
-                wire = Part.Wire(Part.__sortEdges__(se))
-                if wire.isClosed():
-                    shapeTups.extend(self._processWire(obj, None, se))
+                for base in bases:
+                    if any(base.Shape.isInside(e.Vertexes[0].Point, self.tol, True) for e in se):
+                        shapeTups.extend(self._processOpenWire(obj, base, wire, se))
+                        break
                 else:
                     Path.Log.warning("Skipped open wire without base solid model")
 
         return shapeTups
 
-    def _processHorFace(self, obj, base, face):
-        """_processHorFace(obj, base, face) ... returns envelope of horizontal face"""
+    def _processHorFace(self, obj, face):
+        """_processHorFace(obj, face) ... returns envelope of horizontal face"""
         shapeTups = []
 
         ohash = face.OuterWire.hashCode()
@@ -602,91 +604,73 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         for wire in holes:
             f = Part.makeFace(wire, "Part::FaceMakerSimple")
-            drillable = Drillable.isDrillable(base.Shape, f, vector=None)
+            drillable = Drillable.isDrillable(None, f, vector=None)
             Path.Log.debug(drillable)
             if (obj.processCircles and drillable) or (obj.processHoles and not drillable):
-                shapeEnv = PathUtils.getEnvelope(
-                    base.Shape, subshape=f, depthparams=self.depthparams
-                )
-                if shapeEnv:
+                if shapeEnv := PathUtils.getEnvelope(f, depthparams=self.depthparams):
                     self._addDebugObject("HoleShapeEnvelope", shapeEnv)
                     shapeTups.append((shapeEnv, True, "pathProfile"))
 
         if obj.processPerimeter:
             try:
-                shapeEnv = PathUtils.getEnvelope(face, depthparams=self.depthparams)
+                if shapeEnv := PathUtils.getEnvelope(face, depthparams=self.depthparams):
+                    self._addDebugObject("CutShapeEnv", shapeEnv)
+                    shapeTups.append((shapeEnv, False, "pathProfile"))
             except Exception as ee:
-                # PathUtils.getEnvelope() failed to return an object.
                 msg = translate("PathProfile", "Unable to create path for face(s).")
                 Path.Log.error(msg + "\n{}".format(ee))
-                shapeEnv = None
-
-            if shapeEnv:
-                for shEnv in shapeEnv.Solids:
-                    # divide solids after for 'Individually'
-                    self._addDebugObject("CutShapeEnv", shEnv)
-                    shapeTups.append((shEnv, False, "pathProfile"))
 
         return shapeTups
 
-    def _processWire(self, obj, base, edges):
-        """_processWires(obj, base, edges) ... returns envelope of edges forms the wire"""
+    def _processClosedWire(self, obj, base, wire):
+        """_processClosedWire(obj, base, edges) ... returns envelope of the closed wire"""
         Path.Log.track(base)
         shapeTups = []
-        wire = Part.Wire(Part.__sortEdges__(edges))
-        if wire.isClosed():
-            origWire, flatWire = self._flattenWire(obj, wire, obj.FinalDepth.Value)
-            f = flatWire.Wires[0]
-            if f:
-                shape = Part.Face(f)
-                shapeEnv = PathUtils.getEnvelope(shape, depthparams=self.depthparams)
-                if shapeEnv:
-                    shapeTups.append((shapeEnv, False, "pathProfile"))
-            else:
-                Path.Log.error(self.inaccessibleMsg)
-        else:  # open wire
-            if self.JOB.GeometryTolerance.Value == 0.0:
-                msg = self.JOB.Label + ".GeometryTolerance = 0.0. "
-                msg += "Please set to an acceptable value greater than zero."
-                Path.Log.error(msg)
-            else:
-                flattened = self._flattenWire(obj, wire, wire.BoundBox.Center.z)
-                if not flattened:
-                    Path.Log.error(self.inaccessibleMsg)
-                    return []
-                origWire, flatWire = flattened
-                diffDepth = self._getOpenProfileDiffDepth(base, edges)
-                # translate wire in Z to get correct cross-section with model
-                flatWire.translate(FreeCAD.Vector(0, 0, diffDepth))
-                self._addDebugObject("FlatWire", flatWire)
+        origWire, flatWire = self._flattenWire(obj, wire, obj.FinalDepth.Value)
+        if f := flatWire.Wires[0]:
+            shape = Part.Face(f)
+            if shapeEnv := PathUtils.getEnvelope(shape, depthparams=self.depthparams):
+                shapeTups.append((shapeEnv, False, "pathProfile"))
+        if not shapeTups:
+            Path.Log.error(self.inaccessibleMsg)
 
-                openWires = []
-                params = self.areaOpAreaParams(obj, False)
-                passOffsets = [
-                    self.ofstRadius + i * abs(params["Stepover"])
-                    for i in range(params["ExtraPass"] + 1)
-                ][::-1]
-                for po in passOffsets:
-                    cutWireObjs = False
-                    self.ofstRadius = po
-                    cutShp = self._getCutAreaCrossSection(obj, base, origWire, flatWire)
-                    if cutShp:
-                        cutWireObjs = self._extractPathWire(obj, base, flatWire, cutShp)
+        return shapeTups
 
-                    if cutWireObjs:
-                        for cW in cutWireObjs:
-                            openWires.append(cW)
-                    else:
-                        Path.Log.error(self.inaccessibleMsg)
-                shapeTups.append((openWires[0], openWires, "OpenEdge"))
+    def _processOpenWire(self, obj, base, wire, edges):
+        """_processOpenWire(obj, base, wire, edges) ... returns envelope of edges forms the open wire"""
+        Path.Log.track(base)
+        shapeTups = []
+        flattened = self._flattenWire(obj, wire, wire.BoundBox.Center.z)
+        if not flattened:
+            Path.Log.error(self.inaccessibleMsg)
+            return []
+        origWire, flatWire = flattened
+        diffDepth = self._getOpenProfileDiffDepth(base, edges)
+        # translate wire in Z to get correct cross-section with model
+        flatWire.translate(FreeCAD.Vector(0, 0, diffDepth))
+        self._addDebugObject("FlatWire", flatWire)
+
+        openWires = []
+        params = self.areaOpAreaParams(obj, False)
+        passOffsets = [
+            self.ofstRadius + i * abs(params["Stepover"]) for i in range(params["ExtraPass"] + 1)
+        ][::-1]
+        for po in passOffsets:
+            self.ofstRadius = po
+            if cutShp := self._getCutAreaCrossSection(obj, base, origWire, flatWire):
+                for cW in self._extractPathWire(obj, base, flatWire, cutShp):
+                    openWires.append(cW)
+        if openWires:
+            shapeTups.append((openWires[0], openWires, "OpenEdge"))
+        else:
+            Path.Log.error(self.inaccessibleMsg)
 
         return shapeTups
 
     def _getOpenProfileDiffDepth(self, base, edges):
         """_getOpenProfileDiffDepth(base, edges)...
         Returns extra depth with sign to get correct cross-section with model for open profile"""
-        tol = self.JOB.GeometryTolerance.Value
-        diffDepth = 2 * tol
+        diffDepth = 2 * self.tol
         offset = FreeCAD.Vector(0, 0, diffDepth)
         edgeMiddlePoint = edges[0].discretize(3)[1]
         edgeHash = edges[0].hashCode()
@@ -694,9 +678,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             if Path.Geom.isHorizontal(face):
                 continue
             if any(e.hashCode() == edgeHash for e in face.Edges):
-                if face.isInside(edgeMiddlePoint + offset, tol, True):
+                if face.isInside(edgeMiddlePoint + offset, self.tol, True):
                     return diffDepth
-                if face.isInside(edgeMiddlePoint - offset, tol, True):
+                if face.isInside(edgeMiddlePoint - offset, self.tol, True):
                     return -diffDepth
 
         Path.Log.warning("Can not define depth for open edges.")
@@ -730,7 +714,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
     # Open-edges methods
     def _getCutAreaCrossSection(self, obj, base, origWire, flatWire):
         Path.Log.debug("_getCutAreaCrossSection()")
-        tolerance = self.JOB.GeometryTolerance.Value
         toolDiam = 2 * self.radius  # self.radius defined in PathAreaOp or PathProfileBase modules
         minBfr = toolDiam * 1.25
         bbBfr = (self.ofstRadius * 2) * 1.25
@@ -738,7 +721,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             bbBfr = minBfr
         fwBB = flatWire.BoundBox
         wBB = origWire.BoundBox
-        minArea = (self.ofstRadius - tolerance) ** 2 * math.pi
+        minArea = (self.ofstRadius - self.tol) ** 2 * math.pi
 
         useWire = origWire.Wires[0]
         numOrigEdges = len(useWire.Edges)
@@ -781,7 +764,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         # Cut model(selected edges) from extended edges boundbox
         cutArea = extBndboxEXT.cut(base.Shape)
-        cutArea.tessellate(tolerance)
+        cutArea.tessellate(self.tol)
         self._addDebugObject("CutArea", cutArea)
 
         # Get top and bottom faces of cut area (CA), and combine faces when necessary
@@ -791,9 +774,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         bbZMin = cutArea.BoundBox.ZMin
         for f in range(0, len(cutArea.Faces)):
             FcBB = cutArea.Faces[f].BoundBox
-            if abs(FcBB.ZMax - bbZMax) < tolerance and abs(FcBB.ZMin - bbZMax) < tolerance:
+            if abs(FcBB.ZMax - bbZMax) < self.tol and abs(FcBB.ZMin - bbZMax) < self.tol:
                 topFc.append(f)
-            if abs(FcBB.ZMax - bbZMin) < tolerance and abs(FcBB.ZMin - bbZMin) < tolerance:
+            if abs(FcBB.ZMax - bbZMin) < self.tol and abs(FcBB.ZMin - bbZMin) < self.tol:
                 botFc.append(f)
         if len(topFc) == 0:
             Path.Log.error("Failed to identify top faces of cut area.")
@@ -866,8 +849,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     twr = WS[w]
                     for v in range(0, len(twr.Vertexes)):
                         V = twr.Vertexes[v]
-                        if abs(V.X - wvt.X) < tolerance:
-                            if abs(V.Y - wvt.Y) < tolerance:
+                        if abs(V.X - wvt.X) < self.tol:
+                            if abs(V.Y - wvt.Y) < self.tol:
                                 # Same vertex found.  This wire to be used for offset
                                 wi = w
                                 break
@@ -1053,7 +1036,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             )
         except Exception as ee:
             Path.Log.error("Failed to identify offset edge.\n{}".format(ee))
-            return False
+            return []
         edgs0 = []
         edgs1 = []
         for e in edgeIdxs0:
@@ -1080,8 +1063,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         PathUtils.getOffsetArea."""
         Path.Log.debug("_getOffsetArea()")
 
-        JOB = PathUtils.findParentJob(obj)
-        tolerance = JOB.GeometryTolerance.Value
         offset = self.ofstRadius
 
         if isHole is False:
@@ -1096,7 +1077,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         joinType = jointype_map.get(obj.JoinType, Path.ClipperJoinTypeRound)
 
         return PathUtils.getOffsetArea(
-            fcShape, offset, plane=fcShape, tolerance=tolerance, joinType=joinType
+            fcShape, offset, plane=fcShape, tolerance=self.tol, joinType=joinType
         )
 
     def _findNearestVertex(self, shape, point):
@@ -1130,7 +1111,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     def _separateWireAtVertexes(self, wire, VV1, VV2):
         Path.Log.debug("_separateWireAtVertexes()")
-        tolerance = self.JOB.GeometryTolerance.Value
         grps = [[], []]
         wireIdxs = [[], []]
         V1 = FreeCAD.Vector(VV1.X, VV1.Y, VV1.Z)
@@ -1148,25 +1128,25 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             fv0 = FreeCAD.Vector(E.Vertexes[0].X, E.Vertexes[0].Y, E.Vertexes[0].Z)
             fv1 = FreeCAD.Vector(E.Vertexes[1].X, E.Vertexes[1].Y, E.Vertexes[1].Z)
 
-            if fv0.sub(V1).Length < tolerance:
+            if fv0.sub(V1).Length < self.tol:
                 v = 1
-                if fv1.sub(V2).Length < tolerance:
+                if fv1.sub(V2).Length < self.tol:
                     v += 3
                     chk4 = True
-            elif fv1.sub(V1).Length < tolerance:
+            elif fv1.sub(V1).Length < self.tol:
                 v = 1
-                if fv0.sub(V2).Length < tolerance:
+                if fv0.sub(V2).Length < self.tol:
                     v += 3
                     chk4 = True
 
-            if fv0.sub(V2).Length < tolerance:
+            if fv0.sub(V2).Length < self.tol:
                 v = 3
-                if fv1.sub(V1).Length < tolerance:
+                if fv1.sub(V1).Length < self.tol:
                     v += 1
                     chk4 = True
-            elif fv1.sub(V2).Length < tolerance:
+            elif fv1.sub(V2).Length < self.tol:
                 v = 3
-                if fv0.sub(V1).Length < tolerance:
+                if fv0.sub(V1).Length < self.tol:
                     v += 1
                     chk4 = True
             FLGS[e] += v
