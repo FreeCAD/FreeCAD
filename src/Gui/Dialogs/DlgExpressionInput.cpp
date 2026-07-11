@@ -608,15 +608,11 @@ void DlgExpressionInput::applyImpliedUnit()
     }
 
     auto left = expression->copy();
-    auto right = std::make_unique<App::UnitExpression>(
-        path.getDocumentObject(),
-        Base::Quantity(factor, impliedUnit),
-        unitString
-    );
+    auto right = App::Expression::parse(path.getDocumentObject(), "1" + unitString);
     expression = std::make_shared<App::OperatorExpression>(
         path.getDocumentObject(),
         left.release(),
-        App::OperatorExpression::Operator::UNIT,
+        App::OperatorExpression::Operator::MUL,
         right.release()
     );
 }
