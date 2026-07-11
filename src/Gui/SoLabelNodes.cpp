@@ -25,6 +25,13 @@
 
 #ifdef FC_OS_WIN32
 # include <windows.h>
+# undef min
+# undef max
+#endif
+#ifdef FC_OS_MACOSX
+# include <OpenGL/gl.h>
+#else
+# include <GL/gl.h>
 #endif
 #include <QFont>
 #include <QFontMetrics>
@@ -32,23 +39,25 @@
 #include <QPainter>
 #include <QPen>
 #include <QStringList>
+#include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/misc/SoState.h>
-
 #include <Inventor/SbVec2f.h>
 #include <Inventor/C/basic.h>
 #include <Inventor/elements/SoDepthBufferElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoProjectionMatrixElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoMultiTextureEnabledElement.h>
+#include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoBaseColor.h>
 
 #include <algorithm>
+#include <cmath>
 
+#include "Inventor/SoFCScreenSpaceGroup.h"
 #include "SoLabelNodes.h"
 #include "SoFCInteractiveElement.h"
 #include "Tools.h"
@@ -56,6 +65,36 @@
 
 using namespace Gui;
 
+namespace
+{
+
+template<typename ComputeBBoxFn>
+void computeText2BBoxWithCoinWorkaround(
+    SoAction* action,
+    SoNode* node,
+    SbBox3f& box,
+    SbVec3f& center,
+    ComputeBBoxFn&& computeBBox
+)
+{
+    if (!action) {
+        box.makeEmpty();
+        center.setValue(0.0f, 0.0f, 0.0f);
+        return;
+    }
+
+    computeBBox(box, center);
+    if (!box.hasVolume()) {
+        SbViewVolume vv = SoViewVolumeElement::get(action->getState());
+        // Work around https://github.com/coin3d/coin/issues/417 by slightly
+        // widening the view volume before recomputing the text quad bounds.
+        vv.scaleWidth(1.02f);
+        SoViewVolumeElement::set(action->getState(), node, vv);
+        computeBBox(box, center);
+    }
+}
+
+}  // namespace
 
 SO_NODE_SOURCE(SoColorBarLabel)
 
@@ -71,15 +110,9 @@ SoColorBarLabel::SoColorBarLabel()
 
 void SoColorBarLabel::computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center)
 {
-    inherited::computeBBox(action, box, center);
-    if (!box.hasVolume()) {
-        SbViewVolume vv = SoViewVolumeElement::get(action->getState());
-        // workaround for https://github.com/coin3d/coin/issues/417:
-        // extend by 2 percent
-        vv.scaleWidth(1.02f);
-        SoViewVolumeElement::set(action->getState(), this, vv);
-        inherited::computeBBox(action, box, center);
-    }
+    computeText2BBoxWithCoinWorkaround(action, this, box, center, [&](SbBox3f& textBox, SbVec3f& textCenter) {
+        inherited::computeBBox(action, textBox, textCenter);
+    });
 }
 
 // ------------------------------------------------------
@@ -99,10 +132,22 @@ SoStringLabel::SoStringLabel()
     SO_NODE_ADD_FIELD(name, ("Helvetica"));
     SO_NODE_ADD_FIELD(size, (12));
 
+    textRoot = new Inventor::SoFCScreenSpaceGroup;
+    textRoot->ref();
+    textRoot->setCoordinateSpace(Inventor::SoFCScreenSpaceGroup::CoordinateSpace::ViewportPixels);
+    textRoot->setBaseColorLightModel(true);
+    textRoot->setTexturesEnabled(true);
+    textRoot->setMultiTexturesEnabled(false);
+    textRoot->setDepthBuffer(false, false, SoDepthBufferElement::ALWAYS);
+
     textSwitch = new SoSwitch;
-    textSwitch->ref();
+    textRoot->addChild(textSwitch);
 
     textSeparator = new SoSeparator;
+
+    auto* textColorNode = new SoBaseColor;
+    textColorNode->rgb.setValue(1.0f, 1.0f, 1.0f);
+    textSeparator->addChild(textColorNode);
 
     textTexture = new SoTexture2;
     textTexture->wrapS = SoTexture2::CLAMP;
@@ -121,11 +166,29 @@ SoStringLabel::SoStringLabel()
 }
 
 /**
- * Renders the open edges only.
+ * Render the retained viewport-space text quad in the legacy renderer.
  */
 void SoStringLabel::GLRender(SoGLRenderAction* action)
 {
-    if (!action || !textSwitch) {
+    renderRetained(action);
+}
+
+SoStringLabel::~SoStringLabel()
+{
+    if (textRoot) {
+        textRoot->unref();
+        textRoot = nullptr;
+    }
+    textSwitch = nullptr;
+    textSeparator = nullptr;
+    textTexture = nullptr;
+    textFaceSet = nullptr;
+    textVertexProperty = nullptr;
+}
+
+void SoStringLabel::renderRetained(SoGLRenderAction* action)
+{
+    if (!action || !textRoot || !textSwitch) {
         return;
     }
 
@@ -135,53 +198,17 @@ void SoStringLabel::GLRender(SoGLRenderAction* action)
     }
 
     state->push();
-    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-
     ensureTextGeometry(state);
 
-    if (textSwitch->whichChild.getValue() == SO_SWITCH_NONE) {
-        state->pop();
-        return;
+    if (textSwitch->whichChild.getValue() != SO_SWITCH_NONE) {
+        SoShapeStyleElement::setTransparentTexture(state, TRUE);
+        SoShapeStyleElement::setTransparencyType(state, SoGLRenderAction::BLEND);
+        SoLazyElement::setTransparencyType(state, static_cast<int32_t>(SoGLRenderAction::BLEND));
+        SoLazyElement::enableBlending(state, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        textRoot->GLRender(action);
     }
-
-    const SbViewportRegion& vp = SoViewportRegionElement::get(state);
-    SbVec2s vpsize = vp.getViewportSizePixels();
-
-    SbViewVolume ortho;
-    ortho.ortho(0.0f, static_cast<float>(vpsize[0]), 0.0f, static_cast<float>(vpsize[1]), -1.0f, 1.0f);
-    SbMatrix affine;
-    SbMatrix projection;
-    ortho.getMatrices(affine, projection);
-
-    SoModelMatrixElement::set(state, this, SbMatrix::identity());
-    SoViewingMatrixElement::set(state, this, SbMatrix::identity());
-    SoProjectionMatrixElement::set(state, this, projection);
-    SoViewVolumeElement::set(state, this, ortho);
-
-    SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
-
-    SbColor white(1.0f, 1.0f, 1.0f);
-    SoLazyElement::setDiffuse(state, this, 1, &white, 0);
-    SoLazyElement::setTransparencyType(state, static_cast<int32_t>(SoGLRenderAction::BLEND));
-    SoGLTextureEnabledElement::set(state, this, TRUE);
-    SoMultiTextureEnabledElement::set(state, this, FALSE);
-
-    textSwitch->whichChild.setValue(0);
-    textSwitch->GLRender(action);
 
     state->pop();
-}
-
-SoStringLabel::~SoStringLabel()
-{
-    if (textSwitch) {
-        textSwitch->unref();
-        textSwitch = nullptr;
-    }
-    textSeparator = nullptr;
-    textTexture = nullptr;
-    textFaceSet = nullptr;
-    textVertexProperty = nullptr;
 }
 
 void SoStringLabel::notify(SoNotList* list)
@@ -249,7 +276,6 @@ void SoStringLabel::ensureTextGeometry(SoState* state)
     QFont font(fontFamily);
     const int fontSize = std::max(1, size.getValue());
     font.setPixelSize(fontSize);
-    font.setStyleStrategy(QFont::NoAntialias);
 
     QFontMetrics metrics(font);
     int maxWidth = 0;

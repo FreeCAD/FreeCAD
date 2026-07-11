@@ -43,9 +43,16 @@
 
 #include "BitmapFactory.h"
 
+class SoAction;
+class SoGLRenderAction;
+class SoState;
 
 namespace Gui
 {
+namespace Inventor
+{
+class SoFCScreenSpaceGroup;
+}
 
 /**
  * A text label for the color bar.
@@ -87,7 +94,9 @@ protected:
 
 private:
     void ensureTextGeometry(SoState* state);
+    void renderRetained(SoGLRenderAction* action);
 
+    mutable Inventor::SoFCScreenSpaceGroup* textRoot {nullptr};
     mutable SoSwitch* textSwitch {nullptr};
     mutable SoSeparator* textSeparator {nullptr};
     mutable SoTexture2* textTexture {nullptr};
