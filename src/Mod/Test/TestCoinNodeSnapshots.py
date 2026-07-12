@@ -61,6 +61,7 @@ _FONT_REL = Path("tests") / "visual" / "fonts"
 _DEFAULT_FONT_FAMILY = "Noto Sans"
 _DEFAULT_FONT_FILES = ("NotoSans-Regular.ttf",)
 _DEFAULT_FONT_SIZE = 18
+_ISOLATED_CAMERA_NODES = frozenset(("SoDrawingGrid", "SoRegPoint", "SoDatumLabel", "SoStringLabel"))
 
 
 def _repo_root() -> Path | None:
@@ -349,33 +350,21 @@ def _make_scene_for_node(coin, type_name: str):
     font.size.setValue(float(_DEFAULT_FONT_SIZE))
     root.addChild(font)
 
+    if type_name in _ISOLATED_CAMERA_NODES:
+        # These nodes are tested in isolation. Their geometry is either
+        # screen-space or explicitly positioned, so a host cube would only
+        # obscure the behavior being snapshotted.
+        cam.position.setValue(0.0, 0.0, 5.0)
+        cam.orientation.setValue(coin.SbRotation())
+        cam.height.setValue(2.0)
+        cam.nearDistance.setValue(0.1)
+        cam.farDistance.setValue(100.0)
+
     if type_name == "SoDrawingGrid":
-        material = coin.SoMaterial()
-        material.diffuseColor.setValue(0.7, 0.7, 0.75)
-        cube_trans = coin.SoTranslation()
-        cube_trans.translation.setValue(0.0, 0.0, -0.5)
-        cube = coin.SoCube()
-        cube.width = 1.2
-        cube.height = 1.2
-        cube.depth = 1.2
-        root.addChild(material)
-        root.addChild(cube_trans)
-        root.addChild(cube)
         root.addChild(_instantiate(coin, "SoDrawingGrid"))
         return root
 
     if type_name == "SoRegPoint":
-        material = coin.SoMaterial()
-        material.diffuseColor.setValue(0.7, 0.7, 0.75)
-        cube_trans = coin.SoTranslation()
-        cube_trans.translation.setValue(0.0, 0.0, -0.5)
-        cube = coin.SoCube()
-        cube.width = 1.2
-        cube.height = 1.2
-        cube.depth = 1.2
-        root.addChild(material)
-        root.addChild(cube_trans)
-        root.addChild(cube)
         probe = _instantiate(coin, "SoRegPoint")
         probe.base.setValue(0.0, 0.0, 0.0)
         probe.normal.setValue(0.6, 0.7, 0.4)
@@ -386,17 +375,6 @@ def _make_scene_for_node(coin, type_name: str):
         return root
 
     if type_name == "SoDatumLabel":
-        material = coin.SoMaterial()
-        material.diffuseColor.setValue(0.7, 0.7, 0.75)
-        cube_trans = coin.SoTranslation()
-        cube_trans.translation.setValue(0.0, 0.0, -0.5)
-        cube = coin.SoCube()
-        cube.width = 1.2
-        cube.height = 1.2
-        cube.depth = 1.2
-        root.addChild(material)
-        root.addChild(cube_trans)
-        root.addChild(cube)
         label = _instantiate(coin, "SoDatumLabel")
         label.string.setValue("SoDatumLabel")
         label.textColor.setValue(1.0, 0.45, 0.34)
@@ -422,7 +400,7 @@ def _make_scene_for_node(coin, type_name: str):
         label = _instantiate(coin, "SoStringLabel")
         label.string.setValue("SoStringLabel")
         label.name.setValue(_DEFAULT_FONT_FAMILY)
-        label.size.setValue(18)
+        label.size.setValue(28)
         # Default SoStringLabel textColor is white, which can become invisible on the white
         # snapshot background depending on the GL blending / alpha handling.
         label.textColor.setValue(0.05, 0.05, 0.05)
@@ -1774,7 +1752,15 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
                     diff_dir = out_dir / "diff"
 
                     actual_path = actual_dir / f"{type_name}.png"
-                    _render_png(harness, coin, root, actual_path, width, height)
+                    _render_png(
+                        harness,
+                        coin,
+                        root,
+                        actual_path,
+                        width,
+                        height,
+                        frame_camera=type_name not in _ISOLATED_CAMERA_NODES,
+                    )
                     self.assertTrue(actual_path.exists(), f"missing snapshot: {actual_path}")
                     self.assertGreater(
                         actual_path.stat().st_size, 0, f"empty snapshot: {actual_path}"
