@@ -24,6 +24,11 @@
 
 #include "MeasureSnap.h"
 
+#include <App/DocumentObserver.h>
+#include <App/GeoFeature.h>
+#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/TopoShape.h>
+
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepBndLib.hxx>
@@ -203,6 +208,70 @@ MeasureSnapMode MeasureSnap::pickPreviewType(int availableFlags, MeasureSnapMode
             return MeasureSnapMode::None;
     }
     return MeasureSnapMode::None;
+}
+
+TopoDS_Shape MeasureSnap::resolveShape(const App::SubObjectT& subject)
+{
+    try {
+        const auto chain = subject.getSubObjectList();
+        if (chain.empty() || !chain.back()) {
+            return {};
+        }
+        App::DocumentObject* obj = chain.back();
+        Part::TopoShape ts = Part::Feature::getTopoShape(
+            obj,
+            Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
+                | Part::ShapeOption::Transform,
+            subject.getElementName()
+        );
+        if (ts.isNull()) {
+            return {};
+        }
+        ts.setPlacement(
+            App::GeoFeature::getGlobalPlacement(obj, subject.getObject(), subject.getSubName())
+        );
+        return ts.getShape();
+    }
+    catch (...) {
+        return {};
+    }
+}
+
+std::vector<gp_Pnt> MeasureSnap::previewPoints(const TopoDS_Shape& shape, MeasureSnapMode type)
+{
+    std::vector<gp_Pnt> points;
+    gp_Pnt p;
+    switch (type) {
+        case MeasureSnapMode::Center:
+            if (centerOf(shape, p)) {
+                points.push_back(p);
+            }
+            break;
+        case MeasureSnapMode::Midpoint:
+            if (midpointOf(shape, p)) {
+                points.push_back(p);
+            }
+            break;
+        case MeasureSnapMode::Vertex:
+            if (shape.ShapeType() == TopAbs_VERTEX) {
+                points.push_back(BRep_Tool::Pnt(TopoDS::Vertex(shape)));
+            }
+            else if (shape.ShapeType() == TopAbs_EDGE) {
+                TopoDS_Vertex v1;
+                TopoDS_Vertex v2;
+                TopExp::Vertices(TopoDS::Edge(shape), v1, v2);
+                if (!v1.IsNull()) {
+                    points.push_back(BRep_Tool::Pnt(v1));
+                }
+                if (!v2.IsNull()) {
+                    points.push_back(BRep_Tool::Pnt(v2));
+                }
+            }
+            break;
+        default:
+            break;
+    }
+    return points;
 }
 
 bool MeasureSnap::computeSnapPoint(

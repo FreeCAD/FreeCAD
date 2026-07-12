@@ -26,6 +26,8 @@
 
 #include <Mod/Measure/MeasureGlobal.h>
 
+#include <vector>
+
 #include <Bnd_Box.hxx>
 #include <gp_Ax1.hxx>
 #include <gp_Dir.hxx>
@@ -35,6 +37,11 @@
 #include <TopoDS_Shape.hxx>
 
 #include <Base/Vector3D.h>
+
+namespace App
+{
+class SubObjectT;
+}
 
 namespace Measure
 {
@@ -94,6 +101,14 @@ public:
     // Preview type for a hovered element: the active mode if its flag is set, else None;
     // Auto returns the best available point snap (Center, then Midpoint, then Vertex).
     static MeasureSnapMode pickPreviewType(int availableFlags, MeasureSnapMode activeMode);
+
+    // Placed sub-shape a preselection refers to, matching what execute() measures on;
+    // a null shape if it cannot be resolved.
+    static TopoDS_Shape resolveShape(const App::SubObjectT& subject);
+
+    // Marker points to preview for a resolved snap type: both edge endpoints for Vertex,
+    // a single point for Center/Midpoint, empty otherwise.
+    static std::vector<gp_Pnt> previewPoints(const TopoDS_Shape& shape, MeasureSnapMode type);
 };
 
 }  // namespace Measure

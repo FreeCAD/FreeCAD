@@ -756,4 +756,24 @@ TEST_F(MeasureSnap, testPickPreviewType)
     EXPECT_EQ(MeasureSnap::pickPreviewType(vertexOnly, MeasureSnapMode::Axis), MeasureSnapMode::None);
 }
 
+// Unlike computeSnapPoint, a Vertex preview keeps both endpoints so the click can pick
+// the nearer. Single-point modes yield one point, non-point modes none.
+TEST_F(MeasureSnap, testPreviewPoints)
+{
+    const TopoDS_Edge line = makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(2.0, 0.0, 0.0));
+
+    const std::vector<gp_Pnt> ends =
+        Measure::MeasureSnap::previewPoints(line, Measure::MeasureSnapMode::Vertex);
+    ASSERT_EQ(ends.size(), 2U);
+    EXPECT_DOUBLE_EQ(ends.front().X(), 0.0);
+    EXPECT_DOUBLE_EQ(ends.back().X(), 2.0);
+
+    const std::vector<gp_Pnt> mid =
+        Measure::MeasureSnap::previewPoints(line, Measure::MeasureSnapMode::Midpoint);
+    ASSERT_EQ(mid.size(), 1U);
+    EXPECT_DOUBLE_EQ(mid.front().X(), 1.0);
+
+    EXPECT_TRUE(Measure::MeasureSnap::previewPoints(line, Measure::MeasureSnapMode::None).empty());
+}
+
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
