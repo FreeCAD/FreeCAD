@@ -137,6 +137,9 @@ class OpenSBPPost(PostProcessor):
         for prop in common_props:
             if prop["name"] == "file_extension":
                 prop["default"] = "sbp"
+            elif prop["name"] == "f_for_rapid_moves":
+                # Use G0's F by default
+                prop["default"] = True
 
             # FIXME: show but don't allow edit in UI
 
@@ -243,7 +246,10 @@ class OpenSBPPost(PostProcessor):
         # These schema defaults are r/o: force them
         for property_name in (
             "supported_commands drill_cycles_to_translate"
-            " translate_drill_cycles output_tool_length_offset".split(" ")
+            " translate_drill_cycles output_tool_length_offset"
+            " f_for_rapid_moves".split(  # FIXME: the merge logic doesn't respect our updated default
+                " "
+            )
         ):
             self.values[property_name.upper()] = schema[property_name]["default"]
 

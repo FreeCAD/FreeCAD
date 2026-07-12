@@ -87,22 +87,6 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         self.post.apply_configuration_bundle()
         import json
 
-        if self._first_time:  # FIXME: disable when dev is done
-            self.__class__._first_time = False
-            print(f"## _mach setup: { self.post._machine.__class__.__name__}")
-            try:
-                adump = json.dumps(self.post._machine.to_dict(), sort_keys=True, indent=2)
-            except TypeError:
-                adump = str(self.post._machine.to_dict())
-            print("---_machine\n{adump}\n---")
-            try:
-                adump = json.dumps(
-                    self.post._machine.postprocessor_properties, sort_keys=True, indent=2
-                )
-            except TypeError:
-                adump = str(self.post._machine.postprocessor_properties)
-            print(f"--.postprocessor_properties\n{adump}")
-
         self.post._machine.name = "Test ShopBot Machine"
         toolhead = Toolhead(
             name="Default Toolhead",
@@ -223,6 +207,12 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         command = Path.Command("G0", {"Y": 20.0, "Z": 5.0})
         result = self.post._convert_rapid_move(command)
         self.assertIn("G0 Y20.000 Z5.000", result)
+
+    def test_rapid_f(self):
+        """Output F for G0 is the default for us"""
+        command = Path.Command("G0 X1 F8")
+        gcode = self.post._convert_rapid_move(command)
+        self.assertIn(" F", gcode)
 
     # -------------------------------------------------------------------------
     # Linear move (G1) → Move commands
