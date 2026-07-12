@@ -721,8 +721,7 @@ TEST_F(MeasureSnap, testSnapModeFromIndexClampsOutOfRange)
     EXPECT_EQ(Measure::MeasureSnap::snapModeFromIndex(-1), Measure::MeasureSnapMode::Auto);
 }
 
-// Auto prefers Center, then Midpoint, then Vertex; an explicit mode needs its own flag;
-// Axis is never auto-selected and only previews when explicitly requested.
+// Auto prefers Center, then Midpoint, Vertex, then Axis; an explicit mode needs its own flag.
 TEST_F(MeasureSnap, testPickPreviewType)
 {
     using Measure::MeasureSnap;
@@ -737,12 +736,12 @@ TEST_F(MeasureSnap, testPickPreviewType)
         | static_cast<int>(MeasureSnapFlag::FlagCenter);
     const int axisOnly = static_cast<int>(MeasureSnapFlag::FlagAxis);
 
-    // Auto picks the highest-priority available point snap.
+    // Auto picks the highest-priority available snap; a face's lone axis flag counts.
     EXPECT_EQ(MeasureSnap::pickPreviewType(circleFlags, MeasureSnapMode::Auto), MeasureSnapMode::Center);
     EXPECT_EQ(MeasureSnap::pickPreviewType(lineFlags, MeasureSnapMode::Auto), MeasureSnapMode::Midpoint);
     EXPECT_EQ(MeasureSnap::pickPreviewType(vertexOnly, MeasureSnapMode::Auto), MeasureSnapMode::Vertex);
     EXPECT_EQ(MeasureSnap::pickPreviewType(0, MeasureSnapMode::Auto), MeasureSnapMode::None);
-    EXPECT_EQ(MeasureSnap::pickPreviewType(axisOnly, MeasureSnapMode::Auto), MeasureSnapMode::None);
+    EXPECT_EQ(MeasureSnap::pickPreviewType(axisOnly, MeasureSnapMode::Auto), MeasureSnapMode::Axis);
 
     // An explicit mode previews only when its flag is present.
     EXPECT_EQ(MeasureSnap::pickPreviewType(circleFlags, MeasureSnapMode::Center), MeasureSnapMode::Center);
@@ -750,7 +749,7 @@ TEST_F(MeasureSnap, testPickPreviewType)
     EXPECT_EQ(MeasureSnap::pickPreviewType(lineFlags, MeasureSnapMode::Midpoint), MeasureSnapMode::Midpoint);
     EXPECT_EQ(MeasureSnap::pickPreviewType(vertexOnly, MeasureSnapMode::Vertex), MeasureSnapMode::Vertex);
 
-    // None never previews; Axis previews only when explicitly requested.
+    // None never previews; an Axis request degrades to None without the axis flag.
     EXPECT_EQ(MeasureSnap::pickPreviewType(circleFlags, MeasureSnapMode::None), MeasureSnapMode::None);
     EXPECT_EQ(MeasureSnap::pickPreviewType(axisOnly, MeasureSnapMode::Axis), MeasureSnapMode::Axis);
     EXPECT_EQ(MeasureSnap::pickPreviewType(vertexOnly, MeasureSnapMode::Axis), MeasureSnapMode::None);
@@ -774,6 +773,63 @@ TEST_F(MeasureSnap, testPreviewPoints)
     EXPECT_DOUBLE_EQ(mid.front().X(), 1.0);
 
     EXPECT_TRUE(Measure::MeasureSnap::previewPoints(line, Measure::MeasureSnapMode::None).empty());
+}
+
+// Endpoints are the box centre projected onto the axis (so x,y collapse to 0), extended
+// each way by 0.6 of the diagonal: a diagonal-5 box gives a length-6 segment about z=1.5.
+TEST_F(MeasureSnap, testAxisPreviewSegment)
+{
+    Bnd_Box bounds;
+    bounds.Add(gp_Pnt(0.0, 0.0, 0.0));
+    bounds.Add(gp_Pnt(4.0, 0.0, 3.0));
+    const gp_Ax1 axis(gp_Pnt(0.0, 0.0, 0.0), gp_Dir(0.0, 0.0, 1.0));
+    gp_Pnt a;
+    gp_Pnt b;
+    ASSERT_TRUE(Measure::MeasureSnap::axisPreviewSegment(axis, bounds, a, b));
+    EXPECT_DOUBLE_EQ(a.X(), 0.0);
+    EXPECT_DOUBLE_EQ(a.Y(), 0.0);
+    EXPECT_DOUBLE_EQ(b.X(), 0.0);
+    EXPECT_DOUBLE_EQ(b.Y(), 0.0);
+    EXPECT_NEAR((a.Z() + b.Z()) / 2.0, 1.5, 1e-6);
+    EXPECT_NEAR(a.Distance(b), 6.0, 1e-6);
+}
+
+// A zero-size box (fillet-tiny face) falls back to the fixed minimum half-length of 1.
+TEST_F(MeasureSnap, testAxisPreviewSegmentDegenerateBoxUsesMinLength)
+{
+    Bnd_Box bounds;
+    bounds.Add(gp_Pnt(2.0, 0.0, 3.0));
+    const gp_Ax1 axis(gp_Pnt(0.0, 0.0, 0.0), gp_Dir(0.0, 0.0, 1.0));
+    gp_Pnt a;
+    gp_Pnt b;
+    ASSERT_TRUE(Measure::MeasureSnap::axisPreviewSegment(axis, bounds, a, b));
+    EXPECT_NEAR((a.Z() + b.Z()) / 2.0, 3.0, 1e-6);
+    EXPECT_NEAR(a.Distance(b), 2.0, 1e-6);
+}
+
+// A void box declines rather than throwing on CornerMin.
+TEST_F(MeasureSnap, testAxisPreviewSegmentVoidBoxReturnsFalse)
+{
+    const Bnd_Box voidBox;
+    const gp_Ax1 axis(gp_Pnt(0.0, 0.0, 0.0), gp_Dir(0.0, 0.0, 1.0));
+    gp_Pnt a;
+    gp_Pnt b;
+    EXPECT_FALSE(Measure::MeasureSnap::axisPreviewSegment(axis, voidBox, a, b));
+}
+
+// Wiring: a cylinder face resolves to two axis-line endpoints, symmetric about the bbox
+// centre projected onto the Z axis (0,0,2.5 for a height-5 cylinder) and on the axis line.
+TEST_F(MeasureSnap, testPreviewPointsAxisOnCylinder)
+{
+    const TopoDS_Face face = makeCylinderFace(2.0, 5.0);
+    const std::vector<gp_Pnt> ends =
+        Measure::MeasureSnap::previewPoints(face, Measure::MeasureSnapMode::Axis);
+    ASSERT_EQ(ends.size(), 2U);
+    EXPECT_NEAR(ends.front().X(), 0.0, 1e-6);
+    EXPECT_NEAR(ends.front().Y(), 0.0, 1e-6);
+    EXPECT_NEAR(ends.back().X(), 0.0, 1e-6);
+    EXPECT_NEAR(ends.back().Y(), 0.0, 1e-6);
+    EXPECT_NEAR((ends.front().Z() + ends.back().Z()) / 2.0, 2.5, 1e-6);
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
