@@ -215,6 +215,7 @@ void TaskImage::showToolHints() const
     InputHint snap = {tr("%1 snap angle"), {ModifierCtrl}};
     InputHint toggleCenter = {tr("%1 toggle centering"), {KeyC}};
     InputHint toggleRotation = {tr("%1 toggle rotating to line"), {KeyR}};
+    InputHint acceptDistance = {tr("%1 accept distance"), {KeyEnter}};
 
     std::list<Gui::InputHint> hints = Gui::lookupHints<InteractiveScaleState>(
         state,
@@ -223,7 +224,7 @@ void TaskImage::showToolHints() const
              .hints = {{tr("%1 pick first point"), {MouseLeft}}, toggleCenter, toggleRotation}},
             {.state = InteractiveScaleState::PickingSecond,
              .hints = {snap, {tr("%1 pick second point"), {MouseLeft}}, toggleCenter, toggleRotation}},
-            {.state = InteractiveScaleState::Pending, .hints = {toggleCenter, toggleRotation}},
+            {.state = InteractiveScaleState::Pending, .hints = {acceptDistance}},
         }
     );
 
@@ -614,6 +615,7 @@ void InteractiveScale::deactivate()
         viewer->setSelectionEnabled(true);
         viewer->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
         active = false;
+        Gui::getMainWindow()->hideHints();
     }
 }
 
