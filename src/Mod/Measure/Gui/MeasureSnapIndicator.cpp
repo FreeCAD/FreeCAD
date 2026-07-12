@@ -29,6 +29,8 @@
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoBaseColor.h>
 #include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoLineSet.h>
 #include <Inventor/nodes/SoMarkerSet.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
@@ -46,6 +48,28 @@ using namespace MeasureGui;
 
 namespace
 {
+// pSwitch children; one branch is selected at a time, never both.
+constexpr int MarkerChild = 0;
+constexpr int AxisChild = 1;
+constexpr unsigned short AxisLinePattern = 0xF0F0;
+
+// Copy OCCT points into a Coin coordinate node.
+void writePoints(SoCoordinate3* coords, const std::vector<gp_Pnt>& points)
+{
+    const auto count = static_cast<int>(points.size());
+    coords->point.setNum(count);
+    SbVec3f* verts = coords->point.startEditing();
+    for (int i = 0; i < count; ++i) {
+        const gp_Pnt& p = points[i];
+        verts[i].setValue(
+            static_cast<float>(p.X()),
+            static_cast<float>(p.Y()),
+            static_cast<float>(p.Z())
+        );
+    }
+    coords->point.finishEditing();
+}
+
 // Distinct built-in marker per snap type; nullptr for types this overlay does not draw.
 const char* markerName(Measure::MeasureSnapMode type)
 {
@@ -117,7 +141,33 @@ MeasureSnapIndicator::MeasureSnapIndicator()
     pSep->addChild(pColor);
     pSep->addChild(pCoords);
     pSep->addChild(pMarkerSet);
+
+    pAxisSep = new SoSeparator;
+    pAxisSep->ref();
+
+    pAxisColor = new SoBaseColor;
+    pAxisColor->ref();
+    pAxisColor->rgb.setValue(1.0F, 1.0F, 0.0F);
+
+    pAxisStyle = new SoDrawStyle;
+    pAxisStyle->ref();
+    pAxisStyle->lineWidth = 2.0F;
+    pAxisStyle->linePattern = AxisLinePattern;
+
+    pAxisCoords = new SoCoordinate3;
+    pAxisCoords->ref();
+
+    pAxisLine = new SoLineSet;
+    pAxisLine->ref();
+    pAxisLine->numVertices.setValue(2);
+
+    pAxisSep->addChild(pAxisColor);
+    pAxisSep->addChild(pAxisStyle);
+    pAxisSep->addChild(pAxisCoords);
+    pAxisSep->addChild(pAxisLine);
+
     pSwitch->addChild(pSep);
+    pSwitch->addChild(pAxisSep);
     pRoot->addChild(pSwitch);
 }
 
@@ -126,6 +176,11 @@ MeasureSnapIndicator::~MeasureSnapIndicator()
     if (attached && pSceneGraph) {
         pSceneGraph->removeChild(pRoot);
     }
+    pAxisLine->unref();
+    pAxisCoords->unref();
+    pAxisStyle->unref();
+    pAxisColor->unref();
+    pAxisSep->unref();
     pMarkerSet->unref();
     pCoords->unref();
     pColor->unref();
@@ -155,30 +210,28 @@ bool MeasureSnapIndicator::attach()
 
 void MeasureSnapIndicator::show(const std::vector<gp_Pnt>& points, Measure::MeasureSnapMode type)
 {
+    if (type == Measure::MeasureSnapMode::Axis) {
+        if (points.size() != 2 || !attach()) {
+            hide();
+            return;
+        }
+        writePoints(pAxisCoords, points);
+        pSwitch->whichChild = AxisChild;
+        return;
+    }
+
     const char* name = markerName(type);
     if (points.empty() || !name || !attach()) {
         hide();
         return;
     }
 
-    const auto count = static_cast<int>(points.size());
-    pCoords->point.setNum(count);
-    SbVec3f* verts = pCoords->point.startEditing();
-    for (int i = 0; i < count; ++i) {
-        const gp_Pnt& p = points[i];
-        verts[i].setValue(
-            static_cast<float>(p.X()),
-            static_cast<float>(p.Y()),
-            static_cast<float>(p.Z())
-        );
-    }
-    pCoords->point.finishEditing();
-
+    writePoints(pCoords, points);
     const int desiredSize = static_cast<int>(Gui::ViewParams::instance()->getMarkerSize());
     const int size = nearestSupportedSize(name, desiredSize);
     pMarkerSet->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex(name, size);
-    pMarkerSet->numPoints = count;
-    pSwitch->whichChild = SO_SWITCH_ALL;
+    pMarkerSet->numPoints = static_cast<int>(points.size());
+    pSwitch->whichChild = MarkerChild;
 }
 
 void MeasureSnapIndicator::hide()

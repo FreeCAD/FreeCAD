@@ -36,21 +36,24 @@ class SoSeparator;
 class SoBaseColor;
 class SoCoordinate3;
 class SoMarkerSet;
+class SoDrawStyle;
+class SoLineSet;
 class SoGroup;
 
 
 namespace MeasureGui
 {
 
-// On-top marker overlay for the snap preview. The subtree is built once and mutated
-// per hover; visibility toggles through an SoSwitch, never by re-parenting.
+// On-top overlay for the snap preview: point markers or a dashed axis line. The subtree
+// is built once and mutated per hover; the SoSwitch selects one branch, never re-parents.
 class MeasureSnapIndicator
 {
 public:
     MeasureSnapIndicator();
     ~MeasureSnapIndicator();
 
-    // Draw one marker of the given snap type at each point; empty or a non-point type hides.
+    // Preview the resolved snap: markers for point types, a dashed line through the two
+    // Axis endpoints. Empty points or an unpreviewable type hides.
     void show(const std::vector<gp_Pnt>& points, Measure::MeasureSnapMode type);
     void hide();
 
@@ -67,6 +70,12 @@ private:
     SoBaseColor* pColor;
     SoCoordinate3* pCoords;
     SoMarkerSet* pMarkerSet;
+
+    SoSeparator* pAxisSep;
+    SoBaseColor* pAxisColor;
+    SoDrawStyle* pAxisStyle;
+    SoCoordinate3* pAxisCoords;
+    SoLineSet* pAxisLine;
 
     SoGroup* pSceneGraph = nullptr;
     bool attached = false;
