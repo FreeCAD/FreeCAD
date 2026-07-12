@@ -34,10 +34,6 @@ Environment variables:
   - FC_VISUAL_OUT_DIR: output directory (writes actual/expected/diff)
   - FC_VISUAL_BASELINE_DIR: baseline directory override (default: tests/visual/baselines/coin-nodes)
   - FC_VISUAL_UPDATE_BASELINE: if truthy, overwrite baselines with actual renders
-  - FC_VISUAL_WIDTH / FC_VISUAL_HEIGHT: render size (default: 512x512)
-  - FC_VISUAL_TOLERANCE: per-channel tolerance (default: 8)
-  - FC_VISUAL_MAX_MISMATCH_PCT: mismatch threshold percent (default: 0.20)
-  - FC_VISUAL_IGNORE_ALPHA: ignore alpha differences (default: 1)
   - FC_VISUAL_NODES: optional comma-separated node list to run
 """
 
@@ -54,6 +50,8 @@ import sys
 import tempfile
 import time
 import unittest
+from dataclasses import dataclass
+from enum import Enum, auto
 from pathlib import Path
 
 _BASELINE_REL = Path("tests") / "visual" / "baselines" / "coin-nodes"
@@ -61,18 +59,73 @@ _FONT_REL = Path("tests") / "visual" / "fonts"
 _DEFAULT_FONT_FAMILY = "Noto Sans"
 _DEFAULT_FONT_FILES = ("NotoSans-Regular.ttf",)
 _DEFAULT_FONT_SIZE = 18
-_ISOLATED_CAMERA_NODES = frozenset(
-    (
-        "SoDrawingGrid",
-        "SoRegPoint",
-        "SoDatumLabel",
-        "SoStringLabel",
-        "SoColorBarLabel",
-        "SoFrameLabel",
-    )
-)
 _TRANSLUCENCY_BACKGROUND_TOP = (0.20, 0.20, 0.60)
 _TRANSLUCENCY_BACKGROUND_BOTTOM = (0.90, 0.90, 1.00)
+_SNAPSHOT_WIDTH = 512
+_SNAPSHOT_HEIGHT = 512
+_PIXEL_TOLERANCE = 8
+_MAX_MISMATCH_PCT = 0.20
+_IGNORE_ALPHA = True
+
+
+class _CameraPolicy(Enum):
+    VIEW_ALL = auto()
+    FIXED_OVERLAY = auto()
+    COLOR_BAR_OVERLAY = auto()
+
+
+@dataclass(frozen=True)
+class _SnapshotFixture:
+    framing_policy: _CameraPolicy = _CameraPolicy.VIEW_ALL
+    required_modules: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
+class _SnapshotScene:
+    root: object
+    framing_policy: _CameraPolicy
+
+
+_PART_GUI_NODES = (
+    "SoBrepEdgeSet",
+    "SoBrepEdgeSetHighlight",
+    "SoBrepEdgeSetSelection",
+    "SoBrepPointSet",
+    "SoBrepPointSetHighlight",
+    "SoBrepPointSetSelection",
+    "SoBrepFaceSet",
+    "SoBrepFaceSetHighlight",
+    "SoBrepFaceSetSelection",
+    "SoFCControlPoints",
+)
+_MESH_GUI_NODES = (
+    "SoPolygon",
+    "SoPolygonOpen",
+    "SoPolygonStartIndex",
+    "SoPolygonNonPlanar",
+    "SoPolygonTriangle",
+    "SoFCIndexedFaceSet",
+    "SoFCIndexedFaceSetPerFaceColor",
+    "SoFCIndexedFaceSetPerVertexColor",
+    "SoFCIndexedFaceSetTranslucent",
+)
+
+_SNAPSHOT_FIXTURES = {
+    "SoDrawingGrid": _SnapshotFixture(_CameraPolicy.FIXED_OVERLAY),
+    "SoRegPoint": _SnapshotFixture(_CameraPolicy.FIXED_OVERLAY),
+    "SoDatumLabel": _SnapshotFixture(_CameraPolicy.FIXED_OVERLAY),
+    "SoStringLabel": _SnapshotFixture(_CameraPolicy.FIXED_OVERLAY),
+    "SoColorBarLabel": _SnapshotFixture(_CameraPolicy.FIXED_OVERLAY),
+    "SoFrameLabel": _SnapshotFixture(_CameraPolicy.FIXED_OVERLAY),
+    "SoFCPlacementIndicatorKit": _SnapshotFixture(),
+    "SoAxisCrossKit": _SnapshotFixture(),
+    "SoFCBackgroundGradient": _SnapshotFixture(),
+    "SoNaviCube": _SnapshotFixture(),
+    "SoNaviCubeTranslucent": _SnapshotFixture(),
+    "SoNaviCubeHiliteFront": _SnapshotFixture(),
+    **{name: _SnapshotFixture(required_modules=("PartGui",)) for name in _PART_GUI_NODES},
+    **{name: _SnapshotFixture(required_modules=("MeshGui",)) for name in _MESH_GUI_NODES},
+}
 
 
 def _repo_root() -> Path | None:
@@ -390,7 +443,31 @@ def _add_translucency_backplate(root, coin):
     root.addChild(backplate)
 
 
-def _make_scene_for_node(coin, type_name: str):
+def _load_required_modules(fixture: _SnapshotFixture) -> None:
+    for module_name in fixture.required_modules:
+        if importlib.util.find_spec(module_name) is None:
+            raise unittest.SkipTest(f"required module not available: {module_name}")
+        try:
+            importlib.import_module(module_name)
+        except Exception as exc:
+            raise AssertionError(f"failed to import required module: {module_name}") from exc
+
+
+def _configure_camera(coin, cam, policy: _CameraPolicy) -> None:
+    if policy is _CameraPolicy.VIEW_ALL:
+        return
+
+    # These nodes are tested in isolation. Their geometry is either
+    # screen-space or explicitly positioned, so a host cube would only
+    # obscure the behavior being snapshotted.
+    cam.position.setValue(0.0, 0.0, 5.0)
+    cam.orientation.setValue(coin.SbRotation())
+    cam.height.setValue(10.0 if policy is _CameraPolicy.COLOR_BAR_OVERLAY else 2.0)
+    cam.nearDistance.setValue(0.1)
+    cam.farDistance.setValue(100.0)
+
+
+def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
     root = coin.SoSeparator()
 
     cam = coin.SoOrthographicCamera()
@@ -408,15 +485,8 @@ def _make_scene_for_node(coin, type_name: str):
     font.size.setValue(float(_DEFAULT_FONT_SIZE))
     root.addChild(font)
 
-    if type_name in _ISOLATED_CAMERA_NODES:
-        # These nodes are tested in isolation. Their geometry is either
-        # screen-space or explicitly positioned, so a host cube would only
-        # obscure the behavior being snapshotted.
-        cam.position.setValue(0.0, 0.0, 5.0)
-        cam.orientation.setValue(coin.SbRotation())
-        cam.height.setValue(2.0)
-        cam.nearDistance.setValue(0.1)
-        cam.farDistance.setValue(100.0)
+    _configure_camera(coin, cam, fixture.framing_policy)
+    _load_required_modules(fixture)
 
     if type_name == "SoDrawingGrid":
         root.addChild(_instantiate(coin, "SoDrawingGrid"))
@@ -532,8 +602,8 @@ def _make_scene_for_node(coin, type_name: str):
         if type_name == "SoNaviCubeHiliteFront":
             # Gui::SoNaviCube::PickId::Front (see `src/Gui/Inventor/SoNaviCube.h`).
             cube.hiliteId.setValue(1)
-        width = float(int(os.environ.get("FC_VISUAL_WIDTH", "512")))
-        height = float(int(os.environ.get("FC_VISUAL_HEIGHT", "512")))
+        width = float(_SNAPSHOT_WIDTH)
+        height = float(_SNAPSHOT_HEIGHT)
 
         # Render like a real overlay: small square in the corner.
         overlay = max(64.0, min(width, height) * 0.60)
@@ -549,37 +619,6 @@ def _make_scene_for_node(coin, type_name: str):
         cube.cameraOrientation.setValue(cam.orientation.getValue())
         root.addChild(cube)
         return root
-
-    if type_name in (
-        "SoBrepEdgeSet",
-        "SoBrepEdgeSetHighlight",
-        "SoBrepEdgeSetSelection",
-        "SoBrepPointSet",
-        "SoBrepPointSetHighlight",
-        "SoBrepPointSetSelection",
-        "SoBrepFaceSet",
-        "SoBrepFaceSetHighlight",
-        "SoBrepFaceSetSelection",
-        "SoFCControlPoints",
-    ):
-        # These are provided by PartGui, so ensure it is imported to register the Coin types.
-        if importlib.util.find_spec("PartGui") is not None:
-            importlib.import_module("PartGui")
-
-    if type_name in (
-        "SoPolygon",
-        "SoPolygonOpen",
-        "SoPolygonStartIndex",
-        "SoPolygonNonPlanar",
-        "SoPolygonTriangle",
-        "SoFCIndexedFaceSet",
-        "SoFCIndexedFaceSetPerFaceColor",
-        "SoFCIndexedFaceSetPerVertexColor",
-        "SoFCIndexedFaceSetTranslucent",
-    ):
-        # These are provided by MeshGui, so ensure it is imported to register the Coin types.
-        if importlib.util.find_spec("MeshGui") is not None:
-            importlib.import_module("MeshGui")
 
     if type_name in (
         "SoPolygon",
@@ -979,6 +1018,14 @@ def _make_scene_for_node(coin, type_name: str):
     return root
 
 
+def _make_snapshot_scene(coin, type_name: str) -> _SnapshotScene:
+    fixture = _SNAPSHOT_FIXTURES.get(type_name, _SnapshotFixture())
+    return _SnapshotScene(
+        root=_make_scene_for_node(coin, type_name, fixture),
+        framing_policy=fixture.framing_policy,
+    )
+
+
 class _ViewerSnapshotHarness:
     def __init__(self, FreeCAD, FreeCADGui, width: int, height: int):
         self.FreeCAD = FreeCAD
@@ -1084,10 +1131,10 @@ def _render_png(
     width: int,
     height: int,
     *,
-    frame_camera: bool = True,
+    framing_policy: _CameraPolicy = _CameraPolicy.VIEW_ALL,
 ) -> None:
     viewport = coin.SbViewportRegion(width, height)
-    if frame_camera:
+    if framing_policy is _CameraPolicy.VIEW_ALL:
         # Tighten the camera to what we're rendering.
         cam = root.getChild(0)
         # Some GUI helper nodes (e.g. SoDatumLabel) compute a camera-dependent bounding box.
@@ -1405,8 +1452,8 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
     def test_so_datum_label_ignores_parent_cull_face(self):
         FreeCAD, FreeCADGui, coin = _require_gui()
 
-        width = int(os.environ.get("FC_VISUAL_WIDTH", "512"))
-        height = int(os.environ.get("FC_VISUAL_HEIGHT", "512"))
+        width = _SNAPSHOT_WIDTH
+        height = _SNAPSHOT_HEIGHT
         out_dir = Path(
             os.environ.get(
                 "FC_VISUAL_OUT_DIR",
@@ -1460,7 +1507,15 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         root.addChild(label)
 
         with _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height) as harness:
-            _render_png(harness, coin, root, actual_path, width, height, frame_camera=False)
+            _render_png(
+                harness,
+                coin,
+                root,
+                actual_path,
+                width,
+                height,
+                framing_policy=_CameraPolicy.FIXED_OVERLAY,
+            )
         self.assertTrue(actual_path.exists(), f"missing snapshot: {actual_path}")
         self.assertGreater(
             _non_background_pixel_count(actual_path),
@@ -1471,8 +1526,8 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
     def test_so_string_label_anchor_regression(self):
         FreeCAD, FreeCADGui, coin = _require_gui()
 
-        width = int(os.environ.get("FC_VISUAL_WIDTH", "512"))
-        height = int(os.environ.get("FC_VISUAL_HEIGHT", "512"))
+        width = _SNAPSHOT_WIDTH
+        height = _SNAPSHOT_HEIGHT
         out_dir = Path(
             os.environ.get(
                 "FC_VISUAL_OUT_DIR",
@@ -1526,7 +1581,15 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         root.addChild(label)
 
         with _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height) as harness:
-            _render_png(harness, coin, root, actual_path, width, height, frame_camera=False)
+            _render_png(
+                harness,
+                coin,
+                root,
+                actual_path,
+                width,
+                height,
+                framing_policy=_CameraPolicy.FIXED_OVERLAY,
+            )
         self.assertTrue(actual_path.exists(), f"missing snapshot: {actual_path}")
 
         marker_bbox = _pixel_bbox(
@@ -1568,11 +1631,10 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
     def test_so_brep_face_set_per_part_material_binding_regression(self):
         FreeCAD, FreeCADGui, coin = _require_gui()
 
-        if importlib.util.find_spec("PartGui") is not None:
-            importlib.import_module("PartGui")
+        _load_required_modules(_SnapshotFixture(required_modules=("PartGui",)))
 
-        width = int(os.environ.get("FC_VISUAL_WIDTH", "512"))
-        height = int(os.environ.get("FC_VISUAL_HEIGHT", "512"))
+        width = _SNAPSHOT_WIDTH
+        height = _SNAPSHOT_HEIGHT
         out_dir = Path(
             os.environ.get(
                 "FC_VISUAL_OUT_DIR",
@@ -1655,7 +1717,15 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         root.addChild(faces)
 
         with _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height) as harness:
-            _render_png(harness, coin, root, actual_path, width, height, frame_camera=False)
+            _render_png(
+                harness,
+                coin,
+                root,
+                actual_path,
+                width,
+                height,
+                framing_policy=_CameraPolicy.FIXED_OVERLAY,
+            )
         self.assertTrue(actual_path.exists(), f"missing snapshot: {actual_path}")
         self.assertGreater(
             _non_background_pixel_count(actual_path),
@@ -1689,11 +1759,10 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
 
     def test_so_brep_face_set_partial_render_transparency_regression(self):
         FreeCAD, FreeCADGui, coin = _require_gui()
-        importlib.import_module("Part")
-        importlib.import_module("PartGui")
+        _load_required_modules(_SnapshotFixture(required_modules=("Part", "PartGui")))
 
-        width = int(os.environ.get("FC_VISUAL_WIDTH", "512"))
-        height = int(os.environ.get("FC_VISUAL_HEIGHT", "512"))
+        width = _SNAPSHOT_WIDTH
+        height = _SNAPSHOT_HEIGHT
         out_dir = Path(
             os.environ.get(
                 "FC_VISUAL_OUT_DIR",
@@ -1730,7 +1799,15 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
                 camera_height=14.0,
             )
             with _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height) as harness:
-                _render_png(harness, coin, root, actual_path, width, height, frame_camera=False)
+                _render_png(
+                    harness,
+                    coin,
+                    root,
+                    actual_path,
+                    width,
+                    height,
+                    framing_policy=_CameraPolicy.FIXED_OVERLAY,
+                )
 
             self.assertTrue(actual_path.exists(), f"missing snapshot: {actual_path}")
             self.assertGreater(
@@ -1787,42 +1864,10 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         if nodes_env.strip():
             node_types = [n.strip() for n in nodes_env.split(",") if n.strip()]
         else:
-            node_types = [
-                "SoDrawingGrid",
-                "SoRegPoint",
-                "SoDatumLabel",
-                "SoStringLabel",
-                "SoColorBarLabel",
-                "SoFrameLabel",
-                "SoFCPlacementIndicatorKit",
-                "SoAxisCrossKit",
-                "SoFCBackgroundGradient",
-                "SoNaviCube",
-                "SoNaviCubeTranslucent",
-                "SoNaviCubeHiliteFront",
-                "SoBrepEdgeSet",
-                "SoBrepEdgeSetHighlight",
-                "SoBrepEdgeSetSelection",
-                "SoBrepPointSet",
-                "SoBrepPointSetHighlight",
-                "SoBrepPointSetSelection",
-                "SoBrepFaceSet",
-                "SoBrepFaceSetHighlight",
-                "SoBrepFaceSetSelection",
-                "SoFCControlPoints",
-                "SoPolygon",
-                "SoPolygonOpen",
-                "SoPolygonStartIndex",
-                "SoPolygonNonPlanar",
-                "SoPolygonTriangle",
-                "SoFCIndexedFaceSet",
-                "SoFCIndexedFaceSetPerFaceColor",
-                "SoFCIndexedFaceSetPerVertexColor",
-                "SoFCIndexedFaceSetTranslucent",
-            ]
+            node_types = list(_SNAPSHOT_FIXTURES)
 
-        width = int(os.environ.get("FC_VISUAL_WIDTH", "512"))
-        height = int(os.environ.get("FC_VISUAL_HEIGHT", "512"))
+        width = _SNAPSHOT_WIDTH
+        height = _SNAPSHOT_HEIGHT
 
         out_dir = Path(
             os.environ.get(
@@ -1848,23 +1893,13 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
                 "(set FC_VISUAL_BASELINE_DIR or run with FC_VISUAL_UPDATE_BASELINE=1)"
             )
 
-        tolerance = int(os.environ.get("FC_VISUAL_TOLERANCE", "8"))
-        tolerance = max(0, min(tolerance, 255))
-        ignore_alpha = os.environ.get("FC_VISUAL_IGNORE_ALPHA", "1").strip() not in (
-            "",
-            "0",
-            "false",
-            "False",
-        )
-        max_mismatch_pct = float(os.environ.get("FC_VISUAL_MAX_MISMATCH_PCT", "0.20"))
-        max_mismatch_pct = max(0.0, min(max_mismatch_pct, 100.0))
-        max_mismatched_pixels = int((width * height) * (max_mismatch_pct / 100.0))
+        max_mismatched_pixels = int((width * height) * (_MAX_MISMATCH_PCT / 100.0))
 
         did_render = False
         with _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height) as harness:
             for type_name in node_types:
                 with self.subTest(node=type_name):
-                    root = _make_scene_for_node(coin, type_name)
+                    scene = _make_snapshot_scene(coin, type_name)
                     actual_dir = out_dir / "actual"
                     expected_dir = out_dir / "expected"
                     diff_dir = out_dir / "diff"
@@ -1873,11 +1908,11 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
                     _render_png(
                         harness,
                         coin,
-                        root,
+                        scene.root,
                         actual_path,
                         width,
                         height,
-                        frame_camera=type_name not in _ISOLATED_CAMERA_NODES,
+                        framing_policy=scene.framing_policy,
                     )
                     self.assertTrue(actual_path.exists(), f"missing snapshot: {actual_path}")
                     self.assertGreater(
@@ -1911,8 +1946,8 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
                         expected_path,
                         actual_path,
                         diff_dir / f"{type_name}.png",
-                        tolerance=tolerance,
-                        ignore_alpha=ignore_alpha,
+                        tolerance=_PIXEL_TOLERANCE,
+                        ignore_alpha=_IGNORE_ALPHA,
                         max_mismatched_pixels=max_mismatched_pixels,
                     )
                     if smoke_mode:
