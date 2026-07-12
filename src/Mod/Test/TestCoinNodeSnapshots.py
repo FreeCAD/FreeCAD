@@ -62,6 +62,8 @@ _DEFAULT_FONT_FAMILY = "Noto Sans"
 _DEFAULT_FONT_FILES = ("NotoSans-Regular.ttf",)
 _DEFAULT_FONT_SIZE = 18
 _ISOLATED_CAMERA_NODES = frozenset(("SoDrawingGrid", "SoRegPoint", "SoDatumLabel", "SoStringLabel"))
+_TRANSLUCENCY_BACKGROUND_TOP = (0.20, 0.20, 0.60)
+_TRANSLUCENCY_BACKGROUND_BOTTOM = (0.90, 0.90, 1.00)
 
 
 def _repo_root() -> Path | None:
@@ -330,6 +332,53 @@ def _configure_background_gradient(grad, from_color, to_color):
     grad.fromColor.setValue(from_color)
     grad.toColor.setValue(to_color)
     grad.useMidColor.setValue(False)
+
+
+def _add_gradient_background(root, coin, top, bottom):
+    gradient = _instantiate(coin, "SoFCBackgroundGradient")
+    _configure_background_gradient(gradient, coin.SbColor(*top), coin.SbColor(*bottom))
+    root.addChild(gradient)
+
+
+def _add_translucency_backplate(root, coin):
+    """Add two opaque color panels behind the translucent face-set fixture."""
+    backplate = coin.SoSeparator()
+
+    light_model = coin.SoLightModel()
+    light_model.model = coin.SoLightModel.BASE_COLOR
+    backplate.addChild(light_model)
+
+    coords = coin.SoCoordinate3()
+    coords.point.setValues(
+        0,
+        8,
+        [
+            coin.SbVec3f(-0.95, -0.85, -0.05),
+            coin.SbVec3f(0.0, -0.85, -0.05),
+            coin.SbVec3f(0.0, 0.85, -0.05),
+            coin.SbVec3f(-0.95, 0.85, -0.05),
+            coin.SbVec3f(0.0, -0.85, -0.05),
+            coin.SbVec3f(0.95, -0.85, -0.05),
+            coin.SbVec3f(0.95, 0.85, -0.05),
+            coin.SbVec3f(0.0, 0.85, -0.05),
+        ],
+    )
+    material = coin.SoMaterial()
+    material.diffuseColor.setValues(
+        0,
+        2,
+        [coin.SbColor(0.10, 0.25, 0.90), coin.SbColor(1.00, 0.75, 0.05)],
+    )
+    binding = coin.SoMaterialBinding()
+    binding.value = coin.SoMaterialBinding.PER_FACE
+    faces = coin.SoIndexedFaceSet()
+    faces.coordIndex.setValues(0, 10, [0, 1, 2, 3, -1, 4, 5, 6, 7, -1])
+
+    backplate.addChild(coords)
+    backplate.addChild(material)
+    backplate.addChild(binding)
+    backplate.addChild(faces)
+    root.addChild(backplate)
 
 
 def _make_scene_for_node(coin, type_name: str):
@@ -618,41 +667,57 @@ def _make_scene_for_node(coin, type_name: str):
         root.addChild(normal_bind)
 
         if type_name == "SoFCIndexedFaceSetTranslucent":
-            # Provide visible background so translucency can be verified.
-            grad = _instantiate(coin, "SoFCBackgroundGradient")
-            if hasattr(grad, "setColorGradient"):
-                top = coin.SbColor(0.15, 0.15, 0.20)
-                bottom = coin.SbColor(0.95, 0.95, 1.0)
-                grad.setColorGradient(top, bottom)
-            root.addChild(grad)
+            # A single quad makes the material's alpha directly observable.
+            # A closed cube would blend its front and back faces together,
+            # making the result look nearly opaque.
+            _add_gradient_background(
+                root,
+                coin,
+                _TRANSLUCENCY_BACKGROUND_TOP,
+                _TRANSLUCENCY_BACKGROUND_BOTTOM,
+            )
+            _add_translucency_backplate(root, coin)
 
-        # Simple cube: 12 triangles (each terminated by -1).
         coords = coin.SoCoordinate3()
-        coords.point.setValues(
-            0,
-            8,
-            [
-                coin.SbVec3f(-0.6, -0.6, -0.6),
-                coin.SbVec3f(0.6, -0.6, -0.6),
-                coin.SbVec3f(0.6, 0.6, -0.6),
-                coin.SbVec3f(-0.6, 0.6, -0.6),
-                coin.SbVec3f(-0.6, -0.6, 0.6),
-                coin.SbVec3f(0.6, -0.6, 0.6),
-                coin.SbVec3f(0.6, 0.6, 0.6),
-                coin.SbVec3f(-0.6, 0.6, 0.6),
-            ],
-        )
         faces = _instantiate(coin, "SoFCIndexedFaceSet")
-        # fmt: off
-        faces.coordIndex.setValues(0, 48, [
-            0, 1, 2, -1,  0, 2, 3, -1,  # bottom (-Z)
-            4, 6, 5, -1,  4, 7, 6, -1,  # top (+Z)
-            0, 4, 5, -1,  0, 5, 1, -1,  # -Y
-            1, 5, 6, -1,  1, 6, 2, -1,  # +X
-            2, 6, 7, -1,  2, 7, 3, -1,  # +Y
-            3, 7, 4, -1,  3, 4, 0, -1,  # -X
-        ])
-        # fmt: on
+        if type_name == "SoFCIndexedFaceSetTranslucent":
+            coords.point.setValues(
+                0,
+                4,
+                [
+                    coin.SbVec3f(-0.7, -0.7, 0.0),
+                    coin.SbVec3f(0.7, -0.7, 0.0),
+                    coin.SbVec3f(0.7, 0.7, 0.0),
+                    coin.SbVec3f(-0.7, 0.7, 0.0),
+                ],
+            )
+            faces.coordIndex.setValues(0, 8, [0, 1, 2, -1, 0, 2, 3, -1])
+        else:
+            # Simple cube: 12 triangles (each terminated by -1).
+            coords.point.setValues(
+                0,
+                8,
+                [
+                    coin.SbVec3f(-0.6, -0.6, -0.6),
+                    coin.SbVec3f(0.6, -0.6, -0.6),
+                    coin.SbVec3f(0.6, 0.6, -0.6),
+                    coin.SbVec3f(-0.6, 0.6, -0.6),
+                    coin.SbVec3f(-0.6, -0.6, 0.6),
+                    coin.SbVec3f(0.6, -0.6, 0.6),
+                    coin.SbVec3f(0.6, 0.6, 0.6),
+                    coin.SbVec3f(-0.6, 0.6, 0.6),
+                ],
+            )
+            # fmt: off
+            faces.coordIndex.setValues(0, 48, [
+                0, 1, 2, -1,  0, 2, 3, -1,  # bottom (-Z)
+                4, 6, 5, -1,  4, 7, 6, -1,  # top (+Z)
+                0, 4, 5, -1,  0, 5, 1, -1,  # -Y
+                1, 5, 6, -1,  1, 6, 2, -1,  # +X
+                2, 6, 7, -1,  2, 7, 3, -1,  # +Y
+                3, 7, 4, -1,  3, 4, 0, -1,  # -X
+            ])
+            # fmt: on
         material = coin.SoMaterial()
         if type_name == "SoFCIndexedFaceSetPerFaceColor":
             # 12 faces (triangles).
@@ -707,6 +772,9 @@ def _make_scene_for_node(coin, type_name: str):
             material.diffuseColor.setValue(0.70, 0.70, 0.75)
             if type_name == "SoFCIndexedFaceSetTranslucent":
                 material.transparency.setValue(0.55)
+                light_model = coin.SoLightModel()
+                light_model.model = coin.SoLightModel.BASE_COLOR
+                root.addChild(light_model)
         root.addChild(coords)
         root.addChild(material)
         root.addChild(faces)
@@ -1770,7 +1838,6 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
                         10,
                         f"snapshot seems empty (all background): {actual_path}",
                     )
-
                     did_render = True
                     baseline_path = baseline_dir / f"{type_name}.png"
 
