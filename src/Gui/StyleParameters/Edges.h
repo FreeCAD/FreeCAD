@@ -163,10 +163,10 @@ public:
         // clang-format on
 
         return Tuple({
-            Tuple::Element::named("top",    top    ? *top    : zero),
-            Tuple::Element::named("right",  right  ? *right  : zero),
+            Tuple::Element::named("top", top ? *top : zero),
+            Tuple::Element::named("right", right ? *right : zero),
             Tuple::Element::named("bottom", bottom ? *bottom : zero),
-            Tuple::Element::named("left",   left   ? *left   : zero),
+            Tuple::Element::named("left", left ? *left : zero),
         });
     }
 

@@ -422,8 +422,10 @@ public:
             painter->fillRect(option.rect, headerBackgroundColor);
             QStyledItemDelegate::paint(painter, option, index);
         }
-        else if (index.column() == StyleParametersModel::ParameterPreview
-                 && !index.data(Qt::UserRole).value<QPixmap>().isNull()) {
+        else if (
+            index.column() == StyleParametersModel::ParameterPreview
+            && !index.data(Qt::UserRole).value<QPixmap>().isNull()
+        ) {
             paintGradientPreview(painter, opt, index);
         }
         else {

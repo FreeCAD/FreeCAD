@@ -128,13 +128,13 @@ public:
             bottomLeft = found;
         }
 
-        static const Value zero = Numeric{0.0, ""};
+        static const Value zero = Numeric {0.0, ""};
 
         return Tuple({
-            Tuple::Element::named("top_left",     topLeft     ? *topLeft     : zero),
-            Tuple::Element::named("top_right",    topRight    ? *topRight    : zero),
+            Tuple::Element::named("top_left", topLeft ? *topLeft : zero),
+            Tuple::Element::named("top_right", topRight ? *topRight : zero),
             Tuple::Element::named("bottom_right", bottomRight ? *bottomRight : zero),
-            Tuple::Element::named("bottom_left",  bottomLeft  ? *bottomLeft  : zero),
+            Tuple::Element::named("bottom_left", bottomLeft ? *bottomLeft : zero),
         });
     }
 

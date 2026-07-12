@@ -279,7 +279,10 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
 
     const auto contentBox = [&args]() -> Value {
         if (args.size() < 2) {
-            THROWM(Base::ExpressionError, "content_box requires at least 2 arguments: a size tuple and at least one inset");
+            THROWM(
+                Base::ExpressionError,
+                "content_box requires at least 2 arguments: a size tuple and at least one inset"
+            );
         }
 
         const Value& sizeValue = args.at(0);
@@ -295,7 +298,10 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
             height = sizeValue.get<Numeric>();
         }
         else {
-            THROWM(Base::TypeError, "content_box: first argument must be a (width, height) size tuple or a Numeric");
+            THROWM(
+                Base::TypeError,
+                "content_box: first argument must be a (width, height) size tuple or a Numeric"
+            );
         }
 
         for (size_t index = 1; index < args.size(); ++index) {
