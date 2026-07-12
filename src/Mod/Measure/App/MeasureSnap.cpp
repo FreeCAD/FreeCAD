@@ -24,6 +24,7 @@
 
 #include "MeasureSnap.h"
 
+#include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
 #include <App/GeoFeature.h>
 #include <Mod/Part/App/PartFeature.h>
@@ -214,10 +215,23 @@ TopoDS_Shape MeasureSnap::resolveShape(const App::SubObjectT& subject)
 {
     try {
         const auto chain = subject.getSubObjectList();
-        if (chain.empty() || !chain.back()) {
+        if (chain.empty()) {
             return {};
         }
         App::DocumentObject* obj = chain.back();
+        if (!obj || !obj->getNameInDocument()) {
+            return {};
+        }
+        if (obj->isDerivedFrom<Part::Feature>()) {
+            Part::TopoShape ts = static_cast<const Part::Feature*>(obj)->Shape.getShape();
+            ts.setPlacement(
+                App::GeoFeature::getGlobalPlacement(obj, subject.getObject(), subject.getSubName())
+            );
+            ts = ts.getSubTopoShape(subject.getElementName(), true);
+            if (!ts.isNull()) {
+                return ts.getShape();
+            }
+        }
         Part::TopoShape ts = Part::Feature::getTopoShape(
             obj,
             Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
