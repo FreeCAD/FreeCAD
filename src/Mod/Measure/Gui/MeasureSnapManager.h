@@ -26,6 +26,8 @@
 
 #include <memory>
 
+#include <fastsignals/connection.h>
+
 
 namespace Gui
 {
@@ -49,6 +51,7 @@ public:
 
 private:
     std::unique_ptr<MeasureSnapIndicator> mIndicator;
+    fastsignals::connection mDeleteDocConn;
 };
 
 }  // namespace MeasureGui
