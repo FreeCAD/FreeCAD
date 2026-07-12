@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
- *   Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
+ *   Copyright (c) 2024 Ondsel <development@ondsel.com>                     *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
  *                                                                          *
@@ -29,18 +29,32 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 
-#include "JointGroup.h"
+#include "Groups.h"
+#include "BomGroupPy.h"
 #include "JointGroupPy.h"
+#include "SimulationGroupPy.h"
+#include "SnapshotGroupPy.h"
+#include "ViewGroupPy.h"
 
 using namespace Assembly;
 
 
+PROPERTY_SOURCE(Assembly::BomGroup, App::DocumentObjectGroup)
 PROPERTY_SOURCE(Assembly::JointGroup, App::DocumentObjectGroup)
+PROPERTY_SOURCE(Assembly::SimulationGroup, App::DocumentObjectGroup)
+PROPERTY_SOURCE(Assembly::SnapshotGroup, App::DocumentObjectGroup)
+PROPERTY_SOURCE(Assembly::ViewGroup, App::DocumentObjectGroup)
 
-JointGroup::JointGroup()
-{}
 
-JointGroup::~JointGroup() = default;
+PyObject* BomGroup::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new BomGroupPy(this), true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
+
 
 PyObject* JointGroup::getPyObject()
 {
@@ -50,7 +64,6 @@ PyObject* JointGroup::getPyObject()
     }
     return Py::new_reference_to(PythonObject);
 }
-
 
 std::vector<App::DocumentObject*> JointGroup::getJoints()
 {
@@ -77,4 +90,33 @@ std::vector<App::DocumentObject*> JointGroup::getJoints()
     }
 
     return joints;
+}
+
+
+PyObject* SimulationGroup::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new SimulationGroupPy(this), true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
+
+PyObject* SnapshotGroup::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new SnapshotGroupPy(this), true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
+
+
+PyObject* ViewGroup::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new ViewGroupPy(this), true);
+    }
+    return Py::new_reference_to(PythonObject);
 }

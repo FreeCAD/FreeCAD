@@ -37,7 +37,7 @@ import PathScripts.PathUtils as PathUtils
 import importlib
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-from PySide import QtCore, QtGui, QtWidgets
+from PySide import QtCore, QtGui, QtSvg, QtWidgets
 
 __title__ = "CAM Operation UI base classes"
 __author__ = "sliptonic (Brad Collette)"
@@ -394,6 +394,7 @@ class TaskPanelPage(object):
         self.obj = obj
         self.job = PathUtils.findParentJob(obj)
         self.form = self.getForm()
+        self.setToolControllerMinWidth(self.form)
         self.signalDirtyChanged = None
         self.setClean()
         self.setTitle("-")
@@ -424,6 +425,12 @@ class TaskPanelPage(object):
         """setParent() ... used to transfer parent object link to child class.
         Do not overwrite."""
         self.parent = parent
+
+    def setToolControllerMinWidth(self, form):
+        """If form has a widget named toolController, set its minimum width to 80 if possible."""
+        if hasattr(form, "toolController"):
+            tc = getattr(form, "toolController")
+            tc.setMinimumWidth(80)
 
     def onDirtyChanged(self, callback):
         """onDirtyChanged(callback) ... set callback when dirty state changes."""
@@ -1094,7 +1101,7 @@ class TaskPanelBaseLocationPage(TaskPanelPage):
 
 
 class TaskPanelHeightsPage(TaskPanelPage):
-    """Page controller for heights."""
+    """Page controller for heights and depths."""
 
     def __init__(self, obj, features):
         super(TaskPanelHeightsPage, self).__init__(obj, features)
@@ -1102,93 +1109,16 @@ class TaskPanelHeightsPage(TaskPanelPage):
         # members initialized later
         self.clearanceHeight = None
         self.safeHeight = None
+        self.startDepth = None
+        self.finalDepth = None
+        self.finishDepth = None
+        self.stepDown = None
         self.panelTitle = "Heights"
         self.OpIcon = ":/icons/CAM_Heights.svg"
         self.setIcon(self.OpIcon)
 
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageHeightsEdit.ui")
-
-    def initPage(self, obj):
-        self.safeHeight = PathGuiUtil.QuantitySpinBox(self.form.safeHeight, obj, "SafeHeight")
-        self.clearanceHeight = PathGuiUtil.QuantitySpinBox(
-            self.form.clearanceHeight, obj, "ClearanceHeight"
-        )
-
-        if PathOp.FeatureLinking & self.features:
-            self.CollisionClearance = PathGuiUtil.QuantitySpinBox(
-                self.form.CollisionClearance, obj, "CollisionClearance"
-            )
-            for mode in [
-                "Clearance Height",
-                "Retract Height",
-                "Line of Sight",
-                "Tool Diameter",
-                "Tool Shape",
-            ]:
-                self.form.CollisionAvoidanceStrategy.addItem(translate("CAM_Operation", mode), mode)
-        else:
-            self.form.groupBoxLinking.hide()
-
-    def getTitle(self, obj):
-        return translate("PathOp", "Heights")
-
-    def getFields(self, obj):
-        self.safeHeight.updateProperty()
-        self.clearanceHeight.updateProperty()
-        if PathOp.FeatureLinking & self.features:
-            self.CollisionClearance.updateProperty()
-            mode = self.form.CollisionAvoidanceStrategy.currentData()
-            if mode and obj.CollisionAvoidanceStrategy != mode:
-                obj.CollisionAvoidanceStrategy = mode
-
-    def setFields(self, obj):
-        self.safeHeight.updateWidget()
-        self.clearanceHeight.updateWidget()
-        if PathOp.FeatureLinking & self.features:
-            self.CollisionClearance.updateWidget()
-            index = self.form.CollisionAvoidanceStrategy.findData(obj.CollisionAvoidanceStrategy)
-            if index >= 0:
-                self.form.CollisionAvoidanceStrategy.blockSignals(True)
-                self.form.CollisionAvoidanceStrategy.setCurrentIndex(index)
-                self.form.CollisionAvoidanceStrategy.blockSignals(False)
-
-    def getSignalsForUpdate(self, obj):
-        signals = []
-        signals.append(self.form.safeHeight.editingFinished)
-        signals.append(self.form.clearanceHeight.editingFinished)
-        if PathOp.FeatureLinking & self.features:
-            signals.append(self.form.CollisionClearance.editingFinished)
-            signals.append(self.form.CollisionAvoidanceStrategy.currentIndexChanged)
-        return signals
-
-    def pageUpdateData(self, obj, prop):
-        if prop in [
-            "SafeHeight",
-            "ClearanceHeight",
-            "CollisionAvoidanceStrategy",
-            "CollisionClearance",
-        ]:
-            self.setFields(obj)
-
-
-class TaskPanelDepthsPage(TaskPanelPage):
-    """Page controller for depths."""
-
-    def __init__(self, obj, features):
-        super(TaskPanelDepthsPage, self).__init__(obj, features)
-
-        # members initialized later
-        self.startDepth = None
-        self.finalDepth = None
-        self.finishDepth = None
-        self.stepDown = None
-        self.panelTitle = "Depths"
-        self.OpIcon = ":/icons/CAM_Depths.svg"
-        self.setIcon(self.OpIcon)
-
-    def getForm(self):
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageDepthsEdit.ui")
 
     def haveStartDepth(self):
         return PathOp.FeatureDepths & self.features
@@ -1205,6 +1135,10 @@ class TaskPanelDepthsPage(TaskPanelPage):
         return PathOp.FeatureStepDown & self.features
 
     def initPage(self, obj):
+        self.safeHeight = PathGuiUtil.QuantitySpinBox(self.form.safeHeight, obj, "SafeHeight")
+        self.clearanceHeight = PathGuiUtil.QuantitySpinBox(
+            self.form.clearanceHeight, obj, "ClearanceHeight"
+        )
 
         if self.haveStartDepth():
             self.startDepth = PathGuiUtil.QuantitySpinBox(self.form.startDepth, obj, "StartDepth")
@@ -1243,10 +1177,47 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.form.finishDepth.hide()
             self.form.finishDepthLabel.hide()
 
+        if PathOp.FeatureLinking & self.features:
+            self.CollisionClearance = PathGuiUtil.QuantitySpinBox(
+                self.form.CollisionClearance, obj, "CollisionClearance"
+            )
+            for mode in [
+                "Clearance Height",
+                "Retract Height",
+                "Line of Sight",
+                "Tool Diameter",
+                "Tool Shape",
+            ]:
+                self.form.CollisionAvoidanceStrategy.addItem(translate("CAM_Operation", mode), mode)
+        else:
+            self.form.groupBoxLinking.hide()
+
+        self.updateHeightsDiagram()
+
+    def updateHeightsDiagram(self):
+        """Render the Clearance/Retract/Start/StepDown/FinishStepDown/Final callout graphic as
+        a single fixed-size image, independent of the fields grid next to it."""
+        haveFinish = self.haveFinishDepth()
+        resource = (
+            ":/icons/CAM_HeightsDiagram.svg"
+            if haveFinish
+            else ":/icons/CAM_HeightsDiagram_NoFinish.svg"
+        )
+        renderer = QtSvg.QSvgRenderer(resource)
+        size = renderer.defaultSize()
+        pixmap = QtGui.QPixmap(size)
+        pixmap.fill(QtCore.Qt.transparent)
+        painter = QtGui.QPainter(pixmap)
+        renderer.render(painter, QtCore.QRectF(0, 0, size.width(), size.height()))
+        painter.end()
+        self.form.heightsDiagram.setPixmap(pixmap)
+
     def getTitle(self, obj):
-        return translate("PathOp", "Depths")
+        return translate("PathOp", "Heights")
 
     def getFields(self, obj):
+        self.safeHeight.updateProperty()
+        self.clearanceHeight.updateProperty()
         if self.haveStartDepth():
             self.startDepth.updateProperty()
         if self.haveFinalDepth():
@@ -1255,8 +1226,15 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.stepDown.updateProperty()
         if self.haveFinishDepth():
             self.finishDepth.updateProperty()
+        if PathOp.FeatureLinking & self.features:
+            self.CollisionClearance.updateProperty()
+            mode = self.form.CollisionAvoidanceStrategy.currentData()
+            if mode and obj.CollisionAvoidanceStrategy != mode:
+                obj.CollisionAvoidanceStrategy = mode
 
     def setFields(self, obj):
+        self.safeHeight.updateWidget()
+        self.clearanceHeight.updateWidget()
         if self.haveStartDepth():
             self.startDepth.updateWidget()
         if self.haveFinalDepth():
@@ -1265,10 +1243,19 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.stepDown.updateWidget()
         if self.haveFinishDepth():
             self.finishDepth.updateWidget()
+        if PathOp.FeatureLinking & self.features:
+            self.CollisionClearance.updateWidget()
+            index = self.form.CollisionAvoidanceStrategy.findData(obj.CollisionAvoidanceStrategy)
+            if index >= 0:
+                self.form.CollisionAvoidanceStrategy.blockSignals(True)
+                self.form.CollisionAvoidanceStrategy.setCurrentIndex(index)
+                self.form.CollisionAvoidanceStrategy.blockSignals(False)
         self.updateSelection(obj, FreeCADGui.Selection.getSelectionEx())
 
     def getSignalsForUpdate(self, obj):
         signals = []
+        signals.append(self.form.safeHeight.editingFinished)
+        signals.append(self.form.clearanceHeight.editingFinished)
         if self.haveStartDepth():
             signals.append(self.form.startDepth.editingFinished)
         if self.haveFinalDepth():
@@ -1277,7 +1264,23 @@ class TaskPanelDepthsPage(TaskPanelPage):
             signals.append(self.form.stepDown.editingFinished)
         if self.haveFinishDepth():
             signals.append(self.form.finishDepth.editingFinished)
+        if PathOp.FeatureLinking & self.features:
+            signals.append(self.form.CollisionClearance.editingFinished)
+            signals.append(self.form.CollisionAvoidanceStrategy.currentIndexChanged)
         return signals
+
+    def pageUpdateData(self, obj, prop):
+        if prop in [
+            "SafeHeight",
+            "ClearanceHeight",
+            "StartDepth",
+            "FinalDepth",
+            "StepDown",
+            "FinishDepth",
+            "CollisionAvoidanceStrategy",
+            "CollisionClearance",
+        ]:
+            self.setFields(obj)
 
     def registerSignalHandlers(self, obj):
         if self.haveStartDepth():
@@ -1288,10 +1291,6 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.form.finalDepthSet.clicked.connect(
                 lambda: self.depthSet(obj, self.finalDepth, "FinalDepth")
             )
-
-    def pageUpdateData(self, obj, prop):
-        if prop in ["StartDepth", "FinalDepth", "StepDown", "FinishDepth"]:
-            self.setFields(obj)
 
     def depthSet(self, obj, spinbox, prop):
         z = self.selectionZLevel(FreeCADGui.Selection.getSelectionEx())
@@ -1411,12 +1410,6 @@ class TaskPanel(object):
             else:
                 self.featurePages.append(TaskPanelBaseLocationPage(obj, features))
 
-        if PathOp.FeatureDepths & features or PathOp.FeatureStepDown & features:
-            if hasattr(opPage, "taskPanelDepthsPage"):
-                self.featurePages.append(opPage.taskPanelDepthsPage(obj, features))
-            else:
-                self.featurePages.append(TaskPanelDepthsPage(obj, features))
-
         if PathOp.FeatureHeights & features:
             if hasattr(opPage, "taskPanelHeightsPage"):
                 self.featurePages.append(opPage.taskPanelHeightsPage(obj, features))
@@ -1437,29 +1430,32 @@ class TaskPanel(object):
             page.onDirtyChanged(self.pageDirtyChanged)
 
         taskPanelLayout = Path.Preferences.defaultTaskPanelLayout()
+        self.taskPanelLayout = taskPanelLayout
 
         if taskPanelLayout < 2:
             opTitle = opPage.getTitle(obj)
             opPage.setTitle(translate("PathOp", "Operation"))
-            toolbox = QtGui.QToolBox()
+            tabwidget = IconTabWidget()
+            # tabwidget.setTabPosition(QtWidgets.QTabWidget.West)
             if taskPanelLayout == 0:
                 for page in self.featurePages:
-                    toolbox.addItem(page.form, page.getTitle(obj))
-                    itemIdx = toolbox.count() - 1
-                    if page.icon:
-                        toolbox.setItemIcon(itemIdx, QtGui.QIcon(page.icon))
-                toolbox.setCurrentIndex(len(self.featurePages) - 1)
+                    tabwidget.addTab(
+                        page.form,
+                        QtGui.QIcon(page.icon) if page.icon else QtGui.QIcon(),
+                        page.getTitle(obj),
+                    )
+                tabwidget.setCurrentIndex(len(self.featurePages) - 1)
             else:
                 for page in reversed(self.featurePages):
-                    toolbox.addItem(page.form, page.getTitle(obj))
-                    itemIdx = toolbox.count() - 1
-                    if page.icon:
-                        toolbox.setItemIcon(itemIdx, QtGui.QIcon(page.icon))
-            toolbox.setWindowTitle(opTitle)
+                    tabwidget.addTab(
+                        page.form,
+                        QtGui.QIcon(page.icon) if page.icon else QtGui.QIcon(),
+                        page.getTitle(obj),
+                    )
+            tabwidget.setWindowTitle(opTitle)
             if opPage.getIcon(obj):
-                toolbox.setWindowIcon(QtGui.QIcon(opPage.getIcon(obj)))
-
-            self.form = toolbox
+                tabwidget.setWindowIcon(QtGui.QIcon(opPage.getIcon(obj)))
+            self.form = tabwidget
         elif taskPanelLayout == 2:
             forms = []
             for page in self.featurePages:
@@ -1615,7 +1611,7 @@ class TaskPanel(object):
             page.pageUpdateData(obj, prop)
 
     def needsFullSpace(self):
-        return True
+        return self.taskPanelLayout >= 2
 
     def updateSelection(self):
         sel = FreeCADGui.Selection.getSelectionEx()
@@ -1776,6 +1772,177 @@ def SetupOperation(name, objFactory, opPageClass, pixmap, menuText, toolTip, set
         PathSetupSheet.RegisterOperation(name, objFactory, setupProperties)
 
     return command
+
+
+class _AdaptiveTabBar(QtGui.QTabBar):
+    """QTabBar that clamps the width of icon-only tabs (empty tabText) to
+    ICON_ONLY_MAX_WIDTH. Tabs with a label are left at whatever the native
+    style computes for them -- we only ever shrink the hint, never invent one,
+    so icon+text tabs keep correct native layout."""
+
+    ICON_ONLY_MAX_WIDTH = 38
+
+    def tabSizeHint(self, index):
+        size = super(_AdaptiveTabBar, self).tabSizeHint(index)
+        if not self.tabText(index):
+            size.setWidth(min(size.width(), self.ICON_ONLY_MAX_WIDTH))
+        return size
+
+
+class IconTabWidget(QtGui.QTabWidget):
+    """Tab widget that shows every tab's icon + label when there's room; if the
+    full set doesn't fit the available width, it falls back to icon-only tabs
+    (label as tooltip) for everything except the active tab. Avoiding the tab
+    bar's scroll (< >) buttons this way keeps every tab reachable at a glance.
+    """
+
+    def __init__(self, *args, **kwargs):
+        super(IconTabWidget, self).__init__(*args, **kwargs)
+        self.setStyleSheet("QTabWidget::tab-bar { alignment: left; }")
+        self.setTabBar(_AdaptiveTabBar())
+        tabbar = self.tabBar()
+        tabbar.setUsesScrollButtons(False)
+        tabbar.setElideMode(QtCore.Qt.ElideNone)
+        tabbar.setIconSize(QtCore.QSize(20, 20))
+        tabbar.setLayoutDirection(QtCore.Qt.LeftToRight)
+        # Force padding and margin to make themes match.
+        tabbar.setStyleSheet("""
+            QTabBar::tab {
+                min-width: 0px;
+                padding: 6px;
+                margin: 2px;
+            }
+            """)
+        self._tabLabels = {}
+        self._updatingLabels = False
+        self._filteredAncestors = []
+        self.currentChanged.connect(self._updateTabLabels)
+        self.currentChanged.connect(self._resizeToCurrentPage)
+
+    def sizeHint(self):
+        return self._currentPageSize(super(IconTabWidget, self).sizeHint(), "sizeHint")
+
+    def minimumSizeHint(self):
+        return self._currentPageSize(
+            super(IconTabWidget, self).minimumSizeHint(), "minimumSizeHint"
+        )
+
+    def _currentPageSize(self, fallback, hintName):
+        current = self.currentWidget()
+        if current is None:
+            return fallback
+        pageSize = getattr(current, hintName)()
+        tabBarSize = self.tabBar().sizeHint()
+        height = pageSize.height() + tabBarSize.height()
+        width = max(pageSize.width(), tabBarSize.width())
+        return QtCore.QSize(width, height)
+
+    def hasHeightForWidth(self):
+        current = self.currentWidget()
+        return current.hasHeightForWidth() if current is not None else False
+
+    def heightForWidth(self, width):
+        current = self.currentWidget()
+        if current is None or not current.hasHeightForWidth():
+            return super(IconTabWidget, self).heightForWidth(width)
+        return current.heightForWidth(width) + self.tabBar().sizeHint().height()
+
+    def _resizeToCurrentPage(self, _index):
+        self.updateGeometry()
+        target = self.sizeHint()
+        parent = self.parentWidget()
+        while parent is not None:
+            if isinstance(parent, QtGui.QScrollArea):
+                target = target.expandedTo(parent.viewport().size())
+                break
+            parent = parent.parentWidget()
+        self.resize(target)
+
+    def addTab(self, widget, icon, label):
+        if self.tabPosition() == QtGui.QTabWidget.West and not icon.isNull():
+            pixmap = icon.pixmap(32, 32)
+            transform = QtGui.QTransform().rotate(90)
+            rotated_pixmap = pixmap.transformed(transform, QtCore.Qt.SmoothTransformation)
+            icon = QtGui.QIcon(rotated_pixmap)
+        index = super(IconTabWidget, self).addTab(widget, icon, "")
+        self._tabLabels[index] = label
+        self.tabBar().setTabToolTip(index, label)
+        self._updateTabLabels(self.currentIndex())
+        return index
+
+    def resizeEvent(self, event):
+        super(IconTabWidget, self).resizeEvent(event)
+        self._scheduleUpdate()
+
+    def showEvent(self, event):
+        super(IconTabWidget, self).showEvent(event)
+        self._installAncestorFilters()
+        self._scheduleUpdate()
+
+    def hideEvent(self, event):
+        self._removeAncestorFilters()
+        super(IconTabWidget, self).hideEvent(event)
+
+    def _installAncestorFilters(self):
+        self._removeAncestorFilters()
+        parent = self.parentWidget()
+        while parent is not None:
+            parent.installEventFilter(self)
+            self._filteredAncestors.append(parent)
+            parent = parent.parentWidget()
+
+    def _removeAncestorFilters(self):
+        for ancestor in self._filteredAncestors:
+            try:
+                ancestor.removeEventFilter(self)
+            except RuntimeError:
+                pass  # ancestor's c++ object was deleted before the timer fired
+        self._filteredAncestors = []
+
+    def eventFilter(self, obj, event):
+        if isinstance(event, QtCore.QEvent) and event.type() == QtCore.QEvent.Resize:
+            self._scheduleUpdate()
+        return super(IconTabWidget, self).eventFilter(obj, event)
+
+    def _scheduleUpdate(self):
+        # Defer until the event loop catches up so ancestor geometry (dock/
+        # scroll area) has settled before we measure available width.
+        def _deferredUpdate():
+            try:
+                self._updateTabLabels(self.currentIndex())
+            except RuntimeError:
+                pass  # widget's c++ object was deleed before the timer fired
+
+        QtCore.QTimer.singleShot(0, _deferredUpdate)
+
+    def _availableWidth(self):
+        """Width to fit tabs into: the nearest ancestor QScrollArea's viewport
+        if there is one (since that's what actually resizes with the dock),
+        otherwise this widget's own width. Confirmed load-bearing: removing
+        this in testing made tabs stop reflowing on resize entirely, so
+        self.width() alone does not track the real available width here."""
+        parent = self.parentWidget()
+        while parent is not None:
+            if isinstance(parent, QtGui.QScrollArea):
+                return parent.viewport().width()
+            parent = parent.parentWidget()
+        return self.width()
+
+    def _updateTabLabels(self, current):
+        """Show every tab's label if they all fit; otherwise only the active tab."""
+        if self._updatingLabels or not self._tabLabels:
+            return
+        self._updatingLabels = True
+        try:
+            tabbar = self.tabBar()
+            for index, label in self._tabLabels.items():
+                tabbar.setTabText(index, label)
+            if tabbar.sizeHint().width() > self._availableWidth():
+                for index, label in self._tabLabels.items():
+                    if index != current:
+                        tabbar.setTabText(index, "")
+        finally:
+            self._updatingLabels = False
 
 
 FreeCADGui.addCommand("CAM_SetStartPoint", CommandSetStartPoint())

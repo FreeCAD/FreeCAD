@@ -268,7 +268,7 @@ void StdCmdImport::activated(int iMsg)
     );
     if (!fileList.isEmpty()) {
         const auto& selectedFilter = formatList[selectedFilterIndex];
-        hPath->SetASCII("FileImportFilter", selectedFilter.name.toLatin1().constData());
+        hPath->SetASCII("FileImportFilter", selectedFilter.name.toUtf8());
         SelectModule::Dict dict
             = SelectModule::importHandler(fileList, selectedFilter.toFilterString());
 

@@ -1,6 +1,10 @@
 set(ENV{PATH} "${FREECAD_LIBPACK_DIR};$ENV{PATH}")
 list(PREPEND CMAKE_PREFIX_PATH "${FREECAD_LIBPACK_DIR}")
 
+# Python console-script entry points (e.g. mypy's stubgen) are installed under bin/Scripts, which is
+# not one of the directories find_program() searches by default. Add it so those tools are found.
+list(APPEND CMAKE_PROGRAM_PATH "${FREECAD_LIBPACK_DIR}/bin/Scripts")
+
 # Make really, really, REALLY sure that CMake doesn't do that thing where it decides that the LibPack's Python isn't
 # good enough, and just finds some other one to use. If there is a problem with the LibPack's Python, that is a fatal
 # error and should stop generation.
@@ -46,6 +50,15 @@ endif()
 
 find_package(yaml-cpp REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/lib/cmake NO_DEFAULT_PATH)
 message(STATUS "Found LibPack 3 yaml-cpp ${yaml-cpp_VERSION}")
+
+# LibPacks older than 3.5.3 do not ship the build-time dependencies required to
+# compile the bundled Coin and Pivy (notably the Expat CMake config), but they do
+# provide prebuilt Coin and Pivy. Fall back to those automatically on old LibPacks.
+if(NOT FREECAD_USE_EXTERNAL_COIN_PIVY AND FREECAD_LIBPACK_VERSION VERSION_LESS "3.5.3")
+    message(STATUS "LibPack ${FREECAD_LIBPACK_VERSION} predates 3.5.3 which cannot build the "
+                   "bundled Coin and Pivy; using the LibPack's prebuilt Coin and Pivy instead.")
+    set(FREECAD_USE_EXTERNAL_COIN_PIVY ON)
+endif()
 
 if(FREECAD_USE_EXTERNAL_COIN_PIVY)
     find_package(Coin REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/lib/cmake NO_DEFAULT_PATH)

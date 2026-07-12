@@ -108,6 +108,8 @@ class ToolBit(Asset, ABC):
         # This is what the user selected and should be saved back to disk
         # If not provided, default to the class name (e.g., "Endmill")
         self._shape_type = attrs.get("shape-type") if attrs else tool_bit_shape.name
+        # Unknown top-level keys; merged back on save so third-party extensions survive round-trips.
+        self._extra_attrs: dict = {}
 
     def __eq__(self, other):
         """Compare ToolBit objects based on their unique ID."""
@@ -228,7 +230,24 @@ class ToolBit(Asset, ABC):
                     f" '{toolbit.obj.Label}'. Skipping."
                 )
 
+        # Restore feeds & speeds presets if present. The "presets" key is
+        # additive and optional; absence means "no presets" (lazy property
+        # remains unadded).
+        presets = attrs.get("presets")
+        if presets:
+            from ...FeedsSpeeds.presets import set_presets as _set_presets
+
+            try:
+                _set_presets(toolbit.obj, presets)
+            except Exception as e:
+                Path.Log.warning(
+                    f"ToolBit.from_shape: failed to restore presets for "
+                    f"'{toolbit.obj.Label}': {e}. Presets will be ignored."
+                )
+
         toolbit._update_tool_properties()
+        # Snapshot all keys; to_dict() lets native keys take precedence, unknown ones pass through.
+        toolbit._extra_attrs = dict(attrs)
         return toolbit
 
     @classmethod
@@ -979,6 +998,26 @@ class ToolBit(Asset, ABC):
                     f"(type {type(value).__name__}, value {value}): {e}"
                 )
 
+        # Merge unrecognised keys back so they aren't dropped on save.
+        extra = getattr(self, "_extra_attrs", {})
+        for k, v in extra.items():
+            if k not in attrs:
+                attrs[k] = v
+
+        # Serialize feeds & speeds presets if the property exists. Empty
+        # lists are omitted from the .fctb so unused tools stay byte-identical.
+        from ...FeedsSpeeds.presets import get_presets as _get_presets
+
+        try:
+            presets = _get_presets(self.obj)
+            if presets:
+                attrs["presets"] = presets
+        except Exception as e:
+            Path.Log.warning(
+                f"ToolBit.to_dict: failed to serialize presets for "
+                f"'{self.obj.Label}': {e}. Presets will be omitted."
+            )
+
         Path.Log.debug(f"to_dict output for {self.obj.Label}: {attrs}")
         return attrs
 
@@ -1011,6 +1050,13 @@ class ToolBit(Asset, ABC):
         }
 
         return state
+
+    def __setstate__(self, state):
+        if not state:
+            return
+        self.__dict__.update(state)
+        # Seed _extra_attrs from _obj_data so unrecognised keys survive round-trips.
+        self._extra_attrs = state.get("_obj_data", {})
 
     def get_spindle_direction(self) -> toolchange.SpindleDirection:
         """

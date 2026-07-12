@@ -310,7 +310,7 @@ class PostProcessor:
             + Constants.GCODE_NON_CONFORMING
         )
 
-        return [
+        return [  # FIXME: this list does not match _merge_machine_config(), nor machine_editor.py
             {
                 "name": "file_extension",
                 "type": "string",
@@ -545,6 +545,16 @@ class PostProcessor:
                 "help": translate(
                     "CAM",
                     "Decimals of precision for spindle-speed",
+                ),
+            },
+            {
+                "name": "f_for_rapid_moves",
+                "type": "bool",
+                "label": translate("CAM", "Output F parameter for G0 (rapid)"),
+                "default": False,
+                "help": translate(
+                    "CAM",
+                    "Whether to output the F parameter for G0 (rapid moves)",
                 ),
             },
         ]
@@ -835,14 +845,12 @@ class PostProcessor:
         self.values["OUTPUT_DOUBLES"] = getattr(duplicates, "parameters", False)
 
         # Processing options
-        self.values["SPLIT_ARCS"] = self._machine.processing.split_arcs
-        self.values["TRANSLATE_RAPID_MOVES"] = self._machine.processing.translate_rapid_moves
-        self.values["TRANSLATE_DRILL_CYCLES"] = self._machine.processing.translate_drill_cycles
-        self.values["TOOL_CHANGE"] = self._machine.processing.tool_change  # boolean
-        self.values["XY_BEFORE_Z_AFTER_TOOL_CHANGE"] = (
-            self._machine.processing.xy_before_z_after_tool_change
-        )
-        self.values["FILTER_INEFFICIENT_MOVES"] = self._machine.processing.filter_inefficient_moves
+        for (
+            option
+        ) in "split_arcs f_for_rapid_moves translate_rapid_moves translate_drill_cycles tool_change xy_before_z_after_tool_change filter_inefficient_moves".split(
+            " "
+        ):
+            self.values[option.upper()] = getattr(self._machine.processing, option)
 
     def _apply_schema_defaults(self):
         """Populate postprocessor_properties with schema defaults for missing keys.
@@ -891,16 +899,16 @@ class PostProcessor:
         Returns:
             dict: The final postprocessor property bundle.
         """
-        schema = self.get_full_property_schema()
-        schema_keys = {x["name"] for x in schema}
-        # HACK: not really schema-keys, but no-where else to deal with
-        schema_keys |= set("comment selected_fixtures job_author".split(" "))
-
         # Stage 1 — machine postprocessor_properties
         bundle = {}
         bundle.update(self._machine.postprocessor_properties)
 
         # Stage 2 — schema defaults for missing keys
+        schema = self.get_full_property_schema()
+        schema_keys = {x["name"] for x in schema}
+        # HACK: not really schema-keys, but no-where else to deal with
+        schema_keys |= set("comment selected_fixtures job_author".split(" "))
+
         for prop in schema:
             name = prop.get("name", "")
             if name and name not in bundle:
@@ -1948,6 +1956,10 @@ class PostProcessor:
         else:
             Path.Log.debug("No bCNC postamble commands to process")
 
+    def _convert_start_section(self, section_name, sublist):
+        """Override if your PP needs to notice when each section (file) starts"""
+        pass
+
     def _convert_job_sections(self, postables):
         """Convert each section to output-code"""
 
@@ -1957,6 +1969,7 @@ class PostProcessor:
             self._optimize_start = None
 
             self._operation = None
+            self._convert_start_section(section_name, sublist)
 
             for item in sublist:
                 # for error context
@@ -2617,16 +2630,22 @@ class PostProcessor:
         for parameter in parameter_order:
             if parameter in params:
                 # Check if we should suppress duplicate parameters
+                current_value = params[parameter]
                 if not self.values["OUTPUT_DOUBLES"]:
                     # Suppress parameters that haven't changed
-                    current_value = params[parameter]
                     if (
                         parameter in self._modal_state
                         and self._modal_state[parameter] == current_value
                     ):
                         continue  # Skip this parameter
+                elif (
+                    parameter == "F"
+                    and command_name in Constants.GCODE_MOVE_RAPID
+                    and (not self.values["F_FOR_RAPID_MOVES"] or current_value == 0.0)
+                ):
+                    continue  # no F for G0, or the F is 0.0 which should be skipped too
 
-                formatted_value = self.format_parameter(parameter, params[parameter])
+                formatted_value = self.format_parameter(parameter, current_value)
                 command_line.append(f"{parameter}{formatted_value}")
 
                 self._modal_state[parameter] = params[parameter]

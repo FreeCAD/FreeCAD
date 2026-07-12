@@ -2681,7 +2681,7 @@ MDIView* Document::getActiveView() const
     MDIView* active = getMainWindow()->activeWindow();
 
     // get all MDI views of the document
-    std::list<MDIView*> mdis = getMDIViews(true);
+    std::list<MDIView*> mdis = getMDIViews();
 
     // check whether the active view is part of this document
     bool ok = false;
@@ -2786,7 +2786,7 @@ void Document::setActiveWindow(Gui::MDIView* view)
     }
 
     // get all MDI views of the document
-    std::list<MDIView*> mdis = getMDIViews(true);
+    std::list<MDIView*> mdis = getMDIViews();
 
     // this document is not active
     if (std::ranges::find(mdis, active) == mdis.end()) {

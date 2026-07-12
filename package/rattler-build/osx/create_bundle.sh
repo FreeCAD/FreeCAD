@@ -83,6 +83,12 @@ if ! "${conda_env}/bin/freecadcmd" --safe-mode --version; then
     exit 1
 fi
 
+echo "Running FreeCAD bundled Pivy smoke test..."
+if ! "${conda_env}/bin/freecadcmd" --safe-mode --console "import pivy; from pivy import coin; print(pivy.__file__); print(coin.SoDB.getVersion())"; then
+    echo "FreeCAD bundled Pivy smoke test failed; the macOS bundle cannot import the bundled Coin/Pivy runtime."
+    exit 1
+fi
+
 # move plugins into their final location (Library only exists for macOS < 15.0 builds)
 if [ -d "${conda_env}/Library" ]; then
     mv ${conda_env}/Library ${conda_env}/..

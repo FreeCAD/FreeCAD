@@ -32,13 +32,13 @@ namespace Gui::SelectionColors
 inline SbColor highlightFallbackColor()
 {
     // Keep this aligned with the generic Selection preferences page defaults.
-    return SbColor(225.0f / 255.0f, 225.0f / 255.0f, 20.0f / 255.0f);
+    return SbColor(10.0f / 255.0f, 200.0f / 255.0f, 1.0f);
 }
 
 inline SbColor selectionFallbackColor()
 {
     // Keep this aligned with the generic Selection preferences page defaults.
-    return SbColor(28.0f / 255.0f, 173.0f / 255.0f, 28.0f / 255.0f);
+    return SbColor(0.0f, 171.0f / 255.0f, 1.0f);
 }
 
 inline SbColor viewPreferenceColor(const char* key, const SbColor& fallback)

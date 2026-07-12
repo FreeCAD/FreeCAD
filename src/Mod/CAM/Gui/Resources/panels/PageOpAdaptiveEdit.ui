@@ -391,6 +391,9 @@ Larger values (further to the right) will calculate faster; smaller values (furt
    </item>
    <item>
     <widget class="QPushButton" name="StopButton">
+     <property name="maximumWidth">
+      <number>120</number>
+     </property>
      <property name="text">
       <string>Stop</string>
      </property>

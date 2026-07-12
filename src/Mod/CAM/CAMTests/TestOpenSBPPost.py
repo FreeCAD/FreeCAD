@@ -87,22 +87,6 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         self.post.apply_configuration_bundle()
         import json
 
-        if self._first_time:  # FIXME: disable when dev is done
-            self.__class__._first_time = False
-            print(f"## _mach setup: { self.post._machine.__class__.__name__}")
-            try:
-                adump = json.dumps(self.post._machine.to_dict(), sort_keys=True, indent=2)
-            except TypeError:
-                adump = str(self.post._machine.to_dict())
-            print("---_machine\n{adump}\n---")
-            try:
-                adump = json.dumps(
-                    self.post._machine.postprocessor_properties, sort_keys=True, indent=2
-                )
-            except TypeError:
-                adump = str(self.post._machine.postprocessor_properties)
-            print(f"--.postprocessor_properties\n{adump}")
-
         self.post._machine.name = "Test ShopBot Machine"
         toolhead = Toolhead(
             name="Default Toolhead",
@@ -223,6 +207,12 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         command = Path.Command("G0", {"Y": 20.0, "Z": 5.0})
         result = self.post._convert_rapid_move(command)
         self.assertIn("G0 Y20.000 Z5.000", result)
+
+    def test_rapid_f(self):
+        """Output F for G0 is the default for us"""
+        command = Path.Command("G0 X1 F8")
+        gcode = self.post._convert_rapid_move(command)
+        self.assertIn(" F", gcode)
 
     # -------------------------------------------------------------------------
     # Linear move (G1) → Move commands
@@ -1095,13 +1085,11 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         open = Path.Command("(begin probe ...)", {}, {"probe_open": file})
         gcode = self.post._convert_probe_open(open)
 
+        self.assertIn("CaptureZPos:", gcode, "Has subroutines once/job")
         self.assertRegex(
             gcode,
             r'OPEN "probe_results\.txt" FOR OUTPUT as',
             "OPEN statement, and correct filename",
-        )
-        self.assertIn(
-            "CaptureZPos:", self.post.values["POST_JOB"], "Has subroutines once/job in POST_JOB"
         )
 
         # Second probe open (check subroutines added only once)
@@ -1114,7 +1102,7 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         self.assertEqual(
             1,
             len(subroutine_markers),
-            "probe subroutines added to POST_JOB only once ('CaptureZPos'):---\n{self.post.values['POST_JOB']}\n---",
+            "probe subroutines added only once ('CaptureZPos')",
         )
 
     def test_convert_probe(self):

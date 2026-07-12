@@ -1546,6 +1546,7 @@ class InitPipeline:
             sys_path=PathPriority.FallbackLast,
         )
         self.search_paths.commit()
+        App.__MacroDirs__ = list({str(user_macro), str(user_macro_default), str(std_macro)})
 
     def post(self) -> None:
         """
