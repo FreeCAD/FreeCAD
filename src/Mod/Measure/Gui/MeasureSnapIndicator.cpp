@@ -61,8 +61,7 @@ const char* markerName(Measure::MeasureSnapMode type)
     }
 }
 
-// Only a fixed set of bitmap sizes is registered; an unregistered size silently
-// falls back to a filled circle, so snap the desired size to the nearest available.
+// Unregistered sizes silently fall back to a filled circle, so snap to the nearest registered one.
 int nearestSupportedSize(const char* name, int desired)
 {
     const std::list<int> sizes = Gui::Inventor::MarkerBitmaps::getSupportedSizes(name);
