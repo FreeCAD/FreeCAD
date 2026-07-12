@@ -66,6 +66,7 @@ private:
     void findPointOnImagePlane(SoEventCallback* ecb);
     void collectPoint(const SbVec3f&);
     void setDistance(const SbVec3f&);
+    void updateInputHints() const;
 
     /// give the coordinates of a line on the image plane in imagePlane (2D) coordinates
     SbVec3f getCoordsOnImagePlane(const SbVec3f& point);

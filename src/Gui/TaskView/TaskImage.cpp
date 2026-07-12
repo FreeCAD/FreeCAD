@@ -42,6 +42,7 @@
 #include <Gui/Camera.h>
 #include <Gui/Document.h>
 #include <Gui/EditableDatumLabel.h>
+#include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderDocumentObject.h>
@@ -493,6 +494,7 @@ void InteractiveScale::activate()
         viewer->setSelectionEnabled(false);
         viewer->getWidget()->setCursor(QCursor(Qt::CrossCursor));
         active = true;
+        updateInputHints();
     }
 }
 
@@ -515,6 +517,7 @@ void InteractiveScale::deactivate()
         viewer->setSelectionEnabled(true);
         viewer->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
         active = false;
+        Gui::getMainWindow()->hideHints();
     }
 }
 
@@ -570,6 +573,7 @@ void InteractiveScale::collectPoint(const SbVec3f& pos3d)
 
         measureLabel->label->setPoints(getCoordsOnImagePlane(pos3d), getCoordsOnImagePlane(pos3d));
         measureLabel->activate();
+        updateInputHints();
     }
     else if (points.size() == 1) {
         double distance = getDistance(pos3d);
@@ -581,6 +585,7 @@ void InteractiveScale::collectPoint(const SbVec3f& pos3d)
             measureLabel->startEdit(getDistance(points[1]), this, true);
 
             Q_EMIT enableApplyBtn();
+            updateInputHints();
         }
         else {
             Base::Console().warning(
@@ -588,6 +593,21 @@ void InteractiveScale::collectPoint(const SbVec3f& pos3d)
                 "The second point is too close. Retry!\n"
             );
         }
+    }
+}
+
+void InteractiveScale::updateInputHints() const
+{
+    using enum Gui::InputHint::UserInput;
+
+    if (points.empty()) {
+        Gui::getMainWindow()->showHints({{tr("%1 pick first point"), {MouseLeft}}});
+    }
+    else if (points.size() == 1) {
+        Gui::getMainWindow()->showHints({{tr("%1 pick second point"), {MouseLeft}}});
+    }
+    else {
+        Gui::getMainWindow()->showHints({{tr("%1 accept distance"), {KeyEnter}}});
     }
 }
 
