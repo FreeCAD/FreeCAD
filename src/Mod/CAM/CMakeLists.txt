@@ -170,6 +170,7 @@ SET(PathPythonToolsGui_SRCS
     Path/Tool/Gui/__init__.py
     Path/Tool/Gui/Controller.py
     Path/Tool/Gui/FeedsSpeedsDialog.py
+    Path/Tool/Gui/LibrarySyncDialog.py
     Path/Tool/Gui/MaterialPicker.py
 )
 
@@ -179,6 +180,7 @@ SET(PathPythonToolsFeedsSpeeds_SRCS
     Path/Tool/FeedsSpeeds/resolver.py
     Path/Tool/FeedsSpeeds/providers.py
     Path/Tool/FeedsSpeeds/presets.py
+    Path/Tool/FeedsSpeeds/library_sync.py
 )
 
 SET(PathPythonMachineUi_SRCS
@@ -638,6 +640,7 @@ SET(Tests_SRCS
     CAMTests/TestFeedsSpeedsResolver.py
     CAMTests/TestFeedsSpeedsToolBitPresets.py
     CAMTests/TestFeedsSpeedsToolController.py
+    CAMTests/TestFeedsSpeedsLibrarySync.py
     CAMTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
     CAMTests/Tools/Library/test-path-tool-bit-library-00.fctl
     CAMTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd

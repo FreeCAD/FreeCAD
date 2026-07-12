@@ -55,7 +55,7 @@ class TestFeedsSpeedsToolController(PathTestWithAssets):
         try:
             FreeCAD.closeDocument(self.doc.Name)
         except Exception:
-            pass
+            pass  # already closed by the test itself, or never fully created
         super().tearDown()
 
     def test_resolver_applies_to_tc_and_stamps_provenance(self):

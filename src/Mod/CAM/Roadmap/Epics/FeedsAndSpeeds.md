@@ -203,6 +203,33 @@ is follow-up work outside this epic.
 - Per-op context awareness in the optimizer (engagement, effective stickout)
   — data structure only; consumer logic is follow-up work.
 
+## Library -> Job preset sync
+
+Presets edited from inside a Job never promote back to the library asset
+(by design - library tools are shared state; see
+`Path/Tool/FeedsSpeeds/presets.py`'s docstring). That leaves a gap: a tool
+already embedded in an old Job has no way to pick up presets added or
+edited on its library source afterward. `Path/Tool/FeedsSpeeds/library_sync.py`
+closes that one gap, in the pull direction only.
+
+- Matches an embedded tool to its library source by `ToolBitID` only - no
+  fallback, no guessing. A tool with no id, or an id not found in the
+  local library, is reported orphaned and left untouched; if it's
+  genuinely the wrong tool, the user replaces it from the library directly.
+- Only searches the user's local asset store. FreeCAD copies its entire
+  builtin tool set into the local store the first time a user's local
+  store is empty, so local is already a superset of builtin for virtually
+  every real user - this only ever syncs user toolbits.
+- Merges presets by key (name, or material/op hint for unnamed presets);
+  on a collision the library version wins.
+- Two entry points, both in `Path/Tool/Gui/LibrarySyncDialog.py`: a "Sync
+  Tool Presets from Library" command on a Job's context menu, and a
+  passive check on document load that prompts (Yes/No, default No) only
+  when a Job actually has stale presets.
+
+`library_sync.py` and `CAMTests/TestFeedsSpeedsLibrarySync.py` are the
+source of truth for exact behavior - this section is a summary only.
+
 ## Data locations
 
 | Data | Home | Referenced from job by |
