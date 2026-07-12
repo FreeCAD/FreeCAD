@@ -1209,13 +1209,11 @@ void CmdPartImportCurveNet::activated(int iMsg)
     if (!fn.isEmpty()) {
         QFileInfo fi;
         fi.setFile(fn);
+        const std::string baseName = Base::Tools::escapeEncodeFilename(fi.baseName().toStdString());
+        const std::string fileName = Base::Tools::escapeEncodeFilename(fn.toStdString());
         openCommand(QT_TRANSLATE_NOOP("Command", "Import Curve Net"));
-        doCommand(
-            Doc,
-            "f = App.activeDocument().addObject(\"Part::CurveNet\",\"%s\")",
-            (const char*)fi.baseName().toLatin1()
-        );
-        doCommand(Doc, "f.FileName = \"%s\"", (const char*)fn.toLatin1());
+        doCommand(Doc, "f = App.activeDocument().addObject(\"Part::CurveNet\",\"%s\")", baseName.c_str());
+        doCommand(Doc, "f.FileName = \"%s\"", fileName.c_str());
         commitCommand();
         updateActive();
     }
