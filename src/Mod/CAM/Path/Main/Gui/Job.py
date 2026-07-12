@@ -37,6 +37,7 @@ import Path.Main.Gui.JobDlg as PathJobDlg
 import Path.Main.Job as PathJob
 import Path.Main.Stock as PathStock
 import Path.Tool.Gui.Controller as PathToolControllerGui
+import Path.Tool.Gui.LibrarySyncDialog as PathLibrarySyncGui
 import PathScripts.PathUtils as PathUtils
 from Path.Tool.toolbit.ui.selector import ToolBitSelector
 from Machine.models import MachineFactory
@@ -364,8 +365,16 @@ class ViewProvider:
         action.triggered.connect(self._editInContextMenuTriggered)
         menu.addAction(action)
 
+        syncAction = QtGui.QAction(translate("CAM_Job", "Sync Tool Presets from Library"), menu)
+        syncAction.setIcon(QtGui.QIcon(":/icons/CAM_SyncTools.svg"))
+        syncAction.triggered.connect(self._syncPresetsFromLibraryTriggered)
+        menu.addAction(syncAction)
+
     def _editInContextMenuTriggered(self, checked):
         self.setEdit()
+
+    def _syncPresetsFromLibraryTriggered(self, checked):
+        PathLibrarySyncGui.sync_job_from_gui(self.obj)
 
 
 class MaterialDialog(QtWidgets.QDialog):
