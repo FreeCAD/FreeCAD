@@ -61,7 +61,16 @@ _FONT_REL = Path("tests") / "visual" / "fonts"
 _DEFAULT_FONT_FAMILY = "Noto Sans"
 _DEFAULT_FONT_FILES = ("NotoSans-Regular.ttf",)
 _DEFAULT_FONT_SIZE = 18
-_ISOLATED_CAMERA_NODES = frozenset(("SoDrawingGrid", "SoRegPoint", "SoDatumLabel", "SoStringLabel"))
+_ISOLATED_CAMERA_NODES = frozenset(
+    (
+        "SoDrawingGrid",
+        "SoRegPoint",
+        "SoDatumLabel",
+        "SoStringLabel",
+        "SoColorBarLabel",
+        "SoFrameLabel",
+    )
+)
 _TRANSLUCENCY_BACKGROUND_TOP = (0.20, 0.20, 0.60)
 _TRANSLUCENCY_BACKGROUND_BOTTOM = (0.90, 0.90, 1.00)
 
@@ -454,6 +463,43 @@ def _make_scene_for_node(coin, type_name: str):
         # snapshot background depending on the GL blending / alpha handling.
         label.textColor.setValue(0.05, 0.05, 0.05)
         root.addChild(label)
+        return root
+
+    if type_name == "SoColorBarLabel":
+        font.size.setValue(28.0)
+        color = coin.SoBaseColor()
+        color.rgb.setValue(0.05, 0.05, 0.05)
+        label = _instantiate(coin, "SoColorBarLabel")
+        label.string.setValues(0, 2, ["Low", "High"])
+        root.addChild(color)
+        root.addChild(label)
+        return root
+
+    if type_name == "SoFrameLabel":
+        label = _instantiate(coin, "SoFrameLabel")
+        label.string.setValue("Frame Label")
+        label.textColor.setValue(1.0, 1.0, 1.0)
+        label.backgroundColor.setValue(0.10, 0.35, 0.85)
+        label.name.setValue(_DEFAULT_FONT_FAMILY)
+        label.size.setValue(20)
+        label.justification.setValue(2)  # SoFrameLabel::CENTER
+        label.frame.setValue(True)
+        label.border.setValue(True)
+        root.addChild(label)
+        return root
+
+    if type_name == "SoFCPlacementIndicatorKit":
+        indicator = _instantiate(coin, "SoFCPlacementIndicatorKit")
+        indicator.parts.setValue(31)  # SoFCPlacementIndicatorKit::AllParts
+        indicator.axes.setValue(7)  # SoFCPlacementIndicatorKit::AllAxes
+        indicator.axisLength.setValue(0.8)
+        indicator.scaleFactor.setValue(70.0)
+        indicator.axisLabels.setValues(0, 3, ["X", "Y", "Z"])
+        root.addChild(indicator)
+        return root
+
+    if type_name == "SoAxisCrossKit":
+        root.addChild(_instantiate(coin, "SoAxisCrossKit"))
         return root
 
     if type_name == "SoFCBackgroundGradient":
@@ -1746,6 +1792,10 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
                 "SoRegPoint",
                 "SoDatumLabel",
                 "SoStringLabel",
+                "SoColorBarLabel",
+                "SoFrameLabel",
+                "SoFCPlacementIndicatorKit",
+                "SoAxisCrossKit",
                 "SoFCBackgroundGradient",
                 "SoNaviCube",
                 "SoNaviCubeTranslucent",
