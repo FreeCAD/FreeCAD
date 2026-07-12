@@ -23,6 +23,7 @@
 #include <QMessageBox>
 
 
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -99,12 +100,13 @@ void CmdRobotExportKukaCompact::activated(int)
     }
 
     doCommand(Doc, "from KukaExporter import ExportCompactSub");
+    const std::string fileName = Base::Tools::escapeEncodeString(fn.toStdString());
     doCommand(
         Doc,
         "ExportCompactSub(App.activeDocument().%s,App.activeDocument().%s,'%s')",
         pcRobotObject->getNameInDocument(),
         pcTrajectoryObject->getNameInDocument(),
-        (const char*)fn.toLatin1()
+        fileName.c_str()
     );
 }
 
@@ -180,12 +182,13 @@ void CmdRobotExportKukaFull::activated(int)
     }
 
     doCommand(Doc, "from KukaExporter import ExportFullSub");
+    const std::string fileName = Base::Tools::escapeEncodeString(fn.toStdString());
     doCommand(
         Doc,
         "ExportFullSub(App.activeDocument().%s,App.activeDocument().%s,'%s')",
         pcRobotObject->getNameInDocument(),
         pcTrajectoryObject->getNameInDocument(),
-        (const char*)fn.toLatin1()
+        fileName.c_str()
     );
 }
 
