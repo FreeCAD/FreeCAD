@@ -117,7 +117,7 @@ a raw wire from the original shape is added</string>
            <string>Check to cut shapes according to the even/odd SVG fill rule</string>
           </property>
           <property name="text">
-           <string>Apply Cuts</string>
+           <string>Apply cuts</string>
           </property>
           <property name="checked">
            <bool>true</bool>
