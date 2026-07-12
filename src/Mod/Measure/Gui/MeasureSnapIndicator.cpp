@@ -175,7 +175,8 @@ void MeasureSnapIndicator::show(const std::vector<gp_Pnt>& points, Measure::Meas
     }
     pCoords->point.finishEditing();
 
-    const int size = nearestSupportedSize(name, ViewParams::instance()->getMarkerSize());
+    const int desiredSize = static_cast<int>(Gui::ViewParams::instance()->getMarkerSize());
+    const int size = nearestSupportedSize(name, desiredSize);
     pMarkerSet->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex(name, size);
     pMarkerSet->numPoints = count;
     pSwitch->whichChild = SO_SWITCH_ALL;
