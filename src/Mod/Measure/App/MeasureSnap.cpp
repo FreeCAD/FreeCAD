@@ -24,6 +24,8 @@
 
 #include "MeasureSnap.h"
 
+#include <algorithm>
+
 #include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
 #include <App/GeoFeature.h>
@@ -204,6 +206,9 @@ MeasureSnapMode MeasureSnap::pickPreviewType(int availableFlags, MeasureSnapMode
             if (has(MeasureSnapFlag::FlagVertex)) {
                 return MeasureSnapMode::Vertex;
             }
+            if (has(MeasureSnapFlag::FlagAxis)) {
+                return MeasureSnapMode::Axis;
+            }
             return MeasureSnapMode::None;
         case MeasureSnapMode::None:
             return MeasureSnapMode::None;
@@ -282,10 +287,47 @@ std::vector<gp_Pnt> MeasureSnap::previewPoints(const TopoDS_Shape& shape, Measur
                 }
             }
             break;
+        case MeasureSnapMode::Axis: {
+            if (shape.ShapeType() != TopAbs_FACE) {
+                break;
+            }
+            gp_Ax1 axis;
+            if (!axisOfFace(TopoDS::Face(shape), axis)) {
+                break;
+            }
+            Bnd_Box box;
+            BRepBndLib::Add(shape, box);
+            gp_Pnt a;
+            gp_Pnt b;
+            if (axisPreviewSegment(axis, box, a, b)) {
+                points.push_back(a);
+                points.push_back(b);
+            }
+            break;
+        }
         default:
             break;
     }
     return points;
+}
+
+bool MeasureSnap::axisPreviewSegment(const gp_Ax1& axis, const Bnd_Box& bounds, gp_Pnt& a, gp_Pnt& b)
+{
+    if (bounds.IsVoid()) {
+        return false;
+    }
+    const gp_Pnt lo = bounds.CornerMin();
+    const gp_Pnt hi = bounds.CornerMax();
+    const gp_Pnt centre((lo.X() + hi.X()) / 2.0, (lo.Y() + hi.Y()) / 2.0, (lo.Z() + hi.Z()) / 2.0);
+    const gp_Pnt onAxis = projectOntoAxis(axis, centre);
+    // Overshoot the shape so the line reads as a reference, not an edge; k tuned by eye in QA.
+    constexpr double extentFactor = 0.6;
+    constexpr double minHalfLength = 1.0;
+    const double half = std::max(extentFactor * lo.Distance(hi), minHalfLength);
+    const gp_Vec step = gp_Vec(axis.Direction()) * half;
+    a = onAxis.Translated(-step);
+    b = onAxis.Translated(step);
+    return true;
 }
 
 bool MeasureSnap::computeSnapPoint(

@@ -99,15 +99,19 @@ public:
     static MeasureSnapMode snapModeFromIndex(long index);
 
     // Preview type for a hovered element: the active mode if its flag is set, else None;
-    // Auto returns the best available point snap (Center, then Midpoint, then Vertex).
+    // Auto returns the best available snap (Center, then Midpoint, Vertex, then Axis).
     static MeasureSnapMode pickPreviewType(int availableFlags, MeasureSnapMode activeMode);
+
+    // Endpoints of the axis preview line: the bbox centre projected onto the axis,
+    // extended each way by a bbox-proportional length. False for a void box.
+    static bool axisPreviewSegment(const gp_Ax1& axis, const Bnd_Box& bounds, gp_Pnt& a, gp_Pnt& b);
 
     // Placed sub-shape a preselection refers to, matching what execute() measures on;
     // a null shape if it cannot be resolved.
     static TopoDS_Shape resolveShape(const App::SubObjectT& subject);
 
-    // Marker points to preview for a resolved snap type: both edge endpoints for Vertex,
-    // a single point for Center/Midpoint, empty otherwise.
+    // Points to preview for a resolved snap type: both edge endpoints for Vertex, a single
+    // point for Center/Midpoint, the two axis-line endpoints for Axis, empty otherwise.
     static std::vector<gp_Pnt> previewPoints(const TopoDS_Shape& shape, MeasureSnapMode type);
 };
 
