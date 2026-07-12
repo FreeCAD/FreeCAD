@@ -77,8 +77,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return form
 
     def getFields(self, obj):
-        self.updateToolController(obj, self.form.toolController)
-        self.updateCoolant(obj, self.form.coolantController)
 
         if obj.CutMode != str(self.form.cutMode.currentData()):
             obj.CutMode = str(self.form.cutMode.currentData())
@@ -103,8 +101,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.BoundaryFromFaces = self.form.boundaryFromFaces.isChecked()
 
     def setFields(self, obj):
-        self.setupToolController(obj, self.form.toolController)
-        self.setupCoolant(obj, self.form.coolantController)
         self.selectInComboBox(obj.CutMode, self.form.cutMode)
         self.selectInComboBox(obj.CutPattern, self.form.cutPattern)
         self.selectInComboBox(obj.FeedMode, self.form.feedMode)
@@ -132,8 +128,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getSignalsForUpdate(self, obj):
         signals = [
-            self.form.toolController.currentIndexChanged,
-            self.form.coolantController.currentIndexChanged,
             self.form.cutMode.currentIndexChanged,
             self.form.cutPattern.currentIndexChanged,
             self.form.feedMode.currentIndexChanged,

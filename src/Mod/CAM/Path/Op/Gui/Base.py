@@ -28,6 +28,7 @@ import Path.Base.Gui.GetPoint as PathGetPoint
 import Path.Base.Gui.Util as PathGuiUtil
 import Path.Base.SetupSheet as PathSetupSheet
 import Path.Base.Util as PathUtil
+import Path.Dressup.Utils as PathDressupUtils
 import Path.Main.Job as PathJob
 import Path.Op.Base as PathOp
 import Path.Op.Gui.Selection as PathSelection
@@ -609,14 +610,10 @@ class TaskPanelPage(object):
                 self.obj.ToolController = tc
                 self.setupToolController()
 
-    def updateToolControllerEditorVisibility(self):
-        if self.form.editToolController.isChecked():
-            self.tcEditor.controller.show()
-        else:
-            self.tcEditor.controller.hide()
-
     def resetToolController(self, job, tc):
         if self.obj is None:
+            return
+        if job != self.job:
             return
         self.obj.ToolController = tc
         self.setupToolController()
@@ -665,58 +662,69 @@ class TaskPanelPage(object):
 
         self.resetTCCombo()
 
-        if hasattr(self.form, "editToolController"):
-            layout = self.form.editToolController.parent().layout()
-            oldEditor = self.tcEditor
+        layout = self.form.toolController.parent().layout()
+        oldEditor = self.tcEditor
 
-            # Count the number of times the tool controller is used in other operations
-            # If it is used in other operations, we will offer the "copy tool controller" button
-            tcCount = 0
-            for job in PathUtils.GetJobs():
-                for op in job.Operations.Group:
-                    if op == self.obj:
-                        continue
-                    elif hasattr(op, "ToolController") and op.ToolController == obj.ToolController:
-                        tcCount += 1
+        # Count operations sharing this tool controller, unwrapping dressups since
+        # Operations.Group holds the dressup, not the base op the TC lives on.
+        tcCount = 0
+        selfBase = PathDressupUtils.baseOp(self.obj)
+        for job in PathUtils.GetJobs():
+            for op in job.Operations.Group:
+                opBase = PathDressupUtils.baseOp(op)
+                if opBase == selfBase:
+                    continue
+                elif (
+                    hasattr(opBase, "ToolController")
+                    and opBase.ToolController == obj.ToolController
+                ):
+                    tcCount += 1
 
-            self.tcEditor = Path.Tool.Gui.Controller.ToolControllerEditor(
-                obj.ToolController,
-                False,
-                self.tcEditorChanged,
-                True,
-                True,
+        self.tcEditor = Path.Tool.Gui.Controller.ToolControllerEditor(
+            obj.ToolController,
+            False,
+            self.tcEditorChanged,
+            True,
+            True,
+        )
+        self.tcEditor.setupUi()
+
+        if tcCount == 1:
+            labelStr = FreeCAD.Qt.translate(
+                "CAM_Operation", "This tool controller is used by 1 other operation."
             )
-            self.tcEditor.setupUi()
-
+        else:
             labelStr = FreeCAD.Qt.translate(
                 "CAM_Operation", "This tool controller is used by {0} other operations."
             ).format(tcCount)
-            self.tcEditor.controller.tcOperationCountLabel.setText(labelStr)
-
-            # add to layout -- requires a grid layout
-            if isinstance(layout, QtWidgets.QGridLayout):
-                layout.addWidget(
-                    self.tcEditor.controller, layout.rowCount(), 0, 1, layout.columnCount()
-                )
-            else:
-                Path.Log.error(
-                    "Panel uses a layout incompatible with editing tool controllers. Report a bug: it should be a QGridLayout"
-                )
-
-            self.updateToolControllerEditorVisibility()
-            self.tcEditor.updateUi()
-            checkbox = self.form.editToolController
-            checkboxSignal = (
-                checkbox.checkStateChanged
-                if hasattr(checkbox, "checkStateChanged")
-                else checkbox.stateChanged
+        showCountLabel = tcCount > 0
+        self.tcEditor.controller.tcOperationCountLabel.setWordWrap(True)
+        self.tcEditor.controller.tcOperationCountLabel.setText(
+            '<img src=":/icons/Warning.svg" width="24" height="24" style="vertical-align: bottom;"> {0}'.format(
+                labelStr
             )
-            checkboxSignal.connect(self.updateToolControllerEditorVisibility)
+        )
+        self.tcEditor.controller.tcOperationCountLabel.setVisible(showCountLabel)
 
-            if oldEditor:
-                oldEditor.updateToolController()
-                oldEditor.controller.hide()
-                layout.removeWidget(oldEditor.controller)
+        # add to layout -- requires a grid layout
+        if isinstance(layout, QtWidgets.QGridLayout):
+            layout.addWidget(
+                self.tcEditor.controller, layout.rowCount(), 0, 1, layout.columnCount()
+            )
+        else:
+            Path.Log.error(
+                "Panel uses a layout incompatible with editing tool controllers. Report a bug: it should be a QGridLayout"
+            )
+
+        self.tcEditor.controller.show()
+        self.tcEditor.updateUi()
+
+        if oldEditor:
+            oldEditor.updateToolController()
+            oldEditor.controller.hide()
+            layout.removeWidget(oldEditor.controller)
+            oldEditor.controller.setParent(None)
+            oldEditor.controller.deleteLater()
 
     def updateToolController(self, obj, combo):
         """updateToolController(obj, combo) ...
@@ -1326,6 +1334,47 @@ class TaskPanelHeightsPage(TaskPanelPage):
             self.form.finalDepthSet.setEnabled(False)
 
 
+class TaskPanelToolControllerPage(TaskPanelPage):
+    """Page controller for tool controller, coolant and tool controller editing."""
+
+    def __init__(self, obj, features):
+        super(TaskPanelToolControllerPage, self).__init__(obj, features)
+
+        self.panelTitle = "Tool Controller"
+        self.OpIcon = ":/icons/CAM_ToolController.svg"
+        self.setIcon(self.OpIcon)
+
+    def getForm(self):
+        return FreeCADGui.PySideUic.loadUi(":/panels/PageToolControllerEdit.ui")
+
+    def haveCoolant(self):
+        return PathOp.FeatureCoolant & self.features
+
+    def initPage(self, obj):
+        if not self.haveCoolant():
+            self.form.coolantControllerLabel.hide()
+            self.form.coolantController.hide()
+
+    def getTitle(self, obj):
+        return translate("PathOp", "Tool Controller")
+
+    def getFields(self, obj):
+        self.updateToolController(obj, self.form.toolController)
+        if self.haveCoolant():
+            self.updateCoolant(obj, self.form.coolantController)
+
+    def setFields(self, obj):
+        self.setupToolController(obj, self.form.toolController)
+        if self.haveCoolant():
+            self.setupCoolant(obj, self.form.coolantController)
+
+    def getSignalsForUpdate(self, obj):
+        signals = [self.form.toolController.currentIndexChanged]
+        if self.haveCoolant():
+            signals.append(self.form.coolantController.currentIndexChanged)
+        return signals
+
+
 class TaskPanelDiametersPage(TaskPanelPage):
     """Page controller for diameters."""
 
@@ -1421,6 +1470,12 @@ class TaskPanel(object):
                 self.featurePages.append(opPage.taskPanelDiametersPage(obj, features))
             else:
                 self.featurePages.append(TaskPanelDiametersPage(obj, features))
+
+        if (PathOp.FeatureTool | PathOp.FeatureCoolant) & features:
+            if hasattr(opPage, "taskPanelToolControllerPage"):
+                self.featurePages.append(opPage.taskPanelToolControllerPage(obj, features))
+            else:
+                self.featurePages.append(TaskPanelToolControllerPage(obj, features))
 
         self.featurePages.append(opPage)
 
@@ -1776,16 +1831,22 @@ def SetupOperation(name, objFactory, opPageClass, pixmap, menuText, toolTip, set
 
 class _AdaptiveTabBar(QtGui.QTabBar):
     """QTabBar that clamps the width of icon-only tabs (empty tabText) to
-    ICON_ONLY_MAX_WIDTH. Tabs with a label are left at whatever the native
+    iconOnlyMaxWidth. Tabs with a label are left at whatever the native
     style computes for them -- we only ever shrink the hint, never invent one,
     so icon+text tabs keep correct native layout."""
 
-    ICON_ONLY_MAX_WIDTH = 38
+    # Extra width, beyond the icon itself, to accommodate the QSS padding/margin
+    # set on QTabBar::tab in IconTabWidget (6px padding each side + ~2px border).
+    ICON_PADDING = 14
+
+    def __init__(self, *args, **kwargs):
+        super(_AdaptiveTabBar, self).__init__(*args, **kwargs)
+        self.iconOnlyMaxWidth = 24 + self.ICON_PADDING
 
     def tabSizeHint(self, index):
         size = super(_AdaptiveTabBar, self).tabSizeHint(index)
         if not self.tabText(index):
-            size.setWidth(min(size.width(), self.ICON_ONLY_MAX_WIDTH))
+            size.setWidth(min(size.width(), self.iconOnlyMaxWidth))
         return size
 
 
@@ -1803,7 +1864,11 @@ class IconTabWidget(QtGui.QTabWidget):
         tabbar = self.tabBar()
         tabbar.setUsesScrollButtons(False)
         tabbar.setElideMode(QtCore.Qt.ElideNone)
-        tabbar.setIconSize(QtCore.QSize(20, 20))
+        iconSize = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General").GetInt(
+            "ToolbarIconSize", 24
+        )
+        tabbar.setIconSize(QtCore.QSize(iconSize, iconSize))
+        tabbar.iconOnlyMaxWidth = iconSize + _AdaptiveTabBar.ICON_PADDING
         tabbar.setLayoutDirection(QtCore.Qt.LeftToRight)
         # Force padding and margin to make themes match.
         tabbar.setStyleSheet("""
@@ -1900,7 +1965,9 @@ class IconTabWidget(QtGui.QTabWidget):
         self._filteredAncestors = []
 
     def eventFilter(self, obj, event):
-        if isinstance(event, QtCore.QEvent) and event.type() == QtCore.QEvent.Resize:
+        if not isinstance(event, QtCore.QEvent):
+            return False
+        if event.type() == QtCore.QEvent.Resize:
             self._scheduleUpdate()
         return super(IconTabWidget, self).eventFilter(obj, event)
 

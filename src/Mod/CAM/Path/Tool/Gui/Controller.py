@@ -208,6 +208,7 @@ class ToolControllerEditor(object):
         self.form.tc_layout.addWidget(self.controller)
         if not asDialog:
             self.form.buttonBox.hide()
+        self.controller.tcOperationCountLabel.setTextFormat(QtCore.Qt.RichText)
         if not showCountLabel:
             self.controller.tcOperationCountLabel.hide()
         self.obj = obj
@@ -308,6 +309,8 @@ class ToolControllerEditor(object):
                 obj.blockSignals(True)
 
             self.controller.tcName.setText(tc.Label)
+            if not self.controller.tcName.hasFocus():
+                self.controller.tcName.setCursorPosition(0)
             self.controller.tcNumber.setValue(tc.ToolNumber)
             self.horizFeed.updateWidget()
             self.horizRapid.updateWidget()
@@ -369,6 +372,9 @@ class ToolControllerEditor(object):
             self.editor.setupUI()
 
         self.controller.tcName.textChanged.connect(self.changed)
+        self.controller.tcName.editingFinished.connect(
+            lambda: self.controller.tcName.setCursorPosition(0)
+        )
         self.controller.tcNumber.editingFinished.connect(self.changed)
         self.vertFeed.widget.textChanged.connect(self.changed)
         self.horizFeed.widget.textChanged.connect(self.changed)

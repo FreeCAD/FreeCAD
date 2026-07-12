@@ -168,7 +168,7 @@ class ObjectRotarySurface(PathOp.ObjectOp):
                 "RadialStockToLeave",
                 "Rotary",
                 QtCore.QT_TRANSLATE_NOOP(
-                    "App::Property", "Radial finish allowance left on the surface."
+                    "App::Property", "Set how much stock to leave on the walls for the operation."
                 ),
             ),
             (

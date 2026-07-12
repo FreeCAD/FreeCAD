@@ -163,7 +163,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
                 "Facing",
                 QtCore.QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Set the stock to leave for the operation.",
+                    "Set how much stock to leave on the floor for the operation.",
                 ),
             ),
             (

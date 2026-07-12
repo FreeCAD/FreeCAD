@@ -482,8 +482,11 @@ def copyTC(tc, job):
         try:
             if prop not in ["Label", "Label2"]:
                 setattr(newtc, prop, getattr(tc, prop))
-        except RuntimeError:
-            # Ignore errors for read-only properties
+        except (RuntimeError, AttributeError):
+            # RuntimeError: read-only property.
+            # AttributeError: prop is a dynamically-added property (e.g. the
+            # Feeds & Speeds wizard's FeedSpeedProvenance/OpTypeHint) that
+            # exists on tc but was never added to the freshly-created newtc.
             pass
     for attr, expr in tc.ExpressionEngine:
         newtc.setExpression(attr, expr)

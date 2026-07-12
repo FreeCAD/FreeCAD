@@ -127,6 +127,7 @@
         <file>panels/PageOpThreadMillingEdit.ui</file>
         <file>panels/PageOpWaterlineEdit.ui</file>
         <file>panels/PageOpVcarveEdit.ui</file>
+        <file>panels/PageToolControllerEdit.ui</file>
         <file>panels/PathEdit.ui</file>
         <file>panels/PointEdit.ui</file>
         <file>panels/PropertyBag.ui</file>
