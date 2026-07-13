@@ -60,6 +60,10 @@ endforeach()
 
 add_custom_target(TestSources DEPENDS ${Test_COPY_OUTPUTS})
 
+if(BUILD_MATERIAL AND TARGET MaterialLib)
+    add_dependencies(TestSources MaterialLib)
+endif()
+
 ADD_CUSTOM_TARGET(Test ALL
     DEPENDS TestSources
     SOURCES ${Test_SRCS} ${TestData_SRCS}
