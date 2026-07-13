@@ -177,7 +177,7 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
     <message>
       <location filename="../../Command.cpp" line="1476"/>
       <source>Additive Pipe</source>
-      <translation>Dodaj izvlačenje po putanji</translation>
+      <translation>Dodaj izvlačenje po vodilji</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1477"/>
@@ -735,7 +735,7 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
     <message>
       <location filename="../../Command.cpp" line="1526"/>
       <source>Subtractive Pipe</source>
-      <translation>Oduzmi izvlačenje po putanji</translation>
+      <translation>Oduzmi izvlačenje po vodilji</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1527"/>
@@ -2637,7 +2637,7 @@ merena duž zadatog pravca</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="69"/>
       <source>Pipe Parameters</source>
-      <translation>Parametri izvlačenja po putanji</translation>
+      <translation>Parametri izvlačenja po vodilji</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="80"/>
@@ -3681,7 +3681,7 @@ Mada, moći ćeš da migriraš u bilo kom trenutku kasnije pomoću 'Konstruisanj
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="77"/>
       <source>Edit Pipe</source>
-      <translation>Uredi Izvlačenje po putanji</translation>
+      <translation>Uredi Izvlačenje po vodilji</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPocket.cpp" line="47"/>
@@ -4824,7 +4824,7 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="211"/>
       <source>Pipe: Could not obtain profile shape</source>
-      <translation>Izvlačenje po putanji: Nije moguće obezbediti profilni oblik</translation>
+      <translation>Izvlačenje po vodilji: Nije moguće obezbediti profilni oblik</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="218"/>
@@ -4839,27 +4839,27 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="255"/>
       <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
-      <translation>Izvlačenje po putanji: Ako vam je potrebno da presek bude samo tačka onda na skici nacrtajte samo jednu tačku</translation>
+      <translation>Izvlačenje po vodilji: Ako vam je potrebno da presek bude samo tačka onda na skici nacrtajte samo jednu tačku</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="264"/>
       <source>Pipe: At least one section is needed when using a single point for profile</source>
-      <translation>Izvlačenje po putanji: Ako koristite tačku kao presek onda vam je potreban barem još jedan presek</translation>
+      <translation>Izvlačenje po vodilji: Ako koristite tačku kao presek onda vam je potreban barem još jedan presek</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="282"/>
       <source>Pipe: All sections need to be Part features</source>
-      <translation>Po putanji: Svi preseci moraju da budu elementi Part okruženja</translation>
+      <translation>Po vodilji: Svi preseci moraju da budu elementi Part okruženja</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="290"/>
       <source>Pipe: Could not obtain section shape</source>
-      <translation>Izvlačenje po putanji: Nije moguće obezbediti profilni oblik</translation>
+      <translation>Izvlačenje po vodilji: Nije moguće obezbediti profilni oblik</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="298"/>
       <source>Pipe: Only the profile and last section can be vertices</source>
-      <translation>Izvlačenje po putanji: Samo prvi i zadnji presek mogu biti tačka</translation>
+      <translation>Izvlačenje po vodilji: Samo prvi i zadnji presek mogu biti tačka</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="311"/>
@@ -4874,12 +4874,12 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="384"/>
       <source>Pipe could not be built</source>
-      <translation>Nije moguće napraviti izvlačenje po putanji</translation>
+      <translation>Nije moguće napraviti izvlačenje po vodilji</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="532"/>
       <source>Pipe: There is nothing to subtract from</source>
-      <translation>Izvlačenje po putanji: Nema od čega da se oduzme</translation>
+      <translation>Izvlačenje po vodilji: Nema od čega da se oduzme</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="584"/>
@@ -4889,7 +4889,7 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="614"/>
       <source>A fatal error occurred when making the pipe</source>
-      <translation>Izvlačenje po putanji: Došlo je do fatalne greške prilikom pravljenja izvlačenja po putanji</translation>
+      <translation>Izvlačenje po vodilji: Došlo je do fatalne greške prilikom pravljenja izvlačenja po vodilji</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="741"/>

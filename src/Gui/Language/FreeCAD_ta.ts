@@ -23,7 +23,7 @@
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="2743"/>
       <source>Position</source>
-      <translation>பதவி</translation>
+      <translation>நிலை</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3015"/>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../CommandTest.cpp" line="706"/>
       <source>Runs test cases to verify console messages</source>
-      <translation type="unfinished">Runs test cases to verify console messages</translation>
+      <translation>கன்சோல் செய்திகளைச் சரிபார்க்க சோதனை நிகழ்வுகளை இயக்குகிறது</translation>
     </message>
   </context>
   <context>
@@ -105,7 +105,7 @@
     <message>
       <location filename="../CommandStd.cpp" line="1030"/>
       <source>Create Annotation Label</source>
-      <translation type="unfinished">Create Annotation Label</translation>
+      <translation>சிறுகுறிப்பு லேபிளை உருவாக்கவும்</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="64"/>
@@ -164,7 +164,7 @@
     <message>
       <location filename="../CommandFeat.cpp" line="259"/>
       <source>Toggle suppress</source>
-      <translation type="unfinished">Toggle suppress</translation>
+      <translation>அடக்குமுறையை மாற்று</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="426"/>
@@ -189,7 +189,7 @@
     <message>
       <location filename="../TaskElementColors.cpp" line="202"/>
       <source>Set colors</source>
-      <translation type="unfinished">Set colors</translation>
+      <translation>வண்ணங்களை அமைக்கவும்</translation>
     </message>
   </context>
   <context>
@@ -350,7 +350,7 @@ The property of this object will refer to the property of the Variable Set.</sou
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="187"/>
       <source>Store in Variable Set…</source>
-      <translation type="unfinished">Store in Variable Set…</translation>
+      <translation>மாறி தொகுப்பில் சேமிக்கவும்…</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="260"/>
@@ -549,12 +549,12 @@ The property of this object will refer to the property of the Variable Set.</sou
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="51"/>
       <source>Press middle or ctrl+right mouse button</source>
-      <translation type="unfinished">Press middle or ctrl+right mouse button</translation>
+      <translation>நடுத்தர அல்லது கட்டுப்பாடு + வலது சுட்டி பொத்தானை அழுத்தவும்</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="53"/>
       <source>Press middle+left, middle+right or shift+right mouse button</source>
-      <translation type="unfinished">Press middle+left, middle+right or shift+right mouse button</translation>
+      <translation>நடுத்தர+இடது, நடுத்தர+வலது அல்லது shift+வலது சுட்டி பொத்தானை அழுத்தவும்</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="55"/>
@@ -772,12 +772,12 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="434"/>
       <source>Q2</source>
-      <translation>Q2</translation>
+      <translation>வாந்தி</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="444"/>
       <source>Q3</source>
-      <translation>Q3</translation>
+      <translation>Kz</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="453"/>
@@ -803,14 +803,14 @@ while doing a left or right click and move the mouse up or down</source>
       <location filename="../Clipping.ui" line="122"/>
       <location filename="../Clipping.ui" line="167"/>
       <source>Offset</source>
-      <translation>ஆஃப்செட்</translation>
+      <translation>ஈடுசெய்</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="55"/>
       <location filename="../Clipping.ui" line="100"/>
       <location filename="../Clipping.ui" line="145"/>
       <source>Flip</source>
-      <translation>புரட்டவும்</translation>
+      <translation>புரட்டு</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="65"/>
@@ -941,7 +941,7 @@ while doing a left or right click and move the mouse up or down</source>
       <location filename="../Dialogs/DlgAddProperty.ui" line="14"/>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="574"/>
       <source>Add Property</source>
-      <translation>சொத்து சேர்க்கவும்</translation>
+      <translation>சொத்து சேர்</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="27"/>
@@ -1100,12 +1100,12 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="183"/>
       <source>Export Configuration</source>
-      <translation type="unfinished">Export Configuration</translation>
+      <translation>ஏற்றுமதி கட்டமைப்பு</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="194"/>
       <source>Pack Already Exists</source>
-      <translation type="unfinished">Pack Already Exists</translation>
+      <translation>பேக் ஏற்கனவே உள்ளது</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="195"/>
@@ -1196,23 +1196,23 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="212"/>
       <source>Macro Not Found</source>
-      <translation type="unfinished">Macro Not Found</translation>
+      <translation>மேக்ரோ கிடைக்கவில்லை</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="239"/>
       <source>Empty Macro</source>
-      <translation type="unfinished">Empty Macro</translation>
+      <translation>வெற்று மேக்ரோ</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="244"/>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="314"/>
       <source>Empty Text</source>
-      <translation type="unfinished">Empty Text</translation>
+      <translation>வெற்று உரை</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="309"/>
       <source>No Item Selected</source>
-      <translation type="unfinished">No Item Selected</translation>
+      <translation>உருப்படி எதுவும் தேர்ந்தெடுக்கப்படவில்லை</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="213"/>
@@ -1828,7 +1828,7 @@ Perhaps a file permission error?</source>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="114"/>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="144"/>
       <source>Macro Recorder</source>
-      <translation type="unfinished">Macro Recorder</translation>
+      <translation>மேக்ரோ ரெக்கார்டர்</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="105"/>
@@ -1843,7 +1843,7 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="130"/>
       <source>Existing Macro</source>
-      <translation type="unfinished">Existing Macro</translation>
+      <translation>தற்போதுள்ள மேக்ரோ</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="131"/>
@@ -1858,7 +1858,7 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="191"/>
       <source>Choose Macro Directory</source>
-      <translation type="unfinished">Choose Macro Directory</translation>
+      <translation>மேக்ரோ கோப்பகத்தைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
   </context>
   <context>
@@ -1871,7 +1871,7 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="179"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
-      <translation type="unfinished">Defines how much light passes through an object, making it partially or fully see-through</translation>
+      <translation>ஒரு பொருளின் வழியாக எவ்வளவு ஒளி கடந்து செல்கிறது என்பதை வரையறுக்கிறது, அதை ஓரளவு அல்லது முழுமையாக பார்க்கிறது</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="192"/>
@@ -1896,7 +1896,7 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="50"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
-      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+      <translation>ஒளியால் ஒளிரும் போது மேற்பரப்பின் அடிப்படை நிறத்தை வரையறுக்கிறது. பார்வையாளரின் கோணத்தைப் பொருட்படுத்தாமல், பொருள் எவ்வாறு அனைத்து திசைகளிலும் சமமாக ஒளியைச் சிதறடிக்கிறது என்பதை இது பிரதிபலிக்கிறது. இந்த பண்பு பொருள் நிறத்தை மிகவும் பாதிக்கும்.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="57"/>
@@ -1906,12 +1906,12 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="60"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
-      <translation type="unfinished">Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</translation>
+      <translation>மேற்பரப்பில் உள்ள ச்பெகுலர் ஐலைட்களின் அளவு மற்றும் கூர்மையை வரையறுக்கிறது. அதிக மதிப்புகள் சிறிய, கூர்மையான சிறப்பம்சங்களை உருவாக்குகின்றன, அதே சமயம் குறைந்த மதிப்புகள் பரந்த, மென்மையான சிறப்பம்சங்களை உருவாக்குகின்றன. சிறப்பம்சத்தின் தீவிரம் ச்பெகுலர் நிறத்தால் வரையறுக்கப்படுகிறது என்பதை நினைவில் கொள்க.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="80"/>
       <source>Reverts changes done in the dialogue.</source>
-      <translation type="unfinished">Reverts changes done in the dialogue.</translation>
+      <translation>உரையாடலில் செய்யப்பட்ட மாற்றங்களை மாற்றியமைக்கிறது.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="87"/>
@@ -1921,7 +1921,7 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="90"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
-      <translation type="unfinished">Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</translation>
+      <translation>திசை ஒளி, நிழல் அல்லது சிறப்பம்சங்கள் இல்லாமல், ஒரு காட்சியில் சுற்றுப்புற ஒளியால் மட்டுமே ஒளிரும் போது அது எவ்வாறு தோன்றும் என்பதைக் குறிக்கும் மறைமுக, சீரான விளக்குகளின் கீழ் ஒரு மேற்பரப்பின் நிறத்தை வரையறுக்கிறது.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="126"/>
@@ -1931,7 +1931,7 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="129"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
-      <translation type="unfinished">Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</translation>
+      <translation>ஒளி நேரடியாகத் தாக்கும் போது பளபளப்பான அல்லது பிரதிபலிப்பு மேற்பரப்பில் தோன்றும் பிரகாசமான, கண்ணாடி போன்ற சிறப்பம்சங்களின் நிறம் மற்றும் தீவிரத்தை வரையறுக்கிறது. பளபளப்பான பொருட்களுக்கு பிரகாசமான வண்ணங்களை அமைக்கவும்.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="146"/>
@@ -1941,7 +1941,7 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="149"/>
       <source>Changes all values to default values</source>
-      <translation type="unfinished">Changes all values to default values</translation>
+      <translation>எல்லா மதிப்புகளையும் இயல்புநிலை மதிப்புகளாக மாற்றுகிறது</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="166"/>
@@ -1951,7 +1951,7 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="169"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
-      <translation type="unfinished">Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</translation>
+      <translation>வெளிப்புற ஒளியமைப்பிலிருந்து சாராத, ஒளியின் மூலமாக வெளிப்படுவது போல் தோன்றும் மேற்பரப்பின் நிறத்தை வரையறுக்கிறது. உமிழும் நிறம் இல்லாமல் கருப்பு நிறமாக அமைக்கவும்.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="176"/>
@@ -1991,7 +1991,7 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../Dialogs/DlgOnlineHelpImp.cpp" line="103"/>
       <source>Access Denied</source>
-      <translation type="unfinished">Access Denied</translation>
+      <translation>அணுகல் மறுக்கப்பட்டது</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgOnlineHelpImp.cpp" line="104"/>
@@ -2102,7 +2102,7 @@ Specify another directory.</source>
     <message>
       <location filename="../Dialogs/DlgParameterFind.cpp" line="314"/>
       <source>%1 not found. Would you like to start from the beginning?</source>
-      <translation type="unfinished">%1 not found. Would you like to start from the beginning?</translation>
+      <translation>% 1 கிடைக்கவில்லை. நீங்கள் ஆரம்பத்தில் இருந்து தொடங்க விரும்புகிறீர்களா?</translation>
     </message>
   </context>
   <context>
@@ -2228,7 +2228,7 @@ Specify another directory.</source>
     <message>
       <location filename="../Dialogs/DlgPreferences.ui" line="233"/>
       <source>Search preferences…</source>
-      <translation type="unfinished">Search preferences…</translation>
+      <translation>தேடல் விருப்பத்தேர்வுகள்…</translation>
     </message>
     <message>
       <source/>
@@ -2275,7 +2275,7 @@ Specify another directory.</source>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="922"/>
       <source>Wrong Parameter</source>
-      <translation type="unfinished">Wrong Parameter</translation>
+      <translation>தவறான அளவுரு</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="965"/>
@@ -2453,23 +2453,23 @@ Specify another directory.</source>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="62"/>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="79"/>
       <source>Empty Source</source>
-      <translation type="unfinished">Empty Source</translation>
+      <translation>வெற்று சான்று</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="67"/>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="83"/>
       <source>Empty Destination</source>
-      <translation type="unfinished">Empty Destination</translation>
+      <translation>வெற்று இலக்கு</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="103"/>
       <source>Failed to Extract Document</source>
-      <translation type="unfinished">Failed to Extract Document</translation>
+      <translation>ஆவணத்தைப் பிரித்தெடுக்க முடியவில்லை</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="120"/>
       <source>Failed to Create Document</source>
-      <translation type="unfinished">Failed to Create Document</translation>
+      <translation>ஆவணத்தை உருவாக்க முடியவில்லை</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="62"/>
@@ -2828,20 +2828,20 @@ forcibly enabled.
 
 Note: Turning this on is typically not required. If you do,
 remember to report this setting as enabled when seeking support.</source>
-      <translation type="unfinished">A VBO is an OpenGL feature that enables uploading geometry data
-to the graphics card, and is how efficient 3D rendering is done
-on modern hardware.
-This feature might not be used by default if you are running old
-hardware or drivers. By selecting this option its usage will be
-forcibly enabled.
+      <translation>ஒரு VBO என்பது ஒரு OpenGL அம்சமாகும், இது வடிவியல் தரவைப் பதிவேற்றுகிறது 
+கிராபிக்ச் கார்டுக்கு, மற்றும் 3D வழங்குதல் எவ்வளவு திறமையானது 
+நவீன வன்பொருளில். 
+நீங்கள் பழையதாக இருந்தால், இந்த நற்பொருத்தம் இயல்பாகப் பயன்படுத்தப்படாமல் போகலாம் 
+வன்பொருள் அல்லது இயக்கிகள். இந்த விருப்பத்தைத் தேர்ந்தெடுப்பதன் மூலம் அதன் பயன்பாடு இருக்கும் 
+வலுக்கட்டாயமாக இயக்கப்பட்டது. 
 
-Note: Turning this on is typically not required. If you do,
-remember to report this setting as enabled when seeking support.</translation>
+குறிப்பு: இதை இயக்குவது பொதுவாக தேவையில்லை. நீங்கள் செய்தால், 
+ஆதரவைத் தேடும்போது இந்த அமைப்பை இயக்கியதாகப் புகாரளிக்க நினைவில் கொள்ளுங்கள்.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="314"/>
       <source>Force use of OpenGL VBO (Vertex Buffer Object)</source>
-      <translation type="unfinished">Force use of OpenGL VBO (Vertex Buffer Object)</translation>
+      <translation>OpenGL VBO இன் கட்டாயப் பயன்பாடு (வெர்டெக்ச் பஃபர் ஆப்செக்ட்)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="406"/>
@@ -2907,7 +2907,7 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="184"/>
       <source>7px</source>
-      <translation>7px</translation>
+      <translation>ஏபெக்ச்</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="185"/>
@@ -3318,12 +3318,12 @@ This feature may slightly increase recomputation time.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="214"/>
       <source>This experimental feature allows more responsive GUI while recomputing features.</source>
-      <translation type="unfinished">This experimental feature allows more responsive GUI while recomputing features.</translation>
+      <translation>இந்த சோதனை அம்சமானது, அம்சங்களை மறுகணிப்பீடு செய்யும் போது மிகவும் பதிலளிக்கக்கூடிய GUI ஐ அனுமதிக்கிறது.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="220"/>
       <source>Enables async document recomputation</source>
-      <translation type="unfinished">Enables async document recomputation</translation>
+      <translation>ஒத்திசைவு ஆவண மறுகணிப்பீட்டை இயக்குகிறது</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="300"/>
@@ -3384,12 +3384,12 @@ get date suffix according to the specified format</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="590"/>
       <source>Suppresses the version mismatch warning when saving files created with an older FreeCAD version</source>
-      <translation type="unfinished">Suppresses the version mismatch warning when saving files created with an older FreeCAD version</translation>
+      <translation>பழைய FreeCAD பதிப்பில் உருவாக்கப்பட்ட கோப்புகளைச் சேமிக்கும் போது பதிப்பு பொருந்தாத எச்சரிக்கையை அடக்குகிறது</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="593"/>
       <source>Suppress older version warning on save</source>
-      <translation type="unfinished">Suppress older version warning on save</translation>
+      <translation>சேமிப்பில் பழைய பதிப்பு எச்சரிக்கையை அடக்கவும்</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="612"/>
@@ -3413,11 +3413,11 @@ Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</source>
-      <translation type="unfinished">Disable partial loading of external linked documents.
-Then only referenced objects and their dependencies will be loaded
-when a linked document is auto-opened together with the main document.
-A partially loaded document cannot be edited. Double click the document
-icon in the tree view to fully reload it.</translation>
+      <translation>வெளிப்புற இணைக்கப்பட்ட ஆவணங்களின் பகுதி ஏற்றுதலை முடக்கு. 
+பின்னர் குறிப்பிடப்பட்ட பொருள்கள் மற்றும் அவற்றின் சார்புகள் மட்டுமே ஏற்றப்படும் 
+இணைக்கப்பட்ட ஆவணம் முதன்மை ஆவணத்துடன் தானாகத் திறக்கப்படும் போது.
+ பகுதி ஏற்றப்பட்ட ஆவணத்தைத் திருத்த முடியாது. ஆவணத்தில் இருமுறை சொடுக்கு செய்யவும் 
+மரக் காட்சியில் உள்ள ஐகானை முழுமையாக மீண்டும் ஏற்றவும்.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="641"/>
@@ -3536,7 +3536,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="54"/>
       <source>Other</source>
-      <translation>மற்றொன்று</translation>
+      <translation>மற்றவை</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="747"/>
@@ -3569,7 +3569,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocumentImp.cpp" line="119"/>
       <source>Warning: The format '%1' produces '%2' which contains invalid characters. They will be replaced with '-' when saving.</source>
-      <translation type="unfinished">Warning: The format '%1' produces '%2' which contains invalid characters. They will be replaced with '-' when saving.</translation>
+      <translation>எச்சரிக்கை: '% 1' வடிவம் தவறான எழுத்துகளைக் கொண்ட '%2' ஐ உருவாக்குகிறது. சேமிக்கும் போது அவை '-' என மாற்றப்படும்.</translation>
     </message>
   </context>
   <context>
@@ -4391,7 +4391,7 @@ horizontal space in Python console</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="26"/>
       <source>The color used for highlighting selected objects in the 3D view</source>
-      <translation type="unfinished">The color used for highlighting selected objects in the 3D view</translation>
+      <translation>3D காட்சியில் தேர்ந்தெடுக்கப்பட்ட பொருட்களைத் தனிப்படுத்துவதற்குப் பயன்படுத்தப்படும் வண்ணம்</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="70"/>
@@ -4409,7 +4409,7 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="131"/>
       <source>The color used for highlighting preselected objects in the 3D view</source>
-      <translation type="unfinished">The color used for highlighting preselected objects in the 3D view</translation>
+      <translation>3D காட்சியில் முன்தேர்ந்தெடுக்கப்பட்ட பொருட்களைத் தனிப்படுத்துவதற்குப் பயன்படுத்தப்படும் வண்ணம்</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="160"/>
@@ -4434,7 +4434,7 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="207"/>
       <source>Selecting an item in the Tree View automatically activates its document and switches to its 3D view.</source>
-      <translation type="unfinished">Selecting an item in the Tree View automatically activates its document and switches to its 3D view.</translation>
+      <translation>ட்ரீ வியூவில் ஒரு பொருளைத் தேர்ந்தெடுப்பது அதன் ஆவணத்தை தானாகவே செயல்படுத்துகிறது மற்றும் அதன் 3D காட்சிக்கு மாறுகிறது.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="220"/>
@@ -4444,7 +4444,7 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="255"/>
       <source>Provides persistent selection toggles for each item. Simplifies batch operations and complex multi-selection without holding modifier keys (Ctrl/Shift).</source>
-      <translation type="unfinished">Provides persistent selection toggles for each item. Simplifies batch operations and complex multi-selection without holding modifier keys (Ctrl/Shift).</translation>
+      <translation>ஒவ்வொரு பொருளுக்கும் நிலையான தேர்வு நிலைமாற்றங்களை வழங்குகிறது. மாற்றியமைக்கும் விசைகளை (Ctrl/Shift) வைத்திருக்காமல் தொகுதி செயல்பாடுகள் மற்றும் சிக்கலான பல-தேர்வுகளை எளிதாக்குகிறது.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="49"/>
@@ -4464,7 +4464,7 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="223"/>
       <source>Locates and reveals the selected object within the tree hierarchy. Prevents manual scrolling in deep, complex document structures.</source>
-      <translation type="unfinished">Locates and reveals the selected object within the tree hierarchy. Prevents manual scrolling in deep, complex document structures.</translation>
+      <translation>மரப் படிநிலைக்குள் தேர்ந்தெடுக்கப்பட்ட பொருளைக் கண்டறிந்து வெளிப்படுத்துகிறது. ஆழமான, சிக்கலான ஆவணக் கட்டமைப்புகளில் கைமுறையாக உருட்டுவதைத் தடுக்கிறது.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="236"/>
@@ -4474,7 +4474,7 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="239"/>
       <source>Enables selection history. Use 'Back' and 'Forward' navigation to toggle between previously selected objects without re-searching the tree.</source>
-      <translation type="unfinished">Enables selection history. Use 'Back' and 'Forward' navigation to toggle between previously selected objects without re-searching the tree.</translation>
+      <translation>தேர்வு வரலாற்றை இயக்குகிறது. மரத்தை மீண்டும் தேடாமல், முன்பு தேர்ந்தெடுத்த பொருள்களுக்கு இடையே மாறுவதற்கு, 'பின்' மற்றும் 'முன்னோக்கி' வழிசெலுத்தலைப் பயன்படுத்தவும்.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="252"/>
@@ -4622,12 +4622,12 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="150"/>
       <source>Central</source>
-      <translation type="unfinished">Central</translation>
+      <translation>மைய</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="151"/>
       <source>Midway</source>
-      <translation type="unfinished">Midway</translation>
+      <translation>நடுவழி</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="152"/>
@@ -4937,7 +4937,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DownloadItem.cpp" line="623"/>
       <source>MB</source>
-      <translation>MB</translation>
+      <translation>எம்பி</translation>
     </message>
   </context>
   <context>
@@ -4983,7 +4983,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="600"/>
       <source>Add Icon Folder</source>
-      <translation type="unfinished">Add Icon Folder</translation>
+      <translation>படவுரு கோப்புறையைச் சேர்க்கவும்</translation>
     </message>
   </context>
   <context>
@@ -4996,7 +4996,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="628"/>
       <source>Remove Folder</source>
-      <translation type="unfinished">Remove Folder</translation>
+      <translation>கோப்புறையை அகற்று</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="629"/>
@@ -5019,17 +5019,17 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../InputVector.ui" line="32"/>
       <source>X</source>
-      <translation>ஃச்</translation>
+      <translation>ஓ</translation>
     </message>
     <message>
       <location filename="../InputVector.ui" line="49"/>
       <source>Y</source>
-      <translation>ஒய்</translation>
+      <translation>ஔ</translation>
     </message>
     <message>
       <location filename="../InputVector.ui" line="66"/>
       <source>Z</source>
-      <translation>சட்</translation>
+      <translation>ஃ</translation>
     </message>
   </context>
   <context>
@@ -5077,22 +5077,22 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="593"/>
       <source>Existing Sub-Group</source>
-      <translation type="unfinished">Existing Sub-Group</translation>
+      <translation>தற்போதுள்ள துணைக்குழு</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="610"/>
       <source>Export Parameter to File</source>
-      <translation type="unfinished">Export Parameter to File</translation>
+      <translation>கோப்பிற்கு அளவுருவை ஏற்றுமதி செய்யவும்</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="628"/>
       <source>Import Parameter From File</source>
-      <translation type="unfinished">Import Parameter From File</translation>
+      <translation>இறக்குமதி கூறளவு இருந்து கோப்பு</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="656"/>
       <source>Import Error</source>
-      <translation type="unfinished">Import Error</translation>
+      <translation>இறக்குமதி பிழை</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="676"/>
@@ -5220,7 +5220,7 @@ The 'Status' column shows whether the document could be recovered.</source>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="967"/>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="1014"/>
       <source>Existing Item</source>
-      <translation type="unfinished">Existing Item</translation>
+      <translation>ஏற்கனவே உள்ள பொருள்</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="830"/>
@@ -5390,7 +5390,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../RemoteDebugger.ui" line="58"/>
       <source>VS Code</source>
-      <translation>VS Code</translation>
+      <translation>VS குறியீடு</translation>
     </message>
   </context>
   <context>
@@ -5459,7 +5459,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../TextureMapping.cpp" line="167"/>
       <source>No 3D View</source>
-      <translation type="unfinished">No 3D View</translation>
+      <translation>3D காட்சி இல்லை</translation>
     </message>
     <message>
       <location filename="../TextureMapping.cpp" line="167"/>
@@ -5956,18 +5956,18 @@ Save all changes?</source>
     <message>
       <location filename="../GraphvizView.cpp" line="491"/>
       <source>Bitmap</source>
-      <translation type="unfinished">Bitmap</translation>
+      <translation>பிட்மேப்</translation>
     </message>
     <message>
       <location filename="../GraphvizView.cpp" line="517"/>
       <location filename="../CommandDoc.cpp" line="710"/>
       <source>Export Graph</source>
-      <translation type="unfinished">Export Graph</translation>
+      <translation>ஏற்றுமதி வரைபடம்</translation>
     </message>
     <message>
       <location filename="../GraphvizView.cpp" line="609"/>
       <source>Export graph</source>
-      <translation type="unfinished">Export graph</translation>
+      <translation>ஏற்றுமதி வரைபடம்</translation>
     </message>
   </context>
   <context>
@@ -6091,7 +6091,7 @@ Save all changes?</source>
     <message>
       <location filename="../InputVector.cpp" line="97"/>
       <source>Y:</source>
-      <translation>Y:</translation>
+      <translation>ஒய்:</translation>
     </message>
     <message>
       <location filename="../InputVector.cpp" line="98"/>
@@ -6140,37 +6140,37 @@ Save all changes?</source>
       <location filename="../MainWindow.cpp" line="467"/>
       <source>Preselection</source>
       <extracomment>A context menu action used to show or hide the preselection info in the status bar</extracomment>
-      <translation type="unfinished">Preselection</translation>
+      <translation>முன் தேர்வு</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="482"/>
       <source>Input Hints</source>
       <extracomment>A context menu action used to show or hide the input hints in the status bar</extracomment>
-      <translation type="unfinished">Input Hints</translation>
+      <translation>உள்ளீடு குறிப்புகள்</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="522"/>
       <source>Quick Measure</source>
       <extracomment>A context menu action used to enable or disable quick measure in the status bar</extracomment>
-      <translation type="unfinished">Quick Measure</translation>
+      <translation>விரைவான அளவீடு</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="537"/>
       <source>Toggles the bottom dock panels</source>
       <extracomment>Tooltip for the status bar button that toggles bottom dock panels</extracomment>
-      <translation type="unfinished">Toggles the bottom dock panels</translation>
+      <translation>கீழ் டாக் பேனல்களை மாற்றுகிறது</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="547"/>
       <source>Bottom Panel Toggle</source>
       <extracomment>A context menu action used to show or hide the Toggle Bottom Panels button in the status bar</extracomment>
-      <translation type="unfinished">Bottom Panel Toggle</translation>
+      <translation>கீழ் பேனல் நிலைமாற்று</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="566"/>
       <source>Notifications</source>
       <extracomment>A context menu action used to show or hide the 'notificationArea' toolbar widget</extracomment>
-      <translation type="unfinished">Notifications</translation>
+      <translation>அறிவிப்புகள்</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="624"/>
@@ -6466,7 +6466,7 @@ How do you want to proceed?</source>
       <location filename="../ProgressBar.cpp" line="448"/>
       <source>Progress Indicator</source>
       <extracomment>A context menu action used to show or hide the progress indicator in the status bar</extracomment>
-      <translation type="unfinished">Progress Indicator</translation>
+      <translation>முன்னேற்றம் காட்டி</translation>
     </message>
     <message>
       <location filename="../ProgressBar.cpp" line="559"/>
@@ -6561,38 +6561,38 @@ How do you want to proceed?</source>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="978"/>
       <source>object %1 (%2):
 </source>
-      <translation type="unfinished">object %1 (%2):
+      <translation>பொருள்% 1 (%2):
 </translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="985"/>
       <source>property %1
 </source>
-      <translation type="unfinished">property %1
+      <translation>சொத்து% 1
 </translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="997"/>
       <source>document %1:
 </source>
-      <translation type="unfinished">document %1:
+      <translation>ஆவணம்% 1:
 </translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1022"/>
       <source>The property %1 in object %2 (%3) in document %4 is referenced by:</source>
-      <translation type="unfinished">The property %1 in object %2 (%3) in document %4 is referenced by:</translation>
+      <translation>% 4 ஆவணத்தில் உள்ள ஆப்செக்ட் 2 (%3) இல் உள்ள சொத்து % 1 குறிப்பிடப்பட்டுள்ளது:</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1038"/>
       <source>(No references found.)</source>
-      <translation type="unfinished">(No references found.)</translation>
+      <translation>(குறிப்புகள் எதுவும் இல்லை.)</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1056"/>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1144"/>
       <source>Property Uses</source>
-      <translation type="unfinished">Property Uses</translation>
+      <translation>சொத்து பயன்பாடுகள்</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1086"/>
@@ -6613,7 +6613,7 @@ How do you want to proceed?</source>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1112"/>
       <source>Cannot rename group: one or more properties have names that start with the group name</source>
-      <translation type="unfinished">Cannot rename group: one or more properties have names that start with the group name</translation>
+      <translation>குழுவை மறுபெயரிட முடியாது: ஒன்று அல்லது அதற்கு மேற்பட்ட பண்புகளில் குழுப் பெயருடன் தொடங்கும் பெயர்கள் உள்ளன</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1121"/>
@@ -6645,7 +6645,7 @@ How do you want to proceed?</source>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1171"/>
       <source>Expression</source>
-      <translation>கோவை</translation>
+      <translation>வெளிப்பாடு</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1345"/>
@@ -6825,7 +6825,7 @@ Exit without saving all data?</source>
     <message>
       <location filename="../Action.cpp" line="892"/>
       <source>Clear the list of recent files?</source>
-      <translation type="unfinished">Clear the list of recent files?</translation>
+      <translation>அண்மைக் கால கோப்புகளின் பட்டியலை அழிக்கவா?</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="979"/>
@@ -6894,7 +6894,7 @@ Exit without saving all data?</source>
     <message>
       <location filename="../EditorView.cpp" line="879"/>
       <source>No results</source>
-      <translation type="unfinished">No results</translation>
+      <translation>முடிவுகள் இல்லை</translation>
     </message>
   </context>
   <context>
@@ -7093,7 +7093,7 @@ Specify another directory?</source>
     <message>
       <location filename="../TaskView/TaskSelectLinkProperty.cpp" line="41"/>
       <source>Edit Selection</source>
-      <translation type="unfinished">Edit Selection</translation>
+      <translation>தேர்வைத் திருத்து</translation>
     </message>
   </context>
   <context>
@@ -7376,12 +7376,12 @@ Specify another directory?</source>
     <message>
       <location filename="Translator.cpp" line="256"/>
       <source>Tamil</source>
-      <translation type="unfinished">Tamil</translation>
+      <translation>தமிழ்</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="257"/>
       <source>Irish</source>
-      <translation type="unfinished">Irish</translation>
+      <translation>ஐரிச்</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="221"/>
@@ -7782,52 +7782,52 @@ Specify another directory?</source>
     <message>
       <location filename="../Dialogs/DlgLocationPos.ui" line="97"/>
       <source>0.1 mm</source>
-      <translation>0.1 mm</translation>
+      <translation>0.1 மி.மீ</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgLocationPos.ui" line="102"/>
       <source>0.5 mm</source>
-      <translation>0.5 mm</translation>
+      <translation>0.5 மி.மீ</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgLocationPos.ui" line="107"/>
       <source>1 mm</source>
-      <translation>1 mm</translation>
+      <translation>1 மி.மீ</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgLocationPos.ui" line="112"/>
       <source>2 mm</source>
-      <translation>2 mm</translation>
+      <translation>2 மி.மீ</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgLocationPos.ui" line="117"/>
       <source>5 mm</source>
-      <translation>5 mm</translation>
+      <translation>5 மி.மீ</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgLocationPos.ui" line="122"/>
       <source>10 mm</source>
-      <translation>10 mm</translation>
+      <translation>10 மி.மீ</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgLocationPos.ui" line="127"/>
       <source>20 mm</source>
-      <translation>20 mm</translation>
+      <translation>20 மி.மீ</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgLocationPos.ui" line="132"/>
       <source>50 mm</source>
-      <translation>50 mm</translation>
+      <translation>50 மி.மீ</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgLocationPos.ui" line="137"/>
       <source>100 mm</source>
-      <translation>100 mm</translation>
+      <translation>100 மி.மீ</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgLocationPos.ui" line="142"/>
       <source>200 mm</source>
-      <translation>200 mm</translation>
+      <translation>200 மி.மீ</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgLocationPos.ui" line="147"/>
@@ -8045,20 +8045,20 @@ Check the report view for more details.</source>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="492"/>
       <source>Migration Completed With Warnings</source>
-      <translation type="unfinished">Migration Completed With Warnings</translation>
+      <translation>எச்சரிக்கைகளுடன் இடம்பெயர்வு முடிந்தது</translation>
     </message>
     <message numerus="yes">
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="499"/>
       <source>%n file(s) could not be copied and were skipped. A full list has been saved to %1 in your new configuration directory.</source>
-      <translation type="unfinished">
-        <numerusform>%n file(s) could not be copied and were skipped. A full list has been saved to %1 in your new configuration directory.</numerusform>
-        <numerusform>%n file(s) could not be copied and were skipped. A full list has been saved to %1 in your new configuration directory.</numerusform>
+      <translation>
+        <numerusform>%n கோப்பு(களை) நகலெடுக்க முடியவில்லை மற்றும் தவிர்க்கப்பட்டது. உங்கள் புதிய கட்டமைப்பு கோப்பகத்தில் முழு பட்டியல் % 1 இல் சேமிக்கப்பட்டுள்ளது.</numerusform>
+        <numerusform>%n கோப்பு(களை) நகலெடுக்க முடியவில்லை மற்றும் தவிர்க்கப்பட்டது. உங்கள் புதிய கட்டமைப்பு கோப்பகத்தில் முழு பட்டியல் % 1 இல் சேமிக்கப்பட்டுள்ளது.</numerusform>
       </translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="516"/>
       <source>Migration Failed</source>
-      <translation type="unfinished">Migration Failed</translation>
+      <translation>இடம்பெயர்வு தோல்வியடைந்தது</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="517"/>
@@ -8100,12 +8100,12 @@ Check the report view for more details.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="138"/>
       <source>Open Document</source>
-      <translation type="unfinished">Open Document</translation>
+      <translation>ஆவணத்தைத் திற</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="264"/>
       <source>Import File</source>
-      <translation type="unfinished">Import File</translation>
+      <translation>கோப்பை இறக்குமதி செய்யவும்</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="551"/>
@@ -8116,7 +8116,7 @@ Check the report view for more details.</source>
       <location filename="../CommandDoc.cpp" line="619"/>
       <location filename="../CommandDoc.cpp" line="631"/>
       <source>Merge Document</source>
-      <translation type="unfinished">Merge Document</translation>
+      <translation>ஆவணத்தை ஒன்றிணைக்கவும்</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="632"/>
@@ -8142,7 +8142,7 @@ Check the report view for more details.</source>
       <location filename="../CommandDoc.cpp" line="1670"/>
       <location filename="../CommandDoc.cpp" line="1680"/>
       <source>Delete Failed</source>
-      <translation type="unfinished">Delete Failed</translation>
+      <translation>நீக்குவது தோல்வியடைந்தது</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="2178"/>
@@ -8162,7 +8162,7 @@ Check the report view for more details.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="2298"/>
       <source>Expression Error</source>
-      <translation type="unfinished">Expression Error</translation>
+      <translation>வெளிப்பாடு பிழை</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="2299"/>
@@ -8174,7 +8174,7 @@ Check the report view for more details.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="1734"/>
       <source>Dependency error</source>
-      <translation type="unfinished">Dependency error</translation>
+      <translation>சார்பு பிழை</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="2181"/>
@@ -8194,7 +8194,7 @@ Check the report view for more details.</source>
     <message>
       <location filename="../CommandStd.cpp" line="112"/>
       <source>Cannot Load Workbench</source>
-      <translation type="unfinished">Cannot Load Workbench</translation>
+      <translation>வொர்க்பெஞ்சை ஏற்ற முடியவில்லை</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="113"/>
@@ -8243,13 +8243,13 @@ Check the report view for more details.</source>
     <message>
       <location filename="../CommandView.cpp" line="460"/>
       <source>Save Frozen Views</source>
-      <translation type="unfinished">Save Frozen Views</translation>
+      <translation>உறைந்த காட்சிகளைச் சேமிக்கவும்</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="506"/>
       <location filename="../CommandView.cpp" line="533"/>
       <source>Restore Views</source>
-      <translation type="unfinished">Restore Views</translation>
+      <translation>காட்சிகளை மீட்டமை</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="462"/>
@@ -8267,7 +8267,7 @@ Continue?</source>
     <message>
       <location filename="../CommandView.cpp" line="522"/>
       <source>Restore Frozen Views</source>
-      <translation type="unfinished">Restore Frozen Views</translation>
+      <translation>உறைந்த காட்சிகளை மீட்டெடுக்கவும்</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2159"/>
@@ -8310,13 +8310,13 @@ Continue?</source>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="576"/>
       <source>New Sub-Group</source>
-      <translation type="unfinished">New Sub-Group</translation>
+      <translation>புதிய துணைக்குழு</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="812"/>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="838"/>
       <source>New Text Item</source>
-      <translation type="unfinished">New Text Item</translation>
+      <translation>புதிய உரை உருப்படி</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="839"/>
@@ -8502,7 +8502,7 @@ Would you like to save the file with a different name?</source>
     <message>
       <location filename="../Document.cpp" line="1548"/>
       <source>File Created with Older FreeCAD Version</source>
-      <translation type="unfinished">File Created with Older FreeCAD Version</translation>
+      <translation>கோப்பு பழைய FreeCAD பதிப்பில் உருவாக்கப்பட்டது</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1551"/>
@@ -8512,22 +8512,22 @@ Saving will upgrade the file format. The file may not be readable by older versi
 
 Use 'Save As…' to preserve the original file.
 </source>
-      <translation type="unfinished">This file was created with %1, but you are using v%2.%3.
+      <translation>இந்த கோப்பு % 1 உடன் உருவாக்கப்பட்டது, ஆனால் நீங்கள் v%2.%3 ஐப் பயன்படுத்துகிறீர்கள். 
 
-Saving will upgrade the file format. The file may not be readable by older versions of FreeCAD after saving.
+சேமிப்பது கோப்பு வடிவத்தை மேம்படுத்தும். கோப்பு சேமிக்கப்பட்ட பிறகு FreeCAD இன் பழைய பதிப்புகளால் படிக்க முடியாது. 
 
-Use 'Save As…' to preserve the original file.
+அசல் கோப்பைப் பாதுகாக்க, 'இவ்வாறு சேமி...' என்பதைப் பயன்படுத்தவும்.
 </translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1560"/>
       <source>an unknown older version of FreeCAD</source>
-      <translation type="unfinished">an unknown older version of FreeCAD</translation>
+      <translation>FreeCAD இன் அறியப்படாத பழைய பதிப்பு</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1561"/>
       <source>FreeCAD version %1</source>
-      <translation type="unfinished">FreeCAD version %1</translation>
+      <translation>FreeCAD பதிப்பு% 1</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1566"/>
@@ -8542,7 +8542,7 @@ Use 'Save As…' to preserve the original file.
     <message>
       <location filename="../Document.cpp" line="1571"/>
       <source>Do not show this warning again</source>
-      <translation type="unfinished">Do not show this warning again</translation>
+      <translation>இந்த எச்சரிக்கையை மீண்டும் காட்ட வேண்டாம்</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1636"/>
@@ -8570,7 +8570,7 @@ Use 'Save As…' to preserve the original file.
       <location filename="../Document.cpp" line="1845"/>
       <location filename="../CommandDoc.cpp" line="621"/>
       <source>%1 document</source>
-      <translation type="unfinished">%1 document</translation>
+      <translation>% 1 ஆவணம்</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1831"/>
@@ -9110,7 +9110,7 @@ the current copy will be lost.
     <message>
       <location filename="../ViewProviderPart.cpp" line="105"/>
       <source>Override colors…</source>
-      <translation type="unfinished">Override colors…</translation>
+      <translation>நிறங்களை மீறு…</translation>
     </message>
     <message>
       <location filename="../ViewProviderTextDocument.cpp" line="107"/>
@@ -9150,7 +9150,7 @@ the current copy will be lost.
     <message>
       <location filename="../ViewProviderImagePlane.cpp" line="171"/>
       <source>Edit Image Plane</source>
-      <translation type="unfinished">Edit Image Plane</translation>
+      <translation>பட விமானத்தைத் திருத்து</translation>
     </message>
     <message>
       <location filename="../FileDialog.cpp" line="281"/>
@@ -9316,7 +9316,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandMacro.cpp" line="64"/>
       <source>S&amp;top Macro Recording</source>
-      <translation type="unfinished">S&amp;top Macro Recording</translation>
+      <translation>எச்&amp;டாப் மேக்ரோ ரெக்கார்டிங்</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="67"/>
@@ -9409,7 +9409,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="727"/>
       <source>Opens the FreeCAD forum to find help from other users</source>
-      <translation type="unfinished">Opens the FreeCAD forum to find help from other users</translation>
+      <translation>பிற பயனர்களின் உதவியைக் கண்டறிய FreeCAD மன்றத்தைத் திறக்கிறது</translation>
     </message>
   </context>
   <context>
@@ -9524,7 +9524,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="182"/>
       <source>Cannot Open File</source>
-      <translation type="unfinished">Cannot Open File</translation>
+      <translation>கோப்பை திறக்க முடியவில்லை</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="183"/>
@@ -9966,7 +9966,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="3446"/>
       <source>Preselection</source>
-      <translation type="unfinished">Preselection</translation>
+      <translation>முன் தேர்வு</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3447"/>
@@ -10068,7 +10068,7 @@ Continue?
     <message>
       <location filename="../CommandDoc.cpp" line="1624"/>
       <source>Object Dependencies</source>
-      <translation type="unfinished">Object Dependencies</translation>
+      <translation>பொருள் சார்புகள்</translation>
     </message>
   </context>
   <context>
@@ -10081,7 +10081,7 @@ Continue?
     <message>
       <location filename="../CommandView.cpp" line="842"/>
       <source>As Is</source>
-      <translation type="unfinished">As Is</translation>
+      <translation>அப்படியே</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="845"/>
@@ -10106,7 +10106,7 @@ Continue?
     <message>
       <location filename="../CommandView.cpp" line="851"/>
       <source>Hidden Line</source>
-      <translation type="unfinished">Hidden Line</translation>
+      <translation>மறைக்கப்பட்ட வரி</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="852"/>
@@ -10116,7 +10116,7 @@ Continue?
     <message>
       <location filename="../CommandView.cpp" line="854"/>
       <source>No Shading</source>
-      <translation type="unfinished">No Shading</translation>
+      <translation>நிழல் இல்லை</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="855"/>
@@ -10149,7 +10149,7 @@ Continue?
     <message>
       <location filename="../CommandDoc.cpp" line="1391"/>
       <source>Object Dependencies</source>
-      <translation type="unfinished">Object Dependencies</translation>
+      <translation>பொருள் சார்புகள்</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1392"/>
@@ -10885,7 +10885,7 @@ FreeCAD தொடங்கப்பட்ட பிறகு</translation>
     <message>
       <location filename="../NaviCube.cpp" line="1378"/>
       <source>Drags and places the NaviCube</source>
-      <translation type="unfinished">Drags and places the NaviCube</translation>
+      <translation>NaviCube ஐ இழுத்து வைக்கிறது</translation>
     </message>
   </context>
   <context>
@@ -11005,7 +11005,7 @@ FreeCAD தொடங்கப்பட்ட பிறகு</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="375"/>
       <source>Preview</source>
-      <translation>முன்னோட்டம்</translation>
+      <translation>முன்னோட்டம்</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="163"/>
@@ -11324,12 +11324,12 @@ FreeCAD தொடங்கும் போது. இந்த விருப�
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="363"/>
       <source>Activate fine-grained recomputation of documents</source>
-      <translation type="unfinished">Activate fine-grained recomputation of documents</translation>
+      <translation>செயல்படுத்து fine-grained recomputation of ஆவணங்கள்</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="366"/>
       <source>Fine-grained recompute (experimental)</source>
-      <translation type="unfinished">Fine-grained recompute (experimental)</translation>
+      <translation>நேர்த்தியான மறுகணிப்பு (பரிசோதனை)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="385"/>
@@ -12561,7 +12561,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../TaskTransform.cpp" line="466"/>
       <source>Select object…</source>
-      <translation type="unfinished">Select object…</translation>
+      <translation>பொருளைத் தேர்ந்தெடு…</translation>
     </message>
   </context>
   <context>
@@ -12720,13 +12720,13 @@ the region are non-opaque.</source>
       <location filename="../InputHintWidget.cpp" line="295"/>
       <source>Ctrl</source>
       <extracomment>Keyboard key for Control on Windows &amp; Linux</extracomment>
-      <translation>Ctrl</translation>
+      <translation>கட்டுப்பாடு</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="302"/>
       <source>Alt</source>
       <extracomment>Keyboard key for Alt on Windows &amp; Linux</extracomment>
-      <translation>Alt</translation>
+      <translation>மாற்று</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="305"/>
@@ -12921,7 +12921,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="696"/>
       <source>Export Dependency &amp;Graph…</source>
-      <translation type="unfinished">Export Dependency &amp;Graph…</translation>
+      <translation>ஏற்றுமதி சார்பு &amp; வரைபடம்…</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="697"/>
@@ -12947,7 +12947,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="843"/>
       <source>Save a Cop&amp;y…</source>
-      <translation type="unfinished">Save a Cop&amp;y…</translation>
+      <translation>சேமி a Cop&amp;y…</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="845"/>
@@ -13369,7 +13369,7 @@ Proceed?</source>
     <message>
       <location filename="../CommandStd.cpp" line="466"/>
       <source>Cu&amp;stomize</source>
-      <translation type="unfinished">Cu&amp;stomize</translation>
+      <translation>வித்&amp;ச்டோமிச்</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="467"/>
@@ -13400,7 +13400,7 @@ Proceed?</source>
     <message>
       <location filename="../CommandStd.cpp" line="600"/>
       <source>Opens the FreeCAD donation page</source>
-      <translation type="unfinished">Opens the FreeCAD donation page</translation>
+      <translation>FreeCAD நன்கொடை பக்கத்தைத் திறக்கிறது</translation>
     </message>
   </context>
   <context>
@@ -13413,7 +13413,7 @@ Proceed?</source>
     <message>
       <location filename="../CommandStd.cpp" line="632"/>
       <source>Opens the FreeCAD developers handbook</source>
-      <translation type="unfinished">Opens the FreeCAD developers handbook</translation>
+      <translation>FreeCAD உருவாக்குபவர்கள் கையேட்டைத் திறக்கிறது</translation>
     </message>
   </context>
   <context>
@@ -13993,7 +13993,7 @@ Proceed?</source>
     <message>
       <location filename="../CommandView.cpp" line="3387"/>
       <source>Sync View</source>
-      <translation type="unfinished">Sync View</translation>
+      <translation>ஒத்திசைவு காட்சி</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3388"/>
@@ -14006,7 +14006,7 @@ Proceed?</source>
     <message>
       <location filename="../CommandView.cpp" line="3407"/>
       <source>Sync Selection</source>
-      <translation type="unfinished">Sync Selection</translation>
+      <translation>ஒத்திசைவு தேர்வு</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3408"/>
@@ -14019,7 +14019,7 @@ Proceed?</source>
     <message>
       <location filename="../CommandView.cpp" line="3427"/>
       <source>Sync Placement</source>
-      <translation type="unfinished">Sync Placement</translation>
+      <translation>ஒத்திசைவு இடம்</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3429"/>
@@ -14032,7 +14032,7 @@ Proceed?</source>
     <message>
       <location filename="../CommandView.cpp" line="3466"/>
       <source>Record Selection</source>
-      <translation type="unfinished">Record Selection</translation>
+      <translation>பதிவு தேர்வு</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3468"/>
@@ -14089,7 +14089,7 @@ Proceed?</source>
     <message>
       <location filename="../CommandView.cpp" line="3611"/>
       <source>Toggles overlay mode for all docked panels</source>
-      <translation type="unfinished">Toggles overlay mode for all docked panels</translation>
+      <translation>அனைத்து டாக் செய்யப்பட்ட பேனல்களுக்கும் மேலடுக்கு பயன்முறையை மாற்றுகிறது</translation>
     </message>
   </context>
   <context>
@@ -14422,7 +14422,7 @@ This makes the docked panel stay transparent at all times.</source>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="71"/>
       <source>Tuple</source>
-      <translation type="unfinished">Tuple</translation>
+      <translation>டூபிள்</translation>
     </message>
   </context>
   <context>
@@ -14647,7 +14647,7 @@ This makes the docked panel stay transparent at all times.</source>
     <message>
       <location filename="../FreeCADGuiInit.py" line="470"/>
       <source>Portable Document Format</source>
-      <translation type="unfinished">Portable Document Format</translation>
+      <translation>எடுத்துச்செல்லக்கூடிய ஆவண வடிவம்</translation>
     </message>
   </context>
   <context>
@@ -14679,7 +14679,7 @@ treated as shortcut key sequence 'F, F'.</source>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="75"/>
       <source>Shortcuts</source>
-      <translation type="unfinished">Shortcuts</translation>
+      <translation>குறுக்குவழிகள்</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="108"/>
@@ -14739,7 +14739,7 @@ treated as shortcut key sequence 'F, F'.</source>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="234"/>
       <source>Priority List</source>
-      <translation type="unfinished">Priority List</translation>
+      <translation>முன்னுரிமை பட்டியல்</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="293"/>
@@ -14762,12 +14762,12 @@ treated as shortcut key sequence 'F, F'.</source>
     <message>
       <location filename="../CommandStd.cpp" line="984"/>
       <source>Annotation Label</source>
-      <translation type="unfinished">Annotation Label</translation>
+      <translation>சிறுகுறிப்பு சிட்டை</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="985"/>
       <source>Creates a new annotation label at the picked location in the 3D view</source>
-      <translation type="unfinished">Creates a new annotation label at the picked location in the 3D view</translation>
+      <translation>3D காட்சியில் தேர்ந்தெடுக்கப்பட்ட இடத்தில் புதிய சிறுகுறிப்பு லேபிளை உருவாக்குகிறது</translation>
     </message>
   </context>
   <context>
@@ -14775,12 +14775,12 @@ treated as shortcut key sequence 'F, F'.</source>
     <message>
       <location filename="../CommandView.cpp" line="3890"/>
       <source>Toggle Bottom Panels</source>
-      <translation type="unfinished">Toggle Bottom Panels</translation>
+      <translation>கீழ் பேனல்களை நிலைமாற்று</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3891"/>
       <source>Toggles the bottom dock panels</source>
-      <translation type="unfinished">Toggles the bottom dock panels</translation>
+      <translation>கீழ் டாக் பேனல்களை மாற்றுகிறது</translation>
     </message>
   </context>
   <context>
@@ -14788,12 +14788,12 @@ treated as shortcut key sequence 'F, F'.</source>
     <message>
       <location filename="../CommandFeat.cpp" line="240"/>
       <source>Toggle Suppressed</source>
-      <translation type="unfinished">Toggle Suppressed</translation>
+      <translation>நிலைமாற்றம் அடக்கப்பட்டது</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="242"/>
       <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
-      <translation type="unfinished">Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</translation>
+      <translation>தேர்ந்தெடுக்கப்பட்ட பொருட்களின் ஒடுக்கப்பட்ட நிலையை மாற்றுகிறது. அடக்கப்பட்ட பொருள் நீக்கப்பட்டது போல் செயல்படுகிறது.</translation>
     </message>
   </context>
   <context>
@@ -14814,32 +14814,32 @@ treated as shortcut key sequence 'F, F'.</source>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3587"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
-      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+      <translation>ஒளியால் ஒளிரும் போது மேற்பரப்பின் அடிப்படை நிறத்தை வரையறுக்கிறது. பார்வையாளரின் கோணத்தைப் பொருட்படுத்தாமல், பொருள் எவ்வாறு அனைத்து திசைகளிலும் சமமாக ஒளியைச் சிதறடிக்கிறது என்பதை இது பிரதிபலிக்கிறது. இந்த பண்பு பொருள் நிறத்தை மிகவும் பாதிக்கும்.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3597"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
-      <translation type="unfinished">Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</translation>
+      <translation>திசை ஒளி, நிழல் அல்லது சிறப்பம்சங்கள் இல்லாமல், ஒரு காட்சியில் சுற்றுப்புற ஒளியால் மட்டுமே ஒளிரும் போது அது எவ்வாறு தோன்றும் என்பதைக் குறிக்கும் மறைமுக, சீரான விளக்குகளின் கீழ் ஒரு மேற்பரப்பின் நிறத்தை வரையறுக்கிறது.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3607"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
-      <translation type="unfinished">Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</translation>
+      <translation>ஒளி நேரடியாகத் தாக்கும் போது பளபளப்பான அல்லது பிரதிபலிப்பு மேற்பரப்பில் தோன்றும் பிரகாசமான, கண்ணாடி போன்ற சிறப்பம்சங்களின் நிறம் மற்றும் தீவிரத்தை வரையறுக்கிறது. பளபளப்பான பொருட்களுக்கு பிரகாசமான வண்ணங்களை அமைக்கவும்.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3617"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
-      <translation type="unfinished">Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</translation>
+      <translation>வெளிப்புற ஒளியமைப்பிலிருந்து சாராத, ஒளியின் மூலமாக வெளிப்படுவது போல் தோன்றும் மேற்பரப்பின் நிறத்தை வரையறுக்கிறது. உமிழும் நிறம் இல்லாமல் கருப்பு நிறமாக அமைக்கவும்.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3629"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
-      <translation type="unfinished">Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</translation>
+      <translation>மேற்பரப்பில் உள்ள ச்பெகுலர் ஐலைட்களின் அளவு மற்றும் கூர்மையை வரையறுக்கிறது. அதிக மதிப்புகள் சிறிய, கூர்மையான சிறப்பம்சங்களை உருவாக்குகின்றன, அதே சமயம் குறைந்த மதிப்புகள் பரந்த, மென்மையான சிறப்பம்சங்களை உருவாக்குகின்றன. சிறப்பம்சத்தின் தீவிரம் ச்பெகுலர் நிறத்தால் வரையறுக்கப்படுகிறது என்பதை நினைவில் கொள்க.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3641"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
-      <translation type="unfinished">Defines how much light passes through an object, making it partially or fully see-through</translation>
+      <translation>ஒரு பொருளின் வழியாக எவ்வளவு ஒளி கடந்து செல்கிறது என்பதை வரையறுக்கிறது, அதை ஓரளவு அல்லது முழுமையாக பார்க்கிறது</translation>
     </message>
   </context>
   <context>
@@ -14847,32 +14847,32 @@ treated as shortcut key sequence 'F, F'.</source>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3953"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
-      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+      <translation>ஒளியால் ஒளிரும் போது மேற்பரப்பின் அடிப்படை நிறத்தை வரையறுக்கிறது. பார்வையாளரின் கோணத்தைப் பொருட்படுத்தாமல், பொருள் எவ்வாறு அனைத்து திசைகளிலும் சமமாக ஒளியைச் சிதறடிக்கிறது என்பதை இது பிரதிபலிக்கிறது. இந்த பண்பு பொருள் நிறத்தை மிகவும் பாதிக்கும்.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3963"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
-      <translation type="unfinished">Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</translation>
+      <translation>திசை ஒளி, நிழல் அல்லது சிறப்பம்சங்கள் இல்லாமல், ஒரு காட்சியில் சுற்றுப்புற ஒளியால் மட்டுமே ஒளிரும் போது அது எவ்வாறு தோன்றும் என்பதைக் குறிக்கும் மறைமுக, சீரான விளக்குகளின் கீழ் ஒரு மேற்பரப்பின் நிறத்தை வரையறுக்கிறது.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3973"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
-      <translation type="unfinished">Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</translation>
+      <translation>ஒளி நேரடியாகத் தாக்கும் போது பளபளப்பான அல்லது பிரதிபலிப்பு மேற்பரப்பில் தோன்றும் பிரகாசமான, கண்ணாடி போன்ற சிறப்பம்சங்களின் நிறம் மற்றும் தீவிரத்தை வரையறுக்கிறது. பளபளப்பான பொருட்களுக்கு பிரகாசமான வண்ணங்களை அமைக்கவும்.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3983"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
-      <translation type="unfinished">Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</translation>
+      <translation>வெளிப்புற ஒளியமைப்பிலிருந்து சாராத, ஒளியின் மூலமாக வெளிப்படுவது போல் தோன்றும் மேற்பரப்பின் நிறத்தை வரையறுக்கிறது. உமிழும் நிறம் இல்லாமல் கருப்பு நிறமாக அமைக்கவும்.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3995"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
-      <translation type="unfinished">Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</translation>
+      <translation>மேற்பரப்பில் உள்ள ச்பெகுலர் ஐலைட்களின் அளவு மற்றும் கூர்மையை வரையறுக்கிறது. அதிக மதிப்புகள் சிறிய, கூர்மையான சிறப்பம்சங்களை உருவாக்குகின்றன, அதே சமயம் குறைந்த மதிப்புகள் பரந்த, மென்மையான சிறப்பம்சங்களை உருவாக்குகின்றன. சிறப்பம்சத்தின் தீவிரம் ச்பெகுலர் நிறத்தால் வரையறுக்கப்படுகிறது என்பதை நினைவில் கொள்க.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="4007"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
-      <translation type="unfinished">Defines how much light passes through an object, making it partially or fully see-through</translation>
+      <translation>ஒரு பொருளின் வழியாக எவ்வளவு ஒளி கடந்து செல்கிறது என்பதை வரையறுக்கிறது, அதை ஓரளவு அல்லது முழுமையாக பார்க்கிறது</translation>
     </message>
   </context>
   <context>
@@ -14888,7 +14888,7 @@ treated as shortcut key sequence 'F, F'.</source>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="284"/>
       <source>New parameter…</source>
-      <translation type="unfinished">New parameter…</translation>
+      <translation>புதிய அளவுரு…</translation>
     </message>
   </context>
 </TS>

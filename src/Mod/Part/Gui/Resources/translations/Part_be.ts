@@ -7766,12 +7766,12 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
       <source>Unified facemaker</source>
-      <translation type="unfinished">Unified facemaker</translation>
+      <translation>Уніфікаваны майстар граняў</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
       <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
-      <translation type="unfinished">Unified: handles nested holes, overlapping wires, and curved surfaces</translation>
+      <translation>Уніфікаваны: апрацоўвае ўкладзеныя адтуліны, якія накладваюцца адзін на аднаго ломаныя лініі і крывалінейныя паверхні</translation>
     </message>
   </context>
   <context>

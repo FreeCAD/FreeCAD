@@ -1164,12 +1164,12 @@ Only takes effect if 'Pipeline only' is enabled</source>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="144"/>
       <source>MPI path</source>
-      <translation type="unfinished">MPI path</translation>
+      <translation>Траекторыя MPI</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="175"/>
       <source>Leave blank to use default MPI binary file</source>
-      <translation type="unfinished">Leave blank to use default MPI binary file</translation>
+      <translation>Пакіньце поле пустым, каб ужыць першапачатковы двайковы файл MPI</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="191"/>
@@ -2503,27 +2503,28 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintTransform.cpp" line="318"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="328"/>
       <source>Only one face (edge in 2D model) for rectangular local coordinate system!</source>
-      <translation type="unfinished">Only one face (edge in 2D model) for rectangular local coordinate system!</translation>
+      <translation>Толькі адна грань (рабро ў дзвюхмернай мадэлі) для прастакутнай лакальнай сістэмы каардынат!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="361"/>
       <source>Only one face (edge in 2D model) for local coordinate system!</source>
-      <translation type="unfinished">Only one face (edge in 2D model) for local coordinate system!</translation>
+      <translation>Толькі адна грань (рабро ў дзвюхмернай мадэлі) для лакальнай сістэмы каардынат!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="375"/>
       <source>Only faces (edges in 2D model) can be picked</source>
-      <translation type="unfinished">Only faces (edges in 2D model) can be picked</translation>
+      <translation>Можна выбраць толькі грані (рэбры ў дзвюхмернай мадэлі)</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="393"/>
       <source>Only cylindrical faces (edges in 2D model) can be picked</source>
-      <translation type="unfinished">Only cylindrical faces (edges in 2D model) can be picked</translation>
+      <translation>Можна выбраць толькі цыліндрычныя грані (рэбры ў дзвюхмернай мадэлі)</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="437"/>
       <source>Only transformable faces (edges in 2D model) can be selected! Apply a displacement boundary condition or a force load to a boundary first then apply the local coordinate system.</source>
-      <translation type="unfinished">Only transformable faces (edges in 2D model) can be selected! Apply a displacement boundary condition or a force load to a boundary first then apply the local coordinate system.</translation>
+      <translation>Можна выбраць толькі пераўтвораныя грані (рэбры ў дзвюхмернай мадэлі)!
+Спачатку прымяніце межавую ўмову зрушэння ці сілавую нагрузку да мяжы, а потым прымяніце лакальную сістэму каардынат.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="310"/>

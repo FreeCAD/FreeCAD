@@ -3748,7 +3748,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandDecorate.cpp" line="359"/>
       <source>Image files</source>
-      <translation type="unfinished">Image files</translation>
+      <translation>பட கோப்புகள்</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="363"/>
