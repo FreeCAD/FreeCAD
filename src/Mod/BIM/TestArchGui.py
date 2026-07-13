@@ -34,3 +34,24 @@ from bimtests.TestArchWallGui import TestArchWallGui
 from bimtests.TestArchWindowGui import TestArchWindowGui
 from bimtests.TestWebGLExportGui import TestWebGLExportGui
 from bimtests.TestArchCoveringGui import TestArchCoveringGui
+
+TEST_CLASSES = (
+    TestArchImportersGui,
+    TestArchAxisGui,
+    TestArchBuildingPartGui,
+    TestArchStairsGui,
+    TestArchReportGui,
+    TestArchSiteGui,
+    TestArchWallGui,
+    TestArchWindowGui,
+    TestWebGLExportGui,
+    TestArchCoveringGui,
+)
+
+
+def load_tests(loader, _tests, _pattern):
+    """Return the complete Arch GUI test suite explicitly."""
+    suite = loader.suiteClass()
+    for test_class in TEST_CLASSES:
+        suite.addTests(loader.loadTestsFromTestCase(test_class))
+    return suite

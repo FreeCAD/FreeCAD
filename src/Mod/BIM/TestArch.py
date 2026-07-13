@@ -27,6 +27,10 @@ from bimtests.TestArchRoof import TestArchRoof
 from bimtests.TestArchSpace import TestArchSpace
 from bimtests.TestArchWall import TestArchWall
 from bimtests.TestArchWallGeometry import TestArchWallGeometry
+from bimtests.TestArchWallJoint import TestArchWallJoint
+from bimtests.TestArchWallJoinMatrix import TestArchWallJoinMatrix
+from bimtests.TestArchWallJunction import TestArchWallJunction
+from bimtests.TestArchWallJunctionMatrix import TestArchWallJunctionMatrix
 from bimtests.TestArchBuildingPart import TestArchBuildingPart
 from bimtests.TestArchAxis import TestArchAxis
 from bimtests.TestArchStructure import TestArchStructure
@@ -51,3 +55,46 @@ from bimtests.TestArchComponent import TestArchComponent
 from bimtests.TestWebGLExport import TestWebGLExport
 from bimtests.TestArchReport import TestArchReport
 from bimtests.TestArchCovering import TestArchCovering
+
+TEST_CLASSES = (
+    TestArchRoof,
+    TestArchSpace,
+    TestArchWall,
+    TestArchWallGeometry,
+    TestArchWallJoint,
+    TestArchWallJoinMatrix,
+    TestArchWallJunction,
+    TestArchWallJunctionMatrix,
+    TestArchBuildingPart,
+    TestArchAxis,
+    TestArchStructure,
+    TestArchMaterial,
+    TestArchPanel,
+    TestArchWindow,
+    TestArchStairs,
+    TestArchPipe,
+    TestArchCurtainWall,
+    TestArchProfile,
+    TestArchProject,
+    TestArchSectionPlane,
+    TestArchRebar,
+    TestArchGrid,
+    TestArchFence,
+    TestArchEquipment,
+    TestArchFrame,
+    TestArchReference,
+    TestArchSchedule,
+    TestArchTruss,
+    TestArchComponent,
+    TestWebGLExport,
+    TestArchReport,
+    TestArchCovering,
+)
+
+
+def load_tests(loader, _tests, _pattern):
+    """Return the complete Arch application test suite explicitly."""
+    suite = loader.suiteClass()
+    for test_class in TEST_CLASSES:
+        suite.addTests(loader.loadTestsFromTestCase(test_class))
+    return suite
