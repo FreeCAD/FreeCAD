@@ -1081,8 +1081,6 @@ SET(Inventor_CPP_SRCS
     ColorScaleOverlay.cpp
     SoFCColorBar.cpp
     SoFCColorBarNotifier.cpp
-    SoFCColorGradient.cpp
-    SoFCColorLegend.cpp
     SoFCDB.cpp
     SoFCInteractiveElement.cpp
     SoFCOffscreenRenderer.cpp
@@ -1126,8 +1124,6 @@ SET(Inventor_SRCS
     ColorScaleOverlay.h
     SoFCColorBar.h
     SoFCColorBarNotifier.h
-    SoFCColorGradient.h
-    SoFCColorLegend.h
     SoFCDB.h
     SoFCInteractiveElement.h
     SoFCOffscreenRenderer.h

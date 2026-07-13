@@ -62,8 +62,6 @@
 #include "SelectionObject.h"
 #include "SoDevicePixelRatioElement.h"
 #include "SoFCColorBar.h"
-#include "SoFCColorGradient.h"
-#include "SoFCColorLegend.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCSelection.h"
 #include "SoFCSelectionAction.h"
@@ -111,10 +109,7 @@ void Gui::SoFCDB::init()
     SoGLRenderActionElement ::initClass();
     SoFCInteractiveElement ::initClass();
     SoGLWidgetElement ::initClass();
-    SoFCColorBarBase ::initClass();
     SoFCColorBar ::initClass();
-    SoFCColorLegend ::initClass();
-    SoFCColorGradient ::initClass();
     SoFCScreenSpaceGroup ::initClass();
     SoFCBackgroundGradient ::initClass();
     SoFCBoundingBox ::initClass();
@@ -250,10 +245,7 @@ void Gui::SoFCDB::finish()
     // Coin doesn't provide a mechanism to free static members of own data types.
     // Hence, we need to define a static method e.g. 'finish()' for all new types
     // to invoke the private member function 'atexit_cleanup()'.
-    SoFCColorBarBase ::finish();
     SoFCColorBar ::finish();
-    SoFCColorLegend ::finish();
-    SoFCColorGradient ::finish();
     SoFCBackgroundGradient ::finish();
     SoFCBoundingBox ::finish();
     SoFCSelection ::finish();

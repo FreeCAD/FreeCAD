@@ -120,6 +120,7 @@ _SNAPSHOT_FIXTURES = {
     "SoStringLabel": _SnapshotFixture(_CameraPolicy.FIXED_OVERLAY),
     "SoColorBarLabel": _SnapshotFixture(_CameraPolicy.FIXED_OVERLAY),
     "SoFrameLabel": _SnapshotFixture(_CameraPolicy.FIXED_OVERLAY),
+    "SoFCColorBar": _SnapshotFixture(_CameraPolicy.COLOR_BAR_OVERLAY),
     "So3DAnnotation": _SnapshotFixture(),
     "SoFCPlacementIndicatorKit": _SnapshotFixture(),
     "SoAxisCrossKit": _SnapshotFixture(),
@@ -471,6 +472,18 @@ def _find_descendant(coin, root, type_name: str):
     return None if path is None else path.getTail()
 
 
+def _set_scene_font_family(coin, node, family: str) -> None:
+    """Apply the vendored font to all SoFont nodes in a fixture graph."""
+    if node.getTypeId().isDerivedFrom(coin.SoFont.getClassTypeId()):
+        node.name.setValue(family)
+
+    if not node.getTypeId().isDerivedFrom(coin.SoGroup.getClassTypeId()):
+        return
+
+    for index in range(node.getNumChildren()):
+        _set_scene_font_family(coin, node.getChild(index), family)
+
+
 def _configure_preview_geometry(coin, preview) -> None:
     """Populate SoPreviewShape's retained SoFCShape geometry for a test scene."""
     coords = _find_descendant(coin, preview, "SoCoordinate3")
@@ -686,6 +699,14 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
         label.string.setValues(0, 2, ["Low", "High"])
         root.addChild(color)
         root.addChild(label)
+        return root
+
+    if type_name == "SoFCColorBar":
+        # The color scale defaults to its continuous presentation, so this snapshot covers the
+        # complete foreground composition without depending on application-side setup.
+        _add_gradient_background(root, coin, (0.07, 0.09, 0.15), (0.16, 0.19, 0.28))
+        root.addChild(_instantiate(coin, "SoFCColorBar"))
+        _set_scene_font_family(coin, root, _DEFAULT_FONT_FAMILY)
         return root
 
     if type_name == "So3DAnnotation":
