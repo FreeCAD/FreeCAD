@@ -50,9 +50,8 @@ import FreeCAD
 import ArchCommands
 import ArchComponent
 import ArchSketchObject
-import ArchWallPath
-import ArchWallUtils
-import ArchWallSection
+import ArchWallGeometry
+import ArchWallEndpoint
 import Draft
 import DraftVecUtils
 
@@ -1404,9 +1403,9 @@ class _Wall(ArchComponent.Component):
         if len(pts) < 2:
             return
 
-        edit = ArchWallUtils.resolve_endpoint_edit(obj, pts)
+        edit = ArchWallEndpoint.resolve_endpoint_edit(obj, pts)
         if edit is not None:
-            ArchWallUtils.apply_endpoint_edit(obj, edit)
+            ArchWallEndpoint.apply_endpoint_edit(obj, edit)
 
     def handleComponentRemoval(self, obj, subobject):
         """
@@ -1417,9 +1416,9 @@ class _Wall(ArchComponent.Component):
 
         # Check if the component being removed is this wall's Base
         if hasattr(obj, "Base") and obj.Base == subobject:
-            if ArchWallUtils.is_debasable(obj):
+            if ArchWallEndpoint.is_debasable(obj):
                 # This is a valid, single-line wall. Perform a clean debase.
-                ArchWallUtils.debaseWall(obj)
+                ArchWallEndpoint.debaseWall(obj)
             else:
                 # This is a complex wall. Behavior depends on GUI availability.
                 if FreeCAD.GuiUp:
@@ -1565,14 +1564,14 @@ class _Wall(ArchComponent.Component):
             raw_thickness = float(raw_thickness)
             thickness = abs(raw_thickness)
             resolved_layers.append(
-                ArchWallSection.WallSectionLayer(
+                ArchWallGeometry.WallSectionLayer(
                     raw_thickness=raw_thickness,
                     y_min=cursor,
                     y_max=cursor + thickness,
                 )
             )
             cursor += thickness
-        return ArchWallSection.WallSection(tuple(resolved_layers))
+        return ArchWallGeometry.WallSection(tuple(resolved_layers))
 
     def _base_section_values(self, obj):
         """Read optional section lists from an ArchSketch base provider.
@@ -1838,7 +1837,8 @@ class _Wall(ArchComponent.Component):
             if source_edge.Curve.TypeId != "Part::GeomLine":
                 return None
             points = [
-                placement.multVec(point) for point in ArchWallUtils.get_oriented_base_points(base)
+                placement.multVec(point)
+                for point in ArchWallEndpoint.get_oriented_base_points(base)
             ]
             if len(points) != 2 or points[0].distanceToPoint(points[1]) <= 1e-9:
                 return None
@@ -1866,7 +1866,7 @@ class _Wall(ArchComponent.Component):
         normal.normalize()
         if edge.Vertexes[0].Point.sub(edge.Vertexes[-1].Point).cross(normal).Length <= 1e-9:
             return None
-        return ArchWallPath.WallBaseline(edge, normal, points[0], points[1])
+        return ArchWallGeometry.WallBaseline(edge, normal, points[0], points[1])
 
 
 if FreeCAD.GuiUp:

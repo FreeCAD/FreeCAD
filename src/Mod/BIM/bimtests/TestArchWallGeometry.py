@@ -20,8 +20,7 @@
 
 """Direct tests for the wall path and section value objects."""
 
-import ArchWallPath
-import ArchWallSection
+import ArchWallGeometry
 import FreeCAD as App
 import Part
 
@@ -33,7 +32,7 @@ class TestArchWallGeometry(TestArchBase.TestArchBase):
 
     def test_wall_path_operations_use_finite_segments(self):
         """Path queries use ordered finite endpoints and global geometry."""
-        path = ArchWallPath.WallPath(
+        path = ArchWallGeometry.WallPath(
             Part.makeLine(App.Vector(0, 0, 0), App.Vector(1000, 0, 0)),
             App.Vector(0, 0, 1),
         )
@@ -43,23 +42,23 @@ class TestArchWallGeometry(TestArchBase.TestArchBase):
         self.assertEqual(path.nearest_end_name(App.Vector(500, 0, 0)), "End")
         self.assertTrue(path.lateral_direction().isEqual(App.Vector(0, -1, 0), 1e-6))
 
-        crossing = ArchWallPath.WallPath(
+        crossing = ArchWallGeometry.WallPath(
             Part.makeLine(App.Vector(500, -500, 0), App.Vector(500, 500, 0)),
             App.Vector(0, 0, 1),
         )
-        point, end_a, end_b = ArchWallPath.find_path_intersection(path, crossing)
+        point, end_a, end_b = ArchWallGeometry.find_path_intersection(path, crossing)
         self.assertTrue(point.isEqual(App.Vector(500, 0, 0), 1e-6))
         self.assertEqual((end_a, end_b), ("End", "End"))
 
     def test_wall_path_consumes_immutable_oriented_baseline(self):
         """WallPath uses explicit endpoint orientation from WallBaseline."""
-        baseline = ArchWallPath.WallBaseline(
+        baseline = ArchWallGeometry.WallBaseline(
             Part.makeLine(App.Vector(1000, 0, 0), App.Vector(0, 0, 0)),
             App.Vector(0, 0, 1),
             App.Vector(1000, 0, 0),
             App.Vector(0, 0, 0),
         )
-        path = ArchWallPath.WallPath.from_baseline(baseline)
+        path = ArchWallGeometry.WallPath.from_baseline(baseline)
         self.assertTrue(path.start_point.isEqual(baseline.start_point, 1e-6))
         self.assertTrue(path.end_point.isEqual(baseline.end_point, 1e-6))
         with self.assertRaises(AttributeError):
@@ -68,25 +67,25 @@ class TestArchWallGeometry(TestArchBase.TestArchBase):
     def test_wall_path_rejects_invalid_values(self):
         """WallPath rejects non-geometry, degenerate, and parallel inputs."""
         with self.assertRaises(TypeError):
-            ArchWallPath.WallPath(None, App.Vector(0, 0, 1))
+            ArchWallGeometry.WallPath(None, App.Vector(0, 0, 1))
         with self.assertRaises((ValueError, Part.OCCError)):
-            ArchWallPath.WallPath(
+            ArchWallGeometry.WallPath(
                 Part.makeLine(App.Vector(0, 0, 0), App.Vector(0, 0, 0)),
                 App.Vector(0, 0, 1),
             )
         with self.assertRaises(ValueError):
-            ArchWallPath.WallPath(
+            ArchWallGeometry.WallPath(
                 Part.makeLine(App.Vector(0, 0, 0), App.Vector(1000, 0, 0)),
                 App.Vector(1, 0, 0),
             )
 
     def test_wall_section_is_immutable_resolved_data(self):
         """WallSection exposes resolved extents without mutable state."""
-        section = ArchWallSection.WallSection(
+        section = ArchWallGeometry.WallSection(
             (
-                ArchWallSection.WallSectionLayer(100, -150, -50),
-                ArchWallSection.WallSectionLayer(-50, -50, 0),
-                ArchWallSection.WallSectionLayer(200, 0, 200),
+                ArchWallGeometry.WallSectionLayer(100, -150, -50),
+                ArchWallGeometry.WallSectionLayer(-50, -50, 0),
+                ArchWallGeometry.WallSectionLayer(200, 0, 200),
             )
         )
 

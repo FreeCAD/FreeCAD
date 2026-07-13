@@ -10,7 +10,7 @@
 #                                                                              #
 ################################################################################
 
-"""Utilities for calculating and applying wall endpoint edits.
+"""Calculate and apply wall endpoint edits.
 
 This module deliberately has no dependency on :mod:`Arch`.  The public Arch
 API and the wall proxy share these helpers, keeping endpoint conversion out
@@ -18,7 +18,6 @@ of the recompute-time factory module.
 """
 
 from dataclasses import dataclass
-
 import FreeCAD
 import Part
 
@@ -161,7 +160,7 @@ def get_oriented_base_points(base):
     relies on shape vertex order, and it is retained for legacy line-shaped
     document objects that provide no semantic endpoint API.
     """
-    if hasattr(base, "Start") and hasattr(base, "End"):
+    if "Start" in base.PropertiesList and "End" in base.PropertiesList:
         return FreeCAD.Vector(base.Start), FreeCAD.Vector(base.End)
 
     if base.isDerivedFrom("Sketcher::SketchObject") and len(base.Geometry) == 1:

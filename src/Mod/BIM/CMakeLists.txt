@@ -22,9 +22,8 @@ SET(Arch_SRCS
     ArchIFCSchema.py
     ArchProject.py
     ArchWall.py
-    ArchWallUtils.py
-    ArchWallPath.py
-    ArchWallSection.py
+    ArchWallEndpoint.py
+    ArchWallGeometry.py
     Arch.py
     ArchSite.py
     ArchStructure.py
