@@ -120,6 +120,7 @@ _SNAPSHOT_FIXTURES = {
     "SoStringLabel": _SnapshotFixture(_CameraPolicy.FIXED_OVERLAY),
     "SoColorBarLabel": _SnapshotFixture(_CameraPolicy.FIXED_OVERLAY),
     "SoFrameLabel": _SnapshotFixture(_CameraPolicy.FIXED_OVERLAY),
+    "So3DAnnotation": _SnapshotFixture(),
     "SoFCPlacementIndicatorKit": _SnapshotFixture(),
     "SoAxisCrossKit": _SnapshotFixture(),
     "SoFCBackgroundGradient": _SnapshotFixture(),
@@ -687,6 +688,56 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
         root.addChild(label)
         return root
 
+    if type_name == "So3DAnnotation":
+        light_model = coin.SoLightModel()
+        light_model.model.setValue(coin.SoLightModel.BASE_COLOR)
+
+        plate_material = coin.SoMaterial()
+        plate_material.diffuseColor.setValue(0.12, 0.30, 0.72)
+        plate_transform = coin.SoTransform()
+        plate_transform.scaleFactor.setValue(1.4, 1.0, 0.18)
+        plate = coin.SoCube()
+        root.addChild(light_model)
+        plate_group = coin.SoSeparator()
+        plate_group.addChild(plate_material)
+        plate_group.addChild(plate_transform)
+        plate_group.addChild(plate)
+        root.addChild(plate_group)
+
+        # The annotation is deliberately placed behind the normal scene
+        # geometry. The viewer delays it, clears the scene depth buffer, and
+        # renders it afterwards so gizmos remain visible above the model.
+        annotation = _instantiate(coin, type_name)
+        annotation_material = coin.SoMaterial()
+        annotation_material.diffuseColor.setValue(0.95, 0.16, 0.05)
+        annotation_style = coin.SoDrawStyle()
+        annotation_style.style.setValue(1)  # SoDrawStyle::LINES
+        annotation_style.lineWidth.setValue(3.0)
+        annotation_transform = coin.SoTransform()
+        annotation_transform.translation.setValue(0.0, 0.0, -0.55)
+        annotation_transform.scaleFactor.setValue(0.95, 0.72, 0.55)
+        annotation_box = coin.SoCube()
+        annotation_box_group = coin.SoSeparator()
+        annotation_box_group.addChild(annotation_material)
+        annotation_box_group.addChild(annotation_style)
+        annotation_box_group.addChild(annotation_transform)
+        annotation_box_group.addChild(annotation_box)
+        annotation.addChild(annotation_box_group)
+
+        marker_material = coin.SoMaterial()
+        marker_material.diffuseColor.setValue(1.0, 0.75, 0.05)
+        marker_transform = coin.SoTransform()
+        marker_transform.translation.setValue(0.0, 0.0, -0.55)
+        marker_transform.scaleFactor.setValue(0.35, 0.35, 0.35)
+        marker = coin.SoSphere()
+        marker_group = coin.SoSeparator()
+        marker_group.addChild(marker_material)
+        marker_group.addChild(marker_transform)
+        marker_group.addChild(marker)
+        annotation.addChild(marker_group)
+        root.addChild(annotation)
+        return root
+
     if type_name == "SoFrameLabel":
         label = _instantiate(coin, "SoFrameLabel")
         label.string.setValue("Frame Label")
@@ -1193,6 +1244,8 @@ class _ViewerSnapshotHarness:
             self.viewer = self.view.getViewer()
             self.viewer.setBackgroundColor(1.0, 1.0, 1.0)
             self.viewer.setGradientBackground("NONE")
+            # Keep viewer-owned 3D annotations out of node-specific snapshots.
+            self.view.setAxisCross(False)
             graphics_view = self.view.graphicsView()
             graphics_view.resize(width, height)
             graphics_view.show()
@@ -2069,6 +2122,18 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
                         10,
                         f"snapshot seems empty (all background): {actual_path}",
                     )
+                    if type_name == "So3DAnnotation":
+                        annotation_pixels = _matching_pixel_count(
+                            actual_path,
+                            lambda red, green, blue, _alpha: red >= 160
+                            and green <= 120
+                            and blue <= 120,
+                        )
+                        self.assertGreater(
+                            annotation_pixels,
+                            50,
+                            "delayed So3DAnnotation geometry should remain visible above the plate",
+                        )
                     did_render = True
                     baseline_path = baseline_dir / f"{type_name}.png"
 

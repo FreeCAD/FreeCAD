@@ -3092,6 +3092,7 @@ bool View3DInventorViewer::renderToFramebuffer(QOpenGLFramebufferObject* fbo, bo
         SoNode* scene = this->getSceneGraph();
         gl.apply(scene == this->viewerSceneRoot ? this->selectionRoot : scene);
     }
+    renderDelayedAnnotations(&gl);
     gl.apply(this->foregroundroot);
     if (shouldRenderDecorations(currentRenderIntent())) {
         gl.apply(this->decorationroot);
@@ -3207,6 +3208,38 @@ void View3DInventorViewer::recoverFromRenderMemoryException()
     );
 }
 
+void View3DInventorViewer::renderDelayedAnnotations(SoGLRenderAction* glra)
+{
+    SoState* state = glra->getState();
+
+    if (!Gui::SoDelayedAnnotationsElement::hasDelayedPaths(state)) {
+        return;
+    }
+
+    class ScopedAnnotationRender
+    {
+    public:
+        ScopedAnnotationRender()
+        {
+            So3DAnnotation::render = true;
+        }
+
+        ~ScopedAnnotationRender()
+        {
+            So3DAnnotation::render = false;
+        }
+    } annotationRender;
+
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+    if (Gui::Selection().isClarifySelectionActive()) {
+        Gui::SoDelayedAnnotationsElement::processDelayedPathsWithPriority(state, glra);
+    }
+    else {
+        glra->apply(Gui::SoDelayedAnnotationsElement::getDelayedPaths(state));
+    }
+}
+
 void View3DInventorViewer::renderGLActionScene(const QColor& backgroundColor, SoGLRenderAction* glra)
 {
     SoState* state = glra->getState();
@@ -3230,20 +3263,7 @@ void View3DInventorViewer::renderGLActionScene(const QColor& backgroundColor, So
     try {
         // Render normal scenegraph.
         inherited::actualRedraw();
-
-        So3DAnnotation::render = true;
-        glClear(GL_DEPTH_BUFFER_BIT);
-
-        // process delayed paths with priority support
-        if (Gui::Selection().isClarifySelectionActive()) {
-            Gui::SoDelayedAnnotationsElement::processDelayedPathsWithPriority(state, glra);
-        }
-        else {
-            // standard processing for normal delayed annotations
-            glra->apply(Gui::SoDelayedAnnotationsElement::getDelayedPaths(state));
-        }
-
-        So3DAnnotation::render = false;
+        renderDelayedAnnotations(glra);
     }
     catch (const Base::MemoryException&) {
         this->recoverFromRenderMemoryException();

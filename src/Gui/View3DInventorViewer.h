@@ -633,6 +633,7 @@ private:
     void drawAxisCross();
     void drawSingleBackground(const QColor&);
     void recoverFromRenderMemoryException();
+    void renderDelayedAnnotations(SoGLRenderAction* glra);
     void renderGLActionScene(const QColor& backgroundColor, SoGLRenderAction* glra);
     bool renderToFramebuffer(QOpenGLFramebufferObject*, bool includeViewerLighting = true);
     void setCursorRepresentation(int mode);
