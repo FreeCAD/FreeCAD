@@ -118,25 +118,26 @@ void DlgFlex::changeEvent(QEvent* e)
 //! list widget
 void DlgFlex::findShapes()
 {
-    App::Document* activeDoc = App::GetApplication().getActiveDocument();
+    auto* activeDoc = App::GetApplication().getActiveDocument();
     if (!activeDoc) {
         return;
     }
-    Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
     m_document = activeDoc->getName();
     m_label = activeDoc->Label.getValue();
 
-    std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
+    auto* activeGui = Gui::Application::Instance->getDocument(activeDoc);
+
+    auto objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
     for (auto obj : objs) {
-        Part::TopoShape topoShape = Part::Feature::getTopoShape(
+        const auto& topoShape = Part::Feature::getTopoShape(
             obj,
             Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
         );
         if (topoShape.isNull()) {
             continue;
         }
-        TopoDS_Shape shape = topoShape.getShape();
+        const auto& shape = topoShape.getShape();
         if (shape.IsNull()) {
             continue;
         }
@@ -156,25 +157,25 @@ void DlgFlex::findShapes()
 //! list widget
 void DlgFlex::findEdges()
 {
-    App::Document* activeDoc = App::GetApplication().getActiveDocument();
+    auto* activeDoc = App::GetApplication().getActiveDocument();
     if (!activeDoc) {
         return;
     }
-    Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
+    auto* activeGui = Gui::Application::Instance->getDocument(activeDoc);
     m_document = activeDoc->getName();
     m_label = activeDoc->Label.getValue();
 
-    std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
+    auto objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
     for (auto obj : objs) {
-        Part::TopoShape topoShape = Part::Feature::getTopoShape(
+        const auto& topoShape = Part::Feature::getTopoShape(
             obj,
             Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
         );
         if (topoShape.isNull()) {
             continue;
         }
-        TopoDS_Shape shape = topoShape.getShape();
+        const auto& shape = topoShape.getShape();
         if (isEdge(shape)) {
             QTreeWidgetItem* item = new QTreeWidgetItem(ui->twEdges);
             item->setText(0, QString::fromUtf8(obj->Label.getValue()));
@@ -193,8 +194,7 @@ bool DlgFlex::isEdge(const TopoDS_Shape& shape) const
     if (shape.IsNull()) {
         return false;
     }
-    TopAbs_ShapeEnum type = shape.ShapeType();
-    if (type == TopAbs_EDGE) {
+    if (shape.ShapeType() == TopAbs_EDGE) {
         return true;
     }
 
