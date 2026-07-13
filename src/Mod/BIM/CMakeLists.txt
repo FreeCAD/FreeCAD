@@ -24,6 +24,9 @@ SET(Arch_SRCS
     ArchWall.py
     ArchWallEndpoint.py
     ArchWallGeometry.py
+    ArchWallJoint.py
+    ArchWallRelation.py
+    ArchWallRelationBase.py
     Arch.py
     ArchSite.py
     ArchStructure.py

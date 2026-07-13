@@ -305,7 +305,11 @@ def convertFloors(floor=None):
                 nobj.CompositionType = "ELEMENT"
                 t = QT_TRANSLATE_NOOP("App::Property", "The type of this building")
                 nobj.addProperty(
-                    "App::PropertyEnumeration", "BuildingType", "Building", t, locked=True
+                    "App::PropertyEnumeration",
+                    "BuildingType",
+                    "Building",
+                    t,
+                    locked=True,
                 )
                 nobj.BuildingType = ArchBuildingPart.BuildingTypes
             label = obj.Label
@@ -1744,6 +1748,45 @@ def makeWall(
     return wall
 
 
+def makeWallJoint(wall_a=None, wall_b=None, joint_type="Miter", name=None):
+    """Create a persistent two-wall relation in the active document.
+
+    The returned object stores links and settings only; its linked walls apply
+    the solved trim during recompute.  ``joint_type`` accepts ``Miter``,
+    ``Butt``, or ``Tee`` and defaults to ``Miter``.
+    """
+
+    import ArchWallRelation
+
+    if joint_type not in ArchWallRelation.JOINT_TYPES:
+        allowed = ", ".join(ArchWallRelation.JOINT_TYPES)
+        raise ValueError(f"Unsupported wall joint type {joint_type!r}; expected one of: {allowed}")
+
+    joint = _initializeArchObject(
+        "App::FeaturePython",
+        baseClassName="_WallJoint",
+        internalName="WallJoint",
+        defaultLabel=name if name else translate("Arch", "Wall Joint"),
+        moduleName="ArchWallJoint",
+        viewProviderName="_ViewProviderWallJoint",
+    )
+    if joint is None:
+        return None
+
+    if wall_a is not None:
+        joint.WallA = wall_a
+    if wall_b is not None:
+        joint.WallB = wall_b
+    joint.JointType = joint_type
+    joint.touch()
+    if name:
+        joint.AutoLabel = False
+        joint.Label = name
+    else:
+        joint.Proxy.updatePresentation(joint, force_label=True)
+    return joint
+
+
 def joinWalls(walls, delete=False, deletebase=False):
     """Join the given list of walls into one sketch-based wall.
 
@@ -2134,7 +2177,14 @@ def makeWindow(
                     ]
             else:
                 # Bind properties from base obj if they exist and have a value
-                for prop in ["Height", "Width", "Subvolume", "Tag", "Description", "Material"]:
+                for prop in [
+                    "Height",
+                    "Width",
+                    "Subvolume",
+                    "Tag",
+                    "Description",
+                    "Material",
+                ]:
                     for baseobj_prop in baseobj.PropertiesList:
                         if (baseobj_prop == prop or baseobj_prop.endswith(f"_{prop}")) and getattr(
                             baseobj, baseobj_prop
