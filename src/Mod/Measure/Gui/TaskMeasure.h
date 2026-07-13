@@ -36,6 +36,7 @@
 #include <Gui/Document.h>
 
 #include <Mod/Measure/App/MeasureBase.h>
+#include <Mod/Measure/App/MeasureSnap.h>
 #include <Mod/Measure/Gui/ViewProviderMeasureBase.h>
 
 
@@ -45,6 +46,7 @@
 
 #include <fastsignals/connection.h>
 
+#include <map>
 #include <memory>
 
 namespace MeasureGui
@@ -85,6 +87,7 @@ private:
     void updateUnitDropdown(const App::MeasureType* measureType);
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     bool snapEnabled() const;
+    Measure::MeasureSnapMode currentSnapMode() const;
     void onObjectDeleted(const App::DocumentObject& obj);
     void saveMeasurement();
     void quitMeasurement();
@@ -129,6 +132,9 @@ private:
     Gui::Document* mTargetDoc;
 
     std::unique_ptr<MeasureSnapManager> mSnapManager;
+
+    // Snap mode captured for each selected element, applied to Snap1/Snap2 at click
+    std::map<App::SubObjectT, Measure::MeasureSnapMode> mSnapClickState;
 };
 
 }  // namespace MeasureGui
