@@ -343,3 +343,17 @@ class DocumentObject(ExtensionContainer):
         getPlacementOf(subname, [targetObj]) -> Base.Placement
         """
         ...
+
+    @constmethod
+    def moveProperty(self, name: str, targetObj: DocumentObject, /) -> None:
+        """
+        moveProperty(name, targetObj) -> None
+
+        Move a property to the target container.
+
+        name : str
+            The name of the property to move.
+        targetObj : DocumentObject
+            The target object to move the property to.
+        """
+        ...

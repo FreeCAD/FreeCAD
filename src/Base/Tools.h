@@ -27,6 +27,7 @@
 
 #include <FCGlobal.h>
 #include <algorithm>
+#include <functional>
 #include <cmath>
 #include <numbers>
 #include <ostream>
@@ -309,6 +310,25 @@ private:
 };
 
 // ----------------------------------------------------------------------------
+
+class ScopeGuard
+{
+public:
+    explicit ScopeGuard(std::function<void()> onExitScope)
+        : onExitScope(std::move(onExitScope))
+    {}
+    ~ScopeGuard()
+    {
+        onExitScope();
+    }
+    ScopeGuard(const ScopeGuard&) = delete;
+    ScopeGuard& operator=(const ScopeGuard&) = delete;
+    ScopeGuard(ScopeGuard&&) = default;
+    ScopeGuard& operator=(ScopeGuard&&) = default;
+
+private:
+    std::function<void()> onExitScope;
+};
 
 template<typename T>
 class BitsetLocker

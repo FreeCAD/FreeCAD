@@ -27,6 +27,7 @@
 #include <CXX/Objects.hxx>
 #include <Base/Observer.h>
 #include <Base/Persistence.h>
+#include <Base/Tools.h>
 #include <Base/Type.h>
 #include <Base/Handle.h>
 #include <Base/Bitmask.h>
@@ -1054,8 +1055,8 @@ public:
      *
      * @warning This function is only for internal use.
      */
-
     void addOrRemovePropertyOfObject(TransactionalObject* obj, const Property* prop, bool add);
+
     /**
      * @brief Register that a property of an object has been renamed in a transaction.
      *
@@ -1066,6 +1067,17 @@ public:
      * @warning This function is only for internal use.
      */
     void renamePropertyOfObject(TransactionalObject* obj, const Property* prop, const char* newName);
+
+    /**
+     * @brief Register in a transaction that a property move has been arranged.
+     *
+     * @param[in] obj The object whose property is moved.
+     * @param[in] toBeMovedProp The property that is moved.
+     * @param[in] target The object to which the property is moved.
+     * @param[in] newProp The new property in the target object.
+     */
+    void arrangeMovePropertyOfObject(TransactionalObject* obj, const Property* toBeMovedProp,
+                                     TransactionalObject* target, Property* newProp);
     /// @}
 
     /** @name Dependency items.
@@ -1471,6 +1483,7 @@ protected:
 private:
     void changePropertyOfObject(TransactionalObject* obj, const Property* prop,
                                 const std::function<void()>& changeFunc);
+    [[nodiscard]] Base::ScopeGuard setDefiningTransaction();
 
 private:
     // # Data Member of the document
