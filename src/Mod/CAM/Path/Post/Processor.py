@@ -608,6 +608,10 @@ class PostProcessor:
         self._kwargs = kwargs
         self._optimize_start = None
         self._bcnc_postamble_commands = None
+        self._operation = None
+
+        # Reset this to None when not in-use (e.g. _convert_job_sections)
+        # Use `with self.use_machine_state():`
         self.machine_state = None
 
         # Handle job: can be single job or list of jobs
@@ -1223,7 +1227,7 @@ class PostProcessor:
                         if has_drill:
                             Path.Log.debug(f"Translating drill cycles for {item.label}")
                             expander = DrillCycleExpander(self.machine_state)
-                            item.path = expander.expand_path(item.path, strict=True)
+                            item.path = expander.expand_path(item.path)
                             # DrillCycleExpander tracks it's commands: machine_state.addCommands(...)
 
                         else:
@@ -1643,7 +1647,14 @@ class PostProcessor:
             )
 
         for cmd in item.path.Commands:
-            self.machine_state.addCommand(cmd)  # .previous has state before this command
+            # Update the MachineState before the PP converts it
+            # So, `machine_state` reflects where we end up.
+            # And, so `machine_state` reflects the intended location for the next command
+            # (we can't update on the result of the PP's convert).
+            # `.previous` is where we were before the cmd (often useful)
+            # If the MachineState won't be right after the PP's convert,
+            # then the PP must fix MachineState.
+            self.machine_state.addCommand(cmd)
 
             try:
 
@@ -1975,9 +1986,10 @@ class PostProcessor:
 
         job_sections = []
 
-        with self.use_machine_state():
+        for section_name, sublist in postables:
 
-            for section_name, sublist in postables:
+            # MachineState per file (section)
+            with self.use_machine_state():
                 gcode_lines = []
 
                 # For _optimize_gcode, FIXME: do annotations on Postables instead
@@ -2007,20 +2019,6 @@ class PostProcessor:
                     job_sections.append((section_name, gcode_string))
 
         return job_sections
-
-    def dump_sections(self, msg, sections):
-        """Print the sections
-        for development/debugging
-        """
-        print(f"## proc DUMP {msg}")
-        for si, (sn, postables) in enumerate(sections):
-            print(f"Section[{si}] '{sn}'")
-            for pi, p in enumerate(postables):
-                print(f"  Postable[{pi}] {p.item_type}:'{p.Name}'")
-                print(f"    {p}")
-                if p.Path:
-                    for i, c in enumerate(p.Path.Commands):
-                        print(f"        [{i}] {c.toGCode()}")
 
     def export2(self) -> Union[None, GCodeSections]:
         """
@@ -2204,10 +2202,6 @@ class PostProcessor:
         # processing the arguments) or a string containing the argument list formatted
         # for output.  Either way the calling routine will need to handle the args value.
         #
-        x = {
-            k: v for k, v in self.values.items() if k in "OUTPUT_DOUBLES OUTPUT_DUPLICATE_COMMANDS"
-        }
-        print(f"## args {x}")
         return flag, args
 
     def process_postables(self) -> GCodeSections:
@@ -2230,7 +2224,6 @@ class PostProcessor:
         g_code_sections = []
         for _, section in enumerate(postables):
             partname, sublist = section
-            print(f"## PostUtilsExport.export_common...")
             gcode = PostUtilsExport.export_common(self.values, sublist, "-")
             g_code_sections.append((partname, gcode))
 
@@ -2250,6 +2243,8 @@ class PostProcessor:
         self.parser: Parser = self.init_arguments(
             self.values, self.argument_defaults, self.arguments_visible
         )
+        self.machine_state = None
+
         #
         # Create another parser just to get a list of all possible arguments
         # that may be output using --output_all_arguments.
@@ -2628,7 +2623,6 @@ class PostProcessor:
         """
         from Path.Post.UtilsParse import format_command_line
 
-        print(f"##   _convert_move {command}")
         # Extract command components
         command_name = command.Name
         params = command.Parameters
