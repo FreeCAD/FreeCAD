@@ -67,7 +67,12 @@ struct SnapResult
 
 // Auto and None resolve to nothing by intent; a requested snap that cannot apply
 // warns and resolves to nothing (the pair then uses nearest points).
-SnapResult resolveSnap(const TopoDS_Shape& shape, MeasureSnapMode mode, const char* fullName, const char* elementName)
+SnapResult resolveSnap(
+    const TopoDS_Shape& shape,
+    MeasureSnapMode mode,
+    const char* fullName,
+    const char* elementName
+)
 {
     if (mode == MeasureSnapMode::Auto || mode == MeasureSnapMode::None) {
         return {SnapKind::Unresolved, {}, {}};
