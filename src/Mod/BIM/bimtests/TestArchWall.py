@@ -591,6 +591,113 @@ class TestArchWall(TestArchBase.TestArchBase):
         self.document.recompute()
         self.assertIsNone(curved_wall.Proxy.get_global_baseline(curved_wall))
 
+    def test_resolved_section_matches_visible_shape_bounds(self):
+        """Invisible material layers move the cursor but never become faces."""
+        material_a = Arch.makeMaterial()
+        material_b = Arch.makeMaterial()
+        material = Arch.makeMultiMaterial()
+        material.Materials = [material_a, material_b]
+        material.Thicknesses = [100, -50]
+
+        wall = Arch.makeWall(length=2000, width=150, height=1000, align="Center")
+        wall.Material = material
+        self.document.recompute()
+
+        section = wall.Proxy.get_resolved_section(wall)
+        self.assertEqual([layer.raw_thickness for layer in section.layers], [100, -50])
+        self.assertAlmostEqual(wall.Shape.BoundBox.YMin, section.y_min, delta=1e-6)
+        self.assertAlmostEqual(wall.Shape.BoundBox.YMax, section.y_max, delta=1e-6)
+
+    def test_resolved_section_applies_wall_overrides_and_defaults(self):
+        """Short overrides resolve each segment against the wall defaults."""
+        wire = Draft.makeWire(
+            [App.Vector(0, 0, 0), App.Vector(1000, 0, 0), App.Vector(1000, 1000, 0)]
+        )
+        wall = Arch.makeWall(wire, width=100, height=1000, align="Center", offset=10)
+        wall.OverrideWidth = [300]
+        wall.OverrideAlign = ["Left"]
+        wall.OverrideOffset = [25]
+
+        first = wall.Proxy.get_resolved_section(wall, segment_index=0)
+        second = wall.Proxy.get_resolved_section(wall, segment_index=1)
+
+        self.assertEqual([layer.raw_thickness for layer in first.layers], [300])
+        self.assertEqual([layer.raw_thickness for layer in second.layers], [100])
+        self.assertEqual(wall.Proxy.get_width(wall, widths=False), 100.0)
+        self.assertEqual(wall.Proxy.get_width(wall), (100.0, [300]))
+
+        self.document.recompute()
+        section = wall.Proxy.get_resolved_section(wall)
+        self.assertAlmostEqual(section.y_min, -325.0)
+        self.assertAlmostEqual(section.y_max, -25.0)
+
+        first_segment = wall.Shape.common(Part.makeBox(2, 2000, 1000, App.Vector(499, -1000, 0)))
+        self.assertAlmostEqual(first_segment.BoundBox.YMin, section.y_min, delta=1e-6)
+        self.assertAlmostEqual(first_segment.BoundBox.YMax, section.y_max, delta=1e-6)
+
+        second_section = wall.Proxy.get_resolved_section(wall, segment_index=1)
+        second_segment = wall.Shape.common(Part.makeBox(2000, 2, 1000, App.Vector(-500, 499, 0)))
+        self.assertAlmostEqual(
+            second_segment.BoundBox.XMin, 1000 + second_section.y_min, delta=1e-6
+        )
+        self.assertAlmostEqual(
+            second_segment.BoundBox.XMax, 1000 + second_section.y_max, delta=1e-6
+        )
+
+    def test_resolved_material_layers_use_wall_width_for_all_segments(self):
+        """Variable material layers use the wall width, not segment overrides."""
+        wire = Draft.makeWire(
+            [App.Vector(0, 0, 0), App.Vector(1000, 0, 0), App.Vector(1000, 1000, 0)]
+        )
+        material = Arch.makeMultiMaterial()
+        material.Materials = [Arch.makeMaterial(), Arch.makeMaterial()]
+        material.Thicknesses = [50, 0]
+        wall = Arch.makeWall(wire, width=100, height=1000, align="Center")
+        wall.Material = material
+        wall.OverrideWidth = [300, 100]
+        self.document.recompute()
+
+        first = wall.Proxy.get_resolved_section(wall, segment_index=0)
+        second = wall.Proxy.get_resolved_section(wall, segment_index=1)
+        self.assertEqual([layer.raw_thickness for layer in first.layers], [50, 50])
+        self.assertEqual([layer.raw_thickness for layer in second.layers], [50, 50])
+
+        second_segment = wall.Shape.common(Part.makeBox(2000, 2, 1000, App.Vector(-500, 499, 0)))
+        self.assertAlmostEqual(second_segment.BoundBox.XMin, 1000 + second.y_min, delta=1e-6)
+        self.assertAlmostEqual(second_segment.BoundBox.XMax, 1000 + second.y_max, delta=1e-6)
+
+    def test_resolved_section_rejects_invalid_alignment_values(self):
+        """Invalid alignment sources fall back to wall.Align."""
+        wall = Arch.makeWall(length=2000, width=100, height=1000, align="Center")
+        wall.OverrideAlign = ["Bogus"]
+        section = wall.Proxy.get_resolved_section(wall)
+        self.assertAlmostEqual(section.y_min, -50.0)
+        self.assertAlmostEqual(section.y_max, 50.0)
+
+        class InvalidArchSketchProvider:
+            Type = "ArchSketch"
+
+            @staticmethod
+            def getWidths(_obj, **_kwargs):
+                return [100]
+
+            @staticmethod
+            def getAligns(_obj, **_kwargs):
+                return ["Bogus"]
+
+            @staticmethod
+            def getOffsets(_obj, **_kwargs):
+                return [0]
+
+        base = self.document.addObject("Part::FeaturePython", "InvalidArchSketchBase")
+        base.Proxy = InvalidArchSketchProvider()
+        provider_wall = Arch.makeWall(length=2000, width=100, height=1000, align="Center")
+        provider_wall.Base = base
+        provider_wall.ArchSketchData = True
+        provider_section = provider_wall.Proxy.get_resolved_section(provider_wall)
+        self.assertAlmostEqual(provider_section.y_min, -50.0)
+        self.assertAlmostEqual(provider_section.y_max, 50.0)
+
     def test_wall_makeblocks(self):
         """Test the 'MakeBlocks' feature for both based and baseless Arch Walls.
         This is a regression test for https://github.com/FreeCAD/FreeCAD/issues/26982,

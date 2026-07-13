@@ -52,6 +52,7 @@ import ArchComponent
 import ArchSketchObject
 import ArchWallPath
 import ArchWallUtils
+import ArchWallSection
 import Draft
 import DraftVecUtils
 
@@ -152,6 +153,8 @@ class _Wall(ArchComponent.Component):
         The object to turn into a wall. Note that this is not the object that
         forms the basis for the new wall's shape. That is given later.
     """
+
+    _SECTION_ALIGNMENTS = ("Left", "Right", "Center")
 
     def __init__(self, obj):
         ArchComponent.Component.__init__(self, obj)
@@ -839,7 +842,6 @@ class _Wall(ArchComponent.Component):
 
         import Part
         import DraftGeomUtils
-        import ArchSketchObject
 
         propSetUuid = self.ArchSkPropSetPickedUuid
 
@@ -855,155 +857,20 @@ class _Wall(ArchComponent.Component):
 
         self.noWidths = False
         self.noHeight = False
-        width = 0
-        # Get width of each edge segment from Base Objects if they store it
-        # (Adding support in SketchFeaturePython, DWire...)
-        widths = []  # [] or None are both False
-        if (
-            hasattr(obj, "ArchSketchData")
-            and obj.ArchSketchData
-            and Draft.getType(obj.Base) == "ArchSketch"
-        ):
-            if hasattr(obj.Base, "Proxy"):  # TODO Any need to test ?
-                if hasattr(obj.Base.Proxy, "getWidths"):
-                    # Return a list of Width corresponding to indexes of sorted
-                    # edges of Sketch.
-                    widths = obj.Base.Proxy.getWidths(obj.Base, propSetUuid=propSetUuid)
-        # Get width of each edge/wall segment from ArchWall.OverrideWidth if
-        # Base Object does not provide it
-        if not widths:
-            if obj.OverrideWidth:
-                if obj.Base and obj.Base.isDerivedFrom("Sketcher::SketchObject"):
-                    # If Base Object is ordinary Sketch (or when ArchSketch.getWidth() not implemented yet):-
-                    # sort the width list in OverrrideWidth to correspond to indexes of sorted edges of Sketch
-                    try:
-                        import ArchSketchObject
-                    except Exception:
-                        print("ArchSketchObject add-on module is not installed yet")
-                    try:
-                        widths = ArchSketchObject.sortSketchWidth(
-                            obj.Base, obj.OverrideWidth, obj.ArchSketchEdges
-                        )
-                    except Exception:
-                        widths = obj.OverrideWidth
-                else:
-                    # If Base Object is not Sketch, but e.g. DWire, the width
-                    # list in OverrrideWidth just correspond to sequential
-                    # order of edges
-                    widths = obj.OverrideWidth
-            elif obj.Width:
-                widths = [obj.Width.Value]
-            else:
-                ## having no width is valid for walls so the user doesn't need to be warned
-                ## it just disables extrusions and return none
-                ## print ("Width & OverrideWidth & base.getWidths() should not be all 0 or None or [] empty list ")
-                #
-                # Having no width is valid for walls for a few cases, e.g.-
-                # - it has Base with solid
-                # - it has Additions
-                # A message could be provided in the Report panel for users
-                # to note if this is intended, then ignore extrusion afterwards,
-                # i.e. return None.
-                # Also should check Height.
-                self.noWidths = True
-                # return None
+        widths, aligns, offsets = self._resolved_section_lists(obj)
+        default_width, default_align, default_offset = self._section_defaults(obj)
+        width, _align, _offset = self._resolve_section_value_at(obj, 0)
+        if not widths and not self._resolve_material_layers(obj):
+            self.noWidths = True
 
-        # Set 'default' width - for filling in any item in the list == 0 or None
-        if obj.Width.Value:
-            width = obj.Width.Value
-        else:
-            width = 200  # 'Default' width value
-
-        # Check height
+        # Check height.
         height = obj.Height.Value
         if not height:
             height = self.getParentHeight(obj)
         if not height:
             self.noHeight = True
-
-        # Check width and height is provided or not
         if self.noWidths or self.noHeight:
             return None
-
-        # Get align of each edge segment from Base Objects if they store it.
-        # (Adding support in SketchFeaturePython, DWire...)
-        aligns = []
-        if (
-            hasattr(obj, "ArchSketchData")
-            and obj.ArchSketchData
-            and Draft.getType(obj.Base) == "ArchSketch"
-        ):
-            if hasattr(obj.Base, "Proxy"):
-                if hasattr(obj.Base.Proxy, "getAligns"):
-                    # Return a list of Align corresponds to indexes of sorted
-                    # edges of Sketch.
-                    aligns = obj.Base.Proxy.getAligns(obj.Base, propSetUuid=propSetUuid)
-        # Get align of each edge/wall segment from ArchWall.OverrideAlign if
-        # Base Object does not provide it
-        if not aligns:
-            if obj.OverrideAlign:
-                if obj.Base and obj.Base.isDerivedFrom("Sketcher::SketchObject"):
-                    # If Base Object is ordinary Sketch (or when
-                    # ArchSketch.getAligns() not implemented yet):- sort the
-                    # align list in OverrideAlign to correspond to indexes of
-                    # sorted edges of Sketch
-                    try:
-                        import ArchSketchObject
-                    except Exception:
-                        print("ArchSketchObject add-on module is not installed yet")
-                    try:
-                        aligns = ArchSketchObject.sortSketchAlign(
-                            obj.Base, obj.OverrideAlign, obj.ArchSketchEdges
-                        )
-                    except Exception:
-                        aligns = obj.OverrideAlign
-                else:
-                    # If Base Object is not Sketch, but e.g. DWire, the align
-                    # list in OverrideAlign just correspond to sequential order
-                    # of edges
-                    aligns = obj.OverrideAlign
-            else:
-                aligns = [obj.Align]
-
-        # Set 'default' align - for filling in any item in the list == 0 or None
-        align = obj.Align  # or aligns[0]
-
-        # Get offset of each edge segment from Base Objects if they store it
-        # (Adding support in SketchFeaturePython, DWire...)
-        offsets = []  # [] or None are both False
-        if (
-            hasattr(obj, "ArchSketchData")
-            and obj.ArchSketchData
-            and Draft.getType(obj.Base) == "ArchSketch"
-        ):
-            if hasattr(obj.Base, "Proxy"):
-                if hasattr(obj.Base.Proxy, "getOffsets"):
-                    # Return a list of Offset corresponding to indexes of sorted
-                    # edges of Sketch.
-                    offsets = obj.Base.Proxy.getOffsets(obj.Base, propSetUuid=propSetUuid)
-        # Get offset of each edge/wall segment from ArchWall.OverrideOffset if
-        # Base Object does not provide it
-        if not offsets:
-            if obj.OverrideOffset:
-                if obj.Base and obj.Base.isDerivedFrom("Sketcher::SketchObject"):
-                    # If Base Object is ordinary Sketch (or when ArchSketch.getOffsets() not implemented yet):-
-                    # sort the offset list in OverrideOffset to correspond to indexes of sorted edges of Sketch
-                    if hasattr(ArchSketchObject, "sortSketchOffset"):
-                        offsets = ArchSketchObject.sortSketchOffset(
-                            obj.Base, obj.OverrideOffset, obj.ArchSketchEdges
-                        )
-                    else:
-                        offsets = obj.OverrideOffset
-                else:
-                    # If Base Object is not Sketch, but e.g. DWire, the width
-                    # list in OverrrideWidth just correspond to sequential
-                    # order of edges
-                    offsets = obj.OverrideOffset
-            elif obj.Offset:
-                offsets = [obj.Offset.Value]
-
-        # Set 'default' offset - for filling in any item in the list == 0 or None
-        offset = obj.Offset.Value  # could be 0
 
         if obj.Normal == Vector(0, 0, 0):
             if obj.Base and hasattr(obj.Base, "Shape"):
@@ -1018,12 +885,14 @@ class _Wall(ArchComponent.Component):
         placement = None
         self.basewires = None
 
+        # Width, alignment, and offset have already been resolved above.
+
         # Check and build wall layers
         self.multimaterialsWidth = False
         layers = self.get_layers(obj)
         # check total width and update Wall's Width
         if layers:
-            total = sum(layers)
+            total = sum(abs(layer) for layer in layers)
             if obj.Width.Value != total:
                 obj.Width = total
             # If there is no 0 (zero) in any of the layers, the total thickness
@@ -1181,11 +1050,12 @@ class _Wall(ArchComponent.Component):
                         if (len(self.basewires) == 1) and layers:
                             self.basewires = [self.basewires[0] for l in layers]
                             self.layersNum = len(layers)
-                        else:
+                        if not ((len(self.basewires) == 1) and layers):
                             self.layersNum = 0
                         layeroffset = 0
                         baseface = None
                         self.connectEdges = []
+                        section_index = 0
                         for i, wire in enumerate(self.basewires):
 
                             # Check number of edges per 'wire' and get the 1st edge
@@ -1196,6 +1066,29 @@ class _Wall(ArchComponent.Component):
                                 edgeNum = len(wire)
                                 e = wire[0]
 
+                            if not layers:
+                                resolved_widths = []
+                                resolved_aligns = []
+                                resolved_offsets = []
+                                for segment in range(edgeNum):
+                                    section = self.get_resolved_section(
+                                        obj, section_index + segment
+                                    )
+                                    if section is None or not section.visible_layers:
+                                        continue
+                                    resolved_widths.append(section.y_max - section.y_min)
+                                    _, align, offset = self._resolve_section_value_at(
+                                        obj, section_index + segment
+                                    )
+                                    resolved_aligns.append(align)
+                                    resolved_offsets.append(offset)
+                                if resolved_widths:
+                                    widths = resolved_widths
+                                    aligns = resolved_aligns
+                                    offsets = resolved_offsets
+                                    width = widths[0]
+                                section_index += edgeNum
+
                             for n in range(
                                 0, edgeNum, 1
                             ):  # why these not work - range(edgeNum), range(0,edgeNum) ...
@@ -1204,27 +1097,27 @@ class _Wall(ArchComponent.Component):
                                 # align entry and with same number of items as
                                 # number of edges
                                 try:
-                                    if aligns[n] not in ["Left", "Right", "Center"]:
-                                        aligns[n] = align
+                                    if aligns[n] not in self._SECTION_ALIGNMENTS:
+                                        aligns[n] = default_align
                                 except Exception:
-                                    aligns.append(align)
+                                    aligns.append(default_align)
 
                                 # Fill the widths List with ArchWall's default
                                 # width entry and with same number of items as
                                 # number of edges
                                 try:
                                     if not widths[n]:
-                                        widths[n] = width
+                                        widths[n] = default_width
                                 except Exception:
-                                    widths.append(width)
+                                    widths.append(default_width)
                                 # Fill the offsets List with ArchWall's default
                                 # offset entry and with same number of items as
                                 # number of edges
                                 try:
                                     if not offsets[n]:
-                                        offsets[n] = offset
+                                        offsets[n] = default_offset
                                 except Exception:
-                                    offsets.append(offset)
+                                    offsets.append(default_offset)
 
                             # Get a direction vector orthogonal to both the
                             # normal of the face/sketch and the direction the
@@ -1467,14 +1360,14 @@ class _Wall(ArchComponent.Component):
                         if baseface:
                             base, placement = self.rebase(baseface)
 
-                    else:  # if not self.basewires:
-                        FreeCAD.Console.PrintWarning(
-                            translate(
-                                "Arch",
-                                f"No supported edges in Base object of {obj.Label} (line, circle, arc, ellipse)",
-                            )
-                            + "\n"
+                else:  # if not self.basewires:
+                    FreeCAD.Console.PrintWarning(
+                        translate(
+                            "Arch",
+                            f"No supported edges in Base object of {obj.Label} (line, circle, arc, ellipse)",
                         )
+                        + "\n"
+                    )
 
         # Build Wall from scratch if there is no obj.Base or even obj.Base is not valid
         else:
@@ -1564,67 +1457,183 @@ class _Wall(ArchComponent.Component):
             super(_Wall, self).handleComponentRemoval(obj, subobject)
 
     def get_width(self, obj, widths=True):
-        """Returns a width and a list of widths for this wall.
-        If widths is False, only the main width is returned"""
-        import ArchSketchObject
+        """Return the legacy wall width API while using resolved sources.
 
-        # Set 'default' width - for filling in any item in the list == 0 or None
-        if obj.Width.Value:
-            width = obj.Width.Value
-        else:
-            width = 200  # 'Default' width value
+        With ``widths=False`` this returns the scalar wall default.  With
+        ``widths=True`` it returns ``(default_width, override_widths)`` when
+        segment values exist, or ``None`` otherwise.  The return shape and
+        fallback behavior are retained for existing Arch callers.
+        """
+        default_width, _default_align, _default_offset = self._section_defaults(obj)
         if not widths:
-            return width
-
-        lwidths = []
-        if (
-            hasattr(obj, "ArchSketchData")
-            and obj.ArchSketchData
-            and Draft.getType(obj.Base) == "ArchSketch"
-        ):
-            if hasattr(obj.Base, "Proxy"):
-                if hasattr(obj.Base.Proxy, "getWidths"):
-                    lwidths = obj.Base.Proxy.getWidths(
-                        obj.Base, propSetUuid=self.ArchSkPropSetPickedUuid
-                    )
-        if not lwidths:
-            if obj.OverrideWidth:
-                if (
-                    obj.Base
-                    and obj.Base.isDerivedFrom("Sketcher::SketchObject")
-                    and hasattr(ArchSketchObject, "sortSketchWidth")
-                ):
-                    lwidths = ArchSketchObject.sortSketchWidth(
-                        obj.Base, obj.OverrideWidth, obj.ArchSketchEdges
-                    )
-                else:
-                    lwidths = obj.OverrideWidth
-            elif obj.Width:
-                lwidths = [obj.Width.Value]
-            else:
-                return None
-        return width, lwidths
+            return default_width
+        widths_list = self._resolved_section_lists(obj)[0]
+        return None if not widths_list else (default_width, widths_list)
 
     def get_layers(self, obj):
-        """Returns a list of layers"""
-        layers = []
-        width = self.get_width(obj, widths=False)
-        if hasattr(obj, "Material"):
-            if obj.Material:
-                if hasattr(obj.Material, "Materials"):
-                    thicknesses = [abs(t) for t in obj.Material.Thicknesses]
-                    restwidth = width - sum(thicknesses)
-                    varwidth = 0
-                    if restwidth > 0:
-                        varwidth = [t for t in thicknesses if t == 0]
-                        if varwidth:
-                            varwidth = restwidth / len(varwidth)
-                    for t in obj.Material.Thicknesses:
-                        if t:
-                            layers.append(t)
-                        elif varwidth:
-                            layers.append(varwidth)
-        return layers
+        """Return the wall-global material stack used by shape generation.
+
+        The legacy based-wall builder obtains one material stack for the wall
+        and reuses it for every baseline segment.  Section resolution follows
+        that same rule so its geometry cannot describe a different shape.
+        """
+        return self._resolve_material_layers(obj)
+
+    def _resolve_section_values(self, obj):
+        """Resolve the effective width, alignment, and offset sources.
+
+        The returned lists are intentionally kept as the shape-builder input;
+        ``get_resolved_section`` turns one indexed entry into immutable section
+        geometry.  Base-provider data wins over wall overrides, matching the
+        existing ArchSketch contract.
+        """
+        default_width, default_align, default_offset = self._section_defaults(obj)
+
+        widths, aligns, offsets = self._resolved_section_lists(obj)
+
+        width = self._section_value(widths, 0, default_width)
+        align = self._section_value(aligns, 0, default_align, valid_values=self._SECTION_ALIGNMENTS)
+        offset = self._section_value(offsets, 0, default_offset)
+        return width, align, offset, widths
+
+    def _resolve_section_value_at(self, obj, segment_index, section_lists=None):
+        """Return width, alignment, and offset for one segment.
+
+        A segment entry is selected from the already chosen provider or
+        override lists.  Missing, zero, empty, or invalid entries fall back
+        to the wall properties, preserving the short-list behavior of the
+        legacy shape builder.
+        """
+        default_width, default_align, default_offset = self._section_defaults(obj)
+        widths, aligns, offsets = section_lists or self._resolved_section_lists(obj)
+        width = self._section_value(widths, segment_index, default_width)
+        align = self._section_value(
+            aligns, segment_index, default_align, valid_values=self._SECTION_ALIGNMENTS
+        )
+        offset = self._section_value(offsets, segment_index, default_offset)
+        return width, align, offset
+
+    def _resolved_section_lists(self, obj):
+        """Return per-segment width, alignment, and offset source lists.
+
+        Optional ArchSketch values take precedence over wall override
+        properties.  If no provider or override list is available, the wall's
+        Width, Align, and Offset properties become one-entry fallback lists.
+        These lists remain raw resolution inputs; scalar fallback and material
+        expansion happen in the section resolver.
+        """
+        provider_widths, provider_aligns, provider_offsets = self._base_section_values(obj)
+        widths = provider_widths or list(obj.OverrideWidth)
+        aligns = provider_aligns or list(obj.OverrideAlign)
+        offsets = provider_offsets or list(obj.OverrideOffset)
+        if not widths and obj.Width.Value:
+            widths = [obj.Width.Value]
+        if not aligns:
+            aligns = [obj.Align]
+        if not offsets:
+            offsets = [obj.Offset.Value]
+        return list(widths), list(aligns), list(offsets)
+
+    def get_resolved_section(self, obj, segment_index=0):
+        """Return the immutable section that the wall shape actually builds.
+
+        Width, alignment, and offset are resolved for the requested segment.
+        Material layers are resolved once from the wall's default width,
+        matching the legacy builder's wall-global layer stack even when a
+        segment has a width override.  Negative layers remain invisible
+        construction layers while moving the cursor for following layers.
+        """
+        section_lists = self._resolved_section_lists(obj)
+        widths, _aligns, _offsets = section_lists
+        width, align, offset = self._resolve_section_value_at(obj, segment_index, section_lists)
+        layers = self._resolve_material_layers(obj)
+        if not layers:
+            if not widths:
+                return None
+            layers = [width]
+
+        total = sum(abs(layer) for layer in layers)
+        if align == "Center":
+            cursor = -total / 2.0
+        elif align == "Left":
+            cursor = -total - offset
+        else:  # Right, and the legacy fallback for invalid values.
+            cursor = offset
+
+        resolved_layers = []
+        for raw_thickness in layers:
+            raw_thickness = float(raw_thickness)
+            thickness = abs(raw_thickness)
+            resolved_layers.append(
+                ArchWallSection.WallSectionLayer(
+                    raw_thickness=raw_thickness,
+                    y_min=cursor,
+                    y_max=cursor + thickness,
+                )
+            )
+            cursor += thickness
+        return ArchWallSection.WallSection(tuple(resolved_layers))
+
+    def _base_section_values(self, obj):
+        """Read optional section lists from an ArchSketch base provider.
+
+        ArchSketch is an optional object protocol: its proxy may provide any
+        of the three getters, and a missing getter contributes an empty list.
+        The provider is considered only when ArchSketch data is selected on a
+        wall with an ArchSketch base.
+        """
+        base = obj.Base
+        if not obj.ArchSketchData or not base or Draft.getType(base) != "ArchSketch":
+            return [], [], []
+        proxy = base.Proxy
+        kwargs = {"propSetUuid": self.ArchSkPropSetPickedUuid}
+        return (
+            proxy.getWidths(base, **kwargs) if hasattr(proxy, "getWidths") else [],
+            proxy.getAligns(base, **kwargs) if hasattr(proxy, "getAligns") else [],
+            proxy.getOffsets(base, **kwargs) if hasattr(proxy, "getOffsets") else [],
+        )
+
+    @staticmethod
+    def _section_value(values, index, fallback, valid_values=None):
+        """Select one list entry, applying the wall-level fallback rules."""
+        if not values or index >= len(values):
+            return fallback
+        value = values[index]
+        value = getattr(value, "Value", value)
+        if value in (None, 0, ""):
+            return fallback
+        if valid_values is not None and value not in valid_values:
+            return fallback
+        return value
+
+    @staticmethod
+    def _section_defaults(obj):
+        """Return the wall defaults used when no segment value is present."""
+        return obj.Width.Value or 200.0, obj.Align, obj.Offset.Value
+
+    @staticmethod
+    def _resolve_material_layers(obj):
+        """Resolve the material thickness stack used by every wall segment.
+
+        Positive thicknesses are preserved.  Zero-thickness layers divide the
+        remaining width equally, using the wall's default Width rather than a
+        segment override because the existing shape builder is wall-global.
+        Signed values are retained so negative layers can act as invisible
+        cursor steps in ``WallSection``.
+        """
+        material = obj.Material
+        if not material or not hasattr(material, "Materials"):
+            return []
+        raw_thicknesses = [float(value) for value in material.Thicknesses]
+        if not raw_thicknesses:
+            return []
+        width = obj.Width.Value or 200.0
+        rest_width = width - sum(abs(value) for value in raw_thicknesses)
+        zero_count = sum(value == 0 for value in raw_thicknesses)
+        variable_width = rest_width / zero_count if rest_width > 0 and zero_count else 0.0
+        return [
+            variable_width if value == 0 and variable_width else value for value in raw_thicknesses
+        ]
 
     def _make_blocks(self, obj, base_face, extv):
         """Cut a wall's base face into block-sized pieces and stack them.
@@ -1781,46 +1790,22 @@ class _Wall(ArchComponent.Component):
                 Part.makePolygon([bottom_left, bottom_right, top_right, top_left, bottom_left])
             )
 
-        layers = self.get_layers(obj)
-        width = self.get_width(obj, widths=False)
-        align = obj.Align
-        wall_offset = obj.Offset.Value
-
         # Use a small default for zero dimensions to ensure a valid shape can be created.
         safe_length = obj.Length.Value or 0.5
-
-        if not layers:
-            safe_width = width or 0.5
-            layers = [safe_width]  # Treat a single-layer wall as a multi-layer wall with one layer.
+        section = self.get_resolved_section(obj)
+        if section is None:
+            return [], FreeCAD.Placement()
 
         # --- Calculate and Create Geometry ---
         base_faces = []
 
-        # The total width is needed to calculate the starting offset for alignment.
-        totalwidth = sum([abs(layer) for layer in layers])
-
-        # The offset acts as a cursor, tracking the current position along the Y-axis.
-        offset = 0
-        if align == "Center":
-            offset = -totalwidth / 2
-        elif align == "Left":
-            # Per convention, 'Left' is on the geometric right (-Y direction).
-            offset = -totalwidth - wall_offset
-        elif align == "Right":
-            offset = wall_offset
-
-        # Loop through all layers and create a face for each.
-        for layer in layers:
-            # A negative layer value is not drawn, so its geometry is skipped.
-            if layer > 0:
+        # Loop through the already-resolved layers.  Invisible layers retain
+        # their cursor position but never become faces.
+        for layer in section.layers:
+            if layer.visible:
                 half_length = safe_length / 2
-                layer_y_min = offset
-                layer_y_max = offset + layer
-                face = _create_face_from_coords(half_length, layer_y_min, layer_y_max)
+                face = _create_face_from_coords(half_length, layer.y_min, layer.y_max)
                 base_faces.append(face)
-
-            # The offset is always increased by the absolute thickness of the layer.
-            offset += abs(layer)
 
         placement = FreeCAD.Placement()
 
