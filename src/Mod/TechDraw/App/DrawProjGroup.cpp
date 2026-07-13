@@ -187,9 +187,7 @@ App::DocumentObjectExecReturn* DrawProjGroup::execute()
         }
     }
 
-    if (AutoDistribute.getValue()) {
-        autoPositionChildren();
-    }
+    autoPositionChildren();
     overrideKeepUpdated(false);
     return DrawViewCollection::execute();
 }
@@ -604,12 +602,19 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char* viewTypeCStr)
     //TODO: bounding boxes do not take view orientation into account
     //      i.e. X&Y widths might be swapped on page
 
-    if (viewPtrs[viewIndex]->LockPosition.getValue() || !AutoDistribute.getValue()) {
+    if (viewPtrs[viewIndex]->LockPosition.getValue()) {
         return Base::Vector3d(
             viewPtrs[viewIndex]->X.getValue(),
             viewPtrs[viewIndex]->Y.getValue(),
             0.0
         );
+    }
+    if (!AutoDistribute.getValue()) {
+        double x = viewPtrs[viewIndex]->X.getValue();
+        double y = viewPtrs[viewIndex]->Y.getValue();
+        if (!DrawUtil::fpCompare(x, 0.0) || !DrawUtil::fpCompare(y, 0.0)) {
+            return Base::Vector3d(x, y, 0.0);
+        }
     }
 
     std::vector<Base::Vector3d> position(idxCount);

@@ -64,6 +64,9 @@ public:
     ViewProviderDraft();
     /// destructor
     ~ViewProviderDraft() override = default ;
+
+    bool setEdit(int ModNum) override;
+    bool doubleClicked() override;
 };
 
 
@@ -78,6 +81,9 @@ public:
     ViewProviderArch();
     /// destructor
     ~ViewProviderArch() override  = default ;
+
+    bool setEdit(int ModNum) override;
+    bool doubleClicked() override;
 };
 
 } // namespace TechDrawGui

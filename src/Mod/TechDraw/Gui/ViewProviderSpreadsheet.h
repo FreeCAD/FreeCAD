@@ -48,6 +48,8 @@ public:
     bool useNewSelectionModel() const override {return false;}
 
     TechDraw::DrawViewSpreadsheet* getViewObject() const override;
+    bool setEdit(int ModNum) override;
+    bool doubleClicked() override;
 };
 
 } // namespace TechDrawGui

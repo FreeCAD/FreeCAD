@@ -27,6 +27,27 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <layout class="QHBoxLayout" name="hLayout">
+    <property name="bottomMargin">
+      <number>8</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label1">
+       <property name="text">
+        <string>Add image view</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="openFileButton">
+       <property name="text">
+        <string>Open File</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
       <widget class="QLabel" name="label">
@@ -701,6 +722,47 @@ using the given X/Y spacings</string>
       </item>
      </layout>
     </widget>
+   </item>
+   <item>
+     <widget class="QGroupBox" name="spreadsheetGroupBox">
+       <property name="title"><string>Spreadsheet Range</string></property>
+       <property name="visible"><bool>false</bool></property>
+       <layout class="QFormLayout" name="formLayoutSheet">
+        <item row="0" column="0">
+          <widget class="QLabel" name="labelCellStart">
+            <property name="text"><string>Cell start</string></property>
+          </widget>
+        </item>
+        <item row="0" column="1">
+          <widget class="QLineEdit" name="leCellStart">
+            <property name="text"><string>A1</string></property>
+          </widget>
+        </item>
+        <item row="1" column="0">
+          <widget class="QLabel" name="labelCellEnd">
+            <property name="text"><string>Cell end</string></property>
+          </widget>
+        </item>
+        <item row="1" column="1">
+          <widget class="QLineEdit" name="leCellEnd">
+            <property name="text"><string>B2</string></property>
+          </widget>
+        </item>
+      </layout>
+     </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

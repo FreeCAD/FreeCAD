@@ -24,6 +24,7 @@
 # include <sstream>
 
 # include <QGraphicsItem>
+# include <QGraphicsSceneMouseEvent>
 # include <QRectF>
 # include <QString>
 
@@ -62,6 +63,16 @@ QGIViewImage::QGIViewImage()
 QGIViewImage::~QGIViewImage()
 {
     // m_imageItem belongs to this group and will be deleted by Qt
+}
+
+void QGIViewImage::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
+{
+    auto* vp = freecad_cast<ViewProviderImage*>(getViewProvider(getViewObject()));
+    if (!vp) {
+        return;
+    }
+    vp->startDefaultEditMode();
+    QGraphicsItem::mouseDoubleClickEvent(event);
 }
 
 void QGIViewImage::setViewImageFeature(TechDraw::DrawViewImage *obj)

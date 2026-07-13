@@ -155,9 +155,8 @@ void DrawProjGroupItem::autoPosition()
     if (LockPosition.getValue()) {
         return;
     }
-    Base::Vector3d newPos;
-    if (pGroup && pGroup->AutoDistribute.getValue()) {
-        newPos = pGroup->getXYPosition(Type.getValueAsString());
+    Base::Vector3d newPos = pGroup->getXYPosition(Type.getValueAsString());
+    if (!DrawUtil::fpCompare(X.getValue(), newPos.x) || !DrawUtil::fpCompare(Y.getValue(), newPos.y)) {
         X.setValue(newPos.x);
         Y.setValue(newPos.y);
         requestPaint();
