@@ -3407,7 +3407,7 @@ REMARQUE : l'activation d'OpenCAMLib ici nécessite un redémarrage de FreeCAD p
       <translation>Finition de l'axe assigné</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="94"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="288"/>
       <location filename="../panels/AxisMapEdit.ui" line="20"/>
       <source>Radius</source>
       <translation>Rayon</translation>
@@ -3617,145 +3617,145 @@ Si cette liste est vide, cela signifie probablement que vous essayez de créer d
       <translation>Attaches de maintien</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="28"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="224"/>
       <source>Width</source>
       <translation>Largeur</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="80"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="274"/>
       <source>Height</source>
       <translation>Hauteur</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="42"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="238"/>
       <source>Angle</source>
       <translation>Angle</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="35"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="231"/>
       <source>Width of the resulting holding tag</source>
       <translation>Largeur de l'attache de maintien résultante</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="49"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="245"/>
       <source>Plunge angle for ascent and descent of holding tag</source>
       <translation>Angle de descente pour la montée et la descente de l'attache de maintien</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="52"/>
-      <source> °</source>
-      <translation> °</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="136"/>
-      <source>Remove all tags from list</source>
-      <translation>Supprimer toutes les attaches de la liste</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="139"/>
-      <source>Clear</source>
-      <translation>Supprimer</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="146"/>
-      <source>Remove selected tag from list</source>
-      <translation>Supprimer l'attache sélectionnée de la liste</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="149"/>
-      <source>Remove</source>
-      <translation>Supprimer</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="156"/>
-      <source>Edit position of selected tag</source>
-      <translation>Modifier la position de l'attache sélectionnée</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="159"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="124"/>
       <source>Edit</source>
       <translation>Éditer</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="166"/>
-      <source>Add new tags</source>
-      <translation>Ajouter de nouvelles attaches</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="101"/>
+      <source>Remove all tags from list</source>
+      <translation>Supprimer toutes les attaches de la liste</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="169"/>
-      <source>Add</source>
-      <translation>Ajouter</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="104"/>
+      <source>Clear</source>
+      <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="176"/>
-      <source>Enable/disable all tags</source>
-      <translation>Activer/désactiver toutes les attaches</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="111"/>
+      <source>Remove selected tag from list</source>
+      <translation>Supprimer l'attache sélectionnée de la liste</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="179"/>
-      <source>Enable All</source>
-      <translation>Tout activer</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="114"/>
+      <source>Remove</source>
+      <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="186"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="121"/>
+      <source>Edit position of selected tag</source>
+      <translation>Modifier la position de l'attache sélectionnée</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="131"/>
       <source>Replace all tags by tags from another DressupTag</source>
       <translation>Remplacer toutes les attaches par des attaches d'une autre configuration d'attaches</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="189"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="134"/>
       <source>Copy</source>
       <translation>Copier</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="206"/>
-      <source>Min</source>
-      <translation>Minimum</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="141"/>
+      <source>Enable/disable all tags</source>
+      <translation>Activer/désactiver toutes les attaches</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="213"/>
-      <source>Minimum number of tags per short wire</source>
-      <translation>Nombre minimum d'attaches par portion courte</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="144"/>
+      <source>Enable All</source>
+      <translation>Tout activer</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="229"/>
-      <source>Max</source>
-      <translation>Maximum</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="177"/>
+      <source>Add new tags</source>
+      <translation>Ajouter de nouvelles attaches</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="236"/>
-      <source>Maximum number of tags per long wire</source>
-      <translation>Nombre maximum d'attaches par portion longue</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="180"/>
+      <source>Add</source>
+      <translation>Ajouter</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="252"/>
-      <source>Create the specified number of tags for each bottom wire</source>
-      <translation>Créer le nombre spécifié d'attaches pour chaque portion inférieure</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="248"/>
+      <source> °</source>
+      <translation> °</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="255"/>
-      <source>Replace Existing Tags</source>
-      <translation>Remplacer les attaches existantes</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="87"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="281"/>
       <source>Height of holding tag. Note that resulting tag might be smaller if the tag&apos;s width and angle result in a triangular shape.</source>
       <translation>Hauteur de l'attache. Notez que l'attache résultante peut être plus petite si la largeur et l'angle de l'attache produisent une forme triangulaire.</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="101"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="295"/>
       <source>Radius of the fillet at the top. If the radius is too big for the tag shape it gets reduced to the maximum possible radius - resulting in a spherical shape.</source>
       <translation>Rayon du congé au sommet.
 Si le rayon est trop grand pour la forme de l'attache, il est réduit au rayon maximal possible, ce qui donne une forme sphérique.</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="121"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="312"/>
+      <source>Min</source>
+      <translation>Minimum</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="325"/>
+      <source>Minimum number of tags per short wire</source>
+      <translation>Nombre minimum d'attaches par portion courte</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="335"/>
+      <source>Max</source>
+      <translation>Maximum</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="348"/>
+      <source>Maximum number of tags per long wire</source>
+      <translation>Nombre maximum d'attaches par portion longue</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="358"/>
+      <source>Create the specified number of tags for each bottom wire</source>
+      <translation>Créer le nombre spécifié d'attaches pour chaque portion inférieure</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="361"/>
+      <source>Replace Existing Tags</source>
+      <translation>Remplacer les attaches existantes</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="34"/>
       <source>List of current tags. Edit coordinates by double click or Edit button. Tags are automatically disabled if they overlap with the previous tag, or don&apos;t lie on the base wire.</source>
       <translation>Liste des attaches actuelles.
 Les coordonnées peuvent être modifiées en double-cliquant ou en utilisant le bouton Éditer.
 Les attaches sont automatiquement désactivées si elles se chevauchent avec l'attache précédente ou si elles ne se trouvent pas sur la polyligne de base.</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="200"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="306"/>
       <source>Auto Generate</source>
       <translation>Auto-générer</translation>
     </message>
@@ -4715,7 +4715,7 @@ d'ajouter de nouvelles machines à l'aide du bouton « Nouvelle machine ».</tra
       <translation>Sauvegarder le rapport de contrôle de l'outil Chercher des erreurs</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
+      <location filename="../../../PathScripts/PathUtilsGui.py" line="90"/>
       <source>Choose a CAM Job</source>
       <translation>Choisir une tâche</translation>
     </message>
@@ -5313,35 +5313,35 @@ Uniquement pour les styles : Arc, Ligne, Perpendiculaire et Tangente</translatio
       <translation>Mettre à False pour empêcher l'opération de générer du code</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1544"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1547"/>
       <source>Side of selected faces that tool should cut</source>
       <translation>Côté des faces sélectionnées que l'outil doit couper</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1553"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1556"/>
       <source>Type of adaptive operation</source>
       <translation>Type d'opération adaptative</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1571"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1955"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1574"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1958"/>
       <location filename="../../../Path/Op/PocketBase.py" line="159"/>
       <location filename="../../../Path/Op/Helix.py" line="164"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>Pourcentage du diamètre de l'outil de coupe à recouvrir à chaque passe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1580"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1583"/>
       <source>Lift distance for rapid moves</source>
       <translation>Hauteur d'élévation pour les déplacements rapides</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1589"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1592"/>
       <source>Max length of keep tool down path compared to direct distance between points</source>
       <translation>Longueur maximale du parcours de l'outil maintenu en bas comparé à la distance directe entre les points</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1562"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1565"/>
       <source>Influences calculation performance vs stability and accuracy.
 
 Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</source>
@@ -5351,24 +5351,24 @@ Des valeurs plus élevées (plus à droite) permettent de calculer plus rapideme
 Des valeurs plus petites (plus à gauche) permettent des parcours d'outils plus précis.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1598"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1601"/>
       <source>How much stock to leave in the XY plane (eg for finishing operation)</source>
       <translation>Quantité de brut à laisser dans le plan XY (par ex. pour l'opération de finition)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1607"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1610"/>
       <source>How much stock to leave along the Z axis (eg for finishing operation). This property is only used if the ModelAwareExperiment is enabled.</source>
       <translation>Quantité de brut à laisser suivant l'axe Z (par exemple pour l'opération de finition). Cette propriété n'est utilisée que si ModelAwareExperiment est activé.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1672"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1675"/>
       <source>The maximum allowable helix ramp entry angle (degrees)
 Set to zero to disable limitation by ramp angle</source>
       <translation>Angle maximum (en degré) autorisé pour l'entrée de la rampe hélicoïdale. Mettre cette valeur à zéro pour désactiver la limitation liée à
 l'angle de la rampe.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1682"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1685"/>
       <location filename="../../../Path/Op/Helix.py" line="288"/>
       <location filename="../../../Path/Op/Helix.py" line="507"/>
       <source>The maximum allowable descent in a single revolution of the helix
@@ -5376,78 +5376,78 @@ Set to zero to disable limitation by pitch</source>
       <translation>Descente maximum autorisée par seul tour de l'hélicoïde. Mettre à zéro pour désactiver la limitation par pas.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1700"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1894"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1703"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1897"/>
       <source>Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter</source>
       <translation>Diamètre d'entrée maximum (et nominal) de la rampe hélicoïdale, exprimé en pourcentage du diamètre de l'outil</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1709"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1903"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1712"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1906"/>
       <source>Minimum acceptable helix entry diameter, as a percentage of the tool diameter</source>
       <translation>Diamètre d'entrée minimum acceptable de la rampe hélicoïdale, en pourcentage du diamètre de l'outil</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1736"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1739"/>
       <source>Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</source>
       <translation>Trie les commandes par région plutôt que par profondeur. Cette propriété n'est utilisée que si ModelAwareExperiment est activé.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1751"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1875"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1754"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1878"/>
       <source>Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</source>
       <translation>Active la fonction de reconnaissance du modèle expérimental afin de respecter la géométrie 3D et empêche la découpe sous les
 surplombs.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1864"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1867"/>
       <source>How much stock to leave along the Z axis (eg for finishing operation)</source>
       <translation>Quantité de brut à laisser suivant l'axe Z (par ex. pour l'opération de finition)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1925"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1928"/>
       <source>The maximum allowable descent in a single revolution of the helix. Set to 0 to disable the pitch limit.</source>
       <translation>Descente maximale autorisée sur un tour complet de l'hélicoïde. Mettre à 0 cette valeur pour désactiver la limite du pas.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1616"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1619"/>
       <source>Force plunging into material inside and clearing towards the edges</source>
       <translation>Forcer à descendre à l'intérieur du matériau et à l'ébauchage vers les bords</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1625"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1628"/>
       <source>To take a finishing profile path at the end</source>
       <translation>Pour prendre un parcours de profilage de finition à la fin</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1631"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1641"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1634"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1644"/>
       <source>Stop processing</source>
       <translation>Arrêter le traitement</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1651"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1654"/>
       <source>Internal input state</source>
       <translation>État des saisies internes</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1660"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1663"/>
       <source>Internal output state</source>
       <translation>État de la sortie interne</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1691"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1694"/>
       <source>Helix cone angle (degrees)</source>
       <translation>Angle du cône hélicoïdal (degrés)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1718"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1721"/>
       <location filename="../../../Path/Op/PocketShape.py" line="168"/>
       <source>Uses the outline of the base geometry.</source>
       <translation>Utiliser les contours de la géométrie de base.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1853"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1856"/>
       <source>Orders cuts by region instead of depth.</source>
       <translation>Ordonne les coupes par région et non par profondeur.</translation>
     </message>
@@ -6003,8 +6003,8 @@ profil.</translation>
       <translation>Utiliser le tri des parcours en 3D</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1727"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1842"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1730"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1845"/>
       <location filename="../../../Path/Op/PocketBase.py" line="195"/>
       <location filename="../../../Path/Op/PocketBase.py" line="271"/>
       <source>Skips machining regions that have already been cleared by previous operations.</source>
@@ -7423,71 +7423,71 @@ sélectionnées.</translation>
       <translation>Géométrie de base</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="932"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="934"/>
       <source>Multiple operations are labeled as</source>
       <translation>Plusieurs opérations sont étiquetées comme</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1006"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1008"/>
       <source>Base Location</source>
       <translation>Position de base</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1134"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1136"/>
       <source>Heights</source>
       <translation>Hauteurs</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1224"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1226"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>La profondeur finale ne peut pas être modifiée pour cette opération.
 S'il est nécessaire de régler manuellement la profondeur finale, sélectionner une autre opération.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1247"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1249"/>
       <source>Depths</source>
       <translation>Profondeurs</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1348"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1350"/>
       <source>Diameters</source>
       <translation>Diamètres</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1380"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1382"/>
       <source>AreaOp Operation</source>
       <translation>Opération sur la zone disponible</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1441"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1443"/>
       <source>Operation</source>
       <translation>Opération</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1506"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1508"/>
       <source>Uncreate AreaOp Operation</source>
       <translation>Annuler la création de l'opération sur la zone disponible</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1643"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1645"/>
       <source>Start Point Selection</source>
       <translation>Sélection du point de départ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1644"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1646"/>
       <source>Selects the start point</source>
       <translation>Sélectionne le point de départ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1694"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1696"/>
       <source>No suitable tool controller found.
 Aborting op creation</source>
       <translation>Aucun contrôleur d'outils adapté n'a été trouvé.
 Annulation de la création de l'opération</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1698"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1700"/>
       <source>No tool controller, aborting op creation</source>
       <translation>Aucun contrôleur d'outil, annulation de la création de l'opération</translation>
     </message>
@@ -7813,12 +7813,12 @@ Sélectionner un parcours de profil</translation>
       <translation>Attaches de maintien</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Tags.py" line="575"/>
+      <location filename="../../../Path/Dressup/Gui/Tags.py" line="579"/>
       <source>Tag</source>
       <translation>Attache</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Tags.py" line="578"/>
+      <location filename="../../../Path/Dressup/Gui/Tags.py" line="582"/>
       <source>Creates a tag dress-up object from a selected toolpath</source>
       <translation>Crée une finition d'attache à partir d'un parcours d'outils sélectionné.</translation>
     </message>
@@ -8594,22 +8594,22 @@ converties dans l'unité souhaitée lors du post-traitement.</translation>
   <context>
     <name>CAM_Simulator</name>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="366"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="364"/>
       <source>CAM Simulator</source>
       <translation>Simuler le parcours</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="315"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="313"/>
       <source>High</source>
       <translation>Haut</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="317"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="315"/>
       <source>Low</source>
       <translation>Bas</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="319"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="317"/>
       <source>Medium</source>
       <translation>Moyen</translation>
     </message>
@@ -8620,7 +8620,7 @@ converties dans l'unité souhaitée lors du post-traitement.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Simulator.py" line="625"/>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="368"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="366"/>
       <source>Simulates G-code on stock</source>
       <translation>Simule le G-code sur le brut.</translation>
     </message>
@@ -8628,22 +8628,22 @@ converties dans l'unité souhaitée lors du post-traitement.</translation>
   <context>
     <name>CAM_Adaptive</name>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1511"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1514"/>
       <source>Outside</source>
       <translation>Extérieur</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1512"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1515"/>
       <source>Inside</source>
       <translation>Intérieur</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1515"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1518"/>
       <source>Clearing</source>
       <translation>Ébauchage</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1516"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1519"/>
       <source>Profiling</source>
       <translation>Profilage</translation>
     </message>
@@ -9101,7 +9101,7 @@ bibliothèques qui les contiennent.</translation>
       <translation>{diameter} {pitch} {rotation} taraud, {flutes}-goujure, {cutting_edge_length} lèvre</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="373"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="375"/>
       <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
       <translation>L'opération adaptative n'a pas pu déterminer la polyligne de délimitation. La géométrie de base est-elle sélectionnée ?</translation>
     </message>
@@ -9127,267 +9127,267 @@ bibliothèques qui les contiennent.</translation>
       <translation>Interrompre</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="311"/>
+      <location filename="../../../Path/Post/Processor.py" line="317"/>
       <source>File Extension</source>
       <translation>Extension des fichiers</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="317"/>
+      <location filename="../../../Path/Post/Processor.py" line="323"/>
       <source>Default file extension for output files (without the dot). Common extensions: nc, gcode, tap, ngc, sbp, etc.</source>
       <translation>Extension par défaut des fichiers résultants (sans le point). Extensions courantes : nc, gcode, tap, ngc, sbp, etc.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="322"/>
+      <location filename="../../../Path/Post/Processor.py" line="328"/>
       <source>Tool Radius Compensation (G41/G42)</source>
       <translation>Compensation de rayon d'outils (G41/G42)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="328"/>
+      <location filename="../../../Path/Post/Processor.py" line="334"/>
       <source>Enable if this postprocessor supports G41/G42 tool radius compensation commands. When enabled, the postprocessor can output cutter compensation codes.</source>
       <translation>Active cette option si ce post-processeur prend en charge les commandes de compensation de rayon d'outils G41/G42. Lorsque cette
 option est activée, le post-processeur peut générer des codes de compensation de couteaux.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="333"/>
+      <location filename="../../../Path/Post/Processor.py" line="339"/>
       <source>Supported G-code Commands</source>
       <translation>Commandes G-code prises en charge</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="339"/>
+      <location filename="../../../Path/Post/Processor.py" line="345"/>
       <source>List of G-code commands supported by this postprocessor (one per line). Commands not in this list will be filtered out or cause warnings.</source>
       <translation>Liste des commandes G-code prises en charge par ce post-processeur (une par ligne). Les commandes ne figurant pas dans cette liste seront
 ignorées ou donneront lieu à des avertissements.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="344"/>
+      <location filename="../../../Path/Post/Processor.py" line="350"/>
       <source>Drill Cycles to Translate</source>
       <translation>Cycles de perçage à convertir</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="351"/>
+      <location filename="../../../Path/Post/Processor.py" line="357"/>
       <source>List of drill cycle commands to translate to G0/G1 moves (one per line). Standard drill cycles: {&apos;, &apos;.join(Constants.GCODE_MOVE_DRILL)}. Leave empty if postprocessor supports drill cycles natively.</source>
       <translation>Liste des commandes de cycles de perçage à convertir en mouvements G0/G1 (une par ligne). Cycles de perçage standard :
 {&apos;, &apos;.join(Constants.GCODE_MOVE_DRILL)}. Laisser vide si le post-processeur prend en charge les cycles de perçage en natif.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="356"/>
+      <location filename="../../../Path/Post/Processor.py" line="362"/>
       <source>Preamble</source>
       <translation>Préambule</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="360"/>
+      <location filename="../../../Path/Post/Processor.py" line="366"/>
       <source>G-code commands inserted at the start of the program after the header.</source>
       <translation>Commandes G-code insérées au début du programme, après l'en-tête.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="365"/>
+      <location filename="../../../Path/Post/Processor.py" line="371"/>
       <source>Postamble</source>
       <translation>Fin</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="367"/>
+      <location filename="../../../Path/Post/Processor.py" line="373"/>
       <source>G-code commands inserted at the end of the program.</source>
       <translation>Commandes G-code insérées à la fin du programme.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="372"/>
+      <location filename="../../../Path/Post/Processor.py" line="378"/>
       <source>Safety Block</source>
       <translation>Bloc de sécurité</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="377"/>
+      <location filename="../../../Path/Post/Processor.py" line="383"/>
       <source>Safety commands to reset machine to known safe condition (e.g., G40, G49, G80).</source>
       <translation>Commandes de sécurité permettant de ramener la machine-outil dans un état de sécurité connu (par ex. G40, G49, G80).</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="382"/>
+      <location filename="../../../Path/Post/Processor.py" line="388"/>
       <source>Pre-Job</source>
       <translation>Pré-tâche</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="384"/>
+      <location filename="../../../Path/Post/Processor.py" line="390"/>
       <source>G-code commands inserted before each Job.</source>
       <translation>Commandes G-code insérées avant chaque tâche</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="389"/>
+      <location filename="../../../Path/Post/Processor.py" line="395"/>
       <source>Post-Job</source>
       <translation>Post-tâche</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="391"/>
+      <location filename="../../../Path/Post/Processor.py" line="397"/>
       <source>G-code commands inserted after each Job.</source>
       <translation>Commandes G-code insérées après chaque tâche</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="396"/>
+      <location filename="../../../Path/Post/Processor.py" line="402"/>
       <source>Pre-Fixture</source>
       <translation>Avant fixations</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="398"/>
+      <location filename="../../../Path/Post/Processor.py" line="404"/>
       <source>G-code commands inserted before fixture change.</source>
       <translation>Commandes G-code insérées avant le changement des fixations</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="403"/>
+      <location filename="../../../Path/Post/Processor.py" line="409"/>
       <source>Post-Fixture</source>
       <translation>Après fixations</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="405"/>
+      <location filename="../../../Path/Post/Processor.py" line="411"/>
       <source>G-code commands inserted after fixture change.</source>
       <translation>Commandes G-code insérées après changement de fixations</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="410"/>
+      <location filename="../../../Path/Post/Processor.py" line="416"/>
       <source>Pre-Operation</source>
       <translation>Pré-opération</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="412"/>
+      <location filename="../../../Path/Post/Processor.py" line="418"/>
       <source>G-code commands inserted before each operation.</source>
       <translation>Commandes G-code insérées avant chaque opération.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="417"/>
+      <location filename="../../../Path/Post/Processor.py" line="423"/>
       <source>Post-Operation</source>
       <translation>Post-opération</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="419"/>
+      <location filename="../../../Path/Post/Processor.py" line="425"/>
       <source>G-code commands inserted after each operation.</source>
       <translation>Commandes G-code insérées après chaque opération.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="424"/>
+      <location filename="../../../Path/Post/Processor.py" line="430"/>
       <source>Pre-Tool Change</source>
       <translation>Avant le changement d'outil</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="426"/>
+      <location filename="../../../Path/Post/Processor.py" line="432"/>
       <source>G-code commands inserted before tool changes.</source>
       <translation>Commandes G-code insérées avant les changements d'outils.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="431"/>
+      <location filename="../../../Path/Post/Processor.py" line="437"/>
       <source>Post-Tool Change</source>
       <translation>Après le changement d'outil</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="433"/>
-      <location filename="../../../Path/Post/Processor.py" line="440"/>
+      <location filename="../../../Path/Post/Processor.py" line="439"/>
+      <location filename="../../../Path/Post/Processor.py" line="446"/>
       <source>G-code commands inserted after tool changes.</source>
       <translation>Commandes G-code insérées après les changements d'outils.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="438"/>
+      <location filename="../../../Path/Post/Processor.py" line="444"/>
       <source>Tool Return after tool changes</source>
       <translation>Retour de l'outil après les modifications de l'outil</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="445"/>
+      <location filename="../../../Path/Post/Processor.py" line="451"/>
       <source>Pre-Rotary Move</source>
       <translation>Déplacement avant la rotation</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="447"/>
+      <location filename="../../../Path/Post/Processor.py" line="453"/>
       <source>G-code commands inserted before rotary axis moves.</source>
       <translation>Commandes G-code insérées avant les déplacements de l'axe rotatif.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="452"/>
+      <location filename="../../../Path/Post/Processor.py" line="458"/>
       <source>Post-Rotary Move</source>
       <translation>Déplacement après la rotation</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="454"/>
+      <location filename="../../../Path/Post/Processor.py" line="460"/>
       <source>G-code commands inserted after rotary axis moves.</source>
       <translation>Commandes G-code insérées après les déplacements de l'axe rotatif.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="459"/>
+      <location filename="../../../Path/Post/Processor.py" line="465"/>
       <source>Show Pre-processing Dialogs</source>
       <translation>Afficher les boîtes de dialogue de prétraitement</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="465"/>
+      <location filename="../../../Path/Post/Processor.py" line="471"/>
       <source>Show interactive dialogs during post-processing. Disable for automated operation or testing.</source>
       <translation>Affiche des boîtes de dialogue interactives pendant le post-traitement. À désactiver en cas d'exécution automatisée ou de test.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="470"/>
+      <location filename="../../../Path/Post/Processor.py" line="476"/>
       <source>Generated Parameter Order for GCode</source>
       <translation>Ordre des paramètres généré pour le G-code</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="472"/>
+      <location filename="../../../Path/Post/Processor.py" line="478"/>
       <source>Generated Parameter Order for GCode for output</source>
       <translation>Ordre des paramètres généré pour le G-code à transmettre</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="477"/>
+      <location filename="../../../Path/Post/Processor.py" line="483"/>
       <source>TLO after tool-change</source>
       <translation>Temps pour ouvrir après un changement d'outil</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="482"/>
+      <location filename="../../../Path/Post/Processor.py" line="488"/>
       <source>Output a G43 TLO after tool-change</source>
       <translation>Générer une commande temps d'ouverture G43 après un changement d'outil</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="487"/>
+      <location filename="../../../Path/Post/Processor.py" line="493"/>
       <source>Expand drill-cycles</source>
       <translation>Étendre les cycles de perçage</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="492"/>
+      <location filename="../../../Path/Post/Processor.py" line="498"/>
       <source>Expand drill-cycles (cf. &apos;Drill Cycles to Translate&apos;) to moves</source>
       <translation>Étend les cycles de perçage (cf. « Cycles de perçage à convertir ») aux mouvements.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="497"/>
+      <location filename="../../../Path/Post/Processor.py" line="503"/>
       <source>Allow tool-change</source>
       <translation>Autoriser le changement d'outil</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="502"/>
+      <location filename="../../../Path/Post/Processor.py" line="508"/>
       <source>Unchecked to suppress tool-change (M6)</source>
       <translation>Décoché pour supprimer le changement d'outil (M6)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="507"/>
-      <location filename="../../../Path/Post/Processor.py" line="512"/>
+      <location filename="../../../Path/Post/Processor.py" line="513"/>
+      <location filename="../../../Path/Post/Processor.py" line="518"/>
       <source>Unit-command in output</source>
       <translation>Commande d’unité en sortie</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="517"/>
-      <source>Axis precision in ouptput</source>
-      <translation>Précision de l'axe en sortie</translation>
+      <location filename="../../../Path/Post/Processor.py" line="523"/>
+      <source>Axis precision in output</source>
+      <translation>Précision des axes en sortie</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="522"/>
+      <location filename="../../../Path/Post/Processor.py" line="528"/>
       <source>Decimals of precision for axis motion</source>
       <translation>Précision en décimales pour le déplacement des axes</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="527"/>
-      <source>Feedrate precision in ouptput</source>
+      <location filename="../../../Path/Post/Processor.py" line="533"/>
+      <source>Feedrate precision in output</source>
       <translation>Précision de la vitesse d'avance en sortie</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="532"/>
+      <location filename="../../../Path/Post/Processor.py" line="538"/>
       <source>Decimals of precision for feedrate (F)</source>
       <translation>Nombre de décimales de précision pour la vitesse d'avance (F)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="537"/>
-      <source>Spindle-speed precision in ouptput</source>
+      <location filename="../../../Path/Post/Processor.py" line="543"/>
+      <source>Spindle-speed precision in output</source>
       <translation>Précision de la vitesse de rotation de la broche en sortie</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="542"/>
+      <location filename="../../../Path/Post/Processor.py" line="548"/>
       <source>Decimals of precision for spindle-speed</source>
       <translation>Nombre de décimales de précision pour la vitesse de rotation de la broche</translation>
     </message>
@@ -10296,17 +10296,17 @@ personnalisés. La sélection est limitée à un seul modèle :
   <context>
     <name>CAM_Custom</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Custom.py" line="112"/>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="120"/>
       <source>Select file containing the gcode</source>
       <translation>Sélectionner un fichier contenant le G-code</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Custom.py" line="127"/>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="135"/>
       <source>Custom</source>
       <translation>Personnalisé</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Custom.py" line="128"/>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="136"/>
       <source>Create custom G-code snippet</source>
       <translation>Créer un extrait de G-code personnalisé</translation>
     </message>
@@ -10787,12 +10787,12 @@ de refroidissement.</translation>
   <context>
     <name>CAM_OpActiveToggle</name>
     <message>
-      <location filename="../../../PathCommands.py" line="148"/>
+      <location filename="../../../PathCommands.py" line="149"/>
       <source>Toggle Operation</source>
       <translation>Activer/désactiver une opération</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="152"/>
+      <location filename="../../../PathCommands.py" line="153"/>
       <source>Toggles the active state of the operation</source>
       <translation>Active/désactive l'état actif de l'opération.</translation>
     </message>
@@ -10800,12 +10800,12 @@ de refroidissement.</translation>
   <context>
     <name>CAM_OperationCopy</name>
     <message>
-      <location filename="../../../PathCommands.py" line="218"/>
+      <location filename="../../../PathCommands.py" line="219"/>
       <source>Copy Operation</source>
       <translation>Copier une opération</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="219"/>
+      <location filename="../../../PathCommands.py" line="220"/>
       <source>Copies the operation in the job</source>
       <translation>Copie l'opération dans la tâche.</translation>
     </message>

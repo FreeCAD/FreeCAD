@@ -76,6 +76,7 @@ from CAMTests.TestPostOutput import (
     TestExport2Integration,
 )
 
+from CAMTests.TestPathCustom import TestPathCustomConverted
 from CAMTests.TestPathPreferences import TestPathPreferences
 from CAMTests.TestPathPocket import TestPathPocket
 from CAMTests.TestPathProfile import TestPathProfile, TestPathOpenProfile
@@ -114,6 +115,9 @@ from CAMTests.TestPathToolBitSerializer import (
     TestFCTBSerializer,
     TestYamlToolBitSerializer,
 )
+from CAMTests.TestFeedsSpeedsResolver import TestFeedsSpeedsResolver
+from CAMTests.TestFeedsSpeedsToolBitPresets import TestFeedsSpeedsToolBitPresets
+from CAMTests.TestFeedsSpeedsToolController import TestFeedsSpeedsToolController
 from CAMTests.TestPathToolLibrary import TestPathToolLibrary
 from CAMTests.TestPathToolLibrarySerializer import (
     TestCamoticsLibrarySerializer,
@@ -158,3 +162,4 @@ from CAMTests.TestGcodeProcessingUtils import (
     TestNumberGenerator,
     TestDeduplicateRepeatedCommands,
 )
+from CAMTests.TestPathDressupArray import TestDressupArray

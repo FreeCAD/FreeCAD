@@ -27,6 +27,7 @@ set(Assembly_Scripts
     CommandCreateJoint.py
     CommandCreateView.py
     CommandCreateSimulation.py
+    CommandCreateSnapshot.py
     CommandExportASMT.py
     TestAssemblyWorkbench.py
     JointObject.py

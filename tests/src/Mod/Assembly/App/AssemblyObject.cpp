@@ -9,7 +9,7 @@
 #include <App/Expression.h>
 #include <App/ObjectIdentifier.h>
 #include <Mod/Assembly/App/AssemblyObject.h>
-#include <Mod/Assembly/App/JointGroup.h>
+#include <Mod/Assembly/App/Groups.h>
 #include <src/App/InitApplication.h>
 
 class AssemblyObjectTest: public ::testing::Test

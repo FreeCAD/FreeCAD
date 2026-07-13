@@ -954,13 +954,11 @@ Py::List DocumentPy::getRootObjectsIgnoreLinks() const
 
 Py::Long DocumentPy::getUndoMode() const
 {
-    return Py::Long(getDocumentPtr()->getUndoMode());
+    return Py::Long(1);
 }
 
-void DocumentPy::setUndoMode(Py::Long arg)
-{
-    getDocumentPtr()->setUndoMode(arg);
-}
+void DocumentPy::setUndoMode(Py::Long /*arg*/)
+{}
 
 
 Py::Long DocumentPy::getUndoRedoMemSize() const

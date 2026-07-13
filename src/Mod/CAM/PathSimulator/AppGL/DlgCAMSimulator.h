@@ -94,11 +94,11 @@ public:
     void connectTo(GuiDisplay& gui, Dummy3DViewer& dv);
     void cloneFrom(const DlgCAMSimulator& from);
 
-    static DlgCAMSimulator* instance();
+    static DlgCAMSimulator* instance(Gui::Document* doc = nullptr);
 
     void setAnimating(bool animating);
     void startSimulation(const Part::TopoShape& stock, float quality);
-    void resetSimulation(Gui::Document* doc);
+    void resetSimulation();
 
     void addGcodeCommand(const char* cmd);
     void addTool(
@@ -119,7 +119,6 @@ public:
     void setPathColor(const QColor& normal, const QColor& rapid);
 
 Q_SIGNALS:
-    void documentChanged(Gui::Document* doc);
     void simulationStarted();
 
 protected:

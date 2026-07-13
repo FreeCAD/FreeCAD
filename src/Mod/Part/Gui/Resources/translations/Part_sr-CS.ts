@@ -2028,12 +2028,12 @@ projekcije.</translation>
     <message>
       <location filename="../../Command.cpp" line="1762"/>
       <source>Sweep</source>
-      <translation>Po putanji</translation>
+      <translation>Po vodilji</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1763"/>
       <source>Sweeps profiles along a wire</source>
-      <translation>Napravi oblik izvlačenjem preseka po putanji</translation>
+      <translation>Napravi oblik izvlačenjem preseka po vodilji</translation>
     </message>
   </context>
   <context>
@@ -2264,7 +2264,7 @@ projekcije.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="417"/>
       <source>Sweep</source>
-      <translation>Po putanji</translation>
+      <translation>Po vodilji</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="1615"/>
@@ -5273,7 +5273,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="394"/>
       <source>'%1' cannot be used as profile and path.</source>
-      <translation>'%1' ne može se koristiti kao profil i putanja.</translation>
+      <translation>'%1' ne može se koristiti kao profil i vodilja.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="431"/>
@@ -5310,7 +5310,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="520"/>
       <source>Sweep</source>
-      <translation>Po putanji</translation>
+      <translation>Po vodilji</translation>
     </message>
   </context>
   <context>
@@ -5980,7 +5980,7 @@ Provera pojedinačnih bulovih operacija:</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="14"/>
       <source>Sweep</source>
-      <translation>Po putanji</translation>
+      <translation>Po vodilji</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>
@@ -7174,12 +7174,12 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
   <context>
     <name>Part::FaceMakerExtrusion</name>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="421"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="427"/>
       <source>Part Extrude facemaker</source>
       <translation>Part izvlačenje tvorac stranica</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="426"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="432"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation>Podrška pravljenju stranica sa rupama, isključuje mogućnost slaganja.</translation>
     </message>
@@ -7742,6 +7742,19 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
       <source>STEP with colors</source>
       <extracomment>Translation note: "STEP" is a file type end should not be translated</extracomment>
       <translation type="unfinished">STEP with colors</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerUnified</name>
+    <message>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
+      <source>Unified facemaker</source>
+      <translation type="unfinished">Unified facemaker</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
+      <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
+      <translation type="unfinished">Unified: handles nested holes, overlapping wires, and curved surfaces</translation>
     </message>
   </context>
   <context>

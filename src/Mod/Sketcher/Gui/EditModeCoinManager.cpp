@@ -27,6 +27,7 @@
 #include <functional>
 #include <limits>
 #include <memory>
+#include <ranges>
 
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec3f.h>
@@ -78,6 +79,43 @@ struct ScreenPreselectionPolicy
     static constexpr float PointHoverHysteresisPx = 2.0F;
     static constexpr float EdgeHitPaddingPx = 2.0F;
 };
+
+struct PreselectionPriority
+{
+    static constexpr int None = 0;
+    static constexpr int ConstraintDatumLabel = 100;
+    static constexpr int Axis = 300;
+    static constexpr int ConstraintFallback = 350;
+    static constexpr int Edge = 400;
+    static constexpr int ConstraintIcon = 450;
+    static constexpr int Point = 500;
+};
+
+int preselectionPriority(const EditModeCoinManager::PreselectionResult& result)
+{
+    using Result = EditModeCoinManager::PreselectionResult;
+
+    switch (result.Kind) {
+        case Result::HitKind::Point:
+            return PreselectionPriority::Point;
+        case Result::HitKind::Constraint:
+            if (result.ConstraintKind == Result::ConstraintHitKind::Icon) {
+                return PreselectionPriority::ConstraintIcon;
+            }
+            if (result.ConstraintKind == Result::ConstraintHitKind::DatumLabel) {
+                return PreselectionPriority::ConstraintDatumLabel;
+            }
+            return PreselectionPriority::ConstraintFallback;
+        case Result::HitKind::Edge:
+            return PreselectionPriority::Edge;
+        case Result::HitKind::Axis:
+            return PreselectionPriority::Axis;
+        case Result::HitKind::None:
+            return PreselectionPriority::None;
+    }
+
+    return PreselectionPriority::None;
+}
 
 float distanceSquaredToSegment(const SbVec2f& point, const SbVec2f& segmentStart, const SbVec2f& segmentEnd)
 {
@@ -1133,13 +1171,29 @@ EditModeCoinManager::PreselectionResult EditModeCoinManager::detectConstraintPre
 )
 {
     PreselectionResult result;
-    Base::Vector3d pickedPoint;
+    auto toPreselectionResult = [](const auto& hit, PreselectionResult& target) {
+        using ConstraintResult = EditModeConstraintCoinManager::ConstraintPreselectionResult;
 
-    result.ConstrIndices
-        = pEditModeConstraintCoinManager->detectPreselectionConstr(cursorPos, &pickedPoint);
-    if (!result.ConstrIndices.empty()) {
-        result.Kind = PreselectionResult::HitKind::Constraint;
-        result.setPickedPoint(pickedPoint);
+        target.Kind = PreselectionResult::HitKind::Constraint;
+        target.ConstrIndices = hit.ConstrIndices;
+        target.setPickedPoint(hit.PickedPoint);
+
+        switch (hit.Kind) {
+            case ConstraintResult::HitKind::Icon:
+                target.ConstraintKind = PreselectionResult::ConstraintHitKind::Icon;
+                break;
+            case ConstraintResult::HitKind::DatumLabel:
+                target.ConstraintKind = PreselectionResult::ConstraintHitKind::DatumLabel;
+                break;
+            case ConstraintResult::HitKind::None:
+                target.ConstraintKind = PreselectionResult::ConstraintHitKind::None;
+                break;
+        }
+    };
+
+    auto constraintHit = pEditModeConstraintCoinManager->detectPreselectionConstr(cursorPos);
+    if (constraintHit.hasHit()) {
+        toPreselectionResult(constraintHit, result);
         return result;
     }
 
@@ -1149,14 +1203,12 @@ EditModeCoinManager::PreselectionResult EditModeCoinManager::detectConstraintPre
             continue;
         }
 
-        result.ConstrIndices
-            = pEditModeConstraintCoinManager->detectPreselectionConstr(point, cursorPos);
-        if (result.ConstrIndices.empty()) {
+        constraintHit = pEditModeConstraintCoinManager->detectPreselectionConstr(point, cursorPos);
+        if (!constraintHit.hasHit()) {
             continue;
         }
 
-        result.Kind = PreselectionResult::HitKind::Constraint;
-        result.setPickedPoint(point);
+        toPreselectionResult(constraintHit, result);
         return result;
     }
 
@@ -1405,28 +1457,57 @@ bool EditModeCoinManager::detectAxisPreselection(
     return false;
 }
 
+EditModeCoinManager::PreselectionCandidates EditModeCoinManager::collectPreselectionCandidates(
+    const SoPickedPointList& points,
+    const SbVec2s& cursorPos,
+    int hoveredPointIndex
+)
+{
+    PreselectionCandidates candidates;
+    auto addCandidate = [&candidates](const PreselectionResult& result) {
+        if (result.hasWinner()) {
+            candidates.Items.push_back(result);
+        }
+    };
+
+    addCandidate(detectConstraintPreselection(points, cursorPos));
+
+    PreselectionResult geometry;
+    detectGeometryPreselection(points, cursorPos, hoveredPointIndex, geometry);
+    addCandidate(geometry);
+
+    PreselectionResult axis;
+    detectAxisPreselection(points, axis);
+    addCandidate(axis);
+
+    return candidates;
+}
+
+EditModeCoinManager::PreselectionResult EditModeCoinManager::resolvePreselectionCandidates(
+    const PreselectionCandidates& candidates
+) const
+{
+    if (candidates.Items.empty()) {
+        return {};
+    }
+
+    return *std::ranges::max_element(
+        candidates.Items,
+        [](const PreselectionResult& lhs, const PreselectionResult& rhs) {
+            return preselectionPriority(lhs) < preselectionPriority(rhs);
+        }
+    );
+}
+
 EditModeCoinManager::PreselectionResult EditModeCoinManager::detectPreselection(
     const SoPickedPointList& points,
     const SbVec2s& cursorPos,
     int hoveredPointIndex
 )
 {
-    PreselectionResult result;
-
-    result = detectConstraintPreselection(points, cursorPos);
-    if (result.hasWinner()) {
-        return result;
-    }
-
-    if (detectGeometryPreselection(points, cursorPos, hoveredPointIndex, result)) {
-        return result;
-    }
-
-    if (detectAxisPreselection(points, result)) {
-        return result;
-    }
-
-    return result;
+    return resolvePreselectionCandidates(
+        collectPreselectionCandidates(points, cursorPos, hoveredPointIndex)
+    );
 }
 
 SoGroup* EditModeCoinManager::getSelectedConstraints()
