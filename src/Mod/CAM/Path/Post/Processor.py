@@ -2394,6 +2394,7 @@ class PostProcessor:
             command.Name not in supported
             and not command.Name.startswith("(")
             and not command.Name.startswith("T")
+            and not command.Annotations.get(Constants.ANNOT_ALLOW_UNSUPPORTED, False)
         ):
             raise CAMValueError(
                 f"Unsupported command: {command.Name}",
