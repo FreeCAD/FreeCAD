@@ -448,7 +448,7 @@ public:
                               const ElementIDRefs* sid = nullptr,
                               bool overwrite = false)
     {
-        return _elementMap->setElementName(element, name, masterTag, sid, overwrite);
+        return ensureElementMap()->setElementName(element, name, masterTag, sid, overwrite);
     }
 
     /// Check if there is an element map.
