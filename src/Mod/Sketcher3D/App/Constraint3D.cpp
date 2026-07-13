@@ -30,9 +30,6 @@
 #include <vector>
 
 #include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Reader.h>
-#include <Base/Tools.h>
 #include <Base/Writer.h>
 
 using namespace Sketcher3D;

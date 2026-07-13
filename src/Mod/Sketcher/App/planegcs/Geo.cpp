@@ -1294,4 +1294,90 @@ Line3D* Line3D::Copy()
     return new Line3D(*this);
 }
 
+//----------------circle3D
+DeriVector3 Circle3D::CalculateNormal(const Point3D& p, const double* derivparam) const
+{
+    DeriVector3 cv(center, derivparam);
+    DeriVector3 pv(p, derivparam);
+
+    return cv.subtr(pv);
+}
+
+DeriVector3 Circle3D::Value(double u, double du, const double* derivparam) const
+{
+    DeriVector3 cv(center, derivparam);
+    DeriVector3 nhat = DeriVector3(normal, derivparam).getNormalized();
+    DeriVector3 xRaw(xAxis, derivparam);
+    double dotD = 0.0;
+    double dot = nhat.scalarProd(xRaw, &dotD);
+    DeriVector3 e1v = xRaw.subtr(nhat.multD(dot, dotD)).getNormalized();
+    DeriVector3 e2v = nhat.crossProd(e1v);
+
+    double r = *(this->rad);
+    double dr = (derivparam == this->rad) ? 1.0 : 0.0;
+
+    double si = std::sin(u);
+    double dsi = du * std::cos(u);
+    double co = std::cos(u);
+    double dco = du * (-std::sin(u));
+
+    DeriVector3 radial = e1v.multD(co, dco).sum(e2v.multD(si, dsi));
+    return cv.sum(radial.multD(r, dr));
+}
+
+int Circle3D::PushOwnParams(VEC_pD& pvec)
+{
+    int cnt = 0;
+    cnt += center.PushOwnParams(pvec);
+    pvec.push_back(rad);
+    cnt++;
+    cnt += normal.PushOwnParams(pvec);
+    cnt += xAxis.PushOwnParams(pvec);
+    return cnt;
+}
+
+void Circle3D::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
+{
+    center.ReconstructOnNewPvec(pvec, cnt);
+    rad = pvec[cnt];
+    cnt++;
+    normal.ReconstructOnNewPvec(pvec, cnt);
+    xAxis.ReconstructOnNewPvec(pvec, cnt);
+}
+
+Circle3D* Circle3D::Copy()
+{
+    return new Circle3D(*this);
+}
+
+//----------------Arc3D
+int Arc3D::PushOwnParams(VEC_pD& pvec)
+{
+    int cnt = 0;
+    cnt += Circle3D::PushOwnParams(pvec);
+    cnt += start.PushOwnParams(pvec);
+    cnt += end.PushOwnParams(pvec);
+    pvec.push_back(startAngle);
+    cnt++;
+    pvec.push_back(endAngle);
+    cnt++;
+    return cnt;
+}
+
+void Arc3D::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
+{
+    Circle3D::ReconstructOnNewPvec(pvec, cnt);
+    start.ReconstructOnNewPvec(pvec, cnt);
+    end.ReconstructOnNewPvec(pvec, cnt);
+    startAngle = pvec[cnt];
+    cnt++;
+    endAngle = pvec[cnt];
+    cnt++;
+}
+
+Arc3D* Arc3D::Copy()
+{
+    return new Arc3D(*this);
+}
+
 }  // namespace GCS

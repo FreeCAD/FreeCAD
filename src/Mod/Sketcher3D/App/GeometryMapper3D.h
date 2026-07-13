@@ -75,18 +75,10 @@ public:
     std::vector<Part::Geometry*> extractGeometry() const;
 
 private:
-    enum GeoType
-    {
-        None = 0,
-        Point,
-        Line,
-        Plane
-    };
-
     struct GeoDef
     {
         std::unique_ptr<Part::Geometry> geo;
-        GeoType type = None;    ///< Type of the geometry
+        GeoKind type = GeoKind::Unknown;
         int index = -1;         ///< Index in the corresponding storage vector (Lines, Arcs, ...)
         int startPointId = -1;  ///< Index in Points of the start point of this geometry
         int midPointId = -1;    ///< Index in Points of the mid point of this geometry

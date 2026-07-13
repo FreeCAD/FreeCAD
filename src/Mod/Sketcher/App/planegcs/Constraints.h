@@ -91,6 +91,7 @@ enum ConstraintType
     EqualLineLength3D = 40,
     ProjectOnPlane3D = 41,
     P2LDistance3D = 42,
+    CurveValue3D = 43,
 };
 
 enum InternalAlignmentType
@@ -1611,7 +1612,6 @@ public:
     ConstraintType getTypeId() override;
 };
 
-/// TODO: make plane as dof
 class ConstraintProjectOnPlane3D: public Constraint
 {
 private:
@@ -1627,18 +1627,33 @@ private:
     {
         return pvec[2];
     }
-    double ox, oy, oz, nx, ny, nz;
+    inline double* ox()
+    {
+        return pvec[3];
+    }
+    inline double* oy()
+    {
+        return pvec[4];
+    }
+    inline double* oz()
+    {
+        return pvec[5];
+    }
+    inline double* nx()
+    {
+        return pvec[6];
+    }
+    inline double* ny()
+    {
+        return pvec[7];
+    }
+    inline double* nz()
+    {
+        return pvec[8];
+    }
 
 public:
-    ConstraintProjectOnPlane3D(
-        Point3D& point,
-        double oX,
-        double oY,
-        double oZ,
-        double nX,
-        double nY,
-        double nZ
-    );
+    ConstraintProjectOnPlane3D(Point3D& p, Point3D& plane_p, Point3D& plane_n);
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     ConstraintProjectOnPlane3D()
     {}
@@ -1706,6 +1721,44 @@ public:
     double grad(double*) override;
     double maxStep(MAP_pD_D& dir, double lim = 1.) override;
     void evaluate() override;
+};
+
+// CurveValue3D
+class ConstraintCurveValue3D: public Constraint
+{
+private:
+    // defines, which coordinate of point is being constrained by this constraint
+    inline double* pcoord()
+    {
+        return pvec[3];
+    }
+    inline double* u()
+    {
+        return pvec[4];
+    }
+    void errorgrad(double* err, double* grad, double* param) override;
+    // writes pointers in pvec to the parameters of crv
+    void reconstructGeomPointers() override;
+    Curve3D* crv;
+    Point3D p;
+
+public:
+    /**
+     * @brief ConstraintCurveValue3D: solver constraint that ties parameter value with point
+     * coordinates, according to curve's parametric equation.
+     * @param p : endpoint to be constrained
+     * @param pcoord : pointer to point coordinate to be constrained. Must be either p.x or p.y
+     * @param crv : the curve (crv->Value() must be functional)
+     * @param u : pointer to u parameter corresponding to the point
+     */
+    ConstraintCurveValue3D(Point3D& p, double* pcoord, Curve3D& crv, double* u);
+#ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+    ConstraintCurveValue3D()
+    {}
+#endif
+    ~ConstraintCurveValue3D() override;
+    ConstraintType getTypeId() override;
+    double maxStep(MAP_pD_D& dir, double lim = 1.) override;
 };
 
 }  // namespace GCS

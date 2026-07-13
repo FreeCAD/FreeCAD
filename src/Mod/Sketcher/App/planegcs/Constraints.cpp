@@ -3883,25 +3883,11 @@ void ConstraintP2LDistance3D::evaluate()
 
 // --------------------------------------------------------
 // ProjectOnPlane3D
-ConstraintProjectOnPlane3D::ConstraintProjectOnPlane3D(
-    Point3D& point,
-    double oX,
-    double oY,
-    double oZ,
-    double nX,
-    double nY,
-    double nZ
-)
-    : ox(oX)
-    , oy(oY)
-    , oz(oZ)
-    , nx(nX)
-    , ny(nY)
-    , nz(nZ)
+ConstraintProjectOnPlane3D::ConstraintProjectOnPlane3D(Point3D& p, Point3D& origin, Point3D& normal)
 {
-    pvec.push_back(point.x);
-    pvec.push_back(point.y);
-    pvec.push_back(point.z);
+    p.PushOwnParams(pvec);
+    origin.PushOwnParams(pvec);
+    normal.PushOwnParams(pvec);
     origpvec = pvec;
     rescale();
 }
@@ -3913,24 +3899,115 @@ ConstraintType ConstraintProjectOnPlane3D::getTypeId()
 
 double ConstraintProjectOnPlane3D::error()
 {
-    const double dx = *px() - ox;
-    const double dy = *py() - oy;
-    const double dz = *pz() - oz;
-    return scale * ((nx * dx) + (ny * dy) + (nz * dz));
+    DeriVector3 nhat = DeriVector3(*nx(), *ny(), *nz()).getNormalized();
+    double dx = *px() - *ox();
+    double dy = *py() - *oy();
+    double dz = *pz() - *oz();
+    return scale * (dx * nhat.x + dy * nhat.y + dz * nhat.z);
 }
 
 double ConstraintProjectOnPlane3D::grad(double* param)
 {
-    if (param == px()) {
-        return scale * nx;
+    Point3D pRef(px(), py(), pz());
+    Point3D oRef(ox(), oy(), oz());
+    Point3D nRef(nx(), ny(), nz());
+
+    DeriVector3 pvec(pRef, param);
+    DeriVector3 ovec(oRef, param);
+    DeriVector3 delta = pvec.subtr(ovec);
+    DeriVector3 nhat = DeriVector3(nRef, param).getNormalized();
+
+    double dprd;
+    delta.scalarProd(nhat, &dprd);
+    return scale * dprd;
+}
+
+// --------------------------------------------------------
+// CurveValue3D
+ConstraintCurveValue3D::ConstraintCurveValue3D(Point3D& p, double* pcoord, Curve3D& c, double* u)
+    : crv(c.Copy())
+{
+    pvec.push_back(p.x);
+    pvec.push_back(p.y);
+    pvec.push_back(p.z);
+    pvec.push_back(pcoord);
+    pvec.push_back(u);
+    crv->PushOwnParams(pvec);
+    reconstructGeomPointers();
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintCurveValue3D::~ConstraintCurveValue3D()
+{
+    delete this->crv;
+    this->crv = nullptr;
+}
+
+void ConstraintCurveValue3D::reconstructGeomPointers()
+{
+    int i = 0;
+    p.x = pvec[i];
+    i++;
+    p.y = pvec[i];
+    i++;
+    p.z = pvec[i];
+    i++;
+    i++;  // we have an inline function for point coordinate
+    i++;  // we have an inline function for the parameterU
+    this->crv->ReconstructOnNewPvec(pvec, i);
+}
+
+ConstraintType ConstraintCurveValue3D::getTypeId()
+{
+    return CurveValue3D;
+}
+
+void ConstraintCurveValue3D::errorgrad(double* err, double* grad, double* param)
+{
+    double u, du;
+    u = *(this->u());
+    du = (param == this->u()) ? 1.0 : 0.0;
+
+    DeriVector3 P_to;  // point of curve at parameter value of u, in global coordinates
+    P_to = this->crv->Value(u, du, param);
+
+    DeriVector3 P_from(this->p, param);  // point to be constrained
+
+    DeriVector3 err_vec = P_from.subtr(P_to);
+
+    if (this->pcoord() == this->p.x) {  // this constraint is for X projection
+        if (err) {
+            *err = err_vec.x;
+        }
+        if (grad) {
+            *grad = err_vec.dx;
+        }
     }
-    if (param == py()) {
-        return scale * ny;
+    else if (this->pcoord() == this->p.y) {  // this constraint is for Y projection
+        if (err) {
+            *err = err_vec.y;
+        }
+        if (grad) {
+            *grad = err_vec.dy;
+        }
     }
-    if (param == pz()) {
-        return scale * nz;
+    else if (this->pcoord() == this->p.z) {  // this constraint is for Z projection
+        if (err) {
+            *err = err_vec.z;
+        }
+        if (grad) {
+            *grad = err_vec.dz;
+        }
     }
-    return 0.0;
+    else {
+        assert(false /*this constraint is neither X, Y nor Z. Nothing to do*/);
+    }
+}
+
+double ConstraintCurveValue3D::maxStep(MAP_pD_D& /*dir*/, double lim)
+{
+    return lim;
 }
 
 }  // namespace GCS

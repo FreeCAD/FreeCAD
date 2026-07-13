@@ -35,6 +35,10 @@ namespace App
 class DocumentObject;
 }
 
+namespace Sketcher3D
+{
+class Sketch3DObject;
+}
 
 namespace Sketcher3DGui
 {
@@ -46,6 +50,9 @@ Sketcher3DGuiExport bool isSketch3DInEdit();
 
 // Returns the ViewProviderSketch3D of the sketch currently being edited,
 Sketcher3DGuiExport ViewProviderSketch3D* getActiveSketch3DVP();
+
+// Returns the Sketch3DObject.
+Sketcher3DGuiExport Sketcher3D::Sketch3DObject* activeSketch3D();
 
 Sketcher3DGuiExport GeometryCreationMode3D currentGeometryCreationMode3D();
 Sketcher3DGuiExport bool isConstructionMode();

@@ -70,6 +70,29 @@ public:
     /// Fixed reference plane.
     int addPlane(const Base::Vector3d& origin, const Base::Vector3d& normal);
 
+    /// Arc3D
+    int addArc(
+        int centerHandle,
+        int startHandle,
+        int endHandle,
+        double radius,
+        double startAngle,
+        double endAngle,
+        const Base::Vector3d& normal,
+        const Base::Vector3d& xDirection
+    );
+
+    /// Circle3D.
+    int addCircle(
+        int centerHandle,
+        double radius,
+        const Base::Vector3d& normal,
+        const Base::Vector3d& xDirection
+    );
+
+    /// Tie the start/end points of an arc to its parametric circle.
+    void addConstraintArcRules(int tagId, int arcHandle);
+
     /// Coincident constraint between two points.
     void addConstraintCoincident(int tagId, int pointHandleA, int pointHandleB);
 
@@ -81,6 +104,8 @@ public:
 
     /// Pointonline constraint
     void addConstraintPointOnLine(int tagId, int pointHandle, int lineHandle);
+    void addConstraintPointOnArc(int tagId, int pointHandle, int arcHandle);
+    void addConstraintPointOnCircle(int tagId, int pointHandle, int circleHandle);
 
     /// Point at the midpoint of a line segment.
     void addConstraintPointAtLineMidpoint(int tagId, int pointHandle, int lineHandle);
@@ -140,6 +165,25 @@ public:
     /// Read back the current value of a point after solve().
     Base::Vector3d getPoint(int pointHandle) const;
 
+    struct CircleFrame
+    {
+        Base::Vector3d normal;
+        Base::Vector3d xAxis;
+        double radius;
+    };
+
+    struct ArcFrame
+    {
+        Base::Vector3d normal;
+        Base::Vector3d xAxis;
+        double radius;
+        double startAngle;
+        double endAngle;
+    };
+
+    CircleFrame getCircleFrame(int circleHandle) const;
+    ArcFrame getArcFrame(int arcHandle) const;
+
     bool hasConflicts() const
     {
         return !conflictingTags.empty();
@@ -170,12 +214,13 @@ private:
     // Mapping from handle index to underlying GCS struct.
     std::vector<GCS::Point3D> points;
     std::vector<GCS::Line3D> lines;
+    std::vector<GCS::Circle3D> circles;
+    std::vector<GCS::Arc3D> arcs;
 
-    // TODO: plane is not a Dof in solver.
     struct Plane3D
     {
-        Base::Vector3d origin;
-        Base::Vector3d normal;
+        GCS::Point3D origin;
+        GCS::Point3D normal;
     };
     std::vector<Plane3D> planes;
 

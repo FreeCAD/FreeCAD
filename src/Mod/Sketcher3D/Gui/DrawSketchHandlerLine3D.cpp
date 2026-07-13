@@ -51,36 +51,7 @@ DrawSketchHandlerLine3D::~DrawSketchHandlerLine3D() = default;
 
 void DrawSketchHandlerLine3D::onActivated()
 {
-    SoSeparator* root = getPreviewRoot();
-    if (!root) {
-        return;
-    }
-
-    auto* material = new SoMaterial();
-    applyConstructionPreviewColor(material);
-    root->addChild(material);
-
-    auto* style = new SoDrawStyle();
-    style->lineWidth.setValue(2.0F);
-    root->addChild(style);
-
-    rubberSwitch = new SoSwitch();
-    rubberSwitch->whichChild = SO_SWITCH_NONE;
-    root->addChild(rubberSwitch);
-
-    auto* rubberGroup = new SoSeparator();
-    rubberSwitch->addChild(rubberGroup);
-
-    rubberCoords = new SoCoordinate3();
-    rubberCoords->point.setNum(2);
-    rubberCoords->point.set1Value(0, 0.0F, 0.0F, 0.0F);
-    rubberCoords->point.set1Value(1, 0.0F, 0.0F, 0.0F);
-    rubberGroup->addChild(rubberCoords);
-
-    auto* lineSet = new SoLineSet();
-    lineSet->numVertices.setNum(1);
-    lineSet->numVertices.set1Value(0, 2);
-    rubberGroup->addChild(lineSet);
+    setupLineRubberBandPreview();
 }
 
 bool DrawSketchHandlerLine3D::mouseMove(const Base::Vector3d& pos)
@@ -124,7 +95,7 @@ bool DrawSketchHandlerLine3D::pressButton(const Base::Vector3d& pos)
             );
         }
         if (rubberSwitch) {
-            rubberSwitch->whichChild = SO_SWITCH_ALL;
+            setRubberBandVisible(true);
         }
         // Anchor the workplane at the segment's start for the second pick.
         if (auto* vp = getSketchVP()) {
@@ -176,6 +147,6 @@ void DrawSketchHandlerLine3D::resetToPickFirst()
     state = State::PickFirst;
     sugConstr1.clear();
     if (rubberSwitch) {
-        rubberSwitch->whichChild = SO_SWITCH_NONE;
+        setRubberBandVisible(false);
     }
 }

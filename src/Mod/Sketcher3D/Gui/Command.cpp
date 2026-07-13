@@ -37,18 +37,8 @@
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection/Selection.h>
-#include <Gui/Selection/SelectionObject.h>
-
-#include <BRep_Tool.hxx>
-#include <Standard_Failure.hxx>
-#include <TopAbs_ShapeEnum.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <gp_Pnt.hxx>
 
 #include <Mod/Part/App/Geometry.h>
-#include <Mod/Part/App/TopoShape.h>
 #include <Mod/Sketcher3D/App/Constraint3D.h>
 #include <Mod/Sketcher3D/App/GeoEnum3D.h>
 #include <Mod/Sketcher3D/App/Sketch3DObject.h>
@@ -58,6 +48,8 @@
 #include "DrawSketchHandlerPoint3D.h"
 #include "DrawSketchHandlerPolyline3D.h"
 #include "DrawSketchHandlerReferencePlane3D.h"
+#include "DrawSketchHandlerCircle3D.h"
+#include "DrawSketchHandlerArc3D.h"
 #include "Utils.h"
 #include "ViewProviderSketch3D.h"
 
@@ -244,6 +236,8 @@ CmdSketcher3DToggleConstruction::CmdSketcher3DToggleConstruction()
     rcCmdMgr.addCommandMode("ToggleConstruction3D", "Sketcher3D_CreatePoint");
     rcCmdMgr.addCommandMode("ToggleConstruction3D", "Sketcher3D_CreateLine");
     rcCmdMgr.addCommandMode("ToggleConstruction3D", "Sketcher3D_CreatePolyline");
+    rcCmdMgr.addCommandMode("ToggleConstruction3D", "Sketcher3D_CreateCircle");
+    rcCmdMgr.addCommandMode("ToggleConstruction3D", "Sketcher3D_CreateArc");
     rcCmdMgr.addCommandMode("ToggleConstruction3D", "Sketcher3D_ToggleConstruction");
 }
 
@@ -274,6 +268,67 @@ bool CmdSketcher3DToggleConstruction::isActive()
     return isSketch3DInEdit();
 }
 
+DEF_STD_CMD_A(CmdSketcher3DCreateCircle)
+
+CmdSketcher3DCreateCircle::CmdSketcher3DCreateCircle()
+    : Command("Sketcher3D_CreateCircle")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Create circle");
+    sToolTipText = QT_TR_NOOP("Creates a 3D circle from 3 perimeter points");
+    sWhatsThis = "Sketcher3D_CreateCircle";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_Create3PointCircle";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DCreateCircle::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ViewProviderSketch3D* vp = getActiveSketch3DVP();
+    if (!vp) {
+        return;
+    }
+    vp->activateHandler(std::make_unique<DrawSketchHandlerCircle3D>());
+}
+
+bool CmdSketcher3DCreateCircle::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+
+DEF_STD_CMD_A(CmdSketcher3DCreateArc)
+
+CmdSketcher3DCreateArc::CmdSketcher3DCreateArc()
+    : Command("Sketcher3D_CreateArc")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Create arc");
+    sToolTipText = QT_TR_NOOP("Creates a 3D arc from start point, end point, and a point on the arc");
+    sWhatsThis = "Sketcher3D_CreateArc";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_Create3PointArc";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DCreateArc::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ViewProviderSketch3D* vp = getActiveSketch3DVP();
+    if (!vp) {
+        return;
+    }
+    vp->activateHandler(std::make_unique<DrawSketchHandlerArc3D>());
+}
+
+bool CmdSketcher3DCreateArc::isActive()
+{
+    return isSketch3DInEdit();
+}
+
 // ---------------------------------------------------------------------------
 // Selection helpers
 // ---------------------------------------------------------------------------
@@ -282,18 +337,20 @@ struct Sketch3DCollectedSelection
 {
     std::vector<Sketcher3D::GeoElementId3D> points;
     std::vector<Sketcher3D::GeoElementId3D> lines;
+    std::vector<Sketcher3D::GeoElementId3D> arcs;
+    std::vector<Sketcher3D::GeoElementId3D> circles;
     std::vector<Sketcher3D::GeoElementId3D> planes;
 };
 
 Sketch3DCollectedSelection collectSketch3DSelection(
     Sketcher3D::Sketch3DObject* sketch,
     bool wantPoints,
-    bool wantLines,
+    bool wantCurves = false,
     bool wantPlanes = false
 )
 {
     Sketch3DCollectedSelection result;
-    if (!sketch || (!wantPoints && !wantLines && !wantPlanes)) {
+    if (!sketch || (!wantPoints && !wantCurves && !wantPlanes)) {
         return result;
     }
 
@@ -310,15 +367,28 @@ Sketch3DCollectedSelection collectSketch3DSelection(
 
             // check by geokind
             bool isPoint = id.Kind == Sketcher3D::GeoKind::Point
-                || (id.Kind == Sketcher3D::GeoKind::Line && id.Pos != Sketcher3D::PointPos::none);
-            bool isLine = id.Kind == Sketcher3D::GeoKind::Line
-                && id.Pos == Sketcher3D::PointPos::none;
+                || (id.Kind != Sketcher3D::GeoKind::Plane && id.Pos != Sketcher3D::PointPos::none);
+            bool isCurve = id.Pos == Sketcher3D::PointPos::none
+                && (id.Kind == Sketcher3D::GeoKind::Line || id.Kind == Sketcher3D::GeoKind::Arc
+                    || id.Kind == Sketcher3D::GeoKind::Circle);
 
             if (wantPoints && isPoint) {
                 result.points.push_back(id);
             }
-            else if (wantLines && isLine) {
-                result.lines.push_back(id);
+            else if (wantCurves && isCurve) {
+                switch (id.Kind) {
+                    case Sketcher3D::GeoKind::Line:
+                        result.lines.push_back(id);
+                        break;
+                    case Sketcher3D::GeoKind::Arc:
+                        result.arcs.push_back(id);
+                        break;
+                    case Sketcher3D::GeoKind::Circle:
+                        result.circles.push_back(id);
+                        break;
+                    default:
+                        break;
+                }
             }
             else if (wantPlanes && id.Kind == Sketcher3D::GeoKind::Plane) {
                 result.planes.push_back(id);
@@ -331,27 +401,12 @@ Sketch3DCollectedSelection collectSketch3DSelection(
 
 std::vector<Sketcher3D::GeoElementId3D> collectSelectedPointRefs(Sketcher3D::Sketch3DObject* sketch)
 {
-    return collectSketch3DSelection(sketch, true, false).points;
+    return collectSketch3DSelection(sketch, true).points;
 }
 
 std::vector<Sketcher3D::GeoElementId3D> collectSelectedLineRefs(Sketcher3D::Sketch3DObject* sketch)
 {
     return collectSketch3DSelection(sketch, false, true).lines;
-}
-
-bool collectSelectedPointAndLineRefs(
-    Sketcher3D::Sketch3DObject* sketch,
-    Sketcher3D::GeoElementId3D& pointRef,
-    Sketcher3D::GeoElementId3D& lineRef
-)
-{
-    auto sel = collectSketch3DSelection(sketch, true, true);
-    if (sel.points.size() != 1 || sel.lines.size() != 1) {
-        return false;
-    }
-    pointRef = sel.points[0];
-    lineRef = sel.lines[0];
-    return true;
 }
 
 // ---------------------------------------------------------------------------
@@ -377,11 +432,7 @@ void CmdSketcher3DConstrainDistance::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    ViewProviderSketch3D* vp = getActiveSketch3DVP();
-    if (!vp) {
-        return;
-    }
-    Sketcher3D::Sketch3DObject* sketch = vp->getSketch3DObject();
+    Sketcher3D::Sketch3DObject* sketch = activeSketch3D();
     if (!sketch) {
         return;
     }
@@ -390,8 +441,9 @@ void CmdSketcher3DConstrainDistance::activated(int iMsg)
 
     std::vector<Sketcher3D::GeoElementId3D> refs;
     double seedValue = 0.0;
+    auto& lines = sel.lines;
 
-    if (sel.points.size() == 2 && sel.lines.size() == 0) {
+    if (sel.points.size() == 2 && lines.empty()) {
         // P2P
         if (sel.points[0] == sel.points[1]) {
             Base::Console().warning("Sketcher3D: Distance needs two distinct points.\n");
@@ -404,30 +456,30 @@ void CmdSketcher3DConstrainDistance::activated(int iMsg)
         sketch->getPointAt(refs[1], p2);
         seedValue = (p2 - p1).Length();
     }
-    else if (sel.points.size() == 0 && sel.lines.size() == 1) {
+    else if (sel.points.size() == 0 && lines.size() == 1) {
         // Line
-        refs.emplace_back(sel.lines[0].GeoId, Sketcher3D::PointPos::start, Sketcher3D::GeoKind::Line);
-        refs.emplace_back(sel.lines[0].GeoId, Sketcher3D::PointPos::end, Sketcher3D::GeoKind::Line);
+        refs.emplace_back(lines[0].GeoId, Sketcher3D::PointPos::start, Sketcher3D::GeoKind::Line);
+        refs.emplace_back(lines[0].GeoId, Sketcher3D::PointPos::end, Sketcher3D::GeoKind::Line);
         Base::Vector3d p1, p2;
         sketch->getPointAt(refs[0], p1);
         sketch->getPointAt(refs[1], p2);
         seedValue = (p2 - p1).Length();
     }
-    else if (sel.points.size() == 1 && sel.lines.size() == 1) {
+    else if (sel.points.size() == 1 && lines.size() == 1) {
         // P2L
         refs.push_back(sel.points[0]);
-        refs.push_back(sel.lines[0]);
+        refs.push_back(lines[0]);
 
         Base::Vector3d pt, pStart, pEnd;
         sketch->getPointAt(sel.points[0], pt);
 
         Sketcher3D::GeoElementId3D lStart(
-            sel.lines[0].GeoId,
+            lines[0].GeoId,
             Sketcher3D::PointPos::start,
             Sketcher3D::GeoKind::Line
         );
         Sketcher3D::GeoElementId3D lEnd(
-            sel.lines[0].GeoId,
+            lines[0].GeoId,
             Sketcher3D::PointPos::end,
             Sketcher3D::GeoKind::Line
         );
@@ -688,11 +740,7 @@ void CmdSketcher3DConstrainCoincident::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    ViewProviderSketch3D* vp = getActiveSketch3DVP();
-    if (!vp) {
-        return;
-    }
-    Sketcher3D::Sketch3DObject* sketch = vp->getSketch3DObject();
+    Sketcher3D::Sketch3DObject* sketch = activeSketch3D();
     if (!sketch) {
         return;
     }
@@ -720,7 +768,6 @@ void CmdSketcher3DConstrainCoincident::activated(int iMsg)
     sketch->addConstraint(c);
     sketch->recomputeFeature();
     commitCommand();
-
     Gui::Selection().clearSelection();
 }
 
@@ -820,11 +867,7 @@ void CmdSketcher3DConstrainParallel::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    ViewProviderSketch3D* vp = getActiveSketch3DVP();
-    if (!vp) {
-        return;
-    }
-    Sketcher3D::Sketch3DObject* sketch = vp->getSketch3DObject();
+    Sketcher3D::Sketch3DObject* sketch = activeSketch3D();
     if (!sketch) {
         return;
     }
@@ -847,7 +890,6 @@ void CmdSketcher3DConstrainParallel::activated(int iMsg)
     sketch->addConstraint(c);
     sketch->recomputeFeature();
     commitCommand();
-
     Gui::Selection().clearSelection();
 }
 
@@ -909,55 +951,60 @@ bool CmdSketcher3DConstrainEqualLength::isActive()
     return isSketch3DInEdit();
 }
 
-DEF_STD_CMD_A(CmdSketcher3DConstrainPointOnLine)
+DEF_STD_CMD_A(CmdSketcher3DConstrainPointOnCurve)
 
-CmdSketcher3DConstrainPointOnLine::CmdSketcher3DConstrainPointOnLine()
-    : Command("Sketcher3D_ConstrainPointOnLine")
+CmdSketcher3DConstrainPointOnCurve::CmdSketcher3DConstrainPointOnCurve()
+    : Command("Sketcher3D_ConstrainPointOnCurve")
 {
     sAppModule = "Sketcher3D";
     sGroup = QT_TR_NOOP("Sketcher3D");
-    sMenuText = QT_TR_NOOP("Constrain point on line");
-    sToolTipText = QT_TR_NOOP("Force a 3D point to lie on a 3D line");
-    sWhatsThis = "Sketcher3D_ConstrainPointOnLine";
+    sMenuText = QT_TR_NOOP("Constrain point on curve");
+    sToolTipText = QT_TR_NOOP("Force a 3D point to lie on a line, arc, or circle");
+    sWhatsThis = "Sketcher3D_ConstrainPointOnCurve";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_PointOnObject";
     eType = ForEdit;
 }
 
-void CmdSketcher3DConstrainPointOnLine::activated(int iMsg)
+void CmdSketcher3DConstrainPointOnCurve::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    ViewProviderSketch3D* vp = getActiveSketch3DVP();
-    if (!vp) {
-        return;
-    }
-    Sketcher3D::Sketch3DObject* sketch = vp->getSketch3DObject();
+    Sketcher3D::Sketch3DObject* sketch = activeSketch3D();
     if (!sketch) {
         return;
     }
 
     Sketcher3D::GeoElementId3D pointRef;
-    Sketcher3D::GeoElementId3D lineRef;
-    if (!collectSelectedPointAndLineRefs(sketch, pointRef, lineRef)) {
-        Base::Console().warning(
-            "Sketcher3D: select exactly one 3D point and one 3D line for Point on line.\n"
-        );
+    Sketcher3D::GeoElementId3D curveRef;
+    auto sel = collectSketch3DSelection(sketch, true, true);
+    if (sel.points.size() != 1 || sel.lines.size() + sel.arcs.size() + sel.circles.size() != 1) {
+        Base::Console()
+            .warning("Sketcher3D: select exactly one 3D point and one 3D line, arc, or circle for Point on curve.\n");
         return;
     }
+    pointRef = sel.points[0];
+    if (!sel.lines.empty()) {
+        curveRef = sel.lines[0];
+    }
+    else if (!sel.arcs.empty()) {
+        curveRef = sel.arcs[0];
+    }
+    else {
+        curveRef = sel.circles[0];
+    }
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Constrain point on line"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Constrain point on curve"));
     Sketcher3D::Constraint3D c;
-    c.Type = Sketcher3D::Constraint3D::PointOnLine3D;
-    c.setElements({pointRef, lineRef});
+    c.Type = Sketcher3D::Constraint3D::PointOnCurve3D;
+    c.setElements({pointRef, curveRef});
     sketch->addConstraint(c);
     sketch->recomputeFeature();
     commitCommand();
-
     Gui::Selection().clearSelection();
 }
 
-bool CmdSketcher3DConstrainPointOnLine::isActive()
+bool CmdSketcher3DConstrainPointOnCurve::isActive()
 {
     return isSketch3DInEdit();
 }
@@ -969,9 +1016,9 @@ CmdSketcher3DConstrainPointAtLineMidpoint::CmdSketcher3DConstrainPointAtLineMidp
 {
     sAppModule = "Sketcher3D";
     sGroup = QT_TR_NOOP("Sketcher3D");
-    sMenuText = QT_TR_NOOP("Constrain midpoint");
-    sToolTipText = QT_TR_NOOP("Force a 3D point to be the midpoint of a 3D line");
-    sWhatsThis = "Sketcher3D_ConstrainMidpoint";
+    sMenuText = QT_TR_NOOP("Constrain point at line midpoint");
+    sToolTipText = QT_TR_NOOP("Force a 3D point to lie at the midpoint of a 3D line segment");
+    sWhatsThis = "Sketcher3D_ConstrainPointAtLineMidpoint";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_Symmetric";
     eType = ForEdit;
@@ -981,23 +1028,22 @@ void CmdSketcher3DConstrainPointAtLineMidpoint::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    ViewProviderSketch3D* vp = getActiveSketch3DVP();
-    if (!vp) {
-        return;
-    }
-    Sketcher3D::Sketch3DObject* sketch = vp->getSketch3DObject();
+    Sketcher3D::Sketch3DObject* sketch = activeSketch3D();
     if (!sketch) {
         return;
     }
 
     Sketcher3D::GeoElementId3D pointRef;
     Sketcher3D::GeoElementId3D lineRef;
-    if (!collectSelectedPointAndLineRefs(sketch, pointRef, lineRef)) {
+    auto sel = collectSketch3DSelection(sketch, true, true);
+    if (sel.points.size() != 1 || sel.lines.size() != 1) {
         Base::Console().warning(
             "Sketcher3D: select exactly one 3D point and one 3D line for Point at line midpoint.\n"
         );
         return;
     }
+    pointRef = sel.points[0];
+    lineRef = sel.lines[0];
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Constrain point at line midpoint"));
     Sketcher3D::Constraint3D c;
@@ -1006,7 +1052,6 @@ void CmdSketcher3DConstrainPointAtLineMidpoint::activated(int iMsg)
     sketch->addConstraint(c);
     sketch->recomputeFeature();
     commitCommand();
-
     Gui::Selection().clearSelection();
 }
 
@@ -1034,11 +1079,7 @@ void CmdSketcher3DConstrainCollinear::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    ViewProviderSketch3D* vp = getActiveSketch3DVP();
-    if (!vp) {
-        return;
-    }
-    Sketcher3D::Sketch3DObject* sketch = vp->getSketch3DObject();
+    Sketcher3D::Sketch3DObject* sketch = activeSketch3D();
     if (!sketch) {
         return;
     }
@@ -1063,7 +1104,6 @@ void CmdSketcher3DConstrainCollinear::activated(int iMsg)
     sketch->addConstraint(c);
     sketch->recomputeFeature();
     commitCommand();
-
     Gui::Selection().clearSelection();
 }
 
@@ -1091,16 +1131,13 @@ void CmdSketcher3DConstrainProjectOnPlane::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    ViewProviderSketch3D* vp = getActiveSketch3DVP();
-    if (!vp) {
-        return;
-    }
-    Sketcher3D::Sketch3DObject* sketch = vp->getSketch3DObject();
+    Sketcher3D::Sketch3DObject* sketch = activeSketch3D();
     if (!sketch) {
         return;
     }
     auto sel = collectSketch3DSelection(sketch, true, true, true);
-    if (sel.planes.size() != 1 || (sel.points.empty() && sel.lines.empty())) {
+    const auto& lines = sel.lines;
+    if (sel.planes.size() != 1 || (sel.points.empty() && lines.empty())) {
         Base::Console()
             .warning("Sketcher3D: select one reference plane and at least one point or line for Project on plane.\n");
         return;
@@ -1123,7 +1160,7 @@ void CmdSketcher3DConstrainProjectOnPlane::activated(int iMsg)
             addProjectOnPlane(pointRef);
         }
     }
-    for (Sketcher3D::GeoElementId3D lineRef : sel.lines) {
+    for (Sketcher3D::GeoElementId3D lineRef : lines) {
         lineRef.Pos = Sketcher3D::PointPos::none;
         if (seen.insert(lineRef).second) {
             addProjectOnPlane(lineRef);
@@ -1432,6 +1469,8 @@ void CreateSketcher3DCommands()
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreatePolyline());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreateReferencePlane());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DToggleConstruction());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreateCircle());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreateArc());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainDistance());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainAngle());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainDistanceX());
@@ -1443,7 +1482,7 @@ void CreateSketcher3DCommands()
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainAlongY());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainAlongZ());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainEqualLength());
-    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainPointOnLine());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainPointOnCurve());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainPointAtLineMidpoint());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainCollinear());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainProjectOnPlane());

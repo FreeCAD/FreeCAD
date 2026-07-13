@@ -1129,18 +1129,14 @@ int System::addConstraintCollinear3D(Line3D& l1, Line3D& l2, int tagId, bool dri
 }
 
 int System::addConstraintProjectOnPlane3D(
-    Point3D& point,
-    double oX,
-    double oY,
-    double oZ,
-    double nX,
-    double nY,
-    double nZ,
+    Point3D& p,
+    Point3D& plane_p,
+    Point3D& plane_n,
     int tagId,
     bool driving
 )
 {
-    Constraint* constr = new ConstraintProjectOnPlane3D(point, oX, oY, oZ, nX, nY, nZ);
+    Constraint* constr = new ConstraintProjectOnPlane3D(p, plane_p, plane_n);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
@@ -1152,6 +1148,34 @@ int System::addConstraintP2LDistance3D(Point3D& p, Line3D& l, double* distance, 
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
+}
+
+int System::addConstraintCurveValue3D(Point3D& p, Curve3D& crv, double* u, int tagId, bool driving)
+{
+    Constraint* constr = new ConstraintCurveValue3D(p, p.x, crv, u);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    addConstraint(constr);
+    constr = new ConstraintCurveValue3D(p, p.y, crv, u);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    addConstraint(constr);
+    constr = new ConstraintCurveValue3D(p, p.z, crv, u);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+
+int System::addConstraintArcRules3D(Arc3D& a, int tagId, bool driving)
+{
+    addConstraintCurveValue3D(a.start, a, a.startAngle, tagId, driving);
+    return addConstraintCurveValue3D(a.end, a, a.endAngle, tagId, driving);
+}
+
+int System::addConstraintPointOnCircle3D(Point3D& p, Circle3D& c, int tagId, bool driving)
+{
+    addConstraintP2PDistance3D(p, c.center, c.rad, tagId, driving);
+    return addConstraintProjectOnPlane3D(p, c.center, c.normal, tagId, driving);
 }
 
 int System::addConstraintArcRules(Arc& a, int tagId, bool driving)

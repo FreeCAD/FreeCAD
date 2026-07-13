@@ -573,5 +573,35 @@ public:
     Line3D* Copy() override;
 };
 
+class SketcherExport Circle3D: public Curve3D
+{
+public:
+    Point3D center;
+    double* rad {nullptr};
+    Point3D normal;
+    Point3D xAxis;
+
+    DeriVector3 CalculateNormal(const Point3D& p, const double* derivparam = nullptr) const override;
+    DeriVector3 Value(double u, double du, const double* derivparam = nullptr) const override;
+    int PushOwnParams(VEC_pD& pvec) override;
+    void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;
+    Circle3D* Copy() override;
+};
+
+class SketcherExport Arc3D: public Circle3D
+{
+public:
+    double* startAngle {nullptr};
+    double* endAngle {nullptr};
+    // double *rad{nullptr}; //inherited
+    // start and end points are computed by an ArcRules constraint
+    Point3D start;
+    Point3D end;
+    // Point center; //inherited
+    int PushOwnParams(VEC_pD& pvec) override;
+    void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;
+    Arc3D* Copy() override;
+};
+
 }  // namespace GCS
 // NOLINTEND(readability-math-missing-parentheses)

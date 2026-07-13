@@ -26,13 +26,19 @@
 #include "PreCompiled.h"
 
 #include <Inventor/events/SoKeyboardEvent.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSwitch.h>
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher3D/App/Sketch3DObject.h>
 
 #include "DrawSketchHandler3D.h"
+#include "Utils.h"
 #include "ViewProviderSketch3D.h"
 
 
@@ -80,6 +86,49 @@ bool DrawSketchHandler3D::keyPressed(int key)
 Sketcher3D::Sketch3DObject* DrawSketchHandler3D::getSketch() const
 {
     return vp ? vp->getSketch3DObject() : nullptr;
+}
+
+// TODO: curently only implemented for lines.
+void DrawSketchHandler3D::setupLineRubberBandPreview()
+{
+    SoSeparator* root = getPreviewRoot();
+    if (!root) {
+        return;
+    }
+
+    auto* material = new SoMaterial();
+    previewMaterial = material;
+    applyConstructionPreviewColor(previewMaterial);
+    root->addChild(material);
+
+    auto* style = new SoDrawStyle();
+    style->lineWidth.setValue(2.0F);
+    root->addChild(style);
+
+    rubberSwitch = new SoSwitch();
+    rubberSwitch->whichChild = SO_SWITCH_NONE;
+    root->addChild(rubberSwitch);
+
+    auto* rubberGroup = new SoSeparator();
+    rubberSwitch->addChild(rubberGroup);
+
+    rubberCoords = new SoCoordinate3();
+    rubberCoords->point.setNum(2);
+    rubberCoords->point.set1Value(0, 0.0F, 0.0F, 0.0F);
+    rubberCoords->point.set1Value(1, 0.0F, 0.0F, 0.0F);
+    rubberGroup->addChild(rubberCoords);
+
+    auto* lineSet = new SoLineSet();
+    lineSet->numVertices.setNum(1);
+    lineSet->numVertices.set1Value(0, 2);
+    rubberGroup->addChild(lineSet);
+}
+
+void DrawSketchHandler3D::setRubberBandVisible(bool visible)
+{
+    if (rubberSwitch) {
+        rubberSwitch->whichChild = visible ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+    }
 }
 
 DrawSketchHandler3D::PreselectionData DrawSketchHandler3D::getPreselectionData() const

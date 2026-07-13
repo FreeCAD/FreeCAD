@@ -27,6 +27,10 @@
 
 #include <Base/Console.h>
 #include <Mod/Part/App/Geometry.h>
+#include <Geom_Circle.hxx>
+#include <gp_Ax2.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Pnt.hxx>
 
 #include "Constraint3D.h"
 #include "GeomReferencePlane3D.h"
@@ -72,25 +76,71 @@ void GeometryMapper3D::addGeometry(const std::vector<Part::Geometry*>& geoList, 
 
         GeoDef& def = Geoms[i];
         def.geo.reset(geometry->clone());
+        def.type = kindOfGeometry(def.geo.get());
 
-        if (def.geo->is<Part::GeomPoint>()) {
-            auto* point = static_cast<Part::GeomPoint*>(def.geo.get());
-            def.type = Point;
-            def.startPointId = solver.addPoint(point->getPoint());
+        switch (def.type) {
+            case GeoKind::Point: {
+                auto* point = static_cast<Part::GeomPoint*>(def.geo.get());
+                def.startPointId = solver.addPoint(point->getPoint());
+                break;
+            }
+            case GeoKind::Line: {
+                auto* segment = static_cast<Part::GeomLineSegment*>(def.geo.get());
+                def.startPointId = solver.addPoint(segment->getStartPoint());
+                def.endPointId = solver.addPoint(segment->getEndPoint());
+                def.index = solver.addLine(def.startPointId, def.endPointId);
+                break;
+            }
+            case GeoKind::Plane: {
+                auto* plane = static_cast<GeomReferencePlane3D*>(def.geo.get());
+                def.index = solver.addPlane(plane->getLocation(), plane->getDir());
+                break;
+            }
+            case GeoKind::Arc: {
+                auto* arc = static_cast<Part::GeomArcOfCircle*>(def.geo.get());
+                def.midPointId = solver.addPoint(arc->getCenter());
+                def.startPointId = solver.addPoint(arc->getStartPoint());
+                def.endPointId = solver.addPoint(arc->getEndPoint());
+
+                double startAngle = 0.0;
+                double endAngle = 0.0;
+                arc->getRange(startAngle, endAngle, /*emulateCCW=*/false);
+
+                def.index = solver.addArc(
+                    def.midPointId,
+                    def.startPointId,
+                    def.endPointId,
+                    arc->getRadius(),
+                    startAngle,
+                    endAngle,
+                    arc->getAxisDirection(),
+                    arc->getXAxisDir()
+                );
+                solver.addConstraintArcRules(0, def.index);
+                break;
+            }
+            case GeoKind::Circle: {
+                auto* circle = static_cast<Part::GeomCircle*>(def.geo.get());
+                def.midPointId = solver.addPoint(circle->getCenter());
+
+                Base::Vector3d xDir(1.0, 0.0, 0.0);
+                Handle(Geom_Circle) gc = Handle(Geom_Circle)::DownCast(circle->handle());
+                if (!gc.IsNull()) {
+                    gp_Dir xd = gc->Position().XDirection();
+                    xDir.Set(xd.X(), xd.Y(), xd.Z());
+                }
+
+                def.index = solver.addCircle(
+                    def.midPointId,
+                    circle->getRadius(),
+                    circle->getAxisDirection(),
+                    xDir
+                );
+                break;
+            }
+            default:
+                break;
         }
-        else if (def.geo->is<Part::GeomLineSegment>()) {
-            auto* segment = static_cast<Part::GeomLineSegment*>(def.geo.get());
-            def.type = Line;
-            def.startPointId = solver.addPoint(segment->getStartPoint());
-            def.endPointId = solver.addPoint(segment->getEndPoint());
-            def.index = solver.addLine(def.startPointId, def.endPointId);
-        }
-        else if (def.geo->is<GeomReferencePlane3D>()) {
-            auto* plane = static_cast<GeomReferencePlane3D*>(def.geo.get());
-            def.type = Plane;
-            def.index = solver.addPlane(plane->getLocation(), plane->getDir());
-        }
-        // Circle / Arc / others deferred.
     }
 }
 
@@ -263,36 +313,74 @@ int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, S
             }
             return tagId;
         }
-        case Constraint3D::PointOnLine3D:
+        case Constraint3D::PointOnCurve3D: {
+            if (elements.size() != 2) {
+                return -1;
+            }
+            int pointIdx = -1;
+            int curveIdx = -1;
+            for (int x = 0; x < 2; ++x) {
+                if (elements[x].Pos != PointPos::none) {
+                    pointIdx = x;
+                }
+                else {
+                    curveIdx = x;
+                }
+            }
+            if (pointIdx < 0 || curveIdx < 0) {
+                return -1;
+            }
+            int point = getPointId(elements[pointIdx]);
+            if (point < 0) {
+                return -1;
+            }
+            GeoDef& curveDef = Geoms[elements[curveIdx].GeoId];
+            switch (curveDef.type) {
+                case GeoKind::Line: {
+                    int line = getLineId(elements[curveIdx]);
+                    if (line < 0) {
+                        return -1;
+                    }
+                    solver.addConstraintPointOnLine(tagId, point, line);
+                    break;
+                }
+                case GeoKind::Arc:
+                    solver.addConstraintPointOnArc(tagId, point, curveDef.index);
+                    break;
+                case GeoKind::Circle:
+                    solver.addConstraintPointOnCircle(tagId, point, curveDef.index);
+                    break;
+                default:
+                    return -1;
+            }
+            return tagId;
+        }
         case Constraint3D::PointAtLineMidpoint3D: {
             if (elements.size() != 2) {
                 return -1;
             }
-            int lineIdx = -1;
-            int line = -1;
+            int pointIdx = -1;
+            int curveIdx = -1;
             for (int x = 0; x < 2; ++x) {
-                if (elements[x].Pos == PointPos::none) {
-                    int candidate = getLineId(elements[x]);
-                    if (candidate >= 0) {
-                        lineIdx = x;
-                        line = candidate;
-                        break;
-                    }
+                if (elements[x].Pos != PointPos::none) {
+                    pointIdx = x;
+                }
+                else {
+                    curveIdx = x;
                 }
             }
-            if (lineIdx < 0) {
+            if (pointIdx < 0 || curveIdx < 0) {
                 return -1;
             }
-            int point = getPointId(elements[1 - lineIdx]);
+            int point = getPointId(elements[pointIdx]);
             if (point < 0) {
                 return -1;
             }
-            if (constraint.Type == Constraint3D::PointOnLine3D) {
-                solver.addConstraintPointOnLine(tagId, point, line);
+            int line = getLineId(elements[curveIdx]);
+            if (line < 0) {
+                return -1;
             }
-            else {
-                solver.addConstraintPointAtLineMidpoint(tagId, point, line);
-            }
+            solver.addConstraintPointAtLineMidpoint(tagId, point, line);
             return tagId;
         }
         case Constraint3D::Collinear3D: {
@@ -345,14 +433,14 @@ int GeometryMapper3D::getPointId(const GeoElementId3D& ref) const
         return rootPointId;
     }
 
-    if (!ref.isValid() || ref.GeoId < 0 || ref.GeoId >= static_cast<int>(Geoms.size())) {
+    if (ref.GeoId < 0 || ref.GeoId >= static_cast<int>(Geoms.size())) {
         return -1;
     }
 
     const GeoDef& def = Geoms[ref.GeoId];
     switch (ref.Pos) {
         case PointPos::none:
-            return def.type == Point ? def.startPointId : -1;
+            return def.type == GeoKind::Point ? def.startPointId : -1;
         case PointPos::start:
             return def.startPointId;
         case PointPos::end:
@@ -365,21 +453,21 @@ int GeometryMapper3D::getPointId(const GeoElementId3D& ref) const
 
 int GeometryMapper3D::getLineId(const GeoElementId3D& ref) const
 {
-    if (!ref.isValid() || ref.GeoId < 0 || ref.GeoId >= static_cast<int>(Geoms.size())) {
+    if (ref.GeoId < 0 || ref.GeoId >= static_cast<int>(Geoms.size())) {
         return -1;
     }
 
     const GeoDef& def = Geoms[ref.GeoId];
-    return def.type == Line ? def.index : -1;
+    return def.type == GeoKind::Line ? def.index : -1;
 }
 
 int GeometryMapper3D::getPlaneId(const GeoElementId3D& ref) const
 {
-    if (!ref.isValid() || ref.GeoId < 0 || ref.GeoId >= static_cast<int>(Geoms.size())) {
+    if (ref.GeoId < 0 || ref.GeoId >= static_cast<int>(Geoms.size())) {
         return -1;
     }
     const GeoDef& def = Geoms[ref.GeoId];
-    return def.type == Plane ? def.index : -1;
+    return def.type == GeoKind::Plane ? def.index : -1;
 }
 
 void GeometryMapper3D::updateGeometry(const Solver3D& solver)
@@ -389,13 +477,60 @@ void GeometryMapper3D::updateGeometry(const Solver3D& solver)
             continue;
         }
 
-        if (def.type == Point && def.startPointId >= 0) {
-            auto* point = static_cast<Part::GeomPoint*>(def.geo.get());
-            point->setPoint(solver.getPoint(def.startPointId));
-        }
-        else if (def.type == Line && def.startPointId >= 0 && def.endPointId >= 0) {
-            auto* segment = static_cast<Part::GeomLineSegment*>(def.geo.get());
-            segment->setPoints(solver.getPoint(def.startPointId), solver.getPoint(def.endPointId));
+        switch (def.type) {
+            case GeoKind::Point:
+                if (def.startPointId >= 0) {
+                    auto* point = static_cast<Part::GeomPoint*>(def.geo.get());
+                    point->setPoint(solver.getPoint(def.startPointId));
+                }
+                break;
+            case GeoKind::Line:
+                if (def.startPointId >= 0 && def.endPointId >= 0) {
+                    auto* segment = static_cast<Part::GeomLineSegment*>(def.geo.get());
+                    segment->setPoints(
+                        solver.getPoint(def.startPointId),
+                        solver.getPoint(def.endPointId)
+                    );
+                }
+                break;
+            case GeoKind::Arc:
+                if (def.index >= 0 && def.midPointId >= 0) {
+                    auto* arc = static_cast<Part::GeomArcOfCircle*>(def.geo.get());
+                    const Base::Vector3d center = solver.getPoint(def.midPointId);
+                    const Solver3D::ArcFrame frame = solver.getArcFrame(def.index);
+
+                    gp_Dir N(frame.normal.x, frame.normal.y, frame.normal.z);
+                    gp_Dir X(frame.xAxis.x, frame.xAxis.y, frame.xAxis.z);
+                    gp_Ax2 ax2(gp_Pnt(center.x, center.y, center.z), N, X);
+
+                    Handle(Geom_Circle)
+                        circ = new Geom_Circle(ax2, std::max(std::abs(frame.radius), 1e-7));
+                    arc->setHandle(circ);
+                    arc->setRange(frame.startAngle, frame.endAngle, false);
+                }
+                break;
+            case GeoKind::Circle:
+                if (def.index >= 0 && def.midPointId >= 0) {
+                    auto* circle = static_cast<Part::GeomCircle*>(def.geo.get());
+                    const Base::Vector3d center = solver.getPoint(def.midPointId);
+                    const Solver3D::CircleFrame frame = solver.getCircleFrame(def.index);
+                    Base::Vector3d xDirection = frame.xAxis
+                        - frame.normal * frame.xAxis.Dot(frame.normal);
+                    if (xDirection.Length() > 1e-12) {
+                        xDirection.Normalize();
+                    }
+
+                    gp_Dir N(frame.normal.x, frame.normal.y, frame.normal.z);
+                    gp_Dir X(xDirection.x, xDirection.y, xDirection.z);
+                    gp_Ax2 ax2(gp_Pnt(center.x, center.y, center.z), N, X);
+
+                    Handle(Geom_Circle)
+                        circ = new Geom_Circle(ax2, std::max(std::abs(frame.radius), 1e-7));
+                    circle->setHandle(circ);
+                }
+                break;
+            default:
+                break;
         }
     }
 }

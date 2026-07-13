@@ -32,7 +32,10 @@
 
 #include "AutoConstraint3D.h"
 
+class SoCoordinate3;
+class SoMaterial;
 class SoSeparator;
+class SoSwitch;
 
 namespace Sketcher3D
 {
@@ -82,6 +85,13 @@ protected:
     {
         return preview;
     }
+
+    void setupLineRubberBandPreview();
+    void setRubberBandVisible(bool visible);
+
+    SoMaterial* previewMaterial {nullptr};
+    SoSwitch* rubberSwitch {nullptr};
+    SoCoordinate3* rubberCoords {nullptr};
 
     struct PreselectionData
     {

@@ -27,11 +27,7 @@
 
 #include "Mod/Sketcher3D/App/GeoEnum3D.h"
 
-#include <Mod/Sketcher3D/App/PreCompiled.h>
-
-#include <Base/FileInfo.h>
 #include <Base/Reader.h>
-#include <Base/Tools.h>
 #include <Base/Writer.h>
 
 #include <Mod/Sketcher3D/Sketcher3DGlobal.h>
@@ -66,7 +62,7 @@ public:
         DistanceZ3D,
         Angle3D,
         EqualLength3D,
-        PointOnLine3D,
+        PointOnCurve3D,
         PointAtLineMidpoint3D,
         Collinear3D,
         ProjectOnPlane3D,
@@ -111,7 +107,7 @@ private:
         "DistanceZ3D",
         "Angle3D",
         "EqualLength3D",
-        "PointOnLine3D",
+        "PointOnCurve3D",
         "PointAtLineMidpoint3D",
         "Collinear3D",
         "ProjectOnPlane3D",

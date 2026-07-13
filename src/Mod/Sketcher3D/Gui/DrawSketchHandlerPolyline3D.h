@@ -61,10 +61,6 @@ private:
 
     int prevSegGeoId {-1};
     std::vector<AutoConstraint3D> sugConstr1;
-
-    SoCoordinate3* rubberCoords {nullptr};
-    SoSwitch* rubberSwitch {nullptr};
-    SoMaterial* previewMaterial {nullptr};
 };
 
 }  // namespace Sketcher3DGui

@@ -20,48 +20,33 @@
  *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
- ***************************************************************************/
+ **************************************************************************/
 
 
 #pragma once
 
-#include <vector>
-
 #include "DrawSketchHandler3D.h"
-
-class SoCoordinate3;
-class SoLineSet;
-class SoMaterial;
-class SoSwitch;
 
 namespace Sketcher3DGui
 {
 
-class Sketcher3DGuiExport DrawSketchHandlerLine3D: public DrawSketchHandler3D
+class Sketcher3DGuiExport DrawSketchHandlerCircle3D: public DrawSketchHandler3D
 {
 public:
-    DrawSketchHandlerLine3D();
-    ~DrawSketchHandlerLine3D() override;
-
     bool pressButton(const Base::Vector3d& pos) override;
-    bool mouseMove(const Base::Vector3d& pos) override;
     bool keyPressed(int key) override;
-
-protected:
-    void onActivated() override;
 
 private:
     enum class State
     {
         PickFirst,
         PickSecond,
+        PickThird
     };
 
-    void resetToPickFirst();
-
     State state {State::PickFirst};
-    Base::Vector3d startPos {0.0, 0.0, 0.0};
-    std::vector<AutoConstraint3D> sugConstr1;
+    Base::Vector3d point1;
+    Base::Vector3d point2;
 };
 
 }  // namespace Sketcher3DGui

@@ -146,7 +146,7 @@ SoSeparator* addAxisArrow(
     axisSep->addChild(coords);
 
     auto* lineSet = new SoIndexedLineSet();
-    static const int32_t lineIndices[] = {0, 1, -1, 1, 2, -1, 1, 3, -1};
+    const int32_t lineIndices[] = {0, 1, -1, 1, 2, -1, 1, 3, -1};
     lineSet->coordIndex.setValues(0, 9, lineIndices);
     axisSep->addChild(lineSet);
 
@@ -460,6 +460,7 @@ void ViewProviderSketch3D::updateData(const App::Property* prop)
             activeUserPlaneGeoId = -1;
         }
         if (prop == &sketch->Geometry) {
+            Gui::Selection().clearSelection();
             updateReferenceGeometry();
         }
         taskPanel->refresh();
@@ -637,9 +638,11 @@ bool ViewProviderSketch3D::mouseButtonPressed(
 
 bool ViewProviderSketch3D::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
 {
+
     if (!handler) {
         return false;
     }
+
     Base::Vector3d raw = projectToSketchPlane(cursorPos, viewer);
     updatePlaneOverlaySize(raw);
     Base::Vector3d p = applySnap(raw, cursorPos, viewer);
@@ -835,6 +838,7 @@ void ViewProviderSketch3D::ensurePlaneOverlay()
     handleSep->setName("Sketcher3DAxisHandleAutoZoom");
     handleSep->addChild(new Gui::SoAutoZoomTranslation());
 
+    // Axis arrows
     auto* handle = new SoSeparator();
     handle->setName("Sketcher3DAxisHandle");
     handle->addChild(addAxisArrow(

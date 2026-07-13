@@ -53,37 +53,7 @@ DrawSketchHandlerPolyline3D::~DrawSketchHandlerPolyline3D() = default;
 
 void DrawSketchHandlerPolyline3D::onActivated()
 {
-    SoSeparator* root = getPreviewRoot();
-    if (!root) {
-        return;
-    }
-
-    auto* material = new SoMaterial();
-    previewMaterial = material;
-    applyConstructionPreviewColor(previewMaterial);
-    root->addChild(material);
-
-    auto* style = new SoDrawStyle();
-    style->lineWidth.setValue(2.0F);
-    root->addChild(style);
-
-    rubberSwitch = new SoSwitch();
-    rubberSwitch->whichChild = SO_SWITCH_NONE;
-    root->addChild(rubberSwitch);
-
-    auto* rubberGroup = new SoSeparator();
-    rubberSwitch->addChild(rubberGroup);
-
-    rubberCoords = new SoCoordinate3();
-    rubberCoords->point.setNum(2);
-    rubberCoords->point.set1Value(0, 0.0F, 0.0F, 0.0F);
-    rubberCoords->point.set1Value(1, 0.0F, 0.0F, 0.0F);
-    rubberGroup->addChild(rubberCoords);
-
-    auto* lineSet = new SoLineSet();
-    lineSet->numVertices.setNum(1);
-    lineSet->numVertices.set1Value(0, 2);
-    rubberGroup->addChild(lineSet);
+    setupLineRubberBandPreview();
 }
 
 bool DrawSketchHandlerPolyline3D::mouseMove(const Base::Vector3d& pos)
@@ -126,9 +96,7 @@ bool DrawSketchHandlerPolyline3D::pressButton(const Base::Vector3d& pos)
                 static_cast<float>(pos.z)
             );
         }
-        if (rubberSwitch) {
-            rubberSwitch->whichChild = SO_SWITCH_ALL;
-        }
+        setRubberBandVisible(true);
         if (auto* vp = getSketchVP()) {
             vp->setPlaneBase(pos);
         }
@@ -164,16 +132,9 @@ bool DrawSketchHandlerPolyline3D::pressButton(const Base::Vector3d& pos)
     }
 
     if (newGeoId >= 0) {
-        if (!sugConstr1.empty()) {
-            createAutoConstraints(
-                sugConstr1,
-                newGeoId,
-                Sketcher3D::PointPos::start,
-                Sketcher3D::GeoKind::Line
-            );
-            sugConstr1.clear();
-        }
+        createAutoConstraints(sugConstr1, newGeoId, Sketcher3D::PointPos::start, Sketcher3D::GeoKind::Line);
         createAutoConstraints(sugConstr2, newGeoId, Sketcher3D::PointPos::end, Sketcher3D::GeoKind::Line);
+        sugConstr1.clear();
     }
 
     sketch->recomputeFeature();
@@ -198,9 +159,8 @@ bool DrawSketchHandlerPolyline3D::pressButton(const Base::Vector3d& pos)
 bool DrawSketchHandlerPolyline3D::keyPressed(int key)
 {
     if (key == SoKeyboardEvent::ESCAPE) {
-        sugConstr1.clear();
         // end the polyline.
-        return DrawSketchHandler3D::keyPressed(key);
+        sugConstr1.clear();
     }
     return DrawSketchHandler3D::keyPressed(key);
 }

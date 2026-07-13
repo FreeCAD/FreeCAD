@@ -569,13 +569,9 @@ public:
 
     // Project a point onto a reference plane
     int addConstraintProjectOnPlane3D(
-        Point3D& point,
-        double oX,
-        double oY,
-        double oZ,
-        double nX,
-        double nY,
-        double nZ,
+        Point3D& p,
+        Point3D& plane_p,
+        Point3D& plane_n,
         int tagId = 0,
         bool driving = true
     );
@@ -588,6 +584,12 @@ public:
         int tagId = 0,
         bool driving = true
     );
+
+    int addConstraintCurveValue3D(Point3D& p, Curve3D& crv, double* u, int tagId = 0, bool driving = true);
+
+    int addConstraintArcRules3D(Arc3D& a, int tagId = 0, bool driving = true);
+
+    int addConstraintPointOnCircle3D(Point3D& p, Circle3D& c, int tagId = 0, bool driving = true);
 
     // internal alignment constraints
     int addConstraintInternalAlignmentPoint2Ellipse(

@@ -14,6 +14,7 @@ SET(Module_SRCS
 SOURCE_GROUP("Module" FILES ${Module_SRCS})
 
 SET(Constraint_SRCS
+    GeoEnum3D.cpp
     GeoEnum3D.h
     Constraint3D.cpp
     Constraint3D.h

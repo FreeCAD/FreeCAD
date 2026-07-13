@@ -24,6 +24,7 @@
 
 
 #include "PreCompiled.h"
+#include <Base/Tools.h>
 
 #include <QAbstractItemView>
 #include <QEvent>
@@ -147,7 +148,7 @@ QIcon iconForConstraint(Sketcher3D::Constraint3D::Constraint3DType type)
             return Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance");
         case Sketcher3D::Constraint3D::DistanceZ3D:
             return Gui::BitmapFactory().iconFromTheme("Constraint_Length");
-        case Sketcher3D::Constraint3D::PointOnLine3D:
+        case Sketcher3D::Constraint3D::PointOnCurve3D:
             return Gui::BitmapFactory().iconFromTheme("Constraint_PointOnObject");
         case Sketcher3D::Constraint3D::PointAtLineMidpoint3D:
             return Gui::BitmapFactory().iconFromTheme("Constraint_Symmetric");

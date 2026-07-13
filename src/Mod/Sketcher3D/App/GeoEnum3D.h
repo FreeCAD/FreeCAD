@@ -28,6 +28,11 @@
 #include <functional>
 #include <Mod/Sketcher3D/Sketcher3DGlobal.h>
 
+namespace Part
+{
+class Geometry;
+}
+
 namespace Sketcher3D
 {
 
@@ -82,11 +87,6 @@ struct Sketcher3DExport GeoElementId3D
         return GeoId == RtPnt.GeoId && Pos == RtPnt.Pos;
     }
 
-    bool isCurve() const
-    {
-        return Pos == PointPos::none;
-    }
-
     int posIdAsInt() const
     {
         return static_cast<int>(Pos);
@@ -105,6 +105,8 @@ struct Sketcher3DExport GeoElementId3D
 
 inline const GeoElementId3D GeoElementId3D::RtPnt
     = GeoElementId3D(GeoEnum3D::RtPnt, PointPos::start, GeoKind::Point);
+
+Sketcher3DExport GeoKind kindOfGeometry(const Part::Geometry* geo);
 
 }  // namespace Sketcher3D
 

@@ -16,6 +16,10 @@ SET(Sketcher3DGui_SRCS
     DrawSketchHandler3D.h
     DrawSketchHandlerLine3D.cpp
     DrawSketchHandlerLine3D.h
+    DrawSketchHandlerArc3D.cpp
+    DrawSketchHandlerArc3D.h
+    DrawSketchHandlerCircle3D.cpp
+    DrawSketchHandlerCircle3D.h
     DrawSketchHandlerPoint3D.cpp
     DrawSketchHandlerPoint3D.h
     DrawSketchHandlerPolyline3D.cpp

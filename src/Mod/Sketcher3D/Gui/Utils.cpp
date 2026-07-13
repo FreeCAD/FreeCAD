@@ -32,6 +32,8 @@
 #include <Gui/Document.h>
 #include <Gui/ViewProviderDocumentObject.h>
 
+#include <Mod/Sketcher3D/App/Sketch3DObject.h>
+
 #include "Utils.h"
 #include "ViewProviderSketch3D.h"
 
@@ -99,4 +101,10 @@ Sketcher3DGui::ViewProviderSketch3D* Sketcher3DGui::getActiveSketch3DVP()
         return nullptr;
     }
     return static_cast<ViewProviderSketch3D*>(vp);
+}
+
+Sketcher3D::Sketch3DObject* Sketcher3DGui::activeSketch3D()
+{
+    ViewProviderSketch3D* vp = getActiveSketch3DVP();
+    return vp ? vp->getSketch3DObject() : nullptr;
 }

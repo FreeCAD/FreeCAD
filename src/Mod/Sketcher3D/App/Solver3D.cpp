@@ -44,6 +44,8 @@ void Solver3D::clear()
     points.clear();
     lines.clear();
     planes.clear();
+    circles.clear();
+    arcs.clear();
     parameters.clear();
     parameterStorage.clear();
     fixedParameterStorage.clear();
@@ -82,6 +84,7 @@ int Solver3D::addLine(int pointHandleA, int pointHandleB)
     return static_cast<int>(lines.size()) - 1;
 }
 
+// TODO: curently reference plane is fixed.
 int Solver3D::addPlane(const Base::Vector3d& origin, const Base::Vector3d& normal)
 {
     Base::Vector3d n = normal;
@@ -91,10 +94,73 @@ int Solver3D::addPlane(const Base::Vector3d& origin, const Base::Vector3d& norma
     n.Normalize();
 
     Plane3D plane;
-    plane.origin = origin;
-    plane.normal = n;
+    plane.origin
+        = GCS::Point3D(allocFixParam(origin.x), allocFixParam(origin.y), allocFixParam(origin.z));
+    plane.normal = GCS::Point3D(allocFixParam(n.x), allocFixParam(n.y), allocFixParam(n.z));
     planes.push_back(plane);
     return static_cast<int>(planes.size()) - 1;
+}
+
+int Solver3D::addArc(
+    int centerHandle,
+    int startHandle,
+    int endHandle,
+    double radius,
+    double startAngle,
+    double endAngle,
+    const Base::Vector3d& normal,
+    const Base::Vector3d& xDirection
+)
+{
+    GCS::Arc3D arc;
+    arc.center = points[centerHandle];
+    arc.start = points[startHandle];
+    arc.end = points[endHandle];
+    arc.rad = allocParam(radius);
+    arc.startAngle = allocFixParam(0.0);
+    arc.endAngle = allocParam(endAngle - startAngle);
+
+    Base::Vector3d n = normal;
+    n.Normalize();
+    Base::Vector3d xAxisIn = xDirection - n * xDirection.Dot(n);
+    xAxisIn.Normalize();
+    Base::Vector3d yAxisIn = n.Cross(xAxisIn);
+    Base::Vector3d xAxis = xAxisIn * std::cos(startAngle) + yAxisIn * std::sin(startAngle);
+
+    arc.normal = GCS::Point3D(allocParam(n.x), allocParam(n.y), allocParam(n.z));
+    arc.xAxis = GCS::Point3D(allocParam(xAxis.x), allocParam(xAxis.y), allocParam(xAxis.z));
+
+    arcs.emplace_back(arc);
+
+    return static_cast<int>(arcs.size()) - 1;
+}
+
+int Solver3D::addCircle(
+    int centerHandle,
+    double radius,
+    const Base::Vector3d& normal,
+    const Base::Vector3d& xDirection
+)
+{
+    Base::Vector3d n = normal;
+    n.Normalize();
+    Base::Vector3d xAxis = xDirection - n * xDirection.Dot(n);
+    xAxis.Normalize();
+
+    GCS::Circle3D circ;
+    circ.center = points[centerHandle];
+    circ.rad = allocParam(radius);
+    circ.normal = GCS::Point3D(allocParam(n.x), allocParam(n.y), allocParam(n.z));
+    circ.xAxis = GCS::Point3D(allocFixParam(xAxis.x), allocFixParam(xAxis.y), allocFixParam(xAxis.z));
+
+    circles.emplace_back(circ);
+
+    return static_cast<int>(circles.size()) - 1;
+}
+
+void Solver3D::addConstraintArcRules(int tagId, int arcHandle)
+{
+    GCSsys.addConstraintArcRules3D(arcs[arcHandle], tagId, true);
 }
 
 void Solver3D::addConstraintCoincident(int tagId, int pointHandleA, int pointHandleB)
@@ -117,6 +183,16 @@ void Solver3D::addConstraintEqualLength(int tagId, int lineHandleA, int lineHand
 void Solver3D::addConstraintPointOnLine(int tagId, int pointHandle, int lineHandle)
 {
     GCSsys.addConstraintPointOnLine3D(points[pointHandle], lines[lineHandle], tagId);
+}
+
+void Solver3D::addConstraintPointOnArc(int tagId, int pointHandle, int arcHandle)
+{
+    GCSsys.addConstraintPointOnCircle3D(points[pointHandle], arcs[arcHandle], tagId);
+}
+
+void Solver3D::addConstraintPointOnCircle(int tagId, int pointHandle, int circleHandle)
+{
+    GCSsys.addConstraintPointOnCircle3D(points[pointHandle], circles[circleHandle], tagId);
 }
 
 void Solver3D::addConstraintPointAtLineMidpoint(int tagId, int pointHandle, int lineHandle)
@@ -260,4 +336,20 @@ Base::Vector3d Solver3D::getPoint(int pointHandle) const
 {
     const GCS::Point3D& p = points[pointHandle];
     return Base::Vector3d(*p.x, *p.y, *p.z);
+}
+
+Solver3D::CircleFrame Solver3D::getCircleFrame(int circleHandle) const
+{
+    const GCS::Circle3D& circle = circles[circleHandle];
+    Base::Vector3d normal(*circle.normal.x, *circle.normal.y, *circle.normal.z);
+    Base::Vector3d xAxis(*circle.xAxis.x, *circle.xAxis.y, *circle.xAxis.z);
+    return {normal, xAxis, *circle.rad};
+}
+
+Solver3D::ArcFrame Solver3D::getArcFrame(int arcHandle) const
+{
+    const GCS::Arc3D& arc = arcs[arcHandle];
+    Base::Vector3d normal(*arc.normal.x, *arc.normal.y, *arc.normal.z);
+    Base::Vector3d xAxis(*arc.xAxis.x, *arc.xAxis.y, *arc.xAxis.z);
+    return {normal, xAxis, *arc.rad, *arc.startAngle, *arc.endAngle};
 }
