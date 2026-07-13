@@ -36,7 +36,8 @@ has status ``OK`` and may contain one trim claim per selected wall end;
 
 from dataclasses import dataclass, field, replace
 
-import ArchWallPath
+import ArchWallGeometry
+import ArchWallEndCondition
 import FreeCAD
 
 JOINT_TYPES = ("Miter", "Butt", "Tee")
@@ -110,14 +111,35 @@ class WallJointSolution:
     def is_ok(self):
         return self.status == "OK"
 
-    def trim_for_wall(self, wall):
+    @property
+    def trim_claims(self):
+        """Return the successful end claims using the shared relation contract."""
         if not self.is_ok():
-            return None, None, 0.0
-        if wall == self.wall_a:
-            return self.resolved_end_a, self.plane_a, self.extension_a
-        if wall == self.wall_b:
-            return self.resolved_end_b, self.plane_b, self.extension_b
-        return None, None, 0.0
+            return ()
+        claims = []
+        if self.wall_a and self.resolved_end_a and self.plane_a:
+            claims.append(
+                ArchWallEndCondition.WallTrimClaim(
+                    wall=self.wall_a,
+                    end_name=self.resolved_end_a,
+                    plane=self.plane_a,
+                    extension=self.extension_a,
+                )
+            )
+        if self.wall_b and self.resolved_end_b and self.plane_b:
+            claims.append(
+                ArchWallEndCondition.WallTrimClaim(
+                    wall=self.wall_b,
+                    end_name=self.resolved_end_b,
+                    plane=self.plane_b,
+                    extension=self.extension_b,
+                )
+            )
+        return tuple(claims)
+
+    def trim_for_wall(self, wall):
+        """Return this solution's typed claim for ``wall``, if any."""
+        return next((claim for claim in self.trim_claims if claim.wall == wall), None)
 
 
 def is_wall_joint(obj):
@@ -191,7 +213,7 @@ def get_join_path(wall):
     if not callable(get_baseline):
         return None
     baseline = get_baseline(wall)
-    return ArchWallPath.WallPath.from_baseline(baseline) if baseline else None
+    return ArchWallGeometry.WallPath.from_baseline(baseline) if baseline else None
 
 
 def get_join_section(wall):
@@ -424,20 +446,9 @@ def solve_wall_joint_inputs(
     return result
 
 
-def get_trim_for_wall(solution, wall):
-    """Returns the resolved end and plane for the requested wall."""
-    if solution is None:
-        return None, None, 0.0
-    trim = solution.trim_for_wall(wall)
-    if len(trim) == 2:
-        end_name, plane = trim
-        return end_name, plane, 0.0
-    return trim
-
-
 def find_best_intersection(path1, path2):
     """Finds the intersection point of two baselines and the closest end on each line."""
-    return ArchWallPath.find_path_intersection(path1, path2)
+    return ArchWallGeometry.find_path_intersection(path1, path2)
 
 
 def calculate_miter_cutting_planes(path1, path2, intersection):

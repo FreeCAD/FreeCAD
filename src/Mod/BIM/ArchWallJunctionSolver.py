@@ -33,6 +33,7 @@ from dataclasses import dataclass, field
 
 import FreeCAD
 
+import ArchWallEndCondition
 import ArchWallRelation
 
 END_TOLERANCE = 1e-4
@@ -43,10 +44,9 @@ INTERSECTION_TOLERANCE = 1e-4
 class WallJunctionSolution:
     """Typed solver output for a wall-junction relation.
 
-    ``trim_claims`` contains one global plane for each branch wall end.  Unlike
-    ``WallJointSolution.trim_for_wall()``, the junction helper returns
-    ``(end_name, plane)`` because junctions currently have no extension value;
-    the resolver adapts both solution shapes when collecting wall trims.
+    ``trim_claims`` contains one :class:`WallTrimClaim` for each branch wall
+    end.  Junctions do not currently need an extension, so their claims use
+    the default value of zero.
     """
 
     status: str
@@ -65,19 +65,8 @@ class WallJunctionSolution:
         return self.status == "OK"
 
     def trim_for_wall(self, wall):
-        for trim in self.trim_claims:
-            if trim.wall == wall:
-                return trim.end_name, trim.plane
-        return None, None
-
-
-@dataclass
-class WallJunctionTrim:
-    """Resolved trim claim for one wall end in a junction relation."""
-
-    wall: object
-    end_name: str
-    plane: FreeCAD.Placement
+        """Return this solution's typed claim for ``wall``, if any."""
+        return next((claim for claim in self.trim_claims if claim.wall == wall), None)
 
 
 def solve_wall_junction(junction):
@@ -258,7 +247,13 @@ def _solve_carrier_candidate(walls, paths, carrier_wall):
                 f"The wall junction could not compute the trim plane for {wall.Label}.",
                 walls=walls,
             )
-        trim_claims.append(WallJunctionTrim(wall=wall, end_name=end_name, plane=plane))
+        trim_claims.append(
+            ArchWallEndCondition.WallTrimClaim(
+                wall=wall,
+                end_name=end_name,
+                plane=plane,
+            )
+        )
 
     return WallJunctionSolution(
         "OK",
