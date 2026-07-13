@@ -600,8 +600,13 @@ TEST_F(ApplicationDirectoriesTest, migrateConfigSkipsBrokenSymlink)
     fs::path oldPath = tempDir() / "symlink_src";
     fs::path newPath = tempDir() / "symlink_dst";
     writeFile(oldPath / "good.txt", "ok");
-    fs::create_symlink(oldPath / "nonexistent_target", oldPath / "bad_link");
-
+    try {
+        fs::create_symlink(oldPath / "nonexistent_target", oldPath / "bad_link");
+    } catch (const std::filesystem::filesystem_error &e) {
+        // Windows can throw exception "A required privilege is not held by the client"
+        // if dev mode is not enabled on the machine, skip if that happens
+        GTEST_SKIP() << "Could not create symlink: " << e.what();
+    }
     auto result = App::ApplicationDirectories::migrateConfig(oldPath, newPath);
 
     EXPECT_FALSE(result.failedPaths.empty());
@@ -615,8 +620,11 @@ TEST_F(ApplicationDirectoriesTest, migrateConfigCopiesValidSymlink)
     fs::path oldPath = tempDir() / "valid_link_src";
     fs::path newPath = tempDir() / "valid_link_dst";
     writeFile(oldPath / "target.txt", "content");
-    fs::create_symlink(oldPath / "target.txt", oldPath / "good_link");
-
+    try {
+        fs::create_symlink(oldPath / "target.txt", oldPath / "good_link");
+    } catch (const std::filesystem::filesystem_error &e) {
+        GTEST_SKIP() << "Could not create symlink: " << e.what();
+    }
     auto result = App::ApplicationDirectories::migrateConfig(oldPath, newPath);
 
     EXPECT_TRUE(result.failedPaths.empty());
@@ -632,8 +640,11 @@ TEST_F(ApplicationDirectoriesTest, migrateAllPathsReturnsSkippedPaths)
     fs::path base = tempDir() / "fail_count";
     fs::create_directories(base);
     writeFile(base / "good.txt", "ok");
-    fs::create_symlink(base / "no_such_file", base / "broken");
-
+    try {
+        fs::create_symlink(base / "no_such_file", base / "broken");
+    } catch (const std::filesystem::filesystem_error &e) {
+        GTEST_SKIP() << "Could not create symlink: " << e.what();
+    }
     std::vector<fs::path> inputs {base};
     auto result = appDirs->migrateAllPaths(inputs);
 
