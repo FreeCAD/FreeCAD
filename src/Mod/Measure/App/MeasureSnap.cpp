@@ -320,7 +320,7 @@ bool MeasureSnap::axisPreviewSegment(const gp_Ax1& axis, const Bnd_Box& bounds, 
     const gp_Pnt hi = bounds.CornerMax();
     const gp_Pnt centre((lo.X() + hi.X()) / 2.0, (lo.Y() + hi.Y()) / 2.0, (lo.Z() + hi.Z()) / 2.0);
     const gp_Pnt onAxis = projectOntoAxis(axis, centre);
-    // Overshoot the shape so the line reads as a reference, not an edge; k tuned by eye in QA.
+    // Overshoot the shape so the line reads as a reference, not the edge itself.
     constexpr double extentFactor = 0.6;
     constexpr double minHalfLength = 1.0;
     const double half = std::max(extentFactor * lo.Distance(hi), minHalfLength);
