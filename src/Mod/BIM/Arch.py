@@ -1787,6 +1787,39 @@ def makeWallJoint(wall_a=None, wall_b=None, joint_type="Miter", name=None):
     return joint
 
 
+def makeWallJunction(walls=None, carrier_wall=None, name=None):
+    """Create a persistent three-or-more-wall relation in the active document.
+
+    With ``carrier_wall`` omitted, the junction solver selects a valid carrier
+    automatically.  Supplying it switches the new relation to explicit carrier
+    mode.  The returned object stores links and settings; it does not merge or
+    replace the linked wall objects.
+    """
+
+    junction = _initializeArchObject(
+        "App::FeaturePython",
+        baseClassName="_WallJunction",
+        internalName="WallJunction",
+        defaultLabel=name if name else translate("Arch", "Wall Junction"),
+        moduleName="ArchWallJunction",
+        viewProviderName="_ViewProviderWallJunction",
+    )
+    if not junction:
+        return None
+
+    if walls:
+        junction.Walls = list(walls)
+    if carrier_wall:
+        junction.CarrierMode = "Explicit"
+        junction.CarrierWall = carrier_wall
+    if name:
+        junction.AutoLabel = False
+        junction.Label = name
+    else:
+        junction.Proxy.updatePresentation(junction, force_label=True)
+    return junction
+
+
 def joinWalls(walls, delete=False, deletebase=False):
     """Join the given list of walls into one sketch-based wall.
 
