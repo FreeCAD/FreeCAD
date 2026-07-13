@@ -14,6 +14,7 @@
 #include <Base/Rotation.h>
 #include <Base/Vector3D.h>
 #include <gtest/gtest.h>
+#include <BRep_Tool.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
@@ -21,6 +22,7 @@
 #include <BRepPrimAPI_MakeCylinder.hxx>
 #include <BRepPrimAPI_MakeSphere.hxx>
 #include <gp_Ax2.hxx>
+#include <TopoDS.hxx>
 #include <gp_Circ.hxx>
 #include <gp_Dir.hxx>
 #include <TopoDS_Edge.hxx>
@@ -276,7 +278,7 @@ TEST_F(MeasureDistance, testWireCircleExtremaNotCenter)
 // A measurement's results must survive save and reload unchanged.
 TEST_F(MeasureDistance, testSaveReloadRoundTrip)
 {
-    const char* path = "MeasureRoundTrip.FCStd";
+    const std::string path = App::Application::getTempPath() + "MeasureRoundTrip.FCStd";
 
     App::Document* doc = App::GetApplication().newDocument("MeasureRoundTrip");
     auto p1 = doc->addObject<Part::Feature>("Shape1");
@@ -294,10 +296,10 @@ TEST_F(MeasureDistance, testSaveReloadRoundTrip)
     const Base::Vector3d position1 = md->Position1.getValue();
     const Base::Vector3d position2 = md->Position2.getValue();
 
-    doc->saveAs(path);
+    doc->saveAs(path.c_str());
     App::GetApplication().closeDocument(doc->getName());
 
-    App::Document* reloaded = App::GetApplication().openDocument(path);
+    App::Document* reloaded = App::GetApplication().openDocument(path.c_str());
     ASSERT_TRUE(reloaded);
     auto reloadedMd = dynamic_cast<Measure::MeasureDistance*>(reloaded->getObject("Distance"));
     ASSERT_TRUE(reloadedMd);
@@ -307,7 +309,7 @@ TEST_F(MeasureDistance, testSaveReloadRoundTrip)
     EXPECT_EQ(reloadedMd->Position2.getValue(), position2);
 
     App::GetApplication().closeDocument(reloaded->getName());
-    std::remove(path);
+    std::remove(path.c_str());
 }
 
 // The committed fixture was authored before any Snap property existed, so it
@@ -400,7 +402,7 @@ TEST_F(MeasureDistance, testRestoredOutOfRangeSnapIndexDispatchesAsAuto)
 // recomputes to the same distance it was saved with (#13708).
 TEST_F(MeasureDistance, testSnapValuePersistsAcrossReload)
 {
-    const char* path = "MeasureSnapPersist.FCStd";
+    const std::string path = App::Application::getTempPath() + "MeasureSnapPersist.FCStd";
 
     App::Document* doc = App::GetApplication().newDocument("MeasureSnapPersist");
     auto p1 = doc->addObject<Part::Feature>("Shape1");
@@ -417,10 +419,10 @@ TEST_F(MeasureDistance, testSnapValuePersistsAcrossReload)
     doc->recompute();
     const double distance = md->Distance.getValue();
 
-    doc->saveAs(path);
+    doc->saveAs(path.c_str());
     App::GetApplication().closeDocument(doc->getName());
 
-    App::Document* reloaded = App::GetApplication().openDocument(path);
+    App::Document* reloaded = App::GetApplication().openDocument(path.c_str());
     ASSERT_TRUE(reloaded);
     auto reloadedMd = dynamic_cast<Measure::MeasureDistance*>(reloaded->getObject("Distance"));
     ASSERT_TRUE(reloadedMd);
@@ -430,7 +432,7 @@ TEST_F(MeasureDistance, testSnapValuePersistsAcrossReload)
     EXPECT_DOUBLE_EQ(reloadedMd->Distance.getValue(), distance);
 
     App::GetApplication().closeDocument(reloaded->getName());
-    std::remove(path);
+    std::remove(path.c_str());
 }
 
 // Regression: https://github.com/FreeCAD/FreeCAD/issues/27404
@@ -584,6 +586,16 @@ TEST_F(MeasureDistance, testAxisAxisSkewClosestApproach)
     doc->recompute();
 
     EXPECT_NEAR(md->Distance.getValue(), 5.0, 1e-6);
+    // Positions must land on their own axes: the common perpendicular joins
+    // (3,0,0) on the X axis to (3,0,5) on the shifted Y axis.
+    const Base::Vector3d position1 = md->Position1.getValue();
+    const Base::Vector3d position2 = md->Position2.getValue();
+    EXPECT_NEAR(position1.x, 3.0, 1e-6);
+    EXPECT_NEAR(position1.y, 0.0, 1e-6);
+    EXPECT_NEAR(position1.z, 0.0, 1e-6);
+    EXPECT_NEAR(position2.x, 3.0, 1e-6);
+    EXPECT_NEAR(position2.y, 0.0, 1e-6);
+    EXPECT_NEAR(position2.z, 5.0, 1e-6);
 }
 
 // The cylinder snaps to its Z axis at the origin; the box is None, so it stays a
@@ -735,10 +747,107 @@ TEST_F(MeasureDistance, testNoneAxisToBoxReversed)
     doc->recompute();
 
     EXPECT_NEAR(md->Distance.getValue(), 10.0, 1e-6);
+    EXPECT_NEAR(md->DistanceX.getValue(), 10.0, 1e-6);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
     const Base::Vector3d position1 = md->Position1.getValue();
     const Base::Vector3d position2 = md->Position2.getValue();
     EXPECT_NEAR(position1.x, 10.0, 1e-6);
     EXPECT_NEAR(position2.x, 0.0, 1e-6);
+}
+
+// Vertex on both sides goes through the point/point arm with the deterministic
+// first-endpoint fallback (no cursor at recompute): (0,0,0) to (3,4,0) reads 5,
+// where nearest points between the segments would read less.
+TEST_F(MeasureDistance, testVertexVertexFirstEndpoints)
+{
+    App::Document* doc = getDocument();
+    auto p1 = doc->addObject<Part::Feature>("Line1");
+    p1->Shape.setValue(makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(0.0, 2.0, 0.0)));
+    auto p2 = doc->addObject<Part::Feature>("Line2");
+    p2->Shape.setValue(makeLine(gp_Pnt(3.0, 4.0, 0.0), gp_Pnt(3.0, 6.0, 0.0)));
+
+    auto md = doc->addObject<Measure::MeasureDistance>("Distance");
+    md->Element1.setValue(p1, {"Edge1"});
+    md->Element2.setValue(p2, {"Edge1"});
+    md->Snap1.setValue("Vertex");
+    md->Snap2.setValue("Vertex");
+
+    doc->recompute();
+
+    EXPECT_NEAR(md->Distance.getValue(), 5.0, 1e-6);
+    EXPECT_EQ(md->Position1.getValue(), Base::Vector3d(0.0, 0.0, 0.0));
+    EXPECT_EQ(md->Position2.getValue(), Base::Vector3d(3.0, 4.0, 0.0));
+}
+
+// Axis requested on a planar box face cannot resolve, so that side warns and the
+// pair degrades to nearest points between the raw shapes.
+TEST_F(MeasureDistance, testAxisOnPlanarFaceDegradesToGeneric)
+{
+    App::Document* doc = getDocument();
+    auto box = doc->addObject<Part::Feature>("Box");
+    box->Shape.setValue(BRepPrimAPI_MakeBox(gp_Pnt(10.0, 0.0, 0.0), 5.0, 5.0, 5.0).Solid());
+    auto vtx = doc->addObject<Part::Feature>("Vtx");
+    vtx->Shape.setValue(makeVertex(gp_Pnt(0.0, 0.0, 0.0)));
+
+    auto md = doc->addObject<Measure::MeasureDistance>("Distance");
+    md->Element1.setValue(box, {"Face1"});
+    md->Element2.setValue(vtx, {"Vertex1"});
+    md->Snap1.setValue("Axis");
+    md->Snap2.setValue("None");
+
+    doc->recompute();
+
+    EXPECT_NEAR(md->Distance.getValue(), 10.0, 1e-6);
+}
+
+// Parallel cylinder axes: the deterministic parallel rule survives the dispatch,
+// measuring the 4.0 perpendicular gap between the axis lines.
+TEST_F(MeasureDistance, testAxisAxisParallelClosestApproach)
+{
+    App::Document* doc = getDocument();
+    auto c1 = doc->addObject<Part::Feature>("Cyl1");
+    c1->Shape.setValue(BRepPrimAPI_MakeCylinder(1.0, 4.0).Face());
+    auto c2 = doc->addObject<Part::Feature>("Cyl2");
+    c2->Shape.setValue(
+        BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(4.0, 0.0, 0.0), gp_Dir(0.0, 0.0, 1.0)), 1.0, 4.0).Face()
+    );
+
+    auto md = doc->addObject<Measure::MeasureDistance>("Distance");
+    md->Element1.setValue(c1, {"Face1"});
+    md->Element2.setValue(c2, {"Face1"});
+    md->Snap1.setValue("Axis");
+    md->Snap2.setValue("Axis");
+
+    doc->recompute();
+
+    EXPECT_NEAR(md->Distance.getValue(), 4.0, 1e-6);
+    EXPECT_NEAR(md->DistanceX.getValue(), 4.0, 1e-6);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
+}
+
+// The snapped path sees placed geometry: a Center snap on a placed circle pins
+// Position1 at the global centre, not the local one.
+TEST_F(MeasureDistance, testCenterSnapRespectsPlacement)
+{
+    App::Document* doc = getDocument();
+    auto pCircle = doc->addObject<Part::Feature>("Circle");
+    pCircle->Shape.setValue(makeCircle(gp_Pnt(0.0, 0.0, 0.0)));
+    pCircle->Placement.setValue(Base::Placement(Base::Vector3d(10.0, 0.0, 5.0), Base::Rotation()));
+    auto vtx = doc->addObject<Part::Feature>("Vtx");
+    vtx->Shape.setValue(makeVertex(gp_Pnt(10.0, 0.0, 0.0)));
+
+    auto md = doc->addObject<Measure::MeasureDistance>("Distance");
+    md->Element1.setValue(pCircle, {"Edge1"});
+    md->Element2.setValue(vtx, {"Vertex1"});
+    md->Snap1.setValue("Center");
+    md->Snap2.setValue("None");
+
+    doc->recompute();
+
+    EXPECT_NEAR(md->Distance.getValue(), 5.0, 1e-6);
+    EXPECT_EQ(md->Position1.getValue(), Base::Vector3d(10.0, 0.0, 5.0));
 }
 
 TEST_F(MeasureDistance, testCircleCircleWithPlacement)
@@ -794,5 +903,63 @@ TEST_F(MeasureDistance, testTwoBoxesMovedByContainers)
     EXPECT_DOUBLE_EQ(md->DistanceX.getValue(), 50.0);
     EXPECT_DOUBLE_EQ(md->DistanceY.getValue(), 0.0);
     EXPECT_DOUBLE_EQ(md->DistanceZ.getValue(), 0.0);
+}
+
+// resolveShape feeds the hover preview and must apply the placement exactly once:
+// the double-applied variant put markers off by the placement in GUI testing.
+TEST_F(MeasureDistance, testResolveShapeAppliesPlacementOnce)
+{
+    App::Document* doc = getDocument();
+    auto pCircle = doc->addObject<Part::Feature>("Circle");
+    pCircle->Shape.setValue(makeCircle(gp_Pnt(0.0, 0.0, 0.0)));
+    pCircle->Placement.setValue(Base::Placement(Base::Vector3d(10.0, 0.0, 5.0), Base::Rotation()));
+    doc->recompute();
+
+    const TopoDS_Shape shape = Measure::MeasureSnap::resolveShape(App::SubObjectT(pCircle, "Edge1"));
+    ASSERT_FALSE(shape.IsNull());
+    ASSERT_EQ(shape.ShapeType(), TopAbs_EDGE);
+    gp_Pnt centre;
+    ASSERT_TRUE(
+        Measure::MeasureSnap::computeSnapPoint(shape, Measure::MeasureSnapMode::Center, nullptr, centre)
+    );
+    EXPECT_NEAR(centre.X(), 10.0, 1e-6);
+    EXPECT_NEAR(centre.Y(), 0.0, 1e-6);
+    EXPECT_NEAR(centre.Z(), 5.0, 1e-6);
+}
+
+// A container chain resolves through the App::Part placement, matching what
+// execute() measures on.
+TEST_F(MeasureDistance, testResolveShapeThroughContainer)
+{
+    App::Document* doc = getDocument();
+    auto vtx = doc->addObject<Part::Feature>("Vtx");
+    vtx->Shape.setValue(makeVertex(gp_Pnt(1.0, 2.0, 3.0)));
+    auto container = doc->addObject<App::Part>("Container");
+    container->Placement.setValue(Base::Placement(Base::Vector3d(50.0, 0.0, 0.0), Base::Rotation()));
+    container->getExtensionByType<App::GeoFeatureGroupExtension>()->addObject(vtx);
+    doc->recompute();
+
+    const TopoDS_Shape shape = Measure::MeasureSnap::resolveShape(
+        App::SubObjectT(container, "Vtx.Vertex1")
+    );
+    ASSERT_FALSE(shape.IsNull());
+    ASSERT_EQ(shape.ShapeType(), TopAbs_VERTEX);
+    const gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(shape));
+    EXPECT_NEAR(p.X(), 51.0, 1e-6);
+    EXPECT_NEAR(p.Y(), 2.0, 1e-6);
+    EXPECT_NEAR(p.Z(), 3.0, 1e-6);
+}
+
+// Anything unresolvable yields a null shape, never a throw: the hover code treats
+// null as "nothing to preview".
+TEST_F(MeasureDistance, testResolveShapeUnresolvableIsNull)
+{
+    App::Document* doc = getDocument();
+    auto pCircle = doc->addObject<Part::Feature>("Circle");
+    pCircle->Shape.setValue(makeCircle(gp_Pnt(0.0, 0.0, 0.0)));
+    doc->recompute();
+
+    EXPECT_TRUE(Measure::MeasureSnap::resolveShape(App::SubObjectT(pCircle, "Edge99")).IsNull());
+    EXPECT_TRUE(Measure::MeasureSnap::resolveShape(App::SubObjectT()).IsNull());
 }
 // NOLINTEND

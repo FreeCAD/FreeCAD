@@ -47,7 +47,6 @@
 #include <gp_Cylinder.hxx>
 #include <gp_Lin.hxx>
 #include <gp_Vec.hxx>
-#include <Precision.hxx>
 #include <TopExp.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
@@ -431,7 +430,10 @@ bool MeasureSnap::closestPointsOnAxes(const gp_Ax1& a, const gp_Ax1& b, gp_Pnt& 
 {
     const gp_Lin lineA(a);
     const gp_Lin lineB(b);
-    Extrema_ExtElC ext(lineA, lineB, Precision::Angular());
+    // Placement round-trips leave nominally parallel axes a hair off; without this
+    // slack the skew solve puts the feet ~separation/angle away from the shapes.
+    constexpr double parallelTol = 1e-6;
+    Extrema_ExtElC ext(lineA, lineB, parallelTol);
     if (!ext.IsDone()) {
         return false;
     }

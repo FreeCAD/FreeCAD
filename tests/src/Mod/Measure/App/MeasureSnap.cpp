@@ -573,7 +573,23 @@ TEST_F(MeasureSnap, testClosestPointsCoincident)
     gp_Pnt onA;
     gp_Pnt onB;
     ASSERT_TRUE(Measure::MeasureSnap::closestPointsOnAxes(a, b, onA, onB));
-    EXPECT_DOUBLE_EQ(onA.Distance(onB), 0.0);
+    // The documented deterministic pair is a's origin on both sides.
+    EXPECT_DOUBLE_EQ(onA.Distance(gp_Pnt(0.0, 0.0, 0.0)), 0.0);
+    EXPECT_DOUBLE_EQ(onB.Distance(gp_Pnt(0.0, 0.0, 0.0)), 0.0);
+}
+
+// Sub-microradian noise, as left on nominally parallel axes by placement math,
+// must take the parallel rule: a skew solve would send the feet ~separation/angle
+// away from the geometry.
+TEST_F(MeasureSnap, testClosestPointsFloatNoiseTreatedParallel)
+{
+    const gp_Ax1 a(gp_Pnt(0.0, 0.0, 10.0), gp_Dir(0.0, 0.0, 1.0));
+    const gp_Ax1 b(gp_Pnt(4.0, 0.0, -7.0), gp_Dir(1e-9, 0.0, 1.0));
+    gp_Pnt onA;
+    gp_Pnt onB;
+    ASSERT_TRUE(Measure::MeasureSnap::closestPointsOnAxes(a, b, onA, onB));
+    EXPECT_NEAR(onA.Z(), 10.0, 1e-6);
+    EXPECT_NEAR(onA.Distance(onB), 4.0, 1e-6);
 }
 
 // Near-parallel (0.001 rad) must take the skew branch, not the parallel rule:
@@ -744,9 +760,15 @@ TEST_F(MeasureSnap, testPickPreviewType)
     EXPECT_EQ(MeasureSnap::pickPreviewType(axisOnly, MeasureSnapMode::Auto), MeasureSnapMode::Axis);
 
     // An explicit mode previews only when its flag is present.
-    EXPECT_EQ(MeasureSnap::pickPreviewType(circleFlags, MeasureSnapMode::Center), MeasureSnapMode::Center);
+    EXPECT_EQ(
+        MeasureSnap::pickPreviewType(circleFlags, MeasureSnapMode::Center),
+        MeasureSnapMode::Center
+    );
     EXPECT_EQ(MeasureSnap::pickPreviewType(lineFlags, MeasureSnapMode::Center), MeasureSnapMode::None);
-    EXPECT_EQ(MeasureSnap::pickPreviewType(lineFlags, MeasureSnapMode::Midpoint), MeasureSnapMode::Midpoint);
+    EXPECT_EQ(
+        MeasureSnap::pickPreviewType(lineFlags, MeasureSnapMode::Midpoint),
+        MeasureSnapMode::Midpoint
+    );
     EXPECT_EQ(MeasureSnap::pickPreviewType(vertexOnly, MeasureSnapMode::Vertex), MeasureSnapMode::Vertex);
 
     // None never previews; an Axis request degrades to None without the axis flag.
@@ -761,18 +783,38 @@ TEST_F(MeasureSnap, testPreviewPoints)
 {
     const TopoDS_Edge line = makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(2.0, 0.0, 0.0));
 
-    const std::vector<gp_Pnt> ends =
-        Measure::MeasureSnap::previewPoints(line, Measure::MeasureSnapMode::Vertex);
+    const std::vector<gp_Pnt> ends
+        = Measure::MeasureSnap::previewPoints(line, Measure::MeasureSnapMode::Vertex);
     ASSERT_EQ(ends.size(), 2U);
     EXPECT_DOUBLE_EQ(ends.front().X(), 0.0);
     EXPECT_DOUBLE_EQ(ends.back().X(), 2.0);
 
-    const std::vector<gp_Pnt> mid =
-        Measure::MeasureSnap::previewPoints(line, Measure::MeasureSnapMode::Midpoint);
+    const std::vector<gp_Pnt> mid
+        = Measure::MeasureSnap::previewPoints(line, Measure::MeasureSnapMode::Midpoint);
     ASSERT_EQ(mid.size(), 1U);
     EXPECT_DOUBLE_EQ(mid.front().X(), 1.0);
 
+    const std::vector<gp_Pnt> single = Measure::MeasureSnap::previewPoints(
+        makeVertex(gp_Pnt(1.0, 2.0, 3.0)),
+        Measure::MeasureSnapMode::Vertex
+    );
+    ASSERT_EQ(single.size(), 1U);
+    EXPECT_DOUBLE_EQ(single.front().Z(), 3.0);
+
+    const std::vector<gp_Pnt> centre = Measure::MeasureSnap::previewPoints(
+        makeCircle(gp_Pnt(3.0, 4.0, 0.0)),
+        Measure::MeasureSnapMode::Center
+    );
+    ASSERT_EQ(centre.size(), 1U);
+    EXPECT_DOUBLE_EQ(centre.front().X(), 3.0);
+    EXPECT_DOUBLE_EQ(centre.front().Y(), 4.0);
+
+    // Auto is a caller-side concept and an axis needs an axis-bearing face.
     EXPECT_TRUE(Measure::MeasureSnap::previewPoints(line, Measure::MeasureSnapMode::None).empty());
+    EXPECT_TRUE(Measure::MeasureSnap::previewPoints(line, Measure::MeasureSnapMode::Auto).empty());
+    EXPECT_TRUE(
+        Measure::MeasureSnap::previewPoints(makePlaneFace(), Measure::MeasureSnapMode::Axis).empty()
+    );
 }
 
 // Endpoints are the box centre projected onto the axis (so x,y collapse to 0), extended
@@ -822,8 +864,8 @@ TEST_F(MeasureSnap, testAxisPreviewSegmentVoidBoxReturnsFalse)
 TEST_F(MeasureSnap, testPreviewPointsAxisOnCylinder)
 {
     const TopoDS_Face face = makeCylinderFace(2.0, 5.0);
-    const std::vector<gp_Pnt> ends =
-        Measure::MeasureSnap::previewPoints(face, Measure::MeasureSnapMode::Axis);
+    const std::vector<gp_Pnt> ends
+        = Measure::MeasureSnap::previewPoints(face, Measure::MeasureSnapMode::Axis);
     ASSERT_EQ(ends.size(), 2U);
     EXPECT_NEAR(ends.front().X(), 0.0, 1e-6);
     EXPECT_NEAR(ends.front().Y(), 0.0, 1e-6);
