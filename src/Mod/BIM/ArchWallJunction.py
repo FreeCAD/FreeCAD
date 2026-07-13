@@ -246,7 +246,7 @@ class _ViewProviderWallJunction:
         return
 
     def getIcon(self):
-        return ":/icons/BIM_Join_Tee.svg"
+        return ":/icons/BIM_Join_Junction.svg"
 
     def doubleClicked(self, _vobj):
         return False
