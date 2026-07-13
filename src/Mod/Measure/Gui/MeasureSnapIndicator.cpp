@@ -32,6 +32,7 @@
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoLineSet.h>
 #include <Inventor/nodes/SoMarkerSet.h>
+#include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 
@@ -121,6 +122,12 @@ MeasureSnapIndicator::MeasureSnapIndicator()
     pRoot = new SoAnnotation;
     pRoot->ref();
 
+    // The overlay sits exactly on the hovered geometry; keep it out of ray picks
+    // so it cannot steal the preselection it is illustrating.
+    pPickStyle = new SoPickStyle;
+    pPickStyle->ref();
+    pPickStyle->style = SoPickStyle::UNPICKABLE;
+
     pSwitch = new SoSwitch;
     pSwitch->ref();
     pSwitch->whichChild = SO_SWITCH_NONE;
@@ -168,14 +175,13 @@ MeasureSnapIndicator::MeasureSnapIndicator()
 
     pSwitch->addChild(pSep);
     pSwitch->addChild(pAxisSep);
+    pRoot->addChild(pPickStyle);
     pRoot->addChild(pSwitch);
 }
 
 MeasureSnapIndicator::~MeasureSnapIndicator()
 {
-    if (attached && pSceneGraph) {
-        pSceneGraph->removeChild(pRoot);
-    }
+    detach();
     pAxisLine->unref();
     pAxisCoords->unref();
     pAxisStyle->unref();
@@ -186,6 +192,7 @@ MeasureSnapIndicator::~MeasureSnapIndicator()
     pColor->unref();
     pSep->unref();
     pSwitch->unref();
+    pPickStyle->unref();
     pRoot->unref();
 }
 
@@ -198,14 +205,24 @@ bool MeasureSnapIndicator::attach()
     if (attached && pSceneGraph == sg) {
         return true;
     }
-    // Active view changed: move off the previous (still-alive) view before re-attaching.
-    if (attached && pSceneGraph) {
-        pSceneGraph->removeChild(pRoot);
-    }
+    detach();
     sg->addChild(pRoot);
+    // The ref keeps the group valid even if its view is destroyed while we are
+    // attached; there is no per-view deletion signal to learn about that.
+    sg->ref();
     pSceneGraph = sg;
     attached = true;
     return true;
+}
+
+void MeasureSnapIndicator::detach()
+{
+    if (attached && pSceneGraph) {
+        pSceneGraph->removeChild(pRoot);
+        pSceneGraph->unref();
+    }
+    pSceneGraph = nullptr;
+    attached = false;
 }
 
 void MeasureSnapIndicator::show(const std::vector<gp_Pnt>& points, Measure::MeasureSnapMode type)
@@ -237,10 +254,4 @@ void MeasureSnapIndicator::show(const std::vector<gp_Pnt>& points, Measure::Meas
 void MeasureSnapIndicator::hide()
 {
     pSwitch->whichChild = SO_SWITCH_NONE;
-}
-
-void MeasureSnapIndicator::dropHandle()
-{
-    attached = false;
-    pSceneGraph = nullptr;
 }
