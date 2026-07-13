@@ -427,6 +427,19 @@ void TaskMeasure::tryUpdate()
         // Fill measure object's properties from selection
         _mMeasureObject->parseSelection(selection);
 
+        if (snapEnabled() && selection.size() >= 2) {
+            if (auto* md = dynamic_cast<Measure::MeasureDistance*>(_mMeasureObject)) {
+                if (auto it = mSnapClickState.find(selection.at(0).object);
+                    it != mSnapClickState.end()) {
+                    md->Snap1.setValue(static_cast<long>(it->second));
+                }
+                if (auto it = mSnapClickState.find(selection.at(1).object);
+                    it != mSnapClickState.end()) {
+                    md->Snap2.setValue(static_cast<long>(it->second));
+                }
+            }
+        }
+
         syncDisplayUnit();
         refreshResult();
 
@@ -664,6 +677,27 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
         return;
     }
 
+    if (snapEnabled()) {
+        switch (msg.Type) {
+            case Gui::SelectionChanges::AddSelection: {
+                const auto mode = currentSnapMode();
+                if (mode == Measure::MeasureSnapMode::Auto) {
+                    mSnapClickState.erase(msg.Object);
+                }
+                else {
+                    mSnapClickState[msg.Object] = mode;
+                }
+                break;
+            }
+            case Gui::SelectionChanges::RmvSelection:
+                mSnapClickState.erase(msg.Object);
+                break;
+            default:
+                mSnapClickState.clear();
+                break;
+        }
+    }
+
     // If the control modifier is pressed, the object is just added to the current measurement
     // If the control modifier is not pressed, a new measurement will be started. If autosave is on,
     // the old measurement will be saved otherwise discharded. Shift inverts the autosave behaviour
@@ -685,6 +719,12 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
 bool TaskMeasure::snapEnabled() const
 {
     return Measure::Preferences::getPreferenceGroup("Snapping")->GetBool("SnapEnabled", true);
+}
+
+Measure::MeasureSnapMode TaskMeasure::currentSnapMode() const
+{
+    // Interactive mode selection is not wired yet, so the default applies.
+    return Measure::MeasureSnapMode::Auto;
 }
 
 void TaskMeasure::setupShortcuts(QWidget* parent)
