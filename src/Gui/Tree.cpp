@@ -20,6 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <cstdlib>
+#include <sstream>
 
 #include <QAction>
 #include <QActionGroup>
@@ -94,6 +96,17 @@ const int TreeWidget::DocumentType = 1000;
 const int TreeWidget::ObjectType = 1001;
 static bool _DraggingActive;
 static bool _DragEventFilter;
+
+static bool issue29844DiagnosticsEnabled()
+{
+    static const bool enabled = []() {
+        if (const char* value = std::getenv("FC_ISSUE_29844_DIAGNOSTICS")) {
+            return value[0] != '\0' && value[0] != '0';
+        }
+        return true;
+    }();
+    return enabled;
+}
 
 static bool isVisibilityIconEnabled()
 {
@@ -1577,6 +1590,25 @@ void TreeWidget::onAllowPartialRecompute(bool on)
 
 void TreeWidget::onMarkRecompute()
 {
+    if (issue29844DiagnosticsEnabled()) {
+        std::ostringstream log;
+        log << "issue-29844 diagnostics: TreeWidget::onMarkRecompute contextType="
+            << (this->contextItem ? this->contextItem->type() : -1) << " selectedItems=";
+        bool first = true;
+        for (auto* item : this->selectedItems()) {
+            if (!first) {
+                log << ", ";
+            }
+            first = false;
+            log << item->text(0).toStdString();
+        }
+        if (first) {
+            log << "<none>";
+        }
+        log << '\n';
+        Base::Console().log("%s", log.str().c_str());
+    }
+
     // if a document item is selected then touch all objects
     if (this->contextItem && this->contextItem->type() == DocumentType) {
         auto docitem = static_cast<DocumentItem*>(this->contextItem);
@@ -1596,6 +1628,37 @@ void TreeWidget::onMarkRecompute()
                 obj->enforceRecompute();
             }
         }
+    }
+
+    if (issue29844DiagnosticsEnabled()) {
+        std::set<std::string> touched;
+        const auto items = this->selectedItems();
+        for (auto* item : items) {
+            if (item->type() == ObjectType) {
+                auto* objitem = static_cast<DocumentObjectItem*>(item);
+                if (auto* obj = objitem->object()->getObject(); obj && obj->isTouched()) {
+                    touched.insert(obj->getFullName());
+                }
+            }
+        }
+
+        std::ostringstream log;
+        log << "issue-29844 diagnostics: TreeWidget::onMarkRecompute touchedSelected=";
+        if (touched.empty()) {
+            log << "<none>";
+        }
+        else {
+            bool first = true;
+            for (const auto& name : touched) {
+                if (!first) {
+                    log << ", ";
+                }
+                first = false;
+                log << name;
+            }
+        }
+        log << '\n';
+        Base::Console().log("%s", log.str().c_str());
     }
 }
 

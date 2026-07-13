@@ -87,8 +87,8 @@ public:
     );
     void blockCollapseAll();
     void updateProperty(const App::Property&);
-    void removeProperty(const App::Property&);
-    void renameProperty(const App::Property&);
+    void removeProperty(const App::Property*);
+    void renameProperty(const App::Property*);
     void setAutomaticDocumentUpdate(bool);
     bool isAutomaticDocumentUpdate(bool) const;
     /*! Reset the internal state of the view. */

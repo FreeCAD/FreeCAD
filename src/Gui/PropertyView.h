@@ -31,6 +31,7 @@ class QTabWidget;
 
 namespace App
 {
+class Document;
 class Property;
 class PropertyContainer;
 class DocumentObject;
@@ -38,6 +39,8 @@ class DocumentObject;
 
 namespace Gui
 {
+struct DynamicPropertyChangeEvent;
+
 namespace PropertyEditor
 {
 
@@ -83,9 +86,7 @@ private:
     void onSelectionChanged(const SelectionChanges& msg) override;
     void slotChangePropertyData(const App::Property&);
     void slotChangePropertyView(const Gui::ViewProvider&, const App::Property&);
-    void slotAppendDynamicProperty(const App::Property&);
-    void slotRemoveDynamicProperty(const App::Property&);
-    void slotRenameDynamicProperty(const App::Property&, const char* oldName);
+    void slotDynamicPropertyChanged(const Gui::DynamicPropertyChangeEvent&);
     void slotChangePropertyEditor(const App::Document&, const App::Property&);
     void slotRollback();
     void slotActiveDocument(const Gui::Document&);
@@ -101,9 +102,7 @@ private:
     using Connection = fastsignals::connection;
     Connection connectPropData;
     Connection connectPropView;
-    Connection connectPropAppend;
-    Connection connectPropRemove;
-    Connection connectPropRename;
+    Connection connectDynamicProperty;
     Connection connectPropChange;
     Connection connectUndoDocument;
     Connection connectRedoDocument;

@@ -46,6 +46,7 @@
 
 #include <QLoggingCategory>
 #include <fmt/format.h>
+#include <cstdlib>
 #include <list>
 #include <ranges>
 
@@ -174,10 +175,46 @@ extern const long NlErrorCode;  // initialized before main() by navlib_load.cpp
 namespace Gui
 {
 
+namespace
+{
+
+bool issue29844DiagnosticsEnabled()
+{
+    static const bool enabled = []() {
+        if (const char* value = std::getenv("FC_ISSUE_29844_DIAGNOSTICS")) {
+            return value[0] != '\0' && value[0] != '0';
+        }
+        return true;
+    }();
+    return enabled;
+}
+
+void logIssue29844Diagnostic(const std::string& message)
+{
+    if (issue29844DiagnosticsEnabled()) {
+        Base::Console().log("issue-29844 diagnostics: %s\n", message.c_str());
+    }
+}
+
+}  // namespace
+
 void requireMainThread(const char* api)
 {
     if (App::MainThreadSignalConfig::isMainThread()) {
         return;
+    }
+
+    if (issue29844DiagnosticsEnabled()) {
+        const auto* currentThread = QThread::currentThread();
+        const auto* mainThread = qApp ? qApp->thread() : nullptr;
+        logIssue29844Diagnostic(
+            fmt::format(
+                "off-thread GUI API api={} currentThread={} mainThread={}",
+                api,
+                fmt::ptr(currentThread),
+                fmt::ptr(mainThread)
+            )
+        );
     }
 
     Base::Console().error("GUI API '%s' may only be used from the main thread.\n", api);
@@ -443,6 +480,29 @@ void qtInvokeOnMain(std::function<void()>&& fn, bool blocking)
     );
 }
 
+DynamicPropertyChangeEvent makeDynamicPropertyChangeEvent(
+    DynamicPropertyChangeEvent::Kind kind,
+    const App::Property& prop,
+    std::string oldName = {}
+)
+{
+    DynamicPropertyChangeEvent event;
+    event.kind = kind;
+    event.container = prop.getContainer();
+    event.property = &prop;
+    event.name = prop.getName() ? prop.getName() : "";
+    event.oldName = std::move(oldName);
+    event.hidden = (prop.getType() & App::Prop_Hidden) || prop.testStatus(App::Property::Hidden);
+    return event;
+}
+
+void emitDynamicPropertyChangeOnMain(Application& app, DynamicPropertyChangeEvent event)
+{
+    App::MainThreadSignalConfig::callOnMainThreadSync([&app, event = std::move(event)]() {
+        app.signalDynamicPropertyChanged(event);
+    });
+}
+
 }  // namespace Gui
 
 void Application::initStyleParameterManager()
@@ -544,6 +604,12 @@ Application::Application(bool GUIenabled)
             std::bind(&Gui::Application::slotRelabelDocument, this, sp::_1));
         App::GetApplication().signalShowHidden.connect(
             std::bind(&Gui::Application::slotShowHidden, this, sp::_1));
+        App::GetApplication().signalAppendDynamicProperty.connect(
+            std::bind(&Gui::Application::slotAppendDynamicProperty, this, sp::_1));
+        App::GetApplication().signalRemoveDynamicProperty.connect(
+            std::bind(&Gui::Application::slotRemoveDynamicProperty, this, sp::_1));
+        App::GetApplication().signalRenameDynamicProperty.connect(
+            std::bind(&Gui::Application::slotRenameDynamicProperty, this, sp::_1, sp::_2));
         // NOLINTEND
         // install the last active language
         ParameterGrp::handle hPGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
@@ -1408,6 +1474,34 @@ void Application::slotResetEdit(const Gui::ViewProviderDocumentObject& vp)
     this->signalResetEdit(vp);
 }
 
+void Application::slotAppendDynamicProperty(const App::Property& prop)
+{
+    emitDynamicPropertyChangeOnMain(
+        *this,
+        makeDynamicPropertyChangeEvent(DynamicPropertyChangeEvent::Kind::Add, prop)
+    );
+}
+
+void Application::slotRemoveDynamicProperty(const App::Property& prop)
+{
+    emitDynamicPropertyChangeOnMain(
+        *this,
+        makeDynamicPropertyChangeEvent(DynamicPropertyChangeEvent::Kind::Remove, prop)
+    );
+}
+
+void Application::slotRenameDynamicProperty(const App::Property& prop, const char* oldName)
+{
+    emitDynamicPropertyChangeOnMain(
+        *this,
+        makeDynamicPropertyChangeEvent(
+            DynamicPropertyChangeEvent::Kind::Rename,
+            prop,
+            oldName ? oldName : ""
+        )
+    );
+}
+
 void Application::onLastWindowClosed(Gui::Document* pcDoc)
 {
     try {
@@ -1735,6 +1829,11 @@ void Application::hideViewProvider(const App::DocumentObject* obj)
 
 Gui::ViewProvider* Application::getViewProvider(const App::DocumentObject* obj) const
 {
+    if (issue29844DiagnosticsEnabled() && !App::MainThreadSignalConfig::isMainThread()) {
+        logIssue29844Diagnostic(
+            fmt::format("Gui::Application::getViewProvider obj={}", obj ? obj->getFullName() : "<null>")
+        );
+    }
     requireMainThread("Gui::Application::getViewProvider");
     return d->viewproviderMap.getViewProvider(obj);
 }

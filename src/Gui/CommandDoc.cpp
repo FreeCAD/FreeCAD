@@ -22,6 +22,8 @@
 
 #include <Inventor/nodes/SoCamera.h>
 #include <algorithm>
+#include <cstdlib>
+#include <sstream>
 
 #include <QApplication>
 #include <QCheckBox>
@@ -72,6 +74,22 @@
 FC_LOG_LEVEL_INIT("Command", false)
 
 using namespace Gui;
+
+namespace
+{
+
+bool issue29844DiagnosticsEnabled()
+{
+    static const bool enabled = []() {
+        if (const char* value = std::getenv("FC_ISSUE_29844_DIAGNOSTICS")) {
+            return value[0] != '\0' && value[0] != '0';
+        }
+        return true;
+    }();
+    return enabled;
+}
+
+}  // namespace
 
 
 //===========================================================================
@@ -1798,8 +1816,18 @@ void StdCmdRefresh::activated([[maybe_unused]] int iMsg)
     App::RecomputeRequest request
         = App::RecomputeRequest::fromDocument(*doc, true, App::Document::DepNoCycle);
 
-    if (!App::GetApplication().isAsyncRecomputeEnabled()
-        || !App::GetApplication().canRecomputeRequestOnWorker(request)) {
+    const bool asyncEnabled = App::GetApplication().isAsyncRecomputeEnabled();
+    const bool canUseWorker = App::GetApplication().canRecomputeRequestOnWorker(request);
+
+    if (issue29844DiagnosticsEnabled()) {
+        std::ostringstream log;
+        log << "issue-29844 diagnostics: Std_Refresh doc=" << doc->getName()
+            << " asyncEnabled=" << asyncEnabled << " canUseWorker=" << canUseWorker
+            << " mustExecute=" << doc->mustExecute() << '\n';
+        Base::Console().log("%s", log.str().c_str());
+    }
+
+    if (!asyncEnabled || !canUseWorker) {
         refreshDocumentSynchronously(*doc);
         return;
     }

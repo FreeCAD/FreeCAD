@@ -24,6 +24,7 @@
 #include <memory>
 #include <list>
 #include <string>
+#include <cstdlib>
 #include <map>
 #include <set>
 #include <unordered_map>
@@ -46,6 +47,7 @@
 #include <App/DocumentObjectGroup.h>
 #include <App/Transactions.h>
 #include <App/ElementNamingUtils.h>
+#include <App/MainThreadSignal.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
@@ -79,6 +81,22 @@ namespace sp = std::placeholders;
 
 namespace Gui
 {
+
+namespace
+{
+
+bool issue29844DiagnosticsEnabled()
+{
+    static const bool enabled = []() {
+        if (const char* value = std::getenv("FC_ISSUE_29844_DIAGNOSTICS")) {
+            return value[0] != '\0' && value[0] != '0';
+        }
+        return true;
+    }();
+    return enabled;
+}
+
+}  // namespace
 
 // Pimpl class
 struct DocumentP
@@ -1101,6 +1119,14 @@ void Document::beforeDelete()
 
 void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
 {
+    if (issue29844DiagnosticsEnabled() && !App::MainThreadSignalConfig::isMainThread()) {
+        Base::Console().log(
+            "issue-29844 diagnostics: Gui::Document::slotChangedObject off-thread obj=%s prop=%s\n",
+            Obj.getFullName().c_str(),
+            Prop.getName() ? Prop.getName() : "<null>"
+        );
+    }
+
     ViewProvider* viewProvider = getViewProvider(&Obj);
     if (viewProvider) {
         try {
@@ -1220,6 +1246,13 @@ void Document::slotRecomputed(const App::Document& doc)
 {
     if (d->_pcDocument != &doc) {
         return;
+    }
+
+    if (issue29844DiagnosticsEnabled() && !App::MainThreadSignalConfig::isMainThread()) {
+        Base::Console().log(
+            "issue-29844 diagnostics: Gui::Document::slotRecomputed off-thread doc=%s\n",
+            doc.getName()
+        );
     }
     getMainWindow()->updateActions();
     TreeWidget::updateStatus();

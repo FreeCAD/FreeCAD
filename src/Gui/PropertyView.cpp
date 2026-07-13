@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 
+#include <cstdlib>
 #include <QEvent>
 #include <QGridLayout>
 #include <QTimer>
@@ -28,6 +29,7 @@
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/MainThreadSignal.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
@@ -49,6 +51,22 @@ using namespace Gui;
 using namespace Gui::DockWnd;
 using namespace Gui::PropertyEditor;
 namespace sp = std::placeholders;
+
+namespace
+{
+
+bool issue29844DiagnosticsEnabled()
+{
+    static const bool enabled = []() {
+        if (const char* value = std::getenv("FC_ISSUE_29844_DIAGNOSTICS")) {
+            return value[0] != '\0' && value[0] != '0';
+        }
+        return true;
+    }();
+    return enabled;
+}
+
+}  // namespace
 
 static ParameterGrp::handle _GetParam()
 {
@@ -111,14 +129,8 @@ PropertyView::PropertyView(QWidget* parent)
     this->connectPropView = Gui::Application::Instance->signalChangedObject.connect(
         std::bind(&PropertyView::slotChangePropertyView, this, sp::_1, sp::_2)
     );
-    this->connectPropAppend = App::GetApplication().signalAppendDynamicProperty.connect(
-        std::bind(&PropertyView::slotAppendDynamicProperty, this, sp::_1)
-    );
-    this->connectPropRemove = App::GetApplication().signalRemoveDynamicProperty.connect(
-        std::bind(&PropertyView::slotRemoveDynamicProperty, this, sp::_1)
-    );
-    this->connectPropRename = App::GetApplication().signalRenameDynamicProperty.connect(
-        std::bind(&PropertyView::slotRenameDynamicProperty, this, sp::_1, sp::_2)
+    this->connectDynamicProperty = Gui::Application::Instance->signalDynamicPropertyChanged.connect(
+        std::bind(&PropertyView::slotDynamicPropertyChanged, this, sp::_1)
     );
     this->connectPropChange = App::GetApplication().signalChangePropertyEditor.connect(
         std::bind(&PropertyView::slotChangePropertyEditor, this, sp::_1, sp::_2)
@@ -151,8 +163,7 @@ PropertyView::~PropertyView()
 {
     this->connectPropData.disconnect();
     this->connectPropView.disconnect();
-    this->connectPropAppend.disconnect();
-    this->connectPropRemove.disconnect();
+    this->connectDynamicProperty.disconnect();
     this->connectPropChange.disconnect();
     this->connectUndoDocument.disconnect();
     this->connectRedoDocument.disconnect();
@@ -226,6 +237,13 @@ void PropertyView::slotRollback()
 void PropertyView::slotChangePropertyData(const App::Property& prop)
 {
     if (propertyEditorData->propOwners.contains(prop.getContainer())) {
+        if (issue29844DiagnosticsEnabled() && !App::MainThreadSignalConfig::isMainThread()) {
+            Base::Console().log(
+                "issue-29844 diagnostics: PropertyView::slotChangePropertyData off-thread "
+                "prop=%s\n",
+                prop.getFullName().c_str()
+            );
+        }
         propertyEditorData->updateProperty(prop);
         timer->start(ViewParams::instance()->getPropertyViewTimer());
     }
@@ -234,6 +252,13 @@ void PropertyView::slotChangePropertyData(const App::Property& prop)
 void PropertyView::slotChangePropertyView(const Gui::ViewProvider&, const App::Property& prop)
 {
     if (propertyEditorView->propOwners.contains(prop.getContainer())) {
+        if (issue29844DiagnosticsEnabled() && !App::MainThreadSignalConfig::isMainThread()) {
+            Base::Console().log(
+                "issue-29844 diagnostics: PropertyView::slotChangePropertyView off-thread "
+                "prop=%s\n",
+                prop.getFullName().c_str()
+            );
+        }
         propertyEditorView->updateProperty(prop);
         timer->start(ViewParams::instance()->getPropertyViewTimer());
     }
@@ -245,52 +270,58 @@ bool PropertyView::isPropertyHidden(const App::Property* prop)
         && ((prop->getType() & App::Prop_Hidden) || prop->testStatus(App::Property::Hidden));
 }
 
-void PropertyView::slotAppendDynamicProperty(const App::Property& prop)
+void PropertyView::slotDynamicPropertyChanged(const Gui::DynamicPropertyChangeEvent& event)
 {
-    if (isPropertyHidden(&prop)) {
+    if (!event.container) {
         return;
     }
 
-    App::PropertyContainer* parent = prop.getContainer();
-    if (propertyEditorData->propOwners.contains(parent)) {
-        propertyEditorData->blockCollapseAll();
-        timer->start(ViewParams::instance()->getPropertyViewTimer());
+    switch (event.kind) {
+        case DynamicPropertyChangeEvent::Kind::Add:
+            if (event.hidden) {
+                return;
+            }
+            if (propertyEditorData->propOwners.contains(event.container)) {
+                propertyEditorData->blockCollapseAll();
+                timer->start(ViewParams::instance()->getPropertyViewTimer());
+            }
+            if (propertyEditorView->propOwners.contains(event.container)) {
+                propertyEditorView->blockCollapseAll();
+                timer->start(ViewParams::instance()->getPropertyViewTimer());
+            }
+            return;
+        case DynamicPropertyChangeEvent::Kind::Remove:
+            if (!event.property) {
+                return;
+            }
+            if (propertyEditorData->propOwners.contains(event.container)) {
+                propertyEditorData->removeProperty(event.property);
+            }
+            else if (propertyEditorView->propOwners.contains(event.container)) {
+                propertyEditorView->removeProperty(event.property);
+            }
+            else {
+                return;
+            }
+            timer->start(ViewParams::instance()->getPropertyViewTimer());
+            return;
+        case DynamicPropertyChangeEvent::Kind::Rename:
+            if (!event.property) {
+                return;
+            }
+            if (propertyEditorData->propOwners.contains(event.container)) {
+                propertyEditorData->renameProperty(event.property);
+            }
+            else if (propertyEditorView->propOwners.contains(event.container)) {
+                propertyEditorView->renameProperty(event.property);
+            }
+            else {
+                return;
+            }
+            clearPropertyItemSelection();
+            timer->start(ViewParams::instance()->getPropertyViewTimer());
+            return;
     }
-    if (propertyEditorView->propOwners.contains(parent)) {
-        propertyEditorView->blockCollapseAll();
-        timer->start(ViewParams::instance()->getPropertyViewTimer());
-    }
-}
-
-void PropertyView::slotRemoveDynamicProperty(const App::Property& prop)
-{
-    App::PropertyContainer* parent = prop.getContainer();
-    if (propertyEditorData->propOwners.contains(parent)) {
-        propertyEditorData->removeProperty(prop);
-    }
-    else if (propertyEditorView->propOwners.contains(parent)) {
-        propertyEditorView->removeProperty(prop);
-    }
-    else {
-        return;
-    }
-    timer->start(ViewParams::instance()->getPropertyViewTimer());
-}
-
-void PropertyView::slotRenameDynamicProperty(const App::Property& prop, const char* /*oldName*/)
-{
-    App::PropertyContainer* parent = prop.getContainer();
-    if (propertyEditorData->propOwners.contains(parent)) {
-        propertyEditorData->renameProperty(prop);
-    }
-    else if (propertyEditorView->propOwners.contains(parent)) {
-        propertyEditorView->renameProperty(prop);
-    }
-    else {
-        return;
-    }
-    clearPropertyItemSelection();
-    timer->start(ViewParams::instance()->getPropertyViewTimer());
 }
 
 void PropertyView::slotChangePropertyEditor(const App::Document&, const App::Property& prop)
@@ -298,6 +329,13 @@ void PropertyView::slotChangePropertyEditor(const App::Document&, const App::Pro
     App::PropertyContainer* parent = prop.getContainer();
     if (propertyEditorData->propOwners.contains(parent)
         || propertyEditorView->propOwners.contains(parent)) {
+        if (issue29844DiagnosticsEnabled() && !App::MainThreadSignalConfig::isMainThread()) {
+            Base::Console().log(
+                "issue-29844 diagnostics: PropertyView::slotChangePropertyEditor off-thread "
+                "prop=%s\n",
+                prop.getFullName().c_str()
+            );
+        }
         timer->start(ViewParams::instance()->getPropertyViewTimer());
     }
 }
