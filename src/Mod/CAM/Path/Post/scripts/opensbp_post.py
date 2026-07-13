@@ -610,12 +610,14 @@ class OpenSBPPost(PostProcessor):
         """
 
         # We are being strict here, Z motion only
+        excess = set(command.Parameters.keys()) - set(list("ZF"))
+        if len(excess) > 0:
+            raise Exception(f"A probing move (G38.2) must only have Z and F, saw {command}")
         required = {p: v for p, v in command.Parameters.items() if p in "ZF"}
-        # FIXME: allow default F from MachineState when implemented?
+        if self.machine_state.F is not None:
+            required["F"] = self.machine_state.F
         if len(required) != 2:
             raise Exception(f"A probing move (G38.2) must have a Z and F, only saw: {command}")
-        if len(command.Parameters) > 2:
-            raise Exception(f"A probing move (G38.2) should only have Z and F, saw {command}")
 
         # G1, we aren't jogging, we are doing a slow, deliberate move, i.e. ~"feed".
         probe_movement = self._convert_move(Path.Command("G1", required))

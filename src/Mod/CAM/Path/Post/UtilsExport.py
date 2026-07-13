@@ -302,9 +302,7 @@ def export_common(values: Values, objectslist, filename: str) -> str:
         output_preop(values, gcode, obj)
         output_coolant_on(values, gcode, coolant_mode)
         # output the G-code for the group (compound) or simple path
-        print(f"##  parse_a_group...")
         PostUtilsParse.parse_a_group(values, gcode, obj)
-        print(f"##  <parse_a_group")
         output_postop(values, gcode, obj)
         output_coolant_off(values, gcode, coolant_mode)
 

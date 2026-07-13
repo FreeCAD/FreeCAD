@@ -205,7 +205,6 @@ def default_axis_parameter(
     #
     epsilon: float = 0.00001
 
-    print(f"##     chk axis-modal for {param} = {current_location[param]}")
     if (
         not values["OUTPUT_DOUBLES"]
         and param in current_location
@@ -431,12 +430,11 @@ def drill_translate(
         # force absolute coordinates during cycles
         gcode.append(f"{linenumber(values)}G90")
 
-    # TODO: Defaulting to 0.0 when an axis is missing from machine_state
+    # TODO: Defaulting to 0.0 when an axis is missing from motion_location
     # silently degrades G98 safe-height retract (max(initial_z, R) uses 0
     # instead of the real tool height). Consider requiring a valid initial
     # position and warning when machine_state is incomplete.
     initial_position = {k: motion_location.get(k, 0.0) for k in "XYZ"}
-    print(f"##    initial pos {initial_position}")
 
     # Per ADR-002, Path Command coordinates are always absolute.
     # No G91-to-absolute conversion is needed.
@@ -697,7 +695,6 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
     # the goal is to have initial values that aren't likely to match
     # any "real" first parameter values
     current_location.update({k: 123456789.0 for k in "XYZUVWABCF"})
-    print(f"## start ms {current_location}")
 
     adaptive_op_variables = determine_adaptive_op(values, pathobj)
 
@@ -711,7 +708,6 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
         path_to_process = PostUtils.splitArcs(path_to_process)
 
     for c in path_to_process.Commands:
-        print(f"##    command {c}...")
         command = c.Name
         command_line = []
 
@@ -753,8 +749,8 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
         set_adaptive_op_speed(values, command, command_line, c.Parameters, adaptive_op_variables)
         # Remember the current command
         lastcommand = command
+        # Remember the current location
         current_location.update(c.Parameters)
-        print(f"##      pre-ms {current_location}")
 
         if command in ("G90", "G91"):
             # Remember the motion mode
@@ -765,7 +761,6 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
         if command in values["MOTION_COMMANDS"]:
             # Remember the current location for drill_translate
             motion_location.update(c.Parameters)
-            print(f"##      updated-ms for motion {motion_location}")
         if check_for_drill_translate(
             values,
             gcode,

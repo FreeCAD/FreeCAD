@@ -34,6 +34,7 @@ import Path
 import Constants
 from CAMTests import PathTestUtils
 from CAMTests import PostTestMocks
+from Path.Base.MachineState import MachineState
 from Path.Post.Processor import PostProcessorFactory
 from Machine.models.machine import Machine, Toolhead, ToolheadType, OutputUnits
 
@@ -1110,6 +1111,7 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         self.post._machine.output.comments.enabled = True
         self.post._machine.output.units = OutputUnits.METRIC
         self.post.apply_configuration_bundle()
+        self.post.machine_state = MachineState(None)
 
         # Probe.opExecute would make G38.2's
         # (after open-comment, clearance, then for each: safe, g38.2)
@@ -1130,7 +1132,7 @@ IF &hit = 0 THEN GOTO FailedToTouch
         with self.assertRaisesRegex(Exception, "must have a Z and F"):
             _ = self.post._convert_probe(Path.Command(f"G38.2 F{5/60}"))
 
-        with self.assertRaisesRegex(Exception, "should only have Z and F"):
+        with self.assertRaisesRegex(Exception, "must only have Z and F"):
             _ = self.post._convert_probe(Path.Command(f"G38.2 X1 Z5 F{5/60}"))
 
     def test_convert_probe_close(self):

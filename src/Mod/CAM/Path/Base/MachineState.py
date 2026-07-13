@@ -37,6 +37,13 @@ else:
 
 
 class MachineState:
+    """Track the evolution of an abstract g-code machine across
+    a limited set of parameters (`MachineState.Tracked`).
+    Parameters available as `.$key`, or `[$key]`.
+    Has logic for dealing with certain special g-codes (drill),
+    NB: Tracks G0's F distinct from all other motion F (i.e. `.G0F` vs `.F`).
+    Provides several convenience constructor usages.
+    """
 
     # State we track, available as .$key, or [$key]
     Tracked = [
@@ -106,11 +113,11 @@ class MachineState:
         self.previous = {}
 
     def __getitem__(self, key):
-        """Support [k] for Tracked keys (state"""
+        """Support [k] for Tracked keys"""
         if key in self.Tracked:
             return getattr(self, key)
         else:
-            raise AttributeError(obj=self, name=key)
+            raise KeyError(obj=self, name=key)
 
     def addCommand(self, command):
         """Processes a command and updates the internal state of the machine.
