@@ -39,6 +39,7 @@ class SoMarkerSet;
 class SoDrawStyle;
 class SoLineSet;
 class SoGroup;
+class SoPickStyle;
 
 
 namespace MeasureGui
@@ -57,14 +58,15 @@ public:
     void show(const std::vector<gp_Pnt>& points, Measure::MeasureSnapMode type);
     void hide();
 
-    // Forget the scene-graph handle without touching it, for when the owning view is
-    // destroyed first (removeChild on a freed viewer graph would be a use-after-free).
-    void dropHandle();
+    // Remove the overlay and release the scene graph. Safe after the owning view is
+    // gone: attach() refs the graph, so the handle can never dangle.
+    void detach();
 
 private:
     bool attach();
 
     SoAnnotation* pRoot;
+    SoPickStyle* pPickStyle;
     SoSwitch* pSwitch;
     SoSeparator* pSep;
     SoBaseColor* pColor;
