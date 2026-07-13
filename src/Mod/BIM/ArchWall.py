@@ -50,6 +50,8 @@ import FreeCAD
 import ArchCommands
 import ArchComponent
 import ArchSketchObject
+import ArchWallPath
+import ArchWallUtils
 import Draft
 import DraftVecUtils
 
@@ -1487,52 +1489,44 @@ class _Wall(ArchComponent.Component):
         return None
 
     def calc_endpoints(self, obj):
-        """Returns the global start and end points of a baseless wall's centerline."""
-        # The wall's shape is centered, so its endpoints in local coordinates
-        # are at (-Length/2, 0, 0) and (+Length/2, 0, 0).
-        p1_local = FreeCAD.Vector(-obj.Length.Value / 2, 0, 0)
-        p2_local = FreeCAD.Vector(obj.Length.Value / 2, 0, 0)
+        """Return the global endpoints of the canonical wall baseline.
 
-        # Transform these local points into global coordinates using the wall's placement.
-        p1_global = obj.Placement.multVec(p1_local)
-        p2_global = obj.Placement.multVec(p2_local)
-
-        return [p1_global, p2_global]
+        The baseline resolver handles both based and baseless straight walls.
+        Unsupported base topology produces an empty list rather than exposing
+        local coordinates or making callers interpret the wall placement.
+        """
+        baseline = self.get_global_baseline(obj)
+        if baseline:
+            return [baseline.start_point, baseline.end_point]
+        return []
 
     def set_from_endpoints(self, obj, pts):
-        """Sets the Length and Placement of a baseless wall from two global points."""
+        """Set a straight wall from two global points.
+
+        Endpoint editing is defined in global coordinates and updates the
+        wall's length, midpoint, and direction.  A straight based wall is
+        debased first when the normal Arch wall rules allow it; unsupported or
+        non-debasable bases are left unchanged.
+        """
         if len(pts) < 2:
             return
 
-        p1 = pts[0]
-        p2 = pts[1]
-
-        # Recalculate the wall's properties based on the new endpoints
-        new_length = p1.distanceToPoint(p2)
-        new_midpoint = (p1 + p2) * 0.5
-        new_direction = (p2 - p1).normalize()
-
-        # Calculate the rotation required to align the local X-axis with the new direction
-        new_rotation = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), new_direction)
-
-        # Apply the new properties to the wall object
-        obj.Length = new_length
-        obj.Placement.Base = new_midpoint
-        obj.Placement.Rotation = new_rotation
+        edit = ArchWallUtils.resolve_endpoint_edit(obj, pts)
+        if edit is not None:
+            ArchWallUtils.apply_endpoint_edit(obj, edit)
 
     def handleComponentRemoval(self, obj, subobject):
         """
         Overrides the default component removal to implement smart debasing
         when the Base object is being removed.
         """
-        import Arch
         from PySide import QtGui
 
         # Check if the component being removed is this wall's Base
         if hasattr(obj, "Base") and obj.Base == subobject:
-            if Arch.is_debasable(obj):
+            if ArchWallUtils.is_debasable(obj):
                 # This is a valid, single-line wall. Perform a clean debase.
-                Arch.debaseWall(obj)
+                ArchWallUtils.debaseWall(obj)
             else:
                 # This is a complex wall. Behavior depends on GUI availability.
                 if FreeCAD.GuiUp:
@@ -1836,6 +1830,58 @@ class _Wall(ArchComponent.Component):
         self.basewires = [[Part.LineSegment(p1, p2).toShape()]]
 
         return base_faces, placement
+
+    def get_global_baseline(self, obj):
+        """Resolve one supported wall baseline into global coordinates.
+
+        Based walls must expose exactly one straight edge.  Its semantic
+        provider orientation is resolved before the wall placement is applied
+        and copied into a fresh ``Part.Edge`` so relation code never has to
+        interpret wall placement.
+        A baseless wall is derived directly from its local length and
+        placement.  Unsupported topology returns ``None``.
+        """
+        import Part
+        import DraftGeomUtils
+
+        base = obj.Base
+        placement = obj.Placement
+        if base:
+            if not hasattr(base, "Shape") or len(base.Shape.Edges) != 1:
+                return None
+            source_edge = base.Shape.Edges[0]
+            if source_edge.Curve.TypeId != "Part::GeomLine":
+                return None
+            points = [
+                placement.multVec(point) for point in ArchWallUtils.get_oriented_base_points(base)
+            ]
+            if len(points) != 2 or points[0].distanceToPoint(points[1]) <= 1e-9:
+                return None
+            edge = Part.makeLine(points[0], points[1])
+        else:
+            half_length = obj.Length.Value / 2.0
+            points = [
+                placement.multVec(FreeCAD.Vector(-half_length, 0, 0)),
+                placement.multVec(FreeCAD.Vector(half_length, 0, 0)),
+            ]
+            if points[0].distanceToPoint(points[1]) <= 1e-9:
+                return None
+            edge = Part.makeLine(points[0], points[1])
+
+        if obj.Normal == Vector(0, 0, 0):
+            local_normal = None
+            if base and hasattr(base, "Shape"):
+                local_normal = DraftGeomUtils.get_shape_normal(base.Shape)
+            local_normal = local_normal or Vector(0, 0, 1)
+        else:
+            local_normal = Vector(obj.Normal)
+        normal = placement.Rotation.multVec(local_normal)
+        if normal.Length <= 1e-9:
+            return None
+        normal.normalize()
+        if edge.Vertexes[0].Point.sub(edge.Vertexes[-1].Point).cross(normal).Length <= 1e-9:
+            return None
+        return ArchWallPath.WallBaseline(edge, normal, points[0], points[1])
 
 
 if FreeCAD.GuiUp:
