@@ -27,6 +27,7 @@
 import os
 import tempfile
 import Arch
+import ArchWallEndCondition
 import Draft
 import Part
 import FreeCAD as App
@@ -697,6 +698,116 @@ class TestArchWall(TestArchBase.TestArchBase):
         provider_section = provider_wall.Proxy.get_resolved_section(provider_wall)
         self.assertAlmostEqual(provider_section.y_min, -50.0)
         self.assertAlmostEqual(provider_section.y_max, 50.0)
+
+    def test_wall_ending_properties_trim_wall(self):
+        """Tests that EndingStart/EndingEnd placements trim and restore a wall shape."""
+        self.printTestMessage("Checking wall ending properties...")
+
+        wall = Arch.makeWall(length=2000, width=200, height=1000)
+        self.document.recompute()
+        initial_volume = wall.Shape.Volume
+        self.assertGreater(initial_volume, 0)
+
+        wall.EndingEnd = App.Placement(
+            App.Vector(1000, 0, 0),
+            App.Rotation(App.Vector(0, 0, 1), 45) * App.Rotation(App.Vector(0, 1, 0), 90),
+        )
+        self.document.recompute()
+
+        self.assertTrue(wall.Shape.isValid(), "Wall shape became invalid after trimming.")
+        self.assertLess(wall.Shape.Volume, initial_volume)
+        self.assertLess(wall.Shape.BoundBox.XMax, 1000.01)
+
+        wall.EndingEnd = App.Placement()
+        self.document.recompute()
+        self.assertAlmostEqual(wall.Shape.Volume, initial_volume, delta=1e-6)
+
+    def test_wall_end_condition_selector_orders_sources(self):
+        """Tests that end-condition selection follows the configured order."""
+        manual = ArchWallEndCondition.WallEndCondition(
+            source="Manual",
+            placement=App.Placement(App.Vector(100, 0, 0), App.Rotation()),
+        )
+        relation = ArchWallEndCondition.WallEndCondition(
+            source="Relation",
+            placement=App.Placement(App.Vector(200, 0, 0), App.Rotation()),
+            is_global=True,
+            extension=12.5,
+        )
+
+        order = ["Manual", "Relation", "Manual", "Bogus"]
+        active = ArchWallEndCondition.select_end_condition([relation, manual], order)
+        self.assertEqual(
+            ArchWallEndCondition.normalize_end_condition_order(order), ["Manual", "Relation"]
+        )
+        self.assertEqual(active.source, "Manual")
+
+        active = ArchWallEndCondition.select_end_condition(
+            [relation, manual], ["Relation", "Manual"]
+        )
+        self.assertEqual(active.source, "Relation")
+        self.assertTrue(active.is_global)
+        self.assertAlmostEqual(active.extension, 12.5)
+
+        inactive_relation = ArchWallEndCondition.WallEndCondition(source="Relation", extension=25.0)
+        self.assertIs(
+            ArchWallEndCondition.select_end_condition(
+                [inactive_relation, manual], ["Relation", "Manual"]
+            ),
+            manual,
+        )
+
+    def test_wall_end_conditions_require_brep_export(self):
+        """Walls with processed end planes must not use untrimmed IFC extrusions."""
+        self.printTestMessage("Checking IFC representation selection for wall endings...")
+
+        wall = Arch.makeWall(length=2000, width=200, height=1000)
+        self.document.recompute()
+        self.assertFalse(wall.Proxy.requires_brep_export(wall))
+        self.assertTrue(wall.Proxy.isStandardCase(wall))
+
+        wall.EndingEnd = App.Placement(
+            App.Vector(1000, 0, 0),
+            App.Rotation(App.Vector(0, 0, 1), 45) * App.Rotation(App.Vector(0, 1, 0), 90),
+        )
+        self.document.recompute()
+
+        self.assertTrue(
+            wall.Proxy.requires_brep_export(wall),
+            "A wall with an active end condition must export its processed shape.",
+        )
+        self.assertFalse(
+            wall.Proxy.isStandardCase(wall),
+            "A BREP-exported wall must not be classified as IfcWallStandardCase.",
+        )
+
+        wall.EndingEnd = App.Placement()
+        self.document.recompute()
+        self.assertFalse(wall.Proxy.requires_brep_export(wall))
+        self.assertTrue(wall.Proxy.isStandardCase(wall))
+
+    def test_wall_end_condition_order_changes_active_trim(self):
+        """Tests that the configured order changes which trim drives the wall end."""
+        support_wall = Arch.makeWall(length=2000, width=200, height=1000)
+        trimmed_wall = Arch.makeWall(length=1000, width=200, height=1000)
+        trimmed_wall.Placement = App.Placement(
+            App.Vector(1000, 500, 0),
+            App.Rotation(App.Vector(1, 0, 0), App.Vector(0, 1, 0)),
+        )
+        self.document.recompute()
+
+        joint = Arch.makeWallJoint(support_wall, trimmed_wall, "Butt")
+        joint.ButtTrimmed = "WallB"
+        support_wall.EndingEnd = App.Placement(
+            App.Vector(600, 0, 0), App.Rotation(App.Vector(0, 1, 0), 90)
+        )
+        self.document.recompute()
+        joint_first_xmax = support_wall.Shape.BoundBox.XMax
+        self.assertGreater(joint_first_xmax, 800.0)
+
+        support_wall.EndConditionOrderEnd = ["Manual", "Relation"]
+        self.document.recompute()
+        self.assertAlmostEqual(support_wall.Shape.BoundBox.XMax, 600.0, delta=1e-4)
 
     def test_wall_makeblocks(self):
         """Test the 'MakeBlocks' feature for both based and baseless Arch Walls.

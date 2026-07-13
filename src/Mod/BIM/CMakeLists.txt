@@ -29,6 +29,7 @@ SET(Arch_SRCS
     ArchWallRelationBase.py
     ArchWallEndCondition.py
     ArchWallRelationResolver.py
+    ArchWallTrimming.py
     ArchWallJunction.py
     ArchWallJunctionSolver.py
     Arch.py

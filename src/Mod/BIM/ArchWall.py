@@ -38,10 +38,6 @@ __url__ = "https://www.freecad.org"
 objects, usually vertical, typically obtained by giving a thickness to a base
 line, then extruding it vertically.
 
-Examples
---------
-TODO put examples here.
-
 """
 
 import math
@@ -52,6 +48,10 @@ import ArchComponent
 import ArchSketchObject
 import ArchWallGeometry
 import ArchWallEndpoint
+import ArchWallEndCondition
+import ArchWallTrimming
+import ArchWallRelation
+import ArchWallRelationResolver
 import Draft
 import DraftVecUtils
 
@@ -158,6 +158,9 @@ class _Wall(ArchComponent.Component):
     def __init__(self, obj):
         ArchComponent.Component.__init__(self, obj)
         self.Type = "Wall"
+        self._normalizing_end_condition_order = False
+        self._resolved_geometry_signatures = {}
+        self._invalidating_wall_relations = False
         self.setProperties(obj)
         obj.IfcType = "Wall"
 
@@ -248,7 +251,8 @@ class _Wall(ArchComponent.Component):
                 "Area",
                 "Wall",
                 QT_TRANSLATE_NOOP(
-                    "App::Property", "The area of this wall as a simple Height * Length calculation"
+                    "App::Property",
+                    "The area of this wall as a simple Height * Length calculation",
                 ),
                 locked=True,
             )
@@ -282,7 +286,8 @@ class _Wall(ArchComponent.Component):
                 "Face",
                 "Wall",
                 QT_TRANSLATE_NOOP(
-                    "App::Property", "The face number of the base object used to build this wall"
+                    "App::Property",
+                    "The face number of the base object used to build this wall",
                 ),
                 locked=True,
             )
@@ -344,7 +349,8 @@ class _Wall(ArchComponent.Component):
                 "OffsetSecond",
                 "Blocks",
                 QT_TRANSLATE_NOOP(
-                    "App::Property", "The horizontal offset of the second line of blocks"
+                    "App::Property",
+                    "The horizontal offset of the second line of blocks",
                 ),
                 locked=True,
             )
@@ -413,6 +419,50 @@ class _Wall(ArchComponent.Component):
             self.ArchSkPropSetPickedUuid = ""
         if not hasattr(self, "ArchSkPropSetListPrev"):
             self.ArchSkPropSetListPrev = []
+        if "EndingStart" not in obj.PropertiesList:
+            obj.addProperty(
+                "App::PropertyPlacement",
+                "EndingStart",
+                "Wall",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "A placement, relative to the main wall placement, describing "
+                    "a plane that cuts the end of the wall, at start position.",
+                ),
+            )
+        if "EndingEnd" not in obj.PropertiesList:
+            obj.addProperty(
+                "App::PropertyPlacement",
+                "EndingEnd",
+                "Wall",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "A placement, relative to the main wall placement, describing "
+                    "a plane that cuts the end of the wall, at end position.",
+                ),
+            )
+        if "EndConditionOrderStart" not in obj.PropertiesList:
+            obj.addProperty(
+                "App::PropertyStringList",
+                "EndConditionOrderStart",
+                "Wall",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Ordered trim providers for the start end of the wall. Valid entries are Relation and Manual.",
+                ),
+            )
+            obj.EndConditionOrderStart = list(ArchWallEndCondition.DEFAULT_END_CONDITION_ORDER)
+        if "EndConditionOrderEnd" not in obj.PropertiesList:
+            obj.addProperty(
+                "App::PropertyStringList",
+                "EndConditionOrderEnd",
+                "Wall",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Ordered trim providers for the end end of the wall. Valid entries are Relation and Manual.",
+                ),
+            )
+            obj.EndConditionOrderEnd = list(ArchWallEndCondition.DEFAULT_END_CONDITION_ORDER)
         self.connectEdges = []
 
     def dumps(self):
@@ -424,6 +474,7 @@ class _Wall(ArchComponent.Component):
 
     def loads(self, state):
         self.Type = "Wall"
+        self._normalizing_end_condition_order = False
         if state == None:
             return
         elif state[0] == "W":  # state[1] == 'a', behaviour before 2024.11.28
@@ -442,6 +493,7 @@ class _Wall(ArchComponent.Component):
         from draftutils.messages import _log
 
         ArchComponent.Component.onDocumentRestored(self, obj)
+        self._normalizing_end_condition_order = False
         self.setProperties(obj)
 
         # In V1.0 the handling of wall normals has changed. As a result existing
@@ -517,6 +569,8 @@ class _Wall(ArchComponent.Component):
 
         if self.clone(obj):
             return
+
+        self._invalidate_relations_if_geometry_changed(obj)
 
         # Wall can do without Base, validity to be tested in getExtrusionData()
         # Remarked out ensureBase() below
@@ -632,7 +686,26 @@ class _Wall(ArchComponent.Component):
             # return
             # walls can be made of only a series of additions and have no base shape
             base = Part.Shape()
+
+        relation_endings = ArchWallRelationResolver.collect_wall_relation_endings(obj)
+        end_conditions = {
+            end_name: self._resolve_end_condition(obj, end_name, relation_endings)
+            for end_name in ("Start", "End")
+        }
+        baseline = self.get_global_baseline(obj)
+        if baseline is not None:
+            for end_name, condition in end_conditions.items():
+                if condition and condition.source == "Relation":
+                    base = ArchWallTrimming.extend_solid_along_baseline(
+                        base,
+                        baseline,
+                        pl,
+                        end_name,
+                        condition.extension,
+                    )
         base = self.processSubShapes(obj, base, pl)
+        trimmed_base = self.process_endings(obj, base, pl, end_conditions)
+        base = trimmed_base
         self.applyShape(obj, base, pl)
 
         # Check if there is base, and if width and height is provided or not
@@ -713,6 +786,9 @@ class _Wall(ArchComponent.Component):
         prop: string
             The name of the property that has changed.
         """
+
+        if prop in ("EndConditionOrderStart", "EndConditionOrderEnd"):
+            self._normalize_end_condition_order_property(obj, prop)
 
         if prop == "Length":
             if (
@@ -803,6 +879,92 @@ class _Wall(ArchComponent.Component):
         self.hideSubobjects(obj, prop)
         ArchComponent.Component.onChanged(self, obj, prop)
 
+    def _invalidate_relations_if_geometry_changed(self, obj):
+        """Touch relation dependents when resolved wall geometry changes.
+
+        A wall can depend on a Draft line or sketch without receiving an
+        ``onChanged('Base')`` callback when that source moves.  Comparing the
+        resolved baseline and section at the wall execution boundary covers
+        both direct property edits and changes propagated from a linked base,
+        without maintaining a fragile list of property names.
+        """
+        signature = self._resolved_geometry_signature(obj)
+        previous = self._resolved_geometry_signatures.get(obj.Name)
+        self._resolved_geometry_signatures[obj.Name] = signature
+        if previous is None or previous == signature:
+            return
+        self._touch_wall_relations(obj)
+
+    def _touch_wall_relations(self, obj):
+        if self._invalidating_wall_relations:
+            return
+        self._invalidating_wall_relations = True
+        touched = set()
+        touched_walls = {obj.Name}
+        try:
+            for relation in ArchWallRelation.iter_wall_relations(obj):
+                if relation.Name in touched:
+                    continue
+                touched.add(relation.Name)
+                relation.touch()
+                for linked_wall in ArchWallRelation.get_relation_walls(relation):
+                    if not linked_wall or linked_wall.Name in touched_walls:
+                        continue
+                    touched_walls.add(linked_wall.Name)
+                    linked_wall.touch()
+        finally:
+            self._invalidating_wall_relations = False
+
+    def _resolved_geometry_signature(self, obj):
+        baseline = self.get_global_baseline(obj)
+        normal = baseline.normal if baseline is not None else None
+        section = self.get_resolved_section(obj)
+        return (
+            self._edge_signature(baseline),
+            self._vector_signature(normal),
+            (
+                tuple((layer.raw_thickness, layer.y_min, layer.y_max) for layer in section.layers)
+                if section is not None
+                else None
+            ),
+        )
+
+    @staticmethod
+    def _edge_signature(baseline):
+        if baseline is None:
+            return None
+        return (
+            _Wall._vector_signature(baseline.start_point),
+            _Wall._vector_signature(baseline.end_point),
+        )
+
+    @staticmethod
+    def _vector_signature(vector):
+        if vector is None:
+            return None
+        return tuple(round(value, 9) for value in (vector.x, vector.y, vector.z))
+
+    def _normalize_end_condition_order_property(self, obj, prop):
+        """Normalize wall end-condition order without recursively handling our own write."""
+        if self._normalizing_end_condition_order:
+            return
+
+        current = list(getattr(obj, prop))
+        normalized = ArchWallEndCondition.normalize_end_condition_order(current)
+        if current == normalized:
+            return
+
+        self._normalizing_end_condition_order = True
+        try:
+            setattr(obj, prop, normalized)
+        finally:
+            self._normalizing_end_condition_order = False
+
+    @staticmethod
+    def _base_object(obj):
+        """Return the wall base object safely for legacy or partially initialized walls."""
+        return getattr(obj, "Base", None)
+
     def getFootprint(self, obj):
         """Get the faces that make up the base/foot of the wall.
 
@@ -819,6 +981,25 @@ class _Wall(ArchComponent.Component):
                     if abs(abs(f.CenterOfMass.z) - abs(obj.Shape.BoundBox.ZMin)) < 0.001:
                         faces.append(f)
         return faces
+
+    def requires_brep_export(self, obj):
+        """Return whether IFC must use the wall's processed shape."""
+        manual_endings = (
+            getattr(obj, "EndingStart", FreeCAD.Placement()),
+            getattr(obj, "EndingEnd", FreeCAD.Placement()),
+        )
+        if any(
+            not ArchWallEndCondition.is_null_placement(placement) for placement in manual_endings
+        ):
+            return True
+        relation_endings = ArchWallRelationResolver.collect_wall_relation_endings(obj)
+        return any(relation_endings.get(end_name) for end_name in ("Start", "End"))
+
+    def isStandardCase(self, obj):
+        """Return whether this wall can use the IFC standard-case form."""
+        if self.requires_brep_export(obj):
+            return False
+        return super().isStandardCase(obj)
 
     def getExtrusionData(self, obj):
         """Get data needed to extrude the wall from a base object.
@@ -979,7 +1160,12 @@ class _Wall(ArchComponent.Component):
                                 # as Base at the moment
                                 if isinstance(
                                     geom.Geometry,
-                                    (Part.LineSegment, Part.Circle, Part.ArcOfCircle, Part.Ellipse),
+                                    (
+                                        Part.LineSegment,
+                                        Part.Circle,
+                                        Part.ArcOfCircle,
+                                        Part.Ellipse,
+                                    ),
                                 ):
                                     skGeomEdgesI = geom.Geometry.toShape()
                                     skGeomEdges.append(skGeomEdgesI)
@@ -1429,7 +1615,8 @@ class _Wall(ArchComponent.Component):
                     msg_box.setWindowTitle(translate("ArchComponent", "Unsupported Base"))
                     msg_box.setText(
                         translate(
-                            "ArchComponent", "The base of this wall is not a single straight line."
+                            "ArchComponent",
+                            "The base of this wall is not a single straight line.",
                         )
                     )
                     msg_box.setInformativeText(
@@ -1868,6 +2055,67 @@ class _Wall(ArchComponent.Component):
             return None
         return ArchWallGeometry.WallBaseline(edge, normal, points[0], points[1])
 
+    def process_endings(self, obj, base_solid, wall_placement, end_conditions=None):
+        """Trim a wall solid using the winning end-condition providers.
+
+        Each end is resolved independently from its normalized provider list.
+        Relation extensions are applied to the construction solid before
+        subshape processing.  This stage applies only the selected cutting
+        planes to the already processed solid.
+        """
+        if base_solid.isNull():
+            return base_solid
+
+        solid_to_trim = base_solid
+        min_tool_size = base_solid.BoundBox.DiagonalLength * 2
+        if end_conditions is None:
+            relation_endings = ArchWallRelationResolver.collect_wall_relation_endings(obj)
+            end_conditions = {
+                end_name: self._resolve_end_condition(obj, end_name, relation_endings)
+                for end_name in ("Start", "End")
+            }
+        baseline = self.get_global_baseline(obj)
+        if baseline is None:
+            return solid_to_trim
+        endpoints = [baseline.start_point, baseline.end_point]
+        start_condition = end_conditions["Start"]
+        if start_condition:
+            solid_to_trim = ArchWallTrimming.apply_cutting_plane(
+                obj,
+                solid_to_trim,
+                wall_placement,
+                start_condition.placement,
+                endpoints[1],
+                min_tool_size,
+                is_global=start_condition.is_global,
+            )
+
+        end_condition = end_conditions["End"]
+        if end_condition:
+            solid_to_trim = ArchWallTrimming.apply_cutting_plane(
+                obj,
+                solid_to_trim,
+                wall_placement,
+                end_condition.placement,
+                endpoints[0],
+                min_tool_size,
+                is_global=end_condition.is_global,
+            )
+        return solid_to_trim
+
+    def _resolve_end_condition(self, obj, end_name, relation_endings):
+        conditions = [
+            ArchWallEndCondition.WallEndCondition(
+                source="Manual", placement=getattr(obj, "Ending" + end_name)
+            )
+        ]
+        relation_condition = relation_endings.get(end_name)
+        if relation_condition is not None:
+            conditions.append(relation_condition)
+        return ArchWallEndCondition.select_end_condition(
+            conditions, getattr(obj, "EndConditionOrder" + end_name)
+        )
+
 
 if FreeCAD.GuiUp:
 
@@ -2043,7 +2291,12 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
                             cols = []
                             for i, mat in enumerate(activematerials):
                                 c = obj.ViewObject.ShapeColor
-                                c = (c[0], c[1], c[2], 1.0 - obj.ViewObject.Transparency / 100.0)
+                                c = (
+                                    c[0],
+                                    c[1],
+                                    c[2],
+                                    1.0 - obj.ViewObject.Transparency / 100.0,
+                                )
                                 if "DiffuseColor" in mat.Material:
                                     if "(" in mat.Material["DiffuseColor"]:
                                         c = tuple(
@@ -2143,7 +2396,9 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         super().contextMenuAddEdit(menu)
 
         actionFlipDirection = QtGui.QAction(
-            QtGui.QIcon(":/icons/Arch_Wall_Tree.svg"), translate("Arch", "Flip Direction"), menu
+            QtGui.QIcon(":/icons/Arch_Wall_Tree.svg"),
+            translate("Arch", "Flip Direction"),
+            menu,
         )
         QtCore.QObject.connect(
             actionFlipDirection, QtCore.SIGNAL("triggered()"), self.flipDirection
