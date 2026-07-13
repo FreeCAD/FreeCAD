@@ -8,6 +8,21 @@
       <source>Unnamed</source>
       <translation>Namnlös</translation>
     </message>
+    <message>
+      <location filename="../../Expression.cpp" line="569"/>
+      <source>True</source>
+      <translation>Sant</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="569"/>
+      <source>False</source>
+      <translation>Falskt</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="587"/>
+      <source>Null</source>
+      <translation type="unfinished">Null</translation>
+    </message>
   </context>
   <context>
     <name>App::OriginGroupExtension</name>

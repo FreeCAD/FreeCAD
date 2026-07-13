@@ -8,6 +8,21 @@
       <source>Unnamed</source>
       <translation>Gan ainm</translation>
     </message>
+    <message>
+      <location filename="../../Expression.cpp" line="569"/>
+      <source>True</source>
+      <translation>Fíor</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="569"/>
+      <source>False</source>
+      <translation>Bréagach</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="587"/>
+      <source>Null</source>
+      <translation>Nialas</translation>
+    </message>
   </context>
   <context>
     <name>App::OriginGroupExtension</name>

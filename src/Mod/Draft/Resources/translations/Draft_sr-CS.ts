@@ -5941,12 +5941,12 @@ postojećih objekata u svim otvorenim dokumentima?</translation>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="161"/>
       <source>Create Path Array</source>
-      <translation>Napravi umnožavanje po putanji</translation>
+      <translation>Napravi umnožavanje po vodilji</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="116"/>
       <source>Create Path Twisted Array</source>
-      <translation>Napravi umnožavanje po putanji sa uvrtanjem</translation>
+      <translation>Napravi umnožavanje po vodilji sa uvrtanjem</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="108"/>
@@ -7079,7 +7079,7 @@ podesi Tačno za uniju ili Netačno za sastavljeni objekat</translation>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="138"/>
       <source>Rotation factor of the twisted array.</source>
-      <translation>Koeficijent okretanja Umnožavanja po putanji sa uvrtanjem.</translation>
+      <translation>Koeficijent okretanja Umnožavanja po vodilji sa uvrtanjem.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="262"/>
@@ -8184,7 +8184,7 @@ iznad kotne linije</translation>
     <message>
       <location filename="../../draftguitools/gui_arrays.py" line="80"/>
       <source>Tools to create various types of arrays, including rectangular, polar, circular, path, and point arrays</source>
-      <translation>Alatke za pravljnje različitih vrsta umnožavanja: pravougaono, polarno, kružno, po putanji i umnožavanje tačaka</translation>
+      <translation>Alatke za pravljnje različitih vrsta umnožavanja: pravougaono, polarno, kružno, po vodilji i umnožavanje tačaka</translation>
     </message>
   </context>
   <context>
@@ -8420,12 +8420,12 @@ prave linije koje su nacrtane u ravni XY. Izabrani objekti koji nisu linije bić
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="77"/>
       <source>Path Array</source>
-      <translation>Umnožavanje po putanji</translation>
+      <translation>Umnožavanje po vodilji</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="80"/>
       <source>Creates copies of the selected object along a selected path</source>
-      <translation>Rasporedi po putanji kopije izabranog objekta</translation>
+      <translation>Rasporedi po vodilji kopije izabranog objekta</translation>
     </message>
   </context>
   <context>
@@ -8433,12 +8433,12 @@ prave linije koje su nacrtane u ravni XY. Izabrani objekti koji nisu linije bić
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="182"/>
       <source>Path Link Array</source>
-      <translation>Umnožavanje spona po putanji</translation>
+      <translation>Umnožavanje spona po vodilji</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="186"/>
       <source>Creates linked copies of the selected object along a selected path</source>
-      <translation>Rasporedi po putanji spone izabranog objekta</translation>
+      <translation>Rasporedi po vodilji spone izabranog objekta</translation>
     </message>
   </context>
   <context>
@@ -8446,12 +8446,12 @@ prave linije koje su nacrtane u ravni XY. Izabrani objekti koji nisu linije bić
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="70"/>
       <source>Twisted Path Array</source>
-      <translation>Umnožavanje po putanji sa uvrtanjem</translation>
+      <translation>Umnožavanje po vodilji sa uvrtanjem</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="74"/>
       <source>Creates twisted copies of the selected object along a selected path</source>
-      <translation>Rasporedi po putanji i uvrni kopije izabranog objekta</translation>
+      <translation>Rasporedi po vodilji i uvrni kopije izabranog objekta</translation>
     </message>
   </context>
   <context>
@@ -8459,12 +8459,12 @@ prave linije koje su nacrtane u ravni XY. Izabrani objekti koji nisu linije bić
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="137"/>
       <source>Twisted Path Link Array</source>
-      <translation>Umnožavanje spona po putanji sa uvrtanjem</translation>
+      <translation>Umnožavanje spona po vodilji sa uvrtanjem</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="141"/>
       <source>Creates twisted linked copies of the selected object along a selected path</source>
-      <translation>Rasporedi po putanji i uvrni spone izabranog objekta</translation>
+      <translation>Rasporedi po vodilji i uvrni spone izabranog objekta</translation>
     </message>
   </context>
   <context>

@@ -2593,7 +2593,7 @@ Godkända kombinationer: två kurvor; en ändpunkt och en kurva; två ändpunkte
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="355"/>
       <source>Line</source>
-      <translation>Rad</translation>
+      <translation>Linje</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="356"/>

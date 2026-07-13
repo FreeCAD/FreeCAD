@@ -4525,7 +4525,7 @@ fonction isolée.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="361"/>
       <source>Experimental</source>
-      <translation>Expérimental</translation>
+      <translation>Expérimental pour les manipulateurs</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="367"/>
@@ -4566,7 +4566,7 @@ fonction en cours d'édition par le glisser-déposer.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="466"/>
       <source>Default coarse drag behavior</source>
-      <translation>Comportement par défaut du glissement par pas importants</translation>
+      <translation>Comportement par défaut du glissement du manipulateur</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="473"/>
@@ -4576,12 +4576,12 @@ fonction en cours d'édition par le glisser-déposer.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="493"/>
       <source>Coarse movement multiplier</source>
-      <translation>Multiplicateur de mouvement par pas importants</translation>
+      <translation>Multiplicateur de mouvement</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="523"/>
       <source>Coarse rotation step (degrees)</source>
-      <translation>Pas de rotation par pas importants (degrés)</translation>
+      <translation>Pas de rotation (degrés)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>

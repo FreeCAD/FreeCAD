@@ -1304,7 +1304,8 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <location filename="../panels/PageOpMillFacingEdit.ui" line="155"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="192"/>
       <source>The sideways distance* the cutting tool moves between successive passes (*a percentage of the tool&apos;s diameter).</source>
-      <translation type="unfinished">The sideways distance* the cutting tool moves between successive passes (*a percentage of the tool&apos;s diameter).</translation>
+      <translation>Бакавая адлегласць*, на якую перамяшчаецца рэжучы інструмент паміж паслядоўнымі праходамі
+(* у адсотках ад дыяметра інструмента).</translation>
     </message>
     <message>
       <location filename="../panels/PageOpMillFacingEdit.ui" line="158"/>
@@ -1375,22 +1376,22 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="153"/>
       <source>The sideways distance the cutting tool moves between successive passes, as percentage of the tool&apos;s diameter.</source>
-      <translation type="unfinished">The sideways distance the cutting tool moves between successive passes, as percentage of the tool&apos;s diameter.</translation>
+      <translation>Бакавая адлегласць, на якую перамяшчаецца рэжучы інструмент паміж паслядоўнымі праходамі, выяўленыя ў адсотках ад дыяметра інструмента.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="178"/>
       <source>Step over (percent)</source>
-      <translation type="unfinished">Step over (percent)</translation>
+      <translation>Крок наперад (у адсотках)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="185"/>
       <source>The sideways distance the cutting tool moves between successive passes.</source>
-      <translation type="unfinished">The sideways distance the cutting tool moves between successive passes.</translation>
+      <translation>Бакавая адлегласць, на якую перамяшчаецца рэжучы інструмент паміж паслядоўнымі праходамі.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="195"/>
       <source>Step over (distance)</source>
-      <translation type="unfinished">Step over (distance)</translation>
+      <translation>Крок праз (у адсотках)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="276"/>
@@ -1697,7 +1698,8 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <location filename="../panels/PageOpHelixEdit.ui" line="165"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="229"/>
       <source>The sideways distance* the cutting tool moves between successive passes (*percentage of the tool&apos;s diameter).</source>
-      <translation type="unfinished">The sideways distance* the cutting tool moves between successive passes (*percentage of the tool&apos;s diameter).</translation>
+      <translation>Бакавая адлегласць*, на якую перамяшчаецца рэжучы інструмент паміж паслядоўнымі праходамі
+(* у адсотках ад дыяметра інструмента).</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="187"/>
@@ -2860,12 +2862,12 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="72"/>
       <source>G-code source</source>
-      <translation type="unfinished">G-code source</translation>
+      <translation>Зыходны G-code</translation>
     </message>
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="79"/>
       <source>Select source of the G-code</source>
-      <translation type="unfinished">Select source of the G-code</translation>
+      <translation>Абраць крыніцу G-code</translation>
     </message>
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="83"/>
@@ -2880,7 +2882,7 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="118"/>
       <source>Enter the filename containing the G-code</source>
-      <translation type="unfinished">Enter the filename containing the G-code</translation>
+      <translation>Увядзіце імя файла, які змяшчае G-code</translation>
     </message>
   </context>
   <context>
@@ -3418,7 +3420,7 @@ See the file save policy below on how to deal with name conflicts.</source>
       <translation>Аздабленне восей</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="94"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="288"/>
       <location filename="../panels/AxisMapEdit.ui" line="20"/>
       <source>Radius</source>
       <translation>Радыус</translation>
@@ -3635,146 +3637,146 @@ See the file save policy below on how to deal with name conflicts.</source>
       <translation>Перамычка</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="28"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="224"/>
       <source>Width</source>
       <translation>Шырыня</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="80"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="274"/>
       <source>Height</source>
       <translation>Вышыня</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="42"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="238"/>
       <source>Angle</source>
       <translation>Вугал</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="35"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="231"/>
       <source>Width of the resulting holding tag</source>
       <translation>Шырыня выніковай перамычкі</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="49"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="245"/>
       <source>Plunge angle for ascent and descent of holding tag</source>
       <translation>Вугал апускання і ўздыму перамычкі</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="52"/>
-      <source> °</source>
-      <translation> °</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="136"/>
-      <source>Remove all tags from list</source>
-      <translation>Выдаліць усе меткі з спісу</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="139"/>
-      <source>Clear</source>
-      <translation>Ачысціць</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="146"/>
-      <source>Remove selected tag from list</source>
-      <translation>Выдаліць абраную метку з спісу</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="149"/>
-      <source>Remove</source>
-      <translation>Выдаліць</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="156"/>
-      <source>Edit position of selected tag</source>
-      <translation>Правіць становішча абранай меткі</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="159"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="124"/>
       <source>Edit</source>
       <translation>Змяніць</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="166"/>
-      <source>Add new tags</source>
-      <translation>Дадаць новую метку</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="101"/>
+      <source>Remove all tags from list</source>
+      <translation>Выдаліць усе меткі з спісу</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="169"/>
-      <source>Add</source>
-      <translation>Дадаць</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="104"/>
+      <source>Clear</source>
+      <translation>Ачысціць</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="176"/>
-      <source>Enable/disable all tags</source>
-      <translation>Уключыць/адключыць усе меткі</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="111"/>
+      <source>Remove selected tag from list</source>
+      <translation>Выдаліць абраную метку з спісу</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="179"/>
-      <source>Enable All</source>
-      <translation>Уключыць усё</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="114"/>
+      <source>Remove</source>
+      <translation>Выдаліць</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="186"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="121"/>
+      <source>Edit position of selected tag</source>
+      <translation>Правіць становішча абранай меткі</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="131"/>
       <source>Replace all tags by tags from another DressupTag</source>
       <translation>Заменіце ўсе меткі меткамі з іншага DressupTag</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="189"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="134"/>
       <source>Copy</source>
       <translation>Скапіраваць</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="206"/>
-      <source>Min</source>
-      <translation>Найменшы</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="141"/>
+      <source>Enable/disable all tags</source>
+      <translation>Уключыць/адключыць усе меткі</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="213"/>
-      <source>Minimum number of tags per short wire</source>
-      <translation>Найменшая колькасць метак на кароткай ломанай лініі</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="144"/>
+      <source>Enable All</source>
+      <translation>Уключыць усё</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="229"/>
-      <source>Max</source>
-      <translation>Найбольшы</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="177"/>
+      <source>Add new tags</source>
+      <translation>Дадаць новую метку</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="236"/>
-      <source>Maximum number of tags per long wire</source>
-      <translation>Найбольшая колькасць метак на доўгай ломанай лініі</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="180"/>
+      <source>Add</source>
+      <translation>Дадаць</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="252"/>
-      <source>Create the specified number of tags for each bottom wire</source>
-      <translation>Стварыць паказаную колькасць метак для кожнай ніжняй ломанай лініі</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="248"/>
+      <source> °</source>
+      <translation> °</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="255"/>
-      <source>Replace Existing Tags</source>
-      <translation>Заменіць існуючыя меткі</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="87"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="281"/>
       <source>Height of holding tag. Note that resulting tag might be smaller if the tag&apos;s width and angle result in a triangular shape.</source>
       <translation>Вышыня перамычкі.
 Звярніце ўвагу, што выніковая перамычка можа быць менш, калі шырыня і вугал нахілу перамычкі маюць трыкутную фігуру.</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="101"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="295"/>
       <source>Radius of the fillet at the top. If the radius is too big for the tag shape it gets reduced to the maximum possible radius - resulting in a spherical shape.</source>
       <translation>Радыус акруглення наверху.
 Калі радыус занадта вялікі для фігуры перамычкі, ён памяншаецца да найбольшага магчымага радыусу, у выніку чаго атрымліваецца сферычная фігура.</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="121"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="312"/>
+      <source>Min</source>
+      <translation>Найменшы</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="325"/>
+      <source>Minimum number of tags per short wire</source>
+      <translation>Найменшая колькасць метак на кароткай ломанай лініі</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="335"/>
+      <source>Max</source>
+      <translation>Найбольшы</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="348"/>
+      <source>Maximum number of tags per long wire</source>
+      <translation>Найбольшая колькасць метак на доўгай ломанай лініі</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="358"/>
+      <source>Create the specified number of tags for each bottom wire</source>
+      <translation>Стварыць паказаную колькасць метак для кожнай ніжняй ломанай лініі</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="361"/>
+      <source>Replace Existing Tags</source>
+      <translation>Заменіць існуючыя меткі</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="34"/>
       <source>List of current tags. Edit coordinates by double click or Edit button. Tags are automatically disabled if they overlap with the previous tag, or don&apos;t lie on the base wire.</source>
       <translation>Спіс бягучых перамычак.
 Змяніце каардынаты падвоенай пстрычкай мышы ці кнопкай Змяніць.
 Перамычка аўтаматычна адключаецца, калі яны перакрываюцца з папярэдняй перамычкай, альбо не ляжаць на асноўнай ломанай лініі.</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="200"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="306"/>
       <source>Auto Generate</source>
       <translation>Аўтаматычнае стварэнне</translation>
     </message>
@@ -5790,28 +5792,28 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape<
 
 Manual - Using order from selection without sorting
 Automatic - Sorting wires by the nearest neighbour method, further improved with 2-opt</source>
-      <translation type="unfinished">Order processing of the wires
+      <translation>Парадак апрацоўкі ломанай лініі
 
-Manual - Using order from selection without sorting
-Automatic - Sorting wires by the nearest neighbour method, further improved with 2-opt</translation>
+Уручную - парадак з спісу выбару без парадкавання
+Аўтаматычна - парадкуе ломаныя лініі па метадзе бліжэйшага суседа, які ўдасканалены з дапамогай алгарытму 2-opt</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Engrave.py" line="125"/>
       <location filename="../../../Path/Op/Engrave.py" line="188"/>
       <source>The start point for sorting</source>
-      <translation type="unfinished">The start point for sorting</translation>
+      <translation>Пачатковая кропка для парадкавання</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Engrave.py" line="131"/>
       <location filename="../../../Path/Op/Engrave.py" line="196"/>
       <source>The end point for sorting</source>
-      <translation type="unfinished">The end point for sorting</translation>
+      <translation>Канцавая кропка для парадкавання</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Engrave.py" line="137"/>
       <location filename="../../../Path/Op/Engrave.py" line="204"/>
       <source>Use end point for sorting</source>
-      <translation type="unfinished">Use end point for sorting</translation>
+      <translation>Ужыць канцавую кропку для парадкавання</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/FeatureExtension.py" line="478"/>
@@ -6588,7 +6590,7 @@ Should be identical for all base operations</source>
       <location filename="../../../Path/Op/Gui/Array.py" line="141"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="301"/>
       <source>Start from farthest repeat</source>
-      <translation type="unfinished">Start from farthest repeat</translation>
+      <translation>Пачаць з паўтарэння самага далёкага</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="153"/>
@@ -7853,12 +7855,12 @@ Without sub selection all edges of the shape will be selected.</source>
       <translation>Перамычка</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Tags.py" line="575"/>
+      <location filename="../../../Path/Dressup/Gui/Tags.py" line="579"/>
       <source>Tag</source>
       <translation>Метка</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Tags.py" line="578"/>
+      <location filename="../../../Path/Dressup/Gui/Tags.py" line="582"/>
       <source>Creates a tag dress-up object from a selected toolpath</source>
       <translation>Стварае аздабленне для крапежных аб'ектаў з абранай траекторыі руху інструмента</translation>
     </message>
@@ -9178,272 +9180,272 @@ This will not delete the toolbits contained within it.</source>
       <translation>Скасаваць</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="314"/>
+      <location filename="../../../Path/Post/Processor.py" line="317"/>
       <source>File Extension</source>
       <translation>Пашырэнне файла</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="320"/>
+      <location filename="../../../Path/Post/Processor.py" line="323"/>
       <source>Default file extension for output files (without the dot). Common extensions: nc, gcode, tap, ngc, sbp, etc.</source>
       <translation>Першапачатковае пашырэнне файла для выходных файлаў (без кропкі).
 Распаўсюджаныя пашырэння: nc, gcode, tap, ngc, sbp і гэтак далей</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="325"/>
+      <location filename="../../../Path/Post/Processor.py" line="328"/>
       <source>Tool Radius Compensation (G41/G42)</source>
       <translation>Кампенсацыя радыусу інструмента (G41/G42)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="331"/>
+      <location filename="../../../Path/Post/Processor.py" line="334"/>
       <source>Enable if this postprocessor supports G41/G42 tool radius compensation commands. When enabled, the postprocessor can output cutter compensation codes.</source>
       <translation>Птушка, калі пасляапрацоўка падтрымлівае каманды карэкцыі радыусу інструмента G41/G42.
 Калі птушка, пасляапрацоўка можа выводзіць коды карэкцыі разца.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="336"/>
+      <location filename="../../../Path/Post/Processor.py" line="339"/>
       <source>Supported G-code Commands</source>
       <translation>Падтрымліваюцца каманды G-code</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="342"/>
+      <location filename="../../../Path/Post/Processor.py" line="345"/>
       <source>List of G-code commands supported by this postprocessor (one per line). Commands not in this list will be filtered out or cause warnings.</source>
       <translation>Спіс каманд G-code, якія падтрымліваюцца пасляапрацоўкай (па адным на радок).
 Каманды, якія адсутнічаюць у гэтым спісе, будуць адфільтраваныя ці выклічуць папярэджанні.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="347"/>
+      <location filename="../../../Path/Post/Processor.py" line="350"/>
       <source>Drill Cycles to Translate</source>
       <translation>Цыклы свідравання для пераносу</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="354"/>
+      <location filename="../../../Path/Post/Processor.py" line="357"/>
       <source>List of drill cycle commands to translate to G0/G1 moves (one per line). Standard drill cycles: {&apos;, &apos;.join(Constants.GCODE_MOVE_DRILL)}. Leave empty if postprocessor supports drill cycles natively.</source>
       <translation>Спіс каманд цыклу свідравання для пераўтварэння ў руху G0/G1 (па адным на радок).
 Стандартныя цыклы дэталізацыі: {&apos;, &apos;.join(Constants.GCODE_MOVE_DRILL)}.
 Пакіньце пустым, калі пасляапрацоўка першапачаткова падтрымлівае цыклы дэталізацыі.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="359"/>
+      <location filename="../../../Path/Post/Processor.py" line="362"/>
       <source>Preamble</source>
       <translation>Прэамбула</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="363"/>
+      <location filename="../../../Path/Post/Processor.py" line="366"/>
       <source>G-code commands inserted at the start of the program after the header.</source>
       <translation>Каманды G-code, якія ўстаўляюцца ў пачатку праграмы пасля загалоўка.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="368"/>
+      <location filename="../../../Path/Post/Processor.py" line="371"/>
       <source>Postamble</source>
       <translation>Пасляслоўе</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="370"/>
+      <location filename="../../../Path/Post/Processor.py" line="373"/>
       <source>G-code commands inserted at the end of the program.</source>
       <translation>Каманды G-code, якія ўстаўляюцца ў канцы праграмы.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="375"/>
+      <location filename="../../../Path/Post/Processor.py" line="378"/>
       <source>Safety Block</source>
       <translation>Бяспечны блок</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="380"/>
+      <location filename="../../../Path/Post/Processor.py" line="383"/>
       <source>Safety commands to reset machine to known safe condition (e.g., G40, G49, G80).</source>
       <translation>Каманды бяспекі для скіду станка ў вядомы бяспечны стан (напрыклад, G40, G49, G80).</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="385"/>
+      <location filename="../../../Path/Post/Processor.py" line="388"/>
       <source>Pre-Job</source>
       <translation>Папярэдняе заданне</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="387"/>
+      <location filename="../../../Path/Post/Processor.py" line="390"/>
       <source>G-code commands inserted before each Job.</source>
       <translation>Каманды G-code, якія ўводзяцца перад кожным заданнем.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="392"/>
+      <location filename="../../../Path/Post/Processor.py" line="395"/>
       <source>Post-Job</source>
       <translation>Пасля заканчэння задання</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="394"/>
+      <location filename="../../../Path/Post/Processor.py" line="397"/>
       <source>G-code commands inserted after each Job.</source>
       <translation>Каманды G-code, якія ўводзяцца пасля кожнага задання.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="399"/>
+      <location filename="../../../Path/Post/Processor.py" line="402"/>
       <source>Pre-Fixture</source>
       <translation>Перад прыстасаваннем</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="401"/>
+      <location filename="../../../Path/Post/Processor.py" line="404"/>
       <source>G-code commands inserted before fixture change.</source>
       <translation>Каманды G-code, якія ўводзяцца перад зменамі прыстасавання.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="406"/>
+      <location filename="../../../Path/Post/Processor.py" line="409"/>
       <source>Post-Fixture</source>
       <translation>Пасля прыстасавання</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="408"/>
+      <location filename="../../../Path/Post/Processor.py" line="411"/>
       <source>G-code commands inserted after fixture change.</source>
       <translation>Каманды G-code, якія ўводзяцца пасля змены прыстасавання.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="413"/>
+      <location filename="../../../Path/Post/Processor.py" line="416"/>
       <source>Pre-Operation</source>
       <translation>Папярэдняя падрыхтоўка да аперацыі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="415"/>
+      <location filename="../../../Path/Post/Processor.py" line="418"/>
       <source>G-code commands inserted before each operation.</source>
       <translation>Каманды G-code, якія ўводзяцца перад кожнай аперацыяй.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="420"/>
+      <location filename="../../../Path/Post/Processor.py" line="423"/>
       <source>Post-Operation</source>
       <translation>Пасля аперацый</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="422"/>
+      <location filename="../../../Path/Post/Processor.py" line="425"/>
       <source>G-code commands inserted after each operation.</source>
       <translation>Каманды G-code, якія ўводзяцца пасля кожнай аперацыяй.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="427"/>
+      <location filename="../../../Path/Post/Processor.py" line="430"/>
       <source>Pre-Tool Change</source>
       <translation>Папярэдняя змена інструмента</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="429"/>
+      <location filename="../../../Path/Post/Processor.py" line="432"/>
       <source>G-code commands inserted before tool changes.</source>
       <translation>Каманды G-code, якія ўводзяцца перад зменай інструмента.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="434"/>
+      <location filename="../../../Path/Post/Processor.py" line="437"/>
       <source>Post-Tool Change</source>
       <translation>Пасля змены інструмента</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="436"/>
-      <location filename="../../../Path/Post/Processor.py" line="443"/>
+      <location filename="../../../Path/Post/Processor.py" line="439"/>
+      <location filename="../../../Path/Post/Processor.py" line="446"/>
       <source>G-code commands inserted after tool changes.</source>
       <translation>Каманды G-code, якія ўводзяцца пасля змены інструмента.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="441"/>
+      <location filename="../../../Path/Post/Processor.py" line="444"/>
       <source>Tool Return after tool changes</source>
       <translation>Вяртанне інструмента пасля змены інструмента</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="448"/>
+      <location filename="../../../Path/Post/Processor.py" line="451"/>
       <source>Pre-Rotary Move</source>
       <translation>Папярэдняе вярчальнае перамяшчэнне</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="450"/>
+      <location filename="../../../Path/Post/Processor.py" line="453"/>
       <source>G-code commands inserted before rotary axis moves.</source>
       <translation>Каманды G-code, якія ўводзяцца перад перамяшчэннем восі кручэння.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="455"/>
+      <location filename="../../../Path/Post/Processor.py" line="458"/>
       <source>Post-Rotary Move</source>
       <translation>Пасля вярчальнае перамяшчэнне</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="457"/>
+      <location filename="../../../Path/Post/Processor.py" line="460"/>
       <source>G-code commands inserted after rotary axis moves.</source>
       <translation>Каманды G-code, якія ўводзяцца пасля перамяшчэння восі кручэння.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="462"/>
+      <location filename="../../../Path/Post/Processor.py" line="465"/>
       <source>Show Pre-processing Dialogs</source>
       <translation>Паказаць дыялогавыя вокны папярэдняй апрацоўкі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="468"/>
+      <location filename="../../../Path/Post/Processor.py" line="471"/>
       <source>Show interactive dialogs during post-processing. Disable for automated operation or testing.</source>
       <translation>Паказваць інтэрактыўныя дыялогі падчас наступнай апрацоўкі.
 Адключыць для аўтаматычнай працы ці тэставання.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="473"/>
+      <location filename="../../../Path/Post/Processor.py" line="476"/>
       <source>Generated Parameter Order for GCode</source>
       <translation>Створаны парадак налад для G-сode</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="475"/>
+      <location filename="../../../Path/Post/Processor.py" line="478"/>
       <source>Generated Parameter Order for GCode for output</source>
       <translation>Створаны парадак налад для G-сode для вываду</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="480"/>
+      <location filename="../../../Path/Post/Processor.py" line="483"/>
       <source>TLO after tool-change</source>
-      <translation type="unfinished">TLO after tool-change</translation>
+      <translation>TLO пасля змены інструмента</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="485"/>
+      <location filename="../../../Path/Post/Processor.py" line="488"/>
       <source>Output a G43 TLO after tool-change</source>
-      <translation type="unfinished">Output a G43 TLO after tool-change</translation>
+      <translation>Вывад G43 TLO пасля змены інструмента</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="490"/>
+      <location filename="../../../Path/Post/Processor.py" line="493"/>
       <source>Expand drill-cycles</source>
-      <translation type="unfinished">Expand drill-cycles</translation>
+      <translation>Пашырыць цыклы свідравання</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="495"/>
+      <location filename="../../../Path/Post/Processor.py" line="498"/>
       <source>Expand drill-cycles (cf. &apos;Drill Cycles to Translate&apos;) to moves</source>
-      <translation type="unfinished">Expand drill-cycles (cf. &apos;Drill Cycles to Translate&apos;) to moves</translation>
+      <translation>Пашырыць цыклы свідравання (глядзіце "Цыклы свідравання для перакладу") да перамяшчэнняў</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="500"/>
+      <location filename="../../../Path/Post/Processor.py" line="503"/>
       <source>Allow tool-change</source>
-      <translation type="unfinished">Allow tool-change</translation>
+      <translation>Дазволіць змену інструмента</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="505"/>
+      <location filename="../../../Path/Post/Processor.py" line="508"/>
       <source>Unchecked to suppress tool-change (M6)</source>
-      <translation type="unfinished">Unchecked to suppress tool-change (M6)</translation>
+      <translation>Не птушка, каб забараніць змену інструмента (M6)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="510"/>
-      <location filename="../../../Path/Post/Processor.py" line="515"/>
+      <location filename="../../../Path/Post/Processor.py" line="513"/>
+      <location filename="../../../Path/Post/Processor.py" line="518"/>
       <source>Unit-command in output</source>
-      <translation type="unfinished">Unit-command in output</translation>
+      <translation>Каманда адзінак у выхадзе</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="520"/>
-      <source>Axis precision in ouptput</source>
-      <translation type="unfinished">Axis precision in ouptput</translation>
+      <location filename="../../../Path/Post/Processor.py" line="523"/>
+      <source>Axis precision in output</source>
+      <translation>Дакладнасць восі ў выхадзе</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="525"/>
+      <location filename="../../../Path/Post/Processor.py" line="528"/>
       <source>Decimals of precision for axis motion</source>
-      <translation type="unfinished">Decimals of precision for axis motion</translation>
+      <translation>Дзесятковыя дробы дакладнасці для перамяшчэння восі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="530"/>
-      <source>Feedrate precision in ouptput</source>
-      <translation type="unfinished">Feedrate precision in ouptput</translation>
+      <location filename="../../../Path/Post/Processor.py" line="533"/>
+      <source>Feedrate precision in output</source>
+      <translation>Дакладнасць хуткасці падачы ў выхадзе</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="535"/>
+      <location filename="../../../Path/Post/Processor.py" line="538"/>
       <source>Decimals of precision for feedrate (F)</source>
-      <translation type="unfinished">Decimals of precision for feedrate (F)</translation>
+      <translation>Дзесятковыя дробы дакладнасці для хуткасць падачы (F)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="540"/>
-      <source>Spindle-speed precision in ouptput</source>
-      <translation type="unfinished">Spindle-speed precision in ouptput</translation>
+      <location filename="../../../Path/Post/Processor.py" line="543"/>
+      <source>Spindle-speed precision in output</source>
+      <translation>Дакладнасць хуткасці кручэння шпіндаля ў выхадзе</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="545"/>
+      <location filename="../../../Path/Post/Processor.py" line="548"/>
       <source>Decimals of precision for spindle-speed</source>
-      <translation type="unfinished">Decimals of precision for spindle-speed</translation>
+      <translation>Дзесятковыя дробы дакладнасці для частоты кручэння шпіндаля</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/test_post.py" line="57"/>
@@ -9588,12 +9590,13 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Post/scripts/opensbp_post.py" line="187"/>
       <source>Suppressed (tolerated) G-code Commands</source>
-      <translation type="unfinished">Suppressed (tolerated) G-code Commands</translation>
+      <translation>Падушаныя (дапушчальныя) каманды G-code</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/opensbp_post.py" line="193"/>
       <source>List of G-code commands tolerated but suppressed by this post-processor (one per line). Commands this list will be filtered out</source>
-      <translation type="unfinished">List of G-code commands tolerated but suppressed by this post-processor (one per line). Commands this list will be filtered out</translation>
+      <translation>Спіс каманд G-code, якія дапускаюцца, але не выконваюцца гэтай пасляапрацоўкай (па адным на радок).
+Каманды з гэтага спісу будуць адфільтраваныя</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/opensbp_post.py" line="200"/>
@@ -10356,7 +10359,7 @@ Allowed selection only from one model:
     <message>
       <location filename="../../../Path/Op/Gui/Custom.py" line="120"/>
       <source>Select file containing the gcode</source>
-      <translation type="unfinished">Select file containing the gcode</translation>
+      <translation>Выберыце файл, які змяшчае G-code</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Custom.py" line="135"/>
