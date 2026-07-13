@@ -250,7 +250,9 @@ class TestBimClassificationGui(TestArchBaseGui.TestArchBaseGui):
         self.assertEqual(first_item.text(), "OmniClass (Active)")
         self.assertEqual(first_item.checkState(), QtCore.Qt.Checked)
         self.assertEqual(second_item.checkState(), QtCore.Qt.Unchecked)
-        self.assertEqual(self.document.Meta.get(BimClassification.BSDD_DICTIONARY_META_KEY), "dict://omni")
+        self.assertEqual(
+            self.document.Meta.get(BimClassification.BSDD_DICTIONARY_META_KEY), "dict://omni"
+        )
         self.assertEqual(
             self.document.Meta.get(BimClassification.BSDD_DICTIONARY_META_PRESENT_KEY),
             "1",
@@ -368,7 +370,9 @@ class TestBimClassificationGui(TestArchBaseGui.TestArchBaseGui):
         self.assertEqual(item.text(1), "Test Dictionary RC-10")
         self.assertEqual(self.cmd._get_stored_bsdd_contract_for_item(item), contract)
 
-        with patch.object(self.cmd, "_apply_bsdd_contract_to_object", return_value=True) as mock_apply:
+        with patch.object(
+            self.cmd, "_apply_bsdd_contract_to_object", return_value=True
+        ) as mock_apply:
             self.cmd.accept()
 
         self.assertEqual(self.obj.StandardCode, "Test Dictionary RC-10")
