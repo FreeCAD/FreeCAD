@@ -32,6 +32,9 @@
 #include <GC_MakeCircle.hxx>
 #include <GeomAPI_Interpolate.hxx>
 #include <gp_Pln.hxx>
+#include <Precision.hxx>
+#include <TColgp_Array1OfPnt.hxx>
+#include <TColgp_HArray1OfPnt.hxx>
 #include <TopoDS.hxx>
 
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

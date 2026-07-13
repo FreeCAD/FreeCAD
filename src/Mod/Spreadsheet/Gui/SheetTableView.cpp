@@ -247,11 +247,10 @@ void SheetTableView::onBind()
 void SheetTableView::onConfSetup()
 {
     auto ranges = selectedRanges();
-    if (ranges.empty()) {
-        return;
+    if (ranges.size() == 1 && ranges.back().size() > 1) {
+        DlgSheetConf dlg {sheet, ranges.back()};
+        dlg.exec();
     }
-    DlgSheetConf dlg {sheet, ranges.back()};
-    dlg.exec();
 }
 
 void SheetTableView::cellProperties()
@@ -1068,6 +1067,7 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent*)
 
     auto ranges = selectedRanges();
     actionBind->setEnabled(!ranges.empty() && ranges.size() <= 2);
+    actionConf->setEnabled(ranges.size() == 1 && ranges.back().size() > 1);
 
     contextMenu.exec(QCursor::pos());
 }

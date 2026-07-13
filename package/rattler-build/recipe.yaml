@@ -100,7 +100,6 @@ requirements:
         - cross-python_${{ target_platform }}
 
   host:
-    - coin3d ==4.0.3
     - eigen >=3.3,<5
     - fmt >=12.1,<12.2
     - freetype
@@ -112,7 +111,6 @@ requirements:
     - numpy>=1.26,<2
     - occt>=7.8,<7.9
     - pcl
-    - pivy
     - ply
     - pybind11
     - pyside6
@@ -140,6 +138,7 @@ requirements:
         - xorg-xproto
 
   run:
+    - av
     - blas * openblas*
     - blinker
     - calculix
@@ -158,10 +157,8 @@ requirements:
     - occt>=7.8,<7.9
     - olefile
     - opencamlib
-    - opencv
     - pandas
     - pip
-    - pivy
     - ply
     - pycollada
     - pyside6

@@ -316,6 +316,16 @@ bool DrawSketchHandler::isWidgetVisible() const
     return false;
 };
 
+bool DrawSketchHandler::isConstructionMode() const
+{
+    return sketchgui->isConstructionMode();
+}
+
+const char* DrawSketchHandler::constructionModeAsBooleanText()
+{
+    return sketchgui->isConstructionMode() ? "True" : "False";
+}
+
 QPixmap DrawSketchHandler::getToolIcon() const
 {
     return QPixmap();
@@ -807,7 +817,9 @@ bool DrawSketchHandler::seekAlignmentAutoConstraint(
         if (bestConstraint != Sketcher::None) {
             AutoConstraint constr;
             constr.Type = bestConstraint;
-            constr.GeoId = bestIndex;
+            // bestIndex is an index into getCompleteGeometry(); convert to a GeoId
+            // (negative for external geometry).
+            constr.GeoId = obj->getGeoIdFromCompleteGeometryIndex(bestIndex);
             constr.PosId = PointPos::none;  // or set appropriately
             suggestedConstraints.push_back(constr);
         }
@@ -843,7 +855,10 @@ bool DrawSketchHandler::seekTangentAutoConstraint(
     Base::Vector3d tmpDir(Dir.x, Dir.y, 0.f);                    // Direction of line
     Base::Vector3d tmpStart(Pos.x - Dir.x, Pos.y - Dir.y, 0.f);  // Start point
 
-    auto removeCoincidentConstraint = [&](int geoId, PointPos pos) {
+    auto removeCoincidentConstraint = [&](int completeGeometryIndex, PointPos pos) {
+        // The callers pass an index into getCompleteGeometry(); the stored
+        // constraints use real GeoIds (negative for external geometry).
+        int geoId = obj->getGeoIdFromCompleteGeometryIndex(completeGeometryIndex);
         std::erase_if(suggestedConstraints, [geoId, pos](const AutoConstraint& c) {
             return c.Type == Coincident && c.GeoId == geoId && c.PosId == pos;
         });
@@ -1022,12 +1037,11 @@ bool DrawSketchHandler::seekTangentAutoConstraint(
     }
 
     if (tangId != GeoEnum::GeoUndef) {
-        if (tangId > getHighestCurveIndex()) {  // external Geometry
-            tangId = getHighestCurveIndex() - tangId;
-        }
         AutoConstraint constr;
         constr.Type = Tangent;
-        constr.GeoId = tangId;
+        // tangId is an index into getCompleteGeometry(); convert to a GeoId
+        // (negative for external geometry).
+        constr.GeoId = obj->getGeoIdFromCompleteGeometryIndex(tangId);
         constr.PosId = tanPos;
         suggestedConstraints.push_back(constr);
         return true;

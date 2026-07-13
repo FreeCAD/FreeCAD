@@ -2967,6 +2967,64 @@ TEST_F(TopoShapeExpansionTest, makeElementFilledFace)
     ));
 }
 
+TEST_F(TopoShapeExpansionTest, makeElementFilledFaceFromLooseEdges)
+{
+    // Arrange: four independently-built edges whose endpoints are coincident but are *not* the same
+    // shared vertices. See issue #31080 and PR #31141.
+    auto [face, wire, edge1, edge2, edge3, edge4] = CreateRectFace(2.0, 3.0);
+    boost::ignore_unused(face, wire);
+    std::vector<TopoShape> edges {
+        TopoShape {edge1, 1L},
+        TopoShape {edge2, 2L},
+        TopoShape {edge3, 3L},
+        TopoShape {edge4, 4L},
+    };
+    TopoShape result;
+
+    // Act: default params force boundary detection from the loose edges
+    auto params = TopoShape::BRepFillingParams();
+    result.makeElementFilledFace(edges, params);
+
+    // Assert: the four disconnected edges were merged into a single closed four-sided boundary and
+    // filled. Under the old requireSharedVertex policy the edges could not be chained and no
+    // boundary face was produced. The filled surface bulges beyond the boundary, so its bounding
+    // box and area are not asserted exactly.
+    EXPECT_FALSE(result.isNull());
+    EXPECT_EQ(result.countSubShapes(TopAbs_FACE), 1);
+    EXPECT_EQ(result.countSubShapes(TopAbs_EDGE), 4);
+    EXPECT_GT(getArea(result.getShape()), 0.0);
+    // Topological naming survived the tolerance-based wire construction.
+    EXPECT_FALSE(elementMap(result).empty());
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementFilledFaceExplicitBoundaryRange)
+{
+    // Arrange: same disconnected edges as test above, but designate them explicitly as the boundary
+    // range. See issue #31080 and PR #31141.
+    auto [face, wire, edge1, edge2, edge3, edge4] = CreateRectFace(2.0, 3.0);
+    boost::ignore_unused(face, wire);
+    std::vector<TopoShape> edges {
+        TopoShape {edge1, 1L},
+        TopoShape {edge2, 2L},
+        TopoShape {edge3, 3L},
+        TopoShape {edge4, 4L},
+    };
+    TopoShape result;
+
+    // Act
+    auto params = TopoShape::BRepFillingParams();
+    params.boundary_begin = 0;
+    params.boundary_end = 4;
+    result.makeElementFilledFace(edges, params);
+
+    // Assert
+    EXPECT_FALSE(result.isNull());
+    EXPECT_EQ(result.countSubShapes(TopAbs_FACE), 1);
+    EXPECT_EQ(result.countSubShapes(TopAbs_EDGE), 4);
+    EXPECT_GT(getArea(result.getShape()), 0.0);
+    EXPECT_FALSE(elementMap(result).empty());
+}
+
 TEST_F(TopoShapeExpansionTest, makeElementBSplineFace)
 {
     // Arrange

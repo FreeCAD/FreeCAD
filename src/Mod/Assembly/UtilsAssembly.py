@@ -687,6 +687,20 @@ def getSimulationGroup(assembly):
     return sim_group
 
 
+def getSnapshotGroup(assembly):
+    snapshot_group = None
+
+    for obj in assembly.OutList:
+        if obj.TypeId == "Assembly::SnapshotGroup":
+            snapshot_group = obj
+            break
+
+    if not snapshot_group:
+        snapshot_group = assembly.newObject("Assembly::SnapshotGroup", "Snapshots")
+
+    return snapshot_group
+
+
 def isAssemblyGrounded():
     assembly = activeAssembly()
     if not assembly:
@@ -1224,6 +1238,12 @@ def getComponentReference(assembly, root_obj, sub_string):
         return None, ""
 
     doc = assembly.Document
+
+    # We do not need the full TNP string like :"Part.Body.Pad.;#a:1;:G0;XTR;:Hc94:8,F.Face6"
+    # instead we need : "Part.Body.Pad.Face6"
+    resolved = root_obj.resolveSubElement(sub_string, True)
+    sub_string = resolved[2]
+    sub_string = fixBodyExtraFeatureInSub(doc.Name, sub_string)
 
     # 1. Reconstruct full path
     # e.g. ['Part', 'Assembly', 'Cylinder', 'Face1']

@@ -913,7 +913,7 @@ void CmdFemConstraintPressure::activated(int)
     );
     doCommand(
         Doc,
-        "App.activeDocument().%s.Pressure = 0.1",
+        "App.activeDocument().%s.Pressure = \"1 MPa\"",
         FeatName.c_str()
     );  // OvG: set default not equal to 0
     doCommand(
@@ -2122,6 +2122,9 @@ void setupFilter(Gui::Command* cmd, std::string Name)
             selObject->getNameInDocument()
         );
     }
+
+    // show active filter
+    cmd->doCommand(Gui::Command::Doc, "App.activeDocument().ActiveObject.ViewObject.Visibility = True");
 
     cmd->updateActive();
     // open the dialog to edit the filter

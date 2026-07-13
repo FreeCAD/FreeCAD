@@ -24,6 +24,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <functional>
 #include <optional>
 #include <vector>
@@ -147,6 +148,8 @@ class SketcherGuiExport EditModeCoinManager
         void initParameters();
         void updateCurvedEdgeCountSegmentsParameter(const std::string& parametername);
         void updateLineRenderingOrderParameters(const std::string& parametername);
+        void updateAxisTransparencyParameter(const std::string& parametername);
+        void updateOccludedAxisTransparencyParameter(const std::string& parametername);
         void updateConstraintPresentationParameters(const std::string& parametername);
         void updateWidth(int& width, const std::string& parametername, int def);
         void updatePattern(unsigned int& pattern, const std::string& pname, unsigned int def);
@@ -178,13 +181,20 @@ public:
      */
     struct PreselectionResult
     {
-        enum class HitKind
+        enum class HitKind : std::int8_t
         {
             None = -1,
             Point = 0,
             Edge = 1,
             Axis = 2,
             Constraint = 3
+        };
+
+        enum class ConstraintHitKind : std::uint8_t
+        {
+            None,
+            Icon,
+            DatumLabel
         };
 
         enum SpecialValues
@@ -208,6 +218,7 @@ public:
                                       // -3,-4,-5,... for external geometry
         Axes Cross = Axes::None;
         std::set<int> ConstrIndices;
+        ConstraintHitKind ConstraintKind = ConstraintHitKind::None;
         std::optional<Base::Vector3d> PickedPoint;
 
         [[nodiscard]] inline bool hasWinner() const
@@ -235,8 +246,14 @@ public:
             GeoIndex = InvalidCurve;
             Cross = Axes::None;
             ConstrIndices.clear();
+            ConstraintKind = ConstraintHitKind::None;
             PickedPoint.reset();
         }
+    };
+
+    struct PreselectionCandidates
+    {
+        std::vector<PreselectionResult> Items;
     };
 
 public:
@@ -322,6 +339,12 @@ private:
     bool detectPointPreselection(const SoPickedPoint* point, int layerIndex, PreselectionResult& result);
     bool detectCurvePreselection(const SoPickedPoint* point, int layerIndex, PreselectionResult& result);
     bool detectAxisPreselection(const SoPickedPoint* point, PreselectionResult& result);
+    PreselectionCandidates collectPreselectionCandidates(
+        const SoPickedPointList& points,
+        const SbVec2s& cursorPos,
+        int hoveredPointIndex
+    );
+    PreselectionResult resolvePreselectionCandidates(const PreselectionCandidates& candidates) const;
 
     // This function populates the coin nodes with the information of the current geometry
     void processGeometry(const GeoListFacade& geolistfacade);
