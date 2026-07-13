@@ -1772,6 +1772,8 @@ def makeWallJoint(wall_a=None, wall_b=None, joint_type="Miter", name=None):
     )
     if joint is None:
         return None
+    if FreeCAD.GuiUp:
+        joint.ViewObject.Visibility = True
 
     if wall_a is not None:
         joint.WallA = wall_a
@@ -1806,6 +1808,8 @@ def makeWallJunction(walls=None, carrier_wall=None, name=None):
     )
     if not junction:
         return None
+    if FreeCAD.GuiUp:
+        junction.ViewObject.Visibility = True
 
     if walls:
         junction.Walls = list(walls)

@@ -592,6 +592,66 @@ class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
         self.assertEqual(joint.ButtTrimmed, "WallA")
         self.assertEqual(joint.Status, "OK")
 
+    def test_wall_relation_tree_state_reflects_enabled_status(self):
+        """Tree presentation distinguishes active, disabled, and failed relations."""
+        self.printTestMessage("Testing wall relation tree state...")
+
+        wall1 = self._make_baseless_wall_between(
+            FreeCAD.Vector(-1000, 0, 0), FreeCAD.Vector(0, 0, 0)
+        )
+        wall2 = self._make_baseless_wall_between(
+            FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 1000, 0)
+        )
+        joint = Arch.makeWallJoint(wall1, wall2, "Miter")
+        self.document.recompute()
+
+        self.assertTrue(joint.ViewObject.Visibility)
+        self.assertTrue(joint.Enabled)
+        self.assertEqual(joint.Status, "OK")
+        self.assertEqual(joint.ViewObject.Proxy.getIcon(), ":/icons/BIM_Join_Miter.svg")
+
+        panel = ArchWallJointGui.WallJointTaskPanel(joint)
+        self.assertTrue(panel.enabled_checkbox.isChecked())
+        panel.enabled_checkbox.setChecked(False)
+        self.assertEqual(panel.preview_title.text(), "Joint disabled")
+        panel.accept()
+        self.pump_gui_events()
+
+        self.assertFalse(joint.Enabled)
+        self.assertEqual(joint.Status, "Disabled")
+        self.assertEqual(joint.ViewObject.Proxy.getIcon(), ":/icons/Invisible.svg")
+
+        joint.Enabled = True
+        self.document.recompute()
+        self.assertEqual(joint.Status, "OK")
+        self.assertEqual(joint.ViewObject.Proxy.getIcon(), ":/icons/BIM_Join_Miter.svg")
+
+    def test_wall_junction_tree_state_reflects_enabled_status(self):
+        """Junctions use the same active and disabled tree presentation policy."""
+        self.printTestMessage("Testing wall junction tree state...")
+
+        carrier = self._make_baseless_wall_between(
+            FreeCAD.Vector(-1000, 0, 0), FreeCAD.Vector(1000, 0, 0)
+        )
+        branch_a = self._make_baseless_wall_between(
+            FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 1000, 0)
+        )
+        branch_b = self._make_baseless_wall_between(
+            FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(700, 700, 0)
+        )
+        junction = Arch.makeWallJunction([carrier, branch_a, branch_b], carrier_wall=carrier)
+        self.document.recompute()
+
+        self.assertTrue(junction.ViewObject.Visibility)
+        self.assertTrue(junction.Enabled)
+        self.assertEqual(junction.Status, "OK")
+        self.assertEqual(junction.ViewObject.Proxy.getIcon(), ":/icons/BIM_Join_Junction.svg")
+
+        junction.Enabled = False
+        self.document.recompute()
+        self.assertEqual(junction.Status, "Disabled")
+        self.assertEqual(junction.ViewObject.Proxy.getIcon(), ":/icons/Invisible.svg")
+
     def test_wall_joint_task_panel_previews_conflicts(self):
         """Tests that the wall-joint task panel previews blocking conflicts before applying."""
         self.printTestMessage("Testing BIM wall joint task panel conflict preview...")

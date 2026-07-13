@@ -37,8 +37,11 @@ import ArchWallRelationResolver
 translate = FreeCAD.Qt.translate
 
 if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtGui
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    FreeCADGui = None
 
     def QT_TRANSLATE_NOOP(ctxt, txt):
         return txt
@@ -229,9 +232,10 @@ class _ViewProviderWallJunction:
 
     def __init__(self, vobj):
         vobj.Proxy = self
+        self.Object = vobj.Object
 
-    def attach(self, _vobj):
-        return
+    def attach(self, vobj):
+        self.Object = vobj.Object
 
     def dumps(self):
         return None
@@ -246,7 +250,34 @@ class _ViewProviderWallJunction:
         return
 
     def getIcon(self):
+        if not self.Object.Enabled:
+            return ":/icons/Invisible.svg"
+        if self.Object.Status != "OK":
+            return ":/icons/warning.svg"
         return ":/icons/BIM_Join_Junction.svg"
+
+    def setupContextMenu(self, _vobj, menu):
+        if not FreeCAD.GuiUp or FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
+            return
+        action_toggle = QtGui.QAction(
+            FreeCAD.Qt.translate(
+                "BIM", "Disable Junction" if self.Object.Enabled else "Enable Junction"
+            ),
+            menu,
+        )
+        action_toggle.triggered.connect(self.toggle_enabled)
+        menu.addAction(action_toggle)
+
+    def toggle_enabled(self):
+        doc = self.Object.Document
+        doc.openTransaction(FreeCAD.Qt.translate("BIM", "Toggle wall junction"))
+        try:
+            self.Object.Enabled = not self.Object.Enabled
+            doc.commitTransaction()
+        except Exception:
+            doc.abortTransaction()
+            raise
+        doc.recompute()
 
     def doubleClicked(self, _vobj):
         return False

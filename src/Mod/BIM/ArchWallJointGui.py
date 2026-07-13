@@ -57,6 +57,10 @@ class _ViewProviderWallJoint:
         return
 
     def getIcon(self):
+        if not self.Object.Enabled:
+            return ":/icons/Invisible.svg"
+        if self.Object.Status != "OK":
+            return ":/icons/warning.svg"
         return f":/icons/BIM_Join_{self.Object.JointType}.svg"
 
     def setEdit(self, vobj, mode):
@@ -87,10 +91,27 @@ class _ViewProviderWallJoint:
         action_edit = QtGui.QAction(translate("BIM", "Edit Joint"), menu)
         action_edit.triggered.connect(self.edit)
         menu.addAction(action_edit)
+        action_toggle = QtGui.QAction(
+            translate("BIM", "Disable Joint" if self.Object.Enabled else "Enable Joint"),
+            menu,
+        )
+        action_toggle.triggered.connect(self.toggle_enabled)
+        menu.addAction(action_toggle)
 
     def edit(self):
         if FreeCAD.GuiUp:
             FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
+
+    def toggle_enabled(self):
+        doc = self.Object.Document
+        doc.openTransaction(translate("BIM", "Toggle wall joint"))
+        try:
+            self.Object.Enabled = not self.Object.Enabled
+            doc.commitTransaction()
+        except Exception:
+            doc.abortTransaction()
+            raise
+        doc.recompute()
 
 
 if FreeCAD.GuiUp:
@@ -119,6 +140,17 @@ if FreeCAD.GuiUp:
             )
             wall_summary.setWordWrap(True)
             layout.addWidget(wall_summary)
+
+            self.enabled_checkbox = QtGui.QCheckBox(
+                translate("BIM", "Enable joint relation"),
+                self.form,
+            )
+            self.enabled_checkbox.setToolTip(
+                translate(
+                    "BIM", "When disabled, this relation is kept but does not trim its walls."
+                )
+            )
+            layout.addWidget(self.enabled_checkbox)
 
             self.form_layout = QtGui.QFormLayout()
             layout.addLayout(self.form_layout)
@@ -227,6 +259,7 @@ if FreeCAD.GuiUp:
             values = self._current_values()
             if (
                 self.obj.JointType == values["JointType"]
+                and self.obj.Enabled == values["Enabled"]
                 and self.obj.EndA == values["EndA"]
                 and self.obj.EndB == values["EndB"]
                 and self.obj.ButtTrimmed == values["ButtTrimmed"]
@@ -239,6 +272,7 @@ if FreeCAD.GuiUp:
             doc.openTransaction(translate("BIM", "Edit wall joint"))
             try:
                 self.obj.JointType = values["JointType"]
+                self.obj.Enabled = values["Enabled"]
                 self.obj.EndA = values["EndA"]
                 self.obj.EndB = values["EndB"]
                 self.obj.ButtTrimmed = values["ButtTrimmed"]
@@ -264,6 +298,7 @@ if FreeCAD.GuiUp:
                 self.tee_stem_combo,
             ):
                 combo.currentIndexChanged.connect(self._refresh_preview)
+            self.enabled_checkbox.stateChanged.connect(self._refresh_preview_from_check_state)
 
         def _load_from_object(self):
             self._set_combo_value(self.joint_type_combo, "JointType", self.obj.JointType)
@@ -271,11 +306,20 @@ if FreeCAD.GuiUp:
             self._set_combo_value(self.end_b_combo, "EndB", self.obj.EndB)
             self._set_combo_value(self.butt_trimmed_combo, "ButtTrimmed", self.obj.ButtTrimmed)
             self._set_combo_value(self.tee_stem_combo, "TeeStem", self.obj.TeeStem)
+            self.enabled_checkbox.setChecked(self.obj.Enabled)
             self._update_editor_state()
 
         def _refresh_preview(self):
             self._update_editor_state()
             values = self._current_values()
+            if not values["Enabled"]:
+                self.preview_title.setText(translate("BIM", "Joint disabled"))
+                self.preview_message.setText(
+                    translate("BIM", "This relation is kept but will not trim its walls.")
+                )
+                self.preview_group.setVisible(True)
+                self.preview_message.setVisible(True)
+                return
             solution = ArchWallRelation.solve_wall_joint_settings(
                 self.obj,
                 values["JointType"],
@@ -292,6 +336,9 @@ if FreeCAD.GuiUp:
             self.preview_group.setVisible(solution.status != "OK" or has_message)
             self.preview_message.setVisible(has_message)
             self.preview_message.setText(message)
+
+        def _refresh_preview_from_check_state(self, _state):
+            self._refresh_preview()
 
         @staticmethod
         def _get_preview_title(solution):
@@ -324,6 +371,7 @@ if FreeCAD.GuiUp:
         def _current_values(self):
             return {
                 "JointType": self._get_combo_value(self.joint_type_combo, "JointType"),
+                "Enabled": self.enabled_checkbox.isChecked(),
                 "EndA": self._get_combo_value(self.end_a_combo, "EndA"),
                 "EndB": self._get_combo_value(self.end_b_combo, "EndB"),
                 "ButtTrimmed": self._get_combo_value(self.butt_trimmed_combo, "ButtTrimmed"),
