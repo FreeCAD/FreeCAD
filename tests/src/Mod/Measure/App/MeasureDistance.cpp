@@ -178,9 +178,7 @@ TEST_F(MeasureDistance, testArcArcCenterToCenter)
     EXPECT_EQ(md->Position2.getValue(), Base::Vector3d(3.0, 4.0, 0.0));
 }
 
-// Only one shape is a circle, so the center shortcut does not fire and the
-// generic extrema path runs. Nearest rim point (1,0,0) to line x=5 gives 4.0,
-// not the 5.0 center-to-center distance (#27404).
+// Only one circle: no center shortcut, generic extrema gives rim-to-line 4.0, not 5.0 (#27404).
 TEST_F(MeasureDistance, testCircleLineExtremaNotCenter)
 {
     App::Document* doc = getDocument();
@@ -244,9 +242,7 @@ TEST_F(MeasureDistance, testVertexFaceExtrema)
     EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
 }
 
-// A single circular-edge wire is not reduced to a circle by BRepAdaptor_CompCurve,
-// so the center shortcut is skipped and generic extrema measures rim-to-rim: centers
-// 5 apart, radii 1, gives 3.0 with rim points (0.6,0.8,0) and (2.4,3.2,0).
+// A single circular-edge wire isn't reduced to a circle, so extrema measures rim-to-rim = 3.0.
 TEST_F(MeasureDistance, testWireCircleExtremaNotCenter)
 {
     App::Document* doc = getDocument();
@@ -516,9 +512,7 @@ TEST_F(MeasureDistance, testCenterMidpointPointToPoint)
     EXPECT_NEAR(position2.z, 0.0, 1e-6);
 }
 
-// Center snaps the circle to (0,0,0); the line is Auto, so it stays a raw shape.
-// The snapped side is pinned at the centre and only the line side comes from
-// extrema: nearest point (10,0,0), distance 10.0.
+// Center pins the circle at (0,0,0); the Auto line side comes from extrema: distance 10.0.
 TEST_F(MeasureDistance, testCenterAutoPinsSnappedPosition)
 {
     App::Document* doc = getDocument();
@@ -617,9 +611,7 @@ TEST_F(MeasureDistance, testAxisNoneToBox)
     EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
 }
 
-// Center snaps the circle to (0,0,0); the cylinder snaps to its Z axis through
-// (5,0,0). The point projects onto that axis at (5,0,0), giving 5.0, with the
-// circle side pinned at the centre.
+// Circle Center (0,0,0) projected onto the cylinder axis at (5,0,0): distance 5.0.
 TEST_F(MeasureDistance, testCenterAxisPointToAxis)
 {
     App::Document* doc = getDocument();
@@ -646,10 +638,7 @@ TEST_F(MeasureDistance, testCenterAxisPointToAxis)
     EXPECT_NEAR(position2.z, 0.0, 1e-6);
 }
 
-// A snap re-resolves when the linked geometry moves, on a pair whose snapped result
-// differs from the Auto shortcut so the snapped path is actually exercised: circle
-// Center to line Midpoint reads 4.0, then 8.0 after the circle centre moves from
-// (0,3,0) to (-4,3,0). The circle side stays pinned to its centre.
+// Snapped path (circle Center to line Midpoint) re-resolves after the circle moves: 4.0 then 8.0.
 TEST_F(MeasureDistance, testSnapReResolvesWhenGeometryMoves)
 {
     App::Document* doc = getDocument();
@@ -700,9 +689,7 @@ TEST_F(MeasureDistance, testAutoCenterPinsSecondElement)
     EXPECT_NEAR(position1.z, 0.0, 1e-6);
 }
 
-// Reverse of the point/axis arm: the cylinder axis is Element1 and the Center-snapped
-// circle is Element2, so Position2 pins to the circle centre and Position1 is the
-// foot on the axis. Distance 5.
+// Reversed arm: axis is Element1, Center-snapped circle Element2; distance 5.
 TEST_F(MeasureDistance, testAxisCenterPinsSecondElement)
 {
     App::Document* doc = getDocument();
