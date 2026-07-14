@@ -21,6 +21,8 @@
 
 #include "ShapeAnalysis_FreeBoundsFix.h"
 
+#include <Standard_Version.hxx>
+
 #include <BRep_Builder.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
 #include <TopoDS.hxx>
@@ -52,6 +54,10 @@ void Fix_ShapeAnalysis_FreeBounds_ConnectEdgesToWires(
             break;
         }
     }
+
+#if OCC_VERSION_HEX >= 0x080100
+    needsFiltering = false;
+#endif
 
     // If filtering is not required, run the wrapped method with no changes
     if (!needsFiltering) {
@@ -94,6 +100,10 @@ void Fix_ShapeAnalysis_FreeBounds_ConnectWiresToWires(
             }
         }
     }
+
+#if OCC_VERSION_HEX >= 0x080100
+    needsFiltering = false;
+#endif
 
     // If filtering is not required, run the wrapped method with no changes
     if (!needsFiltering) {
