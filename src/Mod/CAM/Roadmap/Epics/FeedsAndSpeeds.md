@@ -203,32 +203,53 @@ is follow-up work outside this epic.
 - Per-op context awareness in the optimizer (engagement, effective stickout)
   — data structure only; consumer logic is follow-up work.
 
-## Library -> Job preset sync
+## Library -> Job tool sync
 
 Presets edited from inside a Job never promote back to the library asset
 (by design - library tools are shared state; see
 `Path/Tool/FeedsSpeeds/presets.py`'s docstring). That leaves a gap: a tool
-already embedded in an old Job has no way to pick up presets added or
-edited on its library source afterward. `Path/Tool/FeedsSpeeds/library_sync.py`
-closes that one gap, in the pull direction only.
+already embedded in an old Job has no way to pick up presets - or
+dimensional changes from a regrind - added or edited on its library source
+afterward. `Path/Tool/UpdateDocumentTools.py` closes that gap, in the pull
+direction only.
 
 - Matches an embedded tool to its library source by `ToolBitID` only - no
-  fallback, no guessing. A tool with no id, or an id not found in the
-  local library, is reported orphaned and left untouched; if it's
+  fallback, no guessing (`resolve_library_source`). A tool with no id, or
+  an id not found in the local library, is left untouched; if it's
   genuinely the wrong tool, the user replaces it from the library directly.
-- Only searches the user's local asset store. FreeCAD copies its entire
-  builtin tool set into the local store the first time a user's local
-  store is empty, so local is already a superset of builtin for virtually
-  every real user - this only ever syncs user toolbits.
-- Merges presets by key (name, or material/op hint for unnamed presets);
-  on a collision the library version wins.
-- Two entry points, both in `Path/Tool/Gui/LibrarySyncDialog.py`: a "Sync
-  Tool Presets from Library" command on a Job's context menu, and a
-  passive check on document load that prompts (Yes/No, default No) only
-  when a Job actually has stale presets.
+- Detects both presets differing (`_presets_differ`) and geometry
+  differing (`diff_tool_geometry` - any "Shape"-group property, e.g.
+  Diameter/CuttingEdgeHeight/a custom regrind field) per tool
+  (`job_stale_tools`). A tool with either kind of difference shows up as
+  one stale row - there's no separate presets-only vs. geometry-only path.
+- Applying an update is **a full replace, not a merge**
+  (`replace_tool_from_library`): the ToolController's `Tool` link is
+  repointed at a freshly-fetched library copy - presets, geometry, shape,
+  everything - and the old embedded tool object is removed from the
+  document, as if the tool had been deleted and picked fresh from the
+  library. The relink itself reuses the same primitive
+  `Path.Tool.Gui.Controller.ToolControllerEditor.updateToolController`
+  already uses for a manual tool swap. A tool can't end up half-updated.
+- Store search depends on what's being resolved: the tool itself only ever
+  needs syncing from the user's own local library (`store="local"`), but a
+  resolved shape *dependency* is different - `.fcstd` shape assets are
+  never copied into `local` the way `.fctb` tool files are, so a geometry
+  diff (which needs the shape resolved as a real dependency, not a shallow
+  placeholder) also searches `"builtin"`, or every stock shape's tool would
+  wrongly report "no library match".
+- One dialog, two entry points, both in
+  `Path/Tool/Gui/UpdateDocumentToolsDlg.py`: the "Update Tools from
+  Library" command on a Job's context menu, and a passive check on
+  document load (gated by a CAM Preferences > Assets toggle,
+  `tool_update_on_load_enabled`) that prompts only when a Job actually has
+  a stale tool. The dialog lists one row per stale tool with a checkbox
+  (default checked) and an expandable tree of what changed; Update applies
+  every checked tool and recomputes the document once at the end
+  (`Document.RecomputesFrozen` batches the relinks so there's no
+  recompute-per-tool).
 
-`library_sync.py` and `CAMTests/TestFeedsSpeedsLibrarySync.py` are the
-source of truth for exact behavior - this section is a summary only.
+`UpdateDocumentTools.py` and `CAMTests/TestUpdateTool.py` are the source of
+truth for exact behavior - this section is a summary only.
 
 ## Data locations
 

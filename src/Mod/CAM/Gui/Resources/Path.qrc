@@ -58,7 +58,6 @@
         <file>icons/CAM_Slot.svg</file>
         <file>icons/CAM_StartPoint.svg</file>
         <file>icons/CAM_Stop.svg</file>
-        <file>icons/CAM_SyncTools.svg</file>
         <file>icons/CAM_Tapping.svg</file>
         <file>icons/CAM_ThreadMilling.svg</file>
         <file>icons/CAM_ToolBit.svg</file>
@@ -69,6 +68,7 @@
         <file>icons/CAM_ToolTable.svg</file>
         <file>icons/CAM_ToolTableAdd.svg</file>
         <file>icons/CAM_ToolTableRemove.svg</file>
+        <file>icons/CAM_UpdateDocumentTools.svg</file>
         <file>icons/CAM_Vcarve.svg</file>
         <file>icons/CAM_RotarySurface.svg</file>
         <file>icons/CAM_Waterline.svg</file>

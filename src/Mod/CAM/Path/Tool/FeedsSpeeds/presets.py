@@ -152,3 +152,15 @@ def derive_preset_label(preset: dict, fallback: str = "(unnamed)") -> str:
     if mat == "any" and op == "any":
         return fallback
     return f"{mat} / {op}"
+
+
+def preset_key(preset: dict) -> tuple:
+    """Stable identity for a preset: name plus the material/op-type
+    combination it targets - not name alone. Two presets that share a name
+    but target different materials or op types are different presets, not
+    a collision (e.g. "Default" for hardwood/any vs "Default" for
+    softwood/any). Used for the duplicate check in the Presets tab editor.
+    """
+    hint = preset.get("material_hint") or {}
+    material_key = hint.get("uuid") or hint.get("name")
+    return (preset.get("name"), material_key, preset.get("op_type_hint"))
