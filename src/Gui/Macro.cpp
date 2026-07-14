@@ -390,8 +390,13 @@ void MacroManager::run(MacroType eType, const char* sName)
                                         .GetGroup("BaseApp")
                                         ->GetGroup("Preferences")
                                         ->GetGroup("OutputWindow");
-        PyObject* pyout = hGrp->GetBool("RedirectPythonOutput", true) ? new OutputStdout : nullptr;
-        PyObject* pyerr = hGrp->GetBool("RedirectPythonErrors", true) ? new OutputStderr : nullptr;
+        PyObject* pyout {nullptr};
+        PyObject* pyerr {nullptr};
+        {
+            Base::PyGILStateLocker lock;
+            pyout = hGrp->GetBool("RedirectPythonOutput", true) ? new OutputStdout : nullptr;
+            pyerr = hGrp->GetBool("RedirectPythonErrors", true) ? new OutputStderr : nullptr;
+        }
         PythonRedirector std_out("stdout", pyout);
         PythonRedirector std_err("stderr", pyerr);
         // The given path name is expected to be Utf-8
