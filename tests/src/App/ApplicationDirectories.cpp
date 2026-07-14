@@ -602,7 +602,8 @@ TEST_F(ApplicationDirectoriesTest, migrateConfigSkipsBrokenSymlink)
     writeFile(oldPath / "good.txt", "ok");
     try {
         fs::create_symlink(oldPath / "nonexistent_target", oldPath / "bad_link");
-    } catch (const std::filesystem::filesystem_error &e) {
+    }
+    catch (const std::filesystem::filesystem_error& e) {
         // Windows can throw exception "A required privilege is not held by the client"
         // if dev mode is not enabled on the machine, skip if that happens
         GTEST_SKIP() << "Could not create symlink: " << e.what();
@@ -622,7 +623,8 @@ TEST_F(ApplicationDirectoriesTest, migrateConfigCopiesValidSymlink)
     writeFile(oldPath / "target.txt", "content");
     try {
         fs::create_symlink(oldPath / "target.txt", oldPath / "good_link");
-    } catch (const std::filesystem::filesystem_error &e) {
+    }
+    catch (const std::filesystem::filesystem_error& e) {
         GTEST_SKIP() << "Could not create symlink: " << e.what();
     }
     auto result = App::ApplicationDirectories::migrateConfig(oldPath, newPath);
@@ -642,7 +644,8 @@ TEST_F(ApplicationDirectoriesTest, migrateAllPathsReturnsSkippedPaths)
     writeFile(base / "good.txt", "ok");
     try {
         fs::create_symlink(base / "no_such_file", base / "broken");
-    } catch (const std::filesystem::filesystem_error &e) {
+    }
+    catch (const std::filesystem::filesystem_error& e) {
         GTEST_SKIP() << "Could not create symlink: " << e.what();
     }
     std::vector<fs::path> inputs {base};
