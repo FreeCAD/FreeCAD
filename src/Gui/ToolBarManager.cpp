@@ -1109,8 +1109,10 @@ bool ToolBarManager::showContextMenu(QObject* source)
         area = statusBarAreaWidget;
         layout = findLayoutOfObject(source, area);
     }
-    else if ((customTitleBar && getMainWindow()->menuWidget() == source)
-             || (!customTitleBar && getMainWindow()->menuBar() == source)) {
+    else if (
+        (customTitleBar && getMainWindow()->menuWidget() == source)
+        || (!customTitleBar && getMainWindow()->menuBar() == source)
+    ) {
         area = findToolBarAreaWidget();
         if (!area) {
             return false;
