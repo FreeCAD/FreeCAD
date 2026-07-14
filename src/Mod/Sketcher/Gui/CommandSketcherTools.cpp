@@ -113,6 +113,147 @@ int getExternalEdgeId(std::string_view name)
     return -std::atoi(name.substr(extEdge.size(), maxlen).data()) - 2;
 }
 
+class DrawSketchHandlerNote final: public DrawSketchHandler
+{
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerNote)
+
+public:
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
+    {
+        const Base::Vector2d point = snapHandle.compute();
+        setPositionText(point);
+    }
+
+    bool pressButton(Base::Vector2d onSketchPos) override
+    {
+        if (sketchgui && sketchgui->addNoteAtSketchPoint(onSketchPos)) {
+            quit();
+            return true;
+        }
+
+        return false;
+    }
+
+    bool releaseButton(Base::Vector2d) override
+    {
+        return true;
+    }
+
+    void cancelCurrentAction() override
+    {
+        resetPositionText();
+        DrawSketchHandler::cancelCurrentAction();
+    }
+
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        using enum Gui::InputHint::UserInput;
+        return {
+            {tr("%1 place a note", "Sketcher Note: hint"), {MouseLeft}},
+        };
+    }
+
+protected:
+    std::string getToolName() const override
+    {
+        return "DSH_Note";
+    }
+
+    QString getCrosshairCursorSVGName() const override
+    {
+        return QStringLiteral("Sketcher_Pointer_Create_Point");
+    }
+};
+
+DEF_STD_CMD_A(CmdSketcherShowNotes)
+
+CmdSketcherShowNotes::CmdSketcherShowNotes()
+    : Command("Sketcher_ShowNotes")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Show Notes");
+    sToolTipText = QT_TR_NOOP("Shows sketch notes in edit mode");
+    sWhatsThis = "Sketcher_ShowNotes";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_AddNote";
+    eType = ForEdit;
+}
+
+void CmdSketcherShowNotes::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    Gui::Document* doc = getActiveGuiDocument();
+    auto* viewProvider = doc ? dynamic_cast<ViewProviderSketch*>(doc->getInEdit()) : nullptr;
+    if (viewProvider) {
+        viewProvider->setNotesVisible(true);
+    }
+}
+
+bool CmdSketcherShowNotes::isActive()
+{
+    Gui::Document* doc = getActiveGuiDocument();
+    auto* viewProvider = doc ? dynamic_cast<ViewProviderSketch*>(doc->getInEdit()) : nullptr;
+    return viewProvider && !viewProvider->areNotesVisible();
+}
+
+DEF_STD_CMD_A(CmdSketcherHideNotes)
+
+CmdSketcherHideNotes::CmdSketcherHideNotes()
+    : Command("Sketcher_HideNotes")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Hide Notes");
+    sToolTipText = QT_TR_NOOP("Hides sketch notes in edit mode");
+    sWhatsThis = "Sketcher_HideNotes";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_AddNote";
+    eType = ForEdit;
+}
+
+void CmdSketcherHideNotes::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    Gui::Document* doc = getActiveGuiDocument();
+    auto* viewProvider = doc ? dynamic_cast<ViewProviderSketch*>(doc->getInEdit()) : nullptr;
+    if (viewProvider) {
+        viewProvider->setNotesVisible(false);
+    }
+}
+
+bool CmdSketcherHideNotes::isActive()
+{
+    Gui::Document* doc = getActiveGuiDocument();
+    auto* viewProvider = doc ? dynamic_cast<ViewProviderSketch*>(doc->getInEdit()) : nullptr;
+    return viewProvider && viewProvider->areNotesVisible();
+}
+
+class CmdSketcherCompNotes: public Gui::GroupCommand
+{
+public:
+    CmdSketcherCompNotes()
+        : GroupCommand("Sketcher_CompNotes")
+    {
+        sAppModule = "Sketcher";
+        sGroup = "Sketcher";
+        sMenuText = QT_TR_NOOP("Notes");
+        sToolTipText = QT_TR_NOOP("Creates and manages sketch notes");
+        sWhatsThis = "Sketcher_CompNotes";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
+        setCheckable(false);
+        addCommand("Sketcher_AddNote");
+        addCommand("Sketcher_ShowNotes");
+        addCommand("Sketcher_HideNotes");
+    }
+
+    const char* className() const override
+    {
+        return "CmdSketcherCompNotes";
+    }
+};
+
 bool isConstraint(std::string_view name)
 {
     const std::string_view constr("Constraint");
@@ -2568,6 +2709,38 @@ bool CmdSketcherScale::isActive()
     return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
+// Note tool =======================================================
+
+DEF_STD_CMD_A(CmdSketcherAddNote)
+
+CmdSketcherAddNote::CmdSketcherAddNote()
+    : Command("Sketcher_AddNote")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("New Note");
+    sToolTipText = QT_TR_NOOP(
+        "Adds an editable screen-fixed note to the active sketch.\n"
+        "Click to place the note."
+    );
+    sWhatsThis = "Sketcher_AddNote";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_AddNote";
+    eType = ForEdit;
+}
+
+void CmdSketcherAddNote::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerNote>());
+}
+
+bool CmdSketcherAddNote::isActive()
+{
+    Gui::Document* doc = getActiveGuiDocument();
+    return doc && dynamic_cast<ViewProviderSketch*>(doc->getInEdit());
+}
+
 // Translate / rectangular pattern tool =======================================================
 
 DEF_STD_CMD_A(CmdSketcherTranslate)
@@ -2617,6 +2790,10 @@ void CreateSketcherCommandsConstraintAccel()
     rcCmdMgr.addCommand(new CmdSketcherSelectElementsAssociatedWithConstraints());
     rcCmdMgr.addCommand(new CmdSketcherSelectElementsWithDoFs());
     rcCmdMgr.addCommand(new CmdSketcherRestoreInternalAlignmentGeometry());
+    rcCmdMgr.addCommand(new CmdSketcherAddNote());
+    rcCmdMgr.addCommand(new CmdSketcherShowNotes());
+    rcCmdMgr.addCommand(new CmdSketcherHideNotes());
+    rcCmdMgr.addCommand(new CmdSketcherCompNotes());
     rcCmdMgr.addCommand(new CmdSketcherTranslate());
     rcCmdMgr.addCommand(new CmdSketcherOffset());
     rcCmdMgr.addCommand(new CmdSketcherRotate());

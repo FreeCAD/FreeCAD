@@ -6,5 +6,7 @@ The Sketcher module
 .. toctree::
    :maxdepth: 4
 
+   SketchNotes.rst
+
 .. automodule:: Sketcher
    :members:

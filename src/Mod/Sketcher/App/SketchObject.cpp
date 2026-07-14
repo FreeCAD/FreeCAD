@@ -120,6 +120,21 @@ SketchObject::SketchObject() : geoLastId(0)
                       "Internal Geometry",
                       App::Prop_None,
                       "Enables selection of closed profiles within a sketch as input for operations");
+    ADD_PROPERTY_TYPE(NoteTexts,
+                      (std::vector<std::string>()),
+                      "Sketch Notes",
+                      App::PropertyType(App::Prop_NoRecompute),
+                      "Sketch notes stored as edit-mode annotations");
+    ADD_PROPERTY_TYPE(NotePositions,
+                      (std::vector<Base::Vector3d>()),
+                      "Sketch Notes",
+                      App::PropertyType(App::Prop_NoRecompute),
+                      "Sketch note anchor positions in sketch coordinates");
+    ADD_PROPERTY_TYPE(NoteSizes,
+                      (std::vector<Base::Vector3d>()),
+                      "Sketch Notes",
+                      App::PropertyType(App::Prop_NoRecompute),
+                      "Sketch note sizes in screen pixels");
 
     Geometry.setOrderRelevant(true);
 
@@ -171,6 +186,126 @@ void SketchObject::setupObject()
     ArcFitTolerance.setValue(hGrpp->GetFloat("ArcFitTolerance", Precision::Confusion()*10.0));
     MakeInternals.setValue(hGrpp->GetBool("MakeInternals", true));
     inherited::setupObject();
+}
+
+std::size_t SketchObject::getNoteCount() const
+{
+    return std::min(NoteTexts.getValues().size(), NotePositions.getValues().size());
+}
+
+std::string SketchObject::getNoteText(std::size_t index) const
+{
+    if (index >= getNoteCount()) {
+        return {};
+    }
+
+    return NoteTexts.getValues()[index];
+}
+
+Base::Vector3d SketchObject::getNotePosition(std::size_t index) const
+{
+    if (index >= getNoteCount()) {
+        return Base::Vector3d();
+    }
+
+    return NotePositions.getValues()[index];
+}
+
+Base::Vector3d SketchObject::getNoteSize(std::size_t index) const
+{
+    constexpr double defaultWidth = 220.0;
+    constexpr double defaultHeight = 72.0;
+
+    const auto& sizes = NoteSizes.getValues();
+    if (index >= sizes.size()) {
+        return Base::Vector3d(defaultWidth, defaultHeight, 0.0);
+    }
+
+    return sizes[index];
+}
+
+int SketchObject::addNote(const std::string& text,
+                          const Base::Vector3d& position,
+                          const Base::Vector3d& size)
+{
+    auto texts = NoteTexts.getValues();
+    auto positions = NotePositions.getValues();
+    auto sizes = NoteSizes.getValues();
+
+    texts.push_back(text);
+    positions.push_back(position);
+    while (sizes.size() + 1 < texts.size()) {
+        sizes.emplace_back(220.0, 72.0, 0.0);
+    }
+    sizes.push_back(size);
+
+    NoteTexts.setValues(texts);
+    NotePositions.setValues(positions);
+    NoteSizes.setValues(sizes);
+
+    return static_cast<int>(texts.size()) - 1;
+}
+
+bool SketchObject::setNoteText(std::size_t index, const std::string& text)
+{
+    if (index >= getNoteCount()) {
+        return false;
+    }
+
+    auto texts = NoteTexts.getValues();
+    texts[index] = text;
+    NoteTexts.setValues(texts);
+    return true;
+}
+
+bool SketchObject::setNotePosition(std::size_t index, const Base::Vector3d& position)
+{
+    if (index >= getNoteCount()) {
+        return false;
+    }
+
+    auto positions = NotePositions.getValues();
+    positions[index] = position;
+    NotePositions.setValues(positions);
+    return true;
+}
+
+bool SketchObject::setNoteSize(std::size_t index, const Base::Vector3d& size)
+{
+    if (index >= getNoteCount()) {
+        return false;
+    }
+
+    auto sizes = NoteSizes.getValues();
+    while (sizes.size() < getNoteCount()) {
+        sizes.emplace_back(220.0, 72.0, 0.0);
+    }
+
+    sizes[index] = size;
+    NoteSizes.setValues(sizes);
+    return true;
+}
+
+bool SketchObject::removeNote(std::size_t index)
+{
+    if (index >= getNoteCount()) {
+        return false;
+    }
+
+    auto texts = NoteTexts.getValues();
+    auto positions = NotePositions.getValues();
+    auto sizes = NoteSizes.getValues();
+
+    texts.erase(texts.begin() + index);
+    positions.erase(positions.begin() + index);
+    if (index < sizes.size()) {
+        sizes.erase(sizes.begin() + index);
+    }
+
+    NoteTexts.setValues(texts);
+    NotePositions.setValues(positions);
+    NoteSizes.setValues(sizes);
+    return true;
 }
 
 short SketchObject::mustExecute() const

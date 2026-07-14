@@ -293,6 +293,7 @@
     <qresource>
         <file>icons/tools/Sketcher_Clone.svg</file>
         <file>icons/tools/Sketcher_Copy.svg</file>
+        <file>icons/tools/Sketcher_AddNote.svg</file>
         <file>icons/tools/Sketcher_DeleteConstraints.svg</file>
         <file>icons/tools/Sketcher_DeleteGeometry.svg</file>
         <file>icons/tools/Sketcher_Move.svg</file>

@@ -39,12 +39,19 @@
 #include <Inventor/nodes/SoTransform.h>
 
 #include <QApplication>
+#include <QContextMenuEvent>
 #include <QFontMetricsF>
+#include <QKeyEvent>
 #include <QHelpEvent>
 #include <QListWidget>
+#include <QMouseEvent>
 #include <QMenu>
 #include <QMessageBox>
+#include <QPlainTextEdit>
+#include <QResizeEvent>
 #include <QScreen>
+#include <QTextDocument>
+#include <QTextOption>
 #include <QTextStream>
 #include <QToolTip>
 #include <QWindow>
@@ -124,6 +131,293 @@ bool isFiniteVector(const Base::Vector3d& vector)
 {
     return std::isfinite(vector.x) && std::isfinite(vector.y) && std::isfinite(vector.z);
 }
+
+constexpr int SketchNoteWidthPx = 220;
+constexpr int SketchNoteMinHeightPx = 72;
+constexpr int SketchNoteMinWidthPx = 140;
+constexpr int SketchNotePaddingPx = 8;
+constexpr int SketchNoteSketchClearancePx = 12;
+
+class SketchNoteWidget: public QPlainTextEdit
+{
+public:
+    explicit SketchNoteWidget(int noteIndex, QWidget* parent = nullptr)
+        : QPlainTextEdit(parent)
+        , noteIndex(noteIndex)
+        , moveHandle(new QWidget(this))
+        , resizeHandle(new QWidget(this))
+    {
+        setFrameShape(QFrame::StyledPanel);
+        setLineWrapMode(QPlainTextEdit::WidgetWidth);
+        setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+        setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        setTabChangesFocus(true);
+        setPlaceholderText(QObject::tr("Note"));
+        setObjectName(QStringLiteral("SketchNoteWidget"));
+        setMinimumSize(SketchNoteMinWidthPx, SketchNoteMinHeightPx);
+        setStyleSheet(QStringLiteral(
+            "QPlainTextEdit#SketchNoteWidget {"
+            " background: rgba(255, 249, 196, 235);"
+            " border: 1px solid rgba(80, 80, 80, 180);"
+            " border-radius: 4px;"
+            " padding: 4px;"
+            " }"
+        ));
+        moveHandle->setObjectName(QStringLiteral("SketchNoteMoveHandle"));
+        moveHandle->setCursor(Qt::OpenHandCursor);
+        moveHandle->setToolTip(QObject::tr("Drag to move"));
+        moveHandle->setFixedSize(14, 10);
+        moveHandle->setStyleSheet(QStringLiteral(
+            "QWidget#SketchNoteMoveHandle {"
+            " background: rgba(80, 80, 80, 40);"
+            " border: 1px solid rgba(80, 80, 80, 120);"
+            " border-radius: 3px;"
+            " }"
+        ));
+        resizeHandle->setObjectName(QStringLiteral("SketchNoteResizeHandle"));
+        resizeHandle->setCursor(Qt::SizeFDiagCursor);
+        resizeHandle->setToolTip(QObject::tr("Drag to resize"));
+        resizeHandle->setFixedSize(12, 12);
+        resizeHandle->setStyleSheet(QStringLiteral(
+            "QWidget#SketchNoteResizeHandle {"
+            " background: transparent;"
+            " border-right: 2px dotted rgba(80, 80, 80, 180);"
+            " border-bottom: 2px dotted rgba(80, 80, 80, 180);"
+            " }"
+        ));
+        moveHandle->installEventFilter(this);
+        resizeHandle->installEventFilter(this);
+        moveHandle->raise();
+        resizeHandle->raise();
+
+        connect(document(), &QTextDocument::contentsChanged, this, [this]() { adjustHeight(); });
+    }
+
+    std::function<void(int, const QString&)> textCommitted;
+    std::function<void(int, const QPoint&)> dragFinished;
+    std::function<void(int, const QSize&)> sizeChanged;
+    std::function<void(int)> deleteRequested;
+
+    void setNoteIndex(int index)
+    {
+        noteIndex = index;
+    }
+
+    void syncText(const QString& text)
+    {
+        if (text == committedText && text == toPlainText()) {
+            return;
+        }
+
+        syncing = true;
+        setPlainText(text);
+        committedText = text;
+        syncing = false;
+        adjustHeight();
+    }
+
+    int preferredHeight() const
+    {
+        const int docHeight = static_cast<int>(std::ceil(document()->size().height()));
+        return std::max(SketchNoteMinHeightPx, docHeight + (2 * SketchNotePaddingPx));
+    }
+
+    QSize clampedSize(const QSize& desired) const
+    {
+        return QSize(std::max(SketchNoteMinWidthPx, desired.width()),
+                     std::max(preferredHeight(), desired.height()));
+    }
+
+    void syncSize(const QSize& requestedSize)
+    {
+        const QSize target = clampedSize(requestedSize);
+        if (size() != target) {
+            resize(target);
+        }
+    }
+
+    void adjustHeight()
+    {
+        const QSize target = clampedSize(size());
+        if (size() != target) {
+            resize(target);
+        }
+    }
+
+protected:
+    bool eventFilter(QObject* watched, QEvent* event) override
+    {
+        if (watched == moveHandle) {
+            if (event->type() == QEvent::MouseButtonPress) {
+                auto* mouseEvent = static_cast<QMouseEvent*>(event);
+                if (mouseEvent->button() == Qt::MiddleButton) {
+                    event->ignore();
+                    return false;
+                }
+                if (mouseEvent->button() == Qt::LeftButton) {
+                    dragging = true;
+                    dragOffset = mapFromGlobal(mouseEvent->globalPosition().toPoint());
+                    moveHandle->setCursor(Qt::ClosedHandCursor);
+                    event->accept();
+                    return true;
+                }
+            }
+            else if (event->type() == QEvent::MouseMove && dragging && parentWidget()) {
+                auto* mouseEvent = static_cast<QMouseEvent*>(event);
+                move(mapToParent(mapFromGlobal(mouseEvent->globalPosition().toPoint()) - dragOffset));
+                event->accept();
+                return true;
+            }
+            else if (event->type() == QEvent::MouseButtonRelease && dragging) {
+                auto* mouseEvent = static_cast<QMouseEvent*>(event);
+                if (mouseEvent->button() == Qt::LeftButton) {
+                    dragging = false;
+                    moveHandle->setCursor(Qt::OpenHandCursor);
+                    if (dragFinished) {
+                        dragFinished(noteIndex, pos());
+                    }
+                    event->accept();
+                    return true;
+                }
+            }
+        }
+        else if (watched == resizeHandle) {
+            if (event->type() == QEvent::MouseButtonPress) {
+                auto* mouseEvent = static_cast<QMouseEvent*>(event);
+                if (mouseEvent->button() == Qt::MiddleButton) {
+                    event->ignore();
+                    return false;
+                }
+                if (mouseEvent->button() == Qt::LeftButton) {
+                    resizing = true;
+                    resizeStartGlobalPos = mouseEvent->globalPosition().toPoint();
+                    resizeStartSize = size();
+                    event->accept();
+                    return true;
+                }
+            }
+            else if (event->type() == QEvent::MouseMove && resizing) {
+                auto* mouseEvent = static_cast<QMouseEvent*>(event);
+                const QPoint delta = mouseEvent->globalPosition().toPoint() - resizeStartGlobalPos;
+                resize(clampedSize(QSize(resizeStartSize.width() + delta.x(),
+                                         resizeStartSize.height() + delta.y())));
+                event->accept();
+                return true;
+            }
+            else if (event->type() == QEvent::MouseButtonRelease && resizing) {
+                auto* mouseEvent = static_cast<QMouseEvent*>(event);
+                if (mouseEvent->button() == Qt::LeftButton) {
+                    resizing = false;
+                    if (sizeChanged) {
+                        sizeChanged(noteIndex, size());
+                    }
+                    event->accept();
+                    return true;
+                }
+            }
+        }
+
+        return QPlainTextEdit::eventFilter(watched, event);
+    }
+
+    void focusOutEvent(QFocusEvent* event) override
+    {
+        commitIfNeeded();
+        QPlainTextEdit::focusOutEvent(event);
+    }
+
+    void keyPressEvent(QKeyEvent* event) override
+    {
+        if ((event->modifiers() & Qt::ControlModifier)
+            && (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)) {
+            clearFocus();
+            event->accept();
+            return;
+        }
+
+        QPlainTextEdit::keyPressEvent(event);
+    }
+
+    void mousePressEvent(QMouseEvent* event) override
+    {
+        if (event->button() == Qt::MiddleButton) {
+            event->ignore();
+            return;
+        }
+
+        QPlainTextEdit::mousePressEvent(event);
+    }
+
+    void mouseMoveEvent(QMouseEvent* event) override
+    {
+        if (event->buttons() & Qt::MiddleButton) {
+            event->ignore();
+            return;
+        }
+
+        QPlainTextEdit::mouseMoveEvent(event);
+    }
+
+    void mouseReleaseEvent(QMouseEvent* event) override
+    {
+        if (event->button() == Qt::MiddleButton) {
+            event->ignore();
+            return;
+        }
+
+        QPlainTextEdit::mouseReleaseEvent(event);
+    }
+
+    void contextMenuEvent(QContextMenuEvent* event) override
+    {
+        std::unique_ptr<QMenu> menu(createStandardContextMenu());
+        menu->addSeparator();
+        QAction* deleteAction = menu->addAction(QObject::tr("Delete Note"));
+        QObject::connect(deleteAction, &QAction::triggered, this, [this]() {
+            if (deleteRequested) {
+                deleteRequested(noteIndex);
+            }
+        });
+        menu->exec(event->globalPos());
+    }
+
+    void resizeEvent(QResizeEvent* event) override
+    {
+        QPlainTextEdit::resizeEvent(event);
+        moveHandle->move(6, 6);
+        resizeHandle->move(width() - resizeHandle->width() - 1, height() - resizeHandle->height() - 1);
+        moveHandle->raise();
+        resizeHandle->raise();
+    }
+
+private:
+    void commitIfNeeded()
+    {
+        if (syncing) {
+            return;
+        }
+
+        const QString text = toPlainText();
+        if (text != committedText) {
+            committedText = text;
+            if (textCommitted) {
+                textCommitted(noteIndex, text);
+            }
+        }
+    }
+
+    int noteIndex;
+    bool dragging = false;
+    bool resizing = false;
+    bool syncing = false;
+    QPoint dragOffset;
+    QString committedText;
+    QPoint resizeStartGlobalPos;
+    QSize resizeStartSize;
+    QWidget* moveHandle = nullptr;
+    QWidget* resizeHandle = nullptr;
+};
 }  // namespace
 
 /************** ViewProviderSketch::ParameterObserver *********************/
@@ -594,6 +888,7 @@ ViewProviderSketch::ViewProviderSketch()
     , sketchHandler(nullptr)
     , viewOrientationFactor(1)
     , blockContextMenu(false)
+    , noteIndexToFocus(-1)
 {
     PartGui::ViewProviderAttachExtension::initExtension(this);
     PartGui::ViewProviderGridExtension::initExtension(this);
@@ -3535,6 +3830,67 @@ bool ViewProviderSketch::doubleClicked()
     return true;
 }
 
+bool ViewProviderSketch::addNoteAtViewportCenter()
+{
+    if (!isInEditMode()) {
+        return false;
+    }
+
+    auto* view = qobject_cast<Gui::View3DInventor*>(getActiveView());
+    if (!view || !view->getViewer() || !view->getViewer()->getGLWidget()) {
+        return false;
+    }
+
+    QWidget* viewport = view->getViewer()->getGLWidget();
+    const QPoint topLeft(
+        std::max(0, (viewport->width() - SketchNoteWidthPx) / 2),
+        std::max(0, (viewport->height() - SketchNoteMinHeightPx) / 2)
+    );
+
+    Base::Vector2d sketchPoint;
+    if (!getSketchCoordinatesFromWidgetPoint(topLeft, sketchPoint)) {
+        return false;
+    }
+
+    return addNoteAtSketchPoint(sketchPoint);
+}
+
+bool ViewProviderSketch::addNoteAtSketchPoint(const Base::Vector2d& sketchPoint)
+{
+    if (!isInEditMode()) {
+        return false;
+    }
+
+    getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch note"));
+    try {
+        noteIndexToFocus = getSketchObject()->addNote(
+            std::string(),
+            Base::Vector3d(sketchPoint.x, sketchPoint.y, 0.0),
+            Base::Vector3d(SketchNoteWidthPx, SketchNoteMinHeightPx, 0.0)
+        );
+        getDocument()->commitCommand();
+    }
+    catch (const Base::Exception&) {
+        noteIndexToFocus = -1;
+        getDocument()->abortCommand();
+        return false;
+    }
+
+    updateNoteWidgets();
+    return true;
+}
+
+void ViewProviderSketch::setNotesVisible(bool visible)
+{
+    notesVisible = visible;
+    updateNoteWidgets();
+}
+
+bool ViewProviderSketch::areNotesVisible() const
+{
+    return notesVisible;
+}
+
 float ViewProviderSketch::getScaleFactor() const
 {
     assert(isInEditMode());
@@ -3749,6 +4105,8 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationoverl
     if (mdi && mdi->isDerivedFrom<Gui::View3DInventor>()) {
         static_cast<Gui::View3DInventor*>(mdi)->getViewer()->redraw();
     }
+
+    updateNoteWidgets();
 }
 
 void ViewProviderSketch::setIsShownVirtualSpace(bool isshownvirtualspace)
@@ -3839,6 +4197,11 @@ void ViewProviderSketch::updateData(const App::Property* prop) {
 
     if (prop != &getSketchObject()->Constraints) {
         signalElementsChanged();
+    }
+
+    if (prop == &getSketchObject()->NoteTexts || prop == &getSketchObject()->NotePositions
+        || prop == &getSketchObject()->NoteSizes) {
+        updateNoteWidgets();
     }
 }
 
@@ -4193,6 +4556,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     selection.reset();
     editCoinManager = std::make_unique<EditModeCoinManager>(*this);
     snapManager = std::make_unique<SnapManager>(*this);
+    noteIndexToFocus = -1;
 
 
     App::DocumentObject* editObj = getSketchObject();
@@ -4496,6 +4860,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
             deactivateHandler();
         }
 
+        clearNoteWidgets();
         editCoinManager = nullptr;
         snapManager = nullptr;
         preselection.reset();
@@ -4649,6 +5014,9 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
             }
         });
     }
+
+    rebuildNoteWidgets();
+    updateNoteWidgets();
 }
 
 void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
@@ -4668,6 +5036,7 @@ void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
     viewer->setSelectionEnabled(true);
 
     blockContextMenu = false;
+    clearNoteWidgets();
 
     QObject::disconnect(screenChangeConnection);
 }
@@ -4739,6 +5108,7 @@ void ViewProviderSketch::onCameraChanged(SoCamera* cam)
     }
 
     drawGrid(true);
+    updateNoteWidgets();
 }
 
 int ViewProviderSketch::getPreselectPoint() const
@@ -5187,6 +5557,312 @@ SbVec2f ViewProviderSketch::getScreenCoordinates(SbVec3f sketchcoordinates) cons
 
     SbVec2s viewportPoint = viewer->getPointOnViewport(Base::convertTo<SbVec3f>(pos));
     return SbVec2f(static_cast<float>(viewportPoint[0]), static_cast<float>(viewportPoint[1]));
+}
+
+QPoint ViewProviderSketch::notePositionToWidgetPoint(const Base::Vector3d& point) const
+{
+    SbVec2f viewportPoint = getScreenCoordinates(SbVec3f(point.x, point.y, point.z));
+    auto* view = qobject_cast<Gui::View3DInventor*>(getActiveView());
+    if (!view || !view->getViewer() || !view->getViewer()->getGLWidget()) {
+        return {};
+    }
+
+    QWidget* viewport = view->getViewer()->getGLWidget();
+    return QPoint(
+        static_cast<int>(std::lround(viewportPoint[0])),
+        viewport->height() - static_cast<int>(std::lround(viewportPoint[1]))
+    );
+}
+
+QRect ViewProviderSketch::getVisibleSketchScreenRect() const
+{
+    auto* view = qobject_cast<Gui::View3DInventor*>(getActiveView());
+    if (!view || !view->getViewer() || !isInEditMode()) {
+        return {};
+    }
+
+    const Base::BoundBox3d bbox = _getBoundingBox(nullptr, nullptr, true, view->getViewer(), 0);
+    if (!bbox.IsValid()) {
+        return {};
+    }
+
+    const Base::Vector3d corners[] = {
+        Base::Vector3d(bbox.MinX, bbox.MinY, bbox.MinZ),
+        Base::Vector3d(bbox.MinX, bbox.MaxY, bbox.MinZ),
+        Base::Vector3d(bbox.MaxX, bbox.MinY, bbox.MinZ),
+        Base::Vector3d(bbox.MaxX, bbox.MaxY, bbox.MinZ),
+        Base::Vector3d(bbox.MinX, bbox.MinY, bbox.MaxZ),
+        Base::Vector3d(bbox.MinX, bbox.MaxY, bbox.MaxZ),
+        Base::Vector3d(bbox.MaxX, bbox.MinY, bbox.MaxZ),
+        Base::Vector3d(bbox.MaxX, bbox.MaxY, bbox.MaxZ),
+    };
+
+    QRect screenRect;
+    bool first = true;
+    for (const auto& corner : corners) {
+        const QPoint point = notePositionToWidgetPoint(corner);
+        if (first) {
+            screenRect = QRect(point, point);
+            first = false;
+        }
+        else {
+            screenRect = screenRect.united(QRect(point, point));
+        }
+    }
+
+    return screenRect.normalized();
+}
+
+bool ViewProviderSketch::getSketchCoordinatesFromWidgetPoint(
+    const QPoint& point,
+    Base::Vector2d& sketchPoint
+) const
+{
+    auto* view = qobject_cast<Gui::View3DInventor*>(getActiveView());
+    if (!view || !view->getViewer() || !view->getViewer()->getGLWidget()) {
+        return false;
+    }
+
+    QWidget* viewport = view->getViewer()->getGLWidget();
+    SbLine line;
+    if (!getProjectingLine(
+            SbVec2s(static_cast<short>(point.x()), static_cast<short>(viewport->height() - point.y())),
+            view->getViewer(),
+            line)) {
+        return false;
+    }
+
+    double u = 0.0;
+    double v = 0.0;
+    if (!getCoordsOnSketchPlane(line.getPosition(), line.getDirection(), u, v)) {
+        return false;
+    }
+
+    sketchPoint = Base::Vector2d(u, v);
+    return true;
+}
+
+void ViewProviderSketch::clearNoteWidgets()
+{
+    for (auto& widget : noteWidgets) {
+        if (widget) {
+            widget->hide();
+            widget->deleteLater();
+        }
+    }
+    noteWidgets.clear();
+    noteViewport.clear();
+}
+
+void ViewProviderSketch::rebuildNoteWidgets()
+{
+    clearNoteWidgets();
+
+    if (!isInEditMode()) {
+        return;
+    }
+
+    auto* view = qobject_cast<Gui::View3DInventor*>(getActiveView());
+    if (!view || !view->getViewer() || !view->getViewer()->getGLWidget()) {
+        return;
+    }
+
+    noteViewport = view->getViewer()->getGLWidget();
+    const std::size_t noteCount = getSketchObject()->getNoteCount();
+    noteWidgets.reserve(noteCount);
+
+    for (std::size_t i = 0; i < noteCount; ++i) {
+        auto* widget = new SketchNoteWidget(static_cast<int>(i), noteViewport);
+        widget->textCommitted = [this](int noteIndex, const QString& text) {
+            commitNoteTextChange(noteIndex, text);
+        };
+        widget->dragFinished = [this](int noteIndex, const QPoint& topLeft) {
+            commitNotePositionChange(noteIndex, topLeft);
+        };
+        widget->sizeChanged = [this](int noteIndex, const QSize& size) {
+            commitNoteSizeChange(noteIndex, size);
+        };
+        widget->deleteRequested = [this](int noteIndex) { deleteNote(noteIndex); };
+        widget->syncText(QString::fromStdString(getSketchObject()->getNoteText(i)));
+        const Base::Vector3d noteSize = getSketchObject()->getNoteSize(i);
+        widget->syncSize(QSize(static_cast<int>(std::lround(noteSize.x)),
+                               static_cast<int>(std::lround(noteSize.y))));
+        widget->show();
+        noteWidgets.push_back(widget);
+    }
+}
+
+void ViewProviderSketch::updateNoteWidgets()
+{
+    if (!isInEditMode()) {
+        clearNoteWidgets();
+        return;
+    }
+
+    auto* view = qobject_cast<Gui::View3DInventor*>(getActiveView());
+    QWidget* viewport = (view && view->getViewer()) ? view->getViewer()->getGLWidget() : nullptr;
+    if (!viewport) {
+        clearNoteWidgets();
+        return;
+    }
+
+    if (noteViewport != viewport || noteWidgets.size() != getSketchObject()->getNoteCount()) {
+        rebuildNoteWidgets();
+    }
+
+    const QRect sketchRect = getVisibleSketchScreenRect().adjusted(-SketchNoteSketchClearancePx,
+                                                                   -SketchNoteSketchClearancePx,
+                                                                   SketchNoteSketchClearancePx,
+                                                                   SketchNoteSketchClearancePx);
+    const QPoint sketchCenter = sketchRect.center();
+
+    for (std::size_t i = 0; i < noteWidgets.size(); ++i) {
+        auto* widget = static_cast<SketchNoteWidget*>(noteWidgets[i].data());
+        if (!widget) {
+            continue;
+        }
+
+        widget->setNoteIndex(static_cast<int>(i));
+        if (!widget->hasFocus()) {
+            widget->syncText(QString::fromStdString(getSketchObject()->getNoteText(i)));
+        }
+        const Base::Vector3d noteSize = getSketchObject()->getNoteSize(i);
+        widget->syncSize(QSize(static_cast<int>(std::lround(noteSize.x)),
+                               static_cast<int>(std::lround(noteSize.y))));
+        QRect noteRect(notePositionToWidgetPoint(getSketchObject()->getNotePosition(i)), widget->size());
+
+        if (notesVisible && sketchRect.isValid() && noteRect.intersects(sketchRect)) {
+            const QPoint noteCenter = noteRect.center();
+            const int dx = noteCenter.x() - sketchCenter.x();
+            const int dy = noteCenter.y() - sketchCenter.y();
+
+            if (std::abs(dx) >= std::abs(dy)) {
+                if (dx >= 0) {
+                    noteRect.moveLeft(sketchRect.right() + 1);
+                }
+                else {
+                    noteRect.moveLeft(sketchRect.left() - noteRect.width() - 1);
+                }
+            }
+            else {
+                if (dy >= 0) {
+                    noteRect.moveTop(sketchRect.bottom() + 1);
+                }
+                else {
+                    noteRect.moveTop(sketchRect.top() - noteRect.height() - 1);
+                }
+            }
+        }
+
+        noteRect.moveLeft(std::clamp(noteRect.left(), 0, std::max(0, viewport->width() - noteRect.width())));
+        noteRect.moveTop(std::clamp(noteRect.top(), 0, std::max(0, viewport->height() - noteRect.height())));
+
+        widget->move(noteRect.topLeft());
+        widget->setVisible(notesVisible);
+    }
+
+    if (noteIndexToFocus >= 0 && noteIndexToFocus < static_cast<int>(noteWidgets.size())) {
+        if (auto* widget = static_cast<SketchNoteWidget*>(noteWidgets[noteIndexToFocus].data())) {
+            widget->setFocus();
+        }
+        noteIndexToFocus = -1;
+    }
+}
+
+void ViewProviderSketch::commitNoteTextChange(int noteIndex, const QString& text)
+{
+    if (noteIndex < 0 || static_cast<std::size_t>(noteIndex) >= getSketchObject()->getNoteCount()) {
+        return;
+    }
+
+    if (getSketchObject()->getNoteText(noteIndex) == text.toStdString()) {
+        return;
+    }
+
+    getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Edit sketch note"));
+    try {
+        getSketchObject()->setNoteText(static_cast<std::size_t>(noteIndex), text.toStdString());
+        getDocument()->commitCommand();
+    }
+    catch (const Base::Exception&) {
+        getDocument()->abortCommand();
+    }
+}
+
+void ViewProviderSketch::commitNotePositionChange(int noteIndex, const QPoint& topLeft)
+{
+    if (noteIndex < 0 || static_cast<std::size_t>(noteIndex) >= getSketchObject()->getNoteCount()) {
+        return;
+    }
+
+    Base::Vector2d sketchPoint;
+    if (!getSketchCoordinatesFromWidgetPoint(topLeft, sketchPoint)) {
+        updateNoteWidgets();
+        return;
+    }
+
+    Base::Vector3d newPosition(sketchPoint.x, sketchPoint.y, 0.0);
+    Base::Vector3d currentPosition = getSketchObject()->getNotePosition(noteIndex);
+    if ((newPosition - currentPosition).Length() <= Precision::Confusion()) {
+        updateNoteWidgets();
+        return;
+    }
+
+    getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Move sketch note"));
+    try {
+        getSketchObject()->setNotePosition(static_cast<std::size_t>(noteIndex), newPosition);
+        getDocument()->commitCommand();
+    }
+    catch (const Base::Exception&) {
+        getDocument()->abortCommand();
+    }
+
+    updateNoteWidgets();
+}
+
+void ViewProviderSketch::commitNoteSizeChange(int noteIndex, const QSize& size)
+{
+    if (noteIndex < 0 || static_cast<std::size_t>(noteIndex) >= getSketchObject()->getNoteCount()) {
+        return;
+    }
+
+    const Base::Vector3d currentSize = getSketchObject()->getNoteSize(noteIndex);
+    const Base::Vector3d newSize(std::max(SketchNoteMinWidthPx, size.width()),
+                                 std::max(SketchNoteMinHeightPx, size.height()),
+                                 0.0);
+    if ((newSize - currentSize).Length() <= Precision::Confusion()) {
+        updateNoteWidgets();
+        return;
+    }
+
+    getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Resize sketch note"));
+    try {
+        getSketchObject()->setNoteSize(static_cast<std::size_t>(noteIndex), newSize);
+        getDocument()->commitCommand();
+    }
+    catch (const Base::Exception&) {
+        getDocument()->abortCommand();
+    }
+
+    updateNoteWidgets();
+}
+
+void ViewProviderSketch::deleteNote(int noteIndex)
+{
+    if (noteIndex < 0 || static_cast<std::size_t>(noteIndex) >= getSketchObject()->getNoteCount()) {
+        return;
+    }
+
+    getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Delete sketch note"));
+    try {
+        getSketchObject()->removeNote(static_cast<std::size_t>(noteIndex));
+        getDocument()->commitCommand();
+    }
+    catch (const Base::Exception&) {
+        getDocument()->abortCommand();
+    }
+
+    updateNoteWidgets();
 }
 
 QFont ViewProviderSketch::getApplicationFont() const

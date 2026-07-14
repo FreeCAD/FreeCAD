@@ -27,6 +27,7 @@
 #include <App/FeaturePython.h>
 #include <App/IndexedName.h>
 #include <App/PropertyFile.h>
+#include <App/PropertyStandard.h>
 #include <Base/Axis.h>
 #include <Base/Bitmask.h>
 #include <Mod/Part/App/Part2DObject.h>
@@ -109,6 +110,9 @@ public:
     Part ::PropertyPartShape InternalShape;
     App ::PropertyPrecision InternalTolerance;
     App ::PropertyBool MakeInternals;
+    App::PropertyStringList NoteTexts;
+    App::PropertyVectorList NotePositions;
+    App::PropertyVectorList NoteSizes;
     /** @name methods override Feature */
     //@{
     short mustExecute() const override;
@@ -123,6 +127,16 @@ public:
     }
     void setupObject() override;
     //@}
+
+    std::size_t getNoteCount() const;
+    std::string getNoteText(std::size_t index) const;
+    Base::Vector3d getNotePosition(std::size_t index) const;
+    Base::Vector3d getNoteSize(std::size_t index) const;
+    int addNote(const std::string& text, const Base::Vector3d& position, const Base::Vector3d& size);
+    bool setNoteText(std::size_t index, const std::string& text);
+    bool setNotePosition(std::size_t index, const Base::Vector3d& position);
+    bool setNoteSize(std::size_t index, const Base::Vector3d& size);
+    bool removeNote(std::size_t index);
 
     /** SketchObject can work in two modes: Recompute Mode and noRecomputes Mode
         - In Recompute Mode, a recompute is necessary after each geometry addition to update the

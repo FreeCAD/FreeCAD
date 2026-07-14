@@ -31,6 +31,8 @@
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <QCoreApplication>
 #include <QMetaObject>
+#include <QPoint>
+#include <QPointer>
 #include <fastsignals/signal.h>
 #include <memory>
 
@@ -753,6 +755,11 @@ public:
         Base::Vector3d& pickedPoint
     );
 
+    bool addNoteAtViewportCenter();
+    bool addNoteAtSketchPoint(const Base::Vector2d& sketchPoint);
+    void setNotesVisible(bool visible);
+    bool areNotesVisible() const;
+
     /** @name Attorneys for collaboration with helper classes */
     //@{
     friend class ViewProviderSketchDrawSketchHandlerAttorney;
@@ -935,6 +942,16 @@ private:
 
     void updateColorPropertiesVisibility();
     void updateAutomaticColorProperties();
+    void rebuildNoteWidgets();
+    void clearNoteWidgets();
+    void updateNoteWidgets();
+    QRect getVisibleSketchScreenRect() const;
+    bool getSketchCoordinatesFromWidgetPoint(const QPoint& point, Base::Vector2d& sketchPoint) const;
+    QPoint notePositionToWidgetPoint(const Base::Vector3d& point) const;
+    void commitNoteTextChange(int noteIndex, const QString& text);
+    void commitNotePositionChange(int noteIndex, const QPoint& topLeft);
+    void commitNoteSizeChange(int noteIndex, const QSize& size);
+    void deleteNote(int noteIndex);
 
     /** @name Attorney functions*/
     //@{
@@ -1087,6 +1104,10 @@ private:
     int viewOrientationFactor;  // stores if sketch viewed from front or back
 
     bool blockContextMenu;
+    QPointer<QWidget> noteViewport;
+    std::vector<QPointer<QWidget>> noteWidgets;
+    int noteIndexToFocus;
+    bool notesVisible = true;
     std::stringstream sketchBackup;
 };
 

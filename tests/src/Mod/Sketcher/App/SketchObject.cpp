@@ -22,6 +22,69 @@ TEST_F(SketchObjectTest, createSketchObject)  // NOLINT
     // Assert
 }
 
+TEST_F(SketchObjectTest, testSketchNotesAddAndReadBack)
+{
+    Base::Vector3d position(10.0, 20.0, 0.0);
+    Base::Vector3d size(240.0, 90.0, 0.0);
+
+    const int noteIndex = getObject()->addNote("hello note", position, size);
+
+    EXPECT_EQ(noteIndex, 0);
+    EXPECT_EQ(getObject()->getNoteCount(), 1);
+    EXPECT_EQ(getObject()->getNoteText(0), "hello note");
+    EXPECT_DOUBLE_EQ(getObject()->getNotePosition(0).x, 10.0);
+    EXPECT_DOUBLE_EQ(getObject()->getNotePosition(0).y, 20.0);
+    EXPECT_DOUBLE_EQ(getObject()->getNoteSize(0).x, 240.0);
+    EXPECT_DOUBLE_EQ(getObject()->getNoteSize(0).y, 90.0);
+}
+
+TEST_F(SketchObjectTest, testSketchNotesEditTextPositionAndSize)
+{
+    getObject()->addNote("before", Base::Vector3d(1.0, 2.0, 0.0), Base::Vector3d(220.0, 72.0, 0.0));
+
+    EXPECT_TRUE(getObject()->setNoteText(0, "after"));
+    EXPECT_TRUE(getObject()->setNotePosition(0, Base::Vector3d(3.0, 4.0, 0.0)));
+    EXPECT_TRUE(getObject()->setNoteSize(0, Base::Vector3d(260.0, 110.0, 0.0)));
+
+    EXPECT_EQ(getObject()->getNoteText(0), "after");
+    EXPECT_DOUBLE_EQ(getObject()->getNotePosition(0).x, 3.0);
+    EXPECT_DOUBLE_EQ(getObject()->getNotePosition(0).y, 4.0);
+    EXPECT_DOUBLE_EQ(getObject()->getNoteSize(0).x, 260.0);
+    EXPECT_DOUBLE_EQ(getObject()->getNoteSize(0).y, 110.0);
+}
+
+TEST_F(SketchObjectTest, testSketchNotesRemoveKeepsListsInSync)
+{
+    getObject()->addNote("first", Base::Vector3d(1.0, 1.0, 0.0), Base::Vector3d(220.0, 72.0, 0.0));
+    getObject()->addNote("second", Base::Vector3d(2.0, 2.0, 0.0), Base::Vector3d(230.0, 80.0, 0.0));
+
+    EXPECT_TRUE(getObject()->removeNote(0));
+
+    EXPECT_EQ(getObject()->getNoteCount(), 1);
+    EXPECT_EQ(getObject()->getNoteText(0), "second");
+    EXPECT_DOUBLE_EQ(getObject()->getNotePosition(0).x, 2.0);
+    EXPECT_DOUBLE_EQ(getObject()->getNotePosition(0).y, 2.0);
+    EXPECT_DOUBLE_EQ(getObject()->getNoteSize(0).x, 230.0);
+    EXPECT_DOUBLE_EQ(getObject()->getNoteSize(0).y, 80.0);
+}
+
+TEST_F(SketchObjectTest, testSketchNotesOutOfRangeOperationsFailCleanly)
+{
+    EXPECT_EQ(getObject()->getNoteCount(), 0);
+    EXPECT_EQ(getObject()->getNoteText(0), "");
+    EXPECT_DOUBLE_EQ(getObject()->getNotePosition(0).x, 0.0);
+    EXPECT_DOUBLE_EQ(getObject()->getNotePosition(0).y, 0.0);
+
+    const Base::Vector3d defaultSize = getObject()->getNoteSize(0);
+    EXPECT_DOUBLE_EQ(defaultSize.x, 220.0);
+    EXPECT_DOUBLE_EQ(defaultSize.y, 72.0);
+
+    EXPECT_FALSE(getObject()->setNoteText(0, "nope"));
+    EXPECT_FALSE(getObject()->setNotePosition(0, Base::Vector3d(1.0, 1.0, 0.0)));
+    EXPECT_FALSE(getObject()->setNoteSize(0, Base::Vector3d(1.0, 1.0, 0.0)));
+    EXPECT_FALSE(getObject()->removeNote(0));
+}
+
 TEST_F(SketchObjectTest, testGeoIdFromShapeTypeEdge)
 {
     // Arrange

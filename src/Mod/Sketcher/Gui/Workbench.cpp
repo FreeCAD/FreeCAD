@@ -99,7 +99,11 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     sketch->setCommand("S&ketch");
     addSketcherWorkbenchSketchActions(*sketch);
     addSketcherWorkbenchSketchEditModeActions(*sketch);
-    *sketch << geom << cons << consaccel << bsplines << visual;
+    *sketch << "Sketcher_AddNote"
+            << "Sketcher_ShowNotes"
+            << "Sketcher_HideNotes"
+            << "Separator"
+            << geom << cons << consaccel << bsplines << visual;
 
     return root;
 }
@@ -574,6 +578,7 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel)
     consaccel << "Sketcher_Projection"
               << "Sketcher_Intersection"
               << "Sketcher_CarbonCopy"
+              << "Sketcher_CompNotes"
               << "Separator"
               << "Sketcher_SelectOrigin"
               << "Sketcher_SelectHorizontalAxis"
@@ -601,6 +606,7 @@ inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consac
     SketcherAddWorkspaceCurveEdition(consaccel);
     consaccel << "Sketcher_CompExternal"
               << "Sketcher_CarbonCopy"
+              << "Sketcher_CompNotes"
               << "Separator"
               << "Sketcher_Translate"
               << "Sketcher_Rotate"

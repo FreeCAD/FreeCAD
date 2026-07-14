@@ -24,6 +24,7 @@ This is the complete python API reference of the FreeCAD application
    Mesh.rst
    Part.rst
    Sketch.rst
+   SketchNotes.rst
    PartDesign.rst
    Draft.rst
    DraftVecUtils.rst
