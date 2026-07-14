@@ -1125,9 +1125,14 @@ void View3DInventorViewer::init()
     auto hiddenAnchor = new SoSkipBoundingGroup();
     hiddenAnchor->mode = SoSkipBoundingGroup::EXCLUDE_BBOX;
     auto hiddenSep = new SoSeparator();
+    // The zero scale that hides the cube also makes the model matrix singular, so keep it out of
+    // the ray-casting calculations during object picking.
+    auto hiddenPickStyle = new SoPickStyle();
+    hiddenPickStyle->style = SoPickStyle::UNPICKABLE;
     auto hiddenScale = new SoScale();
     hiddenScale->scaleFactor = SbVec3f(0, 0, 0);
     auto hiddenCube = new SoCube();
+    hiddenSep->addChild(hiddenPickStyle);
     hiddenSep->addChild(hiddenScale);
     hiddenSep->addChild(hiddenCube);
     hiddenAnchor->addChild(hiddenSep);
