@@ -24,6 +24,7 @@
 import FreeCAD
 import Path
 import glob
+import json
 import os
 import pathlib
 from collections import defaultdict
@@ -295,16 +296,17 @@ def setJobDefaults(jobTemplate, geometryTolerance, curveAccuracy):
 def postProcessorBlacklist():
     pref = preferences()
     blacklist = pref.GetString(PostProcessorBlacklist, "")
-    if not blacklist:
+    try:
+        return json.loads(blacklist)
+    except Exception:
         return []
-    return eval(blacklist)
 
 
 def setPostProcessorDefaults(processor, args, blacklist):
     pref = preferences()
     pref.SetString(PostProcessorDefault, processor)
     pref.SetString(PostProcessorDefaultArgs, args)
-    pref.SetString(PostProcessorBlacklist, "%s" % (blacklist))
+    pref.SetString(PostProcessorBlacklist, json.dumps(blacklist))
 
 
 def setOutputFileDefaults(fileName, policy):
