@@ -28,7 +28,6 @@
 #include <BRep_Builder.hxx>
 #include <Precision.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
-#include <Mod/Part/App/ShapeAnalysis_FreeBoundsFix.h>
 #include <Standard_Failure.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
@@ -37,6 +36,7 @@
 
 
 #include "OCCError.h"
+#include "ShapeAnalysis_FreeBoundsFix.h"
 #include <Base/GeometryPyCXX.h>
 
 // inclusion of the generated files (generated out of TopoShapeCompoundPy.xml)

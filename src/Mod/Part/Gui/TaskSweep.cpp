@@ -23,15 +23,15 @@
  ***************************************************************************/
 
 
+#include <BRepBuilderAPI_MakeWire.hxx>
+#include <Mod/Part/App/ShapeAnalysis_FreeBoundsFix.h>
+#include <Precision.hxx>
 #include <QApplication>
 #include <QMessageBox>
 #include <QTextStream>
 #include <QTimer>
 #include <QTreeWidget>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <Precision.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
-#include <Mod/Part/App/ShapeAnalysis_FreeBoundsFix.h>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Iterator.hxx>
