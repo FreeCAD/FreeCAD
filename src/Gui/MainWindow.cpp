@@ -317,6 +317,9 @@ struct StatusBarItem
     /// widget->isVisible(), which is unreliable while MainWindow is still being
     /// constructed (the window is not shown yet, so every child reports hidden).
     bool enabled = true;
+    /// Whether the widget is currently held by the QStatusBar. A freshly-registered  item is not,
+    /// so relayout should skip it to avoid Qt warnings about removing an unknown widget.
+    bool placed = false;
 };
 
 // -------------------------------------
@@ -2795,7 +2798,7 @@ void MainWindow::removeStatusBarItem(const QByteArray& id)
     if (it == items.end()) {
         return;
     }
-    if (it->widget) {
+    if (it->widget && it->placed) {
         statusBar()->removeWidget(it->widget);
     }
     items.erase(it);
@@ -2813,7 +2816,10 @@ void MainWindow::relayoutStatusBar()
     for (auto& item : d->statusBarItems) {
         if (item.widget) {
             wasVisible.insert(item.widget, item.widget->isVisible());
-            sb->removeWidget(item.widget);
+            if (item.placed) {
+                sb->removeWidget(item.widget);
+                item.placed = false;
+            }
         }
     }
 
@@ -2839,6 +2845,7 @@ void MainWindow::relayoutStatusBar()
         else {
             sb->addPermanentWidget(item.widget, item.spec.stretch);
         }
+        item.placed = true;
 
         if (ownsVisibility(item.widget)) {
             // Progress bar: registry drives userEnabled; actual visibility stays
