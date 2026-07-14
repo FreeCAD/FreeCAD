@@ -169,6 +169,16 @@ SET(PathPythonToolsDocObjectUi_SRCS
 SET(PathPythonToolsGui_SRCS
     Path/Tool/Gui/__init__.py
     Path/Tool/Gui/Controller.py
+    Path/Tool/Gui/FeedsSpeedsDialog.py
+    Path/Tool/Gui/MaterialPicker.py
+)
+
+SET(PathPythonToolsFeedsSpeeds_SRCS
+    Path/Tool/FeedsSpeeds/__init__.py
+    Path/Tool/FeedsSpeeds/types.py
+    Path/Tool/FeedsSpeeds/resolver.py
+    Path/Tool/FeedsSpeeds/providers.py
+    Path/Tool/FeedsSpeeds/presets.py
 )
 
 SET(PathPythonMachineUi_SRCS
@@ -233,6 +243,7 @@ SET(PathPythonToolsToolBitUi_SRCS
     Path/Tool/toolbit/ui/browser.py
     Path/Tool/toolbit/ui/file.py
     Path/Tool/toolbit/ui/panel.py
+    Path/Tool/toolbit/ui/presets_tab.py
     Path/Tool/toolbit/ui/selector.py
     Path/Tool/toolbit/ui/tablecell.py
     Path/Tool/toolbit/ui/toollist.py
@@ -305,6 +316,7 @@ SET(PathPythonToolsShapeUi_SRCS
 SET(PathPythonPost_SRCS
     Path/Post/__init__.py
     Path/Post/Command.py
+    Path/Post/CAMErrors.py
     Path/Post/GcodeProcessingUtils.py
     Path/Post/PostList.py
     Path/Post/Processor.py
@@ -553,6 +565,7 @@ SET(Tests_SRCS
     CAMTests/TestPathAdaptive.py
     CAMTests/TestPathCommandAnnotations.py
     CAMTests/TestPathCore.py
+    CAMTests/TestPathCustom.py
     CAMTests/TestPathDepthParams.py
     CAMTests/TestPathDressupArray.py
     CAMTests/TestPathDressupDogboneII.py
@@ -623,6 +636,9 @@ SET(Tests_SRCS
     CAMTests/TestSVGPost.py
     CAMTests/TestTSPSolver.py
     CAMTests/TestGcodeProcessingUtils.py
+    CAMTests/TestFeedsSpeedsResolver.py
+    CAMTests/TestFeedsSpeedsToolBitPresets.py
+    CAMTests/TestFeedsSpeedsToolController.py
     CAMTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
     CAMTests/Tools/Library/test-path-tool-bit-library-00.fctl
     CAMTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
@@ -679,6 +695,7 @@ SET(all_files
     ${PathPythonToolsDocObject_SRCS}
     ${PathPythonToolsDocObjectModels_SRCS}
     ${PathPythonToolsDocObjectUi_SRCS}
+    ${PathPythonToolsFeedsSpeeds_SRCS}
     ${PathPythonToolsGui_SRCS}
     ${PathPythonToolsShape_SRCS}
     ${PathPythonToolsShapeModels_SRCS}
@@ -868,6 +885,13 @@ INSTALL(
         ${PathPythonToolsGui_SRCS}
     DESTINATION
         Mod/CAM/Path/Tool/Gui
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsFeedsSpeeds_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/FeedsSpeeds
 )
 
 INSTALL(

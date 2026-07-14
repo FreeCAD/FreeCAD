@@ -659,36 +659,6 @@ def sort_locations_tsp(locations, keys, attractors=None, startPoint=None, endPoi
     return [locations[i] for i in order]
 
 
-def sort_tunnels_tsp(tunnels, allowFlipping=False, routeStartPoint=None, routeEndPoint=None):
-    """
-    Python wrapper for the C++ TSP tunnel solver. Takes a list of dicts (tunnels),
-    a list of keys for start/end coordinates, and optional parameters.
-
-    Parameters:
-    - tunnels: List of dictionaries with tunnel data. Each tunnel dictionary should contain:
-        - startX: X-coordinate of the tunnel start point
-        - startY: Y-coordinate of the tunnel start point
-        - endX: X-coordinate of the tunnel end point
-        - endY: Y-coordinate of the tunnel end point
-        - isOpen: Boolean indicating if the tunnel is open (optional, defaults to True)
-    - allowFlipping: Whether tunnels can be reversed (entry becomes exit)
-    - routeStartPoint: Optional starting point [x, y] for the entire route
-    - routeEndPoint: Optional ending point [x, y] for the entire route
-
-    Returns the sorted list of tunnels in TSP order. Each returned tunnel dictionary
-    will include the original keys plus:
-    - flipped: Boolean indicating if the tunnel was reversed during optimization
-    - index: Original index of the tunnel in the input list
-    """
-    # Call C++ TSP tunnel solver directly - it handles all the processing
-    return tsp_solver.solveTunnels(
-        tunnels=tunnels,
-        allowFlipping=allowFlipping,
-        routeStartPoint=routeStartPoint,
-        routeEndPoint=routeEndPoint,
-    )
-
-
 def guessDepths(objshape, subs=None):
     """
     takes an object shape and optional list of subobjects and returns a depth_params
@@ -918,7 +888,7 @@ class depth_params(object):
         all steps are of equal size, which is as big as possible but not bigger
         than max_size."""
 
-        steps_needed = math.ceil((start - stop) / max_size)
+        steps_needed = Path.Geom.ceil((start - stop) / max_size)
         depths = list(linspace(stop, start, steps_needed, endpoint=False))
 
         return depths

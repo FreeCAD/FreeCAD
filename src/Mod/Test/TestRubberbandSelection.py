@@ -30,18 +30,23 @@ import unittest
 
 import FreeCAD
 import FreeCADGui
-import Part
-from PySide6 import QtCore, QtGui, QtWidgets
+from pivy import coin
 
-LEFT_BUTTON = QtCore.Qt.MouseButton.LeftButton
-NO_BUTTON = QtCore.Qt.MouseButton.NoButton
-NO_MODIFIER = QtCore.Qt.KeyboardModifier.NoModifier
-CONTROL_MODIFIER = QtCore.Qt.KeyboardModifier.ControlModifier
-SHIFT_MODIFIER = QtCore.Qt.KeyboardModifier.ShiftModifier
-OTHER_FOCUS_REASON = QtCore.Qt.FocusReason.OtherFocusReason
-MOUSE_MOVE = QtCore.QEvent.Type.MouseMove
-MOUSE_PRESS = QtCore.QEvent.Type.MouseButtonPress
-MOUSE_RELEASE = QtCore.QEvent.Type.MouseButtonRelease
+try:
+    import Part
+except ImportError:
+    Part = None
+from PySide import QtCore, QtGui
+
+LEFT_BUTTON = QtCore.Qt.LeftButton
+NO_BUTTON = QtCore.Qt.NoButton
+NO_MODIFIER = QtCore.Qt.NoModifier
+CONTROL_MODIFIER = QtCore.Qt.ControlModifier
+SHIFT_MODIFIER = QtCore.Qt.ShiftModifier
+OTHER_FOCUS_REASON = QtCore.Qt.OtherFocusReason
+MOUSE_MOVE = QtCore.QEvent.MouseMove
+MOUSE_PRESS = QtCore.QEvent.MouseButtonPress
+MOUSE_RELEASE = QtCore.QEvent.MouseButtonRelease
 
 
 class TestRubberbandSelection(unittest.TestCase):
@@ -52,6 +57,7 @@ class TestRubberbandSelection(unittest.TestCase):
         ("Revit", "Gui::RevitNavigationStyle"),
         ("SolidWorks", "Gui::SolidWorksNavigationStyle"),
         ("TinkerCAD", "Gui::TinkerCADNavigationStyle"),
+        ("Touchpad", "Gui::TouchpadNavigationStyle"),
     )
     ADDITIVE_DRAG_STYLES = (
         ("CAD", "Gui::CADNavigationStyle"),
@@ -59,46 +65,57 @@ class TestRubberbandSelection(unittest.TestCase):
         ("Revit", "Gui::RevitNavigationStyle"),
         ("SolidWorks", "Gui::SolidWorksNavigationStyle"),
         ("TinkerCAD", "Gui::TinkerCADNavigationStyle"),
+        ("Touchpad", "Gui::TouchpadNavigationStyle"),
     )
     MODIFIED_DRAG_STYLES = (
         ("Gesture", "Gui::GestureNavigationStyle"),
         ("MayaGesture", "Gui::MayaGestureNavigationStyle"),
     )
+    VIEWER_HANDOFF_STYLES = (
+        ("CAD", "Gui::CADNavigationStyle"),
+        ("Blender", "Gui::BlenderNavigationStyle"),
+        ("OpenCascade", "Gui::OpenCascadeNavigationStyle"),
+        ("Revit", "Gui::RevitNavigationStyle"),
+        ("SolidWorks", "Gui::SolidWorksNavigationStyle"),
+        ("TinkerCAD", "Gui::TinkerCADNavigationStyle"),
+        ("Touchpad", "Gui::TouchpadNavigationStyle"),
+    )
 
     def setUp(self):
         self.doc = FreeCAD.newDocument("TestRubberbandSelection")
         FreeCADGui.ActiveDocument = FreeCADGui.getDocument(self.doc.Name)
+        self.left_box = None
+        self.right_box = None
 
-        self.left_box = self.doc.addObject("Part::Feature", "LeftBox")
-        self.left_box.Shape = Part.makeBox(6, 6, 6, FreeCAD.Vector(-20, -3, 0))
-
-        self.right_box = self.doc.addObject("Part::Feature", "RightBox")
-        self.right_box.Shape = Part.makeBox(6, 6, 6, FreeCAD.Vector(20, -3, 0))
-
-        self.doc.recompute()
-
+        self._process_events(50)
         self.view = FreeCADGui.ActiveDocument.ActiveView
         self.viewer = self.view.getViewer()
-        self.graphics_view = self.view.graphicsView()
-        self.viewport = self.graphics_view.viewport()
+        try:
+            self._refresh_view_widgets()
+        except RuntimeError:
+            FreeCAD.closeDocument(self.doc.Name)
+            self.doc = None
+            raise unittest.SkipTest(
+                "3D view widget wrapping is unavailable in this test environment"
+            )
+
+        self.view_preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
+        self.old_enable_selection = self.view_preferences.GetBool("EnableSelection", True)
+        self.view_preferences.SetBool("EnableSelection", True)
 
         self.viewer.setEnabledNaviCube(False)
         self.view.setAxisCross(False)
         self._refresh_view()
 
-        left_rect = self._object_rect(self.left_box)
-        right_rect = self._object_rect(self.right_box)
-        self.assertLess(
-            left_rect.right(),
-            right_rect.left(),
-            "Test objects must not overlap in screen space",
-        )
-
     def tearDown(self):
         FreeCADGui.Selection.clearSelection()
-        FreeCAD.closeDocument(self.doc.Name)
+        if hasattr(self, "view_preferences"):
+            self.view_preferences.SetBool("EnableSelection", self.old_enable_selection)
+        if self.doc is not None:
+            FreeCAD.closeDocument(self.doc.Name)
 
     def test_plain_drag_selects_in_supported_styles(self):
+        self._ensure_selection_objects()
         for label, style in self.PLAIN_DRAG_STYLES:
             with self.subTest(style=label):
                 FreeCADGui.Selection.clearSelection()
@@ -109,6 +126,7 @@ class TestRubberbandSelection(unittest.TestCase):
                 self.assertEqual(self._selected_names(), {self.left_box.Name})
 
     def test_ctrl_drag_adds_in_supported_styles(self):
+        self._ensure_selection_objects()
         for label, style in self.ADDITIVE_DRAG_STYLES:
             with self.subTest(style=label):
                 FreeCADGui.Selection.clearSelection()
@@ -123,6 +141,7 @@ class TestRubberbandSelection(unittest.TestCase):
                 )
 
     def test_shift_drag_selects_in_modified_styles(self):
+        self._ensure_selection_objects()
         for label, style in self.MODIFIED_DRAG_STYLES:
             with self.subTest(style=label):
                 FreeCADGui.Selection.clearSelection()
@@ -133,6 +152,7 @@ class TestRubberbandSelection(unittest.TestCase):
                 self.assertEqual(self._selected_names(), {self.left_box.Name})
 
     def test_shift_ctrl_drag_adds_in_modified_styles(self):
+        self._ensure_selection_objects()
         for label, style in self.MODIFIED_DRAG_STYLES:
             with self.subTest(style=label):
                 FreeCADGui.Selection.clearSelection()
@@ -146,16 +166,212 @@ class TestRubberbandSelection(unittest.TestCase):
                     {self.left_box.Name, self.right_box.Name},
                 )
 
+    def test_drag_motion_reaches_viewer_callbacks_before_box_selection(self):
+        for label, style in self.VIEWER_HANDOFF_STYLES:
+            with self.subTest(style=label):
+                FreeCADGui.Selection.clearSelection()
+                self.view.setNavigationType(style)
+                self._refresh_view()
+
+                state = {"armed": False, "moves": 0}
+
+                def on_button(event_callback):
+                    event = event_callback.getEvent()
+                    if event.getButton() != coin.SoMouseButtonEvent.BUTTON1:
+                        return
+                    state["armed"] = event.getState() == coin.SoButtonEvent.DOWN
+
+                def on_move(event_callback):
+                    if not state["armed"]:
+                        return
+                    state["moves"] += 1
+                    event_callback.setHandled()
+
+                button_callback = self.view.addEventCallbackPivy(
+                    coin.SoMouseButtonEvent.getClassTypeId(),
+                    on_button,
+                )
+                move_callback = self.view.addEventCallbackPivy(
+                    coin.SoLocation2Event.getClassTypeId(),
+                    on_move,
+                )
+
+                try:
+                    start = self.viewport.rect().center() + QtCore.QPoint(-60, 0)
+                    end = start + QtCore.QPoint(90, 0)
+                    self._drag_path(start, end)
+                finally:
+                    self.view.removeEventCallbackPivy(
+                        coin.SoMouseButtonEvent.getClassTypeId(),
+                        button_callback,
+                    )
+                    self.view.removeEventCallbackPivy(
+                        coin.SoLocation2Event.getClassTypeId(),
+                        move_callback,
+                    )
+
+                self.assertGreater(
+                    state["moves"],
+                    0,
+                    "Viewer callbacks should receive drag motion before box selection starts",
+                )
+
+    def test_scene_graph_handled_press_keeps_release(self):
+        for label, style in self.VIEWER_HANDOFF_STYLES:
+            with self.subTest(style=label):
+                FreeCADGui.Selection.clearSelection()
+                self.view.setNavigationType(style)
+                self._refresh_view()
+
+                state = {"presses": 0, "releases": 0}
+
+                def on_button(event_callback):
+                    event = event_callback.getEvent()
+                    if event.getButton() != coin.SoMouseButtonEvent.BUTTON1:
+                        return
+                    if event.getState() == coin.SoButtonEvent.DOWN:
+                        state["presses"] += 1
+                    else:
+                        state["releases"] += 1
+                    event_callback.setHandled()
+
+                button_callback = self.view.addEventCallbackPivy(
+                    coin.SoMouseButtonEvent.getClassTypeId(),
+                    on_button,
+                )
+
+                try:
+                    start = self.viewport.rect().center() + QtCore.QPoint(-60, 0)
+                    end = start + QtCore.QPoint(90, 0)
+                    self._drag_path(start, end)
+                finally:
+                    self.view.removeEventCallbackPivy(
+                        coin.SoMouseButtonEvent.getClassTypeId(),
+                        button_callback,
+                    )
+
+                self.assertEqual(state["presses"], 1)
+                self.assertEqual(
+                    state["releases"],
+                    1,
+                    "Box selection must not steal release after the scene graph handles press",
+                )
+
+    def test_box_select_does_not_swallow_next_viewer_press(self):
+        for label, style in self.VIEWER_HANDOFF_STYLES:
+            with self.subTest(style=label):
+                FreeCADGui.Selection.clearSelection()
+                self.view.setNavigationType(style)
+                self._refresh_view()
+
+                first_start = self.viewport.rect().center() + QtCore.QPoint(-120, 0)
+                first_end = first_start + QtCore.QPoint(90, 0)
+                self._drag_path(first_start, first_end)
+
+                state = {"presses": 0}
+
+                def on_button(event_callback):
+                    event = event_callback.getEvent()
+                    if event.getButton() != coin.SoMouseButtonEvent.BUTTON1:
+                        return
+                    if event.getState() == coin.SoButtonEvent.DOWN:
+                        state["presses"] += 1
+                    event_callback.setHandled()
+
+                button_callback = self.view.addEventCallbackPivy(
+                    coin.SoMouseButtonEvent.getClassTypeId(),
+                    on_button,
+                )
+
+                try:
+                    second_start = self.viewport.rect().center() + QtCore.QPoint(-20, 0)
+                    second_end = second_start + QtCore.QPoint(90, 0)
+                    self._drag_path(second_start, second_end)
+                finally:
+                    self.view.removeEventCallbackPivy(
+                        coin.SoMouseButtonEvent.getClassTypeId(),
+                        button_callback,
+                    )
+
+                self.assertEqual(
+                    state["presses"],
+                    1,
+                    "A fast drag after box selection must still deliver its press to the viewer",
+                )
+
+    def test_annotation_label_corner_drag_reaches_dragger(self):
+        self._ensure_selection_objects()
+        FreeCADGui.Selection.clearSelection()
+        self.view.setNavigationType("Gui::CADNavigationStyle")
+
+        label = self.doc.addObject("App::AnnotationLabel", "DragLabel")
+        label.LabelText = ["Drag me"]
+        label.BasePosition = FreeCAD.Vector(0, 0, 0)
+        label.TextPosition = FreeCAD.Vector(0, 0, 0)
+        self.doc.recompute()
+        label.ViewObject.DisplayMode = "Line"
+        label.ViewObject.FontSize = 18
+        label.ViewObject.Frame = True
+        label.ViewObject.BackgroundColor = (1.0, 1.0, 0.25, 0.0)
+        label.ViewObject.TextColor = (0.0, 0.0, 0.0, 0.0)
+        self._refresh_view()
+
+        bounds = self._annotation_label_bounds()
+        start = QtCore.QPoint(bounds.left() + 4, bounds.bottom() - 4)
+        end = start + QtCore.QPoint(80, -30)
+
+        self._drag_path(start, end)
+
+        self.assertNotEqual(
+            label.TextPosition,
+            FreeCAD.Vector(0, 0, 0),
+            "Dragging from the annotation label corner should move the annotation",
+        )
+
+    def test_cubic_bezier_drag_release_is_not_stolen_when_selection_is_disabled(self):
+        try:
+            from draftguitools import gui_beziers
+            from draftutils import params as draft_params
+        except ImportError as exc:
+            raise unittest.SkipTest("Draft GUI tools are unavailable in this build") from exc
+
+        FreeCADGui.activateWorkbench("DraftWorkbench")
+        FreeCADGui.ActiveDocument = FreeCADGui.getDocument(self.doc.Name)
+        self.view = FreeCADGui.ActiveDocument.ActiveView
+        self.viewer = self.view.getViewer()
+        self.view.setNavigationType("CAD")
+        self._refresh_view()
+
+        tool = gui_beziers.CubicBezCurve()
+        start = self.viewport.rect().center() + QtCore.QPoint(-50, 0)
+        end = start + QtCore.QPoint(90, 0)
+
+        try:
+            tool.Activated()
+            self._process_events(50)
+            self.assertFalse(draft_params.get_param_view("EnableSelection"))
+
+            self._drag_path(start, end)
+            self.assertEqual(
+                len(tool.node),
+                2,
+                "Cubic Bézier drag should reach button release when selection is disabled",
+            )
+        finally:
+            tool.finish(cont=False)
+            self._process_events(20)
+
     def _refresh_view(self):
         self.view.viewIsometric()
         self.view.fitAll()
+        self._refresh_view_widgets()
         self.viewport.setFocus(OTHER_FOCUS_REASON)
         self._process_events()
         self._process_events()
 
     def _process_events(self, wait_ms=50):
         FreeCADGui.updateGui()
-        app = QtWidgets.QApplication.instance()
+        app = QtGui.QApplication.instance()
         app.processEvents()
         time.sleep(wait_ms / 1000.0)
         app.processEvents()
@@ -165,7 +381,23 @@ class TestRubberbandSelection(unittest.TestCase):
             return self.viewport.devicePixelRatioF()
         return float(self.viewport.devicePixelRatio())
 
+    def _refresh_view_widgets(self, timeout_ms=1000):
+        deadline = time.monotonic() + (timeout_ms / 1000.0)
+        while True:
+            try:
+                graphics_view = self.view.graphicsView()
+                viewport = graphics_view.viewport()
+                viewport.rect()
+                self.graphics_view = graphics_view
+                self.viewport = viewport
+                return
+            except RuntimeError:
+                if time.monotonic() >= deadline:
+                    raise
+                self._process_events(20)
+
     def _to_qpoint(self, point):
+        self._refresh_view_widgets()
         _, height = self.view.getSize()
         scale = self._device_pixel_ratio()
         x = int(round(point[0] / scale))
@@ -192,6 +424,68 @@ class TestRubberbandSelection(unittest.TestCase):
     def _selection_rect(self, obj):
         return self._object_rect(obj, pad=18)
 
+    def _annotation_label_bounds(self):
+        self._process_events()
+        image = self.viewer.grabFramebuffer()
+        min_x = image.width()
+        min_y = image.height()
+        max_x = -1
+        max_y = -1
+
+        for y in range(image.height()):
+            for x in range(image.width()):
+                color = image.pixelColor(x, y)
+                if color.red() > 190 and color.green() > 190 and color.blue() < 140:
+                    min_x = min(min_x, x)
+                    min_y = min(min_y, y)
+                    max_x = max(max_x, x)
+                    max_y = max(max_y, y)
+
+        if max_x < 0:
+            self.fail("Could not find the rendered annotation label")
+
+        image_to_widget_x = self.viewport.width() / image.width()
+        image_to_widget_y = self.viewport.height() / image.height()
+        top_left = QtCore.QPoint(
+            round(min_x * image_to_widget_x),
+            round(min_y * image_to_widget_y),
+        )
+        bottom_right = QtCore.QPoint(
+            round(max_x * image_to_widget_x),
+            round(max_y * image_to_widget_y),
+        )
+        return QtCore.QRect(top_left, bottom_right)
+
+    def _ensure_selection_objects(self):
+        if self.left_box and self.right_box:
+            return
+
+        if Part is None:
+            self.skipTest("Part.makeBox is unavailable in this build")
+
+        left_shape = Part.makeBox(6, 6, 6, FreeCAD.Vector(-20, -3, 0))
+        right_shape = Part.makeBox(6, 6, 6, FreeCAD.Vector(20, -3, 0))
+        self.left_box = self._add_part_feature("LeftBox", left_shape)
+        self.right_box = self._add_part_feature("RightBox", right_shape)
+        self.doc.recompute()
+        self._refresh_view()
+
+        left_rect = self._object_rect(self.left_box)
+        right_rect = self._object_rect(self.right_box)
+        self.assertLess(
+            left_rect.right(),
+            right_rect.left(),
+            "Test objects must not overlap in screen space",
+        )
+
+    def _add_part_feature(self, name, shape):
+        if "Part::Feature" in self.doc.supportedTypes():
+            obj = self.doc.addObject("Part::Feature", name)
+            obj.Shape = shape
+            return obj
+
+        return Part.show(shape, name)
+
     def _drag_select(self, rect, control=False, shift=False):
         start = rect.topLeft()
         center = rect.center()
@@ -213,17 +507,31 @@ class TestRubberbandSelection(unittest.TestCase):
         self._send_mouse_event(MOUSE_RELEASE, end, LEFT_BUTTON, NO_BUTTON, modifiers)
         self._process_events()
 
+    def _drag_path(self, start, end, modifiers=NO_MODIFIER):
+        center = QtCore.QPoint((start.x() + end.x()) // 2, (start.y() + end.y()) // 2)
+        self._send_mouse_event(MOUSE_MOVE, start, NO_BUTTON, NO_BUTTON, modifiers)
+        self._process_events(10)
+        self._send_mouse_event(MOUSE_PRESS, start, LEFT_BUTTON, LEFT_BUTTON, modifiers)
+        self._process_events(10)
+        self._send_mouse_event(MOUSE_MOVE, center, NO_BUTTON, LEFT_BUTTON, modifiers)
+        self._process_events(10)
+        self._send_mouse_event(MOUSE_MOVE, end, NO_BUTTON, LEFT_BUTTON, modifiers)
+        self._process_events(10)
+        self._send_mouse_event(MOUSE_RELEASE, end, LEFT_BUTTON, NO_BUTTON, modifiers)
+        self._process_events()
+
     def _selected_names(self):
         return {obj.Name for obj in FreeCADGui.Selection.getSelection()}
 
     def _send_mouse_event(self, event_type, pos, button, buttons, modifiers):
-        app = QtWidgets.QApplication.instance()
+        self._refresh_view_widgets()
+        app = QtGui.QApplication.instance()
         global_pos = self.viewport.mapToGlobal(pos)
         QtGui.QCursor.setPos(global_pos)
         event = QtGui.QMouseEvent(
             event_type,
-            QtCore.QPointF(pos),
-            QtCore.QPointF(global_pos),
+            pos,
+            global_pos,
             button,
             buttons,
             modifiers,

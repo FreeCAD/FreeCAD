@@ -31,6 +31,8 @@ OpenSBP Post Processor for ShopBot Controllers, "machine" based
 
 import operator
 import math
+import re
+import textwrap
 from typing import Any, Dict
 
 import FreeCAD
@@ -135,6 +137,9 @@ class OpenSBPPost(PostProcessor):
         for prop in common_props:
             if prop["name"] == "file_extension":
                 prop["default"] = "sbp"
+            elif prop["name"] == "f_for_rapid_moves":
+                # Use G0's F by default
+                prop["default"] = True
 
             # FIXME: show but don't allow edit in UI
 
@@ -207,6 +212,8 @@ class OpenSBPPost(PostProcessor):
         )
         Path.Log.debug("OpenSBP post processor initialized.")
 
+        self._first_probe_open = True  # for probe-subroutines only once
+
         # Track current speeds for OpenSBP (separate XY and Z speeds)
         self._current_move_speed_xy = None
         self._current_move_speed_z = None
@@ -239,9 +246,18 @@ class OpenSBPPost(PostProcessor):
         # These schema defaults are r/o: force them
         for property_name in (
             "supported_commands drill_cycles_to_translate"
-            " translate_drill_cycles output_tool_length_offset".split(" ")
+            " translate_drill_cycles output_tool_length_offset"
+            " f_for_rapid_moves".split(  # FIXME: the merge logic doesn't respect our updated default
+                " "
+            )
         ):
             self.values[property_name.upper()] = schema[property_name]["default"]
+
+    def _convert_start_section(self, section_name, sublist):
+        # need to note that we are starting a section (file), so "per section" stuff...
+        self._first_probe_open = True
+
+        super()._convert_start_section(section_name, sublist)
 
     def convert_command_to_gcode(self, command: Path.Command) -> str:
 
@@ -520,7 +536,100 @@ class OpenSBPPost(PostProcessor):
         else:
             return super()._convert_program_control(command)
 
-    def _optimize_gcode(self, header_lines, gcode_lines) -> str:
+    def _quote(self, string):
+        """Return a string that is safe for double-quotes (for opensbp)"""
+        # very conservative: only alpha-numeric and /-_.
+        return re.sub(r"[^A-Za-z0-9/_ .-]", "", string)
+
+    def _convert_probe_open(self, command):
+        """We need to setup for this probe-sequence,
+        provide subroutines for this/other probe-sequences.
+        The command should be a comment, and is already handled by
+        a _convert_comment().
+        But, has an annotation for the file-name from the Probe Operation
+        """
+
+        # we allow "/", "../", etc., in the filename
+        # but not things like "c:".
+        filename = command.Annotations["probe_open"]
+        if "." not in filename:
+            # default .txt (really "space delimited values")
+            filename += ".txt"
+        filename = self._quote(filename)
+
+        rez = []
+
+        # only insert subroutines once per section FIXME: need to be told when starting a section
+        if self._first_probe_open:
+            self._first_probe_open = False
+            rez.extend(textwrap.dedent("""\
+                    ' Loads my-variables, notably my_ZzeroInput
+                    C#,90
+                    ' PROBE SUBROUTINE
+                    GOTO SkipProbeSubRoutines
+                    CaptureZPos:
+                      ' for g38.2 probe, write the data on probe-contact
+                      ' and set flag for didn't-fail
+                      ' xyzab
+                      WRITE #1; %(1); " "; %(2); " "; %(3); " "; %(4); " "; %(5)
+                      &hit = 1
+                      RETURN
+                    FailedToTouch:
+                      ' for g38.2 probe, when
+                      ' failed to trigger w/in movement
+                      MSGBOX(Failed to touch...Exiting,16,Probe Failed) # fixme: which job/op label, and file?
+                      END
+                    SkipProbeSubRoutines:
+                    ' ------
+                """).rstrip().split("\n"))
+
+        rez.extend(
+            [
+                # we already handled the probe-open comment
+                f'OPEN "{filename}" FOR OUTPUT as #1',
+            ]
+        )
+
+        return "\n".join(rez)
+
+    def _convert_probe_close(self, command):
+        return textwrap.dedent("""\
+            '(PROBECLOSE)
+            'Clear probe-switch-trigger
+            ON INPUT(&my_ZzeroInput, 1)
+            CLOSE #1
+        """).rstrip()
+
+    def _convert_probe(self, command):
+        """
+        Converts a probe command (G38.2) to gcode.
+        _convert_probe_open(command) was already called to start the sequence
+        Probe.opExecute generated various move commands, and are handled as normal.
+        _convert_probe_close(command) will-be called to end the sequence
+        """
+
+        # We are being strict here, Z motion only
+        required = {p: v for p, v in command.Parameters.items() if p in "ZF"}
+        # FIXME: allow default F from MachineState when implemented?
+        if len(required) != 2:
+            raise Exception(f"A probing move (G38.2) must have a Z and F, only saw: {command}")
+        if len(command.Parameters) > 2:
+            raise Exception(f"A probing move (G38.2) should only have Z and F, saw {command}")
+
+        # G1, we aren't jogging, we are doing a slow, deliberate move, i.e. ~"feed".
+        probe_movement = self._convert_move(Path.Command("G1", required))
+
+        # &hit is set to 1 if the touch happens (see subroutine in _convert_probe_open)
+        rez = textwrap.dedent(f"""\
+            &hit = 0
+            ON INPUT(&my_ZzeroInput, 1) GOSUB CaptureZPos
+            {probe_movement}
+            IF &hit = 0 THEN GOTO FailedToTouch
+        """).rstrip()
+
+        return rez
+
+    def _optimize_gcode(self, gcode_lines) -> str:
         # There may be opensbp in the stream
         # so, you can't know the state for modal and axis-modal
         # FIXME: this override goes away when Processor's does
@@ -535,7 +644,7 @@ class OpenSBPPost(PostProcessor):
         self.values["OUTPUT_DUPLICATE_COMMANDS"] = True
 
         try:
-            return super()._optimize_gcode(header_lines, gcode_lines)
+            return super()._optimize_gcode(gcode_lines)
         finally:
             for k in disable:
                 self.values[k] = was[k]

@@ -84,10 +84,6 @@ void StdCmdPart::activated(int iMsg)
         "selected_objects = Gui.Selection.getSelection()\n"
         "if len(selected_objects) > 1:\n"
         "    for obj in selected_objects:\n"
-        "        # Add subobjects if obj is a container\n"
-        "        if hasattr(obj, 'OutList') and len(obj.OutList) > 0:\n"
-        "            for child in obj.OutList:\n"
-        "                App.activeDocument().%s.addObject(child)\n"
         "        App.activeDocument().%s.addObject(obj)\n",
         PartName.c_str(),
         PartName.c_str()

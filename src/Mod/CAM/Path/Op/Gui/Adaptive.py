@@ -50,6 +50,18 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.LiftDistance.setProperty("unit", obj.LiftDistance.getUserPreferred()[2])
         self.form.KeepToolDownRatio.setProperty("unit", obj.KeepToolDownRatio.getUserPreferred()[2])
         self.form.StockToLeave.setProperty("unit", obj.StockToLeave.getUserPreferred()[2])
+        # Use user's preferred length unit
+        self.form.stepOverDistance.setProperty(
+            "unit", FreeCAD.Units.Quantity("1 mm").getUserPreferred()[2]
+        )
+
+        # Connect controls to keep step over percent and distance in sync
+        self.form.stepOver.valueChanged.connect(lambda: self.updateStepOverDistance(obj))
+        self.form.stepOverDistance.valueChanged.connect(lambda: self.updateStepOverPercent(obj))
+        self.form.stepOverDistance.editingFinished.connect(lambda: self.updateStepOverDistance(obj))
+        self.form.toolController.currentIndexChanged.connect(
+            lambda: self.updateStepOverDistance(obj)
+        )
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
@@ -81,10 +93,36 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.StopButton.toggled)
         return signals
 
+    def updateStepOverDistance(self, obj):
+        """Update step over distance from percent"""
+        if hasattr(obj, "ToolController") and obj.ToolController:
+            toolDiameter = obj.ToolController.Tool.Diameter.Value
+            percent = self.form.stepOver.value()
+            distance = toolDiameter * percent / 100.0
+            self.form.stepOverDistance.blockSignals(True)
+            self.form.stepOverDistance.setProperty("rawValue", distance)
+            self.form.stepOverDistance.blockSignals(False)
+
+    def updateStepOverPercent(self, obj):
+        """Update step over percent when distance changes"""
+        if hasattr(obj, "ToolController") and obj.ToolController:
+            toolDiameter = obj.ToolController.Tool.Diameter.Value
+            if toolDiameter > 0:
+                distance = self.form.stepOverDistance.property("rawValue")
+                percent = (distance / toolDiameter) * 100.0
+                percent = max(0.1, min(100.0, percent))
+
+                self.form.stepOver.blockSignals(True)
+                self.form.stepOver.setValue(percent)
+                self.form.stepOver.blockSignals(False)
+                self.getFields(obj)
+
     def setFields(self, obj):
         self.selectInComboBox(obj.Side, self.form.Side)
         self.selectInComboBox(obj.OperationType, self.form.OperationType)
-        self.form.stepOver.setValue(obj.StepOver)
+        self.form.stepOver.setValue(obj.StepOverPercent)
+        self.updateStepOverDistance(obj)
+
         self.form.Tolerance.setValue(int(obj.Tolerance * 100))
 
         self.form.HelixMaxRampAngle.setText(
@@ -128,8 +166,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.OperationType != str(self.form.OperationType.currentData()):
             obj.OperationType = str(self.form.OperationType.currentData())
 
-        if obj.StepOver != self.form.stepOver.value():
-            obj.StepOver = self.form.stepOver.value()
+        if obj.StepOverPercent != self.form.stepOver.value():
+            obj.StepOverPercent = self.form.stepOver.value()
 
         if obj.HelixMaxDiameterPercent != self.form.HelixMaxDiameterPercent.value():
             obj.HelixMaxDiameterPercent = self.form.HelixMaxDiameterPercent.value()

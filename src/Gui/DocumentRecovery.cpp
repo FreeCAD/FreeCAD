@@ -487,10 +487,10 @@ DocumentRecoveryPrivate::Info DocumentRecoveryPrivate::getRecoveryInfo(const QFi
 
 /// Rough check to see if the ZIP data is valid. No CRC calculation, just a fast iteration over the
 /// contents to see if it seems basically OK.
-bool zipDataIsValid(const QString& zipData)
+bool zipDataIsValid(const QString& fcstdFile)
 {
     try {
-        zipios::ZipFile zf(zipData.toStdString());
+        zipios::ZipFile zf(fcstdFile.toStdString());
         auto entries = zf.entries();
         int n = 0;
         for (auto it = entries.begin(); it != entries.end(); ++it) {
@@ -569,15 +569,17 @@ bool DocumentRecoveryPrivate::isValidProject(const QFileInfo& fi) const
         return false;
     }
 
-    if (!zipDataIsValid(fi.fileName())) {
+    const QString projectFile = fi.absoluteFilePath();
+
+    if (!zipDataIsValid(projectFile)) {
         return false;
     }
 
-    if (!xmlFilesAreValid(fi.fileName())) {
+    if (!xmlFilesAreValid(projectFile)) {
         return false;
     }
 
-    App::ProjectFile project(fi.absoluteFilePath().toStdString());
+    App::ProjectFile project(projectFile.toStdString());
     return project.loadDocument();
 }
 

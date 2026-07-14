@@ -498,6 +498,8 @@ void SketcherSettingsDisplay::saveSettings()
     ui->checkBoxTVRestoreCamera->onSave();
     ui->checkBoxTVForceOrtho->onSave();
     ui->checkBoxTVSectionView->onSave();
+    ui->axisTransparency->onSave();
+    ui->occludedAxisTransparency->onSave();
 }
 
 void SketcherSettingsDisplay::loadSettings()
@@ -522,6 +524,8 @@ void SketcherSettingsDisplay::loadSettings()
     ui->checkBoxTVForceOrtho->onRestore();
     this->ui->checkBoxTVForceOrtho->setEnabled(this->ui->checkBoxTVRestoreCamera->isChecked());
     ui->checkBoxTVSectionView->onRestore();
+    ui->axisTransparency->onRestore();
+    ui->occludedAxisTransparency->onRestore();
 }
 
 /**

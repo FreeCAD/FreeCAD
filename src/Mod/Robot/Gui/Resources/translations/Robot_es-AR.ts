@@ -83,7 +83,7 @@
     <message>
       <location filename="../../CommandExport.cpp" line="47"/>
       <source>Kuka Compact Subroutine</source>
-      <translation type="unfinished">Kuka Compact Subroutine</translation>
+      <translation>Subrutina compacta KUKA</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="48"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../CommandExport.cpp" line="129"/>
       <source>Kuka Full Subroutine</source>
-      <translation type="unfinished">Kuka Full Subroutine</translation>
+      <translation>Subrutina completa KUKA</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="130"/>
@@ -296,12 +296,12 @@
       <location filename="../../CommandTrajectory.cpp" line="180"/>
       <location filename="../../CommandTrajectory.cpp" line="201"/>
       <location filename="../../CommandTrajectory.cpp" line="486"/>
-      <location filename="../../CommandInsertRobot.cpp" line="70"/>
-      <location filename="../../CommandExport.cpp" line="63"/>
-      <location filename="../../CommandExport.cpp" line="145"/>
       <location filename="../../Command.cpp" line="104"/>
       <location filename="../../Command.cpp" line="167"/>
       <location filename="../../Command.cpp" line="269"/>
+      <location filename="../../CommandExport.cpp" line="63"/>
+      <location filename="../../CommandExport.cpp" line="145"/>
+      <location filename="../../CommandInsertRobot.cpp" line="70"/>
       <source>Wrong selection</source>
       <translation>Selección Incorrecta</translation>
     </message>
@@ -337,9 +337,9 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="110"/>
+      <location filename="../../Command.cpp" line="270"/>
       <location filename="../../CommandExport.cpp" line="64"/>
       <location filename="../../CommandExport.cpp" line="146"/>
-      <location filename="../../Command.cpp" line="270"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Seleccione un Robot y un objeto de Trayectoria.</translation>
     </message>

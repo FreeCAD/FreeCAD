@@ -86,22 +86,30 @@ static float getFaceArea(TopoDS_Shape& face)
     return gprops.Mass();
 }
 
-TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat = nullptr)
+TopoDS_Shape getLocatedShape(const App::SubObjectT& subject)
 {
     App::DocumentObject* obj = subject.getSubObjectList().back();
-    if (!obj) {
+    if (!obj || !obj->getNameInDocument()) {
         return {};
     }
+    if (obj->isDerivedFrom<Part::Feature>()) {
+        TopoShape ts = static_cast<const Part::Feature*>(obj)->Shape.getShape();
+        ts.setPlacement(
+            App::GeoFeature::getGlobalPlacement(obj, subject.getObject(), subject.getSubName())
+        );
+        ts = ts.getSubTopoShape(subject.getElementName(), true);
+        if (!ts.isNull()) {
+            return ts.getShape();
+        }
+    }
 
-    TopoDS_Shape shape = Part::Feature::getShape(
+    TopoShape ts = Part::Feature::getTopoShape(
         obj,
         Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
             | Part::ShapeOption::Transform,
-        subject.getElementName(),
-        mat
+        subject.getElementName()
     );
-
-    if (shape.IsNull()) {
+    if (ts.isNull()) {
         Base::Console().log(
             "Part::MeasureClient::getLocatedShape: Did not retrieve shape for %s, %s\n",
             obj->getNameInDocument(),
@@ -109,8 +117,10 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat
         );
         return {};
     }
-
-    return shape;
+    ts.setPlacement(
+        App::GeoFeature::getGlobalPlacement(obj, subject.getObject(), subject.getSubName())
+    );
+    return ts.getShape();
 }
 
 
@@ -247,60 +257,6 @@ bool getShapeFromStrings(TopoDS_Shape& shapeOut, const App::SubObjectT& subject,
     return !shapeOut.IsNull();
 }
 
-
-Part::VectorAdapter buildAdapter(const App::SubObjectT& subject)
-{
-    Base::Matrix4D mat;
-    TopoDS_Shape shape = getLocatedShape(subject, &mat);
-
-    if (shape.IsNull()) {
-        // failure here on loading document with existing measurement.
-        Base::Console().message(
-            "Part::buildAdapter did not retrieve shape for %s, %s\n",
-            subject.getObjectName(),
-            subject.getElementName()
-        );
-        return Part::VectorAdapter();
-    }
-    TopAbs_ShapeEnum shapeType = shape.ShapeType();
-
-    if (shapeType == TopAbs_EDGE) {
-        TopoDS_Edge edge = TopoDS::Edge(shape);
-        // make edge orientation so that end of edge closest to pick is head of vector.
-        TopoDS_Vertex firstVertex = TopExp::FirstVertex(edge, Standard_True);
-        TopoDS_Vertex lastVertex = TopExp::LastVertex(edge, Standard_True);
-        if (firstVertex.IsNull() || lastVertex.IsNull()) {
-            return {};
-        }
-        gp_Vec firstPoint = Part::VectorAdapter::convert(firstVertex);
-        gp_Vec lastPoint = Part::VectorAdapter::convert(lastVertex);
-        Base::Vector3d v(0.0, 0.0, 0.0);  // v(current.x,current.y,current.z);
-        v = mat * v;
-        gp_Vec pickPoint(v.x, v.y, v.z);
-        double firstDistance = (firstPoint - pickPoint).Magnitude();
-        double lastDistance = (lastPoint - pickPoint).Magnitude();
-        if (lastDistance > firstDistance) {
-            if (edge.Orientation() == TopAbs_FORWARD) {
-                edge.Orientation(TopAbs_REVERSED);
-            }
-            else {
-                edge.Orientation(TopAbs_FORWARD);
-            }
-        }
-        return {edge, pickPoint};
-    }
-    if (shapeType == TopAbs_FACE) {
-        TopoDS_Face face = TopoDS::Face(shape);
-        Base::Vector3d vTemp(0.0, 0.0, 0.0);  // v(current.x, current.y, current.z);
-        vTemp = mat * vTemp;
-        gp_Vec pickPoint(vTemp.x, vTemp.y, vTemp.z);
-        return {face, pickPoint};
-    }
-
-    return {};
-}
-
-
 MeasureLengthInfoPtr MeasureLengthHandler(const App::SubObjectT& subject)
 {
     TopoDS_Shape shape = getLocatedShape(subject);
@@ -331,11 +287,8 @@ MeasureLengthInfoPtr MeasureLengthHandler(const App::SubObjectT& subject)
 
 MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
 {
-    Base::Placement placement;  // curve center + orientation
-    Base::Vector3d centerPoint;
-
     MeasureRadiusInfoPtr invalidRes
-        = std::make_shared<MeasureRadiusInfo>(false, 0.0, centerPoint, placement);
+        = std::make_shared<MeasureRadiusInfo>(false, 0.0, Base::Vector3d {}, Base::Vector3d {});
 
     TopoDS_Shape shape = getLocatedShape(subject);
 
@@ -351,7 +304,11 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
     GProp_GProps gprops;
     TopoDS_Edge edge;
     TopoDS_Face face;
-    gp_Pnt center;
+    // This is where the label is placed
+    // For now not necessarily on the curve as the name implies
+    // But in the future when https://github.com/FreeCAD/FreeCAD/issues/28937
+    // gets implemented it should be.
+    gp_Pnt pointOnCurve;
     double radius = 0.0;
 
     if (sType == TopAbs_EDGE) {
@@ -360,7 +317,7 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
         BRepAdaptor_Curve adapt(edge);
         if (adapt.GetType() == GeomAbs_Circle) {
             gp_Circ circ = adapt.Circle();
-            center = circ.Location();
+            pointOnCurve = circ.Location();
             radius = circ.Radius();
         }
     }
@@ -377,11 +334,11 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
 
         BRepAdaptor_Surface surf(face);
         if (surf.GetType() == GeomAbs_Cylinder) {
-            center = surf.Cylinder().Location();
+            pointOnCurve = surf.Cylinder().Location();
             radius = surf.Cylinder().Radius();
         }
         else if (surf.GetType() == GeomAbs_Torus) {
-            center = surf.Torus().Location();
+            pointOnCurve = surf.Torus().Location();
             radius = surf.Torus().MinorRadius();
 
             // Places the label point inside the torus
@@ -389,10 +346,10 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
             gp_Vec direction(surf.Torus().Position().XDirection());
             double majorRadius = surf.Torus().MajorRadius();
             direction = direction * majorRadius;
-            center = center.Translated(direction);
+            pointOnCurve = pointOnCurve.Translated(direction);
         }
         else if (surf.GetType() == GeomAbs_Sphere) {
-            center = surf.Sphere().Location();
+            pointOnCurve = surf.Sphere().Location();
             radius = surf.Sphere().Radius();
         }
         else if (surf.GetType() == GeomAbs_Plane) {
@@ -412,7 +369,7 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
             }
 
             gp_Circ circle = adapt.Circle();
-            center = circle.Location();
+            pointOnCurve = circle.Location();
             radius = circle.Radius();
         }
     }
@@ -420,21 +377,16 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
         return invalidRes;
     }
 
-    // Get Center of mass as the attachment point of the label
-    auto origin = gprops.CentreOfMass();
+    // Currently not in use but useful for future implementation of
+    // https://github.com/FreeCAD/FreeCAD/issues/28937
+    gp_Pnt center = gprops.CentreOfMass();
 
-
-    centerPoint = Base::Vector3d(center.X(), center.Y(), center.Z());
-
-    // a somewhat arbitrary radius from center -> point on curve
-    auto dir = (center.XYZ() - origin.XYZ()).Normalized();
-    Base::Vector3d elementDirection(dir.X(), dir.Y(), dir.Z());
-    Base::Vector3d axisUp(0.0, 0.0, 1.0);
-    Base::Rotation rot(axisUp, elementDirection);
-
-    placement = Base::Placement(Base::Vector3d(origin.X(), origin.Y(), origin.Z()), rot);
-
-    return std::make_shared<MeasureRadiusInfo>(true, radius, centerPoint, placement);
+    return std::make_shared<MeasureRadiusInfo>(
+        true,
+        radius,
+        Base::Vector3d(pointOnCurve.X(), pointOnCurve.Y(), pointOnCurve.Z()),
+        Base::Vector3d(center.X(), center.Y(), center.Z())
+    );
 }
 
 
@@ -510,29 +462,38 @@ MeasureAngleInfoPtr MeasureAngleHandler(const App::SubObjectT& subject)
 
     TopAbs_ShapeEnum sType = shape.ShapeType();
 
-    Part::VectorAdapter vAdapt = buildAdapter(subject);
-
-    gp_Pnt vec;
-    Base::Vector3d position;
+    gp_Pnt position;
+    Base::Vector3d orientation;
     if (sType == TopAbs_FACE) {
         TopoDS_Face face = TopoDS::Face(shape);
 
         GProp_GProps gprops;
         BRepGProp::SurfaceProperties(face, gprops);
-        vec = gprops.CentreOfMass();
+        position = gprops.CentreOfMass();
+        auto vAdapt = Part::VectorAdapter(face, gp_Vec(0, 0, 0));
+        if (!vAdapt.isValid()) {
+            return std::make_shared<MeasureAngleInfo>();
+        }
+        orientation = (Base::Vector3d)vAdapt;
     }
     else if (sType == TopAbs_EDGE) {
         TopoDS_Edge edge = TopoDS::Edge(shape);
 
         GProp_GProps gprops;
         BRepGProp::LinearProperties(edge, gprops);
-        vec = gprops.CentreOfMass();
+        position = gprops.CentreOfMass();
+        auto vAdapt = Part::VectorAdapter(edge, gp_Vec(0, 0, 0));
+        if (!vAdapt.isValid()) {
+            return std::make_shared<MeasureAngleInfo>();
+        }
+        orientation = (Base::Vector3d)vAdapt;
     }
 
-    position.Set(vec.X(), vec.Y(), vec.Z());
-
-    auto info = std::make_shared<MeasureAngleInfo>(vAdapt.isValid(), (Base::Vector3d)vAdapt, position);
-    return info;
+    return std::make_shared<MeasureAngleInfo>(
+        true,
+        orientation,
+        Base::Vector3d(position.X(), position.Y(), position.Z())
+    );
 }
 
 
