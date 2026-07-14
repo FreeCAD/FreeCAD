@@ -126,10 +126,7 @@ private:
     /// to null geometry slots. Runs at the top of execute().
     void acceptGeometry();
 
-    /// Build a TopoShape for normal or reference geometry.
-    Part::TopoShape buildShapeForGeometry(bool construction) const;
-
-    /// Build Shape and ReferenceShape from the current (solved) geometry.
+    /// Build Shape and ReferenceShape from the current geometry.
     void buildShapes();
 
     /// Ensure every geometry has a stable ID and rebuild the lookup from

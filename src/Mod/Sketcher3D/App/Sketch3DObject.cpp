@@ -171,6 +171,10 @@ GeoElementId3D resolveSubNameInShape(
         return {};
     }
 
+    if (el.name.toString() == "RootPoint") {
+        return GeoElementId3D::RtPnt;
+    }
+
     long stableId = -1;
     PointPos pos = PointPos::none;
     if (!parseMappedName(el.name.toString().c_str(), stableId, pos)) {
@@ -270,6 +274,67 @@ Part::TopoShape makeNamedCenterVertex(const Part::Geometry* geo)
 
     Part::GeomPoint pt(center);
     return makeNamedVertex(pt.toShape(), geo, PointPos::mid);
+}
+
+// The root/origin point is fixed solver geometry (GeoId -1). ReferenceShape
+// gives it a selectable edit-time representation without adding it to Shape.
+Part::TopoShape makeRootPointVertex()
+{
+    Part::GeomPoint origin(Base::Vector3d(0.0, 0.0, 0.0));
+    auto ocShape = origin.toShape();
+    if (ocShape.IsNull()) {
+        return {};
+    }
+
+    Part::TopoShape shape(ocShape);
+    shape.resetElementMap(std::make_shared<Data::ElementMap>());
+    setElementName(shape, "Vertex", 1, "RootPoint");
+    return shape;
+}
+
+Part::TopoShape makeNamedGeometryShape(const Part::Geometry* geo)
+{
+    if (!geo) {
+        return {};
+    }
+
+    const GeoKind kind = kindOfGeometry(geo);
+    if (kind == GeoKind::Plane || kind == GeoKind::Unknown) {
+        return {};
+    }
+
+    auto ocShape = geo->toShape();
+    if (ocShape.IsNull()) {
+        return {};
+    }
+
+    switch (kind) {
+        case GeoKind::Point:
+            return makeNamedVertex(ocShape, geo);
+        case GeoKind::Line:
+        case GeoKind::Arc:
+        case GeoKind::Circle:
+            return makeNamedEdge(ocShape, geo);
+        case GeoKind::Plane:
+        case GeoKind::Unknown:
+            return {};
+    }
+    return {};
+}
+
+void appendShape(std::vector<Part::TopoShape>& shapes, Part::TopoShape shape)
+{
+    if (!shape.isNull()) {
+        shapes.push_back(std::move(shape));
+    }
+}
+
+Part::TopoShape makeShapeCompound(const std::vector<Part::TopoShape>& shapes, long tag)
+{
+    Part::TopoShape result;
+    result.makeElementCompound(shapes, Part::OpCodes::Sketch3D);
+    result.Tag = tag;
+    return result;
 }
 
 }  // namespace
@@ -512,52 +577,31 @@ App::DocumentObjectExecReturn* Sketch3DObject::execute()
     }
 }
 
-Part::TopoShape Sketch3DObject::buildShapeForGeometry(bool construction) const
+void Sketch3DObject::buildShapes()
 {
-    std::vector<Part::TopoShape> shapes;
     auto& geos = Geometry.getValues();
-    shapes.reserve(geos.size());
+    std::vector<Part::TopoShape> normalShapes;
+    std::vector<Part::TopoShape> referenceShapes;
+    normalShapes.reserve(geos.size());
+    referenceShapes.reserve((2 * geos.size()) + 1);
 
-    for (auto& g : geos) {
-        if (!g || Sketcher::GeometryFacade::getConstruction(g) != construction) {
+    appendShape(referenceShapes, makeRootPointVertex());
+
+    for (auto& geo : geos) {
+        if (!geo) {
             continue;
         }
 
-        switch (kindOfGeometry(g)) {
-            case GeoKind::Point: {
-                auto shape = g->toShape();
-                if (!shape.IsNull()) {
-                    shapes.push_back(makeNamedVertex(shape, g));
-                }
-                break;
-            }
-            case GeoKind::Line:
-            case GeoKind::Arc:
-            case GeoKind::Circle: {
-                auto shape = g->toShape();
-                if (!shape.IsNull()) {
-                    shapes.push_back(makeNamedEdge(shape, g));
-                }
-                break;
-            }
-            case GeoKind::Plane:
-            case GeoKind::Unknown:
-                break;
+        GeoKind kind = kindOfGeometry(geo);
+        if (kind == GeoKind::Circle || kind == GeoKind::Arc) {
+            appendShape(referenceShapes, makeNamedCenterVertex(geo));
         }
+
+        auto& target = Sketcher::GeometryFacade::getConstruction(geo) ? referenceShapes
+                                                                      : normalShapes;
+        appendShape(target, makeNamedGeometryShape(geo));
     }
 
-    if (shapes.empty()) {
-        return Part::TopoShape();
-    }
-
-    Part::TopoShape result;
-    result.makeElementCompound(shapes, Part::OpCodes::Sketch3D);
-    result.Tag = getID();
-    return result;
-}
-
-void Sketch3DObject::buildShapes()
-{
-    Shape.setValue(buildShapeForGeometry(/*construction=*/false));
-    ReferenceShape.setValue(buildShapeForGeometry(/*construction=*/true));
+    Shape.setValue(makeShapeCompound(normalShapes, getID()));
+    ReferenceShape.setValue(makeShapeCompound(referenceShapes, getID()));
 }
