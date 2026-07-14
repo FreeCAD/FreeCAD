@@ -128,7 +128,44 @@ Known limitations
 * Notes do not currently route around each other intelligently.
 * Note visibility is view-provider state, not yet a persisted sketch property.
 * There is no dedicated test coverage yet for note creation, movement, resize,
-  or visibility toggling.
+  or visibility toggling beyond the current app-level storage tests.
+
+Future direction: attached notes
+--------------------------------
+
+One possible extension is to let a note attach to a specific sketch element
+instead of only to the sketch as a whole.
+
+Examples:
+
+* a note attached to a geometry element
+* a note attached to a dimensional constraint
+* a note attached to another sketch constraint
+
+This would be useful for documenting design intent close to the feature it
+describes, especially for explaining why a constraint exists or why a piece of
+construction geometry was added.
+
+However, this is a substantially larger feature than the current sketch-level
+note implementation.
+
+The main difficulty is stable identity. Geometry and constraint indices in a
+sketch can change as the sketch is edited, reordered, split, or deleted. An
+attached-note system would need a reliable way to track those remaps so notes do
+not silently drift to the wrong target or become invalid unexpectedly.
+
+Other added complexity would include:
+
+* a stable attachment reference model
+* rules for where attached notes are anchored on different target types
+* UI for selecting or reassigning the note target
+* behavior when the target is deleted or replaced
+* clutter-management rules when many notes are attached in a small area
+
+For these reasons, attached notes are best treated as a later phase rather than
+part of the initial sketch-note feature. The current sketch-level notes provide
+a lower-risk base feature and a way to validate the overall note workflow before
+adding target-specific attachments.
 
 Why notes are not geometry
 --------------------------
