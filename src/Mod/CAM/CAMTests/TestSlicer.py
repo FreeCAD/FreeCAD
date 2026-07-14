@@ -25,8 +25,6 @@ import pathlib
 import unittest
 
 import FreeCAD
-import Part
-import Path
 
 FIXTURE_PATH = pathlib.Path(__file__).parent / "Fixtures"
 
