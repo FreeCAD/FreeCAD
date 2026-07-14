@@ -102,8 +102,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *sketch << "Sketcher_AddNote"
             << "Sketcher_ShowNotes"
             << "Sketcher_HideNotes"
-            << "Separator"
-            << geom << cons << consaccel << bsplines << visual;
+            << "Separator" << geom << cons << consaccel << bsplines << visual;
 
     return root;
 }
