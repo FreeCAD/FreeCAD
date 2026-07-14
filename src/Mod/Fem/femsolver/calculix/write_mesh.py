@@ -30,6 +30,7 @@ import codecs
 from os.path import join
 
 from femmesh import meshtools
+from .spatial_hash_merger import merge_inp_nodes
 
 
 def write_mesh(ccxwriter):
@@ -68,6 +69,8 @@ def write_mesh(ccxwriter):
     if is_reduced:
         face_variant += " reduced"
 
+    merge_tolerance = getattr(ccxwriter.analysis_obj, "MergeTolerance", 0.1)
+
     if ccxwriter.split_inpfile:
         write_name = "femesh"
         file_name_split = ccxwriter.mesh_name + "_" + write_name + ".inp"
@@ -81,6 +84,8 @@ def write_mesh(ccxwriter):
             faceVariant=face_variant,
             edgeVariant=edge_variant,
         )
+
+        merge_inp_nodes(ccxwriter.femmesh_file, tolerance=merge_tolerance)
 
         inpfile = codecs.open(ccxwriter.file_name, "w", encoding="utf-8")
         inpfile.write("{}\n".format(59 * "*"))
@@ -99,6 +104,8 @@ def write_mesh(ccxwriter):
         )
 
         # reopen file with "append" to add all the rest
+        merge_inp_nodes(ccxwriter.femmesh_file, tolerance=merge_tolerance)
+
         inpfile = codecs.open(ccxwriter.femmesh_file, "a", encoding="utf-8")
         inpfile.write("\n\n")
 
