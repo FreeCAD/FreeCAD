@@ -207,6 +207,21 @@ PyObject* DrawPagePy::renderToSVGString(PyObject* args)
     }
 }
 
+PyObject* DrawPagePy::renderTemplateToSVG(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    try {
+        std::string svg = getDrawPagePtr()->renderTemplateToSVG();
+        return PyUnicode_FromStringAndSize(svg.c_str(), static_cast<Py_ssize_t>(svg.size()));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
+
 //! replace the current Label with a translated version
 PyObject* DrawPagePy::translateLabel(PyObject *args)
 {

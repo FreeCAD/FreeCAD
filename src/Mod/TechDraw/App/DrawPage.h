@@ -113,6 +113,7 @@ public:
     bool exportToPDF(const std::string& filePath) const;
     bool exportToSVG(const std::string& filePath) const;
     std::string renderToSVGString() const;
+    std::string renderTemplateToSVG() const;
 
 protected:
     void onBeforeChange(const App::Property* prop) override;

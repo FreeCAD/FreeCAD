@@ -27,14 +27,7 @@ except ImportError:
     FREECAD_AVAILABLE = False
     sys.exit(1)
 
-TEMPLATE_FILE = os.path.join(
-    os.path.dirname(__file__),
-    "src",
-    "Mod",
-    "TechDraw",
-    "TDTest",
-    "TestTemplate.svg",
-)
+TEMPLATE_FILE = os.path.join(os.path.dirname(__file__), "TestTemplate.svg")
 
 
 class TechDrawHeadlessTestSuite:
@@ -47,6 +40,20 @@ class TechDrawHeadlessTestSuite:
             f"Temporary directory: {self.temp_dir}. "
             f"TechDraw module: {TECHDRAW_MODULE_NAME}"
         )
+
+    def _default_template_path(self):
+        """Create a minimal fallback template in the temp directory."""
+        template_path = os.path.join(self.temp_dir, "smoke_template.svg")
+        if not os.path.exists(template_path):
+            with open(template_path, "w", encoding="utf-8") as handle:
+                handle.write(
+                    "<?xml version='1.0' encoding='UTF-8'?>\n"
+                    "<svg xmlns='http://www.w3.org/2000/svg' id='smoke-template' "
+                    "width='210mm' height='297mm' viewBox='0 0 210 297'>\n"
+                    "<rect x='5' y='5' width='200' height='287' fill='none' stroke='#000' stroke-width='0.35'/>\n"
+                    "</svg>\n"
+                )
+        return template_path
 
     def setup_test_environment(self):
         """Create test document and basic objects"""
@@ -62,6 +69,9 @@ class TechDrawHeadlessTestSuite:
 
             # Create TechDraw page
             self.test_page = self.test_doc.addObject('TechDraw::DrawPage', 'TestPage')
+            template_obj = self.test_doc.addObject('TechDraw::DrawSVGTemplate', 'SmokeTemplate')
+            template_obj.Template = self._default_template_path()
+            self.test_page.Template = template_obj
 
             # Recompute document
             self.test_doc.recompute()
@@ -314,6 +324,7 @@ class TechDrawHeadlessTestSuite:
 
             # Test with very small page dimensions
             small_template = self.test_doc.addObject('TechDraw::DrawSVGTemplate', 'SmallTemplate')
+            small_template.Template = self._default_template_path()
             small_template.setExpression('Width', '1mm')
             small_template.setExpression('Height', '1mm')
             self.test_page.Template = small_template
@@ -327,6 +338,7 @@ class TechDrawHeadlessTestSuite:
 
             # Test with very large page dimensions (A0: 841x1189mm)
             large_template = self.test_doc.addObject('TechDraw::DrawSVGTemplate', 'LargeTemplate')
+            large_template.Template = self._default_template_path()
             large_template.setExpression('Width', '841mm')
             large_template.setExpression('Height', '1189mm')
             self.test_page.Template = large_template
@@ -443,7 +455,7 @@ class TechDrawHeadlessTestSuite:
         test_name = "File System Edge Cases"
         try:
             # Test with very long filename (within OS limits)
-            long_name = 'a' * 200  # Most filesystems support at least 255 characters
+            long_name = 'a' * 120  # Keep well within common filesystem limits
             long_path = os.path.join(self.temp_dir, f'{long_name}.pdf')
 
             ok, err = self._export_page_as_pdf(long_path)

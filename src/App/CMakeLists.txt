@@ -82,9 +82,16 @@ if(BUILD_TRACY_FRAME_PROFILER)
 endif()
 
 list(APPEND FreeCADApp_LIBS
-        ${QtCore_LIBRARIES}
-        ${QtXml_LIBRARIES}
+    ${QtCore_LIBRARIES}
+    ${QtXml_LIBRARIES}
 )
+
+# GuiApplicationBootstrap uses QGuiApplication; link against the Gui module
+if(TARGET Qt6::Gui)
+    list(APPEND FreeCADApp_LIBS Qt6::Gui)
+elseif(TARGET Qt5::Gui)
+    list(APPEND FreeCADApp_LIBS Qt5::Gui)
+endif()
 
 generate_from_py(ApplicationDirectories)
 generate_from_py(Document)
@@ -281,6 +288,7 @@ SOURCE_GROUP("Properties" FILES ${Properties_SRCS})
 SET(FreeCADApp_CPP_SRCS
     ${Document_CPP_SRCS}
     ${Properties_CPP_SRCS}
+    GuiApplicationBootstrap.cpp
     Application.cpp
     ApplicationDirectories.cpp
     ApplicationDirectoriesPyImp.cpp
@@ -313,6 +321,7 @@ SET(FreeCADApp_CPP_SRCS
 SET(FreeCADApp_HPP_SRCS
     ${Document_HPP_SRCS}
     ${Properties_HPP_SRCS}
+    GuiApplicationBootstrap.h
     Application.h
     ApplicationDirectories.h
     AutoTransaction.h

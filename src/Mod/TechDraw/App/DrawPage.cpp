@@ -544,6 +544,12 @@ std::string DrawPage::renderToSVGString() const
     return renderer.renderToSVGString();
 }
 
+std::string DrawPage::renderTemplateToSVG() const
+{
+    PageRenderer renderer(this);
+    return renderer.renderTemplateToSVG();
+}
+
 
 // Python Drawing feature ---------------------------------------------------------
 

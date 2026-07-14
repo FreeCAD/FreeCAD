@@ -53,6 +53,10 @@ class DrawPage(DocumentObject):
     def renderToSVGString(self) -> str:
         """renderToSVGString() -> str: return the page render as SVG markup"""
         ...
+
+    def renderTemplateToSVG(self) -> str:
+        """renderTemplateToSVG() -> str: return the template render as SVG markup (no views)"""
+        ...
     PageWidth: Final[float]
     """Returns the width of this page"""
 

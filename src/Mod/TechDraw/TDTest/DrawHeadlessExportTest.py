@@ -1,29 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""Comprehensive headless export tests for the TechDraw module.
-
-This test suite provides extensive coverage for the TechDraw headless export
-functionality introduced in Phase 1, including:
-
-- Basic API functionality and return value validation
-- File I/O operations with various path formats and encodings
-- Error handling for invalid inputs and edge cases
-- Template processing and validation
-- Unicode filename support
-- Memory and performance constraint testing
-- Cross-platform compatibility validation
-- SVG content structure and encoding verification
-
-These tests ensure the headless export implementation is robust,
-reliable, and suitable for production use.
-"""
+"""Comprehensive headless export tests for the TechDraw module."""
 
 import os
+import re
 import shutil
+import subprocess
+import sys
 import tempfile
 import unittest
 import xml.etree.ElementTree as ET
+from functools import lru_cache
+from pathlib import Path
 
 import FreeCAD as App
 import TechDraw
@@ -39,10 +28,100 @@ except ImportError:  # pragma: no cover - PyPDF2 not always available
 class DrawHeadlessExportTest(unittest.TestCase):
     """Exercise DrawPage headless export helpers added in Phase 1."""
 
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def _cmake_flag(name: str):
+        """Best-effort read of a CMakeCache flag from the build tree."""
+        cache_file = DrawHeadlessExportTest._cmake_cache_path()
+        if cache_file is None:
+            return None
+
+        try:
+            with cache_file.open("r", encoding="utf-8") as handle:
+                for line in handle:
+                    if line.startswith(f"{name}:"):
+                        _, _, value = line.partition("=")
+                        return value.strip()
+        except OSError:
+            return None
+        return None
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def _cmake_cache_path():
+        for parent in Path(__file__).resolve().parents:
+            candidate = parent / "CMakeCache.txt"
+            if candidate.exists():
+                return candidate
+        return None
+
+    @classmethod
+    @lru_cache(maxsize=1)
+    def _qt_major_version(cls):
+        """Detect the configured Qt major version from the CMake cache."""
+        cache_file = cls._cmake_cache_path()
+        if cache_file is None:
+            return None
+
+        try:
+            with cache_file.open("r", encoding="utf-8") as handle:
+                for line in handle:
+                    if line.startswith("Qt6Core_DIR:") or line.startswith("Qt6_DIR:"):
+                        return 6
+                    if line.startswith("Qt5Core_DIR:") or line.startswith("Qt5_DIR:"):
+                        return 5
+        except OSError:
+            return None
+        return None
+
+    def _pyside_enabled(self) -> bool:
+        """Returns True when PySide can actually be imported."""
+        venv = os.environ.get("FREECAD_TEST_VENV")
+        if venv:
+            site_dir = Path(venv) / f"lib/python{sys.version_info.major}.{sys.version_info.minor}/site-packages"
+            if site_dir.exists() and str(site_dir) not in sys.path:
+                sys.path.insert(0, str(site_dir))
+
+        for mod in ("PySide6.QtGui", "PySide2.QtGui"):
+            try:
+                __import__(mod)
+                return True
+            except Exception:
+                continue
+
+        # Fallback to CMake flag if imports fail
+        flag = self._cmake_flag("FREECAD_USE_PYSIDE")
+        if flag is None:
+            return False
+        return flag.upper() == "ON"
+
+    def _qt_available(self):
+        """Return a PySide QGuiApplication class if available (PySide2/6)."""
+        qt_major = self._qt_major_version()
+        module_order = ("PySide6.QtGui", "PySide2.QtGui")
+        if qt_major == 6:
+            module_order = ("PySide6.QtGui",)
+        elif qt_major == 5:
+            module_order = ("PySide2.QtGui",)
+
+        if not self._pyside_enabled():
+            # If CMake flag was off but imports work, _pyside_enabled would have returned True.
+            # At this point, respect the flag and skip.
+            return None
+
+        for module in module_order:
+            try:
+                components = __import__(module, fromlist=["QGuiApplication"])
+                return getattr(components, "QGuiApplication", None)
+            except Exception:  # pragma: no cover - PySide may be absent in some builds
+                continue
+        return None
+
     def setUp(self):
         self._doc = App.newDocument("TDHeadless")
         self._page = self._doc.addObject("TechDraw::DrawPage", "Page")
         self._tempdir = tempfile.mkdtemp(prefix="techdraw_headless_")
+        self._assign_template(self._page)
 
     def tearDown(self):
         doc_name = self._doc.Name
@@ -70,11 +149,45 @@ class DrawHeadlessExportTest(unittest.TestCase):
             return False, exc
         return bool(result), None
 
+    def _assign_template(self, page):
+        """Ensure the supplied page has a usable template."""
+        template = self._doc.addObject("TechDraw::DrawSVGTemplate", "UnitTestTemplate")
+        template_path = None
+        if TechDraw is not None and hasattr(TechDraw, "getStandardTemplate"):
+            try:
+                candidate = TechDraw.getStandardTemplate("A4_Landscape_TD.svg")  # type: ignore[attr-defined]
+                if candidate:
+                    candidate_path = Path(candidate)
+                    if candidate_path.exists():
+                        template_path = candidate_path
+            except Exception:
+                template_path = None
+
+        if template_path is None:
+            fallback = Path(self._tempdir) / "unit_template.svg"
+            fallback.write_text(
+                """<?xml version='1.0' encoding='UTF-8'?>\n<svg xmlns='http://www.w3.org/2000/svg' id='unit-test-template' width='297mm' height='210mm'\n viewBox='0 0 297 210' version='1.1'>\n  <rect x='5' y='5' width='287' height='200' fill='none' stroke='#000' stroke-width='0.35'/>\n</svg>\n""",
+                encoding="utf-8",
+            )
+            template.Template = str(fallback)
+        else:
+            template.Template = str(template_path)
+
+        page.Template = template
+
     @staticmethod
     def _err_text(err, fallback="returned False"):
         return str(err) if err else fallback
 
+    def _render_svg_string(self):
+        """Call DrawPage.renderToSVGString directly."""
+        try:
+            return self._page.renderToSVGString()
+        except Exception as exc:
+            raise AssertionError(f"renderToSVGString raised: {exc}") from exc
+
     def _export_svg_string(self):
+        """Export to disk then read back (exercises exportToSVG path)."""
         temp_svg = self._tmp("temp_render.svg")
         ok, err = self._export_svg(temp_svg)
         if not ok:
@@ -88,10 +201,272 @@ class DrawHeadlessExportTest(unittest.TestCase):
 
     # Tests -------------------------------------------------------------------
 
+    def test_00_qt_application_defaults_when_unset(self):
+        """Headless export should bootstrap an offscreen QGuiApplication."""
+        QGuiApplication = self._qt_available()
+        if QGuiApplication is None:
+            self.skipTest("PySide bindings are not available")
+
+        if QGuiApplication.instance():  # pragma: no cover - GUI builds
+            self.skipTest("QGuiApplication already initialised")
+
+        original_platform = os.environ.pop("QT_QPA_PLATFORM", None)
+        original_opengl = os.environ.pop("QT_OPENGL", None)
+
+        try:
+            svg_content = self._export_svg_string()
+            self.assertTrue(svg_content, "SVG string is empty")
+            self.assertIsNotNone(QGuiApplication.instance(),
+                                 "rendering did not create a QGuiApplication")
+            self.assertNotIn("Qt SVG Document", svg_content,
+                              "Qt fallback SVG stub detected")
+            self.assertEqual(os.environ.get("QT_QPA_PLATFORM"), "offscreen")
+            self.assertEqual(os.environ.get("QT_OPENGL"), "software")
+        finally:
+            if original_platform is None:
+                os.environ.pop("QT_QPA_PLATFORM", None)
+            else:
+                os.environ["QT_QPA_PLATFORM"] = original_platform
+
+            if original_opengl is None:
+                os.environ.pop("QT_OPENGL", None)
+            else:
+                os.environ["QT_OPENGL"] = original_opengl
+
+    def test_qt_application_respects_existing_environment(self):
+        """Existing Qt platform hints must not be overwritten."""
+        QGuiApplication = self._qt_available()
+        if QGuiApplication is None:
+            self.skipTest("PySide bindings are not available")
+
+        original_platform = os.environ.get("QT_QPA_PLATFORM")
+        original_opengl = os.environ.get("QT_OPENGL")
+        os.environ["QT_QPA_PLATFORM"] = original_platform or "offscreen"
+        os.environ["QT_OPENGL"] = original_opengl or "software"
+
+        try:
+            svg_content = self._export_svg_string()
+            self.assertTrue(svg_content, "SVG string is empty")
+            self.assertIsNotNone(QGuiApplication.instance())
+            self.assertNotIn("Qt SVG Document", svg_content,
+                              "Qt fallback SVG stub detected")
+            self.assertEqual(os.environ.get("QT_QPA_PLATFORM"),
+                             original_platform or "offscreen")
+            self.assertEqual(os.environ.get("QT_OPENGL"),
+                             original_opengl or "software")
+        finally:
+            if original_platform is None:
+                os.environ.pop("QT_QPA_PLATFORM", None)
+            else:
+                os.environ["QT_QPA_PLATFORM"] = original_platform
+
+            if original_opengl is None:
+                os.environ.pop("QT_OPENGL", None)
+            else:
+                os.environ["QT_OPENGL"] = original_opengl
+
+    def test_fail_fast_with_existing_qcoreapplication(self):
+        """Headless export must fail when a non-GUI QCoreApplication is running."""
+        try:
+            import PySide6  # noqa: F401
+            from PySide6 import QtCore as _QtCore  # noqa: F401
+            from PySide6 import QtGui as _QtGui  # noqa: F401
+        except ImportError:
+            self.skipTest("PySide6 bindings are not available")
+
+        script = '''import os, sys, shutil, tempfile
+from pathlib import Path
+import FreeCAD as App
+import TechDraw
+from PySide6.QtCore import QCoreApplication
+from PySide6.QtGui import QGuiApplication
+
+try:
+    app = QCoreApplication([])
+    tempdir = tempfile.mkdtemp(prefix="td_core_only_")
+    try:
+        doc = App.newDocument("CoreOnly")
+        page = doc.addObject("TechDraw::DrawPage", "Page")
+        template = doc.addObject("TechDraw::DrawSVGTemplate", "Template")
+        template_path = Path(tempdir) / "core_only_template.svg"
+        template_path.write_text(
+            "<?xml version='1.0' encoding='UTF-8'?>\n"
+            "<svg xmlns='http://www.w3.org/2000/svg' id='core-only' width='210mm' height='297mm' viewBox='0 0 210 297'>\n"
+            "<rect x='1' y='1' width='208' height='295' fill='none' stroke='#000' stroke-width='0.35'/>\n"
+            "</svg>\n",
+            encoding="utf-8",
+        )
+        template.Template = str(template_path)
+        page.Template = template
+        doc.recompute()
+        pdf_path = Path(tempdir) / "core_only.pdf"
+        ok = page.exportToPDF(str(pdf_path))
+        gui_created = QGuiApplication.instance() is not None
+    finally:
+        shutil.rmtree(tempdir, ignore_errors=True)
+    sys.exit(0 if (not ok and not gui_created) else 1)
+except Exception:
+    import traceback
+    traceback.print_exc()
+    sys.exit(2)
+'''
+
+        python_exe = sys.executable
+        if os.path.basename(python_exe).lower().startswith("freecadcmd"):
+            python_exe = shutil.which("python3") or python_exe
+
+        result = subprocess.run(
+            [python_exe, "-c", script],
+            env=os.environ.copy(),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+
+        self.assertEqual(
+            result.returncode,
+            0,
+            f"Headless export should fail-fast when QCoreApplication exists "
+            f"(stdout: {result.stdout} stderr: {result.stderr})",
+        )
+
+    def test_fail_fast_with_existing_qcoreapplication_pyside2(self):
+        """Headless export must fail when a non-GUI QCoreApplication is running (PySide2)."""
+        qt_major = self._qt_major_version()
+        if qt_major and qt_major != 5:
+            self.skipTest("PySide2 bindings are not available for this Qt version")
+        if not self._pyside_enabled():
+            self.skipTest("PySide bindings are not available")
+        try:
+            import PySide2  # noqa: F401
+            from PySide2 import QtCore as _QtCore  # noqa: F401
+            from PySide2 import QtGui as _QtGui  # noqa: F401
+        except ImportError:
+            self.skipTest("PySide2 bindings are not available")
+
+        script = '''import os, sys, shutil, tempfile
+from pathlib import Path
+import FreeCAD as App
+import TechDraw
+from PySide2.QtCore import QCoreApplication
+from PySide2.QtGui import QGuiApplication
+
+try:
+    app = QCoreApplication([])
+    tempdir = tempfile.mkdtemp(prefix="td_core_only_")
+    try:
+        doc = App.newDocument("CoreOnly")
+        page = doc.addObject("TechDraw::DrawPage", "Page")
+        template = doc.addObject("TechDraw::DrawSVGTemplate", "Template")
+        template_path = Path(tempdir) / "core_only_template.svg"
+        template_path.write_text(
+            "<?xml version='1.0' encoding='UTF-8'?>\\n"
+            "<svg xmlns='http://www.w3.org/2000/svg' id='core-only' width='210mm' height='297mm' viewBox='0 0 210 297'>\\n"
+            "<rect x='1' y='1' width='208' height='295' fill='none' stroke='#000' stroke-width='0.35'/>\\n"
+            "</svg>\\n",
+            encoding='utf-8',
+        )
+        template.Template = str(template_path)
+        page.Template = template
+        doc.recompute()
+        pdf_path = Path(tempdir) / "core_only.pdf"
+        ok = page.exportToPDF(str(pdf_path))
+        gui_created = QGuiApplication.instance() is not None
+    finally:
+        shutil.rmtree(tempdir, ignore_errors=True)
+    sys.exit(0 if (not ok and not gui_created) else 1)
+except Exception:
+    import traceback
+    traceback.print_exc()
+    sys.exit(2)
+'''
+
+        python_exe = sys.executable
+        if os.path.basename(python_exe).lower().startswith("freecadcmd"):
+            python_exe = shutil.which("python3") or python_exe
+
+        result = subprocess.run(
+            [python_exe, "-c", script],
+            env=os.environ.copy(),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+
+        self.assertEqual(
+            result.returncode,
+            0,
+            f"Headless export should fail-fast when QCoreApplication exists (PySide2) "
+            f"(stdout: {result.stdout} stderr: {result.stderr})",
+        )
+
+    def test_template_svg_metadata_matches_full_render(self):
+        """SVG outputs should carry consistent metadata and template tags."""
+        full_svg = self._render_svg_string()
+        self.assertTrue(full_svg, "Full SVG export failed")
+        file_svg = self._export_svg_string()
+        self.assertTrue(file_svg, "File SVG export failed")
+
+        for svg in (full_svg, file_svg):
+            self.assertIn("<title>FreeCAD TechDraw Page</title>", svg)
+            self.assertIn("<desc>Generated by FreeCAD TechDraw</desc>", svg)
+            self.assertNotIn("Qt SVG Document", svg)
+            self.assertNotIn("Generated with Qt</desc>", svg)
+
+        comment_match = re.search(r"<!-- template-id: ([^ ]+) -->", full_svg)
+        self.assertIsNotNone(comment_match, "SVG output missing template-id comment")
+        self.assertIn(comment_match.group(0), file_svg, "File render missing template-id comment")
+
+    def test_template_only_render_uses_full_pipeline(self):
+        """renderTemplateToSVG should use the Qt pipeline with metadata and template id."""
+        template_svg = self._page.renderTemplateToSVG()
+        self.assertTrue(template_svg, "Template render returned empty output")
+        self.assertIn("<title>FreeCAD TechDraw Page</title>", template_svg)
+        self.assertIn("<desc>Generated by FreeCAD TechDraw</desc>", template_svg)
+        self.assertNotIn("Qt SVG Document", template_svg)
+        self.assertNotIn("Generated with Qt</desc>", template_svg)
+
+        full_svg = self._render_svg_string()
+        comment_match = re.search(r"<!-- template-id: ([^ ]+) -->", template_svg)
+        self.assertIsNotNone(comment_match, "Template render missing template-id comment")
+        if full_svg:
+            self.assertIn(comment_match.group(0),
+                          full_svg,
+                          "Template render template-id comment absent from full render")
+
+    def test_template_render_bootstraps_qt(self):
+        """renderTemplateToSVG should bootstrap QGuiApplication when PySide is available."""
+        QGuiApplication = self._qt_available()
+        if QGuiApplication is None:
+            self.skipTest("PySide bindings are not available")
+        if QGuiApplication.instance():  # pragma: no cover - GUI builds
+            self.skipTest("QGuiApplication already initialised")
+
+        original_platform = os.environ.pop("QT_QPA_PLATFORM", None)
+        original_opengl = os.environ.pop("QT_OPENGL", None)
+
+        try:
+            svg_content = self._page.renderTemplateToSVG()
+            self.assertTrue(svg_content, "Template render returned empty output")
+            self.assertIsNotNone(QGuiApplication.instance(),
+                                 "renderTemplateToSVG did not create a QGuiApplication")
+            self.assertEqual(os.environ.get("QT_QPA_PLATFORM"), "offscreen")
+            self.assertEqual(os.environ.get("QT_OPENGL"), "software")
+        finally:
+            if original_platform is None:
+                os.environ.pop("QT_QPA_PLATFORM", None)
+            else:
+                os.environ["QT_QPA_PLATFORM"] = original_platform
+
+            if original_opengl is None:
+                os.environ.pop("QT_OPENGL", None)
+            else:
+                os.environ["QT_OPENGL"] = original_opengl
+
     def test_api_methods_available(self):
         """DrawPage should expose the headless export helpers."""
         self.assertEqual(TECHDRAW_MODULE_NAME, "TechDraw", "TechDraw module failed to import")
-        for attr in ("exportToPDF", "exportToSVG", "renderToSVGString"):
+        for attr in ("exportToPDF", "exportToSVG", "renderToSVGString", "renderTemplateToSVG"):
             self.assertTrue(hasattr(self._page, attr), f"DrawPage missing {attr}")
 
     def test_pdf_export_creates_file(self):
@@ -126,7 +501,7 @@ class DrawHeadlessExportTest(unittest.TestCase):
 
     def test_render_to_svg_string_returns_markup(self):
         """renderToSVGString should return SVG markup."""
-        svg_content = self._export_svg_string()
+        svg_content = self._render_svg_string()
         self.assertTrue(svg_content, "SVG string is empty")
 
         root = ET.fromstring(svg_content)
@@ -188,6 +563,15 @@ class DrawHeadlessExportTest(unittest.TestCase):
         """Test export with extreme page sizes."""
         # Test with very small page (minimum viable size)
         template = self._doc.addObject("TechDraw::DrawSVGTemplate", "SmallTemplate")
+        template_path = Path(self._tempdir) / "page_size_template.svg"
+        template_path.write_text(
+            "<?xml version='1.0' encoding='UTF-8'?>\n"
+            "<svg xmlns='http://www.w3.org/2000/svg' id='page-size-template' width='210mm' height='297mm' viewBox='0 0 210 297'>\n"
+            "<rect x='1' y='1' width='208' height='295' fill='none' stroke='#000' stroke-width='0.35'/>\n"
+            "</svg>\n",
+            encoding="utf-8",
+        )
+        template.Template = str(template_path)
         template.setExpression("Width", "1mm")
         template.setExpression("Height", "1mm")
         self._page.Template = template

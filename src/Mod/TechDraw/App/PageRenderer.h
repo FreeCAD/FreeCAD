@@ -49,9 +49,9 @@ class DrawView;
  * to generate PDF and SVG output directly from App layer objects.
  *
  * Phase 1 Implementation:
- * - Basic template rendering
- * - SVG string generation
- * - PDF/SVG file export stubs
+ * - Template rendering via QSvgRenderer (metadata + template-id tagging)
+ * - DPI-aware PDF/SVG emission that matches template mm sizing
+ * - Qt bootstrap through App::QtApp::ensureGuiApplication (fails fast on core-only)
  *
  * Future phases will add:
  * - View content rendering (dimensions, annotations, parts)
@@ -78,7 +78,7 @@ public:
     void setResolution(double dpi);
     double getResolution() const;
 
-    // Phase 1: Template-only rendering
+    // Phase 1: Template-only rendering (Qt-backed, offscreen-capable)
     std::string renderTemplateToSVG() const;
     bool hasValidTemplate() const;
 
@@ -93,15 +93,12 @@ public:
 private:
     // Phase 1: Internal implementation
     void setupPainter(QPainter& painter) const;
-    void renderTemplate(QPainter& painter) const;
+    bool renderTemplate(QPainter& painter) const;
     void calculatePageBounds(double& width, double& height) const;
     void setError(const std::string& message) const;
     void clearError() const { m_lastError.clear(); }
-
-    // Phase 2+ (Future): View rendering internals
-    // void renderViews(QPainter& painter) const;
-    // void renderDimensions(QPainter& painter) const;
-    // void renderAnnotations(QPainter& painter) const;
+    std::string postProcessSvg(std::string&& svg) const;
+    void updateTemplateRenderer() const;
 
     // Member variables
     const DrawPage* m_page;
@@ -109,7 +106,7 @@ private:
     mutable std::string m_lastError;
 
     // Phase 1: Template handling
-    std::unique_ptr<class TemplateRenderer> m_templateRenderer;
+    mutable std::unique_ptr<class TemplateRenderer> m_templateRenderer;
 };
 
 /**
@@ -127,20 +124,26 @@ public:
 
     void setTemplate(const DrawTemplate* template_);
     const DrawTemplate* getTemplate() const;
+    const std::string& getTemplateIdentifier() const;
 
     // Template rendering
     std::string renderToSVG() const;
     bool isValid() const;
+    bool canRender() const;
+    bool isParametric() const;
+    std::string getUnsupportedReason() const;
 
     // Template field processing
     std::string processTemplateFields(const std::string& svgContent) const;
 
 private:
     const DrawTemplate* m_template;
+    mutable std::string m_lastTemplateIdentifier;
 
     // Internal template processing
     std::string loadTemplateSVG() const;
     std::string substituteFields(const std::string& content) const;
+    void cacheTemplateIdentifier(const std::string& svgContent) const;
 };
 
 } // namespace TechDraw
