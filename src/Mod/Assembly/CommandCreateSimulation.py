@@ -1060,7 +1060,7 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
             if "libvpx-vp9" in av.codecs_available:
                 formats["WebM Video"] = ".webm"
         except ImportError:
-            pass # Error out later
+            pass  # Error out later
 
         # Prompt user for file location and type
         file_path, selected_filter = QFileDialog.getSaveFileName(
@@ -1173,7 +1173,9 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
         )
         return True
 
-    def create_video(self, output_path: str, frame_files: list[str], fps: int, size: tuple[int, int]):
+    def create_video(
+        self, output_path: str, frame_files: list[str], fps: int, size: tuple[int, int]
+    ):
         """Creates a video file from a list of image files using PyAV."""
         try:
             import av
@@ -1199,9 +1201,7 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
             elif file_extension == ".webm":
                 stream = output.add_stream("libvpx-vp9", fps)
             else:
-                errMsg = (
-                    translate("Assembly", "Unknown video export format")
-                )
+                errMsg = translate("Assembly", "Unknown video export format")
                 QMessageBox.critical(self.form, "Error", errMsg)
                 return False
 
