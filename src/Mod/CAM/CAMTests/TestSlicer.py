@@ -44,6 +44,24 @@ def _get_z_depths(obj, z_max=0):
 class TestSlicer(unittest.TestCase):
     """Tests for Path.Area slicing through complex geometry."""
 
+    def test_17748_cam_profile(self):
+        """
+        Tests for regressions on issue #17748. In that issue, the pocket and mill face
+        operations do not generate the final/deepest slice. This test asserts that
+        each operation generates the expected number of layers.
+        """
+        doc = FreeCAD.openDocument(str(FIXTURE_PATH / "test_17748_cam_profile.FCStd"))
+        try:
+            pocket = doc.getObject("Pocket_Shape")
+            pocket.recompute()
+            self.assertEqual(len(_get_z_depths(pocket)), 4)
+
+            millface = doc.getObject("MillFace")
+            millface.recompute()
+            self.assertEqual(len(_get_z_depths(millface)), 2)
+        finally:
+            FreeCAD.closeDocument(doc.Name)
+
     def test_28534_truncated_pocket(self):
         """
         Tests for regressions on issue #28534. In that issue, the pocket operation does

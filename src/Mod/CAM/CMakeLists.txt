@@ -633,6 +633,7 @@ SET(Tests_SRCS
 
 SET(Tests_Fixtures
     CAMTests/Fixtures/OpHelix_v0-21.FCStd
+    CAMTests/Fixtures/test_17748_cam_profile.FCStd
     CAMTests/Fixtures/test_28534_truncated_pocket.FCStd
 )
 
