@@ -125,11 +125,8 @@ target_link_libraries(area-native ${area_native_LIBS} Import Clipper2::Clipper2Z
 SET_BIN_DIR(area-native area-native /Mod/CAM)
 
 target_link_libraries(area area-native ${area_LIBS} ${area_native_LIBS})
-
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(area)
-    target_compile_warn_error(area-native)
-endif()
+target_compile_warn_error(area)
+target_compile_warn_error(area-native)
 
 # TODO why CMAKE_SHARED_LINKER_FLAGS is not used here?
 # This is a dirty workaround!
