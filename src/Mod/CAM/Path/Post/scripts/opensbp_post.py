@@ -40,9 +40,7 @@ import Path
 
 Path.Log.debug(f"### RELOADED {__file__}")
 import Constants
-
 from Path.Post.Processor import PostProcessor
-from Path.Post.GcodeProcessingUtils import insert_line_numbers
 
 translate = FreeCAD.Qt.translate
 
@@ -254,6 +252,9 @@ class OpenSBPPost(PostProcessor):
         ):
             self.values[property_name.upper()] = schema[property_name]["default"]
 
+        # non-schema override
+        self.values.update({"OUTPUT_DUPLICATE_COMMANDS": True})
+
     def _convert_start_section(self, section_name, sublist):
         # need to note that we are starting a section (file), so "per section" stuff...
         self._first_probe_open = True
@@ -274,34 +275,31 @@ class OpenSBPPost(PostProcessor):
         return super().convert_command_to_gcode(command)
 
     def _convert_move(self, command):
-        # FIXME: use Path.Command world _add_line_numbers when implemented
-        gcode = super()._convert_move(command)
-        if gcode is None or "" == gcode.strip():
-            return None
+        # Some gcode starts with the same command as shopbot commands
+        # and shopbot will assume they are shopbot
+        # unless they start with gcode line-numbering: Nxxxx
+        if (
+            command.Name in self.GCodeLineNumberRequired
+            # modal can omit the command, leaving a Zn... as the first parameter -> head of string
+            or command.Name[0] in self.GCodeLineNumberRequiredParameters
+        ) and "N" not in command.Parameters:
+            # Shouldn't happen if OUTPUT_LINE_NUMBERS==True
 
-        if self.values["OUTPUT_LINE_NUMBERS"]:
-            # It will be taken care of later (everything line-numbered)
+            # But, we don't know what the line-number should be, so:
+            start = self.values["LINE_NUMBER_START"]
+            params = command.Parameters()
+            params["N"] = start
+            command = Path.Command(command.Name, params)
+
+        gcode = super()._convert_move(command)
+        if gcode is None or gcode == "":
             return gcode
 
         # We have to do this in string world
         result = []
         gcode_lines = gcode.split("\n")
         for line in gcode_lines:
-            command_name, *_ = line.split(" ", 1)
-
-            if (
-                command_name in self.GCodeLineNumberRequired
-                # modal can omit the command, leaving a Zn... as the first parameter -> head of string
-                or command_name[0] in self.GCodeLineNumberRequiredParameters
-            ):
-                # Line-numbering can't work properly, the progress isn't saved anywhere after
-                # calling insert_line_numbers()
-                start = self.values["LINE_NUMBER_START"]
-                increment = self.values["LINE_INCREMENT"]
-                result.append("' LN required")
-                result.extend(insert_line_numbers(gcode.split("\n"), start, increment))
-            else:
-                result.append(line)
+            result.append(line)
 
         return "\n".join(result)
 
@@ -611,14 +609,16 @@ class OpenSBPPost(PostProcessor):
         """
 
         # We are being strict here, Z motion only
-        excess = set(command.Parameters.keys()) - set(list("ZF"))
+        excess = set(command.Parameters.keys()) - set(list("ZFN"))
         if len(excess) > 0:
-            raise Exception(f"A probing move (G38.2) must only have Z and F, saw {command}")
+            raise Exception(f"A probing move (G38.2) must only have Z, F, and N, saw {command}")
         required = {p: v for p, v in command.Parameters.items() if p in "ZF"}
         if self.machine_state.F is not None:
             required["F"] = self.machine_state.F
         if len(required) != 2:
             raise Exception(f"A probing move (G38.2) must have a Z and F, only saw: {command}")
+        if len(command.Parameters) > 2 and "N" not in command.Parameters:
+            raise Exception(f"A probing move (G38.2) must only have Z, F, and N, saw {command}")
 
         # G1, we aren't jogging, we are doing a slow, deliberate move, i.e. ~"feed".
         probe_movement = self._convert_move(Path.Command("G1", required))
@@ -638,9 +638,7 @@ class OpenSBPPost(PostProcessor):
         # so, you can't know the state for modal and axis-modal
         # FIXME: this override goes away when Processor's does
 
-        disable = "OUTPUT_DUPLICATE_COMMANDS FILTER_INEFFICIENT_MOVES OUTPUT_LINE_NUMBERS".split(
-            " "
-        )
+        disable = "FILTER_INEFFICIENT_MOVES".split(" ")
         was = {k: self.values[k] for k in disable}
 
         for k in disable:

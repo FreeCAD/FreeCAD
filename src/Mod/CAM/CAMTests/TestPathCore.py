@@ -162,3 +162,12 @@ G0 Z0.500000
             ]
         )
         self.assertAlmostEqual(absolute_center_path.Length, expected_length, places=12)
+
+    # Command (App/Command.cpp) does not try to correctly parse modal g-code.
+    # (strings with just the axis, missing the "command" part).
+    # As implemented, Command (setFromGCode()) skips non-alpha leading chars (unless comment).
+    # So, " X1" is the Command.Name X1, not the axis X.
+    # Similarly, it does not try to render a modal via toGCode(),
+    # Path.Command("",{"X":1}).toGCode() gives " X1.00000".
+    # Code should not rely on "modal" behavior.
+    # No tests around this, therefore.
