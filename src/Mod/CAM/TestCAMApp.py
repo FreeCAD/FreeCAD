@@ -115,13 +115,13 @@ from CAMTests.TestPathToolBitSerializer import (
     TestYamlToolBitSerializer,
 )
 from CAMTests.TestFeedsSpeedsResolver import TestFeedsSpeedsResolver
-from CAMTests.TestFeedsSpeedsToolBitPresets import TestFeedsSpeedsToolBitPresets
+from CAMTests.TestFeedsSpeedsToolBitPresets import TestFeedsSpeedsToolBitPresets, TestPresetKey
 from CAMTests.TestFeedsSpeedsToolController import TestFeedsSpeedsToolController
-from CAMTests.TestFeedsSpeedsLibrarySync import (
-    TestMergePresets,
-    TestSyncToolPresets,
+from CAMTests.TestUpdateDocumentTools import (
     TestResolveLibrarySource,
-    TestSyncJobTools,
+    TestGeometryProperties,
+    TestDiffToolGeometry,
+    TestUpdateToolFromLibrary,
 )
 from CAMTests.TestPathToolLibrary import TestPathToolLibrary
 from CAMTests.TestPathToolLibrarySerializer import (

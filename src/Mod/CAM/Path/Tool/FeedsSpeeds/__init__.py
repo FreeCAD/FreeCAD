@@ -34,9 +34,9 @@ from .presets import (
     derive_preset_label,
     get_presets,
     make_preset,
+    preset_key,
     set_presets,
 )
-from .library_sync import preset_key
 
 __all__ = (
     "FeedSpeedResult",
