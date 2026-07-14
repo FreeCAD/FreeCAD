@@ -75,7 +75,6 @@
 #include <GeomFill_BSplineCurves.hxx>
 #include <Precision.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
-#include <Mod/Part/App/ShapeAnalysis_FreeBoundsFix.h>
 #include <ShapeBuild_ReShape.hxx>
 #include <ShapeConstruct_Curve.hxx>
 #include <ShapeUpgrade_ShellSewing.hxx>
@@ -102,6 +101,7 @@
 #include "Geometry.h"
 #include "BRepOffsetAPI_MakeOffsetFix.h"
 #include "ProgressIndicator.h"
+#include "ShapeAnalysis_FreeBoundsFix.h"
 
 #include <App/ElementMap.h>
 #include <App/ElementNamingUtils.h>

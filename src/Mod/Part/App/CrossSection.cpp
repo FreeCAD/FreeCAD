@@ -34,7 +34,6 @@
 #include <gp_Pln.hxx>
 #include <Precision.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
-#include <Mod/Part/App/ShapeAnalysis_FreeBoundsFix.h>
 #include <ShapeFix_Wire.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
@@ -46,6 +45,7 @@
 
 
 #include "CrossSection.h"
+#include "ShapeAnalysis_FreeBoundsFix.h"
 #include "TopoShapeOpCode.h"
 
 

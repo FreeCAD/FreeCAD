@@ -33,7 +33,6 @@
 #include <Precision.hxx>
 #include <ShapeAnalysis.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
-#include <Mod/Part/App/ShapeAnalysis_FreeBoundsFix.h>
 #include <ShapeFix_Face.hxx>
 #include <ShapeFix_Wire.hxx>
 #include <ShapeFix_Wireframe.hxx>
@@ -46,6 +45,7 @@
 
 
 #include "FeatureProjectOnSurface.h"
+#include "ShapeAnalysis_FreeBoundsFix.h"
 #include <Base/Exception.h>
 
 

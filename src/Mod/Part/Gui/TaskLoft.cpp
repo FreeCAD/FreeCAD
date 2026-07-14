@@ -23,12 +23,12 @@
  ***************************************************************************/
 
 
+#include <Mod/Part/App/ShapeAnalysis_FreeBoundsFix.h>
+#include <Precision.hxx>
 #include <QMessageBox>
 #include <QTextStream>
 #include <QTreeWidget>
-#include <Precision.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
-#include <Mod/Part/App/ShapeAnalysis_FreeBoundsFix.h>
 #include <TopoDS.hxx>
 #include <TopoDS_Iterator.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
