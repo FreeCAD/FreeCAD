@@ -123,9 +123,7 @@ target_include_directories(
     ${EIGEN3_INCLUDE_DIR}
 )
 target_link_libraries(Path ${Path_LIBS})
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Path)
-endif()
+target_compile_warn_error(Path)
 
 
 if(FREECAD_USE_PCH)
@@ -142,9 +140,7 @@ INSTALL(TARGETS Path DESTINATION ${CMAKE_INSTALL_LIBDIR})
 add_library(tsp_solver SHARED tsp_solver_pybind.cpp tsp_solver.cpp)
 target_include_directories(tsp_solver PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${pybind11_INCLUDE_DIR})
 target_link_libraries(tsp_solver PRIVATE pybind11::module Python3::Python)
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(tsp_solver)
-endif()
+target_compile_warn_error(tsp_solver)
 
 SET_BIN_DIR(tsp_solver tsp_solver /Mod/CAM)
 SET_PYTHON_PREFIX_SUFFIX(tsp_solver)

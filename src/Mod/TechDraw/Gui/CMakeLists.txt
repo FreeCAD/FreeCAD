@@ -487,9 +487,7 @@ if (MSVC)
     target_compile_definitions(TechDrawGui PRIVATE WIN32_LEAN_AND_MEAN)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(TechDrawGui)
-endif()
+target_compile_warn_error(TechDrawGui)
 
 fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/" ${TechDrawGuiIcon_SVG})
 INSTALL(FILES ${TechDrawGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Resources/icons")

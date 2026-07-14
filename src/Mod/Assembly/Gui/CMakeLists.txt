@@ -90,9 +90,7 @@ if(WIN32)
 endif(WIN32)
 
 target_link_libraries(AssemblyGui ${AssemblyGui_LIBS})
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(AssemblyGui)
-endif()
+target_compile_warn_error(AssemblyGui)
 
 SET_BIN_DIR(AssemblyGui AssemblyGui /Mod/Assembly)
 SET_PYTHON_PREFIX_SUFFIX(AssemblyGui)

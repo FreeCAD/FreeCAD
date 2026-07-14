@@ -68,9 +68,7 @@ target_include_directories(
 )
 
 target_link_libraries(PointsGui ${PointsGui_LIBS})
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(PointsGui)
-endif()
+target_compile_warn_error(PointsGui)
 
 fc_target_copy_resource_flat(PointsGui
     ${CMAKE_CURRENT_SOURCE_DIR}

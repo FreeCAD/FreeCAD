@@ -287,9 +287,7 @@ if (MSVC)
     target_compile_options(PartGui PRIVATE /wd4251 /wd4273)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(PartGui)
-endif()
+target_compile_warn_error(PartGui)
 
 
 SET_BIN_DIR(PartGui PartGui /Mod/Part)

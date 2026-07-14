@@ -83,10 +83,7 @@ if (MSVC)
     target_compile_options(MeshPartGui PRIVATE /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(MeshPartGui)
-endif()
-
+target_compile_warn_error(MeshPartGui)
 
 SET_BIN_DIR(MeshPartGui MeshPartGui /Mod/MeshPart)
 SET_PYTHON_PREFIX_SUFFIX(MeshPartGui)

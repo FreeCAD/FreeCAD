@@ -128,9 +128,7 @@ if (MSVC)
     target_compile_options(RobotGui PRIVATE /wd4273)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(RobotGui)
-endif()
+target_compile_warn_error(RobotGui)
 
 unset(_flag_found CACHE)
 check_cxx_compiler_flag("-Wno-deprecated-copy" _flag_found)

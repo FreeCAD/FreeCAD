@@ -190,9 +190,7 @@ if (MSVC)
     target_compile_options(MatGui PRIVATE /wd4251 /wd4273)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(MatGui)
-endif()
+target_compile_warn_error(MatGui)
 
 SET_BIN_DIR(MatGui MatGui /Mod/Material)
 SET_PYTHON_PREFIX_SUFFIX(MatGui)

@@ -92,9 +92,7 @@ if (MSVC)
     target_compile_options(MeshPart PRIVATE /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(MeshPart)
-endif()
+target_compile_warn_error(MeshPart)
 
 
 fc_target_copy_resource_flat(MeshPart
@@ -126,6 +124,7 @@ if (BUILD_FLAT_MESH)
     SET_PYTHON_PREFIX_SUFFIX(flatmesh)
     target_include_directories(flatmesh PRIVATE ${pybind11_INCLUDE_DIR})
     target_link_libraries(flatmesh ${Python3_LIBRARIES} ${MeshPart_LIBS})
+    target_compile_warn_error(flatmesh)
 
     SET_BIN_DIR(flatmesh flatmesh /Mod/MeshPart)
     install(TARGETS flatmesh DESTINATION ${CMAKE_INSTALL_LIBDIR})

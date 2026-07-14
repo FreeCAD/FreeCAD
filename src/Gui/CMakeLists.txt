@@ -1506,9 +1506,7 @@ if (MSVC)
     target_compile_options(FreeCADGui PRIVATE /wd4251 /wd4273 /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(FreeCADGui)
-endif()
+target_compile_warn_error(FreeCADGui)
 
 SET_BIN_DIR(FreeCADGui FreeCADGui)
 

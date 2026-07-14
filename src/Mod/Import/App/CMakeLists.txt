@@ -69,9 +69,7 @@ if (MSVC)
     target_compile_options(Import PRIVATE /wd4251 /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Import)
-endif()
+target_compile_warn_error(Import)
 
 ADD_CUSTOM_TARGET(ImportPy ALL
 )

@@ -106,9 +106,7 @@ target_include_directories(
 
 # target_link_libraries(StartGui ${StartGui_LIBS} Qt::Quick Qt::Qml Qt::QuickWidgets)
 target_link_libraries(StartGui ${StartGui_LIBS})
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(StartGui)
-endif()
+target_compile_warn_error(StartGui)
 
 SET_BIN_DIR(StartGui StartGui /Mod/Start)
 SET_PYTHON_PREFIX_SUFFIX(StartGui)
