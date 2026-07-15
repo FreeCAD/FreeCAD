@@ -103,6 +103,15 @@ enum SpecialTag
     DefaultTemporaryConstraint = -1
 };
 
+// Optional per-run instrumentation for a System. Set with
+// System::setStats() to collect statistics during a solve/diagnose.
+class SketcherExport SystemStats
+{
+public:
+    // Sum of the size of every reduced Jacobian built during diagnose().
+    int cumulativeDiagnoseMatrixSize = 0;
+};
+
 class SketcherExport System
 {
     // This is the main class. It holds all constraints and information
@@ -144,6 +153,8 @@ private:
     bool isInit;        // if plists, clists, reductionmaps are up to date
 
     bool emptyDiagnoseMatrix;  // false only if there is at least one driving constraint.
+
+    SystemStats* stats = nullptr;  // optional instrumentation, see setStats()
 
     int solve_BFGS(SubSystem* subsys, bool isFine = true, bool isRedundantsolving = false);
     int solve_LM(SubSystem* subsys, bool isRedundantsolving = false);
@@ -633,6 +644,7 @@ public:
     }
 
     int diagnose(Algorithm alg = DogLeg);
+
     int dofsNumber() const
     {
         return hasDiagnosis ? dofs : -1;
@@ -687,6 +699,11 @@ protected:
         return std::count_if(clist.begin(), clist.end(), [tagID](Constraint* constraint) {
             return constraint->getTag() == tagID;
         });
+    }
+
+    void _setStats(SystemStats* stats)
+    {
+        this->stats = stats;
     }
 };
 

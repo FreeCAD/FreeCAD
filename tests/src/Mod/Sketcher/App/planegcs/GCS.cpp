@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+#include <vector>
+
 #include <gtest/gtest.h>
 
 #include "Mod/Sketcher/App/planegcs/GCS.h"
@@ -10,6 +12,11 @@ public:
     size_t getNumberOfConstraints(int tagID = -1)
     {
         return _getNumberOfConstraints(tagID);
+    }
+
+    void setStats(GCS::SystemStats* stats)
+    {
+        return _setStats(stats);
     }
 };
 
@@ -49,4 +56,29 @@ TEST_F(GCSTest, clearConstraints)  // NOLINT
 
     // Assert
     EXPECT_EQ(0, System()->getNumberOfConstraints());
+}
+
+TEST_F(GCSTest, diagnoseManyIndependentComponentsPerf)  // NOLINT
+{
+    // Arrange
+    constexpr int N = 6000;
+    std::vector<double> values(2 * N, 0.0);
+    GCS::VEC_pD params;
+    params.reserve(values.size());
+    for (auto& v : values) {
+        params.push_back(&v);
+    }
+
+    System()->declareUnknowns(params);
+    for (int i = 0; i < N; ++i) {
+        System()->addConstraintEqual(params[2 * i], params[2 * i + 1]);
+    }
+
+    // Act
+    GCS::SystemStats stats;
+    System()->setStats(&stats);
+    System()->diagnose();
+
+    // Assert
+    EXPECT_EQ(stats.cumulativeDiagnoseMatrixSize, 2*N);
 }

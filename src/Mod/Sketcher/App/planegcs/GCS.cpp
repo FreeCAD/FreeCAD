@@ -4839,6 +4839,10 @@ int System::diagnose(Algorithm alg)
 
     makeReducedJacobian(J, jacobianconstraintmap, pdiagnoselist, tagmultiplicity);
 
+    if (stats) {
+        stats->cumulativeDiagnoseMatrixSize += J.rows() * J.cols();
+    }
+
     // this function will exit with a diagnosis and, unless overridden by functions below, with full
     // DoFs
     hasDiagnosis = true;
