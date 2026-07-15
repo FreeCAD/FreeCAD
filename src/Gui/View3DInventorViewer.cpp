@@ -377,6 +377,15 @@ bool hasFramebufferBlitSupport()
     return QOpenGLFramebufferObject::hasOpenGLFramebufferBlit();
 }
 
+QImage flipVertically(const QImage& image)
+{
+#if QT_VERSION < QT_VERSION_CHECK(6, 9, 0)
+    return image.mirrored();
+#else
+    return image.flipped(Qt::Vertical);
+#endif
+}
+
 void renderOverlayImage(
     const QImage& image,
     int viewportWidth,
@@ -2387,14 +2396,11 @@ void View3DInventorViewer::savePicture(
 
     if (useGrabFramebuffer) {
         img = self->grabFramebuffer();
-#if QT_VERSION < QT_VERSION_CHECK(6, 9, 0)
-        img = img.mirrored();
-#else
-        img = img.flipped(Qt::Vertical);
-#endif
         img = img.scaledToWidth(width);
         return;
     }
+
+    ScopedRenderIntent scopedIntent(*self, intent);
 
     // if no valid color use the current background
     bool useBackground = false;
@@ -2884,7 +2890,10 @@ void View3DInventorViewer::setRenderType(RenderType type)
                 fboFormat.setAttachment(QOpenGLFramebufferObject::Depth);
                 auto fbo = new QOpenGLFramebufferObject(width, height, fboFormat);
                 if (fbo->format().samples() > 0 && hasFramebufferBlitSupport()) {
-                    renderToFramebuffer(fbo);
+                    if (!renderToFramebuffer(fbo)) {
+                        delete fbo;
+                        break;
+                    }
                     framebuffer = new QOpenGLFramebufferObject(fbo->size());
                     // this is needed to be able to render the texture later
                     QOpenGLFramebufferObject::blitFramebuffer(framebuffer, fbo);
@@ -2901,14 +2910,18 @@ void View3DInventorViewer::setRenderType(RenderType type)
                         fallbackFormat.setAttachment(QOpenGLFramebufferObject::Depth);
                         fbo = new QOpenGLFramebufferObject(width, height, fallbackFormat);
                     }
-                    renderToFramebuffer(fbo);
+                    if (!renderToFramebuffer(fbo)) {
+                        delete fbo;
+                        break;
+                    }
                     framebuffer = fbo;
                 }
             }
             break;
-        case Image: {
-            glImage = grabFramebuffer();
-        } break;
+        case Image:
+            // renderOverlayImage() consumes OpenGL-oriented rows.
+            glImage = flipVertically(grabFramebuffer());
+            break;
     }
 }
 
@@ -2922,40 +2935,9 @@ QImage View3DInventorViewer::grabFramebuffer()
     auto gl = static_cast<QOpenGLWidget*>(this->viewport());  // NOLINT
     gl->makeCurrent();
 
-    QImage res;
-    const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
-    SbVec2s size = vp.getViewportSizePixels();
-    int width = size[0];
-    int height = size[1];
-
-    int samples = getNumSamples();
-    if (samples == 0) {
-        // if anti-aliasing is off we can directly use glReadPixels
-        QImage img(QSize(width, height), QImage::Format_RGB32);
-        glReadPixels(0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, img.bits());
-        res = img;
-    }
-    else {
-        QOpenGLFramebufferObjectFormat fboFormat;
-        fboFormat.setSamples(getNumSamples());
-        fboFormat.setAttachment(QOpenGLFramebufferObject::Depth);
-        fboFormat.setTextureTarget(GL_TEXTURE_2D);
-        fboFormat.setInternalTextureFormat(getInternalTextureFormat());
-
-        QOpenGLFramebufferObject fbo(width, height, fboFormat);
-        renderToFramebuffer(&fbo);
-
-        res = fbo.toImage(false);
-
-        QImage image(res.width(), res.height(), QImage::Format_RGB32);
-        QPainter painter(&image);
-        painter.fillRect(image.rect(), Qt::black);
-        painter.drawImage(0, 0, res);
-        painter.end();
-        res = image;
-    }
-
-    return res;
+    // QOpenGLWidget resolves multisampling and renders the live widget as
+    // necessary before reading its framebuffer.
+    return gl->grabFramebuffer().convertToFormat(QImage::Format_RGB32);
 }
 
 QImage View3DInventorViewer::renderToImage(const RenderImageOptions& options)

@@ -106,7 +106,7 @@ class _View3DInventorViewer:
         ...
 
     def grabFramebuffer(self) -> Any:
-        """Capture the current framebuffer."""
+        """Capture the live viewport framebuffer as a raster-oriented image."""
         ...
 
     def setOverrideMode(self, mode: str, /) -> None:

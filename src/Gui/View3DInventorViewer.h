@@ -246,7 +246,7 @@ public:
     /** Render the scene into a new image using the requested capture policy. */
     QImage renderToImage(const RenderImageOptions& options);
 
-    /** Capture the live viewport framebuffer. */
+    /** Capture the live viewport framebuffer as a raster-oriented image. */
     QImage grabFramebuffer();
 
     void setViewing(bool enable) override;
