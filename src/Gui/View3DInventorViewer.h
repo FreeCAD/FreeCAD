@@ -146,8 +146,11 @@ public:
     /// decorations can be excluded from capture and export paths.
     enum class RenderIntent
     {
+        /// Interactive viewport traversal including viewer decorations.
         LiveInteractive,
+        /// Fresh raster output excluding screen-only viewer decorations.
         RasterCapture,
+        /// Vector output excluding screen-only viewer decorations.
         VectorExport
     };
 
@@ -237,6 +240,7 @@ public:
         int samples = -1;
         QColor background;
         RenderIntent intent = RenderIntent::RasterCapture;
+        bool includeViewerLighting = true;
     };
 
     /** Render the scene into a new image using the requested capture policy. */
@@ -630,7 +634,7 @@ private:
     void drawSingleBackground(const QColor&);
     void recoverFromRenderMemoryException();
     void renderGLActionScene(const QColor& backgroundColor, SoGLRenderAction* glra);
-    bool renderToFramebuffer(QOpenGLFramebufferObject*);
+    bool renderToFramebuffer(QOpenGLFramebufferObject*, bool includeViewerLighting = true);
     void setCursorRepresentation(int mode);
     void aboutToDestroyGLContext();
     void createStandardCursors();
@@ -653,6 +657,8 @@ private:
     SoDirectionalLight* backlight;
     SoDirectionalLight* fillLight;
     SoEnvironment* environment;
+    SoGroup* viewerLightingRoot;
+    SoSeparator* viewerSceneRoot;
 
     SoRotation* lightRotation;
 

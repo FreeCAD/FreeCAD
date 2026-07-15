@@ -71,6 +71,7 @@
 #include <Inventor/nodes/SoCube.h>
 #include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoEventCallback.h>
+#include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
@@ -1106,6 +1107,10 @@ void View3DInventorViewer::init()
     threePointLightingSeparator->addChild(lightRotation);
     threePointLightingSeparator->addChild(this->fillLight);
 
+    viewerLightingRoot = new SoGroup;
+    viewerLightingRoot->addChild(threePointLightingSeparator);
+    viewerLightingRoot->addChild(environment);
+
     this->foregroundroot->addChild(cam);
     this->foregroundroot->addChild(foregroundLightModel);
     this->foregroundroot->addChild(foregroundBaseColor);
@@ -1118,8 +1123,11 @@ void View3DInventorViewer::init()
 
     // set the ViewProvider root node
     pcViewProviderRoot = selectionRoot;
-    pcViewProviderRoot->addChild(threePointLightingSeparator);
-    pcViewProviderRoot->addChild(environment);
+
+    viewerSceneRoot = new SoSeparator;
+    viewerSceneRoot->ref();
+    viewerSceneRoot->addChild(viewerLightingRoot);
+    viewerSceneRoot->addChild(pcViewProviderRoot);
 
     // add a global hidden anchor object to ensure transparent objects work correctly
     // in empty scenes - OpenInventor's two-pass transparency rendering requires at least
@@ -1146,7 +1154,7 @@ void View3DInventorViewer::init()
     // increase refcount before passing it to setScenegraph(), to avoid
     // premature destruction
     pcViewProviderRoot->ref();
-    setSceneGraph(pcViewProviderRoot);
+    setSceneGraph(viewerSceneRoot);
     // Event callback node
     pEventCallback = new SoEventCallback();
     pEventCallback->setUserData(this);
@@ -1310,6 +1318,9 @@ View3DInventorViewer::~View3DInventorViewer()
     this->pcBackGround = nullptr;
 
     setSceneGraph(nullptr);
+    this->viewerSceneRoot->unref();
+    this->viewerLightingRoot = nullptr;
+    this->viewerSceneRoot = nullptr;
     this->pEventCallback->unref();
     this->pEventCallback = nullptr;
     // Note: It can happen that there is still someone who references
@@ -2363,7 +2374,6 @@ void View3DInventorViewer::savePicture(
     }
 
     auto self = const_cast<View3DInventorViewer*>(this);  // NOLINT
-
     if (useFramebufferObject) {
         RenderImageOptions options;
         options.width = width;
@@ -3019,7 +3029,7 @@ QImage View3DInventorViewer::renderToImage(const RenderImageOptions& options)
         setGradientBackground(Background::NoGradient);
     }
 
-    if (!renderToFramebuffer(&fbo)) {
+    if (!renderToFramebuffer(&fbo, options.includeViewerLighting)) {
         return {};
     }
     img = fbo.toImage();
@@ -3056,7 +3066,7 @@ QImage View3DInventorViewer::renderToImage(const RenderImageOptions& options)
     return img;
 }
 
-bool View3DInventorViewer::renderToFramebuffer(QOpenGLFramebufferObject* fbo)
+bool View3DInventorViewer::renderToFramebuffer(QOpenGLFramebufferObject* fbo, bool includeViewerLighting)
 {
     static_cast<QOpenGLWidget*>(this->viewport())->makeCurrent();  // NOLINT
     if (!fbo->bind()) {
@@ -3092,13 +3102,20 @@ bool View3DInventorViewer::renderToFramebuffer(QOpenGLFramebufferObject* fbo)
     // while creating a new render action has it set to GL_LEQUAL. So, in order to get
     // the exact same result set it explicitly to GL_LESS.
     glDepthFunc(GL_LESS);
-    gl.apply(this->getSoRenderManager()->getSceneGraph());
+    if (includeViewerLighting) {
+        gl.apply(this->getSoRenderManager()->getSceneGraph());
+    }
+    else {
+        gl.apply(this->getSoRenderManager()->getCamera());
+        SoNode* scene = this->getSceneGraph();
+        gl.apply(scene == this->viewerSceneRoot ? this->selectionRoot : scene);
+    }
     gl.apply(this->foregroundroot);
     if (shouldRenderDecorations(currentRenderIntent())) {
         gl.apply(this->decorationroot);
     }
 
-    if (this->axiscrossEnabled) {
+    if (shouldRenderDecorations(currentRenderIntent()) && this->axiscrossEnabled) {
         this->drawAxisCross();
     }
 
@@ -3283,7 +3300,7 @@ void View3DInventorViewer::renderScene()
 
     this->renderGLActionScene(col, this->getSoRenderManager()->getGLRenderAction());
 
-    if (this->axiscrossEnabled) {
+    if (shouldRenderDecorations(currentRenderIntent()) && this->axiscrossEnabled) {
         this->drawAxisCross();
     }
 
@@ -3292,12 +3309,14 @@ void View3DInventorViewer::renderScene()
         this->getSoRenderManager()->scheduleRedraw();
     }
 
-    printDimension();
+    if (shouldRenderDecorations(currentRenderIntent())) {
+        printDimension();
 
-    {
-        ZoneScopedN("Graphics items");
-        for (auto it : this->graphicsItems) {
-            it->paintGL();
+        {
+            ZoneScopedN("Graphics items");
+            for (auto it : this->graphicsItems) {
+                it->paintGL();
+            }
         }
     }
 

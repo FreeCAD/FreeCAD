@@ -73,6 +73,7 @@ public:
     Py::Object setBackgroundColor(const Py::Tuple& args);
     Py::Object setRedirectToSceneGraph(const Py::Tuple& args);
     Py::Object isRedirectedToSceneGraph(const Py::Tuple& args);
+    Py::Object renderToImage(const Py::Tuple& args, const Py::Dict& kwds);
     Py::Object grabFramebuffer(const Py::Tuple& args);
 
     Py::Object setOverrideMode(const Py::Tuple& args);
@@ -92,8 +93,13 @@ public:
 
 private:
     using method_varargs_handler = PyObject* (*)(PyObject * _self, PyObject* _args);
+    using method_keyword_handler = PyObject* (*)(PyObject * _self,
+                                                 PyObject* _args,
+                                                 PyObject* _keywords);
     static method_varargs_handler pycxx_handler;
+    static method_keyword_handler pycxx_keyword_handler;
     static PyObject* method_varargs_ext_handler(PyObject* _self, PyObject* _args);
+    static PyObject* method_keyword_ext_handler(PyObject* _self, PyObject* _args, PyObject* _keywords);
 
 private:
     friend class EditableDatumLabelPy;
