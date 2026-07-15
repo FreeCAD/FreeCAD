@@ -818,6 +818,10 @@ ZCallback64 CArea::MakeZCallback()
     );
 }
 
+// For any intersection points created, splitting an original edge, update
+// the arc fitting data structure with appropriate arc metadata for their edges
+//
+// Also, for open paths, reorder as needed to produce positively oriented and positively ordered paths
 void CArea::ProcessIntersectionPoints(Paths64& paths, bool is_closed)
 {
     // Process each path
