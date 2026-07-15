@@ -8,7 +8,9 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-set(CMAKE_AUTOMOC ON)
+if(FREECAD_HAS_QT)
+    set(CMAKE_AUTOMOC ON)
+endif()
 
 function(setup_qt_test)
     foreach(_testname ${ARGN})
