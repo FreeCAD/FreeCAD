@@ -381,11 +381,14 @@ TEST_F(MeasureSnap, testVertexOnWireReturnsFalse)
     );
 }
 
+// A circular edge carries an axis (through its centre, normal to its plane), so it
+// offers FlagAxis alongside the vertex/midpoint/centre snaps.
 TEST_F(MeasureSnap, testAvailableSnapTypesOnCircleEdge)
 {
     const int expected = static_cast<int>(Measure::MeasureSnapFlag::FlagVertex)
         | static_cast<int>(Measure::MeasureSnapFlag::FlagMidpoint)
-        | static_cast<int>(Measure::MeasureSnapFlag::FlagCenter);
+        | static_cast<int>(Measure::MeasureSnapFlag::FlagCenter)
+        | static_cast<int>(Measure::MeasureSnapFlag::FlagAxis);
     const TopoDS_Edge circle = makeCircle(gp_Pnt(0.0, 0.0, 0.0));
     EXPECT_EQ(Measure::MeasureSnap::getAvailableSnapTypes(circle), expected);
 }
@@ -664,7 +667,7 @@ TEST_F(MeasureSnap, testAxisSnapCursorProjectsCursor)
     EXPECT_DOUBLE_EQ(out.Z(), 3.0);
 }
 
-// Axis mode needs a face; an edge carries no surface axis and is rejected.
+// Axis mode needs a face or a circular edge; a straight edge has no axis.
 TEST_F(MeasureSnap, testAxisSnapOnNonFaceReturnsFalse)
 {
     const TopoDS_Edge line = makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0));
@@ -872,6 +875,37 @@ TEST_F(MeasureSnap, testPreviewPointsAxisOnCylinder)
     EXPECT_NEAR(ends.back().X(), 0.0, 1e-6);
     EXPECT_NEAR(ends.back().Y(), 0.0, 1e-6);
     EXPECT_NEAR((ends.front().Z() + ends.back().Z()) / 2.0, 2.5, 1e-6);
+}
+
+// A circular edge in the XY plane snaps to its centre as the axis point, with the
+// plane normal (Z) as the axis direction.
+TEST_F(MeasureSnap, testAxisSnapOnCircleEdge)
+{
+    const TopoDS_Edge circle = makeCircle(gp_Pnt(3.0, 4.0, 0.0));
+    gp_Pnt out;
+    gp_Dir dir;
+    ASSERT_TRUE(
+        Measure::MeasureSnap::computeSnapPoint(circle, Measure::MeasureSnapMode::Axis, nullptr, out, &dir)
+    );
+    EXPECT_TRUE(dir.IsParallel(gp_Dir(0.0, 0.0, 1.0), 1e-9));
+    EXPECT_NEAR(out.X(), 3.0, 1e-6);
+    EXPECT_NEAR(out.Y(), 4.0, 1e-6);
+    EXPECT_NEAR(out.Z(), 0.0, 1e-6);
+}
+
+// Wiring: a circular edge resolves to two axis-line endpoints along its normal,
+// symmetric about the centre (z=0 for a circle in the XY plane at the origin).
+TEST_F(MeasureSnap, testPreviewPointsAxisOnCircle)
+{
+    const TopoDS_Edge circle = makeCircle(gp_Pnt(0.0, 0.0, 0.0));
+    const std::vector<gp_Pnt> ends
+        = Measure::MeasureSnap::previewPoints(circle, Measure::MeasureSnapMode::Axis);
+    ASSERT_EQ(ends.size(), 2U);
+    EXPECT_NEAR(ends.front().X(), 0.0, 1e-6);
+    EXPECT_NEAR(ends.front().Y(), 0.0, 1e-6);
+    EXPECT_NEAR(ends.back().X(), 0.0, 1e-6);
+    EXPECT_NEAR(ends.back().Y(), 0.0, 1e-6);
+    EXPECT_NEAR((ends.front().Z() + ends.back().Z()) / 2.0, 0.0, 1e-6);
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
