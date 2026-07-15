@@ -20,6 +20,7 @@
 
 #include "PathUtils.h"
 
+#include <algorithm>
 #include <system_error>
 
 #include <Base/FileInfo.h>
@@ -66,6 +67,17 @@ fs::path pathFromUtf8(std::string_view utf8)
 #endif
 }
 
+std::string pathToPortableUtf8(const fs::path& path)
+{
+#if defined(FC_OS_WIN32)
+    auto result = FileInfo::pathToString(path);
+    std::replace(result.begin(), result.end(), '\\', '/');
+    return result;
+#else
+    return path.generic_string();
+#endif
+}
+
 fs::path canonicalIfExists(const fs::path& path)
 {
     std::error_code error;
@@ -85,7 +97,7 @@ std::optional<fs::path> normalizePath(const fs::path& path, const NormalizePathO
     std::error_code error;
     fs::path out = path;
 
-    if (options.makeAbsolute) {
+    if (options.absolute) {
         out = fs::absolute(out, error);
         if (error) {
             return std::nullopt;
@@ -100,13 +112,6 @@ std::optional<fs::path> normalizePath(const fs::path& path, const NormalizePathO
     }
     else {
         out = out.lexically_normal();
-    }
-
-    if (options.createParentDirectories) {
-        fs::create_directories(out.parent_path(), error);
-        if (error) {
-            return std::nullopt;
-        }
     }
 
     return out;

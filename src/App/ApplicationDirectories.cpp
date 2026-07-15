@@ -22,7 +22,6 @@
 
 #include <fmt/format.h>
 #include <boost/version.hpp>
-#include <cstdlib>
 #include <optional>
 #include <string_view>
 #include <system_error>
@@ -50,19 +49,10 @@
 using namespace App;
 namespace fs = std::filesystem;
 
+FC_LOG_LEVEL_INIT("App", true, true)
+
 namespace
 {
-
-std::optional<std::string> getenvString(const char* key)
-{
-    if (!key || !*key) {
-        return std::nullopt;
-    }
-    if (const char* value = std::getenv(key); value && *value) {
-        return std::string(value);
-    }
-    return std::nullopt;
-}
 
 #if defined(FC_OS_WIN32)
 bool hasDllExtension(const char* name)
@@ -171,7 +161,7 @@ fs::path ApplicationDirectories::findPath(const fs::path& stdHome, const fs::pat
             fs::create_directories(appData);
         } catch (const fs::filesystem_error& e) {
             THROWM(Base::FileSystemError,
-                   "Could not create directories in " + appData.string() + ". "
+                   "Could not create directories in " + Base::FileInfo::pathToString(appData) + ". "
                    "Failed with: " + e.code().message());
         }
     }
@@ -451,7 +441,7 @@ std::tuple<fs::path, fs::path, fs::path> ApplicationDirectories::getCustomPaths(
         if (!value || value->empty()) {
             return {};
         }
-        fs::path candidate(*value);
+        fs::path candidate = Base::pathFromUtf8(*value);
         std::error_code error;
         if (!fs::is_directory(candidate, error) || error) {
             return {};
@@ -459,9 +449,9 @@ std::tuple<fs::path, fs::path, fs::path> ApplicationDirectories::getCustomPaths(
         return Base::canonicalIfExists(candidate);
     };
 
-    fs::path userHome = normalizeDir(getenvString("FREECAD_USER_HOME"));
-    fs::path userData = normalizeDir(getenvString("FREECAD_USER_DATA"));
-    fs::path userTemp = normalizeDir(getenvString("FREECAD_USER_TEMP"));
+    fs::path userHome = normalizeDir(Base::environmentVariableUtf8("FREECAD_USER_HOME"));
+    fs::path userData = normalizeDir(Base::environmentVariableUtf8("FREECAD_USER_DATA"));
+    fs::path userTemp = normalizeDir(Base::environmentVariableUtf8("FREECAD_USER_TEMP"));
 
     if (!userHome.empty() && userData.empty()) {
         userData = userHome;
@@ -472,7 +462,11 @@ std::tuple<fs::path, fs::path, fs::path> ApplicationDirectories::getCustomPaths(
         if (!Py_IsInitialized()) {
             try {
                 fs::create_directories(userTemp);
-            } catch (...) {
+            } catch (const fs::filesystem_error& error) {
+                FC_WARN("Unable to create custom temporary directory '"
+                        << Base::FileInfo::pathToString(userTemp) << "': " << error.code().message());
+                // Let the normal platform temporary directory fallback handle this case.
+                userTemp.clear();
             }
         }
     }

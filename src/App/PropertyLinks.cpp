@@ -33,6 +33,7 @@
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 #include <Base/Tools.h>
+#include <Base/PathUtils.h>
 
 #include "PropertyLinks.h"
 #include "Application.h"
@@ -3385,8 +3386,11 @@ public:
             std::error_code relativeError;
             const std::filesystem::path relativePath = std::filesystem::relative(full, docDir, relativeError);
             if (!relativeError) {
-                return Base::FileInfo::pathToString(relativePath);
+                // Document paths are serialized and must use the portable
+                // separator regardless of the host filesystem.
+                return Base::pathToPortableUtf8(relativePath);
             }
+            return Base::pathToPortableUtf8(full);
         }
         return fullString;
     }
