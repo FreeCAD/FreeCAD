@@ -446,7 +446,7 @@ void CmdMeshExport::activated(int)
         filter << it.first;
     }
 
-    qsizetype formatIndex;
+    qsizetype formatIndex = -1;
     QString fn = Gui::FileDialog::getSaveFileName(
         Gui::getMainWindow(),
         QObject::tr("Export Mesh"),
@@ -757,21 +757,19 @@ CmdMeshAddFacet::CmdMeshAddFacet()
 
 void CmdMeshAddFacet::activated(int)
 {
-    std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(
-        Mesh::Feature::getClassTypeId()
-    );
-    for (auto it : docObj) {
-        Gui::Document* doc = Gui::Application::Instance->getDocument(it->getDocument());
-        Gui::MDIView* view = doc->getActiveView();
-        if (view->isDerivedFrom<Gui::View3DInventor>()) {
-            MeshGui::MeshFaceAddition* edit = new MeshGui::MeshFaceAddition(
-                static_cast<Gui::View3DInventor*>(view)
-            );
-            edit->startEditing(
-                static_cast<MeshGui::ViewProviderMesh*>(Gui::Application::Instance->getViewProvider(it))
-            );
-            break;
-        }
+    auto meshes = Gui::Selection().getObjectsOfType<Mesh::Feature>();
+    if (meshes.size() != 1) {
+        return;
+    }
+
+    auto meshObj = meshes.front();
+    Gui::Document* doc = Gui::Application::Instance->getDocument(meshObj->getDocument());
+    Gui::MDIView* view = doc->getActiveView();
+    if (view->isDerivedFrom<Gui::View3DInventor>()) {
+        auto edit = new MeshGui::MeshFaceAddition(static_cast<Gui::View3DInventor*>(view));
+        edit->startEditing(
+            static_cast<MeshGui::ViewProviderMesh*>(Gui::Application::Instance->getViewProvider(meshObj))
+        );
     }
 }
 

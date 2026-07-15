@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 
+#include <QCheckBox>
 #include <QMessageBox>
 
 
@@ -37,6 +38,7 @@
 #include "Command.h"
 #include "Document.h"
 #include "MainWindow.h"
+#include "Selection.h"
 
 
 using namespace Gui;
@@ -83,6 +85,28 @@ void deleteGroupContentsRecursively(App::GroupExtension* group)
             child->getDocument()->removeObject(child->getNameInDocument());
         }
     }
+}
+
+// Returns the currently selected objects that are non-empty groups, i.e. exactly
+// the objects whose deletion will pop up a recursive-delete confirmation. The same
+// group selected through several sub-elements is returned only once.
+std::vector<App::DocumentObject*> selectedNonEmptyGroups()
+{
+    std::vector<App::DocumentObject*> groups;
+    for (const auto& sel : Gui::Selection().getSelection()) {
+        App::DocumentObject* obj = sel.pObject;
+        if (!obj || !obj->hasExtension(App::GroupExtension::getExtensionClassTypeId())) {
+            continue;
+        }
+        auto* group = obj->getExtensionByType<App::GroupExtension>();
+        if (group->Group.getValues().empty()) {
+            continue;
+        }
+        if (std::ranges::find(groups, obj) == groups.end()) {
+            groups.push_back(obj);
+        }
+    }
+    return groups;
 }
 }  // namespace
 
@@ -183,63 +207,18 @@ std::vector<App::DocumentObject*> ViewProviderGroupExtension::extensionClaimChil
     return group->Group.getValues();
 }
 
-void ViewProviderGroupExtension::extensionShow()
+bool ViewProviderGroupExtension::extensionOnDelete(const std::vector<std::string>& subNames)
 {
-
-    // avoid possible infinite recursion
-    if (guard) {
-        return;
-    }
-    Base::StateLocker lock(guard);
-
-    // when reading the Visibility property from file then do not hide the
-    // objects of this group because they have stored their visibility status, too
-    //
-    // Property::User1 is used by ViewProviderDocumentObject to mark for
-    // temporary visibility changes. Do not propagate the change to children.
-    if (!getExtendedViewProvider()->isRestoring()
-        && !getExtendedViewProvider()->Visibility.testStatus(App::Property::User1)) {
-        auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
-        for (auto obj : group->Group.getValues()) {
-            if (obj && !obj->Visibility.getValue()) {
-                obj->Visibility.setValue(true);
-            }
-        }
+    // If this group is being deleted as part of a parent group's recursive deletion,
+    // the user already confirmed at the top level, so don't ask again. This matches
+    // the marker checked by ViewProviderBoolean and ViewProviderCompound.
+    bool inGroupDeletion = !subNames.empty() && subNames[0] == "group_recursive_deletion";
+    if (inGroupDeletion) {
+        return true;
     }
 
-    ViewProviderExtension::extensionShow();
-}
-
-void ViewProviderGroupExtension::extensionHide()
-{
-
-    // avoid possible infinite recursion
-    if (guard) {
-        return;
-    }
-    Base::StateLocker lock(guard);
-
-    // when reading the Visibility property from file then do not hide the
-    // objects of this group because they have stored their visibility status, too
-    //
-    // Property::User1 is used by ViewProviderDocumentObject to mark for
-    // temporary visibility changes. Do not propagate the change to children.
-    if (!getExtendedViewProvider()->isRestoring()
-        && !getExtendedViewProvider()->Visibility.testStatus(App::Property::User1)) {
-        auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
-        for (auto obj : group->Group.getValues()) {
-            if (obj && obj->Visibility.getValue()) {
-                obj->Visibility.setValue(false);
-            }
-        }
-    }
-    ViewProviderExtension::extensionHide();
-}
-
-bool ViewProviderGroupExtension::extensionOnDelete(const std::vector<std::string>&)
-{
-
-    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
+    auto* currentObj = getExtendedViewProvider()->getObject();
+    auto* group = currentObj->getExtensionByType<App::GroupExtension>();
 
     std::vector<App::DocumentObject*> directChildren = group->Group.getValues();
 
@@ -248,6 +227,12 @@ bool ViewProviderGroupExtension::extensionOnDelete(const std::vector<std::string
         return true;
     }
 
+    // The delete command calls this method once per selected object. When several
+    // non-empty groups are selected we add an "Apply to all" checkbox so the user
+    // can answer once for the whole selection instead of for every group.
+    const std::vector<App::DocumentObject*> selectedGroups = selectedNonEmptyGroups();
+    const bool multipleGroups = selectedGroups.size() > 1;
+
     const auto* docGroup = freecad_cast<App::DocumentObjectGroup*>(
         getExtendedViewProvider()->getObject()
     );
@@ -255,10 +240,9 @@ bool ViewProviderGroupExtension::extensionOnDelete(const std::vector<std::string
 
     QString message;
     if (allDescendants.size() == directChildren.size()) {
-        message
-            = QObject::tr("The group '%1' contains %2 object(s). Do you want to delete them as well?")
-                  .arg(QString::fromUtf8(getExtendedViewProvider()->getObject()->Label.getValue()))
-                  .arg(allDescendants.size());
+        message = QObject::tr("The group '%1' contains %2 object(s). Delete them as well?")
+                      .arg(QString::fromUtf8(getExtendedViewProvider()->getObject()->Label.getValue()))
+                      .arg(allDescendants.size());
     }
     else {
         // if we have nested groups
@@ -271,17 +255,75 @@ bool ViewProviderGroupExtension::extensionOnDelete(const std::vector<std::string
                       .arg(allDescendants.size());
     }
 
-    QMessageBox::StandardButton choice = QMessageBox::question(
-        getMainWindow(),
-        QObject::tr("Delete group contents recursively?"),
+    QMessageBox msgBox(
+        QMessageBox::Question,
+        QObject::tr("Delete Group Contents Recursively?"),
         message,
         QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
-        QMessageBox::No
+        getMainWindow()
     );
+    msgBox.setDefaultButton(QMessageBox::No);
+
+    QCheckBox* applyToAllCheckBox = nullptr;
+    if (multipleGroups) {
+        applyToAllCheckBox = new QCheckBox(
+            QObject::tr("Apply to all selected objects (%1) and their children")
+                .arg(selectedGroups.size()),
+            &msgBox
+        );
+        msgBox.setCheckBox(applyToAllCheckBox);
+    }
+
+    msgBox.exec();
+    QMessageBox::StandardButton choice = msgBox.standardButton(msgBox.clickedButton());
+    const bool applyToAll = applyToAllCheckBox && applyToAllCheckBox->isChecked();
 
     if (choice == QMessageBox::Cancel) {
         // don't delete anything if user has cancelled
         return false;
+    }
+
+    if (choice == QMessageBox::No && applyToAll) {
+        // Apply "No" to the whole selection: remove every other selected group now but
+        // keep its children (removeObject reparents them to the document root). Those
+        // groups are then already gone when their own delete call comes around; the
+        // current group is left for the delete command to remove on return. We capture
+        // names first because removing one group may already remove another (nested).
+        std::vector<std::pair<App::Document*, std::string>> groupRefs;
+        groupRefs.reserve(selectedGroups.size());
+        for (App::DocumentObject* selObj : selectedGroups) {
+            if (selObj != currentObj) {
+                groupRefs.emplace_back(selObj->getDocument(), selObj->getNameInDocument());
+            }
+        }
+        for (const auto& [doc, name] : groupRefs) {
+            App::DocumentObject* obj = doc ? doc->getObject(name.c_str()) : nullptr;
+            if (obj && obj->isAttachedToDocument() && !obj->isRemoving()) {
+                doc->removeObject(name.c_str());
+            }
+        }
+        return true;
+    }
+
+    if (choice == QMessageBox::Yes && applyToAll) {
+        // Apply the decision to the whole selection right away by emptying every
+        // selected non-empty group now. Each group's own delete call will then find
+        // it empty and return without asking again. We capture the objects by name
+        // first because emptying one group may already remove another (e.g. a nested
+        // group), so we re-resolve and skip the ones that are already gone.
+        std::vector<std::pair<App::Document*, std::string>> groupRefs;
+        groupRefs.reserve(selectedGroups.size());
+        for (App::DocumentObject* obj : selectedGroups) {
+            groupRefs.emplace_back(obj->getDocument(), obj->getNameInDocument());
+        }
+        for (const auto& [doc, name] : groupRefs) {
+            App::DocumentObject* obj = doc ? doc->getObject(name.c_str()) : nullptr;
+            if (obj && obj->isAttachedToDocument() && !obj->isRemoving()
+                && obj->hasExtension(App::GroupExtension::getExtensionClassTypeId())) {
+                deleteGroupContentsRecursively(obj->getExtensionByType<App::GroupExtension>());
+            }
+        }
+        return true;
     }
 
     if (choice == QMessageBox::Yes) {

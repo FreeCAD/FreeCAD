@@ -80,7 +80,7 @@
     <message>
       <location filename="../../StartView.cpp" line="232"/>
       <source>Creates a 2D Draft document</source>
-      <translation type="unfinished">Creates a 2D Draft document</translation>
+      <translation>Створює 2D документ чернетки</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="235"/>
@@ -100,27 +100,27 @@
     <message>
       <location filename="../../StartView.cpp" line="218"/>
       <source>Opens an existing CAD file or 3D model</source>
-      <translation type="unfinished">Opens an existing CAD file or 3D model</translation>
+      <translation>Відкриває наявний файл CAD або 3D модель</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="222"/>
       <source>Parametric Body</source>
-      <translation type="unfinished">Parametric Body</translation>
+      <translation>Параметричне тіло</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="223"/>
       <source>Creates a body with the Part Design workbench</source>
-      <translation type="unfinished">Creates a body with the Part Design workbench</translation>
+      <translation>Створення тіла за допомогою робочого середовища Part Design</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="228"/>
       <source>Creates an assembly project</source>
-      <translation type="unfinished">Creates an assembly project</translation>
+      <translation>Створення збірного проекту</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="236"/>
       <source>Creates an architectural project</source>
-      <translation type="unfinished">Creates an architectural project</translation>
+      <translation>Створення архітектурного проекту</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="520"/>
@@ -140,12 +140,12 @@
     <message>
       <location filename="../../StartView.cpp" line="539"/>
       <source>Open First Start Setup</source>
-      <translation type="unfinished">Open First Start Setup</translation>
+      <translation>Відкрити налаштування першого запуску</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="540"/>
       <source>Do not show this Start page again (start with blank screen)</source>
-      <translation type="unfinished">Do not show this Start page again (start with blank screen)</translation>
+      <translation>Не показувати цю Початкову сторінку знову (запускати з порожнім екраном)</translation>
     </message>
   </context>
   <context>
@@ -212,40 +212,40 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="20"/>
       <source>Contents</source>
-      <translation type="unfinished">Contents</translation>
+      <translation>Вміст</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
       <location filename="../../DlgStartPreferences.ui" line="86"/>
       <source>Show only FreeCAD files in additional folder</source>
-      <translation type="unfinished">Show only FreeCAD files in additional folder</translation>
+      <translation>Показувати лише файли FreeCAD у додатковій теці</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="33"/>
       <source>Show examples folder contents</source>
-      <translation type="unfinished">Show examples folder contents</translation>
+      <translation>Показувати вміст теки з прикладами</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="40"/>
       <source>Show additional folder contents</source>
-      <translation type="unfinished">Show additional folder contents</translation>
+      <translation>Показувати вміст додаткової теки</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="47"/>
       <source>An optional custom folder to be displayed on the Start page.
 Multiple folders can be added using ";;" to separate paths.</source>
-      <translation type="unfinished">An optional custom folder to be displayed on the Start page.
-Multiple folders can be added using ";;" to separate paths.</translation>
+      <translation>Не обов’язкова власна тека, яка буде відображатися на Початковій сторінці.
+Декілька тек можна додати використовуючи ";;" для розділення шляхів.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="64"/>
       <source>Shows example files on the start page</source>
-      <translation type="unfinished">Shows example files on the start page</translation>
+      <translation>Показувати файли прикладів на початковій сторінці</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="114"/>
       <source>The start page is closed automatically when FreeCAD launches</source>
-      <translation type="unfinished">The start page is closed automatically when FreeCAD launches</translation>
+      <translation>Початкова сторінка закривається автоматично під час запуску FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="108"/>
@@ -269,14 +269,14 @@ Multiple folders can be added using ";;" to separate paths.</translation>
   <context>
     <name>Start::DisplayedFilesModel</name>
     <message>
-      <location filename="../../../App/DisplayedFilesModel.cpp" line="130"/>
+      <location filename="../../../App/DisplayedFilesModel.cpp" line="131"/>
       <source>Created at:</source>
-      <translation type="unfinished">Created at:</translation>
+      <translation>Створено:</translation>
     </message>
     <message>
-      <location filename="../../../App/DisplayedFilesModel.cpp" line="131"/>
+      <location filename="../../../App/DisplayedFilesModel.cpp" line="132"/>
       <source>Modified at:</source>
-      <translation type="unfinished">Modified at:</translation>
+      <translation>Змінено:</translation>
     </message>
   </context>
 </TS>

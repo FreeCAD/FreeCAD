@@ -92,14 +92,16 @@ public:
        addDynamicProperty(..., ..., "Base","blah", Prop_None, true, true);
       @endcode
      */
-    Property* addDynamicProperty(PropertyContainer& pc,
-                                 const char* type,
-                                 const char* name = nullptr,
-                                 const char* group = nullptr,
-                                 const char* doc = nullptr,
-                                 short attr = 0,
-                                 bool ro = false,
-                                 bool hidden = false);
+    Property* addDynamicProperty(
+        PropertyContainer& pc,
+        std::string_view type,
+        const char* name = nullptr,
+        const char* group = nullptr,
+        const char* doc = nullptr,
+        short attr = 0,
+        bool ro = false,
+        bool hidden = false
+    );
     /** Add a pre-existing property
      *
      * The property is not treated as dynamic, and will not trigger signal.

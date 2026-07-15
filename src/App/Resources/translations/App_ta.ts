@@ -4,9 +4,24 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="481"/>
+      <location filename="../../Application.cpp" line="619"/>
       <source>Unnamed</source>
       <translation>பெயரிடப்படாத</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="569"/>
+      <source>True</source>
+      <translation>உண்மை</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="569"/>
+      <source>False</source>
+      <translation>பொய்</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="587"/>
+      <source>Null</source>
+      <translation type="unfinished">Null</translation>
     </message>
   </context>
   <context>
@@ -20,7 +35,7 @@
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../Document.cpp" line="1218"/>
+      <location filename="../../Document.cpp" line="1255"/>
       <source>
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.
@@ -66,7 +81,7 @@ The user should then click the Refresh button in the main toolbar.
     <message>
       <location filename="../../Datums.cpp" line="273"/>
       <source>Origin-Point</source>
-      <translation type="unfinished">Origin-Point</translation>
+      <translation>தோற்றம்-புள்ளி</translation>
     </message>
   </context>
   <context>
@@ -75,8 +90,7 @@ The user should then click the Refresh button in the main toolbar.
       <location filename="../../Link.cpp" line="119"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
-      <translation type="unfinished">Stores the last user choice of whether to apply CopyOnChange setup to all link
-that links to the same configurable object</translation>
+      <translation>ஒரே உள்ளமைக்கக்கூடிய பொருளுடன் இணைக்கும் அனைத்து இணைப்புகளுக்கும் CopyOnChange அமைப்பைப் பயன்படுத்துவதா இல்லையா என்பது குறித்த பயனரின் கடைசித் தேர்வைச் சேமிக்கிறது</translation>
     </message>
   </context>
 </TS>

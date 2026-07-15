@@ -133,7 +133,6 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
         return SbMatrix();
     }
 
-    gp_Lin lin1 = getLine(vector1, loc1);
     gp_Lin lin2 = getLine(vector2, loc2);
 
     SbMatrix dimSys = SbMatrix();
@@ -421,7 +420,7 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
 
     // ========================== Normals ==========================
 
-    // arc normals standerd
+    // arc normals standard
     auto pNormalsSwitch = new SoSwitch();
     pNormalsSwitch->whichChild.connectFrom(&visualMode);
 
@@ -627,7 +626,7 @@ Measure::MeasureAngle* ViewProviderMeasureAngle::getMeasureAngle()
 }
 
 
-void ViewProviderMeasureAngle::positionAnno(const Measure::MeasureBase* measureObject)
+void ViewProviderMeasureAngle::positionAnno([[maybe_unused]] const Measure::MeasureBase* measureObject)
 {
     // for imgOrigin, the initial radius is set to the center of the two obj
     auto obj = getMeasureAngle();
@@ -668,8 +667,9 @@ void ViewProviderMeasureAngle::positionAnno(const Measure::MeasureBase* measureO
 
 void ViewProviderMeasureAngle::onLabelMoved()
 {
-    if (!Gui::Control().activeDialog()
-        || !dynamic_cast<MeasureGui::TaskMeasure*>(Gui::Control().activeDialog())) {
+    auto* activeDialog = Gui::Control().activeDialog();
+    const bool isTaskMeasure = activeDialog && dynamic_cast<MeasureGui::TaskMeasure*>(activeDialog);
+    if (!isTaskMeasure) {
         return;
     }
     SbVec3f trans = pLabelTranslation->translation.getValue();
@@ -702,10 +702,7 @@ void ViewProviderMeasureAngle::onLabelMoved()
 
 void ViewProviderMeasureAngle::onLabelMoveFinish()
 {
-    if (!Gui::Control().activeDialog()
-        || !dynamic_cast<MeasureGui::TaskMeasure*>(Gui::Control().activeDialog())) {
-        return;
-    }
+    ViewProviderMeasureBase::onLabelMoveFinish();
     IsFlipped.setValue(isArcFlipped.getValue());
 }
 

@@ -1,5 +1,13 @@
 if [[ ${HOST} =~ .*linux.*  ]]; then
     CMAKE_PRESET=conda-linux-release
+
+    # The Linux conda preset builds with Clang, but conda compiler activation
+    # can still provide GCC-only flags.
+    for flags_var in CFLAGS CXXFLAGS DEBUG_CFLAGS DEBUG_CXXFLAGS; do
+        if [[ -n "${!flags_var:-}" ]]; then
+            export "${flags_var}=${!flags_var//-fno-merge-constants/}"
+        fi
+    done
 fi
 
 if [[ ${HOST} =~ .*darwin.* ]]; then
@@ -59,7 +67,6 @@ cmake \
     -D CMAKE_INSTALL_PREFIX:FILEPATH="$PREFIX" \
     -D CMAKE_LIBRARY_PATH:FILEPATH="$PREFIX/lib" \
     -D CMAKE_PREFIX_PATH:FILEPATH="$PREFIX" \
-    -D FREECAD_USE_EXTERNAL_FMT:BOOL=OFF \
     -D INSTALL_TO_SITEPACKAGES:BOOL=ON \
     -D OCC_INCLUDE_DIR:FILEPATH="$PREFIX/include/opencascade" \
     -D OCC_LIBRARY_DIR:FILEPATH="$PREFIX/lib" \

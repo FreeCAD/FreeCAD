@@ -1,6 +1,17 @@
 # -------------------------------- Qt --------------------------------
 
 set(FREECAD_QT_COMPONENTS Core Concurrent Network Xml)
+
+if (FREECAD_QT_MAJOR_VERSION EQUAL 5)
+    message(WARNING [[
+
+     ******************************************************************
+        Qt5 support is deprecated: please update your builds to Qt6.
+                  Support will be removed in August 2026.
+     ******************************************************************
+    ]])
+endif()
+
 if (FREECAD_QT_MAJOR_VERSION EQUAL 6)
     set (Qt6Core_MOC_EXECUTABLE Qt6::moc)
 endif()
@@ -92,7 +103,7 @@ configure_file(${CMAKE_SOURCE_DIR}/src/QtWidgets.h.cmake ${CMAKE_BINARY_DIR}/src
 function(qt_find_and_add_translation _qm_files _tr_dir _qm_dir)
     file(GLOB _ts_files ${_tr_dir})
     set_source_files_properties(${_ts_files} PROPERTIES OUTPUT_LOCATION ${_qm_dir})
-    qt_add_translation("${_qm_files}" ${_ts_files})
+    qt_add_translation("${_qm_files}" ${_ts_files} OPTIONS -silent)
     set("${_qm_files}" "${${_qm_files}}" PARENT_SCOPE)
 endfunction()
 

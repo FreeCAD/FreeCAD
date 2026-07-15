@@ -541,7 +541,7 @@ valeurs faibles créent des reflets larges et flous. Notez que l'intensité des 
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="72"/>
       <source>Use materials from the Materials preference directory</source>
-      <translation>Utiliser les matériaux du répertoire des préférences de Materials</translation>
+      <translation>Utiliser les matériaux du répertoire des préférences de FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="88"/>
@@ -655,19 +655,15 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="207"/>
-      <source>Image files (*.jpg *.jpeg *.png *.bmp)</source>
-      <translation>Fichiers image (*.jpg *.jpeg *.png *.bmp)</translation>
+      <location filename="../../ImageEdit.cpp" line="223"/>
+      <source>Image files</source>
+      <translation>Fichiers d'images</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="208"/>
-      <location filename="../../ImageEdit.cpp" line="223"/>
-      <source>All files (*)</source>
-      <translation>Tous les fichiers (*)</translation>
-    </message>
-    <message>
-      <location filename="../../ImageEdit.cpp" line="222"/>
-      <source>Image files (*.svg)</source>
-      <translation>Fichiers image (*.svg)</translation>
+      <location filename="../../ImageEdit.cpp" line="224"/>
+      <source>All files</source>
+      <translation>Tous les fichiers</translation>
     </message>
   </context>
   <context>
@@ -724,68 +720,68 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
       <translation>Nouveau dossier</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="96"/>
+      <location filename="../../MaterialSave.cpp" line="97"/>
       <source>Delete</source>
       <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="198"/>
+      <location filename="../../MaterialSave.cpp" line="199"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
       <translation>Enregistrer par-dessus le fichier d'origine peut endommager d'autres documents. Ceci n'est pas recommandé.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="222"/>
+      <location filename="../../MaterialSave.cpp" line="223"/>
       <source>Save as new material</source>
       <translation>Enregistrer en tant que nouveau matériau</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="195"/>
+      <location filename="../../MaterialSave.cpp" line="196"/>
       <source>Save over &apos;%1&apos;?</source>
       <translation>Voulez-vous enregistrer par-dessus « %1 » ?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="220"/>
+      <location filename="../../MaterialSave.cpp" line="221"/>
       <source>Confirm Save as New Material</source>
       <translation>Confirmer l'enregistrement en tant que nouveau matériau</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="225"/>
+      <location filename="../../MaterialSave.cpp" line="226"/>
       <source>This material already exists in this library. Save as a new material?</source>
       <translation>Ce matériau existe déjà dans cette bibliothèque. Voulez-vous l'enregistrer comme nouveau matériau ?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="247"/>
+      <location filename="../../MaterialSave.cpp" line="248"/>
       <source>Confirm Save as Copy</source>
       <translation>Confirmer l'enregistrement en tant que copie</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="249"/>
+      <location filename="../../MaterialSave.cpp" line="250"/>
       <source>Save as copy</source>
       <translation>Enregistrer en tant que copie</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="252"/>
+      <location filename="../../MaterialSave.cpp" line="253"/>
       <source>Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</source>
       <translation>Il n'est pas recommandé d'enregistrer une copie, car cela peut endommager d'autres documents. Il est recommandé d'enregistrer en tant que nouveau matériau.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="255"/>
+      <location filename="../../MaterialSave.cpp" line="256"/>
       <source>Save Copy</source>
       <translation>Enregistrer une copie</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="256"/>
+      <location filename="../../MaterialSave.cpp" line="257"/>
       <source>Save As New</source>
       <translation>Enregistrer comme nouveau</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="488"/>
-      <location filename="../../MaterialSave.cpp" line="498"/>
+      <location filename="../../MaterialSave.cpp" line="489"/>
+      <location filename="../../MaterialSave.cpp" line="499"/>
       <source>New folder</source>
       <translation>Nouveau dossier</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="538"/>
+      <location filename="../../MaterialSave.cpp" line="539"/>
       <source>Context Menu</source>
       <translation>Menu contextuel</translation>
     </message>
@@ -1163,23 +1159,23 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
       <translation>Material</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="192"/>
+      <location filename="../../MaterialSave.cpp" line="193"/>
       <source>Confirm Overwrite</source>
       <translation>Confirmer le remplacement</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="382"/>
       <location filename="../../MaterialSave.cpp" line="383"/>
+      <location filename="../../MaterialSave.cpp" line="384"/>
       <source>No writeable library</source>
       <translation>Aucune bibliothèque accessible en écriture</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="570"/>
+      <location filename="../../MaterialSave.cpp" line="571"/>
       <source>Delete &apos;%1&apos;?</source>
       <translation>Voulez-vous supprimer « %1 » ?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="574"/>
+      <location filename="../../MaterialSave.cpp" line="575"/>
       <source>Removing this will also remove all contents.</source>
       <translation>Supprimer ceci supprimera également tous les contenus.</translation>
     </message>
@@ -1204,15 +1200,15 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
       <translation>Si ce n'est pas fait, toutes les modifications seront perdues.</translation>
     </message>
     <message>
-      <location filename="../../ListEdit.cpp" line="142"/>
+      <location filename="../../MaterialSave.cpp" line="568"/>
       <location filename="../../Array2D.cpp" line="170"/>
-      <location filename="../../MaterialSave.cpp" line="567"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
       <source>Confirm Delete</source>
       <translation>Confirmer la suppression</translation>
     </message>
     <message>
-      <location filename="../../ListEdit.cpp" line="144"/>
       <location filename="../../Array2D.cpp" line="172"/>
+      <location filename="../../ListEdit.cpp" line="144"/>
       <source>Delete the row?</source>
       <translation>Voulez-vous supprimer la ligne ?</translation>
     </message>

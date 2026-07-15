@@ -148,7 +148,7 @@ protected:
     virtual void onLabelMoved() {};
     virtual void onLabelMoveFinish();
     void setLabelValue(const Base::Quantity& value);
-    void setLabelValue(const QString& value);
+    void setLabelValue(const std::string& value);
     void setLabelTranslation(const SbVec3f& position);
     void updateIcon();
 

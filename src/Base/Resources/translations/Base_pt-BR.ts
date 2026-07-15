@@ -19,7 +19,7 @@
       <translation>Padrão US (in/lb)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="679"/>
+      <location filename="../../UnitsSchemasData.h" line="681"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
       <translation>Unidades Imperiais Eng. Civil (pés, libras, milhas por hora)</translation>
     </message>

@@ -110,7 +110,7 @@ void TaskFemConstraintFixed::addToSelection()
     // gets vector of selected objects of active document
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
     Fem::ConstraintFixed* pcConstraint = ConstraintView->getObject<Fem::ConstraintFixed>();
@@ -119,7 +119,7 @@ void TaskFemConstraintFixed::addToSelection()
 
     for (auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
 
@@ -127,7 +127,7 @@ void TaskFemConstraintFixed::addToSelection()
         if (obj->getDocument() != pcConstraint->getDocument()) {
             QMessageBox::warning(
                 this,
-                tr("Selection error"),
+                tr("Selection Error"),
                 tr("External object selection is not supported")
             );
             return;
@@ -168,7 +168,7 @@ void TaskFemConstraintFixed::addToSelection()
                         "Only one type of selection (vertex, face or edge) per "
                         "analysis feature allowed!"
                     );
-                    QMessageBox::warning(this, tr("Selection error"), msg);
+                    QMessageBox::warning(this, tr("Selection Error"), msg);
                     addMe = false;
                     break;
                 }
@@ -191,7 +191,7 @@ void TaskFemConstraintFixed::removeFromSelection()
     // gets vector of selected objects of active document
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
     Fem::ConstraintFixed* pcConstraint = ConstraintView->getObject<Fem::ConstraintFixed>();
@@ -200,7 +200,7 @@ void TaskFemConstraintFixed::removeFromSelection()
     std::vector<size_t> itemsToDel;
     for (const auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
         const std::vector<std::string>& subNames = it.getSubNames();

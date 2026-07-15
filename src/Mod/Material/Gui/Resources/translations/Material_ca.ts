@@ -251,7 +251,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="204"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
-      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+      <translation>Defineix el color base d'una superfície quan està il·luminada per llum. Representa com l'objecte dispersa la llum uniformement en totes direccions, independentment de l'angle de l'espectador. Aquesta propietat influirà més en el color del material.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="215"/>
@@ -261,7 +261,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="217"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
-      <translation type="unfinished">Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</translation>
+      <translation>Defineix el color d'una superfície sota una il·luminació indirecta i uniforme, representant com apareix quan està il·luminada només per llum d'ambient en una escena, sense llum direccional, ombres ni reflexos</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="228"/>
@@ -271,7 +271,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="230"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
-      <translation type="unfinished">Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</translation>
+      <translation>Defineix el color d'una superfície que sembla emetre com si fos una font de llum, independent de la il·luminació externa, fent que l'objecte sembli autoil·luminat. Estableix-ho a negre per no tenir cap color emissor.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="241"/>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="243"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
-      <translation type="unfinished">Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</translation>
+      <translation>Defineix el color i la intensitat dels reflexos brillants i semblants a miralls, que apareixen a les superfícies brillants o reflectants quan la llum hi incideix directament. Estableix colors brillants per a objectes brillants.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="254"/>
@@ -291,7 +291,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="256"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
-      <translation type="unfinished">Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</translation>
+      <translation>Defineix la mida i la nitidesa dels reflexos especulars en una superfície. Els valors més alts produeixen reflexos petits i nítids, mentre que els valors més baixos creen reflexos amplis i suaus. Tingueu en compte que la intensitat del reflex es defineix mitjançant el color especular.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="268"/>
@@ -301,7 +301,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="269"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
-      <translation type="unfinished">Defines how much light passes through an object, making it partially or fully see-through</translation>
+      <translation>Defineix quanta llum passa a través d'un objecte, fent-lo parcialment o totalment transparent</translation>
     </message>
   </context>
   <context>
@@ -650,19 +650,15 @@ Si no es marca, s'ordenaran pel seu nom.</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="207"/>
-      <source>Image files (*.jpg *.jpeg *.png *.bmp)</source>
-      <translation type="unfinished">Image files (*.jpg *.jpeg *.png *.bmp)</translation>
+      <location filename="../../ImageEdit.cpp" line="223"/>
+      <source>Image files</source>
+      <translation>Fitxers d'imatge</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="208"/>
-      <location filename="../../ImageEdit.cpp" line="223"/>
-      <source>All files (*)</source>
-      <translation type="unfinished">All files (*)</translation>
-    </message>
-    <message>
-      <location filename="../../ImageEdit.cpp" line="222"/>
-      <source>Image files (*.svg)</source>
-      <translation type="unfinished">Image files (*.svg)</translation>
+      <location filename="../../ImageEdit.cpp" line="224"/>
+      <source>All files</source>
+      <translation>Tots els fitxers</translation>
     </message>
   </context>
   <context>
@@ -719,68 +715,68 @@ Si no es marca, s'ordenaran pel seu nom.</translation>
       <translation>Carpeta nova</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="96"/>
+      <location filename="../../MaterialSave.cpp" line="97"/>
       <source>Delete</source>
       <translation>Elimina</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="198"/>
+      <location filename="../../MaterialSave.cpp" line="199"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
       <translation>Desar sobre el fitxer original pot causar que altres documents es trenquin. Això no es recomana.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="222"/>
+      <location filename="../../MaterialSave.cpp" line="223"/>
       <source>Save as new material</source>
       <translation>Desar com a material nou</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="195"/>
+      <location filename="../../MaterialSave.cpp" line="196"/>
       <source>Save over &apos;%1&apos;?</source>
       <translation>Voleu desar-ho sobreescrivint "%1"?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="220"/>
+      <location filename="../../MaterialSave.cpp" line="221"/>
       <source>Confirm Save as New Material</source>
       <translation>Confirma Desar com a material nou</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="225"/>
+      <location filename="../../MaterialSave.cpp" line="226"/>
       <source>This material already exists in this library. Save as a new material?</source>
       <translation>Aquest material ja existeix en aquesta biblioteca. Desar-ho com a material nou?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="247"/>
+      <location filename="../../MaterialSave.cpp" line="248"/>
       <source>Confirm Save as Copy</source>
       <translation>Confirma Desar com a còpia</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="249"/>
+      <location filename="../../MaterialSave.cpp" line="250"/>
       <source>Save as copy</source>
       <translation>Desar com a còpia</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="252"/>
+      <location filename="../../MaterialSave.cpp" line="253"/>
       <source>Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</source>
       <translation>No es recomana desar com a còpia, ja que pot trencar altres documents. Es recomana que ho desis com a un material nou.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="255"/>
+      <location filename="../../MaterialSave.cpp" line="256"/>
       <source>Save Copy</source>
       <translation>Desar Còpia</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="256"/>
+      <location filename="../../MaterialSave.cpp" line="257"/>
       <source>Save As New</source>
       <translation>Desar com a nou</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="488"/>
-      <location filename="../../MaterialSave.cpp" line="498"/>
+      <location filename="../../MaterialSave.cpp" line="489"/>
+      <location filename="../../MaterialSave.cpp" line="499"/>
       <source>New folder</source>
       <translation>Carpeta nova</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="538"/>
+      <location filename="../../MaterialSave.cpp" line="539"/>
       <source>Context Menu</source>
       <translation>Menú contextual</translation>
     </message>
@@ -1158,23 +1154,23 @@ Si no es marca, s'ordenaran pel seu nom.</translation>
       <translation>Material</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="192"/>
+      <location filename="../../MaterialSave.cpp" line="193"/>
       <source>Confirm Overwrite</source>
       <translation>Confirmeu la sobreescriptura</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="382"/>
       <location filename="../../MaterialSave.cpp" line="383"/>
+      <location filename="../../MaterialSave.cpp" line="384"/>
       <source>No writeable library</source>
       <translation>Biblioteca no escrivible</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="570"/>
+      <location filename="../../MaterialSave.cpp" line="571"/>
       <source>Delete &apos;%1&apos;?</source>
       <translation>Esborrar &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="574"/>
+      <location filename="../../MaterialSave.cpp" line="575"/>
       <source>Removing this will also remove all contents.</source>
       <translation>En suprimir-ho, també s'eliminarà tots els continguts.</translation>
     </message>
@@ -1199,15 +1195,15 @@ Si no es marca, s'ordenaran pel seu nom.</translation>
       <translation>Altrament, es perdran tots els canvis.</translation>
     </message>
     <message>
-      <location filename="../../ListEdit.cpp" line="142"/>
+      <location filename="../../MaterialSave.cpp" line="568"/>
       <location filename="../../Array2D.cpp" line="170"/>
-      <location filename="../../MaterialSave.cpp" line="567"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
       <source>Confirm Delete</source>
       <translation>Confirma la supressió</translation>
     </message>
     <message>
-      <location filename="../../ListEdit.cpp" line="144"/>
       <location filename="../../Array2D.cpp" line="172"/>
+      <location filename="../../ListEdit.cpp" line="144"/>
       <source>Delete the row?</source>
       <translation>Voleu suprimir la fila?</translation>
     </message>
@@ -1448,7 +1444,7 @@ Si no es marca, s'ordenaran pel seu nom.</translation>
     <message>
       <location filename="../../DlgMaterialImp.cpp" line="263"/>
       <source>Set Material</source>
-      <translation type="unfinished">Set Material</translation>
+      <translation>Establir material</translation>
     </message>
   </context>
 </TS>

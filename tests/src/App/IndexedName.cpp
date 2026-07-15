@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 
+#include "App/ByteArray.h"
 #include "App/IndexedName.h"
 
 #include <sstream>

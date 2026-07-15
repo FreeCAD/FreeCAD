@@ -393,6 +393,7 @@ public:
 
     // Returns if document and object recomputes should be done async.
     bool isAsyncRecomputeEnabled();
+    bool isFineGrainedRecomputeEnabled();
     bool canRecomputeRequestOnWorker(const RecomputeRequest& req) const;
 
     // Adds a recompute request to the processing queue.
@@ -775,8 +776,8 @@ public:
     /// Get the argument values that were provided at the start of the application.
     static char** GetARGV(){return _argv;}
 
-    /// Get the application process id.
-    static int64_t applicationPid();
+    /// Get a constant unique ID specific to this application instance.
+    static int64_t uniqueInstanceId();
     /// @}
 
     /**
@@ -893,6 +894,7 @@ public:
     /// Check if there is any link to the given object
     bool hasLinksTo(const DocumentObject *obj) const;
     /// @}
+
 
     friend class App::Document;
 

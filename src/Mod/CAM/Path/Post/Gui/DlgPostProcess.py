@@ -52,7 +52,7 @@ _TAB_WARNINGS = 4
 
 
 def _parse_cycle_time(ct_str):
-    """Convert 'HH:MM:SS' string to total seconds, or None if unparseable."""
+    """Convert 'HH:MM:SS' string to total seconds, or None if unparsable."""
     try:
         parts = ct_str.strip().split(":")
         if len(parts) == 3:
@@ -272,11 +272,13 @@ class PostProcessDialog:
         self._post_config_widgets.clear()
 
         if machine is None:
+            Path.Log.warning(f"No machine for job <{self.job.Label}> : {__file__}")
             return
 
         # Resolve postprocessor class
         post_class = None
         postprocessor_name = getattr(machine, "postprocessor_file_name", None)
+        Path.Log.debug(f"Machine for job <{self.job.Label}> {postprocessor_name}: {__file__}")
         if postprocessor_name:
             try:
                 from Path.Post.Processor import PostProcessorFactory

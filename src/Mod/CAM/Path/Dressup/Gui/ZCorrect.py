@@ -136,8 +136,8 @@ class ObjectDressup:
 
         if skipped:
             Path.Log.warning(
-                translate("CAM_DressupZCorrect", "Incorrect lines in file: %s\n%s")
-                % (filename, skipped)
+                translate("CAM_DressupZCorrect", "Skipped non-data lines in file: %s (lines %s)")
+                % (filename, ", ".join(str(n) for n in skipped))
             )
 
         if len(pointlist) < 3:

@@ -125,7 +125,7 @@ public:
 
     /// Returns if automatic width adjustment is enabled for this input
     bool autoAdjustWidth() const;
-    /// Enables or disables automatic width adjustement
+    /// Enables or disables automatic width adjustment
     void setAutoAdjustWidth(bool adjust);
 
     /// Returns if icon space is added for this input

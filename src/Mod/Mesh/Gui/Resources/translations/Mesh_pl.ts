@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshAddFacet</name>
     <message>
-      <location filename="../../Command.cpp" line="754"/>
+      <location filename="../../Command.cpp" line="750"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="755"/>
+      <location filename="../../Command.cpp" line="751"/>
       <source>Add Triangle</source>
       <translation>Dodaj trójkąt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="756"/>
+      <location filename="../../Command.cpp" line="752"/>
       <source>Adds a triangle manually to a mesh</source>
       <translation>Dodaje trójkąt do siatki ręcznie</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshBoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1493"/>
+      <location filename="../../Command.cpp" line="1487"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1494"/>
+      <location filename="../../Command.cpp" line="1488"/>
       <source>Bounding Box Info</source>
       <translation>Informacje o ramce ograniczającej</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1495"/>
+      <location filename="../../Command.cpp" line="1489"/>
       <source>Shows the bounding box coordinates of the selected mesh</source>
       <translation>Pokazuje współrzędne ramki ograniczającej wybranej siatki</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdMeshBuildRegularSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1548"/>
+      <location filename="../../Command.cpp" line="1542"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1549"/>
+      <location filename="../../Command.cpp" line="1543"/>
       <source>Regular Solid</source>
       <translation>Bryła pierwotna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1550"/>
+      <location filename="../../Command.cpp" line="1544"/>
       <source>Builds a regular solid</source>
       <translation>Zbuduj bryłę podstawową</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdMeshCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="998"/>
+      <location filename="../../Command.cpp" line="992"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="999"/>
+      <location filename="../../Command.cpp" line="993"/>
       <source>Cross-Sections</source>
       <translation>Przekroje poprzeczne</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1000"/>
+      <location filename="../../Command.cpp" line="994"/>
       <source>Creates cross-sections of the mesh</source>
       <translation>Tworzy przekroje poprzeczne siatki</translation>
     </message>
@@ -76,17 +76,17 @@
   <context>
     <name>CmdMeshDecimating</name>
     <message>
-      <location filename="../../Command.cpp" line="1383"/>
+      <location filename="../../Command.cpp" line="1377"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1384"/>
+      <location filename="../../Command.cpp" line="1378"/>
       <source>Decimate</source>
       <translation>Redukuj</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1385"/>
+      <location filename="../../Command.cpp" line="1379"/>
       <source>Decimates a mesh</source>
       <translation>Wyznacza siatkę</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdMeshEvaluateFacet</name>
     <message>
-      <location filename="../../Command.cpp" line="1131"/>
+      <location filename="../../Command.cpp" line="1125"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1132"/>
+      <location filename="../../Command.cpp" line="1126"/>
       <source>Face Info</source>
       <translation>Informacje o ścianie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1133"/>
+      <location filename="../../Command.cpp" line="1127"/>
       <source>Displays information about the selected faces</source>
       <translation>Wyświetla informacje o wybranych ścianach</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdMeshEvaluateSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1312"/>
+      <location filename="../../Command.cpp" line="1306"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1313"/>
+      <location filename="../../Command.cpp" line="1307"/>
       <source>Evaluate Solid</source>
       <translation>Zweryfikuj bryłę</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1314"/>
+      <location filename="../../Command.cpp" line="1308"/>
       <source>Checks whether the mesh is a solid</source>
       <translation>Sprawdza czy siatka jest bryłą</translation>
     </message>
@@ -148,17 +148,17 @@
   <context>
     <name>CmdMeshEvaluation</name>
     <message>
-      <location filename="../../Command.cpp" line="1085"/>
+      <location filename="../../Command.cpp" line="1079"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1087"/>
+      <location filename="../../Command.cpp" line="1081"/>
       <source>Evaluate and Repair</source>
       <translation>Zweryfikuj i napraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1088"/>
+      <location filename="../../Command.cpp" line="1082"/>
       <source>Opens a dialog to analyze and repair a mesh</source>
       <translation>Otwiera okno dialogowe do analizy i naprawy siatki</translation>
     </message>
@@ -166,17 +166,17 @@
   <context>
     <name>CmdMeshExport</name>
     <message>
-      <location filename="../../Command.cpp" line="399"/>
+      <location filename="../../Command.cpp" line="401"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="400"/>
+      <location filename="../../Command.cpp" line="402"/>
       <source>Export Mesh…</source>
       <translation>Eksport siatki…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="401"/>
+      <location filename="../../Command.cpp" line="403"/>
       <source>Exports a mesh to a file</source>
       <translation>Eksportuje siatkę do pliku</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdMeshFillInteractiveHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1635"/>
+      <location filename="../../Command.cpp" line="1629"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1636"/>
+      <location filename="../../Command.cpp" line="1630"/>
       <source>Close Hole</source>
       <translation>Zamknij otwór</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1637"/>
+      <location filename="../../Command.cpp" line="1631"/>
       <source>Closes a hole interactively in the mesh</source>
       <translation>Interaktywnie zamyka otwór w siatce</translation>
     </message>
@@ -202,17 +202,17 @@
   <context>
     <name>CmdMeshFillupHoles</name>
     <message>
-      <location filename="../../Command.cpp" line="1580"/>
+      <location filename="../../Command.cpp" line="1574"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1581"/>
+      <location filename="../../Command.cpp" line="1575"/>
       <source>Fill Holes</source>
       <translation>Wypełnij otwory</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1582"/>
+      <location filename="../../Command.cpp" line="1576"/>
       <source>Fills holes in the mesh</source>
       <translation>Wypełnia otwory w siatce</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdMeshFlipNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1454"/>
+      <location filename="../../Command.cpp" line="1448"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1455"/>
+      <location filename="../../Command.cpp" line="1449"/>
       <source>Flip Normals</source>
       <translation>Odwróć wektory normalne</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1456"/>
+      <location filename="../../Command.cpp" line="1450"/>
       <source>Flips the normals of the selected mesh</source>
       <translation>Odwraca wektory normalne wybranej siatki</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdMeshFromGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="486"/>
+      <location filename="../../Command.cpp" line="482"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="487"/>
+      <location filename="../../Command.cpp" line="483"/>
       <source>Mesh From Geometry</source>
       <translation>Siatka z geometrii</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="488"/>
+      <location filename="../../Command.cpp" line="484"/>
       <source>Creates a mesh from the selected geometry</source>
       <translation>Tworzy siatkę z wybranej geometrii</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdMeshFromPartShape</name>
     <message>
-      <location filename="../../Command.cpp" line="559"/>
+      <location filename="../../Command.cpp" line="555"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="560"/>
+      <location filename="../../Command.cpp" line="556"/>
       <source>Mesh From Shape</source>
       <translation>Siatka z kształtu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="561"/>
+      <location filename="../../Command.cpp" line="557"/>
       <source>Tessellates the selected shape to a mesh</source>
       <translation>Dokonuje teselacji wybranego kształtu do siatki</translation>
     </message>
@@ -274,17 +274,17 @@
   <context>
     <name>CmdMeshHarmonizeNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1415"/>
+      <location filename="../../Command.cpp" line="1409"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1416"/>
+      <location filename="../../Command.cpp" line="1410"/>
       <source>Harmonize Normals</source>
       <translation>Porządkuj wektory normalne</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1417"/>
+      <location filename="../../Command.cpp" line="1411"/>
       <source>Harmonizes the normals of the mesh</source>
       <translation>Porządkuje wektory normalne siatki</translation>
     </message>
@@ -328,17 +328,17 @@
   <context>
     <name>CmdMeshMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="1757"/>
+      <location filename="../../Command.cpp" line="1751"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1758"/>
+      <location filename="../../Command.cpp" line="1752"/>
       <source>Merge</source>
       <translation>Scal</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1759"/>
+      <location filename="../../Command.cpp" line="1753"/>
       <source>Merges selected meshes into one</source>
       <translation>Łączy wybrane siatki</translation>
     </message>
@@ -346,17 +346,17 @@
   <context>
     <name>CmdMeshPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="806"/>
+      <location filename="../../Command.cpp" line="800"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="807"/>
+      <location filename="../../Command.cpp" line="801"/>
       <source>Cut</source>
       <translation>Wytnij</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="808"/>
+      <location filename="../../Command.cpp" line="802"/>
       <source>Cuts the mesh with a selected polygon</source>
       <translation>Przecina siatkę wybranym wielokątem</translation>
     </message>
@@ -364,17 +364,17 @@
   <context>
     <name>CmdMeshPolySegm</name>
     <message>
-      <location filename="../../Command.cpp" line="693"/>
+      <location filename="../../Command.cpp" line="689"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="694"/>
+      <location filename="../../Command.cpp" line="690"/>
       <source>Segment</source>
       <translation>Segment</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="695"/>
+      <location filename="../../Command.cpp" line="691"/>
       <source>Creates a mesh segment</source>
       <translation>Tworzy segment siatki</translation>
     </message>
@@ -382,17 +382,17 @@
   <context>
     <name>CmdMeshPolySplit</name>
     <message>
-      <location filename="../../Command.cpp" line="1026"/>
+      <location filename="../../Command.cpp" line="1020"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1027"/>
+      <location filename="../../Command.cpp" line="1021"/>
       <source>Split</source>
       <translation>Rozdziel</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1028"/>
+      <location filename="../../Command.cpp" line="1022"/>
       <source>Splits a mesh into 2 meshes</source>
       <translation>Rozdziela siatkę na 2 siatki</translation>
     </message>
@@ -400,22 +400,22 @@
   <context>
     <name>CmdMeshPolyTrim</name>
     <message>
-      <location filename="../../Command.cpp" line="873"/>
+      <location filename="../../Command.cpp" line="867"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="874"/>
+      <location filename="../../Command.cpp" line="868"/>
       <source>Trim</source>
       <translation>Przytnij</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="875"/>
+      <location filename="../../Command.cpp" line="869"/>
       <source>Trims a mesh with a selected polygon</source>
       <translation>Przycina siatkę za pomocą wybranego wielokąta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="877"/>
+      <location filename="../../Command.cpp" line="871"/>
       <source>Trims a mesh with a picked polygon</source>
       <translation>Przycina siatkę za pomocą wybranego wielokąta</translation>
     </message>
@@ -423,17 +423,17 @@
   <context>
     <name>CmdMeshRemeshGmsh</name>
     <message>
-      <location filename="../../Command.cpp" line="1228"/>
+      <location filename="../../Command.cpp" line="1222"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1229"/>
+      <location filename="../../Command.cpp" line="1223"/>
       <source>Refinement</source>
       <translation>Zagęszczenie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1230"/>
+      <location filename="../../Command.cpp" line="1224"/>
       <source>Refines an existing mesh</source>
       <translation>Zagęszcza istniejącą siatkę</translation>
     </message>
@@ -441,17 +441,17 @@
   <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
-      <location filename="../../Command.cpp" line="1262"/>
+      <location filename="../../Command.cpp" line="1256"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1263"/>
+      <location filename="../../Command.cpp" line="1257"/>
       <source>Remove Components Manually</source>
       <translation>Usuń komponenty ręcznie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1264"/>
+      <location filename="../../Command.cpp" line="1258"/>
       <source>Marks a component to remove it from the mesh</source>
       <translation>Oznacza komponent do usunięcia z siatki</translation>
     </message>
@@ -459,17 +459,17 @@
   <context>
     <name>CmdMeshRemoveComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1180"/>
+      <location filename="../../Command.cpp" line="1174"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1181"/>
+      <location filename="../../Command.cpp" line="1175"/>
       <source>Remove Components</source>
       <translation>Usuń komponenty</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1182"/>
+      <location filename="../../Command.cpp" line="1176"/>
       <source>Removes topologically independent components from the mesh</source>
       <translation>Usuwa topologicznie niezależne komponenty z siatki</translation>
     </message>
@@ -477,17 +477,17 @@
   <context>
     <name>CmdMeshScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1852"/>
+      <location filename="../../Command.cpp" line="1846"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1853"/>
+      <location filename="../../Command.cpp" line="1847"/>
       <source>Scale</source>
       <translation>Skala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1854"/>
+      <location filename="../../Command.cpp" line="1848"/>
       <source>Scales the selected mesh objects</source>
       <translation>Skaluje wybrane obiekty siatki</translation>
     </message>
@@ -495,17 +495,17 @@
   <context>
     <name>CmdMeshSectionByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="969"/>
+      <location filename="../../Command.cpp" line="963"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="970"/>
+      <location filename="../../Command.cpp" line="964"/>
       <source>Section From Plane</source>
       <translation>Przekrój z płaszczyzny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="971"/>
+      <location filename="../../Command.cpp" line="965"/>
       <source>Sections the mesh with the selected plane</source>
       <translation>Tworzy przekrój siatki z wybraną płaszczyzną</translation>
     </message>
@@ -513,17 +513,17 @@
   <context>
     <name>CmdMeshSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="1683"/>
+      <location filename="../../Command.cpp" line="1677"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1684"/>
+      <location filename="../../Command.cpp" line="1678"/>
       <source>Segmentation</source>
       <translation>Segmentacja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1685"/>
+      <location filename="../../Command.cpp" line="1679"/>
       <source>Creates new mesh segments from the mesh</source>
       <translation>Tworzy nowe segmenty siatki z siatki</translation>
     </message>
@@ -531,17 +531,17 @@
   <context>
     <name>CmdMeshSegmentationBestFit</name>
     <message>
-      <location filename="../../Command.cpp" line="1720"/>
+      <location filename="../../Command.cpp" line="1714"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1721"/>
+      <location filename="../../Command.cpp" line="1715"/>
       <source>Segmentation From Best-Fit Surfaces</source>
       <translation>Segmentacja z powierzchni najlepszego dopasowania</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1722"/>
+      <location filename="../../Command.cpp" line="1716"/>
       <source>Creates new mesh segments from the best-fit surfaces</source>
       <translation>Tworzy nowe segmenty siatki z powierzchni najlepszego dopasowania</translation>
     </message>
@@ -549,17 +549,17 @@
   <context>
     <name>CmdMeshSmoothing</name>
     <message>
-      <location filename="../../Command.cpp" line="1354"/>
+      <location filename="../../Command.cpp" line="1348"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1355"/>
+      <location filename="../../Command.cpp" line="1349"/>
       <source>Smooth</source>
       <translation>Wygładź</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1356"/>
+      <location filename="../../Command.cpp" line="1350"/>
       <source>Smoothes the selected meshes</source>
       <translation>Wygładza wybrane siatki</translation>
     </message>
@@ -567,17 +567,17 @@
   <context>
     <name>CmdMeshSplitComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1803"/>
+      <location filename="../../Command.cpp" line="1797"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1804"/>
+      <location filename="../../Command.cpp" line="1798"/>
       <source>Split by Components</source>
       <translation>Rozdziel według komponentów</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1805"/>
+      <location filename="../../Command.cpp" line="1799"/>
       <source>Splits the selected mesh into its components</source>
       <translation>Rozdziela wybraną siatkę na jej komponenty</translation>
     </message>
@@ -585,17 +585,17 @@
   <context>
     <name>CmdMeshTrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="940"/>
+      <location filename="../../Command.cpp" line="934"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="941"/>
+      <location filename="../../Command.cpp" line="935"/>
       <source>Trim With Plane</source>
       <translation>Przytnij płaszczyzną</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="942"/>
+      <location filename="../../Command.cpp" line="936"/>
       <source>Trims a mesh by removing faces on one side of a selected plane</source>
       <translation>Przycina siatkę usuwając ściany po jednej stronie wybranej płaszczyzny</translation>
     </message>
@@ -621,17 +621,17 @@
   <context>
     <name>CmdMeshVertexCurvature</name>
     <message>
-      <location filename="../../Command.cpp" line="585"/>
+      <location filename="../../Command.cpp" line="581"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="586"/>
+      <location filename="../../Command.cpp" line="582"/>
       <source>Curvature Plot</source>
       <translation>Wykres krzywizny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="587"/>
+      <location filename="../../Command.cpp" line="583"/>
       <source>Calculates the curvature of the vertices of a mesh</source>
       <translation>Oblicza krzywiznę wierzchołków siatki</translation>
     </message>
@@ -639,17 +639,17 @@
   <context>
     <name>CmdMeshVertexCurvatureInfo</name>
     <message>
-      <location filename="../../Command.cpp" line="642"/>
+      <location filename="../../Command.cpp" line="638"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="643"/>
+      <location filename="../../Command.cpp" line="639"/>
       <source>Curvature Info</source>
       <translation>Informacje o krzywiźnie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="644"/>
+      <location filename="../../Command.cpp" line="640"/>
       <source>Displays information about the curvature</source>
       <translation>Wyświetla informacje o krzywiźnie</translation>
     </message>
@@ -672,12 +672,12 @@
       <translation>Przecięcie siatki</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="378"/>
+      <location filename="../../Command.cpp" line="380"/>
       <source>Import Mesh</source>
       <translation>Importuj siatkę</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="603"/>
+      <location filename="../../Command.cpp" line="599"/>
       <source>Mesh VertexCurvature</source>
       <translation>Krzywa wierzchołka siatki</translation>
     </message>
@@ -687,32 +687,32 @@
       <translation>Wygładzanie siatki</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1428"/>
+      <location filename="../../Command.cpp" line="1422"/>
       <source>Harmonize mesh normals</source>
       <translation>Porządkuj wektory normalne</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1467"/>
+      <location filename="../../Command.cpp" line="1461"/>
       <source>Flip mesh normals</source>
       <translation>Odwraca wektory normalne siatki</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1608"/>
+      <location filename="../../Command.cpp" line="1602"/>
       <source>Fill up holes</source>
       <translation>Wypełnij otwory</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1772"/>
+      <location filename="../../Command.cpp" line="1766"/>
       <source>Mesh merge</source>
       <translation>Scalanie siatki</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1818"/>
+      <location filename="../../Command.cpp" line="1812"/>
       <source>Mesh split</source>
       <translation>Rozbicie siatki</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1883"/>
+      <location filename="../../Command.cpp" line="1877"/>
       <source>Mesh scale</source>
       <translation>Skala oczek siatki</translation>
     </message>
@@ -1088,19 +1088,25 @@
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="927"/>
-      <source>Duplicated faces</source>
-      <translation>Zduplikowane fasetki</translation>
+      <source>Duplicated Faces</source>
+      <translation>Ściany zduplikowane</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
+      <source>Duplicated Points</source>
+      <translation>Punkty zduplikowane</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1298"/>
+      <source>Mesh Repair</source>
+      <translation>Naprawa siatek</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="963"/>
       <source>No duplicated points</source>
       <translation>Brak zduplikowanych punktów</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
-      <source>Duplicated points</source>
-      <translation>Zduplikowane punkty</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1040"/>
@@ -1126,12 +1132,6 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1161"/>
       <source>Folds</source>
       <translation>Zagięcia</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1298"/>
-      <source>Mesh repair</source>
-      <translation>Naprawa siatek</translation>
     </message>
   </context>
   <context>
@@ -1289,7 +1289,7 @@
     </message>
     <message>
       <location filename="../../DlgRegularSolidImp.cpp" line="122"/>
-      <source>No active document</source>
+      <source>No Active Document</source>
       <translation>Brak aktywnego dokumentu</translation>
     </message>
   </context>
@@ -1572,6 +1572,10 @@ do gładszego wyglądu.
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="201"/>
+      <source>Time</source>
+      <translation>Czas</translation>
+    </message>
+    <message>
       <location filename="../../RemeshGmsh.cpp" line="259"/>
       <source>Time:</source>
       <translation>Czas:</translation>
@@ -1595,22 +1599,27 @@ do gładszego wyglądu.
   <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="394"/>
+      <location filename="../../MeshEditor.cpp" line="255"/>
+      <source>Cannot add triangle to avoid non-manifolds.</source>
+      <translation>Nie można dodać trójkąta, aby uniknąć geometrii typu non-manifold.</translation>
+    </message>
+    <message>
+      <location filename="../../MeshEditor.cpp" line="407"/>
       <source>Add Triangle</source>
       <translation>Dodaj trójkąt</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="395"/>
+      <location filename="../../MeshEditor.cpp" line="408"/>
       <source>Flip Normal</source>
       <translation>Odwróć wektory normalne</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="396"/>
+      <location filename="../../MeshEditor.cpp" line="409"/>
       <source>Clear</source>
       <translation>Wyczyść</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="413"/>
+      <location filename="../../MeshEditor.cpp" line="426"/>
       <source>Finish</source>
       <translation>Zakończ</translation>
     </message>
@@ -1618,7 +1627,7 @@ do gładszego wyglądu.
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="765"/>
+      <location filename="../../MeshEditor.cpp" line="778"/>
       <source>Finish</source>
       <translation>Zakończ</translation>
     </message>
@@ -2023,7 +2032,7 @@ do gładszego wyglądu.
   <context>
     <name>Mesh_BoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1520"/>
+      <location filename="../../Command.cpp" line="1514"/>
       <source>Boundings of %1:</source>
       <translation>Granice %1:</translation>
     </message>
@@ -2083,170 +2092,154 @@ Odwiedź https://openscad.org żeby go zainstalować.</translation>
       <translation>Wszystkie pliki siatek</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="358"/>
-      <location filename="../../Command.cpp" line="421"/>
+      <location filename="../../Command.cpp" line="359"/>
+      <location filename="../../Command.cpp" line="424"/>
       <source>Binary STL</source>
       <translation>Binarny STL</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="359"/>
-      <location filename="../../Command.cpp" line="422"/>
-      <location filename="../../Command.cpp" line="423"/>
+      <location filename="../../Command.cpp" line="360"/>
+      <location filename="../../Command.cpp" line="425"/>
+      <location filename="../../Command.cpp" line="426"/>
       <source>ASCII STL</source>
       <translation>ASCII STL</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="360"/>
-      <location filename="../../Command.cpp" line="424"/>
+      <location filename="../../Command.cpp" line="361"/>
+      <location filename="../../Command.cpp" line="427"/>
       <source>Binary Mesh</source>
       <translation>Binarny plik siatki</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="361"/>
-      <location filename="../../Command.cpp" line="425"/>
+      <location filename="../../Command.cpp" line="362"/>
+      <location filename="../../Command.cpp" line="428"/>
       <source>Alias Mesh</source>
       <translation>Jako Siatka (Mesh)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="362"/>
-      <location filename="../../Command.cpp" line="427"/>
+      <location filename="../../Command.cpp" line="363"/>
+      <location filename="../../Command.cpp" line="430"/>
       <source>Object File Format</source>
       <translation>Format pliku obiektu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="363"/>
+      <location filename="../../Command.cpp" line="364"/>
       <source>Inventor V2.1 ASCII</source>
       <translation>Inventor V2.1 w ASCII</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="364"/>
-      <location filename="../../Command.cpp" line="432"/>
+      <location filename="../../Command.cpp" line="365"/>
+      <location filename="../../Command.cpp" line="435"/>
       <source>Stanford Polygon</source>
       <translation>Stanford Triangle Format</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="365"/>
-      <source>NASTRAN</source>
-      <translation>NASTRAN</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="366"/>
-      <location filename="../../Command.cpp" line="439"/>
-      <source>All Files</source>
-      <translation>Wszystkie pliki</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="371"/>
+      <location filename="../../Command.cpp" line="373"/>
       <source>Import Mesh</source>
       <translation>Importuj siatkę</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="426"/>
+      <location filename="../../Command.cpp" line="429"/>
       <source>Simple Model Format</source>
       <translation>Prosty Format Modelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="428"/>
+      <location filename="../../Command.cpp" line="431"/>
       <source>Inventor V2.1 ascii</source>
       <translation>Inventor v2.1 w ASCII</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="429"/>
+      <location filename="../../Command.cpp" line="432"/>
       <source>X3D Extensible 3D</source>
       <translation>X3D rozszerzenie 3D (*. x3d)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="430"/>
+      <location filename="../../Command.cpp" line="433"/>
       <source>Compressed X3D</source>
       <translation>Skompresowany X3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="431"/>
+      <location filename="../../Command.cpp" line="434"/>
       <source>WebGL/X3D</source>
       <translation>WebGL/X3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="433"/>
+      <location filename="../../Command.cpp" line="436"/>
       <source>VRML V2.0</source>
       <translation>VRML V2.0</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="434"/>
+      <location filename="../../Command.cpp" line="437"/>
       <source>Compressed VRML 2.0</source>
       <translation>Skompresowany VRML 2.0</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="435"/>
-      <source>Nastran</source>
-      <translation>Nastran</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="436"/>
+      <location filename="../../Command.cpp" line="439"/>
       <source>Python module def</source>
       <translation>Definicje modułów Python</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="437"/>
+      <location filename="../../Command.cpp" line="440"/>
       <source>Asymptote Format</source>
       <translation>Format asymptoty</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="438"/>
+      <location filename="../../Command.cpp" line="441"/>
       <source>3D Manufacturing Format</source>
       <translation>Format produkcyjny 3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="449"/>
+      <location filename="../../Command.cpp" line="452"/>
       <source>Export Mesh</source>
       <translation>Eksportuj siatkę</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="498"/>
+      <location filename="../../Command.cpp" line="494"/>
       <source>Meshing Tolerance</source>
       <translation>Tolerancja siatki</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="499"/>
+      <location filename="../../Command.cpp" line="495"/>
       <source>Enter tolerance for meshing geometry:</source>
       <translation>Wprowadź tolerancję dla geometrii siatki:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1329"/>
+      <location filename="../../Command.cpp" line="1323"/>
       <source>The mesh '%1' is not a solid.</source>
       <translation>Siatka '%1' nie jest ciągła.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1333"/>
+      <location filename="../../Command.cpp" line="1327"/>
       <source>The mesh '%1' is a solid.</source>
       <translation>Siatka '%1' jest ciągła.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1336"/>
+      <location filename="../../Command.cpp" line="1330"/>
       <source>Solid Mesh</source>
       <translation>Siatka bryły</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1529"/>
+      <location filename="../../Command.cpp" line="1523"/>
       <source>Boundings</source>
       <translation>Granice</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1596"/>
+      <location filename="../../Command.cpp" line="1590"/>
       <source>Fill Holes</source>
       <translation>Wypełnij otwory</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1597"/>
+      <location filename="../../Command.cpp" line="1591"/>
       <source>Fill holes with maximum number of edges</source>
       <translation>Wypełnij otwory maksymalną liczbą krawędzi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1870"/>
+      <location filename="../../Command.cpp" line="1864"/>
       <source>Scaling</source>
       <translation>Skalowanie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1871"/>
+      <location filename="../../Command.cpp" line="1865"/>
       <source>Enter scaling factor:</source>
       <translation>Wprowadź współczynnik skalowania:</translation>
     </message>

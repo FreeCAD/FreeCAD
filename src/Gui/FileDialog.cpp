@@ -141,6 +141,18 @@ struct ActionDisabler
 };
 
 
+DialogOptions::Backend DialogOptions::fileDialogBackend()
+{
+    if (dontUseNativeFileDialog()) {
+        return Backend::NonNative;
+    }
+#ifdef FC_OS_WIN32
+    return Backend::ViaWin32;
+#else
+    return Backend::ViaQt;
+#endif
+}
+
 bool DialogOptions::dontUseNativeFileDialog()
 {
 #if defined(USE_QT_DIALOGS)
@@ -155,6 +167,14 @@ bool DialogOptions::dontUseNativeFileDialog()
                                      ->GetGroup("Preferences")
                                      ->GetGroup("Dialog");
     return group->GetBool("DontUseNativeDialog", notNativeDialog);
+}
+
+DialogOptions::Backend DialogOptions::colorDialogBackend()
+{
+    if (dontUseNativeColorDialog()) {
+        return Backend::NonNative;
+    }
+    return Backend::ViaQt;
 }
 
 bool DialogOptions::dontUseNativeColorDialog()
@@ -288,7 +308,7 @@ Filter Filter::fromFilterString(const QString& filter)
     const auto name = filter.left(start).trimmed();
     const auto patternsPart = filter.mid(start + 1, end - start - 1);
     // ";" separators are explicitly not supported as this could
-    // encourage having more than one canonical string represenation.
+    // encourage having more than one canonical string representation.
     return {name, patternsPart.split(QLatin1Char(' '), Qt::SkipEmptyParts)};
 }
 
@@ -419,10 +439,17 @@ QStringList FileDialogInternal::nativeFileDialog(
         );
     }
     selectedFilterIndex = qtFilterList.indexOf(selectedQtFilter);
+    if (selectedFilterIndex < 0 && selected.isEmpty()) {
+        // No files selected means the user cancelled, and a missing/incorrect filter can be
+        // returned by Qt's implementations. Default to index 0 as caller code still might
+        // use this value even though it should not.
+        selectedFilterIndex = 0;
+    }
     if (selectedFilterIndex < 0) {
         Base::Console().error(
             "Qt-backed nativeFileDialog returned a selected filter that wasn't in the original "
-            "list, defaulting to index 0"
+            "list, defaulting to index 0\nProblem cause filter: \"%s\"\n",
+            selectedQtFilter.toStdString()
         );
         selectedFilterIndex = 0;
     }
@@ -465,7 +492,7 @@ void FileDialogInternal::normalizeSavePath(QString& path, const FileDialog::Filt
 
     // Check for any full-name filters first.
     for (const auto& pat : selectedFilter.patterns) {
-        if (!pat.startsWith("*.") && typedName == pat) {
+        if (!pat.startsWith("*.") && typedName.compare(pat, Qt::CaseInsensitive) == 0) {
             return;
         }
     }
@@ -485,7 +512,8 @@ void FileDialogInternal::normalizeSavePath(QString& path, const FileDialog::Filt
     }
     else /* size() > 1 */ {
         for (const auto& pat : selectedFilter.patterns) {
-            if (pat.startsWith("*.") && typedExt == QStringView(pat).mid(1)) {
+            if (pat.startsWith("*.")
+                && typedExt.compare(QStringView(pat).mid(1), Qt::CaseInsensitive) == 0) {
                 // Valid extension found for the selected filter.
                 return;
             }
@@ -534,7 +562,7 @@ QString FileDialog::getSaveFileName(
         // to existing dir), don't touch it and don't use QFileDialog::selectFile() later.
         if (!(fi.fileName().isEmpty() || fi.isDir())) {
             // If there is a file name at the end, make sure it matches one of the patterns
-            // of the pre-selected filter, if applicable.
+            // of the preselected filter, if applicable.
             hasFilename = true;
             if (actuallySelectedFilterIndex >= 0) {
                 FileDialogInternal::normalizeSavePath(
@@ -588,8 +616,11 @@ QString FileDialog::getSaveFileName(
         actuallySelectedFilterIndex = qtFilterList.indexOf(dlg.selectedNameFilter());
         if (actuallySelectedFilterIndex < 0) {
             // Log an error since this happening means the code is incorrect
-            Base::Console()
-                .error("FileDialog returned a selected filter that wasn't in the original list, defaulting to index 0");
+            Base::Console().error(
+                "Non-native FileDialog returned a selected filter that wasn't in the original "
+                "list, defaulting to index 0\nProblem cause filter: \"%s\"\n",
+                dlg.selectedNameFilter().toStdString()
+            );
             actuallySelectedFilterIndex = 0;
         }
     }
@@ -716,8 +747,11 @@ QString FileDialog::getOpenFileName(
         actuallySelectedFilterIndex = qtFilterList.indexOf(dlg.selectedNameFilter());
         if (actuallySelectedFilterIndex < 0) {
             // Log an error since this happening means the code is incorrect
-            Base::Console()
-                .error("FileDialog returned a selected filter that wasn't in the original list, defaulting to index 0");
+            Base::Console().error(
+                "Non-native FileDialog returned a selected filter that wasn't in the original "
+                "list, defaulting to index 0\nProblem cause filter: \"%s\"\n",
+                dlg.selectedNameFilter().toStdString()
+            );
             actuallySelectedFilterIndex = 0;
         }
     }
@@ -808,8 +842,11 @@ QStringList FileDialog::getOpenFileNames(
         actuallySelectedFilterIndex = qtFilterList.indexOf(dlg.selectedNameFilter());
         if (actuallySelectedFilterIndex < 0) {
             // Log an error since this happening means the code is incorrect
-            Base::Console()
-                .error("FileDialog returned a selected filter that wasn't in the original list, defaulting to index 0");
+            Base::Console().error(
+                "Non-native FileDialog returned a selected filter that wasn't in the original "
+                "list, defaulting to index 0\nProblem cause filter: \"%s\"\n",
+                dlg.selectedNameFilter().toStdString()
+            );
             actuallySelectedFilterIndex = 0;
         }
     }

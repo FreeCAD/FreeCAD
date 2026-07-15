@@ -80,6 +80,7 @@
 #include "OverlayManager.h"
 #include "SceneInspector.h"
 #include "Selection.h"
+#include "Selection/BoxSelection.h"
 #include "Selection/SelectionView.h"
 #include "SelectionObject.h"
 #include "SoFCOffscreenRenderer.h"
@@ -1422,17 +1423,7 @@ StdCmdViewHome::StdCmdViewHome()
 void StdCmdViewHome::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/View"
-    );
-    std::string default_view = hGrp->GetASCII("NewDocumentCameraOrientation", "Top");
-    doCommand(
-        Command::Gui,
-        "Gui.activeDocument().activeView().viewDefaultOrientation('%s',0)",
-        default_view.c_str()
-    );
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewHome\")");
 }
 
 //===========================================================================
@@ -2571,148 +2562,6 @@ bool StdCmdViewExample3::isActive()
 
 
 //===========================================================================
-// Std_ViewIvStereoOff
-//===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoOff)
-
-StdCmdViewIvStereoOff::StdCmdViewIvStereoOff()
-    : Command("Std_ViewIvStereoOff")
-{
-    sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Stereo &Off");
-    sToolTipText = QT_TR_NOOP("Switches stereo viewing off");
-    sWhatsThis = "Std_ViewIvStereoOff";
-    sStatusTip = sToolTipText;
-    sPixmap = "Std_ViewIvStereoOff";
-    eType = Alter3DView;
-}
-
-void StdCmdViewIvStereoOff::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"Mono\")");
-}
-
-bool StdCmdViewIvStereoOff::isActive()
-{
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoOff");
-}
-
-
-//===========================================================================
-// Std_ViewIvStereoRedGreen
-//===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoRedGreen)
-
-StdCmdViewIvStereoRedGreen::StdCmdViewIvStereoRedGreen()
-    : Command("Std_ViewIvStereoRedGreen")
-{
-    sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Stereo Re&d/Cyan");
-    sToolTipText = QT_TR_NOOP("Switches stereo viewing to red/cyan");
-    sWhatsThis = "Std_ViewIvStereoRedGreen";
-    sStatusTip = sToolTipText;
-    sPixmap = "Std_ViewIvStereoRedGreen";
-    eType = Alter3DView;
-}
-
-void StdCmdViewIvStereoRedGreen::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"Anaglyph\")");
-}
-
-bool StdCmdViewIvStereoRedGreen::isActive()
-{
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoRedGreen");
-}
-
-//===========================================================================
-// Std_ViewIvStereoQuadBuff
-//===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoQuadBuff)
-
-StdCmdViewIvStereoQuadBuff::StdCmdViewIvStereoQuadBuff()
-    : Command("Std_ViewIvStereoQuadBuff")
-{
-    sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Stereo &Quad Buffer");
-    sToolTipText = QT_TR_NOOP("Switches stereo viewing to quad buffer");
-    sWhatsThis = "Std_ViewIvStereoQuadBuff";
-    sStatusTip = sToolTipText;
-    sPixmap = "Std_ViewIvStereoQuadBuff";
-    eType = Alter3DView;
-}
-
-void StdCmdViewIvStereoQuadBuff::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"QuadBuffer\")");
-}
-
-bool StdCmdViewIvStereoQuadBuff::isActive()
-{
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoQuadBuff");
-}
-
-//===========================================================================
-// Std_ViewIvStereoInterleavedRows
-//===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoInterleavedRows)
-
-StdCmdViewIvStereoInterleavedRows::StdCmdViewIvStereoInterleavedRows()
-    : Command("Std_ViewIvStereoInterleavedRows")
-{
-    sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Stereo Interleaved &Rows");
-    sToolTipText = QT_TR_NOOP("Switches stereo viewing to interleaved rows");
-    sWhatsThis = "Std_ViewIvStereoInterleavedRows";
-    sStatusTip = sToolTipText;
-    sPixmap = "Std_ViewIvStereoInterleavedRows";
-    eType = Alter3DView;
-}
-
-void StdCmdViewIvStereoInterleavedRows::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"InterleavedRows\")");
-}
-
-bool StdCmdViewIvStereoInterleavedRows::isActive()
-{
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoInterleavedRows");
-}
-
-//===========================================================================
-// Std_ViewIvStereoInterleavedColumns
-//===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoInterleavedColumns)
-
-StdCmdViewIvStereoInterleavedColumns::StdCmdViewIvStereoInterleavedColumns()
-    : Command("Std_ViewIvStereoInterleavedColumns")
-{
-    sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Stereo Interleaved &Columns");
-    sToolTipText = QT_TR_NOOP("Switches stereo viewing to interleaved columns");
-    sWhatsThis = "Std_ViewIvStereoInterleavedColumns";
-    sStatusTip = sToolTipText;
-    sPixmap = "Std_ViewIvStereoInterleavedColumns";
-    eType = Alter3DView;
-}
-
-void StdCmdViewIvStereoInterleavedColumns::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"InterleavedColumns\")");
-}
-
-bool StdCmdViewIvStereoInterleavedColumns::isActive()
-{
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoInterleavedColumns");
-}
-
-
-//===========================================================================
 // Std_ViewIvIssueCamPos
 //===========================================================================
 DEF_STD_CMD_A(StdCmdViewIvIssueCamPos)
@@ -3017,274 +2866,16 @@ StdBoxSelection::StdBoxSelection()
     eType = AlterSelection;
 }
 
-using SelectionMode = enum
-{
-    CENTER,
-    INTERSECT
-};
-
-static bool findObjectsOfTypeInBox(
-    const std::string& type,
-    const Base::ViewProjMethod& proj,
-    Data::ComplexGeoData* data,
-    const Base::Polygon2d& polygon,
-    std::vector<std::string>& ret,
-    SelectionMode mode
-)
-{
-    size_t count = data->countSubElements(type.c_str());
-    if (!count) {
-        return false;
-    }
-
-    bool foundElement = false;
-    for (size_t i = 1; i <= count; ++i) {
-        std::string element(type);
-        element += std::to_string(i);
-        std::unique_ptr<Data::Segment> segment(data->getSubElementByName(element.c_str()));
-        if (!segment) {
-            continue;
-        }
-        if (type == "Vertex") {
-            Base::Vector3d point;
-            if (data->getFirstVertexFromSubElement(segment.get(), point)) {
-                auto v = proj(point);
-                if (polygon.Contains(Base::Vector2d(v.x, v.y))) {
-                    foundElement = true;
-                    ret.push_back(element);
-                    continue;
-                }
-            }
-        }
-        else {
-            // find lines or faces
-            std::vector<Base::Vector3d> points;
-            std::vector<Data::ComplexGeoData::Line> lines;
-            data->getLinesFromSubElement(segment.get(), points, lines);
-            if (points.empty() || lines.empty()) {
-                continue;
-            }
-            Base::Polygon2d loop;
-            // TODO: can we assume the line returned above are in proper
-            // order if the element is a face?
-            auto v = proj(points[lines.front().I1]);
-            loop.Add(Base::Vector2d(v.x, v.y));
-            for (auto& line : lines) {
-                for (auto i = line.I1; i < line.I2; ++i) {
-                    auto v = proj(points[i + 1]);
-                    loop.Add(Base::Vector2d(v.x, v.y));
-                }
-            }
-            if (!polygon.Intersect(loop)) {
-                continue;
-            }
-            if (mode == CENTER && !polygon.Contains(loop.CalcBoundBox().GetCenter())) {
-                continue;
-            }
-            ret.push_back(element);
-            foundElement = true;
-        }
-    }
-    return foundElement;
-}
-
-static std::vector<std::string> getBoxSelection(
-    ViewProviderDocumentObject* vp,
-    SelectionMode mode,
-    bool selectElement,
-    const Base::ViewProjMethod& proj,
-    const Base::Polygon2d& polygon,
-    const Base::Matrix4D& mat,
-    bool transform = true,
-    int depth = 0
-)
-{
-    std::vector<std::string> ret;
-    auto obj = vp->getObject();
-    if (!obj || !obj->isAttachedToDocument()) {
-        return ret;
-    }
-
-    App::Document* doc = App::GetApplication().getActiveDocument();
-    const auto selectionGate = SelectionSingleton::instance().getSelectionGate(doc);
-
-    // DO NOT check this view object Visibility, let the caller do this. Because
-    // we may be called by upper object hierarchy that manages our visibility.
-
-    auto bbox3 = vp->getBoundingBox(nullptr, transform);
-    Base::BoundBox2d bbox;
-    const bool isBBox3Valid = bbox3.IsValid();
-    if (isBBox3Valid && selectionGate == nullptr) {
-        bbox = bbox3.Transformed(mat).ProjectBox(&proj);
-
-        // check if both two boundary points are inside polygon, only
-        // valid since we know the given polygon is a box.
-        if (polygon.Contains(Base::Vector2d(bbox.MinX, bbox.MinY))
-            && polygon.Contains(Base::Vector2d(bbox.MaxX, bbox.MaxY))) {
-            ret.emplace_back("");
-            return ret;
-        }
-
-        // we could select the whole polygon if there's no selection filter
-        if (!bbox.Intersect(polygon) && selectionGate == nullptr) {
-            return ret;
-        }
-    }
-
-    // find subobjects that are contained within the box selection
-    const auto& subs = obj->getSubObjects(App::DocumentObject::GS_SELECT);
-    if (subs.empty()) {
-        if (!selectElement) {
-            // bbox wasn't created if bbox3 had been invalid
-            if (mode == INTERSECT || (isBBox3Valid && polygon.Contains(bbox.GetCenter()))) {
-                ret.emplace_back("");
-            }
-            return ret;
-        }
-        Base::PyGILStateLocker lock;
-        PyObject* pyobj = nullptr;
-        Base::Matrix4D matCopy(mat);
-        obj->getSubObject(nullptr, &pyobj, &matCopy, transform, depth);
-        if (!pyobj) {
-            return ret;
-        }
-        Py::Object pyobject(pyobj, true);
-        if (!PyObject_TypeCheck(pyobj, &Data::ComplexGeoDataPy::Type)) {
-            return ret;
-        }
-        auto data = static_cast<Data::ComplexGeoDataPy*>(pyobj)->getComplexGeoDataPtr();
-        const auto& allAllowedDocumentTypes = data->getElementTypes();
-
-        if (selectionGate) {
-            // there's no point to try to iterate over every type of object when a selector is
-            // specified iterate over only those which are allowed
-            auto filteredTypes = selectionGate->getGatedTypes(allAllowedDocumentTypes);
-            if (!filteredTypes.empty()) {
-                for (const auto& type : filteredTypes) {
-                    findObjectsOfTypeInBox(type, proj, data, polygon, ret, mode);
-                }
-                return ret;
-            }
-        }
-
-        // if either selectionGate is not present, or filteredTypes = []
-        // the selection process needs iterate from the biggest objects
-        // to the smallest ones ex. if a line can't be selected (ie. out of selector bounds)
-        // then try to select vertices
-        for (auto type : allAllowedDocumentTypes) {
-            if (findObjectsOfTypeInBox(type, proj, data, polygon, ret, mode)) {
-                // notice the break - if a line can be selected - don't go over to vertices
-                break;
-            }
-        }
-
-        return ret;
-    }
-
-    size_t count = 0;
-    for (auto& sub : subs) {
-        App::DocumentObject* parent = nullptr;
-        std::string childName;
-        Base::Matrix4D smat(mat);
-        auto sobj
-            = obj->resolve(sub.c_str(), &parent, &childName, nullptr, nullptr, &smat, transform, depth + 1);
-        if (!sobj) {
-            continue;
-        }
-        int vis;
-        if (!parent || (vis = parent->isElementVisible(childName.c_str())) < 0) {
-            vis = sobj->Visibility.getValue() ? 1 : 0;
-        }
-
-        if (!vis) {
-            continue;
-        }
-
-        auto svp = freecad_cast<ViewProviderDocumentObject*>(
-            Application::Instance->getViewProvider(sobj)
-        );
-        if (!svp) {
-            continue;
-        }
-
-        const auto& sels
-            = getBoxSelection(svp, mode, selectElement, proj, polygon, smat, false, depth + 1);
-        if (sels.size() == 1 && sels[0].empty()) {
-            ++count;
-        }
-        for (auto& sel : sels) {
-            ret.emplace_back(sub + sel);
-        }
-    }
-    if (count == subs.size()) {
-        ret.resize(1);
-        ret[0].clear();
-    }
-    return ret;
-}
-
 static void doSelect(void* ud, SoEventCallback* cb)
 {
     bool selectElement = ud ? true : false;
     auto viewer = static_cast<Gui::View3DInventorViewer*>(cb->getUserData());
 
     viewer->setSelectionEnabled(true);
+    cb->setHandled();
 
-    SelectionMode selectionMode = CENTER;
-
-    std::vector<SbVec2f> picked = viewer->getGLPolygon();
-    SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-    SbViewVolume vv = cam->getViewVolume();
-    Gui::ViewVolumeProjection proj(vv);
-    Base::Polygon2d polygon;
-    if (picked.size() == 2) {
-        SbVec2f pt1 = picked[0];
-        SbVec2f pt2 = picked[1];
-        polygon.Add(Base::Vector2d(pt1[0], pt1[1]));
-        polygon.Add(Base::Vector2d(pt1[0], pt2[1]));
-        polygon.Add(Base::Vector2d(pt2[0], pt2[1]));
-        polygon.Add(Base::Vector2d(pt2[0], pt1[1]));
-
-        // when selecting from right to left then select by intersection
-        // otherwise if the center is inside the rectangle
-        if (picked[0][0] > picked[1][0]) {
-            selectionMode = INTERSECT;
-        }
-    }
-    else {
-        for (const auto& it : picked) {
-            polygon.Add(Base::Vector2d(it[0], it[1]));
-        }
-    }
-
-    App::Document* doc = App::GetApplication().getActiveDocument();
-    if (doc) {
-        cb->setHandled();
-
-        const SoEvent* ev = cb->getEvent();
-        if (ev && !ev->wasCtrlDown()) {
-            Gui::Selection().clearSelection(doc->getName());
-        }
-
-        const std::vector<App::DocumentObject*> objects = doc->getObjects();
-        for (auto obj : objects) {
-            if (App::GeoFeatureGroupExtension::getGroupOfObject(obj)) {
-                continue;
-            }
-
-            auto vp = freecad_cast<ViewProviderDocumentObject*>(
-                Application::Instance->getViewProvider(obj)
-            );
-            if (!vp || !vp->isVisible()) {
-                continue;
-            }
-
-            Base::Matrix4D mat;
-            for (auto& sub : getBoxSelection(vp, selectionMode, selectElement, proj, polygon, mat)) {
-                Gui::Selection().addSelection(doc->getName(), obj->getNameInDocument(), sub.c_str());
-            }
-        }
-    }
+    const SoEvent* ev = cb->getEvent();
+    applyBoxSelection(viewer, viewer->getPolygon(), selectElement, ev && ev->wasCtrlDown());
 }
 
 void StdBoxSelection::activated(int iMsg)
@@ -4017,7 +3608,7 @@ StdCmdDockOverlayAll::StdCmdDockOverlayAll()
 {
     sGroup = "View";
     sMenuText = QT_TR_NOOP("Toggle Overl&ay for All Panels");
-    sToolTipText = QT_TR_NOOP("Toggled overlay mode for all docked panels");
+    sToolTipText = QT_TR_NOOP("Toggles overlay mode for all docked panels");
     sWhatsThis = "Std_DockOverlayAll";
     sStatusTip = sToolTipText;
     eType = 0;
@@ -4325,7 +3916,7 @@ void StdCmdToggleBottomPanels::activated(int iMsg)
         // No visible bottom panels: restore the previously hidden ones. The default covers a fresh
         // install with no saved state.
         const auto savedNames = QString::fromStdString(
-            hGrp->GetASCII("HiddenBottomWidgets", "Python console;;Report view;;Selection view")
+            hGrp->GetASCII("HiddenBottomWidgets", "Python console;;Report view")
         );
         QStringList panelNamesToRestore = savedNames.split(QStringLiteral(";;"));
 
@@ -4592,6 +4183,33 @@ void StdCmdClarifySelection::activated(int iMsg)
         };
 
         selections.push_back(pickData);
+
+        // Split a dotted container path (e.g. "Body.Pad.Face1") so getRelatedElements
+        // dispatches on the leaf object's view provider, not the outer container's.
+        std::string subObjPath;
+        std::string pickedElement = pickData.subName;
+        auto lastDot = pickData.subName.find_last_of('.');
+        if (lastDot != std::string::npos) {
+            subObjPath = pickData.subName.substr(0, lastDot + 1);
+            pickedElement = pickData.subName.substr(lastDot + 1);
+        }
+        auto* subObj = obj->getSubObject(subObjPath.c_str());
+        auto* subVP = subObj ? Application::Instance->getViewProvider(subObj) : nullptr;
+        if (!subVP) {
+            subVP = vp;
+        }
+        for (const auto& [relElement, relSubName] :
+             subVP->getRelatedElements(pickedElement, pp->getPoint())) {
+            selections.push_back(
+                PickData {
+                    .obj = obj,
+                    .element = relElement,
+                    .docName = obj->getDocument()->getName(),
+                    .objName = obj->getNameInDocument(),
+                    .subName = subObjPath + relSubName
+                }
+            );
+        }
     }
 
     if (selections.empty()) {
@@ -4660,12 +4278,6 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdCmdViewExample1());
     rcCmdMgr.addCommand(new StdCmdViewExample2());
     rcCmdMgr.addCommand(new StdCmdViewExample3());
-
-    rcCmdMgr.addCommand(new StdCmdViewIvStereoQuadBuff());
-    rcCmdMgr.addCommand(new StdCmdViewIvStereoRedGreen());
-    rcCmdMgr.addCommand(new StdCmdViewIvStereoInterleavedColumns());
-    rcCmdMgr.addCommand(new StdCmdViewIvStereoInterleavedRows());
-    rcCmdMgr.addCommand(new StdCmdViewIvStereoOff());
 
     rcCmdMgr.addCommand(new StdCmdViewIvIssueCamPos());
 

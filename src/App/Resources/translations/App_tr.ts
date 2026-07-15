@@ -4,9 +4,24 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="614"/>
+      <location filename="../../Application.cpp" line="619"/>
       <source>Unnamed</source>
       <translation>Adsız</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="569"/>
+      <source>True</source>
+      <translation>Doğru</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="569"/>
+      <source>False</source>
+      <translation>Yanlış</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="587"/>
+      <source>Null</source>
+      <translation type="unfinished">Null</translation>
     </message>
   </context>
   <context>
@@ -14,7 +29,7 @@
     <message>
       <location filename="../../OriginGroupExtension.cpp" line="163"/>
       <source>Origin</source>
-      <translation>Orjin</translation>
+      <translation>Orijin</translation>
     </message>
   </context>
   <context>
@@ -26,7 +41,7 @@ It is recommended that the user right-click the root of the document and select 
 The user should then click the Refresh button in the main toolbar.
 </source>
       <translation>
-Kullanıcının belgenin kök dizinine sağ tıklayıp "Yeniden hesaplamak için işaretle" seçeneğini seçmesi önerilir. Ardından kullanıcı ana araç çubuğundaki "Yenile" düğmesine tıklamalıdır.
+Kullanıcının belgenin kök dizinine sağ tıklayıp "Yeniden hesaplamak için işaretle" seçeneğini seçmesi önerilir. Ardından kullanıcı ana araç çubuğundaki "Yenile" düğmesine tıklanmalıdır.
 </translation>
     </message>
   </context>
@@ -74,8 +89,7 @@ Kullanıcının belgenin kök dizinine sağ tıklayıp "Yeniden hesaplamak için
       <location filename="../../Link.cpp" line="119"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
-      <translation type="unfinished">Stores the last user choice of whether to apply CopyOnChange setup to all link
-that links to the same configurable object</translation>
+      <translation>"CopyOnChange" ayarının, aynı yapılandırılabilir nesneye bağlı tüm bağlantılara uygulanıp uygulanmayacağına dair son kullanıcı tercihlerini saklar</translation>
     </message>
   </context>
 </TS>

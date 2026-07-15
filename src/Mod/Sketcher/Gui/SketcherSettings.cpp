@@ -364,7 +364,7 @@ SketcherSettingsGrid::~SketcherSettingsGrid()
 
 bool SketcherSettingsGrid::event(QEvent* event)
 {
-    if (event->type() == QEvent::PaletteChange) {
+    if (event->type() == QEvent::StyleChange) {
         PreferencePage::event(event);
         const qreal dpr = devicePixelRatioF();
         const QBrush brush = palette().windowText();
@@ -455,6 +455,18 @@ SketcherSettingsDisplay::SketcherSettingsDisplay(QWidget* parent)
     ui->setupUi(this);
 
     connect(ui->btnTVApply, &QPushButton::clicked, this, &SketcherSettingsDisplay::onBtnTVApplyClicked);
+    connect(
+        ui->fontBoxSketcherFontName,
+        &QFontComboBox::currentFontChanged,
+        this,
+        &SketcherSettingsDisplay::onFontNameChanged
+    );
+    connect(
+        ui->EditSketcherFontSize,
+        qOverload<int>(&QSpinBox::valueChanged),
+        this,
+        &SketcherSettingsDisplay::onFontSizeChanged
+    );
 }
 
 /**
@@ -467,6 +479,7 @@ SketcherSettingsDisplay::~SketcherSettingsDisplay()
 
 void SketcherSettingsDisplay::saveSettings()
 {
+    ui->fontBoxSketcherFontName->onSave();
     ui->EditSketcherFontSize->onSave();
     ui->ConstraintSymbolSize->onSave();
     ui->viewScalingFactor->onSave();
@@ -485,10 +498,13 @@ void SketcherSettingsDisplay::saveSettings()
     ui->checkBoxTVRestoreCamera->onSave();
     ui->checkBoxTVForceOrtho->onSave();
     ui->checkBoxTVSectionView->onSave();
+    ui->axisTransparency->onSave();
+    ui->occludedAxisTransparency->onSave();
 }
 
 void SketcherSettingsDisplay::loadSettings()
 {
+    ui->fontBoxSketcherFontName->onRestore();
     ui->EditSketcherFontSize->onRestore();
     ui->ConstraintSymbolSize->onRestore();
     ui->viewScalingFactor->onRestore();
@@ -508,6 +524,8 @@ void SketcherSettingsDisplay::loadSettings()
     ui->checkBoxTVForceOrtho->onRestore();
     this->ui->checkBoxTVForceOrtho->setEnabled(this->ui->checkBoxTVRestoreCamera->isChecked());
     ui->checkBoxTVSectionView->onRestore();
+    ui->axisTransparency->onRestore();
+    ui->occludedAxisTransparency->onRestore();
 }
 
 /**
@@ -521,6 +539,16 @@ void SketcherSettingsDisplay::changeEvent(QEvent* e)
     else {
         QWidget::changeEvent(e);
     }
+}
+
+void SketcherSettingsDisplay::showEvent(QShowEvent* e)
+{
+    QPalette previewPalette = QPalette();
+    previewPalette.setColor(QPalette::Window, getSketcherBackgroundColor());
+    previewPalette.setColor(QPalette::WindowText, getSketcherConstraintColor());
+    ui->LabelFontPreview->setPalette(previewPalette);
+
+    Gui::Dialog::PreferencePage::showEvent(e);
 }
 
 void SketcherSettingsDisplay::onBtnTVApplyClicked(bool)
@@ -556,6 +584,84 @@ void SketcherSettingsDisplay::onBtnTVApplyClicked(bool)
     if (errMsg.length() > 0) {
         QMessageBox::warning(this, tr("Sketcher"), errMsg);
     }
+}
+
+void SketcherSettingsDisplay::onFontNameChanged(const QFont& font)
+{
+    QFont testFont;
+    // To QFontMetrics::inFont() return false, QFont::setStyleStrategy() must be called
+    // before QFont::setFamily()
+    testFont.setStyleStrategy(QFont::NoFontMerging);
+    testFont.setFamily(font.family());
+
+    QFontMetrics metrics(testFont);
+    auto testChars = QString::fromUtf8(RequiredCharacters).toUcs4();
+
+    QString missingChars;
+    for (char32_t testChar : testChars) {
+        if (!metrics.inFontUcs4(testChar)) {
+            missingChars += QString::fromUtf8("  ");
+            missingChars += QString::fromUcs4(&testChar, 1);
+        }
+    }
+
+    if (missingChars.length() > 0) {
+        ui->LabelFontMessage->setText(tr("Glyphs not present:") + missingChars);
+        ui->LabelFontMessage->show();
+    }
+    else {
+        ui->LabelFontMessage->hide();
+    }
+
+    QFont previewFont(font);
+    previewFont.setPixelSize(ui->EditSketcherFontSize->value());
+    ui->LabelFontPreview->setFont(previewFont);
+}
+
+void SketcherSettingsDisplay::onFontSizeChanged(int size)
+{
+    QFont previewFont = ui->fontBoxSketcherFontName->currentFont();
+    previewFont.setPixelSize(size);
+    ui->LabelFontPreview->setFont(previewFont);
+}
+
+QColor SketcherSettingsDisplay::getSketcherBackgroundColor()
+{
+    auto parameters = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/View");
+
+    uint32_t backgroundColor;
+    if (parameters->GetBool("Gradient", false) || parameters->GetBool("RadialGradient", false)) {
+        if (parameters->GetBool("UseBackgroundColorMid")) {
+            backgroundColor = parameters->GetUnsigned("BackgroundColor4", 0xFFFFFFFF);
+        }
+        else {
+            // For 2 colors gradient take their average, i.e. the background in the center
+            backgroundColor = (((parameters->GetUnsigned("BackgroundColor2", 0xFFFFFFFF)) >> 8)
+                               + ((parameters->GetUnsigned("BackgroundColor3", 0xFFFFFFFF)) >> 8))
+                << 7;
+        }
+    }
+    else {
+        backgroundColor = parameters->GetUnsigned("BackgroundColor", 0xFFFFFFFF);
+    }
+
+    return QColor(
+        (backgroundColor >> 24) & 0xFF,
+        (backgroundColor >> 16) & 0xFF,
+        (backgroundColor >> 8) & 0xFF
+    );
+}
+
+QColor SketcherSettingsDisplay::getSketcherConstraintColor()
+{
+    auto parameters = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/View");
+    uint32_t constraintColor = parameters->GetUnsigned("ConstrainedDimColor", 0x000000FF);
+
+    return QColor(
+        (constraintColor >> 24) & 0xFF,
+        (constraintColor >> 16) & 0xFF,
+        (constraintColor >> 8) & 0xFF
+    );
 }
 
 
@@ -598,7 +704,7 @@ SketcherSettingsAppearance::~SketcherSettingsAppearance()
 
 bool SketcherSettingsAppearance::event(QEvent* event)
 {
-    if (event->type() == QEvent::PaletteChange) {
+    if (event->type() == QEvent::StyleChange) {
         PreferencePage::event(event);
         const qreal dpr = devicePixelRatioF();
         const QBrush brush = palette().windowText();

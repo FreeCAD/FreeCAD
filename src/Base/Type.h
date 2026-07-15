@@ -27,11 +27,14 @@
 
 // Std. configurations
 
-#include <string>
+#include <FCGlobal.h>
+
 #include <map>
 #include <set>
+#include <string>
+#include <string_view>
 #include <vector>
-#include <FCGlobal.h>
+
 
 namespace Base
 {
@@ -92,25 +95,25 @@ public:
     /// Checks whether this type can instantiate
     [[nodiscard]] bool canInstantiate() const;
     /// Creates an instance of the named type
-    [[nodiscard]] static void* createInstanceByName(const char* typeName, bool loadModule = false);
+    [[nodiscard]] static void* createInstanceByName(std::string_view typeName, bool loadModule = false);
 
     using instantiationMethod = void* (*)();
 
     /// Returns a type object by name
-    [[nodiscard]] static const Type fromName(const char* name);
+    [[nodiscard]] static Type fromName(std::string_view name);
     /// Returns a type object by key
-    [[nodiscard]] static const Type fromKey(TypeId key);
+    [[nodiscard]] static Type fromKey(TypeId key);
     /// Returns the name of the type
-    [[nodiscard]] const char* getName() const;
+    [[nodiscard]] std::string_view getName() const;
     /// Returns the parent type
-    [[nodiscard]] const Type getParent() const;
+    [[nodiscard]] Type getParent() const;
     /// Checks whether this type is derived from "type"
     [[nodiscard]] bool isDerivedFrom(const Type type) const;
     /// Returns all descendants from the given type
     static int getAllDerivedFrom(const Type type, std::vector<Type>& list);
     /// Returns the given named type if is derived from parent type, otherwise return bad type
-    [[nodiscard]] static const Type getTypeIfDerivedFrom(
-        const char* name,
+    [[nodiscard]] static Type getTypeIfDerivedFrom(
+        std::string_view name,
         const Type parent,
         bool loadModule = false
     );
@@ -119,7 +122,7 @@ public:
     /// Creates a new type with the given name, parent and instantiation method
     [[nodiscard]] static const Type createType(
         const Type parent,
-        const char* name,
+        std::string_view name,
         instantiationMethod method = nullptr
     );
     /// Returns the inner index of the type
@@ -142,17 +145,17 @@ public:
     static void destruct();
 
     /// Returns the name of the module the class is defined in
-    static const std::string getModuleName(const char* className);
+    static std::string getModuleName(std::string_view className);
 
 private:
     [[nodiscard]] instantiationMethod getInstantiationMethod() const;
-    static void importModule(const char* TypeName);
+    static void importModule(std::string_view typeName);
 
     TypeId index {BadTypeIndex};
 
-    static std::map<std::string, TypeId> typemap;
+    static std::map<std::string, TypeId, std::less<>> typemap;
     static std::vector<TypeData*> typedata;  // use pointer to hide implementation details
-    static std::set<std::string> loadModuleSet;
+    static std::set<std::string, std::less<>> loadModuleSet;
 
     static constexpr TypeId BadTypeIndex = 0;
 };

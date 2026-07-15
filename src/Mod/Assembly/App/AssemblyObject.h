@@ -112,6 +112,8 @@ public:
 
     // This makes sure that LinkGroups or sub-assemblies have identity placements.
     void ensureIdentityPlacements();
+    // Make sure grounded joints reflect Placement read-only states
+    void syncGroundedJoints();
 
     // Ondsel Solver interface
     std::shared_ptr<MbD::ASMTAssembly> makeMbdAssembly();

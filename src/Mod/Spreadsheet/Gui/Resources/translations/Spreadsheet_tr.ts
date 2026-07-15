@@ -4,17 +4,17 @@
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
-      <location filename="../../Command.cpp" line="956"/>
+      <location filename="../../Command.cpp" line="955"/>
       <source>Spreadsheet</source>
       <translation>Hesap Tablosu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="957"/>
+      <location filename="../../Command.cpp" line="956"/>
       <source>&amp;New Spreadsheet</source>
       <translation>Yeni &amp;Hesap Tablosu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="958"/>
+      <location filename="../../Command.cpp" line="957"/>
       <source>Creates a new spreadsheet</source>
       <translation>Yeni bir hesap tablosu oluşturur</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
-      <location filename="../../Command.cpp" line="515"/>
+      <location filename="../../Command.cpp" line="514"/>
       <source>Spreadsheet</source>
       <translation>Hesap Tablosu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="516"/>
+      <location filename="../../Command.cpp" line="515"/>
       <source>Align &amp;Bottom</source>
       <translation>&amp;Alta Hizala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="517"/>
+      <location filename="../../Command.cpp" line="516"/>
       <source>Aligns cell contents to the bottom</source>
       <translation>Hücre içeriğini alta hizalar</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="344"/>
+      <location filename="../../Command.cpp" line="343"/>
       <source>Spreadsheet</source>
       <translation>Hesap Tablosu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="345"/>
+      <location filename="../../Command.cpp" line="344"/>
       <source>Align Horizontal &amp;Center</source>
       <translation>&amp;Yatayda Ortala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="346"/>
+      <location filename="../../Command.cpp" line="345"/>
       <source>Aligns cell contents to the horizontal center</source>
       <translation>Hücre içeriğini yatayda ortalar</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
-      <location filename="../../Command.cpp" line="287"/>
+      <location filename="../../Command.cpp" line="286"/>
       <source>Spreadsheet</source>
       <translation>Hesap Tablosu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="288"/>
+      <location filename="../../Command.cpp" line="287"/>
       <source>Align &amp;Left</source>
       <translation>&amp;Sola Hizala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="289"/>
+      <location filename="../../Command.cpp" line="288"/>
       <source>Aligns cell contents to the left</source>
       <translation>Hücre içeriğini sola hizalar</translation>
     </message>
@@ -76,17 +76,17 @@
   <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
-      <location filename="../../Command.cpp" line="401"/>
+      <location filename="../../Command.cpp" line="400"/>
       <source>Spreadsheet</source>
       <translation>Hesap Tablosu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="402"/>
+      <location filename="../../Command.cpp" line="401"/>
       <source>Align &amp;Right</source>
       <translation>&amp;Sağa Hizala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="403"/>
+      <location filename="../../Command.cpp" line="402"/>
       <source>Aligns cell contents to the right</source>
       <translation>Hücre içeriğini sağa hizalar</translation>
     </message>
@@ -94,17 +94,17 @@
   <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
-      <location filename="../../Command.cpp" line="458"/>
+      <location filename="../../Command.cpp" line="457"/>
       <source>Spreadsheet</source>
       <translation>Hesap Tablosu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="459"/>
+      <location filename="../../Command.cpp" line="458"/>
       <source>Align &amp;Top</source>
       <translation>&amp;Üste Hizala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="460"/>
+      <location filename="../../Command.cpp" line="459"/>
       <source>Aligns cell contents to the top</source>
       <translation>Hücre içeriğini üste hizalar</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="572"/>
+      <location filename="../../Command.cpp" line="571"/>
       <source>Spreadsheet</source>
       <translation>Hesap Tablosu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="573"/>
+      <location filename="../../Command.cpp" line="572"/>
       <source>Align &amp;Vertical Center</source>
       <translation>&amp;Dikeyde Ortala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="574"/>
+      <location filename="../../Command.cpp" line="573"/>
       <source>Aligns cell contents to the vertical center</source>
       <translation>Hücre içeriğini dikeyde ortalar</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
-      <location filename="../../Command.cpp" line="242"/>
+      <location filename="../../Command.cpp" line="241"/>
       <source>Spreadsheet</source>
       <translation>Hesap Tablosu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="243"/>
+      <location filename="../../Command.cpp" line="242"/>
       <source>&amp;Export Spreadsheet</source>
       <translation>Hesap Tablosunu &amp;Dışa Aktar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="244"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>Exports the spreadsheet to a CSV file</source>
       <translation>Hesap tablosunu bir CSV dosyasına dışa aktarır</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
-      <location filename="../../Command.cpp" line="884"/>
+      <location filename="../../Command.cpp" line="883"/>
       <source>Spreadsheet</source>
       <translation>Hesap Tablosu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="885"/>
+      <location filename="../../Command.cpp" line="884"/>
       <source>Set Alias</source>
       <translation>Takma Ad Belirle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="886"/>
+      <location filename="../../Command.cpp" line="885"/>
       <source>Sets an alias for the selected cell</source>
       <translation>Seçili hücre için bir takma ad belirler</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
-      <location filename="../../Command.cpp" line="629"/>
+      <location filename="../../Command.cpp" line="628"/>
       <source>Spreadsheet</source>
       <translation>Hesap Tablosu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="630"/>
+      <location filename="../../Command.cpp" line="629"/>
       <source>&amp;Bold Text</source>
       <translation>Metni &amp;Kalın Yap</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="631"/>
+      <location filename="../../Command.cpp" line="630"/>
       <source>Sets the text in the selected cells bold</source>
       <translation>Seçili hücrelerdeki metni kalın yapar</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
-      <location filename="../../Command.cpp" line="714"/>
+      <location filename="../../Command.cpp" line="713"/>
       <source>Spreadsheet</source>
       <translation>Hesap Tablosu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="715"/>
+      <location filename="../../Command.cpp" line="714"/>
       <source>&amp;Italic Text</source>
       <translation>Metni &amp;İtalik Yap</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="716"/>
+      <location filename="../../Command.cpp" line="715"/>
       <source>Sets the text in the selected cells italic</source>
       <translation>Seçili hücrelerdeki metni italik yapar</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
-      <location filename="../../Command.cpp" line="799"/>
+      <location filename="../../Command.cpp" line="798"/>
       <source>Spreadsheet</source>
       <translation>Hesap Tablosu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="800"/>
+      <location filename="../../Command.cpp" line="799"/>
       <source>&amp;Underline Text</source>
       <translation>Metnin Altını &amp;Çiz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="801"/>
+      <location filename="../../Command.cpp" line="800"/>
       <source>Underlines the text in the selected cells</source>
       <translation>Seçili hücrelerdeki metnin altını çizer</translation>
     </message>
@@ -302,52 +302,52 @@
       <translation>Hücreyi a&amp;yır</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="309"/>
+      <location filename="../../Command.cpp" line="308"/>
       <source>Left-align cell</source>
       <translation>Sola hizalı hücre</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="366"/>
+      <location filename="../../Command.cpp" line="365"/>
       <source>Center cell</source>
       <translation>Ortala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="423"/>
+      <location filename="../../Command.cpp" line="422"/>
       <source>Right-align cell</source>
       <translation>Sağa hizalı hücre</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="480"/>
+      <location filename="../../Command.cpp" line="479"/>
       <source>Top-align cell</source>
       <translation>Yukarı hizalı hücre</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="537"/>
+      <location filename="../../Command.cpp" line="536"/>
       <source>Bottom-align cell</source>
       <translation>Aşağı hizalı hücre</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="594"/>
+      <location filename="../../Command.cpp" line="593"/>
       <source>Vertically center cells</source>
       <translation>Hücreleri dikey olarak ortala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="669"/>
+      <location filename="../../Command.cpp" line="668"/>
       <source>Set bold text</source>
       <translation>Metni kalınlaştır</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="754"/>
+      <location filename="../../Command.cpp" line="753"/>
       <source>Set italic text</source>
       <translation>Metni eğimle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="839"/>
+      <location filename="../../Command.cpp" line="838"/>
       <source>Set underline text</source>
       <translation>Metnin altını çiz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="969"/>
+      <location filename="../../Command.cpp" line="968"/>
       <source>Create Spreadsheet</source>
       <translation>Elektronik Tablo Oluştur</translation>
     </message>
@@ -357,7 +357,7 @@
       <translation>Hücre özelliklerini ayarla</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="628"/>
+      <location filename="../../SheetModel.cpp" line="623"/>
       <source>Edit cell</source>
       <translation>Hücreyi düzenle</translation>
     </message>
@@ -382,43 +382,43 @@
       <translation type="unfinished">Clear background color</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="224"/>
-      <source>Recompute Cells</source>
-      <translation type="unfinished">Recompute Cells</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="326"/>
+      <location filename="../../SheetTableView.cpp" line="327"/>
       <source>Insert Rows</source>
       <translation>Satır Ekle</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="353"/>
+      <location filename="../../SheetTableView.cpp" line="354"/>
       <source>Remove Rows</source>
       <translation>Satırları Kaldır</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="366"/>
-      <source>Remove Columns</source>
-      <translation type="unfinished">Remove Columns</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="339"/>
+      <location filename="../../SheetTableView.cpp" line="340"/>
       <source>Insert Columns</source>
       <translation>Sütun Ekle</translation>
     </message>
     <message>
+      <location filename="../../SheetTableView.cpp" line="226"/>
+      <source>Recompute Cells</source>
+      <translation type="unfinished">Recompute Cells</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="367"/>
+      <source>Remove Columns</source>
+      <translation type="unfinished">Remove Columns</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="582"/>
       <location filename="../../SpreadsheetView.cpp" line="179"/>
-      <location filename="../../SheetTableView.cpp" line="581"/>
       <source>Clear Cells</source>
       <translation>Hücreleri Temizle</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="204"/>
+      <location filename="../../DlgSheetConf.cpp" line="228"/>
       <source>Setup conf table</source>
       <translation type="unfinished">Setup conf table</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="309"/>
+      <location filename="../../DlgSheetConf.cpp" line="391"/>
       <source>Unsetup conf table</source>
       <translation type="unfinished">Unsetup conf table</translation>
     </message>
@@ -605,17 +605,32 @@ bir ifade girin. Özellik yoksa oluşturulur.</translation>
       <translation>İsteğe bağlı özellik grubu adı</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.ui" line="88"/>
+      <location filename="../../DlgSheetConf.ui" line="86"/>
+      <source>Orientation</source>
+      <translation>Yönlendirme</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.ui" line="93"/>
+      <source>Horizontal</source>
+      <translation>Yatay</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.ui" line="103"/>
+      <source>Vertical</source>
+      <translation>Dikey</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.ui" line="115"/>
       <source>Unsetup</source>
       <translation>Kurulumu kaldır</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.ui" line="95"/>
+      <location filename="../../DlgSheetConf.ui" line="122"/>
       <source>Cancel</source>
       <translation>İptal</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.ui" line="102"/>
+      <location filename="../../DlgSheetConf.ui" line="129"/>
       <source>OK</source>
       <translation>Tamam</translation>
     </message>
@@ -749,23 +764,11 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     </message>
     <message>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="108"/>
-      <location filename="../../Command.cpp" line="199"/>
-      <source>CSV (*.csv *.CSV)</source>
-      <translation type="unfinished">CSV (*.csv *.CSV)</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="109"/>
-      <location filename="../../Command.cpp" line="200"/>
-      <source>All (*)</source>
-      <translation type="unfinished">All (*)</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="112"/>
       <source>Export File</source>
       <translation>Dosyayı Dışa Aktar</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="138"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="133"/>
       <source>Show Spreadsheet</source>
       <translation>Hesap Tablosunu Göster</translation>
     </message>
@@ -792,7 +795,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Hesap tablosu hücrelerinin arka plan rengini ayarlar</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="719"/>
+      <location filename="../../SheetTableView.cpp" line="720"/>
       <source>Copy &amp; Paste Failed</source>
       <translation>Kopyalama ve Yapıştırma Başarısız</translation>
     </message>
@@ -972,22 +975,47 @@ Devam edilsin mi?</translation>
       <translation>Hesap Tablosu</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="26"/>
+      <location filename="../../DlgSettings.ui" line="156"/>
+      <source>Cells</source>
+      <translation type="unfinished">Cells</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="165"/>
+      <source>Maximum number of columns</source>
+      <translation type="unfinished">Maximum number of columns</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="175"/>
+      <source>Maximum number of rows</source>
+      <translation type="unfinished">Maximum number of rows</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="185"/>
       <source>Display Settings</source>
       <translation>Görüntüleme Ayarları</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="35"/>
+      <location filename="../../DlgSettings.ui" line="191"/>
+      <source>Displays the cell alias using the custom format.</source>
+      <translation type="unfinished">Displays the cell alias using the custom format.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="194"/>
       <source>Show alias in cell with format</source>
       <translation>Hücrede takma adı şu biçimle göster</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="51"/>
+      <location filename="../../DlgSettings.ui" line="207"/>
+      <source>Sets the table view zoom level from 60% to 160%.</source>
+      <translation type="unfinished">Sets the table view zoom level from 60% to 160%.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="210"/>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="83"/>
+      <location filename="../../DlgSettings.ui" line="242"/>
       <source>The format of the custom cell string presentation.
 Defaults to: %V = %A
 
@@ -1000,57 +1028,47 @@ Varsayılan: %V = %A
 %V - hücre değeri</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="119"/>
+      <location filename="../../DlgSettings.ui" line="26"/>
       <source>Import/Export Settings</source>
       <translation>İçe/Dışa Aktarma Ayarları</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="32"/>
-      <source>Uses the custom presentation to display cell string</source>
-      <translation>Hücre dizgesini görüntülemek için özel gösterimi kullanır</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="48"/>
-      <source>Defines a default zoom level for table view from 60% to 160%</source>
-      <translation>Tablo görünümü için %60 ile %160 arasında varsayılan bir yakınlaştırma düzeyi belirler</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="76"/>
+      <location filename="../../DlgSettings.ui" line="235"/>
       <source>Default zoom level</source>
       <translation>Varsayılan yakınlaştırma düzeyi</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="131"/>
+      <location filename="../../DlgSettings.ui" line="38"/>
       <source>Delimiter character</source>
       <translation>Ayırıcı karakter</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="151"/>
+      <location filename="../../DlgSettings.ui" line="58"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Alan sınırlayıcı olarak kullanılacak karakter. Varsayılan sekmedir, ancak virgül (,) ve noktalı virgül (;) de yaygın olarak kullanılır. Listeden seçin veya alana kendinizinkini girin. Tek bir karakter veya &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;virgül&lt;/span&gt; veya &lt;span style kelimeleri olmalıdır =" font-style:italic;"&gt;noktalı virgül&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="167"/>
+      <location filename="../../DlgSettings.ui" line="74"/>
       <source>tab</source>
       <translation>sekme</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="191"/>
+      <location filename="../../DlgSettings.ui" line="98"/>
       <source>Quote character</source>
       <translation>Tırnak karakteri</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="198"/>
+      <location filename="../../DlgSettings.ui" line="105"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dizgileri sınırlamak için kullanılan karakter, genellikle tek tırnak (') veya çift tırnaktır (&amp;quot;). Tek bir karakter olmalıdır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="223"/>
+      <location filename="../../DlgSettings.ui" line="130"/>
       <source>Escape character</source>
       <translation>Kaçış karakteri</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="230"/>
+      <location filename="../../DlgSettings.ui" line="137"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Çıkış karakteri, tipik olarak ters eğik çizgi (\), yazdırılamayan özel karakterleri belirtmek için kullanılır, ör. \t = sekme. Tek bir karakter olmalıdır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -1058,13 +1076,13 @@ Varsayılan: %V = %A
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <location filename="../../SheetTableView.cpp" line="186"/>
-      <location filename="../../SheetTableView.cpp" line="563"/>
+      <location filename="../../SheetTableView.cpp" line="188"/>
+      <location filename="../../SheetTableView.cpp" line="564"/>
       <source>Recompute</source>
       <translation>Yeniden hesapla</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="147"/>
+      <location filename="../../SheetTableView.cpp" line="149"/>
       <source>Insert %n Non-Contiguous Rows</source>
       <translation>
         <numerusform>Ardışık olmayan %n satır ekle</numerusform>
@@ -1072,12 +1090,12 @@ Varsayılan: %V = %A
       </translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="150"/>
+      <location filename="../../SheetTableView.cpp" line="152"/>
       <source>Remove Rows</source>
       <translation>Satırları Kaldır</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="167"/>
+      <location filename="../../SheetTableView.cpp" line="169"/>
       <source>Insert %n Non-Contiguous Columns</source>
       <translation>
         <numerusform>Ardışık olmayan %n sütun ekle</numerusform>
@@ -1085,29 +1103,29 @@ Varsayılan: %V = %A
       </translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="562"/>
+      <location filename="../../SheetTableView.cpp" line="563"/>
       <source>Properties…</source>
       <translation>Özellikler…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="187"/>
-      <location filename="../../SheetTableView.cpp" line="571"/>
+      <location filename="../../SheetTableView.cpp" line="189"/>
+      <location filename="../../SheetTableView.cpp" line="572"/>
       <source>Bind…</source>
       <translation>Bağla…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="564"/>
+      <location filename="../../SheetTableView.cpp" line="565"/>
       <source>Configuration Table…</source>
       <translation>Yapılandırma Tablosu…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="192"/>
-      <location filename="../../SheetTableView.cpp" line="565"/>
+      <location filename="../../SheetTableView.cpp" line="194"/>
+      <location filename="../../SheetTableView.cpp" line="566"/>
       <source>Merge Cells</source>
       <translation>Hücreleri Birleştir</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="141"/>
+      <location filename="../../SheetTableView.cpp" line="143"/>
       <source>Insert %n Rows Above</source>
       <translation type="unfinished">
         <numerusform>Insert %n Rows Above</numerusform>
@@ -1115,7 +1133,7 @@ Varsayılan: %V = %A
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="143"/>
+      <location filename="../../SheetTableView.cpp" line="145"/>
       <source>Insert %n Rows Below</source>
       <translation type="unfinished">
         <numerusform>Insert %n Rows Below</numerusform>
@@ -1123,7 +1141,7 @@ Varsayılan: %V = %A
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="161"/>
+      <location filename="../../SheetTableView.cpp" line="163"/>
       <source>Insert %n Columns Left</source>
       <translation type="unfinished">
         <numerusform>Insert %n Columns Left</numerusform>
@@ -1131,7 +1149,7 @@ Varsayılan: %V = %A
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="163"/>
+      <location filename="../../SheetTableView.cpp" line="165"/>
       <source>Insert %n Columns Right</source>
       <translation type="unfinished">
         <numerusform>Insert %n Columns Right</numerusform>
@@ -1139,47 +1157,47 @@ Varsayılan: %V = %A
       </translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="170"/>
+      <location filename="../../SheetTableView.cpp" line="172"/>
       <source>Remove Columns</source>
       <translation type="unfinished">Remove Columns</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="183"/>
+      <location filename="../../SheetTableView.cpp" line="185"/>
       <source>Properties</source>
       <translation>Özellikleri</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="188"/>
+      <location filename="../../SheetTableView.cpp" line="190"/>
       <source>Configuration Table</source>
       <translation type="unfinished">Configuration Table</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="197"/>
-      <location filename="../../SheetTableView.cpp" line="566"/>
+      <location filename="../../SheetTableView.cpp" line="199"/>
+      <location filename="../../SheetTableView.cpp" line="567"/>
       <source>Split Cell</source>
       <translation>Hücreyi Ayır</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="201"/>
-      <location filename="../../SheetTableView.cpp" line="569"/>
+      <location filename="../../SheetTableView.cpp" line="203"/>
+      <location filename="../../SheetTableView.cpp" line="570"/>
       <source>Cut</source>
       <translation>Kes</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="202"/>
-      <location filename="../../SheetTableView.cpp" line="567"/>
+      <location filename="../../SheetTableView.cpp" line="204"/>
+      <location filename="../../SheetTableView.cpp" line="568"/>
       <source>Copy</source>
       <translation>Kopyala</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="203"/>
-      <location filename="../../SheetTableView.cpp" line="568"/>
+      <location filename="../../SheetTableView.cpp" line="205"/>
+      <location filename="../../SheetTableView.cpp" line="569"/>
       <source>Paste</source>
       <translation>Yapıştır</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="204"/>
-      <location filename="../../SheetTableView.cpp" line="570"/>
+      <location filename="../../SheetTableView.cpp" line="206"/>
+      <location filename="../../SheetTableView.cpp" line="571"/>
       <source>Delete</source>
       <translation>Sil</translation>
     </message>
@@ -1190,11 +1208,6 @@ Varsayılan: %V = %A
       <location filename="../../SpreadsheetView.cpp" line="284"/>
       <source>Export PDF</source>
       <translation>PDF olarak dışa aktar</translation>
-    </message>
-    <message>
-      <location filename="../../SpreadsheetView.cpp" line="286"/>
-      <source>PDF file</source>
-      <translation>PDF dosyası</translation>
     </message>
   </context>
   <context>
@@ -1232,12 +1245,12 @@ Varsayılan: %V = %A
   <context>
     <name>ZoomableView</name>
     <message>
-      <location filename="../../ZoomableView.cpp" line="116"/>
+      <location filename="../../ZoomableView.cpp" line="118"/>
       <source>New zoom level:</source>
       <translation>Yeni yakınlaştırma düzeyi:</translation>
     </message>
     <message>
-      <location filename="../../ZoomableView.cpp" line="116"/>
+      <location filename="../../ZoomableView.cpp" line="118"/>
       <source>Zoom Level</source>
       <translation>Yakınlaştırma Düzeyi</translation>
     </message>
@@ -1245,12 +1258,12 @@ Varsayılan: %V = %A
   <context>
     <name>SpreadsheetGui::DlgSheetConf</name>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="291"/>
+      <location filename="../../DlgSheetConf.cpp" line="363"/>
       <source>Setup Configuration Table</source>
       <translation>Kurulum Yapılandırma Tablosu</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="348"/>
+      <location filename="../../DlgSheetConf.cpp" line="430"/>
       <source>Unsetup Configuration Table</source>
       <translation>Yapılandırma Tablosu Kurulumunu Kaldır</translation>
     </message>

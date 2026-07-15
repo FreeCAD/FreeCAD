@@ -1,25 +1,25 @@
-/***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2004 Jürgen Riegel <juergen.riegel@web.de>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
 
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
 #pragma once
 
@@ -34,6 +34,7 @@
 #include <QLabel>
 
 #include <Inventor/SbRotation.h>
+#include <Inventor/SbTime.h>
 #include <Inventor/nodes/SoEnvironment.h>
 #include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/nodes/SoRotation.h>
@@ -50,6 +51,7 @@
 # include <GL/gl.h>
 #endif  // FC_OS_MACOSX
 
+#include <Base/BoundBox.h>
 #include <Base/Placement.h>
 
 #include "Namespace.h"
@@ -81,6 +83,9 @@ class SoGroup;  // NOLINT
 class SoPickStyle;
 class NaviCube;
 class SoClipPlane;
+class SoTimerSensor;
+class SoSensor;
+class SbBox3f;
 
 namespace Quarter = SIM::Coin3D::Quarter;
 
@@ -92,6 +97,7 @@ class BoundBox2d;
 namespace Gui
 {
 class NavigationAnimation;
+class View3DInventor;
 class ViewProvider;
 class SoFCBackgroundGradient;
 class NavigationStyle;
@@ -484,10 +490,15 @@ public:
      */
     void scale(float factor);
     /**
+     * Move the camera to the configured home orientation and fit the scene.
+     */
+    void viewHome();
+    /**
      * Reposition the current camera so we can see the complete scene.
      */
     void viewAll() override;
     void viewAll(float factor);
+    void viewBoundBox(const SbBox3f& box);
 
     /// Breaks out a VR window for a Rift
     void viewVR();
@@ -498,11 +509,24 @@ public:
     SbBox3f getBoundingBox() const;
 
     /**
-     * Reposition the current camera so we can see all selected objects
-     * of the scene. Therefore we search for all SOFCSelection nodes, if
-     * none of them is selected nothing happens.
+     * Reposition the current camera so we can see all selected objects.
+     *
+     * @param extend: Whether to extend the current view (zoom out if
+     * necessary) to include the selection, or zoom in the camera to view only
+     * the selection.
      */
-    void viewSelection();
+    void viewSelection(bool extend = false);
+
+    /** Reposition the current camera so we can see the given objects
+     *
+     * @param objs: viewing objects
+     *
+     * @param extend: Whether to extend the current view (zoom out if
+     * necessary) to include the objects, or zoom in the camera to view only
+     * the given objects.
+     */
+    void viewObjects(const std::vector<App::SubObjectT>& objs, bool extend = false);
+
 
     void alignToSelection();
 
@@ -546,12 +570,18 @@ public:
 
     virtual PyObject* getPyObject();
 
+    bool getSceneBoundBox(SbBox3f& box) const;
+    bool getSceneBoundBox(Base::BoundBox3d& box) const;
+
+Q_SIGNALS:
+    void cameraChanged();
+
 protected:
     static GLenum getInternalTextureFormat();
     void renderScene();
     void renderFramebuffer();
     void renderGLImage();
-    void animatedViewAll(int steps, int ms);
+    void animatedViewAll(const SbBox3f& bbox, int steps, int ms);
     void actualRedraw() override;
     void setSeekMode(bool on) override;
     void afterRealizeHook() override;
@@ -563,6 +593,8 @@ protected:
     bool processSoEventBase(const SoEvent* const ev);
     void printDimension() const;
     void selectAll();
+
+    static void onViewFitTimer(void*, SoSensor*);
 
 private:
     static void setViewportCB(void* userdata, SoAction* action);
@@ -588,11 +620,11 @@ private:
     void initialize();
     void syncNaviCubeVisibility();
     void drawAxisCross();
-    static void drawArrow();
-    static void drawSingleBackground(const QColor&);
+    void drawSingleBackground(const QColor&);
     void setCursorRepresentation(int mode);
     void aboutToDestroyGLContext();
     void createStandardCursors();
+    bool applyCameraState(const SoCamera& camera);
 
 private:
     NaviCube* naviCube;
@@ -663,6 +695,10 @@ private:
     QCursor editCursor, zoomCursor, panCursor, spinCursor;
     bool redirected;
     bool allowredir;
+
+    bool viewFitting;
+    SbTime viewFitTime;
+    SoTimerSensor* viewFitTimer;
 
     std::string overrideMode;
     Gui::Document* guiDocument = nullptr;

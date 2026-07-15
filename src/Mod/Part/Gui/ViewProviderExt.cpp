@@ -1542,7 +1542,7 @@ void ViewProviderPartExt::handleChangedPropertyName(
 )
 {
     if (strcmp(PropName, "DiffuseColor") == 0
-        && strcmp(TypeName, App::PropertyColorList::getClassTypeId().getName()) == 0) {
+        && TypeName == App::PropertyColorList::getClassTypeId().getName()) {
 
         // PropertyColorLists are loaded asynchronously as they're stored in separate files
         _diffuseColor.Restore(reader);

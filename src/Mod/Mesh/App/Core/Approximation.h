@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include <Mod/Mesh/App/WildMagic4/Wm4QuadricSurface.h>
+#include <Wm4QuadricSurface.h>
 #include <Mod/Mesh/MeshGlobal.h>
 
 #include <algorithm>

@@ -34,17 +34,18 @@
 import lazy_loader.lazy_loader as lz
 
 import FreeCAD as App
-import draftutils.gui_utils as gui_utils
-import draftmake.make_block as make_block
-import draftmake.make_wire as make_wire
-import draftmake.make_circle as make_circle
-import draftmake.make_bspline as make_bspline
-import draftmake.make_bezcurve as make_bezcurve
-import draftmake.make_arc_3points as make_arc_3points
+from draftgeoutils import general as geo_general
+from draftmake import make_block
+from draftmake import make_wire
+from draftmake import make_circle
+
+# from draftmake import make_bspline
+# from draftmake import make_bezcurve
+from draftmake import make_arc_3points
+from draftutils import gui_utils
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
-DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 
 def draftify(objectslist, makeblock=False, delete=True):
@@ -96,10 +97,10 @@ def draftify(objectslist, makeblock=False, delete=True):
 def draftify_shape(shape):
 
     nobj = None
-    if DraftGeomUtils.hasCurves(shape):
+    if geo_general.hasCurves(shape):
         if len(shape.Edges) == 1:
             edge = shape.Edges[0]
-            edge_type = DraftGeomUtils.geomType(edge)
+            edge_type = geo_general.geomType(edge)
             if edge_type == "Circle":
                 if edge.isClosed():
                     nobj = make_circle.make_circle(edge)

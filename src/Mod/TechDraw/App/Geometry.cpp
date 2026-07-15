@@ -33,7 +33,6 @@
 # include <BRepLib.hxx>
 # include <BRepLProp_CLProps.hxx>
 # include <BRepTools.hxx>
-# include <BRepLProp_CurveTool.hxx>
 # include <GC_MakeArcOfCircle.hxx>
 # include <GC_MakeEllipse.hxx>
 # include <GC_MakeCircle.hxx>
@@ -1618,40 +1617,45 @@ TopoDS_Edge GeometryUtils::asCircle(const TopoDS_Edge& splineEdge, bool& arc)
 {
     double radius{0};
     Base::Vector3d center;
-    bool isArc = false;
-    bool canMakeCircle = GeometryUtils::getCircleParms(splineEdge, radius, center, isArc);
+    bool canMakeCircle = GeometryUtils::getCircleParms(splineEdge, radius, center, arc);
     if (!canMakeCircle) {
-        throw Base::RuntimeError("GU::asCircle received non-circular edge!");
+        throw Base::RuntimeError("GU::asCircle received non-circular spline edge!");
     }
-    arc = isArc;
 
     gp_Pnt gCenter = Base::convertTo<gp_Pnt>(center);
     gp_Dir gNormal{0, 0, 1};
     Handle(Geom_Circle) circleFromParms = GC_MakeCircle(gCenter, gNormal, radius);
 
-    if (!isArc) {
+    if (!arc) {
         return BRepBuilderAPI_MakeEdge(circleFromParms);
     }
 
-    // find the ends of the edge from the underlying curve
+    // find the ends of the arc from the underlying curve
     BRepAdaptor_Curve curveAdapt(splineEdge);
     double firstParam = curveAdapt.FirstParameter();
     double lastParam = curveAdapt.LastParameter();
+
     gp_Pnt startPoint = curveAdapt.Value(firstParam);
     gp_Pnt endPoint = curveAdapt.Value(lastParam);
 
-    double midRange = (lastParam + firstParam) / 2;
-    gp_Pnt midPoint = curveAdapt.Value(midRange);
+    gp_Vec startVec = startPoint.XYZ() - gCenter.XYZ();
+    gp_Vec endVec = endPoint.XYZ() - gCenter.XYZ();
 
-    // this should be using circleFromParms as a base instead of points on the original spline.
-    // could be problems with very small errors??  other versions of GC_MakeArcOfCircle have
-    // poorly explained parameters.
-    GC_MakeArcOfCircle mkArc(startPoint, midPoint, endPoint);
-    auto circleArc = mkArc.Value();
-    if (!mkArc.IsDone()) {
-        throw Base::RuntimeError("GU::asCircle failed to create arc");
-    }
-    return BRepBuilderAPI_MakeEdge(circleArc);
+    double startAngle = std::atan2(startVec.Y(), startVec.X());  // range [-π, +π] radians
+    double endAngle = std::atan2(endVec.Y(), endVec.X());
+
+    // Find the best match of larger and smaller arcs between startAngle and endAngle.
+    // The last parameter here is the OCCT "sense" boolean which is not explained very well,
+    // but has something to do with the parameterization direction of the curve.  Setting
+    // this to false does not seem to change anything.
+    GC_MakeArcOfCircle mkArc1(circleFromParms->Circ(), startAngle, endAngle, true);
+    GC_MakeArcOfCircle mkArc2(circleFromParms->Circ(), endAngle, startAngle, true);
+
+    opencascade::handle< Geom_TrimmedCurve > splineArcHandle =
+            new Geom_TrimmedCurve(curveAdapt.Curve().Curve(), firstParam, lastParam);
+    auto arcToUse = bestFitArc(splineArcHandle, mkArc1.Value(), mkArc2.Value());
+
+    return BRepBuilderAPI_MakeEdge(arcToUse);
 }
 
 bool GeometryUtils::isLine(const TopoDS_Edge& occEdge)
@@ -1661,6 +1665,7 @@ bool GeometryUtils::isLine(const TopoDS_Edge& occEdge)
     Handle(Geom_BSplineCurve) spline = adapt.BSpline();
     double firstParm = adapt.FirstParameter();
     double lastParm = adapt.LastParameter();
+    spline->Segment(firstParm, lastParm);
     auto startPoint = Base::convertTo<Base::Vector3d>(adapt.Value(firstParm));
     auto endPoint = Base::convertTo<Base::Vector3d>(adapt.Value(lastParm));
     auto edgeLong = edgeLength(occEdge);
@@ -1689,7 +1694,7 @@ bool GeometryUtils::isLine(const TopoDS_Edge& occEdge)
         lenTotal += (v2-v1).Length();
     }
 
-    return DrawUtil::fpCompare(lenTotal, endPointLength, tolerance);
+    return DrawUtil::fpCompare(lenTotal, endPointLength, EWTOLERANCE);
 }
 
 
@@ -1714,8 +1719,8 @@ double GeometryUtils::edgeLength(TopoDS_Edge occEdge)
 {
     BRepAdaptor_Curve adapt(occEdge);
     const Handle(Geom_Curve) curve = adapt.Curve().Curve();
-    double first = BRepLProp_CurveTool::FirstParameter(adapt);
-    double last = BRepLProp_CurveTool::LastParameter(adapt);
+    double first = adapt.FirstParameter();
+    double last = adapt.LastParameter();
     try {
         GeomAdaptor_Curve adaptor(curve);
         return GCPnts_AbscissaPoint::Length(adaptor,first,last,Precision::Confusion());
@@ -1935,4 +1940,44 @@ void GeometryUtils::asLinear(const BRepAdaptor_Curve &curveIn, Handle(Geom_BSpli
     constexpr int MaxDegree{1};
     splineOut = GeomAPI_PointsToBSpline(controlPoints, MinDegree, MaxDegree).Curve();
 }
+
+//! get a description for a GeomType.  Needs to always be in sync with the
+//! GeomType enum.
+std::string GeometryUtils::getGeomTypeName(GeomType typeEnumValue)
+{
+    switch (typeEnumValue) {
+        case GeomType::NOTDEF: return "Not Defined";
+        case GeomType::CIRCLE: return "Circle";
+        case GeomType::ARCOFCIRCLE: return "Arc of Circle";
+        case GeomType::ELLIPSE: return "Ellipse";
+        case GeomType::ARCOFELLIPSE: return "Arc of Ellipse";
+        case GeomType::BEZIER: return "Bezier Curve";
+        case GeomType::BSPLINE: return "B-spline Curve";
+        case GeomType::GENERIC: return "Line";
+    }
+
+    return "Not Defined";
+}
+
+gp_Pnt GeometryUtils::midPoint(const opencascade::handle<Geom_TrimmedCurve> &curve)
+{
+    double midParam = (curve->FirstParameter() + curve->LastParameter()) / 2;
+    return curve->Value(midParam);
+}
+
+//! Returns the arc of a circle that is a better approximation of a spline.
+opencascade::handle<Geom_TrimmedCurve> GeometryUtils::bestFitArc(opencascade::handle<Geom_TrimmedCurve> splineActual,
+                                                                 opencascade::handle<Geom_TrimmedCurve> circleArc0,
+                                                                 opencascade::handle<Geom_TrimmedCurve> circleArc1)
+{
+    gp_Pnt midActual = midPoint(splineActual);
+    gp_Pnt mid0 = midPoint(circleArc0);
+    gp_Pnt mid1 = midPoint(circleArc1);
+    if (midActual.Distance(mid0) < midActual.Distance(mid1)) {
+        return circleArc0;
+    }
+
+    return circleArc1;
+}
+
 

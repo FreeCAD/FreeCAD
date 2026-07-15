@@ -114,6 +114,7 @@ BOOST_GEOMETRY_REGISTER_POINT_3D_GET_SET(gp_Pnt, double, bg::cs::cartesian, X, Y
 FC_LOG_LEVEL_INIT("Path.Area", true, true)
 
 using namespace Path;
+using namespace heeks;
 
 CAreaParams::CAreaParams()
     : PARAM_INIT(PARAM_FNAME, AREA_PARAMS_CAREA)
@@ -127,7 +128,8 @@ void AreaParams::dump(const char* msg) const
 {
 
 #define AREA_PARAM_PRINT(_param) \
-    ss << PARAM_FNAME_STR(_param) << " = " << PARAM_FNAME(_param) << '\n';
+    ss << PARAM_FNAME_STR(_param) << " = " \
+       << static_cast<PARAM_BASE_TYPE(_param)>(PARAM_FNAME(_param)) << '\n';
 
     if (FC_LOG_INSTANCE.level() > FC_LOGLEVEL_TRACE) {
         std::ostringstream ss;
@@ -382,7 +384,7 @@ static std::vector<gp_Pnt> discretize(const TopoDS_Edge& edge, double deflection
     //
     GCPnts_UniformDeflection discretizer(curve, deflection, efirst, elast);
     if (!discretizer.IsDone()) {
-        Standard_Failure::Raise("Curve discretization failed");
+        throw Standard_Failure("Curve discretization failed");
     }
     if (discretizer.NbPoints() > 1) {
         int nbPoints = discretizer.NbPoints();
@@ -505,20 +507,20 @@ void Area::clean(bool deleteShapes)
     }
 }
 
-static inline ClipperLib::ClipType toClipperOp(short op)
+static inline Clipper2Lib::ClipType toClipperOp(short op)
 {
     switch (op) {
         case Area::OperationUnion:
-            return ClipperLib::ctUnion;
+            return Clipper2Lib::ClipType::Union;
             break;
         case Area::OperationDifference:
-            return ClipperLib::ctDifference;
+            return Clipper2Lib::ClipType::Difference;
             break;
         case Area::OperationIntersection:
-            return ClipperLib::ctIntersection;
+            return Clipper2Lib::ClipType::Intersection;
             break;
         case Area::OperationXor:
-            return ClipperLib::ctXor;
+            return Clipper2Lib::ClipType::Xor;
             break;
         default:
             throw Base::ValueError("invalid Operation");
@@ -699,8 +701,8 @@ std::shared_ptr<Area> Area::getClearedArea(
     AreaParams params = {};
     const double buffer = params.Accuracy * 3;
     params.Accuracy = params.Accuracy * .7 / 4;  // 2.3 already encoded in gcode; 4 * .7/4 = 3 total
-    params.SubjectFill = ClipperLib::pftNonZero;
-    params.ClipFill = ClipperLib::pftNonZero;
+    params.SubjectFill = Clipper2Lib::FillRule::NonZero;
+    params.ClipFill = Clipper2Lib::FillRule::NonZero;
 
     // Do not fit arcs after these offsets; it introduces unnecessary approximation error, and all
     // off those arcs will be converted back to segments again for clipper differencing in
@@ -730,10 +732,6 @@ std::shared_ptr<Area> Area::getClearedArea(
 std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clearedAreas, double diameter)
 {
     build();
-#define AREA_MY(_param) myParams.PARAM_FNAME(_param)
-    PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_OFFSET_CONF);
-    PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_CLIPPER_FILL);
-
     // Precision losses in arc/segment conversions (multiples of Accuracy):
     // 2.3 in generation of gcode (see documentation in the implementation of CCurve::CheckForArc
     // (libarea/Curve.cpp) 1 in gcode arc to segment 1 in Thicken() cleared area 2 in getRestArea
@@ -768,23 +766,46 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
     }
 
     CArea clearable(*myArea);
-    clearable.OffsetWithClipper(-diameter / 2, JoinType, EndType, params.MiterLimit, roundPrecision);
-    clearable.OffsetWithClipper(diameter / 2, JoinType, EndType, params.MiterLimit, roundPrecision);
+    clearable.OffsetWithClipper(
+        -diameter / 2,
+        myParams.JoinType,
+        myParams.EndType,
+        params.MiterLimit,
+        roundPrecision
+    );
+    clearable.OffsetWithClipper(
+        diameter / 2,
+        myParams.JoinType,
+        myParams.EndType,
+        params.MiterLimit,
+        roundPrecision
+    );
 
     // remaining = clearable - prevCleared
     CArea remaining(clearable);
     remaining.Clip(
         toClipperOp(Area::OperationDifference),
-        &*(clearedAreasInPlane.myArea),
-        SubjectFill,
-        ClipFill
+        *(clearedAreasInPlane.myArea),
+        myParams.SubjectFill,
+        myParams.ClipFill
     );
 
     // rest = intersect(clearable, offset(remaining, dTool))
     // add buffer to dTool to compensate for oversizing in getClearedArea
     CArea restCArea(remaining);
-    restCArea.OffsetWithClipper(diameter + buffer, JoinType, EndType, params.MiterLimit, roundPrecision);
-    restCArea.Clip(toClipperOp(Area::OperationIntersection), &clearable, SubjectFill, ClipFill);
+    restCArea.OffsetWithClipper(
+        diameter + buffer,
+        myParams.JoinType,
+        myParams.EndType,
+        params.MiterLimit,
+        roundPrecision
+    );
+    restCArea.Clip(
+        toClipperOp(Area::OperationIntersection),
+        clearable,
+        myParams.SubjectFill,
+        myParams.ClipFill
+    );
 
     if (restCArea.m_curves.size() == 0) {
         return {};
@@ -1192,21 +1213,17 @@ struct WireJoiner
 
         std::vector<VertexInfo> adjacentList;
         std::set<EdgeInfo*> edgesToVisit;
-        int count = 0;
         int skips = 0;
 
         for (auto& info : edges) {
             info.reset();
         }
 
-        int rcount = 0;
-
         for (auto& info : edges) {
             if (BRep_Tool::IsClosed(info.edge)) {
                 auto wire = BRepBuilderAPI_MakeWire(info.edge).Wire();
                 Area::showShape(wire, "closed");
                 builder.Add(comp, wire);
-                ++count;
                 continue;
             }
             gp_Pnt pt[2];
@@ -1221,7 +1238,6 @@ struct WireJoiner
                 // populate adjacent list
                 constexpr int intMax = std::numeric_limits<int>::max();
                 for (auto vit = vmap.qbegin(bgi::nearest(pt[i], intMax)); vit != vmap.qend(); ++vit) {
-                    ++rcount;
                     if (vit->pt().SquareDistance(pt[i]) > tol) {
                         break;
                     }
@@ -1355,7 +1371,6 @@ struct WireJoiner
                     }
                     Area::showShape(wire, "joined");
                     builder.Add(comp, wire);
-                    ++count;
                 }
                 break;
             }
@@ -2075,8 +2090,7 @@ void Area::build()
         throw Base::ValueError("no shape added");
     }
 
-    PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_CLIPPER_FILL);
-
+#define AREA_MY(_param) myParams.PARAM_FNAME(_param)
     if (myHaveSolid && myParams.SectionCount) {
         mySections = makeSections(PARAM_FIELDS(AREA_MY, AREA_PARAMS_SECTION_EXTRA));
         return;
@@ -2114,7 +2128,7 @@ void Area::build()
                         myArea->m_curves.splice(myArea->m_curves.end(), areaClip.m_curves);
                     }
                     else {
-                        myArea->Clip(toClipperOp(op), &areaClip, SubjectFill, ClipFill);
+                        myArea->Clip(toClipperOp(op), areaClip, myParams.SubjectFill, myParams.ClipFill);
                         areaClip.m_curves.clear();
                     }
                 }
@@ -2138,7 +2152,7 @@ void Area::build()
                 myArea->m_curves.splice(myArea->m_curves.end(), areaClip.m_curves);
             }
             else {
-                myArea->Clip(toClipperOp(op), &areaClip, SubjectFill, ClipFill);
+                myArea->Clip(toClipperOp(op), areaClip, myParams.SubjectFill, myParams.ClipFill);
             }
         }
         myArea->m_curves.splice(myArea->m_curves.end(), myAreaOpen->m_curves);
@@ -2375,10 +2389,7 @@ std::shared_ptr<CArea> Area::performSingleOffset(double offset)
     auto area = make_shared<CArea>();
     CArea areaOpen;
 
-    PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_OFFSET_CONF);
 #ifdef AREA_OFFSET_ALGO
-    PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_CLIPPER_FILL);
-
     switch (myParams.Algo) {
         case Area::Algolibarea:
             // Separate closed and open curves for libarea
@@ -2396,13 +2407,19 @@ std::shared_ptr<CArea> Area::performSingleOffset(double offset)
             area->Offset(-offset);
             if (areaOpen.m_curves.size()) {
                 areaOpen.Thicken(offset);
-                area->Clip(ClipperLib::ctUnion, &areaOpen, SubjectFill, ClipFill);
+                area->Clip(Clipper2Lib::ClipType::Union, areaOpen, myParams.SubjectFill, myParams.ClipFill);
             }
             break;
         case Area::AlgoClipperOffset:
 #endif
             *area = *myArea;
-            area->OffsetWithClipper(offset, JoinType, EndType, myParams.MiterLimit, myParams.RoundPrecision);
+            area->OffsetWithClipper(
+                offset,
+                myParams.JoinType,
+                myParams.EndType,
+                myParams.MiterLimit,
+                myParams.RoundPrecision
+            );
 #ifdef AREA_OFFSET_ALGO
             break;
     }
@@ -2438,19 +2455,14 @@ void Area::makeOffset(
         }
     }
 
-    PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_OFFSET_CONF);
-#ifdef AREA_OFFSET_ALGO
-    PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_CLIPPER_FILL);
-#endif
-
     // Track previous offset area for gap detection
     std::optional<CArea> previous_area_offset;  // Cached offset of previous area
     double tool_radius = myParams.ToolRadius;
     bool check_gaps = !myParams.ForceMaxStepover && abs(stepover) > tool_radius;
     const double gap_tolerance = myParams.Accuracy;
     double sign_stepover = (stepover > 0) ? 1.0 : -1.0;
-    auto jt = static_cast<ClipperLib::JoinType>(JoinType);
-    auto et = static_cast<ClipperLib::EndType>(EndType);
+    auto jt = myParams.JoinType;
+    auto et = myParams.EndType;
 
     for (int i = 0; count < 0 || i < count; ++i, offset += stepover) {
         double prevOffset = offset - stepover;
@@ -2702,17 +2714,15 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG, AREA_PARAMS_POCK
                     curve.m_vertices.emplace_back(p2 + center);
                 }
             }
-            PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_CLIPPER_FILL);
-            PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_OFFSET_CONF);
             auto area = *myArea;
             area.OffsetWithClipper(
                 -tool_radius - extra_offset,
-                JoinType,
-                EndType,
+                myParams.JoinType,
+                myParams.EndType,
                 myParams.MiterLimit,
                 myParams.RoundPrecision
             );
-            out.Clip(toClipperOp(OperationIntersection), &area, SubjectFill, ClipFill);
+            out.Clip(toClipperOp(OperationIntersection), area, myParams.SubjectFill, myParams.ClipFill);
             done = true;
             break;
         }

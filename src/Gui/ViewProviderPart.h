@@ -35,6 +35,7 @@ class GuiExport ViewProviderPart: public ViewProviderGeometryObject,
                                   public ViewProviderOriginGroupExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(Gui::ViewProviderPart);
+    typedef ViewProviderGeometryObject inherited;
 
 public:
     /// constructor.
@@ -57,11 +58,31 @@ public:
         return true;
     };
 
+    std::map<std::string, Base::Color> getElementColors(const char* subname = 0) const override;
+    void setElementColors(const std::map<std::string, Base::Color>& colors) override;
+
+    void finishRestoring() override;
+
+    App::PropertyColorList OverrideColorList;
+    App::PropertyBool OverrideMaterial;
+
 protected:
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop) override;
+
+    App::PropertyLinkSub* getColoredElementsProperty() const;
+    void applyColors();
+
+    void updateData(const App::Property*) override;
+
+    bool setEdit(int ModNum) override;
+    void setEditViewer(View3DInventorViewer*, int ModNum) override;
+
     /// a second icon for the Assembly type
     const char* aPixmap;
+
+private:
+    bool prevColorOverride {false};
 };
 
 using ViewProviderPartPython = ViewProviderFeaturePythonT<ViewProviderPart>;

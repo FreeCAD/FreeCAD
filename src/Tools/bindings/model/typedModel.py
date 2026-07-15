@@ -105,9 +105,9 @@ class Parameter:
 
 
 @dataclass
-class Methode:
+class Method:
     """
-    Corresponds to <Methode> inside <PythonExport>.
+    Corresponds to the legacy <Methode> element inside <PythonExport>.
     Contains an optional <Documentation> and 0..∞ <Parameter>.
     """
 
@@ -121,6 +121,9 @@ class Methode:
     NoArgs: bool = False
     Class: bool = False
     Static: bool = False
+
+
+Methode = Method
 
 
 @dataclass
@@ -174,7 +177,7 @@ class PythonExport:
     """
 
     Documentation: Optional[Documentation] = None
-    Methode: List[Methode] = field(default_factory=list)
+    Methode: List[Method] = field(default_factory=list)
     Attribute: List[Attribute] = field(default_factory=list)
     Sequence: Optional[SequenceProtocol] = None
     CustomAttributes: Optional[str] = ""  # To match the original XML model
@@ -202,6 +205,21 @@ class PythonExport:
     DisableNotify: bool = False
     DescriptorGetter: bool = False
     DescriptorSetter: bool = False
+    IsExplicitlyExported: bool = False
+
+
+@dataclass
+class PythonModuleExport:
+    """
+    Represents a generated module-level Python binding surface.
+    """
+
+    Documentation: Optional[Documentation] = None
+    Method: List[Method] = field(default_factory=list)
+
+    ModuleName: str = ""
+    Name: str = ""
+    Namespace: str = ""
     IsExplicitlyExported: bool = False
 
 
@@ -300,10 +318,27 @@ class GenerateModel:
 
     Module: List[Module] = field(default_factory=list)
     PythonExport: List[PythonExport] = field(default_factory=list)
+    PythonModule: List[PythonModuleExport] = field(default_factory=list)
 
     def dump(self):
         # Print or process the resulting GenerateModel object
         print("Parsed GenerateModel object:")
+
+        if self.PythonModule:
+            py_mod = self.PythonModule[0]
+            print("PythonModule Name:", py_mod.Name)
+            if py_mod.Documentation and py_mod.Documentation.Author:
+                print("Author Name:", py_mod.Documentation.Author.Name)
+                print("Author Email:", py_mod.Documentation.Author.EMail)
+                print("Author Licence:", py_mod.Documentation.Author.Licence)
+            print("DeveloperDocu:", py_mod.Documentation.DeveloperDocu)
+            print("UserDocu:", py_mod.Documentation.UserDocu)
+
+            print("Methods:")
+            for meth in py_mod.Method:
+                print(f"  - {meth.Name}")
+                for param in meth.Parameter:
+                    print(f"    * param: {param.Name}, type={param.Type}")
 
         if self.PythonExport:
             py_exp = self.PythonExport[0]

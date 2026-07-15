@@ -104,10 +104,46 @@ def debugWire(label, w):
     print("#%s wire <<<<<<<<<<<<<<<<<<<<<<<<" % label)
 
 
+def getCoincideTolerance(edges):
+    """getCoincideTolerance(edges) ... Returns actual tolerance of edges connection in wire
+    Assumes the edges are in an order so they can be connected.
+    Return None if any edge length less than defined tolerance
+
+    Note:
+    Default tolerance of methods Part.sortEdges() and Part.__sortEdges__()
+    is Base.Precision.confusion() => 1e-7
+    """
+    tolerance = FreeCAD.Base.Precision.confusion()
+    for i in range(len(edges) - 1):
+        e1 = edges[i]
+        e1f = e1.valueAt(e1.FirstParameter)
+        e1l = e1.valueAt(e1.LastParameter)
+        e2 = edges[i + 1]
+        e2f = e2.valueAt(e2.FirstParameter)
+        e2l = e2.valueAt(e2.LastParameter)
+        pairs = ((e1l, e2f), (e1l, e2l), (e1f, e2f), (e1f, e2l))
+        dist = min((p2 - p1).Length for p1, p2 in pairs)
+        tolerance = max(dist, tolerance)
+
+    if any(e.Length < 2 * tolerance for e in edges):
+        Path.Log.error(
+            "Can not define tolerance edge connection. "
+            "One of the edge has length less than defined tolerance or edges not sorted."
+        )
+        return None
+
+    return tolerance
+
+
 def _orientEdges(inEdges):
     """_orientEdges(inEdges) ... internal worker function to orient edges so the last vertex of one edge connects to the first vertex of the next edge.
     Assumes the edges are in an order so they can be connected."""
     Path.Log.track()
+
+    tol = getCoincideTolerance(inEdges)
+    if not tol:
+        return None
+
     # orient all edges of the wire so each edge's last value connects to the next edge's first value
     e0 = inEdges[0]
     # well, even the very first edge could be misoriented, so let's try and connect it to the second
@@ -115,19 +151,16 @@ def _orientEdges(inEdges):
         last = e0.valueAt(e0.LastParameter)
         e1 = inEdges[1]
         if not Path.Geom.pointsCoincide(
-            last, e1.valueAt(e1.FirstParameter)
-        ) and not Path.Geom.pointsCoincide(last, e1.valueAt(e1.LastParameter)):
+            last, e1.valueAt(e1.FirstParameter), tol
+        ) and not Path.Geom.pointsCoincide(last, e1.valueAt(e1.LastParameter), tol):
             debugEdge("#  _orientEdges - flip first", e0)
             e0 = Path.Geom.flipEdge(e0)
 
     edges = [e0]
     last = e0.valueAt(e0.LastParameter)
     for e in inEdges[1:]:
-        edge = (
-            e
-            if Path.Geom.pointsCoincide(last, e.valueAt(e.FirstParameter))
-            else Path.Geom.flipEdge(e)
-        )
+        ef = e.valueAt(e.FirstParameter)
+        edge = e if Path.Geom.pointsCoincide(last, ef, tol) else Path.Geom.flipEdge(e)
         edges.append(edge)
         last = edge.valueAt(edge.LastParameter)
     return edges
@@ -210,7 +243,9 @@ def approximateWire(wire, tolerance=0.01):
 
             if isinstance(edge.Curve, Part.BSplineCurve):
                 # Convert BSpline to arcs
-                curves = edge.Curve.toBiArcs(tolerance)
+                curve = edge.Curve
+                trimmed_curve = curve.trim(*edge.ParameterRange)
+                curves = trimmed_curve.toBiArcs(tolerance)
                 for curve in curves:
                     processed_edges.append(curve.toShape())
             else:
@@ -476,6 +511,31 @@ def offsetWire(wire, base, offset, forward, Side=None, tolerance=0.01):
     return orientWire(Part.Wire(edges), None)
 
 
+_ROTARY_AXES = ("A", "B", "C", "U", "V", "W")
+
+
+def _stripRotaryAxes(path):
+    """Return a copy of path with rotary-axis parameters removed.
+
+    PathSegmentWalker accumulates A/B/C state and applies compensateRotation()
+    to every subsequent move, mapping rotated-frame X/Y/Z back to world coords.
+    For 3+2 ops the X/Y/Z stored in the gcode are already in the rotated
+    workplane frame, so that compensation produces the wrong positions when we
+    just want to read the toolpath geometry as-emitted (e.g. to compute a
+    cleared area to compare against another op in the same rotated frame).
+    Stripping the rotary parameters keeps the walker's internal A/B/C at zero
+    so positions are passed through unrotated.
+    """
+    stripped = []
+    for cmd in path.Commands:
+        params = {k: v for k, v in cmd.Parameters.items() if k not in _ROTARY_AXES}
+        if not params and any(k in cmd.Parameters for k in _ROTARY_AXES):
+            # Pure rotary command (e.g. the leading G0 A45) — drop entirely.
+            continue
+        stripped.append(Path.Command(cmd.Name, params))
+    return Path.Path(stripped)
+
+
 def getClearedAreas(currentOp, bbox):
     """
     Returns the cleared area relevant to the operation
@@ -483,20 +543,108 @@ def getClearedAreas(currentOp, bbox):
       before this operation will be considered
     - bbox: the cleared region is only generated where it is close enough to
       impact the bbox region
+
+    Operations whose Workplane differs from the current op's are skipped:
+    each op's Path stores X/Y/Z in the rotated workplane frame used at
+    generation time, and projecting cleared area between non-coplanar
+    workplanes has no meaningful 2D interpretation. For ops that share a
+    non-Z-up Workplane the path's leading rotary G0 is stripped before
+    walking so positions are read in the same rotated frame as bbox.
     """
     clearedAreas = []
     job = currentOp.Proxy.job
     z = bbox.ZMin + job.GeometryTolerance.getValueAs("mm")
+    z_up = FreeCAD.Vector(0, 0, 1)
+    currentWp = getattr(currentOp, "Workplane", z_up)
+    rotated = not currentWp.isEqual(z_up, 1e-6)
     for op in job.Operations.Group:
         baseOp = PathDressup.baseOp(op)
         if baseOp.Name == currentOp.Name:
             break
         if getattr(op, "RestMachiningPass", None):
             op = baseOp
-        if getattr(baseOp, "Active", False) and op.Path:
-            tool = baseOp.ToolController.Tool
-            diameter = tool.Diameter.getValueAs("mm")
-            # for drills, dz translates to the full width part of the tool
-            dz = 0 if not hasattr(tool, "TipAngle") else -PathUtils.drillTipLength(tool)
-            clearedAreas.append(op.Path.getClearedArea(diameter, z + dz, bbox))
+        if not (getattr(baseOp, "Active", False) and op.Path):
+            continue
+        opWp = getattr(baseOp, "Workplane", z_up)
+        if not opWp.isEqual(currentWp, 1e-6):
+            continue
+        tool = baseOp.ToolController.Tool
+        diameter = tool.Diameter.getValueAs("mm")
+        # for drills, dz translates to the full width part of the tool
+        dz = 0 if not hasattr(tool, "TipAngle") else -PathUtils.drillTipLength(tool)
+        opPath = _stripRotaryAxes(op.Path) if rotated else op.Path
+        clearedAreas.append(opPath.getClearedArea(diameter, z + dz, bbox))
     return clearedAreas
+
+
+def getOpSide(obj, default="Outside"):
+    """getOpSide(obj) ...  offer side for op base"""
+
+    def getVerticalFaces(edges, shape):
+        """Returns vertical faces (wall around) that contains given edges
+        Excludes faces which is longer than common edges"""
+        vFaces = []
+        for f in shape.Faces:
+            if len(vFaces) == len(edges):
+                break
+            if isHorizontal(f):
+                continue
+            for hEdge in edges:
+                hsh = hEdge.hashCode()
+                if any(hsh == e.hashCode() for e in f.Edges) and all(
+                    e.Length < hEdge.Length or isRoughly(hEdge.Length, e.Length)
+                    for e in f.Edges
+                    if isHorizontal(e)
+                ):
+                    vFaces.append(f)
+                    edges.remove(hEdge)
+                    break
+        return vFaces
+
+    if not obj.Base:
+        return default
+    isRoughly = Path.Geom.isRoughly
+    isHorizontal = Path.Geom.isHorizontal
+    base, subNames = obj.Base[0]
+    if "Face" in subNames[0]:
+        faces = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Face")]
+        vFaces = []
+        hFaces = []
+        for face in faces:
+            if isHorizontal(face):
+                hFaces.append(face)
+            else:
+                vFaces.append(face)
+        if vFaces:
+            volume = Part.Compound(vFaces).Volume
+            if volume > 0 or isRoughly(volume, 0):
+                return "Outside"
+            # check if vertical faces creates a closed area
+            fzMin = min(e.BoundBox.ZMin for f in vFaces for e in f.Edges)
+            bEdges = [e for f in vFaces for e in f.Edges if isRoughly(e.BoundBox.ZMax, fzMin)]
+            wire = Part.Wire(Part.__sortEdges__(bEdges))
+            if not wire.isClosed():  # for open area always offer 'Outside'
+                return "Outside"
+            if volume < 0 and not isRoughly(volume, 0):  # negative volume forms inner area
+                return "Inside"
+        if hFaces:
+            vFaces = getVerticalFaces(hFaces[0].OuterWire.Edges, base.Shape)
+            volume = Part.Compound(vFaces).Volume
+            if volume < 0 and not isRoughly(volume, 0):  # negative volume forms inner area
+                return "Inside"
+            else:
+                return "Outside"
+    elif "Edge" in subNames[0]:
+        edges = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Edge")]
+        cluster = Part.getSortedClusters(edges)[0]
+        wire = Part.Wire(Part.__sortEdges__(cluster))
+        if not wire.isClosed():  # for open wire always offer 'Outside'
+            return "Outside"
+        vFaces = getVerticalFaces(edges, base.Shape)
+        volume = Part.Compound(vFaces).Volume
+        if volume < 0 and not isRoughly(volume, 0):  # negative volume forms inner area
+            return "Inside"
+        else:
+            return "Outside"
+
+    return default

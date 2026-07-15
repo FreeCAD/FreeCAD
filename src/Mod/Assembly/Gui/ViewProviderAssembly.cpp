@@ -71,9 +71,7 @@
 #include <Mod/Assembly/App/AssemblyLink.h>
 #include <Mod/Assembly/App/AssemblyObject.h>
 #include <Mod/Assembly/App/AssemblyUtils.h>
-#include <Mod/Assembly/App/JointGroup.h>
-#include <Mod/Assembly/App/ViewGroup.h>
-#include <Mod/Assembly/App/BomGroup.h>
+#include <Mod/Assembly/App/Groups.h>
 #include <Mod/PartDesign/App/Body.h>
 
 #include "TaskAssemblyMessages.h"
@@ -130,6 +128,7 @@ ViewProviderAssembly::ViewProviderAssembly()
 ViewProviderAssembly::~ViewProviderAssembly()
 {
     m_preTransactionConn.disconnect();
+    QObject::disconnect(workbenchConnection);
 
     updateTaskPanel(false);
 };
@@ -297,7 +296,8 @@ bool ViewProviderAssembly::setEdit(int mode)
             this->getObject()->getNameInDocument()
         );
 
-        setupActiveAndInEdit();
+        setDragger();
+        attachSelection();
 
         updateTaskPanel(true);
 
@@ -321,7 +321,7 @@ bool ViewProviderAssembly::setEdit(int mode)
             [this](const QString& name) { this->onWorkbenchActivated(name); }
         );
 
-        assembly->solve();
+        assembly->recomputeFeature(true);
 
         return true;
     }
@@ -335,7 +335,8 @@ void ViewProviderAssembly::unsetEdit(int mode)
         partMoving = false;
         docsToMove.clear();
 
-        unsetupActiveAndInEdit();
+        unsetDragger();
+        detachSelection();
 
         // Check if the view is still active before trying to deactivate the assembly.
         auto activeView = getDocument()->getActiveView();
@@ -400,10 +401,14 @@ void ViewProviderAssembly::setDragger()
 void ViewProviderAssembly::unsetDragger()
 {
     pcRoot->removeChild(asmDraggerSwitch);
-    asmDragger->unref();
-    asmDragger = nullptr;
-    asmDraggerSwitch->unref();
-    asmDraggerSwitch = nullptr;
+    if (asmDragger) {
+        asmDragger->unref();
+        asmDragger = nullptr;
+    }
+    if (asmDraggerSwitch) {
+        asmDraggerSwitch->unref();
+        asmDraggerSwitch = nullptr;
+    }
 }
 
 void ViewProviderAssembly::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
@@ -419,26 +424,6 @@ bool ViewProviderAssembly::isInEditMode() const
 {
     return asmDragger != nullptr;
 }
-void ViewProviderAssembly::setupActiveAndInEdit()
-{
-    setDragger();
-    attachSelection();
-}
-void ViewProviderAssembly::unsetupActiveAndInEdit()
-{
-    unsetDragger();
-    detachSelection();
-}
-void ViewProviderAssembly::setActive(bool active)
-{
-    if (active) {
-        setupActiveAndInEdit();
-    }
-    else {
-        unsetupActiveAndInEdit();
-    }
-}
-
 
 App::DocumentObject* ViewProviderAssembly::getActivePart() const
 {
@@ -1554,7 +1539,9 @@ void ViewProviderAssembly::isolateJointReferences(App::DocumentObject* joint, Is
 
     isolatedJoint = joint;
     isolatedJointVisibilityBackup = joint->Visibility.getValue();
-    joint->Visibility.setValue(true);
+    if (!isolatedJointVisibilityBackup) {
+        joint->Visibility.setValue(true);
+    }
 
     std::set<App::DocumentObject*> isolateSet = {part1, part2};
     isolateComponents(isolateSet, mode);
@@ -1565,7 +1552,9 @@ void ViewProviderAssembly::isolateJointReferences(App::DocumentObject* joint, Is
 void ViewProviderAssembly::clearIsolate()
 {
     if (isolatedJoint) {
-        isolatedJoint->Visibility.setValue(isolatedJointVisibilityBackup);
+        if (!isolatedJointVisibilityBackup) {
+            isolatedJoint->Visibility.setValue(false);
+        }
         isolatedJoint = nullptr;
 
         clearJointElementHighlight();

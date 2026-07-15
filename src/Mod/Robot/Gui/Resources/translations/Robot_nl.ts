@@ -16,7 +16,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="48"/>
       <source>Adds a tool shape to the robot</source>
-      <translation type="unfinished">Adds a tool shape to the robot</translation>
+      <translation>Voegt een gereedschapsvorm toe aan de robot</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="202"/>
       <source>Place Robot</source>
-      <translation type="unfinished">Place Robot</translation>
+      <translation>Plaats Robot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="203"/>
       <source>Places a robot in the scene</source>
-      <translation type="unfinished">Places a robot in the scene</translation>
+      <translation>Plaatst een robot in de scène</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="57"/>
       <source>Creates a new empty trajectory</source>
-      <translation type="unfinished">Creates a new empty trajectory</translation>
+      <translation>Maak een nieuw leeg traject</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="381"/>
       <source>Generates a trajectory from the selected edges</source>
-      <translation type="unfinished">Generates a trajectory from the selected edges</translation>
+      <translation>Genereert een traject van de geselecteerde randen</translation>
     </message>
   </context>
   <context>
@@ -83,30 +83,30 @@
     <message>
       <location filename="../../CommandExport.cpp" line="47"/>
       <source>Kuka Compact Subroutine</source>
-      <translation type="unfinished">Kuka Compact Subroutine</translation>
+      <translation>Subroutine Kuka Compact</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="48"/>
       <source>Exports the trajectory as a compact KRL subroutine</source>
-      <translation type="unfinished">Exports the trajectory as a compact KRL subroutine</translation>
+      <translation>Exporteert het traject als een compact KRL subroutine</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotExportKukaFull</name>
     <message>
-      <location filename="../../CommandExport.cpp" line="127"/>
+      <location filename="../../CommandExport.cpp" line="128"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="128"/>
+      <location filename="../../CommandExport.cpp" line="129"/>
       <source>Kuka Full Subroutine</source>
-      <translation type="unfinished">Kuka Full Subroutine</translation>
+      <translation>Kuka Volledige Subroutine</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="129"/>
+      <location filename="../../CommandExport.cpp" line="130"/>
       <source>Exports the trajectory as a full KRL subroutine</source>
-      <translation type="unfinished">Exports the trajectory as a full KRL subroutine</translation>
+      <translation>Exporteert het traject als een volledige KRL subroutine</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="92"/>
       <source>Insert in Trajectory</source>
-      <translation type="unfinished">Insert in Trajectory</translation>
+      <translation>In Trajectory Invoegen</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="93"/>
       <source>Inserts the robot tool location into the trajectory</source>
-      <translation type="unfinished">Inserts the robot tool location into the trajectory</translation>
+      <translation>Voegt de robot gereedschap locatie in het traject</translation>
     </message>
   </context>
   <context>
@@ -137,12 +137,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="165"/>
       <source>Insert in Trajectory</source>
-      <translation type="unfinished">Insert in Trajectory</translation>
+      <translation>In Trajectory Invoegen</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="166"/>
       <source>Inserts the preselection position into the trajectory (W)</source>
-      <translation type="unfinished">Inserts the preselection position into the trajectory (W)</translation>
+      <translation>Voegt de preselectie positie in het traject (W)</translation>
     </message>
   </context>
   <context>
@@ -296,12 +296,12 @@
       <location filename="../../CommandTrajectory.cpp" line="180"/>
       <location filename="../../CommandTrajectory.cpp" line="201"/>
       <location filename="../../CommandTrajectory.cpp" line="486"/>
-      <location filename="../../CommandExport.cpp" line="63"/>
-      <location filename="../../CommandExport.cpp" line="144"/>
-      <location filename="../../CommandInsertRobot.cpp" line="70"/>
       <location filename="../../Command.cpp" line="104"/>
       <location filename="../../Command.cpp" line="167"/>
       <location filename="../../Command.cpp" line="269"/>
+      <location filename="../../CommandExport.cpp" line="63"/>
+      <location filename="../../CommandExport.cpp" line="145"/>
+      <location filename="../../CommandInsertRobot.cpp" line="70"/>
       <source>Wrong selection</source>
       <translation>Verkeerde selectie</translation>
     </message>
@@ -337,9 +337,9 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="110"/>
-      <location filename="../../CommandExport.cpp" line="64"/>
-      <location filename="../../CommandExport.cpp" line="145"/>
       <location filename="../../Command.cpp" line="270"/>
+      <location filename="../../CommandExport.cpp" line="64"/>
+      <location filename="../../CommandExport.cpp" line="146"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Selecteer één robot en één traject-object.</translation>
     </message>
@@ -355,19 +355,13 @@
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="91"/>
-      <location filename="../../CommandExport.cpp" line="172"/>
+      <location filename="../../CommandExport.cpp" line="173"/>
       <source>KRL file</source>
       <translation>KRL bestand</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="92"/>
-      <location filename="../../CommandExport.cpp" line="173"/>
-      <source>All Files</source>
-      <translation>Alle bestanden</translation>
-    </message>
-    <message>
-      <location filename="../../CommandExport.cpp" line="95"/>
-      <location filename="../../CommandExport.cpp" line="176"/>
+      <location filename="../../CommandExport.cpp" line="96"/>
+      <location filename="../../CommandExport.cpp" line="178"/>
       <source>Export program</source>
       <translation>Exporteer programma</translation>
     </message>

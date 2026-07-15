@@ -73,6 +73,13 @@ class TestVersionInfo(unittest.TestCase):
         version = make_version(suffix="RC1")
         self.assertEqual(version.conda, "1.2.0RC1")
 
+    def test_calver_dev_version(self):
+        version = make_version(major=26, minor=3, patch=0, suffix="dev")
+        self.assertEqual(version.simple, "26.3.0")
+        self.assertEqual(version.complete, "26.3.0-dev")
+        self.assertEqual(version.rpm, "26.3.0~dev")
+        self.assertEqual(version.conda, "26.3.0dev")
+
     def test_lowercase_name(self):
         version = make_version(name="FreeCAD")
         self.assertEqual(version.lowercase_name, "freecad")

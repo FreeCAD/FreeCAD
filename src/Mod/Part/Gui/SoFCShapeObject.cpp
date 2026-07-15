@@ -1,44 +1,36 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2008 Werner Mayer <wmayer[at]users.sourceforge.net>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <FCConfig.h>
 
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
-#ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-#else
-# include <GL/gl.h>
-#endif
 #include <algorithm>
 #include <limits>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoLineWidthElement.h>
+#include <Inventor/elements/SoPointSizeElement.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/misc/SoState.h>
 
@@ -81,6 +73,13 @@ SoFCControlPoints::SoFCControlPoints()
     SO_NODE_ADD_FIELD(numKnotsU, (0));
     SO_NODE_ADD_FIELD(numKnotsV, (0));
     SO_NODE_ADD_FIELD(lineColor, (c));
+
+    meshLineSet = new SoIndexedLineSet;
+    meshLineSet->ref();
+    polesPointSet = new SoPointSet;
+    polesPointSet->ref();
+    knotsPointSet = new SoPointSet;
+    knotsPointSet->ref();
 }
 
 /**
@@ -94,74 +93,113 @@ void SoFCControlPoints::GLRender(SoGLRenderAction* action)
         if (!coords) {
             return;
         }
-        const SbVec3f* points = coords->getArrayPtr3();
-        if (!points) {
-            return;
-        }
 
         SoMaterialBundle mb(action);
-        SoTextureCoordinateBundle tb(action, true, false);
         SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
         mb.sendFirst();  // make sure we have the correct material
 
-        int32_t len = coords->getNum();
-        drawControlPoints(points, len);
+        const int32_t len = coords->getNum();
+
+        const uint32_t nCtU = numPolesU.getValue();
+        const uint32_t nCtV = numPolesV.getValue();
+        const uint32_t poles = nCtU * nCtV;
+        if (poles > static_cast<uint32_t>(len)) {
+            return;  // wrong setup, too few points
+        }
+
+        const uint32_t knots = numKnotsU.getValue() * numKnotsV.getValue();
+        const uint32_t total = poles + knots;
+        if (total > static_cast<uint32_t>(len)) {
+            return;  // wrong setup, too few points
+        }
+
+        updateMeshCoordIndex(nCtU, nCtV);
+
+        const SbColor poleColor = lineColor.getValue();
+        const SbColor knotColor(1.0f, 1.0f, 0.0f);
+
+        // Draw control mesh.
+        state->push();
+        SoLineWidthElement::set(state, 1.0f);
+        SoLazyElement::setEmissive(state, &poleColor);
+        uint32_t packed = poleColor.getPackedValue(0.0f);
+        SoLazyElement::setPacked(state, meshLineSet, 1, &packed, false);
+        meshLineSet->coordIndex
+            .setValues(0, static_cast<int32_t>(meshCoordIndex.size()), meshCoordIndex.data());
+        meshLineSet->GLRender(action);
+        state->pop();
+
+        // Draw poles.
+        state->push();
+        SoPointSizeElement::set(state, 5.0f);
+        SoLazyElement::setEmissive(state, &poleColor);
+        packed = poleColor.getPackedValue(0.0f);
+        SoLazyElement::setPacked(state, polesPointSet, 1, &packed, false);
+        polesPointSet->startIndex.setValue(0);
+        polesPointSet->numPoints.setValue(static_cast<int32_t>(poles));
+        polesPointSet->GLRender(action);
+        state->pop();
+
+        // Draw knots, if available.
+        if (knots > 0) {
+            state->push();
+            SoPointSizeElement::set(state, 6.0f);
+            SoLazyElement::setEmissive(state, &knotColor);
+            packed = knotColor.getPackedValue(0.0f);
+            SoLazyElement::setPacked(state, knotsPointSet, 1, &packed, false);
+            knotsPointSet->startIndex.setValue(static_cast<int32_t>(poles));
+            knotsPointSet->numPoints.setValue(static_cast<int32_t>(knots));
+            knotsPointSet->GLRender(action);
+            state->pop();
+        }
     }
 }
 
-/**
- * Renders the control points and knots.
- */
-void SoFCControlPoints::drawControlPoints(const SbVec3f* points, int32_t len) const
+SoFCControlPoints::~SoFCControlPoints()
 {
-    glLineWidth(1.0f);
-    glColor3fv(lineColor.getValue().getValue());
-
-    uint32_t nCtU = numPolesU.getValue();
-    uint32_t nCtV = numPolesV.getValue();
-    uint32_t poles = nCtU * nCtV;
-    if (poles > (uint32_t)len) {
-        return;  // wrong setup, too few points
+    if (meshLineSet) {
+        meshLineSet->unref();
+        meshLineSet = nullptr;
     }
-    // draw control mesh
-    glBegin(GL_LINES);
-    for (uint32_t u = 0; u < nCtU - 1; ++u) {
-        for (uint32_t v = 0; v < nCtV - 1; ++v) {
-            glVertex3fv(points[u * nCtV + v].getValue());
-            glVertex3fv(points[u * nCtV + v + 1].getValue());
-            glVertex3fv(points[u * nCtV + v].getValue());
-            glVertex3fv(points[(u + 1) * nCtV + v].getValue());
+    if (polesPointSet) {
+        polesPointSet->unref();
+        polesPointSet = nullptr;
+    }
+    if (knotsPointSet) {
+        knotsPointSet->unref();
+        knotsPointSet = nullptr;
+    }
+}
+
+void SoFCControlPoints::updateMeshCoordIndex(uint32_t nCtU, uint32_t nCtV)
+{
+    if (nCtU == cachedNumPolesU && nCtV == cachedNumPolesV) {
+        return;
+    }
+
+    cachedNumPolesU = nCtU;
+    cachedNumPolesV = nCtV;
+    meshCoordIndex.clear();
+
+    if (nCtU < 2 || nCtV < 2) {
+        return;
+    }
+
+    // Polylines along V for each U.
+    for (uint32_t u = 0; u < nCtU; ++u) {
+        for (uint32_t v = 0; v < nCtV; ++v) {
+            meshCoordIndex.push_back(static_cast<int32_t>(u * nCtV + v));
         }
-        glVertex3fv(points[(u + 1) * nCtV - 1].getValue());
-        glVertex3fv(points[(u + 2) * nCtV - 1].getValue());
+        meshCoordIndex.push_back(-1);
     }
-    for (uint32_t v = 0; v < nCtV - 1; ++v) {
-        glVertex3fv(points[(nCtU - 1) * nCtV + v].getValue());
-        glVertex3fv(points[(nCtU - 1) * nCtV + v + 1].getValue());
-    }
-    glEnd();
 
-    // draw poles
-    glPointSize(5.0f);
-    glBegin(GL_POINTS);
-    for (uint32_t p = 0; p < poles; p++) {
-        glVertex3fv(points[p].getValue());
+    // Polylines along U for each V.
+    for (uint32_t v = 0; v < nCtV; ++v) {
+        for (uint32_t u = 0; u < nCtU; ++u) {
+            meshCoordIndex.push_back(static_cast<int32_t>(u * nCtV + v));
+        }
+        meshCoordIndex.push_back(-1);
     }
-    glEnd();
-
-    // draw knots if available
-    uint32_t knots = numKnotsU.getValue() * numKnotsV.getValue();
-    uint32_t index = poles + knots;
-    if (index > (uint32_t)len) {
-        return;  // wrong setup, too few points
-    }
-    glColor3f(1.0f, 1.0f, 0.0f);
-    glPointSize(6.0f);
-    glBegin(GL_POINTS);
-    for (uint32_t p = poles; p < index; p++) {
-        glVertex3fv(points[p].getValue());
-    }
-    glEnd();
 }
 
 void SoFCControlPoints::generatePrimitives(SoAction* /*action*/)
