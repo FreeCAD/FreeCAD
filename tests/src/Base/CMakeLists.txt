@@ -23,6 +23,7 @@ add_executable(Base_tests_run
         OkLch.cpp
         Parameter.cpp
         ParameterObserver.cpp
+        PlatformPaths.cpp
         Placement.cpp
         Persistence.cpp
         PyException.cpp
