@@ -94,7 +94,6 @@ class BIM_Tutorial:
             QtCore.QTimer.singleShot(1000, self.load)
 
     def load(self, arg=None):
-        import codecs
         import re
         import sys
         from urllib.request import urlopen
@@ -133,7 +132,7 @@ class BIM_Tutorial:
         else:
             if not os.path.exists(os.path.dirname(offlineloc)):
                 os.makedirs(os.path.dirname(offlineloc))
-            f = codecs.open(offlineloc, "w", "utf-8")
+            f = open(offlineloc, "w", encoding="utf-8")
             f.write(html)
             f.close()
 
