@@ -1778,28 +1778,8 @@ void System::initSolution(Algorithm alg)
     }
 
     // partitioning into decoupled components
-    Graph g;
-    for (int i = 0; i < int(plist.size() + clistR.size()); i++) {
-        boost::add_vertex(g);
-    }
-
-    int cvtid = int(plist.size());
-    for (const auto constr : clistR) {
-        VEC_pD& cparams = c2p[constr];
-        for (const auto param : cparams) {
-            MAP_pD_I::const_iterator it = pIndex.find(param);
-            if (it != pIndex.end()) {
-                boost::add_edge(cvtid, it->second, g);
-            }
-        }
-        ++cvtid;
-    }
-
-    VEC_I components(boost::num_vertices(g));
-    int componentsSize = 0;
-    if (!components.empty()) {
-        componentsSize = boost::connected_components(g, &components[0]);
-    }
+    VEC_I components;
+    int componentsSize = computeComponents(clistR, components);
 
     // identification of equality constraints and parameter reduction
     std::set<Constraint*> reducedConstrs;  // constraints that will be eliminated through reduction
@@ -4772,6 +4752,29 @@ void System::makeReducedJacobian(
     if (jacobianconstraintcount == 0) {  // only driven constraints
         J.resize(0, 0);
     }
+}
+
+int System::computeComponents(const std::vector<Constraint*>& clist, VEC_I& components)
+{
+    Graph graph(plist.size() + clist.size());
+    int cvtid = int(plist.size());
+    for (const auto constr : clist) {
+        VEC_pD& cparams = c2p[constr];
+        for (const auto param : cparams) {
+            MAP_pD_I::const_iterator it = pIndex.find(param);
+            if (it != pIndex.end()) {
+                boost::add_edge(cvtid, it->second, graph);
+            }
+        }
+        ++cvtid;
+    }
+
+    components.resize(boost::num_vertices(graph));
+    int componentsSize = 0;
+    if (!components.empty()) {
+        componentsSize = boost::connected_components(graph, &components[0]);
+    }
+    return componentsSize;
 }
 
 int System::diagnose(Algorithm alg)
