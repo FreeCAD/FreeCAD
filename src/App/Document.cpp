@@ -49,13 +49,12 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include <array>
-
 #include <FCConfig.h>
 
 #include <App/DocumentPy.h>
 #include <Base/Interpreter.h>
 #include <Base/Console.h>
+#include <Base/DirectoryUtils.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/PathUtils.h>
@@ -1097,19 +1096,10 @@ std::string Document::getTransientDirectoryName(const std::string& uuid,
 {
     // Create a directory name of the form: {ExeName}_Doc_{UUID}_{HASH}_{PID}
     std::stringstream out;
-    const auto digestBytes = Base::sha1Digest(Base::BytesView(filename.data(), filename.size()));
-
-    auto hexChar = [](unsigned char nibble) -> char {
-        return nibble < 10 ? static_cast<char>('0' + nibble) : static_cast<char>('a' + (nibble - 10));
-    };
-
-    std::array<char, 6> hashPrefix {};
-    for (int i = 0; i < 3; ++i) {
-        hashPrefix[i * 2 + 0] = hexChar(static_cast<unsigned char>((digestBytes[i] >> 4U) & 0x0F));
-        hashPrefix[i * 2 + 1] = hexChar(static_cast<unsigned char>((digestBytes[i] >> 0U) & 0x0F));
-    }
+    const std::string hashPrefix =
+        Base::sha1HexDigest(Base::asBytes(filename.data(), filename.size())).substr(0, 6);
     out << Application::getUserCachePath() << Application::getExecutableName() << "_Doc_"
-        << uuid << "_" << std::string(hashPrefix.data(), hashPrefix.size()) << "_"
+        << uuid << "_" << hashPrefix << "_"
         << Application::uniqueInstanceId();
     return out.str();
 }
@@ -1985,13 +1975,12 @@ bool Document::saveToFile(const char* filename) const
 
     auto canonical_path = [](const char* filename) {
         Base::NormalizePathOptions options;
-        options.makeAbsolute = true;
+        options.absolute = true;
         options.weaklyCanonical = true;
-        options.createParentDirectories = true;
 
         const auto normalized =
             Base::normalizePath(Base::pathFromUtf8(filename ? std::string_view(filename) : std::string_view()), options);
-        if (!normalized) {
+        if (!normalized.has_value() || !Base::createParentDirectories(*normalized)) {
             return std::string(filename ? filename : "");
         }
         return Base::FileInfo::pathToString(*normalized);
