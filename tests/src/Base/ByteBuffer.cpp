@@ -24,6 +24,7 @@
 
 #include <cstring>
 #include <string>
+#include <utility>
 
 TEST(ByteBuffer, defaultConstruction)
 {
@@ -72,4 +73,56 @@ TEST(ByteBuffer, copyOnWriteDetachOnMutation)
     EXPECT_EQ(a.size(), 3U);
     EXPECT_EQ(std::string(a.data(), a.size()), "abc");
     EXPECT_EQ(std::string(b.data(), b.size()), "abcd");
+}
+
+TEST(ByteBuffer, moveLeavesSourceEmpty)
+{
+    Base::ByteBuffer source = Base::ByteBuffer::copy("abc");
+    Base::ByteBuffer moved = std::move(source);
+
+    EXPECT_EQ(std::string(moved.data(), moved.size()), "abc");
+    EXPECT_TRUE(source.empty());
+    EXPECT_FALSE(source.isBorrowed());
+
+    Base::ByteBuffer assigned;
+    assigned = std::move(moved);
+
+    EXPECT_EQ(std::string(assigned.data(), assigned.size()), "abc");
+    EXPECT_TRUE(moved.empty());
+    EXPECT_FALSE(moved.isBorrowed());
+}
+
+TEST(ByteBuffer, movingBorrowedBufferPreservesViewAndClearsSource)
+{
+    const std::string backing = "abc";
+    Base::ByteBuffer source = Base::ByteBuffer::borrow(backing);
+    Base::ByteBuffer moved = std::move(source);
+
+    EXPECT_TRUE(moved.isBorrowed());
+    EXPECT_EQ(std::string(moved.data(), moved.size()), backing);
+    EXPECT_TRUE(source.empty());
+    EXPECT_FALSE(source.isBorrowed());
+}
+
+TEST(ByteBuffer, moveAssignmentHandlesBorrowedAlias)
+{
+    Base::ByteBuffer destination = Base::ByteBuffer::copy("abcdef");
+    Base::ByteBuffer source = Base::ByteBuffer::borrow(destination.view().substr(1, 3));
+
+    destination = std::move(source);
+
+    EXPECT_EQ(std::string(destination.data(), destination.size()), "bcd");
+    EXPECT_TRUE(source.empty());
+}
+
+TEST(ByteBuffer, appendOwnView)
+{
+    const std::string backing(4096, 'x');
+    Base::ByteBuffer buf = Base::ByteBuffer::copy(Base::BytesView(backing.data(), backing.size()));
+
+    buf.append(buf.view());
+
+    EXPECT_EQ(buf.size(), backing.size() * 2U);
+    EXPECT_EQ(std::string(buf.data(), backing.size()), backing);
+    EXPECT_EQ(std::string(buf.data() + backing.size(), backing.size()), backing);
 }

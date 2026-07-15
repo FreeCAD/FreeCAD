@@ -20,9 +20,13 @@
 
 #pragma once
 
+#include <algorithm>
 #include <cstddef>
+#include <cstdint>
 #include <cstring>
+#include <limits>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -50,6 +54,44 @@ public:
     using size_type = std::size_t;
 
     ByteBuffer() = default;
+    ByteBuffer(const ByteBuffer&) = default;
+    ByteBuffer& operator=(const ByteBuffer&) = default;
+
+    ByteBuffer(ByteBuffer&& other) noexcept
+        : ptr(other.ptr)
+        , len(other.len)
+        , owner(std::move(other.owner))
+    {
+        if (owner) {
+            syncFromOwner();
+        }
+        other.resetToEmpty();
+    }
+
+    ByteBuffer& operator=(ByteBuffer&& other)
+    {
+        if (this == &other) {
+            return *this;
+        }
+
+        // A borrowed view can point into this buffer's current owner. Make a
+        // stable copy before releasing that owner during the assignment.
+        if (!other.owner && owner && rangesOverlap(ptr, len, other.ptr, other.len)) {
+            owner = std::make_shared<std::string>(other.ptr, other.len);
+            syncFromOwner();
+            other.resetToEmpty();
+            return *this;
+        }
+
+        owner = std::move(other.owner);
+        ptr = other.ptr;
+        len = other.len;
+        if (owner) {
+            syncFromOwner();
+        }
+        other.resetToEmpty();
+        return *this;
+    }
 
     static ByteBuffer copy(BytesView bytes)
     {
@@ -138,8 +180,22 @@ public:
         if (bytes.empty()) {
             return;
         }
+
+        if (bytes.size() > std::numeric_limits<size_type>::max() - len) {
+            throw std::length_error("ByteBuffer append exceeds maximum size");
+        }
+
+        // A view may refer to this buffer. Keep the source alive if the
+        // mutation below detaches or reallocates the backing string.
+        std::string sourceCopy;
+        const char* source = bytes.data();
+        if (rangesOverlap(ptr, len, source, bytes.size())) {
+            sourceCopy.assign(source, bytes.size());
+            source = sourceCopy.data();
+        }
+
         ensureOwningForMutation(len + bytes.size());
-        owner->append(bytes.data(), bytes.size());
+        owner->append(source, bytes.size());
         syncFromOwner();
     }
 
@@ -183,6 +239,20 @@ public:
     }
 
 private:
+    static bool rangesOverlap(const char* first, size_type firstSize, const char* second, size_type secondSize)
+    {
+        if (firstSize == 0U || secondSize == 0U) {
+            return false;
+        }
+
+        const auto firstAddress = reinterpret_cast<std::uintptr_t>(first);
+        const auto secondAddress = reinterpret_cast<std::uintptr_t>(second);
+        if (firstAddress <= secondAddress) {
+            return secondAddress - firstAddress < firstSize;
+        }
+        return firstAddress - secondAddress < secondSize;
+    }
+
     void syncFromOwner()
     {
         if (!owner || owner->empty()) {
@@ -195,6 +265,13 @@ private:
         }
         ptr = owner->data();
         len = owner->size();
+    }
+
+    void resetToEmpty() noexcept
+    {
+        ptr = "";
+        len = 0U;
+        owner.reset();
     }
 
     void ensureOwningForMutation(size_type minCapacity)
