@@ -54,9 +54,9 @@ class ObjectTools(ABC):
         """
         if not os.path.isdir(self.obj.WorkingDirectory):
             gen_param = self.fem_param.GetGroup("General")
-            if gen_param.GetBool("UseTempDirectory"):
+            if gen_param.GetBool("UseTempDirectory", True):
                 self.obj.WorkingDirectory = tempfile.mkdtemp(prefix="fem_")
-            elif gen_param.GetBool("UseBesideDirectory"):
+            elif gen_param.GetBool("UseBesideDirectory", False):
                 root, ext = os.path.splitext(self.obj.Document.FileName)
                 if root:
                     self.obj.WorkingDirectory = os.path.join(root, self.obj.Label)
@@ -64,7 +64,7 @@ class ObjectTools(ABC):
                 else:
                     # file not saved, use temporary
                     self.obj.WorkingDirectory = tempfile.mkdtemp(prefix="fem_")
-            elif gen_param.GetBool("UseCustomDirectory"):
+            elif gen_param.GetBool("UseCustomDirectory", False):
                 sub_dir = self.obj.Document.Name + "-" + self.obj.Label
                 base_dir = gen_param.GetString("CustomDirectoryPath")
                 # no custom directory, use home directory

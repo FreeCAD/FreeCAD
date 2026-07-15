@@ -395,7 +395,7 @@ void ViewProvider2DObject::attach(App::DocumentObject* documentObject)
 {
     ViewProviderPart::attach(documentObject);
 
-    getAnnotation()->addChild(plane);
+    getOrCreateAnnotation()->addChild(plane);
 
     updatePlane();
 }

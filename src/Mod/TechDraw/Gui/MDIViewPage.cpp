@@ -25,6 +25,7 @@
 #include <QAction>
 #include <QApplication>
 #include <QContextMenuEvent>
+#include <QMdiSubWindow>
 #include <QMenu>
 #include <QMessageBox>
 #include <QPageLayout>
@@ -94,6 +95,9 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
     m_toggleFrameAction = new QAction(tr("Toggle &Frames"), this);
     connect(m_toggleFrameAction, &QAction::triggered, this, &MDIViewPage::toggleFrame);
 
+    m_toggleGridAction = new QAction(tr("Toggle &Grid"), this);
+    connect(m_toggleGridAction, &QAction::triggered, this, &MDIViewPage::toggleGrid);
+
     m_exportSVGAction = new QAction(tr("&Export SVG"), this);
 
     connect(m_exportSVGAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::saveSVG));
@@ -161,13 +165,31 @@ void MDIViewPage::closeEvent(QCloseEvent* event)
         App::Document* doc = _pcDocument->getDocument();
         if (doc) {
             App::DocumentObject* obj = doc->getObject(m_objectName.c_str());
-            Gui::ViewProvider* vp = _pcDocument->getViewProvider(obj);
-            if (vp) {
-                vp->hide();
+            if (auto* vpPage = freecad_cast<ViewProviderPage*>(
+                    _pcDocument->getViewProvider(obj))) {
+                // Don't call vpPage->hide() here: that path calls removeMDIView()
+                // -> removeWindow() -> setParent(nullptr) re-entrantly from
+                // inside QMdiSubWindow::closeEvent, making it briefly top-level.
+                vpPage->onMDIViewClosed();
             }
         }
     }
     blockSceneSelection(false);
+}
+
+void MDIViewPage::closeWithoutSavePrompt()
+{
+    // Close through the normal Qt sequence
+    bool savedPassive = bIsPassive;
+    bIsPassive = true;
+    QWidget* parent = parentWidget();
+    if (qobject_cast<QMdiSubWindow*>(parent)) {
+        parent->close();
+    }
+    else {
+        close();
+    }
+    bIsPassive = savedPassive;
 }
 
 void MDIViewPage::onDeleteObject(const App::DocumentObject& obj)
@@ -446,6 +468,7 @@ void MDIViewPage::contextMenuEvent(QContextMenuEvent* event)
 {
     if (isContextualMenuEnabled) {
         QMenu menu;
+        menu.addAction(m_toggleGridAction);
         menu.addAction(m_toggleFrameAction);
         menu.addAction(m_toggleKeepUpdatedAction);
         menu.addAction(m_exportSVGAction);
@@ -462,6 +485,11 @@ void MDIViewPage::contextMenuEvent(QContextMenuEvent* event)
 }
 
 void MDIViewPage::toggleFrame() { m_vpPage->toggleFrameState(); }
+
+void MDIViewPage::toggleGrid()
+{
+    m_vpPage->ShowGrid.setValue(!m_vpPage->ShowGrid.getValue());
+}
 
 void MDIViewPage::toggleKeepUpdated()
 {
@@ -502,13 +530,14 @@ void MDIViewPage::saveSVG(std::string filename)
 
 void MDIViewPage::saveSVG()
 {
-    QStringList filter;
-    filter << QStringLiteral("SVG (*.svg)");
-    filter << QObject::tr("All files (*.*)");
+    const Gui::FileDialog::FilterList filter {
+        {QStringLiteral("SVG"), {"*.svg"}},
+        Gui::FileDialog::Filter::AllFiles(),
+    };
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as SVG"),
 
-                                         defaultFileName(), filter.join(QLatin1String(";;")));
+                                         defaultFileName(), filter);
     if (fn.isEmpty()) {
         return;
     }
@@ -524,13 +553,14 @@ void MDIViewPage::saveDXF(std::string filename)
 
 void MDIViewPage::saveDXF()
 {
-    QStringList filter;
-    filter << QStringLiteral("DXF (*.dxf)");
-    filter << QObject::tr("All files (*.*)");
+    const Gui::FileDialog::FilterList filter {
+        {QStringLiteral("DXF"), {"*.dxf"}},
+        Gui::FileDialog::Filter::AllFiles(),
+    };
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as DXF"),
 
-                                         defaultFileName(), filter.join(QLatin1String(";;")));
+                                         defaultFileName(), filter);
     if (fn.isEmpty()) {
         return;
     }
@@ -580,13 +610,14 @@ void MDIViewPage::exportAsPdf() const
 
 QString MDIViewPage::getPdfFileName() const
 {
-    QStringList filter;
-    filter << QObject::tr("PDF (*.pdf)");
-    filter << QObject::tr("All Files (*.*)");
+    const Gui::FileDialog::FilterList filter {
+        {"PDF", {"*.pdf"}},
+        Gui::FileDialog::Filter::AllFiles(),
+    };
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
                                          QObject::tr("Export Page as PDF"),
-                                         QString(), filter.join(QLatin1String(";;")));
+                                         QString(), filter);
     if (fn.isEmpty()) {
         return {};
     }

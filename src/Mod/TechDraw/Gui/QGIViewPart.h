@@ -73,6 +73,7 @@ public:
     void toggleCosmeticLines(bool state);
     void setViewPartFeature(TechDraw::DrawViewPart *obj);
     void updateView(bool update = false) override;
+    void updateFrameVisibility() override;
     void tidy();
     QRectF boundingRect() const override;
 

@@ -35,7 +35,6 @@
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 
-#include "Application.h"
 #include "PropertyPythonObject.h"
 #include "DocumentObject.h"
 
@@ -148,16 +147,24 @@ bool isAllowedModule(const std::string& moduleName)
         return false;
     }
 
-    std::string home = Application::getHomePath();
-    std::string userData = Application::getUserAppDataDir();
-    std::string resource = Application::getResourceDir();
+    // Use FreeCAD.__ModDirs__ as the authoritative list of allowed module directories.
+    // This is populated during startup by FreeCADInit.py and includes built-in workbenches,
+    // user addons, and any additional configured module paths.
+    Py::Module freecad(PyImport_ImportModule("FreeCAD"), true);
+    if (!freecad.hasAttr("__ModDirs__") or !freecad.hasAttr("__MacroDirs__")) {
+        throw Py::RuntimeError("FreeCAD.__ModDirs__ or FreeCAD.__MacroDirs__ not set -- FreeCADInit.py has not run yet");
+    }
+    Py::List allowedDirs(freecad.getAttr("__ModDirs__"));
+    allowedDirs.extend(freecad.getAttr("__MacroDirs__"));
+    const int allowedDirsSize = static_cast<int>(allowedDirs.size());
 
     auto isUnderFreeCAD = [&](const std::string& path) {
-        return isUnderDirectory(path, home + "Mod")
-            || isUnderDirectory(path, home + "Ext")
-            || isUnderDirectory(path, resource + "Mod")
-            || isUnderDirectory(path, resource + "Ext")
-            || isUnderDirectory(path, userData + "Mod");
+        for (int i = 0; i < allowedDirsSize; ++i) {
+            if (isUnderDirectory(path, Py::String(allowedDirs[i]).as_std_string())) {
+                return true;
+            }
+        }
+        return false;
     };
 
     // Get the origin (i.e. the file path) from the spec.

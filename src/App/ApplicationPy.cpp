@@ -25,6 +25,8 @@
 
 #include <FCConfig.h>
 
+#include <array>
+
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
@@ -38,6 +40,7 @@
 #include "DocumentPy.h"
 #include "DocumentObserverPython.h"
 #include "DocumentObjectPy.h"
+#include "RecoverySnapshot.h"
 
 
 // using Base::GetConsole;
@@ -179,6 +182,14 @@ PyMethodDef ApplicationPy::Methods[] = {
      METH_VARARGS,
      "closeDocument(string) -> None\n\n"
      "Close the document with a given name."},
+    {"writeRecoverySnapshotToTransientDir",
+     reinterpret_cast<PyCFunction>(
+         reinterpret_cast<void (*)()>(ApplicationPy::sWriteRecoverySnapshotToTransientDir)
+     ),
+     METH_VARARGS | METH_KEYWORDS,
+     "writeRecoverySnapshotToTransientDir(document, *, compressed=True, "
+     "save_binary_brep=True, save_thumbnail=False) -> bool\n\n"
+     "Write a recovery snapshot for the given document into its transient directory."},
     {"activeDocument",
      (PyCFunction)ApplicationPy::sActiveDocument,
      METH_VARARGS,
@@ -502,6 +513,56 @@ PyObject* ApplicationPy::sSaveDocument(PyObject* /*self*/, PyObject* args)
     }
 
     Py_Return;
+}
+
+PyObject* ApplicationPy::sWriteRecoverySnapshotToTransientDir(PyObject* /*self*/,
+                                                              PyObject* args,
+                                                              PyObject* kwd)
+{
+    PyObject* document {};
+    PyObject* compressed = Py_True;
+    PyObject* saveBinaryBrep = Py_True;
+    PyObject* saveThumbnail = Py_False;
+    static constexpr std::array<const char*, 5> kwlist {
+        "document",
+        "compressed",
+        "save_binary_brep",
+        "save_thumbnail",
+        nullptr
+    };
+    if (!Base::Wrapped_ParseTupleAndKeywords(args,
+                                             kwd,
+                                             "O!|O!O!O!",
+                                             kwlist,
+                                             &App::DocumentPy::Type,
+                                             &document,
+                                             &PyBool_Type,
+                                             &compressed,
+                                             &PyBool_Type,
+                                             &saveBinaryBrep,
+                                             &PyBool_Type,
+                                             &saveThumbnail)) {
+        return nullptr;
+    }
+
+    auto* doc = static_cast<App::DocumentPy*>(document)->getDocumentPtr();
+    if (!doc) {
+        PyErr_SetString(PyExc_RuntimeError, "Invalid document");
+        return nullptr;
+    }
+
+    PY_TRY
+    {
+        App::RecoverySnapshotSaveOptions options;
+        options.compressed = Base::asBoolean(compressed);
+        options.saveBinaryBrep = Base::asBoolean(saveBinaryBrep);
+        options.saveThumbnail = Base::asBoolean(saveThumbnail);
+
+        return Py::new_reference_to(
+            Py::Boolean(App::writeRecoverySnapshotToTransientDir(*doc, options))
+        );
+    }
+    PY_CATCH
 }
 
 PyObject* ApplicationPy::sActiveDocument(PyObject* /*self*/, PyObject* args)

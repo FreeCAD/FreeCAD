@@ -267,7 +267,7 @@
 
 
 ** Volume elements
-*Element, TYPE=C3D20, ELSET=Evolumes
+*Element, TYPE=C3D20R, ELSET=Evolumes
 1, 1, 10, 95, 19, 61, 105, 222, 192, 9, 93, 94, 20, 104, 220, 221,
 193, 62, 103, 219, 190
 2, 10, 2, 13, 95, 105, 34, 134, 222, 11, 12, 96, 93, 106, 133, 223,
@@ -346,8 +346,8 @@ Evolumes
 
 ***********************************************************
 ** constraints fixed node sets
-** ConstraintFixed
-*NSET,NSET=ConstraintFixed
+** Fixed
+*NSET,NSET=Fixed
 1,
 2,
 3,
@@ -396,16 +396,16 @@ Evolumes
 
 ***********************************************************
 ** Fixed Constraints
-** ConstraintFixed
+** Fixed
 *BOUNDARY
-ConstraintFixed,1
-ConstraintFixed,2
-ConstraintFixed,3
+Fixed,1
+Fixed,2
+Fixed,3
 
 
 ***********************************************************
 ** constraints force node loads
-** ConstraintForce
+** Force
 *CLOAD
 ** node loads on shape: Box:Face2
 5,3,187500
@@ -440,7 +440,7 @@ U
 S, E
 ** outputs --> dat file
 ** reaction forces for Constraint fixed
-*NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
+*NODE PRINT, NSET=Fixed, TOTALS=ONLY
 RF
 
 *OUTPUT, FREQUENCY=1

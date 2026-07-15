@@ -36,7 +36,6 @@
 #include "DrawSketchControllableHandler.h"
 #include "SketcherTransformationExpressionHelper.h"
 
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 
 using namespace Sketcher;

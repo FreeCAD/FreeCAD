@@ -144,12 +144,12 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj)
 
     # constraint fixed
-    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "Fixed")
     con_fixed.References = [(geom_obj, "Face3")]
     analysis.addObject(con_fixed)
 
     # constraint force
-    con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
+    con_force = ObjectsFem.makeConstraintForce(doc, "Force")
     con_force.References = [(geom_obj, "Face1")]
     con_force.Force = "2500.0 N"  # 2.5 kN
     con_force.Direction = (load_line, ["Edge1"])
@@ -157,7 +157,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_force)
 
     # constraint transform
-    con_transform = ObjectsFem.makeConstraintTransform(doc, name="ConstraintTransform")
+    con_transform = ObjectsFem.makeConstraintTransform(doc, name="Transform")
     con_transform.References = [(geom_obj, "Face1")]
     con_transform.TransformType = "Cylindrical"
     analysis.addObject(con_transform)

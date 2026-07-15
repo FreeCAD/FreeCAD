@@ -24,7 +24,6 @@
 
 #include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
-#include <BRepAdaptor_Surface.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
@@ -338,21 +337,18 @@ void FaceMakerBullseye::FaceDriller::addHole(const WireInfo& wireInfo, std::vect
 
 int FaceMakerBullseye::FaceDriller::getWireDirection(const gp_Pln& plane, const TopoDS_Wire& wire)
 {
-    // make a test face
-    BRepBuilderAPI_MakeFace mkFace(wire, /*onlyplane=*/Standard_True);
+    // Build a face using the known plane (avoids the expensive BRepLib_FindSurface).
+    // Since the plane is supplied, the surface normal is always co-directional with plane.
+    BRepBuilderAPI_MakeFace mkFace(plane, wire, /*Inside=*/Standard_True);
     TopoDS_Face tmpFace = mkFace.Face();
     if (tmpFace.IsNull()) {
         throw Standard_Failure("getWireDirection: Failed to create face from wire");
     }
 
-    // compare face surface normal with our plane's one
-    BRepAdaptor_Surface surf(tmpFace);
-    bool normal_co = surf.Plane().Axis().Direction().Dot(plane.Axis().Direction()) > 0;
-
-    // unlikely, but just in case OCC decided to reverse our wire for the face...  take that into
-    // account!
+    // CheckInside() (called by the constructor) reverses the wires in the face if the wire
+    // was CW — detect this via the wire orientation change.
     TopoDS_Iterator it(tmpFace, /*CumOri=*/Standard_False);
-    normal_co ^= it.Value().Orientation() != wire.Orientation();
+    bool normal_co = it.Value().Orientation() == wire.Orientation();
 
     return normal_co ? 1 : -1;
 }

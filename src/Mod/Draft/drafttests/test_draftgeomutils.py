@@ -251,6 +251,35 @@ class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
         wire.Orientation = "Reversed"
         self.check_wire(wire)
 
+    def test_make_segment_face_repairs_crossed_connectors(self):
+        """The segment face builder should retry with the alternate endpoint pairing."""
+        operation = "DraftGeomUtils._make_segment_face crossed connectors"
+        _msg("  Test '{}'".format(operation))
+
+        edge1 = Part.makeLine(Vector(10369.55, 6924.675, 0), Vector(10077.45, 6924.675, 0))
+        edge2 = Part.makeLine(Vector(10175.875, 7118.35, 0), Vector(10271.125, 7118.35, 0))
+
+        default_start = Part.LineSegment(edge1.Vertexes[0].Point, edge2.Vertexes[0].Point).toShape()
+        default_end = Part.LineSegment(edge1.Vertexes[-1].Point, edge2.Vertexes[-1].Point).toShape()
+        default_face = Part.Face(
+            Part.Wire(edge1.Edges + [default_start] + edge2.Edges + [default_end])
+        )
+        self.assertTrue(
+            default_start.section(default_end).Vertexes,
+            "The default connector pairing should reproduce the crossed-strip case.",
+        )
+        self.assertFalse(default_face.isValid(), "The default face should be invalid.")
+
+        fixed_face = DraftGeomUtils.bind(edge1, edge2)
+        self.assertIsNotNone(fixed_face, "The repaired segment face should be created.")
+        self.assertTrue(fixed_face.isValid(), "The repaired segment face should be valid.")
+        self.assertAlmostEqual(
+            fixed_face.Area,
+            37510.005625,
+            places=2,
+            msg="The repaired segment face area is incorrect.",
+        )
+
 
 # suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestDraftGeomUtils)
 # unittest.TextTestRunner().run(suite)

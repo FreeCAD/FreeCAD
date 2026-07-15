@@ -169,8 +169,8 @@ GCODE_SUPPORTED = (
 MCODE_SUPPORTED = (
     MCODE_STOP
     + MCODE_OPTIONAL_STOP
-    + MCODE_SPINDLE_CW
-    + MCODE_SPINDLE_CCW
+    + MCODE_SPINDLE_ON
+    + MCODE_SPINDLE_OFF
     + MCODE_TOOL_CHANGE
     + MCODE_COOLANT_MIST
     + MCODE_COOLANT_FLOOD
@@ -194,3 +194,16 @@ GCODE_NON_CONFORMING = (
     + GCODE_RETURN_MODE
     + GCODE_CYCLE_CANCEL
 )
+
+
+# =============================================================================
+# Annotations
+# Use constants for keys, comment here for values/semantics
+# =============================================================================
+
+# For Path.Command
+
+# To skip Processor.py from checking a Path.Command against Supported & Non-Conforming
+# i.e. allow any gcode
+# absence for false; any non-false presence for true: use "True"
+ANNOT_ALLOW_UNSUPPORTED = "allow_unsupported"

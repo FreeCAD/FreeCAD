@@ -27,8 +27,11 @@
 #include <cassert>
 #include <codecvt>
 #include <locale>
+#include <ranges>
 
 #include <zipios++/zipinputstream.h>
+
+#include <unicode/utf8.h>
 
 #include "Exception.h"
 #include "Reader.h"
@@ -36,10 +39,6 @@
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Persistence.h"
-
-#include <QChar>
-#include <QVector>
-#include <QByteArray>
 
 
 using namespace Base;
@@ -157,57 +156,22 @@ static constexpr std::array<std::pair<char32_t, char32_t>, 19> discouragedRanges
  */
 std::string Persistence::validateXMLString(const std::string& str)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
-    // In newer Qt we cannot use QString::toUcs4, so we have to do it the long way...
+    // Decode UTF-8 into code points and filter for XML 1.0 validity, replacing invalid or
+    // discouraged code points with '_'.
+    std::string out;
+    out.reserve(str.size());
 
-    const QString input = QString::fromUtf8(str);
-    QString output;
-    output.reserve(input.size());
+    const auto* data = reinterpret_cast<const uint8_t*>(str.data());  // NOLINT
+    const int32_t len = static_cast<int32_t>(str.size());
 
-    for (auto it = input.cbegin(); it != input.cend();) {
-        const auto cp = static_cast<char32_t>(it->unicode());
-        const uint ch = it->unicode();
-        ++it;
-
-        if (QChar::isHighSurrogate(ch) && it != input.cend()
-            && QChar::isLowSurrogate(static_cast<char32_t>(it->unicode()))) {
-            // We are outside the "Basic Multilingual Plane (BMP)" (directly storable in a UTF-16
-            // char, which is what QString uses internally). So now we have to use *two* chars,
-            // combine them into one for our check, and then run the validity check for XML output.
-            const uint low = it->unicode();
-            ++it;
-            const char32_t full = QChar::surrogateToUcs4(ch, low);
-            const bool valid = std::ranges::any_of(validRanges, [full](const auto& r) {
-                return full >= r.first && full <= r.second;
-            });
-            const bool discouraged = std::ranges::any_of(discouragedRanges, [full](const auto& r) {
-                return full >= r.first && full <= r.second;
-            });
-            output.append((valid && !discouraged) ? QChar::fromUcs4(full) : QChar::fromUcs4('_'));
+    for (int32_t i = 0; i < len;) {
+        UChar32 cp = 0;
+        U8_NEXT(data, i, len, cp);
+        if (cp < 0) {
+            out.push_back('_');
+            continue;
         }
-        else {
-            // The character fits into 16 bytes, it can be checked directly
-            const bool valid = std::ranges::any_of(validRanges, [cp](const auto& r) {
-                return cp >= r.first && cp <= r.second;
-            });
-            const bool discouraged = std::ranges::any_of(discouragedRanges, [cp](const auto& r) {
-                return cp >= r.first && cp <= r.second;
-            });
-            output.append((valid && !discouraged) ? QChar(ch) : QChar::fromUcs2('_'));
-        }
-    }
 
-    const QByteArray utf8 = output.toUtf8();
-    return {utf8.constData(), static_cast<size_t>(utf8.size())};
-#else
-    // In older Qt we can directly use QString::toUcs4, which makes for a bit simpler code
-    const QString input = QString::fromStdString(str);
-    const QVector<uint> ucs4 = input.toUcs4();
-
-    QVector<uint> filtered;
-    filtered.reserve(ucs4.size());
-
-    for (uint cp : ucs4) {
         const char32_t c32 = static_cast<char32_t>(cp);
         const bool ok = std::ranges::any_of(validRanges, [c32](const auto& r) {
             return c32 >= r.first && c32 <= r.second;
@@ -215,13 +179,21 @@ std::string Persistence::validateXMLString(const std::string& str)
         const bool discouraged = std::ranges::any_of(discouragedRanges, [c32](const auto& r) {
             return c32 >= r.first && c32 <= r.second;
         });
-        filtered.push_back((ok && !discouraged) ? cp : static_cast<uint>(U'_'));
+
+        const char32_t emit = (ok && !discouraged) ? c32 : U'_';
+        uint8_t buf[8] {};
+        int32_t outLen = 0;
+        UBool isError = false;
+        U8_APPEND(buf, outLen, static_cast<int32_t>(sizeof(buf)), static_cast<UChar32>(emit), isError);
+        if (isError) {
+            out.push_back('_');
+        }
+        else {
+            out.append(reinterpret_cast<const char*>(buf), static_cast<std::size_t>(outLen));  // NOLINT
+        }
     }
 
-    const QString output = QString::fromUcs4(filtered.constData(), filtered.size());
-    const QByteArray utf8 = output.toUtf8();
-    return {utf8.constData(), static_cast<size_t>(utf8.size())};
-#endif
+    return out;
 }
 
 void Persistence::dumpToStream(std::ostream& stream, int compression)

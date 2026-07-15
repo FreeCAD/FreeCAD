@@ -71,14 +71,9 @@ std::wstring ConvertToWideString(const std::string& string)
 // FileInfo
 
 
-FileInfo::FileInfo(const char* fileName)
+FileInfo::FileInfo(std::string fileName)
 {
-    setFile(fileName);
-}
-
-FileInfo::FileInfo(const std::string& fileName)
-{
-    setFile(fileName.c_str());
+    setFile(std::move(fileName));
 }
 
 const std::string& FileInfo::getTempPath()
@@ -185,14 +180,14 @@ std::string FileInfo::pathToString(const fs::path& path)
 #endif
 }
 
-void FileInfo::setFile(const char* name)
+void FileInfo::setFile(std::string name)
 {
-    if (!name) {
+    if (name.empty()) {
         FileName.clear();
         return;
     }
 
-    FileName = name;
+    FileName = std::move(name);
 
     // keep the UNC paths intact
     if (FileName.substr(0, 2) == std::string("\\\\")) {
@@ -335,7 +330,8 @@ bool FileInfo::isWritable() const
     // convert filename from UTF-8 to windows WSTRING
     std::wstring fileNameWstring = toStdWString();
     // requires import of <windows.h>
-    DWORD attributes = GetFileAttributes(fileNameWstring.c_str());
+    // Use explicit wide API: FreeCAD does not rely on the UNICODE macro being set.
+    DWORD attributes = GetFileAttributesW(fileNameWstring.c_str());
     if (attributes == INVALID_FILE_ATTRIBUTES) {
         // Log the error?
         std::clog << "GetFileAttributes failed for file: " << FileName << '\n';

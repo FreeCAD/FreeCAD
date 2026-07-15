@@ -113,18 +113,18 @@
       <translation>Salir del modo de información</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="708"/>
+      <location filename="../../ViewProviderInspection.cpp" line="709"/>
       <source>Distance: &gt; %1</source>
       <translation>Distancia: &gt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="711"/>
+      <location filename="../../ViewProviderInspection.cpp" line="712"/>
       <source>Distance: &lt; %1</source>
       <translation>Distancia: &lt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="730"/>
-      <location filename="../../ViewProviderInspection.cpp" line="748"/>
+      <location filename="../../ViewProviderInspection.cpp" line="731"/>
+      <location filename="../../ViewProviderInspection.cpp" line="749"/>
       <source>Distance: %1</source>
       <translation>Distancia: %1</translation>
     </message>

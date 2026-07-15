@@ -45,7 +45,7 @@
          <td> <code> ${Boost_VERSION} </code> </td>
          <th colspan = '5' ></th>
          <th align = 'left' > <a href = 'https://coin3d.github.io' > Coin3D </a> </th>
-         <td> <code> ${COIN3D_VERSION} </code> </td>
+         <td> <code> ${COIN3D_VERSION} </code> (${FREECAD_COIN3D_SOURCE}) </td>
       </tr>
 
       <tr>
@@ -115,6 +115,16 @@
       <tr>
          <th align = 'left' > <a href = 'https://github.com/danielfalck/libarea' > LibArea </a> </th>
          <td> <code> </code> </td>
+         <th colspan = '5' ></th>
+         <th align = 'left' > <a href = 'https://github.com/AngusJohnson/Clipper2' > Clipper2 </a> </th>
+         <td> <code> ${Clipper2_VERSION} </code> </td>
+      </tr>
+
+      <tr>
+         <th align = 'left' > <a href = 'https://github.com/coin3d/pivy' > Pivy </a> </th>
+         <td> <code> ${PIVY_VERSION} </code> (${FREECAD_PIVY_SOURCE}) </td>
+         <th colspan = '5' ></th>
+         <th colspan = '2' ></th>
       </tr>
 
    </tbody>

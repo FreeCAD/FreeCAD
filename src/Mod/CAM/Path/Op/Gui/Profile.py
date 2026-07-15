@@ -26,7 +26,7 @@ import FreeCADGui
 import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Profile as PathProfile
-import PathGui
+import Path
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "CAM Profile Operation UI"
@@ -34,6 +34,7 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Profile operation page controller and command implementation."
 
+translate = FreeCAD.Qt.translate
 
 FeatureSide = 0x01
 FeatureProcessing = 0x02
@@ -171,6 +172,19 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         else:  # Qt version < 6.7.0
             self.form.useCompensation.stateChanged.connect(self.updateVisibility)
         self.form.numPasses.editingFinished.connect(self.updateVisibility)
+
+        self.form.setStartPoint.clicked.connect(self.setStartPoint)
+
+    def setStartPoint(self):
+        selEx = FreeCADGui.Selection.getSelectionEx()
+        if selEx and selEx[0].PickedPoints:
+            point = selEx[0].PickedPoints[0]
+            self.obj.StartPoint = point
+            self.setDirty()
+            Path.Log.info(
+                translate("CAM_Profile", "Set start point: %s, %s")
+                % (round(point.x, 3), round(point.y, 3))
+            )
 
 
 # Eclass

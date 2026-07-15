@@ -36,7 +36,7 @@ def selection(verbose=False):
         selected = FreeCADGui.Selection.getSelection()
         if len(selected) != 1:
             if verbose:
-                Path.Log.warning(translate("CAM_Dressup", "Please select one toolpath object\n"))
+                Path.Log.warning(translate("CAM_Dressup", "Select one toolpath object\n"))
             return None
         if not selected[0].isDerivedFrom("Path::Feature"):
             if verbose:
@@ -67,7 +67,7 @@ def isOp(obj):
 
 def baseOp(path):
     """baseOp(path) ... return the base operation underlying the given path"""
-    if "Dressup" in path.Name:
+    if hasattr(path, "Name") and "Dressup" in path.Name:
         return baseOp(path.Base)
     return path
 

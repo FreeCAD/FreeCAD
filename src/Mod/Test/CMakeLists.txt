@@ -1,13 +1,20 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2026 Joao Matos
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 SET(Test_SRCS
     __init__.py
     Init.py
     BaseTests.py
+    AutoSaverStress.py
+    RunAutoSaverStress.py
     Document.py
     GuiDocument.py
     Metadata.py
     StringHasher.py
     Menu.py
+    Recompute.py
+    GuiRecompute.py
     TestApp.py
     TestGui.py
     UnicodeTests.py
@@ -18,7 +25,11 @@ SET(Test_SRCS
     TestPythonSyntax.py
     TestPerf.py
     TestTreeSelection.py
+    TestGraphicsViewWrapping.py
+    TestRubberbandSelection.py
     TestCoinNodeSnapshots.py
+    TestCoinSelectionVisual.py
+    TestViewProviderLink.py
 )
 
 SET(TestData_SRCS
@@ -37,7 +48,18 @@ if(BUILD_GUI)
     list (APPEND Test_SRCS InitGui.py)
 endif(BUILD_GUI)
 
+set(Test_COPY_OUTPUTS)
+foreach(test_src ${Test_SRCS})
+    list(APPEND Test_COPY_OUTPUTS "${CMAKE_BINARY_DIR}/Mod/Test/${test_src}")
+endforeach()
+foreach(test_data_src ${TestData_SRCS})
+    list(APPEND Test_COPY_OUTPUTS "${CMAKE_BINARY_DIR}/Mod/Test/${test_data_src}")
+endforeach()
+
+add_custom_target(TestSources DEPENDS ${Test_COPY_OUTPUTS})
+
 ADD_CUSTOM_TARGET(Test ALL
+    DEPENDS TestSources
     SOURCES ${Test_SRCS} ${TestData_SRCS}
 )
 

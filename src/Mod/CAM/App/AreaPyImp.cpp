@@ -80,7 +80,7 @@ static PyObject* areaSetParams(PyObject*, PyObject* args, PyObject* kwd)
     }
 
 #define AREA_GET(_param) \
-    params.PARAM_FNAME(_param) = PARAM_TYPED(PARAM_CAST_PY_, _param)(PARAM_FNAME(_param));
+    params.PARAM_FNAME(_param) = PARAM_TYPED(PARAM_CAST_PY_, _param)(PARAM_FNAME(_param), _param);
     // populate 'params' with the CONF variables
     PARAM_FOREACH(AREA_GET, AREA_PARAMS_STATIC_CONF)
 

@@ -686,6 +686,54 @@ class TestSketcherSolver(unittest.TestCase):
         self.assertGreater(bg3.Radius, sm3.Radius)
         self.assertGreater(bg4.Radius, sm4.Radius)
 
+    def testCircleLineTangentOriented(self):
+        # Test to ratchet issue https://github.com/FreeCAD/FreeCAD/issues/29007
+
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        arc_q1_idx = sketch.addGeometry(
+            Part.ArcOfCircle(
+                Part.Circle(App.Vector(25, 25, 0), App.Vector(0, 0, 1), 10),
+                -1.403763,
+                1.419522,
+            )
+        )
+        arc_q2_idx = sketch.addGeometry(
+            Part.ArcOfCircle(
+                Part.Circle(App.Vector(-25, 25, 0), App.Vector(0, 0, 1), 10),
+                -1.403763,
+                1.419522,
+            )
+        )
+        circle_q3_idx = sketch.addGeometry(Part.Circle(App.Vector(-25.0, -25.0), xy_normal, 10))
+        circle_q4_idx = sketch.addGeometry(Part.Circle(App.Vector(25.0, -25.0), xy_normal, 10))
+
+        sketch.addConstraint(
+            [
+                Sketcher.Constraint("Tangent", arc_q1_idx, -2),  # with vertical axis
+                Sketcher.Constraint("Tangent", arc_q2_idx, -2),  # with vertical axis
+                Sketcher.Constraint("Tangent", circle_q3_idx, -1),  # with horizontal axis
+                Sketcher.Constraint("Tangent", circle_q4_idx, -1),  # with horizontal axis
+            ]
+        )
+
+        self.assertSuccessfulSolve(sketch)
+
+        # should still be in q1
+        self.assertGreater(sketch.Geometry[arc_q1_idx].Location.x, 0)
+        self.assertGreater(sketch.Geometry[arc_q1_idx].Location.y, 0)
+
+        # should still be in q2
+        self.assertLess(sketch.Geometry[arc_q2_idx].Location.x, 0)
+        self.assertGreater(sketch.Geometry[arc_q2_idx].Location.y, 0)
+
+        # should still be in q3
+        self.assertLess(sketch.Geometry[circle_q3_idx].Location.x, 0)
+        self.assertLess(sketch.Geometry[circle_q3_idx].Location.y, 0)
+
+        # should still be in q4
+        self.assertGreater(sketch.Geometry[circle_q4_idx].Location.x, 0)
+        self.assertLess(sketch.Geometry[circle_q4_idx].Location.y, 0)
+
     def testRemovedExternalGeometryReference(self):
         if "BUILD_PARTDESIGN" in FreeCAD.__cmake__:
             body = self.Doc.addObject("PartDesign::Body", "Body")

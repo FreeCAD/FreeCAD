@@ -48,9 +48,11 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
+#include <Gui/Widgets.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 
@@ -240,9 +242,20 @@ void MeshFaceAddition::addFace()
     f._aulPoints[2] = faceView->index[2];
     std::vector<MeshCore::MeshFacet> faces;
     faces.push_back(f);
+    auto numFaces = mesh->countFacets();
     mesh->addFacets(faces, true);
     mf->Mesh.finishEditing();
-    doc->commitTransaction();
+    if (mesh->countFacets() > numFaces) {
+        doc->commitTransaction();
+    }
+    else {
+        doc->abortTransaction();
+        auto label = new Gui::StatusWidget(Gui::getMainWindow());
+        label->setAttribute(Qt::WA_DeleteOnClose);
+        label->setStatusText(tr("Cannot add triangle to avoid non-manifolds."));
+        label->show();
+        QTimer::singleShot(3000, label, &Gui::StatusWidget::close);
+    }
 
     clearPoints();
 }

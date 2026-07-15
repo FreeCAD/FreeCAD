@@ -524,8 +524,7 @@ void QGIViewPart::drawAllVertexes()
                 item->setRadius(getVertexSize());
                 item->setPrettyNormal();
                 item->setZValue(ZVALUE::VERTEX);
-                item->setVisible(m_isHovered || isSelected() ||
-                (vpPage->getFrameState() && PreferencesGui::getViewFrameMode() == ViewFrameMode::Manual));
+                item->setVisible(shouldShowFrame());
             }
         }
     }
@@ -1377,22 +1376,36 @@ double QGIViewPart::getVertexSize() {
     return getLineWidth() * Preferences::vertexScale();
 }
 
+void QGIViewPart::updateFrameVisibility()
+{
+    QGIView::updateFrameVisibility();
+
+    bool showDecorations = shouldShowFrame();
+    
+    for (auto& child : childItems()) {
+        if (child->type() == UserType::QGIVertex) {
+            child->setVisible(showDecorations || child->isSelected());
+        }
+        if (child->type() == UserType::QGICMark) {
+            child->setVisible(showDecorations || child->isSelected() || !hideCenterMarks());
+        }
+    }
+}
 void QGIViewPart::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     QGIView::hoverEnterEvent(event);
 
+    bool showDecorations = shouldShowFrame();
+
     for (auto& child : childItems()) {
-        if (child->type() == UserType::QGIVertex || child->type() == UserType::QGICMark) {
-            child->show();
+        if (child->type() == UserType::QGIVertex) {
+            child->setVisible(showDecorations);
             continue;
         }
-        if (child->type() == UserType::QGICMark &&
-            !hideCenterMarks()) {
+        if (child->type() == UserType::QGICMark && !hideCenterMarks()) {
             child->show();
         }
-
     }
-
     update();
 }
 
@@ -1400,33 +1413,18 @@ void QGIViewPart::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     QGIView::hoverLeaveEvent(event);
 
-    if (isSelected()) {
-        // if the view is selected, we should leave things alone.
-        return;
-    }
-
-    auto vp(static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject())));
-    ViewProviderPage* vpPage = vp->getViewProviderPage();
-    if (vpPage->getFrameState() &&
-        PreferencesGui::getViewFrameMode() == ViewFrameMode::Manual) {
-        return;
-    }
-
-    bool hideCenters = hideCenterMarks();
+    bool showDecorations = shouldShowFrame();
 
     for (auto& child : childItems()) {
-        if (child->type() == UserType::QGIVertex &&
-            !child->isSelected()) {
-            child->hide();
+        if (child->type() == UserType::QGIVertex) {
+            if (child->isSelected()) continue;
+            child->setVisible(showDecorations);
             continue;
         }
 
         if (child->type() == UserType::QGICMark) {
-            if (child->isSelected()) {
-                continue;
-            }
-
-            if (hideCenters) {
+            if (child->isSelected()) continue;
+            if (hideCenterMarks() || !showDecorations) {
                 child->hide();
             }
         }

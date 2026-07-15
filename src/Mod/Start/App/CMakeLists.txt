@@ -27,12 +27,14 @@ set(Start_LIBS
 
 set(Start_SRCS
         AppStart.cpp
+        CustomFolderModel.cpp
+        CustomFolderModel.h
         DisplayedFilesModel.cpp
         DisplayedFilesModel.h
         ExamplesModel.cpp
         ExamplesModel.h
-        CustomFolderModel.cpp
-        CustomFolderModel.h
+        FcstdInfoSource.cpp
+        FcstdInfoSource.h
         FileUtilities.cpp
         FileUtilities.h
         PreCompiled.h

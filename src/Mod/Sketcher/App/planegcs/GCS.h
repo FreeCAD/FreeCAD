@@ -450,9 +450,9 @@ public:
         int tagId = 0,
         bool driving = true
     );
-    int addConstraintTangent(Line& l, Circle& c, int tagId = 0, bool driving = true);
+    int addConstraintTangent(Line& l, Circle& c, bool ccw, int tagId = 0, bool driving = true);
     int addConstraintTangent(Line& l, Ellipse& e, int tagId = 0, bool driving = true);
-    int addConstraintTangent(Line& l, Arc& a, int tagId = 0, bool driving = true);
+    int addConstraintTangent(Line& l, Arc& a, bool ccw, int tagId = 0, bool driving = true);
     int addConstraintTangent(Circle& c1, Circle& c2, int tagId = 0, bool driving = true);
     int addConstraintTangent(Arc& a1, Arc& a2, int tagId = 0, bool driving = true);
     int addConstraintTangent(Circle& c, Arc& a, int tagId = 0, bool driving = true);

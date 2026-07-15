@@ -7,8 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  actions: write
+  contents: read
 
 concurrency:
   group: build-release-${{ github.event_name }}
@@ -17,16 +16,20 @@ concurrency:
 jobs:
   upload_src:
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'FreeCAD' || github.event_name == 'workflow_dispatch'
+    permissions:
+      contents: write
+      actions: write
     outputs:
       build_tag: ${{ steps.get_tag.outputs.build_tag }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
         with:
           egress-policy: audit
 
       - name: Checkout source
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           ref: ${{ github.sha }}
           fetch-depth: 2
@@ -42,7 +45,15 @@ jobs:
           if [ "${{ github.event_name }}" = "release" ]; then
             export BUILD_TAG="${{ github.event.release.tag_name }}"
           else
-            export BUILD_TAG=weekly-$(date "+%Y.%m.%d")
+            BRANCH="${{ github.ref_name }}"
+            DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
+            if [ "$BRANCH" = "$DEFAULT_BRANCH" ]; then
+              export BUILD_TAG=weekly-$(date "+%Y.%m.%d")
+            else
+              # Sanitize branch name for use in a tag (replace non-alphanumeric with -)
+              SAFE_BRANCH=$(echo "$BRANCH" | sed 's/[^a-zA-Z0-9._-]/-/g')
+              export BUILD_TAG=${SAFE_BRANCH}-$(date "+%Y.%m.%d")
+            fi
             gh release create ${BUILD_TAG} --title "Development Build ${BUILD_TAG}" \
                                            -F .github/workflows/weekly-build-notes.md \
                                            --prerelease || \
@@ -53,7 +64,7 @@ jobs:
 
       - name: Trigger notes updater workflow (only for weekly)
         if: startsWith(steps.get_tag.outputs.build_tag, 'weekly-')
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd  # v8.0.0
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3  # v9.0.0
         env:
           WEEKLY_TAG: ${{ steps.get_tag.outputs.build_tag }}
         with:
@@ -97,6 +108,8 @@ jobs:
 
   build:
     needs: upload_src
+    permissions:
+      contents: write
     strategy:
       matrix:
         include:
@@ -105,14 +118,14 @@ jobs:
           - { target: osx-64, os: macos-15-intel, deploy_target: "10.13" }
           - { target: osx-arm64, os: macos-latest, deploy_target: "11.0" }
           - { target: osx-arm64, os: macos-latest, deploy_target: "15.0" }
-          - { target: win-64, os: windows-latest }
+          - { target: win-64, os: windows-2022 }
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
     environment: weekly-build
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
         with:
           egress-policy: audit
 
@@ -136,16 +149,16 @@ jobs:
           fi
 
       - name: Checkout source
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           ref: ${{ github.sha }}
           fetch-depth: 2
           fetch-tags: true
           submodules: 'recursive'
 
-      - uses: prefix-dev/setup-pixi@1b2de7f3351f171c8b4dfeb558c639cb58ed4ec0 # v0.9.5
+      - uses: prefix-dev/setup-pixi@a09b6247153796b190642a2b53fac4241043cf6f # v0.10.0
         with:
-          pixi-version: v0.59.0
+          pixi-version: v0.68.1
           cache: false
 
       - name: Install the Apple certificate and provisioning profile
@@ -194,7 +207,7 @@ jobs:
 
       - name: Setup .NET 10 SDK
         if: runner.os == 'Windows'
-        uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
+        uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5.4.0
         with:
           dotnet-version: '10.0.103'
 
@@ -220,13 +233,13 @@ jobs:
           fi
           python3 package/scripts/write_version_info.py ../freecad_version.txt
           cd package/rattler-build
-          pixi install
+          pixi install --frozen
 
       - name: Azure login for Windows build code signing
         id: azure_login
         if: runner.os == 'Windows'
         continue-on-error: true
-        uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5 # v2.3.0
+        uses: azure/login@532459ea530d8321f2fb9bb10d1e0bcf23869a43 # v3.0.0
         with:
           creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
 

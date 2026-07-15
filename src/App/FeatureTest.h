@@ -25,6 +25,8 @@
 
 #pragma once
 
+#include <chrono>
+
 #include "DocumentObject.h"
 #include "PropertyGeo.h"
 #include "PropertyLinks.h"
@@ -214,9 +216,25 @@ public:
     FeatureTestAttribute();
     ~FeatureTestAttribute() override;
     DocumentObjectExecReturn* execute() override;
+    bool canRecomputeOnWorker() const override { return false; }
 
     App::PropertyPythonObject Object;
     App::PropertyString Attribute;
+};
+
+class AppExport FeatureTestAsyncBlocker: public DocumentObject
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(App::FeatureTestAsyncBlocker);
+
+public:
+    FeatureTestAsyncBlocker();
+    ~FeatureTestAsyncBlocker() override;
+    DocumentObjectExecReturn* execute() override;
+    bool canRecomputeOnWorker() const override { return true; }
+
+    static void resetBlocker();
+    static bool waitUntilStarted(std::chrono::milliseconds timeout);
+    static void releaseBlocker();
 };
 
 

@@ -21,7 +21,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="92"/>
       <source>Pan</source>
-      <translation>Arrastar vista (pan)</translation>
+      <translation>Arrastar Vista</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="93"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="96"/>
       <source>Rotation focus</source>
-      <translation>Foco de rotação</translation>
+      <translation>Foco de Rotação</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="97"/>
@@ -66,7 +66,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="654"/>
       <source>Orbit style</source>
-      <translation>Estilo de orbita</translation>
+      <translation>Estilo de Órbita</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="655"/>
@@ -81,12 +81,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="657"/>
       <source>Turntable</source>
-      <translation>Plataforma</translation>
+      <translation>Plataforma Giratória</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="658"/>
       <source>Free Turntable</source>
-      <translation>Girarmesa Livre</translation>
+      <translation>Plataforma Giratória Livre</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="659"/>
@@ -110,9 +110,9 @@
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="674"/>
-      <source>Navigation indicator</source>
+      <source>Navigation Styles</source>
       <comment>A context menu action used to show or hide the &apos;Navigation indicator&apos; toolbar widget</comment>
-      <translation>Indicador de Navegação</translation>
+      <translation type="unfinished">Navigation Styles</translation>
     </message>
   </context>
 </TS>

@@ -33,11 +33,13 @@ import os
 import sys
 import subprocess
 import shutil
+from traceback import format_exception_only
 
 import FreeCAD
 
 from femtools import femutils
 from femtools import membertools
+from femsolver.calculix.calculixutils import define_masks
 
 from PySide import QtCore  # there might be a special reason this is not guarded ?!?
 
@@ -232,13 +234,14 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         ## @var mesh
         #  mesh for the analysis
         self.mesh = None
-        mesh, message = membertools.get_mesh_to_solve(self.analysis)
-        if mesh is not None:
-            self.mesh = mesh
-        else:
+        try:
+            self.mesh = membertools.get_mesh_to_solve(self.analysis)
+        except Exception as e:
             # the prerequisites will run anyway and they will print a message box anyway
             # thus do not print one here, but print a console warning
-            FreeCAD.Console.PrintWarning(f"{message} The prerequisite check will fail.\n")
+            FreeCAD.Console.PrintWarning(
+                f"{''.join(format_exception_only(e))} The prerequisite check will fail.\n"
+            )
 
         ## @var members
         # members of the analysis. All except the solver and the mesh
@@ -366,7 +369,20 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             self.mesh,
             membertools.AnalysisMember(self.analysis),
         )
+        # set masks
+        masks = define_masks(self.solver)
+        meshdatagetter.mask_tria3 = masks["tria3"]
+        meshdatagetter.mask_tria6 = masks["tria6"]
+        meshdatagetter.mask_quad4 = masks["quad4"]
+        meshdatagetter.mask_quad8 = masks["quad8"]
+        meshdatagetter.mask_tetra4 = masks["tetra4"]
+        meshdatagetter.mask_tetra10 = masks["tetra10"]
+        meshdatagetter.mask_hexa8 = masks["hexa8"]
+        meshdatagetter.mask_hexa20 = masks["hexa20"]
+        meshdatagetter.mask_penta6 = masks["penta6"]
+        meshdatagetter.mask_penta15 = masks["penta15"]
         # save the sets into the member objects of the instanz meshdatagetter
+
         meshdatagetter.get_mesh_sets()
 
         # write input file

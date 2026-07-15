@@ -76,6 +76,7 @@ SET(PathPythonDressupGui_SRCS
     Path/Dressup/Gui/DogboneII.py
     Path/Dressup/Gui/Dragknife.py
     Path/Dressup/Gui/LeadInOut.py
+    Path/Dressup/Gui/Mirror.py
     Path/Dressup/Gui/Boundary.py
     Path/Dressup/Gui/Preferences.py
     Path/Dressup/Gui/RampEntry.py
@@ -168,6 +169,16 @@ SET(PathPythonToolsDocObjectUi_SRCS
 SET(PathPythonToolsGui_SRCS
     Path/Tool/Gui/__init__.py
     Path/Tool/Gui/Controller.py
+    Path/Tool/Gui/FeedsSpeedsDialog.py
+    Path/Tool/Gui/MaterialPicker.py
+)
+
+SET(PathPythonToolsFeedsSpeeds_SRCS
+    Path/Tool/FeedsSpeeds/__init__.py
+    Path/Tool/FeedsSpeeds/types.py
+    Path/Tool/FeedsSpeeds/resolver.py
+    Path/Tool/FeedsSpeeds/providers.py
+    Path/Tool/FeedsSpeeds/presets.py
 )
 
 SET(PathPythonMachineUi_SRCS
@@ -178,6 +189,7 @@ SET(PathPythonMachineUiEditor_SRCS
     Machine/ui/editor/machine_editor.py
     Machine/ui/editor/postprocessor_properties.py
     Machine/ui/editor/__init__.py
+    Machine/ui/editor/output_options_layout.py
 )
 
 SET(PathPythonMachineModels_SRCS
@@ -231,6 +243,7 @@ SET(PathPythonToolsToolBitUi_SRCS
     Path/Tool/toolbit/ui/browser.py
     Path/Tool/toolbit/ui/file.py
     Path/Tool/toolbit/ui/panel.py
+    Path/Tool/toolbit/ui/presets_tab.py
     Path/Tool/toolbit/ui/selector.py
     Path/Tool/toolbit/ui/tablecell.py
     Path/Tool/toolbit/ui/toollist.py
@@ -303,6 +316,7 @@ SET(PathPythonToolsShapeUi_SRCS
 SET(PathPythonPost_SRCS
     Path/Post/__init__.py
     Path/Post/Command.py
+    Path/Post/CAMErrors.py
     Path/Post/GcodeProcessingUtils.py
     Path/Post/PostList.py
     Path/Post/Processor.py
@@ -321,23 +335,29 @@ SET(PathPythonPostGui_SRCS
 SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/__init__.py
     Path/Post/scripts/centroid_legacy_post.py
+    Path/Post/scripts/centroid_post.py
     Path/Post/scripts/dxf_post.py
     Path/Post/scripts/dynapath_legacy_post.py
     Path/Post/scripts/dynapath_4060_legacy_post.py
     Path/Post/scripts/estlcam_legacy_post.py
+    Path/Post/scripts/fablin_legacy_post.py
     Path/Post/scripts/fanuc_legacy_post.py
     Path/Post/scripts/fangling_legacy_post.py
     Path/Post/scripts/gcode_pre.py
     Path/Post/scripts/generic_post.py
     Path/Post/scripts/generic_plasma_post.py
     Path/Post/scripts/grbl_post.py
+    Path/Post/scripts/grbl_legacy_post.py
     Path/Post/scripts/heidenhain_legacy_post.py
     Path/Post/scripts/KineticNCBeamicon2_legacy_post.py
     Path/Post/scripts/linuxcnc_post.py
     Path/Post/scripts/linuxcnc_legacy_post.py
     Path/Post/scripts/jtech_legacy_post.py
     Path/Post/scripts/mach3_mach4_legacy_post.py
+    Path/Post/scripts/mach3_mach4_post.py
+    Path/Post/scripts/masso_g3_post.py
     Path/Post/scripts/marlin_legacy_post.py
+    Path/Post/scripts/marlin_post.py
     Path/Post/scripts/nccad_legacy_post.py
     Path/Post/scripts/opensbp_legacy_post.py
     Path/Post/scripts/opensbp_post.py
@@ -350,6 +370,7 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/smoothie_post.py
     Path/Post/scripts/snapmaker_legacy_post.py
     Path/Post/scripts/svg_post.py
+    Path/Post/scripts/uccnc_legacy_post.py
     Path/Post/scripts/wedm_legacy_post.py
 )
 
@@ -373,6 +394,7 @@ SET(PathPythonOp_SRCS
     Path/Op/PocketShape.py
     Path/Op/Probe.py
     Path/Op/Profile.py
+    Path/Op/RotarySurface.py
     Path/Op/Slot.py
     Path/Op/Surface.py
     Path/Op/SurfaceSupport.py
@@ -405,6 +427,7 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/PocketShape.py
     Path/Op/Gui/Probe.py
     Path/Op/Gui/Profile.py
+    Path/Op/Gui/RotarySurface.py
     Path/Op/Gui/Selection.py
     Path/Op/Gui/SimpleCopy.py
     Path/Op/Gui/Slot.py
@@ -434,6 +457,11 @@ SET(PathPythonBaseGenerator_SRCS
     Path/Base/Generator/bidirectional_facing.py
     Path/Base/Generator/helix.py
     Path/Base/Generator/linking.py
+    Path/Base/Generator/rotary_dropcutter.py
+    Path/Base/Generator/rotary_parallel.py
+    Path/Base/Generator/rotary_rings.py
+    Path/Base/Generator/rotary_spiral.py
+    Path/Base/Generator/rotary_wrap.py
     Path/Base/Generator/rotation.py
     Path/Base/Generator/spiral.py
     Path/Base/Generator/tapping.py
@@ -516,20 +544,28 @@ SET(Tests_SRCS
     CAMTests/test_profile.fcstd
     CAMTests/test_geomop.fcstd
     CAMTests/test_holes00.fcstd
+    CAMTests/TestAreaOperations.py
     CAMTests/TestCAMSanity.py
     CAMTests/TestCentroidLegacyPost.py
+    CAMTests/TestCentroidPost.py
     CAMTests/TestDxfPost.py
     CAMTests/TestFanucPost.py
     CAMTests/TestGenericPost.py
     CAMTests/TestGenericPlasma.py
+    CAMTests/TestGrblPost.py
     CAMTests/TestLinuxCNCPost.py
+    CAMTests/TestLinuxCNCLegacyPost.py
     CAMTests/TestLinkingGenerator.py
     CAMTests/TestMachine.py
     CAMTests/TestMach3Mach4LegacyPost.py
+    CAMTests/TestMach3Mach4Post.py
     CAMTests/TestMassoG3Post.py
+    CAMTests/TestMarlinPost.py
+    CAMTests/TestOpenSBPPost.py
     CAMTests/TestPathAdaptive.py
     CAMTests/TestPathCommandAnnotations.py
     CAMTests/TestPathCore.py
+    CAMTests/TestPathCustom.py
     CAMTests/TestPathDepthParams.py
     CAMTests/TestPathDressupArray.py
     CAMTests/TestPathDressupDogboneII.py
@@ -545,14 +581,22 @@ SET(Tests_SRCS
     CAMTests/TestPathHelixGenerator.py
     CAMTests/TestPathLanguage.py
     CAMTests/TestPathLog.py
+    CAMTests/TestPathLogNew.py
     CAMTests/TestPathOpDeburr.py
     CAMTests/TestPathOpUtil.py
     CAMTests/TestPostCore.py
     CAMTests/TestPostProcessor.py
     CAMTests/TestPostOutput.py
+    CAMTests/TestPathPocket.py
     CAMTests/TestPathPreferences.py
     CAMTests/TestPathProfile.py
     CAMTests/TestPathPropertyBag.py
+    CAMTests/TestPathRotaryGenerators.py
+    CAMTests/TestPathRotaryParallel.py
+    CAMTests/TestPathRotaryRings.py
+    CAMTests/TestPathRotarySurface.py
+    CAMTests/TestPathRotaryPostRegression.py
+    CAMTests/TestPathRotaryWrap.py
     CAMTests/TestPathRotationGenerator.py
     CAMTests/TestPathSetupSheet.py
     CAMTests/TestPathSpiralGenerator.py
@@ -592,6 +636,9 @@ SET(Tests_SRCS
     CAMTests/TestSVGPost.py
     CAMTests/TestTSPSolver.py
     CAMTests/TestGcodeProcessingUtils.py
+    CAMTests/TestFeedsSpeedsResolver.py
+    CAMTests/TestFeedsSpeedsToolBitPresets.py
+    CAMTests/TestFeedsSpeedsToolController.py
     CAMTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
     CAMTests/Tools/Library/test-path-tool-bit-library-00.fctl
     CAMTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
@@ -648,6 +695,7 @@ SET(all_files
     ${PathPythonToolsDocObject_SRCS}
     ${PathPythonToolsDocObjectModels_SRCS}
     ${PathPythonToolsDocObjectUi_SRCS}
+    ${PathPythonToolsFeedsSpeeds_SRCS}
     ${PathPythonToolsGui_SRCS}
     ${PathPythonToolsShape_SRCS}
     ${PathPythonToolsShapeModels_SRCS}
@@ -837,6 +885,13 @@ INSTALL(
         ${PathPythonToolsGui_SRCS}
     DESTINATION
         Mod/CAM/Path/Tool/Gui
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsFeedsSpeeds_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/FeedsSpeeds
 )
 
 INSTALL(

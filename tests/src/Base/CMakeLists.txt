@@ -5,28 +5,39 @@ add_executable(Base_tests_run
         BoundBox.cpp
         Builder3D.cpp
         Color.cpp
+        Console.cpp
         CoordinateSystem.cpp
         DualNumber.cpp
         DualQuaternion.cpp
+        FileLock.cpp
         FileInfo.cpp
+        InputSource.cpp
         Handle.cpp
         Matrix.cpp
         Parameter.cpp
+        ParameterObserver.cpp
         Placement.cpp
+        Persistence.cpp
+        PyException.cpp
         Quantity.cpp
         Reader.cpp
         Rotation.cpp
         SchemaTests.cpp
         ServiceProvider.cpp
         Stream.cpp
+        StringUtils.cpp
         TimeInfo.cpp
         Tools.cpp
         Tools2D.cpp
         Tools3D.cpp
+        Translation.cpp
+        Translate.cpp
         UnlimitedUnsigned.cpp
         UniqueNameManager.cpp
         Unit.cpp
         UnitsApi.cpp
+        Uuid.cpp
+        UnitsSchemaFormat.cpp
         Vector3D.cpp
         ViewProj.cpp
         Writer.cpp
@@ -36,9 +47,8 @@ add_executable(Base_tests_run
 setup_qt_test(InventorBuilder)
 
 target_link_libraries(Base_tests_run PRIVATE
-    GTest::gtest_main
     GTest::gmock_main
-    ${Google_Tests_LIBS}
     FreeCADApp
+    ${Python3_LIBRARIES}
     ICU::uc ICU::i18n
 )

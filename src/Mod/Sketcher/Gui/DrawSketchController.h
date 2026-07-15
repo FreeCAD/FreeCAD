@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include <cmath>
+
 #include <Base/Console.h>
 #include <Base/Tools2D.h>
 #include <Gui/EditableDatumLabel.h>
@@ -157,38 +159,6 @@ private:
 
     int nOnViewParameter = OnViewParametersT::defaultMethodSize();
 
-    /// Class to keep track of colors used by the on-view parameters
-    class ColorManager
-    {
-    public:
-        SbColor dimConstrColor, dimConstrDeactivatedColor;
-
-        ColorManager()
-        {
-            init();
-        }
-
-    private:
-        void init()
-        {
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/View"
-            );
-
-            dimConstrColor = SbColor(1.0f, 0.149f, 0.0f);           // NOLINT
-            dimConstrDeactivatedColor = SbColor(0.5f, 0.5f, 0.5f);  // NOLINT
-
-            float transparency = 0.f;
-            unsigned long color = (unsigned long)(dimConstrColor.getPackedValue());
-            color = hGrp->GetUnsigned("ConstrainedDimColor", color);
-            dimConstrColor.setPackedValue((uint32_t)color, transparency);
-
-            color = (unsigned long)(dimConstrDeactivatedColor.getPackedValue());
-            color = hGrp->GetUnsigned("DeactivatedConstrDimColor", color);
-            dimConstrDeactivatedColor.setPackedValue((uint32_t)color, transparency);
-        }
-    };
-
     class OnViewParameterVisibilityManager
     {
     public:
@@ -318,16 +288,20 @@ public:
     }
 
     /** @brief function triggered by the handler to ensure its operating position takes into
-     * account widget mandated parameters */
-    void enforceControlParameters(Base::Vector2d& onSketchPos)
+     * account widget mandated parameters. Returns false if the enforced position is not finite. */
+    bool enforceControlParameters(Base::Vector2d& onSketchPos)
     {
-        prevCursorPosition = onSketchPos;
-
         doEnforceControlParameters(onSketchPos);  // specialisation interface
 
+        if (!isFiniteSketchPosition(onSketchPos)) {
+            return false;
+        }
+
+        prevCursorPosition = onSketchPos;
         lastControlEnforcedPosition = onSketchPos;  // store enforced cursor position.
 
         afterEnforceControlParameters();  // NVI
+        return true;
     }
 
     /** function that is called by the handler when the construction mode changed */
@@ -483,6 +457,10 @@ public:
 
     /// function to create constraints based on control information.
     virtual void addConstraints()
+    {}
+
+    /// function to create constraints based on control information for infinite DSH (polyline).
+    virtual void addStepConstraints()
     {}
 
     /// Configures on-view parameters
@@ -686,21 +664,32 @@ protected:
                                      std::make_unique<Gui::EditableDatumLabel>(
                                          viewer,
                                          placement,
-                                         colorManager.dimConstrDeactivatedColor,
                                          /*autoDistance = */ true,
                                          /*avoidMouseCursor = */ true
                                      )
                                  )
                                  .get();
 
+            const auto handleParameterValueChanged = [this, parameter, i](double value) {
+                parameter->setActivatedColor();
+                onViewValueChanged(i, value);
+            };
+
             QObject::connect(
                 parameter,
                 &Gui::EditableDatumLabel::valueChanged,
-                [this, parameter, i](double value) {
-                    parameter->setColor(colorManager.dimConstrColor);
-                    onViewValueChanged(i, value);
-                }
+                handleParameterValueChanged
             );
+            QObject::connect(
+                parameter,
+                &Gui::EditableDatumLabel::editingFinished,
+                handleParameterValueChanged
+            );
+            QObject::connect(parameter, &Gui::EditableDatumLabel::editingCanceled, [this](double) {
+                if (handler) {
+                    handler->cancelCurrentAction();
+                }
+            });
 
             // this gets triggered whenever user deletes content in OVP, we remove the
             // constraints and unset everything to give user another change to select stuff
@@ -722,7 +711,7 @@ protected:
     {
         onViewParameter->isSet = false;
         onViewParameter->hasFinishedEditing = false;
-        onViewParameter->setColor(colorManager.dimConstrDeactivatedColor);
+        onViewParameter->setDeactivatedColor();
         onViewParameter->setLockedAppearance(false);
     }
 
@@ -767,14 +756,29 @@ protected:
                 bool visible = isOnViewParameterVisible(i);
 
                 if (visible) {
-                    onViewParameters[i]->activate();
-
-                    // points/value will be overridden by the mouseMove triggered by the mode
-                    // change.
-                    onViewParameters[i]->setPoints(Base::Vector3d(), Base::Vector3d());
-                    onViewParameters[i]->startEdit(0.0, keymanager.get());
+                    activateOnViewParameter(i);
                 }
             }
+        }
+    }
+
+    void activateOnViewParameter(size_t i)
+    {
+        if (i < onViewParameters.size()) {
+            onViewParameters[i]->activate();
+
+            // points/value will be overridden by the mouseMove triggered by the mode
+            // change.
+            onViewParameters[i]->setPoints(Base::Vector3d(), Base::Vector3d());
+            onViewParameters[i]->startEdit(0.0, keymanager.get());
+        }
+    }
+
+    void deactivateOnViewParameter(size_t i)
+    {
+        if (i < onViewParameters.size()) {
+            onViewParameters[i]->stopEdit();
+            onViewParameters[i]->deactivate();
         }
     }
 
@@ -881,11 +885,15 @@ private:
             OnViewParameterVisibilityManager::OnViewParameterVisibility::Hidden
         ));
     }
+
+    static bool isFiniteSketchPosition(const Base::Vector2d& onSketchPos)
+    {
+        return std::isfinite(onSketchPos.x) && std::isfinite(onSketchPos.y);
+    }
     //@}
 
 private:
     OnViewParameterVisibilityManager ovpVisibilityManager;
-    ColorManager colorManager;
     std::unique_ptr<DrawSketchKeyboardManager> keymanager;
 
     bool firstMoveInit = false;  // true if first mouse movement not yet performed (resets)
