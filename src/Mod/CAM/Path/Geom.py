@@ -807,16 +807,8 @@ def combineHorizontalFaces(faces, keepOrder=False):
     afbb = allFaces.BoundBox
     bboxFace = makeBoundBoxFace(afbb, offset, -5.0)
     bboxSolid = bboxFace.extrude(FreeCAD.Vector(0.0, 0.0, 10.0))
-    extrudedFaces = list()
-    for f in faces:
-        extrudedFaces.append(f.extrude(FreeCAD.Vector(0.0, 0.0, 6.0)))
-
-    # Fuse all extruded faces together
-    allFacesSolid = extrudedFaces.pop()
-    for i in range(len(extrudedFaces)):
-        temp = extrudedFaces.pop().fuse(allFacesSolid)
-        allFacesSolid = temp
-    cut = bboxSolid.cut(allFacesSolid)
+    extrudedFaces = [f.extrude(FreeCAD.Vector(0.0, 0.0, 6.0)) for f in faces]
+    cut = bboxSolid.cut(extrudedFaces)
 
     # Debug
     # Part.show(cut)
