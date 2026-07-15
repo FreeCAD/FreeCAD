@@ -177,6 +177,8 @@ private:
         const std::vector<Constraint*>& clist
     );
 
+    int computeComponents(const std::vector<Constraint*>& clist, VEC_I& components);
+
     void makeDenseQRDecomposition(
         const Eigen::MatrixXd& J,
         const std::map<int, int>& jacobianconstraintmap,
