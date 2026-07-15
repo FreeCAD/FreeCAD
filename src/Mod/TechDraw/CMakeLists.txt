@@ -20,7 +20,6 @@ set(TechDraw_ToolsScripts
     TechDrawTools/__init__.py
     TechDrawTools/CommandMoveView.py
     TechDrawTools/CommandShareView.py
-    TechDrawTools/CommandAxoLengthDimension.py
     TechDrawTools/CommandPositionSectionView.py
     TechDrawTools/CommandFillTemplateFields.py
     TechDrawTools/CommandVertexCreations.py
