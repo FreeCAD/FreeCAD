@@ -110,7 +110,7 @@ bool Branding::readFile(const std::filesystem::path& filePath)
         parser.setErrorHandler(&errorHandler);
 
         const std::string filename = Base::FileInfo::pathToString(filePath);
-        XStr xmlPath(filename.c_str());
+        XUTF8Str xmlPath(filename.c_str());
         LocalFileInputSource source(xmlPath.unicodeForm());
         parser.parse(source);
 

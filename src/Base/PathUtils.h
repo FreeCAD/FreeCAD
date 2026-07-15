@@ -41,14 +41,17 @@ struct BaseExport NormalizePathOptions
 
 /// Convert a UTF-8 encoded string to a platform filesystem path.
 /// On Windows this produces a wide path.
-std::filesystem::path pathFromUtf8(std::string_view utf8);
+BaseExport std::filesystem::path pathFromUtf8(std::string_view utf8);
+
+/// Convert a filesystem path to UTF-8 using '/' as the serialized separator.
+BaseExport std::string pathToPortableUtf8(const std::filesystem::path& path);
 
 /// Returns canonical(path) if it exists, otherwise returns the input unchanged.
-std::filesystem::path canonicalIfExists(const std::filesystem::path& path);
+BaseExport std::filesystem::path canonicalIfExists(const std::filesystem::path& path);
 
 /// Best-effort normalize a path (absolute + weakly_canonical) and optionally create parents.
 /// Returns std::nullopt if normalization fails.
-std::optional<std::filesystem::path> normalizePath(
+BaseExport std::optional<std::filesystem::path> normalizePath(
     const std::filesystem::path& path,
     const NormalizePathOptions& options = {}
 );

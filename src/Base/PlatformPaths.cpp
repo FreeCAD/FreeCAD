@@ -25,6 +25,7 @@
 #include <system_error>
 #include <vector>
 
+#include <Base/FileInfo.h>
 #include <Base/PathUtils.h>
 #include <FCConfig.h>
 
@@ -47,23 +48,62 @@ namespace Base
 namespace
 {
 
-std::optional<std::string> getenvString(const char* key)
+#if defined(FC_OS_WIN32)
+std::wstring wideEnvironmentKey(const char* key)
 {
-    if (!key || !*key) {
-        return std::nullopt;
-    }
-    if (const char* value = std::getenv(key); value && *value) {
-        return std::string(value);
-    }
-    return std::nullopt;
+    return pathFromUtf8(std::string_view(key)).native();
 }
+
+std::optional<std::string> readWindowsEnvironmentVariable(const char* key)
+{
+    const std::wstring wideKey = wideEnvironmentKey(key);
+    DWORD bufferSize = 256;
+    for (;;) {
+        std::wstring value(bufferSize, L'\0');
+        const DWORD length = GetEnvironmentVariableW(wideKey.c_str(), value.data(), bufferSize);
+        if (length == 0) {
+            return std::nullopt;
+        }
+        if (length < bufferSize) {
+            value.resize(length);
+            return FileInfo::pathToString(fs::path(value));
+        }
+        bufferSize = length + 1;
+    }
+}
+#endif
 
 static fs::path pathFromEnvOrDefault(const char* envKey, fs::path fallback)
 {
-    if (auto value = getenvString(envKey); value) {
-        return fs::path(*value);
+    if (auto value = environmentVariableUtf8(envKey); value && !value->empty()) {
+        return pathFromUtf8(*value);
     }
     return fallback;
+}
+
+static fs::path absolutePathFromEnvOrDefault(const char* envKey, fs::path fallback)
+{
+    if (auto value = environmentVariableUtf8(envKey); value && !value->empty()) {
+        fs::path path = pathFromUtf8(*value);
+        if (path.is_absolute()) {
+            return path;
+        }
+    }
+    return fallback;
+}
+
+static bool isExecutableFile(const fs::path& path)
+{
+    std::error_code error;
+    if (!fs::is_regular_file(path, error) || error) {
+        return false;
+    }
+
+#if !defined(FC_OS_WIN32)
+    return access(path.c_str(), X_OK) == 0;
+#else
+    return true;
+#endif
 }
 
 #if defined(FC_OS_WIN32)
@@ -81,20 +121,35 @@ static fs::path knownFolder(REFKNOWNFOLDERID id)
 
 static fs::path userProfileFallback()
 {
-    if (auto value = getenvString("USERPROFILE"); value) {
-        return fs::path(*value);
+    if (auto value = environmentVariableUtf8("USERPROFILE"); value && !value->empty()) {
+        return pathFromUtf8(*value);
     }
 
-    auto drive = getenvString("HOMEDRIVE");
-    auto homepath = getenvString("HOMEPATH");
-    if (drive && homepath) {
-        return fs::path(*drive) / fs::path(*homepath);
+    auto drive = environmentVariableUtf8("HOMEDRIVE");
+    auto homepath = environmentVariableUtf8("HOMEPATH");
+    if (drive && !drive->empty() && homepath && !homepath->empty()) {
+        return pathFromUtf8(*drive) / pathFromUtf8(*homepath);
     }
     return fs::path("C:\\");
 }
 #endif
 
 }  // namespace
+
+std::optional<std::string> environmentVariableUtf8(const char* key)
+{
+    if (!key || !*key) {
+        return std::nullopt;
+    }
+#if defined(FC_OS_WIN32)
+    return readWindowsEnvironmentVariable(key);
+#else
+    if (const char* value = std::getenv(key); value && *value) {
+        return std::string(value);
+    }
+    return std::nullopt;
+#endif
+}
 
 StandardPaths standardPaths()
 {
@@ -128,8 +183,8 @@ StandardPaths standardPaths()
     }
 #elif defined(FC_OS_MACOSX)
     fs::path home;
-    if (auto value = getenvString("HOME"); value) {
-        home = fs::path(*value);
+    if (auto value = environmentVariableUtf8("HOME"); value) {
+        home = pathFromUtf8(*value);
     }
 
     if (home.empty()) {
@@ -137,7 +192,7 @@ StandardPaths standardPaths()
         struct passwd* result {};
         std::vector<char> buffer(16384);
         if (getpwuid_r(getuid(), &pwd, buffer.data(), buffer.size(), &result) == 0 && result) {
-            home = fs::path(pwd.pw_dir);
+            home = pathFromUtf8(pwd.pw_dir);
         }
     }
 
@@ -148,8 +203,8 @@ StandardPaths standardPaths()
     paths.temp = pathFromEnvOrDefault("TMPDIR", fs::path("/tmp"));
 #else
     fs::path home;
-    if (auto value = getenvString("HOME"); value) {
-        home = fs::path(*value);
+    if (auto value = environmentVariableUtf8("HOME"); value) {
+        home = pathFromUtf8(*value);
     }
 
     if (home.empty()) {
@@ -157,14 +212,14 @@ StandardPaths standardPaths()
         struct passwd* result {};
         std::vector<char> buffer(16384);
         if (getpwuid_r(getuid(), &pwd, buffer.data(), buffer.size(), &result) == 0 && result) {
-            home = fs::path(pwd.pw_dir);
+            home = pathFromUtf8(pwd.pw_dir);
         }
     }
 
     paths.home = home;
-    paths.config = pathFromEnvOrDefault("XDG_CONFIG_HOME", home / ".config");
-    paths.data = pathFromEnvOrDefault("XDG_DATA_HOME", home / ".local" / "share");
-    paths.cache = pathFromEnvOrDefault("XDG_CACHE_HOME", home / ".cache");
+    paths.config = absolutePathFromEnvOrDefault("XDG_CONFIG_HOME", home / ".config");
+    paths.data = absolutePathFromEnvOrDefault("XDG_DATA_HOME", home / ".local" / "share");
+    paths.cache = absolutePathFromEnvOrDefault("XDG_CACHE_HOME", home / ".cache");
     paths.temp = pathFromEnvOrDefault("TMPDIR", fs::path("/tmp"));
     if (paths.temp.empty()) {
         paths.temp = pathFromEnvOrDefault("TMP", fs::path("/tmp"));
@@ -195,15 +250,15 @@ std::filesystem::path resolveExecutablePath(const char* argv0)
 
     if (hasSeparator) {
         std::error_code error;
-        fs::path p(argv0String);
+        fs::path p = pathFromUtf8(argv0String);
         fs::path abs = fs::absolute(p, error);
-        if (error) {
-            return canonicalIfExists(p);
+        if (error || !isExecutableFile(abs)) {
+            return {};
         }
         return canonicalIfExists(abs);
     }
 
-    const auto pathEnv = getenvString("PATH");
+    const auto pathEnv = environmentVariableUtf8("PATH");
     if (!pathEnv) {
         return {};
     }
@@ -215,22 +270,19 @@ std::filesystem::path resolveExecutablePath(const char* argv0)
 #endif
 
     std::string_view view(*pathEnv);
-    while (!view.empty()) {
+    while (true) {
         const std::size_t pos = view.find(separator);
         const std::string_view part = view.substr(0, pos);
-        if (!part.empty()) {
-            fs::path dir {std::string(part)};
-            std::vector<fs::path> candidates;
-            candidates.emplace_back(dir / argv0String);
+        fs::path dir = part.empty() ? fs::path(".") : pathFromUtf8(part);
+        std::vector<fs::path> candidates;
+        candidates.emplace_back(dir / pathFromUtf8(argv0String));
 #if defined(FC_OS_WIN32)
-            candidates.emplace_back(dir / (argv0String + ".exe"));
-            candidates.emplace_back(dir / (argv0String + ".com"));
+        candidates.emplace_back(dir / pathFromUtf8(argv0String + ".exe"));
+        candidates.emplace_back(dir / pathFromUtf8(argv0String + ".com"));
 #endif
-            for (const auto& cand : candidates) {
-                std::error_code error;
-                if (fs::exists(cand, error) && !error) {
-                    return canonicalIfExists(cand);
-                }
+        for (const auto& cand : candidates) {
+            if (isExecutableFile(cand)) {
+                return canonicalIfExists(cand);
             }
         }
         if (pos == std::string_view::npos) {

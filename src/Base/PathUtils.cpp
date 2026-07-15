@@ -20,6 +20,7 @@
 
 #include "PathUtils.h"
 
+#include <algorithm>
 #include <system_error>
 
 #include <Base/FileInfo.h>
@@ -63,6 +64,17 @@ fs::path pathFromUtf8(std::string_view utf8)
     return FileInfo::stringToPath(std::string(utf8));
 #else
     return fs::path(std::string(utf8));
+#endif
+}
+
+std::string pathToPortableUtf8(const fs::path& path)
+{
+#if defined(FC_OS_WIN32)
+    auto result = FileInfo::pathToString(path);
+    std::replace(result.begin(), result.end(), '\\', '/');
+    return result;
+#else
+    return path.generic_string();
 #endif
 }
 

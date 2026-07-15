@@ -21,6 +21,8 @@
 #pragma once
 
 #include <filesystem>
+#include <optional>
+#include <string>
 
 #ifndef FC_GLOBAL_H
 # include <FCGlobal.h>
@@ -28,6 +30,11 @@
 
 namespace Base
 {
+
+/// Read an environment variable and return its value as UTF-8.
+/// On Windows this bypasses the narrow CRT environment and preserves Unicode.
+/// Empty variables are treated like undefined variables and return nullopt.
+BaseExport std::optional<std::string> environmentVariableUtf8(const char* key);
 
 struct BaseExport StandardPaths
 {
@@ -47,10 +54,10 @@ struct BaseExport StandardPaths
 /// - On Linux/BSD follows XDG_*_HOME when set, otherwise defaults under HOME.
 /// - On macOS uses ~/Library/{Preferences,Application Support,Caches}.
 /// - On Windows uses known folders (RoamingAppData/LocalAppData/Profile) with env fallbacks.
-StandardPaths standardPaths();
+BaseExport StandardPaths standardPaths();
 
 /// Best-effort absolute path of the current executable given argv[0].
 /// On POSIX, searches PATH when argv0 has no directory separator.
-std::filesystem::path resolveExecutablePath(const char* argv0);
+BaseExport std::filesystem::path resolveExecutablePath(const char* argv0);
 
 }  // namespace Base
