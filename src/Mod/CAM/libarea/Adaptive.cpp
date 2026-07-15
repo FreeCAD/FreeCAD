@@ -3574,6 +3574,7 @@ void Adaptive2d::ProcessPolyNode(
     double perf_total_len = 0;
 
     AdaptiveOutput output;
+    output.clipperScale = double(scaleFactor);
 #ifdef DEV_MODE
     clock_t start_clock = clock();
 #endif

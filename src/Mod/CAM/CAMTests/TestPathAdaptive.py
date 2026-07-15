@@ -228,9 +228,9 @@ class TestPathAdaptive(PathTestBase):
         for result in results:
             self.checkAdaptiveErrors(result)
 
-        # Return total cleared area and the configured instance
+        # Return total cleared area, the configured instance, and raw results
         total_cleared = sum(r.ClearedArea for r in results)
-        return total_cleared, a2d
+        return total_cleared, a2d, results
 
     def _calculateCornerUnclearableArea(self, tool_diameter):
         """Calculate unclearable area in a single corner due to circular tool."""
@@ -243,7 +243,7 @@ class TestPathAdaptive(PathTestBase):
         stockPath2d, path2d, dims = self._createRectangleGeometry(50.0, 50.0, 40.0, 40.0)
 
         # Execute adaptive clearing
-        total_cleared, a2d = self._executeAdaptive(
+        total_cleared, a2d, results = self._executeAdaptive(
             area.AdaptiveOperationType.ClearingInside, stockPath2d, path2d
         )
 
@@ -251,7 +251,11 @@ class TestPathAdaptive(PathTestBase):
         corner_unclearable_area = self._calculateCornerUnclearableArea(a2d.toolDiameter)
         total_unclearable_area = 4 * corner_unclearable_area
         expected_area = dims["path_width"] * dims["path_height"] - total_unclearable_area
-        delta = corner_unclearable_area / 2.0
+        # allowed perimeter_error = the area error from the perimeter being offset by 1 on each side
+        perimeter_error = (
+            (dims["path_width"] * 2 + dims["path_height"] * 2) * 2 / results[0].clipperScale
+        )
+        delta = corner_unclearable_area / 2.0 + perimeter_error
         self.assertAlmostEqual(
             total_cleared,
             expected_area,
@@ -296,7 +300,7 @@ class TestPathAdaptive(PathTestBase):
         ]
 
         # Execute adaptive clearing with pre-cleared area
-        total_cleared, a2d = self._executeAdaptive(
+        total_cleared, a2d, _ = self._executeAdaptive(
             area.AdaptiveOperationType.ClearingInside, stockPath2d, path2d, clearedArea
         )
 
@@ -345,7 +349,7 @@ class TestPathAdaptive(PathTestBase):
         stockPath2d, path2d, dims = self._createRectangleGeometry(50.0, 50.0, 40.0, 40.0)
 
         # Execute adaptive clearing outside
-        total_cleared, a2d = self._executeAdaptive(
+        total_cleared, a2d, _ = self._executeAdaptive(
             area.AdaptiveOperationType.ClearingOutside, stockPath2d, path2d
         )
 
@@ -368,7 +372,7 @@ class TestPathAdaptive(PathTestBase):
         stockPath2d, path2d, dims = self._createRectangleGeometry(50.0, 50.0, 40.0, 40.0)
 
         # Execute adaptive profiling
-        total_cleared, a2d = self._executeAdaptive(
+        total_cleared, a2d, _ = self._executeAdaptive(
             area.AdaptiveOperationType.ProfilingInside, stockPath2d, path2d, stepOverFactor=0.5
         )
 
@@ -416,7 +420,7 @@ class TestPathAdaptive(PathTestBase):
         stockPath2d, path2d, dims = self._createRectangleGeometry(50.0, 50.0, 15.0, 15.0)
 
         # Execute adaptive profiling
-        total_cleared, a2d = self._executeAdaptive(
+        total_cleared, a2d, _ = self._executeAdaptive(
             area.AdaptiveOperationType.ProfilingOutside, stockPath2d, path2d, stepOverFactor=0.5
         )
 

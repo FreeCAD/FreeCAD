@@ -81,6 +81,7 @@ struct AdaptiveOutput
     TPaths AdaptivePaths;
     int ReturnMotionType;  // MotionType enum, problem with serialization if enum is used
     double ClearedArea;    // Total area cleared in this operation
+    double clipperScale;   // Clipper integer units per mm used in this operation
 
     // Warning/error flags
     bool StartPointNotFound = false;
