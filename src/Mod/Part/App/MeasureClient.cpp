@@ -195,6 +195,9 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
                 case GeomAbs_Cylinder: {
                     return App::MeasureElementType::CYLINDER;
                 }
+                case GeomAbs_Cone: {
+                    return App::MeasureElementType::CONE;
+                }
                 case GeomAbs_Torus: {
                     return App::MeasureElementType::TORUS;
                 }
