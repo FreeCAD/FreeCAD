@@ -10,6 +10,7 @@
 #include "App/DocumentObject.h"
 #include "App/Expression.h"
 #include "App/ExpressionParser.h"
+#include "Base/Type.h"
 
 #include "src/App/InitApplication.h"
 
@@ -68,6 +69,9 @@ protected:
 
     void SetUp() override
     {
+        if (Base::Type::fromName("Sketcher::SketchObject").isBad()) {
+            GTEST_SKIP() << "Sketcher module is unavailable";
+        }
         docName = App::GetApplication().getUniqueDocumentName("test");
         thisDoc = App::GetApplication().newDocument(docName.c_str(), "testUser");
         thisObj = thisDoc->addObject("Sketcher::SketchObject", "Sketch");
