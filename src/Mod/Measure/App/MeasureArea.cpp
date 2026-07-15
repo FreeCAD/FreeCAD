@@ -56,6 +56,7 @@ bool MeasureArea::isSupported(App::MeasureElementType type)
     // clang-format off
     return (type == App::MeasureElementType::PLANE) ||
            (type == App::MeasureElementType::CYLINDER) ||
+           (type == App::MeasureElementType::CONE) ||
            (type == App::MeasureElementType::SURFACE) ||
            (type == App::MeasureElementType::VOLUME) ||
            (type == App::MeasureElementType::DISC)  ||
