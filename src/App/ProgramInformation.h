@@ -44,16 +44,6 @@ public:
     static std::string prettyProductInfoWrapper();
 
     /**
-     * @brief Add module info to the verbose output.
-     *
-     * This function is used to add information about a single add-on.
-     *
-     * @param[in,out] str The text stream to write the information to.
-     * @param[in] modPath The path of the module.
-     */
-    static void addModuleInfo(std::stringstream& str, const std::string& path);
-
-    /**
      * @brief Get verbose information about the application.
      *
      * @param[in,out] str The text stream to write the information to.

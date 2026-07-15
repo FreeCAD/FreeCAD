@@ -89,6 +89,7 @@ void getSelectedShapes(Gui::Command* cmd,
 
 std::pair<App::DocumentObject*, std::string> faceFromSelection();
 std::pair<Base::Vector3d, Base::Vector3d> viewDirection();
+Base::Vector3d checkDirectionVsBasis(Base::Vector3d dir);
 
 class Vertex;
 using namespace TechDrawGui;
@@ -178,8 +179,8 @@ void CmdTechDrawPageTemplate::activated(int iMsg)
     QString work_dir = Gui::FileDialog::getWorkingDirectory();
     QString templateDir = Preferences::defaultTemplateDir();
     QString templateFileName = Gui::FileDialog::getOpenFileName(
-        Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Select a template file")), templateDir,
-        QStringList(QString::fromUtf8(QT_TR_NOOP("Template (*.svg)"))));
+        Gui::getMainWindow(), QObject::tr("Select a template file"), templateDir,
+        Gui::FileDialog::FilterList{{QObject::tr("Template"), {"*.svg"}}});
     Gui::FileDialog::setWorkingDirectory(work_dir);// Don't overwrite WD with templateDir
 
     if (templateFileName.isEmpty()) {
@@ -349,6 +350,8 @@ void CmdTechDrawView::activated(int iMsg)
                 SpreadName.c_str());
             doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
                 FeatName.c_str());
+            doCommand(Doc, "if App.activeDocument().%s.Scale: App.activeDocument().%s.Scale = App.activeDocument().%s.Scale",
+                PageName.c_str(), FeatName.c_str(), PageName.c_str());
             updateActive();
             commitCommand();
             viewCreated = true;
@@ -366,6 +369,8 @@ void CmdTechDrawView::activated(int iMsg)
                 SourceName.c_str());
             doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
                 FeatName.c_str());
+            doCommand(Doc, "if App.activeDocument().%s.Scale: App.activeDocument().%s.Scale = App.activeDocument().%s.Scale",
+                PageName.c_str(), FeatName.c_str(), PageName.c_str());
             updateActive();
             commitCommand();
             viewCreated = true;
@@ -440,9 +445,10 @@ void CmdTechDrawView::activated(int iMsg)
                 }
             }
 
-            QStringList filterList;
-            filterList << QStringLiteral("%1 (*.svg *.svgz *.jpg *.jpeg *.png *.bmp)").arg(QObject::tr("SVG or Image files"));
-            filterList << QStringLiteral("%1 (*.*)").arg(QObject::tr("All Files"));
+            const Gui::FileDialog::FilterList filterList {
+                {QObject::tr("SVG or Image files"), {"*.svg", "*.svgz", "*.jpg", "*.jpeg", "*.png", "*.bmp"}},
+                Gui::FileDialog::Filter::AllFiles(),
+            };
             QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
                 QObject::tr("Select a SVG or Image file to open"),
                 Preferences::defaultSymbolDir(),
@@ -455,10 +461,7 @@ void CmdTechDrawView::activated(int iMsg)
                     auto filespec = DU::cleanFilespecBackslash(
                         Base::Tools::escapeEncodeFilename(filename.toStdString()));
                     openCommand(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
-                    doCommand(Doc, "import codecs");
-                    doCommand(Doc,
-                              "f = codecs.open(\"%s\", 'r', encoding=\"utf-8\")",
-                              filespec.c_str());
+                    doCommand(Doc, "f = open(\"%s\", 'r', encoding=\"utf-8\")", filespec.c_str());
                     doCommand(Doc, "svg = f.read()");
                     doCommand(Doc, "f.close()");
                     doCommand(Doc,
@@ -515,10 +518,11 @@ void CmdTechDrawView::activated(int iMsg)
     dvp->XSource.setValues(xShapes);
 
     getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
-    auto dirs = viewDirection();
+    std::pair<Base::Vector3d, Base::Vector3d> dirs = viewDirection();
+    Base::Vector3d checkedDir = checkDirectionVsBasis(dirs.first);
     doCommand(Doc,
               "App.activeDocument().%s.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-              FeatName.c_str(), dirs.first.x, dirs.first.y, dirs.first.z);
+              FeatName.c_str(), checkedDir.x, checkedDir.y, checkedDir.z);
     doCommand(Doc,
               "App.activeDocument().%s.RotationVector = FreeCAD.Vector(%.12f, %.12f, %.12f)",
               FeatName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
@@ -589,7 +593,7 @@ void CmdTechDrawBrokenView::activated(int iMsg)
 
     // we need either a base view (dvp) or some shape objects in the selection
     if (!dvp && (shapes.empty() && xShapes.empty())) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Empty selection"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Empty Selection"),
             QObject::tr("Select objects to break or a base view and break definition objects"));
         return;
     }
@@ -668,7 +672,7 @@ void CmdTechDrawBrokenView::activated(int iMsg)
         dirs = DrawGuiUtil::get3DDirAndRot();
     }
 
-    Base::Vector3d projDir = dirs.first;
+    Base::Vector3d projDir = checkDirectionVsBasis(dirs.first);
     doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(%.6f,%.6f,%.6f)",
               FeatName.c_str(), projDir.x, projDir.y, projDir.z);
     doCommand(Doc, "App.activeDocument().%s.XDirection = FreeCAD.Vector(%.6f,%.6f,%.6f)",
@@ -1153,10 +1157,11 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
         DrawGuiUtil::getProjDirFromFace(partObj, faceName)
         : DrawGuiUtil::get3DDirAndRot();
 
+    Base::Vector3d checkedDir = checkDirectionVsBasis(dirs.first);
     getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
     doCommand(Doc,
         "App.activeDocument().%s.Anchor.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-        multiViewName.c_str(), dirs.first.x, dirs.first.y, dirs.first.z);
+        multiViewName.c_str(), checkedDir.x, checkedDir.y, checkedDir.z);
     doCommand(Doc,
         "App.activeDocument().%s.Anchor.RotationVector = FreeCAD.Vector(%.12f, %.12f, %.12f)",
         multiViewName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
@@ -1189,14 +1194,14 @@ bool _checkSelectionBalloon(Gui::Command* cmd, unsigned maxObjs)
 {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     if (selection.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                              QObject::tr("Select an object first"));
         return false;
     }
 
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() > maxObjs) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                              QObject::tr("Too many objects selected"));
         return false;
     }
@@ -1204,7 +1209,7 @@ bool _checkSelectionBalloon(Gui::Command* cmd, unsigned maxObjs)
     std::vector<App::DocumentObject*> pages =
         cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     if (pages.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                              QObject::tr("Create a page first"));
         return false;
     }
@@ -1216,7 +1221,7 @@ bool _checkDrawViewPartBalloon(Gui::Command* cmd)
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     auto objFeat(dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject()));
     if (!objFeat) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                              QObject::tr("No view of a part in selection"));
         return false;
     }
@@ -1549,9 +1554,10 @@ void CmdTechDrawSymbol::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     // Reading an image
-    QStringList filterList;
-    filterList << QStringLiteral("%1 (*.svg *.svgz)").arg(QObject::tr("Scalable vector graphic"));
-    filterList << QStringLiteral("%1 (*.*)").arg(QObject::tr("All files"));
+    const Gui::FileDialog::FilterList filterList {
+        {QStringLiteral("SVG"), {"*.svg", "*.svgz"}},
+        Gui::FileDialog::Filter::AllFiles(),
+    };
     QString filename = Gui::FileDialog::getOpenFileName(
         Gui::getMainWindow(), QObject::tr("Choose an SVG file to open"),
         Preferences::defaultSymbolDir(),
@@ -1562,8 +1568,7 @@ void CmdTechDrawSymbol::activated(int iMsg)
         auto filespec = DU::cleanFilespecBackslash(
             Base::Tools::escapeEncodeFilename(filename.toStdString()));
         openCommand(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
-        doCommand(Doc, "import codecs");
-        doCommand(Doc, "f = codecs.open(\"%s\", 'r', encoding=\"utf-8\")",  filespec.c_str());
+        doCommand(Doc, "f = open(\"%s\", 'r', encoding=\"utf-8\")", filespec.c_str());
         doCommand(Doc, "svg = f.read()");
         doCommand(Doc, "f.close()");
         doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewSymbol', '%s')",
@@ -1627,6 +1632,7 @@ void CmdTechDrawDraftView::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     std::pair<Base::Vector3d, Base::Vector3d> dirs = DrawGuiUtil::get3DDirAndRot();
+    Base::Vector3d checkedDir = checkDirectionVsBasis(dirs.first);
     for (auto* obj : objects) {
          if (obj->isDerivedFrom<TechDraw::DrawPage>() ||
              obj->isDerivedFrom<TechDraw::DrawView>()) {
@@ -1644,8 +1650,10 @@ void CmdTechDrawDraftView::activated(int iMsg)
                   SourceName.c_str());
         doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
                   FeatName.c_str());
+        doCommand(Doc, "if App.activeDocument().%s.Scale: App.activeDocument().%s.Scale = App.activeDocument().%s.Scale",
+                  PageName.c_str(), FeatName.c_str(), PageName.c_str());
         doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  FeatName.c_str(), dirs.first.x, dirs.first.y, dirs.first.z);
+                  FeatName.c_str(), checkedDir.x, checkedDir.y, checkedDir.z);
         updateActive();
         commitCommand();
     }
@@ -1780,6 +1788,8 @@ void CmdTechDrawSpreadsheetView::activated(int iMsg)
 
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
               FeatName.c_str());
+    doCommand(Doc, "if App.activeDocument().%s.Scale: App.activeDocument().%s.Scale = App.activeDocument().%s.Scale",
+        PageName.c_str(), FeatName.c_str(), PageName.c_str());
     updateActive();
     commitCommand();
 }
@@ -1886,8 +1896,8 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
     //WF? allow more than one TD Page per Dxf file??  1 TD page = 1 DXF file = 1 drawing?
     QString defaultDir;
     QString fileName = Gui::FileDialog::getSaveFileName(
-        Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Save DXF file")), defaultDir,
-        QStringList(QStringLiteral("DXF (*.dxf)")));
+        Gui::getMainWindow(), QObject::tr("Save DXF file"), defaultDir,
+        Gui::FileDialog::FilterList{{QStringLiteral("DXF"), {"*.dxf"}}});
 
     if (fileName.isEmpty()) {
         return;
@@ -2063,3 +2073,34 @@ std::pair<App::DocumentObject*, std::string> faceFromSelection()
 
     return { nullptr, "" };
 }
+
+//! checks for directions that are almost +/- x,y,z.
+Base::Vector3d checkDirectionVsBasis(Base::Vector3d dir)
+{
+    Base::Vector3d closest = DrawUtil::closestBasisOriented(dir);
+    if (dir.IsEqual(closest, Precision::Confusion())) {
+        return closest;
+    }
+
+    double angleDeg = Base::toDegrees(dir.GetAngle(closest));
+    constexpr double MaxAngleDeg{1.0};  // absolutely a WAG.
+    if (std::fabs(angleDeg) < MaxAngleDeg) {
+        // close to a basis, but not quite equal
+        auto msgText = QObject::tr("Selected Direction is within %1 degrees of a standard direction. "
+                    "Replace selected Direction with %2?")
+                    .arg(QString::number(angleDeg))
+                    .arg(QString::fromStdString(DU::formatVector(closest)));
+        QMessageBox::StandardButton rc = QMessageBox::question(
+            Gui::getMainWindow(), QObject::tr("Direction is close to standard"),
+            msgText,
+            QMessageBox::StandardButtons(QMessageBox::Yes | QMessageBox::No));
+        if (rc == QMessageBox::Yes) {
+            return closest;
+        }
+    }
+
+    // not close to a basis vector.
+    return dir;
+
+}
+

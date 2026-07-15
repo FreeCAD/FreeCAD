@@ -52,8 +52,6 @@ exclude: |
         src/Gui/QSint|
         src/Gui/Quarter|
         src/Mod/Fem/femexamples|
-        src/Mod/Import/App/SCL|
-        src/Mod/Import/App/SCL_output|
         src/Mod/Mesh/App/TestData|
         src/Mod/Mesh/App/WildMagic4|
         src/Mod/Robot/App/kdl_cp|
@@ -71,11 +69,26 @@ repos:
     -   id: check-added-large-files
     -   id: mixed-line-ending
 -   repo: https://github.com/psf/black-pre-commit-mirror
-    rev: fa505ab9c3e0fedafe1709fd7ac2b5f8996c670d  # frozen: 26.3.1
+    rev: 4160603246a6b365d4a2af661c6d71b0a0f50478  # frozen: 26.5.1
     hooks:
         -   id: black
             args: ['--line-length', '100']
+            exclude: ^src/Tools/typing/generated/
 -   repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: d730ad6820486029c4fd4cd291a6461a0b6501a3  # frozen: v22.1.3
+    rev: dd18dad857d6133e90bbe478f4f2f22ec0030269  # frozen: v22.1.5
     hooks:
         -   id: clang-format
+-   repo: local
+    hooks:
+    -   id: version-sync
+        name: Push version changes to other necessary files
+        entry: python src/Tools/sync_version.py --update
+        language: python
+        files: '(version\.json)'
+        pass_filenames: false
+    -   id: version-sync
+        name: Verify version consistency
+        entry: python src/Tools/sync_version.py --check
+        language: python
+        files: '(pixi\.toml|recipe\.yaml|declarations\.nsh|freecad\.spec)'
+        pass_filenames: false

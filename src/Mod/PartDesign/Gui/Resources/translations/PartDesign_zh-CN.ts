@@ -77,7 +77,7 @@ i.e. counter-clockwise when moving along its axis.</source>
       <location filename="../../../App/FeatureHelix.cpp" line="198"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
-      <translation>如果是假的，该工具将基于轮廓边界框为螺距提出初始值，，从而避免自相交。</translation>
+      <translation>如果取消勾选，工具会根据轮廓的边界框自动提供一个初始的螺距值，以此来避免模型发生自相交。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="210"/>
@@ -92,7 +92,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="120"/>
       <source>Pressure angle of gear teeth</source>
-      <translation>压力角</translation>
+      <translation>齿轮压力角</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="114"/>
@@ -133,17 +133,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignAdditiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1664"/>
+      <location filename="../../Command.cpp" line="1674"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1665"/>
+      <location filename="../../Command.cpp" line="1675"/>
       <source>Additive Helix</source>
       <translation>添加式螺旋</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1666"/>
+      <location filename="../../Command.cpp" line="1676"/>
       <source>Sweeps the selected sketch or profile along a helix and adds it to the body</source>
       <translation>沿着螺旋线扫描选定的草图或轮廓，并将其添加到实体中</translation>
     </message>
@@ -151,17 +151,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1565"/>
+      <location filename="../../Command.cpp" line="1575"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1566"/>
+      <location filename="../../Command.cpp" line="1576"/>
       <source>Additive Loft</source>
       <translation>添加式放样</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1567"/>
+      <location filename="../../Command.cpp" line="1577"/>
       <source>Lofts the selected sketch or profile along a path and adds it to the body</source>
       <translation>沿着路径放样选定的草图或轮廓，并将其添加到实体中</translation>
     </message>
@@ -169,17 +169,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignAdditivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1465"/>
+      <location filename="../../Command.cpp" line="1475"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1466"/>
+      <location filename="../../Command.cpp" line="1476"/>
       <source>Additive Pipe</source>
       <translation>添加式管道</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1467"/>
+      <location filename="../../Command.cpp" line="1477"/>
       <source>Sweeps the selected sketch or profile along a path and adds it to the body</source>
       <translation>沿着路径扫描选定的草图或轮廓，并将其添加到实体中</translation>
     </message>
@@ -187,17 +187,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignBody</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="92"/>
+      <location filename="../../CommandBody.cpp" line="93"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="93"/>
+      <location filename="../../CommandBody.cpp" line="94"/>
       <source>New Body</source>
       <translation>新建实体</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="94"/>
+      <location filename="../../CommandBody.cpp" line="95"/>
       <source>Creates a new body and activates it</source>
       <translation>创建一个新实体并激活它</translation>
     </message>
@@ -205,17 +205,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2580"/>
+      <location filename="../../Command.cpp" line="2590"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2581"/>
+      <location filename="../../Command.cpp" line="2591"/>
       <source>Boolean Operation</source>
       <translation>布尔运算</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2582"/>
+      <location filename="../../Command.cpp" line="2592"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>对选定的对象和激活的实体应用布尔运算</translation>
     </message>
@@ -223,17 +223,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignCS</name>
     <message>
-      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="283"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="283"/>
+      <location filename="../../Command.cpp" line="284"/>
       <source>Local Coordinate System</source>
       <translation>局部坐标系</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="284"/>
+      <location filename="../../Command.cpp" line="285"/>
       <source>Creates a new local coordinate system</source>
       <translation>创建一个新的局部坐标系</translation>
     </message>
@@ -241,17 +241,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="1991"/>
+      <location filename="../../Command.cpp" line="2001"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1992"/>
+      <location filename="../../Command.cpp" line="2002"/>
       <source>Chamfer</source>
       <translation>倒角</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1993"/>
+      <location filename="../../Command.cpp" line="2003"/>
       <source>Applies a chamfer to the selected edges or faces</source>
       <translation>对选定的边或面应用倒角</translation>
     </message>
@@ -259,17 +259,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location filename="../../Command.cpp" line="492"/>
+      <location filename="../../Command.cpp" line="493"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="493"/>
+      <location filename="../../Command.cpp" line="494"/>
       <source>Clone</source>
       <translation>克隆</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="494"/>
+      <location filename="../../Command.cpp" line="495"/>
       <source>Copies a solid object parametrically as the base feature of a new body</source>
       <translation>将一个实体对象参数化地复制为一个新实体的基本特征</translation>
     </message>
@@ -277,17 +277,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location filename="../../Command.cpp" line="2020"/>
+      <location filename="../../Command.cpp" line="2030"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2021"/>
+      <location filename="../../Command.cpp" line="2031"/>
       <source>Draft</source>
       <translation>拔模</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2022"/>
+      <location filename="../../Command.cpp" line="2032"/>
       <source>Applies a draft to the selected faces</source>
       <translation>对选定的面应用拔模</translation>
     </message>
@@ -295,17 +295,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignDuplicateSelection</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="762"/>
+      <location filename="../../CommandBody.cpp" line="754"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="763"/>
+      <location filename="../../CommandBody.cpp" line="755"/>
       <source>Duplicate &amp;Object</source>
       <translation>复制对象(&amp;O)</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="764"/>
+      <location filename="../../CommandBody.cpp" line="756"/>
       <source>Duplicates the selected object and adds it to the active body</source>
       <translation>复制所选对象并将其添加到活动实体</translation>
     </message>
@@ -313,17 +313,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1963"/>
+      <location filename="../../Command.cpp" line="1973"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1964"/>
+      <location filename="../../Command.cpp" line="1974"/>
       <source>Fillet</source>
       <translation>圆角</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1965"/>
+      <location filename="../../Command.cpp" line="1975"/>
       <source>Applies a fillet to the selected edges or faces</source>
       <translation>对选定的边或面应用圆角</translation>
     </message>
@@ -331,17 +331,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignGroove</name>
     <message>
-      <location filename="../../Command.cpp" line="1395"/>
+      <location filename="../../Command.cpp" line="1405"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1396"/>
+      <location filename="../../Command.cpp" line="1406"/>
       <source>Groove</source>
       <translation>挖槽</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1397"/>
+      <location filename="../../Command.cpp" line="1407"/>
       <source>Revolves the sketch or profile around a line or axis and removes it from the body</source>
       <translation>围绕一条线或一个轴线旋转选定的草图或轮廓，并将其从实体中移除</translation>
     </message>
@@ -349,17 +349,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1288"/>
+      <location filename="../../Command.cpp" line="1298"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1289"/>
+      <location filename="../../Command.cpp" line="1299"/>
       <source>Hole</source>
       <translation>孔</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1291"/>
+      <location filename="../../Command.cpp" line="1301"/>
       <source>Creates holes in the active body at the center points of circles or arcs of the selected sketch or profile</source>
       <translation>在选定草图或轮廓中圆或圆弧的中心点处，在激活的实体上创建孔</translation>
     </message>
@@ -367,17 +367,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignLine</name>
     <message>
-      <location filename="../../Command.cpp" line="222"/>
+      <location filename="../../Command.cpp" line="223"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="223"/>
+      <location filename="../../Command.cpp" line="224"/>
       <source>Datum Line</source>
       <translation>基准线</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="224"/>
+      <location filename="../../Command.cpp" line="225"/>
       <source>Creates a new datum line</source>
       <translation>创建一个新的基准线</translation>
     </message>
@@ -385,17 +385,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2275"/>
+      <location filename="../../Command.cpp" line="2285"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2276"/>
+      <location filename="../../Command.cpp" line="2286"/>
       <source>Linear Pattern</source>
       <translation>线性阵列</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2277"/>
+      <location filename="../../Command.cpp" line="2287"/>
       <source>Duplicates the selected features or the active body in a linear pattern</source>
       <translation>以线性阵列的方式，复制选定的特征或激活的实体</translation>
     </message>
@@ -403,17 +403,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMigrate</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="392"/>
+      <location filename="../../CommandBody.cpp" line="389"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="393"/>
+      <location filename="../../CommandBody.cpp" line="390"/>
       <source>Migrate</source>
       <translation>迁移</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="394"/>
+      <location filename="../../CommandBody.cpp" line="391"/>
       <source>Migrates the document to the modern Part Design workflow</source>
       <translation>将文档迁移到现代零件设计工作流</translation>
     </message>
@@ -421,17 +421,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMirrored</name>
     <message>
-      <location filename="../../Command.cpp" line="2218"/>
+      <location filename="../../Command.cpp" line="2228"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2219"/>
+      <location filename="../../Command.cpp" line="2229"/>
       <source>Mirror</source>
       <translation>镜像</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2220"/>
+      <location filename="../../Command.cpp" line="2230"/>
       <source>Mirrors the selected features or active body</source>
       <translation>镜像选定的特征或激活的实体</translation>
     </message>
@@ -439,17 +439,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMoveFeature</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="830"/>
+      <location filename="../../CommandBody.cpp" line="822"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="831"/>
+      <location filename="../../CommandBody.cpp" line="823"/>
       <source>Move Object To…</source>
       <translation>移动对象到…</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="832"/>
+      <location filename="../../CommandBody.cpp" line="824"/>
       <source>Moves the selected object to another body</source>
       <translation>移动选定对象到另一个实体</translation>
     </message>
@@ -457,17 +457,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMoveFeatureInTree</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="1027"/>
+      <location filename="../../CommandBody.cpp" line="1019"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1028"/>
+      <location filename="../../CommandBody.cpp" line="1020"/>
       <source>Move Feature After…</source>
       <translation>向后移动特征…</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1029"/>
+      <location filename="../../CommandBody.cpp" line="1021"/>
       <source>Moves the selected feature after another feature in the same body</source>
       <translation>移动选中的特征到处于同一实体的其它特征后</translation>
     </message>
@@ -475,17 +475,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMoveTip</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="663"/>
+      <location filename="../../CommandBody.cpp" line="655"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="664"/>
+      <location filename="../../CommandBody.cpp" line="656"/>
       <source>Set Tip</source>
       <translation>设置 Tip</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="665"/>
+      <location filename="../../CommandBody.cpp" line="657"/>
       <source>Moves the tip of the body to the selected feature</source>
       <translation>移动实体的标识到选定特征</translation>
     </message>
@@ -493,17 +493,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2449"/>
+      <location filename="../../Command.cpp" line="2459"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2450"/>
+      <location filename="../../Command.cpp" line="2460"/>
       <source>Multi-Transform</source>
-      <translation>多变形</translation>
+      <translation>多重变换</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2451"/>
+      <location filename="../../Command.cpp" line="2461"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation>将多个转换应用到选定的特征或活动实体</translation>
     </message>
@@ -511,17 +511,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="577"/>
+      <location filename="../../Command.cpp" line="573"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="578"/>
+      <location filename="../../Command.cpp" line="574"/>
       <source>New Sketch</source>
       <translation>新建草图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="579"/>
+      <location filename="../../Command.cpp" line="575"/>
       <source>Creates a new sketch</source>
       <translation>创建一个新的草图</translation>
     </message>
@@ -529,17 +529,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location filename="../../Command.cpp" line="1230"/>
+      <location filename="../../Command.cpp" line="1240"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1231"/>
+      <location filename="../../Command.cpp" line="1241"/>
       <source>Pad</source>
       <translation>凸台</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1232"/>
+      <location filename="../../Command.cpp" line="1242"/>
       <source>Extrudes the selected sketch or profile and adds it to the body</source>
       <translation>拉伸选定的草图或轮廓并将其添加到实体中</translation>
     </message>
@@ -547,17 +547,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="192"/>
+      <location filename="../../Command.cpp" line="193"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="194"/>
       <source>Datum Plane</source>
       <translation>基准面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="194"/>
+      <location filename="../../Command.cpp" line="195"/>
       <source>Creates a new datum plane</source>
       <translation>创建一个新的基准面</translation>
     </message>
@@ -565,17 +565,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location filename="../../Command.cpp" line="1259"/>
+      <location filename="../../Command.cpp" line="1269"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1260"/>
+      <location filename="../../Command.cpp" line="1270"/>
       <source>Pocket</source>
-      <translation>凹坑</translation>
+      <translation>凹槽</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1261"/>
+      <location filename="../../Command.cpp" line="1271"/>
       <source>Extrudes the selected sketch or profile and removes it from the body</source>
       <translation>拉伸选定的草图或轮廓并将其从实体中移除</translation>
     </message>
@@ -583,17 +583,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignPoint</name>
     <message>
-      <location filename="../../Command.cpp" line="252"/>
+      <location filename="../../Command.cpp" line="253"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="253"/>
+      <location filename="../../Command.cpp" line="254"/>
       <source>Datum Point</source>
       <translation>基准点</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="254"/>
+      <location filename="../../Command.cpp" line="255"/>
       <source>Creates a new datum point</source>
       <translation>创建一个新的基准点</translation>
     </message>
@@ -601,17 +601,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2344"/>
+      <location filename="../../Command.cpp" line="2354"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2345"/>
+      <location filename="../../Command.cpp" line="2355"/>
       <source>Polar Pattern</source>
       <translation>环形阵列</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2346"/>
+      <location filename="../../Command.cpp" line="2356"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation>以环形阵列的方式，复制选定的特征或激活的实体</translation>
     </message>
@@ -619,17 +619,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-      <location filename="../../Command.cpp" line="1333"/>
+      <location filename="../../Command.cpp" line="1343"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1334"/>
+      <location filename="../../Command.cpp" line="1344"/>
       <source>Revolve</source>
       <translation>旋转</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1335"/>
+      <location filename="../../Command.cpp" line="1345"/>
       <source>Revolves the selected sketch or profile around a line or axis and adds it to the body</source>
       <translation>围绕一条线或一个轴旋转选定的草图或轮廓，并将其添加到实体中</translation>
     </message>
@@ -637,17 +637,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2406"/>
+      <location filename="../../Command.cpp" line="2416"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2407"/>
+      <location filename="../../Command.cpp" line="2417"/>
       <source>Scale</source>
       <translation>缩放</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2408"/>
+      <location filename="../../Command.cpp" line="2418"/>
       <source>Scales the selected features or the active body</source>
       <translation>缩放选定的特征或活动实体</translation>
     </message>
@@ -655,17 +655,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignShapeBinder</name>
     <message>
-      <location filename="../../Command.cpp" line="316"/>
+      <location filename="../../Command.cpp" line="317"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="317"/>
+      <location filename="../../Command.cpp" line="318"/>
       <source>Shape Binder</source>
       <translation>形状链接器</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="318"/>
+      <location filename="../../Command.cpp" line="319"/>
       <source>Creates a new shape binder</source>
       <translation>创建一个新的形状链接器</translation>
     </message>
@@ -673,17 +673,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignSubShapeBinder</name>
     <message>
-      <location filename="../../Command.cpp" line="386"/>
+      <location filename="../../Command.cpp" line="387"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="387"/>
+      <location filename="../../Command.cpp" line="388"/>
       <source>Sub-Shape Binder</source>
       <translation>子形状引用连接</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="388"/>
+      <location filename="../../Command.cpp" line="389"/>
       <source>Creates a reference to geometry from one or more objects, allowing it to be used inside or outside a body. It tracks relative placements, supports multiple geometry types (solids, faces, edges, vertices), and can work with objects in the same or external documents.</source>
       <translation>创建一个或多个对象的几何引用，允许其在实体内外使用。它跟踪相对位置，支持多种几何类型（实体、面、边、顶点），并可与同一文档或外部文档中的对象协作。</translation>
     </message>
@@ -691,17 +691,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignSubtractiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1748"/>
+      <location filename="../../Command.cpp" line="1758"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1749"/>
+      <location filename="../../Command.cpp" line="1759"/>
       <source>Subtractive Helix</source>
       <translation>减料螺旋</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1750"/>
+      <location filename="../../Command.cpp" line="1760"/>
       <source>Sweeps the selected sketch or profile along a helix and removes it from the body</source>
       <translation>沿螺旋线扫描选定的草图或轮廓，并将其从实体中移除</translation>
     </message>
@@ -709,17 +709,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1615"/>
+      <location filename="../../Command.cpp" line="1625"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1616"/>
+      <location filename="../../Command.cpp" line="1626"/>
       <source>Subtractive Loft</source>
       <translation>减料放样</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1617"/>
+      <location filename="../../Command.cpp" line="1627"/>
       <source>Lofts the selected sketch or profile along a path and removes it from the body</source>
       <translation>沿路径放样选定的草图或轮廓，并从实体中移除</translation>
     </message>
@@ -727,17 +727,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignSubtractivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1515"/>
+      <location filename="../../Command.cpp" line="1525"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1516"/>
+      <location filename="../../Command.cpp" line="1526"/>
       <source>Subtractive Pipe</source>
       <translation>减料管道</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1517"/>
+      <location filename="../../Command.cpp" line="1527"/>
       <source>Sweeps the selected sketch or profile along a path and removes it from the body</source>
       <translation>沿路径扫描选定的草图或轮廓，并将其从实体中移除</translation>
     </message>
@@ -745,17 +745,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="2090"/>
+      <location filename="../../Command.cpp" line="2100"/>
       <source>PartDesign</source>
       <translation>零件设计</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2091"/>
+      <location filename="../../Command.cpp" line="2101"/>
       <source>Thickness</source>
       <translation>抽壳</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2092"/>
+      <location filename="../../Command.cpp" line="2102"/>
       <source>Applies thickness and removes the selected faces</source>
       <translation>应用厚度并移除选定的面</translation>
     </message>
@@ -879,84 +879,84 @@ so that self intersection is avoided.</source>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="338"/>
+      <location filename="../../Command.cpp" line="339"/>
       <source>Edit Shape Binder</source>
       <translation>编辑形状绑定器</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="349"/>
+      <location filename="../../Command.cpp" line="350"/>
       <source>Create Shape Binder</source>
       <translation>创建形状链接器</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="442"/>
+      <location filename="../../Command.cpp" line="443"/>
       <source>Create Sub-Shape Binder</source>
       <translation>创建子形状链接器</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="512"/>
+      <location filename="../../Command.cpp" line="513"/>
       <source>Create Clone</source>
       <translation>创建副本</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1114"/>
+      <location filename="../../Command.cpp" line="1124"/>
       <source>Make Copy</source>
       <translation>创建副本</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2504"/>
+      <location filename="../../Command.cpp" line="2514"/>
       <source>Convert to Multi-Transform feature</source>
       <translation>转换为多重变换特征</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="255"/>
+      <location filename="../../SketchWorkflow.cpp" line="266"/>
       <source>Sketch on Face</source>
       <translation>在面上创建草图</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="316"/>
+      <location filename="../../SketchWorkflow.cpp" line="327"/>
       <source>Make copy</source>
       <translation>制作副本</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="518"/>
-      <location filename="../../SketchWorkflow.cpp" line="775"/>
+      <location filename="../../SketchWorkflow.cpp" line="529"/>
+      <location filename="../../SketchWorkflow.cpp" line="805"/>
       <source>New Sketch</source>
       <translation>新建草图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2601"/>
+      <location filename="../../Command.cpp" line="2611"/>
       <source>Create Boolean</source>
       <translation>创建布尔变量</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="224"/>
       <location filename="../../DlgActiveBody.cpp" line="102"/>
+      <location filename="../../CommandBody.cpp" line="221"/>
       <source>Add a Body</source>
       <translation>添加实体</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="529"/>
+      <location filename="../../CommandBody.cpp" line="526"/>
       <source>Migrate legacy Part Design features to bodies</source>
       <translation>迁移旧版零件设计特征到实体</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="776"/>
+      <location filename="../../CommandBody.cpp" line="768"/>
       <source>Duplicate a Part Design object</source>
       <translation>复制零件设计对象</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1121"/>
+      <location filename="../../CommandBody.cpp" line="1113"/>
       <source>Move a feature inside body</source>
       <translation>移动特征到实体中</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="730"/>
+      <location filename="../../CommandBody.cpp" line="722"/>
       <source>Move tip to selected feature</source>
       <translation>将结算位置移至所选特征</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="935"/>
+      <location filename="../../CommandBody.cpp" line="927"/>
       <source>Move an object</source>
       <translation>移动一个对象</translation>
     </message>
@@ -1100,8 +1100,8 @@ Select a body from below, or create a new body.</source>
     </message>
     <message>
       <location filename="../../DlgActiveBody.cpp" line="53"/>
-      <source>Please select</source>
-      <translation>请选择</translation>
+      <source>Select an active body</source>
+      <translation>选择一个活动实体</translation>
     </message>
   </context>
   <context>
@@ -1435,36 +1435,46 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::TaskBoxPrimitives</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="52"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="53"/>
       <source>Primitive Parameters</source>
       <translation>图元参数</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="944"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="952"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="960"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="947"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="955"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="963"/>
       <source>Invalid wedge parameters</source>
       <translation>无效的请求参数</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="945"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="948"/>
       <source>X min must not be equal to X max!</source>
       <translation>X最小值不能等于X最大值！</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="953"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="956"/>
       <source>Y min must not be equal to Y max!</source>
       <translation>Y 最小值不能等于Y 最大值！</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="961"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="964"/>
       <source>Z min must not be equal to Z max!</source>
       <translation>Z最小值不能等于Z最大值！</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="1003"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1006"/>
       <source>Create primitive</source>
       <translation>创建图元</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1051"/>
+      <source>%1 fine dragging</source>
+      <translation>%1 精细拖动</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1054"/>
+      <source>%1 coarse dragging</source>
+      <translation>%1 粗略拖动</translation>
     </message>
   </context>
   <context>
@@ -1543,13 +1553,13 @@ If zero, it is equal to Radius2</source>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="386"/>
-      <source>Empty body list</source>
-      <translation>空的实体列表</translation>
+      <source>The body list cannot be empty</source>
+      <translation>实体列表不能空</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="386"/>
-      <source>The body list cannot be empty</source>
-      <translation>实体列表不能空</translation>
+      <source>Empty Body List</source>
+      <translation>空实体列表</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="407"/>
@@ -1568,31 +1578,6 @@ If zero, it is equal to Radius2</source>
       <location filename="../../TaskDatumParameters.cpp" line="109"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
       <translation>没有适合当前参考集的附着模式。如果您选择继续，特征将保持现有状态，且将被定义为参照更改而不被移动。要继续吗？</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::TaskDlgFeatureParameters</name>
-    <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="229"/>
-      <source>The feature could not be created with the given parameters.
-The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</source>
-      <translation>无法使用给定的参数创建该特征。
-几何图形可能无效或参数可能不兼容。
-请调整参数并重试。</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="236"/>
-      <source>Input error</source>
-      <translation>输入错误</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
-    <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input error</source>
-      <translation>输入错误</translation>
     </message>
   </context>
   <context>
@@ -2023,7 +2008,7 @@ Please adjust the parameters and try again.</source>
       <translation>错误: 螺旋自相交</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="349"/>
+      <location filename="../../TaskHelixParameters.cpp" line="352"/>
       <source>Error: unsupported mode</source>
       <translation>错误：不支持的模式</translation>
     </message>
@@ -2665,7 +2650,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="463"/>
       <location filename="../../TaskPipeParameters.cpp" line="584"/>
-      <source>Input error</source>
+      <source>Input Error</source>
       <translation>输入错误</translation>
     </message>
     <message>
@@ -2727,12 +2712,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="43"/>
       <source>Offset from the selected face at which the pocket will end on side 1</source>
-      <translation>从选定的面偏移，口袋将在侧面 1 结束</translation>
+      <translation>凹槽在侧面 1 终止的位置，距离所选面的偏移量</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="46"/>
       <source>Offset from the selected face at which the pocket will end on side 2</source>
-      <translation>从选定的面偏移，口袋将在侧面 2 结束</translation>
+      <translation>凹槽在侧面 2 终止的位置，距离所选面的偏移量</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="48"/>
@@ -2919,7 +2904,7 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="204"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="210"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
@@ -3005,59 +2990,59 @@ measured along the specified direction</source>
       <translation>移除</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="404"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="398"/>
       <source>Normal sketch axis</source>
       <translation>法向草图轴</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="403"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="397"/>
       <source>Vertical sketch axis</source>
       <translation>垂直草图轴</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="402"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="396"/>
       <source>Horizontal sketch axis</source>
       <translation>水平草图轴</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="406"/>
-      <location filename="../../TaskTransformedParameters.cpp" line="442"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="400"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="436"/>
       <source>Construction line %1</source>
       <translation>辅助线 %1</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="420"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="414"/>
       <source>Base X-axis</source>
       <translation>X 轴</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="421"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="415"/>
       <source>Base Y-axis</source>
       <translation>Y 轴</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="422"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="416"/>
       <source>Base Z-axis</source>
       <translation>Z 轴</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="456"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="450"/>
       <source>Base XY-plane</source>
       <translation>基准 XY 平面</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="457"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="451"/>
       <source>Base YZ-plane</source>
       <translation>基准 YZ 平面</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="458"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="452"/>
       <source>Base XZ-plane</source>
       <translation>基准 XZ 平面</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="430"/>
-      <location filename="../../TaskTransformedParameters.cpp" line="466"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="424"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="460"/>
       <source>Select reference…</source>
       <translation>选择参考…</translation>
     </message>
@@ -3082,25 +3067,20 @@ measured along the specified direction</source>
       <translation>移除特征</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.ui" line="122"/>
+      <location filename="../../TaskTransformedParameters.ui" line="116"/>
       <source>Recompute on change</source>
       <translation>更改时重新计算</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTransformedParameters.ui" line="106"/>
-      <source>List can be reordered by dragging</source>
-      <translation>列表可以通过拖动重新排序</translation>
     </message>
   </context>
   <context>
     <name>PartDesign_MoveFeature</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="917"/>
+      <location filename="../../CommandBody.cpp" line="909"/>
       <source>Select Body</source>
       <translation>选择实体</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="918"/>
+      <location filename="../../CommandBody.cpp" line="910"/>
       <source>Select a body from the list</source>
       <translation>从列表中选择实体</translation>
     </message>
@@ -3108,27 +3088,27 @@ measured along the specified direction</source>
   <context>
     <name>PartDesign_MoveFeatureInTree</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="1106"/>
+      <location filename="../../CommandBody.cpp" line="1098"/>
       <source>Move Feature After…</source>
       <translation>向后移动特征…</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1107"/>
+      <location filename="../../CommandBody.cpp" line="1099"/>
       <source>Select a feature from the list</source>
       <translation>从列表中选择特征</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1194"/>
+      <location filename="../../CommandBody.cpp" line="1186"/>
       <source>Move Tip</source>
       <translation>移动尖端</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1200"/>
+      <location filename="../../CommandBody.cpp" line="1192"/>
       <source>Set tip to last feature?</source>
       <translation>将尖端设置为最后一个特征？</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1195"/>
+      <location filename="../../CommandBody.cpp" line="1187"/>
       <source>The moved feature appears after the currently set tip.</source>
       <translation>被移动特征出现在当前设置的结算位置之后。</translation>
     </message>
@@ -3136,326 +3116,326 @@ measured along the specified direction</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="149"/>
-      <source>Invalid selection</source>
-      <translation>无效选择</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="150"/>
+      <location filename="../../Command.cpp" line="151"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
       <translation>没有适合选定对象的附着模式。请选择其他的东西。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="163"/>
-      <location filename="../../Command.cpp" line="171"/>
-      <location filename="../../Command.cpp" line="178"/>
+      <location filename="../../Command.cpp" line="164"/>
+      <location filename="../../Command.cpp" line="172"/>
+      <location filename="../../Command.cpp" line="179"/>
       <source>Error</source>
       <translation>错误</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="812"/>
+      <location filename="../../SketchWorkflow.cpp" line="842"/>
       <source>Several sub-elements selected</source>
       <translation>若干子元素被选择</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="813"/>
+      <location filename="../../SketchWorkflow.cpp" line="843"/>
       <source>Select a single face as support for a sketch!</source>
       <translation>选择单个面作为草图的支撑！</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="820"/>
+      <location filename="../../SketchWorkflow.cpp" line="850"/>
       <source>Select a face as support for a sketch!</source>
       <translation>选择一个面作为草图的支撑！</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="827"/>
+      <location filename="../../SketchWorkflow.cpp" line="857"/>
       <source>Need a planar face as support for a sketch!</source>
       <translation>需要一个平面作为草图的支撑！</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="834"/>
+      <location filename="../../SketchWorkflow.cpp" line="864"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation>首先创建一个平面或选择一个面进行草图绘制</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="819"/>
+      <location filename="../../SketchWorkflow.cpp" line="849"/>
       <source>No support face selected</source>
       <translation>未选中支持面</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="826"/>
+      <location filename="../../SketchWorkflow.cpp" line="856"/>
       <source>No planar support</source>
       <translation>无支持平面</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="833"/>
+      <location filename="../../SketchWorkflow.cpp" line="863"/>
       <source>No valid planes in this document</source>
       <translation>文档中无有效平面</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="137"/>
-      <location filename="../../Command.cpp" line="1142"/>
-      <location filename="../../SketchWorkflow.cpp" line="731"/>
+      <location filename="../../SketchWorkflow.cpp" line="761"/>
+      <location filename="../../Command.cpp" line="1152"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../ViewProvider.cpp" line="137"/>
       <source>A dialog is already open in the task panel</source>
       <translation>一个对话框已在任务面板打开</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="996"/>
+      <location filename="../../Command.cpp" line="1006"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
       <translation>无法使用此命令，因为没有可以减去的实体。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="999"/>
+      <location filename="../../Command.cpp" line="1009"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
       <translation>在尝试减料命令之前确保实体包含特征。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1023"/>
+      <location filename="../../Command.cpp" line="1033"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation>无法使用所选对象。所选对象必须属于活动实体</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="164"/>
+      <location filename="../../Command.cpp" line="165"/>
       <source>There is no active body. Please activate a body before inserting a datum entity.</source>
       <translation>当前没有激活的实体。请在插入基准实体之前激活一个实体。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="470"/>
+      <location filename="../../Command.cpp" line="150"/>
+      <source>Invalid Selection</source>
+      <translation>无效选区</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="471"/>
       <source>Sub-shape binder</source>
       <translation>子形状绑定器</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1055"/>
+      <location filename="../../Command.cpp" line="1065"/>
       <source>No sketch to work on</source>
       <translation>没有可工作的草图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1056"/>
+      <location filename="../../Command.cpp" line="1066"/>
       <source>No sketch is available in the document</source>
       <translation>文档无可用草图</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="138"/>
-      <location filename="../../Command.cpp" line="1143"/>
-      <location filename="../../SketchWorkflow.cpp" line="732"/>
+      <location filename="../../Command.cpp" line="2206"/>
+      <source>Select only one feature in an active body.</source>
+      <translation>在活动实体中仅选择一个特征。</translation>
+    </message>
+    <message>
+      <location filename="../../SketchWorkflow.cpp" line="762"/>
+      <location filename="../../Command.cpp" line="1153"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../ViewProvider.cpp" line="138"/>
       <source>Close this dialog?</source>
       <translation>关闭此对话框？</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1825"/>
-      <location filename="../../Command.cpp" line="1860"/>
+      <location filename="../../Command.cpp" line="1835"/>
+      <location filename="../../Command.cpp" line="1870"/>
       <source>Wrong selection</source>
       <translation>选择错误</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1826"/>
+      <location filename="../../Command.cpp" line="1836"/>
       <source>Select an edge, face, or body from a single body.</source>
       <translation>从一单一实体中选择一边，面或体</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1833"/>
-      <location filename="../../Command.cpp" line="2195"/>
+      <location filename="../../Command.cpp" line="1843"/>
+      <location filename="../../Command.cpp" line="2205"/>
       <source>Selection is not in the active body</source>
       <translation>选择不在活动实体中</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1861"/>
+      <location filename="../../Command.cpp" line="1871"/>
       <source>Shape of the selected part is empty</source>
       <translation>所选零件的形状为空</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1834"/>
+      <location filename="../../Command.cpp" line="1844"/>
       <source>Select an edge, face, or body from an active body.</source>
       <translation>从活动实体中选择边、面或体。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1026"/>
+      <location filename="../../Command.cpp" line="1036"/>
       <source>Consider using a shape binder or a base feature to reference external geometry in a body</source>
       <translation>考虑使用形状绑定器或基准特征在实体中引用外部几何体</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1847"/>
+      <location filename="../../Command.cpp" line="1857"/>
       <source>Wrong object type</source>
       <translation>错误的对象类型</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1848"/>
+      <location filename="../../Command.cpp" line="1858"/>
       <source>%1 works only on parts.</source>
       <translation>%1 仅能运作于零件上。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2196"/>
-      <source>Please select only one feature in an active body.</source>
-      <translation>请在一个活动的实体中仅选择一个特征。</translation>
-    </message>
-    <message>
-      <location filename="../../CommandBody.cpp" line="73"/>
+      <location filename="../../CommandBody.cpp" line="74"/>
       <source>Part creation failed</source>
       <translation>零件创建失败</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="74"/>
+      <location filename="../../CommandBody.cpp" line="75"/>
       <source>Failed to create a part object.</source>
       <translation>创建零件对象失败。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="127"/>
-      <location filename="../../CommandBody.cpp" line="135"/>
-      <location filename="../../CommandBody.cpp" line="151"/>
-      <location filename="../../CommandBody.cpp" line="217"/>
+      <location filename="../../CommandBody.cpp" line="124"/>
+      <location filename="../../CommandBody.cpp" line="132"/>
+      <location filename="../../CommandBody.cpp" line="148"/>
+      <location filename="../../CommandBody.cpp" line="214"/>
       <source>Bad base feature</source>
       <translation>不正确的基础特征</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="128"/>
+      <location filename="../../CommandBody.cpp" line="125"/>
       <source>A body cannot be based on a Part Design feature.</source>
       <translation>实体不能基于零件设计特征。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="136"/>
+      <location filename="../../CommandBody.cpp" line="133"/>
       <source>%1 already belongs to a body and cannot be used as a base feature for another body.</source>
       <translation>%1 已经属于一个实体，不能用作另一个实体的基准特征。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="152"/>
+      <location filename="../../CommandBody.cpp" line="149"/>
       <source>Base feature (%1) belongs to other part.</source>
       <translation>基础特征 (%1) 录属于其他部件。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="179"/>
+      <location filename="../../CommandBody.cpp" line="176"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
       <translation>所选形状由多个实体组成。
 这可能会导致意外的结果。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="185"/>
+      <location filename="../../CommandBody.cpp" line="182"/>
       <source>The selected shape consists of multiple shells.
 This may lead to unexpected results.</source>
       <translation>所选形状由多个壳体组成。
 这可能会导致意外的结果。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="191"/>
+      <location filename="../../CommandBody.cpp" line="188"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
       <translation>所选形状仅由一个壳体组成。
 这可能会导致意外的结果。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="197"/>
+      <location filename="../../CommandBody.cpp" line="194"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
       <translation>所选形状由多个实体或壳体组成。
 这可能会导致意外的结果。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="206"/>
+      <location filename="../../CommandBody.cpp" line="203"/>
       <source>Base feature</source>
       <translation>基础特征</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="218"/>
+      <location filename="../../CommandBody.cpp" line="215"/>
       <source>Body may be based on no more than one feature.</source>
       <translation>实体基于的特征不能超过一个。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="233"/>
+      <location filename="../../CommandBody.cpp" line="230"/>
       <source>Body</source>
       <translation>Body</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="428"/>
+      <location filename="../../CommandBody.cpp" line="425"/>
       <source>Nothing to migrate</source>
       <translation>没有可迁移的对象</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="697"/>
+      <location filename="../../CommandBody.cpp" line="614"/>
+      <source>Edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
+      <translation>编辑“%1”并将其重新定义为使用基准面或参考平面作为草图平面。</translation>
+    </message>
+    <message>
+      <location filename="../../CommandBody.cpp" line="689"/>
       <source>Select exactly one Part Design feature or a body.</source>
       <translation>请准确选择一个零件设计特征或一个实体。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="705"/>
+      <location filename="../../CommandBody.cpp" line="697"/>
       <source>Could not determine a body for the selected feature '%s'.</source>
       <translation>无法确定所选特征 '%s' 的实体。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="886"/>
+      <location filename="../../CommandBody.cpp" line="878"/>
       <source>Only features of a single source body can be moved</source>
       <translation>只能移动单一源实体的特征</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="621"/>
+      <location filename="../../CommandBody.cpp" line="613"/>
       <source>Sketch plane cannot be migrated</source>
       <translation>草图平面不能被移动</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="429"/>
+      <location filename="../../CommandBody.cpp" line="426"/>
       <source>No Part Design features without body found Nothing to migrate.</source>
       <translation>未找到没有实体的零件设计特征，无需迁移。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="622"/>
-      <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation>请编辑 '%1'并使用基面或基准平面作为草绘平面来重新定义它。</translation>
-    </message>
-    <message>
+      <location filename="../../CommandBody.cpp" line="688"/>
       <location filename="../../CommandBody.cpp" line="696"/>
-      <location filename="../../CommandBody.cpp" line="704"/>
-      <location filename="../../CommandBody.cpp" line="718"/>
-      <location filename="../../CommandBody.cpp" line="1072"/>
-      <location filename="../../CommandBody.cpp" line="1082"/>
+      <location filename="../../CommandBody.cpp" line="710"/>
+      <location filename="../../CommandBody.cpp" line="1064"/>
+      <location filename="../../CommandBody.cpp" line="1074"/>
       <source>Selection error</source>
       <translation>选择错误</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="719"/>
+      <location filename="../../CommandBody.cpp" line="711"/>
       <source>Only a solid feature can be the tip of a body.</source>
       <translation>只有实体特征才能成为实体的结算特征。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="855"/>
-      <location filename="../../CommandBody.cpp" line="885"/>
-      <location filename="../../CommandBody.cpp" line="903"/>
+      <location filename="../../CommandBody.cpp" line="847"/>
+      <location filename="../../CommandBody.cpp" line="877"/>
+      <location filename="../../CommandBody.cpp" line="895"/>
       <source>Features cannot be moved</source>
       <translation>特征无法被移动</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="856"/>
+      <location filename="../../CommandBody.cpp" line="848"/>
       <source>Some of the selected features have dependencies in the source body</source>
       <translation>一些选定的特征依赖于源实体</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="904"/>
+      <location filename="../../CommandBody.cpp" line="896"/>
       <source>There are no other bodies to move to</source>
       <translation>没有其他实体可以移动</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1073"/>
+      <location filename="../../CommandBody.cpp" line="1065"/>
       <source>Impossible to move the base feature of a body.</source>
       <translation>无法移动实体的基础特征。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1083"/>
+      <location filename="../../CommandBody.cpp" line="1075"/>
       <source>Select one or more features from the same body.</source>
       <translation>从同一实体上选择一个或多个特征。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1098"/>
+      <location filename="../../CommandBody.cpp" line="1090"/>
       <source>Beginning of the body</source>
       <translation>实体的起始</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1179"/>
+      <location filename="../../CommandBody.cpp" line="1171"/>
       <source>Dependency violation</source>
       <translation>依赖冲突</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1180"/>
+      <location filename="../../CommandBody.cpp" line="1172"/>
       <source>Early feature must not depend on later feature.
 
 </source>
@@ -3475,13 +3455,13 @@ This may lead to unexpected results.</source>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="208"/>
-      <location filename="../../TaskTransformedParameters.cpp" line="439"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="433"/>
       <source>Vertical sketch axis</source>
       <translation>垂直草绘轴</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="209"/>
-      <location filename="../../TaskTransformedParameters.cpp" line="440"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="434"/>
       <source>Horizontal sketch axis</source>
       <translation>水平草绘轴</translation>
     </message>
@@ -3496,12 +3476,12 @@ This may lead to unexpected results.</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="208"/>
+      <location filename="../../Utils.cpp" line="209"/>
       <source>Active Body Required</source>
       <translation>需要激活状态的实体</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="150"/>
+      <location filename="../../Utils.cpp" line="151"/>
       <source>To use Part Design, an active body is required in the document. Activate a body (double-click) or create a new one.
 
 For legacy documents with Part Design objects lacking a body, use the migrate function in Part Design to place them into a body.</source>
@@ -3510,34 +3490,34 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
 对于缺少实体的零件设计对象的旧版文档，请使用零件设计中的迁移功能将它们放入实体中。</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="209"/>
+      <location filename="../../Utils.cpp" line="210"/>
       <source>To create a new Part Design object, an active body is required in the document. Activate an existing body (double-click) or create a new one.</source>
       <translation>要创建新的零件设计对象，文档中需要有一个激活的实体。激活一个现有实体（双击）或创建一个新实体。</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="275"/>
+      <location filename="../../Utils.cpp" line="272"/>
       <source>Feature is not in a body</source>
       <translation>特征不在实体内</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="276"/>
+      <location filename="../../Utils.cpp" line="273"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>要使用此特征, 它需隶属于文档中的实体对象。</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="322"/>
+      <location filename="../../Utils.cpp" line="319"/>
       <source>Feature is not in a part</source>
       <translation>特征不在零件内</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="323"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>要使用此特征, 它需隶属于文档中的零件对象。</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTransformed.cpp" line="65"/>
-      <location filename="../../ViewProvider.cpp" line="94"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
+      <location filename="../../ViewProvider.cpp" line="94"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="67"/>
       <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <source>Edit %1</source>
       <translation>编辑 %1</translation>
@@ -3667,7 +3647,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
       <translation>编辑螺旋</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="129"/>
+      <location filename="../../ViewProviderHole.cpp" line="130"/>
       <source>Edit Hole</source>
       <translation>编辑孔</translation>
     </message>
@@ -3704,7 +3684,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../ViewProviderPocket.cpp" line="47"/>
       <source>Edit Pocket</source>
-      <translation>编辑口袋</translation>
+      <translation>编辑凹槽</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPolarPattern.cpp" line="40"/>
@@ -4434,12 +4414,12 @@ over 90: larger hole radius at the bottom</source>
   <context>
     <name>Exception</name>
     <message>
-      <location filename="../../../App/Body.cpp" line="405"/>
+      <location filename="../../../App/Body.cpp" line="406"/>
       <source>Linked object is not a PartDesign feature</source>
       <translation>链接对象不是 PartDesign 功能</translation>
     </message>
     <message>
-      <location filename="../../../App/Body.cpp" line="414"/>
+      <location filename="../../../App/Body.cpp" line="415"/>
       <source>Tip shape is empty</source>
       <translation>提示形状为空</translation>
     </message>
@@ -4474,19 +4454,23 @@ over 90: larger hole radius at the bottom</source>
       <translation>无法对无效的基础形状进行布尔操作</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="420"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="442"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="488"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="334"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="378"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="600"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="333"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="377"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
       <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="482"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="531"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>结果有多个实体：在活动实体中启用“允许复合”</translation>
     </message>
@@ -4508,7 +4492,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="358"/>
       <source>Cannot create a pocket with a total length of zero.</source>
-      <translation>无法创建总长度为零的口袋。</translation>
+      <translation>无法创建总长度为零的凹槽。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="706"/>
@@ -4521,10 +4505,10 @@ over 90: larger hole radius at the bottom</source>
       <translation>结果融合的拉伸为 null。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="370"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="371"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="592"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="523"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <source>Resulting shape is not a solid</source>
       <translation>结果形状不是实体</translation>
     </message>
@@ -4667,9 +4651,9 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>错误：面必须是平面</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="445"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="486"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2454"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="454"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="499"/>
       <source>Error: Result is not a solid</source>
       <translation>错误：结果不是实体</translation>
     </message>
@@ -4679,29 +4663,22 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>错误: 没有可减少的内容</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="421"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="451"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="492"/>
-      <source>Error: Result has multiple solids</source>
-      <translation>错误：结果有多个实体</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="436"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="437"/>
       <source>Error: Adding the helix failed</source>
       <translation>错误：添加螺旋失败</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="468"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="472"/>
       <source>Error: Intersecting the helix failed</source>
       <translation>错误：交叉螺旋失败</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="477"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="481"/>
       <source>Error: Subtracting the helix failed</source>
       <translation>错误：减去螺旋失败</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="508"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="515"/>
       <source>Error: Could not create face from sketch</source>
       <translation>错误：无法从草图创建面</translation>
     </message>
@@ -4776,13 +4753,13 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>孔错误：查找轴失败</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2073"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2081"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2063"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2071"/>
       <source>Boolean operation failed on profile Edge</source>
       <translation>轮廓边缘布尔运算失败</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2088"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2078"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
       <translation>在轮廓边缘的布尔运算产生了非实体</translation>
     </message>
@@ -4792,23 +4769,23 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>布尔操作失败</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2114"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2104"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>无法从草图创建面。不允许使用相交的草图实体、或草图中的多个面来制作凹槽。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2280"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2277"/>
       <source>Thread type out of range</source>
       <translation>螺线类型超出范围</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2283"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2280"/>
       <source>Thread size out of range</source>
       <translation>螺线大小超出范围</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2431"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2428"/>
       <source>Error: Thread could not be built</source>
       <translation>错误：无法构建螺纹</translation>
     </message>
@@ -4818,7 +4795,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>拉伸：至少需要一个轮廊</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="394"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="395"/>
       <source>Loft: A fatal error occurred when making the loft</source>
       <translation>拉伸：在拉伸时发生致命错误</translation>
     </message>
@@ -4828,8 +4805,8 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>拉伸：从草图创建面失败</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="303"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="446"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="304"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="500"/>
       <source>Loft: Failed to create shell</source>
       <translation>拉伸：创建外壳失败</translation>
     </message>
@@ -4841,97 +4818,92 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
 草图中不允许有相交的实体或多个面。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="205"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="211"/>
       <source>Pipe: Could not obtain profile shape</source>
       <translation>管道：无法获取轮廓形状</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="212"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="218"/>
       <source>No spine linked</source>
       <translation>没链接到骨架</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="227"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="233"/>
       <source>No auxiliary spine linked.</source>
       <translation>没链接到辅助骨架。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="250"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="255"/>
       <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
       <translation>管道：在使用带有孤立点的草图作为截面时，只需要一个孤立点。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="259"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="264"/>
       <source>Pipe: At least one section is needed when using a single point for profile</source>
       <translation>管道：当使用单点轮廓时，至少需要一个截面</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="277"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="282"/>
       <source>Pipe: All sections need to be Part features</source>
       <translation>管道：所有截面都需要是零件特征</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="285"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="290"/>
       <source>Pipe: Could not obtain section shape</source>
       <translation>管道：无法获取截面形状</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="295"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="298"/>
       <source>Pipe: Only the profile and last section can be vertices</source>
       <translation>管道：只有轮廓和最后一个截面可以作为顶点</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="308"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="311"/>
       <source>Multisections need to have the same amount of inner wires as the base section</source>
       <translation>多重截面需要有与基本截面相同数量的内部线</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="341"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="344"/>
       <source>Path must not be a null shape</source>
       <translation>路径不能是空形状</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="381"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="384"/>
       <source>Pipe could not be built</source>
       <translation>无法构建管道</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="438"/>
-      <source>Result is not a solid</source>
-      <translation>结果不是实体</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="477"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="532"/>
       <source>Pipe: There is nothing to subtract from</source>
       <translation>错误: 没有可减少的内容</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="545"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="584"/>
+      <source>Pipe: Invalid Boolean Type</source>
+      <translation>管道：无效的布尔类型</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="614"/>
       <source>A fatal error occurred when making the pipe</source>
       <translation>制作管道时发生致命错误</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="674"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="741"/>
       <source>Invalid element in spine.</source>
       <translation>骨架中有无效元素。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="679"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="746"/>
       <source>Element in spine is neither an edge nor a wire.</source>
       <translation>骨架中的元素既不是边线也不是连线。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="700"/>
-      <source>Spine is not connected.</source>
-      <translation>骨架未连接</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="706"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="759"/>
       <source>Spine is neither an edge nor a wire.</source>
       <translation>骨架既不是边线也不是连线。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="711"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="764"/>
       <source>Invalid spine.</source>
       <translation>无效骨架。</translation>
     </message>
@@ -4941,16 +4913,14 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>没有基础特征时无法减去原始特征</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="355"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="356"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="507"/>
       <source>Unknown operation type</source>
       <translation>未知操作类型</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="363"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="364"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="515"/>
       <source>Failed to perform boolean operation</source>
       <translation>执行布尔操作失败</translation>
     </message>
@@ -5098,17 +5068,17 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>没有选中任何要进行变换的特征。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="356"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="379"/>
       <source>Cannot transform invalid support shape</source>
       <translation>无法变换无效的支持形状</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="407"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="430"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>添加/减料的特性形状为空</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="398"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="421"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>只能变换增料和减料特征</translation>
     </message>
@@ -5157,7 +5127,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>显示预览覆盖</translation>
     </message>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="50"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="52"/>
       <source>Preview</source>
       <translation>预览</translation>
     </message>
@@ -5191,12 +5161,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2648"/>
+      <location filename="../../Command.cpp" line="2658"/>
       <source>Create Datum</source>
       <translation>创建基准</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2649"/>
+      <location filename="../../Command.cpp" line="2659"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>创建基准对象或局部坐标系</translation>
     </message>
@@ -5204,12 +5174,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2683"/>
+      <location filename="../../Command.cpp" line="2693"/>
       <source>Create Datum</source>
       <translation>创建基准</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2684"/>
+      <location filename="../../Command.cpp" line="2694"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>创建基准对象或局部坐标系</translation>
     </message>
@@ -5303,7 +5273,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskDlgPrimitiveParameters</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="1082"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="1103"/>
       <source>Attachment</source>
       <translation>附着</translation>
     </message>
@@ -5311,7 +5281,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskDlgRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="802"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="803"/>
       <source>Revolution Parameters</source>
       <translation>旋转参数</translation>
     </message>
@@ -5319,7 +5289,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskDlgGrooveParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="812"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="813"/>
       <source>Groove Parameters</source>
       <translation>槽参数</translation>
     </message>
@@ -5438,19 +5408,52 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="132"/>
+      <location filename="../../TaskPatternParameters.cpp" line="148"/>
       <source>Direction 2</source>
       <translation>方向 2</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="248"/>
+      <location filename="../../TaskPatternParameters.cpp" line="267"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation>选择一个方向参考（边、面、基准线）</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="334"/>
+      <location filename="../../TaskPatternParameters.cpp" line="355"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>无效选择。选择一条边、一个平面或一条基准线。</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>输入错误</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskFeatureParameters</name>
+    <message>
+      <location filename="../../TaskFeatureParameters.cpp" line="138"/>
+      <source>%1 fine dragging</source>
+      <translation>%1 精细拖动</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFeatureParameters.cpp" line="141"/>
+      <source>%1 coarse dragging</source>
+      <translation>%1 粗略拖动</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgFeatureParameters</name>
+    <message>
+      <location filename="../../TaskFeatureParameters.cpp" line="264"/>
+      <source>The feature could not be created with the given parameters.
+The geometry may be invalid or the parameters may be incompatible.
+Adjust the parameters and try again.</source>
+      <translation>无法使用给定参数创建该特征。
+几何图形可能无效，或者参数可能不兼容。
+请调整参数并重试。</translation>
     </message>
   </context>
 </TS>

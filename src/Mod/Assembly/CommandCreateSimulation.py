@@ -456,7 +456,9 @@ class ViewProviderMotion:
 
 
 class MotionEditDialog:
-    def __init__(self, assembly, motionType=MotionTypes[0], joint=None, formula="5*time"):
+    def __init__(
+        self, assembly, motionType=MotionTypes[0], joint=None, formula="initialValue + 5*time"
+    ):
         self.assembly = assembly
         self.motionType = motionType
         self.joint = joint
@@ -542,7 +544,7 @@ class MotionEditDialog:
         self.help_label0 = QLabel(
             translate(
                 "Assembly",
-                "In capital are variables that you need to replace with actual values. More details about each example in its tooltip.",
+                "In capital are variables that you need to replace with actual values. 'initialValue' is dynamically replaced by the current angle or distance. More details about each example in its tooltip.",
             ),
             self.dialog,
         )
@@ -855,7 +857,6 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
         self.form.GlobalErrorToleranceSpinBox.setProperty(
             "rawValue", self.simFeaturePy.fGlobalErrorTolerance
         )
-        self.setFrameValue(0)
         self.form.FramesPerSecondSpinBox.setValue(self.simFeaturePy.jFramesPerSecond)
 
     def setSpinboxPrecision(self, spinbox, precision, unit=App.Units.TimeSpan):
@@ -1046,12 +1047,27 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
             )
             return
 
+        formats = {
+            "MP4 Video": ".mp4",
+            "Animated GIF": ".gif",
+            "AVI Video": ".avi",
+        }
+
+        try:
+            import av
+
+            # 05/26 libvpx has no Windows conda package
+            if "libvpx-vp9" in av.codecs_available:
+                formats["WebM Video"] = ".webm"
+        except ImportError:
+            pass
+
         # Prompt user for file location and type
         file_path, selected_filter = QFileDialog.getSaveFileName(
             self.form,
             translate("Assembly", "Save Animation"),
             "",
-            "MP4 Video (*.mp4);;Animated GIF (*.gif);;AVI Video (*.avi)",
+            ";;".join(f"{k} (*{v})" for k, v in formats.items()),
         )
 
         if not file_path:
@@ -1060,12 +1076,22 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
         # Get parameters
         view = Gui.ActiveDocument.ActiveView
         width, height = view.getSize()
+
         # Ensure dimensions are even, as required by many video codecs
-        if width % 2 != 0:
-            width -= 1
-        if height % 2 != 0:
-            height -= 1
+        width -= width % 2
+        height -= height % 2
+
         fps = self.form.FramesPerSecondSpinBox.value()
+
+        # Fail early when PIL is not installed
+        try:
+            from PIL import Image
+        except ImportError:
+            errMsg = translate(
+                "Assembly", "Pillow (PIL) is not installed. It is required for video export."
+            )
+            QMessageBox.critical(self.form, "Error", errMsg)
+            return
 
         # Setup temporary directory and progress bar
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -1104,9 +1130,15 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
 
                 success = False
                 file_extension = Path(file_path).suffix.lower()
+                if not file_extension:
+                    file_extension = [
+                        filter for filter in formats.values() if filter in selected_filter
+                    ][0]
+                    file_path += file_extension
+
                 if file_extension == ".gif":
                     success = self.create_gif(file_path, frame_files, fps)
-                elif file_extension in [".mp4", ".avi"]:
+                elif file_extension in [".mp4", ".avi", ".webm"]:
                     success = self.create_video(file_path, frame_files, fps, (width, height))
 
                 if success:
@@ -1127,14 +1159,7 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
 
     def create_gif(self, output_path, frame_files, fps):
         """Creates an animated GIF from a list of image files using Pillow."""
-        try:
-            from PIL import Image
-        except ImportError:
-            errMsg = translate(
-                "Assembly", "Pillow (PIL) is not installed. It is required for GIF export."
-            )
-            QMessageBox.critical(self.form, "Error", errMsg)
-            return False
+        from PIL import Image
 
         pil_images = [Image.open(f) for f in frame_files]
         duration_ms = int(1000 / fps)
@@ -1151,10 +1176,10 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
     def create_video(self, output_path, frame_files, fps, size):
         """Creates a video file from a list of image files using OpenCV."""
         try:
-            import cv2
+            import av
         except ImportError:
             errMsg = translate(
-                "Assembly", "OpenCV is not installed. It is required for video export."
+                "Assembly", "PyAv is not installed. It is required for video export."
             )
             QMessageBox.critical(self.form, "Error", errMsg)
             return False
@@ -1162,26 +1187,34 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
         file_extension = Path(output_path).suffix.lower()
 
         # Select codec based on file type
+        output = av.open(output_path, "w")
+        stream = None
         if file_extension == ".mp4":
-            fourcc = cv2.VideoWriter_fourcc(*"mp4v")  # or 'avc1'
+            try:
+                stream = output.add_stream("libx264", fps)
+            except av.codec.codec.UnknownCodecError:
+                stream = output.add_stream("mpeg4", fps)
         elif file_extension == ".avi":
-            fourcc = cv2.VideoWriter_fourcc(*"XVID")
-        else:
-            # Fallback for other types, may not be supported
-            fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+            stream = output.add_stream("mpeg4", fps)
+        elif file_extension == ".webm":
+            stream = output.add_stream("libvpx-vp9", fps)
 
-        video_writer = cv2.VideoWriter(output_path, fourcc, fps, size)
-        if not video_writer.isOpened():
-            errMsg = translate("Assembly", "Could not open video writer. Check codecs.")
-            QMessageBox.critical(self.form, "Error", errMsg)
-            return False
+        stream.width, stream.height = size
 
-        for filename in frame_files:
-            # OpenCV reads images in BGR format by default
-            frame = cv2.imread(str(filename))
-            video_writer.write(frame)
+        from PIL import Image
+        import numpy as np
 
-        video_writer.release()
+        for file in frame_files:
+            img = Image.open(file).convert("RGB")
+            frame = av.VideoFrame.from_ndarray(np.array(img), format="rgb24")
+            packet = stream.encode(frame)
+            output.mux(packet)
+
+        # Flush & write
+        packet = stream.encode(None)
+        output.mux(packet)
+        output.close()
+
         return True
 
 

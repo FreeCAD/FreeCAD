@@ -50,7 +50,7 @@
 #include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Utilities.h>
@@ -354,8 +354,7 @@ bool Mirroring::accept()
     double basez = ui->baseZ->value().getValue();
     for (auto item : items) {
         shape = item->data(0, Qt::UserRole).toString();
-        std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(item->text(0).toUtf8());
-        label = QString::fromStdString(escapedstr);
+        label = item->text(0);
         selectionString = QString::fromStdString(selection);
 
         // if we already have the suffix " (Mirror #<number>)" remove it
@@ -364,6 +363,8 @@ bool Mirroring::accept()
             label = label.left(pos);
         }
         label.append(QStringLiteral(" (Mirror #%1)").arg(++count));
+        std::string escapedLabel = Base::Tools::escapeEncodeString(label.toUtf8().toStdString());
+        label = QString::fromUtf8(escapedLabel.c_str());
 
         QString code = QStringLiteral(
                            "__doc__=FreeCAD.getDocument(\"%1\")\n"
@@ -383,11 +384,13 @@ bool Mirroring::accept()
                            .arg(basey)
                            .arg(basez)
                            .arg(selectionString);
-        Gui::Command::runCommand(Gui::Command::App, code.toLatin1());
-        QByteArray from = shape.toLatin1();
-        Gui::Command::copyVisual("ActiveObject", "ShapeAppearance", from);
-        Gui::Command::copyVisual("ActiveObject", "LineColor", from);
-        Gui::Command::copyVisual("ActiveObject", "PointColor", from);
+        Gui::Command::runCommand(Gui::Command::App, code.toUtf8());
+        QByteArray from = shape.toUtf8();
+        auto dst = activeDoc->getActiveObject();
+        auto src = activeDoc->getObject(from);
+        Gui::copyVisualT(dst, "ShapeAppearance", src);
+        Gui::copyVisualT(dst, "LineColor", src);
+        Gui::copyVisualT(dst, "PointColor", src);
     }
 
     activeDoc->commitTransaction();
@@ -414,7 +417,13 @@ TaskMirroring::TaskMirroring()
 
 bool TaskMirroring::accept()
 {
-    return widget->accept();
+    try {
+        return widget->accept();
+    }
+    catch (const Base::Exception& e) {
+        e.reportException();
+        return false;
+    }
 }
 
 bool TaskMirroring::reject()

@@ -5,7 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export
 from Base.Vector import Vector
 from Conic import Conic
-from typing import Final
+from typing import Final, overload
 
 @export(
     Twin="GeomEllipse",
@@ -49,6 +49,15 @@ class Ellipse(Conic):
 
     Focal: Final[float] = 0.0
     """The focal distance of the ellipse."""
+
+    @overload
+    def __init__(self) -> None: ...
+    @overload
+    def __init__(self, ellipse: "Ellipse", /) -> None: ...
+    @overload
+    def __init__(self, s1: Vector, s2: Vector, center: Vector, /) -> None: ...
+    @overload
+    def __init__(self, center: Vector, major_radius: float, minor_radius: float, /) -> None: ...
 
     Focus1: Final[Vector] = ...
     """The first focus is on the positive side of the major axis of the ellipse."""

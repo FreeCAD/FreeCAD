@@ -19,44 +19,190 @@
      <property name="title">
       <string>Sketch Editing</string>
      </property>
-        <layout class="QGridLayout" name="gridLayout_1">
-         <!-- Constraint symbol size -->
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_ConstraintSymbolSize">
-           <property name="text">
-            <string>Constraint symbol size</string>
-           </property>
-           <property name="buddy">
-            <cstring>ConstraintSymbolSize</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="Gui::PrefSpinBox" name="ConstraintSymbolSize">
-           <property name="toolTip">
-            <string>Pixel size used to render constraint symbols</string>
-           </property>
-           <property name="suffix">
-            <string>px</string>
-           </property>
-           <property name="minimum">
-            <number>6</number>
-           </property>
-           <property name="maximum">
-            <number>96</number>
-           </property>
-           <property name="value">
-            <number>15</number>
-           </property>
-           <property name="prefEntry" stdset="0">
-            <cstring>ConstraintSymbolSize</cstring>
-           </property>
-           <property name="prefPath" stdset="0">
-            <cstring>View</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
+     <layout class="QGridLayout" name="gridLayout_1">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Font name</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefFontBox" name="fontBoxSketcherFontName">
+        <property name="minimumSize">
+         <size>
+          <width>250</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Font used for labels and constraints</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>EditSketcherFontName</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_0">
+        <property name="minimumSize">
+         <size>
+          <width>182</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Font size</string>
+        </property>
+        <property name="buddy">
+         <cstring>EditSketcherFontSize</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::PrefSpinBox" name="EditSketcherFontSize">
+        <property name="toolTip">
+         <string>Font size used for labels and constraints</string>
+        </property>
+        <property name="suffix">
+         <string>px</string>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>17</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>EditSketcherFontSize</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Font preview</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignTop|Qt::AlignLeft|Qt::AlignLeading</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" rowspan="2">
+       <widget class="QLabel" name="LabelFontPreview">
+        <property name="toolTip">
+         <string>Preview of a constraint text when selected font family and size is used</string>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>⌀123.45 µm (ƒ𝑥)</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Panel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <property name="lineWidth">
+         <number>1</number>
+        </property>
+        <property name="autoFillBackground">
+         <bool>true</bool>
+        </property>
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="Window">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>255</red>
+              <green>255</green>
+              <blue>255</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+         </palette>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="LabelFontMessage">
+        <property name="toolTip">
+         <string>Because the selected font does not contain all characters Sketcher uses,
+the characters listed here will be drawn using a substitute font.</string>
+        </property>
+        <property name="text">
+         <string></string>
+        </property>
+        <property name="textInteractionFlags">
+         <set>Qt::TextSelectableByMouse</set>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+       </widget>
+      </item>
+      <!-- Constraint symbol size -->
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_ConstraintSymbolSize">
+        <property name="text">
+         <string>Constraint symbol size</string>
+        </property>
+        <property name="buddy">
+         <cstring>ConstraintSymbolSize</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="Gui::PrefSpinBox" name="ConstraintSymbolSize">
+        <property name="toolTip">
+         <string>Pixel size used to render constraint symbols</string>
+        </property>
+        <property name="suffix">
+         <string>px</string>
+        </property>
+        <property name="minimum">
+         <number>6</number>
+        </property>
+        <property name="maximum">
+         <number>96</number>
+        </property>
+        <property name="value">
+         <number>15</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ConstraintSymbolSize</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
        <widget class="QLabel" name="label_1">
         <property name="minimumSize">
          <size>
@@ -72,7 +218,7 @@
         </property>
        </widget>
       </item>
-         <item row="2" column="1">
+      <item row="5" column="1">
        <widget class="Gui::PrefDoubleSpinBox" name="viewScalingFactor">
         <property name="toolTip">
          <string>Scales the 3D view based on this factor</string>
@@ -103,7 +249,93 @@
         </property>
        </widget>
       </item>
-         <item row="3" column="1">
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_axisTransparency">
+        <property name="text">
+         <string>Axis transparency</string>
+        </property>
+        <property name="buddy">
+         <cstring>axisTransparency</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="Gui::PrefSpinBox" name="axisTransparency">
+        <property name="toolTip">
+         <string>Transparency of visible axes.</string>
+        </property>
+        <property name="suffix">
+         <string notr="true">%</string>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>30</number>
+        </property>
+        <property name="singleStep">
+         <number>10</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AxisTransparency</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="label_occludedAxisTransparency">
+        <property name="text">
+         <string>Occluded axis transparency</string>
+        </property>
+        <property name="buddy">
+         <cstring>occludedAxisTransparency</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="Gui::PrefSpinBox" name="occludedAxisTransparency">
+        <property name="toolTip">
+         <string>Transparency of occluded axes.</string>
+        </property>
+        <property name="suffix">
+         <string notr="true">%</string>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>90</number>
+        </property>
+        <property name="singleStep">
+         <number>10</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>OccludedAxisTransparency</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Segments per geometry</string>
+        </property>
+        <property name="buddy">
+         <cstring>SegmentsPerGeometry</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
        <widget class="Gui::PrefSpinBox" name="SegmentsPerGeometry">
         <property name="toolTip">
          <string>The number of polygons used for geometry approximation</string>
@@ -122,175 +354,7 @@
         </property>
        </widget>
       </item>
-  <item row="10" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBoxShowDimensionalName">
-        <property name="toolTip">
-         <string>Shows names of dimensional constraints, if they exist</string>
-        </property>
-        <property name="text">
-         <string>Show dimensional constraint name with format</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>ShowDimensionalName</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Sketcher</cstring>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-  <item row="10" column="1">
-       <widget class="Gui::PrefLineEdit" name="prefDimensionalStringFormat">
-        <property name="toolTip">
-         <string>The format of the dimensional constraint string presentation.
-Defaults to: %N = %V
-
-%N - name parameter
-%V - dimension value</string>
-        </property>
-        <property name="text">
-         <string notr="true">%N = %V</string>
-        </property>
-        <property name="placeholderText">
-         <string>%N = %V</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>DimensionalStringFormat</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Sketcher</cstring>
-        </property>
-       </widget>
-      </item>
-  <item row="3" column="0">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Segments per geometry</string>
-        </property>
-        <property name="buddy">
-         <cstring>SegmentsPerGeometry</cstring>
-        </property>
-       </widget>
-      </item>
-  <item row="5" column="0" colspan="2">
-       <widget class="Gui::PrefCheckBox" name="continueMode">
-        <property name="toolTip">
-         <string>Keeps the current Sketcher tool active after creating geometry</string>
-        </property>
-        <property name="text">
-         <string>Geometry creation &quot;Continue Mode&quot;</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>ContinuousCreationMode</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Sketcher</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="Gui::PrefSpinBox" name="EditSketcherFontSize">
-        <property name="toolTip">
-         <string>Font size used for labels and constraints</string>
-        </property>
-        <property name="suffix">
-         <string>px</string>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>100</number>
-        </property>
-        <property name="value">
-         <number>17</number>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>EditSketcherFontSize</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
-        </property>
-       </widget>
-      </item>
-        <!-- removed custom checkbox + dependent spin; replaced above with standalone PrefSpinBox -->
-  <item row="7" column="0" colspan="2">
-       <widget class="Gui::PrefCheckBox" name="checkBoxHideUnits">
-        <property name="toolTip">
-         <string>Base length units will not be displayed in constraints or cursor coordinates.
-Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
-        </property>
-        <property name="text">
-         <string>Hide base length units for supported unit systems</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>HideUnits</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Sketcher</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_0">
-        <property name="minimumSize">
-         <size>
-          <width>182</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Font size</string>
-        </property>
-        <property name="buddy">
-         <cstring>EditSketcherFontSize</cstring>
-        </property>
-       </widget>
-      </item>
-  <item row="6" column="0" colspan="2">
-       <widget class="Gui::PrefCheckBox" name="constraintMode">
-        <property name="toolTip">
-         <string>Keeps the current Sketcher constraint tool active after creating geometry</string>
-        </property>
-        <property name="text">
-         <string>Constraint creation &quot;Continue Mode&quot;</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>ContinuousConstraintMode</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Sketcher</cstring>
-        </property>
-       </widget>
-      </item>
-  <item row="8" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBoxShowCursorCoords">
-        <property name="toolTip">
-         <string>Shows cursor position coordinates next to the cursor while editing a sketch</string>
-        </property>
-        <property name="text">
-         <string>Show coordinates next to the cursor while editing</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>ShowCursorCoords</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Sketcher</cstring>
-        </property>
-       </widget>
-      </item>
-  <item row="4" column="0" colspan="2">
+      <item row="9" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="dialogOnDistanceConstraint">
         <property name="toolTip">
          <string>Opens a dialog to input a value for new dimensional constraints after creation</string>
@@ -309,7 +373,81 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
         </property>
        </widget>
       </item>
-  <item row="9" column="0">
+      <item row="10" column="0" colspan="2">
+       <widget class="Gui::PrefCheckBox" name="continueMode">
+        <property name="toolTip">
+         <string>Keeps the current Sketcher tool active after creating geometry</string>
+        </property>
+        <property name="text">
+         <string>Geometry creation &quot;Continue Mode&quot;</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ContinuousCreationMode</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="0" colspan="2">
+       <widget class="Gui::PrefCheckBox" name="constraintMode">
+        <property name="toolTip">
+         <string>Keeps the current Sketcher constraint tool active after creating geometry</string>
+        </property>
+        <property name="text">
+         <string>Constraint creation &quot;Continue Mode&quot;</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ContinuousConstraintMode</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="0" colspan="2">
+       <widget class="Gui::PrefCheckBox" name="checkBoxHideUnits">
+        <property name="toolTip">
+         <string>Base length units will not be displayed in constraints or cursor coordinates.
+Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
+        </property>
+        <property name="text">
+         <string>Hide base length units for supported unit systems</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>HideUnits</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxShowCursorCoords">
+        <property name="toolTip">
+         <string>Shows cursor position coordinates next to the cursor while editing a sketch</string>
+        </property>
+        <property name="text">
+         <string>Show coordinates next to the cursor while editing</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowCursorCoords</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxUseSystemDecimals">
         <property name="toolTip">
          <string>Cursor coordinates will use the system decimals setting instead of the short form</string>
@@ -319,6 +457,48 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>UseSystemDecimals</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="15" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxShowDimensionalName">
+        <property name="toolTip">
+         <string>Shows names of dimensional constraints, if they exist</string>
+        </property>
+        <property name="text">
+         <string>Show dimensional constraint name with format</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowDimensionalName</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="15" column="1">
+       <widget class="Gui::PrefLineEdit" name="prefDimensionalStringFormat">
+        <property name="toolTip">
+         <string>The format of the dimensional constraint string presentation.
+Defaults to: %N = %V
+
+%N - name parameter
+%V - dimension value</string>
+        </property>
+        <property name="text">
+         <string notr="true">%N = %V</string>
+        </property>
+        <property name="placeholderText">
+         <string>%N = %V</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DimensionalStringFormat</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Sketcher</cstring>
@@ -550,11 +730,19 @@ Works only when &quot;Restore camera position after editing&quot; is enabled.</s
    <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
+  <customwidget>
+   <class>Gui::PrefFontBox</class>
+   <extends>QFontComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>fontBoxSketcherFontName</tabstop>
   <tabstop>EditSketcherFontSize</tabstop>
   <tabstop>ConstraintSymbolSize</tabstop>
   <tabstop>viewScalingFactor</tabstop>
+  <tabstop>axisTransparency</tabstop>
+  <tabstop>occludedAxisTransparency</tabstop>
   <tabstop>SegmentsPerGeometry</tabstop>
   <tabstop>dialogOnDistanceConstraint</tabstop>
   <tabstop>continueMode</tabstop>
@@ -587,22 +775,6 @@ Works only when &quot;Restore camera position after editing&quot; is enabled.</s
     <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBoxUseConstraintSymbolSize</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ConstraintSymbolSize</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>0</x>
-     <y>0</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>0</x>
-     <y>0</y>
     </hint>
    </hints>
   </connection>

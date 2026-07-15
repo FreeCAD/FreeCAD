@@ -4,9 +4,24 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="481"/>
+      <location filename="../../Application.cpp" line="619"/>
       <source>Unnamed</source>
       <translation>Nimetön</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="569"/>
+      <source>True</source>
+      <translation>Tosi</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="569"/>
+      <source>False</source>
+      <translation>Epätosi</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="587"/>
+      <source>Null</source>
+      <translation type="unfinished">Null</translation>
     </message>
   </context>
   <context>
@@ -20,13 +35,13 @@
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../Document.cpp" line="1218"/>
+      <location filename="../../Document.cpp" line="1255"/>
       <source>
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.
 </source>
       <translation>
-On suositeltavaa, että käyttäjä napsauttaa asiakirjan juurta hiiren kakkospainikkeella asiakirjan juurta ja valitsee Merkitse uudelleenlaskettavaksi.
+On suositeltavaa, että käyttäjä napsauttaa asiakirjan juurta hiiren kakkospainikkeella ja valitsee Merkitse uudelleenlaskettavaksi.
 Käyttäjän pitäisi sen jälkeen klikata Päivitä-painiketta päätyökalurivillä.
 </translation>
     </message>

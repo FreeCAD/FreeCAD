@@ -1460,6 +1460,15 @@ void ViewProviderPartExt::updateVisual()
     TopoDS_Shape shape = getRenderedShape().getShape();
 
     if (!VisualTouched && lastRenderedShape.IsPartner(shape)) {
+        // shape unchanged so do not rebuild geometry
+        // but still re-apply materials in case colors changed
+        Gui::SoHighlightElementAction haction;
+        haction.apply(this->faceset);
+        haction.apply(this->lineset);
+        haction.apply(this->nodeset);
+        setHighlightedFaces(ShapeAppearance.getValues());
+        setHighlightedEdges(LineColorArray.getValues());
+        setHighlightedPoints(PointColorArray.getValue());
         return;
     }
 
@@ -1533,7 +1542,7 @@ void ViewProviderPartExt::handleChangedPropertyName(
 )
 {
     if (strcmp(PropName, "DiffuseColor") == 0
-        && strcmp(TypeName, App::PropertyColorList::getClassTypeId().getName()) == 0) {
+        && TypeName == App::PropertyColorList::getClassTypeId().getName()) {
 
         // PropertyColorLists are loaded asynchronously as they're stored in separate files
         _diffuseColor.Restore(reader);

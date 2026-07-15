@@ -37,13 +37,19 @@
 #include "AreaParams.h"
 #include "Path.h"
 
-
+namespace heeks
+{
 class CArea;
 class CCurve;
+}  // namespace heeks
+
 class Bnd_Box;
 
 namespace Path
 {
+
+using heeks::CArea;
+using heeks::CCurve;
 
 /** Store libarea algorithm configuration */
 struct PathExport CAreaParams

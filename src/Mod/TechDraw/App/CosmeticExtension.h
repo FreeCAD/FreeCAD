@@ -95,6 +95,7 @@ public:
     virtual void            clearGeomFormats();
 
     void deleteCosmeticElements(std::vector<std::string> removables);
+    void refreshAllCosmetic();
 
     TechDraw::DrawViewPart* getOwner();
 

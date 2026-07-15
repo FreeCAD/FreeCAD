@@ -85,7 +85,9 @@ public:
         Base::Vector2d onSketchPos = snapHandle.compute();
         toolWidgetManager.mouseMoved(onSketchPos);
 
-        toolWidgetManager.enforceControlParameters(onSketchPos);
+        if (!toolWidgetManager.enforceControlParameters(onSketchPos)) {
+            return;
+        }
         updateDataAndDrawToPosition(onSketchPos);
         toolWidgetManager.adaptParameters(onSketchPos);
     }
@@ -95,7 +97,9 @@ public:
         // ensure controller state is initialized even if no mouseMove occurred
         // ie. when a modal dialog blocks input before the first click
         toolWidgetManager.mouseMoved(onSketchPos);
-        toolWidgetManager.enforceControlParameters(onSketchPos);
+        if (!toolWidgetManager.enforceControlParameters(onSketchPos)) {
+            return false;
+        }
         updateDataAndDrawToPosition(onSketchPos);
         toolWidgetManager.adaptParameters(onSketchPos);
 
@@ -124,6 +128,11 @@ protected:
         return DrawSketchHandler::getCrosshairCursorSVGName();
     }
     //@}
+
+    void addStepControlConstraints()
+    {
+        toolWidgetManager.addStepConstraints();
+    }
 
 private:
     /** @name functions requiring specialisation */
@@ -180,6 +189,7 @@ private:
 
     void onConstructionMethodChanged() override
     {
+        DrawSketchHandler::updateHint();
         toolWidgetManager.onConstructionMethodChanged();
     }
 

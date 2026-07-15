@@ -76,9 +76,9 @@ constexpr const char* POSTFIX_CHILD                     = ";:C";
 
 /// Special postfix to mark the index of an array element
 constexpr const char* POSTFIX_INDEX                     = ";:I";
-/// Postfix to mark an element higher in the hierarcy.
+/// Postfix to mark an element higher in the hierarchy.
 constexpr const char* POSTFIX_UPPER                     = ";:U";
-/// Postfix to mark an element lower in the hierarcy.
+/// Postfix to mark an element lower in the hierarchy.
 constexpr const char* POSTFIX_LOWER                     = ";:L";
 /// Postfix to mark an element as being modified.
 constexpr const char* POSTFIX_MOD                       = ";:M";

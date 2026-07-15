@@ -100,7 +100,7 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="511"/>
       <source>Do you want to remove all annotations?</source>
-      <translation>Ці жадаеце вы выдаліць усе заметкі?</translation>
+      <translation>Ці сапраўды выдаліць усе заметкі?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="569"/>

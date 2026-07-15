@@ -30,6 +30,7 @@ import Path.Base.Util as PathUtil
 import Path.Main.Job as PathJob
 import Path.Main.Stock as PathStock
 import glob
+import json
 import os
 
 translate = FreeCAD.Qt.translate
@@ -57,8 +58,6 @@ class JobCreate:
     DataObject = QtCore.Qt.ItemDataRole.UserRole
 
     def __init__(self, parent=None, sel=None):
-        self._warnUserIfNotUsingMinutes()
-
         self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobCreate.ui")
         self.itemsSolid = QtGui.QStandardItem(translate("CAM_Job", "Solids"))
         self.items2D = QtGui.QStandardItem(translate("CAM_Job", "2D"))
@@ -72,188 +71,122 @@ class JobCreate:
         self.index = None
         self.model = None
 
-    def _getMinuteBasedSchemas(self):
-        """Dynamically discover which unit schemas support velocity in minutes."""
-        internal_names = FreeCAD.Units.listSchemas()
-        minute_based_schemes = []
+        self._setupUnitSchema()
 
-        # Create a test velocity quantity
-        q = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity)
-
-        for i, key in enumerate(internal_names):
-            try:
-                label = FreeCAD.Units.listSchemas(i)
-                r = FreeCAD.Units.schemaTranslate(q, i)
-                if "/min" in r[2]:
-                    minute_based_schemes.append({"id": i, "label": label})
-            except (IndexError, TypeError):
-                # Skip invalid schema indices
-                continue
-
-        return minute_based_schemes
-
-    def _currentSchemaUsesMinutes(self):
-        """Test if the current unit schema uses minutes for velocity."""
+    def _schemaUsesMinutes(self, schema_id):
+        """Return True if the given unit schema expresses velocity in /min."""
         try:
-            # Create a test velocity quantity
             q = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity)
-
-            # Get current schema's representation of velocity
-            current_representation = q.getUserPreferred()[2]
-
-            # Check if the current representation contains '/min'
-            return "/min" in current_representation
-        except Exception:
-            # If we can't determine, assume it doesn't use minutes
+            r = FreeCAD.Units.schemaTranslate(q, schema_id)
+            return "/min" in r[2]
+        except (IndexError, TypeError):
             return False
 
-    def _warnUserIfNotUsingMinutes(self):
-        # Warn user if current schema doesn't use minute for time in velocity
-        if Path.Preferences.suppressVelocity():
-            return
+    # Colors for the unit-schema combobox: green = minute-based (safe);
+    # red = per-second (unsafe).
+    _SCHEMA_SAFE_BG = QtGui.QColor(76, 175, 80)
+    _SCHEMA_SAFE_FG = QtGui.QColor(0, 0, 0)
+    _SCHEMA_UNSAFE_BG = QtGui.QColor(192, 57, 43)
+    _SCHEMA_UNSAFE_FG = QtGui.QColor(255, 255, 255)
 
-        # Test if current schema uses minutes for velocity
-        if self._currentSchemaUsesMinutes():
-            return
+    class _ColoredComboDelegate(QtGui.QStyledItemDelegate):
+        """Combobox item delegate that explicitly fills each row from the
+        model's BackgroundRole brush. The native popup style ignores
+        BackgroundRole; this delegate paints it before the text."""
 
-        # Get all minute-based schemas for the dialog
-        minute_based_schemes = self._getMinuteBasedSchemas()
+        def paint(self, painter, option, index):
+            bg = index.data(QtCore.Qt.BackgroundRole)
+            if bg is not None:
+                if not isinstance(bg, QtGui.QBrush):
+                    bg = QtGui.QBrush(bg)
+                painter.save()
+                painter.fillRect(option.rect, bg)
+                painter.restore()
+            super().paint(painter, option, index)
 
-        # Create custom dialog with unit schema selection
-        dialog = QtGui.QDialog()
-        dialog.setWindowTitle(translate("CAM_Job", "Warning: Incompatible Unit Schema"))
-        dialog.setModal(True)
-        dialog.resize(500, 400)
+    def _setupUnitSchema(self):
+        """Populate the unit-schema combobox in the create dialog.
 
-        layout = QtGui.QVBoxLayout(dialog)
-
-        # Warning message
-        warning_label = QtGui.QLabel()
-        warning_label.setText(
-            translate(
-                "CAM_Job",
-                "<b>This document uses an improper unit schema which can result in "
-                "dangerous situations and machine crashes!</b>",
-            )
-        )
-        warning_label.setWordWrap(True)
-        warning_label.setStyleSheet("color: red; font-weight: bold; margin-bottom: 10px;")
-        layout.addWidget(warning_label)
-
-        # Current schema info
-        current_info = QtGui.QLabel()
-        current_info.setText(
-            translate(
-                "CAM_Job",
-                "Current unit schema '{}' expresses velocity in values <i>per second</i>.",
-            ).format(FreeCAD.ActiveDocument.UnitSystem)
-        )
-        current_info.setWordWrap(True)
-        layout.addWidget(current_info)
-
-        # Recommendation
-        recommendation = QtGui.QLabel()
-        recommendation.setText(
-            translate(
-                "CAM_Job",
-                "Please select a unit schema that expresses feed rates <i>per minute</i> instead:",
-            )
-        )
-        recommendation.setWordWrap(True)
-        layout.addWidget(recommendation)
-
-        # Unit schema selection
-        schema_group = QtGui.QGroupBox(translate("CAM_Job", "Recommended Unit Schemas"))
-        schema_layout = QtGui.QVBoxLayout(schema_group)
-
-        self.schema_buttons = []
-        for i, schema in enumerate(minute_based_schemes):
-            radio = QtGui.QRadioButton(schema["label"])
-            radio.setProperty("schema_id", schema["id"])  # Store the schema ID
-            if i == 0:  # Select first (most preferred) by default
-                radio.setChecked(True)
-            self.schema_buttons.append(radio)
-            schema_layout.addWidget(radio)
-
-        layout.addWidget(schema_group)
-
-        # Additional info
-        info_label = QtGui.QLabel()
-        info_label.setText(
-            translate(
-                "CAM_Job",
-                "Keeping the current unit schema can result in dangerous G-code errors. "
-                "For details please refer to the "
-                "<a href='https://wiki.freecad.org/CAM_Workbench#Units'>Units section</a> "
-                "of the CAM Workbench's wiki page.",
-            )
-        )
-        info_label.setWordWrap(True)
-        info_label.setOpenExternalLinks(True)
-        layout.addWidget(info_label)
-
-        # Buttons
-        button_layout = QtGui.QHBoxLayout()
-
-        change_button = QtGui.QPushButton(translate("CAM_Job", "Change Unit Schema"))
-        change_button.setDefault(True)
-        change_button.clicked.connect(lambda: self._applyUnitSchema(dialog))
-
-        keep_button = QtGui.QPushButton(translate("CAM_Job", "Keep Current Schema"))
-        keep_button.clicked.connect(dialog.reject)
-
-        dont_show_button = QtGui.QPushButton(translate("CAM_Job", "Don't Show Again"))
-        dont_show_button.clicked.connect(lambda: self._suppressWarning(dialog))
-
-        button_layout.addWidget(change_button)
-        button_layout.addWidget(keep_button)
-        button_layout.addWidget(dont_show_button)
-
-        layout.addLayout(button_layout)
-
-        dialog.exec_()
-
-    def _applyUnitSchema(self, dialog):
-        """Apply the selected unit schema to the document."""
-        selected_schema_id = None
-        selected_schema_label = None
-        for button in self.schema_buttons:
-            if button.isChecked():
-                selected_schema_id = button.property("schema_id")
-                selected_schema_label = button.text()
-                break
-
-        if selected_schema_id is not None:
+        Lists every schema returned by FreeCAD.Units.listSchemas(). Minute-based
+        schemas are shown black-on-green (safe); per-second schemas are shown
+        white-on-red (unsafe). The closed combobox restyles itself on selection
+        change so the displayed item matches its dropdown coloring. The selected
+        schema is applied only if the user clicks OK (see exec_)."""
+        keys = FreeCAD.Units.listSchemas()
+        labels = []
+        for i in range(len(keys)):
             try:
-                FreeCAD.ActiveDocument.UnitSystem = selected_schema_id
-                FreeCAD.ActiveDocument.recompute()
+                labels.append(FreeCAD.Units.listSchemas(i))
+            except (IndexError, TypeError):
+                labels.append(keys[i])
 
-                # Show success message
-                QtGui.QMessageBox.information(
-                    dialog,
-                    translate("CAM_Job", "Unit Schema Changed"),
-                    translate("CAM_Job", "Unit schema successfully changed to '{}'.").format(
-                        selected_schema_label
-                    ),
+        current_label = FreeCAD.ActiveDocument.UnitSystem if FreeCAD.ActiveDocument else labels[0]
+
+        combo = self.dialog.unitSchemaCombo
+        # Force a custom delegate that explicitly paints BackgroundRole on every
+        # dropdown row (the native style ignores model background brushes).
+        combo.setItemDelegate(self._ColoredComboDelegate(combo))
+        combo.clear()
+        for i, label in enumerate(labels):
+            uses_minutes = self._schemaUsesMinutes(i)
+            combo.addItem(label, label)
+            if uses_minutes:
+                bg, fg = self._SCHEMA_SAFE_BG, self._SCHEMA_SAFE_FG
+                tip = translate("CAM_Job", "Velocity expressed per minute (recommended for G-code)")
+            else:
+                bg, fg = self._SCHEMA_UNSAFE_BG, self._SCHEMA_UNSAFE_FG
+                tip = translate(
+                    "CAM_Job",
+                    "Velocity expressed per second. Unsafe for G-code feed rates.",
                 )
-                dialog.accept()
-            except Exception as e:
-                QtGui.QMessageBox.critical(
-                    dialog,
-                    translate("CAM_Job", "Error"),
-                    translate("CAM_Job", "Failed to change unit schema: {}").format(str(e)),
-                )
+            row = combo.count() - 1
+            combo.setItemData(row, QtGui.QBrush(bg), QtCore.Qt.BackgroundRole)
+            combo.setItemData(row, QtGui.QBrush(fg), QtCore.Qt.ForegroundRole)
+            combo.setItemData(row, tip, QtCore.Qt.ToolTipRole)
+
+        # Default selection: the document's current schema, by label match.
+        idx = combo.findData(current_label)
+        if idx < 0:
+            for i in range(len(labels)):
+                if self._schemaUsesMinutes(i):
+                    idx = i
+                    break
+        if idx < 0:
+            idx = 0
+        combo.setCurrentIndex(idx)
+
+        combo.currentIndexChanged.connect(self._updateUnitSchemaStatus)
+        self._updateUnitSchemaStatus()
+
+    def _updateUnitSchemaStatus(self):
+        """Restyle the closed combobox to match the selected item's colors."""
+        combo = self.dialog.unitSchemaCombo
+        idx = combo.currentIndex()
+        if idx < 0:
+            combo.setStyleSheet("")
+            return
+        if self._schemaUsesMinutes(idx):
+            bg, fg = self._SCHEMA_SAFE_BG, self._SCHEMA_SAFE_FG
         else:
-            QtGui.QMessageBox.warning(
-                dialog,
-                translate("CAM_Job", "No Selection"),
-                translate("CAM_Job", "Please select a unit schema."),
-            )
+            bg, fg = self._SCHEMA_UNSAFE_BG, self._SCHEMA_UNSAFE_FG
+        combo.setStyleSheet(
+            "QComboBox { background-color: %s; color: %s; }" % (bg.name(), fg.name())
+        )
 
-    def _suppressWarning(self, dialog):
-        """Suppress future warnings and close dialog."""
-        Path.Preferences.preferences().SetBool(Path.Preferences.WarningSuppressVelocity, True)
-        dialog.reject()
+    def _applySelectedSchema(self):
+        """Apply the selected unit schema to the active document. Called on OK."""
+        if not FreeCAD.ActiveDocument:
+            return
+        label = self.dialog.unitSchemaCombo.currentData()
+        if not label:
+            return
+        if FreeCAD.ActiveDocument.UnitSystem == label:
+            return
+        try:
+            FreeCAD.ActiveDocument.UnitSystem = label
+            FreeCAD.ActiveDocument.recompute()
+        except Exception as e:
+            Path.Log.warning("Failed to set unit schema: %s" % e)
 
     def setupTitle(self, title):
         self.dialog.setWindowTitle(title)
@@ -407,6 +340,31 @@ class JobCreate:
         self.index = index
         editor.valueChanged.connect(self.item1ValueChanged)
 
+    def _loadTemplateDescription(self, filepath, name):
+        """Return a tooltip-ready description for a job template.
+
+        Reads the canonical PathJob.JobTemplate.Description key ('Desc') from
+        the JSON. If absent or empty, falls back to a synthesized description
+        of the form '<name> (YYYY-MM-DD)' using the file's modification time."""
+        if not filepath:
+            return ""
+        try:
+            with open(filepath, "r") as fp:
+                data = json.load(fp)
+            desc = data.get(PathJob.JobTemplate.Description, "") or ""
+        except Exception:
+            desc = ""
+        if desc:
+            return desc
+        try:
+            import datetime
+
+            mtime = os.path.getmtime(filepath)
+            stamp = datetime.date.fromtimestamp(mtime).isoformat()
+            return "%s (%s)" % (name, stamp)
+        except Exception:
+            return name
+
     def setupTemplate(self):
         templateFiles = []
         for path in Path.Preferences.searchPaths():
@@ -433,11 +391,17 @@ class JobCreate:
             template[name] = tFile
 
         index = 0
-        self.dialog.jobTemplate.addItem(translate("CAM_Job", "<none>"), "")
+        none_label = translate("CAM_Job", "(none)")
+        self.dialog.jobTemplate.addItem(none_label, "")
+        self.dialog.jobTemplate.setItemData(0, "", QtCore.Qt.ToolTipRole)
         for name in sorted(template):
             if template[name] == selectTemplate:
                 index = self.dialog.jobTemplate.count()
             self.dialog.jobTemplate.addItem(name, template[name])
+            tooltip = self._loadTemplateDescription(template[name], name)
+            self.dialog.jobTemplate.setItemData(
+                self.dialog.jobTemplate.count() - 1, tooltip, QtCore.Qt.ToolTipRole
+            )
         self.dialog.jobTemplate.setCurrentIndex(index)
         self.dialog.templateGroup.show()
 
@@ -478,6 +442,8 @@ class JobCreate:
         self.model.dataChanged.connect(self.updateData)
         rc = self.dialog.exec_()
         self.model.dataChanged.disconnect()
+        if rc == 1:
+            self._applySelectedSchema()
         return rc
 
 
@@ -501,6 +467,11 @@ class JobTemplateExport:
 
     def updateUI(self):
         job = self.job
+        # Description: pre-fill from the Job's own Description field. Editing
+        # this field overrides only what gets written to the template; the
+        # running Job's Description is untouched until the user edits it on
+        # the General tab.
+        self.dialog.templateDescriptionEdit.setPlainText(getattr(job, "Description", "") or "")
         if job.PostProcessor:
             ppHint = "%s %s %s" % (
                 job.PostProcessor,
@@ -584,6 +555,10 @@ class JobTemplateExport:
         )
         for i in range(self.dialog.toolsList.count()):
             self.dialog.toolsList.item(i).setCheckState(state)
+
+    def description(self):
+        """Return the (possibly edited) description to write to the template."""
+        return self.dialog.templateDescriptionEdit.toPlainText().strip()
 
     def includePostProcessing(self):
         return self.dialog.postProcessingGroup.isChecked()

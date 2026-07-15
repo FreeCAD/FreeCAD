@@ -35,6 +35,7 @@ from Machine.models.machine import (
     Toolhead,
     ToolheadType,
     AxisRole,
+    WrapStrategy,
 )
 from Path.Main.Gui.Editor import CodeEditor
 from Path.Post.Processor import PostProcessorFactory
@@ -176,6 +177,7 @@ class DataclassGUIGenerator:
         "joint_axis": translate("CAM_MachineEditor", "Joint Axis"),
         "solution_preference": translate("CAM_MachineEditor", "Solution Preference"),
         "allow_flip": translate("CAM_MachineEditor", "Allow Flip"),
+        "wrap_strategy": translate("CAM_MachineEditor", "Wrap Strategy"),
     }
 
     @staticmethod
@@ -677,6 +679,12 @@ class MachineEditorDialog(QtGui.QDialog):
         """Update rotary axis allow flip setting."""
         if self.machine and axis_name in self.machine.rotary_axes:
             self.machine.rotary_axes[axis_name].allow_flip = checked
+
+    def _on_wrap_strategy_changed(self, axis_name, combo):
+        """Update rotary axis wrap strategy."""
+        if self.machine and axis_name in self.machine.rotary_axes:
+            strategy = combo.itemData(combo.currentIndex())
+            self.machine.rotary_axes[axis_name].wrap_strategy = strategy
 
     def _on_kinematics_field_changed(self, field_name, value):
         """Update kinematics field."""
@@ -1427,6 +1435,18 @@ class MachineEditorDialog(QtGui.QDialog):
         )
         form.addRow(translate("CAM_MachineEditor", "Prefer Positive"), prefer_positive_check)
 
+        # Wrap strategy
+        wrap_combo = QtGui.QComboBox()
+        for member in WrapStrategy:
+            wrap_combo.addItem(member.value.title(), member)
+        wi = wrap_combo.findData(axis_obj.wrap_strategy)
+        if wi >= 0:
+            wrap_combo.setCurrentIndex(wi)
+        wrap_combo.currentIndexChanged.connect(
+            lambda _idx, ax=axis, c=wrap_combo: self._on_wrap_strategy_changed(ax, c)
+        )
+        form.addRow(translate("CAM_MachineEditor", "Wrap Strategy"), wrap_combo)
+
         form.addItem(
             QtGui.QSpacerItem(0, 0, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         )
@@ -1445,6 +1465,7 @@ class MachineEditorDialog(QtGui.QDialog):
             "solution": solution_combo,
             "allow_flip": allow_flip_check,
             "prefer_positive": prefer_positive_check,
+            "wrap_strategy": wrap_combo,
             "type": "rotary",
         }
         return page

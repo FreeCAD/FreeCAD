@@ -210,6 +210,12 @@ struct ElementName
 void Part::FaceMaker::postBuild()
 {
     this->myTopoShape.setShape(this->myShape);
+    if (this->MyElementMapPolicy == ElementMapPolicy::Drop) {
+        this->myTopoShape.dropElementNaming();
+        this->Done();
+        return;
+    }
+
     this->myTopoShape.Hasher = this->MyHasher;
     this->myTopoShape.mapSubElement(this->mySourceShapes);
 

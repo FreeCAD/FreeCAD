@@ -26,6 +26,8 @@
 
 #include "ZoomableView.h"
 #include "ui_Sheet.h"
+#include "Base/Console.h"
+#include <Mod/Spreadsheet/App/SheetParameter.h>
 
 
 ZoomableView::ZoomableView(Ui::Sheet* ui)
@@ -174,10 +176,7 @@ void ZoomableView::zoomOut(void)
 
 void ZoomableView::resetZoom(void)
 {
-    constexpr const char* path = "User parameter:BaseApp/Preferences/Mod/Spreadsheet";
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(path);
-    const int defaultZoomLevel = static_cast<int>(hGrp->GetInt("DefaultZoomLevel", 100));
-
+    const int defaultZoomLevel = Spreadsheet::SheetParameter::instance()->getDefaultZoomLevel();
     setZoomLevel(defaultZoomLevel);
 }
 
@@ -204,7 +203,11 @@ void ZoomableView::updateView(void)
 
 void ZoomableView::focusOutEvent(QFocusEvent* event)
 {
-    Q_UNUSED(event);
+    if (event->reason() == Qt::FocusReason::PopupFocusReason) {
+        return;
+    }
+
+    QGraphicsView::focusOutEvent(event);
 }
 
 void ZoomableView::keyPressEvent(QKeyEvent* event)

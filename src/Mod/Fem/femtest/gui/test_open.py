@@ -125,6 +125,13 @@ class TestObjectOpen(unittest.TestCase):
 
         self.assertEqual(ViewProxy, self.document.Fluxsolver.ViewObject.Proxy.__class__)
 
+        from femviewprovider.view_constraint_electromagnetic import VPConstraintElectromagnetic
+
+        self.assertEqual(
+            VPConstraintElectromagnetic,
+            self.document.ConstraintElectrostaticPotential.ViewObject.Proxy.__class__,
+        )
+
     # ********************************************************************************************
     def compare_feature_pythons_class_gui(self, doc):
         import ObjectsFem
@@ -141,15 +148,6 @@ class TestObjectOpen(unittest.TestCase):
         self.assertEqual(
             "Fem::ConstraintCurrentDensity",
             type_of_obj(ObjectsFem.makeConstraintCurrentDensity(doc)),
-        )
-
-        from femviewprovider.view_constraint_electromagnetic import (
-            VPConstraintElectromagnetic,
-        )
-
-        self.assertEqual(
-            VPConstraintElectromagnetic,
-            doc.ConstraintElectromagnetic.ViewObject.Proxy.__class__,
         )
 
         from femviewprovider.view_constraint_flowvelocity import VPConstraintFlowVelocity

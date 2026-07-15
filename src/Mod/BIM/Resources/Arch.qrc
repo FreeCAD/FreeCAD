@@ -98,6 +98,9 @@
         <file>icons/BIM_Clone.svg</file>
         <file>icons/BIM_Column.svg</file>
         <file>icons/BIM_Copy.svg</file>
+        <file>icons/BIM_Covering.svg</file>
+        <file>icons/BIM_Covering_Tree.svg</file>
+        <file>icons/BIM_Covering_Clone.svg</file>
         <file>icons/BIM_Diff.svg</file>
         <file>icons/BIM_DimensionAligned.svg</file>
         <file>icons/BIM_DimensionHorizontal.svg</file>
@@ -212,6 +215,7 @@
         <file>translations/Arch_ta.qm</file>
         <file>translations/Arch_ga-IE.qm</file>
         <file>translations/Arch_sv.qm</file>
+        <file>translations/Arch_lo.qm</file>
         <file>ui/ArchMaterial.ui</file>
         <file>ui/ArchMultiMaterial.ui</file>
         <file>ui/ArchNest.ui</file>

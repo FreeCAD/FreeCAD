@@ -33,6 +33,7 @@ from Path.Post.Processor import PostProcessor
 
 import Path
 import FreeCAD
+from Machine.models.machine import OutputUnits
 
 translate = FreeCAD.Qt.translate
 
@@ -144,36 +145,9 @@ class Linuxcnc(PostProcessor):
         #
         # linuxcnc doesn't want K properties on XY plane; Arcs need work.
         #
-        values["PARAMETER_ORDER"] = [
-            "X",
-            "Y",
-            "Z",
-            "A",
-            "B",
-            "C",
-            "I",
-            "J",
-            "F",
-            "S",
-            "T",
-            "Q",
-            "R",
-            "L",
-            "H",
-            "D",
-            "P",
-        ]
+        values["PARAMETER_ORDER"] = "XYZABCIJFSTQRLHDP"
 
-        values["MACHINE_NAME"] = "LinuxCNC"
         values["POSTPROCESSOR_FILE_NAME"] = __name__
-        #
-        # Load preamble from machine configuration if available
-        #
-        if self._machine and hasattr(self._machine, "postprocessor_properties"):
-            props = self._machine.postprocessor_properties
-            values["PREAMBLE"] = props.get("preamble", "")
-        else:
-            values["PREAMBLE"] = ""
 
         # Path blending mode configuration (LinuxCNC-specific)
         # Load from machine configuration if available, otherwise use defaults
@@ -187,52 +161,23 @@ class Linuxcnc(PostProcessor):
             values["BLEND_MODE"] = "BLEND"
             values["BLEND_TOLERANCE"] = 0.0
 
-        # Add blend command to PREAMBLE
-        blend_cmd = self._get_blend_command()
-        if values["PREAMBLE"]:
-            values["PREAMBLE"] += f"\n{blend_cmd}"
-        else:
-            values["PREAMBLE"] = blend_cmd
+    def _expand_prefix(self, postables):
+        """inject blend command"""
+        blend = self._get_blend_command()
 
-    def export2(self):
-        """Override export2 to inject blend command before parent processing.
+        if self.values["PREAMBLE"] is None:
+            self.values["PREAMBLE"] = ""
+        self.values["PREAMBLE"] += blend
 
-        apply_configuration_bundle() (called by parent export2) populates
-        self.values with the final overridden blend settings.  We apply
-        the bundle first, inject the blend G-code into the preamble, then
-        let the parent finish.
-        """
-        # Build and apply the full configuration bundle (unless dialog already did it)
-        if not getattr(self, "_bundle_applied", False):
-            self.apply_configuration_bundle()
-
-        # Inject blend command into preamble using the now-final values
-        if self._machine and hasattr(self._machine, "postprocessor_properties"):
-            blend_cmd = self._get_blend_command()
-            props = self._machine.postprocessor_properties
-            current_preamble = props.get("preamble", "")
-            if current_preamble:
-                props["preamble"] = f"{current_preamble}\n{blend_cmd}"
-            else:
-                props["preamble"] = blend_cmd
-
-        # Parent export2 will call apply_configuration_bundle again (idempotent)
-        return super().export2()
+        super()._expand_prefix(postables)
 
     def _get_blend_command(self) -> str:
         """Generate the path blending G-code command based on current settings.
 
         Reads from postprocessor_properties if available, otherwise falls back to values dict.
         """
-        # Try to read from postprocessor_properties first (for export2)
-        if self._machine and hasattr(self._machine, "postprocessor_properties"):
-            props = self._machine.postprocessor_properties
-            mode = props.get("blend_mode", "BLEND")
-            tolerance = props.get("blend_tolerance", 0.0)
-        else:
-            # Fallback to values dict (for legacy export)
-            mode = self.values.get("BLEND_MODE", "BLEND")
-            tolerance = self.values.get("BLEND_TOLERANCE", 0.0)
+        mode = self.values["BLEND_MODE"]
+        tolerance = self.values["BLEND_TOLERANCE"]
 
         if mode == "EXACT_PATH":
             return "G61"
@@ -273,11 +218,8 @@ class Linuxcnc(PostProcessor):
 
                 # Get unit conversion function
                 def get_value(val):
-                    if self._machine and hasattr(self._machine, "output"):
-                        from Machine.models.machine import OutputUnits
-
-                        if self._machine.output.units == OutputUnits.IMPERIAL:
-                            return val / 25.4
+                    if self.values["OUTPUT_UNITS"] == OutputUnits.IMPERIAL:
+                        return val / 25.4
                     return val
 
                 pitch = get_value(pitch)

@@ -705,7 +705,7 @@ protected:
     /**
      * @brief Update the link when a property changes.
      *
-     * It fullfills a role similar to DocumentObject::onChanged().
+     * It fulfills a role similar to DocumentObject::onChanged().
      *
      * @param[in] parent The parent document object.
      * @param[in] prop The property that changed.

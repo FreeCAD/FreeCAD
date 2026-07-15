@@ -89,7 +89,6 @@
 #include "Macro.h"
 #include "PreferencePackManager.h"
 #include "PythonConsolePy.h"
-#include "PythonDebugger.h"
 #include "MainWindowPy.h"
 #include "MDIViewPy.h"
 #include "MDIViewWithCamera.h"
@@ -98,6 +97,7 @@
 #include "Selection.h"
 #include "SelectionFilterPy.h"
 #include "SoQtOffscreenRendererPy.h"
+#include "SpaceMouseParameter.h"
 #include "SplitView3DInventor.h"
 #include "StartupProcess.h"
 #include "TaskView/TaskView.h"
@@ -479,6 +479,7 @@ void Application::initStyleParameterManager()
             bool tiledBG = hGrp->GetBool("TiledBackground", false);
 
             setStyleSheet(QString::fromStdString(sheet), tiledBG);
+            OverlayManager::instance()->refresh(nullptr, true);
         }
     );
 
@@ -724,7 +725,6 @@ Application::Application(bool GUIenabled)
 
     // clang-format off
     // Python console binding
-    PythonDebugModule           ::init_module();
     PythonStdout                ::init_type();
     PythonStderr                ::init_type();
     OutputStdout                ::init_type();
@@ -854,7 +854,7 @@ void Application::open(const char* FileName, const char* Module)
             getMainWindow()->appendRecentFile(filename);
             FileDialog::setWorkingDirectory(filename);
         }
-        catch (const Base::PyException& e) {
+        catch (const Base::Exception& e) {
             // Usually thrown if the file is invalid somehow
             e.reportException();
         }
@@ -961,7 +961,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
             }
             FileDialog::setWorkingDirectory(filename);
         }
-        catch (const Base::PyException& e) {
+        catch (const Base::Exception& e) {
             // Usually thrown if the file is invalid somehow
             e.reportException();
         }
@@ -1585,13 +1585,12 @@ void Application::unsetEditDocument(Gui::Document* pcDocument)
 }
 void Application::unsetEditDocumentIf(const std::function<bool(Gui::Document*)>& eval)
 {
-    std::erase_if(d->editDocuments, [&](Gui::Document* doc) {
-        if (eval(doc)) {
-            doc->_resetEdit();
-            return true;
-        }
-        return false;
-    });
+    std::vector<Gui::Document*> matched, unmatched;
+    ranges::partition_copy(d->editDocuments, back_inserter(matched), back_inserter(unmatched), eval);
+    std::swap(d->editDocuments, unmatched);
+    for (auto doc : matched) {
+        doc->_resetEdit();
+    }
     updateActions();
 }
 Gui::MDIView* Application::editViewOfNode(SoNode* node) const
@@ -2297,6 +2296,12 @@ void setCategoryFilterRules()
     stream.flush();
     QLoggingCategory::setFilterRules(filter);
 }
+
+bool isSuppressedQtWarning(const QMessageLogContext& context, const QString& msg)
+{
+    return context.category && strcmp(context.category, "qt.text.font.db") == 0
+        && msg.startsWith(QStringLiteral("OpenType support missing for "));
+}
 }  // namespace
 
 using _qt_msg_handler_old = void (*)(QtMsgType, const QMessageLogContext&, const QString&);
@@ -2304,6 +2309,10 @@ _qt_msg_handler_old old_qtmsg_handler = nullptr;
 
 void messageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
+    if (type == QtWarningMsg && isSuppressedQtWarning(context, msg)) {
+        return;
+    }
+
     QByteArray output;
     if (context.category && strcmp(context.category, "default") != 0) {
         output.append('(');
@@ -2553,7 +2562,7 @@ void tryRunEventLoop(GUISingleApplication& mainApp)
 {
     std::stringstream out;
     out << App::Application::getUserCachePath() << App::Application::getExecutableName() << "_"
-        << App::Application::applicationPid() << ".lock";
+        << App::Application::uniqueInstanceId() << ".lock";
 
     // open a lock file with the PID
     Base::FileInfo fi(out.str());
@@ -2723,16 +2732,13 @@ void Application::init3DMouse(MainWindow* mainWindow, QApplication* qtApp)
 {
     Instance->pNavlibInterface = nullptr;
 #ifdef USE_3DCONNEXION_NAVLIB
-    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/View"
-    );
     if (NlErrorCode) {
         Base::Console().log("Init: 3Dconnexion driver not installed\n");
     }
     else {
         Base::Console().log("Init: 3Dconnexion Navigation Framework present\n");
     }
-    if (!hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
+    if (!SpaceMouseParameter::instance()->getLegacySpaceMouseDevices()) {
         if (!NlErrorCode) {
             // Instantiate the 3Dconnexion controller
             Instance->pNavlibInterface = new NavlibInterface();

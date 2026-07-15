@@ -97,7 +97,7 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Note: DXF options apply to DWG files as well.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

@@ -456,41 +456,41 @@ Detta kommando fungerar endast med ett nätobjekt.</translation>
   <context>
     <name>SurfaceGui::FillingEdgePanel</name>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="134"/>
+      <location filename="../../TaskFillingEdge.cpp" line="133"/>
       <source>Remove</source>
       <translation>Ta bort</translation>
     </message>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="330"/>
+      <location filename="../../TaskFillingEdge.cpp" line="329"/>
       <source>Invalid object</source>
       <translation>Ogiltigt objekt</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskFillingEdge.cpp" line="408"/>
+      <location filename="../../TaskFillingEdge.cpp" line="407"/>
       <source>Edge has %n adjacent face(s)</source>
-      <translation type="unfinished">
-        <numerusform>Kant har %n angränsande sidor</numerusform>
-        <numerusform>Edge has %n adjacent face(s)</numerusform>
+      <translation>
+        <numerusform>Kanten har %n angränsande yta</numerusform>
+        <numerusform>Kanten har %n angränsande ytor</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="412"/>
+      <location filename="../../TaskFillingEdge.cpp" line="411"/>
       <source>None</source>
       <translation>Inget</translation>
     </message>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="433"/>
+      <location filename="../../TaskFillingEdge.cpp" line="432"/>
       <source>Edge has no adjacent faces</source>
-      <translation>Kant har inga angränsande sidor</translation>
+      <translation>Kanten har inga angränsande ytor</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
-      <location filename="../../TaskFilling.cpp" line="64"/>
+      <location filename="../../TaskFilling.cpp" line="63"/>
       <source>Edit Filling</source>
-      <translation>Redigera Fyllning</translation>
+      <translation>Redigera fyllning</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="667"/>
@@ -500,7 +500,7 @@ Detta kommando fungerar endast med ett nätobjekt.</translation>
     <message>
       <location filename="../../TaskSections.cpp" line="59"/>
       <source>Edit Sections</source>
-      <translation>Redigera Sektioner</translation>
+      <translation>Redigera sektioner</translation>
     </message>
     <message>
       <location filename="../../Blending/ViewProviderBlendCurve.cpp" line="47"/>
@@ -511,17 +511,17 @@ Detta kommando fungerar endast med ett nätobjekt.</translation>
   <context>
     <name>SurfaceGui::FillingPanel</name>
     <message>
-      <location filename="../../TaskFilling.cpp" line="282"/>
+      <location filename="../../TaskFilling.cpp" line="281"/>
       <source>Remove</source>
       <translation>Ta bort</translation>
     </message>
     <message>
-      <location filename="../../TaskFilling.cpp" line="498"/>
+      <location filename="../../TaskFilling.cpp" line="497"/>
       <source>Invalid object</source>
       <translation>Ogiltigt objekt</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskFilling.cpp" line="616"/>
+      <location filename="../../TaskFilling.cpp" line="615"/>
       <source>Edge has %n adjacent faces</source>
       <translation type="unfinished">
         <numerusform>Kant har %n angränsande sidor</numerusform>
@@ -529,14 +529,14 @@ Detta kommando fungerar endast med ett nätobjekt.</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskFilling.cpp" line="620"/>
+      <location filename="../../TaskFilling.cpp" line="619"/>
       <source>None</source>
       <translation>Inget</translation>
     </message>
     <message>
-      <location filename="../../TaskFilling.cpp" line="641"/>
+      <location filename="../../TaskFilling.cpp" line="640"/>
       <source>Edge has no adjacent faces</source>
-      <translation>Kant har inga angränsande sidor</translation>
+      <translation>Kanten har inga angränsande ytor</translation>
     </message>
   </context>
   <context>
