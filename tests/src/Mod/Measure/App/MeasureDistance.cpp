@@ -932,22 +932,25 @@ TEST_F(MeasureDistance, testResolveShapeAppliesPlacementOnce)
 TEST_F(MeasureDistance, testResolveShapeThroughContainer)
 {
     App::Document* doc = getDocument();
-    auto vtx = doc->addObject<Part::Feature>("Vtx");
-    vtx->Shape.setValue(makeVertex(gp_Pnt(1.0, 2.0, 3.0)));
+    auto circle = doc->addObject<Part::Feature>("Circle");
+    circle->Shape.setValue(makeCircle(gp_Pnt(1.0, 2.0, 3.0)));
     auto container = doc->addObject<App::Part>("Container");
     container->Placement.setValue(Base::Placement(Base::Vector3d(50.0, 0.0, 0.0), Base::Rotation()));
-    container->getExtensionByType<App::GeoFeatureGroupExtension>()->addObject(vtx);
+    container->getExtensionByType<App::GeoFeatureGroupExtension>()->addObject(circle);
     doc->recompute();
 
     const TopoDS_Shape shape = Measure::MeasureSnap::resolveShape(
-        App::SubObjectT(container, "Vtx.Vertex1")
+        App::SubObjectT(container, "Circle.Edge1")
     );
     ASSERT_FALSE(shape.IsNull());
-    ASSERT_EQ(shape.ShapeType(), TopAbs_VERTEX);
-    const gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(shape));
-    EXPECT_NEAR(p.X(), 51.0, 1e-6);
-    EXPECT_NEAR(p.Y(), 2.0, 1e-6);
-    EXPECT_NEAR(p.Z(), 3.0, 1e-6);
+    ASSERT_EQ(shape.ShapeType(), TopAbs_EDGE);
+    gp_Pnt centre;
+    ASSERT_TRUE(
+        Measure::MeasureSnap::computeSnapPoint(shape, Measure::MeasureSnapMode::Center, nullptr, centre)
+    );
+    EXPECT_NEAR(centre.X(), 51.0, 1e-6);
+    EXPECT_NEAR(centre.Y(), 2.0, 1e-6);
+    EXPECT_NEAR(centre.Z(), 3.0, 1e-6);
 }
 
 // Anything unresolvable yields a null shape, never a throw: the hover code treats
