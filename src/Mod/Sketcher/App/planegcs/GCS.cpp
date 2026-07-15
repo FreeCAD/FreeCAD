@@ -4725,6 +4725,9 @@ void System::undoSolution()
 }
 
 void System::makeReducedJacobian(
+    const VEC_pD& plist,
+    const VEC_pD& pdrivenlist,
+    const std::vector<Constraint*>& clist,
     Eigen::MatrixXd& J,
     std::map<int, int>& jacobianconstraintmap,
     GCS::VEC_pD& pdiagnoselist,
@@ -4799,21 +4802,52 @@ int System::diagnose(Algorithm alg)
     // pdrivenlist      =>  list of the parameters that are driven by other parameters
     //                      (e.g. value of driven constraints)
 
+    emptyDiagnoseMatrix = true;
+    redundant.clear();
+    conflictingTags.clear();
+    redundantTags.clear();
+    partiallyRedundantTags.clear();
+
+    // Diagnose each independent component of the sketch separately; for
+    // now, the whole sketch is treated as a single component.
+    std::vector<VEC_pD> plists {plist};
+    std::vector<std::vector<Constraint*>> clists {clist};
+    std::vector<VEC_pD> pdrivenlists {pdrivenlist};
+    int componentsSize = 1;
+
+    dofs = 0;
+
+    for (int i = 0; i < componentsSize; ++i) {
+        if (plists[i].empty() && clists[i].empty()) {
+            continue;
+        }
+
+        int d = diagnoseComponent(alg, plists[i], pdrivenlists[i], clists[i]);
+        if (d < 0) {
+            dofs = -1;
+            break;
+        }
+        dofs += d;
+    }
+
+    hasDiagnosis = true;
+    return dofs;
+}
+
+int System::diagnoseComponent(
+    Algorithm alg,
+    const VEC_pD& plist,
+    const VEC_pD& pdrivenlist,
+    const std::vector<Constraint*>& clist
+)
+{
     // When adding an external geometry or a constraint on an external geometry the array
     // 'plist' is empty.
     // So, we must abort here because otherwise we would create an invalid matrix and make
     // the application eventually crash. This fixes issues #0002372/#0002373.
     if (plist.empty() || (plist.size() - pdrivenlist.size()) == 0) {
-        hasDiagnosis = true;
-        emptyDiagnoseMatrix = true;
-        dofs = 0;
-        return dofs;
+        return 0;
     }
-
-    redundant.clear();
-    conflictingTags.clear();
-    redundantTags.clear();
-    partiallyRedundantTags.clear();
 
     // This QR diagnosis uses a reduced Jacobian matrix to calculate the rank of the system
     // and identify conflicting and redundant constraints.
@@ -4837,16 +4871,13 @@ int System::diagnose(Algorithm alg)
     // like 0 and -1.
     std::map<int, int> tagmultiplicity;
 
-    makeReducedJacobian(J, jacobianconstraintmap, pdiagnoselist, tagmultiplicity);
+    makeReducedJacobian(plist, pdrivenlist, clist, J, jacobianconstraintmap, pdiagnoselist, tagmultiplicity);
 
     if (stats) {
         stats->cumulativeDiagnoseMatrixSize += J.rows() * J.cols();
     }
 
-    // this function will exit with a diagnosis and, unless overridden by functions below, with full
-    // DoFs
-    hasDiagnosis = true;
-    dofs = pdiagnoselist.size();
+    int dofs = pdiagnoselist.size();
 
     // Use DenseQR for small to medium systems to avoid SparseQR rank issues.
     // SparseQR is known to fail rank detection on specific geometric structures (e.g. aligned slots).
@@ -4970,6 +5001,7 @@ int System::diagnose(Algorithm alg)
             int nonredundantconstrNum;
             identifyConflictingRedundantConstraints(
                 alg,
+                clist,
                 qrJT,
                 jacobianconstraintmap,
                 tagmultiplicity,
@@ -5049,6 +5081,7 @@ int System::diagnose(Algorithm alg)
 
             identifyConflictingRedundantConstraints(
                 alg,
+                clist,
                 SqrJT,
                 jacobianconstraintmap,
                 tagmultiplicity,
@@ -5463,6 +5496,7 @@ void System::eliminateNonZerosOverPivotInUpperTriangularMatrix(Eigen::MatrixXd& 
 template<typename T>
 void System::identifyConflictingRedundantConstraints(
     Algorithm alg,
+    const std::vector<Constraint*>& clist,
     const T& qrJT,
     const std::map<int, int>& jacobianconstraintmap,
     const std::map<int, int>& tagmultiplicity,
