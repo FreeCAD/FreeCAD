@@ -22,7 +22,6 @@
  **************************************************************************/
 
 #include <algorithm>
-#include <cstdlib>
 #include <filesystem>
 #include <fstream>
 #include <optional>
@@ -55,7 +54,9 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
+#include <Base/PlatformPaths.h>
 
 #include "Application.h"
 #include "Metadata.h"
@@ -73,17 +74,6 @@ std::ostream& operator<<(std::ostream& os, const QString& str)
     return os;
 }
 #endif
-
-std::optional<std::string> getenvString(const char* key)
-{
-    if (!key || !*key) {
-        return std::nullopt;
-    }
-    if (const char* value = std::getenv(key); value && *value) {
-        return std::string(value);
-    }
-    return std::nullopt;
-}
 
 #if !(defined(FREECAD_BUILD_QT) && FREECAD_BUILD_QT)
 void appendIfNotEmpty(std::vector<std::string>& values, std::string value)
@@ -135,7 +125,7 @@ std::string displayNameFromPath(fs::path path)
         path = std::move(parent);
     }
 
-    return path.filename().string();
+    return Base::FileInfo::pathToString(path.filename());
 }
 
 #if !(defined(FREECAD_BUILD_QT) && FREECAD_BUILD_QT)
@@ -266,7 +256,7 @@ std::string ProgramInformation::prettyProductInfoWrapper()
 
 static std::string getModuleInfoString(const std::string& path)
 {
-    const fs::path modPath(path);
+    const fs::path modPath = Base::FileInfo::stringToPath(path);
     const auto fileName = displayNameFromPath(modPath);
     if (fileName.empty() || fileName.starts_with(".")) {  // Ignore hidden directories
         return {};
@@ -360,10 +350,16 @@ void ProgramInformation::getSystemInformation(std::stringstream& str)
     }
 #else
     std::vector<std::string> deskInfoList;
-    appendIfNotEmpty(deskInfoList, getenvString("XDG_CURRENT_DESKTOP").value_or(std::string()));
-    appendIfNotEmpty(deskInfoList, getenvString("DESKTOP_SESSION").value_or(std::string()));
+    appendIfNotEmpty(
+        deskInfoList,
+        Base::environmentVariableUtf8("XDG_CURRENT_DESKTOP").value_or(std::string())
+    );
+    appendIfNotEmpty(
+        deskInfoList,
+        Base::environmentVariableUtf8("DESKTOP_SESSION").value_or(std::string())
+    );
 
-    auto sessionType = getenvString("XDG_SESSION_TYPE").value_or(std::string());
+    auto sessionType = Base::environmentVariableUtf8("XDG_SESSION_TYPE").value_or(std::string());
     if (sessionType == "x11") {
         sessionType = "xcb";
     }
@@ -387,10 +383,12 @@ void ProgramInformation::getPackageInformation(std::stringstream& str)
 #ifdef FC_FLATPAK
     str << " Flatpak";
 #endif
-    if (getenvString("APPIMAGE")) {
+    if (const auto appImage = Base::environmentVariableUtf8("APPIMAGE");
+        appImage && !appImage->empty()) {
         str << " AppImage";
     }
-    if (const auto snap = getenvString("SNAP_REVISION")) {
+    if (const auto snap = Base::environmentVariableUtf8("SNAP_REVISION");
+        snap && !snap->empty()) {
         str << " Snap " << *snap;
     }
     str << '\n';
@@ -519,12 +517,12 @@ void ProgramInformation::getLocale(std::stringstream& str)
     }
     str << "\n";
 #else
-    auto locale = getenvString("LC_ALL").value_or(std::string());
+    auto locale = Base::environmentVariableUtf8("LC_ALL").value_or(std::string());
     if (locale.empty()) {
-        locale = getenvString("LC_MESSAGES").value_or(std::string());
+        locale = Base::environmentVariableUtf8("LC_MESSAGES").value_or(std::string());
     }
     if (locale.empty()) {
-        locale = getenvString("LANG").value_or(std::string());
+        locale = Base::environmentVariableUtf8("LANG").value_or(std::string());
     }
     if (locale.empty()) {
         locale = "C";
@@ -538,7 +536,7 @@ void ProgramInformation::getVerboseAddOnsInfo(
     const std::map<std::string, std::string>& mConfig)
 {
     // Add installed module information:
-    const auto modDir = fs::path(Application::getUserAppDataDir()) / "Mod";
+    const auto modDir = Base::FileInfo::stringToPath(Application::getUserAppDataDir()) / "Mod";
     std::vector<std::string> addons;
     std::error_code error;
     if (fs::exists(modDir, error) && !error && fs::is_directory(modDir, error) && !error) {
@@ -554,7 +552,7 @@ void ProgramInformation::getVerboseAddOnsInfo(
             if (!mod.is_directory(modError) || modError) {
                 continue;  // Ignore files, only show directories
             }
-            auto dirName = mod.path().string();
+            auto dirName = Base::FileInfo::pathToString(mod.path());
             auto moduleInfo = getModuleInfoString(dirName);
             if (!moduleInfo.empty()) {
                 addons.push_back(std::move(moduleInfo));
