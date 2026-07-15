@@ -27,6 +27,7 @@
 #include <Base/PyObjectBase.h>
 
 #include "GeomReferencePlane3D.h"
+#include "Measure.h"
 #include "PropertyConstraint3DList.h"
 #include "Sketch3DObject.h"
 
@@ -52,6 +53,8 @@ PyMOD_INIT_FUNC(Sketcher3D)
     Sketcher3D::PropertyConstraint3DList::init();
     Sketcher3D::GeomReferencePlane3D::init();
     Sketcher3D::Sketch3DObject::init();
+
+    Sketcher3D::Measure::initialize();
 
     Base::Console().log("Greping Sketcher3D module... done\n");
 

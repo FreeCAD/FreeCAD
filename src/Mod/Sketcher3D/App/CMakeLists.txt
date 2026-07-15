@@ -9,6 +9,8 @@ set(Sketcher3D_LIBS
 SET(Module_SRCS
     AppSketcher3D.cpp
     AppSketcher3DPy.cpp
+    Measure.cpp
+    Measure.h
     PreCompiled.h
 )
 SOURCE_GROUP("Module" FILES ${Module_SRCS})
