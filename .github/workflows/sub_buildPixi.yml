@@ -262,6 +262,26 @@ jobs:
         logFile: ${{ env.logdir }}TestGUIInstall.log
         reportFile: ${{env.reportdir}}${{ env.reportfilename }}
 
+    - name: Parashell module load (subprocess side)
+      if: "!inputs.skipBuild"
+      timeout-minutes: 10
+      uses: ./.github/workflows/actions/runPythonTests
+      with:
+        testDescription: "Parashell module load (subprocess side)"
+        testCommand: pixi run python .github/scripts/test_parashell_module_load.py
+        logFile: ${{ env.logdir }}ParashellModuleLoadSubprocess.log
+        reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+
+    - name: Parashell module load inside FreeCAD
+      if: runner.os == 'Linux' && !inputs.skipBuild
+      timeout-minutes: 15
+      uses: ./.github/workflows/actions/runPythonTests
+      with:
+        testDescription: "Parashell module load inside FreeCAD"
+        testCommand: pixi run xvfb-run ${{ env.builddir }}/bin/FreeCAD ${{ github.workspace }}/.github/scripts/test_parashell_module_load.py
+        logFile: ${{ env.logdir }}ParashellModuleLoadFreeCAD.log
+        reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+
     - name: Save Compiler Cache
       id: cache-save
       if: "!inputs.skipBuild"
