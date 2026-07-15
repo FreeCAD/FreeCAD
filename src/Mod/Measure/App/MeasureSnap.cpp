@@ -28,9 +28,8 @@
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
-#include <App/GeoFeature.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/TopoShape.h>
+
+#include "ShapeFinder.h"
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
@@ -218,37 +217,13 @@ MeasureSnapMode MeasureSnap::pickPreviewType(int availableFlags, MeasureSnapMode
 TopoDS_Shape MeasureSnap::resolveShape(const App::SubObjectT& subject)
 {
     try {
-        const auto chain = subject.getSubObjectList();
-        if (chain.empty()) {
+        App::DocumentObject* root = subject.getObject();
+        if (!root) {
             return {};
         }
-        App::DocumentObject* obj = chain.back();
-        if (!obj || !obj->getNameInDocument()) {
-            return {};
-        }
-        if (obj->isDerivedFrom<Part::Feature>()) {
-            Part::TopoShape ts = static_cast<const Part::Feature*>(obj)->Shape.getShape();
-            ts.setPlacement(
-                App::GeoFeature::getGlobalPlacement(obj, subject.getObject(), subject.getSubName())
-            );
-            ts = ts.getSubTopoShape(subject.getElementName(), true);
-            if (!ts.isNull()) {
-                return ts.getShape();
-            }
-        }
-        Part::TopoShape ts = Part::Feature::getTopoShape(
-            obj,
-            Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
-                | Part::ShapeOption::Transform,
-            subject.getElementName()
-        );
-        if (ts.isNull()) {
-            return {};
-        }
-        ts.setPlacement(
-            App::GeoFeature::getGlobalPlacement(obj, subject.getObject(), subject.getSubName())
-        );
-        return ts.getShape();
+        // Same resolver the measurement engine uses, so the preview lands where
+        // the snap will; it follows link/assembly placement and scale chains.
+        return ShapeFinder::getLocatedShape(*root, subject.getSubName());
     }
     catch (...) {
         return {};
