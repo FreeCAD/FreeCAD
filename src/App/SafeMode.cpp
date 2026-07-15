@@ -24,11 +24,12 @@
  ***************************************************************************/
 
 #include <array>
-#include <cstdint>
+#include <cerrno>
 #include <filesystem>
 #include <map>
 #include <string>
 #include <system_error>
+#include <vector>
 
 #include <Base/FileInfo.h>
 
@@ -37,9 +38,84 @@
 
 #include "SafeMode.h"
 
+#if defined(FC_OS_WIN32)
+# include <objbase.h>
+# include <sddl.h>
+# include <windows.h>
+#else
+# include <unistd.h>
+#endif
+
 namespace fs = std::filesystem;
 
 static fs::path tempDir;
+
+static bool createSecureTemporaryBaseDir(const fs::path& base, std::error_code& error)
+{
+#if defined(FC_OS_WIN32)
+    GUID guid {};
+    if (FAILED(CoCreateGuid(&guid))) {
+        error = std::make_error_code(std::errc::io_error);
+        return false;
+    }
+
+    wchar_t guidText[39] {};
+    if (StringFromGUID2(
+            guid,
+            guidText,
+            static_cast<int>(sizeof(guidText) / sizeof(*guidText)))
+        == 0) {
+        error = std::make_error_code(std::errc::io_error);
+        return false;
+    }
+
+    const fs::path candidate = base / (std::wstring(L"FreeCADSafeMode-") + guidText);
+
+    // Protect the directory and its descendants at creation time. The
+    // owner-rights ACE avoids the window where a post-creation ACL update
+    // would expose Safe Mode data.
+    PSECURITY_DESCRIPTOR descriptor = nullptr;
+    if (!ConvertStringSecurityDescriptorToSecurityDescriptorW(
+            L"D:P(A;OICI;FA;;;OW)",
+            SDDL_REVISION_1,
+            &descriptor,
+            nullptr)) {
+        error = std::error_code(static_cast<int>(GetLastError()), std::system_category());
+        return false;
+    }
+
+    SECURITY_ATTRIBUTES attributes {
+        sizeof(SECURITY_ATTRIBUTES),
+        descriptor,
+        FALSE,
+    };
+    const BOOL created = CreateDirectoryW(candidate.c_str(), &attributes);
+    const DWORD lastError = created ? ERROR_SUCCESS : GetLastError();
+    LocalFree(descriptor);
+
+    if (!created) {
+        error = lastError == ERROR_ALREADY_EXISTS
+            ? std::make_error_code(std::errc::file_exists)
+            : std::error_code(static_cast<int>(lastError), std::system_category());
+        return false;
+    }
+
+    tempDir = candidate;
+    return true;
+#else
+    std::string pattern = Base::FileInfo::pathToString(base / "FreeCADSafeMode-XXXXXX");
+    std::vector<char> writable(pattern.begin(), pattern.end());
+    writable.push_back('\0');
+    if (!mkdtemp(writable.data())) {
+        error = std::error_code(errno, std::generic_category());
+        return false;
+    }
+
+    // mkdtemp atomically creates the directory with mode 0700.
+    tempDir = fs::path(writable.data());
+    return true;
+#endif
+}
 
 static bool _createTemporaryBaseDir()
 {
@@ -49,18 +125,11 @@ static bool _createTemporaryBaseDir()
         return false;
     }
 
-    auto suffix = static_cast<std::uint64_t>(App::Application::uniqueInstanceId());
-
     for (int attempt = 0; attempt < 64; ++attempt) {
-        fs::path candidate = base / ("FreeCADSafeMode-" + std::to_string(suffix));
-        if (fs::create_directory(candidate, error) && !error) {
-            tempDir = std::move(candidate);
+        if (createSecureTemporaryBaseDir(base, error)) {
             return true;
         }
         error.clear();
-        suffix ^= suffix << 7U;
-        suffix ^= suffix >> 9U;
-        suffix += static_cast<std::uint64_t>(attempt) + 1U;
     }
 
     return false;
