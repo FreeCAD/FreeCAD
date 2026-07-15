@@ -110,7 +110,6 @@ requirements:
     - numpy>=1.26,<2
     - occt>=7.9,<8.0
     - pcl
-    - pivy
     - ply
     - pybind11
     - pyjwt
@@ -168,7 +167,6 @@ requirements:
     - pandas
     - pillow>=12.2,<13.0
     - pip
-    - pivy
     - ply
     - pycollada
     - pyjwt

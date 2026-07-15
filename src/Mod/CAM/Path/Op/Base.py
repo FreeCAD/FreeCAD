@@ -640,6 +640,12 @@ class ObjectOp(object):
         Should be overwritten by subclasses."""
         pass
 
+    def initAfterBase(self, obj):
+        """initAfterBase(obj) ... implement to execute extra commands
+        while create new operation after add all base geometry.
+        Should be overwritten by subclasses."""
+        pass
+
     def opOnDocumentRestored(self, obj):
         """opOnDocumentRestored(obj) ... implement if an op needs special handling like migrating the data model.
         Should be overwritten by subclasses."""

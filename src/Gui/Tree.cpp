@@ -2015,6 +2015,7 @@ void TreeWidget::keyPressEvent(QKeyEvent* event)
 void TreeWidget::mousePressEvent(QMouseEvent* event)
 {
     expandIndicatorPressed = false;
+    visibilityIconPressed = false;
     if (isVisibilityIconEnabled()) {
         QTreeWidgetItem* item = itemAt(event->pos());
         if (item && item->type() == TreeWidget::ObjectType && event->button() == Qt::LeftButton) {
@@ -2064,6 +2065,7 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
                     obj->Visibility.setValue(!visible);
                 }
                 visibilityIconDoubleClickTimer.start();
+                visibilityIconPressed = true;
 
                 // to prevent selection of the item via QTreeWidget::mousePressEvent
                 event->accept();
@@ -2088,7 +2090,7 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
 
 void TreeWidget::mouseMoveEvent(QMouseEvent* event)
 {
-    if (expandIndicatorPressed) {
+    if (expandIndicatorPressed || visibilityIconPressed) {
         return;
     }
     QTreeWidget::mouseMoveEvent(event);
@@ -2097,6 +2099,11 @@ void TreeWidget::mouseMoveEvent(QMouseEvent* event)
 void TreeWidget::mouseReleaseEvent(QMouseEvent* event)
 {
     expandIndicatorPressed = false;
+    if (visibilityIconPressed) {
+        visibilityIconPressed = false;
+        event->accept();
+        return;
+    }
     QTreeWidget::mouseReleaseEvent(event);
 }
 

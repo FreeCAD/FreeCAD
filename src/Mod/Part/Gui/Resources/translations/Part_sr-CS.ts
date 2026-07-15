@@ -2028,12 +2028,12 @@ projekcije.</translation>
     <message>
       <location filename="../../Command.cpp" line="1762"/>
       <source>Sweep</source>
-      <translation>Po putanji</translation>
+      <translation>Po vodilji</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1763"/>
       <source>Sweeps profiles along a wire</source>
-      <translation>Napravi oblik izvlačenjem preseka po putanji</translation>
+      <translation>Napravi oblik izvlačenjem preseka po vodilji</translation>
     </message>
   </context>
   <context>
@@ -2264,7 +2264,7 @@ projekcije.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="417"/>
       <source>Sweep</source>
-      <translation>Po putanji</translation>
+      <translation>Po vodilji</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="1615"/>
@@ -5273,7 +5273,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="394"/>
       <source>'%1' cannot be used as profile and path.</source>
-      <translation>'%1' ne može se koristiti kao profil i putanja.</translation>
+      <translation>'%1' ne može se koristiti kao profil i vodilja.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="431"/>
@@ -5310,7 +5310,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="520"/>
       <source>Sweep</source>
-      <translation>Po putanji</translation>
+      <translation>Po vodilji</translation>
     </message>
   </context>
   <context>
@@ -5980,7 +5980,7 @@ Provera pojedinačnih bulovih operacija:</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="14"/>
       <source>Sweep</source>
-      <translation>Po putanji</translation>
+      <translation>Po vodilji</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>

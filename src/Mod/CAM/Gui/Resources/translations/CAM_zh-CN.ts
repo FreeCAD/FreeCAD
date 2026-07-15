@@ -3344,7 +3344,7 @@ See the file save policy below on how to deal with name conflicts.</source>
       <translation>AxisMap Dressup</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="94"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="288"/>
       <location filename="../panels/AxisMapEdit.ui" line="20"/>
       <source>Radius</source>
       <translation>半径</translation>
@@ -3551,142 +3551,142 @@ See the file save policy below on how to deal with name conflicts.</source>
       <translation>挂起标记</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="28"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="224"/>
       <source>Width</source>
       <translation>宽度</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="80"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="274"/>
       <source>Height</source>
       <translation>高度</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="42"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="238"/>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="35"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="231"/>
       <source>Width of the resulting holding tag</source>
       <translation>生成的连接标签的宽度</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="49"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="245"/>
       <source>Plunge angle for ascent and descent of holding tag</source>
       <translation>用于夹持凸台上升和下降的切入角度</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="52"/>
-      <source> °</source>
-      <translation> °</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="136"/>
-      <source>Remove all tags from list</source>
-      <translation>从列表中移除所有标签</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="139"/>
-      <source>Clear</source>
-      <translation>清除</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="146"/>
-      <source>Remove selected tag from list</source>
-      <translation>从列表中移除选中的标签</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="149"/>
-      <source>Remove</source>
-      <translation>移除</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="156"/>
-      <source>Edit position of selected tag</source>
-      <translation>编辑所选标签的位置</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="159"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="124"/>
       <source>Edit</source>
       <translation>编辑</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="166"/>
-      <source>Add new tags</source>
-      <translation>添加新标签</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="101"/>
+      <source>Remove all tags from list</source>
+      <translation>从列表中移除所有标签</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="169"/>
-      <source>Add</source>
-      <translation>添加</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="104"/>
+      <source>Clear</source>
+      <translation>清除</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="176"/>
-      <source>Enable/disable all tags</source>
-      <translation>启用/禁用所有标签</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="111"/>
+      <source>Remove selected tag from list</source>
+      <translation>从列表中移除选中的标签</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="179"/>
-      <source>Enable All</source>
-      <translation>全部启用</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="114"/>
+      <source>Remove</source>
+      <translation>移除</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="186"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="121"/>
+      <source>Edit position of selected tag</source>
+      <translation>编辑所选标签的位置</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="131"/>
       <source>Replace all tags by tags from another DressupTag</source>
       <translation>用另一个 DressupTag 中的标签替换所有标签</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="189"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="134"/>
       <source>Copy</source>
       <translation>复制</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="206"/>
-      <source>Min</source>
-      <translation>最小</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="141"/>
+      <source>Enable/disable all tags</source>
+      <translation>启用/禁用所有标签</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="213"/>
-      <source>Minimum number of tags per short wire</source>
-      <translation>每根短导线的最小标签数量</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="144"/>
+      <source>Enable All</source>
+      <translation>全部启用</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="229"/>
-      <source>Max</source>
-      <translation>最大</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="177"/>
+      <source>Add new tags</source>
+      <translation>添加新标签</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="236"/>
-      <source>Maximum number of tags per long wire</source>
-      <translation>每根长导线的最大标签数量</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="180"/>
+      <source>Add</source>
+      <translation>添加</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="252"/>
-      <source>Create the specified number of tags for each bottom wire</source>
-      <translation>为每根底部导线创建指定数量的标签</translation>
+      <location filename="../panels/HoldingTagsEdit.ui" line="248"/>
+      <source> °</source>
+      <translation> °</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="255"/>
-      <source>Replace Existing Tags</source>
-      <translation>替换现有标签</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="87"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="281"/>
       <source>Height of holding tag. Note that resulting tag might be smaller if the tag&apos;s width and angle result in a triangular shape.</source>
       <translation>连接桥的高度。请注意，如果连接桥的宽度和角度导致形成三角形，则生成的连接桥可能会更小。</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="101"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="295"/>
       <source>Radius of the fillet at the top. If the radius is too big for the tag shape it gets reduced to the maximum possible radius - resulting in a spherical shape.</source>
       <translation>顶部圆角的半径。如果半径对于标记形状来说太大，则会减小到可能的最大半径，从而形成球形。</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="121"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="312"/>
+      <source>Min</source>
+      <translation>最小</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="325"/>
+      <source>Minimum number of tags per short wire</source>
+      <translation>每根短导线的最小标签数量</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="335"/>
+      <source>Max</source>
+      <translation>最大</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="348"/>
+      <source>Maximum number of tags per long wire</source>
+      <translation>每根长导线的最大标签数量</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="358"/>
+      <source>Create the specified number of tags for each bottom wire</source>
+      <translation>为每根底部导线创建指定数量的标签</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="361"/>
+      <source>Replace Existing Tags</source>
+      <translation>替换现有标签</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="34"/>
       <source>List of current tags. Edit coordinates by double click or Edit button. Tags are automatically disabled if they overlap with the previous tag, or don&apos;t lie on the base wire.</source>
       <translation>当前连接桥列表。通过双击或编辑按钮编辑坐标。如果连接桥与先前的连接桥重叠，或者不在基础线上，则会自动禁用。</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="200"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="306"/>
       <source>Auto Generate</source>
       <translation>自动生成</translation>
     </message>
@@ -7739,12 +7739,12 @@ Without sub selection all edges of the shape will be selected.</source>
       <translation>掰断留料</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Tags.py" line="575"/>
+      <location filename="../../../Path/Dressup/Gui/Tags.py" line="579"/>
       <source>Tag</source>
       <translation>标记：</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Tags.py" line="578"/>
+      <location filename="../../../Path/Dressup/Gui/Tags.py" line="582"/>
       <source>Creates a tag dress-up object from a selected toolpath</source>
       <translation>从选定的刀具路径创建标签修饰对象</translation>
     </message>
@@ -9057,264 +9057,264 @@ This will not delete the toolbits contained within it.</source>
       <translation>中止</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="314"/>
+      <location filename="../../../Path/Post/Processor.py" line="317"/>
       <source>File Extension</source>
       <translation>文件扩展名</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="320"/>
+      <location filename="../../../Path/Post/Processor.py" line="323"/>
       <source>Default file extension for output files (without the dot). Common extensions: nc, gcode, tap, ngc, sbp, etc.</source>
       <translation>输出文件的默认扩展名（不带点）。常见的扩展名有：nc、gcode、tap、ngc、sbp 等。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="325"/>
+      <location filename="../../../Path/Post/Processor.py" line="328"/>
       <source>Tool Radius Compensation (G41/G42)</source>
       <translation>刀具半径补偿 (G41/G42)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="331"/>
+      <location filename="../../../Path/Post/Processor.py" line="334"/>
       <source>Enable if this postprocessor supports G41/G42 tool radius compensation commands. When enabled, the postprocessor can output cutter compensation codes.</source>
       <translation>如果此后处理器支持 G41/G42 刀具半径补偿指令，请启用此项。启用后，后处理器即可输出刀具补偿代码。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="336"/>
+      <location filename="../../../Path/Post/Processor.py" line="339"/>
       <source>Supported G-code Commands</source>
       <translation>支持的 G 代码指令</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="342"/>
+      <location filename="../../../Path/Post/Processor.py" line="345"/>
       <source>List of G-code commands supported by this postprocessor (one per line). Commands not in this list will be filtered out or cause warnings.</source>
       <translation>此后处理器支持的 G 代码指令列表（每行一个）。凡是不在这个列表中的指令，将会被过滤掉或者引发警告。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="347"/>
+      <location filename="../../../Path/Post/Processor.py" line="350"/>
       <source>Drill Cycles to Translate</source>
       <translation>要转换的钻孔循环</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="354"/>
+      <location filename="../../../Path/Post/Processor.py" line="357"/>
       <source>List of drill cycle commands to translate to G0/G1 moves (one per line). Standard drill cycles: {&apos;, &apos;.join(Constants.GCODE_MOVE_DRILL)}. Leave empty if postprocessor supports drill cycles natively.</source>
       <translation>要转换为 G0/G1 移动指令的钻孔循环命令列表（每行一个）。标准钻孔循环包括：{&apos;, &apos;.join(Constants.GCODE_MOVE_DRILL)}。如果后处理器原生支持钻孔循环，请留空。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="359"/>
+      <location filename="../../../Path/Post/Processor.py" line="362"/>
       <source>Preamble</source>
       <translation>程序头</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="363"/>
+      <location filename="../../../Path/Post/Processor.py" line="366"/>
       <source>G-code commands inserted at the start of the program after the header.</source>
       <translation>在程序头部之后、程序主体开始之前插入的 G 代码指令。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="368"/>
+      <location filename="../../../Path/Post/Processor.py" line="371"/>
       <source>Postamble</source>
       <translation>程序尾</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="370"/>
+      <location filename="../../../Path/Post/Processor.py" line="373"/>
       <source>G-code commands inserted at the end of the program.</source>
       <translation>在程序末尾插入的 G 代码指令。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="375"/>
+      <location filename="../../../Path/Post/Processor.py" line="378"/>
       <source>Safety Block</source>
       <translation>安全代码块</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="380"/>
+      <location filename="../../../Path/Post/Processor.py" line="383"/>
       <source>Safety commands to reset machine to known safe condition (e.g., G40, G49, G80).</source>
       <translation>用于将机床重置为已知安全状态的指令（例如：G40, G49, G80）。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="385"/>
+      <location filename="../../../Path/Post/Processor.py" line="388"/>
       <source>Pre-Job</source>
       <translation>作业前</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="387"/>
+      <location filename="../../../Path/Post/Processor.py" line="390"/>
       <source>G-code commands inserted before each Job.</source>
       <translation>在每个作业开始前插入的 G 代码命令。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="392"/>
+      <location filename="../../../Path/Post/Processor.py" line="395"/>
       <source>Post-Job</source>
       <translation>作业后</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="394"/>
+      <location filename="../../../Path/Post/Processor.py" line="397"/>
       <source>G-code commands inserted after each Job.</source>
       <translation>在每个作业结束后插入的 G 代码命令。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="399"/>
+      <location filename="../../../Path/Post/Processor.py" line="402"/>
       <source>Pre-Fixture</source>
       <translation>夹具前</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="401"/>
+      <location filename="../../../Path/Post/Processor.py" line="404"/>
       <source>G-code commands inserted before fixture change.</source>
       <translation>在更换夹具之前插入的 G 代码命令。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="406"/>
+      <location filename="../../../Path/Post/Processor.py" line="409"/>
       <source>Post-Fixture</source>
       <translation>夹具后</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="408"/>
+      <location filename="../../../Path/Post/Processor.py" line="411"/>
       <source>G-code commands inserted after fixture change.</source>
       <translation>在更换夹具之后插入的 G 代码命令。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="413"/>
+      <location filename="../../../Path/Post/Processor.py" line="416"/>
       <source>Pre-Operation</source>
       <translation>工序启动代码</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="415"/>
+      <location filename="../../../Path/Post/Processor.py" line="418"/>
       <source>G-code commands inserted before each operation.</source>
       <translation>在每个加工工序之前插入的 G 代码指令。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="420"/>
+      <location filename="../../../Path/Post/Processor.py" line="423"/>
       <source>Post-Operation</source>
       <translation>工序结束代码</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="422"/>
+      <location filename="../../../Path/Post/Processor.py" line="425"/>
       <source>G-code commands inserted after each operation.</source>
       <translation>在每个加工工序之后插入的 G 代码指令。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="427"/>
+      <location filename="../../../Path/Post/Processor.py" line="430"/>
       <source>Pre-Tool Change</source>
       <translation>换刀前代码</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="429"/>
+      <location filename="../../../Path/Post/Processor.py" line="432"/>
       <source>G-code commands inserted before tool changes.</source>
       <translation>在换刀之前插入的 G 代码指令。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="434"/>
+      <location filename="../../../Path/Post/Processor.py" line="437"/>
       <source>Post-Tool Change</source>
       <translation>换刀后代码</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="436"/>
-      <location filename="../../../Path/Post/Processor.py" line="443"/>
+      <location filename="../../../Path/Post/Processor.py" line="439"/>
+      <location filename="../../../Path/Post/Processor.py" line="446"/>
       <source>G-code commands inserted after tool changes.</source>
       <translation>在换刀之后插入的 G 代码指令。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="441"/>
+      <location filename="../../../Path/Post/Processor.py" line="444"/>
       <source>Tool Return after tool changes</source>
       <translation>换刀后刀具返回</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="448"/>
+      <location filename="../../../Path/Post/Processor.py" line="451"/>
       <source>Pre-Rotary Move</source>
       <translation>旋转轴运动前处理</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="450"/>
+      <location filename="../../../Path/Post/Processor.py" line="453"/>
       <source>G-code commands inserted before rotary axis moves.</source>
       <translation>在旋转轴运动前插入的 G 代码指令。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="455"/>
+      <location filename="../../../Path/Post/Processor.py" line="458"/>
       <source>Post-Rotary Move</source>
       <translation>旋转轴运动后处理</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="457"/>
+      <location filename="../../../Path/Post/Processor.py" line="460"/>
       <source>G-code commands inserted after rotary axis moves.</source>
       <translation>在旋转轴运动后插入的 G 代码指令。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="462"/>
+      <location filename="../../../Path/Post/Processor.py" line="465"/>
       <source>Show Pre-processing Dialogs</source>
       <translation>显示预处理对话框</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="468"/>
+      <location filename="../../../Path/Post/Processor.py" line="471"/>
       <source>Show interactive dialogs during post-processing. Disable for automated operation or testing.</source>
       <translation>在后处理期间显示交互式对话框。如果是自动化操作或测试，请禁用此选项。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="473"/>
+      <location filename="../../../Path/Post/Processor.py" line="476"/>
       <source>Generated Parameter Order for GCode</source>
       <translation>G 代码生成参数顺序</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="475"/>
+      <location filename="../../../Path/Post/Processor.py" line="478"/>
       <source>Generated Parameter Order for GCode for output</source>
       <translation>用于输出的 G 代码生成参数顺序</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="480"/>
+      <location filename="../../../Path/Post/Processor.py" line="483"/>
       <source>TLO after tool-change</source>
       <translation>换刀后的 TLO</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="485"/>
+      <location filename="../../../Path/Post/Processor.py" line="488"/>
       <source>Output a G43 TLO after tool-change</source>
       <translation>换刀后输出 G43 TLO</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="490"/>
+      <location filename="../../../Path/Post/Processor.py" line="493"/>
       <source>Expand drill-cycles</source>
       <translation>展开钻孔循环</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="495"/>
+      <location filename="../../../Path/Post/Processor.py" line="498"/>
       <source>Expand drill-cycles (cf. &apos;Drill Cycles to Translate&apos;) to moves</source>
       <translation>将钻孔循环（参见 &apos;要转换的钻孔循环&apos;）展开为移动轨迹</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="500"/>
+      <location filename="../../../Path/Post/Processor.py" line="503"/>
       <source>Allow tool-change</source>
       <translation>允许换刀</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="505"/>
+      <location filename="../../../Path/Post/Processor.py" line="508"/>
       <source>Unchecked to suppress tool-change (M6)</source>
       <translation>取消勾选以抑制换刀 (M6)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="510"/>
-      <location filename="../../../Path/Post/Processor.py" line="515"/>
+      <location filename="../../../Path/Post/Processor.py" line="513"/>
+      <location filename="../../../Path/Post/Processor.py" line="518"/>
       <source>Unit-command in output</source>
       <translation>输出中的单位命令</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="520"/>
-      <source>Axis precision in ouptput</source>
+      <location filename="../../../Path/Post/Processor.py" line="523"/>
+      <source>Axis precision in output</source>
       <translation>输出中的轴精度</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="525"/>
+      <location filename="../../../Path/Post/Processor.py" line="528"/>
       <source>Decimals of precision for axis motion</source>
       <translation>轴运动的小数精度位数</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="530"/>
-      <source>Feedrate precision in ouptput</source>
+      <location filename="../../../Path/Post/Processor.py" line="533"/>
+      <source>Feedrate precision in output</source>
       <translation>输出中的进给率精度</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="535"/>
+      <location filename="../../../Path/Post/Processor.py" line="538"/>
       <source>Decimals of precision for feedrate (F)</source>
       <translation>进给率 (F) 的小数精度位数</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="540"/>
-      <source>Spindle-speed precision in ouptput</source>
+      <location filename="../../../Path/Post/Processor.py" line="543"/>
+      <source>Spindle-speed precision in output</source>
       <translation>输出中的主轴转速精度</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="545"/>
+      <location filename="../../../Path/Post/Processor.py" line="548"/>
       <source>Decimals of precision for spindle-speed</source>
       <translation>主轴转速的小数精度位数</translation>
     </message>

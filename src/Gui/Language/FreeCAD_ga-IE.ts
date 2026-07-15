@@ -4,29 +4,29 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="561"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="562"/>
       <source>&lt;empty&gt;</source>
       <translation>&lt;folamh&gt;</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2435"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2724"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2445"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2734"/>
       <source>Angle</source>
       <translation>Uillinn</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2439"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2728"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2449"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2738"/>
       <source>Axis</source>
       <translation>Ais</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2733"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2743"/>
       <source>Position</source>
       <translation>Seasamh</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3005"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3015"/>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
       <source>Enum</source>
       <translation>Enum</translation>
@@ -58,7 +58,7 @@
       <translation>Eagar</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="909"/>
+      <location filename="../Application.cpp" line="907"/>
       <source>Import</source>
       <translation>Iompórtáil</translation>
     </message>
@@ -450,32 +450,32 @@ Tagróidh maoin an réada seo do mhaoin an Tacair Athróg.</translation>
   <context>
     <name>Gui::ActionSelector</name>
     <message>
-      <location filename="../Widgets.cpp" line="231"/>
+      <location filename="../Widgets.cpp" line="234"/>
       <source>Available:</source>
       <translation>Ar fáil:</translation>
     </message>
     <message>
-      <location filename="../Widgets.cpp" line="232"/>
+      <location filename="../Widgets.cpp" line="235"/>
       <source>Selected:</source>
       <translation>Roghnaithe:</translation>
     </message>
     <message>
-      <location filename="../Widgets.cpp" line="233"/>
+      <location filename="../Widgets.cpp" line="236"/>
       <source>Add</source>
       <translation>Cuir leis</translation>
     </message>
     <message>
-      <location filename="../Widgets.cpp" line="234"/>
+      <location filename="../Widgets.cpp" line="237"/>
       <source>Remove</source>
       <translation>Bain</translation>
     </message>
     <message>
-      <location filename="../Widgets.cpp" line="235"/>
+      <location filename="../Widgets.cpp" line="238"/>
       <source>Move up</source>
       <translation>Bog suas</translation>
     </message>
     <message>
-      <location filename="../Widgets.cpp" line="236"/>
+      <location filename="../Widgets.cpp" line="239"/>
       <source>Move down</source>
       <translation>Bog síos</translation>
     </message>
@@ -5774,7 +5774,7 @@ a roghnaíodh ar dtús sular osclaíodh an dialóg seo</translation>
       <translation>Comhad modhnaithe</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="355"/>
+      <location filename="../EditorView.cpp" line="349"/>
       <source>Unsaved document</source>
       <translation>Doiciméad neamhshábháilte</translation>
     </message>
@@ -5788,44 +5788,44 @@ This has been modified outside of the source editor. Reload it?</source>
 Tá sé seo modhnaithe lasmuigh den eagarthóir foinse. Athlódáil é?</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="356"/>
+      <location filename="../EditorView.cpp" line="350"/>
       <source>The document has been modified.
 Save all changes?</source>
       <translation>Tá an doiciméad modhnaithe.
 Sábháil na hathruithe go léir?</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="386"/>
+      <location filename="../EditorView.cpp" line="380"/>
       <source>FreeCAD macro</source>
       <translation>Macra FreeCAD</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="515"/>
+      <location filename="../EditorView.cpp" line="509"/>
       <source>Export PDF</source>
       <translation>Easpórtáil PDF</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="554"/>
+      <location filename="../EditorView.cpp" line="547"/>
       <source>untitled[*]</source>
       <translation>gan teideal[*]</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="559"/>
+      <location filename="../EditorView.cpp" line="552"/>
       <source> - Editor</source>
       <translation> - Eagarthóir</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="619"/>
+      <location filename="../EditorView.cpp" line="612"/>
       <source>%1 chars removed</source>
       <translation>Baineadh %1 charachtar</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="622"/>
+      <location filename="../EditorView.cpp" line="615"/>
       <source>%1 chars added</source>
       <translation>%1 carachtar curtha leis</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="625"/>
+      <location filename="../EditorView.cpp" line="618"/>
       <source>Formatted</source>
       <translation>Formáidithe</translation>
     </message>
@@ -6001,7 +6001,7 @@ Sábháil na hathruithe go léir?</translation>
   <context>
     <name>Gui::LabelEditor</name>
     <message>
-      <location filename="../Widgets.cpp" line="1499"/>
+      <location filename="../Widgets.cpp" line="1502"/>
       <source>List</source>
       <translation>Liosta</translation>
     </message>
@@ -6378,7 +6378,7 @@ Conas is mian leat dul ar aghaidh?</translation>
   <context>
     <name>Gui::ModifierLineEdit</name>
     <message>
-      <location filename="../Widgets.cpp" line="409"/>
+      <location filename="../Widgets.cpp" line="412"/>
       <source>Press modifier keys</source>
       <translation>Brúigh eochracha mionathraithe</translation>
     </message>
@@ -6492,12 +6492,12 @@ Conas is mian leat dul ar aghaidh?</translation>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4654"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4664"/>
       <source>Error</source>
       <translation>Earráid</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4654"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4664"/>
       <source>Object not found</source>
       <translation>Níor aimsíodh an réad</translation>
     </message>
@@ -6790,17 +6790,17 @@ Scoir gan na sonraí go léir a shábháil?</translation>
   <context>
     <name>Gui::PythonEditor</name>
     <message>
-      <location filename="../PythonEditor.cpp" line="178"/>
+      <location filename="../PythonEditor.cpp" line="89"/>
       <source>Comment</source>
       <translation>Trácht</translation>
     </message>
     <message>
-      <location filename="../PythonEditor.cpp" line="180"/>
+      <location filename="../PythonEditor.cpp" line="91"/>
       <source>Uncomment</source>
       <translation>Dí-thrácht</translation>
     </message>
     <message>
-      <location filename="../PythonEditor.cpp" line="183"/>
+      <location filename="../PythonEditor.cpp" line="94"/>
       <source>Execute in Console</source>
       <translation>Rith sa Chonsól</translation>
     </message>
@@ -6864,27 +6864,27 @@ Scoir gan na sonraí go léir a shábháil?</translation>
   <context>
     <name>Gui::SearchBar</name>
     <message>
-      <location filename="../EditorView.cpp" line="833"/>
+      <location filename="../EditorView.cpp" line="784"/>
       <source>Previous</source>
       <translation>Roimhe Seo</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="834"/>
+      <location filename="../EditorView.cpp" line="785"/>
       <source>Next</source>
       <translation>Ar Aghaidh</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="835"/>
+      <location filename="../EditorView.cpp" line="786"/>
       <source>Case sensitive</source>
       <translation>Cás-íogair</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="836"/>
+      <location filename="../EditorView.cpp" line="787"/>
       <source>Whole words</source>
       <translation>Focail iomlána</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="928"/>
+      <location filename="../EditorView.cpp" line="879"/>
       <source>No results</source>
       <translation>Gan aon torthaí</translation>
     </message>
@@ -7845,14 +7845,14 @@ Sonraigh eolaire eile?</translation>
   <context>
     <name>PropertyListDialog</name>
     <message>
-      <location filename="../Widgets.cpp" line="1421"/>
-      <location filename="../Widgets.cpp" line="1436"/>
+      <location filename="../Widgets.cpp" line="1424"/>
+      <location filename="../Widgets.cpp" line="1439"/>
       <source>Invalid input</source>
       <translation>Ionchur neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../Widgets.cpp" line="1422"/>
-      <location filename="../Widgets.cpp" line="1437"/>
+      <location filename="../Widgets.cpp" line="1425"/>
+      <location filename="../Widgets.cpp" line="1440"/>
       <source>Input in line %1 is not a number</source>
       <translation>Ní uimhir í an ionchur i líne %1</translation>
     </message>
@@ -7946,35 +7946,35 @@ Sonraigh eolaire eile?</translation>
       <translation>Python</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="868"/>
-      <location filename="../Application.cpp" line="975"/>
-      <location filename="../Application.cpp" line="1062"/>
+      <location filename="../Application.cpp" line="866"/>
+      <location filename="../Application.cpp" line="973"/>
+      <location filename="../Application.cpp" line="1060"/>
       <source>Unknown filetype</source>
       <translation>Cineál comhaid anaithnid</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="869"/>
-      <location filename="../Application.cpp" line="976"/>
+      <location filename="../Application.cpp" line="867"/>
+      <location filename="../Application.cpp" line="974"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>Ní féidir cineál comhaid anaithnid a oscailt: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1052"/>
+      <location filename="../Application.cpp" line="1050"/>
       <source>Export failed</source>
       <translation>Theip ar an easpórtáil</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1063"/>
+      <location filename="../Application.cpp" line="1061"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>Ní féidir sábháil chuig cineál comhaid anaithnid: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1261"/>
+      <location filename="../Application.cpp" line="1259"/>
       <source>Recomputation required</source>
       <translation>Athríomhú ag teastáil</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1262"/>
+      <location filename="../Application.cpp" line="1260"/>
       <source>Some documents require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
 
 Recompute now?</source>
@@ -7983,24 +7983,24 @@ Recompute now?</source>
 Athríomh anois?</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1288"/>
+      <location filename="../Application.cpp" line="1286"/>
       <source>Failed to recompute some documents.
 Check the report view for more details.</source>
       <translation>Theip ar athríomh roinnt doiciméad.
 Seiceáil an radharc tuarascála le haghaidh tuilleadh sonraí.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1287"/>
+      <location filename="../Application.cpp" line="1285"/>
       <source>Recompute error</source>
       <translation>Earráid athríomha</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="2037"/>
+      <location filename="../Application.cpp" line="2035"/>
       <source>Workbench failure</source>
       <translation>Teip ar an mbinse oibre</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="2038"/>
+      <location filename="../Application.cpp" line="2036"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
@@ -8071,18 +8071,18 @@ Seiceáil an radharc tuarascála le haghaidh tuilleadh sonraí.</translation>
       <translation>Eisceacht</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1301"/>
-      <location filename="../Application.cpp" line="1316"/>
+      <location filename="../Application.cpp" line="1299"/>
+      <location filename="../Application.cpp" line="1314"/>
       <source>Error</source>
       <translation>Earráid</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1302"/>
+      <location filename="../Application.cpp" line="1300"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Tharla earráidí agus an comhad á luchtú. B’fhéidir gur modhnaíodh roinnt sonraí nó nár aisghabhadh ar chor ar bith iad. Féach ar an radharc tuarascála le haghaidh tuilleadh eolais faoi na réada lena mbaineann.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1317"/>
+      <location filename="../Application.cpp" line="1315"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>Tharla earráidí tromchúiseacha agus an comhad á luchtú. B’fhéidir gur athraíodh cuid de na sonraí nó nár aisghabhadh ar chor ar bith iad. Is dóichí go gcaillfear sonraí má shábhálfar an tionscadal.</translation>
     </message>
@@ -8640,7 +8640,7 @@ Roghnaigh 'Níl' chun aisiompú sa doiciméad gníomhach amháin.
 Roghnaigh 'Cealaigh' chun cealú</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="384"/>
+      <location filename="../EditorView.cpp" line="378"/>
       <source>Save Macro</source>
       <translation>Sábháil Macra</translation>
     </message>
@@ -8720,7 +8720,7 @@ Roghnaigh 'Cealaigh' chun cealú</translation>
       <translation>Ní féidir comhad %1 a aimsiú i %2 ná i %3</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2340"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2457"/>
       <source>Clarify Selection</source>
       <translation>Soiligh an Roghnú</translation>
     </message>
@@ -9300,22 +9300,22 @@ dhéantar ar an gcóip reatha.
   <context>
     <name>StdCmdDlgMacroRecord</name>
     <message>
-      <location filename="../CommandMacro.cpp" line="48"/>
+      <location filename="../CommandMacro.cpp" line="47"/>
       <source>Record &amp;Macro</source>
       <translation>Taifead &amp;Macra</translation>
     </message>
     <message>
-      <location filename="../CommandMacro.cpp" line="50"/>
+      <location filename="../CommandMacro.cpp" line="49"/>
       <source>Opens a dialog to record a macro</source>
       <translation>Osclaíonn sé seo dialóg chun macra a thaifeadadh</translation>
     </message>
     <message>
-      <location filename="../CommandMacro.cpp" line="65"/>
+      <location filename="../CommandMacro.cpp" line="64"/>
       <source>S&amp;top Macro Recording</source>
       <translation>Taifeadadh Macra S&amp;top</translation>
     </message>
     <message>
-      <location filename="../CommandMacro.cpp" line="68"/>
+      <location filename="../CommandMacro.cpp" line="67"/>
       <source>Stop the macro recording session</source>
       <translation>Stop an seisiún taifeadta macra</translation>
     </message>
@@ -10873,12 +10873,12 @@ after FreeCAD launches</source>
   <context>
     <name>NaviCubeDraggableCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1276"/>
+      <location filename="../NaviCube.cpp" line="1377"/>
       <source>Movable Navigation Cube</source>
       <translation>Ciúb Loingseoireachta Soghluaiste</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1277"/>
+      <location filename="../NaviCube.cpp" line="1378"/>
       <source>Drags and places the NaviCube</source>
       <translation>Tarraingíonn agus cuireann sé an NaviCube</translation>
     </message>
@@ -10919,8 +10919,8 @@ after FreeCAD launches</source>
   <context>
     <name>Gui::ExpLineEdit</name>
     <message>
-      <location filename="../Widgets.cpp" line="1622"/>
-      <location filename="../Widgets.cpp" line="1696"/>
+      <location filename="../Widgets.cpp" line="1625"/>
+      <location filename="../Widgets.cpp" line="1692"/>
       <source>An error occurred -- see Report View for information</source>
       <translation>Tharla earráid -- féach ar an Amharc Tuairisce le haghaidh eolais</translation>
     </message>
@@ -12862,22 +12862,22 @@ neamh-theimhneach.</translation>
   <context>
     <name>Gui::Application</name>
     <message>
-      <location filename="../Application.cpp" line="494"/>
+      <location filename="../Application.cpp" line="493"/>
       <source>Built-in Parameters</source>
       <translation>Paraiméadair Tógtha Isteach</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="468"/>
+      <location filename="../Application.cpp" line="467"/>
       <source>Theme Parameters</source>
       <translation>Paraiméadair Téama</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="503"/>
+      <location filename="../Application.cpp" line="502"/>
       <source>Theme Parameters - Fallback</source>
       <translation>Paraiméadair Téama - Cúltaca</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="515"/>
+      <location filename="../Application.cpp" line="514"/>
       <source>User Parameters</source>
       <translation>Paraiméadair Úsáideora</translation>
     </message>
@@ -13271,12 +13271,12 @@ Ar aghaidh?</translation>
   <context>
     <name>StdCmdDlgMacroExecute</name>
     <message>
-      <location filename="../CommandMacro.cpp" line="96"/>
+      <location filename="../CommandMacro.cpp" line="95"/>
       <source>Ma&amp;cros</source>
       <translation>Macraí</translation>
     </message>
     <message>
-      <location filename="../CommandMacro.cpp" line="98"/>
+      <location filename="../CommandMacro.cpp" line="97"/>
       <source>Opens a dialog to execute a recorded macro</source>
       <translation>Osclaíonn sé seo dialóg chun macra taifeadta a fhorghníomhú</translation>
     </message>
@@ -13284,12 +13284,12 @@ Ar aghaidh?</translation>
   <context>
     <name>StdCmdDlgMacroExecuteDirect</name>
     <message>
-      <location filename="../CommandMacro.cpp" line="126"/>
+      <location filename="../CommandMacro.cpp" line="125"/>
       <source>&amp;Execute Macro</source>
       <translation>Macra a Fhorghníomhú</translation>
     </message>
     <message>
-      <location filename="../CommandMacro.cpp" line="127"/>
+      <location filename="../CommandMacro.cpp" line="126"/>
       <source>Executes the macro in the editor</source>
       <translation>Rith an macra san eagarthóir</translation>
     </message>
@@ -13297,90 +13297,25 @@ Ar aghaidh?</translation>
   <context>
     <name>StdCmdMacroAttachDebugger</name>
     <message>
-      <location filename="../CommandMacro.cpp" line="152"/>
+      <location filename="../CommandMacro.cpp" line="151"/>
       <source>&amp;Attach to Remote Debugger</source>
       <translation>&amp;Ceangail le Dífhabhtóir Cianda</translation>
     </message>
     <message>
-      <location filename="../CommandMacro.cpp" line="154"/>
+      <location filename="../CommandMacro.cpp" line="153"/>
       <source>Attaches to a remotely running debugger</source>
       <translation>Ceanglaíonn sé le dífhabhtóir atá ag rith go cianda</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdMacroStartDebug</name>
-    <message>
-      <location filename="../CommandMacro.cpp" line="181"/>
-      <source>&amp;Debug Macro</source>
-      <translation>Macra &amp;Dífhabhtaithe</translation>
-    </message>
-    <message>
-      <location filename="../CommandMacro.cpp" line="182"/>
-      <source>Starts the debugging of macros</source>
-      <translation>Tosaíonn sé ag dífhabhtú macraí</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdMacroStopDebug</name>
-    <message>
-      <location filename="../CommandMacro.cpp" line="206"/>
-      <source>&amp;Stop Debugging</source>
-      <translation>&amp;Stop Dífhabhtú</translation>
-    </message>
-    <message>
-      <location filename="../CommandMacro.cpp" line="207"/>
-      <source>Stops the debugging of macros</source>
-      <translation>Stopann sé dífhabhtú macraí</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdMacroStepOver</name>
-    <message>
-      <location filename="../CommandMacro.cpp" line="233"/>
-      <source>Step &amp;Over</source>
-      <translation>Céim Thar</translation>
-    </message>
-    <message>
-      <location filename="../CommandMacro.cpp" line="234"/>
-      <source>Steps to the next line in this file</source>
-      <translation>Céimeanna chuig an chéad líne eile sa chomhad seo</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdMacroStepInto</name>
-    <message>
-      <location filename="../CommandMacro.cpp" line="260"/>
-      <source>Step &amp;Into</source>
-      <translation>Céim &amp;Isteach</translation>
-    </message>
-    <message>
-      <location filename="../CommandMacro.cpp" line="261"/>
-      <source>Steps to the next line executed</source>
-      <translation>Céimeanna chuig an chéad líne eile curtha i gcrích</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdToggleBreakpoint</name>
-    <message>
-      <location filename="../CommandMacro.cpp" line="287"/>
-      <source>Toggle &amp;Breakpoint</source>
-      <translation>Scoránaigh &amp; Brisphointe</translation>
-    </message>
-    <message>
-      <location filename="../CommandMacro.cpp" line="288"/>
-      <source>Adds or removes a breakpoint at this position</source>
-      <translation>Cuireann sé pointe briste leis nó baintear é ag an suíomh seo</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdMacrosFolder</name>
     <message>
-      <location filename="../CommandMacro.cpp" line="312"/>
+      <location filename="../CommandMacro.cpp" line="180"/>
       <source>Open Macro Folder</source>
       <translation>Oscail Fillteán Macra</translation>
     </message>
     <message>
-      <location filename="../CommandMacro.cpp" line="313"/>
+      <location filename="../CommandMacro.cpp" line="181"/>
       <source>Opens the macros folder in the system file manager</source>
       <translation>Osclaíonn an fillteán macraí i mbainisteoir comhad an chórais</translation>
     </message>
@@ -14421,43 +14356,43 @@ Fágann sé seo go bhfanann an painéal dugaithe trédhearcach i gcónaí.</tran
       <translation>Fill ar an luach ríofa deireanach (mar tairiseach)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="393"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="402"/>
       <source> (Warning: unit discarded)</source>
       <translation> (Rabhadh: aonad caite amach)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="500"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="508"/>
       <source>Invalid property name: %1</source>
       <translation>Ainm maoine neamhbhailí: %1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="504"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="512"/>
       <source>Unknown object</source>
       <translation>Réad anaithnid</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="510"/>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="959"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="518"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="967"/>
       <source>the name cannot be empty</source>
       <translation>ní féidir an t-ainm a bheith folamh</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="520"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="528"/>
       <source>%1 is a unit</source>
       <translation>Is aonad é %1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="525"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="533"/>
       <source>%1 is a constant</source>
       <translation>Is tairiseach é %1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="531"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="539"/>
       <source>%1 already exists</source>
       <translation>Tá %1 ann cheana féin</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="955"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="963"/>
       <source>Invalid group name: %1</source>
       <translation>Ainm grúpa neamhbhailí: %1</translation>
     </message>
@@ -14553,7 +14488,7 @@ Fágann sé seo go bhfanann an painéal dugaithe trédhearcach i gcónaí.</tran
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4689"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4699"/>
       <source>Changes the linked object</source>
       <translation>Athraíonn an réad nasctha</translation>
     </message>
@@ -14579,12 +14514,12 @@ Fágann sé seo go bhfanann an painéal dugaithe trédhearcach i gcónaí.</tran
       <translation>Luach lasmuigh den raon (%1 as [%2, %3])</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="378"/>
-      <source>Not a number</source>
-      <translation>Ní uimhir í</translation>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="387"/>
+      <source>Not a Number</source>
+      <translation>Ní Uimhir</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="386"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="395"/>
       <source>Unit mismatch between result and required unit</source>
       <translation>Neamhréir aonaid idir an toradh agus an t-aonad riachtanach</translation>
     </message>
@@ -14857,34 +14792,47 @@ sheicheamh eochrach aicearra 'F, F'.</translation>
     </message>
   </context>
   <context>
+    <name>Gui::PropertyMapEditor</name>
+    <message>
+      <location filename="../Widgets.cpp" line="1905"/>
+      <source>Key</source>
+      <translation>Eochair</translation>
+    </message>
+    <message>
+      <location filename="../Widgets.cpp" line="1905"/>
+      <source>Value</source>
+      <translation>Luach</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::PropertyEditor::PropertyMaterialItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3577"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3587"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
       <translation>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3587"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3597"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
       <translation>Sainmhíníonn sé dath dromchla faoi shoilsiú indíreach, aonfhoirmeach, rud a léiríonn an chuma atá air nuair a bhíonn sé soilsithe ag solas comhthimpeallach amháin i radharc, gan solas treorach, scáthú ná buaicphointí</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3597"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3607"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
       <translation>Sainmhíníonn sé dath agus déine na mbuaicphointí geala, scáthánacha a thaispeántar ar dhromchlaí lonracha nó frithchaiteacha nuair a bhuaileann solas iad go díreach. Socraigh go dathanna geala le haghaidh rudaí lonracha.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3607"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3617"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
       <translation>Sainmhíníonn sé dath dromchla a bhfuil cuma air go n-astaíonn sé amhail is dá mba fhoinse solais é, neamhspleách ar shoilsiú seachtrach, rud a fhágann go bhfuil cuma féin-soilsithe ar an réad. Socraigh go dubh le nach mbeidh aon dath astaíochta ann.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3619"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3629"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
       <translation>Sainmhíníonn sé méid agus géire na mbuaicphointí lonracha ar dhromchla. Cruthaíonn luachanna níos airde buaicphointí beaga, géara, agus cruthaíonn luachanna níos ísle buaicphointí leathana, boga. Tabhair faoi deara go sainmhínítear déine na mbuaicphointí le dath lonrach.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3631"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3641"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
       <translation>Sainmhíníonn sé cé mhéad solais a théann trí réad, rud a fhágann go bhfuil sé trédhearcach go páirteach nó go hiomlán</translation>
     </message>
@@ -14892,34 +14840,42 @@ sheicheamh eochrach aicearra 'F, F'.</translation>
   <context>
     <name>Gui::PropertyEditor::PropertyMaterialListItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3943"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3953"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
       <translation>Sainmhíníonn sé bun-dath dromchla nuair a bhíonn solas air. Léiríonn sé an chaoi a scaipeann an réad solas go cothrom i ngach treo, beag beann ar uillinn an lucht féachana. Is é an airí seo a mbeidh an tionchar is mó aige ar dhath an ábhair.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3953"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3963"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
       <translation>Sainmhíníonn sé dath dromchla faoi shoilsiú indíreach, aonfhoirmeach, rud a léiríonn an chuma atá air nuair a bhíonn sé soilsithe ag solas comhthimpeallach amháin i radharc, gan solas treorach, scáthú ná buaicphointí</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3963"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3973"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
       <translation>Sainmhíníonn sé dath agus déine na mbuaicphointí geala, scáthánacha a thaispeántar ar dhromchlaí lonracha nó frithchaiteacha nuair a bhuaileann solas iad go díreach. Socraigh go dathanna geala le haghaidh rudaí lonracha.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3973"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3983"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
       <translation>Sainmhíníonn sé dath dromchla a bhfuil cuma air go n-astaíonn sé amhail is dá mba fhoinse solais é, neamhspleách ar shoilsiú seachtrach, rud a fhágann go bhfuil cuma féin-soilsithe ar an réad. Socraigh go dubh le nach mbeidh aon dath astaíochta ann.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3985"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3995"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
       <translation>Sainmhíníonn sé méid agus géire na mbuaicphointí lonracha ar dhromchla. Cruthaíonn luachanna níos airde buaicphointí beaga, géara, agus cruthaíonn luachanna níos ísle buaicphointí leathana, boga. Tabhair faoi deara go sainmhínítear déine na mbuaicphointí le dath lonrach.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3997"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4007"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
       <translation>Sainmhíníonn sé cé mhéad solais a théann trí réad, rud a fhágann go bhfuil sé trédhearcach go páirteach nó go hiomlán</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::PropertyEditor::PropertyMapItem</name>
+    <message>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4929"/>
+      <source>Map</source>
+      <translation>Léarscáil</translation>
     </message>
   </context>
   <context>

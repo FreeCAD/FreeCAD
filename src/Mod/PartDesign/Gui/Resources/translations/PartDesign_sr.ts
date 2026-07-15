@@ -177,7 +177,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1476"/>
       <source>Additive Pipe</source>
-      <translation>Додај извлачење по путањи</translation>
+      <translation>Додај извлачење по водиљи</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1477"/>
@@ -735,7 +735,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1526"/>
       <source>Subtractive Pipe</source>
-      <translation>Одузми извлачење по путањи</translation>
+      <translation>Одузми извлачење по водиљи</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1527"/>
@@ -2637,7 +2637,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="69"/>
       <source>Pipe Parameters</source>
-      <translation>Параметри извлачења по путањи</translation>
+      <translation>Параметри извлачења по водиљи</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="80"/>
@@ -3681,7 +3681,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="77"/>
       <source>Edit Pipe</source>
-      <translation>Уреди Извлачење по путањи</translation>
+      <translation>Уреди Извлачење по водиљи</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPocket.cpp" line="47"/>
@@ -4824,7 +4824,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="211"/>
       <source>Pipe: Could not obtain profile shape</source>
-      <translation>Извлачење по путањи: Није могуће обезбедити профилни облик</translation>
+      <translation>Извлачење по водиљи: Није могуће обезбедити профилни облик</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="218"/>
@@ -4839,27 +4839,27 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="255"/>
       <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
-      <translation>Извлачење по путањи: Ако вам је потребно да пресек буде само тачка онда на скици нацртајте само једну тачку</translation>
+      <translation>Извлачење по водиљи: Ако вам је потребно да пресек буде само тачка онда на скици нацртајте само једну тачку</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="264"/>
       <source>Pipe: At least one section is needed when using a single point for profile</source>
-      <translation>Извлачење по путањи: Ако користите тачку као пресек онда вам је потребан барем још један пресек</translation>
+      <translation>Извлачење по водиљи: Ако користите тачку као пресек онда вам је потребан барем још један пресек</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="282"/>
       <source>Pipe: All sections need to be Part features</source>
-      <translation>По путањи: Сви пресеци морају да буду елементи Парт окружења</translation>
+      <translation>По водиљи: Сви пресеци морају да буду елементи Парт окружења</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="290"/>
       <source>Pipe: Could not obtain section shape</source>
-      <translation>Извлачење по путањи: Није могуће обезбедити профилни облик</translation>
+      <translation>Извлачење по водиљи: Није могуће обезбедити профилни облик</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="298"/>
       <source>Pipe: Only the profile and last section can be vertices</source>
-      <translation>Извлачење по путањи: Само први и задњи пресек могу бити тачка</translation>
+      <translation>Извлачење по водиљи: Само први и задњи пресек могу бити тачка</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="311"/>
@@ -4874,12 +4874,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="384"/>
       <source>Pipe could not be built</source>
-      <translation>Није могуће направити извлачење по путањи</translation>
+      <translation>Није могуће направити извлачење по водиљи</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="532"/>
       <source>Pipe: There is nothing to subtract from</source>
-      <translation>Извлачење по путањи: Нема од чега да се одузме</translation>
+      <translation>Извлачење по водиљи: Нема од чега да се одузме</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="584"/>
@@ -4889,7 +4889,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="614"/>
       <source>A fatal error occurred when making the pipe</source>
-      <translation>Извлачење по путањи: Дошло је до фаталне грешке приликом прављења извлачења по путањи</translation>
+      <translation>Извлачење по водиљи: Дошло је до фаталне грешке приликом прављења извлачења по путањи</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="741"/>

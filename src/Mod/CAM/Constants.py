@@ -194,3 +194,16 @@ GCODE_NON_CONFORMING = (
     + GCODE_RETURN_MODE
     + GCODE_CYCLE_CANCEL
 )
+
+
+# =============================================================================
+# Annotations
+# Use constants for keys, comment here for values/semantics
+# =============================================================================
+
+# For Path.Command
+
+# To skip Processor.py from checking a Path.Command against Supported & Non-Conforming
+# i.e. allow any gcode
+# absence for false; any non-false presence for true: use "True"
+ANNOT_ALLOW_UNSUPPORTED = "allow_unsupported"

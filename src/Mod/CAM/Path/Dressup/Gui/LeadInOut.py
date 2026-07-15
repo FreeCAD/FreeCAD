@@ -692,7 +692,7 @@ class ObjectDressup:
         else:
             stepLength = self.tolerance * 10
             stepAngle = stepLength / radius
-        stepAngle = angle / math.ceil(round(angle / stepAngle, 6))
+        stepAngle = angle / Path.Geom.ceil(angle / stepAngle)
 
         return stepAngle
 

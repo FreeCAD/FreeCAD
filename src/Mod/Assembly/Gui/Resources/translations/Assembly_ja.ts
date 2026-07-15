@@ -487,44 +487,39 @@ SLOPEはそれぞれ時間 = T1とT2付近での、0とH1の間、またH2から
       <translation>アニメーションを作成するのに十分なフレームがありません。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1053"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1068"/>
       <source>Save Animation</source>
       <translation>アニメーションを保存</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1075"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1093"/>
+      <source>Pillow (PIL) is not installed. It is required for video export.</source>
+      <translation type="unfinished">Pillow (PIL) is not installed. It is required for video export.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1100"/>
       <source>Generating Frames…</source>
       <translation>フレーム生成中…</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1076"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1101"/>
       <source>Cancel</source>
       <translation>キャンセル</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1103"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1128"/>
       <source>Assembling animation…</source>
       <translation>組み立てアニメーション…</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1119"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1150"/>
       <source>An error occurred while saving the animation</source>
       <translation>アニメーションの保存中にエラーが発生しました</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1137"/>
-      <source>Pillow (PIL) is not installed. It is required for GIF export.</source>
-      <translation>Pillow（PIL）がインストールされていません。GIF のエクスポートに必要です。</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1160"/>
-      <source>OpenCV is not installed. It is required for video export.</source>
-      <translation>OpenCVがインストールされていません。動画のエクスポートに必要です。</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1177"/>
-      <source>Could not open video writer. Check codecs.</source>
-      <translation>動画ライターを開けませんでした。コーデックを確認してください。</translation>
+      <location filename="../../../CommandCreateSimulation.py" line="1184"/>
+      <source>PyAv is not installed. It is required for video export.</source>
+      <translation type="unfinished">PyAv is not installed. It is required for video export.</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="160"/>

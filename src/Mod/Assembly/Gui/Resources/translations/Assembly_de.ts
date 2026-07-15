@@ -487,44 +487,39 @@ SLOPE definiert die Steilheit des Übergangs zwischen 0 und H1 und H2 auf 0 übe
       <translation>Es sind nicht genügend Einzelbilder vorhanden, um eine Animation zu erstellen.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1053"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1068"/>
       <source>Save Animation</source>
       <translation>Animation sichern</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1075"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1093"/>
+      <source>Pillow (PIL) is not installed. It is required for video export.</source>
+      <translation>Pillow (PIL) ist nicht installiert. Es wird für den Video-Export benötigt.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1100"/>
       <source>Generating Frames…</source>
       <translation>Einzelbilder werden erstellt…</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1076"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1101"/>
       <source>Cancel</source>
       <translation>Abbrechen</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1103"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1128"/>
       <source>Assembling animation…</source>
       <translation>Animation wird zusammengestellt…</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1119"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1150"/>
       <source>An error occurred while saving the animation</source>
       <translation>Beim Speichern der Animation ist ein Fehler aufgetreten</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1137"/>
-      <source>Pillow (PIL) is not installed. It is required for GIF export.</source>
-      <translation>Pillow (PIL) ist nicht installiert. Es wird für den GIF-Export benötigt.</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1160"/>
-      <source>OpenCV is not installed. It is required for video export.</source>
-      <translation>OpenCV ist nicht installiert. Es wird für den Video-Export benötigt.</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1177"/>
-      <source>Could not open video writer. Check codecs.</source>
-      <translation>Video-Ausgabe konnte nicht geöffnet werden. Codecs überprüfen.</translation>
+      <location filename="../../../CommandCreateSimulation.py" line="1184"/>
+      <source>PyAv is not installed. It is required for video export.</source>
+      <translation>PyAv ist nicht installiert. Es wird für den Video-Export benötigt.</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="160"/>

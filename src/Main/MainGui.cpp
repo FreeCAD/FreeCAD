@@ -290,16 +290,7 @@ int main(int argc, char** argv)
     catch (const Base::ProgramInformation& e) {
         QApplication app(argc, argv);
         if (std::strcmp(e.what(), App::ProgramInformation::verboseVersionEmitMessage) == 0) {
-            std::stringstream str;
-            const std::map<std::string, std::string> config = App::Application::Config();
-
-            App::ProgramInformation::getVerboseCommonInfo(str, config);
-            Gui::ProgramInformation::getStyleInformation(str);
-            Gui::ProgramInformation::getNavigationStyleInformation(str);
-            Gui::ProgramInformation::getDpiInformation(str);
-            App::ProgramInformation::getVerboseAddOnsInfo(str, config);
-
-            displayInfo(str.str());
+            displayInfo(Gui::ProgramInformation::collect());
         }
         else {
             displayInfo(e.what());

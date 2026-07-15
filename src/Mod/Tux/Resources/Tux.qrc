@@ -103,5 +103,6 @@
         <file>translations/Tux_ta.qm</file>
         <file>translations/Tux_ga-IE.qm</file>
         <file>translations/Tux_sv.qm</file>
+        <file>translations/Tux_lo.qm</file>
     </qresource>
 </RCC>

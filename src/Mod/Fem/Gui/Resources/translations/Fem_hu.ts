@@ -3525,7 +3525,7 @@ egyenletek esetén használatos</translation>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
       <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
-      <translation type="unfinished">Creates a structured mesh in a volume guided by its transfinite surfaces.</translation>
+      <translation>Létrehoz egy szerkezeti hálót egy térfogatban, amelyet annak átmeneti felületei határoznak meg.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
@@ -3535,7 +3535,7 @@ egyenletek esetén használatos</translation>
       <location filename="../ui/MeshDistance.ui" line="266"/>
       <location filename="../ui/MeshManipulate.ui" line="434"/>
       <source>Diagram</source>
-      <translation type="unfinished">Diagram</translation>
+      <translation>Diagram</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
@@ -3556,12 +3556,12 @@ egyenletek esetén használatos</translation>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
       <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
-      <translation type="unfinished">All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</translation>
+      <translation>Minden térfogatfelületnek átmenetesnek kell lennie. Ha a felületek hálótípusa eltérő (négyzetes háló helyett háromszög háló), akkor a térfogatot is úgy kell hálózni, hogy a vegyes elemek használata engedélyezve legyen.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
       <source>Mixed mesh elements</source>
-      <translation type="unfinished">Mixed mesh elements</translation>
+      <translation>Vegyes hálós elemek</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
@@ -3581,7 +3581,7 @@ Notes:
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
       <source>Auto apply transfinite surfaces and curves</source>
-      <translation type="unfinished">Auto apply transfinite surfaces and curves</translation>
+      <translation>Az átmeneti síkok és görbék automatikus alkalmazása</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
@@ -3594,7 +3594,7 @@ Notes:
       <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
       <source>Distribution</source>
-      <translation type="unfinished">Distribution</translation>
+      <translation>Elosztás</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
@@ -3608,26 +3608,26 @@ Notes:
       <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
       <source>Bump</source>
-      <translation type="unfinished">Bump</translation>
+      <translation>Kétoldali sűrítés</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
       <source>Bump Inverted</source>
-      <translation type="unfinished">Bump Inverted</translation>
+      <translation>Fordított kétoldali sűrítés</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
       <source>Progression</source>
-      <translation type="unfinished">Progression</translation>
+      <translation>Előrehaladás</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
       <source>Progression Inverted</source>
-      <translation type="unfinished">Progression Inverted</translation>
+      <translation>Fordított előrehaladás</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
@@ -3638,7 +3638,7 @@ Notes:
       <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
       <source>Recombine</source>
-      <translation type="unfinished">Recombine</translation>
+      <translation>Új kombinációk</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="34"/>
@@ -3649,17 +3649,17 @@ Notes:
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="48"/>
       <source>AttractorAnisoCurve</source>
-      <translation type="unfinished">AttractorAnisoCurve</translation>
+      <translation>Az atomok vonzási görbéjének anizotróp görbéje</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="53"/>
       <source>MathEval</source>
-      <translation type="unfinished">MathEval</translation>
+      <translation>Matematikai értékelés</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="58"/>
       <source>MathEvalAniso</source>
-      <translation type="unfinished">MathEvalAniso</translation>
+      <translation>Anizotróp matematikai értékelés</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="63"/>
@@ -3677,20 +3677,20 @@ Notes:
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="100"/>
       <source>Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</source>
-      <translation type="unfinished">Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</translation>
+      <translation>Számítsa ki a kiválasztott referenciaélekhez viszonyított távolságot, és határozza meg a rács méretét függetlenül a legközelebbi görbéhez merőleges és azzal párhuzamos irányban. A teljesítmény növelése érdekében minden görbét egy mintavételi pontokból álló halmaz helyettesít, amelyekhez viszonyítva a távolságot ténylegesen kiszámítják.</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="134"/>
       <location filename="../ui/MeshAdvanced.ui" line="695"/>
       <source>Anisotropic mesh refinements work only with the BAMG (2D) and MMG3D (3D) algorithms</source>
-      <translation type="unfinished">Anisotropic mesh refinements work only with the BAMG (2D) and MMG3D (3D) algorithms</translation>
+      <translation>Az anizotróp hálófinomítások kizárólag a BAMG (2D) és az MMG3D (3D) algoritmusokkal működnek</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="179"/>
       <location filename="../ui/MeshDistance.ui" line="115"/>
       <location filename="../ui/MeshManipulate.ui" line="283"/>
       <source>Distance at which the mesh size will be SizeMaximum</source>
-      <translation type="unfinished">Distance at which the mesh size will be SizeMaximum</translation>
+      <translation>Az a távolság, amelynél a háló rács szélessége eléri a maximális értéket</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="210"/>
@@ -3698,12 +3698,12 @@ Notes:
       <location filename="../ui/MeshDistance.ui" line="68"/>
       <location filename="../ui/MeshManipulate.ui" line="236"/>
       <source>Mesh size when distance = DistanceMaximum</source>
-      <translation type="unfinished">Mesh size when distance = DistanceMaximum</translation>
+      <translation>A rácsméret, amikor a távolság megegyezik a maximális távolsággal</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="315"/>
       <source>Size Tangent</source>
-      <translation type="unfinished">Size Tangent</translation>
+      <translation>Érintő méret</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="337"/>
@@ -3711,19 +3711,19 @@ Notes:
       <location filename="../ui/MeshDistance.ui" line="178"/>
       <location filename="../ui/MeshManipulate.ui" line="346"/>
       <source>Mesh size when distance &lt; DistanceMinimum</source>
-      <translation type="unfinished">Mesh size when distance &lt; DistanceMinimum</translation>
+      <translation>Rács méret, ha a távolság kisebb, mint a minimális távolság</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="368"/>
       <location filename="../ui/MeshDistance.ui" line="219"/>
       <location filename="../ui/MeshManipulate.ui" line="387"/>
       <source>Distance up to which the mesh size will be SizeMinimum</source>
-      <translation type="unfinished">Distance up to which the mesh size will be SizeMinimum</translation>
+      <translation>Az a távolság, amelyig a rácsméret a minimális méret marad</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="449"/>
       <source>Size Normal</source>
-      <translation type="unfinished">Size Normal</translation>
+      <translation>Merőleges méret</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="460"/>
@@ -3734,13 +3734,13 @@ Notes:
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="505"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the mesh size from a formula based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the mesh size from a formula based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A rácsméret kiszámítása az (x, y, z) koordinátákon alapuló képlet és egyéb sűrítési tényezők (F1, F2 stb.) alapján&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="539"/>
       <location filename="../ui/MeshAdvanced.ui" line="659"/>
       <source>Drag refinements into the advanced mesh object in the tree to make them accessible in the Formula</source>
-      <translation type="unfinished">Drag refinements into the advanced mesh object in the tree to make them accessible in the Formula</translation>
+      <translation>Húzza a sűrítéseket a fa szerkezetében az „advanced Mesh” objektumra, hogy azok a képletben elérhetővé váljanak</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="569"/>
@@ -3765,22 +3765,22 @@ Example: "F2 + Sin(z)"</translation>
       <location filename="../ui/MeshAdvanced.ui" line="826"/>
       <location filename="../ui/MeshAdvanced.ui" line="847"/>
       <source>Mesh size equation</source>
-      <translation type="unfinished">Mesh size equation</translation>
+      <translation>A rácsméretre vonatkozó egyenlet</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="590"/>
       <source>EQIcon</source>
-      <translation type="unfinished">EQIcon</translation>
+      <translation>EQIcon</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="625"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the anisotropic mesh size from multiple formulas based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the anisotropic mesh size from multiple formulas based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Az anizotróp háló méretének kiszámítása több, az (x, y, z) koordinátáktól függő képlet és egyéb sűrítési tényezők (F1, F2 stb.) alapján.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="728"/>
       <source>M12</source>
-      <translation type="unfinished">M12</translation>
+      <translation>M12</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="735"/>
@@ -3803,32 +3803,33 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="763"/>
       <source>M33</source>
-      <translation type="unfinished">M33</translation>
+      <translation>M33</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="770"/>
       <source>M22</source>
-      <translation type="unfinished">M22</translation>
+      <translation>M22</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="805"/>
       <source>M11</source>
-      <translation type="unfinished">M11</translation>
+      <translation>M11</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="812"/>
       <source>M23</source>
-      <translation type="unfinished">M23</translation>
+      <translation>M23</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="833"/>
       <source>M13</source>
-      <translation type="unfinished">M13</translation>
+      <translation>M13</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="904"/>
       <source>Compute the distance to the selected reference geometry (vertex, edge and surfaces). For efficiency, curves and surfaces are replaced by a set of points</source>
-      <translation type="unfinished">Compute the distance to the selected reference geometry (vertex, edge and surfaces). For efficiency, curves and surfaces are replaced by a set of points</translation>
+      <translation>Kiszámítja a távolságot a kiválasztott referenciageometria (csúcsok, élek és felületek) alapján. A hatékonyság érdekében a
+görbéket és a felületeket pontsorozattal helyettesítik</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="952"/>
@@ -3884,27 +3885,27 @@ Example: "F2 + Sin(z)"</translation>
       <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
       <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
       <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
-      <translation type="unfinished">Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</translation>
+      <translation>Az automatikus sűrítés feladat párbeszédablakának megnyitásakor automatikusan megjeleníti a rácsméret sűrítését.</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
       <source>Auto enable on open</source>
-      <translation type="unfinished">Auto enable on open</translation>
+      <translation>Automatikus aktiválás megnyitáskor</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
       <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
-      <translation type="unfinished">Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</translation>
+      <translation>Állítsd be, milyen finom legyen az előszűrő hálója. A magasabb érték finomabb hálót jelent (kisebb hálószemek)</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
       <source>Preview mesh fineness</source>
-      <translation type="unfinished">Preview mesh fineness</translation>
+      <translation>A hálófinomítás előnézete</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
       <source>Create a defined number of mesh nodes on edges with a structured algorithm.</source>
-      <translation type="unfinished">Create a defined number of mesh nodes on edges with a structured algorithm.</translation>
+      <translation>Szerkezeti algoritmus segítségével egy meghatározott számú hálózati csomópontot hozunk létre az éleken.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
@@ -3930,7 +3931,7 @@ Example: "F2 + Sin(z)"</translation>
       <location filename="../ui/MeshPreview.ui" line="96"/>
       <location filename="../ui/MeshPreview.ui" line="109"/>
       <source>The smallest mesh size in the refinement, marked green in the mesh preview.</source>
-      <translation type="unfinished">The smallest mesh size in the refinement, marked green in the mesh preview.</translation>
+      <translation>A finomítás során a legkisebb szemméret, amelyet a háló előnézetében zöld színnel jelöltek.</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="99"/>
@@ -3940,13 +3941,13 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshPreview.ui" line="112"/>
       <source>1.00e+02</source>
-      <translation type="unfinished">1.00e+02</translation>
+      <translation>1.00e+02</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="138"/>
       <location filename="../ui/MeshPreview.ui" line="151"/>
       <source>The largest mesh size in the refinement, marked red in the mesh preview.</source>
-      <translation type="unfinished">The largest mesh size in the refinement, marked red in the mesh preview.</translation>
+      <translation>A finomítás során a legnagyobb szemméret, amelyet a háló előnézetében pirossal jelöltek.</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="141"/>
@@ -3956,7 +3957,7 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshPreview.ui" line="154"/>
       <source>1.00e+03</source>
-      <translation type="unfinished">1.00e+03</translation>
+      <translation>1.00e+03</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="184"/>
@@ -3966,7 +3967,7 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshPreview.ui" line="187"/>
       <source>Visualize</source>
-      <translation type="unfinished">Visualize</translation>
+      <translation>Megjelenítés</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="197"/>
@@ -3981,34 +3982,34 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="108"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;or&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;or&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;vagy&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="124"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a single face with more than 4 edges and additionally select the 3 or 4 corner nodes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a single face with more than 4 edges and additionally select the 3 or 4 corner nodes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Válasszon ki egy olyan felületet, amelynek több mint 4 éle van, és emellett jelölje ki a 3 vagy 4 sarokcsúcsot is.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="160"/>
       <source>The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</source>
-      <translation type="unfinished">The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</translation>
+      <translation>Az egymással szemben fekvő éleknek (vagyis a sarokpontok közötti összekötő vonalaknak) azonos számú rácscsúcsot kell tartalmazniuk. Ezt a legegyszerűbben átmeneti görbével lehet megvalósítani.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="178"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="201"/>
       <source>Define if the triangles on the surface shall be recombined into quads</source>
-      <translation type="unfinished">Define if the triangles on the surface shall be recombined into quads</translation>
+      <translation>Meg kell határozni, hogy a felületen lévő háromszögeket négyszögekké kell-e összevonni</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="188"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="217"/>
       <source>Define how the triangles are oriented within the transfinite mesh (if not recombined)</source>
-      <translation type="unfinished">Define how the triangles are oriented within the transfinite mesh (if not recombined)</translation>
+      <translation>Meg kell határozni, hogy a háromszögek hogyan helyezkednek el a átfedő hálózatban (amennyiben nem kerül sor új kombinációk kialakítására)</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="191"/>
       <source>Triangle Orientation</source>
-      <translation type="unfinished">Triangle Orientation</translation>
+      <translation>Háromszög beállítás</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="227"/>
@@ -4019,18 +4020,18 @@ Notes:
 1. User defined curves propagate to the opposite edges of faces, over all selected faces.
 2. Works only for 3- or 4-sided faces. Multi-sided faces need to be done manually.
 3. Works with most faces, either connected or unconnected </source>
-      <translation type="unfinished">If activated, all edges of the selected surfaces that do not have a transfinite curve defined already become transfinite automatically.
-Use strategically placed transfinite curve definitions to guide the automatic algorithm.
+      <translation>Ha ez az opció aktív, a kiválasztott felületek összes olyan éle, amelyhez még nincs transzfinit görbe-definíció, automatikusan transzfinit görbeként kerül megjelölésre.
+Az automatikus algoritmus működésének szabályozása érdekében célszerű stratégiailag elhelyezni az transzfinit görbe-definíciókat.
 
-Notes:
-1. User defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works only for 3- or 4-sided faces. Multi-sided faces need to be done manually.
-3. Works with most faces, either connected or unconnected </translation>
+Megjegyzések:
+1. A felhasználó által definiált görbék az összes kijelölt fal ellenkező oldalára is kiterjednek.
+2. Csak 3 vagy 4 éllel rendelkező falak esetében működik. A több éllel rendelkező falakat manuálisan kell átalakítani.
+3. A legtöbb fal esetében működik, mind az összekapcsolt, mind az összekapcsolatlan falaknál. </translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="236"/>
       <source>Auto apply transfinite curves</source>
-      <translation type="unfinished">Auto apply transfinite curves</translation>
+      <translation>A transfinit típusú görbék automatikus alkalmazása</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="41"/>
@@ -4045,12 +4046,12 @@ Notes:
     <message>
       <location filename="../ui/MeshDistance.ui" line="284"/>
       <source>Interpolation</source>
-      <translation type="unfinished">Interpolation</translation>
+      <translation>Interpoláció</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="291"/>
       <source>Sampling size</source>
-      <translation type="unfinished">Sampling size</translation>
+      <translation>Minta mérete</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="304"/>
@@ -4061,12 +4062,12 @@ Notes:
       <location filename="../ui/MeshDistance.ui" line="326"/>
       <location filename="../ui/MeshManipulate.ui" line="462"/>
       <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
-      <translation type="unfinished">Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</translation>
+      <translation>Meghatározza, hogy a SizeMinimum és a SizeMaximum közötti hálóméret-interpoláció lineáris vagy szigmoid függvény szerint történjen</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="329"/>
       <source>Linear</source>
-      <translation type="unfinished">Linear</translation>
+      <translation>Lineáris</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="56"/>
@@ -4076,23 +4077,23 @@ Notes:
     <message>
       <location filename="../ui/MeshManipulate.ui" line="84"/>
       <source>Restrict</source>
-      <translation type="unfinished">Restrict</translation>
+      <translation>Korlátozás</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="89"/>
       <source>Threshold</source>
-      <translation type="unfinished">Threshold</translation>
+      <translation>Küszöb</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="94"/>
       <location filename="../ui/MeshManipulate.ui" line="609"/>
       <source>Mean</source>
-      <translation type="unfinished">Mean</translation>
+      <translation>Középérték</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="99"/>
       <source>Gradient</source>
-      <translation type="unfinished">Gradient</translation>
+      <translation>Színátmenet</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="104"/>
@@ -4102,48 +4103,48 @@ Notes:
     <message>
       <location filename="../ui/MeshManipulate.ui" line="109"/>
       <source>Laplacian</source>
-      <translation type="unfinished">Laplacian</translation>
+      <translation>Laplace-operátor</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="138"/>
       <source>Restrict the application of the child refinement to the selected reference elements.</source>
-      <translation type="unfinished">Restrict the application of the child refinement to the selected reference elements.</translation>
+      <translation>A másodlagos finomítás alkalmazását a kiválasztott referenciaelemekre korlátozza.</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="160"/>
       <location filename="../ui/MeshManipulate.ui" line="173"/>
       <source>Include the boundary of the selected reference elements</source>
-      <translation type="unfinished">Include the boundary of the selected reference elements</translation>
+      <translation>A kiválasztott referenciaelemek határainak figyelembevétele</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="163"/>
       <source>Include boundary</source>
-      <translation type="unfinished">Include boundary</translation>
+      <translation>Szűkítés bekapcsolása</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="209"/>
       <source>Apply a threshold to the child refinements value</source>
-      <translation type="unfinished">Apply a threshold to the child refinements value</translation>
+      <translation>Egy küszöbérték alkalmazása az alárendelt finomítások értékére</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="308"/>
       <source>Output size</source>
-      <translation type="unfinished">Output size</translation>
+      <translation>Kimeneti méret</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="365"/>
       <source>Input value</source>
-      <translation type="unfinished">Input value</translation>
+      <translation>Bemeneti érték</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="452"/>
       <source>Linear interpolation</source>
-      <translation type="unfinished">Linear interpolation</translation>
+      <translation>Lineáris interpoláció</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="472"/>
       <source>Stop at max input</source>
-      <translation type="unfinished">Stop at max input</translation>
+      <translation>Maximális bevitel esetén leállítani</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="493"/>
@@ -4151,7 +4152,7 @@ Notes:
 
 F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
 </source>
-      <translation type="unfinished">Calculates the mean value of child refinement G:
+      <translation>Kiszámítja a G alkategória átlagértékét:
 
 F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
 </translation>
@@ -4162,7 +4163,7 @@ F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - del
       <location filename="../ui/MeshManipulate.ui" line="689"/>
       <location filename="../ui/MeshManipulate.ui" line="761"/>
       <source>Delta</source>
-      <translation type="unfinished">Delta</translation>
+      <translation>Delta</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="527"/>
@@ -4178,7 +4179,7 @@ F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - del
 
 F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
 </source>
-      <translation type="unfinished">Compute the finite difference gradient of child refinement G:
+      <translation>Számítsd ki a G alrácsfinomítás véges differenciákból származó szakaszát:
 
 F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
 </translation>
@@ -4186,34 +4187,34 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/MeshManipulate.ui" line="580"/>
       <source>Kind</source>
-      <translation type="unfinished">Kind</translation>
+      <translation>Fajta</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="38"/>
       <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
-      <translation type="unfinished">Define mesh size inside and outside of the shape, with possible transition layer thickness</translation>
+      <translation>A mintázat méretét a forma belsejében és kívül is meg kell határozni, szükség esetén átmeneti rétegvastagsággal</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="54"/>
       <location filename="../ui/MeshShape.ui" line="70"/>
       <source>Mesh size within the shape</source>
-      <translation type="unfinished">Mesh size within the shape</translation>
+      <translation>A mintázat mérete a formán belül</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="57"/>
       <source>Size inside</source>
-      <translation type="unfinished">Size inside</translation>
+      <translation>Belső méret</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="80"/>
       <location filename="../ui/MeshShape.ui" line="96"/>
       <source>Mesh size outside of the shape</source>
-      <translation type="unfinished">Mesh size outside of the shape</translation>
+      <translation>A mintázat mérete a formán kívül</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="83"/>
       <source>Size outside</source>
-      <translation type="unfinished">Size outside</translation>
+      <translation>Küldő méret</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="106"/>

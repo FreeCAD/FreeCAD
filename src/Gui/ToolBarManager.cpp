@@ -766,7 +766,8 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
         }
 
         // try to add some breaks to avoid to have all toolbars in one line
-        if (toolbar_added) {
+        // only account for visible toolbars: hidden ones occupy no row space
+        if (toolbar_added && visible) {
             if (top_width > 0 && getMainWindow()->toolBarBreak(toolbar)) {
                 top_width = 0;
             }

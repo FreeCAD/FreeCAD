@@ -28,7 +28,7 @@ jobs:
 
       - name: '🧹 Tag & close stale unconfirmed bugs'
         id: stale_issues
-        uses: actions/stale@eb5cf3af3ac0a1aa4c9c45633dd1ae542a27a899 # v10.3.0
+        uses: actions/stale@1e223db275d687790206a7acac4d1a11bd6fe629 # v10.4.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           days-before-issue-stale: 90
@@ -55,7 +55,7 @@ jobs:
 
       - name: '🧹 Close stale requested feedback issues'
         id: awaiting_issues
-        uses: actions/stale@eb5cf3af3ac0a1aa4c9c45633dd1ae542a27a899 # v10.3.0
+        uses: actions/stale@1e223db275d687790206a7acac4d1a11bd6fe629 # v10.4.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           days-before-issue-stale: 20
@@ -83,7 +83,7 @@ jobs:
 
       - name: '🧹 Tag & close inactive issues'
         id: inactive_issues
-        uses: actions/stale@eb5cf3af3ac0a1aa4c9c45633dd1ae542a27a899 # v10.3.0
+        uses: actions/stale@1e223db275d687790206a7acac4d1a11bd6fe629 # v10.4.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           days-before-issue-stale: 190
@@ -114,7 +114,7 @@ jobs:
 
       - name: '🧹 Tag & close inactive PRs'
         id: inactive_pr
-        uses: actions/stale@eb5cf3af3ac0a1aa4c9c45633dd1ae542a27a899 # v10.3.0
+        uses: actions/stale@1e223db275d687790206a7acac4d1a11bd6fe629 # v10.4.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           days-before-issue-stale: -1
