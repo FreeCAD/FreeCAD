@@ -1078,6 +1078,7 @@ SET(Inventor_CPP_SRCS
     Inventor/Draggers/SoRotationDragger.cpp
     Inventor/Draggers/SoRotationDraggerGeometry.cpp
     Inventor/Draggers/Gizmo.cpp
+    ColorScaleOverlay.cpp
     SoFCColorBar.cpp
     SoFCColorBarNotifier.cpp
     SoFCColorGradient.cpp
@@ -1122,6 +1123,7 @@ SET(Inventor_SRCS
     Inventor/Draggers/SoRotationDraggerGeometry.h
     Inventor/Draggers/Gizmo.h
     Inventor/Draggers/GizmoStyleParameters.h
+    ColorScaleOverlay.h
     SoFCColorBar.h
     SoFCColorBarNotifier.h
     SoFCColorGradient.h
