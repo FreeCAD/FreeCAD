@@ -4810,13 +4810,37 @@ int System::diagnose(Algorithm alg)
     conflictingTags.clear();
     redundantTags.clear();
     partiallyRedundantTags.clear();
+    pDependentParametersGroups.clear();
 
-    // Diagnose each independent component of the sketch separately; for
-    // now, the whole sketch is treated as a single component.
-    std::vector<VEC_pD> plists {plist};
-    std::vector<std::vector<Constraint*>> clists {clist};
-    std::vector<VEC_pD> pdrivenlists {pdrivenlist};
-    int componentsSize = 1;
+    std::vector<Constraint*> drivingConstraints;
+    std::ranges::copy_if(clist, std::back_inserter(drivingConstraints), [](auto constr) {
+        return constr->isDriving();
+    });
+
+    VEC_I components;
+    int componentsSize = computeComponents(drivingConstraints, components);
+
+    if (componentsSize <= 1) {
+        dofs = diagnoseComponent(alg, plist, pdrivenlist, clist);
+        hasDiagnosis = true;
+        return dofs;
+    }
+
+    std::vector<VEC_pD> plists(componentsSize);
+    for (std::size_t i = 0; i < plist.size(); ++i) {
+        plists[components[i]].push_back(plist[i]);
+    }
+    std::vector<std::vector<Constraint*>> clists(componentsSize);
+    for (std::size_t i = 0; i < drivingConstraints.size(); ++i) {
+        clists[components[int(plist.size()) + int(i)]].push_back(drivingConstraints[i]);
+    }
+    std::vector<VEC_pD> pdrivenlists(componentsSize);
+    for (const auto& param : pdrivenlist) {
+        MAP_pD_I::const_iterator it = pIndex.find(param);
+        if (it != pIndex.end()) {
+            pdrivenlists[components[it->second]].push_back(param);
+        }
+    }
 
     dofs = 0;
 
@@ -5358,19 +5382,20 @@ void System::identifyDependentParameters(
     }
 #endif
 
-    pDependentParametersGroups.resize(qrJ.cols() - rank);
+    std::size_t groupBase = pDependentParametersGroups.size();
+    pDependentParametersGroups.resize(groupBase + (qrJ.cols() - rank));
     for (int j = rank; j < qrJ.cols(); j++) {
         for (int row = 0; row < rank; row++) {
             if (fabs(Rparams(row, j)) > 1e-10) {
                 int origCol = qrJ.colsPermutation().indices()[row];
 
-                pDependentParametersGroups[j - rank].push_back(pdiagnoselist[origCol]);
+                pDependentParametersGroups[groupBase + j - rank].push_back(pdiagnoselist[origCol]);
                 pDependentParameters.push_back(pdiagnoselist[origCol]);
             }
         }
         int origCol = qrJ.colsPermutation().indices()[j];
 
-        pDependentParametersGroups[j - rank].push_back(pdiagnoselist[origCol]);
+        pDependentParametersGroups[groupBase + j - rank].push_back(pdiagnoselist[origCol]);
         pDependentParameters.push_back(pdiagnoselist[origCol]);
     }
 
@@ -5717,14 +5742,15 @@ void System::identifyConflictingRedundantConstraints(
     // exclude constraints tagged with zero
     conflictingTagsSet.erase(0);
 
-    conflictingTags.resize(conflictingTagsSet.size());
-    std::ranges::copy(conflictingTagsSet, conflictingTags.begin());
+    conflictingTags.insert(conflictingTags.end(), conflictingTagsSet.begin(), conflictingTagsSet.end());
 
     // output of redundant tags
     SET_I redundantTagsSet, partiallyRedundantTagsSet;
-    for (const auto& constr : redundant) {
-        redundantTagsSet.insert(constr->getTag());
-        partiallyRedundantTagsSet.insert(constr->getTag());
+    for (const auto& constr : clist) {
+        if (redundant.count(constr) != 0) {
+            redundantTagsSet.insert(constr->getTag());
+            partiallyRedundantTagsSet.insert(constr->getTag());
+        }
     }
 
     // remove tags represented at least in one non-redundant constraint
@@ -5734,15 +5760,17 @@ void System::identifyConflictingRedundantConstraints(
         }
     }
 
-    redundantTags.resize(redundantTagsSet.size());
-    std::ranges::copy(redundantTagsSet, redundantTags.begin());
+    redundantTags.insert(redundantTags.end(), redundantTagsSet.begin(), redundantTagsSet.end());
 
     for (auto r : redundantTagsSet) {
         partiallyRedundantTagsSet.erase(r);
     }
 
-    partiallyRedundantTags.resize(partiallyRedundantTagsSet.size());
-    std::ranges::copy(partiallyRedundantTagsSet, partiallyRedundantTags.begin());
+    partiallyRedundantTags.insert(
+        partiallyRedundantTags.end(),
+        partiallyRedundantTagsSet.begin(),
+        partiallyRedundantTagsSet.end()
+    );
 
     nonredundantconstrNum = constrNum;
 }
