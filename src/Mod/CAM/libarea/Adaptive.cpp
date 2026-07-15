@@ -49,19 +49,6 @@ using namespace std;
 //*****************************************
 // SVG Debug Info
 //*****************************************
-struct PreprocessingSVGInfo
-{
-    Paths step3Paths;
-    Paths step4Paths;
-    Paths step5a_stockRev;
-    Paths step5b_outsideOfStock;
-    Paths step5c_inputPathsUnion;
-    Paths step5d_clearedArea;
-    Paths step5e_inputPaths;
-    std::vector<Paths> allToolBoundPaths;
-    std::vector<Paths> allFinishingPaths;
-};
-
 //*****************************************
 // Utils - inline
 //*****************************************
@@ -1625,7 +1612,7 @@ void Adaptive2d::ApplyStockToLeave(Paths& inputPaths)
 }
 
 // Write combined SVG with all accumulated paths from all regions
-void writePreprocessingSVG(const PreprocessingSVGInfo& svgInfo)
+void writePreprocessingSVG(const DebugSVGInfo& svgInfo)
 {
     // Calculate overall bounding box
     long long minX = LLONG_MAX, minY = LLONG_MAX, maxX = LLONG_MIN, maxY = LLONG_MIN;
@@ -1749,6 +1736,13 @@ void writePreprocessingSVG(const PreprocessingSVGInfo& svgInfo)
             svgInfo.allFinishingPaths[regionIdx]
         );
     }
+    for (size_t regionIdx = 0; regionIdx < svgInfo.allFinalClearedPaths.size(); regionIdx++) {
+        renderPathGroup(
+            "final-cleared-paths-" + std::to_string(regionIdx + 1),
+            "lime",
+            svgInfo.allFinalClearedPaths[regionIdx]
+        );
+    }
 
     // Legend (positioned in top-left within viewBox)
     long long legendX = minX + padding / 2;
@@ -1758,9 +1752,9 @@ void writePreprocessingSVG(const PreprocessingSVGInfo& svgInfo)
 
     // Calculate legend height based on number of entries
     size_t numRegions = svgInfo.allToolBoundPaths.size();
-    size_t numLegendItems = 7
-        + numRegions * 2;  // 7 for steps 3,4,5a,5b,5c,5d,5 + 2 per region (step 6, step 8)
-    long long headingOffset = lineHeight;  // Space for heading
+    size_t numLegendItems = 7 + numRegions * 3;  // 7 for steps 3,4,5a,5b,5c,5d,5 + 3 per region
+                                                 // (step 6, step 8, final cleared)
+    long long headingOffset = lineHeight;        // Space for heading
 
     svg << "<g id=\"legend\">\n";
 
@@ -1813,6 +1807,11 @@ void writePreprocessingSVG(const PreprocessingSVGInfo& svgInfo)
             "finishing-paths-" + std::to_string(regionIdx + 1),
             "red",
             "Step 8: Finishing Paths" + regionLabel
+        );
+        renderLegendItem(
+            "final-cleared-paths-" + std::to_string(regionIdx + 1),
+            "lime",
+            "Final Cleared Area" + regionLabel
         );
     }
 
@@ -1869,7 +1868,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     finishPassOffsetScaled = finishingProfile ? long(stepOverScaled * FINISHING_THICKNESS_SCALE) : 0;
 
     // Debug variables for SVG visualization
-    PreprocessingSVGInfo svgInfo;
+    DebugSVGInfo svgInfo;
 
     ClipperOffset clipof;
     Clipper clip;
@@ -2555,7 +2554,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             svgInfo.allFinishingPaths.push_back(finishingPass);
 
             // 10) Run core algorithm on (bounds, toolBounds, finishingPass, clearedArea)
-            ProcessPolyNode(boundPath, currentTBP, finishingPass, initialClearedPaths);
+            ProcessPolyNode(boundPath, currentTBP, finishingPass, initialClearedPaths, &svgInfo);
         }
     }
 
@@ -3510,7 +3509,8 @@ void Adaptive2d::ProcessPolyNode(
     Paths boundPaths,
     Paths toolBoundPaths,
     Paths finishingPaths,
-    const Paths& initialClearedPaths
+    const Paths& initialClearedPaths,
+    DebugSVGInfo* svgInfo
 )
 {
     Perf_ProcessPolyNode.Start();
@@ -4598,6 +4598,9 @@ void Adaptive2d::ProcessPolyNode(
 
     // Then calculate final cleared area
     const Paths& clearedPaths = cleared.GetCleared();
+    if (svgInfo) {
+        svgInfo->allFinalClearedPaths.push_back(clearedPaths);
+    }
     double finalClearedArea = 0.0;
     for (const Path& path : clearedPaths) {
         int nesting = getPathNestingLevel(path, clearedPaths);

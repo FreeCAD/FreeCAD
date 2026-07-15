@@ -92,6 +92,20 @@ struct AdaptiveOutput
     bool FinishingLeadInFailed = false;
 };
 
+struct DebugSVGInfo
+{
+    Paths step3Paths;
+    Paths step4Paths;
+    Paths step5a_stockRev;
+    Paths step5b_outsideOfStock;
+    Paths step5c_inputPathsUnion;
+    Paths step5d_clearedArea;
+    Paths step5e_inputPaths;
+    std::vector<Paths> allToolBoundPaths;
+    std::vector<Paths> allFinishingPaths;
+    std::vector<Paths> allFinalClearedPaths;
+};
+
 // used to isolate state -> enable potential adding of multi-threaded processing of separate regions
 
 class Adaptive2d
@@ -146,7 +160,8 @@ private:
         Paths boundPaths,
         Paths toolBoundPaths,
         Paths finishingPaths,
-        const Paths& initialClearedPaths
+        const Paths& initialClearedPaths,
+        DebugSVGInfo* svgInfo = nullptr
     );
     bool FindEntryPoint(
         TPaths& progressPaths,
