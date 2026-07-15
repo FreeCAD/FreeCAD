@@ -88,6 +88,20 @@ static bool centerOf(const TopoDS_Shape& shape, gp_Pnt& out)
     return false;
 }
 
+// Axis of a circular edge: through its centre, normal to its plane. False otherwise.
+static bool circleAxisOf(const TopoDS_Shape& shape, gp_Ax1& out)
+{
+    if (shape.IsNull() || shape.ShapeType() != TopAbs_EDGE) {
+        return false;
+    }
+    BRepAdaptor_Curve adapt(TopoDS::Edge(shape));
+    if (adapt.GetType() != GeomAbs_Circle) {
+        return false;
+    }
+    out = adapt.Circle().Axis();
+    return true;
+}
+
 // Arc-length middle of an edge (differs from the parameter midpoint on a
 // non-uniform curve).
 static bool midpointOf(const TopoDS_Shape& shape, gp_Pnt& out)
@@ -140,11 +154,17 @@ static bool vertexOf(const TopoDS_Shape& shape, const Base::Vector3d* cursor, gp
 // face bbox centre, projected onto the axis so it sits on the visible geometry.
 static bool axisPointOf(const TopoDS_Shape& shape, const Base::Vector3d* cursor, gp_Pnt& out, gp_Dir* outDir)
 {
-    if (shape.IsNull() || shape.ShapeType() != TopAbs_FACE) {
+    if (shape.IsNull()) {
         return false;
     }
+    const bool isFace = shape.ShapeType() == TopAbs_FACE;
     gp_Ax1 axis;
-    if (!MeasureSnap::axisOfFace(TopoDS::Face(shape), axis)) {
+    if (isFace) {
+        if (!MeasureSnap::axisOfFace(TopoDS::Face(shape), axis)) {
+            return false;
+        }
+    }
+    else if (!circleAxisOf(shape, axis)) {
         return false;
     }
     if (outDir) {
@@ -154,12 +174,15 @@ static bool axisPointOf(const TopoDS_Shape& shape, const Base::Vector3d* cursor,
     if (cursor) {
         target = gp_Pnt(cursor->x, cursor->y, cursor->z);
     }
-    else {
+    else if (isFace) {
         Bnd_Box box;
         BRepBndLib::Add(shape, box);
         const gp_Pnt lo = box.CornerMin();
         const gp_Pnt hi = box.CornerMax();
         target = gp_Pnt((lo.X() + hi.X()) / 2.0, (lo.Y() + hi.Y()) / 2.0, (lo.Z() + hi.Z()) / 2.0);
+    }
+    else {
+        target = axis.Location();  // circle centre lies on its axis
     }
     out = MeasureSnap::projectOntoAxis(axis, target);
     return true;
@@ -262,11 +285,13 @@ std::vector<gp_Pnt> MeasureSnap::previewPoints(const TopoDS_Shape& shape, Measur
             }
             break;
         case MeasureSnapMode::Axis: {
-            if (shape.ShapeType() != TopAbs_FACE) {
-                break;
-            }
             gp_Ax1 axis;
-            if (!axisOfFace(TopoDS::Face(shape), axis)) {
+            if (shape.ShapeType() == TopAbs_FACE) {
+                if (!axisOfFace(TopoDS::Face(shape), axis)) {
+                    break;
+                }
+            }
+            else if (!circleAxisOf(shape, axis)) {
                 break;
             }
             Bnd_Box box;
@@ -354,6 +379,7 @@ int MeasureSnap::getAvailableSnapTypes(const TopoDS_Shape& shape)
         BRepAdaptor_Curve adapt(edge);
         if (adapt.GetType() == GeomAbs_Circle) {
             flags |= static_cast<int>(MeasureSnapFlag::FlagCenter);
+            flags |= static_cast<int>(MeasureSnapFlag::FlagAxis);
         }
         return flags;
     }
