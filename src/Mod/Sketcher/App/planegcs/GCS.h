@@ -161,10 +161,20 @@ private:
     int solve_DL(SubSystem* subsys, bool isRedundantsolving = false);
 
     void makeReducedJacobian(
+        const VEC_pD& plist,
+        const VEC_pD& pdrivenlist,
+        const std::vector<Constraint*>& clist,
         Eigen::MatrixXd& J,
         std::map<int, int>& jacobianconstraintmap,
         GCS::VEC_pD& pdiagnoselist,
         std::map<int, int>& tagmultiplicity
+    );
+
+    int diagnoseComponent(
+        Algorithm alg,
+        const VEC_pD& plist,
+        const VEC_pD& pdrivenlist,
+        const std::vector<Constraint*>& clist
     );
 
     void makeDenseQRDecomposition(
@@ -201,6 +211,7 @@ private:
     template<typename T>
     void identifyConflictingRedundantConstraints(
         Algorithm alg,
+        const std::vector<Constraint*>& clist,
         const T& qrJT,
         const std::map<int, int>& jacobianconstraintmap,
         const std::map<int, int>& tagmultiplicity,
