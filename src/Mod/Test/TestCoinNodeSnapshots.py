@@ -423,6 +423,31 @@ def _add_gradient_background(root, top, bottom):
     root.addChild(gradient)
 
 
+def _make_drawing_grid_overlap_scene():
+    """Build the original grid-over-scene fixture used by the grid regression."""
+    root = coin.SoSeparator()
+
+    cam = coin.SoOrthographicCamera()
+    cam.orientation.setValue(coin.SbRotation(-0.353553, -0.146447, -0.353553, -0.853553))
+    root.addChild(cam)
+    root.addChild(coin.SoDirectionalLight())
+    root.addChild(coin.SoFont())
+
+    material = coin.SoMaterial()
+    material.diffuseColor.setValue(0.7, 0.7, 0.75)
+    translation = coin.SoTranslation()
+    translation.translation.setValue(0.0, 0.0, -0.5)
+    cube = coin.SoCube()
+    cube.width = 1.2
+    cube.height = 1.2
+    cube.depth = 1.2
+    root.addChild(material)
+    root.addChild(translation)
+    root.addChild(cube)
+    root.addChild(_instantiate("SoDrawingGrid"))
+    return root
+
+
 def _add_translucency_backplate(root):
     """Add two opaque color panels behind the translucent face-set fixture."""
     backplate = coin.SoSeparator()
@@ -1414,6 +1439,27 @@ def _non_background_pixel_count(path: Path) -> int:
     return count
 
 
+def _matching_pixel_count(path: Path, predicate) -> int:
+    from PySide.QtGui import QImage  # type: ignore
+
+    img = QImage(str(path)).convertToFormat(QImage.Format_ARGB32)
+    if img.isNull():
+        return 0
+
+    count = 0
+    for y in range(img.height()):
+        for x in range(img.width()):
+            pixel = img.pixel(x, y)
+            r = (pixel >> 16) & 0xFF
+            g = (pixel >> 8) & 0xFF
+            b = pixel & 0xFF
+            a = (pixel >> 24) & 0xFF
+            if predicate(r, g, b, a):
+                count += 1
+
+    return count
+
+
 def _pixel_bbox(path: Path, predicate):
     from PySide.QtGui import QImage  # type: ignore
 
@@ -2074,6 +2120,51 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
                 FreeCADGui.Selection.clearSelection()
             if FreeCAD.getDocument(doc.Name):
                 FreeCAD.closeDocument(doc.Name)
+
+    def test_so_drawing_grid_preserves_color_over_scene(self):
+        """Keep the configured dark grid color when the grid overlays scene geometry."""
+        _require_gui()
+
+        width = _SNAPSHOT_WIDTH
+        height = _SNAPSHOT_HEIGHT
+        out_dir = Path(
+            os.environ.get(
+                "FC_VISUAL_OUT_DIR",
+                os.path.join(tempfile.gettempdir(), "FreeCADTesting", "CoinNodeSnapshots"),
+            )
+        )
+        actual_path = out_dir / "actual" / "SoDrawingGridOverlayColorRegression.png"
+        root = _make_drawing_grid_overlap_scene()
+
+        with _ViewerSnapshotHarness(width, height) as harness:
+            _render_png(
+                harness,
+                root,
+                actual_path,
+                width,
+                height,
+                framing_policy=_CameraPolicy.VIEW_ALL,
+            )
+
+        dark_pixels = _matching_pixel_count(
+            actual_path,
+            lambda r, g, b, _a: (r, g, b) == (10, 10, 10),
+        )
+        default_color_pixels = _matching_pixel_count(
+            actual_path,
+            lambda r, g, b, _a: (r, g, b) == (204, 204, 204),
+        )
+
+        self.assertGreater(
+            dark_pixels,
+            100_000,
+            f"configured dark grid color should survive the screen-space traversal: {actual_path}",
+        )
+        self.assertEqual(
+            default_color_pixels,
+            0,
+            f"grid should not fall back to Coin's default material color: {actual_path}",
+        )
 
     def test_coin_node_snapshots(self):
         """Render each configured node and compare against baseline images."""
