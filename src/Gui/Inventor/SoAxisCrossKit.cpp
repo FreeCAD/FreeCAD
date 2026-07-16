@@ -82,7 +82,23 @@ void SoShapeScale::initClass()
 
 void SoShapeScale::GLRender(SoGLRenderAction* action)
 {
+    updateScale(action ? action->getState() : nullptr);
+    inherited::GLRender(action);
+}
+
+void SoShapeScale::doAction(SoAction* action)
+{
+    updateScale(action ? action->getState() : nullptr);
+    inherited::doAction(action);
+}
+
+void SoShapeScale::updateScale(SoState* state)
+{
     auto* scale = static_cast<SoScale*>(this->getAnyPart(SbName("scale"), true));
+    if (!scale || !state) {
+        return;
+    }
+
     if (!this->active.getValue()) {
         SbVec3f v(1.0f, 1.0f, 1.0f);
         if (scale->scaleFactor.getValue() != v) {
@@ -90,12 +106,22 @@ void SoShapeScale::GLRender(SoGLRenderAction* action)
         }
     }
     else {
-        SoState* state = action->getState();
+        if (!state->isElementEnabled(SoViewportRegionElement::getClassStackIndex())
+            || !state->isElementEnabled(SoViewVolumeElement::getClassStackIndex())
+            || !state->isElementEnabled(SoDevicePixelRatioElement::getClassStackIndex())) {
+            return;
+        }
+
         const SbViewportRegion& vp = SoViewportRegionElement::get(state);
         const SbViewVolume& vv = SoViewVolumeElement::get(state);
 
+        const SbVec2s viewportSize = vp.getViewportSizePixels();
+        if (viewportSize[0] <= 0) {
+            return;
+        }
+
         SbVec3f center(0.0f, 0.0f, 0.0f);
-        float nsize = this->scaleFactor.getValue() / float(vp.getViewportSizePixels()[0]);
+        float nsize = this->scaleFactor.getValue() / float(viewportSize[0]);
         SoModelMatrixElement::get(state).multVecMatrix(center, center);  // world coords
         float sf = vv.getWorldToScreenScale(center, nsize);
 
@@ -106,8 +132,6 @@ void SoShapeScale::GLRender(SoGLRenderAction* action)
             scale->scaleFactor = v;
         }
     }
-
-    inherited::GLRender(action);
 }
 
 // --------------------------------------------------------------

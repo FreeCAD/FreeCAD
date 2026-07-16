@@ -34,6 +34,7 @@
 
 
 class SbViewport;
+class SoAction;
 class SoState;
 class SbColor;
 class SbVec2s;
@@ -65,6 +66,8 @@ public:
     SoSFFloat scaleFactor;
 
 protected:
+    void doAction(SoAction* action) override;
+    void updateScale(SoState* state);
     void GLRender(SoGLRenderAction* action) override;
     ~SoShapeScale() override;
 };
