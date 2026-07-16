@@ -4710,8 +4710,7 @@ void System::makeReducedJacobian(
     const std::vector<Constraint*>& clist,
     Eigen::MatrixXd& J,
     std::map<int, int>& jacobianconstraintmap,
-    GCS::VEC_pD& pdiagnoselist,
-    std::map<int, int>& tagmultiplicity
+    GCS::VEC_pD& pdiagnoselist
 )
 {
     // construct specific parameter list for diagonose ignoring driven constraint parameters
@@ -4735,14 +4734,6 @@ void System::makeReducedJacobian(
             jacobianconstraintcount++;
             for (int j = 0; j < int(pdiagnoselist.size()); j++) {
                 J(jacobianconstraintcount - 1, j) = constr->grad(pdiagnoselist[j]);
-            }
-
-            // parallel processing: create tag multiplicity map
-            if (tagmultiplicity.find(constr->getTag()) == tagmultiplicity.end()) {
-                tagmultiplicity[constr->getTag()] = 0;
-            }
-            else {
-                tagmultiplicity[constr->getTag()]++;
             }
 
             jacobianconstraintmap[jacobianconstraintcount - 1] = allcount - 1;
@@ -4817,11 +4808,26 @@ int System::diagnose(Algorithm alg)
         return constr->isDriving();
     });
 
+    // tag multiplicity gives the number of solver constraints associated with the same tag
+    // A tag generally corresponds to the Sketcher constraint index - There are special tag values,
+    // like 0 and -1.
+    std::map<int, int> tagmultiplicity;
+    for (auto& constr : drivingConstraints) {
+        if (constr->getTag() >= 0) {
+            if (tagmultiplicity.find(constr->getTag()) == tagmultiplicity.end()) {
+                tagmultiplicity[constr->getTag()] = 0;
+            }
+            else {
+                tagmultiplicity[constr->getTag()]++;
+            }
+        }
+    }
+
     VEC_I components;
     int componentsSize = computeComponents(drivingConstraints, components);
 
     if (componentsSize <= 1) {
-        dofs = diagnoseComponent(alg, plist, pdrivenlist, clist);
+        dofs = diagnoseComponent(alg, plist, pdrivenlist, clist, tagmultiplicity);
         hasDiagnosis = true;
         return dofs;
     }
@@ -4849,7 +4855,7 @@ int System::diagnose(Algorithm alg)
             continue;
         }
 
-        int d = diagnoseComponent(alg, plists[i], pdrivenlists[i], clists[i]);
+        int d = diagnoseComponent(alg, plists[i], pdrivenlists[i], clists[i], tagmultiplicity);
         if (d < 0) {
             dofs = -1;
             break;
@@ -4865,7 +4871,8 @@ int System::diagnoseComponent(
     Algorithm alg,
     const VEC_pD& plist,
     const VEC_pD& pdrivenlist,
-    const std::vector<Constraint*>& clist
+    const std::vector<Constraint*>& clist,
+    const std::map<int, int>& tagmultiplicity
 )
 {
     // When adding an external geometry or a constraint on an external geometry the array
@@ -4893,12 +4900,7 @@ int System::diagnoseComponent(
     // constraints)
     GCS::VEC_pD pdiagnoselist;
 
-    // tag multiplicity gives the number of solver constraints associated with the same tag
-    // A tag generally corresponds to the Sketcher constraint index - There are special tag values,
-    // like 0 and -1.
-    std::map<int, int> tagmultiplicity;
-
-    makeReducedJacobian(plist, pdrivenlist, clist, J, jacobianconstraintmap, pdiagnoselist, tagmultiplicity);
+    makeReducedJacobian(plist, pdrivenlist, clist, J, jacobianconstraintmap, pdiagnoselist);
 
     if (stats) {
         stats->cumulativeDiagnoseMatrixSize += J.rows() * J.cols();

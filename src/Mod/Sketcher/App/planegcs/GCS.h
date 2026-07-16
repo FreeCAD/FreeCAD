@@ -166,15 +166,15 @@ private:
         const std::vector<Constraint*>& clist,
         Eigen::MatrixXd& J,
         std::map<int, int>& jacobianconstraintmap,
-        GCS::VEC_pD& pdiagnoselist,
-        std::map<int, int>& tagmultiplicity
+        GCS::VEC_pD& pdiagnoselist
     );
 
     int diagnoseComponent(
         Algorithm alg,
         const VEC_pD& plist,
         const VEC_pD& pdrivenlist,
-        const std::vector<Constraint*>& clist
+        const std::vector<Constraint*>& clist,
+        const std::map<int, int>& tagmultiplicity
     );
 
     int computeComponents(const std::vector<Constraint*>& clist, VEC_I& components);
