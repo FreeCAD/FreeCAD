@@ -748,8 +748,6 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         QGISectionLine* sectionLine = new QGISectionLine();
         addToGroupWithoutUpdate(sectionLine);
         sectionLine->setSymbol(const_cast<char*>(viewSection->SectionSymbol.getValue()));
-        Base::Color color = Preferences::getAccessibleColor(vp->SectionLineColor.getValue());
-        sectionLine->setSectionColor(color.asValue<QColor>());
         sectionLine->setPathMode(false);
 
         //make the section line a little longer
@@ -792,6 +790,9 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         } else {
             sectionLine->setShowLine(false);
         }
+
+        Base::Color color = Preferences::getAccessibleColor(vp->SectionLineColor.getValue());
+        sectionLine->setSectionColor(color.asValue<QColor>());
 
         auto font = sectionVp->SectionLineFont.getValue();
         auto fontSize = sectionVp->SectionLineFontsize.getValue();
