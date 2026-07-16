@@ -856,8 +856,7 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
     QGISectionLine* sectionLine = new QGISectionLine();
     addToGroupWithoutUpdate(sectionLine);
     sectionLine->setSymbol(const_cast<char*>(viewSection->SectionSymbol.getValue()));
-    Base::Color color = Preferences::getAccessibleColor(vp->SectionLineColor.getValue());
-    sectionLine->setSectionColor(color.asValue<QColor>());
+
     sectionLine->setPathMode(true);
     sectionLine->setPath(wirePath);
     sectionLine->setEnds(vStart, vEnd);
@@ -884,6 +883,9 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
     } else {
         sectionLine->setShowLine(false);
     }
+
+    Base::Color color = Preferences::getAccessibleColor(vp->SectionLineColor.getValue());
+    sectionLine->setSectionColor(color.asValue<QColor>());
 
     auto font = sectionVp->SectionLineFont.getValue();
     auto fontSize = sectionVp->SectionLineFontsize.getValue();
