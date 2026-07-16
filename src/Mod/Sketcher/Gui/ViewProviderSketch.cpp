@@ -199,7 +199,7 @@ void ViewProviderSketch::ParameterObserver::updateShapeAppearanceProperty(const 
     auto matProp = static_cast<App::PropertyMaterialList*>(property);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    unsigned long shcol = hGrp->GetUnsigned(string.c_str(), 0x54abff40);
+    unsigned long shcol = hGrp->GetUnsigned(string.c_str(), 0xf59f0040);
     float r = ((shcol >> 24) & 0xff) / 255.0;
     float g = ((shcol >> 16) & 0xff) / 255.0;
     float b = ((shcol >> 8) & 0xff) / 255.0;
