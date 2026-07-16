@@ -89,7 +89,7 @@ class InputFieldLockGroup:
             )
         )
         action.triggered.connect(lambda checked=False, k=key: self.unlock(k))
-        field.textEdited.connect(lambda text, k=key: self._queue_edit(k))
+        field.textEdited.connect(lambda text, k=key: self._queue_edit(k, text))
         flt = _FieldLockFilter(self, key)
         field.installEventFilter(flt)
         self._filters.append(flt)
@@ -97,17 +97,20 @@ class InputFieldLockGroup:
         self._actions[key] = action
         self._locked[key] = False
 
-    def _queue_edit(self, key):
+    def _queue_edit(self, key, text):
         if not self._active:
             return
         revision = self._edit_revisions.get(key, 0) + 1
         self._edit_revisions[key] = revision
-        QtCore.QTimer.singleShot(0, lambda k=key, r=revision: self._finish_edit(k, r))
+        QtCore.QTimer.singleShot(
+            0,
+            lambda k=key, t=text, r=revision: self._finish_edit(k, t, r),
+        )
 
-    def _finish_edit(self, key, revision):
+    def _finish_edit(self, key, text, revision):
         if not self._active or self._edit_revisions.get(key) != revision:
             return
-        locked = self._has_lockable_input(key)
+        locked = self._has_lockable_input(key, text)
         self.set_locked(key, locked)
 
     def queue_locked_value_refresh(self, key):

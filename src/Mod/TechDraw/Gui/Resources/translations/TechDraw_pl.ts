@@ -4114,7 +4114,7 @@ Zastąpić?</translation>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="116"/>
       <source>Prefix Text</source>
-      <translation type="unfinished">Prefix Text</translation>
+      <translation>Tekst prefiksu</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1982"/>

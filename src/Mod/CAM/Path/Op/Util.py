@@ -575,3 +575,76 @@ def getClearedAreas(currentOp, bbox):
         opPath = _stripRotaryAxes(op.Path) if rotated else op.Path
         clearedAreas.append(opPath.getClearedArea(diameter, z + dz, bbox))
     return clearedAreas
+
+
+def getOpSide(obj, default="Outside"):
+    """getOpSide(obj) ...  offer side for op base"""
+
+    def getVerticalFaces(edges, shape):
+        """Returns vertical faces (wall around) that contains given edges
+        Excludes faces which is longer than common edges"""
+        vFaces = []
+        for f in shape.Faces:
+            if len(vFaces) == len(edges):
+                break
+            if isHorizontal(f):
+                continue
+            for hEdge in edges:
+                hsh = hEdge.hashCode()
+                if any(hsh == e.hashCode() for e in f.Edges) and all(
+                    e.Length < hEdge.Length or isRoughly(hEdge.Length, e.Length)
+                    for e in f.Edges
+                    if isHorizontal(e)
+                ):
+                    vFaces.append(f)
+                    edges.remove(hEdge)
+                    break
+        return vFaces
+
+    if not obj.Base:
+        return default
+    isRoughly = Path.Geom.isRoughly
+    isHorizontal = Path.Geom.isHorizontal
+    base, subNames = obj.Base[0]
+    if "Face" in subNames[0]:
+        faces = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Face")]
+        vFaces = []
+        hFaces = []
+        for face in faces:
+            if isHorizontal(face):
+                hFaces.append(face)
+            else:
+                vFaces.append(face)
+        if vFaces:
+            volume = Part.Compound(vFaces).Volume
+            if volume > 0 or isRoughly(volume, 0):
+                return "Outside"
+            # check if vertical faces creates a closed area
+            fzMin = min(e.BoundBox.ZMin for f in vFaces for e in f.Edges)
+            bEdges = [e for f in vFaces for e in f.Edges if isRoughly(e.BoundBox.ZMax, fzMin)]
+            wire = Part.Wire(Part.__sortEdges__(bEdges))
+            if not wire.isClosed():  # for open area always offer 'Outside'
+                return "Outside"
+            if volume < 0 and not isRoughly(volume, 0):  # negative volume forms inner area
+                return "Inside"
+        if hFaces:
+            vFaces = getVerticalFaces(hFaces[0].OuterWire.Edges, base.Shape)
+            volume = Part.Compound(vFaces).Volume
+            if volume < 0 and not isRoughly(volume, 0):  # negative volume forms inner area
+                return "Inside"
+            else:
+                return "Outside"
+    elif "Edge" in subNames[0]:
+        edges = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Edge")]
+        cluster = Part.getSortedClusters(edges)[0]
+        wire = Part.Wire(Part.__sortEdges__(cluster))
+        if not wire.isClosed():  # for open wire always offer 'Outside'
+            return "Outside"
+        vFaces = getVerticalFaces(edges, base.Shape)
+        volume = Part.Compound(vFaces).Volume
+        if volume < 0 and not isRoughly(volume, 0):  # negative volume forms inner area
+            return "Inside"
+        else:
+            return "Outside"
+
+    return default

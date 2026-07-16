@@ -133,6 +133,12 @@ if ! "$SIGN_DIR/bin/freecadcmd.exe" --safe-mode --version; then
   exit 1
 fi
 
+echo "Running FreeCAD bundled Pivy smoke test..."
+if ! "$SIGN_DIR/bin/freecadcmd.exe" --safe-mode --console "import pivy; from pivy import coin; print(pivy.__file__); print(coin.SoDB.getVersion())"; then
+  echo "FreeCAD bundled Pivy smoke test failed; the Windows bundle cannot import the bundled Coin/Pivy runtime."
+  exit 1
+fi
+
 7z a -t7z -mx9 -mmt=${NUMBER_OF_PROCESSORS} ${version_name}.7z ${version_name} -bb
 # create hash
 sha256sum ${version_name}.7z > ${version_name}.7z-SHA256.txt

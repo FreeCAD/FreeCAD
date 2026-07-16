@@ -25,6 +25,8 @@
 
 #include "ViewProviderDocumentObject.h"
 #include <App/PropertyUnits.h>
+#include <Base/Vector3D.h>
+#include <optional>
 #include "SoTextLabel.h"
 
 class SoFont;
@@ -116,11 +118,25 @@ private:
     static void dragMotionCallback(void* data, SoDragger* d);
 
 private:
+    struct DragState
+    {
+        Base::Vector3d basePosition;
+        Base::Vector3d currentTextPosition;
+        Base::Vector3d pickOffset;
+        Base::Vector3d planePoint;
+        Base::Vector3d planeNormal;
+    };
+
+    void previewTextPosition(DragState& state, const Base::Vector3d& textPosition);
+
+private:
     SoCoordinate3* pCoords;
     SoImage* pImage;
+    SoImage* pImageHitProxy;
     SoBaseColor* pColor;
     SoTranslation* pBaseTranslation;
     TranslateManip* pTextTranslation;
+    std::optional<DragState> dragState;
 
     static const char* JustificationEnums[];
 };

@@ -2028,12 +2028,12 @@ of the projection.</source>
     <message>
       <location filename="../../Command.cpp" line="1762"/>
       <source>Sweep</source>
-      <translation>По путањи</translation>
+      <translation>По водиљи</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1763"/>
       <source>Sweeps profiles along a wire</source>
-      <translation>Направи облик извлачењем пресека по путањи</translation>
+      <translation>Направи облик извлачењем пресека по водиљи</translation>
     </message>
   </context>
   <context>
@@ -2264,7 +2264,7 @@ of the projection.</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="417"/>
       <source>Sweep</source>
-      <translation>По путањи</translation>
+      <translation>По водиљи</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="1615"/>
@@ -5310,7 +5310,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="520"/>
       <source>Sweep</source>
-      <translation>По путањи</translation>
+      <translation>По водиљи</translation>
     </message>
   </context>
   <context>
@@ -5980,7 +5980,7 @@ Individual boolean operation checks:</source>
     <message>
       <location filename="../../TaskSweep.ui" line="14"/>
       <source>Sweep</source>
-      <translation>По путањи</translation>
+      <translation>По водиљи</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>

@@ -547,6 +547,8 @@ struct OverlayAxisCrossState
         SoTexture2* texture {nullptr};
         SoVertexProperty* vertices {nullptr};
         SoFaceSet* quad {nullptr};
+        int width {0};
+        int height {0};
     };
 
     Letter xLetter;
@@ -641,6 +643,8 @@ struct OverlayAxisCrossState
         lettersRoot->addChild(lettersMaterial);
 
         auto buildLetter = [](Letter& out, int w, int h) {
+            out.width = w;
+            out.height = h;
             out.root = new SoSeparator;
 
             out.position = new SoTranslation;
@@ -1125,9 +1129,14 @@ void View3DInventorViewer::init()
     auto hiddenAnchor = new SoSkipBoundingGroup();
     hiddenAnchor->mode = SoSkipBoundingGroup::EXCLUDE_BBOX;
     auto hiddenSep = new SoSeparator();
+    // The zero scale that hides the cube also makes the model matrix singular, so keep it out of
+    // the ray-casting calculations during object picking.
+    auto hiddenPickStyle = new SoPickStyle();
+    hiddenPickStyle->style = SoPickStyle::UNPICKABLE;
     auto hiddenScale = new SoScale();
     hiddenScale->scaleFactor = SbVec3f(0, 0, 0);
     auto hiddenCube = new SoCube();
+    hiddenSep->addChild(hiddenPickStyle);
     hiddenSep->addChild(hiddenScale);
     hiddenSep->addChild(hiddenCube);
     hiddenAnchor->addChild(hiddenSep);
@@ -5098,18 +5107,25 @@ void View3DInventorViewer::drawAxisCross()
     vv.getMatrices(affine, projection);
 
     const SbMatrix comb = model.multRight(projection);
-    SbVec3f xpos;
-    comb.multVecMatrix(SbVec3f(1, 0, 0), xpos);
-    xpos[0] = (1 + xpos[0]) * static_cast<float>(viewWidth) / 2.0f;
-    xpos[1] = (1 + xpos[1]) * static_cast<float>(viewHeight) / 2.0f;
-    SbVec3f ypos;
-    comb.multVecMatrix(SbVec3f(0, 1, 0), ypos);
-    ypos[0] = (1 + ypos[0]) * static_cast<float>(viewWidth) / 2.0f;
-    ypos[1] = (1 + ypos[1]) * static_cast<float>(viewHeight) / 2.0f;
-    SbVec3f zpos;
-    comb.multVecMatrix(SbVec3f(0, 0, 1), zpos);
-    zpos[0] = (1 + zpos[0]) * static_cast<float>(viewWidth) / 2.0f;
-    zpos[1] = (1 + zpos[1]) * static_cast<float>(viewHeight) / 2.0f;
+    auto projectOverlayPoint = [&comb](const SbVec3f& point) {
+        SbVec3f projected;
+        comb.multVecMatrix(point, projected);
+        return projected;
+    };
+
+    // Anchor each letter slightly past its axis tip so centered glyphs do not
+    // sit on top of the arrow geometry.
+    constexpr float letterDistance = 1.15f;
+    auto projectLetterAnchor = [&projectOverlayPoint](const SbVec3f& axis) {
+        return projectOverlayPoint(axis * letterDistance);
+    };
+
+    const SbVec3f xTipProjected = projectOverlayPoint(SbVec3f(1, 0, 0));
+    const SbVec3f yTipProjected = projectOverlayPoint(SbVec3f(0, 1, 0));
+    const SbVec3f zTipProjected = projectOverlayPoint(SbVec3f(0, 0, 1));
+    const SbVec3f xLetterProjected = projectLetterAnchor(SbVec3f(1, 0, 0));
+    const SbVec3f yLetterProjected = projectLetterAnchor(SbVec3f(0, 1, 0));
+    const SbVec3f zLetterProjected = projectLetterAnchor(SbVec3f(0, 0, 1));
 
     auto& overlay = overlayAxisCrossState();
     overlay.ensureCreated();
@@ -5132,9 +5148,9 @@ void View3DInventorViewer::drawAxisCross()
     overlay.zMaterial->diffuseColor.setValue(m_zColor.r, m_zColor.g, m_zColor.b);
 
     std::array<std::pair<float, SoNode*>, 3> axes = {
-        std::pair<float, SoNode*> {xpos[2], overlay.xAxis},
-        std::pair<float, SoNode*> {ypos[2], overlay.yAxis},
-        std::pair<float, SoNode*> {zpos[2], overlay.zAxis},
+        std::pair<float, SoNode*> {xTipProjected[2], overlay.xAxis},
+        std::pair<float, SoNode*> {yTipProjected[2], overlay.yAxis},
+        std::pair<float, SoNode*> {zTipProjected[2], overlay.zAxis},
     };
     std::sort(axes.begin(), axes.end(), [](const auto& a, const auto& b) {
         return a.first > b.first;
@@ -5144,26 +5160,57 @@ void View3DInventorViewer::drawAxisCross()
         overlay.axisGroup->addChild(axis.second);
     }
 
-    overlay.lettersCamera->aspectRatio.setValue(
-        static_cast<float>(viewWidth) / static_cast<float>(viewHeight)
+    const float miniViewportSize = static_cast<float>(pixelarea);
+    const float miniViewportCenter = miniViewportSize / 2.0f;
+
+    overlay.lettersCamera->aspectRatio.setValue(1.0f);
+    overlay.lettersCamera->height.setValue(miniViewportSize);
+
+    // Axis endpoints are projected into centered [-1, 1] coordinates. Convert
+    // them into the square overlay viewport's local pixel space before mapping
+    // them back to the centered coordinate system used by the letters camera.
+    auto toMiniViewportPixel = [miniViewportSize](const SbVec3f& projectedEndpoint) {
+        return SbVec2f(
+            (1.0f + projectedEndpoint[0]) * miniViewportSize / 2.0f,
+            (1.0f + projectedEndpoint[1]) * miniViewportSize / 2.0f
+        );
+    };
+
+    // Keep labels proportional to the corner widget, with readable bounds for
+    // very small or very large viewports. These values are framebuffer pixels
+    // because the letters camera is sized to the square overlay viewport.
+    constexpr float letterHeightFraction = 0.07f;
+    constexpr float minLetterHeight = 8.0f;
+    constexpr float maxLetterHeight = 18.0f;
+    const float deviceScale = static_cast<float>(devicePixelRatio());
+    const float targetLetterHeight = std::clamp(
+        miniViewportSize * letterHeightFraction,
+        minLetterHeight * deviceScale,
+        maxLetterHeight * deviceScale
     );
-    overlay.lettersCamera->height.setValue(static_cast<float>(viewHeight));
+    const float letterScale = targetLetterHeight / static_cast<float>(XPM_HEIGHT);
+    overlay.xLetter.scale->scaleFactor.setValue(letterScale, letterScale, 1.0f);
+    overlay.yLetter.scale->scaleFactor.setValue(letterScale, letterScale, 1.0f);
+    overlay.zLetter.scale->scaleFactor.setValue(letterScale, letterScale, 1.0f);
 
-    // The overlay viewport above is sized in physical framebuffer pixels, so
-    // the axis letters must scale by the device pixel ratio to keep the same
-    // perceived size as the axis cross on HiDPI displays.
-    const float scale = static_cast<float>(axiscrossSize) / 30.0f
-        * static_cast<float>(devicePixelRatio());
-    overlay.xLetter.scale->scaleFactor.setValue(scale, scale, 1.0f);
-    overlay.yLetter.scale->scaleFactor.setValue(scale, scale, 1.0f);
-    overlay.zLetter.scale->scaleFactor.setValue(scale, scale, 1.0f);
+    auto placeLetter = [letterScale, miniViewportCenter, toMiniViewportPixel](
+                           OverlayAxisCrossState::Letter& letter,
+                           const SbVec3f& projectedEndpoint
+                       ) {
+        const SbVec2f local = toMiniViewportPixel(projectedEndpoint);
+        const float halfLetterWidth = static_cast<float>(letter.width) * letterScale / 2.0f;
+        const float halfLetterHeight = static_cast<float>(letter.height) * letterScale / 2.0f;
 
-    overlay.xLetter.position->translation
-        .setValue(xpos[0] - 0.5f * viewWidth, xpos[1] - 0.5f * viewHeight, 0.0f);
-    overlay.yLetter.position->translation
-        .setValue(ypos[0] - 0.5f * viewWidth, ypos[1] - 0.5f * viewHeight, 0.0f);
-    overlay.zLetter.position->translation
-        .setValue(zpos[0] - 0.5f * viewWidth, zpos[1] - 0.5f * viewHeight, 0.0f);
+        letter.position->translation.setValue(
+            local[0] - miniViewportCenter - halfLetterWidth,
+            local[1] - miniViewportCenter - halfLetterHeight,
+            0.0f
+        );
+    };
+
+    placeLetter(overlay.xLetter, xLetterProjected);
+    placeLetter(overlay.yLetter, yLetterProjected);
+    placeLetter(overlay.zLetter, zLetterProjected);
 
     overlay.xLetter.texture->image.setValue(SbVec2s(XPM_WIDTH, XPM_HEIGHT), 4, XPM_pixel_data);
     overlay.yLetter.texture->image.setValue(SbVec2s(YPM_WIDTH, YPM_HEIGHT), 4, YPM_pixel_data);
