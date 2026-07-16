@@ -29,7 +29,7 @@ SET(Test_SRCS
     TestRubberbandSelection.py
     TestCoinNodeSnapshots.py
     TestView3DFramebufferCapture.py
-    TestCoinSelectionVisual.py
+    TestSelectionVisual.py
     TestCornerAxisCrossVisual.py
     TestViewProviderLink.py
 )
