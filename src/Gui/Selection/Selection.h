@@ -787,10 +787,6 @@ protected:
     static PyObject* sSetPreselection(PyObject* self, PyObject* args, PyObject* kwd);
     static PyObject* sGetPreselection(PyObject* self, PyObject* args);
     static PyObject* sRemPreselection(PyObject* self, PyObject* args);
-    static PyObject* sApplyCoinHighlight(PyObject* self, PyObject* args, PyObject* kwd);
-    static PyObject* sClearCoinHighlight(PyObject* self, PyObject* args, PyObject* kwd);
-    static PyObject* sApplyCoinSelection(PyObject* self, PyObject* args, PyObject* kwd);
-    static PyObject* sClearCoinSelection(PyObject* self, PyObject* args, PyObject* kwd);
     static PyObject* sGetCompleteSelection(PyObject* self, PyObject* args);
     static PyObject* sGetSelectionEx(PyObject* self, PyObject* args);
     static PyObject* sGetSelectionObject(PyObject* self, PyObject* args);
