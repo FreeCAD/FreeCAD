@@ -4801,6 +4801,7 @@ int System::diagnose(Algorithm alg)
     conflictingTags.clear();
     redundantTags.clear();
     partiallyRedundantTags.clear();
+    pDependentParameters.clear();
     pDependentParametersGroups.clear();
 
     std::vector<Constraint*> drivingConstraints;
