@@ -181,6 +181,29 @@ std::string MaterialPy::representation() const
     return {"<Material object>"};
 }
 
+PyObject* MaterialPy::richCompare(PyObject* v, PyObject* w, int op)
+{
+    if (PyObject_TypeCheck(v, &(MaterialPy::Type)) && PyObject_TypeCheck(w, &(MaterialPy::Type))) {
+        const Material* m1 = static_cast<MaterialPy*>(v)->getMaterialPtr();
+        const Material* m2 = static_cast<MaterialPy*>(w)->getMaterialPtr();
+
+        PyObject* res = nullptr;
+        switch (op) {
+            case Py_NE:
+                res = (!(*m1 == *m2)) ? Py_True : Py_False;
+                Py_INCREF(res);
+                return res;
+            case Py_EQ:
+                res = (*m1 == *m2) ? Py_True : Py_False;
+                Py_INCREF(res);
+                return res;
+        }
+    }
+
+    Py_INCREF(Py_NotImplemented);
+    return Py_NotImplemented;
+}
+
 PyObject* MaterialPy::set(PyObject* args)
 {
     char* pstr {};
