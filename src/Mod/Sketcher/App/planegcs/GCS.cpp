@@ -1178,6 +1178,11 @@ int System::addConstraintPointOnCircle3D(Point3D& p, Circle3D& c, int tagId, boo
     return addConstraintProjectOnPlane3D(p, c.center, c.normal, tagId, driving);
 }
 
+int System::addConstraintCircleRadius3D(Circle3D& c, double* radius, int tagId, bool driving)
+{
+    return addConstraintEqual(c.rad, radius, tagId, driving);
+}
+
 int System::addConstraintArcRules(Arc& a, int tagId, bool driving)
 {
     addConstraintCurveValue(a.start, a, a.startAngle, tagId, driving);

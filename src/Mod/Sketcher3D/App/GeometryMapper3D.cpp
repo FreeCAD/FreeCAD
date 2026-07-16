@@ -396,6 +396,22 @@ int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, S
             solver.addConstraintCollinear(tagId, a, b);
             return tagId;
         }
+        case Constraint3D::Radius3D: {
+            if (elements.size() != 1) {
+                return -1;
+            }
+            GeoDef& def = Geoms[elements[0].GeoId];
+            switch (def.type) {
+                case GeoKind::Circle:
+                    solver.addConstraintCircleRadius(tagId, def.index, constraint.Value);
+                    return tagId;
+                case GeoKind::Arc:
+                    solver.addConstraintArcRadius(tagId, def.index, constraint.Value);
+                    return tagId;
+                default:
+                    return -1;
+            }
+        }
         case Constraint3D::ProjectOnPlane3D: {
             if (elements.size() != 2) {
                 return -1;

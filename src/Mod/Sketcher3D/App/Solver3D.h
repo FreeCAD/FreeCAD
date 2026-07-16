@@ -160,6 +160,9 @@ public:
     /// Project a point onto a fixed plane.
     void addConstraintProjectOnPlane(int tagId, int pointHandle, int planeHandle);
 
+    void addConstraintCircleRadius(int tagId, int circleHandle, double radius);
+    void addConstraintArcRadius(int tagId, int arcHandle, double radius);
+
     int solve();
 
     /// Read back the current value of a point after solve().

@@ -1388,6 +1388,73 @@ bool CmdSketcher3DConstrainAlongZ::isActive()
     return isSketch3DInEdit();
 }
 
+DEF_STD_CMD_A(CmdSketcher3DConstrainRadius)
+
+CmdSketcher3DConstrainRadius::CmdSketcher3DConstrainRadius()
+    : Command("Sketcher3D_ConstrainRadius")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain radius");
+    sToolTipText = QT_TR_NOOP("Fix the radius of a selected 3D circle or arc");
+    sWhatsThis = "Sketcher3D_ConstrainRadius";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_Radius";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainRadius::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Sketcher3D::Sketch3DObject* sketch = activeSketch3D();
+    if (!sketch) {
+        return;
+    }
+
+    auto sel = collectSketch3DSelection(sketch, false, true);
+    if (sel.arcs.size() + sel.circles.size() != 1) {
+        Base::Console().warning("Sketcher3D: select exactly one circle or arc for Radius.\n");
+        return;
+    }
+
+    Sketcher3D::GeoElementId3D ref = !sel.arcs.empty() ? sel.arcs[0] : sel.circles[0];
+    double seedValue = !sel.arcs.empty()
+        ? sketch->getGeometry<Part::GeomArcOfCircle>(ref.GeoId)->getRadius()
+        : sketch->getGeometry<Part::GeomCircle>(ref.GeoId)->getRadius();
+
+    DlgEditConstraintValue dlg(
+        QObject::tr("Constrain radius"),
+        QObject::tr("Radius:"),
+        seedValue,
+        Base::Unit::Length,
+        Gui::getMainWindow()
+    );
+    if (dlg.exec() != QDialog::Accepted) {
+        return;
+    }
+    if (dlg.value() <= 0.0) {
+        Base::Console().warning("Sketcher3D: Radius must be positive.\n");
+        return;
+    }
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Constrain radius"));
+    Sketcher3D::Constraint3D c;
+    c.Type = Sketcher3D::Constraint3D::Radius3D;
+    c.Value = dlg.value();
+    c.setElements({ref});
+    sketch->addConstraint(c);
+    sketch->recomputeFeature();
+    commitCommand();
+
+    Gui::Selection().clearSelection();
+}
+
+bool CmdSketcher3DConstrainRadius::isActive()
+{
+    return isSketch3DInEdit();
+}
+
 class CmdSketcher3DCompDimensionTools: public Gui::GroupCommand
 {
 public:
@@ -1406,6 +1473,7 @@ public:
         setRememberLast(false);
 
         addCommand("Sketcher3D_ConstrainDistance");
+        addCommand("Sketcher3D_ConstrainRadius");
         addCommand("Sketcher3D_ConstrainAngle");
         addCommand("Sketcher3D_ConstrainDistanceX");
         addCommand("Sketcher3D_ConstrainDistanceY");
@@ -1472,6 +1540,7 @@ void CreateSketcher3DCommands()
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreateCircle());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreateArc());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainDistance());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainRadius());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainAngle());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainDistanceX());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainDistanceY());

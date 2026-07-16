@@ -295,6 +295,18 @@ void Solver3D::addConstraintProjectOnPlane(int tagId, int pointHandle, int plane
     GCSsys.addConstraintProjectOnPlane3D(points[pointHandle], plane.origin, plane.normal, tagId);
 }
 
+void Solver3D::addConstraintCircleRadius(int tagId, int circleHandle, double radius)
+{
+    double* r = allocFixParam(radius);
+    GCSsys.addConstraintCircleRadius3D(circles[circleHandle], r, tagId);
+}
+
+void Solver3D::addConstraintArcRadius(int tagId, int arcHandle, double radius)
+{
+    double* r = allocFixParam(radius);
+    GCSsys.addConstraintCircleRadius3D(arcs[arcHandle], r, tagId);
+}
+
 int Solver3D::solve()
 {
     conflictingTags.clear();

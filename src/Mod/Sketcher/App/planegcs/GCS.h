@@ -591,6 +591,8 @@ public:
 
     int addConstraintPointOnCircle3D(Point3D& p, Circle3D& c, int tagId = 0, bool driving = true);
 
+    int addConstraintCircleRadius3D(Circle3D& c, double* radius, int tagId = 0, bool driving = true);
+
     // internal alignment constraints
     int addConstraintInternalAlignmentPoint2Ellipse(
         Ellipse& e,

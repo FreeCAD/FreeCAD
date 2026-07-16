@@ -154,6 +154,8 @@ QIcon iconForConstraint(Sketcher3D::Constraint3D::Constraint3DType type)
             return Gui::BitmapFactory().iconFromTheme("Constraint_Symmetric");
         case Sketcher3D::Constraint3D::Collinear3D:
             return Gui::BitmapFactory().iconFromTheme("Constraint_Tangent");
+        case Sketcher3D::Constraint3D::Radius3D:
+            return Gui::BitmapFactory().iconFromTheme("Constraint_Radius");
         case Sketcher3D::Constraint3D::Distance3D:
         default:
             return Gui::BitmapFactory().iconFromTheme("Constraint_Length");
@@ -441,7 +443,8 @@ void TaskSketcher3DTool::populateConstraints()
         if (c.Type == Sketcher3D::Constraint3D::Distance3D
             || c.Type == Sketcher3D::Constraint3D::DistanceX3D
             || c.Type == Sketcher3D::Constraint3D::DistanceY3D
-            || c.Type == Sketcher3D::Constraint3D::DistanceZ3D) {
+            || c.Type == Sketcher3D::Constraint3D::DistanceZ3D
+            || c.Type == Sketcher3D::Constraint3D::Radius3D) {
             text += tr(" = %1").arg(c.Value, 0, 'f', 3);
         }
         else if (c.Type == Sketcher3D::Constraint3D::Angle3D) {
