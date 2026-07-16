@@ -1425,7 +1425,9 @@ void SelectionSingleton::reselectLastCleared()
             sel.DocName.c_str(),
             sel.FeatName.c_str(),
             sel.SubName.empty() ? nullptr : sel.SubName.c_str(),
-            sel.x, sel.y, sel.z
+            sel.x,
+            sel.y,
+            sel.z
         );
     }
 }
