@@ -152,6 +152,28 @@ TEST_F(GCSTest, diagnoseAccumulatesRedundantTagsAcrossUnrelatedComponents)  // N
     EXPECT_EQ(redundant, (GCS::VEC_I {vertical_tag_1, vertical_tag_2}));
 }
 
+TEST_F(GCSTest, diagnoseResetsDependentParamsEachCall)  // NOLINT
+{
+    // Arrange
+    std::vector<double> values = {0.0, 5.0, 10.0};
+    GCS::VEC_pD params;
+    for (auto& v : values) {
+        params.push_back(&v);
+    }
+    System()->declareUnknowns(params);
+    System()->addConstraintEqual(params[0], params[1], 1);
+    System()->diagnose();
+
+    // Act
+    System()->addConstraintEqual(params[1], params[2], 2);
+    System()->diagnose();
+
+    // Assert
+    GCS::VEC_pD dependent;
+    System()->getDependentParams(dependent);
+    EXPECT_EQ(dependent.size(), 3u);
+}
+
 TEST_F(GCSTest, diagnoseManyIndependentComponentsPerf)  // NOLINT
 {
     // Arrange
