@@ -390,7 +390,7 @@ void renderOverlayImage(
 
     auto& overlay = overlayImageState();
     overlay.ensureCreated();
-    if (!overlay.root || !overlay.camera) {
+    if (!overlay.root || !overlay.camera || !overlay.texture || !overlay.vertices) {
         return;
     }
 
