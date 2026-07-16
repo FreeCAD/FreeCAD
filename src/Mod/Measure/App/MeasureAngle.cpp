@@ -97,10 +97,8 @@ bool MeasureAngle::isValidSelection(const App::MeasureSelection& selection)
         }
 
         if (!(type == App::MeasureElementType::LINE || type == App::MeasureElementType::PLANE
-              || type == App::MeasureElementType::LINESEGMENT
-              || type == App::MeasureElementType::DISC
-              || type == App::MeasureElementType::CYLINDER
-              || type == App::MeasureElementType::CONE)) {
+              || type == App::MeasureElementType::LINESEGMENT || type == App::MeasureElementType::DISC
+              || type == App::MeasureElementType::CYLINDER || type == App::MeasureElementType::CONE)) {
             return false;
         }
     }
@@ -484,8 +482,12 @@ bool MeasureAngle::isAxisBearingFace(const TopoDS_Shape& shape)
 
 // A cylinder/cone axis is a line, so compute the acute line-to-line angle (or the
 // line-to-plane complement) directly; the edge/face paths flip an infinite axis to 180.
-App::DocumentObjectExecReturn*
-MeasureAngle::executeAxisCase(const TopoDS_Shape& s1, const TopoDS_Shape& s2, bool s1Axis, bool s2Axis)
+App::DocumentObjectExecReturn* MeasureAngle::executeAxisCase(
+    const TopoDS_Shape& s1,
+    const TopoDS_Shape& s2,
+    bool s1Axis,
+    bool s2Axis
+)
 {
     const gp_Vec d1 = vector1();
     const gp_Vec d2 = vector2();
