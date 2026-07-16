@@ -125,8 +125,12 @@ private:
     // A cylindrical or conical face contributes its axis as a line, so angle handling
     // treats it like an edge instead of a plane.
     static bool isAxisBearingFace(const TopoDS_Shape& shape);
-    App::DocumentObjectExecReturn*
-    executeAxisCase(const TopoDS_Shape& s1, const TopoDS_Shape& s2, bool s1Axis, bool s2Axis);
+    App::DocumentObjectExecReturn* executeAxisCase(
+        const TopoDS_Shape& s1,
+        const TopoDS_Shape& s2,
+        bool s1Axis,
+        bool s2Axis
+    );
 
     void onChanged(const App::Property* prop) override;
 };
