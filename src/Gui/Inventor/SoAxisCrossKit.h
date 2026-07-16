@@ -28,6 +28,7 @@
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/nodekits/SoBaseKit.h>
+#include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShape.h>
 #include <FCGlobal.h>
 
@@ -41,7 +42,6 @@ class SoCoordinate3;
 class SoDrawStyle;
 class SoLineSet;
 class SoPointSet;
-class SoSeparator;
 class SoText2;
 class SoTranslation;
 
@@ -99,9 +99,9 @@ private:
     ~SoAxisCrossKit() override;
 };
 
-class GuiExport SoRegPoint: public SoShape
+class GuiExport SoRegPoint: public SoSeparator
 {
-    using inherited = SoShape;
+    using inherited = SoSeparator;
 
     SO_NODE_HEADER(SoRegPoint);
 
@@ -119,12 +119,8 @@ public:
 
 protected:
     ~SoRegPoint() override;
-    void GLRender(SoGLRenderAction* action) override;
-    void computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center) override;
-    void generatePrimitives(SoAction* action) override;
 
 private:
-    SoSeparator* root {nullptr};
     SoSeparator* geometryRoot {nullptr};
     SoBaseColor* geometryColor {nullptr};
     SoCoordinate3* lineCoordinates {nullptr};
