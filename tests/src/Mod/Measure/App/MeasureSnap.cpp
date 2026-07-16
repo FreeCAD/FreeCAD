@@ -393,10 +393,13 @@ TEST_F(MeasureSnap, testAvailableSnapTypesOnCircleEdge)
     EXPECT_EQ(Measure::MeasureSnap::getAvailableSnapTypes(circle), expected);
 }
 
+// A straight edge stands in for its supporting line, so it offers FlagAxis on top
+// of the vertex/midpoint snaps.
 TEST_F(MeasureSnap, testAvailableSnapTypesOnLineEdge)
 {
     const int expected = static_cast<int>(Measure::MeasureSnapFlag::FlagVertex)
-        | static_cast<int>(Measure::MeasureSnapFlag::FlagMidpoint);
+        | static_cast<int>(Measure::MeasureSnapFlag::FlagMidpoint)
+        | static_cast<int>(Measure::MeasureSnapFlag::FlagAxis);
     const TopoDS_Edge line = makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0));
     EXPECT_EQ(Measure::MeasureSnap::getAvailableSnapTypes(line), expected);
 }
@@ -667,13 +670,45 @@ TEST_F(MeasureSnap, testAxisSnapCursorProjectsCursor)
     EXPECT_DOUBLE_EQ(out.Z(), 3.0);
 }
 
-// Axis mode needs a face or a circular edge; a straight edge has no axis.
-TEST_F(MeasureSnap, testAxisSnapOnNonFaceReturnsFalse)
+// A straight edge resolves to its supporting line; with no cursor the preview point
+// is the arc-length midpoint (2,0,0), and the direction runs along the edge.
+TEST_F(MeasureSnap, testAxisSnapOnLineEdge)
 {
-    const TopoDS_Edge line = makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0));
+    const TopoDS_Edge line = makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(4.0, 0.0, 0.0));
+    gp_Pnt out;
+    gp_Dir dir;
+    ASSERT_TRUE(
+        Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Axis, nullptr, out, &dir)
+    );
+    EXPECT_TRUE(dir.IsParallel(gp_Dir(1.0, 0.0, 0.0), 1e-9));
+    EXPECT_NEAR(out.X(), 2.0, 1e-6);
+    EXPECT_NEAR(out.Y(), 0.0, 1e-6);
+    EXPECT_NEAR(out.Z(), 0.0, 1e-6);
+}
+
+// The line is infinite: a cursor off the end projects past the edge (x=10 beyond the
+// x=4 endpoint), confirming the snap is the supporting line, not the finite segment.
+TEST_F(MeasureSnap, testAxisSnapOnLineEdgeCursorProjectsPastEnd)
+{
+    const TopoDS_Edge line = makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(4.0, 0.0, 0.0));
+    gp_Pnt out;
+    gp_Dir dir;
+    const Base::Vector3d cursor(10.0, 10.0, 3.0);
+    ASSERT_TRUE(
+        Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Axis, &cursor, out, &dir)
+    );
+    EXPECT_NEAR(out.X(), 10.0, 1e-6);
+    EXPECT_NEAR(out.Y(), 0.0, 1e-6);
+    EXPECT_NEAR(out.Z(), 0.0, 1e-6);
+}
+
+// An edge that is neither a line nor a circle (a Bezier) carries no axis.
+TEST_F(MeasureSnap, testAxisSnapOnBezierEdgeReturnsFalse)
+{
+    const TopoDS_Edge edge = makeCircularBezierEdge();
     gp_Pnt out;
     EXPECT_FALSE(
-        Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Axis, nullptr, out)
+        Measure::MeasureSnap::computeSnapPoint(edge, Measure::MeasureSnapMode::Axis, nullptr, out)
     );
 }
 
@@ -906,6 +941,21 @@ TEST_F(MeasureSnap, testPreviewPointsAxisOnCircle)
     EXPECT_NEAR(ends.back().X(), 0.0, 1e-6);
     EXPECT_NEAR(ends.back().Y(), 0.0, 1e-6);
     EXPECT_NEAR((ends.front().Z() + ends.back().Z()) / 2.0, 0.0, 1e-6);
+}
+
+// Wiring: a straight edge resolves to two axis-line endpoints along the edge,
+// centred on its midpoint (x=2 for the [0,4] segment) and on the axis line (y=z=0).
+TEST_F(MeasureSnap, testPreviewPointsAxisOnLine)
+{
+    const TopoDS_Edge line = makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(4.0, 0.0, 0.0));
+    const std::vector<gp_Pnt> ends
+        = Measure::MeasureSnap::previewPoints(line, Measure::MeasureSnapMode::Axis);
+    ASSERT_EQ(ends.size(), 2U);
+    EXPECT_NEAR(ends.front().Y(), 0.0, 1e-6);
+    EXPECT_NEAR(ends.front().Z(), 0.0, 1e-6);
+    EXPECT_NEAR(ends.back().Y(), 0.0, 1e-6);
+    EXPECT_NEAR(ends.back().Z(), 0.0, 1e-6);
+    EXPECT_NEAR((ends.front().X() + ends.back().X()) / 2.0, 2.0, 1e-6);
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
