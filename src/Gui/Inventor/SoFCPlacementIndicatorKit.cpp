@@ -180,11 +180,10 @@ SoSeparator* SoFCPlacementIndicatorKit::createAxisShaft(
     float axisLength,
     float axisThickness,
     double labelOffset,
-    uint32_t packedColor,
+    Base::Color axisColor,
     const double offset
 )
 {
-    Base::Color axisColor(packedColor);
     Base::Rotation rotation(Base::Vector3d::UnitY, axis);
 
     const auto cylinderOffset = axisLength / 2.F;
@@ -277,7 +276,7 @@ SoSeparator* SoFCPlacementIndicatorKit::createAxes()
             axisLength.getValue(),
             axisThickness,
             labelOffset,
-            ViewParams::instance()->getAxisXColor(),
+            Base::Color(static_cast<uint32_t>(Gui::ViewParams::instance()->getAxisXColor())),
             xyOffset
         );
 
@@ -294,7 +293,7 @@ SoSeparator* SoFCPlacementIndicatorKit::createAxes()
             axisLength.getValue(),
             axisThickness,
             labelOffset,
-            ViewParams::instance()->getAxisYColor(),
+            Base::Color(static_cast<uint32_t>(Gui::ViewParams::instance()->getAxisYColor())),
             xyOffset
         );
 
@@ -314,7 +313,7 @@ SoSeparator* SoFCPlacementIndicatorKit::createAxes()
             axisLength.getValue(),
             axisThickness,
             labelOffset,
-            ViewParams::instance()->getAxisZColor(),
+            Base::Color(static_cast<uint32_t>(Gui::ViewParams::instance()->getAxisZColor())),
             zOffset
         );
 

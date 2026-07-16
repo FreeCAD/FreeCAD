@@ -501,7 +501,7 @@ struct OverlayAxisCrossState
             return;
         }
 
-        auto buildAxisNode = [&](const char* label, Base::Vector3d axis, unsigned long color) {
+        auto buildAxisNode = [&](const char* label, Base::Vector3d axis, unsigned long packedAxisColor) {
             // Lambda for reuse of shared values and cleaner call sites
             return SoFCPlacementIndicatorKit::createAxisShaft(
                 label,
@@ -512,7 +512,7 @@ struct OverlayAxisCrossState
                 0.9,    // axisLengthDefault = 0.6F
                 0.065,  // axisThickness = 0.065F;,
                 0.3,    // labelOffset = 0.4;
-                color,
+                Base::Color(static_cast<uint32_t>(packedAxisColor)),
                 0.0f
             );
         };

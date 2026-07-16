@@ -30,6 +30,7 @@
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Base/Vector3D.h>
+#include <Base/Color.h>
 
 #include <FCGlobal.h>
 
@@ -73,7 +74,7 @@ public:
         float axisLength,
         float axisThickness,
         double labelOffset,
-        uint32_t packedColor,
+        Base::Color axisColor,
         const double offset
     );
 
