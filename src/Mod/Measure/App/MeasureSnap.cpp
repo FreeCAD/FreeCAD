@@ -102,6 +102,21 @@ static bool circleAxisOf(const TopoDS_Shape& shape, gp_Ax1& out)
     return true;
 }
 
+// Supporting line of a straight edge, as an axis. False otherwise.
+static bool lineAxisOf(const TopoDS_Shape& shape, gp_Ax1& out)
+{
+    if (shape.IsNull() || shape.ShapeType() != TopAbs_EDGE) {
+        return false;
+    }
+    BRepAdaptor_Curve adapt(TopoDS::Edge(shape));
+    if (adapt.GetType() != GeomAbs_Line) {
+        return false;
+    }
+    const gp_Lin line = adapt.Line();
+    out = gp_Ax1(line.Location(), line.Direction());
+    return true;
+}
+
 // Arc-length middle of an edge (differs from the parameter midpoint on a
 // non-uniform curve).
 static bool midpointOf(const TopoDS_Shape& shape, gp_Pnt& out)
@@ -159,12 +174,19 @@ static bool axisPointOf(const TopoDS_Shape& shape, const Base::Vector3d* cursor,
     }
     const bool isFace = shape.ShapeType() == TopAbs_FACE;
     gp_Ax1 axis;
+    bool edgeIsLine = false;
     if (isFace) {
         if (!MeasureSnap::axisOfFace(TopoDS::Face(shape), axis)) {
             return false;
         }
     }
-    else if (!circleAxisOf(shape, axis)) {
+    else if (circleAxisOf(shape, axis)) {
+        // circle
+    }
+    else if (lineAxisOf(shape, axis)) {
+        edgeIsLine = true;
+    }
+    else {
         return false;
     }
     if (outDir) {
@@ -180,6 +202,10 @@ static bool axisPointOf(const TopoDS_Shape& shape, const Base::Vector3d* cursor,
         const gp_Pnt lo = box.CornerMin();
         const gp_Pnt hi = box.CornerMax();
         target = gp_Pnt((lo.X() + hi.X()) / 2.0, (lo.Y() + hi.Y()) / 2.0, (lo.Z() + hi.Z()) / 2.0);
+    }
+    else if (edgeIsLine) {
+        gp_Pnt mid;
+        target = midpointOf(shape, mid) ? mid : axis.Location();
     }
     else {
         target = axis.Location();  // circle centre lies on its axis
@@ -291,7 +317,7 @@ std::vector<gp_Pnt> MeasureSnap::previewPoints(const TopoDS_Shape& shape, Measur
                     break;
                 }
             }
-            else if (!circleAxisOf(shape, axis)) {
+            else if (!circleAxisOf(shape, axis) && !lineAxisOf(shape, axis)) {
                 break;
             }
             Bnd_Box box;
@@ -379,6 +405,9 @@ int MeasureSnap::getAvailableSnapTypes(const TopoDS_Shape& shape)
         BRepAdaptor_Curve adapt(edge);
         if (adapt.GetType() == GeomAbs_Circle) {
             flags |= static_cast<int>(MeasureSnapFlag::FlagCenter);
+            flags |= static_cast<int>(MeasureSnapFlag::FlagAxis);
+        }
+        else if (adapt.GetType() == GeomAbs_Line) {
             flags |= static_cast<int>(MeasureSnapFlag::FlagAxis);
         }
         return flags;
