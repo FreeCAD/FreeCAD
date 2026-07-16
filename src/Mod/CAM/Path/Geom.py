@@ -660,14 +660,18 @@ def combineConnectedShapes(shapes):
         combined = []
         Path.Log.debug("shapes: {}".format(shapes))
         for shape in shapes:
-            connected = [f for f in combined if isRoughly(shape.distToShape(f)[0], 0.0)]
-            Path.Log.debug(
-                "  {}: connected: {} dist: {}".format(
-                    len(combined),
-                    connected,
-                    [shape.distToShape(f)[0] for f in combined],
-                )
-            )
+            connected = [
+                f
+                for f in combined
+                if shape.BoundBox.intersect(f.BoundBox) and isRoughly(shape.distToShape(f)[0], 0.0)
+            ]
+            # Path.Log.debug(
+            #     "  {}: connected: {} dist: {}".format(
+            #         len(combined),
+            #         connected,
+            #         [shape.distToShape(f)[0] for f in combined],
+            #     )
+            # )
             if connected:
                 combined = [f for f in combined if f not in connected]
                 connected.append(shape)
@@ -856,7 +860,9 @@ def combineHorizontalFaces(faces, keepOrder=False):
         ordered = [None] * len(faces)
         for face in horizontal:
             for i, f in enumerate(faces):
-                if face.isInside(f.Vertexes[0].Point, Tolerance, False):
+                if face.BoundBox.intersect(f.BoundBox) and face.isInside(
+                    f.Vertexes[0].Point, Tolerance, False
+                ):
                     ordered[i] = face
                     break
         ordered = [x for x in ordered if x]
@@ -866,3 +872,23 @@ def combineHorizontalFaces(faces, keepOrder=False):
             Path.Log.info(translate("PathGeom", "Can not restore order of faces."))
 
     return horizontal
+
+
+def fuseHorizontalFaces(faces, z=0):
+    """fuseHorizontalFaces(faces) ... fuse faces and remove splitters"""
+    for f in faces:
+        f.translate(FreeCAD.Vector(0, 0, z - f.BoundBox.ZMin))
+
+    if len(faces) < 2:
+        return faces
+
+    fusedFaces = []
+    compounds = combineConnectedShapes(faces)
+    for comp in compounds:
+        if len(comp.Faces) > 1:
+            fuse = comp.Faces[0].fuse(comp.Faces[1:])
+            fusedFaces.extend(fuse.removeSplitter().Faces)
+        else:
+            fusedFaces.extend(comp.Faces)
+
+    return fusedFaces

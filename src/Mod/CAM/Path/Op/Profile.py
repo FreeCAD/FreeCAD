@@ -567,7 +567,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     else:
                         vertFaces.append(sub)
 
-        for face in Path.Geom.combineHorizontalFaces(horFaces):
+        for face in Path.Geom.fuseHorizontalFaces(horFaces):
             shapeTups.extend(self._processHorFace(obj, face))
 
         # extend list of selected edges by bottom edges from vertical faces
