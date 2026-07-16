@@ -318,6 +318,14 @@ private:
 
     void clearAlias(App::CellAddress address);
 
+    /*! Shift any configuration-table binding affected by inserting/removing
+     *  @a count rows at @a row, so the table keeps tracking the same cells
+     *  after the operation. */
+    void shiftBindingsRows(int row, int count);
+
+    /*! Column counterpart of shiftBindingsRows(). */
+    void shiftBindingsColumns(int col, int count);
+
     void moveAlias(App::CellAddress currPos, App::CellAddress newPos);
 
     void moveCell(

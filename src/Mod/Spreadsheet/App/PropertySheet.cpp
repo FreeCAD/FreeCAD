@@ -1008,6 +1008,187 @@ void PropertySheet::moveCell(
     signaller.tryInvoke();
 }
 
+namespace
+{
+Expression* shiftIfNeeded(const NumberExpression* num, App::DocumentObject* owner, int pivot, int count)
+{
+    long value = 0;
+    if (!num->isInteger(&value) || value - 1 < pivot) {
+        return nullptr;
+    }
+    return new NumberExpression(owner, Base::Quantity(double(value + count)));
+}
+
+Expression*
+shiftAddressLiteral(const Expression* e, App::DocumentObject* owner, int pivot, int count)
+{
+    if (auto* num = freecad_cast<const NumberExpression*>(e)) {
+        return shiftIfNeeded(num, owner, pivot, count);
+    }
+
+    auto* op = freecad_cast<const OperatorExpression*>(e);
+    if (!op || op->getOperator() != OperatorExpression::ADD) {
+        return nullptr;
+    }
+
+    if (auto* left = freecad_cast<const NumberExpression*>(op->getLeft())) {
+        Expression* shifted = shiftIfNeeded(left, owner, pivot, count);
+        if (!shifted) {
+            return nullptr;
+        }
+        return new OperatorExpression(owner, shifted, OperatorExpression::ADD, op->getRight()->copy().release());
+    }
+
+    if (auto* right = freecad_cast<const NumberExpression*>(op->getRight())) {
+        Expression* shifted = shiftIfNeeded(right, owner, pivot, count);
+        if (!shifted) {
+            return nullptr;
+        }
+        return new OperatorExpression(owner, op->getLeft()->copy().release(), OperatorExpression::ADD, shifted);
+    }
+
+    return nullptr;
+}
+
+App::ExpressionPtr shiftBindingExpression(
+    const Expression* e,
+    App::DocumentObject* owner,
+    int rowPivot,
+    int rowCount,
+    int colPivot,
+    int colCount
+)
+{
+    auto* tuple = freecad_cast<const FunctionExpression*>(e);
+    if (!tuple || tuple->getFunction() != FunctionExpression::TUPLE
+        || tuple->getArgs().size() != 3) {
+        return {};
+    }
+
+    bool changed = false;
+    std::vector<Expression*> newArgs;
+    newArgs.push_back(tuple->getArgs()[0]->copy().release());  // target ".cells", unchanged
+
+    for (std::size_t i = 1; i <= 2; ++i) {
+        auto* addr = freecad_cast<const FunctionExpression*>(tuple->getArgs()[i]);
+        if (!addr || addr->getFunction() != FunctionExpression::ADDRESS
+            || addr->getArgs().size() != 3) {
+            for (auto* a : newArgs) {
+                delete a;
+            }
+            return {};
+        }
+
+        Expression* newRow = rowCount
+            ? shiftAddressLiteral(addr->getArgs()[0], owner, rowPivot, rowCount)
+            : nullptr;
+        Expression* newCol = colCount
+            ? shiftAddressLiteral(addr->getArgs()[1], owner, colPivot, colCount)
+            : nullptr;
+        changed = changed || newRow || newCol;
+
+        std::vector<Expression*> addrArgs;
+        addrArgs.push_back(newRow ? newRow : addr->getArgs()[0]->copy().release());
+        addrArgs.push_back(newCol ? newCol : addr->getArgs()[1]->copy().release());
+        addrArgs.push_back(addr->getArgs()[2]->copy().release());  // address mode, unchanged
+        newArgs.push_back(new FunctionExpression(
+            owner,
+            FunctionExpression::ADDRESS,
+            std::string(),
+            std::move(addrArgs)
+        ));
+    }
+
+    if (!changed) {
+        for (auto* a : newArgs) {
+            delete a;
+        }
+        return {};
+    }
+    return App::ExpressionPtr(
+        new FunctionExpression(owner, FunctionExpression::TUPLE, std::string(), std::move(newArgs))
+    );
+}
+}  // namespace
+
+void PropertySheet::shiftBindingsRows(int row, int count)
+{
+    if (!owner || !count) {
+        return;
+    }
+
+    for (const auto& entry : owner->ExpressionEngine.getExpressions()) {
+        CellAddress from, to;
+        bool href = false;
+        if (!isBindingPath(entry.first, &from, &to, &href)) {
+            continue;
+        }
+
+        CellAddress newFrom(from), newTo(to);
+        if (from.row() >= row) {
+            newFrom.setRow(from.row() + count);
+        }
+        if (to.row() >= row) {
+            newTo.setRow(to.row() + count);
+        }
+
+        auto newExpr = shiftBindingExpression(entry.second, owner, row, count, 0, 0);
+        if (newFrom == from && newTo == to && !newExpr) {
+            continue;
+        }
+
+        ObjectIdentifier newPath(*this);
+        newPath << ObjectIdentifier::SimpleComponent(href ? "BindHiddenRef" : "Bind");
+        newPath << ObjectIdentifier::SimpleComponent(newFrom.toString().c_str());
+        newPath << ObjectIdentifier::SimpleComponent(newTo.toString().c_str());
+
+        std::shared_ptr<Expression> expr(
+            newExpr ? newExpr.release() : entry.second->copy().release()
+        );
+        owner->clearExpression(entry.first);
+        owner->setExpression(newPath, expr);
+    }
+}
+
+void PropertySheet::shiftBindingsColumns(int col, int count)
+{
+    if (!owner || !count) {
+        return;
+    }
+
+    for (const auto& entry : owner->ExpressionEngine.getExpressions()) {
+        CellAddress from, to;
+        bool href = false;
+        if (!isBindingPath(entry.first, &from, &to, &href)) {
+            continue;
+        }
+
+        CellAddress newFrom(from), newTo(to);
+        if (from.col() >= col) {
+            newFrom.setCol(from.col() + count);
+        }
+        if (to.col() >= col) {
+            newTo.setCol(to.col() + count);
+        }
+
+        auto newExpr = shiftBindingExpression(entry.second, owner, 0, 0, col, count);
+        if (newFrom == from && newTo == to && !newExpr) {
+            continue;
+        }
+
+        ObjectIdentifier newPath(*this);
+        newPath << ObjectIdentifier::SimpleComponent(href ? "BindHiddenRef" : "Bind");
+        newPath << ObjectIdentifier::SimpleComponent(newFrom.toString().c_str());
+        newPath << ObjectIdentifier::SimpleComponent(newTo.toString().c_str());
+
+        std::shared_ptr<Expression> expr(
+            newExpr ? newExpr.release() : entry.second->copy().release()
+        );
+        owner->clearExpression(entry.first);
+        owner->setExpression(newPath, expr);
+    }
+}
+
 void PropertySheet::insertRows(int row, int count)
 {
     std::vector<CellAddress> keys;
@@ -1055,6 +1236,7 @@ void PropertySheet::insertRows(int row, int count)
     owner->getDocument()->renameObjectIdentifiers(renames, [docObj](const App::DocumentObject* obj) {
         return obj != docObj;
     });
+    shiftBindingsRows(row, count);
     signaller.tryInvoke();
 }
 
@@ -1152,6 +1334,7 @@ void PropertySheet::removeRows(int row, int count)
     owner->getDocument()->renameObjectIdentifiers(renames, [docObj](const App::DocumentObject* obj) {
         return obj != docObj;
     });
+    shiftBindingsRows(row + count, -count);
     signaller.tryInvoke();
 }
 
@@ -1202,6 +1385,7 @@ void PropertySheet::insertColumns(int col, int count)
     owner->getDocument()->renameObjectIdentifiers(renames, [docObj](const App::DocumentObject* obj) {
         return obj != docObj;
     });
+    shiftBindingsColumns(col, count);
     signaller.tryInvoke();
 }
 
@@ -1299,6 +1483,7 @@ void PropertySheet::removeColumns(int col, int count)
     owner->getDocument()->renameObjectIdentifiers(renames, [docObj](const App::DocumentObject* obj) {
         return obj != docObj;
     });
+    shiftBindingsColumns(col + count, -count);
     signaller.tryInvoke();
 }
 

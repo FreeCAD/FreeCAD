@@ -1121,6 +1121,105 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.insertRows("2", 1)
         self.assertEqual(sheet.getContents("B4"), "=B3")
 
+    def _makeConfigTableBind(self, sheet, obj):
+        """Set up a minimal vertical configuration table binding, without
+        relying on the "growing range" mechanism used for the list of variant
+        names, so this exercises only the ".cells.Bind.<from>.<to>" shifting,
+        independent of the "cells[<<from:to>>]" one.
+        """
+        # Row 0: header + fixed (non-growing) list of variant names.
+        sheet.set("B1", "Variant0")
+        sheet.set("C1", "Variant1")
+        # Rows 1-2: parameter cells, dynamically bound to whichever variant
+        # column Obj.Config currently selects.
+        sheet.set("A2", "10")
+        sheet.set("A3", "20")
+        sheet.set("B2", "100")
+        sheet.set("B3", "101")
+        sheet.set("C2", "200")
+        sheet.set("C3", "201")
+
+        obj.addProperty("App::PropertyEnumeration", "Config", "", "", 0, False, True)
+        obj.setExpression("Config.Enum", "Spreadsheet.cells[<<B1:C1>>]")
+        self.doc.recompute()
+
+        sheet.set("A1", "=hiddenref(Obj.Config.String)")
+        sheet.setExpression(
+            ".cells.Bind.A2.A3",
+            "tuple(.cells; address(2; 2+hiddenref(Obj.Config); 4); "
+            "address(3; 2+hiddenref(Obj.Config); 4))",
+        )
+        self.doc.recompute()
+
+    def testConfigTableBindInsertRows(self):
+        """Regression test for issue 14672: inserting rows must shift a
+        configuration table's ".cells.Bind" binding along with everything
+        else, not just the ordinary cells."""
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
+        obj = self.doc.addObject("App::FeaturePython", "Obj")
+        self._makeConfigTableBind(sheet, obj)
+
+        obj.Config = "Variant1"
+        self.doc.recompute()
+        self.assertEqual(sheet.get("A2"), 200.0)
+        self.assertEqual(sheet.get("A3"), 201.0)
+
+        sheet.insertRows("2", 1)
+        self.doc.recompute()
+
+        self.assertIn("hiddenref", sheet.getContents("A1"))
+        self.assertEqual(sheet.get("A3"), 200.0)
+        self.assertEqual(sheet.get("A4"), 201.0)
+
+        obj.Config = "Variant0"
+        self.doc.recompute()
+        self.assertEqual(sheet.get("A3"), 100.0)
+        self.assertEqual(sheet.get("A4"), 101.0)
+
+    def testConfigTableBindRemoveRows(self):
+        """Regression test for issue 14672: removing rows must shift a
+        configuration table's ".cells.Bind" binding along with everything
+        else."""
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
+        obj = self.doc.addObject("App::FeaturePython", "Obj")
+        sheet.set("B1", "Variant0")
+        sheet.set("C1", "Variant1")
+        sheet.set("A3", "10")
+        sheet.set("A4", "20")
+        sheet.set("B3", "100")
+        sheet.set("B4", "101")
+        sheet.set("C3", "200")
+        sheet.set("C4", "201")
+
+        obj.addProperty("App::PropertyEnumeration", "Config", "", "", 0, False, True)
+        obj.setExpression("Config.Enum", "Spreadsheet.cells[<<B1:C1>>]")
+        self.doc.recompute()
+
+        sheet.set("A1", "=hiddenref(Obj.Config.String)")
+        sheet.setExpression(
+            ".cells.Bind.A3.A4",
+            "tuple(.cells; address(3; 2+hiddenref(Obj.Config); 4); "
+            "address(4; 2+hiddenref(Obj.Config); 4))",
+        )
+        self.doc.recompute()
+
+        obj.Config = "Variant0"
+        self.doc.recompute()
+        self.assertEqual(sheet.get("A3"), 100.0)
+        self.assertEqual(sheet.get("A4"), 101.0)
+
+        sheet.removeRows("2", 1)
+        self.doc.recompute()
+
+        self.assertIn("hiddenref", sheet.getContents("A1"))
+        self.assertEqual(sheet.get("A2"), 100.0)
+        self.assertEqual(sheet.get("A3"), 101.0)
+
+        obj.Config = "Variant1"
+        self.doc.recompute()
+        self.assertEqual(sheet.get("A2"), 200.0)
+        self.assertEqual(sheet.get("A3"), 201.0)
+
     def testConfigTableRangeInsertRows(self):
         """Regression test for issue 14672: inserting rows must shift a
         "cells[<<from:to>>]" growing-range reference, even though it lives on
@@ -1158,6 +1257,91 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.recompute()
 
         self.assertEqual(obj.getEnumerationsOfProperty("Config"), ["Variant0", "Variant1"])
+
+    def testConfigTableBindInsertColumns(self):
+        """Regression test for issue 14672: inserting columns must shift a
+        configuration table's ".cells.Bind" binding along with everything
+        else."""
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
+        obj = self.doc.addObject("App::FeaturePython", "Obj")
+
+        sheet.set("A2", "Variant0")
+        sheet.set("A3", "Variant1")
+        sheet.set("B2", "100")
+        sheet.set("C2", "101")
+        sheet.set("B3", "200")
+        sheet.set("C3", "201")
+
+        obj.addProperty("App::PropertyEnumeration", "Config", "", "", 0, False, True)
+        obj.setExpression("Config.Enum", "Spreadsheet.cells[<<A2:|>>]")
+        self.doc.recompute()
+
+        sheet.set("A1", "=hiddenref(Obj.Config.String)")
+        sheet.setExpression(
+            ".cells.Bind.B1.C1",
+            "tuple(.cells; address(2+hiddenref(Obj.Config); 2; 4); "
+            "address(2+hiddenref(Obj.Config); 3; 4))",
+        )
+        self.doc.recompute()
+
+        obj.Config = "Variant1"
+        self.doc.recompute()
+        self.assertEqual(sheet.get("B1"), 200.0)
+        self.assertEqual(sheet.get("C1"), 201.0)
+
+        sheet.insertColumns("B", 1)
+        self.doc.recompute()
+
+        self.assertIn("hiddenref", sheet.getContents("A1"))
+        self.assertEqual(sheet.get("C1"), 200.0)
+        self.assertEqual(sheet.get("D1"), 201.0)
+
+        obj.Config = "Variant0"
+        self.doc.recompute()
+        self.assertEqual(sheet.get("C1"), 100.0)
+        self.assertEqual(sheet.get("D1"), 101.0)
+
+    def testConfigTableBindRemoveColumns(self):
+        """Regression test for issue 14672: removing columns must shift a
+        configuration table's ".cells.Bind" binding along with everything
+        else."""
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
+        obj = self.doc.addObject("App::FeaturePython", "Obj")
+        sheet.set("A2", "Variant0")
+        sheet.set("A3", "Variant1")
+        sheet.set("C2", "100")
+        sheet.set("D2", "101")
+        sheet.set("C3", "200")
+        sheet.set("D3", "201")
+
+        obj.addProperty("App::PropertyEnumeration", "Config", "", "", 0, False, True)
+        obj.setExpression("Config.Enum", "Spreadsheet.cells[<<A2:|>>]")
+        self.doc.recompute()
+
+        sheet.set("A1", "=hiddenref(Obj.Config.String)")
+        sheet.setExpression(
+            ".cells.Bind.C1.D1",
+            "tuple(.cells; address(2+hiddenref(Obj.Config); 3; 4); "
+            "address(2+hiddenref(Obj.Config); 4; 4))",
+        )
+        self.doc.recompute()
+
+        obj.Config = "Variant0"
+        self.doc.recompute()
+        self.assertEqual(sheet.get("C1"), 100.0)
+        self.assertEqual(sheet.get("D1"), 101.0)
+
+        sheet.removeColumns("B", 1)
+        self.doc.recompute()
+
+        self.assertIn("hiddenref", sheet.getContents("A1"))
+        self.assertEqual(sheet.get("B1"), 100.0)
+        self.assertEqual(sheet.get("C1"), 101.0)
+
+        obj.Config = "Variant1"
+        self.doc.recompute()
+        self.assertEqual(sheet.get("B1"), 200.0)
+        self.assertEqual(sheet.get("C1"), 201.0)
 
     def testConfigTableRangeInsertColumns(self):
         """Regression test for issue 14672: inserting columns must shift a
