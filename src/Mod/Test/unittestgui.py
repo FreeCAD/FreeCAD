@@ -317,6 +317,17 @@ class TkTestRunner(BaseGUITestRunner):
         self.errorListbox.insert(tk.END, "Error: %s" % test)
         self.errorInfo.append((test, err))
 
+    def notifySubTest(self, test, subtest, err):
+        """Called when a subtest has finished. If it failed or errored, add it to the list of errors."""
+        if err is not None:
+            self.errorInfo.append((subtest, err))
+            if isinstance(err[1], self.failureException):
+                self.failCountVar.set(1 + self.failCountVar.get())
+                self.errorListbox.insert(tk.END, "Failure: %s" % subtest)
+            else:
+                self.errorCountVar.set(1 + self.errorCountVar.get())
+                self.errorListbox.insert(tk.END, "Error: %s" % subtest)
+
     def notifyTestFinished(self, test):
         self.remainingCountVar.set(self.remainingCountVar.get() - 1)
         self.runCountVar.set(1 + self.runCountVar.get())

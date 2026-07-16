@@ -153,6 +153,10 @@ class BaseGUITestRunner:
         "Override to indicate that a test has just errored"
         pass
 
+    def notifySubTest(self, test, subtest, err):
+        "Override to indicate that a subtest has just finished (it may have failed or errored)"
+        pass
+
     def notifyTestStarted(self, test):
         "Override to indicate that a test is about to run"
         pass
@@ -179,6 +183,10 @@ class GUITestResult(unittest.TestResult):
     def addFailure(self, test, err):
         unittest.TestResult.addFailure(self, test, err)
         self.callback.notifyTestFailed(test, err)
+
+    def addSubTest(self, test, subtest, err):
+        unittest.TestResult.addSubTest(self, test, subtest, err)
+        self.callback.notifySubTest(test, subtest, err)
 
     def stopTest(self, test):
         unittest.TestResult.stopTest(self, test)
