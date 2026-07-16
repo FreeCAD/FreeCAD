@@ -38,6 +38,7 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/nodes/SoAnnotation.h>
+#include <Inventor/nodes/SoDepthBuffer.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoImage.h>
@@ -3069,6 +3070,13 @@ void EditModeConstraintCoinManager::createEditModeInventorNodes()
     // affecting depth state for other nodes (#28639).
     // See also issues #25840 and #11603.
     auto* constrAnnotation = new SoAnnotation();
+
+    // Depth-test against whatever is already in the depth buffer so a
+    // covering solid from another object occludes constraints (#30249).
+    auto* constrDepth = new SoDepthBuffer;
+    constrDepth->test.setValue(true);
+    constrDepth->write.setValue(false);
+    constrAnnotation->addChild(constrDepth);
 
     editModeScenegraphNodes.constrGroup = new SmSwitchboard();
     editModeScenegraphNodes.constrGroup->setName("ConstraintGroup");
