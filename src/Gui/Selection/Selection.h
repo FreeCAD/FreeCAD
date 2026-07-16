@@ -730,6 +730,21 @@ public:
     void selStackPush(bool clearForward = true, bool overwrite = false);
     //@}
 
+    /** @name Last-cleared selection
+     *
+     * Stores the selection that was active immediately before the most recent
+     * clearSelection() call, so it can be restored by the user.
+     */
+    //@{
+    /// Returns true if there is a saved last-cleared selection to restore.
+    bool hasLastClearedSelection() const
+    {
+        return !_lastClearedSelection.empty();
+    }
+    /// Restores the selection that was saved by the most recent clearSelection() call.
+    void reselectLastCleared();
+    //@}
+
     /** @name Picked list functions
      *
      * Picked list stores all selected geometry elements that intersects the
@@ -849,6 +864,8 @@ protected:
     };
 
     std::list<_SelObj> _SelList;
+
+    std::list<_SelObj> _lastClearedSelection;
 
     std::list<_SelObj> _PickedList;
     bool _needPickedList {false};

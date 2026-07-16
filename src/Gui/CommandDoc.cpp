@@ -1475,6 +1475,35 @@ bool StdCmdSelectAll::isActive()
 }
 
 //===========================================================================
+// Std_ReselectPrevious
+//===========================================================================
+
+DEF_STD_CMD_A(StdCmdReselectPrevious)
+
+StdCmdReselectPrevious::StdCmdReselectPrevious()
+    : Command("Std_ReselectPrevious")
+{
+    sGroup = "Edit";
+    sMenuText = QT_TR_NOOP("Reselect &Previous");
+    sToolTipText = QT_TR_NOOP("Restores the previous selection");
+    sWhatsThis = "Std_ReselectPrevious";
+    sStatusTip = sToolTipText;
+    sAccel = "Ctrl+r";
+    eType = AlterSelection;
+}
+
+void StdCmdReselectPrevious::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    Selection().reselectLastCleared();
+}
+
+bool StdCmdReselectPrevious::isActive()
+{
+    return Selection().hasLastClearedSelection();
+}
+
+//===========================================================================
 // Std_Delete
 //===========================================================================
 DEF_STD_CMD_A(StdCmdDelete)
@@ -2393,6 +2422,7 @@ void CreateDocCommands()
     rcCmdMgr.addCommand(new StdCmdPaste());
     rcCmdMgr.addCommand(new StdCmdDuplicateSelection());
     rcCmdMgr.addCommand(new StdCmdSelectAll());
+    rcCmdMgr.addCommand(new StdCmdReselectPrevious());
     rcCmdMgr.addCommand(new StdCmdDelete());
     rcCmdMgr.addCommand(new StdCmdRefresh());
     rcCmdMgr.addCommand(new StdCmdTransform());

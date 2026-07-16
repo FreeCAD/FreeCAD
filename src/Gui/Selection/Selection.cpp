@@ -1412,6 +1412,24 @@ void SelectionSingleton::selStackPush(bool clearForward, bool overwrite)
     _SelStackBack.back() = std::move(item);
 }
 
+void SelectionSingleton::reselectLastCleared()
+{
+    if (_lastClearedSelection.empty()) {
+        return;
+    }
+    // Snapshot before clearing, since clearCompleteSelection() overwrites the buffer.
+    auto snapshot = _lastClearedSelection;
+    clearCompleteSelection();
+    for (const auto& sel : snapshot) {
+        addSelection(
+            sel.DocName.c_str(),
+            sel.FeatName.c_str(),
+            sel.SubName.empty() ? nullptr : sel.SubName.c_str(),
+            sel.x, sel.y, sel.z
+        );
+    }
+}
+
 void SelectionSingleton::selStackGoBack(int count)
 {
     if ((int)_SelStackBack.size() < count) {
@@ -1965,6 +1983,16 @@ void SelectionSingleton::clearSelection(const char* pDocName, bool clearPreSelec
             rmvPreselect();
         }
         bool touched = false;
+        bool savedToClearedBuffer = false;
+        for (auto it = _SelList.begin(); it != _SelList.end(); ++it) {
+            if (it->DocName == docName) {
+                if (!savedToClearedBuffer) {
+                    _lastClearedSelection.clear();
+                    savedToClearedBuffer = true;
+                }
+                _lastClearedSelection.push_back(*it);
+            }
+        }
         for (auto it = _SelList.begin(); it != _SelList.end();) {
             if (it->DocName == docName) {
                 touched = true;
@@ -2016,6 +2044,8 @@ void SelectionSingleton::clearCompleteSelection(bool clearPreSelect)
 
     // Send the clear selection notification to all view providers associated with the
     // objects being deselected.
+
+    _lastClearedSelection = _SelList;
 
     std::set<ViewProvider*> viewProviders;
     for (_SelObj& sel : _SelList) {
