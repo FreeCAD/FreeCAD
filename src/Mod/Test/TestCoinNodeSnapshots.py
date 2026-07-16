@@ -70,6 +70,7 @@ _IGNORE_ALPHA = True
 
 class _CameraPolicy(Enum):
     VIEW_ALL = auto()
+    VIEW_ALL_WITH_MARGIN = auto()
     FIXED_OVERLAY = auto()
     COLOR_BAR_OVERLAY = auto()
 
@@ -87,6 +88,7 @@ class _SnapshotScene:
 
 
 _PART_GUI_NODES = (
+    "SoPreviewShape",
     "SoBrepEdgeSet",
     "SoBrepEdgeSetHighlight",
     "SoBrepEdgeSetSelection",
@@ -111,6 +113,7 @@ _MESH_GUI_NODES = (
 )
 
 _SNAPSHOT_FIXTURES = {
+    "SoFCBoundingBox": _SnapshotFixture(_CameraPolicy.VIEW_ALL_WITH_MARGIN),
     "SoDrawingGrid": _SnapshotFixture(_CameraPolicy.FIXED_OVERLAY),
     "SoRegPoint": _SnapshotFixture(_CameraPolicy.FIXED_OVERLAY),
     "SoDatumLabel": _SnapshotFixture(_CameraPolicy.FIXED_OVERLAY),
@@ -453,8 +456,123 @@ def _load_required_modules(fixture: _SnapshotFixture) -> None:
             raise AssertionError(f"failed to import required module: {module_name}") from exc
 
 
+def _find_descendant(coin, root, type_name: str):
+    """Return the first descendant of ``root`` with the requested Coin type."""
+    type_id = coin.SoType.fromName(type_name)
+    if type_id.isBad():
+        raise unittest.SkipTest(f"Coin type not registered: {type_name}")
+
+    search = coin.SoSearchAction()
+    search.setType(type_id)
+    search.setSearchingAll(False)
+    search.apply(root)
+    path = search.getPath()
+    return None if path is None else path.getTail()
+
+
+def _configure_preview_geometry(coin, preview) -> None:
+    """Populate SoPreviewShape's retained SoFCShape geometry for a test scene."""
+    coords = _find_descendant(coin, preview, "SoCoordinate3")
+    normals = _find_descendant(coin, preview, "SoNormal")
+    faces = _find_descendant(coin, preview, "SoBrepFaceSet")
+    lines = _find_descendant(coin, preview, "SoBrepEdgeSet")
+    if any(node is None for node in (coords, normals, faces, lines)):
+        raise AssertionError("SoPreviewShape retained geometry is incomplete")
+
+    coords.point.setValues(
+        0,
+        8,
+        [
+            coin.SbVec3f(-0.65, -0.55, -0.45),
+            coin.SbVec3f(0.65, -0.55, -0.45),
+            coin.SbVec3f(0.65, 0.55, -0.45),
+            coin.SbVec3f(-0.65, 0.55, -0.45),
+            coin.SbVec3f(-0.65, -0.55, 0.45),
+            coin.SbVec3f(0.65, -0.55, 0.45),
+            coin.SbVec3f(0.65, 0.55, 0.45),
+            coin.SbVec3f(-0.65, 0.55, 0.45),
+        ],
+    )
+    normals.vector.setValues(
+        0,
+        8,
+        [
+            coin.SbVec3f(0.0, 0.0, -1.0),
+            coin.SbVec3f(0.0, 0.0, 1.0),
+            coin.SbVec3f(0.0, -1.0, 0.0),
+            coin.SbVec3f(1.0, 0.0, 0.0),
+            coin.SbVec3f(0.0, 1.0, 0.0),
+            coin.SbVec3f(-1.0, 0.0, 0.0),
+            coin.SbVec3f(0.0, 0.0, -1.0),
+            coin.SbVec3f(0.0, 0.0, 1.0),
+        ],
+    )
+    # Six faces, two triangles per face.
+    # fmt: off
+    faces.coordIndex.setValues(0, 48, [
+        0, 1, 2, -1,  0, 2, 3, -1,  # bottom (-Z)
+        4, 6, 5, -1,  4, 7, 6, -1,  # top (+Z)
+        0, 4, 5, -1,  0, 5, 1, -1,  # front (-Y)
+        1, 5, 6, -1,  1, 6, 2, -1,  # right (+X)
+        2, 6, 7, -1,  2, 7, 3, -1,  # back (+Y)
+        3, 7, 4, -1,  3, 4, 0, -1,  # left (-X)
+    ])
+    # fmt: on
+    faces.partIndex.setValues(0, 6, [2, 2, 2, 2, 2, 2])
+    lines.coordIndex.setValues(
+        0,
+        36,
+        [
+            0,
+            1,
+            -1,
+            1,
+            2,
+            -1,
+            2,
+            3,
+            -1,
+            3,
+            0,
+            -1,
+            4,
+            5,
+            -1,
+            5,
+            6,
+            -1,
+            6,
+            7,
+            -1,
+            7,
+            4,
+            -1,
+            0,
+            4,
+            -1,
+            1,
+            5,
+            -1,
+            2,
+            6,
+            -1,
+            3,
+            7,
+            -1,
+        ],
+    )
+    lines.materialIndex.setValues(0, 12, [0] * 12)
+
+    preview.color.setValue(0.78, 0.12, 0.92)
+    preview.transparency.setValue(0.45)
+    preview.lineWidth.setValue(3.0)
+    matrix = coin.SbMatrix()
+    matrix.setTranslate(coin.SbVec3f(0.25, 0.1, 0.15))
+    preview.transform.setValue(matrix)
+
+
 def _configure_camera(coin, cam, policy: _CameraPolicy) -> None:
-    if policy is _CameraPolicy.VIEW_ALL:
+    if policy in (_CameraPolicy.VIEW_ALL, _CameraPolicy.VIEW_ALL_WITH_MARGIN):
         return
 
     # These nodes are tested in isolation. Their geometry is either
@@ -487,6 +605,30 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
 
     _configure_camera(coin, cam, fixture.framing_policy)
     _load_required_modules(fixture)
+
+    if type_name == "SoFCBoundingBox":
+        color = coin.SoBaseColor()
+        color.rgb.setValue(0.08, 0.12, 0.22)
+        style = coin.SoDrawStyle()
+        style.lineWidth.setValue(2.0)
+        box = _instantiate(coin, type_name)
+        box.minBounds.setValue(-1.5, -1.1, -0.75)
+        box.maxBounds.setValue(1.5, 1.1, 0.75)
+        box.coordsOn.setValue(True)
+        box.dimensionsOn.setValue(True)
+        # Include the box in viewAll; the production default intentionally
+        # excludes it from parent bounding-box calculations.
+        box.skipBoundingBox.setValue(False)
+        root.addChild(color)
+        root.addChild(style)
+        root.addChild(box)
+        return root
+
+    if type_name == "SoPreviewShape":
+        preview = _instantiate(coin, type_name)
+        root.addChild(preview)
+        _configure_preview_geometry(coin, preview)
+        return root
 
     if type_name == "SoDrawingGrid":
         root.addChild(_instantiate(coin, "SoDrawingGrid"))
@@ -993,7 +1135,8 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
         return root
 
     if type_name == "SoFCControlPoints":
-        # A small 3x3 pole grid with 2x2 knots appended.
+        # A small 3x3 pole grid with 2x2 knots appended.  Use a darker net
+        # color so the snapshot clearly covers both the net and knot markers.
         coords = coin.SoCoordinate3()
         pts = []
         for u in (-0.6, 0.0, 0.6):
@@ -1009,6 +1152,7 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
         cp.numPolesV.setValue(3)
         cp.numKnotsU.setValue(2)
         cp.numKnotsV.setValue(2)
+        cp.lineColor.setValue(0.45, 0.12, 0.05)
 
         root.addChild(coords)
         root.addChild(cp)
@@ -1134,7 +1278,7 @@ def _render_png(
     framing_policy: _CameraPolicy = _CameraPolicy.VIEW_ALL,
 ) -> None:
     viewport = coin.SbViewportRegion(width, height)
-    if framing_policy is _CameraPolicy.VIEW_ALL:
+    if framing_policy in (_CameraPolicy.VIEW_ALL, _CameraPolicy.VIEW_ALL_WITH_MARGIN):
         # Tighten the camera to what we're rendering.
         cam = root.getChild(0)
         # Some GUI helper nodes (e.g. SoDatumLabel) compute a camera-dependent bounding box.
@@ -1167,6 +1311,8 @@ def _render_png(
         # `SoCamera::viewAll()` can choose a near plane that clips geometry located near the origin.
         # This shows up particularly with `SoText2` (text draws, but gets clipped away).
         cam.nearDistance.setValue(min(cam.nearDistance.getValue(), 0.1))
+        if framing_policy is _CameraPolicy.VIEW_ALL_WITH_MARGIN:
+            cam.height.setValue(cam.height.getValue() * 1.25)
 
     harness.render(root, out_path)
 
