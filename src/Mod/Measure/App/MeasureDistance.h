@@ -26,7 +26,6 @@
 
 #include <Mod/Measure/MeasureGlobal.h>
 
-#include <Geom_Circle.hxx>
 #include <TopoDS_Shape.hxx>
 
 #include <App/PropertyGeo.h>
@@ -110,7 +109,6 @@ public:
 
 
 private:
-    bool distanceCircleCircle(const TopoDS_Shape& shape1, const TopoDS_Shape& shape2);
     void distanceGeneric(const TopoDS_Shape& shape1, const TopoDS_Shape& shape2);
     void distanceSnapped(
         const TopoDS_Shape& shape1,
@@ -128,9 +126,6 @@ private:
     );
     void setValues(const gp_Pnt& p1, const gp_Pnt& p2);
     void onChanged(const App::Property* prop) override;
-    Handle(Geom_Circle) asCircle(const TopoDS_Shape& shape) const;
-    Handle(Geom_Circle) asCircle(const TopoDS_Edge& edge) const;
-    Handle(Geom_Circle) asCircle(const TopoDS_Wire& wire) const;
 };
 
 
