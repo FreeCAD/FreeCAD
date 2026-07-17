@@ -330,10 +330,13 @@ struct GeometryScreenPreselector
                     result.clear();
                     result.Kind = SketcherGui::EditModeCoinManager::PreselectionResult::HitKind::Edge;
                     result.GeoIndex = geoIndex;
-                    result.setPickedPoint(sketchPlanePointToWorld(
-                        startPoint[0] + (endPoint[0] - startPoint[0]) * interpolation,
-                        startPoint[1] + (endPoint[1] - startPoint[1]) * interpolation
-                    ));
+                    result.setPickedPoint(
+                        SketcherGui::sketchPlanePointToWorld(
+                            sketchPlacement,
+                            startPoint[0] + (endPoint[0] - startPoint[0]) * interpolation,
+                            startPoint[1] + (endPoint[1] - startPoint[1]) * interpolation
+                        )
+                    );
                     bestDistanceSquared = bestCurveDistanceSquared;
                     found = true;
                 }
@@ -381,16 +384,13 @@ private:
         result.Kind = SketcherGui::EditModeCoinManager::PreselectionResult::HitKind::Point;
         result.PointIndex = coinMapping.getPointVertexId(pointIndex, layerIndex);
         result.setPickedPoint(
-            sketchPlanePointToWorld(pointValues[pointIndex][0], pointValues[pointIndex][1])
+            SketcherGui::sketchPlanePointToWorld(
+                sketchPlacement,
+                pointValues[pointIndex][0],
+                pointValues[pointIndex][1]
+            )
         );
         return true;
-    }
-
-    Base::Vector3d sketchPlanePointToWorld(double x, double y) const
-    {
-        Base::Vector3d point(x, y, 0.0);
-        sketchPlacement.getRotation().multVec(point, point);
-        return point + sketchPlacement.getPosition();
     }
 
     float getPointHitRadius(int pointIndex, int layerIndex, float extraRadiusPx) const
