@@ -1189,6 +1189,145 @@ void PropertySheet::shiftBindingsColumns(int col, int count)
     }
 }
 
+namespace
+{
+bool shiftRangeKey(
+    const std::string& key,
+    int rowPivot,
+    int rowCount,
+    int colPivot,
+    int colCount,
+    std::string& newKey
+)
+{
+    auto sep = key.find(':');
+    if (sep == std::string::npos) {
+        return false;
+    }
+
+    CellAddress from;
+    try {
+        from = CellAddress(key.substr(0, sep));
+    }
+    catch (Base::Exception&) {
+        return false;
+    }
+    if (!from.isValid()) {
+        return false;
+    }
+
+    std::string endStr = key.substr(sep + 1);
+    bool growing = (endStr == "-" || endStr == "|");
+    CellAddress to;
+    if (!growing) {
+        try {
+            to = CellAddress(endStr);
+        }
+        catch (Base::Exception&) {
+            return false;
+        }
+        if (!to.isValid()) {
+            return false;
+        }
+    }
+
+    bool changed = false;
+    CellAddress newFrom(from);
+    if (rowCount && from.row() >= rowPivot) {
+        newFrom.setRow(from.row() + rowCount);
+        changed = true;
+    }
+    if (colCount && from.col() >= colPivot) {
+        newFrom.setCol(from.col() + colCount);
+        changed = true;
+    }
+
+    if (growing) {
+        if (!changed) {
+            return false;
+        }
+        newKey = newFrom.toString() + ":" + endStr;
+        return true;
+    }
+
+    CellAddress newTo(to);
+    if (rowCount && to.row() >= rowPivot) {
+        newTo.setRow(to.row() + rowCount);
+        changed = true;
+    }
+    if (colCount && to.col() >= colPivot) {
+        newTo.setCol(to.col() + colCount);
+        changed = true;
+    }
+    if (!changed) {
+        return false;
+    }
+    newKey = newFrom.toString() + ":" + newTo.toString();
+    return true;
+}
+
+void shiftRangeReferences(Sheet* owner, int rowPivot, int rowCount, int colPivot, int colCount)
+{
+    auto* doc = owner->getDocument();
+    std::map<ObjectIdentifier, ObjectIdentifier> renames;
+
+    for (auto* obj : doc->getObjects()) {
+        for (const auto& entry : obj->ExpressionEngine.getExpressions()) {
+            if (!entry.second) {
+                continue;
+            }
+            for (const auto& idEntry : entry.second->getIdentifiers()) {
+                const ObjectIdentifier& id = idEntry.first;
+                if (id.getDocumentObject() != owner) {
+                    continue;
+                }
+                const auto& comps = id.getComponents();
+                if (comps.size() < 2) {
+                    continue;
+                }
+                const auto& last = comps.back();
+                const auto& prev = comps[comps.size() - 2];
+                if (!last.isMap() || !prev.isSimple() || prev.getName() != "cells") {
+                    continue;
+                }
+
+                std::string newKey;
+                if (!shiftRangeKey(last.getName(), rowPivot, rowCount, colPivot, colCount, newKey)) {
+                    continue;
+                }
+
+                ObjectIdentifier newId(id);
+                newId.setComponent(
+                    static_cast<int>(comps.size()) - 1,
+                    ObjectIdentifier::MapComponent(newKey)
+                );
+                renames[id] = newId;
+            }
+        }
+    }
+
+    if (!renames.empty()) {
+        doc->renameObjectIdentifiers(renames);
+    }
+}
+}  // namespace
+
+void PropertySheet::shiftRangeReferencesRows(int row, int count)
+{
+    if (!owner || !count) {
+        return;
+    }
+    shiftRangeReferences(owner, row, count, 0, 0);
+}
+
+void PropertySheet::shiftRangeReferencesColumns(int col, int count)
+{
+    if (!owner || !count) {
+        return;
+    }
+    shiftRangeReferences(owner, 0, 0, col, count);
+}
+
 void PropertySheet::insertRows(int row, int count)
 {
     std::vector<CellAddress> keys;
@@ -1237,6 +1376,7 @@ void PropertySheet::insertRows(int row, int count)
         return obj != docObj;
     });
     shiftBindingsRows(row, count);
+    shiftRangeReferencesRows(row, count);
     signaller.tryInvoke();
 }
 
@@ -1335,6 +1475,7 @@ void PropertySheet::removeRows(int row, int count)
         return obj != docObj;
     });
     shiftBindingsRows(row + count, -count);
+    shiftRangeReferencesRows(row + count, -count);
     signaller.tryInvoke();
 }
 
@@ -1386,6 +1527,7 @@ void PropertySheet::insertColumns(int col, int count)
         return obj != docObj;
     });
     shiftBindingsColumns(col, count);
+    shiftRangeReferencesColumns(col, count);
     signaller.tryInvoke();
 }
 
@@ -1484,6 +1626,7 @@ void PropertySheet::removeColumns(int col, int count)
         return obj != docObj;
     });
     shiftBindingsColumns(col + count, -count);
+    shiftRangeReferencesColumns(col + count, -count);
     signaller.tryInvoke();
 }
 
