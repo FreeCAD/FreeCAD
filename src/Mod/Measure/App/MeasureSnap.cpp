@@ -180,14 +180,11 @@ static bool axisPointOf(const TopoDS_Shape& shape, const Base::Vector3d* cursor,
             return false;
         }
     }
-    else if (circleAxisOf(shape, axis)) {
-        // circle
-    }
-    else if (lineAxisOf(shape, axis)) {
+    else if (!circleAxisOf(shape, axis)) {
+        if (!lineAxisOf(shape, axis)) {
+            return false;
+        }
         edgeIsLine = true;
-    }
-    else {
-        return false;
     }
     if (outDir) {
         *outDir = axis.Direction();

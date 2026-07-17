@@ -956,6 +956,8 @@ TEST_F(MeasureSnap, testPreviewPointsAxisOnLine)
     EXPECT_NEAR(ends.back().Y(), 0.0, 1e-6);
     EXPECT_NEAR(ends.back().Z(), 0.0, 1e-6);
     EXPECT_NEAR((ends.front().X() + ends.back().X()) / 2.0, 2.0, 1e-6);
+    // The preview overshoots the edge, so the span exceeds the edge length.
+    EXPECT_GT(std::abs(ends.back().X() - ends.front().X()), 4.0);
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
