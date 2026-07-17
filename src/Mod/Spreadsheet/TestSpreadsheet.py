@@ -1121,6 +1121,83 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.insertRows("2", 1)
         self.assertEqual(sheet.getContents("B4"), "=B3")
 
+    def testConfigTableRangeInsertRows(self):
+        """Regression test for issue 14672: inserting rows must shift a
+        "cells[<<from:to>>]" growing-range reference, even though it lives on
+        a different object than the sheet being modified."""
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
+        obj = self.doc.addObject("App::FeaturePython", "Obj")
+        sheet.set("B1", "Variant0")
+        sheet.set("C1", "Variant1")
+
+        obj.addProperty("App::PropertyEnumeration", "Config", "", "", 0, False, True)
+        obj.setExpression("Config.Enum", "Spreadsheet.cells[<<B1:->>]")
+        self.doc.recompute()
+        self.assertEqual(obj.getEnumerationsOfProperty("Config"), ["Variant0", "Variant1"])
+
+        sheet.insertRows("1", 1)
+        self.doc.recompute()
+
+        self.assertEqual(obj.getEnumerationsOfProperty("Config"), ["Variant0", "Variant1"])
+
+    def testConfigTableRangeRemoveRows(self):
+        """Regression test for issue 14672: removing rows must shift a
+        "cells[<<from:to>>]" growing-range reference living on another
+        object."""
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
+        obj = self.doc.addObject("App::FeaturePython", "Obj")
+        sheet.set("B2", "Variant0")
+        sheet.set("C2", "Variant1")
+
+        obj.addProperty("App::PropertyEnumeration", "Config", "", "", 0, False, True)
+        obj.setExpression("Config.Enum", "Spreadsheet.cells[<<B2:->>]")
+        self.doc.recompute()
+        self.assertEqual(obj.getEnumerationsOfProperty("Config"), ["Variant0", "Variant1"])
+
+        sheet.removeRows("1", 1)
+        self.doc.recompute()
+
+        self.assertEqual(obj.getEnumerationsOfProperty("Config"), ["Variant0", "Variant1"])
+
+    def testConfigTableRangeInsertColumns(self):
+        """Regression test for issue 14672: inserting columns must shift a
+        "cells[<<from:to>>]" growing-range reference living on another
+        object (the column-direction counterpart of
+        testConfigTableRangeInsertRows)."""
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
+        obj = self.doc.addObject("App::FeaturePython", "Obj")
+        sheet.set("B1", "Variant0")
+        sheet.set("B2", "Variant1")
+
+        obj.addProperty("App::PropertyEnumeration", "Config", "", "", 0, False, True)
+        obj.setExpression("Config.Enum", "Spreadsheet.cells[<<B1:|>>]")
+        self.doc.recompute()
+        self.assertEqual(obj.getEnumerationsOfProperty("Config"), ["Variant0", "Variant1"])
+
+        sheet.insertColumns("A", 1)
+        self.doc.recompute()
+
+        self.assertEqual(obj.getEnumerationsOfProperty("Config"), ["Variant0", "Variant1"])
+
+    def testConfigTableRangeRemoveColumns(self):
+        """Regression test for issue 14672: removing columns must shift a
+        "cells[<<from:to>>]" growing-range reference living on another
+        object."""
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
+        obj = self.doc.addObject("App::FeaturePython", "Obj")
+        sheet.set("C1", "Variant0")
+        sheet.set("C2", "Variant1")
+
+        obj.addProperty("App::PropertyEnumeration", "Config", "", "", 0, False, True)
+        obj.setExpression("Config.Enum", "Spreadsheet.cells[<<C1:|>>]")
+        self.doc.recompute()
+        self.assertEqual(obj.getEnumerationsOfProperty("Config"), ["Variant0", "Variant1"])
+
+        sheet.removeColumns("A", 1)
+        self.doc.recompute()
+
+        self.assertEqual(obj.getEnumerationsOfProperty("Config"), ["Variant0", "Variant1"])
+
     def testRenameAlias(self):
         """Test renaming of alias1 to alias2 in a spreadsheet"""
         sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
