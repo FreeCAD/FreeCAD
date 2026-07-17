@@ -463,6 +463,7 @@ void Body::onChanged(const App::Property* prop)
 
             if (bf && (bf->BaseFeature.getValue() != BaseFeature.getValue())) {
                 bf->BaseFeature.setValue(BaseFeature.getValue());
+                bf->recomputeFeature();
             }
         }
         else if (prop == &Group) {
