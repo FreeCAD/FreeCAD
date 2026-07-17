@@ -174,6 +174,138 @@ TEST_F(GCSTest, diagnoseResetsDependentParamsEachCall)  // NOLINT
     EXPECT_EQ(dependent.size(), 3u);
 }
 
+TEST_F(GCSTest, diagnoseReportsFreeParamsOfUnconstrainedComponent)  // NOLINT
+{
+    // Arrange
+    double fixedX = 0.0, fixedY = 0.0;
+    std::vector<double> values = {
+        0.0, 0.0,  // p1
+        1.0, 1.0,  // p2
+    };
+    GCS::VEC_pD params;
+    for (auto& v : values) {
+        params.push_back(&v);
+    }
+    System()->declareUnknowns(params);
+
+    GCS::Point p1(params[0], params[1]);
+    GCS::Point fixed(&fixedX, &fixedY);
+    System()->addConstraintP2PCoincident(p1, fixed, 1);
+
+    // Act
+    System()->diagnose();
+
+    // Assert
+    GCS::VEC_pD dependent;
+    System()->getDependentParams(dependent);
+    ASSERT_EQ(dependent.size(), 2u);
+    EXPECT_NE(std::ranges::find(dependent, params[2]), dependent.end());
+    EXPECT_NE(std::ranges::find(dependent, params[3]), dependent.end());
+}
+
+TEST_F(GCSTest, diagnoseFlagsConflictingConstraintEntirelyOnExternalGeometry)  // NOLINT
+{
+    // Arrange
+    double extX1 = 0.0, extY1 = 0.0, extX2 = 3.0, extY2 = 0.0;
+    double wrongDistance = 10.0;
+    std::vector<double> values = {1.0, 1.0};  // p1
+    GCS::VEC_pD params;
+    for (auto& v : values) {
+        params.push_back(&v);
+    }
+    System()->declareUnknowns(params);
+
+    GCS::Point pExt1(&extX1, &extY1);
+    GCS::Point pExt2(&extX2, &extY2);
+
+    constexpr int conflictTag = 1;
+    System()->addConstraintP2PDistance(pExt1, pExt2, &wrongDistance, conflictTag);
+
+    // Act
+    System()->diagnose();
+
+    // Assert
+    GCS::VEC_I conflicting;
+    System()->getConflicting(conflicting);
+    ASSERT_EQ(conflicting.size(), 1u);
+    EXPECT_EQ(conflicting[0], conflictTag);
+}
+
+TEST_F(GCSTest, diagnoseTreatsSatisfiedConstraintOnExternalGeometryAsRedundant)  // NOLINT
+{
+    // Arrange
+    double extX1 = 0.0, extY1 = 0.0, extX2 = 3.0, extY2 = 0.0;
+    double correctDistance = 3.0;
+    std::vector<double> values = {1.0, 1.0};  // p1
+    GCS::VEC_pD params;
+    for (auto& v : values) {
+        params.push_back(&v);
+    }
+    System()->declareUnknowns(params);
+
+    GCS::Point pExt1(&extX1, &extY1);
+    GCS::Point pExt2(&extX2, &extY2);
+
+    constexpr int redundantTag = 1;
+    System()->addConstraintP2PDistance(pExt1, pExt2, &correctDistance, redundantTag);
+
+    // Act
+    System()->diagnose();
+
+    // Assert
+    GCS::VEC_I redundant;
+    System()->getRedundant(redundant);
+    ASSERT_EQ(redundant.size(), 1u);
+    EXPECT_EQ(redundant[0], redundantTag);
+}
+
+TEST_F(GCSTest, diagnoseAccumulatesAcrossMixedConstrainedComponents)  // NOLINT
+{
+    // Arrange
+    double constX1 = 0.0, constX2 = 5.0, constY = 0.0, zero = 0.0;
+    std::vector<double> values = {
+        0.0, 0.0,  // p1
+        1.0, 1.0,  // p2
+        2.0, 1.0,  // p3
+    };
+    GCS::VEC_pD params;
+    for (auto& v : values) {
+        params.push_back(&v);
+    }
+    System()->declareUnknowns(params);
+
+    GCS::Point p1(params[0], params[1]);
+    GCS::Point p2(params[2], params[3]);
+    GCS::Point p3(params[4], params[5]);
+
+    constexpr int conflictingTag1 = 1;
+    constexpr int conflictingTag2 = 2;
+    constexpr int anchorYTag = 3;
+    System()->addConstraintCoordinateX(p1, &constX1, conflictingTag1);
+    System()->addConstraintCoordinateX(p1, &constX2, conflictingTag2);
+    System()->addConstraintCoordinateY(p1, &constY, anchorYTag);
+
+    constexpr int horizontalTag = 4;
+    constexpr int redundantTag = 5;
+    System()->addConstraintHorizontal(p2, p3, horizontalTag);
+    System()->addConstraintDifference(p2.y, p3.y, &zero, redundantTag);
+
+    // Act
+    System()->diagnose();
+
+    // Assert
+    GCS::VEC_I redundant;
+    System()->getRedundant(redundant);
+    ASSERT_EQ(redundant.size(), 1u);
+    EXPECT_EQ(redundant[0], redundantTag);
+    EXPECT_EQ(System()->dofsNumber(), 3);
+
+    GCS::VEC_I conflicting;
+    System()->getConflicting(conflicting);
+    std::sort(conflicting.begin(), conflicting.end());
+    EXPECT_EQ(conflicting, (GCS::VEC_I {conflictingTag1, conflictingTag2}));
+}
+
 TEST_F(GCSTest, diagnoseManyIndependentComponentsPerf)  // NOLINT
 {
     // Arrange

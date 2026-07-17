@@ -4849,7 +4849,8 @@ int System::diagnose(Algorithm alg)
         }
     }
 
-    dofs = 0;
+    int pdofs = 0; // positive degrees of freedom
+    int ndofs = 0; // negative degrees of freedom
 
     for (int i = 0; i < componentsSize; ++i) {
         if (plists[i].empty() && clists[i].empty()) {
@@ -4857,12 +4858,11 @@ int System::diagnose(Algorithm alg)
         }
 
         int d = diagnoseComponent(alg, plists[i], pdrivenlists[i], clists[i], tagmultiplicity);
-        if (d < 0) {
-            dofs = -1;
-            break;
-        }
-        dofs += d;
+        pdofs += std::max(d, 0);
+        ndofs += std::min(d, 0);
     }
+
+    dofs = pdofs > 0 ? pdofs : ndofs;
 
     hasDiagnosis = true;
     return dofs;
@@ -4876,11 +4876,36 @@ int System::diagnoseComponent(
     const std::map<int, int>& tagmultiplicity
 )
 {
-    // When adding an external geometry or a constraint on an external geometry the array
-    // 'plist' is empty.
-    // So, we must abort here because otherwise we would create an invalid matrix and make
-    // the application eventually crash. This fixes issues #0002372/#0002373.
-    if (plist.empty() || (plist.size() - pdrivenlist.size()) == 0) {
+    // 'plist' is empty when a component's driving constraints touch only
+    // external/fixed geometry, so classify each constraint directly
+    if (plist.empty()) {
+        int conflictingCount = 0;
+        for (auto* constr : clist) {
+            if (constr->getTag() < 0 || !constr->isDriving()) {
+                continue;
+            }
+            bool priorityOrAlignment = constr->getTag() == 0
+                || constr->isInternalAlignment() == Constraint::Alignment::InternalAlignment;
+            if (priorityOrAlignment) {
+                ++conflictingCount;
+                continue;
+            }
+
+            double err = constr->error();
+            if (err * err < convergenceRedundant) {
+                redundant.insert(constr);
+                redundantTags.push_back(constr->getTag());
+                partiallyRedundantTags.push_back(constr->getTag());
+            }
+            else {
+                ++conflictingCount;
+                conflictingTags.push_back(constr->getTag());
+            }
+        }
+        return conflictingCount > 0 ? -conflictingCount : 0;
+    }
+
+    if ((plist.size() - pdrivenlist.size()) == 0) {
         return 0;
     }
 
@@ -4975,6 +5000,10 @@ int System::diagnoseComponent(
 #endif
 
     if (J.rows() == 0) {
+        for (auto* param : pdiagnoselist) {
+            pDependentParametersGroups.push_back({param});
+            pDependentParameters.push_back(param);
+        }
         return dofs;
     }
 
