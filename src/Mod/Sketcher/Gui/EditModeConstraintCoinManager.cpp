@@ -2316,11 +2316,25 @@ bool EditModeConstraintCoinManager::resolveIconScreenGeometry(
         }
     }
 
-    SbVec3f iconWorldPos = absPos + scaleFactor * trans;
-    iconScreenCenter = ViewProviderSketchCoinAttorney::getScreenCoordinates(viewProvider, iconWorldPos);
+    // Position of the icon in sketch-plane (edit scenegraph local) coordinates.
+    // getScreenCoordinates() expects sketch coordinates and applies the editing
+    // placement itself.
+    SbVec3f iconSketchPos = absPos + scaleFactor * trans;
+    iconScreenCenter = ViewProviderSketchCoinAttorney::getScreenCoordinates(viewProvider, iconSketchPos);
 
     if (pickedPoint) {
-        *pickedPoint = Base::convertTo<Base::Vector3d>(iconWorldPos);
+        // Consumers of pickedPoint (e.g. the mouse press/release handlers, which
+        // project it back onto the sketch plane) expect GLOBAL coordinates, so the
+        // sketch-plane position must be transformed by the editing placement. The
+        // icon's z-offset is a rendering artifact and is dropped. Returning the
+        // untransformed position made the drag-commit position collapse onto the
+        // sketch's horizontal axis on any sketch whose plane is not the global XY
+        // plane (geometry "snapping to the horizontal axis" when a drag ended on
+        // top of a constraint icon).
+        Base::Placement placement = ViewProviderSketchCoinAttorney::getEditingPlacement(viewProvider);
+        Base::Vector3d localPoint(iconSketchPos[0], iconSketchPos[1], 0.0);
+        placement.getRotation().multVec(localPoint, localPoint);
+        *pickedPoint = localPoint + placement.getPosition();
     }
 
     return true;
