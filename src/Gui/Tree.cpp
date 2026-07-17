@@ -2536,7 +2536,7 @@ bool TreeWidget::dropInDocument(
                     continue;
                 }
                 std::string linkedLabel = Base::Tools::escapeEncodeString(
-                    obj->getLinkedObject(true)->Label.getValue()
+                    std::string(obj->getLinkedObject(true)->Label.getValue())
                 );
                 FCMD_OBJ_CMD(link, "Label='" << linkedLabel << "'");
                 propPlacement = dynamic_cast<App::PropertyPlacement*>(
