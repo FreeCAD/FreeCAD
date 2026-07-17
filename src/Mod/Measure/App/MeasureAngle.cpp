@@ -119,15 +119,18 @@ bool MeasureAngle::isPrioritizedSelection(const App::MeasureSelection& selection
     App::DocumentObject* ob1 = objT1.getObject();
     std::string sub1 = objT1.getSubName();
     Base::Vector3d vec1;
-    getVec(*ob1, sub1, vec1);
+    if (!getVec(*ob1, sub1, vec1)) {
+        return false;
+    }
 
     auto element2 = selection.at(1);
     auto objT2 = element2.object;
     App::DocumentObject* ob2 = objT2.getObject();
     std::string sub2 = objT2.getSubName();
     Base::Vector3d vec2;
-    getVec(*ob2, sub2, vec2);
-
+    if (!getVec(*ob2, sub2, vec2)) {
+        return false;
+    }
 
     double angle = std::fmod(vec1.GetAngle(vec2), std::numbers::pi);
     return angle > Base::Precision::Angular();

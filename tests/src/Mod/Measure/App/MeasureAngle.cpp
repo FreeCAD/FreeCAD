@@ -22,6 +22,7 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
+#include <gp_Circ.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Pnt.hxx>
@@ -237,6 +238,44 @@ TEST_F(MeasureAngle, testValidSelectionAcceptsCylinderAndCone)
     EXPECT_TRUE(Measure::MeasureAngle::isValidSelection(cylEdge));
     EXPECT_TRUE(Measure::MeasureAngle::isValidSelection(coneEdge));
     EXPECT_FALSE(Measure::MeasureAngle::isValidSelection(sphereEdge));
+}
+
+// Angle takes priority for crossing edges only; parallel edges fall to distance.
+TEST_F(MeasureAngle, testPrioritizedSelectionCrossingNotParallel)
+{
+    auto lineX = addFeature("LineX", makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)));
+    auto lineY = addFeature("LineY", makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(0.0, 1.0, 0.0)));
+    auto lineX2 = addFeature("LineX2", makeLine(gp_Pnt(0.0, 2.0, 0.0), gp_Pnt(1.0, 2.0, 0.0)));
+
+    const App::MeasureSelection crossing {
+        {App::SubObjectT(lineX, "Edge1"), Base::Vector3d()},
+        {App::SubObjectT(lineY, "Edge1"), Base::Vector3d()}
+    };
+    const App::MeasureSelection parallel {
+        {App::SubObjectT(lineX, "Edge1"), Base::Vector3d()},
+        {App::SubObjectT(lineX2, "Edge1"), Base::Vector3d()}
+    };
+
+    EXPECT_TRUE(Measure::MeasureAngle::isPrioritizedSelection(crossing));
+    EXPECT_FALSE(Measure::MeasureAngle::isPrioritizedSelection(parallel));
+}
+
+// A closed circle edge has coincident end vertices, so its direction cannot be
+// read; priority must decline instead of comparing zero vectors.
+TEST_F(MeasureAngle, testPrioritizedSelectionUnreadableDirectionRejected)
+{
+    gp_Circ circle;
+    circle.SetLocation(gp_Pnt(0.0, 0.0, 0.0));
+    circle.SetRadius(1.0);
+    auto circleFeat = addFeature("Circle", BRepBuilderAPI_MakeEdge(circle).Edge());
+    auto line = addFeature("Line", makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)));
+
+    const App::MeasureSelection selection {
+        {App::SubObjectT(circleFeat, "Edge1"), Base::Vector3d()},
+        {App::SubObjectT(line, "Edge1"), Base::Vector3d()}
+    };
+
+    EXPECT_FALSE(Measure::MeasureAngle::isPrioritizedSelection(selection));
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
