@@ -47,6 +47,7 @@ DlgSettings3DViewPart::DlgSettings3DViewPart(QWidget* parent)
     , checkValue(false)
 {
     ui->setupUi(this);
+    ui->maxAngularDeflection->setKeyboardTracking(false);
     connect(
         ui->maxDeviation,
         qOverload<double>(&QDoubleSpinBox::valueChanged),
