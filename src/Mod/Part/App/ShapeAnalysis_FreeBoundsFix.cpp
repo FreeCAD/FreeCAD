@@ -55,7 +55,7 @@ void Fix_ShapeAnalysis_FreeBounds_ConnectEdgesToWires(
         }
     }
 
-#if OCC_VERSION_HEX >= 0x080100
+#if OCC_VERSION_HEX >= 0x080001
     needsFiltering = false;
 #endif
 
@@ -101,7 +101,7 @@ void Fix_ShapeAnalysis_FreeBounds_ConnectWiresToWires(
         }
     }
 
-#if OCC_VERSION_HEX >= 0x080100
+#if OCC_VERSION_HEX >= 0x080001
     needsFiltering = false;
 #endif
 
