@@ -50,9 +50,30 @@ import sys
 import tempfile
 import time
 import unittest
+import warnings
 from dataclasses import dataclass
 from enum import Enum, auto
 from pathlib import Path
+
+try:
+    import FreeCAD  # type: ignore
+except Exception as exc:  # pragma: no cover
+    FreeCAD = None
+    _GUI_IMPORT_ERROR = exc
+else:
+    _GUI_IMPORT_ERROR = None
+
+try:
+    import FreeCADGui  # type: ignore
+except Exception as exc:  # pragma: no cover
+    FreeCADGui = None
+    _GUI_IMPORT_ERROR = _GUI_IMPORT_ERROR or exc
+
+try:
+    from pivy import coin  # type: ignore
+except Exception as exc:  # pragma: no cover
+    coin = None
+    _GUI_IMPORT_ERROR = _GUI_IMPORT_ERROR or exc
 
 _BASELINE_REL = Path("tests") / "visual" / "baselines" / "coin-nodes"
 _FONT_REL = Path("tests") / "visual" / "fonts"
@@ -317,11 +338,17 @@ def _configure_software_gl_for_snapshots():
     os.environ.setdefault("MESA_LOADER_DRIVER_OVERRIDE", "llvmpipe")
 
 
+def _skip_headless(message: str, cause: BaseException | None = None):
+    warnings.warn(f"{message}; skipping headless test", RuntimeWarning, stacklevel=2)
+    if cause is not None:
+        raise unittest.SkipTest(message) from cause
+    raise unittest.SkipTest(message)
+
+
 def _require_gui():
-    try:
-        import FreeCAD  # type: ignore
-    except Exception as exc:  # pragma: no cover
-        raise RuntimeError("FreeCAD module not available") from exc
+    if FreeCAD is None or FreeCADGui is None or coin is None:
+        message = "Coin node snapshot tests require the FreeCAD GUI and Pivy bindings"
+        _skip_headless(message, _GUI_IMPORT_ERROR)
 
     _configure_software_gl_for_snapshots()
 
@@ -336,14 +363,8 @@ def _require_gui():
         qpa = os.environ.get("QT_QPA_PLATFORM", "").strip().lower()
         headless_qpa = {"offscreen", "minimal", "eglfs", "linuxfb", "vnc"}
         if not has_display and qpa not in headless_qpa:
-            raise unittest.SkipTest(
-                "No display available (run under xvfb-run or set QT_QPA_PLATFORM=offscreen)"
-            )
-
-    try:
-        import FreeCADGui  # type: ignore
-    except Exception as exc:  # pragma: no cover
-        raise unittest.SkipTest("FreeCADGui not available in this build") from exc
+            message = "Coin node snapshot tests require a display or headless Qt platform"
+            _skip_headless(f"{message} (run under xvfb-run or set QT_QPA_PLATFORM=offscreen)")
 
     # Ensure the GUI subsystem is initialized enough for Coin + offscreen GL.
     # Older setups may not provide this; offscreen rendering can still work.
@@ -370,21 +391,16 @@ def _require_gui():
     except Exception as exc:  # pragma: no cover
         raise unittest.SkipTest("Qt (PySide) not available") from exc
 
-    # Register vendored fonts before importing Coin, so Coin's font backend can discover them.
+    # Register vendored fonts so Coin's font backend can discover them.
     try:
         _register_visual_fonts()
     except Exception as exc:  # pragma: no cover
         raise unittest.SkipTest(f"visual test font setup failed: {exc}") from exc
 
-    try:
-        from pivy import coin  # type: ignore
-    except Exception as exc:  # pragma: no cover
-        raise unittest.SkipTest("pivy.coin not available") from exc
-
-    return FreeCAD, FreeCADGui, coin
+    return None
 
 
-def _instantiate(coin, type_name: str):
+def _instantiate(type_name: str):
     t = coin.SoType.fromName(type_name)
     if t.isBad():
         raise unittest.SkipTest(f"Coin type not registered: {type_name}")
@@ -401,13 +417,13 @@ def _configure_background_gradient(grad, from_color, to_color):
     grad.useMidColor.setValue(False)
 
 
-def _add_gradient_background(root, coin, top, bottom):
-    gradient = _instantiate(coin, "SoFCBackgroundGradient")
+def _add_gradient_background(root, top, bottom):
+    gradient = _instantiate("SoFCBackgroundGradient")
     _configure_background_gradient(gradient, coin.SbColor(*top), coin.SbColor(*bottom))
     root.addChild(gradient)
 
 
-def _add_translucency_backplate(root, coin):
+def _add_translucency_backplate(root):
     """Add two opaque color panels behind the translucent face-set fixture."""
     backplate = coin.SoSeparator()
 
@@ -458,7 +474,7 @@ def _load_required_modules(fixture: _SnapshotFixture) -> None:
             raise AssertionError(f"failed to import required module: {module_name}") from exc
 
 
-def _find_descendant(coin, root, type_name: str):
+def _find_descendant(root, type_name: str):
     """Return the first descendant of ``root`` with the requested Coin type."""
     type_id = coin.SoType.fromName(type_name)
     if type_id.isBad():
@@ -472,7 +488,7 @@ def _find_descendant(coin, root, type_name: str):
     return None if path is None else path.getTail()
 
 
-def _set_scene_font_family(coin, node, family: str) -> None:
+def _set_scene_font_family(node, family: str) -> None:
     """Apply the vendored font to all SoFont nodes in a fixture graph."""
     if node.getTypeId().isDerivedFrom(coin.SoFont.getClassTypeId()):
         node.name.setValue(family)
@@ -481,15 +497,15 @@ def _set_scene_font_family(coin, node, family: str) -> None:
         return
 
     for index in range(node.getNumChildren()):
-        _set_scene_font_family(coin, node.getChild(index), family)
+        _set_scene_font_family(node.getChild(index), family)
 
 
-def _configure_preview_geometry(coin, preview) -> None:
+def _configure_preview_geometry(preview) -> None:
     """Populate SoPreviewShape's retained SoFCShape geometry for a test scene."""
-    coords = _find_descendant(coin, preview, "SoCoordinate3")
-    normals = _find_descendant(coin, preview, "SoNormal")
-    faces = _find_descendant(coin, preview, "SoBrepFaceSet")
-    lines = _find_descendant(coin, preview, "SoBrepEdgeSet")
+    coords = _find_descendant(preview, "SoCoordinate3")
+    normals = _find_descendant(preview, "SoNormal")
+    faces = _find_descendant(preview, "SoBrepFaceSet")
+    lines = _find_descendant(preview, "SoBrepEdgeSet")
     if any(node is None for node in (coords, normals, faces, lines)):
         raise AssertionError("SoPreviewShape retained geometry is incomplete")
 
@@ -585,7 +601,7 @@ def _configure_preview_geometry(coin, preview) -> None:
     preview.transform.setValue(matrix)
 
 
-def _configure_camera(coin, cam, policy: _CameraPolicy) -> None:
+def _configure_camera(cam, policy: _CameraPolicy) -> None:
     if policy in (_CameraPolicy.VIEW_ALL, _CameraPolicy.VIEW_ALL_WITH_MARGIN):
         return
 
@@ -599,7 +615,7 @@ def _configure_camera(coin, cam, policy: _CameraPolicy) -> None:
     cam.farDistance.setValue(100.0)
 
 
-def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
+def _make_scene_for_node(type_name: str, fixture: _SnapshotFixture):
     root = coin.SoSeparator()
 
     cam = coin.SoOrthographicCamera()
@@ -617,7 +633,7 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
     font.size.setValue(float(_DEFAULT_FONT_SIZE))
     root.addChild(font)
 
-    _configure_camera(coin, cam, fixture.framing_policy)
+    _configure_camera(cam, fixture.framing_policy)
     _load_required_modules(fixture)
 
     if type_name == "SoFCBoundingBox":
@@ -625,7 +641,7 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
         color.rgb.setValue(0.08, 0.12, 0.22)
         style = coin.SoDrawStyle()
         style.lineWidth.setValue(2.0)
-        box = _instantiate(coin, type_name)
+        box = _instantiate(type_name)
         box.minBounds.setValue(-1.5, -1.1, -0.75)
         box.maxBounds.setValue(1.5, 1.1, 0.75)
         box.coordsOn.setValue(True)
@@ -639,17 +655,17 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
         return root
 
     if type_name == "SoPreviewShape":
-        preview = _instantiate(coin, type_name)
+        preview = _instantiate(type_name)
         root.addChild(preview)
-        _configure_preview_geometry(coin, preview)
+        _configure_preview_geometry(preview)
         return root
 
     if type_name == "SoDrawingGrid":
-        root.addChild(_instantiate(coin, "SoDrawingGrid"))
+        root.addChild(_instantiate("SoDrawingGrid"))
         return root
 
     if type_name == "SoRegPoint":
-        probe = _instantiate(coin, "SoRegPoint")
+        probe = _instantiate("SoRegPoint")
         probe.base.setValue(0.0, 0.0, 0.0)
         probe.normal.setValue(0.6, 0.7, 0.4)
         probe.length.setValue(1.2)
@@ -659,7 +675,7 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
         return root
 
     if type_name == "SoDatumLabel":
-        label = _instantiate(coin, "SoDatumLabel")
+        label = _instantiate("SoDatumLabel")
         label.string.setValue("SoDatumLabel")
         label.textColor.setValue(1.0, 0.45, 0.34)
         label.name.setValue(_DEFAULT_FONT_FAMILY)
@@ -681,7 +697,7 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
         return root
 
     if type_name == "SoStringLabel":
-        label = _instantiate(coin, "SoStringLabel")
+        label = _instantiate("SoStringLabel")
         label.string.setValue("SoStringLabel")
         label.name.setValue(_DEFAULT_FONT_FAMILY)
         label.size.setValue(28)
@@ -695,7 +711,7 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
         font.size.setValue(28.0)
         color = coin.SoBaseColor()
         color.rgb.setValue(0.05, 0.05, 0.05)
-        label = _instantiate(coin, "SoColorBarLabel")
+        label = _instantiate("SoColorBarLabel")
         label.string.setValues(0, 2, ["Low", "High"])
         root.addChild(color)
         root.addChild(label)
@@ -704,9 +720,9 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
     if type_name == "SoFCColorBar":
         # The color scale defaults to its continuous presentation, so this snapshot covers the
         # complete foreground composition without depending on application-side setup.
-        _add_gradient_background(root, coin, (0.07, 0.09, 0.15), (0.16, 0.19, 0.28))
-        root.addChild(_instantiate(coin, "SoFCColorBar"))
-        _set_scene_font_family(coin, root, _DEFAULT_FONT_FAMILY)
+        _add_gradient_background(root, (0.07, 0.09, 0.15), (0.16, 0.19, 0.28))
+        root.addChild(_instantiate("SoFCColorBar"))
+        _set_scene_font_family(root, _DEFAULT_FONT_FAMILY)
         return root
 
     if type_name == "So3DAnnotation":
@@ -728,7 +744,7 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
         # The annotation is deliberately placed behind the normal scene
         # geometry. The viewer delays it, clears the scene depth buffer, and
         # renders it afterwards so gizmos remain visible above the model.
-        annotation = _instantiate(coin, type_name)
+        annotation = _instantiate(type_name)
         annotation_material = coin.SoMaterial()
         annotation_material.diffuseColor.setValue(0.95, 0.16, 0.05)
         annotation_style = coin.SoDrawStyle()
@@ -760,7 +776,7 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
         return root
 
     if type_name == "SoFrameLabel":
-        label = _instantiate(coin, "SoFrameLabel")
+        label = _instantiate("SoFrameLabel")
         label.string.setValue("Frame Label")
         label.textColor.setValue(1.0, 1.0, 1.0)
         label.backgroundColor.setValue(0.10, 0.35, 0.85)
@@ -773,7 +789,7 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
         return root
 
     if type_name == "SoFCPlacementIndicatorKit":
-        indicator = _instantiate(coin, "SoFCPlacementIndicatorKit")
+        indicator = _instantiate("SoFCPlacementIndicatorKit")
         indicator.parts.setValue(31)  # SoFCPlacementIndicatorKit::AllParts
         indicator.axes.setValue(7)  # SoFCPlacementIndicatorKit::AllAxes
         indicator.axisLength.setValue(0.8)
@@ -783,11 +799,11 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
         return root
 
     if type_name == "SoAxisCrossKit":
-        root.addChild(_instantiate(coin, "SoAxisCrossKit"))
+        root.addChild(_instantiate("SoAxisCrossKit"))
         return root
 
     if type_name == "SoFCBackgroundGradient":
-        grad = _instantiate(coin, "SoFCBackgroundGradient")
+        grad = _instantiate("SoFCBackgroundGradient")
         _configure_background_gradient(
             grad,
             coin.SbColor(0.2, 0.2, 0.6),
@@ -799,7 +815,7 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
     if type_name in ("SoNaviCube", "SoNaviCubeTranslucent", "SoNaviCubeHiliteFront"):
         if type_name == "SoNaviCubeTranslucent":
             # Provide visible background so translucency can be verified.
-            grad = _instantiate(coin, "SoFCBackgroundGradient")
+            grad = _instantiate("SoFCBackgroundGradient")
             _configure_background_gradient(
                 grad,
                 coin.SbColor(0.15, 0.15, 0.20),
@@ -807,7 +823,7 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
             )
             root.addChild(grad)
 
-        cube = _instantiate(coin, "SoNaviCube")
+        cube = _instantiate("SoNaviCube")
         cube.size.setValue(1.0)
         cube.opacity.setValue(0.55 if type_name == "SoNaviCubeTranslucent" else 1.0)
         cube.borderWidth.setValue(0.02)
@@ -915,7 +931,7 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
             material.diffuseColor.setValue(0.65, 0.20, 0.75)
         else:
             material.diffuseColor.setValue(0.10, 0.25, 0.80)
-        poly = _instantiate(coin, "SoPolygon")
+        poly = _instantiate("SoPolygon")
         if type_name == "SoPolygonStartIndex":
             poly.startIndex.setValue(1)
             poly.numVertices.setValue(4)
@@ -971,14 +987,13 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
             # making the result look nearly opaque.
             _add_gradient_background(
                 root,
-                coin,
                 _TRANSLUCENCY_BACKGROUND_TOP,
                 _TRANSLUCENCY_BACKGROUND_BOTTOM,
             )
-            _add_translucency_backplate(root, coin)
+            _add_translucency_backplate(root)
 
         coords = coin.SoCoordinate3()
-        faces = _instantiate(coin, "SoFCIndexedFaceSet")
+        faces = _instantiate("SoFCIndexedFaceSet")
         if type_name == "SoFCIndexedFaceSetTranslucent":
             coords.point.setValues(
                 0,
@@ -1097,7 +1112,7 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
         material = coin.SoMaterial()
         material.diffuseColor.setValue(0.05, 0.05, 0.05)
 
-        edges = _instantiate(coin, "SoBrepEdgeSet")
+        edges = _instantiate("SoBrepEdgeSet")
         # Square + diagonals.
         edges.coordIndex.setValues(0, 14, [0, 1, 2, 3, 0, -1, 0, 2, -1, 1, 3, -1, 4, -1])
         if type_name == "SoBrepEdgeSetHighlight":
@@ -1135,7 +1150,7 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
         material = coin.SoMaterial()
         material.diffuseColor.setValue(0.05, 0.05, 0.05)
 
-        pts = _instantiate(coin, "SoBrepPointSet")
+        pts = _instantiate("SoBrepPointSet")
         pts.startIndex.setValue(0)
         pts.numPoints.setValue(-1)
         if type_name == "SoBrepPointSetHighlight":
@@ -1172,7 +1187,7 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
         material = coin.SoMaterial()
         material.diffuseColor.setValue(0.75, 0.75, 0.78)
 
-        faces = _instantiate(coin, "SoBrepFaceSet")
+        faces = _instantiate("SoBrepFaceSet")
         # Each triangle ends with -1; partIndex counts triangles per part.
         # fmt: off
         faces.coordIndex.setValues(0, 48, [
@@ -1219,7 +1234,7 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
                 pts.append(coin.SbVec3f(u, v, 0.15))
         coords.point.setValues(0, len(pts), pts)
 
-        cp = _instantiate(coin, "SoFCControlPoints")
+        cp = _instantiate("SoFCControlPoints")
         cp.numPolesU.setValue(3)
         cp.numPolesV.setValue(3)
         cp.numKnotsU.setValue(2)
@@ -1230,22 +1245,20 @@ def _make_scene_for_node(coin, type_name: str, fixture: _SnapshotFixture):
         root.addChild(cp)
         return root
 
-    root.addChild(_instantiate(coin, type_name))
+    root.addChild(_instantiate(type_name))
     return root
 
 
-def _make_snapshot_scene(coin, type_name: str) -> _SnapshotScene:
+def _make_snapshot_scene(type_name: str) -> _SnapshotScene:
     fixture = _SNAPSHOT_FIXTURES.get(type_name, _SnapshotFixture())
     return _SnapshotScene(
-        root=_make_scene_for_node(coin, type_name, fixture),
+        root=_make_scene_for_node(type_name, fixture),
         framing_policy=fixture.framing_policy,
     )
 
 
 class _ViewerSnapshotHarness:
-    def __init__(self, FreeCAD, FreeCADGui, width: int, height: int):
-        self.FreeCAD = FreeCAD
-        self.FreeCADGui = FreeCADGui
+    def __init__(self, width: int, height: int):
         self.width = width
         self.height = height
         self.previous_document = FreeCAD.activeDocument()
@@ -1289,7 +1302,7 @@ class _ViewerSnapshotHarness:
     def _wait_until(self, predicate, message: str, *, timeout: float = 5.0):
         deadline = time.monotonic() + timeout
         while time.monotonic() < deadline:
-            self.FreeCADGui.updateGui()
+            FreeCADGui.updateGui()
             if predicate():
                 return
             time.sleep(0.01)
@@ -1323,27 +1336,22 @@ class _ViewerSnapshotHarness:
         self.viewer = None
         self.view = None
 
-        if self.doc is not None and self.FreeCAD.getDocument(self.doc.Name):
+        if self.doc is not None and FreeCAD.getDocument(self.doc.Name):
             document_name = self.doc.Name
-            self.FreeCAD.closeDocument(document_name)
+            FreeCAD.closeDocument(document_name)
             self._wait_until(
-                lambda: document_name not in self.FreeCAD.listDocuments(),
+                lambda: document_name not in FreeCAD.listDocuments(),
                 f"document {document_name} did not close",
             )
         self.doc = None
 
-        if self.previous_document is not None and self.FreeCAD.getDocument(
-            self.previous_document.Name
-        ):
-            self.FreeCAD.setActiveDocument(self.previous_document.Name)
-            self.FreeCADGui.ActiveDocument = self.FreeCADGui.getDocument(
-                self.previous_document.Name
-            )
+        if self.previous_document is not None and FreeCAD.getDocument(self.previous_document.Name):
+            FreeCAD.setActiveDocument(self.previous_document.Name)
+            FreeCADGui.ActiveDocument = FreeCADGui.getDocument(self.previous_document.Name)
 
 
 def _render_png(
     harness,
-    coin,
     root,
     out_path: Path,
     width: int,
@@ -1475,7 +1483,7 @@ def _bbox_relative_point(
     return (x, y)
 
 
-def _make_top_view_scene(coin, node, *, center: tuple[float, float, float], camera_height: float):
+def _make_top_view_scene(node, *, center: tuple[float, float, float], camera_height: float):
     root = coin.SoSeparator()
 
     cam = coin.SoOrthographicCamera()
@@ -1648,10 +1656,10 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
     """Render Coin nodes through the live viewer and compare against PNG baselines."""
 
     def test_so_reg_point_unpickable_regression(self):
-        _, _, coin = _require_gui()
+        _require_gui()
 
         root = coin.SoSeparator()
-        probe = _instantiate(coin, "SoRegPoint")
+        probe = _instantiate("SoRegPoint")
         probe.base.setValue(0.0, 0.0, 0.0)
         probe.normal.setValue(0.0, 0.0, 1.0)
         probe.length.setValue(1.0)
@@ -1670,7 +1678,7 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         )
 
     def test_so_datum_label_ignores_parent_cull_face(self):
-        FreeCAD, FreeCADGui, coin = _require_gui()
+        _require_gui()
 
         width = _SNAPSHOT_WIDTH
         height = _SNAPSHOT_HEIGHT
@@ -1708,7 +1716,7 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         transform.rotation.setValue(coin.SbRotation(coin.SbVec3f(0.0, 1.0, 0.0), 3.141592653589793))
         root.addChild(transform)
 
-        label = _instantiate(coin, "SoDatumLabel")
+        label = _instantiate("SoDatumLabel")
         label.string.setValue("CullFace")
         label.textColor.setValue(0.0, 0.4, 0.9)
         label.name.setValue(_DEFAULT_FONT_FAMILY)
@@ -1726,10 +1734,9 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         )
         root.addChild(label)
 
-        with _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height) as harness:
+        with _ViewerSnapshotHarness(width, height) as harness:
             _render_png(
                 harness,
-                coin,
                 root,
                 actual_path,
                 width,
@@ -1744,7 +1751,7 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         )
 
     def test_so_string_label_anchor_regression(self):
-        FreeCAD, FreeCADGui, coin = _require_gui()
+        _require_gui()
 
         width = _SNAPSHOT_WIDTH
         height = _SNAPSHOT_HEIGHT
@@ -1793,17 +1800,16 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         text_material.diffuseColor.setValue(0.05, 0.05, 0.05)
         root.addChild(text_material)
 
-        label = _instantiate(coin, "SoStringLabel")
+        label = _instantiate("SoStringLabel")
         label.string.setValues(0, 2, ["OOOO", "OOOO"])
         label.name.setValue(_DEFAULT_FONT_FAMILY)
         label.size.setValue(28)
         label.textColor.setValue(0.0, 0.0, 0.0)
         root.addChild(label)
 
-        with _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height) as harness:
+        with _ViewerSnapshotHarness(width, height) as harness:
             _render_png(
                 harness,
-                coin,
                 root,
                 actual_path,
                 width,
@@ -1849,7 +1855,7 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         )
 
     def test_so_brep_face_set_per_part_material_binding_regression(self):
-        FreeCAD, FreeCADGui, coin = _require_gui()
+        _require_gui()
 
         _load_required_modules(_SnapshotFixture(required_modules=("PartGui",)))
 
@@ -1910,7 +1916,7 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         material_binding.value = coin.SoMaterialBinding.PER_PART
         root.addChild(material_binding)
 
-        faces = _instantiate(coin, "SoBrepFaceSet")
+        faces = _instantiate("SoBrepFaceSet")
         faces.coordIndex.setValues(
             0,
             16,
@@ -1936,10 +1942,9 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         faces.partIndex.setValues(0, 2, [2, 2])
         root.addChild(faces)
 
-        with _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height) as harness:
+        with _ViewerSnapshotHarness(width, height) as harness:
             _render_png(
                 harness,
-                coin,
                 root,
                 actual_path,
                 width,
@@ -1978,7 +1983,7 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
             )
 
     def test_so_brep_face_set_partial_render_transparency_regression(self):
-        FreeCAD, FreeCADGui, coin = _require_gui()
+        _require_gui()
         _load_required_modules(_SnapshotFixture(required_modules=("Part", "PartGui")))
 
         width = _SNAPSHOT_WIDTH
@@ -2013,15 +2018,13 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
             FreeCADGui.updateGui()
 
             root = _make_top_view_scene(
-                coin,
                 box.ViewObject.RootNode,
                 center=(5.0, 5.0, 5.0),
                 camera_height=14.0,
             )
-            with _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height) as harness:
+            with _ViewerSnapshotHarness(width, height) as harness:
                 _render_png(
                     harness,
-                    coin,
                     root,
                     actual_path,
                     width,
@@ -2078,7 +2081,7 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         is_linux = sys.platform.startswith("linux")
         smoke_mode = is_ci and not is_linux
 
-        FreeCAD, FreeCADGui, coin = _require_gui()
+        _require_gui()
 
         nodes_env = os.environ.get("FC_VISUAL_NODES", "")
         if nodes_env.strip():
@@ -2116,10 +2119,10 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         max_mismatched_pixels = int((width * height) * (_MAX_MISMATCH_PCT / 100.0))
 
         did_render = False
-        with _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height) as harness:
+        with _ViewerSnapshotHarness(width, height) as harness:
             for type_name in node_types:
                 with self.subTest(node=type_name):
-                    scene = _make_snapshot_scene(coin, type_name)
+                    scene = _make_snapshot_scene(type_name)
                     actual_dir = out_dir / "actual"
                     expected_dir = out_dir / "expected"
                     diff_dir = out_dir / "diff"
@@ -2127,7 +2130,6 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
                     actual_path = actual_dir / f"{type_name}.png"
                     _render_png(
                         harness,
-                        coin,
                         scene.root,
                         actual_path,
                         width,
