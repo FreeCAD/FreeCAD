@@ -10,6 +10,7 @@
 #include <cmath>
 #include <functional>
 #include <optional>
+#include <vector>
 
 using namespace heeks;
 using namespace Clipper2Lib;
@@ -173,20 +174,35 @@ double recenter(double phi, double phi_ref, int type)
     return phi;
 };
 
-static void SetFromResult(CCurve& curve, Path64& path, bool is_closed, const ArcFittingMap& arcMap)
+// Populates the Curve from Path64 data. Returns vector<int> size one smaller than the curve marking
+// each edge as z-increasing (1), z-decreasing (-1), or openEnd (0). TODO do I need the value to be
+// right when wrapping around? Do I need to start at z-min?
+std::vector<int> CArea::_SetFromResult(
+    CCurve& curve,
+    Path64& path,
+    bool is_closed,
+    const std::set<int64_t>& openEnds
+)
 {
     if (CArea::m_clipper_clean_distance >= heeks::Point::tolerance) {
         path = SimplifyPath(path, CArea::m_clipper_clean_distance, is_closed);
     }
 
     if (path.size() == 0) {
-        return;
+        return {};
     }
 
     const double max_arc_length = 2 * M_PI * .99;
 
+    // Tracks the orientation of each edge:
+    // 0: z is constant and present in openEnds (i.e. remove from open wire offset result)
+    // 1: increasing z value, or constant and rotating about the center in the z+ direction
+    // -1: decreasing z value, or constant and rotating about the center in the z- direction
+    std::vector<int> orientations;
+
     // Loop through points
     int pe_next_type = 0;
+    Point64 prevP64 = {0, 0, -1};  // TODO deduplicate stored info, fix this name
     int64_t prevZ = -1;
     heeks::Point prevP;
     double phi_total = 0.0;
@@ -205,21 +221,31 @@ static void SetFromResult(CCurve& curve, Path64& path, bool is_closed, const Arc
         heeks::Point p_next(dp_next.x, dp_next.y);
 
         // Construct ordered pair for arc detection
-        std::pair<int64_t, int64_t> zPair(std::min(prevZ, pt.z), std::max(prevZ, pt.z));
+        auto edgeInfo = getEdgeInfo(prevP64, pt);
+        if (prevZ == pt.z && openEnds.count(pt.z)) {
+            edgeInfo.orientation = 0;
+        }
+        prevP64 = pt;
 
-        // Check if this segment is an arc (presence in arc_centers means it's an arc)
-        auto centerIt = arcMap.arc_centers.find(zPair);
+        // Check if this segment is an arc (presence in arc_centers means it's an arc) TODO need to
+        // redo a lot of documentation here with the new getEdgeInfo strategy/semantics
+        auto centerIt = m_arc_fitting_map.arc_centers.find(edgeInfo.parentEdge);
         bool isLine = !CArea::m_fit_arcs || (prevZ == -1)
-            || ((prevZ != pt.z) && (centerIt == arcMap.arc_centers.end()));
+            || ((prevZ != pt.z) && (centerIt == m_arc_fitting_map.arc_centers.end()));
 
         if (isLine) {
             curve.m_vertices.emplace_back(0, p, heeks::Point {0, 0});
+            if (prevZ != -1) {
+                orientations.push_back(edgeInfo.orientation);  // TODO maybe I just want this to be
+                                                               // a boolean, orientationMatchesParent
+            }
             phi_total = 0.0;
             pe_next_type = 0;  // clear it
         }
         else {
             const bool isPointExpansion = prevZ == pt.z;
-            heeks::Point center = isPointExpansion ? arcMap.point_map.at(pt.z) : centerIt->second;
+            heeks::Point center = isPointExpansion ? m_arc_fitting_map.point_map.at(pt.z)
+                                                   : centerIt->second;
 
             double phi0 = atan2(prevP.y - center.y, prevP.x - center.x);
             double phi1 = atan2(p.y - center.y, p.x - center.x);
@@ -258,9 +284,10 @@ static void SetFromResult(CCurve& curve, Path64& path, bool is_closed, const Arc
                     std::min(pt.z, pt_next.z),
                     std::max(pt.z, pt_next.z)
                 );
-                auto centerNextIt = arcMap.arc_centers.find(zPairNext);
+                auto centerNextIt = m_arc_fitting_map.arc_centers.find(zPairNext);
 
-                if (centerNextIt != arcMap.arc_centers.end() && centerNextIt->second != center) {
+                if (centerNextIt != m_arc_fitting_map.arc_centers.end()
+                    && centerNextIt->second != center) {
                     // It is, with original boundary at this point expansion's center point
                     // Consider subsuming some or all of the point expansion into the arc
                     const heeks::Point& arc_center = centerNextIt->second;
@@ -310,8 +337,7 @@ static void SetFromResult(CCurve& curve, Path64& path, bool is_closed, const Arc
                             );
                             double arc_span = abs(phi_end - phi0);
                             if (arc_span < max_arc_length) {
-                                // update arc start location
-                                curve.m_vertices.front().m_p = prevP;
+                                curve.m_vertices.front().m_p = prevP;  // update arc start location
                             }
                             else {
                                 // create a new arc, to avoid making the existing arc too long
@@ -320,6 +346,7 @@ static void SetFromResult(CCurve& curve, Path64& path, bool is_closed, const Arc
                                     curve.m_vertices.front().m_p,
                                     arc_center
                                 );
+                                orientations.push_back(orientations[0]);
                             }
                         }
                         else {
@@ -345,6 +372,7 @@ static void SetFromResult(CCurve& curve, Path64& path, bool is_closed, const Arc
 
                             curve.m_vertices.emplace_back(pe_type, p, center);  // generate partial
                                                                                 // point expansion
+                            orientations.push_back(edgeInfo.orientation);
                             if (arc_span < max_arc_length) {
                                 curve.m_vertices.front().m_p = p;  // update arc start location
                             }
@@ -354,6 +382,7 @@ static void SetFromResult(CCurve& curve, Path64& path, bool is_closed, const Arc
                                     curve.m_vertices.front().m_p,
                                     arc_center
                                 );  // make a new arc
+                                orientations.push_back(orientations[0]);
                             }
                             continue;
                         }
@@ -369,9 +398,9 @@ static void SetFromResult(CCurve& curve, Path64& path, bool is_closed, const Arc
             if (!isPointExpansion && hasNext) {
                 const int arc_type = seg_type;
 
-                if (pt_next.z == pt.z && arcMap.point_map.at(pt_next.z) != center) {
+                if (pt_next.z == pt.z && m_arc_fitting_map.point_map.at(pt_next.z) != center) {
                     // It is. The original arc boundary is at the point expansion's center
-                    const heeks::Point& arc_boundary = arcMap.point_map.at(pt_next.z);
+                    const heeks::Point& arc_boundary = m_arc_fitting_map.point_map.at(pt_next.z);
 
                     // Arc current angles: phi0 to phi1 (no recompute required)
                     // Point expansion current angles: phi1 to phi_next
@@ -426,6 +455,7 @@ static void SetFromResult(CCurve& curve, Path64& path, bool is_closed, const Arc
                             // Delete it, and update start location for the next move
                             curve.m_vertices.front().m_p = p;
                             curve.m_vertices.erase(std::next(curve.m_vertices.begin()));
+                            orientations.erase(orientations.begin());
                         }
                         else {
                             // Skip the point expansion that comes next
@@ -457,6 +487,7 @@ static void SetFromResult(CCurve& curve, Path64& path, bool is_closed, const Arc
             else {
                 // Add a new CVertex for the arc
                 curve.m_vertices.emplace_back(seg_type, p, center);
+                orientations.push_back(edgeInfo.orientation);
                 phi_total = dphi;
             }
         }
@@ -515,39 +546,45 @@ static void SetFromResult(CCurve& curve, Path64& path, bool is_closed, const Arc
             if (abs(dphi_last) + abs(dphi_first) < max_arc_length) {
                 curve.m_vertices.pop_back();
                 curve.m_vertices.front().m_p = p_prev;
+                orientations.pop_back();
             }
         }
     }
+
+    return orientations;
 }
 
-static void SetFromResult(
-    CArea& area,               // area to populate
-    Paths64& pp,               // clipper data to put in the area
-    bool is_closed = true,     // flag if the clipper paths are closed
-    bool clear_area = true,    // flag for clearing the area's curves before populating
-    bool clear_arc_map = true  // flag for clearing arc metadata when done
+std::vector<std::vector<int>> CArea::_SetFromResult(
+    Paths64& pp,                       // clipper data to put in the area
+    bool is_closed,                    // flag if the clipper paths are closed
+    bool clear_area,                   // flag for clearing the area's curves before populating
+    bool clear_arc_map,                // flag for clearing arc metadata when done
+    const std::set<int64_t>& openEnds  // z-values of open wire endpoints
 )
 {
     // delete existing geometry
     if (clear_area) {
-        area.m_curves.clear();
+        m_curves.clear();
     }
 
     // Process intersection points before reconstructing curves
-    area.ProcessIntersectionPoints(pp, is_closed);
+    ProcessIntersectionPoints(pp, is_closed);
 
+    std::vector<std::vector<int>> result;
     for (unsigned int i = 0; i < pp.size(); i++) {
         Path64& p = pp[i];
 
-        area.m_curves.emplace_back();
-        CCurve& curve = area.m_curves.back();
-        SetFromResult(curve, p, is_closed, area.m_arc_fitting_map);
+        m_curves.emplace_back();
+        CCurve& curve = m_curves.back();
+        result.push_back(_SetFromResult(curve, p, is_closed, openEnds));
     }
 
     // Reset arc fitting map to ensure clean state
     if (clear_arc_map) {
-        area.m_arc_fitting_map = ArcFittingMap();
+        m_arc_fitting_map = ArcFittingMap();
     }
+
+    return result;
 }
 
 void CArea::Subtract(const CArea& a2)
@@ -651,8 +688,7 @@ void CArea::_Clip(
     }
 
     // Set closed paths as result
-    SetFromResult(
-        *this,
+    _SetFromResult(
         closed_paths,
         /*is_closed=*/true,
         /*clear_area=*/true,
@@ -660,8 +696,7 @@ void CArea::_Clip(
     );
 
     // Append open paths to result
-    SetFromResult(
-        *this,
+    _SetFromResult(
         open_paths,
         /*is_closed=*/false,
         /*clear_area=*/false,
@@ -692,8 +727,7 @@ void CArea::ClipperNoop()
     }
 
     // Set closed paths as result
-    SetFromResult(
-        *this,
+    _SetFromResult(
         closed_paths,
         /*is_closed=*/true,
         /*clear_area=*/true,
@@ -701,8 +735,7 @@ void CArea::ClipperNoop()
     );
 
     // Append open paths to result
-    SetFromResult(
-        *this,
+    _SetFromResult(
         open_paths,
         /*is_closed=*/false,
         /*clear_area=*/false,
@@ -726,7 +759,104 @@ void CArea::TestIntersectOpenPathReversal(
     );
 }
 
-void CArea::Offset(double offset, JoinType joinType, EndType endType, double miterLimit, double arcTolerance)
+// TODO rename to OffsetClosed? Or is it assumed? Definitely document it
+void CArea::Offset(double offset, JoinType joinType, EndType unused, double miterLimit, double arcTolerance)
+{
+    _Offset(offset, joinType, EndType::Polygon, miterLimit, arcTolerance);
+    this->Reorder();
+}
+
+CArea CArea::OpenOffset(double offset, double arcTolerance)
+{
+    auto orientations = _Offset(fabs(offset), JoinType::Round, EndType::Round, 0.0, arcTolerance);
+
+    std::list<CCurve> positive;
+    std::list<CCurve> negative;
+
+    auto curveIt = m_curves.begin();
+    for (const auto& curveOrientations : orientations) {
+        CCurve& curve = *curveIt++;
+        const std::vector<CVertex> verts(curve.m_vertices.begin(), curve.m_vertices.end());
+
+        // Find start index: first edge where the previous edge (wrapping) has a different
+        // orientation, so we always begin a new wire at a transition. Fall back to 0 if all
+        // orientations match.
+        //
+        // For open curves, always start at 0 since there is no wrap-around.
+        int n = (int)curveOrientations.size();
+        int iEdgeStart = 0;
+        if (curve.IsClosed()) {
+            for (int i = 0; i < n; ++i) {
+                if (curveOrientations[(i - 1 + n) % n] != curveOrientations[i]) {
+                    iEdgeStart = i;
+                    break;
+                }
+            }
+        }
+
+        CCurve* currentWire = NULL;
+        int prevOrientation = 0;
+        heeks::Point prevP = verts[iEdgeStart].m_p;
+
+        for (int edgeOffset = 0; edgeOffset < n; ++edgeOffset) {
+            int iEdge = (iEdgeStart + edgeOffset) % n;
+            const CVertex& v = verts[iEdge + 1];
+            int orientation = curveOrientations[iEdge];
+
+            // If the orientation changes, start a new wire
+            if (orientation != prevOrientation) {
+                if (orientation == 1) {
+                    positive.emplace_back();
+                    currentWire = &positive.back();
+                    currentWire->m_vertices.emplace_back(0, prevP, heeks::Point {0, 0});
+                }
+                else if (orientation == -1) {
+                    negative.emplace_back();
+                    currentWire = &negative.back();
+                    currentWire->m_vertices.emplace_back(0, prevP, heeks::Point {0, 0});
+                }
+                else {
+                    currentWire = NULL;
+                }
+            }
+
+            // Add the current vertex to the wire
+            if (currentWire) {
+                currentWire->m_vertices.push_back(v);
+            }
+
+            // Update prev values
+            prevP = v.m_p;
+            prevOrientation = orientation;
+        }
+    }
+
+    // We've accumulated all our negative oriented wires in the negative direction, but for open
+    // path offset we actually want them traced out in the forwards direction
+    for (CCurve& c : negative) {
+        c.Reverse();
+    }
+
+    // Return results
+    CArea result;
+    if (offset >= 0) {
+        m_curves = std::move(positive);
+        result.m_curves = std::move(negative);
+    }
+    else {
+        m_curves = std::move(negative);
+        result.m_curves = std::move(positive);
+    }
+    return result;
+}
+
+std::vector<std::vector<int>> CArea::_Offset(
+    double offset,
+    JoinType joinType,
+    EndType endType,
+    double miterLimit,
+    double arcTolerance
+)
 {
     offset *= m_clipper_scale;
     if (arcTolerance == 0.0) {
@@ -748,6 +878,7 @@ void CArea::Offset(double offset, JoinType joinType, EndType endType, double mit
 
     // Collect closed paths to add together (holes must be added with outer boundary)
     Paths64 closedPaths;
+    std::set<int64_t> openEnds;
 
     // Add paths with appropriate end types
     int i = 0;
@@ -757,17 +888,18 @@ void CArea::Offset(double offset, JoinType joinType, EndType endType, double mit
         }
         else {
             clipper.AddPath(pp[i], joinType, endType);
+            openEnds.insert(pp[i][0].z);
+            openEnds.insert(pp[i][pp[i].size() - 1].z);
         }
         i++;
     }
-    clipper.AddPaths(closedPaths, joinType, EndType::Polygon);
+    clipper.AddPaths(closedPaths, joinType, endType);
 
     // Execute offset
     Paths64 pp2;
     clipper.Execute(offset, pp2);
 
-    SetFromResult(*this, pp2);
-    this->Reorder();
+    return _SetFromResult(pp2, /*is_closed=*/true, /*clear_area=*/true, /*clear_arc_map=*/true, openEnds);
 }
 
 void CArea::Thicken(double value)
@@ -818,6 +950,99 @@ ZCallback64 CArea::MakeZCallback()
     );
 }
 
+// rename: get edge data?
+// return parent edge <int, int>
+// return orientation (parent orientation? parent z-increasing?) (1 = moving in the same direction
+// as the parent, -1 opposite)
+//   - note: for point expansions (equal z), positive offsets always create positive-movement arcs
+//   around points, and negative offsets create negative movement. Interesting? I think I can just
+//   classify based on change in angle since this is only used for positive offsets
+//   - note: orientation is assumed to be positive with increasing z, but when completing a loop z
+//   drops back to the start...I only need this for open path offset, where the input is always open
+//   so I should be able to ignore that, but documentation needs to be clear
+// TODO write/update/fix documentation here
+CArea::EdgeInfo CArea::getEdgeInfo(const Point64& p1, const Point64& p2)
+{
+    if (p1.z == p2.z) {
+        const PointD dp1 = ToPointD(p1);
+        const PointD dp2 = ToPointD(p2);
+        auto center = m_arc_fitting_map.point_map[p1.z];
+        double phi1 = atan2(dp1.y - center.y, dp1.x - center.x);
+        double phi2 = atan2(dp2.y - center.y, dp2.x - center.x);
+        double dphi = recenter(phi2 - phi1, -M_PI, 1);  // range: (-M_PI to M_PI]
+        int orientation = dphi > 0 ? 1 : -1;
+        return {{p1.z, p1.z}, orientation};
+    }
+
+    auto it1 = m_arc_fitting_map.intersections.find(p1.z);
+    auto it2 = m_arc_fitting_map.intersections.find(p2.z);
+    bool p1_is_new = it1 != m_arc_fitting_map.intersections.end();
+    bool p2_is_new = it2 != m_arc_fitting_map.intersections.end();
+
+    std::optional<std::pair<int64_t, int64_t>> parentEdge;
+    if (p1_is_new && p2_is_new) {
+        // Both points are intersection points, splitting their common parent edge
+        const auto& [p1_e1bot, p1_e1top, p1_e2bot, p1_e2top] = it1->second;
+        const auto& [p2_e1bot, p2_e1top, p2_e2bot, p2_e2top] = it2->second;
+
+        // Sort each edge by increasing z for easy comparison
+        std::pair<int64_t, int64_t> p1_edge1
+            = {std::min(p1_e1bot, p1_e1top), std::max(p1_e1bot, p1_e1top)};
+        std::pair<int64_t, int64_t> p1_edge2
+            = {std::min(p1_e2bot, p1_e2top), std::max(p1_e2bot, p1_e2top)};
+        std::pair<int64_t, int64_t> p2_edge1
+            = {std::min(p2_e1bot, p2_e1top), std::max(p2_e1bot, p2_e1top)};
+        std::pair<int64_t, int64_t> p2_edge2
+            = {std::min(p2_e2bot, p2_e2top), std::max(p2_e2bot, p2_e2top)};
+
+        if (p1_edge1 == p2_edge1 || p1_edge1 == p2_edge2) {
+            // p1_edge1 matches one of the p2 edges
+            parentEdge = p1_edge1;
+        }
+        else if (p1_edge2 == p2_edge1 || p1_edge2 == p2_edge2) {
+            // p1_edge2 matches one of the p2 edges
+            parentEdge = p1_edge2;
+        }
+    }
+    else if (p1_is_new || p2_is_new) {
+        // One point splits the parent edge, and the other is at the end of the shared edge
+        const Point64& p_new = p1_is_new ? p1 : p2;
+        const Point64& p_old = p1_is_new ? p2 : p1;
+        auto it_new = p1_is_new ? it1 : it2;
+
+        const auto& [p_new_e1bot, p_new_e1top, p_new_e2bot, p_new_e2top] = it_new->second;
+
+        std::pair<int64_t, int64_t> new_edge = {std::min(p_new.z, p_old.z), std::max(p_new.z, p_old.z)};
+
+        if (p_old.z == p_new_e1bot || p_old.z == p_new_e1top) {
+            // p_old.z is an endpoint of edge1
+            parentEdge = {std::min(p_new_e1bot, p_new_e1top), std::max(p_new_e1bot, p_new_e1top)};
+        }
+        else if (p_old.z == p_new_e2bot || p_old.z == p_new_e2top) {
+            // p_old.z is an endpoint of edge2
+            parentEdge = {std::min(p_new_e2bot, p_new_e2top), std::max(p_new_e2bot, p_new_e2top)};
+        }
+    }
+    else {
+        // Points are at either end of the parent edge
+        parentEdge = {std::min(p1.z, p2.z), std::max(p1.z, p2.z)};
+    }
+
+    if (parentEdge) {
+        double dx1 = p1.x - parentEdge->first;
+        double dy1 = p1.y - parentEdge->second;
+        double distsq1 = dx1 * dx1 + dy1 * dy1;
+
+        double dx2 = p2.x - parentEdge->first;
+        double dy2 = p2.y - parentEdge->second;
+        double distsq2 = dx2 * dx2 + dy2 * dy2;
+
+        return {*parentEdge, distsq2 > distsq1 ? 1 : -1};
+    }
+
+    return {{0, 0}, 0};  // this should not happen; parent edge should always exist
+}
+
 // For any intersection points created, splitting an original edge, update
 // the arc fitting data structure with appropriate arc metadata for their edges
 //
@@ -851,98 +1076,33 @@ void CArea::ProcessIntersectionPoints(Paths64& paths, bool is_closed)
             bool p1_is_new = it1 != m_arc_fitting_map.intersections.end();
             bool p2_is_new = it2 != m_arc_fitting_map.intersections.end();
 
-            if (p1_is_new && p2_is_new) {
-                // Both points are intersections - check if they share a parent edge
-                const auto& [p1_e1bot, p1_e1top, p1_e2bot, p1_e2top] = it1->second;
-                const auto& [p2_e1bot, p2_e1top, p2_e2bot, p2_e2top] = it2->second;
-
-                // Sort each edge by increasing z for easy comparison
-                std::pair<int64_t, int64_t> p1_edge1
-                    = {std::min(p1_e1bot, p1_e1top), std::max(p1_e1bot, p1_e1top)};
-                std::pair<int64_t, int64_t> p1_edge2
-                    = {std::min(p1_e2bot, p1_e2top), std::max(p1_e2bot, p1_e2top)};
-                std::pair<int64_t, int64_t> p2_edge1
-                    = {std::min(p2_e1bot, p2_e1top), std::max(p2_e1bot, p2_e1top)};
-                std::pair<int64_t, int64_t> p2_edge2
-                    = {std::min(p2_e2bot, p2_e2top), std::max(p2_e2bot, p2_e2top)};
-
+            if (p1_is_new || p2_is_new) {
+                auto edgeInfo = getEdgeInfo(p1, p2);
+                auto parentEdge = edgeInfo.parentEdge;
                 std::pair<int64_t, int64_t> new_edge = {std::min(p1.z, p2.z), std::max(p1.z, p2.z)};
 
-                std::optional<std::pair<int64_t, int64_t>> sharedEdge;
-                if (p1_edge1 == p2_edge1 || p1_edge1 == p2_edge2) {
-                    // p1_edge1 matches one of the p2 edges
-                    sharedEdge = p1_edge1;
-                }
-                else if (p1_edge2 == p2_edge1 || p1_edge2 == p2_edge2) {
-                    // p1_edge2 matches one of the p2 edges
-                    sharedEdge = p1_edge2;
+                auto arc_it = m_arc_fitting_map.arc_centers.find(parentEdge);
+                if (arc_it != m_arc_fitting_map.arc_centers.end()) {
+                    // m_arc_fitting_map.arc_centers[new_edge] = arc_it->second;
+                    // TODO do we need to update the arc fitting map? I might change SetFromResult
+                    // instead to do the getEdgeInfo lookup, such that we can check
+                    // arc_centers[parentEdge] instead
                 }
 
-                if (sharedEdge) {
-                    auto arc_it = m_arc_fitting_map.arc_centers.find(*sharedEdge);
-                    if (arc_it != m_arc_fitting_map.arc_centers.end()) {
-                        m_arc_fitting_map.arc_centers[new_edge] = arc_it->second;
-                    }
+                if (!is_closed) {
+                    // check if the open path needs reversal
+                    const Point& pRef = m_arc_fitting_map.point_map[parentEdge.first];
+                    const int64_t p1dsq = (p1.x - pRef.x) * (p1.x - pRef.x)
+                        + (p1.y - pRef.y) * (p1.y - pRef.y);
+                    const int64_t p2dsq = (p2.x - pRef.x) * (p2.x - pRef.x)
+                        + (p2.y - pRef.y) * (p2.y - pRef.y);
+                    needsReversal = p1dsq > p2dsq;
 
-                    if (!is_closed) {
-                        // check if the open path needs reversal
-                        const Point& pRef = m_arc_fitting_map.point_map[sharedEdge->first];
-                        const int64_t p1dsq = (p1.x - pRef.x) * (p1.x - pRef.x)
-                            + (p1.y - pRef.y) * (p1.y - pRef.y);
-                        const int64_t p2dsq = (p2.x - pRef.x) * (p2.x - pRef.x)
-                            + (p2.y - pRef.y) * (p2.y - pRef.y);
-                        needsReversal = p1dsq > p2dsq;
-
-                        std::pair<int64_t, int64_t> currentZ = {sharedEdge->first, max(p1dsq, p2dsq)};
-                        pathOrder.back() = max(pathOrder.back(), currentZ);
-                    }
-                }
-            }
-            else if (p1_is_new || p2_is_new) {
-                // One point is new, one is old
-                const Point64& p_new = p1_is_new ? p1 : p2;
-                const Point64& p_old = p1_is_new ? p2 : p1;
-                auto it_new = p1_is_new ? it1 : it2;
-
-                const auto& [p_new_e1bot, p_new_e1top, p_new_e2bot, p_new_e2top] = it_new->second;
-
-                std::pair<int64_t, int64_t> new_edge
-                    = {std::min(p_new.z, p_old.z), std::max(p_new.z, p_old.z)};
-
-                std::optional<std::pair<int64_t, int64_t>> sharedEdge;
-                if (p_old.z == p_new_e1bot || p_old.z == p_new_e1top) {
-                    // p_old.z is an endpoint of edge1
-                    sharedEdge
-                        = {std::min(p_new_e1bot, p_new_e1top), std::max(p_new_e1bot, p_new_e1top)};
-                }
-                else if (p_old.z == p_new_e2bot || p_old.z == p_new_e2top) {
-                    // p_old.z is an endpoint of edge2
-                    sharedEdge
-                        = {std::min(p_new_e2bot, p_new_e2top), std::max(p_new_e2bot, p_new_e2top)};
-                }
-
-                if (sharedEdge) {
-                    auto arc_it = m_arc_fitting_map.arc_centers.find(*sharedEdge);
-                    if (arc_it != m_arc_fitting_map.arc_centers.end()) {
-                        m_arc_fitting_map.arc_centers[new_edge] = arc_it->second;
-                    }
-
-                    if (!is_closed) {
-                        // check if the open path needs reversal
-                        const Point& pRef = m_arc_fitting_map.point_map[sharedEdge->first];
-                        const int64_t p1dsq = (p1.x - pRef.x) * (p1.x - pRef.x)
-                            + (p1.y - pRef.y) * (p1.y - pRef.y);
-                        const int64_t p2dsq = (p2.x - pRef.x) * (p2.x - pRef.x)
-                            + (p2.y - pRef.y) * (p2.y - pRef.y);
-                        needsReversal = p1dsq > p2dsq;
-
-                        std::pair<int64_t, int64_t> currentZ = {sharedEdge->first, max(p1dsq, p2dsq)};
-                        pathOrder.back() = max(pathOrder.back(), currentZ);
-                    }
+                    std::pair<int64_t, int64_t> currentZ = {parentEdge.first, max(p1dsq, p2dsq)};
+                    pathOrder.back() = max(pathOrder.back(), currentZ);
                 }
             }
             else {
-                // neither point is new; just check if open path reversal is required
                 if (!is_closed) {
                     needsReversal = p1.z > p2.z;
 

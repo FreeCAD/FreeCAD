@@ -300,6 +300,7 @@ void init_pyarea(py::module& m)
         .def("Union", &CArea::Union)
         .def("OffsetInward", &CArea::OffsetInward)  // Deprecated, prefer Offset
         .def("Offset", [](CArea& self, double offset) { self.Offset(offset); })
+        .def("OpenOffset", [](CArea& self, double offset) { return self.OpenOffset(offset); })
         .def("text", &print_area)
         .def("num_curves", &CArea::num_curves)
         .def("NearestPoint", &CArea::NearestPoint)

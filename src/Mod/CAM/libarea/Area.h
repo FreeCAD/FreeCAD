@@ -10,6 +10,7 @@
 #include <map>
 #include <set>
 #include <tuple>
+#include <vector>
 #include "Curve.h"
 #include "clipper2/clipper.h"
 
@@ -60,7 +61,7 @@ struct ArcFittingMap
     std::map<int64_t, Point> point_map;
 
     // Arc centers: maps pairs of z-values (z1, z2) where z1 < z2 to the center point of the arc
-    // between them If a pair exists in this map, the segment is an arc; otherwise it's a line
+    // between them. If a pair exists in this map, the segment is an arc; otherwise it's a line
     std::map<std::pair<int64_t, int64_t>, Point> arc_centers;
 
     // Intersection tracking: maps the new value of a point created in an
@@ -114,6 +115,7 @@ public:
         double miterLimit = 5.0,
         double arcTolerance = 0.0
     );
+    CArea OpenOffset(double offset, double arcTolerance = 0.0);
     void ClipperNoop();  // converts to clipper and back (arc fiting) without performing clipper ops
     void Thicken(double value);
     unsigned int num_curves()
@@ -179,6 +181,12 @@ public:
     void ProcessIntersectionPoints(Clipper2Lib::Paths64& paths, bool is_closed);
 
 private:
+    struct EdgeInfo
+    {
+        std::pair<int64_t, int64_t> parentEdge;
+        int orientation;  // 1 = positive, -1 = negative, 0 = error
+    };
+
     // Z-callback for Clipper intersection handling
     void ZCallback(
         const Clipper2Lib::Point64& e1bot,
@@ -191,6 +199,23 @@ private:
     // Helper to create bound Z callback
     Clipper2Lib::ZCallback64 MakeZCallback();
 
+    EdgeInfo getEdgeInfo(const Clipper2Lib::Point64& p1, const Clipper2Lib::Point64& p2);
+
+    std::vector<int> _SetFromResult(
+        CCurve& curve,
+        Clipper2Lib::Path64& path,
+        bool is_closed,
+        const std::set<int64_t>& openEnds = {}
+    );
+
+    std::vector<std::vector<int>> _SetFromResult(
+        Clipper2Lib::Paths64& pp,
+        bool is_closed = true,
+        bool clear_area = true,
+        bool clear_arc_map = true,
+        const std::set<int64_t>& openEnds = {}
+    );
+
     // Internal implementation of Clip with optional open path reversal
     void _Clip(
         Clipper2Lib::ClipType op,
@@ -199,6 +224,14 @@ private:
         Clipper2Lib::FillRule clipFillType,
         bool reverseOpenPathContents,
         bool reverseOpenPathOrder
+    );
+
+    std::vector<std::vector<int>> _Offset(
+        double offset,
+        Clipper2Lib::JoinType joinType,
+        Clipper2Lib::EndType endType,
+        double miterLimit,
+        double arcTolerance
     );
 };
 

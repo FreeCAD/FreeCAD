@@ -8,6 +8,7 @@ Created for Clipper1 to Clipper2 migration - provides safety net for changes.
 import unittest
 import area
 import math
+from CAMTests.TestArcFitting import areas_equal, curves_equal, make_curve, make_area, format_area
 
 
 class TestAreaOperations(unittest.TestCase):
@@ -46,6 +47,25 @@ class TestAreaOperations(unittest.TestCase):
         c.append(area.Vertex(1, area.Point(cx + radius, cy), area.Point(cx, cy)))
         a.append(c)
         return a
+
+    def make_vertex(self, type, p, c=(0, 0)):
+        return area.Vertex(type, area.Point(*p), area.Point(*c))
+
+    def assert_areas_equal(self, actual, expected):
+        if not areas_equal(actual, expected):
+            self.fail(format_area(actual, "Actual") + format_area(expected, "Expected"))
+
+    def assertVertexEquals(self, actual, expected, approx_center=False):
+        self.assertEqual(actual.type, expected.type)
+        self.assertAlmostEqual(actual.p.x, expected.p.x)
+        self.assertAlmostEqual(actual.p.y, expected.p.y)
+        if expected.type != 0:
+            if approx_center:
+                self.assertAlmostEqual(actual.c.x, expected.c.x)
+                self.assertAlmostEqual(actual.c.y, expected.c.y)
+            else:
+                self.assertEqual(actual.c.x, expected.c.x)
+                self.assertEqual(actual.c.y, expected.c.y)
 
     def assertAreaNear(self, area_obj, expected_area, tolerance=None, msg=None):
         """Helper: Assert area is within tolerance of expected value.
@@ -256,6 +276,41 @@ class TestAreaOperations(unittest.TestCase):
         # Check area
         self.assertAreaNear(a1, math.pi * 8**2, msg="Offset circle")
         self.assertAreaNear(a2, math.pi * 8**2, msg="Offset circle")
+
+    # ========================================================================
+    # Open Offset Tests
+    # ========================================================================
+
+    def test_open_offset_l_curve(self):
+        """Test OpenOffset on an L-shaped open wire."""
+        a = area.Area()
+        a.append(make_curve([(0, 0), (10, 0), (10, 10)]))
+
+        negative = a.OpenOffset(1.0)
+
+        expected_pos = make_area(make_curve([(0, -1), (10, -1), (11, 0, 1, 10, 0), (11, 10)]))
+        expected_neg = make_area(make_curve([(0, 1), (9, 1), (9, 10)]))
+
+        self.assert_areas_equal(a, expected_pos)
+        self.assert_areas_equal(negative, expected_neg)
+
+    def test_open_offset_negative(self):
+        """Test that OpenOffset(-1) swaps positive and negative results vs OpenOffset(1)."""
+
+        def make_l_curve():
+            a = area.Area()
+            a.append(make_curve([(0, 0), (10, 0), (10, 10)]))
+            return a
+
+        a1 = make_l_curve()
+        a2 = make_l_curve()
+
+        neg1 = a1.OpenOffset(1.0)
+        neg2 = a2.OpenOffset(-1.0)
+
+        # OpenOffset(-1) should swap: a2 == neg1, neg2 == a1
+        self.assert_areas_equal(a2, neg1)
+        self.assert_areas_equal(neg2, a1)
 
     # ========================================================================
     # Geometry Manipulation Tests

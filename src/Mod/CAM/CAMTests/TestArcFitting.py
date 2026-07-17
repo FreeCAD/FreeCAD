@@ -29,6 +29,18 @@ import math
 from CAMTests.PathTestUtils import PathTestBase
 
 
+def format_area(area_obj, label):
+    lines = [f"\n{label}:"]
+    for i, curve in enumerate(area_obj.getCurves()):
+        vertices = list(curve.getVertices())
+        lines.append(f"  Curve {i} ({len(vertices)} vertices):")
+        for j, v in enumerate(vertices):
+            lines.append(
+                f"    [{j}] type={v.type}, p=({v.p.x:.2f}, {v.p.y:.2f}), c=({v.c.x:.2f}, {v.c.y:.2f})"
+            )
+    return "\n".join(lines)
+
+
 def make_curve(vertices):
     """Helper: Create a curve from a list of vertex specs.
 
@@ -217,49 +229,37 @@ def canonicalize_area(a):
     return result
 
 
-def areas_equal(a1, a2):
-    """Compare if two areas are exactly equal, including curve order.
+def curves_equal(c1, c2, tol=1e-6, ctol=0):
+    vertices1 = list(c1.getVertices())
+    vertices2 = list(c2.getVertices())
+
+    if len(vertices1) != len(vertices2):
+        return False
+
+    for v1, v2 in zip(vertices1, vertices2):
+        if v1.type != v2.type:
+            return False
+        if abs(v1.p.x - v2.p.x) > tol or abs(v1.p.y - v2.p.y) > tol:
+            return False
+        if v1.type != 0:
+            if abs(v1.c.x - v2.c.x) > ctol or abs(v1.c.y - v2.c.y) > ctol:
+                return False
+
+    return True
+
+
+def areas_equal(a1, a2, tol=1e-6, ctol=0):
+    """Compare if two areas are equal within tolerance, including curve order.
 
     Note: You may want to canonicalize areas before using this function.
-
-    Args:
-        a1: First area to compare
-        a2: Second area to compare
-
-    Returns:
-        True if areas are equal, False otherwise
     """
-    # Compare number of curves
     curves1 = list(a1.getCurves())
     curves2 = list(a2.getCurves())
 
     if len(curves1) != len(curves2):
         return False
 
-    # Compare each curve
-    for curve1, curve2 in zip(curves1, curves2):
-        vertices1 = list(curve1.getVertices())
-        vertices2 = list(curve2.getVertices())
-
-        if len(vertices1) != len(vertices2):
-            return False
-
-        # Compare each vertex
-        for v1, v2 in zip(vertices1, vertices2):
-            # Compare type
-            if v1.type != v2.type:
-                return False
-
-            # Compare position (exact)
-            if v1.p.x != v2.p.x or v1.p.y != v2.p.y:
-                return False
-
-            # Compare center for arcs (type != 0)
-            if v1.type != 0:
-                if v1.c.x != v2.c.x or v1.c.y != v2.c.y:
-                    return False
-
-    return True
+    return all(curves_equal(c1, c2, tol, ctol) for c1, c2 in zip(curves1, curves2))
 
 
 class TestArcFittingRoundTrip(PathTestBase):
@@ -830,18 +830,6 @@ class TestArcFittingOpenPathReversal(PathTestBase):
         a[1].TestIntersectOpenPathReversal(closed_area, False, True)
         a[2].TestIntersectOpenPathReversal(closed_area, True, False)
         a[3].TestIntersectOpenPathReversal(closed_area, True, True)
-
-        def format_area(area_obj, label):
-            """Format area for debug output."""
-            lines = [f"\n{label}:"]
-            for i, curve in enumerate(area_obj.getCurves()):
-                vertices = list(curve.getVertices())
-                lines.append(f"  Curve {i} ({len(vertices)} vertices):")
-                for j, v in enumerate(vertices):
-                    lines.append(
-                        f"    [{j}] type={v.type}, p=({v.p.x:.2f}, {v.p.y:.2f}), c=({v.c.x:.2f}, {v.c.y:.2f})"
-                    )
-            return "\n".join(lines)
 
         # Assert that output points have increasing x values across all curves
         lastX = None
