@@ -19,6 +19,7 @@
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepPrimAPI_MakeBox.hxx>
+#include <BRepPrimAPI_MakeCone.hxx>
 #include <BRepPrimAPI_MakeCylinder.hxx>
 #include <BRepPrimAPI_MakeSphere.hxx>
 #include <gp_Ax2.hxx>
@@ -156,8 +157,8 @@ TEST_F(MeasureDistance, testCircleCircle)
     EXPECT_EQ(md->Position2.getValue(), Base::Vector3d(3.0, 4.0, 0.0));
 }
 
-// A trimmed circular edge is still GeomAbs_Circle, so distanceCircleCircle
-// measures center-to-center: centers (0,0,0) and (3,4,0) give 5.0.
+// A trimmed circular edge is still GeomAbs_Circle, so Auto snaps both to their
+// centres: centers (0,0,0) and (3,4,0) give 5.0.
 TEST_F(MeasureDistance, testArcArcCenterToCenter)
 {
     App::Document* doc = getDocument();
@@ -273,6 +274,170 @@ TEST_F(MeasureDistance, testWireCircleExtremaNotCenter)
     EXPECT_NEAR(position2.x, 2.4, 1e-6);
     EXPECT_NEAR(position2.y, 3.2, 1e-6);
     EXPECT_NEAR(position2.z, 0.0, 1e-6);
+}
+
+// Two parallel cylinders in Auto measure axis-to-axis: Z axes 4 apart give 4.0,
+// not the surface-to-surface gap.
+TEST_F(MeasureDistance, testTwoCylindersAxisDistance)
+{
+    App::Document* doc = getDocument();
+    auto p1 = doc->addObject<Part::Feature>("Cyl1");
+    p1->Shape.setValue(BRepPrimAPI_MakeCylinder(2.0, 5.0).Face());
+    auto p2 = doc->addObject<Part::Feature>("Cyl2");
+    p2->Shape.setValue(
+        BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(4.0, 0.0, 0.0), gp_Dir(0.0, 0.0, 1.0)), 2.0, 5.0)
+            .Face()
+    );
+
+    auto md = doc->addObject<Measure::MeasureDistance>("Distance");
+    md->Element1.setValue(p1, {"Face1"});
+    md->Element2.setValue(p2, {"Face1"});
+
+    doc->recompute();
+
+    EXPECT_NEAR(md->Distance.getValue(), 4.0, 1e-6);
+    EXPECT_NEAR(md->DistanceX.getValue(), 4.0, 1e-6);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
+}
+
+// A cylinder and a circle in Auto measure the cylinder axis to the circle centre:
+// the centre (0,0,0) is 4 from the Z axis at x=4.
+TEST_F(MeasureDistance, testCylinderCircleAxisToCenter)
+{
+    App::Document* doc = getDocument();
+    auto pCyl = doc->addObject<Part::Feature>("Cyl");
+    pCyl->Shape.setValue(
+        BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(4.0, 0.0, 0.0), gp_Dir(0.0, 0.0, 1.0)), 2.0, 5.0)
+            .Face()
+    );
+    auto pCircle = doc->addObject<Part::Feature>("Circle");
+    pCircle->Shape.setValue(makeCircle(gp_Pnt(0.0, 0.0, 0.0)));
+
+    auto md = doc->addObject<Measure::MeasureDistance>("Distance");
+    md->Element1.setValue(pCyl, {"Face1"});
+    md->Element2.setValue(pCircle, {"Edge1"});
+
+    doc->recompute();
+
+    EXPECT_NEAR(md->Distance.getValue(), 4.0, 1e-6);
+    EXPECT_NEAR(md->DistanceX.getValue(), 4.0, 1e-6);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
+}
+
+// Two parallel lines offset in X and Z: Auto measures between the infinite lines
+// (3.0), unlike the finite extrema which would run corner-to-corner.
+TEST_F(MeasureDistance, testParallelLinesNominalDistance)
+{
+    App::Document* doc = getDocument();
+    auto p1 = doc->addObject<Part::Feature>("Line1");
+    p1->Shape.setValue(makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(2.0, 0.0, 0.0)));
+    auto p2 = doc->addObject<Part::Feature>("Line2");
+    p2->Shape.setValue(makeLine(gp_Pnt(10.0, 0.0, 3.0), gp_Pnt(12.0, 0.0, 3.0)));
+
+    auto md = doc->addObject<Measure::MeasureDistance>("Distance");
+    md->Element1.setValue(p1, {"Edge1"});
+    md->Element2.setValue(p2, {"Edge1"});
+
+    doc->recompute();
+
+    EXPECT_NEAR(md->Distance.getValue(), 3.0, 1e-6);
+    EXPECT_NEAR(md->DistanceX.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 3.0, 1e-6);
+}
+
+// A cylinder and a line parallel to its axis, 4 apart in X: Auto measures the two
+// axes, giving 4.0.
+TEST_F(MeasureDistance, testCylinderLineAxisDistance)
+{
+    App::Document* doc = getDocument();
+    auto pCyl = doc->addObject<Part::Feature>("Cyl");
+    pCyl->Shape.setValue(BRepPrimAPI_MakeCylinder(2.0, 5.0).Face());
+    auto pLine = doc->addObject<Part::Feature>("Line");
+    pLine->Shape.setValue(makeLine(gp_Pnt(4.0, 0.0, 0.0), gp_Pnt(4.0, 0.0, 5.0)));
+
+    auto md = doc->addObject<Measure::MeasureDistance>("Distance");
+    md->Element1.setValue(pCyl, {"Face1"});
+    md->Element2.setValue(pLine, {"Edge1"});
+
+    doc->recompute();
+
+    EXPECT_NEAR(md->Distance.getValue(), 4.0, 1e-6);
+    EXPECT_NEAR(md->DistanceX.getValue(), 4.0, 1e-6);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
+}
+
+// A cone's axis snaps like a cylinder's: the circle centre (4,0,0) projects onto
+// the cone's Z axis, giving 4.0.
+TEST_F(MeasureDistance, testConeCircleAxisToCenter)
+{
+    App::Document* doc = getDocument();
+    auto pCone = doc->addObject<Part::Feature>("Cone");
+    pCone->Shape.setValue(BRepPrimAPI_MakeCone(2.0, 1.0, 5.0).Face());
+    auto pCircle = doc->addObject<Part::Feature>("Circle");
+    pCircle->Shape.setValue(makeCircle(gp_Pnt(4.0, 0.0, 0.0)));
+
+    auto md = doc->addObject<Measure::MeasureDistance>("Distance");
+    md->Element1.setValue(pCone, {"Face1"});
+    md->Element2.setValue(pCircle, {"Edge1"});
+
+    doc->recompute();
+
+    EXPECT_NEAR(md->Distance.getValue(), 4.0, 1e-6);
+    EXPECT_NEAR(md->DistanceX.getValue(), 4.0, 1e-6);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
+}
+
+// Reversed order takes the point-to-axis arm: circle centre first, cylinder axis second.
+TEST_F(MeasureDistance, testCircleCylinderCenterToAxis)
+{
+    App::Document* doc = getDocument();
+    auto pCircle = doc->addObject<Part::Feature>("Circle");
+    pCircle->Shape.setValue(makeCircle(gp_Pnt(0.0, 0.0, 0.0)));
+    auto pCyl = doc->addObject<Part::Feature>("Cyl");
+    pCyl->Shape.setValue(
+        BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(4.0, 0.0, 0.0), gp_Dir(0.0, 0.0, 1.0)), 2.0, 5.0)
+            .Face()
+    );
+
+    auto md = doc->addObject<Measure::MeasureDistance>("Distance");
+    md->Element1.setValue(pCircle, {"Edge1"});
+    md->Element2.setValue(pCyl, {"Face1"});
+
+    doc->recompute();
+
+    EXPECT_NEAR(md->Distance.getValue(), 4.0, 1e-6);
+    EXPECT_NEAR(md->DistanceX.getValue(), 4.0, 1e-6);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
+    EXPECT_EQ(md->Position1.getValue(), Base::Vector3d(0.0, 0.0, 0.0));
+    EXPECT_EQ(md->Position2.getValue(), Base::Vector3d(4.0, 0.0, 0.0));
+}
+
+// The vertex lies on the line's infinite extension, so 6.0 proves Auto measures
+// to the finite edge, not the supporting line.
+TEST_F(MeasureDistance, testVertexLineStaysFiniteExtrema)
+{
+    App::Document* doc = getDocument();
+    auto pVertex = doc->addObject<Part::Feature>("Vertex");
+    pVertex->Shape.setValue(makeVertex(gp_Pnt(10.0, 0.0, 0.0)));
+    auto pLine = doc->addObject<Part::Feature>("Line");
+    pLine->Shape.setValue(makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(4.0, 0.0, 0.0)));
+
+    auto md = doc->addObject<Measure::MeasureDistance>("Distance");
+    md->Element1.setValue(pVertex, {"Vertex1"});
+    md->Element2.setValue(pLine, {"Edge1"});
+
+    doc->recompute();
+
+    EXPECT_NEAR(md->Distance.getValue(), 6.0, 1e-6);
+    EXPECT_NEAR(md->DistanceX.getValue(), 6.0, 1e-6);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
 }
 
 // A measurement's results must survive save and reload unchanged.

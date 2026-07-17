@@ -30,12 +30,11 @@
 #include <Base/Tools.h>
 #include <Bnd_Box.hxx>
 #include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_CompCurve.hxx>
+#include <BRepAdaptor_Surface.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <gp_Ax1.hxx>
-#include <gp_Circ.hxx>
 #include <gp_Dir.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
@@ -92,6 +91,74 @@ SnapResult resolveSnap(
         return {SnapKind::Axis, point, gp_Ax1(point, dir)};
     }
     return {SnapKind::Point, point, {}};
+}
+
+enum class AutoElement
+{
+    AxisFace,  // cylinder or cone face
+    Circle,
+    Line,
+    Other
+};
+
+AutoElement classifyAuto(const TopoDS_Shape& shape)
+{
+    if (shape.IsNull()) {
+        return AutoElement::Other;
+    }
+    if (shape.ShapeType() == TopAbs_FACE) {
+        const BRepAdaptor_Surface surf(TopoDS::Face(shape));
+        if (surf.GetType() == GeomAbs_Cylinder || surf.GetType() == GeomAbs_Cone) {
+            return AutoElement::AxisFace;
+        }
+        return AutoElement::Other;
+    }
+    if (shape.ShapeType() == TopAbs_EDGE) {
+        const BRepAdaptor_Curve adapt(TopoDS::Edge(shape));
+        if (adapt.GetType() == GeomAbs_Circle) {
+            return AutoElement::Circle;
+        }
+        if (adapt.GetType() == GeomAbs_Line) {
+            return AutoElement::Line;
+        }
+    }
+    return AutoElement::Other;
+}
+
+// Auto derives each element's snap: axis for cylinder/cone faces, centre for
+// circles, lines pair only axis-to-axis. Unhandled pairs stay nearest points.
+void autoSnapModes(
+    const TopoDS_Shape& shape1,
+    const TopoDS_Shape& shape2,
+    MeasureSnapMode& mode1,
+    MeasureSnapMode& mode2
+)
+{
+    const AutoElement e1 = classifyAuto(shape1);
+    const AutoElement e2 = classifyAuto(shape2);
+    auto axisLike = [](AutoElement e) {
+        return e == AutoElement::AxisFace || e == AutoElement::Line;
+    };
+
+    mode1 = MeasureSnapMode::None;
+    mode2 = MeasureSnapMode::None;
+
+    if (axisLike(e1) && axisLike(e2)) {
+        mode1 = MeasureSnapMode::Axis;
+        mode2 = MeasureSnapMode::Axis;
+    }
+    else if (e1 == AutoElement::Circle && e2 == AutoElement::Circle) {
+        mode1 = MeasureSnapMode::Center;
+        mode2 = MeasureSnapMode::Center;
+    }
+    else if (e1 == AutoElement::AxisFace && e2 == AutoElement::Circle) {
+        mode1 = MeasureSnapMode::Axis;
+        mode2 = MeasureSnapMode::Center;
+    }
+    else if (e1 == AutoElement::Circle && e2 == AutoElement::AxisFace) {
+        mode1 = MeasureSnapMode::Center;
+        mode2 = MeasureSnapMode::Axis;
+    }
 }
 
 }  // namespace
@@ -255,20 +322,6 @@ bool MeasureDistance::getShape(App::PropertyLinkSub* prop, TopoDS_Shape& rShape)
 
     rShape = distanceInfo->getShape();
     return true;
-}
-
-bool MeasureDistance::distanceCircleCircle(const TopoDS_Shape& shape1, const TopoDS_Shape& shape2)
-{
-    auto circle1 = asCircle(shape1);
-    auto circle2 = asCircle(shape2);
-    if (!circle1.IsNull() && !circle2.IsNull()) {
-        const gp_Pnt p1 = circle1->Location();
-        const gp_Pnt p2 = circle2->Location();
-        setValues(p1, p2);
-        return true;
-    }
-
-    return false;
 }
 
 void MeasureDistance::distanceGeneric(const TopoDS_Shape& shape1, const TopoDS_Shape& shape2)
@@ -439,15 +492,11 @@ App::DocumentObjectExecReturn* MeasureDistance::execute()
         return new App::DocumentObjectExecReturn("Could not get shape");
     }
 
-    const MeasureSnapMode snap1 = MeasureSnap::snapModeFromIndex(Snap1.getValue());
-    const MeasureSnapMode snap2 = MeasureSnap::snapModeFromIndex(Snap2.getValue());
+    MeasureSnapMode snap1 = MeasureSnap::snapModeFromIndex(Snap1.getValue());
+    MeasureSnapMode snap2 = MeasureSnap::snapModeFromIndex(Snap2.getValue());
 
     if (snap1 == MeasureSnapMode::Auto && snap2 == MeasureSnapMode::Auto) {
-        if (distanceCircleCircle(shape1, shape2)) {
-            return DocumentObject::StdReturn;
-        }
-        distanceGeneric(shape1, shape2);
-        return DocumentObject::StdReturn;
+        autoSnapModes(shape1, shape2, snap1, snap2);
     }
 
     distanceSnapped(shape1, shape2, snap1, snap2);
@@ -464,45 +513,6 @@ void MeasureDistance::onChanged(const App::Property* prop)
         }
     }
     DocumentObject::onChanged(prop);
-}
-
-Handle(Geom_Circle) MeasureDistance::asCircle(const TopoDS_Shape& shape) const
-{
-    if (shape.IsNull()) {
-        return {};
-    }
-
-    if (shape.ShapeType() == TopAbs_EDGE) {
-        return asCircle(TopoDS::Edge(shape));
-    }
-
-    if (shape.ShapeType() == TopAbs_WIRE) {
-        return asCircle(TopoDS::Wire(shape));
-    }
-
-    return {};
-}
-
-Handle(Geom_Circle) MeasureDistance::asCircle(const TopoDS_Edge& edge) const
-{
-    Handle(Geom_Circle) circle;
-    BRepAdaptor_Curve adapt(edge);
-    if (adapt.GetType() == GeomAbs_Circle) {
-        circle = new Geom_Circle(adapt.Circle());
-    }
-
-    return circle;
-}
-
-Handle(Geom_Circle) MeasureDistance::asCircle(const TopoDS_Wire& wire) const
-{
-    Handle(Geom_Circle) circle;
-    BRepAdaptor_CompCurve adapt(wire);
-    if (adapt.GetType() == GeomAbs_Circle) {
-        circle = new Geom_Circle(adapt.Circle());
-    }
-
-    return circle;
 }
 
 //! Return the object we are measuring
