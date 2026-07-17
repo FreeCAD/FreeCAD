@@ -49,6 +49,7 @@
 #include <QTimer>
 #include <QToolButton>
 #include <QToolTip>
+#include <QTextDocument>
 #include <QProcess>
 #include <QPushButton>
 #include <QWindow>
@@ -1642,22 +1643,23 @@ void PreferencesSearchController::searchWidgetType(
     for (WidgetType* widget : widgets) {
         QString widgetText;
 
-        // Get text based on widget type
+        // Get text based on widget type and strip any rich text formatting
         if constexpr (std::is_same_v<WidgetType, QLabel>) {
-            widgetText = widget->text();
+            widgetText = toPlainText(widget->text());
         }
         else if constexpr (std::is_same_v<WidgetType, QCheckBox>) {
-            widgetText = widget->text();
+            widgetText = toPlainText(widget->text());
         }
         else if constexpr (std::is_same_v<WidgetType, QGroupBox>) {
-            widgetText = widget->title();
+            widgetText = toPlainText(widget->title());
         }
         else if constexpr (std::is_same_v<WidgetType, QRadioButton>) {
-            widgetText = widget->text();
+            widgetText = toPlainText(widget->text());
         }
         else if constexpr (std::is_same_v<WidgetType, QPushButton>) {
-            widgetText = widget->text();
+            widgetText = toPlainText(widget->text());
         }
+
 
         if (!widgetText.isEmpty()) {
             int score = 0;
@@ -1677,16 +1679,17 @@ void PreferencesSearchController::searchWidgetType(
             }
         }
 
-        // search tooltip text for all widget types
-        QString tooltip = widget->toolTip();
-        if (!tooltip.isEmpty()) {
+        // normalise text and search tooltip text for all widget types
+        QString plainTooltip = toPlainText(widget->toolTip());
+        if (!plainTooltip.isEmpty()) {
+
             int tooltipScore = 0;
-            if (fuzzyMatch(searchText, tooltip, tooltipScore)) {
+            if (fuzzyMatch(searchText, plainTooltip, tooltipScore)) {
                 SearchResult result {
                     .groupName = groupName,
                     .pageName = pageName,
                     .widget = widget,
-                    .matchText = QStringLiteral("Tooltip: ") + tooltip,
+                    .matchText = QStringLiteral("Tooltip: ") + plainTooltip,
                     .groupBoxName = findGroupBoxForWidget(widget),
                     .tabName = tabName,
                     .pageDisplayName = pageDisplayName,
@@ -1907,6 +1910,16 @@ bool PreferencesSearchController::fuzzyMatch(
 
     score = 0;
     return false;
+}
+
+QString PreferencesSearchController::toPlainText(const QString& text)
+{
+    if (Qt::mightBeRichText(text)) {
+        QTextDocument doc;
+        doc.setHtml(text);
+        return doc.toPlainText();
+    }
+    return text;
 }
 
 void PreferencesSearchController::ensureSearchBoxFocus()
