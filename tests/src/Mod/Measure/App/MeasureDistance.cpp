@@ -285,8 +285,7 @@ TEST_F(MeasureDistance, testTwoCylindersAxisDistance)
     p1->Shape.setValue(BRepPrimAPI_MakeCylinder(2.0, 5.0).Face());
     auto p2 = doc->addObject<Part::Feature>("Cyl2");
     p2->Shape.setValue(
-        BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(4.0, 0.0, 0.0), gp_Dir(0.0, 0.0, 1.0)), 2.0, 5.0)
-            .Face()
+        BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(4.0, 0.0, 0.0), gp_Dir(0.0, 0.0, 1.0)), 2.0, 5.0).Face()
     );
 
     auto md = doc->addObject<Measure::MeasureDistance>("Distance");
@@ -308,8 +307,7 @@ TEST_F(MeasureDistance, testCylinderCircleAxisToCenter)
     App::Document* doc = getDocument();
     auto pCyl = doc->addObject<Part::Feature>("Cyl");
     pCyl->Shape.setValue(
-        BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(4.0, 0.0, 0.0), gp_Dir(0.0, 0.0, 1.0)), 2.0, 5.0)
-            .Face()
+        BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(4.0, 0.0, 0.0), gp_Dir(0.0, 0.0, 1.0)), 2.0, 5.0).Face()
     );
     auto pCircle = doc->addObject<Part::Feature>("Circle");
     pCircle->Shape.setValue(makeCircle(gp_Pnt(0.0, 0.0, 0.0)));
@@ -400,8 +398,7 @@ TEST_F(MeasureDistance, testCircleCylinderCenterToAxis)
     pCircle->Shape.setValue(makeCircle(gp_Pnt(0.0, 0.0, 0.0)));
     auto pCyl = doc->addObject<Part::Feature>("Cyl");
     pCyl->Shape.setValue(
-        BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(4.0, 0.0, 0.0), gp_Dir(0.0, 0.0, 1.0)), 2.0, 5.0)
-            .Face()
+        BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(4.0, 0.0, 0.0), gp_Dir(0.0, 0.0, 1.0)), 2.0, 5.0).Face()
     );
 
     auto md = doc->addObject<Measure::MeasureDistance>("Distance");
