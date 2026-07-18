@@ -58,8 +58,7 @@ if [ -x /c/ProgramData/chocolatey/tools/shimgen.exe ]; then
     popd
 fi
 
-python_version=$("${copy_dir}"/bin/python.exe -c 'import platform; print("py" + platform.python_version_tuple()[0] + platform.python_version_tuple()[1])')
-version_name="FreeCAD_${BUILD_TAG}-Windows-$(uname -m)-${python_version}"
+version_name="FreeCAD_${BUILD_TAG}-Windows-$(uname -m)"
 
 echo -e "################"
 echo -e "version_name:  ${version_name}"
@@ -126,6 +125,18 @@ if [[ "${WINDOWS_SIGN_RELEASE:-0}" == "1" ]]; then
   fi
 else
   echo "Not logged into Azure -- skipping signing."
+fi
+
+echo "Running FreeCAD command-line smoke test..."
+if ! "$SIGN_DIR/bin/freecadcmd.exe" --safe-mode --version; then
+  echo "FreeCAD command-line smoke test failed; the Windows bundle cannot start."
+  exit 1
+fi
+
+echo "Running FreeCAD bundled Pivy smoke test..."
+if ! "$SIGN_DIR/bin/freecadcmd.exe" --safe-mode --console "import pivy; from pivy import coin; print(pivy.__file__); print(coin.SoDB.getVersion())"; then
+  echo "FreeCAD bundled Pivy smoke test failed; the Windows bundle cannot import the bundled Coin/Pivy runtime."
+  exit 1
 fi
 
 7z a -t7z -mx9 -mmt=${NUMBER_OF_PROCESSORS} ${version_name}.7z ${version_name} -bb

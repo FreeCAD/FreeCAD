@@ -120,6 +120,20 @@
     </layout>
    </item>
    <item>
+    <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="followsVisibility">
+        <property name="toolTip">
+         <string>Set default state in accordance with operations visibility</string>
+        </property>
+        <property name="text">
+         <string>Follow operations visibility</string>
+        </property>
+       </widget>
+      </item>
+    </layout>
+   </item>
+   <item>
     <widget class="QListWidget" name="listOperations">
      <property name="selectionMode">
       <enum>QAbstractItemView::NoSelection</enum>

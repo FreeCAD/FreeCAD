@@ -127,7 +127,7 @@ void Box::Restore(Base::XMLReader& reader)
                 prop->setStatusValue(status.to_ulong());
             }
         }
-        if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
+        if (prop && prop->getTypeId().getName() == TypeName) {
             if (!prop->testStatus(App::Property::Transient) && !status.test(App::Property::Transient)
                 && !status.test(App::Property::PropTransient)
                 && !(getPropertyType(prop) & App::Prop_Transient)) {
@@ -192,7 +192,7 @@ void Box::Restore(Base::XMLReader& reader)
         if (strcmp(TypeName, "PropertyDistance") == 0) {  // missing prefix App::
             tn = std::string("App::") + tn;
         }
-        if (prop && strcmp(prop->getTypeId().getName(), tn.c_str()) == 0) {
+        if (prop && prop->getTypeId().getName() == tn) {
             prop->Restore(reader);
         }
 

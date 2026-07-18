@@ -40,7 +40,7 @@
 #include "Core/Iterator.h"
 #include "Core/MeshIO.h"
 #include "Core/MeshKernel.h"
-#include "WildMagic4/Wm4ContBox3.h"
+#include "Wm4ContBox3.h"
 
 #include "Exporter.h"
 #include "Importer.h"
@@ -443,7 +443,9 @@ private:
         int closed = 1;
         float edgelen = 1.0F;
         int sampling = 50;
-        if (!PyArg_ParseTuple(args.ptr(), "|fffifi", &radius1, &radius2, &len, &closed, &edgelen, &sampling)) {
+        if (
+            !PyArg_ParseTuple(args.ptr(), "|fffifi", &radius1, &radius2, &len, &closed, &edgelen, &sampling)
+        ) {
             throw Py::Exception();
         }
 

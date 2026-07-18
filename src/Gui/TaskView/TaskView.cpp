@@ -188,23 +188,20 @@ void TaskBox::hideGroupBox()
     m_foldStep = 0.0;
     m_foldDirection = -1;
 
-    // make sure to have the correct icon
-    bool block = myHeader->blockSignals(true);
-    myHeader->fold();
-    myHeader->blockSignals(block);
+    myHeader->setFold(false);
 
     myDummy->setFixedHeight(0);
     myDummy->hide();
     myGroup->hide();
 
     m_foldPixmap = QPixmap();
-    setFixedHeight(myHeader->height());
+    setFixedHeight(myScheme->headerSize);
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 }
 
 bool TaskBox::isGroupVisible() const
 {
-    return myGroup->isVisible();
+    return !myGroup->isHidden() || m_foldDirection == 1;
 }
 
 void TaskBox::actionEvent(QActionEvent* e)
@@ -272,22 +269,6 @@ TaskPanel::~TaskPanel()
     }
 }
 
-QSize TaskPanel::minimumSizeHint() const
-{
-    // ActionPanel returns a size of 200x150 which leads to problems
-    // when there are several task groups in the panel and the first
-    // one is collapsed. In this case the task panel doesn't expand to
-    // the actually required size and all the remaining groups are
-    // squeezed into the available space and thus the widgets in there
-    // often can't be used any more.
-    // To fix this problem minimumSizeHint() is implemented to again
-    // respect the layout's minimum size.
-    QSize s1 = actionPanel->minimumSizeHint();
-    QSize s2 = QWidget::minimumSizeHint();
-    return {qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height())};
-}
-
-
 //**************************************************************************
 //**************************************************************************
 // TaskView
@@ -321,6 +302,9 @@ TaskView::TaskView(QWidget* parent)
     connectApplicationInEdit = Gui::Application::Instance->signalInEdit.connect(
         std::bind(&Gui::TaskView::TaskView::slotInEdit, this, sp::_1)
     );
+    connectApplicationResetEdit = Gui::Application::Instance->signalResetEdit.connect(
+        std::bind(&Gui::TaskView::TaskView::slotResetEdit, this, sp::_1)
+    );
     // NOLINTEND
 
     setShowTaskWatcher(hGrp->GetBool("ShowTaskWatcher", true));
@@ -343,6 +327,7 @@ TaskView::~TaskView()
     connectApplicationUndoDocument.disconnect();
     connectApplicationRedoDocument.disconnect();
     connectApplicationInEdit.disconnect();
+    connectApplicationResetEdit.disconnect();
     connectShowTaskWatcherSetting.disconnect();
     Gui::Selection().Detach(this);
 
@@ -435,7 +420,7 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
             QDialogButtonBox* box = active->ActiveCtrl->standardButtons();
             QList<QAbstractButton*> list = box->buttons();
             for (auto pb : list) {
-                if (box->buttonRole(pb) == QDialogButtonBox::RejectRole) {
+                if (box->buttonRole(pb) == active->ActiveDialog->roleOnEscape) {
                     if (pb->isEnabled()) {
 #if defined(FC_OS_MACOSX)
                         // #0001354: Crash on using Enter-Key for confirmation of chamfer or fillet
@@ -521,13 +506,38 @@ void TaskView::slotInEdit(const Gui::ViewProviderDocumentObject& vp)
     }
 }
 
+void TaskView::slotResetEdit(const Gui::ViewProviderDocumentObject& vp)
+{
+    App::Document* doc = vp.getDocument()->getDocument();
+    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+    bool hasDialog = foundTaskInfo != taskInfos.end();
+
+    if (hasDialog && foundTaskInfo->ActiveDialog->isAutoCloseOnResetEdit()) {
+        foundTaskInfo->ActiveDialog->autoClosedOnResetEdit();
+
+        auto refreshedTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+        if (refreshedTaskInfo != taskInfos.end()) {
+            removeDialog(refreshedTaskInfo);
+        }
+        hasDialog = false;
+    }
+
+    if (!hasDialog) {
+        updateWatcher();
+    }
+}
+
 void TaskView::slotDeletedDocument(const App::Document& doc)
 {
     auto foundTaskInfo = std::ranges::find(taskInfos, &doc, &TaskInfo::Document);
     bool hasDialog = foundTaskInfo != taskInfos.end();
     if (hasDialog && foundTaskInfo->ActiveDialog->isAutoCloseOnDeletedDocument()) {
         foundTaskInfo->ActiveDialog->autoClosedOnDeletedDocument();
-        removeDialog(foundTaskInfo);
+
+        auto refreshedTaskInfo = std::ranges::find(taskInfos, &doc, &TaskInfo::Document);
+        if (refreshedTaskInfo != taskInfos.end()) {
+            removeDialog(refreshedTaskInfo);
+        }
         hasDialog = false;
     }
 
@@ -544,8 +554,13 @@ void TaskView::slotViewClosed(const Gui::MDIView* view)
     bool hasDialog = foundTaskInfo != taskInfos.end();
     // It can happen that only a view is closed an not the document
     if (hasDialog && foundTaskInfo->ActiveDialog->isAutoCloseOnClosedView()) {
+        App::Document* doc = foundTaskInfo->Document;
         foundTaskInfo->ActiveDialog->autoClosedOnClosedView();
-        removeDialog(foundTaskInfo);
+
+        auto refreshedTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+        if (refreshedTaskInfo != taskInfos.end()) {
+            removeDialog(refreshedTaskInfo);
+        }
         hasDialog = false;
     }
 
@@ -568,8 +583,13 @@ void TaskView::transactionChangeOnDocument(const App::Document& doc, bool undo)
         }
 
         if (foundTaskInfo->ActiveDialog->isAutoCloseOnTransactionChange()) {
+            App::Document* docPtr = foundTaskInfo->Document;
             foundTaskInfo->ActiveDialog->autoClosedOnTransactionChange();
-            removeDialog(foundTaskInfo);
+
+            auto refreshedTaskInfo = std::ranges::find(taskInfos, docPtr, &TaskInfo::Document);
+            if (refreshedTaskInfo != taskInfos.end()) {
+                removeDialog(refreshedTaskInfo);
+            }
             hasDialog = false;
         }
     }
@@ -835,6 +855,7 @@ void TaskView::addTaskWatcher()
 {
     if (!showTaskWatcher) {
         setShownTaskInfo(-1);  // Switch to the empty taskwatcher panel
+        Q_EMIT taskUpdate();
         return;
     }
     // add all widgets for all watcher to the task view
@@ -861,7 +882,11 @@ void TaskView::addTaskWatcher()
     }
 
     TaskWatcherPanel->actionPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
-    setShownTaskInfo(-1);
+    // Don't hide active task dialog when switching workbenches
+    // Only switch to watcher panel if there's no active task dialog
+    if (!currentTaskInfo()) {
+        setShownTaskInfo(-1);
+    }
 }
 
 void TaskView::saveCurrentWidth()
@@ -908,7 +933,7 @@ void TaskView::setShownTaskInfo(int index)
 {
     int stackedIndex = 0;
     int initIndex = currentIndex();
-    if (index < 0 || index >= taskInfos.size()) {
+    if (index < 0 || static_cast<decltype(taskInfos)::size_type>(index) >= taskInfos.size()) {
         updateWatcher();
         stackedIndex = 0;  // Show task watcher
     }

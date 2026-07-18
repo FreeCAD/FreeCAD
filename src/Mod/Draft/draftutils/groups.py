@@ -29,6 +29,7 @@
 The functions here are also used in the Arch Workbench as some of
 the objects created with this workbench work like groups.
 """
+
 ## @package groups
 # \ingroup draftutils
 # \brief Provides utility functions to do operations with groups.
@@ -155,15 +156,14 @@ def get_windows(obj):
     Parameters
     ----------
     obj: App::DocumentObject
-        A scripted object of type `'Wall'` or `'Structure'`
-        (Arch Workbench).
+        A scripted object of type `'Wall'`, `'Roof'`, `'Structure'` or
+        `'CurtainWall'` (BIM Workbench).
         This will be searched for objects of type `'Window'` and `'Rebar'`,
         and clones of them, and the found elements will be added
         to the output list.
 
         The function will search recursively all elements under `obj.OutList`,
-        in case the windows and rebars are nested under other walls
-        and structures.
+        in case the windows and rebars are nested under other hosts.
 
     Returns
     -------
@@ -173,7 +173,7 @@ def get_windows(obj):
         it will return the same `obj` element.
     """
     out = []
-    if utils.get_type(obj) in ("Wall", "Structure"):
+    if utils.get_type(obj) in ("Wall", "Roof", "Structure", "CurtainWall"):
         for o in obj.OutList:
             out.extend(get_windows(o))
         for i in obj.InList:
@@ -193,7 +193,9 @@ def get_windows(obj):
     return out
 
 
-def get_group_contents(objectslist, walls=False, addgroups=False, spaces=False, noarchchild=False):
+def get_group_contents(
+    objectslist, walls=False, addgroups=False, spaces=False, noarchchild=False, exclude_names=None
+):
     """Return a list of objects from expanding the input groups.
 
     The function accepts any type of object, although it is most useful
@@ -211,9 +213,9 @@ def get_group_contents(objectslist, walls=False, addgroups=False, spaces=False, 
 
     walls: bool, optional
         It defaults to `False`.
-        If it is `True`, Wall and Structure objects (Arch Workbench)
-        are treated as groups; they are scanned for Window, Door,
-        and Rebar objects, and these are added to the output list.
+        If it is `True`, Wall, Roof, Structure and CurtainWall objects
+        (BIM Workbench) are treated as groups; they are scanned for Window,
+        Door, and Rebar objects, and these are added to the output list.
 
     addgroups: bool, optional
         It defaults to `False`.
@@ -229,6 +231,11 @@ def get_group_contents(objectslist, walls=False, addgroups=False, spaces=False, 
         If it is `True`, the objects inside Building and BuildingParts
         (Arch Workbench) aren't added to the output list.
 
+    exclude_names: list/tuple/set, optional
+        It defaults to `None`.
+        If an iterable of object names is given, any object whose `Name` is
+        in this iterable will be excluded from the output list.
+
     Returns
     -------
     list
@@ -241,12 +248,16 @@ def get_group_contents(objectslist, walls=False, addgroups=False, spaces=False, 
 
     for obj in objectslist:
         if obj:
+            if exclude_names and obj.Name in exclude_names:
+                continue
             if is_group(obj):
                 if addgroups or (spaces and utils.get_type(obj) == "Space"):
                     newlist.append(obj)
                 if not (noarchchild and utils.get_type(obj) in ("Building", "BuildingPart")):
                     newlist.extend(
-                        get_group_contents(obj.Group, walls, addgroups, spaces, noarchchild)
+                        get_group_contents(
+                            obj.Group, walls, addgroups, spaces, noarchchild, exclude_names
+                        )
                     )
             else:
                 # print("adding ", obj.Name)

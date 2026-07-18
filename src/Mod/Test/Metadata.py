@@ -23,7 +23,6 @@
 import FreeCAD
 import unittest
 import os
-import codecs
 import tempfile
 
 
@@ -120,9 +119,8 @@ class TestMetadata(unittest.TestCase):
         # Issue 7112
         try:
             filename = os.path.join(tempfile.gettempdir(), b"H\xc3\xa5vard.xml".decode("utf-8"))
-            xmlfile = codecs.open(filename, mode="w", encoding="utf-8")
-            xmlfile.write(
-                r"""<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+            xmlfile = open(filename, mode="w", encoding="utf-8")
+            xmlfile.write(r"""<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
   <name>test</name>
   <description>Text</description>
@@ -133,8 +131,7 @@ class TestMetadata(unittest.TestCase):
       <classname>Workbench</classname>
     </workbench>
   </content>
-</package>"""
-            )
+</package>""")
             xmlfile.close()
             md = FreeCAD.Metadata(filename)
             self.assertEqual(md.Name, "test")

@@ -27,6 +27,7 @@
 #include <QAction>
 #include <QApplication>
 #include <QKeyEvent>
+#include <QListWidget>
 #include <QListWidgetItem>
 #include <QTimer>
 
@@ -92,7 +93,7 @@ void TaskDressUpParameters::setupTransaction()
     }
 
     // open a transaction if none is active
-    // where is this transaction commited - theo-vt?
+    // where is this transaction committed - theo-vt?
     std::string n("Edit ");
     n += DressUpView->getObject()->Label.getValue();
     transactionID = DressUpView->getObject()->getDocument()->openTransaction(n.c_str());
@@ -338,6 +339,7 @@ void TaskDressUpParameters::createDeleteAction(QListWidget* parentList)
     deleteAction->setShortcutVisibleInContextMenu(true);
     parentList->addAction(deleteAction);
     parentList->setContextMenuPolicy(Qt::ActionsContextMenu);
+    parentList->installEventFilter(this);
 }
 
 bool TaskDressUpParameters::event(QEvent* event)
@@ -355,6 +357,30 @@ bool TaskDressUpParameters::event(QEvent* event)
     }
 
     return TaskBox::event(event);
+}
+
+bool TaskDressUpParameters::eventFilter(QObject* watched, QEvent* event)
+{
+    if (event->type() == QEvent::KeyPress) {
+        auto* listWidget = qobject_cast<QListWidget*>(watched);
+        auto* keyEvent = static_cast<QKeyEvent*>(event);  // NOLINT
+        if (listWidget) {
+            const Qt::KeyboardModifiers ignoredModifiers = Qt::ShiftModifier | Qt::KeypadModifier;
+            if ((keyEvent->modifiers() & ~ignoredModifiers) == Qt::NoModifier
+                && (keyEvent->key() == Qt::Key_Down || keyEvent->key() == Qt::Key_Up)) {
+                const int row = listWidget->currentRow();
+                const int last = listWidget->count() - 1;
+                if (row >= 0
+                    && ((keyEvent->key() == Qt::Key_Down && row >= last)
+                        || (keyEvent->key() == Qt::Key_Up && row <= 0))) {
+                    keyEvent->accept();
+                    return true;
+                }
+            }
+        }
+    }
+
+    return TaskFeatureParameters::eventFilter(watched, event);
 }
 
 void TaskDressUpParameters::keyPressEvent(QKeyEvent* ke)

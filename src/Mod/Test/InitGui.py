@@ -98,4 +98,10 @@ FreeCAD.__unit_test__ += [
     "Menu.MenuDeleteCases",
     "Menu.MenuCreateCases",
     "GuiDocument",
+    "TestGraphicsViewWrapping",
+    "TestRubberbandSelection",
+    "TestCoinSelectionVisual",
+    "TestCornerAxisCrossVisual",
+    "TestCoinNodeSnapshots",
+    "TestViewProviderLink",
 ]

@@ -36,8 +36,16 @@ if(POLICY CMP0177)
     cmake_policy(SET CMP0177 NEW)
 endif()
 
+# Make CMake output a bit more focused
+set(CMAKE_REQUIRED_QUIET TRUE)
+
 
 option(FREECAD_USE_CCACHE "Auto detect and use ccache during compilation" ON)
+
+# FreeCAD does not use C++20 modules. Keep CMake 3.28+ from enabling module
+# dependency scanning on C++20 targets, especially with toolchains that do not
+# provide a scanner such as clang-scan-deps.
+set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
 
 if(FREECAD_USE_CCACHE)
     find_program(CCACHE_PROGRAM ccache)  #This check should occur before project()
@@ -48,17 +56,40 @@ if(FREECAD_USE_CCACHE)
     endif()
 endif()
 
-project(FreeCAD)
+# Version and Package Name are set in the version.json file and propagate to all other
+# files with version information in them either via CMake or via the sync_version.py
+# script (in src/Tools/)
+file(READ "${CMAKE_SOURCE_DIR}/version.json" VERSION_JSON)
+string(JSON _PROJECT_NAME GET ${VERSION_JSON} "name")
+string(JSON PACKAGE_VERSION_MAJOR GET ${VERSION_JSON} "version_major")
+string(JSON PACKAGE_VERSION_MINOR GET ${VERSION_JSON} "version_minor")
+string(JSON PACKAGE_VERSION_PATCH GET ${VERSION_JSON} "version_patch")
+string(JSON PACKAGE_VERSION_SUFFIX GET ${VERSION_JSON} "version_suffix")
+string(JSON PACKAGE_BUILD_VERSION GET ${VERSION_JSON} "build_version")
 
-set(PACKAGE_VERSION_MAJOR "1")
-set(PACKAGE_VERSION_MINOR "2")
-set(PACKAGE_VERSION_PATCH "0") # number of patch release (e.g. "4" for the 0.18.4 release)
-set(PACKAGE_VERSION_SUFFIX "dev") # either "dev" for development snapshot or "" (empty string)
-set(PACKAGE_BUILD_VERSION "0") # used when the same FreeCAD version will be re-released (for example using an updated LibPack)
+project(${_PROJECT_NAME})
 string(TIMESTAMP PACKAGE_COPYRIGHT_YEAR "%Y")
 
 set(PACKAGE_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${PACKAGE_VERSION_PATCH}")
 set(PACKAGE_STRING "${PROJECT_NAME} ${PACKAGE_VERSION}")
+
+
+# Sanitizer support
+option(FREECAD_USE_SANITIZER_ASAN "Enable AddressSanitizer ie. (ASan)" OFF)
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    option(FREECAD_USE_SANITIZER_LSAN "Enable LeakSanitizer (LSan)" OFF)
+    option(FREECAD_USE_SANITIZER_TSAN "Enable ThreadSanitizer (TSan)" OFF)
+    option(FREECAD_USE_SANITIZER_UBSAN "Enable UndefinedBehaviorSanitizer (UBSan)" OFF)
+    option(FREECAD_USE_SANITIZER_MSAN "Enable MemorySanitizer (MSan)" OFF)
+endif()
+
+mark_as_advanced(
+        FREECAD_USE_SANITIZER_ASAN
+        FREECAD_USE_SANITIZER_LSAN
+        FREECAD_USE_SANITIZER_TSAN
+        FREECAD_USE_SANITIZER_UBSAN
+        FREECAD_USE_SANITIZER_MSAN
+)
 
 # include local modules
 include(CheckCXXCompilerFlag)
@@ -75,9 +106,13 @@ InitializeFreeCADBuildOptions()
 CheckInterModuleDependencies()
 FreeCADLibpackChecks()
 SetupDoxygen()
-SetupLibFmt()
+SetupJSON()
+SetupKDTree()
+SetupSanitizers()
 SetupYamlCpp()
 SetupZipIos()
+SetupClipper2()
+find_package(fmt REQUIRED)
 find_package(ICU REQUIRED COMPONENTS uc i18n)
 if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIBPACK_CHECKFILE_VERSION)
     SetupPython()
@@ -100,8 +135,6 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
             find_package(NETGEN REQUIRED)
         endif()
     endif()
-    # not needed at the moment
-    #find_package(OpenCV REQUIRED)
     SetupSwig()
     SetupEigen()
     # This file is included directly due to some cMake macros that are defined within.
@@ -110,14 +143,13 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
     SetupFreetype()
 
     if(BUILD_GUI)
-        SetupCoin3D()
-        SetupPivy()
+        SetupCoinPivy()
         SetupSpaceball()
         SetupShibokenAndPyside()
         SetupMatplotlib()
     endif(BUILD_GUI)
 
-    # SetupCoin3D can overwrite find_package(Boost) output so keep this after.
+    # SetupCoinPivy can overwrite find_package(Boost) output so keep this after.
     SetupBoost()
 
     if(BUILD_BIM)
@@ -146,6 +178,7 @@ endif()
 if (ENABLE_DEVELOPER_TESTS)
     include(CTest)
     enable_testing()
+    find_package(GTest REQUIRED)
     add_subdirectory(tests)
 endif()
 

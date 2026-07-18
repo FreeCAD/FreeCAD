@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************/
 
-import FreeCAD, os, unittest, tempfile
+import FreeCAD, os, unittest, tempfile, zipfile
 from FreeCAD import Base
 import math
 import xml.etree.ElementTree as ET
@@ -186,7 +186,6 @@ class DocumentBasicCases(unittest.TestCase):
         # call members to check for errors in ref counting
         self.Doc.ActiveObject
         self.Doc.Objects
-        self.Doc.UndoMode
         self.Doc.UndoRedoMemSize
         self.Doc.UndoCount
         # test read only mechanismus
@@ -699,6 +698,133 @@ class DocumentBasicCases(unittest.TestCase):
         FreeCAD.closeDocument("CreateTest")
 
 
+class DocumentSettingsCases(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("DocumentSettingsTests")
+
+    def tearDown(self):
+        if FreeCAD.getDocument(self.Doc.Name) is not None:
+            FreeCAD.closeDocument(self.Doc.Name)
+
+    def testStringSettingUpdatesOnlyNamespacedMetaKey(self):
+        self.Doc.Meta = {
+            "Unrelated": "keep",
+            "Draft.Other": "old",
+            "BIM.GridSpacing": "1 m",
+        }
+
+        settings = self.Doc.settings("Draft")
+        settings.setString("GridSpacing", "0.1 m")
+
+        self.assertEqual(settings.getString("GridSpacing", ""), "0.1 m")
+        self.assertEqual(self.Doc.Meta["Draft.GridSpacing"], "0.1 m")
+        self.assertEqual(self.Doc.Meta["Unrelated"], "keep")
+        self.assertEqual(self.Doc.Meta["Draft.Other"], "old")
+        self.assertEqual(self.Doc.Meta["BIM.GridSpacing"], "1 m")
+
+    def testTypedGettersParseValidValuesAndDefaultInvalidValues(self):
+        self.Doc.Meta = {
+            "Draft.GridMainlines": "10",
+            "Draft.GridSize": "12.5",
+            "Draft.ShowGrid": "true",
+            "Draft.InvalidInt": "10 lines",
+            "Draft.InvalidFloat": "12,5",
+            "Draft.InvalidBool": "sometimes",
+        }
+
+        settings = self.Doc.settings("Draft")
+
+        self.assertEqual(settings.getInt("GridMainlines", 1), 10)
+        self.assertAlmostEqual(settings.getFloat("GridSize", 1.0), 12.5)
+        self.assertTrue(settings.getBool("ShowGrid", False))
+        self.assertEqual(settings.getInt("InvalidInt", 7), 7)
+        self.assertAlmostEqual(settings.getFloat("InvalidFloat", 2.5), 2.5)
+        self.assertTrue(settings.getBool("InvalidBool", True))
+        self.assertEqual(settings.getString("Missing", "fallback"), "fallback")
+        self.assertEqual(settings.getInt("Missing", 3), 3)
+        self.assertAlmostEqual(settings.getFloat("Missing", 4.5), 4.5)
+        self.assertTrue(settings.getBool("Missing", True))
+
+    def testTypedSettersStoreStringBackedCanonicalValues(self):
+        settings = self.Doc.settings("Draft")
+
+        settings.setInt("GridMainlines", 10)
+        settings.setFloat("GridSize", 12.5)
+        settings.setFloat("FineStep", 0.1)
+        settings.setBool("ShowGrid", True)
+
+        self.assertEqual(self.Doc.Meta["Draft.GridMainlines"], "10")
+        self.assertEqual(self.Doc.Meta["Draft.GridSize"], "12.5")
+        self.assertEqual(self.Doc.Meta["Draft.FineStep"], "0.1")
+        self.assertEqual(self.Doc.Meta["Draft.ShowGrid"], "true")
+
+    def testKeysAreScopedAndRemoveDeletesOnlySelectedKey(self):
+        self.Doc.Meta = {
+            "Draft.GridSpacing": "0.1 m",
+            "Draft.GridSize": "100",
+            "Draft.Bad.Key": "hidden",
+            "BIM.GridSpacing": "1 m",
+            "Draft_Style_Default": "{}",
+        }
+
+        settings = self.Doc.settings("Draft")
+
+        self.assertEqual(settings.keys(), ["GridSize", "GridSpacing"])
+        settings.remove("GridSize")
+
+        self.assertNotIn("Draft.GridSize", self.Doc.Meta)
+        self.assertEqual(self.Doc.Meta["Draft.GridSpacing"], "0.1 m")
+        self.assertEqual(self.Doc.Meta["BIM.GridSpacing"], "1 m")
+        self.assertEqual(self.Doc.Meta["Draft_Style_Default"], "{}")
+
+    def testDottedNamespacesAreScoped(self):
+        self.Doc.Meta = {
+            "Draft.Grid.Spacing": "0.1 m",
+            "Draft.Grid.Mainlines": "10",
+            "Draft.Grid.Nested.Key": "hidden",
+            "Draft.GridSize": "100",
+            "Draft.Other": "keep",
+            "BIM.Grid.Spacing": "1 m",
+        }
+
+        draftSettings = self.Doc.settings("Draft")
+        gridSettings = self.Doc.settings("Draft.Grid")
+
+        self.assertEqual(draftSettings.keys(), ["GridSize", "Other"])
+        self.assertEqual(gridSettings.keys(), ["Mainlines", "Spacing"])
+        self.assertEqual(gridSettings.getString("Spacing", ""), "0.1 m")
+
+        gridSettings.setFloat("Size", 100.0)
+        gridSettings.remove("Spacing")
+
+        self.assertEqual(self.Doc.Meta["Draft.Grid.Size"], "100")
+        self.assertNotIn("Draft.Grid.Spacing", self.Doc.Meta)
+        self.assertEqual(self.Doc.Meta["Draft.Grid.Mainlines"], "10")
+        self.assertEqual(self.Doc.Meta["Draft.Other"], "keep")
+        self.assertEqual(self.Doc.Meta["BIM.Grid.Spacing"], "1 m")
+
+    def testNamespaceAndKeyValidation(self):
+        for namespace in ("", ".Draft", "Draft.", "Draft..Grid", "Draft-Grid"):
+            with self.subTest(namespace=namespace):
+                with self.assertRaises(ValueError):
+                    self.Doc.settings(namespace)
+
+        settings = self.Doc.settings("Draft.Grid")
+        for key in ("", "Grid.Spacing", "Grid-Spacing"):
+            with self.subTest(key=key):
+                with self.assertRaises(ValueError):
+                    settings.setString(key, "0.1 m")
+
+    def testBoolArgumentsRequireBoolValues(self):
+        settings = self.Doc.settings("Draft")
+
+        with self.assertRaises(TypeError):
+            settings.getBool("ShowGrid", "false")
+
+        with self.assertRaises(TypeError):
+            settings.setBool("ShowGrid", "false")
+
+
 # class must be defined in global scope to allow it to be reloaded on document open
 class SaveRestoreSpecialGroup:
     def __init__(self, obj):
@@ -840,6 +966,66 @@ class DocumentSaveRestoreCases(unittest.TestCase):
         FreeCAD.closeDocument("SaveRestoreTests")
 
 
+class DocumentRecoveryCases(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("RecoveryTests")
+        self.Obj = self.Doc.addObject("App::FeatureTest", "RecoveryObject")
+        self.savedFileName = None
+
+    def tearDown(self):
+        if FreeCAD.getDocument("RecoveryTests") is not None:
+            FreeCAD.closeDocument("RecoveryTests")
+        if self.savedFileName and os.path.exists(self.savedFileName):
+            os.remove(self.savedFileName)
+
+    def testWriteCompressedRecoverySnapshot(self):
+        self.assertTrue(self.Doc.canWriteRecoverySnapshot())
+        self.assertTrue(FreeCAD.writeRecoverySnapshotToTransientDir(self.Doc))
+
+        metadata = os.path.join(self.Doc.TransientDir, "fc_recovery_file.xml")
+        archive = os.path.join(self.Doc.TransientDir, "fc_recovery_file.fcstd")
+
+        self.assertTrue(os.path.isfile(metadata))
+        self.assertTrue(os.path.isfile(archive))
+
+        root = ET.parse(metadata).getroot()
+        self.assertEqual(root.tag, "AutoRecovery")
+
+        with zipfile.ZipFile(archive) as recovery:
+            self.assertIn("Document.xml", recovery.namelist())
+
+    def testWriteUncompressedRecoverySnapshot(self):
+        self.assertTrue(FreeCAD.writeRecoverySnapshotToTransientDir(self.Doc, compressed=False))
+
+        metadata = os.path.join(self.Doc.TransientDir, "fc_recovery_file.xml")
+        document_xml = os.path.join(self.Doc.TransientDir, "fc_recovery_files", "Document.xml")
+
+        self.assertTrue(os.path.isfile(metadata))
+        self.assertTrue(os.path.isfile(document_xml))
+
+    def testRecoveryMetadataEscapesXml(self):
+        self.Doc.Label = 'Recovery <Label> & "Name"'
+        self.savedFileName = os.path.join(tempfile.gettempdir(), "Recovery&Name.FCStd")
+        self.Doc.saveAs(self.savedFileName)
+
+        self.assertTrue(FreeCAD.writeRecoverySnapshotToTransientDir(self.Doc))
+
+        metadata = os.path.join(self.Doc.TransientDir, "fc_recovery_file.xml")
+        root = ET.parse(metadata).getroot()
+
+        self.assertEqual(root.findtext("Label"), self.Doc.Label)
+        self.assertEqual(root.findtext("FileName"), self.savedFileName)
+
+    def testRejectRecoverySnapshotDuringTransaction(self):
+        self.Doc.openTransaction("RecoveryWrite")
+        try:
+            self.assertFalse(self.Doc.canWriteRecoverySnapshot())
+            with self.assertRaises(RuntimeError):
+                FreeCAD.writeRecoverySnapshotToTransientDir(self.Doc)
+        finally:
+            self.Doc.abortTransaction()
+
+
 class DocumentRecomputeCases(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("RecomputeTests")
@@ -961,15 +1147,11 @@ class DocumentRecomputeCases(unittest.TestCase):
 class UndoRedoCases(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("UndoTest")
-        self.Doc.UndoMode = 0
         self.Doc.addObject("App::FeatureTest", "Base")
         self.Doc.addObject("App::FeatureTest", "Del")
         self.Doc.getObject("Del").Integer = 2
 
     def testUndoProperties(self):
-        # switch on the Undo
-        self.Doc.UndoMode = 1
-
         # first transaction
         self.Doc.openTransaction("Transaction1")
         self.Doc.addObject("App::FeatureTest", "test1")
@@ -991,12 +1173,8 @@ class UndoRedoCases(unittest.TestCase):
         self.Doc.getObject("test1").Float = 2.0
         self.Doc.getObject("test1").Bool = 0
 
-        # switch on the Undo OFF
-        self.Doc.UndoMode = 0
-
     def testUndoClear(self):
         # switch on the Undo
-        self.Doc.UndoMode = 1
         self.assertEqual(self.Doc.UndoNames, [])
         self.assertEqual(self.Doc.UndoCount, 0)
         self.assertEqual(self.Doc.RedoNames, [])
@@ -1015,7 +1193,6 @@ class UndoRedoCases(unittest.TestCase):
 
     def testUndo(self):
         # switch on the Undo
-        self.Doc.UndoMode = 1
         self.assertEqual(self.Doc.UndoNames, [])
         self.assertEqual(self.Doc.UndoCount, 0)
         self.assertEqual(self.Doc.RedoNames, [])
@@ -1182,17 +1359,7 @@ class UndoRedoCases(unittest.TestCase):
         self.assertEqual(self.Doc.RedoNames, ["Transaction9"])
         self.assertEqual(self.Doc.RedoCount, 1)
 
-        # switch on the Undo OFF
-        self.Doc.UndoMode = 0
-        self.assertEqual(self.Doc.UndoNames, [])
-        self.assertEqual(self.Doc.UndoCount, 0)
-        self.assertEqual(self.Doc.RedoNames, [])
-        self.assertEqual(self.Doc.RedoCount, 0)
-
     def testUndoInList(self):
-
-        self.Doc.UndoMode = 1
-
         self.Doc.openTransaction("Box")
         self.Box = self.Doc.addObject("App::FeatureTest")
         self.Doc.commitTransaction()
@@ -1217,9 +1384,6 @@ class UndoRedoCases(unittest.TestCase):
         self.assertTrue(self.Cylinder.InList[0] == self.Doc.Fuse)
 
     def testUndoIssue0003150Part1(self):
-
-        self.Doc.UndoMode = 1
-
         self.Doc.openTransaction("Box")
         self.Box = self.Doc.addObject("App::FeatureTest")
         self.Doc.commitTransaction()
@@ -1282,8 +1446,6 @@ class DocumentGroupCases(unittest.TestCase):
         else:
             self.fail("Adding the group to itself must not be possible")
 
-        self.Doc.UndoMode = 1
-
         # Remove object from group
         self.Doc.openTransaction("Remove")
         self.Doc.removeObject("Label_2")
@@ -1335,8 +1497,6 @@ class DocumentGroupCases(unittest.TestCase):
         self.Doc.undo()
         self.assertTrue(G1.getObject("Label_3") is not None)
         self.assertTrue(G1.getObject("Label_2") is not None)
-
-        self.Doc.UndoMode = 0
 
         # Cleanup
         self.Doc.removeObject("Group")
@@ -1441,6 +1601,22 @@ class DocumentGroupCases(unittest.TestCase):
 
         self.Doc.recompute()
 
+    def testContainerChainGroupInPart(self):
+        # ContainerChain must not raise when a plain group is nested inside a GeoFeatureGroup
+        from Show.Containers import ContainerChain
+
+        part = self.Doc.addObject("App::Part", "Part")
+        group = self.Doc.addObject("App::DocumentObjectGroup", "Group")
+        obj = self.Doc.addObject("App::FeatureTest", "Obj")
+        part.addObject(group)
+        group.addObject(obj)
+        self.Doc.recompute()
+
+        chain = ContainerChain(obj)
+        objects_in_chain = [c for c in chain if not c.isDerivedFrom("App::Document")]
+        self.assertIn(part, objects_in_chain)
+        self.assertIn(group, objects_in_chain)
+
     def testIssue0003150Part2(self):
         self.box = self.Doc.addObject("App::FeatureTest")
         self.cyl = self.Doc.addObject("App::FeatureTest")
@@ -1535,7 +1711,6 @@ class DocumentBacklinks(unittest.TestCase):
         self.Doc = FreeCAD.newDocument("BackLinks")
 
     def testIssue0003323(self):
-        self.Doc.UndoMode = 1
         self.Doc.openTransaction("Create object")
         obj1 = self.Doc.addObject("App::FeatureTest", "Test1")
         obj2 = self.Doc.addObject("App::FeatureTest", "Test2")
@@ -1552,8 +1727,6 @@ class DocumentBacklinks(unittest.TestCase):
 class DocumentFileIncludeCases(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("FileIncludeTests")
-        # testing with undo
-        self.Doc.UndoMode = 1
 
     def testApplyFiles(self):
         self.Doc.openTransaction("Transaction0")
@@ -1797,7 +1970,6 @@ class DocumentExpressionCases(unittest.TestCase):
 
         obj = self.Doc.addObject("App::DocumentObjectGroupPython", "Obj")
         Cls(obj)
-        self.Doc.UndoMode = 1
         self.Doc.openTransaction("Expression")
         obj.setExpression("propA", "42")
         self.Doc.recompute()
@@ -2071,9 +2243,6 @@ class DocumentObserverCases(unittest.TestCase):
         self.assertTrue(self.Obs.parameter.pop() is self.Doc1)
         self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
-        # undo/redo is not enabled in cmd line mode by default
-        self.Doc2.UndoMode = 1
-
         # Must set Doc2 as active document before start transaction test. If not,
         # then a transaction will be auto created inside the active document if a
         # new transaction is triggered from a non active document
@@ -2225,7 +2394,6 @@ class DocumentObserverCases(unittest.TestCase):
 
         # testing document level signals
         self.Doc1 = FreeCAD.newDocument("Observer1")
-        self.Doc1.UndoMode = 0
         self.Obs.clear()
 
         self.Doc1.openTransaction("test")
@@ -2624,7 +2792,6 @@ class FeatureTestAbsAddress(unittest.TestCase):
 class FeatureTestAttribute(unittest.TestCase):
     def setUp(self):
         self.doc = FreeCAD.newDocument("TestAttribute")
-        self.doc.UndoMode = 0
 
     def testValidAttribute(self):
         obj = self.doc.addObject("App::FeatureTestAttribute", "Attribute")
@@ -2699,8 +2866,6 @@ class MultiDocumentUndo(unittest.TestCase):
     def setUp(self):
         self.Doc1 = FreeCAD.newDocument("Doc1")
         self.Doc2 = FreeCAD.newDocument("Doc2")
-        self.Doc1.UndoMode = 1
-        self.Doc2.UndoMode = 1
 
     def testAddObjects(self):
         self.Doc1.openTransaction("transact1")

@@ -26,6 +26,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to move objects in the 3D space."""
+
 ## @package gui_move
 # \ingroup draftguitools
 # \brief Provides GUI tools to move objects in the 3D space.
@@ -94,6 +95,8 @@ class Move(gui_base_original.Modifier):
         self.ui.xValue.selectAll()
         self.call = self.view.addEventCallback("SoEvent", self.action)
         _toolmsg(translate("draft", "Pick start point"))
+        self.selection_done = True
+        self.update_hints()
 
     def finish(self, cont=False):
         """Terminate the operation.
@@ -166,6 +169,7 @@ class Move(gui_base_original.Modifier):
             for ghost in self.ghosts:
                 ghost.on()
             _toolmsg(translate("draft", "Pick end point"))
+            self.update_hints()
             if self.planetrack:
                 self.planetrack.set(self.point)
         else:
@@ -235,11 +239,29 @@ class Move(gui_base_original.Modifier):
             for ghost in self.ghosts:
                 ghost.on()
             _toolmsg(translate("draft", "Pick end point"))
+            self.update_hints()
         else:
             last = self.node[-1]
             self.vector = self.point.sub(last)
             self.move(self.ui.isCopy.isChecked())
             self.finish(cont=None)
+
+    def get_action_hints(self):
+        if not self.node:
+            hints = [
+                Gui.InputHint(translate("draft", "%1 pick start point"), Gui.UserInput.MouseLeft)
+            ]
+        else:
+            hints = [
+                Gui.InputHint(translate("draft", "%1 pick end point"), Gui.UserInput.MouseLeft)
+            ]
+        return (
+            hints
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+            + gui_tool_utils._get_hint_mod_copy()
+        )
 
 
 Gui.addCommand("Draft_Move", Move())

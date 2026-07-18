@@ -27,9 +27,12 @@
 
 // Std. configurations
 #include <array>
+#include <atomic>
 #include <cassert>
 #include <chrono>
+#include <functional>
 #include <map>
+#include <mutex>
 #include <set>
 #include <string>
 #include <sstream>
@@ -174,134 +177,6 @@ using PyMethodDef = struct PyMethodDef;
  * FC_ERR("error: " << code << ". exiting")
  * \endcode
  *
- * \section TimingHelper Timing Helpers
- *
- * This set of macros is for helping C++ code to time lengthy operations.
- * Examples:
- *
- * \code{.c}
- * void operation() {
- *      FC_TIME_INIT(t);
- *
- *      //do stuff
- *
- *      FC_TIME_LOG(t,"operation done.");
- * }
- * \endcode
- *
- * This will output in console something like,
- *
- * \code
- * operation done. time: 1.12s
- * \endcode
- *
- * Every time you call \c FC_TIME_LOG it will calculate the time duration
- * between this call and the last \c FC_TIME_LOG or \c FC_TIME_INIT.  Time
- * variable \c t will then be updated to the current time. You can also use
- * <tt>FC_TIME_MSG, FC_TIME_TRACE</tt> similar to <tt>FC_MSG and FC_TRACE</tt>.
- *
- * To time operation in multiple stages,
- *
- * \code{.cpp}
- * void operation() {
- *      FC_TIME_INIT2(t,t1);
- *
- *      //do stage 1
- *
- *      FC_TIME_LOG(t1,"stage1");
- *
- *      //do stage 2
- *
- *      FC_TIME_LOG(t1,"stage2");
- *
- *      // do other stuff
- *
- *      FC_TIME_LOG(t,"total");
- * }
- * \endcode
- *
- * Will output something like,
- * \code
- * stage1 time: 1.2s
- * stage2 time: 2.3s
- * total time: 4.0s
- * \endcode
- *
- * To time operation in multiple functions,
- *
- * \code{.cpp}
- * class Timing {
- *      FC_DURATION_DECLARE(d1)
- *      FC_DURATION_DECLARE(d1_1)
- *      FC_DURATION_DECLARE(d1_2)
- *      FC_DURATION_DECLARE(d2);
- *
- *      Timing() {
- *          FC_DURATION_INIT(d1);
- *          FC_DURATION_INIT(d1_1);
- *          FC_DURATION_INIT(d1_2);
- *          FC_DURATION_INIT(d2);
- *      }
- * };
- *
- * void operation1(Timing &timing) {
- *
- *      FC_TIME_INIT(t);
- *
- *      for(...) {
- *          FC_TIME_INIT(t1);
- *
- *          //do setp 1
- *
- *          FC_DURATION_PLUS(timing.d1_1,t1);
- *
- *          // do step 2
- *
- *          FC_DURATION_PLUS(timing.d1_2,t1);
- *      }
- *
- *      // do other stuff
- *
- *      FC_DRUATION_PLUS(timing.d1, t);
- * }
- *
- * void operation2(Timing &timing) {
- *
- *      FC_TIME_INIT(t);
- *
- *      // do stuff
- *
- *      FC_DRUATION_PLUS(timing.d2, t);
- * }
- *
- * void operation() {
- *
- *      Timing timing;
- *
- *      FC_TIME_INIT(t);
- *
- *      for(...) {
- *          operation1(timing);
- *
- *          // do other stuff
- *
- *          operation2(timing);
- *      }
- *
- *      FC_DURATION_LOG(timing.d1_1,"operation 1 step 1");
- *      FC_DURATION_LOG(timing.d1_2,"operation 1 step 2");
- *      FC_DURATION_LOG(timing.d1,"operation 1");
- *      FC_DURATION_LOG(timing.d2,"operation 2");
- *      FC_TIME_LOG(t,"operation total");
- * }
- * \endcode
- *
- * You can also use <tt>FC_DURATION_MSG, FC_DURATION_TRACE</tt> as usual.
- *
- * If you use only macros provided here to do timing, the entire timing code
- * can be compiled out by defining \c FC_LOG_NO_TIMING before including
- * \c App/Console.h.
- *
  * \section Customization
  *
  * Most of the logging facilities are exposed through macros. This section
@@ -397,92 +272,7 @@ using PyMethodDef = struct PyMethodDef;
 #define FC_xy(_pt) '(' << (_pt).x << ", " << (_pt).y << ')'
 #define FC_xyz(_pt) '(' << (_pt).x << ", " << (_pt).y << ", " << (_pt).z << ')'
 
-#ifndef FC_LOG_NO_TIMING
-#define FC_TIME_CLOCK high_resolution_clock
-#define FC_TIME_POINT std::chrono::FC_TIME_CLOCK::time_point
-#define FC_DURATION std::chrono::duration<double>
 
-#define _FC_TIME_INIT(_t) _t = std::chrono::FC_TIME_CLOCK::now()
-#define FC_TIME_INIT(_t) FC_TIME_POINT _FC_TIME_INIT(_t)
-#define FC_TIME_INIT2(_t1, _t2) FC_TIME_INIT(_t1), _t2 = _t1
-#define FC_TIME_INIT3(_t1, _t2, _t3) FC_TIME_INIT(_t1), _t2 = _t1, _t3 = _t1
-
-#define _FC_DURATION_PRINT(_l, _d, _msg) FC_##_l(_msg << " time: " << _d.count() << 's');
-
-#define FC_DURATION_MSG(_d, _msg) _FC_DURATION_PRINT(MSG, _d, _msg)
-#define FC_DURATION_LOG(_d, _msg) _FC_DURATION_PRINT(LOG, _d, _msg)
-#define FC_DURATION_TRACE(_d, _msg) _FC_DURATION_PRINT(TRACE, _d, _msg)
-
-#define _FC_TIME_PRINT(_l, _t, _msg) _FC_DURATION_PRINT(_l, Base::GetDuration(_t), _msg);
-
-#define FC_TIME_MSG(_t, _msg) _FC_TIME_PRINT(MSG, _t, _msg)
-#define FC_TIME_LOG(_t, _msg) _FC_TIME_PRINT(LOG, _t, _msg)
-#define FC_TIME_TRACE(_t, _msg) _FC_TIME_PRINT(TRACE, _t, _msg)
-
-#define FC_DURATION_DECLARE(_d) FC_DURATION _d
-#define FC_DURATION_DECLARE2(_d, _d1) FC_DURATION_DECLARE(_d), _d1
-#define FC_DURATION_DECLARE3(_d, _d1) FC_DURATION_DECLARE2(_d, _d1), _d2
-
-#define FC_DURATION_INIT(_d) _d = FC_DURATION(0)
-#define FC_DURATION_INIT2(_d, _d1) _d = _d1 = FC_DURATION(0)
-#define FC_DURATION_INIT3(_d, _d1, _d2) _d = _d1 = _d2 = FC_DURATION(0)
-
-#define FC_DURATION_DECL_INIT(_d) FC_DURATION _d(0)
-#define FC_DURATION_DECL_INIT2(_d, _d1) FC_DURATION_DECL_INIT(_d), _d1(0)
-#define FC_DURATION_DECL_INIT3(_d, _d1) FC_DURATION_DECL_INIT2(_d, _d1), _d3(0)
-
-#define FC_DURATION_PLUS(_d, _t) _d += Base::GetDuration(_t)
-
-#else  // FC_LOG_NO_TIMING
-#define FC_TIME_POINT
-#define _FC_TIME_INIT(...)                                                                         \
-    do {                                                                                           \
-    } while (0)
-#define FC_TIME_INIT(...)                                                                          \
-    do {                                                                                           \
-    } while (0)
-#define FC_TIME_INIT2(...)                                                                         \
-    do {                                                                                           \
-    } while (0)
-#define FC_TIME_INIT3(...)                                                                         \
-    do {                                                                                           \
-    } while (0)
-#define _FC_DURATION_PRINT(...)                                                                    \
-    do {                                                                                           \
-    } while (0)
-#define _FC_TIME(_t)                                                                               \
-    do {                                                                                           \
-    } while (0)
-#define FC_DURATION_PRINT(...)                                                                     \
-    do {                                                                                           \
-    } while (0)
-#define FC_DURATION
-#define FC_DURATION_INIT(...)                                                                      \
-    do {                                                                                           \
-    } while (0)
-#define FC_DURATION_INIT1(...)                                                                     \
-    do {                                                                                           \
-    } while (0)
-#define FC_DURATION_INIT2(...)                                                                     \
-    do {                                                                                           \
-    } while (0)
-#define FC_DURATION_DECLARE(...)
-#define FC_DURATION_DECLARE1(...)
-#define FC_DURATION_DECLARE2(...)
-#define FC_DURATION_DECL_INIT(...)                                                                 \
-    do {                                                                                           \
-    } while (0)
-#define FC_DURATION_DECL_INIT2(...)                                                                \
-    do {                                                                                           \
-    } while (0)
-#define FC_DURATION_DECL_INIT3(...)                                                                \
-    do {                                                                                           \
-    } while (0)
-#define FC_DURATION_PLUS(...)                                                                      \
-    do {                                                                                           \
-    } while (0)
-
-#endif  // FC_LOG_NO_TIMING
 // clang-format on
 // NOLINTEND(bugprone-reserved-identifier,bugprone-macro-parentheses,cppcoreguidelines-macro-usage,cppcoreguidelines-avoid-do-while)
 
@@ -490,16 +280,6 @@ using ConsoleMsgFlags = unsigned int;
 
 namespace Base
 {
-
-#ifndef FC_LOG_NO_TIMING
-inline FC_DURATION GetDuration(FC_TIME_POINT& tp)
-{
-    const auto tnow = std::chrono::FC_TIME_CLOCK::now();
-    const auto dc = std::chrono::duration_cast<FC_DURATION>(tnow - tp);
-    tp = tnow;
-    return dc;
-}
-#endif
 
 /** Used to identify log level*/
 enum class LogStyle
@@ -782,6 +562,15 @@ public:
     template<LogStyle, IntendedRecipient = IntendedRecipient::All, ContentType = ContentType::Untranslated>
     void notify(const std::string& notifiername, const std::string& msg);
 
+    // Runtime (non-template) notify helper.
+    void notify(
+        LogStyle category,
+        IntendedRecipient recipient,
+        ContentType content,
+        const std::string& notifiername,
+        const std::string& msg
+    );
+
     /// Attaches an Observer to FCConsole
     void attachObserver(ILogger* pcObserver);
     /// Detaches an Observer from FCConsole
@@ -807,6 +596,26 @@ public:
         MsgType_Critical = 16,      // Special message to notify critical information
         MsgType_Notification = 32,  // Special message to for notifications to the user
     };
+
+    class BaseExport Bridge
+    {
+    public:
+        virtual ~Bridge() = default;
+
+        virtual void postEvent(
+            FreeCAD_ConsoleMsgType type,
+            IntendedRecipient recipient,
+            ContentType content,
+            const std::string& notifiername,
+            const std::string& msg
+        ) const = 0;
+
+        virtual void refresh() const = 0;
+    };
+
+    using PostEventHandler = std::function<
+        void(FreeCAD_ConsoleMsgType, IntendedRecipient, ContentType, const std::string&, const std::string&)>;
+    using RefreshHandler = std::function<void()>;
 
     /// Enables or disables message types of a certain console observer
     ConsoleMsgFlags setEnabledMsgType(const char* sObs, ConsoleMsgFlags type, bool on) const;
@@ -836,6 +645,10 @@ public:
 
     void refresh() const;
     void enableRefresh(bool enable);
+    void setBridge(const Bridge* bridge);
+    const Bridge* getBridge() const;
+    void setPostEventHandler(PostEventHandler handler);
+    void setRefreshHandler(RefreshHandler handler);
 
     constexpr FreeCAD_ConsoleMsgType getConsoleMsg(LogStyle style);
 
@@ -861,6 +674,11 @@ private:
 
     bool _bCanRefresh {true};
     ConnectionMode connectionMode {Direct};
+
+    std::atomic<const Bridge*> _bridge {nullptr};
+    mutable std::mutex _handlerMutex;
+    PostEventHandler _postEventHandler;
+    RefreshHandler _refreshHandler;
 
     // Singleton!
     ConsoleSingleton();
@@ -897,8 +715,6 @@ private:
 
     std::map<std::string, int> _logLevels;
     int _defaultLogLevel;
-
-    friend class ConsoleOutput;
 };
 
 /** Access to the Console

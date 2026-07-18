@@ -65,16 +65,9 @@ PyObject* PartFeaturePy::getElementHistory(PyObject* args, PyObject* kwds) const
 
     static const std::array<const char*, 5>
         kwlist {"elementName", "recursive", "sameType", "showName", nullptr};
-    if (!Base::Wrapped_ParseTupleAndKeywords(
-            args,
-            kwds,
-            "s|OOO",
-            kwlist,
-            &name,
-            &recursive,
-            &sameType,
-            &showName
-        )) {
+    if (
+        !Base::Wrapped_ParseTupleAndKeywords(args, kwds, "s|OOO", kwlist, &name, &recursive, &sameType, &showName)
+    ) {
         return {};
     }
 

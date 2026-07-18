@@ -41,7 +41,6 @@
 # include <boost/scope_exit.hpp>
 # include <chrono>
 # include <optional>
-# include <random>
 # include <memory>
 # include <utility>
 # include <set>
@@ -53,6 +52,7 @@
 # include <tuple>
 # include <vector>
 # include <fmt/format.h>
+# include <fmt/ranges.h>
 
 #ifdef FC_OS_WIN32
 # include <Shlobj.h>
@@ -88,13 +88,14 @@
 #include <Base/Interpreter.h>
 #include <Base/MatrixPy.h>
 #include <Base/QuantityPy.h>
-#include <Base/Parameter.h>
+#include <Base/ParameterPy.h>
 #include <Base/Persistence.h>
 #include <Base/PlacementPy.h>
 #include <Base/PrecisionPy.h>
 #include <Base/ProgressIndicatorPy.h>
 #include <Base/RotationPy.h>
 #include <Base/UniqueNameManager.h>
+#include <Base/TimeInfo.h>
 #include <Base/SystemHandler.h>
 #include <Base/Tools.h>
 #include <Base/Translate.h>
@@ -111,12 +112,15 @@
 #include "ApplicationPy.h"
 #include "CleanupProcess.h"
 #include "ComplexGeoData.h"
+#include "ConsoleQtBridge.h"
+#include "TranslationQtBridge.h"
 #include "Services.h"
 #include "DocumentObjectFileIncluded.h"
 #include "DocumentObjectGroup.h"
 #include "DocumentObjectGroupPy.h"
 #include "DocumentObserver.h"
 #include "DocumentPy.h"
+#include "DocumentSettingsPy.h"
 #include "ExpressionParser.h"
 #include "FeatureTest.h"
 #include "FeaturePython.h"
@@ -203,6 +207,83 @@ using namespace App;
 namespace sp = std::placeholders;
 namespace fs = std::filesystem;
 
+namespace
+{
+
+RecomputeRequest takeNextRecomputeRequest(std::deque<RecomputeRequest>& requests)
+{
+    RecomputeRequest request = std::move(requests.front());
+    requests.pop_front();
+    return request;
+}
+
+bool requestTargetsDocument(const RecomputeRequest& request, const std::string& documentName)
+{
+    return request.documentName == documentName;
+}
+
+bool documentCanRecomputeOnWorker(const Document& document)
+{
+    try {
+        const auto& objects = document.getObjects();
+        std::vector<DocumentObject*> recomputeRoots(objects.begin(), objects.end());
+        const auto recomputeObjects = Document::getDependencyList(recomputeRoots, Document::DepSort);
+
+        return std::ranges::all_of(recomputeObjects, [](const DocumentObject* object) {
+            return object && object->canRecomputeOnWorker();
+        });
+    }
+    catch (const Base::BadGraphError&) {
+        return false;
+    }
+}
+
+void reportRecomputeException(const Base::Exception& exception)
+{
+    if (App::MainThreadSignalConfig::hasHooks()) {
+        if (auto* app = QCoreApplication::instance()) {
+            QMetaObject::invokeMethod(
+                app,
+                [exception]() mutable { exception.reportException(); },
+                Qt::QueuedConnection
+            );
+            return;
+        }
+    }
+
+    exception.reportException();
+}
+
+RecomputeResult processRecomputeRequest(RecomputeRequest& request)
+{
+    RecomputeResult result;
+
+    try {
+        if (Document* document = request.resolveDocument()) {
+            document->recompute({}, request.force, nullptr, request.options);
+        }
+
+        if (DocumentObject* documentObject = request.resolveDocumentObject()) {
+            documentObject->recomputeFeature(request.recursive);
+        }
+    }
+    catch (Base::BadGraphError& exception) {
+        result.exception = std::make_unique<Base::BadGraphError>(std::move(exception));
+        result.failure = RecomputeFailure::DependencyCycle;
+        result.success = false;
+    }
+    catch (Base::Exception& exception) {
+        reportRecomputeException(exception);
+        result.exception = std::make_unique<Base::Exception>(std::move(exception));
+        result.failure = RecomputeFailure::Exception;
+        result.success = false;
+    }
+
+    return result;
+}
+
+}  // namespace
+
 //==========================================================================
 // Application
 //==========================================================================
@@ -214,6 +295,50 @@ Base::ConsoleObserverFile *Application::_pConsoleObserverFile = nullptr;
 
 AppExport std::map<std::string, std::string> Application::mConfig;
 std::unique_ptr<ApplicationDirectories> Application::_appDirs;
+
+RecomputeRequest RecomputeRequest::fromDocument(const Document& document, bool force, int options)
+{
+    RecomputeRequest request;
+    request.documentName = document.getName();
+    request.force = force;
+    request.options = options;
+    return request;
+}
+
+RecomputeRequest RecomputeRequest::fromDocumentObject(const DocumentObject& documentObject, bool recursive)
+{
+    RecomputeRequest request;
+
+    if (const Document* document = documentObject.getDocument()) {
+        request.documentName = document->getName();
+    }
+
+    request.documentObjectName = documentObject.getNameInDocument();
+    request.recursive = recursive;
+    return request;
+}
+
+Document* RecomputeRequest::resolveDocument() const
+{
+    if (documentName.empty()) {
+        return nullptr;
+    }
+
+    return GetApplication().getDocument(documentName.c_str());
+}
+
+DocumentObject* RecomputeRequest::resolveDocumentObject() const
+{
+    if (documentObjectName.empty()) {
+        return nullptr;
+    }
+
+    if (Document* document = resolveDocument()) {
+        return document->getObject(documentObjectName.c_str());
+    }
+
+    return nullptr;
+}
 
 
 //**************************************************************************
@@ -290,10 +415,22 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     mpcPramManager["System parameter"] = _pcSysParamMngr;
     mpcPramManager["User parameter"] = _pcUserParamMngr;
 
+    _stopRecomputeThread = false;
+    _recomputeThread = std::thread(&Application::recomputeWorker, this);
+
     setupPythonTypes();
 }
 
-Application::~Application() = default;
+Application::~Application()
+{
+    // Signal the recompute worker thread to stop and join it.
+    _stopRecomputeThread = true;
+    _recomputeRequestAvailable.notify_all();
+
+    if (_recomputeThread.joinable()) {
+        _recomputeThread.join();
+    }
+}
 
 void Application::setupPythonTypes()
 {
@@ -373,6 +510,7 @@ void Application::setupPythonTypes()
     Base::InterpreterSingleton::addType(&PropertyContainerPy::Type, pAppModule, "PropertyContainer");
     Base::InterpreterSingleton::addType(&ExtensionContainerPy::Type, pAppModule, "ExtensionContainer");
     Base::InterpreterSingleton::addType(&DocumentPy::Type, pAppModule, "Document");
+    Base::InterpreterSingleton::addType(&DocumentSettingsPy::Type, pAppModule, "DocumentSettings");
     Base::InterpreterSingleton::addType(&DocumentObjectPy::Type, pAppModule, "DocumentObject");
     Base::InterpreterSingleton::addType(&DocumentObjectGroupPy::Type, pAppModule, "DocumentObjectGroup");
     Base::InterpreterSingleton::addType(&GeoFeaturePy::Type, pAppModule, "GeoFeature");
@@ -384,6 +522,10 @@ void Application::setupPythonTypes()
     Base::InterpreterSingleton::addType(&GeoFeatureGroupExtensionPy::Type, pAppModule, "GeoFeatureGroupExtension");
     Base::InterpreterSingleton::addType(&OriginGroupExtensionPy::Type, pAppModule, "OriginGroupExtension");
     Base::InterpreterSingleton::addType(&LinkBaseExtensionPy::Type, pAppModule, "LinkBaseExtension");
+
+    Base::ParameterGrpPy::init_type();
+    Base::InterpreterSingleton::addType(Base::ParameterGrpPy::type_object(),
+        pAppModule, "ParameterGrp");
 
     //insert Base and Console
     Py_INCREF(pBaseModule);
@@ -418,6 +560,7 @@ void Application::setupPythonTypes()
     Base::Vector2dPy::init_type();
     Base::InterpreterSingleton::addType(Base::Vector2dPy::type_object(),
         pBaseModule,"Vector2d");
+
     // clang-format on
 }
 
@@ -543,6 +686,10 @@ bool Application::closeDocument(const Document* doc)
 
 bool Application::closeDocument(const char* name)
 {
+    const std::string documentName(name);
+
+    cancelRecomputeRequestsForDocument(documentName);
+
     const auto pos = DocMap.find( name );
     if (pos == DocMap.end()) // no such document
         return false;
@@ -671,13 +818,92 @@ bool Application::isClosingAll() const {
     return _isClosingAll;
 }
 
-struct DocTiming {
-    FC_DURATION_DECLARE(d1);
-    FC_DURATION_DECLARE(d2);
-    DocTiming() {
-        FC_DURATION_INIT(d1);
-        FC_DURATION_INIT(d2);
+bool Application::isAsyncRecomputeEnabled()
+{
+    static const ParameterGrp::handle hGrp = GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Document"
+    );
+    bool enableAsyncRecompute = hGrp->GetBool("EnableAsyncRecompute", true);
+    return enableAsyncRecompute;
+}
+
+bool Application::isFineGrainedRecomputeEnabled()
+{
+    static const ParameterGrp::handle hGrp = GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/General"
+    );
+    bool enableFineGrainedRecompute = hGrp->GetBool("FineGrainedRecompute");
+    return enableFineGrainedRecompute;
+}
+
+bool Application::canRecomputeRequestOnWorker(const RecomputeRequest& req) const
+{
+    if (DocumentObject* documentObject = req.resolveDocumentObject()) {
+        return documentObject->canRecomputeOnWorker();
     }
+
+    Document* document = req.resolveDocument();
+    return !document || documentCanRecomputeOnWorker(*document);
+}
+
+void Application::queueRecomputeRequest(RecomputeRequest req)
+{
+    if (!canRecomputeRequestOnWorker(req)) {
+        RecomputeResult result;
+
+        // Requests that are not worker-safe stay on the caller thread unless a
+        // GUI main-thread hop is required. In App-only/headless mode there are
+        // no GUI hooks, so processing inline preserves the "stay off the
+        // worker" guarantee without inventing a synthetic main thread.
+        if (App::MainThreadSignalConfig::hasHooks()
+            && !App::MainThreadSignalConfig::isMainThread()) {
+            App::MainThreadSignalConfig::invoke(
+                [&req, &result]() { result = processRecomputeRequest(req); },
+                /*blocking=*/true
+            );
+        }
+        else {
+            result = processRecomputeRequest(req);
+        }
+
+        if (req.callback) {
+            req.callback(req, result);
+        }
+        return;
+    }
+
+    {
+        std::lock_guard<std::mutex> lock(_recomputeMutex);
+        _recomputeRequests.push_back(std::move(req));
+    }
+    notifyRecomputeWorker();
+}
+
+void Application::cancelRecomputeRequestsForDocument(const std::string& documentName)
+{
+    if (documentName.empty()) {
+        return;
+    }
+
+    std::unique_lock<std::mutex> lock(_recomputeMutex);
+    _recomputeStateChanged.wait(lock, [this, &documentName] {
+        return !_recomputeDocumentsInProgress.contains(documentName);
+    });
+
+    // Cancellation runs on document-close boundaries, so a linear scan keeps
+    // the queue simple without affecting the steady-state worker path.
+    std::erase_if(_recomputeRequests, [&documentName](const RecomputeRequest& request) {
+        return requestTargetsDocument(request, documentName);
+    });
+}
+
+struct DocTiming {
+    std::chrono::duration<double> d1;
+    std::chrono::duration<double> d2;
+    DocTiming()
+        : d1(std::chrono::duration<double>(0))
+        , d2(std::chrono::duration<double>(0))
+    {}
 };
 
 class DocOpenGuard {
@@ -777,7 +1003,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
 
     std::map<DocumentT, DocTiming> timings;
 
-    FC_TIME_INIT(t);
+    Base::TimeTracker tracker("Application::openDocuments");
 
     std::vector<DocumentT> openedDocs;
 
@@ -803,8 +1029,8 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                     }
                 }
 
-                FC_TIME_INIT(t1);
                 DocTiming timing;
+                std::chrono::high_resolution_clock::time_point startTime = std::chrono::high_resolution_clock::now();
 
                 const char *path = name.c_str();
                 const char *label = nullptr;
@@ -817,7 +1043,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 }
 
                 auto doc = openDocumentPrivate(path, name.c_str(), label, isMainDoc, initFlags, std::move(objNames));
-                FC_DURATION_PLUS(timing.d1,t1);
+                timing.d1 += std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now() - startTime);
                 if (doc) {
                     timings[doc].d1 += timing.d1;
                     newDocs.emplace(doc);
@@ -906,7 +1132,8 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
             }
 
             auto &timing = timings[doc];
-            FC_TIME_INIT(t1);
+            std::chrono::high_resolution_clock::time_point startTime = std::chrono::high_resolution_clock::now();
+
             // Finalize document restoring with the correct order
             if(doc->afterRestore(true)) {
                 openedDocs.emplace_back(doc);
@@ -923,7 +1150,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 _pendingDocs.emplace_back(doc->FileName.getValue());
                 _pendingDocMap.erase(doc->FileName.getValue());
             }
-            FC_DURATION_PLUS(timing.d2,t1);
+            timing.d2 += std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now() - startTime);
             seq.next();
         }
         // Close the document for reloading
@@ -943,10 +1170,9 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
 
     for (auto &doc : openedDocs) {
         auto &timing = timings[doc];
-        FC_DURATION_LOG(timing.d1, doc.getDocumentName() << " restore");
-        FC_DURATION_LOG(timing.d2, doc.getDocumentName() << " postprocess");
+        Base::Console().log("%s restore time: %f\n", doc.getDocumentName(), timing.d1.count());
+        Base::Console().log("%s postprocess time: %f\n", doc.getDocumentName(), timing.d2.count());
     }
-    FC_TIME_LOG(t,"total");
     PropertyLinkBase::updateAllElementReferences();
     _isRestoring = false;
 
@@ -1132,19 +1358,18 @@ Application::TransactionSignaller::~TransactionSignaller() {
     }
 }
 
-int64_t Application::applicationPid()
+int64_t Application::uniqueInstanceId()
 {
-    static int64_t randomNumber = []() {
+    static int64_t uniqueId = []() {
         const auto tp = std::chrono::high_resolution_clock::now();
         const auto dur = tp.time_since_epoch();
-        const auto seed = dur.count();
-        std::mt19937 generator(static_cast<unsigned>(seed));
-        constexpr int64_t minValue {1};
-        constexpr int64_t maxValue {1000000};
-        std::uniform_int_distribution<int64_t> distribution(minValue, maxValue);
-        return distribution(generator);
+        // Mix up the bits. Smallest implementation of a xorshift64 there is.
+        auto hash = static_cast<int64_t>(dur.count());
+        hash ^= hash << 7;
+        hash ^= hash >> 9;
+        return hash & 0x7FFFFFFFFFFFFFFFULL;
     }();
-    return randomNumber;
+    return uniqueId;
 }
 
 std::string Application::getHomePath()
@@ -1567,7 +1792,7 @@ void Application::retranslateExportTypes()
     std::erase_if(_mExportTypes, [](const FileTypeItem& item) {
         return item.translatable;
     });
-    for (const auto &cacheEntry : translatableExportTypeCache.getCache()) {
+    for (const auto &cacheEntry : cache) {
         addTranslatableExportType(cacheEntry.description, cacheEntry.extensions, cacheEntry.moduleName);
     }
 }
@@ -2096,6 +2321,7 @@ void Application::initTypes()
     App::FeatureTestAbsAddress     ::init();
     App::FeatureTestPlacement      ::init();
     App::FeatureTestAttribute      ::init();
+    App::FeatureTestAsyncBlocker   ::init();
 
     // Feature class
     App::FeaturePython             ::init();
@@ -2632,6 +2858,9 @@ void Application::initConfig(int argc, char ** argv)
     else
         _pConsoleObserverFile = nullptr;
 
+    App::installConsoleQtBridge();
+    App::installTranslationQtBridge();
+
     // Banner ===========================================================
     if (mConfig["RunMode"] != "Cmd" && !(vm.contains("verbose") && vm.contains("version"))) {
         // Remove banner if FreeCAD is invoked via the -c command as regular
@@ -2735,12 +2964,17 @@ void Application::initConfig(int argc, char ** argv)
     mConfig["BOOST_VERSION"] = BOOST_LIB_VERSION;
     mConfig["PYTHON_VERSION"] = PY_VERSION;
     mConfig["QT_VERSION"] = QT_VERSION_STR;
+    mConfig["COIN3D_VERSION"] = fcCoin3dVersion;
+    mConfig["COIN3D_SOURCE"] = fcCoin3dSource;
+    mConfig["PIVY_VERSION"] = fcPivyVersion;
+    mConfig["PIVY_SOURCE"] = fcPivySource;
     mConfig["EIGEN_VERSION"] = fcEigen3Version;
     mConfig["PYSIDE_VERSION"] = fcPysideVersion;
 #ifdef SMESH_VERSION_STR
     mConfig["SMESH_VERSION"] = SMESH_VERSION_STR;
 #endif
     mConfig["XERCESC_VERSION"] = fcXercescVersion;
+    mConfig["CLIPPER2_VERSION"] = fcClipper2Version;
 
 
     logStatus();
@@ -2820,7 +3054,6 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
     std::list<std::string> processed;
     Base::Console().log("Init: Processing command line files\n");
     for (const auto & it : files) {
-
         Base::FileInfo file(it);
         // Can we safely remove the isSymlink check and directly query the canonical
         // path for every string? The reason for avoiding it currently is that
@@ -2836,7 +3069,8 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
         Base::Console().log("Init:     Processing file: %s\n",file.filePath().c_str());
 
         try {
-            if (file.hasExtension("fcstd") || file.hasExtension("std")) {
+            if (file.hasExtension("fcstd") || file.hasExtension("fcbak")
+                || file.hasExtension("std")) {
                 // try to open
                 Application::_pcSingleton->openDocument(file.filePath().c_str());
                 processed.push_back(it);
@@ -2956,6 +3190,48 @@ void Application::runApplication()
     }
     else {
         Base::Console().log("Unknown Run mode (%d) in main()?!?\n\n", mConfig["RunMode"].c_str());
+    }
+}
+
+void Application::notifyRecomputeWorker()
+{
+    _recomputeRequestAvailable.notify_one();
+}
+
+void Application::recomputeWorker()
+{
+    while (!_stopRecomputeThread) {
+        std::unique_lock<std::mutex> lock(_recomputeMutex);
+        // Wait until either stop is signaled or there is at least one pending request.
+        _recomputeRequestAvailable.wait(lock, [this] {
+            return _stopRecomputeThread || !_recomputeRequests.empty();
+        });
+        if (_stopRecomputeThread) {
+            break;
+        }
+
+        // Process all pending recompute requests.
+        while (!_recomputeRequests.empty()) {
+            RecomputeRequest request = takeNextRecomputeRequest(_recomputeRequests);
+            if (!request.documentName.empty()) {
+                _recomputeDocumentsInProgress.insert(request.documentName);
+            }
+
+            // Unlock while processing to allow other threads to add new requests.
+            lock.unlock();
+
+            RecomputeResult result = processRecomputeRequest(request);
+
+            if (request.callback) {
+                request.callback(request, result);
+            }
+
+            lock.lock();
+            if (!request.documentName.empty()) {
+                _recomputeDocumentsInProgress.erase(request.documentName);
+                _recomputeStateChanged.notify_all();
+            }
+        }
     }
 }
 

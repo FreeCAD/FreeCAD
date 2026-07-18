@@ -29,7 +29,6 @@ __url__ = "https://www.freecad.org"
 from PySide.QtCore import QProcess, QProcessEnvironment
 import os
 import re
-import shutil
 
 import FreeCAD
 
@@ -53,10 +52,7 @@ class ElmerTools(ObjectTools):
         w = writer.Writer(self.obj, self.obj.WorkingDirectory)
         w.write_solver_input()
 
-        mesh = w.getSingleMember("Fem::FemMeshObject")
-        if not mesh.FemMesh.Groups:
-            raise ValueError(f"Mesh object '{mesh.Label}' has no groups, please remesh\n")
-
+        mesh = w.getMesh()
         mesh_file = os.path.join(self.obj.WorkingDirectory, "mesh.unv")
         mesh.FemMesh.write(mesh_file)
 
@@ -73,7 +69,7 @@ class ElmerTools(ObjectTools):
             # MPI parallel computing version
             grid_args.extend(["-partdual", "-metiskway", str(num_proc)])
             p.start(grid_bin, grid_args)
-            p.waitForFinished()
+            p.waitForFinished(-1)
 
         self.model_file = os.path.join(self.obj.WorkingDirectory, writer._SIF_NAME)
         handled = w.getHandledConstraints()
@@ -93,10 +89,10 @@ class ElmerTools(ObjectTools):
 
         if num_proc > 1:
             # MPI parallel computing version
-            mpi = shutil.which("mpiexec")
+            mpi_bin = settings.get_binary("MPIElmer")
             self._result_format = ".pvtu"
             command_list = ["-n", str(num_proc), elmer_bin]
-            self.process.start(mpi, command_list)
+            self.process.start(mpi_bin, command_list)
         else:
             self._result_format = ".vtu"
             command_list = []

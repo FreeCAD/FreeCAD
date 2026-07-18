@@ -172,6 +172,11 @@ double PreferencesGui::edgeFuzz()
     return Preferences::getPreferenceGroup("General")->GetFloat("EdgeFuzz", 10.0);
 }
 
+double PreferencesGui::markFuzz()
+{
+    return Preferences::getPreferenceGroup("General")->GetFloat("MarkFuzz", 5.0);
+}
+
 QString PreferencesGui::weldingDirectory()
 {
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Symbols/Welding/AWS/";

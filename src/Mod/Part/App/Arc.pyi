@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from Base.Metadata import export
+from Base.Vector import Vector
 from TrimmedCurve import TrimmedCurve
 from Geometry import Geom_Circle, Geom_Ellipse
 from typing import overload
@@ -28,3 +29,5 @@ class Arc(TrimmedCurve):
     def __init__(self, circ: Geom_Circle, T: type = ...) -> None: ...
     @overload
     def __init__(self, circ: Geom_Ellipse, T: type = ...) -> None: ...
+    @overload
+    def __init__(self, p1: Vector, p2: Vector, p3: Vector, /) -> None: ...

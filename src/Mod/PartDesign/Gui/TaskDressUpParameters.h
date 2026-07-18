@@ -82,6 +82,7 @@ protected Q_SLOTS:
     void createAddAllEdgesAction(QListWidget* parentList);
 
 protected:
+    bool eventFilter(QObject* watched, QEvent* event) override;
     void referenceSelected(const Gui::SelectionChanges& msg, QListWidget* widget);
     bool wasDoubleClicked = false;
     void keyPressEvent(QKeyEvent* ke) override;

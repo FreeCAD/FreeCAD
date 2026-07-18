@@ -57,6 +57,7 @@ protected:
 
 private:
     float m_size;
+    double m_markFuzz;
 };
 
 }

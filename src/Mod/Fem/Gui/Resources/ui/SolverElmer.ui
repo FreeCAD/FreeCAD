@@ -53,7 +53,7 @@
         <item>
          <widget class="Gui::FileChooser" name="fc_working_directory">
           <property name="toolTip">
-           <string>Path to working directory</string>
+           <string>Path to working directory. Leave blank to use user preferences</string>
           </property>
           <property name="readOnly">
            <bool>false</bool>

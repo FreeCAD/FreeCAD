@@ -221,6 +221,7 @@ protected:
 private:
     QPixmap getValidationIcon(const char* name, const QSize& size) const;
     void updateText(const Base::Quantity&);
+    void notifyValueChanged();
 
 private:
     QByteArray m_sPrefGrp;

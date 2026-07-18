@@ -28,7 +28,6 @@ import Path.Post.Utils as PostUtils
 import PathScripts.PathUtils as PathUtils
 from builtins import open as pyopen
 
-
 TOOLTIP = """
 This is an postprocessor file for the Path workbench. It will output path data
 in a format suitable for OpenSBP controllers like shopbot.  This postprocessor,

@@ -24,11 +24,13 @@
 #include <iomanip>
 #include <sstream>
 
+#include <Base/Console.h>
 #include <QMainWindow>
 #include <FCConfig.h>
 #include "Application.h"
 #include "GuiApplicationNativeEventAware.h"
 #include "SpaceballEvent.h"
+#include "SpaceMouseParameter.h"
 
 
 #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
@@ -56,20 +58,33 @@ Gui::GUIApplicationNativeEventAware::GUIApplicationNativeEventAware(int& argc, c
 
 Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware() = default;
 
+/* GUIApplicationNativeEventAware::initSpaceball
+ *
+ * 3Dconnexion legacy drivers on Windows/macOS and spacenav on Linux all require
+ * converting native device events into platform-neutral navigation commands.
+ *
+ * The current 3Dconnexion Navigation Framework ("Navlib", Windows/macOS only)
+ * doesn't need or use this code path for supported devices.
+ *
+ * However, because the new framework dropped support for legacy devices, we
+ * revert to native device events if the user has enabled legacy support.
+ */
 void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow* window)
 {
 #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
 # if defined(USE_3DCONNEXION_NAVLIB)
-    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/View"
-    );
-    if (nativeEvent && hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
+    if (nativeEvent && SpaceMouseParameter::instance()->getLegacySpaceMouseDevices()) {
+        // Even though Navlib is enabled, process native events to support legacy devices.
         nativeEvent->initSpaceball(window);
+    }
+    else {
+        Base::Console().log("Legacy device support not enabled\n");
     }
 # else
     nativeEvent->initSpaceball(window);
 # endif
 #else
+    Base::Console().log("3D mouse support not enabled in this build\n");
     Q_UNUSED(window);
 #endif
     Spaceball::MotionEvent::MotionEventType = QEvent::registerEventType();

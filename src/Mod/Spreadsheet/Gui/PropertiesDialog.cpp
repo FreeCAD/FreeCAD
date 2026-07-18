@@ -28,6 +28,7 @@
 #include <App/Range.h>
 #include <Base/Tools.h>
 #include <Gui/CommandT.h>
+#include <Gui/MainWindow.h>
 
 #include "PropertiesDialog.h"
 #include "ui_PropertiesDialog.h"
@@ -46,9 +47,13 @@ PropertiesDialog::PropertiesDialog(Sheet* _sheet, const std::vector<Range>& _ran
     , displayUnitOk(true)
     , aliasOk(true)
 {
+    QPalette palette = Gui::getMainWindow()->palette();
+
     ui->setupUi(this);
     ui->foregroundColor->setStandardColors();
+    ui->foregroundColor->setDefaultColor(palette.color(QPalette::WindowText));
     ui->backgroundColor->setStandardColors();
+    ui->backgroundColor->setDefaultColor(palette.color(QPalette::Base));
 
     assert(ranges.size() > 0);
     Range range = ranges[0];
@@ -57,26 +62,42 @@ PropertiesDialog::PropertiesDialog(Sheet* _sheet, const std::vector<Range>& _ran
 
     assert(cell);
 
-    (void)cell->getForeground(foregroundColor);
-    (void)cell->getBackground(backgroundColor);
+    foregroundColorSet = cell->getForeground(foregroundColor);
+    backgroundColorSet = cell->getBackground(backgroundColor);
     (void)cell->getAlignment(alignment);
     (void)cell->getStyle(style);
     (void)cell->getDisplayUnit(displayUnit);
     (void)cell->getAlias(alias);
 
     orgForegroundColor = foregroundColor;
+    orgForegroundColorSet = foregroundColorSet;
     orgBackgroundColor = backgroundColor;
+    orgBackgroundColorSet = backgroundColorSet;
     orgAlignment = alignment;
     orgStyle = style;
     orgDisplayUnit = displayUnit;
     orgAlias = alias;
 
-    ui->foregroundColor->setCurrentColor(
-        QColor::fromRgbF(foregroundColor.r, foregroundColor.g, foregroundColor.b, foregroundColor.a)
-    );
-    ui->backgroundColor->setCurrentColor(
-        QColor::fromRgbF(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a)
-    );
+    if (foregroundColorSet) {
+        ui->foregroundColor->setCurrentColor(
+            QColor::fromRgbF(
+                foregroundColor.r,
+                foregroundColor.g,
+                foregroundColor.b,
+                foregroundColor.a
+            )
+        );
+    }
+    if (backgroundColorSet) {
+        ui->backgroundColor->setCurrentColor(
+            QColor::fromRgbF(
+                backgroundColor.r,
+                backgroundColor.g,
+                backgroundColor.b,
+                backgroundColor.a
+            )
+        );
+    }
 
     if (alignment & Cell::ALIGNMENT_LEFT) {
         ui->alignLeft->setChecked(true);
@@ -120,10 +141,22 @@ PropertiesDialog::PropertiesDialog(Sheet* _sheet, const std::vector<Range>& _ran
         &PropertiesDialog::foregroundColorChanged
     );
     connect(
+        ui->foregroundColor,
+        &QtColorPicker::colorCleared,
+        this,
+        &PropertiesDialog::foregroundColorCleared
+    );
+    connect(
         ui->backgroundColor,
         &QtColorPicker::colorChanged,
         this,
         &PropertiesDialog::backgroundColorChanged
+    );
+    connect(
+        ui->backgroundColor,
+        &QtColorPicker::colorCleared,
+        this,
+        &PropertiesDialog::backgroundColorCleared
     );
 
     // Alignment
@@ -155,12 +188,25 @@ PropertiesDialog::PropertiesDialog(Sheet* _sheet, const std::vector<Range>& _ran
 void PropertiesDialog::foregroundColorChanged(const QColor& color)
 {
     foregroundColor = Base::Color(color.redF(), color.greenF(), color.blueF(), color.alphaF());
+    foregroundColorSet = true;
+}
+
+void PropertiesDialog::foregroundColorCleared()
+{
+    foregroundColorSet = false;
 }
 
 void PropertiesDialog::backgroundColorChanged(const QColor& color)
 {
     backgroundColor = Base::Color(color.redF(), color.greenF(), color.blueF(), color.alphaF());
+    backgroundColorSet = true;
 }
+
+void PropertiesDialog::backgroundColorCleared()
+{
+    backgroundColorSet = false;
+}
+
 
 void PropertiesDialog::alignmentChanged()
 {
@@ -289,7 +335,12 @@ void PropertiesDialog::apply()
                 );
                 changes = true;
             }
-            if (orgForegroundColor != foregroundColor) {
+            if (orgForegroundColorSet && !foregroundColorSet) {
+                Gui::cmdAppObjectArgs(sheet, "clearForeground('%s')", i->rangeString().c_str());
+                changes = true;
+            }
+            if ((!orgForegroundColorSet && foregroundColorSet)
+                || (foregroundColorSet && orgForegroundColor != foregroundColor)) {
                 Gui::cmdAppObjectArgs(
                     sheet,
                     "setForeground('%s', (%f,%f,%f,%f))",
@@ -301,7 +352,12 @@ void PropertiesDialog::apply()
                 );
                 changes = true;
             }
-            if (orgBackgroundColor != backgroundColor) {
+            if (orgBackgroundColorSet && !backgroundColorSet) {
+                Gui::cmdAppObjectArgs(sheet, "clearBackground('%s')", i->rangeString().c_str());
+                changes = true;
+            }
+            if ((!orgBackgroundColorSet && backgroundColorSet)
+                || (backgroundColorSet && orgBackgroundColor != backgroundColor)) {
                 Gui::cmdAppObjectArgs(
                     sheet,
                     "setBackground('%s', (%f,%f,%f,%f))",

@@ -23,14 +23,163 @@
  ***************************************************************************/
 
 
-#include <QUuid>
-
+#include <array>
+#include <cctype>
+#include <cstdint>
+#include <cstring>
+#include <random>
+#include <string_view>
 #include <stdexcept>
+
+#include <fmt/format.h>
+
+#if defined(_WIN32)
+# include <objbase.h>
+#endif
 
 #include "Uuid.h"
 
 
 using namespace Base;
+
+namespace
+{
+
+constexpr std::size_t uuidLen = 36;
+constexpr std::size_t uuidLenWithBraces = 38;
+
+int hexValue(const char ch)
+{
+    if (ch >= '0' && ch <= '9') {
+        return ch - '0';
+    }
+    if (ch >= 'a' && ch <= 'f') {
+        return 10 + (ch - 'a');
+    }
+    if (ch >= 'A' && ch <= 'F') {
+        return 10 + (ch - 'A');
+    }
+    return -1;
+}
+
+std::string formatUuid(const std::array<std::uint8_t, 16>& bytes)
+{
+    return fmt::format(
+        "{:02x}{:02x}{:02x}{:02x}-{:02x}{:02x}-{:02x}{:02x}-{:02x}{:02x}-{:02x}{:02x}{:02x}{:02x}{:"
+        "02x}{:02x}",
+        bytes[0],
+        bytes[1],
+        bytes[2],
+        bytes[3],
+        bytes[4],
+        bytes[5],
+        bytes[6],
+        bytes[7],
+        bytes[8],
+        bytes[9],
+        bytes[10],
+        bytes[11],
+        bytes[12],
+        bytes[13],
+        bytes[14],
+        bytes[15]
+    );
+}
+
+bool parseUuid(std::string_view text, std::array<std::uint8_t, 16>& out)
+{
+    if (text.size() == uuidLenWithBraces && text.front() == '{' && text.back() == '}') {
+        text.remove_prefix(1);
+        text.remove_suffix(1);
+    }
+
+    if (text.size() != uuidLen) {
+        return false;
+    }
+
+    // Canonical RFC4122 format: 8-4-4-4-12
+    if (text[8] != '-' || text[13] != '-' || text[18] != '-' || text[23] != '-') {
+        return false;
+    }
+
+    auto readByte = [&](const std::size_t pos, std::uint8_t& byte) -> bool {
+        const int hi = hexValue(text[pos]);
+        const int lo = hexValue(text[pos + 1]);
+        if (hi < 0 || lo < 0) {
+            return false;
+        }
+        byte = static_cast<std::uint8_t>((hi << 4) | lo);
+        return true;
+    };
+
+    // Map positions skipping dashes.
+    static constexpr std::array<std::size_t, 16> positions = {
+        0,
+        2,
+        4,
+        6,  // 8
+        9,
+        11,  // 4
+        14,
+        16,  // 4
+        19,
+        21,  // 4
+        24,
+        26,
+        28,
+        30,
+        32,
+        34  // 12
+    };
+
+    for (std::size_t i = 0; i < out.size(); ++i) {
+        if (!readByte(positions[i], out[i])) {
+            return false;
+        }
+    }
+
+    // Validate RFC4122 variant (10xxxxxx) and version (4).
+    const std::uint8_t version = static_cast<std::uint8_t>((out[6] >> 4) & 0x0F);
+    const std::uint8_t variant = static_cast<std::uint8_t>((out[8] >> 6) & 0x03);
+    if (version == 0) {
+        // Reject "nil"/unspecified version UUIDs as invalid input in this API.
+        return false;
+    }
+    // Accept RFC4122 variant only (binary 10).
+    if (variant != 0b10) {
+        return false;
+    }
+
+    return true;
+}
+
+std::array<std::uint8_t, 16> randomUuidV4Bytes()
+{
+    std::array<std::uint8_t, 16> bytes {};
+
+#if defined(_WIN32)
+    // CoCreateGuid does not require COM initialization.
+    GUID guid;
+    if (CoCreateGuid(&guid) != S_OK) {
+        throw std::runtime_error("failed to create uuid");
+    }
+    static_assert(sizeof(guid) == 16);
+    std::memcpy(bytes.data(), &guid, 16);
+#else
+    std::random_device rd;
+    for (auto& b : bytes) {
+        b = static_cast<std::uint8_t>(rd());
+    }
+#endif
+
+    // Force RFC4122 version 4 and variant 1 bits.
+    bytes[6] = static_cast<std::uint8_t>((bytes[6] & 0x0F) | 0x40);
+    bytes[8] = static_cast<std::uint8_t>((bytes[8] & 0x3F) | 0x80);
+
+    return bytes;
+}
+
+}  // namespace
 
 
 //**************************************************************************
@@ -57,26 +206,17 @@ Uuid::~Uuid() = default;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 std::string Uuid::createUuid()
 {
-    std::string Uuid;
-    QString uuid = QUuid::createUuid().toString();
-    uuid = uuid.mid(1);
-    uuid.chop(1);
-    Uuid = uuid.toLatin1().constData();
-    return Uuid;
+    return formatUuid(randomUuidV4Bytes());
 }
 
 void Uuid::setValue(const char* sString)
 {
     if (sString) {
-        QUuid uuid(QString::fromLatin1(sString));
-        if (uuid.isNull()) {
+        std::array<std::uint8_t, 16> bytes {};
+        if (!parseUuid(sString, bytes)) {
             throw std::runtime_error("invalid uuid");
         }
-        // remove curly braces
-        QString id = uuid.toString();
-        id = id.mid(1);
-        id.chop(1);
-        _uuid = id.toLatin1().constData();
+        _uuid = formatUuid(bytes);
     }
 }
 

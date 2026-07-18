@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides support functions to edit Sketch objects."""
+
 ## @package gui_edit_sketcher_objects
 # \ingroup draftguitools
 # \brief Provides support functions to edit Sketch objects.

@@ -40,6 +40,7 @@ __url__ = "https://www.freecad.org"
 __doc__ = "Functions to extract and convert between Path.Command and Part.Edge and utility functions to reason about them."
 
 Tolerance = 0.000001
+Decimal = 6
 
 translate = FreeCAD.Qt.translate
 
@@ -95,6 +96,12 @@ CmdMove = Constants.GCODE_MOVE
 CmdMoveAll = Constants.GCODE_MOVE_ALL
 
 
+def ceil(value, decimal=Decimal):
+    """ceil(value, [decimal=Decimal])
+    Rounding value to exclude precision error and returns ceiling result"""
+    return math.ceil(round(value, decimal))
+
+
 def isRoughly(float1, float2, error=Tolerance):
     """isRoughly(float1, float2, [error=Tolerance])
     Returns true if the two values are the same within a given error."""
@@ -108,7 +115,7 @@ def pointsCoincide(p1, p2, error=Tolerance):
 
 
 def edgesMatch(e0, e1, error=Tolerance):
-    """edgesMatch(e0, e1, [error=Tolerance]
+    """edgesMatch(e0, e1, [error=Tolerance])
     Return true if the edges start and end at the same point and have the same type of curve."""
     if type(e0.Curve) is not type(e1.Curve) or len(e0.Vertexes) != len(e1.Vertexes):
         return False
@@ -307,7 +314,9 @@ def cmdsForEdge(edge, flip=False, approximation=False, hSpeed=0, vSpeed=0, tol=0
 
         if isinstance(edge.Curve, Part.BSplineCurve):
             # convert B-Spline to arcs and lines
-            curves = edge.Curve.toBiArcs(tol)
+            curve = edge.Curve
+            trimmed_curve = curve.trim(*edge.ParameterRange)
+            curves = trimmed_curve.toBiArcs(tol)
             for curve in curves:
                 edge = curve.toShape()
                 if isinstance(edge.Curve, Part.Circle) and not isVertical(edge.Curve.Axis):
@@ -688,7 +697,9 @@ def flipEdge(edge):
             Part.Line(edge.valueAt(edge.LastParameter), edge.valueAt(edge.FirstParameter))
         )
     elif isinstance(edge.Curve, (Part.Line, Part.LineSegment)):
-        return Part.Edge(Part.LineSegment(edge.Vertexes[-1].Point, edge.Vertexes[0].Point))
+        return Part.Edge(
+            Part.LineSegment(edge.valueAt(edge.LastParameter), edge.valueAt(edge.FirstParameter))
+        )
     elif isinstance(edge.Curve, Part.Circle):
         # Create an inverted circle
         circle = Part.Circle(edge.Curve.Center, -edge.Curve.Axis, edge.Curve.Radius)
@@ -761,7 +772,7 @@ def makeBoundBoxFace(bBox, offset=0.0, zHeight=0.0):
 
 
 # Method to combine faces if connected
-def combineHorizontalFaces(faces):
+def combineHorizontalFaces(faces, keepOrder=False):
     """combineHorizontalFaces(faces)...
     This function successfully identifies and combines multiple connected faces and
     works on multiple independent faces with multiple connected faces within the list.
@@ -770,6 +781,8 @@ def combineHorizontalFaces(faces):
 
     Attempts to do the same shape connecting failed with TechDraw.findShapeOutline() and
     Path.Geom.combineConnectedShapes(), so this algorithm was created.
+
+    If keepOrder is True, returns shapes with original order
     """
     horizontal = list()
     offset = 10.0
@@ -826,7 +839,7 @@ def combineHorizontalFaces(faces):
     if not topFace:
         return horizontal
 
-    outer = [Part.Face(w) for w in topFace.Wires[1:]]
+    outer = [Part.Face(w) for w in topFace.Wires[1:] if w.isClosed()]
 
     if outer:
         for f in outer:
@@ -845,5 +858,19 @@ def combineHorizontalFaces(faces):
                 horizontal.append(f)
         else:
             horizontal = outer
+
+    # restore order
+    if keepOrder and len(horizontal) > 1:
+        ordered = [None] * len(faces)
+        for face in horizontal:
+            for i, f in enumerate(faces):
+                if face.isInside(f.Vertexes[0].Point, Tolerance, False):
+                    ordered[i] = face
+                    break
+        ordered = [x for x in ordered if x]
+        if len(ordered) == len(horizontal):
+            horizontal = ordered
+        else:
+            Path.Log.info(translate("PathGeom", "Can not restore order of faces."))
 
     return horizontal

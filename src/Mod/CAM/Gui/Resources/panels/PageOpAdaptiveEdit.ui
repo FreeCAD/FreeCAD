@@ -148,31 +148,51 @@ Larger values (further to the right) will calculate faster; smaller values (furt
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QSpinBox" name="stepOverPercent">
+       <widget class="QDoubleSpinBox" name="stepOver">
         <property name="toolTip">
-         <string>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter. A step over of 100% results in no overlap between two different cycles.</string>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>100</number>
-        </property>
-        <property name="singleStep">
-         <number>10</number>
-        </property>
-        <property name="value">
-         <number>100</number>
+         <string>The sideways distance the cutting tool moves between successive passes, as percentage of the tool's diameter.</string>
         </property>
         <property name="suffix">
          <string>%</string>
+        </property>
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="minimum">
+         <double>0.1</double>
+        </property>
+        <property name="maximum">
+         <double>100.0</double>
+        </property>
+        <property name="singleStep">
+         <double>5.0</double>
+        </property>
+        <property name="value">
+         <double>20.0</double>
         </property>
        </widget>
       </item>
       <item row="4" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Step over</string>
+         <string>Step over (percent)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="Gui::QuantitySpinBox" name="stepOverDistance" native="true">
+        <property name="toolTip">
+         <string>The sideways distance the cutting tool moves between successive passes.</string>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_stepOverDistance">
+        <property name="text">
+         <string>Step over (distance)</string>
         </property>
        </widget>
       </item>
@@ -180,6 +200,13 @@ Larger values (further to the right) will calculate faster; smaller values (furt
        <widget class="QCheckBox" name="useOutline">
         <property name="text">
          <string>Use outline</string>
+        </property>
+       </widget>
+      </item>
+      <item row="26" column="0">
+       <widget class="QCheckBox" name="useRestMachining">
+        <property name="text">
+         <string>Use rest machining</string>
         </property>
        </widget>
       </item>
@@ -253,14 +280,14 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="9" column="0">
        <widget class="QLabel" name="label_max_stepdown">
         <property name="text">
-         <string>Max stepdown</string>
+         <string>Max pitch</string>
         </property>
        </widget>
       </item>
       <item row="9" column="1">
-       <widget class="Gui::InputField" name="HelixMaxStepdown">
+       <widget class="Gui::InputField" name="HelixMaxPitch">
         <property name="toolTip">
-         <string>The maximum allowable descent in a single revolution of the helix.</string>
+         <string>The maximum allowable descent in a single revolution of the helix. Set to zero to disable limitation by pitch.</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true"/>
@@ -270,14 +297,14 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="10" column="0">
        <widget class="QLabel" name="label_7">
         <property name="text">
-         <string>Ramp angle</string>
+         <string>Max ramp angle</string>
         </property>
        </widget>
       </item>
       <item row="10" column="1">
-       <widget class="Gui::InputField" name="HelixAngle">
+       <widget class="Gui::InputField" name="HelixMaxRampAngle">
         <property name="toolTip">
-         <string>Angle of the helix ramp entry</string>
+         <string>The maximum allowable angle of the helix ramp entry. Set to zero to disable limitation by ramp angle.</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true"/>
@@ -364,6 +391,9 @@ Larger values (further to the right) will calculate faster; smaller values (furt
    </item>
    <item>
     <widget class="QPushButton" name="StopButton">
+     <property name="maximumWidth">
+      <number>120</number>
+     </property>
      <property name="text">
       <string>Stop</string>
      </property>

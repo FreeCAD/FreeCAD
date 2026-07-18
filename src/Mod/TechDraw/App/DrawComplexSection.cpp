@@ -84,6 +84,7 @@
 #include <ShapeExtend_WireData.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Edge.hxx>
@@ -189,6 +190,9 @@ TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
     TopoDS_Shape cuttingTool = cuttingToolFromProfile(profileWire, dMax);
     if (debugSection()) {
         BRepTools::Write(cuttingTool, "DCSmakeCuttingTool_cuttingToo.brep");//debug
+    }
+    if (cuttingTool.IsNull()) {
+        return {};
     }
 
     // save the tool face for shading/hatching of cut surface
@@ -1468,10 +1472,14 @@ TopoDS_Shape DrawComplexSection::profileToSolid(const TopoDS_Wire& closedProfile
     if (!mkFace.IsDone()) {
         throw Base::RuntimeError("Complex section could not create face from closed profile");
     }
+    const TopoDS_Face& face = mkFace.Face();
+    if (face.IsNull()) {
+        return {};
+    }
 
     auto extrudeVector = getReferenceAxis() * dMax * 2;
 
-    BRepPrimAPI_MakePrism mkPrism(mkFace.Face(), Base::convertTo<gp_Vec>(extrudeVector));
+    BRepPrimAPI_MakePrism mkPrism(face, Base::convertTo<gp_Vec>(extrudeVector));
     auto profileSolid = mkPrism.Shape();
 
      return profileSolid;
@@ -1648,6 +1656,9 @@ TopoDS_Shape DrawComplexSection::cuttingToolFromProfile(const TopoDS_Wire& inPro
     }
 
     TopoDS_Shape solid = profileToSolid(profileWireClosed, dMax);
+    if (solid.IsNull()) {
+        return {};
+    }
     solid = ShapeUtils::moveShape(solid, getReferenceAxis() * -dMax);
     return solid;
 }

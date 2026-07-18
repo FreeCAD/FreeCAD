@@ -1,5 +1,5 @@
 context:
-  version: "1.1.0dev"
+  version: "26.3.0dev"
 
 package:
   name: freecad
@@ -18,6 +18,7 @@ requirements:
     - cmake
     - compilers>=1.10,<1.11
     - doxygen
+    - gtest
     - ninja
     - noqt5
     - python>=3.11,<3.12
@@ -99,9 +100,8 @@ requirements:
         - cross-python_${{ target_platform }}
 
   host:
-    - coin3d
     - eigen >=3.3,<5
-    - fmt
+    - fmt >=12.1,<12.2
     - freetype
     - hdf5
     - lark
@@ -111,7 +111,6 @@ requirements:
     - numpy>=1.26,<2
     - occt>=7.8,<7.9
     - pcl
-    - pivy
     - ply
     - pybind11
     - pyside6
@@ -139,6 +138,7 @@ requirements:
         - xorg-xproto
 
   run:
+    - av
     - blas * openblas*
     - blinker
     - calculix
@@ -157,10 +157,8 @@ requirements:
     - occt>=7.8,<7.9
     - olefile
     - opencamlib
-    - opencv
     - pandas
     - pip
-    - pivy
     - ply
     - pycollada
     - pyside6

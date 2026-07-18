@@ -26,6 +26,7 @@ At the moment this view provider subclasses the Wire view provider,
 and behaves the same as it. In the future this could change
 if another behavior is desired.
 """
+
 ## @package view_bezcurve
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the BezCurve object.

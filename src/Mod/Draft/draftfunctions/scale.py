@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to scale shapes."""
+
 ## @package scale
 # \ingroup draftfunctions
 # \brief Provides functions to scale shapes.

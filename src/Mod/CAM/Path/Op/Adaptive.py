@@ -30,13 +30,19 @@
 # shape.Wires list is non-empty bypasses this issue.
 
 import Path
+import Path.Base.FeedRate as PathFeedRate
+import Path.Base.Generator.helix as helix
+import Path.Base.Generator.spiral as spiral
 import Path.Op.Base as PathOp
+import Path.Op.Util as PathOpUtil
 import PathScripts.PathUtils as PathUtils
 import FreeCAD
 import time
 import json
 import math
 import area
+import Constants
+from FreeCAD import BoundBox
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 if FreeCAD.GuiUp:
@@ -62,6 +68,8 @@ else:
 
 
 translate = FreeCAD.Qt.translate
+
+ADAPTIVE_GENERATOR_VERSION = "1.0.2"
 
 
 def convertTo2d(pathArray):
@@ -110,6 +118,37 @@ def sceneClean():
     del scenePathNodes[:]
 
 
+def renderProgressCallback(tpaths):
+    if FreeCAD.GuiUp:
+        for path in tpaths:
+            # path[0] contains the MotionType
+            # path[1] contains list of points
+            if path[0] == area.AdaptiveMotionType.Cutting:
+                sceneDrawPath(path[1], (0, 0, 1))  # Blue for cutting
+            else:
+                sceneDrawPath(path[1], (1, 0, 1))  # Magenta for non-cutting
+
+        FreeCADGui.updateGui()
+
+
+def initSceneGraph(z=10):
+    """Initialize the scene graph for adaptive visualization.
+
+    Args:
+        z: The Z height at which to draw paths (default: 10)
+
+    Returns True if scene graph was initialized, False otherwise.
+    """
+    global sceneGraph, topZ
+
+    if not FreeCAD.GuiUp:
+        return False
+
+    sceneGraph = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+    topZ = z
+    return True
+
+
 def discretize(edge, flipDirection=False):
     pts = edge.discretize(Deflection=0.002)
     if flipDirection:
@@ -119,27 +158,25 @@ def discretize(edge, flipDirection=False):
 
 
 def GenerateGCode(op, obj, adaptiveResults):
-    if not adaptiveResults or not adaptiveResults[0]["AdaptivePaths"]:
-        return
 
     # minLiftDistance = op.tool.Diameter
     helixRadius = 0
     for region in adaptiveResults:
+        if not region["AdaptivePaths"]:
+            continue
         p1 = region["HelixCenterPoint"]
         p2 = region["StartPoint"]
         helixRadius = max(math.dist(p1[:2], p2[:2]), helixRadius)
 
     stepDown = max(obj.StepDown.Value, _ADAPTIVE_MIN_STEPDOWN)
 
-    length = 2 * math.pi * helixRadius
+    if obj.HelixMaxRampAngle < 0:
+        obj.HelixMaxRampAngle = 0
+    elif obj.HelixMaxRampAngle > 90:
+        obj.HelixMaxRampAngle = 90
 
-    obj.HelixAngle = min(89.99, max(obj.HelixAngle.Value, 0.01))
-    obj.HelixConeAngle = max(obj.HelixConeAngle, 0)
-
-    helixAngleRad = math.radians(obj.HelixAngle)
-    depthPerOneCircle = length * math.tan(helixAngleRad)
-    if obj.HelixMaxStepdown.Value != 0 and obj.HelixMaxStepdown.Value < depthPerOneCircle:
-        depthPerOneCircle = obj.HelixMaxStepdown.Value
+    if obj.HelixConeAngle < 0:
+        obj.HelixConeAngle = 0
 
     stepUp = max(obj.LiftDistance.Value, 0)
 
@@ -155,6 +192,8 @@ def GenerateGCode(op, obj, adaptiveResults):
     lz = obj.StartDepth.Value
 
     for region in adaptiveResults:
+        if not region["AdaptivePaths"]:
+            continue
         passStartDepth = region.get("TopDepth", obj.StartDepth.Value)
 
         depthParams = PathUtils.depth_params(
@@ -168,294 +207,81 @@ def GenerateGCode(op, obj, adaptiveResults):
         )
 
         for passEndDepth in depthParams.data:
-            pass_start_angle = math.atan2(
-                region["StartPoint"][1] - region["HelixCenterPoint"][1],
-                region["StartPoint"][0] - region["HelixCenterPoint"][0],
-            )
-
-            passDepth = passStartDepth - passEndDepth
-
             p1 = region["HelixCenterPoint"]
             p2 = region["StartPoint"]
             helixRadius = math.dist(p1[:2], p2[:2])
+            dirAngleRad = math.atan2(p2[1] - p1[1], p2[0] - p1[0])
 
             # Helix ramp
             if helixRadius > 0.01:
                 r = helixRadius - 0.01
+                helixHeight = passStartDepth - passEndDepth
+                cone_angle_rad = math.radians(obj.HelixConeAngle.Value)
+                r_bottom = r - helixHeight * math.tan(cone_angle_rad)
+                if r_bottom < r * 0.5:
+                    # put a limit on how small the cone tip can be
+                    r_bottom = r * 0.5
+                    cone_angle_rad = math.atan((r - r_bottom) / helixHeight)
+
                 op.commandlist.append(Path.Command("(Helix to depth: %f)" % passEndDepth))
+                op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
-                if obj.UseHelixArcs is False:
-                    helix_down_angle = passDepth / depthPerOneCircle * 2 * math.pi
+                # Prepend parameters for generator to create helix
+                argsHelix = {
+                    "edge": None,
+                    "outer_radius": r_bottom,
+                    "pitch": obj.HelixMaxPitch.Value or helixHeight,
+                    "retract_height": obj.SafeHeight.Value,
+                    "direction": "CCW",
+                    "startAt": "Inside",
+                    "finish_circle": True,
+                    "cone_angle_rad": cone_angle_rad,
+                    "dir_angle_rad": dirAngleRad,
+                    "ramp_angle_rad": math.radians(obj.HelixMaxRampAngle.Value) or math.pi / 2,
+                }
+                centerTop = FreeCAD.Vector(p1[0], p1[1], passStartDepth)
+                centerBottom = FreeCAD.Vector(p1[0], p1[1], passEndDepth)
+                argsHelix["edge"] = Part.makeLine(centerTop, centerBottom)
 
-                    r_bottom = r - (passStartDepth - passEndDepth) * math.tan(
-                        math.radians(obj.HelixConeAngle.Value)
-                    )
-                    r_bottom = max(
-                        r_bottom, r * 0.5
-                    )  # put a limit on how small the cone tip can be
-                    step_over = obj.StepOver * 0.01 * op.tool.Diameter.Value
-                    spiral_out_angle = (r - r_bottom) / step_over * 2 * math.pi
+                helixCommands = helix.generate(**argsHelix)
+                while helixCommands[-1].Name in Constants.GCODE_MOVE_LINE:
+                    # Remove last retract movements from helix path
+                    del helixCommands[-1]
 
-                    helix_base_angle = pass_start_angle - helix_down_angle - spiral_out_angle
-                    helix_angular_progress = 0
+                op.commandlist.append(helixCommands[1])  # move to helix start point (x,y)
+                op.commandlist.append(Path.Command("G0", {"Z": obj.SafeHeight.Value}))
 
-                    helixStart = [
-                        region["HelixCenterPoint"][0] + r * math.cos(helix_base_angle),
-                        region["HelixCenterPoint"][1] + r * math.sin(helix_base_angle),
-                    ]
+                PathFeedRate.setFeedRate(helixCommands, obj.ToolController)
+                op.commandlist.extend(helixCommands[2:])
 
-                    # rapid move to start point
-                    op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
-                    op.commandlist.append(
-                        Path.Command(
-                            "G0",
-                            {
-                                "X": helixStart[0],
-                                "Y": helixStart[1],
-                                "Z": obj.ClearanceHeight.Value,
-                            },
-                        )
-                    )
-
-                    # rapid move to safe height
-                    op.commandlist.append(
-                        Path.Command(
-                            "G0",
-                            {
-                                "X": helixStart[0],
-                                "Y": helixStart[1],
-                                "Z": obj.SafeHeight.Value,
-                            },
-                        )
-                    )
-
-                    # move to start depth
-                    op.commandlist.append(
-                        Path.Command(
-                            "G1",
-                            {
-                                "X": helixStart[0],
-                                "Y": helixStart[1],
-                                "Z": passStartDepth,
-                                "F": op.vertFeed,
-                            },
-                        )
-                    )
-
-                    # helix down
-                    while helix_angular_progress < helix_down_angle:
-                        progress = helix_angular_progress / helix_down_angle
-                        r_current = r * (1 - progress) + r_bottom * progress
-                        x = region["HelixCenterPoint"][0] + r_current * math.cos(
-                            helix_angular_progress + helix_base_angle
-                        )
-                        y = region["HelixCenterPoint"][1] + r_current * math.sin(
-                            helix_angular_progress + helix_base_angle
-                        )
-                        z = passStartDepth - progress * (passStartDepth - passEndDepth)
-                        op.commandlist.append(
-                            Path.Command("G1", {"X": x, "Y": y, "Z": z, "F": op.vertFeed})
-                        )
-                        helix_angular_progress = min(
-                            helix_angular_progress + math.pi / 16, helix_down_angle
-                        )
-
-                    # spiral out, plus a full extra circle
-                    max_angle = helix_down_angle + spiral_out_angle + 2 * math.pi
-                    while helix_angular_progress < max_angle:
-                        if spiral_out_angle == 0:
-                            progress = 1
-                        else:
-                            progress = min(
-                                1, (helix_angular_progress - helix_down_angle) / spiral_out_angle
-                            )
-                        r_current = r_bottom * (1 - progress) + r * progress
-                        x = region["HelixCenterPoint"][0] + r_current * math.cos(
-                            helix_angular_progress + helix_base_angle
-                        )
-                        y = region["HelixCenterPoint"][1] + r_current * math.sin(
-                            helix_angular_progress + helix_base_angle
-                        )
-                        z = passEndDepth
-                        op.commandlist.append(
-                            Path.Command("G1", {"X": x, "Y": y, "Z": z, "F": op.horizFeed})
-                        )
-                        helix_angular_progress = min(
-                            helix_angular_progress + math.pi / 16, max_angle
-                        )
-                else:
-                    # Use arcs for helix - no conical shape support
-                    helixStart = [
-                        region["HelixCenterPoint"][0] + r,
-                        region["HelixCenterPoint"][1],
-                    ]
-
-                    # rapid move to start point
-                    op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
-                    op.commandlist.append(
-                        Path.Command(
-                            "G0",
-                            {
-                                "X": helixStart[0],
-                                "Y": helixStart[1],
-                                "Z": obj.ClearanceHeight.Value,
-                            },
-                        )
-                    )
-
-                    # rapid move to safe height
-                    op.commandlist.append(
-                        Path.Command(
-                            "G0",
-                            {
-                                "X": helixStart[0],
-                                "Y": helixStart[1],
-                                "Z": obj.SafeHeight.Value,
-                            },
-                        )
-                    )
-
-                    # move to start depth
-                    op.commandlist.append(
-                        Path.Command(
-                            "G1",
-                            {
-                                "X": helixStart[0],
-                                "Y": helixStart[1],
-                                "Z": passStartDepth,
-                                "F": op.vertFeed,
-                            },
-                        )
-                    )
-
-                    x = region["HelixCenterPoint"][0] + r
-                    y = region["HelixCenterPoint"][1]
-
-                    curDep = passStartDepth
-                    while curDep > (passEndDepth + depthPerOneCircle):
-                        op.commandlist.append(
-                            Path.Command(
-                                "G2",
-                                {
-                                    "X": x - (2 * r),
-                                    "Y": y,
-                                    "Z": curDep - (depthPerOneCircle / 2),
-                                    "I": -r,
-                                    "F": op.vertFeed,
-                                },
-                            )
-                        )
-                        op.commandlist.append(
-                            Path.Command(
-                                "G2",
-                                {
-                                    "X": x,
-                                    "Y": y,
-                                    "Z": curDep - depthPerOneCircle,
-                                    "I": r,
-                                    "F": op.vertFeed,
-                                },
-                            )
-                        )
-                        curDep = curDep - depthPerOneCircle
-
-                    lastStep = curDep - passEndDepth
-                    if lastStep > (depthPerOneCircle / 2):
-                        op.commandlist.append(
-                            Path.Command(
-                                "G2",
-                                {
-                                    "X": x - (2 * r),
-                                    "Y": y,
-                                    "Z": curDep - (lastStep / 2),
-                                    "I": -r,
-                                    "F": op.vertFeed,
-                                },
-                            )
-                        )
-                        op.commandlist.append(
-                            Path.Command(
-                                "G2",
-                                {
-                                    "X": x,
-                                    "Y": y,
-                                    "Z": passEndDepth,
-                                    "I": r,
-                                    "F": op.vertFeed,
-                                },
-                            )
-                        )
-                    else:
-                        op.commandlist.append(
-                            Path.Command(
-                                "G2",
-                                {
-                                    "X": x - (2 * r),
-                                    "Y": y,
-                                    "Z": passEndDepth,
-                                    "I": -r,
-                                    "F": op.vertFeed,
-                                },
-                            )
-                        )
-                        op.commandlist.append(
-                            Path.Command(
-                                "G1",
-                                {"X": x, "Y": y, "Z": passEndDepth, "F": op.vertFeed},
-                            )
-                        )
-
-                    # one more circle at target depth to make sure center is cleared
-                    op.commandlist.append(
-                        Path.Command(
-                            "G2",
-                            {
-                                "X": x - (2 * r),
-                                "Y": y,
-                                "Z": passEndDepth,
-                                "I": -r,
-                                "F": op.horizFeed,
-                            },
-                        )
-                    )
-                    op.commandlist.append(
-                        Path.Command(
-                            "G2",
-                            {
-                                "X": x,
-                                "Y": y,
-                                "Z": passEndDepth,
-                                "I": r,
-                                "F": op.horizFeed,
-                            },
-                        )
-                    )
+                if cone_angle_rad:
+                    # Add spiral to connect helix and adaptive path
+                    spiralArgs = {
+                        "center": centerBottom,
+                        "outer_radius": r,
+                        "step": op.tool.Diameter.Value * obj.StepOverPercent / 100,
+                        "inner_radius": r_bottom,
+                        "direction": "CCW",
+                        "startAt": "Inside",
+                        "dir_angle_rad": dirAngleRad,
+                    }
+                    spiralCommands = spiral.generate(**spiralArgs)
+                    PathFeedRate.setFeedRate(spiralCommands, obj.ToolController)
+                    # remove first linear movements
+                    while spiralCommands[0].Name in Constants.GCODE_MOVE_LINE:
+                        del spiralCommands[0]
+                    op.commandlist.append(Path.Command("(Spiral to radius: %f)" % r))
+                    op.commandlist.extend(spiralCommands)
 
             else:  # no helix entry
-                # rapid move to clearance height
-                op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
-                op.commandlist.append(
-                    Path.Command(
-                        "G0",
-                        {
-                            "X": region["StartPoint"][0],
-                            "Y": region["StartPoint"][1],
-                            "Z": obj.ClearanceHeight.Value,
-                        },
-                    )
-                )
+                # rapid move to start point at clearance height
+                z = obj.ClearanceHeight.Value
+                op.commandlist.append(Path.Command("G0", {"Z": z}))
+                op.commandlist.append(Path.Command("G0", {"X": p2[0], "Y": p2[1], "Z": z}))
+
                 # straight plunge to target depth
-                op.commandlist.append(
-                    Path.Command(
-                        "G1",
-                        {
-                            "X": region["StartPoint"][0],
-                            "Y": region["StartPoint"][1],
-                            "Z": passEndDepth,
-                            "F": op.vertFeed,
-                        },
-                    )
-                )
+                parameters = {"X": p2[0], "Y": p2[1], "Z": passEndDepth, "F": op.vertFeed}
+                op.commandlist.append(Path.Command("G1", parameters))
 
             lz = passEndDepth
             z = obj.ClearanceHeight.Value
@@ -474,9 +300,8 @@ def GenerateGCode(op, obj, adaptiveResults):
                         if z != lz:
                             op.commandlist.append(Path.Command("G1", {"Z": z, "F": op.vertFeed}))
 
-                        op.commandlist.append(
-                            Path.Command("G1", {"X": x, "Y": y, "F": op.horizFeed})
-                        )
+                        parameters = {"X": x, "Y": y, "F": op.horizFeed}
+                        op.commandlist.append(Path.Command("G1", parameters))
 
                     elif motionType == area.AdaptiveMotionType.LinkClear:
                         z = passEndDepth + stepUp
@@ -503,24 +328,13 @@ def GenerateGCode(op, obj, adaptiveResults):
 
             passStartDepth = passEndDepth
 
-            # return to safe height in this Z pass
-            z = obj.ClearanceHeight.Value
-            if z != lz:
-                op.commandlist.append(Path.Command("G0", {"Z": z}))
-
-            lz = z
-
     z = obj.ClearanceHeight.Value
     if z != lz:
         op.commandlist.append(Path.Command("G0", {"Z": z}))
 
 
 def Execute(op, obj):
-    global sceneGraph
-    global topZ
-
-    if FreeCAD.GuiUp:
-        sceneGraph = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+    initSceneGraph()
 
     Path.Log.info("*** Adaptive toolpath processing started...\n")
 
@@ -574,14 +388,12 @@ def Execute(op, obj):
         if obj.OperationType == "Clearing":
             if obj.Side == "Outside":
                 opType = area.AdaptiveOperationType.ClearingOutside
-
             else:
                 opType = area.AdaptiveOperationType.ClearingInside
 
         else:  # profiling
             if obj.Side == "Outside":
                 opType = area.AdaptiveOperationType.ProfilingOutside
-
             else:
                 opType = area.AdaptiveOperationType.ProfilingInside
 
@@ -589,14 +401,17 @@ def Execute(op, obj):
         if hasattr(obj, "KeepToolDownRatio"):
             keepToolDownRatio = float(obj.KeepToolDownRatio)
 
+        clearedArea = get_cleared_area(op, obj, pathArray)
+
         # put here all properties that influence calculation of adaptive base paths,
 
         inputStateObject = {
             "tool": float(op.tool.Diameter),
             "tolerance": float(obj.Tolerance),
             "geometry": path2d,
+            "clearedArea": clearedArea,
             "stockGeometry": stockPath2d,
-            "stepover": float(obj.StepOver),
+            "stepover": float(obj.StepOverPercent),
             "effectiveHelixDiameter": float(helixDiameter),
             "helixMinDiameter": float(helixMinDiameter),
             "operationType": obj.OperationType,
@@ -606,6 +421,7 @@ def Execute(op, obj):
             "keepToolDownRatio": keepToolDownRatio,
             "stockToLeave": float(obj.StockToLeave),
             "modelAwareExperiment": obj.ModelAwareExperiment,
+            "adaptiveGeneratorVersion": ADAPTIVE_GENERATOR_VERSION,
         }
 
         inputStateChanged = False
@@ -620,25 +436,14 @@ def Execute(op, obj):
 
         # progress callback fn, if return true it will stop processing
         def progressFn(tpaths):
-            if FreeCAD.GuiUp:
-                for (
-                    path
-                ) in tpaths:  # path[0] contains the MotionType, #path[1] contains list of points
-                    if path[0] == area.AdaptiveMotionType.Cutting:
-                        sceneDrawPath(path[1], (0, 0, 1))
-
-                    else:
-                        sceneDrawPath(path[1], (1, 0, 1))
-
-                FreeCADGui.updateGui()
-
+            renderProgressCallback(tpaths)
             return obj.StopProcessing
 
         start = time.time()
 
         if inputStateChanged or adaptiveResults is None:
             a2d = area.Adaptive2d()
-            a2d.stepOverFactor = 0.01 * obj.StepOver
+            a2d.stepOverFactor = 0.01 * obj.StepOverPercent
             a2d.toolDiameter = float(op.tool.Diameter)
             a2d.helixRampTargetDiameter = helixDiameter
             a2d.helixRampMinDiameter = helixMinDiameter
@@ -650,19 +455,20 @@ def Execute(op, obj):
             a2d.opType = opType
 
             # EXECUTE
-            results = a2d.Execute(stockPath2d, path2d, progressFn)
+            results = a2d.Execute(stockPath2d, path2d, clearedArea, progressFn)
 
             # need to convert results to python object to be JSON serializable
             adaptiveResults = []
             for result in results:
-                adaptiveResults.append(
-                    {
-                        "HelixCenterPoint": result.HelixCenterPoint,
-                        "StartPoint": result.StartPoint,
-                        "AdaptivePaths": result.AdaptivePaths,
-                        "ReturnMotionType": result.ReturnMotionType,
-                    }
-                )
+                if not result.StartPointNotFound:
+                    adaptiveResults.append(
+                        {
+                            "HelixCenterPoint": result.HelixCenterPoint,
+                            "StartPoint": result.StartPoint,
+                            "AdaptivePaths": result.AdaptivePaths,
+                            "ReturnMotionType": result.ReturnMotionType,
+                        }
+                    )
 
         # GENERATE
         GenerateGCode(op, obj, adaptiveResults)
@@ -682,12 +488,38 @@ def Execute(op, obj):
             sceneClean()
 
 
-def ExecuteModelAware(op, obj):
-    global sceneGraph
-    global topZ
+def get_cleared_area(op, obj, pathArray, zOverride=None):
+    clearedArea = []
+    if obj.UseRestMachining:
+        bbox = BoundBox()
+        for path in pathArray:
+            for seg in path:
+                # path is closed, so adding just the start point of each segment is sufficient
+                bbox.add(seg[0][0], seg[0][1], zOverride if zOverride is not None else seg[0][2])
 
-    if FreeCAD.GuiUp:
-        sceneGraph = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+        # If profiling, enlarge the bbox to cover the area that will actually be cleared
+        if obj.OperationType == "Profiling":
+            dxy = op.tool.Diameter.Value * 3  # slightly excessive, to ensure coverage
+            bbox.XMin -= dxy
+            bbox.YMin -= dxy
+            bbox.XMax += dxy
+            bbox.YMax += dxy
+
+        for ca in PathOpUtil.getClearedAreas(obj, bbox):
+            shape = ca.toTopoShape()
+            for wire in shape.Wires:
+                outputWire = []
+                for edge in wire.Edges:
+                    assert edge.Curve.TypeId == "Part::GeomLine"
+                    v = edge.Vertexes[0].Point
+                    outputWire.append([v.x, v.y])
+                clearedArea.append(outputWire)
+
+    return clearedArea
+
+
+def ExecuteModelAware(op, obj):
+    initSceneGraph()
 
     Path.Log.info("*** Adaptive toolpath processing started...\n")
 
@@ -709,7 +541,6 @@ def ExecuteModelAware(op, obj):
     try:
         obj.HelixMinDiameterPercent = max(obj.HelixMinDiameterPercent, 10)
         obj.HelixMaxDiameterPercent = max(obj.HelixMaxDiameterPercent, obj.HelixMinDiameterPercent)
-        obj.StepOver = max(obj.StepOver, 1)
 
         helixDiameter = obj.HelixMaxDiameterPercent / 100 * op.tool.Diameter.Value
         helixMinDiameter = obj.HelixMinDiameterPercent / 100 * op.tool.Diameter.Value
@@ -739,12 +570,14 @@ def ExecuteModelAware(op, obj):
         # NOTE: Pretty sure sorting is already guaranteed by how these are
         # created, but best to not assume that
         for rdict in op.outsidePathArray:
+            stockEdges = [list(zip(p, p[1:] + [p[0]])) for p in stockPaths[rdict["depths"][0]]]
             regionOps.append(
                 {
                     "opType": (
                         outsideClearing if obj.OperationType == "Clearing" else outsideProfiling
                     ),
                     "path2d": convertTo2d(rdict["edges"]),
+                    "clearedArea": get_cleared_area(op, obj, stockEdges, rdict["depths"][-1]),
                     "id": rdict["id"],
                     "children": rdict["children"],
                     # FIXME: Kinda gross- just use this to match up with the
@@ -756,12 +589,14 @@ def ExecuteModelAware(op, obj):
                 (sorted(rdict["depths"], reverse=True), regionOps[-1])
             )
         for rdict in op.insidePathArray:
+            edges = [list(zip(p, p[1:] + [p[0]])) for p in convertTo2d(rdict["edges"])]
             regionOps.append(
                 {
                     "opType": (
                         insideClearing if obj.OperationType == "Clearing" else insideProfiling
                     ),
                     "path2d": convertTo2d(rdict["edges"]),
+                    "clearedArea": get_cleared_area(op, obj, edges, min(rdict["depths"])),
                     "id": rdict["id"],
                     "children": rdict["children"],
                     # FIXME: Kinda gross- just use this to match up with the
@@ -782,10 +617,12 @@ def ExecuteModelAware(op, obj):
             "tool": op.tool.Diameter.Value,
             "tolerance": obj.Tolerance,
             "geometry": [
-                k["path2d"] for k in regionOps if k["opType"] in [outsideClearing, outsideProfiling]
+                (k["path2d"], k["clearedArea"])
+                for k in regionOps
+                if k["opType"] in [outsideClearing, outsideProfiling]
             ],
             "stockGeometry": stockPaths,
-            "stepover": obj.StepOver,
+            "stepover": obj.StepOverPercent,
             "effectiveHelixDiameter": helixDiameter,
             "helixMinDiameter": helixMinDiameter,
             "operationType": "Clearing",
@@ -796,16 +633,19 @@ def ExecuteModelAware(op, obj):
             "stockToLeave": obj.StockToLeave.Value,
             "zStockToLeave": obj.ZStockToLeave.Value,
             "orderCutsByRegion": obj.OrderCutsByRegion,
+            "adaptiveGeneratorVersion": ADAPTIVE_GENERATOR_VERSION,
         }
 
         insideInputStateObject = {
             "tool": op.tool.Diameter.Value,
             "tolerance": obj.Tolerance,
             "geometry": [
-                k["path2d"] for k in regionOps if k["opType"] in [insideClearing, insideProfiling]
+                (k["path2d"], k["clearedArea"])
+                for k in regionOps
+                if k["opType"] in [insideClearing, insideProfiling]
             ],
             "stockGeometry": stockPaths,
-            "stepover": obj.StepOver,
+            "stepover": obj.StepOverPercent,
             "effectiveHelixDiameter": helixDiameter,
             "helixMinDiameter": helixMinDiameter,
             "operationType": "Clearing",
@@ -817,6 +657,7 @@ def ExecuteModelAware(op, obj):
             "zStockToLeave": obj.ZStockToLeave.Value,
             "orderCutsByRegion": obj.OrderCutsByRegion,
             "modelAwareExperiment": obj.ModelAwareExperiment,
+            "adaptiveGeneratorVersion": ADAPTIVE_GENERATOR_VERSION,
         }
 
         inputStateObject = [outsideInputStateObject, insideInputStateObject]
@@ -837,18 +678,7 @@ def ExecuteModelAware(op, obj):
 
         # progress callback fn, if return true it will stop processing
         def progressFn(tpaths):
-            if FreeCAD.GuiUp:
-                for (
-                    path
-                ) in tpaths:  # path[0] contains the MotionType, #path[1] contains list of points
-                    if path[0] == area.AdaptiveMotionType.Cutting:
-                        sceneDrawPath(path[1], (0, 0, 1))
-
-                    else:
-                        sceneDrawPath(path[1], (1, 0, 1))
-
-                FreeCADGui.updateGui()
-
+            renderProgressCallback(tpaths)
             return obj.StopProcessing
 
         start = time.time()
@@ -867,10 +697,11 @@ def ExecuteModelAware(op, obj):
             # identical stepdowns
             for rdict in regionOps:
                 path2d = rdict["path2d"]
+                clearedArea = rdict["clearedArea"]
                 opType = rdict["opType"]
 
                 a2d = area.Adaptive2d()
-                a2d.stepOverFactor = 0.01 * obj.StepOver
+                a2d.stepOverFactor = 0.01 * obj.StepOverPercent
                 a2d.toolDiameter = op.tool.Diameter.Value
                 a2d.helixRampTargetDiameter = helixDiameter
                 a2d.helixRampMinDiameter = helixMinDiameter
@@ -883,21 +714,17 @@ def ExecuteModelAware(op, obj):
                 a2d.opType = opType
 
                 rdict["toolpaths"] = a2d.Execute(
-                    stockPaths[rdict["startdepth"]], path2d, progressFn
+                    stockPaths[rdict["startdepth"]], path2d, clearedArea, progressFn
                 )
 
             # Sort regions to cut by either depth or area.
             # TODO: Bonus points for ordering to minimize rapids
             cutlist = list()
-            # Region IDs that have been cut already
-            cutids = list()
-            # Create sorted list of unique depths
-            # NOTE: reverse because we cut top-down!
-            depths = list()
             # NOTE: alltuples is sorted by depth already
             alltuples = outsidePathArray2dDepthTuples + insidePathArray2dDepthTuples
-            for t in alltuples:
-                depths += [d for d in t[0]]
+            # Create sorted list of unique depths
+            depths = [d for t in alltuples for d in t[0]]
+            # NOTE: reverse because we cut top-down!
             depths = sorted(list(set(depths)), reverse=True)
             if obj.OrderCutsByRegion:
                 # Translate child ID numbers to an actual reference to the
@@ -937,12 +764,6 @@ def ExecuteModelAware(op, obj):
                     # Regions are only generated where stock needs to be
                     # removed, so we can't start at the cut level- we know
                     # there's material there.
-                    # TODO: Due to the adaptive algorithm currently not
-                    # processing holes in the stock when finding entry points,
-                    # this may result in a helix up to stepdown in height where
-                    # one isn't required. This should be fixed in FindEntryPoint
-                    # or FindEntryPointOutside in Adaptive.cpp, not bandaged
-                    # here.
 
                     TopDepth = min(
                         topZ,
@@ -1102,11 +923,11 @@ def projectFacesToXY(faces, minEdgeLength=1e-10):
         # removeSplitter is sometimes required to make concatenate succeed.
         try:
             fusion = fusion.removeSplitter()
-        except:
+        except Exception:
             Path.Log.warning("projectFacesToXY: removeSplitter failure")
         try:
             fusion = DraftGeomUtils.concatenate(fusion)
-        except:
+        except Exception:
             Path.Log.warning("projectFacesToXY: concatenate failure")
         return fusion
     else:
@@ -1130,8 +951,7 @@ def _getSolidProjection(shp, z):
         FreeCAD.Vector(bb.XMin, bb.YMin, z),
     )
     aboveSolids = shp.common(bbCutTop).Solids
-
-    faces = list()
+    faces = []
     for s in aboveSolids:
         faces += s.Faces
 
@@ -1157,12 +977,9 @@ def _workingEdgeHelperRoughing(op, obj, depths):
         Part.makeFace(TechDraw.findShapeOutline(s, 1, projdir)) for s in shps.Solids
     ]
 
-    lastdepth = obj.StartDepth.Value
-
     for depth in depths:
         # If we have no stock to machine, just skip all the rest of the math
         if depth >= op.stock.Shape.BoundBox.ZMax:
-            lastdepth = depth
             continue
 
         # NOTE: To "leave" stock along Z without actually checking any face
@@ -1246,7 +1063,6 @@ def _workingEdgeHelperRoughing(op, obj, depths):
             for f in finalCut.Faces:
                 addNew = True
                 # Brute-force search all existing regions to see if any are the same
-                newtop = lastdepth
                 for rdict in insideRegions:
                     # FIXME: Smarter way to do this than a full cut operation?
                     if not rdict["region"].cut(f).Wires:
@@ -1256,8 +1072,6 @@ def _workingEdgeHelperRoughing(op, obj, depths):
                 if addNew:
                     insideRegions.append({"region": f, "depths": [depth]})
 
-        # Update the last depth step
-        lastdepth = depth
     # end for depth
 
     return insideRegions, outsideRegions
@@ -1287,7 +1101,7 @@ def _workingEdgeHelperManual(op, obj, depths):
                 for f in ext.getExtensionFaces(wire):
                     selectedRegions.extend(f.Faces)
 
-    for base, subs in obj.Base:
+    for base, subs in op.baseShapes(obj):
         for sub in subs:
             element = base.Shape.getElement(sub)
             if sub.startswith("Face") and sub not in avoidFeatures:
@@ -1317,7 +1131,7 @@ def _workingEdgeHelperManual(op, obj, depths):
     edgefaces = list()
     if selectedEdges:
         pp = [projface.makeParallelProjection(e, projdir).Wires[0] for e in selectedEdges]
-        ppe = list()
+        ppe = []
         for w in pp:
             ppe += w.Edges
         edgeWires = DraftGeomUtils.findWires(ppe)
@@ -1331,12 +1145,9 @@ def _workingEdgeHelperManual(op, obj, depths):
         Path.Log.warning("Selected faces/wires have no projection on the XY plane")
         return insideRegions, outsideRegions
 
-    lastdepth = obj.StartDepth.Value
-
     for depth in depths:
         # If our depth is above the top of the stock, there's nothing to machine
         if depth >= op.stock.Shape.BoundBox.ZMax:
-            lastdepth = depth
             continue
 
         # NOTE: See note in _workingEdgeHelperRoughing- tl;dr slice stock
@@ -1402,7 +1213,6 @@ def _workingEdgeHelperManual(op, obj, depths):
             for f in finalCut.Faces:
                 addNew = True
                 # Brute-force search all existing regions to see if any are the same
-                newtop = lastdepth
                 for rdict in insideRegions:
                     # FIXME: Smarter way to do this than a full cut operation?
                     if not rdict["region"].cut(f).Wires:
@@ -1412,8 +1222,6 @@ def _workingEdgeHelperManual(op, obj, depths):
                 if addNew:
                     insideRegions.append({"region": f, "depths": [depth]})
 
-        # Update the last depth step
-        lastdepth = depth
     # end for depth
 
     return insideRegions, outsideRegions
@@ -1428,17 +1236,14 @@ def _get_working_edges(op, obj):
     """
     all_regions = list()
     edge_list = list()
-    avoidFeatures = list()
     rawEdges = list()
 
     # Get extensions and identify faces to avoid
     extensions = FeatureExtensions.getExtensions(obj)
-    for e in extensions:
-        if e.avoid:
-            avoidFeatures.append(e.feature)
+    avoidFeatures = [e.feature for e in extensions if e.avoid]
 
     # Get faces selected by user
-    for base, subs in obj.Base:
+    for base, subs in op.baseShapes(obj):
         for sub in subs:
             if sub.startswith("Face"):
                 if sub not in avoidFeatures:
@@ -1452,8 +1257,8 @@ def _get_working_edges(op, obj):
                         shape = base.Shape.getElement(sub)
                     all_regions.append(shape)
             elif sub.startswith("Edge"):
-                # Save edges for later processing
-                rawEdges.append(base.Shape.getElement(sub))
+                if sub not in avoidFeatures:
+                    rawEdges.append(base.Shape.getElement(sub))
     # Efor
 
     # Process selected edges
@@ -1760,8 +1565,8 @@ class PathAdaptive(PathOp.ObjectOp):
             ),
         )
         obj.addProperty(
-            "App::PropertyPercent",
-            "StepOver",
+            "App::PropertyFloat",
+            "StepOverPercent",
             "Adaptive",
             QT_TRANSLATE_NOOP(
                 "App::Property",
@@ -1840,15 +1645,6 @@ class PathAdaptive(PathOp.ObjectOp):
         )
         obj.setEditorMode("StopProcessing", 2)  # hide this property
         obj.addProperty(
-            "App::PropertyBool",
-            "UseHelixArcs",
-            "Adaptive",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "Use Arcs (G2) for helix ramp",
-            ),
-        )
-        obj.addProperty(
             "App::PropertyPythonObject",
             "AdaptiveInputState",
             "Adaptive",
@@ -1870,26 +1666,28 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.setEditorMode("AdaptiveOutputState", 2)  # hide this property
         obj.addProperty(
             "App::PropertyAngle",
-            "HelixAngle",
-            "Adaptive",
+            "HelixMaxRampAngle",
+            "AdaptiveHelixEntry",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Helix ramp entry angle (degrees)",
+                "The maximum allowable helix ramp entry angle (degrees)"
+                "\nSet to zero to disable limitation by ramp angle",
             ),
         )
         obj.addProperty(
             "App::PropertyLength",
-            "HelixMaxStepdown",
-            "Adaptive",
+            "HelixMaxPitch",
+            "AdaptiveHelixEntry",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "The maximum allowable descent in a single revolution of the helix.",
+                "The maximum allowable descent in a single revolution of the helix"
+                "\nSet to zero to disable limitation by pitch",
             ),
         )
         obj.addProperty(
             "App::PropertyAngle",
             "HelixConeAngle",
-            "Adaptive",
+            "AdaptiveHelixEntry",
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Helix cone angle (degrees)",
@@ -1898,7 +1696,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.addProperty(
             "App::PropertyPercent",
             "HelixMaxDiameterPercent",
-            "Adaptive",
+            "AdaptiveHelixEntry",
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter",
@@ -1907,7 +1705,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.addProperty(
             "App::PropertyPercent",
             "HelixMinDiameterPercent",
-            "Adaptive",
+            "AdaptiveHelixEntry",
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Minimum acceptable helix entry diameter, as a percentage of the tool diameter",
@@ -1920,6 +1718,15 @@ class PathAdaptive(PathOp.ObjectOp):
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Uses the outline of the base geometry.",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "UseRestMachining",
+            "Adaptive",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Skips machining regions that have already been cleared by previous operations.",
             ),
         )
         obj.addProperty(
@@ -1960,14 +1767,14 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.Side = "Inside"
         obj.OperationType = "Clearing"
         obj.Tolerance = 0.1
-        obj.StepOver = 20
+        obj.StepOverPercent = 20
         obj.LiftDistance = 0
         # obj.ProcessHoles = True
         obj.ForceInsideOut = False
         obj.FinishingProfile = True
         obj.Stopped = False
         obj.StopProcessing = False
-        obj.HelixAngle = 5
+        obj.HelixMaxRampAngle = 5
         obj.HelixConeAngle = 0
         obj.HelixMaxDiameterPercent = 100
         obj.HelixMinDiameterPercent = 10
@@ -1976,8 +1783,8 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.StockToLeave = 0
         obj.ZStockToLeave = 0
         obj.KeepToolDownRatio = 3.0
-        obj.UseHelixArcs = False
         obj.UseOutline = False
+        obj.UseRestMachining = False
         obj.OrderCutsByRegion = False
         obj.ModelAwareExperiment = False
         FeatureExtensions.set_default_property_values(obj, job)
@@ -1986,6 +1793,12 @@ class PathAdaptive(PathOp.ObjectOp):
         """opExecute(obj) ... called whenever the receiver needs to be recalculated.
         See documentation of execute() for a list of base functionality provided.
         Should be overwritten by subclasses."""
+
+        # Enforce StepOverPercent constraints
+        if obj.StepOverPercent > 100.0:
+            obj.StepOverPercent = 100.0
+        if obj.StepOverPercent < 0.1:
+            obj.StepOverPercent = 0.1
 
         obj.setEditorMode("OrderCutsByRegion", 0 if obj.ModelAwareExperiment else 2)
         obj.setEditorMode("ZStockToLeave", 0 if obj.ModelAwareExperiment else 2)
@@ -2009,7 +1822,7 @@ class PathAdaptive(PathOp.ObjectOp):
             obj.addProperty(
                 "App::PropertyAngle",
                 "HelixConeAngle",
-                "Adaptive",
+                "AdaptiveHelixEntry",
                 "Helix cone angle (degrees)",
             )
 
@@ -2019,6 +1832,17 @@ class PathAdaptive(PathOp.ObjectOp):
                 "UseOutline",
                 "Adaptive",
                 "Uses the outline of the base geometry.",
+            )
+
+        if not hasattr(obj, "UseRestMachining"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "UseRestMachining",
+                "Adaptive",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Skips machining regions that have already been cleared by previous operations.",
+                ),
             )
 
         if not hasattr(obj, "OrderCutsByRegion"):
@@ -2066,7 +1890,7 @@ class PathAdaptive(PathOp.ObjectOp):
             obj.addProperty(
                 "App::PropertyPercent",
                 "HelixMaxDiameterPercent",
-                "Adaptive",
+                "AdaptiveHelixEntry",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter",
@@ -2075,7 +1899,7 @@ class PathAdaptive(PathOp.ObjectOp):
             obj.addProperty(
                 "App::PropertyPercent",
                 "HelixMinDiameterPercent",
-                "Adaptive",
+                "AdaptiveHelixEntry",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Minimum acceptable helix entry diameter, as a percentage of the tool diameter",
@@ -2087,16 +1911,53 @@ class PathAdaptive(PathOp.ObjectOp):
                     75 if oldD == 0 else 100 * oldD / obj.ToolController.Tool.Diameter.Value
                 )
 
-        if not hasattr(obj, "HelixMaxStepdown"):
+        if hasattr(obj, "HelixAngle"):
+            obj.renameProperty("HelixAngle", "HelixMaxRampAngle")
+
+        if hasattr(obj, "HelixMaxStepdown"):
+            obj.renameProperty("HelixMaxStepdown", "HelixMaxPitch")
+        if not hasattr(obj, "HelixMaxPitch"):
             obj.addProperty(
                 "App::PropertyLength",
-                "HelixMaxStepdown",
+                "HelixMaxPitch",
+                "AdaptiveHelixEntry",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "The maximum allowable descent in a single revolution of the helix. "
+                    "Set to 0 to disable the pitch limit.",
+                ),
+            )
+        helixProps = (
+            "HelixConeAngle",
+            "HelixMaxDiameterPercent",
+            "HelixMinDiameterPercent",
+            "HelixMaxRampAngle",
+            "HelixMaxPitch",
+        )
+        for prop in helixProps:
+            if obj.getGroupOfProperty(prop) != "AdaptiveHelixEntry":
+                obj.setGroupOfProperty(prop, "AdaptiveHelixEntry")
+
+        # Migrate StepOver to StepOverPercent
+        if not hasattr(obj, "StepOverPercent"):
+            # Get value from old StepOver property or use default
+            if hasattr(obj, "StepOver"):
+                oldValue = obj.StepOver
+                obj.removeProperty("StepOver")
+            else:
+                oldValue = 20
+
+            # Create new StepOverPercent property
+            obj.addProperty(
+                "App::PropertyFloat",
+                "StepOverPercent",
                 "Adaptive",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The maximum allowable descent in a single revolution of the helix.",
+                    "Percent of cutter diameter to step over on each pass",
                 ),
             )
+            obj.StepOverPercent = float(oldValue)
 
         FeatureExtensions.initialize_properties(obj)
 
@@ -2106,7 +1967,7 @@ def SetupProperties():
         "Side",
         "OperationType",
         "Tolerance",
-        "StepOver",
+        "StepOverPercent",
         "LiftDistance",
         "KeepToolDownRatio",
         "StockToLeave",
@@ -2115,14 +1976,14 @@ def SetupProperties():
         "FinishingProfile",
         "Stopped",
         "StopProcessing",
-        "UseHelixArcs",
         "AdaptiveInputState",
         "AdaptiveOutputState",
-        "HelixAngle",
+        "HelixMaxRampAngle",
         "HelixConeAngle",
         "HelixMaxDiameterPercent",
         "HelixMinDiameterPercent",
         "UseOutline",
+        "UseRestMachining",
         "OrderCutsByRegion",
     ]
     return setup

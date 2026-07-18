@@ -49,6 +49,8 @@
 #include "SketcherSettings.h"
 #include "ui_InsertDatum.h"
 
+#include <Precision.hxx>
+#include <cmath>
 #include <numeric>
 
 
@@ -58,7 +60,7 @@ using namespace SketcherGui;
 
 bool SketcherGui::checkConstraintName(const Sketcher::SketchObject* sketch, std::string constraintName)
 {
-    if (constraintName != Base::Tools::getIdentifier(constraintName)) {
+    if (!constraintName.empty() && constraintName != Base::Tools::getIdentifier(constraintName)) {
         Gui::NotifyUserError(
             sketch,
             QT_TRANSLATE_NOOP("Notifications", "Value Error"),
@@ -133,7 +135,7 @@ int EditDatumDialog::exec(bool atCursor)
             datum = Base::toDegrees<double>(datum);
             dlg.setWindowTitle(tr("Insert Angle"));
             init_val.setUnit(Base::Unit::Angle);
-            ui_ins_datum->label->setText(tr("Angle:"));
+            ui_ins_datum->label->setText(tr("Angle"));
             ui_ins_datum->labelEdit->setParamGrpPath(
                 QByteArray("User parameter:BaseApp/History/SketcherAngle")
             );
@@ -141,7 +143,7 @@ int EditDatumDialog::exec(bool atCursor)
         else if (Constr->Type == Sketcher::Radius) {
             dlg.setWindowTitle(tr("Insert Radius"));
             init_val.setUnit(Base::Unit::Length);
-            ui_ins_datum->label->setText(tr("Radius:"));
+            ui_ins_datum->label->setText(tr("Radius"));
             ui_ins_datum->labelEdit->setParamGrpPath(
                 QByteArray("User parameter:BaseApp/History/SketcherLength")
             );
@@ -150,7 +152,7 @@ int EditDatumDialog::exec(bool atCursor)
         else if (Constr->Type == Sketcher::Diameter) {
             dlg.setWindowTitle(tr("Insert Diameter"));
             init_val.setUnit(Base::Unit::Length);
-            ui_ins_datum->label->setText(tr("Diameter:"));
+            ui_ins_datum->label->setText(tr("Diameter"));
             ui_ins_datum->labelEdit->setParamGrpPath(
                 QByteArray("User parameter:BaseApp/History/SketcherLength")
             );
@@ -158,7 +160,7 @@ int EditDatumDialog::exec(bool atCursor)
         }
         else if (Constr->Type == Sketcher::Weight) {
             dlg.setWindowTitle(tr("Insert Weight"));
-            ui_ins_datum->label->setText(tr("Weight:"));
+            ui_ins_datum->label->setText(tr("Weight"));
             ui_ins_datum->labelEdit->setParamGrpPath(
                 QByteArray("User parameter:BaseApp/History/SketcherWeight")
             );
@@ -174,7 +176,7 @@ int EditDatumDialog::exec(bool atCursor)
         else {
             dlg.setWindowTitle(tr("Insert Length"));
             init_val.setUnit(Base::Unit::Length);
-            ui_ins_datum->label->setText(tr("Length:"));
+            ui_ins_datum->label->setText(tr("Length"));
             ui_ins_datum->labelEdit->setParamGrpPath(
                 QByteArray("User parameter:BaseApp/History/SketcherLength")
             );
@@ -301,11 +303,8 @@ void EditDatumDialog::accepted()
             std::string constraintName = ui_ins_datum->name->text().trimmed().toStdString();
             std::string currConstraintName = sketch->Constraints[ConstrNbr]->Name;
 
-            if (constraintName != currConstraintName) {
-                if (!SketcherGui::checkConstraintName(sketch, constraintName)) {
-                    constraintName = currConstraintName;
-                }
-
+            if (constraintName != currConstraintName
+                && SketcherGui::checkConstraintName(sketch, constraintName)) {
                 Gui::cmdAppObjectArgs(
                     sketch,
                     "renameConstraint(%d, u'%s')",
@@ -464,8 +463,10 @@ void EditDatumDialog::performAutoScale(double newDatum)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning"
     );
-    long autoScaleMode
-        = hGrp->GetInt("AutoScaleMode", static_cast<int>(SketcherGui::AutoScaleMode::Always));
+    long autoScaleMode = hGrp->GetInt(
+        "AutoScaleMode",
+        static_cast<int>(SketcherGui::AutoScaleMode::WhenNoScaleFeatureIsVisible)
+    );
 
     // There is a single constraint in the sketch so it can
     // be used as a reference to scale the geometries around the origin
@@ -487,7 +488,16 @@ void EditDatumDialog::performAutoScale(double newDatum)
             }
 
             double oldDatum = sketch->getDatum(ConstrNbr);
+            if (!std::isfinite(newDatum) || !std::isfinite(oldDatum)
+                || std::abs(oldDatum) <= Precision::Confusion()) {
+                return;
+            }
+
             double scaleFactor = newDatum / oldDatum;
+            if (!std::isfinite(scaleFactor) || scaleFactor <= Precision::Confusion()
+                || std::abs(scaleFactor - 1.0) <= Precision::Confusion()) {
+                return;
+            }
             centerScale(scaleFactor);
 
             // Some constraints cannot be scaled so the actual datum constraint

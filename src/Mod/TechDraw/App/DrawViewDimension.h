@@ -98,6 +98,9 @@ public:
     App::PropertyVectorList BoxCorners;
     App::PropertyBool UseActualArea;
 
+    App::PropertyBool UseAreaLeaderPoint;
+    App::PropertyVector AreaLeaderPoint;
+
     App::PropertyBool ShowUnits;
 //NOLINTEND
 
@@ -246,6 +249,9 @@ protected:
     virtual anglePoints getAnglePointsThreeVerts(ReferenceVector references);
 
     virtual areaPoint getAreaParameters(ReferenceVector references);
+
+    bool isCircleSpecialCase(const TopoDS_Edge& edge0, const TopoDS_Edge& edge1);
+    pointPair getPointsTwoCircles(const TopoDS_Edge& edge0, const TopoDS_Edge& edge1, bool is3d);
 
     double
     dist2Segs(Base::Vector3d s1, Base::Vector3d e1, Base::Vector3d s2, Base::Vector3d e2) const;

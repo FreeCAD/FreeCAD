@@ -22,6 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to set up the working plane and its grid."""
+
 ## @package gui_selectplane
 # \ingroup draftguitools
 # \brief Provides GUI tools to set up the working plane and its grid.
@@ -71,6 +72,12 @@ class Draft_SelectPlane:
 
     def Activated(self):
         """Execute when the command is called."""
+
+        def _show_dialog():
+            dia = Gui.Control.showDialog(self.taskd)
+            dia.setDocumentName(Gui.ActiveDocument.Document.Name)
+            dia.setAutoCloseOnDeletedDocument(True)
+
         # Finish active Draft command if any
         if App.activeDraftCommand is not None:
             App.activeDraftCommand.finish()
@@ -154,7 +161,7 @@ class Draft_SelectPlane:
             return
 
         # Execute the actual task panel delayed to catch possible active Draft command
-        todo.delay(Gui.Control.showDialog, self.taskd)
+        todo.delay(_show_dialog, None)
         todo.delay(form.setFocus, None)
         _toolmsg(
             translate(

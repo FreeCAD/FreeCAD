@@ -15,6 +15,60 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <widget class="QCheckBox" name="ckb_working_directory">
+     <property name="text">
+      <string>Working directory</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gpb_working_directory">
+     <property name="title">
+      <string></string>
+     </property>
+     <layout class="QVBoxLayout" name="vbl_working_directory">
+      <item>
+       <layout class="QHBoxLayout" name="hbl_working_directory">
+        <item>
+         <widget class="QPushButton" name="pb_write_input">
+          <property name="text">
+           <string>Write</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pb_edit_input">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Edit</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="hbl_working_directory">
+        <item>
+         <widget class="Gui::FileChooser" name="fc_working_directory">
+          <property name="toolTip">
+           <string>Path to working directory. Leave blank to use user preferences</string>
+          </property>
+          <property name="readOnly">
+           <bool>false</bool>
+          </property>
+          <property name="mode">
+            <enum>Gui::FileChooser::Mode::Directory</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="gb01_mesh_params">
      <property name="maximumSize">
       <size>

@@ -45,11 +45,23 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return form
 
     def initPage(self, obj):
-        self.form.HelixMaxStepdown.setProperty("unit", obj.HelixMaxStepdown.getUserPreferred()[2])
+        self.form.HelixMaxPitch.setProperty("unit", obj.HelixMaxPitch.getUserPreferred()[2])
 
         self.form.LiftDistance.setProperty("unit", obj.LiftDistance.getUserPreferred()[2])
         self.form.KeepToolDownRatio.setProperty("unit", obj.KeepToolDownRatio.getUserPreferred()[2])
         self.form.StockToLeave.setProperty("unit", obj.StockToLeave.getUserPreferred()[2])
+        # Use user's preferred length unit
+        self.form.stepOverDistance.setProperty(
+            "unit", FreeCAD.Units.Quantity("1 mm").getUserPreferred()[2]
+        )
+
+        # Connect controls to keep step over percent and distance in sync
+        self.form.stepOver.valueChanged.connect(lambda: self.updateStepOverDistance(obj))
+        self.form.stepOverDistance.valueChanged.connect(lambda: self.updateStepOverPercent(obj))
+        self.form.stepOverDistance.editingFinished.connect(lambda: self.updateStepOverDistance(obj))
+        self.form.toolController.currentIndexChanged.connect(
+            lambda: self.updateStepOverDistance(obj)
+        )
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
@@ -57,10 +69,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.Side.currentIndexChanged)
         signals.append(self.form.OperationType.currentIndexChanged)
         signals.append(self.form.toolController.currentIndexChanged)
-        signals.append(self.form.stepOverPercent.valueChanged)
+        signals.append(self.form.stepOver.valueChanged)
         signals.append(self.form.Tolerance.valueChanged)
-        signals.append(self.form.HelixAngle.valueChanged)
-        signals.append(self.form.HelixMaxStepdown.valueChanged)
+        signals.append(self.form.HelixMaxRampAngle.valueChanged)
+        signals.append(self.form.HelixMaxPitch.valueChanged)
         signals.append(self.form.HelixConeAngle.valueChanged)
         signals.append(self.form.HelixMaxDiameterPercent.valueChanged)
         signals.append(self.form.HelixMinDiameterPercent.valueChanged)
@@ -72,24 +84,52 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             signals.append(self.form.ForceInsideOut.checkStateChanged)
             signals.append(self.form.FinishingProfile.checkStateChanged)
             signals.append(self.form.useOutline.checkStateChanged)
+            signals.append(self.form.useRestMachining.checkStateChanged)
         else:  # Qt version < 6.7.0
             signals.append(self.form.ForceInsideOut.stateChanged)
             signals.append(self.form.FinishingProfile.stateChanged)
             signals.append(self.form.useOutline.stateChanged)
+            signals.append(self.form.useRestMachining.stateChanged)
         signals.append(self.form.StopButton.toggled)
         return signals
+
+    def updateStepOverDistance(self, obj):
+        """Update step over distance from percent"""
+        if hasattr(obj, "ToolController") and obj.ToolController:
+            toolDiameter = obj.ToolController.Tool.Diameter.Value
+            percent = self.form.stepOver.value()
+            distance = toolDiameter * percent / 100.0
+            self.form.stepOverDistance.blockSignals(True)
+            self.form.stepOverDistance.setProperty("rawValue", distance)
+            self.form.stepOverDistance.blockSignals(False)
+
+    def updateStepOverPercent(self, obj):
+        """Update step over percent when distance changes"""
+        if hasattr(obj, "ToolController") and obj.ToolController:
+            toolDiameter = obj.ToolController.Tool.Diameter.Value
+            if toolDiameter > 0:
+                distance = self.form.stepOverDistance.property("rawValue")
+                percent = (distance / toolDiameter) * 100.0
+                percent = max(0.1, min(100.0, percent))
+
+                self.form.stepOver.blockSignals(True)
+                self.form.stepOver.setValue(percent)
+                self.form.stepOver.blockSignals(False)
+                self.getFields(obj)
 
     def setFields(self, obj):
         self.selectInComboBox(obj.Side, self.form.Side)
         self.selectInComboBox(obj.OperationType, self.form.OperationType)
-        self.form.stepOverPercent.setValue(obj.StepOver)
+        self.form.stepOver.setValue(obj.StepOverPercent)
+        self.updateStepOverDistance(obj)
+
         self.form.Tolerance.setValue(int(obj.Tolerance * 100))
 
-        self.form.HelixAngle.setText(
-            FreeCAD.Units.Quantity(obj.HelixAngle, FreeCAD.Units.Angle).UserString
+        self.form.HelixMaxRampAngle.setText(
+            FreeCAD.Units.Quantity(obj.HelixMaxRampAngle, FreeCAD.Units.Angle).UserString
         )
 
-        self.form.HelixMaxStepdown.setProperty("rawValue", obj.HelixMaxStepdown.Value)
+        self.form.HelixMaxPitch.setProperty("rawValue", obj.HelixMaxPitch.Value)
 
         self.form.HelixConeAngle.setText(
             FreeCAD.Units.Quantity(obj.HelixConeAngle, FreeCAD.Units.Angle).UserString
@@ -110,6 +150,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.ForceInsideOut.setChecked(obj.ForceInsideOut)
         self.form.FinishingProfile.setChecked(obj.FinishingProfile)
         self.form.useOutline.setChecked(obj.UseOutline)
+        self.form.useRestMachining.setChecked(obj.UseRestMachining)
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
         self.form.StopButton.setChecked(obj.Stopped)
@@ -125,8 +166,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.OperationType != str(self.form.OperationType.currentData()):
             obj.OperationType = str(self.form.OperationType.currentData())
 
-        if obj.StepOver != self.form.stepOverPercent.value():
-            obj.StepOver = self.form.stepOverPercent.value()
+        if obj.StepOverPercent != self.form.stepOver.value():
+            obj.StepOverPercent = self.form.stepOver.value()
 
         if obj.HelixMaxDiameterPercent != self.form.HelixMaxDiameterPercent.value():
             obj.HelixMaxDiameterPercent = self.form.HelixMaxDiameterPercent.value()
@@ -135,8 +176,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.HelixMinDiameterPercent = self.form.HelixMinDiameterPercent.value()
 
         obj.Tolerance = 1.0 * self.form.Tolerance.value() / 100.0
-        PathGuiUtil.updateInputField(obj, "HelixAngle", self.form.HelixAngle)
-        PathGuiUtil.updateInputField(obj, "HelixMaxStepdown", self.form.HelixMaxStepdown)
+        PathGuiUtil.updateInputField(obj, "HelixMaxRampAngle", self.form.HelixMaxRampAngle)
+        PathGuiUtil.updateInputField(obj, "HelixMaxPitch", self.form.HelixMaxPitch)
         PathGuiUtil.updateInputField(obj, "HelixConeAngle", self.form.HelixConeAngle)
         PathGuiUtil.updateInputField(obj, "LiftDistance", self.form.LiftDistance)
 
@@ -149,6 +190,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         obj.ForceInsideOut = self.form.ForceInsideOut.isChecked()
         obj.FinishingProfile = self.form.FinishingProfile.isChecked()
         obj.UseOutline = self.form.useOutline.isChecked()
+        obj.UseRestMachining = self.form.useRestMachining.isChecked()
         obj.Stopped = self.form.StopButton.isChecked()
         if obj.Stopped:
             self.form.StopButton.setChecked(False)  # reset the button

@@ -52,9 +52,8 @@ PyObject* ToroidPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python
 int ToroidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     if (PyArg_ParseTuple(args, "")) {
-        Handle(Geom_ToroidalSurface) torus = Handle(Geom_ToroidalSurface)::DownCast(
-            getGeomToroidPtr()->handle()
-        );
+        Handle(Geom_ToroidalSurface)
+            torus = Handle(Geom_ToroidalSurface)::DownCast(getGeomToroidPtr()->handle());
         torus->SetMajorRadius(5.0);
         torus->SetMinorRadius(1.0);
         return 0;
@@ -65,18 +64,16 @@ int ToroidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 Py::Float ToroidPy::getMajorRadius() const
 {
-    Handle(Geom_ToroidalSurface) torus = Handle(Geom_ToroidalSurface)::DownCast(
-        getGeomToroidPtr()->handle()
-    );
+    Handle(Geom_ToroidalSurface)
+        torus = Handle(Geom_ToroidalSurface)::DownCast(getGeomToroidPtr()->handle());
     return Py::Float(torus->MajorRadius());
 }
 
 void ToroidPy::setMajorRadius(Py::Float arg)
 {
     try {
-        Handle(Geom_ToroidalSurface) torus = Handle(Geom_ToroidalSurface)::DownCast(
-            getGeomToroidPtr()->handle()
-        );
+        Handle(Geom_ToroidalSurface)
+            torus = Handle(Geom_ToroidalSurface)::DownCast(getGeomToroidPtr()->handle());
         torus->SetMajorRadius((double)arg);
     }
     catch (Standard_Failure&) {
@@ -86,18 +83,16 @@ void ToroidPy::setMajorRadius(Py::Float arg)
 
 Py::Float ToroidPy::getMinorRadius() const
 {
-    Handle(Geom_ToroidalSurface) torus = Handle(Geom_ToroidalSurface)::DownCast(
-        getGeomToroidPtr()->handle()
-    );
+    Handle(Geom_ToroidalSurface)
+        torus = Handle(Geom_ToroidalSurface)::DownCast(getGeomToroidPtr()->handle());
     return Py::Float(torus->MinorRadius());
 }
 
 void ToroidPy::setMinorRadius(Py::Float arg)
 {
     try {
-        Handle(Geom_ToroidalSurface) torus = Handle(Geom_ToroidalSurface)::DownCast(
-            getGeomToroidPtr()->handle()
-        );
+        Handle(Geom_ToroidalSurface)
+            torus = Handle(Geom_ToroidalSurface)::DownCast(getGeomToroidPtr()->handle());
         torus->SetMinorRadius((double)arg);
     }
     catch (Standard_Failure&) {
@@ -107,9 +102,8 @@ void ToroidPy::setMinorRadius(Py::Float arg)
 
 Py::Object ToroidPy::getCenter() const
 {
-    Handle(Geom_ToroidalSurface) torus = Handle(Geom_ToroidalSurface)::DownCast(
-        getGeomToroidPtr()->handle()
-    );
+    Handle(Geom_ToroidalSurface)
+        torus = Handle(Geom_ToroidalSurface)::DownCast(getGeomToroidPtr()->handle());
     gp_Pnt loc = torus->Location();
     return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
 }
@@ -119,9 +113,8 @@ void ToroidPy::setCenter(Py::Object arg)
     PyObject* p = arg.ptr();
     if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
         Base::Vector3d loc = static_cast<Base::VectorPy*>(p)->value();
-        Handle(Geom_ToroidalSurface) torus = Handle(Geom_ToroidalSurface)::DownCast(
-            getGeomToroidPtr()->handle()
-        );
+        Handle(Geom_ToroidalSurface)
+            torus = Handle(Geom_ToroidalSurface)::DownCast(getGeomToroidPtr()->handle());
         torus->SetLocation(gp_Pnt(loc.x, loc.y, loc.z));
     }
     else {
@@ -133,9 +126,8 @@ void ToroidPy::setCenter(Py::Object arg)
 
 Py::Object ToroidPy::getAxis() const
 {
-    Handle(Geom_ElementarySurface) s = Handle(Geom_ElementarySurface)::DownCast(
-        getGeometryPtr()->handle()
-    );
+    Handle(Geom_ElementarySurface)
+        s = Handle(Geom_ElementarySurface)::DownCast(getGeometryPtr()->handle());
     gp_Dir dir = s->Axis().Direction();
     return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
 }
@@ -163,9 +155,8 @@ void ToroidPy::setAxis(Py::Object arg)
     }
 
     try {
-        Handle(Geom_ElementarySurface) this_surf = Handle(Geom_ElementarySurface)::DownCast(
-            this->getGeometryPtr()->handle()
-        );
+        Handle(Geom_ElementarySurface)
+            this_surf = Handle(Geom_ElementarySurface)::DownCast(this->getGeometryPtr()->handle());
         gp_Ax1 axis;
         axis.SetLocation(this_surf->Location());
         axis.SetDirection(gp_Dir(dir_x, dir_y, dir_z));
@@ -178,17 +169,15 @@ void ToroidPy::setAxis(Py::Object arg)
 
 Py::Float ToroidPy::getArea() const
 {
-    Handle(Geom_ToroidalSurface) torus = Handle(Geom_ToroidalSurface)::DownCast(
-        getGeomToroidPtr()->handle()
-    );
+    Handle(Geom_ToroidalSurface)
+        torus = Handle(Geom_ToroidalSurface)::DownCast(getGeomToroidPtr()->handle());
     return Py::Float(torus->Area());
 }
 
 Py::Float ToroidPy::getVolume() const
 {
-    Handle(Geom_ToroidalSurface) torus = Handle(Geom_ToroidalSurface)::DownCast(
-        getGeomToroidPtr()->handle()
-    );
+    Handle(Geom_ToroidalSurface)
+        torus = Handle(Geom_ToroidalSurface)::DownCast(getGeomToroidPtr()->handle());
     return Py::Float(torus->Volume());
 }
 

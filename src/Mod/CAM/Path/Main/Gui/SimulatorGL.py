@@ -24,18 +24,15 @@
 Command and task window handler for the OpenGL based CAM simulator
 """
 
-
 import math
 import os
 import FreeCAD
 import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
-import Path.Main.Job as PathJob
 from PathScripts import PathUtils
 import CAMSimulator
 
 from FreeCAD import Vector, Placement, Rotation
-
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -163,10 +160,8 @@ class CAMSimulation:
         """Get the edge profile of a tool solid. Basically locating the
         side edge that OCC creates on any revolved object
         """
-        originalPlacement = tool.Placement
-        tool.Placement = Placement(Vector(0, 0, 0), Rotation(Vector(0, 0, 1), 0), Vector(0, 0, 0))
-        shape = tool.Shape
-        tool.Placement = originalPlacement
+        shape = tool.Shape.copy()
+        shape.Placement = Placement()
         sideEdgeList = []
         for _i, edge in enumerate(shape.Edges):
             if not edge.isClosed():
@@ -220,6 +215,12 @@ class CAMSimulation:
         self.Connect(form.toolButtonPlay, self.SimPlay)
         form.sliderAccuracy.valueChanged.connect(self.onAccuracyBarChange)
         self.onAccuracyBarChange()
+
+        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
+        if prefs.GetBool("SimulatorFollowsVisibility"):
+            form.followsVisibility.setCheckState(QtCore.Qt.CheckState.Checked)
+        form.followsVisibility.clicked.connect(self.followsVisibilityChange)
+
         self._populateJobSelection(form)
         form.comboJobs.currentIndexChanged.connect(self.onJobChange)
         self.onJobChange()
@@ -234,37 +235,33 @@ class CAMSimulation:
 
     def _populateJobSelection(self, form):
         """Make Job selection combobox"""
-        setJobIdx = 0
-        jobName = ""
-        jIdx = 0
         # Get list of Job objects in active document
         jobList = FreeCAD.ActiveDocument.findObjects("Path::FeaturePython", "Job.*")
-        jCnt = len(jobList)
 
-        # Check if user has selected a specific job for simulation
-        guiSelection = FreeCADGui.Selection.getSelectionEx()
-        if guiSelection:  #  Identify job selected by user
-            sel = guiSelection[0]
-            if hasattr(sel.Object, "Proxy") and isinstance(sel.Object.Proxy, PathJob.ObjectJob):
-                jobName = sel.Object.Name
-                FreeCADGui.Selection.clearSelection()
+        # Get name of selected Job
+        jobName = ""
+        selection = FreeCADGui.Selection.getSelection()
+        if selection:  #  Identify job selected by user
+            job = PathUtils.findParentJob(selection[0])
+            if job:
+                jobName = job.Name
 
-        # populate the job selection combobox
+        # Prepare combobox
         form.comboJobs.blockSignals(True)
         form.comboJobs.clear()
         form.comboJobs.blockSignals(False)
-        for j in jobList:
-            form.comboJobs.addItem(j.ViewObject.Icon, j.Label)
-            self.jobs.append(j)
-            if j.Name == jobName or jCnt == 1:
-                setJobIdx = jIdx
-            jIdx += 1
+
+        # Get index of selected Job
+        setJobIdx = 0
+        for i, job in enumerate(jobList):
+            # Populate the job selection combobox
+            form.comboJobs.addItem(job.ViewObject.Icon, job.Label)
+            self.jobs.append(job)
+            if job.Name == jobName:
+                setJobIdx = i
 
         # Preselect GUI-selected job in the combobox
-        if jobName or jCnt == 1:
-            form.comboJobs.setCurrentIndex(setJobIdx)
-        else:
-            form.comboJobs.setCurrentIndex(0)
+        form.comboJobs.setCurrentIndex(setJobIdx)
 
     def SetupSimulation(self):
         """Prepare all selected job operations for simulation"""
@@ -283,20 +280,28 @@ class CAMSimulation:
 
     def onJobChange(self):
         """When a new job is selected from the drop-down, update job operation list"""
+        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
+        followsVisibility = prefs.GetBool("SimulatorFollowsVisibility")
         form = self.taskForm.form
         j = self.jobs[form.comboJobs.currentIndex()]
         self.job = j
         form.listOperations.clear()
         self.operations = []
+        allhidden = all(
+            not op.Visibility for op in j.Operations.OutList if PathUtil.opProperty(op, "Active")
+        )
         for op in j.Operations.OutList:
             if PathUtil.opProperty(op, "Active"):
                 listItem = QtGui.QListWidgetItem(op.ViewObject.Icon, op.Label)
                 listItem.setFlags(listItem.flags() | QtCore.Qt.ItemIsUserCheckable)
-                listItem.setCheckState(QtCore.Qt.CheckState.Checked)
+                if followsVisibility and not op.Visibility and not allhidden:
+                    listItem.setCheckState(QtCore.Qt.CheckState.Unchecked)
+                else:
+                    listItem.setCheckState(QtCore.Qt.CheckState.Checked)
                 self.operations.append(op)
                 form.listOperations.addItem(listItem)
         if len(j.Model.OutList) > 0:
-            self.baseShape = j.Model.OutList[0].Shape
+            self.baseShape = Part.makeCompound([o.Shape for o in j.Model.OutList])
         else:
             self.baseShape = None
 
@@ -311,6 +316,14 @@ class CAMSimulation:
             qualText = QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "Medium")
         form.labelAccuracy.setText(qualText)
 
+    def followsVisibilityChange(self):
+        """Update job list in accordance with operations visibility"""
+        form = self.taskForm.form
+        state = form.followsVisibility.isChecked()
+        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
+        prefs.SetBool("SimulatorFollowsVisibility", state)
+        self.onJobChange()
+
     def onOperationItemChange(self, _item):
         """Check if at least one operation is selected to enable the Play button"""
         playvalid = False
@@ -324,7 +337,7 @@ class CAMSimulation:
     def SimPlay(self):
         """Activate the simulation"""
         self.SetupSimulation()
-        self.millSim.ResetSimulation()
+        self.millSim.ResetSimulation(FreeCADGui.getDocument(self.job.Document))
         for op in self.activeOps:
             tool = PathDressup.toolController(op).Tool
             toolNumber = PathDressup.toolController(op).ToolNumber

@@ -25,19 +25,15 @@
 #pragma once
 
 #include "UnitsSchema.h"
-#include "UnitsSchemas.h"
-#include "UnitsSchemasData.h"
 #include "Quantity.h"
-
-
-class QString;
+#include <memory>
 
 using PyObject = struct _object;
 using PyMethodDef = struct PyMethodDef;
 
 namespace Base
 {
-
+class UnitsSchemas;
 
 class BaseExport UnitsApi
 {
@@ -49,6 +45,8 @@ public:
     static std::string schemaTranslate(const Quantity& quant, double& factor, std::string& unitString);
 
     static std::string schemaTranslate(const Quantity& quant);
+
+    static std::string toUnicodeSuperscript(const std::string& str);
 
     static double toDouble(PyObject* args, const Base::Unit& u = Base::Unit());
 
@@ -67,15 +65,12 @@ public:
     static bool isMultiUnitLength();
     static std::string getBasicLengthUnit();
 
-    static std::size_t getDefSchemaNum()
-    {
-        return schemas->spec().num;
-    }
+    static std::size_t getDefSchemaNum();
     // Python interface
     static PyMethodDef Methods[];
 
 protected:
-    static inline auto schemas = std::make_unique<UnitsSchemas>(UnitsSchemasData::unitSchemasDataPack);
+    static std::unique_ptr<UnitsSchemas> schemas;
     static inline int decimals {-1};
     static inline int denominator {-1};
 

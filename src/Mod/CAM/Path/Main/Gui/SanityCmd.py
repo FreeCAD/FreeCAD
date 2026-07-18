@@ -99,6 +99,59 @@ class CommandCAMSanity:
         webbrowser.open_new_tab(file_location)
 
 
+class CommandCAMQuickValidate:
+    """Quick validation command: runs squawk checks without generating images or HTML."""
+
+    def GetResources(self):
+        return {
+            "Pixmap": "CAM_Sanity",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_Sanity", "Quick Validate"),
+            "Accel": "P, V",
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "CAM_Sanity",
+                "Validates the CAM job for common issues without generating a full report",
+            ),
+        }
+
+    def IsActive(self):
+        selection = FreeCADGui.Selection.getSelectionEx()
+        if len(selection) == 0:
+            return False
+        obj = selection[0].Object
+        return isinstance(obj.Proxy, Path.Main.Job.ObjectJob)
+
+    def Activated(self):
+        obj = FreeCADGui.Selection.getSelectionEx()[0].Object
+
+        try:
+            all_squawks, critical_squawks = Sanity.CAMSanity.validate_job(obj)
+        except Exception as e:
+            Path.Log.error(f"CAM_QuickValidate: Validation failed: {e}")
+            FreeCAD.Console.PrintError(f"Quick Validate failed: {e}\n")
+            return
+
+        if not all_squawks:
+            FreeCAD.Console.PrintMessage(
+                translate("CAM_Sanity", "Quick Validate: No issues found.\n")
+            )
+            return
+
+        FreeCAD.Console.PrintMessage(translate("CAM_Sanity", "=== Quick Validation Results ===\n"))
+        for squawk in all_squawks:
+            msg = f"[{squawk['squawkType']}] {squawk['Note']}\n"
+            if squawk["squawkType"] in ("WARNING", "CAUTION"):
+                FreeCAD.Console.PrintWarning(msg)
+            else:
+                FreeCAD.Console.PrintMessage(msg)
+        FreeCAD.Console.PrintMessage(
+            translate(
+                "CAM_Sanity",
+                f"=== {len(all_squawks)} issue(s) found, {len(critical_squawks)} critical ===\n",
+            )
+        )
+
+
 if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand("CAM_Sanity", CommandCAMSanity())
+    FreeCADGui.addCommand("CAM_QuickValidate", CommandCAMQuickValidate())

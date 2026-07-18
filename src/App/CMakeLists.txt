@@ -93,7 +93,9 @@ list(APPEND FreeCADApp_LIBS
 )
 
 generate_from_py(ApplicationDirectories)
+generate_from_py(DepEdge)
 generate_from_py(Document)
+generate_from_py(DocumentSettings)
 generate_from_py(DocumentObject)
 generate_from_py(Extension)
 generate_from_py(ExtensionContainer)
@@ -126,8 +128,10 @@ SET(FreeCADApp_Pyi_SRCS
     GroupExtension.pyi
     LinkBaseExtension.pyi
     Metadata.pyi
+    DepEdge.pyi
     DocumentObjectGroup.pyi
     DocumentObject.pyi
+    DocumentSettings.pyi
     GeoFeature.pyi
     GeoFeatureGroupExtension.pyi
     OriginGroupExtension.pyi
@@ -148,7 +152,9 @@ SET(Document_CPP_SRCS
     Annotation.cpp
     BackupPolicy.cpp
     Document.cpp
+    RecoverySnapshot.cpp
     DocumentObject.cpp
+    DepEdgePyImp.cpp
     Extension.cpp
     ExtensionPyImp.cpp
     DocumentObjectExtension.cpp
@@ -166,6 +172,8 @@ SET(Document_CPP_SRCS
     DocumentObserver.cpp
     DocumentObserverPython.cpp
     DocumentPyImp.cpp
+    DocumentSettings.cpp
+    DocumentSettingsPyImp.cpp
     Expression.cpp
     ExpressionTokenizer.cpp
     FeaturePython.cpp
@@ -203,6 +211,8 @@ SET(Document_HPP_SRCS
     Annotation.h
     BackupPolicy.h
     Document.h
+    RecoverySnapshot.h
+    DepEdge.h
     DocumentObject.h
     Extension.h
     ExtensionContainer.h
@@ -212,6 +222,7 @@ SET(Document_HPP_SRCS
     DocumentObjectGroup.h
     DocumentObserver.h
     DocumentObserverPython.h
+    DocumentSettings.h
     Expression.h
     ExpressionParser.h
     ExpressionTokenizer.h
@@ -293,10 +304,13 @@ SET(FreeCADApp_CPP_SRCS
     ApplicationPy.cpp
     AutoTransaction.cpp
     Branding.cpp
+    ByteArray.cpp
     CleanupProcess.cpp
     ColorModel.cpp
     ComplexGeoData.cpp
     ComplexGeoDataPyImp.cpp
+    ConsoleQtBridge.cpp
+    TranslationQtBridge.cpp
     ElementMap.cpp
     Enumeration.cpp
     IndexedName.cpp
@@ -324,6 +338,7 @@ SET(FreeCADApp_HPP_SRCS
     ApplicationDirectories.h
     AutoTransaction.h
     Branding.h
+    ByteArray.h
     CleanupProcess.h
     ColorModel.h
     ComplexGeoData.h
@@ -339,11 +354,14 @@ SET(FreeCADApp_HPP_SRCS
     ProgramInformation.h
     Services.h
     StringHasher.h
+    MainThreadSignal.h
 )
 
 # auto-generate resource file with all available translations
 set (FreeCADApp_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/App_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_find_and_add_translation(QM_SRCS "${CMAKE_SOURCE_DIR}/src/Base/Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
 qt_create_resource_file(${FreeCADApp_TR_QRC} ${QM_SRCS})
 qt_add_resources(FreeCADApp_QRC_SRCS ${FreeCADApp_TR_QRC})

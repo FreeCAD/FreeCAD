@@ -37,6 +37,7 @@ In many cases using `App::Link` makes more sense, as this object is
 more memory efficient as it reuses the same internal `Shape`
 instead of creating a copy of it.
 """
+
 ## @package gui_clone
 # \ingroup draftguitools
 # \brief Provides GUI tools to create Clone objects.
@@ -91,11 +92,13 @@ class Clone(gui_base_original.Modifier):
         """Proceed with the command if objects were selected."""
         objs = Gui.Selection.getSelection()
         if not objs:
+            self.moveAfterCloning = False
             self.finish()
             return
         objs_shape = [obj for obj in objs if hasattr(obj, "Shape")]
         if not objs_shape:
             _wrn(translate("draft", "Cannot clone objects without a shape, aborting"))
+            self.moveAfterCloning = False
             self.finish()
             return
         elif len(objs_shape) < len(objs):

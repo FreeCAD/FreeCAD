@@ -619,11 +619,6 @@ TechDraw::DrawLeaderLine* QGILeaderLine::getLeaderFeature()
     return static_cast<TechDraw::DrawLeaderLine*>(getViewObject());
 }
 
-double QGILeaderLine::getEdgeFuzz() const
-{
-    return PreferencesGui::edgeFuzz();
-}
-
 QColor QGILeaderLine::prefNormalColor()
 {
     //    Base::Console().message("QGILL::getNormalColor()\n");

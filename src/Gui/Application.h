@@ -37,6 +37,8 @@ class NavlibInterface;
 
 namespace Gui
 {
+GuiExport void requireMainThread(const char* api);
+
 class ApplicationPy;
 class BaseView;
 class CommandManager;
@@ -349,6 +351,7 @@ private:
     /// workbench python dictionary
     PyObject* _pcWorkbenchDictionary;
     NavlibInterface* pNavlibInterface;
+    static void init3DMouse(MainWindow* mainWindow, QApplication* qtApp);
 
     friend class ApplicationPy;
 };

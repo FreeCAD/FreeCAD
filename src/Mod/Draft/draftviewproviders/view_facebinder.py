@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the viewprovider code for the Facebinder object."""
+
 ## @package view_facebinder
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the Facebinder object.
@@ -58,6 +59,9 @@ class ViewProviderFacebinder(ViewProviderDraft):
         if mode != 0:
             return None
 
+        # There is no finish or reject function:
+        if Gui.Control.activeDialog():
+            Gui.Control.closeDialog()
         return True
 
 

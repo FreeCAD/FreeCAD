@@ -38,14 +38,14 @@ protected:
         // Create a simple parameter manager for testing
         auto source = std::make_unique<InMemoryParameterSource>(
             std::list<Parameter> {
-                {"TestParam", "10px"},
-                {"TestColor", "#ff0000"},
-                {"TestNumber", "5"},
-                {"TestTupleParam", "(left: 1px, right: 2px, top: 3px, bottom: 4px)"},
-                {"TestIndexedTuple", "(10, 20, 30)"},
-                {"TestNestedTuple", "((x: 1, y: 2), (x: 3, y: 4))"},
+                {.name = "TestParam", .value = "10px"},
+                {.name = "TestColor", .value = "#ff0000"},
+                {.name = "TestNumber", .value = "5"},
+                {.name = "TestTupleParam", .value = "(left: 1px, right: 2px, top: 3px, bottom: 4px)"},
+                {.name = "TestIndexedTuple", .value = "(10, 20, 30)"},
+                {.name = "TestNestedTuple", .value = "((x: 1, y: 2), (x: 3, y: 4))"},
             },
-            ParameterSource::Metadata {"Test Source"}
+            ParameterSource::Metadata {.name = "Test Source"}
         );
 
         manager.addSource(source.get());
@@ -62,7 +62,7 @@ TEST_F(ParserTest, ParseNumbers)
     {
         Parser parser("42");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 42.0);
@@ -72,7 +72,7 @@ TEST_F(ParserTest, ParseNumbers)
     {
         Parser parser("10.5px");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 10.5);
@@ -82,7 +82,7 @@ TEST_F(ParserTest, ParseNumbers)
     {
         Parser parser("2.5em");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 2.5);
@@ -92,7 +92,7 @@ TEST_F(ParserTest, ParseNumbers)
     {
         Parser parser("100%");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 100.0);
@@ -106,7 +106,7 @@ TEST_F(ParserTest, ParseColors)
     {
         Parser parser("#ff0000");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
         auto color = std::get<Base::Color>(result);
         EXPECT_EQ(color.r, 1);
@@ -117,7 +117,7 @@ TEST_F(ParserTest, ParseColors)
     {
         Parser parser("#00ff00");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
         auto color = std::get<Base::Color>(result);
         EXPECT_EQ(color.r, 0);
@@ -128,7 +128,7 @@ TEST_F(ParserTest, ParseColors)
     {
         Parser parser("#0000ff");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
         auto color = std::get<Base::Color>(result);
         EXPECT_EQ(color.r, 0);
@@ -139,7 +139,7 @@ TEST_F(ParserTest, ParseColors)
     {
         Parser parser("rgb(255, 0, 0)");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
         auto color = std::get<Base::Color>(result);
         EXPECT_EQ(color.r, 1);
@@ -150,7 +150,7 @@ TEST_F(ParserTest, ParseColors)
     {
         Parser parser("rgba(255, 0, 0, 128)");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
         auto color = std::get<Base::Color>(result);
         EXPECT_DOUBLE_EQ(color.r, 1);
@@ -166,7 +166,7 @@ TEST_F(ParserTest, ParseParameterReferences)
     {
         Parser parser("@TestParam");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 10.0);
@@ -201,7 +201,7 @@ TEST_F(ParserTest, ParseArithmeticOperations)
     {
         Parser parser("10 + 5");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 15.0);
@@ -211,7 +211,7 @@ TEST_F(ParserTest, ParseArithmeticOperations)
     {
         Parser parser("10px + 5px");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 15.0);
@@ -221,7 +221,7 @@ TEST_F(ParserTest, ParseArithmeticOperations)
     {
         Parser parser("10 - 5");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 5.0);
@@ -231,7 +231,7 @@ TEST_F(ParserTest, ParseArithmeticOperations)
     {
         Parser parser("10px - 5px");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 5.0);
@@ -241,7 +241,7 @@ TEST_F(ParserTest, ParseArithmeticOperations)
     {
         Parser parser("10 * 5");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 50.0);
@@ -251,7 +251,7 @@ TEST_F(ParserTest, ParseArithmeticOperations)
     {
         Parser parser("10px * 2");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 20.0);
@@ -261,7 +261,7 @@ TEST_F(ParserTest, ParseArithmeticOperations)
     {
         Parser parser("10 / 2");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 5.0);
@@ -271,7 +271,7 @@ TEST_F(ParserTest, ParseArithmeticOperations)
     {
         Parser parser("10px / 2");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 5.0);
@@ -285,7 +285,7 @@ TEST_F(ParserTest, ParseComplexExpressions)
     {
         Parser parser("(10 + 5) * 2");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 30.0);
@@ -295,7 +295,7 @@ TEST_F(ParserTest, ParseComplexExpressions)
     {
         Parser parser("(10px + 5px) * 2");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 30.0);
@@ -305,7 +305,7 @@ TEST_F(ParserTest, ParseComplexExpressions)
     {
         Parser parser("@TestParam + 5px");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 15.0);
@@ -315,7 +315,7 @@ TEST_F(ParserTest, ParseComplexExpressions)
     {
         Parser parser("@TestParam * @TestNumber");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 50.0);
@@ -329,7 +329,7 @@ TEST_F(ParserTest, ParseUnaryOperations)
     {
         Parser parser("+10");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 10.0);
@@ -339,7 +339,7 @@ TEST_F(ParserTest, ParseUnaryOperations)
     {
         Parser parser("-10");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, -10.0);
@@ -349,7 +349,7 @@ TEST_F(ParserTest, ParseUnaryOperations)
     {
         Parser parser("-10px");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, -10.0);
@@ -363,7 +363,7 @@ TEST_F(ParserTest, ParseFunctionCalls)
     {
         Parser parser("lighten(#ff0000, 20)");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
         auto color = std::get<Base::Color>(result).asValue<QColor>();
         // The result should be lighter than the original red
@@ -373,7 +373,7 @@ TEST_F(ParserTest, ParseFunctionCalls)
     {
         Parser parser("darken(#ff0000, 20)");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
         auto color = std::get<Base::Color>(result).asValue<QColor>();
         // The result should be darker than the original red
@@ -383,7 +383,7 @@ TEST_F(ParserTest, ParseFunctionCalls)
     {
         Parser parser("lighten(@TestColor, 20)");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
         auto color = std::get<Base::Color>(result).asValue<QColor>();
         // The result should be lighter than the original red
@@ -426,7 +426,7 @@ TEST_F(ParserTest, ParseErrors)
         {
             Parser parser("invalid()");
             auto expr = parser.parse();
-            expr->evaluate({&manager, {}});
+            expr->evaluate({.manager = &manager, .context = {}});
         },
         Base::ExpressionError
     );
@@ -436,7 +436,7 @@ TEST_F(ParserTest, ParseErrors)
         {
             Parser parser("10 / 0");
             auto expr = parser.parse();
-            expr->evaluate({&manager, {}});
+            expr->evaluate({.manager = &manager, .context = {}});
         },
         Base::RuntimeError
     );
@@ -446,7 +446,7 @@ TEST_F(ParserTest, ParseErrors)
         {
             Parser parser("10px + 5em");
             auto expr = parser.parse();
-            expr->evaluate({&manager, {}});
+            expr->evaluate({.manager = &manager, .context = {}});
         },
         Base::RuntimeError
     );
@@ -456,7 +456,7 @@ TEST_F(ParserTest, ParseErrors)
         {
             Parser parser("-@TestColor");
             auto expr = parser.parse();
-            expr->evaluate({&manager, {}});
+            expr->evaluate({.manager = &manager, .context = {}});
         },
         Base::ExpressionError
     );
@@ -466,7 +466,7 @@ TEST_F(ParserTest, ParseErrors)
         {
             Parser parser("lighten(#ff0000)");
             auto expr = parser.parse();
-            expr->evaluate({&manager, {}});
+            expr->evaluate({.manager = &manager, .context = {}});
         },
         Base::ExpressionError
     );
@@ -476,7 +476,7 @@ TEST_F(ParserTest, ParseErrors)
         {
             Parser parser("lighten(10px, 20)");
             auto expr = parser.parse();
-            expr->evaluate({&manager, {}});
+            expr->evaluate({.manager = &manager, .context = {}});
         },
         Base::ExpressionError
     );
@@ -488,7 +488,7 @@ TEST_F(ParserTest, ParseWhitespace)
     {
         Parser parser("  10  +  5  ");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 15.0);
@@ -498,7 +498,7 @@ TEST_F(ParserTest, ParseWhitespace)
     {
         Parser parser("10px+5px");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 15.0);
@@ -508,7 +508,7 @@ TEST_F(ParserTest, ParseWhitespace)
     {
         Parser parser("rgb(255,0,0)");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
         auto color = std::get<Base::Color>(result);
         EXPECT_EQ(color.r, 1);
@@ -542,7 +542,7 @@ TEST_F(ParserTest, ParseEdgeCases)
     {
         Parser parser("42");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 42.0);
@@ -553,7 +553,7 @@ TEST_F(ParserTest, ParseEdgeCases)
     {
         Parser parser("#ff0000");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
         auto color = std::get<Base::Color>(result);
         EXPECT_EQ(color.r, 1);
@@ -565,7 +565,7 @@ TEST_F(ParserTest, ParseEdgeCases)
     {
         Parser parser("@TestParam");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 10.0);
@@ -579,7 +579,7 @@ TEST_F(ParserTest, ParseOperatorPrecedence)
     {
         Parser parser("2 + 3 * 4");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 14.0);  // 2 + (3 * 4) = 2 + 12 = 14
@@ -589,7 +589,7 @@ TEST_F(ParserTest, ParseOperatorPrecedence)
     {
         Parser parser("10 - 3 * 2");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 4.0);  // 10 - (3 * 2) = 10 - 6 = 4
@@ -599,7 +599,7 @@ TEST_F(ParserTest, ParseOperatorPrecedence)
     {
         Parser parser("20 / 4 + 3");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 8.0);  // (20 / 4) + 3 = 5 + 3 = 8
@@ -612,7 +612,7 @@ TEST_F(ParserTest, ParseUnnamedTuple)
 {
     Parser parser("(10, 20, 30)");
     auto expr = parser.parse();
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(result.holds<Tuple>());
     const auto& tuple = result.get<Tuple>();
     EXPECT_EQ(tuple.size(), 3);
@@ -626,7 +626,7 @@ TEST_F(ParserTest, ParseNamedTuple)
 {
     Parser parser("(x: 10, y: 20)");
     auto expr = parser.parse();
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(result.holds<Tuple>());
     const auto& tuple = result.get<Tuple>();
     EXPECT_EQ(tuple.size(), 2);
@@ -645,7 +645,7 @@ TEST_F(ParserTest, ParseMixedTuple)
 {
     Parser parser("(x: 10, 20)");
     auto expr = parser.parse();
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(result.holds<Tuple>());
     const auto& tuple = result.get<Tuple>();
     EXPECT_EQ(tuple.size(), 2);
@@ -656,12 +656,31 @@ TEST_F(ParserTest, ParseMixedTuple)
     EXPECT_DOUBLE_EQ(std::get<Numeric>(tuple.at(1)).value, 20.0);
 }
 
+// Test named tuple with numeric-starting names (e.g. shade keys like 050, 100)
+TEST_F(ParserTest, ParseNamedTupleWithNumericNames)
+{
+    Parser parser("(050: 0.05, 100: 0.1)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 2);
+
+    auto* shade050 = tuple.find("050");
+    ASSERT_NE(shade050, nullptr);
+    EXPECT_DOUBLE_EQ(std::get<Numeric>(*shade050).value, 0.05);
+
+    auto* shade100 = tuple.find("100");
+    ASSERT_NE(shade100, nullptr);
+    EXPECT_DOUBLE_EQ(std::get<Numeric>(*shade100).value, 0.1);
+}
+
 // Test single named element is a tuple, not a grouped expression
 TEST_F(ParserTest, ParseSingleNamedElementIsTuple)
 {
     Parser parser("(x: 10)");
     auto expr = parser.parse();
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(result.holds<Tuple>());
     const auto& tuple = result.get<Tuple>();
     EXPECT_EQ(tuple.size(), 1);
@@ -676,7 +695,7 @@ TEST_F(ParserTest, ParseTupleWithExpressions)
 {
     Parser parser("(x: 10 + 5, y: @TestParam)");
     auto expr = parser.parse();
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(result.holds<Tuple>());
     const auto& tuple = result.get<Tuple>();
     EXPECT_EQ(tuple.size(), 2);
@@ -696,7 +715,7 @@ TEST_F(ParserTest, ParseTupleWithMixedTypes)
 {
     Parser parser("(color: #ff0000, opacity: 0.5)");
     auto expr = parser.parse();
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(result.holds<Tuple>());
     const auto& tuple = result.get<Tuple>();
     EXPECT_EQ(tuple.size(), 2);
@@ -719,7 +738,7 @@ TEST_F(ParserTest, ParseNestedTuples)
 {
     Parser parser("((1, 2), (3, 4))");
     auto expr = parser.parse();
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(result.holds<Tuple>());
     const auto& outer = result.get<Tuple>();
     EXPECT_EQ(outer.size(), 2);
@@ -742,7 +761,7 @@ TEST_F(ParserTest, ParseTupleWithComplexExpressions)
 {
     Parser parser("(x: lighten(#ff0000, 20), y: 10px * 2)");
     auto expr = parser.parse();
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(result.holds<Tuple>());
     const auto& tuple = result.get<Tuple>();
     EXPECT_EQ(tuple.size(), 2);
@@ -763,7 +782,7 @@ TEST_F(ParserTest, TupleToString)
     {
         Parser parser("(x: 10, y: 20)");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         auto str = result.toString();
         EXPECT_EQ(str, "(x: 10, y: 20)");
     }
@@ -771,7 +790,7 @@ TEST_F(ParserTest, TupleToString)
     {
         Parser parser("(10, 20, 30)");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         auto str = result.toString();
         EXPECT_EQ(str, "(10, 20, 30)");
     }
@@ -779,7 +798,7 @@ TEST_F(ParserTest, TupleToString)
     {
         Parser parser("(x: 10, 20)");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         auto str = result.toString();
         EXPECT_EQ(str, "(x: 10, 20)");
     }
@@ -788,7 +807,7 @@ TEST_F(ParserTest, TupleToString)
 // Test Value::holds and Value::get
 TEST_F(ParserTest, ValueHoldsAndGet)
 {
-    Value numericValue = Numeric {42, "px"};
+    Value numericValue = Numeric {.value = 42, .unit = "px"};
     EXPECT_TRUE(numericValue.holds<Numeric>());
     EXPECT_FALSE(numericValue.holds<Tuple>());
     EXPECT_DOUBLE_EQ(numericValue.get<Numeric>().value, 42.0);
@@ -803,7 +822,7 @@ TEST_F(ParserTest, ValueHoldsAndGet)
 
     Parser parser("(1, 2)");
     auto expr = parser.parse();
-    auto tupleValue = expr->evaluate({&manager, {}});
+    auto tupleValue = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(tupleValue.holds<Tuple>());
     EXPECT_FALSE(tupleValue.holds<Numeric>());
     EXPECT_EQ(tupleValue.get<Tuple>().size(), 2);
@@ -814,7 +833,7 @@ TEST_F(ParserTest, TupleAtOutOfBounds)
 {
     Parser parser("(10, 20)");
     auto expr = parser.parse();
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     const auto& tuple = result.get<Tuple>();
 
     EXPECT_NO_THROW(tuple.at(0));
@@ -827,7 +846,7 @@ TEST_F(ParserTest, TupleFindNonexistent)
 {
     Parser parser("(x: 10, y: 20)");
     auto expr = parser.parse();
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     const auto& tuple = result.get<Tuple>();
 
     EXPECT_NE(tuple.find("x"), nullptr);
@@ -854,7 +873,7 @@ TEST_F(ParserTest, GroupedExpressionStillWorks)
         Parser parser("(10 + 5) * 2");
         auto expr = parser.parse();
 
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         EXPECT_DOUBLE_EQ(std::get<Numeric>(result).value, 30.0);
     }
@@ -863,7 +882,7 @@ TEST_F(ParserTest, GroupedExpressionStillWorks)
         Parser parser("(42)");
         auto expr = parser.parse();
 
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         EXPECT_DOUBLE_EQ(std::get<Numeric>(result).value, 42.0);
     }
@@ -875,7 +894,7 @@ TEST_F(ParserTest, ParseNestedParentheses)
     {
         Parser parser("((2 + 3) * 4)");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 20.0);  // (5) * 4 = 20
@@ -885,7 +904,7 @@ TEST_F(ParserTest, ParseNestedParentheses)
     {
         Parser parser("(10 - (3 + 2)) * 2");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 10.0);  // (10 - 5) * 2 = 5 * 2 = 10
@@ -900,7 +919,7 @@ TEST_F(ParserTest, MemberAccessNamed)
         Parser parser("@TestTupleParam.left");
         auto expr = parser.parse();
 
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
 
         auto length = std::get<Numeric>(result);
@@ -912,7 +931,7 @@ TEST_F(ParserTest, MemberAccessNamed)
         Parser parser("@TestTupleParam.right");
         auto expr = parser.parse();
 
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
 
         auto length = std::get<Numeric>(result);
@@ -928,7 +947,7 @@ TEST_F(ParserTest, MemberAccessIndexed)
         Parser parser("@TestIndexedTuple.0");
         auto expr = parser.parse();
 
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         EXPECT_DOUBLE_EQ(std::get<Numeric>(result).value, 10.0);
     }
@@ -937,7 +956,7 @@ TEST_F(ParserTest, MemberAccessIndexed)
         Parser parser("@TestIndexedTuple.2");
         auto expr = parser.parse();
 
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         EXPECT_DOUBLE_EQ(std::get<Numeric>(result).value, 30.0);
     }
@@ -949,7 +968,7 @@ TEST_F(ParserTest, MemberAccessInlineTuple)
     {
         Parser parser("(x: 10, y: 20).x");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         EXPECT_DOUBLE_EQ(std::get<Numeric>(result).value, 10.0);
     }
@@ -957,7 +976,7 @@ TEST_F(ParserTest, MemberAccessInlineTuple)
     {
         Parser parser("(10, 20, 30).1");
         auto expr = parser.parse();
-        auto result = expr->evaluate({&manager, {}});
+        auto result = expr->evaluate({.manager = &manager, .context = {}});
         EXPECT_TRUE(std::holds_alternative<Numeric>(result));
         EXPECT_DOUBLE_EQ(std::get<Numeric>(result).value, 20.0);
     }
@@ -969,7 +988,7 @@ TEST_F(ParserTest, MemberAccessInArithmetic)
     Parser parser("@TestTupleParam.left + @TestTupleParam.right");
     auto expr = parser.parse();
 
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(std::holds_alternative<Numeric>(result));
 
     auto length = std::get<Numeric>(result);
@@ -983,7 +1002,7 @@ TEST_F(ParserTest, MemberAccessChained)
     Parser parser("@TestNestedTuple.0.x");
     auto expr = parser.parse();
 
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(std::holds_alternative<Numeric>(result));
     EXPECT_DOUBLE_EQ(std::get<Numeric>(result).value, 1.0);
 }
@@ -996,7 +1015,7 @@ TEST_F(ParserTest, MemberAccessErrors)
         {
             Parser parser("@TestTupleParam.nonexistent");
             auto expr = parser.parse();
-            expr->evaluate({&manager, {}});
+            expr->evaluate({.manager = &manager, .context = {}});
         },
         Base::ExpressionError
     );
@@ -1006,7 +1025,7 @@ TEST_F(ParserTest, MemberAccessErrors)
         {
             Parser parser("@TestIndexedTuple.5");
             auto expr = parser.parse();
-            expr->evaluate({&manager, {}});
+            expr->evaluate({.manager = &manager, .context = {}});
         },
         Base::RuntimeError
     );
@@ -1016,7 +1035,7 @@ TEST_F(ParserTest, MemberAccessErrors)
         {
             Parser parser("@TestNumber.foo");
             auto expr = parser.parse();
-            expr->evaluate({&manager, {}});
+            expr->evaluate({.manager = &manager, .context = {}});
         },
         Base::ExpressionError
     );
@@ -1029,7 +1048,7 @@ TEST_F(ParserTest, TupleElementWiseAdd)
     Parser parser("(1px, 2px) + (3px, 4px)");
     auto expr = parser.parse();
 
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(result.holds<Tuple>());
 
     const auto& tuple = result.get<Tuple>();
@@ -1045,7 +1064,7 @@ TEST_F(ParserTest, TupleElementWiseSubtract)
     Parser parser("(10, 20) - (3, 7)");
     auto expr = parser.parse();
 
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(result.holds<Tuple>());
 
     const auto& tuple = result.get<Tuple>();
@@ -1059,7 +1078,7 @@ TEST_F(ParserTest, TupleScalarMultiplyTupleFirst)
     Parser parser("(1px, 2px, 3px) * 2");
     auto expr = parser.parse();
 
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(result.holds<Tuple>());
 
     const auto& tuple = result.get<Tuple>();
@@ -1075,7 +1094,7 @@ TEST_F(ParserTest, TupleScalarMultiplyScalarFirst)
     Parser parser("2 * (1px, 2px, 3px)");
     auto expr = parser.parse();
 
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(result.holds<Tuple>());
 
     const auto& tuple = result.get<Tuple>();
@@ -1091,7 +1110,7 @@ TEST_F(ParserTest, TupleScalarDivide)
     Parser parser("(10, 20) / 2");
     auto expr = parser.parse();
 
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(result.holds<Tuple>());
 
     const auto& tuple = result.get<Tuple>();
@@ -1105,7 +1124,7 @@ TEST_F(ParserTest, TupleUnaryNegate)
     Parser parser("-(1px, 2px)");
     auto expr = parser.parse();
 
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(result.holds<Tuple>());
 
     const auto& tuple = result.get<Tuple>();
@@ -1121,7 +1140,7 @@ TEST_F(ParserTest, TupleAddPreservesNames)
     Parser parser("(x: 1, y: 2) + (x: 3, y: 4)");
     auto expr = parser.parse();
 
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(result.holds<Tuple>());
 
     const auto& tuple = result.get<Tuple>();
@@ -1141,7 +1160,7 @@ TEST_F(ParserTest, TupleAddMatchesByName)
     Parser parser("(x: 10, y: 20) + (y: 30, x: 5)");
     auto expr = parser.parse();
 
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(result.holds<Tuple>());
 
     const auto& tuple = result.get<Tuple>();
@@ -1161,7 +1180,7 @@ TEST_F(ParserTest, TupleParamArithmetic)
     Parser parser("@TestTupleParam + @TestTupleParam");
     auto expr = parser.parse();
 
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(result.holds<Tuple>());
 
     const auto& tuple = result.get<Tuple>();
@@ -1178,7 +1197,7 @@ TEST_F(ParserTest, TupleUnionMixedNamedUnnamed)
     Parser parser("(x: 5, 10) + (y: 10, 5, 20)");
     auto expr = parser.parse();
 
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(result.holds<Tuple>());
 
     const auto& tuple = result.get<Tuple>();
@@ -1202,7 +1221,7 @@ TEST_F(ParserTest, TupleUnionNamedDifferentSizes)
     Parser parser("(x: 1, y: 2) + (x: 3, y: 4, z: 5)");
     auto expr = parser.parse();
 
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(result.holds<Tuple>());
 
     const auto& tuple = result.get<Tuple>();
@@ -1219,7 +1238,7 @@ TEST_F(ParserTest, TupleUnionUnnamedDifferentSizes)
     Parser parser("(1, 2) + (3, 4, 5)");
     auto expr = parser.parse();
 
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(result.holds<Tuple>());
 
     const auto& tuple = result.get<Tuple>();
@@ -1236,7 +1255,7 @@ TEST_F(ParserTest, TupleAddNumericError)
         {
             Parser parser("(1, 2) + 5");
             auto expr = parser.parse();
-            expr->evaluate({&manager, {}});
+            expr->evaluate({.manager = &manager, .context = {}});
         },
         Base::ExpressionError
     );
@@ -1247,7 +1266,7 @@ TEST_F(ParserTest, TupleNestedScalarMultiply)
     Parser parser("((1, 2), (3, 4)) * 2");
     auto expr = parser.parse();
 
-    auto result = expr->evaluate({&manager, {}});
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
     EXPECT_TRUE(result.holds<Tuple>());
 
     const auto& outer = result.get<Tuple>();
@@ -1288,10 +1307,10 @@ protected:
 TEST_F(ArgumentParserTest, AllPositional)
 {
     auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {1, ""}},
-        {.name = std::nullopt, .value = Numeric {2, ""}},
+        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
+        {.name = std::nullopt, .value = Numeric {.value = 2, .unit = ""}},
     });
-    auto resolved = ArgumentParser {{"x"}, {"y"}}.resolve(args);
+    auto resolved = ArgumentParser {{.name = "x"}, {.name = "y"}}.resolve(args);
 
     ASSERT_NE(resolved.find("x"), nullptr);
     ASSERT_NE(resolved.find("y"), nullptr);
@@ -1302,10 +1321,10 @@ TEST_F(ArgumentParserTest, AllPositional)
 TEST_F(ArgumentParserTest, AllNamed)
 {
     auto args = makeTuple({
-        {.name = std::string("x"), .value = Numeric {10, ""}},
-        {.name = std::string("y"), .value = Numeric {20, ""}},
+        {.name = std::string("x"), .value = Numeric {.value = 10, .unit = ""}},
+        {.name = std::string("y"), .value = Numeric {.value = 20, .unit = ""}},
     });
-    auto resolved = ArgumentParser {{"x"}, {"y"}}.resolve(args);
+    auto resolved = ArgumentParser {{.name = "x"}, {.name = "y"}}.resolve(args);
 
     EXPECT_DOUBLE_EQ(resolved.find("x")->get<Numeric>().value, 10.0);
     EXPECT_DOUBLE_EQ(resolved.find("y")->get<Numeric>().value, 20.0);
@@ -1314,10 +1333,10 @@ TEST_F(ArgumentParserTest, AllNamed)
 TEST_F(ArgumentParserTest, AllNamedReversedOrder)
 {
     auto args = makeTuple({
-        {.name = std::string("y"), .value = Numeric {20, ""}},
-        {.name = std::string("x"), .value = Numeric {10, ""}},
+        {.name = std::string("y"), .value = Numeric {.value = 20, .unit = ""}},
+        {.name = std::string("x"), .value = Numeric {.value = 10, .unit = ""}},
     });
-    auto resolved = ArgumentParser {{"x"}, {"y"}}.resolve(args);
+    auto resolved = ArgumentParser {{.name = "x"}, {.name = "y"}}.resolve(args);
 
     EXPECT_DOUBLE_EQ(resolved.find("x")->get<Numeric>().value, 10.0);
     EXPECT_DOUBLE_EQ(resolved.find("y")->get<Numeric>().value, 20.0);
@@ -1327,10 +1346,10 @@ TEST_F(ArgumentParserTest, MixedPositionalThenNamed)
 {
     // f(1, y: 2) with signature (x, y)
     auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {1, ""}},
-        {.name = std::string("y"), .value = Numeric {2, ""}},
+        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
+        {.name = std::string("y"), .value = Numeric {.value = 2, .unit = ""}},
     });
-    auto resolved = ArgumentParser {{"x"}, {"y"}}.resolve(args);
+    auto resolved = ArgumentParser {{.name = "x"}, {.name = "y"}}.resolve(args);
 
     EXPECT_DOUBLE_EQ(resolved.find("x")->get<Numeric>().value, 1.0);
     EXPECT_DOUBLE_EQ(resolved.find("y")->get<Numeric>().value, 2.0);
@@ -1340,10 +1359,10 @@ TEST_F(ArgumentParserTest, NamedThenPositionalFillsRemainingSlot)
 {
     // f(y: 2, 1) with signature (x, y) — positional 1 fills unclaimed x
     auto args = makeTuple({
-        {.name = std::string("y"), .value = Numeric {2, ""}},
-        {.name = std::nullopt, .value = Numeric {1, ""}},
+        {.name = std::string("y"), .value = Numeric {.value = 2, .unit = ""}},
+        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
     });
-    auto resolved = ArgumentParser {{"x"}, {"y"}}.resolve(args);
+    auto resolved = ArgumentParser {{.name = "x"}, {.name = "y"}}.resolve(args);
 
     EXPECT_DOUBLE_EQ(resolved.find("x")->get<Numeric>().value, 1.0);
     EXPECT_DOUBLE_EQ(resolved.find("y")->get<Numeric>().value, 2.0);
@@ -1352,9 +1371,12 @@ TEST_F(ArgumentParserTest, NamedThenPositionalFillsRemainingSlot)
 TEST_F(ArgumentParserTest, DefaultValueUsedWhenMissing)
 {
     auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {1, ""}},
+        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
     });
-    auto resolved = ArgumentParser {{"x"}, {"y", Numeric {99, ""}}}.resolve(args);
+    auto resolved = ArgumentParser {
+        {.name = "x"},
+        {.name = "y", .defaultValue = Numeric {.value = 99, .unit = ""}}
+    }.resolve(args);
 
     EXPECT_DOUBLE_EQ(resolved.find("x")->get<Numeric>().value, 1.0);
     EXPECT_DOUBLE_EQ(resolved.find("y")->get<Numeric>().value, 99.0);
@@ -1363,10 +1385,13 @@ TEST_F(ArgumentParserTest, DefaultValueUsedWhenMissing)
 TEST_F(ArgumentParserTest, DefaultValueOverriddenByPositional)
 {
     auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {1, ""}},
-        {.name = std::nullopt, .value = Numeric {2, ""}},
+        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
+        {.name = std::nullopt, .value = Numeric {.value = 2, .unit = ""}},
     });
-    auto resolved = ArgumentParser {{"x"}, {"y", Numeric {99, ""}}}.resolve(args);
+    auto resolved = ArgumentParser {
+        {.name = "x"},
+        {.name = "y", .defaultValue = Numeric {.value = 99, .unit = ""}}
+    }.resolve(args);
 
     EXPECT_DOUBLE_EQ(resolved.find("y")->get<Numeric>().value, 2.0);
 }
@@ -1374,10 +1399,13 @@ TEST_F(ArgumentParserTest, DefaultValueOverriddenByPositional)
 TEST_F(ArgumentParserTest, DefaultValueOverriddenByName)
 {
     auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {1, ""}},
-        {.name = std::string("y"), .value = Numeric {2, ""}},
+        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
+        {.name = std::string("y"), .value = Numeric {.value = 2, .unit = ""}},
     });
-    auto resolved = ArgumentParser {{"x"}, {"y", Numeric {99, ""}}}.resolve(args);
+    auto resolved = ArgumentParser {
+        {.name = "x"},
+        {.name = "y", .defaultValue = Numeric {.value = 99, .unit = ""}}
+    }.resolve(args);
 
     EXPECT_DOUBLE_EQ(resolved.find("y")->get<Numeric>().value, 2.0);
 }
@@ -1385,10 +1413,10 @@ TEST_F(ArgumentParserTest, DefaultValueOverriddenByName)
 TEST_F(ArgumentParserTest, ResolvedTupleHasCorrectOrder)
 {
     auto args = makeTuple({
-        {.name = std::string("y"), .value = Numeric {2, ""}},
-        {.name = std::nullopt, .value = Numeric {1, ""}},
+        {.name = std::string("y"), .value = Numeric {.value = 2, .unit = ""}},
+        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
     });
-    auto resolved = ArgumentParser {{"x"}, {"y"}}.resolve(args);
+    auto resolved = ArgumentParser {{.name = "x"}, {.name = "y"}}.resolve(args);
 
     // at(0) is x, at(1) is y — matches declaration order
     EXPECT_DOUBLE_EQ(resolved.at(0).get<Numeric>().value, 1.0);
@@ -1399,9 +1427,9 @@ TEST_F(ArgumentParserTest, MixedTypes)
 {
     auto args = makeTuple({
         {.name = std::nullopt, .value = Base::Color(1.0, 0.0, 0.0)},
-        {.name = std::nullopt, .value = Numeric {20, ""}},
+        {.name = std::nullopt, .value = Numeric {.value = 20, .unit = ""}},
     });
-    auto resolved = ArgumentParser {{"color"}, {"amount"}}.resolve(args);
+    auto resolved = ArgumentParser {{.name = "color"}, {.name = "amount"}}.resolve(args);
 
     EXPECT_TRUE(resolved.find("color")->holds<Base::Color>());
     EXPECT_TRUE(resolved.find("amount")->holds<Numeric>());
@@ -1410,7 +1438,7 @@ TEST_F(ArgumentParserTest, MixedTypes)
 TEST_F(ArgumentParserTest, ErrorOnUnknownName)
 {
     auto args = makeTuple({
-        {.name = std::string("unknown"), .value = Numeric {1, ""}},
+        {.name = std::string("unknown"), .value = Numeric {.value = 1, .unit = ""}},
     });
     ArgumentParser parser {{"x"}, {"y"}};
     EXPECT_THROW(parser.resolve(args), Base::ExpressionError);
@@ -1419,8 +1447,8 @@ TEST_F(ArgumentParserTest, ErrorOnUnknownName)
 TEST_F(ArgumentParserTest, ErrorOnDuplicateName)
 {
     auto args = makeTuple({
-        {.name = std::string("x"), .value = Numeric {1, ""}},
-        {.name = std::string("x"), .value = Numeric {2, ""}},
+        {.name = std::string("x"), .value = Numeric {.value = 1, .unit = ""}},
+        {.name = std::string("x"), .value = Numeric {.value = 2, .unit = ""}},
     });
     ArgumentParser parser {{"x"}, {"y"}};
     EXPECT_THROW(parser.resolve(args), Base::ExpressionError);
@@ -1429,7 +1457,7 @@ TEST_F(ArgumentParserTest, ErrorOnDuplicateName)
 TEST_F(ArgumentParserTest, ErrorOnMissingRequired)
 {
     auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {1, ""}},
+        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
     });
     ArgumentParser parser {{"x"}, {"y"}};
     EXPECT_THROW(parser.resolve(args), Base::ExpressionError);
@@ -1438,9 +1466,9 @@ TEST_F(ArgumentParserTest, ErrorOnMissingRequired)
 TEST_F(ArgumentParserTest, ErrorOnExcessPositional)
 {
     auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {1, ""}},
-        {.name = std::nullopt, .value = Numeric {2, ""}},
-        {.name = std::nullopt, .value = Numeric {3, ""}},
+        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
+        {.name = std::nullopt, .value = Numeric {.value = 2, .unit = ""}},
+        {.name = std::nullopt, .value = Numeric {.value = 3, .unit = ""}},
     });
     ArgumentParser parser {{"x"}, {"y"}};
     EXPECT_THROW(parser.resolve(args), Base::ExpressionError);
@@ -1450,9 +1478,9 @@ TEST_F(ArgumentParserTest, TypedGetSuccess)
 {
     auto args = makeTuple({
         {.name = std::nullopt, .value = Base::Color(1.0, 0.0, 0.0)},
-        {.name = std::nullopt, .value = Numeric {20, ""}},
+        {.name = std::nullopt, .value = Numeric {.value = 20, .unit = ""}},
     });
-    auto resolved = ArgumentParser {{"color"}, {"amount"}}.resolve(args);
+    auto resolved = ArgumentParser {{.name = "color"}, {.name = "amount"}}.resolve(args);
 
     EXPECT_NO_THROW(resolved.get<Base::Color>("color"));
     EXPECT_NO_THROW(resolved.get<Numeric>("amount"));
@@ -1462,18 +1490,18 @@ TEST_F(ArgumentParserTest, TypedGetSuccess)
 TEST_F(ArgumentParserTest, TypedGetWrongType)
 {
     auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {10, "px"}},
-        {.name = std::nullopt, .value = Numeric {20, ""}},
+        {.name = std::nullopt, .value = Numeric {.value = 10, .unit = "px"}},
+        {.name = std::nullopt, .value = Numeric {.value = 20, .unit = ""}},
     });
-    auto resolved = ArgumentParser {{"color"}, {"amount"}}.resolve(args);
+    auto resolved = ArgumentParser {{.name = "color"}, {.name = "amount"}}.resolve(args);
 
     EXPECT_THROW(resolved.get<Base::Color>("color"), Base::ExpressionError);
 }
 
 TEST_F(ArgumentParserTest, TypedGetMissingName)
 {
-    auto args = makeTuple({{.name = std::nullopt, .value = Numeric {10, ""}}});
-    auto resolved = ArgumentParser {{"x"}}.resolve(args);
+    auto args = makeTuple({{.name = std::nullopt, .value = Numeric {.value = 10, .unit = ""}}});
+    auto resolved = ArgumentParser {{.name = "x"}}.resolve(args);
 
     EXPECT_THROW(resolved.get<Numeric>("nonexistent"), Base::ExpressionError);
 }

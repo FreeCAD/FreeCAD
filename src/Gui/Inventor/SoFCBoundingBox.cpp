@@ -22,15 +22,32 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <FCConfig.h>
+
+#ifdef FC_OS_WIN32
+# include <Windows.h>
+#endif
+#ifdef FC_OS_MACOSX
+# include <OpenGL/gl.h>
+# include <OpenGL/glext.h>
+#else
+# include <GL/gl.h>
+# include <GL/glext.h>
+#endif
+
 #include <sstream>
 
 #include <Inventor/SbBox.h>
-#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTransform.h>
+#include <Inventor/actions/SoActions.h>
 
+#include "ViewParams.h"
+#include "SoFCUnifiedSelection.h"
+#include "SoFCSelectionAction.h"
 #include "SoFCBoundingBox.h"
 
 
@@ -59,14 +76,14 @@ SoFCBoundingBox::SoFCBoundingBox()
     SO_NODE_ADD_FIELD(maxBounds, (1.0, 1.0, 1.0));
     SO_NODE_ADD_FIELD(coordsOn, (true));
     SO_NODE_ADD_FIELD(dimensionsOn, (true));
+    SO_NODE_ADD_FIELD(skipBoundingBox, (true));
 
-    root = new SoSeparator();
-    auto bboxSep = new SoSeparator();
+    bboxSep = new SoSeparator();
+    bboxSep->ref();
 
     bboxCoords = new SoCoordinate3();
     bboxCoords->point.setNum(8);
     bboxSep->addChild(bboxCoords);
-    root->addChild(bboxSep);
 
     // the lines of the box
     bboxLines = new SoIndexedLineSet();
@@ -77,6 +94,7 @@ SoFCBoundingBox::SoFCBoundingBox()
 
     // create the text nodes, including a transform for each vertice offset
     textSep = new SoSeparator();
+    textSep->ref();
     for (int i = 0; i < 8; i++) {
         auto temp = new SoSeparator();
         auto trans = new SoTransform();
@@ -89,6 +107,7 @@ SoFCBoundingBox::SoFCBoundingBox()
 
     // create the text nodes, including a transform for each dimension
     dimSep = new SoSeparator();
+    dimSep->ref();
     for (int i = 0; i < 3; i++) {
         auto temp = new SoSeparator();
         auto trans = new SoTransform();
@@ -98,15 +117,13 @@ SoFCBoundingBox::SoFCBoundingBox()
         temp->addChild(text);
         dimSep->addChild(temp);
     }
-
-    root->addChild(textSep);
-    root->addChild(dimSep);
-    root->ref();
 }
 
 SoFCBoundingBox::~SoFCBoundingBox()
 {
-    root->unref();
+    bboxSep->unref();
+    textSep->unref();
+    dimSep->unref();
 }
 
 void SoFCBoundingBox::GLRender(SoGLRenderAction* action)
@@ -121,9 +138,19 @@ void SoFCBoundingBox::GLRender(SoGLRenderAction* action)
         return;
     }
 
+    SoState* state = action->getState();
+
     // get the latest values from the fields
-    corner[0] = minBounds.getValue();
-    corner[1] = maxBounds.getValue();
+    SbXfBox3f xbbox(minBounds.getValue(), maxBounds.getValue());
+
+    if (ViewParams::instance()->getRenderProjectedBBox()) {
+        xbbox.transform(SoModelMatrixElement::get(state));
+    }
+
+    SbBox3f bbox = xbbox.project();
+
+    corner[0] = bbox.getMin();
+    corner[1] = bbox.getMax();
     coord = coordsOn.getValue();
     dimension = dimensionsOn.getValue();
 
@@ -152,16 +179,6 @@ void SoFCBoundingBox::GLRender(SoGLRenderAction* action)
             SoText2* t = static_cast<SoText2*>(sep->getChild(1));
             t->string.setValue(str.str().c_str());
         }
-
-        textSep->ref();
-        if (root->findChild(textSep) < 0) {
-            root->addChild(textSep);
-        }
-    }
-    else {
-        if (root->findChild(textSep) >= 0) {
-            root->removeChild(textSep);
-        }
     }
 
     // if dimension is true then set the text nodes
@@ -183,25 +200,57 @@ void SoFCBoundingBox::GLRender(SoGLRenderAction* action)
             SoText2* t = static_cast<SoText2*>(sep->getChild(1));
             t->string.setValue(str.str().c_str());
         }
-
-        dimSep->ref();
-        if (root->findChild(dimSep) < 0) {
-            root->addChild(dimSep);
-        }
-    }
-    else {
-        if (root->findChild(dimSep) >= 0) {
-            root->removeChild(dimSep);
-        }
     }
 
     bboxCoords->point.finishEditing();
 
     // Avoid shading
-    SoState* state = action->getState();
     state->push();
+
+    if (ViewParams::instance()->getRenderProjectedBBox()) {
+        SoModelMatrixElement::makeIdentity(state, this);
+    }
+
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-    root->GLRender(action);
+
+    if (action->isRenderingDelayedPaths()) {
+        bboxSep->GLRender(action);
+        if (coord) {
+            textSep->GLRender(action);
+        }
+        if (dimension) {
+            dimSep->GLRender(action);
+        }
+    }
+    else {
+        // Enable depth clampping to bypass near/far plane clipping, because
+        // the bounding box corners are likely outside the range.
+        GLboolean clamped = glIsEnabled(GL_DEPTH_CLAMP);
+        if (!clamped) {
+            glEnable(GL_DEPTH_CLAMP);
+        }
+
+        // GL_LEQUAL is necessary for far clampping to work
+        FCDepthFunc depthFunc(GL_LEQUAL);
+
+        bboxSep->GLRender(action);
+
+        if (coord || dimension) {
+            // Change depth func to GL_ALWAYS to render text on top of the
+            // geometry
+            depthFunc.set(GL_ALWAYS);
+            if (coord) {
+                textSep->GLRender(action);
+            }
+            if (dimension) {
+                dimSep->GLRender(action);
+            }
+        }
+
+        if (!clamped) {
+            glDisable(GL_DEPTH_CLAMP);
+        }
+    }
     state->pop();
 }
 
@@ -210,6 +259,9 @@ void SoFCBoundingBox::generatePrimitives(SoAction* /*action*/)
 
 void SoFCBoundingBox::computeBBox(SoAction* /*action*/, SbBox3f& box, SbVec3f& center)
 {
+    if (skipBoundingBox.getValue()) {
+        return;
+    }
     center = (minBounds.getValue() + maxBounds.getValue()) / 2.0f;
     box.setBounds(minBounds.getValue(), maxBounds.getValue());
 }
@@ -254,7 +306,68 @@ void SoSkipBoundingGroup::finish()
 
 void SoSkipBoundingGroup::getBoundingBox(SoGetBoundingBoxAction* action)
 {
-    if (mode.getValue() == INCLUDE_BBOX) {
+    if (mode.getValue() == INCLUDE_BBOX
+        && SoSkipBoundingBoxElement::get(action->getState()) == INCLUDE_BBOX) {
         inherited::getBoundingBox(action);
     }
+}
+
+// ---------------------------------------------------------------
+
+SO_ELEMENT_SOURCE(SoSkipBoundingBoxElement)
+
+void SoSkipBoundingBoxElement::initClass(void)
+{
+    SO_ELEMENT_INIT_CLASS(SoSkipBoundingBoxElement, inherited);
+    SO_ENABLE(SoGLRenderAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoGetBoundingBoxAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoAudioRenderAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoSearchAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoGetMatrixAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoPickAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoCallbackAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoGetPrimitiveCountAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoHandleEventAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoSelectionElementAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoHighlightElementAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoFCEnableSelectionAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoFCSelectionColorAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoFCHighlightColorAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoFCSelectionAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoFCDocumentAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoFCDocumentObjectAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoGLSelectAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoVisibleFaceAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoUpdateVBOAction, SoSkipBoundingBoxElement);
+    SO_ENABLE(SoVRMLAction, SoSkipBoundingBoxElement);
+}
+
+SoSkipBoundingBoxElement::~SoSkipBoundingBoxElement()
+{}
+
+void SoSkipBoundingBoxElement::set(SoState* const state, Modes mode)
+{
+    inherited::set(classStackIndex, state, nullptr, static_cast<int>(mode));
+}
+
+SoSkipBoundingBoxElement::Modes SoSkipBoundingBoxElement::get(SoState* const state)
+{
+    return static_cast<Modes>(inherited::get(classStackIndex, state));
+}
+
+void SoSkipBoundingBoxElement::init(SoState* state)
+{
+    inherited::init(state);
+    this->data = SoSkipBoundingGroup::INCLUDE_BBOX;
+}
+
+bool Gui::isValidBBox(const SbBox3f& bbox)
+{
+    const auto& maxPt = bbox.getMax();
+    const auto& minPt = bbox.getMin();
+    if (maxPt[0] < minPt[0]) {
+        return false;
+    }
+    return !std::isnan(maxPt[0]) && !std::isnan(maxPt[1]) && !std::isnan(maxPt[2])
+        && !std::isnan(minPt[0]) && !std::isnan(minPt[1]) && !std::isnan(minPt[2]);
 }

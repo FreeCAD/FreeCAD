@@ -195,7 +195,7 @@ App::DatumElement* LocalCoordinateSystem::getDatumElement(const char* role) cons
 App::Line* LocalCoordinateSystem::getAxis(const char* role) const
 {
     App::DatumElement* feat = getDatumElement(role);
-    if (feat->isDerivedFrom<App::Line>()) {
+    if (feat && feat->isDerivedFrom<App::Line>()) {
         return static_cast<App::Line*>(feat);
     }
     std::stringstream err;
@@ -207,7 +207,7 @@ App::Line* LocalCoordinateSystem::getAxis(const char* role) const
 App::Plane* LocalCoordinateSystem::getPlane(const char* role) const
 {
     App::DatumElement* feat = getDatumElement(role);
-    if (feat->isDerivedFrom<App::Plane>()) {
+    if (feat && feat->isDerivedFrom<App::Plane>()) {
         return static_cast<App::Plane*>(feat);
     }
     std::stringstream err;
@@ -219,7 +219,7 @@ App::Plane* LocalCoordinateSystem::getPlane(const char* role) const
 App::Point* LocalCoordinateSystem::getPoint(const char* role) const
 {
     App::DatumElement* feat = getDatumElement(role);
-    if (feat->isDerivedFrom<App::Point>()) {
+    if (feat && feat->isDerivedFrom<App::Point>()) {
         return static_cast<App::Point*>(feat);
     }
     std::stringstream err;
@@ -270,7 +270,7 @@ const std::vector<LocalCoordinateSystem::SetupData>& LocalCoordinateSystem::getS
         {App::Plane::getClassTypeId(), PlaneRoles[0], tr("XY-plane"), Base::Rotation()},
         {App::Plane::getClassTypeId(), PlaneRoles[1], tr("XZ-plane"), Base::Rotation(1.0, 0.0, 0.0, 1.0)},
         {App::Plane::getClassTypeId(), PlaneRoles[2], tr("YZ-plane"), Base::Rotation(Base::Vector3d(1, 1, 1), pi * 2 / 3)},
-        {App::Point::getClassTypeId(), PointRoles[0], tr("Origin"),   Base::Rotation()}
+        {App::Point::getClassTypeId(), PointRoles[0], tr("Origin-Point"),   Base::Rotation()}
         // clang-format on
     };
     return setupData;

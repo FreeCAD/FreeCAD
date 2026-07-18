@@ -28,7 +28,6 @@
 These are common functions and classes for creating custom post processors.
 """
 
-
 from Path.Base.MachineState import MachineState
 from Path.Main.Gui.Editor import CodeEditor
 from Path.Geom import CmdMoveDrill
@@ -388,7 +387,7 @@ def splitArcs(path, deflection=None):
 
     if not deflection:
         prefGrp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
-        deflection = prefGrp.GetFloat("LibAreaCurveAccuracy", 0.01)
+        deflection = prefGrp.GetFloat("LibAreaCurveAccuracy", 0.01) or 0.01
 
     results = []
     machine = MachineState()
