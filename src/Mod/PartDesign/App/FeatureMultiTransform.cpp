@@ -103,7 +103,8 @@ const std::list<gp_Trsf> MultiTransform::getTransformations(
             throw Base::TypeError("Transformation features must be subclasses of Transformed");
         }
 
-        std::list<gp_Trsf> newTransformations = transFeature->getTransformations(originals);
+        std::list<gp_Trsf> newTransformations = transFeature->getFilteredTransformations(originals);
+
         if (result.empty()) {
             // First transformation Feature
             result = newTransformations;

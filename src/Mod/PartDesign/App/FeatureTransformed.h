@@ -27,6 +27,8 @@
 
 #include <gp_Trsf.hxx>
 
+#include <list>
+
 #include <App/PropertyStandard.h>
 #include "FeatureRefine.h"
 
@@ -55,6 +57,7 @@ public:
      */
     App::PropertyLinkList Originals;
     App::PropertyEnumeration TransformMode;
+    App::PropertyIntegerList SuppressedIndices;
     App::PropertyBool Refine;
 
     /**
@@ -84,6 +87,11 @@ public:
     {
         return std::list<gp_Trsf>();  // Default method
     }
+
+    bool isTransformationSuppressed(int index) const;
+    const std::list<gp_Trsf> getFilteredTransformations(
+        const std::vector<App::DocumentObject*> originals
+    );
 
     /** @name methods override feature */
     //@{

@@ -214,6 +214,24 @@ SET(Features_SRCS
     FeatureOffset.h
     LinearPatternExtension.cpp
     LinearPatternExtension.h
+    CircularPatternExtension.cpp
+    CircularPatternExtension.h
+    LinkArray.cpp
+    LinkArray.h
+    LinkArrayCircular.cpp
+    LinkArrayCircular.h
+    LinkArrayLinear.cpp
+    LinkArrayLinear.h
+    LinkArrayPath.cpp
+    LinkArrayPath.h
+    LinkArrayPoint.cpp
+    LinkArrayPoint.h
+    LinkArrayPolar.cpp
+    LinkArrayPolar.h
+    PathPatternExtension.cpp
+    PathPatternExtension.h
+    PointPatternExtension.cpp
+    PointPatternExtension.h
     PolarPatternExtension.cpp
     PolarPatternExtension.h
     OCCTMessagePrinter.cpp
