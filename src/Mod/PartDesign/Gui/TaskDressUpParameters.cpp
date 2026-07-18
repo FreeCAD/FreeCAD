@@ -512,6 +512,7 @@ TaskDlgDressUpParameters::TaskDlgDressUpParameters(ViewProviderDressUp* DressUpV
     }
     if (changed) {
         pcDressUp->Base.setValue(base, newSubList);
+        pcDressUp->recomputeFeature(false);
     }
 }
 
