@@ -116,7 +116,7 @@ def smCreateBaseShape(type, thickness, radius, width, length,
             if v.z > 0.9999 and z > bendCompensation:
                 faces.append("Face" + str(i+1))
         shape, _f = smBend(thickness, selFaceNames=faces, extLen=flangeWidth, bendR=radius,
-                           MainObject=shape, flipped=invertBend, automiter=fillGaps)
+                           MainObject=shape, flipped=invertBend, automiter=fillGaps, maxExtendGap=999999)
     #SMLogger.message(str(faces))
     return shape
 

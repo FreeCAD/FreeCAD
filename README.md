@@ -96,6 +96,8 @@ SheetMetal WB can be installed via the [Addon Manager](https://github.com/FreeCA
 * FreeCAD Forum announcement/discussion [thread](https://forum.freecad.org/viewtopic.php?f=3&t=60818) 
 
 #### Release notes:
+* V0.8.21 18 Jun 2026:  Fix auto gap fill of base shape command.  
+                      - Attend some lint warnings.  
 * V0.8.20 08 Jun 2026:  Update translations and translation scripts.
                       - Allow zero length initial perforation by [@rtm7777][rtm7777]  
 * V0.8.12 03 Jun 2026:  Fix missing edge selections on task panel list.  
