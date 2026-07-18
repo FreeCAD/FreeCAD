@@ -2512,8 +2512,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
         std::hash<TopoDS_Shape> shapeHasher;
 
         for (const std::pair<const std::vector<Part::NamingMapKey>, std::vector<Part::NamingMapValue>>&
-                 generatedShapeEntry : generatedNamingMap.getMultiMap()) 
-        {
+                 generatedShapeEntry : generatedNamingMap.getMultiMap()) {
             std::vector<Data::MappedName> linkedNames {};
 
             if (generatedShapeEntry.second.size()) {
@@ -4469,7 +4468,9 @@ struct MapperThruSections: MapperMaker
         BRepOffsetAPI_ThruSections& tmaker,
         const std::vector<TopoShape>& profiles,
         const TopTools_DataMapOfShapeListOfShape& compatibleWiresMap
-    ) : MapperMaker(tmaker), compatibleWiresMap(compatibleWiresMap)
+    )
+        : MapperMaker(tmaker)
+        , compatibleWiresMap(compatibleWiresMap)
     {
         if (!tmaker.FirstShape().IsNull()) {
             firstProfile = profiles.front();
@@ -4514,7 +4515,8 @@ struct MapperThruSections: MapperMaker
             if (modifiedList.Size()) {
                 TopTools_ListIteratorOfListOfShape shapeListIterator;
 
-                for (shapeListIterator.Init(modifiedList); shapeListIterator.More(); shapeListIterator.Next()) {
+                for (shapeListIterator.Init(modifiedList); shapeListIterator.More();
+                     shapeListIterator.Next()) {
                     _res.push_back(shapeListIterator.Value());
                 }
             }
@@ -5389,7 +5391,8 @@ TopoShape& TopoShape::makeElementLoft(
     for (const TopoShape& profile : profiles) {
         if (profile.shapeType() == TopAbs_WIRE) {
             wireProfiles.Append(profile.getShape());
-        } else {
+        }
+        else {
             compatibleProfiles.push_back(profile);
         }
     }
@@ -5400,7 +5403,7 @@ TopoShape& TopoShape::makeElementLoft(
     TopTools_SequenceOfShape::Iterator compatibleWiresIterator;
     compatibleWiresIterator.Init(compatibleWiresBuilder.Shape());
 
-    for (;compatibleWiresIterator.More(); compatibleWiresIterator.Next()) {
+    for (; compatibleWiresIterator.More(); compatibleWiresIterator.Next()) {
         compatibleProfiles.push_back({compatibleWiresIterator.Value()});
     }
 
