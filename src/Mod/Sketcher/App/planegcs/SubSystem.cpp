@@ -114,7 +114,10 @@ void SubSystem::initialize(VEC_pD& params, MAP_pD_pD& reductionmap)
 
     c2p.clear();
     p2c.clear();
-    for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end(); ++constr) {
+    p2c_rows_.clear();
+    int row = 0;
+    for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end();
+         ++constr, ++row) {
         (*constr)->revertParams();  // ensure that the constraint points to the original parameters
         VEC_pD constr_params_orig = (*constr)->params();
         SET_pD constr_params;
@@ -129,6 +132,7 @@ void SubSystem::initialize(VEC_pD& params, MAP_pD_pD& reductionmap)
             //            jacobi.set(*constr, *p, 0.);
             c2p[*constr].push_back(*p);
             p2c[*p].push_back(*constr);
+            p2c_rows_[*p].push_back(row);  // clist index of *constr, aligned with p2c[*p]
         }
         //        (*constr)->redirectParams(pmap); // redirect parameters to pvec
     }
@@ -251,20 +255,84 @@ void SubSystem::calcResidual(Eigen::VectorXd& r, double& err)
     err *= 0.5;
 }
 
+// ---------------------------------------------------------------------------
+// calcJacobi() — Sparse Analytical Jacobian Assembly
+//
+// For each output column j we look up params[j]'s redirected pvals pointer and
+// visit ONLY the constraints that actually depend on it (via the p2c / p2c_rows_
+// adjacency built once in initialize()). This is O(nnz) — for banded/local
+// sketches O(N) — instead of the O(nparams × csize) dense grad() sweep.
+//
+// The column is j (the position in the passed-in `params`), so the result is
+// correct for ANY params array — `plist` (single-arg overload) or a differently
+// ordered union such as the SQP solver's `plistAB`. This mirrors calcGrad()'s
+// use of p2c and removes the earlier Equal fast path, whose cached column index
+// was keyed to `plist` and therefore produced wrong columns when called with
+// `plistAB` during dragging.
+// ---------------------------------------------------------------------------
 void SubSystem::calcJacobi(VEC_pD& params, Eigen::MatrixXd& jacobi)
 {
-    jacobi.setZero(csize, params.size());
-    for (int j = 0; j < int(params.size()); j++) {
+    int nparams = int(params.size());
+    jacobi.setZero(csize, nparams);
+
+    for (int j = 0; j < nparams; j++) {
         MAP_pD_pD::const_iterator pmapfind = pmap.find(params[j]);
-        if (pmapfind != pmap.end()) {
-            for (int i = 0; i < csize; i++) {
-                jacobi(i, j) = clist[i]->grad(pmapfind->second);
-            }
+        if (pmapfind == pmap.end()) {
+            continue;
+        }
+        double* pval = pmapfind->second;
+
+        auto cit = p2c.find(pval);
+        if (cit == p2c.end()) {
+            continue;
+        }
+        const std::vector<Constraint*>& constrs = cit->second;
+        const std::vector<int>& rows = p2c_rows_.find(pval)->second;  // 1:1 with constrs
+        for (std::size_t k = 0; k < constrs.size(); ++k) {
+            jacobi(rows[k], j) = constrs[k]->grad(pval);
         }
     }
 }
 
 void SubSystem::calcJacobi(Eigen::MatrixXd& jacobi)
+{
+    calcJacobi(plist, jacobi);
+}
+
+// Sparse counterpart of calcJacobi(): assembles the Jacobian directly into an
+// Eigen::SparseMatrix in O(nnz) via the p2c / p2c_rows_ adjacency. Same column
+// convention as the dense overload (column j == params[j]), so it is correct for
+// any params array. Used by the monolithic DogLeg path so that J^T*J and the
+// linear solve stay sparse (banded) instead of O(N^2)/O(N^3) dense.
+void SubSystem::calcJacobi(VEC_pD& params, Eigen::SparseMatrix<double>& jacobi)
+{
+    int nparams = int(params.size());
+    // called once per solver iteration: reuse the triplet buffer's capacity
+    jacobiTriplets_.clear();
+
+    for (int j = 0; j < nparams; j++) {
+        MAP_pD_pD::const_iterator pmapfind = pmap.find(params[j]);
+        if (pmapfind == pmap.end()) {
+            continue;
+        }
+        double* pval = pmapfind->second;
+
+        auto cit = p2c.find(pval);
+        if (cit == p2c.end()) {
+            continue;
+        }
+        const std::vector<Constraint*>& constrs = cit->second;
+        const std::vector<int>& rows = p2c_rows_.find(pval)->second;  // 1:1 with constrs
+        for (std::size_t k = 0; k < constrs.size(); ++k) {
+            jacobiTriplets_.emplace_back(rows[k], j, constrs[k]->grad(pval));
+        }
+    }
+
+    jacobi.resize(csize, nparams);
+    jacobi.setFromTriplets(jacobiTriplets_.begin(), jacobiTriplets_.end());
+}
+
+void SubSystem::calcJacobi(Eigen::SparseMatrix<double>& jacobi)
 {
     calcJacobi(plist, jacobi);
 }
@@ -277,7 +345,7 @@ void SubSystem::calcGrad(VEC_pD& params, Eigen::VectorXd& grad)
     for (int j = 0; j < int(params.size()); j++) {
         MAP_pD_pD::const_iterator pmapfind = pmap.find(params[j]);
         if (pmapfind != pmap.end()) {
-            std::vector<Constraint*> constrs = p2c[pmapfind->second];
+            const std::vector<Constraint*>& constrs = p2c[pmapfind->second];
             for (std::vector<Constraint*>::const_iterator constr = constrs.begin();
                  constr != constrs.end();
                  ++constr) {

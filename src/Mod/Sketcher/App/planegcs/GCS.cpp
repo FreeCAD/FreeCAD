@@ -488,7 +488,7 @@ System::System()
     , qrAlgorithm(EigenSparseQR)
     , autoChooseAlgorithm(true)
     , autoQRThreshold(1000)
-    , dogLegGaussStep(FullPivLU)
+    , dogLegGaussStep(SparseLDLT)
     , qrpivotThreshold(1E-13)
     , debugMode(Minimal)
     , LM_eps(1E-10)
@@ -2299,8 +2299,10 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
                << ", dogLegGaussStep: "
                << (dogLegGaussStep == FullPivLU
                        ? "FullPivLU"
-                       : (dogLegGaussStep == LeastNormFullPivLU ? "LeastNormFullPivLU"
-                                                                : "LeastNormLdlt"))
+                       : (dogLegGaussStep == LeastNormFullPivLU
+                              ? "LeastNormFullPivLU"
+                              : (dogLegGaussStep == LeastNormLdlt ? "LeastNormLdlt"
+                                                                  : "SparseLDLT")))
                << ", xsize: " << xsize << ", csize: " << csize << ", maxIter: " << maxIterNumber
                << "\n";
 
@@ -2308,9 +2310,16 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
         Base::Console().log(tmp.c_str());
     }
 
+    // Sparse LDLT solver infrastructure. Jx is assembled directly as a sparse
+    // matrix so J^T*J and the linear solve stay banded (O(N*bw^2)) instead of the
+    // O(N^2)/O(N^3) dense path — the dominant cost for dense/banded sketches.
+    Eigen::SparseMatrix<double> A_sparse;
+    Eigen::SimplicialLDLT<Eigen::SparseMatrix<double>, Eigen::Upper> sparse_ldlt;
+    bool sparse_pattern_analyzed = false;  // analyzePattern() done once (topology is fixed per solve)
+
     Eigen::VectorXd x(xsize), x_new(xsize);
     Eigen::VectorXd fx(csize), fx_new(csize);
-    Eigen::MatrixXd Jx(csize, xsize), Jx_new(csize, xsize);
+    Eigen::SparseMatrix<double> Jx(csize, xsize), Jx_new(csize, xsize);
     Eigen::VectorXd g(xsize), h_sd(xsize), h_gn(xsize), h_dl(xsize);
 
     subsys->redirectParams();
@@ -2358,22 +2367,82 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
         }
 
         // get the steepest descent direction
-        alpha = g.squaredNorm() / (Jx * g).squaredNorm();
-        h_sd = alpha * g;
+        // Guard the denominator: if g lies in ker(J) (possible for rank-deficient J)
+        // then Jx*g == 0 and alpha would be inf/nan; fall back to alpha = 0 so the
+        // dogleg relies on the Gauss-Newton step instead of a degenerate SD step.
+        double Jxg_sq = (Jx * g).squaredNorm();
+        alpha = (Jxg_sq > 0.0) ? g.squaredNorm() / Jxg_sq : 0.0;
+        h_sd.noalias() = alpha * g;
 
         // get the gauss-newton step
         // https://forum.freecad.org/viewtopic.php?f=10&t=12769&start=50#p106220
         // https://forum.kde.org/viewtopic.php?f=74&t=129439#p346104
         switch (dogLegGaussStep) {
             case FullPivLU:
-                h_gn = Jx.fullPivLu().solve(-fx);
+                h_gn = Jx.toDense().fullPivLu().solve(-fx);
                 break;
-            case LeastNormFullPivLU:
-                h_gn = Jx.adjoint() * (Jx * Jx.adjoint()).fullPivLu().solve(-fx);
+            case LeastNormFullPivLU: {
+                Eigen::MatrixXd Jd = Jx.toDense();
+                h_gn = Jd.adjoint() * (Jd * Jd.adjoint()).fullPivLu().solve(-fx);
                 break;
-            case LeastNormLdlt:
-                h_gn = Jx.adjoint() * (Jx * Jx.adjoint()).ldlt().solve(-fx);
+            }
+            case LeastNormLdlt: {
+                Eigen::MatrixXd Jd = Jx.toDense();
+                h_gn = Jd.adjoint() * (Jd * Jd.adjoint()).ldlt().solve(-fx);
                 break;
+            }
+            case SparseLDLT: {
+                // Sparse Gauss-Newton step. Sketch systems are usually
+                // UNDER-constrained (csize < xsize: many free DOFs during a normal
+                // recompute or drag), which makes the normal-equations matrix
+                // J^T J (xsize x xsize) rank-deficient and SimplicialLDLT fail —
+                // the old path then fell back to a dense fullPivLU every iteration
+                // (O(N^3), the real bottleneck for dense sketches).
+                //
+                // Instead take the least-norm step via the smaller, full-rank
+                // system: solve (J J^T) y = -fx  (csize x csize, banded, SPD for
+                // independent constraints) with sparse LDLT, then h_gn = J^T y.
+                // For the over/at-constrained case (csize >= xsize) J^T J is the
+                // full-rank one, so use the normal equations there.
+                //
+                // The non-zero pattern is fixed for the whole solve (topology does
+                // not change), so analyzePattern() runs once. No LM damping: the
+                // dogleg trust region controls step length via delta.
+                //
+                // Robustness: SimplicialLDLT::info() only flags an EXACT zero pivot,
+                // so a merely rank-deficient (redundant/over-constrained) matrix can
+                // factorize "successfully" with ~1e-16 pivots and blow the solve up to
+                // NaN/Inf. We therefore also validate that h_gn is finite and fall
+                // back to a dense fullPivLU (which pivots through rank deficiency)
+                // whenever the sparse step is not usable.
+                bool underdetermined = (csize < xsize);
+                if (underdetermined) {
+                    A_sparse = Jx * Jx.transpose();  // csize x csize
+                }
+                else {
+                    A_sparse = Jx.transpose() * Jx;  // xsize x xsize
+                }
+                if (!sparse_pattern_analyzed) {
+                    sparse_ldlt.analyzePattern(A_sparse);
+                    sparse_pattern_analyzed = true;
+                }
+                sparse_ldlt.factorize(A_sparse);
+                if (sparse_ldlt.info() != Eigen::Success) {
+                    h_gn = Jx.toDense().fullPivLu().solve(-fx);
+                }
+                else if (underdetermined) {
+                    Eigen::VectorXd y = sparse_ldlt.solve(-fx);
+                    h_gn = Jx.transpose() * y;
+                }
+                else {
+                    h_gn = sparse_ldlt.solve(g);
+                }
+                if (!h_gn.allFinite()) {
+                    // Rank-deficient normal matrix slipped past info(); use dense.
+                    h_gn = Jx.toDense().fullPivLu().solve(-fx);
+                }
+                break;
+            }
         }
 
         double rel_error = (Jx * h_gn + fx).norm() / fx.norm();
@@ -2413,7 +2482,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
 
         // get the new values
         double err_new;
-        x_new = x + h_dl;
+        x_new.noalias() = x + h_dl;
         subsys->setParams(x_new);
         subsys->calcResidual(fx_new, err_new);
         subsys->calcJacobi(Jx_new);
@@ -4557,7 +4626,7 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
     Eigen::VectorXd lambda(csizeA), lambda0(csizeA), lambdadir(csizeA);
     Eigen::VectorXd x(xsize), x0(xsize), xdir(xsize), xdir1(xsize);
     Eigen::VectorXd grad(xsize);
-    Eigen::VectorXd h(xsize);
+    Eigen::VectorXd h = Eigen::VectorXd::Zero(xsize);
     Eigen::VectorXd y(xsize);
     Eigen::VectorXd Bh(xsize);
 
@@ -4671,6 +4740,7 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
         }
 
         double err = subsysA->error();
+
         if (h.norm() <= (isRedundantsolving ? convergenceRedundant : convergence) && err <= smallF) {
             break;
         }

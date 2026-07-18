@@ -28,6 +28,7 @@
 #undef max
 
 #include <Eigen/Core>
+#include <Eigen/SparseCore>
 
 #include "Constraints.h"
 
@@ -46,6 +47,11 @@ private:
                      //        JacobianMatrix jacobi;  // jacobi matrix of the residuals
     std::map<Constraint*, VEC_pD> c2p;                // constraint to parameter adjacency list
     std::map<double*, std::vector<Constraint*>> p2c;  // parameter to constraint adjacency list
+    std::map<double*, std::vector<int>> p2c_rows_;    // parameter -> row (clist index) of each
+                                                      // constraint in p2c, aligned 1:1 with p2c;
+                                                      // used for sparse Jacobian assembly
+    std::vector<Eigen::Triplet<double>> jacobiTriplets_;  // reused across the sparse calcJacobi()
+                                                          // calls of a solve (one per iteration)
     void initialize(VEC_pD& params, MAP_pD_pD& reductionmap);  // called by the constructors
 public:
     SubSystem(std::vector<Constraint*>& clist_, VEC_pD& params);
@@ -79,6 +85,9 @@ public:
     void calcResidual(Eigen::VectorXd& r, double& err);
     void calcJacobi(VEC_pD& params, Eigen::MatrixXd& jacobi);
     void calcJacobi(Eigen::MatrixXd& jacobi);
+    // Sparse Jacobian assembly (O(nnz)) for the banded/dense monolithic DogLeg path.
+    void calcJacobi(VEC_pD& params, Eigen::SparseMatrix<double>& jacobi);
+    void calcJacobi(Eigen::SparseMatrix<double>& jacobi);
     void calcGrad(VEC_pD& params, Eigen::VectorXd& grad);
     void calcGrad(Eigen::VectorXd& grad);
 

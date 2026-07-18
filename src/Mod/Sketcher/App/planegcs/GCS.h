@@ -70,7 +70,9 @@ enum DogLegGaussStep
 {
     FullPivLU = 0,
     LeastNormFullPivLU = 1,
-    LeastNormLdlt = 2
+    LeastNormLdlt = 2,
+    SparseLDLT = 3  // Sparse LDLT: least-norm (J J^T) when under-constrained, else
+                    // normal equations (J^T J); dense fullPivLU fallback on failure
 };
 
 enum QRAlgorithm
