@@ -2320,7 +2320,8 @@ bool EditModeConstraintCoinManager::resolveIconScreenGeometry(
     // getScreenCoordinates() expects sketch coordinates and applies the editing
     // placement itself.
     SbVec3f iconSketchPos = absPos + scaleFactor * trans;
-    iconScreenCenter = ViewProviderSketchCoinAttorney::getScreenCoordinates(viewProvider, iconSketchPos);
+    iconScreenCenter
+        = ViewProviderSketchCoinAttorney::getScreenCoordinates(viewProvider, iconSketchPos);
 
     if (pickedPoint) {
         // Consumers of pickedPoint (e.g. the mouse press/release handlers, which
