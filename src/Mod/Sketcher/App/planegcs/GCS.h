@@ -146,6 +146,7 @@ private:
 
     int dofs;
     std::set<Constraint*> redundant;
+    std::set<Constraint*> conflicting;
     VEC_I conflictingTags, redundantTags, partiallyRedundantTags;
 
     bool hasUnknowns;   // if plist is filled with the unknown parameters

@@ -529,6 +529,7 @@ void System::clear()
     emptyDiagnoseMatrix = true;
 
     redundant.clear();
+    conflicting.clear();
     conflictingTags.clear();
     redundantTags.clear();
     partiallyRedundantTags.clear();
@@ -4798,6 +4799,7 @@ int System::diagnose(Algorithm alg)
 
     emptyDiagnoseMatrix = true;
     redundant.clear();
+    conflicting.clear();
     conflictingTags.clear();
     redundantTags.clear();
     partiallyRedundantTags.clear();
@@ -4824,11 +4826,46 @@ int System::diagnose(Algorithm alg)
         }
     }
 
+    auto finalizeConstraintTags = [this](const std::vector<Constraint*>& universe) {
+        SET_I redundantTagsSet, partiallyRedundantTagsSet;
+        for (const auto& constr : universe) {
+            if (redundant.count(constr) != 0) {
+                redundantTagsSet.insert(constr->getTag());
+                partiallyRedundantTagsSet.insert(constr->getTag());
+            }
+        }
+        for (const auto& constr : universe) {
+            if (redundant.count(constr) == 0) {
+                redundantTagsSet.erase(constr->getTag());
+            }
+        }
+        for (auto r : redundantTagsSet) {
+            partiallyRedundantTagsSet.erase(r);
+        }
+        redundantTags.assign(redundantTagsSet.begin(), redundantTagsSet.end());
+        partiallyRedundantTags.assign(
+            partiallyRedundantTagsSet.begin(),
+            partiallyRedundantTagsSet.end()
+        );
+
+        SET_I conflictingTagsSet;
+        for (const auto& constr : universe) {
+            if (conflicting.count(constr) != 0) {
+                bool isinternalalignment
+                    = (constr->isInternalAlignment() == Constraint::Alignment::InternalAlignment);
+                conflictingTagsSet.insert(isinternalalignment ? 0 : constr->getTag());
+            }
+        }
+        conflictingTagsSet.erase(0);
+        conflictingTags.assign(conflictingTagsSet.begin(), conflictingTagsSet.end());
+    };
+
     VEC_I components;
     int componentsSize = computeComponents(drivingConstraints, components);
 
     if (componentsSize <= 1) {
         dofs = diagnoseComponent(alg, plist, pdrivenlist, clist, tagmultiplicity);
+        finalizeConstraintTags(clist);
         hasDiagnosis = true;
         return dofs;
     }
@@ -4849,8 +4886,8 @@ int System::diagnose(Algorithm alg)
         }
     }
 
-    int pdofs = 0; // positive degrees of freedom
-    int ndofs = 0; // negative degrees of freedom
+    int pdofs = 0;  // positive degrees of freedom
+    int ndofs = 0;  // negative degrees of freedom
 
     for (int i = 0; i < componentsSize; ++i) {
         if (plists[i].empty() && clists[i].empty()) {
@@ -4863,6 +4900,8 @@ int System::diagnose(Algorithm alg)
     }
 
     dofs = pdofs > 0 ? pdofs : ndofs;
+
+    finalizeConstraintTags(drivingConstraints);
 
     hasDiagnosis = true;
     return dofs;
@@ -4894,12 +4933,10 @@ int System::diagnoseComponent(
             double err = constr->error();
             if (err * err < convergenceRedundant) {
                 redundant.insert(constr);
-                redundantTags.push_back(constr->getTag());
-                partiallyRedundantTags.push_back(constr->getTag());
             }
             else {
                 ++conflictingCount;
-                conflictingTags.push_back(constr->getTag());
+                conflicting.insert(constr);
             }
         }
         return conflictingCount > 0 ? -conflictingCount : 0;
@@ -5756,53 +5793,11 @@ void System::identifyConflictingRedundantConstraints(
     }
     delete subSysTmp;
 
-    // simplified output of conflicting tags
-    SET_I conflictingTagsSet;
     for (const auto& cGroup : conflictGroups) {
-        // exclude internal alignment
-        std::ranges::transform(
-            cGroup,
-            std::inserter(conflictingTagsSet, conflictingTagsSet.begin()),
-            [](const auto& constr) {
-                bool isinternalalignment
-                    = (constr->isInternalAlignment() == Constraint::Alignment::InternalAlignment);
-                return (isinternalalignment ? 0 : constr->getTag());
-            }
-        );
-    }
-
-    // exclude constraints tagged with zero
-    conflictingTagsSet.erase(0);
-
-    conflictingTags.insert(conflictingTags.end(), conflictingTagsSet.begin(), conflictingTagsSet.end());
-
-    // output of redundant tags
-    SET_I redundantTagsSet, partiallyRedundantTagsSet;
-    for (const auto& constr : clist) {
-        if (redundant.count(constr) != 0) {
-            redundantTagsSet.insert(constr->getTag());
-            partiallyRedundantTagsSet.insert(constr->getTag());
+        for (const auto& constr : cGroup) {
+            conflicting.insert(constr);
         }
     }
-
-    // remove tags represented at least in one non-redundant constraint
-    for (const auto& constr : clist) {
-        if (redundant.count(constr) == 0) {
-            redundantTagsSet.erase(constr->getTag());
-        }
-    }
-
-    redundantTags.insert(redundantTags.end(), redundantTagsSet.begin(), redundantTagsSet.end());
-
-    for (auto r : redundantTagsSet) {
-        partiallyRedundantTagsSet.erase(r);
-    }
-
-    partiallyRedundantTags.insert(
-        partiallyRedundantTags.end(),
-        partiallyRedundantTagsSet.begin(),
-        partiallyRedundantTagsSet.end()
-    );
 
     nonredundantconstrNum = constrNum;
 }

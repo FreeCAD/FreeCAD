@@ -306,6 +306,71 @@ TEST_F(GCSTest, diagnoseAccumulatesAcrossMixedConstrainedComponents)  // NOLINT
     EXPECT_EQ(conflicting, (GCS::VEC_I {conflictingTag1, conflictingTag2}));
 }
 
+TEST_F(GCSTest, diagnoseCoincidentBetweenAlreadyCoincidentExternalPointsIsFullyRedundant)  // NOLINT
+{
+    // Arrange
+    double extX1 = 3.0, extY1 = 4.0, extX2 = 3.0, extY2 = 4.0;  // already coincident
+    std::vector<double> values = {1.0, 1.0};  // p1, unrelated unknown so hasUnknowns is true
+    GCS::VEC_pD params;
+    for (auto& v : values) {
+        params.push_back(&v);
+    }
+    System()->declareUnknowns(params);
+
+    GCS::Point pExt1(&extX1, &extY1);
+    GCS::Point pExt2(&extX2, &extY2);
+
+    constexpr int coincidentTag = 1;
+    System()->addConstraintP2PCoincident(pExt1, pExt2, coincidentTag);
+
+    // Act
+    System()->diagnose();
+
+    // Assert
+    GCS::VEC_I redundant;
+    System()->getRedundant(redundant);
+    EXPECT_EQ(redundant, (GCS::VEC_I {coincidentTag}));
+
+    GCS::VEC_I partiallyRedundant;
+    System()->getPartiallyRedundant(partiallyRedundant);
+    EXPECT_TRUE(partiallyRedundant.empty());
+
+    GCS::VEC_I conflicting;
+    System()->getConflicting(conflicting);
+    EXPECT_TRUE(conflicting.empty());
+}
+
+TEST_F(GCSTest, diagnoseDuplicateCoincidentOnUnlinkedPointsIsFullyRedundant)  // NOLINT
+{
+    // Arrange
+    std::vector<double> values = {0.0, 0.0, 5.0, 5.0};  // x1, y1, x2, y2
+    GCS::VEC_pD params;
+    for (auto& v : values) {
+        params.push_back(&v);
+    }
+    System()->declareUnknowns(params);
+
+    GCS::Point p1(params[0], params[1]);
+    GCS::Point p2(params[2], params[3]);
+
+    constexpr int coincidentTag1 = 1;
+    constexpr int coincidentTag2 = 2;
+    System()->addConstraintP2PCoincident(p1, p2, coincidentTag1);
+    System()->addConstraintP2PCoincident(p1, p2, coincidentTag2);
+
+    // Act
+    System()->diagnose();
+
+    // Assert
+    GCS::VEC_I redundant;
+    System()->getRedundant(redundant);
+    EXPECT_EQ(redundant, (GCS::VEC_I {coincidentTag2}));
+
+    GCS::VEC_I partiallyRedundant;
+    System()->getPartiallyRedundant(partiallyRedundant);
+    EXPECT_TRUE(partiallyRedundant.empty());
+}
+
 TEST_F(GCSTest, diagnoseManyIndependentComponentsPerf)  // NOLINT
 {
     // Arrange
