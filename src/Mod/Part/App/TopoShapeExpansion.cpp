@@ -84,6 +84,7 @@
 #include <ShapeFix_Shape.hxx>
 #include <ShapeFix_ShapeTolerance.hxx>
 #include <gp_Pln.hxx>
+#include <BRepFill_CompatibleWires.hxx>
 
 #include <boost/algorithm/string/predicate.hpp>
 
@@ -835,7 +836,7 @@ void TopoShape::mapSubElementTypeForShape(
     bool& warned
 )
 {
-    App::HistoryAlgorithm historyVersion = App::getSelectedHistoryAlgorithm();
+    const App::HistoryAlgorithm& historyVersion = App::getSelectedHistoryAlgorithm();
     auto& shapeMap = _cache->getAncestry(type);
     auto& otherMap = other._cache->getAncestry(type);
     const char* shapeType = shapeName(type).c_str();
@@ -945,7 +946,7 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
 
     bool warned = false;
     static const std::array<TopAbs_ShapeEnum, 3> types = {TopAbs_VERTEX, TopAbs_EDGE, TopAbs_FACE};
-    App::HistoryAlgorithm historyVersion = App::getSelectedHistoryAlgorithm();
+    const App::HistoryAlgorithm& historyVersion = App::getSelectedHistoryAlgorithm();
 
     auto checkHasher = [this](const TopoShape& other) {
         if (Hasher) {
@@ -1695,7 +1696,9 @@ TopoShape& TopoShape::makeShapeWithElementMap(
     infoMap[TopAbs_COMPOUND] = &faceInfo;
     infoMap[TopAbs_COMPSOLID] = &faceInfo;
 
-    if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+    const App::HistoryAlgorithm& selectedHistoryVersion = App::getSelectedHistoryAlgorithm();
+
+    if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
         std::ostringstream ss;
         std::string postfix;
         Data::MappedName newName;
@@ -2229,7 +2232,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
             delayed = true;
         }
     }
-    else if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+    else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
         // This algorithm has some edgecase detection from the V1 Algorithm, which is why it looks a
         // little bit copypasted.
 
@@ -2452,7 +2455,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                     }
 
                     for (size_t generatedI = 0; generatedI < generatedShapes.size(); generatedI++) {
-                        auto& generatedShape = generatedShapes[generatedI];
+                        const TopoDS_Shape& generatedShape = generatedShapes[generatedI];
 
                         if (generatedShape.ShapeType() >= TopAbs_SHAPE) {
                             continue;
@@ -2500,15 +2503,17 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
         // key is the new generated shape, value is a pair where the first value is the `IndexedName`
         // of the key, and the second is the `DecodedMappedSection` associated with the key.
-        std::unordered_map<TopoDS_Shape, Data::DecodedMappedSection> namedGeneratedShapes {};
+        std::unordered_map<size_t, Data::DecodedMappedSection> namedGeneratedShapes {};
         std::unordered_map<std::vector<NamingMapKey>, Data::DecodedMappedSection, Part::NamingMapKeyHasher>
             delayedGeneratedMap {};
 
         generatedNamingMap.build();
 
+        std::hash<TopoDS_Shape> shapeHasher;
+
         for (const std::pair<const std::vector<Part::NamingMapKey>, std::vector<Part::NamingMapValue>>&
-                 generatedShapeEntry : generatedNamingMap.getMultiMap()) {
-            // FC_WARN("multi map first size: " <<)
+                 generatedShapeEntry : generatedNamingMap.getMultiMap()) 
+        {
             std::vector<Data::MappedName> linkedNames {};
 
             if (generatedShapeEntry.second.size()) {
@@ -2548,7 +2553,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                     // we put all generated elements in here, even if it was just mapped above.
                     // we do this so we can look up those values later.
-                    namedGeneratedShapes[generatedElementShape] = newNameSection;
+                    namedGeneratedShapes[shapeHasher(generatedElementShape)] = newNameSection;
                 }
 
                 // if the source shapes create more than one resultant shapes, then wait to map
@@ -2588,7 +2593,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                     for (; xp.More(); xp.Next()) {
                         const TopoDS_Shape& foundSubshape = xp.Current();
-                        auto it = namedGeneratedShapes.find(foundSubshape);
+                        auto it = namedGeneratedShapes.find(shapeHasher(foundSubshape));
 
                         if (it != namedGeneratedShapes.end()) {
                             std::string encodedMappedSection = Data::MappedName::makeSection(
@@ -4458,9 +4463,13 @@ struct MapperThruSections: MapperMaker
 {
     TopoShape firstProfile;
     TopoShape lastProfile;
+    const TopTools_DataMapOfShapeListOfShape& compatibleWiresMap;
 
-    MapperThruSections(BRepOffsetAPI_ThruSections& tmaker, const std::vector<TopoShape>& profiles)
-        : MapperMaker(tmaker)
+    MapperThruSections(
+        BRepOffsetAPI_ThruSections& tmaker,
+        const std::vector<TopoShape>& profiles,
+        const TopTools_DataMapOfShapeListOfShape& compatibleWiresMap
+    ) : MapperMaker(tmaker), compatibleWiresMap(compatibleWiresMap)
     {
         if (!tmaker.FirstShape().IsNull()) {
             firstProfile = profiles.front();
@@ -4486,6 +4495,28 @@ struct MapperThruSections: MapperMaker
             }
             else if (lastProfile.getShape().IsSame(s) || lastProfile.findShape(s)) {
                 _res.push_back(tmaker.LastShape());
+            }
+        }
+        catch (const Standard_Failure& e) {
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                FC_WARN("Exception on shape mapper: " << e.GetMessageString());
+            }
+        }
+        return _res;
+    }
+    const std::vector<TopoDS_Shape>& modified(const TopoDS_Shape& s) const override
+    {
+        _res.clear();
+
+        try {
+            const TopTools_ListOfShape& modifiedList = compatibleWiresMap.Find(s);
+
+            if (modifiedList.Size()) {
+                TopTools_ListIteratorOfListOfShape shapeListIterator;
+
+                for (shapeListIterator.Init(modifiedList); shapeListIterator.More(); shapeListIterator.Next()) {
+                    _res.push_back(shapeListIterator.Value());
+                }
             }
         }
         catch (const Standard_Failure& e) {
@@ -5351,10 +5382,32 @@ TopoShape& TopoShape::makeElementLoft(
         FC_THROWM(Base::CADKernelError, "Need at least two vertices, edges or wires to create loft face");
     }
 
+    TopTools_SequenceOfShape wireProfiles;
+    BRepFill_CompatibleWires compatibleWiresBuilder;
+    std::vector<TopoShape> compatibleProfiles;
+
+    for (const TopoShape& profile : profiles) {
+        if (profile.shapeType() == TopAbs_WIRE) {
+            wireProfiles.Append(profile.getShape());
+        } else {
+            compatibleProfiles.push_back(profile);
+        }
+    }
+
+    compatibleWiresBuilder.Init(wireProfiles);
+    compatibleWiresBuilder.Perform();
+
+    TopTools_SequenceOfShape::Iterator compatibleWiresIterator;
+    compatibleWiresIterator.Init(compatibleWiresBuilder.Shape());
+
+    for (;compatibleWiresIterator.More(); compatibleWiresIterator.Next()) {
+        compatibleProfiles.push_back({compatibleWiresIterator.Value()});
+    }
+
     int i = 0;
-    for (auto& sh : profiles) {
+    for (auto& sh : compatibleProfiles) {
         if (i > 0) {
-            if (!checkProfiles(sh, profiles[i - 1])) {
+            if (!checkProfiles(sh, compatibleProfiles[i - 1])) {
                 FC_THROWM(Base::CADKernelError, "Segments of a loft do not have sufficient separation");
             }
         }
@@ -5374,7 +5427,7 @@ TopoShape& TopoShape::makeElementLoft(
             - V1-W1-W2-W3     ==> V1-W1-W2-W3-V1     valid closed
             - W1-W2-W3-V1     ==> W1-W2-W3-V1-W1     invalid closed
             - W1-W2-W3        ==> W1-W2-W3-W1        valid closed*/
-        if (profiles.back().getShape().ShapeType() == TopAbs_VERTEX) {
+        if (compatibleProfiles.back().getShape().ShapeType() == TopAbs_VERTEX) {
             Base::Console().message(
                 "TopoShape::makeLoft: can't close Loft with Vertex as last "
                 "profile. 'Closed' ignored.\n"
@@ -5382,7 +5435,7 @@ TopoShape& TopoShape::makeElementLoft(
         }
         else {
             // repeat Add logic above for first profile
-            const TopoDS_Shape& firstProfile = profiles.front().getShape();
+            const TopoDS_Shape& firstProfile = compatibleProfiles.front().getShape();
             if (firstProfile.ShapeType() == TopAbs_VERTEX) {
                 aGenerator.AddVertex(TopoDS::Vertex(firstProfile));
             }
@@ -5406,7 +5459,7 @@ TopoShape& TopoShape::makeElementLoft(
 #endif
     return makeShapeWithElementMap(
         aGenerator.Shape(),
-        MapperThruSections(aGenerator, profiles),
+        MapperThruSections(aGenerator, compatibleProfiles, compatibleWiresBuilder.Generated()),
         shapes,
         op
     );
@@ -7077,7 +7130,7 @@ bool TopoShape::isSame(const Data::ComplexGeoData& _other) const
 
 long TopoShape::isElementGenerated(const Data::MappedName& _name, int depth) const
 {
-    App::HistoryAlgorithm historyAlgo = App::getSelectedHistoryAlgorithm();
+    const App::HistoryAlgorithm& historyAlgo = App::getSelectedHistoryAlgorithm();
 
     if (historyAlgo == App::HistoryAlgorithm::V1) {
         long res = 0;
@@ -7130,16 +7183,17 @@ void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const cha
         return;
     }
 
+    const App::HistoryAlgorithm& selectedHistoryAlgorithm = App::getSelectedHistoryAlgorithm();
     TopoShape tmp(*this);
     initCache(1);
     Hasher = hasher;
     Tag = tag;
 
-    if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+    if (selectedHistoryAlgorithm == App::HistoryAlgorithm::V1) {
         resetElementMap();
         copyElementMap(tmp, postfix);
     }
-    else if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+    else if (selectedHistoryAlgorithm == App::HistoryAlgorithm::V2) {
         std::vector<Data::MappedElement> copiedElementMap = tmp.ensureElementMap()->getAll();
 
         for (Data::MappedElement& mappedElement : copiedElementMap) {

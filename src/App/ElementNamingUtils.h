@@ -16,10 +16,10 @@ enum HistoryAlgorithm : int {
     V2 = 1
 };
 
-AppExport HistoryAlgorithm getSelectedHistoryAlgorithm();
+AppExport const HistoryAlgorithm& getSelectedHistoryAlgorithm();
 AppExport HistoryAlgorithm getDefaultHistoryAlgorithm();
 AppExport HistoryAlgorithm getHistoryAlgorithm(int fromUnderlyingInteger);
-AppExport int getSelectedUnderlyingHistoryAlgorithm();
+AppExport const int& getSelectedUnderlyingHistoryAlgorithm();
 
 /// Return type for lookups of new and old style sub-element names
 struct ElementNamePair

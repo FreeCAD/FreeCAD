@@ -263,17 +263,19 @@ void SketchObject::buildShape()
     std::vector<Part::TopoShape> vertices;
     int geoId = 0;
 
-    auto addVertex = [&vertices](auto vertex, auto name, int tag) {
+    const App::HistoryAlgorithm& selectedHistoryVersion = App::getSelectedHistoryAlgorithm();
+
+    auto addVertex = [&vertices, &selectedHistoryVersion](auto vertex, auto name, int tag) {
         if (!vertex.hasElementMap()) {
             vertex.resetElementMap(std::make_shared<Data::ElementMap>());
         }
 
         Data::MappedName builtName = Data::MappedName();
 
-        if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
             builtName = name;
         }
-        else if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+        else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             builtName = Data::MappedName::makeSection(
                 {name},
                 {},

@@ -221,7 +221,7 @@ void Part::FaceMaker::postBuild()
     this->myTopoShape.Hasher = this->MyHasher;
     this->myTopoShape.mapSubElement(this->mySourceShapes);
 
-    App::HistoryAlgorithm historyVersion = App::getSelectedHistoryAlgorithm();
+    const App::HistoryAlgorithm& historyVersion = App::getSelectedHistoryAlgorithm();
 
     // Some makers modify edges before the splitter runs (e.g. splitting
     // self-intersecting B-splines).  If myPreSplitHistory is set, build an

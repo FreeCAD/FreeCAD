@@ -511,7 +511,7 @@ MappedName ElementMap::addName(MappedName& name,
 {
     ZoneScoped;
 
-    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG) && App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
         if (name.find("#") >= 0 && name.findTagInElementName() < 0) {
             FC_ERR("missing tag postfix " << name);  // NOLINT
         }
@@ -600,9 +600,10 @@ MappedName ElementMap::setElementName(const IndexedName& element,
         sid = &_sid;
     }
 
+    const App::HistoryAlgorithm& selectedHistoryVersion = App::getSelectedHistoryAlgorithm();
     Data::MappedName mappedName(name);
 
-    if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+    if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
         std::ostringstream ss;
 
         for (int i = 0;;) {
@@ -628,12 +629,13 @@ MappedName ElementMap::setElementName(const IndexedName& element,
             }
             sid = &_sid;
         }
-    } else if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+    } else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
         size_t duplicateIndex = 1;
 
         IndexedName existing;
         MappedName res = this->addName(mappedName, element, *sid, overwrite, &existing);
         if (res) {
+            ZoneNameF("%s, %d", name.toString().c_str(), static_cast<int>(duplicateIndex));
             return res;
         }
 
@@ -672,12 +674,14 @@ MappedName ElementMap::setElementName(const IndexedName& element,
             res = this->addName(fixedName, element, *sid, overwrite, &existing);
 
             if (res) {
+                ZoneNameF("%s, %d", name.toString().c_str(), static_cast<int>(duplicateIndex));
                 return res;
             }
 
             duplicateIndex++;
         }
 
+        ZoneNameF("%s, %d", name.toString().c_str(), static_cast<int>(duplicateIndex));
         return res ? res : name;
     }
 
@@ -1188,6 +1192,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
 {
     ZoneScoped;
 
+    const App::HistoryAlgorithm& selectedHistoryVersion = App::getSelectedHistoryAlgorithm();
     std::ostringstream ss;
     ss << std::hex;
 
@@ -1299,7 +1304,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
         // skip encoding only when masterTag=0, child.tag=0, and count is exactly at threshold
         bool skipEncoding = (masterTag == 0 && child.tag == 0 && child.count == threshold && child.elementMap);
 
-        if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V1
             && ((child.count >= threshold && !skipEncoding)
                || !child.elementMap))
         {
@@ -1328,7 +1333,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
             IndexedName childIdx(child.indexedName);
             IndexedName idx(childIdx.getType(), childIdx.getIndex() + child.offset);
             for (int i = 0; i < child.count; ++i, ++childIdx, ++idx) {
-                if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+                if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
                     ElementIDRefs sids;
                     MappedName name = child.elementMap->find(childIdx, &sids);
                     if (!name) {
@@ -1349,7 +1354,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
                                       child.postfix.constData(),
                                       child.tag);
                     setElementName(idx, name, masterTag, &sids);
-                } else if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2 && child.elementMap) {
+                } else if (selectedHistoryVersion == App::HistoryAlgorithm::V2 && child.elementMap) {
                     std::vector<std::pair<Data::MappedName, Data::ElementIDRefs>> names = child.elementMap->findAll(childIdx);
 
                     for (const auto& name : names) {
@@ -1363,7 +1368,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
             continue;
         }
 
-        if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1 && entry->index != 1) {
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V1 && entry->index != 1) {
             // There is some ambiguity in child mapping. We need some
             // additional postfix for disambiguation. NOTE: We are not
             // using ComplexGeoData::indexPostfix() so we don't confuse

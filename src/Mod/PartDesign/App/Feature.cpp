@@ -202,7 +202,7 @@ bool Feature::relinkToMatchingSubelements(
     std::vector<std::string> newSubs;
     newSubs.reserve(oldSubs.size());
 
-    App::HistoryAlgorithm selectedHistoryAlgorithm = App::getSelectedHistoryAlgorithm();
+    const App::HistoryAlgorithm& selectedHistoryAlgorithm = App::getSelectedHistoryAlgorithm();
 
     for (const auto& sub : oldSubs) {
         if (sub.empty()) {

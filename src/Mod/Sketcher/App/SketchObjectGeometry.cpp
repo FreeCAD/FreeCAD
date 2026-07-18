@@ -1624,13 +1624,14 @@ int SketchObject::getVertexIndexGeoPos(int GeoId, PointPos PosId) const
 
 Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *name) const
 {
+    const App::HistoryAlgorithm& selectedHistoryVersion = App::getSelectedHistoryAlgorithm();
     Part::TopoShape shape(geo->toShape());
     Data::MappedName builtName = Data::MappedName();
     Data::MappedName builtVertexName = Data::MappedName();
 
-    if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+    if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
         builtName = name;
-    } else if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+    } else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
         builtName = Data::MappedName::makeSection(
             {name},
             {},
@@ -1661,9 +1662,9 @@ Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *nam
             if(getPoint(geo,pos[j]) == pt) {
                 ss.str("");
                 ss << name << 'v' << static_cast<int>(pos[j]);
-                if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+                if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
                     builtVertexName = ss.str();
-                } else if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+                } else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
                     builtVertexName = Data::MappedName::makeSection(
                         {ss.str()},
                         {},

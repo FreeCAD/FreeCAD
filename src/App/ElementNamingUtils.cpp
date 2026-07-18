@@ -6,8 +6,10 @@
 #include <Base/Parameter.h>
 #include "Application.h"
 
-App::HistoryAlgorithm App::getSelectedHistoryAlgorithm() {
-    return App::getHistoryAlgorithm(App::getSelectedUnderlyingHistoryAlgorithm());
+const App::HistoryAlgorithm& App::getSelectedHistoryAlgorithm() {
+    static App::HistoryAlgorithm selectedHistoryAlgorithm = App::getHistoryAlgorithm(App::getSelectedUnderlyingHistoryAlgorithm());
+
+    return selectedHistoryAlgorithm;
 }
 
 App::HistoryAlgorithm App::getDefaultHistoryAlgorithm() {
@@ -25,15 +27,21 @@ App::HistoryAlgorithm App::getHistoryAlgorithm(int fromUnderlying) {
     }
 }
 
-int App::getSelectedUnderlyingHistoryAlgorithm() {
-    ParameterGrp::handle grp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Part/General"
-    );
+const int& App::getSelectedUnderlyingHistoryAlgorithm() {
+    static int underlyingHistoryAlgorithm = -1;
 
-    return grp->GetInt(
-        "HistoryAlgorithm",
-        static_cast<int>(getDefaultHistoryAlgorithm())
-    );
+    if (underlyingHistoryAlgorithm == -1) {
+        ParameterGrp::handle grp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Part/General"
+        );
+
+        underlyingHistoryAlgorithm = grp->GetInt(
+            "HistoryAlgorithm",
+            static_cast<int>(getDefaultHistoryAlgorithm())
+        );
+    }
+
+    return underlyingHistoryAlgorithm;
 }
 
 const char* Data::isMappedElement(const char* name)

@@ -327,6 +327,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         return App::DocumentObject::StdReturn;
     }
 
+    const App::HistoryAlgorithm& selectedHistoryVersion = App::getSelectedHistoryAlgorithm();
 
     bool makeface = options.testFlag(ExtrudeOption::MakeFace);
     bool fuse = options.testFlag(ExtrudeOption::MakeFuse);
@@ -702,7 +703,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
 
         // --- Combine generated prisms (all in global CS) ---
         TopoShape prism(
-            App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2 ? getID() : 0,
+            selectedHistoryVersion == App::HistoryAlgorithm::V2 ? getID() : 0,
             getDocument()->getStringHasher()
         );
         if (prisms.empty()) {
@@ -746,7 +747,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
 
             // Let's call algorithm computing a fuse operation:
             TopoShape result(
-                App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2 ? getID() : 0,
+                selectedHistoryVersion == App::HistoryAlgorithm::V2 ? getID() : 0,
                 getDocument()->getStringHasher()
             );
             try {
