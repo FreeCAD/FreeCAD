@@ -712,6 +712,9 @@ void ViewProviderSketch::slotUndoDocument(const Gui::Document& /*doc*/)
     // stale geometry IDs, which would lead to a crash.
     if (!drag.Dragged.empty() || !drag.DragConstraintSet.empty()) {
         drag.reset();
+        // also clear the solver-side drag state: the next solve() must rebuild
+        // from the undone Geometry, not write back stale drag-era geometry
+        getSketchObject()->cancelTemporaryMove();
         setSketchMode(STATUS_NONE);
         resetPositionText();
     }
@@ -731,6 +734,8 @@ void ViewProviderSketch::slotRedoDocument(const Gui::Document& /*doc*/)
     // stale geometry IDs, which would lead to a crash.
     if (!drag.Dragged.empty() || !drag.DragConstraintSet.empty()) {
         drag.reset();
+        // also clear the solver-side drag state (see slotUndoDocument)
+        getSketchObject()->cancelTemporaryMove();
         setSketchMode(STATUS_NONE);
         resetPositionText();
     }

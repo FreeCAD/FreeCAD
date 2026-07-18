@@ -76,22 +76,42 @@ void SketchObject::retrieveSolverDiagnostics()
 
 int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
 {
+    // Check if this solve() was called from outside a managed operation (e.g., a recompute
+    // triggered by the document). We capture this before the StateLocker so we can distinguish
+    // external calls from managed ones.
+    bool isExternalCall = !managedoperation;
+
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
-    // Reset the initial movement in case of a dragging operation was ongoing on the solver.
-    solvedSketch.resetInitMove();
-
-    // if updateGeoAfterSolving=false, the solver information is updated, but the Sketch is nothing
-    // updated. It is useful to avoid triggering an OnChange when the goeometry did not change but
-    // the solver needs to be updated.
-
-    // We should have an updated Sketcher (sketchobject) geometry or this solve() should not have
-    // happened therefore we update our sketch solver geometry with the SketchObject one.
-    //
-    // set up a sketch (including dofs counting and diagnosing of conflicts)
-    lastDoF = solvedSketch.setUpSketch(
-        getCompleteGeometry(), Constraints.getValues(), getExternalGeometryCount());
+    // During an interactive drag (isDragActive), the solver already has the correct state
+    // from moveGeometriesTemporary() calls. We must avoid destroying this state via
+    // setUpSketch() -> clear(), which would cause the geometry to snap back.
+    if (isDragActive) {
+        // During drag, NEVER rebuild the solver from getCompleteGeometry().
+        // The Geometry property is stale during drag (moveGeometriesTemporary()
+        // updates the solver's internal parameters directly, not the property).
+        // Rebuilding from stale geometry would snapshot pre-drag positions into
+        // InitParameters, causing the next moveGeometries(relative=true) to
+        // compute MoveParameters = stale_position + delta, snapping to origin.
+        //
+        // Instead: keep solverNeedsUpdate=true and skip setUpSketch() entirely.
+        // The solver retains its live drag state. When the drag ends and
+        // isDragActive becomes false, the next solve() takes the non-drag branch
+        // and rebuilds from the (now-committed) Geometry property.
+        //
+        // New geometry created during drag is unconstrained, so it has no effect
+        // on existing solver parameters — it stays where it was created until
+        // the post-drag rebuild.
+    } else {
+        // Normal (non-drag) path: reset any stale drag state from a previous operation,
+        // then rebuild the solver from the SketchObject's current geometry.
+        if (isExternalCall) {
+            solvedSketch.resetInitMove();
+        }
+        lastDoF = solvedSketch.setUpSketch(
+            getCompleteGeometry(), Constraints.getValues(), getExternalGeometryCount());
+    }
 
     // At this point we have the solver information about conflicting/redundant/over-constrained,
     // but the sketch is NOT solved. Some examples: Redundant: a vertical line, a horizontal line
@@ -130,8 +150,51 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
     }
     else {
         lastSolverStatus = solvedSketch.solve();
-        if (lastSolverStatus != 0) {// solving
+        if (lastSolverStatus != 0) {
             err = -1;
+        }
+    }
+
+    if (solvedSketch.wasDiagnosisRestored()) {
+        bool cacheInvalid = false;
+        // The restored diagnosis reflects PRE-solve residual state after
+        // setDatum(). Redundant/partially-redundant
+        // constraint residuals legitimately exceed 1e-4 because parameters have not
+        // yet been re-solved against the new datum. This is normal pre-solve state,
+        // NOT cache corruption. Only NaN (structural invalidity) justifies
+        // invalidation; a magnitude threshold destroys the cache on every
+        // measured-phase solve and defeats the delta-update optimization.
+        const auto& constraintTags = solvedSketch.getConflicting();
+        const auto& redundantTags = solvedSketch.getRedundant();
+        const auto& partialTags = solvedSketch.getPartiallyRedundant();
+
+        auto checkTag = [&](int tag) {
+            double errVal = solvedSketch.calculateConstraintError(tag);
+            if (std::isnan(errVal)) {
+                cacheInvalid = true;
+            }
+        };
+
+        for (int tag : constraintTags) {
+            checkTag(tag);
+        }
+        for (int tag : redundantTags) {
+            checkTag(tag);
+        }
+        for (int tag : partialTags) {
+            checkTag(tag);
+        }
+
+        if (cacheInvalid) {
+            solvedSketch.invalidateDiagnosisCache();
+            lastDoF = solvedSketch.setUpSketch(
+                getCompleteGeometry(), Constraints.getValues(),
+                getExternalGeometryCount());
+            retrieveSolverDiagnostics();
+            lastSolverStatus = solvedSketch.solve();
+            if (lastSolverStatus != 0) {
+                err = -1;
+            }
         }
     }
 
