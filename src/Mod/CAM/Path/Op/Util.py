@@ -654,9 +654,7 @@ def getCycleTimeEstimate(obj, formatted=True):
     """getCycleTimeEstimate(obj, formated=True) ... Returns operation cycle time estimation
     If formatted=True returns string which describes time in format 'hh:mm:ss'
     If formatted=False returns seconds as a float value"""
-    baseOp = PathDressup.baseOp(obj)
-    tc = baseOp.ToolController
-
+    tc = PathDressup.toolController(obj)
     if tc is None or tc.ToolNumber == 0:
         Path.Log.error(translate("CAM", "No Tool Controller selected."))
         return translate("CAM", "Tool Error")
