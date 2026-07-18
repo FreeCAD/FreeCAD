@@ -1019,8 +1019,7 @@ Expression* shiftIfNeeded(const NumberExpression* num, App::DocumentObject* owne
     return new NumberExpression(owner, Base::Quantity(double(value + count)));
 }
 
-Expression*
-shiftAddressLiteral(const Expression* e, App::DocumentObject* owner, int pivot, int count)
+Expression* shiftAddressLiteral(const Expression* e, App::DocumentObject* owner, int pivot, int count)
 {
     if (auto* num = freecad_cast<const NumberExpression*>(e)) {
         return shiftIfNeeded(num, owner, pivot, count);
@@ -1036,7 +1035,12 @@ shiftAddressLiteral(const Expression* e, App::DocumentObject* owner, int pivot, 
         if (!shifted) {
             return nullptr;
         }
-        return new OperatorExpression(owner, shifted, OperatorExpression::ADD, op->getRight()->copy().release());
+        return new OperatorExpression(
+            owner,
+            shifted,
+            OperatorExpression::ADD,
+            op->getRight()->copy().release()
+        );
     }
 
     if (auto* right = freecad_cast<const NumberExpression*>(op->getRight())) {
@@ -1044,7 +1048,12 @@ shiftAddressLiteral(const Expression* e, App::DocumentObject* owner, int pivot, 
         if (!shifted) {
             return nullptr;
         }
-        return new OperatorExpression(owner, op->getLeft()->copy().release(), OperatorExpression::ADD, shifted);
+        return new OperatorExpression(
+            owner,
+            op->getLeft()->copy().release(),
+            OperatorExpression::ADD,
+            shifted
+        );
     }
 
     return nullptr;
@@ -1060,8 +1069,7 @@ App::ExpressionPtr shiftBindingExpression(
 )
 {
     auto* tuple = freecad_cast<const FunctionExpression*>(e);
-    if (!tuple || tuple->getFunction() != FunctionExpression::TUPLE
-        || tuple->getArgs().size() != 3) {
+    if (!tuple || tuple->getFunction() != FunctionExpression::TUPLE || tuple->getArgs().size() != 3) {
         return {};
     }
 
@@ -1091,12 +1099,9 @@ App::ExpressionPtr shiftBindingExpression(
         addrArgs.push_back(newRow ? newRow : addr->getArgs()[0]->copy().release());
         addrArgs.push_back(newCol ? newCol : addr->getArgs()[1]->copy().release());
         addrArgs.push_back(addr->getArgs()[2]->copy().release());  // address mode, unchanged
-        newArgs.push_back(new FunctionExpression(
-            owner,
-            FunctionExpression::ADDRESS,
-            std::string(),
-            std::move(addrArgs)
-        ));
+        newArgs.push_back(
+            new FunctionExpression(owner, FunctionExpression::ADDRESS, std::string(), std::move(addrArgs))
+        );
     }
 
     if (!changed) {
@@ -1142,9 +1147,7 @@ void PropertySheet::shiftBindingsRows(int row, int count)
         newPath << ObjectIdentifier::SimpleComponent(newFrom.toString().c_str());
         newPath << ObjectIdentifier::SimpleComponent(newTo.toString().c_str());
 
-        std::shared_ptr<Expression> expr(
-            newExpr ? newExpr.release() : entry.second->copy().release()
-        );
+        std::shared_ptr<Expression> expr(newExpr ? newExpr.release() : entry.second->copy().release());
         owner->clearExpression(entry.first);
         owner->setExpression(newPath, expr);
     }
@@ -1181,9 +1184,7 @@ void PropertySheet::shiftBindingsColumns(int col, int count)
         newPath << ObjectIdentifier::SimpleComponent(newFrom.toString().c_str());
         newPath << ObjectIdentifier::SimpleComponent(newTo.toString().c_str());
 
-        std::shared_ptr<Expression> expr(
-            newExpr ? newExpr.release() : entry.second->copy().release()
-        );
+        std::shared_ptr<Expression> expr(newExpr ? newExpr.release() : entry.second->copy().release());
         owner->clearExpression(entry.first);
         owner->setExpression(newPath, expr);
     }
