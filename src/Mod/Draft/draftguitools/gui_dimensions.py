@@ -282,12 +282,17 @@ class Dimension(gui_base_original.Creator):
             # Linear dimension
             if self.link:
                 # Linked to a straight edge
+                direction = None
                 if self.force == 1:
-                    self.create_linear_dimension_obj("Y")
+                    direction = "Y"
                 elif self.force == 2:
-                    self.create_linear_dimension_obj("X")
-                else:
-                    self.create_linear_dimension_obj()
+                    direction = "X"
+                elif self.dir:
+                    if self.dir.isEqual(self.wp.v, 1e-7):
+                        direction = "Y"
+                    elif self.dir.isEqual(self.wp.u, 1e-7):
+                        direction = "X"
+                self.create_linear_dimension_obj(direction)
             else:
                 # Not linked to any edge
                 self.create_linear_dimension()
