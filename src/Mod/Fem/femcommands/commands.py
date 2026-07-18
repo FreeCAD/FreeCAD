@@ -29,6 +29,8 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM command definitions
 
+import warnings
+
 import FreeCAD
 import FreeCADGui
 from FreeCAD import Qt
@@ -171,13 +173,19 @@ class _ClippingPlaneRemoveAll(CommandManager):
         return resources
 
     def Activated(self):
-        line1 = "for node in list(sg.getChildren()):\n"
-        line2 = "    if isinstance(node, coin.SoClipPlane):\n"
-        line3 = "        sg.removeChild(node)"
-        FreeCADGui.doCommand("from pivy import coin")
-        FreeCADGui.doCommand("sg = Gui.ActiveDocument.ActiveView.getSceneGraph()")
-        FreeCADGui.doCommand("nodes = sg.getChildren()")
-        FreeCADGui.doCommand(line1 + line2 + line3)
+        with warnings.catch_warnings():
+            warnings.filterwarnings(
+                "ignore",
+                message=r"builtin type (SwigPyPacked|SwigPyObject|swigvarlink) has no __module__ attribute",
+                category=DeprecationWarning,
+            )
+            from pivy import coin
+
+            scene_graph = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+
+        for node in list(scene_graph.getChildren()):
+            if isinstance(node, coin.SoClipPlane):
+                scene_graph.removeChild(node)
 
 
 class _ConstantVacuumPermittivity(CommandManager):
