@@ -109,6 +109,7 @@ class Clone(gui_base_original.Modifier):
         for idx, obj in enumerate(objs_shape):
             cmd = "Draft.make_clone(FreeCAD.ActiveDocument." + obj.Name + ")"
             Gui.doCommand("clone" + str(idx) + " = " + cmd)
+            Gui.doCommand("Draft.autogroup(clone" + str(idx) + ")")
         App.ActiveDocument.commitTransaction()
         App.ActiveDocument.recompute()
 
