@@ -105,6 +105,25 @@ enum SpecialTag
     DefaultTemporaryConstraint = -1
 };
 
+// DiagnosisCache stores the result of the expensive O(n³) diagnose() call so it
+// can be restored across consecutive setUpSketch() invocations when the
+// constraint topology has not changed (e.g., during setDatum() drags).
+struct DiagnosisCache
+{
+    VEC_I conflictingTags;
+    VEC_I redundantTags;
+    VEC_I partiallyRedundantTags;
+    std::vector<int> redundantIndices;               // indices into clist
+    std::vector<std::vector<int>> dependentParamGroupsIndices;  // indices into plist
+    std::vector<int> dependentParamIndices;          // indices into plist
+    // sizes of clist/plist at save time; restoreDiagnosis() aborts on any
+    // mismatch, since the cached indices would map onto different entries
+    size_t clistSize = 0;
+    size_t plistSize = 0;
+    int dofs = -1;
+    bool emptyDiagnoseMatrix = true;
+};
+
 class SketcherExport System
 {
     // This is the main class. It holds all constraints and information
@@ -678,6 +697,10 @@ public:
     }
 
     void invalidatedDiagnosis();
+
+    // save/restore diagnosis across topology-stable re-solves
+    DiagnosisCache saveDiagnosis() const;
+    void restoreDiagnosis(const DiagnosisCache& cache);
 
     // Unit testing interface - not intended for use by production code
 protected:

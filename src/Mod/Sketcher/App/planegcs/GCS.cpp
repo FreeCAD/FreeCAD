@@ -53,6 +53,7 @@
 #include <iostream>
 #include <limits>
 #include <numbers>
+#include <unordered_map>
 
 #include "GCS.h"
 #include "qp_eq.h"
@@ -546,6 +547,112 @@ void System::invalidatedDiagnosis()
     hasDiagnosis = false;
     pDependentParameters.clear();
     pDependentParametersGroups.clear();
+}
+
+DiagnosisCache System::saveDiagnosis() const
+{
+    DiagnosisCache cache;
+    cache.conflictingTags = conflictingTags;
+    cache.redundantTags = redundantTags;
+    cache.partiallyRedundantTags = partiallyRedundantTags;
+    cache.dofs = dofs;
+    cache.emptyDiagnoseMatrix = emptyDiagnoseMatrix;
+    cache.clistSize = clist.size();
+    cache.plistSize = plist.size();
+
+    std::unordered_map<Constraint*, int> constraintIndex;
+    constraintIndex.reserve(clist.size() * 2);
+    for (size_t i = 0; i < clist.size(); ++i) {
+        constraintIndex.emplace(clist[i], static_cast<int>(i));
+    }
+    std::unordered_map<double*, int> paramIndex;
+    paramIndex.reserve(plist.size() * 2);
+    for (size_t i = 0; i < plist.size(); ++i) {
+        paramIndex.emplace(plist[i], static_cast<int>(i));
+    }
+
+    for (auto* c : redundant) {
+        auto it = constraintIndex.find(c);
+        if (it != constraintIndex.end()) {
+            cache.redundantIndices.push_back(it->second);
+        }
+    }
+
+    for (auto* p : pDependentParameters) {
+        auto it = paramIndex.find(p);
+        if (it != paramIndex.end()) {
+            cache.dependentParamIndices.push_back(it->second);
+        }
+    }
+
+    cache.dependentParamGroupsIndices.resize(pDependentParametersGroups.size());
+    for (size_t g = 0; g < pDependentParametersGroups.size(); ++g) {
+        for (auto* p : pDependentParametersGroups[g]) {
+            auto it = paramIndex.find(p);
+            if (it != paramIndex.end()) {
+                cache.dependentParamGroupsIndices[g].push_back(it->second);
+            }
+        }
+    }
+
+    return cache;
+}
+
+void System::restoreDiagnosis(const DiagnosisCache& cache)
+{
+    // The cached entries are indices into clist/plist captured at save time.
+    // The caller's topology fingerprint keeps the constraint wiring and the
+    // geometry structure stable between save and restore, but cannot see
+    // everything (e.g. an edit that changes a geometry's parameter count), so
+    // a size mismatch — or any out-of-range index — means the mapping is
+    // stale and the restore must be abandoned in favor of a fresh diagnose().
+    auto abortRestore = [this]() {
+        redundant.clear();
+        invalidatedDiagnosis();
+    };
+
+    if (cache.clistSize != clist.size() || cache.plistSize != plist.size()) {
+        abortRestore();
+        return;
+    }
+
+    conflictingTags = cache.conflictingTags;
+    redundantTags = cache.redundantTags;
+    partiallyRedundantTags = cache.partiallyRedundantTags;
+    dofs = cache.dofs;
+    emptyDiagnoseMatrix = cache.emptyDiagnoseMatrix;
+
+    redundant.clear();
+    for (int idx : cache.redundantIndices) {
+        if (idx < 0 || idx >= static_cast<int>(clist.size())) {
+            abortRestore();
+            return;
+        }
+        redundant.insert(clist[idx]);
+    }
+
+    pDependentParameters.clear();
+    for (int idx : cache.dependentParamIndices) {
+        if (idx < 0 || idx >= static_cast<int>(plist.size())) {
+            abortRestore();
+            return;
+        }
+        pDependentParameters.push_back(plist[idx]);
+    }
+
+    pDependentParametersGroups.clear();
+    pDependentParametersGroups.resize(cache.dependentParamGroupsIndices.size());
+    for (size_t g = 0; g < cache.dependentParamGroupsIndices.size(); ++g) {
+        for (int idx : cache.dependentParamGroupsIndices[g]) {
+            if (idx < 0 || idx >= static_cast<int>(plist.size())) {
+                abortRestore();
+                return;
+            }
+            pDependentParametersGroups[g].push_back(plist[idx]);
+        }
+    }
+
+    hasDiagnosis = true;
 }
 
 void System::clearByTag(int tagId)

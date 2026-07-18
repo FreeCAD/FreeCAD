@@ -24,6 +24,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <algorithm>
 
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRep_Builder.hxx>
@@ -38,6 +39,7 @@
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/TimeInfo.h>
+#include <Base/Tools.h>
 #include <Base/VectorPy.h>
 #include <Base/Writer.h>
 #include <Mod/Part/App/ArcOfCirclePy.h>
@@ -195,8 +197,6 @@ int Sketch::setUpSketch(
 {
     Base::TimeElapsed start_time;
 
-    clear();
-
     // The geometries that are in groups are going to be ignored by the solver.
     std::set<int> inGroupGeoIds;
     for (const auto& c : ConstraintList) {
@@ -207,6 +207,65 @@ int Sketch::setUpSketch(
             }
         }
     }
+
+    // Persistent diagnosis cache: fingerprint the constraint topology before
+    // clear() destroys the current solver state. The hash covers the wiring
+    // (Type, geoId, posId) of every effective constraint (driving, active,
+    // non-Group/Text/Block, not referencing grouped geometry) and the geometry
+    // type sequence. If it matches the previous call, the topology is
+    // unchanged and the cached diagnosis can be reused.
+    size_t topologyHash = 0;
+    for (const auto* c : ConstraintList) {
+        if (!c || c->Type == Group || c->Type == Text || c->Type == Block
+            || !c->isActive || !c->isDriving) {
+            continue;
+        }
+        // unenforceableConstraints isn't computed yet; approximate it — a
+        // constraint referencing grouped geometry is not enforced.
+        bool inGroup = false;
+        for (int j = 0; c->hasElement(j); ++j) {
+            if (inGroupGeoIds.count(c->getGeoId(j))) {
+                inGroup = true;
+                break;
+            }
+        }
+        if (inGroup) {
+            continue;
+        }
+        Base::hash_combine(topologyHash, static_cast<int>(c->Type));
+        for (int j = 0; c->hasElement(j); ++j) {
+            Base::hash_combine(topologyHash, c->getGeoId(j));
+            Base::hash_combine(topologyHash, c->getPosIdAsInt(j));
+        }
+    }
+    for (const auto* g : GeoList) {
+        if (!g) {
+            continue;
+        }
+        Base::hash_combine(topologyHash, g->getTypeId().getKey());
+        // The typeId alone misses parameter-count changes within a type;
+        // B-splines are the only sketcher geometry with a variable parameter
+        // count, and a knot/pole edit must not hit the cache.
+        if (const auto* bsp = dynamic_cast<const GeomBSplineCurve*>(g)) {
+            Base::hash_combine(topologyHash, bsp->countPoles());
+            Base::hash_combine(topologyHash, bsp->countKnots());
+            Base::hash_combine(topologyHash, bsp->getDegree());
+            Base::hash_combine(topologyHash, bsp->isPeriodic());
+        }
+    }
+
+    bool topologyUnchanged = (topologyHash == lastTopologyHash) && hasValidDiagnosis;
+
+    // Save diagnosis cache before clear() destroys the solver state
+    if (topologyUnchanged) {
+        cachedDiagnosis = GCSsys.saveDiagnosis();
+        hasCachedDiagnosis = true;
+    }
+    else {
+        hasCachedDiagnosis = false;
+    }
+
+    clear();
 
     std::vector<Part::Geometry*> intGeoList, extGeoList;
     std::copy(GeoList.begin(), GeoList.end() - extGeoCount, std::back_inserter(intGeoList));
@@ -290,12 +349,29 @@ int Sketch::setUpSketch(
     clearTemporaryConstraints();
     GCSsys.declareUnknowns(Parameters);
     GCSsys.declareDrivenParams(DrivenParameters);
+
+    // Restore the cached diagnosis if the topology is unchanged. Must run AFTER
+    // addConstraints() (which sets hasDiagnosis=false) and BEFORE initSolution()
+    // (which calls diagnose()).
+    if (topologyUnchanged && hasCachedDiagnosis) {
+        GCSsys.restoreDiagnosis(cachedDiagnosis);
+    }
+
     GCSsys.initSolution(defaultSolverRedundant);
+
+    // update fingerprint state after a successful initSolution
+    lastTopologyHash = topologyHash;
+    hasValidDiagnosis = true;
 
     // Post-analysis
     // Now that we have all the parameters information, we deal properly with the block constraints
     // if necessary
+    // Block-constraint sketches bypass the diagnosis cache because
+    // fixParametersAndDiagnose() calls invalidatedDiagnosis() which sets hasDiagnosis=false.
+    // This is acceptable — block constraints are rare.
     if (doesBlockAffectOtherConstraints) {
+        hasValidDiagnosis = false;
+        hasCachedDiagnosis = false;
 
         std::vector<double*> params_to_block;
 
@@ -5322,6 +5398,8 @@ int Sketch::initMove(const std::vector<GeoElementId>& geoEltIds, bool fine)
     InitParameters = MoveParameters;
 
     GCSsys.initSolution();
+    initToPoint = Base::Vector3d(0, 0, 0);
+    moveStep = 0;
     isInitMove = true;
 
     return 0;

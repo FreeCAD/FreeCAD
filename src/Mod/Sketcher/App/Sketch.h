@@ -156,6 +156,17 @@ public:
         return MalformedConstraints;
     }
 
+    // diagnosis cache management
+    inline bool wasDiagnosisRestored() const
+    {
+        return hasCachedDiagnosis;
+    }
+    inline void invalidateDiagnosisCache()
+    {
+        hasValidDiagnosis = false;
+        hasCachedDiagnosis = false;
+    }
+
 public:
     std::set<std::pair<int, Sketcher::PointPos>> getDependencyGroup(int geoId, PointPos pos) const;
 
@@ -182,6 +193,7 @@ public:
     /** Resets the initialization of a point or curve drag
      */
     void resetInitMove();
+    inline bool isInitMoveActive() const { return isInitMove; }
 
     /** Limits a b-spline drag to the segment around `firstPoint`.
      */
@@ -612,6 +624,12 @@ private:
     std::vector<int> Redundant;
     std::vector<int> PartiallyRedundant;
     std::vector<int> MalformedConstraints;
+
+    // fingerprint for the diagnosis cache
+    size_t lastTopologyHash = 0;
+    bool hasValidDiagnosis = false;
+    GCS::DiagnosisCache cachedDiagnosis;
+    bool hasCachedDiagnosis = false;
 
     std::vector<double*> pDependentParametersList;
 
