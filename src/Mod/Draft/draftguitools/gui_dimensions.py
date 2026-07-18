@@ -303,6 +303,11 @@ class Dimension(gui_base_original.Creator):
                 self.chain = self.node[2]
                 self.node = [self.node[1]]
                 self.link = None
+                self.point1 = None
+                self.point2 = None
+                self.proj_point1 = None
+                self.proj_point2 = None
+                self.force = 0
 
     def selectEdge(self):
         """Toggle the select mode to the opposite state."""

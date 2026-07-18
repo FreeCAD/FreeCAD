@@ -30,6 +30,7 @@ import os
 import re
 import tempfile
 import xml.etree.ElementTree as ET
+from unittest import mock
 
 import Draft
 import DraftVecUtils
@@ -37,7 +38,9 @@ import FreeCAD as App
 import FreeCADGui as Gui
 from FreeCAD import Vector
 
+from draftguitools import gui_dimensions
 from drafttests import test_base
+from draftutils.todo import ToDo
 
 
 class DraftGuiDimension(test_base.DraftTestCaseDoc):
@@ -337,6 +340,51 @@ class DraftGuiDimension(test_base.DraftTestCaseDoc):
             if original_name in App.listDocuments():
                 self.doc = App.getDocument(original_name)
             os.unlink(temp_file.name)
+
+    def test_constrained_first_dimension_keeps_chain_start(self):
+        """The next chained dimension should start at the constrained endpoint."""
+        # Regression test for:
+        # https://github.com/FreeCAD/FreeCAD/issues/29764
+        Gui.activateWorkbench("DraftWorkbench")
+        Gui.activateView("Gui::View3DInventor", True)
+
+        start = Vector(0, 0, 0)
+        endpoint = Vector(100, 0, 0)
+        next_point = Vector(200, 0, 0)
+        dim_line = Vector(0, 20, 0)
+
+        command = gui_dimensions.Dimension()
+        command.Activated()
+        try:
+            command.ui.chainedMode = True
+            command.node = [start, endpoint, dim_line]
+
+            # Match the state left by Shift-constraining the first dimension.
+            command.point1 = start
+            command.point2 = endpoint
+            command.proj_point1 = start
+            command.proj_point2 = endpoint
+            command.force = 2
+            command.createObject()
+
+            move_event = {
+                "Type": "SoLocation2Event",
+                "Position": (0, 0),
+                "ShiftDown": False,
+                "CtrlDown": False,
+                "AltDown": False,
+            }
+            with mock.patch.object(
+                gui_dimensions.gui_tool_utils,
+                "getPoint",
+                return_value=(next_point, None, {}),
+            ):
+                command.action(move_event)
+
+            self.assertTrue(command.node[0].isEqual(endpoint, 1e-7))
+        finally:
+            command.finish(cont=None)
+            ToDo.doTasks()
 
     def test_angular_dimension_svg_overshoots_after_restore_and_in_techdraw(self):
         """Angular dimension overshoots survive restore in SVG and propagate into TechDraw DraftView."""
