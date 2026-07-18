@@ -171,76 +171,86 @@ SoSeparator* SoFCPlacementIndicatorKit::createGeometry()
     return sep;
 }
 
+SoSeparator* SoFCPlacementIndicatorKit::createAxisShaft(
+    const char* label,
+    Base::Vector3d axis,
+    bool hasColor,
+    bool hasArrowHead,
+    bool hasLabels,
+    float axisLength,
+    float axisThickness,
+    double labelOffset,
+    Base::Color axisColor,
+    const double offset
+)
+{
+    Base::Rotation rotation(Base::Vector3d::UnitY, axis);
+
+    const auto cylinderOffset = axisLength / 2.F;
+
+    auto sep = new SoSeparator;
+
+    auto pcTranslate = new SoTransform();
+    pcTranslate->translation.setValue(Base::convertTo<SbVec3f>((cylinderOffset + offset) * axis));
+    pcTranslate->rotation.setValue(Base::convertTo<SbRotation>(rotation));
+
+    auto pcArrowShaft = new SoCylinder();
+    pcArrowShaft->radius = axisThickness / 2.F;
+    pcArrowShaft->height = axisLength;
+
+    if (hasColor) {
+        auto pcBaseColor = new SoBaseColor();
+        pcBaseColor->rgb.setValue(Base::convertTo<SbColor>(axisColor));
+
+        sep->addChild(pcBaseColor);
+    }
+
+    sep->addChild(pcTranslate);
+    sep->addChild(pcArrowShaft);
+
+    if (hasArrowHead) {
+        auto pcArrowHeadTranslation = new SoTranslation();
+        pcArrowHeadTranslation->translation.setValue(0.0, cylinderOffset, 0.0);
+
+        auto pcArrowHead = new SoCone();
+        pcArrowHead->bottomRadius = arrowHeadRadius;
+        pcArrowHead->height = arrowHeadHeight;
+
+        auto pcArrowHeadSeparator = new SoSeparator();
+        pcArrowHeadSeparator->addChild(pcArrowHeadTranslation);
+        pcArrowHeadSeparator->addChild(pcArrowHead);
+
+        sep->addChild(pcArrowHeadSeparator);
+    }
+
+    if (hasLabels) {
+        auto pcLabelSeparator = new SoSeparator();
+
+        auto pcLabelTranslation = new SoTranslation();
+        pcLabelTranslation->translation.setValue(0.0, cylinderOffset + labelOffset, 0.0);
+        pcLabelSeparator->addChild(pcLabelTranslation);
+
+        auto pcAxisLabel = new SoFrameLabel();
+        pcAxisLabel->string.setValue(label);
+        pcAxisLabel->textColor.setValue(1.0, 1.0, 1.0);
+        pcAxisLabel->horAlignment = SoImage::CENTER;
+        pcAxisLabel->vertAlignment = SoImage::HALF;
+        pcAxisLabel->border = false;
+        pcAxisLabel->frame = false;
+        pcAxisLabel->textUseBaseColor = true;
+        pcAxisLabel->size = labelFontSize;
+
+        pcLabelSeparator->addChild(pcAxisLabel);
+
+        sep->addChild(pcLabelSeparator);
+    }
+
+    return sep;
+};
+
 SoSeparator* SoFCPlacementIndicatorKit::createAxes()
 {
     const auto cylinderOffset = axisLength.getValue() / 2.F;
-
-    const auto createAxis = [&](const char* label,
-                                Base::Vector3d axis,
-                                uint32_t packedColor,
-                                const double offset) {
-        Base::Color axisColor(packedColor);
-        Base::Rotation rotation(Base::Vector3d::UnitY, axis);
-
-        auto sep = new SoSeparator;
-
-        auto pcTranslate = new SoTransform();
-        pcTranslate->translation.setValue(Base::convertTo<SbVec3f>((cylinderOffset + offset) * axis));
-        pcTranslate->rotation.setValue(Base::convertTo<SbRotation>(rotation));
-
-        auto pcArrowShaft = new SoCylinder();
-        pcArrowShaft->radius = axisThickness / 2.F;
-        pcArrowShaft->height = axisLength;
-
-        if (coloredAxis.getValue()) {
-            auto pcBaseColor = new SoBaseColor();
-            pcBaseColor->rgb.setValue(Base::convertTo<SbColor>(axisColor));
-
-            sep->addChild(pcBaseColor);
-        }
-
-        sep->addChild(pcTranslate);
-        sep->addChild(pcArrowShaft);
-
-        if (parts.getValue() & ArrowHeads) {
-            auto pcArrowHeadTranslation = new SoTranslation();
-            pcArrowHeadTranslation->translation.setValue(0.0, cylinderOffset, 0.0);
-
-            auto pcArrowHead = new SoCone();
-            pcArrowHead->bottomRadius = arrowHeadRadius;
-            pcArrowHead->height = arrowHeadHeight;
-
-            auto pcArrowHeadSeparator = new SoSeparator();
-            pcArrowHeadSeparator->addChild(pcArrowHeadTranslation);
-            pcArrowHeadSeparator->addChild(pcArrowHead);
-
-            sep->addChild(pcArrowHeadSeparator);
-        }
-
-        if (parts.getValue() & Labels) {
-            auto pcLabelSeparator = new SoSeparator();
-
-            auto pcLabelTranslation = new SoTranslation();
-            pcLabelTranslation->translation.setValue(0.0, cylinderOffset + labelOffset, 0.0);
-            pcLabelSeparator->addChild(pcLabelTranslation);
-
-            auto pcAxisLabel = new SoFrameLabel();
-            pcAxisLabel->string.setValue(label);
-            pcAxisLabel->textColor.setValue(1.0, 1.0, 1.0);
-            pcAxisLabel->horAlignment = SoImage::CENTER;
-            pcAxisLabel->vertAlignment = SoImage::HALF;
-            pcAxisLabel->border = false;
-            pcAxisLabel->frame = false;
-            pcAxisLabel->textUseBaseColor = true;
-            pcAxisLabel->size = labelFontSize;
-
-            pcLabelSeparator->addChild(pcAxisLabel);
-
-            sep->addChild(pcLabelSeparator);
-        }
-
-        return sep;
-    };
 
     double additionalAxisMargin = (parts.getValue() & OriginIndicator) ? axisThickness * 4 : 0;
     double xyOffset = (parts.getValue() & PlaneIndicator)
@@ -257,33 +267,57 @@ SoSeparator* SoFCPlacementIndicatorKit::createAxes()
     };
 
     if (axes.getValue() & X) {
-        sep->addChild(createAxis(
+        auto result = createAxisShaft(
             labelAt(0).value_or("X"),
             Base::Vector3d::UnitX,
-            ViewParams::instance()->getAxisXColor(),
+            coloredAxis.getValue(),
+            parts.getValue() & ArrowHeads,
+            parts.getValue() & Labels,
+            axisLength.getValue(),
+            axisThickness,
+            labelOffset,
+            Base::Color(static_cast<uint32_t>(Gui::ViewParams::instance()->getAxisXColor())),
             xyOffset
-        ));
+        );
+
+        sep->addChild(result);
     }
 
     if (axes.getValue() & Y) {
-        sep->addChild(createAxis(
+        auto result = createAxisShaft(
             labelAt(1).value_or("Y"),
             Base::Vector3d::UnitY,
-            ViewParams::instance()->getAxisYColor(),
+            coloredAxis.getValue(),
+            parts.getValue() & ArrowHeads,
+            parts.getValue() & Labels,
+            axisLength.getValue(),
+            axisThickness,
+            labelOffset,
+            Base::Color(static_cast<uint32_t>(Gui::ViewParams::instance()->getAxisYColor())),
             xyOffset
-        ));
+        );
+
+        sep->addChild(result);
     }
 
     if (axes.getValue() & Z) {
         double zOffset = (parts.getValue() & PlaneIndicator) ? planeIndicatorMargin
                                                              : axisMargin + additionalAxisMargin;
 
-        sep->addChild(createAxis(
+        auto result = createAxisShaft(
             labelAt(2).value_or("Z"),
             Base::Vector3d::UnitZ,
-            ViewParams::instance()->getAxisZColor(),
+            coloredAxis.getValue(),
+            parts.getValue() & ArrowHeads,
+            parts.getValue() & Labels,
+            axisLength.getValue(),
+            axisThickness,
+            labelOffset,
+            Base::Color(static_cast<uint32_t>(Gui::ViewParams::instance()->getAxisZColor())),
             zOffset
-        ));
+        );
+
+        sep->addChild(result);
     }
 
     return sep;

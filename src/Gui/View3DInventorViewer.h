@@ -57,7 +57,6 @@
 #include "Namespace.h"
 #include "Selection/Selection.h"
 
-#include "CornerCrossLetters.h"
 #include "View3DInventorSelection.h"
 #include "Quarter/SoQTQuarterAdaptor.h"
 
@@ -540,7 +539,6 @@ public:
     );
     void setNavigationType(Base::Type);
 
-    void setAxisLetterColor(const SbColor& color);
     void setAxisCross(bool on);
     bool hasAxisCross();
 
@@ -619,7 +617,7 @@ private:
     static SoPath* pickFilterCB(void* viewer, const SoPickedPoint* pp);
     void initialize();
     void syncNaviCubeVisibility();
-    void drawAxisCross();
+    void drawCornerCross();
     void drawSingleBackground(const QColor&);
     void setCursorRepresentation(int mode);
     void aboutToDestroyGLContext();
@@ -669,10 +667,8 @@ private:
     SoSwitch* dimensionRoot;
 
     // small axis cross in the corner
-    bool axiscrossEnabled;
+    bool cornerCrossVisible;
     int axiscrossSize;
-    // big one in the middle
-    SoShapeScale* axisCross;
     SoGroup* axisGroup;
 
     SoGroup* rotationCenterGroup;
@@ -706,10 +702,6 @@ private:
     ViewerEventFilter* viewerEventFilter;
 
     PyObject* _viewerPy;
-
-    static unsigned char XPM_pixel_data[YPM_WIDTH * YPM_HEIGHT * YPM_BYTES_PER_PIXEL + 1];
-    static unsigned char YPM_pixel_data[YPM_WIDTH * YPM_HEIGHT * YPM_BYTES_PER_PIXEL + 1];
-    static unsigned char ZPM_pixel_data[ZPM_WIDTH * ZPM_HEIGHT * ZPM_BYTES_PER_PIXEL + 1];
 
     // friends
     friend class NavigationStyle;
