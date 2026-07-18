@@ -2,7 +2,7 @@
 
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
+# *   Copyright (c) 2026 CCNUdhj                                            *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
@@ -22,16 +22,42 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""Import all Arch module unit tests in GUI mode."""
+"""GUI tests for the BIM Reorder Children command."""
 
-from bimtests.TestArchImportersGui import TestArchImportersGui
-from bimtests.TestArchAxisGui import TestArchAxisGui
-from bimtests.TestArchBuildingPartGui import TestArchBuildingPartGui
-from bimtests.TestArchStairsGui import TestArchStairsGui
-from bimtests.TestArchReportGui import TestArchReportGui
-from bimtests.TestArchSiteGui import TestArchSiteGui
-from bimtests.TestArchWallGui import TestArchWallGui
-from bimtests.TestArchWindowGui import TestArchWindowGui
-from bimtests.TestWebGLExportGui import TestWebGLExportGui
-from bimtests.TestArchCoveringGui import TestArchCoveringGui
-from bimtests.TestBimReorderGui import TestBimReorderGui
+from PySide import QtCore
+
+from bimcommands import BimReorder
+from bimtests.TestArchBaseGui import TestArchBaseGui
+
+
+class TestBimReorderGui(TestArchBaseGui):
+    """Test the Reorder Children task panel."""
+
+    def test_sort_connection_has_no_qt_warning(self):
+        """Opening the task panel should not register an invalid Qt method."""
+        # Regression test for:
+        # https://github.com/FreeCAD/FreeCAD/issues/29817
+        group = self.document.addObject("App::DocumentObjectGroup", "Group")
+        child_z = self.document.addObject("App::FeaturePython", "ChildZ")
+        child_z.Label = "Z"
+        child_a = self.document.addObject("App::FeaturePython", "ChildA")
+        child_a.Label = "A"
+        group.Group = [child_z, child_a]
+
+        messages = []
+        old_handler = QtCore.qInstallMessageHandler(
+            lambda _msg_type, _context, message: messages.append(message)
+        )
+        try:
+            panel = BimReorder.BIM_Reorder_TaskPanel(group)
+        finally:
+            QtCore.qInstallMessageHandler(old_handler)
+
+        self.assertFalse(any("addMetaMethod" in message for message in messages), messages)
+
+        panel.form.pushButton.click()
+        labels = [
+            panel.form.listWidget.item(index).text()
+            for index in range(panel.form.listWidget.count())
+        ]
+        self.assertEqual(labels, ["A", "Z"])

@@ -61,7 +61,9 @@ class BIM_Reorder_TaskPanel:
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/dialogReorder.ui")
         self.form.setWindowIcon(QtGui.QIcon(":/icons/BIM_Reorder.svg"))
-        self.form.pushButton.clicked.connect(self.form.listWidget.sortItems)
+        self.form.pushButton.clicked.connect(
+            lambda _checked=False: self.form.listWidget.sortItems()
+        )
         for child in self.obj.Group:
             i = QtGui.QListWidgetItem(child.Label)
             i.setIcon(child.ViewObject.Icon)
