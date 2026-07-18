@@ -173,6 +173,7 @@ public:
 
 private:
     void slotConstraintsChanged();
+    void updateConstraintsList();
     bool isConstraintFiltered(QListWidgetItem* item);
     void change3DViewVisibilityToTrackFilter(bool filterEnabled);
     bool doSetVirtualSpace(const std::vector<int>& constrIds, bool isvirtualspace);
@@ -220,6 +221,7 @@ private:
     QWidget* proxy;
     bool inEditMode;
     bool updateListPending;
+    bool constraintsUpdatePending = false;
     std::unique_ptr<Ui_TaskSketcherConstraints> ui;
     ConstraintFilter::FilterValueBitset multiFilterStatus;  // Stores the filters to be aggregated
                                                             // to form the multifilter.

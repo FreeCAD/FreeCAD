@@ -77,6 +77,79 @@ using namespace Gui;
 using namespace SketcherGui;
 using namespace Sketcher;
 
+namespace
+{
+
+// FNV-1a accumulation used to fingerprint the inputs of a constraint's
+// placement update so unchanged constraints can be skipped.
+inline void hashCombine(std::size_t& seed, const void* data, std::size_t len)
+{
+    const auto* bytes = static_cast<const unsigned char*>(data);
+    for (std::size_t k = 0; k < len; ++k) {
+        seed ^= bytes[k];
+        seed *= 1099511628211ULL;
+    }
+}
+
+inline void hashDouble(std::size_t& seed, double v)
+{
+    hashCombine(seed, &v, sizeof(v));
+}
+
+inline void hashInt(std::size_t& seed, long long v)
+{
+    hashCombine(seed, &v, sizeof(v));
+}
+
+inline void hashVector(std::size_t& seed, const Base::Vector3d& v)
+{
+    hashDouble(seed, v.x);
+    hashDouble(seed, v.y);
+    hashDouble(seed, v.z);
+}
+
+// Fingerprint of a geometry's defining data as the placement code sees it.
+// Lines hash their endpoints directly; other curves hash five points sampled
+// along the parameter range (deterministic, so identical geometry always
+// yields an identical hash; different same-type geometry through five common
+// points does not occur in practice).
+std::size_t hashGeometry(const Part::Geometry* geo)
+{
+    std::size_t seed = 14695981039346656037ULL;
+    if (!geo) {
+        return 0;
+    }
+    hashInt(seed, static_cast<long long>(geo->getTypeId().getKey()));
+
+    if (const auto* line = dynamic_cast<const Part::GeomLineSegment*>(geo)) {
+        hashVector(seed, line->getStartPoint());
+        hashVector(seed, line->getEndPoint());
+        return seed;
+    }
+    if (const auto* point = dynamic_cast<const Part::GeomPoint*>(geo)) {
+        hashVector(seed, point->getPoint());
+        return seed;
+    }
+    if (const auto* curve = dynamic_cast<const Part::GeomCurve*>(geo)) {
+        try {
+            const double u0 = curve->getFirstParameter();
+            const double u1 = curve->getLastParameter();
+            hashDouble(seed, u0);
+            hashDouble(seed, u1);
+            for (int k = 0; k <= 4; ++k) {
+                hashVector(seed, curve->pointAtParameter(u0 + (u1 - u0) * k / 4.0));
+            }
+            return seed;
+        }
+        catch (const Base::Exception&) {
+            return 0;  // never skip on evaluation failure
+        }
+    }
+    return 0;
+}
+
+}  // namespace
+
 //**************************** EditModeConstraintCoinManager class ******************************
 
 EditModeConstraintCoinManager::EditModeConstraintCoinManager(
@@ -143,7 +216,9 @@ void EditModeConstraintCoinManager::processConstraints(const GeoListFacade& geol
 Restart:
     // check if a new constraint arrived
     if (constrlist.size() != vConstrType.size()) {
-        rebuildConstraintNodes(geolistfacade);
+        if (!trySyncConstraintNodes(geolistfacade, constrlist)) {
+            rebuildConstraintNodes(geolistfacade);
+        }
     }
 
     assert(int(constrlist.size()) == editModeScenegraphNodes.constrGroup->getNumChildren());
@@ -177,6 +252,27 @@ Restart:
             return normal;
         };
 
+    // Skip-unchanged support: fingerprint every input the update-switch below
+    // reads; a matching fingerprint means the coin nodes already hold the
+    // right values.
+    if (vConstrPlacementHash.size() != constrlist.size()) {
+        vConstrPlacementHash.assign(constrlist.size(), 0);
+    }
+    std::size_t globalSeed = 14695981039346656037ULL;
+    hashDouble(globalSeed, zConstrH);
+    hashInt(globalSeed, static_cast<long long>(Base::UnitsApi::getDecimals()));
+    hashInt(globalSeed, static_cast<long long>(Base::UnitsApi::getDefSchemaNum()));
+    std::map<int, std::size_t> geoStampCache;
+    auto geoStamp = [&](int geoId) -> std::size_t {
+        auto found = geoStampCache.find(geoId);
+        if (found != geoStampCache.end()) {
+            return found->second;
+        }
+        std::size_t h = hashGeometry(geolistfacade.getGeometryFromGeoId(geoId));
+        geoStampCache.emplace(geoId, h);
+        return h;
+    };
+
     // go through the constraints and update the position
     int i = 0;
     for (auto it = constrlist.begin(); it != constrlist.end(); ++it, i++) {
@@ -201,6 +297,45 @@ Restart:
                 // Constraint can refer to non-existent geometry during undo/redo
                 continue;
             }
+
+            // NOTE: geo indices are deliberately NOT part of the signature —
+            // the referenced geometry participates via its content stamp, so
+            // a pure renumbering (deletion of other geometry) does not force
+            // rewriting placements that are in fact unchanged.
+            std::size_t placementSig = globalSeed;
+            hashInt(placementSig, static_cast<long long>(Constr->Type));
+            hashInt(placementSig, static_cast<long long>(Constr->FirstPos));
+            hashInt(placementSig, static_cast<long long>(Constr->SecondPos));
+            hashInt(placementSig, static_cast<long long>(Constr->ThirdPos));
+            hashDouble(placementSig, Constr->getValue());
+            hashInt(placementSig,
+                    (Constr->isDriving ? 1 : 0) | (Constr->isActive ? 2 : 0)
+                        | (Constr->isInVirtualSpace ? 4 : 0));
+            hashDouble(placementSig, Constr->LabelDistance);
+            hashDouble(placementSig, Constr->LabelPosition);
+            hashCombine(placementSig, Constr->Name.data(), Constr->Name.size());
+            std::size_t g1 = geoStamp(Constr->First);
+            hashCombine(placementSig, &g1, sizeof(g1));
+            bool geoHashValid = (g1 != 0);
+            if (Constr->Second != GeoEnum::GeoUndef) {
+                std::size_t g2 = geoStamp(Constr->Second);
+                hashCombine(placementSig, &g2, sizeof(g2));
+                geoHashValid = geoHashValid && (g2 != 0);
+            }
+            if (Constr->Third != GeoEnum::GeoUndef) {
+                std::size_t g3 = geoStamp(Constr->Third);
+                hashCombine(placementSig, &g3, sizeof(g3));
+                geoHashValid = geoHashValid && (g3 != 0);
+            }
+            if (placementSig == 0 || !geoHashValid) {
+                placementSig = 0;  // unknown input -> always update
+            }
+
+            if (placementSig != 0 && vConstrPlacementHash[i] == placementSig) {
+                continue;  // inputs identical to the last update
+            }
+            // invalidate until the update below completes without throwing
+            vConstrPlacementHash[i] = 0;
 
             // distinguish different constraint types to build up
             switch (Constr->Type) {
@@ -1629,6 +1764,8 @@ Restart:
                 case NumConstraintTypes:
                     break;
             }
+
+            vConstrPlacementHash[i] = placementSig;  // update succeeded
         }
         catch (Base::Exception& e) {
             Base::Console().developerError(
@@ -1704,17 +1841,44 @@ void EditModeConstraintCoinManager::updateConstraintColor(
     std::vector<std::vector<int>> CurvNum;
     std::vector<std::vector<SbColor*>> color;  // curve color
 
-    for (int l = 0; l < geometryLayerParameters.getCoinLayerCount(); l++) {
-        PtNum.push_back(editModeScenegraphNodes.PointsMaterials[l]->diffuseColor.getNum());
-        pcolor.push_back(editModeScenegraphNodes.PointsMaterials[l]->diffuseColor.startEditing());
-        CurvNum.emplace_back();
-        color.emplace_back();
-        for (int t = 0; t < geometryLayerParameters.getSubLayerCount(); t++) {
-            CurvNum[l].push_back(editModeScenegraphNodes.CurvesMaterials[l][t]->diffuseColor.getNum());
-            color[l].push_back(
-                editModeScenegraphNodes.CurvesMaterials[l][t]->diffuseColor.startEditing()
-            );
+    // The point/curve material arrays are only written for selected
+    // coincident / internal-alignment constraints; open them lazily so the
+    // common no-selection pass never touches (and never notifies) them.
+    bool arraysOpen = false;
+    auto openArrays = [&]() {
+        if (arraysOpen) {
+            return;
         }
+        arraysOpen = true;
+        for (int l = 0; l < geometryLayerParameters.getCoinLayerCount(); l++) {
+            PtNum.push_back(editModeScenegraphNodes.PointsMaterials[l]->diffuseColor.getNum());
+            pcolor.push_back(editModeScenegraphNodes.PointsMaterials[l]->diffuseColor.startEditing());
+            CurvNum.emplace_back();
+            color.emplace_back();
+            for (int t = 0; t < geometryLayerParameters.getSubLayerCount(); t++) {
+                CurvNum[l].push_back(
+                    editModeScenegraphNodes.CurvesMaterials[l][t]->diffuseColor.getNum());
+                color[l].push_back(
+                    editModeScenegraphNodes.CurvesMaterials[l][t]->diffuseColor.startEditing()
+                );
+            }
+        }
+    };
+
+    // If any color preference changed, every cached state is stale.
+    std::size_t paletteHash = 14695981039346656037ULL;
+    for (const SbColor& c : {SketcherGui::DrawingParameters::ConstrDimColor,
+                             SketcherGui::DrawingParameters::NonDrivingConstrDimColor,
+                             SketcherGui::DrawingParameters::DeactivatedConstrDimColor,
+                             drawingParameters.ExprBasedConstrDimColor,
+                             SketcherGui::DrawingParameters::SelectColor,
+                             SketcherGui::DrawingParameters::PreselectColor}) {
+        float rgb[3] = {c[0], c[1], c[2]};
+        hashCombine(paletteHash, rgb, sizeof(rgb));
+    }
+    if (vConstrColorState.size() != constraints.size() || paletteHash != lastColorPaletteHash) {
+        vConstrColorState.assign(constraints.size(), staleColorState);
+        lastColorPaletteHash = paletteHash;
     }
 
     int maxNumberOfConstraints = std::min(
@@ -1754,7 +1918,32 @@ void EditModeConstraintCoinManager::updateConstraintColor(
             }
         }
 
-        auto selectpoint = [this, pcolor, PtNum](int geoid, Sketcher::PointPos pos) {
+        // Skip constraints whose resolved color state is unchanged since the
+        // last pass — writing an identical value to a coin field still
+        // notifies and invalidates render caches. Selected coincident /
+        // internal-alignment constraints write into the shared point/curve
+        // arrays (which updateGeometryColor has just reset), so they must
+        // always be re-applied.
+        {
+            bool selected = ViewProviderSketchCoinAttorney::isConstraintSelected(viewProvider, i);
+            bool preselected =
+                ViewProviderSketchCoinAttorney::isConstraintPreselected(viewProvider, i);
+            bool isActive =
+                ViewProviderSketchCoinAttorney::isConstraintActiveInSketch(viewProvider, constraint);
+            bool hasExpression = hasDatumLabel && !selected && !preselected
+                && ViewProviderSketchCoinAttorney::constraintHasExpression(viewProvider, i);
+            unsigned char state = (selected ? 1 : 0) | (preselected ? 2 : 0) | (isActive ? 4 : 0)
+                | (constraint->isDriving ? 8 : 0) | (hasExpression ? 16 : 0);
+            bool writesSharedArrays = selected
+                && (type == Sketcher::Coincident || type == Sketcher::InternalAlignment);
+            if (!writesSharedArrays && vConstrColorState[i] == state) {
+                continue;
+            }
+            vConstrColorState[i] = state;
+        }
+
+        auto selectpoint = [this, &openArrays, &pcolor, &PtNum](int geoid, Sketcher::PointPos pos) {
+            openArrays();
             if (geoid >= 0) {
                 auto multifieldIndex = coinMapping.getIndexLayer(geoid, pos);
 
@@ -1768,7 +1957,8 @@ void EditModeConstraintCoinManager::updateConstraintColor(
             }
         };
 
-        auto selectline = [this, color, CurvNum](int geoid) {
+        auto selectline = [this, &openArrays, &color, &CurvNum](int geoid) {
+            openArrays();
             if (geoid >= 0) {
                 auto multifieldIndex = coinMapping.getIndexLayer(geoid, Sketcher::PointPos::none);
 
@@ -1861,10 +2051,12 @@ void EditModeConstraintCoinManager::updateConstraintColor(
         }
     }
 
-    for (int l = 0; l < geometryLayerParameters.getCoinLayerCount(); l++) {
-        editModeScenegraphNodes.PointsMaterials[l]->diffuseColor.finishEditing();
-        for (int t = 0; t < geometryLayerParameters.getSubLayerCount(); t++) {
-            editModeScenegraphNodes.CurvesMaterials[l][t]->diffuseColor.finishEditing();
+    if (arraysOpen) {
+        for (int l = 0; l < geometryLayerParameters.getCoinLayerCount(); l++) {
+            editModeScenegraphNodes.PointsMaterials[l]->diffuseColor.finishEditing();
+            for (int t = 0; t < geometryLayerParameters.getSubLayerCount(); t++) {
+                editModeScenegraphNodes.CurvesMaterials[l][t]->diffuseColor.finishEditing();
+            }
         }
     }
 }
@@ -1910,60 +2102,176 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(const GeoListFacade& 
     rebuildConstraintNodes(geolistfacade, constrlist, norm);
 }
 
+bool EditModeConstraintCoinManager::trySyncConstraintNodes(
+    const GeoListFacade& geolistfacade,
+    const std::vector<Sketcher::Constraint*>& constrlist
+)
+{
+    // Incremental add/remove of constraint separators: aligning the old type
+    // sequence with the new one as an ordered subsequence identifies exactly
+    // which nodes to insert or drop, so the (expensive to build AND to
+    // first-render) surviving nodes are preserved.
+    const std::size_t oldN = vConstrType.size();
+    const std::size_t newN = constrlist.size();
+    if (oldN == newN) {
+        return true;
+    }
+    if (oldN == 0 || newN == 0) {
+        return false;
+    }
+    if (vConstrPlacementHash.size() != oldN || vConstrColorState.size() != oldN
+        || static_cast<std::size_t>(editModeScenegraphNodes.constrGroup->getNumChildren())
+            != oldN) {
+        return false;
+    }
+
+    // A Tangent separator's structure depends on its referenced geometry
+    // (line/line gets a second icon set), so type-only alignment is not safe
+    // for it — fall back to the full rebuild.
+    for (auto* c : constrlist) {
+        if (c->Type == Tangent) {
+            return false;
+        }
+    }
+    for (auto t : vConstrType) {
+        if (t == Tangent) {
+            return false;
+        }
+    }
+
+    if (newN < oldN) {
+        // removal: the new type sequence must be an ordered subsequence
+        std::vector<int> removed;
+        std::size_t j = 0;
+        for (std::size_t i = 0; i < oldN; ++i) {
+            if (j < newN && vConstrType[i] == constrlist[j]->Type) {
+                ++j;
+            }
+            else {
+                removed.push_back(static_cast<int>(i));
+            }
+        }
+        if (j != newN) {
+            return false;
+        }
+        for (auto rit = removed.rbegin(); rit != removed.rend(); ++rit) {
+            editModeScenegraphNodes.constrGroup->removeChild(*rit);
+            vConstrType.erase(vConstrType.begin() + *rit);
+            vConstrPlacementHash.erase(vConstrPlacementHash.begin() + *rit);
+            vConstrColorState.erase(vConstrColorState.begin() + *rit);
+        }
+    }
+    else {
+        // insertion: the old type sequence must be an ordered subsequence
+        std::vector<int> added;
+        std::size_t i = 0;
+        for (std::size_t j = 0; j < newN; ++j) {
+            if (i < oldN && vConstrType[i] == constrlist[j]->Type) {
+                ++i;
+            }
+            else {
+                added.push_back(static_cast<int>(j));
+            }
+        }
+        if (i != oldN) {
+            return false;
+        }
+
+        // sketch normal, as in rebuildConstraintNodes
+        Base::Vector3d RN(0, 0, 1);
+        Base::Placement Plz = ViewProviderSketchCoinAttorney::getEditingPlacement(viewProvider);
+        Base::Rotation tmp(Plz.getRotation());
+        tmp.multVec(RN, RN);
+        SbVec3f norm(RN.x, RN.y, RN.z);
+
+        for (int pos : added) {
+            auto* sep = createConstraintNode(constrlist[pos], geolistfacade, norm);
+            editModeScenegraphNodes.constrGroup->insertChild(sep, pos);
+            sep->unref();
+            vConstrType.insert(vConstrType.begin() + pos, constrlist[pos]->Type);
+            vConstrPlacementHash.insert(vConstrPlacementHash.begin() + pos, 0);
+            vConstrColorState.insert(vConstrColorState.begin() + pos, staleColorState);
+        }
+    }
+
+    // constraint ids and node targets shifted: the icon pass must rerun
+    lastIconQueueHash = 0;
+    return true;
+}
+
 void EditModeConstraintCoinManager::rebuildConstraintNodes(
     const GeoListFacade& geolistfacade,
     const std::vector<Sketcher::Constraint*> constrlist,
     SbVec3f norm
 )
 {
+    // freshly built nodes hold no placement, icon or color data yet
+    vConstrPlacementHash.assign(constrlist.size(), 0);
+    lastIconQueueHash = 0;
+    vConstrColorState.assign(constrlist.size(), staleColorState);
 
     for (auto it : constrlist) {
-        // root separator for one constraint
-        auto* sep = new SoSeparator();
-        sep->ref();
-        // no caching for frequently-changing data structures
-        sep->renderCaching = SoSeparator::OFF;
+        auto* sep = createConstraintNode(it, geolistfacade, norm);
+        vConstrType.push_back(it->Type);
+        editModeScenegraphNodes.constrGroup->addChild(sep);
+        sep->unref();
+    }
+}
 
-        // every constrained visual node gets its own material for preselection and selection
-        auto* mat = new SoMaterial;
-        mat->ref();
-        bool isActive = ViewProviderSketchCoinAttorney::isConstraintActiveInSketch(viewProvider, it);
-        mat->diffuseColor = isActive
-            ? (it->isDriving ? SketcherGui::DrawingParameters::ConstrDimColor
-                             : SketcherGui::DrawingParameters::NonDrivingConstrDimColor)
-            : SketcherGui::DrawingParameters::DeactivatedConstrDimColor;
+SoSeparator* EditModeConstraintCoinManager::createConstraintNode(
+    Sketcher::Constraint* it,
+    const GeoListFacade& geolistfacade,
+    SbVec3f norm
+)
+{
+    // root separator for one constraint
+    auto* sep = new SoSeparator();
+    sep->ref();
+    // no caching for frequently-changing data structures
+    // NOTE: switching to AUTO was tried (2026-07-12) once the placement/icon/
+    // color skips made these fields change-stable: no measurable render win —
+    // SoZoomTranslation makes the subtrees view-dependent, so Coin declines to
+    // cache them — and the first delete after enabling it spiked. Cutting the
+    // ~156 ms uncached traversal at dense sketches needs restructuring the
+    // nodes so view-dependent parts sit outside cacheable subtrees.
+    sep->renderCaching = SoSeparator::OFF;
+
+    // every constrained visual node gets its own material for preselection and selection
+    auto* mat = new SoMaterial;
+    mat->ref();
+    bool isActive = ViewProviderSketchCoinAttorney::isConstraintActiveInSketch(viewProvider, it);
+    mat->diffuseColor = isActive
+        ? (it->isDriving ? SketcherGui::DrawingParameters::ConstrDimColor
+                         : SketcherGui::DrawingParameters::NonDrivingConstrDimColor)
+        : SketcherGui::DrawingParameters::DeactivatedConstrDimColor;
 
 
-        // distinguish different constraint types to build up
-        switch (it->Type) {
-            case Distance:
-            case DistanceX:
-            case DistanceY:
-            case Radius:
-            case Diameter:
-            case Weight:
-            case Angle: {
-                auto* text = new SoDatumLabel();
-                text->norm.setValue(norm);
-                text->string = "";
-                text->textColor = isActive
-                    ? (it->isDriving ? SketcherGui::DrawingParameters::ConstrDimColor
-                                     : SketcherGui::DrawingParameters::NonDrivingConstrDimColor)
-                    : SketcherGui::DrawingParameters::DeactivatedConstrDimColor;
-                if (!drawingParameters.labelFontName.isEmpty()) {
-                    text->name.setValue(drawingParameters.labelFontName.toStdString().c_str());
-                }
-                text->size.setValue(drawingParameters.labelFontSize);
-                text->lineWidth = 2 * drawingParameters.pixelScalingFactor;
-                text->useAntialiasing = false;
-                sep->addChild(text);
-                editModeScenegraphNodes.constrGroup->addChild(sep);
-                vConstrType.push_back(it->Type);
-                // nodes not needed
-                sep->unref();
-                mat->unref();
-                continue;  // jump to next constraint
-            } break;
+    // distinguish different constraint types to build up
+    switch (it->Type) {
+        case Distance:
+        case DistanceX:
+        case DistanceY:
+        case Radius:
+        case Diameter:
+        case Weight:
+        case Angle: {
+            auto* text = new SoDatumLabel();
+            text->norm.setValue(norm);
+            text->string = "";
+            text->textColor = isActive
+                ? (it->isDriving ? SketcherGui::DrawingParameters::ConstrDimColor
+                                 : SketcherGui::DrawingParameters::NonDrivingConstrDimColor)
+                : SketcherGui::DrawingParameters::DeactivatedConstrDimColor;
+            if (!drawingParameters.labelFontName.isEmpty()) {
+                text->name.setValue(drawingParameters.labelFontName.toStdString().c_str());
+            }
+            text->size.setValue(drawingParameters.labelFontSize);
+            text->lineWidth = 2 * drawingParameters.pixelScalingFactor;
+            text->useAntialiasing = false;
+            sep->addChild(text);
+            mat->unref();
+            return sep;
+        } break;
             case Horizontal:
             case Vertical:
             case Block: {
@@ -1982,8 +2290,6 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                 // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID 6
                 sep->addChild(new SoInfo());
 
-                // remember the type of this constraint node
-                vConstrType.push_back(it->Type);
             } break;
             case Group:
             case Text: {
@@ -2008,10 +2314,8 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                 lineSet->numVertices.set1Value(0, 5);  // A single polyline of 5 vertices
                 sep->addChild(lineSet);
 
-                vConstrType.push_back(it->Type);
             } break;
             case Coincident:  // no visual for coincident so far
-                vConstrType.push_back(Coincident);
                 break;
             case Parallel:
             case Perpendicular:
@@ -2031,8 +2335,6 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                 // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID 6
                 sep->addChild(new SoInfo());
 
-                // remember the type of this constraint node
-                vConstrType.push_back(it->Type);
             } break;
             case PointOnObject:
             case Tangent:
@@ -2065,7 +2367,6 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                     }
                 }
 
-                vConstrType.push_back(it->Type);
             } break;
             case Symmetric: {
                 auto* arrows = new SoDatumLabel();
@@ -2083,20 +2384,15 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                 // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
                 sep->addChild(new SoInfo());
 
-                vConstrType.push_back(it->Type);
             } break;
             case InternalAlignment: {
-                vConstrType.push_back(it->Type);
             } break;
             default:
-                vConstrType.push_back(it->Type);
+                break;
         }
 
-        editModeScenegraphNodes.constrGroup->addChild(sep);
-        // decrement ref counter again
-        sep->unref();
-        mat->unref();
-    }
+    mat->unref();
+    return sep;
 }
 
 QString EditModeConstraintCoinManager::getPresentationString(
@@ -2566,6 +2862,35 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade& geo
 
         iconQueue.push_back(thisIcon);
     }
+
+    // Skip the (expensive) icon rendering when nothing an icon depends on has
+    // changed since the last pass: positions, labels, visibility, rotation,
+    // node targets and the resolved color (which encodes selection /
+    // preselection / active / driving state).
+    std::size_t queueHash = 14695981039346656037ULL;
+    hashDouble(queueHash, ViewProviderSketchCoinAttorney::getScaleFactor(viewProvider));
+    for (const auto& icon : iconQueue) {
+        const QByteArray type = icon.type.toUtf8();
+        hashCombine(queueHash, type.constData(), type.size());
+        hashInt(queueHash, icon.constraintId);
+        hashDouble(queueHash, icon.position[0]);
+        hashDouble(queueHash, icon.position[1]);
+        hashDouble(queueHash, icon.position[2]);
+        const SoImage* dest = icon.destination;
+        hashCombine(queueHash, &dest, sizeof(dest));
+        hashInt(queueHash, icon.visible ? 1 : 0);
+        hashDouble(queueHash, icon.iconRotation);
+        const QByteArray label = icon.label.toUtf8();
+        hashCombine(queueHash, label.constData(), label.size());
+        hashInt(queueHash, static_cast<long long>(constrColor(icon.constraintId).rgba()));
+    }
+    if (queueHash == 0) {
+        queueHash = 1;
+    }
+    if (queueHash == lastIconQueueHash) {
+        return;
+    }
+    lastIconQueueHash = queueHash;
 
     combineConstraintIcons(iconQueue);
 }

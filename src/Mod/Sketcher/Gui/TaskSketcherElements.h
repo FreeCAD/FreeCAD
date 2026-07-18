@@ -134,6 +134,7 @@ public:
 
 private:
     void slotElementsChanged();
+    void updateElementsList();
     void updateVisibility();
     void setItemVisibility(QListWidgetItem* item, const std::set<int>& groupedGeoIds);
     void clearWidget();
@@ -168,6 +169,7 @@ private:
     ElementFilterList* filterList;
 
     bool isNamingBoxChecked;
+    bool elementsUpdatePending = false;
 
     // Buffering to speed up large selections
     std::unordered_map<int, ElementItem*> elementMap;

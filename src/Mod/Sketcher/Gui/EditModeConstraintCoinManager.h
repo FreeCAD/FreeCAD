@@ -172,6 +172,20 @@ public:
 private:
     void rebuildConstraintNodes(const GeoListFacade& geolistfacade);  // with specific geometry
 
+    // create the coin separator for one constraint (structure depends on type)
+    SoSeparator* createConstraintNode(
+        Sketcher::Constraint* it,
+        const GeoListFacade& geolistfacade,
+        SbVec3f norm
+    );
+
+    // incremental insert/remove of constraint separators on count change;
+    // returns false when a full rebuild is required
+    bool trySyncConstraintNodes(
+        const GeoListFacade& geolistfacade,
+        const std::vector<Sketcher::Constraint*>& constrlist
+    );
+
     void rebuildConstraintNodes(
         const GeoListFacade& geolistfacade,
         const std::vector<Sketcher::Constraint*> constrlist,
@@ -223,6 +237,23 @@ private:
 
     // helper data structures for the constraint rendering
     std::vector<Sketcher::ConstraintType> vConstrType;
+
+    // Per-constraint hash of every input the placement update reads
+    // (constraint fields + referenced geometry + global view factors).
+    // A matching hash means the coin nodes already hold the right values and
+    // the update-switch can be skipped. 0 = unknown, never skip.
+    std::vector<std::size_t> vConstrPlacementHash;
+
+    // Hash of the last rendered icon queue (positions, labels, colors, node
+    // targets); a match skips re-rendering all constraint icons. 0 = unknown.
+    std::size_t lastIconQueueHash = 0;
+
+    // Per-constraint resolved color state (selected/preselected/active/
+    // driving/expression bits) from the last updateConstraintColor pass; a
+    // match skips rewriting that constraint's colors.
+    static constexpr unsigned char staleColorState = 0xFF;
+    std::vector<unsigned char> vConstrColorState;
+    std::size_t lastColorPaletteHash = 0;
 
     // For each of the combined constraint icons drawn, also create a vector
     // of bounding boxes and associated constraint IDs, to go from the icon's

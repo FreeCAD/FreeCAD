@@ -1130,7 +1130,7 @@ void TaskSketcherConstraints::onSettingsExtendedInformationChanged(bool value)
         hGrp->SetBool("ExtendedConstraintInformation", value);
     }
 
-    slotConstraintsChanged();
+    updateConstraintsList();
 }
 
 void TaskSketcherConstraints::onSettingsHideInternalAligmentChanged(bool value)
@@ -1143,7 +1143,7 @@ void TaskSketcherConstraints::onSettingsHideInternalAligmentChanged(bool value)
         hGrp->SetBool("HideInternalAlignment", value);
     }
 
-    slotConstraintsChanged();
+    updateConstraintsList();
 }
 
 void TaskSketcherConstraints::onSettingsRestrictVisibilityChanged(bool value)
@@ -1309,7 +1309,7 @@ void TaskSketcherConstraints::onListWidgetConstraintsUpdateDrivingStatus(QListWi
 
     Gui::Application::Instance->commandManager().runCommandByName(
         "Sketcher_ToggleDrivingConstraint");
-    slotConstraintsChanged();
+    updateConstraintsList();
 }
 
 void TaskSketcherConstraints::onListWidgetConstraintsUpdateActiveStatus(QListWidgetItem* item,
@@ -1322,7 +1322,7 @@ void TaskSketcherConstraints::onListWidgetConstraintsUpdateActiveStatus(QListWid
 
     Gui::Application::Instance->commandManager().runCommandByName(
         "Sketcher_ToggleActiveConstraint");
-    slotConstraintsChanged();
+    updateConstraintsList();
 }
 
 void TaskSketcherConstraints::onListWidgetConstraintsItemActivated(QListWidgetItem* item)
@@ -1444,7 +1444,7 @@ void TaskSketcherConstraints::updateList()
         filterList->getMultiFilter();// moved here in case the filter is changed programmatically.
 
     // new constraints have to be added first
-    slotConstraintsChanged();
+    updateConstraintsList();
 
     // enforce constraint visibility
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -1698,7 +1698,7 @@ void TaskSketcherConstraints::change3DViewVisibilityToTrackFilter(bool filterEna
     }
 
     if (constrIdsToSetVisible.empty() && constrIdsToSetHidden.empty()) {
-        slotConstraintsChanged();
+        updateConstraintsList();
     }
 }
 
@@ -1872,6 +1872,21 @@ bool TaskSketcherConstraints::isConstraintFiltered(QListWidgetItem* item)
 }
 
 void TaskSketcherConstraints::slotConstraintsChanged()
+{
+    // The solver signal fires on every solve; one rebuild when the event loop
+    // spins covers the whole burst. Direct callers that need the list current
+    // immediately use updateConstraintsList() instead.
+    if (constraintsUpdatePending) {
+        return;
+    }
+    constraintsUpdatePending = true;
+    QTimer::singleShot(0, this, [this]() {
+        constraintsUpdatePending = false;
+        updateConstraintsList();
+    });
+}
+
+void TaskSketcherConstraints::updateConstraintsList()
 {
     assert(sketchView);
 

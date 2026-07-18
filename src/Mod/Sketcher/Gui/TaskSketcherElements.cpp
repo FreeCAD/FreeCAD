@@ -1368,7 +1368,7 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch* sketchView)
     ui->filterBox->setChecked(hGrp->GetBool("ElementFilterEnabled", true));
     ui->filterButton->setEnabled(ui->filterBox->isChecked());
 
-    slotElementsChanged();
+    updateElementsList();
 }
 
 TaskSketcherElements::~TaskSketcherElements()
@@ -1443,7 +1443,7 @@ void TaskSketcherElements::onFilterBoxStateChanged(int val)
     hGrp->SetBool("ElementFilterEnabled", ui->filterBox->checkState() == Qt::Checked);
 
     ui->filterButton->setEnabled(ui->filterBox->checkState() == Qt::Checked);
-    slotElementsChanged();
+    updateElementsList();
 }
 
 void TaskSketcherElements::onListMultiFilterItemChanged(QListWidgetItem* item)
@@ -1987,7 +1987,22 @@ void TaskSketcherElements::leaveEvent(QEvent* event)
 
 void TaskSketcherElements::slotElementsChanged()
 {
+    // The signal fires several times per solve (once per changed property);
+    // one rebuild when the event loop spins covers the whole burst.
+    if (elementsUpdatePending) {
+        return;
+    }
+    elementsUpdatePending = true;
+    QTimer::singleShot(0, this, [this]() {
+        elementsUpdatePending = false;
+        updateElementsList();
+    });
+}
+
+void TaskSketcherElements::updateElementsList()
+{
     assert(sketchView);
+
     // Build up ListView with the elements
     Sketcher::SketchObject* sketch = sketchView->getSketchObject();
 
@@ -2284,7 +2299,7 @@ void TaskSketcherElements::onSettingsExtendedInformationChanged()
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Elements");
     hGrp->SetBool("ExtendedNaming", isNamingBoxChecked);
 
-    slotElementsChanged();
+    updateElementsList();
 }
 
 #include "TaskSketcherElements.moc"// For Delegate as it is QOBJECT
