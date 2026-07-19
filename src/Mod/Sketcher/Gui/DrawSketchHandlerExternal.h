@@ -24,7 +24,11 @@
 
 #pragma once
 
+#include <cstring>
+#include <string>
 #include <App/Datums.h>
+#include <App/IndexedName.h>
+#include <Base/Tools.h>
 #include <Mod/Part/App/DatumFeature.h>
 
 #include <Gui/Notifications.h>
@@ -111,10 +115,11 @@ public:
             return false;
         }
 
-        std::string element(sSubName);
-        if ((element.size() > 4 && element.substr(0, 4) == "Edge")
-            || (element.size() > 6 && element.substr(0, 6) == "Vertex")
-            || (element.size() > 4 && element.substr(0, 4) == "Face")) {
+        const Data::IndexedName element(sSubName);
+        if (element && element.getIndex() > 0
+            && (std::strcmp(element.getType(), "Edge") == 0
+                || std::strcmp(element.getType(), "Vertex") == 0
+                || std::strcmp(element.getType(), "Face") == 0)) {
             return true;
         }
 
@@ -133,6 +138,7 @@ public:
     {}
     ~DrawSketchHandlerExternal() override
     {
+        resumeLazyExternalLayer();
         Gui::Selection().rmvSelectionGate();
     }
 
@@ -169,14 +175,17 @@ public:
             if (!obj) {
                 throw Base::ValueError("Sketcher: External geometry: Invalid object in selection");
             }
-            std::string subName(msg.pSubName);
+            const Data::IndexedName subName(msg.pSubName);
+            const bool hasValidIndex = subName && subName.getIndex() > 0;
+            const bool isExternalEdge = hasValidIndex && std::strcmp(subName.getType(), "Edge") == 0;
+            const bool isExternalVertex = hasValidIndex
+                && std::strcmp(subName.getType(), "Vertex") == 0;
+            const bool isExternalFace = hasValidIndex && std::strcmp(subName.getType(), "Face") == 0;
 
             if (obj->isDerivedFrom<App::Plane>() || obj->isDerivedFrom<Part::Datum>()
                 || obj->isDerivedFrom<Part::DatumLine>() || obj->isDerivedFrom<Part::DatumPoint>()
                 || obj->isDerivedFrom<App::Line>() || obj->isDerivedFrom<App::Point>()
-                || (subName.size() > 4 && subName.substr(0, 4) == "Edge")
-                || (subName.size() > 6 && subName.substr(0, 6) == "Vertex")
-                || (subName.size() > 4 && subName.substr(0, 4) == "Face")) {
+                || isExternalEdge || isExternalVertex || isExternalFace) {
                 try {
                     openCommand(QT_TRANSLATE_NOOP("Command", "Add external geometry"));
                     Gui::cmdAppObjectArgs(
@@ -223,6 +232,13 @@ public:
 private:
     void activated() override
     {
+        if (materializeSelectedLazyExternalReferences()) {
+            sketchgui->purgeHandler();
+            return;
+        }
+
+        suspendLazyExternalLayer();
+
         setAxisPickStyle(false);
         Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
         Gui::View3DInventorViewer* viewer;
@@ -245,12 +261,108 @@ private:
 
     void deactivated() override
     {
-        Q_UNUSED(sketchgui);
+        resumeLazyExternalLayer();
         setAxisPickStyle(true);
+    }
+
+    bool allowLazyExternalPreselection() const override
+    {
+        return false;
+    }
+
+    bool materializeSelectedLazyExternalReferences()
+    {
+        if (intersection || !sketchgui) {
+            return false;
+        }
+
+        const auto lazyExternalIds = getSelectedLazyExternalReferenceIds();
+        if (lazyExternalIds.empty()) {
+            return false;
+        }
+
+        try {
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add external geometry"));
+
+            bool materializationFailed = false;
+            for (int lazyExternalId : lazyExternalIds) {
+                std::string sourceObjectName;
+                std::string sourceSubName;
+                bool sourceIntersection = false;
+                bool sourceVertex = false;
+                if (!getLazyExternalSourceReference(
+                        lazyExternalId,
+                        sourceObjectName,
+                        sourceSubName,
+                        sourceIntersection,
+                        sourceVertex
+                    )) {
+                    materializationFailed = true;
+                    break;
+                }
+
+                const int geoId = materializeLazyExternalSourceReference(
+                    sourceObjectName,
+                    sourceSubName,
+                    sourceIntersection,
+                    !(alwaysReference || isConstructionMode())
+                );
+                if (geoId == Sketcher::GeoEnum::GeoUndef) {
+                    materializationFailed = true;
+                    break;
+                }
+            }
+
+            if (materializationFailed) {
+                abortCommand();
+                clearSelectedLazyExternalReferences();
+                Gui::Selection().clearSelection();
+                Gui::NotifyError(
+                    sketchgui,
+                    QT_TRANSLATE_NOOP("Notifications", "Error"),
+                    QT_TRANSLATE_NOOP("Notifications", "Failed to add external geometry")
+                );
+                return true;
+            }
+
+            commitCommand();
+            tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
+            clearSelectedLazyExternalReferences();
+            Gui::Selection().clearSelection();
+        }
+        catch (const Base::Exception&) {
+            Gui::NotifyError(
+                sketchgui,
+                QT_TRANSLATE_NOOP("Notifications", "Error"),
+                QT_TRANSLATE_NOOP("Notifications", "Failed to add external geometry")
+            );
+            clearSelectedLazyExternalReferences();
+            Gui::Selection().clearSelection();
+            abortCommand();
+        }
+
+        return true;
+    }
+
+    void suspendLazyExternalLayer()
+    {
+        if (!lazyLayerSuspended && sketchgui) {
+            suspendLazyExternalGeometryLayer();
+            lazyLayerSuspended = true;
+        }
+    }
+
+    void resumeLazyExternalLayer()
+    {
+        if (lazyLayerSuspended && sketchgui) {
+            resumeLazyExternalGeometryLayer();
+            lazyLayerSuspended = false;
+        }
     }
 
     bool alwaysReference;
     bool intersection;
+    bool lazyLayerSuspended = false;
 
 public:
     std::list<Gui::InputHint> getToolHints() const override

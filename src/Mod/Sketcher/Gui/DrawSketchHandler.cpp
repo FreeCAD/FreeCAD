@@ -166,6 +166,71 @@ inline int ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCross(const 
     return vp.getPreselectCross();
 }
 
+inline int ViewProviderSketchDrawSketchHandlerAttorney::getPreselectLazyExternalId(
+    const ViewProviderSketch& vp
+)
+{
+    return vp.getPreselectLazyExternalId();
+}
+
+inline bool ViewProviderSketchDrawSketchHandlerAttorney::isPreselectLazyExternalVertex(
+    const ViewProviderSketch& vp
+)
+{
+    return vp.isPreselectLazyExternalVertex();
+}
+
+inline std::vector<int> ViewProviderSketchDrawSketchHandlerAttorney::getSelectedLazyExternalReferenceIds(
+    const ViewProviderSketch& vp
+)
+{
+    return vp.getSelectedLazyExternalReferenceIds();
+}
+
+inline bool ViewProviderSketchDrawSketchHandlerAttorney::getLazyExternalSourceReference(
+    const ViewProviderSketch& vp,
+    int lazyExternalId,
+    std::string& sourceObjectName,
+    std::string& subName,
+    bool& intersection,
+    bool& vertex
+)
+{
+    return vp.getLazyExternalSourceReference(lazyExternalId, sourceObjectName, subName, intersection, vertex);
+}
+
+inline int ViewProviderSketchDrawSketchHandlerAttorney::materializeLazyExternalSourceReference(
+    ViewProviderSketch& vp,
+    const std::string& sourceObjectName,
+    const std::string& subName,
+    bool intersection,
+    bool defining
+)
+{
+    return vp.materializeLazyExternalSourceReference(sourceObjectName, subName, intersection, defining);
+}
+
+inline void ViewProviderSketchDrawSketchHandlerAttorney::clearSelectedLazyExternalReferences(
+    ViewProviderSketch& vp
+)
+{
+    vp.clearSelectedLazyExternalReferences();
+}
+
+inline void ViewProviderSketchDrawSketchHandlerAttorney::suspendLazyExternalGeometryLayer(
+    ViewProviderSketch& vp
+)
+{
+    vp.suspendLazyExternalGeometryLayer();
+}
+
+inline void ViewProviderSketchDrawSketchHandlerAttorney::resumeLazyExternalGeometryLayer(
+    ViewProviderSketch& vp
+)
+{
+    vp.resumeLazyExternalGeometryLayer();
+}
+
 inline void ViewProviderSketchDrawSketchHandlerAttorney::setAngleSnapping(
     ViewProviderSketch& vp,
     bool enable,
@@ -1810,6 +1875,70 @@ int DrawSketchHandler::getPreselectCurve() const
 int DrawSketchHandler::getPreselectCross() const
 {
     return ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCross(*sketchgui);
+}
+
+int DrawSketchHandler::getPreselectLazyExternalId() const
+{
+    return ViewProviderSketchDrawSketchHandlerAttorney::getPreselectLazyExternalId(*sketchgui);
+}
+
+bool DrawSketchHandler::isPreselectLazyExternalVertex() const
+{
+    return ViewProviderSketchDrawSketchHandlerAttorney::isPreselectLazyExternalVertex(*sketchgui);
+}
+
+std::vector<int> DrawSketchHandler::getSelectedLazyExternalReferenceIds() const
+{
+    return ViewProviderSketchDrawSketchHandlerAttorney::getSelectedLazyExternalReferenceIds(*sketchgui);
+}
+
+bool DrawSketchHandler::getLazyExternalSourceReference(
+    int lazyExternalId,
+    std::string& sourceObjectName,
+    std::string& subName,
+    bool& intersection,
+    bool& vertex
+) const
+{
+    return ViewProviderSketchDrawSketchHandlerAttorney::getLazyExternalSourceReference(
+        *sketchgui,
+        lazyExternalId,
+        sourceObjectName,
+        subName,
+        intersection,
+        vertex
+    );
+}
+
+int DrawSketchHandler::materializeLazyExternalSourceReference(
+    const std::string& sourceObjectName,
+    const std::string& subName,
+    bool intersection,
+    bool defining
+)
+{
+    return ViewProviderSketchDrawSketchHandlerAttorney::materializeLazyExternalSourceReference(
+        *sketchgui,
+        sourceObjectName,
+        subName,
+        intersection,
+        defining
+    );
+}
+
+void DrawSketchHandler::clearSelectedLazyExternalReferences()
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::clearSelectedLazyExternalReferences(*sketchgui);
+}
+
+void DrawSketchHandler::suspendLazyExternalGeometryLayer()
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::suspendLazyExternalGeometryLayer(*sketchgui);
+}
+
+void DrawSketchHandler::resumeLazyExternalGeometryLayer()
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::resumeLazyExternalGeometryLayer(*sketchgui);
 }
 
 Sketcher::SketchObject* DrawSketchHandler::getSketchObject()
