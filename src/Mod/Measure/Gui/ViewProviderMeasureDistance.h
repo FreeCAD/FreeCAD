@@ -42,8 +42,10 @@
 #include <Inventor/nodekits/SoSeparatorKit.h>
 
 
+class SoAction;
 class SoCoordinate3;
 class SoIndexedLineSet;
+class SoState;
 
 namespace MeasureGui
 {
@@ -93,9 +95,13 @@ public:
     ~ViewProviderMeasureDistance() override;
 
     App::PropertyBool ShowDelta;
+    App::PropertyBool ShowArrows;
+    App::PropertyFloat ArrowSize;
 
     void redrawAnnotation() override;
     void positionAnno(const Measure::MeasureBase* measureObject) override;
+    void onLabelMoved() override;
+    void finishRestoring() override;
 
 protected:
     Base::Vector3d getTextDirection(
@@ -112,12 +118,22 @@ private:
     SoCoordinate3* pCoords;
     SoIndexedLineSet* pLines;
     SoSwitch* pDeltaDimensionSwitch;
+    SoSwitch* pArrowSwitch {nullptr};
+    SoSwitch* pDeltaLabelSwitch {nullptr};
+
+    SoTranslate2Dragger* pDeltaDragger[3] {};
+    SoTransform* pDeltaLabelTranslation[3] {};
+    Gui::SoFrameLabel* pDeltaLabel[3] {};
+    SoCoordinate3* pDeltaLeaderCoords[3] {};
 
     SoSFVec3f fieldPosition1;
     SoSFVec3f fieldPosition2;
-
     SoSFFloat fieldDistance;
 
+    void initDeltaLabelPositions();
+
+    void drawArrowheads(SoState* state);
+    static void arrowSizeCallback(void* data, SoAction* action);
 
     SbMatrix getMatrix();
 };
