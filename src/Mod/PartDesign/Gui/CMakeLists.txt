@@ -255,9 +255,7 @@ target_include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 target_link_libraries(PartDesignGui ${PartDesignGui_LIBS})
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(PartDesignGui)
-endif()
+target_compile_warn_error(PartDesignGui)
 
 SET_BIN_DIR(PartDesignGui PartDesignGui /Mod/PartDesign)
 SET_PYTHON_PREFIX_SUFFIX(PartDesignGui)

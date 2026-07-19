@@ -496,7 +496,12 @@ void CArea::PopulateClipper(Clipper64& c, bool as_clip) const
     }
 }
 
-void CArea::Clip(ClipType op, const CArea& clip_area, FillRule subjFillType, FillRule clipFillType)
+void CArea::Clip(
+    ClipType op,
+    const CArea& clip_area,
+    FillRule subjFillType,
+    [[maybe_unused]] FillRule clipFillType
+)
 {
     Clipper64 c;
     PopulateClipper(c, false);

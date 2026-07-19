@@ -3860,7 +3860,6 @@ void Adaptive2d::ProcessPolyNode(
 
 
         Path finShiftedPath;
-        int finishingPassCount = 0;
 
         // Create offset version of stock boundary to check if finishing passes are within tool radius
         Paths stockExpandedPaths;
@@ -3876,7 +3875,6 @@ void Adaptive2d::ProcessPolyNode(
                 finShiftedPath,
                 stepOverScaled
             );
-            finishingPassCount++;
 
             if (finShiftedPath.empty()) {
                 continue;

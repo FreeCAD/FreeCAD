@@ -80,9 +80,7 @@ if (MSVC)
     target_compile_options(ReverseEngineering PRIVATE /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(ReverseEngineering)
-endif()
+target_compile_warn_error(ReverseEngineering)
 
 SET_BIN_DIR(ReverseEngineering ReverseEngineering /Mod/ReverseEngineering)
 SET_PYTHON_PREFIX_SUFFIX(ReverseEngineering)

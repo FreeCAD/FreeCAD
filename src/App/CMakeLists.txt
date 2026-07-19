@@ -390,9 +390,7 @@ if (MSVC)
     target_compile_options(FreeCADApp PRIVATE /wd4251 /wd4273 /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(FreeCADApp)
-endif()
+target_compile_warn_error(FreeCADApp)
 
 add_dependencies(FreeCADApp fc_version)
 

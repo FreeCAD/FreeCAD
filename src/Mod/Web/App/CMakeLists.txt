@@ -34,9 +34,7 @@ if(FREECAD_USE_PCH)
     )
 endif(FREECAD_USE_PCH)
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Web)
-endif()
+target_compile_warn_error(Web)
 
 SET_BIN_DIR(Web Web /Mod/Web)
 SET_PYTHON_PREFIX_SUFFIX(Web)

@@ -76,9 +76,7 @@ target_include_directories(
 
 target_link_directories(SurfaceGui PUBLIC ${OCC_LIBRARY_DIR})
 target_link_libraries(SurfaceGui ${SurfaceGui_LIBS})
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(SurfaceGui)
-endif()
+target_compile_warn_error(SurfaceGui)
 
 SET_BIN_DIR(SurfaceGui SurfaceGui /Mod/Surface)
 SET_PYTHON_PREFIX_SUFFIX(SurfaceGui)

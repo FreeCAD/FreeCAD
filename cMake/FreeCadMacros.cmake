@@ -353,9 +353,12 @@ macro(find_pip_package PACKAGE)
 	endif()
 endmacro()
 
-function(target_compile_warn_error ProjectName)
-    if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
-        target_compile_options(${ProjectName} PRIVATE -Werror)
+function(target_compile_warn_error TargetName)
+    if(FREECAD_WARN_ERROR AND (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|MSVC"))
+        target_compile_options(${TargetName} PRIVATE
+            $<$<CXX_COMPILER_ID:MSVC>:/WX>
+            $<$<CXX_COMPILER_ID:GNU,Clang>:-Werror>
+        )
     endif()
 endfunction()
 

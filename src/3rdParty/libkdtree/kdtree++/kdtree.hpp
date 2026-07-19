@@ -526,7 +526,7 @@ behavior of the find and find_nearest functions.
   	    return std::pair<const_iterator, distance_type>
   	      (best.first, best.second.second);
   	  }
-  	return std::pair<const_iterator, distance_type>(end(), 0);
+  	return std::pair<const_iterator, distance_type>(end(), static_cast<distance_type>(0));
   }
 
   template <class SearchVal>

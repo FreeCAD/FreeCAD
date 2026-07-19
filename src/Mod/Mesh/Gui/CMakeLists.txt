@@ -171,9 +171,7 @@ if (MSVC)
     target_compile_options(MeshGui PRIVATE /wd4251 /wd4273 /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(MeshGui)
-endif()
+target_compile_warn_error(MeshGui)
 
 
 SET_BIN_DIR(MeshGui MeshGui /Mod/Mesh)

@@ -93,9 +93,7 @@ if (MSVC)
     target_compile_options(MeasureGui PRIVATE /wd4251 /wd4273)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(MeasureGui)
-endif()
+target_compile_warn_error(MeasureGui)
 
 SET_BIN_DIR(MeasureGui MeasureGui /Mod/Measure)
 SET_PYTHON_PREFIX_SUFFIX(MeasureGui)

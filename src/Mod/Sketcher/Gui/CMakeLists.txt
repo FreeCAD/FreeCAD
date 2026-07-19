@@ -204,9 +204,7 @@ target_include_directories(
 )
 
 target_link_libraries(SketcherGui ${SketcherGui_LIBS})
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(SketcherGui)
-endif()
+target_compile_warn_error(SketcherGui)
 
 SET_BIN_DIR(SketcherGui SketcherGui /Mod/Sketcher)
 SET_PYTHON_PREFIX_SUFFIX(SketcherGui)

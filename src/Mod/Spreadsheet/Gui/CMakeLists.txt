@@ -125,9 +125,7 @@ if (MSVC)
     target_compile_options(SpreadsheetGui PRIVATE /wd4251)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(SpreadsheetGui)
-endif()
+target_compile_warn_error(SpreadsheetGui)
 
 SET_BIN_DIR(SpreadsheetGui SpreadsheetGui /Mod/Spreadsheet)
 SET_PYTHON_PREFIX_SUFFIX(SpreadsheetGui)

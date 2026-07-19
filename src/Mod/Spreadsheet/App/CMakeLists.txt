@@ -64,9 +64,7 @@ if (MSVC)
     target_compile_options(Spreadsheet PRIVATE /wd4251 /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Spreadsheet)
-endif()
+target_compile_warn_error(Spreadsheet)
 
 
 SET_BIN_DIR(Spreadsheet Spreadsheet /Mod/Spreadsheet)
