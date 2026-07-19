@@ -24,10 +24,9 @@
 import FreeCAD
 import FreeCADGui
 import Path
-import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Pocket as PathPocket
-import PathGui
+from Path.Base.Gui.Util import QuantitySpinBox
 
 __title__ = "CAM Pocket Base Operation UI"
 __author__ = "sliptonic (Brad Collette)"
@@ -63,6 +62,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         Must be overwritten by subclasses"""
         pass
 
+    def initPage(self, obj):
+        self.extraOffsetSpinBox = QuantitySpinBox(self.form.extraOffset, obj, "ExtraOffset")
+        self.thresholdSpinBox = QuantitySpinBox(self.form.threshold, obj, "RetractThreshold")
+
     def getForm(self):
         """getForm() ... returns UI, adapted to the results from pocketFeatures()"""
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketFullEdit.ui")
@@ -75,18 +78,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         self.populateCombobox(form, enumTups, comboToPropertyMap)
 
-        if not FeatureFacing & self.pocketFeatures():
+        if not (FeatureFacing & self.pocketFeatures()):
             form.facingWidget.hide()
             form.clearEdges.hide()
-
-        if FeaturePocket & self.pocketFeatures():
-            form.extraOffset_label.setText(translate("PathPocket", "Pass Extension"))
-            form.extraOffset.setToolTip(
-                translate(
-                    "PathPocket",
-                    "The distance the facing operation will extend beyond the boundary shape.",
-                )
-            )
 
         if not (FeatureOutline & self.pocketFeatures()):
             form.useOutline.hide()
@@ -100,14 +94,18 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if setModel and obj.MinTravel != self.form.minTravel.isChecked():
             obj.MinTravel = self.form.minTravel.isChecked()
 
+    def updateQuantitySpinBoxes(self, index=None):
+        self.extraOffsetSpinBox.updateWidget()
+        self.thresholdSpinBox.updateWidget()
+
     def updateAngle(self, obj, setModel=True):
         if obj.ClearingPattern == "Offset":
             self.form.angle.setEnabled(False)
         else:
             self.form.angle.setEnabled(True)
 
-        if setModel:
-            PathGuiUtil.updateInputField(obj, "Angle", self.form.angle)
+        if setModel and getattr(obj.Angle, "Value", obj.Angle) != self.form.angle.value():
+            obj.Angle = self.form.angle.value()
 
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's properties"""
@@ -118,7 +116,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.ClearingPattern != str(self.form.clearingPattern.currentData()):
             obj.ClearingPattern = str(self.form.clearingPattern.currentData())
 
-        PathGuiUtil.updateInputField(obj, "ExtraOffset", self.form.extraOffset)
+        self.extraOffsetSpinBox.updateProperty()
+        self.thresholdSpinBox.updateProperty()
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
         self.updateAngle(obj)
@@ -146,16 +145,14 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
+        self.updateQuantitySpinBoxes()
         self.form.stepOver.setValue(obj.StepOver)
-        self.form.extraOffset.setText(
-            FreeCAD.Units.Quantity(obj.ExtraOffset.Value, FreeCAD.Units.Length).UserString
-        )
         self.form.useStartPoint.setChecked(obj.UseStartPoint)
         self.form.useRestMachining.setChecked(obj.UseRestMachining)
         if FeatureOutline & self.pocketFeatures():
             self.form.useOutline.setChecked(obj.UseOutline)
 
-        self.form.angle.setText(FreeCAD.Units.Quantity(obj.Angle, FreeCAD.Units.Angle).UserString)
+        self.form.angle.setValue(getattr(obj.Angle, "Value", obj.Angle))
         self.updateAngle(obj, False)
 
         self.form.minTravel.setChecked(obj.MinTravel)
@@ -180,6 +177,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.angle.editingFinished)
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.extraOffset.editingFinished)
+        signals.append(self.form.threshold.editingFinished)
         signals.append(self.form.useStartPoint.clicked)
         signals.append(self.form.useRestMachining.clicked)
         signals.append(self.form.useOutline.clicked)
@@ -194,6 +192,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def registerSignalHandlers(self, obj):
         self.form.setStartPoint.clicked.connect(self.setStartPoint)
+        self.form.thresholdToggle.clicked.connect(self.thresholdToggle)
 
     def setStartPoint(self):
         selEx = FreeCADGui.Selection.getSelectionEx()
@@ -205,3 +204,14 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
                 translate("CAM_Pocket", "Set start point: %s, %s")
                 % (round(point.x, 3), round(point.y, 3))
             )
+
+    def thresholdToggle(self):
+        if self.obj.RetractThreshold == 0:
+            self.obj.setExpression("RetractThreshold", "OpToolDiameter")
+            self.thresholdSpinBox.refresh_expression_icon(True)
+        else:
+            self.obj.clearExpression("RetractThreshold")
+            self.obj.RetractThreshold = 0
+            self.thresholdSpinBox.refresh_expression_icon(False)
+        self.updateQuantitySpinBoxes()
+        self.setDirty()

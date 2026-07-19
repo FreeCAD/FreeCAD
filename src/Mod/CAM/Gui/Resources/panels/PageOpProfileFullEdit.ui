@@ -105,55 +105,77 @@
       <item row="2" column="0">
        <widget class="QLabel" name="extraOffsetLabel">
         <property name="text">
-         <string>Extra offset</string>
+         <string>Radial stock to leave</string>
         </property>
        </widget>
       </item>
-     <item row="2" column="1">
-       <widget class="Gui::InputField" name="extraOffset">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
+      <item row="2" column="1">
+       <widget class="Gui::QuantitySpinBox" name="extraOffset">
         <property name="toolTip">
          <string>The amount of extra material left by this operation in relation to the target shape</string>
         </property>
        </widget>
       </item>
       <item row="3" column="0">
+       <widget class="QLabel" name="thresholdLabel">
+        <property name="text">
+         <string>Retract threshold</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::QuantitySpinBox" name="threshold">
+        <property name="toolTip">
+         <string>Distance which will attempts to avoid unnecessary retractions</string>
+        </property>
+        <property name="minimum">
+          <double>0</double>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QToolButton" name="thresholdToggle">
+        <property name="toolTip">
+         <string>Toggle retract threshold between 0 and tool diameter</string>
+        </property>
+        <property name="text">
+         <string notr="true">…</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/button_sort.svg</normaloff>:/icons/button_sort.svg
+         </iconset>
+        </property>
+       </widget>
+      </item>
        <widget class="QLabel" name="numPassesLabel">
         <property name="text">
          <string>Number of passes</string>
         </property>
        </widget>
       </item>
-     <item row="3" column="1">
-       <widget class="QSpinBox" name="numPasses">
-	    <property name="minimum">
-		 <number>1</number>
-        </property>
+      <item row="5" column="1">
+       <widget class="Gui::IntSpinBox" name="numPasses">
+         <property name="minimum">
+           <number>1</number>
+         </property>
+         <property name="maximum">
+           <number>999999</number>
+         </property>
         <property name="toolTip">
          <string>The number of passes to do. If more than one, requires a non-zero value for 'Pass stepover'.</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
+      <item row="6" column="0">
        <widget class="QLabel" name="stepoverLabel">
         <property name="text">
          <string>Pass stepover</string>
         </property>
        </widget>
       </item>
-     <item row="4" column="1">
-       <widget class="Gui::InputField" name="stepover">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
+      <item row="6" column="1">
+       <widget class="Gui::QuantitySpinBox" name="stepover">
         <property name="toolTip">
          <string>If doing multiple passes, the extra offset of each additional pass</string>
         </property>
