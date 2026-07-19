@@ -11,6 +11,13 @@ source:
 
 build:
   number: 0
+  script:
+    # The build runs inside a pixi/rattler-build sandbox that does not inherit the
+    # host environment, so forward the deployment target through explicitly.
+    # Without this, build.sh falls back to its default and the macOS 15 package
+    # builds the legacy QuickLook generator instead of the modern .appex.
+    env:
+      MACOS_DEPLOYMENT_TARGET: ${{ env.get("MACOS_DEPLOYMENT_TARGET", default="11.0") }}
 
 requirements:
   build:
