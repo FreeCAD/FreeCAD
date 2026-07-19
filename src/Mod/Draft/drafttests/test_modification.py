@@ -38,6 +38,7 @@ import FreeCAD as App
 import Part
 import Draft
 from FreeCAD import Vector
+from draftobjects import base as draft_base
 from drafttests import auxiliary as aux
 from drafttests import test_base
 from draftutils.messages import _msg
@@ -611,6 +612,43 @@ class DraftModification(test_base.DraftTestCaseDoc):
         self.doc.recompute()
 
         self.assertTrue(obj.Shape.BoundBox.XLength == 1, "'{}' failed".format(operation))
+
+    def test_attached_draft_nodes(self):
+        """Check if attached Draft nodes follow referenced vertices."""
+        operation = "Attached Draft nodes"
+        _msg("  Test '{}'".format(operation))
+
+        box = self.doc.addObject("Part::Box", "Box")
+        container = self.doc.addObject("App::Part", "Container")
+        container.Placement.Base = Vector(100, 0, 0)
+        wire = Draft.make_wire([Vector(0, 0, 0), Vector(1, 1, 1), Vector(2, 2, 2)])
+        point = Draft.make_point(0, 0, 0)
+        container.addObject(wire)
+        container.addObject(point)
+        self.doc.recompute()
+
+        draft_base.set_point_attachment(wire, 1, (box, ("Vertex4",)))
+        draft_base.set_point_attachment(wire, 2, (box, ("Vertex2",)))
+        draft_base.set_point_attachment(point, 0, (box, ("Vertex4",)))
+        self.doc.recompute()
+
+        wire.Points = wire.Points[1:] + wire.Points[:1]
+        draft_base.rotate_point_attachments(wire, len(wire.Points), 1)
+        wire.Points = list(reversed(wire.Points))
+        draft_base.reverse_point_attachments(wire, len(wire.Points))
+
+        box.Length = 20
+        self.doc.recompute()
+
+        vertex4 = draft_base.point_from_attachment_link((box, ("Vertex4",)))
+        vertex2 = draft_base.point_from_attachment_link((box, ("Vertex2",)))
+        wire_node_1 = wire.getGlobalPlacement().multVec(wire.Points[1])
+        wire_node_2 = wire.getGlobalPlacement().multVec(wire.Points[2])
+        point_position = point.getGlobalPlacement().Base
+
+        self.assertTrue(wire_node_1.isEqual(vertex2, 1e-6), "'{}' failed".format(operation))
+        self.assertTrue(wire_node_2.isEqual(vertex4, 1e-6), "'{}' failed".format(operation))
+        self.assertTrue(point_position.isEqual(vertex4, 1e-6), "'{}' failed".format(operation))
 
     def test_draft_to_techdraw(self):
         """Create a solid, and then a DraftView on a TechDraw page."""

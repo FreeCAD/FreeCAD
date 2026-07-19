@@ -36,6 +36,7 @@ import FreeCAD as App
 from draftutils import gui_utils
 from draftutils import params
 from draftobjects.base import DraftObject
+from draftobjects import base as draft_base
 
 
 class BezCurve(DraftObject):
@@ -71,19 +72,26 @@ class BezCurve(DraftObject):
         obj.Continuity = []
         # obj.setEditorMode("Degree", 2)
         obj.setEditorMode("Continuity", 1)
+        draft_base.assure_point_attachment_properties(obj)
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
+        draft_base.assure_point_attachment_properties(obj)
         gui_utils.restore_view_object(
             obj, vp_module="view_bezcurve", vp_class="ViewProviderBezCurve"
         )
 
     def execute(self, fp):
-        if self.props_changed_placement_only():
+        if self.props_changed_placement_only() and not draft_base.has_point_attachments(fp):
             fp.positionBySupport()
             self.props_changed_clear()
             return
 
+        fp.positionBySupport()
+        if fp.Points:
+            attached_points = draft_base.apply_point_attachments(fp, fp.Points)
+            if attached_points != fp.Points:
+                fp.Points = attached_points
         self.createGeometry(fp)
         fp.positionBySupport()
         self.props_changed_clear()
