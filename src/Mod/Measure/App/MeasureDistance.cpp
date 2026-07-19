@@ -26,6 +26,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/MeasureManager.h>
+#include <Mod/Part/App/Datums.h>
 #include <Base/Tools.h>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
@@ -34,6 +35,14 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Wire.hxx>
+#include <TopoDS_Face.hxx>
+#include <ElCLib.hxx>
+#include <Extrema_ExtElC.hxx>
+#include <IntAna_IntConicQuad.hxx>
+#include <IntAna_QuadQuadGeo.hxx>
+#include <BRep_Tool.hxx>
+#include <Geom_Surface.hxx>
+#include <Geom_Curve.hxx>
 
 #include "MeasureDistance.h"
 
@@ -209,6 +218,135 @@ bool MeasureDistance::distanceCircleCircle(const TopoDS_Shape& shape1, const Top
     return false;
 }
 
+bool MeasureDistance::distanceInfiniteInfinite(
+    const App::DocumentObject& ob1,
+    const std::vector<std::string>& subs1,
+    const App::DocumentObject& ob2,
+    const std::vector<std::string>& subs2,
+    const TopoDS_Shape& shape1,
+    const TopoDS_Shape& shape2
+)
+{
+    App::SubObjectT subject1 = {&ob1, subs1.at(0).c_str()};
+    App::DocumentObject* subObject1 = subject1.getSubObjectList().back();
+    App::SubObjectT subject2 = {&ob2, subs2.at(0).c_str()};
+    App::DocumentObject* subObject2 = subject2.getSubObjectList().back();
+    if (!subObject1 || !subObject2 || !isDatum(*subObject1) || !isDatum(*subObject2)) {
+        return false;
+    }
+
+    auto v = App::GeoFeature::getGlobalPlacement(subObject1, subject1.getObject(), subject1.getSubName())
+                 .getPosition();
+    gp_Pnt ref1(v.x, v.y, v.z);
+    v = App::GeoFeature::getGlobalPlacement(subObject2, subject2.getObject(), subject2.getSubName())
+            .getPosition();
+    gp_Pnt ref2(v.x, v.y, v.z);
+
+    Handle(Geom_Plane) plane1 = asDatumPlane(shape1);
+    Handle(Geom_Plane) plane2 = asDatumPlane(shape2);
+    Handle(Geom_Line) line1 = asDatumLine(shape1);
+    Handle(Geom_Line) line2 = asDatumLine(shape2);
+
+    if (!plane1.IsNull() && !plane2.IsNull()) {
+        gp_Pln pl1 = plane1->Pln();
+        gp_Pln pl2 = plane2->Pln();
+
+        gp_Dir n1 = pl1.Axis().Direction();
+        gp_Dir n2 = pl2.Axis().Direction();
+
+        if (n1.IsParallel(n2, Precision::Angular())) {
+            gp_Vec v(pl2.Location(), ref1);
+            Standard_Real dist = v.Dot(gp_Vec(n1));
+
+            setValues(ref1, ref1.Translated(-dist * gp_Vec(n1)));
+            return true;
+        }
+
+        // Intersecting planes gives a line of solutions, pick the one closest to ref1
+        IntAna_QuadQuadGeo inter(pl1, pl2, Precision::Angular(), Precision::Confusion());
+
+        if (inter.IsDone() && inter.NbSolutions() > 0) {
+            gp_Lin line = inter.Line(1);
+
+            Standard_Real t = ElCLib::Parameter(line, ref1);
+            gp_Pnt p = ElCLib::Value(t, line);
+
+            setValues(p, p);
+            return true;
+        }
+
+        return false;
+    }
+
+    if (!line1.IsNull() && !line2.IsNull()) {
+        gp_Lin l1 = line1->Lin();
+        gp_Lin l2 = line2->Lin();
+
+        gp_Dir d1 = l1.Direction();
+        gp_Dir d2 = l2.Direction();
+
+        if (d1.IsParallel(d2, Precision::Angular())) {
+            Standard_Real t2 = ElCLib::Parameter(l2, ref1);
+            gp_Pnt p2 = ElCLib::Value(t2, l2);
+
+            setValues(ref1, p2);
+            return true;
+        }
+
+        // Skew or intersecting
+        Extrema_ExtElC extrema(l1, l2, Precision::Angular());
+
+        if (extrema.IsDone() && extrema.NbExt() > 0) {
+            Extrema_POnCurv p1, p2;
+            extrema.Points(1, p1, p2);
+
+            setValues(p1.Value(), p2.Value());
+            return true;
+        }
+
+        return false;
+    }
+
+    auto planeLine = [this](
+                         const Handle(Geom_Plane) & plane,
+                         const Handle(Geom_Line) & line,
+                         const gp_Pnt& ref
+                     ) -> bool {
+        gp_Pln pl = plane->Pln();
+        gp_Lin ln = line->Lin();
+
+        gp_Dir n = pl.Axis().Direction();
+        gp_Dir d = ln.Direction();
+
+        if (d.IsNormal(n, Precision::Angular())) {
+            gp_Vec v(pl.Location(), ref);
+            Standard_Real dist = v.Dot(gp_Vec(n));
+
+            setValues(ref, ref.Translated(-dist * gp_Vec(n)));
+            return true;
+        }
+
+        IntAna_IntConicQuad inter(ln, pl, Precision::Angular());
+        if (inter.IsDone() && inter.NbPoints() > 0) {
+            gp_Pnt p = inter.Point(1);
+
+            setValues(p, p);
+            return true;
+        }
+
+        return false;
+    };
+
+    if (!plane2.IsNull() && !line1.IsNull()) {
+        return planeLine(plane2, line1, ref1);
+    }
+    if (!plane1.IsNull() && !line2.IsNull()) {
+        return planeLine(plane1, line2, ref2);
+    }
+
+    return false;
+}
+
 void MeasureDistance::distanceGeneric(const TopoDS_Shape& shape1, const TopoDS_Shape& shape2)
 {
     // Calculate the extrema
@@ -236,7 +374,6 @@ void MeasureDistance::setValues(const gp_Pnt& p1, const gp_Pnt& p2)
 
 App::DocumentObjectExecReturn* MeasureDistance::execute()
 {
-
     App::DocumentObject* ob1 = Element1.getValue();
     std::vector<std::string> subs1 = Element1.getSubValues();
 
@@ -251,6 +388,7 @@ App::DocumentObjectExecReturn* MeasureDistance::execute()
         return new App::DocumentObjectExecReturn("No geometry element picked");
     }
 
+
     // Get both shapes from geometry handler
     TopoDS_Shape shape1;
     if (!this->getShape(&Element1, shape1)) {
@@ -263,6 +401,10 @@ App::DocumentObjectExecReturn* MeasureDistance::execute()
     }
 
     if (distanceCircleCircle(shape1, shape2)) {
+        return DocumentObject::StdReturn;
+    }
+
+    if (distanceInfiniteInfinite(*ob1, subs1, *ob2, subs2, shape1, shape2)) {
         return DocumentObject::StdReturn;
     }
 
@@ -319,6 +461,41 @@ Handle(Geom_Circle) MeasureDistance::asCircle(const TopoDS_Wire& wire) const
     }
 
     return circle;
+}
+
+Handle(Geom_Plane) MeasureDistance::asDatumPlane(const TopoDS_Shape& shape) const
+{
+    if (shape.ShapeType() != TopAbs_FACE) {
+        return {};
+    }
+
+    const TopoDS_Face& face = TopoDS::Face(shape);
+
+    Handle(Geom_Surface) surf = BRep_Tool::Surface(face);
+    if (surf.IsNull()) {
+        return {};
+    }
+
+    Handle(Geom_Plane) plane = Handle(Geom_Plane)::DownCast(surf);
+    return plane;
+}
+
+Handle(Geom_Line) MeasureDistance::asDatumLine(const TopoDS_Shape& shape) const
+{
+    if (shape.ShapeType() != TopAbs_EDGE) {
+        return {};
+    }
+
+    const TopoDS_Edge& edge = TopoDS::Edge(shape);
+
+    Standard_Real first, last;
+    Handle(Geom_Curve) curve = BRep_Tool::Curve(edge, first, last);
+    if (curve.IsNull()) {
+        return {};
+    }
+
+    Handle(Geom_Line) line = Handle(Geom_Line)::DownCast(curve);
+    return line;
 }
 
 //! Return the object we are measuring
