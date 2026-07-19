@@ -305,3 +305,5 @@ class AssemblyWorkbench(Workbench):
 
 
 Gui.addWorkbench(AssemblyWorkbench())
+
+FreeCAD.__unit_test__ += ["TestAssemblyGui"]
