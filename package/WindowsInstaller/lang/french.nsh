@@ -67,6 +67,6 @@ ${LangFileString} DialogUnPreferences 'Vous avez choisi de supprimer le réperto
 ${LangFileString} SecUnProgramFilesDescription "Désinstaller FreeCAD et tous ses composants."
 
 ${LangFileString} DirNotEmptyWarning "The selected folder '$INSTDIR' is not empty.$\r$\n\
-                        The installer will remove all it's content before installing. Continue?"
+                        The installer will remove all its content before installing. Continue?"
 ${LangFileString} RMInstDirFailed "Failed to remove '$INSTDIR'.$\r$\n\
                         Make sure you have sufficient permissions and that no files are in use."
