@@ -4,6 +4,8 @@ These tests inherit from the GUI test base `TestArchBaseGui` which skips
 the whole class when `FreeCAD.GuiUp` is False.
 """
 
+import os
+
 import FreeCAD
 import Arch
 import FreeCADGui
@@ -191,3 +193,43 @@ class TestArchReportGui(TestArchBaseGui):
 
         clause_tooltip = editor._get_tooltip_for_word("SELECT")
         self.assertIn("SQL Clause", clause_tooltip)
+
+    def test_report_restores_view_provider_when_guidocument_is_missing(self):
+        report_obj = Arch.makeReport(name="HeadlessRestoreReport")
+        self.doc.recompute()
+
+        # Force the report's spreadsheet child into existence so claimChildren()
+        # has a real persisted target to rediscover after reopen.
+        spreadsheet = report_obj.Proxy.getSpreadSheet(report_obj, force=True)
+        self.assertIsNotNone(spreadsheet)
+        self.doc.recompute()
+
+        archive = None
+        try:
+            archive, _, restored = self.reopen_without_gui_document(report_obj)
+            self.assertIsNotNone(restored)
+            self.assertIsNotNone(restored.ViewObject)
+            self.assertIsNotNone(restored.ViewObject.Proxy)
+            self.assertEqual(type(restored.ViewObject.Proxy).__name__, "ViewProviderReport")
+            self.assertTrue(restored.ViewObject.Visibility)
+
+            claimed_children = restored.ViewObject.Proxy.claimChildren()
+            self.assertEqual(len(claimed_children), 1)
+            self.assertEqual(claimed_children[0].TypeId, "Spreadsheet::Sheet")
+            self.assertEqual(claimed_children[0].ReportName, restored.Name)
+
+            # Clear any unrelated active task panel before checking that the
+            # restored report can open its own editor.
+            FreeCADGui.Control.closeDialog()
+            self.pump_gui_events()
+            self.panel = None
+            self.assertTrue(restored.ViewObject.Proxy.setEdit(restored.ViewObject, 0))
+            self.pump_gui_events()
+            self.assertTrue(FreeCADGui.Control.activeDialog())
+            self.panel = True
+        finally:
+            if self.panel:
+                FreeCADGui.Control.closeDialog()
+                self.panel = None
+            if archive is not None:
+                os.unlink(archive)

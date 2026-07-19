@@ -88,6 +88,9 @@ class _ArchSchedule:
     def onDocumentRestored(self, obj):
 
         self.setProperties(obj)
+        import ArchRestore
+
+        ArchRestore.restore_view_object(obj)
         if hasattr(obj, "Result"):
             self.update_properties_0v21(obj)
         if hasattr(obj, "Description"):

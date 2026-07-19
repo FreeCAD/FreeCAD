@@ -86,6 +86,9 @@ class _AxisSystem:
     def onDocumentRestored(self, obj):
 
         self.setProperties(obj)
+        import ArchRestore
+
+        ArchRestore.restore_view_object(obj)
 
     def execute(self, obj):
 

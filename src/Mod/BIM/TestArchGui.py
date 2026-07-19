@@ -29,6 +29,7 @@ from bimtests.TestArchAxisGui import TestArchAxisGui
 from bimtests.TestArchBuildingPartGui import TestArchBuildingPartGui
 from bimtests.TestArchStairsGui import TestArchStairsGui
 from bimtests.TestArchReportGui import TestArchReportGui
+from bimtests.TestArchReferenceGui import TestArchReferenceGui  # noqa: F401
 from bimtests.TestArchSiteGui import TestArchSiteGui
 from bimtests.TestArchWallGui import TestArchWallGui
 from bimtests.TestArchWindowGui import TestArchWindowGui

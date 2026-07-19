@@ -175,6 +175,9 @@ class ArchGrid:
     def onDocumentRestored(self, obj):
 
         self.setProperties(obj)
+        import ArchRestore
+
+        ArchRestore.restore_view_object(obj)
 
     def getSizes(self, obj):
         "returns rowsizes,columnsizes,spangroups"

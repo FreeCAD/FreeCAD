@@ -132,14 +132,14 @@ def get_axis_bubble_data(obj, vobj):
 
     pos = ["Start"]
     both_mode = False
-    if hasattr(vobj, "BubblePosition"):
-        if vobj.BubblePosition in ["Both", "Arrow left", "Arrow right", "Bar left", "Bar right"]:
-            pos = ["Start", "End"]
-            both_mode = True
-        elif vobj.BubblePosition == "None":
-            pos = []
-        else:
-            pos = [vobj.BubblePosition]
+    bubble_position = getattr(vobj, "BubblePosition", "Start")
+    if bubble_position in ["Both", "Arrow left", "Arrow right", "Bar left", "Bar right"]:
+        pos = ["Start", "End"]
+        both_mode = True
+    elif bubble_position == "None":
+        pos = []
+    else:
+        pos = [bubble_position]
 
     n = len(obj.Shape.Edges)
     if getattr(obj, "Limit", 0):
@@ -165,16 +165,16 @@ def get_axis_bubble_data(obj, vobj):
             if p == "Start":
                 p1 = verts[0]
                 p2 = verts[1]
-                if vobj.BubblePosition.endswith("left"):
+                if bubble_position.endswith("left"):
                     arrow = True
-                elif vobj.BubblePosition.endswith("right"):
+                elif bubble_position.endswith("right"):
                     arrow = False
             else:
                 p1 = verts[1]
                 p2 = verts[0]
-                if vobj.BubblePosition.endswith("left"):
+                if bubble_position.endswith("left"):
                     arrow = False
-                elif vobj.BubblePosition.endswith("right"):
+                elif bubble_position.endswith("right"):
                     arrow = True
 
             dv = p2.sub(p1)
@@ -309,6 +309,9 @@ class _Axis:
     def onDocumentRestored(self, obj):
 
         self.setProperties(obj)
+        import ArchRestore
+
+        ArchRestore.restore_view_object(obj)
 
     def execute(self, obj):
 
@@ -542,6 +545,7 @@ class _ViewProviderAxis:
         sep.addChild(self.lineset)
         sep.addChild(self.bubbleset)
         sep.addChild(self.labelset)
+        self.setProperties(vobj)
         vobj.addDisplayMode(sep, "Default")
         self.onChanged(vobj, "BubbleSize")
         self.onChanged(vobj, "ShowLabel")

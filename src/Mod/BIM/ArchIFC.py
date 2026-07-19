@@ -100,6 +100,15 @@ class IfcRoot:
 
         self.migrateDeprecatedAttributes(obj)
 
+    def onDocumentRestored(self, obj):
+        """Restore IFC properties and any missing Python view provider."""
+
+        self.setProperties(obj)
+
+        import ArchRestore
+
+        ArchRestore.restore_view_object(obj)
+
     def onChanged(self, obj, prop):
         """Method called when the object has a property changed.
 

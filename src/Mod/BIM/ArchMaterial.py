@@ -189,6 +189,9 @@ class _ArchMaterial:
     def onDocumentRestored(self, obj):
 
         self.setProperties(obj)
+        import ArchRestore
+
+        ArchRestore.restore_view_object(obj)
 
     def setProperties(self, obj):
 

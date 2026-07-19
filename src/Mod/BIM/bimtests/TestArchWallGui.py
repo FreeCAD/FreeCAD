@@ -24,6 +24,8 @@
 
 """GUI tests for the ArchWall module."""
 
+import os
+
 import FreeCAD
 import FreeCADGui
 import Draft
@@ -205,6 +207,23 @@ class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
         self.assertEqual(Draft.get_type(wall), "Wall")
         self.assertEqual(base.TypeId, "Sketcher::SketchObject")
         self.assertEqual(wall.Base, base, "The wall's Base should be the newly created sketch.")
+
+    def test_wall_restores_view_provider_when_guidocument_is_missing(self):
+        wall = Arch.makeWall(length=2000, width=200, height=2500)
+        self.document.recompute()
+
+        archive = None
+        try:
+            archive, _, restored = self.reopen_without_gui_document(wall)
+            self.assertIsNotNone(restored)
+            self.assertIsNotNone(restored.ViewObject)
+            self.assertIsNotNone(restored.ViewObject.Proxy)
+            self.assertEqual(type(restored.ViewObject.Proxy).__name__, "_ViewProviderWall")
+            self.assertTrue(restored.ViewObject.Visibility)
+            self.assertIn("UseMaterialColor", restored.ViewObject.PropertiesList)
+        finally:
+            if archive is not None:
+                os.unlink(archive)
 
     def test_stretch_rotated_baseless_wall(self):
         """Tests that the Draft_Stretch tool correctly handles a rotated baseless wall."""
