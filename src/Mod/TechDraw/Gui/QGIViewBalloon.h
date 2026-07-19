@@ -183,6 +183,8 @@ public:
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
                QWidget* widget = nullptr) override;
 
+    QPainterPath shape() const override;
+
     QString getLabelText();
     void placeBalloon(QPointF pos);
     void setPrettyPre();
@@ -231,6 +233,8 @@ protected:
                           bool isDragging,
                           Base::Vector3d& labelPos,
                           Base::Vector3d& arrowPos);
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
 
 
 private:
