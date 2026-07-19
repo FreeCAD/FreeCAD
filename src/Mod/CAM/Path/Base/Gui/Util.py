@@ -238,6 +238,16 @@ class QuantitySpinBox(QtCore.QObject):
                 return exp
         return None
 
+    def refresh_expression_icon(self, has_expression):
+        line_edit = self.widget.lineEdit()
+        icon_label = line_edit.findChild(QtGui.QLabel)
+        if icon_label is None:
+            return
+        icon_height = QtGui.QFontMetrics(line_edit.font()).height()
+        name = "bound-expression.svg" if has_expression else "bound-expression-unset.svg"
+        pixmap = FreeCADGui.getIcon(":/icons/" + name).pixmap(icon_height, icon_height)
+        icon_label.setPixmap(pixmap)
+
 
 class PropertyComboBox(QtCore.QObject):
     """Base controller class for properties represented as QComboBox."""
