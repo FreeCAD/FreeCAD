@@ -1,4 +1,4 @@
-﻿/*
+/*
 init.nsh
 
 Initialization functions
@@ -7,24 +7,30 @@ Initialization functions
 #--------------------------------
 # User initialization
 
+!include WinVer.nsh
+
 Var FCLangName
 
 Function InitUser
 
   # Get FreeCAD language
-  
+
   ReadRegStr $FCLangName SHELL_CONTEXT "${APP_REGKEY_SETUP}" "FreeCAD Language"
-  
+
   ${If} $FCLangName != ""
     StrCpy $LangName $FCLangName
   ${EndIf}
-  
+
 FunctionEnd
 
 #--------------------------------
 # MultiUser custom method
 
 Function PostMultiUserPageInit
+  # restore command line install directory
+  ${if} $OriginalCmdInstDir != ""
+    StrCpy $INSTDIR $OriginalCmdInstDir
+  ${endif}
   # check if this FreeCAD version is already installed
   ReadRegStr $0 SHCTX "${APP_UNINST_KEY}" "UninstallString"
   ${if} $0 != ""
@@ -86,7 +92,7 @@ Section "!${APP_NAME}" SecCore
 SectionEnd
 
 Section "$(SecFileAssocTitle)" SecFileAssoc
- StrCpy $CreateFileAssociations "true" 
+ StrCpy $CreateFileAssociations "true"
 SectionEnd
 
 Section "$(SecDesktopTitle)" SecDesktop
@@ -104,50 +110,53 @@ SectionEnd
 # .onInit must be here after the section definition because we have to set
 # the selection states of the dictionary sections
 Function .onInit
-
-  ReadRegStr $R0 HKLM "SOFTWARE\Microsoft\Windows NT\CurrentVersion" CurrentVersion
-  ${if} $R0 == "5.0" # 2000
-  ${orif} $R0 == "5.1" # XP
-  ${orif} $R0 == "5.2" # 2003
-  ${orif} $R0 == "6.0" # Vista
-  ${orif} $R0 == "6.1" # 7
-    MessageBox MB_OK|MB_ICONSTOP "${APP_NAME} ${APP_VERSION} requires Windows 8 or newer." /SD IDOK
+  # save INSTDIR specified with /D for later
+  StrCpy $OriginalCmdInstDir $INSTDIR
+  # qt6.8 has windows 10 1809 as minimum version, which is build 17763
+  # build number details at https://learn.microsoft.com/en-us/windows/release-health/release-information
+  ${ifnot} ${AtLeastBuild} 17763
+    MessageBox MB_OK|MB_ICONSTOP "${APP_NAME} ${APP_VERSION} requires Windows 10 or newer." /SD IDOK
     Quit
   ${endif}
-  
+
   # check if it is a 64bit system
   ${if} ${RunningX64}
    SetRegView 64
    !define LIBRARY_X64
   ${endif}
-  
+
   # Check that FreeCAD is not currently running
-  ${nsProcess::FindProcess} ${BIN_FREECAD} $R0
-  # if running result is '0', if not running it is '603'
+  Push $R0
+  Push $R1
+  ${FindProc} $R0 ${BIN_FREECAD}
+  ${FindProc} $R1 ${BIN_FREECADCMD}
+  # if running result is '0', if not running it is '1'
   ${if} $R0 == "0"
+  ${orif} $R1 == "0"
    MessageBox MB_OK|MB_ICONSTOP "$(UnInstallRunning)" /SD IDOK
    Abort
   ${endif}
-  # plugin must be unloaded
-  ${nsProcess::Unload}
-  
+  Pop $R1
+  Pop $R0
+
   # initialize the multi-user installer UI
   !insertmacro MULTIUSER_INIT
 
   # this can be reset to "true" in section SecDesktop
   StrCpy $CreateDesktopIcon "false"
   StrCpy $CreateFileAssociations "false"
- 
+
   ${IfNot} ${Silent}
-    # Show banner while installer is initializing 
+    # Show banner while installer is initializing
     Banner::show /NOUNLOAD "Checking system"
     Banner::destroy
   ${EndIf}
 
-  # if installer runs silent the post install mode page routine has to be called here
+  # if installer runs silent the post install mode and directory page routines have to be called here
   ${If} ${Silent}
     Call PostMultiUserPageInit
-  ${endif}
+    Call ValidateInstallDir
+  ${EndIf}
 
 FunctionEnd
 
@@ -160,15 +169,19 @@ Function un.onInit
   !insertmacro MULTIUSER_UNINIT
 
   # Check that FreeCAD is not currently running
-  ${nsProcess::FindProcess} ${BIN_FREECAD} $R0
-  # if running result is '0', if not running it is '603'
+  Push $R0
+  Push $R1
+  ${FindProc} $R0 ${BIN_FREECAD}
+  ${FindProc} $R1 ${BIN_FREECADCMD}
+  # if running result is '0', if not running it is '1'
   ${if} $R0 == "0"
+  ${orif} $R1 == "0"
    MessageBox MB_OK|MB_ICONSTOP "$(UnInstallRunning)" /SD IDOK
    Abort
   ${endif}
-  # plugin must be unloaded
-  ${nsProcess::Unload}
-  
+  Pop $R1
+  Pop $R0
+
   # check if it is a 64bit system
   ${if} ${RunningX64}
    SetRegView 64
