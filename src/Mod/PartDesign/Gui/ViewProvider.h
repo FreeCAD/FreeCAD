@@ -123,6 +123,7 @@ protected:
     bool isSetTipIcon {false};
 
 private:
+    bool restoreTemporaryVisibilityOnEditClose {false};
     Gui::CoinPtr<PartGui::SoPreviewShape> pcToolPreview;
 };
 
