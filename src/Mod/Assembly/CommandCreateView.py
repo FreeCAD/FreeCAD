@@ -21,12 +21,13 @@
 #                                                                           *
 # **************************************************************************/
 
+import math
 import re
 import os
 import FreeCAD as App
 
 from pivy import coin
-from Part import LineSegment, Compound
+from Part import LineSegment, Compound, Precision
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -352,6 +353,131 @@ ExplodedViewStepTypes = [
     "Radial",
 ]
 
+# SoTransformDragger stores its position in an SbVec3f.
+SINGLE_PRECISION_EPSILON = 2**-23
+
+
+def setMovementDistance(move, distance, direction=None):
+    """Set a move's translation length while preserving its direction and rotation."""
+    transform = App.Placement(move.MovementTransform)
+    base = transform.Base
+
+    if base.Length > 0:
+        direction = App.Vector(base)
+    elif direction is not None and direction.Length > 0:
+        direction = App.Vector(direction)
+    elif move.MoveType == "Radial":
+        # Radial moves only use the vector length, not its direction.
+        direction = App.Vector(1, 0, 0)
+    else:
+        return None
+
+    direction.normalize()
+    transform.Base = direction * max(0.0, distance)
+    move.MovementTransform = transform
+    return direction
+
+
+def movementEditMode(move):
+    if move.MoveType == "Radial":
+        return "Distance"
+    if isPureRotationMovement(move.MovementTransform):
+        return "Angle"
+    return "Distance"
+
+
+def isPureRotationMovement(transform):
+    """Return True when a placement is a rotation without translation along its axis."""
+    rotation = transform.Rotation
+    if rotation.Angle <= Precision.angular():
+        return False
+
+    axis = App.Vector(rotation.Axis)
+    if axis.Length <= Precision.confusion():
+        return False
+    axis.normalize()
+
+    # A pure rotation around an arbitrary center usually has a non-zero Base
+    # term (center - R * center). The meaningful test is whether the transform
+    # also translates along the rotation axis. If it does, it is a screw/mixed
+    # movement, so the distance editor is more appropriate.
+    translation = App.Vector(transform.Base)
+    return abs(translation.dot(axis)) <= Precision.confusion()
+
+
+def draggerTranslationTolerance(initialPlacement, currentPlacement):
+    """Tolerance for translation noise from the dragger's single-precision position."""
+    coordinateScale = max(
+        abs(initialPlacement.Base.x),
+        abs(initialPlacement.Base.y),
+        abs(initialPlacement.Base.z),
+        abs(currentPlacement.Base.x),
+        abs(currentPlacement.Base.y),
+        abs(currentPlacement.Base.z),
+        1.0,
+    )
+    return max(
+        Precision.confusion(),
+        4 * SINGLE_PRECISION_EPSILON * coordinateScale,
+    )
+
+
+def rotationCenterFromTransform(transform):
+    """Return a point on the axis of a rotation transform."""
+    angle = transform.Rotation.Angle
+    if angle <= Precision.angular():
+        return App.Vector()
+
+    axis = App.Vector(transform.Rotation.Axis)
+    axis.normalize()
+    translation = App.Vector(transform.Base)
+    perpendicular = translation - axis * translation.dot(axis)
+    cotangent = 1.0 / math.tan(angle / 2.0)
+    return (perpendicular + axis.cross(perpendicular) * cotangent) * 0.5
+
+
+def placementIsIdentity(transform):
+    return (
+        transform.Base.Length <= Precision.confusion()
+        and transform.Rotation.Angle <= Precision.angular()
+    )
+
+
+def moveObjectsAndReferences(move):
+    if not hasattr(move, "References"):
+        return [], []
+    if not UtilsAssembly.isRefValid(move.References, 1):
+        return [], []
+
+    objs = []
+    refs = []
+    for sub in move.References[1]:
+        ref = [move.References[0], [sub]]
+        obj = UtilsAssembly.getObject(ref)
+        if obj is None or not hasattr(obj, "Placement"):
+            continue
+        objs.append(obj)
+        refs.append(ref)
+    return objs, refs
+
+
+def setMovementAngle(move, angle):
+    """Set a move's rotation angle while preserving its axis and center."""
+    transform = App.Placement(move.MovementTransform)
+    if not isPureRotationMovement(transform):
+        return False
+
+    axis = App.Vector(transform.Rotation.Axis)
+    if axis.Length <= Precision.confusion():
+        return False
+    axis.normalize()
+
+    center = rotationCenterFromTransform(transform)
+    rotation = App.Rotation(axis, angle)
+    pivot = App.Placement(center, App.Rotation())
+    move.MovementTransform = App.Placement(center, rotation) * pivot.inverse()
+    return True
+
 
 class ExplodedViewStep:
     def __init__(self, evStep, type_index=0):
@@ -591,6 +717,8 @@ class TaskAssemblyCreateView(QtCore.QObject):
         self.form = Gui.PySideUic.loadUi(":/panels/TaskAssemblyCreateView.ui")
         self.form.stepList.installEventFilter(self)
         self.form.stepList.itemClicked.connect(self.onItemClicked)
+        self.form.stepList.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.form.stepList.customContextMenuRequested.connect(self.onStepContextMenu)
 
         view = Gui.activeDocument().activeView()
 
@@ -625,6 +753,11 @@ class TaskAssemblyCreateView(QtCore.QObject):
         self.form.CheckBox_PartsAsSingleSolid.setChecked(pref.GetBool("PartsAsSingleSolid", True))
 
         self.initialPlcs = UtilsAssembly.saveAssemblyPartsPlacements(self.assembly)
+        self.moveSpinboxes = {}
+        self.moveDirections = {}
+        self.selectedRefs = []
+        self.selectedObjs = []
+        self.selectedObjsInitPlc = []
 
         if viewObj:
             Gui.ActiveDocument.openCommand("Edit Exploded View")
@@ -781,15 +914,221 @@ class TaskAssemblyCreateView(QtCore.QObject):
 
         self.viewObj.Proxy.applyMoves(self.viewObj, self.com, self.size)
 
+        self.rebuildStepList()
+
+    def rebuildStepList(self):
         self.form.stepList.clear()
+        self.moveSpinboxes.clear()
         for move in self.viewObj.Group:
-            self.form.stepList.addItem(move.Name)
+            item = QtWidgets.QListWidgetItem()
+            item.setData(QtCore.Qt.UserRole, move.Name)
+            self.form.stepList.addItem(item)
+
+            row = QtWidgets.QWidget(self.form.stepList)
+            layout = QtWidgets.QHBoxLayout(row)
+            layout.setContentsMargins(4, 0, 4, 0)
+            row.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+            row.customContextMenuRequested.connect(
+                lambda position, currentItem=item, widget=row: self.showStepContextMenu(
+                    currentItem, widget.mapToGlobal(position)
+                )
+            )
+
+            label = QtWidgets.QLabel(move.Name, row)
+            layout.addWidget(label)
+            layout.addStretch()
+
+            mode = movementEditMode(move)
+            if mode in ("Distance", "Angle"):
+                spinbox = Gui.UiLoader().createWidget("Gui::QuantitySpinBox")
+                spinbox.setParent(row)
+                spinbox.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+                spinbox.customContextMenuRequested.connect(
+                    lambda position, currentItem=item, widget=spinbox: self.showStepContextMenu(
+                        currentItem, widget.mapToGlobal(position)
+                    )
+                )
+                if mode == "Angle":
+                    spinbox.setProperty("unit", "deg")
+                    spinbox.setProperty("minimum", -360.0)
+                    spinbox.setProperty("maximum", 360.0)
+                    spinbox.setProperty(
+                        "rawValue",
+                        math.degrees(move.MovementTransform.Rotation.Angle),
+                    )
+                    spinbox.setToolTip(
+                        QT_TRANSLATE_NOOP("Assembly", "Angle of this exploded-view move")
+                    )
+                else:
+                    spinbox.setProperty("unit", "mm")
+                    spinbox.setProperty("minimum", 0.0)
+                    spinbox.setProperty("maximum", 1.0e9)
+                    spinbox.setProperty("rawValue", move.MovementTransform.Base.Length)
+                    spinbox.setToolTip(
+                        QT_TRANSLATE_NOOP("Assembly", "Distance of this exploded-view move")
+                    )
+                spinbox.valueChanged.connect(
+                    lambda _value, currentMove=move: self.onMoveValueChanged(currentMove)
+                )
+                layout.addWidget(spinbox)
+                self.moveSpinboxes[move.Name] = spinbox
+
+            item.setSizeHint(row.sizeHint())
+            self.form.stepList.setItemWidget(item, row)
+
+            if mode == "Distance" and move.MovementTransform.Base.Length > 0:
+                direction = App.Vector(move.MovementTransform.Base)
+                direction.normalize()
+                self.moveDirections[move.Name] = direction
 
     def onItemClicked(self, item):
         Gui.Selection.clearSelection()
-        Gui.Selection.addSelection(self.viewObj.Document.Name, item.text(), "")
+        moveName = item.data(QtCore.Qt.UserRole)
+        Gui.Selection.addSelection(self.viewObj.Document.Name, moveName, "")
         # we give back the focus to the item as addSelection gave the focus to the 3dview
         self.form.stepList.setCurrentItem(item)
+
+    def onStepContextMenu(self, position):
+        item = self.form.stepList.itemAt(position)
+        if item is None:
+            return
+        self.showStepContextMenu(
+            item,
+            self.form.stepList.viewport().mapToGlobal(position),
+        )
+
+    def showStepContextMenu(self, item, globalPosition):
+        self.form.stepList.setCurrentItem(item)
+        move = self.viewObj.Document.getObject(item.data(QtCore.Qt.UserRole))
+        if move is None:
+            return
+
+        menu = QMenu(self.form.stepList)
+        editPlacement = menu.addAction(
+            QtWidgets.QApplication.translate("Assembly", "Edit placement")
+        )
+        selectedAction = menu.exec_(globalPosition)
+        if selectedAction == editPlacement:
+            previousTransform = [App.Placement(move.MovementTransform)]
+
+            def onPlacementChanged():
+                self.onMovePlacementChanged(move, previousTransform[0])
+                previousTransform[0] = App.Placement(move.MovementTransform)
+
+            UtilsAssembly.openEditingPlacementDialog(
+                move,
+                "MovementTransform",
+                onPlacementChanged,
+            )
+
+    def onMovePlacementChanged(self, move, oldTransform=None):
+        if oldTransform is not None:
+            self.adjustDependentMoves(move, oldTransform)
+        self.onMovesChanged()
+        self.updateDraggerFromMoveObjects(move)
+        self.syncDraggerBaseline()
+
+    def onMoveValueChanged(self, move):
+        spinbox = self.moveSpinboxes.get(move.Name)
+        if spinbox is None:
+            return
+
+        value = spinbox.property("rawValue")
+        oldTransform = App.Placement(move.MovementTransform)
+        if movementEditMode(move) == "Angle":
+            if not setMovementAngle(move, value):
+                self.updateMoveSpinbox(move)
+                return
+        else:
+            direction = setMovementDistance(move, value, self.moveDirections.get(move.Name))
+            if direction is None:
+                self.updateMoveSpinbox(move)
+                return
+            self.moveDirections[move.Name] = direction
+
+            self.adjustDependentMoves(move, oldTransform)
+        UtilsAssembly.restoreAssemblyPartsPlacements(self.assembly, self.initialPlcs)
+        self.viewObj.Proxy.applyMoves(self.viewObj, self.com, self.size)
+        self.updateDraggerFromMoveObjects(move)
+        self.syncDraggerBaseline()
+
+    def adjustDependentMoves(self, changedMove, oldChangedTransform):
+        moves = list(self.viewObj.Group)
+        try:
+            changedIndex = moves.index(changedMove)
+        except ValueError:
+            return
+
+        oldPlacements = {
+            name: App.Placement(placement) for name, placement in self.initialPlcs.items()
+        }
+        newPlacements = {
+            name: App.Placement(placement) for name, placement in self.initialPlcs.items()
+        }
+
+        for i, move in enumerate(moves):
+            objs, _refs = moveObjectsAndReferences(move)
+            objNames = [obj.Name for obj in objs]
+            transformBeforeAdjustment = App.Placement(move.MovementTransform)
+
+            if i > changedIndex and move.MoveType == "Normal":
+                for objName in objNames:
+                    oldPlacement = oldPlacements.get(objName)
+                    newPlacement = newPlacements.get(objName)
+                    if oldPlacement is None or newPlacement is None:
+                        continue
+
+                    delta = newPlacement * oldPlacement.inverse()
+                    if placementIsIdentity(delta):
+                        continue
+
+                    move.MovementTransform = delta * move.MovementTransform * delta.inverse()
+                    break
+
+            oldTransform = oldChangedTransform if move == changedMove else transformBeforeAdjustment
+            newTransform = move.MovementTransform
+            for objName in objNames:
+                if objName in oldPlacements:
+                    oldPlacements[objName] = oldTransform * oldPlacements[objName]
+                if objName in newPlacements:
+                    newPlacements[objName] = newTransform * newPlacements[objName]
+
+    def updateDraggerFromMoveObjects(self, move):
+        objs, refs = moveObjectsAndReferences(move)
+        if not objs:
+            return
+
+        draggerPlacement = UtilsAssembly.getGlobalPlacement(refs[0], objs[0])
+        draggerPlacement = App.Placement(draggerPlacement)
+        draggerPlacement.Base = UtilsAssembly.getCenterOfBoundingBox(objs, refs)
+
+        self.blockDraggerMove = True
+        self.assembly.ViewObject.DraggerPlacement = draggerPlacement
+        self.blockDraggerMove = False
+
+    def syncDraggerBaseline(self):
+        self.initialDraggerPlc = App.Placement(self.assembly.ViewObject.DraggerPlacement)
+        for i, obj in enumerate(getattr(self, "selectedObjs", [])):
+            self.selectedObjsInitPlc[i] = App.Placement(obj.Placement)
+
+    def updateMoveSpinbox(self, move):
+        spinbox = self.moveSpinboxes.get(move.Name)
+        if spinbox is None:
+            return
+
+        if movementEditMode(move) == "Angle":
+            value = math.degrees(move.MovementTransform.Rotation.Angle)
+        else:
+            base = move.MovementTransform.Base
+            value = base.Length
+            if base.Length > 0:
+                direction = App.Vector(base)
+                direction.normalize()
+                self.moveDirections[move.Name] = direction
+
+        spinbox.blockSignals(True)
+        spinbox.setProperty("rawValue", value)
+        spinbox.blockSignals(False)
 
     def onRadialClicked(self):
         self.dismissCurrentStep()
@@ -916,7 +1255,32 @@ class TaskAssemblyCreateView(QtCore.QObject):
 
         # we update the move Placement.
         draggerPlc = self.assembly.ViewObject.DraggerPlacement
+        previousEditorMode = movementEditMode(self.currentStep)
         self.currentStep.MovementTransform = draggerPlc * self.initialDraggerPlc.inverse()
+        translation = (draggerPlc.Base - self.initialDraggerPlc.Base).Length
+        rotation = self.currentStep.MovementTransform.Rotation.Angle
+        translationTolerance = draggerTranslationTolerance(
+            self.initialDraggerPlc,
+            draggerPlc,
+        )
+        if (
+            self.currentStep.MoveType != "Radial"
+            and rotation > Precision.angular()
+            and translation <= translationTolerance
+        ):
+            self.currentStep.MovementTransform.Base = (
+                self.initialDraggerPlc.Base
+                - self.currentStep.MovementTransform.Rotation.multVec(self.initialDraggerPlc.Base)
+            )
+        elif translation > translationTolerance:
+            self.currentStep.MovementTransform = App.Placement(
+                draggerPlc.Base - self.initialDraggerPlc.Base,
+                App.Rotation(),
+            )
+
+        if movementEditMode(self.currentStep) != previousEditorMode:
+            self.rebuildStepList()
+        self.updateMoveSpinbox(self.currentStep)
 
         # Apply the move
         self.currentStep.Proxy.applyStep(self.currentStep, self.com, self.size)
@@ -924,6 +1288,7 @@ class TaskAssemblyCreateView(QtCore.QObject):
     def draggerFinished(self, event):
         isRadial = self.currentStep.MoveType == "Radial"
         self.currentStep = None
+        self.onMovesChanged()
 
         if isRadial:
             Gui.Selection.clearSelection()
