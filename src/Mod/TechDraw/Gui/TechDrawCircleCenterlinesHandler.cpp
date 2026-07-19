@@ -29,6 +29,7 @@
 #include <string>
 #include <cmath>
 
+#include <App/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection/SelectionObject.h>
 #include <Gui/Selection/Selection.h>
@@ -72,6 +73,7 @@ void execHoleCircle(std::vector<std::string> SubNames, TechDraw::DrawViewPart* o
         return;
     }
 
+    objFeat->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Bolt circle centerlines"));
     // make the bolt hole circle from 3 scaled and rotated points
     Base::Vector3d bigCenter =
         _circleCenter(Circles[0]->center, Circles[1]->center, Circles[2]->center);
@@ -110,6 +112,7 @@ void execHoleCircle(std::vector<std::string> SubNames, TechDraw::DrawViewPart* o
     }
     objFeat->refreshCEGeoms();
     objFeat->requestPaint();
+    objFeat->getDocument()->commitTransaction();
 }
 
 
@@ -318,6 +321,7 @@ void TechDrawCircleCenterlinesHandler::deactivated()
         previewLines.clear();
         previewObjFeat = nullptr;
     }
+    previewSubNames.clear();
 }
 
 void TechDrawCircleCenterlinesHandler::mouseMoveEvent(QMouseEvent* event)
@@ -363,6 +367,7 @@ void TechDrawCircleCenterlinesHandler::mouseMoveEvent(QMouseEvent* event)
             previewObjFeat->requestPaint();
             previewLines.clear();
             previewObjFeat = nullptr;
+            previewSubNames.clear();
         }
     }
     else {
@@ -375,6 +380,7 @@ void TechDrawCircleCenterlinesHandler::mouseMoveEvent(QMouseEvent* event)
         }
         execCircleCenterLines(SubNames, objFeat, previewLines);
         previewObjFeat = objFeat;
+        previewSubNames = SubNames;
     }
 }
 
@@ -382,12 +388,20 @@ void TechDrawCircleCenterlinesHandler::mouseReleaseEvent(QMouseEvent* event)
 {
     Q_UNUSED(event);
 
-    if (previewLines.empty()) {
+    if (previewLines.empty() || !previewObjFeat) {
         return;
     }
 
+    previewObjFeat->removeCosmeticEdge(previewLines);
+    previewLines.clear();
+
+    previewObjFeat->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Circle centerlines"));
+    execCircleCenterLines(previewSubNames, previewObjFeat, previewLines);
+    previewObjFeat->getDocument()->commitTransaction();
+
     previewLines.clear();
     previewObjFeat = nullptr;
+    previewSubNames.clear();
 }
 
 void TechDrawCircleCenterlinesHandler::mousePressEvent(QMouseEvent* event)
@@ -408,7 +422,9 @@ void TechDrawCircleCenterlinesHandler::addPreselected() {
         TechDraw::DrawViewPart* objFeat = dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject());
         std::vector<std::string> SubNames = selection[0].getSubNames();
         std::vector<std::string> lines;
+        objFeat->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Circle centerlines"));
         execCircleCenterLines(SubNames, objFeat, lines);
+        objFeat->getDocument()->commitTransaction();
     }
 
 }

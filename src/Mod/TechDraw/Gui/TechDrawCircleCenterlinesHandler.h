@@ -56,6 +56,7 @@ class TechDrawCircleCenterlinesHandler : public TechDrawGui::TechDrawHandler
 private:
     std::vector<std::string> previewLines;
     TechDraw::DrawViewPart* previewObjFeat{nullptr};
+    std::vector<std::string> previewSubNames;
 
 public:
     void activated() override;
