@@ -345,7 +345,7 @@ std::vector<Data::MappedElement> Feature::findSimilarNames(
     ZoneScoped;
     std::vector<Data::MappedElement> ret {};
 
-    if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+    if (searchShape.getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
         for (const Data::MappedElement& loopNamePair : searchShape.getElementMap()) {
             if (loopNamePair.name == searchName) {
                 ret.push_back(loopNamePair);
@@ -1149,11 +1149,11 @@ static TopoShape _getTopoShape(
 )
 
 {
-    TopoShape shape;
-
     if (!obj) {
-        return shape;
+        return { };
     }
+
+    TopoShape shape = Feature::makeTopoShape(obj);
 
     PyObject* pyobj = nullptr;
     Base::Matrix4D mat;
@@ -1251,7 +1251,7 @@ static TopoShape _getTopoShape(
                     _shape = builder.Shape();
                     _shape.Infinite(Standard_True);
                 }
-                shape = TopoShape(tag, hasher, _shape);
+                shape = TopoShape(tag, hasher, _shape, obj->getSelectedHistoryAlgorithm());
             }
             else if (linked->isDerivedFrom<App::Plane>()) {
                 static TopoDS_Shape _shape;
@@ -1264,7 +1264,7 @@ static TopoShape _getTopoShape(
                     _shape = builder.Shape();
                     _shape.Infinite(Standard_True);
                 }
-                shape = TopoShape(tag, hasher, _shape);
+                shape = TopoShape(tag, hasher, _shape, obj->getSelectedHistoryAlgorithm());
             }
             else if (linked->isDerivedFrom<App::Point>()) {
                 static TopoDS_Shape _shape;
@@ -1272,7 +1272,7 @@ static TopoShape _getTopoShape(
                     BRepBuilderAPI_MakeVertex builder(gp_Pnt(0, 0, 0));
                     _shape = builder.Shape();
                 }
-                shape = TopoShape(tag, hasher, _shape);
+                shape = TopoShape(tag, hasher, _shape, obj->getSelectedHistoryAlgorithm());
             }
             else if (linked->isDerivedFrom<App::Placement>()) {
                 auto element = Data::findElementName(subname);
@@ -1286,7 +1286,7 @@ static TopoShape _getTopoShape(
                             _shape = builder.Shape();
                             _shape.Infinite(Standard_True);
                         }
-                        shape = TopoShape(tag, hasher, _shape);
+                        shape = TopoShape(tag, hasher, _shape,obj->getSelectedHistoryAlgorithm());
                     }
                     else if (boost::iequals("o", element) || boost::iequals("origin", element)) {
                         static TopoDS_Shape _shape;
@@ -1295,7 +1295,7 @@ static TopoShape _getTopoShape(
                             _shape = builder.Shape();
                             _shape.Infinite(Standard_True);
                         }
-                        shape = TopoShape(tag, hasher, _shape);
+                        shape = TopoShape(tag, hasher, _shape, obj->getSelectedHistoryAlgorithm());
                     }
                 }
                 if (shape.isNull()) {
@@ -1305,7 +1305,7 @@ static TopoShape _getTopoShape(
                         _shape = builder.Shape();
                         _shape.Infinite(Standard_True);
                     }
-                    shape = TopoShape(tag, hasher, _shape);
+                    shape = TopoShape(tag, hasher, _shape, obj->getSelectedHistoryAlgorithm());
                 }
             }
 
@@ -1372,7 +1372,7 @@ static TopoShape _getTopoShape(
         // Acceleration for link array. Unlike non-array link, a link array does
         // not return the linked object when calling getLinkedObject().
         // Therefore, it should be handled here.
-        TopoShape baseShape;
+        TopoShape baseShape = Feature::makeTopoShape(obj);
         Base::Matrix4D baseMat;
         std::string op;
         if (link && link->getElementCountValue()) {
@@ -1468,6 +1468,7 @@ static TopoShape _getTopoShape(
         }
         shape.Tag = tag;
         shape.Hasher = hasher;
+        shape.setHistoryAlgorithm(obj->getSelectedHistoryAlgorithm());
         shape.makeElementCompound(shapes);
     }
 
@@ -2168,6 +2169,39 @@ void Feature::guessNewLink(std::string& replacementName, DocumentObject* base, c
         return;
     }
     replacementName = oldLink;
+}
+
+TopoShape Feature::makeTopoShape(const App::DocumentObject* documentObject, const TopoDS_Shape& newShape, long tag)
+{
+    ZoneScoped;
+
+    if (!documentObject || !documentObject->isAttachedToDocument()) {
+        return App::getDefaultHistoryAlgorithm();
+    }
+
+    const App::HistoryAlgorithm& selectedVersion = documentObject->getSelectedHistoryAlgorithm();
+    TopoShape newTopoShape {newShape};
+
+    if (selectedVersion == App::HistoryAlgorithm::V1) {
+        newTopoShape.Hasher = documentObject->getDocument()->getStringHasher();
+        newTopoShape.Tag = tag;
+    } else if (selectedVersion == App::HistoryAlgorithm::V2) {
+        newTopoShape.Tag = tag == 0 ? documentObject->getID() : tag;
+    }
+
+    newTopoShape.setHistoryAlgorithm(selectedVersion);
+
+    return newTopoShape;
+}
+
+TopoShape Feature::makeTopoShape(long tag) const
+{
+    return makeTopoShape(this, TopoDS_Shape(), tag);
+}
+
+TopoShape Feature::makeTopoShape(const TopoDS_Shape& newShape, long tag) const
+{
+    return makeTopoShape(this, newShape, tag);
 }
 
 // ---------------------------------------------------------

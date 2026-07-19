@@ -17,8 +17,9 @@ enum HistoryAlgorithm : int {
 };
 
 AppExport const HistoryAlgorithm& getSelectedHistoryAlgorithm();
-AppExport HistoryAlgorithm getDefaultHistoryAlgorithm();
+AppExport const HistoryAlgorithm& getDefaultHistoryAlgorithm();
 AppExport HistoryAlgorithm getHistoryAlgorithm(int fromUnderlyingInteger);
+AppExport HistoryAlgorithm getHistoryAlgorithm(std::string fromString);
 AppExport const int& getSelectedUnderlyingHistoryAlgorithm();
 
 /// Return type for lookups of new and old style sub-element names

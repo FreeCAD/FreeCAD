@@ -327,7 +327,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         return App::DocumentObject::StdReturn;
     }
 
-    const App::HistoryAlgorithm& selectedHistoryVersion = App::getSelectedHistoryAlgorithm();
+    // const App::HistoryAlgorithm& selectedHistoryVersion = getSelectedHistoryAlgorithm();
 
     bool makeface = options.testFlag(ExtrudeOption::MakeFace);
     bool fuse = options.testFlag(ExtrudeOption::MakeFuse);
@@ -702,10 +702,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         }
 
         // --- Combine generated prisms (all in global CS) ---
-        TopoShape prism(
-            selectedHistoryVersion == App::HistoryAlgorithm::V2 ? getID() : 0,
-            getDocument()->getStringHasher()
-        );
+        TopoShape prism = makeTopoShape();
         if (prisms.empty()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "No extrusion geometry was generated.")
@@ -746,10 +743,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             prism.Tag = -this->getID();
 
             // Let's call algorithm computing a fuse operation:
-            TopoShape result(
-                selectedHistoryVersion == App::HistoryAlgorithm::V2 ? getID() : 0,
-                getDocument()->getStringHasher()
-            );
+            TopoShape result = makeTopoShape();
             try {
                 const char* maker;
                 switch (getAddSubType()) {
@@ -853,10 +847,7 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
     TopLoc_Location& invObjLoc
 )
 {
-    TopoShape prism(
-        App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2 ? getID() : 0,
-        getDocument()->getStringHasher()
-    );
+    TopoShape prism = makeTopoShape();
 
     if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace"
         || method == "UpToShape") {
@@ -865,10 +856,10 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
         supportface.move(invObjLoc);
 
         if (!supportface.hasSubShape(TopAbs_WIRE)) {
-            supportface = TopoShape();
+            supportface = makeTopoShape();
         }
 
-        TopoShape upToShape;
+        TopoShape upToShape = makeTopoShape();
         int faceCount = 1;
         // Find a valid shape, face or datum plane to extrude up to
         if (method == "UpToFace") {
@@ -897,7 +888,7 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
         }
 
         try {
-            TopoShape _base;
+            TopoShape _base = makeTopoShape();
             if (addSubType != FeatureAddSub::Subtractive) {
                 _base = base;  // avoid issue #16690
             }
@@ -967,6 +958,8 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
             }
         }
     }
+
+    FC_WARN("prism ver: " << prism.getHistoryAlgorithm());
 
     return prism;
 }

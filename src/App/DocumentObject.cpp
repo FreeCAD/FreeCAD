@@ -1725,6 +1725,15 @@ bool DocumentObject::checkElementMapVersion(const App::Property* _prop, const ch
     return prop->checkElementMapVersion(ver);
 }
 
+const App::HistoryAlgorithm& DocumentObject::getSelectedHistoryAlgorithm() const
+{
+    if (isAttachedToDocument()) {
+        return getDocument()->getSelectedHistoryAlgorithm();
+    }
+
+    return App::getDefaultHistoryAlgorithm();
+}
+
 const std::string& DocumentObject::hiddenMarker()
 {
     static std::string marker("!hide");

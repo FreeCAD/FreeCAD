@@ -2912,6 +2912,19 @@ Py::Float TopoShapePy::getVolume() const
     return Py::Float(props.Mass());
 }
 
+Py::String TopoShapePy::getToponamingAlgorithm() const
+{
+    const App::HistoryAlgorithm& selectedHistoryVersion = getTopoShapePtr()->getHistoryAlgorithm();
+
+    if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
+        return "V1";
+    } else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+        return "V2";
+    }
+
+    return "N/A";
+}
+
 PyObject* TopoShapePy::getElementHistory(PyObject* args) const
 {
     const char* pyname;

@@ -1624,8 +1624,8 @@ int SketchObject::getVertexIndexGeoPos(int GeoId, PointPos PosId) const
 
 Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *name) const
 {
-    const App::HistoryAlgorithm& selectedHistoryVersion = App::getSelectedHistoryAlgorithm();
-    Part::TopoShape shape(geo->toShape());
+    const App::HistoryAlgorithm& selectedHistoryVersion = getSelectedHistoryAlgorithm();
+    Part::TopoShape shape = makeTopoShape(geo->toShape());
     Data::MappedName builtName = Data::MappedName();
     Data::MappedName builtVertexName = Data::MappedName();
 

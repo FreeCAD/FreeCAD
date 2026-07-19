@@ -64,6 +64,7 @@ public:
 
     void addTopoShape(const TopoShape& s);
     void useTopoCompound(const TopoShape& comp);
+    void setHistoryAlgorithm(const App::HistoryAlgorithm& newHistoryAlgorithm);
     const TopoShape& getTopoShape() const;
     const TopoShape& TopoFace() const;
 
@@ -121,8 +122,10 @@ protected:
     std::vector<TopoDS_Shape> myInputFaces;
     BRepAlgoAPI_BuilderAlgo mySplitter;
     Handle(BRepTools_History) myPreSplitHistory;
+    App::HistoryAlgorithm selectedHistoryAlgorithm = App::HistoryAlgorithm::V1;
     TopoDS_Compound myPreSplitCompound;
     TopoShape myTopoShape;
+    bool selectedHistoryAlgorithmUpdated = false;
     int minElementNames = 1;
 
     /**

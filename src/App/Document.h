@@ -192,6 +192,8 @@ public:
     PropertyBool ShowHidden;
     /// Whether to use hasher on topological naming.
     PropertyBool UseHasher;
+    /// The Topological Naming Version to use for this document.
+    PropertyEnumeration ToponamingVersion;
     /// @}
 
     /** @name Signals of the document
@@ -1295,6 +1297,10 @@ public:
     /// Create a unique label based on the given modelLabel.
     std::string makeUniqueLabel(std::string_view modelLabel);
 
+    const App::HistoryAlgorithm& getSelectedHistoryAlgorithm() {
+        return selectedHistoryAlgorithm;
+    };
+
     friend class Application;
     // because of transaction handling
     friend class TransactionalObject;
@@ -1479,6 +1485,8 @@ private:
     std::map<int, Transaction*> mUndoMap;
     std::list<Transaction*> mRedoTransactions;
     std::map<int, Transaction*> mRedoMap;
+
+    App::HistoryAlgorithm selectedHistoryAlgorithm;
 
     struct DocumentP* d;
 

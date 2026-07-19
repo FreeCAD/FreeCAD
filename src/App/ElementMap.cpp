@@ -511,7 +511,7 @@ MappedName ElementMap::addName(MappedName& name,
 {
     ZoneScoped;
 
-    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG) && App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG) && getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
         if (name.find("#") >= 0 && name.findTagInElementName() < 0) {
             FC_ERR("missing tag postfix " << name);  // NOLINT
         }
@@ -600,7 +600,7 @@ MappedName ElementMap::setElementName(const IndexedName& element,
         sid = &_sid;
     }
 
-    const App::HistoryAlgorithm& selectedHistoryVersion = App::getSelectedHistoryAlgorithm();
+    const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
     Data::MappedName mappedName(name);
 
     if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
@@ -700,7 +700,7 @@ void ElementMap::encodeElementName(char element_type,
 {
     ZoneScoped;
 
-    if (App::getSelectedHistoryAlgorithm() != App::HistoryAlgorithm::V1)
+    if (getHistoryAlgorithm() != App::HistoryAlgorithm::V1)
         return;
 
     if (postfix && (postfix[0] != 0)) {
@@ -843,7 +843,7 @@ MappedName ElementMap::renameDuplicateElement(int index,
 {
     ZoneScoped;
 
-    if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+    if (getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
         int idx = index;
         std::ostringstream ss;
         ss << ELEMENT_MAP_PREFIX << 'D' << std::hex << idx;
@@ -1192,7 +1192,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
 {
     ZoneScoped;
 
-    const App::HistoryAlgorithm& selectedHistoryVersion = App::getSelectedHistoryAlgorithm();
+    const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
     std::ostringstream ss;
     ss << std::hex;
 

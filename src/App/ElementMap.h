@@ -307,14 +307,13 @@ public:
      */
     void traceElement(const MappedName& name, long masterTag, TraceCallback cb) const;
 
-    App::HistoryAlgorithm getHistoryAlgorithm() const {
-        return usedHistoryAlgorithm;
+    const App::HistoryAlgorithm& getHistoryAlgorithm() const {
+        return selectedHistoryAlgorithm;
     }
 
-    void setHistoryAlgorithm(App::HistoryAlgorithm newAlgorithm) {
-        usedHistoryAlgorithm = newAlgorithm;
+    void setHistoryAlgorithm(const App::HistoryAlgorithm& newAlgorithm) {
+        selectedHistoryAlgorithm = newAlgorithm;
     }
-
 
 private:
     /** Serialize this map
@@ -410,7 +409,7 @@ private:
 
     std::map<MappedName, IndexedName, std::less<>> mappedNames;
 
-    App::HistoryAlgorithm usedHistoryAlgorithm = App::HistoryAlgorithm::V2;
+    App::HistoryAlgorithm selectedHistoryAlgorithm = App::HistoryAlgorithm::V2;
 
 
     struct ChildMapInfo

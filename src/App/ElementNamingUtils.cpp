@@ -12,8 +12,10 @@ const App::HistoryAlgorithm& App::getSelectedHistoryAlgorithm() {
     return selectedHistoryAlgorithm;
 }
 
-App::HistoryAlgorithm App::getDefaultHistoryAlgorithm() {
-    return HistoryAlgorithm::V2;
+const App::HistoryAlgorithm& App::getDefaultHistoryAlgorithm() {
+    static App::HistoryAlgorithm defaultAlgorithm = App::HistoryAlgorithm::V2;
+    
+    return defaultAlgorithm;
 }
 
 
@@ -21,6 +23,16 @@ App::HistoryAlgorithm App::getHistoryAlgorithm(int fromUnderlying) {
     if (fromUnderlying == 0) {
         return App::HistoryAlgorithm::V1;
     } else if (fromUnderlying == 1) {
+        return App::HistoryAlgorithm::V2;
+    } else {
+        return App::getDefaultHistoryAlgorithm();
+    }
+}
+
+App::HistoryAlgorithm App::getHistoryAlgorithm(std::string fromString) {
+    if (fromString == "V1") {
+        return App::HistoryAlgorithm::V1;
+    } else if (fromString == "V2") {
         return App::HistoryAlgorithm::V2;
     } else {
         return App::getDefaultHistoryAlgorithm();

@@ -583,7 +583,7 @@ public:
      */
     void traceElement(const MappedName& name, TraceCallback cb) const
     {
-        _elementMap->traceElement(name, Tag, std::move(cb));
+        _elementMap->traceElement(name, Tag, std::move(cb)); // this will crash, check if _elementMap is nullptr.
     }
 
     /// Flush internal buffers for element mapping.
@@ -639,6 +639,14 @@ public:
      * @return The string with the element map.
      */
     const std::string dumpElementMap() const;
+
+    const App::HistoryAlgorithm& getHistoryAlgorithm() const {
+        return selectedHistoryAlgorithm;
+    };
+
+    void setHistoryAlgorithm(const App::HistoryAlgorithm& newAlgorithm) {
+        selectedHistoryAlgorithm = newAlgorithm;
+    };
 
 protected:
     /// Transform the point from local to outside.
@@ -751,6 +759,7 @@ protected:
 
 private:
     ElementMapPtr _elementMap;
+    App::HistoryAlgorithm selectedHistoryAlgorithm;
 
 protected:
     /// The persistence file name.

@@ -869,6 +869,8 @@ void Document::onChanged(const Property* prop)
 {
     signalChanged(*this, *prop);
 
+    bool recomputeSubObjects = false;
+
     // the Name property is a label for display purposes
     if (prop == &Label) {
         Base::FlagToggler<> flag(globalIsRelabeling);
@@ -918,6 +920,14 @@ void Document::onChanged(const Property* prop)
         }
     }
     else if (prop == &UseHasher) {
+        recomputeSubObjects = true;
+    }
+    else if (prop == &ToponamingVersion) {
+        selectedHistoryAlgorithm = App::getHistoryAlgorithm(ToponamingVersion.getValueAsString());
+        recomputeSubObjects = true;
+    }
+
+    if (recomputeSubObjects) {
         for (auto obj : d->objectArray) {
             auto geofeature = freecad_cast<GeoFeature*>(obj);
             if (geofeature && geofeature->getPropertyOfGeometry()) {
@@ -1039,6 +1049,13 @@ Document::Document(const char* documentName)
                       0,
                       PropertyType(Prop_Hidden),
                       "Whether to use hasher on topological naming");
+    
+    ToponamingVersion.setEnums({"V1", "V2"});
+    ADD_PROPERTY_TYPE(ToponamingVersion,
+                      (App::getDefaultHistoryAlgorithm()),
+                      0,
+                      PropertyType(Prop_Hidden),
+                      "The Topological Naming Version to use for this document.");
 
     // this creates and sets 'TransientDir' in onChanged()
     ADD_PROPERTY_TYPE(TransientDir,

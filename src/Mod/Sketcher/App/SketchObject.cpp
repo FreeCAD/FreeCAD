@@ -115,7 +115,7 @@ SketchObject::SketchObject() : geoLastId(0)
                       (App::PropertyType)(App::Prop_None),
                       "Tolerance for fitting arcs of projected external geometry");
     ADD_PROPERTY(InternalShape,
-                 (Part::TopoShape()));
+                 (makeTopoShape()));
     ADD_PROPERTY_TYPE(MakeInternals,
                       (false),
                       "Internal Geometry",
@@ -263,7 +263,7 @@ void SketchObject::buildShape()
     std::vector<Part::TopoShape> vertices;
     int geoId = 0;
 
-    const App::HistoryAlgorithm& selectedHistoryVersion = App::getSelectedHistoryAlgorithm();
+    const App::HistoryAlgorithm& selectedHistoryVersion = getSelectedHistoryAlgorithm();
 
     auto addVertex = [&vertices, &selectedHistoryVersion](auto vertex, auto name, int tag) {
         if (!vertex.hasElementMap()) {
@@ -310,7 +310,7 @@ void SketchObject::buildShape()
         if (geo->isDerivedFrom<Part::GeomPoint>()) {
             int idx = getVertexIndexGeoPos(geoId - 1, Sketcher::PointPos::start);
             addVertex(
-                Part::TopoShape {TopoDS::Vertex(geo->toShape())},
+                makeTopoShape(TopoDS::Vertex(geo->toShape())),
                 convertSubName(Data::IndexedName::fromConst("Vertex", idx + 1), false),
                 getID()
             );
@@ -336,7 +336,7 @@ void SketchObject::buildShape()
 
         if (geo->isDerivedFrom<Part::GeomPoint>()) {
             addVertex(
-                Part::TopoShape {TopoDS::Vertex(geo->toShape())},
+                makeTopoShape(TopoDS::Vertex(geo->toShape())),
                 convertSubName(indexedName, false),
                 getID()
             );
@@ -349,11 +349,11 @@ void SketchObject::buildShape()
     internalElementMap.clear();
 
     if (shapes.empty() && vertices.empty()) {
-        InternalShape.setValue(Part::TopoShape());
-        Shape.setValue(Part::TopoShape());
+        InternalShape.setValue(makeTopoShape());
+        Shape.setValue(makeTopoShape());
         return;
     }
-    Part::TopoShape result(0, getDocument()->getStringHasher());
+    Part::TopoShape result = makeTopoShape();
     if (vertices.empty()) {
         // Notice here we supply op code Part::OpCodes::Sketch to makeElementWires().
         result.makeElementWires(shapes, Part::OpCodes::Sketch);
@@ -366,7 +366,7 @@ void SketchObject::buildShape()
             // SketchObject::getElementName() relies on this op code to
             // differentiate geometries that are exposed with those in edit
             // mode.
-            auto wires = Part::TopoShape().makeElementWires(shapes, Part::OpCodes::Sketch);
+            auto wires = makeTopoShape().makeElementWires(shapes, Part::OpCodes::Sketch);
             for (const auto& wire : wires.getSubTopoShapes(TopAbs_WIRE)) {
                 results.push_back(wire);
             }
@@ -417,10 +417,10 @@ const std::map<std::string,std::string> SketchObject::getInternalElementMap() co
 
 Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const {
     if (!MakeInternals.getValue())
-        return Part::TopoShape();
+        return makeTopoShape();
 
     try {
-        Part::TopoShape result(getID(), getDocument()->getStringHasher());
+        Part::TopoShape result = makeTopoShape(getID());
         result = result.makeElementFace(edges.getSubTopoShapes(TopAbs_WIRE),
                 /*op*/"",
                 /*maker*/"Part::FaceMakerBuildFace",
@@ -432,7 +432,7 @@ Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const
         joiner.setTightBound(true);
         joiner.setMergeEdges(true);
         joiner.addShape(edges);
-        Part::TopoShape openWires(getID(), getDocument()->getStringHasher());
+        Part::TopoShape openWires = makeTopoShape(getID());
         joiner.getOpenWires(openWires, "SKF");
 
         if (openWires.isNull()) {
@@ -447,7 +447,7 @@ Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const
     } catch (Standard_Failure &e) {
         FC_WARN("Failed to make face for sketch: " << e.GetMessageString());
     }
-    return Part::TopoShape();
+    return makeTopoShape();
 }
 
 static const char *hasSketchMarker(const char *name) {
@@ -1730,7 +1730,7 @@ App::DocumentObject *SketchObject::getSubObject(
     }
 
     // pyObj exists from here
-    Part::TopoShape shape;
+    Part::TopoShape shape = makeTopoShape();
     std::string name = convertSubName(indexedName,false);
     if (geo) {
         shape = getEdge(geo,name.c_str());
@@ -1876,7 +1876,7 @@ std::vector<Data::MappedElement> SketchObject::findSimilarNames(const Data::Mapp
     if (ret.empty()) {
         const Part::TopoShape &internalShape = InternalShape.getShape();
 
-        if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+        if (getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
             for (const Data::MappedElement &loopNamePair : internalShape.getElementMap()) {
                 if (loopNamePair.name == searchName || Feature::doNamesMatch(searchName, loopNamePair.name)) {
                     std::string loopNameIndexString = internalPrefix();

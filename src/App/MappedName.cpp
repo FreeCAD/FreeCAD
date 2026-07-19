@@ -463,9 +463,8 @@ MappedName::MappedName(const char* name, int size) : raw(false)
     data = size < 0 ? QByteArray(name) : QByteArray(name, size);
 }
 
-MappedName::MappedName(const std::string& nameString, const App::HistoryAlgorithm historyAlgorithm)
+MappedName::MappedName(const std::string& nameString)
     : raw(false)
-    , usedHistoryAlgorithm(historyAlgorithm)
 {
     ZoneScoped;
 

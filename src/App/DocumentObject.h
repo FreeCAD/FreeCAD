@@ -824,6 +824,14 @@ public:
      */
     virtual bool checkElementMapVersion(const App::Property* prop, const char* ver) const;
 
+    /** @brief Check the history algorithm used by the object.
+     *
+     * This method the history algorithm used by the object.
+     *
+     * @return The history algorithm used by the object.
+     */
+    const App::HistoryAlgorithm& getSelectedHistoryAlgorithm() const;
+
 public:
 
     /**

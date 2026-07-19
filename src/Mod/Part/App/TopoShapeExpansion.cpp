@@ -166,6 +166,7 @@ Data::ElementMapPtr TopoShape::resetElementMap(Data::ElementMapPtr elementMap)
     if (elementMap) {
         _cache->cachedElementMap = elementMap;
         _cache->subLocation.Identity();
+        _cache->selectedHistoryAlgorithm = getHistoryAlgorithm();
         _subLocation.Identity();
         _parentCache.reset();
     }
@@ -188,15 +189,22 @@ void TopoShape::flushElementMap() const
             const_cast<TopoShape*>(this)->resetElementMap(this->_cache->cachedElementMap);
         }
         else if (this->_parentCache) {
-            TopoShape parent(this->Tag, this->Hasher, this->_parentCache->shape);
+            TopoShape parent(
+                this->Tag,
+                this->Hasher,
+                this->_parentCache->shape,
+                this->_parentCache->selectedHistoryAlgorithm
+            );
             parent._cache = _parentCache;
             parent.flushElementMap();
             TopoShape self(
                 this->Tag,
                 this->Hasher,
-                this->_Shape.Located(this->_subLocation * this->_cache->subLocation)
+                this->_Shape.Located(this->_subLocation * this->_cache->subLocation),
+                getHistoryAlgorithm()
             );
             self._cache = _cache;
+            self.setHistoryAlgorithm(parent.getHistoryAlgorithm());
             self.mapSubElement(parent);
             this->_parentCache.reset();
             this->_subLocation.Identity();
@@ -301,6 +309,7 @@ void TopoShape::operator=(const TopoShape& sh)
         this->_cache = sh._cache;
         this->_parentCache = sh._parentCache;
         this->_subLocation = sh._subLocation;
+        setHistoryAlgorithm(sh.getHistoryAlgorithm());
         resetElementMap(sh.elementMap(false));
     }
 }
@@ -836,7 +845,7 @@ void TopoShape::mapSubElementTypeForShape(
     bool& warned
 )
 {
-    const App::HistoryAlgorithm& historyVersion = App::getSelectedHistoryAlgorithm();
+    const App::HistoryAlgorithm& historyVersion = getHistoryAlgorithm();
     auto& shapeMap = _cache->getAncestry(type);
     auto& otherMap = other._cache->getAncestry(type);
     const char* shapeType = shapeName(type).c_str();
@@ -946,7 +955,7 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
 
     bool warned = false;
     static const std::array<TopAbs_ShapeEnum, 3> types = {TopAbs_VERTEX, TopAbs_EDGE, TopAbs_FACE};
-    const App::HistoryAlgorithm& historyVersion = App::getSelectedHistoryAlgorithm();
+    const App::HistoryAlgorithm& historyVersion = getHistoryAlgorithm();
 
     auto checkHasher = [this](const TopoShape& other) {
         if (Hasher) {
@@ -1046,7 +1055,7 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
                 }
                 ss.str("");
 
-                if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+                if (historyVersion == App::HistoryAlgorithm::V1) {
                     ensureElementMap()
                         ->encodeElementName(shapetype[0], name, ss, &sids, Tag, op, other.Tag);
                 }
@@ -1696,7 +1705,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
     infoMap[TopAbs_COMPOUND] = &faceInfo;
     infoMap[TopAbs_COMPSOLID] = &faceInfo;
 
-    const App::HistoryAlgorithm& selectedHistoryVersion = App::getSelectedHistoryAlgorithm();
+    const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
 
     if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
         std::ostringstream ss;
@@ -3212,14 +3221,14 @@ TopoShape& TopoShape::makeElementCompound(
     builder.MakeCompound(comp);
 
     if (shapes.empty()) {
-        setShape(comp);
+        setShape(comp, false);
         if (elementMapPolicy == ElementMapPolicy::Drop) {
             dropElementNaming();
         }
         return *this;
     }
     addShapesToBuilder(shapes, builder, comp);
-    setShape(comp);
+    setShape(comp, false);
 
     if (elementMapPolicy == ElementMapPolicy::Drop) {
         dropElementNaming();
@@ -4053,7 +4062,13 @@ TopoShape& TopoShape::makeElementWires(
         }
         edgeList.pop_front();
 
-        TopoDS_Wire new_wire = mkWire.Wire();  // current new wire
+        // current new wire
+        TopoShape new_wire {
+            Tag,
+            Hasher,
+            mkWire.Wire(),
+            getHistoryAlgorithm()
+        };
 
         // try to connect each edge to the wire, the wire is complete if no more edges are
         // connectible
@@ -4074,17 +4089,18 @@ TopoShape& TopoShape::makeElementWires(
                         (*output)[edges.back()] = *it;
                     }
                     edgeList.erase(it);
-                    new_wire = mkWire.Wire();
+                    new_wire.setShape(mkWire.Wire(), false);
                     break;
                 }
             }
         }
 
-        wires.emplace_back(new_wire);
         if (elementMapPolicy == ElementMapPolicy::Propagate) {
-            wires.back().mapSubElement(edges, op);
+            new_wire.mapSubElement(edges, op);
         }
-        wires.back().fix();
+        new_wire.fix();
+
+        wires.push_back(new_wire);
     }
     return makeElementCompound(
         wires,
@@ -5649,7 +5665,7 @@ TopoShape& TopoShape::makeElementPrismUntil(
                     FC_THROWM(Base::CADKernelError, "BRepFeat_MakePrism: extrusion failed");
                 }
 
-                if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+                if (getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
                     result.Tag = Tag;
                 }
 
@@ -5839,6 +5855,7 @@ TopoShape& TopoShape::makeElementFace(
     mkFace->MyHasher = Hasher;
     mkFace->MyOp = op;
     mkFace->MyElementMapPolicy = elementMapPolicy;
+    mkFace->setHistoryAlgorithm(getHistoryAlgorithm());
     if (plane) {
         mkFace->setPlane(*plane);
     }
@@ -5881,9 +5898,9 @@ TopoShape& TopoShape::makeElementFace(
         // See code comments in findPlane() for the description of the bug and
         // work around.
 
-        ShapeFix_Shape fixer(getShape());
-        fixer.Perform();
-        setShape(fixer.Shape(), false);
+        // ShapeFix_Shape fixer(getShape());
+        // fixer.Perform();
+        // setShape(fixer.Shape(), false);
 
         if (!isValid()) {
             FC_WARN("makeElementFace: resulting face is invalid");
@@ -7133,7 +7150,7 @@ bool TopoShape::isSame(const Data::ComplexGeoData& _other) const
 
 long TopoShape::isElementGenerated(const Data::MappedName& _name, int depth) const
 {
-    const App::HistoryAlgorithm& historyAlgo = App::getSelectedHistoryAlgorithm();
+    const App::HistoryAlgorithm& historyAlgo = getHistoryAlgorithm();
 
     if (historyAlgo == App::HistoryAlgorithm::V1) {
         long res = 0;
@@ -7186,7 +7203,7 @@ void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const cha
         return;
     }
 
-    const App::HistoryAlgorithm& selectedHistoryAlgorithm = App::getSelectedHistoryAlgorithm();
+    const App::HistoryAlgorithm& selectedHistoryAlgorithm = getHistoryAlgorithm();
     TopoShape tmp(*this);
     initCache(1);
     Hasher = hasher;

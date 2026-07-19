@@ -70,7 +70,7 @@ void PropertyPartShape::setValue(const TopoShape& sh)
     auto obj = freecad_cast<App::DocumentObject*>(getContainer());
     if (obj) {
         if (_Shape.getElementMap().size() != sh.getElementMap().size()) {
-            TopoShape res(obj->getID(), sh.Hasher, _Shape.getShape());
+            TopoShape res(obj->getID(), sh.Hasher, _Shape.getShape(), _Shape.getHistoryAlgorithm());
             res.mapSubElement(_Shape);
             _Shape = res;
         }
@@ -84,7 +84,7 @@ void PropertyPartShape::setValue(const TopoShape& sh)
         else {
             _Shape.Tag = obj->getID();
 
-            if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+            if (_Shape.getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
                 _Shape.reTagElementMap(_Shape.Tag, nullptr, nullptr, false);
             }
         }
@@ -198,7 +198,7 @@ void PropertyPartShape::setPyObject(PyObject* value)
             if (shape.Tag || shape.getElementMapSize()) {
                 // We can't trust the meaning of the input shape tag, so we
                 // remap anyway
-                TopoShape res(owner->getID(), owner->getDocument()->getStringHasher(), shape.getShape());
+                TopoShape res(owner->getID(), owner->getDocument()->getStringHasher(), shape.getShape(), shape.getHistoryAlgorithm());
                 res.mapSubElement(shape);
                 shape = res;
             }
@@ -377,6 +377,9 @@ void PropertyPartShape::Save(Base::Writer& writer) const
             writer.Stream() << " SaveHasher=\"1\"";
         }
     }
+
+    writer.Stream() << " HistoryAlgorithm=\"" << _Shape.getHistoryAlgorithm() << "\"";
+
     std::string version;
     // If exporting, do not export mapped element name, but still make a mark
     auto const version_valid = _Ver.size() && (_Ver != "?");
@@ -449,6 +452,9 @@ void PropertyPartShape::Restore(Base::XMLReader& reader)
 
     int hasher_idx = reader.getAttribute<int>("HasherIndex", -1);
     int save_hasher = reader.getAttribute<int>("SaveHasher", 0);
+    int history_algorithm = reader.getAttribute<int>("HistoryAlgorithm", 0);
+
+    _Shape.setHistoryAlgorithm(App::getHistoryAlgorithm(history_algorithm));
 
     TopoShape shape;
 
@@ -781,6 +787,7 @@ void PropertyPartShape::RestoreDocFile(Base::Reader& reader)
     // restore the element map
     shape.Hasher = hasher;
     shape.resetElementMap(elementMap);
+    shape.setHistoryAlgorithm(_Shape.getHistoryAlgorithm());
     setValue(shape);
     _Ver = ver;
 }
