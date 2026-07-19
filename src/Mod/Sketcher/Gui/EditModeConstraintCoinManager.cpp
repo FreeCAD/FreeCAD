@@ -308,9 +308,11 @@ Restart:
             hashInt(placementSig, static_cast<long long>(Constr->SecondPos));
             hashInt(placementSig, static_cast<long long>(Constr->ThirdPos));
             hashDouble(placementSig, Constr->getValue());
-            hashInt(placementSig,
-                    (Constr->isDriving ? 1 : 0) | (Constr->isActive ? 2 : 0)
-                        | (Constr->isInVirtualSpace ? 4 : 0));
+            hashInt(
+                placementSig,
+                (Constr->isDriving ? 1 : 0) | (Constr->isActive ? 2 : 0)
+                    | (Constr->isInVirtualSpace ? 4 : 0)
+            );
             hashDouble(placementSig, Constr->LabelDistance);
             hashDouble(placementSig, Constr->LabelPosition);
             hashCombine(placementSig, Constr->Name.data(), Constr->Name.size());
@@ -1857,7 +1859,8 @@ void EditModeConstraintCoinManager::updateConstraintColor(
             color.emplace_back();
             for (int t = 0; t < geometryLayerParameters.getSubLayerCount(); t++) {
                 CurvNum[l].push_back(
-                    editModeScenegraphNodes.CurvesMaterials[l][t]->diffuseColor.getNum());
+                    editModeScenegraphNodes.CurvesMaterials[l][t]->diffuseColor.getNum()
+                );
                 color[l].push_back(
                     editModeScenegraphNodes.CurvesMaterials[l][t]->diffuseColor.startEditing()
                 );
@@ -1867,12 +1870,13 @@ void EditModeConstraintCoinManager::updateConstraintColor(
 
     // If any color preference changed, every cached state is stale.
     std::size_t paletteHash = 14695981039346656037ULL;
-    for (const SbColor& c : {SketcherGui::DrawingParameters::ConstrDimColor,
-                             SketcherGui::DrawingParameters::NonDrivingConstrDimColor,
-                             SketcherGui::DrawingParameters::DeactivatedConstrDimColor,
-                             drawingParameters.ExprBasedConstrDimColor,
-                             SketcherGui::DrawingParameters::SelectColor,
-                             SketcherGui::DrawingParameters::PreselectColor}) {
+    for (const SbColor& c :
+         {SketcherGui::DrawingParameters::ConstrDimColor,
+          SketcherGui::DrawingParameters::NonDrivingConstrDimColor,
+          SketcherGui::DrawingParameters::DeactivatedConstrDimColor,
+          drawingParameters.ExprBasedConstrDimColor,
+          SketcherGui::DrawingParameters::SelectColor,
+          SketcherGui::DrawingParameters::PreselectColor}) {
         float rgb[3] = {c[0], c[1], c[2]};
         hashCombine(paletteHash, rgb, sizeof(rgb));
     }
@@ -1926,10 +1930,11 @@ void EditModeConstraintCoinManager::updateConstraintColor(
         // always be re-applied.
         {
             bool selected = ViewProviderSketchCoinAttorney::isConstraintSelected(viewProvider, i);
-            bool preselected =
-                ViewProviderSketchCoinAttorney::isConstraintPreselected(viewProvider, i);
-            bool isActive =
-                ViewProviderSketchCoinAttorney::isConstraintActiveInSketch(viewProvider, constraint);
+            bool preselected = ViewProviderSketchCoinAttorney::isConstraintPreselected(viewProvider, i);
+            bool isActive = ViewProviderSketchCoinAttorney::isConstraintActiveInSketch(
+                viewProvider,
+                constraint
+            );
             bool hasExpression = hasDatumLabel && !selected && !preselected
                 && ViewProviderSketchCoinAttorney::constraintHasExpression(viewProvider, i);
             unsigned char state = (selected ? 1 : 0) | (preselected ? 2 : 0) | (isActive ? 4 : 0)
@@ -2120,8 +2125,7 @@ bool EditModeConstraintCoinManager::trySyncConstraintNodes(
         return false;
     }
     if (vConstrPlacementHash.size() != oldN || vConstrColorState.size() != oldN
-        || static_cast<std::size_t>(editModeScenegraphNodes.constrGroup->getNumChildren())
-            != oldN) {
+        || static_cast<std::size_t>(editModeScenegraphNodes.constrGroup->getNumChildren()) != oldN) {
         return false;
     }
 
@@ -2272,124 +2276,124 @@ SoSeparator* EditModeConstraintCoinManager::createConstraintNode(
             mat->unref();
             return sep;
         } break;
-            case Horizontal:
-            case Vertical:
-            case Block: {
-                // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
-                sep->addChild(mat);
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION 1
-                sep->addChild(new SoZoomTranslation());
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON 2
-                sep->addChild(new SoImage());
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
-                sep->addChild(new SoInfo());
-                // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION 4
-                sep->addChild(new SoZoomTranslation());
-                // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON 5
-                sep->addChild(new SoImage());
-                // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID 6
-                sep->addChild(new SoInfo());
+        case Horizontal:
+        case Vertical:
+        case Block: {
+            // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
+            sep->addChild(mat);
+            // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION 1
+            sep->addChild(new SoZoomTranslation());
+            // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON 2
+            sep->addChild(new SoImage());
+            // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
+            sep->addChild(new SoInfo());
+            // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION 4
+            sep->addChild(new SoZoomTranslation());
+            // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON 5
+            sep->addChild(new SoImage());
+            // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID 6
+            sep->addChild(new SoInfo());
 
-            } break;
-            case Group:
-            case Text: {
-                // For a group, we will draw a dashed rectangle.
-                // We need a Material, a DrawStyle, Coordinates, and a LineSet.
+        } break;
+        case Group:
+        case Text: {
+            // For a group, we will draw a dashed rectangle.
+            // We need a Material, a DrawStyle, Coordinates, and a LineSet.
 
-                // 1. Material (for color, reusing the one already created)
-                sep->addChild(mat);
+            // 1. Material (for color, reusing the one already created)
+            sep->addChild(mat);
 
-                // 2. DrawStyle (to make the line dashed)
-                auto* drawStyle = new SoDrawStyle();
-                drawStyle->linePattern = 0x0F0F;  // A standard 50% dashed pattern
-                sep->addChild(drawStyle);
+            // 2. DrawStyle (to make the line dashed)
+            auto* drawStyle = new SoDrawStyle();
+            drawStyle->linePattern = 0x0F0F;  // A standard 50% dashed pattern
+            sep->addChild(drawStyle);
 
-                // 3. Coordinates (for the 4 corners + 1 to close the loop)
-                auto* coords = new SoCoordinate3();
-                coords->point.setNum(5);  // Pre-allocate 5 points for a closed rectangle
-                sep->addChild(coords);
+            // 3. Coordinates (for the 4 corners + 1 to close the loop)
+            auto* coords = new SoCoordinate3();
+            coords->point.setNum(5);  // Pre-allocate 5 points for a closed rectangle
+            sep->addChild(coords);
 
-                // 4. LineSet (to connect the coordinates)
-                auto* lineSet = new SoLineSet();
-                lineSet->numVertices.set1Value(0, 5);  // A single polyline of 5 vertices
-                sep->addChild(lineSet);
+            // 4. LineSet (to connect the coordinates)
+            auto* lineSet = new SoLineSet();
+            lineSet->numVertices.set1Value(0, 5);  // A single polyline of 5 vertices
+            sep->addChild(lineSet);
 
-            } break;
-            case Coincident:  // no visual for coincident so far
-                break;
-            case Parallel:
-            case Perpendicular:
-            case Equal: {
-                // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
-                sep->addChild(mat);
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION 1
-                sep->addChild(new SoZoomTranslation());
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON 2
-                sep->addChild(new SoImage());
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
-                sep->addChild(new SoInfo());
-                // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION 4
-                sep->addChild(new SoZoomTranslation());
-                // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON 5
-                sep->addChild(new SoImage());
-                // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID 6
-                sep->addChild(new SoInfo());
+        } break;
+        case Coincident:  // no visual for coincident so far
+            break;
+        case Parallel:
+        case Perpendicular:
+        case Equal: {
+            // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
+            sep->addChild(mat);
+            // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION 1
+            sep->addChild(new SoZoomTranslation());
+            // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON 2
+            sep->addChild(new SoImage());
+            // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
+            sep->addChild(new SoInfo());
+            // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION 4
+            sep->addChild(new SoZoomTranslation());
+            // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON 5
+            sep->addChild(new SoImage());
+            // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID 6
+            sep->addChild(new SoInfo());
 
-            } break;
-            case PointOnObject:
-            case Tangent:
-            case SnellsLaw: {
-                // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
-                sep->addChild(mat);
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION 1
-                sep->addChild(new SoZoomTranslation());
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON 2
-                sep->addChild(new SoImage());
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
-                sep->addChild(new SoInfo());
+        } break;
+        case PointOnObject:
+        case Tangent:
+        case SnellsLaw: {
+            // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
+            sep->addChild(mat);
+            // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION 1
+            sep->addChild(new SoZoomTranslation());
+            // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON 2
+            sep->addChild(new SoImage());
+            // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
+            sep->addChild(new SoInfo());
 
-                if (it->Type == Tangent) {
-                    const Part::Geometry* geo1 = geolistfacade.getGeometryFromGeoId(it->First);
-                    const Part::Geometry* geo2 = geolistfacade.getGeometryFromGeoId(it->Second);
-                    if (!geo1 || !geo2) {
-                        Base::Console().developerWarning(
-                            "EditModeConstraintCoinManager",
-                            "Tangent constraint references non-existing geometry\n"
-                        );
-                    }
-                    else if (geo1->is<Part::GeomLineSegment>() && geo2->is<Part::GeomLineSegment>()) {
-                        // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION 4
-                        sep->addChild(new SoZoomTranslation());
-                        // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON 5
-                        sep->addChild(new SoImage());
-                        // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID 6
-                        sep->addChild(new SoInfo());
-                    }
+            if (it->Type == Tangent) {
+                const Part::Geometry* geo1 = geolistfacade.getGeometryFromGeoId(it->First);
+                const Part::Geometry* geo2 = geolistfacade.getGeometryFromGeoId(it->Second);
+                if (!geo1 || !geo2) {
+                    Base::Console().developerWarning(
+                        "EditModeConstraintCoinManager",
+                        "Tangent constraint references non-existing geometry\n"
+                    );
                 }
+                else if (geo1->is<Part::GeomLineSegment>() && geo2->is<Part::GeomLineSegment>()) {
+                    // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION 4
+                    sep->addChild(new SoZoomTranslation());
+                    // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON 5
+                    sep->addChild(new SoImage());
+                    // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID 6
+                    sep->addChild(new SoInfo());
+                }
+            }
 
-            } break;
-            case Symmetric: {
-                auto* arrows = new SoDatumLabel();
-                arrows->norm.setValue(norm);
-                arrows->string = "";
-                arrows->textColor = SketcherGui::DrawingParameters::ConstrDimColor;
-                arrows->lineWidth = 2 * drawingParameters.pixelScalingFactor;
+        } break;
+        case Symmetric: {
+            auto* arrows = new SoDatumLabel();
+            arrows->norm.setValue(norm);
+            arrows->string = "";
+            arrows->textColor = SketcherGui::DrawingParameters::ConstrDimColor;
+            arrows->lineWidth = 2 * drawingParameters.pixelScalingFactor;
 
-                // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
-                sep->addChild(arrows);
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION 1
-                sep->addChild(new SoTranslation());
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON 2
-                sep->addChild(new SoImage());
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
-                sep->addChild(new SoInfo());
+            // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
+            sep->addChild(arrows);
+            // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION 1
+            sep->addChild(new SoTranslation());
+            // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON 2
+            sep->addChild(new SoImage());
+            // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
+            sep->addChild(new SoInfo());
 
-            } break;
-            case InternalAlignment: {
-            } break;
-            default:
-                break;
-        }
+        } break;
+        case InternalAlignment: {
+        } break;
+        default:
+            break;
+    }
 
     mat->unref();
     return sep;

@@ -113,9 +113,9 @@ struct DiagnosisCache
     VEC_I conflictingTags;
     VEC_I redundantTags;
     VEC_I partiallyRedundantTags;
-    std::vector<int> redundantIndices;               // indices into clist
+    std::vector<int> redundantIndices;                          // indices into clist
     std::vector<std::vector<int>> dependentParamGroupsIndices;  // indices into plist
-    std::vector<int> dependentParamIndices;          // indices into plist
+    std::vector<int> dependentParamIndices;                     // indices into plist
     // sizes of clist/plist at save time; restoreDiagnosis() aborts on any
     // mismatch, since the cached indices would map onto different entries
     size_t clistSize = 0;

@@ -216,8 +216,8 @@ int Sketch::setUpSketch(
     // unchanged and the cached diagnosis can be reused.
     size_t topologyHash = 0;
     for (const auto* c : ConstraintList) {
-        if (!c || c->Type == Group || c->Type == Text || c->Type == Block
-            || !c->isActive || !c->isDriving) {
+        if (!c || c->Type == Group || c->Type == Text || c->Type == Block || !c->isActive
+            || !c->isDriving) {
             continue;
         }
         // unenforceableConstraints isn't computed yet; approximate it — a

@@ -2408,8 +2408,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
                        ? "FullPivLU"
                        : (dogLegGaussStep == LeastNormFullPivLU
                               ? "LeastNormFullPivLU"
-                              : (dogLegGaussStep == LeastNormLdlt ? "LeastNormLdlt"
-                                                                  : "SparseLDLT")))
+                              : (dogLegGaussStep == LeastNormLdlt ? "LeastNormLdlt" : "SparseLDLT")))
                << ", xsize: " << xsize << ", csize: " << csize << ", maxIter: " << maxIterNumber
                << "\n";
 

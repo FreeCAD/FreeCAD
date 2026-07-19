@@ -1288,13 +1288,13 @@ private:
     struct ShapeIslandCache
     {
         bool valid = false;
-        std::map<int, int> geoToCluster;               // absolute geo index -> cluster
-        std::vector<std::vector<int>> clusterGeos;     // absolute geo indices per cluster
-        std::vector<Base::BoundBox3d> clusterBoxes;    // inflated, pairwise disjoint
-        std::vector<Part::TopoShape> wireShapes;       // Shape compound children in order
-        std::vector<Part::TopoShape> faceShapes;       // InternalShape children in order
-        std::vector<std::vector<int>> clusterWires;    // indices into wireShapes per cluster
-        std::vector<std::vector<int>> clusterFaces;    // indices into faceShapes per cluster
+        std::map<int, int> geoToCluster;             // absolute geo index -> cluster
+        std::vector<std::vector<int>> clusterGeos;   // absolute geo indices per cluster
+        std::vector<Base::BoundBox3d> clusterBoxes;  // inflated, pairwise disjoint
+        std::vector<Part::TopoShape> wireShapes;     // Shape compound children in order
+        std::vector<Part::TopoShape> faceShapes;     // InternalShape children in order
+        std::vector<std::vector<int>> clusterWires;  // indices into wireShapes per cluster
+        std::vector<std::vector<int>> clusterFaces;  // indices into faceShapes per cluster
     };
     ShapeIslandCache islandCache;
 

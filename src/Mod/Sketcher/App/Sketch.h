@@ -193,7 +193,10 @@ public:
     /** Resets the initialization of a point or curve drag
      */
     void resetInitMove();
-    inline bool isInitMoveActive() const { return isInitMove; }
+    inline bool isInitMoveActive() const
+    {
+        return isInitMove;
+    }
 
     /** Limits a b-spline drag to the segment around `firstPoint`.
      */

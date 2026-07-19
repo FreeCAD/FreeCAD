@@ -129,6 +129,6 @@ TEST(SparseDogLegTest, redundantConstraintsDoNotProduceNaN)  // NOLINT
     EXPECT_TRUE(std::isfinite(x0) && std::isfinite(y0) && std::isfinite(x1) && std::isfinite(y1))
         << "solve produced a non-finite result on a rank-deficient system";
     double dist = std::hypot(x1 - x0, y1 - y0);
-    EXPECT_NEAR(dist, 5.0, 1e-6)
-        << "distance constraint not satisfied (dist=" << dist << ", res=" << res << ")";
+    EXPECT_NEAR(dist, 5.0, 1e-6) << "distance constraint not satisfied (dist=" << dist
+                                 << ", res=" << res << ")";
 }

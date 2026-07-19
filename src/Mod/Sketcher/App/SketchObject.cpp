@@ -85,13 +85,15 @@ bool isSameGeometryElement(const Part::Geometry* a, const Part::Geometry* b)
 {
     return a->getTypeId() == b->getTypeId()
         && Sketcher::GeometryFacade::getConstruction(a)
-            == Sketcher::GeometryFacade::getConstruction(b)
+        == Sketcher::GeometryFacade::getConstruction(b)
         && a->isSame(*b, Precision::Confusion(), Precision::Angular());
 }
 
 // content compare for the buildShape() skip-cache
-bool isSameShapeGeometry(const std::vector<std::unique_ptr<Part::Geometry>>& cached,
-                         const std::vector<Part::Geometry*>& current)
+bool isSameShapeGeometry(
+    const std::vector<std::unique_ptr<Part::Geometry>>& cached,
+    const std::vector<Part::Geometry*>& current
+)
 {
     if (cached.size() != current.size()) {
         return false;
@@ -325,8 +327,7 @@ void SketchObject::buildShape()
     auto geometries = solvedSketch.extractGeometry();
 
     auto isSameExternalGeometry = [this]() {
-        if (static_cast<int>(builtShapeExternal.size())
-            != std::max(ExternalGeo.getSize() - 2, 0)) {
+        if (static_cast<int>(builtShapeExternal.size()) != std::max(ExternalGeo.getSize() - 2, 0)) {
             return false;
         }
         for (int i = 2; i < ExternalGeo.getSize(); ++i) {
@@ -342,8 +343,7 @@ void SketchObject::buildShape()
         return true;
     };
 
-    const bool shapeCacheHit = builtShapeValid
-        && builtShapeMakeInternals == MakeInternals.getValue()
+    const bool shapeCacheHit = builtShapeValid && builtShapeMakeInternals == MakeInternals.getValue()
         && isSameShapeGeometry(builtShapeGeometry, geometries) && isSameExternalGeometry();
 
     if (shapeCacheHit) {
@@ -370,7 +370,8 @@ void SketchObject::buildShape()
             auto egf = ExternalGeometryFacade::getFacade(geo);
             builtShapeExternal.emplace_back(
                 std::unique_ptr<Part::Geometry>(geo->clone()),
-                egf->testFlag(ExternalGeometryExtension::Defining));
+                egf->testFlag(ExternalGeometryExtension::Defining)
+            );
         }
         builtShapeMakeInternals = MakeInternals.getValue();
         builtShapeValid = true;
@@ -576,8 +577,7 @@ void SketchObject::rebuildIslandCache(
 {
     islandCache = ShapeIslandCache {};
 
-    if (!spliceable || geoBoxes.size() < 2 || result.isNull()
-        || internal.isNull()) {
+    if (!spliceable || geoBoxes.size() < 2 || result.isNull() || internal.isNull()) {
         return;
     }
 
@@ -640,8 +640,7 @@ void SketchObject::rebuildIslandCache(
         for (std::size_t a = 0; a < memberIdx.size() && !merged; ++a) {
             for (std::size_t b = a + 1; b < memberIdx.size() && !merged; ++b) {
                 if (boxes[a].Intersect(boxes[b])) {
-                    memberIdx[a].insert(memberIdx[a].end(), memberIdx[b].begin(),
-                                        memberIdx[b].end());
+                    memberIdx[a].insert(memberIdx[a].end(), memberIdx[b].begin(), memberIdx[b].end());
                     boxes[a].Add(boxes[b]);
                     memberIdx.erase(memberIdx.begin() + b);
                     boxes.erase(boxes.begin() + b);
@@ -668,8 +667,10 @@ void SketchObject::rebuildIslandCache(
 
     // attribute the compounds' children to clusters; every child must land in
     // exactly one cluster box (they are pairwise disjoint)
-    auto attribute = [&cache](const std::vector<Part::TopoShape>& children,
-                              std::vector<std::vector<int>>& clusterIdx) {
+    auto attribute = [&cache](
+                         const std::vector<Part::TopoShape>& children,
+                         std::vector<std::vector<int>>& clusterIdx
+                     ) {
         clusterIdx.assign(cache.clusterBoxes.size(), {});
         for (std::size_t i = 0; i < children.size(); ++i) {
             Base::BoundBox3d box = children[i].getBoundBox();
@@ -810,8 +811,7 @@ bool SketchObject::trySpliceIslandDeletion(
     std::set<int> deadWires;
     std::set<int> deadFaces;
     for (int c : deletedClusters) {
-        if (islandCache.clusterWires[c].size() != 1
-            || islandCache.clusterFaces[c].size() != 1) {
+        if (islandCache.clusterWires[c].size() != 1 || islandCache.clusterFaces[c].size() != 1) {
             return false;
         }
         deadWires.insert(islandCache.clusterWires[c].front());
@@ -909,8 +909,9 @@ bool SketchObject::trySpliceIslandDeletion(
         FC_WARN("island deletion splice failed, falling back to full rebuild: " << e.what());
     }
     catch (Standard_Failure& e) {
-        FC_WARN("island deletion splice failed, falling back to full rebuild: "
-                << e.GetMessageString());
+        FC_WARN(
+            "island deletion splice failed, falling back to full rebuild: " << e.GetMessageString()
+        );
     }
     islandCache = ShapeIslandCache {};
     return false;
@@ -944,8 +945,7 @@ bool SketchObject::trySpliceIslands(
         const Part::Geometry* cached = builtShapeGeometry[i].get();
         const Part::Geometry* current = geometries[i];
         if (cached->getTypeId() != current->getTypeId()
-            || GeometryFacade::getConstruction(cached)
-                != GeometryFacade::getConstruction(current)) {
+            || GeometryFacade::getConstruction(cached) != GeometryFacade::getConstruction(current)) {
             return false;  // structural change
         }
         if (!cached->isSame(*current, Precision::Confusion(), Precision::Angular())) {
@@ -991,8 +991,7 @@ bool SketchObject::trySpliceIslands(
     try {
         for (int c : changedClusters) {
             // strict pairing: exactly one wire and one face to replace
-            if (islandCache.clusterWires[c].size() != 1
-                || islandCache.clusterFaces[c].size() != 1) {
+            if (islandCache.clusterWires[c].size() != 1 || islandCache.clusterFaces[c].size() != 1) {
                 return false;
             }
 
@@ -1018,10 +1017,12 @@ bool SketchObject::trySpliceIslands(
             }
 
             Part::TopoShape faceShape(getID(), getDocument()->getStringHasher());
-            faceShape = faceShape.makeElementFace(newWires,
-                    /*op*/"",
-                    /*maker*/"Part::FaceMakerBuildFace",
-                    /*pln*/nullptr);
+            faceShape = faceShape.makeElementFace(
+                newWires,
+                /*op*/ "",
+                /*maker*/ "Part::FaceMakerBuildFace",
+                /*pln*/ nullptr
+            );
             auto newFaces = faceShape.getSubTopoShapes(TopAbs_FACE);
             if (newFaces.size() != 1) {
                 return false;
