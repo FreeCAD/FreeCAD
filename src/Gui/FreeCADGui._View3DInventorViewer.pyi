@@ -100,8 +100,18 @@ class _View3DInventorViewer:
         """Return whether rendering is redirected to the scene graph."""
         ...
 
+    def renderToImage(
+        self,
+        width: int = 0,
+        height: int = 0,
+        samples: int = -1,
+        includeViewerLighting: bool = True,
+    ) -> Any:
+        """Render a fresh image without viewer decorations."""
+        ...
+
     def grabFramebuffer(self) -> Any:
-        """Capture the current framebuffer."""
+        """Capture the live viewport framebuffer as a raster-oriented image."""
         ...
 
     def setOverrideMode(self, mode: str, /) -> None:

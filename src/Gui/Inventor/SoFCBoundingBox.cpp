@@ -128,81 +128,16 @@ SoFCBoundingBox::~SoFCBoundingBox()
 
 void SoFCBoundingBox::GLRender(SoGLRenderAction* action)
 {
-    SbVec3f corner[2], ctr, *vptr;
-    SbBool coord, dimension;
-
-    // grab the current state
-    // SoState *state = action->getState();
-
     if (!shouldGLRender(action)) {
         return;
     }
 
     SoState* state = action->getState();
 
-    // get the latest values from the fields
-    SbXfBox3f xbbox(minBounds.getValue(), maxBounds.getValue());
+    prepareGeometry(state);
 
-    if (ViewParams::instance()->getRenderProjectedBBox()) {
-        xbbox.transform(SoModelMatrixElement::get(state));
-    }
-
-    SbBox3f bbox = xbbox.project();
-
-    corner[0] = bbox.getMin();
-    corner[1] = bbox.getMax();
-    coord = coordsOn.getValue();
-    dimension = dimensionsOn.getValue();
-
-    // set the coordinates for the LineSet to point to
-    vptr = bboxCoords->point.startEditing();
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 3; j++) {
-            vptr[i][j] = corner[bBoxVerts[i][j]][j];
-        }
-    }
-
-    // if coord is true then set the text nodes
-    if (coord) {
-        ctr = (corner[1] - corner[0]) / 2.0f;
-        for (int i = 0; i < 8; i++) {
-            // create the string for the text
-            std::stringstream str;
-            str.precision(2);
-            str.setf(std::ios::fixed | std::ios::showpoint);
-            str << "(" << vptr[i][0] << "," << vptr[i][1] << "," << vptr[i][2] << ")";
-
-            SoSeparator* sep = static_cast<SoSeparator*>(textSep->getChild(i));
-            SoTransform* trans = static_cast<SoTransform*>(sep->getChild(0));
-
-            trans->translation.setValue(vptr[i].getValue());
-            SoText2* t = static_cast<SoText2*>(sep->getChild(1));
-            t->string.setValue(str.str().c_str());
-        }
-    }
-
-    // if dimension is true then set the text nodes
-    if (dimension) {
-        ctr = (corner[1] - corner[0]) / 2.0f;
-        for (int i = 0; i < 3; i++) {
-            // create the string for the text
-            std::stringstream str;
-            str.precision(2);
-            str.setf(std::ios::fixed | std::ios::showpoint);
-            str << (2.0f * ctr[i]);
-
-            SoSeparator* sep = static_cast<SoSeparator*>(dimSep->getChild(i));
-            SoTransform* trans = static_cast<SoTransform*>(sep->getChild(0));
-
-            SbVec3f point = corner[0];
-            point[i] += ctr[i];
-            trans->translation.setValue(point.getValue());
-            SoText2* t = static_cast<SoText2*>(sep->getChild(1));
-            t->string.setValue(str.str().c_str());
-        }
-    }
-
-    bboxCoords->point.finishEditing();
+    const SbBool coord = coordsOn.getValue();
+    const SbBool dimension = dimensionsOn.getValue();
 
     // Avoid shading
     state->push();
@@ -252,6 +187,75 @@ void SoFCBoundingBox::GLRender(SoGLRenderAction* action)
         }
     }
     state->pop();
+}
+
+void SoFCBoundingBox::prepareGeometry(SoState* state)
+{
+    if (!state || !bboxCoords) {
+        return;
+    }
+
+    // get the latest values from the fields
+    SbXfBox3f xbbox(minBounds.getValue(), maxBounds.getValue());
+
+    if (ViewParams::instance()->getRenderProjectedBBox()) {
+        xbbox.transform(SoModelMatrixElement::get(state));
+    }
+
+    SbBox3f bbox = xbbox.project();
+
+    const SbVec3f corner[2] = {bbox.getMin(), bbox.getMax()};
+    const SbBool coord = coordsOn.getValue();
+    const SbBool dimension = dimensionsOn.getValue();
+
+    // set the coordinates for the LineSet to point to
+    SbVec3f* vptr = bboxCoords->point.startEditing();
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 3; j++) {
+            vptr[i][j] = corner[bBoxVerts[i][j]][j];
+        }
+    }
+
+    // if coord is true then set the text nodes
+    if (coord) {
+        for (int i = 0; i < 8; i++) {
+            // create the string for the text
+            std::stringstream str;
+            str.precision(2);
+            str.setf(std::ios::fixed | std::ios::showpoint);
+            str << "(" << vptr[i][0] << "," << vptr[i][1] << "," << vptr[i][2] << ")";
+
+            SoSeparator* sep = static_cast<SoSeparator*>(textSep->getChild(i));
+            SoTransform* trans = static_cast<SoTransform*>(sep->getChild(0));
+
+            trans->translation.setValue(vptr[i].getValue());
+            SoText2* t = static_cast<SoText2*>(sep->getChild(1));
+            t->string.setValue(str.str().c_str());
+        }
+    }
+
+    // if dimension is true then set the text nodes
+    if (dimension) {
+        const SbVec3f ctr = (corner[1] - corner[0]) / 2.0f;
+        for (int i = 0; i < 3; i++) {
+            // create the string for the text
+            std::stringstream str;
+            str.precision(2);
+            str.setf(std::ios::fixed | std::ios::showpoint);
+            str << (2.0f * ctr[i]);
+
+            SoSeparator* sep = static_cast<SoSeparator*>(dimSep->getChild(i));
+            SoTransform* trans = static_cast<SoTransform*>(sep->getChild(0));
+
+            SbVec3f point = corner[0];
+            point[i] += ctr[i];
+            trans->translation.setValue(point.getValue());
+            SoText2* t = static_cast<SoText2*>(sep->getChild(1));
+            t->string.setValue(str.str().c_str());
+        }
+    }
+
+    bboxCoords->point.finishEditing();
 }
 
 void SoFCBoundingBox::generatePrimitives(SoAction* /*action*/)
