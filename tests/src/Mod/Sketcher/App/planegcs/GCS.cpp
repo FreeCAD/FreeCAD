@@ -125,6 +125,10 @@ TEST(SparseDogLegTest, redundantConstraintsDoNotProduceNaN)  // NOLINT
     int res = sys.solve(true, GCS::DogLeg);
     sys.applySolution();
 
+    // The solver must report success on this consistent (redundant) system, not
+    // merely leave finite coordinates behind.
+    EXPECT_EQ(res, GCS::Success) << "solver did not report Success on a consistent "
+                                    "rank-deficient system (res=" << res << ")";
     // The result must be finite and satisfy the (consistent) distance constraint.
     EXPECT_TRUE(std::isfinite(x0) && std::isfinite(y0) && std::isfinite(x1) && std::isfinite(y1))
         << "solve produced a non-finite result on a rank-deficient system";

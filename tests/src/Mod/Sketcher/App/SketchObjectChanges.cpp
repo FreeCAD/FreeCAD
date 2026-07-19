@@ -1210,3 +1210,60 @@ TEST_F(SketchObjectTest, testJoinCurvesWhenTangent)
         = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(0))->getMultiplicities();
     EXPECT_TRUE(std::all_of(mults.begin(), mults.end(), [](auto mult) { return mult >= 1; }));
 }
+
+// Regression guard for the diagnosis-cache topology fingerprint
+// (Sketch::setUpSketch). An in-place change to a constraint's equation-defining
+// field must be treated as a topology change so the cached diagnosis is not
+// reused for a structurally different system. Both cases go through
+// Constraints.setValues(), so Orientation is the only variable: the unchanged
+// case proves the cache does restore, and the changed case proves the
+// fingerprint catches the change (it would restore, wrongly, if Orientation
+// were omitted from the fingerprint).
+TEST_F(SketchObjectTest, diagnosisCacheDetectsConstraintOrientationChange)
+{
+    // Arrange: a line with one driving DistanceX -> a diagnosable, stable system.
+    Part::GeomLineSegment lineSeg;
+    setupLineSegment(lineSeg);
+    int geoId = getObject()->addGeometry(&lineSeg);
+
+    auto* c = new Sketcher::Constraint();  // ownership transferred to the sketch
+    c->Type = Sketcher::ConstraintType::DistanceX;
+    c->First = geoId;
+    c->FirstPos = Sketcher::PointPos::start;
+    c->Second = geoId;
+    c->SecondPos = Sketcher::PointPos::end;
+    c->setValue(1.0);
+    int cid = getObject()->addConstraint(c);
+
+    // Prime the diagnosis and the topology fingerprint.
+    getObject()->setUpSketch();
+
+    auto cloneConstraints = [this]() {
+        std::vector<Sketcher::Constraint*> out;
+        for (auto* orig : getObject()->Constraints.getValues()) {
+            out.push_back(orig->clone());
+        }
+        return out;
+    };
+
+    // Constraints.setValues() triggers exactly one solver rebuild through
+    // onChanged(), so the cache-restored flag is observed directly after it. Do
+    // NOT add another solve()/setUpSketch() before the assertion: that second
+    // rebuild would compare the new fingerprint against itself and trivially
+    // report a cache hit, masking what the first rebuild decided.
+
+    // Act 1: replace the constraints with identical clones (same topology) -> the
+    // cache must be reused.
+    getObject()->Constraints.setValues(cloneConstraints());
+    EXPECT_TRUE(getObject()->wasDiagnosisRestored())
+        << "an unchanged constraint list should reuse the cached diagnosis";
+
+    // Act 2: same replacement, but flip the constraint's Orientation. Type, the
+    // geo/pos wiring and the constraint count are unchanged, so only the
+    // fingerprint's coverage of Orientation can detect this.
+    auto changed = cloneConstraints();
+    changed[cid]->Orientation |= Sketcher::ConstraintOrientations::Clockwise;
+    getObject()->Constraints.setValues(std::move(changed));
+    EXPECT_FALSE(getObject()->wasDiagnosisRestored())
+        << "changing a constraint's Orientation must invalidate the diagnosis cache";
+}

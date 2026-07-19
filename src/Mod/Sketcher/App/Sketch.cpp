@@ -233,6 +233,15 @@ int Sketch::setUpSketch(
             continue;
         }
         Base::hash_combine(topologyHash, static_cast<int>(c->Type));
+        // Equation-defining fields beyond the geo/pos wiring: retargeting an
+        // internal-alignment constraint (or changing its alignment type or
+        // orientation) can build a different solver equation while leaving Type
+        // and the geo/pos references unchanged. Orientation selects the Tangent
+        // (CCW/CW) and signed-Distance equation. Fold them all in so the cache is
+        // not reused across a structurally different system.
+        Base::hash_combine(topologyHash, static_cast<int>(c->AlignmentType));
+        Base::hash_combine(topologyHash, c->InternalAlignmentIndex);
+        Base::hash_combine(topologyHash, c->Orientation.toUnderlyingType());
         for (int j = 0; c->hasElement(j); ++j) {
             Base::hash_combine(topologyHash, c->getGeoId(j));
             Base::hash_combine(topologyHash, c->getPosIdAsInt(j));

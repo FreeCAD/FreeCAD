@@ -748,6 +748,12 @@ public:
     {
         return lastSolverStatus;
     }
+    /// true if the most recent setUpSketch() restored the diagnosis from the
+    /// topology-stable cache instead of recomputing it (primarily for tests)
+    inline bool wasDiagnosisRestored() const
+    {
+        return solvedSketch.wasDiagnosisRestored();
+    }
     /// gets solver SolveTime of last solver execution
     inline float getLastSolveTime() const
     {
@@ -1363,7 +1369,16 @@ inline int SketchObject::initTemporaryBSplinePieceMove(
         solve();
     }
 
-    return solvedSketch.initBSplinePieceMove(geoId, pos, firstPoint, fine);
+    int result = solvedSketch.initBSplinePieceMove(geoId, pos, firstPoint, fine);
+
+    // As in initTemporaryMove(): mark the drag active only after a successful
+    // init, so a solve()/recompute during the piece drag keeps the live solver
+    // state instead of rebuilding from the (stale) committed Geometry property.
+    if (result >= 0) {
+        isDragActive = true;
+    }
+
+    return result;
 }
 
 inline int SketchObject::

@@ -95,10 +95,11 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
         // InitParameters, causing the next moveGeometries(relative=true) to
         // compute MoveParameters = stale_position + delta, snapping to origin.
         //
-        // Instead: keep solverNeedsUpdate=true and skip setUpSketch() entirely.
-        // The solver retains its live drag state. When the drag ends and
-        // isDragActive becomes false, the next solve() takes the non-drag branch
-        // and rebuilds from the (now-committed) Geometry property.
+        // Instead: skip setUpSketch() entirely so the solver retains its live
+        // drag state. (solverNeedsUpdate is still cleared below; that is harmless
+        // here — the post-drag rebuild is driven by isDragActive becoming false,
+        // at which point the non-drag branch always rebuilds from the
+        // now-committed Geometry property, regardless of solverNeedsUpdate.)
         //
         // New geometry created during drag is unconstrained, so it has no effect
         // on existing solver parameters — it stays where it was created until

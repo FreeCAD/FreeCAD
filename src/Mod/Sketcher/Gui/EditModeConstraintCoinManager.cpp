@@ -109,10 +109,9 @@ inline void hashVector(std::size_t& seed, const Base::Vector3d& v)
 }
 
 // Fingerprint of a geometry's defining data as the placement code sees it.
-// Lines hash their endpoints directly; other curves hash five points sampled
-// along the parameter range (deterministic, so identical geometry always
-// yields an identical hash; different same-type geometry through five common
-// points does not occur in practice).
+// Lines and B-splines hash their exact defining data; other (low-DOF) curves
+// hash their parameter range plus five sampled points, which uniquely determine
+// them (a circle/ellipse/arc has at most five degrees of freedom).
 std::size_t hashGeometry(const Part::Geometry* geo)
 {
     std::size_t seed = 14695981039346656037ULL;
@@ -128,6 +127,27 @@ std::size_t hashGeometry(const Part::Geometry* geo)
     }
     if (const auto* point = dynamic_cast<const Part::GeomPoint*>(geo)) {
         hashVector(seed, point->getPoint());
+        return seed;
+    }
+    if (const auto* bsp = dynamic_cast<const Part::GeomBSplineCurve*>(geo)) {
+        // A B-spline has more effective DOF than five sampled points can
+        // distinguish (two different B-splines can pass through the same five
+        // samples), so hash its full defining data. The pole positions also
+        // drive the placement centroid, which the sampled form would miss.
+        for (const auto& p : bsp->getPoles()) {
+            hashVector(seed, p);
+        }
+        for (double w : bsp->getWeights()) {
+            hashDouble(seed, w);
+        }
+        for (double k : bsp->getKnots()) {
+            hashDouble(seed, k);
+        }
+        for (int m : bsp->getMultiplicities()) {
+            hashInt(seed, m);
+        }
+        hashInt(seed, bsp->getDegree());
+        hashInt(seed, bsp->isPeriodic() ? 1 : 0);
         return seed;
     }
     if (const auto* curve = dynamic_cast<const Part::GeomCurve*>(geo)) {

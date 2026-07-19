@@ -356,9 +356,13 @@ void SketchObject::buildShape()
         return;
     }
 
-    // update the skip-cache reference (takes ownership of the extracted
-    // clones) — called on every path that keeps or produces shapes
-    auto updateGeometryCache = [this, &geometries]() {
+    // Record the geometry the shape is being built from (takes ownership of the
+    // extracted clones). This deliberately leaves builtShapeValid == false: the
+    // cache is marked valid only once Shape and InternalShape have both been
+    // successfully assigned (each commit point sets builtShapeValid = true
+    // below), so an exception during the OCC rebuild cannot leave a "valid"
+    // cache describing a shape that was never committed.
+    auto recordGeometryCache = [this, &geometries]() {
         builtShapeGeometry.clear();
         builtShapeGeometry.reserve(geometries.size());
         for (auto geo : geometries) {
@@ -374,7 +378,7 @@ void SketchObject::buildShape()
             );
         }
         builtShapeMakeInternals = MakeInternals.getValue();
-        builtShapeValid = true;
+        builtShapeValid = false;
     };
 
     // island-local rebuild: when only some disjoint clusters moved, rebuild
@@ -387,10 +391,11 @@ void SketchObject::buildShape()
     }
 
     if (spliced) {
-        updateGeometryCache();
+        recordGeometryCache();
         internalElementMap.clear();
         InternalShape.setValue(splicedInternal);
         Shape.setValue(splicedResult);
+        builtShapeValid = true;  // commit only after both properties are assigned
         return;
     }
 
@@ -420,7 +425,7 @@ void SketchObject::buildShape()
         }
     }
 
-    updateGeometryCache();
+    recordGeometryCache();
 
     for (int i = 2; i < ExternalGeo.getSize(); ++i) {
         auto geo = ExternalGeo[i];
@@ -450,6 +455,7 @@ void SketchObject::buildShape()
         islandCache = ShapeIslandCache {};
         InternalShape.setValue(Part::TopoShape());
         Shape.setValue(Part::TopoShape());
+        builtShapeValid = true;  // commit only after both properties are assigned
         return;
     }
 
@@ -485,6 +491,10 @@ void SketchObject::buildShape()
     Shape.setValue(result);
 
     rebuildIslandCache(geoBoxes, result, internal, islandSpliceable && vertices.empty());
+
+    // commit the skip-cache only now that both Shape and InternalShape are
+    // assigned and the island cache has been rebuilt
+    builtShapeValid = true;
 }
 // clang-format off
 
