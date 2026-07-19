@@ -114,8 +114,7 @@ Function .onInit
   StrCpy $OriginalCmdInstDir $INSTDIR
   # qt6.8 has windows 10 1809 as minimum version, which is build 17763
   # build number details at https://learn.microsoft.com/en-us/windows/release-health/release-information
-  ${ifnot} ${AtLeastWin10}
-  ${andifnot} ${AtLeastBuild} 17763
+  ${ifnot} ${AtLeastBuild} 17763
     MessageBox MB_OK|MB_ICONSTOP "${APP_NAME} ${APP_VERSION} requires Windows 10 or newer." /SD IDOK
     Quit
   ${endif}
@@ -153,12 +152,9 @@ Function .onInit
     Banner::destroy
   ${EndIf}
 
-  # if installer runs silent the post install mode page routine has to be called here
+  # if installer runs silent the post install mode and directory page routines have to be called here
   ${If} ${Silent}
     Call PostMultiUserPageInit
-  ${endif}
-  # if installer runs silent the post directory page routine has to be called here
-  ${If} ${Silent}
     Call ValidateInstallDir
   ${EndIf}
 

@@ -17,6 +17,7 @@ Section -ProgramFiles SecProgramFiles
   SetDetailsPrint textonly
   ${If} $RemoveInstDir == "true"
     ${DetailPrintToBoth} "Cleaning install folder '$INSTDIR'"
+    ClearErrors
     RMDir /r "$INSTDIR"
     ${If} ${Errors}
       MessageBox MB_OK|MB_ICONSTOP "$(RMInstDirFailed)" /SD IDOK
