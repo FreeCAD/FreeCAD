@@ -418,10 +418,7 @@ protected:
 
     bool isLineCenterAutoConstraint(int GeoId, const Base::Vector2d& Pos) const;
 
-    bool seekAlignmentAutoConstraint(
-        std::vector<AutoConstraint>& constraints,
-        const Base::Vector2d& Dir
-    );
+    bool seekAlignmentAutoConstraint(std::vector<AutoConstraint>& constraints, const Base::Vector2d& Dir);
 
     bool seekTangentAutoConstraint(
         std::vector<AutoConstraint>& constraints,
