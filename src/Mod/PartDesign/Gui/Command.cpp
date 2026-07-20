@@ -1928,7 +1928,7 @@ void finishDressupFeature(
         FCMD_OBJ_CMD(Feat, "UseAllEdges = True");
     }
     Gui::Command::doCommand(cmd->Gui, "Gui.Selection.clearSelection()");
-    finishFeature(cmd, Feat, base, true, updateDocument);
+    finishFeature(cmd, Feat, base, /* hidePreviousSolid = */ true, updateDocument);
 
     App::DocumentObject* baseFeature = static_cast<PartDesign::DressUp*>(Feat)->Base.getValue();
     if (baseFeature) {
