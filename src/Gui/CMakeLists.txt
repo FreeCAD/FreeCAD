@@ -851,8 +851,6 @@ SET(Task_View_SRCS
 SOURCE_GROUP("Task View" FILES ${Task_View_SRCS})
 
 SET(qsintActionPanel_SRCS
-    QSint/actionpanel/actionbox.cpp
-    QSint/actionpanel/actionbox.h
     QSint/actionpanel/actionlabel.cpp
     QSint/actionpanel/actionlabel.h
     QSint/actionpanel/actiongroup.cpp
@@ -868,7 +866,6 @@ SET(qsintActionPanel_SRCS
 )
 SOURCE_GROUP("Widget\\QSintActionPanel" FILES ${qsintActionPanel_SRCS})
 set(qsint_MOC_HDRS
-    QSint/actionpanel/actionbox.h
     QSint/actionpanel/actionlabel.h
     QSint/actionpanel/actiongroup.h
     QSint/actionpanel/actionpanel.h
