@@ -742,7 +742,7 @@ def calculate_principal_stress_std(stress_tensor):
     eigvals = list(np.linalg.eigvalsh(sigma))
     eigvals.sort()
     eigvals.reverse()
-    maxshear = (eigvals[0] - eigvals[2])
+    maxshear = eigvals[0] - eigvals[2]
     return (eigvals[0], eigvals[1], eigvals[2], maxshear)
 
 
@@ -785,7 +785,7 @@ def calculate_principal_stress_reinforced(stress_tensor):
     eigenvalues = eigenvalues[idx]
     eigenvectors = eigenvectors[:, idx]
 
-    maxshear = (eigenvalues[0] - eigenvalues[2])
+    maxshear = eigenvalues[0] - eigenvalues[2]
 
     return (
         eigenvalues[0],
