@@ -33,7 +33,7 @@ import Path.Base.Generator.linking as linking
 import Path.Base.MachineState as PathMachineState
 import Path.Op.Base as PathOp
 import Path.Op.CircularHoleBase as PathCircularHoleBase
-import PathScripts.PathUtils as PathUtils
+from Path.Op.Util import drillTipLength
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "CAM Drilling Operation"
@@ -281,9 +281,9 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         # Calculate offsets to add to target edge
         endoffset = 0.0
         if obj.ExtraOffset == "Drill Tip":
-            endoffset = PathUtils.drillTipLength(self.tool)
+            endoffset = drillTipLength(self.tool)
         elif obj.ExtraOffset == "2x Drill Tip":
-            endoffset = PathUtils.drillTipLength(self.tool) * 2
+            endoffset = drillTipLength(self.tool) * 2
 
         # compute the drilling targets
         edgelist = []
@@ -298,15 +298,14 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         linkingArgs = {
             "start_position": None,
             "target_position": None,
-            "local_clearance": safe_height,
-            "global_clearance": obj.ClearanceHeight.Value,
+            "heights_clearance": (safe_height, obj.ClearanceHeight.Value),
             "solids": None,
             "tool_shape": None,
             "tool_diameter": None,
             "collision_clearance": obj.CollisionClearance.Value,
         }
         if obj.CollisionAvoidanceStrategy == "Clearance Height":
-            linkingArgs["local_clearance"] = obj.ClearanceHeight.Value
+            linkingArgs["heights_clearance"] = obj.ClearanceHeight.Value
         elif obj.CollisionAvoidanceStrategy == "Retract Height":
             pass
         elif obj.CollisionAvoidanceStrategy == "Line of Sight":
@@ -444,9 +443,9 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         # Calculate offsets to add to target edge
         endoffset = 0.0
         if obj.ExtraOffset == "Drill Tip":
-            endoffset = PathUtils.drillTipLength(self.tool)
+            endoffset = drillTipLength(self.tool)
         elif obj.ExtraOffset == "2x Drill Tip":
-            endoffset = PathUtils.drillTipLength(self.tool) * 2
+            endoffset = drillTipLength(self.tool) * 2
 
         # compute the tapping targets
         edgelist = []

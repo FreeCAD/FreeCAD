@@ -141,6 +141,11 @@ struct DrawingParameters
     int constraintIconHitPaddingPx = 3;  // Extra hit padding for constraint icons
     int markerSize = 7;                  // Size used for markers
 
+    // transparency of visible axis
+    float axisTransparency = 0.3f;
+    // transparency of axis when occluded
+    float occludedAxisTransparency = 0.9f;
+
     int CurveWidth = 2;             // width of normal edges
     int ConstructionWidth = 1;      // width of construction edges
     int InternalWidth = 1;          // width of internal edges
@@ -415,6 +420,12 @@ struct EditModeScenegraphNodes
     SoCoordinate3* OriginPointCoordinate;
     SoMarkerSet* OriginPointSet;
     SoDrawStyle* OriginPointDrawStyle;
+
+    // occluded
+    SoMaterial* OriginPointMaterialOccluded;
+    SoMarkerSet* OriginPointSetOccluded;
+    SoDrawStyle* OriginPointDrawStyleOccluded;
+    SoCoordinate3* OriginPointCoordinateOccluded;
     //@}
 
     /** @name Curve nodes*/
@@ -433,10 +444,23 @@ struct EditModeScenegraphNodes
 
     /** @name Axes nodes*/
     //@{
-    SoMaterial* RootCrossMaterials;
-    SoCoordinate3* RootCrossCoordinate;
-    SoLineSet* RootCrossSet;
+    SoMaterial* RootCrossHMaterials;
+    SoCoordinate3* RootCrossHCoordinate;
+    SoLineSet* RootCrossHSet;
     SoDrawStyle* RootCrossDrawStyle;
+
+    SoMaterial* RootCrossVMaterials;
+    SoCoordinate3* RootCrossVCoordinate;
+    SoLineSet* RootCrossVSet;
+
+    // occluded
+    SoDrawStyle* RootCrossDrawStyleOccluded;
+    SoCoordinate3* RootCrossHCoordinateOccluded;
+    SoCoordinate3* RootCrossVCoordinateOccluded;
+    SoMaterial* RootCrossMaterialsOccludedH;
+    SoLineSet* RootCrossSetOccludedH;
+    SoMaterial* RootCrossMaterialsOccludedV;
+    SoLineSet* RootCrossSetOccludedV;
     //@}
 
     /** @name Temporal edit curve nodes - For geometry creation */
@@ -446,6 +470,14 @@ struct EditModeScenegraphNodes
     SoLineSet* EditCurveSet;
     SoDrawStyle* EditCurvesDrawStyle;
     SoPickStyle* pickStyleAxes;
+    //@}
+
+    /** @name Line-extension auto-constraint hint nodes */
+    //@{
+    SoMaterial* LineExtensionAutoConstraintHintMaterials;
+    SoCoordinate3* LineExtensionAutoConstraintHintCoordinate;
+    SoLineSet* LineExtensionAutoConstraintHintSet;
+    SoDrawStyle* LineExtensionAutoConstraintHintDrawStyle;
     //@}
 
     /** @name Temporal edit markers nodes- For operation rendering, such as trimming green circles*/

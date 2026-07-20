@@ -69,45 +69,6 @@ TaskWidget::~TaskWidget() = default;
 
 //**************************************************************************
 //**************************************************************************
-// TaskGroup
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-TaskGroup::TaskGroup(QWidget* parent)
-    : QSint::ActionBox(parent)
-{}
-
-TaskGroup::TaskGroup(const QString& headerText, QWidget* parent)
-    : QSint::ActionBox(headerText, parent)
-{}
-
-TaskGroup::TaskGroup(const QPixmap& icon, const QString& headerText, QWidget* parent)
-    : QSint::ActionBox(icon, headerText, parent)
-{}
-
-TaskGroup::~TaskGroup() = default;
-
-void TaskGroup::actionEvent(QActionEvent* e)
-{
-    QAction* action = e->action();
-    switch (e->type()) {
-        case QEvent::ActionAdded: {
-            this->createItem(action);
-            break;
-        }
-        case QEvent::ActionChanged: {
-            break;
-        }
-        case QEvent::ActionRemoved: {
-            // cannot change anything
-            break;
-        }
-        default:
-            break;
-    }
-}
-
-//**************************************************************************
-//**************************************************************************
 // TaskBox
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -195,13 +156,13 @@ void TaskBox::hideGroupBox()
     myGroup->hide();
 
     m_foldPixmap = QPixmap();
-    setFixedHeight(myHeader->height());
+    setFixedHeight(myScheme->headerSize);
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 }
 
 bool TaskBox::isGroupVisible() const
 {
-    return myGroup->isVisible();
+    return !myGroup->isHidden() || m_foldDirection == 1;
 }
 
 void TaskBox::actionEvent(QActionEvent* e)
@@ -855,6 +816,7 @@ void TaskView::addTaskWatcher()
 {
     if (!showTaskWatcher) {
         setShownTaskInfo(-1);  // Switch to the empty taskwatcher panel
+        Q_EMIT taskUpdate();
         return;
     }
     // add all widgets for all watcher to the task view
@@ -1042,7 +1004,7 @@ void TaskView::clearActionStyle()
 {
     std::optional<TaskInfo> current = currentTaskInfo();
     TaskPanel* panel = current ? current->taskPanel : TaskWatcherPanel;
-    static_cast<QSint::ActionPanelScheme*>(QSint::ActionPanelScheme::defaultScheme())->clearActionStyle();
+    QSint::ActionPanelScheme::defaultScheme()->clearActionStyle();
     panel->actionPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 
@@ -1050,8 +1012,7 @@ void TaskView::restoreActionStyle()
 {
     std::optional<TaskInfo> current = currentTaskInfo();
     TaskPanel* panel = current ? current->taskPanel : TaskWatcherPanel;
-    static_cast<QSint::ActionPanelScheme*>(QSint::ActionPanelScheme::defaultScheme())
-        ->restoreActionStyle();
+    QSint::ActionPanelScheme::defaultScheme()->restoreActionStyle();
     panel->actionPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 

@@ -487,10 +487,10 @@ DocumentRecoveryPrivate::Info DocumentRecoveryPrivate::getRecoveryInfo(const QFi
 
 /// Rough check to see if the ZIP data is valid. No CRC calculation, just a fast iteration over the
 /// contents to see if it seems basically OK.
-bool zipDataIsValid(const QString& zipData)
+bool zipDataIsValid(const QString& fcstdFile)
 {
     try {
-        zipios::ZipFile zf(zipData.toStdString());
+        zipios::ZipFile zf(fcstdFile.toStdString());
         auto entries = zf.entries();
         int n = 0;
         for (auto it = entries.begin(); it != entries.end(); ++it) {
@@ -569,15 +569,17 @@ bool DocumentRecoveryPrivate::isValidProject(const QFileInfo& fi) const
         return false;
     }
 
-    if (!zipDataIsValid(fi.fileName())) {
+    const QString projectFile = fi.absoluteFilePath();
+
+    if (!zipDataIsValid(projectFile)) {
         return false;
     }
 
-    if (!xmlFilesAreValid(fi.fileName())) {
+    if (!xmlFilesAreValid(projectFile)) {
         return false;
     }
 
-    App::ProjectFile project(fi.absoluteFilePath().toStdString());
+    App::ProjectFile project(projectFile.toStdString());
     return project.loadDocument();
 }
 
@@ -646,12 +648,9 @@ void DocumentRecovery::onDeleteSection()
 {
     QMessageBox msgBox(this);
     msgBox.setIcon(QMessageBox::Warning);
-    msgBox.setWindowTitle(tr("Cleanup"));
-    msgBox.setText(tr("Delete the selected transient directories?"));
-    msgBox.setInformativeText(
-        tr("When deleting the selected transient directory it is not possible to recover any files "
-           "afterwards.")
-    );
+    msgBox.setWindowTitle(tr("Delete"));
+    msgBox.setText(tr("Delete the selected recovery documents?"));
+    msgBox.setInformativeText(tr("Recovery documents cannot be restored after deletion."));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
     int ret = msgBox.exec();
@@ -683,8 +682,8 @@ void DocumentRecovery::onButtonCleanupClicked()
     QMessageBox msgBox(this);
     msgBox.setIcon(QMessageBox::Warning);
     msgBox.setWindowTitle(tr("Cleanup"));
-    msgBox.setText(tr("Delete all transient directories?"));
-    msgBox.setInformativeText(tr("When deleting all transient directories it is not possible to recover any files afterwards."));
+    msgBox.setText(tr("Delete all recovery documents?"));
+    msgBox.setInformativeText(tr("Recovery documents cannot be restored after deletion."));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
     int ret = msgBox.exec();
@@ -701,7 +700,7 @@ void DocumentRecovery::onButtonCleanupClicked()
     handler.checkForPreviousCrashes(
         std::bind(&DocumentRecovery::cleanup, this, sp::_1, sp::_2, sp::_3)
     );
-    DlgCheckableMessageBox::showMessage(tr("Delete"), tr("Transient directories deleted."));
+    DlgCheckableMessageBox::showMessage(tr("Cleanup"), tr("Recovery documents deleted."));
     reject();
 }
 

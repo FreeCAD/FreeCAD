@@ -174,29 +174,29 @@
       <translation>FreeCAD 浅色</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="250"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="251"/>
       <source>Theme</source>
       <translation>主题</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="253"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="254"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
       <translation>寻找更多主题？您可以使用&lt;a href=“freecad:Std_AddonMgr”&gt;插件管理器&lt;/a&gt;获取。</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="260"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="261"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD 深色</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="261"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="262"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD 浅色</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="262"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="263"/>
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD 经典</translation>

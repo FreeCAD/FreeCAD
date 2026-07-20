@@ -195,8 +195,8 @@
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <location filename="../../Command.cpp" line="54"/>
-      <source>Measure a feature</source>
-      <translation>Вимірювати характеристику</translation>
+      <source>Measures a feature</source>
+      <translation type="unfinished">Measures a feature</translation>
     </message>
   </context>
   <context>
@@ -310,7 +310,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="119"/>
       <source>Distance</source>
-      <translation>Відстань</translation>
+      <translation>Відстань Х</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="127"/>

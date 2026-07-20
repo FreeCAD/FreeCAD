@@ -1572,6 +1572,10 @@ Más uillinn aghaidhe &lt; uillinn fillte, úsáidtear scáthú réidh</translat
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="201"/>
+      <source>Time</source>
+      <translation>Am</translation>
+    </message>
+    <message>
       <location filename="../../RemeshGmsh.cpp" line="259"/>
       <source>Time:</source>
       <translation>Am:</translation>

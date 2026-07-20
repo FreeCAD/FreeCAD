@@ -237,8 +237,8 @@
       <translation>Umiejscowienie</translation>
     </message>
     <message>
+      <location filename="../../FitBSplineCurve.cpp" line="152"/>
       <location filename="../../FitBSplineSurface.cpp" line="242"/>
-      <location filename="../../FitBSplineCurve.cpp" line="138"/>
       <source>Fit B-spline</source>
       <translation>Dopasuj krzywą złożoną</translation>
     </message>
@@ -590,6 +590,26 @@
       <source>Reverse Engineering</source>
       <translation>Inżynieria Wsteczna</translation>
     </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="36"/>
+      <source>&amp;Reverse Engineering</source>
+      <translation>&amp;Inżynieria Wsteczna</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="37"/>
+      <source>Surface Reconstruction</source>
+      <translation>Odbudowa powierzchni</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="38"/>
+      <source>Segmentation</source>
+      <translation>Segmentacja</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="39"/>
+      <source>Approximation</source>
+      <translation>Przybliżenie</translation>
+    </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineCurve</name>
@@ -620,8 +640,8 @@
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>
-      <source>Iso-Parametric</source>
-      <translation>Izoparametryczny</translation>
+      <source>Equidistant</source>
+      <translation>W jednakowej odległości</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>
@@ -720,7 +740,7 @@
   <context>
     <name>ReenGui::FitBSplineCurveWidget</name>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="89"/>
+      <location filename="../../FitBSplineCurve.cpp" line="103"/>
       <source>Input Error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>

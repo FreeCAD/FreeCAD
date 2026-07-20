@@ -55,9 +55,9 @@ DlgSettings3DViewPart::DlgSettings3DViewPart(QWidget* parent)
     );
     connect(
         ui->maxAngularDeflection,
-        qOverload<double>(&QDoubleSpinBox::valueChanged),
+        &QDoubleSpinBox::editingFinished,
         this,
-        &DlgSettings3DViewPart::onMaxAngularDeflectionValueChanged
+        &DlgSettings3DViewPart::onMaxAngularDeflectionEditingFinished
     );
     ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Part"
@@ -92,11 +92,14 @@ void DlgSettings3DViewPart::onMaxDeviationValueChanged(double vMaxDev)
     }
 }
 
-void DlgSettings3DViewPart::onMaxAngularDeflectionValueChanged(double vMaxAngle)
+void DlgSettings3DViewPart::onMaxAngularDeflectionEditingFinished()
 {
     if (!this->isVisible()) {
         return;
     }
+
+    double vMaxAngle = ui->maxAngularDeflection->value();
+
     /**
      *  The lower threshold of 2.0 was determined by testing
      *  as laid out in the table as per comment hyperlink:

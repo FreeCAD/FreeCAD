@@ -141,6 +141,18 @@ struct ActionDisabler
 };
 
 
+DialogOptions::Backend DialogOptions::fileDialogBackend()
+{
+    if (dontUseNativeFileDialog()) {
+        return Backend::NonNative;
+    }
+#ifdef FC_OS_WIN32
+    return Backend::ViaWin32;
+#else
+    return Backend::ViaQt;
+#endif
+}
+
 bool DialogOptions::dontUseNativeFileDialog()
 {
 #if defined(USE_QT_DIALOGS)
@@ -155,6 +167,14 @@ bool DialogOptions::dontUseNativeFileDialog()
                                      ->GetGroup("Preferences")
                                      ->GetGroup("Dialog");
     return group->GetBool("DontUseNativeDialog", notNativeDialog);
+}
+
+DialogOptions::Backend DialogOptions::colorDialogBackend()
+{
+    if (dontUseNativeColorDialog()) {
+        return Backend::NonNative;
+    }
+    return Backend::ViaQt;
 }
 
 bool DialogOptions::dontUseNativeColorDialog()
@@ -472,7 +492,7 @@ void FileDialogInternal::normalizeSavePath(QString& path, const FileDialog::Filt
 
     // Check for any full-name filters first.
     for (const auto& pat : selectedFilter.patterns) {
-        if (!pat.startsWith("*.") && typedName == pat) {
+        if (!pat.startsWith("*.") && typedName.compare(pat, Qt::CaseInsensitive) == 0) {
             return;
         }
     }
@@ -492,7 +512,8 @@ void FileDialogInternal::normalizeSavePath(QString& path, const FileDialog::Filt
     }
     else /* size() > 1 */ {
         for (const auto& pat : selectedFilter.patterns) {
-            if (pat.startsWith("*.") && typedExt == QStringView(pat).mid(1)) {
+            if (pat.startsWith("*.")
+                && typedExt.compare(QStringView(pat).mid(1), Qt::CaseInsensitive) == 0) {
                 // Valid extension found for the selected filter.
                 return;
             }

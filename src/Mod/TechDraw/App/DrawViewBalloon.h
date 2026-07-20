@@ -83,6 +83,8 @@ public:
 
     App::PropertyLink *getOwnerProperty() override { return &SourceView; }
 
+    bool snapsToPosition() const override { return false; }
+
 protected:
     void onChanged(const App::Property* prop) override;
     void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName,

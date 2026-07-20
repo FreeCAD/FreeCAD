@@ -1095,7 +1095,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
       <source>Duplicated Points</source>
-      <translation type="unfinished">Duplicated Points</translation>
+      <translation>Duplicerade punkter</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
@@ -1572,6 +1572,10 @@ till ett mjukare utseende.
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="201"/>
+      <source>Time</source>
+      <translation>Tid</translation>
+    </message>
+    <message>
       <location filename="../../RemeshGmsh.cpp" line="259"/>
       <source>Time:</source>
       <translation>Tid:</translation>

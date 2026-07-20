@@ -195,8 +195,8 @@
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <location filename="../../Command.cpp" line="54"/>
-      <source>Measure a feature</source>
-      <translation>Formelement messen</translation>
+      <source>Measures a feature</source>
+      <translation>Misst ein Formelement</translation>
     </message>
   </context>
   <context>

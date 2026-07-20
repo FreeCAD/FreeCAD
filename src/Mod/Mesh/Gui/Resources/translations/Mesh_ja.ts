@@ -484,7 +484,7 @@
     <message>
       <location filename="../../Command.cpp" line="1847"/>
       <source>Scale</source>
-      <translation>尺度</translation>
+      <translation>拡大縮小</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1848"/>
@@ -1089,19 +1089,19 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="927"/>
       <source>Duplicated Faces</source>
-      <translation type="unfinished">Duplicated Faces</translation>
+      <translation>重複面</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
       <source>Duplicated Points</source>
-      <translation type="unfinished">Duplicated Points</translation>
+      <translation>重複点</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1298"/>
       <source>Mesh Repair</source>
-      <translation type="unfinished">Mesh Repair</translation>
+      <translation>メッシュの修復</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="963"/>
@@ -1566,6 +1566,10 @@ to a smoother appearance.
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="201"/>
+      <source>Time</source>
+      <translation>時刻</translation>
+    </message>
+    <message>
       <location filename="../../RemeshGmsh.cpp" line="259"/>
       <source>Time:</source>
       <translation>時間：</translation>
@@ -1591,7 +1595,7 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="255"/>
       <source>Cannot add triangle to avoid non-manifolds.</source>
-      <translation type="unfinished">Cannot add triangle to avoid non-manifolds.</translation>
+      <translation>非多様体を回避するための三角形を追加できません。</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="407"/>

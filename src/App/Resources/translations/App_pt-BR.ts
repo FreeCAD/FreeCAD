@@ -4,9 +4,24 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="613"/>
+      <location filename="../../Application.cpp" line="619"/>
       <source>Unnamed</source>
       <translation>Sem nome</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="569"/>
+      <source>True</source>
+      <translation>Verdadeiro</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="569"/>
+      <source>False</source>
+      <translation>Falso</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="587"/>
+      <source>Null</source>
+      <translation type="unfinished">Null</translation>
     </message>
   </context>
   <context>
@@ -75,7 +90,7 @@ O usuário deve então clicar no botão Atualizar na barra de ferramentas princi
       <location filename="../../Link.cpp" line="119"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
-      <translation>Armazena a escolha mais recente do usuário a respeito da aplicação da configuração CopyOnChange em todos os links que direcionam para o mesmo objeto configurável</translation>
+      <translation>Armazena a escolha mais recente do usuário a respeito da aplicação da configuração Copiar ao alterar em todos os links que direcionam para o mesmo objeto configurável</translation>
     </message>
   </context>
 </TS>

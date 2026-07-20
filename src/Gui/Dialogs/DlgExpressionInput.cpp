@@ -30,6 +30,8 @@
 #include <QTreeWidget>
 #include <QStyledItemDelegate>
 
+#include <fmt/format.h>
+
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -363,6 +365,7 @@ void DlgExpressionInput::checkExpression(const QString& text)
         }
 
         std::unique_ptr<Expression> result(expr->eval());
+        message = result->toString();
 
         expression = expr;
         okBtn->setEnabled(true);
@@ -374,35 +377,42 @@ void DlgExpressionInput::checkExpression(const QString& text)
         auto* n = freecad_cast<NumberExpression*>(result.get());
         if (n) {
             Base::Quantity value = n->getQuantity();
-            if (!value.isValid()) {
-                THROWMT(Base::ValueError, QT_TRANSLATE_NOOP("Exceptions", "Not a number"));
-            }
 
-            QString msg = QString::fromStdString(value.getUserString());
-            if (impliedUnit != Base::Unit::One) {
-                if (!value.isDimensionless() && value.getUnit() != impliedUnit) {
-                    THROWMT(
-                        Base::UnitsMismatchError,
-                        QT_TRANSLATE_NOOP("Exceptions", "Unit mismatch between result and required unit")
-                    );
+            Base::Type typePath = getTypePath();
+            if (typePath == App::PropertyString::getClassTypeId()
+                || typePath == App::PropertyMap::getClassTypeId()) {
+                // For string properties just take the result value without further checks
+                message = App::quote(anyToString(result->getValueAsAny()));
+            }
+            else {
+                if (!value.isValid()) {
+                    THROWMT(Base::ValueError, QT_TRANSLATE_NOOP("Exceptions", "Not a Number"));
                 }
 
-                value.setUnit(impliedUnit);
-            }
-            else if (!value.isDimensionless()) {
-                msg += tr(" (Warning: unit discarded)");
+                QString msg = QString::fromStdString(value.getUserString());
+                if (impliedUnit != Base::Unit::One) {
+                    if (!value.isDimensionless() && value.getUnit() != impliedUnit) {
+                        THROWMT(
+                            Base::UnitsMismatchError,
+                            QT_TRANSLATE_NOOP("Exceptions", "Unit mismatch between result and required unit")
+                        );
+                    }
 
-                QPalette p(ui->msg->palette());
-                p.setColor(QPalette::WindowText, Qt::red);
-                ui->msg->setPalette(p);
-            }
+                    value.setUnit(impliedUnit);
+                }
+                else if (!value.isDimensionless()) {
+                    msg += tr(" (Warning: unit discarded)");
 
-            numberRange.throwIfOutOfRange(value);
-            message = msg.toStdString();
+                    QPalette p(ui->msg->palette());
+                    p.setColor(QPalette::WindowText, Qt::red);
+                    ui->msg->setPalette(p);
+                }
+
+                numberRange.throwIfOutOfRange(value);
+                message = msg.toStdString();
+            }
         }
-        else {
-            message = result->toString();
-        }
+
         setMsgText();
     }
 }
@@ -580,39 +590,6 @@ static const App::OperatorExpression* toUnitNumberExpr(const App::Expression* ex
     return nullptr;
 }
 
-void DlgExpressionInput::applyImpliedUnit()
-{
-    if (!expression || impliedUnit == Base::Unit::One) {
-        return;
-    }
-
-    std::unique_ptr<App::Expression> evaluated(expression->eval());
-    const auto* numberExpr = toNumberExpr(evaluated.get());
-    if (!numberExpr || !numberExpr->getQuantity().isDimensionless()) {
-        return;
-    }
-
-    double factor = 1.0;
-    std::string unitString;
-    Base::Quantity(1.0, impliedUnit).getUserString(factor, unitString);
-    if (unitString.empty()) {
-        return;
-    }
-
-    auto left = expression->copy();
-    auto right = std::make_unique<App::UnitExpression>(
-        path.getDocumentObject(),
-        Base::Quantity(factor, impliedUnit),
-        unitString
-    );
-    expression = std::make_shared<App::OperatorExpression>(
-        path.getDocumentObject(),
-        left.release(),
-        App::OperatorExpression::Operator::UNIT,
-        right.release()
-    );
-}
-
 void DlgExpressionInput::createBindingVarSet(App::Property* propVarSet, App::DocumentObject* varSet)
 {
     ObjectIdentifier varSetId(*propVarSet);
@@ -652,7 +629,7 @@ void DlgExpressionInput::acceptWithVarSet()
     std::string name = nameProp.toStdString();
     std::string group = nameGroup.toStdString();
     std::string type = getType();
-    auto prop = obj->addDynamicProperty(type.c_str(), name.c_str(), group.c_str());
+    auto prop = obj->addDynamicProperty(type, name.c_str(), group.c_str());
 
     // Set the value of the property in the VarSet
     //
@@ -707,8 +684,6 @@ void DlgExpressionInput::acceptWithVarSet()
 
 void DlgExpressionInput::accept()
 {
-    applyImpliedUnit();
-
     if (varSetsVisible) {
         if (needReportOnVarSet()) {
             return;
@@ -730,7 +705,7 @@ static App::Document* getPreselectedDocument()
     }
 
     App::Document* doc = App::GetApplication().getDocument(lastDoc.c_str());
-    if (doc == nullptr) {
+    if (!doc) {
         return App::GetApplication().getActiveDocument();
     }
 
@@ -761,7 +736,7 @@ int DlgExpressionInput::getVarSetIndex(const App::Document* doc) const
 void DlgExpressionInput::preselectVarSet()
 {
     const App::Document* doc = getPreselectedDocument();
-    if (doc == nullptr) {
+    if (!doc) {
         FC_ERR("No active document found");
     }
     ui->comboBoxVarSet->setCurrentIndex(getVarSetIndex(doc));
@@ -796,7 +771,7 @@ static void addVarSetsVarSetComboBox(
         auto* vp = freecad_cast<Gui::ViewProviderDocumentObject*>(
             Gui::Application::Instance->getViewProvider(varSet)
         );
-        if (vp == nullptr) {
+        if (!vp) {
             FC_ERR("No ViewProvider found for VarSet: " << varSet->getNameInDocument());
             continue;
         }
@@ -922,13 +897,13 @@ void DlgExpressionInput::onVarSetSelected(int /*index*/)
     }
 
     App::Document* doc = App::GetApplication().getDocument(docName.toUtf8());
-    if (doc == nullptr) {
+    if (!doc) {
         FC_ERR("Document not found: " << docName.toStdString());
         return;
     }
 
     App::DocumentObject* varSet = doc->getObject(varSetName.toUtf8());
-    if (varSet == nullptr) {
+    if (!varSet) {
         FC_ERR("Variable set not found: " << varSetName.toStdString());
         return;
     }

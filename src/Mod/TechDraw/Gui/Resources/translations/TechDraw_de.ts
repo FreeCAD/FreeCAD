@@ -51,24 +51,24 @@
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="979"/>
-      <source>Add a cosmetic line that passes through 2 selected points</source>
-      <translation>Fügt eine Hilfslinie durch 2 ausgewählte Punkte hinzu</translation>
+      <source>Adds a cosmetic line that passes through 2 selected points</source>
+      <translation>Fügt eine Hilfslinie hinzu, die durch 2 ausgewählte Punkte verläuft</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDraw3PtAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1771"/>
+      <location filename="../../CommandCreateDims.cpp" line="1777"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1772"/>
+      <location filename="../../CommandCreateDims.cpp" line="1778"/>
       <source>Angle Dimension From 3 Points</source>
       <translation>Winkelmaß über 3 Punkte</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1773"/>
+      <location filename="../../CommandCreateDims.cpp" line="1779"/>
       <source>Inserts an angle dimension between 3 selected points</source>
       <translation>Fügt ein Winkelmaß über 3 ausgewählte Punkte ein</translation>
     </message>
@@ -89,17 +89,17 @@
   <context>
     <name>CmdTechDrawAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1724"/>
+      <location filename="../../CommandCreateDims.cpp" line="1730"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1725"/>
+      <location filename="../../CommandCreateDims.cpp" line="1731"/>
       <source>Angle Dimension</source>
       <translation>Winkelmaß</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1726"/>
+      <location filename="../../CommandCreateDims.cpp" line="1732"/>
       <source>Inserts an angle dimension between two edges</source>
       <translation>Fügt ein Winkelmaß zwischen zwei Kanten ein</translation>
     </message>
@@ -478,17 +478,17 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionCascadeDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1119"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1134"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1120"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1135"/>
       <source>Cascade Horizontal Dimensions</source>
       <translation>Horizontale Maße anordnen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1121"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1136"/>
       <source>Evenly spaces the selected horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Ordnet horizontale Maße mit gleichen Abständen an:&lt;br&gt;- Zeilenabstand eingeben (optional)&lt;br&gt;- Zwei oder mehr horizontale Maße auswählen&lt;br&gt;- Das erste Maß legt die Position fest&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -496,19 +496,19 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionCascadeHorizDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="941"/>
+      <location filename="../../CommandExtensionDims.cpp" line="956"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="942"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1196"/>
+      <location filename="../../CommandExtensionDims.cpp" line="957"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1211"/>
       <source>Cascade Horizontal Dimensions</source>
       <translation>Horizontale Maße anordnen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="943"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1197"/>
+      <location filename="../../CommandExtensionDims.cpp" line="958"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1212"/>
       <source>Evenly spaces the selected horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Ordnet horizontale Maße mit gleichen Abständen an:&lt;br&gt;- Zeilenabstand eingeben (optional)&lt;br&gt;- Zwei oder mehr horizontale Maße auswählen&lt;br&gt;- Das erste Maß legt die Position fest&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -516,19 +516,19 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionCascadeObliqueDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1083"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1098"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1084"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1214"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1099"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1229"/>
       <source>Cascade Oblique Dimensions</source>
       <translation>Schräge Maße anordnen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1085"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1215"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1100"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1230"/>
       <source>Evenly spaces the selected oblique dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Ordnet schräge Maße mit gleichen Abständen an:&lt;br&gt;- Zeilenabstand eingeben (optional)&lt;br&gt;- Zwei oder mehr horizontale Maße auswählen&lt;br&gt;- Das erste Maß legt die Position fest&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -536,19 +536,19 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionCascadeVertDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1008"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1023"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1009"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1205"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1024"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1220"/>
       <source>Cascade Vertical Dimensions</source>
       <translation>Vertikale Maße anordnen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1010"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1206"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1025"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1221"/>
       <source>Evenly spaces the selected vertical dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Ordnet Vertikale Maße mit gleichen Abständen an:&lt;br&gt;- Zeilenabstand eingeben (optional)&lt;br&gt;- Zwei oder mehr horizontale Maße auswählen&lt;br&gt;- Das erste Maß legt die Position fest&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -556,17 +556,17 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionChamferDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2101"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2116"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2102"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2117"/>
       <source>Horizontal Chamfer Dimension</source>
       <translation>Horizontales Maß einer Fase</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2103"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2118"/>
       <source>Inserts a horizontal size and angle dimension for a chamfer from 2 selected vertices</source>
       <translation>Fügt ein horizontales Maß mit Längen- und Winkelangabe für eine Fase an 2 ausgewählten Knoten ein</translation>
     </message>
@@ -634,17 +634,17 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionCreateChainDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1493"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1508"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1494"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1509"/>
       <source>Horizontal Chain Dimension</source>
       <translation>Horizontale Maßkette</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1495"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1510"/>
       <source>Inserts a sequence of aligned horizontal dimensions to at least three selected vertices, where the first two define the direction</source>
       <translation>Fügt eine Folge von fluchtenden horizontalen Maßen an mindestens drei ausgewählten Knotenpunkten ein, wobei die ersten beiden die Richtung festlegen</translation>
     </message>
@@ -652,17 +652,17 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionCreateCoordDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1863"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1878"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1864"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1879"/>
       <source>Horizontal Coordinate Dimension</source>
       <translation>Horizontale Koordinatenmaße</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1865"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1880"/>
       <source>Adds evenly spaced horizontal dimensions between 3 or more vertices aligned to a shared baseline</source>
       <translation>Fügt horizontale Maße mit gleichen Abständen zwischen 3 oder mehr Knotenpunkten ein, die an derselben Grundlinie beginnen</translation>
     </message>
@@ -670,23 +670,23 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionCreateHorizChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1273"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1288"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1274"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1567"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1289"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1582"/>
       <source>Horizontal Chain Dimension</source>
       <translation>Horizontale Maßkette</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1275"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1290"/>
       <source>Inserts a sequence of aligned horizontal dimensions to at least three selected vertices</source>
       <translation>Fügt eine Folge von fluchtenden horizontalen Maßen an mindestens drei ausgewählten Knotenpunkten ein</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1568"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1583"/>
       <source>Inserts a sequence of aligned horizontal dimensions to at least three selected vertices, where the first two define the direction</source>
       <translation>Fügt eine Folge von fluchtenden horizontalen Maßen an mindestens drei ausgewählten Knotenpunkten ein, wobei die ersten beiden die Richtung festlegen</translation>
     </message>
@@ -694,19 +694,19 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionCreateHorizChamferDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2004"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2019"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2005"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2167"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2020"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2182"/>
       <source>Horizontal Chamfer Dimension</source>
       <translation>Horizontales Maß einer Fase</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2006"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2168"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2021"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2183"/>
       <source>Inserts a horizontal size and angle dimension for a chamfer from 2 selected vertices</source>
       <translation>Fügt ein horizontales Maß mit Längen- und Winkelangabe für eine Fase an 2 ausgewählten Knoten ein</translation>
     </message>
@@ -714,19 +714,19 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionCreateHorizCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1638"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1653"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1639"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1936"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1654"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1951"/>
       <source>Horizontal Coordinate Dimension</source>
       <translation>Horizontale Koordinatenmaße</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1640"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1937"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1655"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1952"/>
       <source>Adds evenly spaced horizontal dimensions between 3 or more vertices aligned to a shared baseline</source>
       <translation>Fügt horizontale Maße mit gleichen Abständen zwischen 3 oder mehr Knotenpunkten ein, die an derselben Grundlinie beginnen</translation>
     </message>
@@ -734,17 +734,17 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionCreateLengthArc</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2195"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2210"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2196"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2211"/>
       <source>Arc Length Dimension</source>
       <translation>Bogenmaß</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2197"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2212"/>
       <source>Inserts an arc length dimension to the selected arc</source>
       <translation>Fügt ein Bogenmaß am ausgewählten Bogen ein</translation>
     </message>
@@ -752,19 +752,19 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionCreateObliqueChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1461"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1476"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1462"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1577"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1477"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1592"/>
       <source>Oblique Chain Dimension</source>
       <translation>Schräge Maßkette</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1463"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1578"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1478"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1593"/>
       <source>Inserts a sequence of aligned oblique dimensions to at least three selected vertices, where the first two define the direction</source>
       <translation>Fügt eine Folge von fluchtenden schrägen Maßen an mindestens drei ausgewählten Knotenpunkten ein, wobei die ersten beiden die Richtung festlegen</translation>
     </message>
@@ -772,19 +772,19 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionCreateObliqueCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1832"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1847"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1833"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1946"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1848"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1961"/>
       <source>Oblique Coordinate Dimension</source>
       <translation>Schräge Koordinatenmaße</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1834"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1947"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1849"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1962"/>
       <source>Adds evenly spaced oblique dimensions between 3 or more vertices aligned to a shared baseline</source>
       <translation>Fügt schräge Maße mit gleichen Abständen zwischen 3 oder mehr Knotenpunkten ein, die an derselben Grundlinie beginnen</translation>
     </message>
@@ -792,23 +792,23 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionCreateVertChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1339"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1354"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1340"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1572"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1355"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1587"/>
       <source>Vertical Chain Dimension</source>
       <translation>Vertikale Maßkette</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1341"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1356"/>
       <source>Inserts a sequence of aligned vertical dimensions to at least three selected vertices</source>
       <translation>Fügt eine Folge von fluchtenden vertikalen Maßen an mindestens drei ausgewählten Knotenpunkten ein</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1573"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1588"/>
       <source>Inserts a sequence of aligned vertical dimensions to at least three selected vertices, where the first two define the direction</source>
       <translation>Fügt eine Folge von fluchtenden vertikalen Maßen an mindestens drei ausgewählten Knotenpunkten ein, wobei die ersten beiden die Richtung festlegen</translation>
     </message>
@@ -816,19 +816,19 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionCreateVertChamferDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2070"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2085"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2071"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2172"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2086"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2187"/>
       <source>Vertical Chamfer Dimension</source>
       <translation>Vertikales Maß einer Fase</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2072"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2173"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2087"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2188"/>
       <source>Inserts a vertical size and angle dimension for a chamfer from 2 selected vertices</source>
       <translation>Fügt ein vertikales Maß mit Längen- und Winkelangabe für eine Fase an 2 ausgewählten Knoten ein</translation>
     </message>
@@ -836,19 +836,19 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionCreateVertCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1707"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1722"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1708"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1941"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1723"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1956"/>
       <source>Vertical Coordinate Dimension</source>
       <translation>Vertikale Koordinatenmaße</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1709"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1942"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1724"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1957"/>
       <source>Adds evenly spaced vertical dimensions between 3 or more vertices aligned to a shared baseline</source>
       <translation>Fügt vertikale Maße mit gleichen Abständen zwischen 3 oder mehr Knotenpunkten ein, die an derselben Grundlinie beginnen</translation>
     </message>
@@ -856,17 +856,17 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionCustomizeFormat</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2244"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2259"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2245"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2260"/>
       <source>Customize Format Label</source>
       <translation>Beschriftungsformat anpassen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2246"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2261"/>
       <source>Customizes the format label of a selected dimension or balloon</source>
       <translation>Passt die Formatierung des Textes eines ausgewählten Maßes oder Hinweises an</translation>
     </message>
@@ -874,19 +874,19 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionDecreaseDecimal</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="476"/>
+      <location filename="../../CommandExtensionDims.cpp" line="491"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="477"/>
-      <location filename="../../CommandExtensionDims.cpp" line="578"/>
+      <location filename="../../CommandExtensionDims.cpp" line="492"/>
+      <location filename="../../CommandExtensionDims.cpp" line="593"/>
       <source>Decrease Decimal Places</source>
       <translation>Dezimalstellenanzahl verringern</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="478"/>
-      <location filename="../../CommandExtensionDims.cpp" line="579"/>
+      <location filename="../../CommandExtensionDims.cpp" line="493"/>
+      <location filename="../../CommandExtensionDims.cpp" line="594"/>
       <source>Decreases the number of decimal places of the dimension</source>
       <translation>Verringert die Anzahl der Nachkommastellen der Maßzahl</translation>
     </message>
@@ -1024,19 +1024,19 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionIncreaseDecimal</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="445"/>
+      <location filename="../../CommandExtensionDims.cpp" line="460"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="446"/>
-      <location filename="../../CommandExtensionDims.cpp" line="573"/>
+      <location filename="../../CommandExtensionDims.cpp" line="461"/>
+      <location filename="../../CommandExtensionDims.cpp" line="588"/>
       <source>Increase Decimal Places</source>
       <translation>Dezimalstellenanzahl erhöhen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="447"/>
-      <location filename="../../CommandExtensionDims.cpp" line="574"/>
+      <location filename="../../CommandExtensionDims.cpp" line="462"/>
+      <location filename="../../CommandExtensionDims.cpp" line="589"/>
       <source>Increases the number of decimal places of the dimension</source>
       <translation>Erhöht die Anzahl der Nachkommastellen der Maßzahl</translation>
     </message>
@@ -1044,17 +1044,17 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionIncreaseDecreaseGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="507"/>
+      <location filename="../../CommandExtensionDims.cpp" line="522"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="508"/>
+      <location filename="../../CommandExtensionDims.cpp" line="523"/>
       <source>Increase Decimal Places</source>
       <translation>Dezimalstellenanzahl erhöhen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="509"/>
+      <location filename="../../CommandExtensionDims.cpp" line="524"/>
       <source>Increases the number of decimal places of the dimension</source>
       <translation>Erhöht die Anzahl der Nachkommastellen der Maßzahl</translation>
     </message>
@@ -1062,19 +1062,19 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionInsertDiameter</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="148"/>
+      <location filename="../../CommandExtensionDims.cpp" line="163"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="149"/>
-      <location filename="../../CommandExtensionDims.cpp" line="378"/>
+      <location filename="../../CommandExtensionDims.cpp" line="164"/>
+      <location filename="../../CommandExtensionDims.cpp" line="393"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
       <translation>&apos;⌀&apos;-Symbol einfügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="150"/>
-      <location filename="../../CommandExtensionDims.cpp" line="379"/>
+      <location filename="../../CommandExtensionDims.cpp" line="165"/>
+      <location filename="../../CommandExtensionDims.cpp" line="394"/>
       <source>Inserts a &apos;⌀&apos; symbol at the beginning of the dimension</source>
       <translation>Fügt ein &apos;&lt;⌀>&apos;-Symbol vor der Maßzahl ein</translation>
     </message>
@@ -1082,17 +1082,17 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionInsertPrefixGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="298"/>
+      <location filename="../../CommandExtensionDims.cpp" line="313"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="299"/>
+      <location filename="../../CommandExtensionDims.cpp" line="314"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
       <translation>&apos;⌀&apos;-Symbol einfügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="300"/>
+      <location filename="../../CommandExtensionDims.cpp" line="315"/>
       <source>Inserts a &apos;⌀&apos; symbol at the beginning of the dimension text</source>
       <translation>Fügt ein &apos;&lt;⌀>&apos;-Symbol vor dem Maßtext ein</translation>
     </message>
@@ -1100,19 +1100,19 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionInsertSquare</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="179"/>
+      <location filename="../../CommandExtensionDims.cpp" line="194"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="180"/>
-      <location filename="../../CommandExtensionDims.cpp" line="383"/>
+      <location filename="../../CommandExtensionDims.cpp" line="195"/>
+      <location filename="../../CommandExtensionDims.cpp" line="398"/>
       <source>Insert &apos;□&apos; Prefix</source>
       <translation>&apos;□&apos;-Symbol einfügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="181"/>
-      <location filename="../../CommandExtensionDims.cpp" line="384"/>
+      <location filename="../../CommandExtensionDims.cpp" line="196"/>
+      <location filename="../../CommandExtensionDims.cpp" line="399"/>
       <source>Inserts a &apos;□&apos; symbol at the beginning of the dimension</source>
       <translation>Fügt ein &apos;&lt;□>&apos;-Symbol vor der Maßzahl ein</translation>
     </message>
@@ -1200,17 +1200,17 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionPosChainDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="792"/>
+      <location filename="../../CommandExtensionDims.cpp" line="807"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="793"/>
+      <location filename="../../CommandExtensionDims.cpp" line="808"/>
       <source>Align Horizontal Chain Dimensions</source>
       <translation>Horizontale Kettenmaße ausrichten</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="794"/>
+      <location filename="../../CommandExtensionDims.cpp" line="809"/>
       <source>Aligns the horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Richtet horizontale Maße fluchtend aus, um eine Maßkette zu erstellen:&lt;br&gt;- Zwei oder mehr horizontale Maße auswählen&lt;br&gt;- Das erste Maß legt die Position fest&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -1218,23 +1218,23 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionPosHorizChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="628"/>
+      <location filename="../../CommandExtensionDims.cpp" line="643"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="629"/>
+      <location filename="../../CommandExtensionDims.cpp" line="644"/>
       <source>Align Horizontal Chain Dimensions</source>
       <translation>Horizontale Kettenmaße ausrichten</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="630"/>
-      <location filename="../../CommandExtensionDims.cpp" line="869"/>
+      <location filename="../../CommandExtensionDims.cpp" line="645"/>
+      <location filename="../../CommandExtensionDims.cpp" line="884"/>
       <source>Aligns the horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Richtet die horizontalen Maße fluchtend aus, um eine Maßkette zu erstellen:&lt;br&gt;- Zwei oder mehr horizontale Maße auswählen&lt;br&gt;- Das erste Maß legt die Position fest&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="868"/>
+      <location filename="../../CommandExtensionDims.cpp" line="883"/>
       <source>Position Horizontal Chain Dimensions</source>
       <translation>Horizontale Kettenmaße anordnen</translation>
     </message>
@@ -1242,23 +1242,23 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionPosObliqueChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="757"/>
+      <location filename="../../CommandExtensionDims.cpp" line="772"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="758"/>
+      <location filename="../../CommandExtensionDims.cpp" line="773"/>
       <source>Align Oblique Chain Dimensions</source>
       <translation>Schräge Kettenmaße ausrichten</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="759"/>
-      <location filename="../../CommandExtensionDims.cpp" line="885"/>
+      <location filename="../../CommandExtensionDims.cpp" line="774"/>
+      <location filename="../../CommandExtensionDims.cpp" line="900"/>
       <source>Aligns the oblique dimensions to create a chain dimension:&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Richtet die schrägen Maße fluchtend aus, um eine Maßkette zu erstellen:&lt;br&gt;- Zwei oder mehr parallele schräge Maße auswählen&lt;br&gt;- Das erste Maß legt die Position fest&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="884"/>
+      <location filename="../../CommandExtensionDims.cpp" line="899"/>
       <source>Position Oblique Chain Dimensions</source>
       <translation>Schräge Kettenmaße anordnen</translation>
     </message>
@@ -1266,23 +1266,23 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionPosVertChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="690"/>
+      <location filename="../../CommandExtensionDims.cpp" line="705"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="691"/>
+      <location filename="../../CommandExtensionDims.cpp" line="706"/>
       <source>Align Vertical Chain Dimensions</source>
       <translation>Vertikale Kettenmaße anordnen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="692"/>
-      <location filename="../../CommandExtensionDims.cpp" line="877"/>
+      <location filename="../../CommandExtensionDims.cpp" line="707"/>
+      <location filename="../../CommandExtensionDims.cpp" line="892"/>
       <source>Aligns the vertical dimensions to create a chain dimension:&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Richtet die vertikalen Maße fluchtend aus, um eine Maßkette zu erstellen:&lt;br&gt;- Zwei oder mehr vertikale Maße auswählen&lt;br&gt;- Das erste Maß legt die Position fest&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="876"/>
+      <location filename="../../CommandExtensionDims.cpp" line="891"/>
       <source>Position Vertical Chain Dimensions</source>
       <translation>Vertikale Kettenmaße anordnen</translation>
     </message>
@@ -1290,17 +1290,17 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
   <context>
     <name>CmdTechDrawExtensionRemovePrefixChar</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="267"/>
+      <location filename="../../CommandExtensionDims.cpp" line="282"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="268"/>
+      <location filename="../../CommandExtensionDims.cpp" line="283"/>
       <source>Remove Prefix</source>
       <translation>Präfixsymbol entfernen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="269"/>
+      <location filename="../../CommandExtensionDims.cpp" line="284"/>
       <source>Removes the prefix symbols at the beginning of the dimension</source>
       <translation>Entfernt die Präfixsymbole vor den Maßzahlen</translation>
     </message>
@@ -1447,9 +1447,9 @@ als Hilfslinien zwischen 2 ausgewählten parallelen Linien hinzu</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="592"/>
-      <source>Add a cosmetic thread to the side view of a selected hole between two selected parallel lines</source>
-      <translation>Fügt zwei Gewindebegrenzungen für Innengewinde in Seitenansicht
-als Hilfslinien außerhalb der 2 ausgewählten parallelen Linien hinzu</translation>
+      <source>Adds a cosmetic thread to the side view of a selected hole between two selected parallel lines</source>
+      <translation>Fügt zwei Gewindebegrenzungen für Außengewinde in Seitenansicht
+als Hilfslinien zwischen 2 ausgewählten parallelen Linien hinzu</translation>
     </message>
   </context>
   <context>
@@ -1473,27 +1473,27 @@ als Hilfslinien außerhalb der 2 ausgewählten parallelen Linien hinzu</translat
   <context>
     <name>CmdTechDrawExtentGroup</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1866"/>
+      <location filename="../../CommandCreateDims.cpp" line="1872"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1867"/>
+      <location filename="../../CommandCreateDims.cpp" line="1873"/>
       <source>Extent Dimension</source>
       <translation>Dimension erweitern</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1868"/>
+      <location filename="../../CommandCreateDims.cpp" line="1874"/>
       <source>Inserts a dimension showing the extent (overall length) of an object or feature</source>
       <translation>Fügt ein Maß ein, das die Ausdehnung (Gesamtlänge) eines Objekts oder eines Formelements anzeigt</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1934"/>
+      <location filename="../../CommandCreateDims.cpp" line="1940"/>
       <source>Horizontal extent</source>
       <translation>Horizontale Ausdehnung</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1939"/>
+      <location filename="../../CommandCreateDims.cpp" line="1945"/>
       <source>Vertical extent</source>
       <translation>Vertikale Ausdehnung</translation>
     </message>
@@ -1573,19 +1573,19 @@ als Hilfslinien außerhalb der 2 ausgewählten parallelen Linien hinzu</translat
   <context>
     <name>CmdTechDrawHorizontalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1960"/>
+      <location filename="../../CommandCreateDims.cpp" line="1966"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1961"/>
+      <location filename="../../CommandCreateDims.cpp" line="1967"/>
       <source>Horizontal Extent Dimension</source>
       <translation>Maß für die horizontale Ausdehnung</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1962"/>
-      <source>Inserts a dimension showing the horizontal extent (overall length) of an object or feature.</source>
-      <translation>Fügt ein Maß ein, das die horizontale Ausdehnung (Gesamtlänge) eines Objekts oder eines Formelements anzeigt.</translation>
+      <location filename="../../CommandCreateDims.cpp" line="1968"/>
+      <source>Inserts a dimension showing the horizontal extent (overall length) of an object or feature</source>
+      <translation>Fügt ein Maß ein, das die horizontale Ausdehnung (Gesamtlänge) eines Objekts oder eines Formelements anzeigt</translation>
     </message>
   </context>
   <context>
@@ -2058,17 +2058,17 @@ als Hilfslinien außerhalb der 2 ausgewählten parallelen Linien hinzu</translat
   <context>
     <name>CmdTechDrawVerticalDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1676"/>
+      <location filename="../../CommandCreateDims.cpp" line="1679"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1677"/>
+      <location filename="../../CommandCreateDims.cpp" line="1680"/>
       <source>Vertical Length Dimension</source>
       <translation>Vertikales Längenmaß</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1678"/>
+      <location filename="../../CommandCreateDims.cpp" line="1681"/>
       <source>Inserts a vertical length dimension of an edge or distance between two points</source>
       <translation>Fügt ein vertikales Maß für die Länge einer Kante oder den Abstand zwischen zwei Punkten ein</translation>
     </message>
@@ -2076,19 +2076,19 @@ als Hilfslinien außerhalb der 2 ausgewählten parallelen Linien hinzu</translat
   <context>
     <name>CmdTechDrawVerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2085"/>
+      <location filename="../../CommandCreateDims.cpp" line="2091"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2086"/>
+      <location filename="../../CommandCreateDims.cpp" line="2092"/>
       <source>Vertical Extent Dimension</source>
       <translation>Maß für die vertikale Ausdehnung</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2087"/>
-      <source>Inserts a dimension showing the vertical extent (overall length) of an object or feature.</source>
-      <translation>Fügt ein Maß ein, das die vertikale Ausdehnung (Gesamtlänge) eines Objekts oder eines Formelements anzeigt.</translation>
+      <location filename="../../CommandCreateDims.cpp" line="2093"/>
+      <source>Inserts a dimension showing the vertical extent (overall length) of an object or feature</source>
+      <translation>Fügt ein Maß ein, das die vertikale Ausdehnung (Gesamtlänge) eines Objekts oder eines Formelements anzeigt</translation>
     </message>
   </context>
   <context>
@@ -2159,8 +2159,8 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <translation>Eine unterbrochene Ansicht erstellen</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="444"/>
       <location filename="../../Command.cpp" line="1911"/>
+      <location filename="../../PagePrinter.cpp" line="444"/>
       <source>Save page to DXF</source>
       <translation>Zeichnungsblatt als DXF speichern</translation>
     </message>
@@ -2401,17 +2401,17 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <translation>Maß</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1992"/>
+      <location filename="../../CommandCreateDims.cpp" line="1998"/>
       <source>Create Dimension DistanceX</source>
       <translation>X-Längenmaß erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1994"/>
+      <location filename="../../CommandCreateDims.cpp" line="2000"/>
       <source>Create Dimension DistanceY</source>
       <translation>Y-Längenmaß erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2287"/>
+      <location filename="../../CommandCreateDims.cpp" line="2293"/>
       <source>Create dimension</source>
       <translation>Maß erstellen</translation>
     </message>
@@ -2506,8 +2506,8 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <translation>Komplexe Schnittansicht erstellen</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="572"/>
       <location filename="../../TaskComplexSection.cpp" line="648"/>
+      <location filename="../../TaskSectionView.cpp" line="572"/>
       <source>Edit Section View</source>
       <translation>Schnittansicht bearbeiten</translation>
     </message>
@@ -2517,92 +2517,92 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <translation>Hilfspunkt hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="239"/>
+      <location filename="../../CommandExtensionDims.cpp" line="254"/>
       <source>TechDraw Remove Prefix</source>
       <translation>TechDraw Symbol entfernen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="243"/>
+      <location filename="../../CommandExtensionDims.cpp" line="258"/>
       <source>Remove Prefix</source>
       <translation>Präfixsymbol entfernen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="417"/>
+      <location filename="../../CommandExtensionDims.cpp" line="432"/>
       <source>Increase/Decrease Decimal</source>
       <translation>Dezimalstellenanzahl erhöhen/verringern</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="602"/>
+      <location filename="../../CommandExtensionDims.cpp" line="617"/>
       <source>Position Horizontal Chain Dimension</source>
       <translation>Horizontale Kettenmaße anordnen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="663"/>
+      <location filename="../../CommandExtensionDims.cpp" line="678"/>
       <source>Position Vert Chain Dimension</source>
       <translation>Vertikale Kettenmaße anordnen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="725"/>
+      <location filename="../../CommandExtensionDims.cpp" line="740"/>
       <source>Position Oblique Chain Dimension</source>
       <translation>Schräge Kettenmaße anordnen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="911"/>
+      <location filename="../../CommandExtensionDims.cpp" line="926"/>
       <source>Cascade Horizontal Dimension</source>
       <translation>Horizontale Maße anordnen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="977"/>
+      <location filename="../../CommandExtensionDims.cpp" line="992"/>
       <source>Cascade Vertical Dimension</source>
       <translation>Vertikale Maße anordnen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1044"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1059"/>
       <source>Cascade Oblique Dimension</source>
       <translation>Schräge Maße anordnen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1243"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1258"/>
       <source>Create Horizontal Chain Dimension</source>
       <translation>Horizontale Maßkette einfügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1308"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1323"/>
       <source>Create Vert Chain dimension</source>
       <translation>Vertikale Maßkette einfügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1373"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1388"/>
       <source>Create oblique chain dimension</source>
       <translation>Schräge Maßkette einfügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1602"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1617"/>
       <source>Create Horizontal Coord Dimension</source>
       <translation>Horizontale Koordinatenmaße einfügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1670"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1685"/>
       <source>Create vert coord dimension</source>
       <translation>Vertikale Koordinatenmaße einfügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1740"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1755"/>
       <source>Create oblique coord dimension</source>
       <translation>Schräge Koordinatenmaße einfügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1971"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1986"/>
       <source>Create Horizontal Chamfer Dimension</source>
       <translation>Horizontales Maß an Fase einfügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2037"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2052"/>
       <source>Create Vert Chamfer Dimension</source>
       <translation>Vertikales Maß an Fase einfügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2212"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2227"/>
       <source>Create Arc Length Dimension</source>
       <translation>Bogenmaß erstellen</translation>
     </message>
@@ -3053,8 +3053,6 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandHelpers.cpp" line="87"/>
-      <location filename="../../CommandHelpers.cpp" line="100"/>
       <location filename="../../Command.cpp" line="638"/>
       <location filename="../../Command.cpp" line="648"/>
       <location filename="../../Command.cpp" line="865"/>
@@ -3073,6 +3071,8 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <location filename="../../Command.cpp" line="1705"/>
       <location filename="../../Command.cpp" line="1711"/>
       <location filename="../../Command.cpp" line="1770"/>
+      <location filename="../../CommandHelpers.cpp" line="87"/>
+      <location filename="../../CommandHelpers.cpp" line="100"/>
       <location filename="../../CommandAnnotate.cpp" line="115"/>
       <location filename="../../CommandAnnotate.cpp" line="120"/>
       <location filename="../../CommandAnnotate.cpp" line="311"/>
@@ -3159,21 +3159,6 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <translation>FreeCAD konnte kein Blatt zum Exportieren finden</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1903"/>
-      <source>Save DXF file</source>
-      <translation>DXF-Datei speichern</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2093"/>
-      <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
-      <translation>Die ausgewählte Richtung weicht um weniger als %1 Grad von der Standardrichtung ab. Soll die ausgewählte Richtung durch %2 ersetzt werden?</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2098"/>
-      <source>Direction is close to standard</source>
-      <translation>Die Ausrichtung entspricht weitgehend dem Standard</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="600"/>
       <source>Select objects to break or a base view and break definition objects</source>
       <translation>Die Objekte auswählen, die unterbrochen werden sollen, oder eine Basis-Ansicht mit Objekten, die die Unterbrechung festlegen</translation>
@@ -3190,31 +3175,31 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <translation>Diese Auswahl enthält keine Formen, Gruppen oder Link-Objekte</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="310"/>
-      <location filename="../../CommandExtensionDims.cpp" line="519"/>
-      <location filename="../../CommandExtensionDims.cpp" line="807"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1135"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1506"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1875"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2113"/>
-      <location filename="../../CommandCreateDims.cpp" line="1499"/>
-      <location filename="../../CommandCreateDims.cpp" line="1547"/>
-      <location filename="../../CommandCreateDims.cpp" line="1595"/>
-      <location filename="../../CommandCreateDims.cpp" line="1643"/>
-      <location filename="../../CommandCreateDims.cpp" line="1691"/>
-      <location filename="../../CommandCreateDims.cpp" line="1738"/>
-      <location filename="../../CommandCreateDims.cpp" line="1785"/>
-      <location filename="../../CommandCreateDims.cpp" line="1832"/>
-      <location filename="../../CommandCreateDims.cpp" line="1879"/>
-      <location filename="../../CommandCreateDims.cpp" line="1975"/>
-      <location filename="../../CommandCreateDims.cpp" line="2100"/>
+      <location filename="../../Command.cpp" line="748"/>
+      <location filename="../../Command.cpp" line="841"/>
+      <location filename="../../Command.cpp" line="904"/>
       <location filename="../../CommandStack.cpp" line="73"/>
       <location filename="../../CommandStack.cpp" line="189"/>
       <location filename="../../CommandStack.cpp" line="249"/>
       <location filename="../../CommandStack.cpp" line="309"/>
-      <location filename="../../Command.cpp" line="748"/>
-      <location filename="../../Command.cpp" line="841"/>
-      <location filename="../../Command.cpp" line="904"/>
+      <location filename="../../CommandCreateDims.cpp" line="1499"/>
+      <location filename="../../CommandCreateDims.cpp" line="1547"/>
+      <location filename="../../CommandCreateDims.cpp" line="1595"/>
+      <location filename="../../CommandCreateDims.cpp" line="1643"/>
+      <location filename="../../CommandCreateDims.cpp" line="1694"/>
+      <location filename="../../CommandCreateDims.cpp" line="1744"/>
+      <location filename="../../CommandCreateDims.cpp" line="1791"/>
+      <location filename="../../CommandCreateDims.cpp" line="1838"/>
+      <location filename="../../CommandCreateDims.cpp" line="1885"/>
+      <location filename="../../CommandCreateDims.cpp" line="1981"/>
+      <location filename="../../CommandCreateDims.cpp" line="2106"/>
+      <location filename="../../CommandExtensionDims.cpp" line="325"/>
+      <location filename="../../CommandExtensionDims.cpp" line="534"/>
+      <location filename="../../CommandExtensionDims.cpp" line="822"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1150"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1521"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1890"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2128"/>
       <location filename="../../CommandExtensionPack.cpp" line="299"/>
       <location filename="../../CommandExtensionPack.cpp" line="602"/>
       <location filename="../../CommandExtensionPack.cpp" line="1222"/>
@@ -3239,16 +3224,16 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <translation>Aufgabe wird ausgeführt</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="311"/>
-      <location filename="../../CommandExtensionDims.cpp" line="520"/>
-      <location filename="../../CommandExtensionDims.cpp" line="808"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1136"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1507"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1876"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2114"/>
       <location filename="../../Command.cpp" line="749"/>
       <location filename="../../Command.cpp" line="842"/>
       <location filename="../../Command.cpp" line="905"/>
+      <location filename="../../CommandExtensionDims.cpp" line="326"/>
+      <location filename="../../CommandExtensionDims.cpp" line="535"/>
+      <location filename="../../CommandExtensionDims.cpp" line="823"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1151"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1522"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1891"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2129"/>
       <location filename="../../CommandAnnotate.cpp" line="101"/>
       <location filename="../../CommandAnnotate.cpp" line="162"/>
       <location filename="../../CommandAnnotate.cpp" line="214"/>
@@ -3284,14 +3269,14 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <translation>Diese Auswahl enthält keine Basisansicht, Formen, Gruppen oder Link-Objekte</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2365"/>
       <location filename="../../Command.cpp" line="1201"/>
+      <location filename="../../CommandCreateDims.cpp" line="2371"/>
       <source>Select an object first</source>
       <translation>Zuerst ein Objekt auswählen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2373"/>
       <location filename="../../Command.cpp" line="1208"/>
+      <location filename="../../CommandCreateDims.cpp" line="2379"/>
       <source>Too many objects selected</source>
       <translation>Zu viele Objekte ausgewählt</translation>
     </message>
@@ -3314,6 +3299,21 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <location filename="../../Command.cpp" line="1889"/>
       <source>Page contains a BIM view which will not be exported. Continue?</source>
       <translation>Das Zeichnungsblatt enthält eine BIM-Ansicht, die nicht exportiert wird. Fortfahren?</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1903"/>
+      <source>Save DXF file</source>
+      <translation>DXF-Datei speichern</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2093"/>
+      <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
+      <translation>Die ausgewählte Richtung weicht um weniger als %1 Grad von der Standardrichtung ab. Soll die ausgewählte Richtung durch %2 ersetzt werden?</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2098"/>
+      <source>Direction is close to standard</source>
+      <translation>Die Ausrichtung entspricht weitgehend dem Standard</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1421"/>
@@ -3365,74 +3365,74 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <location filename="../../CommandCreateDims.cpp" line="1548"/>
       <location filename="../../CommandCreateDims.cpp" line="1596"/>
       <location filename="../../CommandCreateDims.cpp" line="1644"/>
-      <location filename="../../CommandCreateDims.cpp" line="1692"/>
-      <location filename="../../CommandCreateDims.cpp" line="1739"/>
-      <location filename="../../CommandCreateDims.cpp" line="1786"/>
-      <location filename="../../CommandCreateDims.cpp" line="1833"/>
-      <location filename="../../CommandCreateDims.cpp" line="1880"/>
-      <location filename="../../CommandCreateDims.cpp" line="1976"/>
-      <location filename="../../CommandCreateDims.cpp" line="2101"/>
+      <location filename="../../CommandCreateDims.cpp" line="1695"/>
+      <location filename="../../CommandCreateDims.cpp" line="1745"/>
+      <location filename="../../CommandCreateDims.cpp" line="1792"/>
+      <location filename="../../CommandCreateDims.cpp" line="1839"/>
+      <location filename="../../CommandCreateDims.cpp" line="1886"/>
+      <location filename="../../CommandCreateDims.cpp" line="1982"/>
+      <location filename="../../CommandCreateDims.cpp" line="2107"/>
       <source>Close the active task dialog and try again</source>
       <translation>Den aktiven Aufgaben-Dialog schließen und erneut versuchen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2002"/>
-      <location filename="../../CommandCreateDims.cpp" line="2192"/>
+      <location filename="../../CommandCreateDims.cpp" line="2008"/>
+      <location filename="../../CommandCreateDims.cpp" line="2198"/>
       <source>No view of a part in selection.</source>
       <translation>Die Auswahl enthält keine Ansicht eines Part-Objekts.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2044"/>
+      <location filename="../../CommandCreateDims.cpp" line="2050"/>
       <source>Cannot make 2D extent dimension from selection</source>
       <translation>Kann aus dieser Auswahl kein 2D-Maß für die Gesamtausdehnung erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2060"/>
+      <location filename="../../CommandCreateDims.cpp" line="2066"/>
       <source>Cannot make 3D extent dimension from selection</source>
       <translation>Kann aus dieser Auswahl kein 3D-Maß für die Gesamtausdehnung erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2140"/>
+      <location filename="../../CommandCreateDims.cpp" line="2146"/>
       <source>There is no dimension in your selection</source>
       <translation>Die Auswahl enthält kein Maß</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2207"/>
+      <location filename="../../CommandCreateDims.cpp" line="2213"/>
       <source>Cannot make 2D dimension from selection</source>
       <translation>Kann aus dieser Auswahl kein 2D-Maß erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2214"/>
+      <location filename="../../CommandCreateDims.cpp" line="2220"/>
       <source>Cannot make 3D dimension without 3d references</source>
       <translation>Ohne 3D-Referenzen kann kein 3D-Maß erstellt werden</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2229"/>
+      <location filename="../../CommandCreateDims.cpp" line="2235"/>
       <source>Cannot make 3D dimension from selection</source>
       <translation>Kann aus dieser Auswahl kein3D-Maß erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2242"/>
+      <location filename="../../CommandCreateDims.cpp" line="2248"/>
       <source>Ellipse curve warning</source>
       <translation>Ellipsen-Kurvenwarnung</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2253"/>
+      <location filename="../../CommandCreateDims.cpp" line="2259"/>
       <source>B-spline curve warning</source>
       <translation>B-Spline-Kurvenwarnung</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2264"/>
+      <location filename="../../CommandCreateDims.cpp" line="2270"/>
       <source>B-spline curve error</source>
       <translation>B-Spline-Kurvenfehler</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2265"/>
+      <location filename="../../CommandCreateDims.cpp" line="2271"/>
       <source>Selected edge is a B-spline and a radius/diameter cannot be calculated.</source>
       <translation>Die ausgewählte Kante ist ein B-Spline; ein Radius bzw. Durchmesser kann nicht berechnet werden.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2382"/>
+      <location filename="../../CommandCreateDims.cpp" line="2388"/>
       <source>Create a page first.</source>
       <translation>Zuerst ein Zeichnungsblatt erstellen.</translation>
     </message>
@@ -3442,33 +3442,33 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <translation>Eine SVG-Datei zum Öffnen auswählen</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="551"/>
-      <location filename="../../CommandCreateDims.cpp" line="2001"/>
-      <location filename="../../CommandCreateDims.cpp" line="2017"/>
-      <location filename="../../CommandCreateDims.cpp" line="2043"/>
-      <location filename="../../CommandCreateDims.cpp" line="2059"/>
-      <location filename="../../CommandCreateDims.cpp" line="2139"/>
-      <location filename="../../CommandCreateDims.cpp" line="2191"/>
-      <location filename="../../CommandCreateDims.cpp" line="2206"/>
-      <location filename="../../CommandCreateDims.cpp" line="2213"/>
-      <location filename="../../CommandCreateDims.cpp" line="2228"/>
-      <location filename="../../CommandCreateDims.cpp" line="2364"/>
-      <location filename="../../CommandCreateDims.cpp" line="2372"/>
-      <location filename="../../CommandCreateDims.cpp" line="2381"/>
-      <location filename="../../TaskDimRepair.cpp" line="137"/>
-      <location filename="../../TaskDimRepair.cpp" line="148"/>
-      <location filename="../../CommandAlign.cpp" line="53"/>
-      <location filename="../../Command.cpp" line="1200"/>
-      <location filename="../../Command.cpp" line="1207"/>
-      <location filename="../../Command.cpp" line="1215"/>
-      <location filename="../../Command.cpp" line="1227"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1878"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2002"/>
       <location filename="../../CommandDecorate.cpp" line="418"/>
       <location filename="../../CommandDecorate.cpp" line="425"/>
       <location filename="../../CommandDecorate.cpp" line="432"/>
       <location filename="../../CommandDecorate.cpp" line="439"/>
       <location filename="../../CommandDecorate.cpp" line="445"/>
+      <location filename="../../Command.cpp" line="1200"/>
+      <location filename="../../Command.cpp" line="1207"/>
+      <location filename="../../Command.cpp" line="1215"/>
+      <location filename="../../Command.cpp" line="1227"/>
+      <location filename="../../CommandAlign.cpp" line="53"/>
+      <location filename="../../TaskDimRepair.cpp" line="137"/>
+      <location filename="../../TaskDimRepair.cpp" line="148"/>
+      <location filename="../../CommandCreateDims.cpp" line="2007"/>
+      <location filename="../../CommandCreateDims.cpp" line="2023"/>
+      <location filename="../../CommandCreateDims.cpp" line="2049"/>
+      <location filename="../../CommandCreateDims.cpp" line="2065"/>
+      <location filename="../../CommandCreateDims.cpp" line="2145"/>
+      <location filename="../../CommandCreateDims.cpp" line="2197"/>
+      <location filename="../../CommandCreateDims.cpp" line="2212"/>
+      <location filename="../../CommandCreateDims.cpp" line="2219"/>
+      <location filename="../../CommandCreateDims.cpp" line="2234"/>
+      <location filename="../../CommandCreateDims.cpp" line="2370"/>
+      <location filename="../../CommandCreateDims.cpp" line="2378"/>
+      <location filename="../../CommandCreateDims.cpp" line="2387"/>
+      <location filename="../../TaskDimension.cpp" line="551"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1878"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2002"/>
       <source>Incorrect Selection</source>
       <translation>Falsche Auswahl</translation>
     </message>
@@ -3480,17 +3480,17 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
 </translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2243"/>
+      <location filename="../../CommandCreateDims.cpp" line="2249"/>
       <source>Selected edge is an Ellipse. Value will be approximate. Continue?</source>
       <translation>Ausgewählte Kante ist eine Ellipse. Wert wird angenähert. Fortfahren?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2254"/>
+      <location filename="../../CommandCreateDims.cpp" line="2260"/>
       <source>Selected edge is a B-spline. Value will be approximate. Continue?</source>
       <translation>Ausgewählte Kante ist ein B-Spline. Wert wird angenähert. Fortfahren?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2018"/>
+      <location filename="../../CommandCreateDims.cpp" line="2024"/>
       <source>Selection contains both 2D and 3D geometry</source>
       <translation>Die Auswahl enthält sowohl 2D als auch 3D Geometrie</translation>
     </message>
@@ -3526,6 +3526,21 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <translation>Den aktiven Aufgaben-Dialog schliessen und erneut versuchen.</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="898"/>
+      <source>Selection is empty.</source>
+      <translation>Auswahl ist leer.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="921"/>
+      <source>You must select a base View for the circle.</source>
+      <translation>Es muss eine Basisansicht für den Kreis ausgewählt werden.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="943"/>
+      <source>Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</source>
+      <translation>In der Auswahl befindet sich weder ein Hilfskreis noch ein Hilfskreisbogen.</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="120"/>
       <source>Can not make hole circle for %1</source>
       <translation>Für %1 kann kein Lochkreis erstellt werden</translation>
@@ -3542,24 +3557,9 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <translation>Für %1 können keine Mittellinien erstellt werden</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="898"/>
-      <source>Selection is empty.</source>
-      <translation>Auswahl ist leer.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandExtensionPack.cpp" line="921"/>
-      <source>You must select a base View for the circle.</source>
-      <translation>Es muss eine Basisansicht für den Kreis ausgewählt werden.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandExtensionPack.cpp" line="943"/>
-      <source>Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</source>
-      <translation>In der Auswahl befindet sich weder ein Hilfskreis noch ein Hilfskreisbogen.</translation>
-    </message>
-    <message>
       <location filename="../../CommandExtensionPack.cpp" line="979"/>
-      <source>Please select a center for the circle.</source>
-      <translation>Bitte einen Mittelpunkt für den Kreis auswählen.</translation>
+      <source>Select a center for the circle.</source>
+      <translation>Einen Mittelpunkt für den Kreis auswählen.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1672"/>
@@ -3902,14 +3902,14 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <translation>Komplexe Schnittansicht bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="228"/>
       <location filename="../../TaskComplexSection.cpp" line="215"/>
+      <location filename="../../TaskSectionView.cpp" line="228"/>
       <source>Current View Direction</source>
       <translation>Aktuelle Blickrichtung</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="229"/>
       <location filename="../../TaskComplexSection.cpp" line="216"/>
+      <location filename="../../TaskSectionView.cpp" line="229"/>
       <source>The view direction in BaseView coordinates</source>
       <translation>Die Richtung derAnsicht in BaseView-Koordinaten</translation>
     </message>
@@ -3924,8 +3924,8 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <translation>Die Eigenschaften SectionNormal, Direction und/oder XDirection überprüfen.</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="638"/>
       <location filename="../../TaskComplexSection.cpp" line="714"/>
+      <location filename="../../TaskSectionView.cpp" line="638"/>
       <source>Operation Failed</source>
       <translation>Vorgang fehlgeschlagen</translation>
     </message>
@@ -3960,8 +3960,8 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <translation>Detailansicht bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="139"/>
       <location filename="../../ViewProviderBalloon.cpp" line="86"/>
+      <location filename="../../ViewProviderDimension.cpp" line="139"/>
       <source>Edit %1</source>
       <translation>%1 bearbeiten</translation>
     </message>
@@ -3971,138 +3971,138 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <translation>TechDraw Präfix einfügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="116"/>
-      <source>Repeat count</source>
-      <translation>Anzahl Wiederholungen</translation>
-    </message>
-    <message>
-      <location filename="../../CommandExtensionDims.cpp" line="128"/>
+      <location filename="../../CommandExtensionDims.cpp" line="143"/>
       <source>Insert Prefix</source>
       <translation>Präfix einfügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="413"/>
+      <location filename="../../CommandExtensionDims.cpp" line="428"/>
       <source>TechDraw Increase/Decrease Decimal</source>
       <translation>TechDraw Nachkommastellenanzahl erhöhen/verringern</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="598"/>
-      <location filename="../../CommandExtensionDims.cpp" line="607"/>
+      <location filename="../../CommandExtensionDims.cpp" line="613"/>
+      <location filename="../../CommandExtensionDims.cpp" line="622"/>
       <source>TechDraw PosHorizChainDimension</source>
       <translation>TechDraw Horizontale Kettenmaße anordnen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="608"/>
-      <location filename="../../CommandExtensionDims.cpp" line="917"/>
+      <location filename="../../CommandExtensionDims.cpp" line="623"/>
+      <location filename="../../CommandExtensionDims.cpp" line="932"/>
       <source>No horizontal dimensions selected</source>
       <translation>Keine horizontalen Maße ausgewählt</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="659"/>
-      <location filename="../../CommandExtensionDims.cpp" line="668"/>
+      <location filename="../../CommandExtensionDims.cpp" line="674"/>
+      <location filename="../../CommandExtensionDims.cpp" line="683"/>
       <source>TechDraw PosVertChainDimension</source>
       <translation>TechDraw Vertikale Kettenmaße anordnen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="669"/>
-      <location filename="../../CommandExtensionDims.cpp" line="983"/>
+      <location filename="../../CommandExtensionDims.cpp" line="684"/>
+      <location filename="../../CommandExtensionDims.cpp" line="998"/>
       <source>No vertical dimensions selected</source>
       <translation>Keine vertikalen Maße ausgewählt</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="721"/>
-      <location filename="../../CommandExtensionDims.cpp" line="730"/>
+      <location filename="../../CommandExtensionDims.cpp" line="736"/>
+      <location filename="../../CommandExtensionDims.cpp" line="745"/>
       <source>TechDraw PosObliqueChainDimension</source>
       <translation>TechDraw Schräge Kettenmaße anordnen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="731"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1050"/>
+      <location filename="../../CommandExtensionDims.cpp" line="746"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1065"/>
       <source>No oblique dimensions selected</source>
       <translation>Keine schrägen Maße ausgewählt</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="907"/>
-      <location filename="../../CommandExtensionDims.cpp" line="916"/>
+      <location filename="../../CommandExtensionDims.cpp" line="922"/>
+      <location filename="../../CommandExtensionDims.cpp" line="931"/>
       <source>TechDraw CascadeHorizDimension</source>
       <translation>TechDraw Horizontale Maße anordnen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="973"/>
-      <location filename="../../CommandExtensionDims.cpp" line="982"/>
+      <location filename="../../CommandExtensionDims.cpp" line="988"/>
+      <location filename="../../CommandExtensionDims.cpp" line="997"/>
       <source>TechDraw CascadeVertDimension</source>
       <translation>TechDraw Vertikale Maße anordnen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1040"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1049"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1055"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1064"/>
       <source>TechDraw CascadeObliqueDimension</source>
       <translation>TechDraw Schräge Maße anordnen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1239"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1254"/>
       <source>TechDraw Create Horizontal Chain Dimension</source>
       <translation>TechDraw Horizontale Maßketten erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1304"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1319"/>
       <source>TechDraw Create Vertical Chain Dimension</source>
       <translation>TechDraw Vertikale Maßketten erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1369"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1384"/>
       <source>TechDraw Create Oblique Chain Dimension</source>
       <translation>TechDraw Schräge Maßketten erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1598"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1613"/>
       <source>TechDraw Create Horizontal Coordinate Dimension</source>
       <translation>TechDraw Horizontale Koordinatenmaße erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1667"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1682"/>
       <source>TechDraw Create Vertical Coord dimension</source>
       <translation>TechDraw Vertikale Koordinatenmaße erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2365"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2380"/>
       <source>No sub-elements selected</source>
       <translation>Keine Unterelemente ausgewählt</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1736"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1751"/>
       <source>TechDraw Create Oblique Coord Dimension</source>
       <translation>TechDraw Schräge Koordinatenmaße erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1967"/>
+      <location filename="../../CommandExtensionDims.cpp" line="116"/>
+      <source>Prefix Text</source>
+      <translation>Vorangestellter Text</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="1982"/>
       <source>TechDraw Create Horizontal Chamfer Dimension</source>
       <translation>TechDraw Horizontales Maß an Fase erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2033"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2048"/>
       <source>TechDraw Create Vertical Chamfer Dimension</source>
       <translation>TechDraw Vertikales Maß an Fase erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2208"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2223"/>
       <source>TechDraw Create Arc Length Dimension</source>
       <translation>TechDraw Bogenmaß erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2256"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2271"/>
       <source>TechDraw Customize Format</source>
       <translation>TechDraw Format anpassen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2329"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2344"/>
       <location filename="../../CommandExtensionPack.cpp" line="2143"/>
       <location filename="../../CommandAnnotate.cpp" line="1022"/>
       <source>Selection is empty</source>
       <translation>Nichts ausgewählt</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2345"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2360"/>
       <location filename="../../CommandExtensionPack.cpp" line="2150"/>
       <source>No object selected</source>
       <translation>Kein Objekt ausgewählt</translation>
@@ -4288,11 +4288,6 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <translation>Rich-Text-Ersteller</translation>
     </message>
     <message>
-      <location filename="../../TemplateTextField.cpp" line="54"/>
-      <source>Click to update text</source>
-      <translation>Text durch Anklicken aktualisieren</translation>
-    </message>
-    <message>
       <location filename="../../QGIRichAnno.cpp" line="400"/>
       <source>Resize Rich Annotation</source>
       <translation>Größe der formatierten Beschriftung anpassen</translation>
@@ -4301,6 +4296,11 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <location filename="../../SymbolChooser.cpp" line="59"/>
       <source>Select a Symbol</source>
       <translation>Ein Symbol auswählen</translation>
+    </message>
+    <message>
+      <location filename="../../TemplateTextField.cpp" line="55"/>
+      <source>Updates the text</source>
+      <translation>Aktualisiert den Text</translation>
     </message>
   </context>
   <context>
@@ -4312,48 +4312,48 @@ it has a weld symbol that would become broken.</source>
       <translation>Diese Hinweislinie kann nicht gelöscht werden, weil ihr ein Schweißsymbol zugeordnet ist, das dadurch unbrauchbar werden würde.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="378"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="392"/>
       <source>Close open dialog before deleting detail object</source>
       <translation>Schliesse den Öffnen-Dialog vorm Löschen des Detailobjekts</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="393"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="407"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>Diese Ansicht kann nicht gelöscht werden, da von ihr eine oder mehrere Ansichten abhängen, die beschädigt werden könnten.</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderViewPart.cpp" line="396"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="411"/>
       <location filename="../../ViewProviderPage.cpp" line="222"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="154"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="163"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="171"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
+      <location filename="../../ViewProviderLeader.cpp" line="212"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="146"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="163"/>
-      <location filename="../../ViewProviderWeld.cpp" line="143"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="174"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="182"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="190"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderLeader.cpp" line="212"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="382"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="397"/>
+      <location filename="../../ViewProviderWeld.cpp" line="143"/>
       <source>Object dependencies</source>
       <translation>Objektabhängigkeiten</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="151"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="162"/>
       <source>You cannot delete the anchor view of a projection group.</source>
       <translation>Die Basisansicht einer Ansichtengruppe kann nicht gelöscht werden.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="160"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="171"/>
       <source>You cannot delete this view because it has a section view that would become broken.</source>
       <translation>Diese Ansicht kann nicht gelöscht werden, da sie eine Schnittansicht enthält, die dadurch unbrauchbar werden würde.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="168"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
       <source>You cannot delete this view because it has a detail view that would become broken.</source>
       <translation>Diese Ansicht kann nicht gelöscht werden, da sie eine Detailansicht hat, die beschädigt werden könnte.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="176"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="187"/>
       <source>You cannot delete this view because it has a leader line that would become broken.</source>
       <translation>Diese Ansicht kann nicht gelöscht werden, weil ihr eine Hinweislinie zugeordnet ist, die dadurch unbrauchbar werden würde.</translation>
     </message>
@@ -6542,47 +6542,37 @@ Do you want to continue?</source>
   <context>
     <name>TechDrawGui::TaskCenterLine</name>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="52"/>
+      <location filename="../../TaskCenterLine.ui" line="55"/>
       <source>Elements</source>
       <translation>Elemente</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="83"/>
+      <location filename="../../TaskCenterLine.ui" line="89"/>
       <source>Orientation</source>
       <translation>Ausrichtung</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="92"/>
+      <location filename="../../TaskCenterLine.ui" line="98"/>
       <source>Vertical</source>
       <translation>Vertikal</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="111"/>
+      <location filename="../../TaskCenterLine.ui" line="117"/>
       <source>Horizontal</source>
       <translation>Horizontal</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="131"/>
+      <location filename="../../TaskCenterLine.ui" line="137"/>
       <source>Aligned</source>
       <translation>Ausgerichtet</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="261"/>
+      <location filename="../../TaskCenterLine.ui" line="207"/>
       <source>Rotate</source>
       <translation>Drehen</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="274"/>
-      <source>Rotate line +CCW or -CW</source>
-      <translation>Linie gegen den Uhrzeigersinn (+) oder im Uhrzeigersinn (-) drehen</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCenterLine.ui" line="303"/>
-      <source>Make the line a little longer.</source>
-      <translation>Verlängere die Linie etwas.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCenterLine.ui" line="146"/>
+      <location filename="../../TaskCenterLine.ui" line="275"/>
       <source>Color</source>
       <translation>Farbe</translation>
     </message>
@@ -6592,22 +6582,27 @@ Do you want to continue?</source>
       <translation>Mittellinie</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="29"/>
+      <location filename="../../TaskCenterLine.ui" line="32"/>
       <source>Base view</source>
-      <translation>Basis-Ansicht</translation>
+      <translation>Basisansicht</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="89"/>
+      <location filename="../../TaskCenterLine.ui" line="77"/>
+      <source>The centerline is positioned at the center of the combined bounding box of the selected elements</source>
+      <translation>Die Mittellinie verläuft durch den Mittelpunkt des kombinierten Begrenzungsrahmens der ausgewählten Elemente</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCenterLine.ui" line="95"/>
       <source>Top to bottom line</source>
       <translation>Von oben nach unten</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="108"/>
+      <location filename="../../TaskCenterLine.ui" line="114"/>
       <source>Left to right line</source>
       <translation>Von links nach rechts</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="124"/>
+      <location filename="../../TaskCenterLine.ui" line="130"/>
       <source>
          Centerline between:
          - Lines: equidistant from both lines and at half the angle between them
@@ -6620,37 +6615,57 @@ Do you want to continue?</source>
          </translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="177"/>
+      <location filename="../../TaskCenterLine.ui" line="150"/>
+      <source>Position</source>
+      <translation>Position</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCenterLine.ui" line="174"/>
+      <source>Shifts the line up (+) or down (-)</source>
+      <translation>Verschiebt die Linie nach oben (+) oder unten (-)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCenterLine.ui" line="190"/>
+      <source>Shifts the line left (-) or right (+)</source>
+      <translation>Verschiebt die Linie nach links (-) oder rechts (+)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCenterLine.ui" line="220"/>
+      <source>Rotates the line counterclockwise (+) or clockwise (-)</source>
+      <translation>Dreht die Linie gegen den Uhrzeigersinn (+) oder im Uhrzeigersinn (-)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCenterLine.ui" line="246"/>
+      <source>Extends the line by the specified amount beyond its natural endpoints</source>
+      <translation>Verlängert die Linie um den angegebenen Betrag über ihre natürlichen Endpunkte hinaus</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCenterLine.ui" line="264"/>
+      <source>Appearance</source>
+      <translation>Erscheinungsbild</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCenterLine.ui" line="303"/>
       <source>Weight</source>
       <translation>Stärke</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="184"/>
+      <location filename="../../TaskCenterLine.ui" line="310"/>
       <source>Style</source>
       <translation>Stil</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="209"/>
+      <location filename="../../TaskCenterLine.ui" line="161"/>
       <source>Shift horizontal</source>
       <translation>Horizontal verschieben</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="222"/>
-      <source>Move line +up or -down</source>
-      <translation>Linie verschieben +oben oder -unten</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCenterLine.ui" line="241"/>
-      <source>Move line -left or +right</source>
-      <translation>Linie verschieben -links oder +rechts</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCenterLine.ui" line="254"/>
+      <location filename="../../TaskCenterLine.ui" line="200"/>
       <source>Shift vertical</source>
       <translation>Vertikal verschieben</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="290"/>
+      <location filename="../../TaskCenterLine.ui" line="233"/>
       <source>Extend by</source>
       <translation>Erweitern durch</translation>
     </message>
@@ -6731,7 +6746,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.ui" line="232"/>
       <source>Base view</source>
-      <translation>Basis-Ansicht</translation>
+      <translation>Basisansicht</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="274"/>
@@ -6829,23 +6844,25 @@ Do you want to continue?</source>
       <translation>Hilfspunkt</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.ui" line="26"/>
+      <location filename="../../TaskCosVertex.ui" line="29"/>
       <source>Base view</source>
-      <translation>Basis-Ansicht</translation>
+      <translation>Basisansicht</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.ui" line="66"/>
+      <location filename="../../TaskCosVertex.ui" line="85"/>
       <location filename="../../TaskCosVertex.cpp" line="111"/>
-      <source>Point Picker</source>
-      <translation>Punkt-Auswahl</translation>
+      <location filename="../../TaskCosVertex.cpp" line="156"/>
+      <location filename="../../TaskCosVertex.cpp" line="248"/>
+      <source>Pick Point</source>
+      <translation>Punkt auswählen</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.ui" line="95"/>
+      <location filename="../../TaskCosVertex.ui" line="114"/>
       <source>Position from the view center</source>
       <translation>Position vom Ansichtszentrum</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.ui" line="98"/>
+      <location filename="../../TaskCosVertex.ui" line="117"/>
       <source>Position</source>
       <translation>Position</translation>
     </message>
@@ -6853,12 +6870,6 @@ Do you want to continue?</source>
       <location filename="../../TaskCosVertex.cpp" line="170"/>
       <source>Pick a point for cosmetic vertex</source>
       <translation>Wähle einen Ort für einen Hilfspunkt</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCosVertex.cpp" line="156"/>
-      <location filename="../../TaskCosVertex.cpp" line="248"/>
-      <source>Pick Points</source>
-      <translation>Punkte auswählen</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="173"/>
@@ -7227,68 +7238,78 @@ Do you want to continue?</source>
       <translation>Detailanker</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="32"/>
-      <source>Base View</source>
-      <translation>Basisansicht</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDetail.ui" line="89"/>
+      <location filename="../../TaskDetail.ui" line="184"/>
       <location filename="../../TaskDetail.cpp" line="252"/>
       <source>Drag Highlight</source>
       <translation>Auswahl verschieben</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="242"/>
+      <location filename="../../TaskDetail.ui" line="230"/>
       <source>Radius</source>
       <translation>Radius</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="55"/>
+      <location filename="../../TaskDetail.ui" line="42"/>
       <source>Detail view</source>
       <translation>Detailansicht</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="86"/>
+      <location filename="../../TaskDetail.ui" line="181"/>
       <source>Enables dragging of the detail highlight to a new position</source>
       <translation>Ermöglicht das Ziehen der Detailmarkierung an eine neue Position</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="120"/>
+      <location filename="../../TaskDetail.ui" line="237"/>
       <source>Scale type</source>
       <translation>Maßstab</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="127"/>
+      <location filename="../../TaskDetail.ui" line="79"/>
       <source>Reference label</source>
       <translation>Referenzbeschriftung</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="140"/>
+      <location filename="../../TaskDetail.ui" line="253"/>
       <source>Scale factor for detail view</source>
       <translation>Maßstab der Detailansicht</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="168"/>
+      <location filename="../../TaskDetail.ui" line="150"/>
       <source>Y-position of detail highlight within view</source>
       <translation>Y-Position des Detailauswahlrahmens innerhalb der Ansicht</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="184"/>
+      <location filename="../../TaskDetail.ui" line="272"/>
       <source>Scale factor</source>
       <translation>Skalierungsfaktor</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="197"/>
+      <location filename="../../TaskDetail.ui" line="291"/>
       <source>Size of detail view</source>
       <translation>Größe der Detailansicht</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="229"/>
+      <location filename="../../TaskDetail.ui" line="114"/>
       <source>X position of detail highlight within view</source>
       <translation>X-Position des Detailauswahlrahmens innerhalb der Ansicht</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="256"/>
+      <location filename="../../TaskDetail.ui" line="35"/>
+      <source>Base view</source>
+      <translation>Basisansicht</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.ui" line="91"/>
+      <source>Position</source>
+      <translation>Position</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.ui" line="194"/>
+      <source>Size</source>
+      <translation>Größe</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.ui" line="205"/>
       <source>Page: scale factor of page is used
 Automatic: if the detail view is larger than the page,
                    it will be scaled down to fit into the page
@@ -7299,22 +7320,22 @@ Automatisch: Wenn die Detailansicht größer ist als das Zeichnungsblatt,
 Benutzerdefiniert: Der benutzerdefinierte Maßstab wird verwendet</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="263"/>
+      <location filename="../../TaskDetail.ui" line="212"/>
       <source>Page</source>
       <translation>Zeichnungsblatt</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="268"/>
+      <location filename="../../TaskDetail.ui" line="217"/>
       <source>Automatic</source>
       <translation>Automatisch</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="273"/>
+      <location filename="../../TaskDetail.ui" line="222"/>
       <source>Custom</source>
       <translation>Benutzerdefiniert</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="216"/>
+      <location filename="../../TaskDetail.ui" line="72"/>
       <source>Reference</source>
       <translation>Referenz</translation>
     </message>
@@ -7517,68 +7538,64 @@ durch den negativen Wert des „Oberen Abmaßes“ ersetzt.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="330"/>
-      <source>Lines</source>
-      <translation>Linien</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.ui" line="338"/>
-      <source>Use override angles if checked. Use default angles if unchecked.</source>
-      <translation>Verwendet benutzerdefinierte Winkel wenn ausgewählt. Verwendet Standardwinkel, wenn nicht ausgewählt.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.ui" line="341"/>
-      <source>Override angles</source>
+      <source>Override Angles</source>
       <translation>Winkel überschreiben</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="348"/>
+      <location filename="../../TaskDimension.ui" line="341"/>
+      <source>Sets the extension line angle to match the selected edge or vertices</source>
+      <translation>Setzt den Winkel der Maßhilfslinie entsprechend der ausgewählten Kante oder den ausgewählten Punkten</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.ui" line="357"/>
+      <location filename="../../TaskDimension.ui" line="403"/>
+      <source>°</source>
+      <translation>°</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.ui" line="370"/>
+      <source>Sets the dimension line angle to match the selected edge or vertices</source>
+      <translation>Setzt den Winkel der Maßlinie entsprechend der ausgewählten Kante oder den ausgewählten Punkten</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.ui" line="380"/>
+      <source>Resets the dimension line angle to the default orthographic value</source>
+      <translation>Setzt den Winkel der Maßlinie auf die Standardeinstellung orthogonal zurück</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.ui" line="423"/>
+      <source>Resets the extension line angle to the default orthographic value</source>
+      <translation>Setzt den Winkel der Maßhilfslinie auf die Standardeinstellung orthogonal zurück</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.ui" line="390"/>
       <source>Dimension line angle</source>
       <translation>Winkel der Maßlinie</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="355"/>
+      <location filename="../../TaskDimension.ui" line="351"/>
       <source>Angle of dimension line with drawing X axis (degrees)</source>
       <translation>Winkel der Maßlinie zur X-Achse der Zeichnung (Grad)</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="371"/>
-      <source>Set dimension line angle to default (orthographic view)</source>
-      <translation>Setzt den Winkel der Maßlinie auf die Standardeinstellung (orthogonale Ansicht)</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.ui" line="374"/>
-      <location filename="../../TaskDimension.ui" line="417"/>
+      <location filename="../../TaskDimension.ui" line="383"/>
+      <location filename="../../TaskDimension.ui" line="426"/>
       <source>Use Default</source>
       <translation>Standardeinstellung verwenden</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="381"/>
-      <source>Set dimension line angle to match selected edge or vertices</source>
-      <translation>Setzt den Winkel der Maßlinie entsprechend der ausgewählten Kante oder den ausgewählten Punkten</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.ui" line="384"/>
-      <location filename="../../TaskDimension.ui" line="427"/>
+      <location filename="../../TaskDimension.ui" line="344"/>
+      <location filename="../../TaskDimension.ui" line="373"/>
       <source>Use Selection</source>
       <translation>Auswahl verwenden</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="414"/>
-      <source>Set extension line angle to default (orthographic)</source>
-      <translation>Erweiterungslinienwinkel auf Standardwert (orthografisch) setzen</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.ui" line="424"/>
-      <source>Set extension line angle to match selected edge or vertices</source>
-      <translation>Winkel der Verlängerungslinie an ausgewählte Kante oder Eckpunkte anpassen</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.ui" line="391"/>
+      <location filename="../../TaskDimension.ui" line="416"/>
       <source>Extension line angle</source>
       <translation>Winkel der Maßhilfslinie</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="398"/>
+      <location filename="../../TaskDimension.ui" line="397"/>
       <source>Angle of extension lines with drawing X axis (degrees)</source>
       <translation>Winkel der Maßhilfslinie zur X-Achse der Zeichnung (Grad)</translation>
     </message>
@@ -7737,24 +7754,24 @@ durch den negativen Wert des „Oberen Abmaßes“ ersetzt.</translation>
       <translation>Hinweislinie</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="93"/>
+      <location filename="../../TaskLeaderLine.ui" line="91"/>
       <source>Discard Changes</source>
       <translation>Änderungen verwerfen</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="118"/>
+      <location filename="../../TaskLeaderLine.ui" line="84"/>
       <location filename="../../TaskLeaderLine.cpp" line="224"/>
       <location filename="../../TaskLeaderLine.cpp" line="499"/>
       <source>Pick Points</source>
       <translation>Punkte auswählen</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="38"/>
+      <location filename="../../TaskLeaderLine.ui" line="41"/>
       <source>Base view</source>
-      <translation>Basis-Ansicht</translation>
+      <translation>Basisansicht</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="113"/>
+      <location filename="../../TaskLeaderLine.ui" line="79"/>
       <source>First pick the start point of the line,
 then at least one more point.
 You can pick further points to get line segments.</source>
@@ -7762,72 +7779,77 @@ You can pick further points to get line segments.</source>
 Weitere Punkte auswählen, um Liniensegmente zu erhalten.</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="149"/>
+      <location filename="../../TaskLeaderLine.ui" line="210"/>
       <source>Start symbol</source>
       <translation>Startsymbol</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="169"/>
+      <location filename="../../TaskLeaderLine.ui" line="111"/>
       <source>End symbol</source>
       <translation>Endsymbol</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="199"/>
+      <location filename="../../TaskLeaderLine.ui" line="244"/>
       <source>Color</source>
       <translation>Farbe</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="212"/>
+      <location filename="../../TaskLeaderLine.ui" line="223"/>
       <source>Line color</source>
       <translation>Linienfarbe</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="226"/>
+      <location filename="../../TaskLeaderLine.ui" line="274"/>
       <source>Width</source>
       <translation>Linienbreite</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="242"/>
+      <location filename="../../TaskLeaderLine.ui" line="127"/>
       <source>Line width</source>
       <translation>Linienbreite</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="258"/>
+      <location filename="../../TaskLeaderLine.ui" line="237"/>
       <source>Style</source>
       <translation>Stil</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="271"/>
+      <location filename="../../TaskLeaderLine.ui" line="146"/>
       <source>Line style</source>
       <translation>Linienart</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="278"/>
+      <location filename="../../TaskLeaderLine.ui" line="100"/>
+      <source>Appearance</source>
+      <translation>Erscheinungsbild</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLeaderLine.ui" line="153"/>
       <source>No line</source>
       <translation>Keine Linie</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="287"/>
+      <location filename="../../TaskLeaderLine.ui" line="162"/>
       <source>Continuous</source>
       <translation>Volllinie</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="296"/>
+      <location filename="../../TaskLeaderLine.ui" line="171"/>
       <source>Dash</source>
       <translation>Strichlinie</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="305"/>
+      <location filename="../../TaskLeaderLine.ui" line="180"/>
       <source>Dot</source>
       <translation>Punktlinie</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="314"/>
+      <location filename="../../TaskLeaderLine.ui" line="189"/>
       <source>DashDot</source>
       <translation>Strich-Punktlinie</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="323"/>
+      <location filename="../../TaskLeaderLine.ui" line="198"/>
       <source>DashDotDot</source>
       <translation>Strich-Zweipunktlinie</translation>
     </message>
@@ -7886,54 +7908,57 @@ Weitere Punkte auswählen, um Liniensegmente zu erhalten.</translation>
       <translation>Liniendarstellung</translation>
     </message>
     <message>
-      <location filename="../../TaskLineDecor.ui" line="92"/>
+      <location filename="../../TaskLineDecor.ui" line="37"/>
       <source>View</source>
       <translation>Ansicht</translation>
     </message>
     <message>
-      <location filename="../../TaskLineDecor.ui" line="99"/>
+      <location filename="../../TaskLineDecor.ui" line="44"/>
+      <source>Selection</source>
+      <translation>Auswahl</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLineDecor.ui" line="76"/>
+      <source>Appearance</source>
+      <translation>Erscheinungsbild</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLineDecor.ui" line="87"/>
       <source>The use of the Qt line style is being phased out. Use a standard line style instead.</source>
       <translation>Die Verwendung des Qt-Linienstils wird auslaufen. Stattdessen einen Standard-Linienstil verwenden.</translation>
     </message>
     <message>
-      <location filename="../../TaskLineDecor.ui" line="145"/>
+      <location filename="../../TaskLineDecor.ui" line="103"/>
       <source>Thickness of pattern lines</source>
       <translation>Breite der Schraffurlinien</translation>
     </message>
     <message>
-      <location filename="../../TaskLineDecor.ui" line="52"/>
-      <source>Lines</source>
-      <translation>Linien</translation>
-    </message>
-    <message>
-      <location filename="../../TaskLineDecor.ui" line="115"/>
+      <location filename="../../TaskLineDecor.ui" line="113"/>
       <source>Style</source>
       <translation>Linienart</translation>
     </message>
     <message>
-      <location filename="../../TaskLineDecor.ui" line="85"/>
+      <location filename="../../TaskLineDecor.ui" line="120"/>
       <source>Color</source>
       <translation>Farbe</translation>
     </message>
     <message>
-      <location filename="../../TaskLineDecor.ui" line="45"/>
+      <location filename="../../TaskLineDecor.ui" line="127"/>
       <source>Weight</source>
       <translation>Linienbreite</translation>
     </message>
     <message>
-      <location filename="../../TaskLineDecor.ui" line="158"/>
+      <location filename="../../TaskLineDecor.ui" line="145"/>
       <source>Visible</source>
       <translation>Sichtbar</translation>
     </message>
-    <message>
-      <location filename="../../TaskLineDecor.ui" line="72"/>
-      <source>False</source>
-      <translation>Falsch</translation>
-    </message>
-    <message>
-      <location filename="../../TaskLineDecor.ui" line="77"/>
-      <source>True</source>
-      <translation>Wahr</translation>
+    <message numerus="yes">
+      <location filename="../../TaskLineDecor.cpp" line="79"/>
+      <source>%n line(s)</source>
+      <translation>
+        <numerusform>%n Linie</numerusform>
+        <numerusform>%n Linien</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -8724,27 +8749,27 @@ entsprechend den angegebenen X- und Y-Abständen</translation>
       <translation>Textname</translation>
     </message>
     <message>
-      <location filename="../../DlgTemplateField.ui" line="42"/>
+      <location filename="../../DlgTemplateField.ui" line="35"/>
+      <source>Name</source>
+      <translation>Name</translation>
+    </message>
+    <message>
+      <location filename="../../DlgTemplateField.ui" line="50"/>
       <source>Value</source>
       <translation>Wert</translation>
     </message>
     <message>
-      <location filename="../../DlgTemplateField.ui" line="52"/>
-      <source>Reapplies auto-fill to this field</source>
-      <translation>Wendet das automatische Ausfüllen erneut auf dieses Feld an</translation>
+      <location filename="../../DlgTemplateField.ui" line="88"/>
+      <source>Applies autofill to this field</source>
+      <translation>Wendet das automatische Ausfüllen auf dieses Feld an</translation>
     </message>
     <message>
-      <location filename="../../DlgTemplateField.ui" line="65"/>
+      <location filename="../../DlgTemplateField.ui" line="101"/>
       <source>The autofill replacement value</source>
       <translation>Ersatztext des Werkzeugs zum automatischen Ausfüllen</translation>
     </message>
     <message>
-      <location filename="../../DlgTemplateField.ui" line="35"/>
-      <source>TextLabel</source>
-      <translation>TextLabel</translation>
-    </message>
-    <message>
-      <location filename="../../DlgTemplateField.ui" line="55"/>
+      <location filename="../../DlgTemplateField.ui" line="91"/>
       <source>Autofill</source>
       <translation>Autofüllen</translation>
     </message>
@@ -8752,12 +8777,12 @@ entsprechend den angegebenen X- und Y-Abständen</translation>
   <context>
     <name>TechDraw_ExtensionremovePrefixChar</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="393"/>
+      <location filename="../../CommandExtensionDims.cpp" line="408"/>
       <source>Remove Prefix</source>
       <translation>Präfixsymbol entfernen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="394"/>
+      <location filename="../../CommandExtensionDims.cpp" line="409"/>
       <source>Removes the prefix symbols at the beginning of the dimension</source>
       <translation>Entfernt die Präfixsymbole vor den Maßzahlen</translation>
     </message>
@@ -9001,65 +9026,72 @@ entsprechend den angegebenen X- und Y-Abständen</translation>
       <translation>Maß</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="28"/>
+      <location filename="../../TaskDimRepair.ui" line="38"/>
       <source>Name</source>
       <translation>Name</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="35"/>
+      <location filename="../../TaskDimRepair.ui" line="91"/>
+      <source>Replace References With Selection</source>
+      <translation>Referenzen durch die Auswahl ersetzen</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.ui" line="107"/>
+      <source>2D References</source>
+      <translation>2D-Referenzen</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.ui" line="202"/>
+      <source>3D References</source>
+      <translation>3D-Referenzen</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.ui" line="246"/>
+      <source>Sub-Element</source>
+      <translation>Unterelement</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.ui" line="31"/>
+      <location filename="../../TaskDimRepair.ui" line="241"/>
       <source>Label</source>
       <translation>Benennung</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="119"/>
+      <location filename="../../TaskDimRepair.ui" line="127"/>
       <source>The view that owns this dimension</source>
       <translation>Die Ansicht, die dieses Maß enthält</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="163"/>
+      <location filename="../../TaskDimRepair.ui" line="178"/>
       <source>The sub-elements of the view that define the geometry for this dimension</source>
       <translation>Die Unterelemente der Ansicht, die die Geometrie für diese Dimension definieren</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="98"/>
-      <source>References 2D</source>
-      <translation>2D-Referenzen</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimRepair.ui" line="86"/>
-      <source>Replace References With Current Selection</source>
-      <translation>Verweise durch aktuelle Auswahl ersetzen</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimRepair.ui" line="106"/>
+      <location filename="../../TaskDimRepair.ui" line="140"/>
+      <location filename="../../TaskDimRepair.ui" line="236"/>
       <source>Object</source>
       <translation>Objekt</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="138"/>
+      <location filename="../../TaskDimRepair.ui" line="153"/>
       <source>Geometry</source>
       <translation>Geometrie</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimRepair.ui" line="187"/>
-      <source>References 3D</source>
-      <translation>3D-Referenzen</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawDimensionRepair</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2123"/>
+      <location filename="../../CommandCreateDims.cpp" line="2129"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2124"/>
+      <location filename="../../CommandCreateDims.cpp" line="2130"/>
       <source>Repair Dimension References</source>
       <translation>Maßreferenzen reparieren</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2125"/>
+      <location filename="../../CommandCreateDims.cpp" line="2131"/>
       <source>Repairs broken or incorrect dimension references</source>
       <translation>Repariert defekte oder falsche Maß-Referenzen</translation>
     </message>
@@ -9496,35 +9528,45 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
       <translation>Hilfspunkt</translation>
     </message>
     <message>
-      <location filename="../../TaskAddOffsetVertex.ui" line="31"/>
+      <location filename="../../TaskAddOffsetVertex.ui" line="29"/>
+      <source>Reference</source>
+      <translation>Referenz</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAddOffsetVertex.ui" line="36"/>
+      <source>The selected vertex this offset vertex is based on</source>
+      <translation>Der ausgewählte Knotenpunkt, auf dem dieser versetzte Knotenpunkt basiert</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAddOffsetVertex.ui" line="45"/>
       <source>Position from the view center</source>
       <translation>Position vom Ansichtszentrum</translation>
     </message>
     <message>
-      <location filename="../../TaskAddOffsetVertex.ui" line="34"/>
+      <location filename="../../TaskAddOffsetVertex.ui" line="48"/>
       <source>Position</source>
       <translation>Position</translation>
     </message>
     <message>
-      <location filename="../../TaskAddOffsetVertex.ui" line="48"/>
-      <source>X-offset</source>
-      <translation>X-Versatz</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAddOffsetVertex.ui" line="55"/>
-      <source>Y-offset</source>
-      <translation>Y-Versatz</translation>
+      <location filename="../../TaskAddOffsetVertex.ui" line="59"/>
+      <source>The X offset distance from the source vertex</source>
+      <translation>Der X-Versatzabstand vom Ausgangsknotenpunkt</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="72"/>
-      <source>Enter X offset value</source>
-      <translation>X-Versatz Wert eingeben</translation>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAddOffsetVertex.ui" line="79"/>
+      <source>Y</source>
+      <translation>Y</translation>
     </message>
   </context>
   <context>
     <name>TechDraw_AddOffsetVertex</name>
     <message>
-      <location filename="../../../TechDrawTools/TaskAddOffsetVertex.py" line="45"/>
+      <location filename="../../../TechDrawTools/TaskAddOffsetVertex.py" line="47"/>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="81"/>
       <source>Offset Vertex</source>
       <translation>Knoten versetzen</translation>
@@ -9846,19 +9888,19 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>CmdTechDrawExtensionInsertRepetition</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="210"/>
+      <location filename="../../CommandExtensionDims.cpp" line="225"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="211"/>
-      <location filename="../../CommandExtensionDims.cpp" line="388"/>
+      <location filename="../../CommandExtensionDims.cpp" line="226"/>
+      <location filename="../../CommandExtensionDims.cpp" line="403"/>
       <source>Insert &apos;n×&apos; Prefix</source>
       <translation>Anzahl-Präfix (&apos;n×&apos;) einfügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="212"/>
-      <location filename="../../CommandExtensionDims.cpp" line="389"/>
+      <location filename="../../CommandExtensionDims.cpp" line="227"/>
+      <location filename="../../CommandExtensionDims.cpp" line="404"/>
       <source>Inserts a repeated feature count at the beginning of the dimension</source>
       <translation>Fügt die Anzahl der Wiederholungen des gemessenen Elements vor der Maßzahl ein</translation>
     </message>
@@ -9943,17 +9985,17 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>CmdTechDrawAreaDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1818"/>
+      <location filename="../../CommandCreateDims.cpp" line="1824"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1819"/>
+      <location filename="../../CommandCreateDims.cpp" line="1825"/>
       <source>Area Annotation</source>
       <translation>Flächeninhalt</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1820"/>
+      <location filename="../../CommandCreateDims.cpp" line="1826"/>
       <source>Inserts an annotation showing the area of a selected face</source>
       <translation>Fügt die Angabe des Flächeninhalts einer ausgewählten Fläche ein</translation>
     </message>
@@ -10177,7 +10219,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>TechDraw_HorizontalExtent</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1936"/>
+      <location filename="../../CommandCreateDims.cpp" line="1942"/>
       <source>Insert horizontal extent dimension</source>
       <translation>Maß für die horizontale Ausdehnung einfügen</translation>
     </message>
@@ -10185,7 +10227,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>TechDraw_VerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1940"/>
+      <location filename="../../CommandCreateDims.cpp" line="1946"/>
       <source>Insert vertical extent dimension</source>
       <translation>Maß für die vertikale Ausdehnung einfügen</translation>
     </message>
@@ -10226,17 +10268,17 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
     <name>TechDrawGui::TaskDimRepair</name>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="79"/>
-      <source>Object name</source>
-      <translation>Objektname</translation>
+      <source>Object</source>
+      <translation>Objekt</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="79"/>
-      <source>Object label</source>
-      <translation>Objektbezeichnung</translation>
+      <source>Label</source>
+      <translation>Hinweis</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="79"/>
-      <source>Sub-element</source>
+      <source>Sub-Element</source>
       <translation>Unterelement</translation>
     </message>
     <message>
@@ -10259,30 +10301,6 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
       <location filename="../../CommandAnnotate.cpp" line="283"/>
       <source>Quadrant Vertices</source>
       <translation>Quadrantengrenzpunkte</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDrawGui::TaskDlgLineDecor</name>
-    <message>
-      <location filename="../../TaskLineDecor.cpp" line="463"/>
-      <source>Restore Invisible Lines</source>
-      <translation>Unsichtbare Linien wiederherstellen</translation>
-    </message>
-  </context>
-  <context>
-    <name>Cmd2LineCenterLine</name>
-    <message>
-      <location filename="../../CommandAnnotate.cpp" line="653"/>
-      <source>Centerline Between 2 Lines</source>
-      <translation>Mittellinie zwischen 2 Linien</translation>
-    </message>
-  </context>
-  <context>
-    <name>Cmd2PointCenterLine</name>
-    <message>
-      <location filename="../../CommandAnnotate.cpp" line="657"/>
-      <source>Centerline Between 2 Points</source>
-      <translation>Mittellinie zwischen 2 Punkten</translation>
     </message>
   </context>
   <context>
@@ -10319,6 +10337,30 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
       <location filename="../../CommandDecorate.cpp" line="140"/>
       <source>Toggles the grid on the active page</source>
       <translation>Schaltet das Raster auf dem aktiven Zeichnungsblatt um</translation>
+    </message>
+  </context>
+  <context>
+    <name>Cmd2LineCenterLine</name>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="653"/>
+      <source>Centerline Between 2 Lines</source>
+      <translation>Mittellinie zwischen 2 Linien</translation>
+    </message>
+  </context>
+  <context>
+    <name>Cmd2PointCenterLine</name>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="657"/>
+      <source>Centerline Between 2 Points</source>
+      <translation>Mittellinie zwischen 2 Punkten</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskDlgLineDecor</name>
+    <message>
+      <location filename="../../TaskLineDecor.cpp" line="454"/>
+      <source>Restore Invisible Lines</source>
+      <translation>Unsichtbare Linien wiederherstellen</translation>
     </message>
   </context>
 </TS>

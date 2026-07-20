@@ -41,7 +41,6 @@
 #include "DrawSketchControllableHandler.h"
 
 #include "DrawSketchHandler.h"
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 #include "SnapManager.h"
@@ -50,8 +49,6 @@ using namespace Sketcher;
 
 namespace SketcherGui
 {
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerLineSet: public DrawSketchHandler
 {
@@ -1068,6 +1065,10 @@ private:
             // We create the geometry first.
             createShape(false);
 
+            if (ShapeGeometry.empty()) {
+                return false;
+            }
+
             commandAddShapeGeometryAndConstraints();
 
             int geoId = getHighestCurveIndex();
@@ -1139,6 +1140,13 @@ private:
                 getFilletData(refPnt1, refPnt2, radius, newGeo, prevGeo, newGeoPos, prevGeoPos);
 
                 obj->fillet(geoId1, geoId2, refPnt1, refPnt2, radius, true, true);
+
+                if (!obj->noRecomputes) {
+                    // obj->fillet() solves at the end only when obj->noRecomputes is set, but we
+                    // need the solve even when AutoRecompute is on or the fillet won't appear.
+                    // See https://github.com/FreeCAD/FreeCAD/issues/30625
+                    obj->solve();
+                }
 
                 if (isConstructionMode()) {
                     int filletGeoId = geoId + 1;
@@ -1306,42 +1314,57 @@ private:
 
             // Start by removing last edge and fillet arc if any
             if (filletWasCreated) {
-                obj->delGeometries({delGeoId, delGeoId + 1});
-            }
-            else {
-                obj->delGeometry(delGeoId);
-            }
+                Gui::cmdAppObjectArgs(obj, "delGeometries([%d, %d])", delGeoId, delGeoId + 1);
 
-            if (!geoEltIds.empty()) {
-                // Move back the previous edge point
-                int prevGeoId = geoEltIds.back().GeoId;
-                PointPos prevPos = geoEltIds.back().Pos;
-                obj->moveGeometry(prevGeoId, prevPos, toVector3d(points.back()));
-
-                // Then transfert back the constraints
-                if (pointWasCreated) {
-                    int pointGeoId = getHighestCurveIndex();
-                    // We must first remove the point on object constraint.
-                    const auto& constraints = sketchgui->getSketchObject()->Constraints.getValues();
-                    for (int i = constraints.size() - 1; i >= 0; --i) {
-                        if (constraints[i]->Type != PointOnObject) {
-                            continue;
-                        }
-                        int first = constraints[i]->getGeoId(0);
-                        int second = constraints[i]->getGeoId(1);
-                        bool case1 = first == pointGeoId && second == prevGeoId;
-                        bool case2 = first == prevGeoId && second == pointGeoId;
-                        if (case1 || case2) {
-                            obj->delConstraint(i);
-                            break;
-                        }
+                if (!geoEltIds.empty()) {
+                    if (!obj->noRecomputes) {
+                        // delGeometries do not call solve if !obj->noRecomputes (AutoRecompute =
+                        // True) But we need to call solve before trying to moveGeometry or it cause
+                        // the deleted geometry to reappear. See
+                        // https://github.com/FreeCAD/FreeCAD/issues/30626
+                        obj->solve();
                     }
 
-                    obj->transferConstraints(pointGeoId, PointPos::start, prevGeoId, prevPos);
+                    // Move back the previous edge point
+                    int prevGeoId = geoEltIds.back().GeoId;
+                    PointPos prevPos = geoEltIds.back().Pos;
+                    Gui::cmdAppObjectArgs(
+                        obj,
+                        "moveGeometry(%d,%d,App.Vector(%f,%f,0.0),0)",
+                        prevGeoId,
+                        static_cast<int>(prevPos),
+                        points.back().x,
+                        points.back().y
+                    );
 
-                    // Delete the point
-                    obj->delGeometry(delGeoId);
+                    // Then transfer back the constraints
+                    if (pointWasCreated) {
+                        int pointGeoId = getHighestCurveIndex();
+                        // We must first remove the point on object constraint.
+                        const auto& constraints = sketchgui->getSketchObject()->Constraints.getValues();
+                        for (int i = constraints.size() - 1; i >= 0; --i) {
+                            if (constraints[i]->Type != PointOnObject) {
+                                continue;
+                            }
+                            int first = constraints[i]->getGeoId(0);
+                            int second = constraints[i]->getGeoId(1);
+                            bool case1 = first == pointGeoId && second == prevGeoId;
+                            bool case2 = first == prevGeoId && second == pointGeoId;
+                            if (case1 || case2) {
+                                Gui::cmdAppObjectArgs(obj, "delConstraint(%d)", i);
+                                break;
+                            }
+                        }
+
+                        obj->transferConstraints(pointGeoId, PointPos::start, prevGeoId, prevPos);
+
+                        // Delete the point
+                        Gui::cmdAppObjectArgs(obj, "delGeometry(%d)", delGeoId);
+                    }
                 }
+            }
+            else {
+                Gui::cmdAppObjectArgs(obj, "delGeometry(%d)", delGeoId);
             }
 
             obj->solve();
@@ -1543,12 +1566,7 @@ private:
             double radius = getArcCenter(center, prevCursorPos);
 
             if (radius == 0.0) {
-                // fall back to a line
-                addLineToShapeGeometry(
-                    toVector3d(points[points.size() - 1]),
-                    toVector3d(prevCursorPos),
-                    isConstructionMode()
-                );
+                return;
             }
 
             double rx = lastPoint.x - center.x;
@@ -1714,7 +1732,7 @@ void DSHPolyLineController::configureToolWidget()
         );
         syncCheckboxToHandler(WCheckbox::FirstBox, handler->fillet);
 
-        if (isConstructionMode()) {
+        if (handler->isConstructionMode()) {
             toolWidget->setComboboxItemIcon(
                 WCombobox::FirstCombo,
                 0,
@@ -1810,6 +1828,7 @@ void DSHPolyLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSke
                 if (handler->constructionMethod() == ConstructionMethod::Arc) {
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
                 }
+                getKeyManager()->resetMode();
                 setFocusToOnViewParameter(OnViewParameter::Third);
                 return;
             }
@@ -1948,7 +1967,7 @@ void DSHPolyLineController::adaptParameters(Base::Vector2d onSketchPos)
                 if (!fourthParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Unit::Angle);
                 }
-                else if (vec.Length() > Precision::Confusion()) {
+                else if (fourthParam->hasFinishedEditing && vec.Length() > Precision::Confusion()) {
                     double ovpRange = fourthParam->getValue();
 
                     if (fabs(range - ovpRange) > Precision::Confusion()) {
@@ -2039,9 +2058,11 @@ void DSHPolyLineController::doConstructionMethodChanged()
             handler->setConstructionMethod(ConstructionMethod::Line);
             return;
         }
+
+        handler->resetEdge = true;
     }
 
-    // Since line has 4 OVP but arc has 5, and because we are not reseting the whole tool,
+    // Since line has 4 OVP but arc has 5, and because we are not resetting the whole tool,
     // we need to reset the OVP to have the correct number.
     resetOnViewParameters();
 
@@ -2120,8 +2141,8 @@ void DSHPolyLineController::addStepConstraints()
         if (p4set) {
             if (handler->geoEltIds.size() > 1) {
                 if (!handler->isPreviousArc()) {
-                    int geoId2 = handler->geoEltIds[handler->geoEltIds.size() - 2].GeoId;
-                    Constraint2LinesByAngle(lastCurve, geoId2, Base::toRadians(p4), obj);
+                    int prevCurve = handler->geoEltIds[handler->geoEltIds.size() - 2].GeoId;
+                    Constraint2LinesByAngle(prevCurve, lastCurve, Base::toRadians(p4), obj);
                 }
             }
             else {

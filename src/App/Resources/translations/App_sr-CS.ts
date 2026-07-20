@@ -4,9 +4,24 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="613"/>
+      <location filename="../../Application.cpp" line="619"/>
       <source>Unnamed</source>
       <translation>Bez imena</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="569"/>
+      <source>True</source>
+      <translation>Tačno</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="569"/>
+      <source>False</source>
+      <translation>Netačno</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="587"/>
+      <source>Null</source>
+      <translation type="unfinished">Null</translation>
     </message>
   </context>
   <context>

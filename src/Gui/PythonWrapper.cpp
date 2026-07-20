@@ -330,13 +330,14 @@ static bool loadPySideModule(const std::string& moduleName, PyTypeObject**& type
 }
 
 #if defined(HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-template<typename qttype>
 # if defined(HAVE_SHIBOKEN2)
-SbkObjectType*
+using ShibokenTypeObject = SbkObjectType;
 # else
-PyTypeObject*
+using ShibokenTypeObject = PyTypeObject;
 # endif
-getPyTypeObjectForTypeName()
+
+template<typename qttype>
+static ShibokenTypeObject* getPyTypeObjectForTypeName()
 {
 # if defined(HAVE_SHIBOKEN_TYPE_FOR_TYPENAME)
 #  if defined(HAVE_SHIBOKEN2)
@@ -351,6 +352,15 @@ getPyTypeObjectForTypeName()
 #  else
     return Shiboken::SbkType<qttype>();
 #  endif
+# endif
+}
+
+static ShibokenTypeObject* getPyTypeObjectForPySideTypeName(const char* typeName)
+{
+# if defined(HAVE_SHIBOKEN2)
+    return reinterpret_cast<SbkObjectType*>(Shiboken::Conversions::getPythonTypeObject(typeName));
+# else
+    return Shiboken::Conversions::getPythonTypeObject(typeName);
 # endif
 }
 
@@ -671,6 +681,11 @@ Py::Object PythonWrapper::fromQImage(const QImage& img)
 {
 #if defined(HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     auto type = getPyTypeObjectForTypeName<QImage>();
+    if (!type) {
+        // QtWidgets can load the PySide QtGui module without registering the
+        // QImage C++ type for lookup by typeid().
+        type = getPyTypeObjectForPySideTypeName("QImage");
+    }
     if (type) {
         PyObject* pyobj = Shiboken::Conversions::copyToPython(type, const_cast<QImage*>(&img));
         return Py::asObject(pyobj);
@@ -679,7 +694,9 @@ Py::Object PythonWrapper::fromQImage(const QImage& img)
     // Access shiboken/PySide via Python
     Py::Object obj = qt_wrapInstance<const QImage*>(&img, "QImage", "QtGui");
     if (!obj.isNull()) {
-        return obj;
+        // qt_wrapInstance() only borrows img. Return an independent QImage
+        // before that temporary wrapper and the caller's storage go away.
+        return obj.callMemberFunction("copy");
     }
 #endif
     throw Py::RuntimeError("Failed to wrap image");
@@ -837,8 +854,18 @@ Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
 #if defined(HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     // Access shiboken/PySide via C++
     auto type = getPyTypeObjectForTypeName<QWidget>();
+    const char* wrapperName = typeName;
+    if (!type) {
+        // Some Shiboken builds do not resolve Qt widget classes via typeid().name().
+        // Caller-provided class names and getWrapperName() use PySide type names instead.
+        type = getPyTypeObjectForPySideTypeName(wrapperName);
+    }
+    if (!type) {
+        wrapperName = getWrapperName(widget);
+        type = getPyTypeObjectForPySideTypeName(wrapperName);
+    }
     if (type) {
-        PyObject* pyobj = Shiboken::Object::newObject(type, widget, false, false, typeName);
+        PyObject* pyobj = Shiboken::Object::newObject(type, widget, false, false, wrapperName);
         WrapperManager::instance().addQObject(widget, pyobj);
         return Py::asObject(pyobj);
     }

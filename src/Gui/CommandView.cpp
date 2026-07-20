@@ -59,6 +59,7 @@
 #include <App/Link.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include "Base/Tools2D.h"
 #include "Command.h"
@@ -1423,17 +1424,7 @@ StdCmdViewHome::StdCmdViewHome()
 void StdCmdViewHome::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/View"
-    );
-    std::string default_view = hGrp->GetASCII("NewDocumentCameraOrientation", "Top");
-    doCommand(
-        Command::Gui,
-        "Gui.activeDocument().activeView().viewDefaultOrientation('%s',0)",
-        default_view.c_str()
-    );
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewHome\")");
 }
 
 //===========================================================================
@@ -2237,29 +2228,27 @@ void StdViewScreenShot::activated(int iMsg)
             }
             hExt->SetInt("OffscreenImageBackground", opt->backgroundType());
 
+            std::string imageFile = Base::Tools::escapeEncodeFilename(fn.toStdString());
             QString comment = opt->comment();
             if (!comment.isEmpty()) {
-                // Replace newline escape sequence through '\\n' string to build one big string,
-                // otherwise Python would interpret it as an invalid command.
-                // Python does the decoding for us.
-                QStringList lines = comment.split(QLatin1String("\n"), Qt::KeepEmptyParts);
-
-                comment = lines.join(QLatin1String("\\n"));
+                std::string escapedComment = Base::Tools::escapeEncodeString(
+                    comment.toUtf8().toStdString()
+                );
                 doCommand(
                     Gui,
                     "Gui.activeDocument().activeView().saveImage('%s',%d,%d,'%s','%s')",
-                    fn.toUtf8().constData(),
+                    imageFile.c_str(),
                     w,
                     h,
                     background,
-                    comment.toUtf8().constData()
+                    escapedComment.c_str()
                 );
             }
             else {
                 doCommand(
                     Gui,
                     "Gui.activeDocument().activeView().saveImage('%s',%d,%d,'%s')",
-                    fn.toUtf8().constData(),
+                    imageFile.c_str(),
                     w,
                     h,
                     background
@@ -2568,148 +2557,6 @@ void StdCmdViewExample3::activated(int iMsg)
 bool StdCmdViewExample3::isActive()
 {
     return getGuiApplication()->sendHasMsgToActiveView("Example3");
-}
-
-
-//===========================================================================
-// Std_ViewIvStereoOff
-//===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoOff)
-
-StdCmdViewIvStereoOff::StdCmdViewIvStereoOff()
-    : Command("Std_ViewIvStereoOff")
-{
-    sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Stereo &Off");
-    sToolTipText = QT_TR_NOOP("Switches stereo viewing off");
-    sWhatsThis = "Std_ViewIvStereoOff";
-    sStatusTip = sToolTipText;
-    sPixmap = "Std_ViewIvStereoOff";
-    eType = Alter3DView;
-}
-
-void StdCmdViewIvStereoOff::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"Mono\")");
-}
-
-bool StdCmdViewIvStereoOff::isActive()
-{
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoOff");
-}
-
-
-//===========================================================================
-// Std_ViewIvStereoRedGreen
-//===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoRedGreen)
-
-StdCmdViewIvStereoRedGreen::StdCmdViewIvStereoRedGreen()
-    : Command("Std_ViewIvStereoRedGreen")
-{
-    sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Stereo Re&d/Cyan");
-    sToolTipText = QT_TR_NOOP("Switches stereo viewing to red/cyan");
-    sWhatsThis = "Std_ViewIvStereoRedGreen";
-    sStatusTip = sToolTipText;
-    sPixmap = "Std_ViewIvStereoRedGreen";
-    eType = Alter3DView;
-}
-
-void StdCmdViewIvStereoRedGreen::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"Anaglyph\")");
-}
-
-bool StdCmdViewIvStereoRedGreen::isActive()
-{
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoRedGreen");
-}
-
-//===========================================================================
-// Std_ViewIvStereoQuadBuff
-//===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoQuadBuff)
-
-StdCmdViewIvStereoQuadBuff::StdCmdViewIvStereoQuadBuff()
-    : Command("Std_ViewIvStereoQuadBuff")
-{
-    sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Stereo &Quad Buffer");
-    sToolTipText = QT_TR_NOOP("Switches stereo viewing to quad buffer");
-    sWhatsThis = "Std_ViewIvStereoQuadBuff";
-    sStatusTip = sToolTipText;
-    sPixmap = "Std_ViewIvStereoQuadBuff";
-    eType = Alter3DView;
-}
-
-void StdCmdViewIvStereoQuadBuff::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"QuadBuffer\")");
-}
-
-bool StdCmdViewIvStereoQuadBuff::isActive()
-{
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoQuadBuff");
-}
-
-//===========================================================================
-// Std_ViewIvStereoInterleavedRows
-//===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoInterleavedRows)
-
-StdCmdViewIvStereoInterleavedRows::StdCmdViewIvStereoInterleavedRows()
-    : Command("Std_ViewIvStereoInterleavedRows")
-{
-    sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Stereo Interleaved &Rows");
-    sToolTipText = QT_TR_NOOP("Switches stereo viewing to interleaved rows");
-    sWhatsThis = "Std_ViewIvStereoInterleavedRows";
-    sStatusTip = sToolTipText;
-    sPixmap = "Std_ViewIvStereoInterleavedRows";
-    eType = Alter3DView;
-}
-
-void StdCmdViewIvStereoInterleavedRows::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"InterleavedRows\")");
-}
-
-bool StdCmdViewIvStereoInterleavedRows::isActive()
-{
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoInterleavedRows");
-}
-
-//===========================================================================
-// Std_ViewIvStereoInterleavedColumns
-//===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoInterleavedColumns)
-
-StdCmdViewIvStereoInterleavedColumns::StdCmdViewIvStereoInterleavedColumns()
-    : Command("Std_ViewIvStereoInterleavedColumns")
-{
-    sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Stereo Interleaved &Columns");
-    sToolTipText = QT_TR_NOOP("Switches stereo viewing to interleaved columns");
-    sWhatsThis = "Std_ViewIvStereoInterleavedColumns";
-    sStatusTip = sToolTipText;
-    sPixmap = "Std_ViewIvStereoInterleavedColumns";
-    eType = Alter3DView;
-}
-
-void StdCmdViewIvStereoInterleavedColumns::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"InterleavedColumns\")");
-}
-
-bool StdCmdViewIvStereoInterleavedColumns::isActive()
-{
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoInterleavedColumns");
 }
 
 
@@ -4430,12 +4277,6 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdCmdViewExample1());
     rcCmdMgr.addCommand(new StdCmdViewExample2());
     rcCmdMgr.addCommand(new StdCmdViewExample3());
-
-    rcCmdMgr.addCommand(new StdCmdViewIvStereoQuadBuff());
-    rcCmdMgr.addCommand(new StdCmdViewIvStereoRedGreen());
-    rcCmdMgr.addCommand(new StdCmdViewIvStereoInterleavedColumns());
-    rcCmdMgr.addCommand(new StdCmdViewIvStereoInterleavedRows());
-    rcCmdMgr.addCommand(new StdCmdViewIvStereoOff());
 
     rcCmdMgr.addCommand(new StdCmdViewIvIssueCamPos());
 

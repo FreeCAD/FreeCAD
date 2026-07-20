@@ -10,3 +10,11 @@
 [submodule "src/3rdParty/json"]
 	path = src/3rdParty/json
 	url = https://github.com/nlohmann/json.git
+[submodule "src/3rdParty/coin"]
+	path = src/3rdParty/coin
+	url = https://github.com/FreeCAD/coin.git
+	branch = freecad-master
+[submodule "src/3rdParty/pivy"]
+	path = src/3rdParty/pivy
+	url = https://github.com/FreeCAD/pivy.git
+	branch = freecad-master

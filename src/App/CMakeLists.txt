@@ -93,7 +93,9 @@ list(APPEND FreeCADApp_LIBS
 )
 
 generate_from_py(ApplicationDirectories)
+generate_from_py(DepEdge)
 generate_from_py(Document)
+generate_from_py(DocumentSettings)
 generate_from_py(DocumentObject)
 generate_from_py(Extension)
 generate_from_py(ExtensionContainer)
@@ -126,8 +128,10 @@ SET(FreeCADApp_Pyi_SRCS
     GroupExtension.pyi
     LinkBaseExtension.pyi
     Metadata.pyi
+    DepEdge.pyi
     DocumentObjectGroup.pyi
     DocumentObject.pyi
+    DocumentSettings.pyi
     GeoFeature.pyi
     GeoFeatureGroupExtension.pyi
     OriginGroupExtension.pyi
@@ -150,6 +154,7 @@ SET(Document_CPP_SRCS
     Document.cpp
     RecoverySnapshot.cpp
     DocumentObject.cpp
+    DepEdgePyImp.cpp
     Extension.cpp
     ExtensionPyImp.cpp
     DocumentObjectExtension.cpp
@@ -167,6 +172,8 @@ SET(Document_CPP_SRCS
     DocumentObserver.cpp
     DocumentObserverPython.cpp
     DocumentPyImp.cpp
+    DocumentSettings.cpp
+    DocumentSettingsPyImp.cpp
     Expression.cpp
     ExpressionTokenizer.cpp
     FeaturePython.cpp
@@ -205,6 +212,7 @@ SET(Document_HPP_SRCS
     BackupPolicy.h
     Document.h
     RecoverySnapshot.h
+    DepEdge.h
     DocumentObject.h
     Extension.h
     ExtensionContainer.h
@@ -214,6 +222,7 @@ SET(Document_HPP_SRCS
     DocumentObjectGroup.h
     DocumentObserver.h
     DocumentObserverPython.h
+    DocumentSettings.h
     Expression.h
     ExpressionParser.h
     ExpressionTokenizer.h
@@ -295,6 +304,7 @@ SET(FreeCADApp_CPP_SRCS
     ApplicationPy.cpp
     AutoTransaction.cpp
     Branding.cpp
+    ByteArray.cpp
     CleanupProcess.cpp
     ColorModel.cpp
     ComplexGeoData.cpp
@@ -328,6 +338,7 @@ SET(FreeCADApp_HPP_SRCS
     ApplicationDirectories.h
     AutoTransaction.h
     Branding.h
+    ByteArray.h
     CleanupProcess.h
     ColorModel.h
     ComplexGeoData.h

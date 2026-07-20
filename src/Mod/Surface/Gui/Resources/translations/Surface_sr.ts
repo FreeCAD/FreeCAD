@@ -54,7 +54,7 @@
     <message>
       <location filename="../../TaskFilling.ui" line="20"/>
       <source>Boundaries</source>
-      <translation>Границе</translation>
+      <translation>Граничне ивице</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="28"/>
@@ -142,12 +142,12 @@
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="20"/>
       <source>Filling</source>
-      <translation>Попуњавање</translation>
+      <translation>Сложена закрпа</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="26"/>
       <source>Fill Type</source>
-      <translation>Врста попуњавања</translation>
+      <translation>Врста закрпе</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="38"/>
@@ -312,7 +312,7 @@
     <message>
       <location filename="../../Command.cpp" line="113"/>
       <source>Filling</source>
-      <translation>Попуњавање</translation>
+      <translation>Сложена закрпа</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="114"/>
@@ -320,7 +320,7 @@
 Additionally, the surface may be constrained by edges and
 vertices that are not on the boundary.</source>
       <translation>Направи површ помоћу изабраних граничних крива тј. ивица.
-Површ може бити присиљена да пролази кроз додатне криве и тачке.</translation>
+Површ може бити присиљена да пролази кроз додатне унутрашње криве и тачке.</translation>
     </message>
   </context>
   <context>
@@ -358,7 +358,7 @@ vertices that are not on the boundary.</source>
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Fill Boundary Curves</source>
-      <translation>Попуни између граничних крива</translation>
+      <translation>Закрпа</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="150"/>
@@ -491,7 +491,7 @@ This command only works with a mesh object.</source>
       <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <location filename="../../TaskFilling.cpp" line="63"/>
       <source>Edit Filling</source>
-      <translation>Уреди попуњавање</translation>
+      <translation>Уреди сложену закрпу</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="667"/>

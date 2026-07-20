@@ -43,12 +43,12 @@
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="166"/>
       <source>Arrow Radius</source>
-      <translation type="unfinished">Arrow Radius</translation>
+      <translation>矢印の半径</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="198"/>
       <source>Arrow Height</source>
-      <translation type="unfinished">Arrow Height</translation>
+      <translation>矢印の高さ</translation>
     </message>
   </context>
   <context>
@@ -195,7 +195,7 @@
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <location filename="../../Command.cpp" line="54"/>
-      <source>Measure a feature</source>
+      <source>Measures a feature</source>
       <translation>フィーチャーを測定</translation>
     </message>
   </context>
@@ -477,17 +477,17 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="650"/>
       <source>J1</source>
-      <translation type="unfinished">J1</translation>
+      <translation>J1</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="677"/>
       <source>J2</source>
-      <translation type="unfinished">J2</translation>
+      <translation>J2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="704"/>
       <source>J3</source>
-      <translation type="unfinished">J3</translation>
+      <translation>J3</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="749"/>

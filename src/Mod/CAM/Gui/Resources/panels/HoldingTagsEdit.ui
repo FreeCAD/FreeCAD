@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>289</width>
+    <width>370</width>
     <height>466</height>
    </rect>
   </property>
@@ -14,106 +14,19 @@
    <string>Holding Tags</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="0">
-    <layout class="QGridLayout" name="gridLayout_10">
-     <item row="0" column="0">
-      <widget class="QWidget" name="parameterGroup_1">
-       <layout class="QFormLayout">
-        <property name="fieldGrowthPolicy">
-         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-        </property>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Width</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="Gui::InputField" name="ifWidth">
-          <property name="toolTip">
-           <string>Width of the resulting holding tag</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Angle</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QDoubleSpinBox" name="dsbAngle">
-          <property name="toolTip">
-           <string>Plunge angle for ascent and descent of holding tag</string>
-          </property>
-          <property name="suffix">
-           <string> °</string>
-          </property>
-          <property name="minimum">
-           <double>5.000000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>90.000000000000000</double>
-          </property>
-          <property name="singleStep">
-           <double>15.000000000000000</double>
-          </property>
-          <property name="value">
-           <double>45.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QWidget" name="parameterGroup_2">
-       <layout class="QFormLayout">
-        <property name="fieldGrowthPolicy">
-         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-        </property>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Height</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="Gui::InputField" name="ifHeight">
-          <property name="toolTip">
-           <string>Height of holding tag. Note that resulting tag might be smaller if the tag's width and angle result in a triangular shape.</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Radius</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="Gui::InputField" name="ifRadius">
-          <property name="toolTip">
-           <string>Radius of the fillet at the top. If the radius is too big for the tag shape it gets reduced to the maximum possible radius - resulting in a spherical shape.</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-    </layout>
-   </item>
    <item row="1" column="0">
     <layout class="QFormLayout">
      <item row="0" column="0">
       <widget class="QListWidget" name="lwTags">
+       <property name="minimumSize">
+        <size>
+         <width>250</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="maximumSize">
         <size>
-         <width>200</width>
+         <width>300</width>
          <height>300</height>
         </size>
        </property>
@@ -130,7 +43,59 @@
        <property name="rightMargin">
         <number>0</number>
        </property>
-       <item row="0" column="0">
+       <item row="3" column="0">
+        <spacer name="horizontalSpacer_5">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="0">
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="5" column="0">
+        <spacer name="horizontalSpacer_7">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="2" column="0">
+        <spacer name="horizontalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="1">
         <widget class="QPushButton" name="pbClear">
          <property name="toolTip">
           <string>Remove all tags from list</string>
@@ -140,7 +105,7 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
+       <item row="1" column="1">
         <widget class="QPushButton" name="pbRemove">
          <property name="toolTip">
           <string>Remove selected tag from list</string>
@@ -150,7 +115,7 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item row="2" column="1">
         <widget class="QPushButton" name="pbEdit">
          <property name="toolTip">
           <string>Edit position of selected tag</string>
@@ -160,17 +125,17 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="QPushButton" name="pbAdd">
+       <item row="5" column="1">
+        <widget class="QPushButton" name="pbCopy">
          <property name="toolTip">
-          <string>Add new tags</string>
+          <string>Replace all tags by tags from another DressupTag</string>
          </property>
          <property name="text">
-          <string>Add</string>
+          <string>Copy</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
+       <item row="4" column="1">
         <widget class="QPushButton" name="pbSwitch">
          <property name="toolTip">
           <string>Enable/disable all tags</string>
@@ -180,13 +145,154 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
-        <widget class="QPushButton" name="pbCopy">
+       <item row="4" column="0">
+        <spacer name="horizontalSpacer_6">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="0">
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="3" column="1">
+        <widget class="QPushButton" name="pbAdd">
          <property name="toolTip">
-          <string>Replace all tags by tags from another DressupTag</string>
+          <string>Add new tags</string>
          </property>
          <property name="text">
-          <string>Copy</string>
+          <string>Add</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="4" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="0">
+    <layout class="QGridLayout" name="gridLayout_10">
+     <item row="0" column="0">
+      <layout class="QFormLayout">
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Width</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="Gui::InputField" name="ifWidth">
+         <property name="toolTip">
+          <string>Width of the resulting holding tag</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Angle</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QDoubleSpinBox" name="dsbAngle">
+         <property name="toolTip">
+          <string>Plunge angle for ascent and descent of holding tag</string>
+         </property>
+         <property name="suffix">
+          <string> °</string>
+         </property>
+         <property name="minimum">
+          <double>5.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>90.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>15.000000000000000</double>
+         </property>
+         <property name="value">
+          <double>45.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="0" column="1">
+      <layout class="QFormLayout">
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Height</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="Gui::InputField" name="ifHeight">
+         <property name="toolTip">
+          <string>Height of holding tag. Note that resulting tag might be smaller if the tag's width and angle result in a triangular shape.</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Radius</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="Gui::InputField" name="ifRadius">
+         <property name="toolTip">
+          <string>Radius of the fillet at the top. If the radius is too big for the tag shape it gets reduced to the maximum possible radius - resulting in a spherical shape.</string>
          </property>
         </widget>
        </item>
@@ -209,14 +315,14 @@
       </item>
       <item row="0" column="1">
        <widget class="QSpinBox" name="sbMinCount">
-        <property name="toolTip">
-         <string>Minimum number of tags per short wire</string>
-        </property>
         <property name="maximumSize">
          <size>
           <width>45</width>
           <height>45</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Minimum number of tags per short wire</string>
         </property>
         <property name="minimum">
          <number>1</number>
@@ -232,14 +338,14 @@
       </item>
       <item row="0" column="3">
        <widget class="QSpinBox" name="sbMaxCount">
-        <property name="toolTip">
-         <string>Maximum number of tags per long wire</string>
-        </property>
         <property name="maximumSize">
          <size>
           <width>45</width>
           <height>45</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Maximum number of tags per long wire</string>
         </property>
         <property name="minimum">
          <number>1</number>
@@ -258,6 +364,19 @@
       </item>
      </layout>
     </widget>
+   </item>
+   <item row="1" column="1">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

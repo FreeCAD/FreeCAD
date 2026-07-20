@@ -131,7 +131,7 @@ public:
     bool isInnerView() const { return m_innerView; }
     void isInnerView(bool state) { m_innerView = state; }
     QGIViewClip* getClipGroup();
-    void updatePositionFromFeatureXY();
+    virtual void updatePositionFromFeatureXY();
 
     bool isSnapping() { return snapping; }
     void snapPosition(QPointF& position);

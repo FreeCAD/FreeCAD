@@ -213,6 +213,9 @@ void execCircleCenterLines(Gui::Command* cmd)
         TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
         std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
         if (GeoType == "Edge") {
+            if (!geom) {
+                continue;
+            }
             if (geom->getGeomType() == GeomType::CIRCLE || geom->getGeomType() == GeomType::ARCOFCIRCLE) {
                 TechDraw::CirclePtr cgen = std::static_pointer_cast<TechDraw::Circle>(geom);
                 // cgen->center is a scaled, rotated and inverted point
