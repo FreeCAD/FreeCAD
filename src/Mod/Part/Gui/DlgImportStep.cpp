@@ -47,7 +47,6 @@ DlgImportStep::DlgImportStep(QWidget* parent)
     ui->checkBoxUseBaseName->setChecked(settings.getUseBaseName());
     ui->checkBoxReduceObjects->setChecked(settings.getReduceObjects());
     ui->checkBoxExpandCompound->setChecked(settings.getExpandCompound());
-    ui->checkBoxShowProgress->setChecked(settings.getShowProgress());
 #if OCC_VERSION_HEX >= 0x070800
     std::list<Part::OCAF::ImportExportSettings::CodePage> codepagelist;
     codepagelist = settings.getCodePageList();
@@ -78,7 +77,6 @@ void DlgImportStep::saveSettings()
     ui->checkBoxUseBaseName->onSave();
     ui->checkBoxReduceObjects->onSave();
     ui->checkBoxExpandCompound->onSave();
-    ui->checkBoxShowProgress->onSave();
     ui->comboBoxImportMode->onSave();
 }
 
@@ -94,7 +92,6 @@ void DlgImportStep::loadSettings()
     ui->checkBoxUseBaseName->onRestore();
     ui->checkBoxReduceObjects->onRestore();
     ui->checkBoxExpandCompound->onRestore();
-    ui->checkBoxShowProgress->onRestore();
     ui->comboBoxImportMode->onRestore();
 }
 
@@ -107,7 +104,6 @@ StepImportSettings DlgImportStep::getSettings() const
     set.useBaseName = settings.getUseBaseName();
     set.importHidden = settings.getImportHiddenObject();
     set.reduceObjects = settings.getReduceObjects();
-    set.showProgress = settings.getShowProgress();
     set.expandCompound = settings.getExpandCompound();
     set.mode = static_cast<int>(settings.getImportMode());
 #if OCC_VERSION_HEX >= 0x070800

@@ -42,7 +42,8 @@ struct StepImportSettings
     bool useBaseName = true;
     bool importHidden = true;
     bool reduceObjects = false;
-    bool showProgress = false;
+    // Progress bar is always shown during import; no longer user-configurable (see #31162).
+    bool showProgress = true;
     bool expandCompound = false;
     int mode = 0;
     int codePage = -1;
