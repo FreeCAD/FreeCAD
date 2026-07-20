@@ -305,6 +305,60 @@ def parse_module_stub_signature_overrides(
     return signatures
 
 
+def supplement_module_methods_from_stub_signatures(
+    root: Path,
+    source_dir: Path,
+    methods: list[BindingMethod],
+) -> list[BindingMethod]:
+    module_signatures = parse_module_stub_signature_overrides(root, source_dir)
+    if not module_signatures:
+        return methods
+
+    supplemented = list(methods)
+    existing = {
+        (method.inferred_module, method.python_name)
+        for method in methods
+        if method.inferred_module is not None
+    }
+    source_line_numbers: dict[tuple[str, str], int] = {}
+    for path in iter_module_stub_pyi_files(root, source_dir):
+        module_name = path.name.removesuffix(MODULE_STUB_PYI_SUFFIX)
+        try:
+            tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+        except (OSError, SyntaxError):
+            continue
+        for node in tree.body:
+            if not isinstance(node, ast.FunctionDef):
+                continue
+            source_line_numbers.setdefault((module_name, node.name), node.lineno)
+
+    for (module_name, function_name), (signatures, path) in sorted(module_signatures.items()):
+        key = (module_name, function_name)
+        if key in existing:
+            continue
+        rel = path.relative_to(root).as_posix()
+        supplemented.append(
+            BindingMethod(
+                family="module_stub",
+                source=rel,
+                line=source_line_numbers.get(key, 1),
+                table=None,
+                context_kind="unknown",
+                context_name=module_name,
+                inferred_module=module_name,
+                method_kind="varargs",
+                python_name=function_name,
+                cxx_callable="",
+                flags="",
+                doc=next((signature.doc for signature in signatures if signature.doc), "") or "",
+                generated_source=False,
+            )
+        )
+        existing.add(key)
+
+    return supplemented
+
+
 def parse_type_stub_target(path: Path) -> tuple[str, str]:
     target = path.stem
     if not target or "." not in target:
