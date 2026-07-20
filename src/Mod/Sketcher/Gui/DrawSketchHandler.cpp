@@ -1240,7 +1240,7 @@ int DrawSketchHandler::seekAutoConstraint(
 
         if (!tangentCreated) {
             // We don't check for alignment if there is already a tangency.
-            seekAlignmentAutoConstraint(suggestedConstraints, Pos, Dir);
+            seekAlignmentAutoConstraint(suggestedConstraints, Dir);
         }
     }
 
