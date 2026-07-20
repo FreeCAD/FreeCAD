@@ -114,7 +114,7 @@ void LoftWidget::findShapes()
 
         // also allow compounds with a single face, wire or vertex or
         // if there are only edges building one wire
-        if (shape.ShapeType() == TopAbs_COMPOUND) {
+        if (shape.ShapeType() == TopAbs_COMPOUND || shape.ShapeType() == TopAbs_SHELL) {
             Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
             Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
 
