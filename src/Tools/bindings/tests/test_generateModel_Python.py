@@ -1,5 +1,8 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+import ast
+import inspect
+import re
 import sys
 import tempfile
 import textwrap
@@ -12,6 +15,90 @@ sys.path.insert(0, str(BINDINGS_DIR))
 
 from generate import generate
 from model.generateModel_Python import parse, parse_python_code
+
+C_STRING_LITERAL = re.compile(r'"(?:\\.|[^"\\])*"')
+PYMETHOD_ENTRY = re.compile(r'\{\s*"([A-Za-z_][A-Za-z0-9_]*)"\s*,')
+EXTENSION_METHOD = re.compile(
+    r'add_(?:varargs|keyword|noargs)_method\s*\(\s*"([A-Za-z_][A-Za-z0-9_]*)"'
+)
+
+
+def _decode_c_string_literals(literals: list[str]) -> str:
+    return "".join(ast.literal_eval(literal) for literal in literals)
+
+
+def _generated_pymethoddef_docstrings(source: str) -> list[tuple[str, str]]:
+    docs = []
+    lines = source.splitlines()
+    index = 0
+    while index < len(lines):
+        entry_match = PYMETHOD_ENTRY.search(lines[index])
+        if not entry_match:
+            index += 1
+            continue
+
+        name = entry_match.group(1)
+        entry_lines = [lines[index]]
+        index += 1
+        while index < len(lines):
+            entry_lines.append(lines[index])
+            if re.search(r"\}\s*,", lines[index]):
+                break
+            index += 1
+
+        literals = C_STRING_LITERAL.findall("\n".join(entry_lines))
+        if len(literals) >= 2:
+            docs.append((name, _decode_c_string_literals(literals[1:])))
+        index += 1
+
+    return docs
+
+
+def _generated_extension_module_docstrings(source: str) -> list[tuple[str, str]]:
+    docs = []
+    matches = list(EXTENSION_METHOD.finditer(source))
+    for index, match in enumerate(matches):
+        name = match.group(1)
+        end = matches[index + 1].start() if index + 1 < len(matches) else len(source)
+        block = source[match.start() : end]
+        call_end = block.find(");")
+        if call_end != -1:
+            block = block[: call_end + 2]
+
+        literals = C_STRING_LITERAL.findall(block)
+        if len(literals) >= 2:
+            docs.append((name, _decode_c_string_literals(literals[1:])))
+
+    return docs
+
+
+def _generated_docstrings(path: Path) -> list[tuple[str, str]]:
+    source = path.read_text(encoding="utf-8")
+    return [
+        *_generated_pymethoddef_docstrings(source),
+        *_generated_extension_module_docstrings(source),
+    ]
+
+
+def _invalid_text_signatures(path: Path) -> list[str]:
+    failures = []
+    for name, docstring in _generated_docstrings(path):
+        if "--\n" not in docstring:
+            continue
+
+        text_signature = docstring.split("--\n", 1)[0].rstrip()
+        for signature in text_signature.splitlines():
+            if not signature.strip():
+                continue
+            try:
+                # This private helper is CPython's actual __text_signature__ parser.
+                inspect._signature_fromstr(
+                    inspect.Signature, object(), signature, skip_bound_arg=False
+                )
+            except ValueError as exc:
+                failures.append(f"{path.name}:{name}: {signature!r}: {exc}")
+
+    return failures
 
 
 class GenerateModelPythonTests(unittest.TestCase):
@@ -100,11 +187,11 @@ class GenerateModelPythonTests(unittest.TestCase):
         source = textwrap.dedent("""
             from __future__ import annotations
 
-            from Base.Metadata import module, no_args
+            from Base.Metadata import bootstrap_export, module, no_args
 
             \"\"\"Example module doc.\"\"\"
 
-            module(Name="Example", Namespace="TestBindings")
+            module(Name="Example", Namespace="TestBindings", Include="ExampleBinding.h")
 
             def ping(value: int, /, *, retry: bool = ...) -> object:
                 \"\"\"
@@ -112,6 +199,7 @@ class GenerateModelPythonTests(unittest.TestCase):
                 \"\"\"
                 ...
 
+            @bootstrap_export
             @no_args
             def reset() -> None:
                 \"\"\"
@@ -130,11 +218,15 @@ class GenerateModelPythonTests(unittest.TestCase):
         export = model.PythonModule[0]
         self.assertEqual(export.Name, "Example")
         self.assertEqual(export.Namespace, "TestBindings")
+        self.assertEqual(export.Include, "ExampleBinding.h")
         self.assertEqual(export.ModuleName, Path(temp_dir).name)
         self.assertTrue(export.IsExplicitlyExported)
         self.assertEqual([method.Name for method in export.Method], ["ping", "reset"])
         self.assertTrue(export.Method[0].Keyword)
         self.assertTrue(export.Method[1].NoArgs)
+        self.assertFalse(export.Method[0].Bootstrap)
+        self.assertTrue(export.Method[1].Bootstrap)
+        self.assertEqual([method.Name for method in export.BootstrapMethods], ["reset"])
         self.assertIn("Example module doc.", export.Documentation.UserDocu)
         self.assertIn("ping(value, /, *, retry=...)", export.Method[0].Documentation.UserDocu)
         self.assertIn("reset()", export.Method[1].Documentation.UserDocu)
@@ -167,6 +259,95 @@ class GenerateModelPythonTests(unittest.TestCase):
         self.assertEqual([method.Name for method in export.Method], ["ping"])
         self.assertIn("Example module doc.", export.Documentation.UserDocu)
 
+    def test_module_stub_allows_helper_classes_and_enums(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from enum import IntEnum
+            from typing import Protocol
+
+            class Mode(IntEnum):
+                One = 1
+
+            class Gate(Protocol):
+                def allow(self, /) -> bool: ...
+
+            def ping() -> None:
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            path = app_dir / "Example.module.pyi"
+            path.write_text(source, encoding="utf-8")
+            model = parse(str(path))
+
+        export = model.PythonModule[0]
+        self.assertEqual([method.Name for method in export.Method], ["ping"])
+
+    def test_module_stub_sanitizes_unsupported_text_signature_defaults(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from enum import Enum
+            from Base.Metadata import module
+
+            class Mode(str, Enum):
+                Append = "append"
+
+            module(Name="Example", Namespace="TestBindings", Include="ExampleBinding.h")
+
+            def apply(mode: Mode = Mode.Append, value: object = object(), /) -> None:
+                \"\"\"
+                Apply one mode.
+                \"\"\"
+                ...
+        """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            output_dir = Path(temp_dir) / "generated"
+            output_dir.mkdir()
+            path = app_dir / "Example.module.pyi"
+            path.write_text(source, encoding="utf-8")
+
+            generate(str(path), str(output_dir))
+
+            module_cpp = (output_dir / "ExampleModulePy.cpp").read_text(encoding="utf-8")
+
+        self.assertIn("apply(mode=..., value=..., /)", module_cpp)
+        self.assertIn(
+            "apply(mode: Mode=Mode.Append, value: object=object(), /) -> None", module_cpp
+        )
+        self.assertNotIn("apply(mode=Mode.Append", module_cpp)
+        self.assertNotIn("apply(mode=..., value=object()", module_cpp)
+
+    def test_source_module_stubs_generate_valid_text_signatures(self):
+        module_paths = sorted(SRC_DIR.rglob("*.module.pyi"))
+        self.assertGreater(len(module_paths), 0)
+
+        failures = []
+        with tempfile.TemporaryDirectory() as temp_dir:
+            output_root = Path(temp_dir)
+            for module_path in module_paths:
+                relative_path = module_path.relative_to(SRC_DIR)
+                output_dir = output_root / relative_path.parent / relative_path.name
+                output_dir.mkdir(parents=True)
+
+                generate(str(module_path), str(output_dir))
+
+                generated_cpp_files = sorted(output_dir.glob("*ModulePy.cpp"))
+                self.assertGreater(len(generated_cpp_files), 0, relative_path)
+                for generated_cpp in generated_cpp_files:
+                    failures.extend(
+                        f"{relative_path}: {failure}"
+                        for failure in _invalid_text_signatures(generated_cpp)
+                    )
+
+        self.assertEqual([], failures)
+
     def test_module_stub_rejects_bound_method_decorators(self):
         source = textwrap.dedent("""
             from __future__ import annotations
@@ -187,11 +368,139 @@ class GenerateModelPythonTests(unittest.TestCase):
             ):
                 parse(str(path))
 
-    def test_module_stub_generation_writes_module_wrapper_files(self):
+    def test_module_stub_rejects_bootstrap_export_on_class_methods(self):
         source = textwrap.dedent("""
             from __future__ import annotations
 
-            from Base.Metadata import no_args
+            from Base.Metadata import bootstrap_export, export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export
+            class Example(PyObjectBase):
+                @bootstrap_export
+                def ping(self) -> None:
+                    ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR) as temp_dir:
+            path = Path(temp_dir) / "Example.pyi"
+            path.write_text(source, encoding="utf-8")
+
+            with self.assertRaisesRegex(
+                ValueError, "Class method 'ping' cannot use bootstrap_export decorator"
+            ):
+                parse_python_code(str(path))
+
+    def test_module_stub_supports_callback_backed_overloads(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from typing import overload
+
+            from Base.Metadata import callback
+
+            @callback("TestBindings::sListSchemas")
+            @overload
+            def listSchemas() -> tuple[str, ...]:
+                \"\"\"Return all schemas.\"\"\"
+                ...
+
+            @overload
+            def listSchemas(index: int, /) -> str:
+                \"\"\"Return one schema.\"\"\"
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            path = app_dir / "Example.module.pyi"
+            path.write_text(source, encoding="utf-8")
+            model = parse(str(path))
+
+        export = model.PythonModule[0]
+        self.assertEqual([method.Name for method in export.Method], ["listSchemas"])
+        self.assertEqual(export.Method[0].Callback, "TestBindings::sListSchemas")
+        self.assertIn("listSchemas()", export.Method[0].Documentation.UserDocu)
+        self.assertIn("listSchemas(index, /)", export.Method[0].Documentation.UserDocu)
+
+    def test_module_stub_infers_callback_symbols_from_module_metadata(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import callback, module
+
+            module(CallbackOwner="TestBindings", CallbackPrefix="s")
+
+            def loadFile(path: str, /) -> None:
+                ...
+
+            @callback("TestBindings::sOpenDocument")
+            def open(path: str, /) -> None:
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            path = app_dir / "Example.module.pyi"
+            path.write_text(source, encoding="utf-8")
+            model = parse(str(path))
+
+        export = model.PythonModule[0]
+        self.assertEqual(export.Method[0].Callback, "TestBindings::sLoadFile")
+        self.assertEqual(export.Method[1].Callback, "TestBindings::sOpenDocument")
+
+    def test_module_stub_rejects_callback_prefix_without_owner(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import module
+
+            module(CallbackPrefix="s")
+
+            def ping() -> None:
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            path = app_dir / "Example.module.pyi"
+            path.write_text(source, encoding="utf-8")
+
+            with self.assertRaisesRegex(ValueError, "CallbackPrefix requires CallbackOwner"):
+                parse(str(path))
+
+    def test_extension_module_stub_requires_module_class(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import module
+
+            module(Runtime="ExtensionModule")
+
+            def ping() -> None:
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            path = app_dir / "Example.module.pyi"
+            path.write_text(source, encoding="utf-8")
+
+            with self.assertRaisesRegex(
+                ValueError, "Runtime='ExtensionModule' requires ModuleClass"
+            ):
+                parse(str(path))
+
+    def test_module_stub_generation_writes_generated_module_files(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import bootstrap_export, no_args
 
             \"\"\"Example module doc.\"\"\"
 
@@ -201,6 +510,7 @@ class GenerateModelPythonTests(unittest.TestCase):
                 \"\"\"
                 ...
 
+            @bootstrap_export
             @no_args
             def reset() -> None:
                 \"\"\"
@@ -221,16 +531,155 @@ class GenerateModelPythonTests(unittest.TestCase):
 
             header = (output_dir / "ExampleModulePy.h").read_text(encoding="utf-8")
             module_cpp = (output_dir / "ExampleModulePy.cpp").read_text(encoding="utf-8")
-            module_imp = (output_dir / "ExampleModulePyImp.cpp").read_text(encoding="utf-8")
+            module_imp_exists = (output_dir / "ExampleModulePyImp.cpp").exists()
 
         self.assertIn("class ExampleModulePy", header)
         self.assertIn("static const char* moduleDocumentation();", header)
+        self.assertIn("static PyMethodDef BootstrapMethods[];", header)
+        self.assertIn(
+            "static PyObject* staticCallback_ping(PyObject* self, PyObject* args, PyObject* kwd);",
+            header,
+        )
+        self.assertIn("static PyObject* ping(PyObject* args, PyObject* kwd);", header)
         self.assertIn("PyModule_AddFunctions(module, Methods)", module_cpp)
         self.assertIn('return "Example module doc.";', module_cpp)
-        self.assertIn('#include "ExampleModulePy.cpp"', module_imp)
+        self.assertIn("return ExampleModulePy::ping(args, kwd);", module_cpp)
         self.assertIn("METH_VARARGS|METH_KEYWORDS", module_cpp)
         self.assertIn("METH_NOARGS", module_cpp)
-        self.assertIn('PyErr_SetString(PyExc_NotImplementedError, "Not implemented")', module_imp)
+        self.assertFalse(module_imp_exists)
+        self.assertNotIn("PyExc_NotImplementedError", module_cpp)
+
+        bootstrap_table = module_cpp.split(
+            "PyMethodDef ExampleModulePy::BootstrapMethods[] = {", 1
+        )[1]
+        bootstrap_table = bootstrap_table.split("};", 1)[0]
+        self.assertIn('{"reset"', bootstrap_table)
+        self.assertNotIn('{"ping"', bootstrap_table)
+
+    def test_module_stub_generation_uses_existing_callback_symbols(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from typing import overload
+
+            from Base.Metadata import callback, module
+
+            module(Include="ExampleBinding.h")
+
+            @callback("TestBindings::sListSchemas")
+            @overload
+            def listSchemas() -> tuple[str, ...]:
+                ...
+
+            @overload
+            def listSchemas(index: int, /) -> str:
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            output_dir = Path(temp_dir) / "generated"
+            output_dir.mkdir()
+            path = app_dir / "Example.module.pyi"
+            path.write_text(source, encoding="utf-8")
+
+            generate(str(path), str(output_dir))
+
+            header = (output_dir / "ExampleModulePy.h").read_text(encoding="utf-8")
+            module_cpp = (output_dir / "ExampleModulePy.cpp").read_text(encoding="utf-8")
+            module_imp_exists = (output_dir / "ExampleModulePyImp.cpp").exists()
+
+        self.assertIn("TestBindings::sListSchemas", module_cpp)
+        self.assertIn('#include "ExampleBinding.h"', module_cpp)
+        self.assertNotIn("staticCallback_listSchemas", header)
+        self.assertNotIn("staticCallback_listSchemas", module_cpp)
+        self.assertFalse(module_imp_exists)
+
+    def test_module_stub_generation_uses_inferred_callback_symbols(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import module
+
+            module(Include="ExampleBinding.h", CallbackOwner="TestBindings", CallbackPrefix="s")
+
+            def loadFile(path: str, /) -> None:
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            output_dir = Path(temp_dir) / "generated"
+            output_dir.mkdir()
+            path = app_dir / "Example.module.pyi"
+            path.write_text(source, encoding="utf-8")
+
+            generate(str(path), str(output_dir))
+
+            header = (output_dir / "ExampleModulePy.h").read_text(encoding="utf-8")
+            module_cpp = (output_dir / "ExampleModulePy.cpp").read_text(encoding="utf-8")
+            module_imp_exists = (output_dir / "ExampleModulePyImp.cpp").exists()
+
+        self.assertIn("TestBindings::sLoadFile", module_cpp)
+        self.assertIn('#include "ExampleBinding.h"', module_cpp)
+        self.assertNotIn("staticCallback_loadFile", header)
+        self.assertNotIn("staticCallback_loadFile", module_cpp)
+        self.assertFalse(module_imp_exists)
+
+    def test_extension_module_stub_generation_writes_extension_helper_files(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import module
+
+            \"\"\"Example helper module.\"\"\"
+
+            module(
+                Name="Example",
+                Namespace="TestBindings",
+                Include="ExampleBinding.h",
+                Runtime="ExtensionModule",
+                ModuleClass="ExampleBinding",
+            )
+
+            def ping(value: int, /) -> object:
+                \"\"\"
+                Ping the module.
+                \"\"\"
+                ...
+
+            def reset() -> None:
+                \"\"\"
+                Reset the module state.
+                \"\"\"
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            output_dir = Path(temp_dir) / "generated"
+            output_dir.mkdir()
+            path = app_dir / "Example.module.pyi"
+            path.write_text(source, encoding="utf-8")
+
+            generate(str(path), str(output_dir))
+
+            header = (output_dir / "ExampleModulePy.h").read_text(encoding="utf-8")
+            module_cpp = (output_dir / "ExampleModulePy.cpp").read_text(encoding="utf-8")
+            module_imp_exists = (output_dir / "ExampleModulePyImp.cpp").exists()
+
+        self.assertIn("static void initialize(ExampleBinding& module);", header)
+        self.assertNotIn("PyMethodDef Methods[]", header)
+        self.assertIn('#include "ExampleBinding.h"', module_cpp)
+        self.assertIn("module.add_varargs_method(", module_cpp)
+        self.assertIn("&ExampleBinding::ping", module_cpp)
+        self.assertIn("&ExampleBinding::reset", module_cpp)
+        self.assertIn("module.initialize(moduleDocumentation())", module_cpp)
+        self.assertIn('return "Example helper module.";', module_cpp)
+        self.assertFalse(module_imp_exists)
 
 
 if __name__ == "__main__":

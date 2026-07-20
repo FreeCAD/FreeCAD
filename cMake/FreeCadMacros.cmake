@@ -188,36 +188,54 @@ macro(generate_from_py_ BASE_NAME)
     generate_from_py_impl(${BASE_NAME} "_")
 endmacro(generate_from_py_)
 
-macro(generate_module_from_py BASE_NAME)
-    set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/bindings/generate.py")
-    file(TO_NATIVE_PATH "${TOOL_PATH}" TOOL_NATIVE_PATH)
-    file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.module.pyi" SOURCE_NATIVE_PATH)
+# Generate <OutputName>ModulePy.h/.cpp from a source-owned .module.pyi file.
+# The generated files are returned through OUT_VAR. Source-owned
+# <OutputName>ModulePyImp.cpp files, when needed, must be listed on the target
+# explicitly; this function never copies or generates implementation skeletons.
+function(generate_module_from_py BASE_NAME OUT_VAR)
+    string(REGEX REPLACE "^.*\\." "" OUTPUT_NAME "${BASE_NAME}")
 
-    set(SOURCE_CPP_PATH "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}ModulePy.cpp")
-    set(SOURCE_H_PATH "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}ModulePy.h")
-
-    GET_FILENAME_COMPONENT(OUTPUT_PATH "${SOURCE_CPP_PATH}" PATH)
-    file(TO_NATIVE_PATH "${OUTPUT_PATH}" OUTPUT_NATIVE_PATH)
-    if(NOT EXISTS "${SOURCE_CPP_PATH}")
-        message(STATUS "${SOURCE_CPP_PATH}")
-        execute_process(
-            COMMAND "${Python3_EXECUTABLE}" "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" "${SOURCE_NATIVE_PATH}"
-            WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-            COMMAND_ERROR_IS_FATAL ANY
-        )
-    endif()
+    set(INPUT_PATH
+        "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.module.pyi"
+    )
+    set(OUTPUT_CPP
+        "${CMAKE_CURRENT_BINARY_DIR}/${OUTPUT_NAME}ModulePy.cpp"
+    )
+    set(OUTPUT_H
+        "${CMAKE_CURRENT_BINARY_DIR}/${OUTPUT_NAME}ModulePy.h"
+    )
+    set(GENERATOR
+        "${CMAKE_SOURCE_DIR}/src/Tools/bindings/generate.py"
+    )
+    set(TEMPLATE
+        "${CMAKE_SOURCE_DIR}/src/Tools/bindings/templates/templateModulePyExport.py"
+    )
 
     add_custom_command(
-        OUTPUT "${SOURCE_H_PATH}" "${SOURCE_CPP_PATH}"
-        COMMAND ${Python3_EXECUTABLE} "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" ${BASE_NAME}.module.pyi
-        MAIN_DEPENDENCY "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.module.pyi"
+        OUTPUT
+            "${OUTPUT_CPP}"
+            "${OUTPUT_H}"
+        COMMAND
+            "${Python3_EXECUTABLE}"
+            "${GENERATOR}"
+            --outputPath "${CMAKE_CURRENT_BINARY_DIR}"
+            "${INPUT_PATH}"
+        MAIN_DEPENDENCY
+            "${INPUT_PATH}"
         DEPENDS
-            "${CMAKE_SOURCE_DIR}/src/Tools/bindings/templates/templateModulePyExport.py"
-            "${TOOL_PATH}"
-        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-        COMMENT "Building ${BASE_NAME}ModulePy.h/.cpp out of ${BASE_NAME}.module.pyi"
+            "${GENERATOR}"
+            "${TEMPLATE}"
+        COMMENT
+            "Generating ${OUTPUT_NAME}ModulePy.h/.cpp"
+        VERBATIM
     )
-endmacro(generate_module_from_py)
+
+    set(${OUT_VAR}
+        "${OUTPUT_CPP}"
+        "${OUTPUT_H}"
+        PARENT_SCOPE
+    )
+endfunction(generate_module_from_py)
 
 macro(generate_embed_from_py BASE_NAME OUTPUT_FILE)
 		set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/PythonToCPP.py")
