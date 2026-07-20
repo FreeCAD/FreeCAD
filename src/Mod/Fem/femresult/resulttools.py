@@ -242,7 +242,7 @@ def get_stats(res_obj, result_type):
 #  - Prin1 - Principal stress 1
 #  - Prin2 - Principal stress 2
 #  - Prin3 - Principal stress 3
-#  - MaxSear - maximum shear stress
+#  - MaxSear - Tresca stress
 #  - Peeq - Equivalent plastic strain
 #  - Temp - Temperature
 #  - MFlow - MassFlowRate
@@ -256,7 +256,7 @@ def get_all_stats(res_obj):
     - MaxPrin - Principal stress 1
     - MidPrin - Principal stress 2
     - MinPrin - Principal stress 3
-    - MaxShear - maximum shear stress
+    - MaxShear - Tresca stress
     - Peeq - peeq strain
     - Temp - Temperature
     - MFlow - MassFlowRate
