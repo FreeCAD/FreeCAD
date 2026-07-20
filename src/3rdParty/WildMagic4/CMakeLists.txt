@@ -219,6 +219,6 @@ set(WildMagic4_SRCS
     Wm4Vector4.inl
 )
 
-add_library(WildMagic4 ${WildMagic4_SRCS})
+add_library(WildMagic4 STATIC ${WildMagic4_SRCS})
 target_include_directories(WildMagic4 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 set_target_properties(WildMagic4 PROPERTIES POSITION_INDEPENDENT_CODE ON)
