@@ -103,11 +103,13 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject)
         }
     }
 
+    // Resolve from the root with the accumulated transform: replacing the placement
+    // on an extracted sub-shape would drop its internal location.
     TopoShape ts = Part::Feature::getTopoShape(
-        obj,
+        subject.getObject(),
         Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
             | Part::ShapeOption::Transform,
-        subject.getElementName()
+        subject.getSubName().c_str()
     );
     if (ts.isNull()) {
         Base::Console().log(
@@ -117,9 +119,6 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject)
         );
         return {};
     }
-    ts.setPlacement(
-        App::GeoFeature::getGlobalPlacement(obj, subject.getObject(), subject.getSubName())
-    );
     return ts.getShape();
 }
 
