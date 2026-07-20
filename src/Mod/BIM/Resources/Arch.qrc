@@ -133,7 +133,6 @@
         <file>icons/BIM_Rewire.svg</file>
         <file>icons/BIM_Slab.svg</file>
         <file>icons/BIM_Trash.svg</file>
-        <file>icons/BIM_Tutorial.svg</file>
         <file>icons/BIM_Unclone.svg</file>
         <file>icons/BIM_Views.svg</file>
         <file>icons/BIM_WPView.svg</file>
@@ -267,7 +266,6 @@
         <file>ui/dialogSetup.ui</file>
         <file>ui/dialogSpaces.ui</file>
         <file>ui/dialogTree.ui</file>
-        <file>ui/dialogTutorial.ui</file>
         <file>ui/dialogViews.ui</file>
         <file>ui/dialogWelcome.ui</file>
         <file>ui/dialogWindows.ui</file>
