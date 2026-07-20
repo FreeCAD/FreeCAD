@@ -43,33 +43,10 @@
 #include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/ApplicationPy.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/MainWindow.h>
+#include <Gui/FreeCADGuiModulePy.h>
 #include <Gui/SoFCDB.h>
 #include <Gui/Quarter/Quarter.h>
 
-struct PyMethodDef FreeCADGui_methods[] = {
-    {"showMainWindow",
-     (PyCFunction)Gui::ApplicationPy::sShowMainWindow,
-     METH_VARARGS,
-     "showMainWindow() -- Show the main window\n"
-     "If no main window does exist one gets created"},
-    {"exec_loop",
-     (PyCFunction)Gui::ApplicationPy::sExec_loop,
-     METH_VARARGS,
-     "exec_loop() -- Starts the event loop\n"
-     "Note: this will block the call until the event loop has terminated"},
-    {"setupWithoutGUI",
-     (PyCFunction)Gui::ApplicationPy::sSetupWithoutGUI,
-     METH_VARARGS,
-     "setupWithoutGUI() -- Uses this module without starting\n"
-     "an event loop or showing up any GUI\n"},
-    {"embedToWindow",
-     (PyCFunction)Gui::ApplicationPy::sEmbedToWindow,
-     METH_VARARGS,
-     "embedToWindow() -- Embeds the main window into another window\n"},
-    {nullptr, nullptr, 0, nullptr} /* sentinel */
-};
 
 PyMOD_INIT_FUNC(FreeCADGui)
 {
@@ -88,12 +65,13 @@ PyMOD_INIT_FUNC(FreeCADGui)
         if (Base::Type::fromName("Gui::BaseView").isBad()) {
             Gui::Application::initApplication();
         }
+        // Console imports only expose the bootstrap-safe FreeCADGui surface.
         static struct PyModuleDef FreeCADGuiModuleDef = {
             PyModuleDef_HEAD_INIT,
             "FreeCADGui",
-            "FreeCAD GUI module\n",
+            Gui::FreeCADGuiModulePy::moduleDocumentation(),
             -1,
-            FreeCADGui_methods,
+            Gui::FreeCADGuiModulePy::BootstrapMethods,
             nullptr,
             nullptr,
             nullptr,

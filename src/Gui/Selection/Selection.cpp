@@ -2311,280 +2311,6 @@ void SelectionSingleton::destruct()
 //**************************************************************************
 // Python stuff
 
-// SelectionSingleton Methods  // Methods structure
-PyMethodDef SelectionSingleton::Methods[] = {
-    {"addSelection",
-     (PyCFunction)SelectionSingleton::sAddSelection,
-     METH_VARARGS,
-     "addSelection(docName, objName, subName, x=0, y=0, z=0, clear=True) -> None\n"
-     "addSelection(obj, subName, x=0, y=0, z=0, clear=True) -> None\n"
-     "addSelection(obj, subNames, clear=True) -> None\n"
-     "\n"
-     "Add an object to the selection.\n"
-     "\n"
-     "docName : str\n    Name of the `App.Document`.\n"
-     "objName : str\n    Name of the `App.DocumentObject` to add.\n"
-     "obj : App.DocumentObject\n    Object to add.\n"
-     "subName : str\n    Subelement name.\n"
-     "x : float\n    Coordinate `x` of the point to pick.\n"
-     "y : float\n    Coordinate `y` of the point to pick.\n"
-     "z : float\n    Coordinate `z` of the point to pick.\n"
-     "subNames : list of str\n    List of subelement names.\n"
-     "clear : bool\n    Clear preselection."},
-    {"updateSelection",
-     (PyCFunction)SelectionSingleton::sUpdateSelection,
-     METH_VARARGS,
-     "updateSelection(show, obj, subName) -> None\n"
-     "\n"
-     "Update an object in the selection.\n"
-     "\n"
-     "show : bool\n    Show or hide the selection.\n"
-     "obj : App.DocumentObject\n    Object to update.\n"
-     "subName : str\n    Name of the subelement to update."},
-    {"removeSelection",
-     (PyCFunction)SelectionSingleton::sRemoveSelection,
-     METH_VARARGS,
-     "removeSelection(obj, subName) -> None\n"
-     "removeSelection(docName, objName, subName) -> None\n"
-     "\n"
-     "Remove an object from the selection.\n"
-     "\n"
-     "docName : str\n    Name of the `App.Document`.\n"
-     "objName : str\n    Name of the `App.DocumentObject` to remove.\n"
-     "obj : App.DocumentObject\n    Object to remove.\n"
-     "subName : str\n    Name of the subelement to remove."},
-    {"clearSelection",
-     (PyCFunction)SelectionSingleton::sClearSelection,
-     METH_VARARGS,
-     "clearSelection(docName, clearPreSelect=True) -> None\n"
-     "clearSelection(clearPreSelect=True) -> None\n"
-     "\n"
-     "Clear the selection in the given document. If no document is\n"
-     "given the complete selection is cleared.\n"
-     "\n"
-     "docName : str\n    Name of the `App.Document`.\n"
-     "clearPreSelect : bool\n    Clear preselection."},
-    {"isSelected",
-     (PyCFunction)SelectionSingleton::sIsSelected,
-     METH_VARARGS,
-     "isSelected(obj, subName, resolve=ResolveMode.OldStyleElement) -> bool\n"
-     "\n"
-     "Check if a given object is selected.\n"
-     "\n"
-     "obj : App.DocumentObject\n    Object to check.\n"
-     "subName : str\n    Name of the subelement.\n"
-     "resolve : int\n    Resolve subelement reference."},
-    {"setPreselection",
-     reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(SelectionSingleton::sSetPreselection)),
-     METH_VARARGS | METH_KEYWORDS,
-     "setPreselection(obj, subName, x=0, y=0, z=0, type=1) -> None\n"
-     "\n"
-     "Set preselected object.\n"
-     "\n"
-     "obj : App.DocumentObject\n    Object to preselect.\n"
-     "subName : str\n    Subelement name.\n"
-     "x : float\n    Coordinate `x` of the point to preselect.\n"
-     "y : float\n    Coordinate `y` of the point to preselect.\n"
-     "z : float\n    Coordinate `z` of the point to preselect.\n"
-     "type : int"},
-    {"getPreselection",
-     (PyCFunction)SelectionSingleton::sGetPreselection,
-     METH_VARARGS,
-     "getPreselection() -> Gui.SelectionObject\n"
-     "\n"
-     "Get preselected object."},
-    {"clearPreselection",
-     (PyCFunction)SelectionSingleton::sRemPreselection,
-     METH_VARARGS,
-     "clearPreselection() -> None\n"
-     "\n"
-     "Clear the preselection."},
-    {"countObjectsOfType",
-     (PyCFunction)SelectionSingleton::sCountObjectsOfType,
-     METH_VARARGS,
-     "countObjectsOfType(type, docName, resolve=ResolveMode.OldStyleElement) -> int\n"
-     "\n"
-     "Get the number of selected objects. If no document name is given the\n"
-     "active document is used and '*' means all documents.\n"
-     "\n"
-     "type : str\n    Object type id name.\n"
-     "docName : str\n    Name of the `App.Document`.\n"
-     "resolve : int"},
-    {"getSelection",
-     (PyCFunction)SelectionSingleton::sGetSelection,
-     METH_VARARGS,
-     "getSelection(docName, resolve=ResolveMode.OldStyleElement, single=False) -> list\n"
-     "\n"
-     "Return a list of selected objects. If no document name is given\n"
-     "the active document is used and '*' means all documents.\n"
-     "\n"
-     "docName : str\n    Name of the `App.Document`.\n"
-     "resolve : int\n    Resolve the subname references.\n"
-     "    0: do not resolve, 1: resolve, 2: resolve with element map.\n"
-     "single : bool\n    Only return if there is only one selection."},
-    {"getPickedList",
-     (PyCFunction)SelectionSingleton::sGetPickedList,
-     1,
-     "getPickedList(docName) -> list of Gui.SelectionObject\n"
-     "\n"
-     "Return a list of SelectionObjects generated by the last mouse click.\n"
-     "If no document name is given the active document is used and '*'\n"
-     "means all documents.\n"
-     "\n"
-     "docName : str\n    Name of the `App.Document`."},
-    {"enablePickedList",
-     (PyCFunction)SelectionSingleton::sEnablePickedList,
-     METH_VARARGS,
-     "enablePickedList(enable=True) -> None\n"
-     "\n"
-     "Enable/disable pick list.\n"
-     "\n"
-     "enable : bool"},
-    {"getCompleteSelection",
-     (PyCFunction)SelectionSingleton::sGetCompleteSelection,
-     METH_VARARGS,
-     "getCompleteSelection(resolve=ResolveMode.OldStyleElement) -> list\n"
-     "\n"
-     "Return a list of selected objects across all documents.\n"
-     "\n"
-     "resolve : int"},
-    {"getSelectionEx",
-     (PyCFunction)SelectionSingleton::sGetSelectionEx,
-     METH_VARARGS,
-     "getSelectionEx(docName, resolve=ResolveMode.OldStyleElement, single=False) -> list of "
-     "Gui.SelectionObject\n"
-     "\n"
-     "Return a list of SelectionObjects. If no document name is given the\n"
-     "active document is used and '*' means all documents.\n"
-     "The SelectionObjects contain a variety of information about the selection,\n"
-     "e.g. subelement names.\n"
-     "\n"
-     "docName : str\n    Name of the `App.Document`.\n"
-     "resolve : int\n    Resolve the subname references.\n"
-     "    0: do not resolve, 1: resolve, 2: resolve with element map.\n"
-     "single : bool\n    Only return if there is only one selection."},
-    {"getSelectionObject",
-     (PyCFunction)SelectionSingleton::sGetSelectionObject,
-     METH_VARARGS,
-     "getSelectionObject(docName, objName, subName, point) -> Gui.SelectionObject\n"
-     "\n"
-     "Return a SelectionObject.\n"
-     "\n"
-     "docName : str\n    Name of the `App.Document`.\n"
-     "objName : str\n    Name of the `App.DocumentObject` to select.\n"
-     "subName : str\n    Subelement name.\n"
-     "point : tuple\n    Coordinates of the point to pick."},
-    {"setSelectionStyle",
-     (PyCFunction)SelectionSingleton::sSetSelectionStyle,
-     METH_VARARGS,
-     "setSelectionStyle(selectionStyle) -> None\n"
-     "\n"
-     "Change the selection style. 0 for normal selection, 1 for greedy selection\n"
-     "\n"
-     "selectionStyle : int"},
-    {"addObserver",
-     (PyCFunction)SelectionSingleton::sAddSelObserver,
-     METH_VARARGS,
-     "addObserver(object, resolve=ResolveMode.OldStyleElement) -> None\n"
-     "\n"
-     "Install an observer.\n"
-     "\n"
-     "object : object\n    Python object instance.\n"
-     "resolve : int"},
-    {"removeObserver",
-     (PyCFunction)SelectionSingleton::sRemSelObserver,
-     METH_VARARGS,
-     "removeObserver(object) -> None\n"
-     "\n"
-     "Uninstall an observer.\n"
-     "\n"
-     "object : object\n    Python object instance."},
-    {"addSelectionGate",
-     (PyCFunction)SelectionSingleton::sAddSelectionGate,
-     METH_VARARGS,
-     "addSelectionGate(filter, resolve=ResolveMode.OldStyleElement) -> None\n"
-     "\n"
-     "Activate the selection gate.\n"
-     "The selection gate will prohibit all selections that do not match\n"
-     "the given selection criteria.\n"
-     "\n"
-     "filter : str, SelectionFilter, object\n"
-     "resolve : int\n"
-     "\n"
-     "Examples strings are:\n"
-     "Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Edge')\n"
-     "Gui.Selection.addSelectionGate('SELECT Robot::RobotObject')\n"
-     "\n"
-     "An instance of SelectionFilter can also be set:\n"
-     "filter = Gui.Selection.Filter('SELECT Part::Feature SUBELEMENT Edge')\n"
-     "Gui.Selection.addSelectionGate(filter)\n"
-     "\n"
-     "The most flexible approach is to write a selection gate class that\n"
-     "implements the method 'allow':\n"
-     "class Gate:\n"
-     "    def allow(self,doc,obj,sub):\n"
-     "        return (sub[0:4] == 'Face')\n"
-     "Gui.Selection.addSelectionGate(Gate())"},
-    {"removeSelectionGate",
-     (PyCFunction)SelectionSingleton::sRemoveSelectionGate,
-     METH_VARARGS,
-     "removeSelectionGate() -> None\n"
-     "\n"
-     "Remove the active selection gate."},
-    {"setVisible",
-     (PyCFunction)SelectionSingleton::sSetVisible,
-     METH_VARARGS,
-     "setVisible(visible=None) -> None\n"
-     "\n"
-     "Set visibility of all selection items.\n"
-     "\n"
-     "visible : bool, None\n    If None, then toggle visibility."},
-    {"pushSelStack",
-     (PyCFunction)SelectionSingleton::sPushSelStack,
-     METH_VARARGS,
-     "pushSelStack(clearForward=True, overwrite=False) -> None\n"
-     "\n"
-     "Push current selection to stack.\n"
-     "\n"
-     "clearForward : bool\n    Clear the forward selection stack.\n"
-     "overwrite : bool\n    Overwrite the top back selection stack with current selection."},
-    {"hasSelection",
-     (PyCFunction)SelectionSingleton::sHasSelection,
-     METH_VARARGS,
-     "hasSelection(docName, resolve=ResolveMode.NoResolve) -> bool\n"
-     "\n"
-     "Check if there is any selection. If no document name is given,\n"
-     "checks selections in all documents.\n"
-     "\n"
-     "docName : str\n    Name of the `App.Document`.\n"
-     "resolve : int"},
-    {"hasSubSelection",
-     (PyCFunction)SelectionSingleton::sHasSubSelection,
-     METH_VARARGS,
-     "hasSubSelection(docName, subElement=False) -> bool\n"
-     "\n"
-     "Check if there is any selection with subname. If no document name\n"
-     "is given the active document is used and '*' means all documents.\n"
-     "\n"
-     "docName : str\n    Name of the `App.Document`.\n"
-     "subElement : bool"},
-    {"getSelectionFromStack",
-     (PyCFunction)SelectionSingleton::sGetSelectionFromStack,
-     METH_VARARGS,
-     "getSelectionFromStack(docName, resolve=ResolveMode.OldStyleElement, index=0) -> list of "
-     "Gui.SelectionObject\n"
-     "\n"
-     "Return SelectionObjects from selection stack. If no document name is given\n"
-     "the active document is used and '*' means all documents.\n"
-     "\n"
-     "docName : str\n    Name of the `App.Document`.\n"
-     "resolve : int\n    Resolve the subname references.\n"
-     "    0: do not resolve, 1: resolve, 2: resolve with element map.\n"
-     "index : int\n    Select stack index.\n"
-     "    0: last pushed selection, > 0: trace back, < 0: trace forward."},
-    {nullptr, nullptr, 0, nullptr} /* Sentinel */
-};
-
 PyObject* SelectionSingleton::sAddSelection(PyObject* /*self*/, PyObject* args)
 {
     SelectionLogDisabler disabler(true);
@@ -2921,7 +2647,7 @@ PyObject* SelectionSingleton::sGetPreselection(PyObject* /*self*/, PyObject* arg
     return obj.getPyObject();
 }
 
-PyObject* SelectionSingleton::sRemPreselection(PyObject* /*self*/, PyObject* args)
+PyObject* SelectionSingleton::sClearPreselection(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -3075,7 +2801,7 @@ PyObject* SelectionSingleton::sSetSelectionStyle(PyObject* /*self*/, PyObject* a
     PY_CATCH;
 }
 
-PyObject* SelectionSingleton::sAddSelObserver(PyObject* /*self*/, PyObject* args)
+PyObject* SelectionSingleton::sAddObserver(PyObject* /*self*/, PyObject* args)
 {
     PyObject* o;
     int resolve = 1;
@@ -3091,7 +2817,7 @@ PyObject* SelectionSingleton::sAddSelObserver(PyObject* /*self*/, PyObject* args
     PY_CATCH;
 }
 
-PyObject* SelectionSingleton::sRemSelObserver(PyObject* /*self*/, PyObject* args)
+PyObject* SelectionSingleton::sRemoveObserver(PyObject* /*self*/, PyObject* args)
 {
     PyObject* o;
     if (!PyArg_ParseTuple(args, "O", &o)) {
