@@ -353,6 +353,21 @@ macro(find_pip_package PACKAGE)
 	endif()
 endmacro()
 
+macro(find_python_runtime_dep PIP_NAME IMPORT_NAME VERSION_VAR MISSING_MESSAGE)
+    find_pip_package(${PIP_NAME})
+    if(${PIP_NAME}_FOUND)
+        execute_process(
+            COMMAND ${Python3_EXECUTABLE} -c "import ${IMPORT_NAME};print(${IMPORT_NAME}.__version__, end='')"
+            RESULT_VARIABLE FAILURE OUTPUT_VARIABLE ${VERSION_VAR})
+        if(FAILURE)
+            message(WARNING "Could not import ${IMPORT_NAME} Python package.")
+            set(${PIP_NAME}_FOUND OFF)
+        endif()
+    else()
+        message(WARNING "Could not find ${PIP_NAME} Python package runtime dependency. ${MISSING_MESSAGE}")
+    endif()
+endmacro()
+
 function(target_compile_warn_error ProjectName)
     if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
         target_compile_options(${ProjectName} PRIVATE -Werror)

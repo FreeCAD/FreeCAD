@@ -501,15 +501,16 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
         // we pluck the generated suffix from the object name and append it to "Section" to generate
         // unique Labels
         QString qTemp = ui->leSymbol->text();
-        std::string temp = qTemp.toStdString();
+        std::string temp = Base::Tools::escapeEncodeString(qTemp.toStdString());
+        std::string sectionLabel = Base::Tools::escapeEncodeString(makeSectionLabel(qTemp));
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Label = '%s'",
                            m_sectionName.c_str(),
-                           makeSectionLabel(qTemp).c_str());
+                           sectionLabel.c_str());
         Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawViewSection', 'Section', '%s')",
-              m_sectionName.c_str(), makeSectionLabel(qTemp).c_str());
+              m_sectionName.c_str(), sectionLabel.c_str());
 
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.addView(App.ActiveDocument.%s)",
@@ -579,15 +580,16 @@ void TaskSectionView::updateSectionView()
                            ui->sbOrgY->value().getValue(), ui->sbOrgZ->value().getValue());
 
         QString qTemp = ui->leSymbol->text();
-        std::string temp = qTemp.toStdString();
+        std::string temp = Base::Tools::escapeEncodeString(qTemp.toStdString());
+        std::string sectionLabel = Base::Tools::escapeEncodeString(makeSectionLabel(qTemp));
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Label = '%s'",
                            m_sectionName.c_str(),
-                           makeSectionLabel(qTemp).c_str());
+                           sectionLabel.c_str());
         Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawViewSection', 'Section', '%s')",
-              m_sectionName.c_str(), makeSectionLabel(qTemp).c_str());
+              m_sectionName.c_str(), sectionLabel.c_str());
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.7f",
                            m_sectionName.c_str(), ui->sbScale->value());

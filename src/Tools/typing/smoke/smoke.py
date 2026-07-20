@@ -31,7 +31,7 @@ import PathApp
 import QtUnitGui
 import SpreadsheetGui
 import TechDrawGui
-from FreeCAD import DocumentObject
+from FreeCAD import DocumentObject, ParameterGrp
 from FreeCAD.Base import (
     Axis,
     BoundBox,
@@ -61,7 +61,7 @@ class ParameterObserver:
 
     def onChange(
         self,
-        group: FreeCAD._ParameterGrp,
+        group: ParameterGrp,
         param_type: str,
         name: str,
         value: str,
@@ -75,7 +75,7 @@ class ParameterManagerObserver:
 
     def slotParamChanged(
         self,
-        group: FreeCAD._ParameterGrp,
+        group: ParameterGrp,
         param_type: str,
         name: str,
         value: str,
@@ -152,6 +152,7 @@ def exercise(
     main_window = cast(FreeCADGui._MainWindow, object())
     mdi_view = cast(FreeCADGui._MDIView, object())
     task_dialog = cast(FreeCADGui._TaskDialog, object())
+    split_view = cast(FreeCADGui._AbstractSplitView, object())
     view = cast(FreeCADGui._View3DInventor, object())
     viewer = cast(FreeCADGui._View3DInventorViewer, object())
     resource = cast(FreeCADGui._PyResource, object())
@@ -337,13 +338,13 @@ def exercise(
     ui_loader.addPluginPath("/tmp")
     ui_loader.setLanguageChangeEnabled(True)
     ui_loader.setWorkingDirectory("/tmp")
-    assert_type(child_parameters, FreeCAD._ParameterGrp)
+    assert_type(child_parameters, ParameterGrp)
     assert_type(parameters.GetGroupName(), str)
     assert_type(parameters.GetGroups(), list[str])
     assert_type(parameters.HasGroup("Preferences"), bool)
     assert_type(parameters.RenameGroup("old", "new"), bool)
-    assert_type(parameters.Manager(), FreeCAD._ParameterGrp | None)
-    assert_type(parameters.Parent(), FreeCAD._ParameterGrp | None)
+    assert_type(parameters.Manager(), ParameterGrp | None)
+    assert_type(parameters.Parent(), ParameterGrp | None)
     assert_type(parameters.IsEmpty(), bool)
     assert_type(parameters.GetBool("flag", 0), bool)
     assert_type(parameters.GetBools(), list[str])
@@ -454,6 +455,8 @@ def exercise(
     assert_type(main_window.getActiveWindow(), FreeCADGui._MDIView | None)
     assert_type(mdi_view.undoActions(), list[str])
     assert_type(mdi_view.sendMessage("ViewFit"), bool)
+    assert_type(len(split_view), int)
+    assert_type(split_view[0], FreeCADGui._View3DInventorViewer)
     assert_type(
         resource.value("objectName", "propertyName"),
         str | int | float | bool | list[str] | None,

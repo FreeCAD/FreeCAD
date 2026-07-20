@@ -27,9 +27,10 @@
 #include <QPainter>
 #include <QRegularExpression>
 #include <Bnd_Box.hxx>
+#include <algorithm>
 #include <limits>
-#include <memory>
 #include <map>
+#include <ranges>
 #include <stack>
 #include <cmath>
 
@@ -37,7 +38,6 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/nodes/SoAnnotation.h>
-#include <Inventor/nodes/SoDepthBuffer.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoImage.h>
@@ -73,7 +73,6 @@
 #include "ViewProviderSketch.h"
 #include "ViewProviderSketchCoinAttorney.h"
 
-
 using namespace Gui;
 using namespace SketcherGui;
 using namespace Sketcher;
@@ -96,8 +95,7 @@ EditModeConstraintCoinManager::EditModeConstraintCoinManager(
     , coinMapping(coinMap)
 {}
 
-EditModeConstraintCoinManager::~EditModeConstraintCoinManager()
-{}
+EditModeConstraintCoinManager::~EditModeConstraintCoinManager() = default;
 
 void EditModeConstraintCoinManager::updateVirtualSpace()
 {
@@ -124,6 +122,7 @@ void EditModeConstraintCoinManager::updateVirtualSpace()
 
 void EditModeConstraintCoinManager::processConstraints(const GeoListFacade& geolistfacade)
 {
+    using Part::GeomCircle;
     using std::numbers::pi;
 
     const auto& constrlist = ViewProviderSketchCoinAttorney::getConstraints(viewProvider);
@@ -164,26 +163,23 @@ Restart:
                 Base::Vector3d linedir = line->getEndPoint() - line->getStartPoint();
                 return Base::Vector3d(-linedir.y, linedir.x, 0);
             }
-            else {
-                Base::Vector3d normal;
-                try {
-                    if (!(curve && curve->normalAt(pointoncurve, normal))) {
-                        normal = Base::Vector3d(1, 0, 0);
-                    }
-                }
-                catch (const Base::CADKernelError&) {
+
+            Base::Vector3d normal;
+            try {
+                if (!(curve && curve->normalAt(pointoncurve, normal))) {
                     normal = Base::Vector3d(1, 0, 0);
                 }
-
-                return normal;
             }
+            catch (const Base::CADKernelError&) {
+                normal = Base::Vector3d(1, 0, 0);
+            }
+
+            return normal;
         };
 
     // go through the constraints and update the position
     int i = 0;
-    for (std::vector<Sketcher::Constraint*>::const_iterator it = constrlist.begin();
-         it != constrlist.end();
-         ++it, i++) {
+    for (auto it = constrlist.begin(); it != constrlist.end(); ++it, i++) {
         // check if the type has changed
         if ((*it)->Type != vConstrType[i]) {
             // clearing the type vector will force a rebuild of the visual nodes
@@ -194,9 +190,7 @@ Restart:
         }
         try {  // because calculateNormalAtPoint, used in there, can throw
             // root separator for this constraint
-            SoSeparator* sep = static_cast<SoSeparator*>(
-                editModeScenegraphNodes.constrGroup->getChild(i)
-            );
+            auto* sep = static_cast<SoSeparator*>(editModeScenegraphNodes.constrGroup->getChild(i));
             const Constraint* Constr = *it;
 
             if (Constr->First < -extGeoCount || Constr->First >= intGeoCount
@@ -229,8 +223,7 @@ Restart:
                         Base::Vector3d norm;
 
                         if (geo->is<Part::GeomLineSegment>()) {
-                            const Part::GeomLineSegment* lineSeg
-                                = static_cast<const Part::GeomLineSegment*>(geo);
+                            const auto* lineSeg = static_cast<const Part::GeomLineSegment*>(geo);
 
                             // calculate the half distance between the start and endpoint
                             midpos = ((lineSeg->getEndPoint() + lineSeg->getStartPoint()) / 2);
@@ -241,8 +234,7 @@ Restart:
                             norm = Base::Vector3d(-dir.y, dir.x, 0);
                         }
                         else if (geo->is<Part::GeomBSplineCurve>()) {
-                            const Part::GeomBSplineCurve* bsp
-                                = static_cast<const Part::GeomBSplineCurve*>(geo);
+                            const auto* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
                             midpos = Base::Vector3d(0, 0, 0);
 
                             std::vector<Base::Vector3d> poles = bsp->getPoles();
@@ -252,10 +244,8 @@ Restart:
                             double ws = 1.0 / poles.size();
                             double w = 1.0;
 
-                            for (std::vector<Base::Vector3d>::iterator it = poles.begin();
-                                 it != poles.end();
-                                 ++it) {
-                                midpos += w * (*it);
+                            for (auto& pole : poles) {
+                                midpos += w * pole;
                                 w -= ws;
                             }
 
@@ -270,15 +260,13 @@ Restart:
                                 angleplus = 0.;  // arc angle (t parameter for ellipses)
 
                             if (geo->is<Part::GeomCircle>()) {
-                                const Part::GeomCircle* circle
-                                    = static_cast<const Part::GeomCircle*>(geo);
+                                const auto* circle = static_cast<const Part::GeomCircle*>(geo);
                                 ra = circle->getRadius();
                                 angle = pi / 4;
                                 midpos = circle->getCenter();
                             }
                             else if (geo->is<Part::GeomArcOfCircle>()) {
-                                const Part::GeomArcOfCircle* arc
-                                    = static_cast<const Part::GeomArcOfCircle*>(geo);
+                                const auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
                                 ra = arc->getRadius();
                                 double startangle, endangle;
                                 arc->getRange(startangle, endangle, /*emulateCCW=*/true);
@@ -286,8 +274,7 @@ Restart:
                                 midpos = arc->getCenter();
                             }
                             else if (geo->is<Part::GeomEllipse>()) {
-                                const Part::GeomEllipse* ellipse
-                                    = static_cast<const Part::GeomEllipse*>(geo);
+                                const auto* ellipse = static_cast<const Part::GeomEllipse*>(geo);
                                 ra = ellipse->getMajorRadius();
                                 rb = ellipse->getMinorRadius();
                                 Base::Vector3d majdir = ellipse->getMajorAxisDir();
@@ -296,8 +283,7 @@ Restart:
                                 midpos = ellipse->getCenter();
                             }
                             else if (geo->is<Part::GeomArcOfEllipse>()) {
-                                const Part::GeomArcOfEllipse* aoe
-                                    = static_cast<const Part::GeomArcOfEllipse*>(geo);
+                                const auto* aoe = static_cast<const Part::GeomArcOfEllipse*>(geo);
                                 ra = aoe->getMajorRadius();
                                 rb = aoe->getMinorRadius();
                                 double startangle, endangle;
@@ -308,8 +294,7 @@ Restart:
                                 midpos = aoe->getCenter();
                             }
                             else if (geo->is<Part::GeomArcOfHyperbola>()) {
-                                const Part::GeomArcOfHyperbola* aoh
-                                    = static_cast<const Part::GeomArcOfHyperbola*>(geo);
+                                const auto* aoh = static_cast<const Part::GeomArcOfHyperbola*>(geo);
                                 ra = aoh->getMajorRadius();
                                 rb = aoh->getMinorRadius();
                                 double startangle, endangle;
@@ -320,8 +305,7 @@ Restart:
                                 midpos = aoh->getCenter();
                             }
                             else if (geo->is<Part::GeomArcOfParabola>()) {
-                                const Part::GeomArcOfParabola* aop
-                                    = static_cast<const Part::GeomArcOfParabola*>(geo);
+                                const auto* aop = static_cast<const Part::GeomArcOfParabola*>(geo);
                                 ra = aop->getFocal();
                                 double startangle, endangle;
                                 aop->getRange(startangle, endangle, /*emulateCCW=*/true);
@@ -469,24 +453,22 @@ Restart:
                     else if (Constr->FirstPos == Sketcher::PointPos::none) {
 
                         if (geo1->is<Part::GeomLineSegment>()) {
-                            const Part::GeomLineSegment* lineSeg1
-                                = static_cast<const Part::GeomLineSegment*>(geo1);
+                            const auto* lineSeg1 = static_cast<const Part::GeomLineSegment*>(geo1);
                             midpos1 = ((lineSeg1->getEndPoint() + lineSeg1->getStartPoint()) / 2);
                             dir1 = (lineSeg1->getEndPoint() - lineSeg1->getStartPoint()).Normalize();
                             norm1 = Base::Vector3d(-dir1.y, dir1.x, 0.);
                         }
                         else if (geo1->is<Part::GeomArcOfCircle>()) {
-                            const Part::GeomArcOfCircle* arc
-                                = static_cast<const Part::GeomArcOfCircle*>(geo1);
+                            const auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo1);
                             double startangle, endangle, midangle;
-                            arc->getRange(startangle, endangle, /*emulateCCW=*/true);
+                            arc->getRange(startangle, endangle, /*emulateCCWXY=*/true);
                             midangle = (startangle + endangle) / 2;
                             norm1 = Base::Vector3d(cos(midangle), sin(midangle), 0);
                             dir1 = Base::Vector3d(-norm1.y, norm1.x, 0);
                             midpos1 = arc->getCenter() + arc->getRadius() * norm1;
                         }
                         else if (geo1->is<Part::GeomCircle>()) {
-                            const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geo1);
+                            const auto* circle = static_cast<const Part::GeomCircle*>(geo1);
                             norm1 = Base::Vector3d(cos(pi / 4), sin(pi / 4), 0);
                             dir1 = Base::Vector3d(-norm1.y, norm1.x, 0);
                             midpos1 = circle->getCenter() + circle->getRadius() * norm1;
@@ -496,15 +478,13 @@ Restart:
                         }
 
                         if (geo2->is<Part::GeomLineSegment>()) {
-                            const Part::GeomLineSegment* lineSeg2
-                                = static_cast<const Part::GeomLineSegment*>(geo2);
+                            const auto* lineSeg2 = static_cast<const Part::GeomLineSegment*>(geo2);
                             midpos2 = ((lineSeg2->getEndPoint() + lineSeg2->getStartPoint()) / 2);
                             dir2 = (lineSeg2->getEndPoint() - lineSeg2->getStartPoint()).Normalize();
                             norm2 = Base::Vector3d(-dir2.y, dir2.x, 0.);
                         }
                         else if (geo2->is<Part::GeomArcOfCircle>()) {
-                            const Part::GeomArcOfCircle* arc
-                                = static_cast<const Part::GeomArcOfCircle*>(geo2);
+                            const auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo2);
                             double startangle, endangle, midangle;
                             arc->getRange(startangle, endangle, /*emulateCCW=*/true);
                             midangle = (startangle + endangle) / 2;
@@ -513,7 +493,7 @@ Restart:
                             midpos2 = arc->getCenter() + arc->getRadius() * norm2;
                         }
                         else if (geo2->is<Part::GeomCircle>()) {
-                            const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geo2);
+                            const auto* circle = static_cast<const Part::GeomCircle*>(geo2);
                             norm2 = Base::Vector3d(cos(pi / 4), sin(pi / 4), 0);
                             dir2 = Base::Vector3d(-norm2.y, norm2.x, 0);
                             midpos2 = circle->getCenter() + circle->getRadius() * norm2;
@@ -563,15 +543,13 @@ Restart:
                                                              // whole; angle1plus = arc angle (t
                                                              // parameter for ellipses).
                             if (geo1->is<Part::GeomCircle>()) {
-                                const Part::GeomCircle* circle
-                                    = static_cast<const Part::GeomCircle*>(geo1);
+                                const auto* circle = static_cast<const Part::GeomCircle*>(geo1);
                                 r1a = circle->getRadius();
                                 angle1 = pi / 4;
                                 midpos1 = circle->getCenter();
                             }
                             else if (geo1->is<Part::GeomArcOfCircle>()) {
-                                const Part::GeomArcOfCircle* arc
-                                    = static_cast<const Part::GeomArcOfCircle*>(geo1);
+                                const auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo1);
                                 r1a = arc->getRadius();
                                 double startangle, endangle;
                                 arc->getRange(startangle, endangle, /*emulateCCW=*/true);
@@ -579,8 +557,7 @@ Restart:
                                 midpos1 = arc->getCenter();
                             }
                             else if (geo1->is<Part::GeomEllipse>()) {
-                                const Part::GeomEllipse* ellipse
-                                    = static_cast<const Part::GeomEllipse*>(geo1);
+                                const auto* ellipse = static_cast<const Part::GeomEllipse*>(geo1);
                                 r1a = ellipse->getMajorRadius();
                                 r1b = ellipse->getMinorRadius();
                                 Base::Vector3d majdir = ellipse->getMajorAxisDir();
@@ -589,8 +566,7 @@ Restart:
                                 midpos1 = ellipse->getCenter();
                             }
                             else if (geo1->is<Part::GeomArcOfEllipse>()) {
-                                const Part::GeomArcOfEllipse* aoe
-                                    = static_cast<const Part::GeomArcOfEllipse*>(geo1);
+                                const auto* aoe = static_cast<const Part::GeomArcOfEllipse*>(geo1);
                                 r1a = aoe->getMajorRadius();
                                 r1b = aoe->getMinorRadius();
                                 double startangle, endangle;
@@ -601,8 +577,7 @@ Restart:
                                 midpos1 = aoe->getCenter();
                             }
                             else if (geo1->is<Part::GeomArcOfHyperbola>()) {
-                                const Part::GeomArcOfHyperbola* aoh
-                                    = static_cast<const Part::GeomArcOfHyperbola*>(geo1);
+                                const auto* aoh = static_cast<const Part::GeomArcOfHyperbola*>(geo1);
                                 r1a = aoh->getMajorRadius();
                                 r1b = aoh->getMinorRadius();
                                 double startangle, endangle;
@@ -613,8 +588,7 @@ Restart:
                                 midpos1 = aoh->getCenter();
                             }
                             else if (geo1->is<Part::GeomArcOfParabola>()) {
-                                const Part::GeomArcOfParabola* aop
-                                    = static_cast<const Part::GeomArcOfParabola*>(geo1);
+                                const auto* aop = static_cast<const Part::GeomArcOfParabola*>(geo1);
                                 r1a = aop->getFocal();
                                 double startangle, endangle;
                                 aop->getRange(startangle, endangle, /*emulateCCW=*/true);
@@ -628,15 +602,13 @@ Restart:
                             }
 
                             if (geo2->is<Part::GeomCircle>()) {
-                                const Part::GeomCircle* circle
-                                    = static_cast<const Part::GeomCircle*>(geo2);
+                                const auto* circle = static_cast<const Part::GeomCircle*>(geo2);
                                 r2a = circle->getRadius();
                                 angle2 = pi / 4;
                                 midpos2 = circle->getCenter();
                             }
                             else if (geo2->is<Part::GeomArcOfCircle>()) {
-                                const Part::GeomArcOfCircle* arc
-                                    = static_cast<const Part::GeomArcOfCircle*>(geo2);
+                                const auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo2);
                                 r2a = arc->getRadius();
                                 double startangle, endangle;
                                 arc->getRange(startangle, endangle, /*emulateCCW=*/true);
@@ -644,8 +616,7 @@ Restart:
                                 midpos2 = arc->getCenter();
                             }
                             else if (geo2->is<Part::GeomEllipse>()) {
-                                const Part::GeomEllipse* ellipse
-                                    = static_cast<const Part::GeomEllipse*>(geo2);
+                                const auto* ellipse = static_cast<const Part::GeomEllipse*>(geo2);
                                 r2a = ellipse->getMajorRadius();
                                 r2b = ellipse->getMinorRadius();
                                 Base::Vector3d majdir = ellipse->getMajorAxisDir();
@@ -654,8 +625,7 @@ Restart:
                                 midpos2 = ellipse->getCenter();
                             }
                             else if (geo2->is<Part::GeomArcOfEllipse>()) {
-                                const Part::GeomArcOfEllipse* aoe
-                                    = static_cast<const Part::GeomArcOfEllipse*>(geo2);
+                                const auto* aoe = static_cast<const Part::GeomArcOfEllipse*>(geo2);
                                 r2a = aoe->getMajorRadius();
                                 r2b = aoe->getMinorRadius();
                                 double startangle, endangle;
@@ -666,8 +636,7 @@ Restart:
                                 midpos2 = aoe->getCenter();
                             }
                             else if (geo2->is<Part::GeomArcOfHyperbola>()) {
-                                const Part::GeomArcOfHyperbola* aoh
-                                    = static_cast<const Part::GeomArcOfHyperbola*>(geo2);
+                                const auto* aoh = static_cast<const Part::GeomArcOfHyperbola*>(geo2);
                                 r2a = aoh->getMajorRadius();
                                 r2b = aoh->getMinorRadius();
                                 double startangle, endangle;
@@ -678,8 +647,7 @@ Restart:
                                 midpos2 = aoh->getCenter();
                             }
                             else if (geo2->is<Part::GeomArcOfParabola>()) {
-                                const Part::GeomArcOfParabola* aop
-                                    = static_cast<const Part::GeomArcOfParabola*>(geo2);
+                                const auto* aop = static_cast<const Part::GeomArcOfParabola*>(geo2);
                                 r2a = aop->getFocal();
                                 double startangle, endangle;
                                 aop->getRange(startangle, endangle, /*emulateCCW=*/true);
@@ -756,10 +724,8 @@ Restart:
                         }
                     }
                     else {
-                        const Part::GeomLineSegment* lineSeg1
-                            = static_cast<const Part::GeomLineSegment*>(geo1);
-                        const Part::GeomLineSegment* lineSeg2
-                            = static_cast<const Part::GeomLineSegment*>(geo2);
+                        const auto* lineSeg1 = static_cast<const Part::GeomLineSegment*>(geo1);
+                        const auto* lineSeg2 = static_cast<const Part::GeomLineSegment*>(geo2);
 
                         // calculate the half distance between the start and endpoint
                         midpos1 = ((lineSeg1->getEndPoint() + lineSeg1->getStartPoint()) / 2);
@@ -824,7 +790,7 @@ Restart:
 
                     if (!totalBBox.HasFinitePart() || totalBBox.IsVoid()) {
                         // If no valid box, hide the geometry by setting all points to the origin.
-                        SoCoordinate3* coords = static_cast<SoCoordinate3*>(sep->getChild(2));
+                        auto* coords = static_cast<SoCoordinate3*>(sep->getChild(2));
 
                         // Use startEditing() to get a writable pointer to the internal array.
                         SbVec3f* points = coords->point.startEditing();
@@ -866,7 +832,7 @@ Restart:
 
                     // 3. Get the SoCoordinate3 node we created in rebuildConstraintNodes
                     //    Index 0: SoMaterial, Index 1: SoDrawStyle, Index 2: SoCoordinate3
-                    SoCoordinate3* coords = static_cast<SoCoordinate3*>(sep->getChild(2));
+                    auto* coords = static_cast<SoCoordinate3*>(sep->getChild(2));
 
                     // 4. Update the points in the node to draw the rectangle
                     SbVec3f* points = coords->point.startEditing();
@@ -1048,7 +1014,7 @@ Restart:
 
                             double angle = toVector2d(pnt2 - center2).Angle();  // between -pi and pi
                             double startAngle, endAngle;  // between 0 and 2*pi
-                            arc->getRange(startAngle, endAngle, /*emulateCCW=*/true);
+                            arc->getRange(startAngle, endAngle, /*emulateCCWXY=*/true);
 
                             findHelperAngles(helperStartAngle2, helperRange2, angle, startAngle, endAngle);
 
@@ -1170,10 +1136,8 @@ Restart:
                         const Part::Geometry* geo2 = geolistfacade.getGeometryFromGeoId(Constr->Second);
 
                         if (geo1->is<Part::GeomLineSegment>() && geo2->is<Part::GeomLineSegment>()) {
-                            const Part::GeomLineSegment* lineSeg1
-                                = static_cast<const Part::GeomLineSegment*>(geo1);
-                            const Part::GeomLineSegment* lineSeg2
-                                = static_cast<const Part::GeomLineSegment*>(geo2);
+                            const auto* lineSeg1 = static_cast<const Part::GeomLineSegment*>(geo1);
+                            const auto* lineSeg2 = static_cast<const Part::GeomLineSegment*>(geo2);
                             // tangency between two lines
                             Base::Vector3d midpos1
                                 = ((lineSeg1->getEndPoint() + lineSeg1->getStartPoint()) / 2);
@@ -1213,19 +1177,17 @@ Restart:
 
                             break;
                         }
-                        else if (geo2->is<Part::GeomLineSegment>()) {
+                        if (geo2->is<Part::GeomLineSegment>()) {
                             std::swap(geo1, geo2);
                         }
 
                         if (geo1->is<Part::GeomLineSegment>()) {
-                            const Part::GeomLineSegment* lineSeg
-                                = static_cast<const Part::GeomLineSegment*>(geo1);
+                            const auto* lineSeg = static_cast<const Part::GeomLineSegment*>(geo1);
                             Base::Vector3d dir
                                 = (lineSeg->getEndPoint() - lineSeg->getStartPoint()).Normalize();
                             Base::Vector3d norm(-dir.y, dir.x, 0);
                             if (geo2->is<Part::GeomCircle>()) {
-                                const Part::GeomCircle* circle
-                                    = static_cast<const Part::GeomCircle*>(geo2);
+                                const auto* circle = static_cast<const Part::GeomCircle*>(geo2);
                                 // tangency between a line and a circle
                                 float length = (circle->getCenter() - lineSeg->getStartPoint()) * dir;
 
@@ -1238,13 +1200,11 @@ Restart:
 
                                 Base::Vector3d center;
                                 if (geo2->is<Part::GeomEllipse>()) {
-                                    const Part::GeomEllipse* ellipse
-                                        = static_cast<const Part::GeomEllipse*>(geo2);
+                                    const auto* ellipse = static_cast<const Part::GeomEllipse*>(geo2);
                                     center = ellipse->getCenter();
                                 }
                                 else {
-                                    const Part::GeomArcOfEllipse* aoc
-                                        = static_cast<const Part::GeomArcOfEllipse*>(geo2);
+                                    const auto* aoc = static_cast<const Part::GeomArcOfEllipse*>(geo2);
                                     center = aoc->getCenter();
                                 }
 
@@ -1255,8 +1215,7 @@ Restart:
                                 relPos = norm * 1;
                             }
                             else if (geo2->is<Part::GeomArcOfCircle>()) {
-                                const Part::GeomArcOfCircle* arc
-                                    = static_cast<const Part::GeomArcOfCircle*>(geo2);
+                                const auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo2);
                                 // tangency between a line and an arc
                                 float length = (arc->getCenter() - lineSeg->getStartPoint()) * dir;
 
@@ -1266,12 +1225,8 @@ Restart:
                         }
 
                         if (geo1->is<Part::GeomCircle>() && geo2->is<Part::GeomCircle>()) {
-                            const Part::GeomCircle* circle1 = static_cast<const Part::GeomCircle*>(
-                                geo1
-                            );
-                            const Part::GeomCircle* circle2 = static_cast<const Part::GeomCircle*>(
-                                geo2
-                            );
+                            const auto* circle1 = static_cast<const Part::GeomCircle*>(geo1);
+                            const auto* circle2 = static_cast<const Part::GeomCircle*>(geo2);
                             // tangency between two circles
                             Base::Vector3d dir
                                 = (circle2->getCenter() - circle1->getCenter()).Normalize();
@@ -1283,9 +1238,8 @@ Restart:
                         }
 
                         if (geo1->is<Part::GeomCircle>() && geo2->is<Part::GeomArcOfCircle>()) {
-                            const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geo1);
-                            const Part::GeomArcOfCircle* arc
-                                = static_cast<const Part::GeomArcOfCircle*>(geo2);
+                            const auto* circle = static_cast<const Part::GeomCircle*>(geo1);
+                            const auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo2);
                             // tangency between a circle and an arc
                             Base::Vector3d dir = (arc->getCenter() - circle->getCenter()).Normalize();
                             pos = circle->getCenter() + dir * circle->getRadius();
@@ -1294,10 +1248,8 @@ Restart:
                         else if (
                             geo1->is<Part::GeomArcOfCircle>() && geo2->is<Part::GeomArcOfCircle>()
                         ) {
-                            const Part::GeomArcOfCircle* arc1
-                                = static_cast<const Part::GeomArcOfCircle*>(geo1);
-                            const Part::GeomArcOfCircle* arc2
-                                = static_cast<const Part::GeomArcOfCircle*>(geo2);
+                            const auto* arc1 = static_cast<const Part::GeomArcOfCircle*>(geo1);
+                            const auto* arc2 = static_cast<const Part::GeomArcOfCircle*>(geo2);
                             // tangency between two arcs
                             Base::Vector3d dir = (arc2->getCenter() - arc1->getCenter()).Normalize();
                             pos = arc1->getCenter() + dir * arc1->getRadius();
@@ -1324,7 +1276,7 @@ Restart:
                     dir.normalize();
                     SbVec3f norm(-dir[1], dir[0], 0);
 
-                    SoDatumLabel* asciiText = static_cast<SoDatumLabel*>(
+                    auto* asciiText = static_cast<SoDatumLabel*>(
                         sep->getChild(static_cast<int>(ConstraintNodePosition::DatumLabelIndex))
                     );
                     asciiText->datumtype = SoDatumLabel::SYMMETRIC;
@@ -1451,8 +1403,8 @@ Restart:
 
                             startangle = atan2(dir1.y, dir1.x);
                             range = atan2(
-                                dir1.x * dir2.y - dir1.y * dir2.x,
-                                dir1.x * dir2.x + dir1.y * dir2.y
+                                (dir1.x * dir2.y) - (dir1.y * dir2.x),
+                                (dir1.x * dir2.x) + (dir1.y * dir2.y)
                             );
                         }
                     }
@@ -1463,8 +1415,8 @@ Restart:
                             p0 = Base::convertTo<SbVec3f>(
                                 (lineSeg->getEndPoint() + lineSeg->getStartPoint()) / 2
                             );
-                            double l1 = 2 * distance
-                                - (lineSeg->getEndPoint() - lineSeg->getStartPoint()).Length() / 2;
+                            double l1 = (2 * distance)
+                                - ((lineSeg->getEndPoint() - lineSeg->getStartPoint()).Length() / 2);
                             endLineLength1 = 2 * distance;
                             endLineLength2 = l1 > 0. ? l1 : 0.;
 
@@ -1476,10 +1428,10 @@ Restart:
                             auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
                             p0 = Base::convertTo<SbVec3f>(arc->getCenter());
 
-                            endLineLength1 = 2 * distance - arc->getRadius();
+                            endLineLength1 = (2 * distance) - arc->getRadius();
                             endLineLength2 = endLineLength1;
 
-                            double endangle;
+                            double endangle = NAN;
                             arc->getRange(startangle, endangle, /*emulateCCWXY=*/true);
                             range = endangle - startangle;
                         }
@@ -1491,7 +1443,7 @@ Restart:
                         break;
                     }
 
-                    SoDatumLabel* asciiText = static_cast<SoDatumLabel*>(
+                    auto* asciiText = static_cast<SoDatumLabel*>(
                         sep->getChild(static_cast<int>(ConstraintNodePosition::DatumLabelIndex))
                     );
                     asciiText->string = SbString(getPresentationString(Constr).toUtf8().constData());
@@ -1529,9 +1481,9 @@ Restart:
                     if (geo->is<Part::GeomArcOfCircle>()) {
                         auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
                         double radius = arc->getRadius();
-                        double angle = (double)Constr->LabelPosition;  // between -pi and pi
-                        double startAngle, endAngle;                   // between 0 and 2*pi
-                        arc->getRange(startAngle, endAngle, /*emulateCCW=*/true);
+                        auto angle = (double)Constr->LabelPosition;  // between -pi and pi
+                        double startAngle = NAN, endAngle = NAN;     // between 0 and 2*pi
+                        arc->getRange(startAngle, endAngle, /*emulateCCWXY=*/true);
 
                         if (angle == 10) {
                             angle = (startAngle + endAngle) / 2;
@@ -1548,7 +1500,7 @@ Restart:
                     else if (geo->is<Part::GeomCircle>()) {
                         auto* circle = static_cast<const Part::GeomCircle*>(geo);
                         double radius = circle->getRadius();
-                        double angle = (double)Constr->LabelPosition;
+                        auto angle = (double)Constr->LabelPosition;
                         if (angle == 10) {
                             angle = 0;
                         }
@@ -1563,7 +1515,7 @@ Restart:
                     SbVec3f p1(pnt1.x, pnt1.y, zConstrH);
                     SbVec3f p2(pnt2.x, pnt2.y, zConstrH);
 
-                    SoDatumLabel* asciiText = static_cast<SoDatumLabel*>(
+                    auto* asciiText = static_cast<SoDatumLabel*>(
                         sep->getChild(static_cast<int>(ConstraintNodePosition::DatumLabelIndex))
                     );
 
@@ -1605,9 +1557,9 @@ Restart:
                     if (geo->is<Part::GeomArcOfCircle>()) {
                         auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
                         double radius = arc->getRadius();
-                        double angle = (double)Constr->LabelPosition;  // between -pi and pi
-                        double startAngle, endAngle;                   // between 0 and 2*pi
-                        arc->getRange(startAngle, endAngle, /*emulateCCW=*/true);
+                        auto angle = (double)Constr->LabelPosition;  // between -pi and pi
+                        double startAngle = NAN, endAngle = NAN;     // between 0 and 2*pi
+                        arc->getRange(startAngle, endAngle, /*emulateCCWXY=*/true);
 
                         if (angle == 10) {
                             angle = (startAngle + endAngle) / 2;
@@ -1622,11 +1574,11 @@ Restart:
                         auto* circle = static_cast<const Part::GeomCircle*>(geo);
                         auto gf = GeometryFacade::getFacade(geo);
 
-                        double radius;
+                        double radius = NAN;
 
                         radius = circle->getRadius();
 
-                        double angle = (double)Constr->LabelPosition;
+                        auto angle = (double)Constr->LabelPosition;
                         if (angle == 10) {
                             angle = 0;
                         }
@@ -1640,7 +1592,7 @@ Restart:
                     SbVec3f p1(pnt1.x, pnt1.y, zConstrH);
                     SbVec3f p2(pnt2.x, pnt2.y, zConstrH);
 
-                    SoDatumLabel* asciiText = static_cast<SoDatumLabel*>(
+                    auto* asciiText = static_cast<SoDatumLabel*>(
                         sep->getChild(static_cast<int>(ConstraintNodePosition::DatumLabelIndex))
                     );
 
@@ -1713,7 +1665,7 @@ void EditModeConstraintCoinManager::findHelperAngles(
     if (endAngle > 2 * pi && angle < endAngle - 2 * pi) {
         angle = angle + 2 * pi;
     }
-    if (!(angle > startAngle && angle < endAngle)) {
+    if (angle <= startAngle || angle >= endAngle) {
         if ((angle < startAngle && startAngle - angle < angle + 2 * pi - endAngle)
             || (angle > endAngle && startAngle + 2 * pi - angle < angle - endAngle)) {
             if (angle > startAngle) {
@@ -1737,7 +1689,7 @@ Base::Vector3d EditModeConstraintCoinManager::seekConstraintPosition(
     float step
 )
 {
-    return norm * 0.5f * step;
+    return norm * 0.5F * step;
 }
 
 void EditModeConstraintCoinManager::updateConstraintColor(
@@ -1772,7 +1724,7 @@ void EditModeConstraintCoinManager::updateConstraintColor(
 
     // colors of the constraints
     for (int i = 0; i < maxNumberOfConstraints; i++) {
-        SoSeparator* s = static_cast<SoSeparator*>(editModeScenegraphNodes.constrGroup->getChild(i));
+        auto* s = static_cast<SoSeparator*>(editModeScenegraphNodes.constrGroup->getChild(i));
 
         // Check Constraint Type
         Sketcher::Constraint* constraint = constraints[i];
@@ -1810,7 +1762,7 @@ void EditModeConstraintCoinManager::updateConstraintColor(
                     int index = multifieldIndex.fieldIndex;
                     int layer = multifieldIndex.layerId;
                     if (layer < static_cast<int>(PtNum.size()) && index >= 0 && index < PtNum[layer]) {
-                        pcolor[layer][index] = drawingParameters.SelectColor;
+                        pcolor[layer][index] = SketcherGui::DrawingParameters::SelectColor;
                     }
                 }
             }
@@ -1827,7 +1779,7 @@ void EditModeConstraintCoinManager::updateConstraintColor(
                     if (layer < static_cast<int>(CurvNum.size())
                         && sublayer < static_cast<int>(CurvNum[layer].size()) && index >= 0
                         && index < CurvNum[layer][sublayer]) {
-                        color[layer][sublayer][index] = drawingParameters.SelectColor;
+                        color[layer][sublayer][index] = SketcherGui::DrawingParameters::SelectColor;
                     }
                 }
             }
@@ -1836,13 +1788,13 @@ void EditModeConstraintCoinManager::updateConstraintColor(
 
         if (ViewProviderSketchCoinAttorney::isConstraintSelected(viewProvider, i)) {
             if (hasDatumLabel) {
-                SoDatumLabel* l = static_cast<SoDatumLabel*>(
+                auto* l = static_cast<SoDatumLabel*>(
                     s->getChild(static_cast<int>(ConstraintNodePosition::DatumLabelIndex))
                 );
-                l->textColor = drawingParameters.SelectColor;
+                l->textColor = SketcherGui::DrawingParameters::SelectColor;
             }
             else if (hasMaterial) {
-                m->diffuseColor = drawingParameters.SelectColor;
+                m->diffuseColor = SketcherGui::DrawingParameters::SelectColor;
             }
             else if (type == Sketcher::Coincident) {
                 selectpoint(constraint->First, constraint->FirstPos);
@@ -1872,13 +1824,13 @@ void EditModeConstraintCoinManager::updateConstraintColor(
         }
         else if (ViewProviderSketchCoinAttorney::isConstraintPreselected(viewProvider, i)) {
             if (hasDatumLabel) {
-                SoDatumLabel* l = static_cast<SoDatumLabel*>(
+                auto* l = static_cast<SoDatumLabel*>(
                     s->getChild(static_cast<int>(ConstraintNodePosition::DatumLabelIndex))
                 );
-                l->textColor = drawingParameters.PreselectColor;
+                l->textColor = SketcherGui::DrawingParameters::PreselectColor;
             }
             else if (hasMaterial) {
-                m->diffuseColor = drawingParameters.PreselectColor;
+                m->diffuseColor = SketcherGui::DrawingParameters::PreselectColor;
             }
         }
         else {
@@ -1887,22 +1839,24 @@ void EditModeConstraintCoinManager::updateConstraintColor(
                 constraint
             );
             if (hasDatumLabel) {
-                SoDatumLabel* l = static_cast<SoDatumLabel*>(
+                auto* l = static_cast<SoDatumLabel*>(
                     s->getChild(static_cast<int>(ConstraintNodePosition::DatumLabelIndex))
                 );
 
                 l->textColor = isActive
                     ? ViewProviderSketchCoinAttorney::constraintHasExpression(viewProvider, i)
                         ? drawingParameters.ExprBasedConstrDimColor
-                        : (constraint->isDriving ? drawingParameters.ConstrDimColor
-                                                 : drawingParameters.NonDrivingConstrDimColor)
-                    : drawingParameters.DeactivatedConstrDimColor;
+                        : (constraint->isDriving
+                               ? SketcherGui::DrawingParameters::ConstrDimColor
+                               : SketcherGui::DrawingParameters::NonDrivingConstrDimColor)
+                    : SketcherGui::DrawingParameters::DeactivatedConstrDimColor;
             }
             else if (hasMaterial) {
                 m->diffuseColor = isActive
-                    ? (constraint->isDriving ? drawingParameters.ConstrDimColor
-                                             : drawingParameters.NonDrivingConstrDimColor)
-                    : drawingParameters.DeactivatedConstrDimColor;
+                    ? (constraint->isDriving
+                           ? SketcherGui::DrawingParameters::ConstrDimColor
+                           : SketcherGui::DrawingParameters::NonDrivingConstrDimColor)
+                    : SketcherGui::DrawingParameters::DeactivatedConstrDimColor;
             }
         }
     }
@@ -1963,27 +1917,25 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
 )
 {
 
-    for (std::vector<Sketcher::Constraint*>::const_iterator it = constrlist.begin();
-         it != constrlist.end();
-         ++it) {
+    for (auto it : constrlist) {
         // root separator for one constraint
-        SoSeparator* sep = new SoSeparator();
+        auto* sep = new SoSeparator();
         sep->ref();
         // no caching for frequently-changing data structures
         sep->renderCaching = SoSeparator::OFF;
 
         // every constrained visual node gets its own material for preselection and selection
-        SoMaterial* mat = new SoMaterial;
+        auto* mat = new SoMaterial;
         mat->ref();
-        bool isActive = ViewProviderSketchCoinAttorney::isConstraintActiveInSketch(viewProvider, *it);
+        bool isActive = ViewProviderSketchCoinAttorney::isConstraintActiveInSketch(viewProvider, it);
         mat->diffuseColor = isActive
-            ? ((*it)->isDriving ? drawingParameters.ConstrDimColor
-                                : drawingParameters.NonDrivingConstrDimColor)
-            : drawingParameters.DeactivatedConstrDimColor;
+            ? (it->isDriving ? SketcherGui::DrawingParameters::ConstrDimColor
+                             : SketcherGui::DrawingParameters::NonDrivingConstrDimColor)
+            : SketcherGui::DrawingParameters::DeactivatedConstrDimColor;
 
 
         // distinguish different constraint types to build up
-        switch ((*it)->Type) {
+        switch (it->Type) {
             case Distance:
             case DistanceX:
             case DistanceY:
@@ -1991,19 +1943,22 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
             case Diameter:
             case Weight:
             case Angle: {
-                SoDatumLabel* text = new SoDatumLabel();
+                auto* text = new SoDatumLabel();
                 text->norm.setValue(norm);
                 text->string = "";
                 text->textColor = isActive
-                    ? ((*it)->isDriving ? drawingParameters.ConstrDimColor
-                                        : drawingParameters.NonDrivingConstrDimColor)
-                    : drawingParameters.DeactivatedConstrDimColor;
+                    ? (it->isDriving ? SketcherGui::DrawingParameters::ConstrDimColor
+                                     : SketcherGui::DrawingParameters::NonDrivingConstrDimColor)
+                    : SketcherGui::DrawingParameters::DeactivatedConstrDimColor;
+                if (!drawingParameters.labelFontName.isEmpty()) {
+                    text->name.setValue(drawingParameters.labelFontName.toStdString().c_str());
+                }
                 text->size.setValue(drawingParameters.labelFontSize);
                 text->lineWidth = 2 * drawingParameters.pixelScalingFactor;
                 text->useAntialiasing = false;
                 sep->addChild(text);
                 editModeScenegraphNodes.constrGroup->addChild(sep);
-                vConstrType.push_back((*it)->Type);
+                vConstrType.push_back(it->Type);
                 // nodes not needed
                 sep->unref();
                 mat->unref();
@@ -2028,7 +1983,7 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                 sep->addChild(new SoInfo());
 
                 // remember the type of this constraint node
-                vConstrType.push_back((*it)->Type);
+                vConstrType.push_back(it->Type);
             } break;
             case Group:
             case Text: {
@@ -2039,21 +1994,21 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                 sep->addChild(mat);
 
                 // 2. DrawStyle (to make the line dashed)
-                SoDrawStyle* drawStyle = new SoDrawStyle();
+                auto* drawStyle = new SoDrawStyle();
                 drawStyle->linePattern = 0x0F0F;  // A standard 50% dashed pattern
                 sep->addChild(drawStyle);
 
                 // 3. Coordinates (for the 4 corners + 1 to close the loop)
-                SoCoordinate3* coords = new SoCoordinate3();
+                auto* coords = new SoCoordinate3();
                 coords->point.setNum(5);  // Pre-allocate 5 points for a closed rectangle
                 sep->addChild(coords);
 
                 // 4. LineSet (to connect the coordinates)
-                SoLineSet* lineSet = new SoLineSet();
+                auto* lineSet = new SoLineSet();
                 lineSet->numVertices.set1Value(0, 5);  // A single polyline of 5 vertices
                 sep->addChild(lineSet);
 
-                vConstrType.push_back((*it)->Type);
+                vConstrType.push_back(it->Type);
             } break;
             case Coincident:  // no visual for coincident so far
                 vConstrType.push_back(Coincident);
@@ -2077,7 +2032,7 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                 sep->addChild(new SoInfo());
 
                 // remember the type of this constraint node
-                vConstrType.push_back((*it)->Type);
+                vConstrType.push_back(it->Type);
             } break;
             case PointOnObject:
             case Tangent:
@@ -2091,9 +2046,9 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                 // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
                 sep->addChild(new SoInfo());
 
-                if ((*it)->Type == Tangent) {
-                    const Part::Geometry* geo1 = geolistfacade.getGeometryFromGeoId((*it)->First);
-                    const Part::Geometry* geo2 = geolistfacade.getGeometryFromGeoId((*it)->Second);
+                if (it->Type == Tangent) {
+                    const Part::Geometry* geo1 = geolistfacade.getGeometryFromGeoId(it->First);
+                    const Part::Geometry* geo2 = geolistfacade.getGeometryFromGeoId(it->Second);
                     if (!geo1 || !geo2) {
                         Base::Console().developerWarning(
                             "EditModeConstraintCoinManager",
@@ -2110,13 +2065,13 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                     }
                 }
 
-                vConstrType.push_back((*it)->Type);
+                vConstrType.push_back(it->Type);
             } break;
             case Symmetric: {
-                SoDatumLabel* arrows = new SoDatumLabel();
+                auto* arrows = new SoDatumLabel();
                 arrows->norm.setValue(norm);
                 arrows->string = "";
-                arrows->textColor = drawingParameters.ConstrDimColor;
+                arrows->textColor = SketcherGui::DrawingParameters::ConstrDimColor;
                 arrows->lineWidth = 2 * drawingParameters.pixelScalingFactor;
 
                 // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
@@ -2128,13 +2083,13 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                 // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
                 sep->addChild(new SoInfo());
 
-                vConstrType.push_back((*it)->Type);
+                vConstrType.push_back(it->Type);
             } break;
             case InternalAlignment: {
-                vConstrType.push_back((*it)->Type);
+                vConstrType.push_back(it->Type);
             } break;
             default:
-                vConstrType.push_back((*it)->Type);
+                vConstrType.push_back(it->Type);
         }
 
         editModeScenegraphNodes.constrGroup->addChild(sep);
@@ -2211,7 +2166,7 @@ QString EditModeConstraintCoinManager::getPresentationString(
 
     int constraintIndex = -1;
     const auto& constrlist = ViewProviderSketchCoinAttorney::getConstraints(viewProvider);
-    auto it = std::find(constrlist.begin(), constrlist.end(), constraint);
+    auto it = std::ranges::find(constrlist, constraint);
     if (it != constrlist.end()) {
         constraintIndex = std::distance(constrlist.begin(), it);
         if (ViewProviderSketchCoinAttorney::constraintHasExpression(viewProvider, constraintIndex)) {
@@ -2226,114 +2181,26 @@ QString EditModeConstraintCoinManager::getPresentationString(
     return fixedValueStr;
 }
 
-std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPickedPoint* Point)
+EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCoinManager::detectPreselectionConstr(
+    const SoPickedPoint* Point,
+    const SbVec2s& cursorScreenPos
+)
 {
-    std::set<int> constrIndices;
+    ConstraintPreselectionResult result;
     SoPath* path = Point->getPath();
 
     // The picked node must be a child of the main constraint group.
     SoNode* tailFather2 = path->getNode(path->getLength() - 3);
     if (tailFather2 != editModeScenegraphNodes.constrGroup) {
-        return constrIndices;
+        return result;
     }
 
     SoNode* tail = path->getTail();  // This is the SoImage or SoDatumLabel node that was picked.
-    SoSeparator* sep = static_cast<SoSeparator*>(path->getNode(path->getLength() - 2));
+    auto* sep = static_cast<SoSeparator*>(path->getNode(path->getLength() - 2));
 
     for (int childIdx = 0; childIdx < sep->getNumChildren(); ++childIdx) {
         if (tail == sep->getChild(childIdx) && dynamic_cast<SoImage*>(tail)) {
-            // The SoInfo node with the ID always follows the SoImage node.
-            if (childIdx + 1 < sep->getNumChildren()) {
-                SoInfo* constrIdsNode = dynamic_cast<SoInfo*>(sep->getChild(childIdx + 1));
-                if (!constrIdsNode) {
-                    continue;
-                }
-
-                QString constrIdsStr = QString::fromLatin1(
-                    constrIdsNode->string.getValue().getString()
-                );
-
-                if (combinedConstrBoxes.count(constrIdsStr)) {
-
-                    // 1. Get the icon group size in device independent pixels.
-                    SbVec3s iconGroupSize = getDisplayedSize(static_cast<SoImage*>(tail));
-
-                    // 2. Get the icon group's absolute world position from its
-                    // SoZoomTranslation node.
-                    SoZoomTranslation* translation = nullptr;
-                    SoNode* firstTransNode = sep->getChild(
-                        static_cast<int>(ConstraintNodePosition::FirstTranslationIndex)
-                    );
-                    if (dynamic_cast<SoZoomTranslation*>(firstTransNode)) {
-                        translation = static_cast<SoZoomTranslation*>(firstTransNode);
-                    }
-                    if (!translation) {
-                        continue;
-                    }
-
-                    SbVec3f absPos = translation->abPos.getValue();
-                    SbVec3f trans = translation->translation.getValue();
-                    float scaleFactor = translation->getScaleFactor();
-
-                    // If this is the second icon in a pair, add its relative translation.
-                    if (int secondIndex = static_cast<int>(ConstraintNodePosition::SecondIconIndex);
-                        secondIndex < sep->getNumChildren()) {
-                        SoNode* secondIconNode = sep->getChild(secondIndex);
-                        if (tail == secondIconNode) {
-                            auto translation2 = static_cast<SoZoomTranslation*>(sep->getChild(
-                                static_cast<int>(ConstraintNodePosition::SecondTranslationIndex)
-                            ));
-                            absPos += translation2->abPos.getValue();
-                            trans += translation2->translation.getValue();
-                            scaleFactor = translation2->getScaleFactor();
-                        }
-                    }
-
-                    // 3. Calculate the icon's center in world coordinates.
-                    SbVec3f iconGroupWorldPos = absPos + scaleFactor * trans;
-
-                    // 4. Project both the icon's center and the picked point to screen coordinates
-                    // (device independent pixels). This is the key: both points are now in the same
-                    // coordinate system.
-                    SbVec2f iconGroupScreenCenter = ViewProviderSketchCoinAttorney::getScreenCoordinates(
-                        viewProvider,
-                        SbVec2f(iconGroupWorldPos[0], iconGroupWorldPos[1])
-                    );
-
-                    SbVec2f cursorScreenPos = ViewProviderSketchCoinAttorney::getScreenCoordinates(
-                        viewProvider,
-                        SbVec2f(Point->getPoint()[0], Point->getPoint()[1])
-                    );
-
-                    // 5. Calculate cursor position relative to the icon group's top-left corner.
-                    //    - QRect/QImage assumes a top-left origin (Y increases downwards).
-                    //    - Coin3D screen coordinates have a bottom-left origin (Y increases
-                    //    upwards).
-                    //    - We must flip the Y-axis for the check.
-                    int relativeX = static_cast<int>(
-                        cursorScreenPos[0] - iconGroupScreenCenter[0] + iconGroupSize[0] / 2.0f
-                    );
-                    int relativeY = static_cast<int>(
-                        iconGroupScreenCenter[1] - cursorScreenPos[1] + iconGroupSize[1] / 2.0f
-                    );
-
-                    // 6. Perform the hit test on each icon in the group.
-                    for (const auto& boxInfo : combinedConstrBoxes[constrIdsStr]) {
-                        if (boxInfo.first.contains(relativeX, relativeY)) {
-                            constrIndices.insert(boxInfo.second.begin(), boxInfo.second.end());
-                        }
-                    }
-                }
-                else {
-                    // Simple, non-merged icon.
-                    QStringList constrIdStrings = constrIdsStr.split(QStringLiteral(","));
-                    for (const QString& id : constrIdStrings) {
-                        constrIndices.insert(id.toInt());
-                    }
-                }
-
-                return constrIndices;
-            }
+            return detectPreselectionIcon(sep, static_cast<SoImage*>(tail), childIdx, cursorScreenPos);
         }
     }
 
@@ -2341,13 +2208,176 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
     if (dynamic_cast<SoDatumLabel*>(tail)) {
         for (int i = 0; i < editModeScenegraphNodes.constrGroup->getNumChildren(); ++i) {
             if (editModeScenegraphNodes.constrGroup->getChild(i) == sep) {
-                constrIndices.insert(i);
+                result.Kind = ConstraintPreselectionResult::HitKind::DatumLabel;
+                result.ConstrIndices.insert(i);
+                result.PickedPoint = Base::convertTo<Base::Vector3d>(Point->getPoint());
                 break;
             }
         }
     }
 
+    return result;
+}
+
+EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCoinManager::detectPreselectionConstr(
+    const SbVec2s& cursorScreenPos,
+    Base::Vector3d* pickedPoint
+)
+{
+    ConstraintPreselectionResult result;
+
+    for (int i = 0; i < editModeScenegraphNodes.constrGroup->getNumChildren(); ++i) {
+        auto* sep = dynamic_cast<SoSeparator*>(editModeScenegraphNodes.constrGroup->getChild(i));
+        if (!sep) {
+            continue;
+        }
+
+        if (int iconIndex = static_cast<int>(ConstraintNodePosition::FirstIconIndex);
+            iconIndex < sep->getNumChildren()) {
+            auto* iconNode = dynamic_cast<SoImage*>(sep->getChild(iconIndex));
+            if (iconNode) {
+                result = detectPreselectionIcon(sep, iconNode, iconIndex, cursorScreenPos, pickedPoint);
+                if (result.hasHit()) {
+                    return result;
+                }
+            }
+        }
+
+        if (int iconIndex = static_cast<int>(ConstraintNodePosition::SecondIconIndex);
+            iconIndex < sep->getNumChildren()) {
+            auto* iconNode = dynamic_cast<SoImage*>(sep->getChild(iconIndex));
+            if (iconNode) {
+                result = detectPreselectionIcon(sep, iconNode, iconIndex, cursorScreenPos, pickedPoint);
+                if (result.hasHit()) {
+                    return result;
+                }
+            }
+        }
+    }
+
+    return result;
+}
+
+std::set<int> EditModeConstraintCoinManager::parseConstraintIds(const QString& constrIdsStr) const
+{
+    std::set<int> constrIndices;
+    QStringList constrIdStrings = constrIdsStr.split(QStringLiteral(","));
+    for (const QString& id : constrIdStrings) {
+        constrIndices.insert(id.toInt());
+    }
     return constrIndices;
+}
+
+bool EditModeConstraintCoinManager::resolveIconScreenGeometry(
+    SoSeparator* sep,
+    SoImage* iconNode,
+    int iconIndex,
+    SbVec2f& iconScreenCenter,
+    SbVec3s& iconSize,
+    QString& constrIdsStr,
+    Base::Vector3d* pickedPoint
+) const
+{
+    if (!sep || !iconNode || iconIndex + 1 >= sep->getNumChildren()) {
+        return false;
+    }
+
+    auto* constrIdsNode = dynamic_cast<SoInfo*>(sep->getChild(iconIndex + 1));
+    if (!constrIdsNode) {
+        return false;
+    }
+
+    constrIdsStr = QString::fromLatin1(constrIdsNode->string.getValue().getString());
+    iconSize = getDisplayedSize(iconNode);
+    if (iconSize[0] <= 0 || iconSize[1] <= 0) {
+        return false;
+    }
+
+    auto* firstTransNode = dynamic_cast<SoZoomTranslation*>(
+        sep->getChild(static_cast<int>(ConstraintNodePosition::FirstTranslationIndex))
+    );
+    if (!firstTransNode) {
+        return false;
+    }
+
+    SbVec3f absPos = firstTransNode->abPos.getValue();
+    SbVec3f trans = firstTransNode->translation.getValue();
+    float scaleFactor = firstTransNode->getScaleFactor();
+
+    if (iconIndex == static_cast<int>(ConstraintNodePosition::SecondIconIndex)
+        && static_cast<int>(ConstraintNodePosition::SecondTranslationIndex) < sep->getNumChildren()) {
+        auto* secondTransNode = dynamic_cast<SoZoomTranslation*>(
+            sep->getChild(static_cast<int>(ConstraintNodePosition::SecondTranslationIndex))
+        );
+        if (secondTransNode) {
+            absPos += secondTransNode->abPos.getValue();
+            trans += secondTransNode->translation.getValue();
+            scaleFactor = secondTransNode->getScaleFactor();
+        }
+    }
+
+    SbVec3f iconWorldPos = absPos + scaleFactor * trans;
+    iconScreenCenter = ViewProviderSketchCoinAttorney::getScreenCoordinates(viewProvider, iconWorldPos);
+
+    if (pickedPoint) {
+        *pickedPoint = Base::convertTo<Base::Vector3d>(iconWorldPos);
+    }
+
+    return true;
+}
+
+EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCoinManager::detectPreselectionIcon(
+    SoSeparator* sep,
+    SoImage* iconNode,
+    int iconIndex,
+    const SbVec2s& cursorScreenPos,
+    Base::Vector3d* pickedPoint
+) const
+{
+    ConstraintPreselectionResult result;
+    SbVec2f iconScreenCenter;
+    SbVec3s iconSize;
+    QString constrIdsStr;
+    Base::Vector3d hitPoint;
+    Base::Vector3d* resultPoint = pickedPoint ? pickedPoint : &hitPoint;
+
+    if (
+        !resolveIconScreenGeometry(sep, iconNode, iconIndex, iconScreenCenter, iconSize, constrIdsStr, resultPoint)
+    ) {
+        return result;
+    }
+
+    int relativeX = static_cast<int>(cursorScreenPos[0] - iconScreenCenter[0] + iconSize[0] / 2.0f);
+    int relativeY = static_cast<int>(iconScreenCenter[1] - cursorScreenPos[1] + iconSize[1] / 2.0f);
+    const QMargins iconHitPadding(
+        drawingParameters.constraintIconHitPaddingPx,
+        drawingParameters.constraintIconHitPaddingPx,
+        drawingParameters.constraintIconHitPaddingPx,
+        drawingParameters.constraintIconHitPaddingPx
+    );
+
+    if (combinedConstrBoxes.count(constrIdsStr)) {
+        for (const auto& boxInfo : combinedConstrBoxes.at(constrIdsStr)) {
+            if (boxInfo.first.marginsAdded(iconHitPadding).contains(relativeX, relativeY)) {
+                result.ConstrIndices.insert(boxInfo.second.begin(), boxInfo.second.end());
+            }
+        }
+        if (!result.ConstrIndices.empty()) {
+            result.Kind = ConstraintPreselectionResult::HitKind::Icon;
+            result.PickedPoint = *resultPoint;
+        }
+        return result;
+    }
+
+    QRect iconBounds(0, 0, iconSize[0], iconSize[1]);
+    if (iconBounds.marginsAdded(iconHitPadding).contains(relativeX, relativeY)) {
+        result.Kind = ConstraintPreselectionResult::HitKind::Icon;
+        result.ConstrIndices = parseConstraintIds(constrIdsStr);
+        result.PickedPoint = *resultPoint;
+        return result;
+    }
+
+    return result;
 }
 
 SbVec3s EditModeConstraintCoinManager::getDisplayedSize(const SoImage* iconPtr) const
@@ -2443,15 +2473,13 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade& geo
         }
 
         // Find the Constraint Icon SoImage Node
-        SoSeparator* sep = static_cast<SoSeparator*>(
-            editModeScenegraphNodes.constrGroup->getChild(constrId)
-        );
+        auto* sep = static_cast<SoSeparator*>(editModeScenegraphNodes.constrGroup->getChild(constrId));
         int numChildren = sep->getNumChildren();
 
         SbVec3f absPos;
         // Somewhat hacky - we use SoZoomTranslations for most types of icon,
         // but symmetry icons use SoTranslations...
-        SoTranslation* translationPtr = static_cast<SoTranslation*>(
+        auto* translationPtr = static_cast<SoTranslation*>(
             sep->getChild(static_cast<int>(ConstraintNodePosition::FirstTranslationIndex))
         );
 
@@ -2462,10 +2490,10 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade& geo
             absPos = translationPtr->translation.getValue();
         }
 
-        SoImage* coinIconPtr = dynamic_cast<SoImage*>(
+        auto* coinIconPtr = dynamic_cast<SoImage*>(
             sep->getChild(static_cast<int>(ConstraintNodePosition::FirstIconIndex))
         );
-        SoInfo* infoPtr = static_cast<SoInfo*>(
+        auto* infoPtr = static_cast<SoInfo*>(
             sep->getChild(static_cast<int>(ConstraintNodePosition::FirstConstraintIdIndex))
         );
 
@@ -2553,7 +2581,7 @@ void EditModeConstraintCoinManager::combineConstraintIcons(IconQueue iconQueue)
 
     // Grid size needs to be slightly larger than the max merge distance to ensure
     // we catch neighbors.
-    float gridSize = std::max(1.0f, std::abs(scale) * 1.1f);
+    float gridSize = std::max(1.0F, 1.1F * std::abs(scale));
 
     // 2. FILTERING & PREPARATION
     // We create a list of valid indices.
@@ -2589,8 +2617,7 @@ void EditModeConstraintCoinManager::combineConstraintIcons(IconQueue iconQueue)
     // 4. CLUSTERING (Reversed Iteration)
     std::vector<bool> processed(iconQueue.size(), false);
 
-    for (auto it = validIndices.rbegin(); it != validIndices.rend(); ++it) {
-        int startIdx = *it;
+    for (int startIdx : std::views::reverse(validIndices)) {
         if (processed[startIdx]) {
             continue;
         }
@@ -2654,8 +2681,8 @@ void EditModeConstraintCoinManager::combineConstraintIcons(IconQueue iconQueue)
 
 void EditModeConstraintCoinManager::drawMergedConstraintIcons(IconQueue iconQueue)
 {
-    for (IconQueue::iterator i = iconQueue.begin(); i != iconQueue.end(); ++i) {
-        clearCoinImage(i->destination);
+    for (auto& i : iconQueue) {
+        clearCoinImage(i.destination);
     }
 
     QImage compositeIcon;
@@ -2671,12 +2698,12 @@ void EditModeConstraintCoinManager::drawMergedConstraintIcons(IconQueue iconQueu
     QString thisType;
     QColor iconColor;
     QList<QColor> labelColors;
-    int maxColorPriority;
-    double iconRotation;
+    int maxColorPriority = 0;
+    double iconRotation = NAN;
 
     ConstrIconBBVec boundingBoxes;
     while (!iconQueue.empty()) {
-        IconQueue::iterator i = iconQueue.begin();
+        auto i = iconQueue.begin();
 
         labels.clear();
         labels.append(i->label);
@@ -2735,7 +2762,7 @@ void EditModeConstraintCoinManager::drawMergedConstraintIcons(IconQueue iconQueu
             );
         }
         else {
-            int thisVPad;
+            int thisVPad = 0;
             QImage partialIcon = renderConstrIcon(
                 thisType,
                 iconColor,
@@ -2770,17 +2797,16 @@ void EditModeConstraintCoinManager::drawMergedConstraintIcons(IconQueue iconQueu
         }
 
         // Add bounding boxes for the icon we just rendered to boundingBoxes
-        std::vector<int>::iterator id = ids.begin();
+        auto id = ids.begin();
         std::set<int> nextIds;
-        for (std::vector<QRect>::iterator bb = boundingBoxesVec.begin(); bb != boundingBoxesVec.end();
-             ++bb) {
+        for (auto bb = boundingBoxesVec.begin(); bb != boundingBoxesVec.end(); ++bb) {
             nextIds.clear();
 
             if (bb == boundingBoxesVec.begin()) {
                 // The first bounding box is for the icon at left, so assign
                 // all IDs for that type of constraint to the icon.
-                for (std::vector<int>::iterator j = ids.begin(); j != ids.end(); ++j) {
-                    nextIds.insert(*j);
+                for (int& id : ids) {
+                    nextIds.insert(id);
                 }
             }
             else {
@@ -2830,7 +2856,7 @@ QImage EditModeConstraintCoinManager::renderConstrIcon(
     }
     QImage icon = pxMap.toImage();
     // The pixmap was already scaled so we don't need to scale the image
-    icon.setDevicePixelRatio(1.0f);
+    icon.setDevicePixelRatio(1.0F);
 
     QFont font = ViewProviderSketchCoinAttorney::getApplicationFont(viewProvider);
     font.setPixelSize(static_cast<int>(1.0 * drawingParameters.constraintIconSize));
@@ -2853,7 +2879,7 @@ QImage EditModeConstraintCoinManager::renderConstrIcon(
 
     // Make a bounding box for the icon
     if (boundingBoxes) {
-        boundingBoxes->push_back(QRect(0, 0, roticon.width(), roticon.height()));
+        boundingBoxes->emplace_back(0, 0, roticon.width(), roticon.height());
     }
 
     // Render the Icons
@@ -2946,7 +2972,7 @@ QString EditModeConstraintCoinManager::iconTypeFromConstraint(Constraint* constr
         case Block:
             return QStringLiteral("Constraint_Block");
         default:
-            return QString();
+            return {};
     }
 }
 
@@ -2974,7 +3000,7 @@ void EditModeConstraintCoinManager::clearCoinImage(SoImage* soImagePtr)
 QColor EditModeConstraintCoinManager::constrColor(int constraintId)
 {
     auto toQColor = [](auto sbcolor) -> QColor {
-        return QColor((int)(sbcolor[0] * 255.0f), (int)(sbcolor[1] * 255.0f), (int)(sbcolor[2] * 255.0f));
+        return {(int)(sbcolor[0] * 255.0F), (int)(sbcolor[1] * 255.0F), (int)(sbcolor[2] * 255.0F)};
     };
 
     const auto constraints = ViewProviderSketchCoinAttorney::getConstraints(viewProvider);
@@ -2984,20 +3010,19 @@ QColor EditModeConstraintCoinManager::constrColor(int constraintId)
     );
 
     if (ViewProviderSketchCoinAttorney::isConstraintPreselected(viewProvider, constraintId)) {
-        return toQColor(drawingParameters.PreselectColor);
+        return toQColor(SketcherGui::DrawingParameters::PreselectColor);
     }
-    else if (ViewProviderSketchCoinAttorney::isConstraintSelected(viewProvider, constraintId)) {
-        return toQColor(drawingParameters.SelectColor);
+    if (ViewProviderSketchCoinAttorney::isConstraintSelected(viewProvider, constraintId)) {
+        return toQColor(SketcherGui::DrawingParameters::SelectColor);
     }
-    else if (!isActive) {
-        return toQColor(drawingParameters.DeactivatedConstrDimColor);
+    if (!isActive) {
+        return toQColor(SketcherGui::DrawingParameters::DeactivatedConstrDimColor);
     }
-    else if (!constraints[constraintId]->isDriving) {
-        return toQColor(drawingParameters.NonDrivingConstrDimColor);
+    if (!constraints[constraintId]->isDriving) {
+        return toQColor(SketcherGui::DrawingParameters::NonDrivingConstrDimColor);
     }
-    else {
-        return toQColor(drawingParameters.ConstrIcoColor);
-    }
+
+    return toQColor(SketcherGui::DrawingParameters::ConstrIcoColor);
 }
 
 int EditModeConstraintCoinManager::constrColorPriority(int constraintId)
@@ -3005,15 +3030,14 @@ int EditModeConstraintCoinManager::constrColorPriority(int constraintId)
     if (ViewProviderSketchCoinAttorney::isConstraintPreselected(viewProvider, constraintId)) {
         return 3;
     }
-    else if (ViewProviderSketchCoinAttorney::isConstraintSelected(viewProvider, constraintId)) {
+    if (ViewProviderSketchCoinAttorney::isConstraintSelected(viewProvider, constraintId)) {
         return 2;
     }
-    else {
-        return 1;
-    }
+
+    return 1;
 }
 
-SoSeparator* EditModeConstraintCoinManager::getConstraintIdSeparator(int i)
+SoSeparator* EditModeConstraintCoinManager::getConstraintIdSeparator(int i) const
 {
     return dynamic_cast<SoSeparator*>(editModeScenegraphNodes.constrGroup->getChild(i));
 }
@@ -3021,7 +3045,7 @@ SoSeparator* EditModeConstraintCoinManager::getConstraintIdSeparator(int i)
 void EditModeConstraintCoinManager::createEditModeInventorNodes()
 {
     // group node for the Constraint visual +++++++++++++++++++++++++++++++++++
-    SoMaterialBinding* MtlBind = new SoMaterialBinding;
+    auto* MtlBind = new SoMaterialBinding;
     MtlBind->setName("ConstraintMaterialBinding");
     MtlBind->value = SoMaterialBinding::OVERALL;
     editModeScenegraphNodes.EditRoot->addChild(MtlBind);
@@ -3029,7 +3053,9 @@ void EditModeConstraintCoinManager::createEditModeInventorNodes()
     // use small line width for the Constraints
     editModeScenegraphNodes.ConstraintDrawStyle = new SoDrawStyle;
     editModeScenegraphNodes.ConstraintDrawStyle->setName("ConstraintDrawStyle");
-    editModeScenegraphNodes.ConstraintDrawStyle->lineWidth = 1 * drawingParameters.pixelScalingFactor;
+    editModeScenegraphNodes.ConstraintDrawStyle->lineWidth = static_cast<float>(
+        drawingParameters.pixelScalingFactor
+    );
     editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.ConstraintDrawStyle);
 
     // add the group where all the constraints has its SoSeparator
@@ -3039,22 +3065,18 @@ void EditModeConstraintCoinManager::createEditModeInventorNodes()
     editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.constrGrpSelect);
     setConstraintSelectability();  // Ensure default value;
 
-    // disable depth testing for constraint icons so they render ON TOP of geometry lines
-    // check issues #25840 and #11603
-    SoDepthBuffer* constrDepthOff = new SoDepthBuffer();
-    constrDepthOff->test.setValue(false);
-    editModeScenegraphNodes.EditRoot->addChild(constrDepthOff);
+    // Render constraint icons ON TOP of geometry lines without
+    // affecting depth state for other nodes (#28639).
+    // See also issues #25840 and #11603.
+    auto* constrAnnotation = new SoAnnotation();
 
     editModeScenegraphNodes.constrGroup = new SmSwitchboard();
     editModeScenegraphNodes.constrGroup->setName("ConstraintGroup");
-    editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.constrGroup);
+    constrAnnotation->addChild(editModeScenegraphNodes.constrGroup);
 
-    // re-enable depth testing for the rest of the nodes
-    SoDepthBuffer* constrDepthOn = new SoDepthBuffer();
-    constrDepthOn->test.setValue(true);
-    editModeScenegraphNodes.EditRoot->addChild(constrDepthOn);
+    editModeScenegraphNodes.EditRoot->addChild(constrAnnotation);
 
-    SoPickStyle* ps = new SoPickStyle();  // used to following nodes aren't impacted
+    auto* ps = new SoPickStyle();  // used to following nodes aren't impacted
     ps->style.setValue(SoPickStyle::SHAPE);
     editModeScenegraphNodes.EditRoot->addChild(ps);
 }

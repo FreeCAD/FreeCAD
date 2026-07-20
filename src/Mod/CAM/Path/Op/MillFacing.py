@@ -278,17 +278,24 @@ class ObjectMillFacing(PathOp.ObjectOp):
         linkingArgs = {
             "start_position": None,
             "target_position": None,
-            "local_clearance": obj.SafeHeight.Value,
-            "global_clearance": obj.ClearanceHeight.Value,
-            "solids": solids,
+            "heights_clearance": (obj.SafeHeight.Value, obj.ClearanceHeight.Value),
+            "solids": None,
             "tool_shape": None,
             "tool_diameter": None,
-            "safety_margin": obj.LinkingSafetyMargin.Value,
+            "collision_clearance": obj.CollisionClearance.Value,
         }
-        if obj.LinkingMode == "Safest":
-            linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
-        elif obj.LinkingMode == "Compromise":
+        if obj.CollisionAvoidanceStrategy == "Clearance Height":
+            linkingArgs["heights_clearance"] = obj.ClearanceHeight.Value
+        elif obj.CollisionAvoidanceStrategy == "Retract Height":
+            pass
+        elif obj.CollisionAvoidanceStrategy == "Line of Sight":
+            linkingArgs["solids"] = solids
+        elif obj.CollisionAvoidanceStrategy == "Tool Diameter":
+            linkingArgs["solids"] = solids
             linkingArgs["tool_diameter"] = tool_diameter
+        elif obj.CollisionAvoidanceStrategy == "Tool Shape":
+            linkingArgs["solids"] = solids
+            linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
 
         # Determine the step-downs
         finish_step = 0.0  # No finish step for facing
@@ -306,12 +313,11 @@ class ObjectMillFacing(PathOp.ObjectOp):
         )
         Path.Log.debug(f"Depth params object: {depthparams}")
 
-        # Always use the stock object top face for facing operations
-        job = PathUtils.findParentJob(obj)
-        Path.Log.debug(f"Job: {job.Label if job else 'None'}")
-        if job and job.Stock:
-            Path.Log.debug(f"Stock: {job.Stock.Label}")
-            stock_faces = job.Stock.Shape.Faces
+        # Use self.stock which the base class wraps with transformed geometry
+        # when a 3+2 workplane is active.
+        if self.stock and hasattr(self.stock, "Shape") and self.stock.Shape:
+            Path.Log.debug(f"Stock: {self.stock.Label}")
+            stock_faces = self.stock.Shape.Faces
             Path.Log.debug(f"Number of stock faces: {len(stock_faces)}")
 
             # Find faces with normal pointing toward Z+ (upward)
@@ -419,9 +425,6 @@ class ObjectMillFacing(PathOp.ObjectOp):
         except Exception as e:
             Path.Log.error(f"Error generating toolpath: {e}")
             raise
-
-        # clear commandlist
-        self.commandlist = []
 
         # Be safe. Add first G0 to clearance height
         targetZ = obj.ClearanceHeight.Value
@@ -705,7 +708,7 @@ def Create(name, obj=None, parentJob=None):
 
 def SetupProperties():
     """SetupProperties() ... Return list of properties required for the operation."""
-    setup = []
+    setup = PathOp.SetupPropertiesLinking()
     setup.append("CutMode")
     setup.append("ClearingPattern")
     setup.append("Angle")

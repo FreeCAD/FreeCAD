@@ -36,14 +36,11 @@
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"
 
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 
 
 namespace SketcherGui
 {
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerBSpline;
 
@@ -426,7 +423,15 @@ private:
         using State = std::pair<ConstructionMethod, SelectMode>;
         using enum Gui::InputHint::UserInput;
 
-        const Gui::InputHint switchModeHint {tr("%1 switch mode"), {KeyM}};
+        const Gui::InputHint switchModeHint {
+            constructionMethod() == ConstructionMethod::ControlPoints
+                ? tr("%1 switch to knots")
+                : tr("%1 switch to control points"),
+            {KeyM}
+        };
+        const Gui::InputHint periodicHint {tr("%1 toggle periodic"), {KeyF}};
+        const Gui::InputHint undoHint {tr("%1 undo last point"), {KeyR}};
+        const Gui::InputHint degreeHint {tr("%1/%2 increase/decrease degree"), {KeyU, KeyJ}};
 
         return Gui::lookupHints<State>(
             {constructionMethod(), state()},
@@ -437,17 +442,18 @@ private:
                      {
                          {tr("%1 pick first control point"), {MouseLeft}},
                          switchModeHint,
-                         {tr("%1 + degree"), {KeyU}},
-                         {tr("%1 - degree"), {KeyJ}},
+                         periodicHint,
+                         degreeHint,
                      }},
                 {.state = {ConstructionMethod::ControlPoints, SelectMode::SeekSecond},
                  .hints =
                      {
-                         {tr("%1 pick next control point"), {MouseLeft}},
-                         {tr("%1 finish B-spline"), {MouseRight}},
+                         {tr("%1 pick next point"), {MouseLeft}},
+                         {tr("%1 finish"), {MouseRight}},
                          switchModeHint,
-                         {tr("%1 + degree"), {KeyU}},
-                         {tr("%1 - degree"), {KeyJ}},
+                         periodicHint,
+                         undoHint,
+                         degreeHint,
                      }},
 
                 // Knots method
@@ -456,15 +462,16 @@ private:
                      {
                          {tr("%1 pick first knot"), {MouseLeft}},
                          switchModeHint,
-                         {tr("%1 toggle periodic"), {KeyR}},
+                         periodicHint,
                      }},
                 {.state = {ConstructionMethod::Knots, SelectMode::SeekSecond},
                  .hints =
                      {
-                         {tr("%1 pick next knot"), {MouseLeft}},
-                         {tr("%1 finish B-spline"), {MouseRight}},
+                         {tr("%1 pick next point"), {MouseLeft}},
+                         {tr("%1 finish"), {MouseRight}},
                          switchModeHint,
-                         {tr("%1 toggle periodic"), {KeyR}},
+                         periodicHint,
+                         undoHint,
                      }},
             });
     }
@@ -919,25 +926,20 @@ void DSHBSplineController::secondKeyShortcut()
 template<>
 void DSHBSplineController::thirdKeyShortcut()
 {
-    auto firstchecked = toolWidget->getCheckboxChecked(WCheckbox::FirstBox);
-    toolWidget->setCheckboxChecked(WCheckbox::FirstBox, !firstchecked);
+    handler->undoLastPoint();
 }
 
 template<>
 void DSHBSplineController::fourthKeyShortcut()
 {
-    handler->undoLastPoint();
+    auto firstchecked = toolWidget->getCheckboxChecked(WCheckbox::FirstBox);
+    toolWidget->setCheckboxChecked(WCheckbox::FirstBox, !firstchecked);
 }
 
 template<>
 void DSHBSplineController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
-        toolWidget->setNoticeVisible(true);
-        toolWidget->setNoticeText(
-            QApplication::translate("TaskSketcherTool_c1_bspline", "Press F to undo last point.")
-        );
-
         QStringList names = {
             QApplication::translate("Sketcher_CreateBSpline", "From control points"),
             QApplication::translate("Sketcher_CreateBSpline", "From knots")
@@ -946,7 +948,7 @@ void DSHBSplineController::configureToolWidget()
 
         toolWidget->setCheckboxLabel(
             WCheckbox::FirstBox,
-            QApplication::translate("TaskSketcherTool_c1_bspline", "Periodic (R)")
+            QApplication::translate("TaskSketcherTool_c1_bspline", "Periodic (F)")
         );
         toolWidget->setCheckboxToolTip(
             WCheckbox::FirstBox,
@@ -954,7 +956,7 @@ void DSHBSplineController::configureToolWidget()
         );
         syncCheckboxToHandler(WCheckbox::FirstBox, handler->periodic);
 
-        if (isConstructionMode()) {
+        if (handler->isConstructionMode()) {
             toolWidget->setComboboxItemIcon(
                 WCombobox::FirstCombo,
                 0,
@@ -1065,6 +1067,7 @@ void DSHBSplineControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
                 handler->resetSeekSecond = false;
                 unsetOnViewParameter(thirdParam.get());
                 unsetOnViewParameter(fourthParam.get());
+                getKeyManager()->resetMode();
                 setFocusToOnViewParameter(OnViewParameter::Third);
                 return;
             }

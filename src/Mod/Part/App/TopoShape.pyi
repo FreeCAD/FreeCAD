@@ -472,13 +472,14 @@ class TopoShape(ComplexGeoData):
         self, matrix: Matrix, copy: bool = False, checkScale: bool = False, /
     ) -> TopoShape:
         """
-        Apply transformation on a shape without changing the underlying geometry.
-        transformShape(Matrix, [boolean copy=False, checkScale=False]) -> shape
+        Apply a transformation on this shape in place and return self.
         --
-        If copy is True, returns a transformed copy and leaves the original unchanged.
-        If copy is False, transforms this shape in place and returns itself.
-        If checkScale is True, it will use transformGeometry if non-uniform
-        scaling is detected.
+        If copy is True the underlying geometry is duplicated and the transformation is baked into
+        it. If copy is False the transformation is applied as a location change without modifying
+        the underlying geometry (no bake-in). Note that scaling, mirroring, and non-uniform
+        transformations may force a copy regardless of this flag. If checkScale is True,
+        transformGeometry is used when non-uniform scaling is detected. To obtain a transformed copy
+        while leaving this shape untouched, use transformed() instead.
         """
         ...
 
@@ -487,8 +488,10 @@ class TopoShape(ComplexGeoData):
         self, matrix: Matrix, *, copy: bool = False, checkScale: bool = False, op: str = None
     ) -> TopoShape:
         """
-        Create a new transformed shape
-        transformed(Matrix,copy=False,checkScale=False,op=None) -> shape
+        Return a new shape with the transformation applied; leave self unchanged.
+        --
+        The copy and checkScale arguments have the same meaning as in transformShape(). op is
+        unused.
         """
         ...
 

@@ -777,7 +777,9 @@ static PyObject* makeShape(const char* op, const TopoShape& shape, PyObject* arg
         std::vector<TopoShape> shapes;
         shapes.push_back(shape);
         getPyShapes(pcObj, shapes);
-        return Py::new_reference_to(shape2pyshape(TopoShape().makeElementBoolean(op, shapes, 0, tol)));
+        return Py::new_reference_to(
+            shape2pyshape(TopoShape().makeElementBoolean(op, shapes, nullptr, tol))
+        );
     }
     PY_CATCH_OCC
 }
@@ -978,9 +980,9 @@ PyObject* TopoShapePy::ancestorsOfType(PyObject* args) const
     }
 
     try {
-        const TopoDS_Shape& model = getTopoShapePtr()->getShape();
+        const TopoShape& model = *getTopoShapePtr();
         const TopoDS_Shape& shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
-        if (model.IsNull() || shape.IsNull()) {
+        if (model.isNull() || shape.IsNull()) {
             PyErr_SetString(PyExc_ValueError, "Shape is null");
             return nullptr;
         }
@@ -992,22 +994,18 @@ PyObject* TopoShapePy::ancestorsOfType(PyObject* args) const
             return nullptr;
         }
 
-        TopTools_IndexedDataMapOfShapeListOfShape mapOfShapeShape;
-        TopExp::MapShapesAndAncestors(model, shape.ShapeType(), shapetype, mapOfShapeShape);
-        const TopTools_ListOfShape& ancestors = mapOfShapeShape.FindFromKey(shape);
+        std::vector<int> foundIndices = model.findAncestors(shape, shapetype);
+        std::unordered_set<int> appendedIndices = {};
 
         Py::List list;
-        std::set<Standard_Integer> hashes;
-        TopTools_ListIteratorOfListOfShape it(ancestors);
-        for (; it.More(); it.Next()) {
-            // make sure to avoid duplicates
-            Standard_Integer code = ShapeMapHasher {}(it.Value());
-            if (hashes.find(code) == hashes.end()) {
-                list.append(shape2pyshape(it.Value()));
-                hashes.insert(code);
+        for (int idx : foundIndices) {
+            if (appendedIndices.count(idx)) {
+                continue;
             }
-        }
 
+            list.append(shape2pyshape(model.getSubTopoShape(shapetype, idx)));
+            appendedIndices.emplace(idx);
+        }
         return Py::new_reference_to(list);
     }
     catch (Standard_Failure& e) {
@@ -1093,17 +1091,9 @@ PyObject* TopoShapePy::transformShape(PyObject* args)
     }
 
     Base::Matrix4D mat = static_cast<Base::MatrixPy*>(obj)->value();
-    bool doCopy = Base::asBoolean(copy);
-    bool doCheckScale = Base::asBoolean(checkScale);
     PY_TRY
     {
-        if (doCopy) {
-            TopoShape s(*getTopoShapePtr());
-            s.transformShape(mat, false, doCheckScale);
-            return Py::new_reference_to(shape2pyshape(s));
-        }
-
-        this->getTopoShapePtr()->transformShape(mat, false, doCheckScale);
+        this->getTopoShapePtr()->transformShape(mat, Base::asBoolean(copy), Base::asBoolean(checkScale));
         return IncRef();
     }
     PY_CATCH_OCC

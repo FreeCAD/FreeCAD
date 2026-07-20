@@ -85,6 +85,7 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent* const ev)
     // event, we only need this flag to see if any processing happened
     // at all.
     SbBool processed = false;
+    bool triedSelectionDrag = false;
 
     const ViewerMode curmode = this->currentmode;
     ViewerMode newmode = curmode;
@@ -205,9 +206,9 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent* const ev)
         this->lockrecenter = true;
         const auto event = (const SoLocation2Event*)ev;
         // Ctrl+LMB drag zooms in this style, so only plain LMB should start box selection.
-        if (this->currentmode == NavigationStyle::SELECTION && this->button1down && !this->ctrldown
-            && tryStartBoxSelection(event)) {
-            processed = true;
+        if (this->currentmode == NavigationStyle::SELECTION && this->button1down && !this->ctrldown) {
+            triedSelectionDrag = true;
+            processed = handleSelectionDragMotion(event, newmode);
         }
         else if (this->currentmode == NavigationStyle::ZOOMING) {
             // OCCT uses horizontal mouse position, not vertical
@@ -259,7 +260,7 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent* const ev)
             break;
         case CTRLDOWN | BUTTON1DOWN:
         case BUTTON1DOWN:
-            if (newmode != NavigationStyle::ZOOMING) {
+            if (newmode != NavigationStyle::ZOOMING && newmode != NavigationStyle::INTERACT) {
                 newmode = NavigationStyle::SELECTION;
             }
             break;
@@ -307,7 +308,7 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent* const ev)
 
     // If not handled in this class, pass on upwards in the inheritance
     // hierarchy.
-    if (!processed) {
+    if (!processed && !triedSelectionDrag) {
         processed = inherited::processSoEvent(ev);
     }
 

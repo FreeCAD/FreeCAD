@@ -62,22 +62,22 @@
 #include "SelectionObject.h"
 #include "SoDevicePixelRatioElement.h"
 #include "SoFCColorBar.h"
-#include "SoFCColorGradient.h"
-#include "SoFCColorLegend.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCSelection.h"
 #include "SoFCSelectionAction.h"
 #include "SoFCUnifiedSelection.h"
 #include "SoFCVectorizeSVGAction.h"
 #include "SoFCVectorizeU3DAction.h"
-#include "SoTextLabel.h"
+#include "SoLabelNodes.h"
 #include "SoDatumLabel.h"
+#include "TranslateManip.h"
 #include "Inventor/MarkerBitmaps.h"
 #include "Inventor/SmSwitchboard.h"
 #include "Inventor/So3DAnnotation.h"
 #include "Inventor/SoAutoZoomTranslation.h"
 #include "Inventor/SoAxisCrossKit.h"
 #include "Inventor/SoDrawingGrid.h"
+#include "Inventor/SoFCScreenSpaceGroup.h"
 #include "Inventor/SoFCBackgroundGradient.h"
 #include "Inventor/SoFCBoundingBox.h"
 #include "Inventor/SoNaviCube.h"
@@ -109,10 +109,8 @@ void Gui::SoFCDB::init()
     SoGLRenderActionElement ::initClass();
     SoFCInteractiveElement ::initClass();
     SoGLWidgetElement ::initClass();
-    SoFCColorBarBase ::initClass();
     SoFCColorBar ::initClass();
-    SoFCColorLegend ::initClass();
-    SoFCColorGradient ::initClass();
+    SoFCScreenSpaceGroup ::initClass();
     SoFCBackgroundGradient ::initClass();
     SoFCBoundingBox ::initClass();
     SoFCSelection ::initClass();
@@ -137,7 +135,7 @@ void Gui::SoFCDB::init()
     SoSelectionElementAction ::initClass();
     SoVRMLAction ::initClass();
     SoSkipBoundingGroup ::initClass();
-    SoTextLabel ::initClass();
+    SoSkipBoundingBoxElement ::initClass();
     SoDatumLabel ::initClass();
     SoColorBarLabel ::initClass();
     SoStringLabel ::initClass();
@@ -206,6 +204,7 @@ void Gui::SoFCDB::init()
     PropertyTransientFileItem ::init();
     PropertyLinkItem ::init();
     PropertyLinkListItem ::init();
+    PropertyMapItem ::init();
 
     NavigationStyle ::init();
     UserNavigationStyle ::init();
@@ -246,10 +245,7 @@ void Gui::SoFCDB::finish()
     // Coin doesn't provide a mechanism to free static members of own data types.
     // Hence, we need to define a static method e.g. 'finish()' for all new types
     // to invoke the private member function 'atexit_cleanup()'.
-    SoFCColorBarBase ::finish();
     SoFCColorBar ::finish();
-    SoFCColorLegend ::finish();
-    SoFCColorGradient ::finish();
     SoFCBackgroundGradient ::finish();
     SoFCBoundingBox ::finish();
     SoFCSelection ::finish();
@@ -702,9 +698,9 @@ bool Gui::SoFCDB::writeToX3DOM(SoNode* node, std::string& buffer)
         << "  <head>\n"
         << "    <meta charset=\"utf-8\"/>\n"
         << "    <title>FreeCAD X3DOM Export</title>\n"
-        << "    <script src=\"http://www.x3dom.org/download/x3dom.js\"> </script>\n"
+        << "    <script src=\"https://www.x3dom.org/download/x3dom.js\"> </script>\n"
         << "    <link rel=\"stylesheet\" type=\"text/css\" "
-           "href=\"http://www.x3dom.org/download/x3dom.css\"/>\n"
+           "href=\"https://www.x3dom.org/download/x3dom.css\"/>\n"
         << "  </head>\n"
         << "  <body>\n"
         << "    <div>\n";

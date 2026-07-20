@@ -1213,21 +1213,17 @@ struct WireJoiner
 
         std::vector<VertexInfo> adjacentList;
         std::set<EdgeInfo*> edgesToVisit;
-        int count = 0;
         int skips = 0;
 
         for (auto& info : edges) {
             info.reset();
         }
 
-        int rcount = 0;
-
         for (auto& info : edges) {
             if (BRep_Tool::IsClosed(info.edge)) {
                 auto wire = BRepBuilderAPI_MakeWire(info.edge).Wire();
                 Area::showShape(wire, "closed");
                 builder.Add(comp, wire);
-                ++count;
                 continue;
             }
             gp_Pnt pt[2];
@@ -1242,7 +1238,6 @@ struct WireJoiner
                 // populate adjacent list
                 constexpr int intMax = std::numeric_limits<int>::max();
                 for (auto vit = vmap.qbegin(bgi::nearest(pt[i], intMax)); vit != vmap.qend(); ++vit) {
-                    ++rcount;
                     if (vit->pt().SquareDistance(pt[i]) > tol) {
                         break;
                     }
@@ -1376,7 +1371,6 @@ struct WireJoiner
                     }
                     Area::showShape(wire, "joined");
                     builder.Add(comp, wire);
-                    ++count;
                 }
                 break;
             }

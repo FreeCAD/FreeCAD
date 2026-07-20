@@ -161,7 +161,7 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     if (PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &pcObj)) {
         TopoShape* shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr();
         if (shape && !shape->getShape().IsNull() && shape->getShape().ShapeType() == TopAbs_EDGE) {
-            this->getTopoShapePtr()->setShape(shape->getShape());
+            this->getTopoShapePtr()->setShape((*shape));
             return 0;
         }
         else {

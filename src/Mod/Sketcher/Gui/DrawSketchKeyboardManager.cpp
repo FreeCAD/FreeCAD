@@ -58,13 +58,18 @@ DrawSketchKeyboardManager::KeyboardEventHandlingMode DrawSketchKeyboardManager::
     return keyMode;
 }
 
+void DrawSketchKeyboardManager::resetMode()
+{
+    keyMode = KeyboardEventHandlingMode::ViewProvider;
+}
+
 bool DrawSketchKeyboardManager::eventFilter(QObject* object, QEvent* event)
 {
     Q_UNUSED(object);
     if (!vpViewer) {
         return false;
     }
-    if (event->type() == QEvent::KeyPress) {
+    if (event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease) {
         // Here we decide if we redirect the input the viewer
         auto keyEvent = static_cast<QKeyEvent*>(event);
 

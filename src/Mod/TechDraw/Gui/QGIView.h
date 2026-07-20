@@ -127,11 +127,11 @@ public:
 
     /** Methods to ensure that Y-Coordinates are orientated correctly.
      * @{ */
-    void setPosition(qreal xPos, qreal yPos);
     inline qreal getY() { return y() * -1; }
     bool isInnerView() const { return m_innerView; }
     void isInnerView(bool state) { m_innerView = state; }
     QGIViewClip* getClipGroup();
+    virtual void updatePositionFromFeatureXY();
 
     bool isSnapping() { return snapping; }
     void snapPosition(QPointF& position);
@@ -232,7 +232,7 @@ private:
     QPen m_decorPen;
     double m_lockWidth;
     double m_lockHeight;
-    int m_zOrder;
+    int m_zOrder{0};
 
     bool m_snapped{false};
 
@@ -243,6 +243,8 @@ private:
                        QPointF& outCaptionPos,
                        QPointF& outLabelPos,
                        QPointF& outLockPos) const;
+
+    bool m_inhibitSnapOnPosChange{false};
 };
 
 } // namespace

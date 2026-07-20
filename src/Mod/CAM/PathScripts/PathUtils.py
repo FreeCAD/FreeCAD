@@ -109,13 +109,18 @@ def loopdetect(obj, edge1, edge2):
         return None
 
 
-def wiredetect(obj, edge):
-    """Returns all edges from first wire which includes the edge."""
+def wiresdetect(obj, edges):
+    """Returns all edges from all horizontal wires which includes the edges."""
 
-    ehash = edge.hashCode()
+    ehashList = [e.hashCode() for e in edges]
+    wires = []
     for wire in obj.Shape.Wires:
-        if any(e.hashCode() == ehash for e in wire.Edges):
-            return wire.Edges
+        if not Path.Geom.isRoughly(wire.BoundBox.ZLength, 0):
+            continue
+        if any(e.hashCode() in ehashList for e in wire.Edges):
+            wires.append(wire)
+    if wires:
+        return [e for w in wires for e in w.Edges]
 
     return None
 
@@ -218,10 +223,30 @@ def tangentEdgeLoop(obj, edge1, edge2):
     return None
 
 
-def horizontalFaceLoop(obj, faces, subNames):
-    """horizontalFaceLoop(obj, faces, subNames) ... returns a list of face names
-    which form the walls of a vertical hole face is a part of.
-    All face names listed in subNames must be part of the hole for the solution to be returned."""
+def innerEdgesFromFace(obj, face):
+    """innerEdgesFromFace(obj, face) ... returns a list of inner edges from face."""
+    outerHash = [e.hashCode() for e in face.OuterWire.Edges]
+    edges = [e for e in face.Edges if e.hashCode() not in outerHash]
+
+    return edges
+
+
+def horizontalFacesAtHeight(obj, z, tol=0.01):
+    """horizontalCoplanarFaces(obj, z) ... returns a list of face names with requested height."""
+    names = [
+        f"Face{i}"
+        for i, f in enumerate(obj.Shape.Faces, 1)
+        if Path.Geom.isHorizontal(f) and Path.Geom.isRoughly(f.CenterOfMass.z, z, tol)
+    ]
+    if len(names) > 1:
+        return names
+
+    return None
+
+
+def horizontalFaceLoops(obj, faces):
+    """horizontalFaceLoops(obj, faces) ... returns a list of face names
+    which form the walls of a vertical hole face is a part of."""
 
     if not all(Path.Geom.isVertical(f) for f in faces):
         # stop if selected faces is not vertical
@@ -233,34 +258,32 @@ def horizontalFaceLoop(obj, faces, subNames):
         )
         return None
 
+    bEdges = []
+    for face in faces:
+        fzMin = min(e.BoundBox.ZMin for e in face.Edges)
+        for edge in face.Edges:
+            if Path.Geom.isRoughly(edge.BoundBox.ZMax, fzMin):
+                bEdges.append(edge)
+                break
+
     objFaces = obj.Shape.Faces
-    horizontalEdgeLoops = [horizontalEdgeLoop(obj, e) for e in faces[0].Edges]
+    horizontalEdgeLoops = [horizontalEdgeLoop(obj, e) for e in bEdges]
+    names = []
     for edges in horizontalEdgeLoops:
         if not edges:
             continue
         hashes = [e.hashCode() for e in edges]
 
         # find all vertical faces that share an edges
-        names = []
-        for i, f in enumerate(objFaces):
+        for i, f in enumerate(objFaces, 1):
             if not Path.Geom.isVertical(f):
                 continue
             if any(e.hashCode() in hashes for e in f.Edges):
-                names.append(f"Face{i + 1}")
+                names.append(f"Face{i}")
 
-        if not names or not all(f in names for f in subNames):
-            # not all selected faces in list of candidates faces
-            continue
-
-        # use bottom edges to check that faces creates a closed area
-        candidates = [obj.Shape.getElement(f) for f in names]
-        fzMin = min(face.BoundBox.ZMin for face in candidates)
-        bottomEdges = [
-            e for f in candidates for e in f.Edges if Path.Geom.isRoughly(e.BoundBox.ZMax, fzMin)
-        ]
-        wire = Part.Wire(Part.__sortEdges__(bottomEdges))
-        if wire.isClosed():
-            return names
+    names = list(set(names))
+    if len(names) > len(faces):
+        return names
 
     return None
 
@@ -636,36 +659,6 @@ def sort_locations_tsp(locations, keys, attractors=None, startPoint=None, endPoi
     return [locations[i] for i in order]
 
 
-def sort_tunnels_tsp(tunnels, allowFlipping=False, routeStartPoint=None, routeEndPoint=None):
-    """
-    Python wrapper for the C++ TSP tunnel solver. Takes a list of dicts (tunnels),
-    a list of keys for start/end coordinates, and optional parameters.
-
-    Parameters:
-    - tunnels: List of dictionaries with tunnel data. Each tunnel dictionary should contain:
-        - startX: X-coordinate of the tunnel start point
-        - startY: Y-coordinate of the tunnel start point
-        - endX: X-coordinate of the tunnel end point
-        - endY: Y-coordinate of the tunnel end point
-        - isOpen: Boolean indicating if the tunnel is open (optional, defaults to True)
-    - allowFlipping: Whether tunnels can be reversed (entry becomes exit)
-    - routeStartPoint: Optional starting point [x, y] for the entire route
-    - routeEndPoint: Optional ending point [x, y] for the entire route
-
-    Returns the sorted list of tunnels in TSP order. Each returned tunnel dictionary
-    will include the original keys plus:
-    - flipped: Boolean indicating if the tunnel was reversed during optimization
-    - index: Original index of the tunnel in the input list
-    """
-    # Call C++ TSP tunnel solver directly - it handles all the processing
-    return tsp_solver.solveTunnels(
-        tunnels=tunnels,
-        allowFlipping=allowFlipping,
-        routeStartPoint=routeStartPoint,
-        routeEndPoint=routeEndPoint,
-    )
-
-
 def guessDepths(objshape, subs=None):
     """
     takes an object shape and optional list of subobjects and returns a depth_params
@@ -696,34 +689,6 @@ def guessDepths(objshape, subs=None):
             final = fbb.ZMin
 
     return depth_params(clearance, safe, start, 1.0, 0.0, final, user_depths=None, equalstep=False)
-
-
-def drillTipLength(tool):
-    """returns the length of the drillbit tip."""
-
-    if not hasattr(tool, "TipAngle"):
-        Path.Log.error(translate("Path", "Selected tool is not a drill"))
-        return 0.0
-
-    angle = tool.TipAngle
-
-    if angle <= 0 or angle >= 180:
-        Path.Log.error(
-            translate("Path", "Invalid Cutting Edge Angle %.2f, must be >0° and <=180°") % angle
-        )
-        return 0.0
-
-    theta = math.radians(angle)
-    length = (float(tool.Diameter) / 2) / math.tan(theta / 2)
-
-    if length < 0:
-        Path.Log.error(
-            translate("Path", "Cutting Edge Angle (%.2f) results in negative tool tip length")
-            % angle
-        )
-        return 0.0
-
-    return length
 
 
 class depth_params(object):
@@ -895,7 +860,7 @@ class depth_params(object):
         all steps are of equal size, which is as big as possible but not bigger
         than max_size."""
 
-        steps_needed = math.ceil((start - stop) / max_size)
+        steps_needed = Path.Geom.ceil((start - stop) / max_size)
         depths = list(linspace(stop, start, steps_needed, endpoint=False))
 
         return depths

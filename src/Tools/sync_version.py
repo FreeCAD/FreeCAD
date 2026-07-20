@@ -6,7 +6,6 @@
 #   - pixi.toml (workspace version)
 #   - package/rattler-build/pixi.toml (package version, name, description)
 #   - package/rattler-build/recipe.yaml (context version, package name)
-#   - package/WindowsInstaller/include/declarations.nsh (APP_NAME)
 #   - package/fedora/freecad.spec (Version, Name)
 #
 # Usage:
@@ -158,20 +157,6 @@ def sync_recipe_yaml(filepath: Path, version: VersionInfo) -> tuple[str, bool]:
     return updated, updated != content
 
 
-def sync_declarations_nsh(filepath: Path, version: VersionInfo) -> tuple[str, bool]:
-    """Sync the NSIS installer APP_NAME define.
-
-    Updates: !define APP_NAME "FreeCAD"
-    """
-    content = filepath.read_text(encoding="utf-8")
-    updated = re.sub(
-        r'(!define APP_NAME\s+)"[^"]*"',
-        rf'\g<1>"{version.name}"',
-        content,
-    )
-    return updated, updated != content
-
-
 def sync_fedora_spec(filepath: Path, version: VersionInfo) -> tuple[str, bool]:
     """Sync the Fedora RPM spec file Name and Version fields.
 
@@ -196,7 +181,6 @@ SYNC_TARGETS = [
     ("pixi.toml", sync_workspace_pixi_toml),
     ("package/rattler-build/pixi.toml", sync_rattler_build_pixi_toml),
     ("package/rattler-build/recipe.yaml", sync_recipe_yaml),
-    ("package/WindowsInstaller/include/declarations.nsh", sync_declarations_nsh),
     ("package/fedora/freecad.spec", sync_fedora_spec),
 ]
 

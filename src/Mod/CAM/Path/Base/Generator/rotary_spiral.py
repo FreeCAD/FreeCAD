@@ -290,7 +290,7 @@ def generate(
     direction = 1.0 if cut_mode == "Climb" else -1.0
     n_revs = (x_max - x_min) / axial_stepover
     total_theta_span = direction * n_revs * 2.0 * math.pi
-    n_steps = max(1, int(math.ceil(abs(total_theta_span) / angular_resolution)))
+    n_steps = max(1, Path.Geom.ceil(abs(total_theta_span) / angular_resolution))
 
     commands = []
 

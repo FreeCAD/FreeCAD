@@ -31,16 +31,17 @@ from CAMTests.TestMachine import (
     TestMachineDataclass,
     TestMachineFactory,
     TestToolhead,
+    TestProcessingOptions,
 )
 
 from CAMTests.TestPathAdaptive import TestPathAdaptive
 from CAMTests.TestPathCommandAnnotations import TestPathCommandAnnotations
 from CAMTests.TestPathCore import TestPathCore
-from CAMTests.TestPathDepthParams import depthTestCases
+from CAMTests.TestPathDepthParams import TestDepthCases
 from CAMTests.TestPathDressupDogboneII import TestDressupDogboneII
-from CAMTests.TestPathDressupHoldingTags import TestHoldingTags
 from CAMTests.TestPathDrillable import TestPathDrillable
 from CAMTests.TestPathDrillGenerator import TestPathDrillGenerator
+from CAMTests.TestPathDressupHoldingTags import TestHoldingTags
 from CAMTests.TestDrillCycleExpander import TestDrillCycleExpander
 from CAMTests.TestPathFacingGenerator import TestPathFacingGenerator
 from CAMTests.TestPathGeneratorDogboneII import TestGeneratorDogboneII
@@ -51,9 +52,14 @@ from CAMTests.TestPathHelpers import TestPathHelpers
 from CAMTests.TestPathHelix import TestPathHelix
 from CAMTests.TestPathHelixGenerator import TestPathHelixGenerator
 from CAMTests.TestPathSpiralGenerator import TestPathSpiralGenerator
+from CAMTests.TestPathRampEntryGenerator import TestPathRampEntryGenerator
 from CAMTests.TestPathLog import TestPathLog
 from CAMTests.TestPathLogNew import TestPathLogNew
-from CAMTests.TestPathOpUtil import TestPathOpUtil
+from CAMTests.TestPathOpUtil import (
+    TestPathOpUtil,
+    TestGetClearedAreasWorkplane,
+    TestStripRotaryAxes,
+)
 from CAMTests.TestPostToolProcessing import TestToolLengthOffset, TestToolProcessing
 
 # Post-processing tests split into 3 files for better organization
@@ -64,12 +70,14 @@ from CAMTests.TestPostProcessor import (
     TestHeaderBuilder,
     TestPostProcessorClassification,
     TestConfigurationBundle,
+    TestPostProcessorMBPPMethods,
 )
 from CAMTests.TestPostOutput import (
     TestFileNameGenerator,
     TestExport2Integration,
 )
 
+from CAMTests.TestPathCustom import TestPathCustomConverted
 from CAMTests.TestPathPreferences import TestPathPreferences
 from CAMTests.TestPathPocket import TestPathPocket
 from CAMTests.TestPathProfile import TestPathProfile, TestPathOpenProfile
@@ -108,14 +116,18 @@ from CAMTests.TestPathToolBitSerializer import (
     TestFCTBSerializer,
     TestYamlToolBitSerializer,
 )
+from CAMTests.TestFeedsSpeedsResolver import TestFeedsSpeedsResolver
+from CAMTests.TestFeedsSpeedsToolBitPresets import TestFeedsSpeedsToolBitPresets
+from CAMTests.TestFeedsSpeedsToolController import TestFeedsSpeedsToolController
 from CAMTests.TestPathToolLibrary import TestPathToolLibrary
 from CAMTests.TestPathToolLibrarySerializer import (
     TestCamoticsLibrarySerializer,
     TestLinuxCNCLibrarySerializer,
+    TestPathToolLibrarySerializerBase,
 )
 from CAMTests.TestPathToolChangeGenerator import TestPathToolChangeGenerator
 from CAMTests.TestPathToolController import TestPathToolController
-from CAMTests.TestPathUtil import TestPathUtil
+from CAMTests.TestPathUtil import TestPathUtil, TestCompass
 from CAMTests.TestPathVcarve import TestPathVcarve
 from CAMTests.TestPathVoronoi import TestPathVoronoi
 
@@ -125,6 +137,7 @@ from CAMTests.TestLinuxCNCPost import TestLinuxCNCPost
 from CAMTests.TestMarlinPost import TestMarlinPost
 from CAMTests.TestDxfPost import TestDxfPost
 from CAMTests.TestFanucPost import TestFanucPost
+from CAMTests.TestOpenSBPPost import TestOpenSBPPost
 
 from CAMTests.TestGrblPost import TestGrblPost
 from CAMTests.TestMassoG3Post import TestMassoG3Post
@@ -148,4 +161,6 @@ from CAMTests.TestGcodeProcessingUtils import (
     TestSuppressRedundantAxesWords,
     TestFilterInefficientMoves,
     TestNumberGenerator,
+    TestDeduplicateRepeatedCommands,
 )
+from CAMTests.TestPathDressupArray import TestDressupArray

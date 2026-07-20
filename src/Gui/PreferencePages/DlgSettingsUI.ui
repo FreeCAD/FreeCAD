@@ -55,9 +55,9 @@
           </property>
           <property name="color" stdset="0">
            <color>
-            <red>85</red>
-            <green>123</green>
-            <blue>182</blue>
+            <red>0</red>
+            <green>171</green>
+            <blue>255</blue>
            </color>
           </property>
           <property name="prefEntry" stdset="0">

@@ -120,6 +120,8 @@ TEST(BaseToolsSuite, TestEscapeEncodeString)
     EXPECT_EQ(Base::Tools::escapeEncodeString("a\\b"), "a\\\\b");
     EXPECT_EQ(Base::Tools::escapeEncodeString("a\"b"), "a\\\"b");
     EXPECT_EQ(Base::Tools::escapeEncodeString("a'b"), "a\\\'b");
+    EXPECT_EQ(Base::Tools::escapeEncodeString("a\nb"), "a\\nb");
+    EXPECT_EQ(Base::Tools::escapeEncodeString("a\rb"), "a\\rb");
     EXPECT_EQ(Base::Tools::escapeEncodeString("plain"), "plain");
 }
 

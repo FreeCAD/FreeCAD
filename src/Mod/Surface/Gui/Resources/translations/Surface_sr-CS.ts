@@ -54,7 +54,7 @@
     <message>
       <location filename="../../TaskFilling.ui" line="20"/>
       <source>Boundaries</source>
-      <translation>Granice</translation>
+      <translation>Granične ivice</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="28"/>
@@ -142,12 +142,12 @@
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="20"/>
       <source>Filling</source>
-      <translation>Popunjavanje</translation>
+      <translation>Složena zakrpa</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="26"/>
       <source>Fill Type</source>
-      <translation>Vrsta popunjavanja</translation>
+      <translation>Vrsta zakrpe</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="38"/>
@@ -312,7 +312,7 @@
     <message>
       <location filename="../../Command.cpp" line="113"/>
       <source>Filling</source>
-      <translation>Popunjavanje</translation>
+      <translation>Složena zakrpa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="114"/>
@@ -320,7 +320,7 @@
 Additionally, the surface may be constrained by edges and
 vertices that are not on the boundary.</source>
       <translation>Napravi površ pomoću izabranih graničnih kriva tj. ivica.
-Površ može biti prisiljena da prolazi kroz dodatne krive i tačke.</translation>
+Površ može biti prisiljena da prolazi kroz dodatne unutrašnje krive i tačke.</translation>
     </message>
   </context>
   <context>
@@ -358,7 +358,7 @@ Površ može biti prisiljena da prolazi kroz dodatne krive i tačke.</translatio
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Fill Boundary Curves</source>
-      <translation>Popuni između graničnih kriva</translation>
+      <translation>Zakrpa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="150"/>
@@ -456,17 +456,17 @@ Ova komanda radi samo sa objektom koji je mreža.</translation>
   <context>
     <name>SurfaceGui::FillingEdgePanel</name>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="134"/>
+      <location filename="../../TaskFillingEdge.cpp" line="133"/>
       <source>Remove</source>
       <translation>Ukloni</translation>
     </message>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="330"/>
+      <location filename="../../TaskFillingEdge.cpp" line="329"/>
       <source>Invalid object</source>
       <translation>Neispravan objekat</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskFillingEdge.cpp" line="408"/>
+      <location filename="../../TaskFillingEdge.cpp" line="407"/>
       <source>Edge has %n adjacent face(s)</source>
       <translation type="unfinished">
         <numerusform>Ivica ima %n susednih stranica</numerusform>
@@ -475,12 +475,12 @@ Ova komanda radi samo sa objektom koji je mreža.</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="412"/>
+      <location filename="../../TaskFillingEdge.cpp" line="411"/>
       <source>None</source>
       <translation>Nijedan</translation>
     </message>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="433"/>
+      <location filename="../../TaskFillingEdge.cpp" line="432"/>
       <source>Edge has no adjacent faces</source>
       <translation>Ivica nema susednih stranica</translation>
     </message>
@@ -489,9 +489,9 @@ Ova komanda radi samo sa objektom koji je mreža.</translation>
     <name>QObject</name>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
-      <location filename="../../TaskFilling.cpp" line="64"/>
+      <location filename="../../TaskFilling.cpp" line="63"/>
       <source>Edit Filling</source>
-      <translation>Uredi popunjavanje</translation>
+      <translation>Uredi složenu zakrpu</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="667"/>
@@ -512,17 +512,17 @@ Ova komanda radi samo sa objektom koji je mreža.</translation>
   <context>
     <name>SurfaceGui::FillingPanel</name>
     <message>
-      <location filename="../../TaskFilling.cpp" line="282"/>
+      <location filename="../../TaskFilling.cpp" line="281"/>
       <source>Remove</source>
       <translation>Ukloni</translation>
     </message>
     <message>
-      <location filename="../../TaskFilling.cpp" line="498"/>
+      <location filename="../../TaskFilling.cpp" line="497"/>
       <source>Invalid object</source>
       <translation>Neispravan objekat</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskFilling.cpp" line="616"/>
+      <location filename="../../TaskFilling.cpp" line="615"/>
       <source>Edge has %n adjacent faces</source>
       <translation type="unfinished">
         <numerusform>Ivica ima %n susednih stranica</numerusform>
@@ -531,12 +531,12 @@ Ova komanda radi samo sa objektom koji je mreža.</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskFilling.cpp" line="620"/>
+      <location filename="../../TaskFilling.cpp" line="619"/>
       <source>None</source>
       <translation>Nijedan</translation>
     </message>
     <message>
-      <location filename="../../TaskFilling.cpp" line="641"/>
+      <location filename="../../TaskFilling.cpp" line="640"/>
       <source>Edge has no adjacent faces</source>
       <translation>Ivica nema susednih stranica</translation>
     </message>

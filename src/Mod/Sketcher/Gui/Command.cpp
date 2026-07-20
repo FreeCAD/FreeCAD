@@ -369,7 +369,7 @@ CmdSketcherLeaveSketch::CmdSketcherLeaveSketch()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Leave Sketch");
-    sToolTipText = QT_TR_NOOP("Finish editing the active sketch. You can also press Escape to exit.");
+    sToolTipText = QT_TR_NOOP("Finishes editing the active sketch. Press Escape to exit.");
     sWhatsThis = "Sketcher_LeaveSketch";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_LeaveSketch";
@@ -409,7 +409,7 @@ CmdSketcherCancelSketch::CmdSketcherCancelSketch()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Cancel Editing");
-    sToolTipText = QT_TR_NOOP("Leave 'edit' mode and revert any changes");
+    sToolTipText = QT_TR_NOOP("Leaves 'edit' mode and reverts any changes");
     sWhatsThis = "Sketcher_CancelSketch";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CancelSketch";
@@ -454,7 +454,7 @@ public:
         sAppModule = "Sketcher";
         sGroup = "Sketcher";
         sMenuText = QT_TR_NOOP("Leave");
-        sToolTipText = QT_TR_NOOP("Leave the sketch editing mode.");
+        sToolTipText = QT_TR_NOOP("Leaves the sketch editing mode");
         sWhatsThis = "Sketcher_LeaveGroup";
         sStatusTip = sToolTipText;
         eType = 0;
@@ -1433,18 +1433,21 @@ void CmdSketcherViewSection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QString cmdStr =
-        QLatin1String("ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch, Gui.ActiveDocument, None, %1)\n");
+        QLatin1String(  "ActiveSketch = App.getDocument('%1').getObject('%2')\n"
+                        "ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch, Gui.ActiveDocument, None, %3)\n");
     Gui::Document* doc = getActiveGuiDocument();
 
-    bool revert = false;
-    if (doc) {
-        SketcherGui::ViewProviderSketch* vp =
-            dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-        if (vp) {
-            revert = vp->getViewOrientationFactor() < 0 ? true : false;
-        }
+    if (!doc) {
+        return;
     }
-    cmdStr = cmdStr.arg(revert ? QLatin1String("True") : QLatin1String("False"));
+    SketcherGui::ViewProviderSketch* vp =
+        freecad_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    if (!vp) {
+        return;
+    }
+    QLatin1String revert = vp->getViewOrientationFactor() < 0 ? QLatin1String("True") : QLatin1String("False");
+
+    cmdStr = cmdStr.arg(doc->getDocument()->getName(), vp->getSketchObject()->getNameInDocument(), revert);
     doCommand(Doc, cmdStr.toLatin1());
 }
 

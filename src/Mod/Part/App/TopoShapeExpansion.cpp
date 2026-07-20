@@ -24,6 +24,7 @@
 
 #include <cmath>
 #include <limits>
+#include <sstream>
 
 #ifndef _Standard_Version_HeaderFile
 # include <Standard_Version.hxx>
@@ -1002,7 +1003,7 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
                 ss.str("");
 
                 ensureElementMap()->encodeElementName(shapetype[0], name, ss, &sids, Tag, op, other.Tag);
-                elementMap()->setElementName(element, name, Tag, &sids);
+                ensureElementMap()->setElementName(element, name, Tag, &sids);
             }
         }
     }
@@ -3884,7 +3885,7 @@ TopoShape& TopoShape::makeElementFilledFace(
                 shapes.begin() + params.boundary_end
             );
             wires = TopoShape(0, Hasher)
-                        .makeElementWires(edges, "", 0.0, ConnectionPolicy::requireSharedVertex, &output)
+                        .makeElementWires(edges, "", 0.0, ConnectionPolicy::mergeWithTolerance, &output)
                         .getSubTopoShapes(TopAbs_WIRE);
             shapes.erase(shapes.begin() + params.boundary_begin, shapes.begin() + params.boundary_end);
         }
@@ -3905,7 +3906,7 @@ TopoShape& TopoShape::makeElementFilledFace(
             }
             if (edges.size()) {
                 wires = TopoShape(0, Hasher)
-                            .makeElementWires(edges, "", 0.0, ConnectionPolicy::requireSharedVertex, &output)
+                            .makeElementWires(edges, "", 0.0, ConnectionPolicy::mergeWithTolerance, &output)
                             .getSubTopoShapes(TopAbs_WIRE);
             }
         }
@@ -6185,6 +6186,21 @@ TopoShape& TopoShape::makeElementBoolean(
         if (shape.isNull()) {
             FC_THROWM(NullShapeException, "Null input shape");
         }
+
+        if (!shape.isValid()) {
+            std::ostringstream details;
+            shape.analyze(false, details);
+
+            std::string message = "Invalid input shape for boolean ";
+            message += maker;
+            if (!details.str().empty()) {
+                message += ":\n";
+                message += details.str();
+            }
+
+            FC_THROWM(Base::CADKernelError, message.c_str());
+        }
+
         if (++i == 0) {
             shapeArguments.Append(shape.getShape());
         }

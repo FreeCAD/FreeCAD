@@ -57,7 +57,7 @@ public:
     bool accept() override;
     bool reject() override;
 
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void update(const Gui::SelectionChanges& msg);
     void tryUpdate();
 

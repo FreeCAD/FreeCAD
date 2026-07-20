@@ -33,7 +33,7 @@ import Path.Base.Generator.linking as linking
 import Path.Base.MachineState as PathMachineState
 import Path.Op.Base as PathOp
 import Path.Op.CircularHoleBase as PathCircularHoleBase
-import PathScripts.PathUtils as PathUtils
+from Path.Op.Util import drillTipLength
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "CAM Drilling Operation"
@@ -281,9 +281,9 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         # Calculate offsets to add to target edge
         endoffset = 0.0
         if obj.ExtraOffset == "Drill Tip":
-            endoffset = PathUtils.drillTipLength(self.tool)
+            endoffset = drillTipLength(self.tool)
         elif obj.ExtraOffset == "2x Drill Tip":
-            endoffset = PathUtils.drillTipLength(self.tool) * 2
+            endoffset = drillTipLength(self.tool) * 2
 
         # compute the drilling targets
         edgelist = []
@@ -293,21 +293,29 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             edgelist.append(Part.makeLine(v1, v2))
 
         # Prepare linking parameters
-        solids = [base.Shape for base in self.job.Model.Group]
+        # Use self.model which is transformed when 3+2 workplane is active
+        solids = [base.Shape for base in self.model]
         linkingArgs = {
             "start_position": None,
             "target_position": None,
-            "local_clearance": safe_height,
-            "global_clearance": obj.ClearanceHeight.Value,
-            "solids": solids,
+            "heights_clearance": (safe_height, obj.ClearanceHeight.Value),
+            "solids": None,
             "tool_shape": None,
             "tool_diameter": None,
-            "safety_margin": obj.LinkingSafetyMargin.Value,
+            "collision_clearance": obj.CollisionClearance.Value,
         }
-        if obj.LinkingMode == "Safest":
-            linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
-        elif obj.LinkingMode == "Compromise":
+        if obj.CollisionAvoidanceStrategy == "Clearance Height":
+            linkingArgs["heights_clearance"] = obj.ClearanceHeight.Value
+        elif obj.CollisionAvoidanceStrategy == "Retract Height":
+            pass
+        elif obj.CollisionAvoidanceStrategy == "Line of Sight":
+            linkingArgs["solids"] = solids
+        elif obj.CollisionAvoidanceStrategy == "Tool Diameter":
+            linkingArgs["solids"] = solids
             linkingArgs["tool_diameter"] = obj.ToolController.Tool.Diameter.Value
+        elif obj.CollisionAvoidanceStrategy == "Tool Shape":
+            linkingArgs["solids"] = solids
+            linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
 
         # http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g98-g99
 
@@ -389,10 +397,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
             # Set RetractMode annotation for each command
             for command in drillcommands:
-                annotations = command.Annotations
-                annotations["RetractMode"] = mode
-                annotations["operation"] = "drilling"
-                command.Annotations = annotations
+                command.addAnnotations({"RetractMode": mode, "operation": "drilling"})
                 self.commandlist.append(command)
                 machinestate.addCommand(command)
 
@@ -438,9 +443,9 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         # Calculate offsets to add to target edge
         endoffset = 0.0
         if obj.ExtraOffset == "Drill Tip":
-            endoffset = PathUtils.drillTipLength(self.tool)
+            endoffset = drillTipLength(self.tool)
         elif obj.ExtraOffset == "2x Drill Tip":
-            endoffset = PathUtils.drillTipLength(self.tool) * 2
+            endoffset = drillTipLength(self.tool) * 2
 
         # compute the tapping targets
         edgelist = []
@@ -524,10 +529,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
             # Set RetractMode annotation for each command
             for command in tappingcommands:
-                annotations = command.Annotations
-                annotations["RetractMode"] = mode
-                annotations["operation"] = "tapping"
-                command.Annotations = annotations
+                command.addAnnotations({"RetractMode": mode, "operation": "tapping"})
                 self.commandlist.append(command)
                 machinestate.addCommand(command)
 
@@ -560,7 +562,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
 
 def SetupProperties():
-    setup = []
+    setup = PathOp.SetupPropertiesLinking()
     setup.append("Strategy")
     setup.append("PeckDepth")
     setup.append("PeckEnabled")

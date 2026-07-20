@@ -287,6 +287,3 @@ ViewProviderFemPostSphereFunction::ViewProviderFemPostSphereFunction()
 }
 
 ViewProviderFemPostSphereFunction::~ViewProviderFemPostSphereFunction() = default;
-
-
-#include "moc_ViewProviderFemPostFunction.cpp"

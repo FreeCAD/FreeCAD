@@ -506,30 +506,33 @@ class Component(ArchIFC.IfcProduct):
             List of child objects set to move with their host.
         """
 
-        ilist = obj.Additions + obj.Subtractions
+        child_list = obj.Additions + obj.Subtractions
         for o in obj.InList:
             if hasattr(o, "Hosts"):
                 if obj in o.Hosts:
-                    ilist.append(o)
+                    child_list.append(o)
             elif hasattr(o, "Host"):
                 if obj == o.Host:
-                    ilist.append(o)
+                    child_list.append(o)
 
         # Stairs railings should be considered as children
         # (RailingLeft and RailingRight property)
         if hasattr(obj, "RailingLeft") and obj.RailingLeft:
-            ilist.append(obj.RailingLeft)
+            child_list.append(obj.RailingLeft)
         if hasattr(obj, "RailingRight") and obj.RailingRight:
-            ilist.append(obj.RailingRight)
+            child_list.append(obj.RailingRight)
 
-        ilist2 = []
-        for o in ilist:
+        child_set = set()
+        for o in child_list:
             if hasattr(o, "MoveWithHost"):
                 if o.MoveWithHost:
-                    ilist2.append(o)
+                    if getattr(o, "MoveBase", False) and self.ensureBase(o):
+                        child_set.add(o.Base)
+                    else:
+                        child_set.add(o)
             else:
-                ilist2.append(o)
-        return ilist2
+                child_set.add(o)
+        return list(child_set)
 
     def getParentHeight(self, obj):
         """Get a height value from hosts.
@@ -2503,7 +2506,7 @@ class ComponentTaskPanel:
         ]
         self.psetdefs = {}
         psetspath = os.path.join(
-            FreeCAD.getResourceDir(), "Mod", "Arch", "Presets", "pset_definitions.csv"
+            FreeCAD.getResourceDir(), "Mod", "BIM", "Presets", "pset_definitions.csv"
         )
         if os.path.exists(psetspath):
             with open(psetspath, "r") as csvfile:
@@ -2544,7 +2547,7 @@ class ComponentTaskPanel:
         self.ifcEditor.comboPset.addItems(
             [
                 QtGui.QApplication.translate("Arch", "Add property set", None),
-                QtGui.QApplication.translate("Arch", "New...", None),
+                QtGui.QApplication.translate("Arch", "New…", None),
             ]
             + self.psetkeys
         )

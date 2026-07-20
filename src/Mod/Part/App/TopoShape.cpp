@@ -545,7 +545,8 @@ const std::string& TopoShape::shapeName(bool silent) const
 
 PyObject* TopoShape::getPySubShape(const char* Type, bool silent) const
 {
-    return Py::new_reference_to(shape2pyshape(getSubShape(Type, silent)));
+    TopoShape s(*this);
+    return Py::new_reference_to(shape2pyshape(s.getSubTopoShape(Type, silent)));
 }
 
 PyObject* TopoShape::getPyObject()
@@ -4291,7 +4292,7 @@ TopoShape& TopoShape::makeFace(const std::vector<TopoShape>& shapes, const char*
     _Shape.Nullify();
 
     if (!maker || !maker[0]) {
-        maker = "Part::FaceMakerBullseye";
+        maker = "Part::FaceMakerUnified";
     }
 
     std::unique_ptr<FaceMaker> mkFace = FaceMaker::ConstructFromType(maker);

@@ -388,7 +388,7 @@ class MaterialDialog(QtWidgets.QDialog):
             try:
                 self.materialTreeWidget.UUID = current_uuid
             except Exception as e:
-                Path.Log.debug("Could not pre-select material %s: %s" % (current_uuid, e))
+                Path.Log.debug("Could not preselect material %s: %s" % (current_uuid, e))
 
         # Create OK and Cancel buttons
         self.okButton = QtWidgets.QPushButton("OK")
@@ -757,26 +757,18 @@ class StockFromExistingEdit(StockEdit):
         # dropdown list. This is important because the `currentIndexChanged` signal
         # will in the end result in the stock object being recreated in `getFields`
         # method, discarding any changes made (like position in respect to origin).
-        try:
-            self.form.stockExisting.blockSignals(True)
-            self.form.stockExisting.clear()
-            stockName = obj.Stock.Label if obj.Stock else None
-            index = -1
-            for i, solid in enumerate(self.candidates(obj)):
-                self.form.stockExisting.addItem(solid.Label, solid)
-                label = "{}-{}".format(self.StockLabelPrefix, solid.Label)
+        self.form.stockExisting.blockSignals(True)
+        self.form.stockExisting.clear()
 
-                # stockName has index suffix (since cloned), label has no index
-                # => ridgid string comparison fails
-                # Instead of ridgid string comparison use partial (needle in haystack)
-                # string comparison
-                # if label == stockName: # ridgid string comparison
-                if label in stockName:  # partial string comparison
-                    index = i
+        stockBaseName = obj.Stock.Objects[0].Name if getattr(obj.Stock, "Objects", None) else None
+        index = 0
+        for i, solid in enumerate(self.candidates(obj)):
+            self.form.stockExisting.addItem(solid.Label, solid)
+            if stockBaseName == solid.Name:
+                index = i
 
-            self.form.stockExisting.setCurrentIndex(index if index != -1 else 0)
-        finally:
-            self.form.stockExisting.blockSignals(False)
+        self.form.stockExisting.setCurrentIndex(index)
+        self.form.stockExisting.blockSignals(False)
 
         if not self.IsStock(obj):
             self.getFields(obj)
@@ -1438,18 +1430,18 @@ class TaskPanel:
         for display, filename in entries:
             combo.addItem(display, filename or "")
         current = getattr(self.obj, "Machine", "") or ""
-        idx = combo.findData(current)
+        idx = combo.findText(current) if current else -1
         if idx < 0:
             idx = 0
         combo.setCurrentIndex(idx)
         combo.blockSignals(False)
 
     def machineChanged(self):
-        """Write the selected machine filename back to Job.Machine."""
+        """Write the selected machine name back to Job.Machine."""
         if not hasattr(self.obj, "Machine"):
             return
-        data = self.form.jobMachine.currentData()
-        self.obj.Machine = data if data else ""
+        text = self.form.jobMachine.currentText()
+        self.obj.Machine = text if text and text != "<any>" else ""
 
     def newMachine(self):
         """Open the Machine Editor to create a new machine, then refresh the combo."""
@@ -1818,7 +1810,7 @@ class TaskPanel:
             """Display window with warning message and Add action button.
             Return action state."""
             txtHeader = translate("CAM_Job", "Warning")
-            txtPleaseAddOne = translate("CAM_Job", "Please add one.")
+            txtPleaseAddOne = translate("CAM_Job", "Add one.")
             txtOk = translate("CAM_Job", "Ok")
             txtAdd = translate("CAM_Job", "Add")
 

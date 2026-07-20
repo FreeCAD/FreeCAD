@@ -48,14 +48,20 @@ on:
 
 permissions:
   contents: read
-  actions: write
 
 jobs:
   Gate:
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
     outputs:
       should-run: ${{ steps.check.outputs.should-run }}
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        with:
+          egress-policy: audit
+
       - name: Decide whether this run is needed
         id: check
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
