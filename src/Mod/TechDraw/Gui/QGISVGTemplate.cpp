@@ -365,36 +365,19 @@ void QGISVGTemplate::createClickHandles()
 
     //TODO: Find location of special fields (first/third angle) and make graphics items for them
 
-    auto textMap = svgTemplate->EditableTexts.getValues();
-
-    TechDraw::XMLQuery query(templateDocument);
-
     std::vector<QDomElement> textElements = getFCElements(templateDocument);
     for(QDomElement& textElement : textElements) {
         // Get elements bounding box of text
         QString id = textElement.attribute(QStringLiteral("id"));
         QRectF textRect = m_svgRender->boundsOnElement(id);
         QString name = textElement.attribute(QStringLiteral(FREECAD_ATTR_EDITABLE));
-        QString content = QString::fromStdString(textMap[name.toStdString()]);
-
         QDomElement tspan = textElement.firstChildElement();
-        QFont font = getFont(tspan);
+        QFont font = getFont(tspan.isNull() ? textElement : tspan);
         QFontMetricsF fm(font);
 
         // deal with empty text
-        bool isShortText{false};
-        if (content.isEmpty()) {
-            // if there is no content, the bounding rect will be oversized and the rect may obscure other
-            // fields and make them unselectable. The calculated box is slightly out of position, but
-            // will correct itself once the content is no longer empty.
-            constexpr double MinRectHeight{3.25};   // roughly 3.5px in the svg
-            constexpr double MinRectWidth{2.381};   // roughly width of '_' character @ 3.5px
-            constexpr double UpwardRectShift{1.75}; // magic. Eliminates some dead space in br of empty text.
-            textRect.setBottom(textRect.bottom() - UpwardRectShift);
-            textRect.setTop(textRect.bottom() - MinRectHeight);
-            textRect.setRight(textRect.left() + MinRectWidth);
-            isShortText = true;
-        }
+        QString content = QString::fromStdString(svgTemplate->EditableTexts.getValue(name.toStdString()));
+        bool isShortText = content.isEmpty();
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 2, 0)
         // from PR 27117
@@ -402,7 +385,14 @@ void QGISVGTemplate::createClickHandles()
             // This is a Qt5 workaround for boundsOnElement() issue fixed in Qt6.2.0
             // Once Qt6 is mandatory, this code may be safely removed.
             // For more details please see https://qt-project.atlassian.net/browse/QTBUG-32405
-            textRect = fm.boundingRect(textElement.text());
+            if (isShortText) {
+                textRect = fm.boundingRect(QStringLiteral("_"));
+                // textRect is now valid, so we don't need to run the shortText code
+                isShortText = false;
+            }
+            else {
+                textRect = fm.boundingRect(content);
+            }
             if (textRect.isValid()) {
                 textRect = m_svgRender->transformForElement(id).mapRect(textRect);
                 textRect.translate(textElement.attribute(QStringLiteral("x")).toDouble(),
@@ -410,7 +400,6 @@ void QGISVGTemplate::createClickHandles()
 
                 QMap<QString, QString> styleMap = parseStyle(textElement.attribute(QStringLiteral("style")));
                 QString textAnchor = styleMap[QStringLiteral("text-anchor")];
-
                 if (textAnchor.compare(QStringLiteral("middle")) == 0) {
                     textRect.translate(-textRect.width()/2.0, 0.0);
                 }
@@ -420,6 +409,19 @@ void QGISVGTemplate::createClickHandles()
             }
         }
 #endif
+
+        if (isShortText) {
+            // if there is no content, the bounding rect will be oversized and the rect may obscure other
+            // fields and make them unselectable. The calculated box is slightly out of position, but
+            // will correct itself once the content is no longer empty.
+            constexpr double MinRectHeight{3.25};   // roughly 3.5px in the svg
+            constexpr double MinRectWidth{2.381};   // roughly width of '_' character @ 3.5px
+            constexpr double UpwardRectShift{1.75}; // magic. Eliminates some dead space in br of empty text.
+            textRect.setBottom(textRect.bottom() - UpwardRectShift);
+            textRect.setTop(textRect.bottom() - MinRectHeight);
+            textRect.setRight(textRect.left() + MinRectWidth);
+        }
+
 
         // Get tight bounding box of text
         double factor = textRect.height() / fm.height();  // Correcting font metrics and SVG text due to different font sizes
