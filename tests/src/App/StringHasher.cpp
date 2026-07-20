@@ -11,9 +11,12 @@
 #include <Base/Base64.h>
 #include <Base/ByteBuffer.h>
 #include <Base/BytesView.h>
+#include <Base/Reader.h>
 
 #include <array>
+#include <sstream>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include <QByteArray>
@@ -953,10 +956,8 @@ TEST_F(StringIDRefTest, toBytesPreservesEmbeddedNul)  // NOLINT
     const std::string data {"da\0ta", 5};
     const std::string postfix {"post"};
     const std::string expected {"da\0ta2post", 10};
-    auto* stringID = new App::StringID {
-        1,
-        Base::ByteBuffer::copy(Base::asBytes(data.data(), data.size()))
-    };
+    auto* stringID
+        = new App::StringID {1, Base::ByteBuffer::copy(Base::asBytes(data.data(), data.size()))};
     stringID->setPostfix(Base::ByteBuffer::copy(Base::asBytes(postfix)));
     auto sid = App::StringIDRef(stringID, 2);
 
@@ -1208,6 +1209,46 @@ TEST_F(StringHasherTest, RestoreDocFile)  // NOLINT
     // Arrange
     // Act
     // Assert
+}
+
+TEST_F(StringHasherTest, RestoreDocFileAcceptsUnpaddedBase64)  // NOLINT
+{
+    const std::vector<std::pair<std::string, std::string>> cases {
+        {"YQ", "a"},
+        {"YQ==", "a"},
+        {"YWI", "ab"},
+        {"YWJjZA", "abcd"},
+        {"YWJjZGU", "abcde"},
+        {"YQAA", std::string("a\0\0", 3)},
+    };
+
+    for (const auto& [encoded, expected] : cases) {
+        std::stringstream stream("StringTableStart v1 1\n1.1 0:" + encoded + "\n");
+        Base::Reader reader(stream, "StringTable", 2);
+
+        ASSERT_NO_THROW(Hasher()->RestoreDocFile(reader));
+        const auto id = Hasher()->getID(1);
+        ASSERT_TRUE(id);
+        EXPECT_EQ(
+            std::string(
+                reinterpret_cast<const char*>(id.deref().data().data()),
+                id.deref().data().size()
+            ),
+            expected
+        );
+    }
+}
+
+TEST_F(StringHasherTest, RestoreDocFileRejectsInvalidBase64)  // NOLINT
+{
+    const std::vector<std::string> invalid {"YQ=", "Y!", "YQ==A", "A"};
+
+    for (const auto& encoded : invalid) {
+        std::stringstream stream("StringTableStart v1 1\n1.1 0:" + encoded + "\n");
+        Base::Reader reader(stream, "StringTable", 2);
+
+        EXPECT_THROW(Hasher()->RestoreDocFile(reader), Base::RuntimeError);
+    }
 }
 
 TEST_F(StringHasherTest, setPersistenceFileName)  // NOLINT
