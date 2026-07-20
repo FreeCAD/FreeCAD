@@ -251,7 +251,7 @@ void TaskImage::acceptScale()
     if (scale) {
         bool update = false;
         if (ui->checkBoxCenterMidpoint->isChecked()) {
-            SbVec3f midpoint = scale->getMidPoint();
+            SbVec3f midpoint = scale->getMidPoint() * scale->getScaleFactor();
             ui->spinBoxX->setValue(-midpoint[0]);
             ui->spinBoxY->setValue(-midpoint[1]);
             update = true;
