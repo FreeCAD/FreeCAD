@@ -55,7 +55,7 @@ inline std::size_t base64_encode_size(std::size_t len)
 /// Returns the max bytes of a decoded base64 binary string
 inline std::size_t base64_decode_size(std::size_t len)
 {
-    return len / 4 * 3;
+    return len / 4 * 3 + (len % 4 ? 3 : 0);
 }
 
 /** Encode input binary with base64

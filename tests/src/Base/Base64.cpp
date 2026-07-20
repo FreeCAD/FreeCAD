@@ -30,6 +30,10 @@ the tests into individual parts.
 
 #include <gtest/gtest.h>
 
+#include <string>
+#include <utility>
+#include <vector>
+
 using namespace Base;
 
 // NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast)
@@ -89,6 +93,23 @@ TEST(Base64, oneEqualsSignPadding)
     std::string rest2_decoded = base64_decode(rest2_encoded);
 
     ASSERT_EQ(rest2_decoded, rest2_original);
+}
+
+TEST(Base64, unpaddedTrailingQuarters)
+{
+    const std::vector<std::pair<std::string, std::string>> cases {
+        {"YQ", "a"},
+        {"YWI", "ab"},
+        {"YWJjZA", "abcd"},
+        {"YWJjZGU", "abcde"},
+    };
+
+    for (const auto& [encoded, expected] : cases) {
+        std::string decoded;
+        const auto consumed = base64_decode(decoded, encoded);
+        EXPECT_EQ(consumed, encoded.size());
+        EXPECT_EQ(decoded, expected);
+    }
 }
 
 // NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast)
