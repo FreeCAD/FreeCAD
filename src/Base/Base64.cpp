@@ -32,6 +32,8 @@ These modifications are Copyright (c) 2019 Zheng Lei (realthunder.dev@gmail.com)
 */
 
 #include <array>
+#include <limits>
+#include <stdexcept>
 
 #include "Base64.h"
 
@@ -42,6 +44,20 @@ These modifications are Copyright (c) 2019 Zheng Lei (realthunder.dev@gmail.com)
 static const std::array<char, 65> base64_chars {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                                 "abcdefghijklmnopqrstuvwxyz"
                                                 "0123456789+/"};
+
+namespace
+{
+
+std::size_t checkedBase64OutputSize(std::size_t current, std::size_t required)
+{
+    constexpr auto max = std::numeric_limits<std::size_t>::max();
+    if (current > max - required) {
+        throw std::length_error("Base64 output size exceeds size_t maximum");
+    }
+    return current + required;
+}
+
+}  // namespace
 
 
 std::array<const signed char, Base::base64DecodeTableSize> Base::base64_decode_table()
@@ -113,6 +129,22 @@ std::size_t Base::base64_encode(char* out, void const* in, std::size_t in_len)
     return ret - out;
 }
 
+void Base::base64_encode(std::string& out, void const* in, std::size_t len)
+{
+    const std::size_t size = out.size();
+    const auto required = base64_encode_size(len);
+    out.resize(checkedBase64OutputSize(size, required));
+    len = base64_encode(&out[size], in, len);
+    out.resize(checkedBase64OutputSize(size, len));
+}
+
+std::string Base::base64_encode(void const* in, std::size_t len)
+{
+    std::string out;
+    base64_encode(out, in, len);
+    return out;
+}
+
 std::pair<std::size_t, std::size_t> Base::base64_decode(void* _out, char const* in, std::size_t in_len)
 {
     auto* out = reinterpret_cast<unsigned char*>(_out);  // NOLINT
@@ -159,6 +191,13 @@ std::pair<std::size_t, std::size_t> Base::base64_decode(void* _out, char const* 
     }
 
     return std::make_pair((std::size_t)(ret - out), (std::size_t)(in - input));
+}
+
+std::string Base::base64_decode(std::string const& str)
+{
+    std::string out;
+    base64_decode(out, str.c_str(), str.size());
+    return out;
 }
 
 // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic,
