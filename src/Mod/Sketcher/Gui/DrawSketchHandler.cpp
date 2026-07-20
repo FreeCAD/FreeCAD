@@ -884,7 +884,6 @@ bool DrawSketchHandler::snapToTangentHint(Base::Vector2d& point)
 
 bool DrawSketchHandler::seekAlignmentAutoConstraint(
     std::vector<AutoConstraint>& suggestedConstraints,
-    const Base::Vector2d& Pos,
     const Base::Vector2d& Dir
 )
 {
@@ -1828,7 +1827,7 @@ bool DrawSketchHandler::isLineExtensionAutoConstraintHintVisible(
     );
 }
 
-bool DrawSketchHandler::getStartPointOfCurrentSegment(Base::Vector2d& point) const
+bool DrawSketchHandler::getStartPointOfCurrentSegment(Base::Vector2d&) const
 {
     return false;
 }
