@@ -170,7 +170,6 @@ SET(bimcommands_SRCS
     bimcommands/BimTogglePanels.py
     bimcommands/BimTrash.py
     bimcommands/BimTruss.py
-    bimcommands/BimTutorial.py
     bimcommands/BimUnclone.py
     bimcommands/BimUngroup.py
     bimcommands/BimViews.py

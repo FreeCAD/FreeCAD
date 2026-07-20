@@ -68,12 +68,8 @@ class BIM_Welcome:
 
         if hasattr(self, "form"):
             self.form.hide()
-            if "BIM_Start_Tutorial" in link:
-                FreeCADGui.runCommand("BIM_Tutorial")
-            else:
-                # print("Opening link:",link)
-                url = QtCore.QUrl(link)
-                QtGui.QDesktopServices.openUrl(url)
+            url = QtCore.QUrl(link)
+            QtGui.QDesktopServices.openUrl(url)
 
 
 FreeCADGui.addCommand("BIM_Welcome", BIM_Welcome())

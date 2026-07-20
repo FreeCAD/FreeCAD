@@ -574,7 +574,6 @@ class BIMWorkbench(Workbench):
             def modifyMenuBar(self):
                 return [
                     {"insert": "BIM_Examples", "menuItem": "Std_ReportBug", "after": ""},
-                    {"insert": "BIM_Tutorial", "menuItem": "Std_ReportBug", "after": ""},
                     {"insert": "BIM_Help", "menuItem": "Std_ReportBug", "after": ""},
                     {"insert": "BIM_Welcome", "menuItem": "Std_ReportBug", "after": ""},
                 ]
