@@ -1092,9 +1092,7 @@ TEST_F(MeasureDistance, testLinkedCompoundKeepsInternalLocation)
     feature->Shape.setValue(compound);
     auto link = doc->addObject<App::Link>("Link");
     link->setLink(-1, feature);
-    link->LinkPlacement.setValue(
-        Base::Placement(Base::Vector3d(100.0, 0.0, 0.0), Base::Rotation())
-    );
+    link->LinkPlacement.setValue(Base::Placement(Base::Vector3d(100.0, 0.0, 0.0), Base::Rotation()));
 
     auto circle = doc->addObject<Part::Feature>("Circle");
     circle->Shape.setValue(makeCircle(gp_Pnt(100.0, 0.0, 0.0)));
