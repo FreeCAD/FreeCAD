@@ -55,25 +55,36 @@ def get_after_write_constraint():
 
 
 def write_meshdata_constraint(f, femobj, contact_obj, ccxwriter):
+    # use False as default for reversed values
+    rev_slave = [False] * len(femobj["ContactSlaveFaces"])
+    for i, v in enumerate(contact_obj.ReversedSlave[: len(rev_slave)]):
+        rev_slave[i] = v
+
+    rev_master = [False] * len(femobj["ContactMasterFaces"])
+    for i, v in enumerate(contact_obj.ReversedMaster[: len(rev_master)]):
+        rev_master[i] = v
+
     # slave DEP
     f.write(f"*SURFACE, NAME=DEP{contact_obj.Name}\n")
-    for refs, surf, is_sub_el in femobj["ContactSlaveFaces"]:
+    for (refs, surf, is_sub_el), rev in zip(femobj["ContactSlaveFaces"], rev_slave):
         if is_sub_el:
             for elem, fno in surf:
                 f.write(f"{elem},S{fno}\n")
         else:
+            fno = 1 if rev else 2
             for elem in surf:
-                f.write(f"{elem},S2\n")
+                f.write(f"{elem},S{fno}\n")
 
     # master IND
     f.write(f"*SURFACE, NAME=IND{contact_obj.Name}\n")
-    for refs, surf, is_sub_el in femobj["ContactMasterFaces"]:
+    for (refs, surf, is_sub_el), rev in zip(femobj["ContactMasterFaces"], rev_master):
         if is_sub_el:
             for elem, fno in surf:
                 f.write(f"{elem},S{fno}\n")
         else:
+            fno = 1 if rev else 2
             for elem in surf:
-                f.write(f"{elem},S2\n")
+                f.write(f"{elem},S{fno}\n")
 
 
 def write_constraint(f, femobj, contact_obj, ccxwriter):

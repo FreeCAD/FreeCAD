@@ -77,6 +77,20 @@ ConstraintContact::ConstraintContact()
         "Enable thermal contact"
     );
     ADD_PROPERTY_TYPE(
+        ReversedMaster,
+        (false),
+        "ConstraintContact",
+        App::PropertyType(App::Prop_None),
+        "Use reversed normal direction for master references"
+    );
+    ADD_PROPERTY_TYPE(
+        ReversedSlave,
+        (false),
+        "ConstraintContact",
+        App::PropertyType(App::Prop_None),
+        "Use reversed normal direction for slave references"
+    );
+    ADD_PROPERTY_TYPE(
         ThermalContactConductance,
         (std::vector<std::string> {}),
         "ConstraintContact",
