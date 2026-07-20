@@ -22,6 +22,8 @@
 
 #include <cstring>
 #include <deque>
+#include <string_view>
+#include <utility>
 
 #include <Base/Base64.h>
 #include <Base/ByteBuffer.h>
@@ -62,6 +64,40 @@ Base::ByteBuffer sha1DigestBuffer(Base::BytesView bytes)
     const auto digest = Base::sha1Digest(bytes);
     return Base::ByteBuffer::copy(
         Base::BytesView(reinterpret_cast<const char*>(digest.data()), digest.size()));
+}
+
+bool decodeBase64(std::string_view encoded, std::string& decoded)
+{
+    std::size_t padding = 0;
+    while (padding < encoded.size() && encoded[encoded.size() - padding - 1] == '=') {
+        ++padding;
+    }
+
+    if (padding > 2) {
+        return false;
+    }
+
+    const std::size_t dataLength = encoded.size() - padding;
+    if (dataLength % 4 == 1 || (padding != 0 && encoded.size() % 4 != 0)
+        || (padding != 0 && padding != (4 - dataLength % 4) % 4)) {
+        return false;
+    }
+
+    const auto table = Base::base64_decode_table();
+    for (std::size_t i = 0; i < dataLength; ++i) {
+        if (table[static_cast<unsigned char>(encoded[i])] < 0) {
+            return false;
+        }
+    }
+
+    std::string result;
+    const std::size_t consumed = Base::base64_decode(result, encoded.data(), encoded.size());
+    if (consumed != dataLength) {
+        return false;
+    }
+
+    decoded = std::move(result);
+    return true;
 }
 
 }  // namespace
@@ -706,7 +742,9 @@ void StringHasher::restoreStreamNew(std::istream& stream, std::size_t count)
             asciiStream >> content;
             if (d.isHashed() || d.isBinary()) {
                 std::string decoded;
-                Base::base64_decode(decoded, content);
+                if (!decodeBase64(content, decoded)) {
+                    FC_THROWM(Base::RuntimeError, "Invalid Base64 string in string table");
+                }
                 d._data = Base::ByteBuffer::copy(decoded);
             }
             else {
@@ -777,7 +815,9 @@ void StringHasher::restoreStream(std::istream& stream, std::size_t count)
         StringIDRef sid = new StringID(id, Base::ByteBuffer{}, static_cast<StringID::Flag>(type));
         if (sid.isHashed() || sid.isBinary()) {
             std::string decoded;
-            Base::base64_decode(decoded, content);
+            if (!decodeBase64(content, decoded)) {
+                FC_THROWM(Base::RuntimeError, "Invalid Base64 string in string table");
+            }
             sid._sid->_data = Base::ByteBuffer::copy(decoded);
         }
         else {
@@ -858,7 +898,9 @@ void StringHasher::Restore(Base::XMLReader& reader)
                 const char* value =
                     hashed ? reader.getAttribute<const char*>("hash") : reader.getAttribute<const char*>("data");
                 std::string decoded;
-                Base::base64_decode(decoded, value, std::strlen(value));
+                if (!decodeBase64(std::string_view(value), decoded)) {
+                    FC_THROWM(Base::RuntimeError, "Invalid Base64 string in string table");
+                }
                 sid = new StringID(id, Base::ByteBuffer::copy(decoded), StringID::Flag::Hashed);
             }
             else {

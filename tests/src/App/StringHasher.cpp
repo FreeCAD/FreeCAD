@@ -10,9 +10,12 @@
 #include <Base/Base64.h>
 #include <Base/ByteBuffer.h>
 #include <Base/BytesView.h>
+#include <Base/Reader.h>
 
 #include <array>
+#include <sstream>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include <QByteArray>
@@ -1198,6 +1201,38 @@ TEST_F(StringHasherTest, RestoreDocFile)  // NOLINT
     // Arrange
     // Act
     // Assert
+}
+
+TEST_F(StringHasherTest, RestoreDocFileAcceptsUnpaddedBase64)  // NOLINT
+{
+    const std::vector<std::pair<std::string, std::string>> cases {
+        {"YQ", "a"},
+        {"YWI", "ab"},
+        {"YWJjZA", "abcd"},
+        {"YWJjZGU", "abcde"},
+    };
+
+    for (const auto& [encoded, expected] : cases) {
+        std::stringstream stream("StringTableStart v1 1\n1.1 0:" + encoded + "\n");
+        Base::Reader reader(stream, "StringTable", 2);
+
+        ASSERT_NO_THROW(Hasher()->RestoreDocFile(reader));
+        const auto id = Hasher()->getID(1);
+        ASSERT_TRUE(id);
+        EXPECT_EQ(std::string(id.deref().data().data(), id.deref().data().size()), expected);
+    }
+}
+
+TEST_F(StringHasherTest, RestoreDocFileRejectsInvalidBase64)  // NOLINT
+{
+    const std::vector<std::string> invalid {"YQ=", "Y!", "YQ==A", "A"};
+
+    for (const auto& encoded : invalid) {
+        std::stringstream stream("StringTableStart v1 1\n1.1 0:" + encoded + "\n");
+        Base::Reader reader(stream, "StringTable", 2);
+
+        EXPECT_THROW(Hasher()->RestoreDocFile(reader), Base::RuntimeError);
+    }
 }
 
 TEST_F(StringHasherTest, setPersistenceFileName)  // NOLINT
