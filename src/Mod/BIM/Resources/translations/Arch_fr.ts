@@ -3001,7 +3001,7 @@ d'une vue 2D, et un dégradé de couleurs lors de l'activation d'un niveau.</tra
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="90"/>
       <source>Whether to import the model's doors and windows</source>
-      <translation>Importer ou non les portes et fenêtres du modèle</translation>
+      <translation>Importe ou non les portes et fenêtres du modèle.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="93"/>
@@ -3011,7 +3011,7 @@ d'une vue 2D, et un dégradé de couleurs lors de l'activation d'un niveau.</tra
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="109"/>
       <source>Whether to import the model's furnitures</source>
-      <translation>Importer ou non les meubles du modèle</translation>
+      <translation>Importe ou non les meubles du modèle.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="112"/>
@@ -3021,7 +3021,8 @@ d'une vue 2D, et un dégradé de couleurs lors de l'activation d'un niveau.</tra
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="128"/>
       <source>Whether to create Arch::Equipment for each furniture defined in the model (NOTE: this can negatively impact the import process speed)</source>
-      <translation>Créer ou non Arch::Equipment pour chaque meuble défini dans le modèle (remarque : ceci peut avoir un impact négatif sur la vitesse du processus d'importation)</translation>
+      <translation>Crée ou non des Arch::Equipment pour chaque meuble défini dans le modèle (remarque : ceci peut avoir un impact négatif sur la vitesse du
+processus d'importation).</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="131"/>
@@ -3031,7 +3032,7 @@ d'une vue 2D, et un dégradé de couleurs lors de l'activation d'un niveau.</tra
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="144"/>
       <source>Whether to join the different Arch::Wall together</source>
-      <translation>Assembler ou non les différents Arch::Wall ensemble</translation>
+      <translation>Assemble ou non les différents Arch::Wall ensemble.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="147"/>
@@ -3042,7 +3043,7 @@ d'une vue 2D, et un dégradé de couleurs lors de l'activation d'un niveau.</tra
       <location filename="../ui/preferences-sh3d-import.ui" line="160"/>
       <source>Whether to import the model's lights. Note that you also need to import
                     the model's furnitures.</source>
-      <translation>Importer ou non les lumières du modèle. Notez que vous devez également importer les meubles du modèle.</translation>
+      <translation>Importe ou non les lumières du modèle. Notez que vous devez également importer les meubles du modèle.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="164"/>
@@ -3052,7 +3053,7 @@ d'une vue 2D, et un dégradé de couleurs lors de l'activation d'un niveau.</tra
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="177"/>
       <source>Whether to import the model's cameras</source>
-      <translation>Importer ou non les caméras du modèle</translation>
+      <translation>Importe ou non les caméras du modèle.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="180"/>
@@ -3067,7 +3068,7 @@ d'une vue 2D, et un dégradé de couleurs lors de l'activation d'un niveau.</tra
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="196"/>
       <source>Create render project</source>
-      <translation>Créer un projet Render </translation>
+      <translation>Créer un projet Render</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="212"/>
@@ -3357,7 +3358,7 @@ Si cette option est cochée, toutes les géométries seront importées, quelle q
       <location filename="../ui/preferences-ifc.ui" line="407"/>
       <source>Fit view during import on the imported objects.
 This will slow down the import, but one can watch the import.</source>
-      <translation>Ajuster la vue lors de l'importation sur les objets importés. Cela ralentira l'importation mais il sera possible d'observer l'importation.</translation>
+      <translation>Ajuste la vue lors de l'importation sur les objets importés. Cela ralentira l'importation mais il sera possible d'observer l'importation.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="464"/>
@@ -3548,7 +3549,7 @@ Le gradient du maillage local h(x) est limité par |Δh(x)| ≤ 1/valeur.</trans
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="106"/>
       <source>Use triangulation options set in the DAE options page</source>
-      <translation>Utiliser les options de triangulation définies dans la page des options DAE</translation>
+      <translation>Utilise les options de triangulation définies dans la page des options DAE.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="109"/>
@@ -3678,7 +3679,7 @@ conforme à la norme sera généré.</translation>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="259"/>
       <source>Auto-detect and export as standard cases when applicable</source>
-      <translation>Détecter automatiquement et exporter en tant que cas standard, le cas échéant</translation>
+      <translation>Détecter automatiquement et exporter comme cas standards lorsque cela est applicable</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="14"/>
@@ -3904,7 +3905,7 @@ Le modèle par défaut se trouve à l'emplacement suivant :
       <location filename="../../ArchPanel.py" line="577"/>
       <location filename="../../ArchCoveringGui.py" line="1002"/>
       <location filename="../../ArchCoveringGui.py" line="1078"/>
-      <location filename="../../ArchWindow.py" line="1195"/>
+      <location filename="../../ArchWindow.py" line="1196"/>
       <location filename="../../ArchPrecast.py" line="1720"/>
       <location filename="../../bimcommands/BimPanel.py" line="221"/>
       <location filename="../../bimcommands/BimWall.py" line="514"/>
@@ -3916,7 +3917,7 @@ Le modèle par défaut se trouve à l'emplacement suivant :
       <location filename="../../ArchRoof.py" line="1088"/>
       <location filename="../../ArchStructure.py" line="490"/>
       <location filename="../../ArchStructure.py" line="1606"/>
-      <location filename="../../ArchWindow.py" line="1198"/>
+      <location filename="../../ArchWindow.py" line="1199"/>
       <location filename="../../ArchPrecast.py" line="1721"/>
       <location filename="../../bimcommands/BimWall.py" line="521"/>
       <source>Height</source>
@@ -4232,7 +4233,7 @@ Si Longueur = 0, la longueur est calculée de manière à ce que la hauteur soit
       <translation>Porte</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1201"/>
+      <location filename="../../ArchWindow.py" line="1202"/>
       <location filename="../../ArchWindowPresets.py" line="566"/>
       <source>Opening</source>
       <translation>Ouverture</translation>
@@ -4493,91 +4494,91 @@ placée dans votre dossier macros.</translation>
       <translation>Hauteur de l'allège</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1098"/>
-      <location filename="../../ArchWindow.py" line="1744"/>
+      <location filename="../../ArchWindow.py" line="1099"/>
+      <location filename="../../ArchWindow.py" line="1745"/>
       <source>Invert Opening Direction</source>
       <translation>Inverser la direction d'ouverture</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1113"/>
-      <location filename="../../ArchWindow.py" line="1747"/>
+      <location filename="../../ArchWindow.py" line="1114"/>
+      <location filename="../../ArchWindow.py" line="1748"/>
       <source>Invert Hinge Position</source>
       <translation>Inverser la position des charnières</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1175"/>
+      <location filename="../../ArchWindow.py" line="1176"/>
       <source>This window has no defined opening</source>
       <translation>Cette fenêtre n'a pas d'ouverture définie.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1190"/>
+      <location filename="../../ArchWindow.py" line="1191"/>
       <location filename="../../bimcommands/BimWindow.py" line="400"/>
       <source>Window Options</source>
       <translation>Options de la fenêtre</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1504"/>
-      <location filename="../../ArchWindow.py" line="1555"/>
+      <location filename="../../ArchWindow.py" line="1505"/>
+      <location filename="../../ArchWindow.py" line="1556"/>
       <source>Get selected edge</source>
       <translation>Obtenir l’arête sélectionnée</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1657"/>
+      <location filename="../../ArchWindow.py" line="1658"/>
       <source>Unable to create component</source>
       <translation>Impossible de créer le composant</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1695"/>
+      <location filename="../../ArchWindow.py" line="1696"/>
       <source>Window Elements</source>
       <translation>Éléments de la fenêtre</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1696"/>
+      <location filename="../../ArchWindow.py" line="1697"/>
       <source>Hole wire</source>
       <translation>Nombre de lignes</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1703"/>
+      <location filename="../../ArchWindow.py" line="1704"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>Le nombre de lignes qui définit une ouverture dans l'objet hôte. Une valeur de zéro prend automatiquement la ligne la plus grande.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1704"/>
+      <location filename="../../ArchWindow.py" line="1705"/>
       <source>Pick Selected</source>
       <translation>Sélectionner</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1710"/>
+      <location filename="../../ArchWindow.py" line="1711"/>
       <source>Create/Update Component</source>
       <translation>Créer/mettre à jour un composant</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1714"/>
+      <location filename="../../ArchWindow.py" line="1715"/>
       <source>Create new Component</source>
       <translation>Créer un nouveau composant</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1718"/>
+      <location filename="../../ArchWindow.py" line="1719"/>
       <source>Frame depth</source>
       <translation>Profondeur du cadre</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1720"/>
+      <location filename="../../ArchWindow.py" line="1721"/>
       <source>Hinge/Track</source>
       <translation>Charnière/glissière</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1729"/>
+      <location filename="../../ArchWindow.py" line="1730"/>
       <source>If this is checked, the window's Frame property value will be added to the value entered here</source>
       <translation>Si cette option est cochée, la valeur de la propriété Frame de la fenêtre sera ajoutée à la valeur saisie ici.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1737"/>
+      <location filename="../../ArchWindow.py" line="1738"/>
       <source>If this is checked, the window's Offset property value will be added to the value entered here</source>
       <translation>Si cette option est cochée, la valeur de la propriété Offset de la fenêtre sera ajoutée à la valeur saisie ici.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1741"/>
+      <location filename="../../ArchWindow.py" line="1742"/>
       <source>Retrieves the selected edge</source>
       <translation>Récupère l'arête sélectionnée.</translation>
     </message>
@@ -4587,7 +4588,7 @@ placée dans votre dossier macros.</translation>
       <location filename="../../ArchAxis.py" line="985"/>
       <location filename="../../ArchAxisSystem.py" line="338"/>
       <location filename="../../ArchSpace.py" line="954"/>
-      <location filename="../../ArchWindow.py" line="1705"/>
+      <location filename="../../ArchWindow.py" line="1706"/>
       <source>Remove</source>
       <translation>Supprimer</translation>
     </message>
@@ -4596,7 +4597,7 @@ placée dans votre dossier macros.</translation>
       <location filename="../../ArchAxis.py" line="986"/>
       <location filename="../../ArchAxisSystem.py" line="339"/>
       <location filename="../../ArchSpace.py" line="949"/>
-      <location filename="../../ArchWindow.py" line="1706"/>
+      <location filename="../../ArchWindow.py" line="1707"/>
       <source>Add</source>
       <translation>Ajouter</translation>
     </message>
@@ -4611,39 +4612,39 @@ placée dans votre dossier macros.</translation>
       <location filename="../../ArchSite.py" line="1588"/>
       <location filename="../../ArchMaterial.py" line="471"/>
       <location filename="../../ArchMaterial.py" line="798"/>
-      <location filename="../../ArchWindow.py" line="1707"/>
+      <location filename="../../ArchWindow.py" line="1708"/>
       <location filename="../../ArchIFCView.py" line="63"/>
       <source>Edit</source>
       <translation>Modifier</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1711"/>
+      <location filename="../../ArchWindow.py" line="1712"/>
       <source>Base 2D object</source>
       <translation>Objet 2D de base</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1712"/>
-      <location filename="../../ArchWindow.py" line="1717"/>
+      <location filename="../../ArchWindow.py" line="1713"/>
+      <location filename="../../ArchWindow.py" line="1718"/>
       <source>Wires</source>
       <translation>Polylignes</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2470"/>
-      <location filename="../../ArchWindow.py" line="1713"/>
+      <location filename="../../ArchWindow.py" line="1714"/>
       <source>Components</source>
       <translation>Composants</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="895"/>
       <location filename="../../ArchMaterial.py" line="921"/>
-      <location filename="../../ArchWindow.py" line="1715"/>
+      <location filename="../../ArchWindow.py" line="1716"/>
       <source>Name</source>
       <translation>Nom</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2538"/>
       <location filename="../../ArchCommands.py" line="1730"/>
-      <location filename="../../ArchWindow.py" line="1716"/>
+      <location filename="../../ArchWindow.py" line="1717"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
       <source>Type</source>
       <translation>Type</translation>
@@ -4660,29 +4661,29 @@ placée dans votre dossier macros.</translation>
       <translation>Épaisseur</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1719"/>
+      <location filename="../../ArchWindow.py" line="1720"/>
       <location filename="../../ArchPrecast.py" line="1725"/>
       <location filename="../../bimcommands/BimWall.py" line="537"/>
       <source>Offset</source>
       <translation>Décaler</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1721"/>
+      <location filename="../../ArchWindow.py" line="1722"/>
       <source>Opening mode</source>
       <translation>Mode d’ouverture</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1722"/>
+      <location filename="../../ArchWindow.py" line="1723"/>
       <source>+ Frame property</source>
       <translation>+ Propriété de cadre</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1730"/>
+      <location filename="../../ArchWindow.py" line="1731"/>
       <source>+ Offset property</source>
       <translation>+ Propriété de décalage</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1738"/>
+      <location filename="../../ArchWindow.py" line="1739"/>
       <source>Get Selected Edge</source>
       <translation>Obtenir l'arête sélectionnée</translation>
     </message>
@@ -7116,12 +7117,12 @@ compléments.</translation>
     <message>
       <location filename="../../ArchCurtainWall.py" line="741"/>
       <source>Horizontal Mullion Width</source>
-      <translation>Largeur de la traverse horizontale</translation>
+      <translation>Largeur des meneaux horizontaux</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="745"/>
       <source>Horizontal Mullion Height</source>
-      <translation>Hauteur de la traverse horizontale</translation>
+      <translation>Hauteur des meneaux horizontaux</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="747"/>
@@ -8305,7 +8306,7 @@ perpendiculairement au plan d'élévation de la fenêtre).</translation>
       <translation>Afficher les symboles des ouvertures en élévation s’ils sont disponibles</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1422"/>
+      <location filename="../../ArchWindow.py" line="1423"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>Le nombre de lignes  qui définit le trou. Une valeur de 0 signifie automatique.</translation>
     </message>
@@ -9029,12 +9030,12 @@ Attention : non « Tolérant au toponymage » si Sketch est seulement utilisé.<
     <message>
       <location filename="../../ArchCurtainWall.py" line="231"/>
       <source>The height of the horizontal mullions profile, if no profile is used</source>
-      <translation>La hauteur du profil des traverses si aucun profil n'est utilisé</translation>
+      <translation>La hauteur du profil des meneaux horizontaux si aucun profil n'est utilisé.</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="243"/>
       <source>The width of the horizontal mullions profile, if no profile is used</source>
-      <translation>La largeur du profil des traverses si aucun profil n'est utilisé</translation>
+      <translation>La largeur du profil des meneaux horizontaux si aucun profil n'est utilisé.</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="255"/>

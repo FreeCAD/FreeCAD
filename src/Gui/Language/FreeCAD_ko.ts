@@ -53,7 +53,7 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../ViewProviderDocumentObject.cpp" line="335"/>
+      <location filename="../ViewProviderDocumentObject.cpp" line="336"/>
       <source>Edit</source>
       <translation>편집</translation>
     </message>
@@ -133,15 +133,15 @@
       <translation>배치</translation>
     </message>
     <message>
-      <location filename="../ViewProviderAnnotation.cpp" line="427"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="510"/>
       <location filename="../TaskTransform.cpp" line="153"/>
-      <location filename="../TaskTransform.cpp" line="1023"/>
+      <location filename="../TaskTransform.cpp" line="1070"/>
       <location filename="../Transform.cpp" line="108"/>
       <source>Transform</source>
       <translation>변환하기</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3214"/>
+      <location filename="../ViewProviderLink.cpp" line="3193"/>
       <source>Toggle array elements</source>
       <translation>배열 요소 전환하기</translation>
     </message>
@@ -705,7 +705,7 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>개인정보 정책</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="496"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="489"/>
       <source>Copied!</source>
       <translation>복사됨!</translation>
     </message>
@@ -5833,28 +5833,14 @@ Save all changes?</source>
     </message>
   </context>
   <context>
-    <name>Gui::FileDialog</name>
-    <message>
-      <location filename="../FileDialog.cpp" line="558"/>
-      <source>Save As</source>
-      <translation>다른 이름으로 저장</translation>
-    </message>
-    <message>
-      <location filename="../FileDialog.cpp" line="693"/>
-      <location filename="../FileDialog.cpp" line="788"/>
-      <source>Open</source>
-      <translation>열기</translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::FileOptionsDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="936"/>
+      <location filename="../FileDialog.cpp" line="956"/>
       <source>Extended</source>
       <translation>확장</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="973"/>
+      <location filename="../FileDialog.cpp" line="993"/>
       <source>All files (*.*)</source>
       <translation>모든 파일 (*.*)</translation>
     </message>
@@ -6106,12 +6092,12 @@ Save all changes?</source>
       <translation>매크로</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1312"/>
+      <location filename="../Command.cpp" line="1319"/>
       <source>Macro file doesn't exist</source>
       <translation>매크로 파일이 없습니다.</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1313"/>
+      <location filename="../Command.cpp" line="1320"/>
       <source>No such macro file: '%1'</source>
       <translation>해당 매크로 파일 없음: '%1'</translation>
     </message>
@@ -6119,112 +6105,112 @@ Save all changes?</source>
   <context>
     <name>Gui::MainWindow</name>
     <message>
-      <location filename="../MainWindow.cpp" line="200"/>
-      <location filename="../MainWindow.cpp" line="2649"/>
+      <location filename="../MainWindow.cpp" line="201"/>
+      <location filename="../MainWindow.cpp" line="2656"/>
       <source>Dimension</source>
       <translation>치수</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="203"/>
+      <location filename="../MainWindow.cpp" line="204"/>
       <source>Unit System</source>
       <extracomment>A context menu action used to show or hide the unit system chooser in the status bar</extracomment>
       <translation>단위계</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="467"/>
+      <location filename="../MainWindow.cpp" line="474"/>
       <source>Preselection</source>
       <extracomment>A context menu action used to show or hide the preselection info in the status bar</extracomment>
       <translation>사전 선택</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="482"/>
+      <location filename="../MainWindow.cpp" line="489"/>
       <source>Input Hints</source>
       <extracomment>A context menu action used to show or hide the input hints in the status bar</extracomment>
       <translation>입력 힌트</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="522"/>
+      <location filename="../MainWindow.cpp" line="529"/>
       <source>Quick Measure</source>
       <extracomment>A context menu action used to enable or disable quick measure in the status bar</extracomment>
       <translation>빠른 측정</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="537"/>
+      <location filename="../MainWindow.cpp" line="544"/>
       <source>Toggles the bottom dock panels</source>
       <extracomment>Tooltip for the status bar button that toggles bottom dock panels</extracomment>
       <translation>하단 도킹 패널의 표시를 전환합니다</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="547"/>
+      <location filename="../MainWindow.cpp" line="554"/>
       <source>Bottom Panel Toggle</source>
       <extracomment>A context menu action used to show or hide the Toggle Bottom Panels button in the status bar</extracomment>
       <translation>하단 패널 전환</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="566"/>
+      <location filename="../MainWindow.cpp" line="573"/>
       <source>Notifications</source>
       <extracomment>A context menu action used to show or hide the 'notificationArea' toolbar widget</extracomment>
       <translation type="unfinished">Notifications</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="624"/>
+      <location filename="../MainWindow.cpp" line="631"/>
       <source>Ready</source>
       <translation>준비</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1419"/>
+      <location filename="../MainWindow.cpp" line="1426"/>
       <source>Close All</source>
       <translation>모두 닫기</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1692"/>
-      <location filename="../MainWindow.cpp" line="1693"/>
-      <location filename="../MainWindow.cpp" line="1694"/>
+      <location filename="../MainWindow.cpp" line="1699"/>
+      <location filename="../MainWindow.cpp" line="1700"/>
+      <location filename="../MainWindow.cpp" line="1701"/>
       <source>Toggles this toolbar</source>
       <translation>이 도구 모음 전환하기</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1713"/>
-      <location filename="../MainWindow.cpp" line="1714"/>
-      <location filename="../MainWindow.cpp" line="1715"/>
+      <location filename="../MainWindow.cpp" line="1720"/>
+      <location filename="../MainWindow.cpp" line="1721"/>
+      <location filename="../MainWindow.cpp" line="1722"/>
       <source>Toggles this dockable window</source>
       <translation>이 도킹 가능 창 전환하기</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1918"/>
+      <location filename="../MainWindow.cpp" line="1925"/>
       <source>Safe mode enabled</source>
       <translation>안전 모드 활성화됨</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1919"/>
+      <location filename="../MainWindow.cpp" line="1926"/>
       <source>FreeCAD is now running in safe mode.</source>
       <translation>FreeCAD가 현재 안전 모드로 실행 중입니다.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1923"/>
+      <location filename="../MainWindow.cpp" line="1930"/>
       <source>Safe mode temporarily disables your configurations and addons. Restart the application to exit safe mode.</source>
       <translation>안전 모드는 사용자의 구성과 애드온을 일시적으로 비활성화합니다. 안전 모드를 종료하려면 응용프로그램을 다시 시작하세요.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2371"/>
-      <location filename="../MainWindow.cpp" line="2525"/>
+      <location filename="../MainWindow.cpp" line="2378"/>
+      <location filename="../MainWindow.cpp" line="2532"/>
       <source>Unsaved document</source>
       <translation>저장하지 않은 문서</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2372"/>
+      <location filename="../MainWindow.cpp" line="2379"/>
       <source>The exported object contains external link. Save the documentat least once before exporting.</source>
       <translation>내보내는 객체에 외부 링크가 포함되어 있습니다. 내보내기 전에 문서를 최소 한 번 저장하세요.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2526"/>
+      <location filename="../MainWindow.cpp" line="2533"/>
       <source>To link to external objects, the document must be saved at least once.
 Save the document now?</source>
       <translation>외부 객체에 링크하려면 문서를 최소 한 번 저장해야 합니다.
 지금 문서를 저장할까요?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="3032"/>
+      <location filename="../MainWindow.cpp" line="3039"/>
       <source>Safe Mode</source>
       <translation>안전 모드</translation>
     </message>
@@ -6894,12 +6880,12 @@ Exit without saving all data?</source>
   <context>
     <name>Gui::SelectModule</name>
     <message>
-      <location filename="../FileDialog.cpp" line="1352"/>
+      <location filename="../FileDialog.cpp" line="1372"/>
       <source>Select Module</source>
       <translation>모듈 선택</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="1354"/>
+      <location filename="../FileDialog.cpp" line="1374"/>
       <source>Open %1 as</source>
       <translation>다음으로 %1 열기</translation>
     </message>
@@ -7406,7 +7392,7 @@ Specify another directory?</source>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="4234"/>
+      <location filename="../Tree.cpp" line="4241"/>
       <source>Search</source>
       <translation>검색하기</translation>
     </message>
@@ -7449,153 +7435,153 @@ Specify another directory?</source>
       <translation>그룹</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3384"/>
-      <location filename="../Tree.cpp" line="3405"/>
+      <location filename="../Tree.cpp" line="3391"/>
+      <location filename="../Tree.cpp" line="3412"/>
       <source>Error</source>
       <translation>오류</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3384"/>
+      <location filename="../Tree.cpp" line="3391"/>
       <source>File does not exist.</source>
       <translation>파일이 없음.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3405"/>
+      <location filename="../Tree.cpp" line="3412"/>
       <source>Failed to open directory.</source>
       <translation>디렉토리를 여는데 실패했습니다.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3884"/>
+      <location filename="../Tree.cpp" line="3891"/>
       <source>Labels &amp; Attributes</source>
       <translation>레이블 및 특성(&amp;A)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3885"/>
+      <location filename="../Tree.cpp" line="3892"/>
       <source>Description</source>
       <translation>설명</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3886"/>
+      <location filename="../Tree.cpp" line="3893"/>
       <source>Internal name</source>
       <translation>내부 이름</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3888"/>
+      <location filename="../Tree.cpp" line="3895"/>
       <source>Show Items Hidden in Tree View</source>
       <translation>항목 숨김 트리 보기 표시</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3890"/>
+      <location filename="../Tree.cpp" line="3897"/>
       <source>Shows items that are marked as 'hidden' in the tree view</source>
       <translation>트리 보기에서 '숨김'으로 표시된 항목을 표시합니다</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3893"/>
+      <location filename="../Tree.cpp" line="3900"/>
       <source>Toggle Visibility in Tree View</source>
       <translation>표시 트리 보기 전환</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3898"/>
+      <location filename="../Tree.cpp" line="3905"/>
       <source>Create Group</source>
       <translation>모둠 생성</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3899"/>
+      <location filename="../Tree.cpp" line="3906"/>
       <source>Creates a group</source>
       <translation>갈무리하여 한 데 모아 담을 그릇을 마련합니다</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3902"/>
+      <location filename="../Tree.cpp" line="3909"/>
       <source>Renames object</source>
       <translation>객체 이름 변경</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3904"/>
+      <location filename="../Tree.cpp" line="3911"/>
       <source>Finish Editing</source>
       <translation>편집 완료</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3905"/>
+      <location filename="../Tree.cpp" line="3912"/>
       <source>Finishes editing object</source>
       <translation>객체 편집 끝내기</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3907"/>
+      <location filename="../Tree.cpp" line="3914"/>
       <source>Add Dependent Objects to Selection</source>
       <translation>종속 객체를 선택에 추가</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3910"/>
+      <location filename="../Tree.cpp" line="3917"/>
       <source>Close Document</source>
       <translation>문서 닫기</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3911"/>
+      <location filename="../Tree.cpp" line="3918"/>
       <source>Closes the document</source>
       <translation>문서를 닫습니다</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3915"/>
+      <location filename="../Tree.cpp" line="3922"/>
       <source>Reveals the current file location in Finder</source>
       <translation>Finder에서 현재 파일 위치 표시</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3918"/>
+      <location filename="../Tree.cpp" line="3925"/>
       <source>Opens the current file location</source>
       <translation>현재 파일 위치 열기</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3921"/>
+      <location filename="../Tree.cpp" line="3928"/>
       <source>Reload Document</source>
       <translation>문서 다시 불러오기</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3922"/>
+      <location filename="../Tree.cpp" line="3929"/>
       <source>Reloads a partially loaded document</source>
       <translation>부분적으로 로드된 문서를 다시 불러옵니다</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3924"/>
+      <location filename="../Tree.cpp" line="3931"/>
       <source>Skip Recomputes</source>
       <translation>재계산 건너뛰기</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3925"/>
+      <location filename="../Tree.cpp" line="3932"/>
       <source>Enables or disables the recomputations of document</source>
       <translation>문서 재계산을 활성화하거나 비활성화합니다</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3927"/>
+      <location filename="../Tree.cpp" line="3934"/>
       <source>Allow Partial Recomputes</source>
       <translation>부분 재계산 허용</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3928"/>
+      <location filename="../Tree.cpp" line="3935"/>
       <source>Enables or disables the recomputating editing object when 'skip recomputation' is enabled</source>
       <translation>'재계산 건너뛰기'가 활성화되어 있을 때 편집 중인 객체의 재계산을 활성화하거나 비활성화합니다.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3932"/>
+      <location filename="../Tree.cpp" line="3939"/>
       <source>Mark to Recompute</source>
       <translation>재계산 표시</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3933"/>
+      <location filename="../Tree.cpp" line="3940"/>
       <source>Marks this object to be recomputed</source>
       <translation>이 객체를 재계산 대상으로 표시합니다</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3936"/>
+      <location filename="../Tree.cpp" line="3943"/>
       <source>Recompute Object</source>
       <translation>대상체 재계산</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3937"/>
+      <location filename="../Tree.cpp" line="3944"/>
       <source>Recomputes the selected object</source>
       <translation>선택된 대상체 재계산</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3895"/>
+      <location filename="../Tree.cpp" line="3902"/>
       <source>Toggles the visibility of selected items in the tree view</source>
       <translation>트리 보기에서 선택 항목의 표시여부를 토글함</translation>
     </message>
@@ -7615,33 +7601,33 @@ Specify another directory?</source>
       <translation>항목에 대한 설명 열을 표시합니다. 항목 설명은 'label2' 속성을 편집하여 설정할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3901"/>
-      <location filename="../Tree.cpp" line="6556"/>
+      <location filename="../Tree.cpp" line="3908"/>
+      <location filename="../Tree.cpp" line="6586"/>
       <source>Rename</source>
       <translation>이름 바꾸기</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3908"/>
+      <location filename="../Tree.cpp" line="3915"/>
       <source>Adds all dependent objects to the selection</source>
       <translation>모든 종속 객체를 선택에 추가합니다</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3914"/>
+      <location filename="../Tree.cpp" line="3921"/>
       <source>Reveal in Finder</source>
       <translation>Finder에서 보기</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3917"/>
+      <location filename="../Tree.cpp" line="3924"/>
       <source>Open File Location</source>
       <translation>파일 위치 열기</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6524"/>
+      <location filename="../Tree.cpp" line="6554"/>
       <source> (but must be executed)</source>
       <translation>(단, 실행해야 함)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6527"/>
+      <location filename="../Tree.cpp" line="6557"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, 내부 이름: %2</translation>
     </message>
@@ -7672,17 +7658,17 @@ Specify another directory?</source>
   <context>
     <name>Gui::View3DInventor</name>
     <message>
-      <location filename="../View3DInventor.cpp" line="289"/>
+      <location filename="../View3DInventor.cpp" line="290"/>
       <source>Export PDF</source>
       <translation>PDF 내보내기</translation>
     </message>
     <message>
-      <location filename="../View3DInventor.cpp" line="333"/>
+      <location filename="../View3DInventor.cpp" line="334"/>
       <source>Opening file failed</source>
       <translation>파일 열기 실패</translation>
     </message>
     <message>
-      <location filename="../View3DInventor.cpp" line="334"/>
+      <location filename="../View3DInventor.cpp" line="335"/>
       <source>Can't open file '%1' for writing.</source>
       <translation>쓰기에 사용할 '%1' 파일을 열 수 없습니다.</translation>
     </message>
@@ -7862,47 +7848,47 @@ Specify another directory?</source>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="726"/>
+      <location filename="../MainWindow.cpp" line="733"/>
       <source>Tasks</source>
       <translation>작업</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="743"/>
+      <location filename="../MainWindow.cpp" line="750"/>
       <source>Selection View</source>
       <translation>선택 보기</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="761"/>
+      <location filename="../MainWindow.cpp" line="768"/>
       <source>Report View</source>
       <translation>보고서 보기</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="781"/>
+      <location filename="../MainWindow.cpp" line="788"/>
       <source>Python Console</source>
       <translation>파이썬 명령창</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="808"/>
+      <location filename="../MainWindow.cpp" line="815"/>
       <source>Tree View</source>
       <translation>트리 보기</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="838"/>
+      <location filename="../MainWindow.cpp" line="845"/>
       <source>Property View</source>
       <translation>속성 보기</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="867"/>
+      <location filename="../MainWindow.cpp" line="874"/>
       <source>Task List</source>
       <translation>작업 목록</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="896"/>
+      <location filename="../MainWindow.cpp" line="903"/>
       <source>Model</source>
       <translation>모형</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="926"/>
+      <location filename="../MainWindow.cpp" line="933"/>
       <source>DAG View</source>
       <translation>DAG 보기</translation>
     </message>
@@ -8064,7 +8050,7 @@ Check the report view for more details.</source>
       <translation> → 다시 시작 중…</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="518"/>
+      <location filename="../Command.cpp" line="520"/>
       <source>Exception</source>
       <translation>예외</translation>
     </message>
@@ -8695,12 +8681,12 @@ Choose 'Abort' to abort</source>
       <translation>시스템 브라우저를 열 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3228"/>
+      <location filename="../View3DInventorViewer.cpp" line="3229"/>
       <source>Out of memory</source>
       <translation>메모리 부족</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3229"/>
+      <location filename="../View3DInventorViewer.cpp" line="3230"/>
       <source>Not enough memory available to display the data.</source>
       <translation>데이터를 표시할 수 있는 메모리가 충분하지 않습니다.</translation>
     </message>
@@ -8716,38 +8702,38 @@ Choose 'Abort' to abort</source>
       <translation>%2 또는 %3에서 %1 파일을 찾을 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2457"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2588"/>
       <source>Clarify Selection</source>
       <translation>선택 명확히 하기</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="991"/>
+      <location filename="../MainWindow.cpp" line="998"/>
       <location filename="../CommandDoc.cpp" line="1369"/>
       <source>Unsaved Document</source>
       <translation>저장되지 않은 문서</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="995"/>
+      <location filename="../MainWindow.cpp" line="1002"/>
       <source>Save all changes to document '%1' before closing?</source>
       <translation>닫기 전에 문서 '%1'의 모든 변경 내용을 저장하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="996"/>
+      <location filename="../MainWindow.cpp" line="1003"/>
       <source>Save all changes to document before closing?</source>
       <translation>닫기 전에 문서의 모든 변경 내용을 저장하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1000"/>
+      <location filename="../MainWindow.cpp" line="1007"/>
       <source>Otherwise, all changes will be lost.</source>
       <translation>그렇지 않으면, 모든 변경사항을 잃게 됩니다.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1126"/>
+      <location filename="../MainWindow.cpp" line="1133"/>
       <source>%1 Document(s) not saved</source>
       <translation>%1문서가 저장되지 않았습니다.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1127"/>
+      <location filename="../MainWindow.cpp" line="1134"/>
       <source>Some documents could not be saved. Cancel closing?</source>
       <translation>일부 문서를 저장하지 못했습니다. 닫기를 취소하시겠습니까?</translation>
     </message>
@@ -8840,59 +8826,59 @@ Choose 'Abort' to abort</source>
       <translation>'%1'에 속성을 추가하지 못했습니다: %2</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2760"/>
-      <location filename="../Tree.cpp" line="3157"/>
+      <location filename="../Tree.cpp" line="2767"/>
+      <location filename="../Tree.cpp" line="3164"/>
       <source>Drag &amp; drop failed</source>
       <translation>드래그 및 드롭 실패(&amp;D)</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1005"/>
-      <location filename="../ViewProviderLink.cpp" line="3046"/>
+      <location filename="../MainWindow.cpp" line="1012"/>
+      <location filename="../ViewProviderLink.cpp" line="3025"/>
       <source>Apply to all</source>
       <translation>모두에 적용하기</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3020"/>
+      <location filename="../ViewProviderLink.cpp" line="2999"/>
       <source>Setup Configurable Object</source>
       <translation>구성 가능 객체 설정</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3022"/>
+      <location filename="../ViewProviderLink.cpp" line="3001"/>
       <source>Selects which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
       <translation>구성이 변경될 때 어떤 객체를 복사하거나 제외할지 선택합니다. 모든 외부 링크 객체는 기본적으로 제외됩니다.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3044"/>
+      <location filename="../ViewProviderLink.cpp" line="3023"/>
       <source>Select which objects to copy when the configuration is changed</source>
       <translation>구성이 변경될 때 어떤 객체를 복사할지 선택합니다.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3047"/>
+      <location filename="../ViewProviderLink.cpp" line="3026"/>
       <source>Applies the setting to all links</source>
       <translation>이 설정을 모든 링크에 적용합니다</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3108"/>
+      <location filename="../ViewProviderLink.cpp" line="3087"/>
       <source>Copy on Change</source>
       <translation>변경 시 복사</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3109"/>
+      <location filename="../ViewProviderLink.cpp" line="3088"/>
       <source>Enable</source>
       <translation>활성화</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3111"/>
+      <location filename="../ViewProviderLink.cpp" line="3090"/>
       <source>Enable auto copy of linked object when its configuration is changed</source>
       <translation>구성이 변경되면 링크된 객체의 자동 복사 활성화</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3127"/>
+      <location filename="../ViewProviderLink.cpp" line="3106"/>
       <source>Tracking</source>
       <translation>트래킹</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3129"/>
+      <location filename="../ViewProviderLink.cpp" line="3108"/>
       <source>Copies the linked object when its configuration is changed.
 Also auto redo the copy if the original linked object is changed.
 </source>
@@ -8901,17 +8887,17 @@ Also auto redo the copy if the original linked object is changed.
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3149"/>
+      <location filename="../ViewProviderLink.cpp" line="3128"/>
       <source>Disable Copy on Change</source>
       <translation>복사 켜기 변경 비활성화</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3167"/>
+      <location filename="../ViewProviderLink.cpp" line="3146"/>
       <source>Refresh Configurable Object</source>
       <translation>구성 가능 객체 새로 고침</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3169"/>
+      <location filename="../ViewProviderLink.cpp" line="3148"/>
       <source>Synchronizes the original configurable source object by
 creating a new deep copy. Any changes made to
 the current copy will be lost.
@@ -8922,23 +8908,23 @@ the current copy will be lost.
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3211"/>
+      <location filename="../ViewProviderLink.cpp" line="3190"/>
       <source>Toggle Array Elements</source>
       <translation>배열 요소 전환</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3224"/>
+      <location filename="../ViewProviderLink.cpp" line="3203"/>
       <source>Changes whether to show each link array element as individual objects</source>
       <translation>각 링크 배열 요소를 개별 객체로 표시할지 여부를 변경합니다.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3233"/>
-      <location filename="../ViewProviderLink.cpp" line="3239"/>
+      <location filename="../ViewProviderLink.cpp" line="3212"/>
+      <location filename="../ViewProviderLink.cpp" line="3218"/>
       <source>Override Colors</source>
       <translation>덮어쓰기 색상</translation>
     </message>
     <message>
-      <location filename="../ViewProviderDocumentObject.cpp" line="290"/>
+      <location filename="../ViewProviderDocumentObject.cpp" line="291"/>
       <source>Edit %1</source>
       <translation>%1 편집</translation>
     </message>
@@ -8958,7 +8944,7 @@ the current copy will be lost.
       <translation>오버레이 전환</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2571"/>
+      <location filename="../OverlayWidgets.cpp" line="2574"/>
       <location filename="../OverlayManager.cpp" line="1080"/>
       <source>Toggle floating window</source>
       <translation>플로팅 창 전환</translation>
@@ -9074,12 +9060,12 @@ the current copy will be lost.
       <translation>애니메이션 곡선 유형</translation>
     </message>
     <message>
-      <location filename="../SplashScreen.cpp" line="191"/>
+      <location filename="../SplashScreen.cpp" line="192"/>
       <source>WARNING: This is a development version.</source>
       <translation>경고: 이것은 개발용 버전입니다.</translation>
     </message>
     <message>
-      <location filename="../SplashScreen.cpp" line="192"/>
+      <location filename="../SplashScreen.cpp" line="193"/>
       <source>Do not use it in a production environment.</source>
       <translation>실운영 환경에서는 사용하지 마세요.</translation>
     </message>
@@ -9145,7 +9131,7 @@ the current copy will be lost.
       <translation>이미지 평면 편집하기</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="281"/>
+      <location filename="../FileDialog.cpp" line="301"/>
       <source>All Files</source>
       <translation>모든 파일</translation>
     </message>
@@ -9153,12 +9139,12 @@ the current copy will be lost.
   <context>
     <name>SelectionFilter</name>
     <message>
-      <location filename="../Selection/Selection.cpp" line="968"/>
+      <location filename="../Selection/Selection.cpp" line="984"/>
       <source>Not allowed:</source>
       <translation>허용 안 됨:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1353"/>
+      <location filename="../Selection/Selection.cpp" line="1369"/>
       <source>Selection not allowed by filter</source>
       <translation>필터에서 허용되지 않는 선택</translation>
     </message>
@@ -9472,7 +9458,7 @@ the current copy will be lost.
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../MainWindow.cpp" line="2642"/>
+      <location filename="../MainWindow.cpp" line="2649"/>
       <location filename="../DocumentRecovery.cpp" line="412"/>
       <source>Unnamed</source>
       <translation>이름 없음</translation>
@@ -12536,8 +12522,9 @@ the region are non-opaque.</source>
     </message>
     <message>
       <location filename="../TaskTransform.cpp" line="451"/>
-      <source>Select face, edge, or vertex…</source>
-      <translation>면, 모서리 또는 꼭짓점을 선택…</translation>
+      <location filename="../TaskTransform.cpp" line="466"/>
+      <source>Select object, face, edge…</source>
+      <translation type="unfinished">Select object, face, edge…</translation>
     </message>
     <message>
       <location filename="../TaskTransform.cpp" line="452"/>
@@ -12545,11 +12532,6 @@ the region are non-opaque.</source>
       <location filename="../TaskTransform.cpp" line="467"/>
       <source>Cancel</source>
       <translation>취소</translation>
-    </message>
-    <message>
-      <location filename="../TaskTransform.cpp" line="466"/>
-      <source>Select object…</source>
-      <translation type="unfinished">Select object…</translation>
     </message>
   </context>
   <context>
@@ -14298,13 +14280,13 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::FileChooser</name>
     <message>
-      <location filename="../FileDialog.cpp" line="1239"/>
-      <location filename="../FileDialog.cpp" line="1249"/>
+      <location filename="../FileDialog.cpp" line="1259"/>
+      <location filename="../FileDialog.cpp" line="1269"/>
       <source>Select a File</source>
       <translation>파일 선택</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="1259"/>
+      <location filename="../FileDialog.cpp" line="1279"/>
       <source>Select a Directory</source>
       <translation>디렉터리 선택</translation>
     </message>
@@ -14320,7 +14302,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::OverlayTitleBar</name>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2211"/>
+      <location filename="../OverlayWidgets.cpp" line="2214"/>
       <source>Mouse pass through, Esc to stop</source>
       <translation>마우스 통과 모드, 중지하려면 Esc</translation>
     </message>
@@ -14336,7 +14318,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="4306"/>
+      <location filename="../Tree.cpp" line="4313"/>
       <source>Tree View</source>
       <translation>트리 보기</translation>
     </message>
@@ -14769,6 +14751,20 @@ treated as shortcut key sequence 'F, F'.</source>
       <location filename="../CommandView.cpp" line="3891"/>
       <source>Toggles the bottom dock panels</source>
       <translation>하단 도킹 패널의 표시를 전환합니다</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileDialog</name>
+    <message>
+      <location filename="../FileDialog.cpp" line="578"/>
+      <source>Save As</source>
+      <translation>다른 이름으로 저장</translation>
+    </message>
+    <message>
+      <location filename="../FileDialog.cpp" line="713"/>
+      <location filename="../FileDialog.cpp" line="808"/>
+      <source>Open</source>
+      <translation>열기</translation>
     </message>
   </context>
   <context>

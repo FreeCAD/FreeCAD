@@ -1174,22 +1174,22 @@
   <context>
     <name>CmdBoxSelection</name>
     <message>
-      <location filename="../../Command.cpp" line="2394"/>
+      <location filename="../../Command.cpp" line="2396"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2395"/>
+      <location filename="../../Command.cpp" line="2397"/>
       <source>Box Selection</source>
       <translation>ການເລືອກແບບກ່ອງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2396"/>
+      <location filename="../../Command.cpp" line="2398"/>
       <source>Selects elements in the 3D view using a box selection</source>
       <translation>ເລືອກອົງປະກອບໃນມຸມມອງ 3D ໂດຍການໃຊ້ການເລືອກແບບກ່ອງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2398"/>
+      <location filename="../../Command.cpp" line="2400"/>
       <source>Box selection</source>
       <translation>ການເລືອກແບບກ່ອງ</translation>
     </message>
@@ -1197,17 +1197,17 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="2316"/>
+      <location filename="../../Command.cpp" line="2318"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2317"/>
+      <location filename="../../Command.cpp" line="2319"/>
       <source>Check Geometry</source>
       <translation>ກວດສອບເລຂາຄະນິດ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2318"/>
+      <location filename="../../Command.cpp" line="2320"/>
       <source>Analyzes the selected shapes for errors</source>
       <translation>ວິເຄາະຮູບຊົງທີ່ເລືອກເພື່ອຫາຂໍ້ຜິດພາດ</translation>
     </message>
@@ -1215,17 +1215,17 @@
   <context>
     <name>CmdColorPerFace</name>
     <message>
-      <location filename="../../Command.cpp" line="2350"/>
+      <location filename="../../Command.cpp" line="2352"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2351"/>
+      <location filename="../../Command.cpp" line="2353"/>
       <source>Appearance per &amp;Face</source>
       <translation>ລັກສະນະພາຍນອກຕໍ່ &amp;ໜ້າພຽງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2352"/>
+      <location filename="../../Command.cpp" line="2354"/>
       <source>Sets the appearance of individual faces of the selected object</source>
       <translation>ກຳນົດລັກສະນະພາຍນອກຂອງແຕ່ລະໜ້າພຽງຂອງວັດຖຸທີ່ເລືອກ</translation>
     </message>
@@ -1233,17 +1233,17 @@
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="1403"/>
+      <location filename="../../Command.cpp" line="1405"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1404"/>
+      <location filename="../../Command.cpp" line="1406"/>
       <source>Boolean Operation</source>
       <translation>ການດຳເນີນການແບບບູນລີນ (Boolean Operation)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1405"/>
+      <location filename="../../Command.cpp" line="1407"/>
       <source>Applies a boolean operation with the selected shapes</source>
       <translation>ນຳໃຊ້ການດຳເນີນການແບບບູລີນກັບຮູບຊົງທີ່ເລືອກ</translation>
     </message>
@@ -1251,19 +1251,18 @@
   <context>
     <name>CmdPartBox</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="113"/>
+      <location filename="../../CommandParametric.cpp" line="116"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="114"/>
-      <location filename="../../CommandParametric.cpp" line="125"/>
-      <location filename="../../CommandParametric.cpp" line="130"/>
+      <location filename="../../CommandParametric.cpp" line="117"/>
+      <location filename="../../CommandParametric.cpp" line="127"/>
       <source>Cube</source>
       <translation>ຮູບກ້ອນສາກ</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="115"/>
+      <location filename="../../CommandParametric.cpp" line="118"/>
       <source>Creates a solid cube</source>
       <translation>ສ້າງຮູບກ້ອນສາກຕັນ</translation>
     </message>
@@ -1307,17 +1306,17 @@
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location filename="../../Command.cpp" line="1702"/>
+      <location filename="../../Command.cpp" line="1704"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1703"/>
+      <location filename="../../Command.cpp" line="1705"/>
       <source>Shape Builder</source>
       <translation>ເຄື່ອງມືສ້າງຮູບຊົງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1705"/>
+      <location filename="../../Command.cpp" line="1707"/>
       <source>Advanced utility to create shapes</source>
       <translation>ເຄື່ອງມືຂັ້ນສູງສຳລັບການສ້າງຮູບຊົງ</translation>
     </message>
@@ -1325,17 +1324,17 @@
   <context>
     <name>CmdPartChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="1607"/>
+      <location filename="../../Command.cpp" line="1609"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1608"/>
+      <location filename="../../Command.cpp" line="1610"/>
       <source>Chamfer</source>
       <translation>ປາດມົນ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1609"/>
+      <location filename="../../Command.cpp" line="1611"/>
       <source>Chamfers the selected edges of a shape</source>
       <translation>ປາດມົນຂອບທີ່ເລືອກຂອງຮູບຊົງ</translation>
     </message>
@@ -1397,17 +1396,17 @@
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1923"/>
+      <location filename="../../Command.cpp" line="1925"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1924"/>
+      <location filename="../../Command.cpp" line="1926"/>
       <source>Offset</source>
       <translation>ໄລຍະຫ່າງ (Offset)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1925"/>
+      <location filename="../../Command.cpp" line="1927"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
       <translation>ເຄື່ອງມືສ້າງໄລຍະຫ່າງຂອງຮູບຊົງ (ສ້າງຮູບຊົງທີ່ຂະໜານກັນ)</translation>
     </message>
@@ -1451,19 +1450,18 @@
   <context>
     <name>CmdPartCone</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="201"/>
+      <location filename="../../CommandParametric.cpp" line="204"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="202"/>
-      <location filename="../../CommandParametric.cpp" line="213"/>
-      <location filename="../../CommandParametric.cpp" line="218"/>
+      <location filename="../../CommandParametric.cpp" line="205"/>
+      <location filename="../../CommandParametric.cpp" line="215"/>
       <source>Cone</source>
       <translation>ຮູບຊົງຈວຍ (Cone)</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="203"/>
+      <location filename="../../CommandParametric.cpp" line="206"/>
       <source>Creates a solid cone</source>
       <translation>ສ້າງຮູບຈວຍຕັນ</translation>
     </message>
@@ -1471,17 +1469,17 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="1663"/>
+      <location filename="../../Command.cpp" line="1665"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1664"/>
+      <location filename="../../Command.cpp" line="1666"/>
       <source>Cross-Sections</source>
       <translation>ໜ້າຕັດຂວາງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1665"/>
+      <location filename="../../Command.cpp" line="1667"/>
       <source>Creates cross-sections</source>
       <translation>ສ້າງໜ້າຕັດຂວາງ</translation>
     </message>
@@ -1507,19 +1505,18 @@
   <context>
     <name>CmdPartCylinder</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="69"/>
+      <location filename="../../CommandParametric.cpp" line="72"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="70"/>
-      <location filename="../../CommandParametric.cpp" line="81"/>
-      <location filename="../../CommandParametric.cpp" line="86"/>
+      <location filename="../../CommandParametric.cpp" line="73"/>
+      <location filename="../../CommandParametric.cpp" line="83"/>
       <source>Cylinder</source>
       <translation>ຮູບຊົງກະບອກ (Cylinder)</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="71"/>
+      <location filename="../../CommandParametric.cpp" line="74"/>
       <source>Creates a solid cylinder</source>
       <translation>ສ້າງຮູບທໍ່ກົມຕັນ</translation>
     </message>
@@ -1581,17 +1578,17 @@
   <context>
     <name>CmdPartExtrude</name>
     <message>
-      <location filename="../../Command.cpp" line="1435"/>
+      <location filename="../../Command.cpp" line="1437"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1436"/>
+      <location filename="../../Command.cpp" line="1438"/>
       <source>Extrude</source>
       <translation>ການຍືດອອກ (Extrude)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1437"/>
+      <location filename="../../Command.cpp" line="1439"/>
       <source>Extrudes the selected sketch or profile</source>
       <translation>ຍືດແບບຮ່າງ ຫຼື ໂປຣໄຟລ໌ທີ່ເລືອກອອກ</translation>
     </message>
@@ -1599,17 +1596,17 @@
   <context>
     <name>CmdPartFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1579"/>
+      <location filename="../../Command.cpp" line="1581"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1580"/>
+      <location filename="../../Command.cpp" line="1582"/>
       <source>Fillet</source>
       <translation>ລົບລ່ຽມ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1581"/>
+      <location filename="../../Command.cpp" line="1583"/>
       <source>Fillets the selected edges of a shape</source>
       <translation>ລົບລ່ຽມຂອບທີ່ເລືອກຂອງຮູບຊົງ</translation>
     </message>
@@ -1671,17 +1668,17 @@
   <context>
     <name>CmdPartLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1732"/>
+      <location filename="../../Command.cpp" line="1734"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1733"/>
+      <location filename="../../Command.cpp" line="1735"/>
       <source>Loft</source>
       <translation>ການລອບ (Loft)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1734"/>
+      <location filename="../../Command.cpp" line="1736"/>
       <source>Lofts the selected profiles</source>
       <translation>ສ້າງຮູບຊົງຕາມໜ້າຕັດ (Loft) ຈາກໂປຣໄຟລ໌ທີ່ເລືອກ</translation>
     </message>
@@ -1689,17 +1686,17 @@
   <context>
     <name>CmdPartMakeFace</name>
     <message>
-      <location filename="../../Command.cpp" line="1492"/>
+      <location filename="../../Command.cpp" line="1494"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1493"/>
+      <location filename="../../Command.cpp" line="1495"/>
       <source>Face From Wires</source>
       <translation>ສ້າງໜ້າພຽງຈາກເສັ້ນເຊື່ອມ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1494"/>
+      <location filename="../../Command.cpp" line="1496"/>
       <source>Creates a face from the selected wires (e.g. from a sketch)</source>
       <translation>ສ້າງໜ້າພຽງຈາກເສັ້ນເຊື່ອມທີ່ເລືອກ (ຕົວຢ່າງ: ຈາກແບບຮ່າງ)</translation>
     </message>
@@ -1725,17 +1722,17 @@
   <context>
     <name>CmdPartMirror</name>
     <message>
-      <location filename="../../Command.cpp" line="1635"/>
+      <location filename="../../Command.cpp" line="1637"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1636"/>
+      <location filename="../../Command.cpp" line="1638"/>
       <source>Mirror</source>
       <translation>ແວ່ນແຍງ (Mirror)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1637"/>
+      <location filename="../../Command.cpp" line="1639"/>
       <source>Mirrors the selected shape</source>
       <translation>ເຮັດແວ່ນແຍງຮູບຊົງທີ່ເລືອກ</translation>
     </message>
@@ -1743,17 +1740,17 @@
   <context>
     <name>CmdPartOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1790"/>
+      <location filename="../../Command.cpp" line="1792"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1791"/>
+      <location filename="../../Command.cpp" line="1793"/>
       <source>3D Offset</source>
       <translation>ໄລຍະຫ່າງ 3D (3D Offset)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1792"/>
+      <location filename="../../Command.cpp" line="1794"/>
       <source>Offsets shapes in 3D</source>
       <translation>ສ້າງໄລຍະຫ່າງຂອງຮູບຊົງໃນແບບ 3D</translation>
     </message>
@@ -1761,17 +1758,17 @@
   <context>
     <name>CmdPartOffset2D</name>
     <message>
-      <location filename="../../Command.cpp" line="1857"/>
+      <location filename="../../Command.cpp" line="1859"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1858"/>
+      <location filename="../../Command.cpp" line="1860"/>
       <source>2D Offset</source>
       <translation>ໄລຍະຫ່າງ 2D (2D Offset)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1859"/>
+      <location filename="../../Command.cpp" line="1861"/>
       <source>Offsets planar shapes in 2D</source>
       <translation>ສ້າງໄລຍະຫ່າງຂອງຮູບຊົງແບບແບນໃນແບບ 2D</translation>
     </message>
@@ -1833,17 +1830,17 @@
   <context>
     <name>CmdPartProjectionOnSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2424"/>
+      <location filename="../../Command.cpp" line="2426"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2425"/>
+      <location filename="../../Command.cpp" line="2427"/>
       <source>Project on Surface</source>
       <translation>ສາຍພາບລົງເທິງພື້ນຜິວ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2426"/>
+      <location filename="../../Command.cpp" line="2428"/>
       <source>Projects edges, wires, or faces of one shape
 onto a face of another shape.
 The camera view determines the direction
@@ -1893,17 +1890,17 @@ of the projection.</source>
   <context>
     <name>CmdPartRevolve</name>
     <message>
-      <location filename="../../Command.cpp" line="1551"/>
+      <location filename="../../Command.cpp" line="1553"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1552"/>
+      <location filename="../../Command.cpp" line="1554"/>
       <source>Revolve</source>
       <translation>ໝູນອ້ອມ (Revolve)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1553"/>
+      <location filename="../../Command.cpp" line="1555"/>
       <source>Revolves the selected shape</source>
       <translation>ໝູນຮູບຊົງທີ່ເລືອກອ້ອມແກນ</translation>
     </message>
@@ -1911,17 +1908,17 @@ of the projection.</source>
   <context>
     <name>CmdPartRuledSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2172"/>
+      <location filename="../../Command.cpp" line="2174"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2173"/>
+      <location filename="../../Command.cpp" line="2175"/>
       <source>Ruled Surface</source>
       <translation>ໜ້າພຽງແບບຣູລ (Ruled Surface)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2174"/>
+      <location filename="../../Command.cpp" line="2176"/>
       <source>Creates a ruled surface between 2 selected wires</source>
       <translation>ສ້າງໜ້າພຽງແບບຣູລລະຫວ່າງ 2 ເສັ້ນເຊື່ອມທີ່ເລືອກ</translation>
     </message>
@@ -2001,19 +1998,18 @@ of the projection.</source>
   <context>
     <name>CmdPartSphere</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="157"/>
+      <location filename="../../CommandParametric.cpp" line="160"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="158"/>
-      <location filename="../../CommandParametric.cpp" line="169"/>
-      <location filename="../../CommandParametric.cpp" line="174"/>
+      <location filename="../../CommandParametric.cpp" line="161"/>
+      <location filename="../../CommandParametric.cpp" line="171"/>
       <source>Sphere</source>
       <translation>ໜ່ວຍມົນ (Sphere)</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="159"/>
+      <location filename="../../CommandParametric.cpp" line="162"/>
       <source>Creates a solid sphere</source>
       <translation>ສ້າງໜ່ວຍມົນແຂງ</translation>
     </message>
@@ -2021,17 +2017,17 @@ of the projection.</source>
   <context>
     <name>CmdPartSweep</name>
     <message>
-      <location filename="../../Command.cpp" line="1761"/>
+      <location filename="../../Command.cpp" line="1763"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1762"/>
+      <location filename="../../Command.cpp" line="1764"/>
       <source>Sweep</source>
       <translation>ການກວາດ (Sweep)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1763"/>
+      <location filename="../../Command.cpp" line="1765"/>
       <source>Sweeps profiles along a wire</source>
       <translation>ກວາດຮູບຮ່າງ (profiles) ໄປຕາມເສັ້ນລວດ</translation>
     </message>
@@ -2039,27 +2035,27 @@ of the projection.</source>
   <context>
     <name>CmdPartThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="2025"/>
+      <location filename="../../Command.cpp" line="2027"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2026"/>
+      <location filename="../../Command.cpp" line="2028"/>
       <source>Thickness</source>
       <translation>ຄວາມໜາ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2027"/>
+      <location filename="../../Command.cpp" line="2029"/>
       <source>Removes the selected faces and offsets the remaining shape outward to add thickness</source>
       <translation>ລຶບໜ້າພຽງທີ່ເລືອກອອກ ແລະ ຂະຫຍາຍຮູບຮ່າງທີ່ເຫຼືອອອກໄປດ້ານນອກເພື່ອເພີ່ມຄວາມໜາ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2086"/>
+      <location filename="../../Command.cpp" line="2088"/>
       <source>Wrong selection</source>
       <translation>ການເລືອກບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2087"/>
+      <location filename="../../Command.cpp" line="2089"/>
       <source>Selected shape is not a solid</source>
       <translation>ຮູບຮ່າງທີ່ເລືອກບໍ່ແມ່ນວັດຖຸແຂງ (solid)</translation>
     </message>
@@ -2067,19 +2063,18 @@ of the projection.</source>
   <context>
     <name>CmdPartTorus</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="245"/>
+      <location filename="../../CommandParametric.cpp" line="248"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="246"/>
-      <location filename="../../CommandParametric.cpp" line="257"/>
-      <location filename="../../CommandParametric.cpp" line="262"/>
+      <location filename="../../CommandParametric.cpp" line="249"/>
+      <location filename="../../CommandParametric.cpp" line="259"/>
       <source>Torus</source>
       <translation>ຮູບວົງແຫວນ (Torus)</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="247"/>
+      <location filename="../../CommandParametric.cpp" line="250"/>
       <source>Creates a solid torus</source>
       <translation>ສ້າງຮູບວົງແຫວນແຂງ</translation>
     </message>
@@ -2151,47 +2146,47 @@ of the projection.</source>
       <translation>ກັບດ້ານ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1511"/>
+      <location filename="../../Command.cpp" line="1513"/>
       <source>Make face</source>
       <translation>ສ້າງໜ້າພຽງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1817"/>
+      <location filename="../../Command.cpp" line="1819"/>
       <source>Make Offset</source>
       <translation>ສ້າງໄລຍະຫ່າງ (Offset)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1885"/>
+      <location filename="../../Command.cpp" line="1887"/>
       <source>Make 2D Offset</source>
       <translation>ສ້າງໄລຍະຫ່າງ 2D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2094"/>
+      <location filename="../../Command.cpp" line="2096"/>
       <source>Make Thickness</source>
       <translation>ສ້າງຄວາມໜາ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2283"/>
+      <location filename="../../Command.cpp" line="2285"/>
       <source>Create ruled surface</source>
       <translation>ສ້າງພື້ນຜິວແບບ Ruled Surface</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2536"/>
+      <location filename="../../Command.cpp" line="2538"/>
       <source>Add coordinate system</source>
       <translation>ເພີ່ມລະບົບພິກັດ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2574"/>
+      <location filename="../../Command.cpp" line="2576"/>
       <source>Add datum plane</source>
       <translation>ເພີ່ມໜ້າພຽງອ້າງອີງ (Datum Plane)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2607"/>
+      <location filename="../../Command.cpp" line="2609"/>
       <source>Add datum line</source>
       <translation>ເພີ່ມເສັ້ນອ້າງອີງ (Datum Line)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2640"/>
+      <location filename="../../Command.cpp" line="2642"/>
       <source>Add datum point</source>
       <translation>ເພີ່ມຈຸດອ້າງອີງ (Datum Point)</translation>
     </message>
@@ -2267,7 +2262,7 @@ of the projection.</source>
       <translation>ການກວາດ (Sweep)</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1615"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1620"/>
       <source>Project on surface</source>
       <translation>ສາຍລົງເທິງພື້ນຜິວ</translation>
     </message>
@@ -4133,17 +4128,17 @@ Check one or more edge entities first.</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="140"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="141"/>
       <source>Projection object</source>
       <translation>ວັດຖຸສາຍພາບ</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="167"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="168"/>
       <source>No active document</source>
       <translation>ບໍ່ມີເອກະສານທີ່ກຳລັງໃຊ້ງານ</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="173"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="174"/>
       <source>Cannot create a projection object</source>
       <translation>ບໍ່ສາມາດສ້າງວັດຖຸສາຍພາບໄດ້</translation>
     </message>
@@ -6076,7 +6071,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="510"/>
       <location filename="../../Command.cpp" line="952"/>
       <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../Command.cpp" line="2277"/>
+      <location filename="../../Command.cpp" line="2279"/>
       <source>Wrong Selection</source>
       <translation>ການເລືອກບໍ່ຖືກຕ້ອງ</translation>
     </message>
@@ -6122,7 +6117,7 @@ Continue?</source>
       <translation>ໄຟລ໌ CAD ທັງໝົດ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2278"/>
+      <location filename="../../Command.cpp" line="2280"/>
       <source>Select either 2 edges or 2 wires.</source>
       <translation>ເລືອກ 2 ຂອບ (edges) ຫຼື 2 ເສັ້ນເຊື່ອມ (wires).</translation>
     </message>
@@ -7076,17 +7071,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1463"/>
+      <location filename="../../Command.cpp" line="1465"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1464"/>
+      <location filename="../../Command.cpp" line="1466"/>
       <source>Scale</source>
       <translation>ອັດຕາສ່ວນ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1465"/>
+      <location filename="../../Command.cpp" line="1467"/>
       <source>Scales the selected shape</source>
       <translation>ຍໍ້-ຂະຫຍາຍຮູບຊົງທີ່ເລືອກ</translation>
     </message>
@@ -7248,17 +7243,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartCoordinateSystem</name>
     <message>
-      <location filename="../../Command.cpp" line="2524"/>
+      <location filename="../../Command.cpp" line="2526"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2525"/>
+      <location filename="../../Command.cpp" line="2527"/>
       <source>Coordinate System</source>
       <translation>ລະບົບພິກັດ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2526"/>
+      <location filename="../../Command.cpp" line="2528"/>
       <source>Creates a coordinate system that can be attached to other objects</source>
       <translation>ສ້າງລະບົບພິກັດທີ່ສາມາດຕິດຄັດໃສ່ວັດຖຸອື່ນໄດ້</translation>
     </message>
@@ -7266,17 +7261,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2663"/>
+      <location filename="../../Command.cpp" line="2665"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2664"/>
+      <location filename="../../Command.cpp" line="2666"/>
       <source>Datums</source>
       <translation>ຂໍ້ມູນອ້າງອີງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2666"/>
+      <location filename="../../Command.cpp" line="2668"/>
       <source>Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</source>
       <translation>ສ້າງວັດຖຸອ້າງອີງ (ລະບົບພິກັດ, ໜ້າພຽງ, ເສັ້ນ, ຫຼື ຈຸດ) ທີ່ສາມາດຕິດຄັດໃສ່ວັດຖຸອື່ນໄດ້.</translation>
     </message>
@@ -7284,7 +7279,7 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6701"/>
+      <location filename="../../../App/Geometry.cpp" line="6723"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>ບໍ່ສາມາດລະບຸສ່ວນຕັດຂອງເສັ້ນໂຄ້ງໄດ້. ລອງເພີ່ມຂໍ້ຈຳກັດ coincident ລະຫວ່າງຈຸດຍອດຂອງເສັ້ນໂຄ້ງທີ່ທ່ານຕ້ອງການເຮັດມຸມມົນ.</translation>
     </message>
@@ -7292,17 +7287,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatumPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="2562"/>
+      <location filename="../../Command.cpp" line="2564"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2563"/>
+      <location filename="../../Command.cpp" line="2565"/>
       <source>Datum Plane</source>
       <translation>ໜ້າພຽງອ້າງອີງ (Datum Plane)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2564"/>
+      <location filename="../../Command.cpp" line="2566"/>
       <source>Creates a datum plane that can be attached to other objects</source>
       <translation>ສ້າງໜ້າພຽງອ້າງອີງທີ່ສາມາດຕິດຄັດໃສ່ວັດຖຸອື່ນໄດ້</translation>
     </message>
@@ -7310,17 +7305,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatumLine</name>
     <message>
-      <location filename="../../Command.cpp" line="2595"/>
+      <location filename="../../Command.cpp" line="2597"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2596"/>
+      <location filename="../../Command.cpp" line="2598"/>
       <source>Datum Line</source>
       <translation>ເສັ້ນອ້າງອີງ (Datum Line)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2597"/>
+      <location filename="../../Command.cpp" line="2599"/>
       <source>Creates a datum line that can be attached to other objects</source>
       <translation>ສ້າງເສັ້ນອ້າງອີງທີ່ສາມາດຕິດຄັດໃສ່ວັດຖຸອື່ນໄດ້</translation>
     </message>
@@ -7328,17 +7323,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatumPoint</name>
     <message>
-      <location filename="../../Command.cpp" line="2628"/>
+      <location filename="../../Command.cpp" line="2630"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2629"/>
+      <location filename="../../Command.cpp" line="2631"/>
       <source>Datum Point</source>
       <translation>ຈຸດອ້າງອີງ (Datum Point)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2630"/>
+      <location filename="../../Command.cpp" line="2632"/>
       <source>Creates a datum point that can be attached to other objects</source>
       <translation>ສ້າງຈຸດອ້າງອີງທີ່ສາມາດຕິດຄັດໃສ່ວັດຖຸອື່ນໄດ້</translation>
     </message>
@@ -7521,12 +7516,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartSectionCut</name>
     <message>
-      <location filename="../../Command.cpp" line="2460"/>
+      <location filename="../../Command.cpp" line="2462"/>
       <source>Persiste&amp;nt Section Cut</source>
       <translation>ການຕັດສ່ວນແບບຄົງທີ່</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2461"/>
+      <location filename="../../Command.cpp" line="2463"/>
       <source>Creates a new object as a boolean intersection of all visible shapes and the selected axis planes</source>
       <translation>ສ້າງວັດຖຸໃໝ່ເປັນສ່ວນຕັດບູລີນຂອງທຸກຮູບຊົງທີ່ສະແດງຢູ່ ແລະ ໜ້າພຽງແກນທີ່ເລືອກ.</translation>
     </message>

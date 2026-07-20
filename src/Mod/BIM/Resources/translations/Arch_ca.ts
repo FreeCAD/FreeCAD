@@ -226,7 +226,7 @@ Quan es treballa amb objectes IFC nadius, es pot utilitzar el nom de les propiet
     <message>
       <location filename="../ui/ArchSchedule.ui" line="136"/>
       <source>If this is enabled, additional rows will be filled with each object considered. If not, only the totals.</source>
-      <translation type="unfinished">If this is enabled, additional rows will be filled with each object considered. If not, only the totals.</translation>
+      <translation>Si aquesta opció està activada, s’ompliran línies addicionals amb cada objecte que s'ha tingut en compte. Si no, només els totals.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="149"/>
@@ -236,7 +236,7 @@ Quan es treballa amb objectes IFC nadius, es pot utilitzar el nom de les propiet
     <message>
       <location filename="../ui/ArchSchedule.ui" line="160"/>
       <source>Adds a row below the selected row/cell</source>
-      <translation type="unfinished">Adds a row below the selected row/cell</translation>
+      <translation>Afegeix una línia sota la línia/cel·la seleccionada</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="163"/>
@@ -246,7 +246,7 @@ Quan es treballa amb objectes IFC nadius, es pot utilitzar el nom de les propiet
     <message>
       <location filename="../ui/ArchSchedule.ui" line="174"/>
       <source>Deletes the selected row</source>
-      <translation type="unfinished">Deletes the selected row</translation>
+      <translation>Elimina la línia seleccionada</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="205"/>
@@ -1806,7 +1806,7 @@ d'aquest projecte, no importa si s'amplien o no.</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="219"/>
       <source>Show available alternative file formats for library items (STEP, IFC, etc.)</source>
-      <translation type="unfinished">Show available alternative file formats for library items (STEP, IFC, etc.)</translation>
+      <translation>Mostra formats de fitxers alternatius disponibles pels elements de la biblioteca (STEP, IFC, etc.)</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="14"/>
@@ -1981,7 +1981,7 @@ d'aquest projecte, no importa si s'amplien o no.</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="40"/>
       <source>Work On</source>
-      <translation type="unfinished">Work On</translation>
+      <translation>En curs</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="73"/>
@@ -2596,7 +2596,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="74"/>
       <source>If this is checked, when a BIM object has a material, the object will take the color of the material. This can be overridden for each object.</source>
-      <translation type="unfinished">If this is checked, when a BIM object has a material, the object will take the color of the material. This can be overridden for each object.</translation>
+      <translation>Si aquesta opció està marcada, quan un objecte BIM d'arquitectura conté un material, l'objecte prendrà el color del material. Això es pot canviar a cada objecte.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="93"/>
@@ -3812,7 +3812,7 @@ La plantilla predeterminada es troba a:
       <location filename="../../ArchPanel.py" line="577"/>
       <location filename="../../ArchCoveringGui.py" line="1002"/>
       <location filename="../../ArchCoveringGui.py" line="1078"/>
-      <location filename="../../ArchWindow.py" line="1195"/>
+      <location filename="../../ArchWindow.py" line="1196"/>
       <location filename="../../ArchPrecast.py" line="1720"/>
       <location filename="../../bimcommands/BimPanel.py" line="221"/>
       <location filename="../../bimcommands/BimWall.py" line="514"/>
@@ -3824,7 +3824,7 @@ La plantilla predeterminada es troba a:
       <location filename="../../ArchRoof.py" line="1088"/>
       <location filename="../../ArchStructure.py" line="490"/>
       <location filename="../../ArchStructure.py" line="1606"/>
-      <location filename="../../ArchWindow.py" line="1198"/>
+      <location filename="../../ArchWindow.py" line="1199"/>
       <location filename="../../ArchPrecast.py" line="1721"/>
       <location filename="../../bimcommands/BimWall.py" line="521"/>
       <source>Height</source>
@@ -4141,7 +4141,7 @@ Si Carrer = 0, la carrera es calcula de manera que l'alçada sigui la mateixa qu
       <translation>Porta</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1201"/>
+      <location filename="../../ArchWindow.py" line="1202"/>
       <location filename="../../ArchWindowPresets.py" line="566"/>
       <source>Opening</source>
       <translation>Obertura</translation>
@@ -4401,91 +4401,91 @@ Si Carrer = 0, la carrera es calcula de manera que l'alçada sigui la mateixa qu
       <translation>Alçada de suport</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1098"/>
-      <location filename="../../ArchWindow.py" line="1744"/>
+      <location filename="../../ArchWindow.py" line="1099"/>
+      <location filename="../../ArchWindow.py" line="1745"/>
       <source>Invert Opening Direction</source>
       <translation>Invertir direcció d'obertura</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1113"/>
-      <location filename="../../ArchWindow.py" line="1747"/>
+      <location filename="../../ArchWindow.py" line="1114"/>
+      <location filename="../../ArchWindow.py" line="1748"/>
       <source>Invert Hinge Position</source>
       <translation>Invertir posició de la frontissa</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1175"/>
+      <location filename="../../ArchWindow.py" line="1176"/>
       <source>This window has no defined opening</source>
       <translation>Aquesta finestra no té obertura definida</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1190"/>
+      <location filename="../../ArchWindow.py" line="1191"/>
       <location filename="../../bimcommands/BimWindow.py" line="400"/>
       <source>Window Options</source>
       <translation type="unfinished">Window Options</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1504"/>
-      <location filename="../../ArchWindow.py" line="1555"/>
+      <location filename="../../ArchWindow.py" line="1505"/>
+      <location filename="../../ArchWindow.py" line="1556"/>
       <source>Get selected edge</source>
       <translation>Obtingui la vora seleccionada</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1657"/>
+      <location filename="../../ArchWindow.py" line="1658"/>
       <source>Unable to create component</source>
       <translation>No s'ha pogut crear el component</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1695"/>
+      <location filename="../../ArchWindow.py" line="1696"/>
       <source>Window Elements</source>
       <translation type="unfinished">Window Elements</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1696"/>
+      <location filename="../../ArchWindow.py" line="1697"/>
       <source>Hole wire</source>
       <translation>Nombre de fils</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1703"/>
+      <location filename="../../ArchWindow.py" line="1704"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>El nombre de fils que defineixen un forat en l'objecte amfitrió. Un valor de zero automàticament adoptarà el fil més gran</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1704"/>
+      <location filename="../../ArchWindow.py" line="1705"/>
       <source>Pick Selected</source>
       <translation>Tria la selecció</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1710"/>
+      <location filename="../../ArchWindow.py" line="1711"/>
       <source>Create/Update Component</source>
       <translation>Crear/actualitzar component</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1714"/>
+      <location filename="../../ArchWindow.py" line="1715"/>
       <source>Create new Component</source>
       <translation>Crear un nou component</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1718"/>
+      <location filename="../../ArchWindow.py" line="1719"/>
       <source>Frame depth</source>
       <translation>Profunditat del marc</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1720"/>
+      <location filename="../../ArchWindow.py" line="1721"/>
       <source>Hinge/Track</source>
       <translation type="unfinished">Hinge/Track</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1729"/>
+      <location filename="../../ArchWindow.py" line="1730"/>
       <source>If this is checked, the window's Frame property value will be added to the value entered here</source>
       <translation>Si està marcat, el valor predeterminat del marc d'aquesta finestra s'afegirà al valor introduït aquí</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1737"/>
+      <location filename="../../ArchWindow.py" line="1738"/>
       <source>If this is checked, the window's Offset property value will be added to the value entered here</source>
       <translation>Si està marcat, el valor predeterminat del desplaçament d'aquesta finestra s'afegirà al valor introduït aquí</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1741"/>
+      <location filename="../../ArchWindow.py" line="1742"/>
       <source>Retrieves the selected edge</source>
       <translation type="unfinished">Retrieves the selected edge</translation>
     </message>
@@ -4495,7 +4495,7 @@ Si Carrer = 0, la carrera es calcula de manera que l'alçada sigui la mateixa qu
       <location filename="../../ArchAxis.py" line="985"/>
       <location filename="../../ArchAxisSystem.py" line="338"/>
       <location filename="../../ArchSpace.py" line="954"/>
-      <location filename="../../ArchWindow.py" line="1705"/>
+      <location filename="../../ArchWindow.py" line="1706"/>
       <source>Remove</source>
       <translation>Elimina</translation>
     </message>
@@ -4504,7 +4504,7 @@ Si Carrer = 0, la carrera es calcula de manera que l'alçada sigui la mateixa qu
       <location filename="../../ArchAxis.py" line="986"/>
       <location filename="../../ArchAxisSystem.py" line="339"/>
       <location filename="../../ArchSpace.py" line="949"/>
-      <location filename="../../ArchWindow.py" line="1706"/>
+      <location filename="../../ArchWindow.py" line="1707"/>
       <source>Add</source>
       <translation>Afegeix</translation>
     </message>
@@ -4519,39 +4519,39 @@ Si Carrer = 0, la carrera es calcula de manera que l'alçada sigui la mateixa qu
       <location filename="../../ArchSite.py" line="1588"/>
       <location filename="../../ArchMaterial.py" line="471"/>
       <location filename="../../ArchMaterial.py" line="798"/>
-      <location filename="../../ArchWindow.py" line="1707"/>
+      <location filename="../../ArchWindow.py" line="1708"/>
       <location filename="../../ArchIFCView.py" line="63"/>
       <source>Edit</source>
       <translation>Edita</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1711"/>
+      <location filename="../../ArchWindow.py" line="1712"/>
       <source>Base 2D object</source>
       <translation>Objecte base 2D</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1712"/>
-      <location filename="../../ArchWindow.py" line="1717"/>
+      <location filename="../../ArchWindow.py" line="1713"/>
+      <location filename="../../ArchWindow.py" line="1718"/>
       <source>Wires</source>
       <translation>Filferros</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2470"/>
-      <location filename="../../ArchWindow.py" line="1713"/>
+      <location filename="../../ArchWindow.py" line="1714"/>
       <source>Components</source>
       <translation>Components</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="895"/>
       <location filename="../../ArchMaterial.py" line="921"/>
-      <location filename="../../ArchWindow.py" line="1715"/>
+      <location filename="../../ArchWindow.py" line="1716"/>
       <source>Name</source>
       <translation>Nom</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2538"/>
       <location filename="../../ArchCommands.py" line="1730"/>
-      <location filename="../../ArchWindow.py" line="1716"/>
+      <location filename="../../ArchWindow.py" line="1717"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
       <source>Type</source>
       <translation>Tipus</translation>
@@ -4568,29 +4568,29 @@ Si Carrer = 0, la carrera es calcula de manera que l'alçada sigui la mateixa qu
       <translation>Gruix</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1719"/>
+      <location filename="../../ArchWindow.py" line="1720"/>
       <location filename="../../ArchPrecast.py" line="1725"/>
       <location filename="../../bimcommands/BimWall.py" line="537"/>
       <source>Offset</source>
       <translation>Equidistància</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1721"/>
+      <location filename="../../ArchWindow.py" line="1722"/>
       <source>Opening mode</source>
       <translation>Mode d'obertura</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1722"/>
+      <location filename="../../ArchWindow.py" line="1723"/>
       <source>+ Frame property</source>
       <translation>+ Propietat del marc</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1730"/>
+      <location filename="../../ArchWindow.py" line="1731"/>
       <source>+ Offset property</source>
       <translation>+ Propietat de desplaçament</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1738"/>
+      <location filename="../../ArchWindow.py" line="1739"/>
       <source>Get Selected Edge</source>
       <translation>Obtenir la vora seleccionada</translation>
     </message>
@@ -8221,7 +8221,7 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Mostra els símbols d'obertura de l'elevació, si està disponible</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1422"/>
+      <location filename="../../ArchWindow.py" line="1423"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>El nombre de filferros que defineix el forat. Un valor de 0 significa automàtic</translation>
     </message>

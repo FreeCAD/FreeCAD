@@ -2064,8 +2064,8 @@ a raw wire from the original shape is added</source>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="120"/>
-      <source>Apply Cuts</source>
-      <translation>应用切割</translation>
+      <source>Apply cuts</source>
+      <translation>应用切削</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="140"/>
@@ -2773,8 +2773,8 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="100"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;注意：&lt;/span&gt;DXF选项也适用于DWG文档。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Note: DXF options apply to DWG files as well.</source>
+      <translation>注意：DXF 选项同样适用于 DWG 文件。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="26"/>

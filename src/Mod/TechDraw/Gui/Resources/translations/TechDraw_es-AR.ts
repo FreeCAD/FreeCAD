@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="979"/>
       <source>Adds a cosmetic line that passes through 2 selected points</source>
-      <translation type="unfinished">Adds a cosmetic line that passes through 2 selected points</translation>
+      <translation>Añade una línea cosmética entre 2 puntos seleccionados</translation>
     </message>
   </context>
   <context>
@@ -3305,12 +3305,12 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
     <message>
       <location filename="../../Command.cpp" line="2093"/>
       <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
-      <translation type="unfinished">Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</translation>
+      <translation>La dirección seleccionada está dentro de %1 grados de una dirección estándar. ¿Reemplazar la dirección seleccionada con %2?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2098"/>
       <source>Direction is close to standard</source>
-      <translation type="unfinished">Direction is close to standard</translation>
+      <translation>La dirección está cerca del estándar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1421"/>
@@ -3376,7 +3376,7 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
       <location filename="../../CommandCreateDims.cpp" line="2008"/>
       <location filename="../../CommandCreateDims.cpp" line="2198"/>
       <source>No view of a part in selection.</source>
-      <translation type="unfinished">No view of a part in selection.</translation>
+      <translation>Ninguna vista de una pieza en la selección.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2050"/>
@@ -3540,7 +3540,7 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="120"/>
       <source>Can not make hole circle for %1</source>
-      <translation type="unfinished">Can not make hole circle for %1</translation>
+      <translation>No se puede hacer un círculo de agujero para %1</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="239"/>
@@ -3551,17 +3551,17 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
       <location filename="../../CommandExtensionPack.cpp" line="240"/>
       <location filename="../../CommandExtensionPack.cpp" line="1673"/>
       <source>Can not make centerlines for %1</source>
-      <translation type="unfinished">Can not make centerlines for %1</translation>
+      <translation>No se pueden crear líneas centrales para %1</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="979"/>
       <source>Select a center for the circle.</source>
-      <translation type="unfinished">Select a center for the circle.</translation>
+      <translation>Seleccione un centro para el círculo.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1672"/>
       <source>TechDraw extend/shorten line</source>
-      <translation type="unfinished">TechDraw extend/shorten line</translation>
+      <translation>TechDraw ampliar/acortar línea</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1879"/>
@@ -3576,12 +3576,12 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2217"/>
       <source>TechDraw create thread circle</source>
-      <translation type="unfinished">TechDraw create thread circle</translation>
+      <translation>TechDraw crear círculo roscado</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2218"/>
       <source>Can not make thread circle for %1</source>
-      <translation type="unfinished">Can not make thread circle for %1</translation>
+      <translation>No se puede crear un círculo roscado para %1</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2235"/>
@@ -3728,7 +3728,7 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
     <message>
       <location filename="../../CommandDecorate.cpp" line="103"/>
       <source>No TechDraw Page</source>
-      <translation type="unfinished">No TechDraw Page</translation>
+      <translation>No hay página de TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="104"/>
@@ -4069,7 +4069,7 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="116"/>
       <source>Prefix Text</source>
-      <translation type="unfinished">Prefix Text</translation>
+      <translation>Texto prefijo</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1982"/>
@@ -4730,7 +4730,7 @@ Las caras deben ser detectadas para usar el rayado, pero puede haber una penaliz
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="263"/>
       <source>Overlap edges scrub passes</source>
-      <translation type="unfinished">Overlap edges scrub passes</translation>
+      <translation>Número de pasadas para eliminar superposiciones de aristas</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="275"/>
@@ -4740,7 +4740,7 @@ Las caras deben ser detectadas para usar el rayado, pero puede haber una penaliz
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="311"/>
       <source>Max SVG hatch tiles</source>
-      <translation type="unfinished">Max SVG hatch tiles</translation>
+      <translation>Máximo de recuadros de rayado SVG</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="321"/>
@@ -4771,7 +4771,7 @@ Each unit is approximately 0.1mm wide</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="469"/>
       <source>Maximum PAT hatch segments</source>
-      <translation type="unfinished">Maximum PAT hatch segments</translation>
+      <translation>Máximo de recuadros de rayado PAT</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="476"/>
@@ -4795,7 +4795,7 @@ Aumente el límite si es necesario.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="542"/>
       <source>Balloon drag</source>
-      <translation type="unfinished">Balloon drag</translation>
+      <translation>Arrastre de globo</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="450"/>
@@ -4805,7 +4805,7 @@ Aumente el límite si es necesario.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="34"/>
       <source>If this box is checked, double-clicking on a page in the tree will automatically switch to TechDraw and the page will be made visible.</source>
-      <translation type="unfinished">If this box is checked, double-clicking on a page in the tree will automatically switch to TechDraw and the page will be made visible.</translation>
+      <translation>Si esta casilla está marcada, hacer doble clic en una página del árbol cambiará automáticamente a TechDraw y la página será visible.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="156"/>
@@ -4965,7 +4965,7 @@ al rayar una cara con un patrón PAT</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="208"/>
       <source>Balloon orthogonal triangle</source>
-      <translation type="unfinished">Balloon orthogonal triangle</translation>
+      <translation>Triángulo ortogonal del globo</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="224"/>
@@ -5000,7 +5000,7 @@ al rayar una cara con un patrón PAT</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="263"/>
       <source>Detail view show matting</source>
-      <translation type="unfinished">Detail view show matting</translation>
+      <translation>Mostrar contorno en vista de detalle</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="279"/>
@@ -5010,17 +5010,17 @@ al rayar una cara con un patrón PAT</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="282"/>
       <source>Detail source show highlight</source>
-      <translation type="unfinished">Detail source show highlight</translation>
+      <translation>Resaltar fuente de detalles</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="303"/>
       <source>Detail view outline shape</source>
-      <translation type="unfinished">Detail view outline shape</translation>
+      <translation>Vista de detalle del contorno de forma</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="324"/>
       <source>Leader line auto horizontal</source>
-      <translation type="unfinished">Leader line auto horizontal</translation>
+      <translation>Línea de referencia horizontal automática</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="358"/>
@@ -5058,20 +5058,20 @@ al rayar una cara con un patrón PAT</translation>
 always be the right choice.  Flat or square caps are useful
 for using drawings as a 1:1 cutting guide.
 </source>
-      <translation type="unfinished">Shape of line end caps. The default (round) should almost
-always be the right choice.  Flat or square caps are useful
-for using drawings as a 1:1 cutting guide.
+      <translation>Forma de los extremos de línea. El valor predeterminado (redondo) debería casi
+siempre ser la opción correcta. Los extremos planos o cuadrados son útiles 
+si planeas usar un dibujo como una guía de corte 1:1.
 </translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="768"/>
       <source>Line width group</source>
-      <translation type="unfinished">Line width group</translation>
+      <translation>Grupo de ancho de línea</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="780"/>
       <source>Line end cap shape</source>
-      <translation type="unfinished">Line end cap shape</translation>
+      <translation>Forma del extremo de línea</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="787"/>
@@ -5116,12 +5116,12 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="444"/>
       <source>Complex section line marks</source>
-      <translation type="unfinished">Complex section line marks</translation>
+      <translation>Marcas de línea de sección compleja</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="482"/>
       <source>Fills out template date fields using ccyy-mm-dd format automatically, even if that is not the standard format for the current locale.</source>
-      <translation type="unfinished">Fills out template date fields using ccyy-mm-dd format automatically, even if that is not the standard format for the current locale.</translation>
+      <translation>Rellene los campos de fecha de plantilla usando el formato cciy-mm-dd automáticamente, incluso si ese no es el formato estándar para el local actual.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="485"/>
@@ -5525,8 +5525,8 @@ for using drawings as a 1:1 cutting guide.
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="257"/>
       <source>Tolerance text scale
 Multiplier of &apos;Font size&apos;</source>
-      <translation type="unfinished">Tolerance text scale
-Multiplier of &apos;Font size&apos;</translation>
+      <translation>Tolerancia de la escala de texto
+Multiplicador de &apos;Tamaño de fuente&apos;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="291"/>
@@ -5571,7 +5571,7 @@ Multiplier of &apos;Font size&apos;</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="441"/>
       <source>Extension gap factor - ASME</source>
-      <translation type="unfinished">Extension gap factor - ASME</translation>
+      <translation>Factor de brecha de extensión - ASME</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="448"/>
@@ -5643,37 +5643,37 @@ Esto solo afecta a la barra de herramientas; todas las herramientas siguen estan
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="627"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this is checked, new dimensions will be set to snap to position.  If not checked, new dimensions will not snap.  Snapping for individual dimensions may be adjusted with the &amp;quot;AllowSnapping&amp;quot; property.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this is checked, new dimensions will be set to snap to position.  If not checked, new dimensions will not snap.  Snapping for individual dimensions may be adjusted with the &amp;quot;AllowSnapping&amp;quot; property.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si se marca esta opción, las nuevas dimensiones se establecerán en posición. Si no está marcado, las nuevas dimensiones no se desvanecerán. El ajuste para las dimensiones individuales puede ser ajustado con la comilla &amp;;Permitir Snapping&amp;quot; propiedad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="630"/>
       <source>Snap dimensions</source>
-      <translation type="unfinished">Snap dimensions</translation>
+      <translation>Ajustar dimensiones</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="658"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraction of the dimension text length within which the text snaps to its centered position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraction of the dimension text length within which the text snaps to its centered position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fracción de la longitud del texto de dimensión dentro de la cual el texto se ajusta a su posición centrada.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="677"/>
       <source>Dimension text factor</source>
-      <translation type="unfinished">Dimension text factor</translation>
+      <translation>Factor de texto de la dimensión</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="684"/>
       <source>Chain factor</source>
-      <translation type="unfinished">Chain factor</translation>
+      <translation>Factor de cadena</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="697"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraction of the spacing between dimensions within which they snap as chain or ordinate dimensions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraction of the spacing between dimensions within which they snap as chain or ordinate dimensions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fracción del espacio entre las dimensiones dentro de las cuales se juntan como dimensiones de cadena o ordenadas.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="737"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note: Snapping settings for views are on the general tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note: Snapping settings for views are on the general tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nota: Los ajustes para las vistas están en la pestaña general.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="529"/>
@@ -5849,7 +5849,7 @@ Los cambios no tendrán efecto en cotas existentes.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="319"/>
       <source>Projection group angle</source>
-      <translation type="unfinished">Projection group angle</translation>
+      <translation>Ángulo del grupo de proyección</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="332"/>
@@ -5884,7 +5884,7 @@ Los cambios no tendrán efecto en cotas existentes.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="564"/>
       <source>Starting directory for &apos;Insert Page From Template&apos; tool</source>
-      <translation type="unfinished">Starting directory for &apos;Insert Page From Template&apos; tool</translation>
+      <translation>Directorio inicial para &apos;Insertar página desde la plantilla&apos; herramienta</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="577"/>
@@ -5914,7 +5914,7 @@ Los cambios no tendrán efecto en cotas existentes.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="714"/>
       <source>Set &apos;Show grid&apos; property to true on new pages</source>
-      <translation type="unfinished">Set &apos;Show grid&apos; property to true on new pages</translation>
+      <translation>Establecer &apos;Mostrar cuadrícula&apos; propiedad a verdadera en nuevas páginas</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="717"/>
@@ -5939,7 +5939,7 @@ Los cambios no tendrán efecto en cotas existentes.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="835"/>
       <source>Uses the 3D camera direction (or normal of a selected face) as the view direction. Otherwise, views will be created as front views.</source>
-      <translation type="unfinished">Uses the 3D camera direction (or normal of a selected face) as the view direction. Otherwise, views will be created as front views.</translation>
+      <translation>Utiliza la dirección de la cámara 3D (o normal de una cara seleccionada) como la dirección de la vista. De lo contrario, las vistas se crearán como vistas frontales.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="838"/>
@@ -5949,17 +5949,17 @@ Los cambios no tendrán efecto en cotas existentes.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="936"/>
       <source>Snaps views into alignment when being dragged</source>
-      <translation type="unfinished">Snaps views into alignment when being dragged</translation>
+      <translation>Adherir vistas al alineamiento cuando se arrastra</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="939"/>
       <source>Snap view alignment</source>
-      <translation type="unfinished">Snap view alignment</translation>
+      <translation>Ajustar vistas en la alineación</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="958"/>
       <source>Snap detail highlights</source>
-      <translation type="unfinished">Snap detail highlights</translation>
+      <translation>Adherir detalles destacados</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="643"/>
@@ -5969,7 +5969,7 @@ Los cambios no tendrán efecto en cotas existentes.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="664"/>
       <source>Line group file</source>
-      <translation type="unfinished">Line group file</translation>
+      <translation>Archivo de grupo de líneas</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="676"/>
@@ -6004,7 +6004,7 @@ Los cambios no tendrán efecto en cotas existentes.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="955"/>
       <source>Check this box if you want detail view highlights to snap to the nearest vertex when dragging.</source>
-      <translation type="unfinished">Check this box if you want detail view highlights to snap to the nearest vertex when dragging.</translation>
+      <translation>Marque esta casilla si desea que los puntos destacados de la vista de detalles se ajusten al vértice más cercano al arrastrar.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="974"/>
@@ -6014,12 +6014,12 @@ Los cambios no tendrán efecto en cotas existentes.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="929"/>
       <source>Highlight snapping factor</source>
-      <translation type="unfinished">Highlight snapping factor</translation>
+      <translation>Factor de resaltado</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="853"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Control when the view boundary frames and labels are displayed.&lt;/p&gt;&lt;p&gt;Auto: Show on hover, On: Always show, Off: Never show.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Control when the view boundary frames and labels are displayed.&lt;/p&gt;&lt;p&gt;Auto: Show on hover, On: Always show, Off: Never show.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controla cuando se muestran los marcos y etiquetas de los límites de la vista.&lt;/p&gt;&lt;p&gt;Auto: Mostrar al posarse, Encendido: Siempre mostrar, Desactivar: Nunca mostrar.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="863"/>
@@ -6044,17 +6044,17 @@ Los cambios no tendrán efecto en cotas existentes.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="886"/>
       <source>View frames mode</source>
-      <translation type="unfinished">View frames mode</translation>
+      <translation>Ver modo marcos</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="910"/>
       <source>Snaps a view into its aligned position when it is within this fraction of the view size from the alignment target.</source>
-      <translation type="unfinished">Snaps a view into its aligned position when it is within this fraction of the view size from the alignment target.</translation>
+      <translation>Adherir una vista a su posición alineada cuando está dentro de esta fracción del tamaño de la vista desde el objetivo de alineación.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="981"/>
       <source>Controls the snap radius for highlights. Vertex must be within this factor times the highlight size to be a snap target.</source>
-      <translation type="unfinished">Controls the snap radius for highlights. Vertex must be within this factor times the highlight size to be a snap target.</translation>
+      <translation>Controla el radio de adhesión para los resaltados. El vértice debe estar las veces dentro de este factor, el tamaño del resaltado, para ser un objetivo de ranura.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1035"/>
@@ -6232,7 +6232,7 @@ Rápido, pero el resultado es una colección de líneas rectas cortas.</translat
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="214"/>
       <source>View scale type</source>
-      <translation type="unfinished">View scale type</translation>
+      <translation>Ver tipo de escala</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="226"/>
@@ -6310,7 +6310,7 @@ Rápido, pero el resultado es una colección de líneas rectas cortas.</translat
     <message>
       <location filename="../../MDIViewPage.cpp" line="98"/>
       <source>Toggle &amp;Grid</source>
-      <translation type="unfinished">Toggle &amp;Grid</translation>
+      <translation>Activar/Desactivar rejilla</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="101"/>
@@ -6382,7 +6382,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../SymbolChooser.ui" line="55"/>
       <source>Directory to welding symbols</source>
-      <translation type="unfinished">Directory to welding symbols</translation>
+      <translation>Directorio de símbolos de soldadura</translation>
     </message>
   </context>
   <context>
@@ -6420,7 +6420,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="102"/>
       <source>Bubble Appearance</source>
-      <translation type="unfinished">Bubble Appearance</translation>
+      <translation>Apariencia de burbuja</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="118"/>
@@ -6470,7 +6470,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="197"/>
       <source>Shape scale</source>
-      <translation type="unfinished">Shape scale</translation>
+      <translation>Escala de forma</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="210"/>
@@ -6490,7 +6490,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="111"/>
       <source>Bubble shape</source>
-      <translation type="unfinished">Bubble shape</translation>
+      <translation>Forma de burbuja</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="229"/>
@@ -6593,12 +6593,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="95"/>
       <source>Top to bottom line</source>
-      <translation type="unfinished">Top to bottom line</translation>
+      <translation>Línea de arriba a abajo</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="114"/>
       <source>Left to right line</source>
-      <translation type="unfinished">Left to right line</translation>
+      <translation>Línea de Izquierda a Derecha</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="130"/>
@@ -6621,12 +6621,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="174"/>
       <source>Shifts the line up (+) or down (-)</source>
-      <translation type="unfinished">Shifts the line up (+) or down (-)</translation>
+      <translation>Desplaza la línea hacia arriba (+) o hacia abajo (-)</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="190"/>
       <source>Shifts the line left (-) or right (+)</source>
-      <translation type="unfinished">Shifts the line left (-) or right (+)</translation>
+      <translation>Desplaza la línea a la izquierda (-) o derecha (+)</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="220"/>
@@ -6656,7 +6656,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="161"/>
       <source>Shift horizontal</source>
-      <translation type="unfinished">Shift horizontal</translation>
+      <translation>Desplazamiento horizontal</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="200"/>
@@ -7579,7 +7579,7 @@ Si se marca &apos;igual tolerancia&apos;, se sustituirá por el valor negativo d
       <location filename="../../TaskDimension.ui" line="383"/>
       <location filename="../../TaskDimension.ui" line="426"/>
       <source>Use Default</source>
-      <translation type="unfinished">Use Default</translation>
+      <translation>Usar predeterminado</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="344"/>

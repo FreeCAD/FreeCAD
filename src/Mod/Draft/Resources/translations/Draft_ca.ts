@@ -2060,8 +2060,8 @@ s'afegeix un fil cru de la forma original</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="120"/>
-      <source>Apply Cuts</source>
-      <translation>Aplica talls</translation>
+      <source>Apply cuts</source>
+      <translation type="unfinished">Apply cuts</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="140"/>
@@ -2767,8 +2767,8 @@ si coincideixen amb l'eix X, Y o Z del sistema de coordenades global</translatio
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="100"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt; Nota:&lt;/span&gt; aplicar opcions DXF arxius DWG així.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Note: DXF options apply to DWG files as well.</source>
+      <translation type="unfinished">Note: DXF options apply to DWG files as well.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="26"/>

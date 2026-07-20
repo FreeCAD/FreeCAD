@@ -2081,7 +2081,7 @@ se añade un alambre crudo de la forma original</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="120"/>
-      <source>Apply Cuts</source>
+      <source>Apply cuts</source>
       <translation>Aplicar cortes</translation>
     </message>
     <message>
@@ -2785,8 +2785,8 @@ si coinciden con el eje X, Y o Z del sistema global de coordenadas</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="100"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt; Nota:&lt;/span&gt; las opciones de DXF también se aplican a archivos DWG.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Note: DXF options apply to DWG files as well.</source>
+      <translation>Nota: las opciones DXF también se aplican a los archivos DWG.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="26"/>
@@ -3782,17 +3782,17 @@ Intente mover el archivo DWG a un directorio cuyo camino no contenga espacios ni
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="243"/>
       <source>%1 pick arrow point</source>
-      <translation type="unfinished">%1 pick arrow point</translation>
+      <translation>%1 elige el punto de flecha</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="247"/>
       <source>%1 pick corner point</source>
-      <translation type="unfinished">%1 pick corner point</translation>
+      <translation>%1 eilge punto de esquina</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="251"/>
       <source>%1 pick text point</source>
-      <translation type="unfinished">%1 pick text point</translation>
+      <translation>%1 elige el punto de texto</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="95"/>
@@ -3925,7 +3925,7 @@ Intente mover el archivo DWG a un directorio cuyo camino no contenga espacios ni
     <message>
       <location filename="../../draftguitools/gui_move.py" line="252"/>
       <source>%1 pick start point</source>
-      <translation type="unfinished">%1 pick start point</translation>
+      <translation>%1 elige el punto de inicio</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="256"/>
@@ -3990,42 +3990,42 @@ Intente mover el archivo DWG a un directorio cuyo camino no contenga espacios ni
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="76"/>
       <source>Hold %1 constrain</source>
-      <translation type="unfinished">Hold %1 constrain</translation>
+      <translation>Mantenga %1 restringido</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="81"/>
       <source>Hold %1 horizontal/vertical dimension</source>
-      <translation type="unfinished">Hold %1 horizontal/vertical dimension</translation>
+      <translation>Mantener dimensión horizontal/vertical %1</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="86"/>
       <source>Hold %1 radial dimension</source>
-      <translation type="unfinished">Hold %1 radial dimension</translation>
+      <translation>Mantener dimensión radial %1</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="93"/>
       <source>Hold %1 snap</source>
-      <translation type="unfinished">Hold %1 snap</translation>
+      <translation>Mantén adhesión %1</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="98"/>
       <source>Hold %1 copy</source>
-      <translation type="unfinished">Hold %1 copy</translation>
+      <translation>Mantén %1 copia</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="104"/>
       <source>%1 select objects to modify</source>
-      <translation type="unfinished">%1 select objects to modify</translation>
+      <translation>%1 selecciona objetos a modificar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="106"/>
       <source>%1 select object to modify</source>
-      <translation type="unfinished">%1 select object to modify</translation>
+      <translation>%1 selecciona objeto a modificar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="123"/>
       <source>%1 / %2 / %3 switch constraint</source>
-      <translation type="unfinished">%1 / %2 / %3 switch constraint</translation>
+      <translation>Restricción de conmutación %1 / %2 / %3</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="133"/>
@@ -6960,7 +6960,7 @@ Es un listado; donde cada elemento de la lista se mostrará en su propia línea.
     <message>
       <location filename="../../draftobjects/hatch.py" line="55"/>
       <source>The objects and faces used by this object</source>
-      <translation type="unfinished">The objects and faces used by this object</translation>
+      <translation>Los objetos y caras usados por este objeto</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="63"/>

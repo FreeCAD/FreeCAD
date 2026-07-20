@@ -2514,7 +2514,7 @@ que indica que es necesario aumentar "MAXGS".</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="393"/>
       <source>Only cylindrical faces (edges in 2D model) can be picked</source>
-      <translation type="unfinished">Only cylindrical faces (edges in 2D model) can be picked</translation>
+      <translation>Solo se pueden seleccionar caras cilíndricas (aristas en el modelo 2D)</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="437"/>

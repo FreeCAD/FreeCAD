@@ -3837,7 +3837,7 @@ The default template is located at:
       <location filename="../../ArchPanel.py" line="577"/>
       <location filename="../../ArchCoveringGui.py" line="1002"/>
       <location filename="../../ArchCoveringGui.py" line="1078"/>
-      <location filename="../../ArchWindow.py" line="1195"/>
+      <location filename="../../ArchWindow.py" line="1196"/>
       <location filename="../../ArchPrecast.py" line="1720"/>
       <location filename="../../bimcommands/BimPanel.py" line="221"/>
       <location filename="../../bimcommands/BimWall.py" line="514"/>
@@ -3849,7 +3849,7 @@ The default template is located at:
       <location filename="../../ArchRoof.py" line="1088"/>
       <location filename="../../ArchStructure.py" line="490"/>
       <location filename="../../ArchStructure.py" line="1606"/>
-      <location filename="../../ArchWindow.py" line="1198"/>
+      <location filename="../../ArchWindow.py" line="1199"/>
       <location filename="../../ArchPrecast.py" line="1721"/>
       <location filename="../../bimcommands/BimWall.py" line="521"/>
       <source>Height</source>
@@ -4167,7 +4167,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>门</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1201"/>
+      <location filename="../../ArchWindow.py" line="1202"/>
       <location filename="../../ArchWindowPresets.py" line="566"/>
       <source>Opening</source>
       <translation>开口</translation>
@@ -4427,91 +4427,91 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>台体高度</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1098"/>
-      <location filename="../../ArchWindow.py" line="1744"/>
+      <location filename="../../ArchWindow.py" line="1099"/>
+      <location filename="../../ArchWindow.py" line="1745"/>
       <source>Invert Opening Direction</source>
       <translation>反转开启方向</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1113"/>
-      <location filename="../../ArchWindow.py" line="1747"/>
+      <location filename="../../ArchWindow.py" line="1114"/>
+      <location filename="../../ArchWindow.py" line="1748"/>
       <source>Invert Hinge Position</source>
       <translation>反转铰链位置</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1175"/>
+      <location filename="../../ArchWindow.py" line="1176"/>
       <source>This window has no defined opening</source>
       <translation>此窗口没有定义为打开</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1190"/>
+      <location filename="../../ArchWindow.py" line="1191"/>
       <location filename="../../bimcommands/BimWindow.py" line="400"/>
       <source>Window Options</source>
       <translation>窗口选项</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1504"/>
-      <location filename="../../ArchWindow.py" line="1555"/>
+      <location filename="../../ArchWindow.py" line="1505"/>
+      <location filename="../../ArchWindow.py" line="1556"/>
       <source>Get selected edge</source>
       <translation>获取选中的边缘</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1657"/>
+      <location filename="../../ArchWindow.py" line="1658"/>
       <source>Unable to create component</source>
       <translation>无法创建组件</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1695"/>
+      <location filename="../../ArchWindow.py" line="1696"/>
       <source>Window Elements</source>
       <translation>窗口构件</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1696"/>
+      <location filename="../../ArchWindow.py" line="1697"/>
       <source>Hole wire</source>
       <translation>孔线</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1703"/>
+      <location filename="../../ArchWindow.py" line="1704"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>线的数目在主体对象中定义一个孔。值为零时将自动采用最大线数</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1704"/>
+      <location filename="../../ArchWindow.py" line="1705"/>
       <source>Pick Selected</source>
       <translation>选取所选</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1710"/>
+      <location filename="../../ArchWindow.py" line="1711"/>
       <source>Create/Update Component</source>
       <translation>创建/更新组件</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1714"/>
+      <location filename="../../ArchWindow.py" line="1715"/>
       <source>Create new Component</source>
       <translation>创建新组件</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1718"/>
+      <location filename="../../ArchWindow.py" line="1719"/>
       <source>Frame depth</source>
       <translation>框架深度</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1720"/>
+      <location filename="../../ArchWindow.py" line="1721"/>
       <source>Hinge/Track</source>
       <translation>铰链 / 滑轨</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1729"/>
+      <location filename="../../ArchWindow.py" line="1730"/>
       <source>If this is checked, the window's Frame property value will be added to the value entered here</source>
       <translation>如果选中此项，窗口的框架属性值将添加到此处输入的值</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1737"/>
+      <location filename="../../ArchWindow.py" line="1738"/>
       <source>If this is checked, the window's Offset property value will be added to the value entered here</source>
       <translation>如果选中此项，窗口的偏移属性值将添加到此处输入的值</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1741"/>
+      <location filename="../../ArchWindow.py" line="1742"/>
       <source>Retrieves the selected edge</source>
       <translation>检索选定的边</translation>
     </message>
@@ -4521,7 +4521,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchAxis.py" line="985"/>
       <location filename="../../ArchAxisSystem.py" line="338"/>
       <location filename="../../ArchSpace.py" line="954"/>
-      <location filename="../../ArchWindow.py" line="1705"/>
+      <location filename="../../ArchWindow.py" line="1706"/>
       <source>Remove</source>
       <translation>移除</translation>
     </message>
@@ -4530,7 +4530,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchAxis.py" line="986"/>
       <location filename="../../ArchAxisSystem.py" line="339"/>
       <location filename="../../ArchSpace.py" line="949"/>
-      <location filename="../../ArchWindow.py" line="1706"/>
+      <location filename="../../ArchWindow.py" line="1707"/>
       <source>Add</source>
       <translation>添加</translation>
     </message>
@@ -4545,39 +4545,39 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchSite.py" line="1588"/>
       <location filename="../../ArchMaterial.py" line="471"/>
       <location filename="../../ArchMaterial.py" line="798"/>
-      <location filename="../../ArchWindow.py" line="1707"/>
+      <location filename="../../ArchWindow.py" line="1708"/>
       <location filename="../../ArchIFCView.py" line="63"/>
       <source>Edit</source>
       <translation>编辑</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1711"/>
+      <location filename="../../ArchWindow.py" line="1712"/>
       <source>Base 2D object</source>
       <translation>基础2D对象</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1712"/>
-      <location filename="../../ArchWindow.py" line="1717"/>
+      <location filename="../../ArchWindow.py" line="1713"/>
+      <location filename="../../ArchWindow.py" line="1718"/>
       <source>Wires</source>
       <translation>线框</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2470"/>
-      <location filename="../../ArchWindow.py" line="1713"/>
+      <location filename="../../ArchWindow.py" line="1714"/>
       <source>Components</source>
       <translation>组件</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="895"/>
       <location filename="../../ArchMaterial.py" line="921"/>
-      <location filename="../../ArchWindow.py" line="1715"/>
+      <location filename="../../ArchWindow.py" line="1716"/>
       <source>Name</source>
       <translation>名称</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2538"/>
       <location filename="../../ArchCommands.py" line="1730"/>
-      <location filename="../../ArchWindow.py" line="1716"/>
+      <location filename="../../ArchWindow.py" line="1717"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
       <source>Type</source>
       <translation>类型</translation>
@@ -4594,29 +4594,29 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>厚度</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1719"/>
+      <location filename="../../ArchWindow.py" line="1720"/>
       <location filename="../../ArchPrecast.py" line="1725"/>
       <location filename="../../bimcommands/BimWall.py" line="537"/>
       <source>Offset</source>
       <translation>偏移</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1721"/>
+      <location filename="../../ArchWindow.py" line="1722"/>
       <source>Opening mode</source>
       <translation>开口模式</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1722"/>
+      <location filename="../../ArchWindow.py" line="1723"/>
       <source>+ Frame property</source>
       <translation>+ 框架属性</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1730"/>
+      <location filename="../../ArchWindow.py" line="1731"/>
       <source>+ Offset property</source>
       <translation>+ 偏移属性</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1738"/>
+      <location filename="../../ArchWindow.py" line="1739"/>
       <source>Get Selected Edge</source>
       <translation>获取选定的边</translation>
     </message>
@@ -8234,7 +8234,7 @@ The ladybug or pysolar Python module is required.</source>
       <translation>如果可用，显示立面开口符号</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1422"/>
+      <location filename="../../ArchWindow.py" line="1423"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>定义孔的线的编号。值为0表示自动</translation>
     </message>

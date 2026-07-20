@@ -3822,7 +3822,7 @@ Die Standardvorlage befindet sich unter:
       <location filename="../../ArchPanel.py" line="577"/>
       <location filename="../../ArchCoveringGui.py" line="1002"/>
       <location filename="../../ArchCoveringGui.py" line="1078"/>
-      <location filename="../../ArchWindow.py" line="1195"/>
+      <location filename="../../ArchWindow.py" line="1196"/>
       <location filename="../../ArchPrecast.py" line="1720"/>
       <location filename="../../bimcommands/BimPanel.py" line="221"/>
       <location filename="../../bimcommands/BimWall.py" line="514"/>
@@ -3834,7 +3834,7 @@ Die Standardvorlage befindet sich unter:
       <location filename="../../ArchRoof.py" line="1088"/>
       <location filename="../../ArchStructure.py" line="490"/>
       <location filename="../../ArchStructure.py" line="1606"/>
-      <location filename="../../ArchWindow.py" line="1198"/>
+      <location filename="../../ArchWindow.py" line="1199"/>
       <location filename="../../ArchPrecast.py" line="1721"/>
       <location filename="../../bimcommands/BimWall.py" line="521"/>
       <source>Height</source>
@@ -4151,7 +4151,7 @@ Wenn Länge = 0, dann wird die Länge so berechnet, dass die Höhe mit dem relat
       <translation>Tür</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1201"/>
+      <location filename="../../ArchWindow.py" line="1202"/>
       <location filename="../../ArchWindowPresets.py" line="566"/>
       <source>Opening</source>
       <translation>Öffnung</translation>
@@ -4411,91 +4411,91 @@ Wenn Länge = 0, dann wird die Länge so berechnet, dass die Höhe mit dem relat
       <translation>Fensterbankhöhe</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1098"/>
-      <location filename="../../ArchWindow.py" line="1744"/>
+      <location filename="../../ArchWindow.py" line="1099"/>
+      <location filename="../../ArchWindow.py" line="1745"/>
       <source>Invert Opening Direction</source>
       <translation>Öffnungsrichtung umkehren</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1113"/>
-      <location filename="../../ArchWindow.py" line="1747"/>
+      <location filename="../../ArchWindow.py" line="1114"/>
+      <location filename="../../ArchWindow.py" line="1748"/>
       <source>Invert Hinge Position</source>
       <translation>Scharnierposition umkehren</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1175"/>
+      <location filename="../../ArchWindow.py" line="1176"/>
       <source>This window has no defined opening</source>
       <translation>Das Fenster hat keine definierte Öffnung</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1190"/>
+      <location filename="../../ArchWindow.py" line="1191"/>
       <location filename="../../bimcommands/BimWindow.py" line="400"/>
       <source>Window Options</source>
       <translation>Fensteroptionen</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1504"/>
-      <location filename="../../ArchWindow.py" line="1555"/>
+      <location filename="../../ArchWindow.py" line="1505"/>
+      <location filename="../../ArchWindow.py" line="1556"/>
       <source>Get selected edge</source>
       <translation>Ausgewählte Kante erhalten</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1657"/>
+      <location filename="../../ArchWindow.py" line="1658"/>
       <source>Unable to create component</source>
       <translation>Komponente konnte nicht erstellt werden</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1695"/>
+      <location filename="../../ArchWindow.py" line="1696"/>
       <source>Window Elements</source>
       <translation>Fensterelemente</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1696"/>
+      <location filename="../../ArchWindow.py" line="1697"/>
       <source>Hole wire</source>
       <translation>Kantenzug</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1703"/>
+      <location filename="../../ArchWindow.py" line="1704"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>Die Nummer des Kantenzuges der das Loch im Host-Objekt definiert. Der Wert Null wählt automatisch den größten Kantenzug aus</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1704"/>
+      <location filename="../../ArchWindow.py" line="1705"/>
       <source>Pick Selected</source>
       <translation>Ausgewählte auswählen</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1710"/>
+      <location filename="../../ArchWindow.py" line="1711"/>
       <source>Create/Update Component</source>
       <translation>Komponente erstellen/aktualisiere</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1714"/>
+      <location filename="../../ArchWindow.py" line="1715"/>
       <source>Create new Component</source>
       <translation>Neue Komponente erstellen</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1718"/>
+      <location filename="../../ArchWindow.py" line="1719"/>
       <source>Frame depth</source>
       <translation>Rahmentiefe</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1720"/>
+      <location filename="../../ArchWindow.py" line="1721"/>
       <source>Hinge/Track</source>
       <translation>Scharnier/Schiene</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1729"/>
+      <location filename="../../ArchWindow.py" line="1730"/>
       <source>If this is checked, the window's Frame property value will be added to the value entered here</source>
       <translation>Wenn diese Option aktiviert ist, wird der Wert der Eigenschaft „Frame“ des Fensters zum hier eingegebenen Wert hinzugefügt</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1737"/>
+      <location filename="../../ArchWindow.py" line="1738"/>
       <source>If this is checked, the window's Offset property value will be added to the value entered here</source>
       <translation>Wenn diese Option aktiviert ist, wird der Wert der Versatz-Eigenschaft des Fensters zu dem hier eingegebenen Wert hinzugefügt</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1741"/>
+      <location filename="../../ArchWindow.py" line="1742"/>
       <source>Retrieves the selected edge</source>
       <translation>Ruft die gewählte Kante ab</translation>
     </message>
@@ -4505,7 +4505,7 @@ Wenn Länge = 0, dann wird die Länge so berechnet, dass die Höhe mit dem relat
       <location filename="../../ArchAxis.py" line="985"/>
       <location filename="../../ArchAxisSystem.py" line="338"/>
       <location filename="../../ArchSpace.py" line="954"/>
-      <location filename="../../ArchWindow.py" line="1705"/>
+      <location filename="../../ArchWindow.py" line="1706"/>
       <source>Remove</source>
       <translation>Entfernen</translation>
     </message>
@@ -4514,7 +4514,7 @@ Wenn Länge = 0, dann wird die Länge so berechnet, dass die Höhe mit dem relat
       <location filename="../../ArchAxis.py" line="986"/>
       <location filename="../../ArchAxisSystem.py" line="339"/>
       <location filename="../../ArchSpace.py" line="949"/>
-      <location filename="../../ArchWindow.py" line="1706"/>
+      <location filename="../../ArchWindow.py" line="1707"/>
       <source>Add</source>
       <translation>Hinzufügen</translation>
     </message>
@@ -4529,39 +4529,39 @@ Wenn Länge = 0, dann wird die Länge so berechnet, dass die Höhe mit dem relat
       <location filename="../../ArchSite.py" line="1588"/>
       <location filename="../../ArchMaterial.py" line="471"/>
       <location filename="../../ArchMaterial.py" line="798"/>
-      <location filename="../../ArchWindow.py" line="1707"/>
+      <location filename="../../ArchWindow.py" line="1708"/>
       <location filename="../../ArchIFCView.py" line="63"/>
       <source>Edit</source>
       <translation>Bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1711"/>
+      <location filename="../../ArchWindow.py" line="1712"/>
       <source>Base 2D object</source>
       <translation>2D Basisobjekt</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1712"/>
-      <location filename="../../ArchWindow.py" line="1717"/>
+      <location filename="../../ArchWindow.py" line="1713"/>
+      <location filename="../../ArchWindow.py" line="1718"/>
       <source>Wires</source>
       <translation>Kantenzüge</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2470"/>
-      <location filename="../../ArchWindow.py" line="1713"/>
+      <location filename="../../ArchWindow.py" line="1714"/>
       <source>Components</source>
       <translation>Komponenten</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="895"/>
       <location filename="../../ArchMaterial.py" line="921"/>
-      <location filename="../../ArchWindow.py" line="1715"/>
+      <location filename="../../ArchWindow.py" line="1716"/>
       <source>Name</source>
       <translation>Name</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2538"/>
       <location filename="../../ArchCommands.py" line="1730"/>
-      <location filename="../../ArchWindow.py" line="1716"/>
+      <location filename="../../ArchWindow.py" line="1717"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
       <source>Type</source>
       <translation>Typ</translation>
@@ -4578,29 +4578,29 @@ Wenn Länge = 0, dann wird die Länge so berechnet, dass die Höhe mit dem relat
       <translation>Dicke</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1719"/>
+      <location filename="../../ArchWindow.py" line="1720"/>
       <location filename="../../ArchPrecast.py" line="1725"/>
       <location filename="../../bimcommands/BimWall.py" line="537"/>
       <source>Offset</source>
       <translation>Versatz</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1721"/>
+      <location filename="../../ArchWindow.py" line="1722"/>
       <source>Opening mode</source>
       <translation>Öffnungsmodus</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1722"/>
+      <location filename="../../ArchWindow.py" line="1723"/>
       <source>+ Frame property</source>
       <translation>+ Rahmen-Eigenschaft</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1730"/>
+      <location filename="../../ArchWindow.py" line="1731"/>
       <source>+ Offset property</source>
       <translation>+ Versatz-Eigenschaft</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1738"/>
+      <location filename="../../ArchWindow.py" line="1739"/>
       <source>Get Selected Edge</source>
       <translation>Ausgewählte Kante erhalten</translation>
     </message>
@@ -8228,7 +8228,7 @@ Das Python-Modul ladybug oder pysolar ist erforderlich.</translation>
       <translation>Zeige Elevationsöffnungssymbole, falls verfügbar</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1422"/>
+      <location filename="../../ArchWindow.py" line="1423"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>Die Nummer des Kantenzuges, die das Loch definieren. Der Wert 0 bedeutet automatisch</translation>
     </message>

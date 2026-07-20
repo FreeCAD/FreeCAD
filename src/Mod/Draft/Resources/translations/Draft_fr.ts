@@ -2075,7 +2075,7 @@ forme originale est ajoutée.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="120"/>
-      <source>Apply Cuts</source>
+      <source>Apply cuts</source>
       <translation>Appliquer les découpes</translation>
     </message>
     <message>
@@ -2202,7 +2202,7 @@ Cette valeur est la longueur maximale du segment.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="446"/>
       <source>Join geometry</source>
-      <translation>Joindre la géométrie</translation>
+      <translation>Joindre les géométries</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="415"/>
@@ -2217,7 +2217,7 @@ Cette valeur est la longueur maximale du segment.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="512"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
-      <translation>L'exportation des ellipses est mal supportée. Utiliser ceci pour les exporter en tant que polylignes à la place.</translation>
+      <translation>L'exportation des ellipses est mal prise en compte. Utiliser ceci pour les exporter en tant que polylignes à la place.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="515"/>
@@ -2325,7 +2325,7 @@ objects, maintaining the block structure. Good for referencing and measuring.</s
     <message>
       <location filename="../ui/preferences-dxf.ui" line="175"/>
       <source>Individual Part shapes (balanced, recommended)</source>
-      <translation>Chaque forme des pièces (équilibré, recommandé)</translation>
+      <translation>Chacune des formes de Part (équilibré, recommandé)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="197"/>
@@ -2793,8 +2793,8 @@ fichiers ODA est utilisé, ou l'utilitaire « dwg2dwg » si la version pro de QC
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="100"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt; Remarque :&lt;/span&gt; les options DXF s'appliquent également aux fichiers DWG.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Note: DXF options apply to DWG files as well.</source>
+      <translation>Remarque : les options DXF s'appliquent également aux fichiers DWG.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="26"/>
@@ -7983,7 +7983,7 @@ the 'First Angle' and 'Last Angle' properties.</source>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="96"/>
       <source>If it is true, the print color will be used when objects in this layer are placed on a TechDraw page</source>
-      <translation>Si mis à vrai, la couleur d'impression sera utilisée lorsque les objets de ce calque seront placés sur une page TechDraw</translation>
+      <translation>Si mis à vrai, la couleur d'affichage sera utilisée lorsque les objets de ce calque seront placés sur une page TechDraw</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="104"/>
@@ -8933,7 +8933,7 @@ objects, maintaining the block structure. Good for referencing and measuring.</s
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="57"/>
       <source>Individual Part shapes (recommended)</source>
-      <translation>Chaque forme des pièces (recommandé)</translation>
+      <translation>Chacune des formes de Part (recommandé)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="64"/>
