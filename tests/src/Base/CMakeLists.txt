@@ -1,6 +1,7 @@
 add_executable(Base_tests_run
         Axis.cpp
         Base64.cpp
+        ByteBuffer.cpp
         Bitmask.cpp
         BoundBox.cpp
         Builder3D.cpp
@@ -13,9 +14,11 @@ add_executable(Base_tests_run
         FileInfo.cpp
         InputSource.cpp
         Handle.cpp
+        HashUtils.cpp
         Matrix.cpp
         Parameter.cpp
         ParameterObserver.cpp
+        PlatformPaths.cpp
         Placement.cpp
         Persistence.cpp
         PyException.cpp
@@ -24,6 +27,7 @@ add_executable(Base_tests_run
         Rotation.cpp
         SchemaTests.cpp
         ServiceProvider.cpp
+        Sha1.cpp
         Stream.cpp
         StringUtils.cpp
         TimeInfo.cpp
@@ -44,11 +48,17 @@ add_executable(Base_tests_run
         XMLTools.cpp
 )
 
-setup_qt_test(InventorBuilder)
+if(BUILD_GUI)
+    setup_qt_test(InventorBuilder)
+endif()
 
 target_link_libraries(Base_tests_run PRIVATE
     GTest::gmock_main
     FreeCADApp
     ${Python3_LIBRARIES}
     ICU::uc ICU::i18n
+)
+
+target_compile_definitions(Base_tests_run PRIVATE
+    FREECAD_TEST_HAS_QT=$<BOOL:${FREECAD_HAS_QT}>
 )

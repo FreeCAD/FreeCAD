@@ -2,8 +2,9 @@
 
 #include <gtest/gtest.h>
 
-#include "App/ByteArray.h"
 #include "App/IndexedName.h"
+
+#include <Base/BytesView.h>
 
 #include <sstream>
 
@@ -174,10 +175,10 @@ TEST_F(IndexedNameTest, nameAndTypeListConstructionReusedMemoryCheck)
 TEST_F(IndexedNameTest, byteArrayConstruction)
 {
     // Arrange
-    QByteArray qba {"EDGE42"};
+    const std::string bytes {"EDGE42"};
 
     // Act
-    auto indexedName = Data::IndexedName(qba);
+    auto indexedName = Data::IndexedName(Base::BytesView(bytes.data(), bytes.size()));
 
     // Assert
     EXPECT_STREQ(indexedName.getType(), "EDGE");
@@ -486,120 +487,6 @@ TEST_F(IndexedNameTest, assignmentOperator)
 
     // Assert
     EXPECT_EQ(indexedName1, indexedName2);
-}
-
-
-class ByteArrayTest: public ::testing::Test
-{
-protected:
-    // void SetUp() override {}
-
-    // void TearDown() override {}
-};
-
-TEST_F(ByteArrayTest, QByteArrayConstruction)
-{
-    // Arrange
-    QByteArray testQBA("Data in a QByteArray");
-
-    // Act
-    Data::ByteArray testByteArray(testQBA);
-
-    // Assert
-    EXPECT_EQ(testQBA, testByteArray.bytes);
-}
-
-TEST_F(ByteArrayTest, CopyConstruction)
-{
-    // Arrange
-    QByteArray testQBA("Data in a QByteArray");
-    Data::ByteArray originalByteArray(testQBA);
-
-    // Act
-    // NOLINTNEXTLINE performance-unnecessary-copy-initialization
-    Data::ByteArray copiedByteArray(originalByteArray);
-
-    // Assert
-    EXPECT_EQ(originalByteArray, copiedByteArray);
-}
-
-TEST_F(ByteArrayTest, MoveConstruction)
-{
-    // Arrange
-    QByteArray testQBA("Data in a QByteArray");
-    Data::ByteArray originalByteArray(testQBA);
-    const auto* originalDataLocation = originalByteArray.bytes.constData();
-
-    // Act
-    Data::ByteArray copiedByteArray(std::move(originalByteArray));
-
-    // Assert
-    EXPECT_EQ(testQBA, copiedByteArray.bytes);
-    EXPECT_EQ(originalDataLocation, copiedByteArray.bytes.constData());
-}
-
-TEST_F(ByteArrayTest, ensureUnshared)
-{
-    // Arrange
-    QByteArray testQBA("Data in a QByteArray");
-    Data::ByteArray originalByteArray(testQBA);
-    const auto* originalDataLocation = originalByteArray.bytes.constData();
-    Data::ByteArray copiedByteArray(originalByteArray);
-
-    // Act
-    copiedByteArray.ensureUnshared();
-
-    // Assert
-    EXPECT_EQ(testQBA, copiedByteArray.bytes);
-    EXPECT_NE(originalDataLocation, copiedByteArray.bytes.constData());
-}
-
-TEST_F(ByteArrayTest, equalityOperator)
-{
-    // Arrange
-    QByteArray testQBA1("Data in a QByteArray");
-    QByteArray testQBA2("Data in a QByteArray");
-    QByteArray testQBA3("Not the same data in a QByteArray");
-    Data::ByteArray byteArray1(testQBA1);
-    Data::ByteArray byteArray2(testQBA2);
-    Data::ByteArray byteArray3(testQBA3);
-
-    // Act & Assert
-    EXPECT_TRUE(byteArray1 == byteArray2);
-    EXPECT_FALSE(byteArray1 == byteArray3);
-}
-
-TEST_F(ByteArrayTest, assignmentOperator)
-{
-    // Arrange
-    QByteArray testQBA1("Data in a QByteArray");
-    QByteArray testQBA2("Different data in a QByteArray");
-    Data::ByteArray originalByteArray(testQBA1);
-    Data::ByteArray newByteArray(testQBA2);
-    ASSERT_FALSE(originalByteArray == newByteArray);
-
-    // Act
-    newByteArray = originalByteArray;
-
-    // Assert
-    EXPECT_TRUE(originalByteArray == newByteArray);
-}
-
-TEST_F(ByteArrayTest, moveAssignmentOperator)
-{
-    // Arrange
-    QByteArray testQBA1("Data in a QByteArray");
-    QByteArray testQBA2("Different data in a QByteArray");
-    Data::ByteArray originalByteArray(testQBA1);
-    const auto* originalByteArrayLocation = originalByteArray.bytes.constData();
-    Data::ByteArray newByteArray(testQBA2);
-    ASSERT_FALSE(originalByteArray == newByteArray);
-
-    // Act
-    newByteArray = std::move(originalByteArray);
-
-    // Assert
-    EXPECT_EQ(originalByteArrayLocation, newByteArray.bytes.constData());
 }
 
 // NOLINTEND(readability-magic-numbers)

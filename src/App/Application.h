@@ -26,12 +26,10 @@
 #pragma once
 
 #include <fastsignals/signal.h>
-#include <QtCore/qtextstream.h>
 
 #include <deque>
 #include <list>
 #include <vector>
-#include <list>
 #include <set>
 #include <map>
 #include <memory>
@@ -1001,18 +999,11 @@ private:
     static Application *_pcSingleton;
     // checks if the environment is alright
     //static void CheckEnv(void);
-    // Search for the FreeCAD home path based on argv[0]
-    /*
-     * There are multiple implementations of this method per-OS
-     */
-    static std::string FindHomePath(const char* sCall);
-    // Print the help message
+    /// Print the help message
     static void PrintInitHelp();
-    // figure out some things
-    static void ExtractUserPath();
-    // load the user and system parameter set
+    /// load the user and system parameter set
     static void LoadParameters();
-    // puts the given env variable in the config
+    /// puts the given env variable in the config
     static void SaveEnv(const char *);
     // startup configuration container
     static std::map<std::string,std::string> mConfig;

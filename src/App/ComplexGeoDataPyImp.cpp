@@ -33,6 +33,7 @@
 #include <App/StringHasherPy.h>
 #include <App/StringIDPy.h>
 #include <Base/BoundBoxPy.h>
+#include <Base/BytesView.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
 #include "Base/PyWrapParseTupleAndKeywords.h"
@@ -434,12 +435,13 @@ PyObject* ComplexGeoDataPy::setElementName(PyObject* args, PyObject* kwds)
             throw Py::RuntimeError("no element map");
         }
 
+        const Base::BytesView postfixView = postfix ? Base::BytesView(postfix) : Base::BytesView();
         map->encodeElementName(getComplexGeoDataPtr()->elementType(index),
                                mapped,
                                ss,
                                &sids,
                                tag,
-                               postfix,
+                               postfixView,
                                tag);
         Data::MappedName res =
             map->setElementName(index, mapped, tag, &sids, PyObject_IsTrue(overwrite));

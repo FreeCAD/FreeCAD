@@ -24,11 +24,14 @@
 
 #include <FCConfig.h>
 
+#include <cassert>
 #include <bitset>
 #include <memory>
+#include <string>
+#include <vector>
 
-#include <QByteArray>
-#include <QVector>
+#include <Base/ByteBuffer.h>
+#include <Base/BytesView.h>
 
 #include <Base/Bitmask.h>
 #include <Base/Handle.h>
@@ -49,8 +52,85 @@ namespace App
 
 class StringHasher;
 class StringID;
-class StringIDRef;
 using StringHasherRef = Base::Reference<StringHasher>;
+
+/** Counted reference to a StringID instance
+ *
+ * This is defined before StringID so that StringID can store `std::vector<StringIDRef>`
+ * members without relying on incomplete-type behavior (required for Clang/libstdc++).
+ */
+class StringIDRef
+{
+public:
+    /// Default construction results in an empty StringIDRef object: it will evaluate to boolean
+    /// "false" if queried.
+    StringIDRef();
+
+    /// Standard construction from a heap-allocated StringID. This reference-counting class manages
+    /// the lifetime of the StringID, ensuring it is deallocated when its reference count goes to
+    /// zero.
+    /// \param stringID A pointer to a StringID allocated with "new"
+    /// \param index (optional) An index value to store along with the StringID. Defaults to zero.
+    StringIDRef(StringID* stringID, int index = 0);
+
+    /// Copy construction results in an incremented reference count for the stored StringID
+    StringIDRef(const StringIDRef& other);
+
+    /// Move construction does NOT increase the reference count of the StringID (instead, it
+    /// invalidates the pointer in the moved object).
+    StringIDRef(StringIDRef&& other) noexcept;
+
+    StringIDRef(const StringIDRef& other, int index);
+
+    ~StringIDRef();
+
+    void reset(const StringIDRef& stringID = StringIDRef());
+    void reset(const StringIDRef& stringID, int index);
+
+    void swap(StringIDRef& stringID);
+
+    StringIDRef& operator=(StringID* stringID);
+    StringIDRef& operator=(const StringIDRef& stringID);
+    StringIDRef& operator=(StringIDRef&& stringID) noexcept;
+
+    bool operator<(const StringIDRef& stringID) const;
+    bool operator==(const StringIDRef& stringID) const;
+    bool operator!=(const StringIDRef& stringID) const;
+
+    explicit operator bool() const;
+
+    int getRefCount() const;
+    std::string toString() const;
+    std::string dataToText() const;
+    const char* constData() const;
+    const StringID& deref() const;
+    long value() const;
+
+    std::vector<StringIDRef> relatedIDs() const;
+    bool isBinary() const;
+    bool isHashed() const;
+
+    void toBytes(Base::ByteBuffer& bytes) const;
+    PyObject* getPyObject();
+
+    void mark() const;
+    bool isMarked() const;
+
+    bool isFromSameHasher(const StringHasherRef& hasher) const;
+    StringHasherRef getHasher() const;
+
+    void setPersistent(bool enable);
+
+    /// Used predominantly by the unit test code to verify that index is set correctly. In general
+    /// user code should not need to call this function.
+    int getIndex() const;
+
+    friend class StringHasher;
+
+private:
+    StringID* _sid;
+    int _index;
+};
 
 /** Class to store a string
  *
@@ -64,7 +144,7 @@ using StringHasherRef = Base::Reference<StringHasher>;
  * created by adding some common postfix to an existing name, so data sharing
  * can be improved using the following techniques:
  *
- *      a) reference count (through QByteArray) the main data part,
+ *      a) reference count (through shared backing storage) the main data part,
  *
  *      b) (recursively) encode prefix and/or postfix as an integer (in the
  *         format of #<hex>, e.g. #1b) that references another StringID,
@@ -117,7 +197,7 @@ public:
      *
      * User code is not supposed to create StringID directly, but through StringHasher::getID()
      */
-    StringID(long id, QByteArray data, const Flags& flags = Flag::None)
+    StringID(long id, Base::ByteBuffer data, const Flags& flags = Flag::None)
         : _id(id)
         , _data(std::move(data))
         , _flags(flags)
@@ -143,7 +223,7 @@ public:
     }
 
     /// Returns all related StringIDs that used to encode this StringID
-    const QVector<StringIDRef>& relatedIDs() const
+    const std::vector<StringIDRef>& relatedIDs() const
     {
         return _sids;
     }
@@ -174,19 +254,19 @@ public:
     }
 
     /// Returns the data (prefix)
-    const QByteArray& data() const
+    const Base::ByteBuffer& data() const
     {
         return _data;
     }
 
     /// Returns the postfix
-    QByteArray postfix() const
+    Base::ByteBuffer postfix() const
     {
         return _postfix;
     }
 
     /// Sets the postfix
-    void setPostfix(QByteArray postfix)
+    void setPostfix(Base::ByteBuffer postfix)
     {
         _postfix = std::move(postfix);
     }
@@ -237,18 +317,9 @@ public:
      */
     static IndexID fromString(const char* name, bool eof = true, int size = -1);
 
-    /** Parse string to get ID and index
-     * @param bytes: input data
-     * @param eof: Whether to check the end of string. If true, then the input
-     *             string must contain only the string representation of this
-     *             StringID
-     *
-     * The input string is expected to be in the format of #<id> or with index
-     * #<id>:<index>, where both id and index are in hex digits.
-     */
-    static IndexID fromString(const QByteArray& bytes, bool eof = true)
+    static IndexID fromString(Base::BytesView bytes, bool eof = true)
     {
-        return fromString(bytes.constData(), eof, bytes.size());
+        return fromString(bytes.data(), eof, static_cast<int>(bytes.size()));
     }
 
     /** Get the text content of this StringID
@@ -258,17 +329,17 @@ public:
      */
     std::string dataToText(int index = 0) const;
 
-    /** Get the content of this StringID as QByteArray
+    /** Get the content of this StringID as a byte buffer
      * @param index: optional index.
      */
-    QByteArray dataToBytes(int index = 0) const
+    Base::ByteBuffer dataToBytes(int index = 0) const
     {
-        QByteArray res(_data);
+        Base::ByteBuffer res = _data;
         if (index != 0) {
-            res += QByteArray::number(index);
+            res.append(std::to_string(index));
         }
-        if (_postfix.size() != 0) {
-            res += _postfix;
+        if (!_postfix.empty()) {
+            res.append(_postfix.view());
         }
         return res;
     }
@@ -309,314 +380,287 @@ public:
 
 private:
     long _id;
-    QByteArray _data;
-    QByteArray _postfix;
+    Base::ByteBuffer _data;
+    Base::ByteBuffer _postfix;
     StringHasher* _hasher = nullptr;
     mutable Flags _flags;
-    mutable QVector<StringIDRef> _sids;
+    mutable std::vector<StringIDRef> _sids;
 };
 
 //////////////////////////////////////////////////////////////////////////
 
-/** Counted reference to a StringID instance
- */
-class StringIDRef
+inline StringIDRef::StringIDRef()
+    : _sid(nullptr)
+    , _index(0)
+{}
+
+inline StringIDRef::StringIDRef(StringID* stringID, int index)
+    : _sid(stringID)
+    , _index(index)
 {
-public:
-    /// Default construction results in an empty StringIDRef object: it will evaluate to boolean
-    /// "false" if queried.
-    StringIDRef()
-        : _sid(nullptr)
-        , _index(0)
-    {}
-
-    /// Standard construction from a heap-allocated StringID. This reference-counting class manages
-    /// the lifetime of the StringID, ensuring it is deallocated when its reference count goes to
-    /// zero.
-    /// \param stringID A pointer to a StringID allocated with "new"
-    /// \param index (optional) An index value to store along with the StringID. Defaults to zero.
-    StringIDRef(StringID* stringID, int index = 0)
-        : _sid(stringID)
-        , _index(index)
-    {
-        if (_sid) {
-            _sid->ref();
-        }
+    if (_sid) {
+        _sid->ref();
     }
+}
 
-    /// Copy construction results in an incremented reference count for the stored StringID
-    StringIDRef(const StringIDRef& other)
-        : _sid(other._sid)
-        , _index(other._index)
-    {
-        if (_sid) {
-            _sid->ref();
-        }
+inline StringIDRef::StringIDRef(const StringIDRef& other)
+    : _sid(other._sid)
+    , _index(other._index)
+{
+    if (_sid) {
+        _sid->ref();
     }
+}
 
-    /// Move construction does NOT increase the reference count of the StringID (instead, it
-    /// invalidates the pointer in the moved object).
-    StringIDRef(StringIDRef&& other) noexcept
-        : _sid(other._sid)
-        , _index(other._index)
-    {
-        other._sid = nullptr;
+inline StringIDRef::StringIDRef(StringIDRef&& other) noexcept
+    : _sid(other._sid)
+    , _index(other._index)
+{
+    other._sid = nullptr;
+}
+
+inline StringIDRef::StringIDRef(const StringIDRef& other, int index)
+    : _sid(other._sid)
+    , _index(index)
+{
+    if (_sid) {
+        _sid->ref();
     }
+}
 
-    StringIDRef(const StringIDRef& other, int index)
-        : _sid(other._sid)
-        , _index(index)
-    {
-        if (_sid) {
-            _sid->ref();
-        }
+inline StringIDRef::~StringIDRef()
+{
+    if (_sid) {
+        _sid->unref();
     }
+}
 
-    ~StringIDRef()
-    {
+inline void StringIDRef::reset(const StringIDRef& stringID)
+{
+    *this = stringID;
+}
+
+inline void StringIDRef::reset(const StringIDRef& stringID, int index)
+{
+    *this = stringID;
+    this->_index = index;
+}
+
+inline void StringIDRef::swap(StringIDRef& stringID)
+{
+    if (*this != stringID) {
+        auto tmp = stringID;
+        stringID = *this;
+        *this = tmp;
+    }
+}
+
+inline StringIDRef& StringIDRef::operator=(StringID* stringID)
+{
+    if (_sid == stringID) {
+        return *this;
+    }
+    if (_sid) {
+        _sid->unref();
+    }
+    _sid = stringID;
+    if (_sid) {
+        _sid->ref();
+    }
+    this->_index = 0;
+    return *this;
+}
+
+inline StringIDRef& StringIDRef::operator=(const StringIDRef& stringID)
+{
+    if (&stringID == this) {
+        return *this;
+    }
+    if (_sid != stringID._sid) {
         if (_sid) {
             _sid->unref();
         }
-    }
-
-    void reset(const StringIDRef& stringID = StringIDRef())
-    {
-        *this = stringID;
-    }
-
-    void reset(const StringIDRef& stringID, int index)
-    {
-        *this = stringID;
-        this->_index = index;
-    }
-
-    void swap(StringIDRef& stringID)
-    {
-        if (*this != stringID) {
-            auto tmp = stringID;
-            stringID = *this;
-            *this = tmp;
-        }
-    }
-
-    StringIDRef& operator=(StringID* stringID)
-    {
-        if (_sid == stringID) {
-            return *this;
-        }
-        if (_sid) {
-            _sid->unref();
-        }
-        _sid = stringID;
+        _sid = stringID._sid;
         if (_sid) {
             _sid->ref();
         }
-        this->_index = 0;
-        return *this;
     }
+    this->_index = stringID._index;
+    return *this;
+}
 
-    StringIDRef& operator=(const StringIDRef& stringID)
-    {
-        if (&stringID == this) {
-            return *this;
-        }
-        if (_sid != stringID._sid) {
-            if (_sid) {
-                _sid->unref();
-            }
-            _sid = stringID._sid;
-            if (_sid) {
-                _sid->ref();
-            }
-        }
-        this->_index = stringID._index;
-        return *this;
-    }
-
-    StringIDRef& operator=(StringIDRef&& stringID) noexcept
-    {
-        if (_sid != stringID._sid) {
-            if (_sid) {
-                _sid->unref();
-            }
-            _sid = stringID._sid;
-            stringID._sid = nullptr;
-        }
-        this->_index = stringID._index;
-        return *this;
-    }
-
-    bool operator<(const StringIDRef& stringID) const
-    {
-        if (!stringID._sid) {
-            return false;
-        }
-        if (!_sid) {
-            return true;
-        }
-        int res = _sid->compare(*stringID._sid);
-        if (res < 0) {
-            return true;
-        }
-        if (res > 0) {
-            return false;
-        }
-        return _index < stringID._index;
-    }
-
-    bool operator==(const StringIDRef& stringID) const
-    {
-        if (_sid && stringID._sid) {
-            return _sid->compare(*stringID._sid) == 0 && _index == stringID._index;
-        }
-        return _sid == stringID._sid;
-    }
-
-    bool operator!=(const StringIDRef& stringID) const
-    {
-        return !(*this == stringID);
-    }
-
-    explicit operator bool() const
-    {
-        return _sid != nullptr;
-    }
-
-    int getRefCount() const
-    {
+inline StringIDRef& StringIDRef::operator=(StringIDRef&& stringID) noexcept
+{
+    if (_sid != stringID._sid) {
         if (_sid) {
-            return _sid->getRefCount();
+            _sid->unref();
         }
-        return 0;
+        _sid = stringID._sid;
+        stringID._sid = nullptr;
     }
+    this->_index = stringID._index;
+    return *this;
+}
 
-    std::string toString() const
-    {
-        if (_sid) {
-            return _sid->toString(_index);
-        }
-        return {};
-    }
-
-    std::string dataToText() const
-    {
-        if (_sid) {
-            return _sid->dataToText(_index);
-        }
-        return {};
-    }
-
-    /// Get a reference to the data: only makes sense if index and postfix are both empty, but
-    /// calling code is responsible for ensuring that.
-    const char* constData() const
-    {
-        if (_sid) {
-            assert(_index == 0);
-            assert(_sid->postfix().isEmpty());
-            return _sid->data().constData();
-        }
-        return "";
-    }
-
-    const StringID& deref() const
-    {
-        return *_sid;
-    }
-
-    long value() const
-    {
-        if (_sid) {
-            return _sid->value();
-        }
-        return 0;
-    }
-
-    QVector<StringIDRef> relatedIDs() const
-    {
-        if (_sid) {
-            return _sid->relatedIDs();
-        }
-        return {};
-    }
-
-    bool isBinary() const
-    {
-        if (_sid) {
-            return _sid->isBinary();
-        }
+inline bool StringIDRef::operator<(const StringIDRef& stringID) const
+{
+    if (!stringID._sid) {
         return false;
     }
-
-    bool isHashed() const
-    {
-        if (_sid) {
-            return _sid->isHashed();
-        }
+    if (!_sid) {
+        return true;
+    }
+    int res = _sid->compare(*stringID._sid);
+    if (res < 0) {
+        return true;
+    }
+    if (res > 0) {
         return false;
     }
+    return _index < stringID._index;
+}
 
-    void toBytes(QByteArray& bytes) const
-    {
-        // TODO: return the QByteArray instead of passing in by reference
-        if (_sid) {
-            bytes = _sid->dataToBytes(_index);
-        }
+inline bool StringIDRef::operator==(const StringIDRef& stringID) const
+{
+    if (_sid && stringID._sid) {
+        return _sid->compare(*stringID._sid) == 0 && _index == stringID._index;
     }
+    return _sid == stringID._sid;
+}
 
-    PyObject* getPyObject()
-    {
-        if (_sid) {
-            return _sid->getPyObjectWithIndex(_index);
-        }
-        Py_INCREF(Py_None);
-        return Py_None;
+inline bool StringIDRef::operator!=(const StringIDRef& stringID) const
+{
+    return !(*this == stringID);
+}
+
+inline StringIDRef::operator bool() const
+{
+    return _sid != nullptr;
+}
+
+inline int StringIDRef::getRefCount() const
+{
+    if (_sid) {
+        return _sid->getRefCount();
     }
+    return 0;
+}
 
-    void mark() const
-    {
-        if (_sid) {
-            _sid->mark();
-        }
+inline std::string StringIDRef::toString() const
+{
+    if (_sid) {
+        return _sid->toString(_index);
     }
+    return {};
+}
 
-    bool isMarked() const
-    {
-        return _sid && _sid->isMarked();  // NOLINT
+inline std::string StringIDRef::dataToText() const
+{
+    if (_sid) {
+        return _sid->dataToText(_index);
     }
+    return {};
+}
 
-    bool isFromSameHasher(const StringHasherRef& hasher) const
-    {
-        return _sid && _sid->isFromSameHasher(hasher);  // NOLINT
+inline const char* StringIDRef::constData() const
+{
+    if (_sid) {
+        assert(_index == 0);
+        assert(_sid->postfix().empty());
+        return _sid->data().data();
     }
+    return "";
+}
 
-    StringHasherRef getHasher() const
-    {
-        if (_sid) {
-            return _sid->getHasher();
-        }
-        return {};
+inline const StringID& StringIDRef::deref() const
+{
+    return *_sid;
+}
+
+inline long StringIDRef::value() const
+{
+    if (_sid) {
+        return _sid->value();
     }
+    return 0;
+}
 
-    void setPersistent(bool enable)
-    {
-        if (_sid) {
-            _sid->setPersistent(enable);
-        }
+inline std::vector<StringIDRef> StringIDRef::relatedIDs() const
+{
+    if (_sid) {
+        return _sid->relatedIDs();
     }
+    return {};
+}
 
-    /// Used predominantly by the unit test code to verify that index is set correctly. In general
-    /// user code should not need to call this function.
-    int getIndex() const
-    {
-        return _index;
+inline bool StringIDRef::isBinary() const
+{
+    if (_sid) {
+        return _sid->isBinary();
     }
+    return false;
+}
 
-    friend class StringHasher;
+inline bool StringIDRef::isHashed() const
+{
+    if (_sid) {
+        return _sid->isHashed();
+    }
+    return false;
+}
 
-private:
-    StringID* _sid;
-    int _index;
-};
+inline void StringIDRef::toBytes(Base::ByteBuffer& bytes) const
+{
+    if (_sid) {
+        bytes = _sid->dataToBytes(_index);
+    }
+}
+
+inline PyObject* StringIDRef::getPyObject()
+{
+    if (_sid) {
+        return _sid->getPyObjectWithIndex(_index);
+    }
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+inline void StringIDRef::mark() const
+{
+    if (_sid) {
+        _sid->mark();
+    }
+}
+
+inline bool StringIDRef::isMarked() const
+{
+    return _sid && _sid->isMarked();  // NOLINT
+}
+
+inline bool StringIDRef::isFromSameHasher(const StringHasherRef& hasher) const
+{
+    return _sid && _sid->isFromSameHasher(hasher);  // NOLINT
+}
+
+inline StringHasherRef StringIDRef::getHasher() const
+{
+    if (_sid) {
+        return _sid->getHasher();
+    }
+    return {};
+}
+
+inline void StringIDRef::setPersistent(bool enable)
+{
+    if (_sid) {
+        _sid->setPersistent(enable);
+    }
+}
+
+inline int StringIDRef::getIndex() const
+{
+    return _index;
+}
 
 
 /// \brief A bidirectional map  of strings and their integer identifier.
@@ -700,10 +744,10 @@ public:
      *
      * \sa getID (const char*, int, bool);
      */
-    StringIDRef getID(const QByteArray& data, Options options = Option::Hashable);
+    StringIDRef getID(Base::BytesView data, Options options = Option::Hashable);
 
     /** Map geometry element name to an integer */
-    StringIDRef getID(const Data::MappedName& name, const QVector<StringIDRef>& sids);
+    StringIDRef getID(const Data::MappedName& name, const std::vector<StringIDRef>& sids);
 
     /** Obtain the reference counted StringID object from numerical id
      *

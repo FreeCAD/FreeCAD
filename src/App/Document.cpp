@@ -49,8 +49,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include <QCryptographicHash>
-#include <QCoreApplication>
+#include <array>
 
 #include <FCConfig.h>
 
@@ -59,6 +58,8 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
+#include <Base/PathUtils.h>
+#include <Base/Sha1.h>
 #include <Base/TimeInfo.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
@@ -1078,14 +1079,19 @@ std::string Document::getTransientDirectoryName(const std::string& uuid,
 {
     // Create a directory name of the form: {ExeName}_Doc_{UUID}_{HASH}_{PID}
     std::stringstream out;
-    QCryptographicHash hash(QCryptographicHash::Sha1);
-#if QT_VERSION < QT_VERSION_CHECK(6, 3, 0)
-    hash.addData(filename.c_str(), filename.size());
-#else
-    hash.addData(QByteArrayView(filename.c_str(), filename.size()));
-#endif
+    const auto digestBytes = Base::sha1Digest(Base::BytesView(filename.data(), filename.size()));
+
+    auto hexChar = [](unsigned char nibble) -> char {
+        return nibble < 10 ? static_cast<char>('0' + nibble) : static_cast<char>('a' + (nibble - 10));
+    };
+
+    std::array<char, 6> hashPrefix {};
+    for (int i = 0; i < 3; ++i) {
+        hashPrefix[i * 2 + 0] = hexChar(static_cast<unsigned char>((digestBytes[i] >> 4U) & 0x0F));
+        hashPrefix[i * 2 + 1] = hexChar(static_cast<unsigned char>((digestBytes[i] >> 0U) & 0x0F));
+    }
     out << Application::getUserCachePath() << Application::getExecutableName() << "_Doc_"
-        << uuid << "_" << hash.result().toHex().left(6).constData() << "_"
+        << uuid << "_" << std::string(hashPrefix.data(), hashPrefix.size()) << "_"
         << Application::uniqueInstanceId();
     return out.str();
 }
@@ -1227,11 +1233,10 @@ void Document::Restore(Base::XMLReader& reader)
 void DocumentP::checkStringHasher(const Base::XMLReader& reader)
 {
     if (reader.hasReadFailed("StringHasher.Table.txt")) {
-        Base::Console().error(QT_TRANSLATE_NOOP(
-            "Notifications",
+        Base::Console().error(
             "\nIt is recommended that the user right-click the root of "
             "the document and select Mark to recompute.\n"
-            "The user should then click the Refresh button in the main toolbar.\n"));
+            "The user should then click the Refresh button in the main toolbar.\n");
     }
 }
 
@@ -1949,32 +1954,17 @@ bool Document::saveToFile(const char* filename) const
                       ->GetBool("BackupPolicy", true);
 
     auto canonical_path = [](const char* filename) {
-        try {
-#ifdef FC_OS_WIN32
-            QString utf8Name = QString::fromUtf8(filename);
-            auto realpath = fs::weakly_canonical(fs::absolute(fs::path(utf8Name.toStdWString())));
-            std::string nativePath = QString::fromStdWString(realpath.native()).toStdString();
-#else
-            auto realpath = fs::weakly_canonical(fs::absolute(fs::path(filename)));
-            std::string nativePath = realpath.native();
-#endif
-            // In case some folders in the path do not exist
-            auto parentPath = realpath.parent_path();
-            fs::create_directories(parentPath);
+        Base::NormalizePathOptions options;
+        options.makeAbsolute = true;
+        options.weaklyCanonical = true;
+        options.createParentDirectories = true;
 
-            return nativePath;
+        const auto normalized =
+            Base::normalizePath(Base::pathFromUtf8(filename ? std::string_view(filename) : std::string_view()), options);
+        if (!normalized) {
+            return std::string(filename ? filename : "");
         }
-        catch (const std::exception&) {
-#ifdef FC_OS_WIN32
-            QString utf8Name = QString::fromUtf8(filename);
-            auto parentPath = fs::absolute(fs::path(utf8Name.toStdWString())).parent_path();
-#else
-            auto parentPath = fs::absolute(fs::path(filename)).parent_path();
-#endif
-            fs::create_directories(parentPath);
-
-            return std::string(filename);
-        }
+        return Base::FileInfo::pathToString(*normalized);
     };
 
     // realpath is canonical filename i.e. without symlink

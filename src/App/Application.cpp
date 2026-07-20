@@ -40,7 +40,6 @@
 # include <boost/date_time/posix_time/posix_time.hpp>
 # include <boost/scope_exit.hpp>
 # include <chrono>
-# include <optional>
 # include <memory>
 # include <utility>
 # include <set>
@@ -49,6 +48,7 @@
 # include <algorithm>
 # include <iostream>
 # include <map>
+# include <system_error>
 # include <tuple>
 # include <vector>
 # include <fmt/format.h>
@@ -56,7 +56,11 @@
 
 #ifdef FC_OS_WIN32
 # include <Shlobj.h>
-# include <codecvt>
+#endif
+
+#if defined(FREECAD_BUILD_QT) && FREECAD_BUILD_QT
+# include <QCoreApplication>
+# include <QMetaObject>
 #endif
 
 #if defined(FC_OS_BSD)
@@ -64,12 +68,6 @@
 #include <sys/sysctl.h>
 #endif
 
-#include <QCoreApplication>
-#include <QDir>
-#include <QFileInfo>
-#include <QProcessEnvironment>
-#include <QSettings>
-#include <QStandardPaths>
 #include <LibraryVersions.h>
 
 #include <App/MaterialPy.h>
@@ -79,8 +77,11 @@
 #include <Base/BaseClass.h>
 #include <Base/BoundBoxPy.h>
 #include <Base/ConsoleObserver.h>
+#include <Base/PathUtils.h>
+#include <Base/PlatformPaths.h>
 #include <Base/ServiceProvider.h>
 #include <Base/CoordinateSystemPy.h>
+#include <Base/Translation.h>
 #include <Base/Exception.h>
 #include <Base/ExceptionFactory.h>
 #include <Base/FileInfo.h>
@@ -169,38 +170,6 @@
 
 #include "SafeMode.h"
 
-#ifdef FC_OS_WIN32
-#include <windows.h>
-#endif
-
-std::optional<std::string> getenvUTF8(const char* name) {
-#ifdef FC_OS_WIN32
-    int wideLength = MultiByteToWideChar(CP_UTF8, 0, name, -1, nullptr, 0);
-    std::wstring wideName(wideLength ? wideLength - 1 : 0, L'\0');
-    if (wideLength) {
-        MultiByteToWideChar(CP_UTF8, 0, name, -1, wideName.data(), wideLength);
-    }
-
-    DWORD needed = GetEnvironmentVariableW(wideName.c_str(), nullptr, 0);
-    if (needed == 0) {
-        return std::nullopt;
-    }
-
-    std::wstring wideValue(needed, L'\0');
-    DWORD written = GetEnvironmentVariableW(wideName.c_str(), wideValue.data(), needed);
-    if (written == 0) {
-        return std::nullopt;
-    }
-    wideValue.resize(written);
-    return Base::Tools::wstringToString(wideValue);
-#else
-    if (const char* v = std::getenv(name)) {
-        return std::string(v);
-    }
-    return std::nullopt;
-#endif
-}
-
 FC_LOG_LEVEL_INIT("App", true, true)
 
 using namespace App;
@@ -240,6 +209,7 @@ bool documentCanRecomputeOnWorker(const Document& document)
 
 void reportRecomputeException(const Base::Exception& exception)
 {
+#if defined(FREECAD_BUILD_QT) && FREECAD_BUILD_QT
     if (App::MainThreadSignalConfig::hasHooks()) {
         if (auto* app = QCoreApplication::instance()) {
             QMetaObject::invokeMethod(
@@ -250,6 +220,7 @@ void reportRecomputeException(const Base::Exception& exception)
             return;
         }
     }
+#endif
 
     exception.reportException();
 }
@@ -618,7 +589,7 @@ Document* Application::newDocument(const char * proposedName, const char * propo
         label = proposedLabel;
     }
     else {
-        label = isUsingDefaultName ? QObject::tr("Unnamed").toStdString() : proposedName;
+        label = isUsingDefaultName ? Base::Translation::translate("QObject", "Unnamed") : proposedName;
 
         if (!DocMap.empty()) {
             // The assumption here is that there are not many documents and
@@ -956,15 +927,17 @@ Document *Application::getDocumentByPath(const char *path, PathMatchMode checkCa
     }
 
     const std::string filepath = Base::FileInfo(path).filePath();
-    const QString canonicalPath = QFileInfo(QString::fromUtf8(path)).canonicalFilePath();
+    const std::string canonicalPath = Base::FileInfo::pathToString(
+        Base::canonicalIfExists(Base::FileInfo::stringToPath(path)));
     for (const auto &v : DocMap) {
-        QFileInfo fi(QString::fromUtf8(v.second->FileName.getValue()));
-        if (canonicalPath == fi.canonicalFilePath()) {
+        const std::string existingCanonical = Base::FileInfo::pathToString(
+            Base::canonicalIfExists(Base::FileInfo::stringToPath(v.second->FileName.getValue())));
+        if (canonicalPath == existingCanonical) {
             if (checkCanonical == PathMatchMode::MatchCanonical) {
                 return v.second;
             }
-            const bool samePath = (canonicalPath == QString::fromUtf8(filepath.c_str()));
-            FC_WARN("Identical physical path '" << canonicalPath.toUtf8().constData() << "'\n"
+            const bool samePath = (canonicalPath == filepath);
+            FC_WARN("Identical physical path '" << canonicalPath.c_str() << "'\n"
                     << (samePath?"":"  for file '") << (samePath?"":filepath.c_str()) << (samePath?"":"'\n")
                     << "  with existing document '" << v.second->Label.getValue()
                     << "' in path: '" << v.second->FileName.getValue() << "'");
@@ -1384,7 +1357,7 @@ std::string Application::getExecutableName()
 
 std::string Application::getNameWithVersion()
 {
-    auto appname = QCoreApplication::applicationName().toStdString();
+    const auto& appname = mConfig.contains("Application") ? mConfig["Application"] : mConfig["ExeName"];
     auto config = Application::Config();
     auto major = config["BuildVersionMajor"];
     auto minor = config["BuildVersionMinor"];
@@ -1766,7 +1739,7 @@ void Application::addTranslatableExportType(const std::string &description,
     };
 
     translatableExportTypeCache.addCacheEntry({description, extensions, moduleName});
-    auto translatedDescription = QCoreApplication::translate("FileFormat", description.c_str()).toStdString();
+    auto translatedDescription = Base::Translation::translate("FileFormat", description);
     bool containsAppName = replaceFreeCAD(translatedDescription);  // Run *AFTER* translation
     appendTypeString(translatedDescription, extensions);
 
@@ -2763,12 +2736,12 @@ void Application::initConfig(int argc, char ** argv)
 
     // Now it's time to read-in the file branding.xml if it exists
     Branding brand;
-    QString binDir = QString::fromUtf8((mConfig["AppHomePath"] + "bin").c_str());
-    QFileInfo fi(binDir, QStringLiteral("branding.xml"));
-    if (fi.exists() && brand.readFile(fi.absoluteFilePath())) {
-        Branding::XmlConfig cfg = brand.getUserDefines();
-        for (Branding::XmlConfig::iterator it = cfg.begin(); it != cfg.end(); ++it) {
-            Application::Config()[it.key()] = it.value();
+    const std::filesystem::path brandingPath =
+        Base::FileInfo::stringToPath(mConfig["AppHomePath"]) / "bin" / "branding.xml";
+    std::error_code error;
+    if (std::filesystem::exists(brandingPath, error) && !error && brand.readFile(brandingPath)) {
+        for (const auto& [key, value] : brand.getUserDefines()) {
+            Application::Config()[key] = value;
         }
     }
 
@@ -2858,8 +2831,10 @@ void Application::initConfig(int argc, char ** argv)
     else
         _pConsoleObserverFile = nullptr;
 
+#if defined(FREECAD_BUILD_QT) && FREECAD_BUILD_QT
     App::installConsoleQtBridge();
     App::installTranslationQtBridge();
+#endif
 
     // Banner ===========================================================
     if (mConfig["RunMode"] != "Cmd" && !(vm.contains("verbose") && vm.contains("version"))) {
@@ -2963,11 +2938,13 @@ void Application::initConfig(int argc, char ** argv)
 #endif
     mConfig["BOOST_VERSION"] = BOOST_LIB_VERSION;
     mConfig["PYTHON_VERSION"] = PY_VERSION;
+#if defined(FREECAD_BUILD_QT) && FREECAD_BUILD_QT
     mConfig["QT_VERSION"] = QT_VERSION_STR;
     mConfig["COIN3D_VERSION"] = fcCoin3dVersion;
     mConfig["COIN3D_SOURCE"] = fcCoin3dSource;
     mConfig["PIVY_VERSION"] = fcPivyVersion;
     mConfig["PIVY_SOURCE"] = fcPivySource;
+#endif
     mConfig["EIGEN_VERSION"] = fcEigen3Version;
     mConfig["PYSIDE_VERSION"] = fcPysideVersion;
 #ifdef SMESH_VERSION_STR
@@ -2987,7 +2964,7 @@ void Application::initConfig(int argc, char ** argv)
 
 void Application::SaveEnv(const char* s)
 {
-    if (auto c = getenvUTF8(s)) {
+    if (auto c = Base::environmentVariableUtf8(s)) {
         mConfig[s] = c.value();
     }
 }
@@ -3287,14 +3264,15 @@ void Application::LoadParameters()
             // this will be used.
             const auto it = mConfig.find("UserParameterTemplate");
             if (it != mConfig.end()) {
-                QString path = QString::fromUtf8(it->second.c_str());
-                if (QDir(path).isRelative()) {
-                    const QString home = QString::fromUtf8(mConfig["AppHomePath"].c_str());
-                    path = QFileInfo(QDir(home), path).absoluteFilePath();
+                std::filesystem::path path = Base::FileInfo::stringToPath(it->second);
+                if (path.is_relative()) {
+                    path = Base::FileInfo::stringToPath(mConfig["AppHomePath"]) / path;
                 }
-                const QFileInfo fi(path);
-                if (fi.exists()) {
-                    _pcUserParamMngr->LoadDocument(path.toUtf8().constData());
+                std::error_code error;
+                path = std::filesystem::absolute(path, error);
+                if (!error && std::filesystem::exists(path, error) && !error) {
+                    const std::string utf8Path = Base::FileInfo::pathToString(path);
+                    _pcUserParamMngr->LoadDocument(utf8Path.c_str());
                 }
             }
 
@@ -3333,468 +3311,3 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& v)
     return os;
 }
 
-namespace {
-
-/*!
- * \brief getUserHome
- * Returns the user's home directory.
- */
-QString getUserHome()
-{
-    QString path;
-#if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD) || defined(FC_OS_MACOSX)
-    // Default paths for the user specific stuff
-    struct passwd pwd;
-    struct passwd *result;
-    const std::size_t buflen = 16384;
-    std::vector<char> buffer(buflen);
-    const int error = getpwuid_r(getuid(), &pwd, buffer.data(), buffer.size(), &result);
-    Q_UNUSED(error)
-    if (!result)
-        throw Base::RuntimeError("Getting HOME path from system failed!");
-    path = QString::fromUtf8(result->pw_dir);
-#else
-    path = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-#endif
-
-    return path;
-}
-
-/*!
- * \brief getOldGenericDataLocation
- * Returns a directory location where persistent data shared across applications can be stored.
- * This method returns the old non-XDG-compliant root path where to store config files and application data.
- */
-#if defined(FC_OS_WIN32)
-QString getOldGenericDataLocation(QString home)
-{
-#if defined(FC_OS_WIN32)
-    WCHAR szPath[MAX_PATH];
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, szPath))) {
-        return QString::fromStdString(converter.to_bytes(szPath));
-    }
-#elif defined(FC_OS_MACOSX)
-    QFileInfo fi(home, QStringLiteral("Library/Preferences"));
-    home = fi.absoluteFilePath();
-#endif
-
-    return home;
-}
-#endif
-
-/*!
- * \brief getSubDirectories
- * To a given path it adds the sub-directories where to store application specific files.
- */
-void getSubDirectories(std::map<std::string,std::string>& mConfig, std::vector<std::string>& appData)
-{
-    // If 'AppDataSkipVendor' is defined, the value of 'ExeVendor' must not be part of
-    // the path.
-    if (mConfig.find("AppDataSkipVendor") == mConfig.end()) {
-        appData.push_back(mConfig["ExeVendor"]);
-    }
-    appData.push_back(mConfig["ExeName"]);
-}
-
-/*!
- * \brief getOldDataLocation
- * To a given path it adds the sub-directories where to store application specific files.
- * On Linux or BSD a hidden directory (i.e. starting with a dot) is added.
- */
-void getOldDataLocation(std::map<std::string,std::string>& mConfig, std::vector<std::string>& appData)
-{
-    // Actually the name of the directory where the parameters are stored should be the name of
-    // the application due to branding reasons.
-#if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
-    // If 'AppDataSkipVendor' is defined, the value of 'ExeVendor' must not be part of
-    // the path.
-    if (mConfig.find("AppDataSkipVendor") == mConfig.end()) {
-        appData.push_back(std::string(".") + mConfig["ExeVendor"]);
-        appData.push_back(mConfig["ExeName"]);
-    } else {
-        appData.push_back(std::string(".") + mConfig["ExeName"]);
-    }
-
-#elif defined(FC_OS_MACOSX) || defined(FC_OS_WIN32)
-    getSubDirectories(mConfig, appData);
-#endif
-}
-
-/*!
- * \brief findUserHomePath
- * If the passed path name is not empty it will be returned, otherwise
- * the user home path of the system will be returned.
- */
-QString findUserHomePath(const QString& userHome)
-{
-    return userHome.isEmpty() ? getUserHome() : userHome;
-}
-
-/*!
- * \brief findPath
- * Returns the path where to store application files to.
- * If \a customHome is not empty it will be used, otherwise a path starting from \a stdHome will be used.
- */
-std::filesystem::path findPath(const QString& stdHome, const QString& customHome,
-                                 const std::vector<std::string>& paths, bool create)
-{
-    QString dataPath = customHome;
-    if (dataPath.isEmpty()) {
-        dataPath = stdHome;
-    }
-
-    std::filesystem::path appData(Base::FileInfo::stringToPath(dataPath.toStdString()));
-
-    // If a custom user home path is given then don't modify it
-    if (customHome.isEmpty()) {
-        for (const auto& it : paths)
-            appData = appData / it;
-    }
-
-    // In order to write to our data path, we must create some directories, first.
-    if (create && !std::filesystem::exists(appData) && !Py_IsInitialized()) {
-        try {
-            std::filesystem::create_directories(appData);
-        } catch (const std::filesystem::filesystem_error& e) {
-            throw Base::FileSystemError("Could not create directories. Failed with: " + e.code().message());
-        }
-    }
-
-    return appData;
-}
-
-/*!
- * \brief getCustomPaths
- * Returns a tuple of path names where to store config, data and temp. files.
- * The method therefore reads the environment variables:
- * \list
- * \li FREECAD_USER_HOME
- * \li FREECAD_USER_DATA
- * \li FREECAD_USER_TEMP
- * \endlist
- */
-std::tuple<QString, QString, QString> getCustomPaths()
-{
-    const QProcessEnvironment env(QProcessEnvironment::systemEnvironment());
-    QString userHome = env.value(QStringLiteral("FREECAD_USER_HOME"));
-    QString userData = env.value(QStringLiteral("FREECAD_USER_DATA"));
-    QString userTemp = env.value(QStringLiteral("FREECAD_USER_TEMP"));
-
-    auto toNativePath = [](QString& path) {
-        if (!path.isEmpty()) {
-            const QDir dir(path);
-            if (dir.exists())
-                path = QDir::toNativeSeparators(dir.canonicalPath());
-            else
-                path.clear();
-        }
-    };
-
-    // verify env. variables
-    toNativePath(userHome);
-    toNativePath(userData);
-    toNativePath(userTemp);
-
-    // if FREECAD_USER_HOME is set but not FREECAD_USER_DATA
-    if (!userHome.isEmpty() && userData.isEmpty()) {
-        userData = userHome;
-    }
-
-    // if FREECAD_USER_HOME is set but not FREECAD_USER_TEMP
-    if (!userHome.isEmpty() && userTemp.isEmpty()) {
-        const QDir dir(userHome);
-        dir.mkdir(QStringLiteral("temp"));
-        const QFileInfo fi(dir, QStringLiteral("temp"));
-        userTemp = fi.absoluteFilePath();
-    }
-
-    return {userHome, userData, userTemp};
-}
-
-/*!
- * \brief getStandardPaths
- * Returns a tuple of XDG-compliant standard paths names where to store config, data and cached files.
- * The method therefore reads the environment variables:
- * \list
- * \li XDG_CONFIG_HOME
- * \li XDG_DATA_HOME
- * \li XDG_CACHE_HOME
- * \endlist
- */
-std::tuple<QString, QString, QString, QString> getStandardPaths()
-{
-    QString configHome = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation);
-    QString dataHome = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
-    QString cacheHome = QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation);
-    QString tempPath = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
-
-    // Keep the old behaviour
-#if defined(FC_OS_WIN32)
-    configHome = getOldGenericDataLocation(QString());
-    dataHome = configHome;
-
-    // On systems with non-7-bit-ASCII application data directories
-    // GetTempPathW will return a path in DOS format. This path will be
-    // accepted by boost's file_lock class.
-    // Since boost 1.76 there is now a version that accepts a wide string.
-#if (BOOST_VERSION < 107600)
-    tempPath = QString::fromStdString(Base::FileInfo::getTempPath());
-    cacheHome = tempPath;
-#endif
-#endif
-
-    return std::make_tuple(configHome, dataHome, cacheHome, tempPath);
-}
-}
-
-void Application::ExtractUserPath()
-{
-    bool keepDeprecatedPaths = mConfig.contains("KeepDeprecatedPaths");
-
-    // std paths
-    mConfig["BinPath"] = mConfig["AppHomePath"] + "bin" + PATHSEP;
-    mConfig["DocPath"] = mConfig["AppHomePath"] + "doc" + PATHSEP;
-
-    // this is to support a portable version of FreeCAD
-    auto paths = getCustomPaths();
-    QString customHome = std::get<0>(paths);
-    QString customData = std::get<1>(paths);
-    QString customTemp = std::get<2>(paths);
-
-    // get the system standard paths
-    auto stdPaths = getStandardPaths();
-    QString configHome = std::get<0>(stdPaths);
-    QString dataHome = std::get<1>(stdPaths);
-    QString cacheHome = std::get<2>(stdPaths);
-    QString tempPath = std::get<3>(stdPaths);
-
-    // User home path
-    //
-    QString homePath = findUserHomePath(customHome);
-    mConfig["UserHomePath"] = homePath.toUtf8().data();
-
-    // the old path name to save config and data files
-    std::vector<std::string> subdirs;
-    if (keepDeprecatedPaths) {
-        configHome = homePath;
-        dataHome = homePath;
-        cacheHome = homePath;
-        getOldDataLocation(mConfig, subdirs);
-    }
-    else {
-        getSubDirectories(mConfig, subdirs);
-    }
-
-    // User data path
-    //
-    std::filesystem::path data = findPath(dataHome, customData, subdirs, true);
-    mConfig["UserAppData"] = Base::FileInfo::pathToString(data) + PATHSEP;
-
-
-    // User config path
-    //
-    std::filesystem::path config = findPath(configHome, customHome, subdirs, true);
-    mConfig["UserConfigPath"] = Base::FileInfo::pathToString(config) + PATHSEP;
-
-
-    // User cache path
-    //
-    std::vector<std::string> cachedirs = subdirs;
-    cachedirs.emplace_back("Cache");
-    std::filesystem::path cache = findPath(cacheHome, customTemp, cachedirs, true);
-    mConfig["UserCachePath"] = Base::FileInfo::pathToString(cache) + PATHSEP;
-
-
-    // Set application tmp. directory
-    //
-    std::vector<std::string> empty;
-    std::filesystem::path tmp = findPath(tempPath, customTemp, empty, true);
-    mConfig["AppTempPath"] = Base::FileInfo::pathToString(tmp) + PATHSEP;
-
-
-    // Set the default macro directory
-    //
-    std::vector<std::string> macrodirs = std::move(subdirs);  // Last use in this method, just move
-    macrodirs.emplace_back("Macro");
-    std::filesystem::path macro = findPath(dataHome, customData, macrodirs, true);
-    mConfig["UserMacroPath"] = Base::FileInfo::pathToString(macro) + PATHSEP;
-}
-
-// TODO: Consider using this for all UNIX-like OSes
-#if defined(__OpenBSD__)
-#include <cstdio>
-#include <cstdlib>
-#include <sys/param.h>
-#include <QCoreApplication>
-
-std::string Application::FindHomePath(const char* sCall)
-{
-    // We have three ways to start this application either use one of the two executables or
-    // import the FreeCAD.so module from a running Python session. In the latter case the
-    // Python interpreter is already initialized.
-    std::string absPath;
-    std::string homePath;
-    if (Py_IsInitialized()) {
-        // Note: realpath is known to cause a buffer overflow because it
-        // expands the given path to an absolute path of unknown length.
-        // Even setting PATH_MAX does not necessarily solve the problem
-        // for sure but the risk of overflow is rather small.
-        char resolved[PATH_MAX];
-        char* path = realpath(sCall, resolved);
-        if (path)
-            absPath = path;
-    }
-    else {
-        int argc = 1;
-        QCoreApplication app(argc, (char**)(&sCall));
-        absPath = QCoreApplication::applicationFilePath().toStdString();
-    }
-
-    // should be an absolute path now
-    std::string::size_type pos = absPath.find_last_of("/");
-    homePath.assign(absPath,0,pos);
-    pos = homePath.find_last_of("/");
-    homePath.assign(homePath,0,pos+1);
-
-    return homePath;
-}
-
-#elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
-#include <cstdio>
-#include <cstdlib>
-#include <sys/param.h>
-
-std::string Application::FindHomePath(const char* sCall)
-{
-    // We have three ways to start this application either use one of the two executables or
-    // import the FreeCAD.so module from a running Python session. In the latter case the
-    // Python interpreter is already initialized.
-    std::string absPath;
-    std::string homePath;
-    if (Py_IsInitialized()) {
-        // Note: realpath is known to cause a buffer overflow because it
-        // expands the given path to an absolute path of unknown length.
-        // Even setting PATH_MAX does not necessarily solve the problem
-        // for sure but the risk of overflow is rather small.
-        char resolved[PATH_MAX];
-        char* path = realpath(sCall, resolved);
-        if (path)
-            absPath = path;
-    }
-    else {
-        // Find the path of the executable. Theoretically, there could occur a
-        // race condition when using readlink, but we only use this method to
-        // get the absolute path of the executable to compute the actual home
-        // path. In the worst case we simply get q wrong path and FreeCAD is not
-        // able to load its modules.
-        char resolved[PATH_MAX];
-#if defined(FC_OS_BSD)
-        int mib[4];
-        mib[0] = CTL_KERN;
-        mib[1] = KERN_PROC;
-        mib[2] = KERN_PROC_PATHNAME;
-        mib[3] = -1;
-        size_t cb = sizeof(resolved);
-        sysctl(mib, 4, resolved, &cb, NULL, 0);
-        int nchars = strlen(resolved);
-#else
-        int nchars = readlink("/proc/self/exe", resolved, PATH_MAX);
-#endif
-        if (nchars < 0 || nchars >= PATH_MAX)
-            throw Base::FileSystemError("Cannot determine the absolute path of the executable");
-        resolved[nchars] = '\0'; // enforce null termination
-        absPath = resolved;
-    }
-
-    // should be an absolute path now
-    std::string::size_type pos = absPath.find_last_of('/');
-    homePath.assign(absPath,0,pos);
-    pos = homePath.find_last_of('/');
-    homePath.assign(homePath,0,pos+1);
-
-    return homePath;
-}
-
-#elif defined(FC_OS_MACOSX)
-#include <mach-o/dyld.h>
-#include <string>
-#include <cstdlib>
-#include <sys/param.h>
-
-std::string Application::FindHomePath(const char* sCall)
-{
-    // If Python is initialized at this point, then we're being run from
-    // MainPy.cpp, which hopefully rewrote argv[0] to point at the
-    // FreeCAD shared library.
-    if (!Py_IsInitialized()) {
-        uint32_t sz = 0;
-
-        // function only returns "sz" if first arg is to small to hold value
-        _NSGetExecutablePath(nullptr, &sz);
-
-        if (const auto buf = new char[++sz]; _NSGetExecutablePath(buf, &sz) == 0) {
-            char resolved[PATH_MAX];
-            const char* path = realpath(buf, resolved);
-            delete [] buf;
-
-            if (path) {
-                const std::string Call(resolved);
-                std::string TempHomePath;
-                std::string::size_type pos = Call.find_last_of(PATHSEP);
-                TempHomePath.assign(Call,0,pos);
-                pos = TempHomePath.find_last_of(PATHSEP);
-                TempHomePath.assign(TempHomePath,0,pos+1);
-                return TempHomePath;
-            }
-        } else {
-            delete [] buf;
-        }
-    }
-
-    return sCall;
-}
-
-#elif defined (FC_OS_WIN32)
-std::string Application::FindHomePath(const char* sCall)
-{
-    // We have several ways to start this application:
-    // * use one of the two executables
-    // * import the FreeCAD.pyd module from a running Python session. In this case the
-    //   Python interpreter is already initialized.
-    // * use a custom dll that links FreeCAD core dlls and that is loaded by its host application
-    //   In this case the calling name should be set to FreeCADBase.dll or FreeCADApp.dll in order
-    //   to locate the correct home directory
-    wchar_t szFileName [MAX_PATH];
-    QString dll(QString::fromUtf8(sCall));
-    if (Py_IsInitialized() || dll.endsWith(QLatin1String(".dll"))) {
-        GetModuleFileNameW(GetModuleHandleA(sCall),szFileName, MAX_PATH-1);
-    }
-    else {
-        GetModuleFileNameW(0, szFileName, MAX_PATH-1);
-    }
-
-    std::wstring Call(szFileName), homePath;
-    std::wstring::size_type pos = Call.find_last_of(PATHSEP);
-    homePath.assign(Call,0,pos);
-    pos = homePath.find_last_of(PATHSEP);
-    homePath.assign(homePath,0,pos+1);
-
-    // fixes #0001638 to avoid to load DLLs from Windows' system directories before FreeCAD's bin folder
-    std::wstring binPath = homePath;
-    binPath += L"bin";
-    SetDllDirectoryW(binPath.c_str());
-
-    // https://stackoverflow.com/questions/5625884/conversion-of-stdwstring-to-qstring-throws-linker-error
-#ifdef _MSC_VER
-    QString str = QString::fromUtf16(reinterpret_cast<const ushort *>(homePath.c_str()));
-#else
-    QString str = QString::fromStdWString(homePath);
-#endif
-    // convert to utf-8
-    return str.toUtf8().data();
-}
-
-#else
-# error "std::string Application::FindHomePath(const char*) not implemented"
-#endif

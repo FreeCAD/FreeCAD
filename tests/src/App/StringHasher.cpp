@@ -7,8 +7,33 @@
 #include <App/StringHasherPy.h>
 #include <App/StringIDPy.h>
 
-#include <QCryptographicHash>
+#include <Base/Base64.h>
+#include <Base/ByteBuffer.h>
+#include <Base/BytesView.h>
+#include <Base/Reader.h>
+
 #include <array>
+#include <sstream>
+#include <string>
+#include <utility>
+#include <vector>
+
+#include <QByteArray>
+
+namespace
+{
+
+Base::ByteBuffer toByteBuffer(const QByteArray& bytes)
+{
+    return Base::ByteBuffer::copy(Base::BytesView(bytes.constData(), bytes.size()));
+}
+
+QByteArray toQByteArray(const Base::ByteBuffer& bytes)
+{
+    return QByteArray(bytes.data(), static_cast<int>(bytes.size()));
+}
+
+}  // namespace
 
 class StringIDTest: public ::testing::Test
 {
@@ -19,8 +44,7 @@ protected:
     static App::StringID givenFlaggedStringID(App::StringID::Flag flag)
     {
         const long value {42};
-        const QByteArray data {"data", 4};
-        return App::StringID {value, data, flag};
+        return App::StringID {value, Base::ByteBuffer::copy("data"), flag};
     }
 };
 
@@ -28,7 +52,7 @@ TEST_F(StringIDTest, stringIDManualConstructionNoFlags)  // NOLINT
 {
     // Arrange
     const long expectedValue {42};
-    const QByteArray expectedData {"data", 4};
+    const Base::ByteBuffer expectedData = Base::ByteBuffer::copy("data");
 
     // Act
     auto id = App::StringID(expectedValue, expectedData);
@@ -43,7 +67,7 @@ TEST_F(StringIDTest, stringIDManualConstructionWithFlag)  // NOLINT
 {
     // Arrange
     const long expectedValue {42};
-    const QByteArray expectedData {"data", 4};
+    const Base::ByteBuffer expectedData = Base::ByteBuffer::copy("data");
     const App::StringID::Flags expectedFlags {App::StringID::Flag::Binary};
 
     // Act
@@ -68,11 +92,11 @@ TEST_F(StringIDTest, value)  // NOLINT
 {
     // Arrange
     const long expectedValueA {0};
-    auto idA = App::StringID(expectedValueA, nullptr);
+    auto idA = App::StringID(expectedValueA, Base::ByteBuffer {});
     const long expectedValueB {42};
-    auto idB = App::StringID(expectedValueB, nullptr);
+    auto idB = App::StringID(expectedValueB, Base::ByteBuffer {});
     const long expectedValueC {314159};
-    auto idC = App::StringID(expectedValueC, nullptr);
+    auto idC = App::StringID(expectedValueC, Base::ByteBuffer {});
 
     // Act
     auto valueA = idA.value();
@@ -203,13 +227,13 @@ TEST_F(StringIDTest, data)  // NOLINT
 {
     // Arrange
     QByteArray expectedData {"data", 4};
-    auto id = App::StringID(1, expectedData);
+    auto id = App::StringID(1, toByteBuffer(expectedData));
 
     // Act
     auto data = id.data();
 
     // Assert
-    EXPECT_EQ(expectedData, data);
+    EXPECT_EQ(toByteBuffer(expectedData), data);
 }
 
 TEST_F(StringIDTest, postfix)  // NOLINT
@@ -221,7 +245,7 @@ TEST_F(StringIDTest, getPyObject)  // NOLINT
 {
     // Arrange
     Py_Initialize();
-    auto id = new App::StringID(1, nullptr);
+    auto id = new App::StringID(1, Base::ByteBuffer {});
     id->ref();
 
     // Act
@@ -236,7 +260,7 @@ TEST_F(StringIDTest, getPyObjectWithIndex)  // NOLINT
 {
     // Arrange
     Py_Initialize();
-    auto id = new App::StringID(1, nullptr);
+    auto id = new App::StringID(1, Base::ByteBuffer {});
     id->ref();
 
     // Act
@@ -251,8 +275,8 @@ TEST_F(StringIDTest, toStringWithoutIndex)  // NOLINT
 {
     // Arrange
     const long bigHex = 0xfcad10;
-    auto idA = App::StringID(1, QByteArray {"data", 4});
-    auto idB = App::StringID(bigHex, QByteArray {"data", 4});
+    auto idA = App::StringID(1, Base::ByteBuffer::copy("data"));
+    auto idB = App::StringID(bigHex, Base::ByteBuffer::copy("data"));
 
     // Act
     auto resultA = idA.toString();
@@ -267,7 +291,7 @@ TEST_F(StringIDTest, toStringWithIndex)  // NOLINT
 {
     // Arrange
     const long bigHex = 0xfcad10;
-    auto id = App::StringID(1, QByteArray {"data", 4});
+    auto id = App::StringID(1, Base::ByteBuffer::copy("data"));
 
     // Act
     auto resultA = id.toString(bigHex);
@@ -370,7 +394,8 @@ TEST_F(StringIDTest, fromStringQByteArray)  // NOLINT
     const QByteArray testString {"#1:fcad", 7};
 
     // Act
-    auto result = App::StringID::fromString(testString, true);
+    auto result
+        = App::StringID::fromString(Base::BytesView(testString.constData(), testString.size()), true);
 
     // Assert
     EXPECT_EQ(result.id, 1);
@@ -381,33 +406,33 @@ TEST_F(StringIDTest, dataToTextHashed)  // NOLINT
 {
     // Arrange
     QByteArray buffer {"120ca87015d849dbea060eaf2295fcc4ee981427", 40};  // NOLINT
-    auto id = App::StringID(1, buffer, App::StringID::Flag::Hashed);
+    auto id = App::StringID(1, toByteBuffer(buffer), App::StringID::Flag::Hashed);
 
     // Act
     auto result = id.dataToText(0);
 
     // Assert
-    EXPECT_EQ(result, buffer.toBase64().constData());
+    EXPECT_EQ(result, Base::base64_encode(buffer.constData(), buffer.size()));
 }
 
 TEST_F(StringIDTest, dataToTextBinary)  // NOLINT
 {
     // Arrange
     QByteArray buffer {"120ca87015d849dbea060eaf2295fcc4ee981427", 40};  // NOLINT
-    auto id = App::StringID(1, buffer, App::StringID::Flag::Binary);
+    auto id = App::StringID(1, toByteBuffer(buffer), App::StringID::Flag::Binary);
 
     // Act
     auto result = id.dataToText(0);
 
     // Assert
-    EXPECT_EQ(result, buffer.toBase64().constData());
+    EXPECT_EQ(result, Base::base64_encode(buffer.constData(), buffer.size()));
 }
 
 TEST_F(StringIDTest, dataToTextNoIndex)  // NOLINT
 {
     // Arrange
     QByteArray data {"data", 4};
-    auto id = App::StringID(1, data);
+    auto id = App::StringID(1, toByteBuffer(data));
 
     // Act
     auto result = id.dataToText(0);
@@ -420,7 +445,7 @@ TEST_F(StringIDTest, dataToTextWithIndex)  // NOLINT
 {
     // Arrange
     QByteArray data {"data", 4};
-    auto id = App::StringID(1, data);
+    auto id = App::StringID(1, toByteBuffer(data));
 
     // Act
     auto resultA = id.dataToText(1);
@@ -436,8 +461,8 @@ TEST_F(StringIDTest, dataToTextWithPostfix)  // NOLINT
     // Arrange
     QByteArray data {"data", 4};
     QByteArray postfix {"postfix", 7};  // NOLINT
-    auto id = App::StringID(1, data);
-    id.setPostfix(postfix);
+    auto id = App::StringID(1, toByteBuffer(data));
+    id.setPostfix(toByteBuffer(postfix));
 
     // Act
     auto result = id.dataToText(1);
@@ -450,13 +475,13 @@ TEST_F(StringIDTest, dataToBytesNoIndex)  // NOLINT
 {
     // Arrange
     QByteArray data {"data", 4};
-    auto id = App::StringID(1, data);
+    auto id = App::StringID(1, toByteBuffer(data));
 
     // Act
     auto result = id.dataToBytes();
 
     // Assert
-    EXPECT_EQ(data, result);
+    EXPECT_EQ(data, toQByteArray(result));
 }
 
 TEST_F(StringIDTest, dataToBytesWithIndex)  // NOLINT
@@ -464,13 +489,13 @@ TEST_F(StringIDTest, dataToBytesWithIndex)  // NOLINT
     // Arrange
     QByteArray data {"data", 4};
     const int index {1234};
-    auto id = App::StringID(1, data);
+    auto id = App::StringID(1, toByteBuffer(data));
 
     // Act
     auto result = id.dataToBytes(index);
 
     // Assert
-    EXPECT_EQ(data + QByteArray::number(index), result);
+    EXPECT_EQ(data + QByteArray::number(index), toQByteArray(result));
 }
 
 TEST_F(StringIDTest, dataToBytesWithPostfix)  // NOLINT
@@ -478,14 +503,14 @@ TEST_F(StringIDTest, dataToBytesWithPostfix)  // NOLINT
     // Arrange
     QByteArray data {"data", 4};
     QByteArray postfix {"postfix", 7};  // NOLINT
-    auto id = App::StringID(1, data);
-    id.setPostfix(postfix);
+    auto id = App::StringID(1, toByteBuffer(data));
+    id.setPostfix(toByteBuffer(postfix));
 
     // Act
     auto result = id.dataToBytes();
 
     // Assert
-    EXPECT_EQ(data + postfix, result);
+    EXPECT_EQ(data + postfix, toQByteArray(result));
 }
 
 TEST_F(StringIDTest, dataToBytesWithIndexAndPostfix)  // NOLINT
@@ -494,21 +519,21 @@ TEST_F(StringIDTest, dataToBytesWithIndexAndPostfix)  // NOLINT
     QByteArray data {"data", 4};
     QByteArray postfix {"postfix", 7};  // NOLINT
     const int index {1234};
-    auto id = App::StringID(1, data);
-    id.setPostfix(postfix);
+    auto id = App::StringID(1, toByteBuffer(data));
+    id.setPostfix(toByteBuffer(postfix));
 
     // Act
     auto result = id.dataToBytes(index);
 
     // Assert
-    EXPECT_EQ(data + QByteArray::number(index) + postfix, result);
+    EXPECT_EQ(data + QByteArray::number(index) + postfix, toQByteArray(result));
 }
 
 TEST_F(StringIDTest, mark)  // NOLINT
 {
     // Arrange
     QByteArray data {"data", 4};
-    auto id = App::StringID(1, data);
+    auto id = App::StringID(1, toByteBuffer(data));
     ASSERT_FALSE(id.isMarked());
 
     // Act
@@ -522,7 +547,7 @@ TEST_F(StringIDTest, setPersistent)  // NOLINT
 {
     // Arrange
     QByteArray data {"data", 4};
-    auto id = App::StringID(1, data);
+    auto id = App::StringID(1, toByteBuffer(data));
     ASSERT_FALSE(id.isPersistent());
 
     // Act
@@ -584,7 +609,7 @@ protected:
     }
 
 private:
-    QByteArray _data {"data", 4};
+    Base::ByteBuffer _data {Base::ByteBuffer::copy("data")};
     int _id {1};
 };
 
@@ -817,8 +842,8 @@ TEST_F(StringIDRefTest, operatorLess)  // NOLINT
     // Arrange
     auto emptySIDA = App::StringIDRef();
     auto emptySIDB = App::StringIDRef();
-    auto lowID = App::StringIDRef(new App::StringID {1, nullptr});
-    auto highID = App::StringIDRef(new App::StringID {2, nullptr});
+    auto lowID = App::StringIDRef(new App::StringID {1, Base::ByteBuffer {}});
+    auto highID = App::StringIDRef(new App::StringID {2, Base::ByteBuffer {}});
 
     // Act & Assert
     EXPECT_FALSE(emptySIDA < emptySIDB);
@@ -836,9 +861,9 @@ TEST_F(StringIDRefTest, operatorEquality)  // NOLINT
     // Arrange
     auto emptySIDA = App::StringIDRef();
     auto emptySIDB = App::StringIDRef();
-    auto nonEmptyA = App::StringIDRef(new App::StringID {1, nullptr});
-    auto nonEmptyB = App::StringIDRef(new App::StringID {1, nullptr});
-    auto nonEmptyOther = App::StringIDRef(new App::StringID {2, nullptr});
+    auto nonEmptyA = App::StringIDRef(new App::StringID {1, Base::ByteBuffer {}});
+    auto nonEmptyB = App::StringIDRef(new App::StringID {1, Base::ByteBuffer {}});
+    auto nonEmptyOther = App::StringIDRef(new App::StringID {2, Base::ByteBuffer {}});
 
     // Act & Assert
     EXPECT_TRUE(emptySIDA == emptySIDB);
@@ -852,9 +877,9 @@ TEST_F(StringIDRefTest, operatorInequality)  // NOLINT
     // Arrange
     auto emptySIDA = App::StringIDRef();
     auto emptySIDB = App::StringIDRef();
-    auto nonEmptyA = App::StringIDRef(new App::StringID {1, nullptr});
-    auto nonEmptyB = App::StringIDRef(new App::StringID {1, nullptr});
-    auto nonEmptyOther = App::StringIDRef(new App::StringID {2, nullptr});
+    auto nonEmptyA = App::StringIDRef(new App::StringID {1, Base::ByteBuffer {}});
+    auto nonEmptyB = App::StringIDRef(new App::StringID {1, Base::ByteBuffer {}});
+    auto nonEmptyOther = App::StringIDRef(new App::StringID {2, Base::ByteBuffer {}});
 
     // Act & Assert
     EXPECT_FALSE(emptySIDA != emptySIDB);
@@ -867,7 +892,7 @@ TEST_F(StringIDRefTest, booleanConversion)  // NOLINT
 {
     // Arrange
     auto emptySID = App::StringIDRef();
-    auto nonEmpty = App::StringIDRef(new App::StringID {1, nullptr});
+    auto nonEmpty = App::StringIDRef(new App::StringID {1, Base::ByteBuffer {}});
 
     // Act & Assert
     EXPECT_FALSE(emptySID);
@@ -969,8 +994,12 @@ TEST_F(StringIDRefTest, isBinary)  // NOLINT
 {
     // Arrange
     auto nothing = App::StringIDRef();
-    auto binary = App::StringIDRef(new App::StringID {1, nullptr, App::StringID::Flag::Binary});
-    auto nonBinary = App::StringIDRef(new App::StringID {1, nullptr, App::StringID::Flag::None});
+    auto binary = App::StringIDRef(
+        new App::StringID {1, Base::ByteBuffer {}, App::StringID::Flag::Binary}
+    );
+    auto nonBinary = App::StringIDRef(
+        new App::StringID {1, Base::ByteBuffer {}, App::StringID::Flag::None}
+    );
 
     // Act & Assert
     EXPECT_FALSE(nothing.isBinary());
@@ -982,8 +1011,12 @@ TEST_F(StringIDRefTest, isHashed)  // NOLINT
 {
     // Arrange
     auto nothing = App::StringIDRef();
-    auto hashed = App::StringIDRef(new App::StringID {1, nullptr, App::StringID::Flag::Hashed});
-    auto nonHashed = App::StringIDRef(new App::StringID {1, nullptr, App::StringID::Flag::None});
+    auto hashed = App::StringIDRef(
+        new App::StringID {1, Base::ByteBuffer {}, App::StringID::Flag::Hashed}
+    );
+    auto nonHashed = App::StringIDRef(
+        new App::StringID {1, Base::ByteBuffer {}, App::StringID::Flag::None}
+    );
 
     // Act & Assert
     EXPECT_FALSE(nothing.isHashed());
@@ -994,14 +1027,14 @@ TEST_F(StringIDRefTest, isHashed)  // NOLINT
 TEST_F(StringIDRefTest, toBytes)  // NOLINT
 {
     // Arrange
-    QByteArray byteStorage;
+    Base::ByteBuffer byteStorage;
     auto ref = App::StringIDRef(createStringID());
 
     // Act
     ref.toBytes(byteStorage);
 
     // Assert
-    EXPECT_FALSE(byteStorage.isNull());
+    EXPECT_FALSE(byteStorage.empty());
 }
 
 TEST_F(StringIDRefTest, getPyObject)  // NOLINT
@@ -1036,7 +1069,9 @@ TEST_F(StringIDRefTest, mark)  // NOLINT
 TEST_F(StringIDRefTest, isMarked)  // NOLINT
 {
     // Arrange
-    auto marked = App::StringIDRef(new App::StringID(1, nullptr, App::StringID::Flag::Marked));
+    auto marked = App::StringIDRef(
+        new App::StringID(1, Base::ByteBuffer {}, App::StringID::Flag::Marked)
+    );
     auto notMarked = App::StringIDRef(createStringID());
 
     // Act & Assert
@@ -1089,12 +1124,9 @@ protected:
 
     static Data::MappedName givenMappedName(const char* name, const char* postfix = nullptr)
     {
-        QByteArray expectedPrefix {name, static_cast<int>(std::strlen(name))};
-        Data::MappedName mappedName(expectedPrefix);
+        Data::MappedName mappedName(name);
         if (postfix) {
-            QByteArray expectedPostfix {postfix, static_cast<int>(std::strlen(postfix))};
-            Data::MappedName mappedNameA(mappedName, expectedPostfix.data());
-            return mappedNameA;
+            return Data::MappedName(mappedName, postfix);
         }
         return mappedName;
     }
@@ -1106,7 +1138,7 @@ protected:
         const std::string prefix {"Test1"};
         const std::string postfix {";:M;FUS;:Hb:7,F"};
         auto mappedName = givenMappedName(prefix.c_str(), postfix.c_str());
-        QVector<App::StringIDRef> sids;
+        std::vector<App::StringIDRef> sids;
         auto ID = Hasher()->getID(mappedName, sids);
         ID.mark();  // For this to be included in the count, and thus the memsize in needs to be
                     // marked.
@@ -1171,6 +1203,38 @@ TEST_F(StringHasherTest, RestoreDocFile)  // NOLINT
     // Assert
 }
 
+TEST_F(StringHasherTest, RestoreDocFileAcceptsUnpaddedBase64)  // NOLINT
+{
+    const std::vector<std::pair<std::string, std::string>> cases {
+        {"YQ", "a"},
+        {"YWI", "ab"},
+        {"YWJjZA", "abcd"},
+        {"YWJjZGU", "abcde"},
+    };
+
+    for (const auto& [encoded, expected] : cases) {
+        std::stringstream stream("StringTableStart v1 1\n1.1 0:" + encoded + "\n");
+        Base::Reader reader(stream, "StringTable", 2);
+
+        ASSERT_NO_THROW(Hasher()->RestoreDocFile(reader));
+        const auto id = Hasher()->getID(1);
+        ASSERT_TRUE(id);
+        EXPECT_EQ(std::string(id.deref().data().data(), id.deref().data().size()), expected);
+    }
+}
+
+TEST_F(StringHasherTest, RestoreDocFileRejectsInvalidBase64)  // NOLINT
+{
+    const std::vector<std::string> invalid {"YQ=", "Y!", "YQ==A", "A"};
+
+    for (const auto& encoded : invalid) {
+        std::stringstream stream("StringTableStart v1 1\n1.1 0:" + encoded + "\n");
+        Base::Reader reader(stream, "StringTable", 2);
+
+        EXPECT_THROW(Hasher()->RestoreDocFile(reader), Base::RuntimeError);
+    }
+}
+
 TEST_F(StringHasherTest, setPersistenceFileName)  // NOLINT
 {
     // Arrange
@@ -1193,7 +1257,10 @@ TEST_F(StringHasherTest, getIDFromQByteArrayShort)  // NOLINT
     Hasher()->setThreshold(string.size() + 1);
 
     // Act
-    auto id = Hasher()->getID(qba, App::StringHasher::Option::Hashable);
+    auto id = Hasher()->getID(
+        Base::BytesView(qba.constData(), qba.size()),
+        App::StringHasher::Option::Hashable
+    );
 
     // Assert
     EXPECT_STREQ(string.data(), id.constData());
@@ -1210,7 +1277,10 @@ TEST_F(StringHasherTest, getIDFromQByteArrayLongHashable)  // NOLINT
     Hasher()->setThreshold(string.size() - 1);
 
     // Act
-    auto id = Hasher()->getID(qba, App::StringHasher::Option::Hashable);
+    auto id = Hasher()->getID(
+        Base::BytesView(qba.constData(), qba.size()),
+        App::StringHasher::Option::Hashable
+    );
 
     // Assert
     EXPECT_STRNE(string.data(), id.constData());
@@ -1226,7 +1296,10 @@ TEST_F(StringHasherTest, getIDFromQByteArrayLongUnhashable)  // NOLINT
     Hasher()->setThreshold(string.size() - 1);
 
     // Act
-    auto id = Hasher()->getID(qba, App::StringHasher::Option::None);
+    auto id = Hasher()->getID(
+        Base::BytesView(qba.constData(), qba.size()),
+        App::StringHasher::Option::None
+    );
 
     // Assert
     EXPECT_STREQ(string.data(), id.constData());
@@ -1242,7 +1315,10 @@ TEST_F(StringHasherTest, getIDFromQByteArrayNoCopy)  // NOLINT
     Hasher()->setThreshold(string.size() + 1);
 
     // Act
-    auto id = Hasher()->getID(qba, App::StringHasher::Option::NoCopy);
+    auto id = Hasher()->getID(
+        Base::BytesView(qba.constData(), qba.size()),
+        App::StringHasher::Option::NoCopy
+    );
 
     // Assert
     EXPECT_STREQ(string.data(), id.constData());
@@ -1258,8 +1334,8 @@ TEST_F(StringHasherTest, getIDFromQByteArrayTwoDifferentStrings)  // NOLINT
     QByteArray qbaB(stringB.data(), stringB.size());
 
     // Act
-    auto idA = Hasher()->getID(qbaA);
-    auto idB = Hasher()->getID(qbaB);
+    auto idA = Hasher()->getID(Base::BytesView(qbaA.constData(), qbaA.size()));
+    auto idB = Hasher()->getID(Base::BytesView(qbaB.constData(), qbaB.size()));
 
     // Assert
     EXPECT_NE(idA.dataToText(), idB.dataToText());
@@ -1274,8 +1350,8 @@ TEST_F(StringHasherTest, getIDFromQByteArrayTwoIdenticalStrings)  // NOLINT
     QByteArray qbaB(stringB.data(), stringB.size());
 
     // Act
-    auto idA = Hasher()->getID(qbaA);
-    auto idB = Hasher()->getID(qbaB);
+    auto idA = Hasher()->getID(Base::BytesView(qbaA.constData(), qbaA.size()));
+    auto idB = Hasher()->getID(Base::BytesView(qbaB.constData(), qbaB.size()));
 
     // Assert
     EXPECT_EQ(idA.dataToText(), idB.dataToText());
@@ -1288,7 +1364,10 @@ TEST_F(StringHasherTest, getIDFromQByteArrayBinaryFlag)  // NOLINT
     QByteArray qba(string.data(), string.size());
 
     // Act
-    auto id = Hasher()->getID(qba, App::StringHasher::Option::Binary);
+    auto id = Hasher()->getID(
+        Base::BytesView(qba.constData(), qba.size()),
+        App::StringHasher::Option::Binary
+    );
 
     // Assert
     EXPECT_TRUE(id.isBinary());
@@ -1318,8 +1397,8 @@ TEST_F(StringHasherTest, getIDFromMappedNameWithoutPostfixWithoutIndex)  // NOLI
     // Arrange
     const char* name {"Face"};
     QByteArray expectedPrefix {name, static_cast<int>(std::strlen(name))};
-    Data::MappedName mappedName1(expectedPrefix);
-    QVector<App::StringIDRef> sids;
+    Data::MappedName mappedName1(name);
+    std::vector<App::StringIDRef> sids;
 
     // Act
     auto id = Hasher()->getID(mappedName1, sids);
@@ -1334,9 +1413,8 @@ TEST_F(StringHasherTest, getIDFromMappedNameWithoutPostfixWithIndex)  // NOLINT
     const char* expectedName {"Face"};
     QByteArray expectedPrefix {expectedName, static_cast<int>(std::strlen(expectedName))};
     const char* name {"Face3"};
-    QByteArray prefix {name, static_cast<int>(std::strlen(name))};
-    Data::MappedName mappedName1(prefix);
-    QVector<App::StringIDRef> sids;
+    Data::MappedName mappedName1(name);
+    std::vector<App::StringIDRef> sids;
 
     // Act
     auto id = Hasher()->getID(mappedName1, sids);
@@ -1352,16 +1430,16 @@ TEST_F(StringHasherTest, getIDFromMappedNameWithoutIndexWithPostfix)  // NOLINT
     QByteArray expectedPrefix {name, static_cast<int>(std::strlen(name))};
     const char* postfix {";:M;FUS;:Hb:7,F"};
     QByteArray expectedPostfix {postfix, static_cast<int>(std::strlen(postfix))};
-    Data::MappedName mappedName1(expectedPrefix);
-    Data::MappedName mappedName2(mappedName1, expectedPostfix.data());
-    QVector<App::StringIDRef> sids;
+    Data::MappedName mappedName1(name);
+    Data::MappedName mappedName2(mappedName1, postfix);
+    std::vector<App::StringIDRef> sids;
 
     // Act
     auto id = Hasher()->getID(mappedName2, sids);
 
     // Assert
-    EXPECT_EQ(expectedPrefix, id.deref().data());
-    EXPECT_EQ(expectedPostfix, id.deref().postfix());
+    EXPECT_EQ(expectedPrefix, toQByteArray(id.deref().data()));
+    EXPECT_EQ(expectedPostfix, toQByteArray(id.deref().postfix()));
 }
 
 TEST_F(StringHasherTest, getIDFromMappedNameWithIndexWithPostfix)  // NOLINT
@@ -1371,9 +1449,9 @@ TEST_F(StringHasherTest, getIDFromMappedNameWithIndexWithPostfix)  // NOLINT
     QByteArray expectedPrefix {name, static_cast<int>(std::strlen(name))};
     const char* postfix {";:M;FUS;:Hb:7,F"};
     QByteArray expectedPostfix {postfix, static_cast<int>(std::strlen(postfix))};
-    Data::MappedName mappedName1(expectedPrefix);
-    Data::MappedName mappedName2(mappedName1, expectedPostfix.data());
-    QVector<App::StringIDRef> sids;
+    Data::MappedName mappedName1(name);
+    Data::MappedName mappedName2(mappedName1, postfix);
+    std::vector<App::StringIDRef> sids;
 
     // Act
     auto id = Hasher()->getID(mappedName2, sids);
@@ -1386,7 +1464,7 @@ TEST_F(StringHasherTest, getIDFromMappedNameExistingNameNoIndex)  // NOLINT
 {
     // Arrange
     Data::MappedName mappedName1 = givenMappedName("SomeTestName");
-    QVector<App::StringIDRef> sids;
+    std::vector<App::StringIDRef> sids;
     auto firstIDInserted = Hasher()->getID(mappedName1, sids);
     ASSERT_EQ(1, Hasher()->size());
 
@@ -1402,7 +1480,7 @@ TEST_F(StringHasherTest, getIDFromMappedNameExistingNameWithIndex)  // NOLINT
     // Arrange
     auto mappedNameA = givenMappedName("Test1");
     auto mappedNameB = givenMappedName("Test2");
-    QVector<App::StringIDRef> sids;
+    std::vector<App::StringIDRef> sids;
     auto firstIDInserted = Hasher()->getID(mappedNameA, sids);
 
     // Act
@@ -1418,7 +1496,7 @@ TEST_F(StringHasherTest, getIDFromMappedNameExistingNameWithIndexAndPostfix)  //
     // Arrange
     auto mappedNameA = givenMappedName("Test1", ";:M;FUS;:Hb:7,F");
     auto mappedNameB = givenMappedName("Test2", ";:M;FUS;:Hb:7,F");
-    QVector<App::StringIDRef> sids;
+    std::vector<App::StringIDRef> sids;
     auto firstIDInserted = Hasher()->getID(mappedNameA, sids);
 
     // Act
@@ -1434,7 +1512,7 @@ TEST_F(StringHasherTest, getIDFromMappedNameDuplicateWithEncodedPostfix)  // NOL
     // Arrange
     auto mappedNameA = givenMappedName("Test1", ";:M;FUS;:Hb:7,F");
     auto mappedNameB = givenMappedName("Test1", "#1");
-    QVector<App::StringIDRef> sids;
+    std::vector<App::StringIDRef> sids;
     auto firstIDInserted = Hasher()->getID(mappedNameA, sids);
 
     // Act
@@ -1462,7 +1540,7 @@ TEST_F(StringHasherTest, getIDFromIntegerIDBadID)  // NOLINT
     // Arrange
     const std::string prefix {"Test1"};
     auto mappedName = givenMappedName(prefix.c_str());
-    QVector<App::StringIDRef> sids;
+    std::vector<App::StringIDRef> sids;
     auto inserted = Hasher()->getID(mappedName, sids);
     ASSERT_EQ(1, Hasher()->size());
 

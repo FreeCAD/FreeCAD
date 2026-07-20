@@ -6,7 +6,18 @@
 #include <App/ElementMap.h>
 #include <src/App/InitApplication.h>
 
+#include <Base/ByteBuffer.h>
+#include <Base/BytesView.h>
+
 // NOLINTBEGIN(readability-magic-numbers)
+
+static Base::ByteBuffer bb(const char* s)
+{
+    if (!s) {
+        return {};
+    }
+    return Base::ByteBuffer::copy(Base::BytesView(s));
+}
 
 
 // this is a "holder" class used for simpler testing of ElementMap in the context of a class
@@ -65,7 +76,7 @@ protected:
 
     std::string _docName;
     Data::ElementIDRefs _sid;
-    QVector<App::StringIDRef>* _sids;
+    Data::ElementIDRefs* _sids;
     App::StringHasherRef _hasher;
 };
 
@@ -149,13 +160,38 @@ TEST_F(ElementMapTest, setElementNameWithHashing)
     const Data::MappedName expectedName(element);
 
     // Act
-    elementMap.encodeElementName(element.getType()[0], elementNameHolder, ss, nullptr, 0, nullptr, 0);
+    elementMap.encodeElementName(
+        element.getType()[0],
+        elementNameHolder,
+        ss,
+        nullptr,
+        0,
+        Base::BytesView(),
+        0
+    );
     auto resultName = elementMap.setElementName(element, elementNameHolder, 0, _sids);
     auto mappedToElement = elementMap.find(element);
 
     // Assert
     EXPECT_EQ(resultName, expectedName);
     EXPECT_EQ(mappedToElement, expectedName);
+}
+
+TEST_F(ElementMapTest, encodeElementNameWithNullPostfix)
+{
+    // Arrange
+    Data::ElementMap elementMap;
+    std::ostringstream ss;
+    Data::IndexedName element("Edge", 1);
+    Data::MappedName elementNameHolder(element);
+    const char* postfix = nullptr;
+
+    // Act
+    elementMap.encodeElementName(element.getType()[0], elementNameHolder, ss, nullptr, 0, postfix, 0);
+
+    // Assert
+    EXPECT_EQ(elementNameHolder, Data::MappedName(element));
+    EXPECT_TRUE(ss.str().empty());
 }
 
 TEST_F(ElementMapTest, eraseMappedName)
@@ -383,7 +419,7 @@ TEST_F(ElementMapTest, mimicSimpleUnion)
         ss,
         nullptr,
         unionPart.Tag,
-        nullptr,
+        Base::BytesView(),
         unionPart.Tag
     );
     auto postfixStr = postfixHolder.toString() + Data::ELEMENT_MAP_PREFIX + PartOp;
@@ -397,7 +433,7 @@ TEST_F(ElementMapTest, mimicSimpleUnion)
         ss,
         nullptr,
         unionPart.Tag,
-        postfixStr.c_str(),
+        Base::BytesView(postfixStr.data(), postfixStr.size()),
         cube.Tag
     );
     unionPart.elementMapPtr->setElementName(uface3, uface3Holder, unionPart.Tag, nullptr, true);
@@ -452,7 +488,7 @@ TEST_F(ElementMapTest, mimicOperationAgainstSelf)
         ss,
         nullptr,
         finalPart.Tag,
-        nullptr,
+        Base::BytesView(),
         finalPart.Tag
     );
     auto postfixStr = postfixHolder.toString() + Data::ELEMENT_MAP_PREFIX + PartOp;
@@ -463,7 +499,7 @@ TEST_F(ElementMapTest, mimicOperationAgainstSelf)
         ss,
         nullptr,
         finalPart.Tag,
-        postfixStr.c_str(),
+        Base::BytesView(postfixStr.data(), postfixStr.size()),
         finalPart.Tag
     );
     // override not forced
@@ -487,7 +523,7 @@ TEST_F(ElementMapTest, hasChildElementMapTest)
 {
     // Arrange
     Data::ElementMap::MappedChildElements child
-        = {Data::IndexedName("face", 1), 2, 7, 4L, Data::ElementMapPtr(), QByteArray(""), _sid};
+        = {Data::IndexedName("face", 1), 2, 7, 4L, Data::ElementMapPtr(), bb(""), _sid};
     std::vector<Data::ElementMap::MappedChildElements> children = {child};
     LessComplexPart cubeFull(3L, "FullBox", _hasher);
     cubeFull.elementMapPtr->addChildElements(cubeFull.Tag, children);
@@ -514,7 +550,7 @@ TEST_F(ElementMapTest, hashChildMapsTest)
         7,
         3L,
         Data::ElementMapPtr(),
-        QByteArray("abcdefghij"),  // postfix must be 10 or more bytes to invoke hasher
+        bb("abcdefghij"),  // postfix must be 10 or more bytes to invoke hasher
         _sid
     };
     std::vector<Data::ElementMap::MappedChildElements> children = {childOne};
@@ -540,11 +576,11 @@ TEST_F(ElementMapTest, addAndGetChildElementsTest)
         7,
         3L,
         Data::ElementMapPtr(),
-        QByteArray("abcdefghij"),  // postfix must be 10 or more bytes to invoke hasher
+        bb("abcdefghij"),  // postfix must be 10 or more bytes to invoke hasher
         _sid
     };
     Data::ElementMap::MappedChildElements childTwo
-        = {Data::IndexedName("Pong", 2), 2, 7, 4L, Data::ElementMapPtr(), QByteArray("abc"), _sid};
+        = {Data::IndexedName("Pong", 2), 2, 7, 4L, Data::ElementMapPtr(), bb("abc"), _sid};
     std::vector<Data::ElementMap::MappedChildElements> children = {childOne, childTwo};
 
     // Act

@@ -1,6 +1,6 @@
 # -------------------------------- Qt --------------------------------
 
-set(FREECAD_QT_COMPONENTS Core Concurrent Network Xml)
+set(FREECAD_QT_COMPONENTS ${FREECAD_QT_BASE_COMPONENTS})
 
 if (FREECAD_QT_MAJOR_VERSION EQUAL 5)
     message(WARNING [[
@@ -27,7 +27,7 @@ if(BUILD_GUI)
         list (APPEND FREECAD_QT_COMPONENTS OpenGLWidgets)
     endif()
 
-    list (APPEND FREECAD_QT_COMPONENTS OpenGL PrintSupport Svg UiTools Widgets LinguistTools)
+    list (APPEND FREECAD_QT_COMPONENTS OpenGL PrintSupport Svg UiTools Widgets)
 
     if(BUILD_DESIGNER_PLUGIN)
         list (APPEND FREECAD_QT_COMPONENTS Designer)
@@ -90,14 +90,11 @@ if (Qt${FREECAD_QT_MAJOR_VERSION}Core_VERSION VERSION_LESS 5.15.0)
         set("${_qm_files}" "${${_qm_files}}" PARENT_SCOPE)
     endfunction()
 
-    # Since Qt 5.15 Q_DISABLE_COPY_MOVE is defined
-    set (HAVE_Q_DISABLE_COPY_MOVE 0)
 else()
     # Since Qt 5.15 Q_DISABLE_COPY_MOVE is defined
-    set (HAVE_Q_DISABLE_COPY_MOVE 1)
+    add_compile_definitions(HAVE_Q_DISABLE_COPY_MOVE=1)
 endif()
 
-configure_file(${CMAKE_SOURCE_DIR}/src/QtCore.h.cmake ${CMAKE_BINARY_DIR}/src/QtCore.h)
 configure_file(${CMAKE_SOURCE_DIR}/src/QtWidgets.h.cmake ${CMAKE_BINARY_DIR}/src/QtWidgets.h)
 
 function(qt_find_and_add_translation _qm_files _tr_dir _qm_dir)

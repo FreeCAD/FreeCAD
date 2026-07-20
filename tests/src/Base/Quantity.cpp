@@ -2,7 +2,9 @@
 #include <Base/Exception.h>
 #include <Base/Quantity.h>
 #include "Base/UnitsApi.h"
-#include <QLocale>
+#if FREECAD_TEST_HAS_QT
+# include <QLocale>
+#endif
 
 using Base::ParserError;
 using Base::Quantity;
@@ -201,8 +203,10 @@ class BaseQuantityLoc: public ::testing::Test
 protected:
     void SetUp() override
     {
+#if FREECAD_TEST_HAS_QT
         QLocale loc(QLocale::C);
         QLocale::setDefault(loc);
+#endif
     }
     void TearDown() override
     {}

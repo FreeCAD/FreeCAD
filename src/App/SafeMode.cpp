@@ -23,32 +23,123 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <array>
+#include <cerrno>
+#include <filesystem>
+#include <map>
+#include <string>
+#include <system_error>
+#include <vector>
 
-#include <QTemporaryDir>
+#include <Base/FileInfo.h>
 
 #include "Application.h"
 #include "FCConfig.h"
 
 #include "SafeMode.h"
 
-static QTemporaryDir* tempDir = nullptr;
+#if defined(FC_OS_WIN32)
+# include <objbase.h>
+# include <sddl.h>
+# include <windows.h>
+#else
+# include <unistd.h>
+#endif
+
+namespace fs = std::filesystem;
+
+static fs::path tempDir;
+
+static bool createSecureTemporaryBaseDir(const fs::path& base, std::error_code& error)
+{
+#if defined(FC_OS_WIN32)
+    GUID guid {};
+    if (FAILED(CoCreateGuid(&guid))) {
+        error = std::make_error_code(std::errc::io_error);
+        return false;
+    }
+
+    wchar_t guidText[39] {};
+    if (StringFromGUID2(
+            guid,
+            guidText,
+            static_cast<int>(sizeof(guidText) / sizeof(*guidText)))
+        == 0) {
+        error = std::make_error_code(std::errc::io_error);
+        return false;
+    }
+
+    const fs::path candidate = base / (std::wstring(L"FreeCADSafeMode-") + guidText);
+
+    // Protect the directory and its descendants at creation time. The
+    // owner-rights ACE avoids the window where a post-creation ACL update
+    // would expose Safe Mode data.
+    PSECURITY_DESCRIPTOR descriptor = nullptr;
+    if (!ConvertStringSecurityDescriptorToSecurityDescriptorW(
+            L"D:P(A;OICI;FA;;;OW)",
+            SDDL_REVISION_1,
+            &descriptor,
+            nullptr)) {
+        error = std::error_code(static_cast<int>(GetLastError()), std::system_category());
+        return false;
+    }
+
+    SECURITY_ATTRIBUTES attributes {
+        sizeof(SECURITY_ATTRIBUTES),
+        descriptor,
+        FALSE,
+    };
+    const BOOL created = CreateDirectoryW(candidate.c_str(), &attributes);
+    const DWORD lastError = created ? ERROR_SUCCESS : GetLastError();
+    LocalFree(descriptor);
+
+    if (!created) {
+        error = lastError == ERROR_ALREADY_EXISTS
+            ? std::make_error_code(std::errc::file_exists)
+            : std::error_code(static_cast<int>(lastError), std::system_category());
+        return false;
+    }
+
+    tempDir = candidate;
+    return true;
+#else
+    std::string pattern = Base::FileInfo::pathToString(base / "FreeCADSafeMode-XXXXXX");
+    std::vector<char> writable(pattern.begin(), pattern.end());
+    writable.push_back('\0');
+    if (!mkdtemp(writable.data())) {
+        error = std::error_code(errno, std::generic_category());
+        return false;
+    }
+
+    // mkdtemp atomically creates the directory with mode 0700.
+    tempDir = fs::path(writable.data());
+    return true;
+#endif
+}
 
 static bool _createTemporaryBaseDir()
 {
-    tempDir = new QTemporaryDir();
-    if (!tempDir->isValid()) {
-        delete tempDir;
-        tempDir = nullptr;
+    std::error_code error;
+    const fs::path base = fs::temp_directory_path(error);
+    if (error) {
+        return false;
     }
-    return tempDir;
+
+    for (int attempt = 0; attempt < 64; ++attempt) {
+        if (createSecureTemporaryBaseDir(base, error)) {
+            return true;
+        }
+        error.clear();
+    }
+
+    return false;
 }
 
-static void _replaceDirs()
+static bool _replaceDirs()
 {
     auto& config = App::GetApplication().Config();
 
-    auto const temp_base = tempDir->path().toStdString();
-    auto const dirs = {
+    constexpr std::array dirs = {
         "UserAppData",
         "UserConfigPath",
         "UserCachePath",
@@ -57,27 +148,47 @@ static void _replaceDirs()
         "UserHomePath",
     };
 
+    std::map<std::string, std::string> replacements;
     for (auto const d : dirs) {
-        auto const path = temp_base + "/" + d + "/";
-        auto const qpath = QDir::cleanPath(QString::fromStdString(path));
-        QDir().mkpath(qpath);
-        config[d] = QDir::toNativeSeparators(qpath).toStdString();
+        try {
+            const fs::path path = tempDir / d;
+            fs::create_directories(path);
+            replacements[d] = Base::FileInfo::pathToString(path) + PATHSEP;
+        }
+        catch (const fs::filesystem_error&) {
+            return false;
+        }
     }
+
+    for (const auto& [key, path] : replacements) {
+        config[key] = path;
+    }
+    return true;
 }
 
 void SafeMode::StartSafeMode()
 {
-    if (_createTemporaryBaseDir()) {
-        _replaceDirs();
+    if (!_createTemporaryBaseDir()) {
+        return;
+    }
+
+    if (!_replaceDirs()) {
+        SafeMode::Destruct();
     }
 }
 
 bool SafeMode::SafeModeEnabled()
 {
-    return tempDir;
+    return !tempDir.empty();
 }
 
 void SafeMode::Destruct()
 {
-    delete tempDir;
+    if (tempDir.empty()) {
+        return;
+    }
+    std::error_code error;
+    // Best-effort cleanup: leaving safe mode should not fail because temporary removal failed.
+    fs::remove_all(tempDir, error);
+    tempDir.clear();
 }

@@ -30,9 +30,9 @@
 #include <string>
 #include <vector>
 
-#include "FCGlobal.h"
+#include <Base/BytesView.h>
 
-class QByteArray;
+#include "FCGlobal.h"
 
 namespace Data
 {
@@ -125,15 +125,20 @@ public:
     }
 
     /**
-     * @brief Construct a mapped name from a QByteArray.
+     * @brief Construct a mapped name from byte view data.
      *
-     * Construct from a QByteArray, but explicitly making a copy of the name on
-     * its first occurrence. If this is a name that has already been stored
+     * Construct from byte view data, but explicitly making a copy of the name
+     * on its first occurrence. If this is a name that has already been stored
      * internally, no additional copy is made.
      *
-     * @param[in] data The QByteArray to copy the data from.
+     * @param[in] data The byte view to copy the data from.
      */
-    explicit IndexedName(const QByteArray& data);
+    explicit IndexedName(Base::BytesView data)
+        : type("")
+        , index(0)
+    {
+        set(data.data(), static_cast<int>(data.size()));
+    }
 
     /**
      * @brief Create an indexed name from a string and index.

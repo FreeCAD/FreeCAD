@@ -276,7 +276,7 @@ void Part::FaceMaker::postBuild()
         int nameCount = 0;
         for (const auto& e : edgeNames) {
             names.push_back(e.name);
-            sids += e.sids;
+            sids.insert(sids.end(), e.sids.begin(), e.sids.end());
             if (namesUsed.insert(e.name).second) {
                 if (++nameCount >= minElementNames) {
                     break;

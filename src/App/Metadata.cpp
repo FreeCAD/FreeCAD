@@ -35,6 +35,8 @@
 
 #include "App/Application.h"
 #include "App/Expression.h"
+#include "Base/FileInfo.h"
+#include "Base/PathUtils.h"
 #include "Base/XMLTools.h"
 
 #include "Metadata.h"
@@ -93,12 +95,8 @@ class XMLErrorHandler: public HandlerBase
 Metadata::Metadata(const fs::path& metadataFile)
     : _dom(nullptr)
 {
-#if defined(FC_OS_WIN32)
-    auto source =
-        LocalFileInputSource(reinterpret_cast<const XMLCh*>(metadataFile.wstring().c_str()));
-#else
-    auto source = LocalFileInputSource(XUTF8Str(metadataFile.string().c_str()).unicodeForm());
-#endif
+    const std::string filename = Base::FileInfo::pathToString(metadataFile);
+    auto source = LocalFileInputSource(XUTF8Str(filename.c_str()).unicodeForm());
     loadFromInputSource(source);
 }
 
@@ -629,7 +627,9 @@ void Metadata::write(const fs::path& file) const
     }
 
     try {
-        XMLFormatTarget* myFormTarget = new LocalFileFormatTarget(file.string().c_str());
+        const std::string filename = Base::FileInfo::pathToString(file);
+        XMLFormatTarget* myFormTarget =
+            new LocalFileFormatTarget(XUTF8Str(filename.c_str()).unicodeForm());
         DOMLSOutput* theOutput = ((DOMImplementationLS*)impl)->createLSOutput();
 
         theOutput->setByteStream(myFormTarget);
@@ -758,7 +758,7 @@ void Metadata::appendToElement(DOMElement* root) const
     for (const auto& license : _license) {
         auto element = appendSimpleXMLNode(root, "license", license.name);
         if (element) {
-            addAttribute(element, "file", license.file.string());
+            addAttribute(element, "file", Base::pathToPortableUtf8(license.file));
         }
     }
 
@@ -828,14 +828,14 @@ void Metadata::appendToElement(DOMElement* root) const
         appendSimpleXMLNode(root, "tag", tag);
     }
 
-    appendSimpleXMLNode(root, "icon", _icon.string());
+    appendSimpleXMLNode(root, "icon", Base::pathToPortableUtf8(_icon));
 
     appendSimpleXMLNode(root, "classname", _classname);
 
-    appendSimpleXMLNode(root, "subdirectory", _subdirectory.string());
+    appendSimpleXMLNode(root, "subdirectory", Base::pathToPortableUtf8(_subdirectory));
 
     for (const auto& file : _file) {
-        appendSimpleXMLNode(root, "file", file.string());
+        appendSimpleXMLNode(root, "file", Base::pathToPortableUtf8(file));
     }
 
     for (const auto& md : _genericMetadata) {
@@ -922,16 +922,16 @@ void Metadata::parseVersion1(const DOMNode* startNode)
             _tag.emplace_back(StrXUTF8(element->getTextContent()).str);
         }
         else if (tagString == "file") {
-            _file.emplace_back(StrXUTF8(element->getTextContent()).str);
+            _file.emplace_back(Base::pathFromUtf8(StrXUTF8(element->getTextContent()).str));
         }
         else if (tagString == "classname") {
             _classname = StrXUTF8(element->getTextContent()).str;
         }
         else if (tagString == "subdirectory") {
-            _subdirectory = StrXUTF8(element->getTextContent()).str;
+            _subdirectory = Base::pathFromUtf8(StrXUTF8(element->getTextContent()).str);
         }
         else if (tagString == "icon") {
-            _icon = fs::path(StrXUTF8(element->getTextContent()).str);
+            _icon = Base::pathFromUtf8(StrXUTF8(element->getTextContent()).str);
         }
         else if (tagString == "content") {
             parseContentNodeVersion1(element);  // Recursive call
@@ -1001,7 +1001,7 @@ Meta::License::License(const XERCES_CPP_NAMESPACE::DOMElement* elem)
     }
     auto fileAttribute = elem->getAttribute(XUTF8StrLiteral("file").unicodeForm());
     if (XMLString::stringLen(fileAttribute) > 0) {
-        file = fs::path(StrXUTF8(fileAttribute).str);
+        file = Base::pathFromUtf8(StrXUTF8(fileAttribute).str);
     }
     name = StrXUTF8(elem->getTextContent()).str;
 }
