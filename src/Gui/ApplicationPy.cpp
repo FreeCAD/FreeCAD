@@ -26,15 +26,26 @@
 #include <QPrinter>
 #include <QFileInfo>
 #include <map>
+#include <QIcon>
+#if defined(Q_OS_WIN)
+# include <windows.h>
+#elif defined(Q_WS_X11)
+# include <QX11EmbedWidget>
+#endif
 #include <Inventor/SoInput.h>
 #include <Inventor/SoPath.h>
+#include <Inventor/SoDB.h>
+#include <Inventor/SoInteraction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/nodekits/SoNodeKit.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <xercesc/util/TranscodingException.hpp>
 #include <xercesc/util/XMLString.hpp>
 
 #include <boost/regex.hpp>
+#include <thread>
 
+#include <App/Application.h>
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentPy.h>
 #include <App/PropertyFile.h>
@@ -63,6 +74,7 @@
 #include "PythonWrapper.h"
 #include "SoFCDB.h"
 #include "SplitView3DInventor.h"
+#include "StartupProcess.h"
 #include "View3DInventor.h"
 #include "ViewProvider.h"
 #include "WaitCursor.h"
@@ -241,6 +253,40 @@ void applyElementColorOverrideAction(
     }
 }
 }  // namespace
+
+static bool _isSetupWithoutGui = false;
+
+static QWidget* setupMainWindow();
+
+class QtApplication: public QApplication
+{
+public:
+    QtApplication(int& argc, char** argv)
+        : QApplication(argc, argv)
+    {}
+    bool notify(QObject* receiver, QEvent* event) override
+    {
+        try {
+            return QApplication::notify(receiver, event);
+        }
+        catch (const Base::SystemExitException& e) {
+            exit(e.getExitCode());
+            return true;
+        }
+    }
+};
+
+#if defined(Q_OS_WIN)
+HHOOK hhook;
+
+LRESULT CALLBACK FilterProc(int nCode, WPARAM wParam, LPARAM lParam)
+{
+    if (qApp) {
+        qApp->sendPostedEvents(0, -1);  // special DeferredDelete
+    }
+    return CallNextHookEx(hhook, nCode, wParam, lParam);
+}
+#endif
 
 // Application methods structure
 PyMethodDef ApplicationPy::Methods[] = {
@@ -742,6 +788,223 @@ PyMethodDef ApplicationPy::Methods[] = {
      "Resumes the application's wait cursor and event filter."},
     {nullptr, nullptr, 0, nullptr} /* Sentinel */
 };
+
+PyObject* Gui::ApplicationPy::sShowMainWindow(PyObject* /*self*/, PyObject* args)
+{
+    if (_isSetupWithoutGui) {
+        PyErr_SetString(
+            PyExc_RuntimeError,
+            "Cannot call showMainWindow() after calling setupWithoutGUI()\n"
+        );
+        return nullptr;
+    }
+
+    PyObject* inThread = Py_False;
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &inThread)) {
+        return nullptr;
+    }
+
+    static bool thr = false;
+    if (!qApp) {
+        if (Base::asBoolean(inThread) && !thr) {
+            thr = true;
+            std::thread t([]() {
+                static int argc = 0;
+                static char** argv = {nullptr};
+                QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+                // This only works well if the QApplication is the very first created instance
+                // of a QObject. Otherwise the application lives in a different thread than the
+                // main thread which will cause hazardous behaviour.
+                QtApplication app(argc, argv);
+                if (setupMainWindow()) {
+                    app.exec();
+                }
+            });
+            t.detach();
+        }
+        else {
+            // In order to get Jupiter notebook integration working we must create a direct instance
+            // of QApplication. Not even a sub-class can be used because otherwise PySide2 wraps it
+            // with a QtCore.QCoreApplication which will raise an exception in ipykernel
+#if defined(Q_OS_WIN)
+            static int argc = 0;
+            static char** argv = {0};
+            (void)new QApplication(argc, argv);
+            // When QApplication is constructed
+            hhook = SetWindowsHookEx(WH_GETMESSAGE, FilterProc, 0, GetCurrentThreadId());
+#elif !defined(QT_NO_GLIB)
+            static int argc = 0;
+            static char** argv = {nullptr};
+            (void)new QApplication(argc, argv);
+#else
+            PyErr_SetString(PyExc_RuntimeError, "Must construct a QApplication before a QPaintDevice\n");
+            return nullptr;
+#endif
+        }
+    }
+    else if (!qobject_cast<QApplication*>(qApp)) {
+        PyErr_SetString(PyExc_RuntimeError, "Cannot create widget when no GUI is being used\n");
+        return nullptr;
+    }
+
+    if (!thr) {
+        if (!setupMainWindow()) {
+            PyErr_SetString(PyExc_RuntimeError, "Cannot create main window\n");
+            return nullptr;
+        }
+    }
+
+    // if successful then enable Console logger
+    Base::ILogger* console = Base::Console().get("Console");
+    if (console) {
+        console->bMsg = true;
+        console->bWrn = true;
+        console->bErr = true;
+    }
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject* Gui::ApplicationPy::sExec_loop(PyObject* /*self*/, PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    if (!qApp) {
+        PyErr_SetString(PyExc_RuntimeError, "Must construct a QApplication before a QPaintDevice\n");
+        return nullptr;
+    }
+    else if (!qobject_cast<QApplication*>(qApp)) {
+        PyErr_SetString(PyExc_RuntimeError, "Cannot create widget when no GUI is being used\n");
+        return nullptr;
+    }
+
+    qApp->exec();
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject* Gui::ApplicationPy::sSetupWithoutGUI(PyObject* /*self*/, PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    if (!Gui::Application::Instance) {
+        static Gui::Application* app = new Gui::Application(false);
+        _isSetupWithoutGui = true;
+        Q_UNUSED(app);
+    }
+    if (!SoDB::isInitialized()) {
+        // init the Inventor subsystem
+        SoDB::init();
+        SoNodeKit::init();
+        SoInteraction::init();
+    }
+    if (!Gui::SoFCDB::isInitialized()) {
+        Gui::SoFCDB::init();
+    }
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject* Gui::ApplicationPy::sEmbedToWindow(PyObject* /*self*/, PyObject* args)
+{
+    char* pointer;
+    if (!PyArg_ParseTuple(args, "s", &pointer)) {
+        return nullptr;
+    }
+
+    QWidget* widget = Gui::getMainWindow();
+    if (!widget) {
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "No main window");
+        return nullptr;
+    }
+
+    std::string pointer_str = pointer;
+    std::stringstream str(pointer_str);
+
+#if defined(Q_OS_WIN)
+    void* window = 0;
+    str >> window;
+    HWND winid = (HWND)window;
+
+    LONG oldLong = GetWindowLong(winid, GWL_STYLE);
+    SetWindowLong(winid, GWL_STYLE, oldLong | WS_CLIPCHILDREN | WS_CLIPSIBLINGS);
+    // SetWindowLong(widget->winId(), GWL_STYLE,
+    //     WS_CHILD | WS_CLIPCHILDREN | WS_CLIPSIBLINGS);
+    SetParent((HWND)widget->winId(), winid);
+
+    QEvent embeddingEvent(QEvent::EmbeddingControl);
+    QApplication::sendEvent(widget, &embeddingEvent);
+#elif defined(Q_WS_X11)
+    WId winid;
+    str >> winid;
+
+    QX11EmbedWidget* x11 = new QX11EmbedWidget();
+    widget->setParent(x11);
+    x11->embedInto(winid);
+    x11->show();
+#else
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented for this platform");
+    return nullptr;
+#endif
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+static QWidget* setupMainWindow()
+{
+    if (!Gui::Application::Instance) {
+        static Gui::Application* app = new Gui::Application(true);
+        Q_UNUSED(app);
+    }
+
+    if (!Gui::MainWindow::getInstance()) {
+        static bool hasMainWindow = false;
+        if (hasMainWindow) {
+            // if a main window existed and has been deleted it's not supported
+            // to re-create it
+            return nullptr;
+        }
+
+        Gui::StartupProcess process;
+        process.execute();
+
+        Base::PyGILStateLocker lock;
+        // It's sufficient to create the config key
+        App::Application::Config()["DontOverrideStdIn"] = "";
+        Gui::MainWindow* mw = new Gui::MainWindow();
+        hasMainWindow = true;
+
+        QIcon icon = qApp->windowIcon();
+        if (icon.isNull()) {
+            qApp->setWindowIcon(
+                Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str())
+            );
+        }
+        mw->setWindowIcon(qApp->windowIcon());
+
+        try {
+            Gui::StartupPostProcess postProcess(mw, *Gui::Application::Instance, qApp);
+            postProcess.setLoadFromPythonModule(true);
+            postProcess.execute();
+        }
+        catch (const Base::Exception&) {
+            return nullptr;
+        }
+    }
+    else {
+        Gui::getMainWindow()->show();
+    }
+
+    return Gui::getMainWindow();
+}
 
 PyObject* Gui::ApplicationPy::sEditDocument(PyObject* /*self*/, PyObject* args)
 {

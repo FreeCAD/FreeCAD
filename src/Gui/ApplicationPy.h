@@ -115,6 +115,10 @@ public:
 
     static PyObject* sSuspendWaitCursor        (PyObject *self, PyObject *args);
     static PyObject* sResumeWaitCursor         (PyObject *self, PyObject *args);
+    static PyObject* sShowMainWindow           (PyObject *self, PyObject *args);
+    static PyObject* sExec_loop                (PyObject *self, PyObject *args);
+    static PyObject* sSetupWithoutGUI          (PyObject *self, PyObject *args);
+    static PyObject* sEmbedToWindow            (PyObject *self, PyObject *args);
 
     static PyMethodDef    Methods[];
     // clang-format on
