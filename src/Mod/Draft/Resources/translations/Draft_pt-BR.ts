@@ -2069,8 +2069,8 @@ um arame bruto da forma original é adicionado</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="120"/>
-      <source>Apply Cuts</source>
-      <translation>Aplicar Cortes</translation>
+      <source>Apply cuts</source>
+      <translation type="unfinished">Apply cuts</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="140"/>
@@ -2764,8 +2764,8 @@ correspondendo aos eixos X, Y ou Z do sistema de coordenadas global</translation
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="100"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt; Nota:&lt;/span&gt; opções DXF aplicam-se a ficheiros DWG também.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Note: DXF options apply to DWG files as well.</source>
+      <translation type="unfinished">Note: DXF options apply to DWG files as well.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="26"/>
@@ -3902,12 +3902,12 @@ Tente mover o arquivo DWG para um caminho de diretório sem espaços e caractere
     <message>
       <location filename="../../draftguitools/gui_move.py" line="252"/>
       <source>%1 pick start point</source>
-      <translation type="unfinished">%1 pick start point</translation>
+      <translation>%1 escolha ponto inicial</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="256"/>
       <source>%1 pick end point</source>
-      <translation type="unfinished">%1 pick end point</translation>
+      <translation>%1 escolher ponto final</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="126"/>
@@ -3982,7 +3982,7 @@ Tente mover o arquivo DWG para um caminho de diretório sem espaços e caractere
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="93"/>
       <source>Hold %1 snap</source>
-      <translation>Segurar 1% para ajuste</translation>
+      <translation>Segurar %1 captura</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="98"/>
@@ -4002,27 +4002,27 @@ Tente mover o arquivo DWG para um caminho de diretório sem espaços e caractere
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="123"/>
       <source>%1 / %2 / %3 switch constraint</source>
-      <translation>%1 / %2 / %3 para alternar a restrição</translation>
+      <translation>%1 / %2 / %3 alternar restrição</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="133"/>
       <source>%1 toggle relative</source>
-      <translation> 1% Liga/Desliga relativo</translation>
+      <translation>%1 alternador relativo</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="142"/>
       <source>%1 toggle global</source>
-      <translation>1% alternador global</translation>
+      <translation>%1 alternador global</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="151"/>
       <source>%1 toggle continue</source>
-      <translation>1% alternador de continuidade </translation>
+      <translation>%1 alternador continuidade</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="162"/>
       <source>%1 / hold %2 select edge</source>
-      <translation>%1 / segurar %2 para selecionar aresta</translation>
+      <translation>%1 / segurar %2 selecionar aresta</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="164"/>
@@ -4033,18 +4033,18 @@ Tente mover o arquivo DWG para um caminho de diretório sem espaços e caractere
       <location filename="../../draftguitools/gui_polygons.py" line="312"/>
       <location filename="../../draftguitools/gui_arcs.py" line="490"/>
       <source>%1 pick center</source>
-      <translation>1% centro de seleção </translation>
+      <translation>%1 escolher ponto central</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="314"/>
       <location filename="../../draftguitools/gui_arcs.py" line="492"/>
       <source>%1 pick radius</source>
-      <translation>1% Escolher raio </translation>
+      <translation>%1 escolher raio</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="498"/>
       <source>%1 pick aperture</source>
-      <translation>1% escolher abertura </translation>
+      <translation>%1 escolher abertura</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="338"/>
@@ -4074,7 +4074,7 @@ Tente mover o arquivo DWG para um caminho de diretório sem espaços e caractere
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="495"/>
       <source>%1 pick start angle</source>
-      <translation>1%  escolher ângulo inicial </translation>
+      <translation>%1 escolher ângulo inicial</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="547"/>
@@ -4093,18 +4093,18 @@ Tente mover o arquivo DWG para um caminho de diretório sem espaços e caractere
       <location filename="../../draftguitools/gui_ellipses.py" line="221"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="219"/>
       <source>%1 pick first point</source>
-      <translation>1%  escolher primeiro ponto </translation>
+      <translation>%1 escolher primeiro ponto</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="662"/>
       <location filename="../../draftguitools/gui_lines.py" line="322"/>
       <source>%1 pick second point</source>
-      <translation>1% escolher segundo ponto </translation>
+      <translation>%1 escolher segundo ponto</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="666"/>
       <source>%1 pick third point</source>
-      <translation>1% escolher terceiro ponto</translation>
+      <translation>%1 escolher terceiro ponto</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="87"/>
@@ -4264,7 +4264,7 @@ Tente mover o arquivo DWG para um caminho de diretório sem espaços e caractere
       <location filename="../../draftguitools/gui_points.py" line="189"/>
       <location filename="../../draftguitools/gui_texts.py" line="180"/>
       <source>%1 pick point</source>
-      <translation>1% ponto de escolha</translation>
+      <translation>%1 escolher ponto</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="82"/>
