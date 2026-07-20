@@ -30,6 +30,12 @@
 #include <vector>
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
+#include <Mod/TechDraw/App/LineFormat.h>
+#include <Mod/TechDraw/App/Cosmetic.h>
+#include <Mod/TechDraw/App/CenterLine.h>
+
+#include <Gui/Selection/SelectionObject.h>
+
 #include <Base/Vector3D.h>
 
 namespace App {
@@ -61,3 +67,26 @@ std::pair<App::DocumentObject*, std::string> faceFromSelection();
 
 }   // end namespace CommandHelpers
 }   // end namespace TechDraw
+
+namespace TechDrawGui
+{
+//TechDraw::LineFormat activeAttributes; // container holding global line attributes
+
+//internal helper functions
+TechDraw::LineFormat& _getActiveLineAttributes();
+Base::Vector3d _circleCenter(Base::Vector3d p1, Base::Vector3d p2, Base::Vector3d p3);
+std::string _createThreadCircle(const std::string Name, TechDraw::DrawViewPart* objFeat, double factor);
+void _createThreadLines(const std::vector<std::string>& SubNames, TechDraw::DrawViewPart* objFeat,
+                        double factor, bool endLine);
+void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge);
+void _setLineAttributes(TechDraw::CenterLine* cosEdge);
+void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, Base::Color color);
+void _setLineAttributes(TechDraw::CenterLine* cosEdge, int style, float weight, Base::Color color);
+double _getAngle(Base::Vector3d center, Base::Vector3d point);
+std::vector<Base::Vector3d> _getVertexPoints(const std::vector<std::string>& SubNames,
+                                             TechDraw::DrawViewPart* objFeat);
+bool _checkSel(Gui::Command* cmd, std::vector<Gui::SelectionObject>& selection,
+               TechDraw::DrawViewPart*& objFeat, const std::string& message);
+std::string _createBalloon(Gui::Command* cmd, TechDraw::DrawViewPart* objFeat);
+
+} // namespace TechDrawGui
