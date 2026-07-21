@@ -1209,13 +1209,11 @@ void CmdPartImportCurveNet::activated(int iMsg)
     if (!fn.isEmpty()) {
         QFileInfo fi;
         fi.setFile(fn);
+        const std::string baseName = Base::Tools::escapeEncodeFilename(fi.baseName().toStdString());
+        const std::string fileName = Base::Tools::escapeEncodeFilename(fn.toStdString());
         openCommand(QT_TRANSLATE_NOOP("Command", "Import Curve Net"));
-        doCommand(
-            Doc,
-            "f = App.activeDocument().addObject(\"Part::CurveNet\",\"%s\")",
-            (const char*)fi.baseName().toLatin1()
-        );
-        doCommand(Doc, "f.FileName = \"%s\"", (const char*)fn.toLatin1());
+        doCommand(Doc, "f = App.activeDocument().addObject(\"Part::CurveNet\",\"%s\")", baseName.c_str());
+        doCommand(Doc, "f.FileName = \"%s\"", fileName.c_str());
         commitCommand();
         updateActive();
     }
@@ -2543,6 +2541,7 @@ void CmdPartCoordinateSystem::activated(int iMsg)
         "obj = App.activeDocument().addObject('Part::LocalCoordinateSystem','%s')",
         name.c_str()
     );
+    doCommand(Doc, "obj.Label = 'LCS'");
     doCommand(Doc, getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.Visibility = True");
     doCommand(Doc, "obj.ViewObject.doubleClicked()");
@@ -2577,6 +2576,7 @@ void CmdPartDatumPlane::activated(int iMsg)
 
     std::string name = getUniqueObjectName("DatumPlane");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumPlane','%s')", name.c_str());
+    doCommand(Doc, "obj.Label = 'DatumPlane'");
     doCommand(Doc, getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
@@ -2610,6 +2610,7 @@ void CmdPartDatumLine::activated(int iMsg)
 
     std::string name = getUniqueObjectName("DatumLine");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumLine','%s')", name.c_str());
+    doCommand(Doc, "obj.Label = 'DatumLine'");
     doCommand(Doc, getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
@@ -2643,6 +2644,7 @@ void CmdPartDatumPoint::activated(int iMsg)
 
     std::string name = getUniqueObjectName("DatumPoint");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumPoint','%s')", name.c_str());
+    doCommand(Doc, "obj.Label = 'DatumPoint'");
     doCommand(Doc, getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }

@@ -3,34 +3,34 @@ include (CheckCXXSourceRuns)
 # ================================================================================
 # == Macros, mostly for special targets ==========================================
 
-MACRO (fc_copy_sources target_name outpath)
-	if(BUILD_VERBOSE_GENERATION)
-		set(fc_details " (fc_copy_sources called from ${CMAKE_CURRENT_SOURCE_DIR})")
-	else()
-		set(fc_details "")
-	endif()
-	if(INSTALL_PREFER_SYMLINKS)
-		set(copy_command create_symlink)
-	else()
-		set(copy_command copy)
-	endif()
+function(fc_copy_sources target_name outpath)
+    if(BUILD_VERBOSE_GENERATION)
+        set(fc_details " (fc_copy_sources called from ${CMAKE_CURRENT_SOURCE_DIR})")
+    else()
+        set(fc_details "")
+    endif()
+    if(INSTALL_PREFER_SYMLINKS)
+        set(copy_command create_symlink)
+    else()
+        set(copy_command copy)
+    endif()
 
-	foreach(it ${ARGN})
-		get_filename_component(infile ${it} ABSOLUTE)
-		get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
-		# Ensure parent directory exists when copying or creating symlinks
-		get_filename_component(outfile_dir "${outfile}" PATH)
-		add_file_dependencies("${infile}" "${outfile}")
-		ADD_CUSTOM_COMMAND(
-			# Make sure destination directory exists before copy/symlink
-			COMMAND   "${CMAKE_COMMAND}" -E make_directory "${outfile_dir}"
-			COMMAND   "${CMAKE_COMMAND}" -E ${copy_command} "${infile}" "${outfile}"
-			OUTPUT   "${outfile}"
-			COMMENT "Copying ${infile} to ${outfile}${fc_details}"
-			MAIN_DEPENDENCY "${infile}"
-		)
-	endforeach(it)
-ENDMACRO(fc_copy_sources)
+    foreach(it ${ARGN})
+        get_filename_component(infile ${it} ABSOLUTE)
+        get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
+        # Ensure parent directory exists when copying or creating symlinks
+        get_filename_component(outfile_dir "${outfile}" PATH)
+        add_custom_command(
+            # Make sure destination directory exists before copy/symlink
+            COMMAND "${CMAKE_COMMAND}" -E make_directory "${outfile_dir}"
+            COMMAND "${CMAKE_COMMAND}" -E ${copy_command} "${infile}" "${outfile}"
+            OUTPUT  "${outfile}"
+            COMMENT "Copying ${infile} to ${outfile}${fc_details}"
+            MAIN_DEPENDENCY "${infile}"
+        )
+        target_sources(${target_name} PRIVATE "${outfile}")
+    endforeach(it)
+endfunction(fc_copy_sources)
 
 MACRO (fc_copy_file_if_different inputfile outputfile)
     if (EXISTS ${inputfile})
@@ -54,8 +54,7 @@ MACRO (fc_copy_file_if_different inputfile outputfile)
     endif()
 ENDMACRO(fc_copy_file_if_different)
 
-MACRO (fc_target_copy_resource target_name inpath outpath)
-# Macro to copy a list of files into a nested directory structure
+# Function to copy a list of files into a nested directory structure
 # Arguments -
 #   target_name - name of the target the files will be added to
 #   inpath      - name of the source directory
@@ -66,26 +65,26 @@ MACRO (fc_target_copy_resource target_name inpath outpath)
 #   part will be kept so that the destination file name will be
 #   ${outpath}/foo/bar.txt
 #
-	if(BUILD_VERBOSE_GENERATION)
-		set(fc_details " (fc_target_copy_resource called from ${CMAKE_CURRENT_SOURCE_DIR})")
-	else()
-		set(fc_details "")
-	endif()
-	foreach(it ${ARGN})
-		get_filename_component(infile "${inpath}/${it}" ABSOLUTE)
-		get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
-		add_file_dependencies("${infile}" "${outfile}")
-		ADD_CUSTOM_COMMAND(
-			COMMAND   "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
-			OUTPUT   "${outfile}"
-			COMMENT "Copying ${infile} to ${outfile}${fc_details}"
-			MAIN_DEPENDENCY "${infile}"
-		)
-	endforeach(it)
-ENDMACRO(fc_target_copy_resource)
+function(fc_target_copy_resource target_name inpath outpath)
+    if(BUILD_VERBOSE_GENERATION)
+        set(fc_details " (fc_target_copy_resource called from ${CMAKE_CURRENT_SOURCE_DIR})")
+    else()
+        set(fc_details "")
+    endif()
+    foreach(it ${ARGN})
+        get_filename_component(infile "${inpath}/${it}" ABSOLUTE)
+        get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
+        add_custom_command(
+            COMMAND "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
+            OUTPUT  "${outfile}"
+            COMMENT "Copying ${infile} to ${outfile}${fc_details}"
+            MAIN_DEPENDENCY "${infile}"
+        )
+        target_sources(${target_name} PRIVATE "${outfile}")
+    endforeach(it)
+endfunction(fc_target_copy_resource)
 
-MACRO (fc_target_copy_resource_flat target_name inpath outpath)
-# Macro to copy a list of files into a flat directory structure
+# Function to copy a list of files into a flat directory structure
 # Arguments -
 #   target_name - name of the target the files will be added to
 #   inpath      - name of the source directory
@@ -96,24 +95,25 @@ MACRO (fc_target_copy_resource_flat target_name inpath outpath)
 #   part will be removed so that the destination file name will be
 #   ${outpath}/bar.txt
 #
-	if(BUILD_VERBOSE_GENERATION)
-		set(fc_details " (fc_target_copy_resource_flat called from ${CMAKE_CURRENT_SOURCE_DIR})")
-	else()
-		set(fc_details "")
-	endif()
-	foreach(it ${ARGN})
-		get_filename_component(infile "${inpath}/${it}" ABSOLUTE)
-		get_filename_component(outfile "${it}" NAME)
-		get_filename_component(outfile "${outpath}/${outfile}" ABSOLUTE)
-		add_file_dependencies("${infile}" "${outfile}")
-		ADD_CUSTOM_COMMAND(
-			COMMAND   "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
-			OUTPUT    "${outfile}"
-			COMMENT "Copying ${infile} to ${outfile}${fc_details}"
-			MAIN_DEPENDENCY "${infile}"
-		)
-	endforeach(it)
-ENDMACRO(fc_target_copy_resource_flat)
+function(fc_target_copy_resource_flat target_name inpath outpath)
+    if(BUILD_VERBOSE_GENERATION)
+        set(fc_details " (fc_target_copy_resource_flat called from ${CMAKE_CURRENT_SOURCE_DIR})")
+    else()
+        set(fc_details "")
+    endif()
+    foreach(it ${ARGN})
+        get_filename_component(infile "${inpath}/${it}" ABSOLUTE)
+        get_filename_component(outfile "${it}" NAME)
+        get_filename_component(outfile "${outpath}/${outfile}" ABSOLUTE)
+        add_custom_command(
+            COMMAND "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
+            OUTPUT  "${outfile}"
+            COMMENT "Copying ${infile} to ${outfile}${fc_details}"
+            MAIN_DEPENDENCY "${infile}"
+        )
+        target_sources(${target_name} PRIVATE "${outfile}")
+    endforeach(it)
+endfunction(fc_target_copy_resource_flat)
 
 # It would be a bit cleaner to generate these files in ${CMAKE_CURRENT_BINARY_DIR}
 
@@ -351,6 +351,21 @@ macro(find_pip_package PACKAGE)
 			message(STATUS "  --> with includes in ${${PACKAGE}_INCLUDE_DIRS}")
 		endif()
 	endif()
+endmacro()
+
+macro(find_python_runtime_dep PIP_NAME IMPORT_NAME VERSION_VAR MISSING_MESSAGE)
+    find_pip_package(${PIP_NAME})
+    if(${PIP_NAME}_FOUND)
+        execute_process(
+            COMMAND ${Python3_EXECUTABLE} -c "import ${IMPORT_NAME};print(${IMPORT_NAME}.__version__, end='')"
+            RESULT_VARIABLE FAILURE OUTPUT_VARIABLE ${VERSION_VAR})
+        if(FAILURE)
+            message(WARNING "Could not import ${IMPORT_NAME} Python package.")
+            set(${PIP_NAME}_FOUND OFF)
+        endif()
+    else()
+        message(WARNING "Could not find ${PIP_NAME} Python package runtime dependency. ${MISSING_MESSAGE}")
+    endif()
 endmacro()
 
 function(target_compile_warn_error ProjectName)

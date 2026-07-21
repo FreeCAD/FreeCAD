@@ -126,28 +126,34 @@ macro(SetupBundledCoinPivy)
         "$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src/3rdParty/coin/include>"
         "$<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/src/3rdParty/coin/include>"
     )
+    if (UNIX AND NOT APPLE)
+        # Coin directly loads sibling libraries such as libEGL.  The RUNPATH of
+        # a library that loads Coin is not used to resolve Coin's dependencies.
+        # Keep the bundled library relocatable in both Pixi and AppImage installs.
+        set_property(TARGET Coin PROPERTY INSTALL_RPATH "$ORIGIN")
+    endif ()
     install(TARGETS Coin
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} NAMELINK_SKIP
     )
 
     set(PIVY_USE_SOQT OFF CACHE BOOL "Build bundled Pivy SoQt bindings" FORCE)
+    set(PIVY_PACKAGE_INSTALL_DIR "Mod/pivy"
+        CACHE STRING "Install directory for bundled Pivy inside FreeCAD packages" FORCE)
+    if (APPLE)
+        set(PIVY_MODULE_INSTALL_RPATH "@loader_path/../../${CMAKE_INSTALL_LIBDIR}"
+            CACHE STRING "RUNPATH for bundled Pivy extension modules in FreeCAD packages" FORCE)
+    elseif (UNIX)
+        set(PIVY_MODULE_INSTALL_RPATH "$ORIGIN/../../${CMAKE_INSTALL_LIBDIR}"
+            CACHE STRING "RUNPATH for bundled Pivy extension modules in FreeCAD packages" FORCE)
+    endif ()
     set(PIVY_PACKAGE_OUTPUT_DIR "${PROJECT_BINARY_DIR}/Mod/pivy"
         CACHE PATH "Build-tree output directory for bundled Pivy" FORCE)
-    add_subdirectory("${CMAKE_SOURCE_DIR}/src/3rdParty/pivy" "${CMAKE_BINARY_DIR}/src/3rdParty/pivy" EXCLUDE_FROM_ALL)
+    add_subdirectory("${CMAKE_SOURCE_DIR}/src/3rdParty/pivy" "${CMAKE_BINARY_DIR}/src/3rdParty/pivy")
+    set_property(TARGET coin PROPERTY INSTALL_REMOVE_ENVIRONMENT_RPATH TRUE)
     if (NOT DEFINED PIVY_VERSION OR PIVY_VERSION STREQUAL "")
         message(FATAL_ERROR "Bundled Pivy did not define PIVY_VERSION")
     endif ()
-    add_custom_target(BundledPivy ALL
-        DEPENDS pivy
-    )
-
-    # Install pivy with FreeCAD rather than with the global Python.
-    # We add pivy with EXCLUDE_FROM_ALL to suppress its own install rule.
-    install(
-        DIRECTORY "${PIVY_PACKAGE_OUTPUT_DIR}/"
-        DESTINATION Mod/pivy
-    )
 endmacro(SetupBundledCoinPivy)
 
 macro(SetupCoinPivy)

@@ -89,31 +89,6 @@ def _parse_args(argv: list[str]) -> argparse.Namespace:
         help="Artifact output directory (default: %(default)s)",
     )
     common.add_argument("--nodes", default="", help="Comma-separated node type list (optional)")
-    common.add_argument("--width", type=int, default=512, help="Image width (default: %(default)s)")
-    common.add_argument(
-        "--height",
-        type=int,
-        default=512,
-        help="Image height (default: %(default)s)",
-    )
-    common.add_argument(
-        "--tolerance",
-        type=int,
-        default=8,
-        help="Per-channel tolerance (default: %(default)s)",
-    )
-    common.add_argument(
-        "--max-mismatch-pct",
-        type=float,
-        default=0.20,
-        help="Allowed mismatch percent (default: %(default)s)",
-    )
-    common.add_argument(
-        "--ignore-alpha",
-        default="1",
-        choices=["0", "1"],
-        help="Ignore alpha channel (default: %(default)s)",
-    )
 
     sub.add_parser("update", parents=[common], help="Write/update baselines")
     sub.add_parser("compare", parents=[common], help="Compare against baselines")
@@ -157,11 +132,6 @@ def main(argv: list[str]) -> int:
             env["QT_QPA_PLATFORM"] = "offscreen"
     env["FC_VISUAL_BASELINE_DIR"] = str(baseline_dir.resolve())
     env["FC_VISUAL_OUT_DIR"] = str(Path(args.out_dir).resolve())
-    env["FC_VISUAL_WIDTH"] = str(int(args.width))
-    env["FC_VISUAL_HEIGHT"] = str(int(args.height))
-    env["FC_VISUAL_TOLERANCE"] = str(int(args.tolerance))
-    env["FC_VISUAL_MAX_MISMATCH_PCT"] = str(float(args.max_mismatch_pct))
-    env["FC_VISUAL_IGNORE_ALPHA"] = args.ignore_alpha
     if args.nodes.strip():
         env["FC_VISUAL_NODES"] = args.nodes
 

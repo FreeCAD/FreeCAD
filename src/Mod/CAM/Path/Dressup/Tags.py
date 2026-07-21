@@ -736,7 +736,7 @@ class PathData:
         tags = []
         maxLength = max(w.Length for w in self.baseWires)
         for wire in self.baseWires:
-            optimalCount = math.ceil(round(wire.Length / maxLength * maxCount, 6))
+            optimalCount = Path.Geom.ceil(wire.Length / maxLength * maxCount)
             numberTags = max(minCount, optimalCount)
 
             # copy edge list into python array for (much) faster random access
@@ -861,7 +861,7 @@ class PathData:
         tagCount = 0
         currentLength += edge.Length
         if edge.Length >= minLength:
-            steps = max(0, math.ceil((currentLength - lastTagLength) / tagDistance) - 1)
+            steps = max(0, Path.Geom.ceil((currentLength - lastTagLength) / tagDistance) - 1)
             tagCount += steps
             lastTagLength += steps * tagDistance
             if tagCount > 0:

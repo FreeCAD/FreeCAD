@@ -9,14 +9,13 @@ close to the GUI selection implementation.
 from __future__ import annotations
 
 from collections.abc import Sequence
-from enum import Enum, IntEnum
-from typing import Literal, Protocol, overload
+from enum import IntEnum
+from typing import Protocol, overload
 
 from FreeCAD import DocumentObject
 from FreeCADGui import SelectionObject
 
 _Point3 = tuple[float, float, float]
-_RGBColor = tuple[float, float, float]
 
 class ResolveMode(IntEnum):
     """How selection queries should resolve linked or mapped elements."""
@@ -31,13 +30,6 @@ class SelectionStyle(IntEnum):
 
     NormalSelection = 0
     GreedySelection = 1
-
-class SelectionActionMode(str, Enum):
-    """Low-level Coin selection action accepted by :func:`applyCoinSelection`."""
-
-    Append = "append"
-    Remove = "remove"
-    All = "all"
 
 class _SelectionGate(Protocol):
     """Protocol for custom selection-gate objects."""
@@ -158,43 +150,6 @@ def getPreselection() -> SelectionObject:
 
 def clearPreselection() -> None:
     """Clear the current preselection target."""
-    ...
-
-def applyCoinHighlight(
-    path: object,
-    detail: object | None = None,
-    color: _RGBColor | None = None,
-) -> None:
-    """Apply a low-level Coin highlight to one scene-graph path.
-
-    ``detail`` may target one specific Coin sub-element detail. When omitted,
-    the whole path is highlighted. ``color`` overrides the current View
-    preference highlight color for this action only.
-    """
-    ...
-
-def clearCoinHighlight(path: object) -> None:
-    """Clear a low-level Coin highlight from one scene-graph path."""
-    ...
-
-def applyCoinSelection(
-    path: object,
-    detail: object | None = None,
-    mode: (
-        SelectionActionMode | Literal["append", "remove", "all"] | None
-    ) = SelectionActionMode.Append,
-    color: _RGBColor | None = None,
-) -> None:
-    """Apply a low-level Coin selection action to one scene-graph path.
-
-    ``detail`` may target one specific Coin sub-element detail. When omitted,
-    the whole path is targeted. ``color`` overrides the current View preference
-    selection color for this action only.
-    """
-    ...
-
-def clearCoinSelection(path: object) -> None:
-    """Clear low-level Coin selection state from one scene-graph path."""
     ...
 
 def countObjectsOfType(

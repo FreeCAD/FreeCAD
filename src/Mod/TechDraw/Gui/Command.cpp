@@ -461,10 +461,7 @@ void CmdTechDrawView::activated(int iMsg)
                     auto filespec = DU::cleanFilespecBackslash(
                         Base::Tools::escapeEncodeFilename(filename.toStdString()));
                     openCommand(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
-                    doCommand(Doc, "import codecs");
-                    doCommand(Doc,
-                              "f = codecs.open(\"%s\", 'r', encoding=\"utf-8\")",
-                              filespec.c_str());
+                    doCommand(Doc, "f = open(\"%s\", 'r', encoding=\"utf-8\")", filespec.c_str());
                     doCommand(Doc, "svg = f.read()");
                     doCommand(Doc, "f.close()");
                     doCommand(Doc,
@@ -1571,8 +1568,7 @@ void CmdTechDrawSymbol::activated(int iMsg)
         auto filespec = DU::cleanFilespecBackslash(
             Base::Tools::escapeEncodeFilename(filename.toStdString()));
         openCommand(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
-        doCommand(Doc, "import codecs");
-        doCommand(Doc, "f = codecs.open(\"%s\", 'r', encoding=\"utf-8\")",  filespec.c_str());
+        doCommand(Doc, "f = open(\"%s\", 'r', encoding=\"utf-8\")", filespec.c_str());
         doCommand(Doc, "svg = f.read()");
         doCommand(Doc, "f.close()");
         doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewSymbol', '%s')",

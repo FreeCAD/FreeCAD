@@ -25,14 +25,13 @@
 
 #include <algorithm>
 #include <limits>
+#include <vector>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoLineWidthElement.h>
-#include <Inventor/elements/SoPointSizeElement.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoLightModel.h>
 
 #include "SoFCShapeObject.h"
 
@@ -74,100 +73,225 @@ SoFCControlPoints::SoFCControlPoints()
     SO_NODE_ADD_FIELD(numKnotsV, (0));
     SO_NODE_ADD_FIELD(lineColor, (c));
 
+    renderRoot = new SoSeparator;
+    renderRoot->ref();
+
+    auto* pickStyle = new SoPickStyle;
+    pickStyle->style = SoPickStyle::UNPICKABLE;
+    renderRoot->addChild(pickStyle);
+
+    renderCoordinates = new SoCoordinate3;
+    renderRoot->addChild(renderCoordinates);
+
+    auto* lightModel = new SoLightModel;
+    lightModel->model = SoLightModel::BASE_COLOR;
+    renderRoot->addChild(lightModel);
+
+    auto* meshRoot = new SoSeparator;
+    meshBaseColor = new SoBaseColor;
+    meshRoot->addChild(meshBaseColor);
+    auto* meshDrawStyle = new SoDrawStyle;
+    meshDrawStyle->lineWidth = 1.0f;
+    meshRoot->addChild(meshDrawStyle);
     meshLineSet = new SoIndexedLineSet;
-    meshLineSet->ref();
+    meshRoot->addChild(meshLineSet);
+    renderRoot->addChild(meshRoot);
+
+    auto* polesRoot = new SoSeparator;
+    polesBaseColor = new SoBaseColor;
+    polesRoot->addChild(polesBaseColor);
+    auto* polesDrawStyle = new SoDrawStyle;
+    polesDrawStyle->pointSize = 5.0f;
+    polesRoot->addChild(polesDrawStyle);
     polesPointSet = new SoPointSet;
-    polesPointSet->ref();
+    polesRoot->addChild(polesPointSet);
+    renderRoot->addChild(polesRoot);
+
+    auto* knotsRoot = new SoSeparator;
+    auto* knotsBaseColor = new SoBaseColor;
+    knotsBaseColor->rgb.setValue(1.0f, 1.0f, 0.0f);
+    knotsRoot->addChild(knotsBaseColor);
+    auto* knotsDrawStyle = new SoDrawStyle;
+    knotsDrawStyle->pointSize = 6.0f;
+    knotsRoot->addChild(knotsDrawStyle);
     knotsPointSet = new SoPointSet;
-    knotsPointSet->ref();
+    knotsRoot->addChild(knotsPointSet);
+    renderRoot->addChild(knotsRoot);
 }
 
-/**
- * Renders the control points.
- */
-void SoFCControlPoints::GLRender(SoGLRenderAction* action)
+void SoFCControlPoints::clearRenderGeometry()
 {
-    if (shouldGLRender(action)) {
-        SoState* state = action->getState();
-        const SoCoordinateElement* coords = SoCoordinateElement::getInstance(state);
-        if (!coords) {
-            return;
+    if (renderCoordinates) {
+        if (renderCoordinates->point.getNum() != 0) {
+            renderCoordinates->point.setNum(0);
         }
-
-        SoMaterialBundle mb(action);
-        SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-        mb.sendFirst();  // make sure we have the correct material
-
-        const int32_t len = coords->getNum();
-
-        const uint32_t nCtU = numPolesU.getValue();
-        const uint32_t nCtV = numPolesV.getValue();
-        const uint32_t poles = nCtU * nCtV;
-        if (poles > static_cast<uint32_t>(len)) {
-            return;  // wrong setup, too few points
+    }
+    if (meshLineSet) {
+        if (meshLineSet->coordIndex.getNum() != 0) {
+            meshLineSet->coordIndex.setNum(0);
         }
-
-        const uint32_t knots = numKnotsU.getValue() * numKnotsV.getValue();
-        const uint32_t total = poles + knots;
-        if (total > static_cast<uint32_t>(len)) {
-            return;  // wrong setup, too few points
+    }
+    if (polesPointSet) {
+        if (polesPointSet->startIndex.getValue() != 0) {
+            polesPointSet->startIndex.setValue(0);
         }
-
-        updateMeshCoordIndex(nCtU, nCtV);
-
-        const SbColor poleColor = lineColor.getValue();
-        const SbColor knotColor(1.0f, 1.0f, 0.0f);
-
-        // Draw control mesh.
-        state->push();
-        SoLineWidthElement::set(state, 1.0f);
-        SoLazyElement::setEmissive(state, &poleColor);
-        uint32_t packed = poleColor.getPackedValue(0.0f);
-        SoLazyElement::setPacked(state, meshLineSet, 1, &packed, false);
-        meshLineSet->coordIndex
-            .setValues(0, static_cast<int32_t>(meshCoordIndex.size()), meshCoordIndex.data());
-        meshLineSet->GLRender(action);
-        state->pop();
-
-        // Draw poles.
-        state->push();
-        SoPointSizeElement::set(state, 5.0f);
-        SoLazyElement::setEmissive(state, &poleColor);
-        packed = poleColor.getPackedValue(0.0f);
-        SoLazyElement::setPacked(state, polesPointSet, 1, &packed, false);
-        polesPointSet->startIndex.setValue(0);
-        polesPointSet->numPoints.setValue(static_cast<int32_t>(poles));
-        polesPointSet->GLRender(action);
-        state->pop();
-
-        // Draw knots, if available.
-        if (knots > 0) {
-            state->push();
-            SoPointSizeElement::set(state, 6.0f);
-            SoLazyElement::setEmissive(state, &knotColor);
-            packed = knotColor.getPackedValue(0.0f);
-            SoLazyElement::setPacked(state, knotsPointSet, 1, &packed, false);
-            knotsPointSet->startIndex.setValue(static_cast<int32_t>(poles));
-            knotsPointSet->numPoints.setValue(static_cast<int32_t>(knots));
-            knotsPointSet->GLRender(action);
-            state->pop();
+        if (polesPointSet->numPoints.getValue() != 0) {
+            polesPointSet->numPoints.setValue(0);
+        }
+    }
+    if (knotsPointSet) {
+        if (knotsPointSet->startIndex.getValue() != 0) {
+            knotsPointSet->startIndex.setValue(0);
+        }
+        if (knotsPointSet->numPoints.getValue() != 0) {
+            knotsPointSet->numPoints.setValue(0);
         }
     }
 }
+
+bool SoFCControlPoints::syncRenderGeometry(SoState* state)
+{
+    if (!state || !renderCoordinates || !meshBaseColor || !meshLineSet || !polesBaseColor
+        || !polesPointSet || !knotsPointSet) {
+        clearRenderGeometry();
+        return false;
+    }
+
+    const SoCoordinateElement* coords = SoCoordinateElement::getInstance(state);
+    if (!coords) {
+        clearRenderGeometry();
+        return false;
+    }
+
+    const int32_t len = coords->getNum();
+    const uint32_t nCtU = numPolesU.getValue();
+    const uint32_t nCtV = numPolesV.getValue();
+    const uint32_t poles = nCtU * nCtV;
+    if (poles > static_cast<uint32_t>(len)) {
+        clearRenderGeometry();
+        return false;  // wrong setup, too few points
+    }
+
+    const uint32_t knots = numKnotsU.getValue() * numKnotsV.getValue();
+    const uint32_t total = poles + knots;
+    if (total > static_cast<uint32_t>(len)) {
+        clearRenderGeometry();
+        return false;  // wrong setup, too few points
+    }
+
+    // The control-point node is driven by a sibling coordinate node in the
+    // parent scene. Copy only changed active coordinates into the private
+    // retained graph so every renderer sees the same geometry.
+    updateMeshCoordIndex(nCtU, nCtV);
+    bool coordinatesChanged = renderCoordinates->point.getNum() != len;
+    if (!coordinatesChanged) {
+        const SbVec3f* retainedPoints = renderCoordinates->point.getValues(0);
+        for (int32_t i = 0; i < len; ++i) {
+            if (retainedPoints[i] != coords->get3(i)) {
+                coordinatesChanged = true;
+                break;
+            }
+        }
+    }
+    if (coordinatesChanged) {
+        std::vector<SbVec3f> points;
+        points.reserve(static_cast<size_t>(len));
+        for (int32_t i = 0; i < len; ++i) {
+            points.push_back(coords->get3(i));
+        }
+        renderCoordinates->point.setValues(0, len, points.data());
+    }
+
+    const SbColor poleColor = lineColor.getValue();
+    if (meshBaseColor->rgb.getNum() != 1 || meshBaseColor->rgb.getValues(0)[0] != poleColor) {
+        meshBaseColor->rgb.setValue(poleColor);
+    }
+    if (polesBaseColor->rgb.getNum() != 1 || polesBaseColor->rgb.getValues(0)[0] != poleColor) {
+        polesBaseColor->rgb.setValue(poleColor);
+    }
+
+    const int meshIndexCount = static_cast<int>(meshCoordIndex.size());
+    bool meshIndicesChanged = meshLineSet->coordIndex.getNum() != meshIndexCount;
+    if (!meshIndicesChanged && meshIndexCount > 0) {
+        const int32_t* retainedIndices = meshLineSet->coordIndex.getValues(0);
+        meshIndicesChanged = !std::equal(meshCoordIndex.begin(), meshCoordIndex.end(), retainedIndices);
+    }
+    if (meshIndicesChanged && meshCoordIndex.empty()) {
+        meshLineSet->coordIndex.setNum(0);
+    }
+    else if (meshIndicesChanged) {
+        meshLineSet->coordIndex.setValues(0, meshIndexCount, meshCoordIndex.data());
+    }
+    if (polesPointSet->startIndex.getValue() != 0) {
+        polesPointSet->startIndex.setValue(0);
+    }
+    if (polesPointSet->numPoints.getValue() != static_cast<int32_t>(poles)) {
+        polesPointSet->numPoints.setValue(static_cast<int32_t>(poles));
+    }
+    if (knotsPointSet->startIndex.getValue() != static_cast<int32_t>(poles)) {
+        knotsPointSet->startIndex.setValue(static_cast<int32_t>(poles));
+    }
+    if (knotsPointSet->numPoints.getValue() != static_cast<int32_t>(knots)) {
+        knotsPointSet->numPoints.setValue(static_cast<int32_t>(knots));
+    }
+
+    return true;
+}
+
+void SoFCControlPoints::GLRender(SoGLRenderAction* action)
+{
+    if (!action || !renderRoot || !shouldGLRender(action)) {
+        return;
+    }
+
+    if (!syncRenderGeometry(action->getState())) {
+        return;
+    }
+
+    renderRoot->GLRender(action);
+}
+
+void SoFCControlPoints::computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center)
+{
+    if (!action) {
+        return;
+    }
+
+    const SoCoordinateElement* coords = SoCoordinateElement::getInstance(action->getState());
+    if (!coords) {
+        return;
+    }
+
+    const int32_t len = coords->getNum();
+    if (len <= 0) {
+        box.setBounds(SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 0.0f, 0.0f));
+        center.setValue(0.0f, 0.0f, 0.0f);
+        return;
+    }
+
+    constexpr float floatMax = std::numeric_limits<float>::max();
+    SbVec3f minimum(floatMax, floatMax, floatMax);
+    SbVec3f maximum(-floatMax, -floatMax, -floatMax);
+    for (int32_t i = 0; i < len; ++i) {
+        const SbVec3f& point = coords->get3(i);
+        for (int axis = 0; axis < 3; ++axis) {
+            minimum[axis] = std::min(minimum[axis], point[axis]);
+            maximum[axis] = std::max(maximum[axis], point[axis]);
+        }
+    }
+
+    box.setBounds(minimum, maximum);
+    center = (minimum + maximum) * 0.5f;
+}
+
+void SoFCControlPoints::generatePrimitives(SoAction*)
+{}
 
 SoFCControlPoints::~SoFCControlPoints()
 {
-    if (meshLineSet) {
-        meshLineSet->unref();
-        meshLineSet = nullptr;
-    }
-    if (polesPointSet) {
-        polesPointSet->unref();
-        polesPointSet = nullptr;
-    }
-    if (knotsPointSet) {
-        knotsPointSet->unref();
-        knotsPointSet = nullptr;
+    if (renderRoot) {
+        renderRoot->unref();
+        renderRoot = nullptr;
     }
 }
 
@@ -199,45 +323,5 @@ void SoFCControlPoints::updateMeshCoordIndex(uint32_t nCtU, uint32_t nCtV)
             meshCoordIndex.push_back(static_cast<int32_t>(u * nCtV + v));
         }
         meshCoordIndex.push_back(-1);
-    }
-}
-
-void SoFCControlPoints::generatePrimitives(SoAction* /*action*/)
-{}
-
-/**
- * Sets the bounding box of the mesh to \a box and its center to \a center.
- */
-void SoFCControlPoints::computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center)
-{
-    SoState* state = action->getState();
-    const SoCoordinateElement* coords = SoCoordinateElement::getInstance(state);
-    if (!coords) {
-        return;
-    }
-    const SbVec3f* points = coords->getArrayPtr3();
-    if (!points) {
-        return;
-    }
-    constexpr float floatMax = std::numeric_limits<float>::max();
-    float maxX = -floatMax, minX = floatMax, maxY = -floatMax, minY = floatMax, maxZ = -floatMax,
-          minZ = floatMax;
-    int32_t len = coords->getNum();
-    if (len > 0) {
-        for (int32_t i = 0; i < len; i++) {
-            maxX = std::max<float>(maxX, points[i][0]);
-            minX = std::min<float>(minX, points[i][0]);
-            maxY = std::max<float>(maxY, points[i][1]);
-            minY = std::min<float>(minY, points[i][1]);
-            maxZ = std::max<float>(maxZ, points[i][2]);
-            minZ = std::min<float>(minZ, points[i][2]);
-        }
-
-        box.setBounds(minX, minY, minZ, maxX, maxY, maxZ);
-        center.setValue(0.5f * (minX + maxX), 0.5f * (minY + maxY), 0.5f * (minZ + maxZ));
-    }
-    else {
-        box.setBounds(SbVec3f(0, 0, 0), SbVec3f(0, 0, 0));
-        center.setValue(0.0f, 0.0f, 0.0f);
     }
 }

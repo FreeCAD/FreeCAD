@@ -444,7 +444,10 @@ set(Gui_RES_SRCS
     ${FreeCAD_TR_QRC}
 )
 
-qt_add_resources(Gui_QRC_SRCS ${Gui_RES_SRCS})
+qt_add_resources(Gui_QRC_SRCS
+    ${Gui_RES_SRCS}
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 SOURCE_GROUP("Uic" FILES ${Gui_UIC_HDRS})
 
@@ -851,8 +854,6 @@ SET(Task_View_SRCS
 SOURCE_GROUP("Task View" FILES ${Task_View_SRCS})
 
 SET(qsintActionPanel_SRCS
-    QSint/actionpanel/actionbox.cpp
-    QSint/actionpanel/actionbox.h
     QSint/actionpanel/actionlabel.cpp
     QSint/actionpanel/actionlabel.h
     QSint/actionpanel/actiongroup.cpp
@@ -868,7 +869,6 @@ SET(qsintActionPanel_SRCS
 )
 SOURCE_GROUP("Widget\\QSintActionPanel" FILES ${qsintActionPanel_SRCS})
 set(qsint_MOC_HDRS
-    QSint/actionpanel/actionbox.h
     QSint/actionpanel/actionlabel.h
     QSint/actionpanel/actiongroup.h
     QSint/actionpanel/actionpanel.h
@@ -1064,6 +1064,7 @@ SET(Inventor_CPP_SRCS
     Inventor/SoAxisCrossKit.cpp
     Inventor/SoFCPlacementIndicatorKit.cpp
     Inventor/SoDrawingGrid.cpp
+    Inventor/SoFCScreenSpaceGroup.cpp
     Inventor/SoFCBackgroundGradient.cpp
     Inventor/SoFCBoundingBox.cpp
     Inventor/SoNaviCube.cpp
@@ -1077,10 +1078,9 @@ SET(Inventor_CPP_SRCS
     Inventor/Draggers/SoRotationDragger.cpp
     Inventor/Draggers/SoRotationDraggerGeometry.cpp
     Inventor/Draggers/Gizmo.cpp
+    ColorScaleOverlay.cpp
     SoFCColorBar.cpp
     SoFCColorBarNotifier.cpp
-    SoFCColorGradient.cpp
-    SoFCColorLegend.cpp
     SoFCDB.cpp
     SoFCInteractiveElement.cpp
     SoFCOffscreenRenderer.cpp
@@ -1092,7 +1092,8 @@ SET(Inventor_CPP_SRCS
     SoFCVectorizeSVGAction.cpp
     SoFCVectorizeU3DAction.cpp
     SoDevicePixelRatioElement.cpp
-    SoTextLabel.cpp
+    SoLabelNodes.cpp
+    TranslateManip.cpp
     SoDatumLabel.cpp
     SoTouchEvents.cpp
     ArcEngine.cpp
@@ -1105,6 +1106,7 @@ SET(Inventor_SRCS
     Inventor/SoAxisCrossKit.h
     Inventor/SoFCPlacementIndicatorKit.h
     Inventor/SoDrawingGrid.h
+    Inventor/SoFCScreenSpaceGroup.h
     Inventor/SoFCBackgroundGradient.h
     Inventor/SoFCBoundingBox.h
     Inventor/SoNaviCube.h
@@ -1119,10 +1121,9 @@ SET(Inventor_SRCS
     Inventor/Draggers/SoRotationDraggerGeometry.h
     Inventor/Draggers/Gizmo.h
     Inventor/Draggers/GizmoStyleParameters.h
+    ColorScaleOverlay.h
     SoFCColorBar.h
     SoFCColorBarNotifier.h
-    SoFCColorGradient.h
-    SoFCColorLegend.h
     SoFCDB.h
     SoFCInteractiveElement.h
     SoFCOffscreenRenderer.h
@@ -1134,7 +1135,8 @@ SET(Inventor_SRCS
     SoFCVectorizeSVGAction.h
     SoFCVectorizeU3DAction.h
     SoDevicePixelRatioElement.h
-    SoTextLabel.h
+    SoLabelNodes.h
+    TranslateManip.h
     SoDatumLabel.h
     SoTouchEvents.h
     ArcEngine.h
