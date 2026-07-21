@@ -282,20 +282,20 @@ class TestAreaOperations(unittest.TestCase):
     # ========================================================================
 
     def test_open_offset_l_curve(self):
-        """Test OpenOffset on an L-shaped open wire."""
+        """Test open offset on an L-shaped open wire."""
         a = area.Area()
         a.append(make_curve([(0, 0), (10, 0), (10, 10)]))
 
-        negative = a.OpenOffset(1.0)
+        neg = a.OpenOffset(1.0)
 
         expected_pos = make_area(make_curve([(0, -1), (10, -1), (11, 0, 1, 10, 0), (11, 10)]))
         expected_neg = make_area(make_curve([(0, 1), (9, 1), (9, 10)]))
 
         self.assert_areas_equal(a, expected_pos)
-        self.assert_areas_equal(negative, expected_neg)
+        self.assert_areas_equal(neg, expected_neg)
 
     def test_open_offset_negative(self):
-        """Test that OpenOffset(-1) swaps positive and negative results vs OpenOffset(1)."""
+        """Test that open offset with a negative offset produces swapped positive and negative results."""
 
         def make_l_curve():
             a = area.Area()
@@ -313,13 +313,13 @@ class TestAreaOperations(unittest.TestCase):
         self.assert_areas_equal(neg2, a1)
 
     def test_open_offset_direction_flip(self):
-        """Test OpenOffset on a path that causes direction flipping"""
+        """Test open offset on a path that causes direction flipping"""
         # Construct subject, a P-shape curve that doesn't quite close to itself
         subj = make_curve([(0, 0), (0, 40), (40, 40), (40, 20), (9, 20)])
-        a3 = make_area(subj)
+        a = make_area(subj)
 
         # Offset by enough to close the gap
-        neg3 = a3.OpenOffset(5)
+        neg = a.OpenOffset(5)
 
         expected_pos = make_area(
             [
@@ -348,8 +348,42 @@ class TestAreaOperations(unittest.TestCase):
         # This creates a vertical offset of the intersection with the x=5 line of area.get_accuracy() / (3/5)
         expected_accuracy = area.get_accuracy() / (3 / 5.0)
 
-        self.assert_areas_equal(a3, expected_pos, tol=expected_accuracy)
-        self.assert_areas_equal(neg3, expected_neg, tol=expected_accuracy)
+        self.assert_areas_equal(a, expected_pos, tol=expected_accuracy)
+        self.assert_areas_equal(neg, expected_neg, tol=expected_accuracy)
+
+    def test_open_offset_zigzag(self):
+        """Test open offset on a path with point expansion in both directions"""
+        subj = make_curve([(-3, -4), (3, 4), (-3, 12), (3, 20)])
+        a = make_area(subj)
+        neg = a.OpenOffset(5)
+
+        expected_pos = make_area(
+            [
+                make_curve(
+                    [
+                        (1, -7),
+                        (7, 1),
+                        (7, 7, 1, 3, 4),
+                        (3.25, 12),
+                        (7, 17),
+                    ]
+                ),
+            ]
+        )
+        expected_neg = make_area(
+            make_curve(
+                [
+                    (-7, -1),
+                    (-3.25, 4),
+                    (-7, 9),
+                    (-7, 15, -1, -3, 12),
+                    (-1, 23),
+                ]
+            )
+        )
+
+        self.assert_areas_equal(a, expected_pos)
+        self.assert_areas_equal(neg, expected_neg)
 
     # ========================================================================
     # Geometry Manipulation Tests
