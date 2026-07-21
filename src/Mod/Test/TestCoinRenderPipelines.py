@@ -163,6 +163,44 @@ def _path_contains_type(path, type_id):
 
 
 class CoinRenderPipelineTestCase(unittest.TestCase):
+    def test_draw_list_viewer_context_recreation(self):
+        FreeCAD, FreeCADGui, coin = _require_gui()
+        width, height = _snapshot_dimensions()
+
+        def render_once(harness):
+            if _RENDERER_DRAW_LIST not in harness.render_pipelines():
+                raise unittest.SkipTest(
+                    "DrawList context recreation requires the DrawList pipeline"
+                )
+
+            root, _light = _build_lighting_equivalence_scene(coin)
+            root.ref()
+            try:
+                _frame_scene_camera(coin, root, width, height)
+                harness.set_render_pipeline(_RENDERER_DRAW_LIST)
+                harness.viewer.setSceneGraph(root)
+                harness.view.redraw()
+                harness.flush(cycles=8)
+                image = harness.capture_framebuffer()
+                self.assertFalse(image.isNull(), "DrawList rendered an empty framebuffer")
+                self.assertEqual((image.width(), image.height()), (width, height))
+            finally:
+                root.unref()
+
+        first = _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height)
+        try:
+            render_once(first)
+        finally:
+            # Closing the document tears down the QOpenGLWidget and its shared Coin
+            # context. Event processing in close() lets the deferred Qt destruction run.
+            first.close()
+
+        second = _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height)
+        try:
+            render_once(second)
+        finally:
+            second.close()
+
     def test_3d_annotation_self_depth_matches_between_pipelines(self):
         FreeCAD, FreeCADGui, coin = _require_gui()
         width, height = _snapshot_dimensions()
