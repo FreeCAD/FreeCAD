@@ -1,3 +1,10 @@
+if(FREECAD_LIBPACK_VERSION VERSION_LESS "3.5.3")
+    message(FATAL_ERROR
+        "Bundled Coin and Pivy require FreeCAD LibPack 3.5.3 or newer "
+        "(found ${FREECAD_LIBPACK_VERSION})."
+    )
+endif()
+
 set(ENV{PATH} "${FREECAD_LIBPACK_DIR};$ENV{PATH}")
 list(PREPEND CMAKE_PREFIX_PATH "${FREECAD_LIBPACK_DIR}")
 
@@ -30,14 +37,9 @@ set(SWIG_EXECUTABLE ${FREECAD_LIBPACK_DIR}/bin/swig.exe CACHE FILEPATH "Swig" FO
 find_package(Qt6 REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/lib/cmake NO_DEFAULT_PATH)
 message(STATUS "Found LibPack 3 Qt ${Qt6_VERSION}")
 
-if(FREECAD_LIBPACK_VERSION VERSION_GREATER_EQUAL "3.1.0")
-    find_package(pybind11 REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/share/cmake/pybind11 NO_DEFAULT_PATH)
-    message(STATUS "Found LibPack 3 pybind11 ${pybind11_VERSION}")
-    set(FREECAD_USE_PYBIND11 ON)
-else()
-    # We have completely removed support for boost-python and require pybind11, which requires LibPack 3.1 or later
-    message(FATAL_ERROR "FreeCAD now requires LibPack 3.1.0 or newer (you are using ${FREECAD_LIBPACK_VERSION}): please upgrade your LibPack")
-endif()
+find_package(pybind11 REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/share/cmake/pybind11 NO_DEFAULT_PATH)
+message(STATUS "Found LibPack 3 pybind11 ${pybind11_VERSION}")
+set(FREECAD_USE_PYBIND11 ON)
 
 find_package(XercesC REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/cmake NO_DEFAULT_PATH)
 message(STATUS "Found LibPack 3 XercesC ${XercesC_VERSION}")
@@ -50,23 +52,6 @@ endif()
 
 find_package(yaml-cpp REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/lib/cmake NO_DEFAULT_PATH)
 message(STATUS "Found LibPack 3 yaml-cpp ${yaml-cpp_VERSION}")
-
-# LibPacks older than 3.5.3 do not ship the build-time dependencies required to
-# compile the bundled Coin and Pivy (notably the Expat CMake config), but they do
-# provide prebuilt Coin and Pivy. Fall back to those automatically on old LibPacks.
-if(NOT FREECAD_USE_EXTERNAL_COIN_PIVY AND FREECAD_LIBPACK_VERSION VERSION_LESS "3.5.3")
-    message(STATUS "LibPack ${FREECAD_LIBPACK_VERSION} predates 3.5.3 which cannot build the "
-                   "bundled Coin and Pivy; using the LibPack's prebuilt Coin and Pivy instead.")
-    set(FREECAD_USE_EXTERNAL_COIN_PIVY ON)
-endif()
-
-if(FREECAD_USE_EXTERNAL_COIN_PIVY)
-    find_package(Coin REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/lib/cmake NO_DEFAULT_PATH)
-
-    message(STATUS "Found LibPack 3 Coin ${Coin_VERSION}")
-    # For compatibility with the rest of the cMake scripts:
-    set (COIN3D_FOUND TRUE)
-endif()
 
 set (NETGENDATA ${FREECAD_LIBPACK_DIR}/include/netgen)
 
