@@ -1159,7 +1159,7 @@ SNAPSHOT_FIXTURES = {
     ),
     "So3DAnnotation": _fixture(
         _build_3d_annotation_scene,
-        supported_renderers=LEGACY_ONLY,
+        supported_renderers=ALL_RENDERERS,
     ),
     "SoFCPlacementIndicatorKit": _fixture(
         _build_placement_indicator_scene,
