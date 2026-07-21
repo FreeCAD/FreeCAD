@@ -66,6 +66,7 @@
 #include <Inventor/nodes/SoPolygonOffset.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoSwitch.h>
 
 #include <boost/algorithm/string/predicate.hpp>
 

@@ -27,6 +27,7 @@
 #include <limits>
 #include <vector>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoIRRenderAction.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/misc/SoState.h>
@@ -199,6 +200,7 @@ bool SoFCControlPoints::syncRenderGeometry(SoState* state)
         for (int32_t i = 0; i < len; ++i) {
             points.push_back(coords->get3(i));
         }
+        renderCoordinates->point.setNum(len);
         renderCoordinates->point.setValues(0, len, points.data());
     }
 
@@ -220,6 +222,7 @@ bool SoFCControlPoints::syncRenderGeometry(SoState* state)
         meshLineSet->coordIndex.setNum(0);
     }
     else if (meshIndicesChanged) {
+        meshLineSet->coordIndex.setNum(meshIndexCount);
         meshLineSet->coordIndex.setValues(0, meshIndexCount, meshCoordIndex.data());
     }
     if (polesPointSet->startIndex.getValue() != 0) {
@@ -249,6 +252,15 @@ void SoFCControlPoints::GLRender(SoGLRenderAction* action)
     }
 
     renderRoot->GLRender(action);
+}
+
+void SoFCControlPoints::render(SoIRRenderAction* action)
+{
+    if (!action || !renderRoot || !syncRenderGeometry(action->getState())) {
+        return;
+    }
+
+    renderRoot->doAction(action);
 }
 
 void SoFCControlPoints::computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center)
@@ -286,6 +298,18 @@ void SoFCControlPoints::computeBBox(SoAction* action, SbBox3f& box, SbVec3f& cen
 
 void SoFCControlPoints::generatePrimitives(SoAction*)
 {}
+
+void SoFCControlPoints::doAction(SoAction* action)
+{
+    if (action && action->getTypeId().isDerivedFrom(SoIRRenderAction::getClassTypeId())) {
+        if (renderRoot && syncRenderGeometry(action->getState())) {
+            renderRoot->doAction(action);
+        }
+        return;
+    }
+
+    inherited::doAction(action);
+}
 
 SoFCControlPoints::~SoFCControlPoints()
 {
