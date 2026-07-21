@@ -45,12 +45,11 @@ using namespace Gui;
 
 SO_ELEMENT_SOURCE(SoDelayedAnnotationsElement);
 
-bool SoDelayedAnnotationsElement::isProcessingDelayedPaths = false;
-
 void SoDelayedAnnotationsElement::init(SoState* state)
 {
     SoElement::init(state);
     paths.clear();
+    processingDelayedPaths = false;
 }
 
 void SoDelayedAnnotationsElement::initClass()
@@ -77,6 +76,16 @@ bool SoDelayedAnnotationsElement::hasDelayedPaths(SoState* state)
     return !getElement(state)->paths.empty();
 }
 
+bool SoDelayedAnnotationsElement::isProcessingDelayedPaths(SoState* state)
+{
+    return getElement(state)->processingDelayedPaths;
+}
+
+void SoDelayedAnnotationsElement::setProcessingDelayedPaths(SoState* state, bool processing)
+{
+    getElement(state)->processingDelayedPaths = processing;
+}
+
 SoPathList SoDelayedAnnotationsElement::getDelayedPaths(SoState* state)
 {
     auto* elt = getElement(state);
@@ -94,7 +103,7 @@ SoPathList SoDelayedAnnotationsElement::getDelayedPaths(SoState* state)
 
     SoPathList sortedPaths;
     for (const auto& priorityPath : elt->paths) {
-        sortedPaths.append(priorityPath.path);
+        sortedPaths.append(priorityPath.path.get());
     }
 
     // Clear storage
@@ -117,16 +126,17 @@ void SoDelayedAnnotationsElement::processDelayedPathsWithPriority(SoState* state
         [](const PriorityPath& a, const PriorityPath& b) { return a.priority < b.priority; }
     );
 
-    isProcessingDelayedPaths = true;
+    const bool previous = elt->processingDelayedPaths;
+    elt->processingDelayedPaths = true;
 
     for (const auto& priorityPath : elt->paths) {
         SoPathList singlePath;
-        singlePath.append(priorityPath.path);
+        singlePath.append(priorityPath.path.get());
 
         action->apply(singlePath, TRUE);
     }
 
-    isProcessingDelayedPaths = false;
+    elt->processingDelayedPaths = previous;
 
     elt->paths.clear();
 }
@@ -145,18 +155,19 @@ void SoDelayedAnnotationsElement::processDelayedPathsWithPriority(SoState* state
         [](const PriorityPath& a, const PriorityPath& b) { return a.priority < b.priority; }
     );
 
-    isProcessingDelayedPaths = true;
+    const bool previous = elt->processingDelayedPaths;
+    elt->processingDelayedPaths = true;
+    action->beginAfterMainStage();
     for (const auto& priorityPath : elt->paths) {
-        action->switchToPathTraversal(priorityPath.path);
+        action->switchToPathTraversal(priorityPath.path.get());
     }
-    isProcessingDelayedPaths = false;
+    action->endAfterMainStage();
+    elt->processingDelayedPaths = previous;
 
     elt->paths.clear();
 }
 
 SO_NODE_SOURCE(So3DAnnotation);
-
-bool So3DAnnotation::render = false;
 
 So3DAnnotation::So3DAnnotation()
 {
@@ -187,7 +198,7 @@ void So3DAnnotation::GLRender(SoGLRenderAction* action)
 
 void So3DAnnotation::GLRenderBelowPath(SoGLRenderAction* action)
 {
-    if (render) {
+    if (SoDelayedAnnotationsElement::isProcessingDelayedPaths(action->getState())) {
         inherited::GLRenderBelowPath(action);
     }
     else {
@@ -198,7 +209,7 @@ void So3DAnnotation::GLRenderBelowPath(SoGLRenderAction* action)
 
 void So3DAnnotation::GLRenderInPath(SoGLRenderAction* action)
 {
-    if (render) {
+    if (SoDelayedAnnotationsElement::isProcessingDelayedPaths(action->getState())) {
         inherited::GLRenderInPath(action);
     }
     else {
@@ -218,11 +229,11 @@ void So3DAnnotation::IRRender(SoAction* action, SoNode* node)
     auto* renderAction = static_cast<SoIRRenderAction*>(action);
     SoState* state = renderAction->getState();
 
-    if (render) {
+    if (SoDelayedAnnotationsElement::isProcessingDelayedPaths(state)) {
         state->push();
-        // IR retains the annotation traversal until the render manager's
-        // after-main callback, then represents it as an overlay command.
-        SoDepthBufferElement::set(state, FALSE, TRUE, SoDepthBufferElement::LEQUAL, SbVec2f(0.0F, 1.0F));
+        // The after-main DrawList stage clears the main depth buffer once,
+        // then retains normal depth testing for annotation self-occlusion.
+        SoDepthBufferElement::set(state, TRUE, TRUE, SoDepthBufferElement::LEQUAL, SbVec2f(0.0F, 1.0F));
         annotation->inherited::doAction(action);
         state->pop();
         return;

@@ -492,7 +492,7 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx)
     buildOverlayCoordIndex(overlayCoordIndex, ci, ciCount, partCounts, partCount, parts, selectAll);
 
     const bool onTop = Gui::Selection().isClarifySelectionActive()
-        && Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths;
+        && Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths(action->getState());
 
     renderOverlayFaces(action, overlayCoordIndex, ctx->highlightColor, onTop);
 }
@@ -775,7 +775,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction* action)
 
     // Clarify selection: render highlight as delayed annotation on top.
     if (Gui::Selection().isClarifySelectionActive() && hasContextHighlight) {
-        if (!Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths) {
+        if (!Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths(state)) {
             if (viewProvider) {
                 viewProvider->setFaceHighlightActive(true);
             }

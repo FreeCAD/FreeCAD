@@ -3323,20 +3323,11 @@ void View3DInventorViewer::renderDelayedAnnotations(SoGLRenderAction* glra)
         return;
     }
 
-    class ScopedAnnotationRender
-    {
-    public:
-        ScopedAnnotationRender()
-        {
-            So3DAnnotation::render = true;
-        }
-
-        ~ScopedAnnotationRender()
-        {
-            So3DAnnotation::render = false;
-        }
-    } annotationRender;
-
+    const bool previous = Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths(state);
+    Gui::SoDelayedAnnotationsElement::setProcessingDelayedPaths(state, true);
+    auto restoreProcessing = qScopeGuard([state, previous]() {
+        Gui::SoDelayedAnnotationsElement::setProcessingDelayedPaths(state, previous);
+    });
     glClear(GL_DEPTH_BUFFER_BIT);
 
     if (Gui::Selection().isClarifySelectionActive()) {
@@ -3354,20 +3345,6 @@ void View3DInventorViewer::renderDelayedAnnotations(SoIRRenderAction* action)
     if (!Gui::SoDelayedAnnotationsElement::hasDelayedPaths(state)) {
         return;
     }
-
-    class ScopedAnnotationRender
-    {
-    public:
-        ScopedAnnotationRender()
-        {
-            So3DAnnotation::render = true;
-        }
-
-        ~ScopedAnnotationRender()
-        {
-            So3DAnnotation::render = false;
-        }
-    } annotationRender;
 
     // switchToPathTraversal() appends the retained annotation commands without
     // resetting the draw list, so they remain in Coin's pre-foreground

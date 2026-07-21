@@ -24,7 +24,11 @@ from CoinSnapshotHarness import (
     _snapshot_dimensions,
     _snapshot_out_dir,
 )
-from CoinSnapshotScenes import _build_lighting_equivalence_scene, _frame_scene_camera
+from CoinSnapshotScenes import (
+    _build_lighting_equivalence_scene,
+    _frame_scene_camera,
+    _instantiate,
+)
 
 
 def _save_image(image, path: Path) -> Path:
@@ -85,6 +89,99 @@ def _masked_image_difference(
 
 
 class CoinRenderPipelineTestCase(unittest.TestCase):
+    def test_3d_annotation_self_depth_matches_between_pipelines(self):
+        FreeCAD, FreeCADGui, coin = _require_gui()
+        width, height = _snapshot_dimensions()
+        out_dir = _snapshot_out_dir()
+        harness = _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height)
+        try:
+            if not {_RENDERER_LEGACY, _RENDERER_DRAW_LIST}.issubset(
+                set(harness.render_pipelines())
+            ):
+                raise unittest.SkipTest("3D annotation depth regression requires both pipelines")
+
+            root = coin.SoSeparator()
+            camera = coin.SoOrthographicCamera()
+            camera.position.setValue(0.0, 0.0, 5.0)
+            camera.nearDistance.setValue(0.1)
+            camera.farDistance.setValue(20.0)
+            camera.height.setValue(2.0)
+            root.addChild(camera)
+
+            # Main geometry must be covered by the delayed stage after its
+            # depth barrier, while the two annotation cubes must still
+            # self-occlude in front-to-back order.
+            main_material = coin.SoMaterial()
+            main_material.diffuseColor.setValue(0.15, 0.75, 0.20)
+            main_transform = coin.SoTransform()
+            main_transform.scaleFactor.setValue(1.3, 1.3, 0.12)
+            main_group = coin.SoSeparator()
+            main_group.addChild(main_material)
+            main_group.addChild(main_transform)
+            main_group.addChild(coin.SoCube())
+            root.addChild(main_group)
+
+            annotation = _instantiate(coin, "So3DAnnotation")
+            front_material = coin.SoMaterial()
+            front_material.diffuseColor.setValue(0.90, 0.10, 0.08)
+            front_transform = coin.SoTransform()
+            front_transform.translation.setValue(0.0, 0.0, 0.28)
+            front_transform.scaleFactor.setValue(0.82, 0.82, 0.22)
+            front_group = coin.SoSeparator()
+            front_group.addChild(front_material)
+            front_group.addChild(front_transform)
+            front_group.addChild(coin.SoCube())
+
+            back_material = coin.SoMaterial()
+            back_material.diffuseColor.setValue(0.08, 0.18, 0.92)
+            back_transform = coin.SoTransform()
+            back_transform.translation.setValue(0.0, 0.0, -0.28)
+            back_transform.scaleFactor.setValue(0.62, 0.62, 0.22)
+            back_group = coin.SoSeparator()
+            back_group.addChild(back_material)
+            back_group.addChild(back_transform)
+            back_group.addChild(coin.SoCube())
+
+            annotation.addChild(front_group)
+            annotation.addChild(back_group)
+            root.addChild(annotation)
+
+            harness.viewer.setBackgroundColor(1.0, 1.0, 1.0)
+            harness.viewer.setGradientBackground("NONE")
+            harness.viewer.setOverrideMode("No Shading")
+
+            rendered = {}
+            for renderer_name in (_RENDERER_LEGACY, _RENDERER_DRAW_LIST):
+                path = _renderer_output_path(
+                    out_dir,
+                    renderer_name,
+                    "actual",
+                    "So3DAnnotationSelfDepth.png",
+                )
+                _render_png(harness, coin, root, path, renderer_name, frame_camera=False)
+                rendered[renderer_name] = path
+
+            QImage = _QtGuiModule.QImage
+            for renderer_name, path in rendered.items():
+                image = QImage(str(path)).convertToFormat(QImage.Format_ARGB32)
+                red = 0
+                blue = 0
+                for y in range(height // 2 - 8, height // 2 + 8):
+                    for x in range(width // 2 - 8, width // 2 + 8):
+                        color = image.pixelColor(x, y)
+                        if color.red() > color.blue() * 1.8 and color.red() > 140:
+                            red += 1
+                        if color.blue() > color.red() * 1.8 and color.blue() > 140:
+                            blue += 1
+                self.assertGreater(
+                    red, 100, f"front annotation cube is not visible: {renderer_name}"
+                )
+                self.assertLess(
+                    blue, red // 4, f"back cube bypassed annotation depth: {renderer_name}"
+                )
+        finally:
+            harness.close()
+
     def test_render_type_transitions_resynchronize_native_redraw(self):
         FreeCAD, FreeCADGui, coin = _require_gui()
         width, height = _snapshot_dimensions()
