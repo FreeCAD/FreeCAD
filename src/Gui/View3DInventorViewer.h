@@ -70,8 +70,6 @@ class SoAction;
 class SoTranslation;
 class SoTransform;
 class SoText2;
-class SoAnnotation;
-
 class SoSeparator;
 class SoShapeHints;
 class SoMaterial;
@@ -83,7 +81,9 @@ class SoVectorizeAction;
 class QImage;
 class SoGroup;  // NOLINT
 class SoGLRenderAction;
+class SoIRRenderAction;
 class SoPickStyle;
+class SoRenderLayerGroup;
 class NaviCube;
 class SoClipPlane;
 class SoTimerSensor;
@@ -610,6 +610,8 @@ protected:
     static void onViewFitTimer(void*, SoSensor*);
 
 private:
+    struct OverlayAxisCrossState;
+
     static void setViewportCB(void* userdata, SoAction* action);
     static void clearBufferCB(void* userdata, SoAction* action);
     static void interactionStartCB(void* data, Quarter::SoQTQuarterAdaptor* viewer);
@@ -634,19 +636,19 @@ private:
     void syncLightingMode();
     void invalidateMainRenderActionState();
     void syncNaviCubeVisibility();
-    void drawAxisCross();
-    void drawSingleBackground(const QColor&);
+    bool updateAxisCrossGeometry();
     void recoverFromRenderMemoryException();
     void renderDelayedAnnotations(SoGLRenderAction* glra);
+    void renderDelayedAnnotations(SoIRRenderAction* action);
     bool renderToFramebuffer(QOpenGLFramebufferObject*, bool includeViewerLighting = true);
     void setCursorRepresentation(int mode);
-    void aboutToDestroyGLContext();
+    void destroyNaviCube();
     void createStandardCursors();
     bool applyCameraState(const SoCamera& camera);
 
 private:
     NaviCube* naviCube;
-    SoSeparator* naviCubeAnnotation;
+    SoSeparator* naviCubeDecorationRoot;
     std::set<ViewProvider*> _ViewProviderSet;
     std::map<SoSeparator*, ViewProvider*> _ViewProviderMap;
     std::list<GLGraphicsItem*> graphicsItems;
@@ -657,6 +659,8 @@ private:
     SoSeparator* decorationroot;
     SoSeparator* combinedForegroundRoot;
     SoSwitch* decorationSwitch;
+    SoRenderLayerGroup* axisCrossOverlay {nullptr};
+    std::unique_ptr<OverlayAxisCrossState> axisCrossState;
 
     SoDirectionalLight* backlight;
     SoDirectionalLight* fillLight;
@@ -701,6 +705,8 @@ private:
     bool fpsEnabled;
     QLabel* fpsCounter = nullptr;
     unsigned long previousAxisLetterColor = 0;
+    SbColor axisCrossLetterColor {0.0F, 0.0F, 0.0F};
+    bool axisCrossLetterColorValid {false};
     bool vboEnabled;
     bool naviCubeEnabled;
     // Screen-only viewer decorations such as the navicube are rendered only
