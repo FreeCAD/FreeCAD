@@ -66,17 +66,41 @@ def makeRegularPolygon(
         geoList.append(Part.LineSegment(pointList[i], pointList[i + 1]))
     geoList.append(Part.LineSegment(pointList[sides - 1], pointList[0]))
     geoList.append(Part.Circle(centerPoint, App.Vector(0, 0, 1), diffVec.Length))
+    for i in range(0, sides):
+        geoList.append(Part.LineSegment(centerPoint, pointList[i]))
     geoIndices = sketch.addGeometry(geoList, construction)
 
-    sketch.setConstruction(geoIndices[-1], True)
+    sketch.setConstruction(geoIndices[-(sides + 1)], True)
+    for i in range(sides):
+        sketch.setConstruction(geoIndices[-sides + i], True)
 
     conList = []
     for i in range(0, sides - 1):
         conList.append(Sketcher.Constraint("Coincident", geoIndices[i], 2, geoIndices[i + 1], 1))
     conList.append(Sketcher.Constraint("Coincident", geoIndices[sides - 1], 2, geoIndices[0], 1))
-    for i in range(0, sides - 1):
-        conList.append(Sketcher.Constraint("Equal", geoIndices[0], geoIndices[i + 1]))
     for i in range(0, sides):
-        conList.append(Sketcher.Constraint("PointOnObject", geoIndices[i], 2, geoIndices[-1]))
+        conList.append(
+            Sketcher.Constraint("PointOnObject", geoIndices[i], 2, geoIndices[-(sides + 1)])
+        )
+    angle = 2 * math.pi / sides
+    for i in range(0, sides):
+        conList.append(
+            Sketcher.Constraint("Coincident", geoIndices[-sides + i], 1, geoIndices[-(sides + 1)], 3)
+        )
+        conList.append(
+            Sketcher.Constraint("Coincident", geoIndices[-sides + i], 2, geoIndices[i], 1)
+        )
+    for i in range(0, sides - 1):
+        conList.append(
+            Sketcher.Constraint(
+                "Angle",
+                geoIndices[-sides + i],
+                2,
+                geoIndices[-sides + i + 1],
+                2,
+                angle,
+            )
+        )
     sketch.addConstraint(conList)
     return
+
