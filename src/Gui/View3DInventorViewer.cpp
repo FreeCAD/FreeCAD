@@ -54,6 +54,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/annex/HardCopy/SoVectorizePSAction.h>
 #include <Inventor/annex/Profiler/SoProfiler.h>
 #include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
@@ -171,6 +172,37 @@ FC_LOG_LEVEL_INIT("3DViewer", true, true)
 // #define FC_LOGGING_CB
 
 using namespace Gui;
+
+namespace
+{
+bool renderIntentIncludesDecorations(View3DInventorViewer::RenderIntent intent)
+{
+    return intent == View3DInventorViewer::RenderIntent::LiveInteractive;
+}
+
+SoRenderManager::RenderPipeline toCoinRenderPipeline(RenderPipeline mode)
+{
+    switch (mode) {
+        case RenderPipeline::DrawList:
+            return SoRenderManager::RenderPipeline::DRAW_LIST;
+        case RenderPipeline::LegacyGL:
+        default:
+            return SoRenderManager::RenderPipeline::LEGACY_GL;
+    }
+}
+
+RenderPipeline fromCoinRenderPipeline(SoRenderManager::RenderPipeline mode)
+{
+    switch (mode) {
+        case SoRenderManager::RenderPipeline::DRAW_LIST:
+            return RenderPipeline::DrawList;
+        case SoRenderManager::RenderPipeline::LEGACY_GL:
+        default:
+            return RenderPipeline::LegacyGL;
+    }
+}
+
+}  // namespace
 
 class View3DInventorViewer::ScopedRenderIntent
 {
@@ -319,14 +351,12 @@ SoSeparator* create2DOverlayRoot(int viewportWidth, int viewportHeight)
 
     return root;
 }
-
 void applyOverlay(SoNode* root, int viewportWidth, int viewportHeight, const View3DInventorViewer* viewer)
 {
     SoGLRenderAction action(SbViewportRegion(viewportWidth, viewportHeight));
     setOverlayCacheContext(action, viewer);
     action.setTransparencyType(SoGLRenderAction::BLEND);
     action.apply(root);
-    resetMainLazyGLState(viewer);
 }
 
 struct OverlayImageState
@@ -448,39 +478,6 @@ void renderOverlayImage(
     overlay.vertices->vertex.set1Value(3, SbVec3f(baseX, baseY + drawHeight, 0.0f));
 
     applyOverlay(overlay.root, viewportWidth, viewportHeight, viewer);
-}
-
-void renderOverlaySolidColor(
-    const QColor& col,
-    int viewportWidth,
-    int viewportHeight,
-    const View3DInventorViewer* viewer
-)
-{
-    SoSeparator* root = create2DOverlayRoot(viewportWidth, viewportHeight);
-
-    auto* material = new SoMaterial;
-    material->diffuseColor.setValue(
-        static_cast<float>(col.redF()),
-        static_cast<float>(col.greenF()),
-        static_cast<float>(col.blueF())
-    );
-    material->transparency.setValue(1.0f - static_cast<float>(col.alphaF()));
-    root->addChild(material);
-
-    auto* vertices = new SoVertexProperty;
-    vertices->vertex.set1Value(0, SbVec3f(-0.5f * viewportWidth, -0.5f * viewportHeight, 0.0f));
-    vertices->vertex.set1Value(1, SbVec3f(0.5f * viewportWidth, -0.5f * viewportHeight, 0.0f));
-    vertices->vertex.set1Value(2, SbVec3f(0.5f * viewportWidth, 0.5f * viewportHeight, 0.0f));
-    vertices->vertex.set1Value(3, SbVec3f(-0.5f * viewportWidth, 0.5f * viewportHeight, 0.0f));
-
-    auto* face = new SoFaceSet;
-    face->vertexProperty.setValue(vertices);
-    face->numVertices.setValue(4);
-    root->addChild(face);
-
-    applyOverlay(root, viewportWidth, viewportHeight, viewer);
-    root->unref();
 }
 
 SoSeparator* createAxisArrowGeometry()
@@ -1104,7 +1101,18 @@ void View3DInventorViewer::init()
     this->decorationroot->ref();
     this->decorationroot->setName("decorationroot");
 
-    naviCubeAnnotation = new SoAnnotation();
+    this->combinedForegroundRoot = new SoSeparator;
+    this->combinedForegroundRoot->ref();
+    this->combinedForegroundRoot->setName("combinedForegroundRoot");
+
+    this->decorationSwitch = new SoSwitch;
+    this->decorationSwitch->setName("decorationSwitch");
+    this->decorationSwitch->whichChild = SO_SWITCH_NONE;
+    this->decorationSwitch->addChild(this->decorationroot);
+    this->combinedForegroundRoot->addChild(this->foregroundroot);
+    this->combinedForegroundRoot->addChild(this->decorationSwitch);
+
+    naviCubeAnnotation = new SoSeparator();
     naviCubeAnnotation->ref();
     naviCubeAnnotation->setName("naviCubeAnnotation");
 
@@ -1151,6 +1159,8 @@ void View3DInventorViewer::init()
     this->foregroundroot->addChild(foregroundLightModel);
     this->foregroundroot->addChild(foregroundBaseColor);
 
+    this->initializeRenderManager();
+    this->updateDecorationSwitch(currentRenderIntent());
     // NOTE: For every mouse click event the SoFCUnifiedSelection searches for the picked
     // point which causes a certain slow-down because for all objects the primitives
     // must be created. Using an SoSeparator avoids this drawback.
@@ -1346,8 +1356,16 @@ View3DInventorViewer::~View3DInventorViewer()
         naviCubeAnnotation = nullptr;
     }
 
+    if (auto* rm = this->getSoRenderManager()) {
+        rm->removeAfterMainSceneCallback(&View3DInventorViewer::afterMainSceneCB, this);
+        rm->setRenderLayerRoot(SoRenderManager::RENDER_LAYER_BACKGROUND, nullptr);
+        rm->setRenderLayerRoot(SoRenderManager::RENDER_LAYER_FOREGROUND, nullptr);
+    }
     this->backgroundroot->unref();
     this->backgroundroot = nullptr;
+    this->combinedForegroundRoot->unref();
+    this->combinedForegroundRoot = nullptr;
+    this->decorationSwitch = nullptr;
     this->foregroundroot->unref();
     this->foregroundroot = nullptr;
     this->decorationroot->unref();
@@ -2076,27 +2094,58 @@ bool View3DInventorViewer::isEnabledVBO() const
     return vboEnabled;
 }
 
+void View3DInventorViewer::initializeRenderManager()
+{
+    auto* rm = getSoRenderManager();
+    if (!rm) {
+        return;
+    }
+
+    rm->setRenderLayerRoot(SoRenderManager::RENDER_LAYER_BACKGROUND, backgroundroot);
+    rm->setRenderLayerRoot(SoRenderManager::RENDER_LAYER_FOREGROUND, combinedForegroundRoot);
+    rm->addAfterMainSceneCallback(&View3DInventorViewer::afterMainSceneCB, this);
+    rm->setLightingMode(shading ? SoRenderManager::LIT : SoRenderManager::UNLIT);
+    rm->setRenderPipeline(
+        toCoinRenderPipeline(parseRenderPipelineOrLegacy(ViewParams::instance()->getRenderPipeline()))
+    );
+}
+
+void View3DInventorViewer::updateDecorationSwitch(RenderIntent intent)
+{
+    if (!decorationSwitch) {
+        return;
+    }
+
+    const int desiredChild = renderIntentIncludesDecorations(intent) ? 0 : SO_SWITCH_NONE;
+    if (decorationSwitch->whichChild.getValue() != desiredChild) {
+        decorationSwitch->whichChild = desiredChild;
+    }
+}
+
+void View3DInventorViewer::syncLightingMode()
+{
+    if (auto* renderManager = this->getSoRenderManager()) {
+        renderManager->setLightingMode(shading ? SoRenderManager::LIT : SoRenderManager::UNLIT);
+    }
+}
+
 RenderPipeline View3DInventorViewer::getRenderPipeline() const
 {
-    if (auto* renderManager = getSoRenderManager()) {
-        return renderManager->getRenderPipeline() == SoRenderManager::RenderPipeline::DRAW_LIST
-            ? RenderPipeline::DrawList
-            : RenderPipeline::LegacyGL;
+    if (auto* rm = this->getSoRenderManager()) {
+        return fromCoinRenderPipeline(rm->getRenderPipeline());
     }
     return RenderPipeline::LegacyGL;
 }
 
 void View3DInventorViewer::setRenderPipeline(RenderPipeline mode)
 {
-    if (auto* renderManager = getSoRenderManager()) {
-        renderManager->setRenderPipeline(
-            mode == RenderPipeline::DrawList
-                ? SoRenderManager::RenderPipeline::DRAW_LIST
-                : SoRenderManager::RenderPipeline::LEGACY_GL
-        );
+    auto* rm = this->getSoRenderManager();
+    if (!rm) {
+        return;
     }
-}
 
+    rm->setRenderPipeline(toCoinRenderPipeline(mode));
+}
 void View3DInventorViewer::setRenderCache(int mode)
 {
     static int canAutoCache = -1;
@@ -2172,11 +2221,6 @@ View3DInventorViewer::RenderIntent View3DInventorViewer::currentRenderIntent() c
     }
 
     return renderIntentOverrideStack.back();
-}
-
-bool View3DInventorViewer::shouldRenderDecorations(RenderIntent intent)
-{
-    return intent == RenderIntent::LiveInteractive;
 }
 
 void View3DInventorViewer::syncNaviCubeVisibility()
@@ -2456,7 +2500,7 @@ void View3DInventorViewer::savePicture(
         useCoinOffscreenRenderer = true;
     }
 
-    const bool needsFreshRender = !shouldRenderDecorations(intent);
+    const bool needsFreshRender = !renderIntentIncludesDecorations(intent);
     // Intent takes precedence over the user's preferred capture backend.
     // grabFramebuffer() reads the already-rendered widget, so it cannot honor
     // capture-time decoration filtering.
@@ -2544,7 +2588,7 @@ void View3DInventorViewer::savePicture(
     root->addChild(camera);
     root->addChild(pcViewProviderRoot);
     root->addChild(foregroundroot);
-    if (shouldRenderDecorations(intent)) {
+    if (renderIntentIncludesDecorations(intent)) {
         root->addChild(decorationroot);
     }
 
@@ -3402,6 +3446,17 @@ void View3DInventorViewer::renderLegacyFrame(const RenderFrameOptions& options, 
     renderLegacyForeground(glra, options.intent);
 }
 
+void View3DInventorViewer::afterMainSceneCB(void* userdata, SoRenderManager* manager, SoAction* action)
+{
+    Q_UNUSED(manager);
+    if (!action || !action->isOfType(SoGLRenderAction::getClassTypeId())) {
+        return;
+    }
+
+    auto* viewer = static_cast<View3DInventorViewer*>(userdata);
+    viewer->renderDelayedAnnotations(static_cast<SoGLRenderAction*>(action));
+}
+
 void View3DInventorViewer::renderScene()
 {
     ZoneScoped;
@@ -3420,8 +3475,23 @@ void View3DInventorViewer::renderScene()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
+#if FC_COIN_HAVE_RENDER_MANAGER_STAGES
+    updateDecorationSwitch(currentRenderIntent());
+
+    if (auto* glra = this->getSoRenderManager()->getGLRenderAction()) {
+        SoGLVBOActivatedElement::set(glra->getState(), this->vboEnabled);
+    }
+
+    try {
+        inherited::actualRedraw();
+    }
+    catch (const Base::MemoryException&) {
+        this->recoverFromRenderMemoryException();
+    }
+#else
     RenderFrameOptions options {vp, currentRenderIntent(), true, col};
     this->renderLegacyFrame(options, this->getSoRenderManager()->getGLRenderAction());
+#endif
 
     if (shouldRenderDecorations(currentRenderIntent()) && this->axiscrossEnabled) {
         this->drawAxisCross();
@@ -3432,7 +3502,7 @@ void View3DInventorViewer::renderScene()
         this->getSoRenderManager()->scheduleRedraw();
     }
 
-    if (shouldRenderDecorations(currentRenderIntent())) {
+    if (renderIntentIncludesDecorations(currentRenderIntent())) {
         printDimension();
 
         {
