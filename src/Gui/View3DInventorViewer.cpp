@@ -101,6 +101,7 @@
 #include <QKeyEvent>
 #include <QMessageBox>
 #include <QMimeData>
+#include <QOpenGLContext>
 #include <QOpenGLFramebufferObject>
 #include <QOpenGLWidget>
 #include <QScopeGuard>
@@ -3060,7 +3061,23 @@ void View3DInventorViewer::setRenderType(RenderType type)
             glImage = flipVertically(grabFramebuffer());
             break;
     }
+    // Image and framebuffer presentation use direct GL and/or a separate Coin action. Notify Coin
+    // when ownership returns to the retained main action, outside the active traversal and only
+    // when the owner actually changes.
+    if (previous != Native && type == Native) {
+        invalidateMainRenderActionState();
+    }
 }
+
+void View3DInventorViewer::invalidateMainRenderActionState()
+{
+    auto* manager = getSoRenderManager();
+    if (manager) {
+        // Coin tracks this transition for every action sharing the cache
+        // context, including temporary image/FBO actions.
+        // Full backend/owner tracking remains a separate Coin follow-up.
+        manager->invalidateSharedGLState();
+    }
 
 View3DInventorViewer::RenderType View3DInventorViewer::getRenderType() const
 {
@@ -3201,6 +3218,11 @@ bool View3DInventorViewer::renderToFramebuffer(
         Base::Console().warning("renderToFramebuffer failed to bind the framebuffer\n");
         return false;
     }
+
+    // This temporary action and the direct GL setup share the context with the retained main
+    // action. Notify Coin after capture so every action sharing the context resynchronizes.
+    // Create this guard before the release guard so the framebuffer is released first.
+    auto invalidateMainAction = qScopeGuard([this]() { invalidateMainRenderActionState(); });
     auto releaseFramebuffer = qScopeGuard([fbo]() { fbo->release(); });
     int width = fbo->size().width();
     int height = fbo->size().height();
