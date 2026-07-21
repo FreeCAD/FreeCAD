@@ -794,7 +794,6 @@ bool SoFCUnifiedSelection::setPreselect(
         if (!highlighted) {
             currentHighlightPath->unref();
             currentHighlightPath = nullptr;
-            Selection().rmvPreselect();
         }
         this->touch();
     }

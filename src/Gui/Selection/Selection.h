@@ -30,6 +30,8 @@
 #include <unordered_set>
 #include <vector>
 
+#include <QPointer>
+
 #include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
 #include <Base/Observer.h>
@@ -63,6 +65,7 @@ enum class ResolveMode
 
 class SelectionObject;
 class SelectionFilter;
+class MDIView;
 
 /** Transport the changes of the Selection
  * This class transports closer information what was changed in the
@@ -816,6 +819,8 @@ protected:
     /// helper to retrieve document by name
     App::Document* getDocument(const char* pDocName = nullptr) const;
 
+    void setSelectionGateCursorBlocked(bool blocked);
+
     void slotSelectionChanged(const SelectionChanges& msg);
 
     void notify(SelectionChanges&& Chng);
@@ -907,6 +912,8 @@ protected:
 
     Gui::SelectionGate* ActiveGate {nullptr};
     ResolveMode gateResolve;
+    bool selectionGateCursorBlocked {false};
+    QPointer<MDIView> selectionGateCursorView;
 
     int logDisabled {0};
     bool logHasSelection {false};
