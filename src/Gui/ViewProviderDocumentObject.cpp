@@ -29,6 +29,7 @@
 #include <Inventor/details/SoDetail.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSwitch.h>
 
 
 #include <App/Document.h>

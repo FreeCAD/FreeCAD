@@ -49,6 +49,7 @@ class SoSwitch;
 class SoTexture2;
 class SoTransform;
 class SoVertexProperty;
+class SoIRRenderAction;
 
 namespace Gui
 {
@@ -111,6 +112,8 @@ protected:
     void computeBBox(SoAction*, SbBox3f& box, SbVec3f& center) override;
     void generatePrimitives(SoAction* action) override;
     void notify(SoNotList* l) override;
+    static void IRRender(SoAction* action, SoNode* node);
+    void renderAction(::SoIRRenderAction* action);
 
 private:
     struct DistanceGeometry
