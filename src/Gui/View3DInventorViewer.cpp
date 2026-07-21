@@ -3060,6 +3060,23 @@ GLenum View3DInventorViewer::getInternalTextureFormat()
     // NOLINTEND
 }
 
+void View3DInventorViewer::renderPresentationItems()
+{
+    if (this->graphicsItems.empty()) {
+        return;
+    }
+
+    auto invalidateSharedGLState = qScopeGuard([this]() {
+        if (auto* manager = this->getSoRenderManager()) {
+            manager->invalidateSharedGLState();
+        }
+    });
+
+    for (auto* item : this->graphicsItems) {
+        item->paintGL();
+    }
+}
+
 void View3DInventorViewer::setRenderType(RenderType type)
 {
     const RenderType previous = renderType;
@@ -3387,10 +3404,7 @@ void View3DInventorViewer::renderFramebuffer()
     }
 
     printDimension();
-
-    for (auto it : this->graphicsItems) {
-        it->paintGL();
-    }
+    renderPresentationItems();
 }
 
 void View3DInventorViewer::renderGLImage()
@@ -3419,10 +3433,7 @@ void View3DInventorViewer::renderGLImage()
     );
 
     printDimension();
-
-    for (auto it : this->graphicsItems) {
-        it->paintGL();
-    }
+    renderPresentationItems();
 }
 
 void View3DInventorViewer::recoverFromRenderMemoryException()
@@ -3612,9 +3623,7 @@ void View3DInventorViewer::renderScene()
 
         {
             ZoneScopedN("Graphics items");
-            for (auto it : this->graphicsItems) {
-                it->paintGL();
-            }
+            renderPresentationItems();
         }
     }
 
