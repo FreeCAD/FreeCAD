@@ -34,6 +34,8 @@
 #endif
 
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoDepthBufferElement.h>
+#include <Inventor/actions/SoIRRenderAction.h>
 #include <algorithm>
 
 #include "So3DAnnotation.h"
@@ -56,6 +58,7 @@ void SoDelayedAnnotationsElement::initClass()
     SO_ELEMENT_INIT_CLASS(SoDelayedAnnotationsElement, inherited);
 
     SO_ENABLE(SoGLRenderAction, SoDelayedAnnotationsElement);
+    SO_ENABLE(SoIRRenderAction, SoDelayedAnnotationsElement);
 }
 
 SoDelayedAnnotationsElement* SoDelayedAnnotationsElement::getElement(SoState* state)
@@ -128,6 +131,29 @@ void SoDelayedAnnotationsElement::processDelayedPathsWithPriority(SoState* state
     elt->paths.clear();
 }
 
+void SoDelayedAnnotationsElement::processDelayedPathsWithPriority(SoState* state, SoIRRenderAction* action)
+{
+    auto* elt = static_cast<SoDelayedAnnotationsElement*>(state->getElementNoPush(classStackIndex));
+
+    if (elt->paths.empty()) {
+        return;
+    }
+
+    std::stable_sort(
+        elt->paths.begin(),
+        elt->paths.end(),
+        [](const PriorityPath& a, const PriorityPath& b) { return a.priority < b.priority; }
+    );
+
+    isProcessingDelayedPaths = true;
+    for (const auto& priorityPath : elt->paths) {
+        action->switchToPathTraversal(priorityPath.path);
+    }
+    isProcessingDelayedPaths = false;
+
+    elt->paths.clear();
+}
+
 SO_NODE_SOURCE(So3DAnnotation);
 
 bool So3DAnnotation::render = false;
@@ -140,6 +166,7 @@ So3DAnnotation::So3DAnnotation()
 void So3DAnnotation::initClass()
 {
     SO_NODE_INIT_CLASS(So3DAnnotation, SoSeparator, "3DAnnotation");
+    SoIRRenderAction::addMethod(So3DAnnotation::getClassTypeId(), So3DAnnotation::IRRender);
 }
 
 void So3DAnnotation::GLRender(SoGLRenderAction* action)
@@ -183,4 +210,24 @@ void So3DAnnotation::GLRenderInPath(SoGLRenderAction* action)
 void So3DAnnotation::GLRenderOffPath(SoGLRenderAction* /* action */)
 {
     // should never render, this is a separator node
+}
+
+void So3DAnnotation::IRRender(SoAction* action, SoNode* node)
+{
+    auto* annotation = static_cast<So3DAnnotation*>(node);
+    auto* renderAction = static_cast<SoIRRenderAction*>(action);
+    SoState* state = renderAction->getState();
+
+    if (render) {
+        state->push();
+        // IR retains the annotation traversal until the render manager's
+        // after-main callback, then represents it as an overlay command.
+        SoDepthBufferElement::set(state, FALSE, TRUE, SoDepthBufferElement::LEQUAL, SbVec2f(0.0F, 1.0F));
+        annotation->inherited::doAction(action);
+        state->pop();
+        return;
+    }
+
+    SoCacheElement::invalidate(state);
+    SoDelayedAnnotationsElement::addDelayedPath(state, action->getCurPath()->copy());
 }
