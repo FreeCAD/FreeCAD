@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #include <App/Application.h>
+#include "RenderPipeline.h"
 #include "ViewParams.h"
 
 using namespace Gui;
@@ -61,6 +62,15 @@ void ViewParams::setup()
     );
     static_assert(
         Base::is_setter<decltype(&ViewParams::setRenderCache), Int::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getRenderPipeline), String::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setRenderPipeline), String::value_type>,
         "Mismatching signature"
     );
 
@@ -383,6 +393,7 @@ void ViewParams::setup()
     addParameter("UseSelectionRoot", Bool {true});
     addParameter("EnableSelection", Bool {true});
     addParameter("RenderCache", Int {0});
+    addParameter("CoinRenderPipeline", String {"LegacyGL"});
     addParameter("RandomColor", Bool {false});
     addParameter("BoundingBoxColor", Unsigned {4294967295UL});
     addParameter("AnnotationTextColor", Unsigned {4294967295UL});
@@ -473,6 +484,24 @@ long ViewParams::getRenderCache() const
 void ViewParams::setRenderCache(long v)
 {
     setValue("RenderCache", v);
+}
+
+std::string ViewParams::getRenderPipeline() const
+{
+    const auto value = getValue<std::string>("CoinRenderPipeline");
+    const auto pipeline = parseRenderPipelineOrLegacy(value);
+    if (value != renderPipelineName(pipeline)) {
+        const_cast<ViewParams*>(this)->setRenderPipeline(
+            std::string(renderPipelineName(pipeline))
+        );  // NOLINT
+    }
+    return std::string(renderPipelineName(pipeline));
+}
+
+void ViewParams::setRenderPipeline(std::string v)
+{
+    const auto pipeline = parseRenderPipelineOrLegacy(v);
+    setValue("CoinRenderPipeline", std::string(renderPipelineName(pipeline)));
 }
 
 bool ViewParams::getRandomColor() const

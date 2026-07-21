@@ -47,6 +47,7 @@
 #include <Inventor/SbBox.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/SoEventManager.h>
+#include <Inventor/SoRenderManager.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
@@ -2037,6 +2038,27 @@ void View3DInventorViewer::setEnabledVBO(bool on)
 bool View3DInventorViewer::isEnabledVBO() const
 {
     return vboEnabled;
+}
+
+RenderPipeline View3DInventorViewer::getRenderPipeline() const
+{
+    if (auto* renderManager = getSoRenderManager()) {
+        return renderManager->getRenderPipeline() == SoRenderManager::RenderPipeline::DRAW_LIST
+            ? RenderPipeline::DrawList
+            : RenderPipeline::LegacyGL;
+    }
+    return RenderPipeline::LegacyGL;
+}
+
+void View3DInventorViewer::setRenderPipeline(RenderPipeline mode)
+{
+    if (auto* renderManager = getSoRenderManager()) {
+        renderManager->setRenderPipeline(
+            mode == RenderPipeline::DrawList
+                ? SoRenderManager::RenderPipeline::DRAW_LIST
+                : SoRenderManager::RenderPipeline::LEGACY_GL
+        );
+    }
 }
 
 void View3DInventorViewer::setRenderCache(int mode)
