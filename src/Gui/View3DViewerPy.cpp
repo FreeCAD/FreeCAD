@@ -172,6 +172,12 @@ void View3DInventorViewerPy::init_type()
         "setOverrideMode(mode): sets the display override mode."
     );
     add_varargs_method(
+        "setRenderType",
+        &View3DInventorViewerPy::setRenderType,
+        "setRenderType(type): selects the viewer presentation type ('Native', 'Framebuffer', or "
+        "'Image')."
+    );
+    add_varargs_method(
         "setRenderPipeline",
         &View3DInventorViewerPy::setRenderPipeline,
         "setRenderPipeline(str): selects the Coin rendering pipeline for this viewer "
@@ -391,6 +397,31 @@ Py::Object View3DInventorViewerPy::setSceneGraph(const Py::Tuple& args)
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
     }
+}
+
+Py::Object View3DInventorViewerPy::setRenderType(const Py::Tuple& args)
+{
+    const char* type = nullptr;
+    if (!PyArg_ParseTuple(args.ptr(), "s", &type)) {
+        throw Py::Exception();
+    }
+
+    View3DInventorViewer::RenderType renderType;
+    if (strcmp(type, "Native") == 0) {
+        renderType = View3DInventorViewer::Native;
+    }
+    else if (strcmp(type, "Framebuffer") == 0) {
+        renderType = View3DInventorViewer::Framebuffer;
+    }
+    else if (strcmp(type, "Image") == 0) {
+        renderType = View3DInventorViewer::Image;
+    }
+    else {
+        throw Py::RuntimeError("render type must be 'Native', 'Framebuffer', or 'Image'");
+    }
+
+    _viewer->setRenderType(renderType);
+    return Py::None();
 }
 
 Py::Object View3DInventorViewerPy::setRenderPipeline(const Py::Tuple& args)
