@@ -260,8 +260,6 @@ std::vector<int> CArea::_SetFromResult(
         PointD dp_next = ToPointD(pt_next);
         heeks::Point p_next(dp_next.x, dp_next.y);
 
-        std::cerr << "pt=(" << pt.x << ", " << pt.y << ", " << pt.z << ")\n";
-
         // Construct ordered pair for arc detection
         auto edgeInfo = prevZ == -1 ? EdgeInfo {{prevZ, pt.z}, 0} : getEdgeInfo(prevP64, pt);
         if (edgeInfo.parentEdge.first == edgeInfo.parentEdge.second
