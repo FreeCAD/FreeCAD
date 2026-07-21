@@ -27,7 +27,6 @@ import unittest
 import FreeCAD
 
 import BimBsdd
-import BimBsddClient
 
 try:
     from PySide import QtCore, QtNetwork
@@ -44,7 +43,9 @@ class _FakeReply(QtCore.QObject):
     def __init__(self, payload=b"", error_code=None, error_message="", parent=None):
         super().__init__(parent)
         self._payload = payload
-        self._error_code = error_code if error_code is not None else QtNetwork.QNetworkReply.NoError
+        self._error_code = (
+            error_code if error_code is not None else QtNetwork.QNetworkReply.NoError
+        )
         self._error_message = error_message
         self.deleted = False
 
@@ -74,7 +75,6 @@ class _FakeNetworkManager:
 
 
 class TestBsddClient(unittest.TestCase):
-
     def setUp(self):
         self.params = FreeCAD.ParamGet(BimBsdd.BSDD_PREFERENCES_PATH)
         self.params.SetBool(BimBsdd.BSDD_PREVIEW_KEY, True)
@@ -288,12 +288,6 @@ class TestBsddClient(unittest.TestCase):
         self.assertEqual(failures[0][0], "dictionary")
         self.assertEqual(failures[0][2], ("key",))
         self.assertTrue(reply.deleted)
-
-    def test_bsdd_client_shim_reexports_symbols(self):
-        self.assertIs(BimBsddClient.BsddNetworkClient, BimBsdd.BsddNetworkClient)
-        self.assertIs(BimBsddClient.BsddSettings, BimBsdd.BsddSettings)
-        self.assertIs(BimBsddClient.get_bsdd_network_client, BimBsdd.get_bsdd_network_client)
-        self.assertEqual(BimBsddClient.BSDD_API_BASE_URL, BimBsdd.BSDD_API_BASE_URL)
 
     def test_get_bsdd_network_client_returns_singleton(self):
         first = BimBsdd.get_bsdd_network_client()
