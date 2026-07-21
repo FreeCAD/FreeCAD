@@ -56,6 +56,7 @@
 #include <Base/Placement.h>
 
 #include "Namespace.h"
+#include "RenderPipeline.h"
 #include "Selection/Selection.h"
 
 #include "CornerCrossLetters.h"
@@ -572,6 +573,8 @@ public:
     void setEnabledVBO(bool on);
     bool isEnabledVBO() const;
     void setRenderCache(int);
+    RenderPipeline getRenderPipeline() const;
+    void setRenderPipeline(RenderPipeline mode);
 
     //! Update colors of axis in corner to match preferences
     void updateColors();
