@@ -118,8 +118,16 @@ void SoFCScreenSpaceGroup::setDepthBuffer(
 
 void SoFCScreenSpaceGroup::doAction(SoAction* action)
 {
+    SoState* state = action ? action->getState() : nullptr;
+    if (!state) {
+        return;
+    }
+
+    state->push();
+    applyScreenSpaceGeometryState(state);
     prepareScreenSpaceGeometry(action);
     inherited::doAction(action);
+    state->pop();
 }
 
 void SoFCScreenSpaceGroup::GLRenderBelowPath(SoGLRenderAction* action)
