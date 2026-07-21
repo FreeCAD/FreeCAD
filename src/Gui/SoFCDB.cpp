@@ -113,7 +113,6 @@ void Gui::SoFCDB::init()
 #endif
     SoGLRenderActionElement ::initClass();
     SoFCInteractiveElement ::initClass();
-    SoGLWidgetElement ::initClass();
     SoFCColorBar ::initClass();
     SoFCScreenSpaceGroup ::initClass();
     SoFCBackgroundGradient ::initClass();
@@ -123,7 +122,6 @@ void Gui::SoFCDB::init()
     SoFCPreselectionAction ::initClass();
     SoFCSelectionAction ::initClass();
     SoFCDocumentAction ::initClass();
-    SoGLWidgetNode ::initClass();
     SoGLVBOActivatedElement ::initClass();
     SoFCEnableSelectionAction ::initClass();
     SoFCEnablePreselectionAction ::initClass();

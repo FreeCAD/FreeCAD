@@ -35,8 +35,10 @@
 #include <Inventor/SbBasic.h>
 #include <QElapsedTimer>
 #include <QList>
+#include <QMetaObject>
 #include <QUrl>
 
+class QOpenGLContext;
 class QOpenGLWidget;
 class QTimer;
 
@@ -128,10 +130,14 @@ public:
 
   static bool nativeEventFilter(void * message, long * result);
   void replaceGLWidget(const QOpenGLWidget * newviewport);
+  void connectRenderContext();
+  void cleanupRenderBackendResources(QOpenGLContext * context = nullptr);
 
  private:
   QuarterWidgetP_cachecontext * findCacheContext(QuarterWidget * widget, const QOpenGLWidget * sharewidget);
   static void removeFromCacheContext(QuarterWidgetP_cachecontext * context, const QOpenGLWidget * widget);
+  QOpenGLContext * connectedRenderContext;
+  QMetaObject::Connection renderContextConnection;
 };
 
 }}} // namespace
