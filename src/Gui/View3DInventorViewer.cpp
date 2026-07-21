@@ -1541,6 +1541,9 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges& reason)
         SoFCSelectionAction selectionAction(Reason);
         selectionAction.apply(pcViewProviderRoot);
     }
+    if (auto* rm = this->getSoRenderManager()) {
+        rm->invalidateScene();
+    }
 }
 /// @endcond
 
@@ -1919,6 +1922,8 @@ void View3DInventorViewer::setOverrideMode(const std::string& mode)
         }
         this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
     }
+
+    syncLightingMode();
 }
 
 /// update override mode. doesn't affect providers
@@ -1942,6 +1947,7 @@ void View3DInventorViewer::updateOverrideMode(const std::string& mode)
         this->shading = true;
         this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
     }
+    syncLightingMode();
 }
 
 void View3DInventorViewer::setViewportCB(void* ud, SoAction* action)
