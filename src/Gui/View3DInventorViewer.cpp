@@ -139,7 +139,6 @@
 #include "Navigation/GestureNavigationStyle.h"
 #include "Navigation/SiemensNXNavigationStyle.h"
 #include "Selection.h"
-#include "SoDevicePixelRatioElement.h"
 #include "SoFCDB.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCOffscreenRenderer.h"

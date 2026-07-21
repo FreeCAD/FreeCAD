@@ -44,6 +44,7 @@
 #include <QMenu>
 #include <QOpenGLContext>
 #include <QOpenGLWidget>
+#include <QSurface>
 
 #include <Inventor/SoEventManager.h>
 #include <Inventor/actions/SoSearchAction.h>
@@ -90,6 +91,7 @@ QuarterWidgetP::QuarterWidgetP(QuarterWidget * masterptr, const QOpenGLWidget * 
   processdelayqueue(true),
   currentStateMachine(nullptr),
   device_pixel_ratio(1.0),
+  connectedRenderContext(nullptr),
   transparencytypegroup(nullptr),
   stereomodegroup(nullptr),
   rendermodegroup(nullptr),
@@ -106,9 +108,70 @@ QuarterWidgetP::QuarterWidgetP(QuarterWidget * masterptr, const QOpenGLWidget * 
 
 QuarterWidgetP::~QuarterWidgetP()
 {
+  QObject::disconnect(this->renderContextConnection);
   QOpenGLWidget* glMaster = static_cast<QOpenGLWidget*>(this->master->viewport());
   removeFromCacheContext(this->cachecontext, glMaster);
   delete this->contextmenu;
+}
+
+void
+QuarterWidgetP::connectRenderContext()
+{
+  QOpenGLWidget * glWidget = static_cast<QOpenGLWidget *>(this->master->viewport());
+  QOpenGLContext * context = glWidget ? glWidget->context() : nullptr;
+  if (!context || context == this->connectedRenderContext) {
+    return;
+  }
+
+  QObject::disconnect(this->renderContextConnection);
+  this->connectedRenderContext = context;
+  this->renderContextConnection = QObject::connect(
+    context,
+    &QOpenGLContext::aboutToBeDestroyed,
+    this->master,
+    [this, context]() {
+      this->cleanupRenderBackendResources(context);
+      this->connectedRenderContext = nullptr;
+    }
+  );
+}
+
+void
+QuarterWidgetP::cleanupRenderBackendResources(QOpenGLContext * context)
+{
+  if (!this->sorendermanager) {
+    return;
+  }
+
+  QOpenGLWidget * glWidget = static_cast<QOpenGLWidget *>(this->master->viewport());
+  if (!context && glWidget) {
+    context = glWidget->context();
+  }
+
+  QOpenGLContext * previousContext = QOpenGLContext::currentContext();
+  QSurface * previousSurface = previousContext ? previousContext->surface() : nullptr;
+  bool haveCurrentContext = context && QOpenGLContext::currentContext() == context;
+  bool madeCurrent = false;
+  if (!haveCurrentContext && context && glWidget && glWidget->context() == context
+      && context->isValid()) {
+    glWidget->makeCurrent();
+    haveCurrentContext = QOpenGLContext::currentContext() == context;
+    madeCurrent = haveCurrentContext;
+  }
+
+  if (haveCurrentContext) {
+    this->sorendermanager->releaseRenderBackendResources();
+  }
+  else {
+    this->sorendermanager->discardRenderBackendResources();
+  }
+
+  if (madeCurrent) {
+    if (!previousContext || previousContext == context || !previousSurface
+        || !previousContext->makeCurrent(previousSurface)) {
+      glWidget->doneCurrent();
+    }
+  }
 }
 
 SoCamera *
@@ -196,6 +259,15 @@ void
 QuarterWidgetP::replaceGLWidget(const QOpenGLWidget * newviewport)
 {
   QOpenGLWidget* oldviewport = static_cast<QOpenGLWidget*>(this->master->viewport());
+  if (oldviewport == newviewport) {
+    return;
+  }
+
+  QObject::disconnect(this->renderContextConnection);
+  this->connectedRenderContext = nullptr;
+  if (oldviewport) {
+    this->cleanupRenderBackendResources(oldviewport->context());
+  }
   cachecontext->widgetlist.removeItem(oldviewport);
   cachecontext->widgetlist.append(newviewport);
 }
@@ -357,4 +429,3 @@ QuarterWidgetP::nativeEventFilter(void * message, long * result)
 
   return false;
 }
-
