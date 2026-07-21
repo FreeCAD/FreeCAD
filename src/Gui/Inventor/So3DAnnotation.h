@@ -30,6 +30,9 @@
 #include <FCGlobal.h>
 #include <vector>
 
+class SoAction;
+class SoIRRenderAction;
+
 namespace Gui
 {
 
@@ -73,6 +76,7 @@ public:
     static SoPathList getDelayedPaths(SoState* state);
 
     static void processDelayedPathsWithPriority(SoState* state, SoGLRenderAction* action);
+    static void processDelayedPathsWithPriority(SoState* state, SoIRRenderAction* action);
 
     static bool isProcessingDelayedPaths;
 
@@ -122,6 +126,9 @@ public:
     void GLRenderBelowPath(SoGLRenderAction* action) override;
     void GLRenderInPath(SoGLRenderAction* action) override;
     void GLRenderOffPath(SoGLRenderAction* action) override;
+
+private:
+    static void IRRender(SoAction* action, SoNode* node);
 
 protected:
     ~So3DAnnotation() override = default;
