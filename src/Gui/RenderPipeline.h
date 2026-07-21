@@ -12,6 +12,16 @@
 namespace Gui
 {
 
+/**
+ * Coin's live viewport rendering pipeline.
+ *
+ * DrawList is experimental and LegacyGL remains the default. If DrawList
+ * backend initialization fails, Coin falls back to LegacyGL for the active
+ * viewer. Raster capture and save-picture rendering currently use a temporary
+ * LegacyGL action; routing them through the selected pipeline is a follow-up.
+ * After-main commands are not included in the DrawList GPU ID buffer and use
+ * the existing CPU scene-graph picking path instead.
+ */
 enum class RenderPipeline
 {
     LegacyGL,
