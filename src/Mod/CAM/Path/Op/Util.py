@@ -263,6 +263,24 @@ def approximateWire(wire, tolerance=0.01):
     return wire
 
 
+def print_carea_vertices(carea, label):
+    """Debug helper to print all vertices in a Clipper Area."""
+    print(f"DEBUG {label}: AAAAAAarea has {carea.num_curves()} curves")
+    for curve_idx, curve in enumerate(carea.getCurves()):
+        vertices = curve.getVertices()
+        print(f"  Curve {curve_idx}: {len(vertices)} vertices")
+        for v_idx, v in enumerate(vertices):
+            if v.type == 0:
+                # Line vertex
+                print(f"    Vertex {v_idx}: Line to ({v.p.x:10.4f}, {v.p.y:10.4f})")
+            else:
+                # Arc vertex
+                arc_type = "CCW" if v.type == 1 else "CW"
+                print(
+                    f"    Vertex {v_idx}: Arc ({arc_type}) to ({v.p.x:10.4f}, {v.p.y:10.4f}), center=({v.c.x:10.4f}, {v.c.y:10.4f})"
+                )
+
+
 def wireToCArea(wire, tolerance=0.01):
     """wireToCArea(wire) ... converts a FreeCAD wire to a Clipper Area representation.
 
@@ -272,26 +290,30 @@ def wireToCArea(wire, tolerance=0.01):
     Returns:
         area.Area object containing a single curve representing the wire's geometry
     """
+    print("DEBUG wireToCArea: Starting conversion")
     a = area.Area()
     c = area.Curve()
 
     # Approximate wire as lines and arcs, sorted
     wire = approximateWire(wire, tolerance)
     edges = Part.__sortEdges__(wire.Edges)
+    print(f"DEBUG wireToCArea: Processing {len(edges)} edges")
 
     # Add the first point (start of first edge)
     if len(edges) > 0:
         first_point = edges[0].firstVertex().Point
+        print(f"DEBUG wireToCArea: First point: ({first_point.x:10.4f}, {first_point.y:10.4f})")
         c.append(area.Vertex(area.Point(first_point.x, first_point.y)))
 
     # Process each edge, adding its endpoint
-    for edge in edges:
+    for i, edge in enumerate(edges):
         curve = edge.Curve
         p0 = edge.firstVertex().Point
         p1 = edge.lastVertex().Point
 
         if isinstance(curve, (Part.Line, Part.LineSegment)):
             # Add endpoint as straight line vertex
+            print(f"DEBUG wireToCArea: Edge {i}: Line to ({p1.x:10.4f}, {p1.y:10.4f})")
             c.append(area.Vertex(area.Point(p1.x, p1.y)))
 
         elif isinstance(curve, Part.Circle):
@@ -307,6 +329,12 @@ def wireToCArea(wire, tolerance=0.01):
                 mid_y = center.y - (p0.y - center.y)
                 midpoint = FreeCAD.Vector(mid_x, mid_y, p0.z)
 
+                print(
+                    f"DEBUG wireToCArea: Edge {i}: Full circle - splitting into semicircles, radius={radius:10.4f}"
+                )
+                print(
+                    f"DEBUG wireToCArea:   First semicircle (dir={direction}) to ({midpoint.x:10.4f}, {midpoint.y:10.4f}), center=({center.x:10.4f}, {center.y:10.4f})"
+                )
                 c.append(
                     area.Vertex(
                         direction,
@@ -315,11 +343,17 @@ def wireToCArea(wire, tolerance=0.01):
                     )
                 )
 
+                print(
+                    f"DEBUG wireToCArea:   Second semicircle (dir={direction}) to ({p1.x:10.4f}, {p1.y:10.4f}), center=({center.x:10.4f}, {center.y:10.4f})"
+                )
                 c.append(
                     area.Vertex(direction, area.Point(p1.x, p1.y), area.Point(center.x, center.y))
                 )
             else:
                 # Regular arc - add as single vertex
+                print(
+                    f"DEBUG wireToCArea: Edge {i}: Arc (dir={direction}) to ({p1.x:10.4f}, {p1.y:10.4f}), center=({center.x:10.4f}, {center.y:10.4f}), radius={curve.Radius:10.4f}"
+                )
                 c.append(
                     area.Vertex(direction, area.Point(p1.x, p1.y), area.Point(center.x, center.y))
                 )
@@ -398,6 +432,18 @@ def cAreaToWires(carea, z=0.0, tolerance=0.01):
                     while angle1 >= angle0:
                         angle1 -= 2 * math.pi
 
+                print(
+                    f"DEBUG cAreaToWires: Creating arc type={v1.type} ({'CCW' if v1.type == 1 else 'CW'})"
+                )
+                print(f"  p0=({p0.x:.10f}, {p0.y:.10f}, {p0.z:.10f})")
+                print(f"  p1=({p1.x:.10f}, {p1.y:.10f}, {p1.z:.10f})")
+                print(
+                    f"  center=({center.x:.10f}, {center.y:.10f}, {center.z:.10f}), radius={radius:.10f}"
+                )
+                print(
+                    f"  axis=({axis.x:.4f}, {axis.y:.4f}, {axis.z:.4f}), angle0={math.degrees(angle0):.2f}deg, angle1={math.degrees(angle1):.2f}deg"
+                )
+
                 # Create circle with center, axis, and radius, then extract arc
                 circle = Part.Circle(center, axis, radius)
                 edge = Part.ArcOfCircle(circle, angle0, angle1).toShape()
@@ -409,6 +455,16 @@ def cAreaToWires(carea, z=0.0, tolerance=0.01):
                 result_center = edge.Curve.Center
                 edge_p0 = edge.firstVertex().Point
                 edge_p1 = edge.lastVertex().Point
+                print(
+                    f"  result: center=({result_center.x:.10f}, {result_center.y:.10f}, {result_center.z:.10f}), axis=({edge.Curve.Axis.x:.4f}, {edge.Curve.Axis.y:.4f}, {edge.Curve.Axis.z:.4f}), radius={edge.Curve.Radius:.10f}"
+                )
+                print(
+                    f"  result endpoints: first=({edge_p0.x:.10f}, {edge_p0.y:.10f}, {edge_p0.z:.10f}), last=({edge_p1.x:.10f}, {edge_p1.y:.10f}, {edge_p1.z:.10f})"
+                )
+                if len(edge.Vertexes) >= 2:
+                    print(
+                        f"  vertex tolerances: first={edge.Vertexes[0].Tolerance:.10f}, last={edge.Vertexes[1].Tolerance:.10f}"
+                    )
                 edges.append(edge)
 
             v0 = v1
@@ -425,23 +481,33 @@ def offsetWireNew(wire, base, offset, tolerance=0.01):
     This is an alternative implementation to offsetWire that uses the Clipper library.
     tolerance: Deflection tolerance for discretization. Must be positive
     """
+    print(f"DEBUG offsetWireNew: offset={offset}, tolerance={tolerance}")
+    print(f"DEBUG offsetWireNew: input wire has {len(wire.Edges)} edges")
+
     # Store original accuracy and set to tolerance/10 for better precision
     original_accuracy = area.get_accuracy()
     try:
         area.set_accuracy(min(original_accuracy, tolerance))
+        print(f"DEBUG offsetWireNew: set accuracy to {area.get_accuracy()}")
 
         # Convert wire to Clipper Area (approximation done inside)
+        print()
         carea = wireToCArea(wire, tolerance)
-
-        # Save a copy of the original carea in case we need to offset in the other direction
-        carea_original = area.copy_area(carea)
+        print(f"DEBUG offsetWireNew: carea has {carea.num_curves()} curves")
+        print_carea_vertices(carea, "after wireToCArea")
 
         # Try offsetting outward (positive offset expands the shape)
-        carea.Offset(offset)
+        print()
+        neg = carea.OpenOffset(offset)
+        print(f"DEBUG offsetWireNew: after Offset({offset}), carea has {carea.num_curves()} curves")
+        print_carea_vertices(carea, f"after Offset({offset})")
 
         # Convert back to FreeCAD wires
+        print()
         z_coord = wire.Edges[0].Vertexes[0].Point.z
         result_wires = cAreaToWires(carea, z_coord, tolerance)
+        print(f"DEBUG offsetWireNew: cAreaToWires returned {len(result_wires)} wires")
+        print()
 
         if not result_wires:
             return []
@@ -450,16 +516,25 @@ def offsetWireNew(wire, base, offset, tolerance=0.01):
         # This test is copied from the original offsetWire implementation; it's a bit brittle
         test_point = result_wires[0].Edges[0].Vertexes[0].Point
         is_inside = base.isInside(test_point, offset / 2, True)
+        print(f"DEBUG offsetWireNew: test_point={test_point}, is_inside={is_inside}")
 
         if is_inside:
+            print(
+                f"DEBUG offsetWireNew: offset went wrong way, using original and offsetting by {-offset}"
+            )
             # Offset went the wrong way - use original carea and offset in opposite direction
-            carea = carea_original
-            carea.Offset(-offset)
+            carea = neg
+            print(f"DEBUG offsetWireNew: after correction, carea has {carea.num_curves()} curves")
+            print_carea_vertices(carea, f"after Offset({-offset})")
             result_wires = cAreaToWires(carea, z_coord, tolerance)
+            print(
+                f"DEBUG offsetWireNew: cAreaToWires after correction returned {len(result_wires)} wires"
+            )
             result_wires = [Path.Geom.flipWire(w) for w in result_wires]
 
         # Return all wires, oriented appropriately
         # For inside wires (holes), orientation is reversed
+        print(f"DEBUG offsetWireNew: returning {len(result_wires)} wires, is_inside={is_inside}")
         return result_wires
     finally:
         # Restore original accuracy
@@ -587,6 +662,19 @@ def offsetWire(wire, base, offset, tolerance=0.01):
             # and the offset is too big - making the hole vanish
             return None
         # For negative offsets (holes) 'forward' is the other way
+        # DEBUG: Print wire edges
+        print(f"DEBUG offsetWire closed-inside: {len(owire.Edges)} edges")
+        for i, edge in enumerate(owire.Edges):
+            p0 = edge.firstVertex().Point
+            p1 = edge.lastVertex().Point
+            curve_info = f"{type(edge.Curve).__name__:15s}"
+            if isinstance(edge.Curve, Part.Circle):
+                center = edge.Curve.Center
+                radius = edge.Curve.Radius
+                curve_info += f" center=({center.x:8.3f},{center.y:8.3f},{center.z:8.3f}) radius={radius:8.3f}"
+            print(
+                f"  Edge {i:2d}: {curve_info} ({p0.x:8.3f},{p0.y:8.3f},{p0.z:8.3f}) -> ({p1.x:8.3f},{p1.y:8.3f},{p1.z:8.3f})"
+            )
         return orientWire(owire, False)
 
     # An edge is considered to be inside of shape if the mid point is inside

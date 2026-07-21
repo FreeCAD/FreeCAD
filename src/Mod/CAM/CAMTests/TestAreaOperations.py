@@ -385,6 +385,53 @@ class TestAreaOperations(unittest.TestCase):
         self.assert_areas_equal(a, expected_pos)
         self.assert_areas_equal(neg, expected_neg)
 
+    def test_open_offset_arcs(self):
+        """Test open offset on a path with arcs"""
+        subj = make_curve(
+            [
+                (0, 0),
+                (0, 6, 1, 0, 3),
+                (0, 12, 1, 0, 9),
+                (0, 18, -1, 0, 15),
+                (0, 24, -1, 0, 21),
+                (0, 30, 1, 0, 27),
+            ]
+        )
+        a = make_area(subj)
+        neg = a.OpenOffset(2)
+
+        expected_pos = make_area(
+            [
+                make_curve(
+                    [
+                        (0, -2),
+                        (4, 6, 1, 0, 3),
+                        (0, 14, 1, 0, 9),
+                        (0, 16, -1, 0, 15),
+                        (0, 20, 1, 0, 18),
+                        (0, 22, -1, 0, 21),
+                        (0, 32, 1, 0, 27),
+                    ]
+                ),
+            ]
+        )
+        expected_neg = make_area(
+            make_curve(
+                [
+                    (0, 2),
+                    (0, 4, 1, 0, 3),
+                    (0, 8, -1, 0, 6),
+                    (0, 10, 1, 0, 9),
+                    (-4, 18, -1, 0, 15),
+                    (0, 26, -1, 0, 21),
+                    (0, 28, 1, 0, 27),
+                ]
+            )
+        )
+
+        self.assert_areas_equal(a, expected_pos)
+        self.assert_areas_equal(neg, expected_neg)
+
     # ========================================================================
     # Geometry Manipulation Tests
     # ========================================================================
