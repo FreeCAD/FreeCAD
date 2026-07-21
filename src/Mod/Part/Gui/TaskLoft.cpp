@@ -119,7 +119,7 @@ void LoftWidget::findShapes()
         TopExp_Explorer xp(shape, TopAbs_WIRE);
         int wireCount = 0;
         bool allClosed = true;
-        for (; xp.More() && wireCount<=1; xp.Next(), wireCount++) {
+        for (; xp.More() && wireCount <= 1; xp.Next(), wireCount++) {
             if (!BRep_Tool::IsClosed(TopoDS::Wire(xp.Current()))) {
                 allClosed = false;
                 break;
@@ -127,29 +127,31 @@ void LoftWidget::findShapes()
         }
         if (wireCount == 1 && allClosed) {
             viable = true;
-        } else if (!wireCount) {
-            int vertexCount=0;
+        }
+        else if (!wireCount) {
+            int vertexCount = 0;
             TopExp_Explorer xp(shape, TopAbs_VERTEX);
-            for (; xp.More() && vertexCount<=1; xp.Next(), vertexCount++);
-            if ( vertexCount == 1 ) {
+            for (; xp.More() && vertexCount <= 1; xp.Next(), vertexCount++)
+                ;
+            if (vertexCount == 1) {
                 viable = true;
             }
         }
 
-        if ( viable ) {
-                QString label = QString::fromUtf8(obj->Label.getValue());
-                QString name = QString::fromLatin1(obj->getNameInDocument());
-                QTreeWidgetItem* child = new QTreeWidgetItem();
-                child->setText(0, label);
-                child->setToolTip(0, label);
-                child->setData(0, Qt::UserRole, name);
-                Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
-                if (vp) {
-                    child->setIcon(0, vp->getIcon());
-                }
-                d->ui.selector->availableTreeWidget()->addTopLevelItem(child);
+        if (viable) {
+            QString label = QString::fromUtf8(obj->Label.getValue());
+            QString name = QString::fromLatin1(obj->getNameInDocument());
+            QTreeWidgetItem* child = new QTreeWidgetItem();
+            child->setText(0, label);
+            child->setToolTip(0, label);
+            child->setData(0, Qt::UserRole, name);
+            Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
+            if (vp) {
+                child->setIcon(0, vp->getIcon());
+            }
+            d->ui.selector->availableTreeWidget()->addTopLevelItem(child);
         }
-    }   // end for objs
+    }  // end for objs
 }
 
 bool LoftWidget::accept()
