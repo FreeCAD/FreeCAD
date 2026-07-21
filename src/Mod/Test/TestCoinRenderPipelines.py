@@ -14,6 +14,7 @@ from CoinSnapshotHarness import (
     _ViewerSnapshotHarness,
     _images_are_pixel_identical,
     _images_are_similar,
+    _mean_rgb,
     _render_png,
     _region_color_count,
     _region_luminance_range,
@@ -86,6 +87,79 @@ def _masked_image_difference(
                 changed_pixels += 1
 
     return object_pixels, changed_pixels, total_difference
+
+
+def _make_annotation_stage_root(coin):
+    root = coin.SoSeparator()
+    camera = coin.SoOrthographicCamera()
+    camera.position.setValue(0.0, 0.0, 5.0)
+    camera.nearDistance.setValue(0.1)
+    camera.farDistance.setValue(20.0)
+    camera.height.setValue(2.0)
+    root.addChild(camera)
+    return root
+
+
+def _add_stage_cube(coin, parent, color, z, *, scale=(0.75, 0.75, 0.15), transparency=0.0):
+    material = coin.SoMaterial()
+    material.diffuseColor.setValue(*color)
+    if transparency:
+        material.transparency.setValue(transparency)
+    transform = coin.SoTransform()
+    transform.translation.setValue(0.0, 0.0, z)
+    transform.scaleFactor.setValue(*scale)
+    group = coin.SoSeparator()
+    group.addChild(material)
+    group.addChild(transform)
+    cube = coin.SoCube()
+    group.addChild(cube)
+    parent.addChild(group)
+    return cube
+
+
+def _add_transparent_stage_triangle(coin, parent):
+    material = coin.SoMaterial()
+    material.diffuseColor.setValue(0.95, 0.08, 0.05)
+    material.transparency.setValue(0.45)
+    coordinates = coin.SoCoordinate3()
+    coordinates.point.setValues(
+        0,
+        3,
+        [
+            coin.SbVec3f(-0.82, -0.78, 0.0),
+            coin.SbVec3f(0.82, -0.78, 0.0),
+            coin.SbVec3f(0.0, 0.82, 0.0),
+        ],
+    )
+    faces = coin.SoFaceSet()
+    faces.numVertices.setValue(3)
+    group = coin.SoSeparator()
+    group.addChild(material)
+    group.addChild(coordinates)
+    group.addChild(faces)
+    parent.addChild(group)
+    return faces
+
+
+def _render_annotation_stage_pair(harness, coin, root, out_dir, filename):
+    rendered = {}
+    for renderer_name in (_RENDERER_LEGACY, _RENDERER_DRAW_LIST):
+        path = _renderer_output_path(out_dir, renderer_name, "actual", filename)
+        _render_png(harness, coin, root, path, renderer_name, frame_camera=False)
+        rendered[renderer_name] = path
+    return rendered
+
+
+def _save_current_frame(harness, path: Path) -> Path:
+    return _save_image(harness.capture_framebuffer(), path)
+
+
+def _path_contains_type(path, type_id):
+    if path is None:
+        return False
+    return any(
+        path.getNode(index).getTypeId().isDerivedFrom(type_id) for index in range(path.getLength())
+    )
 
 
 class CoinRenderPipelineTestCase(unittest.TestCase):
@@ -179,6 +253,243 @@ class CoinRenderPipelineTestCase(unittest.TestCase):
                 self.assertLess(
                     blue, red // 4, f"back cube bypassed annotation depth: {renderer_name}"
                 )
+        finally:
+            harness.close()
+
+    def test_3d_annotation_bypasses_main_depth(self):
+        FreeCAD, FreeCADGui, coin = _require_gui()
+        width, height = _snapshot_dimensions()
+        out_dir = _snapshot_out_dir()
+        harness = _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height)
+        try:
+            if not {_RENDERER_LEGACY, _RENDERER_DRAW_LIST}.issubset(
+                set(harness.render_pipelines())
+            ):
+                raise unittest.SkipTest("3D annotation depth regression requires both pipelines")
+
+            root = _make_annotation_stage_root(coin)
+            main_group = coin.SoSeparator()
+            _add_stage_cube(coin, main_group, (0.08, 0.72, 0.16), 0.45, scale=(0.9, 0.9, 0.16))
+            root.addChild(main_group)
+
+            annotation = _instantiate(coin, "So3DAnnotation")
+            _add_stage_cube(coin, annotation, (0.92, 0.08, 0.05), 0.0, scale=(0.55, 0.55, 0.12))
+            root.addChild(annotation)
+
+            harness.viewer.setBackgroundColor(1.0, 1.0, 1.0)
+            harness.viewer.setGradientBackground("NONE")
+            harness.viewer.setOverrideMode("No Shading")
+            rendered = _render_annotation_stage_pair(
+                harness, coin, root, out_dir, "So3DAnnotationMainDepthBypass.png"
+            )
+
+            for renderer_name, path in rendered.items():
+                red, green, _blue = _mean_rgb(path, width // 2, height // 2, radius=5)
+                self.assertGreater(
+                    red,
+                    green + 45.0,
+                    f"after-main annotation did not bypass main depth: {renderer_name}",
+                )
+        finally:
+            harness.close()
+
+    def test_3d_annotation_transparency_matches_between_pipelines(self):
+        FreeCAD, FreeCADGui, coin = _require_gui()
+        width, height = _snapshot_dimensions()
+        out_dir = _snapshot_out_dir()
+        harness = _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height)
+        try:
+            if not {_RENDERER_LEGACY, _RENDERER_DRAW_LIST}.issubset(
+                set(harness.render_pipelines())
+            ):
+                raise unittest.SkipTest("transparent annotation regression requires both pipelines")
+
+            root = _make_annotation_stage_root(coin)
+            main_group = coin.SoSeparator()
+            _add_stage_cube(coin, main_group, (0.08, 0.55, 0.82), -0.30, scale=(0.9, 0.9, 0.12))
+            root.addChild(main_group)
+            annotation = _instantiate(coin, "So3DAnnotation")
+            _add_transparent_stage_triangle(coin, annotation)
+            root.addChild(annotation)
+
+            harness.viewer.setBackgroundColor(1.0, 1.0, 1.0)
+            harness.viewer.setGradientBackground("NONE")
+            harness.viewer.setOverrideMode("No Shading")
+            rendered = _render_annotation_stage_pair(
+                harness, coin, root, out_dir, "So3DAnnotationTransparent.png"
+            )
+            object_region = (width // 4, height // 4, width * 3 // 4, height * 3 // 4)
+
+            self.assertTrue(
+                _region_pixels_similar(
+                    rendered[_RENDERER_LEGACY],
+                    rendered[_RENDERER_DRAW_LIST],
+                    object_region,
+                    tolerance=45,
+                    max_mismatched_fraction=0.08,
+                ),
+                "transparent after-main annotation differs between LegacyGL and DrawList",
+            )
+            red, green, _blue = _mean_rgb(
+                rendered[_RENDERER_DRAW_LIST], width // 2, height // 2, radius=5
+            )
+            self.assertGreater(red, 70.0, "transparent after-main annotation was not rendered")
+            self.assertGreater(green, 35.0, "transparent annotation lost its underlying geometry")
+        finally:
+            harness.close()
+
+    def test_main_selection_respects_depth_before_after_main_clear(self):
+        FreeCAD, FreeCADGui, coin = _require_gui()
+        width, height = _snapshot_dimensions()
+        out_dir = _snapshot_out_dir()
+        harness = _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height)
+        try:
+            if _RENDERER_DRAW_LIST not in harness.render_pipelines():
+                raise unittest.SkipTest("main selection depth regression requires DrawList")
+
+            root = _make_annotation_stage_root(coin)
+            front_group = coin.SoSeparator()
+            _add_stage_cube(coin, front_group, (0.08, 0.72, 0.16), 0.45, scale=(0.9, 0.9, 0.16))
+            root.addChild(front_group)
+            rear_group = coin.SoSeparator()
+            _add_stage_cube(coin, rear_group, (0.08, 0.16, 0.84), -0.35, scale=(0.9, 0.9, 0.16))
+            root.addChild(rear_group)
+
+            # Keep a delayed subtree in the frame so the after-main depth barrier is active,
+            # without covering the center used to verify main-scene occlusion.
+            annotation = _instantiate(coin, "So3DAnnotation")
+            aid_group = coin.SoSeparator()
+            aid_translation = coin.SoTransform()
+            aid_translation.translation.setValue(-0.78, 0.78, 0.0)
+            aid_group.addChild(aid_translation)
+            _add_stage_cube(coin, aid_group, (0.92, 0.30, 0.05), 0.0, scale=(0.10, 0.10, 0.10))
+            annotation.addChild(aid_group)
+            root.addChild(annotation)
+
+            harness.viewer.setBackgroundColor(1.0, 1.0, 1.0)
+            harness.viewer.setGradientBackground("NONE")
+            harness.viewer.setOverrideMode("No Shading")
+            initial = _renderer_output_path(
+                out_dir, _RENDERER_DRAW_LIST, "actual", "MainSelectionDepthInitial.png"
+            )
+            _render_png(harness, coin, root, initial, _RENDERER_DRAW_LIST, frame_camera=False)
+
+            manager = harness.viewer.getSoRenderManager()
+            select = getattr(manager, "setDrawListSelection", None)
+            if not callable(select):
+                raise unittest.SkipTest("DrawList selection API is not exposed by this build")
+            self.assertTrue(
+                select(2, coin.SbColor4f(1.0, 0.0, 1.0, 1.0), False),
+                "the rear main object was not present in the DrawList pick LUT",
+            )
+            harness.view.redraw()
+            harness.flush(cycles=8)
+            selected = _save_current_frame(
+                harness,
+                _renderer_output_path(
+                    out_dir, _RENDERER_DRAW_LIST, "actual", "MainSelectionDepthSelected.png"
+                ),
+            )
+            red, green, blue = _mean_rgb(selected, width // 2, height // 2, radius=5)
+            self.assertGreater(green, red + 35.0, "main selection bypassed the front object depth")
+            self.assertGreater(green, blue + 35.0, "main selection bypassed the front object depth")
+        finally:
+            harness.close()
+
+    def test_after_main_selection_runs_after_depth_clear(self):
+        FreeCAD, FreeCADGui, coin = _require_gui()
+        width, height = _snapshot_dimensions()
+        out_dir = _snapshot_out_dir()
+        harness = _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height)
+        try:
+            if _RENDERER_DRAW_LIST not in harness.render_pipelines():
+                raise unittest.SkipTest("after-main selection regression requires DrawList")
+
+            root = _make_annotation_stage_root(coin)
+            main_group = coin.SoSeparator()
+            _add_stage_cube(coin, main_group, (0.06, 0.70, 0.18), 0.35, scale=(0.9, 0.9, 0.16))
+            root.addChild(main_group)
+            annotation = _instantiate(coin, "So3DAnnotation")
+            _add_stage_cube(coin, annotation, (0.88, 0.08, 0.04), 0.0, scale=(0.55, 0.55, 0.12))
+            root.addChild(annotation)
+
+            harness.viewer.setBackgroundColor(1.0, 1.0, 1.0)
+            harness.viewer.setGradientBackground("NONE")
+            harness.viewer.setOverrideMode("No Shading")
+            initial = _renderer_output_path(
+                out_dir, _RENDERER_DRAW_LIST, "actual", "AfterMainSelectionInitial.png"
+            )
+            _render_png(harness, coin, root, initial, _RENDERER_DRAW_LIST, frame_camera=False)
+
+            manager = harness.viewer.getSoRenderManager()
+            select = getattr(manager, "setDrawListSelection", None)
+            if not callable(select):
+                raise unittest.SkipTest("DrawList selection API is not exposed by this build")
+            self.assertTrue(
+                select(2, coin.SbColor4f(1.0, 1.0, 0.0, 1.0), False),
+                "the after-main object was not present in the DrawList pick LUT",
+            )
+            harness.view.redraw()
+            harness.flush(cycles=8)
+            selected = _save_current_frame(
+                harness,
+                _renderer_output_path(
+                    out_dir, _RENDERER_DRAW_LIST, "actual", "AfterMainSelectionSelected.png"
+                ),
+            )
+            # Whole-object selection is represented by a wireframe bounding box. Sample its
+            # top edge, where a pre-clear selection would still fail the main-scene depth test.
+            edge_y = height // 2 - int(height * 0.27)
+            red, green, blue = _mean_rgb(selected, width // 2, edge_y, radius=2)
+            self.assertGreater(red, 100.0, "after-main selection was not rendered")
+            self.assertGreater(
+                green, 80.0, "after-main selection did not run after the depth clear"
+            )
+            self.assertLess(blue, 100.0, "after-main selection color was not applied")
+        finally:
+            harness.close()
+
+    def test_draw_list_cpu_picking_keeps_annotation_aid_interactive(self):
+        FreeCAD, FreeCADGui, coin = _require_gui()
+        width, height = _snapshot_dimensions()
+        out_dir = _snapshot_out_dir()
+        harness = _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height)
+        try:
+            if _RENDERER_DRAW_LIST not in harness.render_pipelines():
+                raise unittest.SkipTest("annotation interaction regression requires DrawList")
+
+            root = _make_annotation_stage_root(coin)
+            annotation = _instantiate(coin, "So3DAnnotation")
+            indicator = _instantiate(coin, "SoFCPlacementIndicatorKit")
+            indicator.parts.setValue(31)
+            indicator.axes.setValue(7)
+            indicator.axisLength.setValue(0.8)
+            indicator.scaleFactor.setValue(70.0)
+            indicator.axisLabels.setValues(0, 3, ["X", "Y", "Z"])
+            annotation.addChild(indicator)
+            root.addChild(annotation)
+
+            harness.viewer.setBackgroundColor(1.0, 1.0, 1.0)
+            harness.viewer.setGradientBackground("NONE")
+            harness.viewer.setOverrideMode("No Shading")
+            rendered = _renderer_output_path(
+                out_dir, _RENDERER_DRAW_LIST, "actual", "So3DAnnotationPlacementAid.png"
+            )
+            _render_png(harness, coin, root, rendered, _RENDERER_DRAW_LIST, frame_camera=False)
+
+            pick = coin.SoRayPickAction(coin.SbViewportRegion(width, height))
+            pick.setPoint(coin.SbVec2s(width // 2, height // 2))
+            pick.setRadius(14.0)
+            pick.setPickAll(True)
+            pick.apply(root)
+            picked = pick.getPickedPoint()
+            self.assertIsNotNone(picked, "CPU ray picking did not hit the placement indicator")
+            self.assertTrue(
+                _path_contains_type(picked.getPath(), annotation.getTypeId()),
+                "CPU picking did not retain the So3DAnnotation path for the placement aid",
+            )
+            # The DrawList GPU ID buffer intentionally excludes after-main commands for now;
+            # this test verifies the existing CPU event/ray-picking path remains interactive.
         finally:
             harness.close()
 
