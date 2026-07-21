@@ -66,6 +66,7 @@ class QOpenGLFramebufferObject;
 class QOpenGLWidget;
 class QSurfaceFormat;
 
+class SoAction;
 class SoTranslation;
 class SoTransform;
 class SoText2;
@@ -143,8 +144,6 @@ public:
     };
     //@}
 
-    /// Declares why the viewer scene is being traversed so screen-only
-    /// decorations can be excluded from capture and export paths.
     enum class RenderIntent
     {
         /// Interactive viewport traversal including viewer decorations.
@@ -620,22 +619,25 @@ private:
 private:
     class ScopedRenderIntent;
     static void selectCB(void* viewer, SoPath* path);
+    static void afterMainSceneCB(void* userdata, SoRenderManager* manager, SoAction* action);
     // A small intent stack lets nested export/capture code paths temporarily
     // override the default live-view traversal behavior.
     void pushRenderIntentOverride(RenderIntent intent) const;
     void popRenderIntentOverride() const;
     RenderIntent currentRenderIntent() const;
-    static bool shouldRenderDecorations(RenderIntent intent);
+    void initializeRenderManager();
+    void updateDecorationSwitch(RenderIntent intent);
 
     static void deselectCB(void* viewer, SoPath* path);
     static SoPath* pickFilterCB(void* viewer, const SoPickedPoint* pp);
     void initialize();
+    void syncLightingMode();
+    void invalidateMainRenderActionState();
     void syncNaviCubeVisibility();
     void drawAxisCross();
     void drawSingleBackground(const QColor&);
     void recoverFromRenderMemoryException();
     void renderDelayedAnnotations(SoGLRenderAction* glra);
-    void renderGLActionScene(const QColor& backgroundColor, SoGLRenderAction* glra);
     bool renderToFramebuffer(QOpenGLFramebufferObject*, bool includeViewerLighting = true);
     void setCursorRepresentation(int mode);
     void aboutToDestroyGLContext();
@@ -644,7 +646,7 @@ private:
 
 private:
     NaviCube* naviCube;
-    SoAnnotation* naviCubeAnnotation;
+    SoSeparator* naviCubeAnnotation;
     std::set<ViewProvider*> _ViewProviderSet;
     std::map<SoSeparator*, ViewProvider*> _ViewProviderMap;
     std::list<GLGraphicsItem*> graphicsItems;
@@ -652,9 +654,9 @@ private:
     SoFCBackgroundGradient* pcBackGround;
     SoSeparator* backgroundroot;
     SoSeparator* foregroundroot;
-    // Dedicated root for viewer-owned HUD/decorations that should not be
-    // treated as model content during capture/export traversals.
     SoSeparator* decorationroot;
+    SoSeparator* combinedForegroundRoot;
+    SoSwitch* decorationSwitch;
 
     SoDirectionalLight* backlight;
     SoDirectionalLight* fillLight;
