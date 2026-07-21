@@ -161,6 +161,9 @@ macro(SetupBundledCoinPivy)
 endmacro(SetupBundledCoinPivy)
 
 macro(SetupCoinPivy)
+    # FreeCAD compiles against the renderer-specific Coin and Pivy APIs in the
+    # bundled renderer stack. External Coin/Pivy installations cannot provide
+    # that ABI, so GUI builds intentionally use the bundled submodules.
     set(FREECAD_COIN3D_SOURCE "bundled")
     set(FREECAD_PIVY_SOURCE "bundled")
     SetupBundledCoinPivy()
