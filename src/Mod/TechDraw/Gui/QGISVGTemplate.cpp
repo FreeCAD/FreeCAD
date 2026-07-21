@@ -387,8 +387,6 @@ void QGISVGTemplate::createClickHandles()
             // For more details please see https://qt-project.atlassian.net/browse/QTBUG-32405
             if (isShortText) {
                 textRect = fm.boundingRect(QStringLiteral("_"));
-                // textRect is now valid, so we don't need to run the shortText code
-                isShortText = false;
             }
             else {
                 textRect = fm.boundingRect(content);
@@ -421,7 +419,6 @@ void QGISVGTemplate::createClickHandles()
             textRect.setTop(textRect.bottom() - MinRectHeight);
             textRect.setRight(textRect.left() + MinRectWidth);
         }
-
 
         // Get tight bounding box of text
         double factor = textRect.height() / fm.height();  // Correcting font metrics and SVG text due to different font sizes
