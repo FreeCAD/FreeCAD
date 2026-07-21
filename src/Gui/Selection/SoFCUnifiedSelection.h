@@ -29,6 +29,9 @@
 #include <unordered_set>
 #include <vector>
 
+#include <Inventor/misc/SoTempPath.h>
+#include <Inventor/actions/SoAction.h>
+#include <Inventor/actions/SoSubAction.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFColor.h>
@@ -36,7 +39,6 @@
 #include <Inventor/nodes/SoSeparator.h>
 
 #include "SoFCSelectionContext.h"
-#include "../View3DInventorViewer.h"
 
 
 class SoFullPath;
@@ -68,7 +70,9 @@ GuiExport std::size_t choosePreferredPick(const std::vector<Candidate>& picked);
 }  // namespace SelectionPickPolicy
 
 class Document;
+class ViewProvider;
 class ViewProviderDocumentObject;
+class View3DInventorViewer;
 
 /**  Unified Selection node
  *  This is the new selection node for the 3D Viewer which will
@@ -322,6 +326,26 @@ public:
         return std::dynamic_pointer_cast<T>(getNodeContext(SelStack, node, def));
     }
 
+    /** Returns selection context for rendering using a specific traversal action.
+     *
+     * This is the action-aware variant of getRenderContext() and should be used
+     * by render paths that traverse through doAction() instead of the legacy
+     * GLRender* entry points.
+     */
+    template<class T>
+    static std::shared_ptr<T> getRenderContext(
+        SoAction* action,
+        SoNode* node,
+        std::shared_ptr<T> def = std::shared_ptr<T>()
+    )
+    {
+        auto it = ActionStacks.find(action);
+        if (it == ActionStacks.end() || it->second.empty()) {
+            return def;
+        }
+        return std::dynamic_pointer_cast<T>(getNodeContext(it->second, node, def));
+    }
+
     /** Returns selection context for rendering.
      *
      * @param node: the querying node
@@ -358,6 +382,30 @@ public:
     {
         ctx2 = std::dynamic_pointer_cast<T>(getNodeContext2(SelStack, node, T::merge));
         return std::dynamic_pointer_cast<T>(getNodeContext(SelStack, node, def));
+    }
+
+    /** Returns selection context for rendering using a specific traversal action.
+     *
+     * The primary context is looked up from the first selection root in the
+     * current action stack. Secondary context is merged from the last selection
+     * root, matching the semantics of the legacy render-path overload.
+     */
+    template<class T>
+    static std::shared_ptr<T> getRenderContext(
+        SoAction* action,
+        SoNode* node,
+        std::shared_ptr<T> def,
+        std::shared_ptr<T>& ctx2
+    )
+    {
+        auto it = ActionStacks.find(action);
+        if (it == ActionStacks.end() || it->second.empty()) {
+            ctx2.reset();
+            return def;
+        }
+        auto& stack = it->second;
+        ctx2 = std::dynamic_pointer_cast<T>(getNodeContext2(stack, node, T::merge));
+        return std::dynamic_pointer_cast<T>(getNodeContext(stack, node, def));
     }
 
     /** Get the selection context for an action.
@@ -420,6 +468,7 @@ public:
     }
 
     static void checkSelection(bool& sel, SbColor& selColor, bool& hl, SbColor& hlColor);
+    static void checkSelection(SoAction* action, bool& sel, SbColor& selColor, bool& hl, SbColor& hlColor);
 
     static void moveActionStack(SoAction* from, SoAction* to, bool erase);
 

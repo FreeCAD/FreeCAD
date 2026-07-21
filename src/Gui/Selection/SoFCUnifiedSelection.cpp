@@ -88,6 +88,7 @@
 #include "MainWindow.h"
 #include "SoFCSelectionAction.h"
 #include "ViewParams.h"
+#include "../View3DInventorViewer.h"
 #include "ViewProvider.h"
 #include "ViewProviderDocumentObject.h"
 
@@ -797,6 +798,9 @@ bool SoFCUnifiedSelection::setPreselect(
         }
         this->touch();
     }
+    else if (!path) {
+        Selection().rmvPreselect();
+    }
     return highlighted;
 }
 
@@ -1057,7 +1061,7 @@ void SoFCUnifiedSelection::handleEvent(SoHandleEventAction* action)
                 setPreselect(infos[0]);
             }
             else {
-                setPreselect(PickedInfo());
+                setPreselect(PickedInfo {});
             }
         }
     }
@@ -1099,7 +1103,6 @@ void SoFCUnifiedSelection::GLRenderBelowPath(SoGLRenderAction* action)
     inherited::GLRenderBelowPath(action);
 
     _ShowBoundBox = bbox;
-
 }
 
 // ---------------------------------------------------------------
@@ -1948,6 +1951,42 @@ void SoFCSelectionRoot::checkSelection(bool& sel, SbColor& selColor, bool& hl, S
     }
     if ((hl = !HlColorStack.empty())) {
         hlColor = HlColorStack.back();
+    }
+}
+
+void SoFCSelectionRoot::checkSelection(
+    SoAction* action,
+    bool& sel,
+    SbColor& selColor,
+    bool& hl,
+    SbColor& hlColor
+)
+{
+    sel = false;
+    hl = false;
+
+    auto it = ActionStacks.find(action);
+    if (it == ActionStacks.end() || it->second.empty()) {
+        return;
+    }
+
+    auto* root = dynamic_cast<SoFCSelectionRoot*>(it->second.front());
+    if (!root) {
+        return;
+    }
+
+    auto ctx = std::dynamic_pointer_cast<SelContext>(
+        getNodeContext(it->second, root, SoFCSelectionContextBasePtr())
+    );
+    if (!ctx) {
+        return;
+    }
+
+    if ((sel = ctx->selAll)) {
+        selColor = ctx->selColor;
+    }
+    if ((hl = ctx->hlAll)) {
+        hlColor = ctx->hlColor;
     }
 }
 
