@@ -451,7 +451,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
     bool hasAnyHighlight = hasContextHighlight || hasFaceHighlight;
 
     if (Gui::Selection().isClarifySelectionActive()
-        && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths && hasAnyHighlight) {
+        && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths(state) && hasAnyHighlight) {
         // if we are using clarifyselection - add this to delayed paths with priority
         // as we want to get this rendered on top of everything
         if (viewProvider) {
@@ -548,7 +548,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
     }
     else if (
         Gui::Selection().isClarifySelectionActive()
-        && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths && hasAnyHighlight
+        && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths(state) && hasAnyHighlight
     ) {
         state->push();
         SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
