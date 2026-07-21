@@ -205,6 +205,37 @@ RenderPipeline fromCoinRenderPipeline(SoRenderManager::RenderPipeline mode)
 
 }  // namespace
 
+RenderFrameResult View3DInventorViewer::renderFrame(const RenderFrameRequest& request)
+{
+    // The roots are bound by the rendering integration that follows this model commit.
+    // Keep the result honest until there is a render target and an active scene graph to traverse.
+    const auto stagePlan = buildStagePlan(request);
+
+    RenderFrameResult result;
+    result.requestedPipeline = request.requestedPipeline;
+    result.actualPipeline = request.requestedPipeline;
+    result.rendered = std::any_of(
+        stagePlan.begin(),
+        stagePlan.end(),
+        [](const ViewerRenderStageEntry& entry) { return entry.enabled && entry.root != nullptr; }
+    );
+    return result;
+}
+
+std::vector<ViewerRenderStageEntry>
+View3DInventorViewer::buildStagePlan(const RenderFrameRequest& request) const
+{
+    // This is deliberately policy-only. Root binding and all OpenGL operations belong to the
+    // rendering integration that consumes this plan.
+    return {
+        {ViewerRenderStage::Background, nullptr, true},
+        {ViewerRenderStage::MainScene, nullptr, true},
+        {ViewerRenderStage::AfterMain, nullptr, true},
+        {ViewerRenderStage::Foreground, nullptr, true},
+        {ViewerRenderStage::Decorations, nullptr, request.includeDecorations}
+    };
+}
+
 class View3DInventorViewer::ScopedRenderIntent
 {
 public:
