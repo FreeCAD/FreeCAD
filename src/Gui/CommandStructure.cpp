@@ -62,7 +62,6 @@ void StdCmdPart::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Add a part"));
-    std::string FeatName = getUniqueObjectName("Part");
 
     std::string PartName;
     PartName = getUniqueObjectName("Part");
@@ -76,7 +75,7 @@ void StdCmdPart::activated(int iMsg)
         Doc,
         "App.activeDocument().%s.Label = '%s'",
         PartName.c_str(),
-        QObject::tr(PartName.c_str()).toUtf8().data()
+        QObject::tr("Part").toUtf8().data()
     );
 
     doCommand(

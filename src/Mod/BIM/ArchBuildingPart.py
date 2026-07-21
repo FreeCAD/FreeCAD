@@ -1150,16 +1150,16 @@ class ViewProviderBuildingPart:
 
         if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
-        if (not hasattr(vobj, "DoubleClickActivates")) or vobj.DoubleClickActivates:
-            menuTxt = translate("Arch", "Active")
-            actionActivate = QtGui.QAction(menuTxt, menu)
-            actionActivate.setCheckable(True)
-            if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == self.Object:
-                actionActivate.setChecked(True)
-            else:
-                actionActivate.setChecked(False)
-            actionActivate.triggered.connect(lambda _: self.activate(actionActivate))
-            menu.addAction(actionActivate)
+
+        menuTxt = translate("Arch", "Active")
+        actionActivate = QtGui.QAction(menuTxt, menu)
+        actionActivate.setCheckable(True)
+        if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == self.Object:
+            actionActivate.setChecked(True)
+        else:
+            actionActivate.setChecked(False)
+        actionActivate.triggered.connect(lambda _: self.activate(actionActivate))
+        menu.addAction(actionActivate)
 
         actionSetWorkingPlane = QtGui.QAction(
             QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),
@@ -1192,53 +1192,35 @@ class ViewProviderBuildingPart:
         menu.addAction(actionCloneUp)
 
     def activate(self, action=None):
-        from draftutils.gui_utils import toggle_working_plane
+        from bimcommands.BimViews import _toggle_active_container
 
-        vobj = self.Object.ViewObject
-
-        if (not hasattr(vobj, "DoubleClickActivates")) or vobj.DoubleClickActivates:
-            if toggle_working_plane(self.Object, action, restore=True):
-                print("Setting active working plane to: ", self.Object.Label)
-            else:
-                print("Deactivating working plane from: ", self.Object.Label)
-
+        _toggle_active_container(self.Object, action)
         FreeCADGui.Selection.clearSelection()
 
     def setWorkingPlane(self, restore=False):
-        vobj = self.Object.ViewObject
-
         import WorkingPlane
 
         wp = WorkingPlane.get_working_plane(update=False)
-        autoclip = False
-        if hasattr(vobj, "AutoCutView"):
-            autoclip = vobj.AutoCutView
+        obj = self.Object
+
+        if getattr(obj.ViewObject, "AutoCutView", False):
+            obj.ViewObject.CutView = not restore
+        for found in obj.Document.findObjects(Type="App::GeometryPython"):
+            if found == obj:
+                continue
+            if getattr(found.ViewObject, "AutoCutView", False):
+                found.ViewObject.CutView = False
+
         if restore:
-            if wp.label.rstrip("*") == self.Object.Label:
-                prev_data = wp._previous()
-                if prev_data:
-                    prev_label = prev_data.get("label", "").rstrip("*")
-                    prev_obj = None
-                    for obj in FreeCAD.ActiveDocument.Objects:
-                        if hasattr(obj, "Label") and obj.Label == prev_label:
-                            prev_obj = obj
-                            break
-
-                    if prev_obj:
-                        # check in which context we need to set the active object
-                        context = "Arch"
-                        obj_type = Draft.getType(prev_obj)
-                        if obj_type == "IfcBuildingStorey":
-                            context = "NativeIFC"
-                        FreeCADGui.ActiveDocument.ActiveView.setActiveObject(context, prev_obj)
-                        print(f"Set active object to: {prev_obj.Label} (context: {context})")
-
-            if autoclip:
-                vobj.CutView = False
+            wp.set_to_top()
+            FreeCAD.Console.PrintMessage(
+                translate("Arch", "Active working plane set to Top") + "\n"
+            )
         else:
             wp.align_to_selection()
-            if autoclip:
-                vobj.CutView = True
+            FreeCAD.Console.PrintMessage(
+                translate("Arch", f"Active working plane set to {self.Object.Label}") + "\n"
+            )
 
     def writeCamera(self):
 

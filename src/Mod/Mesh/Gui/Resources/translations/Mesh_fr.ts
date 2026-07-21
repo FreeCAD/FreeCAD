@@ -2175,7 +2175,7 @@ Visit https://openscad.org/ to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="440"/>
       <source>Asymptote Format</source>
-      <translation>Format Asymptote</translation>
+      <translation>Format d'Asymptote</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="441"/>
