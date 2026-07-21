@@ -34,6 +34,7 @@
 #include "Navigation/NavigationStyle.h"
 #include "Selection/SelectionColors.h"
 #include "SoFCSelectionAction.h"
+#include "RenderPipeline.h"
 #include "View3DSettings.h"
 #include "View3DInventorViewer.h"
 
@@ -95,6 +96,7 @@ void View3DSettings::applySettings()
     OnChange(*hGrp, "AxisZColor");
     OnChange(*hGrp, "UseVBO");
     OnChange(*hGrp, "RenderCache");
+    OnChange(*hGrp, "CoinRenderPipeline");
     OnChange(*hGrp, "Orthographic");
     OnChange(*hGrp, "NavigationStyle");
     OnChange(*hGrp, "OrbitStyle");
@@ -125,7 +127,7 @@ void View3DSettings::applySettings()
 
 void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason)
 {
-    const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
+    ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
     if (strcmp(Reason, "EnableHeadlight") == 0) {
         bool enable = rGrp.GetBool("EnableHeadlight", true);
         for (auto _viewer : _viewers) {
@@ -432,6 +434,17 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
             for (auto _viewer : _viewers) {
                 _viewer->setRenderCache(rGrp.GetInt("RenderCache", 0));
             }
+        }
+    }
+    else if (strcmp(Reason, "CoinRenderPipeline") == 0) {
+        const auto value = rGrp.GetASCII("CoinRenderPipeline", "LegacyGL");
+        const auto pipeline = parseRenderPipelineOrLegacy(value);
+        const auto canonical = std::string(renderPipelineName(pipeline));
+        if (value != canonical) {
+            rGrp.SetASCII("CoinRenderPipeline", canonical.c_str());
+        }
+        for (auto _viewer : _viewers) {
+            _viewer->setRenderPipeline(pipeline);
         }
     }
     else if (strcmp(Reason, "Orthographic") == 0) {
