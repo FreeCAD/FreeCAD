@@ -85,7 +85,9 @@ def makeRegularPolygon(
     angle = 2 * math.pi / sides
     for i in range(0, sides):
         conList.append(
-            Sketcher.Constraint("Coincident", geoIndices[-sides + i], 1, geoIndices[-(sides + 1)], 3)
+            Sketcher.Constraint(
+                "Coincident", geoIndices[-sides + i], 1, geoIndices[-(sides + 1)], 3
+            )
         )
         conList.append(
             Sketcher.Constraint("Coincident", geoIndices[-sides + i], 2, geoIndices[i], 1)
@@ -103,4 +105,3 @@ def makeRegularPolygon(
         )
     sketch.addConstraint(conList)
     return
-
