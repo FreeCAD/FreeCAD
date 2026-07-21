@@ -613,8 +613,6 @@ protected:
 private:
     static void setViewportCB(void* userdata, SoAction* action);
     static void clearBufferCB(void* userdata, SoAction* action);
-    static void setGLWidgetCB(void* userdata, SoAction* action);
-    static void handleEventCB(void* userdata, SoEventCallback* n);
     static void interactionStartCB(void* data, Quarter::SoQTQuarterAdaptor* viewer);
     static void interactionFinishCB(void* data, Quarter::SoQTQuarterAdaptor* viewer);
     static void interactionLoggerCB(void* ud, SoAction* action);

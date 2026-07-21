@@ -1195,7 +1195,6 @@ void View3DInventorViewer::init()
     pEventCallback->setUserData(this);
     pEventCallback->ref();
     pcViewProviderRoot->addChild(pEventCallback);
-    pEventCallback->addEventCallback(SoEvent::getClassTypeId(), handleEventCB, this);
 
     dimensionRoot = new SoSwitch(SO_SWITCH_NONE);
     dimensionRoot->setName("RootDimensions");
@@ -1944,26 +1943,6 @@ void View3DInventorViewer::clearBufferCB(void* ud, SoAction* action)
     }
 }
 
-void View3DInventorViewer::setGLWidgetCB(void* userdata, SoAction* action)
-{
-    // FIXME: This causes the Coin error message:
-    //  Coin error in SoNode::GLRenderS(): GL error: 'GL_STACK_UNDERFLOW', nodetype:
-    //  Separator (set envvar COIN_GLERROR_DEBUGGING=1 and re-run to get more information)
-    if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
-        auto gl = static_cast<QWidget*>(userdata);
-        SoGLWidgetElement::set(action->getState(), qobject_cast<QOpenGLWidget*>(gl));
-    }
-}
-
-void View3DInventorViewer::handleEventCB(void* userdata, SoEventCallback* n)
-{
-    auto that = static_cast<View3DInventorViewer*>(userdata);
-    SoGLRenderAction* glra = that->getSoRenderManager()->getGLRenderAction();
-    SoAction* action = n->getAction();
-    SoGLRenderActionElement::set(action->getState(), glra);
-    SoGLWidgetElement::set(action->getState(), qobject_cast<QOpenGLWidget*>(that->getGLWidget()));
-}
-
 void View3DInventorViewer::setGradientBackground(View3DInventorViewer::Background grad)
 {
     switch (grad) {
@@ -2506,9 +2485,6 @@ void View3DInventorViewer::savePicture(
     root->addChild(getBacklight());
     root->addChild(getFillLight());
     root->addChild(camera);
-    auto gl = new SoCallback;
-    gl->setCallback(setGLWidgetCB, this->getGLWidget());
-    root->addChild(gl);
     root->addChild(pcViewProviderRoot);
     root->addChild(foregroundroot);
     if (shouldRenderDecorations(intent)) {
@@ -3294,8 +3270,6 @@ void View3DInventorViewer::renderGLActionScene(const QColor& backgroundColor, So
     {
         ZoneScopedN("Background");
         SoDevicePixelRatioElement::set(state, devicePixelRatio());
-        SoGLWidgetElement::set(state, qobject_cast<QOpenGLWidget*>(this->getGLWidget()));
-        SoGLRenderActionElement::set(state, glra);
         SoGLVBOActivatedElement::set(state, this->vboEnabled);
         drawSingleBackground(backgroundColor);
         glra->apply(this->backgroundroot);
