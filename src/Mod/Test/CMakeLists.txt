@@ -30,6 +30,8 @@ SET(Test_SRCS
     CoinSnapshotHarness.py
     CoinSnapshotScenes.py
     TestCoinNodeSnapshots.py
+    TestCoinRenderPipelines.py
+    TestSelectionCursor.py
     TestView3DFramebufferCapture.py
     TestSelectionVisual.py
     TestCornerAxisCrossVisual.py
