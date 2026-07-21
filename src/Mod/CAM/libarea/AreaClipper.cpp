@@ -56,13 +56,53 @@ static void AddVertex(
     std::optional<int> zLoop = {}
 )
 {
+    std::optional<heeks::Point> prev_pt;
+    if (arcMap.z_prev != 0) {
+        prev_pt = {arcMap.point_map[arcMap.z_prev]};
+    }
+
+    auto setOrientation = [&arcMap](
+                              int64_t z,
+                              const std::pair<double, double>& dirIn,
+                              const std::pair<double, double>& dirOut
+                          ) {
+        arcMap.orientations[z] = dirIn.first * dirOut.second - dirIn.second * dirOut.first > 0;
+    };
+
+    auto addPoint = [&](const PointD& cur_pt, bool push) {
+        // Add to the list
+        if (push) {
+            pts_for_AddVertex.push_back(cur_pt);
+        }
+
+        // Update map of point orientations, and update prev* values
+        if (prev_pt.has_value()) {
+            // Compute orientation of point expansion at prev_pt
+            const auto dir = std::make_pair(cur_pt.x - prev_pt->x, cur_pt.y - prev_pt->y);
+            if (arcMap.direction_prev) {
+                setOrientation(arcMap.z_prev, *(arcMap.direction_prev), dir);
+            }
+
+            // Update old values
+            arcMap.direction_prev = dir;
+            if (!arcMap.direction_initial.has_value()) {
+                arcMap.direction_initial = dir;
+            }
+        }
+        arcMap.z_prev = cur_pt.z;
+        prev_pt = {{cur_pt.x, cur_pt.y}};
+    };
+
     if (vertex.m_type == 0 || prev_vertex == NULL) {
+        // Add new point
         if (!zLoop.has_value()) {
             const int64_t z = arcMap.z_next++;
-            PointD p(vertex.m_p.x, vertex.m_p.y, z);
             arcMap.point_map[z] = vertex.m_p;
-            pts_for_AddVertex.push_back(p);
-            arcMap.z_prev = z;
+            addPoint(PointD(vertex.m_p.x, vertex.m_p.y, z), true);
+        }
+        else {
+            addPoint({arcMap.point_map[*zLoop].x, arcMap.point_map[*zLoop].y, *zLoop}, false);
+            setOrientation(*zLoop, *(arcMap.direction_prev), *(arcMap.direction_initial));
         }
     }
     else {
@@ -96,24 +136,24 @@ static void AddVertex(
                     if (zLoop.has_value()) {
                         // since zLoop represents the curve start, its z value will be smaller
                         arcMap.arc_centers[{*zLoop, arcMap.z_prev}] = vertex.m_c;
+                        addPoint({arcMap.point_map[*zLoop].x, arcMap.point_map[*zLoop].y, *zLoop}, false);
+                        setOrientation(*zLoop, *(arcMap.direction_prev), *(arcMap.direction_initial));
                     }
                     else {
                         const int64_t z = arcMap.z_next++;
-                        pts_for_AddVertex.push_back(PointD(vertex.m_p.x, vertex.m_p.y, z));
                         arcMap.point_map[z] = vertex.m_p;
                         arcMap.arc_centers[{arcMap.z_prev, z}] = vertex.m_c;
-                        arcMap.z_prev = z;
+                        addPoint(PointD(vertex.m_p.x, vertex.m_p.y, z), true);
                     }
                 }
                 else {
                     const int64_t z = arcMap.z_next++;
                     const double px = vertex.m_c.x + radius * cos(phi0 + dphi * i);
                     const double py = vertex.m_c.y + radius * sin(phi0 + dphi * i);
-                    pts_for_AddVertex.push_back(PointD(px, py, z));
                     // Store arc center in point_map for intermediate points
                     arcMap.point_map[z] = vertex.m_c;
                     arcMap.arc_centers[{arcMap.z_prev, z}] = vertex.m_c;
-                    arcMap.z_prev = z;
+                    addPoint(PointD(px, py, z), true);
                 }
             }
         }
@@ -220,9 +260,12 @@ std::vector<int> CArea::_SetFromResult(
         PointD dp_next = ToPointD(pt_next);
         heeks::Point p_next(dp_next.x, dp_next.y);
 
+        std::cerr << "pt=(" << pt.x << ", " << pt.y << ", " << pt.z << ")\n";
+
         // Construct ordered pair for arc detection
-        auto edgeInfo = getEdgeInfo(prevP64, pt);
-        if (prevZ == pt.z && openEnds.count(pt.z)) {
+        auto edgeInfo = prevZ == -1 ? EdgeInfo {{prevZ, pt.z}, 0} : getEdgeInfo(prevP64, pt);
+        if (edgeInfo.parentEdge.first == edgeInfo.parentEdge.second
+            && openEnds.contains(edgeInfo.parentEdge.first)) {
             edgeInfo.orientation = 0;
         }
         prevP64 = pt;
@@ -231,7 +274,8 @@ std::vector<int> CArea::_SetFromResult(
         // redo a lot of documentation here with the new getEdgeInfo strategy/semantics
         auto centerIt = m_arc_fitting_map.arc_centers.find(edgeInfo.parentEdge);
         bool isLine = !CArea::m_fit_arcs || (prevZ == -1)
-            || ((prevZ != pt.z) && (centerIt == m_arc_fitting_map.arc_centers.end()));
+            || ((edgeInfo.parentEdge.first != edgeInfo.parentEdge.second)
+                && (centerIt == m_arc_fitting_map.arc_centers.end()));
 
         if (isLine) {
             curve.m_vertices.emplace_back(0, p, heeks::Point {0, 0});
@@ -239,13 +283,15 @@ std::vector<int> CArea::_SetFromResult(
                 orientations.push_back(edgeInfo.orientation);  // TODO maybe I just want this to be
                                                                // a boolean, orientationMatchesParent
             }
+
             phi_total = 0.0;
             pe_next_type = 0;  // clear it
         }
         else {
-            const bool isPointExpansion = prevZ == pt.z;
-            heeks::Point center = isPointExpansion ? m_arc_fitting_map.point_map.at(pt.z)
-                                                   : centerIt->second;
+            const bool isPointExpansion = edgeInfo.parentEdge.first == edgeInfo.parentEdge.second;
+            heeks::Point center = isPointExpansion
+                ? m_arc_fitting_map.point_map.at(edgeInfo.parentEdge.first)
+                : centerIt->second;
 
             double phi0 = atan2(prevP.y - center.y, prevP.x - center.x);
             double phi1 = atan2(p.y - center.y, p.x - center.x);
@@ -923,17 +969,32 @@ void CArea::ZCallback(
     Point64& pt
 )
 {
-    // If z values are present, generate a new one for the new point
-    if (e1bot.z != 0 || e1top.z != 0 || e2bot.z != 0 || e2top.z != 0) {
-        // Allocate a new z-label for this intersection point
-        pt.z = m_arc_fitting_map.z_next++;
+    // If pt exactly matches one of the source points in x and y, give it the same z
+    if (pt.x == e1bot.x && pt.y == e1bot.y) {
+        pt.z = e1bot.z;
+    }
+    else if (pt.x == e1top.x && pt.y == e1top.y) {
+        pt.z = e1top.z;
+    }
+    else if (pt.x == e2bot.x && pt.y == e2bot.y) {
+        pt.z = e2bot.z;
+    }
+    else if (pt.x == e2top.x && pt.y == e2top.y) {
+        pt.z = e2top.z;
+    }
+    else {
+        // If z values are present, generate a new one for the new point
+        if (e1bot.z != 0 || e1top.z != 0 || e2bot.z != 0 || e2top.z != 0) {
+            // Allocate a new z-label for this intersection point
+            pt.z = m_arc_fitting_map.z_next++;
 
-        // Record the intersection: which edges intersected to create this point
-        m_arc_fitting_map.intersections[pt.z] = std::make_tuple(e1bot.z, e1top.z, e2bot.z, e2top.z);
+            // Record the intersection: which edges intersected to create this point
+            m_arc_fitting_map.intersections[pt.z] = std::make_tuple(e1bot.z, e1top.z, e2bot.z, e2top.z);
 
-        // Add the new point to the point map
-        PointD dp = ToPointD(pt);
-        m_arc_fitting_map.point_map[pt.z] = heeks::Point(dp.x, dp.y);
+            // Add the new point to the point map
+            PointD dp = ToPointD(pt);
+            m_arc_fitting_map.point_map[pt.z] = heeks::Point(dp.x, dp.y);
+        }
     }
 }
 
@@ -963,14 +1024,11 @@ ZCallback64 CArea::MakeZCallback()
 // TODO write/update/fix documentation here
 CArea::EdgeInfo CArea::getEdgeInfo(const Point64& p1, const Point64& p2)
 {
+    const PointD dp1 = ToPointD(p1);
+    const PointD dp2 = ToPointD(p2);
+
     if (p1.z == p2.z) {
-        const PointD dp1 = ToPointD(p1);
-        const PointD dp2 = ToPointD(p2);
-        auto center = m_arc_fitting_map.point_map[p1.z];
-        double phi1 = atan2(dp1.y - center.y, dp1.x - center.x);
-        double phi2 = atan2(dp2.y - center.y, dp2.x - center.x);
-        double dphi = recenter(phi2 - phi1, -M_PI, 1);  // range: (-M_PI to M_PI]
-        int orientation = dphi > 0 ? 1 : -1;
+        int orientation = m_arc_fitting_map.orientations[p1.z] ? 1 : -1;
         return {{p1.z, p1.z}, orientation};
     }
 
@@ -996,11 +1054,9 @@ CArea::EdgeInfo CArea::getEdgeInfo(const Point64& p1, const Point64& p2)
             = {std::min(p2_e2bot, p2_e2top), std::max(p2_e2bot, p2_e2top)};
 
         if (p1_edge1 == p2_edge1 || p1_edge1 == p2_edge2) {
-            // p1_edge1 matches one of the p2 edges
             parentEdge = p1_edge1;
         }
         else if (p1_edge2 == p2_edge1 || p1_edge2 == p2_edge2) {
-            // p1_edge2 matches one of the p2 edges
             parentEdge = p1_edge2;
         }
     }
@@ -1015,11 +1071,9 @@ CArea::EdgeInfo CArea::getEdgeInfo(const Point64& p1, const Point64& p2)
         std::pair<int64_t, int64_t> new_edge = {std::min(p_new.z, p_old.z), std::max(p_new.z, p_old.z)};
 
         if (p_old.z == p_new_e1bot || p_old.z == p_new_e1top) {
-            // p_old.z is an endpoint of edge1
             parentEdge = {std::min(p_new_e1bot, p_new_e1top), std::max(p_new_e1bot, p_new_e1top)};
         }
         else if (p_old.z == p_new_e2bot || p_old.z == p_new_e2top) {
-            // p_old.z is an endpoint of edge2
             parentEdge = {std::min(p_new_e2bot, p_new_e2top), std::max(p_new_e2bot, p_new_e2top)};
         }
     }
@@ -1029,18 +1083,22 @@ CArea::EdgeInfo CArea::getEdgeInfo(const Point64& p1, const Point64& p2)
     }
 
     if (parentEdge) {
-        double dx1 = p1.x - parentEdge->first;
-        double dy1 = p1.y - parentEdge->second;
+        // Look up the mm-space position of the "first" (lower-z) endpoint of the parent edge
+        const heeks::Point& edgeStart = m_arc_fitting_map.point_map[parentEdge->first];
+
+        double dx1 = dp1.x - edgeStart.x;
+        double dy1 = dp1.y - edgeStart.y;
         double distsq1 = dx1 * dx1 + dy1 * dy1;
 
-        double dx2 = p2.x - parentEdge->first;
-        double dy2 = p2.y - parentEdge->second;
+        double dx2 = dp2.x - edgeStart.x;
+        double dy2 = dp2.y - edgeStart.y;
         double distsq2 = dx2 * dx2 + dy2 * dy2;
 
-        return {*parentEdge, distsq2 > distsq1 ? 1 : -1};
+        int orientation = distsq2 > distsq1 ? 1 : -1;
+        return {*parentEdge, orientation};
     }
 
-    return {{0, 0}, 0};  // this should not happen; parent edge should always exist
+    return {{-2, -3}, 0};  // this should not happen; parent edge should always exist
 }
 
 // For any intersection points created, splitting an original edge, update

@@ -36,7 +36,7 @@ def format_area(area_obj, label):
         lines.append(f"  Curve {i} ({len(vertices)} vertices):")
         for j, v in enumerate(vertices):
             lines.append(
-                f"    [{j}] type={v.type}, p=({v.p.x:.2f}, {v.p.y:.2f}), c=({v.c.x:.2f}, {v.c.y:.2f})"
+                f"    [{j}] type={v.type}, p=({v.p.x:.3f}, {v.p.y:.3f}), c=({v.c.x:.3f}, {v.c.y:.3f})"
             )
     return "\n".join(lines)
 
@@ -282,7 +282,7 @@ class TestArcFittingRoundTrip(PathTestBase):
         # Helper to format vertex for display
         def fmt_vertex(v):
             return (
-                f"type={v.type:2d}, p=({v.p.x:6.2f}, {v.p.y:6.2f}), c=({v.c.x:6.2f}, {v.c.y:6.2f})"
+                f"type={v.type:2d}, p=({v.p.x:7.3f}, {v.p.y:7.3f}), c=({v.c.x:7.3f}, {v.c.y:7.3f})"
             )
 
         # Compare exhaustively
@@ -460,7 +460,7 @@ class TestArcFittingOffsets(PathTestBase):
             orig_summary.append(f"  Curve {i}: {len(vertices)} vertices")
             for v in vertices:
                 orig_summary.append(
-                    f"    type={v.type:2d}, p=({v.p.x:6.2f}, {v.p.y:6.2f}), c=({v.c.x:6.2f}, {v.c.y:6.2f})"
+                    f"    type={v.type:2d}, p=({v.p.x:7.3f}, {v.p.y:7.3f}), c=({v.c.x:7.3f}, {v.c.y:7.3f})"
                 )
 
         a.Offset(offset_distance)
@@ -488,7 +488,7 @@ class TestArcFittingOffsets(PathTestBase):
             )
             for v in vertices:
                 result_summary.append(
-                    f"    type={v.type:2d}, p=({v.p.x:6.2f}, {v.p.y:6.2f}), c=({v.c.x:6.2f}, {v.c.y:6.2f})"
+                    f"    type={v.type:2d}, p=({v.p.x:7.3f}, {v.p.y:7.3f}), c=({v.c.x:7.3f}, {v.c.y:7.3f})"
                 )
 
         # Check curve count
@@ -707,7 +707,7 @@ class TestArcFittingBooleans(PathTestBase):
             input1_summary.append(f"  Curve {i}: {len(vertices)} vertices")
             for v in vertices:
                 input1_summary.append(
-                    f"    type={v.type:2d}, p=({v.p.x:6.2f}, {v.p.y:6.2f}), c=({v.c.x:6.2f}, {v.c.y:6.2f})"
+                    f"    type={v.type:2d}, p=({v.p.x:7.3f}, {v.p.y:7.3f}), c=({v.c.x:7.3f}, {v.c.y:7.3f})"
                 )
 
         input2_summary = []
@@ -716,7 +716,7 @@ class TestArcFittingBooleans(PathTestBase):
             input2_summary.append(f"  Curve {i}: {len(vertices)} vertices")
             for v in vertices:
                 input2_summary.append(
-                    f"    type={v.type:2d}, p=({v.p.x:6.2f}, {v.p.y:6.2f}), c=({v.c.x:6.2f}, {v.c.y:6.2f})"
+                    f"    type={v.type:2d}, p=({v.p.x:7.3f}, {v.p.y:7.3f}), c=({v.c.x:7.3f}, {v.c.y:7.3f})"
                 )
 
         # Perform the boolean operation
@@ -745,7 +745,7 @@ class TestArcFittingBooleans(PathTestBase):
             )
             for v in vertices:
                 result_summary.append(
-                    f"    type={v.type:2d}, p=({v.p.x:6.2f}, {v.p.y:6.2f}), c=({v.c.x:6.2f}, {v.c.y:6.2f})"
+                    f"    type={v.type:2d}, p=({v.p.x:7.3f}, {v.p.y:7.3f}), c=({v.c.x:7.3f}, {v.c.y:7.3f})"
                 )
 
         # Check curve count

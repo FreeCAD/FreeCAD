@@ -287,6 +287,7 @@ def wireToCArea(wire, tolerance=0.01):
     # Process each edge, adding its endpoint
     for edge in edges:
         curve = edge.Curve
+        p0 = edge.firstVertex().Point
         p1 = edge.lastVertex().Point
 
         if isinstance(curve, (Part.Line, Part.LineSegment)):

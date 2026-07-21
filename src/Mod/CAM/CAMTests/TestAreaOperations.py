@@ -51,8 +51,8 @@ class TestAreaOperations(unittest.TestCase):
     def make_vertex(self, type, p, c=(0, 0)):
         return area.Vertex(type, area.Point(*p), area.Point(*c))
 
-    def assert_areas_equal(self, actual, expected):
-        if not areas_equal(actual, expected):
+    def assert_areas_equal(self, actual, expected, **kwargs):
+        if not areas_equal(actual, expected, **kwargs):
             self.fail(format_area(actual, "Actual") + format_area(expected, "Expected"))
 
     def assertVertexEquals(self, actual, expected, approx_center=False):
@@ -311,6 +311,45 @@ class TestAreaOperations(unittest.TestCase):
         # OpenOffset(-1) should swap: a2 == neg1, neg2 == a1
         self.assert_areas_equal(a2, neg1)
         self.assert_areas_equal(neg2, a1)
+
+    def test_open_offset_direction_flip(self):
+        """Test OpenOffset on a path that causes direction flipping"""
+        # Construct subject, a P-shape curve that doesn't quite close to itself
+        subj = make_curve([(0, 0), (0, 40), (40, 40), (40, 20), (9, 20)])
+        a3 = make_area(subj)
+
+        # Offset by enough to close the gap
+        neg3 = a3.OpenOffset(5)
+
+        expected_pos = make_area(
+            [
+                make_curve([(5, 0), (5, 17)]),
+                make_curve([(5, 23), (5, 35), (35, 35), (35, 25), (9, 25)]),
+            ]
+        )
+        expected_neg = make_area(
+            make_curve(
+                [
+                    (-5, 0),
+                    (-5, 40),
+                    (0, 45, -1, 0, 40),
+                    (40, 45),
+                    (45, 40, -1, 40, 40),
+                    (45, 20),
+                    (40, 15, -1, 40, 20),
+                    (9, 15),
+                ]
+            )
+        )
+
+        # Compute expected arc fitting accuracy
+        # Nominal values: Radius 5, dx = 4, dy = 3 (3/4/5 right triangle)
+        # Segment approximation may truncate the circle at most to radius 5 - area.get_accuracy()
+        # This creates a vertical offset of the intersection with the x=5 line of area.get_accuracy() / (3/5)
+        expected_accuracy = area.get_accuracy() / (3 / 5.0)
+
+        self.assert_areas_equal(a3, expected_pos, tol=expected_accuracy)
+        self.assert_areas_equal(neg3, expected_neg, tol=expected_accuracy)
 
     # ========================================================================
     # Geometry Manipulation Tests
