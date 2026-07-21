@@ -23,6 +23,7 @@
 
 import FreeCAD
 import Path
+import ast
 import glob
 import importlib.util
 import json
@@ -471,10 +472,22 @@ def setJobDefaults(jobTemplate, geometryTolerance, curveAccuracy):
 def postProcessorBlacklist():
     pref = preferences()
     blacklist = pref.GetString(PostProcessorBlacklist, "")
-    try:
-        return json.loads(blacklist)
-    except Exception:
+    if not blacklist:
         return []
+    try:
+        parsed = json.loads(blacklist)
+    except ValueError:
+        # Migrate the legacy format, which stored the list as a Python repr
+        # (for example "['GRBL', 'linuxcnc']") that json cannot parse. Use
+        # ast.literal_eval, which only evaluates literals and cannot execute
+        # arbitrary code, unlike the eval() that was previously used here.
+        try:
+            parsed = ast.literal_eval(blacklist)
+        except (ValueError, SyntaxError):
+            return []
+    if not isinstance(parsed, list):
+        return []
+    return [str(item) for item in parsed]
 
 
 def setPostProcessorDefaults(processor, args, blacklist):
