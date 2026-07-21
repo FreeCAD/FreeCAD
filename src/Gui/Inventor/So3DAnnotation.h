@@ -24,6 +24,8 @@
 #pragma once
 
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/SoPath.h>
+#include <Inventor/misc/SoRefPtr.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/elements/SoSubElement.h>
@@ -52,7 +54,7 @@ protected:
     // priority (lower renders first)
     struct PriorityPath
     {
-        SoPath* path;
+        SoRefPtr<SoPath> path;
         int priority;
 
         PriorityPath(SoPath* p, int pr = 0)
@@ -73,12 +75,13 @@ public:
 
     static bool hasDelayedPaths(SoState* state);
 
+    static bool isProcessingDelayedPaths(SoState* state);
+    static void setProcessingDelayedPaths(SoState* state, bool processing);
+
     static SoPathList getDelayedPaths(SoState* state);
 
     static void processDelayedPathsWithPriority(SoState* state, SoGLRenderAction* action);
     static void processDelayedPathsWithPriority(SoState* state, SoIRRenderAction* action);
-
-    static bool isProcessingDelayedPaths;
 
     SbBool matches([[maybe_unused]] const SoElement* element) const override
     {
@@ -94,6 +97,7 @@ private:
     static SoDelayedAnnotationsElement* getElement(SoState* state);
 
     std::vector<PriorityPath> paths;
+    bool processingDelayedPaths {false};
 };
 
 /*! @brief 3D Annotation Node - Annotation with depth buffer
@@ -111,8 +115,6 @@ class GuiExport So3DAnnotation: public SoSeparator
     SO_NODE_HEADER(So3DAnnotation);
 
 public:
-    static bool render;
-
     So3DAnnotation();
 
     So3DAnnotation(const So3DAnnotation& other) = delete;

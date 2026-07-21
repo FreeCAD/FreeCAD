@@ -264,7 +264,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction* action)
     // for clarifyselection, add this node to delayed path if it is highlighted and render it on
     // top of everything else (highest priority)
     if (Gui::Selection().isClarifySelectionActive() && hasContextHighlight
-        && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths) {
+        && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths(state)) {
         if (viewProvider) {
             viewProvider->setFaceHighlightActive(true);
         }
@@ -328,7 +328,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction* action)
     if (ctx2 && !ctx2->selectionIndex.empty()) {
         renderSelection(action, ctx2, false);
     }
-    else if (Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths) {
+    else if (Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths(state)) {
         state->push();
         SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
         inherited::GLRender(action);
