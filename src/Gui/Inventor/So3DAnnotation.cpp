@@ -45,6 +45,34 @@ using namespace Gui;
 
 SO_ELEMENT_SOURCE(SoDelayedAnnotationsElement);
 
+namespace
+{
+
+class DelayedPathsProcessingScope
+{
+public:
+    explicit DelayedPathsProcessingScope(SoState* state)
+        : state(state)
+        , previous(SoDelayedAnnotationsElement::isProcessingDelayedPaths(state))
+    {
+        SoDelayedAnnotationsElement::setProcessingDelayedPaths(this->state, true);
+    }
+
+    ~DelayedPathsProcessingScope()
+    {
+        SoDelayedAnnotationsElement::setProcessingDelayedPaths(this->state, this->previous);
+    }
+
+    DelayedPathsProcessingScope(const DelayedPathsProcessingScope&) = delete;
+    DelayedPathsProcessingScope& operator=(const DelayedPathsProcessingScope&) = delete;
+
+private:
+    SoState* state;
+    bool previous;
+};
+
+}  // namespace
+
 void SoDelayedAnnotationsElement::init(SoState* state)
 {
     SoElement::init(state);
@@ -126,8 +154,7 @@ void SoDelayedAnnotationsElement::processDelayedPathsWithPriority(SoState* state
         [](const PriorityPath& a, const PriorityPath& b) { return a.priority < b.priority; }
     );
 
-    const bool previous = elt->processingDelayedPaths;
-    elt->processingDelayedPaths = true;
+    DelayedPathsProcessingScope processingScope(state);
 
     for (const auto& priorityPath : elt->paths) {
         SoPathList singlePath;
@@ -135,8 +162,6 @@ void SoDelayedAnnotationsElement::processDelayedPathsWithPriority(SoState* state
 
         action->apply(singlePath, TRUE);
     }
-
-    elt->processingDelayedPaths = previous;
 
     elt->paths.clear();
 }
@@ -155,14 +180,11 @@ void SoDelayedAnnotationsElement::processDelayedPathsWithPriority(SoState* state
         [](const PriorityPath& a, const PriorityPath& b) { return a.priority < b.priority; }
     );
 
-    const bool previous = elt->processingDelayedPaths;
-    elt->processingDelayedPaths = true;
-    action->beginAfterMainStage();
+    DelayedPathsProcessingScope processingScope(state);
+    SoIRRenderStageScope stageScope(*action, SoRenderStage::AfterMain);
     for (const auto& priorityPath : elt->paths) {
         action->switchToPathTraversal(priorityPath.path.get());
     }
-    action->endAfterMainStage();
-    elt->processingDelayedPaths = previous;
 
     elt->paths.clear();
 }
