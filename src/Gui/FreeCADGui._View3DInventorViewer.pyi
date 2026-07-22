@@ -127,7 +127,7 @@ class _View3DInventorViewer:
         ...
 
     def getRenderPipeline(self) -> str:
-        """Return the Coin rendering pipeline."""
+        """Return the selected Coin rendering pipeline."""
         ...
 
     def setEnabledNaviCube(self, enabled: bool, /) -> None:

@@ -186,7 +186,7 @@ void View3DInventorViewerPy::init_type()
     add_varargs_method(
         "getRenderPipeline",
         &View3DInventorViewerPy::getRenderPipeline,
-        "getRenderPipeline() -> str: return the Coin rendering pipeline for this viewer."
+        "getRenderPipeline() -> str: return the selected Coin rendering pipeline for this viewer."
     );
 
     add_varargs_method(

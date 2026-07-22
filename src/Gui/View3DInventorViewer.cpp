@@ -60,8 +60,6 @@
 #include <Inventor/annex/Profiler/SoProfiler.h>
 #include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
 #include <Inventor/details/SoDetail.h>
-#include <Inventor/elements/SoLightModelElement.h>
-#include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/events/SoEvent.h>
@@ -205,38 +203,31 @@ RenderPipeline fromCoinRenderPipeline(SoRenderManager::RenderPipeline mode)
     }
 }
 
+enum class RenderFallbackReason
+{
+    None,
+    PipelineUnavailable,
+    TargetUnsupported,
+    BackendInitializationFailed
+};
+
 }  // namespace
 
-RenderFrameResult View3DInventorViewer::renderFrame(const RenderFrameRequest& request)
+struct View3DInventorViewer::RenderFrameOptions
 {
-    // The roots are bound by the rendering integration that follows this model commit.
-    // Keep the result honest until there is a render target and an active scene graph to traverse.
-    const auto stagePlan = buildStagePlan(request);
+    SbViewportRegion viewport;
+    RenderIntent intent {RenderIntent::LiveInteractive};
+    bool includeViewerLighting {true};
+    bool includeDecorations {true};
+    std::optional<QColor> backgroundOverride;
+};
 
-    RenderFrameResult result;
-    result.requestedPipeline = request.requestedPipeline;
-    result.actualPipeline = request.requestedPipeline;
-    result.rendered = std::any_of(
-        stagePlan.begin(),
-        stagePlan.end(),
-        [](const ViewerRenderStageEntry& entry) { return entry.enabled && entry.root != nullptr; }
-    );
-    return result;
-}
-
-std::vector<ViewerRenderStageEntry>
-View3DInventorViewer::buildStagePlan(const RenderFrameRequest& request) const
+struct View3DInventorViewer::RenderFrameResult
 {
-    // This is deliberately policy-only. Root binding and all OpenGL operations belong to the
-    // rendering integration that consumes this plan.
-    return {
-        {ViewerRenderStage::Background, nullptr, true},
-        {ViewerRenderStage::MainScene, nullptr, true},
-        {ViewerRenderStage::AfterMain, nullptr, true},
-        {ViewerRenderStage::Foreground, nullptr, true},
-        {ViewerRenderStage::Decorations, nullptr, request.includeDecorations}
-    };
-}
+    bool rendered {false};
+    RenderPipeline usedPipeline {RenderPipeline::LegacyGL};
+    RenderFallbackReason fallback {RenderFallbackReason::None};
+};
 
 class View3DInventorViewer::ScopedRenderIntent
 {
@@ -256,13 +247,110 @@ private:
     View3DInventorViewer& viewer;
 };
 
-struct View3DInventorViewer::RenderFrameOptions
+View3DInventorViewer::RenderFrameResult View3DInventorViewer::renderFrame(
+    const RenderFrameOptions& options
+)
 {
-    SbViewportRegion viewport;
-    RenderIntent intent = RenderIntent::LiveInteractive;
-    bool includeViewerLighting = true;
-    std::optional<QColor> backgroundOverride;
-};
+    RenderFrameResult result;
+    const RenderPipeline selectedPipeline = getRenderPipeline();
+
+    auto* renderManager = getSoRenderManager();
+    if (!renderManager) {
+        result.fallback = RenderFallbackReason::PipelineUnavailable;
+        return result;
+    }
+
+    result.usedPipeline = fromCoinRenderPipeline(renderManager->getRenderPipeline());
+
+    const SbVec2s size = options.viewport.getViewportSizePixels();
+    if (size[0] <= 0 || size[1] <= 0) {
+        result.fallback = RenderFallbackReason::TargetUnsupported;
+        return result;
+    }
+
+    // The live manager owns the selected pipeline and the capture path binds its FBO before
+    // entering here. Both targets therefore use the same manager traversal.
+    const SbViewportRegion previousViewport = renderManager->getViewportRegion();
+    renderManager->setViewportRegion(options.viewport);
+    auto restoreViewport = qScopeGuard([renderManager, previousViewport]() {
+        renderManager->setViewportRegion(previousViewport);
+    });
+
+    ScopedRenderIntent scopedIntent(*this, options.intent);
+
+    const bool includeDecorations = options.includeDecorations
+        && renderIntentIncludesDecorations(options.intent);
+    const int previousDecorationChild = decorationSwitch ? decorationSwitch->whichChild.getValue()
+                                                         : SO_SWITCH_NONE;
+    auto restoreDecorations = qScopeGuard([this, previousDecorationChild]() {
+        if (decorationSwitch) {
+            decorationSwitch->whichChild = previousDecorationChild;
+        }
+    });
+    updateDecorationSwitch(
+        includeDecorations ? RenderIntent::LiveInteractive : RenderIntent::RasterCapture
+    );
+    if (includeDecorations && axiscrossEnabled) {
+        updateAxisCrossGeometry();
+    }
+
+    const bool overrideBackground = options.backgroundOverride.has_value()
+        && options.backgroundOverride->isValid();
+    const QColor previousBackground = backgroundColor();
+    const Background previousGradient = getGradientBackground();
+    auto restoreBackground = qScopeGuard(
+        [this, overrideBackground, previousBackground, previousGradient]() {
+            if (overrideBackground) {
+                setBackgroundColor(previousBackground);
+                setGradientBackground(previousGradient);
+            }
+        }
+    );
+    if (overrideBackground) {
+        setBackgroundColor(*options.backgroundOverride);
+        setGradientBackground(Background::NoGradient);
+    }
+
+    // A capture without viewer lighting uses the selection root for the main traversal. Swap the
+    // manager's root directly so View3DInventorViewer::setSceneGraph() cannot add its backlight.
+    SoNode* previousScene = renderManager->getSceneGraph();
+    const bool temporaryScene = !options.includeViewerLighting && previousScene == viewerSceneRoot;
+    if (temporaryScene) {
+        renderManager->setSceneGraph(selectionRoot);
+    }
+    auto restoreScene = qScopeGuard([renderManager, previousScene, temporaryScene]() {
+        if (temporaryScene) {
+            renderManager->setSceneGraph(previousScene);
+        }
+    });
+
+    renderManager->setRenderPipeline(toCoinRenderPipeline(selectedPipeline));
+
+    const SbVec2s origin = options.viewport.getViewportOriginPixels();
+    glViewport(origin[0], origin[1], size[0], size[1]);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_LINE_SMOOTH);
+
+    const QColor color = backgroundColor();
+    glClearColor(float(color.redF()), float(color.greenF()), float(color.blueF()), 1.0F);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    if (auto* glra = renderManager->getGLRenderAction()) {
+        SoGLVBOActivatedElement::set(glra->getState(), vboEnabled);
+    }
+
+    inherited::actualRedraw();
+
+    result.usedPipeline = fromCoinRenderPipeline(renderManager->getRenderPipeline());
+    result.rendered = true;
+    if (result.usedPipeline != selectedPipeline) {
+        result.fallback = result.usedPipeline == RenderPipeline::LegacyGL
+                && renderManager->getRenderBackend() == nullptr
+            ? RenderFallbackReason::BackendInitializationFailed
+            : RenderFallbackReason::PipelineUnavailable;
+    }
+    return result;
+}
 
 namespace
 {
@@ -2204,9 +2292,8 @@ void View3DInventorViewer::initializeRenderManager()
     rm->setRenderLayerRoot(SoRenderManager::RENDER_LAYER_FOREGROUND, combinedForegroundRoot);
     rm->addAfterMainSceneCallback(&View3DInventorViewer::afterMainSceneCB, this);
     rm->setLightingMode(shading ? SoRenderManager::LIT : SoRenderManager::UNLIT);
-    rm->setRenderPipeline(
-        toCoinRenderPipeline(parseRenderPipelineOrLegacy(ViewParams::instance()->getRenderPipeline()))
-    );
+    configuredPipeline = parseRenderPipelineOrLegacy(ViewParams::instance()->getRenderPipeline());
+    rm->setRenderPipeline(toCoinRenderPipeline(configuredPipeline));
 }
 
 void View3DInventorViewer::updateDecorationSwitch(RenderIntent intent)
@@ -2230,14 +2317,13 @@ void View3DInventorViewer::syncLightingMode()
 
 RenderPipeline View3DInventorViewer::getRenderPipeline() const
 {
-    if (auto* rm = this->getSoRenderManager()) {
-        return fromCoinRenderPipeline(rm->getRenderPipeline());
-    }
-    return RenderPipeline::LegacyGL;
+    return configuredPipeline;
 }
 
 void View3DInventorViewer::setRenderPipeline(RenderPipeline mode)
 {
+    configuredPipeline = mode;
+
     auto* rm = this->getSoRenderManager();
     if (!rm) {
         return;
@@ -3136,8 +3222,12 @@ void View3DInventorViewer::setRenderType(RenderType type)
                 fboFormat.setAttachment(QOpenGLFramebufferObject::Depth);
                 auto fbo = new QOpenGLFramebufferObject(width, height, fboFormat);
                 if (fbo->format().samples() > 0 && hasFramebufferBlitSupport()) {
-                    RenderFrameOptions options {vp, currentRenderIntent(), true, std::nullopt};
-                    if (!renderToFramebuffer(fbo, options)) {
+                    RenderFrameOptions frameOptions;
+                    frameOptions.intent = currentRenderIntent();
+                    frameOptions.includeDecorations = renderIntentIncludesDecorations(
+                        frameOptions.intent
+                    );
+                    if (!renderFrameToFramebuffer(*fbo, frameOptions).rendered) {
                         delete fbo;
                         break;
                     }
@@ -3157,8 +3247,12 @@ void View3DInventorViewer::setRenderType(RenderType type)
                         fallbackFormat.setAttachment(QOpenGLFramebufferObject::Depth);
                         fbo = new QOpenGLFramebufferObject(width, height, fallbackFormat);
                     }
-                    RenderFrameOptions options {vp, currentRenderIntent(), true, std::nullopt};
-                    if (!renderToFramebuffer(fbo, options)) {
+                    RenderFrameOptions frameOptions;
+                    frameOptions.intent = currentRenderIntent();
+                    frameOptions.includeDecorations = renderIntentIncludesDecorations(
+                        frameOptions.intent
+                    );
+                    if (!renderFrameToFramebuffer(*fbo, frameOptions).rendered) {
                         delete fbo;
                         break;
                     }
@@ -3219,7 +3313,6 @@ QImage View3DInventorViewer::renderToImage(const RenderImageOptions& options)
 
     const int samples = options.samples >= 0 ? options.samples : getNumSamples();
     QImage img;
-    ScopedRenderIntent scopedIntent(*this, options.intent);
 
     auto gl = static_cast<QOpenGLWidget*>(this->viewport());  // NOLINT
     gl->makeCurrent();
@@ -3255,16 +3348,6 @@ QImage View3DInventorViewer::renderToImage(const RenderImageOptions& options)
     int alpha = maxAlpha;
     QColor opaqueBackground = options.background;
     const bool overrideBackground = opaqueBackground.isValid();
-    const QColor previousBackground = backgroundColor();
-    const Background previousGradient = getGradientBackground();
-    auto restoreBackground = qScopeGuard(
-        [this, overrideBackground, previousBackground, previousGradient]() {
-            if (overrideBackground) {
-                setBackgroundColor(previousBackground);
-                setGradientBackground(previousGradient);
-            }
-        }
-    );
 
     if (overrideBackground) {
         // force an opaque background color
@@ -3272,17 +3355,15 @@ QImage View3DInventorViewer::renderToImage(const RenderImageOptions& options)
         if (alpha < maxAlpha) {
             opaqueBackground.setRgb(maxAlpha, maxAlpha, maxAlpha);
         }
-        setBackgroundColor(opaqueBackground);
-        setGradientBackground(Background::NoGradient);
     }
 
-    RenderFrameOptions frameOptions {
-        SbViewportRegion(width, height),
-        options.intent,
-        options.includeViewerLighting,
-        overrideBackground ? std::optional<QColor>(opaqueBackground) : std::nullopt
-    };
-    if (!renderToFramebuffer(&fbo, frameOptions)) {
+    RenderFrameOptions frameOptions;
+    frameOptions.intent = options.intent;
+    frameOptions.includeViewerLighting = options.includeViewerLighting;
+    frameOptions.includeDecorations = renderIntentIncludesDecorations(options.intent);
+    frameOptions.backgroundOverride = overrideBackground ? std::optional<QColor>(opaqueBackground)
+                                                         : std::nullopt;
+    if (!renderFrameToFramebuffer(fbo, frameOptions).rendered) {
         return {};
     }
     img = fbo.toImage();
@@ -3319,69 +3400,29 @@ QImage View3DInventorViewer::renderToImage(const RenderImageOptions& options)
     return img;
 }
 
-bool View3DInventorViewer::renderToFramebuffer(
-    QOpenGLFramebufferObject* fbo,
+View3DInventorViewer::RenderFrameResult View3DInventorViewer::renderFrameToFramebuffer(
+    QOpenGLFramebufferObject& framebuffer,
     const RenderFrameOptions& options
 )
 {
-    // Raster capture still uses this temporary LegacyGL action. The selected Coin pipeline governs
-    // the live viewport; routing captures through SoRenderManager is a follow-up FrameRequest API.
     static_cast<QOpenGLWidget*>(this->viewport())->makeCurrent();  // NOLINT
-    if (!fbo->bind()) {
+    if (!framebuffer.bind()) {
         Base::Console().warning("renderToFramebuffer failed to bind the framebuffer\n");
-        return false;
+        RenderFrameResult result;
+        result.fallback = RenderFallbackReason::TargetUnsupported;
+        return result;
     }
 
-    // This temporary action and the direct GL setup share the context with the retained main
-    // action. Notify Coin after capture so every action sharing the context resynchronizes.
-    // Create this guard before the release guard so the framebuffer is released first.
+    // The capture shares the context with the live action. Notify Coin after the framebuffer is
+    // released so every action sharing the context resynchronizes.
     auto invalidateMainAction = qScopeGuard([this]() { invalidateMainRenderActionState(); });
-    auto releaseFramebuffer = qScopeGuard([fbo]() { fbo->release(); });
-    int width = fbo->size().width();
-    int height = fbo->size().height();
+    auto releaseFramebuffer = qScopeGuard([&framebuffer]() { framebuffer.release(); });
 
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_LINE_SMOOTH);
+    RenderFrameOptions frameOptions = options;
+    const QSize framebufferSize = framebuffer.size();
+    frameOptions.viewport = SbViewportRegion(framebufferSize.width(), framebufferSize.height());
 
-    const QColor col = options.backgroundOverride.value_or(this->backgroundColor());
-    glViewport(0, 0, width, height);
-    glClearColor(float(col.redF()), float(col.greenF()), float(col.blueF()), 1.0F);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    SoBoxSelectionRenderAction gl(SbViewportRegion(width, height));
-    // When creating a new GL render action we have to copy over the cache context id
-    // For further details see init().
-    uint32_t id = this->getSoRenderManager()->getGLRenderAction()->getCacheContext();
-    gl.setCacheContext(id);
-    gl.setTransparencyType(SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND);
-
-    if (!this->shading) {
-        SoLightModelElement::set(gl.getState(), selectionRoot, SoLightModelElement::BASE_COLOR);
-        SoOverrideElement::setLightModelOverride(gl.getState(), selectionRoot, true);
-    }
-
-    gl.apply(this->backgroundroot);
-    // The render action of the render manager has set the depth function to GL_LESS
-    // while creating a new render action has it set to GL_LEQUAL. So, in order to get
-    // the exact same result set it explicitly to GL_LESS.
-    glDepthFunc(GL_LESS);
-    if (options.includeViewerLighting) {
-        gl.apply(this->getSoRenderManager()->getSceneGraph());
-    }
-    else {
-        gl.apply(this->getSoRenderManager()->getCamera());
-        SoNode* scene = this->getSceneGraph();
-        gl.apply(scene == this->viewerSceneRoot ? this->selectionRoot : scene);
-    }
-    renderDelayedAnnotations(&gl);
-    gl.apply(this->foregroundroot);
-    if (shouldRenderDecorations(options.intent)) {
-        if (this->axiscrossEnabled) {
-            this->updateAxisCrossGeometry();
-        }
-        gl.apply(this->decorationroot);
-    }
-    return true;
+    return renderFrame(frameOptions);
 }
 
 void View3DInventorViewer::actualRedraw()
@@ -3604,46 +3645,19 @@ void View3DInventorViewer::renderScene()
 {
     ZoneScoped;
 
-    // Must set up the OpenGL viewport manually, as upon resize
-    // operations, Coin won't set it up until the SoGLRenderAction is
-    // applied again. And since we need to do glClear() before applying
-    // the action..
-    const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
-    SbVec2s origin = vp.getViewportOriginPixels();
-    SbVec2s size = vp.getViewportSizePixels();
-    glViewport(origin[0], origin[1], size[0], size[1]);
-
-    const QColor col = this->backgroundColor();
-    glClearColor(float(col.redF()), float(col.greenF()), float(col.blueF()), 1.0F);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
-
-#if FC_COIN_HAVE_RENDER_MANAGER_STAGES
-    updateDecorationSwitch(currentRenderIntent());
-    if (renderIntentIncludesDecorations(currentRenderIntent()) && this->axiscrossEnabled) {
-        this->updateAxisCrossGeometry();
-    }
-
-    if (auto* glra = this->getSoRenderManager()->getGLRenderAction()) {
-        SoGLVBOActivatedElement::set(glra->getState(), this->vboEnabled);
-    }
+    const SbViewportRegion viewport = getSoRenderManager()->getViewportRegion();
+    RenderFrameOptions options;
+    options.viewport = viewport;
+    options.intent = currentRenderIntent();
+    options.includeDecorations = renderIntentIncludesDecorations(options.intent);
 
     try {
-        inherited::actualRedraw();
+        renderFrame(options);
     }
     catch (const Base::MemoryException&) {
         this->recoverFromRenderMemoryException();
     }
-#else
-    RenderFrameOptions options {vp, currentRenderIntent(), true, col};
-    this->renderLegacyFrame(options, this->getSoRenderManager()->getGLRenderAction());
-#endif
 
-#if !FC_COIN_HAVE_RENDER_MANAGER_STAGES
-    if (shouldRenderDecorations(currentRenderIntent()) && this->axiscrossEnabled) {
-        this->drawAxisCross();
-    }
-#endif
     // Immediately reschedule to get continuous animation.
     if (this->isAnimating()) {
         this->getSoRenderManager()->scheduleRedraw();
