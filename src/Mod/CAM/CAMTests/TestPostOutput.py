@@ -2013,3 +2013,89 @@ class TestExport2Integration(unittest.TestCase):
                 "nc",
                 "Existing property should not be overwritten",
             )
+
+    def test_tool_return_fires_once_at_job_end_not_per_tool_change(self):
+        """
+        Regression test: TOOL_RETURN must fire once, at the true end of the
+        job, not after every individual tool change.
+
+        Before the fix, _expand_post_item() attached TOOL_RETURN to every
+        tool_controller postable item. A postprocessor whose tool_return
+        content stops the spindle or cancels the tool-length offset (e.g.
+        Centroid's default "M5\nM25\nG49 H0") would cancel the M3/G43 that
+        the same tool-change had just emitted, before any cutting motion.
+        TOOL_RETURN should instead behave like POSTAMBLE: once, at the end.
+
+        This builds its own two-tool-change job (the shared class fixture
+        only has one tool controller, which can't exercise the "not between
+        tool changes" half of this regression).
+        """
+        from Path.Tool.toolbit import ToolBit
+
+        doc = FreeCAD.newDocument("tool_return_timing_test")
+        try:
+            box = doc.addObject("Part::Box", "TRBox")
+            box.Length = 100
+            box.Width = 100
+            box.Height = 20
+
+            job = PathJob.Create("ToolReturnTimingJob", [box], None)
+            job.PostProcessorOutputFile = ""
+            job.SplitOutput = False
+            job.Fixtures = ["G54"]
+
+            tcs = []
+            for i, diameter in enumerate((6.0, 3.0), start=1):
+                tool_attrs = {
+                    "name": f"Tool{i}",
+                    "shape": "endmill.fcstd",
+                    "parameter": {"Diameter": diameter},
+                    "attribute": {},
+                }
+                toolbit = ToolBit.from_dict(tool_attrs)
+                tool = toolbit.attach_to_doc(doc=doc)
+                tool.Label = f"Tool{i}"
+                tc = PathToolController.Create(f"TC_Tool{i}", tool, i)
+                tc.Label = f"TC: Tool{i}"
+                job.Proxy.addToolController(tc)
+                tcs.append(tc)
+
+            for i, tc in enumerate(tcs, start=1):
+                op = doc.addObject("Path::FeaturePython", f"TROp{i}")
+                op.Label = f"TROp{i}"
+                op.addProperty("App::PropertyLink", "ToolController", "Path", "")
+                op.ToolController = tc
+                op.Path = Path.Path(
+                    [
+                        Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),
+                        Path.Command("G1", {"X": 10.0, "Y": 0.0, "Z": -1.0, "F": 100.0}),
+                        Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),
+                    ]
+                )
+                job.Operations.addObject(op)
+
+            doc.recompute()
+
+            machine = self._create_machine()
+            machine.postprocessor_properties["tool_return"] = "(SENTINEL_TOOL_RETURN)"
+
+            results = self._run_export2(machine, job)
+            gcode = self._get_first_section_gcode(results)
+
+            self.assertEqual(
+                gcode.count("M6"),
+                2,
+                "sanity check: job should have two tool changes",
+            )
+            self.assertEqual(
+                gcode.count("SENTINEL_TOOL_RETURN"),
+                1,
+                "TOOL_RETURN should appear exactly once for the whole job",
+            )
+            self.assertGreater(
+                gcode.index("SENTINEL_TOOL_RETURN"),
+                gcode.rindex("M6"),
+                "TOOL_RETURN must appear after the last tool change, not between tool changes",
+            )
+        finally:
+            FreeCAD.closeDocument(doc.Name)
