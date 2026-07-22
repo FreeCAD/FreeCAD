@@ -107,7 +107,26 @@
       </item>
 
       <item row="2" column="1">
-       <widget class="QComboBox" name="endTypeCombo"/>
+        <widget class="QComboBox" name="endTypeCombo">
+            <property name="sizePolicy">
+                <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+
+            <item>
+                <property name="text">
+                    <string>Dimension</string>
+                </property>
+            </item>
+
+            <item>
+                <property name="text">
+                    <string>Through all</string>
+                </property>
+            </item>
+        </widget>
       </item>
 
      </layout>

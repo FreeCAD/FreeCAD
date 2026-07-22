@@ -12,6 +12,9 @@ class ThreadUtils
 {
 public:
     TopoDS_Shape makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double length);
+    App::DocumentObjectExecReturn* validateParameters(const App::PropertyLinkSub& LateralFace);
+    gp_Vec getThreadZAxis(const App::PropertyLinkSub& LateralFace);
+    gp_Vec computePerpendicular(const gp_Vec&) const;
 
     using ThreadDescription = struct
     {
@@ -23,10 +26,23 @@ public:
     static const std::vector<ThreadUtils::ThreadDescription> threadDescription[];
 
     std::vector<std::string> getThreadTypeEnums();
+    std::vector<std::string> getDepthTypeEnums();
+    std::vector<std::string> getThreadClass_None_Enums();
+    std::vector<std::string> getThreadClass_ISOmetric_Enums();
+    std::vector<std::string> getThreadClass_ISOmetricfine_Enums();
+    std::vector<std::string> getThreadClass_UNC_Enums();
+    std::vector<std::string> getThreadClass_UNF_Enums();
+    std::vector<std::string> getThreadClass_UNEF_Enums();
+    std::vector<std::string> getThreadClass_BSW_Enums();
+    std::vector<std::string> getThreadClass_BSF_Enums();
+    std::vector<std::string> getThreadDirectionEnums();
     std::vector<std::string> getThreadDesignations(const int threadType);
     std::vector<std::string> getThreadPitches(const int threadType, const int threadDiameter);
 
+    double getThroughAllLength() const;
+
 private:
+    static const char* DepthTypeEnums[];
     static const char* ThreadDepthTypeEnums[];
     static const char* ThreadTypeEnums[];
     static const char* ThreadDirectionEnums[];

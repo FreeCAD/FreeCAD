@@ -26,6 +26,7 @@ public:
 
     App::PropertyLinkSub LateralFace;
     App::PropertyLinkSub StartPlane;
+    App::PropertyLength Depth;
     App::PropertyLength ThreadDepth;
     App::PropertyLength ThreadDiameter;
     App::PropertyLength ThreadPitch;
@@ -38,6 +39,10 @@ public:
     App::PropertyEnumeration DepthType;
     App::PropertyEnumeration ThreadDirection;
     App::PropertyEnumeration ThreadDepthType;
+
+    App::PropertyBool UseCustomThreadClearance;
+    App::PropertyBool ModelThread;
+    App::PropertyBool CosmeticThread;
 
     /** @name methods override feature */
     //@{

@@ -56,6 +56,11 @@ private Q_SLOTS:
     void threadTypeChanged(int index);
     void threadSizeChanged(int index);
     void threadSizePitchChanged(int index);
+    void depthChanged(int index);
+    void threadClassChanged(int index);
+    void threadDirectionChanged(int index);
+    void CustomClearanceCheckValuesChanged();
+    void threadModelChanged();
 
 private:
     class Observer: public App::DocumentObserver
