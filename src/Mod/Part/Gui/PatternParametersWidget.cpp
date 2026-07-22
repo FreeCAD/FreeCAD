@@ -139,7 +139,7 @@ void PatternParametersWidget::connectSignals()
     connect(ui->groupBox, &QGroupBox::toggled, this, &PatternParametersWidget::onGroupBoxToggled);
     connect(
         ui->enableCheckbox,
-        &QCheckBox::toggled,
+        &QCheckBox::clicked,
         this,
         &PatternParametersWidget::onEnableCheckBoxToggled
     );
@@ -267,7 +267,9 @@ void PatternParametersWidget::onEnableCheckBoxToggled(bool checked)
         ui->groupBox->setVisible(true);
         ui->enableCheckbox->setVisible(false);
 
-        ui->spinOccurrences->setValue(2);
+        if (m_occurrencesProp->getValue() < 2) {
+            ui->spinOccurrences->setValue(2);
+        }
     }
 }
 
