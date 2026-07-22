@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskPanel</class>
+ <widget class="QWidget" name="TaskPanel">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>350</width>
+    <height>466</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Array</string>
+  </property>
+
+  <layout class="QVBoxLayout" name="layout_0">
+
+   <item>
+    <layout class="QGridLayout" name="layoutOperations">
+
+     <item row="0" column="0">
+      <widget class="QListWidget" name="baseList">
+       <property name="maximumSize">
+        <size>
+         <width>230</width>
+         <height>300</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>List of selected operations</string>
+       </property>
+      </widget>
+     </item>
+
+     <item row="0" column="1">
+      <layout class="QVBoxLayout" name="layoutButtons">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+
+       <item>
+        <widget class="QPushButton" name="pbClear">
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Remove all operations from list</string>
+         </property>
+         <property name="text">
+          <string>Clear</string>
+         </property>
+        </widget>
+       </item>
+
+       <item>
+        <widget class="QPushButton" name="pbRemove">
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Remove selected operations from list</string>
+         </property>
+         <property name="text">
+          <string>Remove</string>
+         </property>
+        </widget>
+       </item>
+
+       <item>
+        <widget class="QPushButton" name="pbAdd">
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Add new operations</string>
+         </property>
+         <property name="text">
+          <string>Add</string>
+         </property>
+        </widget>
+       </item>
+
+       <item>
+        <widget class="QPushButton" name="pbUp">
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Move operation up</string>
+         </property>
+         <property name="text">
+          <string>Up</string>
+         </property>
+        </widget>
+       </item>
+
+       <item>
+        <widget class="QPushButton" name="pbDown">
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Move operation down</string>
+         </property>
+         <property name="text">
+          <string>Down</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+
+
+
+
+
+   <item>
+    <widget class="QGroupBox" name="groupCommon">
+     <layout class="QVBoxLayout" name="layoutCommon">
+
+      <item>
+       <widget class="QWidget" name="groupCommon">
+        <layout class="QFormLayout" name="layoutArrayType">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_1">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+           </property>
+           <property name="text">
+            <string>Type</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="cboType">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+
+      <item>
+       <widget class="QWidget" name="groupCopies1D">
+        <layout class="QGridLayout" name="layoutCopies1D">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_2_0_0">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+           </property>
+           <property name="text">
+            <string>Copies</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QSpinBox" name="dspCopies">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+
+      <item>
+       <widget class="QWidget" name="groupCopies2D">
+        <layout class="QGridLayout" name="layoutCopies2D">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_2_0_0">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+           </property>
+           <property name="text">
+            <string>Copies X</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QSpinBox" name="dspCopiesX">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="label_2_0_1">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+           </property>
+           <property name="text">
+            <string>Copies Y</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QSpinBox" name="dspCopiesY">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+
+
+
+      <item>
+       <widget class="QWidget" name="groupOffset">
+        <layout class="QGridLayout" name="layoutOffset">
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_2_0_2">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+           </property>
+           <property name="text">
+            <string>Offset X</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="Gui::QuantitySpinBox" name="dspOffsetX">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLabel" name="label_2_0_3">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+           </property>
+           <property name="text">
+            <string>Offset Y</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="Gui::QuantitySpinBox" name="dspOffsetY">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+
+     </layout>
+    </widget>
+   </item>
+
+   <item>
+    <widget class="QGroupBox" name="groupPolar">
+     <property name="title">
+      <string>Polar parameters</string>
+     </property>
+     <layout class="QGridLayout" name="layout_Polar">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_1">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+        </property>
+        <property name="text">
+         <string>Angle</string>
+        </property>
+        <property name="toolTip">
+         <string>Total angle of polar pattern</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::QuantitySpinBox" name="dspPolarAngle">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+        </property>
+        <property name="text">
+         <string>Center X</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::QuantitySpinBox" name="dspPolarCenterX">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="label_3">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+        </property>
+        <property name="text">
+         <string>Center Y</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="Gui::QuantitySpinBox" name="dspPolarCenterY">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
+   <item>
+    <layout class="QGridLayout" name="layouCheckBoxes">
+     <item row="1" column="1">
+      <widget class="QCheckBox" name="chkSwap">
+       <property name="text">
+        <string>Swap direction</string>
+       </property>
+       <property name="toolTip">
+        <string>Make copies in X direction before Y in Linear 2D pattern</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QCheckBox" name="chkReverse">
+       <property name="text">
+        <string>Reverse direction</string>
+       </property>
+       <property name="toolTip">
+        <string>Start from farthest repeat</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QCheckBox" name="chkCombine">
+       <property name="text">
+        <string>Combine</string>
+       </property>
+       <property name="toolTip">
+        <string>If operations with identical tool controller and without coolant:
+combine by copies
+If operations with different tool controllers or with coolant:
+combine operations with same tool controller and coolant mode,
+but only if operations placed one by one in tree</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="chkExpand">
+       <property name="text">
+        <string>Expand</string>
+       </property>
+       <property name="toolTip">
+        <string>Split path by elements even all base operations without coolant and with identical tool controller</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QCheckBox" name="chkUseJitter">
+       <property name="text">
+        <string>Use jitter</string>
+       </property>
+       <property name="toolTip">
+        <string>Use randomly offset</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+
+
+   <item>
+    <widget class="QGroupBox" name="groupJitter">
+     <property name="title">
+      <string>Jitter parameters</string>
+     </property>
+     <layout class="QGridLayout" name="layoutJitter">
+
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_1">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+        </property>
+        <property name="text">
+         <string>Angle</string>
+        </property>
+        <property name="toolTip">
+         <string>Max angle of rotation for jitter randomness</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::QuantitySpinBox" name="dspJitterAngle">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+
+      <item row="0" column="2">
+       <widget class="QLabel" name="label_2">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred"/>
+        </property>
+        <property name="text">
+         <string>Seed</string>
+        </property>
+        <property name="minimum">
+         <double>0</double>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QSpinBox" name="dspJitterSeed">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+        </property>
+        <property name="text">
+         <string>X</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::QuantitySpinBox" name="dspJitterMagX">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="label_4">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+        </property>
+        <property name="text">
+         <string>Y</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="Gui::QuantitySpinBox" name="dspJitterMagY">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+
+     </layout>
+    </widget>
+   </item>
+
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
