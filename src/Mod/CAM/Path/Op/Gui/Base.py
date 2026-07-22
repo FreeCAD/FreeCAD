@@ -1585,6 +1585,8 @@ class TaskPanel(object):
                 if getattr(page, "InitBase", True) and hasattr(page, "addBase"):
                     page.clearBase()
                     page.addBaseGeometry(sel)
+            if hasattr(self.obj.Proxy, "initAfterBase"):
+                self.obj.Proxy.initAfterBase(self.obj)
 
         # Update properties based upon expressions in case expression value has changed
         for prp, expr in self.obj.ExpressionEngine:
@@ -1896,18 +1898,24 @@ class IconTabWidget(QtGui.QTabWidget):
             try:
                 ancestor.removeEventFilter(self)
             except RuntimeError:
-                pass  # ancestor already destroyed
+                pass  # ancestor's c++ object was deleted before the timer fired
         self._filteredAncestors = []
 
     def eventFilter(self, obj, event):
-        if event.type() == QtCore.QEvent.Resize:
+        if isinstance(event, QtCore.QEvent) and event.type() == QtCore.QEvent.Resize:
             self._scheduleUpdate()
         return super(IconTabWidget, self).eventFilter(obj, event)
 
     def _scheduleUpdate(self):
         # Defer until the event loop catches up so ancestor geometry (dock/
         # scroll area) has settled before we measure available width.
-        QtCore.QTimer.singleShot(0, lambda: self._updateTabLabels(self.currentIndex()))
+        def _deferredUpdate():
+            try:
+                self._updateTabLabels(self.currentIndex())
+            except RuntimeError:
+                pass  # widget's c++ object was deleed before the timer fired
+
+        QtCore.QTimer.singleShot(0, _deferredUpdate)
 
     def _availableWidth(self):
         """Width to fit tabs into: the nearest ancestor QScrollArea's viewport

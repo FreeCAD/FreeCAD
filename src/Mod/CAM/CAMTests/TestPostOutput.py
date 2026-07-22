@@ -751,6 +751,44 @@ class TestExport2Integration(unittest.TestCase):
             "version": 1,
         }
 
+    def test002_g0_convert(self):
+
+        # Default, no G0 F's
+
+        machine = self._create_machine()
+        post = self._create_postprocessor(machine)
+
+        # convert_command_to_gcode: No spurious F
+        cmd = Path.Command("G0 X1")
+        gcode = post.convert_command_to_gcode(cmd)
+        self.assertNotIn(" F", gcode)
+
+        # convert_command_to_gcode: No F by default for G0
+        cmd = Path.Command("G0 X1 F9")
+        gcode = post.convert_command_to_gcode(cmd)
+        self.assertNotIn(" F", gcode)
+
+        # Output G0 F's if asked
+
+        machine.processing.f_for_rapid_moves = True
+        post = self._create_postprocessor(machine)
+
+        # convert_command_to_gcode level: no spurious F
+        cmd = Path.Command("G0 X1")
+        gcode = post.convert_command_to_gcode(cmd)
+        self.assertNotIn(" F", gcode)
+
+        # convert_command_to_gcode level: include F
+        cmd = Path.Command("G0 X1 F8")
+        gcode = post.convert_command_to_gcode(cmd)
+        self.assertIn(" F", gcode)
+
+        # Don't output G0 F's if they are zero (e.g. tool wasn't setup with rapid speed)
+
+        cmd = Path.Command("G0 X1 F0")
+        gcode = post.convert_command_to_gcode(cmd)
+        self.assertNotIn(" F", gcode)
+
     # ===== 010-019: Basic smoke tests =====
 
     def test010_export2_returns_gcode_sections(self):

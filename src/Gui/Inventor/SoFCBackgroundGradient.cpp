@@ -25,19 +25,7 @@
 #include <cmath>
 #include <numbers>
 
-#include <Inventor/SbMatrix.h>
-#include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec3f.h>
-#include <Inventor/SbViewVolume.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoDepthBufferElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoMultiTextureEnabledElement.h>
-#include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/nodes/SoFaceSet.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShapeHints.h>
@@ -58,13 +46,24 @@ void SoFCBackgroundGradient::finish()
 SoFCBackgroundGradient::SoFCBackgroundGradient()
 {
     SO_NODE_CONSTRUCTOR(SoFCBackgroundGradient);
-    fCol.setValue(0.5f, 0.5f, 0.8f);
-    tCol.setValue(0.7f, 0.7f, 0.9f);
-    mCol.setValue(1.0f, 1.0f, 1.0f);
-    gradient = Gradient::LINEAR;
+    SO_NODE_ADD_FIELD(gradientMode, (LINEAR));
+    SO_NODE_ADD_FIELD(fromColor, (SbColor(0.5f, 0.5f, 0.8f)));
+    SO_NODE_ADD_FIELD(toColor, (SbColor(0.7f, 0.7f, 0.9f)));
+    SO_NODE_ADD_FIELD(midColor, (SbColor(1.0f, 1.0f, 1.0f)));
+    SO_NODE_ADD_FIELD(useMidColor, (TRUE));
+    SO_NODE_DEFINE_ENUM_VALUE(Gradient, LINEAR);
+    SO_NODE_DEFINE_ENUM_VALUE(Gradient, RADIAL);
+    SO_NODE_SET_SF_ENUM_TYPE(gradientMode, Gradient);
+
+    setCoordinateSpace(CoordinateSpace::Normalized);
+    setBaseColorLightModel(true);
+    setTexturesEnabled(false);
+    setMultiTexturesEnabled(false);
+    setDepthBuffer(false, false, SoDepthBufferElement::ALWAYS);
 
     gradientSwitch = new SoSwitch;
-    gradientSwitch->ref();
+    gradientSwitch->whichChild = 0;
+    addChild(gradientSwitch);
 
     // Linear gradient geometry
     linearSeparator = new SoSeparator;
@@ -99,118 +98,104 @@ SoFCBackgroundGradient::SoFCBackgroundGradient()
 
     gradientSwitch->addChild(linearSeparator);
     gradientSwitch->addChild(radialSeparator);
-    gradientSwitch->whichChild = 0;
+    ensureGeometry();
 }
 
 SoFCBackgroundGradient::~SoFCBackgroundGradient()
 {
-    if (gradientSwitch) {
-        gradientSwitch->unref();
-        gradientSwitch = nullptr;
-    }
+    gradientSwitch = nullptr;
+    linearSeparator = nullptr;
+    linearFaces = nullptr;
+    linearVertexProperty = nullptr;
+    radialSeparator = nullptr;
+    radialFan = nullptr;
+    radialFanVertexProperty = nullptr;
+    radialRing = nullptr;
+    radialRingVertexProperty = nullptr;
 }
 
 void SoFCBackgroundGradient::initClass()
 {
-    SO_NODE_INIT_CLASS(SoFCBackgroundGradient, SoNode, "Node");
+    SO_NODE_INIT_CLASS(SoFCBackgroundGradient, SoFCScreenSpaceGroup, "SoFCScreenSpaceGroup");
 }
 
-void SoFCBackgroundGradient::GLRender(SoGLRenderAction* action)
+void SoFCBackgroundGradient::prepareScreenSpaceGeometry(SoAction*)
 {
-    if (!action || !gradientSwitch) {
-        return;
-    }
-
-    SoState* state = action->getState();
-    if (!state) {
-        return;
-    }
-
-    state->push();
-
-    SoModelMatrixElement::set(state, this, SbMatrix::identity());
-    SoViewingMatrixElement::set(state, this, SbMatrix::identity());
-
-    SbViewVolume viewVolume;
-    viewVolume.ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
-    SbMatrix affine;
-    SbMatrix projection;
-    viewVolume.getMatrices(affine, projection);
-    SoProjectionMatrixElement::set(state, this, projection);
-    SoViewVolumeElement::set(state, this, viewVolume);
-
-    SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
-    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-    SoGLTextureEnabledElement::set(state, this, FALSE);
-    SoMultiTextureEnabledElement::set(state, this, FALSE);
-
     ensureGeometry();
-    gradientSwitch->whichChild = (gradient == Gradient::LINEAR) ? 0 : 1;
-    gradientSwitch->GLRender(action);
-
-    state->pop();
 }
 
 void SoFCBackgroundGradient::setGradient(SoFCBackgroundGradient::Gradient grad)
 {
-    if (gradient != grad) {
-        gradient = grad;
-        geometryDirty = true;
-        this->touch();
-    }
+    gradientMode.setValue(static_cast<int>(grad));
 }
 
 SoFCBackgroundGradient::Gradient SoFCBackgroundGradient::getGradient() const
 {
-    return gradient;
+    return static_cast<Gradient>(gradientMode.getValue());
 }
 
-void SoFCBackgroundGradient::setColorGradient(const SbColor& fromColor, const SbColor& toColor)
+void SoFCBackgroundGradient::setColorGradient(const SbColor& fromColorValue, const SbColor& toColorValue)
 {
-    fCol = fromColor;
-    tCol = toColor;
-    mCol[0] = -1.0f;
-    geometryDirty = true;
-    this->touch();
+    fromColor.setValue(fromColorValue);
+    toColor.setValue(toColorValue);
+    useMidColor.setValue(FALSE);
 }
 
 void SoFCBackgroundGradient::setColorGradient(
-    const SbColor& fromColor,
-    const SbColor& toColor,
-    const SbColor& midColor
+    const SbColor& fromColorValue,
+    const SbColor& toColorValue,
+    const SbColor& midColorValue
 )
 {
-    fCol = fromColor;
-    tCol = toColor;
-    mCol = midColor;
-    geometryDirty = true;
-    this->touch();
+    fromColor.setValue(fromColorValue);
+    toColor.setValue(toColorValue);
+    midColor.setValue(midColorValue);
+    useMidColor.setValue(TRUE);
 }
 
 void SoFCBackgroundGradient::ensureGeometry()
 {
-    if (!geometryDirty) {
+    const GeometryState state = currentGeometryState();
+    if (geometryInitialized && state.gradient == appliedGeometryState.gradient
+        && state.fromColor == appliedGeometryState.fromColor
+        && state.toColor == appliedGeometryState.toColor
+        && state.midColor == appliedGeometryState.midColor
+        && state.useMidColor == appliedGeometryState.useMidColor) {
         return;
     }
 
-    geometryDirty = false;
+    geometryInitialized = true;
+    appliedGeometryState = state;
+    if (gradientSwitch) {
+        gradientSwitch->whichChild = (state.gradient == Gradient::LINEAR) ? 0 : 1;
+    }
 
-    if (gradient == Gradient::LINEAR) {
-        updateLinearGeometry();
+    if (state.gradient == Gradient::LINEAR) {
+        updateLinearGeometry(state);
     }
     else {
-        updateRadialGeometry();
+        updateRadialGeometry(state);
     }
 }
 
-void SoFCBackgroundGradient::updateLinearGeometry()
+SoFCBackgroundGradient::GeometryState SoFCBackgroundGradient::currentGeometryState() const
+{
+    GeometryState state;
+    state.gradient = static_cast<Gradient>(gradientMode.getValue());
+    state.fromColor = fromColor.getValue().getPackedValue();
+    state.toColor = toColor.getValue().getPackedValue();
+    state.midColor = midColor.getValue().getPackedValue();
+    state.useMidColor = (useMidColor.getValue() != FALSE);
+    return state;
+}
+
+void SoFCBackgroundGradient::updateLinearGeometry(const GeometryState& state)
 {
     if (!linearVertexProperty || !linearFaces) {
         return;
     }
 
-    const bool hasMid = mCol[0] >= 0.0f;
-    if (!hasMid) {
+    if (!state.useMidColor) {
         static const SbVec3f quadVertices[4] = {
             SbVec3f(-1.0f, 1.0f, 0.0f),
             SbVec3f(1.0f, 1.0f, 0.0f),
@@ -218,12 +203,7 @@ void SoFCBackgroundGradient::updateLinearGeometry()
             SbVec3f(-1.0f, -1.0f, 0.0f)
         };
         linearVertexProperty->vertex.setValues(0, 4, quadVertices);
-        const uint32_t colors[4] = {
-            fCol.getPackedValue(),
-            fCol.getPackedValue(),
-            tCol.getPackedValue(),
-            tCol.getPackedValue()
-        };
+        const uint32_t colors[4] = {state.fromColor, state.fromColor, state.toColor, state.toColor};
         linearVertexProperty->orderedRGBA.setValues(0, 4, colors);
         linearFaces->numVertices.setNum(1);
         linearFaces->numVertices.set1Value(0, 4);
@@ -240,11 +220,16 @@ void SoFCBackgroundGradient::updateLinearGeometry()
             SbVec3f(-1.0f, -1.0f, 0.0f)
         };
         linearVertexProperty->vertex.setValues(0, 8, vertices);
-        const uint32_t topColor = fCol.getPackedValue();
-        const uint32_t midColor = mCol.getPackedValue();
-        const uint32_t bottomColor = tCol.getPackedValue();
-        const uint32_t colors[8]
-            = {topColor, topColor, midColor, midColor, midColor, midColor, bottomColor, bottomColor};
+        const uint32_t colors[8] = {
+            state.fromColor,
+            state.fromColor,
+            state.midColor,
+            state.midColor,
+            state.midColor,
+            state.midColor,
+            state.toColor,
+            state.toColor
+        };
         linearVertexProperty->orderedRGBA.setValues(0, 8, colors);
         linearFaces->numVertices.setNum(2);
         linearFaces->numVertices.set1Value(0, 4);
@@ -252,20 +237,15 @@ void SoFCBackgroundGradient::updateLinearGeometry()
     }
 }
 
-void SoFCBackgroundGradient::updateRadialGeometry()
+void SoFCBackgroundGradient::updateRadialGeometry(const GeometryState& state)
 {
     if (!radialFan || !radialFanVertexProperty || !radialRing || !radialRingVertexProperty) {
         return;
     }
 
-    const bool hasMid = mCol[0] >= 0.0f;
     constexpr float twoPi = 2.0f * std::numbers::pi_v<float>;
     constexpr float sqrt2 = std::numbers::sqrt2_v<float>;
     const float angleStep = twoPi / CircleSegments;
-
-    const uint32_t fromColor = fCol.getPackedValue();
-    const uint32_t toColor = tCol.getPackedValue();
-    uint32_t midColor = 0;
 
     std::array<SbVec3f, CircleSegments> outerPoints;
     for (int i = 0; i < CircleSegments; ++i) {
@@ -274,8 +254,7 @@ void SoFCBackgroundGradient::updateRadialGeometry()
     }
 
     std::array<SbVec3f, CircleSegments> innerPoints;
-    if (hasMid) {
-        midColor = mCol.getPackedValue();
+    if (state.useMidColor) {
         const float sqrtHalf = std::sqrt(0.5f);
         for (int i = 0; i < CircleSegments; ++i) {
             const float angle = angleStep * i;
@@ -293,11 +272,11 @@ void SoFCBackgroundGradient::updateRadialGeometry()
         const int base = i * 3;
 
         radialFanVertexProperty->vertex.set1Value(base + 0, SbVec3f(0.0f, 0.0f, 0.0f));
-        radialFanVertexProperty->orderedRGBA.set1Value(base + 0, fromColor);
+        radialFanVertexProperty->orderedRGBA.set1Value(base + 0, state.fromColor);
 
-        const SbVec3f& first = hasMid ? innerPoints[i] : outerPoints[i];
-        const SbVec3f& second = hasMid ? innerPoints[next] : outerPoints[next];
-        const uint32_t color = hasMid ? midColor : toColor;
+        const SbVec3f& first = state.useMidColor ? innerPoints[i] : outerPoints[i];
+        const SbVec3f& second = state.useMidColor ? innerPoints[next] : outerPoints[next];
+        const uint32_t color = state.useMidColor ? state.midColor : state.toColor;
 
         radialFanVertexProperty->vertex.set1Value(base + 1, first);
         radialFanVertexProperty->orderedRGBA.set1Value(base + 1, color);
@@ -307,7 +286,7 @@ void SoFCBackgroundGradient::updateRadialGeometry()
         radialFan->numVertices.set1Value(i, 3);
     }
 
-    if (hasMid) {
+    if (state.useMidColor) {
         const int ringTriangles = CircleSegments * 2;
         const int ringVertexCount = ringTriangles * 3;
         radialRing->numVertices.setNum(ringTriangles);
@@ -320,20 +299,20 @@ void SoFCBackgroundGradient::updateRadialGeometry()
 
             // Triangle: inner_i, outer_i, outer_next
             radialRingVertexProperty->vertex.set1Value(base + 0, innerPoints[i]);
-            radialRingVertexProperty->orderedRGBA.set1Value(base + 0, midColor);
+            radialRingVertexProperty->orderedRGBA.set1Value(base + 0, state.midColor);
             radialRingVertexProperty->vertex.set1Value(base + 1, outerPoints[i]);
-            radialRingVertexProperty->orderedRGBA.set1Value(base + 1, toColor);
+            radialRingVertexProperty->orderedRGBA.set1Value(base + 1, state.toColor);
             radialRingVertexProperty->vertex.set1Value(base + 2, outerPoints[next]);
-            radialRingVertexProperty->orderedRGBA.set1Value(base + 2, toColor);
+            radialRingVertexProperty->orderedRGBA.set1Value(base + 2, state.toColor);
             radialRing->numVertices.set1Value(i * 2, 3);
 
             // Triangle: inner_i, outer_next, inner_next
             radialRingVertexProperty->vertex.set1Value(base + 3, innerPoints[i]);
-            radialRingVertexProperty->orderedRGBA.set1Value(base + 3, midColor);
+            radialRingVertexProperty->orderedRGBA.set1Value(base + 3, state.midColor);
             radialRingVertexProperty->vertex.set1Value(base + 4, outerPoints[next]);
-            radialRingVertexProperty->orderedRGBA.set1Value(base + 4, toColor);
+            radialRingVertexProperty->orderedRGBA.set1Value(base + 4, state.toColor);
             radialRingVertexProperty->vertex.set1Value(base + 5, innerPoints[next]);
-            radialRingVertexProperty->orderedRGBA.set1Value(base + 5, midColor);
+            radialRingVertexProperty->orderedRGBA.set1Value(base + 5, state.midColor);
             radialRing->numVertices.set1Value(i * 2 + 1, 3);
         }
     }

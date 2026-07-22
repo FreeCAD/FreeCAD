@@ -10,7 +10,10 @@ set(_TEMPLATE_Gui_LIBS
     FreeCADGui
 )
 
-qt_add_resources(_TEMPLATE__QRC_SRCS Resources/_TEMPLATE_.qrc)
+qt_add_resources(_TEMPLATE__QRC_SRCS
+    Resources/_TEMPLATE_.qrc
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 SET(_TEMPLATE_Gui_SRCS
     ${_TEMPLATE__QRC_SRCS}

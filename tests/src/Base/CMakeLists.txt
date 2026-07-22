@@ -25,6 +25,7 @@ add_executable(Base_tests_run
         SchemaTests.cpp
         ServiceProvider.cpp
         Stream.cpp
+        StringUtils.cpp
         TimeInfo.cpp
         Tools.cpp
         Tools2D.cpp

@@ -23,10 +23,13 @@
  ***************************************************************************/
 
 
+#include <string>
+
 #include <QApplication>
 
 
 #include <App/Part.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -77,13 +80,13 @@ CmdPartCylinder::CmdPartCylinder()
 void CmdPartCylinder::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    QString cmd;
-    cmd = qApp->translate("CmdPartCylinder", "Cylinder");
-    openCommand((const char*)cmd.toUtf8());
+    std::string name = qApp->translate("CmdPartCylinder", "Cylinder").toUtf8().toStdString();
+    name = Base::Tools::escapeEncodeString(name);
+    openCommand(name);
 
     runCommand(Doc, "App.ActiveDocument.addObject(\"Part::Cylinder\",\"Cylinder\")");
-    cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
-              .arg(qApp->translate("CmdPartCylinder", "Cylinder"));
+    QString cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
+                      .arg(QString::fromUtf8(name.c_str()));
     runCommand(Doc, cmd.toUtf8());
     runCommand(Doc, getAutoGroupCommandStr().toUtf8());
     commitCommand();
@@ -121,13 +124,13 @@ CmdPartBox::CmdPartBox()
 void CmdPartBox::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    QString cmd;
-    cmd = qApp->translate("CmdPartBox", "Cube");
-    openCommand((const char*)cmd.toUtf8());
+    std::string name = qApp->translate("CmdPartBox", "Cube").toUtf8().toStdString();
+    name = Base::Tools::escapeEncodeString(name);
+    openCommand(name);
 
     runCommand(Doc, "App.ActiveDocument.addObject(\"Part::Box\",\"Box\")");
-    cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
-              .arg(qApp->translate("CmdPartBox", "Cube"));
+    QString cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
+                      .arg(QString::fromUtf8(name.c_str()));
     runCommand(Doc, cmd.toUtf8());
     runCommand(Doc, getAutoGroupCommandStr().toUtf8());
     commitCommand();
@@ -165,13 +168,13 @@ CmdPartSphere::CmdPartSphere()
 void CmdPartSphere::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    QString cmd;
-    cmd = qApp->translate("CmdPartSphere", "Sphere");
-    openCommand((const char*)cmd.toUtf8());
+    std::string name = qApp->translate("CmdPartSphere", "Sphere").toUtf8().toStdString();
+    name = Base::Tools::escapeEncodeString(name);
+    openCommand(name);
 
     runCommand(Doc, "App.ActiveDocument.addObject(\"Part::Sphere\",\"Sphere\")");
-    cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
-              .arg(qApp->translate("CmdPartSphere", "Sphere"));
+    QString cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
+                      .arg(QString::fromUtf8(name.c_str()));
     runCommand(Doc, cmd.toUtf8());
     runCommand(Doc, getAutoGroupCommandStr().toUtf8());
     commitCommand();
@@ -209,13 +212,13 @@ CmdPartCone::CmdPartCone()
 void CmdPartCone::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    QString cmd;
-    cmd = qApp->translate("CmdPartCone", "Cone");
-    openCommand((const char*)cmd.toUtf8());
+    std::string name = qApp->translate("CmdPartCone", "Cone").toUtf8().toStdString();
+    name = Base::Tools::escapeEncodeString(name);
+    openCommand(name);
 
     runCommand(Doc, "App.ActiveDocument.addObject(\"Part::Cone\",\"Cone\")");
-    cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
-              .arg(qApp->translate("CmdPartCone", "Cone"));
+    QString cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
+                      .arg(QString::fromUtf8(name.c_str()));
     runCommand(Doc, cmd.toUtf8());
     runCommand(Doc, getAutoGroupCommandStr().toUtf8());
     commitCommand();
@@ -253,13 +256,13 @@ CmdPartTorus::CmdPartTorus()
 void CmdPartTorus::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    QString cmd;
-    cmd = qApp->translate("CmdPartTorus", "Torus");
-    openCommand((const char*)cmd.toUtf8());
+    std::string name = qApp->translate("CmdPartTorus", "Torus").toUtf8().toStdString();
+    name = Base::Tools::escapeEncodeString(name);
+    openCommand(name);
 
     runCommand(Doc, "App.ActiveDocument.addObject(\"Part::Torus\",\"Torus\")");
-    cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
-              .arg(qApp->translate("CmdPartTorus", "Torus"));
+    QString cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
+                      .arg(QString::fromUtf8(name.c_str()));
     runCommand(Doc, cmd.toUtf8());
     runCommand(Doc, getAutoGroupCommandStr().toUtf8());
     commitCommand();

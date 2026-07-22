@@ -1101,10 +1101,12 @@ void SoNaviCube::updateEdges(const RenderParams& params) const
 void SoNaviCube::updateAxes(const RenderParams& params) const
 {
     bool axisColorsChanged = false;
-    for (size_t i = 0; i < params.axisRgb.size(); ++i) {
-        if (!nearlyEqual(params.axisRgb[i], style.axisRgb[i])) {
-            axisColorsChanged = true;
-            break;
+    if (!style.axisDirty) {
+        for (size_t i = 0; i < params.axisRgb.size(); ++i) {
+            if (!nearlyEqual(params.axisRgb[i], style.axisRgb[i])) {
+                axisColorsChanged = true;
+                break;
+            }
         }
     }
 

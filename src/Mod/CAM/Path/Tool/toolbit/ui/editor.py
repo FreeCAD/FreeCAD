@@ -391,29 +391,13 @@ class ToolBitEditor(QtGui.QWidget):
         # Hide second tab (tool notes) for now.
         self.form.tabWidget.setTabVisible(1, False)
 
-        # Feeds & Speeds
-        self.feeds_tab_idx = None
-        """
-        TODO: disabled for now.
-        if tool.supports_feeds_and_speeds():
-            label = translate('CAM', 'Feeds && Speeds')
-            self.feeds = FeedsAndSpeedsWidget(db, serializer, tool, parent=self)
-            self.feeds_tab_idx = self.form.tabWidget.insertTab(1, self.feeds, label)
-        else:
-            self.feeds = None
-            self.feeds_tab_idx = None
+        # Feeds & Speeds presets tab.
+        from .presets_tab import PresetsTab
 
-        self.form.lineEditCoating.setText(toolbit.get_coating())
-        self.form.lineEditCoating.textChanged.connect(toolbit.set_coating)
-        self.form.lineEditHardness.setText(toolbit.get_hardness())
-        self.form.lineEditHardness.textChanged.connect(toolbit.set_hardness)
-        self.form.lineEditMaterials.setText(toolbit.get_materials())
-        self.form.lineEditMaterials.textChanged.connect(toolbit.set_materials)
-        self.form.lineEditSupplier.setText(toolbit.get_supplier())
-        self.form.lineEditSupplier.textChanged.connect(toolbit.set_supplier)
-        self.form.plainTextEditNotes.setPlainText(tool.get_notes())
-        self.form.plainTextEditNotes.textChanged.connect(self._on_notes_changed)
-        """
+        self.presets_tab = PresetsTab(toolbit.obj, parent=self)
+        self.feeds_tab_idx = self.form.tabWidget.addTab(
+            self.presets_tab, translate("CAM", "Feeds && Speeds")
+        )
 
         self._update()
 
@@ -483,8 +467,13 @@ class ToolBitEditor(QtGui.QWidget):
         self.form.setWindowTitle(title)
 
     def _on_tab_switched(self, index):
-        if index == self.feeds_tab_idx:
-            self.feeds.update()
+        feeds_tab_idx = getattr(self, "feeds_tab_idx", None)
+        if (
+            feeds_tab_idx is not None
+            and index == feeds_tab_idx
+            and getattr(self, "presets_tab", None) is not None
+        ):
+            self.presets_tab.refresh()
 
     def _on_notes_changed(self):
         self.toolbit.set_notes(self.form.plainTextEditNotes.toPlainText())

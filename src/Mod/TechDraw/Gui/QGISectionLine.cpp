@@ -97,15 +97,18 @@ void QGISectionLine::draw()
     update();
 }
 
+//! makes the small lines connecting the ends of the main section line to the arrowheads.
 void QGISectionLine::makeExtensionLine()
 {
-    QPen extendPen;
-    extendPen.setWidthF(getWidth());
-    extendPen.setColor(getSectionColor());
-    extendPen.setStyle(Qt::SolidLine);
-    extendPen.setCapStyle(Qt::FlatCap);
+    // start with the current settings for the rest of the graphic
+    QPen extendPen{m_pen};
+
+    // change the unique attributes
+    extendPen.setStyle(Qt::SolidLine);      // main section line might not be continuous, but arrow shafts should be
+    extendPen.setCapStyle(Qt::FlatCap);     // prevents ugly overlaps at main line and arrow points
     m_extend->setPen(extendPen);
 
+    // make the lines
     QPainterPath pp;
 
     pp.moveTo(m_beginExt1);

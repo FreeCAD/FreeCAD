@@ -418,10 +418,7 @@ class _Covering(ArchComponent.Component):
                 doc = FreeCAD.getDocument(doc_name)
                 if doc is None:
                     return
-                # Disable undo recording so the deletion does not appear in the undo stack.
                 # Orphan cleanup is not a user action and should not be undoable.
-                old_undo_mode = doc.UndoMode
-                doc.UndoMode = 0  # 0 = disabled
                 try:
                     for name in orphans:
                         if doc.getObject(name):
@@ -430,7 +427,8 @@ class _Covering(ArchComponent.Component):
                             )
                             doc.removeObject(name)
                 finally:
-                    doc.UndoMode = old_undo_mode
+                    # As this code executes before any user action, it's safe to just drop the undos
+                    doc.clearUndos()
 
             todo.ToDo.delay(_purge, doc.Name)
 

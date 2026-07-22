@@ -299,6 +299,7 @@ private:
     QTimer visibilityIconDoubleClickTimer;
 
     bool expandIndicatorPressed = false;
+    bool visibilityIconPressed = false;
 
     static std::unique_ptr<QPixmap> documentPixmap;
     static std::unique_ptr<QPixmap> documentPartialPixmap;

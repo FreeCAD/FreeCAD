@@ -177,7 +177,7 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
     <message>
       <location filename="../../Command.cpp" line="1476"/>
       <source>Additive Pipe</source>
-      <translation>Dodaj izvlačenje po putanji</translation>
+      <translation>Dodaj izvlačenje po vodilji</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1477"/>
@@ -206,17 +206,17 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2590"/>
+      <location filename="../../Command.cpp" line="2595"/>
       <source>PartDesign</source>
       <translation>Konstruisanje delova</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2591"/>
+      <location filename="../../Command.cpp" line="2596"/>
       <source>Boolean Operation</source>
       <translation>Bulove operacije</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2592"/>
+      <location filename="../../Command.cpp" line="2597"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>Primeni bulovu operaciju između izabranih objekata i aktivnog tela</translation>
     </message>
@@ -494,17 +494,17 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2459"/>
+      <location filename="../../Command.cpp" line="2464"/>
       <source>PartDesign</source>
       <translation>Konstruisanje delova</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2460"/>
+      <location filename="../../Command.cpp" line="2465"/>
       <source>Multi-Transform</source>
       <translation>Višestruko pretvaranje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2461"/>
+      <location filename="../../Command.cpp" line="2466"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation>Primeni više pretvaranja na izabrane tipske oblike ili aktivno telo</translation>
     </message>
@@ -602,17 +602,17 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2354"/>
+      <location filename="../../Command.cpp" line="2359"/>
       <source>PartDesign</source>
       <translation>Konstruisanje delova</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2355"/>
+      <location filename="../../Command.cpp" line="2360"/>
       <source>Polar Pattern</source>
       <translation>Kružno umnožavanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2356"/>
+      <location filename="../../Command.cpp" line="2361"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation>Kružno umnoži izabrani tipski oblik ili aktivno telo</translation>
     </message>
@@ -638,17 +638,17 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2416"/>
+      <location filename="../../Command.cpp" line="2421"/>
       <source>PartDesign</source>
       <translation>Konstruisanje delova</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2417"/>
+      <location filename="../../Command.cpp" line="2422"/>
       <source>Scale</source>
       <translation>Razmera</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2418"/>
+      <location filename="../../Command.cpp" line="2423"/>
       <source>Scales the selected features or the active body</source>
       <translation>Skaliraj izabrani tipski oblik ili aktivno telo</translation>
     </message>
@@ -735,7 +735,7 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
     <message>
       <location filename="../../Command.cpp" line="1526"/>
       <source>Subtractive Pipe</source>
-      <translation>Oduzmi izvlačenje po putanji</translation>
+      <translation>Oduzmi izvlačenje po vodilji</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1527"/>
@@ -905,7 +905,7 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
       <translation>Napravi kopiju</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2514"/>
+      <location filename="../../Command.cpp" line="2519"/>
       <source>Convert to Multi-Transform feature</source>
       <translation>Pretvori u tipski oblik dobijen Višestrukim pretvaranjenjem</translation>
     </message>
@@ -926,7 +926,7 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
       <translation>Nova skica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2611"/>
+      <location filename="../../Command.cpp" line="2616"/>
       <source>Create Boolean</source>
       <translation>Napravi bulovu operaciju</translation>
     </message>
@@ -2637,7 +2637,7 @@ merena duž zadatog pravca</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="69"/>
       <source>Pipe Parameters</source>
-      <translation>Parametri izvlačenja po putanji</translation>
+      <translation>Parametri izvlačenja po vodilji</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="80"/>
@@ -3619,7 +3619,7 @@ Mada, moći ćeš da migriraš u bilo kom trenutku kasnije pomoću 'Konstruisanj
       <translation>Migriraj ručno</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBoolean.cpp" line="70"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="223"/>
       <source>Edit Boolean</source>
       <translation>Uredi bulovu operaciju</translation>
     </message>
@@ -3681,7 +3681,7 @@ Mada, moći ćeš da migriraš u bilo kom trenutku kasnije pomoću 'Konstruisanj
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="77"/>
       <source>Edit Pipe</source>
-      <translation>Uredi Izvlačenje po putanji</translation>
+      <translation>Uredi Izvlačenje po vodilji</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPocket.cpp" line="47"/>
@@ -4824,7 +4824,7 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="211"/>
       <source>Pipe: Could not obtain profile shape</source>
-      <translation>Izvlačenje po putanji: Nije moguće obezbediti profilni oblik</translation>
+      <translation>Izvlačenje po vodilji: Nije moguće obezbediti profilni oblik</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="218"/>
@@ -4839,27 +4839,27 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="255"/>
       <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
-      <translation>Izvlačenje po putanji: Ako vam je potrebno da presek bude samo tačka onda na skici nacrtajte samo jednu tačku</translation>
+      <translation>Izvlačenje po vodilji: Ako vam je potrebno da presek bude samo tačka onda na skici nacrtajte samo jednu tačku</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="264"/>
       <source>Pipe: At least one section is needed when using a single point for profile</source>
-      <translation>Izvlačenje po putanji: Ako koristite tačku kao presek onda vam je potreban barem još jedan presek</translation>
+      <translation>Izvlačenje po vodilji: Ako koristite tačku kao presek onda vam je potreban barem još jedan presek</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="282"/>
       <source>Pipe: All sections need to be Part features</source>
-      <translation>Po putanji: Svi preseci moraju da budu elementi Part okruženja</translation>
+      <translation>Po vodilji: Svi preseci moraju da budu elementi Part okruženja</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="290"/>
       <source>Pipe: Could not obtain section shape</source>
-      <translation>Izvlačenje po putanji: Nije moguće obezbediti profilni oblik</translation>
+      <translation>Izvlačenje po vodilji: Nije moguće obezbediti profilni oblik</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="298"/>
       <source>Pipe: Only the profile and last section can be vertices</source>
-      <translation>Izvlačenje po putanji: Samo prvi i zadnji presek mogu biti tačka</translation>
+      <translation>Izvlačenje po vodilji: Samo prvi i zadnji presek mogu biti tačka</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="311"/>
@@ -4874,12 +4874,12 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="384"/>
       <source>Pipe could not be built</source>
-      <translation>Nije moguće napraviti izvlačenje po putanji</translation>
+      <translation>Nije moguće napraviti izvlačenje po vodilji</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="532"/>
       <source>Pipe: There is nothing to subtract from</source>
-      <translation>Izvlačenje po putanji: Nema od čega da se oduzme</translation>
+      <translation>Izvlačenje po vodilji: Nema od čega da se oduzme</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="584"/>
@@ -4889,7 +4889,7 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="614"/>
       <source>A fatal error occurred when making the pipe</source>
-      <translation>Izvlačenje po putanji: Došlo je do fatalne greške prilikom pravljenja izvlačenja po putanji</translation>
+      <translation>Izvlačenje po vodilji: Došlo je do fatalne greške prilikom pravljenja izvlačenja po vodilji</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="741"/>
@@ -5165,12 +5165,12 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2658"/>
+      <location filename="../../Command.cpp" line="2663"/>
       <source>Create Datum</source>
       <translation>Napravi pomoćne elemente</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2659"/>
+      <location filename="../../Command.cpp" line="2664"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Napravi pomoćne elemente ili lokalni koordinatni sistem</translation>
     </message>
@@ -5178,12 +5178,12 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2693"/>
+      <location filename="../../Command.cpp" line="2698"/>
       <source>Create Datum</source>
       <translation>Napravi pomoćne elemente</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2694"/>
+      <location filename="../../Command.cpp" line="2699"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Napravi pomoćne elemente ili lokalni koordinatni sistem</translation>
     </message>

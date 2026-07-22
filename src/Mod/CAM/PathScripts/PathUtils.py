@@ -691,34 +691,6 @@ def guessDepths(objshape, subs=None):
     return depth_params(clearance, safe, start, 1.0, 0.0, final, user_depths=None, equalstep=False)
 
 
-def drillTipLength(tool):
-    """returns the length of the drillbit tip."""
-
-    if not hasattr(tool, "TipAngle"):
-        Path.Log.error(translate("Path", "Selected tool is not a drill"))
-        return 0.0
-
-    angle = tool.TipAngle
-
-    if angle <= 0 or angle >= 180:
-        Path.Log.error(
-            translate("Path", "Invalid Cutting Edge Angle %.2f, must be >0° and <=180°") % angle
-        )
-        return 0.0
-
-    theta = math.radians(angle)
-    length = (float(tool.Diameter) / 2) / math.tan(theta / 2)
-
-    if length < 0:
-        Path.Log.error(
-            translate("Path", "Cutting Edge Angle (%.2f) results in negative tool tip length")
-            % angle
-        )
-        return 0.0
-
-    return length
-
-
 class depth_params(object):
     """calculates the intermediate depth values for various operations given the starting, ending, and stepdown parameters
     (self, clearance_height, safe_height, start_depth, step_down, z_finish_depth, final_depth, [user_depths=None], equalstep=False)
@@ -888,7 +860,7 @@ class depth_params(object):
         all steps are of equal size, which is as big as possible but not bigger
         than max_size."""
 
-        steps_needed = math.ceil((start - stop) / max_size)
+        steps_needed = Path.Geom.ceil((start - stop) / max_size)
         depths = list(linspace(stop, start, steps_needed, endpoint=False))
 
         return depths

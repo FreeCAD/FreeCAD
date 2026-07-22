@@ -25,6 +25,7 @@
 #include <QCheckBox>
 #include <QCoreApplication>
 #include <QHeaderView>
+#include <QLabel>
 #include <QPushButton>
 #include <QScrollBar>
 #include <QTextEdit>

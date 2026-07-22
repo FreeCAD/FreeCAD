@@ -28,8 +28,7 @@ import Path
 import Path.Base.Util as PathUtil
 import Path.Geom
 import PathScripts.PathUtils as PathUtils
-import math
-import time
+from Path.Op.Util import getCycleTimeEstimate
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -640,6 +639,12 @@ class ObjectOp(object):
         Should be overwritten by subclasses."""
         pass
 
+    def initAfterBase(self, obj):
+        """initAfterBase(obj) ... implement to execute extra commands
+        while create new operation after add all base geometry.
+        Should be overwritten by subclasses."""
+        pass
+
     def opOnDocumentRestored(self, obj):
         """opOnDocumentRestored(obj) ... implement if an op needs special handling like migrating the data model.
         Should be overwritten by subclasses."""
@@ -712,7 +717,7 @@ class ObjectOp(object):
                     if hasattr(shape, "ShapeType"):
                         Path.Log.debug(f"  Shape type: {shape.ShapeType}")
                     if hasattr(shape, "isNull") and shape.isNull():
-                        Path.Log.warning(f"  Transformed shape is null, using original")
+                        Path.Log.warning("  Transformed shape is null, using original")
                         shape = base_obj.Shape
                     elif hasattr(shape, "Volume") and shape.Volume < 1e-9:
                         Path.Log.debug(f"  Transformed shape has very small volume: {shape.Volume}")
@@ -721,7 +726,7 @@ class ObjectOp(object):
                     if hasattr(shape, "Faces"):
                         Path.Log.debug(f"  Shape has {len(shape.Faces)} faces")
                         if len(shape.Faces) == 0:
-                            Path.Log.warning(f"  Transformed shape has no faces!")
+                            Path.Log.warning("  Transformed shape has no faces!")
 
                     proxy_cache[key] = _TransformedShapeProxy(base_obj, shape)
                 else:
@@ -1489,48 +1494,6 @@ class Compass:
         for k, v in report_data.items():
             Path.Log.debug(f"  {k:15s}: {v}")
         return report_data
-
-
-def getCycleTimeEstimate(obj):
-    tc = obj.ToolController
-
-    if tc is None or tc.ToolNumber == 0:
-        Path.Log.error(translate("CAM", "No Tool Controller selected."))
-        return translate("CAM", "Tool Error")
-
-    hFeedrate = tc.HorizFeed.Value
-    vFeedrate = tc.VertFeed.Value
-    hRapidrate = tc.HorizRapid.Value
-    vRapidrate = tc.VertRapid.Value
-
-    if hFeedrate == 0 or vFeedrate == 0:
-        if not Path.Preferences.suppressAllSpeedsWarning():
-            Path.Log.warning(
-                translate(
-                    "CAM",
-                    "Tool Controller feedrates required to calculate the cycle time.",
-                )
-            )
-        return translate("CAM", "Tool Feedrate Error")
-
-    if (hRapidrate == 0 or vRapidrate == 0) and not Path.Preferences.suppressRapidSpeedsWarning():
-        Path.Log.warning(
-            translate(
-                "CAM",
-                "Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.",
-            )
-        )
-
-    # Get the cycle time in seconds
-    seconds = obj.Path.getCycleTime(hFeedrate, vFeedrate, hRapidrate, vRapidrate)
-
-    if math.isnan(seconds):
-        return translate("CAM", "Cycletime Error")
-
-    # Convert the cycle time to a HH:MM:SS format
-    cycleTime = time.strftime("%H:%M:%S", time.gmtime(seconds))
-
-    return cycleTime
 
 
 def SetupPropertiesLinking():

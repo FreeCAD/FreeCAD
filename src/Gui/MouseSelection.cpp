@@ -33,6 +33,7 @@
 
 #include "MouseSelection.h"
 #include "Selection/BoxSelection.h"
+#include "Selection/SelectionColors.h"
 #include "View3DInventorViewer.h"
 
 
@@ -560,7 +561,8 @@ int FreehandSelection::locationEvent(const SoLocation2Event* const e, const QPoi
 
 RubberbandSelection::RubberbandSelection()
 {
-    rubberband.setColor(1.0, 1.0, 0.0, 0.5);
+    const SbColor color = SelectionColors::defaultSelectionColor();
+    rubberband.setColor(color[0], color[1], color[2], 0.5);
 }
 
 RubberbandSelection::~RubberbandSelection() = default;

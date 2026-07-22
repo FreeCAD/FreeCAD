@@ -2069,8 +2069,8 @@ a raw wire from the original shape is added</source>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="120"/>
-      <source>Apply Cuts</source>
-      <translation>Примени резове</translation>
+      <source>Apply cuts</source>
+      <translation type="unfinished">Apply cuts</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="140"/>
@@ -2769,8 +2769,8 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="100"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Белешка:&lt;/span&gt; DXF опције се примењују и на DWG датотеке.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Note: DXF options apply to DWG files as well.</source>
+      <translation type="unfinished">Note: DXF options apply to DWG files as well.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="26"/>
@@ -5943,12 +5943,12 @@ of existing objects in all opened documents?</source>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="161"/>
       <source>Create Path Array</source>
-      <translation>Направи умножавање по путањи</translation>
+      <translation>Направи умножавање по водиљи</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="116"/>
       <source>Create Path Twisted Array</source>
-      <translation>Направи умножавање по путањи са увртањем</translation>
+      <translation>Направи умножавање по водиљи са увртањем</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="108"/>
@@ -7081,7 +7081,7 @@ set True for fusion or False for compound</source>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="138"/>
       <source>Rotation factor of the twisted array.</source>
-      <translation>Коефицијент окретања Умножавања по путањи са увртањем.</translation>
+      <translation>Коефицијент окретања Умножавања по водиљи са увртањем.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="262"/>
@@ -8186,7 +8186,7 @@ beyond the dimension line</source>
     <message>
       <location filename="../../draftguitools/gui_arrays.py" line="80"/>
       <source>Tools to create various types of arrays, including rectangular, polar, circular, path, and point arrays</source>
-      <translation>Алатке за прављње различитих врста умножавања: правоугаоно, поларно, кружно, по путањи и умножавање тачака</translation>
+      <translation>Алатке за прављње различитих врста умножавања: правоугаоно, поларно, кружно, по водиљи и умножавање тачака</translation>
     </message>
   </context>
   <context>
@@ -8422,12 +8422,12 @@ straight Draft lines that are drawn on the XY-plane.</source>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="77"/>
       <source>Path Array</source>
-      <translation>Умножавање по путањи</translation>
+      <translation>Умножавање по водиљи</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="80"/>
       <source>Creates copies of the selected object along a selected path</source>
-      <translation>Рапореди по путањи копије изабраног објекта</translation>
+      <translation>Рапореди по водиљи копије изабраног објекта</translation>
     </message>
   </context>
   <context>
@@ -8435,12 +8435,12 @@ straight Draft lines that are drawn on the XY-plane.</source>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="182"/>
       <source>Path Link Array</source>
-      <translation>Умножавање спона по путањи</translation>
+      <translation>Умножавање спона по водиљи</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="186"/>
       <source>Creates linked copies of the selected object along a selected path</source>
-      <translation>Рапореди по путањи споне изабраног објекта</translation>
+      <translation>Рапореди по водиљи споне изабраног објекта</translation>
     </message>
   </context>
   <context>
@@ -8448,12 +8448,12 @@ straight Draft lines that are drawn on the XY-plane.</source>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="70"/>
       <source>Twisted Path Array</source>
-      <translation>Умножавање по путањи са увртањем</translation>
+      <translation>Умножавање по водиљи са увртањем</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="74"/>
       <source>Creates twisted copies of the selected object along a selected path</source>
-      <translation>Распореди по путањи и уврни копије изабраног објекта</translation>
+      <translation>Распореди по водиљи и уврни копије изабраног објекта</translation>
     </message>
   </context>
   <context>
@@ -8461,12 +8461,12 @@ straight Draft lines that are drawn on the XY-plane.</source>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="137"/>
       <source>Twisted Path Link Array</source>
-      <translation>Умножавање спона по путањи са увртањем</translation>
+      <translation>Умножавање спона по водиљи са увртањем</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="141"/>
       <source>Creates twisted linked copies of the selected object along a selected path</source>
-      <translation>Распореди по путањи и уврни споне изабраног објекта</translation>
+      <translation>Распореди по водиљи и уврни споне изабраног објекта</translation>
     </message>
   </context>
   <context>
