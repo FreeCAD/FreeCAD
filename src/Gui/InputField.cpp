@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #include <limits>
+#include <optional>
 #include <QContextMenuEvent>
 #include <QMenu>
 #include <QPixmapCache>
@@ -267,72 +268,83 @@ void InputField::contextMenuEvent(QContextMenuEvent* event)
 
 void InputField::newInput(const QString& text)
 {
-    Quantity res;
     QString errorText;
     const auto formatting = Gui::effectiveNumericFormattingState(locale());
-    auto tryParse = [&](const QString& input) -> bool {
+    struct ParsedInput
+    {
+        Quantity quantity;
+        std::shared_ptr<Expression> expression;
+    };
+
+    auto parseInput = [&](const QString& input) -> std::optional<ParsedInput> {
         try {
+            ParsedInput result;
             if (isBound()) {
                 const QByteArray inputUtf8 = input.toUtf8();
-                std::shared_ptr<Expression> e(ExpressionParser::parseUserInput(
-                    getPath().getDocumentObject(), inputUtf8.constData(), formatting
+                result.expression = std::shared_ptr<Expression>(ExpressionParser::parseUserInput(
+                    getPath().getDocumentObject(),
+                    inputUtf8.constData(),
+                    formatting
                 ));
-
-                setExpression(e);
-
-                std::unique_ptr<Expression> evalRes(getExpression()->eval());
-
-                auto* value = freecad_cast<NumberExpression*>(evalRes.get());
-                if (value) {
-                    res.setValue(value->getValue());
-                    res.setUnit(value->getUnit());
+                if (!result.expression) {
+                    errorText = tr("Invalid expression");
+                    return std::nullopt;
                 }
+
+                // Parse and evaluate entirely in temporaries. A failed evaluation must not replace
+                // the last valid expression stored by ExpressionBinding.
+                std::unique_ptr<Expression> evalRes(result.expression->eval());
+                auto* value = freecad_cast<NumberExpression*>(evalRes.get());
+                if (!value) {
+                    errorText = tr("Expression must evaluate to a number");
+                    return std::nullopt;
+                }
+                result.quantity = value->getQuantity();
             }
             else {
-                res = Quantity::parseUserInput(input.toStdString(), formatting);
+                result.quantity = Quantity::parseUserInput(input.toStdString(), formatting);
             }
-            return true;
+
+            return result;
         }
         catch (Base::Exception& e) {
             errorText = QString::fromLatin1(e.what());
-            return false;
+            return std::nullopt;
         }
     };
 
-    bool parsed = tryParse(text);
+    auto parsed = parseInput(text);
     if (!parsed) {
         QString compatibilityInput = text;
         fixup(compatibilityInput);
-        parsed = compatibilityInput != text && tryParse(compatibilityInput);
+        if (compatibilityInput != text) {
+            parsed = parseInput(compatibilityInput);
+        }
     }
 
-    if (!parsed) {
+    auto rejectInput = [&](const QString& message) {
         if (iconLabel->isHidden()) {
             iconLabel->setVisible(true);
         }
-        Q_EMIT parseError(errorText);
+        Q_EMIT parseError(message);
         validInput = false;
+    };
+
+    if (!parsed) {
+        rejectInput(errorText);
         return;
     }
 
+    Quantity res = parsed->quantity;
     if (res.isDimensionless()) {
         res.setUnit(this->actUnit);
     }
 
     // check if unit fits!
     if (actUnit != Unit::One && !res.isDimensionless() && actUnit != res.getUnit()) {
-        if (iconLabel->isHidden()) {
-            iconLabel->setVisible(true);
-        }
-        Q_EMIT parseError(QStringLiteral("Wrong unit"));
-        validInput = false;
+        rejectInput(QStringLiteral("Wrong unit"));
         return;
     }
-
-    if (iconLabel->isVisible()) {
-        iconLabel->setVisible(false);
-    }
-    validInput = true;
 
     if (res.getValue() > Maximum) {
         res.setValue(Maximum);
@@ -347,7 +359,18 @@ void InputField::newInput(const QString& text)
     actUnitValue = res.getValue() / dFactor;
     // Preserve previous format
     res.setFormat(this->actQuantity.getFormat());
+
+    // Commit the expression and value only after parsing, evaluation, unit validation, and range
+    // handling have all succeeded.
+    if (parsed->expression) {
+        setExpression(parsed->expression);
+    }
     actQuantity = res;
+
+    if (iconLabel->isVisible()) {
+        iconLabel->setVisible(false);
+    }
+    validInput = true;
 
     // signaling
     Q_EMIT valueChanged(res);
