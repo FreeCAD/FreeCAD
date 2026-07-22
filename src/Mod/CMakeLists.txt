@@ -42,6 +42,10 @@ if(BUILD_MATERIAL)
   add_subdirectory(Material)
 endif(BUILD_MATERIAL)
 
+if(BUILD_MBDFEM)
+  add_subdirectory(MbDFEM)
+endif(BUILD_MBDFEM)
+
 if(BUILD_MESH)
   add_subdirectory(Mesh)
 endif(BUILD_MESH)
