@@ -378,6 +378,7 @@ SET(PathPythonOp_SRCS
     Path/Op/__init__.py
     Path/Op/Adaptive.py
     Path/Op/Area.py
+    Path/Op/Array.py
     Path/Op/Base.py
     Path/Op/CircularHoleBase.py
     Path/Op/Custom.py
