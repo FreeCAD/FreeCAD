@@ -30,8 +30,16 @@ Thread::Thread()
     ThreadSizePitch.setEnums(threadUtils.getThreadPitches(ThreadType.getValue(), ThreadSize.getValue()));
 
     ADD_PROPERTY_TYPE(ThreadDirection, (0L), "Thread", App::Prop_None, "Thread direction");
-    // ThreadDirection.setEnums(ThreadDirectionEnums);
-    // ThreadDirection.setReadOnly(true);
+    ThreadDirection.setEnums(threadUtils.getThreadDirectionEnums());
+    ThreadDirection.setReadOnly(true);
+
+    ADD_PROPERTY_TYPE(DepthType, (0L), "Thread", App::Prop_None, "Type");
+    DepthType.setEnums(threadUtils.getDepthTypeEnums());
+
+    ADD_PROPERTY_TYPE(Depth, (25.0), "Thread", App::Prop_None, "Length");
+
+    ADD_PROPERTY_TYPE(ThreadClass, (0L), "Thread", App::Prop_None, "Thread class");
+    ThreadClass.setEnums(threadUtils.getThreadClass_None_Enums());
 }
 
 void Thread::updateDiameterParam()
@@ -51,6 +59,7 @@ App::DocumentObjectExecReturn* Thread::execute()
     Base::Console().message("THREAD EXECUTED\n");
     // TODO: verify if this is needed for feature threading
     if (onlyHaveRefined()) {
+        Base::Console().message("THREAD ONLY REFINED\n");
         return App::DocumentObject::StdReturn;
     }
 
@@ -65,6 +74,22 @@ App::DocumentObjectExecReturn* Thread::execute()
     // TODO: verify if this is needed for feature threading
     TopShape.setTransform(Base::Matrix4D());
 
+    // Faces where draft should be applied
+    // Note: Cannot be const reference currently because of BRepOffsetAPI_DraftAngle::Remove() bug,
+    // see below
+    std::vector<std::string> SubVals = Base.getSubValuesStartsWith("Face");
+
+    // If no element is selected, then we use a copy of previous feature.
+    if (SubVals.empty()) {
+        this->positionByBaseFeature();
+        this->Shape.setValue(TopShape);
+        return App::DocumentObject::StdReturn;
+    }
+
+    auto res = threadUtils.validateParameters(LateralFace);
+    if (res != App::DocumentObject::StdReturn) {
+        return res;
+    }
 
     try {
 
@@ -127,27 +152,130 @@ App::DocumentObjectExecReturn* Thread::execute()
         gp_Vec emptyZDir;
         double testLength = 10.0;
 
+        // TopoShape profileshape = getProfileShape(
+        // Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
+        // | Part::ShapeOption::Transform | Part::ShapeOption::DontSimplifyCompound
+        // );
+
+        // Base::Vector3d SketchVector = guessNormalDirection(profileshape);
+
+        // Define this as zDir
+        // gp_Vec zDir(SketchVector.x, SketchVector.y, SketchVector.z);
+        // zDir.Transform(invObjLoc.Transformation());
+
+        
+        gp_Vec zDir = threadUtils.getThreadZAxis(LateralFace);
+        // TODO: resolver problema de xDir  gp_Vec::Normalize() - vector has zero norm
+        gp_Vec xDir = threadUtils.computePerpendicular(zDir);
+        std::string method(DepthType.getValueAsString());
+        double length = 0.0;
+
+        if (method == "Dimension") {
+            length = Depth.getValue();
+        }
+        else if (method == "UpToFirst") {
+            /* TODO */
+        }
+        else if (method == "ThroughAll") {
+            length = threadUtils.getThroughAllLength();
+        }
+        else {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Hole error: Unsupported length specification")
+            );
+        }
+
+        if (length <= 0.0) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Hole error: Invalid hole depth")
+            );
+        }
+
+        // double length = ThreadDepth.getValue();
+
         TopoDS_Shape thread = threadUtils.makeThread(emptyXDir, emptyZDir, testLength);
     }
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    return new App::DocumentObjectExecReturn(
-        QT_TRANSLATE_NOOP("Exception", "Thread failed: thread not implemented")
-    );
+    // return new App::DocumentObjectExecReturn(
+    //     QT_TRANSLATE_NOOP("Exception", "Thread failed: thread not implemented")
+    // );
+    return App::DocumentObject::StdReturn;
 }
 
 void Thread::onChanged(const App::Property* prop)
 {
     if (prop == &ThreadType) {
+        std::string type;
+
         if (ThreadType.isValid()) {
-            // type = ThreadType.getValueAsString();
+            type = ThreadType.getValueAsString();
             ThreadSize.setEnums(threadUtils.getThreadDesignations(ThreadType.getValue()));
             // if (type != "None") {
                 // findClosestDesignation();
             // }
         }
+
+        if (type == "None") {
+            ThreadClass.setEnums(threadUtils.getThreadClass_None_Enums());
+            // HoleCutType.setEnums(HoleCutType_None_Enums);
+            // Threaded.setValue(false);
+            // ModelThread.setValue(false);
+            // UseCustomThreadClearance.setValue(false);
+            // ThreadFit.setEnums(ClearanceNoneEnums);
+        }
+        else if (type == "ISOMetricProfile") {
+            ThreadClass.setEnums(threadUtils.getThreadClass_ISOmetric_Enums());
+            // HoleCutType.setEnums(HoleCutType_ISOmetric_Enums);
+            // ThreadFit.setEnums(ClearanceMetricEnums);
+        }
+        else if (type == "ISOMetricFineProfile") {
+            ThreadClass.setEnums(threadUtils.getThreadClass_ISOmetricfine_Enums());
+            // HoleCutType.setEnums(HoleCutType_ISOmetricfine_Enums);
+            // ThreadFit.setEnums(ClearanceMetricEnums);
+        }
+        else if (type == "UNC") {
+            ThreadClass.setEnums(threadUtils.getThreadClass_UNC_Enums());
+            // HoleCutType.setEnums(HoleCutType_UNC_Enums);
+            // ThreadFit.setEnums(ClearanceUTSEnums);
+        }
+        else if (type == "UNF") {
+            ThreadClass.setEnums(threadUtils.getThreadClass_UNF_Enums());
+            // HoleCutType.setEnums(HoleCutType_UNF_Enums);
+            // ThreadFit.setEnums(ClearanceUTSEnums);
+        }
+        else if (type == "UNEF") {
+            ThreadClass.setEnums(threadUtils.getThreadClass_UNEF_Enums());
+            // HoleCutType.setEnums(HoleCutType_UNEF_Enums);
+            // ThreadFit.setEnums(ClearanceUTSEnums);
+        }
+        else if (type == "BSP") {
+            ThreadClass.setEnums(threadUtils.getThreadClass_None_Enums());
+            // HoleCutType.setEnums(HoleCutType_BSP_Enums);
+            // ThreadFit.setEnums(ClearanceMetricEnums);
+        }
+        else if (type == "NPT") {
+            ThreadClass.setEnums(threadUtils.getThreadClass_None_Enums());
+            // HoleCutType.setEnums(HoleCutType_NPT_Enums);
+            // ThreadFit.setEnums(ClearanceUTSEnums);
+        }
+        else if (type == "BSW") {
+            ThreadClass.setEnums(threadUtils.getThreadClass_BSW_Enums());
+            // HoleCutType.setEnums(HoleCutType_BSW_Enums);
+            // ThreadFit.setEnums(ClearanceOtherEnums);
+        }
+        else if (type == "BSF") {
+            ThreadClass.setEnums(threadUtils.getThreadClass_BSF_Enums());
+            // HoleCutType.setEnums(HoleCutType_BSF_Enums);
+            // ThreadFit.setEnums(ClearanceOtherEnums);
+        }
+        else if (type == "ISOTyre") {
+            ThreadClass.setEnums(threadUtils.getThreadClass_None_Enums());
+            // HoleCutType.setEnums(HoleCutType_None_Enums);
+        }
+
     } else if (prop == &ThreadSize) {
         // Base::Console().message("it was me!\n");
         ThreadSizePitch.setEnums(threadUtils.getThreadPitches(ThreadType.getValue(), ThreadSize.getValue()));

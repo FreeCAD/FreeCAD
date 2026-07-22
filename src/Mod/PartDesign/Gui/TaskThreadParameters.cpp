@@ -35,6 +35,16 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
 
     PartDesign::Thread* pcThread = DressUpView->getObject<PartDesign::Thread>();
 
+    // Reloading Lateral Face
+    const std::vector<std::string>& subNamesLateral = pcThread->LateralFace.getSubValues();
+    if (!subNamesLateral.empty()) {
+        ui->lateralFaceEdit->setText(QString::fromStdString(subNamesLateral.front()));
+    }
+    const std::vector<std::string>& subNamesStart = pcThread->StartPlane.getSubValues();
+    if (!subNamesStart.empty()) {
+        ui->startEdit->setText(QString::fromStdString(subNamesStart.front()));
+    }
+
     setUpUI(pcThread);
 
     std::vector<std::string> strings = pcThread->Base.getSubValues();
@@ -42,8 +52,13 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     // ui->listWidgetReferences->addItem(QString::fromStdString(string));
     // }
 
+
     QMetaObject::connectSlotsByName(this);
 
+    setThreadSelectionMode(SideFaceSel);
+
+    ui->endTypeCombo->setCurrentIndex(pcThread->DepthType.getValue());
+    
     // TODO: change hardcoded for enum loop
     // TODO: change ui->standardCombo for a better name
     ui->standardCombo->addItem(tr("None"), QByteArray("None"));
@@ -57,7 +72,8 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     ui->standardCombo->addItem(tr("BSW whitworth"), QByteArray("Other"));
     ui->standardCombo->addItem(tr("BSF whitworth fine"), QByteArray("Other"));
     ui->standardCombo->addItem(tr("ISO tyre valves"), QByteArray("Other"));
-
+    ui->standardCombo->setCurrentIndex(pcThread->ThreadType.getValue());
+    
     // diameter
     ui->diameterCombo->clear();
     std::vector<std::string> cursorDiameter = pcThread->ThreadSize.getEnumVector();
@@ -67,11 +83,12 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     ui->diameterCombo->setCurrentIndex(pcThread->ThreadSize.getValue());
     
     // class
-    // ui->ThreadClass->clear();
-    // cursor = pcHole->ThreadClass.getEnumVector();
-    // for (const auto& it : cursor) {
-        //     ui->ThreadClass->addItem(tr(it.c_str()));
-        // }
+    ui->classCombo->clear();
+    std::vector<std::string> cursorClass = pcThread->ThreadClass.getEnumVector();
+    for (const auto& it : cursorClass) {
+            ui->classCombo->addItem(tr(it.c_str()));
+    }
+    ui->classCombo->setCurrentIndex(pcThread->ThreadClass.getValue());
         
     // pitch
     ui->pitchCombo->clear();
@@ -81,12 +98,30 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     }
     ui->pitchCombo->setCurrentIndex(pcThread->ThreadSizePitch.getValue());
 
+    // thread direction
+    ui->directionCombo->clear();
+    std::vector<std::string> cursorDirection = pcThread->ThreadDirection.getEnumVector();
+    for (const auto& it : cursorDirection) {
+        ui->directionCombo->addItem(tr(it.c_str()));
+    }
+    ui->directionCombo->setCurrentIndex(pcThread->ThreadDirection.getValue());
+
+    ui->customClearanceCheck->setChecked(pcThread->UseCustomThreadClearance.getValue());
+
+    bool isModeled = pcThread->ModelThread.getValue();
+    ui->modelledThreadRadio->setChecked(isModeled);
+
     connect(ui->standardCombo, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskThreadParameters::threadTypeChanged);
 
     connect(ui->diameterCombo, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskThreadParameters::threadSizeChanged);
-
+    
     connect(ui->pitchCombo, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskThreadParameters::threadSizePitchChanged);
+    
+    connect(ui->classCombo, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskThreadParameters::threadClassChanged);
+    
+    connect(ui->directionCombo, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskThreadParameters::threadDirectionChanged);
 
+    // TODO: verificar se essa sentença ainda serve e tirar daqui
     connect(ui->lateralFaceEdit, &QLineEdit::textChanged, this, &TaskThreadParameters::QLineEditSelected);
 
     connect(ui->selectLateralFace, &QPushButton::toggled, [this](bool checked) {
@@ -113,6 +148,15 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
             setThreadSelectionMode(None);
         }
     });
+
+    connect(ui->endTypeCombo, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskThreadParameters::depthChanged);
+
+    connect(ui->customClearanceCheck, &QCheckBox::toggled, this, &TaskThreadParameters::CustomClearanceCheckValuesChanged);
+
+    connect(ui->cosmeticThreadRadio, &QRadioButton::clicked, this, &TaskThreadParameters::threadModelChanged);
+
+    connect(ui->modelledThreadRadio, &QRadioButton::clicked, this, &TaskThreadParameters::threadModelChanged);
 
     // NOLINTBEGIN
     connectPropChanged = App::GetApplication().signalChangePropertyEditor.connect(
@@ -258,28 +302,29 @@ void TaskThreadParameters::QLineEditSelected(const QString& text)
 
 void TaskThreadParameters::threadTypeChanged(int index)
 {
+    Base::Console().message("ESTOU mudando TYPE\n");
     if (index < 0) {
         return;
     }
-
+    
     auto pcThread = getObject<PartDesign::Thread>();
     if (!pcThread) {
         return;
     }
+    
+    // store the current class
+    QString ThreadClassString = ui->classCombo->currentText();
 
     // now set the new type, this will reset the comboboxes to item 0
     pcThread->ThreadType.setValue(index);
+    Base::Console().message("MUDEI THREAD TYPE\n");
 
     // TODO: check a lot of new type consequences
 
-    //TODO: find a better way to update diameter
-    // diameter
-    // ui->diameterCombo->clear();
-    // std::vector<std::string> cursor = pcThread->ThreadSize.getEnumVector();
-    // for (const auto& it : cursor) {
-    //     ui->diameterCombo->addItem(tr(it.c_str()));
-    // }
-    // ui->diameterCombo->setCurrentIndex(pcThread->ThreadSize.getValue());
+    int threadClassIndex = ui->classCombo->findText(ThreadClassString, Qt::MatchContains);
+    if (threadClassIndex > -1) {
+        ui->classCombo->setCurrentIndex(threadClassIndex);
+    }
 
     recomputeFeature();
 }
@@ -322,6 +367,85 @@ void TaskThreadParameters::threadSizePitchChanged(int index){
         // apply the recompute result to the widgets
         // ui->HoleCutCustomValues->setDisabled(hole->HoleCutCustomValues.isReadOnly());
         // ui->HoleCutCustomValues->setChecked(hole->HoleCutCustomValues.getValue());
+    }
+}
+
+void TaskThreadParameters::depthChanged(int index)
+{
+    auto thread = getObject<PartDesign::Thread>();
+    if (!thread) {
+        return;
+    }
+    thread->DepthType.setValue(index);
+    recomputeFeature();
+    // enabling must be handled after recompute
+    // bool DepthisDimension = (std::string(hole->DepthType.getValueAsString()) == "Dimension");
+    // ui->DrillPointAngled->setEnabled(DepthisDimension);
+    // ui->DrillPointAngle->setEnabled(DepthisDimension);
+    // ui->DrillForDepth->setEnabled(DepthisDimension);
+    // setCutDiagram();
+
+    // setGizmoPositions();
+}
+
+void TaskThreadParameters::threadClassChanged(int index){
+     if (index < 0) {
+        return;
+    }
+
+    if (auto thread = getObject<PartDesign::Thread>()) {
+        thread->ThreadClass.setValue(index);
+        recomputeFeature();
+    }
+}
+
+void TaskThreadParameters::threadDirectionChanged(int index)
+{
+    if (index < 0) {
+        return;
+    }
+
+    if (auto thread = getObject<PartDesign::Thread>()) {
+        thread->ThreadDirection.setValue(index);
+        recomputeFeature();
+    }   
+}
+
+void TaskThreadParameters::CustomClearanceCheckValuesChanged(){
+    if (auto thread = getObject<PartDesign::Thread>()) {
+        thread->UseCustomThreadClearance.setValue(ui->customClearanceCheck->isChecked());
+
+        if (ui->customClearanceCheck->isChecked()) {
+            // ui->HoleCutDiameter->setEnabled(true);
+            // ui->HoleCutDepth->setEnabled(true);
+            // if (!hole->HoleCutCountersinkAngle.isReadOnly()) {
+                // ui->HoleCutCountersinkAngle->setEnabled(true);
+            // }
+        }
+        else {
+            // ui->HoleCutDiameter->setEnabled(false);
+            // ui->HoleCutDepth->setEnabled(false);
+            // ui->HoleCutCountersinkAngle->setEnabled(false);
+        }
+
+        recomputeFeature();
+    }
+}
+
+void TaskThreadParameters::threadModelChanged()
+{
+    if (auto thread = getObject<PartDesign::Thread>()) {
+        if (sender() == ui->cosmeticThreadRadio) {
+            // hole->ThreadDirection.setValue(0L);
+            thread->CosmeticThread.setValue(true);
+            thread->ModelThread.setValue(false);
+        }
+        else {
+            thread->CosmeticThread.setValue(false);
+            thread->ModelThread.setValue(true);
+            // hole->ThreadDirection.setValue(1L);
+        }
+        recomputeFeature();
     }
 }
 
@@ -393,11 +517,11 @@ void TaskThreadParameters::changedObject(const App::Document&, const App::Proper
         // }
         // updateComboBoxItems(ui->HoleCutType, translatedCutTypes, hole->HoleCutType.getValue());
 
-        // std::vector<std::string> translatedClassTypes;
-        // for (const auto& it : hole->ThreadClass.getEnumVector()) {
-        //     translatedClassTypes.push_back(tr(it.c_str()).toStdString());
-        // }
-        // updateComboBoxItems(ui->ThreadClass, translatedClassTypes, hole->ThreadClass.getValue());
+        std::vector<std::string> translatedClassTypes;
+        for (const auto& it : thread->ThreadClass.getEnumVector()) {
+            translatedClassTypes.push_back(tr(it.c_str()).toStdString());
+        }
+        updateComboBoxItems(ui->classCombo, translatedClassTypes, thread->ThreadClass.getValue());
     }
     else if (&Prop == &thread->ThreadSize) {
         // ui->ThreadSize->setEnabled(true);
@@ -418,6 +542,9 @@ void TaskThreadParameters::changedObject(const App::Document&, const App::Proper
             thread->ThreadSizePitch.getEnumVector(),
             thread->ThreadSizePitch.getValue()
         );
+    } else if (&Prop == &thread->DepthType) {
+        ui->endTypeCombo->setEnabled(true);
+        updateComboBox(ui->endTypeCombo, thread->DepthType.getValue());
     }
     // else if (&Prop == &hole->ThreadClass) {
     //     ui->ThreadClass->setEnabled(true);
