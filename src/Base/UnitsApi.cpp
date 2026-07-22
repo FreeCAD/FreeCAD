@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 #include <iomanip>
+#include <string_view>
 
 #include <CXX/WrapPython.h>
 

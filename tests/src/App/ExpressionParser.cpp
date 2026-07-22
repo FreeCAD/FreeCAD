@@ -4,6 +4,7 @@
 #include <gmock/gmock.h>
 
 #include "Base/Quantity.h"
+#include "Base/NumericFormatting.h"
 
 #include "App/Application.h"
 #include "App/Document.h"
@@ -70,7 +71,7 @@ protected:
     {
         docName = App::GetApplication().getUniqueDocumentName("test");
         thisDoc = App::GetApplication().newDocument(docName.c_str(), "testUser");
-        thisObj = thisDoc->addObject("Sketcher::SketchObject", "Sketch");
+        thisObj = thisDoc->addObject("App::GeoFeature", "Sketch");
     }
 
     void TearDown() override
@@ -87,6 +88,15 @@ protected:
     Base::Quantity parse_expression_text_as_quantity(const char* expression_text)
     {
         const auto expression = parse(thisObj, expression_text);
+        return App::any_cast<Base::Quantity>(expression->getValueAsAny());
+    }
+
+    Base::Quantity parse_user_input_as_quantity(
+        const char* expressionText,
+        const Base::NumericFormattingState& formatting
+    )
+    {
+        const auto expression = parseUserInput(thisObj, expressionText, formatting);
         return App::any_cast<Base::Quantity>(expression->getValueAsAny());
     }
 
@@ -227,6 +237,32 @@ TEST_F(ExpressionParserTest, simpleExpressionsParse)
         << "mixed angle units";
 
     EXPECT_THAT(parseExpr("True mm"), IsQuantity(mm(1))) << "boolean constant treated as scalar";
+}
+
+TEST_F(ExpressionParserTest, expressionUserInputKeepsGroupingSeparateFromDecimals)
+{
+    const Base::NumericFormattingState deDe {"de_DE", ",", "."};
+
+    EXPECT_EQ(parse_user_input_as_quantity("1.234 mm", deDe), mm(1.234));
+    EXPECT_EQ(parse_user_input_as_quantity("1,234 mm", deDe), mm(1.234));
+}
+
+TEST_F(ExpressionParserTest, functionArgumentsTakePrecedenceOverGrouping)
+{
+    const Base::NumericFormattingState enUs {"en_US", ".", ","};
+    const auto expression = parseUserInput(this_obj(), "pow(1,234)", enUs);
+    const auto simplified = expression->simplify();
+
+    EXPECT_THAT(simplified->getValueAsAny(), IsLong(1));
+}
+
+TEST_F(ExpressionParserTest, commaDecimalLocalesUseSemicolonsForArguments)
+{
+    const Base::NumericFormattingState deDe {"de_DE", ",", "."};
+    const auto expression = parseUserInput(this_obj(), "pow(1, 234)", deDe);
+    const auto simplified = expression->simplify();
+
+    EXPECT_THAT(simplified->getValueAsAny(), IsLong(1));
 }
 
 TEST_F(ExpressionParserTest, badExpressionsDoNotParse)
