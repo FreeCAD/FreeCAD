@@ -637,6 +637,38 @@ class CoinRenderPipelineTestCase(unittest.TestCase):
         finally:
             harness.close()
 
+    def test_render_to_image_uses_selected_draw_list_pipeline(self):
+        FreeCAD, FreeCADGui, coin = _require_gui()
+        width, height = _snapshot_dimensions()
+        harness = _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height)
+        try:
+            if _RENDERER_DRAW_LIST not in harness.render_pipelines():
+                raise unittest.SkipTest("DrawList framebuffer capture requires the DrawList pipeline")
+
+            root, _light = _build_lighting_equivalence_scene(coin)
+            root.ref()
+            try:
+                _frame_scene_camera(coin, root, width, height)
+                harness.set_render_pipeline(_RENDERER_DRAW_LIST)
+                harness.viewer.setOverrideMode("Shaded")
+                harness.viewer.setSceneGraph(root)
+                harness.view.redraw()
+                harness.flush(cycles=8)
+
+                captured = harness.viewer.renderToImage(samples=0)
+                self.assertFalse(captured.isNull(), "DrawList renderToImage returned an empty image")
+                self.assertEqual(
+                    harness.viewer.getRenderPipeline(),
+                    "DrawList",
+                    "DrawList framebuffer capture fell back to LegacyGL",
+                )
+                self.assertGreater(captured.width(), 0)
+                self.assertGreater(captured.height(), 0)
+            finally:
+                root.unref()
+        finally:
+            harness.close()
+
     def test_legacy_solid_background_preserves_lighting(self):
         FreeCAD, FreeCADGui, coin = _require_gui()
         width, height = _snapshot_dimensions()

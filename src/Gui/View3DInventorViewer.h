@@ -114,24 +114,6 @@ class GLGraphicsItem;
 class SoShapeScale;
 class ViewerEventFilter;
 
-/** Ordered phases used to assemble a viewer frame. */
-enum class ViewerRenderStage
-{
-    Background,  ///< Viewer background pass.
-    MainScene,   ///< Main scene-graph traversal.
-    AfterMain,   ///< Work retained or emitted after the main traversal.
-    Foreground,  ///< Foreground scene content.
-    Decorations  ///< Screen-only viewer decorations.
-};
-
-/** Scene-graph root and participation policy for one frame phase. */
-struct ViewerRenderStageEntry
-{
-    ViewerRenderStage stage;  ///< Stage represented by this entry.
-    SoNode* root {nullptr};   ///< Scene-graph root to traverse, when bound.
-    bool enabled {false};     ///< Whether this stage participates in the frame.
-};
-
 struct RenderFrameRequest;
 struct RenderFrameResult;
 
@@ -656,8 +638,6 @@ private:
     void pushRenderIntentOverride(RenderIntent intent) const;
     void popRenderIntentOverride() const;
     RenderIntent currentRenderIntent() const;
-    std::vector<ViewerRenderStageEntry>
-    buildStagePlan(const RenderFrameRequest&) const;
     void initializeRenderManager();
     void updateDecorationSwitch(RenderIntent intent);
 
@@ -671,7 +651,11 @@ private:
     void recoverFromRenderMemoryException();
     void renderDelayedAnnotations(SoGLRenderAction* glra);
     void renderDelayedAnnotations(SoIRRenderAction* action);
-    bool renderToFramebuffer(QOpenGLFramebufferObject*, bool includeViewerLighting = true);
+    bool renderToFramebuffer(
+        QOpenGLFramebufferObject*,
+        bool includeViewerLighting = true,
+        std::optional<QColor> backgroundOverride = std::nullopt
+    );
     void setCursorRepresentation(int mode);
     void destroyNaviCube();
     void createStandardCursors();
@@ -813,7 +797,7 @@ struct RenderFrameRequest
 
     /// Include viewer-owned lights in the main scene.
     bool includeViewerLighting {true};
-    /// Include viewer-owned decorations in the decorations stage.
+    /// Include viewer-owned decorations in the frame.
     bool includeDecorations {true};
 
     /// Optional replacement for the viewer background.
