@@ -201,6 +201,8 @@ public:
     TechDraw::ArrowType prefDefaultArrow() const;
     bool prefOrthoPyramid() const;
 
+    void updatePositionFromFeatureXY() override;
+
     TechDraw::DrawViewBalloon* getBalloonFeat()
     {
         return dvBalloon;

@@ -330,7 +330,6 @@ bool QGIViewBalloon::getGroupSelection()
 //Set selection state for this and its children
 void QGIViewBalloon::setGroupSelection(bool isSelected)
 {
-    //    Base::Console().message("QGIVB::setGroupSelection(%d)\n", b);
     setSelected(isSelected);
     balloonLabel->setSelected(isSelected);
     balloonLines->setSelected(isSelected);
@@ -340,7 +339,6 @@ void QGIViewBalloon::setGroupSelection(bool isSelected)
 
 void QGIViewBalloon::select(bool state)
 {
-    //    Base::Console().message("QGIVBall::select(%d)\n", state);
     setSelected(state);
     draw();
 }
@@ -353,7 +351,6 @@ void QGIViewBalloon::hover(bool state)
 
 void QGIViewBalloon::setViewPartFeature(TechDraw::DrawViewBalloon* balloonFeat)
 {
-    //    Base::Console().message("QGIVB::setViewPartFeature()\n");
     if (!balloonFeat) {
         return;
     }
@@ -447,9 +444,14 @@ void QGIViewBalloon::updateBalloon(bool obtuse)
     }
 
     balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
-    float x = Rez::guiX(balloon->X.getValue() * refObj->getScale());
-    float y = Rez::guiX(balloon->Y.getValue() * refObj->getScale());
-    balloonLabel->setPosFromCenter(x, -y);
+
+    if (balloon->X.isTouched() || balloon->Y.isTouched()) {
+        float x = Rez::guiX(balloon->X.getValue() * refObj->getScale());
+        float y = Rez::guiX(balloon->Y.getValue() * refObj->getScale());
+        balloonLabel->setPosFromCenter(x, -y);
+    }
+
+
 }
 
 void QGIViewBalloon::balloonLabelDragged(bool originDrag)
@@ -541,8 +543,6 @@ void QGIViewBalloon::balloonLabelDragFinished()
 //from QGVP::mouseReleaseEvent - pos = eventPos in scene coords?
 void QGIViewBalloon::placeBalloon(QPointF pos)
 {
-    //    Base::Console().message("QGIVB::placeBalloon(%s)\n",
-    //                            DrawUtil::formatVector(pos).c_str());
     auto balloon(dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()));
     if (!balloon) {
         return;
@@ -1017,6 +1017,16 @@ void QGIViewBalloon::getBalloonPoints(TechDraw::DrawViewBalloon* balloon, DrawVi
     }
     labelPos = Base::Vector3d(x, y, 0.0);
     arrowPos = arrowTipPosInParent;
+}
+
+//! get the X&Y position from the feature in parent coords, convert to Qt coords and update
+//! this graphic item's scene position.
+// Since balloon positioning is different from shape views, we don't want to use
+// QGIView::updatePositionFromFeatureXY here.
+void QGIViewBalloon::updatePositionFromFeatureXY()
+{
+    //TODO: opportunity to use this method to centralize positioning logic from
+    //      QGIViewBalloon::placeBalloon(), QGSPage::createBalloon(), etc.
 }
 
 #include <Mod/TechDraw/Gui/moc_QGIViewBalloon.cpp>

@@ -978,17 +978,17 @@ Kontynuować?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="156"/>
       <source>Cells</source>
-      <translation type="unfinished">Cells</translation>
+      <translation>Komórki</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="165"/>
       <source>Maximum number of columns</source>
-      <translation type="unfinished">Maximum number of columns</translation>
+      <translation>Maksymalna liczba kolumn</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="175"/>
       <source>Maximum number of rows</source>
-      <translation type="unfinished">Maximum number of rows</translation>
+      <translation>Maksymalna liczba wierszy</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="185"/>
@@ -998,7 +998,7 @@ Kontynuować?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="191"/>
       <source>Displays the cell alias using the custom format.</source>
-      <translation type="unfinished">Displays the cell alias using the custom format.</translation>
+      <translation>Wyświetla alias komórki w niestandardowym formacie.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="194"/>
@@ -1008,7 +1008,7 @@ Kontynuować?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="207"/>
       <source>Sets the table view zoom level from 60% to 160%.</source>
-      <translation type="unfinished">Sets the table view zoom level from 60% to 160%.</translation>
+      <translation>Ustawia poziom powiększenia tabeli od 60% do 160%.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="210"/>

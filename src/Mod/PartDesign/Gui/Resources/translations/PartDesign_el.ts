@@ -205,17 +205,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2590"/>
+      <location filename="../../Command.cpp" line="2595"/>
       <source>PartDesign</source>
       <translation>ΣχεδίασηΕξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2591"/>
+      <location filename="../../Command.cpp" line="2596"/>
       <source>Boolean Operation</source>
       <translation>Πράξη Άλγεβρας Boole</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2592"/>
+      <location filename="../../Command.cpp" line="2597"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>Εφαρμόζει λογικές πράξεις boolean με τα επιλεγμένα αντικείμενα και το ενεργό σώμα</translation>
     </message>
@@ -494,17 +494,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2459"/>
+      <location filename="../../Command.cpp" line="2464"/>
       <source>PartDesign</source>
       <translation>ΣχεδίασηΕξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2460"/>
+      <location filename="../../Command.cpp" line="2465"/>
       <source>Multi-Transform</source>
       <translation>Πολλαπλός-Μετασχηματισμός</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2461"/>
+      <location filename="../../Command.cpp" line="2466"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation>Εφαρμόζει πολλούς συνδυαστικούς μετασχηματισμούς (όπως επαναλήψεις, καθρεπτισμούς ή αλλαγή μεγέθους) στα επιλεγμένα στοιχεία ή στο ενεργό σώμα</translation>
     </message>
@@ -602,17 +602,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2354"/>
+      <location filename="../../Command.cpp" line="2359"/>
       <source>PartDesign</source>
       <translation>ΣχεδίασηΕξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2355"/>
+      <location filename="../../Command.cpp" line="2360"/>
       <source>Polar Pattern</source>
       <translation>Κυκλική Διάταξη</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2356"/>
+      <location filename="../../Command.cpp" line="2361"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation>Δημιουργεί αντίγραφα των επιλεγμένων στοιχείων ή του ενεργού σώματος σε κυκλική διάταξη</translation>
     </message>
@@ -638,17 +638,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2416"/>
+      <location filename="../../Command.cpp" line="2421"/>
       <source>PartDesign</source>
       <translation>ΣχεδίασηΕξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2417"/>
+      <location filename="../../Command.cpp" line="2422"/>
       <source>Scale</source>
       <translation>Κλίμακα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2418"/>
+      <location filename="../../Command.cpp" line="2423"/>
       <source>Scales the selected features or the active body</source>
       <translation>Αλλάζει το μέγεθος (κλιμακώνει) των επιλεγμένων στοιχείων ή του ενεργού σώματος</translation>
     </message>
@@ -905,7 +905,7 @@ so that self intersection is avoided.</source>
       <translation>Δημιουργία Αντιγράφου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2514"/>
+      <location filename="../../Command.cpp" line="2519"/>
       <source>Convert to Multi-Transform feature</source>
       <translation>Μετατροπή σε λειτουργία Πολλαπλού Μετασχηματισμού</translation>
     </message>
@@ -926,7 +926,7 @@ so that self intersection is avoided.</source>
       <translation>Νέο Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2611"/>
+      <location filename="../../Command.cpp" line="2616"/>
       <source>Create Boolean</source>
       <translation>Δημιουργία Σύνθετης Πράξης (Boolean)</translation>
     </message>
@@ -3620,7 +3620,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
       <translation>Χειροκίνητη Μεταφορά</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBoolean.cpp" line="70"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="223"/>
       <source>Edit Boolean</source>
       <translation>Επεξεργασία Boolean</translation>
     </message>
@@ -5165,12 +5165,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2658"/>
+      <location filename="../../Command.cpp" line="2663"/>
       <source>Create Datum</source>
       <translation>Δημιουργία Στοιχείου Αναφοράς</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2659"/>
+      <location filename="../../Command.cpp" line="2664"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Δημιουργεί ένα στοιχείο αναφοράς ή ένα τοπικό σύστημα συντεταγμένων
 (είναι βοηθητικά αντικείμενα όπως επίπεδα, γραμμές ή σημεία που δεν αποτελούν μέρος του τελικού αντικειμένου, αλλά τα χρησιμοποιούμε ως «βάση» ή «οδηγό» για να τοποθετήσουμε με ακρίβεια άλλα σχήματα ή σκαριφήματα)</translation>
@@ -5179,12 +5179,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2693"/>
+      <location filename="../../Command.cpp" line="2698"/>
       <source>Create Datum</source>
       <translation>Δημιουργία Στοιχείου Αναφοράς</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2694"/>
+      <location filename="../../Command.cpp" line="2699"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Δημιουργεί ένα στοιχείο αναφοράς ή ένα τοπικό σύστημα συντεταγμένων
 (είναι βοηθητικά αντικείμενα όπως επίπεδα, γραμμές ή σημεία που δεν αποτελούν μέρος του τελικού αντικειμένου, αλλά τα χρησιμοποιούμε ως «βάση» ή «οδηγό» για να τοποθετήσουμε με ακρίβεια άλλα σχήματα ή σκαριφήματα)</translation>

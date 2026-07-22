@@ -4069,7 +4069,7 @@ Se non è selezionato alcun oggetto, si apre un browser di file per selezionare 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="116"/>
       <source>Prefix Text</source>
-      <translation type="unfinished">Prefix Text</translation>
+      <translation>Testo prefisso</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1982"/>

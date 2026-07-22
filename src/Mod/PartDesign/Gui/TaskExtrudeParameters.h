@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include <QLabel>
+
 #include <Gui/Inventor/Draggers/Gizmo.h>
 
 #include "TaskSketchBasedParameters.h"

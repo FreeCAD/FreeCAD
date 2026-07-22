@@ -154,6 +154,11 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
 
     if(BUILD_BIM)
         SetupLark()
+        find_python_runtime_dep(ifcopenshell ifcopenshell ifcopenshell_VERSION "IFC files support disabled.")
+    endif()
+    if(BUILD_ASSEMBLY)
+        find_python_runtime_dep(av av av_VERSION "Assembly simulation video export will not work properly.")
+        find_python_runtime_dep(pillow PIL pillow_VERSION "Assembly simulation video export will not work properly.")
     endif()
 endif()
 

@@ -698,6 +698,72 @@ class DocumentBasicCases(unittest.TestCase):
         FreeCAD.closeDocument("CreateTest")
 
 
+class DocumentDuplicateLabelCases(unittest.TestCase):
+    """Tests for the DuplicateLabels document preference (issue #25519)."""
+
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("DuplicateLabelTest")
+        self.Params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Document")
+        self.OldDuplicateLabels = self.Params.GetBool("DuplicateLabels", False)
+
+    def tearDown(self):
+        self.Params.SetBool("DuplicateLabels", self.OldDuplicateLabels)
+        FreeCAD.closeDocument("DuplicateLabelTest")
+
+    def testNewObjectKeepsRequestedLabel(self):
+        # With duplicate labels allowed, the label of a new object must be the
+        # requested name, not the numbered internal name generated from it
+        self.Params.SetBool("DuplicateLabels", True)
+        first = self.Doc.addObject("App::FeatureTest", "Label")
+        second = self.Doc.addObject("App::FeatureTest", "Label")
+        self.assertEqual(first.Name, "Label")
+        self.assertEqual(second.Name, "Label001")
+        self.assertEqual(first.Label, "Label")
+        self.assertEqual(second.Label, "Label")
+
+    def testNewObjectLabelIsSanitized(self):
+        # The requested name is sanitized the same way as the internal name
+        self.Params.SetBool("DuplicateLabels", True)
+        first = self.Doc.addObject("App::FeatureTest", "My Label")
+        second = self.Doc.addObject("App::FeatureTest", "My Label")
+        self.assertEqual(first.Name, "My_Label")
+        self.assertEqual(second.Name, "My_Label001")
+        self.assertEqual(first.Label, "My_Label")
+        self.assertEqual(second.Label, "My_Label")
+
+    def testNewObjectWithoutNameUsesInternalName(self):
+        # Without a requested name the internal name is the only choice
+        self.Params.SetBool("DuplicateLabels", True)
+        first = self.Doc.addObject("App::FeatureTest")
+        second = self.Doc.addObject("App::FeatureTest")
+        self.assertEqual(first.Label, first.Name)
+        self.assertEqual(second.Label, second.Name)
+
+    def testNewObjectGetsUniqueLabelWhenDisabled(self):
+        # With duplicate labels disallowed (default), the label of the second
+        # object is made unique
+        self.Params.SetBool("DuplicateLabels", False)
+        first = self.Doc.addObject("App::FeatureTest", "Label")
+        second = self.Doc.addObject("App::FeatureTest", "Label")
+        self.assertEqual(first.Label, "Label")
+        self.assertEqual(second.Label, "Label001")
+
+    def testCopyObjectPreservesDuplicateLabel(self):
+        # With duplicate labels allowed, copying an object must not rename the
+        # label of the copy
+        self.Params.SetBool("DuplicateLabels", True)
+        obj = self.Doc.addObject("App::FeatureTest", "Label")
+        copy = self.Doc.copyObject(obj)
+        self.assertEqual(copy.Label, "Label")
+
+    def testCopyObjectGetsUniqueLabelWhenDisabled(self):
+        # With duplicate labels disallowed (default), the copy gets a unique label
+        self.Params.SetBool("DuplicateLabels", False)
+        obj = self.Doc.addObject("App::FeatureTest", "Label")
+        copy = self.Doc.copyObject(obj)
+        self.assertEqual(copy.Label, "Label001")
+
+
 class DocumentSettingsCases(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("DocumentSettingsTests")
