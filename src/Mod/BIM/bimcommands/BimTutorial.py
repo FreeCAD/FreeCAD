@@ -24,6 +24,7 @@
 
 """This is the tutorial of the BIM workbench"""
 
+import ast
 import os
 
 import FreeCAD
@@ -145,8 +146,10 @@ class BIM_Tutorial:
         )
         self.goal1 = re.findall(r'goal1">(.*?)</div', html)
         self.goal2 = re.findall(r'goal2">(.*?)</div', html)
-        self.test1 = re.findall(r'test1".*?>(.*?)</div', html)
-        self.test2 = re.findall(r'test2".*?>(.*?)</div', html)
+        # self.test1 = re.findall(r'test1".*?>(.*?)</div', html)
+        # self.test2 = re.findall(r'test2".*?>(.*?)</div', html)
+        self.test1 = ["False"] * len(self.goal1)
+        self.test2 = ["False"] * len(self.goal2)
 
         # fix mediawiki encodes
         self.test1 = [t.replace("&lt;", "<").replace("&gt;", ">") for t in self.test1]
@@ -270,9 +273,9 @@ class BIM_Tutorial:
             if self.test1[self.step]:
                 if not self.done1:
                     try:
-                        result = eval(self.test1[self.step])
+                        result = ast.literal_eval(self.test1[self.step])
                     except:
-                        print("BIM Tutorial: unable to eval: " + self.test1[self.step])
+                        print("BIM Tutorial: unable to ast.literal_eval: " + self.test1[self.step])
                         result = False
                         self.done1 = True
                     if result:
@@ -283,9 +286,9 @@ class BIM_Tutorial:
             if self.test2[self.step]:
                 if not self.done2:
                     try:
-                        result = eval(self.test2[self.step])
+                        result = ast.literal_eval(self.test2[self.step])
                     except:
-                        print("BIM Tutorial: unable to eval: " + self.test2[self.step])
+                        print("BIM Tutorial: unable to ast.literal_eval: " + self.test2[self.step])
                         result = False
                         self.done2 = True
                     if result:
