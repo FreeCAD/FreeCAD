@@ -28,6 +28,7 @@
 
 #include "Dialogs/DlgUnitsCalculatorImp.h"
 #include "ui_DlgUnitsCalculator.h"
+#include "NumericLocale.h"
 #include <Base/Quantity.h>
 #include <Base/UnitsApi.h>
 
@@ -131,9 +132,12 @@ void DlgUnitsCalculator::textChanged(QString unit)
 
 void DlgUnitsCalculator::valueChanged(const Quantity& quant)
 {
+    const auto formatting = ::Gui::effectiveNumericFormattingState(ui->UnitInput->locale());
     std::string unitTypeStr;
     try {
-        unitTypeStr = Quantity::parse(ui->UnitInput->text().toStdString()).getUnit().getTypeString();
+        unitTypeStr = Quantity::parseUserInput(ui->UnitInput->text().toStdString(), formatting)
+                          .getUnit()
+                          .getTypeString();
     }
     catch (const Base::ParserError&) {
     }
@@ -153,7 +157,9 @@ void DlgUnitsCalculator::valueChanged(const Quantity& quant)
             ui->pushButton_Copy->setEnabled(false);
         }
         else {  // the unit is valid and has the same type
-            double convertValue = Quantity::parse("1" + ui->UnitInput->text().toStdString()).getValue();
+            double convertValue
+                = Quantity::parseUserInput("1" + ui->UnitInput->text().toStdString(), formatting)
+                      .getValue();
             // we got now e.g. for "1 in" the value '25.4' because 1 in = 25.4 mm
             // the result is now just quant / convertValue because the input is always in a base
             // unit (an input of "1 cm" will immediately be converted to "10 mm" by Gui::InputField
