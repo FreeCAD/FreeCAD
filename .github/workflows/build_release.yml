@@ -288,3 +288,38 @@ jobs:
       #   run: |
       #     security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
       #     rm ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision
+
+  # Experimental Windows binaries built against the latest LibPack (OCCT 8, Qt 6, Python from the
+  # LibPack) for both Intel (x64) and ARM64. These are uploaded to the same release as the primary
+  # conda-based build, distinguished by an "experimental" file name. This path is non-blocking (the
+  # reusable workflow's Build job uses continue-on-error), so a failure here never fails the release.
+  windows_experimental:
+    needs: upload_src
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x86_64
+            runner: windows-2022
+            cmakeArchitecture: ""
+            makeInstaller: "true"
+            libpackDownloadUrl: https://github.com/FreeCAD/FreeCAD-LibPack/releases/download/3.5.3/LibPack-26.3.0-v3.5.3-x64-Release.7z
+            libpackName: LibPack-26.3.0-v3.5.3-x64-Release
+          - arch: arm64
+            runner: windows-11-arm
+            cmakeArchitecture: ARM64
+            makeInstaller: "false"
+            libpackDownloadUrl: https://github.com/FreeCAD/FreeCAD-LibPack/releases/download/3.5.3/LibPack-26.3.0-v3.5.3-ARM64-Release.7z
+            libpackName: LibPack-26.3.0-v3.5.3-ARM64-Release
+    uses: ./.github/workflows/sub_releaseWindowsLibpack.yml
+    with:
+      build_tag: ${{ needs.upload_src.outputs.build_tag }}
+      arch: ${{ matrix.arch }}
+      runner: ${{ matrix.runner }}
+      cmakeArchitecture: ${{ matrix.cmakeArchitecture }}
+      libpackDownloadUrl: ${{ matrix.libpackDownloadUrl }}
+      libpackName: ${{ matrix.libpackName }}
+      makeInstaller: ${{ matrix.makeInstaller }}
+    secrets: inherit
