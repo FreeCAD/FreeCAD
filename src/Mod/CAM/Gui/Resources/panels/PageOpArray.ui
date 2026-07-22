@@ -26,16 +26,51 @@
     <layout class="QGridLayout" name="layoutOperations">
 
      <item row="0" column="0">
-      <widget class="QListWidget" name="baseList">
-       <property name="maximumSize">
+      <widget class="QTableWidget" name="baseList">
+       <property name="minimumSize">
         <size>
-         <width>230</width>
-         <height>300</height>
+         <width>250</width>
+         <height>200</height>
         </size>
        </property>
        <property name="toolTip">
         <string>List of selected operations</string>
        </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::ExtendedSelection</enum>
+       </property>
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectRows</enum>
+       </property>
+       <property name="columnCount">
+        <number>3</number>
+       </property>
+       <attribute name="horizontalHeaderStretchLastSection">
+        <bool>true</bool>
+       </attribute>
+       <attribute name="verticalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
+       <column>
+        <property name="text">
+         <string>#</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Operation</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>TC</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Coolant</string>
+        </property>
+       </column>
       </widget>
      </item>
 
@@ -52,7 +87,7 @@
         <widget class="QPushButton" name="pbClear">
          <property name="maximumSize">
           <size>
-           <width>100</width>
+           <width>70</width>
            <height>40</height>
           </size>
          </property>
@@ -69,7 +104,7 @@
         <widget class="QPushButton" name="pbRemove">
          <property name="maximumSize">
           <size>
-           <width>100</width>
+           <width>70</width>
            <height>40</height>
           </size>
          </property>
@@ -86,12 +121,12 @@
         <widget class="QPushButton" name="pbAdd">
          <property name="maximumSize">
           <size>
-           <width>100</width>
+           <width>70</width>
            <height>40</height>
           </size>
          </property>
          <property name="toolTip">
-          <string>Add new operations</string>
+          <string>Add new operations to list</string>
          </property>
          <property name="text">
           <string>Add</string>
@@ -103,12 +138,12 @@
         <widget class="QPushButton" name="pbUp">
          <property name="maximumSize">
           <size>
-           <width>100</width>
+           <width>70</width>
            <height>40</height>
           </size>
          </property>
          <property name="toolTip">
-          <string>Move operation up</string>
+          <string>Move operation up the list</string>
          </property>
          <property name="text">
           <string>Up</string>
@@ -120,12 +155,12 @@
         <widget class="QPushButton" name="pbDown">
          <property name="maximumSize">
           <size>
-           <width>100</width>
+           <width>70</width>
            <height>40</height>
           </size>
          </property>
          <property name="toolTip">
-          <string>Move operation down</string>
+          <string>Move operation down the list</string>
          </property>
          <property name="text">
           <string>Down</string>
@@ -190,6 +225,9 @@
              <height>0</height>
             </size>
            </property>
+           <property name="toolTip">
+            <string>The number of copies</string>
+           </property>
           </widget>
          </item>
         </layout>
@@ -217,6 +255,9 @@
              <height>0</height>
             </size>
            </property>
+           <property name="toolTip">
+            <string>The number of copies along X-axis</string>
+           </property>
           </widget>
          </item>
          <item row="0" column="2">
@@ -236,6 +277,9 @@
              <width>80</width>
              <height>0</height>
             </size>
+           </property>
+           <property name="toolTip">
+            <string>The number of copies along Y-axis</string>
            </property>
           </widget>
          </item>
@@ -266,6 +310,9 @@
              <height>0</height>
             </size>
            </property>
+           <property name="toolTip">
+            <string>The spacing between the array copies along X-axis</string>
+           </property>
           </widget>
          </item>
          <item row="1" column="2">
@@ -285,6 +332,9 @@
              <width>80</width>
              <height>0</height>
             </size>
+           </property>
+           <property name="toolTip">
+            <string>The spacing between the array copies along Y-axis</string>
            </property>
           </widget>
          </item>
@@ -310,9 +360,6 @@
         <property name="text">
          <string>Angle</string>
         </property>
-        <property name="toolTip">
-         <string>Total angle of polar pattern</string>
-        </property>
        </widget>
       </item>
       <item row="0" column="1">
@@ -322,6 +369,9 @@
           <width>80</width>
           <height>0</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Total angle of polar pattern</string>
         </property>
        </widget>
       </item>
@@ -343,6 +393,9 @@
           <height>0</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>The centre of rotation in polar pattern</string>
+        </property>
        </widget>
       </item>
       <item row="1" column="2">
@@ -363,6 +416,9 @@
           <height>0</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>The centre of rotation in polar pattern</string>
+        </property>
        </widget>
       </item>
      </layout>
@@ -371,13 +427,10 @@
 
    <item>
     <layout class="QGridLayout" name="layouCheckBoxes">
-     <item row="1" column="1">
-      <widget class="QCheckBox" name="chkSwap">
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="chkExpand">
        <property name="text">
-        <string>Swap direction</string>
-       </property>
-       <property name="toolTip">
-        <string>Make copies in X direction before Y in Linear 2D pattern</string>
+        <string>Expand</string>
        </property>
       </widget>
      </item>
@@ -386,9 +439,6 @@
        <property name="text">
         <string>Reverse direction</string>
        </property>
-       <property name="toolTip">
-        <string>Start from farthest repeat</string>
-       </property>
       </widget>
      </item>
      <item row="1" column="0">
@@ -396,22 +446,12 @@
        <property name="text">
         <string>Combine</string>
        </property>
-       <property name="toolTip">
-        <string>If operations with identical tool controller and without coolant:
-combine by copies
-If operations with different tool controllers or with coolant:
-combine operations with same tool controller and coolant mode,
-but only if operations placed one by one in tree</string>
-       </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QCheckBox" name="chkExpand">
+     <item row="1" column="1">
+      <widget class="QCheckBox" name="chkSwap">
        <property name="text">
-        <string>Expand</string>
-       </property>
-       <property name="toolTip">
-        <string>Split path by elements even all base operations without coolant and with identical tool controller</string>
+        <string>Swap direction</string>
        </property>
       </widget>
      </item>
@@ -419,9 +459,6 @@ but only if operations placed one by one in tree</string>
       <widget class="QCheckBox" name="chkUseJitter">
        <property name="text">
         <string>Use jitter</string>
-       </property>
-       <property name="toolTip">
-        <string>Use randomly offset</string>
        </property>
       </widget>
      </item>
@@ -444,9 +481,6 @@ but only if operations placed one by one in tree</string>
         <property name="text">
          <string>Angle</string>
         </property>
-        <property name="toolTip">
-         <string>Max angle of rotation for jitter randomness</string>
-        </property>
        </widget>
       </item>
       <item row="0" column="1">
@@ -456,6 +490,9 @@ but only if operations placed one by one in tree</string>
           <width>80</width>
           <height>0</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Max angle of rotation for jitter randomness</string>
         </property>
        </widget>
       </item>
@@ -481,6 +518,9 @@ but only if operations placed one by one in tree</string>
           <height>0</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Seed value for jitter randomness</string>
+        </property>
        </widget>
       </item>
 
@@ -495,12 +535,15 @@ but only if operations placed one by one in tree</string>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="Gui::QuantitySpinBox" name="dspJitterMagX">
+       <widget class="Gui::QuantitySpinBox" name="dspJitterX">
         <property name="minimumSize">
          <size>
           <width>80</width>
           <height>0</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Maximum random offset along X-axis</string>
         </property>
        </widget>
       </item>
@@ -515,12 +558,15 @@ but only if operations placed one by one in tree</string>
        </widget>
       </item>
       <item row="1" column="3">
-       <widget class="Gui::QuantitySpinBox" name="dspJitterMagY">
+       <widget class="Gui::QuantitySpinBox" name="dspJitterY">
         <property name="minimumSize">
          <size>
           <width>80</width>
           <height>0</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Maximum random offset along Y-axis</string>
         </property>
        </widget>
       </item>

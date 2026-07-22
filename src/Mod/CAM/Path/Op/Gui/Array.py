@@ -114,8 +114,6 @@ class ViewProviderArrayChild:
 class ArrayTaskPanel(SimpleEditPanel):
     _transaction_name = "Edit Array"
     _ui_file = ":/panels/PageOpArray.ui"
-    DataLabel = QtCore.Qt.ItemDataRole.UserRole
-    DataID = QtCore.Qt.ItemDataRole.UserRole + 1
 
     def setupUi(self):
         self.initPage()
@@ -145,8 +143,8 @@ class ArrayTaskPanel(SimpleEditPanel):
 
         self.jitterAngle = QuantitySpinBox(self.form.dspJitterAngle, self.obj, "JitterAngle")
         self.jitterSeed = IntegerSpinBox(self.form.dspJitterSeed, self.obj, "JitterSeed")
-        self.jitterMagX = QuantitySpinBox(self.form.dspJitterMagX, self.obj, "JitterMagnitude.x")
-        self.jitterMagY = QuantitySpinBox(self.form.dspJitterMagY, self.obj, "JitterMagnitude.y")
+        self.jitterX = QuantitySpinBox(self.form.dspJitterX, self.obj, "JitterMagnitude.x")
+        self.jitterY = QuantitySpinBox(self.form.dspJitterY, self.obj, "JitterMagnitude.y")
 
         self.updateSpinBoxes()
 
@@ -163,8 +161,8 @@ class ArrayTaskPanel(SimpleEditPanel):
 
         self.jitterAngle.updateWidget()
         self.jitterSeed.updateWidget()
-        self.jitterMagX.updateWidget()
-        self.jitterMagY.updateWidget()
+        self.jitterX.updateWidget()
+        self.jitterY.updateWidget()
 
     def registerSignalHandlers(self):
         self.form.chkUseJitter.clicked.connect(self.updateVisibility)
@@ -188,8 +186,8 @@ class ArrayTaskPanel(SimpleEditPanel):
         signals.append(self.form.dspPolarCenterY.editingFinished)
         signals.append(self.form.dspJitterAngle.editingFinished)
         signals.append(self.form.dspJitterSeed.editingFinished)
-        signals.append(self.form.dspJitterMagX.editingFinished)
-        signals.append(self.form.dspJitterMagY.editingFinished)
+        signals.append(self.form.dspJitterX.editingFinished)
+        signals.append(self.form.dspJitterY.editingFinished)
         return signals
 
     def pageGetFields(self):
@@ -206,11 +204,11 @@ class ArrayTaskPanel(SimpleEditPanel):
 
         self.jitterAngle.updateProperty()
         self.jitterSeed.updateProperty()
-        self.jitterMagX.updateProperty()
-        self.jitterMagY.updateProperty()
+        self.jitterX.updateProperty()
+        self.jitterY.updateProperty()
 
-        updateInputField(self.obj, "JitterMagnitude.x", self.form.dspJitterMagX)
-        updateInputField(self.obj, "JitterMagnitude.y", self.form.dspJitterMagY)
+        updateInputField(self.obj, "JitterMagnitude.x", self.form.dspJitterX)
+        updateInputField(self.obj, "JitterMagnitude.y", self.form.dspJitterY)
 
     def pageRegisterSignalHandlers(self):
         for signal in self.getSignalsForUpdate():
@@ -248,32 +246,60 @@ class ArrayTaskPanel(SimpleEditPanel):
             self.form.groupPolar.hide()
 
     def updateBaseList(self):
+        print("updateBaseList")
+        # Column indices for baseList table
+        COL_ORDER = 0
+        COL_OP_NAME = 1
+        COL_OP_TC = 2
+        COL_OP_COOLANT = 3
         self.form.baseList.blockSignals(True)
-        self.form.baseList.clear()
+        self.form.baseList.clearContents()
+        self.form.baseList.setRowCount(0)
         for i, op in enumerate(self.obj.Base):
-            item = QtGui.QListWidgetItem(op.Label)
-            item.setData(self.DataLabel, op.Label)
-            item.setData(self.DataID, i)
-            flags = QtCore.Qt.ItemFlag.ItemIsSelectable
-            flags |= QtCore.Qt.ItemFlag.ItemIsEnabled
-            flags |= QtCore.Qt.ItemFlag.ItemIsUserCheckable
-            item.setFlags(flags)
-            self.form.baseList.addItem(item)
+            print("   ", i, op.Label)
+            self.form.baseList.insertRow(self.form.baseList.rowCount())
+
+            item = QtGui.QTableWidgetItem()
+            item.setData(QtCore.Qt.DisplayRole, i + 1)
+            self.form.baseList.setItem(i, COL_ORDER, item)
+
+            item = QtGui.QTableWidgetItem(op.Label)
+            self.form.baseList.setItem(i, COL_OP_NAME, item)
+
+            item = QtGui.QTableWidgetItem(op.ToolController.Label)
+            self.form.baseList.setItem(i, COL_OP_TC, item)
+
+            item = QtGui.QTableWidgetItem(op.CoolantMode)
+            self.form.baseList.setItem(i, COL_OP_COOLANT, item)
+
+        header = self.form.baseList.horizontalHeader()
+        header.setSectionResizeMode(COL_ORDER, QtGui.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(COL_OP_NAME, QtGui.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(COL_OP_TC, QtGui.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(COL_OP_COOLANT, QtGui.QHeaderView.ResizeToContents)
         self.form.baseList.blockSignals(False)
         self.updateButtonsVisibility()
 
     def updateButtonsVisibility(self):
-        print("baselist count", self.form.baseList.count())
-        self.form.pbClear.setEnabled(self.form.baseList.count())
-        if self.form.baseList.selectedItems():
-            self.form.pbRemove.setEnabled(True)
+        print("baselist count", self.form.baseList.rowCount())
+        self.form.pbClear.setEnabled(self.form.baseList.rowCount())
+        selectedRows = self.form.baseList.selectionModel().selectedRows()
+        indexes = [row.row() for row in selectedRows]
+        self.form.pbRemove.setEnabled(bool(indexes))
+
+        if len(indexes) == 1:
             index = self.form.baseList.currentRow()
             self.form.pbUp.setEnabled(index > 0)
-            self.form.pbDown.setEnabled(index < self.form.baseList.count() - 1)
+            self.form.pbDown.setEnabled(index < self.form.baseList.rowCount() - 1)
         else:
-            self.form.pbRemove.setEnabled(False)
             self.form.pbUp.setEnabled(False)
             self.form.pbDown.setEnabled(False)
+
+        if indexes:  # select operations in 3d view
+            FreeCADGui.Selection.clearSelection()
+            operations = [op for i, op in enumerate(self.obj.Base) if i in indexes]
+            for op in operations:
+                FreeCADGui.Selection.addSelection(op)
 
     def clearBaseList(self):
         print("clearBaseList")
@@ -282,11 +308,12 @@ class ArrayTaskPanel(SimpleEditPanel):
 
     def RemoveFromBaseList(self):
         print("RemoveFromBaseList")
-        index = self.form.baseList.currentRow()
-        print(" index", index)
-        print(" ", self.obj.Base)
         base = self.obj.Base
-        del base[index]
+        selectedRows = self.form.baseList.selectionModel().selectedRows()
+        indexes = [row.row() for row in selectedRows]
+        for index in sorted(indexes, reverse=True):
+            print(f"    Remove op {index}")
+            del base[index]
         self.obj.Base = base
         self.updateBaseList()
 
@@ -308,13 +335,13 @@ class ArrayTaskPanel(SimpleEditPanel):
             base.insert(index - 1, op)
             self.obj.Base = base
             self.updateBaseList()
-            self.form.baseList.setCurrentRow(index - 1)
+            self.form.baseList.selectRow(index - 1)
             self.updateButtonsVisibility()
 
     def downInBaseList(self):
         print("downInBaseList")
         index = self.form.baseList.currentRow()
-        if index < self.form.baseList.count() - 1:
+        if index < self.form.baseList.rowCount() - 1:
             base = self.obj.Base
             print("   ", [b.Label for b in base])
             op = base.pop(index)
@@ -322,7 +349,7 @@ class ArrayTaskPanel(SimpleEditPanel):
             base.insert(index + 1, op)
             self.obj.Base = base
             self.updateBaseList()
-            self.form.baseList.setCurrentRow(index + 1)
+            self.form.baseList.selectRow(index + 1)
             self.updateButtonsVisibility()
 
 
