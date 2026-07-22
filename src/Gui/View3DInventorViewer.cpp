@@ -2890,9 +2890,22 @@ GLenum View3DInventorViewer::getInternalTextureFormat()
 
 void View3DInventorViewer::setRenderType(RenderType type)
 {
+    QImage capturedImage;
+    if (type == Image) {
+        // QOpenGLWidget::grabFramebuffer() may repaint the widget. Keep the
+        // current render mode active until the capture has completed.
+        capturedImage = flipVertically(grabFramebuffer());
+        if (capturedImage.isNull()) {
+            Base::Console().warning(
+                "Failed to capture the viewport; keeping the current render mode\n"
+            );
+            return;
+        }
+    }
+
     renderType = type;
 
-    glImage = QImage();
+    glImage = capturedImage;
     if (type != Framebuffer) {
         delete framebuffer;
         framebuffer = nullptr;
@@ -2944,8 +2957,7 @@ void View3DInventorViewer::setRenderType(RenderType type)
             }
             break;
         case Image:
-            // renderOverlayImage() consumes OpenGL-oriented rows.
-            glImage = flipVertically(grabFramebuffer());
+            // capturedImage was prepared before the state transition.
             break;
     }
 }
