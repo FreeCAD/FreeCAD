@@ -114,27 +114,6 @@ class GLGraphicsItem;
 class SoShapeScale;
 class ViewerEventFilter;
 
-/** Ordered phases used to assemble a viewer frame. */
-enum class ViewerRenderStage
-{
-    Background,  ///< Viewer background pass.
-    MainScene,   ///< Main scene-graph traversal.
-    AfterMain,   ///< Work retained or emitted after the main traversal.
-    Foreground,  ///< Foreground scene content.
-    Decorations  ///< Screen-only viewer decorations.
-};
-
-/** Scene-graph root and participation policy for one frame phase. */
-struct ViewerRenderStageEntry
-{
-    ViewerRenderStage stage;  ///< Stage represented by this entry.
-    SoNode* root {nullptr};   ///< Scene-graph root to traverse, when bound.
-    bool enabled {false};     ///< Whether this stage participates in the frame.
-};
-
-struct RenderFrameRequest;
-struct RenderFrameResult;
-
 /** GUI view into a 3D scene provided by View3DInventor
  *
  */
@@ -273,9 +252,6 @@ public:
 
     /** Capture the live viewport framebuffer as a raster-oriented image. */
     QImage grabFramebuffer();
-
-    /** Render one frame according to a unified request. */
-    RenderFrameResult renderFrame(const RenderFrameRequest& request);
 
     void setViewing(bool enable) override;
     virtual void setCursorEnabled(bool enable);
@@ -594,6 +570,7 @@ public:
     void setEnabledVBO(bool on);
     bool isEnabledVBO() const;
     void setRenderCache(int);
+    /** Return the pipeline selected for this viewer. */
     RenderPipeline getRenderPipeline() const;
     void setRenderPipeline(RenderPipeline mode);
 
@@ -639,6 +616,9 @@ protected:
     static void onViewFitTimer(void*, SoSensor*);
 
 private:
+    struct RenderFrameOptions;
+    struct RenderFrameResult;
+
     struct OverlayAxisCrossState;
 
     static void setViewportCB(void* userdata, SoAction* action);
@@ -656,8 +636,6 @@ private:
     void pushRenderIntentOverride(RenderIntent intent) const;
     void popRenderIntentOverride() const;
     RenderIntent currentRenderIntent() const;
-    std::vector<ViewerRenderStageEntry>
-    buildStagePlan(const RenderFrameRequest&) const;
     void initializeRenderManager();
     void updateDecorationSwitch(RenderIntent intent);
 
@@ -671,7 +649,11 @@ private:
     void recoverFromRenderMemoryException();
     void renderDelayedAnnotations(SoGLRenderAction* glra);
     void renderDelayedAnnotations(SoIRRenderAction* action);
-    bool renderToFramebuffer(QOpenGLFramebufferObject*, bool includeViewerLighting = true);
+    RenderFrameResult renderFrame(const RenderFrameOptions& options);
+    RenderFrameResult renderFrameToFramebuffer(
+        QOpenGLFramebufferObject& framebuffer,
+        const RenderFrameOptions& options
+    );
     void setCursorRepresentation(int mode);
     void destroyNaviCube();
     void createStandardCursors();
@@ -720,6 +702,7 @@ private:
     RenderType renderType;
     QOpenGLFramebufferObject* framebuffer;
     QImage glImage;
+    RenderPipeline configuredPipeline {RenderPipeline::LegacyGL};
     bool shading;
     SoSwitch* dimensionRoot;
 
@@ -772,74 +755,6 @@ private:
     friend class NavigationStyle;
     friend class GLPainter;
     friend class ViewerEventFilter;
-};
-
-/** Destination to which a requested frame is rendered. */
-enum class RenderTargetKind
-{
-    LiveViewport,      ///< The viewer's live presentation target.
-    BoundFramebuffer   ///< A framebuffer already bound by the caller.
-};
-
-/** Reason the requested rendering pipeline was not used. */
-enum class RenderFallbackReason
-{
-    None,                         ///< No fallback was needed.
-    PipelineUnavailable,          ///< The requested pipeline is unavailable.
-    TargetUnsupported,            ///< The requested target cannot be used.
-    BackendInitializationFailed   ///< The requested backend failed to initialize.
-};
-
-/** Describes the target, intent, and optional policy overrides for one frame. */
-struct RenderFrameRequest
-{
-    /// Viewport region used for the frame traversal.
-    SbViewportRegion viewport;
-
-    /// Pipeline requested by the caller.
-    RenderPipeline requestedPipeline {
-        RenderPipeline::LegacyGL
-    };
-
-    /// Destination used for the frame.
-    RenderTargetKind target {
-        RenderTargetKind::LiveViewport
-    };
-
-    /// Semantic purpose of the traversal.
-    View3DInventorViewer::RenderIntent intent {
-        View3DInventorViewer::RenderIntent::LiveInteractive
-    };
-
-    /// Include viewer-owned lights in the main scene.
-    bool includeViewerLighting {true};
-    /// Include viewer-owned decorations in the decorations stage.
-    bool includeDecorations {true};
-
-    /// Optional replacement for the viewer background.
-    std::optional<QColor> backgroundOverride;
-};
-
-/** Reports the effective result of a frame request. */
-struct RenderFrameResult
-{
-    /// Whether the frame was rendered successfully.
-    bool rendered {false};
-
-    /// Pipeline requested by the caller.
-    RenderPipeline requestedPipeline {
-        RenderPipeline::LegacyGL
-    };
-
-    /// Pipeline actually used for the frame.
-    RenderPipeline actualPipeline {
-        RenderPipeline::LegacyGL
-    };
-
-    /// Explanation when the active pipeline differs from the requested one.
-    RenderFallbackReason fallback {
-        RenderFallbackReason::None
-    };
 };
 
 }  // namespace Gui
