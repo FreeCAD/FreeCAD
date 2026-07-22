@@ -314,8 +314,8 @@ void CmdRobotSetDefaultValues::activated(int)
         Qt::MSWindowsFixedSizeDialogHint
     );
     if (ok && !text.isEmpty()) {
-        text = Base::Tools::escapeEncodeString(text);
-        doCommand(Doc, "_DefSpeed = '%s'", text.toUtf8().constData());
+        std::string encoded = Base::Tools::escapeEncodeString(text.toStdString());
+        doCommand(Doc, "_DefSpeed = '%s'", encoded.c_str());
     }
 
     QStringList items;
@@ -347,8 +347,8 @@ void CmdRobotSetDefaultValues::activated(int)
         Qt::MSWindowsFixedSizeDialogHint
     );
     if (ok && !text.isEmpty()) {
-        text = Base::Tools::escapeEncodeString(text);
-        doCommand(Doc, "_DefAcceleration = '%s'", text.toUtf8().constData());
+        std::string encoded = Base::Tools::escapeEncodeString(text.toStdString());
+        doCommand(Doc, "_DefAcceleration = '%s'", encoded.c_str());
     }
 
 
