@@ -57,7 +57,6 @@ public:
     explicit InputValidator(InputField* parent);
     ~InputValidator() override;
 
-    void fixup(QString& input) const override;
     State validate(QString& input, int& pos) const override;
 
 private:
@@ -314,13 +313,6 @@ void InputField::newInput(const QString& text)
     };
 
     auto parsed = parseInput(text);
-    if (!parsed) {
-        QString compatibilityInput = text;
-        fixup(compatibilityInput);
-        if (compatibilityInput != text) {
-            parsed = parseInput(compatibilityInput);
-        }
-    }
 
     auto rejectInput = [&](const QString& message) {
         if (iconLabel->isHidden()) {
@@ -815,13 +807,6 @@ void InputField::wheelEvent(QWheelEvent* event)
     event->accept();
 }
 
-void InputField::fixup(QString& input) const
-{
-    // Work around improper handling of plus signs in the Building US unit system.
-    // https://github.com/FreeCAD/FreeCAD/issues/11345
-    input.replace(QStringLiteral("+"), QStringLiteral("--"));
-}
-
 QValidator::State InputField::validate(QString& input, int& pos) const
 {
     Q_UNUSED(pos);
@@ -837,12 +822,7 @@ QValidator::State InputField::validate(QString& input, int& pos) const
         }
     };
 
-    bool parsed = tryParse(input);
-    if (!parsed) {
-        QString compatibilityInput = input;
-        fixup(compatibilityInput);
-        parsed = compatibilityInput != input && tryParse(compatibilityInput);
-    }
+    const bool parsed = tryParse(input);
 
     if (!parsed) {
         // Actually invalid input but the newInput slot gives
@@ -871,11 +851,6 @@ InputValidator::InputValidator(InputField* parent)
 {}
 
 InputValidator::~InputValidator() = default;
-
-void InputValidator::fixup(QString& input) const
-{
-    dptr->fixup(input);
-}
 
 QValidator::State InputValidator::validate(QString& input, int& pos) const
 {

@@ -540,13 +540,12 @@ TEST_F(SchemaTest, imperial_building_special_function_high_precision_rounding)
 
 TEST_F(SchemaTest, imperial_building_special_function_length)
 {
-    GTEST_SKIP() << "QuantityParser::yyparse() is crashing on the >>1' 2\" + 1/4\"<< input, "
-                    "so disable this test";
     constexpr auto val {360.6};
     const auto result = set("ImperialBuilding", Unit::Length, val);
     const auto expect = Tools::escapeQuotesFromString("1' 2\" + 1/4\"");
 
     EXPECT_EQ(result, expect);
+    EXPECT_EQ(Quantity::parse("1' 2\" + 1/4\""), Quantity::parse("1' 2\" 1/4\""));
 }
 
 TEST_F(SchemaTest, imperial_building_special_function_length_neg)

@@ -161,8 +161,6 @@ public:
     /// set the number portion selected (use after setValue())
     void selectNumber();
     /// input validation
-    void fixup(QString& input) const;
-    /// input validation
     QValidator::State validate(QString& input, int& pos) const;
 
     /** @name history and default management */

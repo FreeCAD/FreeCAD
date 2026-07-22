@@ -94,27 +94,6 @@ private Q_SLOTS:
         QCOMPARE(input.text(), QStringLiteral("1.010,00 mm"));
     }
 
-    void test_ValidatorDoesNotRewriteValidScientificNotation()  // NOLINT
-    {
-        tests::ScopedLocaleEnvironment localeState {
-            {.qtLocale = "da_DK",
-             .formattingLocale = "en_US",
-             .icuLocale = "fr_FR",
-             .useQtSeparators = true}
-        };
-
-        Gui::InputField input;
-        input.setMaximum(50);
-
-        // The compatibility fixup rewrites '+' to "--" for Building US quantities. A valid
-        // exponent must therefore be parsed as entered; applying fixup first changes its meaning.
-        QString text = QStringLiteral("1e+2 mm");
-        int pos = 0;
-
-        QCOMPARE(input.validate(text, pos), QValidator::Invalid);
-        QCOMPARE(text, QStringLiteral("1e+2 mm"));
-    }
-
     void test_GroupedLocaleNumberIsNormalizedBeforeParse()  // NOLINT
     {
         tests::ScopedLocaleEnvironment localeState {
