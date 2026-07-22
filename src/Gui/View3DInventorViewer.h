@@ -761,17 +761,17 @@ private:
 /** Destination to which a requested frame is rendered. */
 enum class RenderTargetKind
 {
-    LiveViewport,      ///< The viewer's live presentation target.
-    BoundFramebuffer   ///< A framebuffer already bound by the caller.
+    LiveViewport,     ///< The viewer's live presentation target.
+    BoundFramebuffer  ///< A framebuffer already bound by the caller.
 };
 
 /** Reason the requested rendering pipeline was not used. */
 enum class RenderFallbackReason
 {
-    None,                         ///< No fallback was needed.
-    PipelineUnavailable,          ///< The requested pipeline is unavailable.
-    TargetUnsupported,            ///< The requested target cannot be used.
-    BackendInitializationFailed   ///< The requested backend failed to initialize.
+    None,                        ///< No fallback was needed.
+    PipelineUnavailable,         ///< The requested pipeline is unavailable.
+    TargetUnsupported,           ///< The requested target cannot be used.
+    BackendInitializationFailed  ///< The requested backend failed to initialize.
 };
 
 /** Describes the target, intent, and optional policy overrides for one frame. */
@@ -781,19 +781,13 @@ struct RenderFrameRequest
     SbViewportRegion viewport;
 
     /// Pipeline requested by the caller.
-    RenderPipeline requestedPipeline {
-        RenderPipeline::LegacyGL
-    };
+    RenderPipeline requestedPipeline {RenderPipeline::LegacyGL};
 
     /// Destination used for the frame.
-    RenderTargetKind target {
-        RenderTargetKind::LiveViewport
-    };
+    RenderTargetKind target {RenderTargetKind::LiveViewport};
 
     /// Semantic purpose of the traversal.
-    View3DInventorViewer::RenderIntent intent {
-        View3DInventorViewer::RenderIntent::LiveInteractive
-    };
+    View3DInventorViewer::RenderIntent intent {View3DInventorViewer::RenderIntent::LiveInteractive};
 
     /// Include viewer-owned lights in the main scene.
     bool includeViewerLighting {true};
@@ -811,19 +805,13 @@ struct RenderFrameResult
     bool rendered {false};
 
     /// Pipeline requested by the caller.
-    RenderPipeline requestedPipeline {
-        RenderPipeline::LegacyGL
-    };
+    RenderPipeline requestedPipeline {RenderPipeline::LegacyGL};
 
     /// Pipeline actually used for the frame.
-    RenderPipeline actualPipeline {
-        RenderPipeline::LegacyGL
-    };
+    RenderPipeline actualPipeline {RenderPipeline::LegacyGL};
 
     /// Explanation when the active pipeline differs from the requested one.
-    RenderFallbackReason fallback {
-        RenderFallbackReason::None
-    };
+    RenderFallbackReason fallback {RenderFallbackReason::None};
 };
 
 }  // namespace Gui

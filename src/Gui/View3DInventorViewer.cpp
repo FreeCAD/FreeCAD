@@ -252,16 +252,16 @@ RenderFrameResult View3DInventorViewer::renderFrame(const RenderFrameRequest& re
 
     const bool includeDecorations = request.includeDecorations
         && renderIntentIncludesDecorations(request.intent);
-    const int previousDecorationChild = decorationSwitch
-        ? decorationSwitch->whichChild.getValue()
-        : SO_SWITCH_NONE;
+    const int previousDecorationChild = decorationSwitch ? decorationSwitch->whichChild.getValue()
+                                                         : SO_SWITCH_NONE;
     auto restoreDecorations = qScopeGuard([this, previousDecorationChild]() {
         if (decorationSwitch) {
             decorationSwitch->whichChild = previousDecorationChild;
         }
     });
-    updateDecorationSwitch(includeDecorations ? RenderIntent::LiveInteractive
-                                               : RenderIntent::RasterCapture);
+    updateDecorationSwitch(
+        includeDecorations ? RenderIntent::LiveInteractive : RenderIntent::RasterCapture
+    );
     if (includeDecorations && axiscrossEnabled) {
         updateAxisCrossGeometry();
     }
@@ -286,8 +286,7 @@ RenderFrameResult View3DInventorViewer::renderFrame(const RenderFrameRequest& re
     // A capture without viewer lighting uses the selection root for the main traversal. Swap the
     // manager's root directly so View3DInventorViewer::setSceneGraph() cannot add its backlight.
     SoNode* previousScene = renderManager->getSceneGraph();
-    const bool temporaryScene = !request.includeViewerLighting
-        && previousScene == viewerSceneRoot;
+    const bool temporaryScene = !request.includeViewerLighting && previousScene == viewerSceneRoot;
     if (temporaryScene) {
         renderManager->setSceneGraph(selectionRoot);
     }
@@ -318,7 +317,7 @@ RenderFrameResult View3DInventorViewer::renderFrame(const RenderFrameRequest& re
     result.rendered = true;
     if (result.actualPipeline != result.requestedPipeline) {
         result.fallback = result.actualPipeline == RenderPipeline::LegacyGL
-            && renderManager->getRenderBackend() == nullptr
+                && renderManager->getRenderBackend() == nullptr
             ? RenderFallbackReason::BackendInitializationFailed
             : RenderFallbackReason::PipelineUnavailable;
     }

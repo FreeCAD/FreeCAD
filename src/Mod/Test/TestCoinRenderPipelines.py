@@ -643,7 +643,9 @@ class CoinRenderPipelineTestCase(unittest.TestCase):
         harness = _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height)
         try:
             if _RENDERER_DRAW_LIST not in harness.render_pipelines():
-                raise unittest.SkipTest("DrawList framebuffer capture requires the DrawList pipeline")
+                raise unittest.SkipTest(
+                    "DrawList framebuffer capture requires the DrawList pipeline"
+                )
 
             root, _light = _build_lighting_equivalence_scene(coin)
             root.ref()
@@ -656,7 +658,9 @@ class CoinRenderPipelineTestCase(unittest.TestCase):
                 harness.flush(cycles=8)
 
                 captured = harness.viewer.renderToImage(samples=0)
-                self.assertFalse(captured.isNull(), "DrawList renderToImage returned an empty image")
+                self.assertFalse(
+                    captured.isNull(), "DrawList renderToImage returned an empty image"
+                )
                 self.assertEqual(
                     harness.viewer.getRenderPipeline(),
                     "DrawList",
