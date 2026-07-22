@@ -27,7 +27,9 @@ Thread::Thread()
     ThreadSize.setEnums(threadUtils.getThreadDesignations(ThreadType.getValue()));
 
     ADD_PROPERTY_TYPE(ThreadSizePitch, (0L), "Thread", App::Prop_None, "Thread size");
-    ThreadSizePitch.setEnums(threadUtils.getThreadPitches(ThreadType.getValue(), ThreadSize.getValue()));
+    ThreadSizePitch.setEnums(
+        threadUtils.getThreadPitches(ThreadType.getValue(), ThreadSize.getValue())
+    );
 
     ADD_PROPERTY_TYPE(ThreadDirection, (0L), "Thread", App::Prop_None, "Thread direction");
     ThreadDirection.setEnums(threadUtils.getThreadDirectionEnums());
@@ -47,7 +49,7 @@ void Thread::updateDiameterParam()
     // int threadType = ThreadType.getValue();
     // int threadSize = ThreadSize.getValue();
     // if (threadType > 0 && threadSize > 0) {
-        // ThreadDiameter.setValue(threadDescription[threadType][threadSize].diameter);
+    // ThreadDiameter.setValue(threadDescription[threadType][threadSize].diameter);
     // }
     // if (auto opt = determineDiameter()) {
     //     Diameter.setValue(opt.value());
@@ -163,7 +165,7 @@ App::DocumentObjectExecReturn* Thread::execute()
         // gp_Vec zDir(SketchVector.x, SketchVector.y, SketchVector.z);
         // zDir.Transform(invObjLoc.Transformation());
 
-        
+
         gp_Vec zDir = threadUtils.getThreadZAxis(LateralFace);
         // TODO: resolver problema de xDir  gp_Vec::Normalize() - vector has zero norm
         gp_Vec xDir = threadUtils.computePerpendicular(zDir);
@@ -214,7 +216,7 @@ void Thread::onChanged(const App::Property* prop)
             type = ThreadType.getValueAsString();
             ThreadSize.setEnums(threadUtils.getThreadDesignations(ThreadType.getValue()));
             // if (type != "None") {
-                // findClosestDesignation();
+            // findClosestDesignation();
             // }
         }
 
@@ -275,12 +277,14 @@ void Thread::onChanged(const App::Property* prop)
             ThreadClass.setEnums(threadUtils.getThreadClass_None_Enums());
             // HoleCutType.setEnums(HoleCutType_None_Enums);
         }
-
-    } else if (prop == &ThreadSize) {
-        // Base::Console().message("it was me!\n");
-        ThreadSizePitch.setEnums(threadUtils.getThreadPitches(ThreadType.getValue(), ThreadSize.getValue()));
     }
-    
+    else if (prop == &ThreadSize) {
+        // Base::Console().message("it was me!\n");
+        ThreadSizePitch.setEnums(
+            threadUtils.getThreadPitches(ThreadType.getValue(), ThreadSize.getValue())
+        );
+    }
+
     DressUp::onChanged(prop);
 }
 

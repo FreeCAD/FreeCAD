@@ -10,11 +10,11 @@
 #include <Geom_CylindricalSurface.hxx>
 #include <Geom_ConicalSurface.hxx>
 #include <Geom_Surface.hxx>
-#include <BRepFilletAPI_MakeFillet.hxx> //TODO: why is this needed here
+#include <BRepFilletAPI_MakeFillet.hxx>  //TODO: why is this needed here
 
 #include <Base/Console.h>
 #include <App/DocumentObject.h>
-#include <QObject> 
+#include <QObject>
 
 #include "ThreadUtils.h"
 
@@ -39,7 +39,7 @@ const char* ThreadUtils::ThreadClass_ISOmetric_Enums[]
 const char* ThreadUtils::ThreadClass_ISOmetricfine_Enums[]
     = {"4G", "4H", "5G", "5H", "6G", "6H", "7G", "7H", "8G", "8H", nullptr};
 
-    // ISO 965-1:2013 ISO general purpose metric screw threads - Tolerances - Part 1
+// ISO 965-1:2013 ISO general purpose metric screw threads - Tolerances - Part 1
 // Table 1 - Fundamentral deviations for internal threads ...
 // reproduced in: https://www.accu.co.uk/en/p/134-iso-metric-thread-tolerances [retrieved: 2021-01-11]
 const double ThreadUtils::ThreadClass_ISOmetric_data[ThreadClass_ISOmetric_data_size_utils][2] = {
@@ -84,7 +84,7 @@ const char* ThreadUtils::ThreadClass_UNEF_Enums[] = {"1B", "2B", "3B", nullptr};
 
 /* BSP */
 // const char* Hole::HoleCutType_BSP_Enums[]
-    // = {"None", "Counterbore", "Countersink", "Counterdrill", nullptr};
+// = {"None", "Counterbore", "Countersink", "Counterdrill", nullptr};
 
 /* BSW */
 // const char* Hole::HoleCutType_BSW_Enums[]
@@ -491,7 +491,8 @@ std::vector<std::string> ThreadUtils::getThreadClass_BSF_Enums()
     return result;
 }
 
-std::vector<std::string> ThreadUtils::getThreadDirectionEnums(){
+std::vector<std::string> ThreadUtils::getThreadDirectionEnums()
+{
     std::vector<std::string> result;
 
     // Itera sobre o array até encontrar nullptr
@@ -516,24 +517,24 @@ std::vector<std::string> ThreadUtils::getThreadDesignations(const int threadType
 std::vector<std::string> ThreadUtils::getThreadPitches(const int threadType, const int threadDiameter)
 {
     std::vector<std::string> pitches;
-    
+
     double targetDiameter = ThreadUtils::threadDescription[threadType][threadDiameter].diameter;
-    
+
     // Debug: mostra o diâmetro alvo
     Base::Console().message("Target diameter: %f\n", targetDiameter);
-    
+
     // get all pitches from a selected diameter
     for (const auto& thread : ThreadUtils::threadDescription[threadType]) {
         // Debug: mostra cada diâmetro
         Base::Console().message("Thread diameter: %f\n", thread.diameter);
-        
+
         // Usa comparação com tolerância para floats
         if (std::abs(thread.diameter - targetDiameter) < 0.001) {
             pitches.push_back(std::to_string(thread.pitch));
             Base::Console().message("Match found! Pitch: %f\n", thread.pitch);
         }
     }
-    
+
     Base::Console().message("Total pitches found: %d\n", pitches.size());
     return pitches;
 }
@@ -554,14 +555,14 @@ static FaceType getFaceType(const TopoDS_Face& face)
     BRepAdaptor_Surface surface(face);
 
     switch (surface.GetType()) {
-    case GeomAbs_Cylinder:
-        return FaceType::Cylinder;
+        case GeomAbs_Cylinder:
+            return FaceType::Cylinder;
 
-    case GeomAbs_Cone:
-        return FaceType::Cone;
+        case GeomAbs_Cone:
+            return FaceType::Cone;
 
-    default:
-        return FaceType::Invalid;
+        default:
+            return FaceType::Invalid;
     }
 }
 
@@ -570,226 +571,228 @@ TopoDS_Shape ThreadUtils::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, dou
     TopoDS_Shape emptyTopoDS_Shape;
     return emptyTopoDS_Shape;
 
-//     int threadType = ThreadType.getValue();
-//     int threadSize = ThreadSize.getValue();
-//     if (threadType < 0) {
-//         throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread type out of range"));
-//     }
-//     if (threadSize < 0) {
-//         throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread size out of range"));
-//     }
+    //     int threadType = ThreadType.getValue();
+    //     int threadSize = ThreadSize.getValue();
+    //     if (threadType < 0) {
+    //         throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread type out of range"));
+    //     }
+    //     if (threadSize < 0) {
+    //         throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread size out of range"));
+    //     }
 
-//     bool leftHanded = (bool)ThreadDirection.getValue();
+    //     bool leftHanded = (bool)ThreadDirection.getValue();
 
-//     // Nomenclature and formulae according to Figure 1 of ISO 68-1
-//     // this is the same for all metric and UTS threads as stated here:
-//     // https://en.wikipedia.org/wiki/File:ISO_and_UTS_Thread_Dimensions.svg
-//     // Rmaj is half of the major diameter
-//     double Rmaj = threadDescription[threadType][threadSize].diameter / 2;
-//     double Pitch = getThreadPitch();
+    //     // Nomenclature and formulae according to Figure 1 of ISO 68-1
+    //     // this is the same for all metric and UTS threads as stated here:
+    //     // https://en.wikipedia.org/wiki/File:ISO_and_UTS_Thread_Dimensions.svg
+    //     // Rmaj is half of the major diameter
+    //     double Rmaj = threadDescription[threadType][threadSize].diameter / 2;
+    //     double Pitch = getThreadPitch();
 
-//     double clearance;  // clearance to be added on the diameter
-//     if (UseCustomThreadClearance.getValue()) {
-//         clearance = CustomThreadClearance.getValue() / 2;
-//     }
-//     else {
-//         clearance = getThreadClassClearance() / 2;
-//     }
-//     double RmajC = Rmaj + clearance;
-//     double marginZ = 0.001;
+    //     double clearance;  // clearance to be added on the diameter
+    //     if (UseCustomThreadClearance.getValue()) {
+    //         clearance = CustomThreadClearance.getValue() / 2;
+    //     }
+    //     else {
+    //         clearance = getThreadClassClearance() / 2;
+    //     }
+    //     double RmajC = Rmaj + clearance;
+    //     double marginZ = 0.001;
 
-//     BRepBuilderAPI_MakeWire mkThreadWire;
-//     double H;
-//     std::string threadTypeStr = ThreadType.getValueAsString();
-//     if (threadTypeStr == "BSP" || threadTypeStr == "BSW" || threadTypeStr == "BSF") {
-//         H = 0.960491 * Pitch;              // Height of Sharp V
-//         double radius = 0.137329 * Pitch;  // radius of the crest
-//         // construct the cross section going counter-clockwise
-//         // --------------
-//         // P    | p4
-//         // 5/8P |                p3
-//         //      |                         crest
-//         // 3/8P |                p2
-//         // 0    | p1
-//         // --------------
-//         //      | base-sharpV             Rmaj     H
+    //     BRepBuilderAPI_MakeWire mkThreadWire;
+    //     double H;
+    //     std::string threadTypeStr = ThreadType.getValueAsString();
+    //     if (threadTypeStr == "BSP" || threadTypeStr == "BSW" || threadTypeStr == "BSF") {
+    //         H = 0.960491 * Pitch;              // Height of Sharp V
+    //         double radius = 0.137329 * Pitch;  // radius of the crest
+    //         // construct the cross section going counter-clockwise
+    //         // --------------
+    //         // P    | p4
+    //         // 5/8P |                p3
+    //         //      |                         crest
+    //         // 3/8P |                p2
+    //         // 0    | p1
+    //         // --------------
+    //         //      | base-sharpV             Rmaj     H
 
-//         // the little adjustment of p1 and p4 is here to prevent coincidencies
-//         double marginX = std::tan(Base::toRadians(62.5)) * marginZ;
+    //         // the little adjustment of p1 and p4 is here to prevent coincidencies
+    //         double marginX = std::tan(Base::toRadians(62.5)) * marginZ;
 
-//         gp_Pnt p1 = toPnt((RmajC - 5 * H / 6 + marginX) * xDir + marginZ * zDir);
-//         gp_Pnt p4 = toPnt((RmajC - 5 * H / 6 + marginX) * xDir + (Pitch - marginZ) * zDir);
+    //         gp_Pnt p1 = toPnt((RmajC - 5 * H / 6 + marginX) * xDir + marginZ * zDir);
+    //         gp_Pnt p4 = toPnt((RmajC - 5 * H / 6 + marginX) * xDir + (Pitch - marginZ) * zDir);
 
-//         // Calculate positions for p2 and p3
-//         double p23x = RmajC - radius * 0.58284013094;
+    //         // Calculate positions for p2 and p3
+    //         double p23x = RmajC - radius * 0.58284013094;
 
-//         gp_Pnt p2 = toPnt(p23x * xDir + 3 * Pitch / 8 * zDir);
-//         gp_Pnt p3 = toPnt(p23x * xDir + 5 * Pitch / 8 * zDir);
-//         gp_Pnt crest = toPnt((RmajC)*xDir + Pitch / 2 * zDir);
+    //         gp_Pnt p2 = toPnt(p23x * xDir + 3 * Pitch / 8 * zDir);
+    //         gp_Pnt p3 = toPnt(p23x * xDir + 5 * Pitch / 8 * zDir);
+    //         gp_Pnt crest = toPnt((RmajC)*xDir + Pitch / 2 * zDir);
 
-//         mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p1, p2).Edge());
-//         Handle(Geom_TrimmedCurve) arc1 = GC_MakeArcOfCircle(p2, crest, p3).Value();
-//         mkThreadWire.Add(BRepBuilderAPI_MakeEdge(arc1).Edge());
-//         mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p3, p4).Edge());
-//         mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p4, p1).Edge());
-//     }
-//     else {
-//         H = sqrt(3) / 2 * Pitch;  // height of fundamental triangle
-//         double h = 7 * H / 8;     // distance from Rmaj to the base
-//         // construct the cross section going counter-clockwise
-//         // pitch
-//         // --------------
-//         // P     | p4
-//         // 9/16P |                p3
-//         // 7/16P |                p2
-//         // 0     | p1
-//         // --------------
-//         //       | base-sharpV    Rmaj
+    //         mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p1, p2).Edge());
+    //         Handle(Geom_TrimmedCurve) arc1 = GC_MakeArcOfCircle(p2, crest, p3).Value();
+    //         mkThreadWire.Add(BRepBuilderAPI_MakeEdge(arc1).Edge());
+    //         mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p3, p4).Edge());
+    //         mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p4, p1).Edge());
+    //     }
+    //     else {
+    //         H = sqrt(3) / 2 * Pitch;  // height of fundamental triangle
+    //         double h = 7 * H / 8;     // distance from Rmaj to the base
+    //         // construct the cross section going counter-clockwise
+    //         // pitch
+    //         // --------------
+    //         // P     | p4
+    //         // 9/16P |                p3
+    //         // 7/16P |                p2
+    //         // 0     | p1
+    //         // --------------
+    //         //       | base-sharpV    Rmaj
 
-//         // the little adjustment of p1 and p4 is here to prevent coincidencies
-//         double marginX = std::tan(Base::toRadians(60.0)) * marginZ;
-//         gp_Pnt p1 = toPnt((RmajC - h + marginX) * xDir + marginZ * zDir);
-//         gp_Pnt p2 = toPnt((RmajC)*xDir + 7 * Pitch / 16 * zDir);
-//         gp_Pnt p3 = toPnt((RmajC)*xDir + 9 * Pitch / 16 * zDir);
-//         gp_Pnt p4 = toPnt((RmajC - h + marginX) * xDir + (Pitch - marginZ) * zDir);
+    //         // the little adjustment of p1 and p4 is here to prevent coincidencies
+    //         double marginX = std::tan(Base::toRadians(60.0)) * marginZ;
+    //         gp_Pnt p1 = toPnt((RmajC - h + marginX) * xDir + marginZ * zDir);
+    //         gp_Pnt p2 = toPnt((RmajC)*xDir + 7 * Pitch / 16 * zDir);
+    //         gp_Pnt p3 = toPnt((RmajC)*xDir + 9 * Pitch / 16 * zDir);
+    //         gp_Pnt p4 = toPnt((RmajC - h + marginX) * xDir + (Pitch - marginZ) * zDir);
 
-//         mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p1, p2).Edge());
-//         if (threadTypeStr == "ISOTyre") {
-//             gp_Pnt crest = toPnt((RmajC + (Pitch / 32)) * xDir + Pitch / 2 * zDir);
-//             Handle(Geom_TrimmedCurve) arc1 = GC_MakeArcOfCircle(p2, crest, p3).Value();
-//             mkThreadWire.Add(BRepBuilderAPI_MakeEdge(arc1).Edge());
-//         }
-//         else {
-//             mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p2, p3).Edge());
-//         }
-//         mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p3, p4).Edge());
-//         mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p4, p1).Edge());
-//     }
+    //         mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p1, p2).Edge());
+    //         if (threadTypeStr == "ISOTyre") {
+    //             gp_Pnt crest = toPnt((RmajC + (Pitch / 32)) * xDir + Pitch / 2 * zDir);
+    //             Handle(Geom_TrimmedCurve) arc1 = GC_MakeArcOfCircle(p2, crest, p3).Value();
+    //             mkThreadWire.Add(BRepBuilderAPI_MakeEdge(arc1).Edge());
+    //         }
+    //         else {
+    //             mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p2, p3).Edge());
+    //         }
+    //         mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p3, p4).Edge());
+    //         mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p4, p1).Edge());
+    //     }
 
-//     mkThreadWire.Build();
-//     TopoDS_Wire threadWire = mkThreadWire.Wire();
+    //     mkThreadWire.Build();
+    //     TopoDS_Wire threadWire = mkThreadWire.Wire();
 
-//     // create the helix path
-//     double threadDepth = ThreadDepth.getValue();
-//     double helixLength = threadDepth + Pitch / 2;
-//     double holeDepth = Depth.getValue();
-//     std::string threadDepthMethod(ThreadDepthType.getValueAsString());
-//     std::string depthMethod(DepthType.getValueAsString());
-//     if (threadDepthMethod != "Dimension") {
-//         if (depthMethod == "ThroughAll") {
-//             threadDepth = length;
-//             ThreadDepth.setValue(threadDepth);
-//             helixLength = threadDepth + 2 * Pitch;
-//         }
-//         else if (threadDepthMethod == "Tapped (DIN76)") {
-//             threadDepth = holeDepth - getThreadRunout();
-//             ThreadDepth.setValue(threadDepth);
-//             helixLength = threadDepth + Pitch / 2;
-//         }
-//         else {  // Hole depth
-//             threadDepth = holeDepth;
-//             ThreadDepth.setValue(threadDepth);
-//             helixLength = threadDepth + Pitch / 8;
-//         }
-//     }
-//     else {
-//         if (depthMethod == "Dimension") {
-//             // the thread must not be deeper than the hole
-//             // thus the max helixLength is holeDepth + P / 8;
-//             if (threadDepth > (holeDepth - Pitch / 2)) {
-//                 helixLength = holeDepth + Pitch / 8;
-//             }
-//         }
-//     }
-//     double helixAngle = Tapered.getValue() ? TaperedAngle.getValue() - 90 : 0.0;
-//     TopoDS_Shape helix = TopoShape().makeLongHelix(Pitch, helixLength, Rmaj, helixAngle, leftHanded);
+    //     // create the helix path
+    //     double threadDepth = ThreadDepth.getValue();
+    //     double helixLength = threadDepth + Pitch / 2;
+    //     double holeDepth = Depth.getValue();
+    //     std::string threadDepthMethod(ThreadDepthType.getValueAsString());
+    //     std::string depthMethod(DepthType.getValueAsString());
+    //     if (threadDepthMethod != "Dimension") {
+    //         if (depthMethod == "ThroughAll") {
+    //             threadDepth = length;
+    //             ThreadDepth.setValue(threadDepth);
+    //             helixLength = threadDepth + 2 * Pitch;
+    //         }
+    //         else if (threadDepthMethod == "Tapped (DIN76)") {
+    //             threadDepth = holeDepth - getThreadRunout();
+    //             ThreadDepth.setValue(threadDepth);
+    //             helixLength = threadDepth + Pitch / 2;
+    //         }
+    //         else {  // Hole depth
+    //             threadDepth = holeDepth;
+    //             ThreadDepth.setValue(threadDepth);
+    //             helixLength = threadDepth + Pitch / 8;
+    //         }
+    //     }
+    //     else {
+    //         if (depthMethod == "Dimension") {
+    //             // the thread must not be deeper than the hole
+    //             // thus the max helixLength is holeDepth + P / 8;
+    //             if (threadDepth > (holeDepth - Pitch / 2)) {
+    //                 helixLength = holeDepth + Pitch / 8;
+    //             }
+    //         }
+    //     }
+    //     double helixAngle = Tapered.getValue() ? TaperedAngle.getValue() - 90 : 0.0;
+    //     TopoDS_Shape helix = TopoShape().makeLongHelix(Pitch, helixLength, Rmaj, helixAngle,
+    //     leftHanded);
 
-//     gp_Pnt origo(0.0, 0.0, 0.0);
-//     gp_Dir dir_axis1(0.0, 0.0, 1.0);  // pointing along the helix axis, as created.
-//     gp_Dir dir_axis2(1.0, 0.0, 0.0);  // pointing towards the helix start point, as created.
+    //     gp_Pnt origo(0.0, 0.0, 0.0);
+    //     gp_Dir dir_axis1(0.0, 0.0, 1.0);  // pointing along the helix axis, as created.
+    //     gp_Dir dir_axis2(1.0, 0.0, 0.0);  // pointing towards the helix start point, as created.
 
-//     // Reverse the direction of the helix. So that it goes into the material
-//     gp_Trsf mov;
-//     mov.SetRotation(gp_Ax1(origo, dir_axis2), std::numbers::pi);
-//     TopLoc_Location loc1(mov);
-//     helix.Move(loc1);
+    //     // Reverse the direction of the helix. So that it goes into the material
+    //     gp_Trsf mov;
+    //     mov.SetRotation(gp_Ax1(origo, dir_axis2), std::numbers::pi);
+    //     TopLoc_Location loc1(mov);
+    //     helix.Move(loc1);
 
-//     // rotate the helix so that it is pointing in the zdir.
-//     rotateToNormal(dir_axis1, zDir, helix);
+    //     // rotate the helix so that it is pointing in the zdir.
+    //     rotateToNormal(dir_axis1, zDir, helix);
 
-//     // create the pipe shell
-//     BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(helix));
-//     mkPS.SetTolerance(Precision::Confusion());
-//     mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
-//     mkPS.SetMode(true);  // This is for frenet
-//     mkPS.Add(threadWire);
-//     if (!mkPS.IsReady()) {
-//         throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Error: Thread could not be built"));
-//     }
-//     TopoDS_Shape shell = mkPS.Shape();
+    //     // create the pipe shell
+    //     BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(helix));
+    //     mkPS.SetTolerance(Precision::Confusion());
+    //     mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
+    //     mkPS.SetMode(true);  // This is for frenet
+    //     mkPS.Add(threadWire);
+    //     if (!mkPS.IsReady()) {
+    //         throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Error: Thread could not be
+    //         built"));
+    //     }
+    //     TopoDS_Shape shell = mkPS.Shape();
 
-//     // create faces at the ends of the pipe shell
-//     TopTools_ListOfShape sim;
-//     mkPS.Simulate(2, sim);
-//     std::vector<TopoDS_Wire> frontwires, backwires;
-//     frontwires.push_back(TopoDS::Wire(sim.First()));
-//     backwires.push_back(TopoDS::Wire(sim.Last()));
-//     // build the end faces
-//     TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
-//     TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
+    //     // create faces at the ends of the pipe shell
+    //     TopTools_ListOfShape sim;
+    //     mkPS.Simulate(2, sim);
+    //     std::vector<TopoDS_Wire> frontwires, backwires;
+    //     frontwires.push_back(TopoDS::Wire(sim.First()));
+    //     backwires.push_back(TopoDS::Wire(sim.Last()));
+    //     // build the end faces
+    //     TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
+    //     TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
 
-//     // sew the shell and end faces
-//     BRepBuilderAPI_Sewing sewer;
-//     sewer.SetTolerance(Precision::Confusion());
-//     sewer.Add(front);
-//     sewer.Add(back);
-//     sewer.Add(shell);
-//     sewer.Perform();
+    //     // sew the shell and end faces
+    //     BRepBuilderAPI_Sewing sewer;
+    //     sewer.SetTolerance(Precision::Confusion());
+    //     sewer.Add(front);
+    //     sewer.Add(back);
+    //     sewer.Add(shell);
+    //     sewer.Perform();
 
-//     // make the closed off shell into a solid
-//     BRepBuilderAPI_MakeSolid mkSolid;
-//     mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
-//     if (!mkSolid.IsDone()) {
-//         throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
-//     }
-//     TopoDS_Shape result = mkSolid.Shape();
+    //     // make the closed off shell into a solid
+    //     BRepBuilderAPI_MakeSolid mkSolid;
+    //     mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
+    //     if (!mkSolid.IsDone()) {
+    //         throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a
+    //         solid"));
+    //     }
+    //     TopoDS_Shape result = mkSolid.Shape();
 
-//     // check if the algorithm has confused the inside and outside of the solid
-//     BRepClass3d_SolidClassifier SC(result);
-//     SC.PerformInfinitePoint(Precision::Confusion());
-//     if (SC.State() == TopAbs_IN) {
-//         result.Reverse();
-//     }
+    //     // check if the algorithm has confused the inside and outside of the solid
+    //     BRepClass3d_SolidClassifier SC(result);
+    //     SC.PerformInfinitePoint(Precision::Confusion());
+    //     if (SC.State() == TopAbs_IN) {
+    //         result.Reverse();
+    //     }
 
-//     // we are done
-//     return result;
-// }
+    //     // we are done
+    //     return result;
+    // }
 
-// void Hole::addCutType(const CutDimensionSet& dimensions)
-// {
-//     const CutDimensionSet::ThreadType thread = dimensions.thread_type;
-//     const std::string& name = dimensions.name;
+    // void Hole::addCutType(const CutDimensionSet& dimensions)
+    // {
+    //     const CutDimensionSet::ThreadType thread = dimensions.thread_type;
+    //     const std::string& name = dimensions.name;
 
-//     std::vector<std::string>* list;
-//     switch (thread) {
-//         case CutDimensionSet::Metric:
-//             HoleCutTypeMap.emplace(CutDimensionKey("ISOMetricProfile", name), dimensions);
-//             list = &HoleCutType_ISOmetric_Enums;
-//             break;
-//         case CutDimensionSet::MetricFine:
-//             HoleCutTypeMap.emplace(CutDimensionKey("ISOMetricFineProfile", name), dimensions);
-//             list = &HoleCutType_ISOmetricfine_Enums;
-//             break;
-//         default:
-//             return;
-//     }
-//     // add the collected lists of JSON definitions to the lists
-//     // if a name doesn't already exist in the list
-//     if (std::all_of(list->begin(), list->end(), [name](const std::string& x) { return x != name; })) {
-//         list->push_back(name);
-//     }
+    //     std::vector<std::string>* list;
+    //     switch (thread) {
+    //         case CutDimensionSet::Metric:
+    //             HoleCutTypeMap.emplace(CutDimensionKey("ISOMetricProfile", name), dimensions);
+    //             list = &HoleCutType_ISOmetric_Enums;
+    //             break;
+    //         case CutDimensionSet::MetricFine:
+    //             HoleCutTypeMap.emplace(CutDimensionKey("ISOMetricFineProfile", name),
+    //             dimensions); list = &HoleCutType_ISOmetricfine_Enums; break;
+    //         default:
+    //             return;
+    //     }
+    //     // add the collected lists of JSON definitions to the lists
+    //     // if a name doesn't already exist in the list
+    //     if (std::all_of(list->begin(), list->end(), [name](const std::string& x) { return x !=
+    //     name; })) {
+    //         list->push_back(name);
+    //     }
 }
-
 
 
 static bool isCylindricalFace(const TopoDS_Face& face)
@@ -797,9 +800,9 @@ static bool isCylindricalFace(const TopoDS_Face& face)
     if (face.IsNull()) {
         return false;
     }
-    
+
     BRepAdaptor_Surface surface(face);
-    
+
     return surface.GetType() == GeomAbs_Cylinder;
 }
 
@@ -812,25 +815,25 @@ static TopoDS_Face getSelectedFace(const App::PropertyLinkSub& faceProp)
     if (!obj) {
         return TopoDS_Face();
     }
-    
+
     const std::vector<std::string>& subs = faceProp.getSubValues();
     if (subs.empty()) {
         return TopoDS_Face();
     }
-    
+
     auto feature = dynamic_cast<Part::Feature*>(obj);
     if (!feature) {
         return TopoDS_Face();
     }
-    
+
     const Part::TopoShape& topoShape = feature->Shape.getShape();
-    
+
     TopoDS_Shape subShape = topoShape.getSubShape(subs.front().c_str());
-    
+
     if (subShape.IsNull() || subShape.ShapeType() != TopAbs_FACE) {
         return TopoDS_Face();
     }
-    
+
     return TopoDS::Face(subShape);
 }
 
@@ -846,8 +849,7 @@ App::DocumentObjectExecReturn* ThreadUtils::validateParameters(
     // if (!isCylindricalFace(threadedFace)){
     if (getFaceType(threadedFace) == FaceType::Invalid) {
         return new App::DocumentObjectExecReturn(
-            QT_TRANSLATE_NOOP("Exception",
-                "The selected face must be cylindrical or conical")
+            QT_TRANSLATE_NOOP("Exception", "The selected face must be cylindrical or conical")
         );
     }
     // Size is common to all chamfer types.
@@ -871,7 +873,8 @@ App::DocumentObjectExecReturn* ThreadUtils::validateParameters(
     //     case 2:  // Distance and angle
     //         if (angle <= 0 || angle >= 180.0) {
     //             return new App::DocumentObjectExecReturn(
-    //                 QT_TRANSLATE_NOOP("Exception", "Angle must be greater than 0 and less than 180")
+    //                 QT_TRANSLATE_NOOP("Exception", "Angle must be greater than 0 and less than
+    //                 180")
     //             );
     //         }
     //         break;
@@ -929,20 +932,21 @@ gp_Vec ThreadUtils::computePerpendicular(const gp_Vec& zDir) const
     return xDir;
 }
 
-gp_Vec ThreadUtils::getThreadZAxis(const App::PropertyLinkSub& LateralFace){
+gp_Vec ThreadUtils::getThreadZAxis(const App::PropertyLinkSub& LateralFace)
+{
     TopoDS_Face threadedFace = getSelectedFace(LateralFace);
     Handle(Geom_Surface) surf = BRep_Tool::Surface(threadedFace);
 
-    if(getFaceType(threadedFace) == FaceType::Cylinder){
-        Handle(Geom_CylindricalSurface) cyl =
-            Handle(Geom_CylindricalSurface)::DownCast(surf);
+    if (getFaceType(threadedFace) == FaceType::Cylinder) {
+        Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast(surf);
 
         gp_Ax3 ax = cyl->Position();
 
         gp_Dir axis = ax.Direction();
 
         return gp_Vec(axis);
-    } else if (getFaceType(threadedFace) == FaceType::Cone){
+    }
+    else if (getFaceType(threadedFace) == FaceType::Cone) {
         Handle(Geom_ConicalSurface) cone = Handle(Geom_ConicalSurface)::DownCast(surf);
 
         gp_Ax3 ax = cone->Position();
