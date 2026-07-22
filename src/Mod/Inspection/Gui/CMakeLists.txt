@@ -9,7 +9,10 @@ set(Dialogs_UIC_SRCS
     VisualInspection.ui
 )
 
-qt_add_resources(Inspection_QRC_SRCS Resources/Inspection.qrc)
+qt_add_resources(Inspection_QRC_SRCS
+    Resources/Inspection.qrc
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 SET(Dialogs_SRCS
     ${Dialogs_UIC_HDRS}

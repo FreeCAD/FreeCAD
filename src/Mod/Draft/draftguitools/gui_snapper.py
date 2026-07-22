@@ -1523,10 +1523,16 @@ class Snapper:
         def click(event_cb):
             if not self.ui.mouse:
                 return
+
             event = event_cb.getEvent()
-            if event.getButton() == 1:
-                if event.getState() == coin.SoMouseButtonEvent.DOWN:
-                    accept()
+            if (
+                event.getButton() == coin.SoMouseButtonEvent.BUTTON1
+                and event.getState() == coin.SoButtonEvent.DOWN
+            ):
+                # The active Draft command owns this pointer interaction.
+                # Prevent navigation styles from arming LMB box selection.
+                event_cb.setHandled()
+                accept()
 
         def accept():
             try:

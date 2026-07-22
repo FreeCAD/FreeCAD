@@ -1174,22 +1174,22 @@
   <context>
     <name>CmdBoxSelection</name>
     <message>
-      <location filename="../../Command.cpp" line="2394"/>
+      <location filename="../../Command.cpp" line="2396"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2395"/>
+      <location filename="../../Command.cpp" line="2397"/>
       <source>Box Selection</source>
       <translation>영역 선택</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2396"/>
+      <location filename="../../Command.cpp" line="2398"/>
       <source>Selects elements in the 3D view using a box selection</source>
       <translation>3D 보기에서 박스 선택으로 요소를 선택합니다</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2398"/>
+      <location filename="../../Command.cpp" line="2400"/>
       <source>Box selection</source>
       <translation>박스 선택</translation>
     </message>
@@ -1197,17 +1197,17 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="2316"/>
+      <location filename="../../Command.cpp" line="2318"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2317"/>
+      <location filename="../../Command.cpp" line="2319"/>
       <source>Check Geometry</source>
       <translation>도형 검사</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2318"/>
+      <location filename="../../Command.cpp" line="2320"/>
       <source>Analyzes the selected shapes for errors</source>
       <translation>선택한 형상의 오류를 분석합니다</translation>
     </message>
@@ -1215,17 +1215,17 @@
   <context>
     <name>CmdColorPerFace</name>
     <message>
-      <location filename="../../Command.cpp" line="2350"/>
+      <location filename="../../Command.cpp" line="2352"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2351"/>
+      <location filename="../../Command.cpp" line="2353"/>
       <source>Appearance per &amp;Face</source>
       <translation>면별 외관(&amp;F)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2352"/>
+      <location filename="../../Command.cpp" line="2354"/>
       <source>Sets the appearance of individual faces of the selected object</source>
       <translation>선택한 객체의 각 면 외관을 설정합니다</translation>
     </message>
@@ -1233,17 +1233,17 @@
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="1403"/>
+      <location filename="../../Command.cpp" line="1405"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1404"/>
+      <location filename="../../Command.cpp" line="1406"/>
       <source>Boolean Operation</source>
       <translation>부울 연산</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1405"/>
+      <location filename="../../Command.cpp" line="1407"/>
       <source>Applies a boolean operation with the selected shapes</source>
       <translation type="unfinished">Applies a boolean operation with the selected shapes</translation>
     </message>
@@ -1251,19 +1251,18 @@
   <context>
     <name>CmdPartBox</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="113"/>
+      <location filename="../../CommandParametric.cpp" line="116"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="114"/>
-      <location filename="../../CommandParametric.cpp" line="125"/>
-      <location filename="../../CommandParametric.cpp" line="130"/>
+      <location filename="../../CommandParametric.cpp" line="117"/>
+      <location filename="../../CommandParametric.cpp" line="127"/>
       <source>Cube</source>
       <translation>입방체</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="115"/>
+      <location filename="../../CommandParametric.cpp" line="118"/>
       <source>Creates a solid cube</source>
       <translation>고체 입방체를 생성합니다</translation>
     </message>
@@ -1307,17 +1306,17 @@
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location filename="../../Command.cpp" line="1702"/>
+      <location filename="../../Command.cpp" line="1704"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1703"/>
+      <location filename="../../Command.cpp" line="1705"/>
       <source>Shape Builder</source>
       <translation>형상 생성기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1705"/>
+      <location filename="../../Command.cpp" line="1707"/>
       <source>Advanced utility to create shapes</source>
       <translation>도형을 만들 고급 유틸리티</translation>
     </message>
@@ -1325,17 +1324,17 @@
   <context>
     <name>CmdPartChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="1607"/>
+      <location filename="../../Command.cpp" line="1609"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1608"/>
+      <location filename="../../Command.cpp" line="1610"/>
       <source>Chamfer</source>
       <translation>모따기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1609"/>
+      <location filename="../../Command.cpp" line="1611"/>
       <source>Chamfers the selected edges of a shape</source>
       <translation>형상에서 선택한 모서리를 모따기합니다</translation>
     </message>
@@ -1397,17 +1396,17 @@
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1923"/>
+      <location filename="../../Command.cpp" line="1925"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1924"/>
+      <location filename="../../Command.cpp" line="1926"/>
       <source>Offset</source>
       <translation>편차</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1925"/>
+      <location filename="../../Command.cpp" line="1927"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
       <translation>형상을 오프셋하여 평행 형상을 만드는 도구입니다</translation>
     </message>
@@ -1451,19 +1450,18 @@
   <context>
     <name>CmdPartCone</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="201"/>
+      <location filename="../../CommandParametric.cpp" line="204"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="202"/>
-      <location filename="../../CommandParametric.cpp" line="213"/>
-      <location filename="../../CommandParametric.cpp" line="218"/>
+      <location filename="../../CommandParametric.cpp" line="205"/>
+      <location filename="../../CommandParametric.cpp" line="215"/>
       <source>Cone</source>
       <translation>원뿔</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="203"/>
+      <location filename="../../CommandParametric.cpp" line="206"/>
       <source>Creates a solid cone</source>
       <translation>고체 원뿔을 생성합니다</translation>
     </message>
@@ -1471,17 +1469,17 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="1663"/>
+      <location filename="../../Command.cpp" line="1665"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1664"/>
+      <location filename="../../Command.cpp" line="1666"/>
       <source>Cross-Sections</source>
       <translation>단면</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1665"/>
+      <location filename="../../Command.cpp" line="1667"/>
       <source>Creates cross-sections</source>
       <translation>단면을 생성합니다</translation>
     </message>
@@ -1507,19 +1505,18 @@
   <context>
     <name>CmdPartCylinder</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="69"/>
+      <location filename="../../CommandParametric.cpp" line="72"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="70"/>
-      <location filename="../../CommandParametric.cpp" line="81"/>
-      <location filename="../../CommandParametric.cpp" line="86"/>
+      <location filename="../../CommandParametric.cpp" line="73"/>
+      <location filename="../../CommandParametric.cpp" line="83"/>
       <source>Cylinder</source>
       <translation>원통</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="71"/>
+      <location filename="../../CommandParametric.cpp" line="74"/>
       <source>Creates a solid cylinder</source>
       <translation>고체 원통을 생성합니다</translation>
     </message>
@@ -1581,17 +1578,17 @@
   <context>
     <name>CmdPartExtrude</name>
     <message>
-      <location filename="../../Command.cpp" line="1435"/>
+      <location filename="../../Command.cpp" line="1437"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1436"/>
+      <location filename="../../Command.cpp" line="1438"/>
       <source>Extrude</source>
       <translation>돌출</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1437"/>
+      <location filename="../../Command.cpp" line="1439"/>
       <source>Extrudes the selected sketch or profile</source>
       <translation>선택한 스케치나 윤곽을 돌출합니다</translation>
     </message>
@@ -1599,17 +1596,17 @@
   <context>
     <name>CmdPartFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1579"/>
+      <location filename="../../Command.cpp" line="1581"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1580"/>
+      <location filename="../../Command.cpp" line="1582"/>
       <source>Fillet</source>
       <translation>모깎기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1581"/>
+      <location filename="../../Command.cpp" line="1583"/>
       <source>Fillets the selected edges of a shape</source>
       <translation>형상에서 선택한 모서리를 모깎기합니다</translation>
     </message>
@@ -1671,17 +1668,17 @@
   <context>
     <name>CmdPartLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1732"/>
+      <location filename="../../Command.cpp" line="1734"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1733"/>
+      <location filename="../../Command.cpp" line="1735"/>
       <source>Loft</source>
       <translation>로프트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1734"/>
+      <location filename="../../Command.cpp" line="1736"/>
       <source>Lofts the selected profiles</source>
       <translation>선택한 프로파일을 로프트합니다</translation>
     </message>
@@ -1689,17 +1686,17 @@
   <context>
     <name>CmdPartMakeFace</name>
     <message>
-      <location filename="../../Command.cpp" line="1492"/>
+      <location filename="../../Command.cpp" line="1494"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1493"/>
+      <location filename="../../Command.cpp" line="1495"/>
       <source>Face From Wires</source>
       <translation>와이어에서 면 생성</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1494"/>
+      <location filename="../../Command.cpp" line="1496"/>
       <source>Creates a face from the selected wires (e.g. from a sketch)</source>
       <translation>선택한 와이어(예: 스케치)에서 면을 생성합니다</translation>
     </message>
@@ -1725,17 +1722,17 @@
   <context>
     <name>CmdPartMirror</name>
     <message>
-      <location filename="../../Command.cpp" line="1635"/>
+      <location filename="../../Command.cpp" line="1637"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1636"/>
+      <location filename="../../Command.cpp" line="1638"/>
       <source>Mirror</source>
       <translation>대칭복사</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1637"/>
+      <location filename="../../Command.cpp" line="1639"/>
       <source>Mirrors the selected shape</source>
       <translation>선택한 형상을 대칭복사합니다</translation>
     </message>
@@ -1743,17 +1740,17 @@
   <context>
     <name>CmdPartOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1790"/>
+      <location filename="../../Command.cpp" line="1792"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1791"/>
+      <location filename="../../Command.cpp" line="1793"/>
       <source>3D Offset</source>
       <translation>3D 오프셋</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1792"/>
+      <location filename="../../Command.cpp" line="1794"/>
       <source>Offsets shapes in 3D</source>
       <translation>3D에서 형상을 오프셋합니다</translation>
     </message>
@@ -1761,17 +1758,17 @@
   <context>
     <name>CmdPartOffset2D</name>
     <message>
-      <location filename="../../Command.cpp" line="1857"/>
+      <location filename="../../Command.cpp" line="1859"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1858"/>
+      <location filename="../../Command.cpp" line="1860"/>
       <source>2D Offset</source>
       <translation>2D 오프셋</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1859"/>
+      <location filename="../../Command.cpp" line="1861"/>
       <source>Offsets planar shapes in 2D</source>
       <translation>2D에서 평면 형상을 오프셋합니다</translation>
     </message>
@@ -1833,17 +1830,17 @@
   <context>
     <name>CmdPartProjectionOnSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2424"/>
+      <location filename="../../Command.cpp" line="2426"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2425"/>
+      <location filename="../../Command.cpp" line="2427"/>
       <source>Project on Surface</source>
       <translation>표면에 투상</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2426"/>
+      <location filename="../../Command.cpp" line="2428"/>
       <source>Projects edges, wires, or faces of one shape
 onto a face of another shape.
 The camera view determines the direction
@@ -1891,17 +1888,17 @@ of the projection.</source>
   <context>
     <name>CmdPartRevolve</name>
     <message>
-      <location filename="../../Command.cpp" line="1551"/>
+      <location filename="../../Command.cpp" line="1553"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1552"/>
+      <location filename="../../Command.cpp" line="1554"/>
       <source>Revolve</source>
       <translation>회전체</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1553"/>
+      <location filename="../../Command.cpp" line="1555"/>
       <source>Revolves the selected shape</source>
       <translation>선택한 형상을 회전시킵니다</translation>
     </message>
@@ -1909,17 +1906,17 @@ of the projection.</source>
   <context>
     <name>CmdPartRuledSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2172"/>
+      <location filename="../../Command.cpp" line="2174"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2173"/>
+      <location filename="../../Command.cpp" line="2175"/>
       <source>Ruled Surface</source>
       <translation>직선 곡면</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2174"/>
+      <location filename="../../Command.cpp" line="2176"/>
       <source>Creates a ruled surface between 2 selected wires</source>
       <translation>선택한 두 와이어 사이에 직선 곡면을 만듭니다</translation>
     </message>
@@ -1999,19 +1996,18 @@ of the projection.</source>
   <context>
     <name>CmdPartSphere</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="157"/>
+      <location filename="../../CommandParametric.cpp" line="160"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="158"/>
-      <location filename="../../CommandParametric.cpp" line="169"/>
-      <location filename="../../CommandParametric.cpp" line="174"/>
+      <location filename="../../CommandParametric.cpp" line="161"/>
+      <location filename="../../CommandParametric.cpp" line="171"/>
       <source>Sphere</source>
       <translation>구</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="159"/>
+      <location filename="../../CommandParametric.cpp" line="162"/>
       <source>Creates a solid sphere</source>
       <translation>고체 구를 생성합니다</translation>
     </message>
@@ -2019,17 +2015,17 @@ of the projection.</source>
   <context>
     <name>CmdPartSweep</name>
     <message>
-      <location filename="../../Command.cpp" line="1761"/>
+      <location filename="../../Command.cpp" line="1763"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1762"/>
+      <location filename="../../Command.cpp" line="1764"/>
       <source>Sweep</source>
       <translation>쓸기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1763"/>
+      <location filename="../../Command.cpp" line="1765"/>
       <source>Sweeps profiles along a wire</source>
       <translation>철사를 따라 윤곽을 쓸어나갑니다</translation>
     </message>
@@ -2037,27 +2033,27 @@ of the projection.</source>
   <context>
     <name>CmdPartThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="2025"/>
+      <location filename="../../Command.cpp" line="2027"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2026"/>
+      <location filename="../../Command.cpp" line="2028"/>
       <source>Thickness</source>
       <translation>두께</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2027"/>
+      <location filename="../../Command.cpp" line="2029"/>
       <source>Removes the selected faces and offsets the remaining shape outward to add thickness</source>
       <translation>선택한 면을 제거하고 남은 형상을 바깥쪽으로 오프셋하여 두께를 추가합니다</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2086"/>
+      <location filename="../../Command.cpp" line="2088"/>
       <source>Wrong selection</source>
       <translation>잘못된 선택</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2087"/>
+      <location filename="../../Command.cpp" line="2089"/>
       <source>Selected shape is not a solid</source>
       <translation>선택한 형상은 고체가 아닙니다</translation>
     </message>
@@ -2065,19 +2061,18 @@ of the projection.</source>
   <context>
     <name>CmdPartTorus</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="245"/>
+      <location filename="../../CommandParametric.cpp" line="248"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="246"/>
-      <location filename="../../CommandParametric.cpp" line="257"/>
-      <location filename="../../CommandParametric.cpp" line="262"/>
+      <location filename="../../CommandParametric.cpp" line="249"/>
+      <location filename="../../CommandParametric.cpp" line="259"/>
       <source>Torus</source>
       <translation>원환체</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="247"/>
+      <location filename="../../CommandParametric.cpp" line="250"/>
       <source>Creates a solid torus</source>
       <translation>고체 원환체를 생성합니다</translation>
     </message>
@@ -2149,47 +2144,47 @@ of the projection.</source>
       <translation>반대로</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1511"/>
+      <location filename="../../Command.cpp" line="1513"/>
       <source>Make face</source>
       <translation>면 만들기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1817"/>
+      <location filename="../../Command.cpp" line="1819"/>
       <source>Make Offset</source>
       <translation>오프셋 만들기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1885"/>
+      <location filename="../../Command.cpp" line="1887"/>
       <source>Make 2D Offset</source>
       <translation>2D 오프셋 만들기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2094"/>
+      <location filename="../../Command.cpp" line="2096"/>
       <source>Make Thickness</source>
       <translation>두께 만들기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2283"/>
+      <location filename="../../Command.cpp" line="2285"/>
       <source>Create ruled surface</source>
       <translation>직선 곡면 생성</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2536"/>
+      <location filename="../../Command.cpp" line="2538"/>
       <source>Add coordinate system</source>
       <translation>좌표계 추가</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2574"/>
+      <location filename="../../Command.cpp" line="2576"/>
       <source>Add datum plane</source>
       <translation>기준평면 추가</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2607"/>
+      <location filename="../../Command.cpp" line="2609"/>
       <source>Add datum line</source>
       <translation>기준선 추가</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2640"/>
+      <location filename="../../Command.cpp" line="2642"/>
       <source>Add datum point</source>
       <translation>기준점 추가</translation>
     </message>
@@ -2265,7 +2260,7 @@ of the projection.</source>
       <translation>쓸기</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1615"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1620"/>
       <source>Project on surface</source>
       <translation>표면에 투상</translation>
     </message>
@@ -4139,17 +4134,17 @@ Check one or more edge entities first.</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="140"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="141"/>
       <source>Projection object</source>
       <translation>투상 객체</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="167"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="168"/>
       <source>No active document</source>
       <translation>활성 문서가 없습니다</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="173"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="174"/>
       <source>Cannot create a projection object</source>
       <translation>투상 객체를 생성할 수 없습니다</translation>
     </message>
@@ -6093,7 +6088,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="510"/>
       <location filename="../../Command.cpp" line="952"/>
       <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../Command.cpp" line="2277"/>
+      <location filename="../../Command.cpp" line="2279"/>
       <source>Wrong Selection</source>
       <translation>잘못된 선택</translation>
     </message>
@@ -6139,7 +6134,7 @@ Continue?</source>
       <translation>모든 CAD 파일</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2278"/>
+      <location filename="../../Command.cpp" line="2280"/>
       <source>Select either 2 edges or 2 wires.</source>
       <translation>모서리 2개 또는 와이어 2개를 선택하세요.</translation>
     </message>
@@ -7095,17 +7090,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1463"/>
+      <location filename="../../Command.cpp" line="1465"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1464"/>
+      <location filename="../../Command.cpp" line="1466"/>
       <source>Scale</source>
       <translation>배율</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1465"/>
+      <location filename="../../Command.cpp" line="1467"/>
       <source>Scales the selected shape</source>
       <translation>선택한 형상의 크기를 조정합니다</translation>
     </message>
@@ -7267,17 +7262,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartCoordinateSystem</name>
     <message>
-      <location filename="../../Command.cpp" line="2524"/>
+      <location filename="../../Command.cpp" line="2526"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2525"/>
+      <location filename="../../Command.cpp" line="2527"/>
       <source>Coordinate System</source>
       <translation>좌표계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2526"/>
+      <location filename="../../Command.cpp" line="2528"/>
       <source>Creates a coordinate system that can be attached to other objects</source>
       <translation>다른 객체에 부착할 수 있는 좌표계를 생성합니다</translation>
     </message>
@@ -7285,17 +7280,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2663"/>
+      <location filename="../../Command.cpp" line="2665"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2664"/>
+      <location filename="../../Command.cpp" line="2666"/>
       <source>Datums</source>
       <translation>기준</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2666"/>
+      <location filename="../../Command.cpp" line="2668"/>
       <source>Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</source>
       <translation>다른 객체에 부착할 수 있는 기준 객체(좌표계, 평면, 선 또는 점)를 생성합니다</translation>
     </message>
@@ -7303,7 +7298,7 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6701"/>
+      <location filename="../../../App/Geometry.cpp" line="6723"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>곡선의 교점을 추정할 수 없습니다. 모깎기하려는 곡선의 꼭짓점 사이에 일치 구속을 추가해 보세요.</translation>
     </message>
@@ -7311,17 +7306,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatumPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="2562"/>
+      <location filename="../../Command.cpp" line="2564"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2563"/>
+      <location filename="../../Command.cpp" line="2565"/>
       <source>Datum Plane</source>
       <translation>기준 평면</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2564"/>
+      <location filename="../../Command.cpp" line="2566"/>
       <source>Creates a datum plane that can be attached to other objects</source>
       <translation>다른 객체에 부착할 수 있는 기준 평면을 생성합니다</translation>
     </message>
@@ -7329,17 +7324,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatumLine</name>
     <message>
-      <location filename="../../Command.cpp" line="2595"/>
+      <location filename="../../Command.cpp" line="2597"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2596"/>
+      <location filename="../../Command.cpp" line="2598"/>
       <source>Datum Line</source>
       <translation>기준 선</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2597"/>
+      <location filename="../../Command.cpp" line="2599"/>
       <source>Creates a datum line that can be attached to other objects</source>
       <translation>다른 객체에 부착할 수 있는 기준 선을 생성합니다</translation>
     </message>
@@ -7347,17 +7342,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatumPoint</name>
     <message>
-      <location filename="../../Command.cpp" line="2628"/>
+      <location filename="../../Command.cpp" line="2630"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2629"/>
+      <location filename="../../Command.cpp" line="2631"/>
       <source>Datum Point</source>
       <translation>기준점</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2630"/>
+      <location filename="../../Command.cpp" line="2632"/>
       <source>Creates a datum point that can be attached to other objects</source>
       <translation>다른 객체에 부착할 수 있는 기준점을 생성합니다</translation>
     </message>
@@ -7540,12 +7535,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartSectionCut</name>
     <message>
-      <location filename="../../Command.cpp" line="2460"/>
+      <location filename="../../Command.cpp" line="2462"/>
       <source>Persiste&amp;nt Section Cut</source>
       <translation>영구 단면 절단(&amp;N)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2461"/>
+      <location filename="../../Command.cpp" line="2463"/>
       <source>Creates a new object as a boolean intersection of all visible shapes and the selected axis planes</source>
       <translation>보이는 모든 형상과 선택한 축 평면의 부울 교집합으로 새 객체를 생성합니다</translation>
     </message>

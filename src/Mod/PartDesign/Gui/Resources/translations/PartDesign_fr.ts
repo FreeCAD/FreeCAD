@@ -208,17 +208,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2590"/>
+      <location filename="../../Command.cpp" line="2595"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2591"/>
+      <location filename="../../Command.cpp" line="2596"/>
       <source>Boolean Operation</source>
       <translation>Créer une opération booléenne</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2592"/>
+      <location filename="../../Command.cpp" line="2597"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>Applique une opération booléenne à des objets sélectionnés et au corps actif.</translation>
     </message>
@@ -323,7 +323,7 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
     <message>
       <location filename="../../Command.cpp" line="1974"/>
       <source>Fillet</source>
-      <translation>Créer un congé</translation>
+      <translation>Congé</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1975"/>
@@ -496,17 +496,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2459"/>
+      <location filename="../../Command.cpp" line="2464"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2460"/>
+      <location filename="../../Command.cpp" line="2465"/>
       <source>Multi-Transform</source>
       <translation>Transformation multiple</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2461"/>
+      <location filename="../../Command.cpp" line="2466"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation>Applique plusieurs transformations aux éléments sélectionnés ou au corps actif.</translation>
     </message>
@@ -604,17 +604,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2354"/>
+      <location filename="../../Command.cpp" line="2359"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2355"/>
+      <location filename="../../Command.cpp" line="2360"/>
       <source>Polar Pattern</source>
       <translation>Répétition circulaire</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2356"/>
+      <location filename="../../Command.cpp" line="2361"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation>Duplique les fonctions sélectionnées ou le corps actif selon un motif circulaire.</translation>
     </message>
@@ -640,17 +640,17 @@ sections transversales). Si le corps contient déjà des éléments, le lissage 
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2416"/>
+      <location filename="../../Command.cpp" line="2421"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2417"/>
+      <location filename="../../Command.cpp" line="2422"/>
       <source>Scale</source>
       <translation>Échelle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2418"/>
+      <location filename="../../Command.cpp" line="2423"/>
       <source>Scales the selected features or the active body</source>
       <translation>Met à l'échelle les fonctions sélectionnées ou le corps actif.</translation>
     </message>
@@ -910,7 +910,7 @@ appelés coupes transversales). Sa forme est ensuite soustraite du solide exista
       <translation>Créer une copie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2514"/>
+      <location filename="../../Command.cpp" line="2519"/>
       <source>Convert to Multi-Transform feature</source>
       <translation>Transformation multiple</translation>
     </message>
@@ -931,7 +931,7 @@ appelés coupes transversales). Sa forme est ensuite soustraite du solide exista
       <translation>Créer une esquisse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2611"/>
+      <location filename="../../Command.cpp" line="2616"/>
       <source>Create Boolean</source>
       <translation>Créer une opération booléenne</translation>
     </message>
@@ -3609,7 +3609,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
       <translation>Migrer manuellement</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBoolean.cpp" line="70"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="223"/>
       <source>Edit Boolean</source>
       <translation>Éditer une opération booléenne</translation>
     </message>
@@ -5153,12 +5153,12 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2658"/>
+      <location filename="../../Command.cpp" line="2663"/>
       <source>Create Datum</source>
       <translation>Créer une référence</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2659"/>
+      <location filename="../../Command.cpp" line="2664"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Crée un objet de référence ou un système de coordonnées local.</translation>
     </message>
@@ -5166,12 +5166,12 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2693"/>
+      <location filename="../../Command.cpp" line="2698"/>
       <source>Create Datum</source>
       <translation>Créer une référence</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2694"/>
+      <location filename="../../Command.cpp" line="2699"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Crée un objet de référence ou un système de coordonnées local.</translation>
     </message>

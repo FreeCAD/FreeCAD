@@ -95,15 +95,12 @@ void Thumbnail::SaveDocFile(Base::Writer& writer) const
             qWarning("Cannot create a thumbnail from non-GUI thread");
         }
         else {
-            QColor invalid;
-            this->viewer->imageFromFramebuffer(
-                this->size,
-                this->size,
-                4,
-                invalid,
-                img,
-                View3DInventorViewer::RenderIntent::RasterCapture
-            );
+            View3DInventorViewer::RenderImageOptions options;
+            options.width = this->size;
+            options.height = this->size;
+            options.samples = 4;
+            options.intent = View3DInventorViewer::RenderIntent::RasterCapture;
+            img = this->viewer->renderToImage(options);
             created = !img.isNull();
         }
     }

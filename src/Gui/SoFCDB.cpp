@@ -62,22 +62,22 @@
 #include "SelectionObject.h"
 #include "SoDevicePixelRatioElement.h"
 #include "SoFCColorBar.h"
-#include "SoFCColorGradient.h"
-#include "SoFCColorLegend.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCSelection.h"
 #include "SoFCSelectionAction.h"
 #include "SoFCUnifiedSelection.h"
 #include "SoFCVectorizeSVGAction.h"
 #include "SoFCVectorizeU3DAction.h"
-#include "SoTextLabel.h"
+#include "SoLabelNodes.h"
 #include "SoDatumLabel.h"
+#include "TranslateManip.h"
 #include "Inventor/MarkerBitmaps.h"
 #include "Inventor/SmSwitchboard.h"
 #include "Inventor/So3DAnnotation.h"
 #include "Inventor/SoAutoZoomTranslation.h"
 #include "Inventor/SoAxisCrossKit.h"
 #include "Inventor/SoDrawingGrid.h"
+#include "Inventor/SoFCScreenSpaceGroup.h"
 #include "Inventor/SoFCBackgroundGradient.h"
 #include "Inventor/SoFCBoundingBox.h"
 #include "Inventor/SoNaviCube.h"
@@ -109,10 +109,8 @@ void Gui::SoFCDB::init()
     SoGLRenderActionElement ::initClass();
     SoFCInteractiveElement ::initClass();
     SoGLWidgetElement ::initClass();
-    SoFCColorBarBase ::initClass();
     SoFCColorBar ::initClass();
-    SoFCColorLegend ::initClass();
-    SoFCColorGradient ::initClass();
+    SoFCScreenSpaceGroup ::initClass();
     SoFCBackgroundGradient ::initClass();
     SoFCBoundingBox ::initClass();
     SoFCSelection ::initClass();
@@ -138,7 +136,6 @@ void Gui::SoFCDB::init()
     SoVRMLAction ::initClass();
     SoSkipBoundingGroup ::initClass();
     SoSkipBoundingBoxElement ::initClass();
-    SoTextLabel ::initClass();
     SoDatumLabel ::initClass();
     SoColorBarLabel ::initClass();
     SoStringLabel ::initClass();
@@ -248,10 +245,7 @@ void Gui::SoFCDB::finish()
     // Coin doesn't provide a mechanism to free static members of own data types.
     // Hence, we need to define a static method e.g. 'finish()' for all new types
     // to invoke the private member function 'atexit_cleanup()'.
-    SoFCColorBarBase ::finish();
     SoFCColorBar ::finish();
-    SoFCColorLegend ::finish();
-    SoFCColorGradient ::finish();
     SoFCBackgroundGradient ::finish();
     SoFCBoundingBox ::finish();
     SoFCSelection ::finish();

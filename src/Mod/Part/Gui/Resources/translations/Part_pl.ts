@@ -1187,22 +1187,22 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
   <context>
     <name>CmdBoxSelection</name>
     <message>
-      <location filename="../../Command.cpp" line="2394"/>
+      <location filename="../../Command.cpp" line="2396"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2395"/>
+      <location filename="../../Command.cpp" line="2397"/>
       <source>Box Selection</source>
       <translation>Zaznacz obszarem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2396"/>
+      <location filename="../../Command.cpp" line="2398"/>
       <source>Selects elements in the 3D view using a box selection</source>
       <translation>Wybiera elementy w widoku 3D używając obszaru zaznaczenia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2398"/>
+      <location filename="../../Command.cpp" line="2400"/>
       <source>Box selection</source>
       <translation>Zaznacz obszarem</translation>
     </message>
@@ -1210,17 +1210,17 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="2316"/>
+      <location filename="../../Command.cpp" line="2318"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2317"/>
+      <location filename="../../Command.cpp" line="2319"/>
       <source>Check Geometry</source>
       <translation>Sprawdź geometrię</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2318"/>
+      <location filename="../../Command.cpp" line="2320"/>
       <source>Analyzes the selected shapes for errors</source>
       <translation>Analizuje wybrane kształty pod kątem błędów</translation>
     </message>
@@ -1228,17 +1228,17 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
   <context>
     <name>CmdColorPerFace</name>
     <message>
-      <location filename="../../Command.cpp" line="2350"/>
+      <location filename="../../Command.cpp" line="2352"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2351"/>
+      <location filename="../../Command.cpp" line="2353"/>
       <source>Appearance per &amp;Face</source>
       <translation>Wygląd dla ś&amp;ciany</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2352"/>
+      <location filename="../../Command.cpp" line="2354"/>
       <source>Sets the appearance of individual faces of the selected object</source>
       <translation>Ustawia wygląd poszczególnych ścian wybranego obiektu</translation>
     </message>
@@ -1246,17 +1246,17 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="1403"/>
+      <location filename="../../Command.cpp" line="1405"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1404"/>
+      <location filename="../../Command.cpp" line="1406"/>
       <source>Boolean Operation</source>
       <translation>Operacja logiczna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1405"/>
+      <location filename="../../Command.cpp" line="1407"/>
       <source>Applies a boolean operation with the selected shapes</source>
       <translation>Wykonuje operacje logiczne na wybranych kształtach</translation>
     </message>
@@ -1264,19 +1264,18 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
   <context>
     <name>CmdPartBox</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="113"/>
+      <location filename="../../CommandParametric.cpp" line="116"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="114"/>
-      <location filename="../../CommandParametric.cpp" line="125"/>
-      <location filename="../../CommandParametric.cpp" line="130"/>
+      <location filename="../../CommandParametric.cpp" line="117"/>
+      <location filename="../../CommandParametric.cpp" line="127"/>
       <source>Cube</source>
       <translation>Sześcian</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="115"/>
+      <location filename="../../CommandParametric.cpp" line="118"/>
       <source>Creates a solid cube</source>
       <translation>Tworzy bryłę sześcianu</translation>
     </message>
@@ -1320,17 +1319,17 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location filename="../../Command.cpp" line="1702"/>
+      <location filename="../../Command.cpp" line="1704"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1703"/>
+      <location filename="../../Command.cpp" line="1705"/>
       <source>Shape Builder</source>
       <translation>Konstruktor kształtu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1705"/>
+      <location filename="../../Command.cpp" line="1707"/>
       <source>Advanced utility to create shapes</source>
       <translation>Zaawansowane narzędzie do tworzenia kształtów</translation>
     </message>
@@ -1338,17 +1337,17 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
   <context>
     <name>CmdPartChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="1607"/>
+      <location filename="../../Command.cpp" line="1609"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1608"/>
+      <location filename="../../Command.cpp" line="1610"/>
       <source>Chamfer</source>
       <translation>Sfazowanie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1609"/>
+      <location filename="../../Command.cpp" line="1611"/>
       <source>Chamfers the selected edges of a shape</source>
       <translation>Fazuje wybrane krawędzie obiektu</translation>
     </message>
@@ -1410,17 +1409,17 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1923"/>
+      <location filename="../../Command.cpp" line="1925"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1924"/>
+      <location filename="../../Command.cpp" line="1926"/>
       <source>Offset</source>
       <translation>Odsunięcie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1925"/>
+      <location filename="../../Command.cpp" line="1927"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
       <translation>Narzędzia do odsuwania kształtów (konstrukcja równoległych kształtów)</translation>
     </message>
@@ -1464,19 +1463,18 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
   <context>
     <name>CmdPartCone</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="201"/>
+      <location filename="../../CommandParametric.cpp" line="204"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="202"/>
-      <location filename="../../CommandParametric.cpp" line="213"/>
-      <location filename="../../CommandParametric.cpp" line="218"/>
+      <location filename="../../CommandParametric.cpp" line="205"/>
+      <location filename="../../CommandParametric.cpp" line="215"/>
       <source>Cone</source>
       <translation>Stożek</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="203"/>
+      <location filename="../../CommandParametric.cpp" line="206"/>
       <source>Creates a solid cone</source>
       <translation>Tworzy bryłę stożka</translation>
     </message>
@@ -1484,17 +1482,17 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="1663"/>
+      <location filename="../../Command.cpp" line="1665"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1664"/>
+      <location filename="../../Command.cpp" line="1666"/>
       <source>Cross-Sections</source>
       <translation>Przekroje poprzeczne</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1665"/>
+      <location filename="../../Command.cpp" line="1667"/>
       <source>Creates cross-sections</source>
       <translation>Tworzy przekroje poprzeczne</translation>
     </message>
@@ -1520,19 +1518,18 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
   <context>
     <name>CmdPartCylinder</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="69"/>
+      <location filename="../../CommandParametric.cpp" line="72"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="70"/>
-      <location filename="../../CommandParametric.cpp" line="81"/>
-      <location filename="../../CommandParametric.cpp" line="86"/>
+      <location filename="../../CommandParametric.cpp" line="73"/>
+      <location filename="../../CommandParametric.cpp" line="83"/>
       <source>Cylinder</source>
       <translation>Walec</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="71"/>
+      <location filename="../../CommandParametric.cpp" line="74"/>
       <source>Creates a solid cylinder</source>
       <translation>Tworzy bryłę walca</translation>
     </message>
@@ -1594,17 +1591,17 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
   <context>
     <name>CmdPartExtrude</name>
     <message>
-      <location filename="../../Command.cpp" line="1435"/>
+      <location filename="../../Command.cpp" line="1437"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1436"/>
+      <location filename="../../Command.cpp" line="1438"/>
       <source>Extrude</source>
       <translation>Wyciągnięcie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1437"/>
+      <location filename="../../Command.cpp" line="1439"/>
       <source>Extrudes the selected sketch or profile</source>
       <translation>Wyciąga zaznaczony szkic lub profil</translation>
     </message>
@@ -1612,17 +1609,17 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
   <context>
     <name>CmdPartFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1579"/>
+      <location filename="../../Command.cpp" line="1581"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1580"/>
+      <location filename="../../Command.cpp" line="1582"/>
       <source>Fillet</source>
       <translation>Zaokrąglenie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1581"/>
+      <location filename="../../Command.cpp" line="1583"/>
       <source>Fillets the selected edges of a shape</source>
       <translation>Tworzy zaokrąglenie wybranych krawędzi obiektu</translation>
     </message>
@@ -1684,17 +1681,17 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
   <context>
     <name>CmdPartLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1732"/>
+      <location filename="../../Command.cpp" line="1734"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1733"/>
+      <location filename="../../Command.cpp" line="1735"/>
       <source>Loft</source>
       <translation>Wyciągnięcie przez profile</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1734"/>
+      <location filename="../../Command.cpp" line="1736"/>
       <source>Lofts the selected profiles</source>
       <translation>Wyciągnięcie przez profile zaznaczonych profili</translation>
     </message>
@@ -1702,17 +1699,17 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
   <context>
     <name>CmdPartMakeFace</name>
     <message>
-      <location filename="../../Command.cpp" line="1492"/>
+      <location filename="../../Command.cpp" line="1494"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1493"/>
+      <location filename="../../Command.cpp" line="1495"/>
       <source>Face From Wires</source>
       <translation>Ściana z krzywej złożonej</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1494"/>
+      <location filename="../../Command.cpp" line="1496"/>
       <source>Creates a face from the selected wires (e.g. from a sketch)</source>
       <translation>Tworzy ścianę z wybranych linii złożonych (np. ze szkicu)</translation>
     </message>
@@ -1738,17 +1735,17 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
   <context>
     <name>CmdPartMirror</name>
     <message>
-      <location filename="../../Command.cpp" line="1635"/>
+      <location filename="../../Command.cpp" line="1637"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1636"/>
+      <location filename="../../Command.cpp" line="1638"/>
       <source>Mirror</source>
       <translation>Odbicie lustrzane</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1637"/>
+      <location filename="../../Command.cpp" line="1639"/>
       <source>Mirrors the selected shape</source>
       <translation>Tworzy odbicie lustrzane wybranego kształtu</translation>
     </message>
@@ -1756,17 +1753,17 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
   <context>
     <name>CmdPartOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1790"/>
+      <location filename="../../Command.cpp" line="1792"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1791"/>
+      <location filename="../../Command.cpp" line="1793"/>
       <source>3D Offset</source>
       <translation>Odsunięcie 3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1792"/>
+      <location filename="../../Command.cpp" line="1794"/>
       <source>Offsets shapes in 3D</source>
       <translation>Odsunięcie kształtów w przestrzeni 3D</translation>
     </message>
@@ -1774,17 +1771,17 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
   <context>
     <name>CmdPartOffset2D</name>
     <message>
-      <location filename="../../Command.cpp" line="1857"/>
+      <location filename="../../Command.cpp" line="1859"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1858"/>
+      <location filename="../../Command.cpp" line="1860"/>
       <source>2D Offset</source>
       <translation>Odsunięcie 2D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1859"/>
+      <location filename="../../Command.cpp" line="1861"/>
       <source>Offsets planar shapes in 2D</source>
       <translation>Odsunięcie kształtów planarnych w przestrzeni 2D</translation>
     </message>
@@ -1846,17 +1843,17 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
   <context>
     <name>CmdPartProjectionOnSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2424"/>
+      <location filename="../../Command.cpp" line="2426"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2425"/>
+      <location filename="../../Command.cpp" line="2427"/>
       <source>Project on Surface</source>
       <translation>Rzut na powierzchnię</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2426"/>
+      <location filename="../../Command.cpp" line="2428"/>
       <source>Projects edges, wires, or faces of one shape
 onto a face of another shape.
 The camera view determines the direction
@@ -1905,17 +1902,17 @@ Widok ujęcie widoku określa kierunek rzutu.</translation>
   <context>
     <name>CmdPartRevolve</name>
     <message>
-      <location filename="../../Command.cpp" line="1551"/>
+      <location filename="../../Command.cpp" line="1553"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1552"/>
+      <location filename="../../Command.cpp" line="1554"/>
       <source>Revolve</source>
       <translation>Wyciągnięcie przez obrót</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1553"/>
+      <location filename="../../Command.cpp" line="1555"/>
       <source>Revolves the selected shape</source>
       <translation>Wyciąga przez obrót wybrany kształt</translation>
     </message>
@@ -1923,17 +1920,17 @@ Widok ujęcie widoku określa kierunek rzutu.</translation>
   <context>
     <name>CmdPartRuledSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2172"/>
+      <location filename="../../Command.cpp" line="2174"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2173"/>
+      <location filename="../../Command.cpp" line="2175"/>
       <source>Ruled Surface</source>
       <translation>Powierzchnia prostokreślna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2174"/>
+      <location filename="../../Command.cpp" line="2176"/>
       <source>Creates a ruled surface between 2 selected wires</source>
       <translation>Tworzy powierzchnię prostokreślną pomiędzy 2 wybranymi liniami złożonymi</translation>
     </message>
@@ -2013,19 +2010,18 @@ Widok ujęcie widoku określa kierunek rzutu.</translation>
   <context>
     <name>CmdPartSphere</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="157"/>
+      <location filename="../../CommandParametric.cpp" line="160"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="158"/>
-      <location filename="../../CommandParametric.cpp" line="169"/>
-      <location filename="../../CommandParametric.cpp" line="174"/>
+      <location filename="../../CommandParametric.cpp" line="161"/>
+      <location filename="../../CommandParametric.cpp" line="171"/>
       <source>Sphere</source>
       <translation>Sfera</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="159"/>
+      <location filename="../../CommandParametric.cpp" line="162"/>
       <source>Creates a solid sphere</source>
       <translation>Tworzy bryłę sfery</translation>
     </message>
@@ -2033,17 +2029,17 @@ Widok ujęcie widoku określa kierunek rzutu.</translation>
   <context>
     <name>CmdPartSweep</name>
     <message>
-      <location filename="../../Command.cpp" line="1761"/>
+      <location filename="../../Command.cpp" line="1763"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1762"/>
+      <location filename="../../Command.cpp" line="1764"/>
       <source>Sweep</source>
       <translation>Wyciągnięcie po ścieżce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1763"/>
+      <location filename="../../Command.cpp" line="1765"/>
       <source>Sweeps profiles along a wire</source>
       <translation>Przeciąga profile wzdłuż krzywej złożonej</translation>
     </message>
@@ -2051,27 +2047,27 @@ Widok ujęcie widoku określa kierunek rzutu.</translation>
   <context>
     <name>CmdPartThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="2025"/>
+      <location filename="../../Command.cpp" line="2027"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2026"/>
+      <location filename="../../Command.cpp" line="2028"/>
       <source>Thickness</source>
       <translation>Grubość</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2027"/>
+      <location filename="../../Command.cpp" line="2029"/>
       <source>Removes the selected faces and offsets the remaining shape outward to add thickness</source>
       <translation>Usuwa wybrane powierzchnie i przesuwa pozostały kształt na zewnątrz, aby dodać grubość.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2086"/>
+      <location filename="../../Command.cpp" line="2088"/>
       <source>Wrong selection</source>
       <translation>Niewłaściwy wybór</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2087"/>
+      <location filename="../../Command.cpp" line="2089"/>
       <source>Selected shape is not a solid</source>
       <translation>Zaznaczony kształt nie jest bryłą</translation>
     </message>
@@ -2079,19 +2075,18 @@ Widok ujęcie widoku określa kierunek rzutu.</translation>
   <context>
     <name>CmdPartTorus</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="245"/>
+      <location filename="../../CommandParametric.cpp" line="248"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="246"/>
-      <location filename="../../CommandParametric.cpp" line="257"/>
-      <location filename="../../CommandParametric.cpp" line="262"/>
+      <location filename="../../CommandParametric.cpp" line="249"/>
+      <location filename="../../CommandParametric.cpp" line="259"/>
       <source>Torus</source>
       <translation>Torus</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="247"/>
+      <location filename="../../CommandParametric.cpp" line="250"/>
       <source>Creates a solid torus</source>
       <translation>Tworzy bryłę torusa</translation>
     </message>
@@ -2163,47 +2158,47 @@ Widok ujęcie widoku określa kierunek rzutu.</translation>
       <translation>Odwróć</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1511"/>
+      <location filename="../../Command.cpp" line="1513"/>
       <source>Make face</source>
       <translation>Utwórz ścianę</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1817"/>
+      <location filename="../../Command.cpp" line="1819"/>
       <source>Make Offset</source>
       <translation>Dokonaj odsunięcia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1885"/>
+      <location filename="../../Command.cpp" line="1887"/>
       <source>Make 2D Offset</source>
       <translation>Wykonaj odsunięcie 2D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2094"/>
+      <location filename="../../Command.cpp" line="2096"/>
       <source>Make Thickness</source>
       <translation>Stwórz grubość</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2283"/>
+      <location filename="../../Command.cpp" line="2285"/>
       <source>Create ruled surface</source>
       <translation>Utwórz powierzchnię prostokreślną</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2536"/>
+      <location filename="../../Command.cpp" line="2538"/>
       <source>Add coordinate system</source>
       <translation>Dodaj układ współrzędnych</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2574"/>
+      <location filename="../../Command.cpp" line="2576"/>
       <source>Add datum plane</source>
       <translation>Dodaj płaszczyznę odniesienia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2607"/>
+      <location filename="../../Command.cpp" line="2609"/>
       <source>Add datum line</source>
       <translation>Dodaj linię odniesienia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2640"/>
+      <location filename="../../Command.cpp" line="2642"/>
       <source>Add datum point</source>
       <translation>Dodaj punkt odniesienia</translation>
     </message>
@@ -2279,7 +2274,7 @@ Widok ujęcie widoku określa kierunek rzutu.</translation>
       <translation>Wyciągnięcie po ścieżce</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1615"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1620"/>
       <source>Project on surface</source>
       <translation>Rzut na powierzchnię</translation>
     </message>
@@ -4165,17 +4160,17 @@ Opcja przydatna w przypadku niektórych starszych plików STEP, z nieistotnymi a
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="140"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="141"/>
       <source>Projection object</source>
       <translation>Obiekt do rzutowania</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="167"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="168"/>
       <source>No active document</source>
       <translation>Brak aktywnego dokumentu</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="173"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="174"/>
       <source>Cannot create a projection object</source>
       <translation>Nie można utworzyć obiektu projekcji</translation>
     </message>
@@ -6138,7 +6133,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="510"/>
       <location filename="../../Command.cpp" line="952"/>
       <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../Command.cpp" line="2277"/>
+      <location filename="../../Command.cpp" line="2279"/>
       <source>Wrong Selection</source>
       <translation>Nieprawidłowy wybór</translation>
     </message>
@@ -6185,7 +6180,7 @@ Alternatywnie możesz zaznaczyć jeden złożony obiekt zawierający dwa lub wi�
       <translation>Wszystkie pliki CAD</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2278"/>
+      <location filename="../../Command.cpp" line="2280"/>
       <source>Select either 2 edges or 2 wires.</source>
       <translation>Wybierz dowolne dwie krawędzie lub dwie linie złożone.</translation>
     </message>
@@ -7150,17 +7145,17 @@ Zachodzące na siebie części kształtów zostaną usunięte.</translation>
   <context>
     <name>CmdPartScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1463"/>
+      <location filename="../../Command.cpp" line="1465"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1464"/>
+      <location filename="../../Command.cpp" line="1466"/>
       <source>Scale</source>
       <translation>Skala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1465"/>
+      <location filename="../../Command.cpp" line="1467"/>
       <source>Scales the selected shape</source>
       <translation>Wykonuje transformację skali wybranego kształtu</translation>
     </message>
@@ -7325,17 +7320,17 @@ Polilinie mogą znajdować się na różnych płaszczyznach.</translation>
   <context>
     <name>CmdPartCoordinateSystem</name>
     <message>
-      <location filename="../../Command.cpp" line="2524"/>
+      <location filename="../../Command.cpp" line="2526"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2525"/>
+      <location filename="../../Command.cpp" line="2527"/>
       <source>Coordinate System</source>
       <translation>Układ współrzędnych</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2526"/>
+      <location filename="../../Command.cpp" line="2528"/>
       <source>Creates a coordinate system that can be attached to other objects</source>
       <translation>Tworzy układ współrzędnych, który może być dołączony do innych obiektów</translation>
     </message>
@@ -7343,17 +7338,17 @@ Polilinie mogą znajdować się na różnych płaszczyznach.</translation>
   <context>
     <name>CmdPartDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2663"/>
+      <location filename="../../Command.cpp" line="2665"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2664"/>
+      <location filename="../../Command.cpp" line="2666"/>
       <source>Datums</source>
       <translation>Odniesienia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2666"/>
+      <location filename="../../Command.cpp" line="2668"/>
       <source>Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</source>
       <translation>Tworzy obiekt odniesienia (układ współrzędnych, płaszczyzna, linia lub punkt), który może być dołączony do innych obiektów</translation>
     </message>
@@ -7361,7 +7356,7 @@ Polilinie mogą znajdować się na różnych płaszczyznach.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6701"/>
+      <location filename="../../../App/Geometry.cpp" line="6723"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Nie można ustalić przecięcia krzywych. Spróbuj dodać wiązanie zbieżności między wierzchołkami krzywych, które zamierzasz zaokrąglić.</translation>
     </message>
@@ -7369,17 +7364,17 @@ Polilinie mogą znajdować się na różnych płaszczyznach.</translation>
   <context>
     <name>CmdPartDatumPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="2562"/>
+      <location filename="../../Command.cpp" line="2564"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2563"/>
+      <location filename="../../Command.cpp" line="2565"/>
       <source>Datum Plane</source>
       <translation>Płaszczyzna odniesienia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2564"/>
+      <location filename="../../Command.cpp" line="2566"/>
       <source>Creates a datum plane that can be attached to other objects</source>
       <translation>Tworzy płaszczyznę odniesienia, która może być dołączona do innych obiektów</translation>
     </message>
@@ -7387,17 +7382,17 @@ Polilinie mogą znajdować się na różnych płaszczyznach.</translation>
   <context>
     <name>CmdPartDatumLine</name>
     <message>
-      <location filename="../../Command.cpp" line="2595"/>
+      <location filename="../../Command.cpp" line="2597"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2596"/>
+      <location filename="../../Command.cpp" line="2598"/>
       <source>Datum Line</source>
       <translation>Linia odniesienia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2597"/>
+      <location filename="../../Command.cpp" line="2599"/>
       <source>Creates a datum line that can be attached to other objects</source>
       <translation>Tworzy linię odniesienia, która może być dołączona do innych obiektów</translation>
     </message>
@@ -7405,17 +7400,17 @@ Polilinie mogą znajdować się na różnych płaszczyznach.</translation>
   <context>
     <name>CmdPartDatumPoint</name>
     <message>
-      <location filename="../../Command.cpp" line="2628"/>
+      <location filename="../../Command.cpp" line="2630"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2629"/>
+      <location filename="../../Command.cpp" line="2631"/>
       <source>Datum Point</source>
       <translation>Punkt odniesienia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2630"/>
+      <location filename="../../Command.cpp" line="2632"/>
       <source>Creates a datum point that can be attached to other objects</source>
       <translation>Tworzy punkt odniesienia, który może być dołączony do innych obiektów</translation>
     </message>
@@ -7598,12 +7593,12 @@ Polilinie mogą znajdować się na różnych płaszczyznach.</translation>
   <context>
     <name>CmdPartSectionCut</name>
     <message>
-      <location filename="../../Command.cpp" line="2460"/>
+      <location filename="../../Command.cpp" line="2462"/>
       <source>Persiste&amp;nt Section Cut</source>
       <translation>Wyci&amp;nek przekroju</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2461"/>
+      <location filename="../../Command.cpp" line="2463"/>
       <source>Creates a new object as a boolean intersection of all visible shapes and the selected axis planes</source>
       <translation>Tworzy nowy obiekt jako część wspólną (operację logiczną) wszystkich widocznych kształtów oraz wybranych płaszczyzn osiowych</translation>
     </message>
@@ -7794,12 +7789,12 @@ Zazwyczaj oznacza to błąd modelu.</translation>
     <message>
       <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
       <source>Unified facemaker</source>
-      <translation type="unfinished">Unified facemaker</translation>
+      <translation>Ujednolicona metoda tworzenia ścian</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
       <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
-      <translation type="unfinished">Unified: handles nested holes, overlapping wires, and curved surfaces</translation>
+      <translation>Ujednolicona metoda tworzenia ścian: obsługuje zagnieżdżone otwory, nakładające się polilinie oraz zakrzywione powierzchnie</translation>
     </message>
   </context>
   <context>

@@ -2078,8 +2078,8 @@ aghaidhe, cuirtear sreang amh ón gcruth bunaidh leis</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="120"/>
-      <source>Apply Cuts</source>
-      <translation>Cuir Gearrthacha i bhFeidhm</translation>
+      <source>Apply cuts</source>
+      <translation>Cuir ciorruithe i bhfeidhm</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="140"/>
@@ -2788,8 +2788,8 @@ ghreille má mheaitseálann siad ais X, Y nó Z an chórais chomhordanáidí dho
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="100"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Nóta:&lt;/span&gt; Baineann roghanna DXF le comhaid DWG chomh maith.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Note: DXF options apply to DWG files as well.</source>
+      <translation>Nóta: Baineann roghanna DXF le comhaid DWG chomh maith.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="26"/>

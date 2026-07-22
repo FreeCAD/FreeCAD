@@ -206,17 +206,17 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2590"/>
+      <location filename="../../Command.cpp" line="2595"/>
       <source>PartDesign</source>
       <translation>Konstruisanje delova</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2591"/>
+      <location filename="../../Command.cpp" line="2596"/>
       <source>Boolean Operation</source>
       <translation>Bulove operacije</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2592"/>
+      <location filename="../../Command.cpp" line="2597"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>Primeni bulovu operaciju između izabranih objekata i aktivnog tela</translation>
     </message>
@@ -494,17 +494,17 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2459"/>
+      <location filename="../../Command.cpp" line="2464"/>
       <source>PartDesign</source>
       <translation>Konstruisanje delova</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2460"/>
+      <location filename="../../Command.cpp" line="2465"/>
       <source>Multi-Transform</source>
       <translation>Višestruko pretvaranje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2461"/>
+      <location filename="../../Command.cpp" line="2466"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation>Primeni više pretvaranja na izabrane tipske oblike ili aktivno telo</translation>
     </message>
@@ -602,17 +602,17 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2354"/>
+      <location filename="../../Command.cpp" line="2359"/>
       <source>PartDesign</source>
       <translation>Konstruisanje delova</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2355"/>
+      <location filename="../../Command.cpp" line="2360"/>
       <source>Polar Pattern</source>
       <translation>Kružno umnožavanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2356"/>
+      <location filename="../../Command.cpp" line="2361"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation>Kružno umnoži izabrani tipski oblik ili aktivno telo</translation>
     </message>
@@ -638,17 +638,17 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2416"/>
+      <location filename="../../Command.cpp" line="2421"/>
       <source>PartDesign</source>
       <translation>Konstruisanje delova</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2417"/>
+      <location filename="../../Command.cpp" line="2422"/>
       <source>Scale</source>
       <translation>Razmera</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2418"/>
+      <location filename="../../Command.cpp" line="2423"/>
       <source>Scales the selected features or the active body</source>
       <translation>Skaliraj izabrani tipski oblik ili aktivno telo</translation>
     </message>
@@ -905,7 +905,7 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
       <translation>Napravi kopiju</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2514"/>
+      <location filename="../../Command.cpp" line="2519"/>
       <source>Convert to Multi-Transform feature</source>
       <translation>Pretvori u tipski oblik dobijen Višestrukim pretvaranjenjem</translation>
     </message>
@@ -926,7 +926,7 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
       <translation>Nova skica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2611"/>
+      <location filename="../../Command.cpp" line="2616"/>
       <source>Create Boolean</source>
       <translation>Napravi bulovu operaciju</translation>
     </message>
@@ -3619,7 +3619,7 @@ Mada, moći ćeš da migriraš u bilo kom trenutku kasnije pomoću 'Konstruisanj
       <translation>Migriraj ručno</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBoolean.cpp" line="70"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="223"/>
       <source>Edit Boolean</source>
       <translation>Uredi bulovu operaciju</translation>
     </message>
@@ -5165,12 +5165,12 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2658"/>
+      <location filename="../../Command.cpp" line="2663"/>
       <source>Create Datum</source>
       <translation>Napravi pomoćne elemente</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2659"/>
+      <location filename="../../Command.cpp" line="2664"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Napravi pomoćne elemente ili lokalni koordinatni sistem</translation>
     </message>
@@ -5178,12 +5178,12 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2693"/>
+      <location filename="../../Command.cpp" line="2698"/>
       <source>Create Datum</source>
       <translation>Napravi pomoćne elemente</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2694"/>
+      <location filename="../../Command.cpp" line="2699"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Napravi pomoćne elemente ili lokalni koordinatni sistem</translation>
     </message>

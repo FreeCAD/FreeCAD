@@ -401,11 +401,16 @@ Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const
 
     try {
         Part::TopoShape result(getID(), getDocument()->getStringHasher());
-        result = result.makeElementFace(edges.getSubTopoShapes(TopAbs_WIRE),
-                /*op*/"",
-                /*maker*/"Part::FaceMakerBuildFace",
-                /*pln*/nullptr
-        );
+        try {
+            result = result.makeElementFace(edges.getSubTopoShapes(TopAbs_WIRE),
+                    /*op*/"",
+                    /*maker*/"Part::FaceMakerBuildFace",
+                    /*pln*/nullptr
+            );
+        }
+        catch (const Part::NullShapeException&) {
+            // An open-only sketch has no bounded regions, so a null face result is expected.
+        }
 
         // Append open wires (edges not part of any closed face)
         Part::WireJoiner joiner;

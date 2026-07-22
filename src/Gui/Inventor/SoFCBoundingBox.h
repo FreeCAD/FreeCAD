@@ -35,6 +35,7 @@
 #include <FCGlobal.h>
 
 class SbBox3f;
+class SoState;
 
 namespace Gui
 {
@@ -75,6 +76,8 @@ protected:
     void computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center) override;
 
 private:
+    void prepareGeometry(SoState* state);
+
     SoSeparator *bboxSep, *textSep, *dimSep;
     SoCoordinate3* bboxCoords;
     SoIndexedLineSet* bboxLines;

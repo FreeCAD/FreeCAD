@@ -3748,7 +3748,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandDecorate.cpp" line="359"/>
       <source>Image files</source>
-      <translation type="unfinished">Image files</translation>
+      <translation>画像ファイル</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="363"/>
@@ -6713,7 +6713,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.ui" line="129"/>
       <source>Scale</source>
-      <translation>尺度</translation>
+      <translation>拡大縮小</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="136"/>

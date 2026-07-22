@@ -59,6 +59,7 @@
 #include "Document.h"
 #include "SoFCSelection.h"
 #include "Tools.h"
+#include "TranslateManip.h"
 #include "Utilities.h"
 #include "ViewParams.h"
 #include "Window.h"

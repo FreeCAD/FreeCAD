@@ -1828,6 +1828,7 @@ void DSHPolyLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSke
                 if (handler->constructionMethod() == ConstructionMethod::Arc) {
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
                 }
+                getKeyManager()->resetMode();
                 setFocusToOnViewParameter(OnViewParameter::Third);
                 return;
             }
@@ -1966,7 +1967,7 @@ void DSHPolyLineController::adaptParameters(Base::Vector2d onSketchPos)
                 if (!fourthParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Unit::Angle);
                 }
-                else if (vec.Length() > Precision::Confusion()) {
+                else if (fourthParam->hasFinishedEditing && vec.Length() > Precision::Confusion()) {
                     double ovpRange = fourthParam->getValue();
 
                     if (fabs(range - ovpRange) > Precision::Confusion()) {
@@ -2057,6 +2058,8 @@ void DSHPolyLineController::doConstructionMethodChanged()
             handler->setConstructionMethod(ConstructionMethod::Line);
             return;
         }
+
+        handler->resetEdge = true;
     }
 
     // Since line has 4 OVP but arc has 5, and because we are not resetting the whole tool,

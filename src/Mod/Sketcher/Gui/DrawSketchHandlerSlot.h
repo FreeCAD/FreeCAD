@@ -513,7 +513,7 @@ void DSHSlotController::adaptParameters(Base::Vector2d onSketchPos)
                     Base::Unit::Angle
                 );
             }
-            else if (vec.Length() > Precision::Confusion()) {
+            else if (fourthParam->hasFinishedEditing && vec.Length() > Precision::Confusion()) {
                 double ovpRange = Base::toRadians(fourthParam->getValue());
 
                 if (fabs(range - ovpRange) > Precision::Confusion()) {
