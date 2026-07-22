@@ -59,6 +59,28 @@ from draftutils.messages import _msg, _err, _toolmsg
 from draftutils.translate import translate
 
 
+def _get_trimex_data(obj):
+    """Return a Trimex data dict for ``obj``, or None.
+
+    BIM objects opt in by implementing ``obj.Proxy.getTrimexData(obj)``.
+    The returned dict must contain ``endpoints`` (two world-space points
+    bounding the object's editable axis) and ``axes`` (matching outward unit
+    vectors used to identify end faces), plus either:
+
+    - ``redirect``: an object to operate on instead (for example a base wire)
+    - ``set``: callable(list[Vector]) committing new world endpoints
+    """
+    proxy = getattr(obj, "Proxy", None)
+    if proxy is not None and hasattr(proxy, "getTrimexData"):
+        try:
+            adapter = proxy.getTrimexData(obj)
+        except Exception:
+            adapter = None
+        if adapter is not None:
+            return adapter
+    return None
+
+
 class Trimex(gui_base_original.Modifier):
     """Gui Command for the Trimex tool.
 
@@ -90,6 +112,14 @@ class Trimex(gui_base_original.Modifier):
         self.linetrack = None
         self.color = None
         self.width = None
+        # Trimex-data protocol state. When a BIM object provides
+        # ``getTrimexData``, the host is re-selected at the end; either the
+        # operation is redirected to ``self.obj`` (a base wire), or it commits
+        # through ``trimexSet`` with the two updated world endpoints.
+        self.trimexHost = None
+        self.trimexSet = None
+        self.trimexEndpoints = None
+        self.lockedActivePoint = None
         if self.ui:
             if not Gui.Selection.getSelection():
                 self.ui.selectUi(on_close_call=self.finish)
@@ -111,6 +141,12 @@ class Trimex(gui_base_original.Modifier):
         sel = Gui.Selection.getSelectionEx("", 0)[0]
 
         import Part
+
+        # BIM integration. If the selected object opts in via getTrimexData
+        # and an end face is pre-selected, route the operation to its base
+        # wire or to a property-update setter instead of face-extrude.
+        if self._setupTrimexData(sel):
+            return
 
         reason = utils.get_trimex_unsupported_reason(self.obj, sel.SubObjects)
         if reason:
@@ -183,6 +219,137 @@ class Trimex(gui_base_original.Modifier):
         _toolmsg(translate("draft", "Pick distance"))
         self.selection_done = True
         self.update_hints()
+
+    def _setupTrimexData(self, sel):
+        """Generic adapter dispatch.
+
+        Resolves BIM ``getTrimexData`` and, if the user pre-selected an end
+        face, routes Trimex to:
+          - the redirected base wire/line (``redirect`` key), or
+          - a property-update setter (``set`` key) driven by a virtual edge.
+
+        Returns True if the operation is fully set up here (set-mode);
+        False otherwise. Side / top / bottom face selections always fall
+        through to the default face-extrude path.
+        """
+        import Part
+
+        adapter = _get_trimex_data(self.obj)
+        if adapter is None:
+            return False
+
+        endpoints = adapter.get("endpoints") or []
+        axes = adapter.get("axes") or []
+        if len(endpoints) < 2 or len(axes) != len(endpoints):
+            return False
+
+        ends = list(zip(endpoints, axes))
+        end_idx = None
+        for sub in sel.SubObjects:
+            if getattr(sub, "ShapeType", None) != "Face":
+                continue
+            match = self._matchEndFace(sub, ends)
+            if match is not None:
+                end_idx = match
+                break
+        if end_idx is None:
+            # Not an end face (side / top / bottom, or no face picked): keep
+            # the default face-extrude behaviour untouched.
+            return False
+
+        redirect = adapter.get("redirect")
+        setter = adapter.get("set")
+        host = self.obj
+
+        if redirect is not None:
+            # Modify the base directly; the host follows on recompute. The
+            # adapter reports two ends (first / last cap), but the wire-mode
+            # vertex list spans every vertex of the base wire, so map the
+            # matched cap to the correct vertex index: 0 -> first, last cap
+            # -> the wire's final vertex (== edge count). Without this a
+            # multi-segment base would move the 2nd vertex instead of the
+            # last when the far end is trimmed.
+            self.trimexHost = host
+            self.obj = redirect
+            if end_idx == 0:
+                self.lockedActivePoint = 0
+            else:
+                # Last cap -> final vertex; its index equals the edge count.
+                self.lockedActivePoint = self._wireEdgeCount(redirect)
+            return False
+
+        if setter is None:
+            return False
+
+        # Property-update mode: drive a virtual single-edge line and commit
+        # the new endpoints through the setter callable.
+        self.trimexHost = host
+        self.trimexSet = setter
+        self.trimexEndpoints = [App.Vector(p) for p in endpoints]
+        self.lockedActivePoint = end_idx
+
+        p1, p2 = self.trimexEndpoints
+        self.edges = [Part.LineSegment(p1, p2).toShape()]
+        self.placement = None
+        self.extrudeMode = False
+        self.ghost = [trackers.lineTracker(scolor=(0.5, 0.5, 0.5), swidth=1)]
+        self.ui.trimUi(title=translate("draft", self.featureName))
+        self.linetrack = trackers.lineTracker()
+        for g in self.ghost:
+            g.on()
+        self.activePoint = 0
+        self.nodes = []
+        self.shift = False
+        self.alt = False
+        self.force = None
+        self.cv = None
+        self.call = self.view.addEventCallback("SoEvent", self.action)
+        _toolmsg(translate("draft", "Pick distance"))
+        return True
+
+    @staticmethod
+    def _wireEdgeCount(obj):
+        """Edge count of ``obj``'s wire, using the same edge selection as the
+        wire-mode setup. The final vertex index of the vertex list equals
+        this count."""
+        import Part
+
+        shape = obj.Shape
+        if shape.Wires:
+            return len(Part.__sortEdges__(shape.Wires[0].Edges))
+        return len(shape.Edges)
+
+    @staticmethod
+    def _matchEndFace(face, ends):
+        """Index of the end whose axis is parallel to ``face``'s normal and
+        whose endpoint lies on the face's plane. ``None`` if the face is not
+        an end face (side, top, bottom, etc.)."""
+        try:
+            u, v = face.Surface.parameter(face.CenterOfMass)
+            normal = face.normalAt(u, v)
+        except Exception:
+            return None
+        if normal.Length < 1e-9:
+            return None
+        normal = App.Vector(normal).normalize()
+        center = face.CenterOfMass
+        best = None
+        best_dot = 0.95  # require strong alignment to discount side/top/bottom faces
+        for i, (endpoint, axis) in enumerate(ends):
+            ax_len = axis.Length
+            if ax_len < 1e-9:
+                continue
+            ax = App.Vector(axis).multiply(1.0 / ax_len)
+            dot = abs(normal.dot(ax))
+            if dot < best_dot:
+                continue
+            # Endpoint must lie on the face's plane (along the normal).
+            offset = abs(normal.dot(endpoint - center))
+            if offset > 1e-3:
+                continue
+            best_dot = dot
+            best = i
+        return best
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -291,7 +458,12 @@ class Trimex(gui_base_original.Modifier):
         for e in self.edges:
             vlist.append(e.Vertexes[0].Point)
         vlist.append(self.edges[-1].Vertexes[-1].Point)
-        if shift:
+        if self.lockedActivePoint is not None:
+            # An endpoint was pre-selected (e.g. the start/end face of a wall).
+            # Keep it locked so the user's mouse only sets the new position,
+            # not which end moves.
+            npoint = self.lockedActivePoint
+        elif shift:
             npoint = self.activePoint
         else:
             npoint = geo_general.findClosest(point, vlist)
@@ -434,7 +606,18 @@ class Trimex(gui_base_original.Modifier):
             edges = self.redraw(self.point, self.snapped, self.shift, self.alt, real=True)
             newshape = Part.Wire(edges)
             self.doc.openTransaction("Trim/extend")
-            if utils.getType(self.obj) in ["Wire", "BSpline"]:
+            if self.trimexSet is not None:
+                pts = list(self.trimexEndpoints)
+                idx = (
+                    self.lockedActivePoint
+                    if self.lockedActivePoint is not None
+                    else self.activePoint
+                )
+                if idx is None or idx >= len(pts):
+                    idx = min(self.activePoint, len(pts) - 1)
+                pts[idx] = App.Vector(self.newpoint)
+                self.trimexSet(pts)
+            elif utils.getType(self.obj) in ["Wire", "BSpline"]:
                 p = []
                 if self.placement:
                     invpl = self.placement.inverse()
@@ -443,6 +626,18 @@ class Trimex(gui_base_original.Modifier):
                     if self.placement:
                         np = invpl.multVec(np)
                     p.append(np)
+                # When the far endpoint is trimmed, redraw rebuilds the wire
+                # in reverse, which flips the Points order. That is harmless
+                # for a standalone wire but flips direction-sensitive parents
+                # (Arch Truss/Frame, ...) when we trim a redirected base. In
+                # that case keep the original orientation by comparing both
+                # ends against the previous Points.
+                old = self.obj.Points
+                if self.trimexHost is not None and len(p) == len(old) and len(old) >= 2:
+                    same = (p[0] - old[0]).Length + (p[-1] - old[-1]).Length
+                    flipped = (p[0] - old[-1]).Length + (p[-1] - old[0]).Length
+                    if flipped < same:
+                        p.reverse()
                 self.obj.Points = p
             elif utils.getType(self.obj) == "Part::Line":
                 p = []
@@ -582,7 +777,10 @@ class Trimex(gui_base_original.Modifier):
                     self.obj.ViewObject.LineColor = self.color
                 if self.width:
                     self.obj.ViewObject.LineWidth = self.width
-                gui_utils.select(self.obj)
+                # Re-select the original host when we operated on its base
+                # or via its property setter, so the user keeps a meaningful
+                # selection.
+                gui_utils.select(self.trimexHost or self.obj)
         super().finish()
 
     def numericRadius(self, dist):

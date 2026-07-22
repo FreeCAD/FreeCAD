@@ -1486,6 +1486,24 @@ class _Wall(ArchComponent.Component):
             return (base, extrusion, placement)
         return None
 
+    def getTrimexData(self, obj):
+        """Return Trimex data for a Wall.
+
+        Wire and line bases are edited directly; baseless walls update their
+        Length and Placement. Sketch-based walls are excluded.
+        """
+        wall_pl = obj.Placement
+        base = obj.Base
+        if base is None:
+            eps = self.calc_endpoints(obj)
+            axis = wall_pl.Rotation.multVec(FreeCAD.Vector(1, 0, 0))
+            return {
+                "endpoints": [FreeCAD.Vector(eps[0]), FreeCAD.Vector(eps[1])],
+                "axes": [FreeCAD.Vector(axis).negative(), FreeCAD.Vector(axis)],
+                "set": lambda pts: self.set_from_endpoints(obj, pts),
+            }
+        return ArchComponent.getTrimexDataFromBase(obj, base)
+
     def calc_endpoints(self, obj):
         """Returns the global start and end points of a baseless wall's centerline."""
         # The wall's shape is centered, so its endpoints in local coordinates
@@ -1501,14 +1519,13 @@ class _Wall(ArchComponent.Component):
 
     def set_from_endpoints(self, obj, pts):
         """Sets the Length and Placement of a baseless wall from two global points."""
-        if len(pts) < 2:
-            return
-
         p1 = pts[0]
         p2 = pts[1]
 
         # Recalculate the wall's properties based on the new endpoints
         new_length = p1.distanceToPoint(p2)
+        if new_length == 0:
+            return
         new_midpoint = (p1 + p2) * 0.5
         new_direction = (p2 - p1).normalize()
 

@@ -78,6 +78,84 @@ def _make_projected_horizontal_area_face(projected_faces):
     return fused_face.removeSplitter()
 
 
+def getTrimexDataFromBase(obj, base=None, offset_start=0.0, offset_end=0.0):
+    """Return Trimex data for an object based on an open Draft wire or line.
+
+    The data redirects to an unoffset base. For an offset base, its setter
+    moves the base endpoints so the visible caps match the selected points.
+    """
+    import Part
+
+    if base is None:
+        base = obj.Base
+    base_type = Draft.getType(base)
+    if base_type not in ("Wire", "Part::Line"):
+        return None
+    shape = base.Shape
+    if shape.isNull():
+        return None
+    if base_type == "Wire":
+        wire = shape.Wires[0]
+        if wire.isClosed():
+            return None
+        edges = Part.__sortEdges__(wire.Edges)
+    else:
+        edges = shape.Edges
+
+    placement = obj.Placement
+    axis_start = _trimex_tangent(edges[0], True, placement)
+    axis_end = _trimex_tangent(edges[-1], False, placement)
+    raw_start = placement.multVec(edges[0].Vertexes[0].Point)
+    raw_end = placement.multVec(edges[-1].Vertexes[-1].Point)
+    p_start = raw_start - axis_start * offset_start
+    p_end = raw_end - axis_end * offset_end
+
+    data = {
+        "endpoints": [p_start, p_end],
+        "axes": [axis_start, axis_end],
+    }
+    if offset_start == 0 and offset_end == 0:
+        data["redirect"] = base
+    else:
+        data["set"] = lambda pts: _set_trimex_base_endpoints(
+            base,
+            placement,
+            FreeCAD.Vector(pts[0]) + axis_start * offset_start,
+            FreeCAD.Vector(pts[1]) + axis_end * offset_end,
+        )
+    return data
+
+
+def _trimex_tangent(edge, at_start, placement):
+    """Outward world-space tangent for the given edge endpoint."""
+    parameter = edge.FirstParameter if at_start else edge.LastParameter
+    tangent = edge.tangentAt(parameter)
+    if at_start:
+        tangent = tangent.negative()
+    tangent.normalize()
+    return placement.Rotation.multVec(tangent)
+
+
+def _set_trimex_base_endpoints(base, placement, p_start, p_end):
+    """Set the first and last endpoint of an editable base object."""
+    invpl = placement.inverse()
+    p_start = invpl.multVec(FreeCAD.Vector(p_start))
+    p_end = invpl.multVec(FreeCAD.Vector(p_end))
+    base_type = Draft.getType(base)
+    if base_type == "Part::Line":
+        base.X1 = p_start.x
+        base.Y1 = p_start.y
+        base.Z1 = p_start.z
+        base.X2 = p_end.x
+        base.Y2 = p_end.y
+        base.Z2 = p_end.z
+    else:
+        points = list(base.Points)
+        points[0] = p_start
+        points[-1] = p_end
+        base.Points = points
+
+
 def addToComponent(compobject, addobject, prop):
     """Add an object to a component's property.
 
