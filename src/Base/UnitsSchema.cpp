@@ -23,145 +23,17 @@
 
 #include <cmath>
 #include <algorithm>
-#include <iomanip>
-#include <limits>
-#include <memory>
-#include <sstream>
 #include <string>
 
-#include <unicode/decimfmt.h>
-#include <unicode/dcfmtsym.h>
-#include <unicode/locid.h>
-#include <unicode/numfmt.h>
-#include <unicode/unistr.h>
-
 #include "Quantity.h"
+#include "NumericFormatting.h"
 #include "UnitsSchema.h"
 #include "UnitsSchemasData.h"
 #include "UnitsSchemasSpecs.h"
 #include "Exception.h"
-#include "Quantity.h"
 
 using Base::UnitsSchema;
 using Base::UnitsSchemaSpec;
-
-namespace
-{
-std::string toUtf8(const icu::UnicodeString& s)
-{
-    std::string out;
-    s.toUTF8String(out);
-    return out;
-}
-
-bool useQtLikeGeneralScientific(const double value, const int precision)
-{
-    if (!std::isfinite(value) || value == 0.0 || precision <= 0) {
-        return false;
-    }
-
-    const auto exponent = static_cast<int>(std::floor(std::log10(std::abs(value))));
-    return exponent < -4 || exponent >= precision;
-}
-
-std::string localizeDecimalSeparator(std::string value, const icu::Locale& locale)
-{
-    UErrorCode status = U_ZERO_ERROR;
-    icu::DecimalFormatSymbols symbols(locale, status);
-    if (!U_SUCCESS(status)) {
-        return value;
-    }
-
-    const std::string decimal = toUtf8(
-        symbols.getSymbol(icu::DecimalFormatSymbols::kDecimalSeparatorSymbol)
-    );
-    if (decimal == ".") {
-        return value;
-    }
-
-    auto pos = value.find('.');
-    while (pos != std::string::npos) {
-        value.replace(pos, 1, decimal);
-        pos = value.find('.', pos + decimal.size());
-    }
-
-    return value;
-}
-
-std::string formatDefaultScientificLikeQt(
-    const double value,
-    const Base::QuantityFormat& format,
-    const icu::Locale& locale
-)
-{
-    std::ostringstream out;
-    out << std::setprecision(std::max(1, format.getPrecision())) << value;
-    return localizeDecimalSeparator(out.str(), locale);
-}
-
-std::string formatNumberIcu(const double value, const Base::QuantityFormat& format)
-{
-    UErrorCode status = U_ZERO_ERROR;
-    icu::Locale locale = icu::Locale::getDefault();
-
-    std::unique_ptr<icu::NumberFormat> nf(icu::NumberFormat::createInstance(locale, status));
-    if (!U_SUCCESS(status) || !nf) {
-        // Fallback: locale-independent formatting.
-        std::ostringstream out;
-        switch (format.format) {
-            case Base::QuantityFormat::Fixed:
-                out << std::fixed;
-                break;
-            case Base::QuantityFormat::Scientific:
-                out << std::scientific;
-                break;
-            case Base::QuantityFormat::Default:
-            default:
-                break;
-        }
-        out << std::setprecision(format.getPrecision()) << value;
-        return out.str();
-    }
-
-    if (format.option & Base::QuantityFormat::OmitGroupSeparator) {
-        nf->setGroupingUsed(false);
-    }
-
-    const int precision = format.getPrecision();
-    switch (format.format) {
-        case Base::QuantityFormat::Fixed:
-            nf->setMinimumFractionDigits(precision);
-            nf->setMaximumFractionDigits(precision);
-            break;
-        case Base::QuantityFormat::Scientific:
-            if (auto* df = dynamic_cast<icu::DecimalFormat*>(nf.get())) {
-                df->setScientificNotation(true);
-                df->setMinimumFractionDigits(precision);
-                df->setMaximumFractionDigits(precision);
-                break;
-            }
-            [[fallthrough]];
-        case Base::QuantityFormat::Default:
-            if (useQtLikeGeneralScientific(value, precision)) {
-                return formatDefaultScientificLikeQt(value, format, locale);
-            }
-            if (auto* df = dynamic_cast<icu::DecimalFormat*>(nf.get()); precision > 0 && df) {
-                df->setSignificantDigitsUsed(true);
-                df->setMinimumSignificantDigits(1);
-                df->setMaximumSignificantDigits(precision);
-                break;
-            }
-            [[fallthrough]];
-        default:
-            nf->setMaximumFractionDigits(precision);
-            break;
-    }
-
-    icu::UnicodeString s;
-    nf->format(value, s);
-    return toUtf8(s);
-}
-}  // namespace
 
 
 UnitsSchema::UnitsSchema(UnitsSchemaSpec spec)
@@ -177,17 +49,27 @@ std::string UnitsSchema::translate(const Quantity& quant) const
 
 std::string UnitsSchema::translate(const Quantity& quant, double& factor, std::string& unitString) const
 {
+    return translate(quant, currentNumericFormattingState(), factor, unitString);
+}
+
+std::string UnitsSchema::translate(
+    const Quantity& quant,
+    const NumericFormattingState& formatting,
+    double& factor,
+    std::string& unitString
+) const
+{
     // Use defaults without schema-level translation.
     factor = 1.0;
     unitString = quant.getUnit().getString();
 
     if (spec.translationSpecs.empty()) {
-        return toLocale(quant, factor, unitString);
+        return toLocale(quant, formatting, factor, unitString);
     }
 
     const auto unitName = quant.getUnit().getTypeString();
     if (!spec.translationSpecs.contains(unitName)) {
-        return toLocale(quant, factor, unitString);
+        return toLocale(quant, formatting, factor, unitString);
     }
 
     const auto value = quant.getValue();
@@ -223,14 +105,21 @@ std::string UnitsSchema::translate(const Quantity& quant, double& factor, std::s
     factor = unitSpec->factor;
     unitString = unitSpec->unitString;
 
-    return toLocale(quant, factor, unitString);
+    return toLocale(quant, formatting, factor, unitString);
 }
 
-std::string UnitsSchema::toLocale(const Quantity& quant, const double factor, const std::string& unitString)
+std::string UnitsSchema::toLocale(
+    const Quantity& quant,
+    const NumericFormattingState& formatting,
+    const double factor,
+    const std::string& unitString
+)
 {
     const QuantityFormat& format = quant.getFormat();
     const double v = quant.getValue() / factor;
-    const std::string valueString = std::isfinite(v) ? formatNumberIcu(v, format) : std::to_string(v);
+    const std::string valueString = std::isfinite(v)
+        ? Base::formatNumericValue(v, format, formatting)
+        : std::to_string(v);
 
     auto notUnit = [](auto s) {
         return s.empty() || s == "°" || s == "″" || s == "′" || s == "\"" || s == "'";
