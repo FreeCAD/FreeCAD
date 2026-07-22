@@ -178,6 +178,9 @@ class QuantitySpinBox(QtCore.QObject):
             if attr is not None:
                 if hasattr(attr, "Value"):
                     self.widget.setProperty("unit", attr.getUserPreferred()[2])
+                elif obj.getTypeIdOfProperty(prop.split(".")[0]) == "App::PropertyVectorDistance":
+                    units = FreeCAD.Units.Quantity(1, FreeCAD.Units.Length).getUserPreferred()[2]
+                    self.widget.setProperty("unit", units)
                 self.widget.setProperty("binding", "%s.%s" % (obj.Name, prop))
                 self.valid = True
             else:
