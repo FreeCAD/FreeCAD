@@ -1679,7 +1679,12 @@ class PostProcessor:
 
             # item -> 'str' Postable's
             if item.item_type == "tool_controller":
-                return 1, [pblock("POST_TOOL_CHANGE"), pblock("TOOL_RETURN")]
+                # NOTE: TOOL_RETURN is NOT emitted here. It fires once, at the
+                # true end of the job (see _expand_trailing_lines), not after
+                # every tool change: content like a spindle-stop/offset-cancel
+                # sequence would otherwise cancel the M3/G43 that this same
+                # tool-change item just emitted, before any cutting motion.
+                return 1, [pblock("POST_TOOL_CHANGE")]
             elif item.item_type == "fixture":
                 return 1, [pblock("POST_FIXTURE_CHANGE")]
             elif item.item_type == "operation":
@@ -1930,8 +1935,16 @@ class PostProcessor:
         return final_lines
 
     def _expand_trailing_lines(self, postables) -> None:
-        """Append post_job and postamble lines, to each section."""
+        """Append tool_return, post_job, and postamble lines, to each section.
+
+        TOOL_RETURN fires once here, at the true end of the job, matching
+        the legacy export_common() pipeline's output_tool_return() call
+        (once, before the trailing safety block/postamble) rather than
+        after every individual tool change.
+        """
         trailing = []
+        if (lines := self.values["TOOL_RETURN"]) is not None and lines != "":
+            trailing.append(self._make_postable("Post: tool_return", lines))
         if (lines := self.values["POST_JOB"]) is not None and lines != "":
             trailing.append(self._make_postable("Post: post_job", lines))
         if (lines := self.values["POSTAMBLE"]) is not None and lines != "":
