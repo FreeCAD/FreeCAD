@@ -828,9 +828,7 @@ def setObjectElevation(obj, elevation):
     Assign the complete placement to notify dependent objects.
     """
 
-    placement = obj.Placement.copy()
-    placement.Base.z = elevation.Value if hasattr(elevation, "Value") else elevation
-    obj.Placement = placement
+    obj.Placement.Base.z = elevation
 
 
 def getAllItemsInTree(tree_widget):
