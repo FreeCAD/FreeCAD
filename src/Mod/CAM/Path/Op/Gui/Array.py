@@ -126,27 +126,27 @@ class ArrayTaskPanel(SimpleEditPanel):
         self.updateButtonsVisibility()
 
     def initPage(self):
-        self.connectWidget("ReverseDirection", self.form.chkReverse)
-        self.connectWidget("SwapDirection", self.form.chkSwap)
-        self.connectWidget("ExpandArray", self.form.chkExpand)
-        self.connectWidget("Combine", self.form.chkCombine)
-        self.connectWidget("UseJitter", self.form.chkUseJitter)
-        self.connectWidget("Type", self.form.cboType)
+        self.connectWidget("ReverseDirection", self.form.chk_reverse)
+        self.connectWidget("SwapDirection", self.form.chk_swap)
+        self.connectWidget("ExpandArray", self.form.chk_expand)
+        self.connectWidget("Combine", self.form.chk_combine)
+        self.connectWidget("UseJitter", self.form.chk_use_jitter)
+        self.connectWidget("Type", self.form.cbo_type)
 
-        self.copies = QuantitySpinBox(self.form.dspCopies, self.obj, "Copies")
-        self.copiesX = QuantitySpinBox(self.form.dspCopiesX, self.obj, "CopiesX")
-        self.copiesY = QuantitySpinBox(self.form.dspCopiesY, self.obj, "CopiesY")
-        self.offsetX = QuantitySpinBox(self.form.dspOffsetX, self.obj, "Offset.x")
-        self.offsetY = QuantitySpinBox(self.form.dspOffsetY, self.obj, "Offset.y")
+        self.copies = QuantitySpinBox(self.form.dsp_copies, self.obj, "Copies")
+        self.copiesX = QuantitySpinBox(self.form.dsp_copies_x, self.obj, "CopiesX")
+        self.copiesY = QuantitySpinBox(self.form.dsp_copies_y, self.obj, "CopiesY")
+        self.offsetX = QuantitySpinBox(self.form.dsp_offset_x, self.obj, "Offset.x")
+        self.offsetY = QuantitySpinBox(self.form.dsp_offset_y, self.obj, "Offset.y")
 
-        self.polarAngle = QuantitySpinBox(self.form.dspPolarAngle, self.obj, "Angle")
-        self.polarCenterX = QuantitySpinBox(self.form.dspPolarCenterX, self.obj, "Centre.x")
-        self.polarCenterY = QuantitySpinBox(self.form.dspPolarCenterY, self.obj, "Centre.y")
+        self.polarAngle = QuantitySpinBox(self.form.dsp_polar_angle, self.obj, "Angle")
+        self.polarCenterX = QuantitySpinBox(self.form.dsp_polar_center_x, self.obj, "Centre.x")
+        self.polarCenterY = QuantitySpinBox(self.form.dsp_polar_center_y, self.obj, "Centre.y")
 
-        self.jitterAngle = QuantitySpinBox(self.form.dspJitterAngle, self.obj, "JitterAngle")
-        self.jitterSeed = QuantitySpinBox(self.form.dspJitterSeed, self.obj, "JitterSeed")
-        self.jitterX = QuantitySpinBox(self.form.dspJitterX, self.obj, "JitterMagnitude.x")
-        self.jitterY = QuantitySpinBox(self.form.dspJitterY, self.obj, "JitterMagnitude.y")
+        self.jitterAngle = QuantitySpinBox(self.form.dsp_jitter_angle, self.obj, "JitterAngle")
+        self.jitterSeed = QuantitySpinBox(self.form.dsp_jitter_seed, self.obj, "JitterSeed")
+        self.jitterX = QuantitySpinBox(self.form.dsp_jitter_x, self.obj, "JitterMagnitude.x")
+        self.jitterY = QuantitySpinBox(self.form.dsp_jitter_x, self.obj, "JitterMagnitude.y")
 
         self.updateSpinBoxes()
 
@@ -167,29 +167,29 @@ class ArrayTaskPanel(SimpleEditPanel):
         self.jitterY.updateWidget()
 
     def registerSignalHandlers(self):
-        self.form.chkUseJitter.clicked.connect(self.updateVisibility)
-        self.form.cboType.currentIndexChanged.connect(self.updateVisibility)
+        self.form.chk_use_jitter.clicked.connect(self.updateVisibility)
+        self.form.cbo_type.currentIndexChanged.connect(self.updateVisibility)
         self.form.baseList.clicked.connect(self.updateButtonsVisibility)
-        self.form.pbClear.clicked.connect(self.clearBaseList)
-        self.form.pbRemove.clicked.connect(self.RemoveFromBaseList)
-        self.form.pbAdd.clicked.connect(self.addToBaseList)
-        self.form.pbUp.clicked.connect(self.upInBaseList)
-        self.form.pbDown.clicked.connect(self.downInBaseList)
+        self.form.pb_clear.clicked.connect(self.clearBaseList)
+        self.form.pb_remove.clicked.connect(self.RemoveFromBaseList)
+        self.form.pb_add.clicked.connect(self.addToBaseList)
+        self.form.pb_up.clicked.connect(self.upInBaseList)
+        self.form.pb_down.clicked.connect(self.downInBaseList)
 
     def getSignalsForUpdate(self):
         signals = []
-        signals.append(self.form.dspCopies.editingFinished)
-        signals.append(self.form.dspCopiesX.editingFinished)
-        signals.append(self.form.dspCopiesY.editingFinished)
-        signals.append(self.form.dspOffsetX.editingFinished)
-        signals.append(self.form.dspOffsetY.editingFinished)
-        signals.append(self.form.dspPolarAngle.editingFinished)
-        signals.append(self.form.dspPolarCenterX.editingFinished)
-        signals.append(self.form.dspPolarCenterY.editingFinished)
-        signals.append(self.form.dspJitterAngle.editingFinished)
-        signals.append(self.form.dspJitterSeed.editingFinished)
-        signals.append(self.form.dspJitterX.editingFinished)
-        signals.append(self.form.dspJitterY.editingFinished)
+        signals.append(self.form.dsp_copies.editingFinished)
+        signals.append(self.form.dsp_copies_x.editingFinished)
+        signals.append(self.form.dsp_copies_y.editingFinished)
+        signals.append(self.form.dsp_offset_x.editingFinished)
+        signals.append(self.form.dsp_offset_y.editingFinished)
+        signals.append(self.form.dsp_polar_angle.editingFinished)
+        signals.append(self.form.dsp_polar_center_x.editingFinished)
+        signals.append(self.form.dsp_polar_center_y.editingFinished)
+        signals.append(self.form.dsp_jitter_angle.editingFinished)
+        signals.append(self.form.dsp_jitter_seed.editingFinished)
+        signals.append(self.form.dsp_jitter_x.editingFinished)
+        signals.append(self.form.dsp_jitter_y.editingFinished)
         return signals
 
     def pageGetFields(self):
@@ -214,73 +214,91 @@ class ArrayTaskPanel(SimpleEditPanel):
             signal.connect(self.pageGetFields)
 
     def updateVisibility(self):
-        print("updateVisibility", self.form.chkUseJitter.isChecked())
-        if self.form.chkUseJitter.isChecked():
-            self.form.groupJitter.show()
+        """Update visibility of widgets"""
+        print("updateVisibility", self.form.chk_use_jitter.isChecked())
+        if self.form.chk_use_jitter.isChecked():
+            self.form.group_jitter.show()
         else:
-            self.form.groupJitter.hide()
+            self.form.group_jitter.hide()
 
-        if self.form.cboType.currentText() == "Points":
-            self.form.groupCopies.hide()
+        if self.form.cbo_type.currentText() == "Points":
+            self.form.group_copies.hide()
         else:
-            self.form.groupCopies.show()
+            self.form.group_copies.show()
 
-        if self.form.cboType.currentText() in ("Linear1D", "Polar"):
-            self.form.label_Copies.show()
-            self.form.dspCopies.show()
+        if self.form.cbo_type.currentText() in ("Linear1D", "Polar"):
+            self.form.label_copies.show()
             self.form.label_polar_angle.show()
-            self.form.dspPolarAngle.show()
+            self.form.dsp_copies.show()
+            self.form.dsp_polar_angle.show()
         else:
-            self.form.label_Copies.hide()
-            self.form.dspCopies.hide()
+            self.form.label_copies.hide()
             self.form.label_polar_angle.hide()
-            self.form.dspPolarAngle.hide()
+            self.form.dsp_copies.hide()
+            self.form.dsp_polar_angle.hide()
 
-        if self.form.cboType.currentText() == "Polar":
-            self.form.label_polar_centerX.show()
-            self.form.dspPolarCenterX.show()
-            self.form.label_polar_centerY.show()
-            self.form.dspPolarCenterY.show()
-            self.form.dspPolarAngle.setEnabled(True)
+        if self.form.cbo_type.currentText() == "Polar":
+            self.form.label_polar_center_x.show()
+            self.form.label_polar_center_y.show()
+            self.form.dsp_polar_center_x.show()
+            self.form.dsp_polar_center_y.show()
+            self.form.dsp_polar_angle.setEnabled(True)
         else:
-            self.form.dspPolarAngle.setEnabled(False)
-            self.form.label_polar_centerX.hide()
-            self.form.dspPolarCenterX.hide()
-            self.form.label_polar_centerY.hide()
-            self.form.dspPolarCenterY.hide()
+            self.form.label_polar_center_x.hide()
+            self.form.label_polar_center_y.hide()
+            self.form.dsp_polar_center_x.hide()
+            self.form.dsp_polar_center_y.hide()
+            self.form.dsp_polar_angle.setEnabled(False)
 
-        if self.form.cboType.currentText() in ("Linear1D", "Linear2D"):
-            self.form.label_offsetX.show()
-            self.form.label_offsetY.show()
-            self.form.dspOffsetX.show()
-            self.form.dspOffsetY.show()
+        if self.form.cbo_type.currentText() in ("Linear1D", "Linear2D"):
+            self.form.label_offset_x.show()
+            self.form.label_offset_y.show()
+            self.form.dsp_offset_x.show()
+            self.form.dsp_offset_y.show()
         else:
-            self.form.label_offsetX.hide()
-            self.form.label_offsetY.hide()
-            self.form.dspOffsetX.hide()
-            self.form.dspOffsetY.hide()
+            self.form.label_offset_x.hide()
+            self.form.label_offset_y.hide()
+            self.form.dsp_offset_x.hide()
+            self.form.dsp_offset_y.hide()
 
-        if self.form.cboType.currentText() == "Linear2D":
-            self.form.label_copiesX.show()
-            self.form.label_copiesY.show()
-            self.form.dspCopiesX.show()
-            self.form.dspCopiesY.show()
-            self.form.chkSwap.show()
+        if self.form.cbo_type.currentText() == "Linear2D":
+            self.form.label_copies_x.show()
+            self.form.label_copies_y.show()
+            self.form.dsp_copies_x.show()
+            self.form.dsp_copies_y.show()
+            self.form.chk_swap.show()
         else:
-            self.form.label_copiesX.hide()
-            self.form.label_copiesY.hide()
-            self.form.dspCopiesX.hide()
-            self.form.dspCopiesY.hide()
-            self.form.chkSwap.hide()
+            self.form.label_copies_x.hide()
+            self.form.label_copies_y.hide()
+            self.form.dsp_copies_x.hide()
+            self.form.dsp_copies_y.hide()
+            self.form.chk_swap.hide()
 
     def getOpIndex(self, op):
+        print("getOpIndex")
+        """Returns operation index from Operations group"""
         job = PathUtils.findParentJob(op)
+        print("   job", job)
         if job and op in job.Operations.Group:
-            return str(job.Operations.Group.index(op) + 1)
+            print("   index", job.Operations.Group.index(op))
+            return job.Operations.Group.index(op)
         else:
-            return "???"
+            return None
+
+    def getWarningMessage(self):
+        """Returns True if Base list order is correct"""
+        string = translate("CAM_Array", "!!! Order of operations can be dangerous !!!")
+        indexes = [self.getOpIndex(op) for op in self.obj.Base]
+        if not indexes:
+            return None
+        if any(i is None for i in indexes):
+            return string
+        print("  warn", indexes, list(range(indexes[0], indexes[-1] + 1)))
+        if indexes != list(range(indexes[0], indexes[-1] + 1)):
+            return string
 
     def updateBaseList(self):
+        """Update table with operations"""
         print("updateBaseList")
         # Column indices for baseList table
         COL_INDEX = 0
@@ -294,7 +312,12 @@ class ArrayTaskPanel(SimpleEditPanel):
             print("   ", i, op.Label)
             self.form.baseList.insertRow(self.form.baseList.rowCount())
 
-            item = QtGui.QTableWidgetItem(self.getOpIndex(op))
+            index = self.getOpIndex(op)
+            if index is not None:
+                indexString = str(index + 1)
+            else:
+                indexString = "???"
+            item = QtGui.QTableWidgetItem(indexString)
             self.form.baseList.setItem(i, COL_INDEX, item)
 
             item = QtGui.QTableWidgetItem(op.Label)
@@ -307,7 +330,9 @@ class ArrayTaskPanel(SimpleEditPanel):
             item = QtGui.QTableWidgetItem(tcLabel)
             self.form.baseList.setItem(i, COL_OP_TC, item)
 
-            item = QtGui.QTableWidgetItem(coolantModeForOp(op))
+            coolant = coolantModeForOp(op)
+            coolantString = coolant if coolant != "None" else ""
+            item = QtGui.QTableWidgetItem(coolantString)
             self.form.baseList.setItem(i, COL_OP_COOLANT, item)
 
         header = self.form.baseList.horizontalHeader()
@@ -317,21 +342,29 @@ class ArrayTaskPanel(SimpleEditPanel):
         header.setSectionResizeMode(COL_OP_COOLANT, QtGui.QHeaderView.ResizeToContents)
         self.form.baseList.blockSignals(False)
 
+        print("WARN", self.getWarningMessage())
+        if string := self.getWarningMessage():
+            self.form.label_message.setText(string)
+            self.form.group_message.show()
+        else:
+            self.form.group_message.hide()
+
     def updateButtonsVisibility(self):
+        """Update visibility of buttons"""
         print("updateButtonsVisibility", self.form.baseList.rowCount())
-        self.form.pbClear.setEnabled(self.form.baseList.rowCount())
+        self.form.pb_clear.setEnabled(self.form.baseList.rowCount())
         selectedRows = self.form.baseList.selectionModel().selectedRows()
         indexes = [row.row() for row in selectedRows]
         print("   indexes", indexes)
-        self.form.pbRemove.setEnabled(bool(indexes))
+        self.form.pb_remove.setEnabled(bool(indexes))
 
         if len(indexes) == 1:
             index = self.form.baseList.currentRow()
-            self.form.pbUp.setEnabled(index > 0)
-            self.form.pbDown.setEnabled(index < self.form.baseList.rowCount() - 1)
+            self.form.pb_up.setEnabled(index > 0)
+            self.form.pb_down.setEnabled(index < self.form.baseList.rowCount() - 1)
         else:
-            self.form.pbUp.setEnabled(False)
-            self.form.pbDown.setEnabled(False)
+            self.form.pb_up.setEnabled(False)
+            self.form.pb_down.setEnabled(False)
 
         if indexes:  # select operations in 3d view
             FreeCADGui.Selection.clearSelection()
@@ -340,6 +373,7 @@ class ArrayTaskPanel(SimpleEditPanel):
                 FreeCADGui.Selection.addSelection(op)
 
     def clearBaseList(self):
+        """Clear Base list"""
         print("clearBaseList")
         self.obj.Base = []
         self.updateBaseList()
@@ -347,6 +381,7 @@ class ArrayTaskPanel(SimpleEditPanel):
         self.form.focusWidget().clearFocus()
 
     def RemoveFromBaseList(self):
+        """Remove selected operation from Base list"""
         print("RemoveFromBaseList")
         base = self.obj.Base
         selectedRows = self.form.baseList.selectionModel().selectedRows()
@@ -361,6 +396,7 @@ class ArrayTaskPanel(SimpleEditPanel):
         self.updateButtonsVisibility()
 
     def addToBaseList(self):
+        """Add selected operation to Base list"""
         print("addToBaseList")
         selection = FreeCADGui.Selection.getSelection()
         new = [sel for sel in selection if sel.isDerivedFrom("Path::Feature") and sel != self.obj]
@@ -369,6 +405,7 @@ class ArrayTaskPanel(SimpleEditPanel):
         self.updateButtonsVisibility()
 
     def upInBaseList(self):
+        """Move selected operation up in Base list"""
         print("upInBaseList")
         index = self.form.baseList.currentRow()
         if index > 0:
@@ -379,10 +416,11 @@ class ArrayTaskPanel(SimpleEditPanel):
             self.updateBaseList()
             self.form.baseList.selectRow(index - 1)
             self.updateButtonsVisibility()
-            if not self.form.pbUp.isEnabled():
+            if not self.form.pb_up.isEnabled():
                 self.form.focusWidget().clearFocus()
 
     def downInBaseList(self):
+        """Move selected operation down in Base list"""
         print("downInBaseList")
         index = self.form.baseList.currentRow()
         if index < self.form.baseList.rowCount() - 1:
@@ -394,7 +432,7 @@ class ArrayTaskPanel(SimpleEditPanel):
             self.updateBaseList()
             self.form.baseList.selectRow(index + 1)
             self.updateButtonsVisibility()
-            if not self.form.pbDown.isEnabled():
+            if not self.form.pb_down.isEnabled():
                 self.form.focusWidget().clearFocus()
 
 

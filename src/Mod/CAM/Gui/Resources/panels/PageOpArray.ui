@@ -23,7 +23,7 @@
   <layout class="QVBoxLayout" name="layout_0">
 
    <item>
-    <layout class="QGridLayout" name="layoutOperations">
+    <layout class="QGridLayout" name="layout_operations">
 
      <item row="0" column="0">
       <widget class="QTableWidget" name="baseList">
@@ -75,7 +75,7 @@
      </item>
 
      <item row="0" column="1">
-      <layout class="QVBoxLayout" name="layoutButtons">
+      <layout class="QVBoxLayout" name="layout_buttons">
        <property name="leftMargin">
         <number>0</number>
        </property>
@@ -84,7 +84,7 @@
        </property>
 
        <item>
-        <widget class="QPushButton" name="pbClear">
+        <widget class="QPushButton" name="pb_clear">
          <property name="maximumSize">
           <size>
            <width>70</width>
@@ -101,7 +101,7 @@
        </item>
 
        <item>
-        <widget class="QPushButton" name="pbRemove">
+        <widget class="QPushButton" name="pb_remove">
          <property name="maximumSize">
           <size>
            <width>70</width>
@@ -118,7 +118,7 @@
        </item>
 
        <item>
-        <widget class="QPushButton" name="pbAdd">
+        <widget class="QPushButton" name="pb_add">
          <property name="maximumSize">
           <size>
            <width>70</width>
@@ -135,7 +135,7 @@
        </item>
 
        <item>
-        <widget class="QPushButton" name="pbUp">
+        <widget class="QPushButton" name="pb_up">
          <property name="maximumSize">
           <size>
            <width>70</width>
@@ -152,7 +152,7 @@
        </item>
 
        <item>
-        <widget class="QPushButton" name="pbDown">
+        <widget class="QPushButton" name="pb_down">
          <property name="maximumSize">
           <size>
            <width>70</width>
@@ -173,18 +173,33 @@
    </item>
 
 
-
+   <item>
+    <widget class="QGroupBox" name="group_message">
+     <layout class="QVBoxLayout" name="layout_message">
+      <item>
+       <widget class="QLabel" name="label_message">
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
+        </property>
+        <property name="text">
+         <string>Place for message</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
 
 
    <item>
-    <widget class="QGroupBox" name="groupMain">
-     <layout class="QVBoxLayout" name="layoutCommon">
+    <widget class="QGroupBox" name="group_main">
+     <layout class="QVBoxLayout" name="layout_main">
 
       <item>
-       <widget class="QFrame" name="groupArrayType">
-        <layout class="QFormLayout" name="layoutArrayType">
+       <widget class="QFrame" name="group_array_type">
+        <layout class="QFormLayout" name="layout_array_type">
          <item row="0" column="0">
-          <widget class="QLabel" name="label_1">
+          <widget class="QLabel" name="label_type">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
            </property>
@@ -194,7 +209,7 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QComboBox" name="cboType">
+          <widget class="QComboBox" name="cbo_type">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
            </property>
@@ -205,10 +220,10 @@
       </item>
 
       <item>
-       <widget class="QWidget" name="groupCopies">
-        <layout class="QGridLayout" name="layoutCopies">
+       <widget class="QWidget" name="group_copies">
+        <layout class="QGridLayout" name="layout_copies">
          <item row="0" column="0">
-          <widget class="QLabel" name="label_Copies">
+          <widget class="QLabel" name="label_copies">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
            </property>
@@ -218,7 +233,7 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="Gui::QuantitySpinBox" name="dspCopies">
+          <widget class="Gui::QuantitySpinBox" name="dsp_copies">
            <property name="decimals">
             <number>0</number>
            </property>
@@ -250,7 +265,7 @@
           </widget>
          </item>
          <item row="0" column="3">
-          <widget class="Gui::QuantitySpinBox" name="dspPolarAngle">
+          <widget class="Gui::QuantitySpinBox" name="dsp_polar_angle">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Minimum" vsizetype="Preferred"/>
            </property>
@@ -267,7 +282,7 @@
          </item>
 
          <item row="1" column="0">
-          <widget class="QLabel" name="label_copiesX">
+          <widget class="QLabel" name="label_copies_x">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
            </property>
@@ -277,7 +292,7 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="Gui::QuantitySpinBox" name="dspCopiesX">
+          <widget class="Gui::QuantitySpinBox" name="dsp_copies_x">
            <property name="decimals">
             <number>0</number>
            </property>
@@ -299,7 +314,7 @@
           </widget>
          </item>
          <item row="1" column="2">
-          <widget class="QLabel" name="label_copiesY">
+          <widget class="QLabel" name="label_copies_y">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
            </property>
@@ -309,7 +324,7 @@
           </widget>
          </item>
          <item row="1" column="3">
-          <widget class="Gui::QuantitySpinBox" name="dspCopiesY">
+          <widget class="Gui::QuantitySpinBox" name="dsp_copies_y">
            <property name="decimals">
             <number>0</number>
            </property>
@@ -332,7 +347,7 @@
          </item>
 
          <item row="2" column="0">
-          <widget class="QLabel" name="label_offsetX">
+          <widget class="QLabel" name="label_offset_x">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
            </property>
@@ -342,7 +357,7 @@
           </widget>
          </item>
          <item row="2" column="1">
-          <widget class="Gui::QuantitySpinBox" name="dspOffsetX">
+          <widget class="Gui::QuantitySpinBox" name="dsp_offset_x">
            <property name="toolTip">
             <string>The spacing between the array copies along X-axis</string>
            </property>
@@ -358,7 +373,7 @@
           </widget>
          </item>
          <item row="2" column="2">
-          <widget class="QLabel" name="label_offsetY">
+          <widget class="QLabel" name="label_offset_y">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
            </property>
@@ -368,7 +383,7 @@
           </widget>
          </item>
          <item row="2" column="3">
-          <widget class="Gui::QuantitySpinBox" name="dspOffsetY">
+          <widget class="Gui::QuantitySpinBox" name="dsp_offset_y">
            <property name="toolTip">
             <string>The spacing between the array copies along Y-axis</string>
            </property>
@@ -385,7 +400,7 @@
          </item>
 
          <item row="3" column="0">
-          <widget class="QLabel" name="label_polar_centerX">
+          <widget class="QLabel" name="label_polar_center_x">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
            </property>
@@ -395,7 +410,7 @@
           </widget>
          </item>
          <item row="3" column="1">
-          <widget class="Gui::QuantitySpinBox" name="dspPolarCenterX">
+          <widget class="Gui::QuantitySpinBox" name="dsp_polar_center_x">
            <property name="toolTip">
             <string>The centre of rotation in polar pattern</string>
            </property>
@@ -411,7 +426,7 @@
           </widget>
          </item>
          <item row="3" column="2">
-          <widget class="QLabel" name="label_polar_centerY">
+          <widget class="QLabel" name="label_polar_center_y">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
            </property>
@@ -421,7 +436,7 @@
           </widget>
          </item>
          <item row="3" column="3">
-          <widget class="Gui::QuantitySpinBox" name="dspPolarCenterY">
+          <widget class="Gui::QuantitySpinBox" name="dsp_polar_center_y">
            <property name="toolTip">
             <string>The centre of rotation in polar pattern</string>
            </property>
@@ -445,37 +460,37 @@
    </item>
 
    <item>
-    <layout class="QGridLayout" name="layouCheckBoxes">
+    <layout class="QGridLayout" name="layou_check_boxes">
      <item row="0" column="0">
-      <widget class="QCheckBox" name="chkExpand">
+      <widget class="QCheckBox" name="chk_expand">
        <property name="text">
         <string>Expand</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QCheckBox" name="chkReverse">
+      <widget class="QCheckBox" name="chk_reverse">
        <property name="text">
         <string>Reverse direction</string>
        </property>
       </widget>
      </item>
      <item row="1" column="0">
-      <widget class="QCheckBox" name="chkCombine">
+      <widget class="QCheckBox" name="chk_combine">
        <property name="text">
         <string>Combine</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QCheckBox" name="chkSwap">
+      <widget class="QCheckBox" name="chk_swap">
        <property name="text">
         <string>Swap direction</string>
        </property>
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QCheckBox" name="chkUseJitter">
+      <widget class="QCheckBox" name="chk_use_jitter">
        <property name="text">
         <string>Use jitter</string>
        </property>
@@ -486,13 +501,13 @@
 
 
    <item>
-    <widget class="QGroupBox" name="groupJitter">
+    <widget class="QGroupBox" name="group_jitter">
      <property name="title">
       <string>Jitter parameters</string>
      </property>
-     <layout class="QGridLayout" name="layoutJitter">
+     <layout class="QGridLayout" name="layout_jitter">
       <item row="0" column="0">
-       <widget class="QLabel" name="label_1">
+       <widget class="QLabel" name="label_jitter_angle">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
         </property>
@@ -502,7 +517,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="Gui::QuantitySpinBox" name="dspJitterAngle">
+       <widget class="Gui::QuantitySpinBox" name="dsp_jitter_angle">
         <property name="minimumSize">
          <size>
           <width>80</width>
@@ -515,7 +530,7 @@
        </widget>
       </item>
       <item row="0" column="2">
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="label_jitter_seed">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
         </property>
@@ -528,7 +543,7 @@
        </widget>
       </item>
       <item row="0" column="3">
-       <widget class="Gui::QuantitySpinBox" name="dspJitterSeed">
+       <widget class="Gui::QuantitySpinBox" name="dsp_jitter_seed">
         <property name="decimals">
          <number>0</number>
         </property>
@@ -548,14 +563,14 @@
       </item>
 
       <item row="1" column="0">
-       <widget class="QLabel" name="label_3">
+       <widget class="QLabel" name="label_jitter_x">
         <property name="text">
          <string>Max X</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="Gui::QuantitySpinBox" name="dspJitterX">
+       <widget class="Gui::QuantitySpinBox" name="dsp_jitter_x">
         <property name="toolTip">
          <string>Maximum random offset along X-axis</string>
         </property>
@@ -568,14 +583,14 @@
        </widget>
       </item>
       <item row="1" column="2">
-       <widget class="QLabel" name="label_4">
+       <widget class="QLabel" name="label_jitter_y">
         <property name="text">
          <string>Max Y</string>
         </property>
        </widget>
       </item>
       <item row="1" column="3">
-       <widget class="Gui::QuantitySpinBox" name="dspJitterY">
+       <widget class="Gui::QuantitySpinBox" name="dsp_jitter_y">
         <property name="toolTip">
          <string>Maximum random offset along Y-axis</string>
         </property>
