@@ -1380,7 +1380,7 @@ int SketchObject::deleteUnusedInternalGeometryAndUpdateGeoId(int& GeoId, bool de
     // We need to remove the internal geometry of the BSpline, as BSplines change in number
     // of poles and knots We save the tags of the relevant geometry to retrieve the new
     // GeoIds later on.
-    boost::uuids::uuid GeoIdTag;
+    Base::Uuid GeoIdTag;
 
     GeoIdTag = geo->getTag();
 

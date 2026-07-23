@@ -30,8 +30,7 @@
 #include <Base/Quantity.h>
 #include <Base/Bitmask.h>
 
-#include <boost/uuid/uuid.hpp>
-#include <boost/uuid/uuid_generators.hpp>
+#include <Base/Uuid.h>
 
 #include "GeoEnum.h"
 
@@ -280,7 +279,7 @@ private:
     std::vector<GeoElementId> elements {GeoElementId(), GeoElementId(), GeoElementId()};
 
 protected:
-    boost::uuids::uuid tag;
+    Base::Uuid tag;
 };
 
 }  // namespace Sketcher

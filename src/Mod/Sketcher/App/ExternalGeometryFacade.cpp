@@ -22,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <boost/uuid/uuid_io.hpp>
 
 
 #include <Base/Console.h>
@@ -97,7 +96,7 @@ void ExternalGeometryFacade::initExtensions()
         // left for potential usefulness to future developers making a custom build for debugging.
         // Base::Console().warning("Sketcher External Geometry without Geometry Extension: %s
         // \n",
-        //                         boost::uuids::to_string(Geo->getTag()).c_str());
+        //                         Geo->getTag().getValue().c_str());
     }
 
     if (!Geo->hasExtension(ExternalGeometryExtension::getClassTypeId())) {
@@ -108,7 +107,7 @@ void ExternalGeometryFacade::initExtensions()
         // left for potential usefulness to future developers making a custom build for debugging.
         // Base::Console().warning(
         //     "Sketcher External Geometry without ExternalGeometryExtension: %s \n",
-        //     boost::uuids::to_string(Geo->getTag()).c_str());
+        //     Geo->getTag().getValue().c_str());
     }
 
     SketchGeoExtension = std::static_pointer_cast<const SketchGeometryExtension>(

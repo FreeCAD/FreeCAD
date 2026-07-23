@@ -24,7 +24,6 @@
 
 #pragma once
 
-#include <boost/uuid/uuid_io.hpp>
 
 #include <Base/BaseClass.h>
 
@@ -267,7 +266,7 @@ public:
     {
         return getGeo()->clone();
     }
-    boost::uuids::uuid getTag() const
+    const Base::Uuid& getTag() const
     {
         return getGeo()->getTag();
     }

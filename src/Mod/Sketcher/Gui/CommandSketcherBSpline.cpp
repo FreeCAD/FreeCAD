@@ -442,7 +442,7 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
         isBsplineKnotOrEndPoint(Obj, GeoId, PosId)
         && findBSplineAndKnotIndex(Obj, GeoId, PosId, splineGeoId, knotIndexOCC)
     );
-    boost::uuids::uuid bsplinetag;
+    Base::Uuid bsplinetag;
 
     if (!notaknot) {
         bsplinetag = Obj->getGeometry(splineGeoId)->getTag();
@@ -599,7 +599,7 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
         isBsplineKnotOrEndPoint(Obj, GeoId, PosId)
         && findBSplineAndKnotIndex(Obj, GeoId, PosId, splineGeoId, knotIndexOCC)
     );
-    boost::uuids::uuid bsplinetag;
+    Base::Uuid bsplinetag;
 
     if (!notaknot) {
         bsplinetag = Obj->getGeometry(splineGeoId)->getTag();
@@ -853,7 +853,7 @@ public:
         openCommand(QT_TRANSLATE_NOOP("Command", "Insert knot"));
 
         bool applied = false;
-        boost::uuids::uuid bsplinetag = Obj->getGeometry(GeoId)->getTag();
+        Base::Uuid bsplinetag = Obj->getGeometry(GeoId)->getTag();
 
         try {
             Gui::cmdAppObjectArgs(Obj, "insertBSplineKnot(%d, %lf, %d) ", GeoId, guessParam, 1);

@@ -27,7 +27,7 @@
 #include <string>
 #include <vector>
 
-#include <boost/unordered/unordered_map.hpp>
+#include <map>
 #include <fastsignals/signal.h>
 
 #include <App/Property.h>
@@ -171,7 +171,7 @@ private:
     App::ObjectIdentifier makePath(int idx, const Constraint* c);
 
     std::vector<Constraint*> _lValueList;
-    boost::unordered_map<boost::uuids::uuid, std::size_t> valueMap;
+    std::map<Base::Uuid, std::size_t> valueMap;
 
     std::vector<unsigned int> validGeometryKeys;
     bool invalidGeometry;
