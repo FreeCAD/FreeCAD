@@ -24,12 +24,11 @@
 
 
 #include <algorithm>
+#include <locale>
+#include <sstream>
 #include <string>
 #include <string_view>
-#include <boost/algorithm/string.hpp>
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/tokenizer.hpp>
+#include <vector>
 
 #include "Builder3D.h"
 #include "Console.h"
@@ -1061,6 +1060,33 @@ void Builder3D::endSeparator()
 
 // -----------------------------------------------------------------------------
 
+namespace
+{
+// Split a string at spaces and commas, skipping empty tokens
+std::vector<std::string> tokenize(const std::string& str)
+{
+    constexpr std::string_view separators {" ,"};
+    std::vector<std::string> tokens;
+    for (auto start = str.find_first_not_of(separators); start != std::string::npos;) {
+        const auto end = str.find_first_of(separators, start);
+        tokens.push_back(str.substr(start, end - start));
+        start = str.find_first_not_of(separators, end);
+    }
+    return tokens;
+}
+
+// Parse the whole token as a number, locale-independently.
+// Returns false if the token is not fully consumed.
+template<typename T>
+bool parseNumber(const std::string& token, T& value)
+{
+    std::istringstream iss(token);
+    iss.imbue(std::locale::classic());
+    iss >> value;
+    return !iss.fail() && iss.eof();
+}
+}  // namespace
+
 template<typename T>
 std::vector<T> InventorLoader::readData(const char* fieldName) const
 {
@@ -1084,17 +1110,10 @@ std::vector<T> InventorLoader::readData(const char* fieldName) const
     }
 
     do {
-        boost::char_separator<char> sep(" ,");
-        boost::tokenizer<boost::char_separator<char>> tokens(str, sep);
-        std::vector<std::string> token_results;
-        token_results.assign(tokens.begin(), tokens.end());
-
-        for (const auto& it : token_results) {
-            try {
-                T value = boost::lexical_cast<T>(it);
+        for (const auto& token : tokenize(str)) {
+            T value {};
+            if (parseNumber(token, value)) {
                 fieldValues.emplace_back(value);
-            }
-            catch (const boost::bad_lexical_cast&) {
             }
         }
 
@@ -1262,7 +1281,7 @@ namespace Base
 BaseExport Vector3f stringToVector(std::string str)
 {
     std::string_view view = str;
-    if (!boost::starts_with(view, "(") || !boost::ends_with(str, ")")) {
+    if (!view.starts_with('(') || !view.ends_with(')')) {
         throw std::runtime_error("string is not a tuple");
     }
 
@@ -1271,19 +1290,16 @@ BaseExport Vector3f stringToVector(std::string str)
 
     str = std::string {view};
 
-    boost::char_separator<char> sep(" ,");
-    boost::tokenizer<boost::char_separator<char>> tokens(str, sep);
-    std::vector<std::string> token_results;
-    token_results.assign(tokens.begin(), tokens.end());
-
-    if (token_results.size() != 3) {
+    const std::vector<std::string> tokens = tokenize(str);
+    if (tokens.size() != 3) {
         throw std::runtime_error("not a tuple of three floats");
     }
 
     Base::Vector3f vec;
-    vec.x = boost::lexical_cast<float>(token_results.at(0));
-    vec.y = boost::lexical_cast<float>(token_results.at(1));
-    vec.z = boost::lexical_cast<float>(token_results.at(2));
+    if (!parseNumber(tokens.at(0), vec.x) || !parseNumber(tokens.at(1), vec.y)
+        || !parseNumber(tokens.at(2), vec.z)) {
+        throw std::runtime_error("not a tuple of three floats");
+    }
 
     return vec;
 }
