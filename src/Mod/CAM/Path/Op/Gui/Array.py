@@ -22,12 +22,13 @@
 import FreeCAD
 import FreeCADGui
 import Path.Op.Array as Array
+import PathScripts.PathUtils as PathUtils
 from Path.Base.Gui.Util import QuantitySpinBox
-from Path.Base.Util import toolControllerForOp
+from Path.Base.Util import toolControllerForOp, coolantModeForOp
 from PathPythonGui.simple_edit_panel import SimpleEditPanel
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
-from PySide import QtCore, QtGui
+from PySide import QtGui
 
 __doc__ = "UI and Command for Array object"
 
@@ -272,10 +273,17 @@ class ArrayTaskPanel(SimpleEditPanel):
             self.form.dspCopiesY.hide()
             self.form.chkSwap.hide()
 
+    def getOpIndex(self, op):
+        job = PathUtils.findParentJob(op)
+        if job and op in job.Operations.Group:
+            return str(job.Operations.Group.index(op) + 1)
+        else:
+            return "???"
+
     def updateBaseList(self):
         print("updateBaseList")
         # Column indices for baseList table
-        COL_ORDER = 0
+        COL_INDEX = 0
         COL_OP_NAME = 1
         COL_OP_TC = 2
         COL_OP_COOLANT = 3
@@ -286,21 +294,24 @@ class ArrayTaskPanel(SimpleEditPanel):
             print("   ", i, op.Label)
             self.form.baseList.insertRow(self.form.baseList.rowCount())
 
-            item = QtGui.QTableWidgetItem()
-            item.setData(QtCore.Qt.DisplayRole, i + 1)
-            self.form.baseList.setItem(i, COL_ORDER, item)
+            item = QtGui.QTableWidgetItem(self.getOpIndex(op))
+            self.form.baseList.setItem(i, COL_INDEX, item)
 
             item = QtGui.QTableWidgetItem(op.Label)
             self.form.baseList.setItem(i, COL_OP_NAME, item)
 
-            item = QtGui.QTableWidgetItem(op.ToolController.Label)
+            if tc := toolControllerForOp(op):
+                tcLabel = tc.Label
+            else:
+                tcLabel = "???"
+            item = QtGui.QTableWidgetItem(tcLabel)
             self.form.baseList.setItem(i, COL_OP_TC, item)
 
-            item = QtGui.QTableWidgetItem(op.CoolantMode)
+            item = QtGui.QTableWidgetItem(coolantModeForOp(op))
             self.form.baseList.setItem(i, COL_OP_COOLANT, item)
 
         header = self.form.baseList.horizontalHeader()
-        header.setSectionResizeMode(COL_ORDER, QtGui.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(COL_INDEX, QtGui.QHeaderView.ResizeToContents)
         header.setSectionResizeMode(COL_OP_NAME, QtGui.QHeaderView.ResizeToContents)
         header.setSectionResizeMode(COL_OP_TC, QtGui.QHeaderView.ResizeToContents)
         header.setSectionResizeMode(COL_OP_COOLANT, QtGui.QHeaderView.ResizeToContents)
