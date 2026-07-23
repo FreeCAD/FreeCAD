@@ -36,8 +36,10 @@
 #include <xercesc/sax/EntityResolver.hpp>
 #include <xercesc/sax/ErrorHandler.hpp>
 #include <xercesc/sax/SAXParseException.hpp>
+#include <array>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include <FCConfig.h>
@@ -46,7 +48,6 @@
 # include <unistd.h>
 #endif
 
-#include <boost/algorithm/string.hpp>
 #include <fmt/printf.h>
 
 #include "Parameter.h"
@@ -383,15 +384,19 @@ Base::Reference<ParameterGrp> ParameterGrp::GetGroup(const char* Name)
         throw Base::ValueError("Empty group name");
     }
 
+    constexpr std::string_view whitespace {" \t\n\v\f\r"};
     Base::Reference<ParameterGrp> hGrp = this;
-    std::vector<std::string> tokens;
-    boost::split(tokens, Name, boost::is_any_of("/"));
-    for (auto& token : tokens) {
-        boost::trim(token);
-        if (token.empty()) {
+    const std::string_view path {Name};
+    for (std::size_t pos = 0; pos <= path.size(); ) {
+        const std::size_t sep = std::min(path.find('/', pos), path.size());
+        std::string_view token = path.substr(pos, sep - pos);
+        pos = sep + 1;
+        const auto first = token.find_first_not_of(whitespace);
+        if (first == std::string_view::npos) {
             continue;
         }
-        hGrp = hGrp->_GetGroup(token.c_str());
+        token = token.substr(first, token.find_last_not_of(whitespace) - first + 1);
+        hGrp = hGrp->_GetGroup(std::string(token).c_str());
         if (!hGrp) {
             // The group is clearing. Return some dummy group to avoid caller
             // crashing for backward compatibility.
@@ -516,46 +521,31 @@ bool ParameterGrp::HasGroup(const char* Name) const
     return false;
 }
 
+namespace
+{
+using TypeEntry = std::pair<const char*, ParameterGrp::ParamType>;
+constexpr auto typeNames = std::to_array<TypeEntry>({
+    {"FCBool", ParameterGrp::ParamType::FCBool},
+    {"FCInt", ParameterGrp::ParamType::FCInt},
+    {"FCUInt", ParameterGrp::ParamType::FCUInt},
+    {"FCText", ParameterGrp::ParamType::FCText},
+    {"FCFloat", ParameterGrp::ParamType::FCFloat},
+    {"FCParamGroup", ParameterGrp::ParamType::FCGroup},
+});
+}  // namespace
+
 const char* ParameterGrp::TypeName(ParamType Type)
 {
-    switch (Type) {
-        case ParamType::FCBool:
-            return "FCBool";
-        case ParamType::FCInt:
-            return "FCInt";
-        case ParamType::FCUInt:
-            return "FCUInt";
-        case ParamType::FCText:
-            return "FCText";
-        case ParamType::FCFloat:
-            return "FCFloat";
-        case ParamType::FCGroup:
-            return "FCParamGroup";
-        default:
-            return nullptr;
-    }
+    const auto it = std::ranges::find(typeNames, Type, &TypeEntry::second);
+    return it != typeNames.end() ? it->first : nullptr;
 }
 
 ParameterGrp::ParamType ParameterGrp::TypeValue(const char* Name)
 {
     if (Name) {
-        if (boost::equals(Name, "FCBool")) {
-            return ParamType::FCBool;
-        }
-        if (boost::equals(Name, "FCInt")) {
-            return ParamType::FCInt;
-        }
-        if (boost::equals(Name, "FCUInt")) {
-            return ParamType::FCUInt;
-        }
-        if (boost::equals(Name, "FCText")) {
-            return ParamType::FCText;
-        }
-        if (boost::equals(Name, "FCFloat")) {
-            return ParamType::FCFloat;
-        }
-        if (boost::equals(Name, "FCParamGroup")) {
-            return ParamType::FCGroup;
+        const auto it = std::ranges::find(typeNames, std::string_view {Name}, &TypeEntry::first);
+        if (it != typeNames.end()) {
+            return it->second;
         }
     }
     return ParamType::FCInvalid;
