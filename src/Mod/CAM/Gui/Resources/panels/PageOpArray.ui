@@ -43,7 +43,7 @@
         <enum>QAbstractItemView::SelectRows</enum>
        </property>
        <property name="columnCount">
-        <number>3</number>
+        <number></number>
        </property>
        <attribute name="horizontalHeaderStretchLastSection">
         <bool>true</bool>
@@ -63,7 +63,7 @@
        </column>
        <column>
         <property name="text">
-         <string>TC</string>
+         <string>Tool</string>
         </property>
        </column>
        <column>
@@ -177,11 +177,11 @@
 
 
    <item>
-    <widget class="QGroupBox" name="groupCommon">
+    <widget class="QGroupBox" name="groupMain">
      <layout class="QVBoxLayout" name="layoutCommon">
 
       <item>
-       <widget class="QWidget" name="groupCommon">
+       <widget class="QFrame" name="groupArrayType">
         <layout class="QFormLayout" name="layoutArrayType">
          <item row="0" column="0">
           <widget class="QLabel" name="label_1">
@@ -205,10 +205,10 @@
       </item>
 
       <item>
-       <widget class="QWidget" name="groupCopies1D">
-        <layout class="QGridLayout" name="layoutCopies1D">
+       <widget class="QWidget" name="groupCopies">
+        <layout class="QGridLayout" name="layoutCopies">
          <item row="0" column="0">
-          <widget class="QLabel" name="label_2_0_0">
+          <widget class="QLabel" name="label_Copies">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
            </property>
@@ -219,6 +219,9 @@
          </item>
          <item row="0" column="1">
           <widget class="QSpinBox" name="dspCopies">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred"/>
+           </property>
            <property name="minimumSize">
             <size>
              <width>80</width>
@@ -230,15 +233,35 @@
            </property>
           </widget>
          </item>
-        </layout>
-       </widget>
-      </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="label_polar_angle">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+           </property>
+           <property name="text">
+            <string>Angle</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="Gui::QuantitySpinBox" name="dspPolarAngle">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred"/>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Total angle of polar pattern</string>
+           </property>
+          </widget>
+         </item>
 
-      <item>
-       <widget class="QWidget" name="groupCopies2D">
-        <layout class="QGridLayout" name="layoutCopies2D">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_2_0_0">
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_copiesX">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
            </property>
@@ -247,21 +270,24 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
+         <item row="1" column="1">
           <widget class="QSpinBox" name="dspCopiesX">
+           <property name="toolTip">
+            <string>The number of copies along X-axis</string>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred"/>
+           </property>
            <property name="minimumSize">
             <size>
              <width>80</width>
              <height>0</height>
             </size>
            </property>
-           <property name="toolTip">
-            <string>The number of copies along X-axis</string>
-           </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <widget class="QLabel" name="label_2_0_1">
+         <item row="1" column="2">
+          <widget class="QLabel" name="label_copiesY">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
            </property>
@@ -270,30 +296,25 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="3">
+         <item row="1" column="3">
           <widget class="QSpinBox" name="dspCopiesY">
+           <property name="toolTip">
+            <string>The number of copies along Y-axis</string>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred"/>
+           </property>
            <property name="minimumSize">
             <size>
              <width>80</width>
              <height>0</height>
             </size>
            </property>
-           <property name="toolTip">
-            <string>The number of copies along Y-axis</string>
-           </property>
           </widget>
          </item>
-        </layout>
-       </widget>
-      </item>
 
-
-
-      <item>
-       <widget class="QWidget" name="groupOffset">
-        <layout class="QGridLayout" name="layoutOffset">
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_2_0_2">
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_offsetX">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
            </property>
@@ -302,21 +323,24 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
+         <item row="2" column="1">
           <widget class="Gui::QuantitySpinBox" name="dspOffsetX">
+           <property name="toolTip">
+            <string>The spacing between the array copies along X-axis</string>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred"/>
+           </property>
            <property name="minimumSize">
             <size>
              <width>80</width>
              <height>0</height>
             </size>
            </property>
-           <property name="toolTip">
-            <string>The spacing between the array copies along X-axis</string>
-           </property>
           </widget>
          </item>
-         <item row="1" column="2">
-          <widget class="QLabel" name="label_2_0_3">
+         <item row="2" column="2">
+          <widget class="QLabel" name="label_offsetY">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
            </property>
@@ -325,16 +349,72 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="3">
+         <item row="2" column="3">
           <widget class="Gui::QuantitySpinBox" name="dspOffsetY">
+           <property name="toolTip">
+            <string>The spacing between the array copies along Y-axis</string>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred"/>
+           </property>
            <property name="minimumSize">
             <size>
              <width>80</width>
              <height>0</height>
             </size>
            </property>
+          </widget>
+         </item>
+
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_polar_centerX">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+           </property>
+           <property name="text">
+            <string>Center X</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="Gui::QuantitySpinBox" name="dspPolarCenterX">
            <property name="toolTip">
-            <string>The spacing between the array copies along Y-axis</string>
+            <string>The centre of rotation in polar pattern</string>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred"/>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2">
+          <widget class="QLabel" name="label_polar_centerY">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+           </property>
+           <property name="text">
+            <string>Center Y</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="3">
+          <widget class="Gui::QuantitySpinBox" name="dspPolarCenterY">
+           <property name="toolTip">
+            <string>The centre of rotation in polar pattern</string>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred"/>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
            </property>
           </widget>
          </item>
@@ -342,85 +422,6 @@
        </widget>
       </item>
 
-     </layout>
-    </widget>
-   </item>
-
-   <item>
-    <widget class="QGroupBox" name="groupPolar">
-     <property name="title">
-      <string>Polar parameters</string>
-     </property>
-     <layout class="QGridLayout" name="layout_Polar">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_1">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
-        </property>
-        <property name="text">
-         <string>Angle</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="Gui::QuantitySpinBox" name="dspPolarAngle">
-        <property name="minimumSize">
-         <size>
-          <width>80</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Total angle of polar pattern</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
-        </property>
-        <property name="text">
-         <string>Center X</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="Gui::QuantitySpinBox" name="dspPolarCenterX">
-        <property name="minimumSize">
-         <size>
-          <width>80</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>The centre of rotation in polar pattern</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="QLabel" name="label_3">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
-        </property>
-        <property name="text">
-         <string>Center Y</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="3">
-       <widget class="Gui::QuantitySpinBox" name="dspPolarCenterY">
-        <property name="minimumSize">
-         <size>
-          <width>80</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>The centre of rotation in polar pattern</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
@@ -472,7 +473,6 @@
       <string>Jitter parameters</string>
      </property>
      <layout class="QGridLayout" name="layoutJitter">
-
       <item row="0" column="0">
        <widget class="QLabel" name="label_1">
         <property name="sizePolicy">
@@ -496,11 +496,10 @@
         </property>
        </widget>
       </item>
-
       <item row="0" column="2">
        <widget class="QLabel" name="label_2">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Preferred"/>
+         <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
         </property>
         <property name="text">
          <string>Seed</string>
@@ -526,47 +525,41 @@
 
       <item row="1" column="0">
        <widget class="QLabel" name="label_3">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
-        </property>
         <property name="text">
-         <string>X</string>
+         <string>Max X</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
        <widget class="Gui::QuantitySpinBox" name="dspJitterX">
+        <property name="toolTip">
+         <string>Maximum random offset along X-axis</string>
+        </property>
         <property name="minimumSize">
          <size>
           <width>80</width>
           <height>0</height>
          </size>
-        </property>
-        <property name="toolTip">
-         <string>Maximum random offset along X-axis</string>
         </property>
        </widget>
       </item>
       <item row="1" column="2">
        <widget class="QLabel" name="label_4">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
-        </property>
         <property name="text">
-         <string>Y</string>
+         <string>Max Y</string>
         </property>
        </widget>
       </item>
       <item row="1" column="3">
        <widget class="Gui::QuantitySpinBox" name="dspJitterY">
+        <property name="toolTip">
+         <string>Maximum random offset along Y-axis</string>
+        </property>
         <property name="minimumSize">
          <size>
           <width>80</width>
           <height>0</height>
          </size>
-        </property>
-        <property name="toolTip">
-         <string>Maximum random offset along Y-axis</string>
         </property>
        </widget>
       </item>
@@ -574,6 +567,8 @@
      </layout>
     </widget>
    </item>
+
+
 
    <item>
     <spacer name="verticalSpacer">
