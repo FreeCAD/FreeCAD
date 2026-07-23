@@ -221,29 +221,58 @@ class ArrayTaskPanel(SimpleEditPanel):
         else:
             self.form.groupJitter.hide()
 
-        if self.form.cboType.currentText() == "Linear2D":
-            self.form.groupCopies2D.show()
-            self.form.chkSwap.show()
+        if self.form.cboType.currentText() == "Points":
+            self.form.groupCopies.hide()
         else:
-            self.form.groupCopies2D.hide()
-            self.form.chkSwap.hide()
-
-        if self.form.cboType.currentText() == "Polar":
-            self.form.groupPolar.show()
-            self.form.groupOffset.hide()
-        else:
-            self.form.groupPolar.hide()
+            self.form.groupCopies.show()
 
         if self.form.cboType.currentText() in ("Linear1D", "Polar"):
-            self.form.groupCopies1D.show()
+            self.form.label_Copies.show()
+            self.form.dspCopies.show()
+            self.form.label_polar_angle.show()
+            self.form.dspPolarAngle.show()
         else:
-            self.form.groupCopies1D.hide()
+            self.form.label_Copies.hide()
+            self.form.dspCopies.hide()
+            self.form.label_polar_angle.hide()
+            self.form.dspPolarAngle.hide()
 
-        if self.form.cboType.currentText() == "Points":
-            self.form.groupCopies1D.hide()
-            self.form.groupCopies2D.hide()
-            self.form.groupOffset.hide()
-            self.form.groupPolar.hide()
+        if self.form.cboType.currentText() == "Polar":
+            self.form.label_polar_centerX.show()
+            self.form.dspPolarCenterX.show()
+            self.form.label_polar_centerY.show()
+            self.form.dspPolarCenterY.show()
+            self.form.dspPolarAngle.setEnabled(True)
+        else:
+            self.form.dspPolarAngle.setEnabled(False)
+            self.form.label_polar_centerX.hide()
+            self.form.dspPolarCenterX.hide()
+            self.form.label_polar_centerY.hide()
+            self.form.dspPolarCenterY.hide()
+
+        if self.form.cboType.currentText() in ("Linear1D", "Linear2D"):
+            self.form.label_offsetX.show()
+            self.form.label_offsetY.show()
+            self.form.dspOffsetX.show()
+            self.form.dspOffsetY.show()
+        else:
+            self.form.label_offsetX.hide()
+            self.form.label_offsetY.hide()
+            self.form.dspOffsetX.hide()
+            self.form.dspOffsetY.hide()
+
+        if self.form.cboType.currentText() == "Linear2D":
+            self.form.label_copiesX.show()
+            self.form.label_copiesY.show()
+            self.form.dspCopiesX.show()
+            self.form.dspCopiesY.show()
+            self.form.chkSwap.show()
+        else:
+            self.form.label_copiesX.hide()
+            self.form.label_copiesY.hide()
+            self.form.dspCopiesX.hide()
+            self.form.dspCopiesY.hide()
+            self.form.chkSwap.hide()
 
     def updateBaseList(self):
         print("updateBaseList")
