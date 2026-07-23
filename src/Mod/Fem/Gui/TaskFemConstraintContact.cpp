@@ -144,12 +144,12 @@ TaskFemConstraintContact::TaskFemConstraintContact(
     }
 
     ui->lbl_info->setText(
-        tr("Select slave geometry of type: ") + QString::fromUtf8("<b>%1</b>; ").arg(tr("Edge, Face"))
-        + tr("click Add or Remove")
+        tr("Select slave geometry of type: ")
+        + QString::fromUtf8("<b>%1</b>; ").arg(tr("Edge, Face")) + tr("click Add or Remove")
     );
     ui->lbl_info_2->setText(
-        tr("Select master geometry of type: ") + QString::fromUtf8("<b>%1</b>; ").arg(tr("Edge, Face"))
-        + tr("click Add or Remove")
+        tr("Select master geometry of type: ")
+        + QString::fromUtf8("<b>%1</b>; ").arg(tr("Edge, Face")) + tr("click Add or Remove")
     );
 
     // Selection buttons
