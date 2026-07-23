@@ -61,9 +61,8 @@
 #include <vector>
 #include <optional>
 
-#include <boost/uuid/uuid_generators.hpp>
-
 #include <Base/Matrix.h>
+#include <Base/Uuid.h>
 #include <Base/Placement.h>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
@@ -112,7 +111,7 @@ public:
     /// constructor did not take a handle as a parameter), set a new handle.
     Geometry* clone() const;
     /// returns the tag of the geometry object
-    boost::uuids::uuid getTag() const;
+    const Base::Uuid& getTag() const;
 
     virtual bool isSame(const Geometry& other, double tol, double atol) const = 0;
     bool hasSameExtensions(const Geometry& other) const;
@@ -153,7 +152,7 @@ protected:
     Geometry();
 
 protected:
-    boost::uuids::uuid tag;
+    Base::Uuid tag;
     std::vector<std::shared_ptr<GeometryExtension>> extensions;
 
 public:
