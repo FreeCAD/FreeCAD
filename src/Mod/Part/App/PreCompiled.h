@@ -59,8 +59,6 @@
 #include <boost/core/ignore_unused.hpp>
 #include <boost/math/special_functions/fpclassify.hpp>
 #include <boost/random.hpp>
-#include <boost/uuid/uuid_generators.hpp>
-#include <boost/uuid/uuid_io.hpp>
 
 // OpenCasCade
 #include "OpenCascadeAll.h"
