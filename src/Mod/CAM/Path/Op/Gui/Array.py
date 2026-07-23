@@ -22,7 +22,7 @@
 import FreeCAD
 import FreeCADGui
 import Path.Op.Array as Array
-from Path.Base.Gui.Util import IntegerSpinBox, QuantitySpinBox, updateInputField
+from Path.Base.Gui.Util import QuantitySpinBox
 from Path.Base.Util import toolControllerForOp
 from PathPythonGui.simple_edit_panel import SimpleEditPanel
 
@@ -122,6 +122,7 @@ class ArrayTaskPanel(SimpleEditPanel):
         self.updateVisibility()
         self.pageRegisterSignalHandlers()
         self.updateBaseList()
+        self.updateButtonsVisibility()
 
     def initPage(self):
         self.connectWidget("ReverseDirection", self.form.chkReverse)
@@ -131,9 +132,9 @@ class ArrayTaskPanel(SimpleEditPanel):
         self.connectWidget("UseJitter", self.form.chkUseJitter)
         self.connectWidget("Type", self.form.cboType)
 
-        self.copies = IntegerSpinBox(self.form.dspCopies, self.obj, "Copies")
-        self.copiesX = IntegerSpinBox(self.form.dspCopiesX, self.obj, "CopiesX")
-        self.copiesY = IntegerSpinBox(self.form.dspCopiesY, self.obj, "CopiesY")
+        self.copies = QuantitySpinBox(self.form.dspCopies, self.obj, "Copies")
+        self.copiesX = QuantitySpinBox(self.form.dspCopiesX, self.obj, "CopiesX")
+        self.copiesY = QuantitySpinBox(self.form.dspCopiesY, self.obj, "CopiesY")
         self.offsetX = QuantitySpinBox(self.form.dspOffsetX, self.obj, "Offset.x")
         self.offsetY = QuantitySpinBox(self.form.dspOffsetY, self.obj, "Offset.y")
 
@@ -142,7 +143,7 @@ class ArrayTaskPanel(SimpleEditPanel):
         self.polarCenterY = QuantitySpinBox(self.form.dspPolarCenterY, self.obj, "Centre.y")
 
         self.jitterAngle = QuantitySpinBox(self.form.dspJitterAngle, self.obj, "JitterAngle")
-        self.jitterSeed = IntegerSpinBox(self.form.dspJitterSeed, self.obj, "JitterSeed")
+        self.jitterSeed = QuantitySpinBox(self.form.dspJitterSeed, self.obj, "JitterSeed")
         self.jitterX = QuantitySpinBox(self.form.dspJitterX, self.obj, "JitterMagnitude.x")
         self.jitterY = QuantitySpinBox(self.form.dspJitterY, self.obj, "JitterMagnitude.y")
 
@@ -206,9 +207,6 @@ class ArrayTaskPanel(SimpleEditPanel):
         self.jitterSeed.updateProperty()
         self.jitterX.updateProperty()
         self.jitterY.updateProperty()
-
-        updateInputField(self.obj, "JitterMagnitude.x", self.form.dspJitterX)
-        updateInputField(self.obj, "JitterMagnitude.y", self.form.dspJitterY)
 
     def pageRegisterSignalHandlers(self):
         for signal in self.getSignalsForUpdate():
@@ -307,13 +305,13 @@ class ArrayTaskPanel(SimpleEditPanel):
         header.setSectionResizeMode(COL_OP_TC, QtGui.QHeaderView.ResizeToContents)
         header.setSectionResizeMode(COL_OP_COOLANT, QtGui.QHeaderView.ResizeToContents)
         self.form.baseList.blockSignals(False)
-        self.updateButtonsVisibility()
 
     def updateButtonsVisibility(self):
-        print("baselist count", self.form.baseList.rowCount())
+        print("updateButtonsVisibility", self.form.baseList.rowCount())
         self.form.pbClear.setEnabled(self.form.baseList.rowCount())
         selectedRows = self.form.baseList.selectionModel().selectedRows()
         indexes = [row.row() for row in selectedRows]
+        print("   indexes", indexes)
         self.form.pbRemove.setEnabled(bool(indexes))
 
         if len(indexes) == 1:
@@ -334,17 +332,22 @@ class ArrayTaskPanel(SimpleEditPanel):
         print("clearBaseList")
         self.obj.Base = []
         self.updateBaseList()
+        self.updateButtonsVisibility()
+        self.form.focusWidget().clearFocus()
 
     def RemoveFromBaseList(self):
         print("RemoveFromBaseList")
         base = self.obj.Base
         selectedRows = self.form.baseList.selectionModel().selectedRows()
         indexes = [row.row() for row in selectedRows]
+        print("  indexes", len(indexes), indexes)
         for index in sorted(indexes, reverse=True):
             print(f"    Remove op {index}")
             del base[index]
         self.obj.Base = base
         self.updateBaseList()
+        self.form.baseList.selectRow(min(index, self.form.baseList.rowCount() - 1))
+        self.updateButtonsVisibility()
 
     def addToBaseList(self):
         print("addToBaseList")
@@ -352,20 +355,21 @@ class ArrayTaskPanel(SimpleEditPanel):
         new = [sel for sel in selection if sel.isDerivedFrom("Path::Feature") and sel != self.obj]
         self.obj.Base = self.obj.Base + new
         self.updateBaseList()
+        self.updateButtonsVisibility()
 
     def upInBaseList(self):
         print("upInBaseList")
         index = self.form.baseList.currentRow()
         if index > 0:
             base = self.obj.Base
-            print("   ", [b.Label for b in base])
             op = base.pop(index)
-            print("   ", index, op.Label)
             base.insert(index - 1, op)
             self.obj.Base = base
             self.updateBaseList()
             self.form.baseList.selectRow(index - 1)
             self.updateButtonsVisibility()
+            if not self.form.pbUp.isEnabled():
+                self.form.focusWidget().clearFocus()
 
     def downInBaseList(self):
         print("downInBaseList")
@@ -374,12 +378,13 @@ class ArrayTaskPanel(SimpleEditPanel):
             base = self.obj.Base
             print("   ", [b.Label for b in base])
             op = base.pop(index)
-            # index = max(index, 0)
             base.insert(index + 1, op)
             self.obj.Base = base
             self.updateBaseList()
             self.form.baseList.selectRow(index + 1)
             self.updateButtonsVisibility()
+            if not self.form.pbDown.isEnabled():
+                self.form.focusWidget().clearFocus()
 
 
 class CommandPathArray:

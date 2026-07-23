@@ -218,7 +218,13 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QSpinBox" name="dspCopies">
+          <widget class="Gui::QuantitySpinBox" name="dspCopies">
+           <property name="decimals">
+            <number>0</number>
+           </property>
+           <property name="minimum">
+            <double>1</double>
+           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="Minimum" vsizetype="Preferred"/>
            </property>
@@ -271,7 +277,13 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QSpinBox" name="dspCopiesX">
+          <widget class="Gui::QuantitySpinBox" name="dspCopiesX">
+           <property name="decimals">
+            <number>0</number>
+           </property>
+           <property name="minimum">
+            <double>1</double>
+           </property>
            <property name="toolTip">
             <string>The number of copies along X-axis</string>
            </property>
@@ -297,7 +309,13 @@
           </widget>
          </item>
          <item row="1" column="3">
-          <widget class="QSpinBox" name="dspCopiesY">
+          <widget class="Gui::QuantitySpinBox" name="dspCopiesY">
+           <property name="decimals">
+            <number>0</number>
+           </property>
+           <property name="minimum">
+            <double>1</double>
+           </property>
            <property name="toolTip">
             <string>The number of copies along Y-axis</string>
            </property>
@@ -510,7 +528,13 @@
        </widget>
       </item>
       <item row="0" column="3">
-       <widget class="QSpinBox" name="dspJitterSeed">
+       <widget class="Gui::QuantitySpinBox" name="dspJitterSeed">
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>0</double>
+        </property>
         <property name="minimumSize">
          <size>
           <width>80</width>
