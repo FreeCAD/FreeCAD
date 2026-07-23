@@ -29,8 +29,11 @@
 **
 **************************************************************************/
 
+#include <QApplication>
 #include <QHeaderView>
 #include <QPushButton>
+#include <QClipboard>
+#include <QRegularExpression>
 
 #include <App/Application.h>
 
@@ -138,6 +141,7 @@ DlgCheckableMessageBox::DlgCheckableMessageBox(QWidget* parent)
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     m_d->ui.setupUi(this);
     m_d->ui.pixmapLabel->setVisible(false);
+    m_d->ui.messageLabel->installEventFilter(this);
     connect(m_d->ui.buttonBox, &QDialogButtonBox::accepted, this, &DlgCheckableMessageBox::accept);
     connect(m_d->ui.buttonBox, &QDialogButtonBox::rejected, this, &DlgCheckableMessageBox::reject);
     connect(m_d->ui.buttonBox, &QDialogButtonBox::clicked, this, &DlgCheckableMessageBox::slotClicked);
@@ -164,6 +168,28 @@ void DlgCheckableMessageBox::setPrefPath(const QString& path)
 void DlgCheckableMessageBox::slotClicked(QAbstractButton* b)
 {
     m_d->clickedButton = b;
+}
+
+bool DlgCheckableMessageBox::eventFilter(QObject* watched, QEvent* event)
+{
+    if (watched == m_d->ui.messageLabel && event->type() == QEvent::ContextMenu) {
+        const QString url = extractFirstUrl(m_d->ui.messageLabel->text());
+        if (!url.isEmpty()) {
+            QApplication::clipboard()->setText(url);
+            return true;
+        }
+    }
+    return QDialog::eventFilter(watched, event);
+}
+
+QString DlgCheckableMessageBox::extractFirstUrl(const QString& text)
+{
+    static const QRegularExpression regex(QStringLiteral(R"(https?://[^\s<>"]+)"));
+    const auto match = regex.match(text);
+    if (match.hasMatch()) {
+        return match.captured(0);
+    }
+    return {};
 }
 
 QAbstractButton* DlgCheckableMessageBox::clickedButton() const
