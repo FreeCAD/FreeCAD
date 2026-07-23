@@ -563,7 +563,7 @@ App::DocumentObjectExecReturn* Pipe::execute()
             //                        because you would expect this to be set to the feature's shape,
             //                        but boolOp is the topoShape that is actually being copied
 
-            boolOp.makeElementBoolean(maker.c_str(), {base, result});
+            boolOp.makeElementBoolean(maker.c_str(), {base, result}, nullptr, FuzzyTolerance.getValue());
 
             if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(

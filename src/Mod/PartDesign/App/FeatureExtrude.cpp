@@ -750,7 +750,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     default:
                         maker = Part::OpCodes::Fuse;
                 }
-                result.makeElementBoolean(maker, {base, prism});
+                result.makeElementBoolean(maker, {base, prism}, nullptr, FuzzyTolerance.getValue());
             }
             catch (Standard_Failure&) {
                 return new App::DocumentObjectExecReturn(

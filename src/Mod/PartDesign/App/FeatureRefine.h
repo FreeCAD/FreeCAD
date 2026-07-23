@@ -45,6 +45,7 @@ public:
     FeatureRefine();
 
     App::PropertyBool Refine;
+    App::PropertyFloatConstraint FuzzyTolerance;
 
 protected:
     // store the shape before refinement

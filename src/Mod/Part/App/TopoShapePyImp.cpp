@@ -725,7 +725,9 @@ static PyObject* makeShape(const char* op, const TopoShape& shape, PyObject* arg
         std::vector<TopoShape> shapes;
         shapes.push_back(shape);
         getPyShapes(pcObj, shapes);
-        return Py::new_reference_to(shape2pyshape(TopoShape().makeElementBoolean(op, shapes, 0, tol)));
+        return Py::new_reference_to(
+            shape2pyshape(TopoShape().makeElementBoolean(op, shapes, nullptr, tol))
+        );
     }
     PY_CATCH_OCC
 }
