@@ -132,3 +132,40 @@ class TestPathTapGenerator(PathTestUtils.PathTestBase):
         self.assertRaises(ValueError, generator.generate, **args)
         args = {"edge": e, "retractheight": "1"}
         self.assertRaises(ValueError, generator.generate, **args)
+
+    def test50_rigid_tap_feed_locked_to_pitch_and_speed(self):
+        """G84 feed rate must be pitch * spindle_speed (mm/s), not pitch alone.
+
+        Regression test: F was previously set to the raw pitch value with
+        spindle_speed unused, silently ignoring the RPM entirely. Rigid tap
+        feed must stay mechanically locked to spindle speed: mm/min =
+        pitch(mm) * RPM. Values below match a real 10-32 tap (0.79248mm
+        pitch) at 128 RPM.
+        """
+        v1 = FreeCAD.Vector(0, 0, 10)
+        v2 = FreeCAD.Vector(0, 0, 0)
+        e = Part.makeLine(v1, v2)
+
+        pitch = 0.79248
+        spindle_speed = 128.0
+
+        result = generator.generate(e, pitch=pitch, spindle_speed=spindle_speed)
+        command = result[0]
+
+        expected_f = pitch * spindle_speed / 60.0
+        self.assertAlmostEqual(command.Parameters["F"], expected_f, places=6)
+        # F must not equal the raw pitch alone (the previous, buggy behavior)
+        self.assertNotAlmostEqual(command.Parameters["F"], pitch, places=3)
+        self.assertEqual(command.Parameters["S"], spindle_speed)
+
+    def test51_rigid_tap_feed_sanity_default_without_pitch_or_speed(self):
+        """Without pitch/spindle_speed, F should fall back to the sanity default."""
+        v1 = FreeCAD.Vector(0, 0, 10)
+        v2 = FreeCAD.Vector(0, 0, 0)
+        e = Part.makeLine(v1, v2)
+
+        result = generator.generate(e)
+        self.assertEqual(result[0].Parameters["F"], 100.0)
+
+        result = generator.generate(e, pitch=0.79248)
+        self.assertEqual(result[0].Parameters["F"], 100.0)
