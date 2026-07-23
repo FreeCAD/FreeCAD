@@ -69,6 +69,10 @@ public:
     void addPixmapToCache(const char* name, const QPixmap& icon);
     /// Checks whether the pixmap is already registered.
     bool findPixmapInCache(const char* name, QPixmap& icon) const;
+    /// Clears all cached pixmaps.
+    void clearCache();
+    /// Reloads external icon-theme settings and clears cached pixmaps.
+    void reloadExternalThemeSettings();
     /** Returns the QIcon corresponding to name in the current icon theme.
      * If no such icon is found in the current theme fallback is returned instead.
      */
@@ -160,8 +164,11 @@ public:
 
 private:
     bool loadPixmap(const QString& path, QPixmap&) const;
+    QPixmap findPixmapNoFallback(const char* name) const;
+    QString findInExternalTheme(const QString& name) const;
     void restoreCustomPaths();
     void configureUseIconTheme();
+    void configureExternalTheme();
 
     static BitmapFactoryInst* _pcSingleton;
     BitmapFactoryInst();
