@@ -182,6 +182,7 @@ SET(bimcommands_SRCS
     bimcommands/BimSlab.py
     bimcommands/BimSpace.py
     bimcommands/BimStairs.py
+    bimcommands/BimStairDesigner.py
     bimcommands/BimTDPage.py
     bimcommands/BimTDView.py
     bimcommands/BimText.py
@@ -198,6 +199,13 @@ SET(bimcommands_SRCS
     bimcommands/BimWPCommands.py
     bimcommands/BimReport.py
     bimcommands/__init__.py
+)
+
+SET(stairdesigner_SRCS
+    stairdesigner/__init__.py
+    stairdesigner/geometry.py
+    stairdesigner/objects.py
+    stairdesigner/taskpanels.py
 )
 
 SET(BIM_templates
@@ -247,6 +255,7 @@ SET(bimtests_SRCS
     bimtests/TestArchWindow.py
     bimtests/TestArchWindowGui.py
     bimtests/TestArchStairs.py
+    bimtests/TestArchStairDesigner.py
     bimtests/TestArchStructure.py
     bimtests/TestArchPipe.py
     bimtests/TestArchCurtainWall.py
@@ -343,6 +352,7 @@ ADD_CUSTOM_TARGET(BIM ALL
             ${importers_SRCS}
             ${ImportersSample_Files}
             ${bimcommands_SRCS}
+            ${stairdesigner_SRCS}
             ${bimtests_SRCS}
             ${bimtests_FIXTURES}
             ${nativeifc_SRCS}
@@ -357,6 +367,7 @@ fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${Arch_SRCS})
 fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${Dice3DS_SRCS})
 fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${importers_SRCS})
 fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${bimcommands_SRCS})
+fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${stairdesigner_SRCS})
 fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${bimtests_SRCS})
 fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${bimtests_FIXTURES})
 fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${ImportersSample_Files})
@@ -407,6 +418,12 @@ INSTALL(
     FILES
         ${bimcommands_SRCS}
     DESTINATION Mod/BIM/bimcommands
+)
+
+INSTALL(
+    FILES
+        ${stairdesigner_SRCS}
+    DESTINATION Mod/BIM/stairdesigner
 )
 
 INSTALL(

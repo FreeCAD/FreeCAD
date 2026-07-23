@@ -32,6 +32,8 @@
         <file>icons/Arch_Frame.svg</file>
         <file>icons/Arch_Frame_Tree.svg</file>
         <file>icons/Arch_Grid.svg</file>
+        <file>icons/Arch_Handrail.svg</file>
+        <file>icons/Arch_Handrail_Tree.svg</file>
         <file>icons/Arch_Material.svg</file>
         <file>icons/Arch_Material_Group.svg</file>
         <file>icons/Arch_Material_Multi.svg</file>
@@ -70,6 +72,8 @@
         <file>icons/Arch_SplitMesh.svg</file>
         <file>icons/Arch_Stairs.svg</file>
         <file>icons/Arch_Stairs_Tree.svg</file>
+        <file>icons/Arch_Stringer.svg</file>
+        <file>icons/Arch_Stringer_Tree.svg</file>
         <file>icons/Arch_StructuralSystem.svg</file>
         <file>icons/Arch_StructuralSystem_Tree.svg</file>
         <file>icons/Arch_Structure.svg</file>
