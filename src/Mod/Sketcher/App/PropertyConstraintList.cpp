@@ -203,13 +203,11 @@ void PropertyConstraintList::applyValues(std::vector<Constraint*>&& lValue)
     std::set<Constraint*> oldVals(_lValueList.begin(), _lValueList.end());
     std::map<App::ObjectIdentifier, App::ObjectIdentifier> renamed;
     std::set<App::ObjectIdentifier> removed;
-    boost::unordered_map<boost::uuids::uuid, std::size_t> newValueMap;
+    std::map<Base::Uuid, std::size_t> newValueMap;
 
     /* Check for renames */
     for (unsigned int i = 0; i < lValue.size(); i++) {
-        boost::unordered_map<boost::uuids::uuid, std::size_t>::const_iterator j = valueMap.find(
-            lValue[i]->tag
-        );
+        auto j = valueMap.find(lValue[i]->tag);
 
         if (j != valueMap.end()) {
             if (i != j->second || _lValueList[j->second]->Name != lValue[i]->Name) {

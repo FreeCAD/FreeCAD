@@ -22,8 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <boost/uuid/uuid_io.hpp>
-
 
 #include "GeometryFacade.h"
 #include "GeometryFacadePy.h"
