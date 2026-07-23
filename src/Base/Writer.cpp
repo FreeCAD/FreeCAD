@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 
+#include <cstring>
 #include <memory>
 #include <set>
 #include <vector>
@@ -41,45 +42,69 @@
 #include "Stream.h"
 #include "Tools.h"
 
-#include <boost/iostreams/filtering_stream.hpp>
 #include <zipios++/zipinputstream.h>
 
 using namespace Base;
 
-// boost iostream filter to escape ']]>' in text file saved into CDATA section.
-// It does not check if the character is valid utf8 or not.
-struct cdata_filter
+namespace
 {
+// Stream buffer to escape ']]>' in text saved into a CDATA section by closing
+// the current section and opening a new one between the ']]' and the '>'.
+// It does not check if the character is valid utf8 or not.
+class CDataStreambuf: public std::streambuf
+{
+public:
+    explicit CDataStreambuf(std::ostream& out)
+        : sink(*out.rdbuf())
+    {}
 
-    using char_type = char;
-    using category = boost::iostreams::output_filter_tag;
-
-    template<typename Device>
-    inline bool put(Device& dev, char ch)
+protected:
+    int_type overflow(int_type ch) override
     {
-        switch (state) {
-            case 0:
-            case 1:
-                if (ch == ']') {
-                    ++state;
-                }
-                else {
-                    state = 0;
-                }
-                break;
-            case 2:
-                if (ch == '>') {
-                    static const char escape[] = "]]><![CDATA[";
-                    boost::iostreams::write(dev, escape, sizeof(escape) - 1);
-                }
-                state = 0;
-                break;
+        if (traits_type::eq_int_type(ch, traits_type::eof())) {
+            return traits_type::not_eof(ch);
         }
-        return boost::iostreams::put(dev, ch);
+        const char c = traits_type::to_char_type(ch);
+        if (c == ']') {
+            if (numClosingBrackets < 2) {
+                ++numClosingBrackets;
+            }
+        }
+        else {
+            if (c == '>' && numClosingBrackets == 2) {
+                static const char escape[] = "]]><![CDATA[";
+                sink.sputn(escape, sizeof(escape) - 1);
+            }
+            numClosingBrackets = 0;
+        }
+        return sink.sputc(c);
     }
 
-    int state = 0;
+    int sync() override
+    {
+        return sink.pubsync();
+    }
+
+private:
+    std::streambuf& sink;
+    int numClosingBrackets = 0;
 };
+
+// Output stream owning a CDataStreambuf
+class CDataOStream: public std::ostream
+{
+public:
+    explicit CDataOStream(std::ostream& out)
+        : std::ostream(nullptr)
+        , buf(out)
+    {
+        rdbuf(&buf);
+    }
+
+private:
+    CDataStreambuf buf;
+};
+}  // namespace
 
 // ---------------------------------------------------------------------------
 //  Writer: Constructors and Destructor
@@ -128,11 +153,8 @@ std::ostream& Writer::beginCharStream(CharStreamFormat format)
     }
     else {
         Stream() << "<![CDATA[";
-        CharStream = std::make_unique<boost::iostreams::filtering_ostream>();
-        auto* filteredStream = dynamic_cast<boost::iostreams::filtering_ostream*>(CharStream.get());
-        filteredStream->push(cdata_filter());
-        filteredStream->push(Stream());
-        *filteredStream << std::setprecision(std::numeric_limits<double>::digits10 + 1);
+        CharStream = std::make_unique<CDataOStream>(Stream());
+        *CharStream << std::setprecision(std::numeric_limits<double>::digits10 + 1);
     }
 
     checkErrNo();

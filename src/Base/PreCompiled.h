@@ -109,12 +109,6 @@
 #include <xercesc/util/XMLUniDefs.hpp>
 #include <xercesc/util/XercesVersion.hpp>
 
-#include <boost/algorithm/string.hpp>
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/regex.hpp>
-#include <boost/tokenizer.hpp>
-
 // Unicode
 #include <unicode/unistr.h>
 #include <unicode/uchar.h>
