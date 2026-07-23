@@ -524,6 +524,10 @@ void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     QGraphicsItemGroup::hoverEnterEvent(event);
 
+    if (!isInsideViewFrame(event->pos())) {
+        return;
+    }
+
     m_isHovered = true;
 
     if (isSelected()) {
@@ -548,6 +552,56 @@ void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
     if (isSelected()) {
         m_colCurrent = getSelectColor();
+        m_lock->setVisible(getViewObject()->isLocked() && getViewObject()->showLock());
+    } else {
+        m_colCurrent = PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor());
+        m_lock->hide();
+    }
+
+    updateFrameVisibility();
+    drawBorder();
+}
+
+bool QGIView::isInsideViewFrame(const QPointF& pos) const
+{
+    auto feat = getViewObject();
+    if (!feat) {
+        return false;
+    }
+
+    if (m_border->rect().contains(pos)) {
+        return true;
+    }
+
+    QRectF labelAtPos = m_label->boundingRect().translated(m_label->pos());
+    if (labelAtPos.contains(pos)) {
+        return true;
+    }
+
+    QRectF captionAtPos = m_caption->boundingRect().translated(m_caption->pos());
+    if (captionAtPos.contains(pos)) {
+        return true;
+    }
+
+    return false;
+}
+
+void QGIView::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
+{
+    QGraphicsItemGroup::hoverMoveEvent(event);
+
+    bool inside = isInsideViewFrame(event->pos());
+    if (inside == m_isHovered) {
+        return;
+    }
+
+    m_isHovered = inside;
+
+    if (isSelected()) {
+        m_colCurrent = getSelectColor();
+        m_lock->setVisible(getViewObject()->isLocked() && getViewObject()->showLock());
+    } else if (m_isHovered) {
+        m_colCurrent = getPreColor();
         m_lock->setVisible(getViewObject()->isLocked() && getViewObject()->showLock());
     } else {
         m_colCurrent = PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor());
@@ -836,7 +890,7 @@ QRectF QGIView::customChildrenBoundingRect() const
 
 QRectF QGIView::boundingRect() const
 {
-    QRectF totalRect = customChildrenBoundingRect();
+    QRectF totalRect = frameRect();
     totalRect = totalRect.united(m_border->rect());
     totalRect = totalRect.united(m_label->boundingRect().translated(m_label->pos()));
     totalRect = totalRect.united(m_caption->boundingRect().translated(m_caption->pos()));
