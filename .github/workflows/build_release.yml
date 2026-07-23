@@ -1,7 +1,7 @@
 name: Build Release
 on:
   release:
-    types: [created]
+    types: [published]
   schedule:
    - cron: "0 0 * * 3"
   workflow_dispatch:
