@@ -154,7 +154,7 @@ Py::String CosmeticEdgePy::getTag() const
 
 //Py::String CosmeticEdgePy::getOwner(void) const
 //{
-////    std::string tmp = boost::uuids::to_string(getCosmeticEdgePtr()->getOwner());
+////    std::string tmp = getCosmeticEdgePtr()->getOwner().getValue();
 //    std::string tmp = "not implemented yet";
 //    return Py::String(tmp);
 //}
