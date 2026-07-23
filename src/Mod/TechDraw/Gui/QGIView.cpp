@@ -530,7 +530,7 @@ void QGIView::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
     // a projection group item should edit its parent group, not itself
     App::DocumentObject* target = feature;
-    if (auto* dpgi = dynamic_cast<TechDraw::DrawProjGroupItem*>(feature)) {
+    if (auto* dpgi = freecad_cast<TechDraw::DrawProjGroupItem*>(feature)) {
         if (auto* group = dpgi->getPGroup()) {
             target = group;
         }
