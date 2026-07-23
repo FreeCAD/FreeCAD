@@ -452,6 +452,10 @@ class recycler:
     def createIfcLocalPlacement(self, gpl=None):
         if not gpl:
             gpl = self.createIfcAxis2Placement3D()
+        if self.ifcfile.schema == "IFC2X3":
+            # IFC2X3 requires PlacesObject to reference exactly one product.
+            # Its axis placement can be shared, but its local placement cannot.
+            return self.ifcfile.createIfcLocalPlacement(None, gpl)
         key = (
             str(gpl.Location.Coordinates)
             + str(gpl.Axis.DirectionRatios)
