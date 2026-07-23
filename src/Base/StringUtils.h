@@ -4,6 +4,7 @@
 
 #include <string>
 #include <string_view>
+#include <vector>
 
 #include <FCGlobal.h>
 
@@ -21,6 +22,43 @@ BaseExport std::string trimmed(std::string_view value);
  * Non-ASCII bytes are preserved unchanged.
  */
 BaseExport std::string lowercaseAscii(std::string_view value);
+
+/**
+ * @brief ASCII case-insensitive comparison of two strings for equality.
+ *
+ * Only characters in the ASCII range are case-folded; bytes are compared otherwise.
+ */
+BaseExport bool iequals(std::string_view lhs, std::string_view rhs);
+
+/**
+ * @brief ASCII case-insensitive test whether str begins with prefix.
+ *
+ * Only characters in the ASCII range are case-folded; bytes are compared otherwise.
+ */
+BaseExport bool istarts_with(std::string_view str, std::string_view prefix);
+
+/**
+ * @brief ASCII case-insensitive test whether str ends with suffix.
+ *
+ * Only characters in the ASCII range are case-folded; bytes are compared otherwise.
+ */
+BaseExport bool iends_with(std::string_view str, std::string_view suffix);
+
+/**
+ * @brief Split value on every occurrence of delimiter, keeping empty tokens.
+ *
+ * A string with no delimiter yields a single-element vector containing the whole
+ * input; adjacent or trailing delimiters produce empty tokens, matching the
+ * behaviour of boost::split with boost::is_any_of on a single character.
+ */
+BaseExport std::vector<std::string> split(std::string_view value, char delimiter);
+
+/**
+ * @brief Replace every occurrence of from with to in value, in place.
+ *
+ * Does nothing if from is empty. Equivalent to boost::replace_all.
+ */
+BaseExport void replaceAll(std::string& value, std::string_view from, std::string_view to);
 
 /**
  * @brief Parse a whole string as a long integer using locale-independent C/POSIX rules.

@@ -38,6 +38,51 @@ std::string Base::StringUtils::lowercaseAscii(std::string_view value)
     return result;
 }
 
+bool Base::StringUtils::iequals(std::string_view lhs, std::string_view rhs)
+{
+    return std::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), [](char l, char r) {
+        return std::tolower(static_cast<unsigned char>(l))
+            == std::tolower(static_cast<unsigned char>(r));
+    });
+}
+
+bool Base::StringUtils::istarts_with(std::string_view str, std::string_view prefix)
+{
+    return str.size() >= prefix.size() && iequals(str.substr(0, prefix.size()), prefix);
+}
+
+bool Base::StringUtils::iends_with(std::string_view str, std::string_view suffix)
+{
+    return str.size() >= suffix.size() && iequals(str.substr(str.size() - suffix.size()), suffix);
+}
+
+std::vector<std::string> Base::StringUtils::split(std::string_view value, char delimiter)
+{
+    std::vector<std::string> tokens;
+    std::string_view::size_type start = 0;
+    while (true) {
+        const auto pos = value.find(delimiter, start);
+        tokens.emplace_back(value.substr(start, pos - start));
+        if (pos == std::string_view::npos) {
+            break;
+        }
+        start = pos + 1;
+    }
+    return tokens;
+}
+
+void Base::StringUtils::replaceAll(std::string& value, std::string_view from, std::string_view to)
+{
+    if (from.empty()) {
+        return;
+    }
+    std::string::size_type pos = 0;
+    while ((pos = value.find(from, pos)) != std::string::npos) {
+        value.replace(pos, from.size(), to);
+        pos += to.size();
+    }
+}
+
 bool Base::StringUtils::parseLong(std::string_view value, long& result)
 {
     std::istringstream stream(trimmed(value));
