@@ -31,6 +31,8 @@
 
 #include "Blending/ViewProviderBlendCurve.h"
 
+#include "Gordon/TaskGordonSurface.h"
+
 #include "TaskFilling.h"
 #include "TaskGeomFillSurface.h"
 #include "TaskSections.h"
@@ -84,6 +86,7 @@ PyMOD_INIT_FUNC(SurfaceGui)
     SurfaceGui::ViewProviderSections        ::init();
     SurfaceGui::ViewProviderExtend          ::init();
     SurfaceGui::ViewProviderBlendCurve      ::init();
+    SurfaceGui::ViewProviderGordonSurface   ::init();
     // SurfaceGui::ViewProviderCut::init();
     // clang-format on
 

@@ -31,6 +31,8 @@
 #include "Blending/BlendPointPy.h"
 #include "Blending/FeatureBlendCurve.h"
 
+#include "Gordon/FeatureGordonSurface.h"
+
 #include "FeatureCut.h"
 #include "FeatureExtend.h"
 #include "FeatureFilling.h"
@@ -87,6 +89,7 @@ PyMOD_INIT_FUNC(Surface)
     Surface::Extend            ::init();
     Surface::FeatureBlendCurve ::init();
     Surface::Sections          ::init();
+    Surface::GordonSurface     ::init();
     // clang-format on
 
     // connect to unified measurement facility
