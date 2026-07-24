@@ -71,6 +71,7 @@ public:
     void selectQGIView(App::DocumentObject *obj, bool isSelected, const std::vector<std::string> &subNames);
     void clearSceneSelection();
     void blockSceneSelection(bool isBlocked);
+    void selectOnRightPress(QGraphicsItem* item);
 
     bool onMsg(const char* pMsg) override;
     bool onHasMsg(const char* pMsg) const override;
@@ -143,6 +144,19 @@ protected:
     void sceneSelectionManager();
 
 private:
+    struct SelectionContext {
+        bool hasFace = false;
+        bool hasGeomEdge = false;
+        bool hasCosmeticEdge = false;
+        bool hasCircleEdge = false;
+    };
+
+    static SelectionContext getSelectionContext();
+
+    bool addSelectionGroups(QMenu& menu);
+    void addPageGroup(QMenu& menu);
+    int addCommandsByName(QMenu& menu, std::initializer_list<const char*> names);
+
     using Connection = fastsignals::connection;
     Connection connectDeletedObject;
 
