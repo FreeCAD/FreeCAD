@@ -310,6 +310,47 @@ void StdCmdAboutQt::activated(int iMsg)
 }
 
 //===========================================================================
+// Std_HelpGroup
+//===========================================================================
+class StdCmdHelpGroup: public Gui::GroupCommand
+{
+public:
+    StdCmdHelpGroup()
+        : GroupCommand("Std_HelpGroup")
+    {
+        sGroup = "File";
+        sMenuText = QT_TR_NOOP("Help");
+        sToolTipText = QT_TR_NOOP("Opens the documentation corresponding to the selection");
+        sWhatsThis = "Std_HelpGroup";
+        sStatusTip = sToolTipText;
+
+        setCheckable(false);
+        setRememberLast(false);
+
+        addCommand("Std_WhatsThis");
+        addCommand("Std_OnlineHelp");
+        addCommand();  // separator
+        addCommand("Std_FreeCADUserHub");
+        addCommand("Std_FreeCADForum");
+        addCommand("Std_FreeCADFAQ");
+        addCommand("Std_ReportBug");
+        addCommand();  // separator
+        addCommand("Std_RestartInSafeMode");
+        addCommand();  // separator
+        addCommand("Std_FreeCADPowerUserHub");
+        addCommand("Std_PythonHelp");
+        addCommand();  // separator
+        addCommand("Std_FreeCADWebsite");
+        addCommand("Std_FreeCADDonation");
+        addCommand("Std_About");
+    }
+
+    const char* className() const override
+    {
+        return "StdCmdHelpGroup";
+    }
+};
+//===========================================================================
 // Std_WhatsThis
 //===========================================================================
 DEF_STD_CMD(StdCmdWhatsThis)
@@ -1078,6 +1119,7 @@ void CreateStdCommands()
     rcCmdMgr.addCommand(new StdCmdUserEditMode());
     rcCmdMgr.addCommand(new StdCmdReloadStyleSheet());
     rcCmdMgr.addCommand(new StdCmdDevHandbook());
+    rcCmdMgr.addCommand(new StdCmdHelpGroup());
     // rcCmdMgr.addCommand(new StdCmdDownloadOnlineHelp());
     // rcCmdMgr.addCommand(new StdCmdDescription());
     rcCmdMgr.addCommand(new StdCmdAnnotationLabel());
