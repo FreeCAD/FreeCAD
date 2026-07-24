@@ -32,7 +32,7 @@
 #include <vector>
 
 #include <boost/algorithm/string/predicate.hpp>
-#include <boost/math/special_functions/round.hpp>
+#include <cmath>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -152,13 +152,13 @@ void PropertyInteger::setPathValue(const ObjectIdentifier& path, const boost::an
         setValue(boost::any_cast<int>(value));
     }
     else if (value.type() == typeid(double)) {
-        setValue(boost::math::round(boost::any_cast<double>(value)));
+        setValue(std::round(boost::any_cast<double>(value)));
     }
     else if (value.type() == typeid(float)) {
-        setValue(boost::math::round(boost::any_cast<float>(value)));
+        setValue(std::round(boost::any_cast<float>(value)));
     }
     else if (value.type() == typeid(Quantity)) {
-        setValue(boost::math::round(boost::any_cast<Quantity>(value).getValue()));
+        setValue(std::round(boost::any_cast<Quantity>(value).getValue()));
     }
     else {
         throw bad_cast();
@@ -2314,10 +2314,10 @@ void PropertyBool::setPathValue(const ObjectIdentifier& path, const boost::any& 
         setValue(boost::any_cast<long>(value) != 0);
     }
     else if (value.type() == typeid(double)) {
-        setValue(boost::math::round(boost::any_cast<double>(value)));
+        setValue(std::round(boost::any_cast<double>(value)));
     }
     else if (value.type() == typeid(float)) {
-        setValue(boost::math::round(boost::any_cast<float>(value)));
+        setValue(std::round(boost::any_cast<float>(value)));
     }
     else if (value.type() == typeid(Quantity)) {
         setValue(boost::any_cast<Quantity>(value).getValue() != 0);

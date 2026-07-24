@@ -33,8 +33,7 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/io/ios_state.hpp>
-#include <boost/math/special_functions/round.hpp>
-#include <boost/math/special_functions/trunc.hpp>
+#include <cmath>
 
 #include <numbers>
 #include <limits>
@@ -2526,7 +2525,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         // Compute new unit for exponentiation
         double exponent = v2.getValue();
         if (!v1.isDimensionless()) {
-            if (exponent - boost::math::round(exponent) < 1e-9)
+            if (exponent - std::round(exponent) < 1e-9)
                 unit = v1.getUnit().pow(exponent);
             else
                 _EXPR_THROW("Exponent must be an integer when used with a unit.",expr);
@@ -2627,10 +2626,10 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         break;
     }
     case ROUND:
-        output = boost::math::round(value);
+        output = std::round(value);
         break;
     case TRUNC:
-        output = boost::math::trunc(value);
+        output = std::trunc(value);
         break;
     case CEIL:
         output = ceil(value);
