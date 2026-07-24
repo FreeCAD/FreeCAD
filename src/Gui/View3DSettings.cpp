@@ -65,6 +65,14 @@ View3DSettings::~View3DSettings()
     hLightSourcesGrp->Detach(this);
 }
 
+void View3DSettings::syncOrthographicPref(bool isOrthographic)
+{
+    ignoreOrthographic = true;
+    hGrp->SetBool("Orthographic", isOrthographic);
+    hGrp->SetBool("Perspective", !isOrthographic);
+    ignoreOrthographic = false;
+}
+
 int View3DSettings::stopAnimatingIfDeactivated() const
 {
     long defaultTimeout = 3000;
@@ -435,15 +443,17 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
         }
     }
     else if (strcmp(Reason, "Orthographic") == 0) {
-        // check whether a perspective or orthogrphic camera should be set
-        if (rGrp.GetBool("Orthographic", true)) {
-            for (auto _viewer : _viewers) {
-                _viewer->setCameraType(SoOrthographicCamera::getClassTypeId());
+        if (!ignoreOrthographic) {
+            // check whether a perspective or orthographic camera should be set
+            if (rGrp.GetBool("Orthographic", true)) {
+                for (auto _viewer : _viewers) {
+                    _viewer->setCameraType(SoOrthographicCamera::getClassTypeId());
+                }
             }
-        }
-        else {
-            for (auto _viewer : _viewers) {
-                _viewer->setCameraType(SoPerspectiveCamera::getClassTypeId());
+            else {
+                for (auto _viewer : _viewers) {
+                    _viewer->setCameraType(SoPerspectiveCamera::getClassTypeId());
+                }
             }
         }
     }
