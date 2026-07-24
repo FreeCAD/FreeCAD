@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export
+from Base.Metadata import export, sequence_protocol
 from Base.Vector import Vector
 from Point import Point
 from TopoShape import TopoShape
@@ -14,6 +14,19 @@ from typing import Final, overload
     FatherInclude="Mod/Part/App/TopoShapePy.h",
     Include="Mod/Part/App/TopoShape.h",
     Constructor=True,
+    RichCompare=True,
+)
+@sequence_protocol(
+    sq_length=True,
+    sq_concat=False,
+    sq_repeat=False,
+    sq_item=True,
+    mp_subscript=False,
+    sq_ass_item=False,
+    mp_ass_subscript=False,
+    sq_contains=False,
+    sq_inplace_concat=False,
+    sq_inplace_repeat=False,
 )
 class TopoShapeVertex(TopoShape):
     """
