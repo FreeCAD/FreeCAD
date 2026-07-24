@@ -167,6 +167,20 @@ def diffAngle(a1, a2, direction="CW"):
     return a
 
 
+def compareVecs(vec1, vec2, exact=False, error=Tolerance):
+    """compareVecs(vec1, vec2, [exact=False, error=Tolerance])
+    Returns True if two vectors are aligned within a given error.
+    If exact is True, vectors must match direction.
+    Otherwise, alignment can indicate the vectors are the same or exactly opposite.
+    """
+    angle = vec1.getAngle(vec2)
+    angle = 0 if math.isnan(angle) else angle
+    if exact:
+        return Path.Geom.isRoughly(angle, 0, error)
+    else:
+        return Path.Geom.isRoughly(angle, 0, error) or Path.Geom.isRoughly(angle, math.pi, error)
+
+
 def isVertical(obj):
     """isVertical(obj) ... answer True if obj points into Z"""
     if isinstance(obj, FreeCAD.Vector):
