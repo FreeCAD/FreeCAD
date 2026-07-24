@@ -211,8 +211,13 @@ SET(TechDrawGui_SRCS
     TaskCosmeticCircle.cpp
     TaskCosmeticCircle.h
     TaskCosmeticCircle.ui
+    TaskAddOffsetVertex.cpp
+    TaskAddOffsetVertex.h
+    TaskAddOffsetVertex.ui
     TechDrawHandler.cpp
     TechDrawHandler.h
+    TechDrawVertexHandler.cpp
+    TechDrawVertexHandler.h
     Widgets/CompassDialWidget.cpp
     Widgets/CompassDialWidget.h
     Widgets/CompassWidget.cpp

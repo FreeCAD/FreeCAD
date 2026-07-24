@@ -41,7 +41,6 @@ using namespace TechDrawGui;
     qApp->translate("Workbench", "Annotations");
     qApp->translate("Workbench", "Stacking");
     qApp->translate("Workbench", "Add Lines");
-    qApp->translate("Workbench", "Add Vertices");
     qApp->translate("Workbench", "Page");
     qApp->translate("Workbench", "TechDraw");
     // Translations for View > Toolbars
@@ -128,9 +127,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *toolcenter << "TechDraw_ExtensionThreadBoltSide";
     *toolcenter << "TechDraw_ExtensionThreadBoltBottom";
     *toolcenter << "Separator";
-    *toolcenter << "TechDraw_ExtensionVertexAtIntersection";
-    *toolcenter << "TechDraw_CommandAddOffsetVertex";
-    *toolcenter << "Separator";
     *toolcenter << "TechDraw_CosmeticCircle";
     *toolcenter << "TechDraw_ExtensionDrawCosmCircle";
     *toolcenter << "TechDraw_ExtensionDrawCosmCircle3Points";
@@ -186,13 +182,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *lines << "Separator";
     *lines << "TechDraw_DecorateLine";
     *lines << "TechDraw_ShowAll";
-
-    // vertices
-    Gui::MenuItem* vertices = new Gui::MenuItem;
-    vertices->setCommand("Add Vertices");
-    *vertices << "TechDraw_CosmeticVertex";
-    *vertices << "TechDraw_Midpoints";
-    *vertices << "TechDraw_Quadrants";
 
     // pages
     Gui::MenuItem* pages = new Gui::MenuItem;
@@ -277,7 +266,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "Separator";
     *draw << annotations;
     *draw << lines;
-    *draw << vertices;
     *draw << "Separator";
     *draw << "TechDraw_CosmeticEraser";
 
@@ -358,8 +346,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     extcenter->setCommand("TechDraw Centerlines");
     *extcenter << "TechDraw_ExtensionCircleCenterLinesGroup";
     *extcenter << "TechDraw_ExtensionThreadsGroup";
-    *extcenter << "TechDraw_CommandVertexCreationGroup";
-    //*extcenter << "TechDraw_ExtensionVertexAtIntersection";
     *extcenter << "TechDraw_ExtensionDrawCirclesGroup";
     *extcenter << "TechDraw_ExtensionLinePPGroup";
 
@@ -388,8 +374,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* anno = new Gui::ToolBarItem(root);
     anno->setCommand("TechDraw Annotation");
     *anno << "TechDraw_RichTextAnnotation";
+    *anno << "TechDraw_CosmeticVertex";
     *anno << "TechDraw_LeaderLine";
-    *anno << "TechDraw_CosmeticVertexGroup";
     *anno << "TechDraw_CenterLineGroup";
     *anno << "TechDraw_2PointCosmeticLine";
     *anno << "TechDraw_DecorateLine";
@@ -456,8 +442,6 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     extcenter->setCommand("TechDraw Centerlines");
     *extcenter << "TechDraw_ExtensionCircleCenterLinesGroup";
     *extcenter << "TechDraw_ExtensionThreadsGroup";
-    *extcenter << "TechDraw_CommandVertexCreationGroup";
-    //*extcenter << "TechDraw_ExtensionVertexAtIntersection";
     *extcenter << "TechDraw_ExtensionDrawCirclesGroup";
     *extcenter << "TechDraw_ExtensionLinePPGroup";
 
@@ -486,7 +470,6 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *anno << "TechDraw_Annotation";
     *anno << "TechDraw_LeaderLine";
     *anno << "TechDraw_RichTextAnnotation";
-    *anno << "TechDraw_CosmeticVertexGroup";
     *anno << "TechDraw_CenterLineGroup";
     *anno << "TechDraw_2PointCosmeticLine";
     *anno << "TechDraw_DecorateLine";
