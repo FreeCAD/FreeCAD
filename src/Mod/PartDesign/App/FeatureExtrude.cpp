@@ -743,15 +743,12 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             // Let's call algorithm computing a fuse operation:
             TopoShape result(0, getDocument()->getStringHasher());
             try {
-                const char* maker;
-                switch (getAddSubType()) {
-                    case Subtractive:
-                        maker = Part::OpCodes::Cut;
-                        break;
-                    default:
-                        maker = Part::OpCodes::Fuse;
-                }
-                result.makeElementBoolean(maker, {base, prism}, nullptr, FuzzyTolerance.getValue());
+                result.makeElementBoolean(
+                    getBooleanMaker(),
+                    {base, prism},
+                    nullptr,
+                    FuzzyTolerance.getValue()
+                );
             }
             catch (Standard_Failure&) {
                 return new App::DocumentObjectExecReturn(
@@ -887,7 +884,7 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
 
         try {
             TopoShape _base;
-            if (addSubType != FeatureAddSub::Subtractive) {
+            if (addSubType != FeatureAddSub::Type::Subtractive) {
                 _base = base;  // avoid issue #16690
             }
             prism.makeElementPrismUntil(

@@ -550,7 +550,7 @@ const App::PropertyQuantityConstraint::Constraints clearanceRange
 
 Hole::Hole()
 {
-    addSubType = FeatureAddSub::Subtractive;
+    defineSubtractive();
 
     readCutDefinitions();
 
@@ -2021,14 +2021,7 @@ App::DocumentObjectExecReturn* Hole::execute()
         // First try cutting with compound which will be faster as it is done in
         // parallel
         bool retry = true;
-        const char* maker;
-        switch (getAddSubType()) {
-            case Additive:
-                maker = Part::OpCodes::Fuse;
-                break;
-            default:
-                maker = Part::OpCodes::Cut;
-        }
+        const char* maker = getBooleanMaker();
         try {
             if (base.isNull()) {
                 result = compound;

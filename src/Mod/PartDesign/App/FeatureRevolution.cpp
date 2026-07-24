@@ -42,7 +42,7 @@ PROPERTY_SOURCE(PartDesign::Revolution, PartDesign::Revolved)
 
 Revolution::Revolution()
 {
-    addSubType = FeatureAddSub::Additive;
+    defineAdditive();
     const double fullAngle = 360.0;
     const double emptyAngle = 0.0;
 

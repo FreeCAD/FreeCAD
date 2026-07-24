@@ -79,7 +79,7 @@ void ViewProvider::attach(App::DocumentObject* pcObject)
     auto* styleParameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
 
     if (auto addSubFeature = getObject<PartDesign::FeatureAddSub>()) {
-        bool isAdditive = addSubFeature->getAddSubType() == PartDesign::FeatureAddSub::Additive;
+        bool isAdditive = addSubFeature->getAddSubType() == PartDesign::FeatureAddSub::Type::Additive;
 
         PreviewColor.setValue(
             isAdditive ? styleParameterManager->resolve(StyleParameters::PreviewAdditiveColor)
@@ -253,7 +253,7 @@ void ViewProvider::updatePreview()
 
     if (auto* addSubFeature = getObject<PartDesign::FeatureAddSub>()) {
         // we only want to show the additional tool preview for subtractive features
-        if (addSubFeature->getAddSubType() != PartDesign::FeatureAddSub::Subtractive) {
+        if (addSubFeature->getAddSubType() != PartDesign::FeatureAddSub::Type::Subtractive) {
             return;
         }
 
