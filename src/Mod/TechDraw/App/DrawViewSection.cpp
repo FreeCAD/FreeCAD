@@ -394,7 +394,7 @@ TopoDS_Shape DrawViewSection::getShapeToCut()
 
 TopoDS_Shape DrawViewSection::getShapeForDetail() const
 {
-    return ShapeUtils::rotateShape(getCutShape(), getProjectionCS(), Rotation.getValue());
+    return ShapeUtils::rotateShape(getCutShape(), getProjectionCS(SectionOrigin.getValue()), Rotation.getValue());
 }
 
 App::DocumentObjectExecReturn* DrawViewSection::execute()
@@ -571,18 +571,21 @@ TopoDS_Shape DrawViewSection::prepareShape(const TopoDS_Shape& uncenteredCutShap
     // build display geometry as in DVP, with minor mods
     TopoDS_Shape preparedShape;
     try {
-        Base::Vector3d origin(0.0, 0.0, 0.0);
-        m_projectionCS = getProjectionCS(origin);
+        m_projectionCS = getProjectionCS(SectionOrigin.getValue());
         gp_Pnt inputCenter;
+
+        // this next bit is unneeded for section, but they are set in
+        // DrawViewPart::centerScaleAndRotate, so the m_xxxx values might be
+        // referenced somewhere.
         inputCenter = ShapeUtils::findCentroid(uncenteredCutShape, m_projectionCS);
         Base::Vector3d centroid(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
-
         m_cutShapeRaw = uncenteredCutShape;
-        preparedShape = ShapeUtils::moveShape(uncenteredCutShape, centroid * -1.0);
-        m_cutShape = preparedShape;
+        m_cutShape = uncenteredCutShape;
         m_saveCentroid = centroid;
 
-        preparedShape = ShapeUtils::scaleShape(preparedShape, getScale());
+        // We don't need to move the cut shape before projecting since the CS is located at the
+        // SectionOrigin.
+        preparedShape = ShapeUtils::scaleShape(uncenteredCutShape, getScale());
 
         if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
             preparedShape =
@@ -590,8 +593,6 @@ TopoDS_Shape DrawViewSection::prepareShape(const TopoDS_Shape& uncenteredCutShap
         }
         if (debugSection()) {
             BRepTools::Write(m_cutShape, "DVSCutShape.brep");// debug
-            //            DrawUtil::dumpCS("DVS::makeSectionCut - CS to GO",
-            //            viewAxis);
         }
     }
     catch (Standard_Failure& e1) {
@@ -633,7 +634,7 @@ void DrawViewSection::onSectionCutFinished()
     postSectionCutTasks();
 
     // display geometry for cut shape is in geometryObject as in DVP
-    m_tempGeometryObject = buildGeometryObject(m_preparedShape, getProjectionCS());
+    m_tempGeometryObject = buildGeometryObject(m_preparedShape, getProjectionCS(SectionOrigin.getValue()));
     if (!DU::isGuiUp()) {
         onHlrFinished();
     }
@@ -662,12 +663,10 @@ void DrawViewSection::postHlrTasks()
         BRepTools::Write(faceIntersections, "DVSFaceIntersections.brep");// debug
     }
 
-    TopoDS_Shape centeredFaces = ShapeUtils::moveShape(faceIntersections, m_saveCentroid * -1.0);
-
-    TopoDS_Shape scaledSection = ShapeUtils::scaleShape(centeredFaces, getScale());
+    TopoDS_Shape scaledSection = ShapeUtils::scaleShape(faceIntersections, getScale());
     if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
         scaledSection =
-            ShapeUtils::rotateShape(scaledSection, getProjectionCS(), Rotation.getValue());
+            ShapeUtils::rotateShape(scaledSection, getProjectionCS(SectionOrigin.getValue()), Rotation.getValue());
     }
 
     m_sectionTopoDSFaces = alignSectionFaces(faceIntersections);
@@ -758,13 +757,11 @@ TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shap
 TopoDS_Compound DrawViewSection::alignSectionFaces(const TopoDS_Shape& faceIntersections)
 {
     TopoDS_Compound sectionFaces;
-    TopoDS_Shape centeredShape =
-        ShapeUtils::moveShape(faceIntersections, getOriginalCentroid() * -1.0);
 
-    TopoDS_Shape scaledSection = ShapeUtils::scaleShape(centeredShape, getScale());
+    TopoDS_Shape scaledSection = ShapeUtils::scaleShape(faceIntersections, getScale());
     if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
         scaledSection =
-            ShapeUtils::rotateShape(scaledSection, getProjectionCS(), Rotation.getValue());
+            ShapeUtils::rotateShape(scaledSection, getProjectionCS(SectionOrigin.getValue()), Rotation.getValue());
     }
 
     if (debugSection()) {
@@ -805,7 +802,7 @@ TopoDS_Compound DrawViewSection::mapToPage(const TopoDS_Shape& shapeToAlign)
         TopExp_Explorer expWires(face, TopAbs_WIRE);
         for (; expWires.More(); expWires.Next()) {
             const TopoDS_Wire& wire = TopoDS::Wire(expWires.Current());
-            TopoDS_Shape projectedShape = GeometryObject::projectSimpleShape(wire, getProjectionCS());
+            TopoDS_Shape projectedShape = GeometryObject::projectSimpleShape(wire, getProjectionCS(SectionOrigin.getValue()));
             if (debugSection()) {
                 std::stringstream ss;
                 ss << "DVSProjectedWire" << iFace << ".brep";
@@ -1080,7 +1077,6 @@ void DrawViewSection::setCSFromLocalUnit(const Base::Vector3d& localUnit)
 
 gp_Ax2 DrawViewSection::getCSFromBase(const std::string& sectionName) const
 {
-    Base::Vector3d origin(0.0, 0.0, 0.0);
     Base::Vector3d sectOrigin = SectionOrigin.getValue();
 
     gp_Ax2 dvpCS = getBaseDVP()->getProjectionCS(sectOrigin);
@@ -1156,7 +1152,7 @@ gp_Ax2 DrawViewSection::getSectionCS() const
 //! return the center of the shape resulting from the cut operation
 Base::Vector3d DrawViewSection::getCutCentroid() const
 {
-    gp_Pnt inputCenter = ShapeUtils::findCentroid(m_cutPieces, getProjectionCS());
+    gp_Pnt inputCenter = ShapeUtils::findCentroid(m_cutPieces, getProjectionCS(SectionOrigin.getValue()));
     return Base::Vector3d(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
 }
 
