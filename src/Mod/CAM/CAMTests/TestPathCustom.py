@@ -30,6 +30,7 @@ from unittest.mock import Mock
 
 import Path
 from Path.Op import Custom
+from Path.Base.MachineState import MachineState
 from Path.Post.Processor import PostProcessor
 from Path.Post.PostList import Postable
 from Machine.models.machine import Machine, OutputUnits
@@ -81,6 +82,7 @@ class TestPathCustomConverted(PathTestUtils.PathTestBase):
         self.pp._machine = Machine()
         self.pp._machine.output.units = OutputUnits.METRIC
         self.pp._merge_machine_config()
+        self.pp.machine_state = MachineState()
 
     def test_supported(self):
         """Processor allows supported gcode"""

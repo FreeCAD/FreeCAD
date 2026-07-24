@@ -207,7 +207,7 @@ G54
         cmd = Path.Command("G73 X1 Y2 Z0 F123 Q1.5 R5")
         cmd.Annotations = {"RetractMode": "G99"}
         test_path = [
-            Path.Command("G0 X1 Y2"),
+            Path.Command("G0 X1 Y2 F100"),  # expect 6000
             Path.Command("G0 Z8"),
             Path.Command("G90"),
             Path.Command("G99"),
@@ -261,7 +261,7 @@ G90
         )
         # check for an inch/imperial chipbreaking amount
         test_path = [
-            Path.Command("G0 X25.4 Y50.8"),
+            Path.Command("G0 X25.4 Y50.8 F1"),
             Path.Command("G0 Z203.2"),
             Path.Command("G90"),
             Path.Command("G99"),

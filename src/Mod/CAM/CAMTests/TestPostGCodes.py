@@ -793,12 +793,14 @@ G90
 """,
             "--comments --translate_drill",
         )
+
+    def test10731(self):
+        """Test translate_drill with G73 and G91."""
         #
         # reinitialize the postprocessor data structures before doing more tests
         #
         self.post.reinitialize()
         #
-        # Test translate_drill with G73 and G91.
         #
         path = [
             Path.Command("G0 X1 Y2"),
@@ -959,12 +961,14 @@ G90
 """,
             "--comments --translate_drill",
         )
+
+    def test10811(self):
+        """Test translate_drill with G81 and G91"""
         #
         # reinitialize the postprocessor data structures before doing more tests
         #
         self.post.reinitialize()
         #
-        # Test translate_drill with G81 and G91.
         #
         path = [
             Path.Command("G0 X1 Y2"),
@@ -1115,12 +1119,14 @@ G90
 """,
             "--comments --translate_drill",
         )
+
+    def test10821(self):
+        """Test translate_drill with G82 and G91."""
         #
         # reinitialize the postprocessor data structures before doing more tests
         #
         self.post.reinitialize()
         #
-        # Test translate_drill with G82 and G91.
         #
         path = [
             Path.Command("G0 X1 Y2"),
@@ -1289,12 +1295,14 @@ G90
 """,
             "--comments --translate_drill",
         )
+
+    def test10831(self):
+        """Test translate_drill with G83 and G91."""
         #
         # reinitialize the postprocessor data structures before doing more tests
         #
         self.post.reinitialize()
         #
-        # Test translate_drill with G83 and G91.
         #
         path = [
             Path.Command("G0 X1 Y2"),
