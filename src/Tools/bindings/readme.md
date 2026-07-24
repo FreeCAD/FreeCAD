@@ -41,7 +41,7 @@ This system is designed to be fully compatible and backwards-compatible with the
 The binding system is built around a few core components:
 
 * **Metadata Decorators:**
-    A set of decorators (e.g., `@export`, `@constmethod`, `@sequence_protocol`) to annotate classes and methods with necessary metadata for the binding process. These decorators help bridge the gap between the C++ definitions and the Python interface.
+    A set of decorators (e.g., `@export`, `@constmethod`, `@sequence_protocol`, `@deprecated_attributes`) to annotate classes and methods with necessary metadata for the binding process. These decorators help bridge the gap between the C++ definitions and the Python interface.
 
 * **C++ Python Stub Generation:**
     The system generates C++ Python stubs that act as a direct mapping to the corresponding C++ classes. These stubs include method signatures, attributes, and detailed docstrings and uses the same code
@@ -149,6 +149,53 @@ provide Python type hinting for type checkers like mypy. Overload-only construct
 exception: when the overload set carries constructor documentation, that documentation is
 folded into the exported class documentation, because constructor bindings are generated
 through `Constructor=True` rather than a normal method stub.
+
+### Deprecation
+
+Deprecated methods and classes should use the keyword-only `deprecated` metadata
+decorator. It records the lifecycle explicitly while generated public stubs expose
+the standard PEP 702 decorator so type checkers can flag call sites:
+
+```python
+from Metadata import deprecated
+
+class ShapePy(PyObjectBase):
+    @deprecated(
+        deprecated_in="26.3",
+        removed_in="27.2",
+        replacement="fuse()",
+    )
+    def multiFuse(self, tools) -> object:
+        """
+        Deprecated: use fuse() instead.
+        """
+        ...
+```
+
+The binding generator formats the lifecycle metadata into a deprecation message and
+emits a runtime `DeprecationWarning` from the generated wrapper. Binding specs accept
+only structured keyword-only metadata.
+
+Deprecated attributes should use structured `@deprecated_attributes(...)` metadata on
+the enclosing class:
+
+```python
+from Metadata import deprecated_attributes
+
+@deprecated_attributes(
+    Wire={
+        "deprecated_in": "26.3",
+        "removed_in": "27.2",
+        "replacement": "OuterWire",
+    },
+)
+class TopoShapeFace(TopoShape):
+    Wire: object = ...
+    """Legacy alias for the outer wire of this face. Use OuterWire instead."""
+```
+
+String values and docstring markers like `Deprecated:` or `deprecated --` are
+documentation only. Attribute deprecations require structured metadata.
 
 ### Attributes and Read-Only Properties
 

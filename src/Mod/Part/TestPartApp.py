@@ -25,6 +25,7 @@
 import FreeCAD, unittest, Part
 import copy
 import math
+import warnings
 from FreeCAD import Units
 from FreeCAD import Base
 
@@ -76,6 +77,37 @@ class PartTestCases(unittest.TestCase):
         # result = Part.makeFilledFace([edge1,edge2,edge3,edge4])
         # self.Doc.addObject("Part::Feature","Face").Shape = result
         # self.assertTrue(isinstance(result.Surface, Part.BSplineSurface))
+
+    def testDeprecatedInsertWarningDoesNotCreateDocument(self):
+        document_name = "DeprecatedPartInsertTest"
+        try:
+            with warnings.catch_warnings():
+                warnings.simplefilter("error", DeprecationWarning)
+                with self.assertRaises(DeprecationWarning):
+                    Part.insert("missing.step", document_name)
+            self.assertNotIn(document_name, FreeCAD.listDocuments())
+        finally:
+            if document_name in FreeCAD.listDocuments():
+                FreeCAD.closeDocument(document_name)
+
+    def testDeprecatedInsertWarningIncludesLifecycle(self):
+        document_name = "DeprecatedPartInsertMessageTest"
+        try:
+            with warnings.catch_warnings(record=True) as caught:
+                warnings.simplefilter("always", DeprecationWarning)
+                try:
+                    Part.insert("missing.step", document_name)
+                except Exception:
+                    pass
+            self.assertEqual(len(caught), 1)
+            self.assertEqual(
+                str(caught[0].message),
+                "Method 'Part.insert' is deprecated since FreeCAD 26.3 and will be removed in "
+                "FreeCAD 27.2; use Import.insert instead.",
+            )
+        finally:
+            if document_name in FreeCAD.listDocuments():
+                FreeCAD.closeDocument(document_name)
 
     def tearDown(self):
         # closing doc

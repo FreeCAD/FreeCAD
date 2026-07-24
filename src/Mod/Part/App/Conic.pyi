@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export
+from Base.Metadata import export, deprecated_attributes
 from Base.Vector import Vector
 from GeometryCurve import GeometryCurve
 from typing import Final
@@ -14,6 +14,13 @@ from typing import Final
     Include="Mod/Part/App/Geometry.h",
     FatherInclude="Mod/Part/App/GeometryCurvePy.h",
     Constructor=True,
+)
+@deprecated_attributes(
+    Center={
+        "deprecated_in": "26.3",
+        "removed_in": "27.2",
+        "replacement": "Location",
+    },
 )
 class Conic(GeometryCurve):
     """

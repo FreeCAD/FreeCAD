@@ -21,6 +21,7 @@ import ast
 from pathlib import Path
 import re
 
+from .deprecation import literal_keyword_values, structured_deprecation_message
 from .discovery import (
     collect_type_registrations,
     contextual_cpp_type_name,
@@ -45,6 +46,31 @@ from .parsing import (
     iter_type_stub_pyi_files,
     parse_python_source,
 )
+
+
+def deprecated_message_from_decorator(decorator: ast.expr) -> str | None:
+    if decorator_name(decorator).split(".", 1)[-1] != "deprecated":
+        return None
+
+    if not isinstance(decorator, ast.Call):
+        raise ValueError("deprecated must be called with structured lifecycle metadata")
+    if decorator.args:
+        raise ValueError("structured deprecated() metadata accepts only keyword arguments")
+
+    kwargs = literal_keyword_values(decorator, "deprecated() metadata")
+    message = structured_deprecation_message(kwargs)
+    if message is None:
+        raise ValueError("deprecated() requires structured lifecycle metadata")
+    return message
+
+
+def deprecated_message_from_function_node(node: ast.FunctionDef) -> str | None:
+    for decorator in node.decorator_list:
+        if message := deprecated_message_from_decorator(decorator):
+            return message
+        if message == "":
+            return ""
+    return None
 
 
 def binding_export_name(class_name: str, export_kwargs: dict[str, object]) -> str:
@@ -214,7 +240,13 @@ def stub_signature_from_function_node(
         parameters = parameters.removeprefix("self,").lstrip()
     else:
         raise ValueError(f"{path}: {class_symbol}.{node.name} must be an instance method")
-    return StubSignature(parameters, returns, class_symbol, doc)
+    return StubSignature(
+        parameters,
+        returns,
+        class_symbol,
+        doc,
+        deprecated_message=deprecated_message_from_function_node(node),
+    )
 
 
 def module_stub_signature_from_function_node(
@@ -226,7 +258,12 @@ def module_stub_signature_from_function_node(
     parameters, returns, doc = extracted_function_signature_parts(path, module_name, source, node)
     if parameters.startswith(("self", "cls")):
         raise ValueError(f"{path}: {module_name}.{node.name} must not declare self or cls")
-    return StubSignature(parameters, returns, doc=doc)
+    return StubSignature(
+        parameters,
+        returns,
+        doc=doc,
+        deprecated_message=deprecated_message_from_function_node(node),
+    )
 
 
 def append_module_signature_group(

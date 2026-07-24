@@ -105,6 +105,14 @@ class Parameter:
 
 
 @dataclass
+class DeprecationLifecycle:
+    DeprecatedIn: str
+    RemovedIn: str
+    Replacement: Optional[str] = None
+    Details: Optional[str] = None
+
+
+@dataclass
 class Method:
     """
     Corresponds to the legacy <Methode> element inside <PythonExport>.
@@ -121,6 +129,7 @@ class Method:
     NoArgs: bool = False
     Class: bool = False
     Static: bool = False
+    Deprecated: Optional[DeprecationLifecycle] = None
 
 
 Methode = Method
@@ -140,6 +149,7 @@ class Attribute:
     # Attributes
     Name: str
     ReadOnly: bool
+    Deprecated: Optional[DeprecationLifecycle] = None
 
 
 @dataclass

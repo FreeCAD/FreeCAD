@@ -87,6 +87,16 @@ Prefer generated stubs for classes that already have binding `.pyi` specs.
 Those files are close to the C++ wrapper source of truth and can be improved
 without creating a second hand-written API surface.
 
+Binding stubs should use the keyword-only `Metadata.deprecated(...)` decorator with
+`deprecated_in` and `removed_in` releases. The public stub generator converts that
+metadata to `typing_extensions.deprecated(...)` for binding classes,
+source-adjacent type stubs, and `*.module.pyi` functions. Positional PEP 702
+decorators are emitted only in the generated public stubs; source metadata is always
+structured.
+When binding classes use structured `@deprecated_attributes(...)` metadata, the
+public stub generator rewrites those members as deprecated properties in the emitted
+stubs so the lifecycle remains visible in the standard public typing surface.
+
 When the same binding class is exported through multiple public module paths,
 the merged public stubs keep one canonical class body and make the other
 symbols re-export aliases. `FreeCAD.Base` is canonical for classes sourced from

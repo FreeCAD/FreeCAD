@@ -53,7 +53,6 @@ using namespace Part;
 
 int Part::ImportIgesParts(App::Document* pcDoc, const char* FileName)
 {
-    FC_WARN("Importing IGES via 'Part' is deprecated. Use 'ImportGui' instead.");
     try {
         Base::FileInfo fi(FileName);
         // read iges file

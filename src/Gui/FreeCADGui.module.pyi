@@ -13,6 +13,7 @@ import FreeCAD as App
 from collections.abc import Sequence
 from enum import IntEnum
 from typing import Any, ClassVar, Literal, Protocol, TypeAlias, overload
+from Base.Metadata import deprecated
 
 from FreeCAD import DocumentObject
 
@@ -442,6 +443,7 @@ def isCommandActive(name: str, /) -> bool:
     """Return whether one command is active in the current GUI context."""
     ...
 
+@deprecated(deprecated_in="26.3", removed_in="27.2", replacement="View")
 def SendMsgToActiveView(name: str, suppress: bool = False, /) -> None:
     """Send one named message to the active view."""
     ...
@@ -483,10 +485,12 @@ def showPreferencesByName(grp: str, pagename: str = "", /) -> None:
     ...
 
 # Document visibility and file I/O
+@deprecated(deprecated_in="26.3", removed_in="27.2", replacement="hideObject")
 def hide(name: str, /) -> None:
     """Hide one named object in the active GUI document."""
     ...
 
+@deprecated(deprecated_in="26.3", removed_in="27.2", replacement="showObject")
 def show(name: str, /) -> None:
     """Show one named object in the active GUI document."""
     ...
