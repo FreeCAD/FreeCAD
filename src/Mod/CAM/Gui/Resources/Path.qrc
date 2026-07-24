@@ -1,5 +1,9 @@
 <RCC>
     <qresource>
+        <file>icons/origin-x.svg</file>
+        <file>icons/origin-y.svg</file>
+        <file>icons/origin-z.svg</file>
+        <file>icons/set-origin.svg</file>
         <file>icons/CAM_Adaptive.svg</file>
         <file>icons/CAM_3DPocket.svg</file>
         <file>icons/CAM_3DSurface.svg</file>
@@ -81,6 +85,7 @@
         <file>icons/arrow-right-up.svg</file>
         <file>icons/arrow-right.svg</file>
         <file>icons/arrow-up.svg</file>
+        <file>icons/move-to-origin.svg</file>
         <file>icons/edge-join-miter-not.svg</file>
         <file>icons/edge-join-miter.svg</file>
         <file>icons/edge-join-round-not.svg</file>
@@ -162,5 +167,9 @@
         <file>preferences/Advanced.ui</file>
         <file>preferences/PathDressupHoldingTags.ui</file>
         <file>preferences/PathJob.ui</file>
+        <file>icons/model.svg</file>
+        <file>icons/stock.svg</file>
+        <file>icons/center-in-stock.svg</file>
+        <file>icons/xy-in-stock.svg</file>
     </qresource>
 </RCC>

@@ -173,12 +173,14 @@ class StockFromBase(Stock):
         )
 
         obj.Base = base
-        obj.ExtXneg = 1.0
-        obj.ExtXpos = 1.0
-        obj.ExtYneg = 1.0
-        obj.ExtYpos = 1.0
-        obj.ExtZneg = 1.0
-        obj.ExtZpos = 1.0
+        _ext_unit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Length).getUserPreferred()[2]
+        _default_ext = 3.175 if _ext_unit in ("in", '"') else 1.0  # 0.125" or 1mm
+        obj.ExtXneg = _default_ext
+        obj.ExtXpos = _default_ext
+        obj.ExtYneg = _default_ext
+        obj.ExtYpos = _default_ext
+        obj.ExtZneg = _default_ext
+        obj.ExtZpos = _default_ext
 
         # placement is only tracked on creation
         bb = shapeBoundBox(base.Group) if base else None
