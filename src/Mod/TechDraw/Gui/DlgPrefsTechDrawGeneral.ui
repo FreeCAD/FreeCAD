@@ -438,7 +438,7 @@ for ProjectionGroups</string>
           <item>
            <widget class="QComboBox" name="patternComboBox">
             <property name="toolTip">
-             <string>Select a default pattern. If 'Last used' is selected, the pattern you last used will be used.</string>
+             <string>Default pattern applied to new hatches. If 'Last used' is selected, the most recently used pattern is applied.</string>
             </property>
            </widget>
           </item>
