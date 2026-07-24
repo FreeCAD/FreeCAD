@@ -36,6 +36,7 @@
 class QAction;
 class QListWidget;
 class QListWidgetItem;
+class QLineEdit;
 
 namespace Part
 {
@@ -84,6 +85,7 @@ protected Q_SLOTS:
 protected:
     bool eventFilter(QObject* watched, QEvent* event) override;
     void referenceSelected(const Gui::SelectionChanges& msg, QListWidget* widget);
+    void referenceQLineEditSelected(const Gui::SelectionChanges& msg, QLineEdit* widget);
     bool wasDoubleClicked = false;
     void keyPressEvent(QKeyEvent* ke) override;
     void hideOnError();

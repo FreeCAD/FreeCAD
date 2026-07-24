@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PartDesignGui::TaskThreadParameters</class>
+ <widget class="QWidget" name="PartDesignGui::TaskThreadParameters">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>380</width>
+    <height>600</height>
+   </rect>
+  </property>
+
+  <layout class="QVBoxLayout" name="verticalLayout">
+
+   <!-- Thread Location -->
+   <item>
+    <widget class="QGroupBox" name="groupThreadLocation">
+     <property name="title">
+      <string>Thread Location</string>
+     </property>
+
+     <layout class="QFormLayout" name="locationLayout">
+
+      <item row="0" column="0">
+       <widget class="QLabel" name="labelLateralFace">
+        <property name="text">
+         <string>Lateral Face</string>
+        </property>
+       </widget>
+      </item>
+
+      <item row="0" column="1">
+       <widget class="QWidget" name="lateralFaceWidget">
+        <layout class="QHBoxLayout" name="lateralFaceLayout">
+
+         <item>
+          <widget class="QLineEdit" name="lateralFaceEdit">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>No selection</string>
+           </property>
+          </widget>
+         </item>
+
+         <item>
+          <widget class="QPushButton" name="selectLateralFace">
+           <property name="checkable">
+             <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>Select</string>
+           </property>
+          </widget>
+         </item>
+
+        </layout>
+       </widget>
+      </item>
+
+      <item row="1" column="0">
+       <widget class="QLabel" name="labelStart">
+        <property name="text">
+         <string>Start</string>
+        </property>
+       </widget>
+      </item>
+
+      <item row="1" column="1">
+       <widget class="QWidget" name="startWidget">
+        <layout class="QHBoxLayout" name="startLayout">
+
+         <item>
+          <widget class="QLineEdit" name="startEdit">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>No selection</string>
+           </property>
+          </widget>
+         </item>
+
+         <item>
+          <widget class="QPushButton" name="selectStart">
+           <property name="checkable">
+             <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>Select</string>
+           </property>
+          </widget>
+         </item>
+
+        </layout>
+       </widget>
+      </item>
+
+      <item row="2" column="0">
+       <widget class="QLabel" name="labelEndType">
+        <property name="text">
+         <string>End Type</string>
+        </property>
+       </widget>
+      </item>
+
+      <item row="2" column="1">
+        <widget class="QComboBox" name="endTypeCombo">
+            <property name="sizePolicy">
+                <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+
+            <item>
+                <property name="text">
+                    <string>Dimension</string>
+                </property>
+            </item>
+
+            <item>
+                <property name="text">
+                    <string>Through all</string>
+                </property>
+            </item>
+        </widget>
+      </item>
+
+     </layout>
+    </widget>
+   </item>
+
+   <!-- Thread Type -->
+   <item>
+    <widget class="QGroupBox" name="groupThreadType">
+     <property name="title">
+      <string>Thread Type</string>
+     </property>
+
+     <layout class="QFormLayout" name="threadTypeLayout">
+
+      <item row="0" column="0">
+       <widget class="QLabel" name="labelDesignation">
+        <property name="text">
+         <string>Designation</string>
+        </property>
+       </widget>
+      </item>
+
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="designationEdit"/>
+      </item>
+
+      <item row="1" column="0">
+       <widget class="QLabel" name="labelStandard">
+        <property name="text">
+         <string>Standard</string>
+        </property>
+       </widget>
+      </item>
+
+      <item row="1" column="1">
+       <widget class="QComboBox" name="standardCombo"/>
+      </item>
+
+      <item row="2" column="0">
+       <widget class="QLabel" name="labelDiameter">
+        <property name="text">
+         <string>Diameter</string>
+        </property>
+       </widget>
+      </item>
+
+      <item row="2" column="1">
+       <widget class="QComboBox" name="diameterCombo"/>
+      </item>
+
+      <item row="3" column="0">
+       <widget class="QLabel" name="labelPitch">
+        <property name="text">
+         <string>Pitch</string>
+        </property>
+       </widget>
+      </item>
+
+      <item row="3" column="1">
+       <widget class="QComboBox" name="pitchCombo"/>
+      </item>
+
+      <item row="4" column="0">
+       <widget class="QLabel" name="labelClass">
+        <property name="text">
+         <string>Class</string>
+        </property>
+       </widget>
+      </item>
+
+      <item row="4" column="1">
+       <widget class="QComboBox" name="classCombo"/>
+      </item>
+
+      <item row="5" column="1">
+       <widget class="QCheckBox" name="customClearanceCheck">
+        <property name="text">
+         <string>Use custom clearance</string>
+        </property>
+       </widget>
+      </item>
+
+      <item row="6" column="0">
+       <widget class="QLabel" name="labelDirection">
+        <property name="text">
+         <string>Direction</string>
+        </property>
+       </widget>
+      </item>
+
+      <item row="6" column="1">
+       <widget class="QComboBox" name="directionCombo"/>
+      </item>
+
+     </layout>
+    </widget>
+   </item>
+
+   <!-- Representation -->
+   <item>
+    <widget class="QGroupBox" name="groupRepresentation">
+     <property name="title">
+      <string>Representation</string>
+     </property>
+
+     <layout class="QVBoxLayout" name="representationLayout">
+
+      <item>
+       <widget class="QRadioButton" name="cosmeticThreadRadio">
+        <property name="text">
+         <string>Cosmetic Thread</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+
+      <item>
+       <widget class="QRadioButton" name="modelledThreadRadio">
+        <property name="text">
+         <string>Modelled Thread</string>
+        </property>
+       </widget>
+      </item>
+
+     </layout>
+    </widget>
+   </item>
+
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+
+  </layout>
+ </widget>
+
+ <resources/>
+ <connections/>
+</ui>

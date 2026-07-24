@@ -2654,6 +2654,67 @@ bool CmdPartDesignBoolean::isActive()
     }
 }
 
+//===========================================================================
+// PartDesign_Thread
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignThread)
+
+CmdPartDesignThread::CmdPartDesignThread()
+    : Command("PartDesign_Thread")
+{
+    sAppModule = "PartDesign";
+    sGroup = QT_TR_NOOP("PartDesign");
+    sMenuText = QT_TR_NOOP("Thread");
+    // sToolTipText has to be rewviewed
+    sToolTipText
+        = QT_TR_NOOP("Creates Threads in the active body at the center points of circles or arcs of the selected face");
+    sWhatsThis = "PartDesign_Thread";
+    sStatusTip = sToolTipText;
+    sPixmap = "PartDesign_Thread";
+}
+
+void CmdPartDesignThread::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    // doCommand(Gui, "Gui.Selection.clearSelection()");
+    Gui::SelectionObject selected;
+    bool useAllEdges = false;
+    bool noSelection = false;
+    if (!dressupGetSelected(this, "Thread", selected, useAllEdges, noSelection)) {
+        return;
+    }
+
+
+    Part::Feature* base;
+    std::vector<std::string> SubNames;
+    if (noSelection) {
+        base = static_cast<Part::Feature*>(PartDesignGui::getBody(true)->Tip.getValue());
+    }
+    else {
+        base = static_cast<Part::Feature*>(selected.getObject());
+        SubNames = std::vector<std::string>(selected.getSubNames());
+
+        // filter out the edges
+        size_t i = 0;
+        while (i < SubNames.size()) {
+            std::string aSubName = SubNames.at(i);
+
+            if (aSubName.compare(0, 4, "Face") != 0) {
+                // empty name or any other sub-element
+                SubNames.erase(SubNames.begin() + i);
+            }
+            i++;
+        }
+    }
+
+    finishDressupFeature(this, "Thread", base, SubNames, useAllEdges);
+}
+
+bool CmdPartDesignThread::isActive()
+{
+    return hasActiveDocument();
+}
+
 // Command group for datums =============================================
 
 class CmdPartDesignCompDatums: public Gui::GroupCommand
@@ -2758,6 +2819,7 @@ void CreatePartDesignCommands()
     rcCmdMgr.addCommand(new CmdPartDesignDraft());
     rcCmdMgr.addCommand(new CmdPartDesignChamfer());
     rcCmdMgr.addCommand(new CmdPartDesignThickness());
+    rcCmdMgr.addCommand(new CmdPartDesignThread());
 
     rcCmdMgr.addCommand(new CmdPartDesignMirrored());
     rcCmdMgr.addCommand(new CmdPartDesignLinearPattern());
