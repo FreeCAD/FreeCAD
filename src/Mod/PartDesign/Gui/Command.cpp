@@ -415,7 +415,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
     }
 
     std::string FeatName;
-    PartDesign::Body* pcActiveBody = PartDesignGui::getBody(false, true, true, &parent, &parentSub);
+    PartDesign::Body* pcActiveBody = PartDesignGui::getBody(false, false, true, &parent, &parentSub);
     FeatName = getUniqueObjectName("Binder", pcActiveBody);
     if (parent) {
         decltype(values) links;
