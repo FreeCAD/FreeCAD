@@ -296,7 +296,7 @@ void PatternInstanceControls::updateButton(ButtonInfo& info) const
     }
 
     info.button->setIcon(suppressIcon());
-    info.button->setToolTip(tr("Suppress instance"));
+    info.button->setToolTip(tr("Suppresses this instance"));
 }
 
 void PatternInstanceControls::attachCameraSensor()
