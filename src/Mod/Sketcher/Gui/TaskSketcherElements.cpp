@@ -34,7 +34,6 @@
 #include <QString>
 #include <QTimer>
 #include <QWidgetAction>
-#include <boost/core/ignore_unused.hpp>
 #include <limits>
 #include <cstring>
 
