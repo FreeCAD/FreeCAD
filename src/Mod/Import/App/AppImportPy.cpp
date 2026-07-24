@@ -26,7 +26,8 @@
 # define WNT  // avoid conflict with GUID
 #endif
 
-#include <boost/algorithm/string/predicate.hpp>
+#include <string_view>
+
 #include <boost/range/adaptor/indexed.hpp>
 #if defined(__clang__)
 # pragma clang diagnostic push
@@ -321,7 +322,7 @@ private:
             auto getShapeColors = [partColor](App::DocumentObject* obj, const char* subname) {
                 std::map<std::string, Base::Color> cols;
                 auto it = partColor.find(dynamic_cast<Part::Feature*>(obj));
-                if (it != partColor.end() && boost::starts_with(subname, "Face")) {
+                if (it != partColor.end() && std::string_view(subname).starts_with("Face")) {
                     const auto& colors = it->second;
                     std::string face("Face");
                     for (const auto& element : colors | boost::adaptors::indexed(1)) {
