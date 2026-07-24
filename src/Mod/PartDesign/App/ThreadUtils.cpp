@@ -506,13 +506,13 @@ std::vector<std::string> ThreadUtils::getThreadDirectionEnums()
 // std::vector<std::string> ThreadUtils::getThreadDiameters(const int threadType)
 // {
 //     std::set<std::string> uniqueDiameters;  // set automaticamente remove duplicatas
-    
+
 //     for (const auto& thread : ThreadUtils::threadDescription[threadType]) {
 //         // Converter para string com precisão controlada para evitar variações
 //         std::string diameterStr = std::to_string(thread.diameter);
 //         uniqueDiameters.insert(diameterStr);
 //     }
-    
+
 //     // Converter o set para vector
 //     std::vector<std::string> designations(uniqueDiameters.begin(), uniqueDiameters.end());
 //     return designations;
@@ -521,16 +521,16 @@ std::vector<std::string> ThreadUtils::getThreadDirectionEnums()
 std::vector<std::string> ThreadUtils::getThreadDiameters(const int threadType)
 {
     std::set<double> uniqueDiameters;  // Ordena numericamente
-    
+
     for (const auto& thread : ThreadUtils::threadDescription[threadType]) {
         uniqueDiameters.insert(thread.diameter);
     }
-    
+
     std::vector<std::string> designations;
     designations.reserve(uniqueDiameters.size());
-    
+
     // for (double diameter : uniqueDiameters) {
-        // designations.push_back(std::to_string(diameter));
+    // designations.push_back(std::to_string(diameter));
     // }
 
     for (double diameter : uniqueDiameters) {
@@ -538,7 +538,7 @@ std::vector<std::string> ThreadUtils::getThreadDiameters(const int threadType)
         oss << std::noshowpoint << diameter << " mm";
         designations.push_back(oss.str());
     }
-    
+
     return designations;
 }
 
@@ -571,7 +571,11 @@ std::vector<std::string> ThreadUtils::getThreadPitches(const int threadType, con
     return pitches;
 }
 
-std::string ThreadUtils::getThreadDesignations(const int threadType, const int threadDiameter, const int threadPitch)
+std::string ThreadUtils::getThreadDesignations(
+    const int threadType,
+    const int threadDiameter,
+    const int threadPitch
+)
 {
     // Base::Console().message("===getThreadDesignations===\n");
     // Base::Console().message("threadType: %d\n", threadType);

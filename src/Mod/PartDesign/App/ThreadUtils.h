@@ -38,7 +38,11 @@ public:
     std::vector<std::string> getThreadDirectionEnums();
     std::vector<std::string> getThreadDiameters(const int threadType);
     std::vector<std::string> getThreadPitches(const int threadType, const int threadDiameter);
-    std::string getThreadDesignations(const int threadType, const int threadDiameter, const int threadPitch);
+    std::string getThreadDesignations(
+        const int threadType,
+        const int threadDiameter,
+        const int threadPitch
+    );
 
     double getThroughAllLength() const;
 

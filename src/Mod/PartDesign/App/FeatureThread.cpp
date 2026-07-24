@@ -43,9 +43,21 @@ Thread::Thread()
     ADD_PROPERTY_TYPE(ThreadClass, (0L), "Thread", App::Prop_None, "Thread class");
     ThreadClass.setEnums(threadUtils.getThreadClass_None_Enums());
 
-    ADD_PROPERTY_TYPE(UseCustomThreadClearance, (false), "Thread", App::Prop_None, "Use custom thread clearance");
+    ADD_PROPERTY_TYPE(
+        UseCustomThreadClearance,
+        (false),
+        "Thread",
+        App::Prop_None,
+        "Use custom thread clearance"
+    );
 
-    ADD_PROPERTY_TYPE(CustomThreadClearance, (0.0), "Thread", App::Prop_None, "Custom thread clearance (overrides ThreadClass)");
+    ADD_PROPERTY_TYPE(
+        CustomThreadClearance,
+        (0.0),
+        "Thread",
+        App::Prop_None,
+        "Custom thread clearance (overrides ThreadClass)"
+    );
 
     ADD_PROPERTY_TYPE(ThreadDesignation, ("---"), "Thread", App::Prop_None, "Name");
 }
@@ -284,7 +296,11 @@ void Thread::onChanged(const App::Property* prop)
             // HoleCutType.setEnums(HoleCutType_None_Enums);
         }
 
-        ThreadDesignation.setValue(threadUtils.getThreadDesignations(ThreadType.getValue(), ThreadSize.getValue(), ThreadSizePitch.getValue()));
+        ThreadDesignation.setValue(threadUtils.getThreadDesignations(
+            ThreadType.getValue(),
+            ThreadSize.getValue(),
+            ThreadSizePitch.getValue()
+        ));
     }
     else if (prop == &ThreadSize) {
         // Base::Console().message("it was me!\n");
@@ -292,10 +308,19 @@ void Thread::onChanged(const App::Property* prop)
             threadUtils.getThreadPitches(ThreadType.getValue(), ThreadSize.getValue())
         );
 
-        ThreadDesignation.setValue(threadUtils.getThreadDesignations(ThreadType.getValue(), ThreadSize.getValue(), ThreadSizePitch.getValue()));
-    } else if (prop == &ThreadSizePitch){
+        ThreadDesignation.setValue(threadUtils.getThreadDesignations(
+            ThreadType.getValue(),
+            ThreadSize.getValue(),
+            ThreadSizePitch.getValue()
+        ));
+    }
+    else if (prop == &ThreadSizePitch) {
 
-        ThreadDesignation.setValue(threadUtils.getThreadDesignations(ThreadType.getValue(), ThreadSize.getValue(), ThreadSizePitch.getValue()));
+        ThreadDesignation.setValue(threadUtils.getThreadDesignations(
+            ThreadType.getValue(),
+            ThreadSize.getValue(),
+            ThreadSizePitch.getValue()
+        ));
     }
 
     DressUp::onChanged(prop);

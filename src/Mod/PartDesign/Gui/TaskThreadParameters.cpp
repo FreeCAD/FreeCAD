@@ -111,11 +111,11 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     }
     ui->directionCombo->setCurrentIndex(pcThread->ThreadDirection.getValue());
 
-    //TODO: only allow to be visible when it is modelled thread
+    // TODO: only allow to be visible when it is modelled thread
     ui->customClearanceCheck->setChecked(pcThread->UseCustomThreadClearance.getValue());
     ui->customClearanceField->setEnabled(ui->customClearanceCheck->isChecked());
     ui->classCombo->setEnabled(!ui->customClearanceCheck->isChecked());
-    //TODO: constraint clearance value
+    // TODO: constraint clearance value
     ui->customClearanceField->setValue(pcThread->CustomThreadClearance.getValue());
 
     bool isModeled = pcThread->ModelThread.getValue();
@@ -131,8 +131,12 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
         &TaskThreadParameters::threadTypeChanged
     );
 
-    connect(ui->Depth, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskThreadParameters::depthChanged);
+    connect(
+        ui->Depth,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &TaskThreadParameters::depthChanged
+    );
 
     connect(
         ui->diameterCombo,
@@ -204,8 +208,12 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
         &TaskThreadParameters::CustomClearanceCheckValuesChanged
     );
 
-    connect(ui->customClearanceField, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskThreadParameters::customThreadClearanceChanged);
+    connect(
+        ui->customClearanceField,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &TaskThreadParameters::customThreadClearanceChanged
+    );
 
     connect(
         ui->cosmeticThreadRadio,
@@ -228,10 +236,10 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     // NOLINTEND
 
     // if (connectPropChanged.connected()) {
-        // Base::Console().message("✅ signalChangePropertyEditor connected successfully!\n");
+    // Base::Console().message("✅ signalChangePropertyEditor connected successfully!\n");
     // }
     // else {
-        // Base::Console().error("❌ Failed to connect signalChangePropertyEditor!\n");
+    // Base::Console().error("❌ Failed to connect signalChangePropertyEditor!\n");
     // }
 
     // setupGizmos(DressUpView);
@@ -635,11 +643,10 @@ void TaskThreadParameters::changedObject(const App::Document&, const App::Proper
         );
 
         ui->designationEdit->setText(thread->ThreadDesignation.getValue());
-
-    } else if (&Prop == &thread->ThreadSizePitch) {
+    }
+    else if (&Prop == &thread->ThreadSizePitch) {
 
         ui->designationEdit->setText(thread->ThreadDesignation.getValue());
-
     }
     else if (&Prop == &thread->DepthType) {
         ui->endTypeCombo->setEnabled(true);
