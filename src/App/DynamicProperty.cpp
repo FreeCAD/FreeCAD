@@ -25,6 +25,7 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <string_view>
 
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/hashed_index.hpp>
@@ -52,7 +53,7 @@ std::size_t CStringHasher::operator()(const char* s) const {
     if (!s) {
         return 0;
     }
-    return boost::hash_range(s, s + std::strlen(s));
+    return std::hash<std::string_view> {}(std::string_view(s));
 }
 
 bool CStringHasher::operator()(const char* a, const char* b) const {

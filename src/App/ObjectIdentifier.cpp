@@ -390,7 +390,7 @@ std::size_t ObjectIdentifier::hash() const
     if (_hash && !_cache.empty()) {
         return _hash;
     }
-    const_cast<ObjectIdentifier*>(this)->_hash = boost::hash_value(toString());
+    const_cast<ObjectIdentifier*>(this)->_hash = std::hash<std::string> {}(toString());
     return _hash;
 }
 
