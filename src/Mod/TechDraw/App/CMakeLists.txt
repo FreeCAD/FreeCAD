@@ -70,6 +70,8 @@ SET(Draw_SRCS
     DrawSVGTemplate.h
     DrawTemplate.cpp
     DrawTemplate.h
+    TemplateTranslator.cpp
+    TemplateTranslator.h
     DrawViewCollection.cpp
     DrawViewCollection.h
     DrawViewDimension.cpp
