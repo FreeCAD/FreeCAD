@@ -24,7 +24,7 @@
 
 #include <iomanip>
 #include <sstream>
-#include <boost_regex.hpp>
+#include <regex>
 
 
 #include <App/Property.h>
@@ -154,11 +154,11 @@ std::string DrawViewSpreadsheet::getSheetImage()
 
     std::string colPart;
     std::string rowPart;
-    boost::regex re{"([A-Z]*)([0-9]*)"};
-    boost::smatch what;
+    std::regex re{"([A-Z]*)([0-9]*)"};
+    std::smatch what;
     int iRowStart = 0, iRowEnd = 0;
     std::string sColStart, sColEnd;
-    if (boost::regex_search(scellstart, what, re)) {
+    if (std::regex_search(scellstart, what, re)) {
         if (what.size() < 3) {
             Base::Console().error("%s - start cell (%s) is invalid\n", getNameInDocument(),
                                   CellStart.getValue());
@@ -178,7 +178,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
         }
     }
 
-    if (boost::regex_search(scellend, what, re)) {
+    if (std::regex_search(scellend, what, re)) {
         if (what.size() < 3) {
             Base::Console().error("%s - end cell (%s) is invalid\n", getNameInDocument(), CellEnd.getValue());
         } else {

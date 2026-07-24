@@ -43,7 +43,6 @@
 #include <boost/random.hpp>
 #include <boost/thread/lock_guard.hpp>
 #include <boost/thread/mutex.hpp>
-#include <boost_regex.hpp>
 
 // Qt
 #include <QApplication>
