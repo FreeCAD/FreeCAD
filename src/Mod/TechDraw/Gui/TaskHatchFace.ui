@@ -50,7 +50,7 @@
      <item row="1" column="1">
       <widget class="QPushButton" name="addCustomPatternButton">
        <property name="text">
-        <string>Add Custom Pattern...</string>
+        <string>Add Custom Pattern…</string>
        </property>
        <property name="toolTip">
         <string>Load a custom SVG or PAT pattern file. It will be added to the list of available patterns.</string>
