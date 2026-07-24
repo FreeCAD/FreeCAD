@@ -843,7 +843,7 @@ bool TaskHatchFace::accept()
     if (ui->patternComboBox->currentIndex() < 0) {
         QMessageBox::warning(this,
                              QObject::tr("No Pattern Selected"),
-                             QObject::tr("Please select a hatch pattern."));
+                             QObject::tr("No hatch pattern is selected."));
         return false;
     }
     if (!m_targetHatchObject) {
