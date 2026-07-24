@@ -162,6 +162,31 @@ class TestGuiDocument(unittest.TestCase):
         self.assertIsInstance(result["exception"], RuntimeError)
         self.assertIn("main thread", str(result["exception"]).lower())
 
+    def testSendMsgToActiveViewFromWorkerThread(self):
+        self.assertIsNotNone(FreeCADGui.getDocument(self.doc.Name).ActiveView)
+
+        result = {}
+
+        def send_view_fit():
+            try:
+                FreeCADGui.SendMsgToActiveView("ViewFit", True)
+                result["sent"] = True
+            except Exception as exc:  # pragma: no cover - exercised through assertion below
+                result["exception"] = exc
+
+        worker = threading.Thread(target=send_view_fit)
+        worker.start()
+
+        deadline = time.monotonic() + 3.0
+        while worker.is_alive() and time.monotonic() < deadline:
+            QtWidgets.QApplication.processEvents(QtCore.QEventLoop.ProcessEventsFlag.AllEvents, 50)
+            worker.join(0.01)
+
+        self.assertFalse(worker.is_alive())
+        if "exception" in result:
+            raise result["exception"]
+        self.assertTrue(result.get("sent"))
+
     def testRefreshFallsBackToSyncForFeaturePython(self):
         params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Document")
         old_async = params.GetBool("EnableAsyncRecompute", True)
