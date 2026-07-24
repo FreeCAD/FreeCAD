@@ -93,8 +93,15 @@ def TestText(s):
 
 
 def RunConfiguredTextTest():
-    test_case = FreeCAD.ConfigGet("TestCase")
-    return TestText(test_case)
+    test_cases = FreeCAD.ConfigGet("TestCase").split(",")
+    if len(test_cases) == 1:
+        return TestText(test_cases[0])
+    suite = unittest.TestSuite()
+    for tc in test_cases:
+        suite.addTest(tryLoadingTest(tc))
+    r = unittest.TextTestRunner(stream=sys.stdout, verbosity=2)
+    sys.stdout.flush()
+    return r.run(suite)
 
 
 def Test(s):
