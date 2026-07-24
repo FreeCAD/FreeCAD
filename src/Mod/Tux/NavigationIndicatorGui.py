@@ -71,6 +71,7 @@ def RePopulateIcons():
 
     a1.setIcon(QtGui.QIcon(":/icons/NavigationBlender_" + StyleSheetType + ".svg"))
     a2.setIcon(QtGui.QIcon(":/icons/NavigationCAD_" + StyleSheetType + ".svg"))
+    a13.setIcon(QtGui.QIcon(":/icons/NavigationFusion_" + StyleSheetType + ".svg"))
     a3.setIcon(QtGui.QIcon(":/icons/NavigationGesture_" + StyleSheetType + ".svg"))
     a4.setIcon(QtGui.QIcon(":/icons/NavigationMayaGesture_" + StyleSheetType + ".svg"))
     a5.setIcon(QtGui.QIcon(":/icons/NavigationOpenCascade_" + StyleSheetType + ".svg"))
@@ -174,6 +175,35 @@ def retranslateUi():
         + ":</b> "
         + text10
         + "</small></p>"
+    )
+
+    global t13
+    t13 = (
+        "<p align='center'><b>Fusion</b> "
+        + text06
+        + """</p>
+    <table>
+     <tr>
+      <th><small>"""
+        + text01
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
+     </tr>
+     <tr>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_ShiftMiddle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
+     </tr>
+    </table>"""
     )
 
     global t3
@@ -731,6 +761,11 @@ a2.setText("CAD  ")
 a2.setData("Gui::CADNavigationStyle")
 a2.setObjectName("Indicator_NavigationCAD")
 
+a13 = QtGui.QAction(gStyle)
+a13.setText("Fusion  ")
+a13.setData("Gui::FusionNavigationStyle")
+a13.setObjectName("Indicator_NavigationFusion")
+
 a3 = QtGui.QAction(gStyle)
 a3.setText("Gesture  ")
 a3.setData("Gui::GestureNavigationStyle")
@@ -791,6 +826,7 @@ menu.addSeparator()
 menu.addAction(a0)
 menu.addAction(a1)
 menu.addAction(a2)
+menu.addAction(a13)
 menu.addAction(a3)
 menu.addAction(a4)
 menu.addAction(a5)
@@ -833,6 +869,7 @@ def onTooltip():
         a0.setToolTip(t0)
         a1.setToolTip(t1)
         a2.setToolTip(t2)
+        a13.setToolTip(t13)
         a3.setToolTip(t3)
         a4.setToolTip(t4)
         a5.setToolTip(t5)
