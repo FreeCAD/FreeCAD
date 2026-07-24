@@ -30,6 +30,7 @@
 #include <BRep_Builder.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 #include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
+#include <BRepAlgoAPI_Common.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
@@ -2093,6 +2094,65 @@ App::DocumentObjectExecReturn* Hole::execute()
                 "Result has multiple solids: enable 'Allow Compound' in the active body."
             ));
         }
+        if (CosmeticThread.getValue()) {
+            try {
+                double threadDepth = this->ThreadDepth.getValue();
+
+                // Prepare compound with main solid
+                BRep_Builder builder;
+                TopoDS_Compound comp;
+                builder.MakeCompound(comp);
+                builder.Add(comp, result.getShape());
+
+                // Trim against the exact geometry of the current hole operation
+                TopoDS_Shape targetShape = result.getShape();
+
+                // Add trimmed thread edges for each hole
+                for (const auto& h : holes) {
+                    if (h.isNull()) {
+                        continue;
+                    }
+
+                    gp_Trsf holeTrsf = h.getShape().Location().Transformation();
+                    gp_Pnt ringCenter = firstPoint.Translated(gp_Vec(zDir) * -threadDepth);
+                    ringCenter.Transform(holeTrsf);
+
+                    gp_Dir localZDir = gp_Dir(zDir);
+                    localZDir.Transform(holeTrsf);
+
+                    double ringRadius = (Tapered.getValue() ? radiusBottom : radius);
+                    if (ringRadius <= Precision::Confusion()) {
+                        continue;
+                    }
+
+                    gp_Ax2 circAx2(ringCenter, localZDir);
+                    gp_Circ circ(circAx2, ringRadius);
+                    TopoDS_Edge fullCircleEdge = BRepBuilderAPI_MakeEdge(circ);
+
+                    // Trim edge against the solid using Boolean Common
+                    BRepAlgoAPI_Common common(targetShape, fullCircleEdge);
+                    common.Build();
+
+                    if (common.IsDone() && !common.Shape().IsNull()) {
+                        for (TopExp_Explorer exp(common.Shape(), TopAbs_EDGE); exp.More();
+                             exp.Next()) {
+                            builder.Add(comp, exp.Current());
+                        }
+                    }
+                    else {
+                        builder.Add(comp, fullCircleEdge);  // fallback
+                    }
+                }
+                result = TopoShape(comp);
+            }
+            catch (const std::exception& e) {
+                FC_WARN(getFullName() << ": Cosmetic thread generation failed - " << e.what());
+            }
+            catch (...) {
+                FC_WARN(getFullName() << ": Cosmetic thread generation failed");
+            }
+        }
+
         this->Shape.setValue(result);
 
         return App::DocumentObject::StdReturn;
