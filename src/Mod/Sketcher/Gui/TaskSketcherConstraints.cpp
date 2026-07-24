@@ -32,7 +32,6 @@
 #include <QTimer>
 #include <QStyledItemDelegate>
 #include <QWidgetAction>
-#include <boost/core/ignore_unused.hpp>
 #include <fmt/format.h>
 #include <fmt/ranges.h>
 #include <cmath>
@@ -1598,7 +1597,7 @@ void TaskSketcherConstraints::getSelectionGeoId(QString expr, int& geoid,
 {
     QRegularExpression rxEdge(QStringLiteral("^Edge(\\d+)$"));
     QRegularExpressionMatch match;
-    boost::ignore_unused(expr.indexOf(rxEdge, 0, &match));
+    (void)expr.indexOf(rxEdge, 0, &match);
     geoid = Sketcher::GeoEnum::GeoUndef;
     pointpos = Sketcher::PointPos::none;
 
@@ -1611,7 +1610,7 @@ void TaskSketcherConstraints::getSelectionGeoId(QString expr, int& geoid,
     }
     else {
         QRegularExpression rxVertex(QStringLiteral("^Vertex(\\d+)$"));
-        boost::ignore_unused(expr.indexOf(rxVertex, 0, &match));
+        (void)expr.indexOf(rxVertex, 0, &match);
 
         if (match.hasMatch()) {
             bool ok;
