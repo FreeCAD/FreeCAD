@@ -54,7 +54,7 @@ std::string TopoShapeVertexPy::representation() const
         str << p.X() << ", " << p.Y() << ", " << p.Z();
         str << ")>";
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure&) {
         str << "<Part.Vertex()>";
     }
 
@@ -229,8 +229,8 @@ PyObject* TopoShapeVertexPy::richCompare(PyObject* self, PyObject* object, int o
 {
     if (!PyObject_TypeCheck(self, &(TopoShapeVertexPy::Type))
         || !PyObject_TypeCheck(object, &(TopoShapeVertexPy::Type))) {
-        PyErr_SetString(PyExc_TypeError, "both operands must be Vertices");
-        return nullptr;
+        Py_INCREF(Py_NotImplemented);
+        return Py_NotImplemented;
     }
 
     try {
