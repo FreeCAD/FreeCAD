@@ -1795,4 +1795,18 @@ class Snapper:
             self._get_wp().set_to_position(self.toWP(self.spoint))
 
 
+def get_snapper():
+    """Return the global Snapper singleton, creating it on first use.
+
+    Historically the singleton was installed as ``FreeCADGui.Snapper`` at
+    Draft workbench import time (see ``DraftTools.py``). Any code path that
+    needs the Snapper before the Draft workbench has been activated must
+    use this accessor so the singleton is available regardless of which
+    workbench triggered the call.
+    """
+    if not hasattr(Gui, "Snapper"):
+        Gui.Snapper = Snapper()
+    return Gui.Snapper
+
+
 ## @}
