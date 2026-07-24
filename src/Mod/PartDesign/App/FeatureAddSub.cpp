@@ -140,6 +140,26 @@ void FeatureAddSub::updatePreviewShape()
         }
     }
 
+    // Fuse multiple solids in AddSubShape (e.g. from overlapping sketch profiles)
+    // so the preview matches the final result.
+    if (addSubType == Additive) {
+        const TopoShape& addSubShape = AddSubShape.getShape();
+        if (!addSubShape.isNull() && addSubShape.countSubShapes(TopAbs_SOLID) > 1) {
+            try {
+                TopoShape fused;
+                fused.makeElementFuse(addSubShape.getSubTopoShapes(TopAbs_SOLID));
+                PreviewShape.setValue(fused);
+                return;
+            }
+            catch (Standard_Failure& e) {
+                notifyWarning(QString::fromUtf8(e.GetMessageString()));
+            }
+            catch (Base::Exception& e) {
+                notifyWarning(QString::fromStdString(e.getMessage()));
+            }
+        }
+    }
+
     PreviewShape.setValue(AddSubShape.getShape());
 }
 
