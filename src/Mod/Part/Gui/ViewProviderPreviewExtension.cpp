@@ -27,17 +27,126 @@
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoPolygonOffset.h>
 #include <Inventor/nodes/SoTransform.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/SbSphere.h>
+#include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
+#include <Inventor/nodes/SoPerspectiveCamera.h>
+#include <Inventor/SoRenderManager.h>
+
+#include <algorithm>
+#include <cmath>
 
 #include "ViewProviderPreviewExtension.h"
 #include "ViewProviderExt.h"
 
 #include <App/Document.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
 #include <Gui/Utilities.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Gui/Inventor/So3DAnnotation.h>
 #include <Mod/Part/App/PreviewExtension.h>
 #include <Mod/Part/App/Tools.h>
 
 using namespace PartGui;
+
+namespace
+{
+
+void expandActiveViewClippingToPreview(const Gui::ViewProvider* viewProvider)
+{
+    if (!viewProvider || !Gui::Application::Instance) {
+        return;
+    }
+
+    auto* guiDocument = Gui::Application::Instance->activeDocument();
+    if (!guiDocument) {
+        return;
+    }
+
+    auto* view = dynamic_cast<Gui::View3DInventor*>(guiDocument->getActiveView());
+    if (!view || !view->containsViewProvider(viewProvider)) {
+        return;
+    }
+
+    auto* viewer = view->getViewer();
+    auto* renderManager = viewer ? viewer->getSoRenderManager() : nullptr;
+    auto* camera = renderManager ? renderManager->getCamera() : nullptr;
+    if (!camera) {
+        return;
+    }
+
+    SoGetBoundingBoxAction bboxAction(renderManager->getViewportRegion());
+    bboxAction.apply(viewProvider->getRoot());
+    const SbBox3f bbox = bboxAction.getBoundingBox();
+    if (bbox.isEmpty()) {
+        return;
+    }
+
+    SbSphere sphere;
+    sphere.circumscribe(bbox);
+    const float radius = sphere.getRadius();
+    if (!(radius > 0.0F) || !std::isfinite(radius)) {
+        return;
+    }
+
+    SbVec3f direction;
+    camera->orientation.getValue().multVec(SbVec3f(0.0F, 0.0F, -1.0F), direction);
+
+    float centerDepth = (sphere.getCenter() - camera->position.getValue()).dot(direction);
+    if (!std::isfinite(centerDepth)) {
+        return;
+    }
+
+    const bool perspective = camera->isOfType(SoPerspectiveCamera::getClassTypeId());
+    const bool orthographic = camera->isOfType(SoOrthographicCamera::getClassTypeId());
+    const float minNearDistance = perspective ? std::max(radius * 1.0e-4F, 1.0e-5F) : 0.0F;
+    const float minClipSpan = std::max(radius * 1.0e-3F, 1.0e-4F);
+    bool changed = false;
+
+    // The preview can extend towards the camera before the view is refit to the resulting feature.
+    // For orthographic views, move the camera along the viewing direction so zoom and pan stay stable.
+    if (orthographic && centerDepth - radius < minNearDistance) {
+        const float offset = minNearDistance - (centerDepth - radius) + minClipSpan;
+        camera->position = camera->position.getValue() - offset * direction;
+        camera->focalDistance = camera->focalDistance.getValue() + offset;
+        centerDepth += offset;
+        changed = true;
+    }
+    else if (centerDepth + radius <= minNearDistance) {
+        return;
+    }
+
+    const float requiredNearDistance = std::max(minNearDistance, centerDepth - radius);
+    const float requiredFarDistance
+        = std::max(centerDepth + radius, requiredNearDistance + minClipSpan);
+
+    if (!std::isfinite(requiredNearDistance) || !std::isfinite(requiredFarDistance)) {
+        return;
+    }
+
+    const float currentNearDistance = camera->nearDistance.getValue();
+    const float currentFarDistance = camera->farDistance.getValue();
+
+    if (!std::isfinite(currentNearDistance) || (perspective && currentNearDistance <= 0.0F)
+        || requiredNearDistance < currentNearDistance) {
+        camera->nearDistance = requiredNearDistance;
+        changed = true;
+    }
+
+    if (!std::isfinite(currentFarDistance) || requiredFarDistance > currentFarDistance) {
+        camera->farDistance = requiredFarDistance;
+        changed = true;
+    }
+
+    if (changed) {
+        renderManager->scheduleRedraw();
+    }
+}
+
+}  // namespace
 
 SO_NODE_SOURCE(SoPreviewShape);
 
@@ -181,6 +290,8 @@ void ViewProviderPreviewExtension::showPreview(bool enable)
         if (annotationRoot->findChild(pcPreviewRoot) < 0) {
             annotationRoot->addChild(pcPreviewRoot);
         }
+
+        expandActiveViewClippingToPreview(getExtendedViewProvider());
     }
     else {
         annotationRoot->removeChild(pcPreviewRoot);
@@ -230,6 +341,9 @@ void ViewProviderPreviewExtension::updatePreviewShape(Part::TopoShape shape, SoP
     try {
         updatePreviewShape(preview, shape);
         preview->transform.setValue(Base::convertTo<SbMatrix>(shape.getTransform()));
+        if (_isPreviewEnabled) {
+            expandActiveViewClippingToPreview(getExtendedViewProvider());
+        }
     }
     catch (Standard_Failure& e) {
         Base::Console().userTranslatedNotification(

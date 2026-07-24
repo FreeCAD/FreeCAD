@@ -31,6 +31,7 @@
 
 #include <Base/Exception.h>
 #include <Base/ServiceProvider.h>
+#include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -166,6 +167,7 @@ bool ViewProvider::setEdit(int ModNum)
 
         // start the edit dialog if
         if (!featureDlg) {
+            applyPreviewDisplayPreferences(true);
             featureDlg = this->getEditDialog();
             if (!featureDlg) {  // Shouldn't generally happen
                 throw Base::RuntimeError("Failed to create new edit dialog.");
@@ -187,6 +189,25 @@ TaskDlgFeatureParameters* ViewProvider::getEditDialog()
 }
 
 
+void ViewProvider::restoreDefaultEditVisibility()
+{
+    auto* feature = getObject<PartDesign::Feature>();
+    auto* body = feature ? PartDesign::Body::findBodyOf(feature) : nullptr;
+    const bool editedFeatureIsVisibleResult = feature && (!body || body->Tip.getValue() == feature);
+
+    // A Body only shows its tip as the final result. If an older feature was edited,
+    // put the pre-edit visible feature back instead of showing the edited one.
+    if (editedFeatureIsVisibleResult) {
+        show();
+    }
+    else if (previouslyShownViewProvider) {
+        previouslyShownViewProvider->show();
+    }
+
+    previouslyShownViewProvider = nullptr;
+}
+
+
 void ViewProvider::unsetEdit(int ModNum)
 {
     showPreview(false);
@@ -196,16 +217,19 @@ void ViewProvider::unsetEdit(int ModNum)
         Gui::Command::assureWorkbench(oldWb.c_str());
     }
 
-    // ensure that after edit we still show the same feature
-    if (previouslyShownViewProvider) {
-        previouslyShownViewProvider->show();
-    }
-
     if (ModNum == ViewProvider::Default) {
+        restoreDefaultEditVisibility();
+
         // when pressing ESC make sure to close the dialog
         Gui::Control().closeDialog();
     }
     else {
+        // ensure that after edit we still show the same feature
+        if (previouslyShownViewProvider) {
+            previouslyShownViewProvider->show();
+            previouslyShownViewProvider = nullptr;
+        }
+
         PartGui::ViewProviderPart::unsetEdit(ModNum);
     }
 }
@@ -417,6 +441,40 @@ void ViewProvider::showPreviousFeature(bool enable)
     else {
         baseFeatureViewProvider->hide();
         show();
+    }
+}
+
+void ViewProvider::applyPreviewDisplayPreferences(App::DocumentObject* obj, bool refreshPreview)
+{
+    if (!obj) {
+        return;
+    }
+
+    auto* viewProvider = freecad_cast<ViewProvider*>(Gui::Application::Instance->getViewProvider(obj));
+    if (viewProvider) {
+        viewProvider->applyPreviewDisplayPreferences(refreshPreview);
+    }
+}
+
+void ViewProvider::applyPreviewDisplayPreferences(bool refreshPreview)
+{
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/PartDesign/Preview"
+    );
+
+    showPreviousFeature(!hGrp->GetBool("ShowFinal", false));
+
+    if (!refreshPreview) {
+        return;
+    }
+
+    const bool enablePreview = hGrp->GetBool("ShowTransparentPreview", true);
+    showPreview(enablePreview);
+
+    if (enablePreview) {
+        if (auto* feature = getObject<PartDesign::Feature>()) {
+            feature->recomputePreview();
+        }
     }
 }
 
