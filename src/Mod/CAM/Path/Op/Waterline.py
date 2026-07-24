@@ -2463,6 +2463,11 @@ def SetupProperties():
 
 def Create(name, obj=None, parentJob=None):
     """Create(name) ... Creates and returns a Waterline operation."""
+    FreeCAD.Console.PrintWarning(
+        "CAM_Waterline is deprecated and will be removed in a future release. "
+        "Use CAM_Surface3D with the Waterline or ZLevelHybrid strategy for new "
+        "operations.\n"
+    )
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Proxy = ObjectWaterline(obj, name, parentJob)
