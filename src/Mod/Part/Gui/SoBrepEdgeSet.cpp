@@ -675,7 +675,7 @@ void SoBrepEdgeSet::doAction(SoAction* action)
                     static std::string element("Edge");
                     bool hasEdgeColors = false;
                     for (const auto& [name, color] : colors) {
-                        if (name.empty() || boost::starts_with(name, element)) {
+                        if (name.empty() || name.starts_with(element)) {
                             hasEdgeColors = true;
                             break;
                         }
