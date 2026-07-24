@@ -87,8 +87,10 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         # Create a TD page
         page = App.ActiveDocument.addObject("TechDraw::DrawPage", "Page")
         template = App.ActiveDocument.addObject("TechDraw::DrawSVGTemplate", "Template")
-        template.Template = App.getResourceDir() \
-                            + "Mod/TechDraw/Templates/Blank/A3/landscape/A3_blank_landscape.svg"
+        template.Template = (
+            App.getResourceDir()
+            + "Mod/TechDraw/Templates/Blank/A3/landscape/A3_blank_landscape.svg"
+        )
         page.Template = template
         view = App.ActiveDocument.addObject("TechDraw::DrawViewDraft", "DraftView")
         view.Source = drawing
