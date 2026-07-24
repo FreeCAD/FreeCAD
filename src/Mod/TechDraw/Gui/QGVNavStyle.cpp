@@ -289,10 +289,15 @@ void QGVNavStyle::handleWheelEvent(QWheelEvent* event)
 void QGVNavStyle::zoom(double factor)
 {
     constexpr double minimumScale(0.01);
+    constexpr double maximumScale(0.80);
     QTransform transform = getViewer()->transform();
     double xScale = transform.m11();
     if (xScale <= minimumScale && factor < 1.0) {
         //don't scale any smaller than this
+        return;
+    }
+    if (xScale >= maximumScale && factor > 1.0) {
+        //don't scale any greater than this
         return;
     }
 
