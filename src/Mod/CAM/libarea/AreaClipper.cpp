@@ -891,119 +891,702 @@ void CArea::TestIntersectOpenPathReversal(
     );
 }
 
+// Creates the naive offset of curves by offsetting each segment by +-offset
+// TODO internal tagging specifies which output segments come from the positive vs negative offset
+// If the path isn't closed, round end caps are generated, tagged as end caps
+// Adjacent segments are either joined round or by a segment, depending on end direction (TODO write
+// this better)
+//
+// TODO I want to be sure I have a test where the negative offset completely collapses
+// TODO check that it's important that input curves are positively oriented (if closed) and document
+// that. Uh, probably in the outer offset function; it's important for the union operation not the
+// naive offset
+// TODO document the expected context/purpose of this function, document the return value
+// TODO reimplement OpenOffset using this
+// TODO reimplement normal/closed offset using this. Note that other join types are not supported,
+// but I think we never use them?
+// TODO consider adding join type, for "use" in the Profile op
+std::list<std::list<int>> CArea::NaiveOffset(double offset, double arcTolerance)
+{
+    std::list<CCurve> offset_curves;
+    std::list<std::list<int>> edge_directions;
+
+    for (CCurve& curve : m_curves) {
+        if (curve.m_vertices.empty()) {
+            continue;
+        }
+
+        if (curve.IsClosed() && curve.IsClockwise()) {
+            curve.Reverse();
+        }
+
+        // Handle "curves" of a single point -- positive offset is the circle about that point,
+        // and negative offset is empty.
+        if (curve.m_vertices.size() == 1) {
+            const Point& center = curve.m_vertices.front().m_p;
+            const Point right(center.x + offset, center.y);
+            const Point left(center.x - offset, center.y);
+
+            // Construct output circle
+            CCurve output_curve;
+            output_curve.m_vertices.emplace_back(0, right, heeks::Point {0, 0});
+            output_curve.m_vertices.emplace_back(1, left, center);
+            output_curve.m_vertices.emplace_back(1, right, center);
+            offset_curves.push_back(output_curve);
+
+            // Construct direction labels
+            std::list<int> directions;
+            for (auto it = std::next(output_curve.m_vertices.begin());
+                 it != output_curve.m_vertices.end();
+                 ++it) {
+                directions.push_back(1);
+            }
+            edge_directions.push_back(directions);
+
+            continue;
+        }
+
+        // Loop over the segments, offsetting and joining
+        double startDirX, startDirY, startQex;
+        double prevDirX, prevDirY;
+        heeks::Point pPrev = curve.m_vertices.front().m_p;
+        double enterQ = 0;
+
+        // cPos is the positive offset; cNeg is the negative offset. Note that both are built
+        // forwards, so cNeg will need to be reversed later. End caps will be handled later
+        CCurve cPos;
+        CCurve cNeg;
+
+        // Append a join from the current endpoint to posTarget/negTarget, using arcCenter as the
+        // arc centerDir. enterDirX/enterDirY is the tangent entering the join; exitDirX/exitDirY is
+        // the tangent exiting the join. enterQ and exitQ are the curvatures of the enter/exit
+        // segments
+        auto addJoin = [&](double enterDirX,
+                           double enterDirY,
+                           double exitDirX,
+                           double exitDirY,
+                           const heeks::Point& posTarget,
+                           const heeks::Point& negTarget,
+                           const heeks::Point& arcCenter,
+                           const double enterQ,
+                           const double exitQ) {
+            // Check the angle of the tangents. If not (anti-)parallel, it is easy to choose if the
+            // round join belongs to the positive side or the negative side.
+            const double cross = enterDirX * exitDirY - enterDirY * exitDirX;
+            if (cross > 0) {
+                cPos.m_vertices.emplace_back(1, posTarget, arcCenter);
+                cNeg.m_vertices.emplace_back(0, negTarget, heeks::Point {0, 0});
+            }
+            else if (cross < 0) {
+                cPos.m_vertices.emplace_back(0, posTarget, heeks::Point {0, 0});
+                cNeg.m_vertices.emplace_back(-1, negTarget, arcCenter);
+            }
+            else {
+                // Check which it is, parallel or anti-parallel. If parallel the no join is required
+                const double dot = enterDirX * exitDirX + enterDirY * exitDirY;
+                if (dot > 0) {
+                    // Parallel --> the ends of the previous/current offset segments already align,
+                    // no join required
+                }
+                else {
+                    // Anti parallel --> make the decision based on curvature
+                    if (enterQ < -exitQ) {
+                        cPos.m_vertices.emplace_back(1, posTarget, arcCenter);
+                        cNeg.m_vertices.emplace_back(0, negTarget, heeks::Point {0, 0});
+                    }
+                    else {
+                        cPos.m_vertices.emplace_back(0, posTarget, heeks::Point {0, 0});
+                        cNeg.m_vertices.emplace_back(-1, negTarget, arcCenter);
+                    }
+                }
+            }
+        };
+
+        for (auto it = std::next(curve.m_vertices.begin()); it != curve.m_vertices.end(); ++it) {
+            const CVertex& v = *it;
+
+            // Compute segment start and end normal and tangent directions. Normalize length to offset
+            double sTanX, sTanY;
+            double sNormX, sNormY;
+            double eTanX, eTanY;
+            double eNormX, eNormY;
+            double radius;
+            if (v.m_type == 0) {
+                const double dx = v.m_p.x - pPrev.x;
+                const double dy = v.m_p.y - pPrev.y;
+                const double len = std::hypot(dx, dy);
+                tie(sTanX, sTanY) = make_pair(dx / len * offset, dy / len * offset);
+                tie(sNormX, sNormY) = make_pair(sTanY, -sTanX);
+                tie(eTanX, eTanY) = make_pair(sTanX, sTanY);
+                tie(eNormX, eNormY) = make_pair(sNormX, sNormY);
+            }
+            else {
+                [[assume(v.m_type == 1 || v.m_type == -1)]];
+
+                const double sx = v.m_type * (pPrev.x - v.m_c.x);
+                const double sy = v.m_type * (pPrev.y - v.m_c.y);
+                const double ex = v.m_type * (v.m_p.x - v.m_c.x);
+                const double ey = v.m_type * (v.m_p.y - v.m_c.y);
+                radius = std::hypot(sx, sy);
+
+                tie(sNormX, sNormY) = make_pair(sx / radius * offset, sy / radius * offset);
+                tie(eNormX, eNormY) = make_pair(ex / radius * offset, ey / radius * offset);
+
+                tie(sTanX, sTanY) = make_pair(-sNormY, sNormX);
+                tie(eTanX, eTanY) = make_pair(-eNormY, eNormX);
+            }
+
+            // Compute the start and end points of the offset segment
+            const heeks::Point pPosS(pPrev.x + sNormX, pPrev.y + sNormY);
+            const heeks::Point pNegS(pPrev.x - sNormX, pPrev.y - sNormY);
+            const heeks::Point pPosE(v.m_p.x + eNormX, v.m_p.y + eNormY);
+            const heeks::Point pNegE(v.m_p.x - eNormX, v.m_p.y - eNormY);
+
+            // If the output curves are empty, intialize the start point and direction
+            const bool hasPrev = !cPos.m_vertices.empty();
+            double exitQ = v.m_type == 0
+                ? 0
+                : v.m_type / std::hypot(pPrev.x - v.m_c.x, pPrev.y - v.m_c.y);
+            if (!hasPrev) {
+                cPos.m_vertices.emplace_back(0, pPosS, Point(0, 0));
+                cNeg.m_vertices.emplace_back(0, pNegS, Point(0, 0));
+                tie(startDirX, startDirY) = make_pair(sTanX, sTanY);
+                startQex = exitQ;
+            }
+
+            // Join from the previous segment, if there is one
+            if (hasPrev) {
+                addJoin(prevDirX, prevDirY, sTanX, sTanY, pPosS, pNegS, pPrev, enterQ, exitQ);
+            }
+            enterQ = v.m_type == 0 ? 0 : v.m_type / std::hypot(v.m_p.x - v.m_c.x, v.m_p.y - v.m_c.y);
+
+            // Generate the positive and negative offset segments connecting pPosS to pPosE and
+            // pNegS to pNegE
+            if (v.m_type == 0) {
+                cPos.m_vertices.emplace_back(0, pPosE, heeks::Point {0, 0});
+                cNeg.m_vertices.emplace_back(0, pNegE, heeks::Point {0, 0});
+            }
+            else {
+                // Check if the offset causes the arc to collapse; if so, generate a straight line
+                // instead of an arc because it will be optimized out anyway in a union operation later
+                [[assume(v.m_type == 1 || v.m_type == -1)]];
+                const bool posCollapse = radius + (offset * v.m_type) <= 0;
+                const bool negCollapse = radius - (offset * v.m_type) <= 0;
+
+                cPos.m_vertices.emplace_back(posCollapse ? 0 : v.m_type, pPosE, v.m_c);
+                cNeg.m_vertices.emplace_back(negCollapse ? 0 : v.m_type, pNegE, v.m_c);
+            }
+
+            // Update state variables
+            pPrev = v.m_p;
+            tie(prevDirX, prevDirY) = make_pair(eTanX, eTanY);
+        }
+
+        // Post processing
+        if (curve.IsClosed()) {
+            // Add the final join back to the start
+            const heeks::Point pPosStart = cPos.m_vertices.front().m_p;
+            const heeks::Point pNegStart = cNeg.m_vertices.front().m_p;
+            addJoin(prevDirX, prevDirY, startDirX, startDirY, pPosStart, pNegStart, pPrev, enterQ, startQex);
+
+            // Reverse the negative path so together cPos and cNeg enclose the area within `offset`
+            // of the original curve
+            cNeg.Reverse();
+
+            // Save results to the output list
+            {
+                offset_curves.push_back(cPos);
+
+                std::list<int> directions;
+                for (auto it = std::next(cPos.m_vertices.begin()); it != cPos.m_vertices.end(); ++it) {
+                    directions.push_back(1);
+                }
+                edge_directions.push_back(directions);
+            }
+            {
+                offset_curves.push_back(cNeg);
+
+                std::list<int> directions;
+                for (auto it = std::next(cNeg.m_vertices.begin()); it != cNeg.m_vertices.end(); ++it) {
+                    directions.push_back(-1);
+                }
+                edge_directions.push_back(directions);
+            }
+        }
+        else {
+            // Reverse cNeg so it's correctly oriented to join with cPos and the end caps
+            cNeg.Reverse();
+
+            // Label positive direction edges
+            std::list<int> directions;
+            while (directions.size() < cPos.m_vertices.size() - 1) {
+                directions.push_back(1);
+            }
+
+            // Append the first end cap
+            cPos.m_vertices.emplace_back(1, cNeg.m_vertices.begin()->m_p, curve.m_vertices.back().m_p);
+            directions.push_back(0);
+
+            // Concatenate cNeg
+            for (auto it = std::next(cNeg.m_vertices.begin()); it != cNeg.m_vertices.end(); ++it) {
+                cPos.m_vertices.push_back(*it);
+                directions.push_back(-1);
+            }
+
+            // Append the final end cap
+            cPos.m_vertices.emplace_back(1, cPos.m_vertices.begin()->m_p, curve.m_vertices.front().m_p);
+            directions.push_back(0);
+
+
+            // Save results to the output list
+            offset_curves.push_back(cPos);
+            edge_directions.push_back(directions);
+        }
+    }
+
+    m_curves = std::move(offset_curves);
+    return edge_directions;
+}
+
+// TODO deduplicate this with existing MakePoly function
+Path64 CArea::_MakePoly(
+    const CCurve& curve,
+    std::map<pair<int64_t, int64_t>, CArea::SegmentData>& zData,
+    std::list<int> edge_orientations
+)
+{
+    if (!curve.m_vertices.size()) {
+        return {};
+    }
+
+    Path64 result;
+
+    std::cerr << "_MakePoly: " << curve.m_vertices.size()
+              << " vertices, isClosed=" << curve.IsClosed() << ", " << edge_orientations.size()
+              << " orientations\n";
+    {
+        auto oIt = edge_orientations.cbegin();
+        for (auto vIt = curve.m_vertices.cbegin(); vIt != curve.m_vertices.cend(); ++vIt) {
+            const auto& v = *vIt;
+            if (vIt == curve.m_vertices.cbegin()) {
+                std::cerr << "  vertex: type=" << v.m_type << " p=(" << v.m_p.x << "," << v.m_p.y
+                          << ") c=(" << v.m_c.x << "," << v.m_c.y << ")\n";
+            }
+            else {
+                std::cerr << "  vertex: type=" << v.m_type << " p=(" << v.m_p.x << "," << v.m_p.y
+                          << ") c=(" << v.m_c.x << "," << v.m_c.y << ") orientation=" << *oIt
+                          << "\n";
+                ++oIt;
+            }
+        }
+    }
+
+    auto getPoint64 = [&](double x, double y) -> Point64 {
+        const Point64 p64 = ToPoint64(PointD(x, y, 0));
+        const auto key = std::make_pair(p64.x, p64.y);
+        auto it = m_arc_fitting_map.zCache.find(key);
+        if (it != m_arc_fitting_map.zCache.end()) {
+            std::cerr << "  point (cached): (" << p64.x << "," << p64.y << ") z=" << it->second
+                      << "\n";
+            return Point64(p64.x, p64.y, it->second);
+        }
+        const int64_t z = m_arc_fitting_map.z_next++;
+        m_arc_fitting_map.zCache[key] = z;
+        return Point64(p64.x, p64.y, z);
+    };
+
+    Point64 pPrev = getPoint64(curve.m_vertices.front().m_p.x, curve.m_vertices.front().m_p.y);
+    result.push_back(pPrev);
+    std::cerr << "  point: (" << pPrev.x << "," << pPrev.y << ") z=" << pPrev.z << "\n";
+    auto orientationIt = edge_orientations.cbegin();
+
+    for (auto vIt = std::next(curve.m_vertices.cbegin()); vIt != curve.m_vertices.cend(); vIt++) {
+        const CVertex& vertex = *vIt;
+        const bool isLoop = std::next(vIt) == curve.m_vertices.end() && curve.IsClosed()
+            && curve.m_vertices.size() > 1;
+
+        const PointD pPrevD = ToPointD(pPrev);
+        std::cerr << "  processing vertex: type=" << vertex.m_type << " isLoop=" << isLoop
+                  << " pPrev=(" << pPrev.x << "," << pPrev.y << ")\n";
+
+        if (vertex.m_type == 0) {
+            // Add new point
+            Point64 newPt;
+            if (!isLoop) {
+                newPt = getPoint64(vertex.m_p.x, vertex.m_p.y);
+                result.push_back(newPt);
+            }
+            else {
+                newPt = Point64(result[0].x, result[0].y, result[0].z);
+            }
+
+            const auto key = std::make_pair(std::min(pPrev.z, newPt.z), std::max(pPrev.z, newPt.z));
+            zData[key] = CArea::SegmentData {vertex, *orientationIt};
+            pPrev = newPt;
+        }
+        else if (vertex.m_p.x != pPrevD.x || vertex.m_p.y != pPrevD.y) {
+            [[assume(vertex.m_type == 1 || vertex.m_type == -1)]];
+
+            // Compute start and end angles
+            const double phi0 = atan2(pPrevD.y - vertex.m_c.y, pPrevD.x - vertex.m_c.x);
+            double phi1 = atan2(vertex.m_p.y - vertex.m_c.y, vertex.m_p.x - vertex.m_c.x);
+
+            if (vertex.m_type == -1 && phi1 > phi0) {
+                // fix to make it clockwise
+                phi1 -= 2 * M_PI;
+            }
+            else if (vertex.m_type == 1 && phi1 < phi0) {
+                // fix to make it counterclockwise
+                phi1 += 2 * M_PI;
+            }
+
+            // Compute the maximum angular step to achieve the required accuracy
+            const double dx = pPrevD.x - vertex.m_c.x;
+            const double dy = pPrevD.y - vertex.m_c.y;
+            const double radius = sqrt(dx * dx + dy * dy);
+            const double max_dphi = 2 * acos((radius - CArea::m_accuracy) / radius);
+
+            // Determine the number of segments
+            const int num_segments = max(min_arc_points, (int)ceil(abs(phi1 - phi0) / max_dphi));
+            const double dphi = (phi1 - phi0) / num_segments;
+
+            // Generate arc points
+            for (int i = 1; i <= num_segments; i++) {
+                Point64 newPt;
+                if (i == num_segments) {
+                    if (isLoop) {
+                        newPt = result[0];
+                        std::cerr << "  point (arc loop): (" << newPt.x << "," << newPt.y
+                                  << ") z=" << newPt.z << "\n";
+                    }
+                    else {
+                        newPt = getPoint64(vertex.m_p.x, vertex.m_p.y);
+                        result.push_back(newPt);
+                        std::cerr << "  point (arc end): (" << newPt.x << "," << newPt.y
+                                  << ") z=" << newPt.z << "\n";
+                    }
+                }
+                else {
+                    const double px = vertex.m_c.x + radius * cos(phi0 + dphi * i);
+                    const double py = vertex.m_c.y + radius * sin(phi0 + dphi * i);
+                    newPt = getPoint64(px, py);
+                    result.push_back(newPt);
+                    std::cerr << "  point (arc): (" << newPt.x << "," << newPt.y
+                              << ") z=" << newPt.z << "\n";
+                }
+
+                const auto key = std::make_pair(std::min(pPrev.z, newPt.z), std::max(pPrev.z, newPt.z));
+                std::cerr << "_MakePoly: arc zData[(" << key.first << "," << key.second
+                          << ")] orientation=" << *orientationIt << "\n";
+                zData[key] = CArea::SegmentData {vertex, *orientationIt};
+                pPrev = newPt;
+            }
+        }
+
+        orientationIt++;
+    }
+
+    return result;
+}
+
+
+// TODO consider changing implementation so that if cNeg is not provided then orientation is ignored
+// ...but also consider if we just did that behavior is zDat is empty/omitted? tbd
+void CArea::__SetFromResult(
+    const Paths64& paths,
+    bool isClosed,
+    std::map<pair<int64_t, int64_t>, SegmentData> zData,
+    std::optional<std::reference_wrapper<CArea>> cNeg
+)
+{
+    std::cerr << "__SetFromResult: " << paths.size() << " paths, isClosed=" << isClosed
+              << ", zData.size()=" << zData.size() << "\n";
+
+    for (const Path64& path : paths) {
+        std::cerr << "  path: " << path.size() << " points\n";
+        // Keep track of the current curve and its orientation. Also track the original curve and
+        // its orientation so the final curve (if different) can be joined to it (if the path is
+        // closed and orientation matches)
+        int orientation = 0;
+        CCurve c;
+        CCurve* firstCurve = nullptr;
+        std::optional<int> firstOrientation;
+
+        // Helper function to save the current curve to the appropriate CArea when done with it
+        auto saveCurve = [&]() {
+            if (!c.m_vertices.empty()) {
+                std::cerr << "\n    saveCurve: orientation=" << orientation
+                          << " vertices=" << c.m_vertices.size() << "\n";
+                for (const auto& v : c.m_vertices) {
+                    std::cerr << "      type=" << v.m_type << " p=(" << v.m_p.x << "," << v.m_p.y
+                              << ") c=(" << v.m_c.x << "," << v.m_c.y << ")\n";
+                }
+
+                if (orientation == 1) {
+                    m_curves.push_back(c);
+                    if (!firstOrientation) {
+                        firstCurve = &m_curves.back();
+                        std::cerr << "    -> pushed to m_curves (firstCurve set), total="
+                                  << m_curves.size() << "\n";
+                    }
+                    else {
+                        std::cerr << "    -> pushed to m_curves, total=" << m_curves.size() << "\n";
+                    }
+                }
+                else if (orientation == -1 && cNeg) {
+                    cNeg->get().m_curves.push_back(c);
+                    if (!firstOrientation) {
+                        firstCurve = &cNeg->get().m_curves.back();
+                        std::cerr << "    -> pushed to cNeg (firstCurve set), total="
+                                  << cNeg->get().m_curves.size() << "\n";
+                    }
+                    else {
+                        std::cerr << "    -> pushed to cNeg, total=" << cNeg->get().m_curves.size()
+                                  << "\n\n";
+                    }
+                }
+                else {
+                    std::cerr << "    -> DROPPED (orientation=" << orientation
+                              << ", cNeg=" << cNeg.has_value() << ")\n";
+                }
+                if (!firstOrientation) {
+                    firstOrientation = orientation;
+                }
+                std::cerr << "\n";
+            }
+        };
+
+        // Loop through clipper edges, converting to CVertex and building up the current CCurve
+        for (int iEdge = 0; iEdge < (isClosed ? path.size() : path.size() - 1); iEdge++) {
+            const Point64& v0 = path[iEdge];
+            const Point64& v1 = path[(iEdge + 1) % path.size()];
+            // TODO actually we only need the parentEdge, so delete excess code from this function
+            // and rename it
+            const auto parentEdge = getEdgeInfo(v0, v1).parentEdge;
+            const SegmentData& parentData = zData[parentEdge];
+
+            const bool inZData = zData.count(parentEdge) > 0;
+            std::cerr << "  edge[" << iEdge << "]: z=(" << v0.z << "," << v1.z << ") parentEdge=("
+                      << parentEdge.first << "," << parentEdge.second << ") inZData=" << inZData
+                      << " orientation=" << parentData.orientation << "\n";
+            if (!inZData) {
+                std::cerr << "\n\n    ERROR MISSING Z DATA! \n\n\n";
+            }
+
+            // Check if the orientation changed; if it did, end the curve
+            if (parentData.orientation != orientation) {
+                saveCurve();
+                c.m_vertices.clear();
+            }
+            orientation = parentData.orientation;
+
+            // Append the edge to the curve
+            if (c.m_vertices.empty()) {
+                const PointD start = ToPointD(v0);
+                c.m_vertices.emplace_back(heeks::Point {start.x, start.y});
+                std::cerr << "    start vertex: (" << start.x << "," << start.y << ")\n";
+            }
+
+            const PointD end = ToPointD(v1);
+            const CVertex edge(parentData.orig.m_type, {end.x, end.y}, parentData.orig.m_c);
+            const bool fullLoop = c.m_vertices.size() > 1
+                && std::prev(c.m_vertices.end(), 2)->m_p == edge.m_p;
+            CVertex& prev = c.m_vertices.back();
+            if (prev.m_type != 0 && prev.m_type == edge.m_type && prev.m_c == edge.m_c && !fullLoop) {
+                // This is a continuation of the same curve; extend the existing segment instead of
+                // appending a new one
+                prev.m_p = edge.m_p;
+                std::cerr << "    extend vertex: type=" << edge.m_type << " p=(" << edge.m_p.x << ","
+                          << edge.m_p.y << ") c=(" << edge.m_c.x << "," << edge.m_c.y << ")\n";
+            }
+            else {
+                c.m_vertices.push_back(edge);
+                std::cerr << "    push vertex: type=" << edge.m_type << " p=(" << edge.m_p.x << ","
+                          << edge.m_p.y << ") c=(" << edge.m_c.x << "," << edge.m_c.y << ")\n";
+            }
+        }
+
+        // Save the final curve
+        std::cerr << "\n  final: isClosed=" << isClosed << " firstCurve=" << (firstCurve != nullptr)
+                  << " firstOrientation=" << (firstOrientation ? *firstOrientation : -99)
+                  << " orientation=" << orientation << "\n";
+        if (isClosed && firstCurve && firstOrientation && orientation == *firstOrientation) {
+            // Save the curve by joining it with the first curve
+            std::cerr << "  -> joining with firstCurve (" << c.m_vertices.size()
+                      << " vertices prepended)\n\n";
+
+            // Remove the first curve's (now redundant) start point
+            firstCurve->m_vertices.pop_front();
+
+            // Check if the first CVertex of the first curve can extend the last CVertex of the
+            // current curve
+            CVertex& edge = firstCurve->m_vertices.front();
+            const bool fullLoop = c.m_vertices.size() > 1
+                && std::prev(c.m_vertices.end(), 2)->m_p == edge.m_p;
+            CVertex& prev = c.m_vertices.back();
+            if (prev.m_type != 0 && prev.m_type == edge.m_type && prev.m_c == edge.m_c && !fullLoop) {
+                // Yes, it is an extension. Remove the redundant CVertex, and update the current
+                // CVertex's end point
+                prev.m_p = edge.m_p;
+                firstCurve->m_vertices.pop_front();
+            }
+
+            // Finally, concatenate them
+            firstCurve->m_vertices
+                .insert(firstCurve->m_vertices.begin(), c.m_vertices.begin(), c.m_vertices.end());
+        }
+        else if (!firstOrientation && isClosed && c.m_vertices.size() >= 3) {
+            // This is the only curve so it needs to be saved as a new curve, but first try to
+            // connect its first/last edges
+
+            // Check if the first CVertex of the curve can extend the last CVertex
+            CVertex& first = *std::next(c.m_vertices.begin());
+            CVertex& last = c.m_vertices.back();
+            const bool fullLoop = std::prev(c.m_vertices.end(), 2)->m_p == first.m_p;
+            if (last.m_type != 0 && last.m_type == first.m_type && last.m_c == first.m_c
+                && !fullLoop) {
+                // Yes, it is an extension. Remove the redundant CVertex, and update the start point
+                c.m_vertices.front().m_p = std::prev(c.m_vertices.end(), 2)->m_p;
+                c.m_vertices.pop_back();
+            }
+
+            // Save it as a new curve
+            saveCurve();
+        }
+        else {
+            // Save it as a new curve
+            saveCurve();
+        }
+    }
+}
+
+// TODO deduplicate this with existing Union/Clip function
+void CArea::_Union(
+    const std::list<std::list<int>>& orientations,
+    std::optional<std::reference_wrapper<CArea>> cNeg
+)
+{
+    Clipper64 c;
+    c.SetZCallback(MakeZCallback());
+
+    std::map<pair<int64_t, int64_t>, CArea::SegmentData> zData;
+    // PopulateClipper(c, false, m_arc_fitting_map);
+    {
+        Paths64 closed_paths;
+        Paths64 open_paths;
+        int skipped = 0;
+        bool as_clip = false;
+
+        auto orientationIt = orientations.cbegin();
+        for (const CCurve& curve : m_curves) {
+            bool is_closed = curve.IsClosed();
+
+            if (!is_closed && as_clip) {
+                ++skipped;
+                continue;
+            }
+
+            Path64 p = _MakePoly(curve, zData, *orientationIt);
+
+            if (is_closed) {
+                closed_paths.push_back(p);
+            }
+            else {
+                open_paths.push_back(p);
+            }
+
+            orientationIt++;
+        }
+
+        if (skipped) {
+            std::cerr << "libarea: warning skipped " << skipped << " open wires" << std::endl;
+        }
+
+        if (as_clip) {
+            if (!closed_paths.empty()) {
+                c.AddClip(closed_paths);
+            }
+        }
+        else {
+            if (!closed_paths.empty()) {
+                c.AddSubject(closed_paths);
+            }
+            if (!open_paths.empty()) {
+                c.AddOpenSubject(open_paths);
+            }
+        }
+    }
+
+    // Execute to get both closed and open paths
+    Paths64 closed_paths;
+    Paths64 open_paths;
+    c.Execute(ClipType::Union, FillRule::Positive, closed_paths, open_paths);
+
+    // Convert clipper paths back to CArea; clean up clipper path metadata
+    m_curves.clear();
+    __SetFromResult(closed_paths, /*is_closed=*/true, zData, cNeg);
+    __SetFromResult(open_paths, /*is_closed=*/false, zData, cNeg);
+    m_arc_fitting_map = {};
+}
+
 // TODO rename to OffsetClosed? Or is it assumed? Definitely document it
 void CArea::Offset(double offset, JoinType joinType, EndType unused, double miterLimit, double arcTolerance)
 {
-    _Offset(offset, joinType, EndType::Polygon, miterLimit, arcTolerance);
+    if (offset == 0) {
+        return;
+    }
+
+    // Perform the naive offset, offsetting each edge and joining
+    std::list<std::list<int>> edge_directions = NaiveOffset(abs(offset), arcTolerance);
+
+    // If we want to keep the negative edges, flip all the edge labels
+    if (offset < 0) {
+        for (auto& curve_dirs : edge_directions) {
+            for (auto& dir : curve_dirs) {
+                dir = -dir;
+            }
+        }
+    }
+
+    // Union (fill rule positive), keeping positive edges and dropping negative edges
+    _Union(edge_directions);
+
+    // If negative offset, reverse the curves to put them in the forward direction
+    if (offset < 0) {
+        for (CCurve& c : m_curves) {
+            c.Reverse();
+        }
+    }
+
+    // I'm preserving this Reorder() call to preserve old behavior, but imo this should not be part
+    // of Offset's spec
     this->Reorder();
 }
 
 CArea CArea::OpenOffset(double offset, double arcTolerance)
 {
-    std::cerr << "OpenOffset arcTolerance=" << arcTolerance << "\n";
-    auto orientations = _Offset(fabs(offset), JoinType::Round, EndType::Round, 0.0, arcTolerance);
-
-    std::list<CCurve> positive;
-    std::list<CCurve> negative;
-
-    auto curveIt = m_curves.begin();
-    for (const auto& curveOrientations : orientations) {
-        CCurve& curve = *curveIt++;
-        const std::vector<CVertex> verts(curve.m_vertices.begin(), curve.m_vertices.end());
-
-        std::cerr << "\nfirst vertex: type=" << verts[0].m_type << " p=(" << verts[0].m_p.x << ","
-                  << verts[0].m_p.y << ")"
-                  << " c=(" << verts[0].m_c.x << "," << verts[0].m_c.y << ")\n";
-        for (int i = 0; i < (int)curveOrientations.size(); ++i) {
-            const CVertex& v = verts[i + 1];
-            std::cerr << "  vertex: type=" << v.m_type << " p=(" << v.m_p.x << "," << v.m_p.y << ")"
-                      << " c=(" << v.m_c.x << "," << v.m_c.y << ")"
-                      << " orientation=" << curveOrientations[i] << "\n";
-        }
-
-        // Find start index: first edge where the previous edge (wrapping) has a different
-        // orientation, so we always begin a new wire at a transition. Fall back to 0 if all
-        // orientations match.
-        //
-        // For open curves, always start at 0 since there is no wrap-around.
-        int n = (int)curveOrientations.size();
-        int iEdgeStart = 0;
-        if (curve.IsClosed()) {
-            for (int i = 0; i < n; ++i) {
-                if (curveOrientations[(i - 1 + n) % n] != curveOrientations[i]) {
-                    iEdgeStart = i;
-                    break;
-                }
-            }
-        }
-
-        CCurve* currentWire = NULL;
-        int prevOrientation = 0;
-        heeks::Point prevP = verts[iEdgeStart].m_p;
-
-        std::cerr << "\n  iEdgeStart=" << iEdgeStart
-                  << " orientation=" << curveOrientations[iEdgeStart];
-
-        for (int edgeOffset = 0; edgeOffset < n; ++edgeOffset) {
-            int iEdge = (iEdgeStart + edgeOffset) % n;
-            const CVertex& v = verts[iEdge + 1];
-            int orientation = curveOrientations[iEdge];
-
-            std::cerr << "\n  iEdge=" << iEdge << " orientation=" << orientation << "\n";
-
-            // If the orientation changes, start a new wire
-            if (orientation != prevOrientation) {
-                if (orientation == 1) {
-                    positive.emplace_back();
-                    currentWire = &positive.back();
-                    currentWire->m_vertices.emplace_back(0, prevP, heeks::Point {0, 0});
-                    std::cerr << "    new positive wire, start p=(" << prevP.x << "," << prevP.y
-                              << ")\n";
-                }
-                else if (orientation == -1) {
-                    negative.emplace_back();
-                    currentWire = &negative.back();
-                    currentWire->m_vertices.emplace_back(0, prevP, heeks::Point {0, 0});
-                    std::cerr << "    new negative wire, start p=(" << prevP.x << "," << prevP.y
-                              << ")\n";
-                }
-                else {
-                    currentWire = NULL;
-                    std::cerr << "    wire ended (orientation=0)\n";
-                }
-            }
-
-            // Add the current vertex to the wire
-            if (currentWire) {
-                currentWire->m_vertices.push_back(v);
-                std::cerr << "    append type=" << v.m_type << " p=(" << v.m_p.x << "," << v.m_p.y
-                          << ")"
-                          << " c=(" << v.m_c.x << "," << v.m_c.y << ")\n";
-            }
-
-            // Update prev values
-            prevP = v.m_p;
-            prevOrientation = orientation;
-        }
+    CArea cNeg;
+    if (offset == 0) {
+        return cNeg;
     }
 
-    // We've accumulated all our negative oriented wires in the negative direction, but for open
-    // path offset we actually want them traced out in the forwards direction
-    for (CCurve& c : negative) {
+    // Perform the naive offset, offsetting each edge and joining
+    std::list<std::list<int>> edge_directions = NaiveOffset(abs(offset), arcTolerance);
+
+    // Union (fill rule positive), separating out the positive and negative edges
+    _Union(edge_directions, std::ref(cNeg));
+
+    // The negative curves are oriented in reverse (to make the union operation work) but we
+    // actually want them oriented forwards when we return. Reverse them.
+    for (CCurve& c : cNeg.m_curves) {
         c.Reverse();
     }
 
-    // Return results
-    CArea result;
-    if (offset >= 0) {
-        m_curves = std::move(positive);
-        result.m_curves = std::move(negative);
+    // If the offset was supposed to be in the negative direction, swap the negative and positive results
+    if (offset < 0) {
+        std::swap(m_curves, cNeg.m_curves);
     }
-    else {
-        m_curves = std::move(negative);
-        result.m_curves = std::move(positive);
-    }
-    return result;
+    return cNeg;
 }
 
 std::vector<std::vector<int>> CArea::_Offset(
@@ -1146,12 +1729,6 @@ CArea::EdgeInfo CArea::getEdgeInfo(const Point64& p1, const Point64& p2)
 
     if (p1.z == p2.z) {
         int orientation = m_arc_fitting_map.orientations[p1.z] ? 1 : -1;
-
-        std::cerr << "  [getEdgeInfo point-expansion] z=" << p1.z << " p1=(" << dp1.x << ","
-                  << dp1.y << ")"
-                  << " p2=(" << dp2.x << "," << dp2.y << ")"
-                  << " orientation=" << orientation << "\n";
-
         return {{p1.z, p1.z}, orientation};
     }
 
@@ -1161,18 +1738,12 @@ CArea::EdgeInfo CArea::getEdgeInfo(const Point64& p1, const Point64& p2)
     bool p2_is_new = it2 != m_arc_fitting_map.intersections.end();
 
     std::optional<std::pair<int64_t, int64_t>> parentEdge;
-    std::cerr << "  [getEdgeInfo] p1.z=" << p1.z << " p2.z=" << p2.z << " p1_is_new=" << p1_is_new
-              << " p2_is_new=" << p2_is_new << "\n";
 
     if (p1_is_new && p2_is_new) {
         // Both points are intersection points, splitting their common parent edge
         const auto& [p1_e1bot, p1_e1top, p1_e2bot, p1_e2top] = it1->second;
         const auto& [p2_e1bot, p2_e1top, p2_e2bot, p2_e2top] = it2->second;
 
-        std::cerr << "    both-new: p1 edges=(" << p1_e1bot << "," << p1_e1top << ") (" << p1_e2bot
-                  << "," << p1_e2top << ")"
-                  << " p2 edges=(" << p2_e1bot << "," << p2_e1top << ") (" << p2_e2bot << ","
-                  << p2_e2top << ") ";
 
         // Sort each edge by increasing z for easy comparison
         std::pair<int64_t, int64_t> p1_edge1
@@ -1186,14 +1757,9 @@ CArea::EdgeInfo CArea::getEdgeInfo(const Point64& p1, const Point64& p2)
 
         if (p1_edge1 == p2_edge1 || p1_edge1 == p2_edge2) {
             parentEdge = p1_edge1;
-            std::cerr << "matched p1_edge1=(" << p1_edge1.first << "," << p1_edge1.second << ")\n";
         }
         else if (p1_edge2 == p2_edge1 || p1_edge2 == p2_edge2) {
             parentEdge = p1_edge2;
-            std::cerr << "matched p1_edge2=(" << p1_edge2.first << "," << p1_edge2.second << ")\n";
-        }
-        else {
-            std::cerr << "no matching edge found\n";
         }
     }
     else if (p1_is_new || p2_is_new) {
@@ -1204,31 +1770,18 @@ CArea::EdgeInfo CArea::getEdgeInfo(const Point64& p1, const Point64& p2)
 
         const auto& [p_new_e1bot, p_new_e1top, p_new_e2bot, p_new_e2top] = it_new->second;
 
-        std::cerr << "    one-new: p_new.z=" << p_new.z << " p_old.z=" << p_old.z << " new edges=("
-                  << p_new_e1bot << "," << p_new_e1top << ") (" << p_new_e2bot << "," << p_new_e2top
-                  << ") ";
-
         std::pair<int64_t, int64_t> new_edge = {std::min(p_new.z, p_old.z), std::max(p_new.z, p_old.z)};
 
         if (p_old.z == p_new_e1bot || p_old.z == p_new_e1top) {
             parentEdge = {std::min(p_new_e1bot, p_new_e1top), std::max(p_new_e1bot, p_new_e1top)};
-            std::cerr << "matched edge1 parentEdge=(" << parentEdge->first << ","
-                      << parentEdge->second << ")\n";
         }
         else if (p_old.z == p_new_e2bot || p_old.z == p_new_e2top) {
             parentEdge = {std::min(p_new_e2bot, p_new_e2top), std::max(p_new_e2bot, p_new_e2top)};
-            std::cerr << "matched edge2 parentEdge=(" << parentEdge->first << ","
-                      << parentEdge->second << ")\n";
-        }
-        else {
-            std::cerr << "no matching edge found\n";
         }
     }
     else {
         // Points are at either end of the parent edge
         parentEdge = {std::min(p1.z, p2.z), std::max(p1.z, p2.z)};
-        std::cerr << "    direct: parentEdge=(" << parentEdge->first << "," << parentEdge->second
-                  << ")\n";
     }
 
     if (parentEdge) {
@@ -1249,9 +1802,9 @@ CArea::EdgeInfo CArea::getEdgeInfo(const Point64& p1, const Point64& p2)
 
         int orientation = distsq2 > distsq1 ? 1 : -1;
 
-        std::cerr << "    edgeStart=(" << edgeStart.x << "," << edgeStart.y << ")"
-                  << " distsq1=" << distsq1 << " distsq2=" << distsq2
-                  << " orientation=" << orientation << "\n";
+        // std::cerr << "    edgeStart=(" << edgeStart.x << "," << edgeStart.y << ")"
+        //           << " distsq1=" << distsq1 << " distsq2=" << distsq2
+        //           << " orientation=" << orientation << "\n";
 
         return {*parentEdge, orientation};
     }

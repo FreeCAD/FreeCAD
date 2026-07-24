@@ -385,6 +385,98 @@ class TestAreaOperations(unittest.TestCase):
         self.assert_areas_equal(a, expected_pos)
         self.assert_areas_equal(neg, expected_neg)
 
+    def test_open_offset_antiparallel(self):
+        def tan_to_x(y, to):
+            """
+            Returns an edge tangent to the x axis at the origin
+            If abs(y) < 10, returns an arc of center (0, y)
+            Else (abs(y) >= 10), returns a line instead of the "large" arc
+            If `to`, returns a segment to the origin, tangent to x-
+            Else returns a segment from the origin, including start point, tangent to x+
+            """
+            if abs(y) >= 10:
+                return [(10, 0), (0, 0)] if to else [(10, 0)]
+
+            if to:
+                return [(0, 2 * y), (0, 0, 1 if y < 0 else -1, 0, y)]
+            else:
+                return [(0, 2 * y, 1 if y > 0 else -1, 0, y)]
+
+        def test_join_side(y0, y1, pos_side, testName):
+            with self.subTest(testName):
+                a = make_area(make_curve(tan_to_x(y0, True) + tan_to_x(y1, False)))
+                pos = area.copy_area(a)
+                neg = pos.OpenOffset(0.1)
+                debug_str = (
+                    f"{format_area(a, "input")}\n{format_area(pos, "pos")}{format_area(neg, "neg")}"
+                )
+                self.assertEqual(len(pos.getCurves()), 1, debug_str)
+                self.assertEqual(len(neg.getCurves()), 1, debug_str)
+                self.assertEqual(
+                    pos.getCurves()[0].getNumVertices(), 4 if pos_side else 3, debug_str
+                )
+                self.assertEqual(
+                    neg.getCurves()[0].getNumVertices(), 3 if pos_side else 4, debug_str
+                )
+
+        test_join_side(-3, 2, False, "CCW, smaller CCW")
+        test_join_side(-3, 3, False, "CCW, equal CCW")
+        test_join_side(-3, 4, False, "CCW, bigger CCW")
+        test_join_side(-3, 10, False, "CCW, line")
+        test_join_side(-3, -4, False, "CCW, bigger CW")
+        test_join_side(-3, -2, True, "CCW, smaller CW")
+
+        test_join_side(3, -2, True, "CW, smaller CW")
+        test_join_side(3, -3, True, "CW, equal CW")
+        test_join_side(3, -4, True, "CW, bigger CW")
+        test_join_side(3, 10, True, "CW, line")
+        test_join_side(3, 4, True, "CW, bigger CCW")
+        test_join_side(3, 2, False, "CW, smaller CCW")
+
+    def test_open_offset_parallel(self):
+        def tan_to_x(y, to):
+            """
+            Returns an edge tangent to the negative x axis at the origin
+            If abs(y) < 10, returns an arc of center (0, y)
+            Else (abs(y) >= 10), returns a line instead of the "large" arc
+            If `to`, returns a segment to the origin
+            Else returns a segment from the origin, including start point
+            """
+            if abs(y) >= 10:
+                return [(10, 0), (0, 0)] if to else [(-10, 0)]
+
+            if to:
+                return [(0, 2 * y), (0, 0, 1 if y < 0 else -1, 0, y)]
+            else:
+                return [(0, 2 * y, -1 if y > 0 else 1, 0, y)]
+
+        def test_no_join(y0, y1, testName):
+            with self.subTest(testName):
+                a = make_area(make_curve(tan_to_x(y0, True) + tan_to_x(y1, False)))
+                pos = area.copy_area(a)
+                neg = pos.OpenOffset(0.1)
+                debug_str = (
+                    f"{format_area(a, "input")}\n{format_area(pos, "pos")}{format_area(neg, "neg")}"
+                )
+                self.assertEqual(len(pos.getCurves()), 1, debug_str)
+                self.assertEqual(len(neg.getCurves()), 1, debug_str)
+                self.assertEqual(pos.getCurves()[0].getNumVertices(), 3, debug_str)
+                self.assertEqual(neg.getCurves()[0].getNumVertices(), 3, debug_str)
+
+        test_no_join(-3, 2, "CCW, smaller CW")
+        test_no_join(-3, 3, "CCW, equal CW")
+        test_no_join(-3, 4, "CCW, bigger CW")
+        test_no_join(-3, 10, "CCW, line")
+        test_no_join(-3, -4, "CCW, bigger CCW")
+        test_no_join(-3, -2, "CCW, smaller CCW")
+
+        test_no_join(3, -2, "CW, smaller CCW")
+        test_no_join(3, -3, "CW, equal CCW")
+        test_no_join(3, -4, "CW, bigger CCW")
+        test_no_join(3, 10, "CW, line")
+        test_no_join(3, 4, "CW, bigger CW")
+        test_no_join(3, 2, "CW, smaller CW")
+
     def test_open_offset_arcs(self):
         """Test open offset on a path with arcs"""
         subj = make_curve(
@@ -428,6 +520,19 @@ class TestAreaOperations(unittest.TestCase):
                 ]
             )
         )
+
+        expected_accuracy = area.get_accuracy() / (3 / 5.0)
+
+        self.assert_areas_equal(a, expected_pos, tol=expected_accuracy)
+        self.assert_areas_equal(neg, expected_neg, tol=expected_accuracy)
+
+    def test_open_offset_colinear(self):
+        """Test that colinear points are not removed while offsetting"""
+        a = make_area(make_curve([(0, 0), (0, 1), (0, 2)]))
+        neg = a.OpenOffset(1)
+
+        expected_pos = make_area(make_curve([(1, 0), (1, 1), (1, 2)]))
+        expected_neg = make_area(make_curve([(-1, 0), (-1, 1), (-1, 2)]))
 
         self.assert_areas_equal(a, expected_pos)
         self.assert_areas_equal(neg, expected_neg)
