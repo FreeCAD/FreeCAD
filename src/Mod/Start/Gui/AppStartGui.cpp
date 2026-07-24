@@ -96,8 +96,7 @@ public:
             auto mainWindow = Gui::getMainWindow();
             auto activeView = mainWindow->activeWindow();
             Gui::Application::Instance->commandManager().runCommandByName("Start_Start");
-            auto startView =
-                mainWindow->findChild<StartGui::StartView*>(QLatin1String("StartView"));
+            auto startView = mainWindow->findChild<StartGui::StartView*>(QLatin1String("StartView"));
             if (startView && mainWindow->activeWindow() == startView) {
                 if (auto tabBar = mainWindow->getMdiArea()->findChild<QTabBar*>(
                         QStringLiteral("mdiAreaTabBar")
