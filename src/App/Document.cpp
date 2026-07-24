@@ -1044,7 +1044,7 @@ Document::~Document()
     try {
         clearUndos();
     }
-    catch (const boost::exception&) {
+    catch (...) {
     }
 
 #ifdef FC_LOGUPDATECHAIN
