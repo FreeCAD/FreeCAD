@@ -400,6 +400,30 @@ class CommandGroupGearBelt:
         return isCreateJointActive()
 
 
+def createJointRigidGroupJoint(objs):
+    if not UtilsAssembly.activeAssembly():
+        return None
+
+    if len(objs) < 2:
+        App.Console.PrintWarning(
+            QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointRigidGroup",
+                "Select at least 2 components to create a rigid group",
+            )
+        )
+        return None
+
+    assembly = UtilsAssembly.activeAssembly()
+    joint_group = UtilsAssembly.getJointGroup(assembly)
+    rg = joint_group.newObject("App::FeaturePython", "RigidGroupJoint")
+
+    JointObject.RigidGroupJoint(rg, objs)
+    JointObject.ViewProviderRigidGroupJoint(rg.ViewObject)
+
+    assembly.Document.recompute()
+    return rg
+
+
 def createGroundedJoint(obj):
     if not UtilsAssembly.activeAssembly():
         return
@@ -502,6 +526,54 @@ class CommandToggleGrounded:
         App.ActiveDocument.commitTransaction()
 
 
+class CommandCreateJointRigidGroup:
+    def __init__(self):
+        pass
+
+    def GetResources(self):
+        return {
+            "Pixmap": "Assembly_CreateJointRigidGroup",
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointRigidGroup", "Create Rigid Group"),
+            "Accel": "O",
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointRigidGroup",
+                "<p>Create a rigid group.</p>"
+                "<p>Creates a rigid group that permanently locks the selected components together.</p>",
+            ),
+            "CmdType": "ForEdit",
+        }
+
+    def IsActive(self):
+        return (
+            UtilsAssembly.isAssemblyCommandActive()
+            and UtilsAssembly.assembly_has_at_least_n_parts(2)
+        )
+
+    def Activated(self):
+        assembly = UtilsAssembly.activeAssembly()
+        if not assembly:
+            return
+
+        selection = Gui.Selection.getSelectionEx("*", 0)
+        if not selection:
+            return
+
+        App.ActiveDocument.openTransaction("Create Rigid Group")
+        parts = []
+        for sel in selection:
+            for sub in sel.SubElementNames:
+                part_ref, new_sub = UtilsAssembly.getComponentReference(assembly, sel.Object, sub)
+
+                # Only objects within the assembly.
+                if part_ref is None:
+                    continue
+
+                parts.append(part_ref)
+
+        createJointRigidGroupJoint(parts)
+        App.ActiveDocument.commitTransaction()
+
+
 if App.GuiUp:
     Gui.addCommand("Assembly_ToggleGrounded", CommandToggleGrounded())
     Gui.addCommand("Assembly_CreateJointFixed", CommandCreateJointFixed())
@@ -518,3 +590,4 @@ if App.GuiUp:
     Gui.addCommand("Assembly_CreateJointGears", CommandCreateJointGears())
     Gui.addCommand("Assembly_CreateJointBelt", CommandCreateJointBelt())
     Gui.addCommand("Assembly_CreateJointGearBelt", CommandGroupGearBelt())
+    Gui.addCommand("Assembly_CreateJointRigidGroup", CommandCreateJointRigidGroup())
