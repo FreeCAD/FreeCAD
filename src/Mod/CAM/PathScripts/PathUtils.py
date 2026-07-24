@@ -179,38 +179,39 @@ def tangentEdgeLoop(obj, edge1, edge2):
 
     loop = [edge1]
     hashes = [edge1.hashCode()]
-    startPoint = edge1.Vertexes[0].Point
-    lastEdge = edge1
-    lastIndex = -1
+    if Path.Geom.edgeConnectsTo(edge2, edge1.Vertexes[0].Point):
+        startPoint = edge1.Vertexes[-1].Point
+        nextIndex = 0
+    else:
+        startPoint = edge1.Vertexes[0].Point
+        nextIndex = -1
+
     objEdges = obj.Shape.Edges
-    for i in range(len(objEdges)):
-        if Path.Geom.pointsCoincide(lastEdge.Vertexes[lastIndex].Point, startPoint):
+    for i in range(len(objEdges) - 1):
+        if Path.Geom.pointsCoincide(loop[-1].Vertexes[nextIndex].Point, startPoint):
             # stop because return to start point and loop is closed
             break
 
-        lastPoint = lastEdge.Vertexes[lastIndex].Point
-        lastTangent = lastEdge.tangentAt(lastEdge.ParameterRange[lastIndex])
-        for e in objEdges:
-            if e.hashCode() in hashes:
+        point = loop[-1].Vertexes[nextIndex].Point
+        tangent = loop[-1].tangentAt(loop[-1].ParameterRange[nextIndex])
+        for candidate in objEdges:
+            if candidate.hashCode() in hashes:
                 # this edge is already in loop
                 continue
 
-            if Path.Geom.pointsCoincide(lastPoint, e.Vertexes[0].Point):
+            if Path.Geom.pointsCoincide(point, candidate.Vertexes[0].Point):
                 index = 0
-            elif Path.Geom.pointsCoincide(lastPoint, e.Vertexes[-1].Point):
+            elif Path.Geom.pointsCoincide(point, candidate.Vertexes[-1].Point):
                 index = -1
             else:
                 continue
 
-            tangent = e.tangentAt(e.ParameterRange[index])
-            if lastIndex == index:
-                tangent = -tangent
-            if Path.Geom.pointsCoincide(tangent, lastTangent, 0.05):
+            candidateTangent = candidate.tangentAt(candidate.ParameterRange[index])
+            if Path.Geom.compareVecs(tangent, candidateTangent, error=0.05):
                 # found next tangency edge
-                loop.append(e)
-                hashes.append(e.hashCode())
-                lastEdge = e
-                lastIndex = -1 if index == 0 else 0
+                loop.append(candidate)
+                hashes.append(candidate.hashCode())
+                nextIndex = -1 if index == 0 else 0
                 break
 
         else:
@@ -241,7 +242,7 @@ def horizontalFacesAtHeight(obj, z, tol=0.01):
     if len(names) > 1:
         return names
 
-    return None
+    return []
 
 
 def horizontalFaceLoops(obj, faces):
