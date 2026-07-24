@@ -145,6 +145,7 @@ class BIMWorkbench(Workbench):
             "Draft_Split",
             "Draft_Stretch",
             "Draft_Draft2Sketch",
+            "Draft_Edit",
         ]
         self.modify_obj = [
             "Draft_Upgrade",
