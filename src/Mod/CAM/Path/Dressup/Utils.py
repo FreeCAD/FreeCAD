@@ -72,6 +72,6 @@ def baseOp(path):
     return path
 
 
-def toolController(path):
+def toolController(path, default=None):
     """toolController(path) ... return the tool controller from the base op."""
-    return baseOp(path).ToolController
+    return getattr(baseOp(path), "ToolController", default)
