@@ -24,6 +24,7 @@
 
 #include <App/GeoFeaturePy.h>
 
+#include <functional>
 #include <Base/Tools.h>
 
 #include "ComplexGeoData.h"
@@ -200,6 +201,143 @@ DocumentObject* GeoFeature::resolveElement(const DocumentObject* obj,
         elementName.oldName = prefix + names.oldName;
     }
     return sobj;
+}
+
+bool GeoFeature::resolveElementCreator(const App::DocumentObject* topParent,
+                                       const char* subname,
+                                       ElementCreatorResult& out,
+                                       const std::function<bool(App::DocumentObject*)>& isValidCreator)
+{
+    out = ElementCreatorResult{};
+    if (!topParent || !topParent->isAttachedToDocument()) {
+        return false;
+    }
+    if (!subname) {
+        subname = "";
+    }
+
+    ElementNamePair elementName;
+    const char* elementToken = nullptr;
+    GeoFeature* geo = nullptr;
+    App::DocumentObject* elementOwner =
+        GeoFeature::resolveElement(topParent, subname, elementName,
+                                   false, GeoFeature::Normal,
+                                   nullptr, &elementToken, &geo);
+
+    out.elementOwner = elementOwner;
+
+    if (!elementOwner || !geo || !elementToken || elementToken[0] == '\0') {
+        return false;
+    }
+
+    const App::PropertyComplexGeoData* prop = geo->getPropertyOfGeometry();
+    if (!prop) {
+        return false;
+    }
+    const Data::ComplexGeoData* complex = prop->getComplexData();
+    if (!complex || !complex->hasElementMap() || complex->Tag == 0) {
+        return false;
+    }
+
+    Data::MappedElement me = complex->getElementName(elementToken);
+    Data::MappedName query = me.name;
+    if (!query && me.index) {
+        query = complex->getMappedName(me.index, false);
+    }
+    if (!query) {
+        return false;
+    }
+
+    App::Document* doc = geo->getDocument();
+    if (!doc) {
+        return false;
+    }
+
+    // Walk element history iteratively across feature shapes.
+    // Each getElementHistory() call returns ONE step back:
+    //   tag      = ID of the feature that produced this element
+    //   original = the element's mapped name on that feature's shape
+    // We call again on that shape with `original` to go deeper.
+    //
+    // CRITICAL: original.copy() before replacing complex — original holds a
+    // fromRawData view into the old complex's element map memory. Replacing
+    // complex without copying causes a dangling reference on the next iteration.
+    //
+    // ELEMENT TYPE BOUNDARY: a fillet/chamfer blend face is *derived from* an
+    // edge of the previous feature (not from a face). getElementHistory() will
+    // return that edge's owner (e.g. Pad) and an edge mapped name as `original`.
+    // Following this would wrongly identify Pad as the blend face's creator.
+    // We detect this by comparing the element type of `original` against the
+    // initial type; if it changes (Face -> Edge), we stop and fall through to
+    // the elementOwner fallback below, which correctly returns the dress-up
+    // feature (Fillet/Chamfer/Thickness/Draft) as the creator.
+    const char initialTypeChar = me.index ? complex->elementType(me.index) : '\0';
+
+    App::DocumentObject* creator = nullptr;
+    Data::MappedName currentMapped = query;
+
+    while (true) {
+        Data::MappedName original;
+        long tag = complex->getElementHistory(currentMapped, &original, nullptr);
+        if (tag == 0) {
+            break;
+        }
+
+        App::DocumentObject* obj = doc->getObjectByID(std::abs(tag));
+        if (!obj) {
+            break;
+        }
+
+        if (isValidCreator && !isValidCreator(obj)) {
+            break;
+        }
+
+        // Resolve the creator's geometry now so we can check the element type
+        // of `original` before committing to this step.
+        auto* creatorLinked = obj->getLinkedObject(true);
+        auto* creatorGeo = freecad_cast<GeoFeature*>(creatorLinked);
+        const Data::ComplexGeoData* creatorComplex = nullptr;
+        if (creatorGeo) {
+            if (const auto* p = creatorGeo->getPropertyOfGeometry()) {
+                creatorComplex = p->getComplexData();
+            }
+        }
+
+        // If `original` resolves to a different element type than we started
+        // with, the history has crossed a dimension boundary (e.g., a fillet
+        // blend face whose ancestry is an edge, not a face). Stop here without
+        // updating creator so the elementOwner fallback can return the
+        // dress-up feature itself.
+        if (original && initialTypeChar && creatorComplex) {
+            char origTypeChar = creatorComplex->elementType(original);
+            if (origTypeChar && origTypeChar != initialTypeChar) {
+                break;
+            }
+        }
+
+        creator = obj;
+
+        if (!original || !creatorComplex || creatorComplex->Tag == 0) {
+            break;
+        }
+
+        Data::MappedName copied = original.copy();
+        complex = creatorComplex;
+        doc = obj->getDocument();
+        currentMapped = std::move(copied);
+    }
+
+    // If the history walk found nothing, the element was created fresh by
+    // `elementOwner` itself (e.g. a fillet blend face, chamfer bevel, thickness
+    // wall). Use elementOwner as the creator if it passes the filter.
+    if (!creator) {
+        if (!isValidCreator || isValidCreator(elementOwner)) {
+            creator = elementOwner;
+        }
+    }
+
+    out.creator = creator;
+    return creator != nullptr;
 }
 
 App::Material GeoFeature::getMaterialAppearance() const
