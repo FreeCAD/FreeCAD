@@ -327,7 +327,7 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
 
     if (revolutions.empty()) {
         return new App::DocumentObjectExecReturn(
-            QT_TRANSLATE_NOOP("Exception", "No revolution geometry was generated.")
+            QT_TRANSLATE_NOOP("Exception", "No revolution geometry was generated")
         );
     }
     if (revolutions.size() == 1) {
