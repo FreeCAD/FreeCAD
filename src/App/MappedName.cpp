@@ -22,6 +22,7 @@
  *                                                                          *
  ****************************************************************************/
 
+#include <sstream>
 #include <unordered_set>
 
 #include "MappedName.h"
@@ -29,8 +30,6 @@
 #include "Base/Console.h"
 
 #include <boost/algorithm/string/predicate.hpp>
-#include <boost/iostreams/device/array.hpp>
-#include <boost/iostreams/stream.hpp>
 
 
 FC_LOG_LEVEL_INIT("MappedName", true, 2);  // NOLINT
@@ -114,7 +113,7 @@ int MappedName::findTagInElementName(long* tagOut,
         ++nameAsChars;
         --size;
     }
-    boost::iostreams::stream<boost::iostreams::array_source> iss(nameAsChars, size);
+    std::istringstream iss(std::string(nameAsChars, size));
     if (!hex) {
         // no hex is an older version of the encoding scheme
         iss >> _tag >> sep;

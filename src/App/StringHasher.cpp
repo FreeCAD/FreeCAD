@@ -24,6 +24,7 @@
 #include <QCryptographicHash>
 #include <QHash>
 #include <deque>
+#include <sstream>
 
 #include <Base/Console.h>
 #include <Base/Reader.h>
@@ -36,7 +37,6 @@
 #include <boost/bimap/set_of.hpp>
 #include <boost/bimap/unordered_set_of.hpp>
 #include <boost/io/ios_state.hpp>
-#include <boost/iostreams/stream.hpp>
 
 #include "MappedElement.h"
 #include "StringHasher.h"
@@ -46,7 +46,6 @@
 
 FC_LOG_LEVEL_INIT("App", true, true)
 
-namespace bio = boost::iostreams;
 using namespace App;
 
 ///////////////////////////////////////////////////////////
@@ -129,7 +128,7 @@ StringID::IndexID StringID::fromString(const char* name, bool eof, int size)
     if (size < 0) {
         size = static_cast<int>(std::strlen(name));
     }
-    bio::stream<bio::array_source> iss(name, size);
+    std::istringstream iss(std::string(name, size));
     char sep = 0;
     char sep2 = 0;
     iss >> sep >> std::hex >> res.id >> sep2 >> res.index;

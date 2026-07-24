@@ -26,6 +26,7 @@
 
 #include <cstdlib>
 #include <limits>
+#include <sstream>
 
 #include <regex>
 
@@ -39,8 +40,6 @@
 #include <Base/Rotation.h>
 #include <Base/Writer.h>
 
-#include <boost/iostreams/device/array.hpp>
-#include <boost/iostreams/stream.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 
 
@@ -51,7 +50,6 @@ TYPESYSTEM_SOURCE_ABSTRACT(Data::ComplexGeoData, Base::Persistence)  // NOLINT
 
 FC_LOG_LEVEL_INIT("ComplexGeoData", true, true)  // NOLINT
 
-namespace bio = boost::iostreams;
 using namespace Data;
 
 // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
@@ -547,7 +545,7 @@ void ComplexGeoData::readElements(Base::XMLReader& reader, size_t count)
             }
             else {
                 const char* attr = reader.getAttribute<const char*>("sid");
-                bio::stream<bio::array_source> iss(attr, std::strlen(attr));
+                std::istringstream iss(attr);
                 long id {};
                 while ((iss >> id)) {
                     if (id == 0) {
