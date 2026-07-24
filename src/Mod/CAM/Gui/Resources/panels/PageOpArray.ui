@@ -42,6 +42,12 @@
        <property name="selectionBehavior">
         <enum>QAbstractItemView::SelectRows</enum>
        </property>
+       <property name="verticalScrollMode">
+        <enum>QAbstractItemView::ScrollMode::ScrollPerPixel</enum>
+       </property>
+       <property name="horizontalScrollMode">
+        <enum>QAbstractItemView::ScrollMode::ScrollPerPixel</enum>
+       </property>
        <property name="columnCount">
         <number></number>
        </property>
@@ -144,6 +150,23 @@ Can undefined if operation not in Job Operations group or under dress-up.
          </property>
          <property name="text">
           <string>Add</string>
+         </property>
+        </widget>
+       </item>
+
+       <item>
+        <widget class="QToolButton" name="tb_op_sort">
+         <property name="maximumSize">
+          <size>
+           <width>70</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Sort operation according to the Job tree</string>
+         </property>
+         <property name="text">
+          <string>Sort</string>
          </property>
         </widget>
        </item>

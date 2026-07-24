@@ -116,6 +116,10 @@ class ArrayTaskPanel(SimpleEditPanel):
     _transaction_name = "Edit Array"
     _ui_file = ":/panels/PageOpArray.ui"
 
+    WarnOrder = 0x0001  # order is incorrect [1,3,2,4]
+    WarnList = 0x0002  # some operations not present in root of Job Operations group
+    WarnMissed = 0x0004  # missed op in list [1,2,4]
+
     def setupUi(self):
         self.initPage()
         self.setFields()
@@ -176,6 +180,7 @@ class ArrayTaskPanel(SimpleEditPanel):
         self.form.baseList.clicked.connect(self.updateBaseButtonsVisibility)
         self.form.tb_op_clear.clicked.connect(self.clearBaseList)
         self.form.tb_op_remove.clicked.connect(self.removeFromBaseList)
+        self.form.tb_op_sort.clicked.connect(self.sortBaseList)
         self.form.tb_op_add.clicked.connect(self.addToBaseList)
         self.form.tb_op_up.clicked.connect(self.upInBaseList)
         self.form.tb_op_down.clicked.connect(self.downInBaseList)
@@ -303,17 +308,50 @@ class ArrayTaskPanel(SimpleEditPanel):
         else:
             return None
 
-    def getWarningMessage(self):
-        """Returns True if Base list order is correct"""
-        string = translate("CAM_Array", "!!! Order of operations can be dangerous !!!")
+    def getWarnState(self):
+        """Check order of indexes and return current warning state"""
+        print("getWarnState")
+        warnState = 0b0000  # current warning state
         indexes = [self.getOpIndex(op) for op in self.obj.Base]
-        if not indexes:
-            return None
+        if len(indexes) < 2:
+            return 0
         if any(i is None for i in indexes):
-            return string
-        print("  warn", indexes, list(range(indexes[0], indexes[-1] + 1)))
-        if indexes != list(range(indexes[0], indexes[-1] + 1)):
-            return string
+            warnState = warnState | self.WarnList
+        elif sorted(indexes)[-1] - sorted(indexes)[0] + 1 > len(indexes):
+            warnState = warnState | self.WarnMissed
+        elif list(range(min(indexes), max(indexes) + 1)) != indexes:
+            warnState = warnState | self.WarnOrder
+
+        print("!!!! warn state", bin(warnState))
+        return warnState
+
+    def updateWarningMessage(self):
+        """Returns True if Base list order is correct"""
+        warnState = self.getWarnState()
+        warnString = ""
+        warnToolTip = ""
+        if warnState & self.WarnList:
+            warnString = translate(
+                "CAM_Array", "!!! Some operations not present in root of Job !!!"
+            )
+            warnToolTip = translate("CAM_Array", "Probably used some operations under dress-up")
+        elif warnState & self.WarnMissed:
+            warnString = translate("CAM_Array", "!!! Missed some operations !!!")
+            warnToolTip = translate(
+                "CAM_Array", "Probably selected not all operations. E.g. 1,2,4, missed 3"
+            )
+        elif warnState & self.WarnOrder:
+            warnString = translate("CAM_Array", "!!! Order of operations can be dangerous !!!")
+            warnToolTip = translate("CAM_Array", "Order of operations does not match Job tree")
+
+        if warnString:
+            self.form.label_message.setText(warnString)
+            self.form.label_message.setToolTip(warnToolTip)
+            self.form.group_message.show()
+        else:
+            self.form.group_message.hide()
+            self.form.label_message.setText("")
+            self.form.label_message.setToolTip("")
 
     def updateBaseList(self):
         """Update table with operations"""
@@ -338,7 +376,11 @@ class ArrayTaskPanel(SimpleEditPanel):
             item = QtGui.QTableWidgetItem(indexString)
             self.form.baseList.setItem(i, COL_INDEX, item)
 
-            item = QtGui.QTableWidgetItem(op.Label)
+            if op.Label == op.Name:
+                name = op.Label
+            else:
+                name = f"{op.Label} ({op.Name})"
+            item = QtGui.QTableWidgetItem(name)
             self.form.baseList.setItem(i, COL_OP_NAME, item)
 
             if tc := toolControllerForOp(op):
@@ -360,17 +402,19 @@ class ArrayTaskPanel(SimpleEditPanel):
         header.setSectionResizeMode(COL_OP_COOLANT, QtGui.QHeaderView.ResizeToContents)
         self.form.baseList.blockSignals(False)
 
-        print("WARN", self.getWarningMessage())
-        if string := self.getWarningMessage():
-            self.form.label_message.setText(string)
-            self.form.group_message.show()
-        else:
-            self.form.group_message.hide()
+        self.updateWarningMessage()
 
     def updateBaseButtonsVisibility(self):
         """Update visibility of operations buttons"""
         print("updateBaseButtonsVisibility", self.form.baseList.rowCount())
         self.form.tb_op_clear.setEnabled(self.form.baseList.rowCount())
+
+        base = [self.getOpIndex(op) for op in self.obj.Base]
+        if len(base) > 1 and None not in base:
+            self.form.tb_op_sort.setEnabled(True)
+        else:
+            self.form.tb_op_sort.setEnabled(False)
+
         selectedRows = self.form.baseList.selectionModel().selectedRows()
         indexes = [row.row() for row in selectedRows]
         print("   indexes", indexes)
@@ -388,6 +432,16 @@ class ArrayTaskPanel(SimpleEditPanel):
             operations = [op for i, op in enumerate(self.obj.Base) if i in indexes]
             for op in operations:
                 FreeCADGui.Selection.addSelection(op)
+
+    def sortBaseList(self):
+        print("sortBaseList")
+        tups = [(self.getOpIndex(op), op) for op in self.obj.Base]
+        tups = sorted(tups, key=lambda tup: tup[0])
+        print("  tup", tups)
+        sortedBase = [op for _, op in tups]
+        self.obj.Base = sortedBase
+        self.updateBaseList()
+        self.updateBaseButtonsVisibility()
 
     def clearBaseList(self):
         """Clear Base list"""
