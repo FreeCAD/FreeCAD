@@ -2848,7 +2848,10 @@ int Document::openCommand(const char* sName)
 
 void Document::commitCommand()
 {
-    getDocument()->commitTransaction();
+    auto doc = getDocument();
+    if (doc) {
+        doc->commitTransaction();
+    }
 }
 
 void Document::abortCommand()
