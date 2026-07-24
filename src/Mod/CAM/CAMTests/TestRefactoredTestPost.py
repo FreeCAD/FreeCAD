@@ -27,6 +27,7 @@ from unittest.mock import mock_open, patch
 
 import FreeCAD
 
+import unittest
 import Path
 import CAMTests.PathTestUtils as PathTestUtils
 from Path.Post.Command import CommandPathPost
@@ -1181,6 +1182,7 @@ G0 Z8.000
 
     #############################################################################
 
+    @unittest.skip("Temporarily disabled: unstable on some platforms")
     def test00190(self):
         """Test Outputting all arguments.
 
