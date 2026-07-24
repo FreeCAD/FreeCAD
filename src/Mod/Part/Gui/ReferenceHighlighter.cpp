@@ -22,10 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <cassert>
+
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
-
-#include <boost/algorithm/string/predicate.hpp>
 
 #include "ReferenceHighlighter.h"
 
@@ -128,16 +128,16 @@ void ReferenceHighlighter::getVertexColors(
 
     if (!elements.empty()) {
         for (const std::string& e : elements) {
-            if (boost::starts_with(e, "Vertex")) {
+            if (e.starts_with("Vertex")) {
                 getVertexColor(e, colors);
             }
-            else if (boost::starts_with(e, "Edge")) {
+            else if (e.starts_with("Edge")) {
                 getVertexColorsOfEdge(e, colors);
             }
-            else if (boost::starts_with(e, "Wire")) {
+            else if (e.starts_with("Wire")) {
                 getVertexColorsOfWire(e, colors);
             }
-            else if (boost::starts_with(e, "Face")) {
+            else if (e.starts_with("Face")) {
                 getVertexColorsOfFace(e, colors);
             }
         }
@@ -210,13 +210,13 @@ void ReferenceHighlighter::getEdgeColors(
 
     if (!elements.empty()) {
         for (const std::string& e : elements) {
-            if (boost::starts_with(e, "Edge")) {
+            if (e.starts_with("Edge")) {
                 getEdgeColor(e, colors);
             }
-            else if (boost::starts_with(e, "Wire")) {
+            else if (e.starts_with("Wire")) {
                 getEdgeColorsOfWire(e, colors);
             }
-            else if (boost::starts_with(e, "Face")) {
+            else if (e.starts_with("Face")) {
                 getEdgeColorsOfFace(e, colors);
             }
         }
@@ -258,7 +258,7 @@ void ReferenceHighlighter::getFaceColors(
 
     if (!elements.empty()) {
         for (const std::string& e : elements) {
-            if (boost::starts_with(e, "Face")) {
+            if (e.starts_with("Face")) {
                 getFaceColor(e, colors);
             }
         }
@@ -278,7 +278,7 @@ void ReferenceHighlighter::getFaceMaterials(
 
     if (!elements.empty()) {
         for (const std::string& e : elements) {
-            if (boost::starts_with(e, "Face")) {
+            if (e.starts_with("Face")) {
                 getFaceColor(e, materials);
             }
         }

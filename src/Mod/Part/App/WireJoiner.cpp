@@ -24,9 +24,7 @@
 
 #include <limits>
 
-#include <boost/core/ignore_unused.hpp>
 #include <boost/geometry/geometries/register/point.hpp>
-#include <boost/graph/graph_concepts.hpp>
 
 #include <BRepLib.hxx>
 #include <BRep_Builder.hxx>
@@ -1784,9 +1782,7 @@ public:
             return;
         }
         for (auto& info : edges) {
-            if (auto wire = info.wireInfo.get()) {
-                boost::ignore_unused(wire);
-
+            if ([[maybe_unused]] auto wire = info.wireInfo.get()) {
                 ENSURE(wire->vertices.front().edgeInfo()->wireInfo.get() == wire);
             }
         }

@@ -83,8 +83,7 @@
 #include <ShapeFix_ShapeTolerance.hxx>
 #include <gp_Pln.hxx>
 
-#include <boost/algorithm/string/predicate.hpp>
-
+#include <string_view>
 #include <utility>
 
 #include <OSD_Parallel.hxx>
@@ -1845,7 +1844,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                     }
                 }
                 else if (
-                    it == newNames.end() || !boost::starts_with(it->first.getType(), info.shapetype)
+                    it == newNames.end()
+                    || !std::string_view(it->first.getType()).starts_with(info.shapetype)
                 ) {
                     break;
                 }
@@ -2059,7 +2059,7 @@ TopoShape TopoShape::getSubTopoShape(const char* Type, bool silent) const
     }
 
     Data::MappedElement mapped = getElementName(Type);
-    if (!mapped.index && boost::starts_with(Type, elementMapPrefix())) {
+    if (!mapped.index && std::string_view(Type).starts_with(elementMapPrefix())) {
         if (!silent) {
             FC_THROWM(Base::CADKernelError, "Mapped element not found: " << Type);
         }
@@ -5358,7 +5358,7 @@ Data::MappedName TopoShape::setElementComboName(
     if (!marker) {
         marker = elementMapPrefix().c_str();
     }
-    else if (!boost::starts_with(marker, elementMapPrefix())) {
+    else if (!std::string_view(marker).starts_with(elementMapPrefix())) {
         _marker = elementMapPrefix() + marker;
         marker = _marker.c_str();
     }
@@ -6017,11 +6017,11 @@ TopoShape& TopoShape::makeElementBoolean(
             elementMapPolicy
         );
     }
-    else if (boost::starts_with(maker, Part::OpCodes::Face)) {
+    else if (std::string_view(maker).starts_with(Part::OpCodes::Face)) {
         std::string prefix(Part::OpCodes::Face);
         prefix += '.';
         const char* face_maker = 0;
-        if (boost::starts_with(maker, prefix)) {
+        if (std::string_view(maker).starts_with(prefix)) {
             face_maker = maker + prefix.size();
         }
         return makeElementFace(shapes, op, face_maker, nullptr, elementMapPolicy);
