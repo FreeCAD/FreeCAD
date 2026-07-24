@@ -45,7 +45,7 @@ void PatternPointParametersWidget::getPointObject(
 void PatternPointParametersWidget::updatePointObjectButton()
 {
     if (!pointObjectProperty || !pointObjectProperty->getValue()) {
-        ui->pointObjectButton->setText(tr("Select point object..."));
+        ui->pointObjectButton->setText(tr("Select point object…"));
         return;
     }
 
