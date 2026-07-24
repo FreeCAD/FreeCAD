@@ -61,7 +61,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         """getForm() ... return UI"""
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpHelixEdit.ui")
 
-        comboToPropertyMap = [("startAt", "StartAt"), ("cutMode", "CutMode")]
+        comboToPropertyMap = [("side", "Side"), ("startAt", "StartAt"), ("cutMode", "CutMode")]
         enumTups = PathHelix.ObjectHelix.helixOpPropertyEnumerations(dataType="raw")
         self.populateCombobox(form, enumTups, comboToPropertyMap)
 
@@ -83,6 +83,8 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             obj.CutMode = str(self.form.cutMode.currentData())
         if obj.StartAt != str(self.form.startAt.currentData()):
             obj.StartAt = str(self.form.startAt.currentData())
+        if obj.Side != str(self.form.side.currentData()):
+            obj.Side = str(self.form.side.currentData())
 
         if obj.StepOver != self.form.stepOver.value():
             obj.StepOver = self.form.stepOver.value()
@@ -99,6 +101,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
         self.selectInComboBox(obj.CutMode, self.form.cutMode)
         self.selectInComboBox(obj.StartAt, self.form.startAt)
+        self.selectInComboBox(obj.Side, self.form.side)
 
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
@@ -114,6 +117,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
         signals.append(self.form.cutMode.currentIndexChanged)
         signals.append(self.form.startAt.currentIndexChanged)
+        signals.append(self.form.side.currentIndexChanged)
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
 
