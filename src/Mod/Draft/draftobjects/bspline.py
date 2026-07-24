@@ -34,6 +34,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 from draftobjects.base import DraftObject
+from draftobjects import base as draft_base
 from draftutils import gui_utils
 from draftutils import params
 
@@ -60,9 +61,11 @@ class BSpline(DraftObject):
         obj.Closed = False
         obj.Points = []
         self.assureProperties(obj)
+        draft_base.assure_point_attachment_properties(obj)
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
+        draft_base.assure_point_attachment_properties(obj)
         gui_utils.restore_view_object(obj, vp_module="view_bspline", vp_class="ViewProviderBSpline")
 
     def assureProperties(self, obj):  # for Compatibility with older versions
@@ -96,7 +99,9 @@ class BSpline(DraftObject):
                 fp.Parameterization = 1.0
 
     def execute(self, obj):
-        if self.props_changed_placement_only() or not obj.Points:
+        if (
+            self.props_changed_placement_only() and not draft_base.has_point_attachments(obj)
+        ) or not obj.Points:
             obj.positionBySupport()
             self.props_changed_clear()
             return
@@ -104,6 +109,10 @@ class BSpline(DraftObject):
         import Part
 
         self.assureProperties(obj)
+        obj.positionBySupport()
+        attached_points = draft_base.apply_point_attachments(obj, obj.Points)
+        if attached_points != obj.Points:
+            obj.Points = attached_points
 
         self.knotSeq = self.parameterization(obj.Points, obj.Parameterization, obj.Closed)
         plm = obj.Placement

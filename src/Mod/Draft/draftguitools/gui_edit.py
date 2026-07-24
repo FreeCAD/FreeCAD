@@ -55,6 +55,7 @@ from draftguitools import gui_edit_part_objects as edit_part
 from draftguitools import gui_edit_sketcher_objects as edit_sketcher
 from draftguitools import gui_tool_utils
 from draftguitools import gui_trackers as trackers
+from draftobjects import base as draft_base
 
 COLORS = {
     "default": utils.get_rgba_tuple(params.get_param("snapcolor"))[:3],
@@ -206,6 +207,7 @@ class Edit(gui_base_original.Modifier):
         self.edited_objects = []
         self.obj = None
         self.editing = None
+        self.node_attachment_pick = False
 
         # event callbacks
         self.selection_callback = None
@@ -236,6 +238,7 @@ class Edit(gui_base_original.Modifier):
         self.gui_tools_repository.add("Rectangle", edit_draft.DraftRectangleGuiTools())
         self.gui_tools_repository.add("Polygon", edit_draft.DraftPolygonGuiTools())
         self.gui_tools_repository.add("Ellipse", edit_draft.DraftEllipseGuiTools())
+        self.gui_tools_repository.add("Point", edit_draft.DraftPointGuiTools())
         self.gui_tools_repository.add(
             "Dimension", edit_draft.DraftDimensionGuiTools()
         )  # Backward compatibility
@@ -341,6 +344,7 @@ class Edit(gui_base_original.Modifier):
         self.unregister_selection_callback()
         self.unregister_editing_callbacks()
         self.editing = None
+        self.node_attachment_pick = False
         self.finalizeGhost()
         Gui.Snapper.setSelectMode(False)
 
@@ -383,6 +387,14 @@ class Edit(gui_base_original.Modifier):
                 Gui.InputHint(
                     translate("draft", "%1 options for hovered node/edge"),
                     Gui.UserInput.KeyE,
+                ),
+                Gui.InputHint(translate("draft", "%1 finish"), Gui.UserInput.KeyEscape),
+            ]
+        if self.node_attachment_pick:
+            return [
+                Gui.InputHint(
+                    translate("draft", "%1 pick vertex or point to attach"),
+                    Gui.UserInput.MouseLeft,
                 ),
                 Gui.InputHint(translate("draft", "%1 finish"), Gui.UserInput.KeyEscape),
             ]
@@ -476,6 +488,9 @@ class Edit(gui_base_original.Modifier):
         if event.getState() in (coin.SoKeyboardEvent.DOWN, coin.SoKeyboardEvent.UP):
             key = event.getKey()
             if key == coin.SoKeyboardEvent.ESCAPE:
+                if self.node_attachment_pick:
+                    self.cancelNodeAttachmentPick()
+                    return
                 self.finish()
             if key == coin.SoKeyboardEvent.E:
                 self.display_tracker_menu(event)
@@ -490,6 +505,9 @@ class Edit(gui_base_original.Modifier):
         if (
             event.getState() == coin.SoMouseButtonEvent.DOWN and event.getButton() == event.BUTTON1
         ):  # left click
+            if self.node_attachment_pick:
+                self.pickNodeAttachmentTarget(event)
+                return
             if not event.wasAltDown():
                 if self.editing is None:
 
@@ -513,6 +531,8 @@ class Edit(gui_base_original.Modifier):
         Update tracker position and update preview ghost.
         """
         event = event_callback.getEvent()
+        if self.node_attachment_pick:
+            return
         if self.editing is not None:
             self.updateTrackerAndGhost(event)
         else:
@@ -540,6 +560,7 @@ class Edit(gui_base_original.Modifier):
 
         self.ui.lineUi(title=translate("draft", "Edit Node"), icon="Draft_Edit")
         self.ui.continueCmd.hide()
+        self.configureNodeAttachmentButton(obj, node_idx)
         self.editing = node_idx
         self.trackers[obj.Name][node_idx].off()
 
@@ -565,6 +586,7 @@ class Edit(gui_base_original.Modifier):
 
     def endEditing(self, obj, nodeIndex, v=None):
         """Terminate editing and start object updating process."""
+        self.node_attachment_pick = False
         self.finalizeGhost()
         self.trackers[obj.Name][nodeIndex].on()
         Gui.Snapper.setSelectMode(True)
@@ -580,6 +602,24 @@ class Edit(gui_base_original.Modifier):
         self.ui.editUi()
         self.node = []
         self.editing = None
+        self.showTrackers()
+        gui_tool_utils.redraw_3d_view()
+        self.update_hints()
+
+    def finishEditingAfterAttachment(self, obj, node_idx):
+        """Terminate node editing after changing node attachment state."""
+        self.node_attachment_pick = False
+        self.finalizeGhost()
+        try:
+            self.trackers[obj.Name][node_idx].on()
+        except (KeyError, IndexError):
+            pass
+        Gui.Snapper.setSelectMode(True)
+        self.alt_edit_mode = 0
+        self.ui.editUi()
+        self.node = []
+        self.editing = None
+        self.resetTrackers(obj)
         self.showTrackers()
         gui_tool_utils.redraw_3d_view()
         self.update_hints()
@@ -767,6 +807,138 @@ class Edit(gui_base_original.Modifier):
     def evaluate_menu_action(self, action):
         callback = action.data()
         callback()
+
+    def supports_node_attachments(self, obj):
+        """Return True for Draft objects with direct coordinate edit nodes."""
+        return utils.get_type(obj) in ("Wire", "BSpline", "BezCurve", "Point")
+
+    def configureNodeAttachmentButton(self, obj, node_idx):
+        """Show and configure the node attachment button in the task panel."""
+        if not self.supports_node_attachments(obj):
+            self.ui.attachNodeButton.hide()
+            return
+
+        self.ui.attachNodeButton.show()
+        self.ui.attachNodeButton.setCheckable(False)
+        self.ui.attachNodeButton.setChecked(False)
+        self.updateNodeAttachmentButton(obj, node_idx)
+
+    def updateNodeAttachmentButton(self, obj, node_idx):
+        if draft_base.get_point_attachment_map(obj).get(node_idx):
+            self.ui.attachNodeButton.setText(translate("draft", "Detach"))
+            self.ui.attachNodeButton.setToolTip(
+                translate("draft", "Removes the attachment from this node")
+            )
+        elif self.node_attachment_pick:
+            self.ui.attachNodeButton.setText(translate("draft", "Pick Target"))
+            self.ui.attachNodeButton.setToolTip(
+                translate("draft", "Selects a vertex or point object in the 3D view")
+            )
+        else:
+            self.ui.attachNodeButton.setText(translate("draft", "Attach"))
+            self.ui.attachNodeButton.setToolTip(
+                translate("draft", "Attaches this node to the selected vertex or point")
+            )
+
+    def attachCurrentNode(self):
+        """Attach, detach, or enter target-pick mode for the edited node."""
+        if self.obj is None or self.editing is None:
+            return False
+        if not self.supports_node_attachments(self.obj):
+            return False
+
+        if draft_base.get_point_attachment_map(self.obj).get(self.editing):
+            self.remove_node_attachment(self.obj, self.editing)
+            self.finishEditingAfterAttachment(self.obj, self.editing)
+            return True
+
+        link = self.get_selected_point_attachment_link(self.obj)
+        if link:
+            self.attach_node_to_link(self.obj, self.editing, link)
+            self.finishEditingAfterAttachment(self.obj, self.editing)
+            return True
+
+        self.node_attachment_pick = True
+        Gui.Snapper.setSelectMode(True)
+        self.updateNodeAttachmentButton(self.obj, self.editing)
+        self.update_hints()
+        App.Console.PrintMessage(
+            translate("draft", "Pick a vertex or point object to attach this node") + "\n"
+        )
+        return True
+
+    def cancelNodeAttachmentPick(self):
+        """Cancel the target-pick step and return to normal node editing."""
+        self.node_attachment_pick = False
+        Gui.Snapper.setSelectMode(False)
+        if self.obj is not None and self.editing is not None:
+            self.updateNodeAttachmentButton(self.obj, self.editing)
+        self.update_hints()
+
+    def pickNodeAttachmentTarget(self, event):
+        """Attach the edited node to the target picked in the 3D view."""
+        if self.obj is None or self.editing is None:
+            self.node_attachment_pick = False
+            return
+
+        pos = event.getPosition().getValue()
+        link = self.get_point_attachment_link_at_position(self.obj, pos)
+        if not link:
+            App.Console.PrintWarning(
+                translate("draft", "Pick a vertex or point object to attach this node") + "\n"
+            )
+            return
+
+        self.attach_node_to_link(self.obj, self.editing, link)
+        self.finishEditingAfterAttachment(self.obj, self.editing)
+
+    def attach_node_to_link(self, obj, node_idx, link):
+        App.ActiveDocument.openTransaction(translate("draft", "Attach node"))
+        draft_base.set_point_attachment(obj, node_idx, link)
+        obj.recompute()
+        App.ActiveDocument.commitTransaction()
+
+    def remove_node_attachment(self, obj, node_idx):
+        App.ActiveDocument.openTransaction(translate("draft", "Remove node attachment"))
+        draft_base.remove_point_attachment(obj, node_idx)
+        obj.recompute()
+        App.ActiveDocument.commitTransaction()
+
+    def get_selected_point_attachment_link(self, target_obj):
+        """Return the first selected external vertex as a LinkSub entry."""
+        for sel in Gui.Selection.getSelectionEx("", 0):
+            if sel.Object is target_obj:
+                continue
+            for subname, subobj in zip(sel.SubElementNames, sel.SubObjects):
+                if getattr(subobj, "ShapeType", None) == "Vertex":
+                    return (sel.Object, (subname,))
+            if not sel.SubElementNames:
+                link = (sel.Object, ("",))
+                if draft_base.point_from_attachment_link(link) is not None:
+                    return link
+        return None
+
+    def get_point_attachment_link_at_position(self, target_obj, pos):
+        """Return an attachable LinkSub entry picked at a screen position."""
+        for info in self.view.getObjectsInfo((pos[0], pos[1])) or []:
+            if not info:
+                continue
+            obj = info.get("ParentObject")
+            if isinstance(obj, str):
+                obj = App.ActiveDocument.getObject(obj)
+            if obj is None:
+                obj = App.ActiveDocument.getObject(info.get("Object", ""))
+            if obj is None:
+                continue
+            if obj is target_obj:
+                continue
+            component = info.get("SubName", info.get("Component", ""))
+            if component.startswith("Vertex"):
+                return (obj, (component,))
+            link = (obj, ("",))
+            if draft_base.point_from_attachment_link(link) is not None:
+                return link
+        return None
 
     # -------------------------------------------------------------------------
     # EDIT OBJECT TOOLS
