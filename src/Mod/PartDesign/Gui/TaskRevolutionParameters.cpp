@@ -552,7 +552,7 @@ QString TaskRevolutionParameters::getFaceName(QLineEdit* lineFaceName) const
 
 void TaskRevolutionParameters::handleLineFaceNameClick(QLineEdit* lineEdit)
 {
-    lineEdit->setPlaceholderText(tr("Click on a face in the model"));
+    lineEdit->setPlaceholderText(tr("Face selection active"));
 }
 
 void TaskRevolutionParameters::handleLineFaceNameNo(QLineEdit* lineEdit)
