@@ -148,8 +148,8 @@ TopoDS_Edge Deformation::deform(
     GCPnts_UniformAbscissa discretizer;
     discretizer.Initialize(adapt, samples, first, last);
     int nbPoints = discretizer.NbPoints();
-    TColgp_Array1OfPnt points(1, nbPoints);
-    TColgp_Array1OfPnt deformPoints(1, nbPoints);
+    NCollection_Array1<gp_Pnt> points(1, nbPoints);
+    NCollection_Array1<gp_Pnt> deformPoints(1, nbPoints);
 
     // deform
     for (int i = 1; i <= nbPoints; i++) {
@@ -249,7 +249,7 @@ TopoDS_Face Deformation::deform(
     if (surf->IsVPeriodic()) {
         vSampleRange += 2;
     }
-    TColgp_Array2OfPnt points(1, samples, 1, samples);
+    NCollection_Array2<gp_Pnt> points(1, samples, 1, samples);
     for (auto i = 0; i < samples; i++) {
         auto u = u1 + (u2 - u1) / uSampleRange * i;
         for (auto j = 0; j < samples; j++) {
