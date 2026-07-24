@@ -37,6 +37,7 @@
 
 #include <QEvent>
 #include <QAction>
+#include <QObject>
 #include <Base/BaseClass.h>
 #include <Base/SmartPtrPy.h>
 #include <Gui/Namespace.h>
@@ -61,6 +62,22 @@ class View3DInventorViewer;
 class NavigationAnimator;
 class AbstractMouseSelection;
 class NavigationAnimation;
+class ViewProviderDocumentObject;
+
+
+class NavigationStyleContextMenuReceiver: public QObject
+{
+    Q_OBJECT
+
+public:
+    NavigationStyleContextMenuReceiver(ViewProviderDocumentObject* viewProvider, QObject* parent);
+
+public Q_SLOTS:
+    void startEditing();
+
+private:
+    ViewProviderDocumentObject* viewProvider {nullptr};
+};
 
 /**
  * @author Werner Mayer

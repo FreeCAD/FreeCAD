@@ -51,6 +51,7 @@
 
 #include <Base/Interpreter.h>
 #include <App/Application.h>
+#include <App/DocumentObject.h>
 
 #include "Navigation/NavigationStyle.h"
 #include "Navigation/NavigationStylePy.h"
@@ -58,6 +59,7 @@
 #include "Camera.h"
 #include "Command.h"
 #include "Action.h"
+#include "Document.h"
 #include "Inventor/SoMouseWheelEvent.h"
 #include "MenuManager.h"
 #include "MouseSelection.h"
@@ -67,6 +69,7 @@
 #include "SoFullPathHelper.h"
 #include "View3DInventorViewer.h"
 #include "ViewParams.h"
+#include "ViewProviderDocumentObject.h"
 
 using namespace Gui;
 
@@ -2593,6 +2596,59 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
         }
         else {
             contextMenu->addAction(pickAction);
+            contextMenu->addSeparator();
+        }
+    }
+
+    QMenu* objectMenu = nullptr;
+    QList<QAction*> objectActions;
+    auto selection = Gui::Selection().getSelectionEx();
+
+    if (selection.size() == 1) {
+        App::DocumentObject* selectedObject = selection.front().getObject();
+        auto* selectedViewProvider
+            = Gui::Application::Instance->getViewProvider<Gui::ViewProviderDocumentObject>(
+                selectedObject
+            );
+
+        if (selectedViewProvider) {
+            objectMenu = new QMenu(contextMenu);
+            selectedViewProvider->setupContextMenu(objectMenu, contextMenu, SLOT(close()));
+            objectActions = objectMenu->actions();
+
+            if (!objectActions.empty()) {
+                contextMenu->setDefaultAction(objectActions.front());
+
+                for (auto* action : objectActions) {
+                    if (posAction) {
+                        contextMenu->insertAction(posAction, action);
+                    }
+                    else {
+                        contextMenu->addAction(action);
+                    }
+                }
+
+                if (posAction) {
+                    contextMenu->insertSeparator(posAction);
+                }
+                else {
+                    contextMenu->addSeparator();
+                }
+
+                QObject::connect(
+                    contextMenu,
+                    &QMenu::triggered,
+                    [objectActions, selectedViewProvider](QAction* selectedAction) {
+                        if (objectActions.contains(selectedAction)
+                            && selectedAction->data().isValid()) {
+                            selectedViewProvider->getDocument()->setEdit(
+                                selectedViewProvider,
+                                selectedAction->data().toInt()
+                            );
+                        }
+                    }
+                );
+            }
         }
     }
 
