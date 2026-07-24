@@ -121,7 +121,28 @@ def _param_observer_callback_scalemultiplier(value):
         scale_widget.scaleLabel.setText(scale_label)
 
 
-def _param_observer_callback_grid():
+def _document_name(doc):
+    if doc is None:
+        return None
+    if isinstance(doc, str):
+        return doc
+    return doc.Name
+
+
+def _resolve_document(doc):
+    if doc is None:
+        return App.ActiveDocument
+    if isinstance(doc, str):
+        if doc in App.listDocuments():
+            return App.getDocument(doc)
+        return None
+    return doc
+
+
+def refresh_grid(doc=None):
+    if not App.GuiUp:
+        return
+    document_name = _document_name(doc)
     if hasattr(App, "draft_working_planes") and hasattr(Gui, "Snapper"):
         try:
             trackers = Gui.Snapper.trackers
@@ -130,12 +151,22 @@ def _param_observer_callback_grid():
                 if view in trackers[0]:
                     i = trackers[0].index(view)
                     grid = trackers[1][i]
+                    grid_doc_name = grid.doc_name
+                    if document_name is not None and grid_doc_name not in (
+                        None,
+                        document_name,
+                    ):
+                        continue
                     grid.pts = []
                     grid.reset()
                     grid.displayHumanFigure(wp)
                     grid.setAxesColor(wp)
         except Exception:
             pass
+
+
+def _param_observer_callback_grid():
+    refresh_grid()
 
 
 def _param_observer_callback_snapbar(value):
@@ -771,6 +802,106 @@ def _get_param_dictionary():
 
 
 PARAM_DICT = _get_param_dictionary()
+
+_GRID_DOCUMENT_NAMESPACE = "Draft"
+_GRID_DOCUMENT_SETTINGS = {
+    "gridSpacing": "GridSpacing",
+    "gridEvery": "GridMainlines",
+    "gridSize": "GridSize",
+}
+_GRID_DOCUMENT_INT_SETTINGS = {"gridEvery", "gridSize"}
+
+
+def _is_valid_grid_spacing(value):
+    try:
+        quantity = App.Units.Quantity(value)
+    except (TypeError, ValueError):
+        return False
+    return quantity.Value > 0
+
+
+def _grid_param_default(entry):
+    value = get_param(entry)
+    if entry == "gridSpacing":
+        if _is_valid_grid_spacing(value):
+            return value
+        default = get_param(entry, ret_default=True)
+        if _is_valid_grid_spacing(default):
+            return default
+        return "1 mm"
+
+    if entry in _GRID_DOCUMENT_INT_SETTINGS:
+        try:
+            value = int(value)
+        except (TypeError, ValueError):
+            value = 0
+        if value > 1:
+            return value
+
+        try:
+            default = int(get_param(entry, ret_default=True))
+        except (TypeError, ValueError):
+            default = 2
+        return default if default > 1 else 2
+
+    return value
+
+
+def get_grid_param(entry, doc=None):
+    """Return a grid parameter with document settings overriding preferences."""
+    document_key = _GRID_DOCUMENT_SETTINGS.get(entry)
+    if document_key is None:
+        return get_param(entry)
+
+    default = _grid_param_default(entry)
+    doc = _resolve_document(doc)
+    if doc is None:
+        return default
+
+    settings = doc.settings(_GRID_DOCUMENT_NAMESPACE)
+    if entry == "gridSpacing":
+        value = settings.getString(document_key, default)
+        return value if _is_valid_grid_spacing(value) else default
+
+    value = settings.getInt(document_key, default)
+    return value if value > 1 else default
+
+
+def set_grid_param(entry, value, doc=None):
+    """Store a grid parameter in document settings, or preferences if no document exists."""
+    document_key = _GRID_DOCUMENT_SETTINGS.get(entry)
+    if document_key is None:
+        return set_param(entry, value)
+
+    if entry == "gridSpacing":
+        try:
+            quantity = App.Units.Quantity(value)
+        except (TypeError, ValueError):
+            return False
+        if quantity.Value <= 0:
+            return False
+        value = quantity.UserString
+    else:
+        try:
+            value = int(value)
+        except (TypeError, ValueError):
+            return False
+        if value <= 1:
+            return False
+
+    source_doc = doc
+    doc = _resolve_document(doc)
+    if doc is None:
+        if source_doc is not None:
+            return False
+        return set_param(entry, value)
+
+    settings = doc.settings(_GRID_DOCUMENT_NAMESPACE)
+    if entry == "gridSpacing":
+        settings.setString(document_key, value)
+    else:
+        settings.setInt(document_key, value)
+    return True
 
 
 def get_param(entry, path="Mod/Draft", ret_default=False, silent=False):
