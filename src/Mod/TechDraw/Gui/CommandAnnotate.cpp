@@ -56,6 +56,8 @@
 #include "TaskWeldingSymbol.h"
 #include "ViewProviderViewPart.h"
 #include "CommandHelpers.h"
+#include "QGVPage.h"
+#include "TechDrawCenterLinesHandler.h"
 
 
 using namespace TechDrawGui;
@@ -68,9 +70,6 @@ using namespace CommandHelpers;
 void execCosmeticVertex(Gui::Command* cmd);
 void execMidpoints(Gui::Command* cmd);
 void execQuadrants(Gui::Command* cmd);
-void execCenterLine(Gui::Command* cmd);
-void exec2LineCenterLine(Gui::Command* cmd);
-void exec2PointCenterLine(Gui::Command* cmd);
 void execLine2Points(Gui::Command* cmd);
 
 //===========================================================================
@@ -563,405 +562,55 @@ bool CmdTechDrawAnnotation::isActive()
 }
 
 //===========================================================================
-// TechDraw_CenterLineGroup
+// TechDraw_Centerline
 //===========================================================================
 
-DEF_STD_CMD_ACL(CmdTechDrawCenterLineGroup)
+DEF_STD_CMD_A(CmdTechDrawCenterLine)
 
-CmdTechDrawCenterLineGroup::CmdTechDrawCenterLineGroup()
-  : Command("TechDraw_CenterLineGroup")
+CmdTechDrawCenterLine::CmdTechDrawCenterLine()
+  : Command("TechDraw_CenterLine")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Centerline");
-    sToolTipText    = QT_TR_NOOP("Inserts a centerline to a face, or between 2 lines or edges");
-    sWhatsThis      = "TechDraw_CenterLineGroup";
-    sStatusTip      = sToolTipText;
-//    eType           = ForEdit;
-}
-
-void CmdTechDrawCenterLineGroup::activated(int iMsg)
-{
-//    Base::Console().message("CMD::CenterLineGroup - activated(%d)\n", iMsg);
-    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
-            QObject::tr("Close active task dialog and try again"));
-        return;
-    }
-
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
-    switch(iMsg) {
-        case 0:                 //faces
-            execCenterLine(this);
-            break;
-        case 1:                 //2 lines
-            exec2LineCenterLine(this);
-            break;
-        case 2:                 //2 points
-            exec2PointCenterLine(this);
-            break;
-        default:
-            Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
-    };
-}
-
-Gui::Action * CmdTechDrawCenterLineGroup::createAction()
-{
-    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
-    pcAction->setDropDownMenu(true);
-    applyCommandData(this->className(), pcAction);
-
-    QAction* p1 = pcAction->addAction(QString());
-    p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_FaceCenterLine"));
-    p1->setObjectName(QStringLiteral("TechDraw_FaceCenterLine"));
-    p1->setWhatsThis(QStringLiteral("TechDraw_FaceCenterLine"));
-    QAction* p2 = pcAction->addAction(QString());
-    p2->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_2LineCenterline"));
-    p2->setObjectName(QStringLiteral("TechDraw_2LineCenterLine"));
-    p2->setWhatsThis(QStringLiteral("TechDraw_2LineCenterLine"));
-    QAction* p3 = pcAction->addAction(QString());
-    p3->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_2PointCenterline"));
-    p3->setObjectName(QStringLiteral("TechDraw_2PointCenterLine"));
-    p3->setWhatsThis(QStringLiteral("TechDraw_2PointCenterLine"));
-
-    _pcAction = pcAction;
-    languageChange();
-
-    pcAction->setIcon(p1->icon());
-    int defaultId = 0;
-    pcAction->setProperty("defaultAction", QVariant(defaultId));
-
-    return pcAction;
-}
-
-void CmdTechDrawCenterLineGroup::languageChange()
-{
-    Command::languageChange();
-
-    if (!_pcAction)
-        return;
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
-
-    QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdTechDrawCenterLineGroup", "Centerline on Face"));
-    arc1->setToolTip(QApplication::translate("TechDraw_FaceCenterLine", "Adds a centerline to selected faces"));
-    arc1->setStatusTip(arc1->toolTip());
-    QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("Cmd2LineCenterLine", "Centerline Between 2 Lines"));
-    arc2->setToolTip(QApplication::translate("TechDraw_2LineCenterLine", "Adds a centerline between 2 selected lines"));
-    arc2->setStatusTip(arc2->toolTip());
-    QAction* arc3 = a[2];
-    arc3->setText(QApplication::translate("Cmd2PointCenterLine", "Centerline Between 2 Points"));
-    arc3->setToolTip(QApplication::translate("TechDraw_2PointCenterLine", "Adds a centerline between 2 selected points"));
-    arc3->setStatusTip(arc3->toolTip());
-}
-
-bool CmdTechDrawCenterLineGroup::isActive()
-{
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, true);
-    return (havePage && haveView);
-}
-//===========================================================================
-// TechDraw_Centerline
-//===========================================================================
-
-DEF_STD_CMD_A(CmdTechDrawFaceCenterLine)
-
-CmdTechDrawFaceCenterLine::CmdTechDrawFaceCenterLine()
-  : Command("TechDraw_FaceCenterLine")
-{
-    sAppModule      = "TechDraw";
-    sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Centerline on Face");
-    sToolTipText    = QT_TR_NOOP("Adds a centerline to selected faces");
+    sToolTipText    = QT_TR_NOOP("Adds a centerline");
     sWhatsThis      = "TechDraw_FaceCenterLine";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/TechDraw_FaceCenterLine";
 }
 
-void CmdTechDrawFaceCenterLine::activated(int iMsg)
+void CmdTechDrawCenterLine::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
-            QObject::tr("Close active task dialog and try again"));
+    auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    if (!mdi) {
         return;
     }
 
-    execCenterLine(this);
+    ViewProviderPage* pageVP = mdi->getViewProviderPage();
+    if (!pageVP) {
+        return;
+    }
+
+    QGVPage* viewPage = pageVP->getQGVPage();
+    if (!viewPage) {
+        return;
+    }
+
+    TechDrawCenterLinesHandler* handler = new TechDrawCenterLinesHandler();
+
+    // Post selection handler
+    viewPage->activateHandler(handler);
+
+    handler->addPreselected();
 }
 
-bool CmdTechDrawFaceCenterLine::isActive()
-{
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
-    return (havePage && haveView);
-}
-
-void execCenterLine(Gui::Command* cmd)
-{
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
-    if (!page) {
-        return;
-    }
-
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    TechDraw::DrawViewPart *baseFeat = nullptr;
-    if (!selection.empty()) {
-        baseFeat = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-        if (!baseFeat) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                 QObject::tr("No base view in selection"));
-            return;
-        }
-    }
-    else {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("You must select a base view for the line"));
-        return;
-    }
-
-    std::vector<std::string> subNames;
-
-    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
-    for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom<TechDraw::DrawViewPart>()) {
-            baseFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            subNames = (*itSel).getSubNames();
-        }
-    }
-    std::vector<std::string> faceNames;
-    std::vector<std::string> edgeNames;
-    for (auto& s: subNames) {
-        std::string geomType = DrawUtil::getGeomTypeFromName(s);
-        if (geomType == "Face") {
-            faceNames.push_back(s);
-        } else if (geomType == "Edge") {
-            edgeNames.push_back(s);
-        }
-    }
-
-    if ( (faceNames.empty()) &&
-         (edgeNames.empty()) ) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("You must select faces or an existing centerline"));
-        return;
-    }
-    if (!faceNames.empty()) {
-        Gui::Control().showDialog(new TaskDlgCenterLine(baseFeat,
-                                                        page,
-                                                        faceNames,
-                                                        false));
-    } else if (edgeNames.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("No CenterLine in selection"));
-        return;
-    } else {
-        TechDraw::CenterLine* cl = baseFeat->getCenterLineBySelection(edgeNames.front());
-        if (!cl) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                             QObject::tr("Selection is not a centerline"));
-            return;
-        }
-        Gui::Control().showDialog(new TaskDlgCenterLine(baseFeat,
-                                                        page,
-                                                        edgeNames.front(),
-                                                        true));
-    }
-}
-
-//===========================================================================
-// TechDraw_2LineCenterline
-//===========================================================================
-
-DEF_STD_CMD_A(CmdTechDraw2LineCenterLine)
-
-CmdTechDraw2LineCenterLine::CmdTechDraw2LineCenterLine()
-  : Command("TechDraw_2LineCenterLine")
-{
-    sAppModule      = "TechDraw";
-    sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Centerline Between 2 Lines");
-    sToolTipText    = QT_TR_NOOP("Adds a centerline between 2 selected lines");
-    sWhatsThis      = "TechDraw_2LineCenterLine";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "actions/TechDraw_2LineCenterline";
-}
-
-void CmdTechDraw2LineCenterLine::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-
-    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
-            QObject::tr("Close active task dialog and try again"));
-        return;
-    }
-
-    exec2LineCenterLine(this);
-}
-
-bool CmdTechDraw2LineCenterLine::isActive()
+bool CmdTechDrawCenterLine::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, true);
     return (havePage && haveView);
-}
-
-void exec2LineCenterLine(Gui::Command* cmd)
-{
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
-    if (!page) {
-        return;
-    }
-    TechDraw::DrawViewPart* dvp = nullptr;
-    std::vector<std::string> selectedEdges = CommandHelpers::getSelectedSubElements(cmd, dvp, "Edge");
-
-    if (!dvp || selectedEdges.empty()) {
-        return;
-    }
-
-    if (selectedEdges.size() == 2) {
-        Gui::Control().showDialog(new TaskDlgCenterLine(dvp,
-                                                        page,
-                                                        selectedEdges,
-                                                        false));
-    } else if (selectedEdges.size() == 1) {
-        TechDraw::CenterLine* cl = dvp->getCenterLineBySelection(selectedEdges.front());
-        if (!cl) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Selection is not a Centerline"));
-            return;
-        }
-        Gui::Control().showDialog(new TaskDlgCenterLine(dvp,
-                                                page,
-                                                selectedEdges.front(),
-                                                true));
-    } else {  //not create, not edit, what is this???
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Selection not understood"));
-        return;
-    }
-}
-
-//===========================================================================
-// TechDraw_2PointCenterline
-//===========================================================================
-
-DEF_STD_CMD_A(CmdTechDraw2PointCenterLine)
-
-CmdTechDraw2PointCenterLine::CmdTechDraw2PointCenterLine()
-  : Command("TechDraw_2PointCenterLine")
-{
-    sAppModule      = "TechDraw";
-    sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Centerline Between 2 Points");
-    sToolTipText    = QT_TR_NOOP("Adds a centerline between 2 selected points");
-    sWhatsThis      = "TechDraw_2PointCenterLine";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "actions/TechDraw_2PointCenterline";
-}
-
-void CmdTechDraw2PointCenterLine::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-
-    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
-            QObject::tr("Close active task dialog and try again"));
-        return;
-    }
-
-    exec2PointCenterLine(this);
-    updateActive();
-    Gui::Selection().clearSelection();
-}
-
-bool CmdTechDraw2PointCenterLine::isActive()
-{
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, true);
-    return (havePage && haveView);
-}
-
-void exec2PointCenterLine(Gui::Command* cmd)
-{
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
-    if (!page) {
-        return;
-    }
-
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    TechDraw::DrawViewPart* baseFeat = nullptr;
-    if (selection.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                QObject::tr("You must select a base view for the line"));
-        return;
-    }
-
-    baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    if (!baseFeat) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                QObject::tr("No base view in selection"));
-        return;
-    }
-
-    std::vector<std::string> subNames;
-
-    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
-    for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom<TechDraw::DrawViewPart>()) {
-            baseFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            subNames = (*itSel).getSubNames();
-        }
-    }
-    std::vector<std::string> edgeNames;
-    std::vector<std::string> vertexNames;
-    for (auto& s: subNames) {
-        std::string geomType = DrawUtil::getGeomTypeFromName(s);
-        if (geomType == "Vertex") {
-            vertexNames.push_back(s);
-        } else if (geomType == "Edge") {
-            edgeNames.push_back(s);
-        }
-    }
-
-    if (vertexNames.empty() &&
-        edgeNames.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("You must select 2 vertices or an existing centerline"));
-        return;
-    }
-    if (!vertexNames.empty() && (vertexNames.size() == 2)) {
-        Gui::Control().showDialog(new TaskDlgCenterLine(baseFeat,
-                                                        page,
-                                                        vertexNames,
-                                                        false));
-    } else if (!edgeNames.empty() && (edgeNames.size() == 1)) {
-        TechDraw::CenterLine* cl = baseFeat->getCenterLineBySelection(edgeNames.front());
-        if (!cl) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Selection is not a centerline"));
-            return;
-        }
-
-        Gui::Control().showDialog(new TaskDlgCenterLine(baseFeat,
-                                                        page,
-                                                        edgeNames.front(),
-                                                        false));
-    } else if (vertexNames.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select 2 vertices or 1 centerline"));
-        return;
-    }
 }
 
 //===========================================================================
@@ -1519,10 +1168,7 @@ void CreateTechDrawCommandsAnnotate()
     rcCmdMgr.addCommand(new CmdTechDrawCosmeticVertex());
     rcCmdMgr.addCommand(new CmdTechDrawMidpoints());
     rcCmdMgr.addCommand(new CmdTechDrawQuadrants());
-    rcCmdMgr.addCommand(new CmdTechDrawCenterLineGroup());
-    rcCmdMgr.addCommand(new CmdTechDrawFaceCenterLine());
-    rcCmdMgr.addCommand(new CmdTechDraw2LineCenterLine());
-    rcCmdMgr.addCommand(new CmdTechDraw2PointCenterLine());
+    rcCmdMgr.addCommand(new CmdTechDrawCenterLine());
     rcCmdMgr.addCommand(new CmdTechDraw2PointCosmeticLine());
     rcCmdMgr.addCommand(new CmdTechDrawAnnotation());
     rcCmdMgr.addCommand(new CmdTechDrawCosmeticEraser());
