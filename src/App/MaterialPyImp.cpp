@@ -181,27 +181,39 @@ std::string MaterialPy::representation() const
     return {"<Material object>"};
 }
 
+namespace
+{
+bool equalMaterialValues(const Material& lhs, const Material& rhs)
+{
+    return lhs.shininess == rhs.shininess
+        && lhs.transparency == rhs.transparency
+        && lhs.ambientColor == rhs.ambientColor
+        && lhs.diffuseColor == rhs.diffuseColor
+        && lhs.specularColor == rhs.specularColor
+        && lhs.emissiveColor == rhs.emissiveColor
+        && lhs.image == rhs.image
+        && lhs.imagePath == rhs.imagePath;
+}
+}  // namespace
+
 PyObject* MaterialPy::richCompare(PyObject* v, PyObject* w, int op)
 {
     if (PyObject_TypeCheck(v, &(MaterialPy::Type)) && PyObject_TypeCheck(w, &(MaterialPy::Type))) {
         const Material* m1 = static_cast<MaterialPy*>(v)->getMaterialPtr();
         const Material* m2 = static_cast<MaterialPy*>(w)->getMaterialPtr();
 
-        PyObject* res = nullptr;
+        const bool equal = equalMaterialValues(*m1, *m2);
         switch (op) {
             case Py_NE:
-                res = (!(*m1 == *m2)) ? Py_True : Py_False;
-                Py_INCREF(res);
-                return res;
+                return PyBool_FromLong(!equal);
             case Py_EQ:
-                res = (*m1 == *m2) ? Py_True : Py_False;
-                Py_INCREF(res);
-                return res;
+                return PyBool_FromLong(equal);
+            default:
+                break;
         }
     }
 
-    Py_INCREF(Py_NotImplemented);
-    return Py_NotImplemented;
+    Py_RETURN_NOTIMPLEMENTED;
 }
 
 PyObject* MaterialPy::set(PyObject* args)
