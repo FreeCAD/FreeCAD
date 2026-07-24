@@ -39,7 +39,7 @@
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>Open the folder containing all available SVG patterns. Note that PAT files are in a sibling folder called PAT.</string>
+        <string>Opens the folder containing all available SVG patterns. PAT files are in a sibling folder called PAT.</string>
        </property>
        <property name="icon">
         <iconset resource="Resources/resource.qrc">
