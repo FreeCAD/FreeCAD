@@ -77,8 +77,6 @@
 #include <fastsignals/signal.h>
 
 #include <boost/program_options.hpp>
-#include <boost/utility.hpp>
-#include <boost/bind/bind.hpp>
 
 #include <fmt/format.h>
 
