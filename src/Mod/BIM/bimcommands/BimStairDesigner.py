@@ -5,7 +5,6 @@
 import FreeCAD
 import FreeCADGui
 
-
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 

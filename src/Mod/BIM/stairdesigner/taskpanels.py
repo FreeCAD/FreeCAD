@@ -12,7 +12,6 @@ from PySide import QtCore, QtGui
 from stairdesigner import objects as stair_objects
 from stairdesigner.geometry import BLONDEL_MAXIMUM, BLONDEL_MINIMUM
 
-
 translate = FreeCAD.Qt.translate
 
 
@@ -103,9 +102,7 @@ class StairDesignerTaskPanel:
             self.form.append(panel)
 
         self._loading = False
-        if {"stairs", "steps", "stringers", "handrails"}.intersection(
-            self.sections
-        ):
+        if {"stairs", "steps", "stringers", "handrails"}.intersection(self.sections):
             self._update_type_visibility()
             QtCore.QTimer.singleShot(0, self._configure_task_boxes)
         if "stairs" in self.sections:
@@ -181,12 +178,8 @@ class StairDesignerTaskPanel:
         self.step_riser_overlap = _length_spin(_value(self.stair.StepRiserOverlap))
         self.step_riser_overlap_label = QtGui.QLabel()
         self._update_overlap_label()
-        self.riser_upper_offset = _length_spin(
-            _value(self.stair.RiserUpperOffset), -1000000.0
-        )
-        self.riser_lower_offset = _length_spin(
-            _value(self.stair.RiserLowerOffset), -1000000.0
-        )
+        self.riser_upper_offset = _length_spin(_value(self.stair.RiserUpperOffset), -1000000.0)
+        self.riser_lower_offset = _length_spin(_value(self.stair.RiserLowerOffset), -1000000.0)
         riser_form.addRow(translate("BIM", "Thickness"), self.riser_thickness)
         riser_form.addRow(translate("BIM", "Priority to riser"), self.priority_to_riser)
         riser_form.addRow(self.step_riser_overlap_label, self.step_riser_overlap)
@@ -214,36 +207,20 @@ class StairDesignerTaskPanel:
                 "Sets the stringer type independently for each flight side",
             )
         )
-        self.stringer_tree.header().setSectionResizeMode(
-            0, QtGui.QHeaderView.ResizeToContents
-        )
-        self.stringer_tree.header().setSectionResizeMode(
-            1, QtGui.QHeaderView.Stretch
-        )
+        self.stringer_tree.header().setSectionResizeMode(0, QtGui.QHeaderView.ResizeToContents)
+        self.stringer_tree.header().setSectionResizeMode(1, QtGui.QHeaderView.Stretch)
         layout.addWidget(self.stringer_tree)
         self._populate_stringer_tree()
 
         form = QtGui.QFormLayout()
 
-        self.stringer_thickness = _length_spin(
-            _value(self.stair.StringerThickness), 0.01
-        )
-        form.addRow(
-            translate("BIM", "Thickness"), self.stringer_thickness
-        )
+        self.stringer_thickness = _length_spin(_value(self.stair.StringerThickness), 0.01)
+        form.addRow(translate("BIM", "Thickness"), self.stringer_thickness)
 
-        self.stringer_custom_width = QtGui.QCheckBox(
-            translate("BIM", "Custom width")
-        )
-        self.stringer_custom_width.setChecked(
-            self.stair.StringerCustomWidth
-        )
-        self.stringer_width = _length_spin(
-            _value(self.stair.StringerWidth), 0.01
-        )
-        self.stringer_width.setReadOnly(
-            not self.stringer_custom_width.isChecked()
-        )
+        self.stringer_custom_width = QtGui.QCheckBox(translate("BIM", "Custom width"))
+        self.stringer_custom_width.setChecked(self.stair.StringerCustomWidth)
+        self.stringer_width = _length_spin(_value(self.stair.StringerWidth), 0.01)
+        self.stringer_width.setReadOnly(not self.stringer_custom_width.isChecked())
         form.addRow(self.stringer_custom_width, self.stringer_width)
 
         self.stringer_step_overlap = _length_spin(
@@ -253,12 +230,8 @@ class StairDesignerTaskPanel:
             translate("BIM", "Step overlap"),
             self.stringer_step_overlap,
         )
-        self.stringer_start_extension = _length_spin(
-            _value(self.stair.StringerStartExtension)
-        )
-        self.stringer_end_extension = _length_spin(
-            _value(self.stair.StringerEndExtension)
-        )
+        self.stringer_start_extension = _length_spin(_value(self.stair.StringerStartExtension))
+        self.stringer_end_extension = _length_spin(_value(self.stair.StringerEndExtension))
         form.addRow(
             translate("BIM", "Length beyond first step"),
             self.stringer_start_extension,
@@ -267,28 +240,18 @@ class StairDesignerTaskPanel:
             translate("BIM", "Length beyond last step"),
             self.stringer_end_extension,
         )
-        self.stringer_position_label = QtGui.QLabel(
-            translate("BIM", "Position above nosing")
-        )
+        self.stringer_position_label = QtGui.QLabel(translate("BIM", "Position above nosing"))
         self.stringer_position_editor = QtGui.QWidget()
-        position_layout = QtGui.QHBoxLayout(
-            self.stringer_position_editor
-        )
+        position_layout = QtGui.QHBoxLayout(self.stringer_position_editor)
         position_layout.setContentsMargins(0, 0, 0, 0)
         self.stringer_nosing_direction = QtGui.QComboBox()
-        self.stringer_nosing_direction.addItem(
-            translate("BIM", "Perpendicular"), "Perpendicular"
-        )
-        self.stringer_nosing_direction.addItem(
-            translate("BIM", "Vertical"), "Vertical"
-        )
+        self.stringer_nosing_direction.addItem(translate("BIM", "Perpendicular"), "Perpendicular")
+        self.stringer_nosing_direction.addItem(translate("BIM", "Vertical"), "Vertical")
         self._select_data(
             self.stringer_nosing_direction,
             str(self.stair.StringerNosingOffsetDirection),
         )
-        self.stringer_nosing_offset = _length_spin(
-            _value(self.stair.StringerNosingOffset)
-        )
+        self.stringer_nosing_offset = _length_spin(_value(self.stair.StringerNosingOffset))
         position_layout.addWidget(self.stringer_nosing_direction)
         position_layout.addWidget(self.stringer_nosing_offset)
         form.addRow(
@@ -296,9 +259,7 @@ class StairDesignerTaskPanel:
             self.stringer_position_editor,
         )
         stringer_help = {
-            self.stringer_thickness: translate(
-                "BIM", "Board thickness across the stair side"
-            ),
+            self.stringer_thickness: translate("BIM", "Board thickness across the stair side"),
             self.stringer_width: translate(
                 "BIM",
                 "Board width, calculated automatically from the stair geometry unless Custom width is enabled",
@@ -330,12 +291,8 @@ class StairDesignerTaskPanel:
                 "Uses a fixed board width instead of the automatic width",
             )
         )
-        self.stringer_nosing_direction.setToolTip(
-            self.stringer_position_editor.toolTip()
-        )
-        self.stringer_nosing_offset.setToolTip(
-            self.stringer_position_editor.toolTip()
-        )
+        self.stringer_nosing_direction.setToolTip(self.stringer_position_editor.toolTip())
+        self.stringer_nosing_offset.setToolTip(self.stringer_position_editor.toolTip())
         layout.addLayout(form)
 
         layout.addWidget(self._make_stringer_override_widget())
@@ -351,12 +308,8 @@ class StairDesignerTaskPanel:
         ):
             editor.valueChanged.connect(self._apply)
         self.stringer_width.valueChanged.connect(self._apply)
-        self.stringer_custom_width.toggled.connect(
-            self._stringer_custom_width_changed
-        )
-        self.stringer_nosing_direction.currentIndexChanged.connect(
-            self._apply
-        )
+        self.stringer_custom_width.toggled.connect(self._stringer_custom_width_changed)
+        self.stringer_nosing_direction.currentIndexChanged.connect(self._apply)
         self._update_stringer_editor_visibility()
         return widget
 
@@ -377,22 +330,14 @@ class StairDesignerTaskPanel:
                 "Enables a handrail independently on the left or right side of each flight",
             )
         )
-        self.handrail_tree.header().setSectionResizeMode(
-            0, QtGui.QHeaderView.ResizeToContents
-        )
-        self.handrail_tree.header().setSectionResizeMode(
-            1, QtGui.QHeaderView.Stretch
-        )
+        self.handrail_tree.header().setSectionResizeMode(0, QtGui.QHeaderView.ResizeToContents)
+        self.handrail_tree.header().setSectionResizeMode(1, QtGui.QHeaderView.Stretch)
         layout.addWidget(self.handrail_tree)
         self._populate_handrail_tree()
 
         form = QtGui.QFormLayout()
-        self.handrail_height = _length_spin(
-            _value(self.stair.HandrailHeightAboveNosing), 0.01
-        )
-        self.handrail_offset = _length_spin(
-            _value(self.stair.HandrailOffset), -1000000.0
-        )
+        self.handrail_height = _length_spin(_value(self.stair.HandrailHeightAboveNosing), 0.01)
+        self.handrail_offset = _length_spin(_value(self.stair.HandrailOffset), -1000000.0)
         self.handrail_picket_spacing = _length_spin(
             _value(self.stair.HandrailPicketMaximumSpacing), 0.01
         )
@@ -431,9 +376,7 @@ class StairDesignerTaskPanel:
         self.handrail_picket_shape = self._make_handrail_shape_editor(
             str(self.stair.HandrailPicketShape)
         )
-        self.handrail_picket_width = _length_spin(
-            _value(self.stair.HandrailPicketWidth), 0.01
-        )
+        self.handrail_picket_width = _length_spin(_value(self.stair.HandrailPicketWidth), 0.01)
         self.handrail_picket_thickness = _length_spin(
             _value(self.stair.HandrailPicketThickness), 0.01
         )
@@ -443,9 +386,7 @@ class StairDesignerTaskPanel:
         self.handrail_picket_top_rail_penetration = _length_spin(
             _value(self.stair.HandrailPicketTopRailPenetration)
         )
-        picket_form.addRow(
-            translate("BIM", "Shape"), self.handrail_picket_shape
-        )
+        picket_form.addRow(translate("BIM", "Shape"), self.handrail_picket_shape)
         picket_form.addRow(
             translate("BIM", "Width / diameter"),
             self.handrail_picket_width,
@@ -463,9 +404,7 @@ class StairDesignerTaskPanel:
             self.handrail_picket_top_rail_penetration,
         )
         picket_help = {
-            self.handrail_picket_shape: translate(
-                "BIM", "Square or circular picket cross-section"
-            ),
+            self.handrail_picket_shape: translate("BIM", "Square or circular picket cross-section"),
             self.handrail_picket_width: translate(
                 "BIM",
                 "Picket width; for a circular picket this is its diameter",
@@ -500,28 +439,16 @@ class StairDesignerTaskPanel:
         self.handrail_post_shape = self._make_handrail_shape_editor(
             str(self.stair.HandrailPostShape)
         )
-        self.handrail_post_width = _length_spin(
-            _value(self.stair.HandrailPostWidth), 0.01
-        )
-        self.handrail_post_thickness = _length_spin(
-            _value(self.stair.HandrailPostThickness), 0.01
-        )
-        self.handrail_post_above = _length_spin(
-            _value(self.stair.HandrailPostAboveTopRail)
-        )
-        self.handrail_post_below = _length_spin(
-            _value(self.stair.HandrailPostBelowStringer)
-        )
-        post_form.addRow(
-            translate("BIM", "Shape"), self.handrail_post_shape
-        )
+        self.handrail_post_width = _length_spin(_value(self.stair.HandrailPostWidth), 0.01)
+        self.handrail_post_thickness = _length_spin(_value(self.stair.HandrailPostThickness), 0.01)
+        self.handrail_post_above = _length_spin(_value(self.stair.HandrailPostAboveTopRail))
+        self.handrail_post_below = _length_spin(_value(self.stair.HandrailPostBelowStringer))
+        post_form.addRow(translate("BIM", "Shape"), self.handrail_post_shape)
         post_form.addRow(
             translate("BIM", "Width / diameter"),
             self.handrail_post_width,
         )
-        post_form.addRow(
-            translate("BIM", "Thickness"), self.handrail_post_thickness
-        )
+        post_form.addRow(translate("BIM", "Thickness"), self.handrail_post_thickness)
         post_form.addRow(
             translate("BIM", "Length above top rail"),
             self.handrail_post_above,
@@ -531,9 +458,7 @@ class StairDesignerTaskPanel:
             self.handrail_post_below,
         )
         post_help = {
-            self.handrail_post_shape: translate(
-                "BIM", "Square or circular post cross-section."
-            ),
+            self.handrail_post_shape: translate("BIM", "Square or circular post cross-section."),
             self.handrail_post_width: translate(
                 "BIM", "Post width; for a circular post this is its diameter"
             ),
@@ -556,25 +481,19 @@ class StairDesignerTaskPanel:
                 label.setToolTip(help_text)
         layout.addWidget(posts)
 
-        top_rail = QtGui.QGroupBox(
-            translate("BIM", "Top rail Parameters")
-        )
+        top_rail = QtGui.QGroupBox(translate("BIM", "Top rail Parameters"))
         top_rail_form = QtGui.QFormLayout(top_rail)
         self.handrail_top_rail_shape = self._make_handrail_shape_editor(
             str(self.stair.HandrailTopRailShape)
         )
-        self.handrail_top_rail_width = _length_spin(
-            _value(self.stair.HandrailTopRailWidth), 0.01
-        )
+        self.handrail_top_rail_width = _length_spin(_value(self.stair.HandrailTopRailWidth), 0.01)
         self.handrail_top_rail_thickness = _length_spin(
             _value(self.stair.HandrailTopRailThickness), 0.01
         )
         self.handrail_top_rail_penetration = _length_spin(
             _value(self.stair.HandrailTopRailPostPenetration)
         )
-        top_rail_form.addRow(
-            translate("BIM", "Shape"), self.handrail_top_rail_shape
-        )
+        top_rail_form.addRow(translate("BIM", "Shape"), self.handrail_top_rail_shape)
         top_rail_form.addRow(
             translate("BIM", "Width / diameter"),
             self.handrail_top_rail_width,
@@ -634,9 +553,7 @@ class StairDesignerTaskPanel:
             self.handrail_post_shape,
             self.handrail_top_rail_shape,
         ):
-            editor.currentIndexChanged.connect(
-                self._handrail_shape_changed
-            )
+            editor.currentIndexChanged.connect(self._handrail_shape_changed)
         self._update_handrail_shape_editors()
         return widget
 
@@ -660,13 +577,8 @@ class StairDesignerTaskPanel:
                 ("Left", translate("BIM", "Left side")),
                 ("Right", translate("BIM", "Right side")),
             ):
-                values = {
-                    str(getattr(flight, f"{side}StringerType"))
-                    for flight in flights
-                }
-                editor = self._make_stringer_type_editor(
-                    values.pop() if len(values) == 1 else None
-                )
+                values = {str(getattr(flight, f"{side}StringerType")) for flight in flights}
+                editor = self._make_stringer_type_editor(values.pop() if len(values) == 1 else None)
                 child = QtGui.QTreeWidgetItem(root)
                 child.setText(0, label)
                 self.stringer_tree.setItemWidget(child, 1, editor)
@@ -692,9 +604,7 @@ class StairDesignerTaskPanel:
                 child.setText(0, label)
                 self.stringer_tree.setItemWidget(child, 1, editor)
                 record[f"{side.lower()}_type"] = editor
-                editor.currentIndexChanged.connect(
-                    self._stringer_type_changed
-                )
+                editor.currentIndexChanged.connect(self._stringer_type_changed)
             root.setExpanded(True)
             self.stringer_flight_editors.append(record)
 
@@ -756,9 +666,7 @@ class StairDesignerTaskPanel:
                 self._select_data(editor, values.pop())
             else:
                 if mixed_index < 0:
-                    editor.insertItem(
-                        0, translate("BIM", "Mixed"), "__mixed__"
-                    )
+                    editor.insertItem(0, translate("BIM", "Mixed"), "__mixed__")
                     mixed_item = editor.model().item(0)
                     if mixed_item is not None:
                         mixed_item.setEnabled(False)
@@ -779,28 +687,19 @@ class StairDesignerTaskPanel:
                 ("Left", translate("BIM", "Left side")),
                 ("Right", translate("BIM", "Right side")),
             ):
-                states = {
-                    bool(getattr(flight, f"{side}HandrailEnabled"))
-                    for flight in flights
-                }
+                states = {bool(getattr(flight, f"{side}HandrailEnabled")) for flight in flights}
                 editor = QtGui.QCheckBox()
                 editor.setTristate(True)
                 editor.setCheckState(
                     QtCore.Qt.PartiallyChecked
                     if len(states) > 1
-                    else (
-                        QtCore.Qt.Checked
-                        if states.pop()
-                        else QtCore.Qt.Unchecked
-                    )
+                    else (QtCore.Qt.Checked if states.pop() else QtCore.Qt.Unchecked)
                 )
                 child = QtGui.QTreeWidgetItem(root)
                 child.setText(0, label)
                 self.handrail_tree.setItemWidget(child, 1, editor)
                 self.handrail_all_editors[side] = editor
-                editor.stateChanged.connect(
-                    partial(self._all_handrail_changed, side, editor)
-                )
+                editor.stateChanged.connect(partial(self._all_handrail_changed, side, editor))
             root.setExpanded(True)
 
         for flight in flights:
@@ -813,9 +712,7 @@ class StairDesignerTaskPanel:
                 ("Right", translate("BIM", "Right side")),
             ):
                 editor = QtGui.QCheckBox()
-                editor.setChecked(
-                    bool(getattr(flight, f"{side}HandrailEnabled"))
-                )
+                editor.setChecked(bool(getattr(flight, f"{side}HandrailEnabled")))
                 child = QtGui.QTreeWidgetItem(root)
                 child.setText(0, label)
                 self.handrail_tree.setItemWidget(child, 1, editor)
@@ -858,11 +755,7 @@ class StairDesignerTaskPanel:
             editor.setCheckState(
                 QtCore.Qt.PartiallyChecked
                 if len(states) > 1
-                else (
-                    QtCore.Qt.Checked
-                    if states.pop()
-                    else QtCore.Qt.Unchecked
-                )
+                else (QtCore.Qt.Checked if states.pop() else QtCore.Qt.Unchecked)
             )
             editor.blockSignals(blocked)
 
@@ -885,43 +778,26 @@ class StairDesignerTaskPanel:
                 self.handrail_top_rail_thickness,
             ),
         ):
-            circular = (
-                str(
-                    shape_editor.itemData(shape_editor.currentIndex())
-                )
-                == "Circular"
-            )
+            circular = str(shape_editor.itemData(shape_editor.currentIndex())) == "Circular"
             thickness_editor.setEnabled(not circular)
 
     def _make_stringer_override_widget(self):
-        group = QtGui.QGroupBox(
-            translate("BIM", "Selected Stringer Overrides")
-        )
+        group = QtGui.QGroupBox(translate("BIM", "Selected Stringer Overrides"))
         layout = QtGui.QVBoxLayout(group)
         self.stringer_override_name = QtGui.QLabel()
         layout.addWidget(self.stringer_override_name)
         form = QtGui.QFormLayout()
 
-        self.override_thickness = QtGui.QCheckBox(
-            translate("BIM", "Override thickness")
-        )
+        self.override_thickness = QtGui.QCheckBox(translate("BIM", "Override thickness"))
         self.override_thickness_value = _length_spin(0.0, 0.01)
-        form.addRow(
-            self.override_thickness, self.override_thickness_value
-        )
+        form.addRow(self.override_thickness, self.override_thickness_value)
 
-        self.override_width = QtGui.QCheckBox(
-            translate("BIM", "Override width")
-        )
+        self.override_width = QtGui.QCheckBox(translate("BIM", "Override width"))
         self.override_width_value = _length_spin(0.0, 0.01)
         form.addRow(self.override_width, self.override_width_value)
 
-        self.override_step_overlap = QtGui.QCheckBox(
-            translate("BIM", "Override step overlap")
-        )
-        self.override_step_overlap_value = _length_spin(
-            0.0, -1000000.0
-        )
+        self.override_step_overlap = QtGui.QCheckBox(translate("BIM", "Override step overlap"))
+        self.override_step_overlap_value = _length_spin(0.0, -1000000.0)
         form.addRow(
             self.override_step_overlap,
             self.override_step_overlap_value,
@@ -934,12 +810,8 @@ class StairDesignerTaskPanel:
         position_layout = QtGui.QHBoxLayout(position)
         position_layout.setContentsMargins(0, 0, 0, 0)
         self.override_nosing_direction = QtGui.QComboBox()
-        self.override_nosing_direction.addItem(
-            translate("BIM", "Perpendicular"), "Perpendicular"
-        )
-        self.override_nosing_direction.addItem(
-            translate("BIM", "Vertical"), "Vertical"
-        )
+        self.override_nosing_direction.addItem(translate("BIM", "Perpendicular"), "Perpendicular")
+        self.override_nosing_direction.addItem(translate("BIM", "Vertical"), "Vertical")
         self.override_nosing_offset = _length_spin(0.0)
         position_layout.addWidget(self.override_nosing_direction)
         position_layout.addWidget(self.override_nosing_offset)
@@ -961,9 +833,7 @@ class StairDesignerTaskPanel:
             self.override_nosing_offset,
         ):
             editor.valueChanged.connect(self._apply_stringer_override)
-        self.override_nosing_direction.currentIndexChanged.connect(
-            self._apply_stringer_override
-        )
+        self.override_nosing_direction.currentIndexChanged.connect(self._apply_stringer_override)
         self.stringer_override_widget = group
         group.hide()
         return group
@@ -977,9 +847,7 @@ class StairDesignerTaskPanel:
         self.flight_tree.header().setSectionResizeMode(0, QtGui.QHeaderView.ResizeToContents)
         self.flight_tree.header().setSectionResizeMode(1, QtGui.QHeaderView.Stretch)
         self.flight_tree.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        self.flight_tree.customContextMenuRequested.connect(
-            self._show_flight_context_menu
-        )
+        self.flight_tree.customContextMenuRequested.connect(self._show_flight_context_menu)
 
         self._populate_flight_tree()
         return self.flight_tree
@@ -989,9 +857,7 @@ class StairDesignerTaskPanel:
         self.flight_editors = []
         flights = stair_objects.get_flights(self.stair)
         single_flight = len(flights) == 1
-        all_straight = all(
-            str(flight.FlightType) == "Straight" for flight in flights
-        )
+        all_straight = all(str(flight.FlightType) == "Straight" for flight in flights)
         for index, flight in enumerate(flights):
             root = QtGui.QTreeWidgetItem(self.flight_tree)
             root.setText(0, flight.Label)
@@ -1001,22 +867,14 @@ class StairDesignerTaskPanel:
             flight_type = QtGui.QComboBox()
             flight_type.addItem(translate("BIM", "Straight flight"), "Straight")
             flight_type.addItem(translate("BIM", "Circular flight"), "Circular")
-            flight_type.addItem(
-                translate("BIM", "Straight landing"), "Straight landing"
-            )
-            flight_type.addItem(
-                translate("BIM", "Circular landing"), "Circular landing"
-            )
+            flight_type.addItem(translate("BIM", "Straight landing"), "Straight landing")
+            flight_type.addItem(translate("BIM", "Circular landing"), "Circular landing")
             self._select_data(flight_type, str(flight.FlightType))
             record["flight_type"] = flight_type
             record["left_length"] = _length_spin(_value(flight.LeftLength), 1.0)
             record["right_length"] = _length_spin(_value(flight.RightLength), 1.0)
-            record["inner_radius"] = _length_spin(
-                _value(flight.InnerRadius), 1.0
-            )
-            record["outer_radius"] = _length_spin(
-                _value(flight.OuterRadius), 1.0
-            )
+            record["inner_radius"] = _length_spin(_value(flight.InnerRadius), 1.0)
+            record["outer_radius"] = _length_spin(_value(flight.OuterRadius), 1.0)
             record["width"] = _length_spin(_value(flight.Width), 1.0)
             record["angle"] = self._angle_spin(_value(flight.Angle))
             rotation = QtGui.QComboBox()
@@ -1026,12 +884,12 @@ class StairDesignerTaskPanel:
             record["rotation"] = rotation
             is_circular = str(flight.FlightType).startswith("Circular")
             is_landing = str(flight.FlightType).endswith("landing")
-            previous_is_circular = index > 0 and str(
-                flights[index - 1].FlightType
-            ).startswith("Circular")
-            previous_is_landing = index > 0 and str(
-                flights[index - 1].FlightType
-            ).endswith("landing")
+            previous_is_circular = index > 0 and str(flights[index - 1].FlightType).startswith(
+                "Circular"
+            )
+            previous_is_landing = index > 0 and str(flights[index - 1].FlightType).endswith(
+                "landing"
+            )
             parameters = [(translate("BIM", "Type"), flight_type)]
             if index:
                 parameters.append((translate("BIM", "Rotation"), rotation))
@@ -1070,18 +928,14 @@ class StairDesignerTaskPanel:
                     )
             if index:
                 turn_type = QtGui.QComboBox()
-                turn_type.addItem(
-                    translate("BIM", "Herse balancing"), "Herse balancing"
-                )
+                turn_type.addItem(translate("BIM", "Herse balancing"), "Herse balancing")
                 turn_type.addItem(translate("BIM", "Landing"), "Landing")
                 self._select_data(turn_type, str(flight.TurnType))
                 record["turn_type"] = turn_type
                 if not is_circular:
                     parameters.append((translate("BIM", "Angle"), record["angle"]))
                     supports_winding = not (
-                        previous_is_circular
-                        or is_landing
-                        or previous_is_landing
+                        previous_is_circular or is_landing or previous_is_landing
                     )
                     if supports_winding:
                         local_winding = _percent_spin(flight.WindingLocal)
@@ -1100,12 +954,8 @@ class StairDesignerTaskPanel:
                         )
                         record["winding_local"] = local_winding
                         record["winding_distant"] = distant_winding
-                        parameters.append(
-                            (translate("BIM", "Turn type"), turn_type)
-                        )
-                        winding_rows.append(
-                            (translate("BIM", "Local winding"), local_winding)
-                        )
+                        parameters.append((translate("BIM", "Turn type"), turn_type))
+                        winding_rows.append((translate("BIM", "Local winding"), local_winding))
                         winding_rows.append(
                             (
                                 translate("BIM", "Distant winding"),
@@ -1114,56 +964,30 @@ class StairDesignerTaskPanel:
                         )
             if is_landing and not is_circular:
                 entry_direction = QtGui.QComboBox()
-                entry_direction.addItem(
-                    translate("BIM", "Straight"), "Straight"
-                )
-                entry_direction.addItem(
-                    translate("BIM", "From left"), "From left"
-                )
-                entry_direction.addItem(
-                    translate("BIM", "From right"), "From right"
-                )
-                self._select_data(
-                    entry_direction, str(flight.EntryDirection)
-                )
+                entry_direction.addItem(translate("BIM", "Straight"), "Straight")
+                entry_direction.addItem(translate("BIM", "From left"), "From left")
+                entry_direction.addItem(translate("BIM", "From right"), "From right")
+                self._select_data(entry_direction, str(flight.EntryDirection))
                 record["entry_direction"] = entry_direction
                 exit_direction = QtGui.QComboBox()
-                exit_direction.addItem(
-                    translate("BIM", "Straight"), "Straight"
-                )
-                exit_direction.addItem(
-                    translate("BIM", "To left"), "To left"
-                )
-                exit_direction.addItem(
-                    translate("BIM", "To right"), "To right"
-                )
+                exit_direction.addItem(translate("BIM", "Straight"), "Straight")
+                exit_direction.addItem(translate("BIM", "To left"), "To left")
+                exit_direction.addItem(translate("BIM", "To right"), "To right")
                 self._select_data(exit_direction, str(flight.ExitDirection))
                 record["exit_direction"] = exit_direction
-                parameters.append(
-                    (translate("BIM", "Entry direction"), entry_direction)
-                )
-                parameters.append(
-                    (translate("BIM", "Exit direction"), exit_direction)
-                )
+                parameters.append((translate("BIM", "Entry direction"), entry_direction))
+                parameters.append((translate("BIM", "Exit direction"), exit_direction))
             if index == 0 and all_straight:
                 record["start_angle"] = self._angle_spin(_value(flight.StartAngle))
                 record["start_angle"].setRange(-89.0, 89.0)
                 entry_direction = QtGui.QComboBox()
                 entry_direction.addItem(translate("BIM", "Straight"), "Straight")
-                entry_direction.addItem(
-                    translate("BIM", "From left"), "From left"
-                )
-                entry_direction.addItem(
-                    translate("BIM", "From right"), "From right"
-                )
+                entry_direction.addItem(translate("BIM", "From left"), "From left")
+                entry_direction.addItem(translate("BIM", "From right"), "From right")
                 self._select_data(entry_direction, str(flight.EntryDirection))
                 record["entry_direction"] = entry_direction
-                parameters.append(
-                    (translate("BIM", "Start angle"), record["start_angle"])
-                )
-                parameters.append(
-                    (translate("BIM", "Entry direction"), entry_direction)
-                )
+                parameters.append((translate("BIM", "Start angle"), record["start_angle"]))
+                parameters.append((translate("BIM", "Entry direction"), entry_direction))
             if index == len(flights) - 1 and all_straight:
                 record["end_angle"] = self._angle_spin(_value(flight.EndAngle))
                 record["end_angle"].setRange(-89.0, 89.0)
@@ -1173,12 +997,8 @@ class StairDesignerTaskPanel:
                 exit_direction.addItem(translate("BIM", "To right"), "To right")
                 self._select_data(exit_direction, str(flight.ExitDirection))
                 record["exit_direction"] = exit_direction
-                parameters.append(
-                    (translate("BIM", "End angle"), record["end_angle"])
-                )
-                parameters.append(
-                    (translate("BIM", "Exit direction"), exit_direction)
-                )
+                parameters.append((translate("BIM", "End angle"), record["end_angle"]))
+                parameters.append((translate("BIM", "Exit direction"), exit_direction))
             turn_type_item = None
             for label, editor in parameters:
                 child = QtGui.QTreeWidgetItem(root)
@@ -1217,42 +1037,33 @@ class StairDesignerTaskPanel:
                 editor = record.get(key)
                 if editor:
                     editor.valueChanged.connect(
-                        lambda _value, current=record: self._turn_geometry_changed(
-                            current
-                        )
+                        lambda _value, current=record: self._turn_geometry_changed(current)
                     )
             for key in ("start_angle", "end_angle"):
                 editor = record.get(key)
                 if editor:
                     editor.valueChanged.connect(
-                        lambda _value, current=record: (
-                            self._endpoint_angle_changed(current)
-                        )
+                        lambda _value, current=record: (self._endpoint_angle_changed(current))
                     )
             for key in ("entry_direction", "exit_direction"):
                 editor = record.get(key)
                 if editor:
                     editor.currentIndexChanged.connect(self._apply)
             flight_type.currentIndexChanged.connect(
-                lambda _index, current=record: self._flight_type_changed(
-                    current
-                )
+                lambda _index, current=record: self._flight_type_changed(current)
             )
             record["rotation"].currentIndexChanged.connect(
-                lambda _index, current=record: self._turn_geometry_changed(
-                    current
-                )
+                lambda _index, current=record: self._turn_geometry_changed(current)
             )
             if record.get("turn_type") is not None:
                 record["turn_type"].currentIndexChanged.connect(
-                    lambda _index, current=record: self._turn_type_changed(
-                        current
-                    )
+                    lambda _index, current=record: self._turn_type_changed(current)
                 )
             for key in ("winding_local", "winding_distant"):
                 editor = record.get(key)
                 if editor:
                     editor.valueChanged.connect(self._apply)
+
     def _flight_length_changed(self, record, side):
         if self._loading:
             return
@@ -1289,9 +1100,7 @@ class StairDesignerTaskPanel:
         if self._loading:
             return
         editor = record["turn_type"]
-        is_landing = (
-            str(editor.itemData(editor.currentIndex())) == "Landing"
-        )
+        is_landing = str(editor.itemData(editor.currentIndex())) == "Landing"
         for item in record.get("winding_items", ()):
             item.setHidden(is_landing)
         self._apply()
@@ -1299,9 +1108,7 @@ class StairDesignerTaskPanel:
     def _endpoint_angle_changed(self, record):
         if self._loading:
             return
-        self._sync_flight_length_editors(
-            self.flight_editors.index(record), "LeftLength"
-        )
+        self._sync_flight_length_editors(self.flight_editors.index(record), "LeftLength")
         self._apply()
 
     def _flight_type_changed(self, record):
@@ -1348,18 +1155,12 @@ class StairDesignerTaskPanel:
             self._sync_flight_radius_editors(index)
             return
         next_record = (
-            self.flight_editors[index + 1]
-            if index + 1 < len(self.flight_editors)
-            else None
+            self.flight_editors[index + 1] if index + 1 < len(self.flight_editors) else None
         )
-        previous_record = (
-            self.flight_editors[index - 1] if index > 0 else None
-        )
+        previous_record = self.flight_editors[index - 1] if index > 0 else None
         incoming_straight_turn = (
             previous_record
-            and not self._editor_flight_type(previous_record).startswith(
-                "Circular"
-            )
+            and not self._editor_flight_type(previous_record).startswith("Circular")
             and abs(record["angle"].value()) > 1e-7
         )
         straight_turn = (
@@ -1389,8 +1190,7 @@ class StairDesignerTaskPanel:
                 turn_difference = -turn_difference
             signed_length_difference += turn_difference
         all_straight = all(
-            self._editor_flight_type(item) == "Straight"
-            for item in self.flight_editors
+            self._editor_flight_type(item) == "Straight" for item in self.flight_editors
         )
         if all_straight and index == 0 and record.get("start_angle") is not None:
             signed_length_difference += record["width"].value() * math.tan(
@@ -1470,9 +1270,7 @@ class StairDesignerTaskPanel:
                 QtGui.QIcon(":/icons/Arch_Remove.svg"),
                 translate("BIM", "Delete Flight"),
             )
-            delete_action.setEnabled(
-                len(stair_objects.get_flights(self.stair)) > 1
-            )
+            delete_action.setEnabled(len(stair_objects.get_flights(self.stair)) > 1)
             delete_action.triggered.connect(self._remove_flight)
         menu.exec_(self.flight_tree.viewport().mapToGlobal(position))
 
@@ -1560,11 +1358,7 @@ class StairDesignerTaskPanel:
         self._apply()
 
     def _apply_stringer_override(self, *args):
-        if (
-            self._loading
-            or self._loading_override
-            or self.selected_stringer is None
-        ):
+        if self._loading or self._loading_override or self.selected_stringer is None:
             return
         part = self.selected_stringer
         try:
@@ -1572,13 +1366,9 @@ class StairDesignerTaskPanel:
             part.Thickness = self.override_thickness_value.value()
             part.OverrideWidth = self.override_width.isChecked()
             part.Width = self.override_width_value.value()
-            part.OverrideStepOverlap = (
-                self.override_step_overlap.isChecked()
-            )
+            part.OverrideStepOverlap = self.override_step_overlap.isChecked()
             part.StepOverlap = self.override_step_overlap_value.value()
-            part.OverrideNosingPosition = (
-                self.override_nosing_position.isChecked()
-            )
+            part.OverrideNosingPosition = self.override_nosing_position.isChecked()
             part.NosingOffsetDirection = str(
                 self.override_nosing_direction.itemData(
                     self.override_nosing_direction.currentIndex()
@@ -1588,9 +1378,7 @@ class StairDesignerTaskPanel:
         except ReferenceError:
             self._update_stringer_selection()
             return
-        self.stair.Proxy.rebuild(
-            self.stair, allow_structure_changes=True
-        )
+        self.stair.Proxy.rebuild(self.stair, allow_structure_changes=True)
         self.stair.Document.recompute()
         self._update_stringer_selection()
 
@@ -1600,14 +1388,11 @@ class StairDesignerTaskPanel:
         candidates = []
         for candidate in FreeCADGui.Selection.getSelection():
             try:
-                role = str(
-                    getattr(candidate, "StairDesignerRole", "")
-                )
-                if (
-                    getattr(candidate, "GeneratedBy", "")
-                    == self.stair.Name
-                    and role in {"LeftStringer", "RightStringer"}
-                ):
+                role = str(getattr(candidate, "StairDesignerRole", ""))
+                if getattr(candidate, "GeneratedBy", "") == self.stair.Name and role in {
+                    "LeftStringer",
+                    "RightStringer",
+                }:
                     candidates.append(candidate)
             except ReferenceError:
                 continue
@@ -1620,30 +1405,18 @@ class StairDesignerTaskPanel:
         self._loading_override = True
         try:
             self.stringer_override_name.setText(selected.Label)
-            self.override_thickness.setChecked(
-                selected.OverrideThickness
-            )
-            self.override_thickness_value.setValue(
-                _value(selected.Thickness)
-            )
+            self.override_thickness.setChecked(selected.OverrideThickness)
+            self.override_thickness_value.setValue(_value(selected.Thickness))
             self.override_width.setChecked(selected.OverrideWidth)
             self.override_width_value.setValue(_value(selected.Width))
-            self.override_step_overlap.setChecked(
-                selected.OverrideStepOverlap
-            )
-            self.override_step_overlap_value.setValue(
-                _value(selected.StepOverlap)
-            )
-            self.override_nosing_position.setChecked(
-                selected.OverrideNosingPosition
-            )
+            self.override_step_overlap.setChecked(selected.OverrideStepOverlap)
+            self.override_step_overlap_value.setValue(_value(selected.StepOverlap))
+            self.override_nosing_position.setChecked(selected.OverrideNosingPosition)
             self._select_data(
                 self.override_nosing_direction,
                 str(selected.NosingOffsetDirection),
             )
-            self.override_nosing_offset.setValue(
-                _value(selected.NosingOffset)
-            )
+            self.override_nosing_offset.setValue(_value(selected.NosingOffset))
             housed = str(selected.StringerType) == "Housed stringer"
             self.override_nosing_position.setVisible(housed)
             self.override_nosing_position_editor.setVisible(housed)
@@ -1655,15 +1428,9 @@ class StairDesignerTaskPanel:
             self._loading_override = False
 
     def _update_override_editor_states(self):
-        self.override_thickness_value.setEnabled(
-            self.override_thickness.isChecked()
-        )
-        self.override_width_value.setEnabled(
-            self.override_width.isChecked()
-        )
-        self.override_step_overlap_value.setEnabled(
-            self.override_step_overlap.isChecked()
-        )
+        self.override_thickness_value.setEnabled(self.override_thickness.isChecked())
+        self.override_width_value.setEnabled(self.override_width.isChecked())
+        self.override_step_overlap_value.setEnabled(self.override_step_overlap.isChecked())
         enabled = self.override_nosing_position.isChecked()
         self.override_nosing_direction.setEnabled(enabled)
         self.override_nosing_offset.setEnabled(enabled)
@@ -1696,9 +1463,7 @@ class StairDesignerTaskPanel:
         proxy._updating = True
         try:
             if "stairs" in self.sections:
-                self.stair.StairType = str(
-                    self.stair_type.itemData(self.stair_type.currentIndex())
-                )
+                self.stair.StairType = str(self.stair_type.itemData(self.stair_type.currentIndex()))
                 self.stair.FloorHeight = self.floor_height.value()
                 self.stair.NumberOfSteps = self.step_count.value()
                 self.stair.ConcreteThickness = self.concrete_thickness.value()
@@ -1715,9 +1480,7 @@ class StairDesignerTaskPanel:
                 for record in self.stringer_flight_editors:
                     flight = record["flight"]
                     flight_proxy = flight.Proxy
-                    was_updating = getattr(
-                        flight_proxy, "_updating", False
-                    )
+                    was_updating = getattr(flight_proxy, "_updating", False)
                     flight_proxy._updating = True
                     try:
                         for side in ("Left", "Right"):
@@ -1725,78 +1488,46 @@ class StairDesignerTaskPanel:
                             setattr(
                                 flight,
                                 f"{side}StringerType",
-                                str(
-                                    editor.itemData(
-                                        editor.currentIndex()
-                                    )
-                                ),
+                                str(editor.itemData(editor.currentIndex())),
                             )
                     finally:
                         flight_proxy._updating = was_updating
-                self.stair.StringerThickness = (
-                    self.stringer_thickness.value()
-                )
-                self.stair.StringerCustomWidth = (
-                    self.stringer_custom_width.isChecked()
-                )
+                self.stair.StringerThickness = self.stringer_thickness.value()
+                self.stair.StringerCustomWidth = self.stringer_custom_width.isChecked()
                 if self.stair.StringerCustomWidth:
-                    self.stair.StringerWidth = (
-                        self.stringer_width.value()
-                    )
-                self.stair.StringerStepOverlap = (
-                    self.stringer_step_overlap.value()
-                )
-                self.stair.StringerStartExtension = (
-                    self.stringer_start_extension.value()
-                )
-                self.stair.StringerEndExtension = (
-                    self.stringer_end_extension.value()
-                )
+                    self.stair.StringerWidth = self.stringer_width.value()
+                self.stair.StringerStepOverlap = self.stringer_step_overlap.value()
+                self.stair.StringerStartExtension = self.stringer_start_extension.value()
+                self.stair.StringerEndExtension = self.stringer_end_extension.value()
                 self.stair.StringerNosingOffsetDirection = str(
                     self.stringer_nosing_direction.itemData(
                         self.stringer_nosing_direction.currentIndex()
                     )
                 )
-                self.stair.StringerNosingOffset = (
-                    self.stringer_nosing_offset.value()
-                )
+                self.stair.StringerNosingOffset = self.stringer_nosing_offset.value()
             if "handrails" in self.sections:
                 for record in self.handrail_flight_editors:
                     flight = record["flight"]
                     flight_proxy = flight.Proxy
-                    was_updating = getattr(
-                        flight_proxy, "_updating", False
-                    )
+                    was_updating = getattr(flight_proxy, "_updating", False)
                     flight_proxy._updating = True
                     try:
                         for side in ("Left", "Right"):
                             setattr(
                                 flight,
                                 f"{side}HandrailEnabled",
-                                record[
-                                    f"{side.lower()}_enabled"
-                                ].isChecked(),
+                                record[f"{side.lower()}_enabled"].isChecked(),
                             )
                     finally:
                         flight_proxy._updating = was_updating
-                self.stair.HandrailHeightAboveNosing = (
-                    self.handrail_height.value()
-                )
+                self.stair.HandrailHeightAboveNosing = self.handrail_height.value()
                 self.stair.HandrailOffset = self.handrail_offset.value()
-                self.stair.HandrailPicketMaximumSpacing = (
-                    self.handrail_picket_spacing.value()
-                )
+                self.stair.HandrailPicketMaximumSpacing = self.handrail_picket_spacing.value()
                 self.stair.HandrailPicketShape = str(
-                    self.handrail_picket_shape.itemData(
-                        self.handrail_picket_shape.currentIndex()
-                    )
+                    self.handrail_picket_shape.itemData(self.handrail_picket_shape.currentIndex())
                 )
-                self.stair.HandrailPicketWidth = (
-                    self.handrail_picket_width.value()
-                )
-                self.stair.HandrailPicketThickness = (
-                    self.handrail_picket_thickness.value()
-                )
+                self.stair.HandrailPicketWidth = self.handrail_picket_width.value()
+                self.stair.HandrailPicketThickness = self.handrail_picket_thickness.value()
                 self.stair.HandrailPicketStringerPenetration = (
                     self.handrail_picket_stringer_penetration.value()
                 )
@@ -1804,33 +1535,19 @@ class StairDesignerTaskPanel:
                     self.handrail_picket_top_rail_penetration.value()
                 )
                 self.stair.HandrailPostShape = str(
-                    self.handrail_post_shape.itemData(
-                        self.handrail_post_shape.currentIndex()
-                    )
+                    self.handrail_post_shape.itemData(self.handrail_post_shape.currentIndex())
                 )
-                self.stair.HandrailPostWidth = (
-                    self.handrail_post_width.value()
-                )
-                self.stair.HandrailPostThickness = (
-                    self.handrail_post_thickness.value()
-                )
-                self.stair.HandrailPostAboveTopRail = (
-                    self.handrail_post_above.value()
-                )
-                self.stair.HandrailPostBelowStringer = (
-                    self.handrail_post_below.value()
-                )
+                self.stair.HandrailPostWidth = self.handrail_post_width.value()
+                self.stair.HandrailPostThickness = self.handrail_post_thickness.value()
+                self.stair.HandrailPostAboveTopRail = self.handrail_post_above.value()
+                self.stair.HandrailPostBelowStringer = self.handrail_post_below.value()
                 self.stair.HandrailTopRailShape = str(
                     self.handrail_top_rail_shape.itemData(
                         self.handrail_top_rail_shape.currentIndex()
                     )
                 )
-                self.stair.HandrailTopRailWidth = (
-                    self.handrail_top_rail_width.value()
-                )
-                self.stair.HandrailTopRailThickness = (
-                    self.handrail_top_rail_thickness.value()
-                )
+                self.stair.HandrailTopRailWidth = self.handrail_top_rail_width.value()
+                self.stair.HandrailTopRailThickness = self.handrail_top_rail_thickness.value()
                 self.stair.HandrailTopRailPostPenetration = (
                     self.handrail_top_rail_penetration.value()
                 )
@@ -1841,9 +1558,7 @@ class StairDesignerTaskPanel:
                 flight_proxy._updating = True
                 try:
                     flight_type = str(
-                        record["flight_type"].itemData(
-                            record["flight_type"].currentIndex()
-                        )
+                        record["flight_type"].itemData(record["flight_type"].currentIndex())
                     )
                     flight.FlightType = flight_type
                     flight_proxy._update_dimension_visibility(flight)
@@ -1855,20 +1570,14 @@ class StairDesignerTaskPanel:
                     flight.Angle = record["angle"].value()
                     if record.get("turn_type") is not None:
                         flight.TurnType = str(
-                            record["turn_type"].itemData(
-                                record["turn_type"].currentIndex()
-                            )
+                            record["turn_type"].itemData(record["turn_type"].currentIndex())
                         )
                     if record.get("winding_local") is not None:
                         flight.WindingLocal = record["winding_local"].value()
-                        flight.WindingDistant = record[
-                            "winding_distant"
-                        ].value()
+                        flight.WindingDistant = record["winding_distant"].value()
                     if record.get("rotation") is not None:
                         flight.Rotation = str(
-                            record["rotation"].itemData(
-                                record["rotation"].currentIndex()
-                            )
+                            record["rotation"].itemData(record["rotation"].currentIndex())
                         )
                     if record.get("start_angle") is not None:
                         flight.StartAngle = record["start_angle"].value()
@@ -1902,9 +1611,7 @@ class StairDesignerTaskPanel:
             self._update_overlap_label()
         if "stringers" in self.sections:
             blocked = self.stringer_width.blockSignals(True)
-            self.stringer_width.setValue(
-                _value(self.stair.StringerWidth)
-            )
+            self.stringer_width.setValue(_value(self.stair.StringerWidth))
             self.stringer_width.blockSignals(blocked)
             self._update_stringer_selection()
         self._update_type_visibility()
@@ -1920,9 +1627,7 @@ class StairDesignerTaskPanel:
 
     def _update_type_visibility(self):
         if hasattr(self, "stair_type"):
-            stair_type = str(
-                self.stair_type.itemData(self.stair_type.currentIndex())
-            )
+            stair_type = str(self.stair_type.itemData(self.stair_type.currentIndex()))
         else:
             stair_type = str(self.stair.StairType)
         wood = stair_type == "Wood"
@@ -1995,8 +1700,7 @@ class StairDesignerTaskPanel:
         compliant = bool(self.stair.BlondelCompliant)
         warning = translate(
             "BIM",
-            "Blondel law is outside "
-            f"{BLONDEL_MINIMUM:.0f}-{BLONDEL_MAXIMUM:.0f} mm.",
+            "Blondel law is outside " f"{BLONDEL_MINIMUM:.0f}-{BLONDEL_MAXIMUM:.0f} mm.",
         )
         if compliant:
             self.blondel_label.setText(translate("BIM", "Stair rule"))
@@ -2004,12 +1708,8 @@ class StairDesignerTaskPanel:
             self.blondel_label.setToolTip("")
             self.blondel_value.setToolTip("")
         else:
-            self.blondel_label.setText(
-                translate("BIM", "\u26a0 Stair rule")
-            )
-            self.blondel_label.setStyleSheet(
-                "color: #b71c1c; font-weight: bold;"
-            )
+            self.blondel_label.setText(translate("BIM", "\u26a0 Stair rule"))
+            self.blondel_label.setStyleSheet("color: #b71c1c; font-weight: bold;")
             self.blondel_label.setToolTip(warning)
             self.blondel_value.setToolTip(warning)
 

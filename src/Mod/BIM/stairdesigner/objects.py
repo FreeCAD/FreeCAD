@@ -9,7 +9,6 @@ import Part
 
 from stairdesigner import geometry
 
-
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 
@@ -42,9 +41,7 @@ def get_flights(stair):
     if not group:
         return []
     return [
-        obj
-        for obj in group.Group
-        if getattr(getattr(obj, "Proxy", None), "Type", "") == "Flight"
+        obj for obj in group.Group if getattr(getattr(obj, "Proxy", None), "Type", "") == "Flight"
     ]
 
 
@@ -61,14 +58,11 @@ def _flight_length(flight):
         name in flight.PropertiesList for name in ("InnerRadius", "OuterRadius")
     ):
         center_radius = (
-            _quantity_value(flight.InnerRadius)
-            + _quantity_value(flight.OuterRadius)
+            _quantity_value(flight.InnerRadius) + _quantity_value(flight.OuterRadius)
         ) / 2.0
         sweep = math.radians(min(abs(_quantity_value(flight.Angle)), 359.999))
         return max(center_radius * sweep, 0.01)
-    return (
-        _quantity_value(flight.LeftLength) + _quantity_value(flight.RightLength)
-    ) / 2.0
+    return (_quantity_value(flight.LeftLength) + _quantity_value(flight.RightLength)) / 2.0
 
 
 def _flight_path_dimension(flight):
@@ -80,9 +74,7 @@ def _flight_path_dimension(flight):
 def _stringer_run_plane(sections, side, width):
     """Return a flat board plane and its selected side-rail line."""
 
-    candidates = [
-        section for section in sections if section.locked_to_flight
-    ] or list(sections)
+    candidates = [section for section in sections if section.locked_to_flight] or list(sections)
     counts = {}
     for section in candidates:
         key = (
@@ -93,9 +85,7 @@ def _stringer_run_plane(sections, side, width):
     tangent_key = max(counts, key=counts.get)
     reference = min(
         candidates,
-        key=lambda section: (
-            section.tangent[0] - tangent_key[0]
-        ) ** 2
+        key=lambda section: (section.tangent[0] - tangent_key[0]) ** 2
         + (section.tangent[1] - tangent_key[1]) ** 2,
     )
     length = math.hypot(*tangent_key)
@@ -104,9 +94,7 @@ def _stringer_run_plane(sections, side, width):
         tangent_key[1] / max(length, 1e-9),
     )
     normal = (-direction[1], direction[0])
-    selected_origin = (
-        reference.left if side == "Left" else reference.right
-    )
+    selected_origin = reference.left if side == "Left" else reference.right
     right_origin = selected_origin
     if side == "Left":
         right_origin = (
@@ -123,8 +111,7 @@ def _line_intersection(first, second):
     first_origin, first_direction = first
     second_origin, second_direction = second
     denominator = (
-        first_direction[0] * second_direction[1]
-        - first_direction[1] * second_direction[0]
+        first_direction[0] * second_direction[1] - first_direction[1] * second_direction[0]
     )
     if abs(denominator) < 1e-9:
         return None
@@ -133,8 +120,7 @@ def _line_intersection(first, second):
         second_origin[1] - first_origin[1],
     )
     distance = (
-        difference[0] * second_direction[1]
-        - difference[1] * second_direction[0]
+        difference[0] * second_direction[1] - difference[1] * second_direction[0]
     ) / denominator
     return (
         first_origin[0] + first_direction[0] * distance,
@@ -146,11 +132,7 @@ def _stringer_center_line(rail_line, side, profile):
     """Return the plan centerline of a straight stringer board."""
 
     origin, direction = rail_line
-    inward = (
-        (direction[1], -direction[0])
-        if side == "Left"
-        else (-direction[1], direction[0])
-    )
+    inward = (direction[1], -direction[0]) if side == "Left" else (-direction[1], direction[0])
     thickness = max(float(profile["Thickness"]), 0.01)
     overlap = float(profile["StepOverlap"])
     center_offset = (
@@ -205,12 +187,9 @@ def _planar_stringer_runs(flight_runs, flights, side, profiles=None):
         end_seam = None
         if run_index:
             previous_index = flight_runs[run_index - 1][0]
-            if (
-                previous_index + 1 == flight_index
-                and str(flights[previous_index].FlightType).startswith(
-                    "Straight"
-                )
-            ):
+            if previous_index + 1 == flight_index and str(
+                flights[previous_index].FlightType
+            ).startswith("Straight"):
                 previous_profile = profiles.get(previous_index)
                 current_profile = profiles.get(flight_index)
                 if previous_profile and current_profile:
@@ -231,12 +210,9 @@ def _planar_stringer_runs(flight_runs, flights, side, profiles=None):
                     )
         if run_index + 1 < len(flight_runs):
             following_index = flight_runs[run_index + 1][0]
-            if (
-                flight_index + 1 == following_index
-                and str(flights[following_index].FlightType).startswith(
-                    "Straight"
-                )
-            ):
+            if flight_index + 1 == following_index and str(
+                flights[following_index].FlightType
+            ).startswith("Straight"):
                 current_profile = profiles.get(flight_index)
                 following_profile = profiles.get(following_index)
                 if current_profile and following_profile:
@@ -285,9 +261,7 @@ def linked_flight_side_lengths(
     """Return linked rail lengths while preserving the requested input."""
 
     difference = max(float(next_width), 0.0) if next_rotation else 0.0
-    signed_difference = (
-        -difference if str(next_rotation) == "Right" else difference
-    )
+    signed_difference = -difference if str(next_rotation) == "Right" else difference
     return linked_flight_side_lengths_for_difference(
         left_length,
         right_length,
@@ -333,10 +307,7 @@ def straight_turn_side_difference(current_width, next_width, angle):
     sine = abs(math.sin(radians))
     if sine < 1e-7:
         return 0.0
-    return (
-        max(float(next_width), 0.0)
-        - max(float(current_width), 0.0) * math.cos(radians)
-    ) / sine
+    return (max(float(next_width), 0.0) - max(float(current_width), 0.0) * math.cos(radians)) / sine
 
 
 def flight_side_length_difference(stair, flight):
@@ -378,20 +349,14 @@ def flight_side_length_difference(stair, flight):
         if str(next_flight.Rotation) == "Right":
             turn_difference = -turn_difference
         difference += turn_difference
-    all_straight = all(
-        str(item.FlightType) == "Straight" for item in flights
-    )
+    all_straight = all(str(item.FlightType) == "Straight" for item in flights)
     if all_straight and index == 0:
         difference += _quantity_value(flight.Width) * math.tan(
-            math.radians(
-                min(max(_quantity_value(flight.StartAngle), -89.0), 89.0)
-            )
+            math.radians(min(max(_quantity_value(flight.StartAngle), -89.0), 89.0))
         )
     if all_straight and index == len(flights) - 1:
         difference -= _quantity_value(flight.Width) * math.tan(
-            math.radians(
-                min(max(_quantity_value(flight.EndAngle), -89.0), 89.0)
-            )
+            math.radians(min(max(_quantity_value(flight.EndAngle), -89.0), 89.0))
         )
     return difference
 
@@ -694,9 +659,7 @@ class StairProxy:
             "App::PropertyBool",
             "StringerCustomWidth",
             "Stringers",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Uses a manually specified stringer width"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Uses a manually specified stringer width"),
             False,
         )
         _add_property(
@@ -704,9 +667,7 @@ class StairProxy:
             "App::PropertyLength",
             "StringerWidth",
             "Stringers",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Default stringer board width"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Default stringer board width"),
             300.0,
         )
         _add_property(
@@ -725,9 +686,7 @@ class StairProxy:
             "App::PropertyLength",
             "StringerStartExtension",
             "Stringers",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Length beyond the first step of the stair"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Length beyond the first step of the stair"),
             0.0,
         )
         _add_property(
@@ -735,9 +694,7 @@ class StairProxy:
             "App::PropertyLength",
             "StringerEndExtension",
             "Stringers",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Length beyond the last step of the stair"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Length beyond the last step of the stair"),
             0.0,
         )
         added = _add_property(
@@ -750,31 +707,21 @@ class StairProxy:
                 "How the stringer offset above nosings is measured",
             ),
         )
-        current_direction = (
-            "Perpendicular"
-            if added
-            else str(obj.StringerNosingOffsetDirection)
-        )
+        current_direction = "Perpendicular" if added else str(obj.StringerNosingOffsetDirection)
         directions = ["Perpendicular", "Vertical"]
         obj.StringerNosingOffsetDirection = directions
         obj.StringerNosingOffsetDirection = (
-            current_direction
-            if current_direction in directions
-            else "Perpendicular"
+            current_direction if current_direction in directions else "Perpendicular"
         )
         _add_property(
             obj,
             "App::PropertyLength",
             "StringerNosingOffset",
             "Stringers",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Default board position above the nosings"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Default board position above the nosings"),
             50.0,
         )
-        obj.setEditorMode(
-            "StringerWidth", 0 if obj.StringerCustomWidth else 1
-        )
+        obj.setEditorMode("StringerWidth", 0 if obj.StringerCustomWidth else 1)
 
         _add_property(
             obj,
@@ -803,9 +750,7 @@ class StairProxy:
             "App::PropertyLength",
             "HandrailPicketMaximumSpacing",
             "Handrails",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Maximum clear spacing between pickets"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Maximum clear spacing between pickets"),
             100.0,
         )
         self._set_shape_property(
@@ -835,9 +780,7 @@ class StairProxy:
             "App::PropertyLength",
             "HandrailPicketStringerPenetration",
             "Pickets",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Picket penetration into the stringer"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Picket penetration into the stringer"),
             20.0,
         )
         _add_property(
@@ -845,9 +788,7 @@ class StairProxy:
             "App::PropertyLength",
             "HandrailPicketTopRailPenetration",
             "Pickets",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Picket penetration into the top rail"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Picket penetration into the top rail"),
             10.0,
         )
         self._set_shape_property(
@@ -877,9 +818,7 @@ class StairProxy:
             "App::PropertyLength",
             "HandrailPostAboveTopRail",
             "Posts",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Post length above the top rail"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Post length above the top rail"),
             70.0,
         )
         _add_property(
@@ -887,9 +826,7 @@ class StairProxy:
             "App::PropertyLength",
             "HandrailPostBelowStringer",
             "Posts",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Post length below a wooden stringer"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Post length below a wooden stringer"),
             100.0,
         )
         self._set_shape_property(
@@ -919,9 +856,7 @@ class StairProxy:
             "App::PropertyLength",
             "HandrailTopRailPostPenetration",
             "Top rail",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Top-rail penetration into end posts"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Top-rail penetration into end posts"),
             35.0,
         )
 
@@ -966,11 +901,7 @@ class StairProxy:
         self._updating = False
 
     def onChanged(self, obj, prop):
-        if (
-            getattr(self, "_updating", False)
-            or FreeCAD.isRestoring()
-            or obj.Document.Transacting
-        ):
+        if getattr(self, "_updating", False) or FreeCAD.isRestoring() or obj.Document.Transacting:
             return
         if prop in {
             "StairType",
@@ -996,9 +927,7 @@ class StairProxy:
             "StringerNosingOffset",
         } or prop.startswith("Handrail"):
             if prop == "StringerCustomWidth":
-                obj.setEditorMode(
-                    "StringerWidth", 0 if obj.StringerCustomWidth else 1
-                )
+                obj.setEditorMode("StringerWidth", 0 if obj.StringerCustomWidth else 1)
             self.rebuild(obj, allow_structure_changes=True)
 
     def execute(self, obj):
@@ -1024,8 +953,7 @@ class StairProxy:
                     "RightHandrailEnabled",
                 )
             ) or any(
-                str(getattr(flight, f"{side}StringerType", ""))
-                == "Cut stringer"
+                str(getattr(flight, f"{side}StringerType", "")) == "Cut stringer"
                 for side in ("Left", "Right")
             ):
                 flight_proxy = flight.Proxy
@@ -1046,9 +974,7 @@ class StairProxy:
             riser_height = floor_height / max(int(obj.NumberOfSteps), 2)
             flight_lengths = [_flight_length(flight) for flight in flights]
             stair_indices = [
-                index
-                for index, flight in enumerate(flights)
-                if not _is_landing_flight(flight)
+                index for index, flight in enumerate(flights) if not _is_landing_flight(flight)
             ]
             stair_tread_counts = geometry.distribute_treads(
                 [flight_lengths[index] for index in stair_indices],
@@ -1062,12 +988,8 @@ class StairProxy:
             balanced_footprint = None
             balanced_plan_shapes = None
             winding_geometry_valid = True
-            has_circular = any(
-                _is_circular_flight(flight) for flight in flights
-            )
-            has_landing_flight = any(
-                _is_landing_flight(flight) for flight in flights
-            )
+            has_circular = any(_is_circular_flight(flight) for flight in flights)
+            has_landing_flight = any(_is_landing_flight(flight) for flight in flights)
             has_tangent_geometry = has_circular or has_landing_flight
             first_flight = flights[0]
             last_flight = flights[-1]
@@ -1118,36 +1040,29 @@ class StairProxy:
                     for flight in flights
                 ]
                 turn_types = [str(flight.TurnType) for flight in flights[1:]]
-                balanced_sections, average_going = (
-                    geometry.tangent_flight_sections(
-                        flight_specs,
-                        total_treads,
-                        1.0,
-                        turn_types,
-                        start_angle,
-                        end_angle,
-                        entry_direction,
-                        exit_direction,
-                        obj.StairType != "Concrete",
-                        winding_parameters=winding_parameters,
-                    )
+                balanced_sections, average_going = geometry.tangent_flight_sections(
+                    flight_specs,
+                    total_treads,
+                    1.0,
+                    turn_types,
+                    start_angle,
+                    end_angle,
+                    entry_direction,
+                    exit_direction,
+                    obj.StairType != "Concrete",
+                    winding_parameters=winding_parameters,
                 )
                 balanced_footprint = geometry.make_tangent_stair_footprint(
                     flight_specs, turn_types, start_angle, end_angle
                 )
-                balanced_sections = (
-                    geometry.fit_tangent_sections_to_footprint(
-                        balanced_sections, balanced_footprint
-                    )
+                balanced_sections = geometry.fit_tangent_sections_to_footprint(
+                    balanced_sections, balanced_footprint
                 )
                 if has_landing_flight:
-                    partition_faces = geometry.tangent_tread_faces(
-                        balanced_sections, flight_specs
-                    )
-                    winding_geometry_valid = (
-                        len(partition_faces) == len(balanced_sections) - 1
-                        and all(face.isValid() for face in partition_faces)
-                    )
+                    partition_faces = geometry.tangent_tread_faces(balanced_sections, flight_specs)
+                    winding_geometry_valid = len(partition_faces) == len(
+                        balanced_sections
+                    ) - 1 and all(face.isValid() for face in partition_faces)
                 else:
                     partition_faces = geometry.balanced_tread_faces(
                         balanced_sections, balanced_footprint
@@ -1208,32 +1123,22 @@ class StairProxy:
                     balanced_plan_shapes = None
 
             if balanced_sections is None:
-                average_going = (
-                    sum(flight_lengths[index] for index in stair_indices)
-                    / total_treads
-                )
+                average_going = sum(flight_lengths[index] for index in stair_indices) / total_treads
             blondel_value = 2.0 * riser_height + average_going
             obj.NumberOfTreads = (
                 len(balanced_sections) - 1
                 if obj.StairType == "Concrete"
                 and balanced_sections
-                and any(
-                    section.landing_to_next
-                    for section in balanced_sections[:-1]
-                )
+                and any(section.landing_to_next for section in balanced_sections[:-1])
                 else total_treads
             )
             obj.RiserHeight = riser_height
             obj.TreadWidth = average_going
             obj.BlondelValue = blondel_value
             obj.BlondelCompliant = (
-                geometry.BLONDEL_MINIMUM
-                <= blondel_value
-                <= geometry.BLONDEL_MAXIMUM
+                geometry.BLONDEL_MINIMUM <= blondel_value <= geometry.BLONDEL_MAXIMUM
             )
-            obj.setEditorMode(
-                "StringerWidth", 0 if obj.StringerCustomWidth else 1
-            )
+            obj.setEditorMode("StringerWidth", 0 if obj.StringerCustomWidth else 1)
             if not obj.StringerCustomWidth:
                 obj.StringerWidth = geometry.automatic_stringer_width(
                     riser_height,
@@ -1261,21 +1166,13 @@ class StairProxy:
                 )
             else:
                 if len(flights) == 1:
-                    obj.GeometryStatus = translate(
-                        "BIM", "Balanced entry/exit stair"
-                    )
+                    obj.GeometryStatus = translate("BIM", "Balanced entry/exit stair")
                 elif any(section.landing_to_next for section in balanced_sections):
-                    obj.GeometryStatus = translate(
-                        "BIM", "Multi-flight stair with landing"
-                    )
+                    obj.GeometryStatus = translate("BIM", "Multi-flight stair with landing")
                 else:
-                    obj.GeometryStatus = translate(
-                        "BIM", "Balanced multi-flight stair"
-                    )
+                    obj.GeometryStatus = translate("BIM", "Balanced multi-flight stair")
 
-            self._update_plan(
-                obj, layouts, balanced_sections, balanced_footprint
-            )
+            self._update_plan(obj, layouts, balanced_sections, balanced_footprint)
             if obj.StairType == "Concrete":
                 if allow_structure_changes:
                     self._remove_steps_group(obj)
@@ -1331,9 +1228,7 @@ class StairProxy:
                 heading += turn
             width = max(_quantity_value(flight.Width), 0.01)
             length = _flight_length(flight)
-            metrics = geometry.flight_stair_metrics(
-                length, tread_count, riser_height
-            )
+            metrics = geometry.flight_stair_metrics(length, tread_count, riser_height)
             radians = math.radians(heading)
             direction = FreeCAD.Vector(math.cos(radians), math.sin(radians), 0.0)
             normal = FreeCAD.Vector(-direction.y, direction.x, 0.0)
@@ -1372,11 +1267,7 @@ class StairProxy:
         sketch.deleteAllGeometry(True)
         lines = []
         if balanced_sections:
-            lines.extend(
-                geometry.balanced_plan_geometry(
-                    balanced_sections, balanced_footprint
-                )
-            )
+            lines.extend(geometry.balanced_plan_geometry(balanced_sections, balanced_footprint))
         else:
             for layout in layouts:
                 placement = layout["placement"]
@@ -1393,12 +1284,8 @@ class StairProxy:
                     layout["width"],
                     _quantity_value(stair.Nosing),
                 ):
-                    start_point = plan_placement.multVec(
-                        FreeCAD.Vector(start[0], start[1], 0.0)
-                    )
-                    end_point = plan_placement.multVec(
-                        FreeCAD.Vector(end[0], end[1], 0.0)
-                    )
+                    start_point = plan_placement.multVec(FreeCAD.Vector(start[0], start[1], 0.0))
+                    end_point = plan_placement.multVec(FreeCAD.Vector(end[0], end[1], 0.0))
                     lines.append(Part.LineSegment(start_point, end_point))
         sketch.addGeometry(lines, False)
         sketch.Placement = stair.Placement
@@ -1458,9 +1345,7 @@ class StairProxy:
                 tread.Label = f"{translate('BIM', 'Step')} {generated_index + 1}"
                 tread.Index = generated_index + 1
                 tread.FlightIndex = layout["index"] + 1
-                has_next_riser = (
-                    stair.RisersEnabled and local_index < metrics.tread_count - 1
-                )
+                has_next_riser = stair.RisersEnabled and local_index < metrics.tread_count - 1
                 back_extension = 0.0
                 if has_next_riser:
                     back_extension = step_riser_overlap
@@ -1521,12 +1406,8 @@ class StairProxy:
     ):
         tread_count = len(sections) - 1
         riser_height = _quantity_value(stair.RiserHeight)
-        base_faces = plan_shapes or geometry.balanced_tread_faces(
-            sections, footprint
-        )
-        for index, (front, rear, base_face) in enumerate(
-            zip(sections, sections[1:], base_faces)
-        ):
+        base_faces = plan_shapes or geometry.balanced_tread_faces(sections, footprint)
+        for index, (front, rear, base_face) in enumerate(zip(sections, sections[1:], base_faces)):
             tread = treads[index]
             tread.Label = f"{translate('BIM', 'Step')} {index + 1}"
             tread.Index = index + 1
@@ -1541,9 +1422,7 @@ class StairProxy:
                 front,
                 rear,
                 footprint,
-                geometry.balanced_section_top(
-                    front, index, riser_height
-                ),
+                geometry.balanced_section_top(front, index, riser_height),
                 step_thickness,
                 nosing,
                 back_extension,
@@ -1563,26 +1442,12 @@ class StairProxy:
         upper_offset = _quantity_value(stair.RiserUpperOffset)
         lower_offset = _quantity_value(stair.RiserLowerOffset)
         riser_sections = list(enumerate(sections[:-1]))
-        for generated_index, (riser, (index, section)) in enumerate(
-            zip(risers, riser_sections)
-        ):
-            bottom_extension = (
-                step_thickness if stair.PriorityToRiser and index > 0 else 0.0
-            )
-            height = (
-                riser_height
-                - step_thickness
-                + bottom_extension
-                - upper_offset
-                - lower_offset
-            )
-            top = geometry.balanced_section_top(
-                section, index, riser_height
-            )
+        for generated_index, (riser, (index, section)) in enumerate(zip(risers, riser_sections)):
+            bottom_extension = step_thickness if stair.PriorityToRiser and index > 0 else 0.0
+            height = riser_height - step_thickness + bottom_extension - upper_offset - lower_offset
+            top = geometry.balanced_section_top(section, index, riser_height)
             base = top - riser_height - bottom_extension + lower_offset
-            riser.Label = (
-                f"{translate('BIM', 'Riser')} {generated_index + 1}"
-            )
+            riser.Label = f"{translate('BIM', 'Riser')} {generated_index + 1}"
             riser.Index = generated_index + 1
             riser.FlightIndex = section.flight_index + 1
             riser.Shape = geometry.make_balanced_riser_shape(
@@ -1592,8 +1457,7 @@ class StairProxy:
                 riser_thickness,
                 footprint,
                 local_expansion=(
-                    section.landing_to_next
-                    or (index > 0 and sections[index - 1].landing_to_next)
+                    section.landing_to_next or (index > 0 and sections[index - 1].landing_to_next)
                 ),
             )
             riser.Placement = stair.Placement
@@ -1662,9 +1526,7 @@ class StairProxy:
                 self._remove_stringers_group(stair)
             return
         if not group and allow_structure_changes:
-            group = _make_component_group(
-                stair, "StringersGroup", "Stringers", "stringers"
-            )
+            group = _make_component_group(stair, "StringersGroup", "Stringers", "stringers")
         if not group:
             return
         group.PanelSection = "stringers"
@@ -1680,9 +1542,7 @@ class StairProxy:
             flight_runs = [
                 (
                     0,
-                    geometry.straight_stringer_sections(
-                        layout["metrics"], layout["width"]
-                    ),
+                    geometry.straight_stringer_sections(layout["metrics"], layout["width"]),
                 )
             ]
         else:
@@ -1697,9 +1557,7 @@ class StairProxy:
             "Width": _quantity_value(stair.StringerWidth),
             "StepOverlap": _quantity_value(stair.StringerStepOverlap),
             "NosingOffset": _quantity_value(stair.StringerNosingOffset),
-            "NosingOffsetDirection": str(
-                stair.StringerNosingOffsetDirection
-            ),
+            "NosingOffsetDirection": str(stair.StringerNosingOffsetDirection),
         }
         for side_index, side in enumerate(("Left", "Right"), start=1):
             role = f"{side}Stringer"
@@ -1728,9 +1586,7 @@ class StairProxy:
                 allow_structure_changes,
             )
             profiles = {}
-            for (flight_index, _sections), part in zip(
-                source_runs, parts
-            ):
+            for (flight_index, _sections), part in zip(source_runs, parts):
                 stringer_type = str(
                     getattr(
                         flights[flight_index],
@@ -1763,22 +1619,12 @@ class StairProxy:
                 if flight_index in profiles
             ]
             labels = {
-                ("Left", "Housed stringer"): translate(
-                    "BIM", "Left housed stringer"
-                ),
-                ("Right", "Housed stringer"): translate(
-                    "BIM", "Right housed stringer"
-                ),
-                ("Left", "Notched stringer"): translate(
-                    "BIM", "Left notched stringer"
-                ),
-                ("Right", "Notched stringer"): translate(
-                    "BIM", "Right notched stringer"
-                ),
+                ("Left", "Housed stringer"): translate("BIM", "Left housed stringer"),
+                ("Right", "Housed stringer"): translate("BIM", "Right housed stringer"),
+                ("Left", "Notched stringer"): translate("BIM", "Left notched stringer"),
+                ("Right", "Notched stringer"): translate("BIM", "Right notched stringer"),
             }
-            for (flight_index, sections), part in zip(
-                side_runs, parts
-            ):
+            for (flight_index, sections), part in zip(side_runs, parts):
                 stringer_type = profiles[flight_index]["StringerType"]
                 thickness = _quantity_value(part.Thickness)
                 width = _quantity_value(part.Width)
@@ -1817,11 +1663,7 @@ class StairProxy:
                         width,
                         overlap,
                         end_extension,
-                        (
-                            _quantity_value(stair.RiserThickness)
-                            if stair.RisersEnabled
-                            else 0.0
-                        ),
+                        (_quantity_value(stair.RiserThickness) if stair.RisersEnabled else 0.0),
                     )
                 part.Label = (
                     f"{translate('BIM', 'Flight')} {flight_index + 1}: "
@@ -1854,9 +1696,7 @@ class StairProxy:
                 self._remove_handrails_group(stair)
             return
         if not group and allow_structure_changes:
-            group = _make_component_group(
-                stair, "HandrailsGroup", "Handrails", "handrails"
-            )
+            group = _make_component_group(stair, "HandrailsGroup", "Handrails", "handrails")
         if not group:
             return
         group.PanelSection = "handrails"
@@ -1871,9 +1711,7 @@ class StairProxy:
             flight_runs = [
                 (
                     0,
-                    geometry.straight_stringer_sections(
-                        layouts[0]["metrics"], layouts[0]["width"]
-                    ),
+                    geometry.straight_stringer_sections(layouts[0]["metrics"], layouts[0]["width"]),
                 )
             ]
         else:
@@ -1881,51 +1719,32 @@ class StairProxy:
         if not flight_runs:
             return
 
-        stringers = (
-            list(stair.StringersGroup.Group)
-            if stair.StringersGroup
-            else []
-        )
+        stringers = list(stair.StringersGroup.Group) if stair.StringersGroup else []
         rail_shape = str(stair.HandrailTopRailShape)
         rail_width = _quantity_value(stair.HandrailTopRailWidth)
         rail_thickness = _quantity_value(stair.HandrailTopRailThickness)
         picket_shape = str(stair.HandrailPicketShape)
         picket_width = _quantity_value(stair.HandrailPicketWidth)
-        picket_thickness = _quantity_value(
-            stair.HandrailPicketThickness
-        )
-        picket_path_size = (
-            picket_width
-            if picket_shape == "Circular"
-            else picket_thickness
-        )
+        picket_thickness = _quantity_value(stair.HandrailPicketThickness)
+        picket_path_size = picket_width if picket_shape == "Circular" else picket_thickness
         post_shape = str(stair.HandrailPostShape)
         post_width = _quantity_value(stair.HandrailPostWidth)
         post_thickness = _quantity_value(stair.HandrailPostThickness)
-        post_path_size = (
-            post_width if post_shape == "Circular" else post_thickness
-        )
+        post_path_size = post_width if post_shape == "Circular" else post_thickness
         global_offset = _quantity_value(stair.HandrailOffset)
         desired = []
         post_positions = set()
         first_flight_index = flight_runs[0][0]
         last_flight_index = flight_runs[-1][0]
         concrete_support_faces = []
-        if (
-            str(stair.StairType) == "Concrete"
-            and balanced_sections
-            and balanced_plan_shapes
-        ):
+        if str(stair.StairType) == "Concrete" and balanced_sections and balanced_plan_shapes:
             for index, plan_shape in enumerate(balanced_plan_shapes):
                 elevation = geometry.balanced_section_top(
                     balanced_sections[index],
                     index,
                     riser_height,
                 )
-                concrete_support_faces.extend(
-                    (face, elevation)
-                    for face in plan_shape.Faces
-                )
+                concrete_support_faces.extend((face, elevation) for face in plan_shape.Faces)
         prepared_handrail_runs = {}
         corner_post_points = {}
         for prepared_side in ("Left", "Right"):
@@ -1954,15 +1773,10 @@ class StairProxy:
             }
             if side_profiles:
                 center_lines = {}
-                for run_index, (flight_index, sections) in enumerate(
-                    flight_runs
-                ):
-                    if (
-                        flight_index not in side_profiles
-                        or not str(
-                            flights[flight_index].FlightType
-                        ).startswith("Straight")
-                    ):
+                for run_index, (flight_index, sections) in enumerate(flight_runs):
+                    if flight_index not in side_profiles or not str(
+                        flights[flight_index].FlightType
+                    ).startswith("Straight"):
                         continue
                     plane = _stringer_run_plane(
                         sections,
@@ -1991,10 +1805,7 @@ class StairProxy:
                         direction,
                     )
                 for run_index in range(len(flight_runs) - 1):
-                    if (
-                        run_index not in center_lines
-                        or run_index + 1 not in center_lines
-                    ):
+                    if run_index not in center_lines or run_index + 1 not in center_lines:
                         continue
                     incoming_index = flight_runs[run_index][0]
                     outgoing_index = flight_runs[run_index + 1][0]
@@ -2006,19 +1817,13 @@ class StairProxy:
                     )
                     if junction is None:
                         continue
-                    corner_post_points[
-                        (prepared_side, incoming_index, 1)
-                    ] = junction
-                    corner_post_points[
-                        (prepared_side, outgoing_index, 0)
-                    ] = junction
+                    corner_post_points[(prepared_side, incoming_index, 1)] = junction
+                    corner_post_points[(prepared_side, outgoing_index, 0)] = junction
 
         for flight_index, sections in flight_runs:
             flight = flights[flight_index]
             for side in ("Left", "Right"):
-                if not bool(
-                    getattr(flight, f"{side}HandrailEnabled", False)
-                ):
+                if not bool(getattr(flight, f"{side}HandrailEnabled", False)):
                     continue
                 stringer = next(
                     (
@@ -2038,11 +1843,7 @@ class StairProxy:
                         if str(stringer.StringerType) == "Housed stringer"
                         else overlap + thickness / 2.0
                     )
-                path_sections = prepared_handrail_runs.get(
-                    side, {}
-                ).get(
-                    flight_index, sections
-                )
+                path_sections = prepared_handrail_runs.get(side, {}).get(flight_index, sections)
                 path = geometry.make_handrail_path(
                     path_sections,
                     riser_height,
@@ -2052,15 +1853,13 @@ class StairProxy:
                     (
                         _quantity_value(stair.StringerStartExtension)
                         if stringer is not None
-                        and str(stringer.StringerType)
-                        == "Housed stringer"
+                        and str(stringer.StringerType) == "Housed stringer"
                         and flight_index == first_flight_index
                         else 0.0
                     ),
                     (
                         _quantity_value(stair.StringerEndExtension)
-                        if stringer is not None
-                        and flight_index == last_flight_index
+                        if stringer is not None and flight_index == last_flight_index
                         else 0.0
                     ),
                 )
@@ -2074,11 +1873,7 @@ class StairProxy:
                     _quantity_value(stair.HandrailHeightAboveNosing),
                 )
                 path_slope = (
-                    (
-                        path["top_elevations"][-1]
-                        - path["top_elevations"][0]
-                    )
-                    / path["length"]
+                    (path["top_elevations"][-1] - path["top_elevations"][0]) / path["length"]
                     if path["length"] > 1e-9
                     else 0.0
                 )
@@ -2092,9 +1887,7 @@ class StairProxy:
                     rail_shape,
                     rail_width,
                     rail_thickness,
-                    _quantity_value(
-                        stair.HandrailTopRailPostPenetration
-                    ),
+                    _quantity_value(stair.HandrailTopRailPostPenetration),
                     post_path_size,
                 )
                 side_label = translate("BIM", side.lower())
@@ -2118,9 +1911,7 @@ class StairProxy:
                         return None
                     tangent = sample["tangent"]
                     inward = (
-                        (tangent[1], -tangent[0])
-                        if side == "Left"
-                        else (-tangent[1], tangent[0])
+                        (tangent[1], -tangent[0]) if side == "Left" else (-tangent[1], tangent[0])
                     )
                     point = (
                         sample["point"][0] - inward[0] * global_offset,
@@ -2133,9 +1924,7 @@ class StairProxy:
                     intersection = stringer.Shape.common(probe)
                     if not intersection.Vertexes:
                         return None
-                    elevations = [
-                        vertex.Point.z for vertex in intersection.Vertexes
-                    ]
+                    elevations = [vertex.Point.z for vertex in intersection.Vertexes]
                     return min(elevations), max(elevations)
 
                 def concrete_support(
@@ -2146,17 +1935,13 @@ class StairProxy:
                 ):
                     if not concrete_support_faces:
                         return None
-                    tangent_length = max(
-                        math.hypot(*sample["tangent"]), 1e-9
-                    )
+                    tangent_length = max(math.hypot(*sample["tangent"]), 1e-9)
                     tangent = (
                         sample["tangent"][0] / tangent_length,
                         sample["tangent"][1] / tangent_length,
                     )
                     inward = (
-                        (tangent[1], -tangent[0])
-                        if side == "Left"
-                        else (-tangent[1], tangent[0])
+                        (tangent[1], -tangent[0]) if side == "Left" else (-tangent[1], tangent[0])
                     )
                     half_width = max(float(member_width) / 2.0, 0.01)
                     if str(member_shape) == "Circular":
@@ -2203,9 +1988,7 @@ class StairProxy:
                             + inward[1] * normal_offset
                             + tangent[1] * tangent_offset,
                         )
-                        probe = FreeCAD.Vector(
-                            point[0], point[1], 0.0
-                        )
+                        probe = FreeCAD.Vector(point[0], point[1], 0.0)
                         for face, elevation in concrete_support_faces:
                             bounds = face.BoundBox
                             if (
@@ -2222,15 +2005,11 @@ class StairProxy:
                 for post_index, fraction in enumerate((0.0, 1.0)):
                     sample = geometry.sample_handrail_path(path, fraction)
                     attachment_sample = sample
-                    corner_point = corner_post_points.get(
-                        (side, flight_index, post_index)
-                    )
+                    corner_point = corner_post_points.get((side, flight_index, post_index))
                     if corner_point is not None:
                         sample = dict(sample)
                         sample["point"] = corner_point
-                    junction_sample = geometry.sample_handrail_path(
-                        junction_path or path, fraction
-                    )
+                    junction_sample = geometry.sample_handrail_path(junction_path or path, fraction)
                     position_key = (
                         round(junction_sample["point"][0], 6),
                         round(junction_sample["point"][1], 6),
@@ -2245,22 +2024,16 @@ class StairProxy:
                         post_width,
                         post_thickness,
                     )
-                    first_floor_post = (
-                        flight_index == 0 and post_index == 0
-                    )
+                    first_floor_post = flight_index == 0 and post_index == 0
                     if first_floor_post:
                         bottom = 0.0
                     elif str(stair.StairType) == "Wood" and span:
-                        bottom = span[0] - _quantity_value(
-                            stair.HandrailPostBelowStringer
-                        )
+                        bottom = span[0] - _quantity_value(stair.HandrailPostBelowStringer)
                     elif local_concrete_support is not None:
                         bottom = local_concrete_support
                     else:
                         bottom = sample["support"]
-                    top = sample["top"] + _quantity_value(
-                        stair.HandrailPostAboveTopRail
-                    )
+                    top = sample["top"] + _quantity_value(stair.HandrailPostAboveTopRail)
                     desired.append(
                         {
                             "role": "HandrailPost",
@@ -2291,9 +2064,7 @@ class StairProxy:
                     path["length"],
                     post_path_size,
                     picket_path_size,
-                    _quantity_value(
-                        stair.HandrailPicketMaximumSpacing
-                    ),
+                    _quantity_value(stair.HandrailPicketMaximumSpacing),
                 )
                 for picket_index, fraction in enumerate(fractions):
                     sample = geometry.sample_handrail_path(path, fraction)
@@ -2305,9 +2076,7 @@ class StairProxy:
                         picket_thickness,
                     )
                     if str(stair.StairType) == "Wood" and span:
-                        bottom = span[1] - _quantity_value(
-                            stair.HandrailPicketStringerPenetration
-                        )
+                        bottom = span[1] - _quantity_value(stair.HandrailPicketStringerPenetration)
                     elif str(stair.StairType) == "Wood":
                         bottom = sample["support"] - _quantity_value(
                             stair.HandrailPicketStringerPenetration
@@ -2319,9 +2088,7 @@ class StairProxy:
                     top = (
                         sample["top"]
                         - rail_depth
-                        + _quantity_value(
-                            stair.HandrailPicketTopRailPenetration
-                        )
+                        + _quantity_value(stair.HandrailPicketTopRailPenetration)
                     )
                     desired.append(
                         {
@@ -2449,9 +2216,7 @@ class FlightProxy:
             "Circular landing",
         ]
         obj.FlightType = flight_types
-        obj.FlightType = (
-            flight_type if flight_type in flight_types else "Straight"
-        )
+        obj.FlightType = flight_type if flight_type in flight_types else "Straight"
         for side in ("Left", "Right"):
             property_name = f"{side}StringerType"
             added = _add_property(
@@ -2461,9 +2226,7 @@ class FlightProxy:
                 "Stringers",
                 "The stringer type on this side of this flight",
             )
-            current_type = (
-                "None" if added else str(getattr(obj, property_name))
-            )
+            current_type = "None" if added else str(getattr(obj, property_name))
             if current_type == "Cut stringer":
                 current_type = "Notched stringer"
             stringer_types = [
@@ -2475,9 +2238,7 @@ class FlightProxy:
             setattr(
                 obj,
                 property_name,
-                current_type
-                if current_type in stringer_types
-                else "None",
+                current_type if current_type in stringer_types else "None",
             )
             _add_property(
                 obj,
@@ -2493,9 +2254,7 @@ class FlightProxy:
         _add_property(
             obj, "App::PropertyLength", "RightLength", "Flight", "Right-side length", 3500.0
         )
-        _add_property(
-            obj, "App::PropertyLength", "Width", "Flight", "Flight width", 1000.0
-        )
+        _add_property(obj, "App::PropertyLength", "Width", "Flight", "Flight width", 1000.0)
         _add_property(
             obj,
             "App::PropertyLength",
@@ -2615,11 +2374,7 @@ class FlightProxy:
             obj.setEditorMode(name, 0 if circular else 2)
 
     def onChanged(self, obj, prop):
-        if (
-            getattr(self, "_updating", False)
-            or FreeCAD.isRestoring()
-            or obj.Document.Transacting
-        ):
+        if getattr(self, "_updating", False) or FreeCAD.isRestoring() or obj.Document.Transacting:
             return
         geometry_properties = {
             "FlightType",
@@ -2695,12 +2450,17 @@ class FlightProxy:
                     "Rotation",
                 }:
                     sync_flight_side_lengths(stair, obj)
-                if prop in geometry_properties and prop in {
-                    "FlightType",
-                    "Width",
-                    "Angle",
-                    "Rotation",
-                } and obj in flights:
+                if (
+                    prop in geometry_properties
+                    and prop
+                    in {
+                        "FlightType",
+                        "Width",
+                        "Angle",
+                        "Rotation",
+                    }
+                    and obj in flights
+                ):
                     index = flights.index(obj)
                     if index:
                         sync_flight_side_lengths(stair, flights[index - 1])
@@ -2909,11 +2669,11 @@ def resize_flights(stair, count, length=None, width=None, rotations=None):
     count = max(int(count), 1)
     flights = get_flights(stair)
     template = flights[-1] if flights else None
-    default_length = length if length is not None else (
-        _flight_length(template) if template else 3500.0
+    default_length = (
+        length if length is not None else (_flight_length(template) if template else 3500.0)
     )
-    default_width = width if width is not None else (
-        _quantity_value(template.Width) if template else 1000.0
+    default_width = (
+        width if width is not None else (_quantity_value(template.Width) if template else 1000.0)
     )
     while len(flights) < count:
         index = len(flights)
@@ -3020,15 +2780,12 @@ def _stringer_parts_for_flights(
                 (
                     candidate
                     for candidate in unused
-                    if int(getattr(candidate, "FlightIndex", 0))
-                    == flight_index + 1
+                    if int(getattr(candidate, "FlightIndex", 0)) == flight_index + 1
                 ),
                 None,
             )
         if part is None and allow_structure_changes:
-            part = stair.Document.addObject(
-                "Part::Feature", f"{stair.Name}_{role}"
-            )
+            part = stair.Document.addObject("Part::Feature", f"{stair.Name}_{role}")
             _set_generated_properties(part, stair, role)
             group.addObject(part)
         if part is None:
@@ -3141,18 +2898,14 @@ def _set_stringer_part_properties(
         "Direction used for the position above nosings",
     )
     current_direction = (
-        defaults["NosingOffsetDirection"]
-        if added
-        else str(part.NosingOffsetDirection)
+        defaults["NosingOffsetDirection"] if added else str(part.NosingOffsetDirection)
     )
     directions = ["Perpendicular", "Vertical"]
     part.NosingOffsetDirection = directions
     if not part.OverrideNosingPosition:
         current_direction = defaults["NosingOffsetDirection"]
     part.NosingOffsetDirection = (
-        current_direction
-        if current_direction in directions
-        else "Perpendicular"
+        current_direction if current_direction in directions else "Perpendicular"
     )
     part.setEditorMode(
         "NosingOffsetDirection",
@@ -3172,9 +2925,7 @@ def _sync_handrail_parts(
         child
         for child in group.Group
         if getattr(child, "GeneratedBy", "") == stair.Name
-        and str(getattr(child, "StairDesignerRole", "")).startswith(
-            "Handrail"
-        )
+        and str(getattr(child, "StairDesignerRole", "")).startswith("Handrail")
     ]
     unused = list(existing)
     role_order = {
@@ -3187,20 +2938,15 @@ def _sync_handrail_parts(
             (
                 candidate
                 for candidate in unused
-                if str(getattr(candidate, "StairDesignerRole", ""))
-                == item["role"]
-                and getattr(candidate, "SourceFlight", None)
-                == item["flight"]
+                if str(getattr(candidate, "StairDesignerRole", "")) == item["role"]
+                and getattr(candidate, "SourceFlight", None) == item["flight"]
                 and str(getattr(candidate, "Side", "")) == item["side"]
-                and int(getattr(candidate, "ElementIndex", -1))
-                == item["element_index"]
+                and int(getattr(candidate, "ElementIndex", -1)) == item["element_index"]
             ),
             None,
         )
         if part is None and allow_structure_changes:
-            part = stair.Document.addObject(
-                "Part::Feature", f"{stair.Name}_{item['role']}"
-            )
+            part = stair.Document.addObject("Part::Feature", f"{stair.Name}_{item['role']}")
             _set_generated_properties(part, stair, item["role"])
             group.addObject(part)
         if part is None:
@@ -3251,15 +2997,11 @@ def _sync_handrail_parts(
         if FreeCAD.GuiUp:
             if str(stair.StairType) == "Concrete":
                 part.ViewObject.ShapeColor = (
-                    (0.68, 0.70, 0.72)
-                    if item["role"] == "HandrailTopRail"
-                    else (0.56, 0.58, 0.61)
+                    (0.68, 0.70, 0.72) if item["role"] == "HandrailTopRail" else (0.56, 0.58, 0.61)
                 )
             else:
                 part.ViewObject.ShapeColor = (
-                    (0.35, 0.20, 0.08)
-                    if item["role"] == "HandrailTopRail"
-                    else (0.42, 0.25, 0.10)
+                    (0.35, 0.20, 0.08) if item["role"] == "HandrailTopRail" else (0.42, 0.25, 0.10)
                 )
 
     if allow_structure_changes:

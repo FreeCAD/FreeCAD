@@ -9,7 +9,6 @@ import math
 import FreeCAD
 import Part
 
-
 BLONDEL_MINIMUM = 620.0
 BLONDEL_MAXIMUM = 640.0
 
@@ -170,18 +169,12 @@ def balanced_winder_sections(
         direction = (math.cos(radians), math.sin(radians))
         directions.append(direction)
         start = vertices[-1]
-        vertices.append(
-            (start[0] + direction[0] * length, start[1] + direction[1] * length)
-        )
+        vertices.append((start[0] + direction[0] * length, start[1] + direction[1] * length))
 
     coefficient = max(float(winding_coefficient), 0.0)
-    corner_controls = _winding_controls(
-        len(specs) - 1, coefficient, winding_parameters
-    )
+    corner_controls = _winding_controls(len(specs) - 1, coefficient, winding_parameters)
     corner_types = list(turn_types or [])
-    corner_types.extend(
-        ["Herse balancing"] * (len(specs) - 1 - len(corner_types))
-    )
+    corner_types.extend(["Herse balancing"] * (len(specs) - 1 - len(corner_types)))
     corner_types = [
         "Landing" if str(value) == "Landing" else "Herse balancing"
         for value in corner_types[: len(specs) - 1]
@@ -203,27 +196,17 @@ def balanced_winder_sections(
         )
 
     corner_trims = _herse_corner_trims(specs, corner_controls)
-    start_trim = _endpoint_balance_trim(
-        specs[0][0], specs[0][1], coefficient, entry_direction
-    )
-    end_trim = _endpoint_balance_trim(
-        specs[-1][0], specs[-1][1], coefficient, exit_direction
-    )
+    start_trim = _endpoint_balance_trim(specs[0][0], specs[0][1], coefficient, entry_direction)
+    end_trim = _endpoint_balance_trim(specs[-1][0], specs[-1][1], coefficient, exit_direction)
     if corner_trims:
         incoming, outgoing = corner_trims[0]
-        start_trim, incoming = _fit_transition_trims(
-            start_trim, incoming, specs[0][0]
-        )
+        start_trim, incoming = _fit_transition_trims(start_trim, incoming, specs[0][0])
         corner_trims[0] = incoming, outgoing
         incoming, outgoing = corner_trims[-1]
-        outgoing, end_trim = _fit_transition_trims(
-            outgoing, end_trim, specs[-1][0]
-        )
+        outgoing, end_trim = _fit_transition_trims(outgoing, end_trim, specs[-1][0])
         corner_trims[-1] = incoming, outgoing
     elif start_trim or end_trim:
-        start_trim, end_trim = _fit_transition_trims(
-            start_trim, end_trim, specs[0][0]
-        )
+        start_trim, end_trim = _fit_transition_trims(start_trim, end_trim, specs[0][0])
 
     dense = []
 
@@ -251,11 +234,7 @@ def balanced_winder_sections(
         append_point(vertices[0], specs[0][1], 0)
     for index, (_length, width, _heading) in enumerate(specs):
         direction = directions[index]
-        flight_end_trim = (
-            corner_trims[index][0]
-            if index < len(corner_trims)
-            else end_trim
-        )
+        flight_end_trim = corner_trims[index][0] if index < len(corner_trims) else end_trim
         straight_end = (
             vertices[index + 1][0] - direction[0] * flight_end_trim,
             vertices[index + 1][1] - direction[1] * flight_end_trim,
@@ -301,9 +280,7 @@ def balanced_winder_sections(
 
     cumulative = [0.0]
     for first, second in zip(dense, dense[1:]):
-        cumulative.append(
-            cumulative[-1] + math.hypot(second[0] - first[0], second[1] - first[1])
-        )
+        cumulative.append(cumulative[-1] + math.hypot(second[0] - first[0], second[1] - first[1]))
     total_length = cumulative[-1]
     going = total_length / tread_count
     sections = []
@@ -353,9 +330,7 @@ def balanced_winder_sections(
                 ),
             )
         )
-    sections = _fit_sections_to_flight_footprint(
-        sections, specs, vertices, directions
-    )
+    sections = _fit_sections_to_flight_footprint(sections, specs, vertices, directions)
     sections = _apply_endpoint_boundary_sections(
         sections,
         vertices,
@@ -378,9 +353,7 @@ def _winding_controls(count, coefficient, winding_parameters=None):
     parameters = list(winding_parameters)
     controls = []
     for index in range(count):
-        local, distant = (
-            parameters[index] if index < len(parameters) else (50.0, 50.0)
-        )
+        local, distant = parameters[index] if index < len(parameters) else (50.0, 50.0)
         local = min(max(float(local), 0.0), 100.0)
         distant = min(max(float(distant), 0.0), 100.0)
         controls.append((local, 1.5 - distant / 100.0))
@@ -391,9 +364,7 @@ def _herse_curve_point(start, corner, end, ratio, local):
     """Return a cubic Herse point with adjustable near-corner tightening."""
 
     ratio = min(max(float(ratio), 0.0), 1.0)
-    influence = 1.0 / 3.0 + 2.0 / 3.0 * min(
-        max(float(local), 0.0), 100.0
-    ) / 100.0
+    influence = 1.0 / 3.0 + 2.0 / 3.0 * min(max(float(local), 0.0), 100.0) / 100.0
     first_control = (
         start[0] + (corner[0] - start[0]) * influence,
         start[1] + (corner[1] - start[1]) * influence,
@@ -483,20 +454,14 @@ def _append_endpoint_transition(
         return
     normal = (-direction[1], direction[0])
     side_offset = side * width / 2.0
-    boundary_offset = side * width / 2.0 * _safe_angle_tangent(
-        boundary_angle
-    )
+    boundary_offset = side * width / 2.0 * _safe_angle_tangent(boundary_angle)
     if is_start:
         join = trim
         chord_length = max(join - boundary_offset, 0.01)
         endpoint_station = boundary_offset + chord_length / 2.0
         endpoint = (
-            vertex[0]
-            + direction[0] * endpoint_station
-            + normal[0] * side_offset,
-            vertex[1]
-            + direction[1] * endpoint_station
-            + normal[1] * side_offset,
+            vertex[0] + direction[0] * endpoint_station + normal[0] * side_offset,
+            vertex[1] + direction[1] * endpoint_station + normal[1] * side_offset,
         )
         control = (
             vertex[0] + direction[0] * endpoint_station,
@@ -513,12 +478,8 @@ def _append_endpoint_transition(
         chord_length = max(trim + boundary_offset, 0.01)
         endpoint_station = boundary_offset - chord_length / 2.0
         endpoint = (
-            vertex[0]
-            + direction[0] * endpoint_station
-            + normal[0] * side_offset,
-            vertex[1]
-            + direction[1] * endpoint_station
-            + normal[1] * side_offset,
+            vertex[0] + direction[0] * endpoint_station + normal[0] * side_offset,
+            vertex[1] + direction[1] * endpoint_station + normal[1] * side_offset,
         )
         control = (
             vertex[0] + direction[0] * endpoint_station,
@@ -615,9 +576,7 @@ def _apply_endpoint_boundary_sections(
         normal = (-direction[1], direction[0])
         boundary_offset = side * width / 2.0 * _safe_angle_tangent(angle)
         length = specs[0][0] if start else specs[-1][0]
-        trim = _endpoint_balance_trim(
-            length, width, coefficient, requested
-        )
+        trim = _endpoint_balance_trim(length, width, coefficient, requested)
         if start:
             first_station = boundary_offset
             second_station = trim
@@ -627,26 +586,17 @@ def _apply_endpoint_boundary_sections(
             second_station = boundary_offset
             tangent = (side * normal[0], side * normal[1])
         first = (
-            vertex[0]
-            + direction[0] * first_station
-            + normal[0] * side * width / 2.0,
-            vertex[1]
-            + direction[1] * first_station
-            + normal[1] * side * width / 2.0,
+            vertex[0] + direction[0] * first_station + normal[0] * side * width / 2.0,
+            vertex[1] + direction[1] * first_station + normal[1] * side * width / 2.0,
         )
         second = (
-            vertex[0]
-            + direction[0] * second_station
-            + normal[0] * side * width / 2.0,
-            vertex[1]
-            + direction[1] * second_station
-            + normal[1] * side * width / 2.0,
+            vertex[0] + direction[0] * second_station + normal[0] * side * width / 2.0,
+            vertex[1] + direction[1] * second_station + normal[1] * side * width / 2.0,
         )
         section_normal = (-tangent[1], tangent[0])
-        projection = (
-            (first[0] - second[0]) * section_normal[0]
-            + (first[1] - second[1]) * section_normal[1]
-        )
+        projection = (first[0] - second[0]) * section_normal[0] + (
+            first[1] - second[1]
+        ) * section_normal[1]
         left, right = (first, second) if projection >= 0.0 else (second, first)
         return BalancedSection(
             center=((first[0] + second[0]) / 2.0, (first[1] + second[1]) / 2.0),
@@ -787,36 +737,24 @@ def _landing_winder_sections(
 ):
     """Return sections with each landing kept as one unsampled corner interval."""
 
-    corner_controls = _winding_controls(
-        len(specs) - 1, coefficient, winding_parameters
-    )
+    corner_controls = _winding_controls(len(specs) - 1, coefficient, winding_parameters)
     corner_trims = _herse_corner_trims(specs, corner_controls)
 
     chunks = [[]]
 
     def append_point(chunk, point, width, flight_index):
-        if chunk and math.hypot(
-            point[0] - chunk[-1][0], point[1] - chunk[-1][1]
-        ) < 1e-9:
+        if chunk and math.hypot(point[0] - chunk[-1][0], point[1] - chunk[-1][1]) < 1e-9:
             chunk[-1] = (point[0], point[1], width, flight_index)
         else:
             chunk.append((point[0], point[1], width, flight_index))
 
-    start_trim = _endpoint_balance_trim(
-        specs[0][0], specs[0][1], coefficient, entry_direction
-    )
-    end_trim = _endpoint_balance_trim(
-        specs[-1][0], specs[-1][1], coefficient, exit_direction
-    )
+    start_trim = _endpoint_balance_trim(specs[0][0], specs[0][1], coefficient, entry_direction)
+    end_trim = _endpoint_balance_trim(specs[-1][0], specs[-1][1], coefficient, exit_direction)
     if len(specs) == 1:
-        start_trim, end_trim = _fit_transition_trims(
-            start_trim, end_trim, specs[0][0]
-        )
+        start_trim, end_trim = _fit_transition_trims(start_trim, end_trim, specs[0][0])
     if start_trim:
         _append_endpoint_transition(
-            lambda point, width, owner: append_point(
-                chunks[-1], point, width, owner
-            ),
+            lambda point, width, owner: append_point(chunks[-1], point, width, owner),
             vertices[0],
             directions[0],
             specs[0][1],
@@ -855,10 +793,7 @@ def _landing_winder_sections(
 
         corner = vertices[index + 1]
         outgoing_direction = directions[index + 1]
-        turn_sine = abs(
-            direction[0] * outgoing_direction[1]
-            - direction[1] * outgoing_direction[0]
-        )
+        turn_sine = abs(direction[0] * outgoing_direction[1] - direction[1] * outgoing_direction[0])
         is_landing = corner_types[index] == "Landing" and turn_sine > 1e-7
         if is_landing:
             incoming_trim = specs[index + 1][1] / (2.0 * turn_sine)
@@ -873,9 +808,7 @@ def _landing_winder_sections(
             )
             append_point(chunks[-1], entry, width, index)
             chunks.append([])
-            append_point(
-                chunks[-1], exit_point, specs[index + 1][1], index + 1
-            )
+            append_point(chunks[-1], exit_point, specs[index + 1][1], index + 1)
             landing_count += 1
             continue
 
@@ -904,9 +837,7 @@ def _landing_winder_sections(
             append_point(chunks[-1], point, curve_width, owner)
 
     chunk_lengths = [_dense_path_length(chunk) for chunk in chunks]
-    free_tread_count = tread_count - (
-        landing_count if landing_replaces_tread else 0
-    )
+    free_tread_count = tread_count - (landing_count if landing_replaces_tread else 0)
     distributed_tread_count = free_tread_count
     if not landing_replaces_tread:
         distributed_tread_count -= landing_count
@@ -916,10 +847,7 @@ def _landing_winder_sections(
             specs,
             tread_count,
             coefficient,
-            [
-                "Herse balancing" if value == "Landing" else value
-                for value in corner_types
-            ],
+            ["Herse balancing" if value == "Landing" else value for value in corner_types],
             start_angle,
             end_angle,
             entry_direction,
@@ -928,9 +856,7 @@ def _landing_winder_sections(
             winding_parameters,
         )
 
-    chunk_tread_counts = distribute_treads(
-        chunk_lengths, distributed_tread_count
-    )
+    chunk_tread_counts = distribute_treads(chunk_lengths, distributed_tread_count)
     if not landing_replaces_tread:
         for index in range(min(landing_count, len(chunk_tread_counts) - 1)):
             chunk_tread_counts[index] += 1
@@ -985,9 +911,7 @@ def _landing_winder_sections(
                 riser_index=(riser_index if not landing_replaces_tread else 0),
             )
         )
-    sections = _fit_sections_to_flight_footprint(
-        sections, specs, vertices, directions
-    )
+    sections = _fit_sections_to_flight_footprint(sections, specs, vertices, directions)
     sections = _apply_endpoint_boundary_sections(
         sections,
         vertices,
@@ -1010,9 +934,7 @@ def _dense_path_length(points):
 
 
 def _tangent_matches_direction(tangent, direction):
-    return abs(
-        tangent[0] * direction[1] - tangent[1] * direction[0]
-    ) < 1e-9
+    return abs(tangent[0] * direction[1] - tangent[1] * direction[0]) < 1e-9
 
 
 def _sample_dense_path(points, interval_count):
@@ -1020,18 +942,11 @@ def _sample_dense_path(points, interval_count):
 
     cumulative = [0.0]
     for first, second in zip(points, points[1:]):
-        cumulative.append(
-            cumulative[-1]
-            + math.hypot(second[0] - first[0], second[1] - first[1])
-        )
+        cumulative.append(cumulative[-1] + math.hypot(second[0] - first[0], second[1] - first[1]))
     total_length = cumulative[-1]
     result = []
     for index in range(interval_count + 1):
-        station = (
-            total_length
-            if index == interval_count
-            else index * total_length / interval_count
-        )
+        station = total_length if index == interval_count else index * total_length / interval_count
         segment = max(
             0,
             min(
@@ -1042,14 +957,8 @@ def _sample_dense_path(points, interval_count):
         first = points[segment]
         second = points[segment + 1]
         segment_length = cumulative[segment + 1] - cumulative[segment]
-        ratio = (
-            (station - cumulative[segment]) / segment_length
-            if segment_length
-            else 0.0
-        )
-        tangent_length = math.hypot(
-            second[0] - first[0], second[1] - first[1]
-        )
+        ratio = (station - cumulative[segment]) / segment_length if segment_length else 0.0
+        tangent_length = math.hypot(second[0] - first[0], second[1] - first[1])
         result.append(
             {
                 "center": (
@@ -1086,14 +995,10 @@ def tangent_flight_sections(
         return [], 0.0
     specs, primitives = _tangent_path_primitives(flight_specs)
     corner_types = list(turn_types or [])
-    corner_types.extend(
-        ["Herse balancing"] * (len(specs) - 1 - len(corner_types))
-    )
+    corner_types.extend(["Herse balancing"] * (len(specs) - 1 - len(corner_types)))
     corner_types = corner_types[: len(specs) - 1]
     modes = _tangent_junction_modes(primitives, corner_types)
-    corner_controls = _winding_controls(
-        len(modes), winding_coefficient, winding_parameters
-    )
+    corner_controls = _winding_controls(len(modes), winding_coefficient, winding_parameters)
     start_trims = [0.0] * len(primitives)
     end_trims = [0.0] * len(primitives)
     for index, mode in enumerate(modes):
@@ -1148,9 +1053,7 @@ def tangent_flight_sections(
     landing_count = 0
     if start_trims[0] and primitives[0]["type"] == "Straight":
         _append_endpoint_transition(
-            lambda point, width, owner: _append_dense_point(
-                chunks[-1], point, width, owner
-            ),
+            lambda point, width, owner: _append_dense_point(chunks[-1], point, width, owner),
             primitives[0]["start"],
             primitives[0]["tangent"],
             primitives[0]["width"],
@@ -1180,13 +1083,9 @@ def tangent_flight_sections(
         elif mode == "Herse balancing":
             incoming = primitive
             outgoing = primitives[index + 1]
-            curve_start = _primitive_point(
-                incoming, incoming["length"] - end_trims[index]
-            )
+            curve_start = _primitive_point(incoming, incoming["length"] - end_trims[index])
             corner = incoming["end"]
-            curve_end = _primitive_point(
-                outgoing, start_trims[index + 1]
-            )
+            curve_end = _primitive_point(outgoing, start_trims[index + 1])
             for sample in range(1, 65):
                 ratio = sample / 64.0
                 point = _herse_curve_point(
@@ -1196,17 +1095,13 @@ def tangent_flight_sections(
                     ratio,
                     corner_controls[index][0],
                 )
-                width = incoming["width"] + (
-                    outgoing["width"] - incoming["width"]
-                ) * ratio
+                width = incoming["width"] + (outgoing["width"] - incoming["width"]) * ratio
                 owner = index if ratio < 0.5 else index + 1
                 _append_dense_point(chunks[-1], point, width, owner)
 
     if end_trims[-1] and primitives[-1]["type"] == "Straight":
         _append_endpoint_transition(
-            lambda point, width, owner: _append_dense_point(
-                chunks[-1], point, width, owner
-            ),
+            lambda point, width, owner: _append_dense_point(chunks[-1], point, width, owner),
             primitives[-1]["end"],
             primitives[-1]["end_tangent"],
             primitives[-1]["width"],
@@ -1218,31 +1113,21 @@ def tangent_flight_sections(
         )
 
     chunk_lengths = [_dense_path_length(chunk) for chunk in chunks]
-    chunk_is_landing = [
-        bool(chunk) and primitives[chunk[0][3]]["is_landing"]
-        for chunk in chunks
-    ]
+    chunk_is_landing = [bool(chunk) and primitives[chunk[0][3]]["is_landing"] for chunk in chunks]
     explicit_landing_count = sum(chunk_is_landing)
     free_tread_count = (
-        tread_count
-        - landing_count
-        - (explicit_landing_count if landing_replaces_tread else 0)
+        tread_count - landing_count - (explicit_landing_count if landing_replaces_tread else 0)
     )
     stair_chunk_indices = [
-        index
-        for index, is_landing in enumerate(chunk_is_landing)
-        if not is_landing
+        index for index, is_landing in enumerate(chunk_is_landing) if not is_landing
     ]
-    required_free_treads = sum(
-        chunk_lengths[index] > 1e-7 for index in stair_chunk_indices
-    )
+    required_free_treads = sum(chunk_lengths[index] > 1e-7 for index in stair_chunk_indices)
     distributed_tread_count = free_tread_count
     if not landing_replaces_tread:
         distributed_tread_count -= explicit_landing_count
     if distributed_tread_count < required_free_treads:
         without_landings = [
-            "Herse balancing" if mode == "Landing" else mode
-            for mode in corner_types
+            "Herse balancing" if mode == "Landing" else mode for mode in corner_types
         ]
         if without_landings == corner_types:
             return [], 0.0
@@ -1265,8 +1150,7 @@ def tangent_flight_sections(
     )
     if not landing_replaces_tread:
         stair_count_positions = {
-            chunk_index: position
-            for position, chunk_index in enumerate(stair_chunk_indices)
+            chunk_index: position for position, chunk_index in enumerate(stair_chunk_indices)
         }
         for landing_index, is_landing in enumerate(chunk_is_landing):
             if not is_landing:
@@ -1289,9 +1173,7 @@ def tangent_flight_sections(
                     None,
                 )
             if receiving_index is not None:
-                stair_chunk_counts[
-                    stair_count_positions[receiving_index]
-                ] += 1
+                stair_chunk_counts[stair_count_positions[receiving_index]] += 1
     chunk_tread_counts = [1 if is_landing else 0 for is_landing in chunk_is_landing]
     for index, count in zip(stair_chunk_indices, stair_chunk_counts):
         chunk_tread_counts[index] = count
@@ -1300,9 +1182,7 @@ def tangent_flight_sections(
         chunk_sections = _sample_dense_path(chunk, count)
         if chunk_is_landing[index]:
             if sampled:
-                sampled[-1]["flight_index"] = chunk_sections[0][
-                    "flight_index"
-                ]
+                sampled[-1]["flight_index"] = chunk_sections[0]["flight_index"]
                 sampled[-1]["landing_to_next"] = True
                 sampled[-1]["level_to_next"] = True
                 sampled.extend(chunk_sections[1:])
@@ -1321,18 +1201,12 @@ def tangent_flight_sections(
         else:
             sampled.extend(chunk_sections)
 
-    free_length = sum(
-        chunk_lengths[index] for index in stair_chunk_indices
-    )
+    free_length = sum(chunk_lengths[index] for index in stair_chunk_indices)
     going = free_length / max(free_tread_count, 1)
     riser_index = 0
     for index, sample in enumerate(sampled):
-        if (
-            index < len(sampled) - 1
-            and not (
-                not landing_replaces_tread
-                and sample.get("level_to_next", False)
-            )
+        if index < len(sampled) - 1 and not (
+            not landing_replaces_tread and sample.get("level_to_next", False)
         ):
             riser_index += 1
         sample["riser_index"] = riser_index
@@ -1352,10 +1226,8 @@ def tangent_flight_sections(
                 radial[1] / radial_length,
             )
             center = (
-                primitive["circle_center"][0]
-                + unit_radial[0] * primitive["radius"],
-                primitive["circle_center"][1]
-                + unit_radial[1] * primitive["radius"],
+                primitive["circle_center"][0] + unit_radial[0] * primitive["radius"],
+                primitive["circle_center"][1] + unit_radial[1] * primitive["radius"],
             )
             tangent = (
                 -primitive["sign"] * unit_radial[1],
@@ -1384,16 +1256,9 @@ def tangent_flight_sections(
                 riser_index=sample["riser_index"],
             )
         )
-    endpoint_specs = [
-        (primitive["length"], primitive["width"], 0.0)
-        for primitive in primitives
-    ]
-    endpoint_vertices = [
-        primitive["start"] for primitive in primitives
-    ] + [primitives[-1]["end"]]
-    endpoint_directions = [
-        primitive["tangent"] for primitive in primitives
-    ]
+    endpoint_specs = [(primitive["length"], primitive["width"], 0.0) for primitive in primitives]
+    endpoint_vertices = [primitive["start"] for primitive in primitives] + [primitives[-1]["end"]]
+    endpoint_directions = [primitive["tangent"] for primitive in primitives]
     sections = _apply_endpoint_boundary_sections(
         sections,
         endpoint_vertices,
@@ -1412,20 +1277,14 @@ def _tangent_path_primitives(flight_specs):
     specs = []
     for flight_spec in flight_specs:
         flight_type, dimension, width, angle, rotation = flight_spec[:5]
-        entry_direction = (
-            str(flight_spec[5]) if len(flight_spec) > 5 else "Straight"
-        )
-        exit_direction = (
-            str(flight_spec[6]) if len(flight_spec) > 6 else "Straight"
-        )
+        entry_direction = str(flight_spec[5]) if len(flight_spec) > 5 else "Straight"
+        exit_direction = str(flight_spec[6]) if len(flight_spec) > 6 else "Straight"
         requested_type = str(flight_type)
         is_landing = requested_type in {
             "Straight landing",
             "Circular landing",
         }
-        flight_type = (
-            "Circular" if requested_type.startswith("Circular") else "Straight"
-        )
+        flight_type = "Circular" if requested_type.startswith("Circular") else "Straight"
         width = max(float(width), 0.01)
         sweep = min(max(abs(math.radians(float(angle))), 1e-6), 2.0 * math.pi - 1e-6)
         if flight_type == "Circular":
@@ -1459,11 +1318,7 @@ def _tangent_path_primitives(flight_specs):
         if index:
             previous = specs[index - 1]
             landing_entry = _endpoint_side(spec["entry_direction"])
-            if (
-                spec["is_landing"]
-                and spec["type"] == "Straight"
-                and landing_entry
-            ):
+            if spec["is_landing"] and spec["type"] == "Straight" and landing_entry:
                 heading += landing_entry * math.radians(abs(spec["angle"]))
             elif (
                 not spec["is_landing"]
@@ -1498,9 +1353,7 @@ def _tangent_path_primitives(flight_specs):
             half_width = spec["width"] / 2.0
             entry_side = _endpoint_side(spec["entry_direction"])
             exit_side = _endpoint_side(spec["exit_direction"])
-            side_port_offset = min(
-                half_width, max((spec["length"] - 0.01) / 2.0, 0.0)
-            )
+            side_port_offset = min(half_width, max((spec["length"] - 0.01) / 2.0, 0.0))
             entry_port = center
             face_start = (
                 entry_port[0]
@@ -1563,21 +1416,15 @@ def _primitive_point(primitive, distance):
     cosine = math.cos(angle)
     sine = math.sin(angle)
     return (
-        primitive["circle_center"][0]
-        + relative[0] * cosine
-        - relative[1] * sine,
-        primitive["circle_center"][1]
-        + relative[0] * sine
-        + relative[1] * cosine,
+        primitive["circle_center"][0] + relative[0] * cosine - relative[1] * sine,
+        primitive["circle_center"][1] + relative[0] * sine + relative[1] * cosine,
     )
 
 
 def _primitive_tangent(primitive, distance):
     if primitive["type"] == "Straight":
         return primitive["tangent"]
-    heading = primitive["heading"] + (
-        primitive["sign"] * distance / primitive["radius"]
-    )
+    heading = primitive["heading"] + (primitive["sign"] * distance / primitive["radius"])
     return math.cos(heading), math.sin(heading)
 
 
@@ -1602,9 +1449,7 @@ def _append_primitive_range(chunk, primitive, start, end):
 
 
 def _append_dense_point(chunk, point, width, flight_index):
-    if chunk and math.hypot(
-        point[0] - chunk[-1][0], point[1] - chunk[-1][1]
-    ) < 1e-9:
+    if chunk and math.hypot(point[0] - chunk[-1][0], point[1] - chunk[-1][1]) < 1e-9:
         chunk[-1] = (point[0], point[1], width, flight_index)
     else:
         chunk.append((point[0], point[1], width, flight_index))
@@ -1626,17 +1471,14 @@ def _tangent_junction_modes(primitives, corner_types):
         tangent = (
             incoming["is_landing"]
             or outgoing["is_landing"]
-            or
-            incoming["type"] == "Circular"
+            or incoming["type"] == "Circular"
             or outgoing["type"] == "Circular"
             or abs(_cross(incoming["end_tangent"], outgoing["tangent"])) < 1e-7
         )
         if tangent:
             modes.append("Tangent")
         else:
-            modes.append(
-                "Landing" if str(requested) == "Landing" else "Herse balancing"
-            )
+            modes.append("Landing" if str(requested) == "Landing" else "Herse balancing")
     return modes
 
 
@@ -1652,12 +1494,8 @@ def make_tangent_stair_footprint(
         return Part.Shape()
     specs, primitives = _tangent_path_primitives(flight_specs)
     corner_types = list(turn_types or [])
-    corner_types.extend(
-        ["Herse balancing"] * (len(specs) - 1 - len(corner_types))
-    )
-    modes = _tangent_junction_modes(
-        primitives, corner_types[: len(specs) - 1]
-    )
+    corner_types.extend(["Herse balancing"] * (len(specs) - 1 - len(corner_types)))
+    modes = _tangent_junction_modes(primitives, corner_types[: len(specs) - 1])
     start_extensions = [0.0] * len(primitives)
     end_extensions = [0.0] * len(primitives)
     for index, mode in enumerate(modes):
@@ -1676,9 +1514,7 @@ def make_tangent_stair_footprint(
         else:
             direction = primitive["tangent"]
             normal = (-direction[1], direction[0])
-            primitive_start = primitive.get(
-                "face_start", primitive["start"]
-            )
+            primitive_start = primitive.get("face_start", primitive["start"])
             primitive_end = primitive.get("face_end", primitive["end"])
             start = (
                 primitive_start[0] - direction[0] * start_extensions[index],
@@ -1699,36 +1535,20 @@ def make_tangent_stair_footprint(
                 _horizontal_face(
                     (
                         (
-                            start[0]
-                            + normal[0] * half_width
-                            + direction[0] * start_offset,
-                            start[1]
-                            + normal[1] * half_width
-                            + direction[1] * start_offset,
+                            start[0] + normal[0] * half_width + direction[0] * start_offset,
+                            start[1] + normal[1] * half_width + direction[1] * start_offset,
                         ),
                         (
-                            end[0]
-                            + normal[0] * half_width
-                            + direction[0] * end_offset,
-                            end[1]
-                            + normal[1] * half_width
-                            + direction[1] * end_offset,
+                            end[0] + normal[0] * half_width + direction[0] * end_offset,
+                            end[1] + normal[1] * half_width + direction[1] * end_offset,
                         ),
                         (
-                            end[0]
-                            - normal[0] * half_width
-                            - direction[0] * end_offset,
-                            end[1]
-                            - normal[1] * half_width
-                            - direction[1] * end_offset,
+                            end[0] - normal[0] * half_width - direction[0] * end_offset,
+                            end[1] - normal[1] * half_width - direction[1] * end_offset,
                         ),
                         (
-                            start[0]
-                            - normal[0] * half_width
-                            - direction[0] * start_offset,
-                            start[1]
-                            - normal[1] * half_width
-                            - direction[1] * start_offset,
+                            start[0] - normal[0] * half_width - direction[0] * start_offset,
+                            start[1] - normal[1] * half_width - direction[1] * start_offset,
                         ),
                     ),
                     0.0,
@@ -1746,9 +1566,11 @@ def tangent_tread_faces(sections, flight_specs):
 
     _specs, primitives = _tangent_path_primitives(flight_specs)
     primitive_faces = [
-        _circular_primitive_face(primitive)
-        if primitive["type"] == "Circular"
-        else _straight_primitive_face(primitive)
+        (
+            _circular_primitive_face(primitive)
+            if primitive["type"] == "Circular"
+            else _straight_primitive_face(primitive)
+        )
         for primitive in primitives
     ]
     result = []
@@ -1758,17 +1580,14 @@ def tangent_tread_faces(sections, flight_specs):
             continue
         primitive_index = (
             rear.flight_index
-            if rear.flight_index != front.flight_index
-            and not rear.level_to_next
+            if rear.flight_index != front.flight_index and not rear.level_to_next
             else front.flight_index
         )
         primitive_face = primitive_faces[primitive_index]
         faces = _balanced_step_faces(front, rear, primitive_face)
         if not faces:
             return []
-        result.append(
-            faces[0] if len(faces) == 1 else _fuse_plan_faces(faces)
-        )
+        result.append(faces[0] if len(faces) == 1 else _fuse_plan_faces(faces))
     return result
 
 
@@ -1820,13 +1639,9 @@ def _circular_primitive_face(primitive):
     right_middle = side_point(half, -1.0)
     right_end = side_point(primitive["length"], -1.0)
     edges = (
-        Part.Arc(
-            vector(left_start), vector(left_middle), vector(left_end)
-        ).toShape(),
+        Part.Arc(vector(left_start), vector(left_middle), vector(left_end)).toShape(),
         Part.makeLine(vector(left_end), vector(right_end)),
-        Part.Arc(
-            vector(right_end), vector(right_middle), vector(right_start)
-        ).toShape(),
+        Part.Arc(vector(right_end), vector(right_middle), vector(right_start)).toShape(),
         Part.makeLine(vector(right_start), vector(left_start)),
     )
     return Part.Face(Part.Wire(edges))
@@ -1860,9 +1675,7 @@ def fit_tangent_sections_to_footprint(sections, footprint):
     extent = max(footprint.BoundBox.DiagonalLength * 2.0, 1000.0)
     fitted = []
     for section_index, section in enumerate(sections):
-        center_vertex = Part.Vertex(
-            FreeCAD.Vector(section.center[0], section.center[1], 0.0)
-        )
+        center_vertex = Part.Vertex(FreeCAD.Vector(section.center[0], section.center[1], 0.0))
         if (
             section_index in {0, len(sections) - 1}
             and footprint.OuterWire.distToShape(center_vertex)[0] < 1e-7
@@ -1895,14 +1708,10 @@ def fit_tangent_sections_to_footprint(sections, footprint):
             if parameters:
                 intervals.append((min(parameters), max(parameters)))
         containing = [
-            interval
-            for interval in intervals
-            if interval[0] - 1e-7 <= 0.0 <= interval[1] + 1e-7
+            interval for interval in intervals if interval[0] - 1e-7 <= 0.0 <= interval[1] + 1e-7
         ]
         if containing:
-            lower, upper = max(
-                containing, key=lambda interval: interval[1] - interval[0]
-            )
+            lower, upper = max(containing, key=lambda interval: interval[1] - interval[0])
             left = (
                 section.center[0] + normal[0] * upper,
                 section.center[1] + normal[1] * upper,
@@ -1935,14 +1744,10 @@ def fit_tangent_sections_to_footprint(sections, footprint):
 def _fit_sections_to_flight_footprint(sections, specs, vertices, directions):
     """Extend each nosing to the fixed union of the rectangular flights."""
 
-    start_extensions, end_extensions = _flight_corner_extensions(
-        specs, directions
-    )
+    start_extensions, end_extensions = _flight_corner_extensions(specs, directions)
     fitted = []
     for index, section in enumerate(sections):
-        if section.landing_to_next or (
-            index and sections[index - 1].landing_to_next
-        ):
+        if section.landing_to_next or (index and sections[index - 1].landing_to_next):
             fitted.append(section)
             continue
         normal = (-section.tangent[1], section.tangent[0])
@@ -2040,9 +1845,7 @@ def _flight_corner_extensions(specs, directions=None):
     for index in range(len(specs) - 1):
         incoming = directions[index]
         outgoing = directions[index + 1]
-        turn_sine = abs(
-            incoming[0] * outgoing[1] - incoming[1] * outgoing[0]
-        )
+        turn_sine = abs(incoming[0] * outgoing[1] - incoming[1] * outgoing[0])
         if turn_sine < 1e-7:
             continue
         ends[index] = specs[index + 1][1] / (2.0 * turn_sine)
@@ -2082,18 +1885,10 @@ def make_stair_footprint(flight_specs, start_angle=0.0, end_angle=0.0):
         half_width = width / 2.0
         start = vertices[index]
         end = vertices[index + 1]
-        left_starts.append(
-            (start[0] + normal[0] * half_width, start[1] + normal[1] * half_width)
-        )
-        right_starts.append(
-            (start[0] - normal[0] * half_width, start[1] - normal[1] * half_width)
-        )
-        left_ends.append(
-            (end[0] + normal[0] * half_width, end[1] + normal[1] * half_width)
-        )
-        right_ends.append(
-            (end[0] - normal[0] * half_width, end[1] - normal[1] * half_width)
-        )
+        left_starts.append((start[0] + normal[0] * half_width, start[1] + normal[1] * half_width))
+        right_starts.append((start[0] - normal[0] * half_width, start[1] - normal[1] * half_width))
+        left_ends.append((end[0] + normal[0] * half_width, end[1] + normal[1] * half_width))
+        right_ends.append((end[0] - normal[0] * half_width, end[1] - normal[1] * half_width))
 
     for index in range(len(specs) - 1):
         incoming = directions[index]
@@ -2161,17 +1956,12 @@ def make_stair_footprint(flight_specs, start_angle=0.0, end_angle=0.0):
     # Coplanar fusion sometimes leaves a shell with internal seams (notably
     # on a U footprint).  Fusing a thin extrusion is more reliable in OCCT;
     # its lower face is the same two-dimensional outline with one clean wire.
-    solids = [
-        face.extrude(FreeCAD.Vector(0.0, 0.0, 1.0))
-        for face in planar_result.Faces
-    ]
+    solids = [face.extrude(FreeCAD.Vector(0.0, 0.0, 1.0)) for face in planar_result.Faces]
     result = solids[0]
     for solid in solids[1:]:
         result = result.fuse(solid)
     result = result.removeSplitter()
-    horizontal_faces = [
-        face for face in result.Faces if face.BoundBox.ZLength < 1e-7
-    ]
+    horizontal_faces = [face for face in result.Faces if face.BoundBox.ZLength < 1e-7]
     if horizontal_faces:
         return min(horizontal_faces, key=lambda face: face.BoundBox.ZMin)
     return planar_result
@@ -2190,6 +1980,7 @@ def _line_intersection(first_point, first_direction, second_point, second_direct
         first_point[0] + first_direction[0] * parameter,
         first_point[1] + first_direction[1] * parameter,
     )
+
 
 def fit_balanced_sections_to_footprint(sections, footprint):
     """Make tread endpoints advance monotonically along both stair rails."""
@@ -2216,11 +2007,12 @@ def fit_balanced_sections_to_footprint(sections, footprint):
     for index, (section, left_parameter, right_parameter) in enumerate(
         zip(sections, left_parameters, right_parameters)
     ):
-        center_on_boundary = footprint.OuterWire.distToShape(
-            Part.Vertex(
-                FreeCAD.Vector(section.center[0], section.center[1], 0.0)
-            )
-        )[0] < 1e-7
+        center_on_boundary = (
+            footprint.OuterWire.distToShape(
+                Part.Vertex(FreeCAD.Vector(section.center[0], section.center[1], 0.0))
+            )[0]
+            < 1e-7
+        )
         if (
             section.locked_to_flight
             or center_on_boundary
@@ -2236,11 +2028,7 @@ def fit_balanced_sections_to_footprint(sections, footprint):
         chord_length = math.hypot(chord[0], chord[1])
         if chord_length > 1e-9:
             tangent = (chord[1] / chord_length, -chord[0] / chord_length)
-            if (
-                tangent[0] * section.tangent[0]
-                + tangent[1] * section.tangent[1]
-                < 0.0
-            ):
+            if tangent[0] * section.tangent[0] + tangent[1] * section.tangent[1] < 0.0:
                 tangent = (-tangent[0], -tangent[1])
         else:
             tangent = section.tangent
@@ -2291,13 +2079,9 @@ def _clip_chord_to_boundary(left, right, boundary):
                     )
                 )
             continue
-        edge_ratio = (
-            relative[0] * direction[1] - relative[1] * direction[0]
-        ) / denominator
+        edge_ratio = (relative[0] * direction[1] - relative[1] * direction[0]) / denominator
         if -1e-9 <= edge_ratio <= 1.0 + 1e-9:
-            parameters.append(
-                (relative[0] * edge[1] - relative[1] * edge[0]) / denominator
-            )
+            parameters.append((relative[0] * edge[1] - relative[1] * edge[0]) / denominator)
     parameters.sort()
     unique = []
     for parameter in parameters:
@@ -2317,9 +2101,11 @@ def _clip_chord_to_boundary(left, right, boundary):
     lower, upper = min(
         intervals,
         key=lambda interval: (
-            0.0
-            if interval[0] - 1e-7 <= 0.0 <= interval[1] + 1e-7
-            else min(abs(interval[0]), abs(interval[1])),
+            (
+                0.0
+                if interval[0] - 1e-7 <= 0.0 <= interval[1] + 1e-7
+                else min(abs(interval[0]), abs(interval[1]))
+            ),
             -(interval[1] - interval[0]),
         ),
     )
@@ -2334,12 +2120,9 @@ def _point_in_boundary(point, boundary):
     previous = boundary["vertices"][-1]
     for current in boundary["vertices"]:
         if (current[1] > point[1]) != (previous[1] > point[1]):
-            crossing = (
-                (previous[0] - current[0])
-                * (point[1] - current[1])
-                / (previous[1] - current[1])
-                + current[0]
-            )
+            crossing = (previous[0] - current[0]) * (point[1] - current[1]) / (
+                previous[1] - current[1]
+            ) + current[0]
             if point[0] < crossing:
                 inside = not inside
         previous = current
@@ -2352,20 +2135,13 @@ def balanced_tread_faces(sections, footprint):
     if len(sections) < 2 or footprint.isNull():
         return []
     if any(
-        abs(
-            edge.curvatureAt(
-                (edge.FirstParameter + edge.LastParameter) / 2.0
-            )
-        )
-        > 1e-9
+        abs(edge.curvatureAt((edge.FirstParameter + edge.LastParameter) / 2.0)) > 1e-9
         for edge in footprint.Edges
     ):
         return _tangent_tread_faces(sections, footprint)
     boundary = _boundary_data(footprint)
     orientation = 1.0 if boundary["signed_area"] > 0.0 else -1.0
-    left_parameters = _unwrap_boundary_parameters(
-        [section.left for section in sections], boundary
-    )
+    left_parameters = _unwrap_boundary_parameters([section.left for section in sections], boundary)
     right_parameters = _unwrap_boundary_parameters(
         [section.right for section in sections], boundary
     )
@@ -2425,16 +2201,10 @@ def balanced_partition_is_valid(faces, footprint, expected_count):
 
 def _boundary_data(footprint):
     face = max(footprint.Faces, key=lambda item: item.Area)
-    vertices = [
-        (vertex.Point.x, vertex.Point.y)
-        for vertex in face.OuterWire.OrderedVertexes
-    ]
+    vertices = [(vertex.Point.x, vertex.Point.y) for vertex in face.OuterWire.OrderedVertexes]
     cumulative = [0.0]
     for first, second in zip(vertices, vertices[1:] + vertices[:1]):
-        cumulative.append(
-            cumulative[-1]
-            + math.hypot(second[0] - first[0], second[1] - first[1])
-        )
+        cumulative.append(cumulative[-1] + math.hypot(second[0] - first[0], second[1] - first[1]))
     signed_area = 0.5 * sum(
         first[0] * second[1] - second[0] * first[1]
         for first, second in zip(vertices, vertices[1:] + vertices[:1])
@@ -2453,16 +2223,13 @@ def _boundary_candidates(point, boundary):
     cumulative = boundary["cumulative"]
     scale = max(boundary["perimeter"], 1.0)
     tolerance = scale * 1e-7
-    for index, (first, second) in enumerate(
-        zip(vertices, vertices[1:] + vertices[:1])
-    ):
+    for index, (first, second) in enumerate(zip(vertices, vertices[1:] + vertices[:1])):
         delta = (second[0] - first[0], second[1] - first[1])
         squared_length = delta[0] * delta[0] + delta[1] * delta[1]
         if squared_length < 1e-18:
             continue
         ratio = (
-            (point[0] - first[0]) * delta[0]
-            + (point[1] - first[1]) * delta[1]
+            (point[0] - first[0]) * delta[0] + (point[1] - first[1]) * delta[1]
         ) / squared_length
         ratio = min(max(ratio, 0.0), 1.0)
         projected = (
@@ -2470,9 +2237,7 @@ def _boundary_candidates(point, boundary):
             first[1] + delta[1] * ratio,
         )
         if math.hypot(projected[0] - point[0], projected[1] - point[1]) <= tolerance:
-            candidates.append(
-                cumulative[index] + math.sqrt(squared_length) * ratio
-            )
+            candidates.append(cumulative[index] + math.sqrt(squared_length) * ratio)
     if not candidates:
         raise ValueError("Balanced section does not meet the stair footprint boundary")
     return candidates
@@ -2490,10 +2255,7 @@ def _unwrap_boundary_parameters(points, boundary):
         expanded = []
         for candidate in candidates:
             cycle = round((previous - candidate) / perimeter)
-            expanded.extend(
-                candidate + (cycle + offset) * perimeter
-                for offset in (-1, 0, 1)
-            )
+            expanded.extend(candidate + (cycle + offset) * perimeter for offset in (-1, 0, 1))
         result.append(min(expanded, key=lambda value: abs(value - previous)))
     return result
 
@@ -2504,10 +2266,7 @@ def _monotone_boundary_parameters(points, sections, boundary, direction):
     total = direction * (raw[-1] - start)
     if total <= 1e-7:
         total += boundary["perimeter"]
-    progress = [
-        min(max(direction * (parameter - start), 0.0), total)
-        for parameter in raw
-    ]
+    progress = [min(max(direction * (parameter - start), 0.0), total) for parameter in raw]
     progress[0] = 0.0
     progress[-1] = total
     monotone = _isotonic_increasing(progress)
@@ -2582,9 +2341,7 @@ def _boundary_vertices_between(start, end, direction, boundary):
     first_cycle = math.floor(lower / perimeter) - 1
     last_cycle = math.ceil(upper / perimeter) + 1
     for cycle in range(first_cycle, last_cycle + 1):
-        for parameter, point in zip(
-            boundary["cumulative"][:-1], boundary["vertices"]
-        ):
+        for parameter, point in zip(boundary["cumulative"][:-1], boundary["vertices"]):
             unwrapped = parameter + cycle * perimeter
             if lower + 1e-7 < unwrapped < upper - 1e-7:
                 candidates.append((unwrapped, point))
@@ -2595,13 +2352,12 @@ def _boundary_vertices_between(start, end, direction, boundary):
 def _without_duplicate_points(points):
     result = []
     for point in points:
-        if not result or math.hypot(
-            point[0] - result[-1][0], point[1] - result[-1][1]
-        ) > 1e-7:
+        if not result or math.hypot(point[0] - result[-1][0], point[1] - result[-1][1]) > 1e-7:
             result.append(point)
-    if len(result) > 1 and math.hypot(
-        result[0][0] - result[-1][0], result[0][1] - result[-1][1]
-    ) < 1e-7:
+    if (
+        len(result) > 1
+        and math.hypot(result[0][0] - result[-1][0], result[0][1] - result[-1][1]) < 1e-7
+    ):
         result.pop()
     return result
 
@@ -2694,9 +2450,7 @@ def _local_step_expansion_faces(
             ),
             0.0,
         )
-        shifted_center = _shifted(
-            section.center, section.tangent, distance
-        )
+        shifted_center = _shifted(section.center, section.tangent, distance)
         probe = FreeCAD.Vector(
             (section.center[0] + shifted_center[0]) / 2.0,
             (section.center[1] + shifted_center[1]) / 2.0,
@@ -2712,9 +2466,7 @@ def _local_step_expansion_faces(
             # A regular balanced nosing can cross a footprint vertex.  Its
             # side boundary then changes rails inside the expansion and the
             # complete clipped section band is required to retain the corner.
-            faces.extend(
-                _section_band_faces(section, footprint, distance)
-            )
+            faces.extend(_section_band_faces(section, footprint, distance))
             continue
         side = (-section.tangent[1], section.tangent[0])
         shifted_left = _continued_section_endpoint(
@@ -2745,11 +2497,7 @@ def _local_step_expansion_faces(
         if not candidates:
             continue
         selected = next(
-            (
-                candidate
-                for candidate in candidates
-                if candidate.isInside(probe, 1e-6, True)
-            ),
+            (candidate for candidate in candidates if candidate.isInside(probe, 1e-6, True)),
             None,
         )
         if selected is None:
@@ -2771,9 +2519,7 @@ def _continued_section_endpoint(
 ):
     """Continue a translated section endpoint to its straight stair rail."""
 
-    original_vertex = Part.Vertex(
-        FreeCAD.Vector(original[0], original[1], 0.0)
-    )
+    original_vertex = Part.Vertex(FreeCAD.Vector(original[0], original[1], 0.0))
     tolerance = max(footprint.BoundBox.DiagonalLength * 1e-7, 1e-6)
     candidates = []
     for edge in footprint.OuterWire.Edges:
@@ -2797,18 +2543,13 @@ def _continued_section_endpoint(
         intersection = _line_intersection(shifted, outward, first, rail)
         if intersection is None:
             continue
-        ray_parameter = (
-            (intersection[0] - shifted[0]) * outward[0]
-            + (intersection[1] - shifted[1]) * outward[1]
-        )
-        rail_parameter = (
-            (intersection[0] - first[0]) * rail[0]
-            + (intersection[1] - first[1]) * rail[1]
-        )
-        if (
-            ray_parameter >= -tolerance
-            and -tolerance <= rail_parameter <= rail_length + tolerance
-        ):
+        ray_parameter = (intersection[0] - shifted[0]) * outward[0] + (
+            intersection[1] - shifted[1]
+        ) * outward[1]
+        rail_parameter = (intersection[0] - first[0]) * rail[0] + (
+            intersection[1] - first[1]
+        ) * rail[1]
+        if ray_parameter >= -tolerance and -tolerance <= rail_parameter <= rail_length + tolerance:
             candidates.append((max(ray_parameter, 0.0), intersection))
     if not candidates:
         return shifted
@@ -2981,11 +2722,7 @@ def make_balanced_riser_shape(
     for face in faces:
         placed_face = face.copy()
         placed_face.translate(FreeCAD.Vector(0.0, 0.0, base_elevation))
-        solids.append(
-            placed_face.extrude(
-                FreeCAD.Vector(0.0, 0.0, max(height, 0.01))
-            )
-        )
+        solids.append(placed_face.extrude(FreeCAD.Vector(0.0, 0.0, max(height, 0.01))))
     result = solids[0]
     for solid in solids[1:]:
         result = result.fuse(solid)
@@ -3012,47 +2749,32 @@ def make_balanced_concrete_shape(
     vertical_waist = effective_waist / slope_cosine
 
     top_elevations = [
-        balanced_section_top(section, index, riser_height)
-        for index, section in enumerate(sections)
+        balanced_section_top(section, index, riser_height) for index, section in enumerate(sections)
     ]
-    bottom_elevations = [
-        max(top - vertical_waist, 0.0) for top in top_elevations
-    ]
+    bottom_elevations = [max(top - vertical_waist, 0.0) for top in top_elevations]
     bottom_fronts = bottom_elevations[:-1]
     bottom_rears = bottom_elevations[1:]
     if bottom_rears:
-        bottom_rears[-1] = max(
-            top_elevations[-2] - concrete_thickness, 0.0
-        )
+        bottom_rears[-1] = max(top_elevations[-2] - concrete_thickness, 0.0)
     for index, section in enumerate(sections[:-1]):
         if section.landing_to_next:
             landing_top = top_elevations[index]
-            landing_bottom = max(
-                landing_top - concrete_thickness, 0.0
-            )
+            landing_bottom = max(landing_top - concrete_thickness, 0.0)
             bottom_fronts[index] = landing_bottom
             bottom_rears[index] = landing_bottom
             if index + 1 < len(bottom_fronts):
-                bottom_fronts[index + 1] = max(
-                    bottom_fronts[index + 1], landing_bottom
-                )
+                bottom_fronts[index + 1] = max(bottom_fronts[index + 1], landing_bottom)
 
-    _align_straight_concrete_bottoms(
-        sections, top_elevations, bottom_fronts, bottom_rears
-    )
+    _align_straight_concrete_bottoms(sections, top_elevations, bottom_fronts, bottom_rears)
 
     solids = []
     if plan_shapes is None:
         plan_shapes = balanced_tread_faces(sections, footprint)
     circular_profiles = []
-    for front, rear, plan_shape in zip(
-        sections, sections[1:], plan_shapes
-    ):
+    for front, rear, plan_shape in zip(sections, sections[1:], plan_shapes):
         profile = None
         if len(plan_shape.Faces) == 1:
-            profile = _circular_profile_data(
-                plan_shape.Faces[0], front, rear
-            )
+            profile = _circular_profile_data(plan_shape.Faces[0], front, rear)
         circular_profiles.append(profile)
 
     index = 0
@@ -3063,42 +2785,24 @@ def make_balanced_concrete_shape(
             landing_solids = []
             for plan_face in plan_shapes[index].Faces:
                 bottom_face = plan_face.copy()
-                bottom_face.translate(
-                    FreeCAD.Vector(0.0, 0.0, landing_bottom)
-                )
+                bottom_face.translate(FreeCAD.Vector(0.0, 0.0, landing_bottom))
                 landing_solids.append(
-                    bottom_face.extrude(
-                        FreeCAD.Vector(
-                            0.0, 0.0, landing_top - landing_bottom
-                        )
-                    )
+                    bottom_face.extrude(FreeCAD.Vector(0.0, 0.0, landing_top - landing_bottom))
                 )
 
             incoming_bottom = bottom_elevations[index]
             predecessor_reaches_landing = (
-                index > 0
-                and abs(top_elevations[index - 1] - landing_top) < 1e-7
+                index > 0 and abs(top_elevations[index - 1] - landing_top) < 1e-7
             )
-            if (
-                not predecessor_reaches_landing
-                and landing_bottom - incoming_bottom > 1e-7
-            ):
-                joint_depth = min(
-                    0.1, max(footprint.BoundBox.DiagonalLength * 1e-6, 0.01)
-                )
+            if not predecessor_reaches_landing and landing_bottom - incoming_bottom > 1e-7:
+                joint_depth = min(0.1, max(footprint.BoundBox.DiagonalLength * 1e-6, 0.01))
                 for joint_face in _section_band_faces(
                     sections[index], plan_shapes[index], joint_depth
                 ):
                     bottom_face = joint_face.copy()
-                    bottom_face.translate(
-                        FreeCAD.Vector(0.0, 0.0, incoming_bottom)
-                    )
+                    bottom_face.translate(FreeCAD.Vector(0.0, 0.0, incoming_bottom))
                     landing_solids.append(
-                        bottom_face.extrude(
-                            FreeCAD.Vector(
-                                0.0, 0.0, landing_top - incoming_bottom
-                            )
-                        )
+                        bottom_face.extrude(FreeCAD.Vector(0.0, 0.0, landing_top - incoming_bottom))
                     )
 
             landing = landing_solids[0]
@@ -3110,16 +2814,8 @@ def make_balanced_concrete_shape(
 
         profile = circular_profiles[index]
         span_end = index
-        if (
-            profile is not None
-            and abs(
-                bottom_rears[index] - bottom_fronts[index]
-            )
-            > 1e-7
-        ):
-            pitch = (
-                (bottom_rears[index] - bottom_fronts[index]) / profile.sweep
-            )
+        if profile is not None and abs(bottom_rears[index] - bottom_fronts[index]) > 1e-7:
+            pitch = (bottom_rears[index] - bottom_fronts[index]) / profile.sweep
             while span_end + 1 < len(plan_shapes):
                 following = circular_profiles[span_end + 1]
                 if following is None or not _circular_profiles_join(
@@ -3127,8 +2823,7 @@ def make_balanced_concrete_shape(
                 ):
                     break
                 following_pitch = (
-                    bottom_rears[span_end + 1]
-                    - bottom_fronts[span_end + 1]
+                    bottom_rears[span_end + 1] - bottom_fronts[span_end + 1]
                 ) / following.sweep
                 if abs(following_pitch - pitch) > max(abs(pitch), 1.0) * 1e-6:
                     break
@@ -3158,9 +2853,7 @@ def make_balanced_concrete_shape(
         bottom_front = bottom_fronts[index]
         bottom_rear = bottom_rears[index]
         tread_solids = [
-            _make_profiled_plan_solid(
-                plan_face, front, rear, top, bottom_front, bottom_rear
-            )
+            _make_profiled_plan_solid(plan_face, front, rear, top, bottom_front, bottom_rear)
             for plan_face in plan_shape.Faces
         ]
         tread = tread_solids[0]
@@ -3175,9 +2868,7 @@ def make_balanced_concrete_shape(
     return result.removeSplitter()
 
 
-def _align_straight_concrete_bottoms(
-    sections, top_elevations, bottom_fronts, bottom_rears
-):
+def _align_straight_concrete_bottoms(sections, top_elevations, bottom_fronts, bottom_rears):
     """Make each straight concrete run use one continuous soffit plane."""
 
     cell_count = min(len(bottom_fronts), len(sections) - 1)
@@ -3188,10 +2879,7 @@ def _align_straight_concrete_bottoms(
         if front.landing_to_next or front.level_to_next:
             return False
         cross = abs(_cross(front.tangent, rear.tangent))
-        dot = (
-            front.tangent[0] * rear.tangent[0]
-            + front.tangent[1] * rear.tangent[1]
-        )
+        dot = front.tangent[0] * rear.tangent[0] + front.tangent[1] * rear.tangent[1]
         return cross < 1e-7 and dot > 0.0
 
     index = 0
@@ -3223,20 +2911,12 @@ def _align_straight_concrete_bottoms(
         if (
             run_end + 1 < cell_count
             and sections[run_end + 1].landing_to_next
-            and abs(
-                top_elevations[run_end]
-                - top_elevations[run_end + 1]
-            )
-            < 1e-7
+            and abs(top_elevations[run_end] - top_elevations[run_end + 1]) < 1e-7
         ):
             end_bottom = bottom_fronts[run_end + 1]
 
         smooth_start = run_start
-        if (
-            run_start == 0
-            and run_end > run_start
-            and abs(start_bottom) < 1e-7
-        ):
+        if run_start == 0 and run_end > run_start and abs(start_bottom) < 1e-7:
             bottom_fronts[run_start] = 0.0
             bottom_rears[run_start] = 0.0
             smooth_start += 1
@@ -3249,25 +2929,16 @@ def _align_straight_concrete_bottoms(
         for boundary in range(smooth_start, run_end + 1):
             first = sections[boundary].center
             second = sections[boundary + 1].center
-            distances.append(
-                distances[-1]
-                + math.hypot(second[0] - first[0], second[1] - first[1])
-            )
+            distances.append(distances[-1] + math.hypot(second[0] - first[0], second[1] - first[1]))
         total_distance = distances[-1]
         if total_distance < 1e-9:
             continue
 
-        for offset, cell_index in enumerate(
-            range(smooth_start, run_end + 1)
-        ):
+        for offset, cell_index in enumerate(range(smooth_start, run_end + 1)):
             front_ratio = distances[offset] / total_distance
             rear_ratio = distances[offset + 1] / total_distance
-            bottom_fronts[cell_index] = start_bottom + (
-                end_bottom - start_bottom
-            ) * front_ratio
-            bottom_rears[cell_index] = start_bottom + (
-                end_bottom - start_bottom
-            ) * rear_ratio
+            bottom_fronts[cell_index] = start_bottom + (end_bottom - start_bottom) * front_ratio
+            bottom_rears[cell_index] = start_bottom + (end_bottom - start_bottom) * rear_ratio
 
 
 def balanced_section_top(section, index, riser_height):
@@ -3292,9 +2963,7 @@ def _make_profiled_plan_solid(
     if abs(bottom_rear - bottom_front) < 1e-7:
         bottom_face = plan_face.copy()
         bottom_face.translate(FreeCAD.Vector(0.0, 0.0, bottom_front))
-        return bottom_face.extrude(
-            FreeCAD.Vector(0.0, 0.0, top_elevation - bottom_front)
-        )
+        return bottom_face.extrude(FreeCAD.Vector(0.0, 0.0, top_elevation - bottom_front))
 
     helical = _make_helical_profiled_plan_solid(
         plan_face,
@@ -3310,10 +2979,9 @@ def _make_profiled_plan_solid(
     mesh_points, facets = plan_face.tessellate(0.1)
 
     def bottom_elevation(point):
-        front_distance = (
-            (point.x - front.center[0]) * front.tangent[0]
-            + (point.y - front.center[1]) * front.tangent[1]
-        )
+        front_distance = (point.x - front.center[0]) * front.tangent[0] + (
+            point.y - front.center[1]
+        ) * front.tangent[1]
         rear_distance = -(
             (point.x - rear.center[0]) * rear.tangent[0]
             + (point.y - rear.center[1]) * rear.tangent[1]
@@ -3323,20 +2991,15 @@ def _make_profiled_plan_solid(
         ratio = min(max(ratio, 0.0), 1.0)
         return bottom_front + (bottom_rear - bottom_front) * ratio
 
-    top_points = [
-        FreeCAD.Vector(point.x, point.y, top_elevation) for point in mesh_points
-    ]
+    top_points = [FreeCAD.Vector(point.x, point.y, top_elevation) for point in mesh_points]
     bottom_points = [
-        FreeCAD.Vector(point.x, point.y, bottom_elevation(point))
-        for point in mesh_points
+        FreeCAD.Vector(point.x, point.y, bottom_elevation(point)) for point in mesh_points
     ]
     faces = []
     oriented_facets = []
     for first, second, third in facets:
         top_triangle = (top_points[first], top_points[second], top_points[third])
-        cross = (top_triangle[1] - top_triangle[0]).cross(
-            top_triangle[2] - top_triangle[0]
-        )
+        cross = (top_triangle[1] - top_triangle[0]).cross(top_triangle[2] - top_triangle[0])
         if cross.z < 0.0:
             second, third = third, second
             top_triangle = (top_triangle[0], top_triangle[2], top_triangle[1])
@@ -3436,37 +3099,25 @@ def _circular_profile_data(plan_face, front, rear):
         rear.center[0] - circle_center[0],
         rear.center[1] - circle_center[1],
     )
-    radial_dot = (
-        front_radial[0] * rear_radial[0]
-        + front_radial[1] * rear_radial[1]
-    )
+    radial_dot = front_radial[0] * rear_radial[0] + front_radial[1] * rear_radial[1]
     sweep = math.atan2(_cross(front_radial, rear_radial), radial_dot)
     if abs(sweep) < 1e-7:
         return None
 
     def radii(section):
         return sorted(
-            math.hypot(
-                point[0] - circle_center[0], point[1] - circle_center[1]
-            )
+            math.hypot(point[0] - circle_center[0], point[1] - circle_center[1])
             for point in (section.left, section.right)
         )
 
     front_radii = radii(front)
     rear_radii = radii(rear)
     tolerance = max(front.width, rear.width, 1.0) * 1e-6
-    if any(
-        abs(first - second) > tolerance
-        for first, second in zip(front_radii, rear_radii)
-    ):
+    if any(abs(first - second) > tolerance for first, second in zip(front_radii, rear_radii)):
         return None
     inner_radius = (front_radii[0] + rear_radii[0]) / 2.0
     outer_radius = (front_radii[1] + rear_radii[1]) / 2.0
-    expected_area = (
-        0.5
-        * (outer_radius * outer_radius - inner_radius * inner_radius)
-        * abs(sweep)
-    )
+    expected_area = 0.5 * (outer_radius * outer_radius - inner_radius * inner_radius) * abs(sweep)
     if abs(plan_face.Area - expected_area) > max(expected_area * 1e-6, 0.01):
         return None
 
@@ -3483,10 +3134,13 @@ def _circular_profiles_join(first, second):
     """Return whether two annular cells belong to one circular flight."""
 
     tolerance = max(first.outer_radius, second.outer_radius, 1.0) * 1e-6
-    if math.hypot(
-        first.center[0] - second.center[0],
-        first.center[1] - second.center[1],
-    ) > tolerance:
+    if (
+        math.hypot(
+            first.center[0] - second.center[0],
+            first.center[1] - second.center[1],
+        )
+        > tolerance
+    ):
         return False
     if abs(first.inner_radius - second.inner_radius) > tolerance:
         return False
@@ -3516,10 +3170,7 @@ def _make_circular_concrete_span(
     """Build one circular flight with two cylinders and one helical soffit."""
 
     first = profiles[start_index]
-    sweep = sum(
-        profiles[index].sweep
-        for index in range(start_index, end_index + 1)
-    )
+    sweep = sum(profiles[index].sweep for index in range(start_index, end_index + 1))
     bottom_front = bottom_fronts[start_index]
     bottom_rear = bottom_rears[end_index]
     base_elevation = min(bottom_front, bottom_rear) - max(riser_height, 1.0)
@@ -3528,13 +3179,9 @@ def _make_circular_concrete_span(
         top = top_elevations[index]
         for plan_face in plan_shapes[index].Faces:
             placed_face = plan_face.copy()
-            placed_face.translate(
-                FreeCAD.Vector(0.0, 0.0, base_elevation)
-            )
+            placed_face.translate(FreeCAD.Vector(0.0, 0.0, base_elevation))
             envelope_solids.append(
-                placed_face.extrude(
-                    FreeCAD.Vector(0.0, 0.0, top - base_elevation)
-                )
+                placed_face.extrude(FreeCAD.Vector(0.0, 0.0, top - base_elevation))
             )
     envelope = envelope_solids[0]
     for solid in envelope_solids[1:]:
@@ -3634,9 +3281,7 @@ def balanced_plan_segments(sections, footprint):
                     )
                 )
                 key = tuple(endpoints)
-                outline_edges.setdefault(key, []).append(
-                    ((first.x, first.y), (last.x, last.y))
-                )
+                outline_edges.setdefault(key, []).append(((first.x, first.y), (last.x, last.y)))
     for matches in outline_edges.values():
         if len(matches) == 1:
             segments.append(matches[0])
@@ -3666,14 +3311,8 @@ def balanced_plan_geometry(sections, footprint):
             if key in seen:
                 continue
             seen.add(key)
-            middle = edge.valueAt(
-                (edge.FirstParameter + edge.LastParameter) / 2.0
-            )
-            if abs(
-                edge.curvatureAt(
-                    (edge.FirstParameter + edge.LastParameter) / 2.0
-                )
-            ) > 1e-9:
+            middle = edge.valueAt((edge.FirstParameter + edge.LastParameter) / 2.0)
+            if abs(edge.curvatureAt((edge.FirstParameter + edge.LastParameter) / 2.0)) > 1e-9:
                 result.append(Part.Arc(first, middle, last))
             else:
                 result.append(Part.LineSegment(first, last))
@@ -3759,14 +3398,8 @@ def _monotone_profile_slopes(parameters, values):
     count = len(parameters)
     if count < 2:
         return [0.0] * count
-    intervals = [
-        parameters[index + 1] - parameters[index]
-        for index in range(count - 1)
-    ]
-    secants = [
-        (values[index + 1] - values[index]) / intervals[index]
-        for index in range(count - 1)
-    ]
+    intervals = [parameters[index + 1] - parameters[index] for index in range(count - 1)]
+    secants = [(values[index + 1] - values[index]) / intervals[index] for index in range(count - 1)]
     if count == 2:
         return [secants[0], secants[0]]
 
@@ -3785,19 +3418,16 @@ def _monotone_profile_slopes(parameters, values):
         )
 
     def endpoint_slope(first_interval, second_interval, first, second):
-        value = (
-            (2.0 * first_interval + second_interval) * first
-            - first_interval * second
-        ) / (first_interval + second_interval)
+        value = ((2.0 * first_interval + second_interval) * first - first_interval * second) / (
+            first_interval + second_interval
+        )
         if value * first <= 0.0:
             return 0.0
         if first * second < 0.0 and abs(value) > 3.0 * abs(first):
             return 3.0 * first
         return value
 
-    slopes[0] = endpoint_slope(
-        intervals[0], intervals[1], secants[0], secants[1]
-    )
+    slopes[0] = endpoint_slope(intervals[0], intervals[1], secants[0], secants[1])
     slopes[-1] = endpoint_slope(
         intervals[-1],
         intervals[-2],
@@ -3837,8 +3467,7 @@ def _profile_bezier_edges(
             ),
             point(
                 second_parameter - interval / 3.0,
-                values[index + 1]
-                - slopes[index + 1] * interval / 3.0,
+                values[index + 1] - slopes[index + 1] * interval / 3.0,
             ),
             point(second_parameter, values[index + 1]),
         )
@@ -3890,10 +3519,7 @@ def _make_planar_housed_stringer_shape(
             section_tangent[0] / section_length,
             section_tangent[1] / section_length,
         )
-        if (
-            abs(_cross(tangent, section_tangent)) > 1e-7
-            or _dot(tangent, section_tangent) < 0.0
-        ):
+        if abs(_cross(tangent, section_tangent)) > 1e-7 or _dot(tangent, section_tangent) < 0.0:
             return None
         inward = _stringer_inward(section, side)
         if _dot(first_inward, inward) < 1.0 - 1e-7:
@@ -3920,54 +3546,36 @@ def _make_planar_housed_stringer_shape(
     origin = surface_points[0]
     tolerance = max(axis_length, 1.0) * 1e-7
     if any(
-        abs(
-            (point[0] - origin[0]) * normal[0]
-            + (point[1] - origin[1]) * normal[1]
-        )
-        > tolerance
+        abs((point[0] - origin[0]) * normal[0] + (point[1] - origin[1]) * normal[1]) > tolerance
         for point in surface_points
     ):
         return None
 
     parameters = [
-        (point[0] - origin[0]) * direction[0]
-        + (point[1] - origin[1]) * direction[1]
+        (point[0] - origin[0]) * direction[0] + (point[1] - origin[1]) * direction[1]
         for point in surface_points
     ]
     if parameters[-1] < 1e-7:
         return None
-    if any(
-        following <= previous + 1e-7
-        for previous, following in zip(parameters, parameters[1:])
-    ):
+    if any(following <= previous + 1e-7 for previous, following in zip(parameters, parameters[1:])):
         # Aggressive winding can make the tread intersections backtrack
         # along a straight board.  A global loft then produces loops.  Keep
         # their distribution but restore the only physically meaningful
         # ordering before constructing the side profile.
         total = parameters[-1]
-        ordered = sorted(
-            min(max(parameter, 0.0), total)
-            for parameter in parameters
-        )
+        ordered = sorted(min(max(parameter, 0.0), total) for parameter in parameters)
         blend = 1e-5
         parameters = [
-            (1.0 - blend) * parameter
-            + blend * total * index / (len(ordered) - 1)
+            (1.0 - blend) * parameter + blend * total * index / (len(ordered) - 1)
             for index, parameter in enumerate(ordered)
         ]
         parameters[0] = 0.0
         parameters[-1] = total
 
     top_values = [float(top) for top in tops]
-    bottom_values = [
-        max(top - float(vertical_width), 0.0) for top in top_values
-    ]
-    top_edges = _profile_bezier_edges(
-        origin, direction, parameters, top_values
-    )
-    bottom_edges = _profile_bezier_edges(
-        origin, direction, parameters, bottom_values
-    )
+    bottom_values = [max(top - float(vertical_width), 0.0) for top in top_values]
+    top_edges = _profile_bezier_edges(origin, direction, parameters, top_values)
+    bottom_edges = _profile_bezier_edges(origin, direction, parameters, bottom_values)
     top_start = top_edges[0].Vertexes[0].Point
     top_end = top_edges[-1].Vertexes[-1].Point
     bottom_start = bottom_edges[0].Vertexes[0].Point
@@ -4006,8 +3614,7 @@ def _make_planar_housed_stringer_shape(
 
 def _stringer_elevations(sections, riser_height):
     return [
-        balanced_section_top(section, index, riser_height)
-        for index, section in enumerate(sections)
+        balanced_section_top(section, index, riser_height) for index, section in enumerate(sections)
     ]
 
 
@@ -4053,10 +3660,8 @@ def automatic_stringer_width(
     if str(offset_direction) == "Vertical":
         upper *= slope_cosine
     step_envelope = (
-        (max(float(riser_height), 0.0) + max(float(step_thickness), 0.0))
-        * slope_cosine
-        + max(float(nosing), 0.0) * slope_sine
-    )
+        max(float(riser_height), 0.0) + max(float(step_thickness), 0.0)
+    ) * slope_cosine + max(float(nosing), 0.0) * slope_sine
     return max(235.0, upper + step_envelope + 50.0)
 
 
@@ -4064,10 +3669,11 @@ def stringer_flight_runs(sections, flight_types=None):
     """Return ``(flight_index, sections)`` for each stair-bearing flight."""
 
     sections = [
-        replace(section, riser_index=index + 1)
-        if int(getattr(section, "riser_index", 0)) <= 0
-        and not section.level_to_next
-        else section
+        (
+            replace(section, riser_index=index + 1)
+            if int(getattr(section, "riser_index", 0)) <= 0 and not section.level_to_next
+            else section
+        )
         for index, section in enumerate(sections)
     ]
     runs = []
@@ -4079,8 +3685,7 @@ def stringer_flight_runs(sections, flight_types=None):
                 runs.append((flight_index, sections[start : index + 1]))
             section_type = (
                 str(flight_types[section.flight_index])
-                if flight_types
-                and section.flight_index < len(flight_types)
+                if flight_types and section.flight_index < len(flight_types)
                 else ""
             )
             if section_type.endswith("landing"):
@@ -4113,9 +3718,8 @@ def stringer_flight_runs(sections, flight_types=None):
                 if flight_types and section.flight_index < len(flight_types)
                 else ""
             )
-            tangent_junction = (
-                previous_type.startswith("Circular")
-                or following_type.startswith("Circular")
+            tangent_junction = previous_type.startswith("Circular") or following_type.startswith(
+                "Circular"
             )
             if tangent_junction and index - start >= 2:
                 runs.append((flight_index, sections[start:index]))
@@ -4157,14 +3761,12 @@ def planar_stringer_sections(
     selected_origin = left_origin if side == "Left" else right_origin
 
     def longitudinal(point):
-        return (
-            (point[0] - selected_origin[0]) * tangent[0]
-            + (point[1] - selected_origin[1]) * tangent[1]
-        )
+        return (point[0] - selected_origin[0]) * tangent[0] + (
+            point[1] - selected_origin[1]
+        ) * tangent[1]
 
     distances = [
-        longitudinal(section.left if side == "Left" else section.right)
-        for section in sections
+        longitudinal(section.left if side == "Left" else section.right) for section in sections
     ]
     if start_seam is not None:
         distances[0] = longitudinal(start_seam)
@@ -4411,14 +4013,10 @@ def _helical_profile_edge(profile, radius, start_elevation, end_elevation):
                 start_elevation,
             )
 
-        return Part.Arc(
-            point(start_angle), point(middle_angle), point(end_angle)
-        ).toShape()
+        return Part.Arc(point(start_angle), point(middle_angle), point(end_angle)).toShape()
     cylinder = Part.Cylinder()
     cylinder.Radius = radius
-    cylinder.Center = FreeCAD.Vector(
-        profile.center[0], profile.center[1], 0.0
-    )
+    cylinder.Center = FreeCAD.Vector(profile.center[0], profile.center[1], 0.0)
     cylinder.Axis = FreeCAD.Vector(0.0, 0.0, 1.0)
     cylinder.rotate(
         FreeCAD.Placement(
@@ -4462,8 +4060,7 @@ def _make_helical_band_solid(
                 segment_profile,
                 top_front + (top_rear - top_front) * front_fraction,
                 top_front + (top_rear - top_front) * rear_fraction,
-                bottom_front
-                + (bottom_rear - bottom_front) * front_fraction,
+                bottom_front + (bottom_rear - bottom_front) * front_fraction,
                 bottom_front + (bottom_rear - bottom_front) * rear_fraction,
             )
             if segment is None:
@@ -4488,22 +4085,11 @@ def _make_helical_band_solid(
         profile.sweep,
     )
 
-    top_inner = _helical_profile_edge(
-        profile, profile.inner_radius, top_front, top_rear
-    )
-    top_outer = _helical_profile_edge(
-        profile, profile.outer_radius, top_front, top_rear
-    )
-    bottom_inner = _helical_profile_edge(
-        profile, profile.inner_radius, bottom_front, bottom_rear
-    )
-    bottom_outer = _helical_profile_edge(
-        profile, profile.outer_radius, bottom_front, bottom_rear
-    )
-    if any(
-        edge is None
-        for edge in (top_inner, top_outer, bottom_inner, bottom_outer)
-    ):
+    top_inner = _helical_profile_edge(profile, profile.inner_radius, top_front, top_rear)
+    top_outer = _helical_profile_edge(profile, profile.outer_radius, top_front, top_rear)
+    bottom_inner = _helical_profile_edge(profile, profile.inner_radius, bottom_front, bottom_rear)
+    bottom_outer = _helical_profile_edge(profile, profile.outer_radius, bottom_front, bottom_rear)
+    if any(edge is None for edge in (top_inner, top_outer, bottom_inner, bottom_outer)):
         return None
 
     def ruled_face(first, second):
@@ -4554,10 +4140,7 @@ def _make_helical_band_solid(
     )
     inner_face = cylindrical_face(profile.inner_radius)
     outer_face = cylindrical_face(profile.outer_radius)
-    if any(
-        face is None
-        for face in (top_face, bottom_face, inner_face, outer_face)
-    ):
+    if any(face is None for face in (top_face, bottom_face, inner_face, outer_face)):
         return None
 
     start_points = (
@@ -4572,9 +4155,7 @@ def _make_helical_band_solid(
         top_outer.Vertexes[-1].Point,
         top_inner.Vertexes[-1].Point,
     )
-    start_face = Part.Face(
-        Part.makePolygon((*start_points, start_points[0]))
-    )
+    start_face = Part.Face(Part.makePolygon((*start_points, start_points[0])))
     end_face = Part.Face(Part.makePolygon((*end_points, end_points[0])))
     try:
         sewn = Part.makeCompound(
@@ -4596,9 +4177,7 @@ def _make_helical_band_solid(
     if solid.isValid() and len(solid.Solids) == 1:
         result = solid.removeSplitter()
         translation = FreeCAD.Matrix()
-        translation.move(
-            FreeCAD.Vector(circle_center[0], circle_center[1], 0.0)
-        )
+        translation.move(FreeCAD.Vector(circle_center[0], circle_center[1], 0.0))
         return result.transformShape(translation, True)
     return None
 
@@ -4611,10 +4190,7 @@ def _make_sectioned_helical_band_solid(
 ):
     """Create a circular board whose pitch follows every stair section."""
 
-    if not (
-        len(angles) == len(top_elevations) == len(bottom_elevations)
-        and len(angles) >= 2
-    ):
+    if not (len(angles) == len(top_elevations) == len(bottom_elevations) and len(angles) >= 2):
         return None
 
     def interval_pitch(values, index):
@@ -4648,9 +4224,7 @@ def _make_sectioned_helical_band_solid(
 
     shapes = []
     for first, last in ranges:
-        segment_profile = _circular_profile_between(
-            profile, angles[first], angles[last]
-        )
+        segment_profile = _circular_profile_between(profile, angles[first], angles[last])
         segment = _make_helical_band_solid(
             segment_profile,
             top_elevations[first],
@@ -4692,15 +4266,11 @@ def make_handrail_path(
         return None
     elevations = _stringer_elevations(sections, riser_height)
     profile_elevations = list(elevations)
-    if (
-        abs(profile_elevations[-1] - profile_elevations[-2]) < 1e-9
-        and not any(section.landing_to_next for section in sections)
+    if abs(profile_elevations[-1] - profile_elevations[-2]) < 1e-9 and not any(
+        section.landing_to_next for section in sections
     ):
         profile_elevations[-1] += float(riser_height)
-    top_elevations = [
-        elevation + float(height_above_nosing)
-        for elevation in profile_elevations
-    ]
+    top_elevations = [elevation + float(height_above_nosing) for elevation in profile_elevations]
     support_elevations = list(elevations)
     if (
         len(support_elevations) >= 2
@@ -4736,17 +4306,12 @@ def make_handrail_path(
         radius = (profile.inner_radius + profile.outer_radius) / 2.0
         direction = 1.0 if profile.sweep >= 0.0 else -1.0
         slope = (
-            (top_elevations[-1] - top_elevations[0])
-            / (abs(profile.sweep) * radius)
+            (top_elevations[-1] - top_elevations[0]) / (abs(profile.sweep) * radius)
             if abs(profile.sweep) * radius > 1e-9
             else 0.0
         )
-        start_angle = (
-            profile.start_angle - direction * start_extension / radius
-        )
-        sweep = profile.sweep + direction * (
-            start_extension + end_extension
-        ) / radius
+        start_angle = profile.start_angle - direction * start_extension / radius
+        sweep = profile.sweep + direction * (start_extension + end_extension) / radius
         top_elevations[0] -= slope * start_extension
         top_elevations[-1] += slope * end_extension
         return {
@@ -4768,11 +4333,7 @@ def make_handrail_path(
     if length < 1e-9:
         return None
     tangent = (direction[0] / length, direction[1] / length)
-    slope = (
-        (top_elevations[-1] - top_elevations[0]) / length
-        if length > 1e-9
-        else 0.0
-    )
+    slope = (top_elevations[-1] - top_elevations[0]) / length if length > 1e-9 else 0.0
     start = (
         start[0] - tangent[0] * start_extension,
         start[1] - tangent[1] * start_extension,
@@ -4801,9 +4362,7 @@ def sample_handrail_path(path, fraction):
 
     fraction = min(max(float(fraction), 0.0), 1.0)
     top_elevations = path["top_elevations"]
-    top = top_elevations[0] + (
-        top_elevations[-1] - top_elevations[0]
-    ) * fraction
+    top = top_elevations[0] + (top_elevations[-1] - top_elevations[0]) * fraction
     if path["kind"] == "Circular":
         angle = path["start_angle"] + path["sweep"] * fraction
         direction = 1.0 if path["sweep"] >= 0.0 else -1.0
@@ -4817,10 +4376,8 @@ def sample_handrail_path(path, fraction):
         )
     else:
         point = (
-            path["start"][0]
-            + (path["end"][0] - path["start"][0]) * fraction,
-            path["start"][1]
-            + (path["end"][1] - path["start"][1]) * fraction,
+            path["start"][0] + (path["end"][0] - path["start"][0]) * fraction,
+            path["start"][1] + (path["end"][1] - path["start"][1]) * fraction,
         )
         tangent = path["tangent"]
 
@@ -4858,10 +4415,7 @@ def handrail_picket_fractions(
         int(math.ceil(path_length / maximum_center_spacing)) - 1,
         0,
     )
-    return [
-        (index + 1) / (picket_count + 1)
-        for index in range(picket_count)
-    ]
+    return [(index + 1) / (picket_count + 1) for index in range(picket_count)]
 
 
 def make_handrail_top_rail_shape(
@@ -4883,11 +4437,7 @@ def make_handrail_top_rail_shape(
     terminal_offset = post_penetration - post_size / 2.0
     top_front = path["top_elevations"][0]
     top_rear = path["top_elevations"][-1]
-    slope = (
-        (top_rear - top_front) / path["length"]
-        if path["length"] > 1e-9
-        else 0.0
-    )
+    slope = (top_rear - top_front) / path["length"] if path["length"] > 1e-9 else 0.0
 
     if path["kind"] == "Circular":
         direction = 1.0 if path["sweep"] >= 0.0 else -1.0
@@ -4937,9 +4487,7 @@ def make_handrail_top_rail_shape(
             tangent,
         )
         try:
-            return Part.Wire([edge]).makePipeShell(
-                [Part.Wire([circle])], True, False
-            )
+            return Part.Wire([edge]).makePipeShell([Part.Wire([circle])], True, False)
         except Part.OCCError:
             return Part.Shape()
 
@@ -4999,9 +4547,7 @@ def make_handrail_top_rail_shape(
         ),
     )
     try:
-        return Part.Face(
-            Part.makePolygon((*points, points[0]))
-        ).extrude(extrusion)
+        return Part.Face(Part.makePolygon((*points, points[0]))).extrude(extrusion)
     except Part.OCCError:
         return Part.Shape()
 
@@ -5036,38 +4582,30 @@ def make_handrail_vertical_member_shape(
     normal = (-tangent[1], tangent[0])
     points = (
         FreeCAD.Vector(
-            point[0] - normal[0] * width / 2.0
-            - tangent[0] * thickness / 2.0,
-            point[1] - normal[1] * width / 2.0
-            - tangent[1] * thickness / 2.0,
+            point[0] - normal[0] * width / 2.0 - tangent[0] * thickness / 2.0,
+            point[1] - normal[1] * width / 2.0 - tangent[1] * thickness / 2.0,
             bottom,
         ),
         FreeCAD.Vector(
-            point[0] + normal[0] * width / 2.0
-            - tangent[0] * thickness / 2.0,
-            point[1] + normal[1] * width / 2.0
-            - tangent[1] * thickness / 2.0,
+            point[0] + normal[0] * width / 2.0 - tangent[0] * thickness / 2.0,
+            point[1] + normal[1] * width / 2.0 - tangent[1] * thickness / 2.0,
             bottom,
         ),
         FreeCAD.Vector(
-            point[0] + normal[0] * width / 2.0
-            + tangent[0] * thickness / 2.0,
-            point[1] + normal[1] * width / 2.0
-            + tangent[1] * thickness / 2.0,
+            point[0] + normal[0] * width / 2.0 + tangent[0] * thickness / 2.0,
+            point[1] + normal[1] * width / 2.0 + tangent[1] * thickness / 2.0,
             bottom,
         ),
         FreeCAD.Vector(
-            point[0] - normal[0] * width / 2.0
-            + tangent[0] * thickness / 2.0,
-            point[1] - normal[1] * width / 2.0
-            + tangent[1] * thickness / 2.0,
+            point[0] - normal[0] * width / 2.0 + tangent[0] * thickness / 2.0,
+            point[1] - normal[1] * width / 2.0 + tangent[1] * thickness / 2.0,
             bottom,
         ),
     )
     try:
-        return Part.Face(
-            Part.makePolygon((*points, points[0]))
-        ).extrude(FreeCAD.Vector(0.0, 0.0, top - bottom))
+        return Part.Face(Part.makePolygon((*points, points[0]))).extrude(
+            FreeCAD.Vector(0.0, 0.0, top - bottom)
+        )
     except Part.OCCError:
         return Part.Shape()
 
@@ -5162,14 +4700,8 @@ def _make_housed_stringer_run(
         True,
     )
     if circular is not None:
-        circular_run = (
-            abs(circular["profile"].sweep) * circular["path_radius"]
-        )
-        slope = (
-            (elevations[-1] - elevations[0]) / circular_run
-            if circular_run > 1e-9
-            else 0.0
-        )
+        circular_run = abs(circular["profile"].sweep) * circular["path_radius"]
+        slope = (elevations[-1] - elevations[0]) / circular_run if circular_run > 1e-9 else 0.0
     else:
         slope = _stringer_slope(sections, elevations)
     slope_cosine = 1.0 / math.sqrt(1.0 + slope * slope)
@@ -5180,48 +4712,31 @@ def _make_housed_stringer_run(
         vertical_offset /= max(slope_cosine, 0.01)
 
     stations = list(sections)
-    tops = [
-        elevation + nosing_compensation + vertical_offset
-        for elevation in elevations
-    ]
+    tops = [elevation + nosing_compensation + vertical_offset for elevation in elevations]
     if circular is not None:
         profile = circular["profile"]
         direction = 1.0 if profile.sweep > 0.0 else -1.0
-        start_angle_extension = (
-            start_extension / circular["path_radius"]
-        )
+        start_angle_extension = start_extension / circular["path_radius"]
         end_angle_extension = end_extension / circular["path_radius"]
         angles = list(circular["angles"])
         circular_tops = list(tops)
-        circular_bottoms = [
-            max(top - vertical_width, 0.0) for top in tops
-        ]
+        circular_bottoms = [max(top - vertical_width, 0.0) for top in tops]
         if start_angle_extension > 1e-9:
-            angles.insert(
-                0, profile.start_angle - direction * start_angle_extension
-            )
+            angles.insert(0, profile.start_angle - direction * start_angle_extension)
             circular_tops.insert(0, tops[0] - slope * start_extension)
             circular_bottoms.insert(
                 0,
                 max(
-                    tops[0]
-                    - vertical_width
-                    - slope * start_extension,
+                    tops[0] - vertical_width - slope * start_extension,
                     0.0,
                 ),
             )
         if end_angle_extension > 1e-9:
-            angles.append(
-                profile.start_angle
-                + profile.sweep
-                + direction * end_angle_extension
-            )
+            angles.append(profile.start_angle + profile.sweep + direction * end_angle_extension)
             circular_tops.append(tops[-1] + slope * end_extension)
             circular_bottoms.append(
                 max(
-                    tops[-1]
-                    - vertical_width
-                    + slope * end_extension,
+                    tops[-1] - vertical_width + slope * end_extension,
                     0.0,
                 )
             )
@@ -5272,8 +4787,7 @@ def _make_housed_stringer_run(
             return result
 
     segments = [
-        Part.makeLoft([first, second], True, True)
-        for first, second in zip(wires, wires[1:])
+        Part.makeLoft([first, second], True, True) for first, second in zip(wires, wires[1:])
     ]
     result = segments[0]
     for segment in segments[1:]:
@@ -5364,10 +4878,7 @@ def _make_circular_notched_stringer_shape(
     slope = _stringer_slope(sections, elevations)
     slope_cosine = 1.0 / math.sqrt(1.0 + slope * slope)
     vertical_width = width / max(slope_cosine, 0.01)
-    bottoms = [
-        max(elevation - vertical_width, 0.0)
-        for elevation in elevations
-    ]
+    bottoms = [max(elevation - vertical_width, 0.0) for elevation in elevations]
     cell_count = len(sections) - 1
 
     def shifted_boundary(index):
@@ -5377,9 +4888,7 @@ def _make_circular_notched_stringer_shape(
         clearance = min(riser_clearance, max(available - 0.01, 0.0))
         return angles[index] + direction * clearance / path_radius
 
-    main_top = max(
-        elevation - step_thickness for elevation in elevations[:-1]
-    )
+    main_top = max(elevation - step_thickness for elevation in elevations[:-1])
     base = _make_helical_annular_solid(
         profile,
         main_top,
@@ -5395,15 +4904,9 @@ def _make_circular_notched_stringer_shape(
     def add_envelope(start_angle, end_angle, top):
         if abs(end_angle - start_angle) < 1e-8:
             return
-        sector = _circular_profile_between(
-            profile, start_angle, end_angle
-        )
+        sector = _circular_profile_between(profile, start_angle, end_angle)
         face = _annular_sector_face(sector, envelope_bottom)
-        envelopes.append(
-            face.extrude(
-                FreeCAD.Vector(0.0, 0.0, top - envelope_bottom)
-            )
-        )
+        envelopes.append(face.extrude(FreeCAD.Vector(0.0, 0.0, top - envelope_bottom)))
 
     first_start = shifted_boundary(0)
     first_riser_index = int(getattr(sections[0], "riser_index", 0))
@@ -5415,11 +4918,7 @@ def _make_circular_notched_stringer_shape(
         )
     for index in range(cell_count):
         start_angle = shifted_boundary(index)
-        end_angle = (
-            shifted_boundary(index + 1)
-            if index + 1 < cell_count
-            else angles[index + 1]
-        )
+        end_angle = shifted_boundary(index + 1) if index + 1 < cell_count else angles[index + 1]
         add_envelope(
             start_angle,
             end_angle,
@@ -5454,11 +4953,7 @@ def _make_circular_notched_stringer_shape(
                 extended = result.fuse(extension).removeSplitter()
             except (Part.OCCError, ValueError):
                 extended = Part.Shape()
-            if (
-                not extended.isNull()
-                and extended.isValid()
-                and len(extended.Solids) == 1
-            ):
+            if not extended.isNull() and extended.isValid() and len(extended.Solids) == 1:
                 result = extended
     return result
 
@@ -5494,21 +4989,18 @@ def _planar_notched_stringer_shape(
             section.tangent[1] / section_length,
         )
         if (
-            abs(
-                tangent[0] * section_tangent[1]
-                - tangent[1] * section_tangent[0]
-            )
-            > 1e-7
-            or tangent[0] * section_tangent[0]
-            + tangent[1] * section_tangent[1]
-            < 0.0
+            abs(tangent[0] * section_tangent[1] - tangent[1] * section_tangent[0]) > 1e-7
+            or tangent[0] * section_tangent[0] + tangent[1] * section_tangent[1] < 0.0
         ):
             return None
         rail = section.left if side == "Left" else section.right
-        if abs(
-            (rail[0] - first_rail[0]) * plan_normal[0]
-            + (rail[1] - first_rail[1]) * plan_normal[1]
-        ) > 1e-5:
+        if (
+            abs(
+                (rail[0] - first_rail[0]) * plan_normal[0]
+                + (rail[1] - first_rail[1]) * plan_normal[1]
+            )
+            > 1e-5
+        ):
             return None
 
     thickness = max(float(thickness), 0.01)
@@ -5520,22 +5012,15 @@ def _planar_notched_stringer_shape(
     slope = _stringer_slope(sections, elevations)
     slope_cosine = 1.0 / math.sqrt(1.0 + slope * slope)
     vertical_width = width / max(slope_cosine, 0.01)
-    bottoms = [
-        max(elevation - vertical_width, 0.0)
-        for elevation in elevations
-    ]
+    bottoms = [max(elevation - vertical_width, 0.0) for elevation in elevations]
 
     inward = _stringer_inward(sections[0], side)
 
     def point(section, elevation, distance=0.0):
         rail = section.left if side == "Left" else section.right
         return FreeCAD.Vector(
-            rail[0]
-            + tangent[0] * distance
-            + inward[0] * lateral_offset,
-            rail[1]
-            + tangent[1] * distance
-            + inward[1] * lateral_offset,
+            rail[0] + tangent[0] * distance + inward[0] * lateral_offset,
+            rail[1] + tangent[1] * distance + inward[1] * lateral_offset,
             elevation,
         )
 
@@ -5551,9 +5036,7 @@ def _planar_notched_stringer_shape(
     def clearance_after(section_index):
         if riser_clearance < 1e-9 or section_index + 1 >= len(sections):
             return 0.0
-        available = run_length(
-            sections[section_index], sections[section_index + 1]
-        )
+        available = run_length(sections[section_index], sections[section_index + 1])
         return min(riser_clearance, max(available - 0.01, 0.0))
 
     points = []
@@ -5600,18 +5083,11 @@ def _planar_notched_stringer_shape(
             )
         )
 
-    bottom_points = [
-        point(section, bottom)
-        for section, bottom in zip(sections, bottoms)
-    ]
+    bottom_points = [point(section, bottom) for section, bottom in zip(sections, bottoms)]
     if shifted_start:
         first_run = max(run_length(sections[0], sections[1]), 0.01)
-        start_bottom = bottoms[0] + (
-            bottoms[1] - bottoms[0]
-        ) * start_clearance / first_run
-        bottom_points[0] = point(
-            sections[0], start_bottom, start_clearance
-        )
+        start_bottom = bottoms[0] + (bottoms[1] - bottoms[0]) * start_clearance / first_run
+        bottom_points[0] = point(sections[0], start_bottom, start_clearance)
     if end_extension > 1e-9:
         bottom_points.append(
             point(
@@ -5693,10 +5169,7 @@ def _make_notched_stringer_run(
     slope = _stringer_slope(sections, elevations)
     slope_cosine = 1.0 / math.sqrt(1.0 + slope * slope)
     vertical_width = width / max(slope_cosine, 0.01)
-    bottoms = [
-        max(elevation - vertical_width, 0.0)
-        for elevation in elevations
-    ]
+    bottoms = [max(elevation - vertical_width, 0.0) for elevation in elevations]
     solids = []
     for index, (front, rear) in enumerate(zip(sections, sections[1:])):
         tread_bottom = elevations[index] - float(step_thickness)
@@ -5774,11 +5247,7 @@ def make_riser_shape(
 
     bottom_extension = step_thickness if priority_to_riser and index > 0 else 0.0
     height = max(
-        metrics.riser_height
-        - step_thickness
-        + bottom_extension
-        - upper_offset
-        - lower_offset,
+        metrics.riser_height - step_thickness + bottom_extension - upper_offset - lower_offset,
         0.01,
     )
     x = index * metrics.tread_width
