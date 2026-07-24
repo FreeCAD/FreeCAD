@@ -420,9 +420,16 @@ def CreateBox(job, extent=None, placement=None):
 
 
 def CreateCylinder(job, radius=None, height=None, placement=None):
+    def checkSides(a, b, c):
+        # a several times bigger than b and c
+        # b and c is close
+        return a > 3 * b and a > 3 * c and b < 2 * c
+
     base = _getBase(job)
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Stock")
     obj.Proxy = StockCreateCylinder(obj)
+    getFromAlignedShapeX = False
+    getFromAlignedShapeY = False
 
     if radius:
         obj.Radius = radius
@@ -431,15 +438,64 @@ def CreateCylinder(job, radius=None, height=None, placement=None):
         obj.Height = height
     elif base:
         bb = shapeBoundBox(base.Group)
-        obj.Radius = math.sqrt(bb.XLength**2 + bb.YLength**2) / 2.0
-        obj.Height = max(bb.ZLength, 1)
+
+        # One side is bigger than two others
+        # Use BoundBox to define Height and Radius
+        if checkSides(bb.XLength, bb.YLength, bb.ZLength):  # along X
+            getFromAlignedShapeX = True
+            obj.Height = max(bb.XLength, 1)
+            obj.Radius = math.hypot(bb.YLength, bb.ZLength) / 2
+        elif checkSides(bb.YLength, bb.XLength, bb.ZLength):  # along Y
+            getFromAlignedShapeY = True
+            obj.Height = max(bb.YLength, 1)
+            obj.Radius = math.hypot(bb.XLength, bb.ZLength) / 2
+        elif checkSides(bb.ZLength, bb.XLength, bb.YLength):  # along Z
+            obj.Height = max(bb.ZLength, 1)
+            obj.Radius = math.hypot(bb.XLength, bb.YLength) / 2
+
+        elif edges := [e for e in base.Group[0].Shape.Edges if isinstance(e.Curve, Part.Circle)]:
+            # Shape contains circular edges
+            # Use BoundBox to define Height and Radius if model aligned with axes
+            edge = sorted(edges, key=lambda e: e.Curve.Radius)[-1]
+            axis = edge.Curve.Axis
+            if Path.Geom.compareVecs(axis, FreeCAD.Vector(1, 0, 0)):  # along X
+                getFromAlignedShapeX = True
+                obj.Height = max(bb.XLength, 1)
+                obj.Radius = math.hypot(bb.YLength, bb.ZLength) / 2
+            elif Path.Geom.compareVecs(axis, FreeCAD.Vector(0, 1, 0)):  # along Y
+                getFromAlignedShapeY = True
+                obj.Height = max(bb.YLength, 1)
+                obj.Radius = math.hypot(bb.XLength, bb.ZLength) / 2
+            elif Path.Geom.compareVecs(axis, FreeCAD.Vector(0, 0, 1)):  # along Z
+                obj.Height = max(bb.ZLength, 1)
+                obj.Radius = math.hypot(bb.XLength, bb.YLength) / 2
+            else:  # Otherwise take Height from bigger face and Radius from bigger circular edge
+                faces = [
+                    f
+                    for f in base.Group[0].Shape.Faces
+                    if isinstance(f.Surface, (Part.Cylinder, Part.Cone))
+                ]
+                face = sorted(faces, key=lambda f: f.Volume)[-1]
+                obj.Height = abs(face.ParameterRange[2] - face.ParameterRange[3])
+                obj.Radius = edge.Curve.Radius
+
+        else:
+            obj.Radius = math.hypot(bb.XLength, bb.YLength) / 2
+            obj.Height = max(bb.ZLength, 1)
 
     if placement:
         obj.Placement = placement
     elif base:
         bb = shapeBoundBox(base.Group)
-        origin = FreeCAD.Vector((bb.XMin + bb.XMax) / 2, (bb.YMin + bb.YMax) / 2, bb.ZMin)
-        obj.Placement = FreeCAD.Placement(origin, FreeCAD.Vector(), 0)
+        if getFromAlignedShapeX:  # along X
+            origin = FreeCAD.Vector(bb.XMin, bb.Center.y, bb.Center.z)
+            obj.Placement = FreeCAD.Placement(origin, FreeCAD.Vector(0, 1, 0), 90)
+        elif getFromAlignedShapeY:  # along Y
+            origin = FreeCAD.Vector(bb.Center.x, bb.YMin, bb.Center.z)
+            obj.Placement = FreeCAD.Placement(origin, FreeCAD.Vector(1, 0, 0), -90)
+        else:  # along Z
+            origin = FreeCAD.Vector(bb.Center.x, bb.Center.y, bb.ZMin)
+            obj.Placement = FreeCAD.Placement(origin, FreeCAD.Vector(0, 0, 1), 0)
 
     SetupStockObject(obj, StockType.CreateCylinder)
     return obj
