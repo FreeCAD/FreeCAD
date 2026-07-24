@@ -31,7 +31,7 @@
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopoDS.hxx>
 
-#include <boost/algorithm/string/predicate.hpp>
+#include <string_view>
 
 #include <App/IndexedName.h>
 #include <App/MappedName.h>
@@ -1691,22 +1691,22 @@ bool SketchObject::geoIdFromShapeType(const Data::IndexedName & indexedName,
     if (!indexedName)
         return false;
     const char *shapetype = indexedName.getType();
-    if (boost::equals(shapetype,"Edge") ||
-        boost::equals(shapetype,"edge")) {
+    if (std::string_view(shapetype) == "Edge" ||
+        std::string_view(shapetype) == "edge") {
         geoId = indexedName.getIndex() - 1;
-    } else if (boost::equals(shapetype,"ExternalEdge")) {
+    } else if (std::string_view(shapetype) == "ExternalEdge") {
         geoId = indexedName.getIndex() - 1;
         geoId = Sketcher::GeoEnum::RefExt - geoId;
-    } else if (boost::equals(shapetype,"Vertex") ||
-               boost::equals(shapetype,"vertex")) {
+    } else if (std::string_view(shapetype) == "Vertex" ||
+               std::string_view(shapetype) == "vertex") {
         int VtId = indexedName.getIndex() - 1;
         getGeoVertexIndex(VtId,geoId,posId);
         if (posId==PointPos::none) return false;
-    } else if (boost::equals(shapetype,"H_Axis")) {
+    } else if (std::string_view(shapetype) == "H_Axis") {
         geoId = Sketcher::GeoEnum::HAxis;
-    } else if (boost::equals(shapetype,"V_Axis")) {
+    } else if (std::string_view(shapetype) == "V_Axis") {
         geoId = Sketcher::GeoEnum::VAxis;
-    } else if (boost::equals(shapetype,"RootPoint")) {
+    } else if (std::string_view(shapetype) == "RootPoint") {
         geoId = Sketcher::GeoEnum::RtPnt;
         posId = PointPos::start;
     } else
