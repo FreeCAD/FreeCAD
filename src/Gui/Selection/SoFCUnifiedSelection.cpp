@@ -84,6 +84,7 @@
 
 #include "SoFCUnifiedSelection.h"
 #include "SelectionColors.h"
+#include "SelectionMaterial.h"
 #include "Application.h"
 #include "Document.h"
 #include "DocumentObserver.h"
@@ -1888,15 +1889,16 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction* action, bool inPath)
             if (style != SoFCSelectionRoot::Box) {
                 state->push();
                 auto& color = SelColorStack.back();
-                SoLazyElement::setEmissive(state, &color);
-                SoOverrideElement::setEmissiveColorOverride(state, this, true);
-                if (SoLazyElement::getLightModel(state) == SoLazyElement::BASE_COLOR) {
-                    auto& packer = shapeColorPacker;
-                    SoLazyElement::setDiffuse(state, this, 1, &color, &packer);
-                    SoOverrideElement::setDiffuseColorOverride(state, this, true);
-                    SoMaterialBindingElement::set(state, this, SoMaterialBindingElement::OVERALL);
-                    SoOverrideElement::setMaterialBindingOverride(state, this, true);
-                }
+                SoMaterialBindingElement::set(state, this, SoMaterialBindingElement::OVERALL);
+                SoOverrideElement::setMaterialBindingOverride(state, this, true);
+                SelectionMaterial::applyMaterial(
+                    state,
+                    this,
+                    SelectionMaterial::VisualRole::Selection,
+                    SelectionMaterial::MaterialMode::Lit,
+                    color,
+                    &shapeColorPacker
+                );
             }
         }
 

@@ -1132,6 +1132,8 @@ SET(Inventor_SRCS
     Selection/SoFCUnifiedSelection.h
     Selection/SoFCSelectionContext.h
     Selection/SoFCSelectionAction.h
+    Selection/SelectionColors.h
+    Selection/SelectionMaterial.h
     SoFCVectorizeSVGAction.h
     SoFCVectorizeU3DAction.h
     SoDevicePixelRatioElement.h
