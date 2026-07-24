@@ -1079,4 +1079,17 @@ void DlgExpressionInput::setMsgText()
     }
 }
 
+void DlgExpressionInput::keyPressEvent(QKeyEvent* event)
+{
+    // handle esc key explicitly so the parent task panel doesn't also close
+    // NOTE: https://github.com/freecad/freecad/issues/23518
+    if (event->key() == Qt::Key_Escape) {
+        event->accept();
+        reject();
+        return;
+    }
+
+    QDialog::keyPressEvent(event);
+}
+
 #include "moc_DlgExpressionInput.cpp"
