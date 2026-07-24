@@ -27,10 +27,12 @@
 
 
 #include "TaskMeasure.h"
+#include "MeasureSnapManager.h"
 
 #include <App/DocumentObjectGroup.h>
 #include <App/Link.h>
 #include <Mod/Measure/App/MeasureDistance.h>
+#include <Mod/Measure/App/Preferences.h>
 #include <App/PropertyStandard.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Application.h>
@@ -260,6 +262,8 @@ TaskMeasure::TaskMeasure()
         mTargetDoc = doc;
         mTargetDoc->openCommand("Add Measurement");
     }
+
+    mSnapManager = std::make_unique<MeasureSnapManager>();
 
     setAutoCloseOnDeletedDocument(true);
     // Call invoke method delayed, otherwise the dialog might not be fully initialized
@@ -652,6 +656,12 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
         && msg.Type != Gui::SelectionChanges::SetSelection
         && msg.Type != Gui::SelectionChanges::ClrSelection) {
 
+        // RmvPreselect routes unconditionally so a marker shown before snapping was
+        // turned off cannot stay frozen on screen.
+        if (msg.Type == Gui::SelectionChanges::RmvPreselect
+            || (msg.Type == Gui::SelectionChanges::SetPreselect && snapEnabled())) {
+            mSnapManager->onPreselect(msg);
+        }
         return;
     }
 
@@ -671,6 +681,11 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
     }
     update();
+}
+
+bool TaskMeasure::snapEnabled() const
+{
+    return Measure::Preferences::getPreferenceGroup("Snapping")->GetBool("SnapEnabled", true);
 }
 
 void TaskMeasure::setupShortcuts(QWidget* parent)
