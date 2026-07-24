@@ -1,0 +1,1560 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+/***************************************************************************
+ *   Copyright (c) 2026 Yash Suthar <yashsuthar983@gmail.com>              *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
+
+
+#include "PreCompiled.h"
+
+#include <QDialog>
+#include <QObject>
+
+#include <Base/Console.h>
+#include <Base/Tools.h>
+#include <Base/Unit.h>
+#include <Gui/Action.h>
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Selection/Selection.h>
+
+#include <Mod/Part/App/Geometry.h>
+#include <Mod/Sketcher3D/App/Constraint3D.h>
+#include <Mod/Sketcher3D/App/GeoEnum3D.h>
+#include <Mod/Sketcher3D/App/Sketch3DObject.h>
+
+#include "DlgEditConstraintValue.h"
+#include "DrawSketchHandlerLine3D.h"
+#include "DrawSketchHandlerPoint3D.h"
+#include "DrawSketchHandlerPolyline3D.h"
+#include "DrawSketchHandlerReferencePlane3D.h"
+#include "DrawSketchHandlerCircle3D.h"
+#include "DrawSketchHandlerArc3D.h"
+#include "Utils.h"
+#include "ViewProviderSketch3D.h"
+
+
+namespace Sketcher3DGui
+{
+
+DEF_STD_CMD_A(CmdSketcher3DCreateSketch)
+
+CmdSketcher3DCreateSketch::CmdSketcher3DCreateSketch()
+    : Command("Sketcher3D_CreateSketch")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Create 3D sketch");
+    sToolTipText = QT_TR_NOOP("Creates a new 3D sketch");
+    sWhatsThis = "Sketcher3D_CreateSketch";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_NewSketch";
+}
+
+void CmdSketcher3DCreateSketch::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    std::string FeatName = getUniqueObjectName("Sketch3D");
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create a new 3D sketch"));
+    doCommand(
+        Doc,
+        "App.activeDocument().addObject('Sketcher3D::Sketch3DObject', '%s')",
+        FeatName.c_str()
+    );
+    doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
+    commitCommand();
+}
+
+bool CmdSketcher3DCreateSketch::isActive()
+{
+    return hasActiveDocument();
+}
+
+// Editmode tool
+
+DEF_STD_CMD_A(CmdSketcher3DCreatePoint)
+
+CmdSketcher3DCreatePoint::CmdSketcher3DCreatePoint()
+    : Command("Sketcher3D_CreatePoint")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Point");
+    sToolTipText = QT_TR_NOOP("Create a 3D point");
+    sWhatsThis = "Sketcher3D_CreatePoint";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_CreatePoint";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DCreatePoint::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ViewProviderSketch3D* vp = getActiveSketch3DVP();
+    if (!vp) {
+        return;
+    }
+    vp->activateHandler(std::make_unique<DrawSketchHandlerPoint3D>());
+}
+
+bool CmdSketcher3DCreatePoint::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DCreateLine)
+
+CmdSketcher3DCreateLine::CmdSketcher3DCreateLine()
+    : Command("Sketcher3D_CreateLine")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Line");
+    sToolTipText = QT_TR_NOOP("Create a 3D line segment");
+    sWhatsThis = "Sketcher3D_CreateLine";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_CreateLine";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DCreateLine::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ViewProviderSketch3D* vp = getActiveSketch3DVP();
+    if (!vp) {
+        return;
+    }
+    vp->activateHandler(std::make_unique<DrawSketchHandlerLine3D>());
+}
+
+bool CmdSketcher3DCreateLine::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+
+DEF_STD_CMD_A(CmdSketcher3DCreatePolyline)
+
+CmdSketcher3DCreatePolyline::CmdSketcher3DCreatePolyline()
+    : Command("Sketcher3D_CreatePolyline")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Polyline");
+    sToolTipText = QT_TR_NOOP("Create a 3D polyline");
+    sWhatsThis = "Sketcher3D_CreatePolyline";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_CreatePolyline";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DCreatePolyline::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ViewProviderSketch3D* vp = getActiveSketch3DVP();
+    if (!vp) {
+        return;
+    }
+    vp->activateHandler(std::make_unique<DrawSketchHandlerPolyline3D>());
+}
+
+bool CmdSketcher3DCreatePolyline::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DCreateReferencePlane)
+
+CmdSketcher3DCreateReferencePlane::CmdSketcher3DCreateReferencePlane()
+    : Command("Sketcher3D_CreateReferencePlane")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Reference plane");
+    sToolTipText = QT_TR_NOOP("Create a reference work plane through three points");
+    sWhatsThis = "Sketcher3D_CreateReferencePlane";
+    sStatusTip = sToolTipText;
+    sPixmap = "PartDesign_Plane";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DCreateReferencePlane::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ViewProviderSketch3D* vp = getActiveSketch3DVP();
+    if (!vp) {
+        return;
+    }
+    vp->activateHandler(std::make_unique<DrawSketchHandlerReferencePlane3D>());
+}
+
+bool CmdSketcher3DCreateReferencePlane::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+DEF_STD_CMD_AU(CmdSketcher3DToggleConstruction)
+
+CmdSketcher3DToggleConstruction::CmdSketcher3DToggleConstruction()
+    : Command("Sketcher3D_ToggleConstruction")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Toggle reference geometry");
+    sToolTipText = QT_TR_NOOP(
+        "Toggle between normal and reference (construction) geometry while drawing"
+    );
+    sWhatsThis = "Sketcher3D_ToggleConstruction";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_ToggleConstruction";
+    sAccel = "G, N";
+    eType = ForEdit;
+
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+    rcCmdMgr.addCommandMode("ToggleConstruction3D", "Sketcher3D_CreatePoint");
+    rcCmdMgr.addCommandMode("ToggleConstruction3D", "Sketcher3D_CreateLine");
+    rcCmdMgr.addCommandMode("ToggleConstruction3D", "Sketcher3D_CreatePolyline");
+    rcCmdMgr.addCommandMode("ToggleConstruction3D", "Sketcher3D_CreateCircle");
+    rcCmdMgr.addCommandMode("ToggleConstruction3D", "Sketcher3D_CreateArc");
+    rcCmdMgr.addCommandMode("ToggleConstruction3D", "Sketcher3D_ToggleConstruction");
+}
+
+void CmdSketcher3DToggleConstruction::updateAction(int mode)
+{
+    auto* act = getAction();
+    if (!act) {
+        return;
+    }
+    switch (static_cast<GeometryCreationMode3D>(mode)) {
+        case GeometryCreationMode3D::Normal:
+            act->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_ToggleConstruction"));
+            break;
+        case GeometryCreationMode3D::Construction:
+            act->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_ToggleConstruction_Constr"));
+            break;
+    }
+}
+
+void CmdSketcher3DToggleConstruction::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    toggleConstructionCreationMode();
+}
+
+bool CmdSketcher3DToggleConstruction::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DCreateCircle)
+
+CmdSketcher3DCreateCircle::CmdSketcher3DCreateCircle()
+    : Command("Sketcher3D_CreateCircle")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Create circle");
+    sToolTipText = QT_TR_NOOP("Creates a 3D circle from 3 perimeter points");
+    sWhatsThis = "Sketcher3D_CreateCircle";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_Create3PointCircle";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DCreateCircle::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ViewProviderSketch3D* vp = getActiveSketch3DVP();
+    if (!vp) {
+        return;
+    }
+    vp->activateHandler(std::make_unique<DrawSketchHandlerCircle3D>());
+}
+
+bool CmdSketcher3DCreateCircle::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+
+DEF_STD_CMD_A(CmdSketcher3DCreateArc)
+
+CmdSketcher3DCreateArc::CmdSketcher3DCreateArc()
+    : Command("Sketcher3D_CreateArc")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Create arc");
+    sToolTipText = QT_TR_NOOP("Creates a 3D arc from start point, end point, and a point on the arc");
+    sWhatsThis = "Sketcher3D_CreateArc";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_Create3PointArc";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DCreateArc::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ViewProviderSketch3D* vp = getActiveSketch3DVP();
+    if (!vp) {
+        return;
+    }
+    vp->activateHandler(std::make_unique<DrawSketchHandlerArc3D>());
+}
+
+bool CmdSketcher3DCreateArc::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+// ---------------------------------------------------------------------------
+// Selection helpers
+// ---------------------------------------------------------------------------
+
+struct Sketch3DCollectedSelection
+{
+    std::vector<Sketcher3D::GeoElementId3D> points;
+    std::vector<Sketcher3D::GeoElementId3D> lines;
+    std::vector<Sketcher3D::GeoElementId3D> arcs;
+    std::vector<Sketcher3D::GeoElementId3D> circles;
+    std::vector<Sketcher3D::GeoElementId3D> planes;
+};
+
+Sketch3DCollectedSelection collectSketch3DSelection(
+    Sketcher3D::Sketch3DObject* sketch,
+    bool wantPoints,
+    bool wantCurves = false,
+    bool wantPlanes = false
+)
+{
+    Sketch3DCollectedSelection result;
+    if (!sketch || (!wantPoints && !wantCurves && !wantPlanes)) {
+        return result;
+    }
+
+    auto sels = Gui::Selection().getSelectionEx(nullptr, Sketcher3D::Sketch3DObject::getClassTypeId());
+    for (auto& s : sels) {
+        if (s.getObject() != sketch) {
+            continue;
+        }
+        for (auto& subname : s.getSubNames()) {
+            auto id = sketch->resolveSubName(subname);
+            if (!id.isValid()) {
+                continue;
+            }
+
+            // check by geokind
+            bool isPoint = id.Kind == Sketcher3D::GeoKind::Point
+                || (id.Kind != Sketcher3D::GeoKind::Plane && id.Pos != Sketcher3D::PointPos::none);
+            bool isCurve = id.Pos == Sketcher3D::PointPos::none
+                && (id.Kind == Sketcher3D::GeoKind::Line || id.Kind == Sketcher3D::GeoKind::Arc
+                    || id.Kind == Sketcher3D::GeoKind::Circle);
+
+            if (wantPoints && isPoint) {
+                result.points.push_back(id);
+            }
+            else if (wantCurves && isCurve) {
+                switch (id.Kind) {
+                    case Sketcher3D::GeoKind::Line:
+                        result.lines.push_back(id);
+                        break;
+                    case Sketcher3D::GeoKind::Arc:
+                        result.arcs.push_back(id);
+                        break;
+                    case Sketcher3D::GeoKind::Circle:
+                        result.circles.push_back(id);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else if (wantPlanes && id.Kind == Sketcher3D::GeoKind::Plane) {
+                result.planes.push_back(id);
+            }
+        }
+    }
+
+    return result;
+}
+
+std::vector<Sketcher3D::GeoElementId3D> collectSelectedPointRefs(Sketcher3D::Sketch3DObject* sketch)
+{
+    return collectSketch3DSelection(sketch, true).points;
+}
+
+std::vector<Sketcher3D::GeoElementId3D> collectSelectedLineRefs(Sketcher3D::Sketch3DObject* sketch)
+{
+    return collectSketch3DSelection(sketch, false, true).lines;
+}
+
+// ---------------------------------------------------------------------------
+// Constraints
+// ---------------------------------------------------------------------------
+
+DEF_STD_CMD_A(CmdSketcher3DConstrainDistance)
+
+CmdSketcher3DConstrainDistance::CmdSketcher3DConstrainDistance()
+    : Command("Sketcher3D_ConstrainDistance")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain distance");
+    sToolTipText = QT_TR_NOOP("Force a 3D line length, P2P distance, or P2L distance");
+    sWhatsThis = "Sketcher3D_ConstrainDistance";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_Length";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainDistance::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Sketcher3D::Sketch3DObject* sketch = activeSketch3D();
+    if (!sketch) {
+        return;
+    }
+
+    auto sel = collectSketch3DSelection(sketch, true, true);
+
+    std::vector<Sketcher3D::GeoElementId3D> refs;
+    double seedValue = 0.0;
+    auto& lines = sel.lines;
+
+    if (sel.points.size() == 2 && lines.empty()) {
+        // P2P
+        if (sel.points[0] == sel.points[1]) {
+            Base::Console().warning("Sketcher3D: Distance needs two distinct points.\n");
+            return;
+        }
+        refs.push_back(sel.points[0]);
+        refs.push_back(sel.points[1]);
+        Base::Vector3d p1, p2;
+        sketch->getPointAt(refs[0], p1);
+        sketch->getPointAt(refs[1], p2);
+        seedValue = (p2 - p1).Length();
+    }
+    else if (sel.points.size() == 0 && lines.size() == 1) {
+        // Line
+        refs.emplace_back(lines[0].GeoId, Sketcher3D::PointPos::start, Sketcher3D::GeoKind::Line);
+        refs.emplace_back(lines[0].GeoId, Sketcher3D::PointPos::end, Sketcher3D::GeoKind::Line);
+        Base::Vector3d p1, p2;
+        sketch->getPointAt(refs[0], p1);
+        sketch->getPointAt(refs[1], p2);
+        seedValue = (p2 - p1).Length();
+    }
+    else if (sel.points.size() == 1 && lines.size() == 1) {
+        // P2L
+        refs.push_back(sel.points[0]);
+        refs.push_back(lines[0]);
+
+        Base::Vector3d pt, pStart, pEnd;
+        sketch->getPointAt(sel.points[0], pt);
+
+        Sketcher3D::GeoElementId3D lStart(
+            lines[0].GeoId,
+            Sketcher3D::PointPos::start,
+            Sketcher3D::GeoKind::Line
+        );
+        Sketcher3D::GeoElementId3D lEnd(
+            lines[0].GeoId,
+            Sketcher3D::PointPos::end,
+            Sketcher3D::GeoKind::Line
+        );
+        sketch->getPointAt(lStart, pStart);
+        sketch->getPointAt(lEnd, pEnd);
+
+        Base::Vector3d dir = pEnd - pStart;
+        double lineLen = dir.Length();
+        Base::Vector3d cross = dir.Cross(pt - pStart);
+        seedValue = cross.Length() / lineLen;
+    }
+    else {
+        Base::Console().warning(
+            "Sketcher3D: select one 3D sketch line, exactly two 3D sketch points, or one point and "
+            "one line for Distance.\n"
+        );
+        return;
+    }
+
+    DlgEditConstraintValue dlg(
+        QObject::tr("Constrain distance"),
+        QObject::tr("Distance:"),
+        seedValue,
+        Base::Unit::Length,
+        Gui::getMainWindow()
+    );
+    if (dlg.exec() != QDialog::Accepted) {
+        return;
+    }
+    double finalValue = dlg.value();
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Constrain distance"));
+    Sketcher3D::Constraint3D c;
+    c.Type = Sketcher3D::Constraint3D::Distance3D;
+    c.Value = finalValue;
+    c.setElements(refs);
+    sketch->addConstraint(c);
+    sketch->recomputeFeature();
+    commitCommand();
+
+    Gui::Selection().clearSelection();
+}
+
+bool CmdSketcher3DConstrainDistance::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+// helper for axisdistanceConstraint
+void addAxisDistanceConstraint(
+    Gui::Command* command,
+    Sketcher3D::Constraint3D::Constraint3DType type,
+    char axis,
+    const QString& dialogTitle,
+    const char* commandText
+)
+{
+    if (!command) {
+        return;
+    }
+    ViewProviderSketch3D* vp = getActiveSketch3DVP();
+    if (!vp) {
+        return;
+    }
+    Sketcher3D::Sketch3DObject* sketch = vp->getSketch3DObject();
+    if (!sketch) {
+        return;
+    }
+
+    auto refs = collectSelectedPointRefs(sketch);
+
+    if (refs.empty() || refs.size() > 2) {
+        Base::Console().warning("Sketcher3D: select one or two 3D sketch points for Distance%c.\n", axis);
+        return;
+    }
+    if (refs.size() == 2 && refs[0] == refs[1]) {
+        Base::Console().warning("Sketcher3D: Distance%c needs two distinct points.\n", axis);
+        return;
+    }
+
+    std::vector<Base::Vector3d> positions;
+    positions.reserve(refs.size());
+    for (const auto& ref : refs) {
+        Base::Vector3d point;
+        if (!sketch->getPointAt(ref, point)) {
+            return;
+        }
+        positions.push_back(point);
+    }
+
+    // One point: seed from the absolute coordinate (distance to the corresponding global plane).
+    // Two points: seed from the signed component-wise delta.
+    Base::Vector3d ref = refs.size() == 2 ? (positions[1] - positions[0]) : positions[0];
+    double seedValue = 0.0;
+    switch (axis) {
+        case 'X':
+            seedValue = ref.x;
+            break;
+        case 'Y':
+            seedValue = ref.y;
+            break;
+        case 'Z':
+            seedValue = ref.z;
+            break;
+    }
+
+    DlgEditConstraintValue dlg(
+        dialogTitle,
+        QObject::tr("Distance:"),
+        seedValue,
+        Base::Unit::Length,
+        Gui::getMainWindow(),
+        true
+    );
+    if (dlg.exec() != QDialog::Accepted) {
+        return;
+    }
+    double finalValue = dlg.value();
+
+    command->openCommand(commandText);
+    Sketcher3D::Constraint3D c;
+    c.Type = type;
+    c.Value = finalValue;
+    if (refs.size() == 2) {
+        c.setElements({refs[0], refs[1]});
+    }
+    else {
+        c.setElements({refs[0]});
+    }
+    sketch->addConstraint(c);
+    sketch->recomputeFeature();
+    command->commitCommand();
+
+    Gui::Selection().clearSelection();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DConstrainDistanceX)
+
+CmdSketcher3DConstrainDistanceX::CmdSketcher3DConstrainDistanceX()
+    : Command("Sketcher3D_ConstrainDistanceX")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain distance X");
+    sToolTipText = QT_TR_NOOP(
+        "Force the X-axis distance: pick one point to lock its X coordinate, or two "
+        "points to fix the signed X delta between them"
+    );
+    sWhatsThis = "Sketcher3D_ConstrainDistanceX";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_HorizontalDistance";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainDistanceX::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    addAxisDistanceConstraint(
+        this,
+        Sketcher3D::Constraint3D::DistanceX3D,
+        'X',
+        QObject::tr("Constrain distance X"),
+        QT_TRANSLATE_NOOP("Command", "Constrain distance X")
+    );
+}
+
+bool CmdSketcher3DConstrainDistanceX::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DConstrainDistanceY)
+
+CmdSketcher3DConstrainDistanceY::CmdSketcher3DConstrainDistanceY()
+    : Command("Sketcher3D_ConstrainDistanceY")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain distance Y");
+    sToolTipText = QT_TR_NOOP(
+        "Force the Y-axis distance: pick one point to lock its Y coordinate, or two "
+        "points to fix the signed Y delta between them"
+    );
+    sWhatsThis = "Sketcher3D_ConstrainDistanceY";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_VerticalDistance";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainDistanceY::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    addAxisDistanceConstraint(
+        this,
+        Sketcher3D::Constraint3D::DistanceY3D,
+        'Y',
+        QObject::tr("Constrain distance Y"),
+        QT_TRANSLATE_NOOP("Command", "Constrain distance Y")
+    );
+}
+
+bool CmdSketcher3DConstrainDistanceY::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DConstrainDistanceZ)
+
+CmdSketcher3DConstrainDistanceZ::CmdSketcher3DConstrainDistanceZ()
+    : Command("Sketcher3D_ConstrainDistanceZ")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain distance Z");
+    sToolTipText = QT_TR_NOOP(
+        "Force the Z-axis distance: pick one point to lock its Z coordinate, or two "
+        "points to fix the signed Z delta between them"
+    );
+    sWhatsThis = "Sketcher3D_ConstrainDistanceZ";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_Length";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainDistanceZ::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    addAxisDistanceConstraint(
+        this,
+        Sketcher3D::Constraint3D::DistanceZ3D,
+        'Z',
+        QObject::tr("Constrain distance Z"),
+        QT_TRANSLATE_NOOP("Command", "Constrain distance Z")
+    );
+}
+
+bool CmdSketcher3DConstrainDistanceZ::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DConstrainCoincident)
+
+CmdSketcher3DConstrainCoincident::CmdSketcher3DConstrainCoincident()
+    : Command("Sketcher3D_ConstrainCoincident")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain coincident");
+    sToolTipText = QT_TR_NOOP("Force two 3D points to share the same location");
+    sWhatsThis = "Sketcher3D_ConstrainCoincident";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_PointOnPoint";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainCoincident::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Sketcher3D::Sketch3DObject* sketch = activeSketch3D();
+    if (!sketch) {
+        return;
+    }
+
+    auto refs = collectSelectedPointRefs(sketch);
+
+    if (refs.size() != 2) {
+        Base::Console().warning("Sketcher3D: select exactly two 3D sketch points for Coincident.\n");
+        return;
+    }
+    if (refs[0] == refs[1]) {
+        Base::Console().warning("Sketcher3D: Coincident needs two distinct points.\n");
+        return;
+    }
+    // Refuse the constraint if the two endpoints are already coincident
+    if (sketch->arePointsCoincident3D(refs[0], refs[1])) {
+        Base::Console().warning("Sketcher3D: those points are already coincident.\n");
+        return;
+    }
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Constrain coincident"));
+    Sketcher3D::Constraint3D c;
+    c.Type = Sketcher3D::Constraint3D::Coincident3D;
+    c.setElements({refs[0], refs[1]});
+    sketch->addConstraint(c);
+    sketch->recomputeFeature();
+    commitCommand();
+    Gui::Selection().clearSelection();
+}
+
+bool CmdSketcher3DConstrainCoincident::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+// Finds the closest pair of endpoints between the two lines, sets
+// which endpoint is tail and returns the angle between the two outward pointing
+// direction vectors in [0, pi]. and store tail endpoint info in ref1.Pos and ref2.Pos.
+bool calculateAngle3D(
+    const Sketcher3D::Sketch3DObject* sketch,
+    Sketcher3D::GeoElementId3D& ref1,
+    Sketcher3D::GeoElementId3D& ref2,
+    double& actAngle
+)
+{
+    if (!sketch) {
+        return false;
+    }
+
+    auto* line1 = sketch->getGeometry<Part::GeomLineSegment>(ref1.GeoId);
+    auto* line2 = sketch->getGeometry<Part::GeomLineSegment>(ref2.GeoId);
+    if (!line1 || !line2) {
+        return false;
+    }
+
+    Base::Vector3d p1[2] = {line1->getStartPoint(), line1->getEndPoint()};
+    Base::Vector3d p2[2] = {line2->getStartPoint(), line2->getEndPoint()};
+
+    // Find the pair of endpoints (one from each line) that are closest together.
+    double minDist = std::numeric_limits<double>::max();
+    int tailIdx1 = 0;
+    int tailIdx2 = 0;
+    for (int i = 0; i <= 1; ++i) {
+        for (int j = 0; j <= 1; ++j) {
+            double d = (p1[i] - p2[j]).Length();
+            if (d < minDist) {
+                minDist = d;
+                tailIdx1 = i;
+                tailIdx2 = j;
+            }
+        }
+    }
+
+    // Store which endpoint is the tail
+    ref1.Pos = tailIdx1 ? Sketcher3D::PointPos::end : Sketcher3D::PointPos::start;
+    ref2.Pos = tailIdx2 ? Sketcher3D::PointPos::end : Sketcher3D::PointPos::start;
+
+    // Direction vectors pointing AWAY from the shared vertex.
+    Base::Vector3d dir1 = tailIdx1 ? (p1[0] - p1[1]) : (p1[1] - p1[0]);
+    Base::Vector3d dir2 = tailIdx2 ? (p2[0] - p2[1]) : (p2[1] - p2[0]);
+
+    if (dir1.Sqr() <= 1e-24 || dir2.Sqr() <= 1e-24) {
+        return false;
+    }
+
+    // Angle between the two outward vectors in [0, pi].
+    double crossMag = (dir1 % dir2).Length();
+    double dot = dir1 * dir2;
+    actAngle = std::atan2(crossMag, dot);
+    return true;
+}
+
+double normalizedLineAngle(double angle)
+{
+    double fullTurn = 2.0 * std::numbers::pi;
+    angle = std::fmod(angle, fullTurn);
+    if (angle < 0.0) {
+        angle += fullTurn;
+    }
+    // Clamp because in 3d there is no referce plane so
+    // clockwise vs counterclockwise dont matter.
+    if (angle > std::numbers::pi) {
+        angle = fullTurn - angle;
+    }
+    return angle;
+}
+
+DEF_STD_CMD_A(CmdSketcher3DConstrainParallel)
+
+CmdSketcher3DConstrainParallel::CmdSketcher3DConstrainParallel()
+    : Command("Sketcher3D_ConstrainParallel")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain parallel");
+    sToolTipText = QT_TR_NOOP("Force two 3D lines to be parallel");
+    sWhatsThis = "Sketcher3D_ConstrainParallel";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_Parallel";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainParallel::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Sketcher3D::Sketch3DObject* sketch = activeSketch3D();
+    if (!sketch) {
+        return;
+    }
+
+    auto refs = collectSelectedLineRefs(sketch);
+
+    if (refs.size() != 2) {
+        Base::Console().warning("Sketcher3D: select exactly two 3D sketch lines for Parallel.\n");
+        return;
+    }
+    if (refs[0] == refs[1]) {
+        Base::Console().warning("Sketcher3D: Parallel needs two distinct lines.\n");
+        return;
+    }
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Constrain parallel"));
+    Sketcher3D::Constraint3D c;
+    c.Type = Sketcher3D::Constraint3D::Parallel3D;
+    c.setElements({refs[0], refs[1]});
+    sketch->addConstraint(c);
+    sketch->recomputeFeature();
+    commitCommand();
+    Gui::Selection().clearSelection();
+}
+
+bool CmdSketcher3DConstrainParallel::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DConstrainEqualLength)
+
+CmdSketcher3DConstrainEqualLength::CmdSketcher3DConstrainEqualLength()
+    : Command("Sketcher3D_ConstrainEqualLength")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain equal length");
+    sToolTipText = QT_TR_NOOP("Constrains the selected 3D lines to have equal length");
+    sWhatsThis = "Sketcher3D_ConstrainEqualLength";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_EqualLength";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainEqualLength::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    ViewProviderSketch3D* vp = getActiveSketch3DVP();
+    if (!vp) {
+        return;
+    }
+    Sketcher3D::Sketch3DObject* sketch = vp->getSketch3DObject();
+    if (!sketch) {
+        return;
+    }
+
+    auto refs = collectSelectedLineRefs(sketch);
+
+    if (refs.size() < 2) {
+        Base::Console().warning("Sketcher3D: select at least two 3D sketch lines for Equal Length.\n");
+        return;
+    }
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Constrain equal length"));
+    for (std::size_t i = 0; i + 1 < refs.size(); ++i) {
+        Sketcher3D::Constraint3D c;
+        c.Type = Sketcher3D::Constraint3D::EqualLength3D;
+        c.setElements({refs[i], refs[i + 1]});
+        sketch->addConstraint(c);
+    }
+    sketch->recomputeFeature();
+    commitCommand();
+
+    Gui::Selection().clearSelection();
+}
+
+bool CmdSketcher3DConstrainEqualLength::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DConstrainPointOnCurve)
+
+CmdSketcher3DConstrainPointOnCurve::CmdSketcher3DConstrainPointOnCurve()
+    : Command("Sketcher3D_ConstrainPointOnCurve")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain point on curve");
+    sToolTipText = QT_TR_NOOP("Force a 3D point to lie on a line, arc, or circle");
+    sWhatsThis = "Sketcher3D_ConstrainPointOnCurve";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_PointOnObject";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainPointOnCurve::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Sketcher3D::Sketch3DObject* sketch = activeSketch3D();
+    if (!sketch) {
+        return;
+    }
+
+    Sketcher3D::GeoElementId3D pointRef;
+    Sketcher3D::GeoElementId3D curveRef;
+    auto sel = collectSketch3DSelection(sketch, true, true);
+    if (sel.points.size() != 1 || sel.lines.size() + sel.arcs.size() + sel.circles.size() != 1) {
+        Base::Console()
+            .warning("Sketcher3D: select exactly one 3D point and one 3D line, arc, or circle for Point on curve.\n");
+        return;
+    }
+    pointRef = sel.points[0];
+    if (!sel.lines.empty()) {
+        curveRef = sel.lines[0];
+    }
+    else if (!sel.arcs.empty()) {
+        curveRef = sel.arcs[0];
+    }
+    else {
+        curveRef = sel.circles[0];
+    }
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Constrain point on curve"));
+    Sketcher3D::Constraint3D c;
+    c.Type = Sketcher3D::Constraint3D::PointOnCurve3D;
+    c.setElements({pointRef, curveRef});
+    sketch->addConstraint(c);
+    sketch->recomputeFeature();
+    commitCommand();
+    Gui::Selection().clearSelection();
+}
+
+bool CmdSketcher3DConstrainPointOnCurve::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DConstrainPointAtLineMidpoint)
+
+CmdSketcher3DConstrainPointAtLineMidpoint::CmdSketcher3DConstrainPointAtLineMidpoint()
+    : Command("Sketcher3D_ConstrainPointAtLineMidpoint")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain point at line midpoint");
+    sToolTipText = QT_TR_NOOP("Force a 3D point to lie at the midpoint of a 3D line segment");
+    sWhatsThis = "Sketcher3D_ConstrainPointAtLineMidpoint";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_Symmetric";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainPointAtLineMidpoint::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Sketcher3D::Sketch3DObject* sketch = activeSketch3D();
+    if (!sketch) {
+        return;
+    }
+
+    Sketcher3D::GeoElementId3D pointRef;
+    Sketcher3D::GeoElementId3D lineRef;
+    auto sel = collectSketch3DSelection(sketch, true, true);
+    if (sel.points.size() != 1 || sel.lines.size() != 1) {
+        Base::Console().warning(
+            "Sketcher3D: select exactly one 3D point and one 3D line for Point at line midpoint.\n"
+        );
+        return;
+    }
+    pointRef = sel.points[0];
+    lineRef = sel.lines[0];
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Constrain point at line midpoint"));
+    Sketcher3D::Constraint3D c;
+    c.Type = Sketcher3D::Constraint3D::PointAtLineMidpoint3D;
+    c.setElements({pointRef, lineRef});
+    sketch->addConstraint(c);
+    sketch->recomputeFeature();
+    commitCommand();
+    Gui::Selection().clearSelection();
+}
+
+bool CmdSketcher3DConstrainPointAtLineMidpoint::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DConstrainCollinear)
+
+CmdSketcher3DConstrainCollinear::CmdSketcher3DConstrainCollinear()
+    : Command("Sketcher3D_ConstrainCollinear")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain collinear");
+    sToolTipText = QT_TR_NOOP("Force two 3D lines to be collinear");
+    sWhatsThis = "Sketcher3D_ConstrainCollinear";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_Tangent";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainCollinear::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Sketcher3D::Sketch3DObject* sketch = activeSketch3D();
+    if (!sketch) {
+        return;
+    }
+
+    auto refs = collectSelectedLineRefs(sketch);
+    if (refs.size() != 2) {
+        Base::Console().warning("Sketcher3D: select exactly two 3D sketch lines for Collinear.\n");
+        return;
+    }
+    if (refs[0] == refs[1]) {
+        Base::Console().warning("Sketcher3D: Collinear needs two distinct lines.\n");
+        return;
+    }
+
+    refs[0].Pos = Sketcher3D::PointPos::none;
+    refs[1].Pos = Sketcher3D::PointPos::none;
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Constrain collinear"));
+    Sketcher3D::Constraint3D c;
+    c.Type = Sketcher3D::Constraint3D::Collinear3D;
+    c.setElements(refs);
+    sketch->addConstraint(c);
+    sketch->recomputeFeature();
+    commitCommand();
+    Gui::Selection().clearSelection();
+}
+
+bool CmdSketcher3DConstrainCollinear::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DConstrainProjectOnPlane)
+
+CmdSketcher3DConstrainProjectOnPlane::CmdSketcher3DConstrainProjectOnPlane()
+    : Command("Sketcher3D_ConstrainProjectOnPlane")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Project on plane");
+    sToolTipText = QT_TR_NOOP("Project selected points/lines onto a reference plane");
+    sWhatsThis = "Sketcher3D_ConstrainProjectOnPlane";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_PointOnObject";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainProjectOnPlane::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Sketcher3D::Sketch3DObject* sketch = activeSketch3D();
+    if (!sketch) {
+        return;
+    }
+    auto sel = collectSketch3DSelection(sketch, true, true, true);
+    const auto& lines = sel.lines;
+    if (sel.planes.size() != 1 || (sel.points.empty() && lines.empty())) {
+        Base::Console()
+            .warning("Sketcher3D: select one reference plane and at least one point or line for Project on plane.\n");
+        return;
+    }
+
+    const Sketcher3D::GeoElementId3D& planeRef = sel.planes[0];
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Project on plane"));
+
+    auto addProjectOnPlane = [&](const Sketcher3D::GeoElementId3D& entity) {
+        Sketcher3D::Constraint3D c;
+        c.Type = Sketcher3D::Constraint3D::ProjectOnPlane3D;
+        c.setElements({entity, planeRef});
+        sketch->addConstraint(c);
+    };
+
+    std::set<Sketcher3D::GeoElementId3D> seen;
+    for (Sketcher3D::GeoElementId3D pointRef : sel.points) {
+        if (seen.insert(pointRef).second) {
+            addProjectOnPlane(pointRef);
+        }
+    }
+    for (Sketcher3D::GeoElementId3D lineRef : lines) {
+        lineRef.Pos = Sketcher3D::PointPos::none;
+        if (seen.insert(lineRef).second) {
+            addProjectOnPlane(lineRef);
+        }
+    }
+
+    sketch->recomputeFeature();
+    commitCommand();
+
+    Gui::Selection().clearSelection();
+}
+
+bool CmdSketcher3DConstrainProjectOnPlane::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DConstrainAngle)
+
+CmdSketcher3DConstrainAngle::CmdSketcher3DConstrainAngle()
+    : Command("Sketcher3D_ConstrainAngle")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain angle");
+    sToolTipText = QT_TR_NOOP("Force the smaller angle between two 3D lines");
+    sWhatsThis = "Sketcher3D_ConstrainAngle";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_InternalAngle";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainAngle::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    ViewProviderSketch3D* vp = getActiveSketch3DVP();
+    if (!vp) {
+        return;
+    }
+    Sketcher3D::Sketch3DObject* sketch = vp->getSketch3DObject();
+    if (!sketch) {
+        return;
+    }
+
+    auto refs = collectSelectedLineRefs(sketch);
+
+    if (refs.size() != 2) {
+        Base::Console().warning("Sketcher3D: select exactly two 3D sketch lines for Angle.\n");
+        return;
+    }
+    if (refs[0] == refs[1]) {
+        Base::Console().warning("Sketcher3D: Angle needs two distinct lines.\n");
+        return;
+    }
+
+    Sketcher3D::GeoElementId3D ref1 = refs[0];
+    Sketcher3D::GeoElementId3D ref2 = refs[1];
+    double actAngle = 0.0;
+    if (!calculateAngle3D(sketch, ref1, ref2, actAngle)) {
+        Base::Console().warning("Sketcher3D: Angle needs two non-zero length lines.\n");
+        return;
+    }
+    if (actAngle == 0.0) {
+        Base::Console().warning(
+            "Sketcher3D: An angle constraint cannot be set for two parallel lines.\n"
+        );
+        return;
+    }
+
+    DlgEditConstraintValue dlg(
+        QObject::tr("Constrain angle"),
+        QObject::tr("Angle:"),
+        Base::toDegrees(actAngle),
+        Base::Unit::Angle,
+        Gui::getMainWindow()
+    );
+    if (dlg.exec() != QDialog::Accepted) {
+        return;
+    }
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Constrain angle"));
+    Sketcher3D::Constraint3D c;
+    c.Type = Sketcher3D::Constraint3D::Angle3D;
+    c.Value = normalizedLineAngle(Base::toRadians(dlg.value()));
+    c.setElements({ref1, ref2});
+    sketch->addConstraint(c);
+    sketch->recomputeFeature();
+    commitCommand();
+
+    Gui::Selection().clearSelection();
+}
+
+bool CmdSketcher3DConstrainAngle::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+void addAlongConstraint(
+    Gui::Command* command,
+    Sketcher3D::Constraint3D::Constraint3DType type,
+    const char* axis,
+    const char* commandText
+)
+{
+    if (!command) {
+        return;
+    }
+    ViewProviderSketch3D* vp = getActiveSketch3DVP();
+    if (!vp) {
+        return;
+    }
+    Sketcher3D::Sketch3DObject* sketch = vp->getSketch3DObject();
+    if (!sketch) {
+        return;
+    }
+
+    auto refs = collectSelectedLineRefs(sketch);
+    if (refs.size() != 1) {
+        Base::Console().warning("Sketcher3D: select exactly one 3D sketch line for Along%s.\n", axis);
+        return;
+    }
+
+    command->openCommand(commandText);
+    Sketcher3D::Constraint3D c;
+    c.Type = type;
+    c.setElements({refs[0]});
+    sketch->addConstraint(c);
+    sketch->recomputeFeature();
+    command->commitCommand();
+
+    Gui::Selection().clearSelection();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DConstrainAlongX)
+
+CmdSketcher3DConstrainAlongX::CmdSketcher3DConstrainAlongX()
+    : Command("Sketcher3D_ConstrainAlongX")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain along X");
+    sToolTipText = QT_TR_NOOP("Force a 3D line to be parallel to the global X axis");
+    sWhatsThis = "Sketcher3D_ConstrainAlongX";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_Horizontal";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainAlongX::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    addAlongConstraint(
+        this,
+        Sketcher3D::Constraint3D::AlongX,
+        "X",
+        QT_TRANSLATE_NOOP("Command", "Constrain along X")
+    );
+}
+
+bool CmdSketcher3DConstrainAlongX::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DConstrainAlongY)
+
+CmdSketcher3DConstrainAlongY::CmdSketcher3DConstrainAlongY()
+    : Command("Sketcher3D_ConstrainAlongY")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain along Y");
+    sToolTipText = QT_TR_NOOP("Force a 3D line to be parallel to the global Y axis");
+    sWhatsThis = "Sketcher3D_ConstrainAlongY";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_Vertical";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainAlongY::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    addAlongConstraint(
+        this,
+        Sketcher3D::Constraint3D::AlongY,
+        "Y",
+        QT_TRANSLATE_NOOP("Command", "Constrain along Y")
+    );
+}
+
+bool CmdSketcher3DConstrainAlongY::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DConstrainAlongZ)
+
+CmdSketcher3DConstrainAlongZ::CmdSketcher3DConstrainAlongZ()
+    : Command("Sketcher3D_ConstrainAlongZ")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain along Z");
+    sToolTipText = QT_TR_NOOP("Force a 3D line to be parallel to the global Z axis");
+    sWhatsThis = "Sketcher3D_ConstrainAlongZ";
+    sStatusTip = sToolTipText;
+    sPixmap = "Std_Axis";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainAlongZ::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    addAlongConstraint(
+        this,
+        Sketcher3D::Constraint3D::AlongZ,
+        "Z",
+        QT_TRANSLATE_NOOP("Command", "Constrain along Z")
+    );
+}
+
+bool CmdSketcher3DConstrainAlongZ::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DConstrainRadius)
+
+CmdSketcher3DConstrainRadius::CmdSketcher3DConstrainRadius()
+    : Command("Sketcher3D_ConstrainRadius")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain radius");
+    sToolTipText = QT_TR_NOOP("Fix the radius of a selected 3D circle or arc");
+    sWhatsThis = "Sketcher3D_ConstrainRadius";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_Radius";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainRadius::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Sketcher3D::Sketch3DObject* sketch = activeSketch3D();
+    if (!sketch) {
+        return;
+    }
+
+    auto sel = collectSketch3DSelection(sketch, false, true);
+    if (sel.arcs.size() + sel.circles.size() != 1) {
+        Base::Console().warning("Sketcher3D: select exactly one circle or arc for Radius.\n");
+        return;
+    }
+
+    Sketcher3D::GeoElementId3D ref = !sel.arcs.empty() ? sel.arcs[0] : sel.circles[0];
+    double seedValue = !sel.arcs.empty()
+        ? sketch->getGeometry<Part::GeomArcOfCircle>(ref.GeoId)->getRadius()
+        : sketch->getGeometry<Part::GeomCircle>(ref.GeoId)->getRadius();
+
+    DlgEditConstraintValue dlg(
+        QObject::tr("Constrain radius"),
+        QObject::tr("Radius:"),
+        seedValue,
+        Base::Unit::Length,
+        Gui::getMainWindow()
+    );
+    if (dlg.exec() != QDialog::Accepted) {
+        return;
+    }
+    if (dlg.value() <= 0.0) {
+        Base::Console().warning("Sketcher3D: Radius must be positive.\n");
+        return;
+    }
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Constrain radius"));
+    Sketcher3D::Constraint3D c;
+    c.Type = Sketcher3D::Constraint3D::Radius3D;
+    c.Value = dlg.value();
+    c.setElements({ref});
+    sketch->addConstraint(c);
+    sketch->recomputeFeature();
+    commitCommand();
+
+    Gui::Selection().clearSelection();
+}
+
+bool CmdSketcher3DConstrainRadius::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+class CmdSketcher3DCompDimensionTools: public Gui::GroupCommand
+{
+public:
+    CmdSketcher3DCompDimensionTools()
+        : GroupCommand("Sketcher3D_CompDimensionTools")
+    {
+        sAppModule = "Sketcher3D";
+        sGroup = QT_TR_NOOP("Sketcher3D");
+        sMenuText = QT_TR_NOOP("Dimension");
+        sToolTipText = QT_TR_NOOP("Dimension tools");
+        sWhatsThis = "Sketcher3D_CompDimensionTools";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
+
+        setCheckable(false);
+        setRememberLast(false);
+
+        addCommand("Sketcher3D_ConstrainDistance");
+        addCommand("Sketcher3D_ConstrainRadius");
+        addCommand("Sketcher3D_ConstrainAngle");
+        addCommand("Sketcher3D_ConstrainDistanceX");
+        addCommand("Sketcher3D_ConstrainDistanceY");
+        addCommand("Sketcher3D_ConstrainDistanceZ");
+    }
+
+    const char* className() const override
+    {
+        return "CmdSketcher3DCompDimensionTools";
+    }
+
+    bool isActive() override
+    {
+        return isSketch3DInEdit();
+    }
+};
+
+class CmdSketcher3DCompParallel: public Gui::GroupCommand
+{
+public:
+    CmdSketcher3DCompParallel()
+        : GroupCommand("Sketcher3D_CompParallel")
+    {
+        sAppModule = "Sketcher3D";
+        sGroup = QT_TR_NOOP("Sketcher3D");
+        sMenuText = QT_TR_NOOP("Parallel axis constraint");
+        sToolTipText = QT_TR_NOOP("Constrain selected 3D lines parallel or along a global axis");
+        sWhatsThis = "Sketcher3D_CompParallel";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
+
+        setCheckable(false);
+        setRememberLast(false);
+
+        addCommand("Sketcher3D_ConstrainParallel");
+        addCommand("Sketcher3D_ConstrainAlongX");
+        addCommand("Sketcher3D_ConstrainAlongY");
+        addCommand("Sketcher3D_ConstrainAlongZ");
+    }
+
+    const char* className() const override
+    {
+        return "CmdSketcher3DCompParallel";
+    }
+
+    bool isActive() override
+    {
+        return isSketch3DInEdit();
+    }
+};
+
+}  // namespace Sketcher3DGui
+
+
+void CreateSketcher3DCommands()
+{
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreateSketch());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreatePoint());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreateLine());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreatePolyline());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreateReferencePlane());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DToggleConstruction());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreateCircle());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreateArc());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainDistance());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainRadius());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainAngle());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainDistanceX());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainDistanceY());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainDistanceZ());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainCoincident());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainParallel());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainAlongX());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainAlongY());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainAlongZ());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainEqualLength());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainPointOnCurve());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainPointAtLineMidpoint());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainCollinear());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainProjectOnPlane());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCompDimensionTools());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCompParallel());
+}
