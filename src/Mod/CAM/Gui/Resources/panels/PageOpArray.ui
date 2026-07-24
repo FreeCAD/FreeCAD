@@ -23,13 +23,13 @@
   <layout class="QVBoxLayout" name="layout_0">
 
    <item>
-    <layout class="QGridLayout" name="layout_operations">
+    <layout class="QHBoxLayout" name="layout_operations">
 
-     <item row="0" column="0">
+     <item>
       <widget class="QTableWidget" name="baseList">
        <property name="minimumSize">
         <size>
-         <width>250</width>
+         <width>220</width>
          <height>200</height>
         </size>
        </property>
@@ -55,27 +55,41 @@
         <property name="text">
          <string>#</string>
         </property>
+        <property name="toolTip">
+         <string>Index operation in Job.
+Can undefined if operation not in Job Operations group or under dress-up.
+         </string>
+        </property>
        </column>
        <column>
         <property name="text">
          <string>Operation</string>
+        </property>
+        <property name="toolTip">
+         <string>Operation label</string>
         </property>
        </column>
        <column>
         <property name="text">
          <string>Tool</string>
         </property>
+        <property name="toolTip">
+         <string>Tool controller label</string>
+        </property>
        </column>
        <column>
         <property name="text">
          <string>Coolant</string>
         </property>
+        <property name="toolTip">
+         <string>Coolant mode</string>
+        </property>
        </column>
       </widget>
      </item>
 
-     <item row="0" column="1">
-      <layout class="QVBoxLayout" name="layout_buttons">
+     <item>
+      <layout class="QVBoxLayout" name="layout_op_buttons">
        <property name="leftMargin">
         <number>0</number>
        </property>
@@ -84,7 +98,7 @@
        </property>
 
        <item>
-        <widget class="QPushButton" name="pb_clear">
+        <widget class="QToolButton" name="tb_op_clear">
          <property name="maximumSize">
           <size>
            <width>70</width>
@@ -101,7 +115,7 @@
        </item>
 
        <item>
-        <widget class="QPushButton" name="pb_remove">
+        <widget class="QToolButton" name="tb_op_remove">
          <property name="maximumSize">
           <size>
            <width>70</width>
@@ -118,7 +132,7 @@
        </item>
 
        <item>
-        <widget class="QPushButton" name="pb_add">
+        <widget class="QToolButton" name="tb_op_add">
          <property name="maximumSize">
           <size>
            <width>70</width>
@@ -135,7 +149,7 @@
        </item>
 
        <item>
-        <widget class="QPushButton" name="pb_up">
+        <widget class="QToolButton" name="tb_op_up">
          <property name="maximumSize">
           <size>
            <width>70</width>
@@ -145,14 +159,16 @@
          <property name="toolTip">
           <string>Move operation up the list</string>
          </property>
-         <property name="text">
-          <string>Up</string>
+         <property name="icon">
+          <iconset>
+           <normaloff>:/icons/button_up.svg</normaloff>:/icons/button_up.svg
+          </iconset>
          </property>
         </widget>
        </item>
 
        <item>
-        <widget class="QPushButton" name="pb_down">
+        <widget class="QToolButton" name="tb_op_down">
          <property name="maximumSize">
           <size>
            <width>70</width>
@@ -162,11 +178,14 @@
          <property name="toolTip">
           <string>Move operation down the list</string>
          </property>
-         <property name="text">
-          <string>Down</string>
+         <property name="icon">
+          <iconset>
+           <normaloff>:/icons/button_down.svg</normaloff>:/icons/button_down.svg
+          </iconset>
          </property>
         </widget>
        </item>
+
       </layout>
      </item>
     </layout>
@@ -196,28 +215,56 @@
      <layout class="QVBoxLayout" name="layout_main">
 
       <item>
-       <widget class="QFrame" name="group_array_type">
-        <layout class="QFormLayout" name="layout_array_type">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_type">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
-           </property>
-           <property name="text">
-            <string>Type</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QComboBox" name="cbo_type">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
+       <layout class="QHBoxLayout" name="layout_type">
+        <item>
+         <widget class="QFrame" name="group_array_type">
+          <layout class="QFormLayout" name="layout_array_type">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_type">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+             </property>
+             <property name="text">
+              <string>Type</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QComboBox" name="cbo_type">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="group_points_sorting">
+          <layout class="QFormLayout" name="layout_points_sorting">
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_points_sorting">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+             </property>
+             <property name="text">
+              <string>Sorting</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QComboBox" name="cbo_points_sorting">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
       </item>
+
 
       <item>
        <widget class="QWidget" name="group_copies">
@@ -451,6 +498,185 @@
            </property>
           </widget>
          </item>
+
+        </layout>
+       </widget>
+      </item>
+
+      <item>
+       <widget class="QWidget" name="group_points">
+        <layout class="QVBoxLayout" name="layout_points">
+
+         <item>
+          <layout class="QHBoxLayout" name="layout_points_origin">
+           <item>
+            <widget class="QLabel" name="label_points_origin">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+             </property>
+             <property name="text">
+              <string>Origin</string>
+             </property>
+            </widget>
+           </item>
+
+
+           <item>
+            <widget class="QLineEdit" name="le_points_origin">
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+             <property name="toolTip">
+              <string>Define the base offsets and angle of rotation from selected shape</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="tb_clear_points_origin">
+             <property name="toolTip">
+              <string>Clear selected origin</string>
+             </property>
+             <property name="text">
+              <string>Clear</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="tb_set_points_origin">
+             <property name="toolTip">
+              <string>Set new origin</string>
+             </property>
+             <property name="text">
+              <string>Set</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+
+         <item>
+          <layout class="QHBoxLayout" name="layout_points_source">
+
+           <item>
+            <widget class="QListWidget" name="pointsSourceList">
+             <property name="minimumSize">
+              <size>
+               <width>220</width>
+               <height>100</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Define the offsets and angle of rotation for repeats from selected sub shapes.
+  If selection without sub elements:
+      - shape contains only vertexes: create repeats for each vertex;
+      - shape contains edges: create only one repeat (useful for imported nesting shapes.
+              </string>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::ExtendedSelection</enum>
+             </property>
+            </widget>
+           </item>
+
+           <item>
+            <layout class="QVBoxLayout" name="layout_points_source_buttons">
+
+             <item>
+              <widget class="QToolButton" name="tb_points_clear">
+               <property name="maximumSize">
+                <size>
+                 <width>70</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string>Remove all shapes from list</string>
+               </property>
+               <property name="text">
+                <string>Clear</string>
+               </property>
+              </widget>
+             </item>
+
+             <item>
+              <widget class="QToolButton" name="tb_points_remove">
+               <property name="maximumSize">
+                <size>
+                 <width>70</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string>Remove selected shape from list</string>
+               </property>
+               <property name="text">
+                <string>Remove</string>
+               </property>
+              </widget>
+             </item>
+
+             <item>
+              <widget class="QToolButton" name="tb_points_add">
+               <property name="maximumSize">
+                <size>
+                 <width>70</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string>Add new shape to list</string>
+               </property>
+               <property name="text">
+                <string>Add</string>
+               </property>
+              </widget>
+             </item>
+
+             <item>
+              <widget class="QToolButton" name="tb_points_up">
+               <property name="maximumSize">
+                <size>
+                 <width>70</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string>Move shape up the list</string>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>:/icons/button_up.svg</normaloff>:/icons/button_up.svg
+                </iconset>
+               </property>
+              </widget>
+             </item>
+
+             <item>
+              <widget class="QToolButton" name="tb_points_down">
+               <property name="maximumSize">
+                <size>
+                 <width>70</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string>Move shape down the list</string>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>:/icons/button_down.svg</normaloff>:/icons/button_down.svg
+                </iconset>
+               </property>
+              </widget>
+             </item>
+
+            </layout>
+
+           </item>
+
+          </layout>
+         </item>
+
         </layout>
        </widget>
       </item>
@@ -459,8 +685,9 @@
     </widget>
    </item>
 
+
    <item>
-    <layout class="QGridLayout" name="layou_check_boxes">
+    <layout class="QGridLayout" name="layout_check_boxes">
      <item row="0" column="0">
       <widget class="QCheckBox" name="chk_expand">
        <property name="text">
