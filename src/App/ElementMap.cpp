@@ -10,13 +10,13 @@
 
 #include "App/Application.h"
 #include "Base/Console.h"
+#include "Base/Stream.h"
 #include "Document.h"
 #include "DocumentObject.h"
 
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/split.hpp>
-#include <boost/io/ios_state.hpp>
 
 
 FC_LOG_LEVEL_INIT("ElementMap", true, 2);  // NOLINT
@@ -146,7 +146,7 @@ void ElementMap::save(std::ostream& stream,
             continue;
         }
 
-        boost::io::ios_flags_saver ifs(stream);
+        Base::StreamFlagsRestorer ifs(stream);
         stream << std::hex;
 
         for (auto& dequeueOfMappedNameRef : indexedName.second.names) {
@@ -382,7 +382,7 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef,
             FC_THROWM(Base::RuntimeError, "missing element name outerCount");  // NOLINT
         }
 
-        boost::io::ios_flags_saver ifs(stream);
+        Base::StreamFlagsRestorer ifs(stream);
         stream >> std::hex;
 
         indices.names.resize(outerCount);
@@ -676,7 +676,7 @@ void ElementMap::encodeElementName(char element_type,
     if (forceTag || (tag != 0)) {
         assert(element_type);
         auto pos = ss.tellp();
-        boost::io::ios_flags_saver ifs(ss);
+        Base::StreamFlagsRestorer ifs(ss);
         ss << POSTFIX_TAG << std::hex;
         if (tag < 0) {
             ss << '-' << -tag;

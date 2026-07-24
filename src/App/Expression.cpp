@@ -32,7 +32,6 @@
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
-#include <boost/io/ios_state.hpp>
 #include <cmath>
 
 #include <numbers>
@@ -53,6 +52,7 @@
 #include <Base/PlacementPy.h>
 #include <Base/QuantityPy.h>
 #include <Base/RotationPy.h>
+#include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <Base/VectorPy.h>
 #include <Base/Precision.h>
@@ -1323,7 +1323,7 @@ void NumberExpression::_toString(std::ostream &ss, bool,int) const
     // https://en.cppreference.com/w/cpp/types/numeric_limits/digits10
     // https://en.cppreference.com/w/cpp/types/numeric_limits/max_digits10
     // https://www.boost.org/doc/libs/1_63_0/libs/multiprecision/doc/html/boost_multiprecision/tut/limits/constants.html
-    boost::io::ios_flags_saver ifs(ss);
+    Base::StreamFlagsRestorer ifs(ss);
     ss << std::setprecision(std::numeric_limits<double>::digits10) << getValue();
 
     /* Trim of any extra spaces */
