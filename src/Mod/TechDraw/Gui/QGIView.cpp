@@ -199,7 +199,7 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
     // wf: why scene()? because if our selected state has changed because we have been removed from
     //     the scene, we don't do anything except wait to be deleted.
     if (change == ItemSelectedHasChanged && scene()) {
-        if (isSelected() || hasSelectedChildren(this)) {
+        if (isViewSelected()) {
             m_colCurrent = getSelectColor();
             m_lock->setVisible(getViewObject()->isLocked() && getViewObject()->showLock());
         } else {
@@ -552,7 +552,7 @@ void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
     m_isHovered = true;
 
-    if (isSelected()) {
+    if (isViewSelected()) {
         m_colCurrent = getSelectColor();
     } else {
         m_colCurrent = getPreColor();
@@ -572,7 +572,7 @@ void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
     m_isHovered = false;
 
-    if (isSelected()) {
+    if (isViewSelected()) {
         m_colCurrent = getSelectColor();
         m_lock->setVisible(getViewObject()->isLocked() && getViewObject()->showLock());
     } else {
@@ -1066,20 +1066,6 @@ void QGIView::makeMark(double xPos, double yPos, QColor color)
     vItem->setZValue(ZVALUE::VERTEX);
 }
 
-//! true if parent has any children which are selected
-bool QGIView::hasSelectedChildren(QGIView* parent)
-{
-    QList<QGraphicsItem*> children = parent->childItems();
-
-    auto itMatch = std::find_if(children.begin(), children.end(),
-             [&](QGraphicsItem* child) {
-                return child->isSelected();
-             });
-
-    return itMatch != children.end();
-}
-
-
 void QGIView::makeMark(Base::Vector3d pos, QColor color)
 {
     makeMark(pos.x, pos.y, color);
@@ -1107,10 +1093,30 @@ void QGIView::updateFrameVisibility()
     }
 }
 
+// true if the whole view (not just a sub-element) is selected in the App selection
+bool QGIView::isViewSelected() const
+{
+    if (!viewObj || !viewObj->getDocument()) {
+        return false;
+    }
+    const auto selection =
+        Gui::Selection().getSelectionEx(viewObj->getDocument()->getName());
+    for (const auto& selObj : selection) {
+        if (selObj.getObject() == viewObj && selObj.getSubNames().empty()) {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool QGIView::shouldShowFrame() const
 {
     if (isExporting()) {
         return false;
+    }
+
+    if (isSelected()) {
+        return true;
     }
 
     ViewFrameMode frameMode = PreferencesGui::getViewFrameMode();
@@ -1121,11 +1127,9 @@ bool QGIView::shouldShowFrame() const
             return true;
         case ViewFrameMode::AlwaysOff:
             return false;
-            break;
         default:
             return m_isHovered;
-    };
-
+    }
 }
 
 bool QGIView::shouldShowFromViewProvider() const
