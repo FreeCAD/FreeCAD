@@ -23,9 +23,10 @@
 
 #include <filesystem>
 #include <algorithm>
+#include <sstream>
+#include <string>
 #include <vector>
 #include <boost/version.hpp>
-#include <boost/tokenizer.hpp>
 #include <QDir>
 #include <QFileInfo>
 #include <QLocale>
@@ -366,9 +367,12 @@ void ProgramInformation::getVerboseAddOnsInfo(
     const auto additionalModules = getValueOrEmpty(mConfig, "AdditionalModulePaths");
 
     if (!additionalModules.empty()) {
-        boost::char_separator<char> sep(";");
-        boost::tokenizer<boost::char_separator<char>> mods(additionalModules, sep);
-        for (const auto& mod : mods) {
+        std::istringstream mods(additionalModules);
+        std::string mod;
+        while (std::getline(mods, mod, ';')) {
+            if (mod.empty()) {
+                continue;
+            }
             auto moduleInfo = getModuleInfoString(mod);
             if (!moduleInfo.empty()) {
                 addons.push_back(std::move(moduleInfo));

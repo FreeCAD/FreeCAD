@@ -2574,11 +2574,14 @@ void parseProgramOptions(int ac, char ** av, const std::string& exe, boost::prog
         // Read the whole file into a string
         std::stringstream ss;
         ss << ifs.rdbuf();
-        // Split the file content
-        boost::char_separator<char> sep(" \n\r");
-        boost::tokenizer<boost::char_separator<char> > tok(ss.str(), sep);
+        // Split the file content on whitespace, dropping empty tokens
+        const std::string content = ss.str();
         std::vector<std::string> args2;
-        copy(tok.begin(), tok.end(), back_inserter(args2));
+        for (auto start = content.find_first_not_of(" \n\r"); start != std::string::npos;) {
+            const auto end = content.find_first_of(" \n\r", start);
+            args2.push_back(content.substr(start, end - start));
+            start = content.find_first_not_of(" \n\r", end);
+        }
         // Parse the file and store the options
         store( boost::program_options::command_line_parser(args2).
                options(cmdline_options).positional(p).extra_parser(Util::customSyntax).run(), vm);
