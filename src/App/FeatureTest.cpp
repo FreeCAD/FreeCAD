@@ -23,7 +23,6 @@
  ***************************************************************************/
 
 
-#include <boost/core/ignore_unused.hpp>
 #include <condition_variable>
 #include <mutex>
 #include <sstream>
@@ -193,10 +192,10 @@ DocumentObjectExecReturn* FeatureTest::execute()
 
     Enumeration enumObj4("Single item");
     enumObj4.setEnums(enums);
-    boost::ignore_unused(enumObj4 == enumObj2);
+    (void)(enumObj4 == enumObj2);
     enumObj4.setEnums(nullptr);
     enumObj4 = enumObj2;
-    boost::ignore_unused(enumObj4 == enumObj4.getCStr());
+    (void)(enumObj4 == enumObj4.getCStr());
 
     Enumeration enumObj5(enums, enums[3]);
     enumObj5.isValue(enums[2]);

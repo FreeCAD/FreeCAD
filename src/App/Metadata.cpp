@@ -22,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <boost/core/ignore_unused.hpp>
 #include <memory>
 #include <sstream>
 
@@ -64,10 +63,8 @@ namespace MetadataInternal
 {
 class XMLErrorHandler: public HandlerBase
 {
-    void warning(const SAXParseException& toCatch) override
+    void warning([[maybe_unused]] const SAXParseException& toCatch) override
     {
-        // Don't deal with warnings at all
-        boost::ignore_unused(toCatch);
     }
 
     void error(const SAXParseException& toCatch) override
