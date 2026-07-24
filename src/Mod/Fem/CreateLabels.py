@@ -32,6 +32,21 @@ __url__ = "https://www.freecad.org"
 import FreeCADGui
 from pivy import coin
 
+
+def _make_hidpi_text2():
+    """Return a HiDPI-aware screen-space text node (``Gui::SoFCText2``).
+
+    ``SoFCText2`` is a ``SoText2`` subclass that scales its font size by the
+    device pixel ratio at render time, so the label keeps a constant perceived
+    size on HiDPI displays. Falls back to a plain ``coin.SoText2`` if the FreeCAD
+    node type is not registered.
+    """
+    node_type = coin.SoType.fromName("SoFCText2")
+    if node_type.isBad():
+        return coin.SoText2()
+    return node_type.createInstance()
+
+
 """
 Place Label on the screen with an optional image.
 positions on screen:
@@ -61,7 +76,7 @@ class createLabel:
         self.size = 20  # 24
         self.myFont.size.setValue(self.size)
 
-        self.SoText2 = coin.SoText2()
+        self.SoText2 = _make_hidpi_text2()
         self.SoText2.string = text
 
         self.textSep.addChild(self.cam)

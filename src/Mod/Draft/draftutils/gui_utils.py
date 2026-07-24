@@ -58,6 +58,21 @@ if App.GuiUp:
     # from PySide import QtSvg  # for load_texture
 
 
+def make_hidpi_text2():
+    """Return a HiDPI-aware screen-space text node (``Gui::SoFCText2``).
+
+    ``SoFCText2`` is a ``SoText2`` subclass that scales its font size by the
+    device pixel ratio at render time, so the text keeps a constant perceived
+    size on HiDPI displays instead of being rendered at half size in physical
+    framebuffer pixels. Falls back to a plain ``coin.SoText2`` if the FreeCAD
+    node type is not registered (e.g. when running without the GUI).
+    """
+    node_type = coin.SoType.fromName("SoFCText2")
+    if node_type.isBad():
+        return coin.SoText2()
+    return node_type.createInstance()
+
+
 def get_3d_view():
     """Return the current 3D view.
 
