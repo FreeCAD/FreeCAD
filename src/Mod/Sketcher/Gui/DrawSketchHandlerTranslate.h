@@ -509,15 +509,40 @@ public:
     {
         using enum Gui::InputHint::UserInput;
 
+        const Gui::InputHint elementsHint {
+            tr("%1/%2 increase/decrease number of elements", "Sketcher Translate: hint"),
+            {KeyU, KeyJ}
+        };
+        const Gui::InputHint rowsHint {
+            tr("%1/%2 increase/decrease number of rows", "Sketcher Translate: hint"),
+            {KeyR, KeyF}
+        };
+
         return Gui::lookupHints<SelectMode>(
             state(),
-            {{.state = SelectMode::SeekFirst,
-              .hints = {{tr("%1 pick reference point", "Sketcher Translate: hint"), {MouseLeft}}}},
-             {.state = SelectMode::SeekSecond,
-              .hints = {{tr("%1 set translation vector", "Sketcher Translate: hint"), {MouseLeft}}}},
-             {.state = SelectMode::SeekThird,
-              .hints
-              = {{tr("%1 set second translation vector", "Sketcher Translate: hint"), {MouseLeft}}}}}
+            {
+                {.state = SelectMode::SeekFirst,
+                 .hints =
+                     {
+                         {tr("%1 pick reference point", "Sketcher Translate: hint"), {MouseLeft}},
+                         elementsHint,
+                         rowsHint,
+                     }},
+                {.state = SelectMode::SeekSecond,
+                 .hints =
+                     {
+                         {tr("%1 set translation vector", "Sketcher Translate: hint"), {MouseLeft}},
+                         elementsHint,
+                         rowsHint,
+                     }},
+                {.state = SelectMode::SeekThird,
+                 .hints =
+                     {
+                         {tr("%1 set second translation vector", "Sketcher Translate: hint"), {MouseLeft}},
+                         elementsHint,
+                         rowsHint,
+                     }},
+            }
         );
     }
 };
@@ -628,11 +653,11 @@ void DSHTranslateController::configureToolWidget()
 
     toolWidget->setParameterLabel(
         WParameter::First,
-        QApplication::translate("TaskSketcherTool_p3_translate", "Elements (+'U'/-'J')")
+        QApplication::translate("TaskSketcherTool_p3_translate", "Elements")
     );
     toolWidget->setParameterLabel(
         WParameter::Second,
-        QApplication::translate("TaskSketcherTool_p5_translate", "Rows (+'R'/-'F')")
+        QApplication::translate("TaskSketcherTool_p5_translate", "Rows")
     );
 
     toolWidget->setParameter(OnViewParameter::First, 1.0);

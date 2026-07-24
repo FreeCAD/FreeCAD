@@ -94,6 +94,11 @@ public:
     {
         using enum Gui::InputHint::UserInput;
 
+        const Gui::InputHint elementsHint {
+            tr("%1/%2 increase/decrease number of elements", "Sketcher Rotate: hint"),
+            {KeyU, KeyJ}
+        };
+
         return Gui::lookupHints<SelectMode>(
             state(),
             {
@@ -101,16 +106,19 @@ public:
                  .hints =
                      {
                          {tr("%1 pick center point", "Sketcher Rotate: hint"), {MouseLeft}},
+                         elementsHint,
                      }},
                 {.state = SelectMode::SeekSecond,
                  .hints =
                      {
                          {tr("%1 set start angle", "Sketcher Rotate: hint"), {MouseLeft}},
+                         elementsHint,
                      }},
                 {.state = SelectMode::SeekThird,
                  .hints =
                      {
                          {tr("%1 set rotation angle", "Sketcher Rotate: hint"), {MouseLeft}},
+                         elementsHint,
                      }},
             });
     }
@@ -589,7 +597,7 @@ void DSHRotateController::configureToolWidget()
 
     toolWidget->setParameterLabel(
         WParameter::First,
-        QApplication::translate("TaskSketcherTool_p4_rotate", "Elements (+'U'/ -'J')")
+        QApplication::translate("TaskSketcherTool_p4_rotate", "Elements")
     );
     toolWidget->setParameter(OnViewParameter::First, 1.0);
     toolWidget->configureParameterUnit(OnViewParameter::First, Base::Unit());
