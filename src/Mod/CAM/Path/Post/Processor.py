@@ -950,6 +950,9 @@ class PostProcessor:
         """
         self.values = {}
 
+        if overrides is None:
+            overrides = self._read_job_overrides()
+
         bundle = self.build_configuration_bundle(overrides)
 
         # Write back to machine postprocessor_properties
@@ -963,6 +966,15 @@ class PostProcessor:
         # IF they weren't already set (by _merge_machine_config)
         for key, value in bundle.items():
             if key.upper() not in self.values:
+                self.values[key.upper()] = value
+
+        # Explicit overrides (job dialog / caller-supplied) are documented as
+        # highest priority, so they must win even over values already set by
+        # _merge_machine_config() straight from the live machine model —
+        # otherwise a per-job override of e.g. f_for_rapid_moves/tool_change
+        # is silently discarded in favor of the machine-level setting.
+        for key, value in overrides.items():
+            if key in bundle:
                 self.values[key.upper()] = value
 
         Path.Log.debug(f"Configuration bundle applied — " f"bundle: {bundle}")
