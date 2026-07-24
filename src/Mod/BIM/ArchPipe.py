@@ -409,6 +409,44 @@ class _ArchPipe(ArchComponent.Component):
                     p = p.cut(p2)
         return p
 
+    def getTrimexData(self, obj):
+        """Return Trimex data for a straight Pipe.
+
+        Base wires are edited directly unless offsets require updating their
+        endpoints. Baseless pipes update Length and Placement.
+        """
+        pipe_pl = obj.Placement
+        off_start = obj.OffsetStart.Value
+        off_end = obj.OffsetEnd.Value
+        base = obj.Base
+        if base is None:
+            length = obj.Length.Value
+            axis = pipe_pl.Rotation.multVec(FreeCAD.Vector(0, 0, 1))
+            p1 = pipe_pl.multVec(FreeCAD.Vector(0, 0, off_start))
+            p2 = pipe_pl.multVec(FreeCAD.Vector(0, 0, length - off_end))
+
+            def _set(pts):
+                new_p1 = FreeCAD.Vector(pts[0])
+                new_p2 = FreeCAD.Vector(pts[1])
+                new_len = new_p1.distanceToPoint(new_p2) + off_start + off_end
+                if new_len == 0:
+                    return
+                # The path origin sits OffsetStart before the visible cap.
+                obj.Placement.Base = new_p1 - axis * off_start
+                obj.Length = new_len
+
+            return {
+                "endpoints": [p1, p2],
+                "axes": [FreeCAD.Vector(axis).negative(), FreeCAD.Vector(axis)],
+                "set": _set,
+            }
+        return ArchComponent.getTrimexDataFromBase(
+            obj,
+            base,
+            offset_start=off_start,
+            offset_end=off_end,
+        )
+
 
 class _ViewProviderPipe(ArchComponent.ViewProviderComponent):
     "A View Provider for the Pipe object"
