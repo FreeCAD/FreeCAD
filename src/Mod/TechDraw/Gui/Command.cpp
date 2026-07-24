@@ -1925,7 +1925,7 @@ CmdTechDrawExportPagePDF::CmdTechDrawExportPagePDF() : Command("TechDraw_ExportP
 {
     sGroup = QT_TR_NOOP("File");
     sMenuText = QT_TR_NOOP("Export Page as PDF");
-    sToolTipText = sMenuText;
+    sToolTipText = QT_TR_NOOP("Exports the current page as a PDF");
     sWhatsThis = "TechDraw_ExportPagePDF";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_ExportPagePDF";
