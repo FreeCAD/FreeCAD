@@ -59,12 +59,16 @@
 #include <Mod/TechDraw/App/LineGroup.h>
 
 #include "DrawGuiUtil.h"
+#include "MDIViewPage.h"
 #include "QGSPage.h"
+#include "QGVPage.h"
 #include "TaskCosmeticCircle.h"
 #include "TaskSelectLineAttributes.h"
 #include "ViewProviderBalloon.h"
 #include "ViewProviderDimension.h"
 #include "ViewProviderPage.h"
+#include "CommandHelpers.h"
+#include "TechDrawThreadHandler.h"
 
 
 using namespace TechDrawGui;
@@ -74,24 +78,6 @@ using DU = DrawUtil;
 
 namespace TechDrawGui
 {
-//TechDraw::LineFormat activeAttributes; // container holding global line attributes
-
-//internal helper functions
-TechDraw::LineFormat& _getActiveLineAttributes();
-Base::Vector3d _circleCenter(Base::Vector3d p1, Base::Vector3d p2, Base::Vector3d p3);
-void _createThreadCircle(const std::string Name, TechDraw::DrawViewPart* objFeat, double factor);
-void _createThreadLines(const std::vector<std::string>& SubNames, TechDraw::DrawViewPart* objFeat,
-                        double factor, bool endLine);
-void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge);
-void _setLineAttributes(TechDraw::CenterLine* cosEdge);
-void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, Base::Color color);
-void _setLineAttributes(TechDraw::CenterLine* cosEdge, int style, float weight, Base::Color color);
-double _getAngle(Base::Vector3d center, Base::Vector3d point);
-std::vector<Base::Vector3d> _getVertexPoints(const std::vector<std::string>& SubNames,
-                                             TechDraw::DrawViewPart* objFeat);
-bool _checkSel(Gui::Command* cmd, std::vector<Gui::SelectionObject>& selection,
-               TechDraw::DrawViewPart*& objFeat, const std::string& message);
-std::string _createBalloon(Gui::Command* cmd, TechDraw::DrawViewPart* objFeat);
 
 //===========================================================================
 // TechDraw_ExtensionHoleCircle
@@ -378,26 +364,6 @@ bool CmdTechDrawExtensionCircleCenterLinesGroup::isActive()
 // TechDraw_ExtensionThreadHoleSide
 //===========================================================================
 
-void execThreadHoleSide(Gui::Command* cmd)
-{
-    constexpr double ThreadFactor{1.176};
-    // add cosmetic thread to side view of hole
-    std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Thread Hole Side"))) {
-        return;
-    }
-    cmd->openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Thread Hole Side"));
-    const std::vector<std::string> SubNames = selection[0].getSubNames();
-    if (SubNames.size() >= 2) {
-        _createThreadLines(SubNames, objFeat, ThreadFactor, true);
-    }
-    cmd->getSelection().clearSelection();
-    objFeat->refreshCEGeoms();
-    objFeat->requestPaint();
-    cmd->commitCommand();
-}
-
 DEF_STD_CMD_A(CmdTechDrawExtensionThreadHoleSide)
 
 CmdTechDrawExtensionThreadHoleSide::CmdTechDrawExtensionThreadHoleSide()
@@ -415,7 +381,27 @@ CmdTechDrawExtensionThreadHoleSide::CmdTechDrawExtensionThreadHoleSide()
 void CmdTechDrawExtensionThreadHoleSide::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    execThreadHoleSide(this);
+    auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    if (!mdi) {
+        return;
+    }
+
+    ViewProviderPage* pageVP = mdi->getViewProviderPage();
+    if (!pageVP) {
+        return;
+    }
+
+    QGVPage* viewPage = pageVP->getQGVPage();
+    if (!viewPage) {
+        return;
+    }
+
+    auto* handler = new TechDrawThreadHandler("ThreadHoleSide");
+
+    // Post selection handler
+    viewPage->activateHandler(handler);
+
+    handler->addPreselected();
 }
 
 bool CmdTechDrawExtensionThreadHoleSide::isActive()
@@ -428,26 +414,6 @@ bool CmdTechDrawExtensionThreadHoleSide::isActive()
 //===========================================================================
 // TechDraw_ExtensionThreadBoltSide
 //===========================================================================
-
-void execThreadBoltSide(Gui::Command* cmd)
-{
-    constexpr double ThreadFactor{0.85};
-    // add cosmetic thread to side view of bolt
-    std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Thread Bolt Side")))  {
-        return;
-    }
-    cmd->openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Thread Bolt Side"));
-    const std::vector<std::string> SubNames = selection[0].getSubNames();
-    if (SubNames.size() >= 2) {
-        _createThreadLines(SubNames, objFeat, ThreadFactor, false);
-    }
-    cmd->getSelection().clearSelection();
-    objFeat->refreshCEGeoms();
-    objFeat->requestPaint();
-    cmd->commitCommand();
-}
 
 DEF_STD_CMD_A(CmdTechDrawExtensionThreadBoltSide)
 
@@ -467,7 +433,27 @@ CmdTechDrawExtensionThreadBoltSide::CmdTechDrawExtensionThreadBoltSide()
 void CmdTechDrawExtensionThreadBoltSide::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    execThreadBoltSide(this);
+    auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    if (!mdi) {
+        return;
+    }
+
+    ViewProviderPage* pageVP = mdi->getViewProviderPage();
+    if (!pageVP) {
+        return;
+    }
+
+    QGVPage* viewPage = pageVP->getQGVPage();
+    if (!viewPage) {
+        return;
+    }
+
+    auto* handler = new TechDrawThreadHandler("ThreadBoltSide");
+
+    // Post selection handler
+    viewPage->activateHandler(handler);
+
+    handler->addPreselected();
 }
 
 bool CmdTechDrawExtensionThreadBoltSide::isActive()
@@ -481,25 +467,6 @@ bool CmdTechDrawExtensionThreadBoltSide::isActive()
 // TechDraw_ExtensionThreadHoleBottom
 //===========================================================================
 
-void execThreadHoleBottom(Gui::Command* cmd)
-{
-    constexpr double ThreadFactor{1.176};
-    // add cosmetic thread to bottom view of hole
-    std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Thread Hole Bottom"))) {
-        return;
-    }
-    cmd->openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic thread hole bottom"));
-    const std::vector<std::string> SubNames = selection[0].getSubNames();
-    for (const std::string& Name : SubNames) {
-        _createThreadCircle(Name, objFeat, ThreadFactor);
-    }
-    cmd->getSelection().clearSelection();
-    objFeat->refreshCEGeoms();
-    objFeat->requestPaint();
-    cmd->commitCommand();
-}
 
 DEF_STD_CMD_A(CmdTechDrawExtensionThreadHoleBottom)
 
@@ -518,7 +485,27 @@ CmdTechDrawExtensionThreadHoleBottom::CmdTechDrawExtensionThreadHoleBottom()
 void CmdTechDrawExtensionThreadHoleBottom::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    execThreadHoleBottom(this);
+    auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    if (!mdi) {
+        return;
+    }
+
+    ViewProviderPage* pageVP = mdi->getViewProviderPage();
+    if (!pageVP) {
+        return;
+    }
+
+    QGVPage* viewPage = pageVP->getQGVPage();
+    if (!viewPage) {
+        return;
+    }
+
+    auto* handler = new TechDrawThreadHandler("ThreadHoleBottom");
+
+    // Post selection handler
+    viewPage->activateHandler(handler);
+
+    handler->addPreselected();
 }
 
 bool CmdTechDrawExtensionThreadHoleBottom::isActive()
@@ -532,25 +519,6 @@ bool CmdTechDrawExtensionThreadHoleBottom::isActive()
 // TechDraw_ExtensionThreadBoltBottom
 //===========================================================================
 
-void execThreadBoltBottom(Gui::Command* cmd)
-{
-    constexpr double ThreadFactor{0.85};
-    // add cosmetic thread to bottom view of bolt
-    std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Thread Bolt Bottom")))  {
-        return;
-    }
-    cmd->openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Thread Bolt Bottom"));
-    const std::vector<std::string> SubNames = selection[0].getSubNames();
-    for (const std::string& Name : SubNames) {
-        _createThreadCircle(Name, objFeat, ThreadFactor);
-    }
-    cmd->getSelection().clearSelection();
-    objFeat->refreshCEGeoms();
-    objFeat->requestPaint();
-    cmd->commitCommand();
-}
 
 DEF_STD_CMD_A(CmdTechDrawExtensionThreadBoltBottom)
 
@@ -570,7 +538,27 @@ CmdTechDrawExtensionThreadBoltBottom::CmdTechDrawExtensionThreadBoltBottom()
 void CmdTechDrawExtensionThreadBoltBottom::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    execThreadBoltBottom(this);
+    auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    if (!mdi) {
+        return;
+    }
+
+    ViewProviderPage* pageVP = mdi->getViewProviderPage();
+    if (!pageVP) {
+        return;
+    }
+
+    QGVPage* viewPage = pageVP->getQGVPage();
+    if (!viewPage) {
+        return;
+    }
+
+    auto* handler = new TechDrawThreadHandler("ThreadBoltBottom");
+
+    // Post selection handler
+    viewPage->activateHandler(handler);
+
+    handler->addPreselected();
 }
 
 bool CmdTechDrawExtensionThreadBoltBottom::isActive()
@@ -609,18 +597,19 @@ void CmdTechDrawExtensionThreadsGroup::activated(int iMsg)
 
     auto pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
+    auto& cmdMgr = Gui::Application::Instance->commandManager();
     switch (iMsg) {
         case 0://thread hole side view
-            execThreadHoleSide(this);
+            cmdMgr.runCommandByName("TechDraw_ExtensionThreadHoleSide");
             break;
         case 1://thread hole bottom view
-            execThreadHoleBottom(this);
+            cmdMgr.runCommandByName("TechDraw_ExtensionThreadHoleBottom");
             break;
         case 2://thread bolt side view
-            execThreadBoltSide(this);
+            cmdMgr.runCommandByName("TechDraw_ExtensionThreadBoltSide");
             break;
         case 3://thread bolt bottom view
-            execThreadBoltBottom(this);
+            cmdMgr.runCommandByName("TechDraw_ExtensionThreadBoltBottom");
             break;
         default:
             Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
@@ -2100,224 +2089,6 @@ bool CmdTechDrawExtensionArcLengthAnnotation::isActive()
     bool haveView = DrawGuiUtil::needView(this);
     return (havePage && haveView);
 }
-
-//===========================================================================
-// internal helper routines
-//===========================================================================
-namespace TechDrawGui
-{
-
-LineFormat& _getActiveLineAttributes()
-{
-    return LineFormat::getCurrentLineFormat();
-}
-
-std::string _createBalloon(Gui::Command* cmd, TechDraw::DrawViewPart* objFeat)
-// create a new balloon, return its name as string
-{
-    std::string featName;
-    TechDraw::DrawPage* page = objFeat->findParentPage();
-    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
-    auto pageVP = freecad_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
-    if (pageVP) {
-        QGSPage* scenePage = pageVP->getQGSPage();
-        featName = scenePage->getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
-        std::string pageName = scenePage->getDrawPage()->getNameInDocument();
-        cmd->doCommand(cmd->Doc,
-                       "App.activeDocument().addObject('TechDraw::DrawViewBalloon', '%s')",
-                       featName.c_str());
-        cmd->doCommand(cmd->Doc, "App.activeDocument().%s.SourceView = (App.activeDocument().%s)",
-                       featName.c_str(), objFeat->getNameInDocument());
-
-        cmd->doCommand(cmd->Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",
-                       pageName.c_str(), featName.c_str());
-    }
-    return featName;
-}
-
-bool _checkSel(Gui::Command* cmd, std::vector<Gui::SelectionObject>& selection,
-               TechDraw::DrawViewPart*& objFeat, const std::string& message)
-{
-    // check selection of getSelectionEx() and selection[0].getObject()
-    selection = cmd->getSelection().getSelectionEx();
-    if (selection.empty()) {
-        // message is translated in caller
-        QMessageBox::warning(Gui::getMainWindow(), QString::fromUtf8(message.c_str()),
-                             QObject::tr("Selection is empty"));
-        return false;
-    }
-
-    objFeat = dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject());
-    if (!objFeat) {
-        QMessageBox::warning(Gui::getMainWindow(), QString::fromUtf8(message.c_str()),
-                             QObject::tr("No object selected"));
-        return false;
-    }
-
-    return true;
-}
-
-//! return the vertices in the selection as [Base::Vector3d]
-std::vector<Base::Vector3d> _getVertexPoints(const std::vector<std::string>& SubNames,
-                                             TechDraw::DrawViewPart* objFeat)
-{
-    std::vector<Base::Vector3d> vertexPoints;
-    for (const std::string& Name : SubNames) {
-        std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
-        if (GeoType == "Vertex") {
-            int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
-            TechDraw::VertexPtr vert = objFeat->getProjVertexByIndex(GeoId);
-            vertexPoints.push_back(vert->point());
-        }
-    }
-    return vertexPoints;
-}
-
-//! get angle between x-axis and the vector from center to point.
-//! result is [0, 360]
-double _getAngle(Base::Vector3d center, Base::Vector3d point)
-{
-    constexpr double DegreesHalfCircle{180.0};
-    Base::Vector3d vecCP = point - center;
-    double angle = DU::angleWithX(vecCP) * DegreesHalfCircle / std::numbers::pi;
-    return angle;
-}
-
-Base::Vector3d _circleCenter(Base::Vector3d p1, Base::Vector3d p2, Base::Vector3d p3)
-{
-    Base::Vector2d v1(p1.x, p1.y);
-    Base::Vector2d v2(p2.x, p2.y);
-    Base::Vector2d v3(p3.x, p3.y);
-    Base::Vector2d center = Part::Geom2dCircle::getCircleCenter(v1, v2, v3);
-    return Base::Vector3d(center.x, center.y, 0.0);
-}
-
-void _createThreadCircle(const std::string Name, TechDraw::DrawViewPart* objFeat, double factor)
-{
-    constexpr double ArcStartDegree{15.0};
-    constexpr double ArcEndDegree{285.0};
-    // create the 3/4 arc symbolizing a thread from top seen
-    double scale = objFeat->getScale();
-    int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
-    TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
-    std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
-
-    if (GeoType == "Edge" && geom->getGeomType() == GeomType::CIRCLE) {
-        TechDraw::CirclePtr cgen = std::static_pointer_cast<TechDraw::Circle>(geom);
-        // center is rotated and scaled
-        Base::Vector3d center = CosmeticVertex::makeCanonicalPointInverted(objFeat, cgen->center);
-        // radius is scaled
-        float radius = cgen->radius * factor / scale;
-        TechDraw::BaseGeomPtr threadArc =
-            std::make_shared<TechDraw::AOC>(center, radius, ArcStartDegree, ArcEndDegree);
-        std::string arcTag = objFeat->addCosmeticEdge(threadArc);
-        TechDraw::CosmeticEdge* arc = objFeat->getCosmeticEdge(arcTag);
-        int solidStyle = 1; // Qt::SolidLine
-        float thinWeight = (float)TechDraw::DrawUtil::getDefaultLineWeight("Thin");
-        Base::Color threadColor = _getActiveLineAttributes().getColor(); 
-        _setLineAttributes(arc, solidStyle, thinWeight, threadColor);
-    } else {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("TechDraw create thread circle"),
-                             QObject::tr("Can not make thread circle for %1")
-                                 .arg(QString::fromStdString(GeometryUtils::getGeomTypeName(geom->getGeomType()))));
-    }
-}
-
-void _createThreadLines(const std::vector<std::string>& SubNames, TechDraw::DrawViewPart* objFeat,
-                        double factor, bool endLine)
-{
-    // create symbolizing lines of a thread from the side seen
-    std::string GeoType0 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]);
-    std::string GeoType1 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]);
-    if ((GeoType0 == "Edge") && (GeoType1 == "Edge")) {
-        int GeoId0 = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
-        int GeoId1 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
-        TechDraw::BaseGeomPtr geom0 = objFeat->getGeomByIndex(GeoId0);
-        TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(GeoId1);
-        if (geom0->getGeomType() != GeomType::GENERIC || geom1->getGeomType() != GeomType::GENERIC) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("TechDraw thread hole side"),
-                                 QObject::tr("Select 2 straight lines"));
-            return;
-        }
-
-        TechDraw::GenericPtr line0 = std::static_pointer_cast<TechDraw::Generic>(geom0);
-        TechDraw::GenericPtr line1 = std::static_pointer_cast<TechDraw::Generic>(geom1);
-        // start and end points are scaled,rotated and inverted (CSRIx).
-        // convert start and end to unscaled, unrotated.
-        Base::Vector3d start0 = CosmeticVertex::makeCanonicalPointInverted(objFeat, line0->getStartPoint());
-        Base::Vector3d start1 = CosmeticVertex::makeCanonicalPointInverted(objFeat, line1->getStartPoint());
-        Base::Vector3d end0 = CosmeticVertex::makeCanonicalPointInverted(objFeat, line0->getEndPoint());
-        Base::Vector3d end1 = CosmeticVertex::makeCanonicalPointInverted(objFeat, line1->getEndPoint());
-        if (DrawUtil::circulation(start0, end0, start1)
-            != DrawUtil::circulation(end0, end1, start1)) {
-            Base::Vector3d help1 = start1;
-            Base::Vector3d help2 = end1;
-            start1 = help2;
-            end1 = help1;
-        }
-        float kernelDiam = (start1 - start0).Length();
-        float kernelFactor = (kernelDiam * factor - kernelDiam) / 2;
-        Base::Vector3d delta = (start1 - start0).Normalize() * kernelFactor;
-        std::string line0Tag =
-            objFeat->addCosmeticEdge(start0 - delta, end0 - delta);
-        std::string line1Tag =
-            objFeat->addCosmeticEdge(start1 + delta, end1 + delta);
-        TechDraw::CosmeticEdge* cosTag0 = objFeat->getCosmeticEdge(line0Tag);
-        TechDraw::CosmeticEdge* cosTag1 = objFeat->getCosmeticEdge(line1Tag);
-        int solidStyle = Qt::SolidLine;
-        float thinWeight = (float)TechDraw::DrawUtil::getDefaultLineWeight("Thin");
-        Base::Color threadColor = _getActiveLineAttributes().getColor();
-        _setLineAttributes(cosTag0, solidStyle, thinWeight, threadColor);
-        _setLineAttributes(cosTag1, solidStyle, thinWeight, threadColor);
-        if (endLine) {
-            float graphicWeight = (float)TechDraw::DrawUtil::getDefaultLineWeight("Graphic");
-            std::string line3Tag =
-                objFeat->addCosmeticEdge(end0 - delta, end1 + delta);
-            TechDraw::CosmeticEdge* cosTag3 = objFeat->getCosmeticEdge(line3Tag);
-            _setLineAttributes(cosTag3, solidStyle, graphicWeight, threadColor);
-        }
-    }
-}
-
-void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge)
-{
-    // set line attributes of a cosmetic edge
-    cosEdge->m_format.setStyle(_getActiveLineAttributes().getStyle());
-    cosEdge->m_format.setWidth(_getActiveLineAttributes().getWidth());
-    cosEdge->m_format.setColor(_getActiveLineAttributes().getColor());
-    cosEdge->m_format.setVisible(_getActiveLineAttributes().getVisible());
-    cosEdge->m_format.setLineNumber(_getActiveLineAttributes().getLineNumber());
-}
-
-void _setLineAttributes(TechDraw::CenterLine* cosEdge)
-{
-    // set line attributes of a cosmetic edge
-    cosEdge->m_format.setStyle(_getActiveLineAttributes().getStyle());
-    cosEdge->m_format.setWidth(_getActiveLineAttributes().getWidth());
-    cosEdge->m_format.setColor(_getActiveLineAttributes().getColor());
-    cosEdge->m_format.setVisible(_getActiveLineAttributes().getVisible());
-    cosEdge->m_format.setLineNumber(_getActiveLineAttributes().getLineNumber());
-}
-
-void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, Base::Color color)
-{
-    // set line attributes of a cosmetic edge
-    cosEdge->m_format.setStyle(style);
-    cosEdge->m_format.setWidth(weight);
-    cosEdge->m_format.setColor(color);
-    cosEdge->m_format.setVisible(_getActiveLineAttributes().getVisible());
-    cosEdge->m_format.setLineNumber(style);
-}
-
-void _setLineAttributes(TechDraw::CenterLine* cosEdge, int style, float weight, Base::Color color)
-{
-    // set line attributes of a centerline
-    cosEdge->m_format.setStyle(style);
-    cosEdge->m_format.setWidth(weight);
-    cosEdge->m_format.setColor(color);
-    cosEdge->m_format.setVisible(_getActiveLineAttributes().getVisible());
-    cosEdge->m_format.setLineNumber(style);}
-}// namespace TechDrawGui
 
 //------------------------------------------------------------------------------
 void CreateTechDrawCommandsExtensions()
