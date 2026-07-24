@@ -222,6 +222,10 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
     of circular edges, and circumferences.
     """
 
+    ARROW_MARKS_INDEX = 2
+    DIM_OVERSHOOT_MARKS_INDEX = 3
+    EXT_OVERSHOOT_MARKS_INDEX = 4
+
     def set_graphics_properties(self, vobj, properties):
         """Set graphics properties only if they don't already exist."""
         super().set_graphics_properties(vobj, properties)
@@ -677,8 +681,8 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
 
         Remove the existing nodes.
         """
-        self.node_wld.removeChild(self.marks)
-        self.node_scr.removeChild(self.marks)
+        self.lineswitch_wld.removeChild(self.marks)
+        self.lineswitch_scr.removeChild(self.marks)
 
     def draw_dim_arrows(self, vobj):
         """Draw dimension arrows."""
@@ -720,13 +724,13 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         s2.addChild(gui_utils.dim_symbol(symbol_end, invert=True))
         self.marks.addChild(s2)
 
-        self.node_wld.insertChild(self.marks, 2)
-        self.node_scr.insertChild(self.marks, 2)
+        self.lineswitch_wld.insertChild(self.marks, self.ARROW_MARKS_INDEX)
+        self.lineswitch_scr.insertChild(self.marks, self.ARROW_MARKS_INDEX)
 
     def remove_dim_overshoot(self):
         """Remove the dimension overshoot lines."""
-        self.node_wld.removeChild(self.marksDimOvershoot)
-        self.node_scr.removeChild(self.marksDimOvershoot)
+        self.lineswitch_wld.removeChild(self.marksDimOvershoot)
+        self.lineswitch_scr.removeChild(self.marksDimOvershoot)
 
     def draw_dim_overshoot(self, vobj):
         """Draw dimension overshoot lines."""
@@ -750,13 +754,13 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             s2.addChild(gui_utils.dimDash((0, 0, 0), (1, 0, 0)))
             self.marksDimOvershoot.addChild(s2)
 
-        self.node_wld.insertChild(self.marksDimOvershoot, 2)
-        self.node_scr.insertChild(self.marksDimOvershoot, 2)
+        self.lineswitch_wld.insertChild(self.marksDimOvershoot, self.DIM_OVERSHOOT_MARKS_INDEX)
+        self.lineswitch_scr.insertChild(self.marksDimOvershoot, self.DIM_OVERSHOOT_MARKS_INDEX)
 
     def remove_ext_overshoot(self):
         """Remove dimension extension overshoot lines."""
-        self.node_wld.removeChild(self.marksExtOvershoot)
-        self.node_scr.removeChild(self.marksExtOvershoot)
+        self.lineswitch_wld.removeChild(self.marksExtOvershoot)
+        self.lineswitch_scr.removeChild(self.marksExtOvershoot)
 
     def draw_ext_overshoot(self, vobj):
         """Draw dimension extension overshoot lines."""
@@ -779,8 +783,8 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             s2.addChild(gui_utils.dimDash((0, 0, 0), (-1, 0, 0)))
             self.marksExtOvershoot.addChild(s2)
 
-        self.node_wld.insertChild(self.marksExtOvershoot, 2)
-        self.node_scr.insertChild(self.marksExtOvershoot, 2)
+        self.lineswitch_wld.insertChild(self.marksExtOvershoot, self.EXT_OVERSHOOT_MARKS_INDEX)
+        self.lineswitch_scr.insertChild(self.marksExtOvershoot, self.EXT_OVERSHOOT_MARKS_INDEX)
 
     def is_linked_to_circle(self):
         """Return true if the dimension measures a circular edge."""
