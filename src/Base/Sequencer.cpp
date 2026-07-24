@@ -28,6 +28,7 @@
 #include <cstdio>
 
 #include "Sequencer.h"
+#include "Console.h"
 
 using namespace Base;
 
@@ -214,7 +215,7 @@ using Base::ConsoleSequencer;
 
 void ConsoleSequencer::setText(const char* pszTxt)
 {
-    printf("%s...\n", pszTxt);
+    Base::Console().log("%s...\n", pszTxt);
 }
 
 void ConsoleSequencer::startStep()
@@ -223,14 +224,14 @@ void ConsoleSequencer::startStep()
 void ConsoleSequencer::nextStep(bool /*canAbort*/)
 {
     if (this->nTotalSteps != 0) {
-        printf("\t\t\t\t\t\t(%d %%)\t\r", progressInPercent());
+        Base::Console().log("\t\t\t\t\t\t(%d %%)\t\r", progressInPercent());
     }
 }
 
 void ConsoleSequencer::resetData()
 {
     SequencerBase::resetData();
-    printf("\t\t\t\t\t\t\t\t\r");
+    Base::Console().log("\t\t\t\t\t\t\t\t\r");
 }
 
 // ---------------------------------------------------------
