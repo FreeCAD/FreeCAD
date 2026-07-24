@@ -1040,6 +1040,9 @@ protected:
     void restoreFinished() override;
     void onSketchRestore();
 
+    bool expressionHasIntraSketchReference(std::shared_ptr<const App::Expression> expr);
+    bool hasIntraSketchReference();
+
     std::string validateExpression(
         const App::ObjectIdentifier& path,
         std::shared_ptr<const App::Expression> expr

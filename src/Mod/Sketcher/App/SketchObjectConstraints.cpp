@@ -36,11 +36,14 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Base/Vector3D.h>
+#include <Base/Writer.h>
 
 #include <memory>
 
 #include "GeoEnum.h"
 #include "SketchObject.h"
+
+#define INTRASKETCH_REFERENCE_REFERENCE_STRICT false
 
 
 #undef DEBUG
@@ -129,10 +132,86 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
         err = -5;
     }
     else {
-        lastSolverStatus = solvedSketch.solve();
-        if (lastSolverStatus != 0) {// solving
-            err = -1;
+        // Cache the original geometry and constraints.
+        // We may need them later if there is an error.
+        auto originalGeometry = Geometry.Copy();
+        std::vector<Constraint*> originalConstraints;
+        for (auto c : Constraints.getValuesForce()) {
+            originalConstraints.push_back(c->clone());
         }
+        try {
+            // Solve the sketch.
+            lastSolverStatus = solvedSketch.solve();
+            if (lastSolverStatus != 0) {// solving
+                err = -1;
+            } else if (hasIntraSketchReference()) {
+                // We need to check for unstable intra-sketch references.
+                // We are going to serialize the result of the first solution and the second solution.
+                Base::StringWriter writer1, writer2;
+                // Extract the first solution.
+                std::vector<Part::Geometry*> geomlist1 = solvedSketch.extractGeometry(true, true);
+                Part::PropertyGeometryList tmp1;
+                tmp1.setValues(std::move(geomlist1));
+                tmp1.Save(writer1);
+                // Update the active geometry.
+                // That is the easiest way to get the expression engine to run.
+                Geometry.Paste(tmp1);
+                // Recompute expressions.
+                auto eeres1 = ExpressionEngine.execute();
+                if (eeres1) {
+                    delete eeres1;
+                    eeres1 = NULL;
+                }
+                // Solve a second time.
+                Sketch solvedSketch2;
+                int lastDoF2 = solvedSketch2.setUpSketch(
+                    tmp1.getValues(), Constraints.getValues(), getExternalGeometryCount());
+                lastSolverStatus = solvedSketch2.solve();
+                // Extract the second solution.
+                std::vector<Part::Geometry*> geomlist2 = solvedSketch2.extractGeometry(true, true);
+                Part::PropertyGeometryList tmp2;
+                tmp2.setValues(std::move(geomlist2));
+                tmp2.Save(writer2);
+                // Check that the results are identical.
+                bool mismatch = (lastDoF != lastDoF2) || (writer1.getString() != writer2.getString());
+                // Roll back and rerun the first solution to allow the regular process to run its course.
+                Constraints.setValues(std::move(originalConstraints));
+                originalConstraints.clear();
+                Geometry.Paste(*originalGeometry);
+                eeres1 = ExpressionEngine.execute();
+                if (eeres1) {
+                    delete eeres1;
+                    eeres1 = NULL;
+                }
+                lastDoF = solvedSketch.setUpSketch(
+                    getCompleteGeometry(), Constraints.getValues(), getExternalGeometryCount());
+                // This operation ought to succeed since it succeeded before.
+                if ((lastSolverStatus = solvedSketch.solve()) != 0) err = -1;
+                else if (mismatch) {
+                    // If there was a mismatch before, the sketch is not stable.
+                    // Report an error.
+                    err = -6;
+                    Base::Console().error(
+                        this->getFullLabel(),
+                        QT_TRANSLATE_NOOP("Notifications", "The Sketch has cyclic or unstable references"
+                        " to internal reference constraints!") "\n");
+                }
+            }
+        }
+        catch (...) {
+            // Something failed.
+            // Clean up.
+            for (auto c : originalConstraints) {
+                delete c;
+            }
+            delete originalGeometry;
+            throw;
+        }
+        // The cycle test is complete. Clean up.
+        for (auto c : originalConstraints) {
+            delete c;
+        }
+        delete originalGeometry;
     }
 
     if (lastHasMalformedConstraints) {
@@ -2322,6 +2401,44 @@ void SketchObject::validateConstraints()
     }
 }
 
+bool SketchObject::expressionHasIntraSketchReference(
+                                             std::shared_ptr<const App::Expression> expr)
+{
+    auto deps = expr->getDeps();
+    auto it = deps.find(this);
+    if (it == deps.end()) {
+        return false;
+    }
+
+    auto it2 = it->second.find("Constraints");
+    if (it2 != it->second.end()) {
+        for (auto& oid : it2->second) {
+            const Constraint* constraint = Constraints.getConstraint(oid);
+
+            if (!constraint->isDriving)
+                return true;
+        }
+    }
+    return false;
+}
+
+bool SketchObject::hasIntraSketchReference()
+{
+    const std::vector<Constraint*>& vals = Constraints.getValues();
+    for (size_t i = 0; i < vals.size(); ++i) {
+        if (!constraintHasExpression(static_cast<int>(i))) {
+            continue;
+        }
+        App::ObjectIdentifier path = Constraints.createPath(static_cast<int>(i));
+        auto info = getExpression(path);
+        if (info.expression) {
+             if (expressionHasIntraSketchReference(info.expression))
+                return true;
+        }
+    }
+    return false;
+}
+
 std::string SketchObject::validateExpression(const App::ObjectIdentifier& path,
                                              std::shared_ptr<const App::Expression> expr)
 {
@@ -2339,22 +2456,9 @@ std::string SketchObject::validateExpression(const App::ObjectIdentifier& path,
             return "Reference constraints cannot be set!";
     }
 
-    auto deps = expr->getDeps();
-    auto it = deps.find(this);
-    if (it == deps.end()) {
-        return "";
-    }
-
-    auto it2 = it->second.find("Constraints");
-    if (it2 != it->second.end()) {
-        for (auto& oid : it2->second) {
-            const Constraint* constraint = Constraints.getConstraint(oid);
-
-            if (!constraint->isDriving)
-                return "Reference constraint from this sketch cannot be used in this "
+    if (INTRASKETCH_REFERENCE_REFERENCE_STRICT && expressionHasIntraSketchReference(expr))
+        return "Reference constraint from this sketch cannot be used in this "
                     "expression.";
-        }
-    }
 
     geoMap.clear();
     const auto &vals = getInternalGeometry();
