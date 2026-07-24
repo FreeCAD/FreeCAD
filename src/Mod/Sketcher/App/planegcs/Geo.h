@@ -24,8 +24,9 @@
 
 #pragma once
 
+#include <cmath>
+
 #include "Util.h"
-#include <boost/math/constants/constants.hpp>
 #include "../../SketcherGlobal.h"
 
 #ifdef _MSC_VER
