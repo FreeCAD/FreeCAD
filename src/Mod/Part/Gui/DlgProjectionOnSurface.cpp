@@ -33,6 +33,7 @@
 #include <BRepPrimAPI_MakePrism.hxx>
 #include <BRepProj_Projection.hxx>
 #include <gp_Ax1.hxx>
+#include <Mod/Part/App/ShapeAnalysis_FreeBoundsFix.h>
 #include <ShapeAnalysis.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
 #include <ShapeFix_Face.hxx>
@@ -947,8 +948,8 @@ TopoDS_Wire PartGui::DlgProjectionOnSurface::sort_and_heal_wire(
     }
 
     const double tolerance = 0.0001;
-    ShapeAnalysis_FreeBounds::ConnectEdgesToWires(shapeList, tolerance, false, aWireHandle);
-    ShapeAnalysis_FreeBounds::ConnectWiresToWires(aWireHandle, tolerance, false, aWireWireHandle);
+    Part::Fix_ShapeAnalysis_FreeBounds_ConnectEdgesToWires(shapeList, tolerance, false, aWireHandle);
+    Part::Fix_ShapeAnalysis_FreeBounds_ConnectWiresToWires(aWireHandle, tolerance, false, aWireWireHandle);
     if (!aWireWireHandle) {
         return {};
     }
