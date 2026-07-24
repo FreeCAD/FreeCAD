@@ -24,7 +24,6 @@
 
 #include <limits>
 #include <sstream>
-#include <boost/regex.hpp>
 
 #include <BRep_Tool.hxx>
 #include <BRepAlgo_NormalProjection.hxx>
