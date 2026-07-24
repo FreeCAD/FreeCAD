@@ -31,7 +31,7 @@
 #include <HLRAlgo_Projector.hxx>
 #include <Standard_Version.hxx>
 
-#include <boost/math/special_functions/fpclassify.hpp>
+#include <cmath>
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
@@ -118,7 +118,7 @@ PyObject* HLRBRep_PolyAlgoPy::setProjector(PyObject* args, PyObject* kwds)
             ax2.SetDirection(Base::convertTo<gp_Dir>(z));
         }
 
-        if (boost::math::isnan(focus)) {
+        if (std::isnan(focus)) {
             getHLRBRep_PolyAlgoPtr()->Projector(HLRAlgo_Projector(ax2));
         }
         else {
