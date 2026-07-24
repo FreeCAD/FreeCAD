@@ -489,7 +489,7 @@ void TaskHatchFace::onAddCustomPattern()
     }
 
     QString filter =
-        QObject::tr("Hatch Patterns (*.svg *.pat);;SVG files (*.svg);;PAT files (*.pat)");
+        QObject::tr("Hatch patterns (*.svg *.pat);;SVG files (*.svg);;PAT files (*.pat)");
     QString fileName = QFileDialog::getOpenFileName(this,
                                                     QObject::tr("Select Custom Pattern File"),
                                                     QString(),  // Default dir
