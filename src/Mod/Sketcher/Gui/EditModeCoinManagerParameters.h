@@ -103,6 +103,7 @@ struct DrawingParameters
     /** @name Rendering Coin Colors **/
     //@{
     static SbColor InformationColor;                       // Information Overlay Color
+    static SbColor GridLineColor;                          // Color used for inactive hint lines
     static SbColor CrossColorH;                            // Color for the Horizontal Axis
     static SbColor CrossColorV;                            // Color for the Vertical Axis
     static SbColor InvalidSketchColor;                     // Color for rendering an invalid sketch
@@ -151,12 +152,14 @@ struct DrawingParameters
     int InternalWidth = 1;          // width of internal edges
     int ExternalWidth = 1;          // width of external edges
     int ExternalDefiningWidth = 1;  // width of external defining edges
+    int InformationWidth = 1;       // width of information edges
 
     unsigned int CurvePattern = 0b1111111111111111;             // pattern of normal edges
     unsigned int ConstructionPattern = 0b1111110011111100;      // pattern of construction edges
     unsigned int InternalPattern = 0b1111110011111100;          // pattern of internal edges
     unsigned int ExternalPattern = 0b1111110011111100;          // pattern of external edges
     unsigned int ExternalDefiningPattern = 0b1111111111111111;  // pattern of external defining edges
+    unsigned int InformationPattern = 0b1111110011111100;  // pattern of information layer edges
     //@}
 
     DrawingParameters()
@@ -477,7 +480,13 @@ struct EditModeScenegraphNodes
     SoMaterial* LineExtensionAutoConstraintHintMaterials;
     SoCoordinate3* LineExtensionAutoConstraintHintCoordinate;
     SoLineSet* LineExtensionAutoConstraintHintSet;
-    SoDrawStyle* LineExtensionAutoConstraintHintDrawStyle;
+    //@}
+
+    /** @name Parallel/Perpendicular reference line hint nodes */
+    //@{
+    SoMaterial* ParallelPerpendicularHintMaterials;
+    SoCoordinate3* ParallelPerpendicularHintCoordinate;
+    SoLineSet* ParallelPerpendicularHintSet;
     //@}
 
     /** @name Temporal edit markers nodes- For operation rendering, such as trimming green circles*/
