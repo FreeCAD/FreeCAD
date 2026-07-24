@@ -143,7 +143,7 @@ void PatternPathParametersWidget::updatePathButton()
     if (!pathProperty || !pathProperty->getValue()) {
         ui->pathButton->setText(tr("Select path..."));
         return;
-    }
+        ui->pathButton->setText(tr("Select path…"));
 
     QString text = QString::fromUtf8(pathProperty->getValue()->Label.getValue());
     if (text.isEmpty()) {
