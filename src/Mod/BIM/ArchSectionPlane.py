@@ -65,6 +65,57 @@ else:
 ISRENDERING = False  # flag to prevent concurrent runs of the coin renderer
 
 
+def _getBoundBoxCorners(boundbox):
+    """Return the eight world-space corners of a FreeCAD BoundBox."""
+
+    return [
+        Vector(x, y, z)
+        for x in (boundbox.XMin, boundbox.XMax)
+        for y in (boundbox.YMin, boundbox.YMax)
+        for z in (boundbox.ZMin, boundbox.ZMax)
+    ]
+
+
+def getSectionPlaneLocalBoundBox(objects, placement):
+    """Return object bounds expressed in section plane local coordinates."""
+
+    local_boundbox = FreeCAD.BoundBox()
+    if not objects:
+        return local_boundbox
+
+    inverse_placement = FreeCAD.Placement(placement).inverse()
+    for obj in Draft.get_group_contents(objects):
+        if not hasattr(obj, "Shape") or not hasattr(obj.Shape, "BoundBox"):
+            continue
+        boundbox = obj.Shape.BoundBox
+        if not boundbox.isValid():
+            continue
+        for corner in _getBoundBoxCorners(boundbox):
+            local_boundbox.add(inverse_placement.multVec(corner))
+    return local_boundbox
+
+
+def getSectionPlaneFit(objects, placement):
+    """Return display length and height needed to cover objects from a placement."""
+
+    local_boundbox = getSectionPlaneLocalBoundBox(objects, placement)
+    if not local_boundbox.isValid():
+        return None
+
+    margin = local_boundbox.XLength * 0.1
+    return local_boundbox.XLength + margin, local_boundbox.YLength + margin
+
+
+def getSectionPlaneCenter(objects, placement):
+    """Return the world-space center of object bounds for a section placement."""
+
+    local_boundbox = getSectionPlaneLocalBoundBox(objects, placement)
+    if not local_boundbox.isValid():
+        return None
+
+    return FreeCAD.Placement(placement).multVec(local_boundbox.Center)
+
+
 def getSectionData(source):
     """Returns some common data from section planes and building parts"""
 
@@ -1717,39 +1768,19 @@ class SectionPlaneTaskPanel:
     def rotateZ(self):
         self.rotate(FreeCAD.Vector(0, 0, 1))
 
-    def getBB(self):
-        bb = FreeCAD.BoundBox()
-        if self.obj:
-            for o in Draft.get_group_contents(self.obj.Objects):
-                if hasattr(o, "Shape") and hasattr(o.Shape, "BoundBox"):
-                    bb.add(o.Shape.BoundBox)
-        return bb
-
     def resize(self):
         if self.obj and self.obj.ViewObject:
-            bb = self.getBB()
-            n = self.obj.Proxy.getNormal(self.obj)
-            margin = bb.XLength * 0.1
-            if (n.getAngle(FreeCAD.Vector(1, 0, 0)) < 0.1) or (
-                n.getAngle(FreeCAD.Vector(-1, 0, 0)) < 0.1
-            ):
-                self.obj.ViewObject.DisplayLength = bb.YLength + margin
-                self.obj.ViewObject.DisplayHeight = bb.ZLength + margin
-            elif (n.getAngle(FreeCAD.Vector(0, 1, 0)) < 0.1) or (
-                n.getAngle(FreeCAD.Vector(0, -1, 0)) < 0.1
-            ):
-                self.obj.ViewObject.DisplayLength = bb.XLength + margin
-                self.obj.ViewObject.DisplayHeight = bb.ZLength + margin
-            elif (n.getAngle(FreeCAD.Vector(0, 0, 1)) < 0.1) or (
-                n.getAngle(FreeCAD.Vector(0, 0, -1)) < 0.1
-            ):
-                self.obj.ViewObject.DisplayLength = bb.XLength + margin
-                self.obj.ViewObject.DisplayHeight = bb.YLength + margin
-            self.obj.Proxy.execute(self.obj)
+            fit = getSectionPlaneFit(self.obj.Objects, self.obj.Placement)
+            if fit is not None:
+                self.obj.ViewObject.DisplayLength = fit[0]
+                self.obj.ViewObject.DisplayHeight = fit[1]
+                self.obj.Proxy.execute(self.obj)
 
     def recenter(self):
         if self.obj:
-            self.obj.Placement.Base = self.getBB().Center
+            center = getSectionPlaneCenter(self.obj.Objects, self.obj.Placement)
+            if center is not None:
+                self.obj.Placement.Base = center
 
     def onTreeClick(self):
         if self.tree.selectedItems():
