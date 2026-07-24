@@ -978,6 +978,43 @@ def closeViewer(name):
             sw.close()
 
 
+def _handle_view_clipping(vobj, group, normal):
+    """
+    Helper function also used for BuildingParts.
+    CutView and CutMargin properties must be available.
+    """
+    views = vobj.Document.mdiViewsOfType("Gui::View3DInventor")
+    if not views:
+        return
+    lighting = "One side" if vobj.CutView else "Two side"
+    for o in Draft.get_group_contents(group, walls=True):
+        if hasattr(o.ViewObject, "Lighting"):
+            o.ViewObject.Lighting = lighting
+    if vobj.CutView:
+        clip_new = coin.SoClipPlane()
+        clip_new.on.setValue(True)
+        mp = vobj.Object.Placement.Base
+        mp = DraftVecUtils.project(mp, normal)
+        dist = mp.Length  # - 0.1 # to not clip exactly on the section object
+        normal = normal.negative()
+        marg = vobj.CutMargin.Value
+        if mp.getAngle(normal) > 1:
+            dist += marg
+            dist = -dist
+        else:
+            dist -= marg
+        plane = coin.SbPlane(coin.SbVec3f(normal.x, normal.y, normal.z), dist)
+        clip_new.plane.setValue(plane)
+    for view in views:
+        sg = view.getSceneGraph()
+        clip_old = gui_utils.find_coin_node(sg, coin.SoClipPlane)
+        # Always remove existing clip:
+        if clip_old is not None:
+            sg.removeChild(clip_old)
+        if vobj.CutView:
+            sg.insertChild(clip_new, 0)
+
+
 class _SectionPlane:
     "A section plane object"
 
@@ -1263,7 +1300,6 @@ class _ViewProviderSectionPlane:
     def attach(self, vobj):
 
         self.Object = vobj.Object
-        self.clip = None
         self.main_transform = gui_utils.find_coin_node(vobj.RootNode, coin.SoTransform)
         self.mat1 = coin.SoMaterial()
         self.mat2 = coin.SoMaterial()
@@ -1393,12 +1429,19 @@ class _ViewProviderSectionPlane:
                 self.txt.string = obj.Label
         return
 
+    def canAddToSceneGraph(self):
+        """
+        This function is called whenever a new 3D View is created.
+        We use it the ensure clipping is applied in new views.
+        """
+        self.refreshCutView(self.Object.ViewObject)
+        return True
+
     def refreshCutView(self, vobj):
         """
         Forces a refresh of the SoClipPlane by toggling the CutView property.
-        This is called with a delay to ensure the object's placement is up-to-date.
         """
-        if vobj and hasattr(vobj, "CutView") and vobj.CutView:
+        if vobj and getattr(vobj, "CutView", False):
             vobj.CutView = False
             vobj.CutView = True
 
@@ -1457,41 +1500,12 @@ class _ViewProviderSectionPlane:
         elif prop == "LineWidth":
             self.drawstyle.lineWidth = vobj.LineWidth
         elif prop in ["CutView", "CutMargin"]:
-            if (
-                hasattr(vobj, "CutView")
-                and FreeCADGui.ActiveDocument.ActiveView
-                and hasattr(FreeCADGui.ActiveDocument.ActiveView, "getSceneGraph")
-            ):
-                sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
-                if vobj.CutView:
-                    if self.clip:
-                        sg.removeChild(self.clip)
-                        self.clip = None
-                    for o in Draft.get_group_contents(vobj.Object.Objects, walls=True):
-                        if hasattr(o.ViewObject, "Lighting"):
-                            o.ViewObject.Lighting = "One side"
-                    self.clip = coin.SoClipPlane()
-                    self.clip.on.setValue(True)
-                    norm = vobj.Object.Proxy.getNormal(vobj.Object)
-                    mp = vobj.Object.Shape.CenterOfMass
-                    mp = DraftVecUtils.project(mp, norm)
-                    dist = mp.Length  # - 0.1 # to not clip exactly on the section object
-                    norm = norm.negative()
-                    marg = 1
-                    if hasattr(vobj, "CutMargin"):
-                        marg = vobj.CutMargin.Value
-                    if mp.getAngle(norm) > 1:
-                        dist += marg
-                        dist = -dist
-                    else:
-                        dist -= marg
-                    plane = coin.SbPlane(coin.SbVec3f(norm.x, norm.y, norm.z), dist)
-                    self.clip.plane.setValue(plane)
-                    sg.insertChild(self.clip, 0)
-                else:
-                    if self.clip:
-                        sg.removeChild(self.clip)
-                        self.clip = None
+            if hasattr(vobj, "CutView") and hasattr(vobj, "CutMargin"):
+                _handle_view_clipping(
+                    vobj,
+                    vobj.Object.Objects,
+                    vobj.Object.Proxy.getNormal(vobj.Object),
+                )
         elif prop == "ShowLabel":
             if vobj.ShowLabel:
                 self.txt.string = vobj.Object.Label or " "
