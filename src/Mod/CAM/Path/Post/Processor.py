@@ -30,6 +30,7 @@ import importlib.util
 import json
 import os
 import sys
+import itertools
 from typing import Any, Dict, List, Optional, Tuple, Union
 import datetime
 from contextlib import contextmanager
@@ -45,6 +46,7 @@ import Path.Post.Utils as PostUtils
 from Path.Post.PostList import Postable
 from Path.Post.DrillCycleExpander import DrillCycleExpander
 from Path.Post.CAMErrors import CAMError, CAMValueError, CAMAttributeError
+from Path.Post.UtilsParse import format_command_line
 from Path.Base.MachineState import MachineState
 from Machine.models.machine import MachineFactory, OutputUnits
 
@@ -1080,6 +1082,57 @@ class PostProcessor:
 
         return gcodeheader
 
+    def _add_line_numbers(self, postables):
+        """Add N word if we are line-numbering
+        Subclasses are expected to render N as line-number (if present)
+            the default _convert_move() will do that
+        Numbering does not know about the subclass inserting/removing commands/lines,
+            so is NOT the physical line-number.
+
+        Subclasses can override to customize.
+        """
+        if not self.values["OUTPUT_LINE_NUMBERS"]:
+            return
+
+        Path.Log.track("Line numbering")
+
+        start = self.values["LINE_NUMBER_START"]
+        increment = self.values["LINE_INCREMENT"]
+
+        for section_name, sublist in postables:
+            # per section
+            line_number = itertools.count(start, increment)
+
+            for item in sublist:
+
+                # count 'str' lines, because it might be gcode/commands
+                if item.item_type == "str":
+                    str_lines = item.data["str"].count("\n")
+                    if item.data["str"] != "" and not item.data["str"].endswith("\n"):
+                        # count last line
+                        str_lines += 1
+                    for _ in range(0, str_lines):
+                        next(line_number)
+
+                # number Path.Command's
+                elif item.Path:
+                    new_commands = []
+                    for command in item.Path.Commands:
+
+                        # don't count comments
+                        if command.Name.startswith("("):
+                            new_commands.append(command)
+                            continue
+
+                        # Have to remake, because we change Parameters
+                        # _convert_move() does the LINE_NUMBER_PREFIX
+                        new_params = {"N": next(line_number)}
+                        new_params.update(command.Parameters)
+                        new_commands.append(
+                            Path.Command(command.Name, new_params, command.Annotations)
+                        )
+                    item.path = Path.Path(new_commands)
+
     def _expand_canned_cycles(self, postables):
         """Terminate canned drill cycles in postable paths.
 
@@ -1896,7 +1949,6 @@ class PostProcessor:
             deduplicate_repeated_commands,
             suppress_redundant_axes_words,
             filter_inefficient_moves,
-            insert_line_numbers,
         )
 
         if not gcode_lines:
@@ -1920,11 +1972,6 @@ class PostProcessor:
 
         if body_part and self.values["FILTER_INEFFICIENT_MOVES"]:
             body_part = filter_inefficient_moves(body_part)
-
-        if body_part and self.values["OUTPUT_LINE_NUMBERS"]:
-            start = self.values["LINE_NUMBER_START"]
-            increment = self.values["LINE_INCREMENT"]
-            body_part = insert_line_numbers(body_part, start=start, increment=increment)
 
         final_lines = header_part + body_part
         return final_lines
@@ -2059,8 +2106,12 @@ class PostProcessor:
         self._expand_tool_change(postables)
         self._expand_rotary_move(postables)
 
-        # must be last
+        # must be last expansion
         self._expand_bcnc_postamble(postables)
+
+        # Add line-numbers to all Path.Command's (if option is on)
+        # must be last
+        self._add_line_numbers(postables)
 
         Path.Log.debug(postables)
 
@@ -2607,7 +2658,6 @@ class PostProcessor:
 
         This method can be overridden by derived postprocessors to customize rapid move handling.
         """
-        from Path.Post.UtilsParse import format_command_line
 
         # Extract command components
         command_name = command.Name
@@ -2619,6 +2669,12 @@ class PostProcessor:
 
         # Build command line
         command_line = []
+
+        # line numbers as prefix
+        if params.get("N", None) is not None:
+            prefix = self.values["LINE_NUMBER_PREFIX"]
+            command_line.append(f"{prefix}{ int(params['N']):d}")
+
         command_line.append(command_name)
 
         # Format parameters with clean, stateless implementation
