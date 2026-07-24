@@ -628,7 +628,7 @@ std::vector<std::string> PartDesignGui::TaskExtrudeParameters::getShapeFaces(
     auto allRefs = prop.getSubValues();
 
     std::copy_if(allRefs.begin(), allRefs.end(), std::back_inserter(faces), [](const std::string& ref) {
-        return boost::starts_with(ref, "Face");
+        return ref.starts_with("Face");
     });
 
     return faces;

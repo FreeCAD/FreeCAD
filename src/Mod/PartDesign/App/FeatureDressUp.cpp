@@ -32,8 +32,6 @@
 #include <TopExp_Explorer.hxx>
 
 
-#include <boost/algorithm/string/predicate.hpp>
-
 #include "FeatureDressUp.h"
 #include <Base/Console.h>
 #include <App/Document.h>
@@ -244,7 +242,7 @@ std::vector<TopoShape> DressUp::getFaces(const TopoShape& shape)
     const auto& subs = Base.getShadowSubs();
     size_t i = 0;
     for (auto& val : vals) {
-        if (!boost::starts_with(val, "Face")) {
+        if (!val.starts_with("Face")) {
             continue;
         }
         auto& sub = subs[i++];

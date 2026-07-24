@@ -504,7 +504,7 @@ TaskDlgDressUpParameters::TaskDlgDressUpParameters(ViewProviderDressUp* DressUpV
     for (auto& shadowSub : shadowSubs) {
         auto displayName = shadowSub.oldName;
         // If there is a missing tag on the shadow sub, take a guess at a new name.
-        if (boost::starts_with(shadowSub.oldName, Data::MISSING_PREFIX)) {
+        if (shadowSub.oldName.starts_with(Data::MISSING_PREFIX)) {
             Part::Feature::guessNewLink(displayName, base, shadowSub.newName.c_str());
             changed = true;
         }
