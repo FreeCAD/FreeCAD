@@ -4121,6 +4121,12 @@ void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const 
 
 bool ViewProviderSketch::setEdit(int ModNum)
 {
+#ifdef FC_DEBUG
+     Base::Console().message("ViewProviderSketch::setEdit ENTRY this=%p (ModNum=%d) doc=%s\n",
+            (void*)this,
+            ModNum,
+            getObject()->getDocument()->getName());
+#endif
     if (ModNum != ViewProviderSketch::Default) {
         return PartGui::ViewProvider2DObject::setEdit(ModNum);
     }
@@ -4302,21 +4308,42 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // intercept del key press from main app
     listener = std::make_unique<ShortcutListener>(this);
 
+#ifdef FC_DEBUG
+    Base::Console().message(
+        "setEdit: editDoc=%p editDoc->isActive()=%s -> %s\n",
+        (void*)editDoc,
+        editDoc ? (editDoc->isActive() ? "true" : "false") : "n/a",
+        (editDoc && editDoc->isActive()) ? "ENTERING setupActiveAndInEdit" : "SKIPPING setupActiveAndInEdit");
+#endif
+
+
     Gui::getMainWindow()->installEventFilter(listener.get());
-    if (editDoc && editDoc->isActive()) {
-        setupActiveAndInEdit();
-    }
+    setupActiveAndInEdit();
 
     return true;
 }
 void ViewProviderSketch::setupActiveAndInEdit()
 {
+#ifdef FC_DEBUG
+    Base::Console().message("ViewProviderSketch::setupActiveAndInEdit ENTRY this=%p doc=%s listener-before=%s\n",
+                            (void*)this,
+                            getObject()->getDocument()->getName(),
+                            listener ? "non-null" : "null");
+#endif
+
     if (!listener) {
         // intercept del key press from main app
         listener = std::make_unique<ShortcutListener>(this);
 
         Gui::getMainWindow()->installEventFilter(listener.get());
     }
+
+#ifdef FC_DEBUG
+    Base::Console().message("ViewProviderSketch::setupActiveAndInEdit MIDPOINT this=%p listener-after=%s\n",
+                            (void*)this,
+                            listener ? "non-null" : "null");
+#endif
+
     attachSelection();
 
     Workbench::enterEditMode();
@@ -4327,16 +4354,31 @@ void ViewProviderSketch::setupActiveAndInEdit()
 }
 void ViewProviderSketch::unsetupActiveAndInEdit()
 {
-    if (listener) {
-        Gui::getMainWindow()->removeEventFilter(listener.get());
-        listener.reset();
-    }
-    detachSelection();
+#ifdef FC_DEBUG
+     Base::Console().message("ViewProviderSketch::unsetupActiveAndInEdit ENTRY this=%p doc=%s listener=%s\n",
+                            (void*)this,
+                            getObject()->getDocument()->getName(),
+                            listener ? "non-null" : "null");
+#endif
 
+    if (!listener) {
+        return; // already torn down see: github issue #29738 so avoid duplicate teardowns
+    }
+    Gui::getMainWindow()->removeEventFilter(listener.get());
+    listener.reset();
+
+    detachSelection();
     Workbench::leaveEditMode();
 }
 void ViewProviderSketch::setActive(bool active)
 {
+#ifdef FC_DEBUG
+     Base::Console().message("ViewProviderSketch::setActive(%s) this=%p doc=%s inEdit=%s\n",
+                            active ? "true" : "false",
+                            (void*)this,
+                            getObject()->getDocument()->getName(),
+                            isInEditMode() ? "true" : "false");
+#endif
     bool inEdit = isInEditMode();
     if (active && inEdit) {
         setupActiveAndInEdit();
@@ -4478,6 +4520,14 @@ void ViewProviderSketch::UpdateSolverInformation()
 
 void ViewProviderSketch::unsetEdit(int ModNum)
 {
+#ifdef FC_DEBUG
+      Base::Console().message("ViewProviderSketch::unsetEdit ENTRY this=%p (ModNum=%d) doc=%s listener=%s\n",
+                            (void*)this,
+                            ModNum,
+                            getObject()->getDocument()->getName(),
+                            listener ? "non-null" : "null");
+#endif
+
     if (ModNum != ViewProviderSketch::Default) {
         return PartGui::ViewProvider2DObject::unsetEdit(ModNum);
     }
@@ -4485,11 +4535,6 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     setGridEnabled(nullptr);
     auto gridnode = getGridNode();
     pcRoot->removeChild(gridnode);
-
-    if (listener) {
-        Gui::getMainWindow()->removeEventFilter(listener.get());
-        listener.reset();
-    }
 
     if (isInEditMode()) {
         if (sketchHandler) {
@@ -4555,7 +4600,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 
 void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
 {
-    if (ModNum != ViewProviderSketch::Default) {
+        if (ModNum != ViewProviderSketch::Default) {
         return PartGui::ViewProvider2DObject::setEditViewer(viewer, ModNum);
     }
 
