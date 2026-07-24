@@ -121,9 +121,6 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         if obj.ExtraOffset != str(self.form.ExtraOffset.currentData()):
             obj.ExtraOffset = str(self.form.ExtraOffset.currentData())
 
-        self.updateToolController(obj, self.form.toolController)
-        self.updateCoolant(obj, self.form.coolantController)
-
     def setFields(self, obj):
         """setFields(obj) ... update UI with obj properties' values"""
         Path.Log.track()
@@ -147,9 +144,6 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
         self.selectInComboBox(obj.ExtraOffset, self.form.ExtraOffset)
 
-        self.setupToolController(obj, self.form.toolController)
-        self.setupCoolant(obj, self.form.coolantController)
-
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals which cause the receiver to update the model"""
         signals = []
@@ -160,8 +154,6 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals.append(self.form.dwellEnabled.stateChanged)
         #        signals.append(self.form.peckEnabled.stateChanged)
         #        signals.append(self.form.chipBreakEnabled.stateChanged)
-        signals.append(self.form.toolController.currentIndexChanged)
-        signals.append(self.form.coolantController.currentIndexChanged)
         signals.append(self.form.ExtraOffset.currentIndexChanged)
 
         return signals

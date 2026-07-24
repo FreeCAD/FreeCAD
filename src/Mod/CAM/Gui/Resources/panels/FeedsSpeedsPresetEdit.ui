@@ -77,9 +77,6 @@
      </item>
      <item row="3" column="1">
       <widget class="QDoubleSpinBox" name="surfaceSpeedSpin">
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
        <property name="decimals">
         <number>1</number>
        </property>
@@ -97,9 +94,6 @@
      </item>
      <item row="4" column="1">
       <widget class="Gui::QuantitySpinBox" name="chiploadSpin">
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
        <property name="minimum">
         <double>0.000000000000000</double>
        </property>
@@ -120,9 +114,6 @@
      </item>
      <item row="5" column="1">
       <widget class="QDoubleSpinBox" name="vertRatioSpin">
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
        <property name="decimals">
         <number>3</number>
        </property>
@@ -154,9 +145,6 @@
       </item>
       <item row="0" column="1">
        <widget class="Gui::QuantitySpinBox" name="rawFeedSpin">
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
         <property name="minimum">
          <double>0.000000000000000</double>
         </property>
@@ -177,9 +165,6 @@
       </item>
       <item row="1" column="1">
        <widget class="QDoubleSpinBox" name="rawSpeedSpin">
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
         <property name="decimals">
          <number>0</number>
         </property>
