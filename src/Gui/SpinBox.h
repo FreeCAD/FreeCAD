@@ -28,6 +28,7 @@
 
 
 class QStyleOptionSpinBox;
+class QContextMenuEvent;
 
 namespace App
 {
@@ -48,6 +49,9 @@ public:
     int getMargin();
     void stashExpression();
     void restoreExpression();
+    void clearExpressionBinding();
+    void clearExpressionBindingAndValue();
+    bool handleContextMenuEvent(QContextMenuEvent* event);
     bool isTentativeDiscard() const
     {
         return m_tentativeDiscard;
@@ -73,8 +77,9 @@ protected:
     virtual void validateInput();
     void resizeWidget();
 
-    bool handleKeyEvent(const QString&);
+    bool handleKeyEvent(QKeyEvent* event);
     virtual void openFormulaDialog();
+    virtual void removeExpression();
 
     void drawControl(QStyleOptionSpinBox&);
 

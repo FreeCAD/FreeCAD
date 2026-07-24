@@ -21,8 +21,13 @@
  ***************************************************************************/
 
 #include <limits>
+#include <QAction>
+#include <QContextMenuEvent>
+#include <QCoreApplication>
 #include <QKeyEvent>
+#include <QKeySequence>
 #include <QLineEdit>
+#include <QMenu>
 #include <QStyle>
 #include <QStyleOptionSpinBox>
 #include <QStylePainter>
@@ -86,6 +91,27 @@ public:
 private:
     ExpressionSpinBox& m_binding;
 };
+
+class ExpressionContextMenuFilter: public QObject
+{
+public:
+    explicit ExpressionContextMenuFilter(ExpressionSpinBox& binding, QObject* parent)
+        : QObject(parent)
+        , m_binding(binding)
+    {}
+
+    bool eventFilter(QObject*, QEvent* event) override
+    {
+        if (event->type() == QEvent::ContextMenu) {
+            return m_binding.handleContextMenuEvent(static_cast<QContextMenuEvent*>(event));
+        }
+
+        return false;
+    }
+
+private:
+    ExpressionSpinBox& m_binding;
+};
 }  // namespace SpinBoxPrivate
 
 ExpressionSpinBox::ExpressionSpinBox(QAbstractSpinBox* sb)
@@ -103,9 +129,11 @@ ExpressionSpinBox::ExpressionSpinBox(QAbstractSpinBox* sb)
     QObject::connect(iconLabel, &ExpressionLabel::clicked, [this]() { this->openFormulaDialog(); });
 
     lineedit->installEventFilter(new SpinBoxPrivate::ExpressionResetDoubleClickFilter(*this, spinbox));
+    lineedit->installEventFilter(new SpinBoxPrivate::ExpressionContextMenuFilter(*this, spinbox));
     // FocusOut filter goes on the spinbox, not lineedit
     // QAbstractSpinBox handles focus at the spinbox level.
     spinbox->installEventFilter(new SpinBoxPrivate::ExpressionFocusOutFilter(*this, spinbox));
+    spinbox->installEventFilter(new SpinBoxPrivate::ExpressionContextMenuFilter(*this, spinbox));
 }
 
 ExpressionSpinBox::~ExpressionSpinBox() = default;
@@ -288,7 +316,7 @@ void ExpressionSpinBox::openFormulaDialog()
             setExpression(box->getExpression());
         }
         else if (box->discardedFormula()) {
-            setExpression(std::shared_ptr<Expression>());
+            removeExpression();
         }
 
         updateExpression();
@@ -301,14 +329,93 @@ void ExpressionSpinBox::openFormulaDialog()
     Gui::adjustDialogPosition(box);
 }
 
-bool ExpressionSpinBox::handleKeyEvent(const QString& text)
+void ExpressionSpinBox::removeExpression()
 {
-    if (text == QLatin1String("=") && isBound()) {
-        openFormulaDialog();
-        return true;
+    setExpression(std::shared_ptr<Expression>());
+}
+
+void ExpressionSpinBox::clearExpressionBinding()
+{
+    if (!hasExpression()) {
+        return;
+    }
+
+    removeExpression();
+    updateExpression();
+}
+
+void ExpressionSpinBox::clearExpressionBindingAndValue()
+{
+    if (!hasExpression()) {
+        return;
+    }
+
+    clearExpressionBinding();
+    spinbox->clear();
+}
+
+bool ExpressionSpinBox::handleKeyEvent(QKeyEvent* event)
+{
+    if (isBound()) {
+        if (event->text() == QLatin1String("=")) {
+            openFormulaDialog();
+            return true;
+        }
+
+        const Qt::KeyboardModifiers modifiers = event->modifiers() & ~Qt::KeypadModifier;
+
+        if (hasExpression()) {
+            if (event->key() == Qt::Key_Delete && modifiers == Qt::ShiftModifier) {
+                clearExpressionBinding();
+                return true;
+            }
+
+            const bool deleteKey = event->key() == Qt::Key_Delete && modifiers == Qt::NoModifier;
+            const bool backspaceKey = event->key() == Qt::Key_Backspace
+                && modifiers == Qt::NoModifier;
+
+            if (deleteKey || backspaceKey) {
+                clearExpressionBindingAndValue();
+                return true;
+            }
+        }
     }
 
     return false;
+}
+
+bool ExpressionSpinBox::handleContextMenuEvent(QContextMenuEvent* event)
+{
+    if (!isBound()) {
+        return false;
+    }
+
+    QMenu* menu = lineedit->createStandardContextMenu();
+    menu->addSeparator();
+
+    QAction* clearBindingAndValueAction = menu->addAction(
+        QCoreApplication::translate("Gui::ExpressionSpinBox", "Clear Binding and Value")
+    );
+    clearBindingAndValueAction->setShortcut(QKeySequence(QKeySequence::Delete));
+    clearBindingAndValueAction->setShortcutVisibleInContextMenu(true);
+    clearBindingAndValueAction->setEnabled(hasExpression());
+    QObject::connect(clearBindingAndValueAction, &QAction::triggered, menu, [this]() {
+        clearExpressionBindingAndValue();
+    });
+
+    QAction* clearBindingAction = menu->addAction(
+        QCoreApplication::translate("Gui::ExpressionSpinBox", "Clear Binding Only")
+    );
+    clearBindingAction->setShortcut(QKeySequence(QStringLiteral("Shift+Del")));
+    clearBindingAction->setShortcutVisibleInContextMenu(true);
+    clearBindingAction->setEnabled(hasExpression());
+    QObject::connect(clearBindingAction, &QAction::triggered, menu, [this]() {
+        clearExpressionBinding();
+    });
+
+    menu->exec(event->globalPos());
+    delete menu;
+    return true;
 }
 
 void ExpressionSpinBox::drawControl(QStyleOptionSpinBox& opt)
@@ -562,7 +669,7 @@ void UIntSpinBox::resizeEvent(QResizeEvent* event)
 
 void UIntSpinBox::keyPressEvent(QKeyEvent* event)
 {
-    if (!handleKeyEvent(event->text())) {
+    if (!handleKeyEvent(event)) {
         QAbstractSpinBox::keyPressEvent(event);
     }
 }
@@ -607,7 +714,7 @@ void IntSpinBox::resizeEvent(QResizeEvent* event)
 
 void IntSpinBox::keyPressEvent(QKeyEvent* event)
 {
-    if (!handleKeyEvent(event->text())) {
+    if (!handleKeyEvent(event)) {
         QAbstractSpinBox::keyPressEvent(event);
     }
 }
@@ -651,7 +758,7 @@ void DoubleSpinBox::resizeEvent(QResizeEvent* event)
 
 void DoubleSpinBox::keyPressEvent(QKeyEvent* event)
 {
-    if (!handleKeyEvent(event->text())) {
+    if (!handleKeyEvent(event)) {
         QDoubleSpinBox::keyPressEvent(event);
     }
 }
