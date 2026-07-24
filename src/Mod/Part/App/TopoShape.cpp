@@ -28,8 +28,8 @@
 #include <array>
 #include <cmath>
 #include <cstdlib>
+#include <regex>
 #include <sstream>
-#include <boost/regex.hpp>
 
 #include <APIHeaderSection_MakeHeader.hxx>
 #include <BinTools.hxx>
@@ -304,10 +304,10 @@ std::pair<std::string, unsigned long> TopoShape::getElementTypeAndIndex(const ch
     const char* Name = strName.c_str();
     int index = 0;
     std::string element;
-    boost::regex ex("^(Face|Edge|Vertex)([1-9][0-9]*)$");
-    boost::cmatch what;
+    const std::regex ex("^(Face|Edge|Vertex)([1-9][0-9]*)$");
+    std::cmatch what;
 
-    if (Name && boost::regex_match(Name, what, ex)) {
+    if (Name && std::regex_match(Name, what, ex)) {
         element = what[1].str();
         index = std::atoi(what[2].str().c_str());
     }
