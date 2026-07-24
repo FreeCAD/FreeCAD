@@ -387,7 +387,7 @@ Base::Reference<ParameterGrp> ParameterGrp::GetGroup(const char* Name)
     constexpr std::string_view whitespace {" \t\n\v\f\r"};
     Base::Reference<ParameterGrp> hGrp = this;
     const std::string_view path {Name};
-    for (std::size_t pos = 0; pos <= path.size(); ) {
+    for (std::size_t pos = 0; pos <= path.size();) {
         const std::size_t sep = std::min(path.find('/', pos), path.size());
         std::string_view token = path.substr(pos, sep - pos);
         pos = sep + 1;

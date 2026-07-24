@@ -210,10 +210,8 @@ protected:
         if (gptr() < egptr()) {
             return traits_type::to_int_type(*gptr());
         }
-        const std::streamsize count = decode(
-            out_buffer.data(),
-            static_cast<std::streamsize>(out_buffer.size())
-        );
+        const std::streamsize count
+            = decode(out_buffer.data(), static_cast<std::streamsize>(out_buffer.size()));
         if (count <= 0) {
             return traits_type::eof();
         }
@@ -259,9 +257,8 @@ private:
                     pending_in = 4;
                 }
                 else {
-                    const signed char decodedChar = table[static_cast<unsigned char>(
-                        traits_type::to_char_type(newChar)
-                    )];
+                    const signed char decodedChar
+                        = table[static_cast<unsigned char>(traits_type::to_char_type(newChar))];
                     if (decodedChar < 0) {
                         if (decodedChar == -2 || errHandling == Base64ErrorHandling::silent) {
                             continue;

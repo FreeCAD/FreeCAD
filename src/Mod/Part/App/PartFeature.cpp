@@ -1082,9 +1082,12 @@ static TopoShape _getTopoShape(
             else if (linked->isDerivedFrom<App::Placement>()) {
                 auto element = Data::findElementName(subname);
                 if (element) {
-                    if (Base::StringUtils::iequals("x", element) || Base::StringUtils::iequals("x-axis", element)
-                        || Base::StringUtils::iequals("y", element) || Base::StringUtils::iequals("y-axis", element)
-                        || Base::StringUtils::iequals("z", element) || Base::StringUtils::iequals("z-axis", element)) {
+                    if (Base::StringUtils::iequals("x", element)
+                        || Base::StringUtils::iequals("x-axis", element)
+                        || Base::StringUtils::iequals("y", element)
+                        || Base::StringUtils::iequals("y-axis", element)
+                        || Base::StringUtils::iequals("z", element)
+                        || Base::StringUtils::iequals("z-axis", element)) {
                         static TopoDS_Shape _shape;
                         if (_shape.IsNull()) {
                             BRepBuilderAPI_MakeEdge builder(gp_Lin(gp_Pnt(0, 0, 0), gp_Dir(0, 0, 1)));
@@ -1093,7 +1096,10 @@ static TopoShape _getTopoShape(
                         }
                         shape = TopoShape(tag, hasher, _shape);
                     }
-                    else if (Base::StringUtils::iequals("o", element) || Base::StringUtils::iequals("origin", element)) {
+                    else if (
+                        Base::StringUtils::iequals("o", element)
+                        || Base::StringUtils::iequals("origin", element)
+                    ) {
                         static TopoDS_Shape _shape;
                         if (_shape.IsNull()) {
                             BRepBuilderAPI_MakeVertex builder(gp_Pnt(0, 0, 0));

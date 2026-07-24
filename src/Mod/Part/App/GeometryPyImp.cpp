@@ -23,8 +23,6 @@
  ***************************************************************************/
 
 
-
-
 #include <Base/GeometryPyCXX.h>
 #include <Base/Matrix.h>
 #include <Base/MatrixPy.h>

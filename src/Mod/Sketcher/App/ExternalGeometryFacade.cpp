@@ -23,7 +23,6 @@
  ***************************************************************************/
 
 
-
 #include <Base/Console.h>
 
 #include "ExternalGeometryFacade.h"

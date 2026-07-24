@@ -23,7 +23,6 @@
  ***************************************************************************/
 
 
-
 #include "GeometryFacade.h"
 #include "GeometryFacadePy.h"
 

@@ -88,8 +88,7 @@ std::string PythonConverter::convert(
             if (construction) {
                 command = fmt::sprintf(
                     "constrGeoList = []\n%s%s.addGeometry(constrGeoList,%s)\n"
-                    "del constrGeoList\n"
-                    ,
+                    "del constrGeoList\n",
                     geolist,
                     doc,
                     "True"
@@ -237,8 +236,7 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
              auto sgeo = static_cast<const Part::GeomLineSegment*>(geo);
              SingleGeometry sg;
              sg.creation = fmt::sprintf(
-                 "Part.LineSegment(App.Vector(%.8f, %.8f, %.8f),App.Vector(%.8f, %.8f, %.8f))"
-                 ,
+                 "Part.LineSegment(App.Vector(%.8f, %.8f, %.8f),App.Vector(%.8f, %.8f, %.8f))",
                  sgeo->getStartPoint().x,
                  sgeo->getStartPoint().y,
                  sgeo->getStartPoint().z,
@@ -257,8 +255,7 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
              SingleGeometry sg;
              sg.creation = fmt::sprintf(
                  "Part.ArcOfCircle(Part.Circle(App.Vector(%.8f, %.8f, "
-                 "%.8f), App.Vector(%.8f, %.8f, %.8f), %.8f), %.8f, %.8f)"
-                 ,
+                 "%.8f), App.Vector(%.8f, %.8f, %.8f), %.8f), %.8f, %.8f)",
                  arc->getCenter().x,
                  arc->getCenter().y,
                  arc->getCenter().z,
@@ -294,8 +291,7 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
              auto positiveB = center + ellipse->getMinorAxisDir() * ellipse->getMinorRadius();
              sg.creation = fmt::sprintf(
                  "Part.Ellipse(App.Vector(%.8f, %.8f, %.8f), App.Vector(%.8f, "
-                 "%.8f, %.8f), App.Vector(%.8f, %.8f, %.8f))"
-                 ,
+                 "%.8f, %.8f), App.Vector(%.8f, %.8f, %.8f))",
                  periapsis.x,
                  periapsis.y,
                  periapsis.z,
@@ -321,8 +317,7 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
              sg.creation = fmt::sprintf(
                  "Part.ArcOfEllipse(Part.Ellipse(App.Vector(%.8f, %.8f, %.8f), "
                  "App.Vector(%.8f, "
-                 "%.8f, %.8f), App.Vector(%.8f, %.8f, %.8f)), %.8f, %.8f)"
-                 ,
+                 "%.8f, %.8f), App.Vector(%.8f, %.8f, %.8f)), %.8f, %.8f)",
                  periapsis.x,
                  periapsis.y,
                  periapsis.z,
@@ -350,8 +345,7 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
              sg.creation = fmt::sprintf(
                  "Part.ArcOfHyperbola(Part.Hyperbola(App.Vector(%.8f, %.8f, %.8f), "
                  "App.Vector(%.8f, %.8f, %.8f), App.Vector(%.8f, %.8f, %.8f)), %.8f, "
-                 "%.8f)"
-                 ,
+                 "%.8f)",
                  majAxisPoint.x,
                  majAxisPoint.y,
                  majAxisPoint.z,
@@ -377,8 +371,7 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
              auto axisPoint = aop->getCenter();
              sg.creation = fmt::sprintf(
                  "Part.ArcOfParabola(Part.Parabola(App.Vector(%.8f, %.8f, %.8f), "
-                 "App.Vector(%.8f, %.8f, %.8f), App.Vector(0, 0, 1)), %.8f, %.8f)"
-                 ,
+                 "App.Vector(%.8f, %.8f, %.8f), App.Vector(0, 0, 1)), %.8f, %.8f)",
                  focus.x,
                  focus.y,
                  focus.z,
@@ -417,8 +410,7 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
              auto circle = static_cast<const Part::GeomCircle*>(geo);
              SingleGeometry sg;
              sg.creation = fmt::sprintf(
-                 "Part.Circle(App.Vector(%.8f, %.8f, %.8f), App.Vector(%.8f, %.8f, %.8f), %.8f)"
-                 ,
+                 "Part.Circle(App.Vector(%.8f, %.8f, %.8f), App.Vector(%.8f, %.8f, %.8f), %.8f)",
                  circle->getCenter().x,
                  circle->getCenter().y,
                  circle->getCenter().z,
@@ -689,6 +681,8 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
 std::vector<std::string> PythonConverter::multiLine(std::string&& singlestring)
 {
     const std::regex re("\n+");
-    return {std::sregex_token_iterator(singlestring.begin(), singlestring.end(), re, -1),
-            std::sregex_token_iterator()};
+    return {
+        std::sregex_token_iterator(singlestring.begin(), singlestring.end(), re, -1),
+        std::sregex_token_iterator()
+    };
 }

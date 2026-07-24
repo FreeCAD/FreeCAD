@@ -54,7 +54,11 @@ using namespace Gui;
 // TaskShapeBinder
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder* view, [[maybe_unused]] bool newObj, QWidget* parent)
+TaskShapeBinder::TaskShapeBinder(
+    ViewProviderShapeBinder* view,
+    [[maybe_unused]] bool newObj,
+    QWidget* parent
+)
     : Gui::TaskView::TaskBox(
           Gui::BitmapFactory().pixmap("PartDesign_ShapeBinder"),
           tr("Shape Binder Parameters"),
