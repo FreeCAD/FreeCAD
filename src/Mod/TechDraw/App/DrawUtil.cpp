@@ -26,7 +26,7 @@
 #include <limits>
 #include <sstream>
 
-#include <boost_regex.hpp>
+#include <regex>
 
 #include <QChar>
 #include <QPointF>
@@ -75,9 +75,9 @@ using namespace TechDraw;
 /*static*/ int DrawUtil::getIndexFromName(const std::string& geomName)
 {
     //   Base::Console().message("DU::getIndexFromName(%s)\n", geomName.c_str());
-    boost::regex re("\\d+$");// one of more digits at end of string
-    boost::match_results<std::string::const_iterator> what;
-    boost::match_flag_type flags = boost::match_default;
+    std::regex re("\\d+$");// one of more digits at end of string
+    std::match_results<std::string::const_iterator> what;
+    std::regex_constants::match_flag_type flags = std::regex_constants::match_default;
     //   char* endChar;
     std::string::const_iterator begin = geomName.begin();
     auto pos = geomName.rfind('.');
@@ -92,7 +92,7 @@ using namespace TechDraw;
     }
 
 
-    if (boost::regex_search(begin, end, what, re, flags)) {
+    if (std::regex_search(begin, end, what, re, flags)) {
         return int(std::stoi(what.str()));
     } else {
         ErrorMsg << "getIndexFromName: malformed geometry name - " << geomName;
@@ -116,9 +116,9 @@ std::string DrawUtil::getGeomTypeFromName(const std::string& geomName)
         throw Base::ValueError("getGeomTypeFromName - empty geometry name");
     }
 
-    boost::regex re("^[a-zA-Z]*");//one or more letters at start of string
-    boost::match_results<std::string::const_iterator> what;
-    boost::match_flag_type flags = boost::match_default;
+    std::regex re("^[a-zA-Z]*");//one or more letters at start of string
+    std::match_results<std::string::const_iterator> what;
+    std::regex_constants::match_flag_type flags = std::regex_constants::match_default;
     std::string::const_iterator begin = geomName.begin();
     auto pos = geomName.rfind('.');
     if (pos != std::string::npos) {
@@ -127,7 +127,7 @@ std::string DrawUtil::getGeomTypeFromName(const std::string& geomName)
     std::string::const_iterator end = geomName.end();
     std::stringstream ErrorMsg;
 
-    if (boost::regex_search(begin, end, what, re, flags)) {
+    if (std::regex_search(begin, end, what, re, flags)) {
         return what.str();
     } else {
         ErrorMsg << "In getGeomTypeFromName: malformed geometry name - " << geomName;
@@ -1862,8 +1862,8 @@ std::string DrawUtil::translateArbitrary(std::string context, std::string baseNa
 std::string DrawUtil::cleanFilespecBackslash(const std::string& filespec)
 {
     std::string forwardSlash{"/"};
-    boost::regex rxBackslash("\\\\");    //this rx really means match to a single '\'
-    std::string noBackslash = boost::regex_replace(filespec, rxBackslash, forwardSlash);
+    std::regex rxBackslash("\\\\");    //this rx really means match to a single '\'
+    std::string noBackslash = std::regex_replace(filespec, rxBackslash, forwardSlash);
     return noBackslash;
 }
 
