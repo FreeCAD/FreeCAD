@@ -74,6 +74,7 @@ SET(Draft_tests
     drafttests/test_modification.py
     drafttests/test_oca.py
     drafttests/test_pivy.py
+    drafttests/test_snapper.py
     drafttests/test_svg.py
     drafttests/README.md
     drafttests/Issue24314.dxf
