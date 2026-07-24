@@ -167,10 +167,15 @@ void QGIHighlight::setFont(QFont f, double fsize)
 }
 
 
-//obs?
+
 QColor QGIHighlight::getHighlightColor()
 {
-    return PreferencesGui::sectionLineQColor();
+    return m_pen.color();
+}
+
+void QGIHighlight::setHighlightColor(QColor newColor)
+{
+    m_pen.setColor(newColor);
 }
 
 int QGIHighlight::getHoleStyle()
