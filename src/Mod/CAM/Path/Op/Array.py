@@ -1,0 +1,1135 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
+
+import FreeCAD
+import Path
+import PathScripts.PathUtils as PathUtils
+from DraftVecUtils import rotate2D
+from Path.Base.Util import coolantModeForOp
+from Path.Base.Util import toolControllerForOp
+from Path.Op.Util import getCycleTimeEstimate
+import tsp_solver
+
+import random
+import math
+import time
+
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
+__doc__ = "CAM Array object"
+
+translate = FreeCAD.Qt.translate
+
+
+class ObjectArray:
+    def __init__(self, obj, bases):
+        # Path properties group
+        obj.addProperty(
+            "App::PropertyBool",
+            "Active",
+            "Path",
+            QT_TRANSLATE_NOOP("PathOp", "Make False, to prevent operation from generating code"),
+        )
+        obj.addProperty(
+            "App::PropertyLinkList",
+            "Base",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "The toolpaths to array"),
+        )
+        obj.addProperty(
+            "App::PropertyString",
+            "CycleTime",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Operations cycle time estimation"),
+        )
+        obj.addProperty(
+            "App::PropertyLink",
+            "ToolController",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The tool controller that will be used to calculate the toolpath",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyLinkListHidden",
+            "ArrayGroup",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "List of child array objects"),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "Combine",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "If operations with identical tool controller and without coolant:"
+                "\ncombine by copies"
+                "\n\nIf operations with different tool controllers or with coolant:"
+                "\ncombine operations with same tool controller and coolant mode, "
+                "\nbut only if operations placed one by one in tree",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "ExpandArray",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Split path by elements even all base operations without coolant"
+                " and with identical tool controller",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "AddBasePath",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Add base path to array operation"),
+        )
+
+        # Pattern properties group
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Type",
+            "Pattern",
+            QT_TRANSLATE_NOOP("App::Property", "Pattern method"),
+        )
+        obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "Copies",
+            "Pattern",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The number of copies in Linear1D and Polar pattern"
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyVectorDistance",
+            "Offset",
+            "Pattern",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The spacing between the array copies in linear pattern",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "CopiesX",
+            "Pattern",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The number of copies in X-direction in linear pattern"
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "CopiesY",
+            "Pattern",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The number of copies in Y-direction in linear pattern"
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyAngle",
+            "Angle",
+            "Pattern",
+            QT_TRANSLATE_NOOP("App::Property", "Total angle in polar pattern"),
+        )
+        obj.addProperty(
+            "App::PropertyVector",
+            "Centre",
+            "Pattern",
+            QT_TRANSLATE_NOOP("App::Property", "The centre of rotation in polar pattern"),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "SwapDirection",
+            "Pattern",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Make copies in X direction before Y in Linear 2D pattern",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "ReverseDirection",
+            "Pattern",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Start from farthest repeat",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyLinkSubListGlobal",
+            "PointsSource",
+            "Pattern",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Define the offsets and angle of rotation for repeats from selected shapes"
+                "\n\nIf selection without sub elements:"
+                "\n- shape contains only vertexes: create repeats for each vertex"
+                "\n- shape contains edges: create only one repeat (useful for imported nesting shapes)",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyLinkSubGlobal",
+            "PointsOrigin",
+            "Pattern",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Define the base offsets and angle of rotation from selected shape",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "PointsSorting",
+            "Pattern",
+            QT_TRANSLATE_NOOP("App::Property", "Sorting mode"),
+        )
+
+        # Random properties group
+        obj.addProperty(
+            "App::PropertyVectorDistance",
+            "JitterMagnitude",
+            "Random",
+            QT_TRANSLATE_NOOP("App::Property", "Maximum random offset of copies"),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "UseJitter",
+            "Random",
+            QT_TRANSLATE_NOOP("App::Property", "Use randomly offset"),
+        )
+        obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "JitterSeed",
+            "Random",
+            QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
+        )
+        obj.addProperty(
+            "App::PropertyAngle",
+            "JitterAngle",
+            "Random",
+            QT_TRANSLATE_NOOP("App::Property", "Max angle of rotation for jitter randomness"),
+        )
+
+        obj.Active = True
+        obj.Type = ("Linear1D", "Linear2D", "Points", "Polar")
+        obj.PointsSorting = ("Automatic", "Manual")
+        obj.Copies = (1, 1, 99999, 1)
+        obj.CopiesX = (1, 1, 99999, 1)
+        obj.CopiesY = (1, 1, 99999, 1)
+        obj.JitterSeed = (0, 0, 2147483647, 1)
+        obj.JitterMagnitude = FreeCAD.Vector(10, 10, 0)
+        obj.JitterAngle = 10
+
+        obj.Base = bases
+        self.group = []
+        self.setEditorModes(obj)
+        obj.Proxy = self
+
+    def dumps(self):
+        return None
+
+    def loads(self, state):
+        return None
+
+    def setEditorModes(self, obj):
+        obj.setEditorMode("ToolController", 2)  # hidden
+        obj.setEditorMode("ArrayGroup", 3)  # hidden and read-only
+        obj.setEditorMode("CycleTime", 1)  # read-only
+        obj.setEditorMode("AddBasePath", 2)  # hidden
+
+        angleMode = centreMode = copiesXMode = copiesYMode = swapDirectionMode = 2
+        copiesMode = offsetMode = pointsMode = 2
+        if obj.Type == "Linear1D":
+            copiesMode = offsetMode = 0
+        elif obj.Type == "Linear2D":
+            copiesXMode = copiesYMode = offsetMode = swapDirectionMode = 0
+        elif obj.Type == "Points":
+            pointsMode = 0
+        elif obj.Type == "Polar":
+            angleMode = copiesMode = centreMode = 0
+
+        obj.setEditorMode("Angle", angleMode)
+        obj.setEditorMode("Centre", centreMode)
+        obj.setEditorMode("Copies", copiesMode)
+        obj.setEditorMode("CopiesX", copiesXMode)
+        obj.setEditorMode("CopiesY", copiesYMode)
+        obj.setEditorMode("Offset", offsetMode)
+        obj.setEditorMode("SwapDirection", swapDirectionMode)
+
+        obj.setEditorMode("PointsOrigin", pointsMode)
+        obj.setEditorMode("PointsSource", pointsMode)
+        obj.setEditorMode("PointsSorting", pointsMode)
+
+        jitterMode = 0 if obj.UseJitter else 2
+        obj.setEditorMode("JitterMagnitude", jitterMode)
+        obj.setEditorMode("JitterSeed", jitterMode)
+        obj.setEditorMode("JitterAngle", jitterMode)
+
+        expandMode = 0 if self.isLegacy(obj) else 2
+        obj.setEditorMode("ExpandArray", expandMode)
+
+        combineMode = 0 if obj.ArrayGroup else 2
+        obj.setEditorMode("Combine", combineMode)
+
+    def onChanged(self, obj, prop):
+        if prop in ("Path", "ExpandArray", "Type", "UseJitter") and not obj.Document.Restoring:
+            self.setEditorModes(obj)
+
+        if prop == "Active" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
+
+        if prop == "Active":
+            for op in obj.ArrayGroup:
+                op.Active = obj.Active
+
+    def onDocumentRestored(self, obj):
+        """onDocumentRestored(obj) ... Called automatically when document is restored."""
+        if not obj.ViewObject.Proxy:
+            Path.Op.Gui.Array.ViewProviderArray(obj.ViewObject)
+
+        if not hasattr(obj, "JitterAngle"):
+            obj.addProperty(
+                "App::PropertyAngle",
+                "JitterAngle",
+                "Random",
+                QT_TRANSLATE_NOOP("App::Property", "Max angle of rotation for jitter randomness"),
+            )
+        if not hasattr(obj, "UseJitter"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "UseJitter",
+                "Random",
+                QT_TRANSLATE_NOOP("App::Property", "Use randomly offset"),
+            )
+            obj.setGroupOfProperty("JitterMagnitude", "Random")
+            obj.setGroupOfProperty("JitterSeed", "Random")
+
+            obj.setGroupOfProperty("SwapDirection", "Pattern")
+            obj.setGroupOfProperty("CopiesX", "Pattern")
+            obj.setGroupOfProperty("CopiesY", "Pattern")
+            obj.setGroupOfProperty("Copies", "Pattern")
+            obj.setGroupOfProperty("Offset", "Pattern")
+            obj.setGroupOfProperty("Angle", "Pattern")
+            obj.setGroupOfProperty("Type", "Pattern")
+
+        if not hasattr(obj, "CycleTime"):
+            obj.addProperty(
+                "App::PropertyString",
+                "CycleTime",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Operations cycle time estimation"),
+            )
+        if not hasattr(obj, "ReverseDirection"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "ReverseDirection",
+                "Pattern",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Start from farthest repeat",
+                ),
+            )
+
+        if not hasattr(obj, "PointsSource"):
+            obj.addProperty(
+                "App::PropertyLinkSubListGlobal",
+                "PointsSource",
+                "Pattern",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Define the offsets and angle of rotation for repeats from selected shapes"
+                    "\n\nIf selection without sub elements:"
+                    "\n- shape contains only vertexes: create repeats for each vertex"
+                    "\n- shape contains edges: create only one repeat (useful for imported nesting shapes)",
+                ),
+            )
+            pattern = obj.Type
+            obj.Type = ("Linear1D", "Linear2D", "Polar", "Points")
+            obj.Type = pattern
+
+        if not hasattr(obj, "PointsOrigin"):
+            obj.addProperty(
+                "App::PropertyLinkSubGlobal",
+                "PointsOrigin",
+                "Pattern",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Define the base offsets and angle of rotation from selected shape",
+                ),
+            )
+
+        if not hasattr(obj, "PointsSorting"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "PointsSorting",
+                "Pattern",
+                QT_TRANSLATE_NOOP("App::Property", "Sorting mode"),
+            )
+            obj.PointsSorting = ("Automatic", "Manual")
+
+        if not hasattr(obj, "ArrayGroup"):
+            obj.addProperty(
+                "App::PropertyLinkListHidden",
+                "ArrayGroup",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "List of child array objects"),
+            )
+            expressions = dict(obj.ExpressionEngine)
+            for prop in ("Copies", "CopiesX", "CopiesY"):
+                if expr := expressions.get(prop):
+                    obj.setExpression(prop, f"{expr} + 1")
+                else:
+                    val = getattr(obj, prop, 0)
+                    setattr(obj, prop, val + 1)
+        if not hasattr(obj, "Combine"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "Combine",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "If operations with identical tool controller and without coolant:"
+                    "\ncombine by copies"
+                    "\n\nIf operations with different tool controllers or with coolant:"
+                    "\ncombine operations with same tool controller and coolant mode, "
+                    "\nbut only if operations placed one by one in tree",
+                ),
+            )
+        if not hasattr(obj, "ExpandArray"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "ExpandArray",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Split path by elements even all base operations without coolant and with identical tool controller",
+                ),
+            )
+            obj.ExpandArray = True
+        if not hasattr(obj, "AddBasePath"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "AddBasePath",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Add base path to array operation"),
+            )
+
+        self.setEditorModes(obj)
+
+    def execute(self, obj):
+        if not obj.Active or not self.isBaseCompatible(obj):
+            self.cleanArrayGroup(obj, 0)
+            obj.Path = Path.Path()
+            return
+
+        obj.ToolController = toolControllerForOp(obj.Base[0])
+
+        # Prepare random function
+        jitterAngle = jitterMagnitude = None
+        if obj.UseJitter:
+            random.seed(obj.JitterSeed)
+            if obj.JitterMagnitude != FreeCAD.Vector():
+                jitterMagnitude = obj.JitterMagnitude
+            if obj.JitterAngle:
+                jitterAngle = obj.JitterAngle
+
+        args = {
+            "base": obj.Base,
+            "arrayType": obj.Type,
+            "copies": obj.Copies - 1,
+            "offsetVector": obj.Offset,
+            "copiesX": obj.CopiesX - 1,
+            "copiesY": obj.CopiesY - 1,
+            "angle": obj.Angle.Value,
+            "centre": obj.Centre,
+            "swapDirection": obj.SwapDirection,
+            "reverse": obj.ReverseDirection,
+            "jitterMagnitude": jitterMagnitude,
+            "jitterAngle": jitterAngle,
+            "pointsSource": obj.PointsSource,
+            "pointsOrigin": obj.PointsOrigin,
+            "pointsSorting": obj.PointsSorting,
+            "addBasePath": obj.AddBasePath,
+        }
+
+        pathArray = PathArray(**args).getPath()
+        if not pathArray:
+            self.cleanArrayGroup(obj, 0)
+            obj.Path = Path.Path()
+            obj.CycleTime = "0"
+            return
+
+        if self.isLegacy(obj) and not obj.ExpandArray:
+            # old type of array
+            self.cleanArrayGroup(obj, 0)
+            self.group = []
+            cmds = [cmd for op in pathArray for cmd in op["path"].Commands]
+            obj.Path = Path.Path(cmds)
+            obj.CycleTime = getCycleTimeEstimate(obj)
+        else:  # new type of array with separated copies
+            self.group = pathArray
+            if obj.Combine:
+                self.processGroupCompound(obj)
+            else:
+                self.processGroup(obj)
+            self.processGroupCycleTime(obj)
+            obj.Path = Path.Path()  # trigger to recompute elements in Group
+
+    def isBaseCompatible(self, obj):
+        """Check compatibility of base operations
+        for array with multi tool controllers and coolant"""
+        if not obj.Base:
+            return False
+
+        for base in obj.Base:
+            if not base.isDerivedFrom("Path::Feature"):
+                return False
+
+            if not toolControllerForOp(base):
+                Path.Log.warning(
+                    translate("PathArray", "Tool controller not selected for operation %s")
+                    % base.Label
+                )
+                return False
+
+        return True
+
+    def isLegacy(self, obj):
+        """Check compatibility of base operations for old type of array,
+        identical tool controller and no coolant"""
+        tc0 = toolControllerForOp(obj.Base[0]) if obj.Base else None
+        if any(toolControllerForOp(b) != tc0 or coolantModeForOp(b) != "None" for b in obj.Base):
+            return False
+
+        return True
+
+    def cleanArrayGroup(self, obj, amount):
+        """Keep only needed amount of child elements in array"""
+        while len(obj.ArrayGroup) > amount:
+            op = obj.ArrayGroup[-1]
+            obj.ArrayGroup = obj.ArrayGroup[:-1]
+            op.Document.removeObject(op.Name)
+
+    def prepareArrayGroup(self, obj):
+        """Clean each child element in array"""
+        for op in obj.ArrayGroup:
+            op.Base = []
+            op.PathTemp = Path.Path()
+            op.Label = "empty"
+
+    def addNewArrayElement(self, obj):
+        """Create new Path Array object"""
+        new = obj.Document.addObject("Path::FeaturePython", "Array")
+        ObjectArrayChild(new)
+        if FreeCAD.GuiUp:
+            Path.Op.Gui.Array.ViewProviderArrayChild(new.ViewObject)
+        obj.ArrayGroup = obj.ArrayGroup + [new]
+
+        return new
+
+    def processGroup(self, obj):
+        """Create chield element for each repeat"""
+        if not self.group:
+            # no copies, remove all child elements
+            self.cleanArrayGroup(obj, 0)
+            return
+
+        self.prepareArrayGroup(obj)
+        counterCopies = 0
+        for i, op in enumerate(self.group):
+            if i >= len(obj.ArrayGroup):
+                self.addNewArrayElement(obj)
+
+            if op["opName"] == obj.Base[0].Name:
+                counterCopies += 1
+                prefix = f"Array_{counterCopies}_"
+
+            baseOp = obj.Document.getObject(op["opName"])
+            obj.ArrayGroup[i].Label = f"{prefix}{baseOp.Label}_{i:03d}"
+            obj.ArrayGroup[i].Base = [baseOp.Name]
+            obj.ArrayGroup[i].ToolController = toolControllerForOp(baseOp)
+            obj.ArrayGroup[i].CoolantMode = coolantModeForOp(baseOp)
+            obj.ArrayGroup[i].PathTemp = op["path"]
+
+            if obj.ArrayGroup[i].Active:
+                obj.ArrayGroup[i].Path = op["path"]
+            else:
+                obj.ArrayGroup[i].Path = Path.Path()
+
+        self.cleanArrayGroup(obj, len(self.group))
+
+    def processGroupCompound(self, obj):
+        """Combine elements with same tool controller and coolant mode which placed in sequence"""
+        if not self.group:
+            # no copies, remove all child elements
+            self.cleanArrayGroup(obj, 0)
+            return
+
+        self.prepareArrayGroup(obj)
+        prefix = ""
+        counterCopies = 0
+        i = 0
+        lastToolController = None
+        lastCoolant = None
+        for op in self.group:
+            baseOp = obj.Document.getObject(op["opName"])
+            toolController = toolControllerForOp(baseOp)
+            coolantMode = coolantModeForOp(baseOp)
+
+            if counterCopies and (
+                op["opName"] == obj.Base[0].Name
+                or lastToolController != toolController
+                or lastCoolant != coolantMode
+            ):  # switch to next child element
+                i += 1
+
+            if i > len(obj.ArrayGroup) - 1:
+                self.addNewArrayElement(obj)
+
+            cmName = f"_{coolantMode}" if coolantMode != "None" else ""
+            if op["opName"] == obj.Base[0].Name:
+                counterCopies += 1
+                prefix = f"Array_{counterCopies}"
+
+            obj.ArrayGroup[i].Label = f"{prefix}{cmName}_{toolController.Label}"
+            obj.ArrayGroup[i].ToolController = toolController
+            obj.ArrayGroup[i].CoolantMode = coolantMode
+
+            obj.ArrayGroup[i].Base += [op["opName"]]
+            obj.ArrayGroup[i].PathTemp.addCommands(op["path"].Commands)
+
+            if obj.ArrayGroup[i].Active:
+                obj.ArrayGroup[i].Path = obj.ArrayGroup[i].PathTemp
+            else:
+                obj.ArrayGroup[i].Path = Path.Path()
+
+            lastToolController = toolController
+            lastCoolant = coolantMode
+
+        self.cleanArrayGroup(obj, i + 1)
+
+    def processGroupCycleTime(self, obj):
+        """Get total cycle time for Array with child elements"""
+        seconds = 0
+        errorStr = ""
+        for op in obj.ArrayGroup:
+            result = getCycleTimeEstimate(op, formatted=False)
+            if isinstance(result, (int, float)):
+                seconds += result
+            else:
+                errorStr = f" ({op.Label}: {result})"
+        timeStr = time.strftime("%H:%M:%S", time.gmtime(seconds))
+        obj.CycleTime = f"{timeStr}{errorStr}"
+
+
+class ObjectArrayChild:
+    def __init__(self, obj):
+        obj.addProperty(
+            "App::PropertyBool",
+            "Active",
+            "Path",
+            "Make False, to prevent operation from generating code",
+        )
+        obj.addProperty(
+            "App::PropertyLink",
+            "ToolController",
+            "Path",
+            "The tool controller that will be used to calculate the toolpath",
+        )
+        obj.addProperty(
+            "App::PropertyString",
+            "CoolantMode",
+            "Path",
+            "Coolant mode for this operation",
+        )
+        obj.addProperty(
+            "Path::PropertyPath",
+            "PathTemp",
+            "Path",
+            "Temporary storage of the tool path if element not active",
+        )
+        obj.addProperty(
+            "App::PropertyString",
+            "CycleTime",
+            "Path",
+            "Operations cycle time estimation",
+        )
+        obj.addProperty(
+            "App::PropertyStringList",
+            "Base",
+            "Path",
+            "Name of the base operations",
+        )
+        obj.Active = True
+        obj.Proxy = self
+        obj.setEditorMode("ToolController", 1)  # read-only
+        obj.setEditorMode("CoolantMode", 1)  # read-only
+        obj.setEditorMode("CycleTime", 1)  # read-only
+        obj.setEditorMode("Base", 1)  # read-only
+
+    def dumps(self):
+        return None
+
+    def loads(self, state):
+        return None
+
+    def onChanged(self, obj, prop):
+        if prop == "Path":
+            obj.CycleTime = getCycleTimeEstimate(obj)
+
+        if prop == "Active" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
+
+    def onDocumentRestored(self, obj):
+        return
+
+    def execute(self, obj):
+        if obj.Active:
+            obj.Path = obj.PathTemp
+        else:
+            obj.Path = Path.Path()
+
+
+class PathArray:
+    """class PathArray ...
+    This class receives one or more base operations and repeats those operations
+    at set intervals based upon array type requested and the related settings for that type."""
+
+    def __init__(
+        self,
+        base,
+        arrayType,
+        copies,
+        offsetVector,
+        copiesX,
+        copiesY,
+        angle,
+        centre,
+        swapDirection,
+        reverse,
+        jitterMagnitude,
+        jitterAngle,
+        pointsSource,
+        pointsOrigin,
+        pointsSorting,
+        addBasePath,
+    ):
+        self.base = base
+        self.arrayType = arrayType  # ['Linear1D', 'Linear2D', 'Polar']
+        self.copies = copies
+        self.offsetVector = offsetVector
+        self.copiesX = copiesX
+        self.copiesY = copiesY
+        self.polarAngle = angle
+        self.polarCentre = centre
+        self.swapDirection = swapDirection
+        self.reverse = reverse
+        self.jitterMagnitude = jitterMagnitude
+        self.jitterAngle = jitterAngle
+        self.pointsSource = pointsSource
+        self.pointsOrigin = pointsOrigin
+        self.pointsSorting = pointsSorting
+        self.addBasePath = addBasePath
+
+    def getPath(self):
+        """getPath() ... Call this method on an instance of the class to generate and return
+        path data for the requested path array."""
+        pathGroup = []
+
+        self.jitterCentre = FreeCAD.Vector()
+        if self.jitterAngle:
+            self.jitterCentre = self.getBasePathCenter(self.base)
+
+        if self.addBasePath:
+            self.getBasePath(pathGroup)
+        if self.arrayType == "Linear1D":
+            self.getLinear1DArray(pathGroup)
+        elif self.arrayType == "Linear2D":
+            if self.swapDirection:
+                self.getLinear2DXYArray(pathGroup)
+            else:
+                self.getLinear2DYXArray(pathGroup)
+        elif self.arrayType == "Polar":
+            self.getPolarArray(pathGroup)
+        elif self.arrayType == "Points":
+            self.getPointsArray(pathGroup)
+
+        return pathGroup
+
+    def calculateJitter(self, pos):
+        """calculateJitter(pos) ...
+        Returns the position argument with a random vector shift applied and random angle"""
+
+        if self.jitterMagnitude:
+            pos.x += random.uniform(-self.jitterMagnitude.x, self.jitterMagnitude.x)
+            pos.y += random.uniform(-self.jitterMagnitude.y, self.jitterMagnitude.y)
+            pos.z += random.uniform(-self.jitterMagnitude.z, self.jitterMagnitude.z)
+
+        alpha = 0
+        if self.jitterAngle:
+            alpha = random.uniform(-self.jitterAngle, self.jitterAngle)
+
+        return pos, alpha
+
+    def getPathPoint(self, op, reverse=False):
+        """Returns first defined point from Path.Commands"""
+        cmds = PathUtils.getPathWithPlacement(op).Commands
+        if reverse:
+            cmds = reversed(cmds)
+        x = y = z = None
+        for cmd in cmds:
+            x = cmd.x if x is None and cmd.x is not None else x
+            y = cmd.y if y is None and cmd.y is not None else y
+            z = cmd.z if z is None and cmd.z is not None else z
+            if x is not None and y is not None and z is not None:
+                return FreeCAD.Vector(x, y, z)
+
+        return FreeCAD.Vector()
+
+    def getBasePathCenter(self, operations):
+        """Get center point of all base operations"""
+        xmin = ymin = xmax = ymax = None
+        for op in operations:
+            for cmd in PathUtils.getPathWithPlacement(op).Commands:
+                if cmd.Name in Path.Geom.CmdMoveMill:
+                    xmin = cmd.x if cmd.x is not None and (xmin is None or cmd.x < xmin) else xmin
+                    ymin = cmd.y if cmd.y is not None and (ymin is None or cmd.y < ymin) else ymin
+                    xmax = cmd.x if cmd.x is not None and (xmax is None or cmd.x > xmax) else xmax
+                    ymax = cmd.y if cmd.y is not None and (ymax is None or cmd.y > ymax) else ymax
+        if xmin is not None and ymin is not None and xmax is not None and ymax is not None:
+            return FreeCAD.Vector(xmin + (xmax - xmin) / 2, ymin + (ymax - ymin) / 2, 0)
+
+        return FreeCAD.Vector()
+
+    def getBasePath(self, pathGroup):
+        """Get copy of base path"""
+        for base in self.base:
+            basePath = PathUtils.getPathWithPlacement(base)
+            pathGroup.append({"path": basePath, "opName": base.Name})
+
+    def getLinear1DArray(self, pathGroup):
+        """Array type Linear1D"""
+        for i in reversed(range(self.copies)) if self.reverse else range(self.copies):
+            pos = FreeCAD.Vector(
+                self.offsetVector.x * (i + 1),
+                self.offsetVector.y * (i + 1),
+                self.offsetVector.z * (i + 1),
+            )
+            pos, alpha = self.calculateJitter(pos)
+
+            for b in self.base:
+                pl = FreeCAD.Placement()
+                pl.move(pos)
+                pl.rotate(self.jitterCentre, FreeCAD.Vector(0, 0, 1), alpha)
+                path = PathUtils.getPathWithPlacement(b)
+                path = PathUtils.applyPlacementToPath(pl, path)
+
+                pathGroup.append(
+                    {
+                        "path": Path.Path(path.Commands),
+                        "opName": b.Name,
+                    }
+                )
+
+    def getLinear2DXYArray(self, pathGroup):
+        """Array type Linear2D with initial X direction"""
+        rngX = list(reversed(range(self.copiesX + 1))) if self.reverse else range(self.copiesX + 1)
+        rngY = reversed(range(self.copiesY + 1)) if self.reverse else range(self.copiesY + 1)
+        for i in rngY:
+            for j in rngX:
+                if (i % 2) == 0:
+                    pos = FreeCAD.Vector(
+                        self.offsetVector.x * j,
+                        self.offsetVector.y * i,
+                        self.offsetVector.z * i,
+                    )
+                else:
+                    pos = FreeCAD.Vector(
+                        self.offsetVector.x * (self.copiesX - j),
+                        self.offsetVector.y * i,
+                        self.offsetVector.z * i,
+                    )
+                pos, alpha = self.calculateJitter(pos)
+
+                for b in self.base:
+                    pl = FreeCAD.Placement()
+                    # index 0,0 will be processed by the base Paths themselves
+                    if i != 0 or j != 0:
+                        pl.move(pos)
+                        pl.rotate(self.jitterCentre, FreeCAD.Vector(0, 0, 1), alpha)
+                        path = PathUtils.getPathWithPlacement(b)
+                        path = PathUtils.applyPlacementToPath(pl, path)
+
+                        pathGroup.append(
+                            {
+                                "path": Path.Path(path.Commands),
+                                "opName": b.Name,
+                            }
+                        )
+
+    def getLinear2DYXArray(self, pathGroup):
+        """Array type Linear2D with initial Y direction"""
+        rngX = reversed(range(self.copiesX + 1)) if self.reverse else range(self.copiesX + 1)
+        rngY = list(reversed(range(self.copiesY + 1))) if self.reverse else range(self.copiesY + 1)
+        for i in rngX:
+            for j in rngY:
+                if (i % 2) == 0:
+                    pos = FreeCAD.Vector(
+                        self.offsetVector.x * i,
+                        self.offsetVector.y * j,
+                        self.offsetVector.z * i,
+                    )
+                else:
+                    pos = FreeCAD.Vector(
+                        self.offsetVector.x * i,
+                        self.offsetVector.y * (self.copiesY - j),
+                        self.offsetVector.z * i,
+                    )
+                pos, alpha = self.calculateJitter(pos)
+
+                for b in self.base:
+                    pl = FreeCAD.Placement()
+                    # index 0,0 will be processed by the base Paths themselves
+                    if i != 0 or j != 0:
+                        pl.move(pos)
+                        pl.rotate(self.jitterCentre, FreeCAD.Vector(0, 0, 1), alpha)
+                        path = PathUtils.getPathWithPlacement(b)
+                        path = PathUtils.applyPlacementToPath(pl, path)
+
+                        pathGroup.append(
+                            {
+                                "path": Path.Path(path.Commands),
+                                "opName": b.Name,
+                            }
+                        )
+
+    def getPolarArray(self, pathGroup):
+        """Array type Polar"""
+        if not self.copies:
+            return
+
+        if Path.Geom.isRoughly(self.polarAngle, 360):
+            stepAng = self.polarAngle / (self.copies + 1)
+        else:
+            stepAng = self.polarAngle / self.copies
+
+        for i in reversed(range(self.copies)) if self.reverse else range(self.copies):
+            # prepare placement for polar pattern
+            ang = stepAng * (i + 1)
+            pl = FreeCAD.Placement()
+            pl.rotate(self.polarCentre, FreeCAD.Vector(0, 0, 1), ang)
+
+            # add jitter to placement
+            pos, alpha = self.calculateJitter(FreeCAD.Vector())
+            pl.move(pos)
+            pl.rotate(self.jitterCentre, FreeCAD.Vector(0, 0, 1), alpha)
+
+            for b in self.base:
+                path = PathUtils.getPathWithPlacement(b)
+                path = PathUtils.applyPlacementToPath(pl, path)
+
+                pathGroup.append(
+                    {
+                        "path": Path.Path(path.Commands),
+                        "opName": b.Name,
+                    }
+                )
+
+    def getPointsArray(self, pathGroup):
+        """Array type Points"""
+        originPoint = FreeCAD.Vector()
+        originAngle = 0
+        self.checkDistance = None
+
+        # get offsets and angle from base shape
+        if self.pointsOrigin:
+            originObj, originSubNames = self.pointsOrigin
+            if not originSubNames:
+                # no sub elements selected
+                if originObj.Shape.Edges:
+                    # object contains edges
+                    originPoint = originObj.Shape.Edges[0].Vertexes[0].Point
+                    originAngle = self.getEdgeAngle(originObj.Shape.Edges[0])
+                else:
+                    # object contains only vertexes
+                    originPoint = originObj.Shape.Vertexes[0].Point
+            else:
+                # sub element selected
+                originSub = originObj.Shape.getElement(originSubNames[0])
+                originPoint = originSub.Vertexes[0].Point
+                if originSub.ShapeType == "Edge":
+                    originAngle = self.getEdgeAngle(originSub)
+                elif originSub.ShapeType == "Face":
+                    originPoint = originSub.CenterOfGravity
+                    originAngle = self.getFaceAngle(originSub, originPoint, origin=True)
+
+        # get points from selected shapes
+        points = []
+        for source in self.pointsSource:
+            sourceObj, sourceSubNames = source
+            if not sourceSubNames or sourceSubNames == ("",):
+                # no sub elements selected
+                if sourceObj.Shape.Edges:
+                    # shape contains edges
+                    # use whole shape as one repeat
+                    point = sourceObj.Shape.Edges[0].Vertexes[0].Point
+                    sourceAngle = self.getEdgeAngle(sourceObj.Shape.Edges[0])
+                    points.append({"point": point, "angle": sourceAngle})
+                else:
+                    # object contains only vertexes
+                    # use each point as repeat
+                    points.extend(
+                        [{"point": v.Point, "angle": 0} for v in sourceObj.Shape.Vertexes]
+                    )
+            else:
+                # sub elements selected
+                for sourceSubName in sourceSubNames:
+                    sourceSub = sourceObj.Shape.getElement(sourceSubName)
+                    sourcePoint = sourceSub.Vertexes[0].Point
+                    sourceAngle = 0
+                    if sourceSub.ShapeType == "Edge":
+                        sourceAngle = self.getEdgeAngle(sourceSub)
+                    elif sourceSub.ShapeType == "Face":
+                        sourcePoint = sourceSub.CenterOfGravity
+                        sourceAngle = self.getFaceAngle(sourceSub, sourcePoint)
+                    points.append({"point": sourcePoint, "angle": sourceAngle})
+
+        # Apply origin offset to each point
+        if originPoint != FreeCAD.Vector() or originAngle:
+            for pos in points:
+                pos["point"] -= originPoint
+                pos["angle"] -= originAngle
+
+        # remove points which similar with origin
+        points = [p for p in points if p["point"] != FreeCAD.Vector() or p["angle"]]
+
+        # get sorted positions for array
+        if self.pointsSorting == "Automatic":
+            basePathStartPoint = self.getPathPoint(self.base[0], reverse=False)
+            basePathEndPoint = self.getPathPoint(self.base[-1], reverse=True)
+            dirStart = basePathStartPoint - originPoint
+            dirEnd = basePathEndPoint - originPoint
+            routes = []
+            for i, pos in enumerate(points):
+                origin = originPoint + pos["point"]
+                dirStartOffset = rotate2D(dirStart, math.radians(pos["angle"]))
+                dirEndOffset = rotate2D(dirEnd, math.radians(pos["angle"]))
+                routes.append(
+                    {
+                        "startX": origin.x + dirStartOffset.x,
+                        "startY": origin.y + dirStartOffset.y,
+                        "endX": origin.x + dirEndOffset.x,
+                        "endY": origin.y + dirEndOffset.y,
+                        "point": pos["point"],
+                        "a": pos["angle"],
+                    }
+                )
+            routes = tsp_solver.solveTunnels(routes, routeStartPoint=basePathEndPoint)
+            if routes:
+                points = [{"point": pos["point"], "angle": pos["a"]} for pos in routes]
+
+        for pos in reversed(points) if self.reverse else points:
+            # apply jitter
+            point, alpha = self.calculateJitter(pos["point"])
+
+            for b in self.base:
+                pl = FreeCAD.Placement()
+                pl.move(point)
+                pl.rotate(self.jitterCentre, FreeCAD.Vector(0, 0, 1), alpha)
+                pl.rotate(originPoint, FreeCAD.Vector(0, 0, 1), pos["angle"])
+                path = PathUtils.getPathWithPlacement(b)
+                path = PathUtils.applyPlacementToPath(pl, path)
+
+                pathGroup.append(
+                    {
+                        "path": Path.Path(path.Commands),
+                        "opName": b.Name,
+                    }
+                )
+
+    def getPointsAngle(self, p1, p2=FreeCAD.Vector()):
+        """return angle between vector (direction) and Y-axis"""
+        direction = p1 - p2
+        if Path.Geom.pointsCoincide(direction, FreeCAD.Vector()):
+            return 0
+        angle = math.degrees(direction.getAngle(FreeCAD.Vector(0, 1, 0)))
+        if direction.x > 0:
+            angle = -angle
+
+        return angle
+
+    def getEdgeAngle(self, edge):
+        """return angle between edge direction and Y-axis
+        Edge direction defines from end points"""
+        p1 = edge.Vertexes[-1].Point
+        p2 = edge.Vertexes[0].Point
+
+        return self.getPointsAngle(p1, p2)
+
+    def getFaceAngle(self, face, centerPoint, origin=False):
+        """return angle between face direction and Y-axis
+        Face direction defines from center point and farthest point from UV nodes"""
+        maxDist = 0
+        farthestPoints = []
+        # use UV nodes to find farthest point
+        face.tessellate(0.1)
+        candidates = [face.valueAt(uv[0], uv[1]) for uv in face.getUVNodes()]
+        for p in candidates:
+            dist = centerPoint.distanceToPoint(p)
+            if Path.Geom.isRoughly(dist, maxDist):
+                farthestPoints.append(p)
+            elif dist > maxDist:
+                farthestPoints = [p]
+                maxDist = dist
+
+        # check extra distance while processing source face
+        if not origin and len(farthestPoints) > 1 and self.checkDistance:
+            for i in range(len(farthestPoints) - 1):
+                d = farthestPoints[i].distanceToPoint(farthestPoints[i + 1])
+                if Path.Geom.isRoughly(d, self.checkDistance):
+                    return self.getPointsAngle(centerPoint, farthestPoints[i])
+
+        # defined several farthest points while processing origin face
+        if origin and len(farthestPoints) > 1:
+            # get distance between first and second farthest points
+            self.checkDistance = farthestPoints[0].distanceToPoint(farthestPoints[1])
+
+        return self.getPointsAngle(centerPoint, farthestPoints[0])
+
+
+def Create(baseObjects, name="Array", mode=0):
+    """
+    Create(baseObject, name='Array', mode=0) … create Array object for the given base path.
+
+    import Path.Op.Gui.Array as array
+    array.Create(basePath)  # to show Task panel
+    array.Create(basePath, 2)  # to skip Task panel
+    """
+    if any(not b.isDerivedFrom("Path::Feature") for b in baseObjects):
+        Path.Log.error(translate("CAM_Array", "The selected objects is not a path") + "\n")
+        return None
+
+    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    ObjectArray(obj, baseObjects)
+    job = PathUtils.findParentJob(baseObjects[0])
+    job.Proxy.addOperation(obj)
+
+    return obj

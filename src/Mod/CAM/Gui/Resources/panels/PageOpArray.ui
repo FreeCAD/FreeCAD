@@ -1,0 +1,881 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskPanel</class>
+ <widget class="QWidget" name="TaskPanel">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>350</width>
+    <height>466</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Array</string>
+  </property>
+
+  <layout class="QVBoxLayout" name="layout_0">
+
+   <item>
+    <layout class="QHBoxLayout" name="layout_operations">
+
+     <item>
+      <widget class="QTableWidget" name="baseList">
+       <property name="minimumSize">
+        <size>
+         <width>220</width>
+         <height>200</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>List of selected operations</string>
+       </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::ExtendedSelection</enum>
+       </property>
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectRows</enum>
+       </property>
+       <property name="columnCount">
+        <number></number>
+       </property>
+       <attribute name="horizontalHeaderStretchLastSection">
+        <bool>true</bool>
+       </attribute>
+       <attribute name="verticalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
+       <column>
+        <property name="text">
+         <string>#</string>
+        </property>
+        <property name="toolTip">
+         <string>Index operation in Job.
+Can undefined if operation not in Job Operations group or under dress-up.
+         </string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Operation</string>
+        </property>
+        <property name="toolTip">
+         <string>Operation label</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Tool</string>
+        </property>
+        <property name="toolTip">
+         <string>Tool controller label</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Coolant</string>
+        </property>
+        <property name="toolTip">
+         <string>Coolant mode</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+
+     <item>
+      <layout class="QVBoxLayout" name="layout_op_buttons">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+
+       <item>
+        <widget class="QToolButton" name="tb_op_clear">
+         <property name="maximumSize">
+          <size>
+           <width>70</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Remove all operations from list</string>
+         </property>
+         <property name="text">
+          <string>Clear</string>
+         </property>
+        </widget>
+       </item>
+
+       <item>
+        <widget class="QToolButton" name="tb_op_remove">
+         <property name="maximumSize">
+          <size>
+           <width>70</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Remove selected operations from list</string>
+         </property>
+         <property name="text">
+          <string>Remove</string>
+         </property>
+        </widget>
+       </item>
+
+       <item>
+        <widget class="QToolButton" name="tb_op_add">
+         <property name="maximumSize">
+          <size>
+           <width>70</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Add new operations to list</string>
+         </property>
+         <property name="text">
+          <string>Add</string>
+         </property>
+        </widget>
+       </item>
+
+       <item>
+        <widget class="QToolButton" name="tb_op_sort">
+         <property name="maximumSize">
+          <size>
+           <width>70</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Sort operation according to the Job tree</string>
+         </property>
+         <property name="text">
+          <string>Sort</string>
+         </property>
+        </widget>
+       </item>
+
+       <item>
+        <widget class="QToolButton" name="tb_op_up">
+         <property name="maximumSize">
+          <size>
+           <width>70</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Move operation up the list</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>:/icons/button_up.svg</normaloff>:/icons/button_up.svg
+          </iconset>
+         </property>
+        </widget>
+       </item>
+
+       <item>
+        <widget class="QToolButton" name="tb_op_down">
+         <property name="maximumSize">
+          <size>
+           <width>70</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Move operation down the list</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>:/icons/button_down.svg</normaloff>:/icons/button_down.svg
+          </iconset>
+         </property>
+        </widget>
+       </item>
+
+      </layout>
+     </item>
+    </layout>
+   </item>
+
+
+   <item>
+    <widget class="QGroupBox" name="group_message">
+     <layout class="QVBoxLayout" name="layout_message">
+      <item>
+       <widget class="QLabel" name="label_message">
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
+        </property>
+        <property name="text">
+         <string>Place for message</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
+
+   <item>
+    <widget class="QGroupBox" name="group_main">
+     <layout class="QVBoxLayout" name="layout_main">
+
+      <item>
+       <layout class="QHBoxLayout" name="layout_type">
+        <item>
+         <widget class="QFrame" name="group_array_type">
+          <layout class="QFormLayout" name="layout_array_type">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_type">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+             </property>
+             <property name="text">
+              <string>Type</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QComboBox" name="cbo_type">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="group_points_sorting">
+          <layout class="QFormLayout" name="layout_points_sorting">
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_points_sorting">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+             </property>
+             <property name="text">
+              <string>Sorting</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QComboBox" name="cbo_points_sorting">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </item>
+
+
+      <item>
+       <widget class="QWidget" name="group_copies">
+        <layout class="QGridLayout" name="layout_copies">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_copies">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+           </property>
+           <property name="text">
+            <string>Copies</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="Gui::QuantitySpinBox" name="dsp_copies">
+           <property name="decimals">
+            <number>0</number>
+           </property>
+           <property name="minimum">
+            <double>1</double>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred"/>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>The number of copies</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="label_polar_angle">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+           </property>
+           <property name="text">
+            <string>Angle</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="Gui::QuantitySpinBox" name="dsp_polar_angle">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred"/>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Total angle of polar pattern</string>
+           </property>
+          </widget>
+         </item>
+
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_copies_x">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+           </property>
+           <property name="text">
+            <string>Copies X</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="Gui::QuantitySpinBox" name="dsp_copies_x">
+           <property name="decimals">
+            <number>0</number>
+           </property>
+           <property name="minimum">
+            <double>1</double>
+           </property>
+           <property name="toolTip">
+            <string>The number of copies along X-axis</string>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred"/>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLabel" name="label_copies_y">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+           </property>
+           <property name="text">
+            <string>Copies Y</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="Gui::QuantitySpinBox" name="dsp_copies_y">
+           <property name="decimals">
+            <number>0</number>
+           </property>
+           <property name="minimum">
+            <double>1</double>
+           </property>
+           <property name="toolTip">
+            <string>The number of copies along Y-axis</string>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred"/>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_offset_x">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+           </property>
+           <property name="text">
+            <string>Offset X</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="Gui::QuantitySpinBox" name="dsp_offset_x">
+           <property name="toolTip">
+            <string>The spacing between the array copies along X-axis</string>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred"/>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QLabel" name="label_offset_y">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+           </property>
+           <property name="text">
+            <string>Offset Y</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="3">
+          <widget class="Gui::QuantitySpinBox" name="dsp_offset_y">
+           <property name="toolTip">
+            <string>The spacing between the array copies along Y-axis</string>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred"/>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_polar_center_x">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+           </property>
+           <property name="text">
+            <string>Center X</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="Gui::QuantitySpinBox" name="dsp_polar_center_x">
+           <property name="toolTip">
+            <string>The centre of rotation in polar pattern</string>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred"/>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2">
+          <widget class="QLabel" name="label_polar_center_y">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+           </property>
+           <property name="text">
+            <string>Center Y</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="3">
+          <widget class="Gui::QuantitySpinBox" name="dsp_polar_center_y">
+           <property name="toolTip">
+            <string>The centre of rotation in polar pattern</string>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred"/>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+
+        </layout>
+       </widget>
+      </item>
+
+      <item>
+       <widget class="QWidget" name="group_points">
+        <layout class="QVBoxLayout" name="layout_points">
+
+         <item>
+          <layout class="QHBoxLayout" name="layout_points_origin">
+           <item>
+            <widget class="QLabel" name="label_points_origin">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+             </property>
+             <property name="text">
+              <string>Origin</string>
+             </property>
+            </widget>
+           </item>
+
+
+           <item>
+            <widget class="QLineEdit" name="le_points_origin">
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+             <property name="toolTip">
+              <string>Define the base offsets and angle of rotation from selected shape</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="tb_clear_points_origin">
+             <property name="toolTip">
+              <string>Clear selected origin</string>
+             </property>
+             <property name="text">
+              <string>Clear</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="tb_set_points_origin">
+             <property name="toolTip">
+              <string>Set new origin</string>
+             </property>
+             <property name="text">
+              <string>Set</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+
+         <item>
+          <layout class="QHBoxLayout" name="layout_points_source">
+
+           <item>
+            <widget class="QListWidget" name="pointsSourceList">
+             <property name="minimumSize">
+              <size>
+               <width>220</width>
+               <height>100</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Define the offsets and angle of rotation for repeats from selected sub shapes.
+  If selection without sub elements:
+      - shape contains only vertexes: create repeats for each vertex;
+      - shape contains edges: create only one repeat (useful for imported nesting shapes.
+              </string>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::ExtendedSelection</enum>
+             </property>
+            </widget>
+           </item>
+
+           <item>
+            <layout class="QVBoxLayout" name="layout_points_source_buttons">
+
+             <item>
+              <widget class="QToolButton" name="tb_points_clear">
+               <property name="maximumSize">
+                <size>
+                 <width>70</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string>Remove all shapes from list</string>
+               </property>
+               <property name="text">
+                <string>Clear</string>
+               </property>
+              </widget>
+             </item>
+
+             <item>
+              <widget class="QToolButton" name="tb_points_remove">
+               <property name="maximumSize">
+                <size>
+                 <width>70</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string>Remove selected shape from list</string>
+               </property>
+               <property name="text">
+                <string>Remove</string>
+               </property>
+              </widget>
+             </item>
+
+             <item>
+              <widget class="QToolButton" name="tb_points_add">
+               <property name="maximumSize">
+                <size>
+                 <width>70</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string>Add new shape to list</string>
+               </property>
+               <property name="text">
+                <string>Add</string>
+               </property>
+              </widget>
+             </item>
+
+             <item>
+              <widget class="QToolButton" name="tb_points_up">
+               <property name="maximumSize">
+                <size>
+                 <width>70</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string>Move shape up the list</string>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>:/icons/button_up.svg</normaloff>:/icons/button_up.svg
+                </iconset>
+               </property>
+              </widget>
+             </item>
+
+             <item>
+              <widget class="QToolButton" name="tb_points_down">
+               <property name="maximumSize">
+                <size>
+                 <width>70</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string>Move shape down the list</string>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>:/icons/button_down.svg</normaloff>:/icons/button_down.svg
+                </iconset>
+               </property>
+              </widget>
+             </item>
+
+            </layout>
+
+           </item>
+
+          </layout>
+         </item>
+
+        </layout>
+       </widget>
+      </item>
+
+     </layout>
+    </widget>
+   </item>
+
+
+   <item>
+    <layout class="QGridLayout" name="layout_check_boxes">
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="chk_expand">
+       <property name="text">
+        <string>Expand</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QCheckBox" name="chk_reverse">
+       <property name="text">
+        <string>Reverse direction</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QCheckBox" name="chk_combine">
+       <property name="text">
+        <string>Combine</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QCheckBox" name="chk_swap">
+       <property name="text">
+        <string>Swap direction</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QCheckBox" name="chk_use_jitter">
+       <property name="text">
+        <string>Use jitter</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+
+
+   <item>
+    <widget class="QGroupBox" name="group_jitter">
+     <property name="title">
+      <string>Jitter parameters</string>
+     </property>
+     <layout class="QGridLayout" name="layout_jitter">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_jitter_angle">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+        </property>
+        <property name="text">
+         <string>Angle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::QuantitySpinBox" name="dsp_jitter_angle">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Max angle of rotation for jitter randomness</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="label_jitter_seed">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Preferred"/>
+        </property>
+        <property name="text">
+         <string>Seed</string>
+        </property>
+        <property name="minimum">
+         <double>0</double>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="Gui::QuantitySpinBox" name="dsp_jitter_seed">
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>0</double>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Seed value for jitter randomness</string>
+        </property>
+       </widget>
+      </item>
+
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_jitter_x">
+        <property name="text">
+         <string>Max X</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::QuantitySpinBox" name="dsp_jitter_x">
+        <property name="toolTip">
+         <string>Maximum random offset along X-axis</string>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="label_jitter_y">
+        <property name="text">
+         <string>Max Y</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="Gui::QuantitySpinBox" name="dsp_jitter_y">
+        <property name="toolTip">
+         <string>Maximum random offset along Y-axis</string>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+
+     </layout>
+    </widget>
+   </item>
+
+
+
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
