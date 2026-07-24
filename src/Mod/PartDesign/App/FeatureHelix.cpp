@@ -120,7 +120,10 @@ Helix::Helix()
         (long(HelixSideMode::one_side)),
         group,
         App::Prop_None,
-        QT_TRANSLATE_NOOP("App::Property", "Whether the helix extends on one side, two sides, or symmetrically.")
+        QT_TRANSLATE_NOOP(
+            "App::Property",
+            "Whether the helix extends on one side, two sides, or symmetrically."
+        )
     );
     SideType.setEnums(SideTypesEnums);
     ADD_PROPERTY_TYPE(
