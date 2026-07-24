@@ -23,7 +23,6 @@
 # include <limits>
 # include <Approx_Curve3d.hxx>
 # include <BRep_Tool.hxx>
-# include <BRepAdaptor_Curve.hxx>
 # include <Mod/Part/App/FCBRepAlgoAPI_Section.h>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
@@ -42,6 +41,7 @@
 
 # include <gce_MakeCirc.hxx>
 # include <GCPnts_AbscissaPoint.hxx>
+# include <GCPnts_QuasiUniformDeflection.hxx>
 # include <GProp_GProps.hxx>
 # include <Geom_BSplineCurve.hxx>
 # include <Geom_BezierCurve.hxx>
@@ -49,6 +49,7 @@
 # include <GeomAPI_ProjectPointOnCurve.hxx>
 # include <GeomConvert_BSplineCurveToBezierCurve.hxx>
 # include <GeomLProp_CLProps.hxx>
+
 # include <gp_Ax2.hxx>
 # include <gp_Circ.hxx>
 # include <gp_Dir.hxx>
@@ -1117,60 +1118,32 @@ Base::Vector3d Generic::apparentInter(GenericPtr g)
 BSpline::BSpline(const TopoDS_Edge &e)
 {
     geomType = GeomType::BSPLINE;
-    BRepAdaptor_Curve c(e);
-    isArc = !c.IsClosed();
-    Handle(Geom_BSplineCurve) cSpline = c.BSpline();
+    BRepAdaptor_Curve edgeCurve(e);
+    isArc = !edgeCurve.IsClosed();
     occEdge = e;
-    Handle(Geom_BSplineCurve) spline;
 
-    double f, l;
-    f = c.FirstParameter();
-    l = c.LastParameter();
-    gp_Pnt s = c.Value(f);
-    gp_Pnt m = c.Value((l+f)/2.0);
-    gp_Pnt ePt = c.Value(l);
-    startPnt = Base::Vector3d(s.X(), s.Y(), s.Z());
-    endPnt = Base::Vector3d(ePt.X(), ePt.Y(), ePt.Z());
-    midPnt = Base::Vector3d(m.X(), m.Y(), m.Z());
-    gp_Vec v1(m, s);
-    gp_Vec v2(m, ePt);
-    gp_Vec v3(0, 0, 1);
-    double a = v3.DotCross(v1, v2);
-    cw = (a < 0) ? true: false;
+    setDirection(edgeCurve);
 
-    startAngle = atan2(startPnt.y, startPnt.x);
-    if (startAngle < 0) {
-         startAngle += 2.0 * std::numbers::pi;
-    }
-    endAngle = atan2(endPnt.y, endPnt.x);
-    if (endAngle < 0) {
-         endAngle += 2.0 * std::numbers::pi;
+    // if the curve is already has degree <= 3, we should not approximate it, but just use the existing curve
+    Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(edgeCurve);
+    Handle(Geom_BSplineCurve) splineOut = hCurve->BSpline();   // the bspline from the edge
+    if (hCurve->Degree() > 3) {
+        // if the degree is > 3 Qt can not draw it, so we approximate it as bezier
+        // segments with degree <= 3.
+        bool success = GeometryUtils::asCubic(edgeCurve, splineOut);
+        if (!success) {
+            // There will be a missing edge in the drawing and error messages
+            // from PathBuilder if we just pass the high degree spline, so we make
+            // a "spline" of degree 1 from the start point to the endpoint.  This is the original
+            // solution for approximation fails.
+            // this is not a useful message for end user. :(
+            Base::Console().warning("Could not create cubic spline in GeometryUtils::asCubic\n");
+            GeometryUtils::asLinear(edgeCurve, splineOut);
+        }
     }
 
-    Standard_Real tol3D = 0.001;                                   //1/1000 of a mm? screen can't resolve this
-    Standard_Integer maxDegree = 3, maxSegment = 200;
-    Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
-    // approximate the curve using a tolerance
-    //Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C2, maxSegment, maxDegree);   //gives degree == 5  ==> too many poles ==> buffer overrun
-    Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C0, maxSegment, maxDegree);
-    if (approx.IsDone() && approx.HasResult()) {
-        spline = approx.Curve();
-    }
-    else if (approx.HasResult()) { //result, but not within tolerance
-        spline = approx.Curve();
-    }
-    else {
-        f = c.FirstParameter();
-        l = c.LastParameter();
-        s = c.Value(f);
-        ePt = c.Value(l);
-        TColgp_Array1OfPnt controlPoints(0, 1);
-        controlPoints.SetValue(0, s);
-        controlPoints.SetValue(1, ePt);
-        spline = GeomAPI_PointsToBSpline(controlPoints, 1).Curve();
-    }
-
-    GeomConvert_BSplineCurveToBezierCurve crt(spline);
+    // spline to bezier segments
+    GeomConvert_BSplineCurveToBezierCurve crt(splineOut);
 
     gp_Pnt controlPoint;
     for (Standard_Integer i = 1; i <= crt.NbArcs(); ++i) {
@@ -1226,6 +1199,35 @@ bool BSpline::intersectsArc(Base::Vector3d p1, Base::Vector3d p2)
         return true;
     }
     return false;
+}
+
+//! determines if the spline should be drawn in a clockwise or anticlockwise
+//! direction.
+void  BSpline::setDirection(BRepAdaptor_Curve edgeCurve)
+{
+    double f, l;
+    f = edgeCurve.FirstParameter();
+    l = edgeCurve.LastParameter();
+    gp_Pnt s = edgeCurve.Value(f);
+    gp_Pnt m = edgeCurve.Value((l+f)/2.0);
+    gp_Pnt ePt = edgeCurve.Value(l);
+    startPnt = Base::Vector3d(s.X(), s.Y(), s.Z());
+    endPnt = Base::Vector3d(ePt.X(), ePt.Y(), ePt.Z());
+    midPnt = Base::Vector3d(m.X(), m.Y(), m.Z());
+    gp_Vec v1(m, s);
+    gp_Vec v2(m, ePt);
+    gp_Vec v3(0, 0, 1);
+    double a = v3.DotCross(v1, v2);
+    cw = (a < 0) ? true: false;
+
+    startAngle = atan2(startPnt.y, startPnt.x);
+    if (startAngle < 0) {
+        startAngle += 2.0 * std::numbers::pi;
+    }
+    endAngle = atan2(endPnt.y, endPnt.x);
+    if (endAngle < 0) {
+        endAngle += 2.0 * std::numbers::pi;
+    }
 }
 
 
@@ -1881,6 +1883,62 @@ std::vector<int> GeometryUtils::findNestedFaceIndices(const std::vector<FacePtr>
         nestedFaceIndices.erase(last, nestedFaceIndices.end());
     }
     return nestedFaceIndices;
+}
+
+//! approximates curveIn as a bspline with degree <= 3.
+bool GeometryUtils::asCubic(const BRepAdaptor_Curve &curveIn, Handle(Geom_BSplineCurve)& splineOut)
+{
+    Standard_Real tol3D = 0.001;                                   //1/1000 of a mm? screen/paper can't resolve this
+    Standard_Integer maxDegree = 3, maxSegment = 200;
+    Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(curveIn);
+
+    try {
+        Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C0, maxSegment, maxDegree);
+        if (approx.IsDone() && approx.HasResult()) {
+            splineOut = approx.Curve();
+        }
+        else if (approx.HasResult()) { //result, but not within tolerance
+            splineOut = approx.Curve();
+        } else {
+            // this should really make a Generic polyline approximation.
+            constexpr double Deflection{0.1};
+            constexpr int LowIndex{0};
+            GCPnts_QuasiUniformDeflection discretizer(curveIn, Deflection);
+            TColgp_Array1OfPnt controlPoints(LowIndex, discretizer.NbPoints()-1);
+            if (discretizer.IsDone() && discretizer.NbPoints() > 0) {
+                for (int i = LowIndex; i < discretizer.NbPoints(); i++) {
+                    controlPoints.SetValue(i, discretizer.Value(i));
+                }
+                constexpr int MinDegree{1};
+                constexpr int MaxDegree{3};
+                splineOut = GeomAPI_PointsToBSpline(controlPoints, MinDegree, MaxDegree).Curve();
+            }
+        }
+    }
+    catch(...) {
+        return false;
+    }
+
+    return true;
+}
+
+//! make splineOut a linear approximation of curveIn.
+void GeometryUtils::asLinear(const BRepAdaptor_Curve &curveIn, Handle(Geom_BSplineCurve)& splineOut)
+{
+    double firstParam = curveIn.FirstParameter();
+    gp_Pnt firstPoint = curveIn.Value(firstParam);
+    double lastParam = curveIn.LastParameter();
+    gp_Pnt lastPoint = curveIn.Value(lastParam);
+
+    constexpr int LowPointIndex{0};
+    constexpr int HighPointIndex{1};
+    TColgp_Array1OfPnt controlPoints(LowPointIndex, HighPointIndex);
+    controlPoints.SetValue(LowPointIndex, firstPoint);
+    controlPoints.SetValue(HighPointIndex, lastPoint);
+
+    constexpr int MinDegree{1};
+    constexpr int MaxDegree{1};
+    splineOut = GeomAPI_PointsToBSpline(controlPoints, MinDegree, MaxDegree).Curve();
 }
 
 //! get a description for a GeomType.  Needs to always be in sync with the
