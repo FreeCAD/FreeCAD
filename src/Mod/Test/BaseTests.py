@@ -30,6 +30,20 @@ import FreeCAD
 from FreeCAD import Base
 
 
+class MaterialTestCase(unittest.TestCase):
+    def testComparison(self):
+        first = FreeCAD.Material()
+        second = FreeCAD.Material()
+
+        self.assertEqual(first, second)
+        self.assertFalse(first != second)
+
+        first.DiffuseColor = (1.0, 0.0, 0.0, 1.0)
+
+        self.assertNotEqual(first, second)
+        self.assertFalse(first == second)
+
+
 class ConsoleTestCase(unittest.TestCase):
     def setUp(self):
         self.count = 0
