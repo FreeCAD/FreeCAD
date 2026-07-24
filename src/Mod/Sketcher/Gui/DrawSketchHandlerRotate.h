@@ -141,7 +141,7 @@ private:
 
     static double angleForShapeCreation(double angle)
     {
-        if (std::abs(angle) < Precision::Confusion()) {
+        if (std::abs(angle) < Precision::Angular()) {
             return getFullTurn();
         }
 
