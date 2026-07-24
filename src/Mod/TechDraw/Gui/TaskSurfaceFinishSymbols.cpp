@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <boost/algorithm/string/predicate.hpp>
 # include <QComboBox>
 # include <QGraphicsProxyWidget>
 # include <QLineEdit>
@@ -28,6 +27,7 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <Base/StringUtils.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -147,7 +147,7 @@ QColor TaskSurfaceFinishSymbols::getPenColor()
     // TODO: should be dependent on global API giving pen color - not from hacking stylesheet name
     const std::string stylesheetName = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/MainWindow")->GetASCII("StyleSheet");
-    if(boost::icontains(stylesheetName, "dark")) {
+    if (Base::StringUtils::lowercaseAscii(stylesheetName).find("dark") != std::string::npos) {
         return Qt::white;
     }
     return Qt::black;
