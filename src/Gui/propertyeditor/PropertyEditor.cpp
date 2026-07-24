@@ -760,6 +760,10 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList&& props, bool _checkDoc
     //
     // closeTransaction();
 
+    // The model reset below destroys every persistent editor: close an open combo
+    // popup and move focus off the editor first. No-op when nothing is being edited.
+    releaseEditorFocus();
+
     QModelIndex index = this->currentIndex();
     QStringList propertyPath = propertyModel->propertyPathFromIndex(index);
     if (!propertyPath.isEmpty()) {
