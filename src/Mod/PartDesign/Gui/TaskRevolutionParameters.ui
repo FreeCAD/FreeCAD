@@ -62,7 +62,7 @@
        </item>
        <item>
         <property name="text">
-         <string>Select reference...</string>
+         <string>Select reference…</string>
         </property>
        </item>
       </widget>
