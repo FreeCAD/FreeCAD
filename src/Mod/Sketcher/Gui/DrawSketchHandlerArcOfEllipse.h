@@ -81,7 +81,6 @@ public:
         , startAngle(0)
         , arcAngle(0)
         , valid(true)
-        , secondRadiusSet(false)
         , ellipseGeoId(Sketcher::GeoEnum::GeoUndef)
     {}
 
@@ -154,20 +153,18 @@ private:
                     delta13.x * bDir.x + delta13.y * bDir.y
                 );
 
-                if (!secondRadiusSet) {
-                    double cosT = std::max(-1.0, std::min(1.0, delta13Prime.x / a));
-                    double sinT = std::sqrt(std::max(0.0, 1 - cosT * cosT));
+                double cosT = std::max(-1.0, std::min(1.0, delta13Prime.x / a));
+                double sinT = std::sqrt(std::max(0.0, 1 - cosT * cosT));
 
-                    if (sinT < Precision::Confusion()) {
-                        valid = false;
-                        break;
-                    }
+                if (sinT < Precision::Confusion()) {
+                    valid = false;
+                    break;
+                }
 
-                    secondRadius = std::abs(delta13Prime.y) / sinT;
-                    if (std::abs(delta13Prime.y) < Precision::Confusion()) {
-                        valid = false;
-                        break;
-                    }
+                secondRadius = std::abs(delta13Prime.y) / sinT;
+                if (std::abs(delta13Prime.y) < Precision::Confusion()) {
+                    valid = false;
+                    break;
                 }
 
                 startAngle = std::atan2(delta13Prime.y / secondRadius, delta13Prime.x / a);
@@ -363,7 +360,7 @@ private:
 private:
     Base::Vector2d centerPoint, axisPoint;
     double secondRadius, startAngle, arcAngle;
-    bool valid, secondRadiusSet;
+    bool valid;
     int ellipseGeoId;
 
     double firstRadius() const
@@ -519,9 +516,7 @@ void DSHArcOfEllipseController::doEnforceControlParameters(Base::Vector2d& onSke
 
             if (secondRadiusParam->isSet) {
                 secondRadius = secondRadiusParam->getValue();
-                handler->secondRadiusSet = true;
                 if (secondRadius < Precision::Confusion() && secondRadiusParam->hasFinishedEditing) {
-                    handler->secondRadiusSet = false;
                     unsetOnViewParameter(secondRadiusParam.get());
                     return;
                 }

@@ -85,7 +85,6 @@ public:
         , startAngle(0)
         , endAngle(0)
         , valid(true)
-        , minorRadiusSet(false)
         , hyperbolaGeoId(Sketcher::GeoEnum::GeoUndef)
     {}
 
@@ -159,19 +158,17 @@ private:
                     delta13.x * bDir.x + delta13.y * bDir.y
                 );
 
-                if (!minorRadiusSet) {
-                    if (abs(delta13Prime.y) < Precision::Confusion()) {
-                        valid = false;
-                        break;
-                    }
-
-                    double denom = (delta13Prime.x * delta13Prime.x) / (a * a) - 1.0;
-                    if (denom < Precision::Confusion()) {
-                        valid = false;
-                        break;
-                    }
-                    minorRadius = std::sqrt((delta13Prime.y * delta13Prime.y) / denom);
+                if (abs(delta13Prime.y) < Precision::Confusion()) {
+                    valid = false;
+                    break;
                 }
+
+                double denom = (delta13Prime.x * delta13Prime.x) / (a * a) - 1.0;
+                if (denom < Precision::Confusion()) {
+                    valid = false;
+                    break;
+                }
+                minorRadius = std::sqrt((delta13Prime.y * delta13Prime.y) / denom);
                 startAngle = atanh((delta13Prime.y * a) / (delta13Prime.x * minorRadius));
                 toolWidgetManager.drawPositionAtCursor(onSketchPos);
                 seekAndRenderAutoConstraint(sugConstraints[2], onSketchPos, Base::Vector2d(0.f, 0.f));
@@ -371,7 +368,7 @@ private:
 private:
     Base::Vector2d centerPoint, axisPoint;
     double minorRadius, startAngle, endAngle;
-    bool valid, minorRadiusSet;
+    bool valid;
     int hyperbolaGeoId;
 
     double majorRadius() const
@@ -509,9 +506,7 @@ void DSHArcOfHyperbolaController::doEnforceControlParameters(Base::Vector2d& onS
 
             if (secondRadiusParam->isSet) {
                 minorRadius = secondRadiusParam->getValue();
-                handler->minorRadiusSet = true;
                 if (minorRadius < Precision::Confusion() && secondRadiusParam->hasFinishedEditing) {
-                    handler->minorRadiusSet = false;
                     unsetOnViewParameter(secondRadiusParam.get());
                     return;
                 }
