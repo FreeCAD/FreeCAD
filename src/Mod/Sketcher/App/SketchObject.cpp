@@ -45,6 +45,7 @@
 #include <App/MappedName.h>
 #include <App/ObjectIdentifier.h>
 #include <Base/Console.h>
+#include <Base/ProgramVersion.h>
 #include <Base/Reader.h>
 #include <Base/TimeInfo.h>
 #include <Base/Tools.h>
@@ -120,6 +121,11 @@ SketchObject::SketchObject() : geoLastId(0)
                       "Internal Geometry",
                       App::Prop_None,
                       "Enables selection of closed profiles within a sketch as input for operations");
+    ADD_PROPERTY_TYPE(_InternalFaceVersion,
+                      (0),
+                      "Base",
+                      (App::PropertyType)(App::Prop_Hidden | App::Prop_ReadOnly),
+                      "");
 
     Geometry.setOrderRelevant(true);
 
@@ -170,6 +176,8 @@ void SketchObject::setupObject()
             "User parameter:BaseApp/Preferences/Mod/Sketcher");
     ArcFitTolerance.setValue(hGrpp->GetFloat("ArcFitTolerance", Precision::Confusion()*10.0));
     MakeInternals.setValue(hGrpp->GetBool("MakeInternals", true));
+    // New sketches build internal faces with FaceMakerBuildFace.
+    _InternalFaceVersion.setValue(2);
     inherited::setupObject();
 }
 
@@ -400,23 +408,40 @@ Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const
         return Part::TopoShape();
 
     try {
-        Part::TopoShape result(getID(), getDocument()->getStringHasher());
-        try {
-            result = result.makeElementFace(edges.getSubTopoShapes(TopAbs_WIRE),
-                    /*op*/"",
-                    /*maker*/"Part::FaceMakerBuildFace",
-                    /*pln*/nullptr
-            );
-        }
-        catch (const Part::NullShapeException&) {
-            // An open-only sketch has no bounded regions, so a null face result is expected.
-        }
+        // Old sketches keep FaceMakerRing: FaceMakerBuildFace names the internal
+        // faces differently, breaking references from downstream features.
+        const bool legacy = _InternalFaceVersion.getValue() < 2;
 
-        // Append open wires (edges not part of any closed face)
+        Part::TopoShape result(getID(), getDocument()->getStringHasher());
         Part::WireJoiner joiner;
         joiner.setTightBound(true);
         joiner.setMergeEdges(true);
         joiner.addShape(edges);
+
+        if (legacy) {
+            if (!joiner.Shape().IsNull()) {
+                joiner.getResultWires(result, "SKF");
+                result = result.makeElementFace(result.getSubTopoShapes(TopAbs_WIRE),
+                        /*op*/"",
+                        /*maker*/"Part::FaceMakerRing",
+                        /*pln*/nullptr
+                );
+            }
+        }
+        else {
+            try {
+                result = result.makeElementFace(edges.getSubTopoShapes(TopAbs_WIRE),
+                        /*op*/"",
+                        /*maker*/"Part::FaceMakerBuildFace",
+                        /*pln*/nullptr
+                );
+            }
+            catch (const Part::NullShapeException&) {
+                // An open-only sketch has no bounded regions, so a null face result is expected.
+            }
+        }
+
+        // Append open wires (edges not part of any closed face)
         Part::TopoShape openWires(getID(), getDocument()->getStringHasher());
         joiner.getOpenWires(openWires, "SKF");
 
@@ -1410,6 +1435,13 @@ void SketchObject::onSketchRestore()
 // clang-format on
 void SketchObject::migrateSketch()
 {
+    // Old documents lack _InternalFaceVersion; infer it from the saving version (still the
+    // file's original at restore) so pre-1.2 sketches keep the legacy face maker.
+    if (_InternalFaceVersion.getValue() == 0) {
+        const bool legacy = getDocument()
+            && Base::getVersion(getDocument()->getProgramVersion()) <= Base::Version::v1_1;
+        _InternalFaceVersion.setValue(legacy ? 1 : 2);
+    }
 
     const auto& allGeoms = getInternalGeometry();
     bool noextensions = std::ranges::any_of(allGeoms, [](const auto& geo) {
