@@ -947,15 +947,9 @@ class ObjectOp(object):
                 obj.OpFinalDepth = zmin
             zmin = obj.OpFinalDepth.Value
 
-            def minZmax(z):
-                if hasattr(obj, "StepDown") and not Path.Geom.isRoughly(obj.StepDown.Value, 0):
-                    return z + obj.StepDown.Value
-                else:
-                    return z + 1
-
             # ensure zmax is higher than zmin
-            if (zmax - 0.0001) <= zmin:
-                zmax = minZmax(zmin)
+            if zmax < zmin or Path.Geom.isRoughly(zmax, zmin):
+                zmax = zmin
 
             # update start depth if requested and required
             if not Path.Geom.isRoughly(obj.OpStartDepth.Value, zmax):
