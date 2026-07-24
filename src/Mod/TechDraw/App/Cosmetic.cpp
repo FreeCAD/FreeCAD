@@ -187,6 +187,17 @@ std::string CosmeticEdge::toString() const
     return ss.str();
 }
 
+void CosmeticEdge::setPoints(const Base::Vector3d& start, const Base::Vector3d& end)
+{
+    permaStart = start;
+    permaEnd = end;
+    TopoDS_Edge edge = TopoDS_EdgeFromVectors(start, end);
+    setOCCEdge(edge);
+    if (m_geometry) {
+        m_geometry->setOCCEdge(edge);
+    }
+}
+
 void CosmeticEdge::dump(const char* title) const
 {
     Base::Console().message("CE::dump - %s \n", title);

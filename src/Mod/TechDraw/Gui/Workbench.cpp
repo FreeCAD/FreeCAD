@@ -135,8 +135,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *toolcenter << "TechDraw_ExtensionDrawCosmCircle";
     *toolcenter << "TechDraw_ExtensionDrawCosmCircle3Points";
     *toolcenter << "TechDraw_ExtensionDrawCosmArc";
-    *toolcenter << "TechDraw_ExtensionLineParallel";
-    *toolcenter << "TechDraw_ExtensionLinePerpendicular";
 
     // extension: dimensions
     Gui::MenuItem* tooldimensions = new Gui::MenuItem;
@@ -182,7 +180,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *lines << "TechDraw_FaceCenterLine";
     *lines << "TechDraw_2LineCenterLine";
     *lines << "TechDraw_2PointCenterLine";
-    *lines << "TechDraw_2PointCosmeticLine";
+    *lines << "TechDraw_CosmeticLine";
     *lines << "Separator";
     *lines << "TechDraw_DecorateLine";
     *lines << "TechDraw_ShowAll";
@@ -361,7 +359,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *extcenter << "TechDraw_CommandVertexCreationGroup";
     //*extcenter << "TechDraw_ExtensionVertexAtIntersection";
     *extcenter << "TechDraw_ExtensionDrawCirclesGroup";
-    *extcenter << "TechDraw_ExtensionLinePPGroup";
 
     Gui::ToolBarItem* extdimensions = new Gui::ToolBarItem(root);
     extdimensions->setCommand("TechDraw Extend Dimensions");
@@ -391,7 +388,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *anno << "TechDraw_LeaderLine";
     *anno << "TechDraw_CosmeticVertexGroup";
     *anno << "TechDraw_CenterLineGroup";
-    *anno << "TechDraw_2PointCosmeticLine";
+    *anno << "TechDraw_CosmeticLine";
     *anno << "TechDraw_DecorateLine";
     *anno << "TechDraw_ShowAll";
     *anno << "TechDraw_WeldSymbol";
@@ -459,7 +456,6 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *extcenter << "TechDraw_CommandVertexCreationGroup";
     //*extcenter << "TechDraw_ExtensionVertexAtIntersection";
     *extcenter << "TechDraw_ExtensionDrawCirclesGroup";
-    *extcenter << "TechDraw_ExtensionLinePPGroup";
 
     Gui::ToolBarItem* extdimensions = new Gui::ToolBarItem(root);
     extdimensions->setCommand("TechDraw Extend Dimensions");
@@ -488,7 +484,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *anno << "TechDraw_RichTextAnnotation";
     *anno << "TechDraw_CosmeticVertexGroup";
     *anno << "TechDraw_CenterLineGroup";
-    *anno << "TechDraw_2PointCosmeticLine";
+    *anno << "TechDraw_CosmeticLine";
     *anno << "TechDraw_DecorateLine";
     *anno << "TechDraw_ShowAll";
     *anno << "TechDraw_WeldSymbol";
