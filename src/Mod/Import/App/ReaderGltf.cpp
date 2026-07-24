@@ -22,7 +22,6 @@
  **************************************************************************/
 
 
-#include <boost/core/ignore_unused.hpp>
 #include <Standard_Version.hxx>
 #include <BRep_Builder.hxx>
 #include <Message_ProgressRange.hxx>

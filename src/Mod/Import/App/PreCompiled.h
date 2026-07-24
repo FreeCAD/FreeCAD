@@ -35,9 +35,6 @@
 #include <sstream>
 #include <vector>
 
-// boost
-#include <boost/core/ignore_unused.hpp>
-
 // OpenCasCade =====================================================================================
 // Base
 #include <Mod/Part/App/OpenCascadeAll.h>
