@@ -30,15 +30,10 @@
 #include "UnitsApi.h"
 #include "UnitsSchema.h"
 #include "UnitsSchemas.h"
-#include "UnitsSchemasData.h"
 
 using Base::UnitsApi;
 using Base::UnitsSchema;
 using Base::UnitsSchemas;
-
-std::unique_ptr<UnitsSchemas> UnitsApi::schemas = std::make_unique<UnitsSchemas>(
-    UnitsSchemasData::unitSchemasDataPack
-);
 
 std::vector<std::string> UnitsApi::getDescriptions()
 {
@@ -68,11 +63,6 @@ bool UnitsApi::isMultiUnitLength()
 std::string UnitsApi::getBasicLengthUnit()
 {
     return schemas->currentSchema()->getBasicLengthUnit();
-}
-
-std::size_t UnitsApi::getDefSchemaNum()
-{
-    return schemas->spec().num;
 }
 
 void UnitsApi::setDecimals(const int prec)

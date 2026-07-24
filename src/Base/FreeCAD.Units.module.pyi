@@ -10,7 +10,16 @@ from __future__ import annotations
 
 from typing import Literal, TypeAlias, overload
 
+from Base.Metadata import module
 from FreeCAD.Base import Quantity
+
+module(
+    Name="Units",
+    Namespace="Base",
+    Include="UnitsApi.h",
+    CallbackOwner="UnitsApi",
+    CallbackPrefix="s",
+)
 
 _NumberFormat: TypeAlias = Literal["g", "f", "e"]
 Radian: Quantity
@@ -38,11 +47,15 @@ def toNumber(value: float, format: _NumberFormat = ..., decimals: int = ..., /) 
     ...
 
 def parseQuantity(expression: str, /) -> Quantity:
-    """Parse one unit expression into a Quantity."""
+    """Parse one unit expression into a Quantity.
+
+    The expression may be a simple value with units, such as ``"1m"``, or a
+    compound unit expression that FreeCAD's quantity parser understands.
+    """
     ...
 
 def getSchema() -> int:
-    """Return the active unit-schema index."""
+    """Return the active unit-schema index into the tuple returned by ``listSchemas``."""
     ...
 
 def setSchema(index: int, /) -> None:

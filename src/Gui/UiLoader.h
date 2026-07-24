@@ -96,6 +96,7 @@ namespace Gui
 
 class PySideUicModule: public Py::ExtensionModule<PySideUicModule>
 {
+    friend class PySideUicModulePy;
 
 public:
     PySideUicModule();
