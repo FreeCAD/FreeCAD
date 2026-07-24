@@ -205,6 +205,12 @@ SheetTableView::SheetTableView(QWidget* parent)
     actionPaste = createAction(":/icons/edit-paste.svg", tr("Paste"), &SheetTableView::pasteClipboard);
     actionDel = createAction(":/icons/edit-delete.svg", tr("Delete"), &SheetTableView::deleteSelection);
 
+    auto& commandManager = Gui::Application::Instance->commandManager();
+    if (commandManager.getCommandByName("Std_ViewDockUndockFullscreen")) {
+        contextMenu.addSeparator();
+        commandManager.addTo("Std_ViewDockUndockFullscreen", &contextMenu);
+    }
+
     addAction(actionProperties);
 
     horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
