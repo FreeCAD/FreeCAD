@@ -22,7 +22,6 @@
  **************************************************************************/
 
 
-#include <boost/core/ignore_unused.hpp>
 #include <Standard_Version.hxx>
 #include <TColStd_IndexedDataMapOfStringString.hxx>
 #include <Message_ProgressRange.hxx>

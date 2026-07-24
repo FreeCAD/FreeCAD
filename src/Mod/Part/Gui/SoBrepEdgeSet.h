@@ -23,7 +23,6 @@
 
 #pragma once
 
-#include <boost/algorithm/string/predicate.hpp>
 #include <Inventor/fields/SoMFInt32.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>

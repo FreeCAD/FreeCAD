@@ -22,7 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <array>
 #include <map>
+#include <optional>
 #include <vector>
 #include <iostream>
 #include <string>
@@ -47,7 +49,6 @@
 # include <zipios++/zipios-config.h>
 #endif
 #include <zipios++/zipinputstream.h>
-#include <boost/iostreams/filtering_stream.hpp>
 
 using namespace std;
 using namespace XERCES_CPP_NAMESPACE;
@@ -333,10 +334,10 @@ void Base::XMLReader::readCharacters(const char* filename, CharStreamFormat form
     endCharStream();
 }
 
-std::streamsize Base::XMLReader::read(char_type* s, std::streamsize n)
+std::streamsize Base::XMLReader::read(char* s, std::streamsize n)
 {
 
-    char_type* buf = s;
+    char* buf = s;
     if (CharacterOffset < 0) {
         return -1;
     }
@@ -381,6 +382,55 @@ std::istream& Base::XMLReader::charStream()
     return *CharStream;
 }
 
+namespace
+{
+// Stream buffer that reads the character data of the current element from an XMLReader
+class XMLReaderBuf: public std::streambuf
+{
+public:
+    explicit XMLReaderBuf(Base::XMLReader& reader)
+        : reader(reader)
+    {}
+
+protected:
+    int_type underflow() override
+    {
+        if (gptr() < egptr()) {
+            return traits_type::to_int_type(*gptr());
+        }
+        const std::streamsize count = reader.read(buffer.data(), buffer.size());
+        if (count <= 0) {
+            return traits_type::eof();
+        }
+        setg(buffer.data(), buffer.data(), buffer.data() + count);
+        return traits_type::to_int_type(*gptr());
+    }
+
+private:
+    Base::XMLReader& reader;
+    std::array<char, 1024> buffer {};
+};
+
+// Input stream over the character data of the current element, optionally base64 decoded
+class XMLCharStream: public std::istream
+{
+public:
+    XMLCharStream(Base::XMLReader& reader, Base::CharStreamFormat format)
+        : std::istream(nullptr)
+        , source(reader)
+    {
+        if (format == Base::CharStreamFormat::Base64Encoded) {
+            decoder.emplace(source, Base::base64DefaultBufferSize, Base::Base64ErrorHandling::silent);
+        }
+        rdbuf(decoder ? static_cast<std::streambuf*>(&*decoder) : &source);
+    }
+
+private:
+    XMLReaderBuf source;
+    std::optional<Base::Base64DecoderBuf> decoder;
+};
+}  // namespace
+
 std::istream& Base::XMLReader::beginCharStream(CharStreamFormat format)
 {
     if (CharStream) {
@@ -405,14 +455,7 @@ std::istream& Base::XMLReader::beginCharStream(CharStreamFormat format)
         throw Base::XMLParseException("invalid state while reading character stream");
     }
 
-    CharStream = std::make_unique<boost::iostreams::filtering_istream>();
-    auto* filteringStream = dynamic_cast<boost::iostreams::filtering_istream*>(CharStream.get());
-    if (format == CharStreamFormat::Base64Encoded) {
-        filteringStream->push(
-            base64_decoder(Base::base64DefaultBufferSize, Base64ErrorHandling::silent)
-        );
-    }
-    filteringStream->push(boost::ref(*this));
+    CharStream = std::make_unique<XMLCharStream>(*this, format);
     return *CharStream;
 }
 

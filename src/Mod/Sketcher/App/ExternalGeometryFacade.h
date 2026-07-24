@@ -24,7 +24,6 @@
 
 #pragma once
 
-#include <boost/uuid/uuid_io.hpp>
 
 #include <Base/BaseClass.h>
 #include <Mod/Sketcher/App/ExternalGeometryExtension.h>
@@ -227,7 +226,7 @@ public:
     {
         return getGeo()->clone();
     };
-    boost::uuids::uuid getTag() const
+    const Base::Uuid& getTag() const
     {
         return getGeo()->getTag();
     };

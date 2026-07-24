@@ -24,6 +24,7 @@
 
 
 #include <sstream>
+#include <string_view>
 #include <Bnd_Box.hxx>
 #include <BRep_Builder.hxx>
 #include <BRepAdaptor_Curve.hxx>
@@ -74,6 +75,7 @@
 #include <Base/Placement.h>
 #include <Base/Rotation.h>
 #include <Base/Stream.h>
+#include <Base/StringUtils.h>
 #include <Base/Tools.h>
 #include <Mod/Material/App/MaterialManager.h>
 
@@ -391,7 +393,7 @@ App::ElementNamePair Feature::getExportElementName(TopoShape shape, const char* 
                         }
                     }
                 }
-                if (ancestors.size() > 1 && boost::starts_with(postfix, Data::POSTFIX_INDEX)) {
+                if (ancestors.size() > 1 && postfix.starts_with(Data::POSTFIX_INDEX)) {
                     std::istringstream iss(postfix.c_str() + strlen(Data::POSTFIX_INDEX));
                     int idx;
                     if (iss >> idx && idx >= 0 && idx < (int)ancestors.size()) {
@@ -1080,9 +1082,12 @@ static TopoShape _getTopoShape(
             else if (linked->isDerivedFrom<App::Placement>()) {
                 auto element = Data::findElementName(subname);
                 if (element) {
-                    if (boost::iequals("x", element) || boost::iequals("x-axis", element)
-                        || boost::iequals("y", element) || boost::iequals("y-axis", element)
-                        || boost::iequals("z", element) || boost::iequals("z-axis", element)) {
+                    if (Base::StringUtils::iequals("x", element)
+                        || Base::StringUtils::iequals("x-axis", element)
+                        || Base::StringUtils::iequals("y", element)
+                        || Base::StringUtils::iequals("y-axis", element)
+                        || Base::StringUtils::iequals("z", element)
+                        || Base::StringUtils::iequals("z-axis", element)) {
                         static TopoDS_Shape _shape;
                         if (_shape.IsNull()) {
                             BRepBuilderAPI_MakeEdge builder(gp_Lin(gp_Pnt(0, 0, 0), gp_Dir(0, 0, 1)));
@@ -1091,7 +1096,10 @@ static TopoShape _getTopoShape(
                         }
                         shape = TopoShape(tag, hasher, _shape);
                     }
-                    else if (boost::iequals("o", element) || boost::iequals("origin", element)) {
+                    else if (
+                        Base::StringUtils::iequals("o", element)
+                        || Base::StringUtils::iequals("origin", element)
+                    ) {
                         static TopoDS_Shape _shape;
                         if (_shape.IsNull()) {
                             BRepBuilderAPI_MakeVertex builder(gp_Pnt(0, 0, 0));
@@ -1457,12 +1465,12 @@ void Feature::onBeforeChange(const App::Property* prop)
             for (auto it = _elementCache.begin(); it != _elementCache.end();) {
                 bool remove;
                 if (prefix) {
-                    remove = boost::starts_with(it->first, *prefix);
+                    remove = it->first.starts_with(*prefix);
                 }
                 else {
                     remove = true;
                     for (const auto& v : _elementCache) {
-                        if (boost::starts_with(it->first, v.first)) {
+                        if (it->first.starts_with(v.first)) {
                             remove = false;
                             break;
                         }
@@ -1493,14 +1501,14 @@ void Feature::onBeforeChange(const App::Property* prop)
                         continue;
                     }
                     if (prefix) {
-                        if (!boost::starts_with(element, *prefix)) {
+                        if (!std::string_view(element).starts_with(*prefix)) {
                             continue;
                         }
                     }
                     else {
                         bool found = false;
                         for (const auto& v : _elementCachePrefixMap) {
-                            if (boost::starts_with(element, v.first)) {
+                            if (std::string_view(element).starts_with(v.first)) {
                                 found = true;
                                 break;
                             }
@@ -1583,7 +1591,7 @@ const std::vector<std::string>& Feature::searchElementCache(
         auto propShape = &Shape;
         const std::string* prefix = nullptr;
         for (const auto& v : _elementCachePrefixMap) {
-            if (boost::starts_with(element, v.first)) {
+            if (element.starts_with(v.first)) {
                 propShape = v.second;
                 prefix = &v.first;
                 break;

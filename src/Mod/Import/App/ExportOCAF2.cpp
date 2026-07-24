@@ -39,8 +39,7 @@
 
 #include <XCAFDoc_ShapeMapTool.hxx>
 
-#include <boost/algorithm/string.hpp>
-#include <boost/format.hpp>
+#include <string_view>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -180,7 +179,7 @@ TDF_Label ExportOCAF2::findComponent(const char* subname, TDF_Label label, TDF_L
             auto component = components.Value(i);
             if (std::isdigit((int)subname[0])) {
                 auto n = std::to_string(i - 1) + ".";
-                if (boost::starts_with(subname, n)) {
+                if (std::string_view(subname).starts_with(n)) {
                     labels.Append(component);
                     return findComponent(subname + n.size(), component, labels);
                 }
@@ -190,7 +189,7 @@ TDF_Label ExportOCAF2::findComponent(const char* subname, TDF_Label label, TDF_L
                 continue;
             }
             for (auto& n : it->second) {
-                if (boost::starts_with(subname, n)) {
+                if (std::string_view(subname).starts_with(n)) {
                     labels.Append(component);
                     return findComponent(subname + n.size(), component, labels);
                 }
@@ -249,7 +248,7 @@ void ExportOCAF2::setupObject(
         for (auto& v : getShapeColors(obj, key)) {
             const char* subname = v.first.c_str();
             if (name) {
-                if (!boost::starts_with(v.first, childName)) {
+                if (!v.first.starts_with(childName)) {
                     continue;
                 }
                 subname += childName.size();

@@ -25,8 +25,6 @@
 #include <cmath>
 #include <limits>
 
-#include <boost/math/special_functions/fpclassify.hpp>
-
 #include "Vector3D.h"
 #include "Tools.h"
 
@@ -234,7 +232,7 @@ template<class float_type>
 bool Vector3<float_type>::IsParallel(const Vector3<float_type>& rclDir, float_type tol) const
 {
     float_type angle = GetAngle(rclDir);
-    if (boost::math::isnan(angle)) {
+    if (std::isnan(angle)) {
         return false;
     }
 
@@ -245,7 +243,7 @@ template<class float_type>
 bool Vector3<float_type>::IsNormal(const Vector3<float_type>& rclDir, float_type tol) const
 {
     float_type angle = GetAngle(rclDir);
-    if (boost::math::isnan(angle)) {
+    if (std::isnan(angle)) {
         return false;
     }
 

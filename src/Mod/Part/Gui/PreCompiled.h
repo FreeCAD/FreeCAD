@@ -48,10 +48,6 @@
 // OpenCasCade
 #include <Mod/Part/App/OpenCascadeAll.h>
 
-// Boost
-#include <boost/regex.hpp>
-#include <boost/algorithm/string/predicate.hpp>
-
 // GL
 // Include glext before QtAll/InventorAll
 #ifdef FC_OS_WIN32

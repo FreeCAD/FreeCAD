@@ -22,8 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <boost/bind/bind.hpp>
-#include <boost/core/ignore_unused.hpp>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbLine.h>
 #include <Inventor/SbTime.h>
@@ -1226,8 +1224,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
     SbVec3f point = line.getPosition();
     SbVec3f normal = line.getDirection();
 
-    // use scoped_ptr to make sure that instance gets deleted in all cases
-    boost::scoped_ptr<SoPickedPoint> pp(this->getPointOnRay(cursorPos, viewer));
+    // use a unique_ptr to make sure that instance gets deleted in all cases
+    std::unique_ptr<SoPickedPoint> pp(this->getPointOnRay(cursorPos, viewer));
     EditModeCoinManager::PreselectionResult clickResult
         = getPreselectionResultAtViewportPos(cursorPos, viewer);
     EditModeCoinManager::PreselectionResult resolvedClickResult
@@ -4277,7 +4275,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     connectRedoDocument = getDocument()->signalRedoDocument.connect(
         std::bind(&ViewProviderSketch::slotRedoDocument, this, sp::_1));
     connectSolverUpdate = getSketchObject()
-            ->signalSolverUpdate.connect(boost::bind(&ViewProviderSketch::slotSolverUpdate, this));
+            ->signalSolverUpdate.connect(std::bind(&ViewProviderSketch::slotSolverUpdate, this));
     //NOLINTEND
 
     // There are geometry extensions introduced by the solver and geometry extensions introduced by

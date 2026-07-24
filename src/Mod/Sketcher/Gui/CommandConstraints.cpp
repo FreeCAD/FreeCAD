@@ -38,7 +38,7 @@
 
 #include <BRepBndLib.hxx>
 
-#include <boost/range/adaptor/reversed.hpp>
+#include <ranges>
 
 #include <App/Application.h>
 #include <Base/Tools.h>
@@ -2595,7 +2595,7 @@ protected:
         const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
 
         bool commandHandledInEditDatum = false;
-        for (int index : cstrIndexes | boost::adaptors::reversed) {
+        for (int index : cstrIndexes | std::views::reverse) {
             if (show && ConStr[index]->isDimensional() && ConStr[index]->isDriving) {
                 commandHandledInEditDatum = true;
                 EditDatumDialog editDatumDialog(currentTransactionID, sketchgui, index);

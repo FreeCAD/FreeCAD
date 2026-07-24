@@ -30,7 +30,7 @@
 #include <gp_Pnt.hxx>
 #include <HLRAlgo_Projector.hxx>
 
-#include <boost/math/special_functions/fpclassify.hpp>
+#include <cmath>
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
@@ -149,7 +149,7 @@ PyObject* HLRBRep_AlgoPy::setProjector(PyObject* args, PyObject* kwds)
             ax2.SetDirection(Base::convertTo<gp_Dir>(z));
         }
 
-        if (boost::math::isnan(focus)) {
+        if (std::isnan(focus)) {
             getHLRBRep_AlgoPtr()->Projector(HLRAlgo_Projector(ax2));
         }
         else {

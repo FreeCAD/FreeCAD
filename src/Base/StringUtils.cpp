@@ -38,6 +38,19 @@ std::string Base::StringUtils::lowercaseAscii(std::string_view value)
     return result;
 }
 
+bool Base::StringUtils::iequals(std::string_view lhs, std::string_view rhs)
+{
+    return std::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), [](char l, char r) {
+        return std::tolower(static_cast<unsigned char>(l))
+            == std::tolower(static_cast<unsigned char>(r));
+    });
+}
+
+bool Base::StringUtils::istarts_with(std::string_view str, std::string_view prefix)
+{
+    return str.size() >= prefix.size() && iequals(str.substr(0, prefix.size()), prefix);
+}
+
 bool Base::StringUtils::parseLong(std::string_view value, long& result)
 {
     std::istringstream stream(trimmed(value));

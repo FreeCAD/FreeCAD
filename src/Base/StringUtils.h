@@ -23,6 +23,20 @@ BaseExport std::string trimmed(std::string_view value);
 BaseExport std::string lowercaseAscii(std::string_view value);
 
 /**
+ * @brief ASCII case-insensitive comparison of two strings for equality.
+ *
+ * Only characters in the ASCII range are case-folded; bytes are compared otherwise.
+ */
+BaseExport bool iequals(std::string_view lhs, std::string_view rhs);
+
+/**
+ * @brief ASCII case-insensitive test whether str begins with prefix.
+ *
+ * Only characters in the ASCII range are case-folded; bytes are compared otherwise.
+ */
+BaseExport bool istarts_with(std::string_view str, std::string_view prefix);
+
+/**
  * @brief Parse a whole string as a long integer using locale-independent C/POSIX rules.
  *
  * Leading and trailing whitespace is ignored. The parse fails if any non-whitespace text remains.

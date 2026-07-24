@@ -22,7 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <boost/iostreams/stream.hpp>
+#include <istream>
+#include <streambuf>
 
 #include "Persistence.h"
 #include "PyWrapParseTupleAndKeywords.h"
@@ -117,6 +118,51 @@ PyObject* PersistencePy::dumpContent(PyObject* args, PyObject* kwds) const
     return ba;
 }
 
+namespace
+{
+// Seekable stream buffer over a raw memory block
+class ArraySourceBuf: public std::streambuf
+{
+public:
+    ArraySourceBuf(char* data, std::size_t size)
+    {
+        setg(data, data, data + size);
+    }
+
+protected:
+    pos_type seekoff(off_type off, std::ios_base::seekdir way, std::ios_base::openmode which) override
+    {
+        if (!(which & std::ios_base::in)) {
+            return {off_type(-1)};
+        }
+        char* target = nullptr;
+        switch (way) {
+            case std::ios_base::beg:
+                target = eback() + off;
+                break;
+            case std::ios_base::cur:
+                target = gptr() + off;
+                break;
+            case std::ios_base::end:
+                target = egptr() + off;
+                break;
+            default:
+                return {off_type(-1)};
+        }
+        if (target < eback() || target > egptr()) {
+            return {off_type(-1)};
+        }
+        setg(eback(), target, egptr());
+        return {target - eback()};
+    }
+
+    pos_type seekpos(pos_type pos, std::ios_base::openmode which) override
+    {
+        return seekoff(off_type(pos), std::ios_base::beg, which);
+    }
+};
+}  // namespace
+
 PyObject* PersistencePy::restoreContent(PyObject* args)
 {
     PyObject* buffer = nullptr;
@@ -140,10 +186,9 @@ PyObject* PersistencePy::restoreContent(PyObject* args)
         return nullptr;
     }
 
-    // check if it really is a buffer
     try {
-        using Device = boost::iostreams::basic_array_source<char>;
-        boost::iostreams::stream<Device> stream((char*)buf.buf, buf.len);
+        ArraySourceBuf streambuf((char*)buf.buf, buf.len);
+        std::istream stream(&streambuf);
         getPersistencePtr()->restoreFromStream(stream);
     }
     catch (...) {

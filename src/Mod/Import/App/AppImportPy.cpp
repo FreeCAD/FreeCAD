@@ -26,8 +26,9 @@
 # define WNT  // avoid conflict with GUID
 #endif
 
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/range/adaptor/indexed.hpp>
+#include <chrono>
+#include <string_view>
+
 #if defined(__clang__)
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Wextra-semi"
@@ -48,7 +49,6 @@
 # pragma clang diagnostic pop
 #endif
 
-#include <chrono>
 #include "dxf/ImpExpDxf.h"
 #include "SketchExportHelper.h"
 #include <App/Application.h>
@@ -321,11 +321,11 @@ private:
             auto getShapeColors = [partColor](App::DocumentObject* obj, const char* subname) {
                 std::map<std::string, Base::Color> cols;
                 auto it = partColor.find(dynamic_cast<Part::Feature*>(obj));
-                if (it != partColor.end() && boost::starts_with(subname, "Face")) {
+                if (it != partColor.end() && std::string_view(subname).starts_with("Face")) {
                     const auto& colors = it->second;
                     std::string face("Face");
-                    for (const auto& element : colors | boost::adaptors::indexed(1)) {
-                        cols[face + std::to_string(element.index())] = element.value();
+                    for (std::size_t i = 0; i < colors.size(); ++i) {
+                        cols[face + std::to_string(i + 1)] = colors[i];
                     }
                 }
                 return cols;
