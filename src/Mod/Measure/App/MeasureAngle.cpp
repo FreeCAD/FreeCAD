@@ -353,6 +353,16 @@ bool MeasureAngle::computeOriginFaceEdge(TopoDS_Shape& s1)
     Base::Vector3d normalVec(faceNormal.X(), faceNormal.Y(), faceNormal.Z());
     edgeDirVec.ProjectToPlane(Base::Vector3d(0, 0, 0), normalVec);
 
+    if (edgeDirVec.Length() < Precision::Confusion()) {
+        if (faceIsS1) {
+            outOrigin = faceLoc;
+        }
+        else {
+            outOrigin = edgeLoc;
+        }
+        return true;
+    }
+
     gp_Vec projection(edgeDirVec.x, edgeDirVec.y, edgeDirVec.z);
     projection.Normalize();
 
@@ -425,6 +435,10 @@ bool MeasureAngle::setDirections(TopoDS_Shape& s1)
         Base::Vector3d edgeDirVec(edgeDir.X(), edgeDir.Y(), edgeDir.Z());
         Base::Vector3d normalVec(faceNormal.X(), faceNormal.Y(), faceNormal.Z());
         edgeDirVec.ProjectToPlane(Base::Vector3d(0, 0, 0), normalVec);
+
+        if (edgeDirVec.Length() < Precision::Confusion()) {
+            return true;
+        }
 
         gp_Vec projection(edgeDirVec.x, edgeDirVec.y, edgeDirVec.z);
         projection.Normalize();
