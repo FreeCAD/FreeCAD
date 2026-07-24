@@ -39,8 +39,6 @@
 
 namespace Base
 {
-class InputStream;
-class OutputStream;
 class Writer;
 }  // namespace Base
 
@@ -1310,9 +1308,6 @@ private:
 
     void RestoreDocFileV0(uint32_t count, Base::Reader& reader);
     void RestoreDocFileV3(Base::Reader& reader);
-
-    void writeString(Base::OutputStream& str, const std::string& value) const;
-    void readString(Base::InputStream& str, std::string& value);
 
     void verifyIndex(int index) const;
     void setMinimumSizeOne();

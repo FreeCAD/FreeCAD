@@ -148,6 +148,7 @@
 #include "PropertyExpressionEngine.h"
 #include "PropertyFile.h"
 #include "PropertyLinks.h"
+#include "PropertyLinkSubValueMap.h"
 #include "PropertyPythonObject.h"
 #include "StringHasherPy.h"
 #include "StringIDPy.h"
@@ -2202,6 +2203,11 @@ void Application::initTypes()
     App::PropertyLinkSubListChild   ::init();
     App::PropertyLinkSubListGlobal  ::init();
     App::PropertyLinkSubListHidden  ::init();
+    App::PropertyLinkSubValueMapBase     ::init();
+    App::PropertyLinkSubColorMap         ::init();
+    App::PropertyLinkSubColorMapHidden   ::init();
+    App::PropertyLinkSubMaterialMap      ::init();
+    App::PropertyLinkSubMaterialMapHidden::init();
     App::PropertyXLink              ::init();
     App::PropertyXLinkSub           ::init();
     App::PropertyXLinkSubHidden     ::init();

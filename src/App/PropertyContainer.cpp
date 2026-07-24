@@ -68,6 +68,11 @@ unsigned int PropertyContainer::getMemSize () const
     return size;
 }
 
+App::DocumentObject* PropertyContainer::getPropertyLinkOwner() const
+{
+    return nullptr;
+}
+
 App::Property* PropertyContainer::addDynamicProperty(
     std::string_view type,
     const char* name,
@@ -653,4 +658,3 @@ void PropertyData::visitProperties(OffsetBase offsetBase,
         visitor(reinterpret_cast<Property*>(spec.Offset + offset));
     };
 }
-
