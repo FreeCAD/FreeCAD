@@ -20,6 +20,9 @@ function(fc_copy_sources target_name outpath)
         get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
         # Ensure parent directory exists when copying or creating symlinks
         get_filename_component(outfile_dir "${outfile}" PATH)
+        if(IS_DIRECTORY ${infile} AND NOT INSTALL_PREFER_SYMLINKS)
+            set(copy_command copy_directory)
+        endif()
         add_custom_command(
             # Make sure destination directory exists before copy/symlink
             COMMAND "${CMAKE_COMMAND}" -E make_directory "${outfile_dir}"
