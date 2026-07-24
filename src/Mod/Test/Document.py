@@ -1569,6 +1569,37 @@ class DocumentGroupCases(unittest.TestCase):
         self.Doc.removeObject("Label_2")
         self.Doc.removeObject("Label_3")
 
+    def testRemoveObjectsFromDocumentDuringRecompute(self):
+        class GroupRemover:
+            def execute(self, obj):
+                obj.Document.Group.removeObjectsFromDocument()
+
+        class NoOp:
+            def execute(self, obj):
+                pass
+
+        remover = self.Doc.addObject("App::FeaturePython", "Remover")
+        remover.Proxy = GroupRemover()
+        group = self.Doc.addObject("App::DocumentObjectGroup", "Group")
+
+        def add_child(name):
+            child = self.Doc.addObject("App::FeaturePython", name)
+            child.Proxy = NoOp()
+            child.addProperty("App::PropertyLink", "Dependency")
+            child.Dependency = remover
+            group.addObject(child)
+            child.touch()
+            return child.Name
+
+        child_names = [add_child("Child1"), add_child("Child2")]
+
+        remover.touch()
+        self.Doc.recompute()
+
+        for child_name in child_names:
+            self.assertIsNone(self.Doc.getObject(child_name))
+        self.assertEqual(group.Group, [])
+
     def testGroupAndGeoFeatureGroup(self):
 
         # an object can only be in one group at once, that must be enforced
