@@ -59,6 +59,7 @@ ToolGroup = PreferencesGroup + "/Tools"
 ToolPath = "ToolPath"
 LastToolLibrary = "LastToolLibrary"
 LastToolLibrarySortKey = "LastToolLibrarySortKey"
+ToolUpdateOnLoad = "ToolUpdateOnLoad"
 
 # Linear tolerance to use when generating Paths, eg when tessellating geometry
 GeometryTolerance = "GeometryTolerance"
@@ -95,6 +96,17 @@ def tool_preferences():
 
 def addToolPreferenceObserver(callback):
     _add_group_observer(ToolGroup, callback)
+
+
+def tool_update_on_load_enabled() -> bool:
+    """Whether opening a document should check for and offer to apply
+    tool preset updates from the library. Defaults to True (current
+    behavior); the CAM preferences Assets tab exposes this as a checkbox."""
+    return tool_preferences().GetBool(ToolUpdateOnLoad, True)
+
+
+def set_tool_update_on_load_enabled(enabled: bool) -> None:
+    tool_preferences().SetBool(ToolUpdateOnLoad, enabled)
 
 
 def pathPostSourcePath():

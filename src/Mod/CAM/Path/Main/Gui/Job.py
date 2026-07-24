@@ -37,6 +37,11 @@ import Path.Main.Gui.JobDlg as PathJobDlg
 import Path.Main.Job as PathJob
 import Path.Main.Stock as PathStock
 import Path.Tool.Gui.Controller as PathToolControllerGui
+
+# Must stay an eager, top-level import (not lazy/local): importing this
+# module registers the document-load observer that prompts about stale
+# tool updates on open, which must happen before any document opens.
+import Path.Tool.Gui.UpdateDocumentToolsDlg as PathUpdateToolsGui
 import PathScripts.PathUtils as PathUtils
 from Path.Tool.toolbit.ui.selector import ToolBitSelector
 from Machine.models import MachineFactory
@@ -364,8 +369,16 @@ class ViewProvider:
         action.triggered.connect(self._editInContextMenuTriggered)
         menu.addAction(action)
 
+        updateAction = QtGui.QAction(translate("CAM_Job", "Update Tools from Library"), menu)
+        updateAction.setIcon(QtGui.QIcon(":/icons/CAM_UpdateDocumentTools.svg"))
+        updateAction.triggered.connect(self._updateToolsFromLibraryTriggered)
+        menu.addAction(updateAction)
+
     def _editInContextMenuTriggered(self, checked):
         self.setEdit()
+
+    def _updateToolsFromLibraryTriggered(self, checked):
+        PathUpdateToolsGui.update_tools_from_gui(self.obj)
 
 
 class MaterialDialog(QtWidgets.QDialog):

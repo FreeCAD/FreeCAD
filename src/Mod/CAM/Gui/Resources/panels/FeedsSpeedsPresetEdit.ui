@@ -195,6 +195,22 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="notesBox">
+     <property name="title">
+      <string>Notes</string>
+     </property>
+     <layout class="QVBoxLayout" name="notesBoxLayout">
+      <item>
+       <widget class="QPlainTextEdit" name="notesEdit">
+        <property name="maximumHeight">
+         <number>60</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QLabel" name="geometryHint">
      <property name="text">
       <string>Tool diameter and/or flute count missing — surface speed and chipload won't auto-sync with direct feed/speed.</string>
@@ -233,6 +249,7 @@
   <tabstop>vertRatioSpin</tabstop>
   <tabstop>rawFeedSpin</tabstop>
   <tabstop>rawSpeedSpin</tabstop>
+  <tabstop>notesEdit</tabstop>
  </tabstops>
  <resources/>
  <connections>
