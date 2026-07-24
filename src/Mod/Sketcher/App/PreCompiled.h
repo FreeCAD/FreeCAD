@@ -44,8 +44,6 @@
 
 // Boost
 #include <boost/geometry/geometries/register/point.hpp>
-#include <boost/random.hpp>
-#include <boost/range/adaptor/map.hpp>
 #include <boost/geometry.hpp>
 
 // OpenCasCade
