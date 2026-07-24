@@ -88,7 +88,7 @@
      <item row="4" column="0">
       <widget class="QLabel" name="labelLineWidth">
        <property name="text">
-        <string>Line Width</string>
+        <string>Line width</string>
        </property>
       </widget>
      </item>
