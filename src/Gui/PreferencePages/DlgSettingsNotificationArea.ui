@@ -29,7 +29,7 @@
       <item row="2" column="0">
        <widget class="QGroupBox" name="NonIntrusiveNotificationsEnabled">
         <property name="toolTip">
-         <string>Enables non-intrusive pop-up notifications above the notification area. Pop-up notifications can be dismissed manually by clicking on them, or automatically after a set duration.</string>
+         <string>&lt;html&gt;Enables non-intrusive pop-up notifications above the notification area. Pop-up notifications can be dismissed manually by clicking on them, or automatically after a set duration.&lt;/html&gt;</string>
         </property>
         <property name="title">
          <string>Enable Pop-Up Notifications</string>
