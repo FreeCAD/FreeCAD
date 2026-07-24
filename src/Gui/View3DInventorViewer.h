@@ -26,15 +26,18 @@
 #include <list>
 #include <map>
 #include <memory>
+#include <optional>
 #include <set>
 #include <vector>
 
+#include <QColor>
 #include <QCursor>
 #include <QImage>
 #include <QLabel>
 
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbTime.h>
+#include <Inventor/SbViewportRegion.h>
 #include <Inventor/nodes/SoEnvironment.h>
 #include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/nodes/SoRotation.h>
@@ -55,6 +58,7 @@
 #include <Base/Placement.h>
 
 #include "Namespace.h"
+#include "RenderPipeline.h"
 #include "Selection/Selection.h"
 
 #include "CornerCrossLetters.h"
@@ -65,11 +69,11 @@ class QOpenGLFramebufferObject;
 class QOpenGLWidget;
 class QSurfaceFormat;
 
+class SoAction;
+class SoNode;
 class SoTranslation;
 class SoTransform;
 class SoText2;
-class SoAnnotation;
-
 class SoSeparator;
 class SoShapeHints;
 class SoMaterial;
@@ -81,7 +85,9 @@ class SoVectorizeAction;
 class QImage;
 class SoGroup;  // NOLINT
 class SoGLRenderAction;
+class SoIRRenderAction;
 class SoPickStyle;
+class SoRenderLayerGroup;
 class NaviCube;
 class SoClipPlane;
 class SoTimerSensor;
@@ -107,6 +113,9 @@ class Document;
 class GLGraphicsItem;
 class SoShapeScale;
 class ViewerEventFilter;
+
+struct RenderFrameRequest;
+struct RenderFrameResult;
 
 /** GUI view into a 3D scene provided by View3DInventor
  *
@@ -142,8 +151,6 @@ public:
     };
     //@}
 
-    /// Declares why the viewer scene is being traversed so screen-only
-    /// decorations can be excluded from capture and export paths.
     enum class RenderIntent
     {
         /// Interactive viewport traversal including viewer decorations.
@@ -248,6 +255,9 @@ public:
 
     /** Capture the live viewport framebuffer as a raster-oriented image. */
     QImage grabFramebuffer();
+
+    /** Render one frame according to a unified request. */
+    RenderFrameResult renderFrame(const RenderFrameRequest& request);
 
     void setViewing(bool enable) override;
     virtual void setCursorEnabled(bool enable);
@@ -566,6 +576,8 @@ public:
     void setEnabledVBO(bool on);
     bool isEnabledVBO() const;
     void setRenderCache(int);
+    RenderPipeline getRenderPipeline() const;
+    void setRenderPipeline(RenderPipeline mode);
 
     //! Update colors of axis in corner to match preferences
     void updateColors();
@@ -592,6 +604,7 @@ protected:
     void renderScene();
     void renderFramebuffer();
     void renderGLImage();
+    void renderPresentationItems();
     void animatedViewAll(const SbBox3f& bbox, int steps, int ms);
     void actualRedraw() override;
     void setSeekMode(bool on) override;
@@ -608,10 +621,10 @@ protected:
     static void onViewFitTimer(void*, SoSensor*);
 
 private:
+    struct OverlayAxisCrossState;
+
     static void setViewportCB(void* userdata, SoAction* action);
     static void clearBufferCB(void* userdata, SoAction* action);
-    static void setGLWidgetCB(void* userdata, SoAction* action);
-    static void handleEventCB(void* userdata, SoEventCallback* n);
     static void interactionStartCB(void* data, Quarter::SoQTQuarterAdaptor* viewer);
     static void interactionFinishCB(void* data, Quarter::SoQTQuarterAdaptor* viewer);
     static void interactionLoggerCB(void* ud, SoAction* action);
@@ -619,31 +632,38 @@ private:
 private:
     class ScopedRenderIntent;
     static void selectCB(void* viewer, SoPath* path);
+    static void afterMainSceneCB(void* userdata, SoRenderManager* manager, SoAction* action);
     // A small intent stack lets nested export/capture code paths temporarily
     // override the default live-view traversal behavior.
     void pushRenderIntentOverride(RenderIntent intent) const;
     void popRenderIntentOverride() const;
     RenderIntent currentRenderIntent() const;
-    static bool shouldRenderDecorations(RenderIntent intent);
+    void initializeRenderManager();
+    void updateDecorationSwitch(RenderIntent intent);
 
     static void deselectCB(void* viewer, SoPath* path);
     static SoPath* pickFilterCB(void* viewer, const SoPickedPoint* pp);
     void initialize();
+    void syncLightingMode();
+    void invalidateMainRenderActionState();
     void syncNaviCubeVisibility();
-    void drawAxisCross();
-    void drawSingleBackground(const QColor&);
+    bool updateAxisCrossGeometry();
     void recoverFromRenderMemoryException();
     void renderDelayedAnnotations(SoGLRenderAction* glra);
-    void renderGLActionScene(const QColor& backgroundColor, SoGLRenderAction* glra);
-    bool renderToFramebuffer(QOpenGLFramebufferObject*, bool includeViewerLighting = true);
+    void renderDelayedAnnotations(SoIRRenderAction* action);
+    bool renderToFramebuffer(
+        QOpenGLFramebufferObject*,
+        bool includeViewerLighting = true,
+        std::optional<QColor> backgroundOverride = std::nullopt
+    );
     void setCursorRepresentation(int mode);
-    void aboutToDestroyGLContext();
+    void destroyNaviCube();
     void createStandardCursors();
     bool applyCameraState(const SoCamera& camera);
 
 private:
     NaviCube* naviCube;
-    SoAnnotation* naviCubeAnnotation;
+    SoSeparator* naviCubeDecorationRoot;
     std::set<ViewProvider*> _ViewProviderSet;
     std::map<SoSeparator*, ViewProvider*> _ViewProviderMap;
     std::list<GLGraphicsItem*> graphicsItems;
@@ -651,9 +671,11 @@ private:
     SoFCBackgroundGradient* pcBackGround;
     SoSeparator* backgroundroot;
     SoSeparator* foregroundroot;
-    // Dedicated root for viewer-owned HUD/decorations that should not be
-    // treated as model content during capture/export traversals.
     SoSeparator* decorationroot;
+    SoSeparator* combinedForegroundRoot;
+    SoSwitch* decorationSwitch;
+    SoRenderLayerGroup* axisCrossOverlay {nullptr};
+    std::unique_ptr<OverlayAxisCrossState> axisCrossState;
 
     SoDirectionalLight* backlight;
     SoDirectionalLight* fillLight;
@@ -698,6 +720,8 @@ private:
     bool fpsEnabled;
     QLabel* fpsCounter = nullptr;
     unsigned long previousAxisLetterColor = 0;
+    SbColor axisCrossLetterColor {0.0F, 0.0F, 0.0F};
+    bool axisCrossLetterColorValid {false};
     bool vboEnabled;
     bool naviCubeEnabled;
     // Screen-only viewer decorations such as the navicube are rendered only
@@ -732,6 +756,62 @@ private:
     friend class NavigationStyle;
     friend class GLPainter;
     friend class ViewerEventFilter;
+};
+
+/** Destination to which a requested frame is rendered. */
+enum class RenderTargetKind
+{
+    LiveViewport,     ///< The viewer's live presentation target.
+    BoundFramebuffer  ///< A framebuffer already bound by the caller.
+};
+
+/** Reason the requested rendering pipeline was not used. */
+enum class RenderFallbackReason
+{
+    None,                        ///< No fallback was needed.
+    PipelineUnavailable,         ///< The requested pipeline is unavailable.
+    TargetUnsupported,           ///< The requested target cannot be used.
+    BackendInitializationFailed  ///< The requested backend failed to initialize.
+};
+
+/** Describes the target, intent, and optional policy overrides for one frame. */
+struct RenderFrameRequest
+{
+    /// Viewport region used for the frame traversal.
+    SbViewportRegion viewport;
+
+    /// Pipeline requested by the caller.
+    RenderPipeline requestedPipeline {RenderPipeline::LegacyGL};
+
+    /// Destination used for the frame.
+    RenderTargetKind target {RenderTargetKind::LiveViewport};
+
+    /// Semantic purpose of the traversal.
+    View3DInventorViewer::RenderIntent intent {View3DInventorViewer::RenderIntent::LiveInteractive};
+
+    /// Include viewer-owned lights in the main scene.
+    bool includeViewerLighting {true};
+    /// Include viewer-owned decorations in the frame.
+    bool includeDecorations {true};
+
+    /// Optional replacement for the viewer background.
+    std::optional<QColor> backgroundOverride;
+};
+
+/** Reports the effective result of a frame request. */
+struct RenderFrameResult
+{
+    /// Whether the frame was rendered successfully.
+    bool rendered {false};
+
+    /// Pipeline requested by the caller.
+    RenderPipeline requestedPipeline {RenderPipeline::LegacyGL};
+
+    /// Pipeline actually used for the frame.
+    RenderPipeline actualPipeline {RenderPipeline::LegacyGL};
+
+    /// Explanation when the active pipeline differs from the requested one.
+    RenderFallbackReason fallback {RenderFallbackReason::None};
 };
 
 }  // namespace Gui

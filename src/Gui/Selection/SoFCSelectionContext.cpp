@@ -28,6 +28,7 @@
 
 
 #include "SoFCSelectionContext.h"
+#include "Selection.h"
 #include "SoFCUnifiedSelection.h"
 
 

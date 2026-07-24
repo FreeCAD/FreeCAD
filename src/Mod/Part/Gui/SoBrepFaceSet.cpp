@@ -25,11 +25,14 @@
 #include <limits>
 #include <set>
 #include <vector>
+#include <QOpenGLContext>
+#include <QOpenGLFunctions>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/actions/SoIRRenderAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/elements/SoCoordinateElement.h>
@@ -53,6 +56,7 @@
 #include <Gui/Inventor/So3DAnnotation.h>
 
 #include "SoBrepFaceSet.h"
+#include "SoBrepSelectionIR.h"
 #include "ViewProviderExt.h"
 
 using namespace PartGui;
@@ -113,46 +117,6 @@ static void buildOverlayCoordIndex(
     }
 }
 
-static void renderOverlayFaces(
-    SoGLRenderAction* action,
-    SoIndexedFaceSet* faceSet,
-    const std::vector<int32_t>& coordIndex,
-    const SbColor& color,
-    bool onTop
-)
-{
-    if (!action || !faceSet || coordIndex.empty()) {
-        return;
-    }
-
-    auto state = action->getState();
-    state->push();
-
-    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-    SoTextureEnabledElement::set(state, faceSet, false);
-    SoMaterialBindingElement::set(state, SoMaterialBindingElement::OVERALL);
-    SoOverrideElement::setMaterialBindingOverride(state, faceSet, true);
-
-    if (onTop) {
-        SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
-        SoShapeStyleElement::setTransparencyType(state, SoGLRenderAction::BLEND);
-        SoLazyElement::setTransparencyType(state, SoGLRenderAction::BLEND);
-    }
-    else {
-        SoPolygonOffsetElement::set(state, faceSet, -0.00001f, -1.0f, SoPolygonOffsetElement::FILLED, TRUE);
-        SoDepthBufferElement::set(state, TRUE, FALSE, SoDepthBufferElement::LEQUAL, SbVec2f(0.0f, 1.0f));
-    }
-
-    SoLazyElement::setEmissive(state, &color);
-    const uint32_t packed = color.getPackedValue(0.0f);
-    SoLazyElement::setPacked(state, faceSet, 1, &packed, false);
-
-    faceSet->coordIndex.setValues(0, static_cast<int32_t>(coordIndex.size()), coordIndex.data());
-    faceSet->GLRender(action);
-
-    state->pop();
-}
-
 static void expandPartMaterialIndexToFaceMaterialIndex(
     std::vector<int32_t>& outFaceMaterialIndex,
     const int32_t* partTriCounts,
@@ -211,6 +175,54 @@ SoBrepFaceSet::~SoBrepFaceSet()
         overlayFaceSet->unref();
         overlayFaceSet = nullptr;
     }
+}
+
+void SoBrepFaceSet::renderOverlayFaces(
+    SoGLRenderAction* action,
+    const std::vector<int32_t>& coordIndex,
+    const SbColor& color,
+    bool onTop
+)
+{
+    if (!action || !overlayFaceSet || coordIndex.empty()) {
+        return;
+    }
+
+    auto state = action->getState();
+    state->push();
+
+    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
+    SoTextureEnabledElement::set(state, overlayFaceSet, false);
+    SoMaterialBindingElement::set(state, overlayFaceSet, SoMaterialBindingElement::OVERALL);
+    SoOverrideElement::setMaterialBindingOverride(state, overlayFaceSet, true);
+
+    if (onTop) {
+        SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
+        SoShapeStyleElement::setTransparencyType(state, SoGLRenderAction::BLEND);
+        SoLazyElement::setTransparencyType(state, SoGLRenderAction::BLEND);
+    }
+    else {
+        SoPolygonOffsetElement::set(
+            state,
+            overlayFaceSet,
+            -0.00001f,
+            -1.0f,
+            SoPolygonOffsetElement::FILLED,
+            TRUE
+        );
+        SoDepthBufferElement::set(state, TRUE, FALSE, SoDepthBufferElement::LEQUAL, SbVec2f(0.0f, 1.0f));
+    }
+
+    SoLazyElement::setEmissive(state, &color);
+    const uint32_t packed = color.getPackedValue(0.0f);
+    SoLazyElement::setPacked(state, overlayFaceSet, 1, &packed, false);
+
+    const int count = static_cast<int>(coordIndex.size());
+    overlayFaceSet->coordIndex.setNum(count);
+    overlayFaceSet->coordIndex.setValues(0, count, coordIndex.data());
+    overlayFaceSet->GLRender(action);
+
+    state->pop();
 }
 
 void SoBrepFaceSet::doAction(SoAction* action)
@@ -387,6 +399,74 @@ void SoBrepFaceSet::doAction(SoAction* action)
     inherited::doAction(action);
 }
 
+void SoBrepFaceSet::render(SoIRRenderAction* action)
+{
+    if (!action) {
+        return;
+    }
+
+    auto& drawlist = action->getMutableDrawList();
+    const int firstCommand = drawlist.getNumCommands();
+    inherited::render(action);
+
+    const int partCount = this->partIndex.getNum();
+    const int appendedCount = drawlist.getNumCommands() - firstCommand;
+    if (partCount <= 0 || appendedCount <= 0) {
+        return;
+    }
+
+    const int32_t* partCounts = this->partIndex.getValues(0);
+    std::vector<SoRenderElementRange> elementRanges;
+    elementRanges.reserve(partCount);
+
+    int vertexOffset = 0;
+    for (int i = 0; i < partCount; ++i) {
+        const int count = std::max(0, partCounts[i]) * 3;
+        if (count > 0) {
+            SoRenderElementRange range;
+            range.elementType = SO_PICK_FACE;
+            range.elementIndex = i;
+            range.drawStart = vertexOffset;
+            range.drawCount = count;
+            elementRanges.push_back(range);
+        }
+        vertexOffset += count;
+    }
+
+    if (vertexOffset <= 0) {
+        return;
+    }
+
+    if (appendedCount != 1) {
+        static bool warned = false;
+        if (!warned) {
+            warned = true;
+            SoDebugError::postWarning(
+                "SoBrepFaceSet::render",
+                "Draw-list traversal emitted %d commands for one SoBrepFaceSet; "
+                "per-face selection metadata expects exactly one triangle command",
+                appendedCount
+            );
+        }
+        return;
+    }
+
+    SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext(action, this, selContext);
+    auto& cmd = drawlist.getCommand(firstCommand);
+    if (cmd.geometry.topology != SO_TOPOLOGY_TRIANGLES) {
+        return;
+    }
+
+    cmd.pick.elementRanges = std::move(elementRanges);
+    auto containsPart = [partCount](int idx) {
+        return idx >= 0 && idx < partCount;
+    };
+
+    SelectionIR::applyPrimary(cmd, ctx, SelectionIR::getRootSelection(action), containsPart);
+    SelectionIR::applySelectionOverlay(cmd, selectionPartIndex, selectionColor.getValue(), containsPart);
+    SelectionIR::applyHighlightOverlay(cmd, highlightPartIndex, highlightColor.getValue(), containsPart);
+}
+
 void SoBrepFaceSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx)
 {
     if (!ctx || ctx->highlightIndex < 0) {
@@ -412,9 +492,9 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx)
     buildOverlayCoordIndex(overlayCoordIndex, ci, ciCount, partCounts, partCount, parts, selectAll);
 
     const bool onTop = Gui::Selection().isClarifySelectionActive()
-        && Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths;
+        && Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths(action->getState());
 
-    renderOverlayFaces(action, overlayFaceSet, overlayCoordIndex, ctx->highlightColor, onTop);
+    renderOverlayFaces(action, overlayCoordIndex, ctx->highlightColor, onTop);
 }
 
 void SoBrepFaceSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx, bool /*push*/)
@@ -431,7 +511,7 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx,
     if (ctx->isSelectAll()) {
         std::set<int> dummy;
         buildOverlayCoordIndex(overlayCoordIndex, ci, ciCount, partCounts, partCount, dummy, true);
-        renderOverlayFaces(action, overlayFaceSet, overlayCoordIndex, ctx->selectionColor, false);
+        renderOverlayFaces(action, overlayCoordIndex, ctx->selectionColor, false);
         return;
     }
 
@@ -447,7 +527,7 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx,
     }
 
     buildOverlayCoordIndex(overlayCoordIndex, ci, ciCount, partCounts, partCount, parts, false);
-    renderOverlayFaces(action, overlayFaceSet, overlayCoordIndex, ctx->selectionColor, false);
+    renderOverlayFaces(action, overlayCoordIndex, ctx->selectionColor, false);
 }
 
 bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction* action, SelContextPtr ctx, SelContextPtr ctx2)
@@ -675,9 +755,9 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction* action)
     SelContextPtr ctx2;
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext(this, selContext, ctx2);
     const bool hasSecondaryColors = ctx2 && !ctx2->colors.empty();
-    const bool hasOverlayFields = (highlightPartIndex.getNum() > 0)
+    const bool hasOverlayFieldData = (highlightPartIndex.getNum() > 0)
         || (selectionPartIndex.getNum() > 0);
-    if (!hasOverlayFields && ctx2 && ctx2->selectionIndex.empty() && !hasSecondaryColors) {
+    if (!hasOverlayFieldData && ctx2 && ctx2->selectionIndex.empty() && !hasSecondaryColors) {
         return;
     }
     if (selContext2->checkGlobal(ctx)) {
@@ -695,7 +775,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction* action)
 
     // Clarify selection: render highlight as delayed annotation on top.
     if (Gui::Selection().isClarifySelectionActive() && hasContextHighlight) {
-        if (!Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths) {
+        if (!Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths(state)) {
             if (viewProvider) {
                 viewProvider->setFaceHighlightActive(true);
             }
@@ -742,28 +822,46 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction* action)
     const int selNum = selectionPartIndex.getNum();
     const int hlNum = highlightPartIndex.getNum();
     if (selNum > 0 || hlNum > 0) {
+        QOpenGLFunctions* glFunctions = QOpenGLContext::currentContext()->functions();
         GLint oldDepthFunc = GL_LEQUAL;
-        glGetIntegerv(GL_DEPTH_FUNC, &oldDepthFunc);
+        glFunctions->glGetIntegerv(GL_DEPTH_FUNC, &oldDepthFunc);
         if (oldDepthFunc != GL_LEQUAL) {
-            glDepthFunc(GL_LEQUAL);
+            glFunctions->glDepthFunc(GL_LEQUAL);
         }
 
+        const int32_t* partCounts = this->partIndex.getValues(0);
+        const int partCount = this->partIndex.getNum();
+        const int32_t* ci = this->coordIndex.getValues(0);
+        const int ciCount = this->coordIndex.getNum();
+
         if (selNum > 0) {
-            SelContextPtr octx = std::make_shared<SelContext>();
-            octx->selectionColor = selectionColor.getValue();
+            std::set<int> parts;
+            bool selectAll = false;
             const int32_t* vals = selectionPartIndex.getValues(0);
             for (int i = 0; i < selNum; i++) {
-                octx->selectionIndex.insert(vals[i]);
+                if (vals[i] < 0) {
+                    selectAll = true;
+                    parts.clear();
+                    break;
+                }
+                if (vals[i] < partCount) {
+                    parts.insert(vals[i]);
+                }
             }
-            renderSelection(action, octx);
+            buildOverlayCoordIndex(overlayCoordIndex, ci, ciCount, partCounts, partCount, parts, selectAll);
+            renderOverlayFaces(action, overlayCoordIndex, selectionColor.getValue(), true);
         }
         if (hlNum > 0) {
+            std::set<int> parts;
             const int32_t* vals = highlightPartIndex.getValues(0);
             for (int i = 0; i < hlNum; i++) {
-                SelContextPtr octx = std::make_shared<SelContext>();
-                octx->highlightIndex = vals[i];
-                octx->highlightColor = highlightColor.getValue();
-                renderHighlight(action, octx);
+                if (vals[i] >= 0 && vals[i] < partCount) {
+                    parts.insert(vals[i]);
+                }
+            }
+            if (!parts.empty()) {
+                buildOverlayCoordIndex(overlayCoordIndex, ci, ciCount, partCounts, partCount, parts, false);
+                renderOverlayFaces(action, overlayCoordIndex, highlightColor.getValue(), true);
             }
         }
         // Keep live face preselection on top when it overlaps the explicit
@@ -773,7 +871,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction* action)
         }
 
         if (oldDepthFunc != GL_LEQUAL) {
-            glDepthFunc(oldDepthFunc);
+            glFunctions->glDepthFunc(oldDepthFunc);
         }
     }
 }

@@ -47,19 +47,19 @@
 #include <Inventor/SbBox.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/SoEventManager.h>
+#include <Inventor/SoRenderManager.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoIRRenderAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/annex/HardCopy/SoVectorizePSAction.h>
 #include <Inventor/annex/Profiler/SoProfiler.h>
 #include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
 #include <Inventor/details/SoDetail.h>
-#include <Inventor/elements/SoGLLazyElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
-#include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/events/SoEvent.h>
@@ -90,6 +90,7 @@
 #include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/nodes/SoTextureCoordinate2.h>
 #include <Inventor/nodes/SoVertexProperty.h>
+#include <Inventor/nodes/SoRenderLayerGroup.h>
 #include <QBitmap>
 #include <QElapsedTimer>
 #include <QEventLoop>
@@ -100,6 +101,7 @@
 #include <QKeyEvent>
 #include <QMessageBox>
 #include <QMimeData>
+#include <QOpenGLContext>
 #include <QOpenGLFramebufferObject>
 #include <QOpenGLWidget>
 #include <QScopeGuard>
@@ -138,7 +140,6 @@
 #include "Navigation/GestureNavigationStyle.h"
 #include "Navigation/SiemensNXNavigationStyle.h"
 #include "Selection.h"
-#include "SoDevicePixelRatioElement.h"
 #include "SoFCDB.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCOffscreenRenderer.h"
@@ -171,6 +172,37 @@ FC_LOG_LEVEL_INIT("3DViewer", true, true)
 
 using namespace Gui;
 
+namespace
+{
+bool renderIntentIncludesDecorations(View3DInventorViewer::RenderIntent intent)
+{
+    return intent == View3DInventorViewer::RenderIntent::LiveInteractive;
+}
+
+SoRenderManager::RenderPipeline toCoinRenderPipeline(RenderPipeline mode)
+{
+    switch (mode) {
+        case RenderPipeline::DrawList:
+            return SoRenderManager::RenderPipeline::DRAW_LIST;
+        case RenderPipeline::LegacyGL:
+        default:
+            return SoRenderManager::RenderPipeline::LEGACY_GL;
+    }
+}
+
+RenderPipeline fromCoinRenderPipeline(SoRenderManager::RenderPipeline mode)
+{
+    switch (mode) {
+        case SoRenderManager::RenderPipeline::DRAW_LIST:
+            return RenderPipeline::DrawList;
+        case SoRenderManager::RenderPipeline::LEGACY_GL:
+        default:
+            return RenderPipeline::LegacyGL;
+    }
+}
+
+}  // namespace
+
 class View3DInventorViewer::ScopedRenderIntent
 {
 public:
@@ -188,6 +220,109 @@ public:
 private:
     View3DInventorViewer& viewer;
 };
+
+RenderFrameResult View3DInventorViewer::renderFrame(const RenderFrameRequest& request)
+{
+    RenderFrameResult result;
+    result.requestedPipeline = request.requestedPipeline;
+
+    auto* renderManager = getSoRenderManager();
+    if (!renderManager) {
+        result.fallback = RenderFallbackReason::PipelineUnavailable;
+        return result;
+    }
+
+    result.actualPipeline = fromCoinRenderPipeline(renderManager->getRenderPipeline());
+
+    const SbVec2s size = request.viewport.getViewportSizePixels();
+    if (size[0] <= 0 || size[1] <= 0) {
+        result.fallback = RenderFallbackReason::TargetUnsupported;
+        return result;
+    }
+
+    // The live manager owns the selected pipeline and the capture path binds its FBO before
+    // entering here. Both targets therefore use the same manager traversal.
+    const SbViewportRegion previousViewport = renderManager->getViewportRegion();
+    renderManager->setViewportRegion(request.viewport);
+    auto restoreViewport = qScopeGuard([renderManager, previousViewport]() {
+        renderManager->setViewportRegion(previousViewport);
+    });
+
+    ScopedRenderIntent scopedIntent(*this, request.intent);
+
+    const bool includeDecorations = request.includeDecorations
+        && renderIntentIncludesDecorations(request.intent);
+    const int previousDecorationChild = decorationSwitch ? decorationSwitch->whichChild.getValue()
+                                                         : SO_SWITCH_NONE;
+    auto restoreDecorations = qScopeGuard([this, previousDecorationChild]() {
+        if (decorationSwitch) {
+            decorationSwitch->whichChild = previousDecorationChild;
+        }
+    });
+    updateDecorationSwitch(
+        includeDecorations ? RenderIntent::LiveInteractive : RenderIntent::RasterCapture
+    );
+    if (includeDecorations && axiscrossEnabled) {
+        updateAxisCrossGeometry();
+    }
+
+    const bool overrideBackground = request.backgroundOverride.has_value()
+        && request.backgroundOverride->isValid();
+    const QColor previousBackground = backgroundColor();
+    const Background previousGradient = getGradientBackground();
+    auto restoreBackground = qScopeGuard(
+        [this, overrideBackground, previousBackground, previousGradient]() {
+            if (overrideBackground) {
+                setBackgroundColor(previousBackground);
+                setGradientBackground(previousGradient);
+            }
+        }
+    );
+    if (overrideBackground) {
+        setBackgroundColor(*request.backgroundOverride);
+        setGradientBackground(Background::NoGradient);
+    }
+
+    // A capture without viewer lighting uses the selection root for the main traversal. Swap the
+    // manager's root directly so View3DInventorViewer::setSceneGraph() cannot add its backlight.
+    SoNode* previousScene = renderManager->getSceneGraph();
+    const bool temporaryScene = !request.includeViewerLighting && previousScene == viewerSceneRoot;
+    if (temporaryScene) {
+        renderManager->setSceneGraph(selectionRoot);
+    }
+    auto restoreScene = qScopeGuard([renderManager, previousScene, temporaryScene]() {
+        if (temporaryScene) {
+            renderManager->setSceneGraph(previousScene);
+        }
+    });
+
+    renderManager->setRenderPipeline(toCoinRenderPipeline(request.requestedPipeline));
+
+    const SbVec2s origin = request.viewport.getViewportOriginPixels();
+    glViewport(origin[0], origin[1], size[0], size[1]);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_LINE_SMOOTH);
+
+    const QColor color = backgroundColor();
+    glClearColor(float(color.redF()), float(color.greenF()), float(color.blueF()), 1.0F);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    if (auto* glra = renderManager->getGLRenderAction()) {
+        SoGLVBOActivatedElement::set(glra->getState(), vboEnabled);
+    }
+
+    inherited::actualRedraw();
+
+    result.actualPipeline = fromCoinRenderPipeline(renderManager->getRenderPipeline());
+    result.rendered = true;
+    if (result.actualPipeline != result.requestedPipeline) {
+        result.fallback = result.actualPipeline == RenderPipeline::LegacyGL
+                && renderManager->getRenderBackend() == nullptr
+            ? RenderFallbackReason::BackendInitializationFailed
+            : RenderFallbackReason::PipelineUnavailable;
+    }
+    return result;
+}
 
 namespace
 {
@@ -273,61 +408,12 @@ void setOverlayCacheContext(SoGLRenderAction& action, const View3DInventorViewer
     }
 }
 
-/**
- * Reset the main render action's lazy GL cache after overlay rendering.
- *
- * Overlay render actions share the viewer's OpenGL context, but keep their own
- * Coin lazy state. They can leave the real GL state different from what the
- * main render action has cached, so reset the cache and let the next traversal
- * resend the state through Coin instead of restoring individual GL flags here.
- */
-void resetMainLazyGLState(const View3DInventorViewer* viewer)
-{
-    if (!viewer || !viewer->getSoRenderManager()) {
-        return;
-    }
-
-    SoGLRenderAction* mainAction = viewer->getSoRenderManager()->getGLRenderAction();
-    if (!mainAction || !mainAction->getState()) {
-        return;
-    }
-
-    SoGLLazyElement::getInstance(mainAction->getState())
-        ->reset(mainAction->getState(), SoLazyElement::ALL_MASK);
-}
-
-SoSeparator* create2DOverlayRoot(int viewportWidth, int viewportHeight)
-{
-    auto* root = new SoSeparator;
-    root->ref();
-
-    auto* camera = new SoOrthographicCamera;
-    camera->aspectRatio.setValue(
-        static_cast<float>(viewportWidth) / static_cast<float>(viewportHeight)
-    );
-    camera->height.setValue(static_cast<float>(viewportHeight));
-    root->addChild(camera);
-
-    auto* depth = new SoDepthBuffer;
-    depth->test.setValue(false);
-    depth->write.setValue(false);
-    depth->function.setValue(SoDepthBuffer::ALWAYS);
-    root->addChild(depth);
-
-    auto* lightModel = new SoLightModel;
-    lightModel->model.setValue(SoLightModel::BASE_COLOR);
-    root->addChild(lightModel);
-
-    return root;
-}
-
 void applyOverlay(SoNode* root, int viewportWidth, int viewportHeight, const View3DInventorViewer* viewer)
 {
     SoGLRenderAction action(SbViewportRegion(viewportWidth, viewportHeight));
     setOverlayCacheContext(action, viewer);
     action.setTransparencyType(SoGLRenderAction::BLEND);
     action.apply(root);
-    resetMainLazyGLState(viewer);
 }
 
 struct OverlayImageState
@@ -451,39 +537,6 @@ void renderOverlayImage(
     applyOverlay(overlay.root, viewportWidth, viewportHeight, viewer);
 }
 
-void renderOverlaySolidColor(
-    const QColor& col,
-    int viewportWidth,
-    int viewportHeight,
-    const View3DInventorViewer* viewer
-)
-{
-    SoSeparator* root = create2DOverlayRoot(viewportWidth, viewportHeight);
-
-    auto* material = new SoMaterial;
-    material->diffuseColor.setValue(
-        static_cast<float>(col.redF()),
-        static_cast<float>(col.greenF()),
-        static_cast<float>(col.blueF())
-    );
-    material->transparency.setValue(1.0f - static_cast<float>(col.alphaF()));
-    root->addChild(material);
-
-    auto* vertices = new SoVertexProperty;
-    vertices->vertex.set1Value(0, SbVec3f(-0.5f * viewportWidth, -0.5f * viewportHeight, 0.0f));
-    vertices->vertex.set1Value(1, SbVec3f(0.5f * viewportWidth, -0.5f * viewportHeight, 0.0f));
-    vertices->vertex.set1Value(2, SbVec3f(0.5f * viewportWidth, 0.5f * viewportHeight, 0.0f));
-    vertices->vertex.set1Value(3, SbVec3f(-0.5f * viewportWidth, 0.5f * viewportHeight, 0.0f));
-
-    auto* face = new SoFaceSet;
-    face->vertexProperty.setValue(vertices);
-    face->numVertices.setValue(4);
-    root->addChild(face);
-
-    applyOverlay(root, viewportWidth, viewportHeight, viewer);
-    root->unref();
-}
-
 SoSeparator* createAxisArrowGeometry()
 {
     constexpr float shaftLength = 1.0f - 1.0f / 3.0f;
@@ -549,8 +602,12 @@ SoSeparator* createAxisArrowGeometry()
     return root;
 }
 
-struct OverlayAxisCrossState
+}  // namespace
+
+struct Gui::View3DInventorViewer::OverlayAxisCrossState
 {
+    SoSeparator* sceneRoot {nullptr};
+    SoSwitch* visibilitySwitch {nullptr};
     SoSeparator* axisRoot {nullptr};
     SoPerspectiveCamera* axisCamera {nullptr};
     SoDepthBuffer* axisDepth {nullptr};
@@ -591,11 +648,51 @@ struct OverlayAxisCrossState
     Letter yLetter;
     Letter zLetter;
 
+    SbRotation lastOrientation;
+    SbVec2s lastViewportSize;
+    int lastRelativeSize {0};
+    float lastDevicePixelRatio {0.0F};
+    SbColor lastXColor;
+    SbColor lastYColor;
+    SbColor lastZColor;
+    SbColor lastLetterColor;
+    std::array<SoNode*, 3> axisOrder {{nullptr, nullptr, nullptr}};
+    bool inputsValid {false};
+
+    ~OverlayAxisCrossState()
+    {
+        if (sceneRoot) {
+            sceneRoot->unref();
+        }
+        if (axisRoot) {
+            axisRoot->unref();
+        }
+        if (lettersRoot) {
+            lettersRoot->unref();
+        }
+        if (xAxis) {
+            xAxis->unref();
+        }
+        if (yAxis) {
+            yAxis->unref();
+        }
+        if (zAxis) {
+            zAxis->unref();
+        }
+    }
+
     void ensureCreated()
     {
         if (axisRoot) {
             return;
         }
+
+        sceneRoot = new SoSeparator;
+        sceneRoot->ref();
+
+        visibilitySwitch = new SoSwitch;
+        visibilitySwitch->whichChild = SO_SWITCH_NONE;
+        sceneRoot->addChild(visibilitySwitch);
 
         axisRoot = new SoSeparator;
         axisRoot->ref();
@@ -723,16 +820,11 @@ struct OverlayAxisCrossState
         lettersRoot->addChild(xLetter.root);
         lettersRoot->addChild(yLetter.root);
         lettersRoot->addChild(zLetter.root);
+
+        visibilitySwitch->addChild(axisRoot);
+        visibilitySwitch->addChild(lettersRoot);
     }
 };
-
-OverlayAxisCrossState& overlayAxisCrossState()
-{
-    static OverlayAxisCrossState state;
-    return state;
-}
-
-}  // namespace
 
 /*!
 As ProgressBar has no chance to control the incoming Qt events of Quarter so we need to stop
@@ -1104,9 +1196,20 @@ void View3DInventorViewer::init()
     this->decorationroot->ref();
     this->decorationroot->setName("decorationroot");
 
-    naviCubeAnnotation = new SoAnnotation();
-    naviCubeAnnotation->ref();
-    naviCubeAnnotation->setName("naviCubeAnnotation");
+    this->combinedForegroundRoot = new SoSeparator;
+    this->combinedForegroundRoot->ref();
+    this->combinedForegroundRoot->setName("combinedForegroundRoot");
+
+    this->decorationSwitch = new SoSwitch;
+    this->decorationSwitch->setName("decorationSwitch");
+    this->decorationSwitch->whichChild = SO_SWITCH_NONE;
+    this->decorationSwitch->addChild(this->decorationroot);
+    this->combinedForegroundRoot->addChild(this->foregroundroot);
+    this->combinedForegroundRoot->addChild(this->decorationSwitch);
+
+    naviCubeDecorationRoot = new SoSeparator();
+    naviCubeDecorationRoot->ref();
+    naviCubeDecorationRoot->setName("naviCubeDecorationRoot");
 
     auto decorationLightModel = new SoLightModel;
     decorationLightModel->model = SoLightModel::BASE_COLOR;
@@ -1135,7 +1238,20 @@ void View3DInventorViewer::init()
     this->decorationroot->addChild(cam);
     this->decorationroot->addChild(decorationLightModel);
     this->decorationroot->addChild(decorationBaseColor);
-    this->decorationroot->addChild(naviCubeAnnotation);
+    this->decorationroot->addChild(naviCubeDecorationRoot);
+
+    if (!this->axisCrossState) {
+        this->axisCrossState = std::make_unique<OverlayAxisCrossState>();
+    }
+    auto& axisCross = *this->axisCrossState;
+    axisCross.ensureCreated();
+    this->axisCrossOverlay = new SoRenderLayerGroup;
+    this->axisCrossOverlay->ref();
+    this->axisCrossOverlay->layer = SoRenderLayerGroup::FOREGROUND;
+    this->axisCrossOverlay->viewportOverride = TRUE;
+    this->axisCrossOverlay->addChild(axisCross.sceneRoot);
+    this->decorationroot->addChild(this->axisCrossOverlay);
+    axisCross.visibilitySwitch->whichChild = this->axiscrossEnabled ? SO_SWITCH_ALL : SO_SWITCH_NONE;
 
     auto threePointLightingSeparator = new SoTransformSeparator;
     threePointLightingSeparator->addChild(lightRotation);
@@ -1149,6 +1265,8 @@ void View3DInventorViewer::init()
     this->foregroundroot->addChild(foregroundLightModel);
     this->foregroundroot->addChild(foregroundBaseColor);
 
+    this->initializeRenderManager();
+    this->updateDecorationSwitch(currentRenderIntent());
     // NOTE: For every mouse click event the SoFCUnifiedSelection searches for the picked
     // point which causes a certain slow-down because for all objects the primitives
     // must be created. Using an SoSeparator avoids this drawback.
@@ -1194,7 +1312,6 @@ void View3DInventorViewer::init()
     pEventCallback->setUserData(this);
     pEventCallback->ref();
     pcViewProviderRoot->addChild(pEventCallback);
-    pEventCallback->addEventCallback(SoEvent::getClassTypeId(), handleEventCB, this);
 
     dimensionRoot = new SoSwitch(SO_SWITCH_NONE);
     dimensionRoot->setName("RootDimensions");
@@ -1320,9 +1437,7 @@ void View3DInventorViewer::init()
 
 View3DInventorViewer::~View3DInventorViewer()
 {
-    // to prevent following OpenGL error message: "Texture is not valid in the current context.
-    // Texture has not been destroyed"
-    aboutToDestroyGLContext();
+    destroyNaviCube();
 
     // It can happen that a document has several MDI views and when the about to be
     // closed 3D view is in edit mode the corresponding view provider must be restored
@@ -1333,19 +1448,33 @@ View3DInventorViewer::~View3DInventorViewer()
     }
 
     // cleanup
-    if (naviCubeAnnotation) {
-        naviCubeAnnotation->removeAllChildren();
+    if (naviCubeDecorationRoot) {
+        naviCubeDecorationRoot->removeAllChildren();
         if (this->decorationroot) {
-            this->decorationroot->removeChild(naviCubeAnnotation);
+            this->decorationroot->removeChild(naviCubeDecorationRoot);
         }
-        naviCubeAnnotation->unref();
-        naviCubeAnnotation = nullptr;
+        naviCubeDecorationRoot->unref();
+        naviCubeDecorationRoot = nullptr;
     }
 
+    if (auto* rm = this->getSoRenderManager()) {
+        rm->removeAfterMainSceneCallback(&View3DInventorViewer::afterMainSceneCB, this);
+        rm->setRenderLayerRoot(SoRenderManager::RENDER_LAYER_BACKGROUND, nullptr);
+        rm->setRenderLayerRoot(SoRenderManager::RENDER_LAYER_FOREGROUND, nullptr);
+    }
     this->backgroundroot->unref();
     this->backgroundroot = nullptr;
+    this->combinedForegroundRoot->unref();
+    this->combinedForegroundRoot = nullptr;
+    this->decorationSwitch = nullptr;
     this->foregroundroot->unref();
     this->foregroundroot = nullptr;
+    if (this->axisCrossOverlay) {
+        this->decorationroot->removeChild(this->axisCrossOverlay);
+        this->axisCrossOverlay->removeAllChildren();
+        this->axisCrossOverlay->unref();
+        this->axisCrossOverlay = nullptr;
+    }
     this->decorationroot->unref();
     this->decorationroot = nullptr;
     this->pcBackGround->unref();
@@ -1419,14 +1548,14 @@ void View3DInventorViewer::createStandardCursors()
     this->zoomCursor = QCursor(zoomPixmap, 8, 8);
 }
 
-void View3DInventorViewer::aboutToDestroyGLContext()
+void View3DInventorViewer::destroyNaviCube()
 {
     if (naviCube) {
         if (auto gl = qobject_cast<QOpenGLWidget*>(this->viewport())) {
             gl->makeCurrent();
         }
-        if (naviCubeAnnotation) {
-            naviCubeAnnotation->removeAllChildren();
+        if (naviCubeDecorationRoot) {
+            naviCubeDecorationRoot->removeAllChildren();
         }
         delete naviCube;
         naviCube = nullptr;
@@ -1518,6 +1647,9 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges& reason)
     else {
         SoFCSelectionAction selectionAction(Reason);
         selectionAction.apply(pcViewProviderRoot);
+    }
+    if (auto* rm = this->getSoRenderManager()) {
+        rm->invalidateScene();
     }
 }
 /// @endcond
@@ -1897,6 +2029,8 @@ void View3DInventorViewer::setOverrideMode(const std::string& mode)
         }
         this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
     }
+
+    syncLightingMode();
 }
 
 /// update override mode. doesn't affect providers
@@ -1920,6 +2054,7 @@ void View3DInventorViewer::updateOverrideMode(const std::string& mode)
         this->shading = true;
         this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
     }
+    syncLightingMode();
 }
 
 void View3DInventorViewer::setViewportCB(void* ud, SoAction* action)
@@ -1941,26 +2076,6 @@ void View3DInventorViewer::clearBufferCB(void* ud, SoAction* action)
         // do stuff specific for GL rendering here.
         glClear(GL_DEPTH_BUFFER_BIT);
     }
-}
-
-void View3DInventorViewer::setGLWidgetCB(void* userdata, SoAction* action)
-{
-    // FIXME: This causes the Coin error message:
-    //  Coin error in SoNode::GLRenderS(): GL error: 'GL_STACK_UNDERFLOW', nodetype:
-    //  Separator (set envvar COIN_GLERROR_DEBUGGING=1 and re-run to get more information)
-    if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
-        auto gl = static_cast<QWidget*>(userdata);
-        SoGLWidgetElement::set(action->getState(), qobject_cast<QOpenGLWidget*>(gl));
-    }
-}
-
-void View3DInventorViewer::handleEventCB(void* userdata, SoEventCallback* n)
-{
-    auto that = static_cast<View3DInventorViewer*>(userdata);
-    SoGLRenderAction* glra = that->getSoRenderManager()->getGLRenderAction();
-    SoAction* action = n->getAction();
-    SoGLRenderActionElement::set(action->getState(), glra);
-    SoGLWidgetElement::set(action->getState(), qobject_cast<QOpenGLWidget*>(that->getGLWidget()));
 }
 
 void View3DInventorViewer::setGradientBackground(View3DInventorViewer::Background grad)
@@ -2039,6 +2154,58 @@ bool View3DInventorViewer::isEnabledVBO() const
     return vboEnabled;
 }
 
+void View3DInventorViewer::initializeRenderManager()
+{
+    auto* rm = getSoRenderManager();
+    if (!rm) {
+        return;
+    }
+
+    rm->setRenderLayerRoot(SoRenderManager::RENDER_LAYER_BACKGROUND, backgroundroot);
+    rm->setRenderLayerRoot(SoRenderManager::RENDER_LAYER_FOREGROUND, combinedForegroundRoot);
+    rm->addAfterMainSceneCallback(&View3DInventorViewer::afterMainSceneCB, this);
+    rm->setLightingMode(shading ? SoRenderManager::LIT : SoRenderManager::UNLIT);
+    rm->setRenderPipeline(
+        toCoinRenderPipeline(parseRenderPipelineOrLegacy(ViewParams::instance()->getRenderPipeline()))
+    );
+}
+
+void View3DInventorViewer::updateDecorationSwitch(RenderIntent intent)
+{
+    if (!decorationSwitch) {
+        return;
+    }
+
+    const int desiredChild = renderIntentIncludesDecorations(intent) ? 0 : SO_SWITCH_NONE;
+    if (decorationSwitch->whichChild.getValue() != desiredChild) {
+        decorationSwitch->whichChild = desiredChild;
+    }
+}
+
+void View3DInventorViewer::syncLightingMode()
+{
+    if (auto* renderManager = this->getSoRenderManager()) {
+        renderManager->setLightingMode(shading ? SoRenderManager::LIT : SoRenderManager::UNLIT);
+    }
+}
+
+RenderPipeline View3DInventorViewer::getRenderPipeline() const
+{
+    if (auto* rm = this->getSoRenderManager()) {
+        return fromCoinRenderPipeline(rm->getRenderPipeline());
+    }
+    return RenderPipeline::LegacyGL;
+}
+
+void View3DInventorViewer::setRenderPipeline(RenderPipeline mode)
+{
+    auto* rm = this->getSoRenderManager();
+    if (!rm) {
+        return;
+    }
+
+    rm->setRenderPipeline(toCoinRenderPipeline(mode));
+}
 void View3DInventorViewer::setRenderCache(int mode)
 {
     static int canAutoCache = -1;
@@ -2116,26 +2283,21 @@ View3DInventorViewer::RenderIntent View3DInventorViewer::currentRenderIntent() c
     return renderIntentOverrideStack.back();
 }
 
-bool View3DInventorViewer::shouldRenderDecorations(RenderIntent intent)
-{
-    return intent == RenderIntent::LiveInteractive;
-}
-
 void View3DInventorViewer::syncNaviCubeVisibility()
 {
-    if (!naviCubeAnnotation) {
+    if (!naviCubeDecorationRoot) {
         return;
     }
 
-    naviCubeAnnotation->removeAllChildren();
+    naviCubeDecorationRoot->removeAllChildren();
     if (naviCubeEnabled && naviCube) {
         if (auto node = naviCube->getCoinNode()) {
-            naviCubeAnnotation->addChild(node);
+            naviCubeDecorationRoot->addChild(node);
         }
     }
 
     if (auto* rm = getSoRenderManager()) {
-        rm->scheduleRedraw();
+        rm->invalidateForeground();
     }
 }
 
@@ -2398,7 +2560,7 @@ void View3DInventorViewer::savePicture(
         useCoinOffscreenRenderer = true;
     }
 
-    const bool needsFreshRender = !shouldRenderDecorations(intent);
+    const bool needsFreshRender = !renderIntentIncludesDecorations(intent);
     // Intent takes precedence over the user's preferred capture backend.
     // grabFramebuffer() reads the already-rendered widget, so it cannot honor
     // capture-time decoration filtering.
@@ -2484,12 +2646,9 @@ void View3DInventorViewer::savePicture(
     root->addChild(getBacklight());
     root->addChild(getFillLight());
     root->addChild(camera);
-    auto gl = new SoCallback;
-    gl->setCallback(setGLWidgetCB, this->getGLWidget());
-    root->addChild(gl);
     root->addChild(pcViewProviderRoot);
     root->addChild(foregroundroot);
-    if (shouldRenderDecorations(intent)) {
+    if (renderIntentIncludesDecorations(intent)) {
         root->addChild(decorationroot);
     }
 
@@ -2888,8 +3047,26 @@ GLenum View3DInventorViewer::getInternalTextureFormat()
     // NOLINTEND
 }
 
+void View3DInventorViewer::renderPresentationItems()
+{
+    if (this->graphicsItems.empty()) {
+        return;
+    }
+
+    auto invalidateSharedGLState = qScopeGuard([this]() {
+        if (auto* manager = this->getSoRenderManager()) {
+            manager->invalidateSharedGLState();
+        }
+    });
+
+    for (auto* item : this->graphicsItems) {
+        item->paintGL();
+    }
+}
+
 void View3DInventorViewer::setRenderType(RenderType type)
 {
+    const RenderType previous = renderType;
     renderType = type;
 
     glImage = QImage();
@@ -2947,6 +3124,23 @@ void View3DInventorViewer::setRenderType(RenderType type)
             // renderOverlayImage() consumes OpenGL-oriented rows.
             glImage = flipVertically(grabFramebuffer());
             break;
+    }
+    // Image and framebuffer presentation use direct GL and/or a separate Coin action. Notify Coin
+    // when ownership returns to the retained main action, outside the active traversal and only
+    // when the owner actually changes.
+    if (previous != Native && type == Native) {
+        invalidateMainRenderActionState();
+    }
+}
+
+void View3DInventorViewer::invalidateMainRenderActionState()
+{
+    auto* manager = getSoRenderManager();
+    if (manager) {
+        // Coin tracks this transition for every action sharing the cache
+        // context, including temporary image/FBO actions.
+        // Full backend/owner tracking remains a separate Coin follow-up.
+        manager->invalidateSharedGLState();
     }
 }
 
@@ -3015,16 +3209,6 @@ QImage View3DInventorViewer::renderToImage(const RenderImageOptions& options)
     int alpha = maxAlpha;
     QColor opaqueBackground = options.background;
     const bool overrideBackground = opaqueBackground.isValid();
-    const QColor previousBackground = backgroundColor();
-    const Background previousGradient = getGradientBackground();
-    auto restoreBackground = qScopeGuard(
-        [this, overrideBackground, previousBackground, previousGradient]() {
-            if (overrideBackground) {
-                setBackgroundColor(previousBackground);
-                setGradientBackground(previousGradient);
-            }
-        }
-    );
 
     if (overrideBackground) {
         // force an opaque background color
@@ -3032,11 +3216,13 @@ QImage View3DInventorViewer::renderToImage(const RenderImageOptions& options)
         if (alpha < maxAlpha) {
             opaqueBackground.setRgb(maxAlpha, maxAlpha, maxAlpha);
         }
-        setBackgroundColor(opaqueBackground);
-        setGradientBackground(Background::NoGradient);
     }
 
-    if (!renderToFramebuffer(&fbo, options.includeViewerLighting)) {
+    if (!renderToFramebuffer(
+            &fbo,
+            options.includeViewerLighting,
+            overrideBackground ? std::optional<QColor>(opaqueBackground) : std::nullopt
+        )) {
         return {};
     }
     img = fbo.toImage();
@@ -3073,61 +3259,38 @@ QImage View3DInventorViewer::renderToImage(const RenderImageOptions& options)
     return img;
 }
 
-bool View3DInventorViewer::renderToFramebuffer(QOpenGLFramebufferObject* fbo, bool includeViewerLighting)
+bool View3DInventorViewer::renderToFramebuffer(
+    QOpenGLFramebufferObject* fbo,
+    bool includeViewerLighting,
+    std::optional<QColor> backgroundOverride
+)
 {
+    if (!fbo) {
+        return false;
+    }
+
     static_cast<QOpenGLWidget*>(this->viewport())->makeCurrent();  // NOLINT
     if (!fbo->bind()) {
         Base::Console().warning("renderToFramebuffer failed to bind the framebuffer\n");
         return false;
     }
+
+    // The capture shares the context with the live action. Notify Coin after the framebuffer is
+    // released so every action sharing the context resynchronizes.
+    auto invalidateMainAction = qScopeGuard([this]() { invalidateMainRenderActionState(); });
     auto releaseFramebuffer = qScopeGuard([fbo]() { fbo->release(); });
-    int width = fbo->size().width();
-    int height = fbo->size().height();
 
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_LINE_SMOOTH);
+    const QSize framebufferSize = fbo->size();
+    RenderFrameRequest request;
+    request.viewport = SbViewportRegion(framebufferSize.width(), framebufferSize.height());
+    request.requestedPipeline = getRenderPipeline();
+    request.target = RenderTargetKind::BoundFramebuffer;
+    request.intent = currentRenderIntent();
+    request.includeViewerLighting = includeViewerLighting;
+    request.includeDecorations = renderIntentIncludesDecorations(request.intent);
+    request.backgroundOverride = std::move(backgroundOverride);
 
-    const QColor col = this->backgroundColor();
-    glViewport(0, 0, width, height);
-    glClearColor(float(col.redF()), float(col.greenF()), float(col.blueF()), float(col.alphaF()));
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    SoBoxSelectionRenderAction gl(SbViewportRegion(width, height));
-    // When creating a new GL render action we have to copy over the cache context id
-    // For further details see init().
-    uint32_t id = this->getSoRenderManager()->getGLRenderAction()->getCacheContext();
-    gl.setCacheContext(id);
-    gl.setTransparencyType(SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND);
-
-    if (!this->shading) {
-        SoLightModelElement::set(gl.getState(), selectionRoot, SoLightModelElement::BASE_COLOR);
-        SoOverrideElement::setLightModelOverride(gl.getState(), selectionRoot, true);
-    }
-
-    gl.apply(this->backgroundroot);
-    // The render action of the render manager has set the depth function to GL_LESS
-    // while creating a new render action has it set to GL_LEQUAL. So, in order to get
-    // the exact same result set it explicitly to GL_LESS.
-    glDepthFunc(GL_LESS);
-    if (includeViewerLighting) {
-        gl.apply(this->getSoRenderManager()->getSceneGraph());
-    }
-    else {
-        gl.apply(this->getSoRenderManager()->getCamera());
-        SoNode* scene = this->getSceneGraph();
-        gl.apply(scene == this->viewerSceneRoot ? this->selectionRoot : scene);
-    }
-    renderDelayedAnnotations(&gl);
-    gl.apply(this->foregroundroot);
-    if (shouldRenderDecorations(currentRenderIntent())) {
-        gl.apply(this->decorationroot);
-    }
-
-    if (shouldRenderDecorations(currentRenderIntent()) && this->axiscrossEnabled) {
-        this->drawAxisCross();
-    }
-
-    return true;
+    return renderFrame(request).rendered;
 }
 
 void View3DInventorViewer::actualRedraw()
@@ -3181,10 +3344,7 @@ void View3DInventorViewer::renderFramebuffer()
     }
 
     printDimension();
-
-    for (auto it : this->graphicsItems) {
-        it->paintGL();
-    }
+    renderPresentationItems();
 }
 
 void View3DInventorViewer::renderGLImage()
@@ -3213,10 +3373,7 @@ void View3DInventorViewer::renderGLImage()
     );
 
     printDimension();
-
-    for (auto it : this->graphicsItems) {
-        it->paintGL();
-    }
+    renderPresentationItems();
 }
 
 void View3DInventorViewer::recoverFromRenderMemoryException()
@@ -3241,20 +3398,11 @@ void View3DInventorViewer::renderDelayedAnnotations(SoGLRenderAction* glra)
         return;
     }
 
-    class ScopedAnnotationRender
-    {
-    public:
-        ScopedAnnotationRender()
-        {
-            So3DAnnotation::render = true;
-        }
-
-        ~ScopedAnnotationRender()
-        {
-            So3DAnnotation::render = false;
-        }
-    } annotationRender;
-
+    const bool previous = Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths(state);
+    Gui::SoDelayedAnnotationsElement::setProcessingDelayedPaths(state, true);
+    auto restoreProcessing = qScopeGuard([state, previous]() {
+        Gui::SoDelayedAnnotationsElement::setProcessingDelayedPaths(state, previous);
+    });
     glClear(GL_DEPTH_BUFFER_BIT);
 
     if (Gui::Selection().isClarifySelectionActive()) {
@@ -3265,45 +3413,33 @@ void View3DInventorViewer::renderDelayedAnnotations(SoGLRenderAction* glra)
     }
 }
 
-void View3DInventorViewer::renderGLActionScene(const QColor& backgroundColor, SoGLRenderAction* glra)
+void View3DInventorViewer::renderDelayedAnnotations(SoIRRenderAction* action)
 {
-    SoState* state = glra->getState();
+    SoState* state = action->getState();
 
-    {
-        ZoneScopedN("Background");
-        SoDevicePixelRatioElement::set(state, devicePixelRatio());
-        SoGLWidgetElement::set(state, qobject_cast<QOpenGLWidget*>(this->getGLWidget()));
-        SoGLRenderActionElement::set(state, glra);
-        SoGLVBOActivatedElement::set(state, this->vboEnabled);
-        drawSingleBackground(backgroundColor);
-        glra->apply(this->backgroundroot);
+    if (!Gui::SoDelayedAnnotationsElement::hasDelayedPaths(state)) {
+        return;
     }
 
-    if (!this->shading) {
-        state->push();
-        SoLightModelElement::set(state, selectionRoot, SoLightModelElement::BASE_COLOR);
-        SoOverrideElement::setLightModelOverride(state, selectionRoot, true);
+    // switchToPathTraversal() appends the retained annotation commands without
+    // resetting the draw list, so they remain in Coin's pre-foreground
+    // checkpoint and survive foreground-only rebuilds.
+    Gui::SoDelayedAnnotationsElement::processDelayedPathsWithPriority(state, action);
+}
+
+void View3DInventorViewer::afterMainSceneCB(void* userdata, SoRenderManager* manager, SoAction* action)
+{
+    Q_UNUSED(manager);
+    if (!action) {
+        return;
     }
 
-    try {
-        // Render normal scenegraph.
-        inherited::actualRedraw();
-        renderDelayedAnnotations(glra);
+    auto* viewer = static_cast<View3DInventorViewer*>(userdata);
+    if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
+        viewer->renderDelayedAnnotations(static_cast<SoGLRenderAction*>(action));
     }
-    catch (const Base::MemoryException&) {
-        this->recoverFromRenderMemoryException();
-    }
-
-    if (!this->shading) {
-        state->pop();
-    }
-
-    {
-        ZoneScopedN("Foreground");
-        glra->apply(this->foregroundroot);
-        if (shouldRenderDecorations(currentRenderIntent())) {
-            glra->apply(this->decorationroot);
-        }
+    else if (action->isOfType(SoIRRenderAction::getClassTypeId())) {
+        viewer->renderDelayedAnnotations(static_cast<SoIRRenderAction*>(action));
     }
 }
 
@@ -3311,24 +3447,19 @@ void View3DInventorViewer::renderScene()
 {
     ZoneScoped;
 
-    // Must set up the OpenGL viewport manually, as upon resize
-    // operations, Coin won't set it up until the SoGLRenderAction is
-    // applied again. And since we need to do glClear() before applying
-    // the action..
-    const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
-    SbVec2s origin = vp.getViewportOriginPixels();
-    SbVec2s size = vp.getViewportSizePixels();
-    glViewport(origin[0], origin[1], size[0], size[1]);
+    const SbViewportRegion viewport = getSoRenderManager()->getViewportRegion();
+    RenderFrameRequest request;
+    request.viewport = viewport;
+    request.requestedPipeline = getRenderPipeline();
+    request.target = RenderTargetKind::LiveViewport;
+    request.intent = currentRenderIntent();
+    request.includeDecorations = renderIntentIncludesDecorations(request.intent);
 
-    const QColor col = this->backgroundColor();
-    glClearColor(float(col.redF()), float(col.greenF()), float(col.blueF()), 0.0F);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
-
-    this->renderGLActionScene(col, this->getSoRenderManager()->getGLRenderAction());
-
-    if (shouldRenderDecorations(currentRenderIntent()) && this->axiscrossEnabled) {
-        this->drawAxisCross();
+    try {
+        renderFrame(request);
+    }
+    catch (const Base::MemoryException&) {
+        this->recoverFromRenderMemoryException();
     }
 
     // Immediately reschedule to get continuous animation.
@@ -3336,14 +3467,12 @@ void View3DInventorViewer::renderScene()
         this->getSoRenderManager()->scheduleRedraw();
     }
 
-    if (shouldRenderDecorations(currentRenderIntent())) {
+    if (renderIntentIncludesDecorations(currentRenderIntent())) {
         printDimension();
 
         {
             ZoneScopedN("Graphics items");
-            for (auto it : this->graphicsItems) {
-                it->paintGL();
-            }
+            renderPresentationItems();
         }
     }
 
@@ -5008,6 +5137,17 @@ void View3DInventorViewer::setFeedbackVisibility(bool enable)
 
     this->axiscrossEnabled = enable;
 
+    if (!this->axisCrossState) {
+        this->axisCrossState = std::make_unique<OverlayAxisCrossState>();
+    }
+    auto& axisCross = *this->axisCrossState;
+    axisCross.ensureCreated();
+    axisCross.visibilitySwitch->whichChild = enable ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+
+    if (auto* renderManager = this->getSoRenderManager()) {
+        renderManager->invalidateForeground();
+    }
+
     if (this->isViewing()) {
         this->getSoRenderManager()->scheduleRedraw();
     }
@@ -5029,14 +5169,16 @@ bool View3DInventorViewer::isFeedbackVisible() const
 */
 void View3DInventorViewer::setFeedbackSize(int size)
 {
-    if (size < 1) {
+    if (size < 1 || size == this->axiscrossSize) {
         return;
     }
 
     this->axiscrossSize = size;
 
-    if (this->isFeedbackVisible() && this->isViewing()) {
-        this->getSoRenderManager()->scheduleRedraw();
+    if (this->isFeedbackVisible()) {
+        if (auto* renderManager = this->getSoRenderManager()) {
+            renderManager->scheduleRedraw();
+        }
     }
 }
 
@@ -5086,6 +5228,11 @@ unsigned char View3DInventorViewer::ZPM_pixel_data[ZPM_WIDTH * ZPM_HEIGHT * ZPM_
 void View3DInventorViewer::setAxisLetterColor(const SbColor& color)
 {
     unsigned packed = color.getPackedValue();
+    if (this->axisCrossLetterColorValid && this->axisCrossLetterColor == color) {
+        return;
+    }
+    this->axisCrossLetterColor = color;
+    this->axisCrossLetterColorValid = true;
 
     auto recolor = [&](const unsigned char* mask,
                        unsigned char* data,
@@ -5110,6 +5257,12 @@ void View3DInventorViewer::setAxisLetterColor(const SbColor& color)
     recolor(XPM_PIXEL_MASK, XPM_pixel_data, XPM_WIDTH, XPM_HEIGHT, XPM_BYTES_PER_PIXEL);
     recolor(YPM_PIXEL_MASK, YPM_pixel_data, YPM_WIDTH, YPM_HEIGHT, YPM_BYTES_PER_PIXEL);
     recolor(ZPM_PIXEL_MASK, ZPM_pixel_data, ZPM_WIDTH, ZPM_HEIGHT, ZPM_BYTES_PER_PIXEL);
+
+    if (this->isFeedbackVisible()) {
+        if (auto* renderManager = this->getSoRenderManager()) {
+            renderManager->scheduleRedraw();
+        }
+    }
 }
 
 void View3DInventorViewer::updateColors()
@@ -5125,36 +5278,67 @@ void View3DInventorViewer::updateColors()
 
     naviCube->updateColors();
 
-    if (hasAxisCross()) {
-        setAxisCross(false);  // Force redraw
-        setAxisCross(true);
+    if (auto* renderManager = this->getSoRenderManager()) {
+        renderManager->invalidateForeground();
     }
 }
 
-void View3DInventorViewer::drawAxisCross()
+bool View3DInventorViewer::updateAxisCrossGeometry()
 {
     const SbVec2s view = this->getSoRenderManager()->getSize();
     const int viewWidth = view[0];
     const int viewHeight = view[1];
     if (viewWidth <= 0 || viewHeight <= 0) {
-        return;
+        return false;
     }
 
     const int pixelarea = static_cast<int>(
         static_cast<float>(this->axiscrossSize) / 100.0F * std::min(viewWidth, viewHeight)
     );
     if (pixelarea <= 0) {
-        return;
+        return false;
     }
 
     const SbVec2s origin(viewWidth - pixelarea, 0);
+
+    SoCamera* cam = this->getSoRenderManager()->getCamera();
+    const SbRotation orientation = cam ? cam->orientation.getValue() : SbRotation::identity();
+    const float deviceScale = static_cast<float>(devicePixelRatio());
+    const SbColor xColor(m_xColor.r, m_xColor.g, m_xColor.b);
+    const SbColor yColor(m_yColor.r, m_yColor.g, m_yColor.b);
+    const SbColor zColor(m_zColor.r, m_zColor.g, m_zColor.b);
+
+    if (!this->axisCrossState) {
+        this->axisCrossState = std::make_unique<OverlayAxisCrossState>();
+    }
+    auto& overlay = *this->axisCrossState;
+    overlay.ensureCreated();
+    if (!overlay.visibilitySwitch || !overlay.axisRoot || !overlay.axisTransform || !overlay.axisGroup
+        || !overlay.lettersRoot || !overlay.lettersCamera || !this->axisCrossOverlay) {
+        return false;
+    }
+
+    const bool orientationChanged = !overlay.inputsValid || overlay.lastOrientation != orientation;
+    const bool viewportChanged = !overlay.inputsValid || overlay.lastViewportSize[0] != view[0]
+        || overlay.lastViewportSize[1] != view[1];
+    const bool sizeChanged = !overlay.inputsValid || overlay.lastRelativeSize != this->axiscrossSize;
+    const bool devicePixelRatioChanged = !overlay.inputsValid
+        || overlay.lastDevicePixelRatio != deviceScale;
+    const bool colorsChanged = !overlay.inputsValid || overlay.lastXColor != xColor
+        || overlay.lastYColor != yColor || overlay.lastZColor != zColor;
+    const bool letterColorChanged = !overlay.inputsValid
+        || overlay.lastLetterColor != this->axisCrossLetterColor;
+
+    if (!orientationChanged && !viewportChanged && !sizeChanged && !devicePixelRatioChanged
+        && !colorsChanged && !letterColorChanged) {
+        return false;
+    }
 
     constexpr float nearVal = 0.1f;
     constexpr float farVal = 10.0f;
     const float dim = nearVal * static_cast<float>(std::tan(std::numbers::pi / 8.0));
 
     SbMatrix model;
-    SoCamera* cam = this->getSoRenderManager()->getCamera();
     if (cam) {
         model = cam->orientation.getValue();
     }
@@ -5193,13 +5377,6 @@ void View3DInventorViewer::drawAxisCross()
     const SbVec3f yLetterProjected = projectLetterAnchor(SbVec3f(0, 1, 0));
     const SbVec3f zLetterProjected = projectLetterAnchor(SbVec3f(0, 0, 1));
 
-    auto& overlay = overlayAxisCrossState();
-    overlay.ensureCreated();
-    if (!overlay.axisRoot || !overlay.axisTransform || !overlay.axisGroup || !overlay.lettersRoot
-        || !overlay.lettersCamera) {
-        return;
-    }
-
     SbRotation inv;
     if (cam) {
         inv = cam->orientation.getValue().inverse();
@@ -5207,11 +5384,17 @@ void View3DInventorViewer::drawAxisCross()
     else {
         inv = SbRotation::identity();
     }
-    overlay.axisTransform->rotation.setValue(inv);
-    overlay.axisTransform->translation.setValue(0.0f, 0.0f, -3.5f);
-    overlay.xMaterial->diffuseColor.setValue(m_xColor.r, m_xColor.g, m_xColor.b);
-    overlay.yMaterial->diffuseColor.setValue(m_yColor.r, m_yColor.g, m_yColor.b);
-    overlay.zMaterial->diffuseColor.setValue(m_zColor.r, m_zColor.g, m_zColor.b);
+    if (orientationChanged) {
+        overlay.axisTransform->rotation.setValue(inv);
+    }
+    if (!overlay.inputsValid) {
+        overlay.axisTransform->translation.setValue(0.0f, 0.0f, -3.5f);
+    }
+    if (colorsChanged) {
+        overlay.xMaterial->diffuseColor.setValue(xColor);
+        overlay.yMaterial->diffuseColor.setValue(yColor);
+        overlay.zMaterial->diffuseColor.setValue(zColor);
+    }
 
     std::array<std::pair<float, SoNode*>, 3> axes = {
         std::pair<float, SoNode*> {xTipProjected[2], overlay.xAxis},
@@ -5221,16 +5404,26 @@ void View3DInventorViewer::drawAxisCross()
     std::sort(axes.begin(), axes.end(), [](const auto& a, const auto& b) {
         return a.first > b.first;
     });
-    overlay.axisGroup->removeAllChildren();
-    for (const auto& axis : axes) {
-        overlay.axisGroup->addChild(axis.second);
+    std::array<SoNode*, 3> desiredOrder {{axes[0].second, axes[1].second, axes[2].second}};
+    bool orderChanged = !overlay.inputsValid;
+    for (size_t i = 0; i < desiredOrder.size() && !orderChanged; ++i) {
+        orderChanged = overlay.axisOrder[i] != desiredOrder[i];
+    }
+    if (orderChanged) {
+        overlay.axisGroup->removeAllChildren();
+        for (SoNode* axis : desiredOrder) {
+            overlay.axisGroup->addChild(axis);
+        }
+        overlay.axisOrder = desiredOrder;
     }
 
     const float miniViewportSize = static_cast<float>(pixelarea);
     const float miniViewportCenter = miniViewportSize / 2.0f;
 
-    overlay.lettersCamera->aspectRatio.setValue(1.0f);
-    overlay.lettersCamera->height.setValue(miniViewportSize);
+    if (!overlay.inputsValid || viewportChanged || sizeChanged) {
+        overlay.lettersCamera->aspectRatio.setValue(1.0f);
+        overlay.lettersCamera->height.setValue(miniViewportSize);
+    }
 
     // Axis endpoints are projected into centered [-1, 1] coordinates. Convert
     // them into the square overlay viewport's local pixel space before mapping
@@ -5248,16 +5441,17 @@ void View3DInventorViewer::drawAxisCross()
     constexpr float letterHeightFraction = 0.07f;
     constexpr float minLetterHeight = 8.0f;
     constexpr float maxLetterHeight = 18.0f;
-    const float deviceScale = static_cast<float>(devicePixelRatio());
     const float targetLetterHeight = std::clamp(
         miniViewportSize * letterHeightFraction,
         minLetterHeight * deviceScale,
         maxLetterHeight * deviceScale
     );
     const float letterScale = targetLetterHeight / static_cast<float>(XPM_HEIGHT);
-    overlay.xLetter.scale->scaleFactor.setValue(letterScale, letterScale, 1.0f);
-    overlay.yLetter.scale->scaleFactor.setValue(letterScale, letterScale, 1.0f);
-    overlay.zLetter.scale->scaleFactor.setValue(letterScale, letterScale, 1.0f);
+    if (!overlay.inputsValid || viewportChanged || sizeChanged || devicePixelRatioChanged) {
+        overlay.xLetter.scale->scaleFactor.setValue(letterScale, letterScale, 1.0f);
+        overlay.yLetter.scale->scaleFactor.setValue(letterScale, letterScale, 1.0f);
+        overlay.zLetter.scale->scaleFactor.setValue(letterScale, letterScale, 1.0f);
+    }
 
     auto placeLetter = [letterScale, miniViewportCenter, toMiniViewportPixel](
                            OverlayAxisCrossState::Letter& letter,
@@ -5274,48 +5468,51 @@ void View3DInventorViewer::drawAxisCross()
         );
     };
 
-    placeLetter(overlay.xLetter, xLetterProjected);
-    placeLetter(overlay.yLetter, yLetterProjected);
-    placeLetter(overlay.zLetter, zLetterProjected);
-
-    overlay.xLetter.texture->image.setValue(SbVec2s(XPM_WIDTH, XPM_HEIGHT), 4, XPM_pixel_data);
-    overlay.yLetter.texture->image.setValue(SbVec2s(YPM_WIDTH, YPM_HEIGHT), 4, YPM_pixel_data);
-    overlay.zLetter.texture->image.setValue(SbVec2s(ZPM_WIDTH, ZPM_HEIGHT), 4, ZPM_pixel_data);
-
-    SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
-    vp.setViewportPixels(origin[0], origin[1], pixelarea, pixelarea);
-
-    {
-        SoGLRenderAction axisAction(vp);
-        setOverlayCacheContext(axisAction, this);
-        axisAction.setTransparencyType(SoGLRenderAction::BLEND);
-        axisAction.apply(overlay.axisRoot);
+    if (!overlay.inputsValid || orientationChanged || viewportChanged || sizeChanged
+        || devicePixelRatioChanged) {
+        placeLetter(overlay.xLetter, xLetterProjected);
+        placeLetter(overlay.yLetter, yLetterProjected);
+        placeLetter(overlay.zLetter, zLetterProjected);
     }
 
-    {
-        SoGLRenderAction letterAction(vp);
-        setOverlayCacheContext(letterAction, this);
-        letterAction.setTransparencyType(SoGLRenderAction::BLEND);
-        letterAction.apply(overlay.lettersRoot);
+    if (letterColorChanged) {
+        overlay.xLetter.texture->image.setValue(SbVec2s(XPM_WIDTH, XPM_HEIGHT), 4, XPM_pixel_data);
+        overlay.yLetter.texture->image.setValue(SbVec2s(YPM_WIDTH, YPM_HEIGHT), 4, YPM_pixel_data);
+        overlay.zLetter.texture->image.setValue(SbVec2s(ZPM_WIDTH, ZPM_HEIGHT), 4, ZPM_pixel_data);
     }
 
-    resetMainLazyGLState(this);
-}
-
-void View3DInventorViewer::drawSingleBackground(const QColor& col)
-{
-    // Note: After changing the NaviCube code the content of an image plane may appear black.
-    // A workaround is this function.
-    // See also: https://github.com/FreeCAD/FreeCAD/pull/9356#issuecomment-1529521654
-    const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
-    const SbVec2s size = vp.getViewportSizePixels();
-    const int viewportWidth = size[0];
-    const int viewportHeight = size[1];
-    if (viewportWidth <= 0 || viewportHeight <= 0) {
-        return;
+    if (!overlay.inputsValid || viewportChanged || sizeChanged) {
+        const SbVec4f rect(
+            static_cast<float>(origin[0]),
+            static_cast<float>(origin[1]),
+            static_cast<float>(pixelarea),
+            static_cast<float>(pixelarea)
+        );
+        const SbVec4f& current = this->axisCrossOverlay->viewportPixels.getValue();
+        if (current[0] != rect[0] || current[1] != rect[1] || current[2] != rect[2]
+            || current[3] != rect[3]) {
+            this->axisCrossOverlay->viewportPixels = rect;
+        }
+    }
+    if (!overlay.inputsValid) {
+        overlay.visibilitySwitch->whichChild = this->axiscrossEnabled ? SO_SWITCH_ALL
+                                                                      : SO_SWITCH_NONE;
     }
 
-    renderOverlaySolidColor(col, viewportWidth, viewportHeight, this);
+    overlay.lastOrientation = orientation;
+    overlay.lastViewportSize = view;
+    overlay.lastRelativeSize = this->axiscrossSize;
+    overlay.lastDevicePixelRatio = deviceScale;
+    overlay.lastXColor = xColor;
+    overlay.lastYColor = yColor;
+    overlay.lastZColor = zColor;
+    overlay.lastLetterColor = this->axisCrossLetterColor;
+    overlay.inputsValid = true;
+
+    if (auto* rm = this->getSoRenderManager()) {
+        rm->invalidateForeground();
+    }
+    return true;
 }
 
 // ************************************************************************

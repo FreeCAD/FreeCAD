@@ -25,6 +25,7 @@
 #include <Inventor/SbString.h>
 #include <Inventor/SoInteraction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoToVRML2Action.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/fields/SoMFNode.h>
@@ -60,7 +61,6 @@
 #include "Navigation/NavigationStyle.h"
 #include "Navigation/SiemensNXNavigationStyle.h"
 #include "SelectionObject.h"
-#include "SoDevicePixelRatioElement.h"
 #include "SoFCColorBar.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCSelection.h"
@@ -105,10 +105,7 @@ SbBool Gui::SoFCDB::isInitialized()
 void Gui::SoFCDB::init()
 {
     SoInteraction ::init();
-    SoDevicePixelRatioElement ::initClass();
-    SoGLRenderActionElement ::initClass();
     SoFCInteractiveElement ::initClass();
-    SoGLWidgetElement ::initClass();
     SoFCColorBar ::initClass();
     SoFCScreenSpaceGroup ::initClass();
     SoFCBackgroundGradient ::initClass();
@@ -118,7 +115,6 @@ void Gui::SoFCDB::init()
     SoFCPreselectionAction ::initClass();
     SoFCSelectionAction ::initClass();
     SoFCDocumentAction ::initClass();
-    SoGLWidgetNode ::initClass();
     SoGLVBOActivatedElement ::initClass();
     SoFCEnableSelectionAction ::initClass();
     SoFCEnablePreselectionAction ::initClass();

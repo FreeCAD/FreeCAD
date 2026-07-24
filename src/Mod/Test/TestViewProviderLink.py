@@ -111,6 +111,10 @@ def _save_active_view_png(
     out_path.parent.mkdir(parents=True, exist_ok=True)
     if hasattr(view, "setAxisCross"):
         view.setAxisCross(False)
+    if hasattr(view, "setEnabledNaviCube"):
+        view.setEnabledNaviCube(False)
+    if hasattr(view, "redraw"):
+        view.redraw()
     getattr(view, view_fn)()
     view.fitAll()
     view.saveImage(str(out_path), width, height, "White")
@@ -141,20 +145,28 @@ def _mean_rgb(path: Path, x: int, y: int, radius: int = 2) -> tuple[float, float
     return (r_total / count, g_total / count, b_total / count)
 
 
-def _pixel_bbox(path: Path, predicate):
+def _pixel_bbox(path: Path, predicate, region=None):
     from PySide.QtGui import QImage  # type: ignore
 
     img = QImage(str(path))
     if img.isNull():
         return None
 
-    min_x = img.width()
-    min_y = img.height()
+    if region is None:
+        region = (0, 0, img.width(), img.height())
+    start_x, start_y, end_x, end_y = region
+    start_x = max(0, start_x)
+    start_y = max(0, start_y)
+    end_x = min(img.width(), end_x)
+    end_y = min(img.height(), end_y)
+
+    min_x = end_x
+    min_y = end_y
     max_x = -1
     max_y = -1
 
-    for y in range(img.height()):
-        for x in range(img.width()):
+    for y in range(start_y, end_y):
+        for x in range(start_x, end_x):
             pixel = img.pixel(x, y)
             r = (pixel >> 16) & 0xFF
             g = (pixel >> 8) & 0xFF
@@ -366,7 +378,11 @@ class TestViewProviderLink(unittest.TestCase):
         self.FreeCADGui.updateGui()
 
         _save_active_view_png(view, override_path, width, height, view_fn="viewTop")
-        bbox = _pixel_bbox(override_path, lambda r, g, b: min(r, g, b) < 250)
+        bbox = _pixel_bbox(
+            override_path,
+            lambda r, g, b: min(r, g, b) < 250,
+            region=(width // 4, height // 4, width * 3 // 4, height * 3 // 4),
+        )
         self.assertIsNotNone(
             bbox, f"linked per-face colors did not render any visible pixels: {override_path}"
         )

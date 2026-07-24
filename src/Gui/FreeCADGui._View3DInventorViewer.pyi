@@ -118,6 +118,18 @@ class _View3DInventorViewer:
         """Set the viewer override rendering mode."""
         ...
 
+    def setRenderType(self, render_type: str, /) -> None:
+        """Set the viewer presentation type ('Native', 'Framebuffer', or 'Image')."""
+        ...
+
+    def setRenderPipeline(self, pipeline: str, /) -> None:
+        """Set the Coin rendering pipeline ('LegacyGL' or 'DrawList')."""
+        ...
+
+    def getRenderPipeline(self) -> str:
+        """Return the Coin rendering pipeline."""
+        ...
+
     def setEnabledNaviCube(self, enabled: bool, /) -> None:
         """Enable or disable the navigation cube."""
         ...

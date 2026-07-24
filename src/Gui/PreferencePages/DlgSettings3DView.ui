@@ -322,6 +322,49 @@ remember to report this setting as enabled when seeking support.</string>
        </widget>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="renderPipelineLayout">
+        <item>
+         <widget class="QLabel" name="renderPipelineLabel">
+          <property name="text">
+           <string>3D rendering pipeline</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="comboRenderPipeline">
+        <property name="toolTip">
+         <string>Select the Coin rendering pipeline for 3D views.</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>CoinRenderPipeline</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+        <property name="prefType" stdset="0">
+         <cstring>QByteArray</cstring>
+        </property>
+        <item>
+         <property name="text">
+          <string>Legacy OpenGL</string>
+         </property>
+         <property name="userData">
+          <string>LegacyGL</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Experimental draw-list renderer</string>
+         </property>
+         <property name="userData">
+          <string>DrawList</string>
+         </property>
+        </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QGridLayout" name="gridLayout">
         <item row="0" column="0">
          <widget class="QLabel" name="renderCacheLabel">

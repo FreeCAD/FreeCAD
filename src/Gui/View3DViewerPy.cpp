@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #include <Inventor/nodes/SoCamera.h>
+#include <cstring>
 #include <string>
 
 #include <Base/GeometryPyCXX.h>
@@ -169,6 +170,23 @@ void View3DInventorViewerPy::init_type()
         "setOverrideMode",
         &View3DInventorViewerPy::setOverrideMode,
         "setOverrideMode(mode): sets the display override mode."
+    );
+    add_varargs_method(
+        "setRenderType",
+        &View3DInventorViewerPy::setRenderType,
+        "setRenderType(type): selects the viewer presentation type ('Native', 'Framebuffer', or "
+        "'Image')."
+    );
+    add_varargs_method(
+        "setRenderPipeline",
+        &View3DInventorViewerPy::setRenderPipeline,
+        "setRenderPipeline(str): selects the Coin rendering pipeline for this viewer "
+        "('LegacyGL' or 'DrawList')."
+    );
+    add_varargs_method(
+        "getRenderPipeline",
+        &View3DInventorViewerPy::getRenderPipeline,
+        "getRenderPipeline() -> str: return the Coin rendering pipeline for this viewer."
     );
 
     add_varargs_method(
@@ -379,6 +397,55 @@ Py::Object View3DInventorViewerPy::setSceneGraph(const Py::Tuple& args)
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
     }
+}
+
+Py::Object View3DInventorViewerPy::setRenderType(const Py::Tuple& args)
+{
+    const char* type = nullptr;
+    if (!PyArg_ParseTuple(args.ptr(), "s", &type)) {
+        throw Py::Exception();
+    }
+
+    View3DInventorViewer::RenderType renderType;
+    if (strcmp(type, "Native") == 0) {
+        renderType = View3DInventorViewer::Native;
+    }
+    else if (strcmp(type, "Framebuffer") == 0) {
+        renderType = View3DInventorViewer::Framebuffer;
+    }
+    else if (strcmp(type, "Image") == 0) {
+        renderType = View3DInventorViewer::Image;
+    }
+    else {
+        throw Py::RuntimeError("render type must be 'Native', 'Framebuffer', or 'Image'");
+    }
+
+    _viewer->setRenderType(renderType);
+    return Py::None();
+}
+
+Py::Object View3DInventorViewerPy::setRenderPipeline(const Py::Tuple& args)
+{
+    const char* pipeline = nullptr;
+    if (!PyArg_ParseTuple(args.ptr(), "s", &pipeline)) {
+        throw Py::Exception();
+    }
+
+    const auto parsed = parseRenderPipeline(pipeline);
+    if (!parsed) {
+        throw Py::RuntimeError("render pipeline must be 'LegacyGL' or 'DrawList'");
+    }
+    _viewer->setRenderPipeline(*parsed);
+    return Py::None();
+}
+
+Py::Object View3DInventorViewerPy::getRenderPipeline(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
+        throw Py::Exception();
+    }
+
+    return Py::String(std::string(renderPipelineName(_viewer->getRenderPipeline())));
 }
 
 Py::Object View3DInventorViewerPy::getSoEventManager(const Py::Tuple& args)

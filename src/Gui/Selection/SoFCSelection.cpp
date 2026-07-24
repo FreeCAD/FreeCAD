@@ -42,6 +42,7 @@
 #include <Base/UnitsApi.h>
 
 #include "SoFCSelection.h"
+#include "Selection.h"
 #include "SelectionColors.h"
 #include "MainWindow.h"
 #include "SoFullPathHelper.h"

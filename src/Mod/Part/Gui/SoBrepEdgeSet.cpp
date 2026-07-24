@@ -29,6 +29,7 @@
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoIRRenderAction.h>
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoDepthBufferElement.h>
@@ -46,6 +47,7 @@
 #include <Gui/Selection/Selection.h>
 #include <Base/Color.h>
 #include "SoBrepEdgeSet.h"
+#include "SoBrepSelectionIR.h"
 #include "ViewProviderExt.h"
 
 #include <Gui/Inventor/So3DAnnotation.h>
@@ -59,6 +61,76 @@ struct SoBrepEdgeSet::SelContext: Gui::SoFCSelectionContextEx
 {
     std::vector<int32_t> hl, sl;
 };
+
+namespace
+{
+
+struct EdgeSectionRange
+{
+    int startOffset = 0;
+    int endOffset = 0;
+};
+
+std::vector<EdgeSectionRange> parseEdgeSectionRanges(const int32_t* indices, int numIndices)
+{
+    std::vector<EdgeSectionRange> sections;
+    if (!indices || numIndices <= 0) {
+        return sections;
+    }
+
+    int startOffset = 0;
+    for (int i = 0; i < numIndices; ++i) {
+        if (indices[i] < 0) {
+            sections.push_back(EdgeSectionRange {startOffset, i});
+            startOffset = i + 1;
+        }
+    }
+
+    if (startOffset < numIndices || indices[numIndices - 1] >= 0) {
+        sections.push_back(EdgeSectionRange {startOffset, numIndices});
+    }
+
+    return sections;
+}
+
+bool appendEdgeSections(
+    const std::vector<EdgeSectionRange>& sections,
+    const int32_t* coordIndices,
+    const int32_t* edgeIndices,
+    int numEdgeIndices,
+    std::vector<int32_t>& out
+)
+{
+    bool valid = true;
+    if (!coordIndices || !edgeIndices || numEdgeIndices <= 0) {
+        return valid;
+    }
+
+    for (int i = 0; i < numEdgeIndices; ++i) {
+        const int edgeIndex = edgeIndices[i];
+        if (edgeIndex < 0 || edgeIndex >= static_cast<int>(sections.size())) {
+            valid = false;
+            continue;
+        }
+        const auto& section = sections[edgeIndex];
+        out.insert(out.end(), coordIndices + section.startOffset, coordIndices + section.endOffset);
+        out.push_back(-1);
+    }
+
+    return valid;
+}
+
+bool commandHasElement(const SoRenderCommand& cmd, int elementIndex)
+{
+    for (const auto& range : cmd.pick.elementRanges) {
+        if (range.elementIndex == elementIndex) {
+            return true;
+        }
+    }
+    return false;
+}
+
+}  // namespace
 
 /// Controls how B-rep overlay primitives interact with the scene depth buffer.
 enum class OverlayDepthMode
@@ -265,11 +337,15 @@ SoBrepEdgeSet::SoBrepEdgeSet()
     , selContext2(std::make_shared<SelContext>())
 {
     SO_NODE_CONSTRUCTOR(SoBrepEdgeSet);
+    SO_NODE_ADD_FIELD(highlightEdgeIndex, (0));
+    SO_NODE_ADD_FIELD(selectionEdgeIndex, (0));
     SO_NODE_ADD_FIELD(highlightCoordIndex, (0));
     SO_NODE_ADD_FIELD(selectionCoordIndex, (0));
     SO_NODE_ADD_FIELD(highlightColor, (SbColor(1.0f, 0.0f, 0.0f)));
     SO_NODE_ADD_FIELD(selectionColor, (SbColor(0.0f, 0.6f, 0.0f)));
 
+    highlightEdgeIndex.setNum(0);
+    selectionEdgeIndex.setNum(0);
     highlightCoordIndex.setNum(0);
     selectionCoordIndex.setNum(0);
     overlayLineSet = new SoIndexedLineSet;
@@ -281,6 +357,80 @@ SoBrepEdgeSet::~SoBrepEdgeSet()
     if (overlayLineSet) {
         overlayLineSet->unref();
         overlayLineSet = nullptr;
+    }
+}
+
+void SoBrepEdgeSet::render(SoIRRenderAction* action)
+{
+    if (!action) {
+        return;
+    }
+
+    SelContextPtr ctx2;
+    SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext(action, this, selContext, ctx2);
+    if (ctx2 && ctx2->selectionIndex.empty() && ctx2->colors.empty()) {
+        return;
+    }
+
+    if (selContext2->checkGlobal(ctx)) {
+        if (selContext2->isSelectAll()) {
+            selContext2->sl.clear();
+            selContext2->sl.push_back(-1);
+        }
+        else if (ctx) {
+            selContext2->sl = ctx->sl;
+        }
+        if (selContext2->highlightIndex == std::numeric_limits<int>::max()) {
+            selContext2->hl.clear();
+            selContext2->hl.push_back(-1);
+        }
+        else if (ctx) {
+            selContext2->hl = ctx->hl;
+        }
+        ctx = selContext2;
+    }
+
+    auto& drawlist = action->getMutableDrawList();
+    const int firstCommand = drawlist.getNumCommands();
+    inherited::render(action);
+
+    const int appendedCount = drawlist.getNumCommands() - firstCommand;
+    if (appendedCount <= 0) {
+        return;
+    }
+
+    const bool hasOverlaySelection = selectionEdgeIndex.getNum() > 0;
+    const bool hasOverlayHighlight = highlightEdgeIndex.getNum() > 0;
+    const auto rootSelection = SelectionIR::getRootSelection(action);
+
+    for (int i = 0; i < appendedCount; ++i) {
+        auto& cmd = drawlist.getCommand(firstCommand + i);
+        if (cmd.geometry.topology != SO_TOPOLOGY_LINES
+            && cmd.geometry.topology != SO_TOPOLOGY_LINE_STRIP) {
+            continue;
+        }
+
+        auto containsEdge = [&cmd](int idx) {
+            return commandHasElement(cmd, idx);
+        };
+
+        SelectionIR::applyPrimary(cmd, ctx, rootSelection, containsEdge);
+        if (hasOverlaySelection) {
+            SelectionIR::applySelectionOverlay(
+                cmd,
+                selectionEdgeIndex,
+                selectionColor.getValue(),
+                containsEdge
+            );
+        }
+        if (hasOverlayHighlight) {
+            SelectionIR::applyHighlightOverlay(
+                cmd,
+                highlightEdgeIndex,
+                highlightColor.getValue(),
+                containsEdge
+            );
+        }
     }
 }
 
@@ -301,7 +451,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
     bool hasAnyHighlight = hasContextHighlight || hasFaceHighlight;
 
     if (Gui::Selection().isClarifySelectionActive()
-        && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths && hasAnyHighlight) {
+        && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths(state) && hasAnyHighlight) {
         // if we are using clarifyselection - add this to delayed paths with priority
         // as we want to get this rendered on top of everything
         if (viewProvider) {
@@ -398,7 +548,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
     }
     else if (
         Gui::Selection().isClarifySelectionActive()
-        && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths && hasAnyHighlight
+        && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths(state) && hasAnyHighlight
     ) {
         state->push();
         SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
@@ -425,27 +575,83 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
     // #endif
 
     // Optional overlay rendering for deterministic tests (and programmatic usage).
-    const int hlNum = highlightCoordIndex.getNum();
-    if (hlNum > 0) {
-        renderOverlayLines(
-            action,
-            overlayLineSet,
-            highlightCoordIndex.getValues(0),
-            hlNum,
-            highlightColor.getValue(),
-            OverlayDepthMode::DrawOnTop
-        );
+    const int hlEdgeNum = highlightEdgeIndex.getNum();
+    const int selEdgeNum = selectionEdgeIndex.getNum();
+    const int hlCoordNum = highlightCoordIndex.getNum();
+    const int selCoordNum = selectionCoordIndex.getNum();
+    if (hlEdgeNum > 0 || selEdgeNum > 0) {
+        const auto sections
+            = parseEdgeSectionRanges(this->coordIndex.getValues(0), this->coordIndex.getNum());
+
+        if (hlEdgeNum > 0) {
+            std::vector<int32_t> overlayIndices;
+            const bool valid = appendEdgeSections(
+                sections,
+                this->coordIndex.getValues(0),
+                highlightEdgeIndex.getValues(0),
+                hlEdgeNum,
+                overlayIndices
+            );
+            if (!valid) {
+                SoDebugError::postWarning("SoBrepEdgeSet::GLRender", "highlightEdgeIndex out of range");
+            }
+            if (!overlayIndices.empty()) {
+                renderOverlayLines(
+                    action,
+                    overlayLineSet,
+                    overlayIndices.data(),
+                    static_cast<int>(overlayIndices.size()),
+                    highlightColor.getValue(),
+                    OverlayDepthMode::DrawOnTop
+                );
+            }
+        }
+
+        if (selEdgeNum > 0) {
+            std::vector<int32_t> overlayIndices;
+            const bool valid = appendEdgeSections(
+                sections,
+                this->coordIndex.getValues(0),
+                selectionEdgeIndex.getValues(0),
+                selEdgeNum,
+                overlayIndices
+            );
+            if (!valid) {
+                SoDebugError::postWarning("SoBrepEdgeSet::GLRender", "selectionEdgeIndex out of range");
+            }
+            if (!overlayIndices.empty()) {
+                renderOverlayLines(
+                    action,
+                    overlayLineSet,
+                    overlayIndices.data(),
+                    static_cast<int>(overlayIndices.size()),
+                    selectionColor.getValue(),
+                    OverlayDepthMode::DrawOnTop
+                );
+            }
+        }
     }
-    const int selNum = selectionCoordIndex.getNum();
-    if (selNum > 0) {
-        renderOverlayLines(
-            action,
-            overlayLineSet,
-            selectionCoordIndex.getValues(0),
-            selNum,
-            selectionColor.getValue(),
-            OverlayDepthMode::DrawOnTop
-        );
+    else {
+        if (hlCoordNum > 0) {
+            renderOverlayLines(
+                action,
+                overlayLineSet,
+                highlightCoordIndex.getValues(0),
+                hlCoordNum,
+                highlightColor.getValue(),
+                OverlayDepthMode::DrawOnTop
+            );
+        }
+        if (selCoordNum > 0) {
+            renderOverlayLines(
+                action,
+                overlayLineSet,
+                selectionCoordIndex.getValues(0),
+                selCoordNum,
+                selectionColor.getValue(),
+                OverlayDepthMode::DrawOnTop
+            );
+        }
     }
 }
 
@@ -631,20 +837,12 @@ void SoBrepEdgeSet::doAction(SoAction* action)
         SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action, this, selContext);
         ctx->highlightColor = hlaction->getColor();
         int index = static_cast<const SoLineDetail*>(detail)->getLineIndex();
-        const int32_t* cindices = this->coordIndex.getValues(0);
-        int numcindices = this->coordIndex.getNum();
 
         ctx->hl.clear();
-        for (int section = 0, i = 0; i < numcindices; i++) {
-            if (cindices[i] < 0) {
-                if (++section > index) {
-                    break;
-                }
-            }
-            else if (section == index) {
-                ctx->hl.push_back(cindices[i]);
-            }
-        }
+        const auto sections
+            = parseEdgeSectionRanges(this->coordIndex.getValues(0), this->coordIndex.getNum());
+        const int32_t edgeIndex = index;
+        appendEdgeSections(sections, this->coordIndex.getValues(0), &edgeIndex, 1, ctx->hl);
         if (!ctx->hl.empty()) {
             ctx->highlightIndex = index;
         }
@@ -759,21 +957,22 @@ void SoBrepEdgeSet::doAction(SoAction* action)
                 }
                 ctx->sl.clear();
                 if (!ctx->selectionIndex.empty()) {
-                    const int32_t* cindices = this->coordIndex.getValues(0);
-                    int numcindices = this->coordIndex.getNum();
-                    auto it = ctx->selectionIndex.begin();
-                    for (int section = 0, i = 0; i < numcindices; i++) {
-                        if (section == *it) {
-                            ctx->sl.push_back(cindices[i]);
-                        }
-                        if (cindices[i] < 0) {
-                            if (++section > *it) {
-                                if (++it == ctx->selectionIndex.end()) {
-                                    break;
-                                }
-                            }
-                        }
+                    const auto sections = parseEdgeSectionRanges(
+                        this->coordIndex.getValues(0),
+                        this->coordIndex.getNum()
+                    );
+                    std::vector<int32_t> selectedEdges;
+                    selectedEdges.reserve(ctx->selectionIndex.size());
+                    for (int selected : ctx->selectionIndex) {
+                        selectedEdges.push_back(selected);
                     }
+                    appendEdgeSections(
+                        sections,
+                        this->coordIndex.getValues(0),
+                        selectedEdges.data(),
+                        static_cast<int>(selectedEdges.size()),
+                        ctx->sl
+                    );
                 }
                 touch();
                 break;
