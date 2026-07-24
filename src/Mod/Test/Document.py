@@ -650,6 +650,44 @@ class DocumentBasicCases(unittest.TestCase):
         self.assertIn("Test", self.Doc.Python.PropertiesList)
         self.assertIn("Test", self.Doc.Link.PropertiesList)
 
+    def testCopiedOwnedLinkKeepsPrivateCopyOnChangeGroup(self):
+        source = self.Doc.addObject("App::FeaturePython", "Source")
+        source.addProperty("App::PropertyInteger", "Config")
+        source.Config = 1
+        source.setPropertyStatus("Config", "CopyOnChange")
+
+        link = self.Doc.addObject("App::Link", "Link")
+        link.LinkedObject = source
+        link.LinkCopyOnChange = "Owned"
+        self.Doc.recompute()
+
+        copiedLink = self.Doc.copyObject(link, False)
+        self.Doc.recompute()
+
+        self.assertIs(link.LinkCopyOnChangeGroup, copiedLink.LinkCopyOnChangeGroup)
+        self.Doc.removeObject(copiedLink.Name)
+        self.Doc.recompute()
+
+        self.assertIsNotNone(link.LinkedObject)
+        self.assertEqual(link.LinkedObject.Config, 1)
+
+        copiedLink = self.Doc.copyObject(link, False)
+        self.Doc.recompute()
+
+        copiedLink.Config = 2
+        self.Doc.recompute()
+
+        self.assertIsNot(link.LinkedObject, copiedLink.LinkedObject)
+        self.assertIsNot(link.LinkCopyOnChangeGroup, copiedLink.LinkCopyOnChangeGroup)
+        self.assertEqual(link.LinkedObject.Config, 1)
+        self.assertEqual(copiedLink.LinkedObject.Config, 2)
+
+        self.Doc.removeObject(copiedLink.Name)
+        self.Doc.recompute()
+
+        self.assertIsNotNone(link.LinkedObject)
+        self.assertEqual(link.LinkedObject.Config, 1)
+
     def testNoProxy(self):
         test = self.Doc.addObject("App::DocumentObject", "Object")
         test.addProperty("App::PropertyPythonObject", "Dictionary")
