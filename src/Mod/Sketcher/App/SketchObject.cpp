@@ -31,8 +31,6 @@
 #include <TopoDS_Shape.hxx>
 
 #include <boost/geometry/geometries/register/point.hpp>
-#include <boost/iostreams/device/array.hpp>
-#include <boost/iostreams/stream.hpp>
 #include <boost/geometry.hpp>
 
 #include <App/Application.h>
@@ -56,6 +54,7 @@
 #include <Mod/Part/App/WireJoiner.h>
 
 #include <memory>
+#include <sstream>
 #include <string_view>
 
 #include "GeoEnum.h"
@@ -72,7 +71,6 @@
 using namespace Sketcher;
 using namespace Base;
 namespace sp = std::placeholders;
-namespace bio = boost::iostreams;
 
 FC_LOG_LEVEL_INIT("Sketch", true, true)
 
@@ -1980,7 +1978,7 @@ Data::IndexedName SketchObject::checkSubName(const char *subname) const
         return result;
     }
 
-    bio::stream<bio::array_source> iss(mappedSubname+1, std::strlen(mappedSubname+1));
+    std::istringstream iss(mappedSubname + 1);
     int id = -1;
     bool valid = false;
     switch (mappedSubname[0]) {
