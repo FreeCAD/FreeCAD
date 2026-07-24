@@ -1374,7 +1374,7 @@ void SketchObject::onSketchRestore()
         synchroniseGeometryState();
 
         // Orientations must be migrated after external refs
-        // are resolved because their underlying geometry might 
+        // are resolved because their underlying geometry might
         // get accessed
         migrateConstraintOrientations();
 
