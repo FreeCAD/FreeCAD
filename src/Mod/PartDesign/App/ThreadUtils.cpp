@@ -503,14 +503,42 @@ std::vector<std::string> ThreadUtils::getThreadDirectionEnums()
     return result;
 }
 
-// TODO: change getThreadDesignations to getThreadDiameters as it can be misleading
-std::vector<std::string> ThreadUtils::getThreadDesignations(const int threadType)
+// std::vector<std::string> ThreadUtils::getThreadDiameters(const int threadType)
+// {
+//     std::set<std::string> uniqueDiameters;  // set automaticamente remove duplicatas
+    
+//     for (const auto& thread : ThreadUtils::threadDescription[threadType]) {
+//         // Converter para string com precisão controlada para evitar variações
+//         std::string diameterStr = std::to_string(thread.diameter);
+//         uniqueDiameters.insert(diameterStr);
+//     }
+    
+//     // Converter o set para vector
+//     std::vector<std::string> designations(uniqueDiameters.begin(), uniqueDiameters.end());
+//     return designations;
+// }
+
+std::vector<std::string> ThreadUtils::getThreadDiameters(const int threadType)
 {
-    Base::Console().message("GETTING DIAMETER UPDATED");
-    std::vector<std::string> designations;
+    std::set<double> uniqueDiameters;  // Ordena numericamente
+    
     for (const auto& thread : ThreadUtils::threadDescription[threadType]) {
-        designations.push_back(std::to_string(thread.diameter));
+        uniqueDiameters.insert(thread.diameter);
     }
+    
+    std::vector<std::string> designations;
+    designations.reserve(uniqueDiameters.size());
+    
+    // for (double diameter : uniqueDiameters) {
+        // designations.push_back(std::to_string(diameter));
+    // }
+
+    for (double diameter : uniqueDiameters) {
+        std::ostringstream oss;
+        oss << std::noshowpoint << diameter << " mm";
+        designations.push_back(oss.str());
+    }
+    
     return designations;
 }
 
@@ -518,25 +546,63 @@ std::vector<std::string> ThreadUtils::getThreadPitches(const int threadType, con
 {
     std::vector<std::string> pitches;
 
-    double targetDiameter = ThreadUtils::threadDescription[threadType][threadDiameter].diameter;
+    std::vector<std::string> diameters = getThreadDiameters(threadType);
+    std::string targetDiameter = diameters[threadDiameter];
+    double targeDiameterDouble = std::stod(targetDiameter);
 
     // Debug: mostra o diâmetro alvo
-    Base::Console().message("Target diameter: %f\n", targetDiameter);
+    // Base::Console().message("Target diameter: %f\n", targetDiameter);
 
     // get all pitches from a selected diameter
     for (const auto& thread : ThreadUtils::threadDescription[threadType]) {
         // Debug: mostra cada diâmetro
-        Base::Console().message("Thread diameter: %f\n", thread.diameter);
+        // Base::Console().message("Thread diameter: %f\n", thread.diameter);
 
         // Usa comparação com tolerância para floats
-        if (std::abs(thread.diameter - targetDiameter) < 0.001) {
-            pitches.push_back(std::to_string(thread.pitch));
-            Base::Console().message("Match found! Pitch: %f\n", thread.pitch);
+        if (std::abs(thread.diameter - targeDiameterDouble) < 0.001) {
+            std::ostringstream oss;
+            oss << std::noshowpoint << thread.pitch << " mm";
+            pitches.push_back(oss.str());
+            // Base::Console().message("Match found! Pitch: %f\n", thread.pitch);
         }
     }
 
-    Base::Console().message("Total pitches found: %d\n", pitches.size());
+    // Base::Console().message("Total pitches found: %d\n", pitches.size());
     return pitches;
+}
+
+std::string ThreadUtils::getThreadDesignations(const int threadType, const int threadDiameter, const int threadPitch)
+{
+    // Base::Console().message("===getThreadDesignations===\n");
+    // Base::Console().message("threadType: %d\n", threadType);
+    // Base::Console().message("threadDiameter: %d\n", threadDiameter);
+    // Base::Console().message("threadPitch: %f\n", threadPitch);
+
+    // double targetDiameter = ThreadUtils::threadDescription[threadType][threadDiameter].diameter;
+    // Base::Console().message("targetDiameter: %f\n", targetDiameter);
+    std::vector<std::string> diameters = getThreadDiameters(threadType);
+    std::string targetDiameter = diameters[threadDiameter];
+    double targeDiameterDouble = std::stod(targetDiameter);
+
+    std::vector<std::string> pitches = ThreadUtils::getThreadPitches(threadType, threadDiameter);
+    std::string targetPitch = pitches[threadPitch];
+
+    // Base::Console().message("targetPitch: %s\n", targetPitch.c_str());
+
+    // Converter a string para double para comparar
+    double targetPitchDouble = std::stod(targetPitch);
+
+    for (const auto& thread : ThreadUtils::threadDescription[threadType]) {
+        if (std::abs(thread.diameter - targeDiameterDouble) < 0.001) {
+            // Comparação direta entre dois doubles
+            if (std::abs(thread.pitch - targetPitchDouble) < 0.001) {  // Usa tolerância
+                // Base::Console().message("thread designation: %s\n", thread.designation);
+                return thread.designation;
+            }
+        }
+    }
+
+    return "---";
 }
 
 enum class FaceType

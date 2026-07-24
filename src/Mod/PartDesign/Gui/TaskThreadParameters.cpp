@@ -58,6 +58,11 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     setThreadSelectionMode(SideFaceSel);
 
     ui->endTypeCombo->setCurrentIndex(pcThread->DepthType.getValue());
+    bool isDimension = std::string(pcThread->DepthType.getValueAsString()) == "Dimension";
+
+    ui->labelDepth->setHidden(!isDimension);
+    ui->Depth->setHidden(!isDimension);
+    ui->Depth->setValue(pcThread->Depth.getValue());
 
     // TODO: change hardcoded for enum loop
     // TODO: change ui->standardCombo for a better name
@@ -106,10 +111,18 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     }
     ui->directionCombo->setCurrentIndex(pcThread->ThreadDirection.getValue());
 
+    //TODO: only allow to be visible when it is modelled thread
     ui->customClearanceCheck->setChecked(pcThread->UseCustomThreadClearance.getValue());
+    ui->customClearanceField->setEnabled(ui->customClearanceCheck->isChecked());
+    ui->classCombo->setEnabled(!ui->customClearanceCheck->isChecked());
+    //TODO: constraint clearance value
+    ui->customClearanceField->setValue(pcThread->CustomThreadClearance.getValue());
 
     bool isModeled = pcThread->ModelThread.getValue();
     ui->modelledThreadRadio->setChecked(isModeled);
+
+    ui->designationEdit->setReadOnly(true);
+    ui->designationEdit->setText(pcThread->ThreadDesignation.getValue());
 
     connect(
         ui->standardCombo,
@@ -117,6 +130,9 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
         this,
         &TaskThreadParameters::threadTypeChanged
     );
+
+    connect(ui->Depth, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskThreadParameters::depthChanged);
 
     connect(
         ui->diameterCombo,
@@ -151,24 +167,24 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
 
     connect(ui->selectLateralFace, &QPushButton::toggled, [this](bool checked) {
         if (checked) {
-            Base::Console().message("então é lateral face\n");
+            // Base::Console().message("então é lateral face\n");
             // ui->selectLateralFace->setChecked(false); // Desliga o outro
             setThreadSelectionMode(SideFaceSel);
         }
         else if (currentSelectionMode == SideFaceSel) {
-            Base::Console().message("não é mais lateral face\n");
+            // Base::Console().message("não é mais lateral face\n");
             setThreadSelectionMode(None);
         }
     });
 
     connect(ui->selectStart, &QPushButton::toggled, [this](bool checked) {
         if (checked) {
-            Base::Console().message("então é start face\n");
+            // Base::Console().message("então é start face\n");
             // ui->selectStart->setChecked(false); // Desliga o outro
             setThreadSelectionMode(StartFaceSel);
         }
         else if (currentSelectionMode == StartFaceSel) {
-            Base::Console().message("não é mais start face\n");
+            // Base::Console().message("não é mais start face\n");
             // Base::Console().message("então é start face\n");
             setThreadSelectionMode(None);
         }
@@ -178,7 +194,7 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
         ui->endTypeCombo,
         qOverload<int>(&QComboBox::currentIndexChanged),
         this,
-        &TaskThreadParameters::depthChanged
+        &TaskThreadParameters::depthTypeChanged
     );
 
     connect(
@@ -187,6 +203,9 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
         this,
         &TaskThreadParameters::CustomClearanceCheckValuesChanged
     );
+
+    connect(ui->customClearanceField, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskThreadParameters::customThreadClearanceChanged);
 
     connect(
         ui->cosmeticThreadRadio,
@@ -208,12 +227,12 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     );
     // NOLINTEND
 
-    if (connectPropChanged.connected()) {
-        Base::Console().message("✅ signalChangePropertyEditor connected successfully!\n");
-    }
-    else {
-        Base::Console().error("❌ Failed to connect signalChangePropertyEditor!\n");
-    }
+    // if (connectPropChanged.connected()) {
+        // Base::Console().message("✅ signalChangePropertyEditor connected successfully!\n");
+    // }
+    // else {
+        // Base::Console().error("❌ Failed to connect signalChangePropertyEditor!\n");
+    // }
 
     // setupGizmos(DressUpView);
 
@@ -275,7 +294,7 @@ void TaskThreadParameters::setButtons(const PartDesignGui::TaskDressUpParameters
 
 void TaskThreadParameters::setThreadSelectionMode(threadSelectionModes mode)
 {
-    Base::Console().message("works!\n");
+    // Base::Console().message("works!\n");
     currentSelectionMode = mode;
 
     // Atualiza o estado visual dos botões
@@ -293,7 +312,7 @@ void TaskThreadParameters::setThreadSelectionMode(threadSelectionModes mode)
 
 void TaskThreadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    Base::Console().message("SELECTIONCHANGED\n");
+    // Base::Console().message("SELECTIONCHANGED\n");
 
     if (msg.Type != Gui::SelectionChanges::AddSelection) {
         return;
@@ -342,12 +361,12 @@ void TaskThreadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 void TaskThreadParameters::QLineEditSelected(const QString& text)
 {
-    Base::Console().message("SINAL RECEBIDO DE QLINEEDIT");
+    // Base::Console().message("SINAL RECEBIDO DE QLINEEDIT");
 }
 
 void TaskThreadParameters::threadTypeChanged(int index)
 {
-    Base::Console().message("ESTOU mudando TYPE\n");
+    // Base::Console().message("ESTOU mudando TYPE\n");
     if (index < 0) {
         return;
     }
@@ -362,7 +381,7 @@ void TaskThreadParameters::threadTypeChanged(int index)
 
     // now set the new type, this will reset the comboboxes to item 0
     pcThread->ThreadType.setValue(index);
-    Base::Console().message("MUDEI THREAD TYPE\n");
+    // Base::Console().message("MUDEI THREAD TYPE\n");
 
     // TODO: check a lot of new type consequences
 
@@ -416,13 +435,17 @@ void TaskThreadParameters::threadSizePitchChanged(int index)
     }
 }
 
-void TaskThreadParameters::depthChanged(int index)
+void TaskThreadParameters::depthTypeChanged(int index)
 {
     auto thread = getObject<PartDesign::Thread>();
     if (!thread) {
         return;
     }
     thread->DepthType.setValue(index);
+
+    bool isDimension = std::string(thread->DepthType.getValueAsString()) == "Dimension";
+    ui->labelDepth->setHidden(!isDimension);
+    ui->Depth->setHidden(!isDimension);
     recomputeFeature();
     // enabling must be handled after recompute
     // bool DepthisDimension = (std::string(hole->DepthType.getValueAsString()) == "Dimension");
@@ -432,6 +455,14 @@ void TaskThreadParameters::depthChanged(int index)
     // setCutDiagram();
 
     // setGizmoPositions();
+}
+
+void TaskThreadParameters::depthChanged(double value)
+{
+    if (auto thread = getObject<PartDesign::Thread>()) {
+        thread->Depth.setValue(value);
+        recomputeFeature();
+    }
 }
 
 void TaskThreadParameters::threadClassChanged(int index)
@@ -462,6 +493,8 @@ void TaskThreadParameters::CustomClearanceCheckValuesChanged()
 {
     if (auto thread = getObject<PartDesign::Thread>()) {
         thread->UseCustomThreadClearance.setValue(ui->customClearanceCheck->isChecked());
+        ui->customClearanceField->setEnabled(ui->customClearanceCheck->isChecked());
+        ui->classCombo->setEnabled(!ui->customClearanceCheck->isChecked());
 
         if (ui->customClearanceCheck->isChecked()) {
             // ui->HoleCutDiameter->setEnabled(true);
@@ -493,6 +526,14 @@ void TaskThreadParameters::threadModelChanged()
             thread->ModelThread.setValue(true);
             // hole->ThreadDirection.setValue(1L);
         }
+        recomputeFeature();
+    }
+}
+
+void TaskThreadParameters::customThreadClearanceChanged(double value)
+{
+    if (auto thread = getObject<PartDesign::Thread>()) {
+        thread->CustomThreadClearance.setValue(value);
         recomputeFeature();
     }
 }
@@ -570,6 +611,8 @@ void TaskThreadParameters::changedObject(const App::Document&, const App::Proper
             translatedClassTypes.push_back(tr(it.c_str()).toStdString());
         }
         updateComboBoxItems(ui->classCombo, translatedClassTypes, thread->ThreadClass.getValue());
+
+        ui->designationEdit->setText(thread->ThreadDesignation.getValue());
     }
     else if (&Prop == &thread->ThreadSize) {
         // ui->ThreadSize->setEnabled(true);
@@ -590,6 +633,13 @@ void TaskThreadParameters::changedObject(const App::Document&, const App::Proper
             thread->ThreadSizePitch.getEnumVector(),
             thread->ThreadSizePitch.getValue()
         );
+
+        ui->designationEdit->setText(thread->ThreadDesignation.getValue());
+
+    } else if (&Prop == &thread->ThreadSizePitch) {
+
+        ui->designationEdit->setText(thread->ThreadDesignation.getValue());
+
     }
     else if (&Prop == &thread->DepthType) {
         ui->endTypeCombo->setEnabled(true);

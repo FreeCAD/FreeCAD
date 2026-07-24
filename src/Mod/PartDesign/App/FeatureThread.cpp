@@ -24,7 +24,7 @@ Thread::Thread()
     ADD_PROPERTY_TYPE(ThreadDiameter, (0.0), "Thread", App::Prop_None, "Thread major diameter");
 
     ADD_PROPERTY_TYPE(ThreadSize, (0L), "Thread", App::Prop_None, "Thread size");
-    ThreadSize.setEnums(threadUtils.getThreadDesignations(ThreadType.getValue()));
+    ThreadSize.setEnums(threadUtils.getThreadDiameters(ThreadType.getValue()));
 
     ADD_PROPERTY_TYPE(ThreadSizePitch, (0L), "Thread", App::Prop_None, "Thread size");
     ThreadSizePitch.setEnums(
@@ -42,6 +42,12 @@ Thread::Thread()
 
     ADD_PROPERTY_TYPE(ThreadClass, (0L), "Thread", App::Prop_None, "Thread class");
     ThreadClass.setEnums(threadUtils.getThreadClass_None_Enums());
+
+    ADD_PROPERTY_TYPE(UseCustomThreadClearance, (false), "Thread", App::Prop_None, "Use custom thread clearance");
+
+    ADD_PROPERTY_TYPE(CustomThreadClearance, (0.0), "Thread", App::Prop_None, "Custom thread clearance (overrides ThreadClass)");
+
+    ADD_PROPERTY_TYPE(ThreadDesignation, ("---"), "Thread", App::Prop_None, "Name");
 }
 
 void Thread::updateDiameterParam()
@@ -58,10 +64,10 @@ void Thread::updateDiameterParam()
 
 App::DocumentObjectExecReturn* Thread::execute()
 {
-    Base::Console().message("THREAD EXECUTED\n");
+    // Base::Console().message("THREAD EXECUTED\n");
     // TODO: verify if this is needed for feature threading
     if (onlyHaveRefined()) {
-        Base::Console().message("THREAD ONLY REFINED\n");
+        // Base::Console().message("THREAD ONLY REFINED\n");
         return App::DocumentObject::StdReturn;
     }
 
@@ -214,7 +220,7 @@ void Thread::onChanged(const App::Property* prop)
 
         if (ThreadType.isValid()) {
             type = ThreadType.getValueAsString();
-            ThreadSize.setEnums(threadUtils.getThreadDesignations(ThreadType.getValue()));
+            ThreadSize.setEnums(threadUtils.getThreadDiameters(ThreadType.getValue()));
             // if (type != "None") {
             // findClosestDesignation();
             // }
@@ -277,12 +283,19 @@ void Thread::onChanged(const App::Property* prop)
             ThreadClass.setEnums(threadUtils.getThreadClass_None_Enums());
             // HoleCutType.setEnums(HoleCutType_None_Enums);
         }
+
+        ThreadDesignation.setValue(threadUtils.getThreadDesignations(ThreadType.getValue(), ThreadSize.getValue(), ThreadSizePitch.getValue()));
     }
     else if (prop == &ThreadSize) {
         // Base::Console().message("it was me!\n");
         ThreadSizePitch.setEnums(
             threadUtils.getThreadPitches(ThreadType.getValue(), ThreadSize.getValue())
         );
+
+        ThreadDesignation.setValue(threadUtils.getThreadDesignations(ThreadType.getValue(), ThreadSize.getValue(), ThreadSizePitch.getValue()));
+    } else if (prop == &ThreadSizePitch){
+
+        ThreadDesignation.setValue(threadUtils.getThreadDesignations(ThreadType.getValue(), ThreadSize.getValue(), ThreadSizePitch.getValue()));
     }
 
     DressUp::onChanged(prop);

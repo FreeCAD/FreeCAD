@@ -39,8 +39,10 @@ public:
     App::PropertyEnumeration DepthType;
     App::PropertyEnumeration ThreadDirection;
     App::PropertyEnumeration ThreadDepthType;
+    App::PropertyString ThreadDesignation;
 
     App::PropertyBool UseCustomThreadClearance;
+    App::PropertyLength CustomThreadClearance;
     App::PropertyBool ModelThread;
     App::PropertyBool CosmeticThread;
 

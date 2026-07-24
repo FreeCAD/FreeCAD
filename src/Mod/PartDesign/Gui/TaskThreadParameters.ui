@@ -129,6 +129,48 @@
         </widget>
       </item>
 
+      <item row="3" column="0">
+        <widget class="QLabel" name="labelDepth">
+            <property name="text">
+                <string>Depth</string>
+            </property>
+        </widget>
+     </item>
+
+     <item row="3" column="1">
+        <widget class="Gui::PrefQuantitySpinBox" name="Depth">
+            <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+
+            <property name="baseSize">
+                <size>
+                    <width>0</width>
+                    <height>0</height>
+                </size>
+            </property>
+
+            <property name="toolTip">
+                <string>Depth</string>
+            </property>
+
+            <property name="keyboardTracking">
+                <bool>false</bool>
+            </property>
+
+            <property name="unit" stdset="0">
+                <string notr="true">mm</string>
+            </property>
+
+            <property name="minimum" stdset="0">
+                <double>0.000000000000000</double>
+            </property>
+        </widget>
+     </item>
+
      </layout>
     </widget>
    </item>
@@ -202,13 +244,47 @@
        <widget class="QComboBox" name="classCombo"/>
       </item>
 
-      <item row="5" column="1">
+      <item row="5" column="0">
        <widget class="QCheckBox" name="customClearanceCheck">
         <property name="text">
          <string>Use custom clearance</string>
         </property>
        </widget>
       </item>
+
+      <item row="5" column="1">
+        <widget class="Gui::PrefQuantitySpinBox" name="customClearanceField">
+            <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+
+            <property name="baseSize">
+                <size>
+                    <width>0</width>
+                    <height>0</height>
+                </size>
+            </property>
+
+            <property name="toolTip">
+                <string>Clearance</string>
+            </property>
+
+            <property name="keyboardTracking">
+                <bool>false</bool>
+            </property>
+
+            <property name="unit" stdset="0">
+                <string notr="true">mm</string>
+            </property>
+
+            <property name="minimum" stdset="0">
+                <double>0.000000000000000</double>
+            </property>
+        </widget>
+     </item>
 
       <item row="6" column="0">
        <widget class="QLabel" name="labelDirection">
@@ -274,7 +350,34 @@
 
   </layout>
  </widget>
-
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QAbstractSpinBox</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefQuantitySpinBox</class>
+   <extends>Gui::QuantitySpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::ElideLabel</class>
+   <extends>QLabel</extends>
+   <header>Gui/ElideLabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::ElideCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/ElideCheckBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::FontScaledSVG</class>
+   <extends>QWidget</extends>
+   <header>Gui/FontScaledSVG.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
