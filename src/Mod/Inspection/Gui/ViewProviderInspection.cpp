@@ -23,9 +23,10 @@
  ***************************************************************************/
 
 
-#include <QApplication>
+#include <string>
+#include <vector>
+
 #include <QMenu>
-#include <QMessageBox>
 
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoRayPickAction.h>
@@ -44,11 +45,14 @@
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoPointSet.h>
 #include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/sensors/SoIdleSensor.h>
 
+#include <App/Annotation.h>
+#include <App/Document.h>
+#include <App/DocumentObjectGroup.h>
 #include <App/GeoFeature.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
-#include <Gui/Flag.h>
 #include <Gui/MainWindow.h>
 #include <Gui/SoFCColorBar.h>
 #include <Gui/SoFCColorBarNotifier.h>
@@ -491,63 +495,80 @@ void ViewProviderInspection::OnChange(Base::Subject<int>& /*rCaller*/, int /*rcR
 
 namespace InspectionGui
 {
-// Proxy class that receives an asynchronous custom event
-class ViewProviderProxyObject: public QObject
+class InspectionAnnotation
 {
 public:
-    explicit ViewProviderProxyObject(QWidget* w)
-        : QObject(nullptr)
-        , widget(w)
+    InspectionAnnotation(
+        Gui::ViewProviderDocumentObject* viewProvider,
+        const QString& text,
+        const SbVec3f& position,
+        const SbVec3f& normal
+    )
+        : viewProvider(viewProvider)
+        , text(text)
+        , position(position)
+        , normal(normal)
     {}
-    ~ViewProviderProxyObject() override = default;
-    void customEvent(QEvent*) override
-    {
-        if (!widget.isNull()) {
-            QList<Gui::Flag*> flags = widget->findChildren<Gui::Flag*>();
-            if (!flags.isEmpty()) {
-                int ret = QMessageBox::question(
-                    Gui::getMainWindow(),
-                    QObject::tr("Remove annotations"),
-                    QObject::tr("Do you want to remove all annotations?"),
-                    QMessageBox::Yes,
-                    QMessageBox::No
-                );
-                if (ret == QMessageBox::Yes) {
-                    for (auto it : flags) {
-                        it->deleteLater();
-                    }
-                }
-            }
-        }
 
-        this->deleteLater();
+    static void schedule(
+        Gui::ViewProviderDocumentObject* viewProvider,
+        const QString& text,
+        const SoPickedPoint* point
+    )
+    {
+        auto* annotation
+            = new InspectionAnnotation(viewProvider, text, point->getPoint(), point->getNormal());
+        auto* sensor = new SoIdleSensor(InspectionAnnotation::run, annotation);
+        sensor->schedule();
     }
 
-    static void addFlag(Gui::View3DInventorViewer* view, const QString& text, const SoPickedPoint* point)
+    static void run(void* data, SoSensor* sensor)
     {
-        Gui::Flag* flag = new Gui::Flag;
-        QPalette p;
-        p.setColor(QPalette::Window, QColor(85, 0, 127));
-        p.setColor(QPalette::Text, QColor(220, 220, 220));
-        flag->setPalette(p);
-        flag->setText(text);
-        flag->setOrigin(point->getPoint());
-        Gui::GLFlagWindow* flags = nullptr;
-        std::list<Gui::GLGraphicsItem*> glItems = view->getGraphicsItemsOfType(
-            Gui::GLFlagWindow::getClassTypeId()
+        auto* annotation = static_cast<InspectionAnnotation*>(data);
+        annotation->show();
+        delete annotation;
+        delete sensor;
+    }
+
+    void show() const
+    {
+        auto* document = viewProvider->getObject()->getDocument();
+        auto* guiDocument = Gui::Application::Instance->getDocument(document);
+        guiDocument->openCommand(QT_TRANSLATE_NOOP("Command", "Create inspection annotation"));
+
+        constexpr char groupName[] = "InspectionAnnotations";
+        auto groups = document->getObjectsOfType<App::DocumentObjectGroup>();
+        App::DocumentObjectGroup* group = nullptr;
+        for (const auto& candidate : groups) {
+            if (candidate->getNameInDocument() == groupName) {
+                group = candidate;
+                break;
+            }
+        }
+        if (!group) {
+            group = document->addObject<App::DocumentObjectGroup>(groupName);
+            group->Label.setValue("Inspection annotations");
+        }
+
+        auto* annotation = group->addObject<App::AnnotationLabel>("InspectionAnnotation");
+        std::vector<std::string> labelText;
+        for (const auto& line : text.split(QLatin1Char('\n'))) {
+            labelText.emplace_back(line.toUtf8().constData());
+        }
+        annotation->LabelText.setValues(labelText);
+        annotation->Label.setValue(
+            "Inspection annotation (" + std::to_string(group->Group.getSize()) + ')'
         );
-        if (glItems.empty()) {
-            flags = new Gui::GLFlagWindow(view);
-            view->addGraphicsItem(flags);
-        }
-        else {
-            flags = static_cast<Gui::GLFlagWindow*>(glItems.front());
-        }
-        flags->addFlag(flag, Gui::FlagLayout::BottomLeft);
+        annotation->BasePosition.setValue(position[0], position[1], position[2]);
+        annotation->TextPosition.setValue(normal[0], normal[1], normal[2]);
+        guiDocument->commitCommand();
     }
 
 private:
-    QPointer<QWidget> widget;
+    Gui::ViewProviderDocumentObject* viewProvider;
+    QString text;
+    SbVec3f position;
+    SbVec3f normal;
 };
 }  // namespace InspectionGui
 
@@ -575,12 +596,6 @@ void ViewProviderInspection::inspectCallback(void* ud, SoEventCallback* n)
                 addflag = fl->isChecked();
             }
             else if (cl == id) {
-                // post an event to a proxy object to make sure to avoid problems
-                // when opening a modal dialog
-                QApplication::postEvent(
-                    new ViewProviderProxyObject(view->getGLWidget()),
-                    new QEvent(QEvent::User)
-                );
                 view->setEditing(false);
                 view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
                 view->setRedirectToSceneGraph(false);
@@ -607,7 +622,7 @@ void ViewProviderInspection::inspectCallback(void* ud, SoEventCallback* n)
                 QString info = that->inspectDistance(point);
                 Gui::getMainWindow()->setPaneText(1, info);
                 if (addflag) {
-                    ViewProviderProxyObject::addFlag(view, info, point);
+                    InspectionAnnotation::schedule(that, info, point);
                 }
                 else {
                     Gui::ToolTip::showText(QCursor::pos(), info);
@@ -629,7 +644,7 @@ void ViewProviderInspection::inspectCallback(void* ud, SoEventCallback* n)
                         QString info = self->inspectDistance(point);
                         Gui::getMainWindow()->setPaneText(1, info);
                         if (addflag) {
-                            ViewProviderProxyObject::addFlag(view, info, point);
+                            InspectionAnnotation::schedule(self, info, point);
                         }
                         else {
                             Gui::ToolTip::showText(QCursor::pos(), info);
