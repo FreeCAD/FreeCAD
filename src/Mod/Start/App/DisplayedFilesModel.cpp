@@ -64,7 +64,9 @@ static bool freecadCanOpen(const QString& extension)
 
 DisplayedFilesModel::DisplayedFilesModel(QObject* parent)
     : QAbstractListModel(parent)
-{}
+{
+    qRegisterMetaType<FileStats>("FileStats");
+}
 
 
 int DisplayedFilesModel::rowCount(const QModelIndex& parent) const

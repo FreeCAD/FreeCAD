@@ -685,9 +685,9 @@ QVariant PropertyItem::dataPropertyName(int role) const
         return {};
     }
     if (role == Qt::ToolTipRole) {
-        QString type
-            = QStringLiteral("Type: %1\nName: %2")
-                  .arg(QString::fromLatin1(propertyItems[0]->getTypeId().getName()), objectName());
+        const auto name = propertyItems[0]->getTypeId().getName();
+        QString type = QStringLiteral("Type: %1\nName: %2")
+                           .arg(QString::fromLatin1(name.data(), name.size()), objectName());
 
         QString doc = PropertyItem::toolTip(propertyItems[0]).toString();
         if (doc.isEmpty()) {

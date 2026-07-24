@@ -1124,7 +1124,7 @@ QTreeWidgetItem* DlgPropertyLink::createTypeItem(Base::Type type)
         item = new QTreeWidgetItem(item);
     }
     item->setExpanded(true);
-    item->setText(0, QString::fromUtf8(type.getName()));
+    item->setText(0, QString::fromUtf8(type.getName().data(), type.getName().size()));
     if (type == App::DocumentObject::getClassTypeId()) {
         item->setFlags(Qt::ItemIsEnabled);
     }

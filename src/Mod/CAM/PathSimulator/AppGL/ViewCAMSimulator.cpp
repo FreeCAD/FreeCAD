@@ -332,7 +332,7 @@ ViewCAMSimulator& ViewCAMSimulator::instance(Gui::Document* doc)
         // therefore becoming a "passive" view. Messages where then also delivered to passive views
         // but that caused some issues in the Assembly workbench. See issue #29901.
 
-        auto old = viewCAMSimulator.get();
+        auto old = viewCAMSimulator.data();
 
         viewCAMSimulator = old->clone(doc);
         getMainWindow()->addWindow(viewCAMSimulator);
