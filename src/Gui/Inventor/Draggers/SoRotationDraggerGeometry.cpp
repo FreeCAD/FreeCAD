@@ -33,6 +33,7 @@
 #include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoLineSet.h>
 #include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSphere.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoTranslation.h>
@@ -219,6 +220,9 @@ SoRotatorArrow::SoRotatorArrow()
     SO_KIT_ADD_CATALOG_ENTRY(pickStyle, SoPickStyle, false, separator, "", false);
     SO_KIT_ADD_CATALOG_ENTRY(arrowBody, SoCylinder, false, separator, "", true);
     SO_KIT_ADD_CATALOG_ENTRY(arrowTip, SoCone, false, separator, "", true);
+    SO_KIT_ADD_CATALOG_ENTRY(pointSeparator, SoSeparator, false, separator, arrowBody, true);
+    SO_KIT_ADD_CATALOG_ENTRY(pointTransform, SoTransform, false, pointSeparator, "", true);
+    SO_KIT_ADD_CATALOG_ENTRY(point, SoSphere, false, pointSeparator, "", true);
 
     SO_KIT_ADD_CATALOG_ENTRY(_arrowTransform, SoTransform, false, separator, arrowBody, false);
     SO_KIT_ADD_CATALOG_ENTRY(_arrowBodyTranslation, SoTranslation, false, separator, arrowBody, false);
@@ -228,6 +232,7 @@ SoRotatorArrow::SoRotatorArrow()
     SO_KIT_ADD_FIELD(coneHeight, (2.5));
     SO_KIT_ADD_FIELD(cylinderHeight, (3.0));
     SO_KIT_ADD_FIELD(cylinderRadius, (0.2));
+    SO_KIT_ADD_FIELD(pointRadius, (0.0));
     SO_KIT_ADD_FIELD(radius, (8.0));
     SO_KIT_ADD_FIELD(minRadius, (8.0));
 
@@ -246,6 +251,9 @@ SoRotatorArrow::SoRotatorArrow()
     auto arrowTip = SO_GET_ANY_PART(this, "arrowTip", SoCone);
     arrowTip->height.connectFrom(&coneHeight);
     arrowTip->bottomRadius.connectFrom(&coneBottomRadius);
+
+    auto* point = SO_GET_ANY_PART(this, "point", SoSphere);
+    point->radius.connectFrom(&pointRadius);
 
     auto transform = SO_GET_ANY_PART(this, "_arrowTransform", SoTransform);
     transform->rotation = SbRotation({1, 0, 0}, std::numbers::pi)
@@ -279,6 +287,9 @@ void SoRotatorArrow::notify(SoNotList* notList)
             std::max(minRadius.getValue(), radius.getValue() / geometryScale.getValue()[1]),
             0
         );
+
+        auto* pointTransform = SO_GET_ANY_PART(this, "pointTransform", SoTransform);
+        pointTransform->translation = pivotPosition;
     }
 
     if (lastField == &coneHeight || lastField == &cylinderHeight) {
@@ -327,6 +338,9 @@ SoRotatorBase::SoRotatorBase()
     SO_KIT_ADD_FIELD(minArcRadius, (8.0));
     SO_KIT_ADD_FIELD(arcRadius, (8.0));
     SO_KIT_ADD_FIELD(arcThickness, (2.0));
+    SO_KIT_ADD_FIELD(startAngle, (0.0));
+    SO_KIT_ADD_FIELD(endAngle, (0.0));
+    SO_KIT_ADD_FIELD(useAngleRange, (false));
     SO_KIT_ADD_FIELD(color, (0.214, 0.560, 0.930));
 
     SO_KIT_INIT_INSTANCE();
@@ -359,21 +373,34 @@ void SoRotatorBase::notify(SoNotList* notList)
     SoField* lastField = notList->getLastField();
 
     if (lastField == &arcRadius || lastField == &minArcRadius || lastField == &rotation
-        || lastField == &geometryScale) {
+        || lastField == &geometryScale || lastField == &startAngle || lastField == &endAngle
+        || lastField == &useAngleRange) {
         SbVec3f axis;
-        float angle;
-        rotation.getValue(axis, angle);
+        float rotAngle;
+        rotation.getValue(axis, rotAngle);
+
+        float start = 0.0F;
+        float end = rotAngle;
+        if (useAngleRange.getValue()) {
+            start = startAngle.getValue();
+            end = endAngle.getValue();
+        }
+
+        const float sweep = end - start;
         float radius
             = std::max(minArcRadius.getValue() * geometryScale.getValue()[0], arcRadius.getValue());
 
         auto coordinates = SO_GET_ANY_PART(this, "arcCoords", SoCoordinate3);
-        float angleIncrement = angle / static_cast<float>(segments);
-        SbRotation rotation(axis, angleIncrement);
+        float angleIncrement = sweep / static_cast<float>(segments);
+        SbRotation startRotation(axis, start);
+        SbRotation stepRotation(axis, angleIncrement);
         SbVec3f point(0.0, radius, 0.0);
+        startRotation.multVec(point, point);
+
         coordinates->point.set1Value(0, {0.0, 0.0, 0.0});
         for (int index = 0; index <= segments; ++index) {
             coordinates->point.set1Value(index + 1, point);
-            rotation.multVec(point, point);
+            stepRotation.multVec(point, point);
         }
         coordinates->point.set1Value(segments + 2, {0.0, 0.0, 0.0});
     }

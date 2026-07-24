@@ -47,6 +47,8 @@ public:
     App::PropertyVector Axis;
     App::PropertyAngle Angle;
     App::PropertyAngle Angle2;
+    App::PropertyAngle StartAngle;
+    App::PropertyAngle StartAngle2;
 
     /** if this property is set to a valid link, both Axis and Base properties
      *  are calculated according to the linked line
@@ -68,7 +70,8 @@ public:
         ToLast = ThroughAll,
         ToFirst,
         ToFace,
-        TwoAngles
+        TwoAngles,
+        AngleFromOrigin
     };
 
 protected:
@@ -111,6 +114,8 @@ private:
         const gp_Ax1& ax1,
         double angle,
         double angle2,
+        double startAngle,
+        double startAngle2,
         bool midplane,
         bool reversed,
         RevolMethod method

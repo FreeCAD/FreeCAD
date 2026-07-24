@@ -130,6 +130,9 @@ class GuiExport SoRotatorArrow: public SoRotatorGeometryKit
     SO_KIT_CATALOG_ENTRY_HEADER(pickStyle);
     SO_KIT_CATALOG_ENTRY_HEADER(arrowBody);
     SO_KIT_CATALOG_ENTRY_HEADER(arrowTip);
+    SO_KIT_CATALOG_ENTRY_HEADER(pointSeparator);
+    SO_KIT_CATALOG_ENTRY_HEADER(pointTransform);
+    SO_KIT_CATALOG_ENTRY_HEADER(point);
 
     SO_KIT_CATALOG_ENTRY_HEADER(_arrowTransform);
     SO_KIT_CATALOG_ENTRY_HEADER(_arrowBodyTranslation);
@@ -143,6 +146,7 @@ public:
     SoSFFloat coneHeight;
     SoSFFloat cylinderHeight;
     SoSFFloat cylinderRadius;
+    SoSFFloat pointRadius;
     SoSFFloat radius;
     SoSFFloat minRadius;
 
@@ -196,6 +200,9 @@ public:
     SoSFFloat arcRadius;
     SoSFFloat minArcRadius;
     SoSFFloat arcThickness;
+    SoSFFloat startAngle;
+    SoSFFloat endAngle;
+    SoSFBool useAngleRange;
     SoSFColor color;
 
 protected:

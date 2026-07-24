@@ -25,6 +25,9 @@
 #include <QSignalBlocker>
 #include <QAction>
 
+#include <algorithm>
+#include <cmath>
+#include <limits>
 
 #include <App/Document.h>
 #include <Base/Tools.h>
@@ -48,6 +51,11 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskExtrudeParameters */
 
+namespace
+{
+constexpr double minimumLinearDistance = 1.0e-6;
+}  // namespace
+
 TaskExtrudeParameters::TaskExtrudeParameters(
     ViewProviderExtrude* SketchBasedView,
     QWidget* parent,
@@ -69,6 +77,58 @@ TaskExtrudeParameters::TaskExtrudeParameters(
     group->setExclusive(true);
 
     this->groupLayout()->addWidget(proxy);
+}
+
+bool TaskExtrudeParameters::isDimensionMode(Mode mode)
+{
+    return mode == Mode::Dimension || mode == Mode::DimensionFromOrigin;
+}
+
+bool TaskExtrudeParameters::isDimensionFromStartMode(Mode mode)
+{
+    return mode == Mode::Dimension;
+}
+
+TaskExtrudeParameters::Mode TaskExtrudeParameters::modeFromPropertyType(
+    const App::PropertyEnumeration& type
+)
+{
+    const std::string value = type.getValueAsString();
+    if (value == "LengthFromOrigin") {
+        return Mode::DimensionFromOrigin;
+    }
+    if (value == "ThroughAll" || value == "UpToLast") {
+        return Mode::ThroughAll;
+    }
+    if (value == "UpToFirst") {
+        return Mode::ToFirst;
+    }
+    if (value == "UpToFace") {
+        return Mode::ToFace;
+    }
+    if (value == "UpToShape") {
+        return Mode::ToShape;
+    }
+    return Mode::Dimension;
+}
+
+int TaskExtrudeParameters::propertyTypeIndexFromMode(Mode mode)
+{
+    switch (mode) {
+        case Mode::Dimension:
+            return 0;
+        case Mode::DimensionFromOrigin:
+            return 6;
+        case Mode::ThroughAll:
+            return 1;
+        case Mode::ToFirst:
+            return 2;
+        case Mode::ToFace:
+            return 3;
+        case Mode::ToShape:
+            return 5;
+    }
+    return 0;
 }
 
 void TaskExtrudeParameters::setupDialog()
@@ -130,13 +190,10 @@ void TaskExtrudeParameters::setupSideDialog(SideController& side)
     Base::Quantity length = side.Length->getQuantityValue();
     Base::Quantity offset = side.Offset->getQuantityValue();
     Base::Quantity taper = side.TaperAngle->getQuantityValue();
-    int typeIndex = side.Type->getValue();
     // The Type/Type2 properties are stuck with the deprecated 'TwoLength' mode.
     // Because enums do not store text just an index. So this create
     // a inconsistence between the UI and the property.
-    if (typeIndex > static_cast<int>(Mode::ToShape)) {
-        typeIndex--;
-    }
+    int typeIndex = static_cast<int>(modeFromPropertyType(*side.Type));
 
     // --- Set up UI widgets with initial values ---
     side.lengthEdit->setValue(length);
@@ -264,6 +321,7 @@ void TaskExtrudeParameters::readValuesFromHistory()
     ui->taperEdit->selectNumber();
     ui->taperEdit2->setToLastUsedValue();
     ui->taperEdit2->selectNumber();
+    syncDimensionLimits();
 }
 
 void TaskExtrudeParameters::connectSlots()
@@ -636,14 +694,168 @@ std::vector<std::string> PartDesignGui::TaskExtrudeParameters::getShapeFaces(
 
 void TaskExtrudeParameters::onLengthChanged(double len, Side side)
 {
-    getSideController(side).Length->setValue(len);
+    auto& sideController = getSideController(side);
+    sideController.Length->setValue(len);
+    syncDimensionLimits();
     tryRecomputeFeature();
+    setGizmoPositions();
 }
 
 void TaskExtrudeParameters::onOffsetChanged(double len, Side side)
 {
-    getSideController(side).Offset->setValue(len);
+    auto& sideController = getSideController(side);
+    sideController.Offset->setValue(len);
+    syncDimensionLimits();
     tryRecomputeFeature();
+    setGizmoPositions();
+}
+
+bool TaskExtrudeParameters::sideUsesDimension(Side side) const
+{
+    const auto& sideController = side == Side::First ? m_side1 : m_side2;
+    return isDimensionMode(modeFromPropertyType(*sideController.Type));
+}
+
+bool TaskExtrudeParameters::sideUsesDistanceFromStart(Side side) const
+{
+    const auto& sideController = side == Side::First ? m_side1 : m_side2;
+    return isDimensionFromStartMode(modeFromPropertyType(*sideController.Type));
+}
+
+double TaskExtrudeParameters::sideEndPosition(const SideController& side) const
+{
+    const double start = side.offsetEdit->value().getValue();
+    const double distance = side.lengthEdit->value().getValue();
+    return isDimensionFromStartMode(modeFromPropertyType(*side.Type)) ? start + distance : distance;
+}
+
+double TaskExtrudeParameters::sideSpan(const SideController& side) const
+{
+    return std::abs(sideEndPosition(side) - side.offsetEdit->value().getValue());
+}
+
+void TaskExtrudeParameters::syncDimensionLimits()
+{
+    auto syncSide = [this](
+                        SideController& side,
+                        bool dimensionMode,
+                        bool distanceFromStart,
+                        double rangeMinimum,
+                        bool forceNonZeroDistance
+                    ) {
+        QSignalBlocker startBlock(side.offsetEdit);
+        QSignalBlocker distanceBlock(side.lengthEdit);
+
+        const double startPropertyMinimum = side.Offset->getMinimum();
+        const double startPropertyMaximum = side.Offset->getMaximum();
+        const double distancePropertyMinimum = side.Length->getConstraints()
+            ? side.Length->getMinimum()
+            : -std::numeric_limits<double>::max();
+        const double distancePropertyMaximum = side.Length->getMaximum();
+
+        side.offsetEdit->setMinimum(startPropertyMinimum);
+        side.offsetEdit->setMaximum(startPropertyMaximum);
+        side.lengthEdit->setMinimum(distancePropertyMinimum);
+        side.lengthEdit->setMaximum(distancePropertyMaximum);
+
+        if (!dimensionMode) {
+            return;
+        }
+
+        const double coordinateMaximum = std::min(startPropertyMaximum, distancePropertyMaximum);
+        const double coordinateMinimum
+            = std::min(coordinateMaximum, std::max(rangeMinimum, startPropertyMinimum));
+
+        double start
+            = std::clamp(side.offsetEdit->value().getValue(), coordinateMinimum, startPropertyMaximum);
+        double distance = side.lengthEdit->value().getValue();
+        double end = distanceFromStart ? start + distance : distance;
+
+        if (distanceFromStart) {
+            const double distanceMinimum = std::max(distancePropertyMinimum, coordinateMinimum - start);
+            const double distanceMaximum = std::min(distancePropertyMaximum, coordinateMaximum - start);
+            distance = std::clamp(distance, distanceMinimum, distanceMaximum);
+            end = start + distance;
+        }
+        else {
+            end = std::clamp(end, coordinateMinimum, coordinateMaximum);
+            distance = end;
+        }
+
+        if (forceNonZeroDistance && std::fabs(end - start) < minimumLinearDistance) {
+            double adjustedEnd = start + minimumLinearDistance;
+            if (adjustedEnd > coordinateMaximum) {
+                adjustedEnd = start - minimumLinearDistance;
+            }
+            end = std::clamp(adjustedEnd, coordinateMinimum, coordinateMaximum);
+            distance = distanceFromStart ? end - start : end;
+        }
+
+        side.offsetEdit->setValue(start);
+        side.lengthEdit->setValue(distance);
+        side.Offset->setValue(start);
+        side.Length->setValue(distance);
+
+        if (distanceFromStart) {
+            const double distanceMinimum = std::max(distancePropertyMinimum, coordinateMinimum - start);
+            const double distanceMaximum = std::min(distancePropertyMaximum, coordinateMaximum - start);
+            const double startMinimum = std::max(coordinateMinimum, coordinateMinimum - distance);
+            const double startMaximum = std::min(startPropertyMaximum, coordinateMaximum - distance);
+
+            side.offsetEdit->setMinimum(std::min(startMinimum, startMaximum));
+            side.offsetEdit->setMaximum(std::max(startMinimum, startMaximum));
+            side.lengthEdit->setMinimum(std::min(distanceMinimum, distanceMaximum));
+            side.lengthEdit->setMaximum(std::max(distanceMinimum, distanceMaximum));
+        }
+        else {
+            side.offsetEdit->setMinimum(coordinateMinimum);
+            side.offsetEdit->setMaximum(startPropertyMaximum);
+            side.lengthEdit->setMinimum(std::max(distancePropertyMinimum, coordinateMinimum));
+            side.lengthEdit->setMaximum(std::min(distancePropertyMaximum, coordinateMaximum));
+        }
+    };
+
+    const auto sidesMode = static_cast<SidesMode>(ui->sidesMode->currentIndex());
+    const bool side1Dimension = sideUsesDimension(Side::First);
+    const bool side2Dimension = sidesMode == SidesMode::TwoSides && sideUsesDimension(Side::Second);
+
+    double side1RangeMinimum = m_side1.Offset->getMinimum();
+    double side2RangeMinimum = m_side2.Offset->getMinimum();
+
+    if (sidesMode == SidesMode::Symmetric) {
+        side1RangeMinimum = std::max(0.0, side1RangeMinimum);
+    }
+    else if (sidesMode == SidesMode::TwoSides) {
+        if (side2Dimension) {
+            const double side2Start = m_side2.offsetEdit->value().getValue();
+            const double side2End = sideEndPosition(m_side2);
+            side1RangeMinimum = std::max(side1RangeMinimum, -std::min(side2Start, side2End));
+        }
+        syncSide(m_side1, side1Dimension, sideUsesDistanceFromStart(Side::First), side1RangeMinimum, false);
+
+        if (side1Dimension) {
+            const double side1Start = m_side1.offsetEdit->value().getValue();
+            const double side1End = sideEndPosition(m_side1);
+            side2RangeMinimum = std::max(side2RangeMinimum, -std::min(side1Start, side1End));
+        }
+        syncSide(m_side2, side2Dimension, sideUsesDistanceFromStart(Side::Second), side2RangeMinimum, false);
+
+        if (side1Dimension && side2Dimension) {
+            const double side1Start = m_side1.offsetEdit->value().getValue();
+            const double side1End = sideEndPosition(m_side1);
+            const double side2Start = m_side2.offsetEdit->value().getValue();
+            const double side2End = sideEndPosition(m_side2);
+            const bool side1Zero = std::fabs(side1End - side1Start) < minimumLinearDistance;
+            const bool side2Zero = std::fabs(side2End - side2Start) < minimumLinearDistance;
+            if (side1Zero && side2Zero) {
+                syncSide(m_side1, true, sideUsesDistanceFromStart(Side::First), side1RangeMinimum, true);
+            }
+        }
+        return;
+    }
+
+    syncSide(m_side1, side1Dimension, sideUsesDistanceFromStart(Side::First), side1RangeMinimum, true);
+    syncSide(m_side2, false, false, side2RangeMinimum, false);
 }
 
 void TaskExtrudeParameters::onTaperChanged(double angle, Side side)
@@ -781,7 +993,8 @@ void TaskExtrudeParameters::updateWholeUI(Type type, Side side)
     // Side 2 is only visible if in TwoSides mode, and we pass whether it should receive focus.
     updateSideUI(m_side2, type, mode2, isSide2GroupVisible, (side == Side::Second));
 
-    ui->checkBoxReversed->setEnabled(sidesMode != SidesMode::Symmetric || mode1 != Mode::Dimension);
+    ui->checkBoxReversed->setEnabled(sidesMode != SidesMode::Symmetric || !isDimensionMode(mode1));
+    syncDimensionLimits();
 }
 
 void TaskExtrudeParameters::updateSideUI(
@@ -792,6 +1005,13 @@ void TaskExtrudeParameters::updateSideUI(
     bool setFocus
 )
 {
+    const bool dimensionMode = isDimensionMode(sideMode);
+
+    if (dimensionMode) {
+        s.labelOffset->setText(tr("Start"));
+        s.offsetEdit->setToolTip(tr("Start position"));
+    }
+
     // Default states for all controls for this side
     bool isLengthVisible = false;
     bool isOffsetVisible = false;
@@ -800,8 +1020,9 @@ void TaskExtrudeParameters::updateSideUI(
     bool isShapeVisible = false;
 
     // This logic block is a direct translation of the original 'if/else if' chain
-    if (sideMode == Mode::Dimension) {
+    if (dimensionMode) {
         isLengthVisible = true;
+        isOffsetVisible = true;
         isTaperVisible = true;
         if (setFocus) {
             s.lengthEdit->selectNumber();
@@ -811,14 +1032,7 @@ void TaskExtrudeParameters::updateSideUI(
     else if (sideMode == Mode::ThroughAll && featureType == Type::Pocket) {
         isTaperVisible = true;
     }
-    else if (sideMode == Mode::ToLast && featureType == Type::Pad) {
-        isOffsetVisible = true;
-    }
-    else if (sideMode == Mode::ToFirst) {
-        isOffsetVisible = true;
-    }
     else if (sideMode == Mode::ToFace) {
-        isOffsetVisible = true;
         isFaceVisible = true;
         if (setFocus) {
             QMetaObject::invokeMethod(s.lineFaceName, "setFocus", Qt::QueuedConnection);
@@ -1282,6 +1496,8 @@ void TaskExtrudeParameters::saveHistory()
 
 void TaskExtrudeParameters::applyParameters()
 {
+    syncDimensionLimits();
+
     auto obj = getObject();
 
     QString facename = QStringLiteral("None");
@@ -1294,14 +1510,8 @@ void TaskExtrudeParameters::applyParameters()
     }
 
     // Handle deprecated 'TwoLength' mode.
-    int type1 = getMode();
-    if (static_cast<Mode>(type1) == Mode::ToShape) {
-        type1++;
-    }
-    int type2 = getMode2();
-    if (static_cast<Mode>(type2) == Mode::ToShape) {
-        type2++;
-    }
+    int type1 = propertyTypeIndexFromMode(static_cast<Mode>(getMode()));
+    int type2 = propertyTypeIndexFromMode(static_cast<Mode>(getMode2()));
 
     ui->lengthEdit->apply();
     ui->lengthEdit2->apply();
@@ -1342,6 +1552,7 @@ void TaskExtrudeParameters::onSidesModeChanged(int index)
             break;
     }
 
+    syncDimensionLimits();
     recomputeFeature();
 }
 
@@ -1380,7 +1591,9 @@ void TaskExtrudeParameters::setupGizmos()
         return;
     }
 
+    startGizmo1 = new Gui::LinearGizmo(ui->offsetEdit);
     lengthGizmo1 = new Gui::LinearGizmo(ui->lengthEdit);
+    startGizmo2 = new Gui::LinearGizmo(ui->offsetEdit2);
     lengthGizmo2 = new Gui::LinearGizmo(ui->lengthEdit2);
     taperAngleGizmo1 = new Gui::RotationGizmo(ui->taperEdit);
     taperAngleGizmo2 = new Gui::RotationGizmo(ui->taperEdit2);
@@ -1390,9 +1603,12 @@ void TaskExtrudeParameters::setupGizmos()
     });
 
     gizmoContainer = GizmoContainer::create(
-        {lengthGizmo1, lengthGizmo2, taperAngleGizmo1, taperAngleGizmo2},
+        {startGizmo1, lengthGizmo1, startGizmo2, lengthGizmo2, taperAngleGizmo1, taperAngleGizmo2},
         vp
     );
+
+    startGizmo1->setPointStyle();
+    startGizmo2->setPointStyle();
 
     setGizmoPositions();
     showDraggerHints();
@@ -1418,14 +1634,12 @@ void TaskExtrudeParameters::setGizmoPositions()
     std::string extrudeType2 = std::string(extrude->Type2.getValueAsString());
     double dir = extrude->Reversed.getValue() ? -1 : 1;
 
-    lengthGizmo1->Gizmo::setDraggerPlacement(center, extrude->Direction.getValue() * dir);
-    lengthGizmo1->setVisibility(extrudeType == "Length");
-    taperAngleGizmo1->placeOverLinearGizmo(lengthGizmo1);
-    taperAngleGizmo1->setVisibility(extrudeType == "Length");
-    lengthGizmo2->Gizmo::setDraggerPlacement(center, -extrude->Direction.getValue() * dir);
-    lengthGizmo2->setVisibility(sideType == "Two sides" && extrudeType2 == "Length");
-    taperAngleGizmo2->placeOverLinearGizmo(lengthGizmo2);
-    taperAngleGizmo2->setVisibility(sideType == "Two sides" && extrudeType2 == "Length");
+    const bool isDimension1 = extrudeType == "Length" || extrudeType == "LengthFromOrigin";
+    const bool isDimension2 = extrudeType2 == "Length" || extrudeType2 == "LengthFromOrigin";
+    const bool showStartGizmo1 = isDimension1;
+    const bool showStartGizmo2 = sideType == "Two sides" && isDimension2;
+    const bool distanceFromStart1 = extrudeType == "Length";
+    const bool distanceFromStart2 = extrudeType2 == "Length";
 
     Base::Vector3d padDir = extrude->Direction.getValue().Normalized();
     Base::Vector3d sketchDir = extrude->getProfileNormal().Normalized();
@@ -1437,13 +1651,64 @@ void TaskExtrudeParameters::setGizmoPositions()
     // and symmetric option influence the multFactor. If some custom gizmos changes
     // it then that also should be handled properly here
     if (extrude->AlongSketchNormal.getValue()) {
+        startGizmo1->setMultFactor(multFactor / lengthFactor);
         lengthGizmo1->setMultFactor(multFactor / lengthFactor);
+        startGizmo2->setMultFactor(multFactor / lengthFactor);
         lengthGizmo2->setMultFactor(multFactor / lengthFactor);
     }
     else {
+        startGizmo1->setMultFactor(multFactor);
         lengthGizmo1->setMultFactor(multFactor);
+        startGizmo2->setMultFactor(multFactor);
         lengthGizmo2->setMultFactor(multFactor);
     }
+
+    auto setLinearGizmoRange = [](Gui::LinearGizmo* startGizmo,
+                                  Gui::LinearGizmo* distanceGizmo,
+                                  const Base::Vector3d& center,
+                                  const Base::Vector3d& direction,
+                                  double start,
+                                  double factor,
+                                  bool distanceFromStart) {
+        startGizmo->Gizmo::setDraggerPlacement(center, direction);
+
+        Base::Vector3d distanceBase = center;
+        if (distanceFromStart) {
+            Base::Vector3d unitDirection = direction;
+            unitDirection.Normalize();
+            distanceBase += unitDirection * start * factor;
+        }
+        distanceGizmo->Gizmo::setDraggerPlacement(distanceBase, direction);
+        distanceGizmo->setBaseStart(distanceFromStart ? 0.0 : start * factor);
+    };
+
+    setLinearGizmoRange(
+        startGizmo1,
+        lengthGizmo1,
+        center,
+        extrude->Direction.getValue() * dir,
+        ui->offsetEdit->value().getValue(),
+        multFactor,
+        distanceFromStart1
+    );
+    startGizmo1->setVisibility(showStartGizmo1);
+    lengthGizmo1->setVisibility(isDimension1);
+    taperAngleGizmo1->placeOverLinearGizmo(lengthGizmo1);
+    taperAngleGizmo1->setVisibility(isDimension1);
+
+    setLinearGizmoRange(
+        startGizmo2,
+        lengthGizmo2,
+        center,
+        -extrude->Direction.getValue() * dir,
+        ui->offsetEdit2->value().getValue(),
+        multFactor,
+        distanceFromStart2
+    );
+    startGizmo2->setVisibility(showStartGizmo2);
+    lengthGizmo2->setVisibility(sideType == "Two sides" && isDimension2);
+    taperAngleGizmo2->placeOverLinearGizmo(lengthGizmo2);
+    taperAngleGizmo2->setVisibility(sideType == "Two sides" && isDimension2);
 
     gizmoContainer->calculateScaleAndOrientation();
 }
