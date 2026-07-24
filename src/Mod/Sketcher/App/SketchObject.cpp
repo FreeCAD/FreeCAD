@@ -136,6 +136,7 @@ SketchObject::SketchObject() : geoLastId(0)
     lastHasPartialRedundancies = false;
     lastHasMalformedConstraints = false;
     lastSolverStatus = 0;
+    lastSolveResult = SketchSolveResult::Success;
     lastSolveTime = 0;
 
     solverNeedsUpdate = false;
@@ -213,29 +214,29 @@ App::DocumentObjectExecReturn* SketchObject::execute()
 
     // This includes a regular solve including full geometry update, except when an error
     // ensues
-    int err = this->solve(true);
+    auto err = this->solve(true);
 
-    if (err == -4) {// over-constrained sketch
+    if (err == SketchSolveResult::OverConstrained) {
         std::string msg = "Over-constrained sketch\n";
         appendConflictMsg(lastConflicting, msg);
         return new App::DocumentObjectExecReturn(msg.c_str(), this);
     }
-    else if (err == -3) {// conflicting constraints
+    else if (err == SketchSolveResult::ConflictingConstraints) {
         std::string msg = "Sketch with conflicting constraints\n";
         appendConflictMsg(lastConflicting, msg);
         return new App::DocumentObjectExecReturn(msg.c_str(), this);
     }
-    else if (err == -2) {// redundant constraints
+    else if (err == SketchSolveResult::RedundantConstraints) {
         std::string msg = "Sketch with redundant constraints\n";
         appendRedundantMsg(lastRedundant, msg);
         return new App::DocumentObjectExecReturn(msg.c_str(), this);
     }
-    else if (err == -5) {
+    else if (err == SketchSolveResult::MalformedConstraints) {
         std::string msg = "Sketch with malformed constraints\n";
         appendMalformedConstraintsMsg(lastMalformedConstraints, msg);
         return new App::DocumentObjectExecReturn(msg.c_str(), this);
     }
-    else if (err == -1) {// Solver failed
+    else if (err == SketchSolveResult::SolverFailed) {
         return new App::DocumentObjectExecReturn("Solving the sketch failed", this);
     }
 
@@ -764,7 +765,7 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
         addConstraint(constr);
     }
 
-    int err = solve();
+    int err = static_cast<int>(solve());
 
     if (err) {
         constr->setText(oldText);
@@ -1375,7 +1376,7 @@ void SketchObject::onSketchRestore()
         // this may happen when saving a sketch directly in edit mode
         // but never performed a recompute before
         if (Shape.getValue().IsNull() && hasConflicts() == 0) {
-            if (this->solve(true) == 0)
+            if (this->solve(true) == SketchSolveResult::Success)
                 Shape.setValue(solvedSketch.toShape());
         }
 

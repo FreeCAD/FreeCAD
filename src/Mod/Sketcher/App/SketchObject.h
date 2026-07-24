@@ -56,6 +56,17 @@ enum class DeleteOption
     NoSolve = 4,         // Can be useful if the call will do many operations and a single solve
 };
 using DeleteOptions = Base::Flags<DeleteOption>;
+
+enum class SketchSolveResult : int
+{
+    // These values are exposed by SketchObjectPy::solve(), so keep the numeric mapping stable.
+    Success = 0,
+    SolverFailed = -1,
+    RedundantConstraints = -2,
+    ConflictingConstraints = -3,
+    OverConstrained = -4,
+    MalformedConstraints = -5
+};
 }  // namespace Sketcher
 
 ENABLE_BITMASK_OPERATORS(Sketcher::DeleteOption)
@@ -342,14 +353,9 @@ public:
        sketch and updates all dependent features When a solve only is necessary (e.g. DoF changed),
        solve() solves the sketch and updates the geometry (if updateGeoAfterSolving==true), but does
        not trigger any recompute.
-       @return 0 if no error, if error, the following codes in this order of priority:
-       -4 if overconstrained,
-       -3 if conflicting constraints,
-       -5 if malformed constraints,
-       -1 if solver error,
-       -2 if redundant constraints
+       @return The sketch solve result.
     */
-    int solve(bool updateGeoAfterSolving = true);
+    SketchSolveResult solve(bool updateGeoAfterSolving = true);
     /// set the datum of a Distance or Angle constraint and solve
     int setDatum(int ConstrId, double Datum);
     /// get the datum of a Distance or Angle constraint
@@ -746,6 +752,11 @@ public:
     inline int getLastSolverStatus() const
     {
         return lastSolverStatus;
+    }
+    /// gets sketch solve result of last solver execution
+    inline SketchSolveResult getLastSolveResult() const
+    {
+        return lastSolveResult;
     }
     /// gets solver SolveTime of last solver execution
     inline float getLastSolveTime() const
@@ -1182,6 +1193,7 @@ private:
     bool lastHasPartialRedundancies;
     bool lastHasMalformedConstraints;
     int lastSolverStatus;
+    SketchSolveResult lastSolveResult;
     float lastSolveTime;
 
     std::vector<int> lastConflicting;
