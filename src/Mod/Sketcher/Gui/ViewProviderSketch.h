@@ -24,7 +24,6 @@
 
 #pragma once
 
-#include <boost/smart_ptr/scoped_ptr.hpp>
 
 #include <Inventor/SoRenderManager.h>
 #include <Inventor/lists/SoPickedPointList.h>
