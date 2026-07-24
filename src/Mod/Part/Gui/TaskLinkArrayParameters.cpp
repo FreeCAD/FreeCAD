@@ -646,7 +646,7 @@ void TaskLinkArrayParameters::fillDirectionCombo(
     combo.addLink(
         nullptr,
         std::string(),
-        translate("Select reference..."),
+        translate("Select reference…"),
         PatternParametersWidget::SelectReferenceUserData
     );
 }
