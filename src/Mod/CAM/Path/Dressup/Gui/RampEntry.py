@@ -90,6 +90,12 @@ class ObjectDressup:
                 " but motion commands are passed through as is.",
             ),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "RampVertical",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Calculate ramp angle from vertical plane"),
+        )
 
         # populate the enumerations
         for n in self.propertyEnumerations():
@@ -142,7 +148,7 @@ class ObjectDressup:
         return None
 
     def onChanged(self, obj, prop):
-        if prop == "UseStartDepth":
+        if prop == "UseStartDepth" and not obj.Document.Restoring:
             self.setEditorProperties(obj)
         if prop == "Path" and obj.ViewObject:
             obj.ViewObject.signalChangeIcon()
@@ -150,10 +156,9 @@ class ObjectDressup:
     def setEditorProperties(self, obj):
         mode = 0 if obj.UseStartDepth else 2
         obj.setEditorMode("DressupStartDepth", mode)
+        obj.setEditorMode("RampVertical", 2)
 
     def onDocumentRestored(self, obj):
-        self.setEditorProperties(obj)
-
         # Remove RampFeedRate + CustomFeedRate properties, but keep the values around temporarily
         # This is required for tool controller migration: if a TC migrates with onDocumentRestored
         # called after this, the prior ramp feed rate still needs to be accessible.
@@ -168,6 +173,17 @@ class ObjectDressup:
                     tmp = exp
             obj.Proxy.CustomFeedRate = tmp
             obj.removeProperty("CustomFeedRate")
+
+        if not hasattr(obj, "RampVertical"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "RampVertical",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Calculate ramp angle from vertical plane"),
+            )
+            obj.RampVertical = True
+
+        self.setEditorProperties(obj)
 
     def setup(self, obj):
         obj.Angle = 60
@@ -196,10 +212,15 @@ class ObjectDressup:
         elif obj.Angle <= 0:
             obj.Angle = 0.1
 
+        if obj.RampVertical:
+            angle_rad = math.pi / 2 - math.radians(obj.Angle.Value)
+        else:
+            angle_rad = math.radians(obj.Angle.Value)
+
         args = {
             "commands": PathUtils.getPathWithPlacement(obj.Base).Commands,
             "method": obj.Proxy.propertyEnumerations(dataType="data")[0][1].index(obj.Method),
-            "angle_rad": math.pi / 2 - math.radians(obj.Angle.Value),
+            "angle_rad": angle_rad,
             "tc": PathDressup.toolController(obj.Base),
             "ignoreAbove": obj.DressupStartDepth.Value if obj.UseStartDepth else None,
         }
