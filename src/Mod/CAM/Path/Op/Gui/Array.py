@@ -28,7 +28,7 @@ from Path.Base.Util import toolControllerForOp, coolantModeForOp
 from PathPythonGui.simple_edit_panel import SimpleEditPanel
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
-from PySide import QtGui
+from PySide import QtCore, QtGui
 
 __doc__ = "UI and Command for Array object"
 
@@ -123,7 +123,10 @@ class ArrayTaskPanel(SimpleEditPanel):
         self.updateVisibility()
         self.pageRegisterSignalHandlers()
         self.updateBaseList()
-        self.updateButtonsVisibility()
+        self.updateBaseButtonsVisibility()
+        self.updateFieldPointsOrigin()
+        self.updatePointsSourceList()
+        self.updatePointsButtonsVisibility()
 
     def initPage(self):
         self.connectWidget("ReverseDirection", self.form.chk_reverse)
@@ -132,6 +135,7 @@ class ArrayTaskPanel(SimpleEditPanel):
         self.connectWidget("Combine", self.form.chk_combine)
         self.connectWidget("UseJitter", self.form.chk_use_jitter)
         self.connectWidget("Type", self.form.cbo_type)
+        self.connectWidget("PointsSorting", self.form.cbo_points_sorting)
 
         self.copies = QuantitySpinBox(self.form.dsp_copies, self.obj, "Copies")
         self.copiesX = QuantitySpinBox(self.form.dsp_copies_x, self.obj, "CopiesX")
@@ -169,12 +173,22 @@ class ArrayTaskPanel(SimpleEditPanel):
     def registerSignalHandlers(self):
         self.form.chk_use_jitter.clicked.connect(self.updateVisibility)
         self.form.cbo_type.currentIndexChanged.connect(self.updateVisibility)
-        self.form.baseList.clicked.connect(self.updateButtonsVisibility)
-        self.form.pb_clear.clicked.connect(self.clearBaseList)
-        self.form.pb_remove.clicked.connect(self.RemoveFromBaseList)
-        self.form.pb_add.clicked.connect(self.addToBaseList)
-        self.form.pb_up.clicked.connect(self.upInBaseList)
-        self.form.pb_down.clicked.connect(self.downInBaseList)
+        self.form.baseList.clicked.connect(self.updateBaseButtonsVisibility)
+        self.form.tb_op_clear.clicked.connect(self.clearBaseList)
+        self.form.tb_op_remove.clicked.connect(self.removeFromBaseList)
+        self.form.tb_op_add.clicked.connect(self.addToBaseList)
+        self.form.tb_op_up.clicked.connect(self.upInBaseList)
+        self.form.tb_op_down.clicked.connect(self.downInBaseList)
+
+        self.form.cbo_points_sorting.currentIndexChanged.connect(self.updateVisibility)
+        self.form.pointsSourceList.clicked.connect(self.updatePointsButtonsVisibility)
+        self.form.tb_set_points_origin.clicked.connect(self.setPointsOrigin)
+        self.form.tb_clear_points_origin.clicked.connect(self.clearPointsOrigin)
+        self.form.tb_points_clear.clicked.connect(self.clearPointsSourceList)
+        self.form.tb_points_remove.clicked.connect(self.removeFromPointsSourceList)
+        self.form.tb_points_add.clicked.connect(self.addToPointsSourceList)
+        self.form.tb_points_up.clicked.connect(self.upInPointsSourceList)
+        self.form.tb_points_down.clicked.connect(self.downInPointsSourceList)
 
     def getSignalsForUpdate(self):
         signals = []
@@ -222,8 +236,12 @@ class ArrayTaskPanel(SimpleEditPanel):
             self.form.group_jitter.hide()
 
         if self.form.cbo_type.currentText() == "Points":
+            self.form.group_points_sorting.show()
+            self.form.group_points.show()
             self.form.group_copies.hide()
         else:
+            self.form.group_points_sorting.hide()
+            self.form.group_points.hide()
             self.form.group_copies.show()
 
         if self.form.cbo_type.currentText() in ("Linear1D", "Polar"):
@@ -349,22 +367,21 @@ class ArrayTaskPanel(SimpleEditPanel):
         else:
             self.form.group_message.hide()
 
-    def updateButtonsVisibility(self):
-        """Update visibility of buttons"""
-        print("updateButtonsVisibility", self.form.baseList.rowCount())
-        self.form.pb_clear.setEnabled(self.form.baseList.rowCount())
+    def updateBaseButtonsVisibility(self):
+        """Update visibility of operations buttons"""
+        print("updateBaseButtonsVisibility", self.form.baseList.rowCount())
+        self.form.tb_op_clear.setEnabled(self.form.baseList.rowCount())
         selectedRows = self.form.baseList.selectionModel().selectedRows()
         indexes = [row.row() for row in selectedRows]
         print("   indexes", indexes)
-        self.form.pb_remove.setEnabled(bool(indexes))
+        self.form.tb_op_remove.setEnabled(bool(indexes))
 
         if len(indexes) == 1:
-            index = self.form.baseList.currentRow()
-            self.form.pb_up.setEnabled(index > 0)
-            self.form.pb_down.setEnabled(index < self.form.baseList.rowCount() - 1)
+            self.form.tb_op_up.setEnabled(indexes[0] > 0)
+            self.form.tb_op_down.setEnabled(indexes[0] < self.form.baseList.rowCount() - 1)
         else:
-            self.form.pb_up.setEnabled(False)
-            self.form.pb_down.setEnabled(False)
+            self.form.tb_op_up.setEnabled(False)
+            self.form.tb_op_down.setEnabled(False)
 
         if indexes:  # select operations in 3d view
             FreeCADGui.Selection.clearSelection()
@@ -377,10 +394,9 @@ class ArrayTaskPanel(SimpleEditPanel):
         print("clearBaseList")
         self.obj.Base = []
         self.updateBaseList()
-        self.updateButtonsVisibility()
-        self.form.focusWidget().clearFocus()
+        self.updateBaseButtonsVisibility()
 
-    def RemoveFromBaseList(self):
+    def removeFromBaseList(self):
         """Remove selected operation from Base list"""
         print("RemoveFromBaseList")
         base = self.obj.Base
@@ -393,7 +409,7 @@ class ArrayTaskPanel(SimpleEditPanel):
         self.obj.Base = base
         self.updateBaseList()
         self.form.baseList.selectRow(min(index, self.form.baseList.rowCount() - 1))
-        self.updateButtonsVisibility()
+        self.updateBaseButtonsVisibility()
 
     def addToBaseList(self):
         """Add selected operation to Base list"""
@@ -402,7 +418,7 @@ class ArrayTaskPanel(SimpleEditPanel):
         new = [sel for sel in selection if sel.isDerivedFrom("Path::Feature") and sel != self.obj]
         self.obj.Base = self.obj.Base + new
         self.updateBaseList()
-        self.updateButtonsVisibility()
+        self.updateBaseButtonsVisibility()
 
     def upInBaseList(self):
         """Move selected operation up in Base list"""
@@ -415,9 +431,7 @@ class ArrayTaskPanel(SimpleEditPanel):
             self.obj.Base = base
             self.updateBaseList()
             self.form.baseList.selectRow(index - 1)
-            self.updateButtonsVisibility()
-            if not self.form.pb_up.isEnabled():
-                self.form.focusWidget().clearFocus()
+            self.updateBaseButtonsVisibility()
 
     def downInBaseList(self):
         """Move selected operation down in Base list"""
@@ -431,9 +445,150 @@ class ArrayTaskPanel(SimpleEditPanel):
             self.obj.Base = base
             self.updateBaseList()
             self.form.baseList.selectRow(index + 1)
-            self.updateButtonsVisibility()
-            if not self.form.pb_down.isEnabled():
-                self.form.focusWidget().clearFocus()
+            self.updateBaseButtonsVisibility()
+
+    def clearPointsOrigin(self):
+        """Clear property PointsOrigin"""
+        self.obj.PointsOrigin = []
+        self.updateFieldPointsOrigin()
+
+    def setPointsOrigin(self):
+        """Set property points origin"""
+        selectionEx = FreeCADGui.Selection.getSelectionEx()
+        if not selectionEx:
+            return
+        sel = selectionEx[0]
+        selObj = sel.Object
+        if not hasattr(selObj, "Shape"):
+            return
+        subNames = sel.SubElementNames
+        if subNames:
+            self.obj.PointsOrigin = selObj, subNames[0]
+        else:
+            self.obj.PointsOrigin = selObj
+        self.updateFieldPointsOrigin()
+
+    def updateFieldPointsOrigin(self):
+        """Update field points origin"""
+        origin = self.obj.PointsOrigin
+        if origin:
+            selObj = origin[0]
+            string = selObj.Label
+            shapeName = selObj.Name
+            if string != shapeName:
+                string += f" ({shapeName})"
+            if len(origin) >= 2 and origin[1]:
+                subName = origin[1][0]
+                string += f", {subName}"
+        else:
+            string = ""
+        self.form.le_points_origin.setText(string)
+
+    def updatePointsSourceList(self):
+        """Update list of points source"""
+        self.form.pointsSourceList.blockSignals(True)
+        self.form.pointsSourceList.clear()
+        tuples = [(sh, name) for sh, subNames in self.obj.PointsSource for name in subNames]
+        for i, (sh, subName) in enumerate(tuples):
+            string = f"{sh.Label}.{subName}"
+            item = QtGui.QListWidgetItem(string)
+            flags = QtCore.Qt.ItemFlag.ItemIsSelectable
+            flags |= QtCore.Qt.ItemFlag.ItemIsEnabled
+            flags |= QtCore.Qt.ItemFlag.ItemIsUserCheckable
+            item.setFlags(flags)
+            self.form.pointsSourceList.addItem(item)
+        self.form.pointsSourceList.blockSignals(False)
+        self.updatePointsButtonsVisibility()
+
+    def updatePointsButtonsVisibility(self):
+        """Update visibility of buttons in points source list"""
+        print("updatePointsButtonsVisibility")
+        self.form.tb_points_clear.setEnabled(self.form.pointsSourceList.count())
+        selectedIndexes = self.form.pointsSourceList.selectedIndexes()
+        indexes = [row.row() for row in selectedIndexes]
+        print("   indexes", indexes)
+        self.form.tb_points_remove.setEnabled(bool(indexes))
+
+        if len(indexes) == 1:
+            self.form.tb_points_up.setEnabled(indexes[0] > 0)
+            self.form.tb_points_down.setEnabled(indexes[0] < self.form.pointsSourceList.count() - 1)
+        else:
+            self.form.tb_points_up.setEnabled(False)
+            self.form.tb_points_down.setEnabled(False)
+
+        if indexes:  # select operations in 3d view
+            FreeCADGui.Selection.clearSelection()
+            shapeTups = [(sh, name) for sh, subNames in self.obj.PointsSource for name in subNames]
+            for i, tup in enumerate(shapeTups):
+                if i in indexes:
+                    FreeCADGui.Selection.addSelection(*tup)
+
+    def clearPointsSourceList(self):
+        """Clear propert points source"""
+        self.obj.PointsSource = []
+        self.updatePointsSourceList()
+
+    def removeFromPointsSourceList(self):
+        """Remove shape from points source list"""
+        print("removeFromPointsSourceList")
+        selectedIndexes = self.form.pointsSourceList.selectedIndexes()
+        indexes = [row.row() for row in selectedIndexes]
+        shapeTups = [(sh, name) for sh, subNames in self.obj.PointsSource for name in subNames]
+        for index in sorted(indexes, reverse=True):
+            del shapeTups[index]
+        self.obj.PointsSource = shapeTups
+        self.updatePointsSourceList()
+        self.form.pointsSourceList.setCurrentRow(min(index, len(shapeTups) - 1))
+        self.updatePointsButtonsVisibility()
+
+    def addToPointsSourceList(self):
+        """Add selected shape to points source list"""
+        print("addToPointsSourceList")
+        if not (selectionEx := FreeCADGui.Selection.getSelectionEx()):
+            return
+        new = []
+        for sel in selectionEx:
+            if not sel.Object.isDerivedFrom("Part::Feature"):
+                continue
+            if sel.SubElementNames:
+                new.extend([(sel.Object, name) for name in sel.SubElementNames])
+            else:
+                new.append((sel.Object, ""))
+
+        print("  new", new)
+        shapeTups = [(sh, name) for sh, subNames in self.obj.PointsSource for name in subNames]
+        print("  shapeTups", shapeTups)
+        for tup in new:
+            print("    tup", tup)
+            if tup not in shapeTups:
+                shapeTups.append(tup)
+        self.obj.PointsSource = shapeTups
+        self.updatePointsSourceList()
+        self.updatePointsButtonsVisibility()
+
+    def upInPointsSourceList(self):
+        """Move shape up in points source list"""
+        index = self.form.pointsSourceList.currentRow()
+        if index > 0:
+            shapeTups = [(sh, name) for sh, subNames in self.obj.PointsSource for name in subNames]
+            tup = shapeTups.pop(index)
+            shapeTups.insert(index - 1, tup)
+            self.obj.PointsSource = shapeTups
+            self.updatePointsSourceList()
+            self.form.pointsSourceList.setCurrentRow(index - 1)
+            self.updatePointsButtonsVisibility()
+
+    def downInPointsSourceList(self):
+        """Move shape down in points source list"""
+        index = self.form.pointsSourceList.currentRow()
+        if index < self.form.pointsSourceList.count() - 1:
+            shapeTups = [(sh, name) for sh, subNames in self.obj.PointsSource for name in subNames]
+            tup = shapeTups.pop(index)
+            shapeTups.insert(index + 1, tup)
+            self.obj.PointsSource = shapeTups
+            self.updatePointsSourceList()
+            self.form.pointsSourceList.setCurrentRow(index + 1)
+            self.updatePointsButtonsVisibility()
 
 
 class CommandPathArray:

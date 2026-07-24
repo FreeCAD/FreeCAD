@@ -594,13 +594,12 @@ class ObjectArray:
             toolController = toolControllerForOp(baseOp)
             coolantMode = coolantModeForOp(baseOp)
 
-            if counterCopies:
-                if (
-                    op["opName"] == obj.Base[0].Name
-                    or lastToolController != toolController
-                    or lastCoolant != coolantMode
-                ):  # switch to next child element
-                    i += 1
+            if counterCopies and (
+                op["opName"] == obj.Base[0].Name
+                or lastToolController != toolController
+                or lastCoolant != coolantMode
+            ):  # switch to next child element
+                i += 1
 
             if i > len(obj.ArrayGroup) - 1:
                 self.addNewArrayElement(obj)
