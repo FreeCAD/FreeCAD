@@ -28,7 +28,7 @@
 #include <TDF_Tool.hxx>
 
 
-#include <boost/format.hpp>
+#include <fmt/format.h>
 
 #include "Tools.h"
 #include <Base/Console.h>
@@ -63,7 +63,7 @@ static inline std::ostream& operator<<(std::ostream& os, const Quantity_ColorRGB
 {
     Base::Color color = Tools::convertColor(rgba);
     auto toHex = [](float v) {
-        return boost::format("%02X") % static_cast<int>(v * 255);
+        return fmt::format("{:02X}", static_cast<int>(v * 255));
     };
     return os << "#" << toHex(color.r) << toHex(color.g) << toHex(color.b) << toHex(color.a);
 }
