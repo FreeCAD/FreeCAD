@@ -511,9 +511,6 @@ public:
     void viewAll(float factor);
     void viewBoundBox(const SbBox3f& box);
 
-    /// Breaks out a VR window for a Rift
-    void viewVR();
-
     /**
      * Returns the bounding box of the scene graph.
      */
