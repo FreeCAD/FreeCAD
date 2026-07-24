@@ -65,6 +65,8 @@ DlgSettingsGeneral::~DlgSettingsGeneral() = default;
 
 void DlgSettingsGeneral::saveSettings()
 {
+    saveHistorySelector();
+
     ui->checkBooleanCheck->onSave();
     ui->checkBooleanRefine->onSave();
     ui->checkSketchBaseRefine->onSave();
@@ -105,6 +107,17 @@ void DlgSettingsGeneral::loadSettings()
     ui->checkShowProfilePreview->onRestore();
     ui->checkSwitchToTask->onRestore();
     ui->checkNewSketchAttachmentDialog->onRestore();
+    ui->selectedHistoryAlgorithmEnum->onRestore();
+}
+
+void DlgSettingsGeneral::saveHistorySelector()
+{
+    if (ui->selectedHistoryAlgorithmEnum->currentIndex()
+        != App::getSelectedUnderlyingHistoryAlgorithm()) {
+        requireRestart();
+    }
+
+    ui->selectedHistoryAlgorithmEnum->onSave();
 }
 
 /**

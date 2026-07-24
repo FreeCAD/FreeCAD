@@ -125,3 +125,17 @@ int PartFeaturePy::setCustomAttributes(const char*, PyObject*)
 {
     return 0;
 }
+
+PyObject* PartFeaturePy::doNamesMatch(PyObject* args)
+{
+    const char* name1;
+    const char* name2;
+
+    if (!PyArg_ParseTuple(args, "ss", &name1, &name2)) {
+        return Py::new_reference_to(Py::Boolean(false));
+    }
+
+    return (Py::new_reference_to(
+        Py::Boolean(Feature::doNamesMatch(Data::MappedName(name1), Data::MappedName(name2)))
+    ));
+}

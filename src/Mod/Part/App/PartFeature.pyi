@@ -48,3 +48,18 @@ class PartFeature(GeoFeature):
         otherwise return a list of tuple.
         """
         ...
+
+    @staticmethod
+    def doNamesMatch(name1: str, name2: str, /) -> bool:
+        """
+        Returns true when `name1` and `name2` match according to FreeCAD's design intent standard.
+
+        `name1` and `name2` are `MappedName`s converted to strings.
+
+        Example:
+            `name1` = `g1125;_;9;SKT;0;E;0;SRC;_|_;_;23;CUT;0;E;0;MOD;_`
+            `name2` = `g1125;_;9;SKT;0;E;0;SRC;_`
+            According to FreeCAD's design intent standard, these two names would match, therefore
+            this method would return `True`.
+        """
+        ...

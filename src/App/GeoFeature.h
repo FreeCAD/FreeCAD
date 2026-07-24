@@ -132,6 +132,19 @@ public:
                                           GeoFeature** geoFeature = nullptr);
 
     /**
+     * @brief Find a similar set of names to the input.
+     *
+     * @param[in] searchName The name to find matches for.
+     *
+     * @return Return a vector of `Data::MappedName` which contains matching names to `searchName`.
+     */
+    virtual std::vector<Data::MappedElement> findSimilarNames(const Data::MappedName &searchName) const
+    {
+        (void)searchName;
+        return { };
+    };
+
+    /**
      * @brief Deprecated. Calculates the placement in the global reference coordinate system
      *
      * Deprecated: This does not handle App::Links correctly. Use getGlobalPlacement() instead.

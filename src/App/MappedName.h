@@ -31,6 +31,8 @@
 #include <QHash>
 #include <QVector>
 #include <utility>
+#include <boost/algorithm/string/predicate.hpp>
+#include <Base/Profiler.h>
 
 #include "ElementNamingUtils.h"
 #include "IndexedName.h"
@@ -42,6 +44,38 @@ namespace Data
 
 // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
+class AppExport DecodedMappedSection {
+    public:
+        /// Definitions for these entries can be found in `ElementNamingUtils.h`
+        std::vector<std::string> referenceIDs;
+        std::vector<std::string> linkedNames;
+        std::string iterationTag = Data::EMPTY_VALUE;
+        std::string opCode = "";
+        std::string index = Data::EMPTY_VALUE;
+        char elementType = (*Data::EMPTY_VALUE);
+        std::string duplicateCount = Data::EMPTY_VALUE;
+        std::vector<std::string> mapperFlags;
+        std::vector<std::string> connectedElements;
+    
+        inline bool hasMapperFlag(std::string flag) const {
+            return (std::find(mapperFlags.begin(), mapperFlags.end(), flag) != mapperFlags.end());
+        };
+
+        inline bool operator==(const DecodedMappedSection& other) const {
+            return (
+                referenceIDs == other.referenceIDs &&
+                linkedNames == other.linkedNames &&
+                iterationTag == other.iterationTag &&
+                opCode == other.opCode &&
+                index == other.index &&
+                elementType == other.elementType &&
+                duplicateCount == other.duplicateCount &&
+                mapperFlags == other.mapperFlags &&
+                connectedElements == other.connectedElements
+            );
+        };
+};
+
 /**
  * @brief A class for managing element map names.
  * @ingroup ElementMapping
@@ -52,7 +86,20 @@ namespace Data
  * (see the fromRawData() members). Despite storing data and postfix
  * separately, they can be accessed via calls to size(), operator[], etc. as
  * though they were a single array.
+ * 
+ * MappedNames can utilize either the V1 or the V2 Topological Naming system.
+ * If it uses the V1 system, it has no methods to simply and efficiently decode
+ * its contents into a datatype which is easy to use and
+ * understand in the FreeCAD codebase.
+ * 
+ * The V2 does include a method to do this: `getDecodedMappedName()`.
+ * This returns a `DecodedMappedName` (or a `std::vector<DecodedMappedSection>`).
+ * 
  */
+
+using DecodedMappedName = std::vector<DecodedMappedSection>;
+static std::unordered_map<std::string, DecodedMappedName> decodedMappedNameCache;
+
 class AppExport MappedName
 {
 public:
@@ -75,8 +122,9 @@ public:
      * element map prefix, which will be omitted from the stored MappedName.
      *
      * @param nameString The new name. A deep copy is made.
+     * @param historyAlgorithm The algorithm used to make `nameString`. Defaulted to `V1`.
      */
-    explicit MappedName(const std::string& nameString);
+    explicit MappedName(const std::string& nameString, const App::HistoryAlgorithm historyAlgorithm = App::HistoryAlgorithm::V2);
 
     /**
      * @brief Create a MappedName from an IndexedName.
@@ -109,6 +157,12 @@ public:
         : raw(false)
     {}
 
+    /// Create a MappedName with a marked history algorithm.
+    MappedName(const App::HistoryAlgorithm historyAlgorithm)
+        : raw(false)
+        , usedHistoryAlgorithm(historyAlgorithm)
+    {}
+
     MappedName(const MappedName& other) = default;
 
     /**
@@ -125,7 +179,7 @@ public:
      * and start positions
      */
     MappedName(const MappedName& other, int startPosition, int size = -1)
-        : raw(false)
+        : raw(false), usedHistoryAlgorithm(other.usedHistoryAlgorithm)
     {
         append(other, startPosition, size);
     }
@@ -142,12 +196,14 @@ public:
         : data(other.data + other.postfix)
         , postfix(postfix)
         , raw(false)
+        , usedHistoryAlgorithm(other.usedHistoryAlgorithm)
     {}
 
     MappedName(MappedName&& other) noexcept
         : data(std::move(other.data))
         , postfix(std::move(other.postfix))
         , raw(other.raw)
+        , usedHistoryAlgorithm(other.usedHistoryAlgorithm)
     {}
 
     ~MappedName() = default;
@@ -220,6 +276,7 @@ public:
 
         MappedName res;
         res.raw = true;
+        res.usedHistoryAlgorithm = other.usedHistoryAlgorithm;
         if (size < 0) {
             size = other.size() - startPosition;
         }
@@ -459,6 +516,12 @@ public:
                 this->data.append(dataToAppend, size);
             }
             else {
+                const char* constData = this->postfix.constData();
+
+                if (strlen(constData) == 0 || constData[strlen(constData) - 1] != '|') {
+                    this->postfix.append("|", 1);
+                }
+
                 this->postfix.append(dataToAppend, size);
             }
         }
@@ -594,6 +657,8 @@ public:
      */
     const char* appendToBuffer(std::string& buffer, int startPosition = 0, int len = -1) const
     {
+        ZoneScoped;
+
         std::size_t offset = buffer.size();
         int count = this->size();
         if (startPosition < 0) {
@@ -899,6 +964,7 @@ public:
         MappedName res;
         res.data.append(this->data.constData(), this->data.size());
         res.postfix = this->postfix;
+        res.usedHistoryAlgorithm = this->usedHistoryAlgorithm;
         return res;
     }
 
@@ -1016,7 +1082,7 @@ public:
     /**
      * @brief Check if this mapped name ends with the search target.
      *
-     * If there is a postfix, only the postfix is considered. If not, then only
+     * If there is a postfix, only the postfix is con   sidered. If not, then only
      * the data is considered. A search string that overlaps the two will not
      * be found.
      *
@@ -1120,12 +1186,87 @@ public:
         return qHash(data, qHash(postfix));
     }
 
+    App::HistoryAlgorithm getHistoryAlgorithm() const {
+        return usedHistoryAlgorithm;
+    };
+
+    void setHistoryAlgorithm(App::HistoryAlgorithm newAlgorithm) {
+        usedHistoryAlgorithm = newAlgorithm;
+    };
+
+    // we use a static here for caching reasons.
+    static DecodedMappedName getDecodedMappedName(const std::string& mappedNameString);
+
+    DecodedMappedName getDecodedMappedName() const;
+    
+    static MappedName fromDecodedMappedName(const DecodedMappedName& name);
+
+    static std::vector<std::string> splitToSections(const std::string& data, const char deliminator);
+
+    static std::vector<std::string> splitToSections(const std::string& data, const char* deliminator);
+
+    static std::string escapeString(const std::string& stringToEscape);
+
+    static std::string makeSection(const std::vector<std::string>& referenceIDs = { },
+                                   const std::vector<MappedName>& linkedNames = { },
+                                   const int&  iterationTag = 0,
+                                   const char* opCode = "MKR",
+                                   const int& index = 0,
+                                   const char& elementType = 'E',
+                                   const int& duplicateCount = 0,
+                                   const std::vector<std::string>& mapperFlags = { },
+                                   const std::vector<MappedName>& connectedElements = { });
+    
+    static std::string makeSection(const std::vector<std::string>& referenceIDs = { },
+                                   const std::vector<MappedName>& linkedNames = { },
+                                   const std::string& iterationTag = 0,
+                                   const char* opCode = "MKR",
+                                   const std::string& index = 0,
+                                   const char& elementType = 'E',
+                                   const std::string& duplicateCount = 0,
+                                   const std::vector<std::string>& mapperFlags = { },
+                                   const  std::vector<MappedName>& connectedElements = { });
+
+    static std::string makeSection(const std::vector<std::string>& referenceIDs = { },
+                                   const std::vector<std::string>& linkedNames = { },
+                                   const std::string& iterationTag = 0,
+                                   const char* opCode = "MKR",
+                                   const std::string& index = 0,
+                                   const char& elementType = 'E',
+                                   const std::string& duplicateCount = 0,
+                                   const std::vector<std::string>& mapperFlags = { },
+                                   const std::vector<std::string>& connectedElements = { });
+
+    static std::string makeSection(const DecodedMappedSection& decodedSection);
+
+    static MappedName makeUnmappedName(const std::vector<std::string>& indexedNames = { },
+                                       const int& iterationTag = 0,
+                                       const char* opCode = "MKR",
+                                       const char& elementType = 'E');
+    
 private:
     QByteArray data;
     QByteArray postfix;
     bool raw;
+    enum App::HistoryAlgorithm usedHistoryAlgorithm = App::HistoryAlgorithm::V2;
 };
 
+class AppExport MappedNameHasher {
+    public:
+        std::size_t operator()(const MappedName& name) const {
+            return name.hash();
+        };
+
+        std::size_t operator()(const std::vector<MappedName>& names) const {
+            std::size_t seed = names.size();
+
+            for (const MappedName& name : names) {
+                seed ^= name.hash() + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+            }
+
+            return seed;
+        };
+};
 
 using ElementIDRefs = QVector<::App::StringIDRef>;
 

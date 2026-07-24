@@ -3,7 +3,46 @@
 #include "ElementNamingUtils.h"
 #include <charconv>
 #include <boost/algorithm/string/predicate.hpp>
+#include <Base/Parameter.h>
+#include "Application.h"
 
+const App::HistoryAlgorithm& App::getSelectedHistoryAlgorithm() {
+    static App::HistoryAlgorithm selectedHistoryAlgorithm = App::getHistoryAlgorithm(App::getSelectedUnderlyingHistoryAlgorithm());
+
+    return selectedHistoryAlgorithm;
+}
+
+App::HistoryAlgorithm App::getDefaultHistoryAlgorithm() {
+    return HistoryAlgorithm::V2;
+}
+
+
+App::HistoryAlgorithm App::getHistoryAlgorithm(int fromUnderlying) {
+    if (fromUnderlying == 0) {
+        return App::HistoryAlgorithm::V1;
+    } else if (fromUnderlying == 1) {
+        return App::HistoryAlgorithm::V2;
+    } else {
+        return App::getDefaultHistoryAlgorithm();
+    }
+}
+
+const int& App::getSelectedUnderlyingHistoryAlgorithm() {
+    static int underlyingHistoryAlgorithm = -1;
+
+    if (underlyingHistoryAlgorithm == -1) {
+        ParameterGrp::handle grp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Part/General"
+        );
+
+        underlyingHistoryAlgorithm = grp->GetInt(
+            "HistoryAlgorithm",
+            static_cast<int>(getDefaultHistoryAlgorithm())
+        );
+    }
+
+    return underlyingHistoryAlgorithm;
+}
 
 const char* Data::isMappedElement(const char* name)
 {

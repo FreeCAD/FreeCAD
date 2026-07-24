@@ -59,6 +59,7 @@
 #include <TopoDS.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopTools_ListOfShape.hxx>
+#include <Base/Profiler.h>
 
 
 #include <App/Application.h>
@@ -177,6 +178,195 @@ App::ElementNamePair Feature::getElementName(const char* name, ElementNameType t
         return App::GeoFeature::getElementName(name, type);
     }
     return getExportElementName(prop->getShape(), name);
+}
+
+// This is the name matching algorithms used for the V2 algorithm.
+bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName& name2)
+{
+    if (!name1 || !name2) {
+        return false;
+    }
+
+    Data::DecodedMappedName decodedName1 = name1.getDecodedMappedName();
+    Data::DecodedMappedName decodedName2 = name2.getDecodedMappedName();
+
+    if (decodedName1.size() && decodedName2.size()) {
+        std::vector<std::pair<Data::DecodedMappedSection, std::vector<Data::DecodedMappedSection>>>
+            pairedCheckSections = {};
+
+        pairedCheckSections.push_back({decodedName1.front(), {decodedName2.front()}});
+
+        decodedName1.erase(decodedName1.begin());
+        decodedName2.erase(decodedName2.begin());
+
+        std::vector<Data::DecodedMappedSection> entry;
+
+        // This loop pairs sections together for checking later.
+        for (const Data::DecodedMappedSection& name1Section : decodedName1) {
+            entry.clear();
+
+            for (const Data::DecodedMappedSection& name2Section : decodedName2) {
+                if ((name1Section.iterationTag != Data::EMPTY_VALUE
+                     && name2Section.iterationTag == name1Section.iterationTag)
+                    && (name1Section.opCode != Data::EMPTY_VALUE
+                        && name2Section.opCode == name1Section.opCode)) {
+                    entry.push_back(name2Section);
+                }
+            }
+
+            if (entry.size()) {
+                pairedCheckSections.push_back({name1Section, entry});
+            }
+        }
+
+        if (pairedCheckSections.size()) {
+            for (const auto& checkSections : pairedCheckSections) {
+                const Data::DecodedMappedSection& mainCheckSection = checkSections.first;
+                bool pass = false;
+
+                for (const Data::DecodedMappedSection& loopCheckSection : checkSections.second) {
+                    // first we need to check reference IDs
+                    int refIDInterference = 0;
+                    size_t linkedNameInterference = 0;
+                    size_t connectedNameInterference = 0;
+
+                    for (const std::string& name1ListID : mainCheckSection.referenceIDs) {
+                        for (const std::string& name2ListID : loopCheckSection.referenceIDs) {
+                            if (name1ListID == name2ListID) {
+                                refIDInterference++;
+                            }
+                        }
+                    }
+
+                    for (const std::string& name1LinkedName : mainCheckSection.linkedNames) {
+                        Data::MappedName name1LinkedMappedName {name1LinkedName};
+
+                        for (const std::string& name2LinkedName : loopCheckSection.linkedNames) {
+                            if ((name1LinkedName == name2LinkedName)
+                                || (name1LinkedName != "_" && name2LinkedName != "_"
+                                    && doNamesMatch(
+                                        name1LinkedMappedName,
+                                        Data::MappedName(name2LinkedName)
+                                    ))) {
+                                linkedNameInterference++;
+                            }
+                        }
+                    }
+
+                    for (const std::string& name1ConnectedName : mainCheckSection.connectedElements) {
+                        Data::MappedName name1ConnectedMappedName {name1ConnectedName};
+
+                        for (const std::string& name2ConnectedName :
+                             loopCheckSection.connectedElements) {
+                            if ((name1ConnectedName == name2ConnectedName)
+                                || (name1ConnectedName != Data::EMPTY_VALUE
+                                    && name2ConnectedName != Data::EMPTY_VALUE
+                                    && doNamesMatch(
+                                        name1ConnectedMappedName,
+                                        Data::MappedName(name2ConnectedName)
+                                    ))) {
+                                connectedNameInterference++;
+                            }
+                        }
+                    }
+
+                    bool linkedNamePass = false;
+                    bool connectedElementPass = false;
+
+                    if (mainCheckSection.hasMapperFlag(Data::MAPPER_FLAG_LOWER)) {
+                        if (mainCheckSection.hasMapperFlag(Data::MAPPER_FLAG_NON_DUPLICATE)
+                            && linkedNameInterference >= 1) {
+                            linkedNamePass = true;
+                        }
+                        else if (linkedNameInterference >= 2) {
+                            linkedNamePass = true;
+                        }
+                    }
+
+                    if (linkedNameInterference == mainCheckSection.linkedNames.size()
+                        && linkedNameInterference == loopCheckSection.linkedNames.size()) {
+                        linkedNamePass = true;
+                    }
+
+                    if (connectedNameInterference >= 1) {
+                        connectedElementPass = true;
+                    }
+
+                    if (connectedNameInterference == mainCheckSection.connectedElements.size()
+                        && connectedNameInterference == loopCheckSection.connectedElements.size()) {
+                        connectedElementPass = true;
+                    }
+
+                    if (linkedNamePass && connectedElementPass
+                        && (refIDInterference >= 2
+                            || mainCheckSection.referenceIDs == loopCheckSection.referenceIDs)) {
+                        Data::DecodedMappedSection modifiedFirstSection(mainCheckSection);
+                        Data::DecodedMappedSection modifiedSecondSection(loopCheckSection);
+
+                        // remove the reference ID and linked names lists to make a direct equality
+                        // check much easier.
+                        modifiedFirstSection.referenceIDs.clear();
+                        modifiedFirstSection.linkedNames.clear();
+                        modifiedFirstSection.connectedElements.clear();
+
+                        modifiedSecondSection.referenceIDs.clear();
+                        modifiedSecondSection.linkedNames.clear();
+                        modifiedSecondSection.connectedElements.clear();
+
+                        if (modifiedFirstSection == modifiedSecondSection) {
+                            pass = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!pass) {
+                    return false;
+                }
+            }
+        }
+        else {
+            return false;
+        }
+    }
+    else {
+        return false;
+    }
+
+    return true;
+}
+
+// This is the name matching algorithms used for the V2 algorithm.
+std::vector<Data::MappedElement> Feature::findSimilarNames(
+    const Data::MappedName& searchName,
+    const TopoShape& searchShape
+)
+{
+    ZoneScoped;
+    std::vector<Data::MappedElement> ret {};
+
+    if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+        for (const Data::MappedElement& loopNamePair : searchShape.getElementMap()) {
+            if (loopNamePair.name == searchName) {
+                ret.push_back(loopNamePair);
+            }
+            else if (Feature::doNamesMatch(searchName, loopNamePair.name)) {
+                ret.push_back(loopNamePair);
+                Base::Console().log(
+                    "Name match resolved name %s as equivelent to %s\n",
+                    searchName.toString(),
+                    loopNamePair.name.toString()
+                );
+            }
+        }
+    }
+
+    return ret;
+}
+
+std::vector<Data::MappedElement> Feature::findSimilarNames(const Data::MappedName& searchName) const
+{
+    return findSimilarNames(searchName, Shape.getShape());
 }
 
 App::ElementNamePair Feature::getExportElementName(TopoShape shape, const char* name) const
@@ -356,9 +546,16 @@ App::ElementNamePair Feature::getExportElementName(TopoShape shape, const char* 
                         searchShape = shapes.front();  // After the break, so we stopped at
                                                        // innermost container
                     }
-                    auto newMapped = TopoShape::chooseMatchingSubShapeByPlaneOrLine(shape, searchShape);
-                    if (!newMapped.name.empty()) {
-                        mapped = newMapped;
+                    if (ancestors.size() > 1 && boost::starts_with(postfix, Data::POSTFIX_INDEX)) {
+                        std::istringstream iss(postfix.c_str() + strlen(Data::POSTFIX_INDEX));
+                        int idx;
+                        if (iss >> idx && idx >= 0 && idx < (int)ancestors.size()) {
+                            ancestors.resize(1, ancestors[idx]);
+                        }
+                    }
+                    if (ancestors.size() == 1) {
+                        idxName.setIndex(ancestors.front());
+                        mapped.index = idxName;
                     }
                 }
                 for (auto& name : names) {

@@ -70,6 +70,7 @@
 #include <TopTools_DataMapOfIntegerShape.hxx>
 
 #include <Base/Console.h>
+#include <App/ElementNamingUtils.h>
 
 #include "modelRefine.h"
 
@@ -1212,9 +1213,9 @@ bool FaceUniter::process()
                     it.second = sew.Modified(it.second);
 
                     // TODO: uncomment in the V2 algorithm PR
-                    // if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
-                    break;
-                    // }
+                    if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+                        break;
+                    }
                 }
             }
 

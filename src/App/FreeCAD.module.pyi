@@ -233,3 +233,7 @@ def isRestoring() -> bool:
 def checkAbort() -> None:
     """Raise if the current long-running operation has been asked to abort."""
     ...
+
+def getDecodedMappedName(name: str, /) -> list[dict]:
+    """Returns the decoding of `name` in the form of a dictionary."""
+    ...

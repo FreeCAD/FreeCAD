@@ -53,6 +53,12 @@ PROPERTY_SOURCE(PartDesign::DressUp, PartDesign::FeatureAddSub)
 DressUp::DressUp()
 {
     ADD_PROPERTY(Base, (nullptr));
+
+    // if an edge/face is split into multiple copies, then add those new copies onto Base,
+    // as we do not know which segment the user wants to use yet.
+    Base.useMultipleMatchedNames(true);
+    Base.allowDuplicateLinks(false);
+
     Placement.setStatus(App::Property::ReadOnly, true);
 
     ADD_PROPERTY_TYPE(

@@ -43,6 +43,7 @@
 #include <App/FeaturePythonPyImp.h>
 #include <App/IndexedName.h>
 #include <App/MappedName.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 #include <App/ObjectIdentifier.h>
 #include <Base/Console.h>
 #include <Base/ProgramVersion.h>
@@ -270,15 +271,32 @@ void SketchObject::buildShape()
     std::vector<Part::TopoShape> vertices;
     int geoId = 0;
 
-    auto addVertex = [&vertices](auto vertex, auto name) {
+    const App::HistoryAlgorithm& selectedHistoryVersion = App::getSelectedHistoryAlgorithm();
+
+    auto addVertex = [&vertices, &selectedHistoryVersion](auto vertex, auto name, int tag) {
         if (!vertex.hasElementMap()) {
             vertex.resetElementMap(std::make_shared<Data::ElementMap>());
         }
-        vertex.setElementName(
-            Data::IndexedName::fromConst("Vertex", 1),
-            Data::MappedName::fromRawData(name.c_str()),
-            0L
-        );
+
+        Data::MappedName builtName = Data::MappedName();
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
+            builtName = name;
+        }
+        else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            builtName = Data::MappedName::makeSection(
+                {name},
+                {},
+                tag,
+                Part::OpCodes::Sketch,
+                0,
+                'V',
+                0,
+                {Data::MAPPER_FLAG_SOURCE}
+            );
+        }
+
+        vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1), builtName, 0L);
         vertices.push_back(vertex);
         vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
     };
@@ -301,7 +319,8 @@ void SketchObject::buildShape()
             int idx = getVertexIndexGeoPos(geoId - 1, Sketcher::PointPos::start);
             addVertex(
                 Part::TopoShape {TopoDS::Vertex(geo->toShape())},
-                convertSubName(Data::IndexedName::fromConst("Vertex", idx + 1), false)
+                convertSubName(Data::IndexedName::fromConst("Vertex", idx + 1), false),
+                getID()
             );
         }
         else {
@@ -326,7 +345,8 @@ void SketchObject::buildShape()
         if (geo->isDerivedFrom<Part::GeomPoint>()) {
             addVertex(
                 Part::TopoShape {TopoDS::Vertex(geo->toShape())},
-                convertSubName(indexedName, false)
+                convertSubName(indexedName, false),
+                getID()
             );
         }
         else {
@@ -1884,26 +1904,74 @@ const char *SketchObject::convertInternalName(const char *name)
     return nullptr;
 }
 
+std::vector<Data::MappedElement> SketchObject::findSimilarNames(const Data::MappedName &searchName) const
+{
+    std::vector<Data::MappedElement> ret;
+
+    ret = Part::Feature::findSimilarNames(searchName, Shape.getShape());
+
+    if (ret.empty()) {
+        const Part::TopoShape &internalShape = InternalShape.getShape();
+
+        if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+            for (const Data::MappedElement &loopNamePair : internalShape.getElementMap()) {
+                if (loopNamePair.name == searchName || Feature::doNamesMatch(searchName, loopNamePair.name)) {
+                    std::string loopNameIndexString = internalPrefix();
+                    loopNameIndexString += loopNamePair.index.toString();
+
+                    Data::IndexedName loopNameIndex = Data::IndexedName(
+                        loopNameIndexString.c_str()
+                    );
+
+                    ret.emplace_back(loopNamePair.name, loopNameIndex);
+                    Base::Console().log("Name match resolved name %s as equivelent to %s\n", searchName.toString(), loopNamePair.name.toString());
+                }
+            }
+        }
+    }
+
+    return ret;
+}
+
 App::ElementNamePair SketchObject::getElementName(
         const char *name, ElementNameType type) const
 {
     App::ElementNamePair ret;
     if(!name) return ret;
 
-    if(hasSketchMarker(name))
+    const char *mapped = Data::isMappedElement(name);
+    const char* indexedSubname = mapped;
+    bool isInternalElement = false;
+
+    if (mapped) {
+        const char* dot = strchr(mapped, '.');
+
+        if (dot) {
+            indexedSubname = dot + 1;
+
+            if (indexedSubname == strstr(indexedSubname, internalPrefix().c_str())) {
+                isInternalElement = true;
+            }
+        }
+    }
+
+    if(hasSketchMarker(name) && !isInternalElement)
         return Part2DObject::getElementName(name,type);
 
-    const char *mapped = Data::isMappedElement(name);
-    Data::IndexedName index = checkSubName(name);
+    Data::IndexedName index = isInternalElement ? Data::IndexedName(indexedSubname, {"InternalFace", "InternalEdge", "InternalVertex"}, false) : checkSubName(name);
     index.appendToStringBuffer(ret.oldName);
     if (auto realName = convertInternalName(ret.oldName.c_str())) {
         Data::MappedElement mappedElement;
-        if (mapped)
-            mappedElement = InternalShape.getShape().getElementName(name);
-        else if (type == ElementNameType::Export)
-            ret.newName = getExportElementName(InternalShape.getShape(), realName).newName;
-        else
-            mappedElement = InternalShape.getShape().getElementName(realName);
+        const Part::TopoShape internalShape = InternalShape.getShape();
+        if (mapped) {
+            mappedElement = internalShape.getElementName(name);
+        }
+        else if (type == ElementNameType::Export) {
+            ret.newName = getExportElementName(internalShape, realName).newName;
+        }
+        else {
+            mappedElement = internalShape.getElementName(realName);
+        }
 
         if (mapped || type != ElementNameType::Export) {
             if (mappedElement.index) {
@@ -1920,7 +1988,7 @@ App::ElementNamePair SketchObject::getElementName(
 
         if (ret.newName.size()) {
             if (auto dot = strrchr(ret.newName.c_str(), '.'))
-                ret.newName.resize(dot+1-ret.newName.c_str());
+                ret.newName.resize(dot + 1 - ret.newName.c_str());
             else
                 ret.newName += ".";
             ret.newName += ret.oldName;
@@ -1947,6 +2015,7 @@ App::ElementNamePair SketchObject::getElementName(
     return ret;
 }
 
+
 Data::IndexedName SketchObject::checkSubName(const char *subname) const
 {
     static std::vector<const char *> types = {
@@ -1959,8 +2028,6 @@ Data::IndexedName SketchObject::checkSubName(const char *subname) const
         "H_Axis",
         "V_Axis",
         "Constraint",
-
-        // other feature from LS3 not related to TNP
         "InternalEdge",
         "InternalFace",
         "InternalVertex",
