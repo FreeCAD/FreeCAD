@@ -320,7 +320,7 @@ public:
     {
         sGroup = "File";
         sMenuText = QT_TR_NOOP("Help");
-        sToolTipText = QT_TR_NOOP("Opens the documentation corresponding to the selection.");
+        sToolTipText = QT_TR_NOOP("Opens the documentation corresponding to the selection");
         sWhatsThis = "Std_HelpGroup";
         sStatusTip = sToolTipText;
 
