@@ -972,9 +972,9 @@ void RecentFilesAction::setFiles(const QStringList& files)
     int adjust = addOpen ? 2 : 0;
 
     if (addOpen && recentFiles.size() > 1) {
-        recentFiles[0]->setText(tr("Open..."));
-        recentFiles[0]->setStatusTip(tr("Open a document or import files."));
-        recentFiles[0]->setToolTip(tr("Open a document or import files."));
+        recentFiles[0]->setText(tr("Open…"));
+        recentFiles[0]->setStatusTip(tr("Opens a document or imports files"));
+        recentFiles[0]->setToolTip(tr("Opens a document or imports files"));
         recentFiles[0]->setVisible(true);
         recentFiles[0]->setIcon(Gui::BitmapFactory().iconFromTheme("document-open"));
 
