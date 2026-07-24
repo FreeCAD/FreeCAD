@@ -22,7 +22,7 @@
  ***************************************************************************/
 
 #include <boost/algorithm/string/replace.hpp>
-#include <boost/regex.hpp>
+#include <regex>
 #include <string>
 
 #include <Base/TimeInfo.h>
@@ -341,10 +341,10 @@ bool BackupPolicy::startsWith(const std::string& st1, const std::string& st2) co
     return st1.substr(0, st2.length()) == st2;
 }
 
-bool BackupPolicy::checkValidString(const std::string& cmpl, const boost::regex& e) const
+bool BackupPolicy::checkValidString(const std::string& cmpl, const std::regex& e) const
 {
-    boost::smatch what;
-    const bool res = boost::regex_search(cmpl, what, e);
+    std::smatch what;
+    const bool res = std::regex_search(cmpl, what, e);
     return res;
 }
 
@@ -354,13 +354,13 @@ bool BackupPolicy::checkValidComplement(const std::string& file,
 {
     const std::string cmpl =
         file.substr(pbn.length(), file.length() - pbn.length() - ext.length() - 1);
-    const boost::regex e(R"(^[^.]*$)");
+    const std::regex e(R"(^[^.]*$)");
     return checkValidString(cmpl, e);
 }
 
 bool BackupPolicy::checkDigits(const std::string& cmpl) const
 {
-    const boost::regex e(R"(^[0-9]*$)");
+    const std::regex e(R"(^[0-9]*$)");
     return checkValidString(cmpl, e);
 }
 

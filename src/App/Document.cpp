@@ -44,7 +44,7 @@
 #include <boost/graph/strong_components.hpp>
 #include <boost/graph/topological_sort.hpp>
 
-#include <boost/regex.hpp>
+#include <regex>
 #include <random>
 #include <unordered_map>
 #include <unordered_set>
@@ -3925,16 +3925,16 @@ std::vector<DocumentObject*> Document::getObjectsWithExtension(const Base::Type&
 std::vector<DocumentObject*>
 Document::findObjects(const Base::Type& typeId, const char* objname, const char* label) const
 {
-    boost::cmatch what;
-    boost::regex rx_name;
-    boost::regex rx_label;
+    std::cmatch what;
+    std::regex rx_name;
+    std::regex rx_label;
 
     if (objname) {
-        rx_name.set_expression(objname);
+        rx_name.assign(objname);
     }
 
     if (label) {
-        rx_label.set_expression(label);
+        rx_label.assign(label);
     }
 
     std::vector<DocumentObject*> Objects;
@@ -3943,11 +3943,11 @@ Document::findObjects(const Base::Type& typeId, const char* objname, const char*
         if (it->isDerivedFrom(typeId)) {
             found = it;
 
-            if (!rx_name.empty() && !boost::regex_search(it->getNameInDocument(), what, rx_name)) {
+            if (objname && !std::regex_search(it->getNameInDocument(), what, rx_name)) {
                 found = nullptr;
             }
 
-            if (!rx_label.empty() && !boost::regex_search(it->Label.getValue(), what, rx_label)) {
+            if (label && !std::regex_search(it->Label.getValue(), what, rx_label)) {
                 found = nullptr;
             }
 

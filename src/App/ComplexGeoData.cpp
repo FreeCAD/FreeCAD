@@ -27,7 +27,7 @@
 #include <cstdlib>
 #include <limits>
 
-#include <boost/regex.hpp>
+#include <regex>
 
 #include "ComplexGeoData.h"
 #include "ElementMap.h"
@@ -62,10 +62,10 @@ std::pair<std::string, unsigned long> ComplexGeoData::getTypeAndIndex(const char
 {
     int index = 0;
     std::string element;
-    boost::regex ex("^([^0-9]*)([0-9]*)$");
-    boost::cmatch what;
+    std::regex ex("^([^0-9]*)([0-9]*)$");
+    std::cmatch what;
 
-    if (Name && boost::regex_match(Name, what, ex)) {
+    if (Name && std::regex_match(Name, what, ex)) {
         element = what[1].str();
         index = std::atoi(what[2].str().c_str());
     }

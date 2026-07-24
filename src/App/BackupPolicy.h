@@ -23,7 +23,7 @@
 
 #include "FCGlobal.h"
 
-#include <boost/regex.hpp>
+#include <regex>
 #include <string>
 #include <Base/FileInfo.h>
 
@@ -51,7 +51,7 @@ private:
     void applyTimeStamp(const std::string& sourcename, const std::string& targetname);
     static bool fileComparisonByDate(const Base::FileInfo& i, const Base::FileInfo& j);
     bool startsWith(const std::string& st1, const std::string& st2) const;
-    bool checkValidString(const std::string& cmpl, const boost::regex& e) const;
+    bool checkValidString(const std::string& cmpl, const std::regex& e) const;
     bool checkValidComplement(const std::string& file,
                               const std::string& pbn,
                               const std::string& ext) const;

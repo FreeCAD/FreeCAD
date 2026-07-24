@@ -22,8 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <boost/regex.hpp>
 #include <cassert>
+#include <cstring>
 #include <sstream>
 #include <string>
 #include <cmath>
@@ -224,7 +224,7 @@ int App::validRow(const std::string& rowstr)
 
 bool App::validColumn(const std::string& colstr)
 {
-    return boost::regex_match(colstr, boost::regex("[A-Z]{1,3}"));
+    return std::regex_match(colstr, std::regex("[A-Z]{1,3}"));
 }
 
 /**
@@ -241,10 +241,10 @@ App::CellAddress App::stringToAddress(const char* strAddress, bool silent)
 {
     assert(strAddress);
 
-    static boost::regex e("(\\$?[A-Z]{1,2})(\\$?[0-9]{1,5})");
-    boost::cmatch cm;
+    static std::regex e("(\\$?[A-Z]{1,2})(\\$?[0-9]{1,5})");
+    std::cmatch cm;
 
-    if (boost::regex_match(strAddress, cm, e)) {
+    if (std::regex_match(strAddress, cm, e)) {
         bool absCol = (cm[1].first[0] == '$');
         std::string r, c;
         if (absCol) {
