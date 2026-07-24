@@ -451,7 +451,7 @@ for ProjectionGroups</string>
              </sizepolicy>
             </property>
             <property name="toolTip">
-             <string>Open the folder containing all available SVG patterns and where you can add your custom svg files. Note: PAT files are in a sibling folder called PAT. If you add a custom file you will need to close and re-open the preference dialog.</string>
+             <string>Opens the folder containing all available SVG patterns, where custom SVG files can be added. PAT files are in a sibling folder called PAT. Adding a custom file requires closing and reopening the preference dialog.</string>
             </property>
             <property name="icon">
              <iconset resource="Resources/resource.qrc">
