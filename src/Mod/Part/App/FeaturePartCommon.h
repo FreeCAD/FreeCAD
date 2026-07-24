@@ -54,7 +54,7 @@ enum CommonBehavior
     CommonOfFirstAndRest,
 };
 
-class PartExport MultiCommon: public Part::Feature
+class PartExport MultiCommon: public Part::RefinableFeature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::MultiCommon);
 
@@ -63,7 +63,6 @@ public:
 
     App::PropertyLinkList Shapes;
     PropertyShapeHistory History;
-    App::PropertyBool Refine;
     App::PropertyEnumeration Behavior;
 
     /** @name methods override feature */
