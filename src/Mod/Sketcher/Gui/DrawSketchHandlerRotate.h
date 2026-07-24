@@ -150,7 +150,7 @@ private:
 
     static double closestContinuousAngle(double angle, double previousAngle)
     {
-        if (std::abs(angle) < Precision::Confusion()) {
+        if (std::abs(angle) < Precision::Angular()) {
             return 0.0;
         }
 
