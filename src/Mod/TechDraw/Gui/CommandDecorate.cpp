@@ -416,7 +416,7 @@ void CmdTechDrawHatchFace::activated(int iMsg)
         QMessageBox::StandardButton rc = QMessageBox::question(
             Gui::getMainWindow(),
             QObject::tr("Replace Hatch?"),
-            QObject::tr("Some Faces in selection are already hatched. Replace existing hatches?"));
+            QObject::tr("Some faces in the selection are already hatched. Replace existing hatches?"));
         if (rc == QMessageBox::No || rc == QMessageBox::Cancel) {  // Or just check for Yes
             return;
         }
