@@ -188,6 +188,7 @@ public:
     void setPrettyPre();
     void setPrettySel();
     void setPrettyNormal();
+    void setPreviewMode(bool previewing);
 
     bool getGroupSelection() override;
     void setGroupSelection(bool isSelected) override;

@@ -63,11 +63,6 @@ void QGVNavStyleOCC::handleMousePressEvent(QMouseEvent *event)
 
 void QGVNavStyleOCC::handleMouseMoveEvent(QMouseEvent *event)
 {
-    if (getViewer()->isBalloonPlacing()) {
-        balloonCursorMovement(event);
-        return;
-    }
-
     //pan mode 1 - MMB + mouse movement
     if (QGuiApplication::mouseButtons() & Qt::MiddleButton) {
         if (panningActive) {
@@ -103,10 +98,6 @@ void QGVNavStyleOCC::handleMouseMoveEvent(QMouseEvent *event)
 
 void QGVNavStyleOCC::handleMouseReleaseEvent(QMouseEvent *event)
 {
-    if (getViewer()->isBalloonPlacing()) {
-        placeBalloon(event->pos());
-    }
-
     if (event->button() == Qt::MiddleButton) {
         //pan mode [Control] + MMB
         if (panningActive) {

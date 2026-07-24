@@ -61,11 +61,6 @@ void QGVNavStyleBlender::handleMouseMoveEvent(QMouseEvent *event)
 //                            QGuiApplication::mouseButtons() & Qt::MiddleButton,
 //                            QGuiApplication::keyboardModifiers().testFlag(Qt::ShiftModifier));
 
-    if (getViewer()->isBalloonPlacing()) {
-        balloonCursorMovement(event);
-        return;
-    }
-
     if ((QGuiApplication::mouseButtons() & Qt::LeftButton) &&
         (QGuiApplication::mouseButtons() & Qt::RightButton)) {
         //pan mode 1 - LMB + RMB
@@ -90,10 +85,6 @@ void QGVNavStyleBlender::handleMouseMoveEvent(QMouseEvent *event)
 void QGVNavStyleBlender::handleMouseReleaseEvent(QMouseEvent *event)
 {
 //    Base::Console().message("QGVNSBlender::handleMouseReleaseEvent() - button: %d buttons: %d\n", event->button(), event->buttons());
-    if (getViewer()->isBalloonPlacing()) {
-        placeBalloon(event->pos());
-    }
-
     if (panningActive) {
         //pan mode 1 - LMB + RMB + mouse move
         //stop panning if either button released

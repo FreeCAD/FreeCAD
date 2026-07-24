@@ -108,7 +108,7 @@ public:
     bool hasQView(App::DocumentObject* obj);
 
     void addBalloonToParent(QGIViewBalloon* balloon, QGIView* parent);
-    void createBalloon(QPointF origin, TechDraw::DrawView* parent);
+    TechDraw::DrawViewBalloon* createBalloon(QPointF origin, QPointF headPlacement, TechDraw::DrawView* parent);
 
     void addDimToParent(QGIViewDimension* dim, QGIView* parent);
     void addLeaderToParent(QGILeaderLine* leader, QGIView* parent);
