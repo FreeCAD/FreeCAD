@@ -24,7 +24,6 @@
 
 #include <unicode/uchar.h>
 #include <unicode/utf8.h>
-#include <unicode/locid.h>
 #include <chrono>
 #include <ctime>
 #include <iomanip>
@@ -44,8 +43,6 @@
 namespace
 {
 constexpr auto underscore = static_cast<UChar32>(U'_');
-std::string operatingSystemNumericLocale;
-
 bool isValidFirstChar(UChar32 c)
 {
     auto category = static_cast<UCharCategory>(u_charType(c));
@@ -310,36 +307,6 @@ std::string Base::Tools::currentDateTimeString()
     std::ostringstream out;
     out << std::put_time(&tmUtc, "%Y-%m-%dT%H:%M:%SZ");
     return out.str();
-}
-
-bool Base::Tools::isCLocaleName(std::string_view localeName)
-{
-    return localeName == "C" || localeName == "c" || localeName == "C.UTF-8" || localeName == "C.utf8"
-        || localeName == "c.utf8" || localeName == "POSIX" || localeName == "posix";
-}
-
-void Base::Tools::setOperatingSystemNumericLocale(std::string_view localeName)
-{
-    operatingSystemNumericLocale = localeName;
-}
-
-std::string Base::Tools::getOperatingSystemNumericLocale()
-{
-    return operatingSystemNumericLocale;
-}
-
-void Base::Tools::setIcuDefaultLocale(std::string_view icuLocaleId)
-{
-    UErrorCode status = U_ZERO_ERROR;
-
-    if (icuLocaleId.empty() || isCLocaleName(icuLocaleId)) {
-        icu::Locale::setDefault(icu::Locale("en_US_POSIX"), status);
-        return;
-    }
-
-    const std::string localeId(icuLocaleId);
-    const icu::Locale locale = icu::Locale::createFromName(localeId.c_str());
-    icu::Locale::setDefault(locale, status);
 }
 
 std::vector<std::string> Base::Tools::splitSubName(const std::string& subname)

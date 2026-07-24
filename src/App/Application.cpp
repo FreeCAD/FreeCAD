@@ -87,6 +87,7 @@
 #include <Base/GeometryPyCXX.h>
 #include <Base/Interpreter.h>
 #include <Base/MatrixPy.h>
+#include <Base/NumericFormatting.h>
 #include <Base/QuantityPy.h>
 #include <Base/ParameterPy.h>
 #include <Base/Persistence.h>
@@ -2129,6 +2130,11 @@ void initExceptions()
 void Application::init(int argc, char ** argv)
 {
     try {
+        // Establish the initial Base snapshot before application or GUI preferences can override it.
+        Base::publishNumericFormattingState(
+            Base::createNumericFormattingState()
+        );
+
         Base::SystemHandler::installNewHandler();
         Base::SystemHandler::installSegfaultHandler();
 

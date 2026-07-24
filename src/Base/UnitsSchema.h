@@ -33,6 +33,7 @@
 namespace Base
 {
 class Quantity;
+struct NumericFormattingState;
 
 /**
  * An individual schema object
@@ -52,10 +53,17 @@ public:
 
     std::string translate(const Quantity& quant) const;
     std::string translate(const Quantity& quant, double& factor, std::string& unitString) const;
+    std::string translate(
+        const Quantity& quant,
+        const NumericFormattingState& formatting,
+        double& factor,
+        std::string& unitString
+    ) const;
 
 private:
     [[nodiscard]] static std::string toLocale(
         const Quantity& quant,
+        const NumericFormattingState& formatting,
         double factor,
         const std::string& unitString
     );

@@ -27,7 +27,7 @@ protected:
     {
         _doc_name = App::GetApplication().getUniqueDocumentName("test");
         _this_doc = App::GetApplication().newDocument(_doc_name.c_str(), "testUser");
-        _this_obj = _this_doc -> addObject("Sketcher::SketchObject");
+        _this_obj = _this_doc -> addObject("App::GeoFeature");
         _source_name = std::string("this_origin");
         _source_prop = _this_obj -> addDynamicProperty("App::PropertyString", _source_name.c_str()); // property with length as string
         _target_name = std::string("this_length");

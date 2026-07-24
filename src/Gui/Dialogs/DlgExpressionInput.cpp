@@ -43,6 +43,7 @@
 
 #include "Dialogs/DlgExpressionInput.h"
 #include "ui_DlgExpressionInput.h"
+#include "NumericLocale.h"
 #include "Application.h"
 #include "Command.h"
 #include "Tools.h"
@@ -326,8 +327,9 @@ QPoint DlgExpressionInput::expressionPosition() const
 
 bool DlgExpressionInput::checkCyclicDependencyVarSet(const QString& text)
 {
+    const auto formatting = ::Gui::effectiveNumericFormattingState(ui->expression->locale());
     std::shared_ptr<Expression> expr(
-        ExpressionParser::parse(path.getDocumentObject(), text.toUtf8().constData())
+        ExpressionParser::parseUserInput(path.getDocumentObject(), text.toUtf8().constData(), formatting)
     );
 
     if (expr) {
@@ -353,8 +355,9 @@ bool DlgExpressionInput::checkCyclicDependencyVarSet(const QString& text)
 void DlgExpressionInput::checkExpression(const QString& text)
 {
     // now handle expression
+    const auto formatting = ::Gui::effectiveNumericFormattingState(ui->expression->locale());
     std::shared_ptr<Expression> expr(
-        ExpressionParser::parse(path.getDocumentObject(), text.toUtf8().constData())
+        ExpressionParser::parseUserInput(path.getDocumentObject(), text.toUtf8().constData(), formatting)
     );
 
     if (expr) {

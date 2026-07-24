@@ -31,6 +31,11 @@
 #include <Base/Quantity.h>
 #include <Base/Vector3D.h>
 
+namespace Base
+{
+struct NumericFormattingState;
+}
+
 namespace App
 {
 
@@ -632,6 +637,14 @@ protected:
 namespace ExpressionParser
 {
 AppExport ExpressionPtr parse(const App::DocumentObject* owner, const char* buffer);
+/// Parse user-entered expression text using the currently published numeric locale.
+AppExport ExpressionPtr parseUserInput(const App::DocumentObject* owner, const char* buffer);
+/// Parse user-entered expression text using an explicit numeric formatting snapshot.
+AppExport ExpressionPtr parseUserInput(
+    const App::DocumentObject* owner,
+    const char* buffer,
+    const Base::NumericFormattingState& formatting
+);
 AppExport std::unique_ptr<UnitExpression> parseUnit(const App::DocumentObject* owner, const char* buffer);
 AppExport ObjectIdentifier parsePath(const App::DocumentObject* owner, const char* buffer);
 AppExport bool isTokenAnIndentifier(const std::string& str);

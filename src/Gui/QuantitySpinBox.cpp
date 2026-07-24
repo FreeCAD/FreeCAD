@@ -39,14 +39,16 @@
 #include <App/DocumentObject.h>
 #include <App/ExpressionParser.h>
 #include <Base/Exception.h>
+#include <Base/NumericFormatting.h>
+#include <Base/NumericInput.h>
 #include <Base/UnitsApi.h>
-#include <Base/Tools.h>
 #include <Base/UnitsSchema.h>
 
 #include "QuantitySpinBox.h"
 #include "QuantitySpinBox_p.h"
 #include "Command.h"
 #include "Dialogs/DlgExpressionInput.h"
+#include "NumericLocale.h"
 #include "Tools.h"
 #include "Widgets.h"
 
@@ -126,7 +128,12 @@ public:
 
                 // Now translate the quantity into its string representation using the user-defined
                 // unit system
-                input = QString::fromStdString(Base::UnitsApi::schemaTranslate(result));
+                input = QString::fromStdString(
+                    Base::UnitsApi::schemaTranslate(
+                        result,
+                        Gui::effectiveNumericFormattingState(q->locale())
+                    )
+                );
             }
         }
 
@@ -139,30 +146,42 @@ public:
         const App::ObjectIdentifier& path
     ) const
     {
-        App::ObjectIdentifier pathtmp = path;
-        try {
-            QString copy = str;
-            copy.remove(locale.groupSeparator());
+        Q_Q(const QuantitySpinBox);
 
-            // Expression parser
-            std::shared_ptr<Expression> expr(
-                ExpressionParser::parse(path.getDocumentObject(), copy.toUtf8().constData())
-            );
-            if (expr) {
+        const auto formatting = Gui::effectiveNumericFormattingState(q->locale());
+
+        auto tryParse = [&](const QString& input) {
+            try {
+                // QuantitySpinBox accepts expressions, but its numeric literals use quantity-mode
+                // grouping rules before the canonical expression parser is invoked.
+                const auto canonical = Base::canonicalizeNumericInput(
+                    input.toStdString(),
+                    formatting,
+                    Base::NumericInputMode::Quantity
+                );
+                std::shared_ptr<Expression> expr(
+                    ExpressionParser::parse(path.getDocumentObject(), canonical.c_str())
+                );
+                if (!expr) {
+                    return false;
+                }
 
                 std::unique_ptr<Expression> res(expr->eval());
                 NumberExpression* n = freecad_cast<NumberExpression*>(res.get());
-                if (n) {
-                    result = n->getQuantity();
-                    value = result.getValue();
-                    return true;
+                if (!n) {
+                    return false;
                 }
+
+                result = n->getQuantity();
+                value = result.getValue();
+                return true;
             }
-        }
-        catch (Base::Exception&) {
-            return false;
-        }
-        return false;
+            catch (const Base::Exception&) {
+                return false;
+            }
+        };
+
+        return tryParse(str);
     }
     Base::Quantity validateAndInterpret(
         QString& input,
@@ -571,8 +590,7 @@ bool QuantitySpinBox::isNormalized()
     // 1. We consider every string that does not contain operators as normalized
     // 2. If it does contain operators we check if it differs from normalized input - as some
     //    operators like - can be allowed even in normalized case.
-    return !d->validStr.contains(operators)
-        || d->validStr.toStdString() == d->quantity.getUserString();
+    return !d->validStr.contains(operators) || d->validStr == getUserString(d->quantity);
 }
 
 void QuantitySpinBox::setValue(const Base::Quantity& value)
@@ -874,26 +892,20 @@ void QuantitySpinBox::clearSchema()
 QString QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor, QString& unitString) const
 {
     Q_D(const QuantitySpinBox);
+    const auto formatting = Gui::effectiveNumericFormattingState(locale());
     std::string unitStr;
-    const std::string str = d->scheme ? val.getUserString(d->scheme.get(), factor, unitStr)
-                                      : val.getUserString(factor, unitStr);
+    const std::string str = d->scheme
+        ? d->scheme->translate(val, formatting, factor, unitStr)
+        : Base::UnitsApi::schemaTranslate(val, formatting, factor, unitStr);
     unitString = QString::fromStdString(unitStr);
     return QString::fromStdString(str);
 }
 
 QString QuantitySpinBox::getUserString(const Base::Quantity& val) const
 {
-    Q_D(const QuantitySpinBox);
-    std::string str;
-    if (d->scheme) {
-        double factor;
-        std::string unitString;
-        str = val.getUserString(d->scheme.get(), factor, unitString);
-    }
-    else {
-        str = val.getUserString();
-    }
-    return QString::fromStdString(str);
+    double factor;
+    QString unitString;
+    return getUserString(val, factor, unitString);
 }
 
 void QuantitySpinBox::setExpression(std::shared_ptr<Expression> expr)
@@ -1115,13 +1127,7 @@ Base::Quantity QuantitySpinBox::valueFromText(const QString& text) const
     QString copy = text;
     QValidator::State state = QValidator::Acceptable;
     const App::ObjectIdentifier& path = getPath();
-    Base::Quantity quant = d->validateAndInterpret(copy, state, path);
-    if (state != QValidator::Acceptable) {
-        fixup(copy);
-        quant = d->validateAndInterpret(copy, state, path);
-    }
-
-    return quant;
+    return d->validateAndInterpret(copy, state, path);
 }
 
 QValidator::State QuantitySpinBox::validate(QString& text, int& pos) const
@@ -1137,7 +1143,7 @@ QValidator::State QuantitySpinBox::validate(QString& text, int& pos) const
 
 void QuantitySpinBox::fixup(QString& input) const
 {
-    input.remove(locale().groupSeparator());
+    (void)input;
 }
 
 

@@ -1153,6 +1153,7 @@ SET(Widget_CPP_SRCS
     NotificationArea.cpp
     PrefWidgets.cpp
     InputField.cpp
+    NumericLocale.cpp
     ProgressBar.cpp
     ProgressDialog.cpp
     QuantitySpinBox.cpp

@@ -31,6 +31,7 @@
 
 namespace Base
 {
+struct NumericFormattingState;
 class UnitsSchema;
 
 struct BaseExport QuantityFormat
@@ -163,6 +164,10 @@ public:
     std::string getSafeUserString() const;
 
     static Quantity parse(const std::string& string);
+    /** Parse quantity text using the currently published user-input locale. */
+    static Quantity parseUserInput(const std::string& string);
+    /** Parse quantity text using an explicit numeric formatting snapshot. */
+    static Quantity parseUserInput(const std::string& string, const NumericFormattingState& formatting);
 
     /// returns the unit of the quantity
     const Unit& getUnit() const

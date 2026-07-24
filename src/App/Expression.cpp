@@ -51,6 +51,8 @@
 #include <App/PropertyUnits.h>
 #include <Base/Interpreter.h>
 #include <Base/MatrixPy.h>
+#include <Base/NumericFormatting.h>
+#include <Base/NumericInput.h>
 #include <Base/PlacementPy.h>
 #include <Base/QuantityPy.h>
 #include <Base/RotationPy.h>
@@ -3782,6 +3784,26 @@ ExpressionPtr App::ExpressionParser::parse(const App::DocumentObject* owner, con
     return std::exchange(ScanResult, nullptr);
 }
 
+ExpressionPtr App::ExpressionParser::parseUserInput(
+    const App::DocumentObject* owner,
+    const char* buffer
+)
+{
+    return parseUserInput(owner, buffer, Base::currentNumericFormattingState());
+}
+
+ExpressionPtr App::ExpressionParser::parseUserInput(
+    const App::DocumentObject* owner,
+    const char* buffer,
+    const Base::NumericFormattingState& formatting
+)
+{
+    const auto canonical = Base::canonicalizeNumericInput(
+        buffer, formatting, Base::NumericInputMode::Expression
+    );
+    return parse(owner, canonical.c_str());
+}
+
 std::unique_ptr<UnitExpression> ExpressionParser::parseUnit(
     const App::DocumentObject* owner,
     const char* buffer
@@ -3865,4 +3887,3 @@ bool ExpressionParser::isTokenAUnit(const std::string & str)
 #if defined(__clang__)
 # pragma clang diagnostic pop
 #endif
-

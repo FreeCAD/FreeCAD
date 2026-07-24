@@ -32,6 +32,8 @@
 #include <fmt/format.h>
 
 #include "Exception.h"
+#include "NumericFormatting.h"
+#include "NumericInput.h"
 #include "Quantity.h"
 #include "Tools.h"
 #include "UnitsApi.h"
@@ -299,7 +301,7 @@ std::string Quantity::getSafeUserString() const
     if (myValue != 0.0) {
         bool useFallback {false};
         try {
-            useFallback = (parse(userStr).getValue() == 0);
+            useFallback = (parseUserInput(userStr).getValue() == 0);
         }
         catch (const Base::ParserError&) {
             useFallback = true;
@@ -605,6 +607,16 @@ private:
 #elif defined(__GNUC__)
 # pragma GCC diagnostic pop
 #endif
+
+Quantity Quantity::parseUserInput(const std::string& string)
+{
+    return parseUserInput(string, currentNumericFormattingState());
+}
+
+Quantity Quantity::parseUserInput(const std::string& string, const NumericFormattingState& formatting)
+{
+    return Quantity::parse(canonicalizeNumericInput(string, formatting, NumericInputMode::Quantity));
+}
 
 Quantity Quantity::parse(const std::string& string)
 {
