@@ -157,6 +157,10 @@ def make_circle(radius, placement=None, face=None, startangle=None, endangle=Non
     return obj
 
 
-makeCircle = make_circle
+def makeCircle(*args, **kwarg):
+    """DEPRECATED. Use 'make_circle'."""
+    utils.use_instead("make_circle")
+    return make_circle(*args, **kwarg)
+
 
 ## @}

@@ -115,6 +115,10 @@ def make_bspline(pointslist, closed=False, placement=None, face=None, support=No
     return obj
 
 
-makeBSpline = make_bspline
+def makeBSpline(*args, **kwarg):
+    """DEPRECATED. Use 'make_bspline'."""
+    utils.use_instead("make_bspline")
+    return make_bspline(*args, **kwarg)
+
 
 ## @}

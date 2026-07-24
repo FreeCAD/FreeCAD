@@ -314,7 +314,7 @@ class NativeIFCTest(unittest.TestCase):
         beam = Arch.makeStructure(None, 20, 200, 20)
         beam.IfcType = "Beam"
         beam = ifc_tools.aggregate(beam, storey)
-        rect = Draft.makeRectangle(200, 200)
+        rect = Draft.make_rectangle(200, 200)
         slab = Arch.makeStructure(rect, height=20)
         slab.IfcType = "Slab"
         slab = ifc_tools.aggregate(slab, storey)

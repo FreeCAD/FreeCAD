@@ -1802,7 +1802,7 @@ def joinWalls(walls, delete=False, deletebase=False):
                 else:
                     newSk = None
             if newSk:
-                sk = Draft.makeSketch(base.Base, autoconstraints=True, addTo=newSk)
+                sk = Draft.make_sketch(base.Base, autoconstraints=True, addTo=newSk)
                 base.Base = sk
             else:
                 sk = base.Base
@@ -2079,7 +2079,7 @@ def makeWindow(
     from draftutils import todo
 
     if baseobj and Draft.getType(baseobj) == "Window" and FreeCAD.ActiveDocument:
-        window = Draft.clone(baseobj)
+        window = Draft.make_clone(baseobj)
         return window
 
     window = _initializeArchObject(

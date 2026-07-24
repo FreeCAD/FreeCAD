@@ -373,7 +373,7 @@ def make_label(
 def makeLabel(
     targetpoint=None, target=None, direction=None, distance=None, labeltype=None, placement=None
 ):
-    """Create a Label. DEPRECATED. Use 'make_label'."""
+    """DEPRECATED. Use 'make_label'."""
     utils.use_instead("make_label")
 
     _name = "makeLabel"

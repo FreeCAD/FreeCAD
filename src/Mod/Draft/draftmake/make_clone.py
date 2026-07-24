@@ -158,6 +158,10 @@ def make_clone(obj, delta=None, forcedraft=False):
     return cl
 
 
-clone = make_clone
+def clone(*args, **kwarg):
+    """DEPRECATED. Use 'make_clone'."""
+    utils.use_instead("make_clone")
+    return make_clone(*args, **kwarg)
+
 
 ## @}

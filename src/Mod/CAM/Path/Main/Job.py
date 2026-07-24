@@ -79,7 +79,7 @@ def isResourceClone(obj, propLink, resourceName):
 
 
 def createResourceClone(obj, orig, name, icon):
-    clone = Draft.clone(orig)
+    clone = Draft.make_clone(orig)
     clone.Label = "%s-%s" % (name, orig.Label)
     clone.addProperty("App::PropertyString", "PathResource")
     clone.PathResource = name

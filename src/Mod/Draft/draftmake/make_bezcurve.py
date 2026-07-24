@@ -111,6 +111,10 @@ def make_bezcurve(pointslist, closed=False, placement=None, face=None, support=N
     return obj
 
 
-makeBezCurve = make_bezcurve
+def makeBezCurve(*args, **kwarg):
+    """DEPRECATED. Use 'make_bezcurve'."""
+    utils.use_instead("make_bezcurve")
+    return make_bezcurve(*args, **kwarg)
+
 
 ## @}

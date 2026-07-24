@@ -101,6 +101,10 @@ def make_rectangle(length, height=0, placement=None, face=None, support=None):
     return obj
 
 
-makeRectangle = make_rectangle
+def makeRectangle(*args, **kwarg):
+    """DEPRECATED. Use 'make_rectangle'."""
+    utils.use_instead("make_rectangle")
+    return make_rectangle(*args, **kwarg)
+
 
 ## @}

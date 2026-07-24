@@ -129,6 +129,10 @@ def make_wire(pointslist, closed=False, placement=None, face=None, support=None,
     return obj
 
 
-makeWire = make_wire
+def makeWire(*args, **kwarg):
+    """DEPRECATED. Use 'make_wire'."""
+    utils.use_instead("make_wire")
+    return make_wire(*args, **kwarg)
+
 
 ## @}

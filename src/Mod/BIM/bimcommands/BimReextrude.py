@@ -87,7 +87,7 @@ class BIM_Reextrude:
             if wirable:
                 # recompose the base wire
                 verts = [v.Point for v in fac.Wires[0].OrderedVertexes]
-                wir = Draft.makeWire(verts, closed=True)
+                wir = Draft.make_wire(verts, closed=True)
             else:
                 # there are curves. Unable to make a wire. We just use the base face
                 wir = FreeCAD.ActiveDocument.addObject("Part::Feature", "Face")

@@ -121,7 +121,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
         for deg in range(self.RotateBy, 360, self.RotateBy):
             self.tearDown()
             self.doc = FreeCAD.open(FreeCAD.getHomePath() + "Mod/CAM/CAMTests/test_holes00.fcstd")
-            self.clone = Draft.clone(self.doc.Body)
+            self.clone = Draft.make_clone(self.doc.Body)
             self.clone.Placement.Rotation = FreeCAD.Rotation(deg, 0, 0)
 
             self.job = PathJob.Create("Job", [self.clone])

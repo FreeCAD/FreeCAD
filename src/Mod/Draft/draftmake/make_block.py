@@ -65,6 +65,10 @@ def make_block(objectslist):
     return obj
 
 
-makeBlock = make_block
+def makeBlock(*args, **kwarg):
+    """DEPRECATED. Use 'make_block'."""
+    utils.use_instead("make_block")
+    return make_block(*args, **kwarg)
+
 
 ## @}

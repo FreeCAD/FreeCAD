@@ -39,7 +39,7 @@ class TestArchComponent(TestArchBase.TestArchBase):
 
     def testAdd(self):
         App.Console.PrintLog("Checking Arch Add...\n")
-        l = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(2, 0, 0))
+        l = Draft.make_line(App.Vector(0, 0, 0), App.Vector(2, 0, 0))
         w = Arch.makeWall(l, width=0.2, height=2)
         sb = Part.makeBox(1, 1, 1)
         b = App.ActiveDocument.addObject("Part::Feature", "Box")
@@ -123,7 +123,7 @@ class TestArchComponent(TestArchBase.TestArchBase):
 
     def testRemove(self):
         App.Console.PrintLog("Checking Arch Remove...\n")
-        l = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(2, 0, 0))
+        l = Draft.make_line(App.Vector(0, 0, 0), App.Vector(2, 0, 0))
         w = Arch.makeWall(l, width=0.2, height=2, align="Right")
         sb = Part.makeBox(1, 1, 1)
         b = App.ActiveDocument.addObject("Part::Feature", "Box")
@@ -163,14 +163,14 @@ class TestArchComponent(TestArchBase.TestArchBase):
             points.append(App.Vector(x, y, 0))
 
         # Create Draft objects
-        bspline = Draft.makeBSpline(points, closed=False)
-        closingLine = Draft.makeLine(points[-1], points[0])
+        bspline = Draft.make_bspline(points, closed=False)
+        closingLine = Draft.make_line(points[-1], points[0])
         doc.recompute()
 
         # Create sketch
         # We do this because Draft.make_wires does not support B-splines
         # and we need a closed wire for the slab
-        sketch = Draft.makeSketch([bspline, closingLine], autoconstraints=True, delete=True)
+        sketch = Draft.make_sketch([bspline, closingLine], autoconstraints=True, delete=True)
         if sketch is None:
             self.fail("Sketch creation failed")
         sketch.recompute()
@@ -240,7 +240,7 @@ class TestArchComponent(TestArchBase.TestArchBase):
         ]
 
         # Create wire with automatic face creation
-        wire = Draft.makeWire(points, closed=True, face=True)
+        wire = Draft.make_wire(points, closed=True, face=True)
         if not wire:
             self.fail(f"Wire creation failed with points: {points}\n")
         doc.recompute()
@@ -302,7 +302,7 @@ class TestArchComponent(TestArchBase.TestArchBase):
         """
 
         # Create a basic wall
-        wall_base = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(3000, 0, 0))
+        wall_base = Draft.make_line(App.Vector(0, 0, 0), App.Vector(3000, 0, 0))
         wall = Arch.makeWall(wall_base, width=200, height=2500)
 
         # Create a window to be added to the wall
@@ -311,7 +311,7 @@ class TestArchComponent(TestArchBase.TestArchBase):
 
         # Create a Draft Rectangle for the window's Base. Arch.makeWindow can work with
         # either a Wire or a Face.
-        window_base = Draft.makeRectangle(length=window_width, height=window_height)
+        window_base = Draft.make_rectangle(length=window_width, height=window_height)
 
         window = Arch.makeWindow(baseobj=window_base)
         window.Width = window_width  # Manually set as makeWindow(base) doesn't
@@ -361,7 +361,7 @@ class TestArchComponent(TestArchBase.TestArchBase):
             return not (is_vertical(normal_z) or is_horizontal(normal_z))
 
         with self.subTest(case="Standard Wall"):
-            line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(10, 0, 0))
+            line = Draft.make_line(App.Vector(0, 0, 0), App.Vector(10, 0, 0))
             wall = Arch.makeWall(line, width=2, height=10)
             self.document.recompute()
 
@@ -384,7 +384,7 @@ class TestArchComponent(TestArchBase.TestArchBase):
 
         with self.subTest(case="Closed Extrusion"):
             points = [App.Vector(0, 0, 0), App.Vector(10, 0, 0), App.Vector(5, 5, 0)]
-            bspline = Draft.makeBSpline(points, closed=True)
+            bspline = Draft.make_bspline(points, closed=True)
             structure = Arch.makeStructure(bspline, height=10)
             self.document.recompute()
 
@@ -405,7 +405,7 @@ class TestArchComponent(TestArchBase.TestArchBase):
             )
 
         with self.subTest(case="Cylinder"):
-            circle = Draft.makeCircle(radius=5)
+            circle = Draft.make_circle(radius=5)
             struct = Arch.makeStructure(circle, height=20)
             self.document.recompute()
 
@@ -430,10 +430,10 @@ class TestArchComponent(TestArchBase.TestArchBase):
         with self.subTest(case="Generic Vertical Surface"):
             # Create two B-spline curves, vertically aligned
             points1 = [App.Vector(0, 0, 0), App.Vector(5, 5, 0), App.Vector(10, 0, 0)]
-            bspline1 = Draft.makeBSpline(points1, closed=False)
+            bspline1 = Draft.make_bspline(points1, closed=False)
 
             points2 = [App.Vector(0, 0, 20), App.Vector(5, 5, 20), App.Vector(10, 0, 20)]
-            bspline2 = Draft.makeBSpline(points2, closed=False)
+            bspline2 = Draft.make_bspline(points2, closed=False)
 
             # Create a ruled surface (Loft)
             loft = self.document.addObject("Part::Loft", "GenericVerticalLoft")
@@ -499,7 +499,7 @@ class TestArchComponent(TestArchBase.TestArchBase):
         Verify that VerticalArea property updates correctly even when the result is zero.
         """
 
-        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(10, 0, 0))
+        line = Draft.make_line(App.Vector(0, 0, 0), App.Vector(10, 0, 0))
         wall = Arch.makeWall(line, width=2, height=10)
         self.document.recompute()
 
@@ -550,9 +550,9 @@ class TestArchComponent(TestArchBase.TestArchBase):
         # Create generic geometry (Ruled Surface / Loft)
         # Reuse the B-Spline logic that triggers the fallback projection path
         points1 = [App.Vector(40, 0, 0), App.Vector(45, 5, 0), App.Vector(50, 0, 0)]
-        bspline1 = Draft.makeBSpline(points1, closed=False)
+        bspline1 = Draft.make_bspline(points1, closed=False)
         points2 = [App.Vector(40, 0, 10), App.Vector(45, 5, 10), App.Vector(50, 0, 10)]
-        bspline2 = Draft.makeBSpline(points2, closed=False)
+        bspline2 = Draft.make_bspline(points2, closed=False)
 
         loft = self.document.addObject("Part::Loft", "IntegrationLoft")
         loft.Sections = [bspline1, bspline2]
@@ -811,13 +811,13 @@ class TestArchComponent(TestArchBase.TestArchBase):
         self.printTestMessage(operation)
 
         # Create the host wall
-        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(4000, 0, 0))
+        line = Draft.make_line(App.Vector(0, 0, 0), App.Vector(4000, 0, 0))
         wall = Arch.makeWall(line, width=200, height=3000, align="Center")
         self.document.recompute()
         initial_volume = wall.Shape.Volume
 
         # Create a prototype window
-        rect = Draft.makeRectangle(length=1000, height=1500)
+        rect = Draft.make_rectangle(length=1000, height=1500)
         rect.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)
         rect.Placement.Base = App.Vector(0, 0, 0)
         self.document.recompute()
@@ -852,13 +852,13 @@ class TestArchComponent(TestArchBase.TestArchBase):
         self.printTestMessage(operation)
 
         # Create the host wall
-        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(4000, 0, 0))
+        line = Draft.make_line(App.Vector(0, 0, 0), App.Vector(4000, 0, 0))
         wall = Arch.makeWall(line, width=200, height=3000, align="Center")
         self.document.recompute()
         initial_volume = wall.Shape.Volume
 
         # Create a prototype window
-        rect = Draft.makeRectangle(length=1000, height=1500)
+        rect = Draft.make_rectangle(length=1000, height=1500)
         rect.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)
         rect.Placement.Base = App.Vector(0, 0, 0)
         self.document.recompute()
@@ -890,13 +890,13 @@ class TestArchComponent(TestArchBase.TestArchBase):
         self.printTestMessage(operation)
 
         # Create the host wall
-        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(4000, 0, 0))
+        line = Draft.make_line(App.Vector(0, 0, 0), App.Vector(4000, 0, 0))
         wall = Arch.makeWall(line, width=200, height=3000, align="Center")
         self.document.recompute()
         initial_volume = wall.Shape.Volume
 
         # Create a prototype window
-        rect = Draft.makeRectangle(length=1000, height=1500)
+        rect = Draft.make_rectangle(length=1000, height=1500)
         rect.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)
         rect.Placement.Base = App.Vector(0, 0, 0)
         self.document.recompute()
