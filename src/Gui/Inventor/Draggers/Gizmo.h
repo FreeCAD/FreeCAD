@@ -171,6 +171,7 @@ private:
     LinearGizmo* linearGizmo = nullptr;
     QMetaObject::Connection quantityChangedConnection;
     QMetaObject::Connection formulaDialogConnection;
+    double lastDragOffset = 0.0;
 
     void draggingStarted();
     void draggingFinished();
