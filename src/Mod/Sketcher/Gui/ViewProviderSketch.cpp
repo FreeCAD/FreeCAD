@@ -22,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <boost/bind/bind.hpp>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbLine.h>
 #include <Inventor/SbTime.h>
@@ -4276,7 +4275,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     connectRedoDocument = getDocument()->signalRedoDocument.connect(
         std::bind(&ViewProviderSketch::slotRedoDocument, this, sp::_1));
     connectSolverUpdate = getSketchObject()
-            ->signalSolverUpdate.connect(boost::bind(&ViewProviderSketch::slotSolverUpdate, this));
+            ->signalSolverUpdate.connect(std::bind(&ViewProviderSketch::slotSolverUpdate, this));
     //NOLINTEND
 
     // There are geometry extensions introduced by the solver and geometry extensions introduced by
