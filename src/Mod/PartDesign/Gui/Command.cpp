@@ -33,6 +33,8 @@
 #include <TopoDS_Face.hxx>
 
 
+#include <App/Expression.h>
+#include <App/ObjectIdentifier.h>
 #include <App/Origin.h>
 #include <App/Part.h>
 #include <Base/Tools.h>
@@ -76,6 +78,26 @@ FC_LOG_LEVEL_INIT("PartDesign", true, true)
 using namespace std;
 using namespace Attacher;
 
+static void copyPlacementExpressions(App::DocumentObject* target, const App::DocumentObject* source)
+{
+    if (!target || !source) {
+        return;
+    }
+
+    for (const auto& it : source->ExpressionEngine.getExpressions()) {
+        if (!it.second || it.first.getPropertyName() != "Placement") {
+            continue;
+        }
+
+        try {
+            auto path = App::ObjectIdentifier::parse(target, it.first.toString().c_str());
+            target->setExpression(path, App::Expression::parse(target, it.second->toString()));
+        }
+        catch (const Base::Exception& e) {
+            FC_WARN("Failed to copy placement expression: " << e.what());
+        }
+    }
+}
 
 //===========================================================================
 // PartDesign_Datum
@@ -542,6 +564,7 @@ void CmdPartDesignClone::activated(int iMsg)
         // In the second step set the link of the base feature
         Gui::cmdAppObject(cloneObj, std::stringstream() << "BaseFeature = " << objCmd);
         Gui::cmdAppObject(cloneObj, std::stringstream() << "Placement = " << objCmd << ".Placement");
+        copyPlacementExpressions(cloneObj, obj);
         Gui::cmdAppObject(cloneObj, std::stringstream() << "setEditorMode('Placement', 0)");
 
         updateActive();
