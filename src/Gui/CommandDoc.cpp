@@ -79,8 +79,8 @@ StdCmdOpenGroup::StdCmdOpenGroup()
     : Command("Std_OpenGroup")
 {
     sGroup = "File";
-    sMenuText = QT_TR_NOOP("&Open...");
-    sToolTipText = QT_TR_NOOP("Open a document or import files.");
+    sMenuText = QT_TR_NOOP("&Open…");
+    sToolTipText = QT_TR_NOOP("Opens a document or imports files");
     sWhatsThis = "Std_OpenGroup";
     sStatusTip = sToolTipText;
     sPixmap = "document-open";
@@ -952,7 +952,7 @@ public:
     {
         sGroup = "File";
         sMenuText = QT_TR_NOOP("Save");
-        sToolTipText = QT_TR_NOOP("Save the active document.");
+        sToolTipText = QT_TR_NOOP("Saves the active document");
         sWhatsThis = "Std_SaveGroup";
         sStatusTip = sToolTipText;
 
