@@ -582,7 +582,7 @@ App::DocumentObjectExecReturn* Helix::execute()
         TopoDS_Shape result;
         if (sideShapes.empty()) {
             return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Error: No helix geometry was generated.")
+                QT_TRANSLATE_NOOP("Exception", "Error: No helix geometry was generated!")
             );
         }
         else if (sideShapes.size() == 1) {
