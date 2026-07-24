@@ -37,9 +37,11 @@
 
 # include <boost/algorithm/string.hpp>
 # include <boost/program_options.hpp>
-# include <boost/date_time/posix_time/posix_time.hpp>
 # include <boost/scope_exit.hpp>
 # include <chrono>
+# include <ctime>
+# include <iomanip>
+# include <sstream>
 # include <optional>
 # include <memory>
 # include <utility>
@@ -3240,8 +3242,17 @@ void Application::recomputeWorker()
 
 void Application::logStatus()
 {
-    const std::string time_str = boost::posix_time::to_simple_string(
-        boost::posix_time::second_clock::local_time());
+    const std::time_t rawTime = std::chrono::system_clock::to_time_t(
+        std::chrono::system_clock::now());
+    std::tm localTime {};
+#if defined(_WIN32)
+    localtime_s(&localTime, &rawTime);
+#else
+    localtime_r(&rawTime, &localTime);
+#endif
+    std::ostringstream timeStream;
+    timeStream << std::put_time(&localTime, "%Y-%b-%d %H:%M:%S");
+    const std::string time_str = timeStream.str();
     Base::Console().log("Time = %s\n", time_str.c_str());
 
     for (const auto & It : mConfig) {
