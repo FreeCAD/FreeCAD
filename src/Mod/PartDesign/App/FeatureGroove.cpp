@@ -44,7 +44,7 @@ Groove::Groove()
     const double fullAngle = 360.0;
     const double emptyAngle = 0.0;
 
-    ADD_PROPERTY_TYPE(SideType, (0L), "Groove", App::Prop_None, "Type of sides definition");
+    ADD_PROPERTY_TYPE(SideType, (0L), "Groove", App::Prop_None, "Type of side definition");
     ADD_PROPERTY_TYPE(Type, (0L), "Side1", App::Prop_None, "Groove type for side 1");
     ADD_PROPERTY_TYPE(Type2, (0L), "Side2", App::Prop_None, "Groove type for side 2");
     SideType.setEnums(SideTypesEnums);
