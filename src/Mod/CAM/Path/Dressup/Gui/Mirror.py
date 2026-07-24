@@ -34,7 +34,7 @@ translate = FreeCAD.Qt.translate
 
 
 class ObjectDressup:
-    def __init__(self, obj):
+    def __init__(self, obj, base):
         obj.addProperty(
             "App::PropertyLink",
             "Base",
@@ -67,12 +67,15 @@ class ObjectDressup:
         )
         obj.addProperty(
             "App::PropertyLinkSubGlobal",
-            "Reference",
+            "ReferenceOffset",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Define the reference edge or plane for mirroring"),
+            QT_TRANSLATE_NOOP("App::Property", "Center point of selected shape defines offset"),
         )
-        obj.MirrorAxis = ("X", "Y", "XY", "Reference", "None")
+        obj.MirrorAxis = ("X", "Y", "XY", "None")
+        self.obj = obj
         obj.Proxy = self
+        obj.Base = base
+
         self.setEditorModes(obj)
 
     def dumps(self):
@@ -85,19 +88,29 @@ class ObjectDressup:
         self.setEditorModes(obj)
 
     def onChanged(self, obj, prop):
-        if prop == "MirrorAxis":
+        if prop == "CenterModel":
             self.setEditorModes(obj)
+        if prop == "ReferenceOffset":
+            self.setMirrorAxis(obj)
         elif prop == "Path" and obj.ViewObject:
             obj.ViewObject.signalChangeIcon()
 
     def setEditorModes(self, obj):
-        centerModelMode = 2 if obj.MirrorAxis in ("None", "Reference") else 0
-        keepBasePathMode = 2 if obj.MirrorAxis == "None" else 0
-        referenceMode = 0 if obj.MirrorAxis == "Reference" else 2
+        referenceMode = 2 if obj.CenterModel else 0
+        obj.setEditorMode("ReferenceOffset", referenceMode)
 
-        obj.setEditorMode("CenterModel", centerModelMode)
-        obj.setEditorMode("KeepBasePath", keepBasePathMode)
-        obj.setEditorMode("Reference", referenceMode)
+    def setMirrorAxis(self, obj):
+        if obj.ReferenceOffset:
+            model, subNames = obj.ReferenceOffset
+            if subNames:
+                sub = model.Shape.getElement(subNames[0])
+                bb = sub.BoundBox
+            else:
+                bb = model.Shape.BoundBox
+            if Path.Geom.isRoughly(bb.XLength, 0) and not Path.Geom.isRoughly(bb.YLength, 0):
+                obj.MirrorAxis = "Y"
+            elif Path.Geom.isRoughly(bb.YLength, 0) and not Path.Geom.isRoughly(bb.XLength, 0):
+                obj.MirrorAxis = "X"
 
     def execute(self, obj):
         if not obj.Base:
@@ -124,46 +137,40 @@ class ObjectDressup:
             obj.Path = obj.Base.Path
             return
 
+        bb = None
+        if obj.CenterModel:  # calculate offset for center of model
+            baseOp = PathDressup.baseOp(obj)
+            if (
+                getattr(baseOp, "Base", None)
+                and isinstance(baseOp.Base, (list, tuple))
+                and isinstance(baseOp.Base[0], (list, tuple))
+                and baseOp.Base[0][0].isDerivedFrom("Part::Feature")
+            ):  # get model from base operation
+                model = baseOp.Base[0][0]
+            else:  # otherwise get first model from Model group of the Job
+                job = PathUtils.findParentJob(obj)
+                model = job.Model.Group[0]
+            bb = model.Shape.BoundBox
+        elif obj.ReferenceOffset:  # calculate offset for reference shape
+            model, subNames = obj.ReferenceOffset
+            if hasattr(model, "Shape"):
+                if subNames:
+                    sub = model.Shape.getElement(subNames[0])
+                    bb = sub.BoundBox
+                else:
+                    bb = model.Shape.BoundBox
+
         offsetX = obj.Offset.x
         offsetY = obj.Offset.y
         offsetZ = obj.Offset.z
-
-        if obj.MirrorAxis == "Reference":
-            if not obj.Reference or not obj.Reference[1]:
-                obj.Path = obj.Base.Path
-                return
-            model, subName = obj.Reference
-            sub = model.Shape.getElement(subName[0])
-            bb = sub.BoundBox
-            if Path.Geom.isRoughly(bb.XLength, 0):
-                mirrorAxis = "Y"
-                offsetX += 2 * bb.XMin
-            elif Path.Geom.isRoughly(bb.YLength, 0):
-                mirrorAxis = "X"
-                offsetY += 2 * bb.YMin
-        else:
-            mirrorAxis = obj.MirrorAxis
-
-        # Calculate offset for center of model
-        if obj.CenterModel and obj.MirrorAxis != "Reference":
-            # if possible get model from base operation
-            baseOp = PathDressup.baseOp(obj)
-            if (
-                hasattr(baseOp, "Base")
-                and isinstance(baseOp.Base, (list, tuple))
-                and baseOp.Base
-                and isinstance(baseOp.Base[0], (list, tuple))
-                and baseOp.Base[0]
-                and baseOp.Base[0][0].isDerivedFrom("Part::Feature")
-            ):
-                model = baseOp.Base[0][0]
+        if bb:
+            if obj.MirrorAxis == "Y":
+                offsetX += 2 * bb.Center.x
+            elif obj.MirrorAxis == "X":
+                offsetY += 2 * bb.Center.y
             else:
-                # otherwise get first model from Model group of the Job
-                job = PathUtils.findParentJob(obj)
-                model = job.Model.Group[0]
-
-            offsetX += model.Shape.BoundBox.XMax + model.Placement.Base.x
-            offsetY += model.Shape.BoundBox.YMax + model.Placement.Base.y
+                offsetX += 2 * bb.Center.x
+                offsetY += 2 * bb.Center.y
 
         commands = PathUtils.getPathWithPlacement(obj.Base).Commands
         for cmd in commands:
@@ -173,13 +180,13 @@ class ObjectDressup:
             else:
                 if cmd.x is not None:
                     # process X move
-                    if mirrorAxis in ("Y", "XY"):
+                    if obj.MirrorAxis in ("Y", "XY"):
                         cmd.x = -cmd.x
                     cmd.x += offsetX
 
                 if cmd.y is not None:
                     # process Y move
-                    if mirrorAxis in ("X", "XY"):
+                    if obj.MirrorAxis in ("X", "XY"):
                         cmd.y = -cmd.y
                     cmd.y += offsetY
 
@@ -187,15 +194,15 @@ class ObjectDressup:
                     # process Z move
                     cmd.z += offsetZ
 
-                if cmd.i is not None and mirrorAxis in ("Y", "XY"):
+                if cmd.i is not None and obj.MirrorAxis in ("Y", "XY"):
                     # process I (X offset) from Arc move
                     cmd.i = -cmd.i
 
-                if cmd.j is not None and mirrorAxis in ("X", "XY"):
+                if cmd.j is not None and obj.MirrorAxis in ("X", "XY"):
                     # process J (Y offset) from Arc move
                     cmd.j = -cmd.j
 
-                if mirrorAxis != "XY" and cmd.Name in Constants.GCODE_MOVE_ARC:
+                if obj.MirrorAxis != "XY" and cmd.Name in Constants.GCODE_MOVE_ARC:
                     # change direction of Arc move
                     if cmd.Name in Constants.GCODE_MOVE_CCW:
                         cmd.Name = "G2"
@@ -211,32 +218,30 @@ class ObjectDressup:
 
 class ViewProviderDressup:
     def __init__(self, vobj):
-        self.attach(vobj)
+        self.obj = vobj.Object
         vobj.Proxy = self
 
     def attach(self, vobj):
-        self.vobj = vobj
         self.obj = vobj.Object
+        self.panel = None
 
-    def dumps(self):
-        return
-
-    def loads(self, state):
-        return
-
-    def onChanged(self, vobj, prop):
-        return
+        if self.obj and self.obj.Base:
+            for i in self.obj.Base.InList:
+                if hasattr(i, "Group") and self.obj.Base.Name in [o.Name for o in i.Group]:
+                    i.Group = [o for o in i.Group if o.Name != self.obj.Base.Name]
+            if self.obj.Base.ViewObject:
+                self.obj.Base.ViewObject.Visibility = False
 
     def claimChildren(self):
-        if hasattr(self.obj.Base, "InList"):
-            for i in self.obj.Base.InList:
-                if hasattr(i, "Group"):
-                    group = i.Group
-                    for g in group:
-                        if g.Name == self.obj.Base.Name:
-                            group.remove(g)
-                    i.Group = group
         return [self.obj.Base]
+
+    def setEdit(self, vobj, mode=0):
+        if mode == 1:
+            FreeCADGui.runCommand("Std_TransformManip")
+        return True
+
+    def unsetEdit(self, vobj, mode=0):
+        pass
 
     def onDelete(self, arg1=None, arg2=None):
         if arg1.Object and arg1.Object.Base:
@@ -247,10 +252,14 @@ class ViewProviderDressup:
             arg1.Object.Base = None
         return True
 
-    def setEdit(self, vobj, mode=0):
-        if mode == 1:
-            FreeCADGui.runCommand("Std_TransformManip")
-        return True
+    def dumps(self):
+        return None
+
+    def loads(self, state):
+        return None
+
+    def onChanged(self, vobj, prop):
+        return None
 
     def getIcon(self):
         if getattr(PathDressup.baseOp(self.obj), "Active", True):
@@ -280,19 +289,37 @@ class CommandPathDressup:
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction("Create Dress-up")
         FreeCADGui.addModule("Path.Dressup.Gui.Mirror")
-        FreeCADGui.addModule("PathScripts.PathUtils")
-        FreeCADGui.doCommand(
-            'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "MirrorDressup")'
-        )
-        FreeCADGui.doCommand("Path.Dressup.Gui.Mirror.ObjectDressup(obj)")
-        FreeCADGui.doCommand("baseOp = FreeCAD.ActiveDocument." + op.Name)
-        FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(baseOp)")
-        FreeCADGui.doCommand("obj.Base = baseOp")
-        FreeCADGui.doCommand("job.Proxy.addOperation(obj, baseOp)")
-        FreeCADGui.doCommand("Path.Dressup.Gui.Mirror.ViewProviderDressup(obj.ViewObject)")
-        FreeCADGui.doCommand("baseOp.Visibility = False")
-        FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()`
+        FreeCADGui.doCommand(f"base = FreeCAD.ActiveDocument.getObject('{op.Name}')")
+        FreeCADGui.doCommand("Path.Dressup.Gui.Mirror.Create(base)")
+        # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()`
         FreeCAD.ActiveDocument.recompute()
+
+
+def Create(baseObject, name="DressupMirror", mode=0):
+    """
+    Create(baseObject, name='DressupMirror', mode=0) … create mirror dressup object for the given base path.
+
+    import Path.Dressup.Gui.Mirror as mirror
+    mirror.Create(basePath)
+    """
+    if not baseObject.isDerivedFrom("Path::Feature"):
+        Path.Log.error(translate("CAM_DressupMirror", "The selected object is not a path") + "\n")
+        return None
+
+    if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
+        Path.Log.error(translate("CAM_DressupMirror", "Select a profile object"))
+        return None
+
+    FreeCAD.ActiveDocument.openTransaction("Create a DressupMirror")
+    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    ObjectDressup(obj, baseObject)
+    job = PathUtils.findParentJob(baseObject)
+    job.Proxy.addOperation(obj, baseObject)
+    ViewProviderDressup(obj.ViewObject)
+    FreeCAD.ActiveDocument.commitTransaction()
+    obj.ViewObject.Document.setEdit(obj.ViewObject, mode)
+
+    return obj
 
 
 if FreeCAD.GuiUp:
