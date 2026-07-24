@@ -46,6 +46,7 @@
 #include <QRegularExpressionMatch>
 #include <QScreen>
 #include <QSettings>
+#include <QSvgWidget>
 #include <QSignalMapper>
 #include <QStatusBar>
 #include <QThread>
@@ -87,6 +88,8 @@
 #include <Inventor/SoDB.h>
 #include <DAGView/DAGView.h>
 #include <TaskView/TaskView.h>
+
+#include <customtitlebarkit/MenuIntegration.h>
 
 #include "MainWindow.h"
 #include "Action.h"
@@ -361,13 +364,34 @@ struct MainWindowP
 /* TRANSLATOR Gui::MainWindow */
 
 MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
-    : QMainWindow(parent, f /*WDestructiveClose*/)
+    : CustomTitleBarWindow(
+          App::GetApplication()
+                  .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
+                  ->GetBool("CustomTitleBar", false)
+              ? Mode::Custom
+              : Mode::Native,
+          parent
+      )
 {
     d = new MainWindowP;
     d->splashscreen = nullptr;
     d->activeView = nullptr;
     d->whatsthis = false;
     d->assistant = new Assistant();
+
+    if (isCustomTitleBar()) {
+        if (!property("backend").toString().startsWith("mac")) {
+            auto* logoBtn = new QPushButton(this);
+            logoBtn->setObjectName("titleBarLogoBtn");
+            logoBtn->setIcon(Gui::BitmapFactory().iconFromTheme("freecad"));
+            logoBtn->setIconSize(QSize(24, 24));
+            logoBtn->setFixedSize(35, 35);
+            logoBtn->setFlat(true);
+            logoBtn->setCursor(Qt::PointingHandCursor);
+
+            setMenuIntegration(new FoldableMenuIntegration(logoBtn, this));
+        }
+    }
 
     // 1. Force Qt to switch to OpenGL mode, this prevents delay and flickering of the window
     // after opening project and prevent issues with double initialization of the window.
@@ -1313,7 +1337,7 @@ bool MainWindow::event(QEvent* e)
             return true;
         }
     }
-    return QMainWindow::event(e);
+    return CustomTitleBarWindow::event(e);
 }
 
 bool MainWindow::eventFilter(QObject* o, QEvent* e)
@@ -1401,7 +1425,7 @@ bool MainWindow::eventFilter(QObject* o, QEvent* e)
         }
     }
 
-    return QMainWindow::eventFilter(o, e);
+    return CustomTitleBarWindow::eventFilter(o, e);
 }
 
 void MainWindow::addWindow(MDIView* view)
@@ -1689,6 +1713,7 @@ void MainWindow::onToolBarMenuAboutToShow()
     menu->addSeparator();
 
     Application::Instance->commandManager().getCommandByName("Std_ToggleToolBarLock")->addTo(menu);
+    Application::Instance->commandManager().getCommandByName("Std_DlgToggleTitleToolBarLock")->addTo(menu);
 }
 
 void MainWindow::populateToolBarMenu(QMenu* menu)
@@ -1697,7 +1722,8 @@ void MainWindow::populateToolBarMenu(QMenu* menu)
     for (const auto& toolbar : toolbars) {
         if (auto parent = toolbar->parentWidget()) {
             if (parent == this || parent == statusBar() || parent->parentWidget() == statusBar()
-                || parent->parentWidget() == menuBar()) {
+                || (isCustomTitleBar() && parent->parentWidget() == menuWidget())
+                || (!isCustomTitleBar() && parent->parentWidget() == menuBar())) {
                 QAction* action = toolbar->toggleViewAction();
                 action->setToolTip(tr("Toggles this toolbar"));
                 action->setStatusTip(tr("Toggles this toolbar"));
@@ -1820,13 +1846,13 @@ void MainWindow::closeEvent(QCloseEvent* e)
 void MainWindow::showEvent(QShowEvent* e)
 {
     std::clog << "Show main window" << std::endl;
-    QMainWindow::showEvent(e);
+    CustomTitleBarWindow::showEvent(e);
 }
 
 void MainWindow::hideEvent(QHideEvent* e)
 {
     std::clog << "Hide main window" << std::endl;
-    QMainWindow::hideEvent(e);
+    CustomTitleBarWindow::hideEvent(e);
 }
 
 void MainWindow::processMessages(const QList<QString>& msg)
@@ -2327,7 +2353,7 @@ void MainWindow::dropEvent(QDropEvent* e)
         loadUrls(App::GetApplication().getActiveDocument(), data->urls());
     }
     else {
-        QMainWindow::dropEvent(e);
+        CustomTitleBarWindow::dropEvent(e);
     }
 }
 
@@ -2687,7 +2713,7 @@ void MainWindow::changeEvent(QEvent* e)
         }
     }
     else {
-        QMainWindow::changeEvent(e);
+        CustomTitleBarWindow::changeEvent(e);
     }
 }
 
@@ -3050,7 +3076,7 @@ void MainWindow::setWindowTitle(const QString& string)
         title = QStringLiteral("[*] %1 - %2").arg(string, title);
     }
 
-    QMainWindow::setWindowTitle(title);
+    CustomTitleBarWindow::setWindowTitle(title);
 }
 
 // ----------------------------------------------------------
