@@ -37,7 +37,6 @@
 
 # include <boost/algorithm/string.hpp>
 # include <boost/program_options.hpp>
-# include <boost/scope_exit.hpp>
 # include <chrono>
 # include <ctime>
 # include <iomanip>
@@ -2779,15 +2778,22 @@ void Application::initConfig(int argc, char ** argv)
 
     boost::program_options::variables_map vm;
     {
-        BOOST_SCOPE_EXIT_ALL(&) {
-            // console-mode needs to be set (if possible) also in case parseProgramOptions
-            // throws, as it's needed when reporting such exceptions
+        // console-mode needs to be set (if possible) also in case parseProgramOptions
+        // throws, as it's needed when reporting such exceptions
+        auto setConsoleMode = [&] {
             if (vm.contains("console")) {
                 mConfig["Console"] = "1";
                 mConfig["RunMode"] = "Cmd";
             }
         };
-        parseProgramOptions(argc, argv, mConfig["ExeName"], vm);
+        try {
+            parseProgramOptions(argc, argv, mConfig["ExeName"], vm);
+        }
+        catch (...) {
+            setConsoleMode();
+            throw;
+        }
+        setConsoleMode();
     }
 
     if (vm.contains("keep-deprecated-paths")) {

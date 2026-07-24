@@ -79,7 +79,6 @@
 #include <boost/program_options.hpp>
 #include <boost/utility.hpp>
 #include <boost/bind/bind.hpp>
-#include <boost/scope_exit.hpp>
 
 #include <fmt/format.h>
 
