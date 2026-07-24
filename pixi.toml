@@ -163,22 +163,27 @@ freecad-stubs = "*"
 
 ## Qt 6 Configuration Presets
 [target.linux-64.tasks]
+configure-rel-with-deb-info = { cmd = [ "cmake", "--preset", "conda-linux-rel-with-deb-info", "{{ extra_args }}" ], args = [{ "arg" ="extra_args", "default" = "" }], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 configure-debug = { cmd = [ "cmake", "--preset", "conda-linux-debug", "{{ extra_args }}" ], args = [{ "arg" ="extra_args", "default" = "" }], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 configure-release = { cmd = [ "cmake", "--preset", "conda-linux-release" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 
 [target.linux-aarch64.tasks]
+configure-rel-with-deb-info = { cmd = [ "cmake", "--preset", "conda-linux-rel-with-deb-info", "{{ extra_args }}" ], args = [{ "arg" = "extra_args", "default" = "" }], depends-on= ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 configure-debug = { cmd = [ "cmake", "--preset", "conda-linux-debug", "{{ extra_args }}" ], args = [{ "arg" = "extra_args", "default" = "" }], depends-on= ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 configure-release = { cmd = [ "cmake", "--preset", "conda-linux-release" ], depends-on= ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 
 [target.osx-64.tasks]
+configure-rel-with-deb-info = { cmd = [ "cmake", "--preset", "conda-macos-rel-with-deb-info", "{{ extra_args }}" ], args = [{ "arg" = "extra_args", "default" = "" }], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 configure-debug = { cmd = [ "cmake", "--preset", "conda-macos-debug", "{{ extra_args }}" ], args = [{ "arg" = "extra_args", "default" = "" }], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 configure-release = { cmd = [ "cmake", "--preset", "conda-macos-release" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 
 [target.osx-arm64.tasks]
+configure-rel-with-deb-info = { cmd = [ "cmake", "--preset", "conda-macos-rel-with-deb-info", "{{ extra_args }}" ], args = [{ "arg" = "extra_args", "default" = "" }], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 configure-debug = { cmd = [ "cmake", "--preset", "conda-macos-debug", "{{ extra_args }}" ], args = [{ "arg" = "extra_args", "default" = "" }], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 configure-release = { cmd = [ "cmake", "--preset", "conda-macos-release" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 
 [target.win-64.tasks]
+configure-rel-with-deb-info = { cmd = [ "cmake", "--preset", "conda-windows-rel-with-deb-info", "-DCMAKE_GENERATOR_PLATFORM=", "-DCMAKE_GENERATOR_TOOLSET=", "{{ extra_args }}" ], args = [{ "arg" = "extra_args", "default" = "" }], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 configure-debug = { cmd = [ "cmake", "--preset", "conda-windows-debug", "-DCMAKE_GENERATOR_PLATFORM=", "-DCMAKE_GENERATOR_TOOLSET=", "{{ extra_args }}" ], args = [{ "arg" = "extra_args", "default" = "" }], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 configure-release = { cmd = [ "cmake", "--preset", "conda-windows-release", "-DCMAKE_GENERATOR_PLATFORM=", "-DCMAKE_GENERATOR_TOOLSET=" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 freecad-debug = { cmd = [ ".pixi/envs/default/Library/bin/FreeCAD.exe" ], depends-on = ["install-debug"]}
@@ -187,7 +192,7 @@ freecad-release = { cmd = [ ".pixi/envs/default/Library/bin/FreeCAD.exe" ], depe
 [tasks]
 initialize = { cmd = ["git", "submodule", "update", "--init", "--recursive"]}
 # redirect to debug by default
-configure = [{ task = "configure-debug" }]
+configure = [{ task = "configure-rel-with-deb-info" }]
 build = [{ task = "build-debug" }]
 install = [{ task = "install-debug" }]
 test = [{ task = "test-debug" }]
