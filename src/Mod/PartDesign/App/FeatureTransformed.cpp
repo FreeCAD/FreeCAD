@@ -81,7 +81,7 @@ Transformed::Transformed()
         (std::vector<long>()),
         "Transformation",
         App::Prop_None,
-        "Indices of generated pattern instances that are suppressed"
+        "Indices of generated pattern instances that are suppressed."
     );
 }
 
