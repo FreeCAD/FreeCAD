@@ -101,6 +101,48 @@ private:
 struct Value;
 
 /**
+ * @brief Identifies the semantic kind of a tuple.
+ *
+ * Generic tuples have no special meaning. Typed kinds (Padding, Margins, BorderThickness)
+ * carry structural identity: they are always 4-element (top, right, bottom, left) insets
+ * created via CSS-like shorthand functions.
+ */
+enum class TupleKind : std::uint8_t
+{
+    Generic,
+    Padding,
+    Margins,
+    BorderThickness,
+    BorderColors,
+    Corners,
+    LinearGradient,
+    RadialGradient,
+};
+
+constexpr const char* tupleKindName(TupleKind kind)
+{
+    switch (kind) {
+        case TupleKind::Generic:
+            return "Generic";
+        case TupleKind::Padding:
+            return "Padding";
+        case TupleKind::Margins:
+            return "Margins";
+        case TupleKind::BorderThickness:
+            return "BorderThickness";
+        case TupleKind::BorderColors:
+            return "BorderColors";
+        case TupleKind::Corners:
+            return "Corners";
+        case TupleKind::LinearGradient:
+            return "LinearGradient";
+        case TupleKind::RadialGradient:
+            return "RadialGradient";
+    }
+    return "<unknown>";
+}
+
+/**
  * @brief Represents a tuple of named or unnamed values.
  *
  * Tuples group related values into a single parameter using `(key: val1, val2)` syntax.
@@ -112,8 +154,19 @@ struct GuiExport Tuple
     {
         std::optional<std::string> name;
         std::shared_ptr<const Value> value;
+
+        /// Creates a named element, wrapping val in a shared_ptr.
+        static Element named(std::string name, Value val);
+
+        /// Creates an unnamed element, wrapping val in a shared_ptr.
+        static Element unnamed(Value val);
     };
 
+    Tuple() = default;
+    Tuple(std::initializer_list<Element> elements);
+    Tuple(std::initializer_list<Element> elements, TupleKind kind);
+
+    TupleKind kind = TupleKind::Generic;
     std::vector<Element> elements;
 
     /**
@@ -244,6 +297,20 @@ const T& Tuple::get(const std::string& name) const
 }
 
 /**
+ * @brief Wraps a Value in a 1-element unnamed generic Tuple if it is not already a Tuple.
+ *
+ * This allows scalar values (e.g. a bare Numeric) to be passed into constructors that
+ * expect a Tuple and use CSS-like expansion (1 element → all sides equal).
+ */
+inline Tuple asTuple(const Value& value)
+{
+    if (value.holds<Tuple>()) {
+        return value.get<Tuple>();
+    }
+    return Tuple({Tuple::Element::unnamed(value)});
+}
+
+/**
  * @brief Defines a single parameter in a function signature.
  *
  * Used with ArgumentParser to declare positional/named parameters with optional defaults.
@@ -278,6 +345,46 @@ public:
 private:
     std::vector<ParamDef> params_;
 };
+
+/**
+ * @brief Extracts a typed value from an optional Value without explicit casting.
+ *
+ * Provides a uniform interface for the two common extraction patterns:
+ *
+ * - For domain wrapper types constructible from `const Value&` (Insets, Corners,
+ *   InnerShadow, …): constructs `T` from the value and returns nullopt if the
+ *   constructor throws Base::Exception (i.e. the value has the wrong structure).
+ *
+ * - For variant member types (Numeric, Base::Color, std::string, Tuple): returns
+ *   the value only if it holds exactly `T`, nullopt otherwise.
+ *
+ * This function is the shared building block for ParameterManager::resolve(definition)
+ * and FreeCADStyle::resolve<T>(), ensuring both use identical dispatch logic.
+ */
+template<typename T>
+    requires std::is_constructible_v<T, const Value&>
+std::optional<T> valueAs(const std::optional<Value>& value)
+{
+    if (!value) {
+        return std::nullopt;
+    }
+    try {
+        return T(*value);
+    }
+    catch (const Base::Exception&) {
+        return std::nullopt;
+    }
+}
+
+template<typename T>
+    requires(!std::is_constructible_v<T, const Value&>)
+std::optional<T> valueAs(const std::optional<Value>& value)
+{
+    if (!value || !value->holds<T>()) {
+        return std::nullopt;
+    }
+    return value->get<T>();
+}
 
 }  // namespace Gui::StyleParameters
 
