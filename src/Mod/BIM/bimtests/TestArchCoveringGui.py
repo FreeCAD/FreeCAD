@@ -343,18 +343,12 @@ class TestArchCoveringGui(TestArchBaseGui.TestArchBaseGui):
             # Trigger Update
             vp.updateTexture(covering)
 
-            # Traverse Scene Graph
-            root = covering.ViewObject.RootNode
-            flat_root = None
-
             # Find FlatRoot inside the Switch
-            switch = gui_utils.find_coin_node(root, coin.SoSwitch)
+            switch = covering.ViewObject.SwitchNode
             if switch:
-                for i in range(switch.getNumChildren()):
-                    child = switch.getChild(i)
-                    if child.getName().getString() == "FlatRoot":
-                        flat_root = child
-                        break
+                flat_root = gui_utils.find_coin_node_by_name(root, "FlatRoot")
+            else:
+                flat_root = None
 
             self.assertIsNotNone(flat_root, "Could not find FlatRoot node in scene graph")
 
