@@ -448,10 +448,6 @@ bool View3DInventor::onMsg(const char* pMsg)
         getGuiDocument()->saveCopy();
         return true;
     }
-    else if (strcmp("AlignToSelection", pMsg) == 0) {
-        _viewer->alignToSelection();
-        return true;
-    }
     else if (strcmp("ZoomIn", pMsg) == 0) {
         _viewer->navigationStyle()->zoomIn();
         return true;
@@ -555,9 +551,6 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
         return true;
     }
     else if (strncmp("Dump", pMsg, 4) == 0) {
-        return true;
-    }
-    else if (strcmp("AlignToSelection", pMsg) == 0) {
         return true;
     }
     else if (strcmp("ZoomIn", pMsg) == 0) {
