@@ -121,12 +121,17 @@ private:
     void changeTransparency(int val);
     void changeWidth();
     void changeHeight();
+    void changeCropLeft();
+    void changeCropRight();
+    void changeCropTop();
+    void changeCropBottom();
 
 private:
     std::unique_ptr<Ui_TaskImage> ui;
     QPointer<InteractiveScale> scale;
     App::WeakPtrT<Image::ImagePlane> feature;
     double aspectRatio;
+    void updateCropLimits();
 };
 
 class TaskImageDialog: public Gui::TaskView::TaskDialog

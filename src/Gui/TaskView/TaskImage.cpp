@@ -116,6 +116,14 @@ void TaskImage::connectSignals()
         this, &TaskImage::acceptScale);
     connect(ui->pushButtonCancel, &QPushButton::clicked,
         this, &TaskImage::rejectScale);
+    connect(ui->spinBoxCropLeft, qOverload<double>(&QuantitySpinBox::valueChanged),
+        this, &TaskImage::changeCropLeft);
+    connect(ui->spinBoxCropRight, qOverload<double>(&QuantitySpinBox::valueChanged),
+        this, &TaskImage::changeCropRight);
+    connect(ui->spinBoxCropTop, qOverload<double>(&QuantitySpinBox::valueChanged),
+        this, &TaskImage::changeCropTop);
+    connect(ui->spinBoxCropBottom, qOverload<double>(&QuantitySpinBox::valueChanged),
+        this, &TaskImage::changeCropBottom);
     // clang-format on
 }
 
@@ -161,6 +169,7 @@ void TaskImage::changeWidth()
             QSignalBlocker block(ui->spinBoxHeight);
             ui->spinBoxHeight->setValue(val / aspectRatio);
         }
+        updateCropLimits();
     }
 }
 
@@ -175,6 +184,43 @@ void TaskImage::changeHeight()
             QSignalBlocker block(ui->spinBoxWidth);
             ui->spinBoxWidth->setValue(val * aspectRatio);
         }
+        updateCropLimits();
+    }
+}
+
+void TaskImage::changeCropLeft()
+{
+    if (!feature.expired()) {
+        double val = ui->spinBoxCropLeft->value().getValue();
+        feature->CropLeft.setValue(val);
+        updateCropLimits();
+    }
+}
+
+void TaskImage::changeCropRight()
+{
+    if (!feature.expired()) {
+        double val = ui->spinBoxCropRight->value().getValue();
+        feature->CropRight.setValue(val);
+        updateCropLimits();
+    }
+}
+
+void TaskImage::changeCropTop()
+{
+    if (!feature.expired()) {
+        double val = ui->spinBoxCropTop->value().getValue();
+        feature->CropTop.setValue(val);
+        updateCropLimits();
+    }
+}
+
+void TaskImage::changeCropBottom()
+{
+    if (!feature.expired()) {
+        double val = ui->spinBoxCropBottom->value().getValue();
+        feature->CropBottom.setValue(val);
+        updateCropLimits();
     }
 }
 
@@ -377,6 +423,17 @@ void TaskImage::restore(const Base::Placement& plm)
     QSignalBlocker blockH(ui->spinBoxHeight);
     ui->spinBoxWidth->setValue(feature->XSize.getValue());
     ui->spinBoxHeight->setValue(feature->YSize.getValue());
+
+    QSignalBlocker blockCL(ui->spinBoxCropLeft);
+    QSignalBlocker blockCR(ui->spinBoxCropRight);
+    QSignalBlocker blockCT(ui->spinBoxCropTop);
+    QSignalBlocker blockCB(ui->spinBoxCropBottom);
+    ui->spinBoxCropLeft->setValue(feature->CropLeft.getValue());
+    ui->spinBoxCropRight->setValue(feature->CropRight.getValue());
+    ui->spinBoxCropTop->setValue(feature->CropTop.getValue());
+    ui->spinBoxCropBottom->setValue(feature->CropBottom.getValue());
+
+    updateCropLimits();
 
     Base::Rotation rot = plm.getRotation();  // NOLINT
     Base::Vector3d pos = plm.getPosition();
@@ -709,6 +766,43 @@ bool TaskImageDialog::reject()
 {
     widget->reject();
     return true;
+}
+
+void TaskImage::updateCropLimits()
+{
+    if (feature.expired()) {
+        return;
+    }
+
+    double xsize = feature->XSize.getValue();
+    double ysize = feature->YSize.getValue();
+    double left = feature->CropLeft.getValue();
+    double right = feature->CropRight.getValue();
+    double top = feature->CropTop.getValue();
+    double bottom = feature->CropBottom.getValue();
+
+    if (left < 0.0) {
+        left = 0.0;
+    }
+    if (right < 0.0) {
+        right = 0.0;
+    }
+    if (top < 0.0) {
+        top = 0.0;
+    }
+    if (bottom < 0.0) {
+        bottom = 0.0;
+    }
+
+    QSignalBlocker blockCL(ui->spinBoxCropLeft);
+    QSignalBlocker blockCR(ui->spinBoxCropRight);
+    QSignalBlocker blockCT(ui->spinBoxCropTop);
+    QSignalBlocker blockCB(ui->spinBoxCropBottom);
+
+    ui->spinBoxCropLeft->setMaximum(std::max(0.0, xsize - right));
+    ui->spinBoxCropRight->setMaximum(std::max(0.0, xsize - left));
+    ui->spinBoxCropTop->setMaximum(std::max(0.0, ysize - bottom));
+    ui->spinBoxCropBottom->setMaximum(std::max(0.0, ysize - top));
 }
 
 #include "moc_TaskImage.cpp"

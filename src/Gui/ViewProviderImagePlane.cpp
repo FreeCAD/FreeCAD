@@ -66,6 +66,9 @@ ViewProviderImagePlane::ViewProviderImagePlane()
     pcCoords = new SoCoordinate3();
     pcCoords->ref();
 
+    textCoord = new SoTextureCoordinate2;
+    textCoord->ref();
+
     shapeHints = new SoShapeHints;
     shapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
     shapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
@@ -79,6 +82,7 @@ ViewProviderImagePlane::ViewProviderImagePlane()
 ViewProviderImagePlane::~ViewProviderImagePlane()
 {
     pcCoords->unref();
+    textCoord->unref();
     texture->unref();
     shapeHints->unref();
 }
@@ -93,7 +97,6 @@ void ViewProviderImagePlane::attach(App::DocumentObject* pcObj)
     SoSeparator* shading = new SoSeparator;
     shading->addChild(pcCoords);
 
-    SoTextureCoordinate2* textCoord = new SoTextureCoordinate2;
     textCoord->point.set1Value(0, 0, 0);
     textCoord->point.set1Value(1, 1, 0);
     textCoord->point.set1Value(2, 1, 1);
@@ -190,10 +193,50 @@ void ViewProviderImagePlane::manipulateImage()
 
 void ViewProviderImagePlane::resizePlane(float xsize, float ysize)
 {
-    pcCoords->point.set1Value(0, -(xsize / 2), -(ysize / 2), 0.0);
-    pcCoords->point.set1Value(1, +(xsize / 2), -(ysize / 2), 0.0);
-    pcCoords->point.set1Value(2, +(xsize / 2), +(ysize / 2), 0.0);
-    pcCoords->point.set1Value(3, -(xsize / 2), +(ysize / 2), 0.0);
+    Image::ImagePlane* pcPlaneObj = static_cast<Image::ImagePlane*>(pcObject);
+    float left = pcPlaneObj->CropLeft.getValue();
+    float right = pcPlaneObj->CropRight.getValue();
+    float top = pcPlaneObj->CropTop.getValue();
+    float bottom = pcPlaneObj->CropBottom.getValue();
+
+    if (left < 0.0f) {
+        left = 0.0f;
+    }
+    if (right < 0.0f) {
+        right = 0.0f;
+    }
+    if (top < 0.0f) {
+        top = 0.0f;
+    }
+    if (bottom < 0.0f) {
+        bottom = 0.0f;
+    }
+
+    if (left + right >= xsize) {
+        float total = left + right;
+        left = (left / total) * (xsize - 0.001f);
+        right = (right / total) * (xsize - 0.001f);
+    }
+    if (top + bottom >= ysize) {
+        float total = top + bottom;
+        top = (top / total) * (ysize - 0.001f);
+        bottom = (bottom / total) * (ysize - 0.001f);
+    }
+
+    pcCoords->point.set1Value(0, -(xsize / 2) + left, -(ysize / 2) + bottom, 0.0);
+    pcCoords->point.set1Value(1, +(xsize / 2) - right, -(ysize / 2) + bottom, 0.0);
+    pcCoords->point.set1Value(2, +(xsize / 2) - right, +(ysize / 2) - top, 0.0);
+    pcCoords->point.set1Value(3, -(xsize / 2) + left, +(ysize / 2) - top, 0.0);
+
+    float u0 = left / xsize;
+    float u1 = 1.0f - right / xsize;
+    float v0 = bottom / ysize;
+    float v1 = 1.0f - top / ysize;
+
+    textCoord->point.set1Value(0, u0, v0);
+    textCoord->point.set1Value(1, u1, v0);
+    textCoord->point.set1Value(2, u1, v1);
+    textCoord->point.set1Value(3, u0, v1);
 }
 
 void ViewProviderImagePlane::loadImage()
@@ -328,7 +371,9 @@ void ViewProviderImagePlane::convertToSFImage(const QImage& img)
 void ViewProviderImagePlane::updateData(const App::Property* prop)
 {
     Image::ImagePlane* pcPlaneObj = static_cast<Image::ImagePlane*>(pcObject);
-    if (prop == &pcPlaneObj->XSize || prop == &pcPlaneObj->YSize) {
+    if (prop == &pcPlaneObj->XSize || prop == &pcPlaneObj->YSize || prop == &pcPlaneObj->CropLeft
+        || prop == &pcPlaneObj->CropRight || prop == &pcPlaneObj->CropTop
+        || prop == &pcPlaneObj->CropBottom) {
         float xsize = pcPlaneObj->XSize.getValue();
         float ysize = pcPlaneObj->YSize.getValue();
 

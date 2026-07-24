@@ -274,6 +274,95 @@
      </layout>
     </widget>
    </item>
+   <item row="8" column="0" colspan="2">
+    <widget class="QGroupBox" name="groupBoxCrop">
+     <property name="title">
+      <string>Crop Image</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_Crop">
+      <item row="0" column="0">
+       <widget class="QLabel" name="labelCropLeft">
+        <property name="text">
+         <string>Left</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::QuantitySpinBox" name="spinBoxCropLeft">
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
+        <property name="minimum" stdset="0">
+         <double>0.00000000</double>
+        </property>
+        <property name="maximum" stdset="0">
+         <double>999999999.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="labelCropRight">
+        <property name="text">
+         <string>Right</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::QuantitySpinBox" name="spinBoxCropRight">
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
+        <property name="minimum" stdset="0">
+         <double>0.00000000</double>
+        </property>
+        <property name="maximum" stdset="0">
+         <double>999999999.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="labelCropTop">
+        <property name="text">
+         <string>Top</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::QuantitySpinBox" name="spinBoxCropTop">
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
+        <property name="minimum" stdset="0">
+         <double>0.00000000</double>
+        </property>
+        <property name="maximum" stdset="0">
+         <double>999999999.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="labelCropBottom">
+        <property name="text">
+         <string>Bottom</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::QuantitySpinBox" name="spinBoxCropBottom">
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
+        <property name="minimum" stdset="0">
+         <double>0.00000000</double>
+        </property>
+        <property name="maximum" stdset="0">
+         <double>999999999.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
