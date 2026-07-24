@@ -522,6 +522,9 @@ void QGIViewPart::drawAllVertexes()
                 item->setNormalColor(vertexColor);
                 item->setFillColor(vertexColor);
                 item->setRadius(getVertexSize());
+                if (PreferencesGui::screenMode() == PreferencesGui::ViewSizeMode::Screen && !isExporting()) {
+                    item->setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
+                }
                 item->setPrettyNormal();
                 item->setZValue(ZVALUE::VERTEX);
                 item->setVisible(shouldShowFrame());

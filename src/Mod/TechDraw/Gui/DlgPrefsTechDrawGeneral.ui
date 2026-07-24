@@ -816,7 +816,7 @@ for ProjectionGroups</string>
       <string>View Defaults</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_9">
-      <item row="1" column="0">
+      <item row="2" column="0">
        <layout class="QVBoxLayout" name="verticalLayout_7">
         <item>
          <widget class="Gui::PrefCheckBox" name="cb_useCameraDirection">
@@ -847,7 +847,7 @@ for ProjectionGroups</string>
         </item>
        </layout>
       </item>
-      <item row="0" column="1">
+      <item row="1" column="1">
        <widget class="Gui::PrefComboBox" name="cb_viewFramesVisibility">
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Control when the view boundary frames and labels are displayed.&lt;/p&gt;&lt;p&gt;Auto: Show on hover, On: Always show, Off: Never show.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -880,11 +880,41 @@ for ProjectionGroups</string>
         </item>
        </widget>
       </item>
-      <item row="0" column="0">
+      <item row="1" column="0">
        <widget class="QLabel" name="label_15">
         <property name="text">
          <string>View frames mode</string>
         </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_16">
+        <property name="text">
+         <string>Screen mode</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefComboBox" name="cb_screenMode">
+        <property name="toolTip">
+         <string>In screen mode, vertex markers and edge lines are displayed at a constant size regardless of zoom level. In paper mode (default), all elements scale with the view as they would appear on the printed page.</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ScreenMode</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/TechDraw/General</cstring>
+        </property>
+        <item>
+         <property name="text">
+          <string>Paper mode</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Screen mode</string>
+         </property>
+        </item>
        </widget>
       </item>
      </layout>
