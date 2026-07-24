@@ -4770,6 +4770,10 @@ void LinkLabel::onEditClicked()
         dlg = new DlgPropertyLink(this);
         dlg->init(objProp, true);
         connect(dlg, &DlgPropertyLink::accepted, this, &LinkLabel::onLinkChanged);
+        Qt::WindowFlags flags = dlg->windowFlags();
+        flags &= ~Qt::WindowType_Mask;
+        flags |= Qt::Tool;
+        dlg->setWindowFlags(flags);
     }
     else {
         dlg->init(objProp, false);
