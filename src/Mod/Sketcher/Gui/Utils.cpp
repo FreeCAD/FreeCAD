@@ -31,6 +31,7 @@
 
 #include <App/Application.h>
 #include <App/Transactions.h>
+#include <Base/Placement.h>
 #include <Base/Quantity.h>
 #include <Base/UnitsApi.h>
 #include <Gui/CommandT.h>
@@ -47,6 +48,17 @@
 using namespace std;
 using namespace SketcherGui;
 using namespace Sketcher;
+
+Base::Vector3d SketcherGui::sketchPlanePointToWorld(
+    const Base::Placement& sketchPlacement,
+    double x,
+    double y
+)
+{
+    Base::Vector3d point(x, y, 0.0);
+    sketchPlacement.multVec(point, point);
+    return point;
+}
 
 bool Sketcher::isCircle(const Part::Geometry& geom)
 {

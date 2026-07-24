@@ -2316,11 +2316,20 @@ bool EditModeConstraintCoinManager::resolveIconScreenGeometry(
         }
     }
 
-    SbVec3f iconWorldPos = absPos + scaleFactor * trans;
-    iconScreenCenter = ViewProviderSketchCoinAttorney::getScreenCoordinates(viewProvider, iconWorldPos);
+    // Icon positions are in sketch coordinates. Keep that frame for screen
+    // projection and convert pickedPoint to global coordinates below.
+    SbVec3f iconSketchPos = absPos + scaleFactor * trans;
+    iconScreenCenter
+        = ViewProviderSketchCoinAttorney::getScreenCoordinates(viewProvider, iconSketchPos);
 
     if (pickedPoint) {
-        *pickedPoint = Base::convertTo<Base::Vector3d>(iconWorldPos);
+        // The icon's z offset is only for rendering; return a point on the sketch
+        // plane in global coordinates.
+        *pickedPoint = sketchPlanePointToWorld(
+            ViewProviderSketchCoinAttorney::getEditingPlacement(viewProvider),
+            iconSketchPos[0],
+            iconSketchPos[1]
+        );
     }
 
     return true;
