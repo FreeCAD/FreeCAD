@@ -374,7 +374,7 @@ void CmdTechDrawHatchFace::activated(int iMsg)
         QMessageBox::information(
             Gui::getMainWindow(),
             QObject::tr("No Faces Selected"),
-            QObject::tr("Please select one or more faces in a TechDraw View."));
+            QObject::tr("No faces are selected in the TechDraw view."));
         return;
     }
 
