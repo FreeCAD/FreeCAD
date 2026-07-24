@@ -62,6 +62,12 @@ PyMethodDef UnitsApi::Methods[] = {
      METH_VARARGS,
      "setSchema(int) -> None\n\n"
      "Sets the current schema to the given number, if possible"},
+    {"getMeasurementSystem",
+     sGetMeasurementSystem,
+     METH_VARARGS,
+     "getMeasurementSystem() -> int\n\n"
+     "getMeasurementSystem(int) -> int\n\n"
+     "Returns the measurement-system classification for the current or given schema"},
     {"schemaTranslate",
      sSchemaTranslate,
      METH_VARARGS,
@@ -150,6 +156,27 @@ PyObject* UnitsApi::sSetSchema(PyObject* /*self*/, PyObject* args)
         schemas->select(index);
     }
     Py_Return;
+}
+
+PyObject* UnitsApi::sGetMeasurementSystem(PyObject* /*self*/, PyObject* args)
+{
+    if (PyArg_ParseTuple(args, "")) {
+        return PyLong_FromLong(static_cast<int>(UnitsApi::getMeasurementSystem()));
+    }
+
+    PyErr_Clear();
+    int index {};
+    if (PyArg_ParseTuple(args, "i", &index)) {
+        if (index < 0 || index >= static_cast<int>(count())) {
+            PyErr_SetString(PyExc_ValueError, "invalid schema value");
+            return nullptr;
+        }
+
+        return PyLong_FromLong(static_cast<int>(UnitsApi::getMeasurementSystem(index)));
+    }
+
+    PyErr_SetString(PyExc_TypeError, "int or empty argument list expected");
+    return nullptr;
 }
 
 PyObject* UnitsApi::sSchemaTranslate(PyObject* /*self*/, PyObject* args)

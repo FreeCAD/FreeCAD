@@ -374,6 +374,7 @@ class BIM_Setup:
         del self.form
 
     def setPreset(self, preset=None):
+        import Arch
         from PySide import QtGui
 
         unit = None
@@ -407,10 +408,11 @@ class BIM_Setup:
 
         elif preset == 1:
             # centimeters
+            grid_settings = Arch.get_default_bim_grid_settings(FreeCAD.Units.Scheme.Centimeter)
             unit = 1
             decimals = 2
-            grid = "10cm"
-            squares = 10
+            grid = grid_settings["spacing"]
+            squares = grid_settings["mainlines"]
             tsize = "20cm"
             linewidth = 1
             dimstyle = 0
@@ -422,10 +424,11 @@ class BIM_Setup:
 
         elif preset == 2:
             # meters
+            grid_settings = Arch.get_default_bim_grid_settings(FreeCAD.Units.Scheme.MKS)
             unit = 2
             decimals = 2
-            grid = "0.1m"
-            squares = 10
+            grid = grid_settings["spacing"]
+            squares = grid_settings["mainlines"]
             tsize = "0.2m"
             linewidth = 1
             dimstyle = 0
@@ -437,10 +440,13 @@ class BIM_Setup:
 
         elif preset == 3:
             # US
+            grid_settings = Arch.get_default_bim_grid_settings(
+                FreeCAD.Units.Scheme.ImperialBuilding
+            )
             unit = 5
             decimals = 2
-            grid = "1in"
-            squares = 12
+            grid = grid_settings["spacing"]
+            squares = grid_settings["mainlines"]
             tsize = "8in"
             linewidth = 1
             dimstyle = 3
