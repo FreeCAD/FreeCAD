@@ -65,6 +65,7 @@ void DlgSettingsPathColor::saveSettings()
     ui->DefaultTaskPanelLayout->onSave();
     ui->HideFirstRapid->onSave();
     ui->PostProcessorShowEditor->onSave();
+    ui->MaxHighlighterSize->onSave();
 }
 
 void DlgSettingsPathColor::loadSettings()
@@ -82,6 +83,7 @@ void DlgSettingsPathColor::loadSettings()
     ui->DefaultTaskPanelLayout->onRestore();
     ui->HideFirstRapid->onRestore();
     ui->PostProcessorShowEditor->onRestore();
+    ui->MaxHighlighterSize->onRestore();
 }
 
 /**

@@ -35,57 +35,6 @@ from Path.Main.Gui.Editor import CodeEditor
 translate = FreeCAD.Qt.translate
 
 
-class GCodeHighlighter(QtGui.QSyntaxHighlighter):
-    def __init__(self, parent=None):
-        def convertcolor(c):
-            return QtGui.QColor(int((c >> 24) & 0xFF), int((c >> 16) & 0xFF), int((c >> 8) & 0xFF))
-
-        super(GCodeHighlighter, self).__init__(parent)
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Editor")
-        colors = []
-        c = p.GetUnsigned("Number")
-        if c:
-            colors.append(convertcolor(c))
-        else:
-            colors.append(QtCore.Qt.red)
-        c = p.GetUnsigned("Keyword")
-        if c:
-            colors.append(convertcolor(c))
-        else:
-            colors.append(QtGui.QColor(0, 170, 0))
-        c = p.GetUnsigned("Define name")
-        if c:
-            colors.append(convertcolor(c))
-        else:
-            colors.append(QtGui.QColor(160, 160, 164))
-
-        self.highlightingRules = []
-        numberFormat = QtGui.QTextCharFormat()
-        numberFormat.setForeground(colors[0])
-        self.highlightingRules.append((QtCore.QRegularExpression("[\\-0-9\\.]"), numberFormat))
-        keywordFormat = QtGui.QTextCharFormat()
-        keywordFormat.setForeground(colors[1])
-        keywordFormat.setFontWeight(QtGui.QFont.Bold)
-        keywordPatterns = ["\\bG[0-9]+\\b", "\\bM[0-9]+\\b"]
-        self.highlightingRules.extend(
-            [(QtCore.QRegularExpression(pattern), keywordFormat) for pattern in keywordPatterns]
-        )
-        speedFormat = QtGui.QTextCharFormat()
-        speedFormat.setFontWeight(QtGui.QFont.Bold)
-        speedFormat.setForeground(colors[2])
-        self.highlightingRules.append((QtCore.QRegularExpression("\\bF[0-9\\.]+\\b"), speedFormat))
-
-    def highlightBlock(self, text):
-
-        for pattern, fmt in self.highlightingRules:
-            expression = QtCore.QRegularExpression(pattern)
-            index = expression.match(text)
-            while index.hasMatch():
-                length = index.capturedLength()
-                self.setFormat(index.capturedStart(), length, fmt)
-                index = expression.match(text, index.capturedStart() + length)
-
-
 class GCodeEditorDialog(QtGui.QDialog):
     tool = None
 
@@ -114,15 +63,7 @@ class GCodeEditorDialog(QtGui.QDialog):
         self.selectionobj.ViewObject.LineWidth = 4
         self.selectionobj.ViewObject.NormalColor = highlightcolor
 
-        # self.editor = QtGui.QTextEdit()  # without lines enumeration
-        self.editor = CodeEditor()  # with lines enumeration
-        font = QtGui.QFont()
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Editor")
-        font.setFamily(p.GetString("Font", "Courier"))
-        font.setFixedPitch(True)
-        font.setPointSize(p.GetInt("FontSize", 10))
-        self.editor.setFont(font)
-        self.editor.setPlainText("G01 X55 Y4.5 F300.0")
+        self.editor = CodeEditor()
         layout.addWidget(self.editor)
 
         # Note
@@ -137,12 +78,11 @@ class GCodeEditorDialog(QtGui.QDialog):
         lab.setWordWrap(True)
         layout.addWidget(lab)
 
-        # OK and Cancel buttons
         self.buttons = QtGui.QDialogButtonBox(
             QtGui.QDialogButtonBox.Close,
             QtCore.Qt.Horizontal,
             self,
-        )
+        )  # add Close button
 
         layout.addWidget(self.buttons)
         self.buttons.rejected.connect(self.reject)
@@ -216,39 +156,10 @@ class GCodeEditorDialog(QtGui.QDialog):
 def show(obj):
     "show(obj): shows the G-code data of the given Path object in a dialog"
 
-    prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
-    # default Max Highlighter Size = 256 Ko
-    defaultMHS = 256 * 1024
-    mhs = prefs.GetUnsigned("inspecteditorMaxHighlighterSize", defaultMHS)
-
-    if hasattr(obj, "Path"):
-        if obj.Path:
-            dia = GCodeEditorDialog(obj)
-            dia.editor.setPlainText(obj.Path.toGCode())
-            gcodeSize = len(dia.editor.toPlainText())
-            if gcodeSize <= mhs:
-                # because of poor performance, syntax highlighting is
-                # limited to mhs octets (default 256 KB).
-                # It seems than the response time curve has an inflexion near 500 KB
-                # beyond 500 KB, the response time increases exponentially.
-                dia.highlighter = GCodeHighlighter(dia.editor.document())
-            else:
-                FreeCAD.Console.PrintMessage(
-                    translate(
-                        "Path",
-                        "GCode size too big ({} o), disabling syntax highlighter.".format(
-                            gcodeSize
-                        ),
-                    )
-                )
-            result = dia.exec_()
-            # exec_() returns 0 or 1 depending on the button pressed (Ok or Cancel)
-            if result:
-                p = Path.Path(dia.editor.toPlainText())
-                FreeCAD.ActiveDocument.openTransaction("Edit Path")
-                obj.Path = p
-                FreeCAD.ActiveDocument.commitTransaction()
-                FreeCAD.ActiveDocument.recompute()
+    if getattr(obj, "Path", None):
+        dia = GCodeEditorDialog(obj)
+        dia.editor.setPlainText(obj.Path.toGCode())
+        dia.exec_()
 
 
 class CommandPathInspect:
@@ -285,9 +196,8 @@ class CommandPathInspect:
 
         # if everything is ok, execute
         FreeCADGui.addModule("Path.Main.Gui.Inspect")
-        FreeCADGui.doCommand(
-            "Path.Main.Gui.Inspect.show(FreeCAD.ActiveDocument." + selection[0].Name + ")"
-        )
+        FreeCADGui.doCommand(f"obj = FreeCAD.ActiveDocument.getObject('{selection[0].Name}')")
+        FreeCADGui.doCommand("Path.Main.Gui.Inspect.show(obj)")
 
 
 if FreeCAD.GuiUp:
