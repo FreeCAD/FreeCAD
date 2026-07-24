@@ -348,7 +348,9 @@ StdCmdToggleTitleToolBarLock::StdCmdToggleTitleToolBarLock()
 {
     sGroup = "Tools";
     sMenuText = QT_TR_NOOP("Lock Menu Bar Toolbars");
-    sToolTipText = QT_TR_NOOP("Locks the menu bar and status bar toolbars so they are no longer moveable");
+    sToolTipText = QT_TR_NOOP(
+        "Locks the menu bar and status bar toolbars so they are no longer moveable"
+    );
     sWhatsThis = "Std_DlgToggleTitleToolBarLock";
     sStatusTip = sToolTipText;
     eType = 0;
