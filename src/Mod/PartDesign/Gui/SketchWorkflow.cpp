@@ -24,7 +24,6 @@
 
 #include <TopoDS.hxx>
 #include <TopoDS_Face.hxx>
-#include <boost/signals2.hpp>
 #include <map>
 #include <string>
 #include <vector>

@@ -338,9 +338,9 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures()
         e.clear();
         Base::Console().warning("Unexpected PyCXX exception\n");
     }
-    catch (const boost::exception&) {
+    catch (...) {
         // reported by code analyzers
-        Base::Console().warning("Unexpected boost exception\n");
+        Base::Console().warning("Unexpected exception\n");
     }
 
     return result;

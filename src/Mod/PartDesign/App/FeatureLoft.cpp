@@ -28,8 +28,6 @@
 #include <Precision.hxx>
 
 
-#include <boost/core/ignore_unused.hpp>
-
 #include <App/Document.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
