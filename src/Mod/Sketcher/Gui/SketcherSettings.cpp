@@ -684,6 +684,9 @@ SketcherSettingsAppearance::SketcherSettingsAppearance(QWidget* parent)
     ui->ExternalPattern->setItemDelegate(lineStyleDelegate);
     ui->ExternalDefiningPattern->setIconSize(LineIconSize);
     ui->ExternalDefiningPattern->setItemDelegate(lineStyleDelegate);
+    ui->DimensionalConstraintLinePattern->setIconSize(LineIconSize);
+    ui->DimensionalConstraintLinePattern->setItemDelegate(lineStyleDelegate);
+
     const QBrush brush = palette().windowText();
     for (auto style : PenStyles) {
         ui->EdgePattern->addItem(QString(), QVariant(style.pattern));
@@ -691,6 +694,7 @@ SketcherSettingsAppearance::SketcherSettingsAppearance(QWidget* parent)
         ui->InternalPattern->addItem(QString(), QVariant(style.pattern));
         ui->ExternalPattern->addItem(QString(), QVariant(style.pattern));
         ui->ExternalDefiningPattern->addItem(QString(), QVariant(style.pattern));
+        ui->DimensionalConstraintLinePattern->addItem(QString(), QVariant(style.pattern));
     }
 }
 
@@ -715,6 +719,7 @@ bool SketcherSettingsAppearance::event(QEvent* event)
             ui->InternalPattern->setItemIcon(i, icon);
             ui->ExternalPattern->setItemIcon(i, icon);
             ui->ExternalDefiningPattern->setItemIcon(i, icon);
+            ui->DimensionalConstraintLinePattern->setItemIcon(i, icon);
         }
         return true;
     }
@@ -752,6 +757,7 @@ void SketcherSettingsAppearance::saveSettings()
     ui->InternalWidth->onSave();
     ui->ExternalWidth->onSave();
     ui->ExternalDefiningWidth->onSave();
+    ui->DimensionalConstraintLineWidth->onSave();
 
     ui->InternalFaceColor->onSave();
 
@@ -777,6 +783,12 @@ void SketcherSettingsAppearance::saveSettings()
     data = ui->ExternalDefiningPattern->itemData(ui->ExternalDefiningPattern->currentIndex());
     pattern = data.toInt();
     hGrp->SetInt("ExternalDefiningPattern", pattern);
+
+    data = ui->DimensionalConstraintLinePattern->itemData(
+        ui->DimensionalConstraintLinePattern->currentIndex()
+    );
+    pattern = data.toInt();
+    hGrp->SetInt("DimensionalConstraintLinePattern", pattern);
 }
 
 void SketcherSettingsAppearance::loadSettings()
@@ -810,6 +822,7 @@ void SketcherSettingsAppearance::loadSettings()
     ui->InternalWidth->onRestore();
     ui->ExternalWidth->onRestore();
     ui->ExternalDefiningWidth->onRestore();
+    ui->DimensionalConstraintLineWidth->onRestore();
 
     ui->InternalFaceColor->setAllowTransparency(true);
     ui->InternalFaceColor->onRestore();
@@ -851,6 +864,13 @@ void SketcherSettingsAppearance::loadSettings()
         index = 0;
     }
     ui->ExternalDefiningPattern->setCurrentIndex(index);
+
+    pattern = hGrp->GetInt("DimensionalConstraintLinePattern", 0b1111111111111111);
+    index = ui->DimensionalConstraintLinePattern->findData(QVariant(pattern));
+    if (index < 0) {
+        index = 0;
+    }
+    ui->DimensionalConstraintLinePattern->setCurrentIndex(index);
 }
 
 /**
