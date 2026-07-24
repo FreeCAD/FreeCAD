@@ -54,6 +54,11 @@ SelectionObject::SelectionObject(const Gui::SelectionChanges& msg)
 }
 
 SelectionObject::SelectionObject(const App::DocumentObject* obj)
+    : SelectionObject(obj, {})
+{}
+
+SelectionObject::SelectionObject(const App::DocumentObject* obj, std::vector<std::string> subNames)
+    : SubNames(std::move(subNames))
 {
     FeatName = obj->getNameInDocument();
     DocName = obj->getDocument()->getName();

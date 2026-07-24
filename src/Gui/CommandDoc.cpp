@@ -45,6 +45,7 @@
 #include <Base/Tools.h>
 
 #include "Action.h"
+#include "ActiveObjectList.h"
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Command.h"
@@ -1477,6 +1478,106 @@ bool StdCmdSelectAll::isActive()
 //===========================================================================
 // Std_Delete
 //===========================================================================
+namespace
+{
+
+App::DocumentObject* findPartDesignBodyContext(App::DocumentObject* root, const char* subName)
+{
+    static const Base::Type bodyType = Base::Type::fromName("PartDesign::Body");
+    if (!root || bodyType.isBad()) {
+        return nullptr;
+    }
+
+    for (auto* obj : root->getSubObjectList(subName)) {
+        if (obj && obj->getLinkedObject(true)->isDerivedFrom(bodyType)) {
+            return obj;
+        }
+    }
+
+    return nullptr;
+}
+
+bool isActivePartDesignBodyContext(App::DocumentObject* context)
+{
+    auto* activeView = Application::Instance->activeView();
+    if (!activeView) {
+        return false;
+    }
+
+    App::DocumentObject* activeParent = nullptr;
+    std::string activeSubName;
+    if (!activeView->getActiveObject<App::DocumentObject*>(PDBODYKEY, &activeParent, &activeSubName)) {
+        return false;
+    }
+
+    // getActiveObject() resolves links, which means both an active Body and
+    // an active Link-to-Body return the Body. The stored parent and subname
+    // retain the actual activation path.
+    return findPartDesignBodyContext(activeParent, activeSubName.c_str()) == context;
+}
+
+std::vector<SelectionObject> getDeleteSelection()
+{
+    auto selections = Selection().getSelectionEx(
+        nullptr,
+        App::DocumentObject::getClassTypeId(),
+        ResolveMode::NoResolve
+    );
+    std::vector<std::pair<App::DocumentObject*, std::vector<std::string>>> redirected;
+
+    auto redirect = [&redirected](App::DocumentObject* root, const char* selectedSubName) {
+        auto* obj = findPartDesignBodyContext(root, selectedSubName);
+        std::string subName;
+        if (!obj || isActivePartDesignBodyContext(obj)) {
+            obj = root;
+            if (selectedSubName && selectedSubName[0]) {
+                App::ElementNamePair elementName;
+                obj = App::GeoFeature::resolveElement(root, selectedSubName, elementName);
+                subName = elementName.oldName;
+            }
+        }
+        if (!obj) {
+            return;
+        }
+
+        auto existing = std::ranges::find(redirected, obj, [](const auto& item) {
+            return item.first;
+        });
+        if (existing == redirected.end()) {
+            existing = redirected.insert(redirected.end(), {obj, {}});
+        }
+        if (!subName.empty()
+            && std::ranges::find(existing->second, subName) == existing->second.end()) {
+            existing->second.push_back(subName);
+        }
+    };
+
+    for (auto& selection : selections) {
+        auto* root = selection.getObject();
+        if (!root) {
+            continue;
+        }
+
+        if (selection.getSubNames().empty()) {
+            redirect(root, nullptr);
+        }
+        else {
+            for (const auto& subName : selection.getSubNames()) {
+                redirect(root, subName.c_str());
+            }
+        }
+    }
+
+    std::vector<SelectionObject> result;
+    result.reserve(redirected.size());
+    for (auto& [obj, subNames] : redirected) {
+        result.emplace_back(obj, std::move(subNames));
+    }
+    return result;
+}
+
+}  // namespace
+
 DEF_STD_CMD_A(StdCmdDelete)
 
 StdCmdDelete::StdCmdDelete()
@@ -1562,7 +1663,7 @@ void StdCmdDelete::activated(int iMsg)
         if (!deletedSelectionOfEditDocument) {
             std::set<QString> affectedLabels;
             bool more = false;
-            auto sels = Selection().getSelectionEx();
+            auto sels = getDeleteSelection();
             bool autoDeletion = true;
             bool forceDeletion = false;
             for (auto& sel : sels) {
