@@ -29,9 +29,9 @@
 #include <list>
 #include <map>
 #include <string>
+#include <string_view>
 #include <vector>
 
-#include <boost/algorithm/string/predicate.hpp>
 #include <cmath>
 
 #include <Base/Console.h>
@@ -301,7 +301,7 @@ void PropertyEnumeration::setEnums(const char** plEnums)
     // For backward compatibility, if the property container is not attached to
     // any document (i.e. its full name starts with '?'), do not notify, or
     // else existing code may crash.
-    bool notify = !boost::starts_with(getFullName(), "?");
+    bool notify = !std::string_view(getFullName()).starts_with("?");
     if (notify) {
         aboutToSetValue();
     }
@@ -375,7 +375,7 @@ void PropertyEnumeration::setEnumVector(const std::vector<std::string>& values)
     // For backward compatibility, if the property container is not attached to
     // any document (i.e. its full name starts with '?'), do not notify, or
     // else existing code may crash.
-    bool notify = !boost::starts_with(getFullName(), "?");
+    bool notify = !std::string_view(getFullName()).starts_with("?");
     if (notify) {
         aboutToSetValue();
     }

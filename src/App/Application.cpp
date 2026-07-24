@@ -24,6 +24,7 @@
  ***************************************************************************/
 
 #include <FCConfig.h>
+#include <cstring>
 
 # if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
 #  include <unistd.h>
@@ -35,7 +36,6 @@
 #  include <Windows.h>
 # endif
 
-# include <boost/algorithm/string.hpp>
 # include <boost/program_options.hpp>
 # include <chrono>
 # include <ctime>
@@ -78,6 +78,7 @@
 // FreeCAD Base header
 #include <Base/AxisPy.h>
 #include <Base/BaseClass.h>
+#include <Base/StringUtils.h>
 #include <Base/BoundBoxPy.h>
 #include <Base/ConsoleObserver.h>
 #include <Base/ServiceProvider.h>
@@ -1611,7 +1612,7 @@ std::vector<std::string> Application::getImportModules(const std::string& extens
     for (const auto & it : _mImportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
-            if (boost::iequals(extension, jt)) {
+            if (Base::StringUtils::iequals(extension, jt)) {
                 modules.push_back(it.module);
             }
         }
@@ -1636,7 +1637,7 @@ std::vector<std::string> Application::getImportTypes(const std::string& Module) 
 {
     std::vector<std::string> types;
     for (const auto & it : _mImportTypes) {
-        if (boost::iequals(Module, it.module)) {
+        if (Base::StringUtils::iequals(Module, it.module)) {
             types.insert(types.end(), it.types.begin(), it.types.end());
         }
     }
@@ -1663,7 +1664,7 @@ std::map<std::string, std::string> Application::getImportFilters(const std::stri
     for (const auto & it : _mImportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
-            if (boost::iequals(extension, jt)) {
+            if (Base::StringUtils::iequals(extension, jt)) {
                 moduleFilter[it.filter] = it.module;
             }
         }
@@ -1814,7 +1815,7 @@ std::vector<std::string> Application::getExportModules(const std::string& extens
     for (const auto & it : _mExportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
-            if (boost::iequals(extension, jt)) {
+            if (Base::StringUtils::iequals(extension, jt)) {
                 modules.push_back(it.module);
             }
         }
@@ -1839,7 +1840,7 @@ std::vector<std::string> Application::getExportTypes(const std::string& Module) 
 {
     std::vector<std::string> types;
     for (const auto & it : _mExportTypes) {
-        if (boost::iequals(Module, it.module)) {
+        if (Base::StringUtils::iequals(Module, it.module)) {
             types.insert(types.end(), it.types.begin(), it.types.end());
         }
     }
@@ -1866,7 +1867,7 @@ std::map<std::string, std::string> Application::getExportFilters(const std::stri
     for (const auto & it : _mExportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
-            if (boost::iequals(extension, jt)) {
+            if (Base::StringUtils::iequals(extension, jt)) {
                 moduleFilter[it.filter] = it.module;
             }
         }

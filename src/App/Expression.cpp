@@ -31,12 +31,13 @@
 # pragma clang diagnostic ignored "-Wdelete-non-virtual-dtor"
 #endif
 
-#include <boost/algorithm/string/predicate.hpp>
 #include <cmath>
+#include <cstring>
 
 #include <numbers>
 #include <limits>
 #include <sstream>
+#include <string_view>
 #include <stack>
 #include <string>
 #include <fmt/format.h>
@@ -53,6 +54,7 @@
 #include <Base/QuantityPy.h>
 #include <Base/RotationPy.h>
 #include <Base/Stream.h>
+#include <Base/StringUtils.h>
 #include <Base/Tools.h>
 #include <Base/VectorPy.h>
 #include <Base/Precision.h>
@@ -2270,13 +2272,13 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
             _EXPR_THROW("Function requires the first argument to be a string.", expr);
         std::string type(pytype.as_string());
         Py::Object res;
-        if (boost::iequals(type, "matrix"))
+        if (Base::StringUtils::iequals(type, "matrix"))
             res = Py::asObject(new Base::MatrixPy(Base::Matrix4D()));
-        else if (boost::iequals(type, "vector"))
+        else if (Base::StringUtils::iequals(type, "vector"))
             res = Py::asObject(new Base::VectorPy(Base::Vector3d()));
-        else if (boost::iequals(type, "placement"))
+        else if (Base::StringUtils::iequals(type, "placement"))
             res = Py::asObject(new Base::PlacementPy(Base::Placement()));
-        else if (boost::iequals(type, "rotation"))
+        else if (Base::StringUtils::iequals(type, "rotation"))
             res = Py::asObject(new Base::RotationPy(Base::Rotation()));
         else
             _EXPR_THROW("Unknown type '" << type << "'.", expr);

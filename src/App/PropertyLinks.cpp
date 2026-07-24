@@ -23,10 +23,11 @@
  ***************************************************************************/
 
 #include <algorithm>
+#include <cstring>
+#include <string_view>
 
 #include <QDir>
 #include <QFileInfo>
-#include <boost/algorithm/string/predicate.hpp>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -1203,7 +1204,7 @@ DocumentObject* PropertyLinkList::find(const char* name, int* pindex) const
         int index = -1;
         for (auto obj : _lValueList) {
             ++index;
-            if (obj && obj->getNameInDocument() && boost::equals(name, obj->getNameInDocument())) {
+            if (obj && obj->getNameInDocument() && std::string_view(name) == obj->getNameInDocument()) {
                 if (pindex) {
                     *pindex = index;
                 }
@@ -1453,7 +1454,7 @@ std::vector<std::string> PropertyLinkSub::getSubValuesStartsWith(const char* sta
     for (size_t i = 0; i < _ShadowSubList.size(); ++i) {
         const auto& sub = getSubNameWithStyle(_cSubList[i], _ShadowSubList[i], newStyle, tmp);
         auto element = Data::findElementName(sub.c_str());
-        if (element && boost::starts_with(element, starter)) {
+        if (element && std::string_view(element).starts_with(starter)) {
             ret.emplace_back(element);
         }
     }
@@ -5945,7 +5946,7 @@ bool PropertyXLinkContainer::isLinkedToDocument(const App::Document& doc) const
     if (iter != _XLinks.end()) {
         size_t len = strlen(doc.getName());
         return iter->first.size() > len && iter->first[len] == '#'
-            && boost::starts_with(iter->first, doc.getName());
+            && std::string_view(iter->first).starts_with(doc.getName());
     }
     return false;
 }

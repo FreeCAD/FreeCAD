@@ -22,6 +22,7 @@
 
 
 #include <QCryptographicHash>
+#include <cstring>
 #include <QHash>
 #include <deque>
 #include <sstream>
@@ -29,10 +30,9 @@
 #include <Base/Console.h>
 #include <Base/Reader.h>
 #include <Base/Stream.h>
+#include <Base/StringUtils.h>
 #include <Base/Writer.h>
 
-#include <boost/algorithm/string/classification.hpp>
-#include <boost/algorithm/string/split.hpp>
 #include <boost/bimap.hpp>
 #include <boost/bimap/set_of.hpp>
 #include <boost/bimap/unordered_set_of.hpp>
@@ -626,8 +626,7 @@ void StringHasher::restoreStreamNew(std::istream& stream, std::size_t count)
             FC_THROWM(Base::RuntimeError, "Invalid string table");
         }
 
-        tokens.clear();
-        boost::split(tokens, tmp, boost::is_any_of("."));
+        tokens = Base::StringUtils::split(tmp, '.');
         if (tokens.size() < 2) {
             FC_THROWM(Base::RuntimeError, "Invalid string table");
         }

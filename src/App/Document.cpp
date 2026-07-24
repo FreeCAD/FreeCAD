@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 #include <bitset>
+#include <cstring>
 #include <stack>
 #include <deque>
 #include <iostream>
@@ -39,7 +40,6 @@
 #include <format>
 #include <optional>
 
-#include <boost/algorithm/string.hpp>
 #include <boost/bimap.hpp>
 #include <boost/graph/strong_components.hpp>
 #include <boost/graph/topological_sort.hpp>
@@ -58,6 +58,7 @@
 #include <Base/Interpreter.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/StringUtils.h>
 #include <Base/FileInfo.h>
 #include <Base/TimeInfo.h>
 #include <Base/Reader.h>
@@ -423,7 +424,7 @@ int Document::_openTransaction(std::string name, int id)
 void Document::renameTransaction(const std::string& name, const int id) const
 {
     if (!name.empty() && d->activeUndoTransaction && d->activeUndoTransaction->getID() == id) {
-        if (boost::starts_with(d->activeUndoTransaction->Name, "-> ")) {
+        if (std::string_view(d->activeUndoTransaction->Name).starts_with("-> ")) {
             d->activeUndoTransaction->Name.resize(3);
         }
         else {
@@ -1841,19 +1842,19 @@ static std::string checkFileName(const char* file)
             ->GetBool("CheckExtension", true)) {
         constexpr std::size_t backupExtLen = sizeof(".fcbak") - 1;
         constexpr std::size_t backupAndDocExtLen = sizeof(".fcbak.fcstd") - 1;
-        if (boost::iends_with(fn, ".fcbak.fcstd")) {
+        if (Base::StringUtils::iends_with(fn, ".fcbak.fcstd")) {
             fn.erase(fn.size() - backupAndDocExtLen);
             fn += ".FCStd";
             return fn;
         }
-        if (boost::iends_with(fn, ".fcbak")) {
+        if (Base::StringUtils::iends_with(fn, ".fcbak")) {
             fn.erase(fn.size() - backupExtLen);
             fn += ".FCStd";
             return fn;
         }
 
         const char* ext = strrchr(fn.c_str(), '.');
-        if ((ext == nullptr) || !boost::iequals(ext + 1, "fcstd")) {
+        if ((ext == nullptr) || !Base::StringUtils::iequals(ext + 1, "fcstd")) {
             if (ext && ext[1] == 0) {
                 fn += "FCStd";
             }

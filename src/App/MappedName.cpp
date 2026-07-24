@@ -23,13 +23,13 @@
  ****************************************************************************/
 
 #include <sstream>
+#include <string_view>
 #include <unordered_set>
 
 #include "MappedName.h"
 
 #include "Base/Console.h"
 
-#include <boost/algorithm/string/predicate.hpp>
 
 
 FC_LOG_LEVEL_INIT("MappedName", true, 2);  // NOLINT
@@ -54,7 +54,7 @@ MappedName::MappedName(const char* name, int size) : raw(false)
     if (!name) {
         return;
     }
-    if (boost::starts_with(name, ELEMENT_MAP_PREFIX)) {
+    if (std::string_view(name).starts_with(ELEMENT_MAP_PREFIX)) {
         name += ELEMENT_MAP_PREFIX_SIZE;
     }
 
@@ -66,7 +66,7 @@ MappedName::MappedName(const std::string& nameString)
 {
     auto size = nameString.size();
     const char* name = nameString.c_str();
-    if (boost::starts_with(nameString, ELEMENT_MAP_PREFIX)) {
+    if (std::string_view(nameString).starts_with(ELEMENT_MAP_PREFIX)) {
         name += ELEMENT_MAP_PREFIX_SIZE;
         size -= ELEMENT_MAP_PREFIX_SIZE;
     }

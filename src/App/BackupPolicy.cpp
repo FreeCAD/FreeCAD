@@ -21,7 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include <boost/algorithm/string/replace.hpp>
 #include <regex>
 #include <string>
 
@@ -146,7 +145,7 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
     if (fi.exists()) {
         if (numberOfFiles > 0) {
             // replace . by - in format to avoid . between base name and extension
-            boost::replace_all(saveBackupDateFormat, ".", "-");
+            std::replace(saveBackupDateFormat.begin(), saveBackupDateFormat.end(), '.', '-');
             {
                 // Remove all extra backups
                 std::string filename = fi.fileName();

@@ -24,8 +24,12 @@
 
 #pragma once
 
+#include <boost/preprocessor/cat.hpp>
+#include <boost/preprocessor/facilities/expand.hpp>
+#include <boost/preprocessor/seq/cat.hpp>
 #include <boost/preprocessor/seq/for_each.hpp>
-#include <boost/algorithm/string/predicate.hpp>
+#include <boost/preprocessor/stringize.hpp>
+#include <boost/preprocessor/tuple/elem.hpp>
 
 #include <unordered_set>
 #include <Base/Parameter.h>

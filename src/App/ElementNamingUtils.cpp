@@ -2,12 +2,13 @@
 
 #include "ElementNamingUtils.h"
 #include <charconv>
-#include <boost/algorithm/string/predicate.hpp>
+#include <cstring>
+#include <string_view>
 
 
 const char* Data::isMappedElement(const char* name)
 {
-    if (name && boost::starts_with(name, ELEMENT_MAP_PREFIX)) {
+    if (name && std::string_view(name).starts_with(ELEMENT_MAP_PREFIX)) {
         return name + ELEMENT_MAP_PREFIX_SIZE;
     }
     return nullptr;
@@ -107,7 +108,7 @@ bool Data::hasMissingElement(const char* subname)
     if (dot) {
         subname = dot + 1;
     }
-    return boost::starts_with(subname, MISSING_PREFIX);
+    return std::string_view(subname).starts_with(MISSING_PREFIX);
 }
 
 const char* Data::hasMappedElementName(const char* subname)

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+#include <string_view>
 #include <unordered_map>
 #ifndef FC_DEBUG
 #include <random>
@@ -11,12 +12,10 @@
 #include "App/Application.h"
 #include "Base/Console.h"
 #include "Base/Stream.h"
+#include "Base/StringUtils.h"
 #include "Document.h"
 #include "DocumentObject.h"
 
-#include <boost/algorithm/string/classification.hpp>
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/algorithm/string/split.hpp>
 
 
 FC_LOG_LEVEL_INIT("ElementMap", true, 2);  // NOLINT
@@ -357,8 +356,7 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef,
                 FC_THROWM(Base::RuntimeError, "Invalid element child string id");  // NOLINT
             }
 
-            tokens.clear();
-            boost::split(tokens, tmp, boost::is_any_of("."));
+            tokens = Base::StringUtils::split(tmp, '.');
             if (tokens.size() > 1) {
                 child.sids.reserve(static_cast<int>(tokens.size()) - 1);
                 for (unsigned k = 1; k < tokens.size(); ++k) {
@@ -401,8 +399,7 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef,
                     ref->next = std::make_unique<MappedNameRef>();
                     ref = ref->next.get();
                 }
-                tokens.clear();
-                boost::split(tokens, tmp, boost::is_any_of("."));
+                tokens = Base::StringUtils::split(tmp, '.');
                 if (tokens.size() < 2) {
                     FC_THROWM(Base::RuntimeError, "Invalid element entry");  // NOLINT
                 }
@@ -627,7 +624,7 @@ void ElementMap::encodeElementName(char element_type,
                                    bool forceTag) const
 {
     if (postfix && (postfix[0] != 0)) {
-        if (!boost::starts_with(postfix, ELEMENT_MAP_PREFIX)) {
+        if (!std::string_view(postfix).starts_with(ELEMENT_MAP_PREFIX)) {
             ss << ELEMENT_MAP_PREFIX;
         }
         ss << postfix;
@@ -849,7 +846,7 @@ IndexedName ElementMap::find(const MappedName& name, ElementIDRefs* sids) const
             res = childName.toIndexedName();
         }
 
-        if (res && boost::equals(res.getType(), child.indexedName.getType())
+        if (res && std::string_view(res.getType()) == child.indexedName.getType()
             && child.indexedName.getIndex() <= res.getIndex()
             && child.indexedName.getIndex() + child.count > res.getIndex()) {
             res.setIndex(res.getIndex() + it.value().childMap->offset);
