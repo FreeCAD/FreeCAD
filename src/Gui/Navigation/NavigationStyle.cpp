@@ -67,6 +67,24 @@
 
 using namespace Gui;
 
+NavigationStyleContextMenuReceiver::NavigationStyleContextMenuReceiver(
+    ViewProviderDocumentObject* viewProvider,
+    QObject* parent
+)
+    : QObject(parent)
+    , viewProvider(viewProvider)
+{}
+
+void NavigationStyleContextMenuReceiver::startEditing()
+{
+    auto action = qobject_cast<QAction*>(sender());
+    if (!action || !viewProvider) {
+        return;
+    }
+
+    viewProvider->getDocument()->setEdit(viewProvider, action->data().toInt());
+}
+
 class FCSphereSheetProjector: public SbSphereSheetProjector
 {
     using inherited = SbSphereSheetProjector;
@@ -2365,7 +2383,9 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
 
         if (selectedViewProvider) {
             objectMenu = new QMenu(contextMenu);
-            selectedViewProvider->setupContextMenu(objectMenu, contextMenu, SLOT(close()));
+            auto receiver =
+                new NavigationStyleContextMenuReceiver(selectedViewProvider, objectMenu);
+            selectedViewProvider->setupContextMenu(objectMenu, receiver, SLOT(startEditing()));
             objectActions = objectMenu->actions();
 
             if (!objectActions.empty()) {
@@ -2386,20 +2406,6 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
                 else {
                     contextMenu->addSeparator();
                 }
-
-                QObject::connect(
-                    contextMenu,
-                    &QMenu::triggered,
-                    [objectActions, selectedViewProvider](QAction* selectedAction) {
-                        if (objectActions.contains(selectedAction)
-                            && selectedAction->data().isValid()) {
-                            selectedViewProvider->getDocument()->setEdit(
-                                selectedViewProvider,
-                                selectedAction->data().toInt()
-                            );
-                        }
-                    }
-                );
             }
         }
     }
