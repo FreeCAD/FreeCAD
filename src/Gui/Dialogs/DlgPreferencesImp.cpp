@@ -831,6 +831,13 @@ void DlgPreferencesImp::restoreDefaults()
         ParameterManager* mgr = App::GetApplication().GetParameterSet("User parameter");
         mgr->Clear();
 
+        // Restore the default preferences template if any
+        const char* templatePath = App::Application::getUserParameterTemplatePath();
+        if (templatePath) {
+            mgr->LoadDocument(templatePath);
+            restartRequired = true;  // the reloaded are not applied.
+        }
+
         App::GetApplication()
             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
             ->SetBool("SaveUserParameter", saveParameter);
