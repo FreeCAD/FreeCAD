@@ -2021,11 +2021,65 @@ void View3DInventorViewer::setEnabledFPSCounter(bool on)
             fpsCounter = new QLabel(this);
             fpsCounter->setAttribute(Qt::WA_TransparentForMouseEvents);
         }
+        // fpsCounter->show();
+        if (!fpsUpdateTimer) {
+            fpsUpdateTimer = new QTimer(this);
+            fpsUpdateTimer->setInterval(250);  // 4 Hz
+            connect(fpsUpdateTimer, &QTimer::timeout, this, &View3DInventorViewer::updateFPSLabel);
+        }
         fpsCounter->show();
+        fpsUpdateTimer->start();
     }
-    else if (fpsCounter) {
-        fpsCounter->hide();
+    else {
+        if (fpsUpdateTimer) {
+            fpsUpdateTimer->stop();
+        }
+        if (fpsCounter) {
+            fpsCounter->hide();
+        }
     }
+}
+
+void View3DInventorViewer::updateFPSLabel()
+{
+    if (!fpsEnabled || !fpsCounter) {
+        return;
+    }
+
+    fpsCounter->setText(
+        QString::fromStdString(
+            fmt::format("{:.1f} ms / {:.1f} fps", framesPerSecond[0], framesPerSecond[1])
+        )
+    );
+
+    // update color from user preference (only when it changes)
+    ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
+
+    unsigned long axisLetterColor = hGrpView->GetUnsigned("AxisLetterColor", 4294902015);  // default
+                                                                                           // yellow
+
+    if (axisLetterColor != previousAxisLetterColor) {
+        previousAxisLetterColor = axisLetterColor;
+        Base::Color c(static_cast<uint32_t>(axisLetterColor));
+        fpsCounter->setStyleSheet(
+            QString::fromLatin1("color: rgb(%1,%2,%3); background: transparent;")
+                .arg(int(c.r * 255))
+                .arg(int(c.g * 255))
+                .arg(int(c.b * 255))
+        );
+    }
+
+    // size must be current before we use width()/height() for positioning
+    fpsCounter->adjustSize();
+
+    // position, bottom left, accounting for left-side overlay widgets
+    ParameterGrp::handle hGrpOverlayL = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/MainWindow/DockWindows/OverlayLeft"
+    );
+    int xOffset = hGrpOverlayL->GetASCII("Widgets", "").empty() ? 10 : fpsCounter->width() + 20;
+    fpsCounter->move(xOffset, height() - fpsCounter->height() - 5);
 }
 
 
@@ -3345,37 +3399,6 @@ void View3DInventorViewer::renderScene()
                 it->paintGL();
             }
         }
-    }
-
-    if (fpsEnabled && fpsCounter) {
-        std::stringstream stream;
-        stream.precision(1);
-        stream.setf(std::ios::fixed | std::ios::showpoint);
-        stream << framesPerSecond[0] << " ms / " << framesPerSecond[1] << " fps";
-
-        ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/View"
-        );
-        unsigned long axisLetterColor = hGrpView->GetUnsigned("AxisLetterColor", 4294902015);
-        if (axisLetterColor != previousAxisLetterColor) {
-            previousAxisLetterColor = axisLetterColor;
-            Base::Color c(static_cast<uint32_t>(axisLetterColor));
-            fpsCounter->setStyleSheet(
-                QString::fromLatin1("color: rgb(%1,%2,%3); background: transparent;")
-                    .arg(int(c.r * 255))
-                    .arg(int(c.g * 255))
-                    .arg(int(c.b * 255))
-            );
-        }
-
-        fpsCounter->setText(QString::fromStdString(stream.str()));
-        fpsCounter->adjustSize();
-
-        ParameterGrp::handle hGrpOverlayL = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/MainWindow/DockWindows/OverlayLeft"
-        );
-        int xOffset = hGrpOverlayL->GetASCII("Widgets", "").empty() ? 10 : fpsCounter->width() + 20;
-        fpsCounter->move(xOffset, height() - fpsCounter->height() - 5);
     }
 
     // Workaround for inconsistent QT behavior related to handling custom OpenGL widgets that
