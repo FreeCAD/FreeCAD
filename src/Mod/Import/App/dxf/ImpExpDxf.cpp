@@ -1770,7 +1770,7 @@ void ImpExpDxfWrite::setOptions()
     setDataDir(App::Application::getResourceDir() + "Mod/Import/DxfPlate/");
 }
 
-void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
+void ImpExpDxfWrite::exportShape(const TopoDS_Shape input, Base::Vector3d placement)
 {
     // export Edges
     TopExp_Explorer edges(input, TopAbs_EDGE);
@@ -1783,10 +1783,10 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
             gp_Pnt start = adapt.Value(f);
             gp_Pnt e = adapt.Value(l);
             if (fabs(l - f) > 1.0 && start.SquareDistance(e) < 0.001) {
-                exportCircle(adapt);
+                exportCircle(adapt, placement);
             }
             else {
-                exportArc(adapt);
+                exportArc(adapt, placement);
             }
         }
         else if (adapt.GetType() == GeomAbs_Ellipse) {
@@ -1842,7 +1842,7 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
                         exportPolyline(adapt);
                     }
                     else {
-                        exportEllipseArc(adapt);
+                        exportEllipseArc(adapt, placement);
                     }
                 }
             }
@@ -1869,7 +1869,7 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
                     exportPolyline(adapt);
                 }
                 else {
-                    exportBSpline(adapt);
+                    exportBSpline(adapt, placement);
                 }
             }
         }
@@ -1877,7 +1877,7 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
             exportBCurve(adapt);
         }
         else if (adapt.GetType() == GeomAbs_Line) {
-            exportLine(adapt);
+            exportLine(adapt, placement);
         }
         else {
             Base::Console().warning(
@@ -1935,10 +1935,13 @@ bool ImpExpDxfWrite::gp_PntCompare(gp_Pnt p1, gp_Pnt p2)
 }
 
 
-void ImpExpDxfWrite::exportCircle(BRepAdaptor_Curve& c)
+void ImpExpDxfWrite::exportCircle(BRepAdaptor_Curve& c, Base::Vector3d placement)
 {
     gp_Circ circ = c.Circle();
     gp_Pnt p = circ.Location();
+    p.SetX(placement.x + p.X());
+    p.SetY(placement.y + p.Y());
+    p.SetZ(placement.z + p.Z());
     double center[3] = {0, 0, 0};
     gPntToTuple(center, p);
 
@@ -1947,10 +1950,13 @@ void ImpExpDxfWrite::exportCircle(BRepAdaptor_Curve& c)
     writeCircle(center, radius);
 }
 
-void ImpExpDxfWrite::exportEllipse(BRepAdaptor_Curve& c)
+void ImpExpDxfWrite::exportEllipse(BRepAdaptor_Curve& c, Base::Vector3d placement)
 {
     gp_Elips ellp = c.Ellipse();
     gp_Pnt p = ellp.Location();
+    p.SetX(placement.x + p.X());
+    p.SetY(placement.y + p.Y());
+    p.SetZ(placement.z + p.Z());
     double center[3] = {0, 0, 0};
     gPntToTuple(center, p);
 
@@ -1966,10 +1972,13 @@ void ImpExpDxfWrite::exportEllipse(BRepAdaptor_Curve& c)
     writeEllipse(center, major, minor, rotation, 0.0, 6.28318, true);
 }
 
-void ImpExpDxfWrite::exportArc(BRepAdaptor_Curve& c)
+void ImpExpDxfWrite::exportArc(BRepAdaptor_Curve& c, Base::Vector3d placement)
 {
     gp_Circ circ = c.Circle();
     gp_Pnt p = circ.Location();
+    p.SetX(placement.x + p.X());
+    p.SetY(placement.y + p.Y());
+    p.SetZ(placement.z + p.Z());
     double center[3] = {0, 0, 0};
     gPntToTuple(center, p);
 
@@ -1992,10 +2001,13 @@ void ImpExpDxfWrite::exportArc(BRepAdaptor_Curve& c)
     writeArc(start, end, center, dir);
 }
 
-void ImpExpDxfWrite::exportEllipseArc(BRepAdaptor_Curve& c)
+void ImpExpDxfWrite::exportEllipseArc(BRepAdaptor_Curve& c, Base::Vector3d placement)
 {
     gp_Elips ellp = c.Ellipse();
     gp_Pnt p = ellp.Location();
+    p.SetX(placement.x + p.X());
+    p.SetY(placement.y + p.Y());
+    p.SetZ(placement.z + p.Z());
     double center[3] = {0, 0, 0};
     gPntToTuple(center, p);
 
@@ -2032,7 +2044,7 @@ void ImpExpDxfWrite::exportEllipseArc(BRepAdaptor_Curve& c)
     writeEllipse(center, major, minor, rotation, startAngle, endAngle, endIsCW);
 }
 
-void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve& c)
+void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve& c, Base::Vector3d placement)
 {
     SplineDataOut sd;
     Handle(Geom_BSplineCurve) spline;
@@ -2068,6 +2080,11 @@ void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve& c)
             controlPoints.SetValue(1, ePt);
             spline = GeomAPI_PointsToBSpline(controlPoints, 1).Curve();
         }
+    }
+
+    if (!spline.IsNull()) {
+        gp_Vec translation(placement.x, placement.y, placement.z);
+        spline->Translate(translation);
     }
     // WF? norm of surface containing curve??
     sd.norm.x = 0.0;
@@ -2121,14 +2138,20 @@ void ImpExpDxfWrite::exportBCurve(BRepAdaptor_Curve& c)
     Base::Console().message("BCurve dxf export not yet supported\n");
 }
 
-void ImpExpDxfWrite::exportLine(BRepAdaptor_Curve& c)
+void ImpExpDxfWrite::exportLine(BRepAdaptor_Curve& c, Base::Vector3d placement)
 {
     double f = c.FirstParameter();
     double l = c.LastParameter();
     gp_Pnt s = c.Value(f);
+    s.SetX(placement.x + s.X());
+    s.SetY(placement.y + s.Y());
+    s.SetZ(placement.z + s.Z());
     double start[3] = {0, 0, 0};
     gPntToTuple(start, s);
     gp_Pnt e = c.Value(l);
+    e.SetX(placement.x + e.X());
+    e.SetY(placement.y + e.Y());
+    e.SetZ(placement.z + e.Z());
     double end[3] = {0, 0, 0};
     gPntToTuple(end, e);
     writeLine(start, end);

@@ -583,7 +583,7 @@ public:
     ImpExpDxfWrite& operator=(const ImpExpDxfWrite&&) = delete;
     ~ImpExpDxfWrite();
 
-    void exportShape(TopoDS_Shape input);
+    void exportShape(TopoDS_Shape input, Base::Vector3d location = Base::Vector3d(0, 0, 0));
     std::string getOptionSource()
     {
         return m_optionSource;
@@ -635,13 +635,13 @@ public:
     static bool gp_PntCompare(gp_Pnt p1, gp_Pnt p2);
 
 protected:
-    void exportCircle(BRepAdaptor_Curve& c);
-    void exportEllipse(BRepAdaptor_Curve& c);
-    void exportArc(BRepAdaptor_Curve& c);
-    void exportEllipseArc(BRepAdaptor_Curve& c);
-    void exportBSpline(BRepAdaptor_Curve& c);
+    void exportCircle(BRepAdaptor_Curve& c, Base::Vector3d placement = Base::Vector3d(0, 0, 0));
+    void exportEllipse(BRepAdaptor_Curve& c, Base::Vector3d placement = Base::Vector3d(0, 0, 0));
+    void exportArc(BRepAdaptor_Curve& c, Base::Vector3d placement = Base::Vector3d(0, 0, 0));
+    void exportEllipseArc(BRepAdaptor_Curve& c, Base::Vector3d placement = Base::Vector3d(0, 0, 0));
+    void exportBSpline(BRepAdaptor_Curve& c, Base::Vector3d placement = Base::Vector3d(0, 0, 0));
     void exportBCurve(BRepAdaptor_Curve& c);
-    void exportLine(BRepAdaptor_Curve& c);
+    void exportLine(BRepAdaptor_Curve& c, Base::Vector3d placement = Base::Vector3d(0, 0, 0));
     void exportLWPoly(BRepAdaptor_Curve& c);  // LWPolyline not supported in R12?
     void exportPolyline(BRepAdaptor_Curve& c);
 

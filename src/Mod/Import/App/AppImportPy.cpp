@@ -626,7 +626,14 @@ private:
                             Part::Feature* part = static_cast<Part::Feature*>(obj);
                             shapeToExport = part->Shape.getValue();
                         }
-                        writer.exportShape(shapeToExport);
+
+                        Base::Vector3d placement(
+                            obj->getPlacement().toMatrix()[0][3],
+                            obj->getPlacement().toMatrix()[1][3],
+                            0.0
+                        );
+
+                        writer.exportShape(shapeToExport, placement);
                     }
                 }
                 writer.endRun();
