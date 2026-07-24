@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: LGPL-2.1-or-later -->
+<!-- SPDX-FileCopyrightText: 2026 FreeCAD Project Association -->
+<!-- SPDX-FileNotice: Part of the FreeCAD project. -->
+<svg
+   width="64"
+   height="64"
+   viewBox="0 0 64 64"
+   version="1.1"
+   xmlns="http://www.w3.org/2000/svg">
+  <g
+     fill="#edd400"
+     stroke="#302b00"
+     stroke-width="2.6"
+     stroke-linejoin="round">
+    <path
+       d="M 6,28 32,12 V 40 L 6,56 Z" />
+    <path
+       d="M 58,28 32,12 v 28 l 26,16 z" />
+    <path
+       fill="#fce94f"
+       d="m 29.5,4 v 50 h 5 V 4 Z" />
+  </g>
+  <g
+     stroke="#204a87"
+     stroke-width="2.4"
+     stroke-linejoin="round">
+    <path
+       fill="#729fcf"
+       d="m 38,49 14,-14 7,7 -14,14 -9,2 z" />
+    <path
+       fill="#fce94f"
+       d="m 52,35 3,-3 7,7 -3,3 z" />
+    <path
+       fill="none"
+       d="m 42,48 7,7" />
+  </g>
+</svg>
