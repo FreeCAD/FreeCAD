@@ -1513,6 +1513,16 @@ void SketchObject::setOrientation(Constraint* constr, bool reset)
         setOrientationTangent(constr);
     }
 }
+// Migrate point-line, circle-circle and circle-line distance from abs to signed
+void SketchObject::migrateConstraintOrientations()
+{
+    auto constraints = Constraints.getValues();
+    for (auto& constr : constraints) {
+        setOrientation(constr, false);
+    }
+
+    Constraints.setValues(std::move(constraints));
+}
 std::unique_ptr<Constraint>
 SketchObject::getConstraintAfterDeletingGeo(const Constraint* constr,
                                             const int deletedGeoId) const
