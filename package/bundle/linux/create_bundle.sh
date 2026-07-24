@@ -7,7 +7,7 @@ conda_env="AppDir/usr"
 
 mkdir -p ${conda_env}
 
-cp -a ../.pixi/envs/default/* ${conda_env}
+cp -a ../../../.pixi/envs/default/* ${conda_env}
 
 echo -e "\nDelete unnecessary stuff"
 rm -rf ${conda_env}/include
@@ -38,10 +38,58 @@ find . -path "*/__pycache__/*" -delete
 find . -name "*.pyc" -type f -delete
 
 # reduce size
-rm -rf ${conda_env}/conda-meta/
-rm -rf ${conda_env}/doc/global/
-rm -rf ${conda_env}/share/gtk-doc/
-rm -rf ${conda_env}/lib/cmake/
+rm -rf ${conda_env}/conda
+rm -rf ${conda_env}/conda-meta
+rm -rf ${conda_env}/doc
+rm -rf ${conda_env}/etc/conda
+rm -rf ${conda_env}/lib/clang
+rm -rf ${conda_env}/lib/cmake
+rm -rf ${conda_env}/lib/gcc
+rm -rf ${conda_env}/lib/libarcher.so.bak
+rm -rf ${conda_env}/lib/libasan.*
+rm -rf ${conda_env}/lib/libhwasan.*
+rm -rf ${conda_env}/lib/libgmock*.*
+rm -rf ${conda_env}/lib/libgtest.*
+rm -rf ${conda_env}/lib/liblsan.*
+rm -rf ${conda_env}/lib/libtsan.*
+rm -rf ${conda_env}/lib/libubsan.*
+rm -rf ${conda_env}/lib/libnode.so.*
+rm -rf ${conda_env}/lib/libclang-cpp.so.*
+rm -rf ${conda_env}/lib/libclang.so.*
+rm -rf ${conda_env}/lib/libLLVM-*.so
+rm -rf ${conda_env}/lib/libLLVM.so.*
+rm -rf ${conda_env}/lib/node_modules
+rm -rf ${conda_env}/lib/objects-Release
+rm -rf ${conda_env}/lib/perl5
+rm -rf ${conda_env}/lib/python*/site-packages/conda
+rm -rf ${conda_env}/lib/python*/site-packages/distlib
+rm -rf ${conda_env}/lib/python*/site-packages/pandas/tests
+rm -rf ${conda_env}/lib/python*/site-packages/pre_commit
+rm -rf ${conda_env}/lib/python*/site-packages/pycparser
+rm -rf ${conda_env}/lib/python*/site-packages/pyright*
+rm -rf ${conda_env}/lib/python*/site-packages/qtpy/tests
+rm -rf ${conda_env}/lib/python*/site-packages/tests
+rm -rf ${conda_env}/lib/python*/site-packages/tornado
+rm -rf ${conda_env}/lib/python*/site-packages/zstandard
+rm -rf ${conda_env}/lib/qt6/bin
+rm -rf ${conda_env}/libexec/gcc
+rm -rf ${conda_env}/libexec/git-core
+rm -rf ${conda_env}/man
+rm -rf ${conda_env}/share/cmake
+rm -rf ${conda_env}/share/cmake-*
+rm -rf ${conda_env}/share/doc
+rm -rf ${conda_env}/share/emacs
+rm -rf ${conda_env}/share/git-core
+rm -rf ${conda_env}/share/git-gui
+rm -rf ${conda_env}/share/gitk
+rm -rf ${conda_env}/share/gitweb
+rm -rf ${conda_env}/share/gtk-doc
+rm -rf ${conda_env}/share/info
+rm -rf ${conda_env}/share/man
+rm -rf ${conda_env}/share/swig
+rm -rf ${conda_env}/share/vim
+rm -rf ${conda_env}/aarch64-conda-linux-gnu
+rm -rf ${conda_env}/x86_64-conda-linux-gnu
 
 find . -name "*.h" -type f -delete
 find . -name "*.cmake" -type f -delete

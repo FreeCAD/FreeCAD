@@ -244,7 +244,7 @@ if(OpenMP_CXX_FOUND)
 endif()
 
 
-SET_BIN_DIR(Fem Fem /Mod/Fem)
+SET_BIN_DIR(Fem)
 SET_PYTHON_PREFIX_SUFFIX(Fem)
 
 

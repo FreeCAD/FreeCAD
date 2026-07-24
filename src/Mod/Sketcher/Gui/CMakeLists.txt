@@ -212,7 +212,7 @@ if (FREECAD_WARN_ERROR)
     target_compile_warn_error(SketcherGui)
 endif()
 
-SET_BIN_DIR(SketcherGui SketcherGui /Mod/Sketcher)
+SET_BIN_DIR(SketcherGui)
 SET_PYTHON_PREFIX_SUFFIX(SketcherGui)
 
 fc_copy_sources(SketcherGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Sketcher" ${SketcherGuiIcon_SVG})

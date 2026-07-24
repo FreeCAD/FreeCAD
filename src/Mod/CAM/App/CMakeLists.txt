@@ -134,7 +134,7 @@ if(FREECAD_USE_PCH)
     )
 endif(FREECAD_USE_PCH)
 
-SET_BIN_DIR(Path PathApp /Mod/CAM)
+SET_BIN_DIR(Path PathApp)
 SET_PYTHON_PREFIX_SUFFIX(Path)
 
 INSTALL(TARGETS Path DESTINATION ${CMAKE_INSTALL_LIBDIR})
@@ -146,7 +146,7 @@ if (FREECAD_WARN_ERROR)
     target_compile_warn_error(tsp_solver)
 endif()
 
-SET_BIN_DIR(tsp_solver tsp_solver /Mod/CAM)
+SET_BIN_DIR(tsp_solver)
 SET_PYTHON_PREFIX_SUFFIX(tsp_solver)
 
 INSTALL(TARGETS tsp_solver DESTINATION ${CMAKE_INSTALL_LIBDIR})

@@ -92,7 +92,7 @@ if (FREECAD_WARN_ERROR)
 endif()
 
 
-SET_BIN_DIR(MeshPartGui MeshPartGui /Mod/MeshPart)
+SET_BIN_DIR(MeshPartGui)
 SET_PYTHON_PREFIX_SUFFIX(MeshPartGui)
 
 fc_target_copy_resource_flat(MeshPartGui

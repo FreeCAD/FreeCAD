@@ -103,7 +103,7 @@ fc_target_copy_resource_flat(MeshPart
     ${MeshPart_Scripts}
 )
 
-SET_BIN_DIR(MeshPart MeshPart /Mod/MeshPart)
+SET_BIN_DIR(MeshPart)
 SET_PYTHON_PREFIX_SUFFIX(MeshPart)
 
 INSTALL(TARGETS MeshPart DESTINATION ${CMAKE_INSTALL_LIBDIR})
@@ -127,7 +127,7 @@ if (BUILD_FLAT_MESH)
     target_include_directories(flatmesh PRIVATE ${pybind11_INCLUDE_DIR})
     target_link_libraries(flatmesh ${Python3_LIBRARIES} ${MeshPart_LIBS})
 
-    SET_BIN_DIR(flatmesh flatmesh /Mod/MeshPart)
+    SET_BIN_DIR(flatmesh)
     install(TARGETS flatmesh DESTINATION ${CMAKE_INSTALL_LIBDIR})
 endif(BUILD_FLAT_MESH)
 ############################################################################

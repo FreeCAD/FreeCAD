@@ -84,7 +84,7 @@ if (FREECAD_WARN_ERROR)
     target_compile_warn_error(ReverseEngineering)
 endif()
 
-SET_BIN_DIR(ReverseEngineering ReverseEngineering /Mod/ReverseEngineering)
+SET_BIN_DIR(ReverseEngineering)
 SET_PYTHON_PREFIX_SUFFIX(ReverseEngineering)
 
 INSTALL(TARGETS ReverseEngineering DESTINATION ${CMAKE_INSTALL_LIBDIR})

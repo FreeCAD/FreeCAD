@@ -81,7 +81,7 @@ fc_target_copy_resource_flat(PointsGui
     ${CMAKE_BINARY_DIR}/Mod/Points
     ${PointsGui_Scripts})
 
-SET_BIN_DIR(PointsGui PointsGui /Mod/Points)
+SET_BIN_DIR(PointsGui)
 SET_PYTHON_PREFIX_SUFFIX(PointsGui)
 
 fc_copy_sources(PointsGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Points" ${PointsGuiIcon_SVG})

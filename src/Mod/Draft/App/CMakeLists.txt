@@ -43,7 +43,7 @@ if (FREECAD_WARN_ERROR)
 endif()
 
 
-SET_BIN_DIR(DraftUtils DraftUtils /Mod/Draft)
+SET_BIN_DIR(DraftUtils)
 SET_PYTHON_PREFIX_SUFFIX(DraftUtils)
 
 INSTALL(TARGETS DraftUtils DESTINATION ${CMAKE_INSTALL_LIBDIR})

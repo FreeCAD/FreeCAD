@@ -1,17 +1,25 @@
+
+PREFIX=$CONDA_PREFIX
+EXT=
+
+if [[ ${OS} == Windows_NT ]]; then
+    CMAKE_PRESET=conda-windows-release
+    PREFIX=$CONDA_PREFIX/Library
+    EXT=.exe
+    CMAKE_PLATFORM_FLAGS+=(-D CMAKE_C_COMPILER="$CC")
+    CMAKE_PLATFORM_FLAGS+=(-D CMAKE_CXX_COMPILER="$CXX")
+    CMAKE_PLATFORM_FLAGS+=(-D SMESH_INCLUDE_DIR="${PREFIX}/include/smesh")
+    CMAKE_PLATFORM_FLAGS+=(-D SMESH_LIBRARY="${PREFIX}/lib/SMESH.lib")
+fi
+
 if [[ ${HOST} =~ .*linux.*  ]]; then
     CMAKE_PRESET=conda-linux-release
-
-    # The Linux conda preset builds with Clang, but conda compiler activation
-    # can still provide GCC-only flags.
-    for flags_var in CFLAGS CXXFLAGS DEBUG_CFLAGS DEBUG_CXXFLAGS; do
-        if [[ -n "${!flags_var:-}" ]]; then
-            export "${flags_var}=${!flags_var//-fno-merge-constants/}"
-        fi
-    done
+    CMAKE_PLATFORM_FLAGS+=(-D BUILD_DYNAMIC_LINK_PYTHON=OFF)
 fi
 
 if [[ ${HOST} =~ .*darwin.* ]]; then
     CMAKE_PRESET=conda-macos-release
+    CMAKE_PLATFORM_FLAGS+=(-D BUILD_DYNAMIC_LINK_PYTHON=OFF)
 
     # add hacks for osx here!
     echo "adding hacks for osx"
@@ -44,7 +52,7 @@ if [[ ${HOST} =~ .*darwin.* ]]; then
     DEPLOY_MAJOR=$(echo "$DEPLOY_TARGET" | cut -d. -f1)
     DEPLOY_MINOR=$(echo "$DEPLOY_TARGET" | cut -d. -f2)
     if [[ "$DEPLOY_MAJOR" -gt 10 ]] || [[ "$DEPLOY_MAJOR" -eq 10 && "$DEPLOY_MINOR" -ge 15 ]]; then
-        FIND_WRAP_OPENGL="$PREFIX/lib/cmake/Qt6/FindWrapOpenGL.cmake"
+        FIND_WRAP_OPENGL="${PREFIX}/lib/cmake/Qt6/FindWrapOpenGL.cmake"
         if [[ -f "$FIND_WRAP_OPENGL" ]]; then
             echo "Patching Qt6 FindWrapOpenGL.cmake to remove AGL linkage (not available on macOS 10.15+)..."
             sed -i.bak \
@@ -62,22 +70,22 @@ cmake \
     ${CMAKE_PLATFORM_FLAGS[@]} \
     --preset ${CMAKE_PRESET} \
     -D CMAKE_IGNORE_PREFIX_PATH="/opt/homebrew;/usr/local/homebrew" \
-    -D CMAKE_INCLUDE_PATH:FILEPATH="$PREFIX/include" \
-    -D CMAKE_INSTALL_LIBDIR:FILEPATH="$PREFIX/lib" \
-    -D CMAKE_INSTALL_PREFIX:FILEPATH="$PREFIX" \
-    -D CMAKE_LIBRARY_PATH:FILEPATH="$PREFIX/lib" \
-    -D CMAKE_PREFIX_PATH:FILEPATH="$PREFIX" \
+    -D CMAKE_INCLUDE_PATH:FILEPATH="${PREFIX}/include" \
+    -D CMAKE_INSTALL_LIBDIR:FILEPATH="${PREFIX}/lib" \
+    -D CMAKE_INSTALL_PREFIX:FILEPATH="${PREFIX}" \
+    -D CMAKE_LIBRARY_PATH:FILEPATH="${PREFIX}/lib" \
+    -D CMAKE_PREFIX_PATH:FILEPATH="${PREFIX}" \
+    -D RELATIVE_RPATH=ON \
     -D INSTALL_TO_SITEPACKAGES:BOOL=ON \
-    -D OCC_INCLUDE_DIR:FILEPATH="$PREFIX/include/opencascade" \
-    -D OCC_LIBRARY_DIR:FILEPATH="$PREFIX/lib" \
+    -D OCC_INCLUDE_DIR:FILEPATH="${PREFIX}/include/opencascade" \
+    -D OCC_LIBRARY_DIR:FILEPATH="${PREFIX}/lib" \
     -D Python_EXECUTABLE:FILEPATH="$PYTHON" \
     -D Python3_EXECUTABLE:FILEPATH="$PYTHON" \
-    -D BUILD_DYNAMIC_LINK_PYTHON:BOOL=OFF \
-    -B build \
+    -B build/bundle-release \
     -S .
 
-cmake --build build
-cmake --install build
+cmake --build build/bundle-release
+cmake --install build/bundle-release
 
-mv ${PREFIX}/bin/FreeCAD ${PREFIX}/bin/freecad || true
-mv ${PREFIX}/bin/FreeCADCmd ${PREFIX}/bin/freecadcmd || true
+mv ${PREFIX}/bin/FreeCAD${EXT} ${PREFIX}/bin/freecad${EXT} || true
+mv ${PREFIX}/bin/FreeCADCmd${EXT} ${PREFIX}/bin/freecadcmd${EXT} || true

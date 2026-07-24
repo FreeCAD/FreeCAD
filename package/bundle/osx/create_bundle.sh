@@ -7,11 +7,45 @@ conda_env="FreeCAD.app/Contents/Resources"
 
 mkdir -p ${conda_env}
 
-cp -a ../.pixi/envs/default/* ${conda_env}
+cp -a ../../../.pixi/envs/default/* ${conda_env}
 
 # delete unnecessary stuff
 rm -rf ${conda_env}/include
 find ${conda_env} -name \*.a -delete
+rm -rf ${conda_env}/conda-meta
+rm -rf ${conda_env}/doc
+rm -rf ${conda_env}/etc/conda
+rm -rf ${conda_env}/lib/clang
+rm -rf ${conda_env}/lib/gcc
+rm -rf ${conda_env}/lib/libclang-cpp.*.dylib
+rm -rf ${conda_env}/lib/libclang.*.dylib
+rm -rf ${conda_env}/lib/libLLVM.*.dylib
+rm -rf ${conda_env}/lib/node_modules
+rm -rf ${conda_env}/lib/perl5
+rm -rf ${conda_env}/lib/python*/site-packages/pandas/tests
+rm -rf ${conda_env}/lib/python*/site-packages/pre_commit
+rm -rf ${conda_env}/lib/python*/site-packages/pycparser
+rm -rf ${conda_env}/lib/python*/site-packages/pyright
+rm -rf ${conda_env}/lib/python*/site-packages/qtpy/tests
+rm -rf ${conda_env}/lib/python*/site-packages/tests
+rm -rf ${conda_env}/lib/python3.1/site-packages/pandas/tests
+rm -rf ${conda_env}/lib/qt6/bin
+rm -rf ${conda_env}/libexec/gcc
+rm -rf ${conda_env}/libexec/git-core
+rm -rf ${conda_env}/man
+rm -rf ${conda_env}/share/cmake
+rm -rf ${conda_env}/share/cmake-*
+rm -rf ${conda_env}/share/doc
+rm -rf ${conda_env}/share/emacs
+rm -rf ${conda_env}/share/git-core
+rm -rf ${conda_env}/share/git-gui
+rm -rf ${conda_env}/share/gitk
+rm -rf ${conda_env}/share/gitweb
+rm -rf ${conda_env}/share/info
+rm -rf ${conda_env}/share/man
+rm -rf ${conda_env}/share/perl5
+rm -rf ${conda_env}/share/swig
+rm -rf ${conda_env}/share/vim
 
 mv ${conda_env}/bin ${conda_env}/bin_tmp
 mkdir ${conda_env}/bin
@@ -39,7 +73,7 @@ find . -name "*.pyc" -type f -delete
 # see https://github.com/FreeCAD/FreeCAD/issues/10144#issuecomment-1836686775
 # and https://github.com/FreeCAD/FreeCAD-Bundle/pull/203
 # and https://github.com/FreeCAD/FreeCAD-Bundle/issues/375
-python ../scripts/fix_macos_lib_paths.py ${conda_env}/lib -r
+python fix_macos_lib_paths.py ${conda_env}/lib -r
 
 # build and install the launcher
 cmake -B build launcher
