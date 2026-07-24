@@ -37,7 +37,7 @@
      <item>
       <widget class="QLabel" name="labelSideMode">
        <property name="text">
-        <string>Side mode</string>
+        <string>Sides</string>
        </property>
       </widget>
      </item>
