@@ -856,7 +856,7 @@ bool TaskHatchFace::accept()
     if (!m_isEditMode && !m_dvp) {  // DVP is crucial for new hatches
         QMessageBox::critical(this,
                               QObject::tr("Error"),
-                              QObject::tr("No valid DrawViewPart for new hatch."));
+                              QObject::tr("No valid drawing view for new hatch."));
         m_doc->abortCommand();
         return false;
     }
