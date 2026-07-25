@@ -92,10 +92,7 @@ void ButtonModel::load3DConnexionButtonMapping(boost::property_tree::ptree Butto
 {
     spaceballButtonGroup()->Clear();
 
-    BOOST_FOREACH (
-        const boost::property_tree::ptree::value_type& Map,
-        ButtonMapTree.get_child("Mapping")
-    ) {
+    for (const boost::property_tree::ptree::value_type& Map : ButtonMapTree.get_child("Mapping")) {
         if ("Map" == Map.first) {
             std::string ButtonDescription;
             std::string ButtonCode;
@@ -103,10 +100,8 @@ void ButtonModel::load3DConnexionButtonMapping(boost::property_tree::ptree Butto
             std::string ButtonDownTime;
 
             // Inspect Map attributes
-            BOOST_FOREACH (
-                const boost::property_tree::ptree::value_type& kv,
-                Map.second.get_child("<xmlattr>")
-            ) {
+            for (const boost::property_tree::ptree::value_type& kv :
+                 Map.second.get_child("<xmlattr>")) {
                 std::string Attribute;
                 std::string Value;
 
@@ -152,13 +147,11 @@ void ButtonModel::load3DConnexionButtons(const char* RequiredDeviceName)
         path += "3Dconnexion/3DConnexion.xml";
         read_xml(path.c_str(), tree);
 
-        BOOST_FOREACH (const boost::property_tree::ptree::value_type& ButtonMap, tree.get_child("")) {
+        for (const boost::property_tree::ptree::value_type& ButtonMap : tree.get_child("")) {
             if ("ButtonMap" == ButtonMap.first) {
                 // Inspect ButtonMap attributes for DeviceName
-                BOOST_FOREACH (
-                    const boost::property_tree::ptree::value_type& kv,
-                    ButtonMap.second.get_child("<xmlattr>")
-                ) {
+                for (const boost::property_tree::ptree::value_type& kv :
+                     ButtonMap.second.get_child("<xmlattr>")) {
                     std::string Attribute;
                     std::string Value;
 
@@ -982,13 +975,11 @@ QStringList DlgCustomizeSpaceball::getModels()
         path += "3Dconnexion/3DConnexion.xml";
         read_xml(path.c_str(), tree);
 
-        BOOST_FOREACH (const boost::property_tree::ptree::value_type& ButtonMap, tree.get_child("")) {
+        for (const boost::property_tree::ptree::value_type& ButtonMap : tree.get_child("")) {
             if ("ButtonMap" == ButtonMap.first) {
                 // Inspect ButtonMap attributes for DeviceName
-                BOOST_FOREACH (
-                    const boost::property_tree::ptree::value_type& kv,
-                    ButtonMap.second.get_child("<xmlattr>")
-                ) {
+                for (const boost::property_tree::ptree::value_type& kv :
+                     ButtonMap.second.get_child("<xmlattr>")) {
                     std::string Attribute;
                     std::string Value;
 
