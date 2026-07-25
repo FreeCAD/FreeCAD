@@ -27,7 +27,7 @@
 #include <QStyleOptionSpinBox>
 #include <QStylePainter>
 
-#include <boost/math/special_functions/round.hpp>
+#include <cmath>
 
 #include <App/ExpressionParser.h>
 #include <App/PropertyUnits.h>
@@ -551,7 +551,7 @@ bool UIntSpinBox::apply(const std::string& propName)
 
 void UIntSpinBox::setNumberExpression(App::NumberExpression* expr)
 {
-    setValue(boost::math::round(expr->getValue()));
+    setValue(std::round(expr->getValue()));
 }
 
 void UIntSpinBox::resizeEvent(QResizeEvent* event)
@@ -596,7 +596,7 @@ bool IntSpinBox::apply(const std::string& propName)
 
 void IntSpinBox::setNumberExpression(App::NumberExpression* expr)
 {
-    setValue(boost::math::round(expr->getValue()));
+    setValue(std::round(expr->getValue()));
 }
 
 void IntSpinBox::resizeEvent(QResizeEvent* event)
