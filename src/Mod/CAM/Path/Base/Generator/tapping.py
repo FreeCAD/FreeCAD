@@ -99,11 +99,14 @@ def generate(
     cmdParams["Y"] = startPoint.y
     cmdParams["Z"] = endPoint.z
     cmdParams["R"] = retractheight if retractheight is not None else startPoint.z
-    cmdParams["S"] = spindle_speed if spindle_speed is not None else 1.0  # Sanity default
+    cmdParams["S"] = float(spindle_speed) if spindle_speed is not None else 1.0  # Sanity default
     # Rigid tap feed must stay locked to spindle speed: mm/min = pitch(mm) * RPM.
     # Divide by 60 for mm/s, matching the convention ToolController feed
     # properties (and the rest of the post-processing pipeline) use.
-    if pitch is not None and spindle_speed:
+    # Check "is not None" (not truthiness) so an explicit spindle_speed=0.0
+    # still locks F to 0 instead of silently falling back to the sanity
+    # default, which would desync F from the S=0.0 already set above.
+    if pitch is not None and spindle_speed is not None:
         cmdParams["F"] = float(pitch) * float(spindle_speed) / 60.0
     else:
         cmdParams["F"] = 100.0  # Sanity default

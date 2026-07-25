@@ -169,3 +169,31 @@ class TestPathTapGenerator(PathTestUtils.PathTestBase):
 
         result = generator.generate(e, pitch=0.79248)
         self.assertEqual(result[0].Parameters["F"], 100.0)
+
+    def test52_rigid_tap_feed_locked_to_zero_spindle_speed(self):
+        """An explicit spindle_speed=0.0 must not be treated as "unset".
+
+        F must stay locked to S (both 0.0) rather than silently falling back
+        to the sanity default, which would desync F from S.
+        """
+        v1 = FreeCAD.Vector(0, 0, 10)
+        v2 = FreeCAD.Vector(0, 0, 0)
+        e = Part.makeLine(v1, v2)
+
+        result = generator.generate(e, pitch=0.79248, spindle_speed=0.0)
+        command = result[0]
+
+        self.assertEqual(command.Parameters["F"], 0.0)
+        self.assertEqual(command.Parameters["S"], 0.0)
+
+    def test53_rigid_tap_speed_normalized_to_float(self):
+        """S must be normalized to float, matching F, for consistent types."""
+        v1 = FreeCAD.Vector(0, 0, 10)
+        v2 = FreeCAD.Vector(0, 0, 0)
+        e = Part.makeLine(v1, v2)
+
+        result = generator.generate(e, pitch=0.79248, spindle_speed=128)
+        command = result[0]
+
+        self.assertIsInstance(command.Parameters["S"], float)
+        self.assertIsInstance(command.Parameters["F"], float)
