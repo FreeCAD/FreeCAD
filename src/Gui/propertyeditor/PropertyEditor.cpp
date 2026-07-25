@@ -338,6 +338,12 @@ void PropertyEditor::closeEditor()
     if (editingIndex.isValid()) {
         Base::StateLocker guard(closingEditor);
         bool hasFocus = activeEditor && activeEditor->hasFocus();
+
+        // closePersistentEditor() below destroys the editor; close an open combo
+        // drop-down first so Qt tears the popup down normally (see releaseEditorFocus()).
+        if (auto* combo = qobject_cast<QComboBox*>(activeEditor.data())) {
+            combo->hidePopup();
+        }
 #ifdef Q_OS_MACOS
         // Brute-force workaround for https://github.com/FreeCAD/FreeCAD/issues/14350
         int currentIndex = 0;
