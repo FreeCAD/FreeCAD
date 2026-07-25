@@ -120,6 +120,12 @@ endif()
 
 SET_BIN_DIR(FreeCADMainPy FreeCAD)
 SET_PYTHON_PREFIX_SUFFIX(FreeCADMainPy)
+if(WIN32)
+    # Name clash with target "FreeCADMain"
+    # Must be called "FreeCADMainPy_d" and "FreeCADMainPy" to work so override default
+    set_target_properties(FreeCADMainPy PROPERTIES PDB_NAME_DEBUG "FreeCADMainPy_d")
+    set_target_properties(FreeCADMainPy PROPERTIES PDB_NAME_RELEASE "FreeCADMainPy")
+endif(WIN32)
 
 if(WIN32)
     INSTALL(TARGETS FreeCADMainPy
