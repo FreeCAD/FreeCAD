@@ -480,27 +480,29 @@ def filter_out(objs):
 
     nobjs = []
     for obj in objs:
-        if obj.isDerivedFrom("Part::Feature"):
-            nobjs.append(obj)
-        elif obj.isDerivedFrom("Mesh::Feature"):
+        if Draft.get_type(obj) in (
+            "Site",
+            "BuildingPart",
+            "Dimension",  # Obsolete type.
+            "AngularDimension",
+            "LinearDimension",
+            "Layer",
+            "Text",
+            "DraftText",  # Obsolete type.
+        ):
+            # Sites and BuildingParts are handled here. They are
+            # considered groups, but should be converted even if empty.
             nobjs.append(obj)
         elif Draft.is_group(obj):
             if filter_out(obj.Group):
-                # only append groups that contain exportable objects
+                # Only append groups that contain exportable objects.
                 nobjs.append(obj)
             else:
                 print("DEBUG: Filtering out", obj.Label)
-        elif obj.isDerivedFrom("App::Feature"):
-            if Draft.get_type(obj) in (
-                "Dimension",
-                "LinearDimension",
-                "Layer",
-                "Text",
-                "DraftText",
-            ):
-                nobjs.append(obj)
-            else:
-                print("DEBUG: Filtering out", obj.Label)
+        elif obj.isDerivedFrom("Part::Feature"):
+            nobjs.append(obj)
+        elif obj.isDerivedFrom("Mesh::Feature"):
+            nobjs.append(obj)
         else:
             print("DEBUG: Filtering out", obj.Label)
     return nobjs
