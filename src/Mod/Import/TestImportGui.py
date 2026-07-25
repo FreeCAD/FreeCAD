@@ -25,8 +25,10 @@ import os
 import tempfile
 import unittest
 import FreeCAD as App
+import FreeCADGui
 import ImportGui
 from pivy import coin
+from PySide import QtCore, QtWidgets
 
 
 class ExportImportTest(unittest.TestCase):
@@ -38,22 +40,12 @@ class ExportImportTest(unittest.TestCase):
     def tearDown(self):
         App.closeDocument(self.doc.Name)
 
-    def testSaveLoadStepFile(self):
-        """
-        Create a STEP file with color per face
-        """
+    def createImportedColoredBox(self, colors):
         part = self.doc.addObject("App::Part", "Part")
         box = part.newObject("Part::Box", "Box")
         self.doc.recompute()
 
-        box.ViewObject.DiffuseColor = [
-            (1.0, 0.0, 0.0, 1.0),
-            (1.0, 0.0, 0.0, 1.0),
-            (1.0, 0.0, 0.0, 1.0),
-            (1.0, 0.0, 0.0, 1.0),
-            (1.0, 1.0, 0.0, 1.0),
-            (1.0, 1.0, 0.0, 1.0),
-        ]
+        box.ViewObject.DiffuseColor = colors
 
         ImportGui.export([part], self.fileName)
 
@@ -62,15 +54,24 @@ class ExportImportTest(unittest.TestCase):
 
         part_features = list(filter(lambda x: x.isDerivedFrom("Part::Feature"), self.doc.Objects))
         self.assertEqual(len(part_features), 1)
-        feature = part_features[0]
+        return part_features[0]
+
+    def testSaveLoadStepFile(self):
+        """
+        Create a STEP file with color per face
+        """
+        colors = [
+            (1.0, 0.0, 0.0, 1.0),
+            (1.0, 0.0, 0.0, 1.0),
+            (1.0, 0.0, 0.0, 1.0),
+            (1.0, 0.0, 0.0, 1.0),
+            (1.0, 1.0, 0.0, 1.0),
+            (1.0, 1.0, 0.0, 1.0),
+        ]
+        feature = self.createImportedColoredBox(colors)
 
         self.assertEqual(len(feature.ViewObject.DiffuseColor), 6)
-        self.assertEqual(feature.ViewObject.DiffuseColor[0], (1.0, 0.0, 0.0, 1.0))
-        self.assertEqual(feature.ViewObject.DiffuseColor[1], (1.0, 0.0, 0.0, 1.0))
-        self.assertEqual(feature.ViewObject.DiffuseColor[2], (1.0, 0.0, 0.0, 1.0))
-        self.assertEqual(feature.ViewObject.DiffuseColor[3], (1.0, 0.0, 0.0, 1.0))
-        self.assertEqual(feature.ViewObject.DiffuseColor[4], (1.0, 1.0, 0.0, 1.0))
-        self.assertEqual(feature.ViewObject.DiffuseColor[5], (1.0, 1.0, 0.0, 1.0))
+        self.assertEqual(feature.ViewObject.DiffuseColor, colors)
 
         sa = coin.SoSearchAction()
         sa.setType(coin.SoMaterialBinding.getClassTypeId())
@@ -91,3 +92,62 @@ class ExportImportTest(unittest.TestCase):
 
         mat = paths.get(1).getTail()
         self.assertEqual(mat.diffuseColor.getNum(), 6)
+
+    def testAppearanceDialogPreservesFaceColors(self):
+        if not App.GuiUp:
+            self.skipTest("This test requires a graphical user interface (GUI).")
+
+        feature = self.createImportedColoredBox(
+            [
+                (0.123, 0.234, 0.345, 1.0),
+                (0.123, 0.234, 0.345, 1.0),
+                (0.123, 0.234, 0.345, 1.0),
+                (0.123, 0.234, 0.345, 1.0),
+                (0.567, 0.678, 0.789, 1.0),
+                (0.567, 0.678, 0.789, 1.0),
+            ]
+        )
+        colors = list(feature.ViewObject.DiffuseColor)
+
+        FreeCADGui.activateWorkbench("MaterialWorkbench")
+        self.addCleanup(FreeCADGui.Selection.clearSelection)
+        self.addCleanup(FreeCADGui.Control.closeDialog)
+        FreeCADGui.Selection.addSelection(feature)
+        FreeCADGui.runCommand("Std_SetAppearance")
+
+        main_window = FreeCADGui.getMainWindow()
+        appearance_button = main_window.findChild(QtWidgets.QPushButton, "buttonCustomAppearance")
+        self.assertIsNotNone(appearance_button)
+
+        dialog_state = {"color_dialog": False, "spinbox": False}
+
+        def change_shininess_after_canceling_color_picker():
+            dialog = QtWidgets.QApplication.activeModalWidget()
+            if dialog is None:
+                return
+
+            color_button = dialog.findChild(QtWidgets.QPushButton, "diffuseColor")
+            self.assertIsNotNone(color_button)
+
+            def reject_color_dialog():
+                color_dialog = QtWidgets.QApplication.activeModalWidget()
+                if isinstance(color_dialog, QtWidgets.QColorDialog):
+                    color_dialog.reject()
+                    dialog_state["color_dialog"] = True
+
+            QtCore.QTimer.singleShot(0, reject_color_dialog)
+            color_button.click()
+
+            spinbox = dialog.findChild(QtWidgets.QSpinBox, "shininess")
+            if spinbox is not None:
+                spinbox.setValue(50)
+                dialog_state["spinbox"] = True
+            dialog.reject()
+
+        QtCore.QTimer.singleShot(0, change_shininess_after_canceling_color_picker)
+        appearance_button.click()
+
+        self.assertEqual(feature.ViewObject.DiffuseColor, colors)
+        self.assertTrue(dialog_state["color_dialog"], "Color picker could not be found.")
+        self.assertTrue(dialog_state["spinbox"], "Shininess control could not be found.")
+        self.assertTrue(all(mat.Shininess == 0.5 for mat in feature.ViewObject.ShapeAppearance))
