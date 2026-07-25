@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <boost/unordered_set.hpp>
+#include <unordered_set>
 
 #include <QApplication>
 #include <QFont>
@@ -147,7 +147,7 @@ class DocumentIndex: public DocumentModelIndex
     friend class ViewProviderIndex;
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
     static QIcon* documentIcon;
-    using IndexSet = boost::unordered_set<ViewProviderIndex*>;
+    using IndexSet = std::unordered_set<ViewProviderIndex*>;
     std::map<const ViewProviderDocumentObject*, IndexSet> vp_nodes;
     void addToDocument(ViewProviderIndex*);
     void removeFromDocument(ViewProviderIndex*);
@@ -239,10 +239,10 @@ void DocumentIndex::removeFromDocument(ViewProviderIndex* vp)
 
 ViewProviderIndex* DocumentIndex::cloneViewProvider(const ViewProviderDocumentObject& vp) const
 {
-    std::map<const ViewProviderDocumentObject*, boost::unordered_set<ViewProviderIndex*>>::const_iterator it;
+    std::map<const ViewProviderDocumentObject*, std::unordered_set<ViewProviderIndex*>>::const_iterator it;
     it = vp_nodes.find(&vp);
     if (it != vp_nodes.end()) {
-        boost::unordered_set<ViewProviderIndex*>::const_iterator v;
+        std::unordered_set<ViewProviderIndex*>::const_iterator v;
         if (!it->second.empty()) {
             v = it->second.begin();
             if (*v) {
