@@ -592,7 +592,7 @@ if SheetMetalTools.isGuiLoaded():
                     "Accel": "Z",
                     "ToolTip": FreeCAD.Qt.translate(
                         "SheetMetal",
-                        "Creat hems on edges.\n"
+                        "Create hems on edges.\n"
                         "1. Select edges to create bends with walls.\n"
                         "2. Use Property editor to modify other parameters",
                         ),
