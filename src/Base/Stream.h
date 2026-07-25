@@ -44,6 +44,31 @@ using PyObject = struct _object;
 namespace Base
 {
 
+/**
+ * RAII guard that saves a stream's format flags on construction and restores
+ * them on destruction. Replacement for boost::io::ios_flags_saver.
+ */
+class StreamFlagsRestorer
+{
+public:
+    explicit StreamFlagsRestorer(std::ios_base& stream)
+        : stream(stream)
+        , flags(stream.flags())
+    {}
+    ~StreamFlagsRestorer()
+    {
+        stream.flags(flags);
+    }
+    StreamFlagsRestorer(const StreamFlagsRestorer&) = delete;
+    StreamFlagsRestorer(StreamFlagsRestorer&&) = delete;
+    StreamFlagsRestorer& operator=(const StreamFlagsRestorer&) = delete;
+    StreamFlagsRestorer& operator=(StreamFlagsRestorer&&) = delete;
+
+private:
+    std::ios_base& stream;
+    std::ios_base::fmtflags flags;
+};
+
 class BaseExport Stream
 {
 public:
