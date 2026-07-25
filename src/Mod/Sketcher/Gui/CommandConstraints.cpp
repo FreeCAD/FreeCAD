@@ -2057,6 +2057,9 @@ public:
         THIRD,
         FOURTH,
         FIFTH,
+        SIXTH,
+        SEVENTH,
+        EIGHTH,
         RESET
     };
 
@@ -2315,6 +2318,12 @@ protected:
             case AvailableConstraint::FOURTH:
                 return AvailableConstraint::FIFTH;
             case AvailableConstraint::FIFTH:
+                return AvailableConstraint::SIXTH;
+            case AvailableConstraint::SIXTH:
+                return AvailableConstraint::SEVENTH;
+            case AvailableConstraint::SEVENTH:
+                return AvailableConstraint::EIGHTH;
+            case AvailableConstraint::EIGHTH:
             case AvailableConstraint::RESET:
                 return AvailableConstraint::FIRST;
         }
@@ -2390,8 +2399,13 @@ protected:
             }
             if (selection.has2Circles()) {
                 return modeHintFor({{AvailableConstraint::FIRST, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to distance")},
-                                    {AvailableConstraint::SECOND, getTwoCircleSecondModeHint()},
-                                    {AvailableConstraint::THIRD, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to equal radius")}},
+                                    {AvailableConstraint::SECOND, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to maximum distance")},
+                                    {AvailableConstraint::THIRD, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to minimum horizontal distance")},
+                                    {AvailableConstraint::FOURTH, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to maximum horizontal distance")},
+                                    {AvailableConstraint::FIFTH, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to minimum vertical distance")},
+                                    {AvailableConstraint::SIXTH, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to maximum vertical distance")},
+                                    {AvailableConstraint::SEVENTH, getTwoCircleSecondModeHint()},
+                                    {AvailableConstraint::EIGHTH, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to equal radius")}},
                                    constraint);
             }
         }
@@ -3021,27 +3035,206 @@ protected:
 
     void makeCts_2Circle(bool& selAllowed, Base::Vector2d onSketchPos)
     {
-        //Distance, radial distance, equality
+        // Distance, maximum distance, horizontal/vertical distances, radial distance, equality
         if (availableConstraint == AvailableConstraint::FIRST) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
             createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selCircleArc[1].GeoId, selCircleArc[1].PosId, onSketchPos);
             selAllowed = true;
         }
         if (availableConstraint == AvailableConstraint::SECOND) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add maximum distance constraint"));
+            createCircularMaximumDistanceConstrain(
+                selCircleArc[0].GeoId, selCircleArc[1].GeoId, onSketchPos);
+            selAllowed = true;
+        }
+        if (availableConstraint == AvailableConstraint::THIRD) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add minimum horizontal distance constraint"));
+            createCircularAxialDistanceConstrain(
+                Sketcher::DistanceX, false, selCircleArc[0].GeoId, selCircleArc[1].GeoId, onSketchPos);
+            selAllowed = true;
+        }
+        if (availableConstraint == AvailableConstraint::FOURTH) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add maximum horizontal distance constraint"));
+            createCircularAxialDistanceConstrain(
+                Sketcher::DistanceX, true, selCircleArc[0].GeoId, selCircleArc[1].GeoId, onSketchPos);
+            selAllowed = true;
+        }
+        if (availableConstraint == AvailableConstraint::FIFTH) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add minimum vertical distance constraint"));
+            createCircularAxialDistanceConstrain(
+                Sketcher::DistanceY, false, selCircleArc[0].GeoId, selCircleArc[1].GeoId, onSketchPos);
+            selAllowed = true;
+        }
+        if (availableConstraint == AvailableConstraint::SIXTH) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add maximum vertical distance constraint"));
+            createCircularAxialDistanceConstrain(
+                Sketcher::DistanceY, true, selCircleArc[0].GeoId, selCircleArc[1].GeoId, onSketchPos);
+            selAllowed = true;
+        }
+        if (availableConstraint == AvailableConstraint::SEVENTH) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add concentric and length constraint"));
             bool created = createCoincidenceConstrain(selCircleArc[0].GeoId, Sketcher::PointPos::mid, selCircleArc[1].GeoId, Sketcher::PointPos::mid);
             if (!created) { //Already concentric, so skip to next
-                availableConstraint = AvailableConstraint::THIRD;
+                availableConstraint = AvailableConstraint::EIGHTH;
             }
             else {
                 createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selCircleArc[1].GeoId, selCircleArc[1].PosId, onSketchPos);
             }
         }
-        if (availableConstraint == AvailableConstraint::THIRD) {
+        if (availableConstraint == AvailableConstraint::EIGHTH) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add Equality constraint"));
             createEqualityConstrain(selCircleArc[0].GeoId, selCircleArc[1].GeoId);
             availableConstraint = AvailableConstraint::RESET;
         }
+    }
+
+    int createConstructionPoint(const Base::Vector3d& point)
+    {
+        Gui::cmdAppObjectArgs(Obj,
+                              "addGeometry(Part.Point(App.Vector(%f,%f,0)), True)",
+                              point.x,
+                              point.y);
+        return Obj->getHighestCurveIndex();
+    }
+
+    void constrainPointToObject(int pointGeoId, int objectGeoId)
+    {
+        Gui::cmdAppObjectArgs(Obj,
+                              "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                              pointGeoId,
+                              static_cast<int>(Sketcher::PointPos::start),
+                              objectGeoId);
+    }
+
+    void constrainPointToCircleAxis(int pointGeoId,
+                                    int circleGeoId,
+                                    Sketcher::ConstraintType type)
+    {
+        const char* constraintType = type == Sketcher::DistanceX ? "Horizontal" : "Vertical";
+        Gui::cmdAppObjectArgs(Obj,
+                              "addConstraint(Sketcher.Constraint('%s',%d,%d,%d,%d))",
+                              constraintType,
+                              pointGeoId,
+                              static_cast<int>(Sketcher::PointPos::start),
+                              circleGeoId,
+                              static_cast<int>(Sketcher::PointPos::mid));
+    }
+
+    void createConstructionDistanceXYConstrain(Sketcher::ConstraintType type,
+                                                int pointGeoId1,
+                                                int pointGeoId2,
+                                                int sourceGeoId1,
+                                                int sourceGeoId2,
+                                                Base::Vector2d onSketchPos)
+    {
+        Base::Vector3d point1 = Obj->getPoint(pointGeoId1, Sketcher::PointPos::start);
+        Base::Vector3d point2 = Obj->getPoint(pointGeoId2, Sketcher::PointPos::start);
+        double distance = type == Sketcher::DistanceX ? point2.x - point1.x : point2.y - point1.y;
+
+        if (distance < -Precision::Confusion()) {
+            std::swap(pointGeoId1, pointGeoId2);
+            distance = -distance;
+        }
+
+        const char* constraintType = type == Sketcher::DistanceX ? "DistanceX" : "DistanceY";
+        Gui::cmdAppObjectArgs(Obj,
+                              "addConstraint(Sketcher.Constraint('%s',%d,%d,%d,%d,%.8g))",
+                              constraintType,
+                              pointGeoId1,
+                              static_cast<int>(Sketcher::PointPos::start),
+                              pointGeoId2,
+                              static_cast<int>(Sketcher::PointPos::start),
+                              distance);
+        finishDimensionCreation(sourceGeoId1, sourceGeoId2, onSketchPos);
+    }
+
+    void createCircularAxialDistanceConstrain(Sketcher::ConstraintType type,
+                                               bool maximum,
+                                               int geoId1,
+                                               int geoId2,
+                                               Base::Vector2d onSketchPos)
+    {
+        const Part::Geometry* geometry1 = Obj->getGeometry(geoId1);
+        const Part::Geometry* geometry2 = Obj->getGeometry(geoId2);
+        auto [radius1, center1] = getRadiusCenterCircleArc(geometry1);
+        auto [radius2, center2] = getRadiusCenterCircleArc(geometry2);
+
+        const bool horizontal = type == Sketcher::DistanceX;
+        const double centerDelta = horizontal ? center2.x - center1.x : center2.y - center1.y;
+        const double direction = centerDelta >= 0.0 ? 1.0 : -1.0;
+        const double sign = maximum ? -direction : direction;
+
+        Base::Vector3d point1 = center1;
+        Base::Vector3d point2 = center2;
+        if (horizontal) {
+            point1.x += sign * radius1;
+            point2.x -= sign * radius2;
+        }
+        else {
+            point1.y += sign * radius1;
+            point2.y -= sign * radius2;
+        }
+
+        const int pointGeoId1 = createConstructionPoint(point1);
+        const int pointGeoId2 = createConstructionPoint(point2);
+        constrainPointToObject(pointGeoId1, geoId1);
+        constrainPointToObject(pointGeoId2, geoId2);
+        constrainPointToCircleAxis(pointGeoId1, geoId1, type);
+        constrainPointToCircleAxis(pointGeoId2, geoId2, type);
+        createConstructionDistanceXYConstrain(
+            type, pointGeoId1, pointGeoId2, geoId1, geoId2, onSketchPos);
+    }
+
+    void createCircularMaximumDistanceConstrain(int geoId1,
+                                                 int geoId2,
+                                                 Base::Vector2d onSketchPos)
+    {
+        const Part::Geometry* geometry1 = Obj->getGeometry(geoId1);
+        const Part::Geometry* geometry2 = Obj->getGeometry(geoId2);
+        auto [radius1, center1] = getRadiusCenterCircleArc(geometry1);
+        auto [radius2, center2] = getRadiusCenterCircleArc(geometry2);
+
+        Base::Vector3d direction = center2 - center1;
+        if (direction.Length() < Precision::Confusion()) {
+            direction = Base::Vector3d(1.0, 0.0, 0.0);
+        }
+        else {
+            direction = direction.Normalize();
+        }
+
+        const Base::Vector3d point1 = center1 - direction * radius1;
+        const Base::Vector3d point2 = center2 + direction * radius2;
+        const double distance = (point2 - point1).Length();
+
+        Gui::cmdAppObjectArgs(Obj,
+                              "addGeometry(Part.LineSegment(App.Vector(%f,%f,0), App.Vector(%f,%f,0)), True)",
+                              point1.x,
+                              point1.y,
+                              point2.x,
+                              point2.y);
+        const int lineGeoId = Obj->getHighestCurveIndex();
+
+        constrainPointToObject(lineGeoId, geoId1);
+        Gui::cmdAppObjectArgs(Obj,
+                              "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                              lineGeoId,
+                              static_cast<int>(Sketcher::PointPos::end),
+                              geoId2);
+        Gui::cmdAppObjectArgs(Obj,
+                              "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                              geoId1,
+                              static_cast<int>(Sketcher::PointPos::mid),
+                              lineGeoId);
+        Gui::cmdAppObjectArgs(Obj,
+                              "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                              geoId2,
+                              static_cast<int>(Sketcher::PointPos::mid),
+                              lineGeoId);
+        Gui::cmdAppObjectArgs(Obj,
+                              "addConstraint(Sketcher.Constraint('Distance',%d,%.8g))",
+                              lineGeoId,
+                              distance);
+        finishDimensionCreation(geoId1, geoId2, onSketchPos);
     }
 
     void makeCts_3MoreCircle(bool& selAllowed, size_t s_cir)
