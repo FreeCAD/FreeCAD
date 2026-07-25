@@ -633,9 +633,9 @@ void SelectionSingleton::notify(SelectionChanges&& Chng)
             try {
                 signalSelectionChanged(msg);
             }
-            catch (const boost::exception&) {
+            catch (...) {
                 // reported by code analyzers
-                Base::Console().warning("notify: Unexpected boost exception\n");
+                Base::Console().warning("notify: Unexpected exception\n");
             }
         }
         NotificationQueue.pop_front();
@@ -829,9 +829,9 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg)
             msg2.pSubName = msg2.Object.getSubName().c_str();
             signalSelectionChanged2(msg2);
         }
-        catch (const boost::exception&) {
+        catch (...) {
             // reported by code analyzers
-            Base::Console().warning("slotSelectionChanged: Unexpected boost exception\n");
+            Base::Console().warning("slotSelectionChanged: Unexpected exception\n");
         }
     }
     else {
@@ -839,9 +839,9 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg)
             signalSelectionChanged3(msg);
             signalSelectionChanged2(msg);
         }
-        catch (const boost::exception&) {
+        catch (...) {
             // reported by code analyzers
-            Base::Console().warning("slotSelectionChanged: Unexpected boost exception\n");
+            Base::Console().warning("slotSelectionChanged: Unexpected exception\n");
         }
     }
 }
