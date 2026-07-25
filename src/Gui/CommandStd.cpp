@@ -22,7 +22,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#include <boost/smart_ptr/scoped_ptr.hpp>
+#include <memory>
 
 #include <QApplication>
 #include <QMessageBox>
@@ -268,7 +268,7 @@ void StdCmdAbout::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     const Gui::Dialog::AboutDialogFactory* f = Gui::Dialog::AboutDialogFactory::defaultFactory();
-    boost::scoped_ptr<QDialog> dlg(f->create(getMainWindow()));
+    std::unique_ptr<QDialog> dlg(f->create(getMainWindow()));
     dlg->exec();
 }
 
