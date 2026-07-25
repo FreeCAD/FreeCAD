@@ -20,6 +20,7 @@ from __future__ import annotations
 import ast
 from pathlib import Path
 import re
+from typing import TypeVar
 
 from .deprecation import literal_keyword_values, structured_deprecation_message
 from .discovery import (
@@ -46,6 +47,8 @@ from .parsing import (
     iter_type_stub_pyi_files,
     parse_python_source,
 )
+
+K = TypeVar("K")
 
 
 def deprecated_message_from_decorator(decorator: ast.expr) -> str | None:
@@ -299,7 +302,7 @@ def append_type_signature_group(
     )
 
 
-def append_signature_group[K](
+def append_signature_group(
     signatures: dict[K, tuple[StubSignatureGroup, Path]],
     key: K,
     signature: StubSignature,
