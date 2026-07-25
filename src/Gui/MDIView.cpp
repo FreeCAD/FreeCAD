@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 #include <fastsignals/signal.h>
-#include <boost/core/ignore_unused.hpp>
 #include <QAction>
 #include <QApplication>
 #include <QEvent>
@@ -178,12 +177,12 @@ void MDIView::onRelabel(Gui::Document* pDoc)
         QRegularExpression rx(QLatin1String(R"((\s\:\s\d+\[\*\])$)"));
         QRegularExpressionMatch match;
         // int pos =
-        boost::ignore_unused(cap.lastIndexOf(rx, -1, &match));
+        (void)cap.lastIndexOf(rx, -1, &match);
         if (!match.hasMatch()) {
             // ... or not
             rx.setPattern(QLatin1String(R"((\s\:\s\d+)$)"));
             // pos =
-            boost::ignore_unused(cap.lastIndexOf(rx, -1, &match));
+            (void)cap.lastIndexOf(rx, -1, &match);
         }
         if (match.hasMatch()) {
             cap = QString::fromUtf8(pDoc->getDocument()->Label.getValue());
