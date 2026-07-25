@@ -47,7 +47,10 @@ void ImportOCAFGui::applyFaceColors(Part::Feature* part, const std::vector<Base:
     }
 
     if (colors.size() == 1) {
-        vp->ShapeAppearance.setDiffuseColor(colors.front());
+        App::Material appearance = vp->ShapeAppearance[0];
+        appearance.diffuseColor = colors.front();
+        appearance.transparency = colors.front().transparency();
+        vp->setObjectAppearance(appearance, true);
         vp->Transparency.setValue(100 * colors.front().transparency());
     }
     else {
@@ -61,6 +64,10 @@ void ImportOCAFGui::applyFaceColors(Part::Feature* part, const std::vector<Base:
             [](const Base::Color& col) { return col.transparency(); }
         );
         vp->ShapeAppearance.setTransparencies(transp);
+
+        auto overrides = vp->FaceAppearanceOverrides.getValues();
+        overrides.resize(colors.size(), true);
+        vp->FaceAppearanceOverrides.setValues(overrides);
     }
 }
 

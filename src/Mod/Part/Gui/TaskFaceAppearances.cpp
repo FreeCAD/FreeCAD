@@ -24,6 +24,8 @@
 
 
 #include <sstream>
+#include <boost/dynamic_bitset.hpp>
+
 #include <QFontMetrics>
 #include <QPointer>
 #include <QSet>
@@ -368,8 +370,10 @@ void FaceAppearances::onBoxSelectionToggled(bool checked)
 
 void FaceAppearances::onDefaultButtonClicked()
 {
-    std::fill(d->perface.begin(), d->perface.end(), d->vp->ShapeAppearance[0]);
-    d->vp->ShapeAppearance.setValues(d->perface);
+    const App::Material& appearance = d->vp->BaseShapeAppearance.getValue();
+    std::fill(d->perface.begin(), d->perface.end(), appearance);
+    d->vp->ShapeAppearance.setValue(appearance);
+    d->vp->FaceAppearanceOverrides.setValues({});
 }
 
 void FaceAppearances::onMaterialSelected(const std::shared_ptr<Materials::Material>& material)
@@ -380,6 +384,7 @@ void FaceAppearances::onMaterialSelected(const std::shared_ptr<Materials::Materi
         for (int it : d->index) {
             d->perface[it] = appearance;
         }
+        markFaceAppearanceOverrides();
         d->vp->ShapeAppearance.setValues(d->perface);
         // new color has been applied, unselect so that users can see this
         onSelectionChanged(Gui::SelectionChanges::ClrSelection);
@@ -510,11 +515,30 @@ void FaceAppearances::onButtonCustomAppearanceClicked()
         for (int it : d->index) {
             d->perface[it] = dlg.getCustomMaterial();
         }
+        markFaceAppearanceOverrides();
         d->vp->ShapeAppearance.setValues(d->perface);
         // new color has been applied, unselect so that users can see this
         onSelectionChanged(Gui::SelectionChanges::ClrSelection);
         Gui::Selection().clearSelection();
     }
+}
+
+void FaceAppearances::markFaceAppearanceOverrides()
+{
+    const int faceCount = static_cast<int>(d->perface.size());
+    auto overrides = d->vp->FaceAppearanceOverrides.getValues();
+    if (d->vp->ShapeAppearance.getSize() == 1) {
+        d->vp->BaseShapeAppearance.setValue(d->vp->ShapeAppearance[0]);
+        overrides = boost::dynamic_bitset<>(faceCount);
+    }
+    else if (static_cast<int>(overrides.size()) != faceCount) {
+        overrides = boost::dynamic_bitset<>(faceCount, true);
+    }
+
+    for (int it : d->index) {
+        overrides.set(it);
+    }
+    d->vp->FaceAppearanceOverrides.setValues(overrides);
 }
 
 void FaceAppearances::open()
