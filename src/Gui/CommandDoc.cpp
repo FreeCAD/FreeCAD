@@ -31,7 +31,7 @@
 #include <QTextStream>
 #include <QTreeWidgetItem>
 
-#include <boost/regex.hpp>
+#include <regex>
 #include <boost/algorithm/string/replace.hpp>
 
 #include <App/AutoTransaction.h>
@@ -2234,16 +2234,16 @@ protected:
         const char* tstart = txt.c_str();
         const char* tend = tstart + txt.size();
 
-        static boost::regex rule("^##@@ ([^ ]+) (\\w+)#(\\w+)\\.(\\w+) [^\n]+\n##@@([^\n]*)\n");
-        boost::cmatch m;
-        if (!boost::regex_search(tstart, m, rule)) {
+        static std::regex rule("^##@@ ([^ ]+) (\\w+)#(\\w+)\\.(\\w+) [^\n]+\n##@@([^\n]*)\n");
+        std::cmatch m;
+        if (!std::regex_search(tstart, m, rule)) {
             FC_WARN("No expression header found");
             return;
         }
-        boost::cmatch m2;
+        std::cmatch m2;
         bool found = true;
         for (; found; m = m2) {
-            found = boost::regex_search(m[0].second, tend, m2, rule);
+            found = std::regex_search(m[0].second, tend, m2, rule);
 
             auto pathName = m.str(1);
             auto docName = m.str(2);

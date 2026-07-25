@@ -33,7 +33,7 @@
 #include <xercesc/util/TranscodingException.hpp>
 #include <xercesc/util/XMLString.hpp>
 
-#include <boost/regex.hpp>
+#include <regex>
 
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentPy.h>
@@ -1657,14 +1657,14 @@ PyObject* ApplicationPy::sAddCommand(PyObject* /*self*/, PyObject* args)
         filename = fi.filePath();
         module = fi.fileNamePure();
         // for the group name get the directory name after 'Mod'
-        boost::regex rx("/Mod/(\\w+)/");
-        boost::smatch what;
-        if (boost::regex_search(filename, what, rx)) {
+        std::regex rx("/Mod/(\\w+)/");
+        std::smatch what;
+        if (std::regex_search(filename, what, rx)) {
             group = what[1];
         }
         else {
             rx = "/Ext/freecad/(\\w+)/";
-            if (boost::regex_search(filename, what, rx)) {
+            if (std::regex_search(filename, what, rx)) {
                 group = what[1];
             }
             else {
