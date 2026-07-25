@@ -571,11 +571,11 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem* option, const
         return;
     }
 
-    // Clear State_Enabled for hidden objects so QSS ::item:disabled rules can
+    // Clear State_Enabled for invisible objects so QSS ::item:disabled rules can
     // override the overlay stylesheet's blanket ::item { color } for text fading.
     if (item->type() == TreeWidget::ObjectType) {
         if (auto* docItem = static_cast<DocumentObjectItem*>(item);
-            docItem->object() && !docItem->object()->isShow()) {
+            docItem->object() && !docItem->isVisibleInTree()) {
             option->state &= ~QStyle::State_Enabled;
         }
     }
@@ -6103,13 +6103,8 @@ enum Status
 };
 }
 
-void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2)
+bool DocumentObjectItem::isVisibleInTree() const
 {
-    // guard against calling this during destruction when tree widget may be nullptr
-    if (!treeWidget()) {
-        return;
-    }
-
     App::DocumentObject* pObject = object()->getObject();
 
     int visible = -1;
@@ -6141,6 +6136,19 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     if (visible < 0) {
         visible = object()->isShow() ? 1 : 0;
     }
+
+    return visible != 0;
+}
+
+void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2)
+{
+    // guard against calling this during destruction when tree widget may be nullptr
+    if (!treeWidget()) {
+        return;
+    }
+
+    App::DocumentObject* pObject = object()->getObject();
+    auto visible = isVisibleInTree();
 
     auto obj = object()->getObject();
     auto linked = obj->getLinkedObject(false);
