@@ -22,7 +22,7 @@
  ***************************************************************************/
 
 #include <algorithm>
-#include <boost/algorithm/string/predicate.hpp>
+#include <string_view>
 #include <QApplication>
 #include <QClipboard>
 #include <QCompleter>
@@ -1103,7 +1103,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
 
         // Check if any property name starts with its group name
         bool hasGroupPrefix = std::any_of(props.begin(), props.end(), [](auto prop) {
-            return boost::starts_with(prop->getName(), prop->getGroup());
+            return std::string_view(prop->getName()).starts_with(prop->getGroup());
         });
 
         if (hasGroupPrefix) {

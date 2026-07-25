@@ -22,6 +22,8 @@
  ******************************************************************************/
 
 #include <atomic>
+#include <cstring>
+#include <string_view>
 #include <cctype>
 #include <unordered_set>
 #include <unordered_map>
@@ -33,7 +35,6 @@
 #include <set>
 #include <map>
 #include <string>
-#include <boost/algorithm/string/predicate.hpp>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/details/SoDetail.h>
@@ -54,7 +55,6 @@
 #include <QCheckBox>
 
 
-#include <boost/range.hpp>
 #include <App/ElementNamingUtils.h>
 #include <App/Document.h>
 #include <Base/BoundBoxPy.h>
@@ -98,7 +98,6 @@ void updateWindingOrder(Gui::LinkView* linkView, App::LinkBaseExtension* ext)
 }
 }  // namespace
 
-using CharRange = boost::iterator_range<const char*>;
 ////////////////////////////////////////////////////////////////////////////
 
 static inline bool appendPathSafe(SoPath* path, SoNode* node)
@@ -1754,10 +1753,9 @@ bool LinkView::linkGetDetailPath(const char* subname, SoFullPath* path, SoDetail
                 }
                 int i = 0;
                 if (subname[0] == '$') {
-                    CharRange name(subname + 1, dot);
+                    std::string_view name(subname + 1, dot);
                     for (const auto& info : nodeArray) {
-                        if (info->isLinked()
-                            && boost::equals(name, info->linkInfo->getLinkedLabel())) {
+                        if (info->isLinked() && name == info->linkInfo->getLinkedLabel()) {
                             idx = i;
                             break;
                         }
@@ -1765,9 +1763,9 @@ bool LinkView::linkGetDetailPath(const char* subname, SoFullPath* path, SoDetail
                     }
                 }
                 else {
-                    CharRange name(subname, dot);
+                    std::string_view name(subname, dot);
                     for (const auto& info : nodeArray) {
-                        if (info->isLinked() && boost::equals(name, info->linkInfo->getLinkedName())) {
+                        if (info->isLinked() && name == info->linkInfo->getLinkedName()) {
                             idx = i;
                             break;
                         }
@@ -1828,7 +1826,7 @@ bool LinkView::linkGetDetailPath(const char* subname, SoFullPath* path, SoDetail
                     nextsub = subname;
                 }
                 else {
-                    if (!boost::algorithm::starts_with(subname, v.first)) {
+                    if (!std::string_view(subname).starts_with(v.first)) {
                         continue;
                     }
                     nextsub = subname + v.first.size();
@@ -2875,14 +2873,14 @@ bool ViewProviderLink::getDetailPath(const char* subname, SoFullPath* pPath, boo
         if (auto linked = ext->getLinkedObjectValue()) {
             if (const char* dot = strchr(subname, '.')) {
                 if (subname[0] == '$') {
-                    CharRange sub(subname + 1, dot);
-                    if (!boost::equals(sub, linked->Label.getValue())) {
+                    std::string_view sub(subname + 1, dot);
+                    if (sub != linked->Label.getValue()) {
                         dot = nullptr;
                     }
                 }
                 else {
-                    CharRange sub(subname, dot);
-                    if (!boost::equals(sub, linked->getNameInDocument())) {
+                    std::string_view sub(subname, dot);
+                    if (sub != linked->getNameInDocument()) {
                         dot = nullptr;
                     }
                 }
@@ -3632,7 +3630,7 @@ std::map<std::string, Base::Color> ViewProviderLink::getElementColorsFrom(
                 ++pos;
             }
             const char* element = sub.oldName.c_str() + pos;
-            if (boost::starts_with(element, wildcard)) {
+            if (std::string_view(element).starts_with(wildcard)) {
                 colors[sub.oldName] = colorList[i];
             }
             else if (!element[0] && wildcard == "Face") {
@@ -3731,8 +3729,8 @@ std::map<std::string, Base::Color> ViewProviderLink::getElementColorsFrom(
         }
 
         if (isPrefix) {
-            if (!boost::starts_with(sub.newName, subname + offset)
-                && !boost::starts_with(sub.oldName, subname + offset)) {
+            if (!std::string_view(sub.newName).starts_with(subname + offset)
+                && !std::string_view(sub.oldName).starts_with(subname + offset)) {
                 continue;
             }
         }

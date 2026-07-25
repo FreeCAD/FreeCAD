@@ -21,8 +21,9 @@
  ***************************************************************************/
 
 
-#include <boost/algorithm/string.hpp>
 #include <qglobal.h>
+#include <cstring>
+#include <string_view>
 
 #include <App/Application.h>
 
@@ -71,7 +72,7 @@ bool WindowParameter::setGroupName(const char* name)
     const auto& list = App::GetApplication().GetParameterSetList();
 
     auto found = std::find_if(list.begin(), list.end(), [prefGroup](auto item) {
-        return boost::starts_with(prefGroup, item.first);
+        return std::string_view(prefGroup).starts_with(item.first);
     });
 
     if (found != list.end()) {

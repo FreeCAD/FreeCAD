@@ -21,6 +21,8 @@
  ***************************************************************************/
 
 #include <Inventor/SbSphere.h>
+#include <cstring>
+#include <Base/StringUtils.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <xercesc/util/XMLException.hpp>
@@ -32,7 +34,6 @@
 #include <QKeySequence>
 #include <QMessageBox>
 
-#include <boost/algorithm/string/replace.hpp>
 
 #include <FCConfig.h>
 
@@ -433,7 +434,7 @@ void Command::invoke(int i, TriggerSource trigger)
     CommandTrigger cmdTrigger(_trigger, trigger);
     if (displayText.empty()) {
         displayText = getMenuText() ? getMenuText() : "";
-        boost::replace_all(displayText, "&", "");
+        Base::StringUtils::replaceAll(displayText, "&", "");
         if (displayText.empty()) {
             displayText = getName();
         }

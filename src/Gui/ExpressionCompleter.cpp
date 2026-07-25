@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#include <boost/algorithm/string/predicate.hpp>
 #include <QAbstractItemView>
+#include <string_view>
 #include <QContextMenuEvent>
 #include <QLineEdit>
 #include <QMenu>
@@ -807,7 +807,7 @@ QStringList ExpressionCompleter::splitPath(const QString& input) const
             }
 
             if (!stringList.empty()) {
-                if (!trim.empty() && boost::ends_with(stringList.back(), trim)) {
+                if (!trim.empty() && std::string_view(stringList.back()).ends_with(trim)) {
                     stringList.back().resize(stringList.back().size() - trim.size());
                 }
                 while (stringListIter != stringList.end()) {

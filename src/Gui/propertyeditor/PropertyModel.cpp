@@ -22,7 +22,7 @@
  ***************************************************************************/
 
 #include <limits>
-#include <boost/algorithm/string/predicate.hpp>
+#include <string_view>
 
 #include <Base/Tools.h>
 
@@ -373,7 +373,7 @@ void PropertyModel::findOrCreateChildren(const PropertyModel::PropertyList& prop
         GroupInfo& groupInfo = getGroupInfo(prop);
         groupInfo.children.push_back(item);
 
-        item->setLinked(boost::ends_with(jt.first, "*"));
+        item->setLinked(std::string_view(jt.first).ends_with("*"));
         setPropertyItemName(item, prop->getName(), groupInfo.groupItem->propertyName());
 
         if (jt.second != item->getPropertyData()) {

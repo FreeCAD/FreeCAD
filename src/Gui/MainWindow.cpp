@@ -22,6 +22,8 @@
 
 
 #include <QActionGroup>
+#include <cstring>
+#include <string_view>
 #include <QApplication>
 #include <QByteArray>
 #include <QCheckBox>
@@ -68,7 +70,6 @@
 
 #include <algorithm>
 #include <vector>
-#include <boost/algorithm/string/predicate.hpp>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -392,12 +393,12 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
             if (Param != d->hGrp || !Name) {
                 return;
             }
-            if (boost::equals(Name, "StatusBar")) {
+            if (std::string_view(Name) == "StatusBar") {
                 if (auto sb = getMainWindow()->statusBar()) {
                     sb->setVisible(d->hGrp->GetBool("StatusBar", sb->isVisible()));
                 }
             }
-            else if (boost::equals(Name, "MainWindowState")) {
+            else if (std::string_view(Name) == "MainWindowState") {
                 OverlayManager::instance()->reload(OverlayManager::ReloadMode::ReloadPause);
                 d->restoreStateTimer.start(100);
             }

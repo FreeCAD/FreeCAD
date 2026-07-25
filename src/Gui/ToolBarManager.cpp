@@ -22,6 +22,7 @@
 
 
 #include <QAction>
+#include <string_view>
 #include <QApplication>
 #include <QHBoxLayout>
 #include <QMenuBar>
@@ -33,8 +34,6 @@
 #include <QToolButton>
 #include <QStyleOption>
 
-
-#include <boost/algorithm/string/predicate.hpp>
 
 #include <Base/Tools.h>
 
@@ -479,15 +478,15 @@ void ToolBarManager::setupConnection()
 {
     auto refreshParams = [this](const char* name) {
         bool sizeChanged = false;
-        if (!name || boost::equals(name, "ToolbarIconSize")) {
+        if (!name || std::string_view(name) == "ToolbarIconSize") {
             _toolBarIconSize = hGeneral->GetInt("ToolbarIconSize", 24);
             sizeChanged = true;
         }
-        if (!name || boost::equals(name, "StatusBarIconSize")) {
+        if (!name || std::string_view(name) == "StatusBarIconSize") {
             _statusBarIconSize = hGeneral->GetInt("StatusBarIconSize", 0);
             sizeChanged = true;
         }
-        if (!name || boost::equals(name, "MenuBarIconSize")) {
+        if (!name || std::string_view(name) == "MenuBarIconSize") {
             _menuBarIconSize = hGeneral->GetInt("MenuBarIconSize", 0);
             sizeChanged = true;
         }

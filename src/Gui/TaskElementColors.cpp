@@ -21,8 +21,9 @@
  ****************************************************************************/
 
 
-#include <boost/algorithm/string/predicate.hpp>
 #include <QColorDialog>
+#include <cstring>
+#include <string_view>
 #include <sstream>
 
 #include <App/ElementNamingUtils.h>
@@ -113,7 +114,7 @@ public:
     bool allow(App::Document* doc, App::DocumentObject* obj, const char* subname) override
     {
         if (editDoc != doc->getName() || editObj != obj->getNameInDocument()
-            || !boost::starts_with(subname, editSub)) {
+            || !std::string_view(subname).starts_with(editSub)) {
             return false;
         }
         if (editElement.empty()) {
@@ -126,7 +127,7 @@ public:
         else {
             ++dot;
         }
-        return *dot == 0 || boost::starts_with(dot, editElement);
+        return *dot == 0 || std::string_view(dot).starts_with(editElement);
     }
 
     void populate()
@@ -293,7 +294,7 @@ public:
             case SelectionChanges::RmvSelection:
                 if (msg.pDocName && msg.pObjectName && msg.pSubName && msg.pSubName[0]) {
                     if (editDoc == msg.pDocName && editObj == msg.pObjectName
-                        && boost::starts_with(msg.pSubName, editSub)) {
+                        && std::string_view(msg.pSubName).starts_with(editSub)) {
                         const auto items = ui->elementList->findItems(
                             QString::fromLatin1(msg.pSubName - editSub.size()),
                             Qt::MatchExactly
@@ -325,7 +326,7 @@ public:
                 continue;
             }
             for (auto& sub : sel.getSubNames()) {
-                if (boost::starts_with(sub, editSub)) {
+                if (std::string_view(sub).starts_with(editSub)) {
                     sels[sub.c_str() + editSub.size()] = 1;
                 }
             }
@@ -481,7 +482,7 @@ void ElementColors::onHideSelectionClicked()
         const auto& subs = sel.getSubNames();
         if (!subs.empty()) {
             for (auto& sub : subs) {
-                if (boost::starts_with(sub, d->editSub)) {
+                if (std::string_view(sub).starts_with(d->editSub)) {
                     auto name = Data::noElementName(sub.c_str() + d->editSub.size());
                     name += ViewProvider::hiddenMarker();
                     d->addItem(-1, name.c_str());
@@ -515,7 +516,7 @@ void ElementColors::onAddSelectionClicked()
                 break;
             }
             for (auto& sub : subs) {
-                if (!boost::starts_with(sub, d->editSub)) {
+                if (!std::string_view(sub).starts_with(d->editSub)) {
                     continue;
                 }
                 std::string s(sub.c_str() + d->editSub.size());

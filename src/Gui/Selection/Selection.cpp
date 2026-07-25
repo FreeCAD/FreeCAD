@@ -24,6 +24,7 @@
 
 
 #include <array>
+#include <string_view>
 #include <set>
 
 #include <QApplication>
@@ -1729,7 +1730,7 @@ void SelectionSingleton::rmvSelection(
         // if no subname is specified, remove all subobjects of the matching object
         if (!temp.SubName.empty()) {
             // otherwise, match subojects with common prefix, separated by '.'
-            if (!boost::starts_with(It->SubName, temp.SubName)
+            if (!std::string_view(It->SubName).starts_with(temp.SubName)
                 || (It->SubName.length() != temp.SubName.length()
                     && It->SubName[temp.SubName.length() - 1] != '.')) {
                 continue;
@@ -2153,7 +2154,8 @@ int SelectionSingleton::checkSelection(
             if (s.SubName == pSubName) {
                 return 1;
             }
-            if (resolve > ResolveMode::OldStyleElement && boost::starts_with(s.SubName, prefix)) {
+            if (resolve > ResolveMode::OldStyleElement
+                && std::string_view(s.SubName).starts_with(prefix)) {
                 return 1;
             }
         }

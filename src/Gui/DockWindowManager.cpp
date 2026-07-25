@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #include <array>
+#include <string_view>
 #include <QAction>
 #include <QApplication>
 #include <QDockWidget>
@@ -29,7 +30,6 @@
 #include <QPointer>
 #include <QTimer>
 
-#include <boost/algorithm/string/predicate.hpp>
 
 #include <App/Application.h>
 #include <Base/Tools.h>
@@ -219,7 +219,7 @@ void DockWindowManager::setupOverlayManagement()
                         d->_timer.start(100);
                         break;
                     case ParameterGrp::ParamType::FCInt:
-                        if (name && boost::equals(name, "CursorMargin")) {
+                        if (name && std::string_view(name) == "CursorMargin") {
                             d->_dockWidgetEventFilter.cursorMargin
                                 = d->_hPref->GetInt("CursorMargin", 5);
                         }

@@ -22,8 +22,8 @@
  ****************************************************************************/
 
 
-#include <boost/algorithm/string/predicate.hpp>
 #include <Inventor/elements/SoCacheElement.h>
+#include <string_view>
 #include <Inventor/misc/SoState.h>
 
 
@@ -152,7 +152,7 @@ bool SoFCSelectionContextEx::setColors(
         tmp[-1] = it->second;
     }
     for (auto it = colors.lower_bound(element); it != colors.end(); ++it) {
-        if (!boost::starts_with(it->first, element)) {
+        if (!std::string_view(it->first).starts_with(element)) {
             break;
         }
         if (it->first.size() == element.size()) {
