@@ -1029,4 +1029,26 @@ void QGIViewBalloon::updatePositionFromFeatureXY()
     //      QGIViewBalloon::placeBalloon(), QGSPage::createBalloon(), etc.
 }
 
+QPainterPath QGIViewBalloon::shape() const
+{
+    QPainterPath path;
+
+    if (balloonShape) {
+        QPainterPath p = mapFromItem(balloonShape, balloonShape->path());
+        p.setFillRule(Qt::WindingFill);
+        path.addPath(p);   // use the raw path (closed bubble) so the interior counts
+    }
+    if (balloonLines) {
+        path.addPath(mapFromItem(balloonLines, balloonLines->shape()));
+    }
+    if (balloonLabel) {
+        path.addPath(mapFromItem(balloonLabel, balloonLabel->shape()));
+    }
+    if (arrow && arrow->isVisible()) {
+        path.addPath(mapFromItem(arrow, arrow->shape()));
+    }
+
+    return path;
+}
+
 #include <Mod/TechDraw/Gui/moc_QGIViewBalloon.cpp>

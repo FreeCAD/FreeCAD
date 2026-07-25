@@ -183,6 +183,8 @@ public:
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
                QWidget* widget = nullptr) override;
 
+    QPainterPath shape() const override;
+
     QString getLabelText();
     void placeBalloon(QPointF pos);
     void setPrettyPre();
