@@ -23,7 +23,6 @@
 
 #include "NavlibInterface.h"
 
-#include <boost/bind/bind.hpp>
 
 #include <QMatrix4x4>
 #include <QMdiArea>
@@ -281,7 +280,7 @@ void NavlibInterface::enableNavigation()
     PutFrameTimingSource(TimingSource::SpaceMouse);
 
     Gui::Application::Instance->signalActivateView.connect(
-        boost::bind(&NavlibInterface::onViewChanged, this, boost::placeholders::_1));
+        [this](const Gui::MDIView* view) { onViewChanged(view); });
 
     Gui::Application::Instance->signalActivateWorkbench.connect([this](const char* wb) {
         exportCommands(std::string(wb));
