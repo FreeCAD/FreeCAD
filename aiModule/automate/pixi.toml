@@ -1,0 +1,60 @@
+[workspace]
+name = "automate-ai"
+version = "0.1.0"
+description = "Isolated training and inference environment for AutoMate"
+channels = ["pytorch", "nvidia", "pyg", "conda-forge"]
+platforms = ["win-64"]
+
+[dependencies]
+python = ">=3.10,<3.11"
+numpy = ">=1.26,<2"
+pandas = ">=2.1,<3"
+pyarrow = ">=14,<22"
+scipy = ">=1.11,<2"
+scikit-learn = ">=1.3,<2"
+matplotlib = ">=3.8,<4"
+seaborn = ">=0.13,<1"
+tqdm = ">=4.66,<5"
+pyyaml = ">=6,<7"
+
+# Keep the AI runtime separate from FreeCAD. The NVIDIA driver installed on
+# the host is new enough to run the CUDA 11.8 runtime used by this environment.
+pytorch = ">=2.4,<2.5"
+pytorch-cuda = "11.8.*"
+pyg = ">=2.6,<2.7"
+pytorch-scatter = "*"
+
+# Native AutoMate feature extractor build dependencies.
+cmake = ">=3.28,<5"
+ninja = ">=1.11,<2"
+pybind11 = ">=2.12,<4"
+eigen = ">=3.4,<4"
+occt = ">=7.8,<7.9"
+
+[pypi-dependencies]
+dotmap = ">=1.3,<2"
+xxhash = ">=3.4,<4"
+
+[tasks]
+check = "python scripts/check_ai_environment.py"
+validate-data = "python validate_dataset_sample.py"
+audit-mates = "python audit_mates.py --count 1000"
+audit-mates-5000 = "python audit_mates.py --count 5000 --stratified --output audit/mates_5000_stratified.jsonl --progress-every 100"
+preprocess-smoke = "python preprocess_parts.py --limit 10 --cache-dir dataset/cache/brep_graph_smoke"
+preprocess-parts = "python preprocess_parts.py"
+preprocess-parts-5000 = "python preprocess_parts.py --mates audit/mates_5000_stratified.jsonl --cache-dir dataset/cache/brep_graph_v2_5000 --progress-every 25"
+verify-cache = "python verify_graph_cache.py"
+verify-cache-5000 = "python verify_graph_cache.py --cache-dir dataset/cache/brep_graph_v2_5000 --mates audit/mates_5000_stratified.jsonl"
+build-training-index = "python build_training_index.py"
+verify-training-index = "python verify_training_index.py"
+build-training-index-5000 = "python build_training_index.py --audit audit/mates_5000_stratified.jsonl --cache-dir dataset/cache/brep_graph_v2_5000 --output-dir dataset/training/index_v2_5000"
+verify-training-index-5000 = "python verify_training_index.py --index-dir dataset/training/index_v2_5000"
+check-dataloader = "python scripts/check_dataloader.py"
+train-mate = "python scripts/train_mate_model.py"
+train-mate-smoke = "python scripts/train_mate_model.py --epochs 1 --batch-size 2 --graph-width 32 --mcf-width 32 --message-passing-steps 1 --max-train-batches 2 --max-val-batches 1 --output-dir runs/mate_multitask_v2_smoke"
+evaluate-mate = "python scripts/evaluate_mate_model.py --checkpoint runs/mate_multitask_v2/best.pt --index-dir dataset/training/index_v2_5000"
+evaluate-multitask-smoke = "python scripts/evaluate_mate_model.py --checkpoint runs/mate_multitask_v2_smoke/best.pt --output runs/mate_multitask_v2_smoke/evaluation_test.json --confusion-matrix runs/mate_multitask_v2_smoke/confusion_matrix_test.png"
+infer-mate = "python scripts/infer_mate.py"
+find-demo-pairs = "python scripts/find_demo_pairs.py"
+verify-v1-frozen = "python scripts/verify_frozen_run.py"
+check-multitask-model = "python scripts/check_multitask_model.py"

@@ -1,0 +1,202 @@
+{
+  "checkpoint": "E:\\FreeCAD\\aiModule\\automate\\runs\\mate_multitask_v2_smoke\\best.pt",
+  "checkpoint_epoch": 0,
+  "split": "test",
+  "negative_count": 15,
+  "location": {
+    "loss": 1.31277330716451,
+    "samples": 144,
+    "top1": 0.006944444444444444,
+    "top3": 0.020833333333333332,
+    "top5": 0.0625,
+    "mrr": 0.10925251446084773,
+    "mean_rank": 11.006944444444445,
+    "by_mate_type": {
+      "CYLINDRICAL": {
+        "samples": 2,
+        "top1": 0.0,
+        "top3": 0.0,
+        "top5": 0.0,
+        "mrr": 0.06971153846153846,
+        "mean_rank": 14.5
+      },
+      "FASTENED": {
+        "samples": 120,
+        "top1": 0.008333333333333333,
+        "top3": 0.016666666666666666,
+        "top5": 0.058333333333333334,
+        "mrr": 0.10647431272431268,
+        "mean_rank": 11.25
+      },
+      "PLANAR": {
+        "samples": 10,
+        "top1": 0.0,
+        "top3": 0.0,
+        "top5": 0.0,
+        "mrr": 0.11218004218004218,
+        "mean_rank": 9.4
+      },
+      "REVOLUTE": {
+        "samples": 3,
+        "top1": 0.0,
+        "top3": 0.3333333333333333,
+        "top5": 0.3333333333333333,
+        "mrr": 0.21314102564102563,
+        "mean_rank": 10.333333333333334
+      },
+      "SLIDER": {
+        "samples": 9,
+        "top1": 0.0,
+        "top3": 0.0,
+        "top5": 0.1111111111111111,
+        "mrr": 0.11719977553310887,
+        "mean_rank": 9.0
+      }
+    }
+  },
+  "mate_type": {
+    "loss": 1.9786395364337497,
+    "accuracy": 0.25,
+    "balanced_accuracy_supported": 0.09666667133569717,
+    "macro_f1_supported": 0.10711836814880371,
+    "macro_f1_all": 0.06694898009300232,
+    "absent_types": [
+      "BALL",
+      "PARALLEL",
+      "PIN_SLOT"
+    ],
+    "per_type": {
+      "BALL": {
+        "support": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "CYLINDRICAL": {
+        "support": 2,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "FASTENED": {
+        "support": 120,
+        "precision": 0.6666666865348816,
+        "recall": 0.28333333134651184,
+        "f1": 0.3976607918739319
+      },
+      "PARALLEL": {
+        "support": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "PIN_SLOT": {
+        "support": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "PLANAR": {
+        "support": 10,
+        "precision": 0.10526315867900848,
+        "recall": 0.20000000298023224,
+        "f1": 0.13793103396892548
+      },
+      "REVOLUTE": {
+        "support": 3,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "SLIDER": {
+        "support": 9,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        70,
+        0,
+        34,
+        0,
+        0,
+        16,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        3,
+        0,
+        5,
+        0,
+        0,
+        2,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        8,
+        0,
+        0,
+        1,
+        0,
+        0
+      ]
+    ],
+    "confusion_matrix_image": "E:\\FreeCAD\\aiModule\\automate\\runs\\mate_multitask_v2_smoke\\confusion_matrix_test.png"
+  }
+}

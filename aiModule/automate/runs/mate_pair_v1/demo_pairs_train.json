@@ -1,0 +1,236 @@
+{
+  "checkpoint_epoch": 3,
+  "split": "train",
+  "results": [
+    {
+      "sample_id": "de7661370d60c31ebe1b8a91_29e841896b71ade576512bfb_3400a4a009f8c757cf543401_default:MHTAF2n0z3rBzDCBA:MjLLfaqtMu1WfXplb",
+      "mate_type": "FASTENED",
+      "rank": 1,
+      "positive_score": 10.248211860656738,
+      "pair_count": 19536,
+      "mcf_counts": [
+        296,
+        66
+      ],
+      "part_ids": [
+        "6b39b9ae253c916b8d16eee4_f0fecbbb8edc7da376ffdb8c_3e9eb724968466ca2c8bf10f_default_jjeei",
+        "3da7f10f2774621f101b1c38_53204001c374db06a6f4c987_b1623f3479b042caecb42641_default_jjeei"
+      ],
+      "step_paths": [
+        "E:\\FreeCAD\\aiModule\\automate\\dataset\\step\\6b39b9ae253c916b8d16eee4_f0fecbbb8edc7da376ffdb8c_3e9eb724968466ca2c8bf10f_default_jjeei.step",
+        "E:\\FreeCAD\\aiModule\\automate\\dataset\\step\\3da7f10f2774621f101b1c38_53204001c374db06a6f4c987_b1623f3479b042caecb42641_default_jjeei.step"
+      ],
+      "candidate_indices": [
+        1,
+        0
+      ]
+    },
+    {
+      "sample_id": "a043c8f4798b28f5d99c9306_0926379a26587f09d4aea1d0_bd3978af342e7d04f3e43481_default:MwPmzj9jzG6gaJQi+",
+      "mate_type": "FASTENED",
+      "rank": 2,
+      "positive_score": 8.280007362365723,
+      "pair_count": 6600,
+      "mcf_counts": [
+        66,
+        100
+      ],
+      "part_ids": [
+        "a043c8f4798b28f5d99c9306_0926379a26587f09d4aea1d0_9fa46599cc5ec6e376a7a6a6_default_jjhui",
+        "ed35a8d1e289e87a331dbb15_66655a1a1375e0ef4b9ad452_d49d4d2276ef871e4e7e869b_default_jjkei"
+      ],
+      "step_paths": [
+        "E:\\FreeCAD\\aiModule\\automate\\dataset\\step\\a043c8f4798b28f5d99c9306_0926379a26587f09d4aea1d0_9fa46599cc5ec6e376a7a6a6_default_jjhui.step",
+        "E:\\FreeCAD\\aiModule\\automate\\dataset\\step\\ed35a8d1e289e87a331dbb15_66655a1a1375e0ef4b9ad452_d49d4d2276ef871e4e7e869b_default_jjkei.step"
+      ],
+      "candidate_indices": [
+        15,
+        0
+      ]
+    },
+    {
+      "sample_id": "a043c8f4798b28f5d99c9306_0926379a26587f09d4aea1d0_bd3978af342e7d04f3e43481_default:MSnMZUiVZka7O+MA9",
+      "mate_type": "FASTENED",
+      "rank": 2,
+      "positive_score": 8.280007362365723,
+      "pair_count": 6600,
+      "mcf_counts": [
+        66,
+        100
+      ],
+      "part_ids": [
+        "a043c8f4798b28f5d99c9306_0926379a26587f09d4aea1d0_9fa46599cc5ec6e376a7a6a6_default_jjhui",
+        "ed35a8d1e289e87a331dbb15_66655a1a1375e0ef4b9ad452_d49d4d2276ef871e4e7e869b_default_jjkei"
+      ],
+      "step_paths": [
+        "E:\\FreeCAD\\aiModule\\automate\\dataset\\step\\a043c8f4798b28f5d99c9306_0926379a26587f09d4aea1d0_9fa46599cc5ec6e376a7a6a6_default_jjhui.step",
+        "E:\\FreeCAD\\aiModule\\automate\\dataset\\step\\ed35a8d1e289e87a331dbb15_66655a1a1375e0ef4b9ad452_d49d4d2276ef871e4e7e869b_default_jjkei.step"
+      ],
+      "candidate_indices": [
+        15,
+        0
+      ]
+    },
+    {
+      "sample_id": "a043c8f4798b28f5d99c9306_0926379a26587f09d4aea1d0_bd3978af342e7d04f3e43481_default:M4kBJNy0bs8+P5kAZ",
+      "mate_type": "FASTENED",
+      "rank": 2,
+      "positive_score": 8.280007362365723,
+      "pair_count": 6600,
+      "mcf_counts": [
+        66,
+        100
+      ],
+      "part_ids": [
+        "a043c8f4798b28f5d99c9306_0926379a26587f09d4aea1d0_9fa46599cc5ec6e376a7a6a6_default_jjhui",
+        "ed35a8d1e289e87a331dbb15_66655a1a1375e0ef4b9ad452_d49d4d2276ef871e4e7e869b_default_jjkei"
+      ],
+      "step_paths": [
+        "E:\\FreeCAD\\aiModule\\automate\\dataset\\step\\a043c8f4798b28f5d99c9306_0926379a26587f09d4aea1d0_9fa46599cc5ec6e376a7a6a6_default_jjhui.step",
+        "E:\\FreeCAD\\aiModule\\automate\\dataset\\step\\ed35a8d1e289e87a331dbb15_66655a1a1375e0ef4b9ad452_d49d4d2276ef871e4e7e869b_default_jjkei.step"
+      ],
+      "candidate_indices": [
+        15,
+        0
+      ]
+    },
+    {
+      "sample_id": "a043c8f4798b28f5d99c9306_0926379a26587f09d4aea1d0_bd3978af342e7d04f3e43481_default:MwrdFBL2ejNbpKngF",
+      "mate_type": "FASTENED",
+      "rank": 2,
+      "positive_score": 7.808941841125488,
+      "pair_count": 6700,
+      "mcf_counts": [
+        100,
+        67
+      ],
+      "part_ids": [
+        "ed35a8d1e289e87a331dbb15_66655a1a1375e0ef4b9ad452_d49d4d2276ef871e4e7e869b_default_jjkei",
+        "a043c8f4798b28f5d99c9306_0926379a26587f09d4aea1d0_9fa46599cc5ec6e376a7a6a6_default_jjeei"
+      ],
+      "step_paths": [
+        "E:\\FreeCAD\\aiModule\\automate\\dataset\\step\\ed35a8d1e289e87a331dbb15_66655a1a1375e0ef4b9ad452_d49d4d2276ef871e4e7e869b_default_jjkei.step",
+        "E:\\FreeCAD\\aiModule\\automate\\dataset\\step\\a043c8f4798b28f5d99c9306_0926379a26587f09d4aea1d0_9fa46599cc5ec6e376a7a6a6_default_jjeei.step"
+      ],
+      "candidate_indices": [
+        0,
+        19
+      ]
+    },
+    {
+      "sample_id": "a043c8f4798b28f5d99c9306_0926379a26587f09d4aea1d0_bd3978af342e7d04f3e43481_default:M4s5B8vKBCnM2bhWD",
+      "mate_type": "FASTENED",
+      "rank": 2,
+      "positive_score": 7.808941841125488,
+      "pair_count": 6700,
+      "mcf_counts": [
+        100,
+        67
+      ],
+      "part_ids": [
+        "ed35a8d1e289e87a331dbb15_66655a1a1375e0ef4b9ad452_d49d4d2276ef871e4e7e869b_default_jjkei",
+        "a043c8f4798b28f5d99c9306_0926379a26587f09d4aea1d0_9fa46599cc5ec6e376a7a6a6_default_jjeei"
+      ],
+      "step_paths": [
+        "E:\\FreeCAD\\aiModule\\automate\\dataset\\step\\ed35a8d1e289e87a331dbb15_66655a1a1375e0ef4b9ad452_d49d4d2276ef871e4e7e869b_default_jjkei.step",
+        "E:\\FreeCAD\\aiModule\\automate\\dataset\\step\\a043c8f4798b28f5d99c9306_0926379a26587f09d4aea1d0_9fa46599cc5ec6e376a7a6a6_default_jjeei.step"
+      ],
+      "candidate_indices": [
+        0,
+        19
+      ]
+    },
+    {
+      "sample_id": "02f80554ca1572c6f972cdbe_41cea722796730a40b231a34_2cde192ab155d4189c1a63e2_default:MzgRln/KhWk3zcjvj:MF8t9s9bUh69fdBTz",
+      "mate_type": "FASTENED",
+      "rank": 2,
+      "positive_score": 10.441411018371582,
+      "pair_count": 16302,
+      "mcf_counts": [
+        66,
+        247
+      ],
+      "part_ids": [
+        "3da7f10f2774621f101b1c38_53204001c374db06a6f4c987_b1623f3479b042caecb42641_default_jjeei",
+        "58618b49cec3fd1081e6ed7f_9fa8d8a119d70db1b483d062_324e16afbb0f5f59cb4eb7c8_default_jjeei"
+      ],
+      "step_paths": [
+        "E:\\FreeCAD\\aiModule\\automate\\dataset\\step\\3da7f10f2774621f101b1c38_53204001c374db06a6f4c987_b1623f3479b042caecb42641_default_jjeei.step",
+        "E:\\FreeCAD\\aiModule\\automate\\dataset\\step\\58618b49cec3fd1081e6ed7f_9fa8d8a119d70db1b483d062_324e16afbb0f5f59cb4eb7c8_default_jjeei.step"
+      ],
+      "candidate_indices": [
+        0,
+        79
+      ]
+    },
+    {
+      "sample_id": "a39f2b68dd05330c70d81d0e_ec4df8c4ec4d0606e4679f62_368bd2924306ae5f01e6758a_default:MTHq7XAeWdJRV0HwU:MUlZmE5EHhYs9rKi8:MOMaL6V+lgsx1WO/I",
+      "mate_type": "FASTENED",
+      "rank": 2,
+      "positive_score": 10.441411018371582,
+      "pair_count": 16302,
+      "mcf_counts": [
+        66,
+        247
+      ],
+      "part_ids": [
+        "3da7f10f2774621f101b1c38_53204001c374db06a6f4c987_b1623f3479b042caecb42641_default_jjeei",
+        "58618b49cec3fd1081e6ed7f_9fa8d8a119d70db1b483d062_324e16afbb0f5f59cb4eb7c8_default_jjeei"
+      ],
+      "step_paths": [
+        "E:\\FreeCAD\\aiModule\\automate\\dataset\\step\\3da7f10f2774621f101b1c38_53204001c374db06a6f4c987_b1623f3479b042caecb42641_default_jjeei.step",
+        "E:\\FreeCAD\\aiModule\\automate\\dataset\\step\\58618b49cec3fd1081e6ed7f_9fa8d8a119d70db1b483d062_324e16afbb0f5f59cb4eb7c8_default_jjeei.step"
+      ],
+      "candidate_indices": [
+        0,
+        79
+      ]
+    },
+    {
+      "sample_id": "02f80554ca1572c6f972cdbe_41cea722796730a40b231a34_2cde192ab155d4189c1a63e2_default:Isu44f9UiCPdO4KYf:MF8t9s9bUh69fdBTz",
+      "mate_type": "FASTENED",
+      "rank": 2,
+      "positive_score": 10.441411018371582,
+      "pair_count": 16302,
+      "mcf_counts": [
+        66,
+        247
+      ],
+      "part_ids": [
+        "3da7f10f2774621f101b1c38_53204001c374db06a6f4c987_b1623f3479b042caecb42641_default_jjeei",
+        "58618b49cec3fd1081e6ed7f_9fa8d8a119d70db1b483d062_324e16afbb0f5f59cb4eb7c8_default_jjeei"
+      ],
+      "step_paths": [
+        "E:\\FreeCAD\\aiModule\\automate\\dataset\\step\\3da7f10f2774621f101b1c38_53204001c374db06a6f4c987_b1623f3479b042caecb42641_default_jjeei.step",
+        "E:\\FreeCAD\\aiModule\\automate\\dataset\\step\\58618b49cec3fd1081e6ed7f_9fa8d8a119d70db1b483d062_324e16afbb0f5f59cb4eb7c8_default_jjeei.step"
+      ],
+      "candidate_indices": [
+        0,
+        79
+      ]
+    },
+    {
+      "sample_id": "02f80554ca1572c6f972cdbe_41cea722796730a40b231a34_2cde192ab155d4189c1a63e2_default:Ii46exShCPdO4KYdq:MF8t9s9bUh69fdBTz",
+      "mate_type": "FASTENED",
+      "rank": 2,
+      "positive_score": 10.441411018371582,
+      "pair_count": 16302,
+      "mcf_counts": [
+        66,
+        247
+      ],
+      "part_ids": [
+        "3da7f10f2774621f101b1c38_53204001c374db06a6f4c987_b1623f3479b042caecb42641_default_jjeei",
+        "58618b49cec3fd1081e6ed7f_9fa8d8a119d70db1b483d062_324e16afbb0f5f59cb4eb7c8_default_jjeei"
+      ],
+      "step_paths": [
+        "E:\\FreeCAD\\aiModule\\automate\\dataset\\step\\3da7f10f2774621f101b1c38_53204001c374db06a6f4c987_b1623f3479b042caecb42641_default_jjeei.step",
+        "E:\\FreeCAD\\aiModule\\automate\\dataset\\step\\58618b49cec3fd1081e6ed7f_9fa8d8a119d70db1b483d062_324e16afbb0f5f59cb4eb7c8_default_jjeei.step"
+      ],
+      "candidate_indices": [
+        0,
+        79
+      ]
+    }
+  ]
+}

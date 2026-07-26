@@ -1,0 +1,60 @@
+diff --git a/include/types.h b/include/types.h
+--- a/include/types.h
++++ b/include/types.h
+@@ -10,6 +10,10 @@
+ #include <BRepGProp.hxx>
+ #include <GProp_GProps.hxx>
+ #include <TopoDS_Shape.hxx>
++#include <Standard_Version.hxx>
++#if OCC_VERSION_HEX >= 0x070800
++#include <TopTools_ShapeMapHasher.hxx>
++#endif
+ #include <TopAbs_ShapeEnum.hxx>
+ 
+ namespace pspy {
+@@ -203,7 +207,11 @@ struct Inference {
+ template <typename T>
+ struct TopoDS_Shape_Hash {
+     size_t operator()(const T& shape) const {
++#if OCC_VERSION_HEX >= 0x070800
++        return TopTools_ShapeMapHasher{}(shape);
++#else
+         return shape.HashCode(INT_MAX);
++#endif
+     }
+ };
+ 
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -7,6 +7,12 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+ find_package(Eigen3 REQUIRED)
+ find_package(OpenCASCADE REQUIRED)
+ 
++find_library(BRLOADER_OCCT_STEP_LIBRARY NAMES TKDESTEP TKSTEP
++  HINTS ${OpenCASCADE_LIBRARY_DIR})
++if(NOT BRLOADER_OCCT_STEP_LIBRARY)
++  message(FATAL_ERROR "Could not find the OpenCascade STEP library")
++endif()
++
+ if (DEFINED ENV{PARASOLID_BASE})
+ 
+ include(FetchContent)
+@@ -83,7 +89,7 @@ target_link_libraries(breploader PUBLIC
+   Eigen3::Eigen 
+   TKernel 
+   TKXSBase 
+-  TKSTEP 
++  ${BRLOADER_OCCT_STEP_LIBRARY}
+   TKBRep 
+   TKG3d 
+   TKMath 
+@@ -99,7 +105,7 @@ target_link_libraries(breploader PUBLIC
+   Eigen3::Eigen 
+   TKernel 
+   TKXSBase 
+-  TKSTEP 
++  ${BRLOADER_OCCT_STEP_LIBRARY}
+   TKBRep 
+   TKG3d 
+   TKMath 

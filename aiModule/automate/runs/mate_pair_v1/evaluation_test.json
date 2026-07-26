@@ -1,0 +1,55 @@
+{
+  "checkpoint": "E:\\FreeCAD\\aiModule\\automate\\runs\\mate_pair_v1\\best.pt",
+  "checkpoint_epoch": 3,
+  "split": "test",
+  "negative_count": 15,
+  "loss": 0.8343660012954691,
+  "samples": 144,
+  "top1": 0.7222222222222222,
+  "top3": 0.8680555555555556,
+  "top5": 0.9166666666666666,
+  "mrr": 0.8068868245951579,
+  "mean_rank": 2.0069444444444446,
+  "by_mate_type": {
+    "CYLINDRICAL": {
+      "samples": 2,
+      "top1": 1.0,
+      "top3": 1.0,
+      "top5": 1.0,
+      "mrr": 1.0,
+      "mean_rank": 1.0
+    },
+    "FASTENED": {
+      "samples": 120,
+      "top1": 0.8333333333333334,
+      "top3": 0.9166666666666666,
+      "top5": 0.95,
+      "mrr": 0.8873511904761904,
+      "mean_rank": 1.55
+    },
+    "PLANAR": {
+      "samples": 10,
+      "top1": 0.0,
+      "top3": 0.4,
+      "top5": 0.7,
+      "mrr": 0.2693686868686869,
+      "mean_rank": 5.1
+    },
+    "REVOLUTE": {
+      "samples": 3,
+      "top1": 0.6666666666666666,
+      "top3": 0.6666666666666666,
+      "top5": 0.6666666666666666,
+      "mrr": 0.6904761904761904,
+      "mean_rank": 5.333333333333333
+    },
+    "SLIDER": {
+      "samples": 9,
+      "top1": 0.0,
+      "top3": 0.7777777777777778,
+      "top5": 0.7777777777777778,
+      "mrr": 0.3271604938271605,
+      "mean_rank": 3.7777777777777777
+    }
+  }
+}

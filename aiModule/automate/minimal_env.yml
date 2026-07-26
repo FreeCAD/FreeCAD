@@ -1,0 +1,21 @@
+name: automate
+channels:
+ - pytorch
+ - pyg
+ - conda-forge
+ - defaults
+
+dependencies:
+ - python
+ - cudatoolkit=11.3
+ - pytorch>=1.10
+ - pyg=2.0.3
+ - numpy
+ - pytorch-lightning
+ - matplotlib
+ - dotmap
+ - eigen
+ - occt>=7.6
+ - cmake
+ - pybind11
+ - seaborn

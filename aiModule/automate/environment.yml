@@ -1,0 +1,36 @@
+name: automate
+channels:
+  - pytorch
+  - pyg
+  - fvcore
+  - iopath
+  - bottler
+  - pytorch3d
+  - conda-forge
+  - defaults
+  
+dependencies:
+  - python
+  - cudatoolkit=11.3
+  - pytorch>=1.10
+  - pyg=2.0.3
+  - numpy
+  - pandas
+  - pytorch-lightning
+  - tensorboard
+  - pyarrow
+  - requests
+  - scipy
+  - matplotlib
+  - dotmap
+  - h5py
+  - meshplot
+  - ipykernel
+  - pip
+  - eigen
+  - occt>=7.6
+  - cmake
+  - pybind11
+  - pip:
+    - pyrender
+    - xxhash

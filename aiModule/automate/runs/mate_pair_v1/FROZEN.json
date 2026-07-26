@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-07-26",
+  "status": "frozen",
+  "run_name": "mate_pair_v1",
+  "purpose": "Location candidate-pair binary ranking baseline",
+  "training": {
+    "epochs": 100,
+    "best_checkpoint_epoch": 3,
+    "negative_count": 15,
+    "type_head": false,
+    "offset_head": false,
+    "axis_flip_head": false
+  },
+  "test_metrics": {
+    "samples": 144,
+    "top1": 0.7222222222222222,
+    "top3": 0.8680555555555556,
+    "top5": 0.9166666666666666,
+    "mrr": 0.8068868245951579
+  },
+  "sha256": {
+    "best.pt": "297952eb338804d360d4e39d8ce93e18730afd08fbd9a8df9470a7cafc9977bd",
+    "last.pt": "59bd2748e161f3edf9a1cd02b642fb92f11c670a8d2ea59cbfa059f70a0d948e",
+    "metrics.jsonl": "bd639d79b750bfac278dfa6ebe5424568c5b5511a4ededa175ccd8956bb5d876",
+    "evaluation_test.json": "6ebb8960f8a3bf9a50d018b6ec9975a0b4e20d986c105a41418ba2f374264355"
+  }
+}
