@@ -6180,6 +6180,7 @@ TopoShape& TopoShape::makeElementBoolean(
     }
 
     TopTools_ListOfShape shapeArguments, shapeTools;
+    std::vector<TopoShape> fixedInputs;
 
     int i = -1;
     for (const auto& shape : inputs) {
@@ -6187,25 +6188,34 @@ TopoShape& TopoShape::makeElementBoolean(
             FC_THROWM(NullShapeException, "Null input shape");
         }
 
-        if (!shape.isValid()) {
-            std::ostringstream details;
-            shape.analyze(false, details);
+        TopoShape& copiedShape = fixedInputs.emplace_back(shape);
 
-            std::string message = "Invalid input shape for boolean ";
-            message += maker;
-            if (!details.str().empty()) {
-                message += ":\n";
-                message += details.str();
+        if (!copiedShape.isValid()) {  
+            // The fix operation will break naming for some elements (specifically faces).
+            // This is an issue with OpenCASCADE (and the Context/ReShape operation).
+            // The topological naming algorithm will make up for this and map the broken elements
+            // with their lower (or upper) level connected elements. It's better to have a slightly
+            // broken/lost element map than to have a feature that fails for no reason.
+            if (!copiedShape.fix()) {
+                std::ostringstream details;
+                shape.analyze(false, details);
+
+                std::string message = "Invalid input shape for boolean ";
+                message += maker;
+                if (!details.str().empty()) {
+                    message += ":\n";
+                    message += details.str();
+                }
+
+                FC_THROWM(Base::CADKernelError, message.c_str());
             }
-
-            FC_THROWM(Base::CADKernelError, message.c_str());
         }
-
+        
         if (++i == 0) {
-            shapeArguments.Append(shape.getShape());
+            shapeArguments.Append(copiedShape.getShape());
         }
         else {
-            shapeTools.Append(shape.getShape());
+            shapeTools.Append(copiedShape.getShape());
         }
     }
 
@@ -6228,7 +6238,7 @@ TopoShape& TopoShape::makeElementBoolean(
     if (Base::Sequencer().wasCanceled()) {
         FC_THROWM(Base::CADKernelError, "User aborted");
     }
-    makeElementShape(*mk, inputs, op, elementMapPolicy);
+    makeElementShape(*mk, fixedInputs, op, elementMapPolicy);
 
     if (buildShell) {
         makeElementShell(true, nullptr, elementMapPolicy);
