@@ -27,6 +27,7 @@
 #include <QMenu>
 
 #include <App/Document.h>
+#include <App/Datums.h>
 #include <App/Origin.h>
 #include <App/Part.h>
 #include <App/VarSet.h>
@@ -37,6 +38,8 @@
 #include <Gui/Document.h>
 #include <Gui/MDIView.h>
 #include <Gui/ViewProviderDatum.h>
+#include <Mod/Part/App/DatumFeature.h>
+#include <Mod/Part/App/Part2DObject.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
 #include <Mod/PartDesign/App/FeatureBase.h>
@@ -202,6 +205,61 @@ void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     func->trigger(act, [this]() { this->toggleActiveBody(); });
 
     Gui::ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);  // clazy:exclude=skipped-base-method
+}
+
+std::vector<Gui::ViewProvider::TreeGroup> ViewProviderBody::getTreeGroups() const
+{
+    auto preferences = App::GetApplication()
+                           .GetUserParameter()
+                           .GetGroup("BaseApp")
+                           ->GetGroup("Preferences")
+                           ->GetGroup("Mod/PartDesign");
+    if (!preferences->GetBool("AutoGroupBodyElements", true)) {
+        return {};
+    }
+
+    auto* body = getObject<PartDesign::Body>();
+    if (!body) {
+        return {};
+    }
+
+    TreeGroup sketches {tr("Sketches"), QStringLiteral("Sketcher_NewSketch"), {}};
+    TreeGroup datums {tr("Datums"), QStringLiteral("PartDesign_Plane"), {}};
+    TreeGroup references {tr("References"), QStringLiteral("PartDesign_SubShapeBinder"), {}};
+
+    for (auto* object : body->Group.getValues()) {
+        if (!object || !object->isAttachedToDocument()) {
+            continue;
+        }
+
+        if (object->isDerivedFrom<Part::Part2DObject>()) {
+            sketches.children.push_back(object);
+        }
+        else if (
+            object->isDerivedFrom<Part::Datum>() || object->isDerivedFrom<App::DatumElement>()
+            || object->isDerivedFrom<App::LocalCoordinateSystem>()
+        ) {
+            datums.children.push_back(object);
+        }
+        else if (
+            object->isDerivedFrom<PartDesign::ShapeBinder>()
+            || object->isDerivedFrom<PartDesign::SubShapeBinder>()
+        ) {
+            references.children.push_back(object);
+        }
+    }
+
+    std::vector<TreeGroup> groups;
+    if (!sketches.children.empty()) {
+        groups.push_back(std::move(sketches));
+    }
+    if (!datums.children.empty()) {
+        groups.push_back(std::move(datums));
+    }
+    if (!references.children.empty()) {
+        groups.push_back(std::move(references));
+    }
+    return groups;
 }
 
 bool ViewProviderBody::isActiveBody()
