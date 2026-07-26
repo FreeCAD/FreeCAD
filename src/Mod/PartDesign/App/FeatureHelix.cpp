@@ -339,7 +339,7 @@ App::DocumentObjectExecReturn* Helix::execute()
     }
     catch (const Base::Exception&) {
         // fall back to support (for legacy features)
-        base = TopoShape();
+        base = makeTopoShape(false);
     }
 
     // update Axis from ReferenceAxis
@@ -462,7 +462,7 @@ App::DocumentObjectExecReturn* Helix::execute()
         }
         else if (getAddSubType() == FeatureAddSub::Subtractive) {
 
-            TopoShape boolOp;
+            TopoShape boolOp = makeTopoShape(false);
 
             TopoDS_Shape rawBoolOp;
             if (Outside.getValue()) {  // are we subtracting the inside or the outside of the profile.

@@ -399,7 +399,7 @@ App::DocumentObjectExecReturn* Body::execute()
 
     App::DocumentObject* tip = Tip.getValue();
 
-    Part::TopoShape tipShape;
+    Part::TopoShape tipShape = makeTopoShape();
     if (tip) {
         if (!tip->isDerivedFrom<PartDesign::Feature>()) {
             return new App::DocumentObjectExecReturn(
@@ -418,9 +418,6 @@ App::DocumentObjectExecReturn* Body::execute()
 
         // We should hide here the transformation of the baseFeature
         tipShape.transformShape(tipShape.getTransform(), true);
-    }
-    else {
-        tipShape = Part::TopoShape();
     }
 
     Shape.setValue(tipShape);

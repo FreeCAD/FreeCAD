@@ -286,17 +286,24 @@ TopoShape::TopoShape(long tag, App::StringHasherRef hasher, const TopoDS_Shape& 
     setHistoryAlgorithm(historyAlgorithm);
 }
 
-TopoShape::TopoShape(const TopoDS_Shape& shape, long tag, App::StringHasherRef hasher)
+TopoShape::TopoShape(const TopoDS_Shape& shape, long tag, App::StringHasherRef hasher, const App::HistoryAlgorithm& historyAlgorithm)
     : _Shape(*this, shape)
 {
     Tag = tag;
     Hasher = hasher;
+    setHistoryAlgorithm(historyAlgorithm);
 }
 
 TopoShape::TopoShape(const TopoShape& shape)
     : _Shape(*this)
 {
     *this = shape;
+}
+
+TopoShape::TopoShape(const App::HistoryAlgorithm& historyAlgorithm, const TopoDS_Shape& shape)
+    : _Shape(*this, shape)
+{
+    setHistoryAlgorithm(historyAlgorithm);
 }
 
 std::pair<std::string, unsigned long> TopoShape::getElementTypeAndIndex(const char* RawName)

@@ -124,7 +124,7 @@ void Feature::setMaterialToBodyMaterial()
 
 void Feature::updateSuppressedShape()
 {
-    TopoShape res(getID());
+    TopoShape res = makeTopoShape(false);
     TopoShape shape = Shape.getShape();
     shape.setPlacement(Base::Placement());
     std::vector<TopoShape> generated;
@@ -155,7 +155,7 @@ short Feature::mustExecute() const
 TopoShape Feature::getSolid(const TopoShape& shape) const
 {
     if (shape.isNull()) {
-        throw Part::NullShapeException("Null shape");
+        throw Part::NullShapeException("Null shape 1");
     }
 
     // If single solid rule is not enforced  we simply return the shape as is
@@ -354,7 +354,7 @@ TopoShape Feature::fixSolids(const TopoShape& solids)
         bb.Add(comp, fix.Solid());
     }
 
-    TopoShape fixShape(comp);
+    TopoShape fixShape = makeTopoShape(comp);
     return fixShape;
 }
 
@@ -453,7 +453,7 @@ const TopoDS_Shape& Feature::getBaseShape() const
 
 Part::TopoShape Feature::getBaseTopoShape(bool silent) const
 {
-    Part::TopoShape result;
+    Part::TopoShape result = makeTopoShape(false);
 
     const Part::Feature* BaseObject = getBaseObject(silent);
     if (!BaseObject) {
@@ -583,7 +583,7 @@ TopoShape Feature::makeTopoShapeFromPlane(const App::DocumentObject* obj)
         throw Base::CADKernelError("Feature: Could not create shape from base plane");
     }
 
-    return TopoShape(obj->getID(), nullptr, builder.Shape());
+    return Feature::makeTopoShape(obj, builder.Shape(), 0, false);
 }
 
 Body* Feature::getFeatureBody() const

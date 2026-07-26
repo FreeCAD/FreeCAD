@@ -401,7 +401,7 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const
                     shape = faces.front();
                 }
                 else {
-                    shape = TopoShape().makeCompound(faces);
+                    shape = makeTopoShape(false).makeCompound(faces);
                 }
             }
             if (!err) {
@@ -475,7 +475,7 @@ TopoShape ProfileBased::getProfileShape(Part::ShapeOptions subShapeOptions) cons
         for (auto& sub : subs) {
             shapes.push_back(Part::Feature::getTopoShape(profile, subShapeOptions, sub.c_str()));
         }
-        shape = TopoShape(shape.Tag).makeElementCompound(shapes);
+        shape = makeTopoShape(shape.Tag).makeElementCompound(shapes);
     }
     if (shape.isNull()) {
         throw Part::NullShapeException("Linked shape object is empty");

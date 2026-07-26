@@ -959,8 +959,6 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
         }
     }
 
-    FC_WARN("prism ver: " << prism.getHistoryAlgorithm());
-
     return prism;
 }
 

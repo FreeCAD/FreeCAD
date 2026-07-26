@@ -1052,10 +1052,11 @@ Document::Document(const char* documentName)
     
     ToponamingVersion.setEnums({"V1", "V2"});
     ADD_PROPERTY_TYPE(ToponamingVersion,
-                      (App::getDefaultHistoryAlgorithm()),
+                      (App::getHistoryAlgorithm(App::getDefaultHistoryAlgorithm())),
                       0,
                       PropertyType(Prop_Hidden),
                       "The Topological Naming Version to use for this document.");
+    selectedHistoryAlgorithm = App::getHistoryAlgorithm(ToponamingVersion.getValueAsString());
 
     // this creates and sets 'TransientDir' in onChanged()
     ADD_PROPERTY_TYPE(TransientDir,

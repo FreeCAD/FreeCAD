@@ -1065,6 +1065,19 @@ void DocumentObjectPy::setNoTouch(Py::Boolean value)
     getDocumentObjectPtr()->setStatus(ObjectStatus::NoTouch, value.isTrue());
 }
 
+Py::String DocumentObjectPy::getToponamingAlgorithm() const
+{
+    const App::HistoryAlgorithm& selectedHistoryVersion = getDocumentObjectPtr()->getSelectedHistoryAlgorithm();
+
+    if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
+        return "V1";
+    } else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+        return "V2";
+    }
+
+    return "N/A";
+}
+
 PyObject* DocumentObjectPy::getPlacementOf(PyObject* args)
 {
     char* subname;

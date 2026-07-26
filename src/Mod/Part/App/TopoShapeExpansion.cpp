@@ -495,7 +495,7 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(
             bool isPlane = false;
 
             std::vector<TopoDS_Shape> vertices;
-            TopoShape wire;
+            TopoShape wire(getHistoryAlgorithm());
             if (shapeType == TopAbs_FACE) {
                 wire = subshape.splitWires();
                 vertices = wire.getSubShapes(TopAbs_VERTEX);
@@ -577,7 +577,7 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(
                     if (!shapeSet.insert(shape).second) {
                         continue;
                     }
-                    TopoShape otherWire;
+                    TopoShape otherWire(getHistoryAlgorithm());
                     std::vector<TopoDS_Shape> otherVertices;
                     if (shapeType == TopAbs_FACE) {
                         otherWire = shape.splitWires();
@@ -1232,7 +1232,7 @@ std::vector<TopoShape> TopoShape::getOrderedEdges(MapElement mapElement) const
     if (shapeType() == TopAbs_WIRE) {
         BRepTools_WireExplorer xp(TopoDS::Wire(getShape()));
         while (xp.More()) {
-            shapes.push_back(TopoShape(xp.Current()));
+            shapes.push_back(TopoShape(getHistoryAlgorithm(), xp.Current()));
             xp.Next();
         }
     }
@@ -1242,7 +1242,7 @@ std::vector<TopoShape> TopoShape::getOrderedEdges(MapElement mapElement) const
         for (const auto& w : getSubShapes(TopAbs_WIRE)) {
             BRepTools_WireExplorer xp(TopoDS::Wire(w));
             while (xp.More()) {
-                shapes.push_back(TopoShape(xp.Current()));
+                shapes.push_back(TopoShape(getHistoryAlgorithm(), xp.Current()));
                 xp.Next();
             }
         }
@@ -1265,7 +1265,7 @@ std::vector<TopoShape> TopoShape::getOrderedVertexes(MapElement mapElement) cons
         auto wire = TopoDS::Wire(s);
         BRepTools_WireExplorer xp(wire);
         while (xp.More()) {
-            shapes.push_back(TopoShape(xp.CurrentVertex()));
+            shapes.push_back(TopoShape(getHistoryAlgorithm(), xp.CurrentVertex()));
             xp.Next();
         }
         // special treatment for open wires
@@ -1273,7 +1273,7 @@ std::vector<TopoShape> TopoShape::getOrderedVertexes(MapElement mapElement) cons
         TopExp::Vertices(wire, Vfirst, Vlast);
         if (!Vfirst.IsNull() && !Vlast.IsNull()) {
             if (!Vfirst.IsSame(Vlast)) {
-                shapes.push_back(TopoShape(Vlast));
+                shapes.push_back(TopoShape(getHistoryAlgorithm(), Vlast));
             }
         }
     };
@@ -2900,14 +2900,14 @@ TopoShape TopoShape::getSubTopoShape(const char* Type, bool silent) const
         if (!silent) {
             FC_THROWM(Base::CADKernelError, "Mapped element not found: " << Type);
         }
-        return TopoShape();
+        return TopoShape(getHistoryAlgorithm());
     }
     auto res = shapeTypeAndIndex(mapped.index);
     if (res.second <= 0) {
         if (!silent) {
             FC_THROWM(Base::ValueError, "Invalid shape name " << (Type ? Type : ""));
         }
-        return TopoShape();
+        return TopoShape(getHistoryAlgorithm());
     }
     return getSubTopoShape(res.first, res.second, silent);
 }
@@ -2919,19 +2919,19 @@ TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent
         if (!silent) {
             FC_THROWM(NullShapeException, "null shape");
         }
-        return TopoShape();
+        return TopoShape(getHistoryAlgorithm());
     }
     if (idx <= 0) {
         if (!silent) {
             FC_THROWM(Base::ValueError, "Invalid shape index " << idx);
         }
-        return TopoShape();
+        return TopoShape(getHistoryAlgorithm());
     }
     if (type < 0 || type > TopAbs_SHAPE) {
         if (!silent) {
             FC_THROWM(Base::ValueError, "Invalid shape type " << type);
         }
-        return TopoShape();
+        return TopoShape(getHistoryAlgorithm());
     }
     initCache();
     auto& shapeMap = _cache->getAncestry(type);
@@ -2939,7 +2939,7 @@ TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent
         if (!silent) {
             FC_THROWM(Base::IndexError, "Shape index " << idx << " out of bound " << shapeMap.count());
         }
-        return TopoShape();
+        return TopoShape(getHistoryAlgorithm());
     }
 
     return shapeMap.getTopoShape(*this, idx);
@@ -3185,7 +3185,7 @@ TopoShape& TopoShape::makeElementRuledSurface(
     // without any API to provide relationship to the output edges. So we have
     // to use searchSubShape() to build the relationship by ourselves.
 
-    TopoShape res(ruledShape.Located(TopLoc_Location()));
+    TopoShape res(getHistoryAlgorithm(), ruledShape.Located(TopLoc_Location()));
     std::vector<TopoShape> edges;
     for (const auto& c : curves) {
         for (const auto& e : c.getSubTopoShapes(TopAbs_EDGE)) {
@@ -3380,7 +3380,7 @@ TopoShape& TopoShape::makeElementOffset(
         FC_THROWM(Base::CADKernelError, "BRepOffsetAPI_MakeOffsetShape not done");
     }
 
-    TopoShape res(Tag, Hasher);
+    TopoShape res(Tag, Hasher, TopoDS_Shape(), getHistoryAlgorithm());
     res.makeElementShape(mkOffset, shape, op);
     if (shape.hasSubShape(TopAbs_SOLID) && !res.hasSubShape(TopAbs_SOLID)) {
         try {
@@ -3406,7 +3406,7 @@ TopoShape& TopoShape::makeElementOffset(
     BRep_Builder builder;
     std::vector<TopoShape> shapes;
     for (int index = 1; index <= freeCheck.NbClosedFreeBounds(); ++index) {
-        TopoShape originalWire(shape.Tag, shape.Hasher, freeCheck.ClosedFreeBound(index)->FreeBound());
+        TopoShape originalWire(shape.Tag, shape.Hasher, freeCheck.ClosedFreeBound(index)->FreeBound(), getHistoryAlgorithm());
         originalWire.mapSubElement(shape);
         const BRepAlgo_Image& img = mkOffset.MakeOffset().OffsetEdgesFromShapes();
 
@@ -3438,7 +3438,7 @@ TopoShape& TopoShape::makeElementOffset(
         }
         std::vector<TopoShape> wires;
         wires.push_back(originalWire);
-        wires.push_back(TopoShape(Tag, Hasher, offsetWire));
+        wires.push_back(TopoShape(Tag, Hasher, offsetWire, getHistoryAlgorithm()));
         wires.back().mapSubElement(res);
 
         // It would be nice if we could get thruSections to build planar faces
@@ -3456,10 +3456,10 @@ TopoShape& TopoShape::makeElementOffset(
             FC_THROWM(Base::CADKernelError, "ThruSections failed");
         }
 
-        shapes.push_back(TopoShape(Tag, Hasher).makeElementShape(aGenerator, wires));
+        shapes.push_back(TopoShape(Tag, Hasher, TopoDS_Shape(), getHistoryAlgorithm()).makeElementShape(aGenerator, wires));
     }
 
-    TopoShape perimeterCompound(Tag, Hasher);
+    TopoShape perimeterCompound(Tag, Hasher, TopoDS_Shape(), getHistoryAlgorithm());
     perimeterCompound.makeElementCompound(shapes, op);
 
     // still had to sew. not using the passed in parameter for sew.
@@ -3488,7 +3488,7 @@ TopoShape& TopoShape::makeElementOffset(
     shapes.push_back(shape);
     shapes.push_back(res);
     shapes.push_back(perimeterCompound);
-    *this = TopoShape(Tag, Hasher)
+    *this = TopoShape(Tag, Hasher, TopoDS_Shape(), getHistoryAlgorithm())
                 .makeShapeWithElementMap(outputShape, MapperSewing(sewTool), shapes, op);
     return *this;
 }
@@ -3546,7 +3546,7 @@ TopoShape& TopoShape::makeElementOffsetFace(
         }
 
         if (std::abs(innerOffset) > Precision::Confusion()) {
-            TopoShape innerWires(0, Hasher);
+            TopoShape innerWires(0, Hasher, TopoDS_Shape(), getHistoryAlgorithm());
             innerWires.makeElementCompound(wires, "", SingleShapeCompoundCreationPolicy::returnShape);
             innerWires = innerWires.makeElementOffset2D(
                 innerOffset,
@@ -3561,7 +3561,7 @@ TopoShape& TopoShape::makeElementOffsetFace(
         wires.push_back(outerWire);
         gp_Pln pln;
         res.push_back(
-            TopoShape(0, Hasher)
+            TopoShape(0, Hasher, TopoDS_Shape(), getHistoryAlgorithm())
                 .makeElementFace(wires, nullptr, nullptr, face.findPlane(pln) ? &pln : nullptr)
         );
     }
@@ -3612,7 +3612,7 @@ TopoShape& TopoShape::makeElementOffset2D(
             // simply recursively process the children, independently
             for (TopoDS_Iterator it(shape.getShape()); it.More(); it.Next()) {
                 shapesToReturn.push_back(
-                    TopoShape(it.Value())
+                    TopoShape(getHistoryAlgorithm(), it.Value())
                         .makeElementOffset2D(offset, joinType, fill, allowOpenResult, intersection, op)
                 );
                 outputPolicy = SingleShapeCompoundCreationPolicy::forceCompound;
@@ -3625,7 +3625,7 @@ TopoShape& TopoShape::makeElementOffset2D(
                 if (s.getShape().ShapeType() == TopAbs_COMPOUND) {
                     // recursively process subcompounds
                     shapesToReturn.push_back(
-                        TopoShape(Tag, Hasher)
+                        TopoShape(Tag, Hasher, TopoDS_Shape(), getHistoryAlgorithm())
                             .makeElementOffset2D(s, offset, joinType, fill, allowOpenResult, intersection, op)
                     );
                     outputPolicy = SingleShapeCompoundCreationPolicy::forceCompound;
@@ -3641,7 +3641,7 @@ TopoShape& TopoShape::makeElementOffset2D(
     }
 
     if (shapesToProcess.size() > 0) {
-        TopoShape res(Tag, Hasher);
+        TopoShape res(Tag, Hasher, TopoDS_Shape(), getHistoryAlgorithm());
 
         // although 2d offset supports offsetting a face directly, it seems there is
         // no way to do a collective offset of multiple faces. So, we are doing it
@@ -3687,7 +3687,7 @@ TopoShape& TopoShape::makeElementOffset2D(
 
         // find plane.
         gp_Pln workingPlane;
-        if (!TopoShape()
+        if (!TopoShape(getHistoryAlgorithm())
                  .makeElementCompound(sourceWires, "", SingleShapeCompoundCreationPolicy::returnShape)
                  .findPlane(workingPlane)) {
             FC_THROWM(Base::CADKernelError, "makeOffset2D: wires are nonplanar or noncoplanar");
@@ -3727,7 +3727,7 @@ TopoShape& TopoShape::makeElementOffset2D(
             offsetShape = shape.makeElementShape(mkOffset, op).makeElementCopy();
         }
         else {
-            offsetShape = TopoShape(Tag, Hasher)
+            offsetShape = TopoShape(Tag, Hasher, TopoDS_Shape(), getHistoryAlgorithm())
                               .makeElementCompound(
                                   sourceWires,
                                   0,
@@ -3890,14 +3890,14 @@ TopoShape& TopoShape::makeElementOffset2D(
                 mkWire.Build();
 #endif
                 wiresForMakingFaces.push_back(
-                    TopoShape(Tag, Hasher).makeElementShape(mkWire, openWires, op)
+                    TopoShape(Tag, Hasher, TopoDS_Shape(), getHistoryAlgorithm()).makeElementShape(mkWire, openWires, op)
                 );
             }
         }
 
         // make faces
         if (wiresForMakingFaces.size() > 0) {
-            TopoShape face(0, Hasher);
+            TopoShape face(0, Hasher, TopoDS_Shape(), getHistoryAlgorithm());
             face.makeElementFace(wiresForMakingFaces, nullptr, nullptr, &workingPlane);
             expandCompound(face, shapesToReturn);
         }
@@ -4148,7 +4148,7 @@ TopoShape TopoShape::reverseEdge(const TopoShape& edge)
     const Handle(Geom_Curve) & curve = BRep_Tool::Curve(TopoDS::Edge(edge.getShape()), first, last);
     first = curve->ReversedParameter(first);
     last = curve->ReversedParameter(last);
-    TopoShape res(BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first));
+    TopoShape res(edge.getHistoryAlgorithm(), BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first));
     auto edgeName = Data::IndexedName::fromConst("Edge", 1);
     if (auto mapped = edge.getMappedName(edgeName)) {
         res.elementMap()->setElementName(edgeName, mapped, res.Tag);
@@ -4281,7 +4281,7 @@ TopoShape& TopoShape::makeElementOrderedWires(
     std::list<TopoShape> edgeList;
 
     auto shape
-        = TopoShape().makeElementCompound(shapes, "", SingleShapeCompoundCreationPolicy::returnShape);
+        = TopoShape(getHistoryAlgorithm()).makeElementCompound(shapes, "", SingleShapeCompoundCreationPolicy::returnShape);
     for (auto& edge : shape.getSubTopoShapes(TopAbs_EDGE)) {
         edgeList.push_back(edge);
     }
@@ -4758,7 +4758,7 @@ TopoShape& TopoShape::makeElementFilledFace(
                 shapes.begin() + params.boundary_begin,
                 shapes.begin() + params.boundary_end
             );
-            wires = TopoShape(0, Hasher)
+            wires = TopoShape(0, Hasher, TopoDS_Shape(), getHistoryAlgorithm())
                         .makeElementWires(edges, "", 0.0, ConnectionPolicy::requireSharedVertex, &output)
                         .getSubTopoShapes(TopAbs_WIRE);
             shapes.erase(shapes.begin() + params.boundary_begin, shapes.begin() + params.boundary_end);
@@ -4779,7 +4779,7 @@ TopoShape& TopoShape::makeElementFilledFace(
                 }
             }
             if (edges.size()) {
-                wires = TopoShape(0, Hasher)
+                wires = TopoShape(0, Hasher, TopoDS_Shape(), getHistoryAlgorithm())
                             .makeElementWires(edges, "", 0.0, ConnectionPolicy::requireSharedVertex, &output)
                             .getSubTopoShapes(TopAbs_WIRE);
             }
@@ -5162,6 +5162,7 @@ TopoShape& TopoShape::makeElementGeneralFuse(
         for (TopTools_ListIteratorOfListOfShape it(mkGFA.Modified(shape.getShape())); it.More();
              it.Next()) {
             TopoShape res(Tag);
+            res.setHistoryAlgorithm(getHistoryAlgorithm());
             res.setShape(it.Value());
             mod.push_back(res);
         }
@@ -5240,7 +5241,7 @@ TopoShape& TopoShape::makeElementXor(
         const char* currentOp = (i == inputs.size() - 1) ? op : nullptr;
 
         // Step 1: Union(A, B) - intermediate result, no op code.
-        TopoShape tempUnion(0, Hasher);
+        TopoShape tempUnion(0, Hasher, TopoDS_Shape(), getHistoryAlgorithm());
         tempUnion.makeElementBoolean(
             Part::OpCodes::Fuse,
             {result, inputs[i]},
@@ -5250,7 +5251,7 @@ TopoShape& TopoShape::makeElementXor(
         );
 
         // Step 2: Common(A, B) - intermediate result, no op code.
-        TopoShape tempCommon(0, Hasher);
+        TopoShape tempCommon(0, Hasher, TopoDS_Shape(), getHistoryAlgorithm());
         tempCommon.makeElementBoolean(
             Part::OpCodes::Common,
             {result, inputs[i]},
@@ -6065,7 +6066,7 @@ TopoShape& TopoShape::makeElementBSplineFace(
         builder.Add(comp, e3);
         builder.Add(comp, e4);
 
-        TopoShape s;
+        TopoShape s{getHistoryAlgorithm()};
         s.makeShapeWithElementMap(comp, mapper, edges, Part::OpCodes::Split);
         return makeElementBSplineFace(s, style, op);
     }
@@ -6193,7 +6194,7 @@ TopoShape& TopoShape::makeElementBSplineFace(
 
     aFaceBuilder.Init(aSurface, u1, u2, v1, v2, Precision::Confusion());
 
-    TopoShape aFace(0, Hasher, aFaceBuilder.Face());
+    TopoShape aFace(0, Hasher, aFaceBuilder.Face(), getHistoryAlgorithm());
 
     if (!aFaceBuilder.IsDone()) {
         FC_THROWM(Base::CADKernelError, "Face unable to be constructed");
@@ -6430,7 +6431,7 @@ TopoShape TopoShape::splitWires(std::vector<TopoShape>* innerWiresOutput, SplitW
     }
 
     if (outerWire.IsNull()) {
-        return TopoShape {};
+        return TopoShape {getHistoryAlgorithm()};
     }
 
     TopAbs_Orientation orientOuter, orientInner;
@@ -6476,7 +6477,7 @@ TopoShape TopoShape::splitWires(std::vector<TopoShape>* innerWiresOutput, SplitW
         }
     };
 
-    TopoShape outerWireResult {};
+    TopoShape outerWireResult {getHistoryAlgorithm()};
 
     for (auto& wire : getSubTopoShapes(TopAbs_WIRE)) {
         if (wire.getShape().IsSame(outerWire)) {
@@ -6745,7 +6746,7 @@ TopoShape& TopoShape::makeElementShell(bool silent, const char* op, ElementMapPo
 
         Data::ElementMapPtr elementMap;
         if (elementMapPolicy == ElementMapPolicy::Propagate) {
-            TopoShape tmp(Tag, Hasher, shell);
+            TopoShape tmp(Tag, Hasher, shell, getHistoryAlgorithm());
             tmp.resetElementMap();
             tmp.mapSubElement(*this, op);
             elementMap = tmp.elementMap();

@@ -76,6 +76,9 @@ class DocumentObject(ExtensionContainer):
     NoTouch: bool = False
     """Enable/disable no touch on any property change"""
 
+    ToponamingAlgorithm: Final[str] = ""
+    """Topological Naming Algorithm used by the Object."""
+
     def addProperty(
         self,
         type: str,

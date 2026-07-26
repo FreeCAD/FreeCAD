@@ -99,7 +99,7 @@ short int ShapeBinder::mustExecute() const
 
 Part::TopoShape ShapeBinder::updatedShape() const
 {
-    Part::TopoShape shape;
+    Part::TopoShape shape = makeTopoShape(false);
     App::GeoFeature* obj = nullptr;
     std::vector<std::string> subs;
 
@@ -594,7 +594,7 @@ void SubShapeBinder::clearCopiedObjects()
 
 void SubShapeBinder::update(SubShapeBinder::UpdateOption options)
 {
-    Part::TopoShape result;
+    Part::TopoShape result = makeTopoShape(false);
     std::vector<Part::TopoShape> shapes;
     std::vector<std::pair<int, int>> shapeOwners;
     std::vector<const Base::Matrix4D*> shapeMats;
@@ -901,7 +901,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options)
             // If the compound has solid, fuse them together, and ignore other type of
             // shapes
             std::vector<TopoDS_Shape> solids;
-            Part::TopoShape solid;
+            Part::TopoShape solid = makeTopoShape(false);
             for (auto& s : result.getSubTopoShapes(TopAbs_SOLID)) {
                 if (solid.isNull()) {
                     solid = s;
@@ -1187,7 +1187,7 @@ void SubShapeBinder::setLinks(
     if (values.empty()) {
         if (reset) {
             Support.setValue(nullptr);
-            Shape.setValue(Part::TopoShape());
+            Shape.setValue(makeTopoShape(false));
         }
         return;
     }

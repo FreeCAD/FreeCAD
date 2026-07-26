@@ -2171,7 +2171,7 @@ void Feature::guessNewLink(std::string& replacementName, DocumentObject* base, c
     replacementName = oldLink;
 }
 
-TopoShape Feature::makeTopoShape(const App::DocumentObject* documentObject, const TopoDS_Shape& newShape, long tag)
+TopoShape Feature::makeTopoShape(const App::DocumentObject* documentObject, const TopoDS_Shape& newShape, long tag, bool useHasher)
 {
     ZoneScoped;
 
@@ -2183,7 +2183,10 @@ TopoShape Feature::makeTopoShape(const App::DocumentObject* documentObject, cons
     TopoShape newTopoShape {newShape};
 
     if (selectedVersion == App::HistoryAlgorithm::V1) {
-        newTopoShape.Hasher = documentObject->getDocument()->getStringHasher();
+        if (useHasher) {
+            newTopoShape.Hasher = documentObject->getDocument()->getStringHasher();
+        }
+
         newTopoShape.Tag = tag;
     } else if (selectedVersion == App::HistoryAlgorithm::V2) {
         newTopoShape.Tag = tag == 0 ? documentObject->getID() : tag;
@@ -2194,14 +2197,19 @@ TopoShape Feature::makeTopoShape(const App::DocumentObject* documentObject, cons
     return newTopoShape;
 }
 
-TopoShape Feature::makeTopoShape(long tag) const
+TopoShape Feature::makeTopoShape(bool useHasher) const
 {
-    return makeTopoShape(this, TopoDS_Shape(), tag);
+    return makeTopoShape(this, TopoDS_Shape(), 0, useHasher);
 }
 
-TopoShape Feature::makeTopoShape(const TopoDS_Shape& newShape, long tag) const
+TopoShape Feature::makeTopoShape(long tag, bool useHasher) const
 {
-    return makeTopoShape(this, newShape, tag);
+    return makeTopoShape(this, TopoDS_Shape(), tag, useHasher);
+}
+
+TopoShape Feature::makeTopoShape(const TopoDS_Shape& newShape, long tag, bool useHasher) const
+{
+    return makeTopoShape(this, newShape, tag, useHasher);
 }
 
 // ---------------------------------------------------------

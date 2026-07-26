@@ -378,7 +378,7 @@ void PropertyPartShape::Save(Base::Writer& writer) const
         }
     }
 
-    writer.Stream() << " HistoryAlgorithm=\"" << _Shape.getHistoryAlgorithm() << "\"";
+    writer.Stream() << " HistoryAlgorithm=\"" << App::getHistoryAlgorithm(_Shape.getHistoryAlgorithm()) << "\"";
 
     std::string version;
     // If exporting, do not export mapped element name, but still make a mark

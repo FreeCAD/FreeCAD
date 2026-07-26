@@ -39,6 +39,16 @@ App::HistoryAlgorithm App::getHistoryAlgorithm(std::string fromString) {
     }
 }
 
+int App::getHistoryAlgorithm(const App::HistoryAlgorithm& fromHistoryAlgorithm) {
+    if (fromHistoryAlgorithm == App::HistoryAlgorithm::V1) {
+        return 0;
+    } else if (fromHistoryAlgorithm == App::HistoryAlgorithm::V2) {
+        return 1;
+    }
+
+    return 1;
+};
+
 const int& App::getSelectedUnderlyingHistoryAlgorithm() {
     static int underlyingHistoryAlgorithm = -1;
 

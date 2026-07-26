@@ -266,7 +266,7 @@ TopoShape TopoCrossSection::slice(int idx, double d) const
 {
     std::vector<TopoShape> wires;
     slice(idx, d, wires);
-    return TopoShape()
+    return TopoShape(shape.getHistoryAlgorithm())
         .makeElementCompound(wires, 0, TopoShape::SingleShapeCompoundCreationPolicy::returnShape);
 }
 
@@ -298,8 +298,7 @@ void TopoCrossSection::sliceSolid(
 {
     gp_Pln slicePlane(a, b, c, -d);
     BRepBuilderAPI_MakeFace mkFace(slicePlane);
-    TopoShape face(idx);
-    face.setShape(mkFace.Face());
+    TopoShape face {idx, nullptr, mkFace.Face(), shape.getHistoryAlgorithm()};
 
     // Make sure to choose a point that does not lie on the plane (fixes #0001228)
     gp_Vec tempVector(a, b, c);
@@ -312,11 +311,12 @@ void TopoCrossSection::sliceSolid(
     TopoShape solid(idx);
     std::string prefix(op);
     prefix += Data::indexSuffix(idx);
+    solid.setHistoryAlgorithm(shape.getHistoryAlgorithm());
     solid.makeElementShape(mkSolid, face, prefix.c_str());
     FCBRepAlgoAPI_Cut mkCut(shape.getShape(), solid.getShape());
 
     if (mkCut.IsDone()) {
-        TopoShape res(shape.Tag, shape.Hasher);
+        TopoShape res{shape.Tag, shape.Hasher, TopoDS_Shape(), shape.getHistoryAlgorithm()};
         std::vector<TopoShape> shapes;
         shapes.push_back(shape);
         shapes.push_back(solid);

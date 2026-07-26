@@ -297,9 +297,11 @@ public:
     TopoShape(
         const TopoDS_Shape&,  // NOLINT google-explicit-constructor
         long Tag = 0,
-        App::StringHasherRef hasher = App::StringHasherRef()
+        App::StringHasherRef hasher = App::StringHasherRef(),
+        const App::HistoryAlgorithm& historyAlgorithm = App::HistoryAlgorithm::V1
     );  // Cannot be made explicit
     TopoShape(const TopoShape&);
+    TopoShape(const App::HistoryAlgorithm& historyAlgorithm, const TopoDS_Shape& shape = TopoDS_Shape());
     ~TopoShape() override;
 
     void setShape(const TopoDS_Shape& shape, bool resetElementMap = true);
