@@ -35,6 +35,8 @@
 #include <Mod/Part/App/OCAF/ImportExportSettings.h>
 #include <Mod/Part/App/STEP/ImportExportSettings.h>
 
+#include <Gui/Tree.h>
+
 #include "DlgSettingsGeneral.h"
 #include "ui_DlgSettingsGeneral.h"
 #include "ui_DlgImportExportIges.h"
@@ -82,7 +84,9 @@ void DlgSettingsGeneral::saveSettings()
     ui->checkShowTransparentPreview->onSave();
     ui->checkShowProfilePreview->onSave();
     ui->checkSwitchToTask->onSave();
+    ui->checkAutoGroupBodyElements->onSave();
     ui->checkNewSketchAttachmentDialog->onSave();
+    Gui::TreeWidget::refreshTreeGroups();
 }
 
 void DlgSettingsGeneral::loadSettings()
@@ -104,6 +108,7 @@ void DlgSettingsGeneral::loadSettings()
     ui->checkShowTransparentPreview->onRestore();
     ui->checkShowProfilePreview->onRestore();
     ui->checkSwitchToTask->onRestore();
+    ui->checkAutoGroupBodyElements->onRestore();
     ui->checkNewSketchAttachmentDialog->onRestore();
 }
 
