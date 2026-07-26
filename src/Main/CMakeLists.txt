@@ -38,6 +38,13 @@ if(BUILD_GUI)
     SET_BIN_DIR(FreeCADMain FreeCAD)
 
     if(WIN32)
+        # FreeCADMainPy has the same output name. Keep their linker PDBs
+        # separate so that linking the Python module does not overwrite the
+        # executable's symbols (especially with single-config generators).
+        set_target_properties(FreeCADMain PROPERTIES PDB_NAME "FreeCADMain")
+    endif()
+
+    if(WIN32)
         INSTALL(TARGETS FreeCADMain
             RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -122,6 +129,10 @@ SET_BIN_DIR(FreeCADMainPy FreeCAD)
 SET_PYTHON_PREFIX_SUFFIX(FreeCADMainPy)
 
 if(WIN32)
+    set_target_properties(FreeCADMainPy PROPERTIES PDB_NAME "FreeCADMainPy")
+endif()
+
+if(WIN32)
     INSTALL(TARGETS FreeCADMainPy
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -149,10 +160,9 @@ if(BUILD_GUI)
     SET_BIN_DIR(FreeCADGuiPy FreeCADGui)
     SET_PYTHON_PREFIX_SUFFIX(FreeCADGuiPy)
     if(WIN32)
-        # Name clash with target "FreeCADGui"
-        # Must be called "FreeCADGuiPy_d" and "FreeCADGuiPy" to work so override default
-        set_target_properties(FreeCADGuiPy PROPERTIES PDB_NAME_DEBUG "FreeCADGuiPy_d")
-        set_target_properties(FreeCADGuiPy PROPERTIES PDB_NAME_RELEASE "FreeCADGuiPy")
+        # Name clash with target "FreeCADGui". Use a distinct PDB name for
+        # every configuration, including RelWithDebInfo.
+        set_target_properties(FreeCADGuiPy PROPERTIES PDB_NAME "FreeCADGuiPy")
     endif(WIN32)
 
     if(WIN32)
