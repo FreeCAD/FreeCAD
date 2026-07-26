@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>360</width>
+    <height>620</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QFrame" name="toolOptions">
+     <property name="frameShape"><enum>QFrame::StyledPanel</enum></property>
+     <property name="frameShadow"><enum>QFrame::Raised</enum></property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="toolController_label">
+        <property name="text"><string>Tool controller</string></property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="toolController">
+        <property name="toolTip"><string>Tool controller that supplies the cutter geometry, feed and speed for this operation.</string></property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="coolantController_label">
+        <property name="text"><string>Coolant</string></property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="coolantController">
+        <property name="toolTip"><string>Coolant mode emitted at the start of the operation.</string></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="strategyOptions">
+     <property name="frameShape"><enum>QFrame::StyledPanel</enum></property>
+     <property name="frameShadow"><enum>QFrame::Raised</enum></property>
+     <layout class="QGridLayout" name="gridLayout_strategy">
+      <item row="0" column="0">
+       <widget class="QLabel" name="strategy_label">
+        <property name="text"><string>Strategy</string></property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="strategy">
+        <property name="toolTip"><string>Top-level finishing strategy. Surface Pattern projects a 2D pattern onto the model surface via drop-cutter. Waterline and Z-Level Hybrid are also available.</string></property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="cutMode_label">
+        <property name="text"><string>Cut mode</string></property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="cutMode">
+        <property name="toolTip"><string>Climb: cutter rotates with material flow (better surface finish). Conventional: cutter rotates against material flow.</string></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="patternOptions">
+     <property name="frameShape"><enum>QFrame::StyledPanel</enum></property>
+     <property name="frameShadow"><enum>QFrame::Raised</enum></property>
+     <layout class="QGridLayout" name="gridLayout_pattern">
+      <item row="0" column="0">
+       <widget class="QLabel" name="cutPattern_label">
+        <property name="text"><string>Cut pattern</string></property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="cutPattern">
+        <property name="toolTip"><string>Line: parallel scan lines. ZigZag: parallel scan lines with alternating direction (no retract between rows). Circular: concentric arcs around the boundary center. Spiral: continuous spiral from center outward.</string></property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="cutPatternAngle_label">
+        <property name="text"><string>Pattern angle</string></property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::QuantitySpinBox" name="cutPatternAngle">
+        <property name="toolTip"><string>Rotation of Line/ZigZag scan lines, in degrees. 0 = +X.</string></property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="cutPatternReversed_label">
+        <property name="text"><string>Reverse pattern</string></property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="cutPatternReversed">
+        <property name="toolTip"><string>Reverses the direction in which scan lines are generated</string></property>
+        <property name="text"><string/></property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="stepOver_label">
+        <property name="text"><string>Step over</string></property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::QuantitySpinBox" name="stepOver">
+        <property name="toolTip"><string>Distance between adjacent scan lines (mm). Smaller = finer surface, longer cycle time.</string></property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="sampleInterval_label">
+        <property name="text"><string>Sample interval</string></property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="Gui::QuantitySpinBox" name="sampleInterval">
+        <property name="toolTip"><string>Distance between sampled points along a scan line (mm). Controls density of drop-cutter samples.</string></property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="depthOffset_label">
+        <property name="text"><string>Depth offset</string></property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="Gui::QuantitySpinBox" name="depthOffset">
+        <property name="toolTip"><string>Constant Z offset added to every projected point. Positive values leave finishing stock for a subsequent pass.</string></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="boundaryOptions">
+     <property name="frameShape"><enum>QFrame::StyledPanel</enum></property>
+     <property name="frameShadow"><enum>QFrame::Raised</enum></property>
+     <layout class="QGridLayout" name="gridLayout_boundary">
+      <item row="0" column="0">
+       <widget class="QLabel" name="boundaryAdjustment_label">
+        <property name="text"><string>Boundary adjustment</string></property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::QuantitySpinBox" name="boundaryAdjustment">
+        <property name="toolTip"><string>Outward (+) or inward (-) offset applied to the boundary mask, on top of the tool radius.</string></property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="handleMultiple_label">
+        <property name="text"><string>Multi-feature handling</string></property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="handleMultiple">
+        <property name="toolTip"><string>How to treat multiple selected faces. Collectively: one continuous toolpath. Individually: one toolpath per face, with retracts between.</string></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="waterlineOptions">
+     <property name="frameShape"><enum>QFrame::StyledPanel</enum></property>
+     <property name="frameShadow"><enum>QFrame::Raised</enum></property>
+     <layout class="QGridLayout" name="gridLayout_waterline">
+      <item row="0" column="0">
+       <widget class="QLabel" name="minSampleInterval_label">
+        <property name="text"><string>Min sample interval</string></property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::QuantitySpinBox" name="minSampleInterval">
+        <property name="toolTip"><string>Minimum fiber spacing for adaptive Waterline refinement (mm). Smaller = finer detail in curvy regions.</string></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="zlevelOptions">
+     <property name="frameShape"><enum>QFrame::StyledPanel</enum></property>
+     <property name="frameShadow"><enum>QFrame::Raised</enum></property>
+     <layout class="QGridLayout" name="gridLayout_zlevel">
+      <item row="0" column="0">
+       <widget class="QLabel" name="cutPatternZLevel_label">
+        <property name="text"><string>Z-level floor pattern</string></property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="cutPatternZLevel">
+        <property name="toolTip"><string>Floor-clearing pattern after each Z-level contour pass. None: only emit contour. Line: parallel passes. Spiral: continuous spiral.</string></property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="stockToLeave_label">
+        <property name="text"><string>Stock to leave</string></property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::QuantitySpinBox" name="stockToLeave">
+        <property name="toolTip"><string>Horizontal (XY) finishing allowance left on the model surface (mm).</string></property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="samplingAccuracy_label">
+        <property name="text"><string>Sampling accuracy</string></property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="samplingAccuracy">
+        <property name="toolTip"><string>Number of sub-slices per Z layer (1=coarse..7=fine). Higher captures more curvature on tilted faces.</string></property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="clearPlanarOnly_label">
+        <property name="text"><string>Clear planar floors only</string></property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QCheckBox" name="clearPlanarOnly">
+        <property name="toolTip"><string>Only clear floor regions detected as Mixed/Extra (planar pockets) instead of every layer.</string></property>
+        <property name="text"><string/></property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="ignoreOuter_label">
+        <property name="text"><string>Ignore outer</string></property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QCheckBox" name="ignoreOuter">
+        <property name="toolTip"><string>Skip the outermost stock-edge contour. Useful when an external profile has already cleaned up the perimeter.</string></property>
+        <property name="text"><string/></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="meshOptions">
+     <property name="frameShape"><enum>QFrame::StyledPanel</enum></property>
+     <property name="frameShadow"><enum>QFrame::Raised</enum></property>
+     <layout class="QGridLayout" name="gridLayout_mesh">
+      <item row="0" column="0">
+       <widget class="QLabel" name="accuracyLevel_label">
+        <property name="text"><string>Speed vs. accuracy</string></property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QSpinBox" name="accuracyLevel">
+        <property name="toolTip"><string>Speed-vs-Accuracy preset (1=Fastest, 7=Ultra). Adjusting writes deflection / sample-interval / mesh-simplification together.</string></property>
+        <property name="minimum"><number>1</number></property>
+        <property name="maximum"><number>7</number></property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="meshSimplification_label">
+        <property name="text"><string>Mesh simplification</string></property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="meshSimplification">
+        <property name="toolTip"><string>Mesh decimation level (1=no reduction, 7=maximum). Driven by the Speed-vs-Accuracy preset.</string></property>
+        <property name="minimum"><number>1</number></property>
+        <property name="maximum"><number>7</number></property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="linearDeflection_label">
+        <property name="text"><string>Linear deflection</string></property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::QuantitySpinBox" name="linearDeflection">
+        <property name="toolTip"><string>Tessellation linear deflection. Smaller = finer mesh, slower OCL.</string></property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="angularDeflection_label">
+        <property name="text"><string>Angular deflection</string></property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::QuantitySpinBox" name="angularDeflection">
+        <property name="toolTip"><string>Tessellation angular deflection. Smaller = finer mesh on curved surfaces.</string></property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="optimizeLinearPaths_label">
+        <property name="text"><string>Optimize linear paths</string></property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QCheckBox" name="optimizeLinearPaths">
+        <property name="toolTip"><string>Drop collinear sample points before emitting G-code. Reduces output size on flat regions.</string></property>
+        <property name="text"><string/></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation"><enum>Qt::Vertical</enum></property>
+     <property name="sizeHint" stdset="0"><size><width>0</width><height>0</height></size></property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

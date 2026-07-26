@@ -244,9 +244,10 @@ class CAMWorkbench(Workbench):
                 except ImportError:
                     import opencamlib as ocl
                 from Path.Op.Gui import Surface
+                from Path.Op.Gui import Surface3D
                 from Path.Op.Gui import Waterline
 
-                threedopcmdlist.extend(["CAM_Surface", "CAM_Waterline"])
+                threedopcmdlist.extend(["CAM_Surface", "CAM_Surface3D", "CAM_Waterline"])
 
                 if Path.Preferences.experimentalFeaturesEnabled():
                     from Path.Op.Gui import RotarySurface  # noqa: F401
