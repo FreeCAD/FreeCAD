@@ -53,6 +53,7 @@
 #include <App/AutoTransaction.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/Link.h>
+#include <App/Origin.h>
 #include <App/SuppressibleExtension.h>
 
 #include "Tree.h"
@@ -92,6 +93,7 @@ std::set<TreeWidget*> TreeWidget::Instances;
 static TreeWidget* _LastSelectedTreeWidget;
 const int TreeWidget::DocumentType = 1000;
 const int TreeWidget::ObjectType = 1001;
+const int TreeWidget::TreeGroupType = 1002;
 static bool _DraggingActive;
 static bool _DragEventFilter;
 
@@ -109,6 +111,96 @@ static bool isSelectionCheckBoxesEnabled()
 {
     return TreeParams::getCheckBoxesSelection();
 }
+
+namespace Gui
+{
+/** A non-persistent folder used to organize aliases of existing tree items. */
+class TreeGroupItem final: public QTreeWidgetItem
+{
+public:
+    TreeGroupItem(const QString& label, const QString& icon)
+        : QTreeWidgetItem(TreeWidget::TreeGroupType)
+        , iconName(icon)
+    {
+        setText(0, label);
+        setFlags(Qt::ItemIsEnabled);
+        updateIcon();
+    }
+
+    bool isGroupVisible() const
+    {
+        for (int i = 0; i < childCount(); ++i) {
+            auto* treeChild = child(i);
+            if (treeChild->type() != TreeWidget::ObjectType) {
+                continue;
+            }
+            auto* viewProvider = static_cast<DocumentObjectItem*>(treeChild)->object();
+            if (viewProvider->canToggleVisibility() && !viewProvider->isShow()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    void setGroupVisible(bool visible)
+    {
+        for (int i = 0; i < childCount(); ++i) {
+            auto* treeChild = child(i);
+            if (treeChild->type() != TreeWidget::ObjectType) {
+                continue;
+            }
+            auto* viewProvider = static_cast<DocumentObjectItem*>(treeChild)->object();
+            if (viewProvider->canToggleVisibility()) {
+                viewProvider->getObject()->Visibility.setValue(visible);
+            }
+        }
+        updateIcon();
+    }
+
+    void updateIcon()
+    {
+        QPixmap folderIcon = BitmapFactory().pixmap(iconName.toUtf8().constData());
+        if (!isVisibilityIconEnabled()) {
+            setIcon(0, folderIcon);
+            return;
+        }
+
+        static QPixmap visibleIcon;
+        static QPixmap hiddenIcon;
+        if (visibleIcon.isNull()) {
+            visibleIcon = BitmapFactory().pixmap("TreeItemVisible");
+        }
+        if (hiddenIcon.isNull()) {
+            hiddenIcon = BitmapFactory().pixmap("TreeItemInvisible");
+        }
+
+        auto* style = treeWidget() ? treeWidget()->style() : QApplication::style();
+        int const spacing = style->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
+        QPixmap combinedIcon(2 * folderIcon.width() + spacing, folderIcon.height());
+        combinedIcon.fill(Qt::transparent);
+
+        QPainter painter(&combinedIcon);
+        painter.drawPixmap(
+            0,
+            0,
+            folderIcon.width(),
+            folderIcon.height(),
+            isGroupVisible() ? visibleIcon : hiddenIcon
+        );
+        painter.drawPixmap(
+            folderIcon.width() + spacing,
+            0,
+            folderIcon.width(),
+            folderIcon.height(),
+            folderIcon
+        );
+        setIcon(0, combinedIcon);
+    }
+
+private:
+    QString iconName;
+};
+}  // namespace Gui
 
 void TreeParams::onItemBackgroundChanged()
 {
@@ -2018,6 +2110,29 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
     visibilityIconPressed = false;
     if (isVisibilityIconEnabled()) {
         QTreeWidgetItem* item = itemAt(event->pos());
+        if (item && item->type() == TreeWidget::TreeGroupType && event->button() == Qt::LeftButton) {
+            auto* groupItem = static_cast<TreeGroupItem*>(item);
+            auto iconRect = visualItemRect(groupItem);
+            auto* style = this->style();
+
+            if (isSelectionCheckBoxesEnabled()) {
+                int checkboxWidth = style->pixelMetric(QStyle::PM_IndicatorWidth)
+                    + style->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
+                iconRect.adjust(checkboxWidth, 0, 0, 0);
+            }
+
+            int const margin = style->pixelMetric(QStyle::PM_FocusFrameHMargin) + 1;
+            iconRect.adjust(margin, 0, 0, 0);
+            iconRect.setWidth(getIconSize());
+
+            if (iconRect.contains(event->pos())) {
+                groupItem->setGroupVisible(!groupItem->isGroupVisible());
+                visibilityIconDoubleClickTimer.start();
+                visibilityIconPressed = true;
+                event->accept();
+                return;
+            }
+        }
         if (item && item->type() == TreeWidget::ObjectType && event->button() == Qt::LeftButton) {
             auto objitem = static_cast<DocumentObjectItem*>(item);
 
@@ -2272,6 +2387,9 @@ public:
                 continue;
             }
             auto item = static_cast<DocumentObjectItem*>(ti);
+            if (item->isTreeGroupChild()) {
+                continue;
+            }
             items.emplace_back();
             auto& info = items.back();
             info.first = item;
@@ -2431,6 +2549,11 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent* event)
                     return;
                 }
                 auto item = static_cast<DocumentObjectItem*>(ti);
+                if (item->isTreeGroupChild()) {
+                    TREE_TRACE("Cannot drag tree group child");
+                    event->ignore();
+                    return;
+                }
 
                 auto obj = item->object()->getObject();
 
@@ -4136,6 +4259,9 @@ void TreeWidget::updateVisibilityIcons()
                 auto objitem = static_cast<DocumentObjectItem*>(item);
                 objitem->testStatus(true);
             }
+            else if (item->type() == TreeGroupType) {
+                static_cast<TreeGroupItem*>(item)->updateIcon();
+            }
         }
         tree->resizeColumnToContents(0);
     }
@@ -4788,6 +4914,7 @@ void DocumentItem::populateItem(DocumentObjectItem* item, bool refresh, bool del
     }
 
     item->populated = true;
+    clearTreeGroups(item);
     bool checkHidden = !showHidden();
     bool updated = false;
 
@@ -4920,6 +5047,8 @@ void DocumentItem::populateItem(DocumentObjectItem* item, bool refresh, bool del
     if (updated) {
         getTree()->_updateStatus();
     }
+
+    syncTreeGroups(item);
 }
 
 int DocumentItem::findRootIndex(App::DocumentObject* childObj)
@@ -5003,6 +5132,105 @@ int DocumentItem::findRootIndex(App::DocumentObject* childObj)
         return -1;
     }
     return first;
+}
+
+void DocumentItem::clearTreeGroups(DocumentObjectItem* item)
+{
+    bool lock = getTree()->blockSelection(true);
+    for (int i = item->childCount() - 1; i >= 0; --i) {
+        if (item->child(i)->type() == TreeWidget::TreeGroupType) {
+            delete item->takeChild(i);
+        }
+    }
+    getTree()->blockSelection(lock);
+}
+
+void TreeWidget::refreshTreeGroups()
+{
+    for (auto* tree : TreeWidget::Instances) {
+        QSignalBlocker blocker(tree);
+        for (const auto& entry : tree->DocumentMap) {
+            entry.second->refreshTreeGroups();
+        }
+        tree->resizeColumnToContents(0);
+    }
+}
+
+void DocumentItem::syncTreeGroups(DocumentObjectItem* item)
+{
+    const auto groups = item->object()->getTreeGroups();
+    if (groups.empty()) {
+        return;
+    }
+
+    int insertAt = 0;
+    for (int i = 0; i < item->childCount(); ++i) {
+        auto* child = item->child(i);
+        if (child->type() != TreeWidget::ObjectType) {
+            continue;
+        }
+        auto* objectItem = static_cast<DocumentObjectItem*>(child);
+        if (objectItem->object()->getObject()->isDerivedFrom<App::Origin>()) {
+            insertAt = i + 1;
+            break;
+        }
+    }
+
+    for (const auto& group : groups) {
+        if (group.children.empty()) {
+            continue;
+        }
+
+        TreeGroupItem* groupItem = nullptr;
+        for (auto* child : group.children) {
+            auto it = ObjectMap.find(child);
+            if (it == ObjectMap.end()) {
+                continue;
+            }
+
+            if (!groupItem) {
+                groupItem = new TreeGroupItem(group.label, group.icon);
+                item->insertChild(insertAt++, groupItem);
+            }
+            createNewItem(*it->second->viewObject, groupItem, -1, it->second);
+        }
+        if (groupItem) {
+            groupItem->updateIcon();
+        }
+    }
+}
+
+void DocumentItem::refreshTreeGroups()
+{
+    std::vector<DocumentObjectItem*> objectItems;
+    auto collect = [&](auto&& self, QTreeWidgetItem* parent) -> void {
+        for (int i = 0; i < parent->childCount(); ++i) {
+            auto* child = parent->child(i);
+            if (child->type() == TreeWidget::TreeGroupType) {
+                continue;
+            }
+            if (child->type() == TreeWidget::ObjectType) {
+                auto* objectItem = static_cast<DocumentObjectItem*>(child);
+                objectItems.push_back(objectItem);
+                self(self, objectItem);
+            }
+        }
+    };
+    collect(collect, this);
+
+    for (auto* item : objectItems) {
+        bool hasTreeGroups = false;
+        for (int i = 0; i < item->childCount(); ++i) {
+            if (item->child(i)->type() == TreeWidget::TreeGroupType) {
+                hasTreeGroups = true;
+                break;
+            }
+        }
+        if (hasTreeGroups || !item->object()->getTreeGroups().empty()) {
+            clearTreeGroups(item);
+            syncTreeGroups(item);
+        }
+    }
 }
 
 void DocumentItem::sortObjectItems()
@@ -5788,6 +6016,14 @@ DocumentObjectItem* DocumentItem::findItemByObject(
         return nullptr;
     }
 
+    // Preserve a user's selection of an alias in a presentation-only group.
+    // The selection synchronizer otherwise prefers the canonical tree item.
+    for (auto item : it->second->items) {
+        if (item->isSelected() && item->isTreeGroupChild()) {
+            return findItem(sync, item, subname, select);
+        }
+    }
+
     // When selecting the whole object (no subname), mark every tree instance so
     // all appearances of the object are highlighted regardless of which tree item
     // was allocated first.
@@ -6301,6 +6537,9 @@ void DocumentObjectItem::testStatus(bool resetStatus)
         f.setStrikeOut(suppressed);
         setFont(0, f);
     }
+    if (isTreeGroupChild()) {
+        static_cast<TreeGroupItem*>(parent())->updateIcon();
+    }
 }
 
 namespace
@@ -6617,6 +6856,11 @@ bool DocumentObjectItem::isChildOfItem(DocumentObjectItem* item)
         }
     }
     return false;
+}
+
+bool DocumentObjectItem::isTreeGroupChild() const
+{
+    return parent() && parent()->type() == TreeWidget::TreeGroupType;
 }
 
 bool DocumentObjectItem::requiredAtRoot(bool excludeSelf) const
