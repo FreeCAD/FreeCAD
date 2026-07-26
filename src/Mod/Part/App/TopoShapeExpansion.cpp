@@ -6190,7 +6190,7 @@ TopoShape& TopoShape::makeElementBoolean(
 
         TopoShape& copiedShape = fixedInputs.emplace_back(shape);
 
-        if (!copiedShape.isValid()) {  
+        if (!copiedShape.isValid()) {
             // The fix operation will break naming for some elements (specifically faces).
             // This is an issue with OpenCASCADE (and the Context/ReShape operation).
             // The topological naming algorithm will make up for this and map the broken elements
@@ -6210,7 +6210,7 @@ TopoShape& TopoShape::makeElementBoolean(
                 FC_THROWM(Base::CADKernelError, message.c_str());
             }
         }
-        
+
         if (++i == 0) {
             shapeArguments.Append(copiedShape.getShape());
         }
