@@ -99,8 +99,11 @@ def generate(
     cmdParams["Y"] = startPoint.y
     cmdParams["Z"] = endPoint.z
     cmdParams["R"] = retractheight if retractheight is not None else startPoint.z
-    cmdParams["S"] = spindle_speed if spindle_speed is not None else 1.0  # Sanity default
-    cmdParams["F"] = float(pitch) if pitch is not None else 100.0  # Sanity default
+    cmdParams["S"] = float(spindle_speed) if spindle_speed is not None else 1.0  # Sanity default
+    if pitch is not None and spindle_speed is not None:
+        cmdParams["F"] = float(pitch) * float(spindle_speed) / 60.0
+    else:
+        cmdParams["F"] = 100.0  # Sanity default
 
     if repeat < 1:
         raise ValueError("repeat must be 1 or greater")
