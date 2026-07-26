@@ -1376,9 +1376,7 @@ class RigidGroupJoint:
         members = self._validMembers(fp)
         placements = getattr(fp, "RigidPlacements", None) or []
         if len(members) < 2 or len(members) != len(placements):
-            App.Console.PrintWarning(
-                "Assembly: Rigid group sync broken, skipping restore.\n"
-            )
+            App.Console.PrintWarning("Assembly: Rigid group sync broken, skipping restore.\n")
             return
 
         anchor = members[0]
