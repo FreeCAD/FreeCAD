@@ -116,9 +116,10 @@ class ArrayTaskPanel(SimpleEditPanel):
     _transaction_name = "Edit Array"
     _ui_file = ":/panels/PageOpArray.ui"
 
-    WarnOrder = 0x0001  # order is incorrect [1,3,2,4]
-    WarnList = 0x0002  # some operations not present in root of Job Operations group
-    WarnMissed = 0x0004  # missed op in list [1,2,4]
+    WarnOrder = 0b0001  # order is incorrect [1,3,2,4]
+    WarnList = 0b0010  # some operations not present in root of Job Operations group
+    WarnMissed = 0b0100  # missed op in list [1,2,4]
+    WarnStart = 0b1000  # started not from first op in Job
 
     def setupUi(self):
         self.initPage()
@@ -154,7 +155,7 @@ class ArrayTaskPanel(SimpleEditPanel):
         self.jitterAngle = QuantitySpinBox(self.form.dsp_jitter_angle, self.obj, "JitterAngle")
         self.jitterSeed = QuantitySpinBox(self.form.dsp_jitter_seed, self.obj, "JitterSeed")
         self.jitterX = QuantitySpinBox(self.form.dsp_jitter_x, self.obj, "JitterMagnitude.x")
-        self.jitterY = QuantitySpinBox(self.form.dsp_jitter_x, self.obj, "JitterMagnitude.y")
+        self.jitterY = QuantitySpinBox(self.form.dsp_jitter_y, self.obj, "JitterMagnitude.y")
 
         self.updateSpinBoxes()
 
@@ -317,11 +318,13 @@ class ArrayTaskPanel(SimpleEditPanel):
             return 0
         if any(i is None for i in indexes):
             warnState = warnState | self.WarnList
-        elif sorted(indexes)[-1] - sorted(indexes)[0] + 1 > len(indexes):
+            return warnState
+        if sorted(indexes)[-1] - sorted(indexes)[0] + 1 > len(indexes):
             warnState = warnState | self.WarnMissed
-        elif list(range(min(indexes), max(indexes) + 1)) != indexes:
+        if list(range(min(indexes), max(indexes) + 1)) != indexes:
             warnState = warnState | self.WarnOrder
-
+        if indexes[0] != 0:
+            warnState = warnState | self.WarnStart
         print("!!!! warn state", bin(warnState))
         return warnState
 
@@ -343,6 +346,9 @@ class ArrayTaskPanel(SimpleEditPanel):
         elif warnState & self.WarnOrder:
             warnString = translate("CAM_Array", "!!! Order of operations can be dangerous !!!")
             warnToolTip = translate("CAM_Array", "Order of operations does not match Job tree")
+        elif warnState & self.WarnStart:
+            warnString = translate("CAM_Array", "!!! Missed first operation !!!")
+            warnToolTip = translate("CAM_Array", "List start not from first operation of the Job")
 
         if warnString:
             self.form.label_message.setText(warnString)
@@ -357,16 +363,20 @@ class ArrayTaskPanel(SimpleEditPanel):
         """Update table with operations"""
         print("updateBaseList")
         # Column indices for baseList table
-        COL_INDEX = 0
-        COL_OP_NAME = 1
-        COL_OP_TC = 2
-        COL_OP_COOLANT = 3
-        self.form.baseList.blockSignals(True)
-        self.form.baseList.clearContents()
-        self.form.baseList.setRowCount(0)
+        col_index = 0
+        col_op_name = 1
+        col_tool_number = 2
+        col_tc = 3
+        col_coolant = 4
+        table = self.form.baseList
+        table.blockSignals(True)
+        table.setTextElideMode(QtCore.Qt.ElideMiddle)
+        table.setWordWrap(False)
+        table.clearContents()
+        table.setRowCount(0)
         for i, op in enumerate(self.obj.Base):
             print("   ", i, op.Label)
-            self.form.baseList.insertRow(self.form.baseList.rowCount())
+            table.insertRow(table.rowCount())
 
             index = self.getOpIndex(op)
             if index is not None:
@@ -374,34 +384,37 @@ class ArrayTaskPanel(SimpleEditPanel):
             else:
                 indexString = "???"
             item = QtGui.QTableWidgetItem(indexString)
-            self.form.baseList.setItem(i, COL_INDEX, item)
+            table.setItem(i, col_index, item)
 
             if op.Label == op.Name:
                 name = op.Label
             else:
                 name = f"{op.Label} ({op.Name})"
             item = QtGui.QTableWidgetItem(name)
-            self.form.baseList.setItem(i, COL_OP_NAME, item)
+            table.setItem(i, col_op_name, item)
 
             if tc := toolControllerForOp(op):
+                toolNumber = str(tc.ToolNumber)
                 tcLabel = tc.Label
             else:
+                toolNumber = ""
                 tcLabel = "???"
+            item = QtGui.QTableWidgetItem(toolNumber)
+            item.setTextAlignment(QtCore.Qt.AlignCenter)
+            table.setItem(i, col_tool_number, item)
             item = QtGui.QTableWidgetItem(tcLabel)
-            self.form.baseList.setItem(i, COL_OP_TC, item)
+            item.setTextAlignment(QtCore.Qt.AlignCenter)
+            table.setItem(i, col_tc, item)
 
             coolant = coolantModeForOp(op)
             coolantString = coolant if coolant != "None" else ""
             item = QtGui.QTableWidgetItem(coolantString)
-            self.form.baseList.setItem(i, COL_OP_COOLANT, item)
+            table.setItem(i, col_coolant, item)
 
-        header = self.form.baseList.horizontalHeader()
-        header.setSectionResizeMode(COL_INDEX, QtGui.QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(COL_OP_NAME, QtGui.QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(COL_OP_TC, QtGui.QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(COL_OP_COOLANT, QtGui.QHeaderView.ResizeToContents)
-        self.form.baseList.blockSignals(False)
+        for column in range(table.rowCount()):
+            table.resizeColumnToContents(column)
 
+        table.blockSignals(False)
         self.updateWarningMessage()
 
     def updateBaseButtonsVisibility(self):
@@ -657,35 +670,17 @@ class CommandPathArray:
         }
 
     def IsActive(self):
-        selection = FreeCADGui.Selection.getSelection()
-        if not selection:
-            return False
-
-        for sel in selection:
-            if not sel.isDerivedFrom("Path::Feature"):
-                return False
-
-            if not toolControllerForOp(sel):
-                # Active only for operations with tool controller
-                return False
-
-        return True
+        if FreeCAD.ActiveDocument is not None:
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.Name[:3] == "Job":
+                    return True
+        return False
 
     def Activated(self):
-        # check that the selection contains exactly what we want
-        selection = FreeCADGui.Selection.getSelection()
-
-        if any(not sel.isDerivedFrom("Path::Feature") for sel in selection):
-            FreeCAD.Console.PrintError(
-                translate("CAM_Array", "Arrays can be created only from toolpath operations.")
-                + "\n"
-            )
-            return
-
-        # if everything is ok, execute and register the transaction in the undo/redo stack
         FreeCAD.ActiveDocument.openTransaction("Create Array")
+        selection = FreeCADGui.Selection.getSelection()
         FreeCADGui.addModule("Path.Op.Gui.Array")
-        names = [sel.Name for sel in selection]
+        names = [sel.Name for sel in selection if sel.isDerivedFrom("Path::Feature")]
         FreeCADGui.doCommand(f"bases = [FreeCAD.ActiveDocument.getObject(n) for n in {names}]")
         FreeCADGui.doCommand("Path.Op.Gui.Array.Create(bases)")
         # FreeCAD.ActiveDocument.commitTransaction()

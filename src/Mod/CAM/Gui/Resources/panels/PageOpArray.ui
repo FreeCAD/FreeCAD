@@ -80,6 +80,14 @@ Can undefined if operation not in Job Operations group or under dress-up.
          <string>Tool</string>
         </property>
         <property name="toolTip">
+         <string>Tool number</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Tool Controller</string>
+        </property>
+        <property name="toolTip">
          <string>Tool controller label</string>
         </property>
        </column>
@@ -163,7 +171,7 @@ Can undefined if operation not in Job Operations group or under dress-up.
           </size>
          </property>
          <property name="toolTip">
-          <string>Sort operation according to the Job tree</string>
+          <string>Sort operation according to the Job tree if all indexes defined</string>
          </property>
          <property name="text">
           <string>Sort</string>
