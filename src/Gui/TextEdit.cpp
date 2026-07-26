@@ -427,14 +427,6 @@ void TextEditor::highlightCurrentLine()
     setExtraSelections(extraSelections);
 }
 
-void TextEditor::drawMarker(int line, int x, int y, QPainter* p)
-{
-    Q_UNUSED(line);
-    Q_UNUSED(x);
-    Q_UNUSED(y);
-    Q_UNUSED(p);
-}
-
 void TextEditor::lineNumberAreaPaintEvent(QPaintEvent* event)
 {
     if (!isVisibleLineNumbers()) {
@@ -455,7 +447,6 @@ void TextEditor::lineNumberAreaPaintEvent(QPaintEvent* event)
             QColor color = pal.windowText().color();
             painter.setPen(color);
             painter.drawText(0, top, lineNumberArea->width(), fontMetrics().height(), Qt::AlignRight, number);
-            drawMarker(blockNumber + 1, 1, top, &painter);
         }
 
         block = block.next();

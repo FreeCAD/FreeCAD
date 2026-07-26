@@ -1,25 +1,25 @@
-/****************************************************************************
- *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
- *                                                                          *
- *   This file is part of the FreeCAD CAx development system.               *
- *                                                                          *
- *   This library is free software; you can redistribute it and/or          *
- *   modify it under the terms of the GNU Library General Public            *
- *   License as published by the Free Software Foundation; either           *
- *   version 2 of the License, or (at your option) any later version.       *
- *                                                                          *
- *   This library  is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
- *   GNU Library General Public License for more details.                   *
- *                                                                          *
- *   You should have received a copy of the GNU Library General Public      *
- *   License along with this library; see the file COPYING.LIB. If not,     *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,          *
- *   Suite 330, Boston, MA  02111-1307, USA                                 *
- *                                                                          *
- ****************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
 
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <atomic>
 #include <cctype>
@@ -1086,27 +1086,6 @@ void LinkView::setInvalid()
     }
 }
 
-Base::BoundBox3d _getBoundBox(ViewProviderDocumentObject* vpd, SoNode* rootNode)
-{
-    auto doc = vpd->getDocument();
-    if (!doc) {
-        LINK_THROW(Base::RuntimeError, "no document");
-    }
-    Gui::MDIView* view = doc->getViewOfViewProvider(vpd);
-    if (!view) {
-        LINK_THROW(Base::RuntimeError, "no view");
-    }
-
-    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
-    SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
-    bboxAction.apply(rootNode);
-    auto bbox = bboxAction.getBoundingBox();
-    float minX, minY, minZ, maxX, maxY, maxZ;
-    bbox.getMax().getValue(maxX, maxY, maxZ);
-    bbox.getMin().getValue(minX, minY, minZ);
-    return Base::BoundBox3d(minX, minY, minZ, maxX, maxY, maxZ);
-}
-
 Base::BoundBox3d LinkView::getBoundBox(ViewProviderDocumentObject* vpd) const
 {
     if (!vpd) {
@@ -1115,7 +1094,7 @@ Base::BoundBox3d LinkView::getBoundBox(ViewProviderDocumentObject* vpd) const
         }
         vpd = linkOwner->pcLinked;
     }
-    return _getBoundBox(vpd, pcLinkRoot);
+    return vpd->getBoundingBox();
 }
 
 ViewProviderDocumentObject* LinkView::getOwner() const
@@ -2522,7 +2501,7 @@ void ViewProviderLink::applyMaterial()
             true
         );  // true for secondary
         action.swapColors(colorMap);
-        linkView->getLinkRoot()->doAction(&action);
+        action.apply(linkView->getLinkRoot());
 
         // 5. Ensure the old global override mechanism is not used.
         linkView->setMaterial(-1, nullptr);
@@ -2533,7 +2512,7 @@ void ViewProviderLink::applyMaterial()
 
         // 1. Dispatch an empty Color action to clear the secondary context.
         SoSelectionElementAction action(SoSelectionElementAction::Color, true);
-        linkView->getLinkRoot()->doAction(&action);
+        action.apply(linkView->getLinkRoot());
 
         // 2. Re-apply any other material settings (e.g., for array elements,
         // or clear the old global override if it was set).
@@ -2629,8 +2608,8 @@ std::vector<App::DocumentObject*> ViewProviderLink::claimChildren() const
     if (ext && !ext->_getShowElementValue() && ext->_getElementCountValue()) {
         // in array mode without element objects, we'd better not show the
         // linked object's children to avoid inconsistent behavior on selection.
-        // We claim the linked object instead
-        if (ext) {
+        // Claim the linked object only if requested.
+        if (ext->getLinkClaimChildValue()) {
             auto obj = ext->getLinkedObjectValue();
             if (obj) {
                 ret.push_back(obj);
@@ -3318,7 +3297,7 @@ bool ViewProviderLink::initDraggingPlacement()
     // the dragger is meant to change our transformation.
     dragCtx->preTransform *= pla.inverse().toMatrix();
 
-    dragCtx->bbox = getBoundingBox(nullptr, false);
+    dragCtx->bbox = getBoundingBox(nullptr, nullptr, false);
     // The returned bounding box is before our own transform, but we still need
     // to scale it to get the correct center.
     auto scale = ext->getScaleVector();
@@ -3930,13 +3909,14 @@ bool ViewProviderLink::applyColorsTo(ViewProviderDocumentObject* vp, bool prevOv
     }
 
     auto node = vp->getModeSwitch();
-    if (!node) {
+    auto root = vp->getRoot();
+    if (!node || !root) {
         return prevOverride;
     }
 
     SoSelectionElementAction action(SoSelectionElementAction::Color, true);
     // reset color and visibility first
-    action.apply(node);
+    action.apply(root);
 
     std::map<std::string, std::map<std::string, Base::Color>> colorMap;
     std::set<std::string> hideList;
@@ -3960,15 +3940,15 @@ bool ViewProviderLink::applyColorsTo(ViewProviderDocumentObject* vp, bool prevOv
     SoTempPath path(10);
     path.ref();
     for (auto& v : colorMap) {
-        action.swapColors(v.second);
+        action.setColors(v.second);
         if (v.first.empty()) {
             prevOverride = true;
-            action.apply(node);
+            action.apply(root);
             continue;
         }
         SoDetail* det = nullptr;
         path.truncate(0);
-        if (vp->getDetailPath(v.first.c_str(), &path, false, det)) {
+        if (vp->getDetailPath(v.first.c_str(), &path, true, det)) {
             prevOverride = true;
             action.apply(&path);
         }
@@ -3979,7 +3959,7 @@ bool ViewProviderLink::applyColorsTo(ViewProviderDocumentObject* vp, bool prevOv
     for (const auto& sub : hideList) {
         SoDetail* det = nullptr;
         path.truncate(0);
-        if (!sub.empty() && vp->getDetailPath(sub.c_str(), &path, false, det)) {
+        if (!sub.empty() && vp->getDetailPath(sub.c_str(), &path, true, det)) {
             prevOverride = true;
             action.apply(&path);
         }
@@ -4117,6 +4097,61 @@ ViewProviderDocumentObject* ViewProviderLink::getLinkedViewProvider(
         return res;
     }
     return self;
+}
+
+Base::BoundBox3d ViewProviderLink::_getBoundingBox(
+    const char* subname,
+    const Base::Matrix4D* mat,
+    bool transform,
+    const View3DInventorViewer* viewer,
+    int depth
+) const
+{
+    Base::BoundBox3d bbox;
+    auto obj = getObject();
+    if (!obj) {
+        return bbox;
+    }
+
+    auto ext = getLinkExtension();
+    if (!ext || isGroup(ext, true) || obj->getLinkedObject(false) == obj || (subname && subname[0])) {
+        return inherited::_getBoundingBox(subname, mat, transform, viewer, depth);
+    }
+
+    Base::Matrix4D smat;
+    if (mat) {
+        smat = *mat;
+    }
+
+    ViewProvider* vp = nullptr;
+    subname = ext->getSubName();
+    if (subname && subname[0]) {
+        auto sobj = obj->getSubObject(subname, 0, &smat, transform, depth);
+        if (!sobj || sobj == obj) {
+            return bbox;
+        }
+        vp = Application::Instance->getViewProvider(sobj);
+    }
+    else {
+        auto linked = obj->getLinkedObject(false, &smat, transform, depth);
+        if (!linked || linked == obj) {
+            return bbox;
+        }
+        vp = Application::Instance->getViewProvider(linked);
+    }
+    if (!vp || vp == this) {
+        return Base::BoundBox3d();
+    }
+
+    const auto& subs = ext->getSubElements();
+    if (subs.empty()) {
+        return vp->getBoundingBox(nullptr, &smat, false, viewer, depth + 1);
+    }
+
+    for (const auto& s : subs) {
+        bbox.Add(vp->getBoundingBox(s.c_str(), &smat, false, viewer, depth + 1));
+    }
+    return bbox;
 }
 
 void ViewProviderLink::setTransformation(const Base::Matrix4D& rcMatrix)

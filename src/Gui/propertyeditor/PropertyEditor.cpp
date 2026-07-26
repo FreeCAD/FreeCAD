@@ -31,6 +31,9 @@
 #include <QMenu>
 #include <QPainter>
 #include <QActionGroup>
+#include <QDialog>
+#include <QDialogButtonBox>
+#include <QTextBrowser>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -804,8 +807,10 @@ enum MenuAction
     MA_AddProp,
     MA_EditPropTooltip,
     MA_EditPropGroup,
+    MA_ShowPropUses,
     MA_Transient,
     MA_Output,
+    MA_Input,
     MA_NoRecompute,
     MA_ReadOnly,
     MA_Hidden,
@@ -957,6 +962,115 @@ void PropertyEditor::removeProperties(const std::unordered_set<App::Property*>& 
     App::GetApplication().commitTransaction(tid);
 }
 
+static inline std::string indent(int level)
+{
+    return std::string(2 * level, ' ');
+}
+
+void PropertyEditor::getPropUsesObj(
+    int level,
+    const App::DocumentObject* obj,
+    const std::set<App::ObjectIdentifier>& ids,
+    QString& content
+) const
+{
+    content += indent(level);
+    content += tr("object %1 (%2):\n")
+                   .arg(QString::fromUtf8(obj->getNameInDocument()))
+                   .arg(QString::fromUtf8(obj->Label.getValue()));
+
+
+    for (const auto& id : ids) {
+        content += indent(level + 1);
+        content += tr("property %1\n").arg(QString::fromStdString(id.toString()));
+    }
+}
+
+void PropertyEditor::getPropUsesDoc(
+    int level,
+    const App::Document* doc,
+    const std::set<App::ObjectIdentifier>& ids,
+    QString& content
+) const
+{
+    content += indent(level);
+    content += tr("document %1:\n").arg(QString::fromUtf8(doc->getName()));
+
+    std::map<App::DocumentObject*, std::set<App::ObjectIdentifier>> objToIds;
+    for (const auto& id : ids) {
+        if (auto obj = id.getDocumentObject()) {
+            objToIds[obj].insert(id);
+        }
+    }
+
+
+    for (const auto& [obj, objIds] : objToIds) {
+        getPropUsesObj(level + 1, obj, objIds, content);
+    }
+}
+
+QString PropertyEditor::getPropUses(App::Property* prop) const
+{
+    QString content;
+
+    std::set<App::ObjectIdentifier> uses = App::DocumentObject::getPropertyUses(prop);
+    auto* obj = freecad_cast<App::DocumentObject*>(prop->getContainer());
+    if (obj == nullptr) {
+        return content;
+    }
+
+    content += tr("The property %1 in object %2 (%3) in document %4 is referenced by:")
+                   .arg(QString::fromUtf8(prop->getName()))
+                   .arg(QString::fromUtf8(obj->getNameInDocument()))
+                   .arg(QString::fromUtf8(obj->Label.getValue()))
+                   .arg(QString::fromUtf8(obj->getDocument()->getName()));
+    content += "\n";
+
+    std::map<App::Document*, std::set<App::ObjectIdentifier>> docToIds;
+    for (const auto& id : uses) {
+        if (auto doc = id.getDocument()) {
+            docToIds[doc].insert(id);
+        }
+    }
+
+    if (docToIds.empty()) {
+        content += indent(1);
+        content += tr("(No references found.)");
+        return content;
+    }
+
+    for (const auto& [doc, objs] : docToIds) {
+        getPropUsesDoc(1, doc, objs, content);
+    }
+
+    return content;
+}
+
+constexpr int WidthPropUsesDialog = 800;
+constexpr int HeightPropUsesDialog = 600;
+
+void PropertyEditor::reportPropUses(App::Property* prop) const
+{
+    auto* dialog = new QDialog(Gui::getMainWindow());
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->setWindowTitle(tr("Property Uses"));
+    dialog->resize(WidthPropUsesDialog, HeightPropUsesDialog);
+
+    auto* layout = new QVBoxLayout(dialog);
+
+    auto* textBrowser = new QTextBrowser(dialog);
+    textBrowser->setReadOnly(true);
+    textBrowser->setPlainText(getPropUses(prop));
+
+    auto* buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, dialog);
+    QObject::connect(buttonBox, &QDialogButtonBox::rejected, dialog, &QDialog::close);
+
+    layout->addWidget(textBrowser);
+    layout->addWidget(buttonBox);
+    dialog->setLayout(layout);
+    dialog->show();
+}
+
 void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
 {
     QMenu menu;
@@ -1025,6 +1139,11 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
         menu.addAction(tr("Delete Property"))->setData(QVariant(MA_RemoveProp));
     }
 
+    // show property uses
+    if (props.size() == 1 && App::DocumentObject::canPropBeReferenced(*props.begin())) {
+        menu.addAction(tr("Property Uses"))->setData(QVariant(MA_ShowPropUses));
+    }
+
     // add a separator between adding/removing properties and the rest
     menu.addSeparator();
 
@@ -1082,6 +1201,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
 
         ACTION_SETUP(Hidden);
         ACTION_SETUP(Output);
+        ACTION_SETUP(Input);
         ACTION_SETUP(NoRecompute);
         ACTION_SETUP(ReadOnly);
         ACTION_SETUP(Transient);
@@ -1140,6 +1260,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             ACTION_CHECK(Transient);
             ACTION_CHECK(ReadOnly);
             ACTION_CHECK(Output);
+            ACTION_CHECK(Input);
             ACTION_CHECK(Hidden);
             ACTION_CHECK(EvalOnRestore);
             ACTION_CHECK(CopyOnChange);
@@ -1300,6 +1421,13 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
         }
         case MA_RemoveProp: {
             removeProperties(props);
+            break;
+        }
+        case MA_ShowPropUses: {
+            if (props.size() != 1) {
+                break;
+            }
+            reportPropUses(*props.begin());
             break;
         }
         default:

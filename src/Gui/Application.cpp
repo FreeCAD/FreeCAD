@@ -27,7 +27,9 @@
 #include <Inventor/errors/SoError.h>
 #include <QCheckBox>
 #include <QCloseEvent>
+#include <QCoreApplication>
 #include <QDir>
+#include <QEvent>
 #include <QFileInfo>
 #include <QLocale>
 #include <QMessageBox>
@@ -35,6 +37,7 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QScreen>
+#include <QScopeGuard>
 #include <QStatusBar>
 #include <QStyle>
 #include <QSurfaceFormat>
@@ -89,7 +92,6 @@
 #include "Macro.h"
 #include "PreferencePackManager.h"
 #include "PythonConsolePy.h"
-#include "PythonDebugger.h"
 #include "MainWindowPy.h"
 #include "MDIViewPy.h"
 #include "MDIViewWithCamera.h"
@@ -98,6 +100,7 @@
 #include "Selection.h"
 #include "SelectionFilterPy.h"
 #include "SoQtOffscreenRendererPy.h"
+#include "SpaceMouseParameter.h"
 #include "SplitView3DInventor.h"
 #include "StartupProcess.h"
 #include "TaskView/TaskView.h"
@@ -725,7 +728,6 @@ Application::Application(bool GUIenabled)
 
     // clang-format off
     // Python console binding
-    PythonDebugModule           ::init_module();
     PythonStdout                ::init_type();
     PythonStderr                ::init_type();
     OutputStdout                ::init_type();
@@ -2297,6 +2299,12 @@ void setCategoryFilterRules()
     stream.flush();
     QLoggingCategory::setFilterRules(filter);
 }
+
+bool isSuppressedQtWarning(const QMessageLogContext& context, const QString& msg)
+{
+    return context.category && strcmp(context.category, "qt.text.font.db") == 0
+        && msg.startsWith(QStringLiteral("OpenType support missing for "));
+}
 }  // namespace
 
 using _qt_msg_handler_old = void (*)(QtMsgType, const QMessageLogContext&, const QString&);
@@ -2304,6 +2312,10 @@ _qt_msg_handler_old old_qtmsg_handler = nullptr;
 
 void messageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
+    if (type == QtWarningMsg && isSuppressedQtWarning(context, msg)) {
+        return;
+    }
+
     QByteArray output;
     if (context.category && strcmp(context.category, "default") != 0) {
         output.append('(');
@@ -2689,6 +2701,9 @@ void Application::runApplication()
     MainWindow mw;
     mw.setProperty("QuitOnClosed", true);
 
+    // Destroy deferred views while their GUI and Python owners are still alive.
+    auto shutdownGuard = qScopeGuard([&app]() { app.shutdown(); });
+
     // https://forum.freecad.org/viewtopic.php?f=3&t=15540
     // Needs to be set after app is created to override platform defaults (qt commit a2aa1f81a81)
     QApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
@@ -2719,20 +2734,24 @@ void Application::runApplication()
     Base::Console().log("Finish: Event loop left\n");
 }
 
+void Application::shutdown()
+{
+    d->isClosing = true;
+    App::GetApplication().closeAllDocuments();
+    QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
+}
+
 void Application::init3DMouse(MainWindow* mainWindow, QApplication* qtApp)
 {
     Instance->pNavlibInterface = nullptr;
 #ifdef USE_3DCONNEXION_NAVLIB
-    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/View"
-    );
     if (NlErrorCode) {
         Base::Console().log("Init: 3Dconnexion driver not installed\n");
     }
     else {
         Base::Console().log("Init: 3Dconnexion Navigation Framework present\n");
     }
-    if (!hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
+    if (!SpaceMouseParameter::instance()->getLegacySpaceMouseDevices()) {
         if (!NlErrorCode) {
             // Instantiate the 3Dconnexion controller
             Instance->pNavlibInterface = new NavlibInterface();

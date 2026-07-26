@@ -52,7 +52,7 @@
           <item row="0" column="0">
            <widget class="QLabel" name="labelMachineLabel">
             <property name="text">
-             <string>Machine:</string>
+             <string>Machine</string>
             </property>
            </widget>
           </item>
@@ -106,7 +106,7 @@
           <item row="0" column="0">
            <widget class="QLabel" name="labelJobAuthorLabel">
             <property name="text">
-             <string>Author:</string>
+             <string>Author</string>
             </property>
            </widget>
           </item>
@@ -123,7 +123,7 @@
           <item row="1" column="0">
            <widget class="QLabel" name="labelCommentLabel">
             <property name="text">
-             <string>Comment:</string>
+             <string>Comment</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
@@ -342,7 +342,7 @@
          <item>
           <widget class="QLabel" name="labelOutputLocationLabel">
            <property name="text">
-            <string>Output folder:</string>
+            <string>Output folder</string>
            </property>
           </widget>
          </item>
@@ -365,7 +365,7 @@
             </size>
            </property>
            <property name="text">
-            <string>Browse...</string>
+            <string>Browse…</string>
            </property>
           </widget>
          </item>
@@ -376,7 +376,7 @@
          <item>
           <widget class="QLabel" name="labelFilenameTemplateLabel">
            <property name="text">
-            <string>Filename template:</string>
+            <string>Filename template</string>
            </property>
           </widget>
          </item>
@@ -493,7 +493,7 @@
           <string notr="true">color: green; font-weight: bold;</string>
          </property>
          <property name="text">
-          <string>No issues found.</string>
+          <string>No issues found</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignmentFlag::AlignCenter</set>

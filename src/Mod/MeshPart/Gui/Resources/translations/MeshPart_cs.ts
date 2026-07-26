@@ -383,11 +383,6 @@ Nejmenší hodnota je 0.</translation>
       <translation>Použijte síťovou síť Netgen</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Jemnost:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Vlemi hrubé</translation>
@@ -438,6 +433,11 @@ Nejmenší hodnota je 0.</translation>
 A value in the range of 0.1-1.</source>
       <translation>Pokud je tento parametr menší, síť bude jemnější.
 Hodnota v rozsahu 0,1-1.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Jemnost</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>

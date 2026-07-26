@@ -22,10 +22,11 @@
 # ***************************************************************************
 
 import FreeCAD
-import FreeCADGui
+import re
 import os
 import Path
 import Path.Op.Base as PathOp
+import Constants
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -140,9 +141,6 @@ class ObjectCustom(PathOp.ObjectOp):
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
 
-    def onDocumentRestore(self, obj):
-        self.setEditorModes(self, obj)
-
     def setEditorModes(self, obj, features=None):
         if not hasattr(obj, "Source"):
             return
@@ -165,23 +163,41 @@ class ObjectCustom(PathOp.ObjectOp):
         if os.path.exists(prospective_path):
             return prospective_path
 
+    def parseExpressions(self, obj, line, index):
+        pattern = r"\{\{(.+?)\}\}"
+        while match := re.search(pattern, line):
+            expr = match.group(1)
+            try:
+                value = obj.evalExpression(expr)
+            except Exception:
+                Path.Log.warning(
+                    translate("PathCustom", "Can not parse expression from line %s: %s")
+                    % (index, line)
+                )
+                obj.Path = Path.Path()
+                raise Exception("Can not parse expression!")
+            line = re.sub(pattern, str(value), line, count=1)
+        return line
+
     def opExecute(self, obj):
         self.commandlist.append(Path.Command("(Begin Custom)"))
         errorNumLines = []
         errorLines = []
-        counter = 0
 
         if obj.Source == "Text" and obj.Gcode:
-            for l in obj.Gcode:
-                counter += 1
+            for i, line in enumerate(obj.Gcode):
+                line = self.parseExpressions(obj, line, i)
                 try:
-                    newcommand = Path.Command(str(l))
+                    newcommand = Path.Command(
+                        str(line), {}, {Constants.ANNOT_ALLOW_UNSUPPORTED: "True"}
+                    )
                     self.commandlist.append(newcommand)
                 except ValueError:
-                    errorNumLines.append(counter)
+                    errorNumLines.append(i)
                     if len(errorLines) < 7:
-                        errorLines.append(f"{counter}: {str(l).strip()}")
+                        errorLines.append(f"{i}: {str(line).strip()}")
             if errorLines:
+                # FIXME: should throw
                 Path.Log.warning(
                     translate("PathCustom", "Total invalid lines in Custom Text G-code: %s")
                     % len(errorNumLines)
@@ -197,17 +213,18 @@ class ObjectCustom(PathOp.ObjectOp):
                 )
             else:
                 with open(gcode_file) as fd:
-                    for l in fd.readlines():
-                        counter += 1
+                    for i, line in enumerate(fd.readlines()):
+                        line = line.strip()
+                        line = self.parseExpressions(obj, line, i)
                         try:
-                            newcommand = Path.Command(str(l))
+                            newcommand = Path.Command(str(line))
                             self.commandlist.append(newcommand)
                         except ValueError:
-                            errorNumLines.append(counter)
+                            errorNumLines.append(i)
                             if len(errorLines) < 7:
-                                errorLines.append(f"{counter}: {str(l).strip()}")
+                                errorLines.append(f"{i}: {str(line).strip()}")
                 if errorLines:
-                    Path.Log.warning(f'"{gcode_file}"')
+                    Path.Log.warning(gcode_file)
                     Path.Log.warning(
                         translate("PathCustom", "Total invalid lines in Custom File G-code: %s")
                         % len(errorNumLines)
@@ -215,8 +232,7 @@ class ObjectCustom(PathOp.ObjectOp):
 
         if errorNumLines:
             Path.Log.warning(
-                translate("PathCustom", "Please check lines: %s")
-                % ", ".join(map(str, errorNumLines))
+                translate("PathCustom", "Check lines: %s") % ", ".join(map(str, errorNumLines))
             )
 
             if len(errorLines) > 7:

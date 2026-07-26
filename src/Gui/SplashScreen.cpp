@@ -20,19 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include <cstdlib>
 #include <QApplication>
 #include <QClipboard>
 #include <QDir>
+#include <QElapsedTimer>
 #include <QFile>
 #include <QFileInfo>
 #include <QMutex>
 #include <QPainter>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
+#include <QThread>
 #include <QWaitCondition>
-
+#include <QWindow>
 
 #include <App/Application.h>
 #include <App/Metadata.h>
@@ -237,6 +238,48 @@ SplashScreen::SplashScreen(const QPixmap& pixmap, Qt::WindowFlags f)
 SplashScreen::~SplashScreen()
 {
     delete messages;
+}
+
+void SplashScreen::finish(QWidget* w)
+{
+    Q_UNUSED(w);
+    close();
+}
+
+bool SplashScreen::event(QEvent* e)
+{
+    if (e->type() == QEvent::Show) {
+        // Bypass QSplashScreen::event for Show events specifically
+        return QWidget::event(e);  // NOLINT(bugprone-parent-virtual-call)
+    }
+    return QSplashScreen::event(e);
+}
+
+void SplashScreen::show()
+{
+    QSplashScreen::show();
+
+    // Our repaint will call processEvents later on, no need to waste time here
+    if (messages->bErr) {
+        return;
+    }
+
+    // Show events are bypassed and splash window is already created by the above show()
+    // call. Now process pending events from underlying OS which actually brings splash
+    // into existence (such as X' MapNotify/Expose events or Wayland's xdg_surface
+    // configuration acknowledgement)
+    constexpr int TimeOut = 250;
+    constexpr int TimeSlice = 20;
+    QElapsedTimer timer;
+    timer.start();
+    while (timer.elapsed() < TimeOut) {
+        QCoreApplication::processEvents(QEventLoop::AllEvents, TimeSlice);
+        QCoreApplication::sendPostedEvents();
+        if (windowHandle()->isExposed()) {
+            break;
+        }
+        QThread::msleep(TimeSlice);
+    }
 }
 
 /**

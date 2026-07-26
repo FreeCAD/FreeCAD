@@ -1571,6 +1571,10 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="201"/>
+      <source>Time</source>
+      <translation>Idő</translation>
+    </message>
+    <message>
       <location filename="../../RemeshGmsh.cpp" line="259"/>
       <source>Time:</source>
       <translation>Idő:</translation>
@@ -1596,7 +1600,7 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
     <message>
       <location filename="../../MeshEditor.cpp" line="255"/>
       <source>Cannot add triangle to avoid non-manifolds.</source>
-      <translation type="unfinished">Cannot add triangle to avoid non-manifolds.</translation>
+      <translation>Háromszög nem adható hozzá, hogy elkerüljük a szabálytalanságokat.</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="407"/>

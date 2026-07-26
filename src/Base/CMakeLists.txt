@@ -198,6 +198,7 @@ SET(FreeCADBase_CPP_SRCS
     Observer.cpp
     Parameter.xsd
     Parameter.cpp
+    ParameterObserver.cpp
     ParameterPy.cpp
     Persistence.cpp
     PersistencePyImp.cpp
@@ -216,6 +217,7 @@ SET(FreeCADBase_CPP_SRCS
     ServiceProvider.cpp
     SmartPtrPy.cpp
     Stream.cpp
+    StringUtils.cpp
     Swap.cpp
     ${SWIG_SRCS}
     SystemHandler.cpp
@@ -268,6 +270,7 @@ SET(FreeCADBase_HPP_SRCS
     Matrix.h
     Observer.h
     Parameter.h
+    ParameterObserver.h
     Persistence.h
     Placement.h
     Precision.h
@@ -283,6 +286,7 @@ SET(FreeCADBase_HPP_SRCS
     Sequencer.h
     SmartPtrPy.h
     Stream.h
+    StringUtils.h
     Swap.h
     ${SWIG_HEADERS}
     SystemHandler.h

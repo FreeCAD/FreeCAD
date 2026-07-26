@@ -7,7 +7,7 @@ target_include_directories(Start_tests_run PUBLIC
 )
 
 target_link_libraries(Start_tests_run
-    gtest_main
-    ${Google_Tests_LIBS}
+    GTest::gtest_main
+    ${Python3_LIBRARIES}
     Start
 )

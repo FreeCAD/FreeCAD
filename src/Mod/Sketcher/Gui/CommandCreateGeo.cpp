@@ -45,7 +45,6 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "CircleEllipseConstructionMethod.h"
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 
@@ -95,10 +94,6 @@ using namespace SketcherGui;
         } \
     }
 
-namespace SketcherGui
-{
-GeometryCreationMode geometryCreationMode = GeometryCreationMode::Normal;
-}
 
 /* Sketch commands =======================================================*/
 
@@ -236,7 +231,6 @@ CmdSketcherCreatePolylineLegacy::CmdSketcherCreatePolylineLegacy()
     sWhatsThis = "Sketcher_CreatePolylineLegacy";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreatePolyline";
-    sAccel = "G, M";
     eType = ForEdit;
 }
 
@@ -266,7 +260,7 @@ CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
     sWhatsThis = "Sketcher_CreatePolyline";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreatePolyline";
-    sAccel = "L";
+    sAccel = "G, M";
     eType = ForEdit;
 }
 

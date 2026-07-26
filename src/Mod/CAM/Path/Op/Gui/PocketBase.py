@@ -34,7 +34,7 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Base page controller and command implementation for pocket operations."
 
-if False:
+if True:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:
@@ -113,8 +113,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         """getFields(obj) ... transfers values from UI to obj's properties"""
         if obj.CutMode != str(self.form.cutMode.currentData()):
             obj.CutMode = str(self.form.cutMode.currentData())
-        if obj.StepOver != self.form.stepOverPercent.value():
-            obj.StepOver = self.form.stepOverPercent.value()
+        if obj.StepOver != self.form.stepOver.value():
+            obj.StepOver = self.form.stepOver.value()
         if obj.ClearingPattern != str(self.form.clearingPattern.currentData()):
             obj.ClearingPattern = str(self.form.clearingPattern.currentData())
 
@@ -146,7 +146,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
-        self.form.stepOverPercent.setValue(obj.StepOver)
+        self.form.stepOver.setValue(obj.StepOver)
         self.form.extraOffset.setText(
             FreeCAD.Units.Quantity(obj.ExtraOffset.Value, FreeCAD.Units.Length).UserString
         )
@@ -176,7 +176,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         signals.append(self.form.cutMode.currentIndexChanged)
         signals.append(self.form.clearingPattern.currentIndexChanged)
-        signals.append(self.form.stepOverPercent.editingFinished)
+        signals.append(self.form.stepOver.editingFinished)
         signals.append(self.form.angle.editingFinished)
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.extraOffset.editingFinished)

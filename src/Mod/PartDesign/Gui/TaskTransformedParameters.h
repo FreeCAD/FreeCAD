@@ -172,7 +172,6 @@ private Q_SLOTS:
     void onButtonAddFeature(bool checked);
     void onButtonRemoveFeature(bool checked);
     void onFeatureDeleted();
-    void indexesMoved();
     void onModeChanged(int mode_id);
 
 private:

@@ -1,53 +1,58 @@
-/***************************************************************************
- *   Copyright (c) 2011-2012 Luke Parry <l.parry@warwick.ac.uk>            *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2011-2012 Luke Parry <l.parry@warwick.ac.uk>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-
-#include <FCConfig.h>
-
-#ifdef FC_OS_WIN32
-# include <windows.h>
-# undef min
-# undef max
-#endif
-#ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-#else
-# include <GL/gl.h>
-#endif
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <algorithm>
+#include <cstdint>
 #include <cmath>
 #include <limits>
 #include <numbers>
 #include <QFontMetrics>
 #include <QPainter>
 
+#include <Inventor/SbRotation.h>
+#include <Inventor/SbVec2f.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoFocalDistanceElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoDepthBuffer.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoFaceSet.h>
+#include <Inventor/nodes/SoLightModel.h>
+#include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoTexture2.h>
+#include <Inventor/nodes/SoTransform.h>
+#include <Inventor/nodes/SoVertexProperty.h>
 
 #include <Base/Tools.h>
 
@@ -71,63 +76,71 @@ using namespace Gui;
 namespace
 {
 
-void glVertex(const SbVec3f& pt)
+SbVec3f withZ(const SbVec3f& point, float z)
 {
-    glVertex3f(pt[0], pt[1], pt[2]);
+    SbVec3f out = point;
+    out[2] = z;
+    return out;
 }
 
-void glVertexes(const std::vector<SbVec3f>& pts)
+void appendLine(
+    std::vector<SbVec3f>& vertices,
+    std::vector<int32_t>& counts,
+    const SbVec3f& a,
+    const SbVec3f& b
+)
 {
-    for (auto pt : pts) {
-        glVertex3f(pt[0], pt[1], pt[2]);
-    }
+    vertices.push_back(a);
+    vertices.push_back(b);
+    counts.push_back(2);
 }
 
-void glDrawLine(const SbVec3f& p1, const SbVec3f& p2)
-{
-    glBegin(GL_LINES);
-    glVertexes({p1, p2});
-    glEnd();
-}
-
-void glDrawArc(
+void appendArc(
+    std::vector<SbVec3f>& vertices,
+    std::vector<int32_t>& counts,
     const SbVec3f& center,
     float radius,
-    float startAngle = 0.,
-    float endAngle = 2.0 * std::numbers::pi,
+    float startAngle,
+    float endAngle,
     int countSegments = 0
 )
 {
-    float range = endAngle - startAngle;
+    const float range = endAngle - startAngle;
 
     if (countSegments == 0) {
         countSegments = std::max(6, abs(int(25.0 * range / std::numbers::pi)));
     }
 
-    float segment = range / (countSegments - 1);
+    const float segment = range / (countSegments - 1);
 
-    glBegin(GL_LINE_STRIP);
     for (int i = 0; i < countSegments; i++) {
-        float theta = startAngle + segment * i;
-        SbVec3f v1 = center + radius * SbVec3f(cos(theta), sin(theta), 0);
-        glVertex(v1);
+        const float theta = startAngle + segment * i;
+        const SbVec3f v = center + radius * SbVec3f(cos(theta), sin(theta), 0);
+        vertices.push_back(v);
     }
-    glEnd();
+    counts.push_back(countSegments);
 }
 
-void glDrawArrow(const SbVec3f& base, const SbVec3f& dir, float width, float length)
+void appendArrowTriangle(
+    std::vector<SbVec3f>& vertices,
+    std::vector<int32_t>& counts,
+    const SbVec3f& base,
+    const SbVec3f& dir,
+    float width,
+    float length
+)
 {
-    // Calculate arrowhead points
-    SbVec3f normal(dir[1], -dir[0], 0);
-    SbVec3f arrowLeft = base - length * dir + width * normal;
-    SbVec3f arrowRight = base - length * dir - width * normal;
+    SbVec3f unitDir = dir;
+    unitDir.normalize();
 
-    // Draw arrowheads at elevated Z to render ON TOP of geometry lines
-    glBegin(GL_TRIANGLES);
-    glVertex3f(base[0], base[1], ZARROW_TEXT_OFFSET);
-    glVertex3f(arrowLeft[0], arrowLeft[1], ZARROW_TEXT_OFFSET);
-    glVertex3f(arrowRight[0], arrowRight[1], ZARROW_TEXT_OFFSET);
-    glEnd();
+    const SbVec3f normal(unitDir[1], -unitDir[0], 0);
+    const SbVec3f arrowLeft = base - length * unitDir + width * normal;
+    const SbVec3f arrowRight = base - length * unitDir - width * normal;
+
+    vertices.push_back(withZ(base, ZARROW_TEXT_OFFSET));
+    vertices.push_back(withZ(arrowLeft, ZARROW_TEXT_OFFSET));
+    vertices.push_back(withZ(arrowRight, ZARROW_TEXT_OFFSET));
+    counts.push_back(3);
 }
 
 
@@ -153,6 +166,36 @@ SbVec3f getArcMidDirection(float startAngle, float endAngle)
 SbVec3f getArcTextCenter(const SbVec3f& center, float startAngle, float endAngle, float distanceFromCenter)
 {
     return center + getArcMidDirection(startAngle, endAngle) * distanceFromCenter;
+}
+
+float getSketchRotationAngle(SoState* state, const SbViewVolume& viewVolume, bool flip)
+{
+    SbVec3f camRight = viewVolume.lrf - viewVolume.llf;
+    SbVec3f camUp = viewVolume.ulf - viewVolume.llf;
+
+    camRight.normalize();
+    camUp.normalize();
+
+    const SbMatrix& matrix = SoModelMatrixElement::get(state);
+    SbVec3f xWorld;
+    matrix.multDirMatrix(SbVec3f(1.0f, 0.0f, 0.0f), xWorld);
+
+    const float cosAngle = xWorld.dot(camRight);
+    const float sinAngle = xWorld.dot(camUp);
+    const float angle = std::atan2(sinAngle, cosAngle);
+
+    return flip ? angle : -angle;
+}
+
+SbVec3f getAngleMidDirection(float startAngle, float range)
+{
+    const float midAngle = startAngle + 0.5F * range;
+    return SbVec3f(cos(midAngle), sin(midAngle), 0);
+}
+
+SbVec3f getAngleTextCenter(const SbVec3f& center, float startAngle, float range, float distanceFromCenter)
+{
+    return center + getAngleMidDirection(startAngle, range) * distanceFromCenter;
 }
 }  // namespace
 
@@ -203,6 +246,104 @@ SoDatumLabel::SoDatumLabel()
     this->imgWidth = 0;
     this->imgHeight = 0;
     this->glimagevalid = false;
+
+    m_Root = new SoSeparator;
+    m_Root->ref();
+
+    m_GeometryDepth = new SoDepthBuffer;
+    m_GeometryDepth->test.setValue(true);
+    m_GeometryDepth->write.setValue(false);
+    m_Root->addChild(m_GeometryDepth);
+
+    m_LightModel = new SoLightModel;
+    m_LightModel->model.setValue(SoLightModel::BASE_COLOR);
+    m_Root->addChild(m_LightModel);
+
+    m_GeometryColor = new SoBaseColor;
+    m_GeometryColor->rgb.connectFrom(&this->textColor);
+    m_Root->addChild(m_GeometryColor);
+
+    m_DrawStyle = new SoDrawStyle;
+    m_DrawStyle->lineWidth.connectFrom(&this->lineWidth);
+    m_Root->addChild(m_DrawStyle);
+
+    // Keep the label two-sided even when inherited rendering state enables face culling.
+    auto* hints = new SoShapeHints;
+    hints->vertexOrdering.setValue(SoShapeHints::UNKNOWN_ORDERING);
+    hints->shapeType.setValue(SoShapeHints::UNKNOWN_SHAPE_TYPE);
+    hints->faceType.setValue(SoShapeHints::UNKNOWN_FACE_TYPE);
+    m_Root->addChild(hints);
+
+    m_LineVertexProperty = new SoVertexProperty;
+    m_LineSet = new SoLineSet;
+    m_LineSet->vertexProperty.setValue(m_LineVertexProperty);
+    m_Root->addChild(m_LineSet);
+
+    m_TriangleVertexProperty = new SoVertexProperty;
+    m_TriangleFaceSet = new SoFaceSet;
+    m_TriangleFaceSet->vertexProperty.setValue(m_TriangleVertexProperty);
+    m_Root->addChild(m_TriangleFaceSet);
+
+    m_TextSwitch = new SoSwitch;
+    m_TextSwitch->whichChild.setValue(SO_SWITCH_NONE);
+    m_Root->addChild(m_TextSwitch);
+
+    m_TextSeparator = new SoSeparator;
+    m_TextSwitch->addChild(m_TextSeparator);
+
+    m_TextDepth = new SoDepthBuffer;
+    m_TextDepth->test.setValue(false);
+    m_TextDepth->write.setValue(false);
+    m_TextDepth->function.setValue(SoDepthBuffer::ALWAYS);
+    m_TextSeparator->addChild(m_TextDepth);
+
+    auto* textLightModel = new SoLightModel;
+    textLightModel->model.setValue(SoLightModel::BASE_COLOR);
+    m_TextSeparator->addChild(textLightModel);
+
+    m_TextBaseColor = new SoBaseColor;
+    m_TextBaseColor->rgb.setValue(1.0f, 1.0f, 1.0f);
+    m_TextSeparator->addChild(m_TextBaseColor);
+
+    m_TextTexture = new SoTexture2;
+    m_TextTexture->wrapS = SoTexture2::CLAMP;
+    m_TextTexture->wrapT = SoTexture2::CLAMP;
+    m_TextTexture->model = SoTexture2::MODULATE;
+    m_TextTexture->image.connectFrom(&this->image);
+    m_TextSeparator->addChild(m_TextTexture);
+
+    m_TextTransform = new SoTransform;
+    m_TextSeparator->addChild(m_TextTransform);
+
+    m_TextVertexProperty = new SoVertexProperty;
+    m_TextFaceSet = new SoFaceSet;
+    m_TextFaceSet->vertexProperty.setValue(m_TextVertexProperty);
+    m_TextFaceSet->numVertices.set1Value(0, 4);
+    m_TextSeparator->addChild(m_TextFaceSet);
+}
+
+SoDatumLabel::~SoDatumLabel()
+{
+    if (m_Root) {
+        m_Root->unref();
+        m_Root = nullptr;
+    }
+    m_GeometryDepth = nullptr;
+    m_LightModel = nullptr;
+    m_GeometryColor = nullptr;
+    m_DrawStyle = nullptr;
+    m_LineVertexProperty = nullptr;
+    m_LineSet = nullptr;
+    m_TriangleVertexProperty = nullptr;
+    m_TriangleFaceSet = nullptr;
+    m_TextSwitch = nullptr;
+    m_TextSeparator = nullptr;
+    m_TextDepth = nullptr;
+    m_TextBaseColor = nullptr;
+    m_TextTexture = nullptr;
+    m_TextTransform = nullptr;
+    m_TextVertexProperty = nullptr;
+    m_TextFaceSet = nullptr;
 }
 
 void SoDatumLabel::drawImage()
@@ -690,9 +831,8 @@ SbVec3f SoDatumLabel::getLabelTextCenterAngle(const SbVec3f& p0)
     float startangle = param2.getValue();
     float range = param3.getValue();
     float len2 = 2.0F * length;
-    float endangle = startangle + range;
 
-    return getArcTextCenter(p0, startangle, endangle, len2);
+    return getAngleTextCenter(p0, startangle, range, len2);
 }
 
 SbVec3f SoDatumLabel::getLabelTextCenterArcLength(
@@ -1152,23 +1292,316 @@ float SoDatumLabel::getScaleFactor(SoState* state) const
     return scale;
 }
 
-void SoDatumLabel::GLRender(SoGLRenderAction* action)
+void SoDatumLabel::setVertexZ(SbVec3f& point, float z) const
 {
-    SoState* state = action->getState();
+    point[2] = z;
+}
 
-    if (!shouldGLRender(action)) {
+void SoDatumLabel::ensureCoinGeometry(const SbVec3f* points, int numPoints)
+{
+    if (!points || numPoints <= 0 || !m_LineVertexProperty || !m_LineSet
+        || !m_TriangleVertexProperty || !m_TriangleFaceSet) {
         return;
     }
-    if (action->handleTransparency(true)) {
+
+    std::vector<SbVec3f> lineVertices;
+    std::vector<int32_t> lineCounts;
+    std::vector<SbVec3f> triangleVertices;
+    std::vector<int32_t> triangleCounts;
+
+    const auto addTriangle = [&](SbVec3f a, SbVec3f b, SbVec3f c) {
+        setVertexZ(a, ZARROW_TEXT_OFFSET);
+        setVertexZ(b, ZARROW_TEXT_OFFSET);
+        setVertexZ(c, ZARROW_TEXT_OFFSET);
+        triangleVertices.push_back(a);
+        triangleVertices.push_back(b);
+        triangleVertices.push_back(c);
+        triangleCounts.push_back(3);
+    };
+
+    const auto type = static_cast<Type>(datumtype.getValue());
+
+    if (type == DISTANCE || type == DISTANCEX || type == DISTANCEY) {
+        if (numPoints >= 2) {
+            const DistanceGeometry geom = calculateDistanceGeometry(points);
+
+            if (param1.getValue() != 0.0F) {
+                appendLine(lineVertices, lineCounts, geom.p1, geom.perp1);
+                appendLine(lineVertices, lineCounts, geom.p2, geom.perp2);
+            }
+            appendLine(lineVertices, lineCounts, geom.par1, geom.par2);
+            appendLine(lineVertices, lineCounts, geom.par3, geom.par4);
+
+            addTriangle(geom.par1, geom.ar1, geom.ar2);
+            addTriangle(geom.par4, geom.ar3, geom.ar4);
+
+            if (type == DISTANCE && numPoints >= 4) {
+                const float range1 = param4.getValue();
+                if (range1 != 0.0F) {
+                    const float startAngle1 = param3.getValue();
+                    const float radius1 = param5.getValue();
+                    const SbVec3f center1 = points[2];
+                    appendArc(lineVertices, lineCounts, center1, radius1, startAngle1, startAngle1 + range1);
+                }
+
+                const float range2 = param7.getValue();
+                if (range2 != 0.0F) {
+                    const float startAngle2 = param6.getValue();
+                    const float radius2 = param8.getValue();
+                    const SbVec3f center2 = points[3];
+                    appendArc(lineVertices, lineCounts, center2, radius2, startAngle2, startAngle2 + range2);
+                }
+            }
+        }
+    }
+    else if (type == RADIUS || type == DIAMETER) {
+        if (numPoints >= 2) {
+            const DiameterGeometry geom = calculateDiameterGeometry(points);
+
+            appendLine(lineVertices, lineCounts, geom.p1, geom.pnt1);
+            appendLine(lineVertices, lineCounts, geom.pnt2, geom.p2);
+
+            addTriangle(geom.ar0, geom.ar1, geom.ar2);
+            if (geom.isDiameter) {
+                addTriangle(geom.ar0_1, geom.ar1_1, geom.ar2_1);
+            }
+
+            if (geom.startRange != 0.0F) {
+                appendArc(
+                    lineVertices,
+                    lineCounts,
+                    geom.center,
+                    geom.radius,
+                    geom.startAngle,
+                    geom.startAngle + geom.startRange
+                );
+            }
+            if (geom.endRange != 0.0F) {
+                appendArc(
+                    lineVertices,
+                    lineCounts,
+                    geom.center,
+                    geom.radius,
+                    geom.endAngle,
+                    geom.endAngle + geom.endRange
+                );
+            }
+        }
+    }
+    else if (type == ANGLE) {
+        if (numPoints >= 1) {
+            const AngleGeometry geom = calculateAngleGeometry(points);
+
+            appendArc(
+                lineVertices,
+                lineCounts,
+                geom.p0,
+                geom.r,
+                geom.startangle,
+                geom.startangle + geom.range / 2.0F - static_cast<float>(geom.textMargin)
+            );
+            appendArc(
+                lineVertices,
+                lineCounts,
+                geom.p0,
+                geom.r,
+                geom.startangle + geom.range / 2.0F + static_cast<float>(geom.textMargin),
+                geom.endangle
+            );
+
+            appendLine(lineVertices, lineCounts, geom.pnt1, geom.pnt2);
+            appendLine(lineVertices, lineCounts, geom.pnt3, geom.pnt4);
+
+            appendArrowTriangle(
+                triangleVertices,
+                triangleCounts,
+                geom.startArrowBase,
+                geom.dirStart,
+                geom.arrowWidth,
+                geom.arrowLength
+            );
+            appendArrowTriangle(
+                triangleVertices,
+                triangleCounts,
+                geom.endArrowBase,
+                geom.dirEnd,
+                geom.arrowWidth,
+                geom.arrowLength
+            );
+        }
+    }
+    else if (type == SYMMETRIC) {
+        if (numPoints >= 2) {
+            const SymmetricGeometry geom = calculateSymmetricGeometry(points);
+
+            SbVec3f p1 = geom.p1;
+            SbVec3f ar0 = geom.ar0;
+            SbVec3f p2 = geom.p2;
+            SbVec3f ar3 = geom.ar3;
+            setVertexZ(p1, ZCONSTR);
+            setVertexZ(ar0, ZCONSTR);
+            setVertexZ(p2, ZCONSTR);
+            setVertexZ(ar3, ZCONSTR);
+            appendLine(lineVertices, lineCounts, p1, ar0);
+            appendLine(lineVertices, lineCounts, p2, ar3);
+
+            appendLine(
+                lineVertices,
+                lineCounts,
+                withZ(geom.ar0, ZARROW_TEXT_OFFSET),
+                withZ(geom.ar1, ZARROW_TEXT_OFFSET)
+            );
+            appendLine(
+                lineVertices,
+                lineCounts,
+                withZ(geom.ar0, ZARROW_TEXT_OFFSET),
+                withZ(geom.ar2, ZARROW_TEXT_OFFSET)
+            );
+            appendLine(
+                lineVertices,
+                lineCounts,
+                withZ(geom.ar3, ZARROW_TEXT_OFFSET),
+                withZ(geom.ar4, ZARROW_TEXT_OFFSET)
+            );
+            appendLine(
+                lineVertices,
+                lineCounts,
+                withZ(geom.ar3, ZARROW_TEXT_OFFSET),
+                withZ(geom.ar5, ZARROW_TEXT_OFFSET)
+            );
+        }
+    }
+    else if (type == ARCLENGTH) {
+        if (numPoints >= 3) {
+            const ArcLengthGeometry geom = calculateArcLengthGeometry(points);
+
+            appendArc(
+                lineVertices,
+                lineCounts,
+                geom.arcCenter,
+                geom.arcRadius,
+                geom.startangle,
+                geom.endangle
+            );
+            appendLine(lineVertices, lineCounts, geom.pnt1, geom.pnt2);
+            appendLine(lineVertices, lineCounts, geom.pnt3, geom.pnt4);
+
+            const float arrowLength = geom.margin * 2.0F;
+            const float arrowWidth = geom.margin * 0.5F;
+            appendArrowTriangle(
+                triangleVertices,
+                triangleCounts,
+                geom.pnt2,
+                geom.dirStart,
+                arrowWidth,
+                arrowLength
+            );
+            appendArrowTriangle(
+                triangleVertices,
+                triangleCounts,
+                geom.pnt4,
+                geom.dirEnd,
+                arrowWidth,
+                arrowLength
+            );
+        }
+    }
+
+    if (!lineVertices.empty()) {
+        m_LineVertexProperty->vertex
+            .setValues(0, static_cast<int>(lineVertices.size()), lineVertices.data());
+        m_LineSet->numVertices.setValues(0, static_cast<int>(lineCounts.size()), lineCounts.data());
+    }
+    else {
+        m_LineVertexProperty->vertex.setNum(0);
+        m_LineSet->numVertices.setNum(0);
+    }
+
+    if (!triangleVertices.empty()) {
+        m_TriangleVertexProperty->vertex
+            .setValues(0, static_cast<int>(triangleVertices.size()), triangleVertices.data());
+        m_TriangleFaceSet->numVertices
+            .setValues(0, static_cast<int>(triangleCounts.size()), triangleCounts.data());
+    }
+    else {
+        m_TriangleVertexProperty->vertex.setNum(0);
+        m_TriangleFaceSet->numVertices.setNum(0);
+    }
+}
+
+void SoDatumLabel::ensureCoinText(SoState* state, int srcw, int srch, float angle, const SbVec3f& textOffset)
+{
+    if (!state || !m_TextSwitch || !m_TextVertexProperty || !m_TextFaceSet || !m_TextTransform
+        || !m_TextTexture) {
         return;
     }
 
-    const float scale = getScaleFactor(state);
-    bool hasText = hasDatumText();
+    SbVec2s imgsize;
+    int nc {};
+    const unsigned char* dataptr = this->image.getValue(imgsize, nc);
+    if (!dataptr || srcw <= 0 || srch <= 0 || imgWidth <= 0.0f || imgHeight <= 0.0f) {
+        m_TextSwitch->whichChild.setValue(SO_SWITCH_NONE);
+        m_TextVertexProperty->vertex.setNum(0);
+        m_TextVertexProperty->texCoord.setNum(0);
+        m_TextFaceSet->numVertices.setNum(0);
+        return;
+    }
 
+    const SbViewVolume& vv = SoViewVolumeElement::get(state);
+    const SbVec3f z = vv.zVector();
+    const bool flip = norm.getValue().dot(z) > std::numeric_limits<float>::epsilon();
+    const float sketchAngle = getSketchRotationAngle(state, vv, flip);
+    const float absLabelAngle = std::abs(sketchAngle + angle);
+
+    constexpr float quarter = 90.0F;
+    constexpr float hysteresis = 15.0F;
+    constexpr float threshold = Base::toRadians(quarter + hysteresis);
+
+    if ((flip && absLabelAngle > threshold) || (!flip && absLabelAngle < threshold)) {
+        angle += std::numbers::pi;
+    }
+
+    m_TextTransform->translation.setValue(textOffset);
+    m_TextTransform->rotation.setValue(SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), angle));
+
+    const float left = -imgWidth / 2.0f;
+    const float right = imgWidth / 2.0f;
+    const float bottom = -imgHeight / 2.0f;
+    const float top = imgHeight / 2.0f;
+
+    m_TextVertexProperty->vertex.setNum(4);
+    m_TextVertexProperty->vertex.set1Value(0, SbVec3f(left, top, 0.0f));
+    m_TextVertexProperty->vertex.set1Value(1, SbVec3f(left, bottom, 0.0f));
+    m_TextVertexProperty->vertex.set1Value(2, SbVec3f(right, bottom, 0.0f));
+    m_TextVertexProperty->vertex.set1Value(3, SbVec3f(right, top, 0.0f));
+
+    m_TextVertexProperty->texCoord.setNum(4);
+    if (flip) {
+        m_TextVertexProperty->texCoord.set1Value(0, SbVec2f(0.0f, 1.0f));
+        m_TextVertexProperty->texCoord.set1Value(1, SbVec2f(0.0f, 0.0f));
+        m_TextVertexProperty->texCoord.set1Value(2, SbVec2f(1.0f, 0.0f));
+        m_TextVertexProperty->texCoord.set1Value(3, SbVec2f(1.0f, 1.0f));
+    }
+    else {
+        m_TextVertexProperty->texCoord.set1Value(0, SbVec2f(1.0f, 1.0f));
+        m_TextVertexProperty->texCoord.set1Value(1, SbVec2f(1.0f, 0.0f));
+        m_TextVertexProperty->texCoord.set1Value(2, SbVec2f(0.0f, 0.0f));
+        m_TextVertexProperty->texCoord.set1Value(3, SbVec2f(0.0f, 1.0f));
+    }
+
+    m_TextFaceSet->numVertices.set1Value(0, 4);
+    m_TextSwitch->whichChild.setValue(0);
+}
+
+bool SoDatumLabel::prepareRenderScene(SoState* state)
+{
+    const bool hasText = hasDatumText();
     int srcw = 1;
     int srch = 1;
+    float angle = 0.0F;
+    SbVec3f textOffset(0.0F, 0.0F, 0.0F);
 
+    const float scale = getScaleFactor(state);
     if (hasText) {
         getDimension(scale, srcw, srch);
     }
@@ -1178,63 +1611,89 @@ void SoDatumLabel::GLRender(SoGLRenderAction* action)
         this->imgWidth = scale * 25.0F;
     }
 
-    // Get the points stored in the pnt field
     const SbVec3f* points = this->pnts.getValues(0);
-
-    state->push();
-
-    // Set General OpenGL Properties
-    glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glDisable(GL_LIGHTING);
-    glDisable(GL_CULL_FACE);
-
-    // Enable depth testing so constraint lines use the sketch-local Z carried by their
-    // input points. That keeps them above coplanar model geometry while still rendering
-    // below sketch elements in the normal scene.
-    glEnable(GL_DEPTH_TEST);
-
-    // Enable Anti-alias
-    if (action->isSmoothing()) {
-        glEnable(GL_LINE_SMOOTH);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+    const auto type = static_cast<Type>(datumtype.getValue());
+    const int numPoints = this->pnts.getNum();
+    const bool isDistance = type == DISTANCE || type == DISTANCEX || type == DISTANCEY;
+    if (isDistance && numPoints < 2) {
+        SoDebugError::postWarning("SoDatumLabel::GLRender", "Too few points to render distance label");
     }
 
-    // Position for Datum Text Label
-    float angle = 0;
-
-    // Get the colour
-    const SbColor& t = textColor.getValue();
-
-    // Set GL Properties
-    glLineWidth(this->lineWidth.getValue());
-    glColor3f(t[0], t[1], t[2]);
-
-    SbVec3f textOffset;
-
-    if (this->datumtype.getValue() == DISTANCE || this->datumtype.getValue() == DISTANCEX
-        || this->datumtype.getValue() == DISTANCEY) {
-        drawDistance(points, angle, textOffset);
-    }
-    else if (this->datumtype.getValue() == RADIUS || this->datumtype.getValue() == DIAMETER) {
-        drawRadiusOrDiameter(points, angle, textOffset);
-    }
-    else if (this->datumtype.getValue() == ANGLE) {
-        drawAngle(points, angle, textOffset);
-    }
-    else if (this->datumtype.getValue() == SYMMETRIC) {
-        drawSymmetric(points);
-    }
-    else if (this->datumtype.getValue() == ARCLENGTH) {
-        drawArcLength(points, angle, textOffset);
-    }
+    ensureCoinGeometry(points, numPoints);
 
     if (hasText) {
-        drawText(state, srcw, srch, angle, textOffset);
+        if (isDistance && numPoints >= 2) {
+            const DistanceGeometry geom = calculateDistanceGeometry(points);
+            angle = geom.angle;
+            textOffset = geom.textOffset;
+        }
+        else if (type == RADIUS || type == DIAMETER) {
+            const DiameterGeometry geom = calculateDiameterGeometry(points);
+            angle = geom.angle;
+            textOffset = geom.textOffset;
+        }
+        else if (type == ANGLE) {
+            const AngleGeometry geom = calculateAngleGeometry(points);
+            angle = geom.angle;
+            textOffset = geom.textOffset;
+        }
+        else if (type == ARCLENGTH && numPoints >= 3) {
+            const ArcLengthGeometry geom = calculateArcLengthGeometry(points);
+            angle = geom.angle;
+            textOffset = geom.textOffset;
+        }
     }
 
-    glPopAttrib();
+    if (m_TextSwitch) {
+        if (hasText) {
+            ensureCoinText(state, srcw, srch, angle, textOffset);
+        }
+        else {
+            m_TextSwitch->whichChild.setValue(SO_SWITCH_NONE);
+        }
+    }
+
+    return hasText;
+}
+
+void SoDatumLabel::GLRender(SoGLRenderAction* action)
+{
+    if (!action) {
+        return;
+    }
+
+    SoState* state = action->getState();
+    if (!state) {
+        return;
+    }
+
+    state->push();
+    // Override inherited cull-face state before SoShape::shouldGLRender() decides
+    // whether this label is visible. Otherwise a flipped parent can cull the
+    // whole label before we get to render its two-sided geometry.
+    SoLazyElement::setBackfaceCulling(state, FALSE);
+
+    if (!shouldGLRender(action)) {
+        state->pop();
+        return;
+    }
+    if (action->handleTransparency(true)) {
+        state->pop();
+        return;
+    }
+
+    const bool hasText = prepareRenderScene(state);
+
+    if (hasText) {
+        // Avoid mipmaps for crisper annotation text while retaining linear filtering.
+        SoTextureQualityElement::set(state, this, 0.49F);
+        SoLazyElement::setTransparencyType(state, static_cast<int32_t>(SoGLRenderAction::BLEND));
+    }
+
+    if (m_Root) {
+        m_Root->GLRender(action);
+    }
+
     state->pop();
 }
 
@@ -1265,376 +1724,6 @@ void SoDatumLabel::getDimension(float scale, int& srcw, int& srch)
     float aspectRatio = (float)srcw / (float)srch;
     this->imgHeight = scale * (float)(srch) / sampling.getValue();
     this->imgWidth = aspectRatio * (float)this->imgHeight;
-}
-
-void SoDatumLabel::drawDistance(const SbVec3f* points, float& angle, SbVec3f& textOffset)
-{
-    SoDatumLabel::DistanceGeometry geom = this->calculateDistanceGeometry(points);
-
-    angle = geom.angle;
-    textOffset = geom.textOffset;
-
-    // Get the colour
-    const SbColor& t = textColor.getValue();
-
-    // Set GL Properties
-    glLineWidth(this->lineWidth.getValue());
-    glColor3f(t[0], t[1], t[2]);
-
-    // Perp Lines
-    glBegin(GL_LINES);
-    if (this->param1.getValue() != 0.) {
-        glVertex(geom.p1);
-        glVertex(geom.perp1);
-
-        glVertex(geom.p2);
-        glVertex(geom.perp2);
-    }
-
-    glVertex(geom.par1);
-    glVertex(geom.par2);
-
-    glVertex(geom.par3);
-    glVertex(geom.par4);
-    glEnd();
-
-    // Draw the arrowheads at elevated Z to render ON TOP of geometry lines
-    glBegin(GL_TRIANGLES);
-    glVertex3f(geom.par1[0], geom.par1[1], ZARROW_TEXT_OFFSET);
-    glVertex3f(geom.ar1[0], geom.ar1[1], ZARROW_TEXT_OFFSET);
-    glVertex3f(geom.ar2[0], geom.ar2[1], ZARROW_TEXT_OFFSET);
-
-    glVertex3f(geom.par4[0], geom.par4[1], ZARROW_TEXT_OFFSET);
-    glVertex3f(geom.ar3[0], geom.ar3[1], ZARROW_TEXT_OFFSET);
-    glVertex3f(geom.ar4[0], geom.ar4[1], ZARROW_TEXT_OFFSET);
-    glEnd();
-
-    if (this->datumtype.getValue() == DISTANCE) {
-        drawDistance(points);
-    }
-}
-
-void SoDatumLabel::drawDistance(const SbVec3f* points)
-{
-    // Draw arc helpers if needed
-    float range1 = this->param4.getValue();
-    if (range1 != 0.0) {
-        float startAngle1 = this->param3.getValue();
-        float radius1 = this->param5.getValue();
-        SbVec3f center1 = points[2];
-        glDrawArc(center1, radius1, startAngle1, startAngle1 + range1);
-    }
-
-    float range2 = this->param7.getValue();
-    if (range2 != 0.0) {
-        float startAngle2 = this->param6.getValue();
-        float radius2 = this->param8.getValue();
-        SbVec3f center2 = points[3];
-        glDrawArc(center2, radius2, startAngle2, startAngle2 + range2);
-    }
-}
-
-void SoDatumLabel::drawRadiusOrDiameter(const SbVec3f* points, float& angle, SbVec3f& textOffset)
-{
-    // Use shared geometry calculation
-    DiameterGeometry geom = calculateDiameterGeometry(points);
-
-    angle = geom.angle;
-    textOffset = geom.textOffset;
-
-    // Draw the Lines
-    glBegin(GL_LINES);
-    glVertex(geom.p1);
-    glVertex(geom.pnt1);
-
-    glVertex(geom.pnt2);
-    glVertex(geom.p2);
-    glEnd();
-
-    // Draw arrowhead at elevated Z to render ON TOP of geometry lines
-    glBegin(GL_TRIANGLES);
-    glVertex3f(geom.ar0[0], geom.ar0[1], ZARROW_TEXT_OFFSET);
-    glVertex3f(geom.ar1[0], geom.ar1[1], ZARROW_TEXT_OFFSET);
-    glVertex3f(geom.ar2[0], geom.ar2[1], ZARROW_TEXT_OFFSET);
-    glEnd();
-
-    if (geom.isDiameter) {
-        // Draw second arrowhead at elevated Z
-        glBegin(GL_TRIANGLES);
-        glVertex3f(geom.ar0_1[0], geom.ar0_1[1], ZARROW_TEXT_OFFSET);
-        glVertex3f(geom.ar1_1[0], geom.ar1_1[1], ZARROW_TEXT_OFFSET);
-        glVertex3f(geom.ar2_1[0], geom.ar2_1[1], ZARROW_TEXT_OFFSET);
-        glEnd();
-    }
-
-    // Draw arc helpers if needed
-    if (geom.startRange != 0.0) {
-        glDrawArc(geom.center, geom.radius, geom.startAngle, geom.startAngle + geom.startRange);
-    }
-
-    if (geom.endRange != 0.0) {
-        glDrawArc(geom.center, geom.radius, geom.endAngle, geom.endAngle + geom.endRange);
-    }
-}
-
-void SoDatumLabel::drawAngle(const SbVec3f* points, float& angle, SbVec3f& textOffset)
-{
-    // use shared geometry calculation
-    AngleGeometry geom = calculateAngleGeometry(points);
-
-    angle = geom.angle;
-    textOffset = geom.textOffset;
-
-    // draw arc segments
-    glDrawArc(geom.p0, geom.r, geom.startangle, geom.startangle + geom.range / 2.0 - geom.textMargin);
-    glDrawArc(geom.p0, geom.r, geom.startangle + geom.range / 2.0 + geom.textMargin, geom.endangle);
-
-    // draw extension lines
-    glDrawLine(geom.pnt1, geom.pnt2);
-    glDrawLine(geom.pnt3, geom.pnt4);
-
-    // draw arrowheads
-    glDrawArrow(geom.startArrowBase, geom.dirStart, geom.arrowWidth, geom.arrowLength);
-    glDrawArrow(geom.endArrowBase, geom.dirEnd, geom.arrowWidth, geom.arrowLength);
-}
-
-void SoDatumLabel::drawSymmetric(const SbVec3f* points)
-{
-    // use shared geometry calculation
-    SymmetricGeometry geom = calculateSymmetricGeometry(points);
-
-    // draw first constraint line (at constraint Z)
-    glBegin(GL_LINES);
-    glVertex3f(geom.p1[0], geom.p1[1], ZCONSTR);
-    glVertex3f(geom.ar0[0], geom.ar0[1], ZCONSTR);
-    glEnd();
-
-    // draw first arrowhead at elevated Z to render ON TOP of geometry lines
-    glBegin(GL_LINES);
-    glVertex3f(geom.ar0[0], geom.ar0[1], ZARROW_TEXT_OFFSET);
-    glVertex3f(geom.ar1[0], geom.ar1[1], ZARROW_TEXT_OFFSET);
-    glVertex3f(geom.ar0[0], geom.ar0[1], ZARROW_TEXT_OFFSET);
-    glVertex3f(geom.ar2[0], geom.ar2[1], ZARROW_TEXT_OFFSET);
-    glEnd();
-
-    // draw second constraint line (at constraint Z)
-    glBegin(GL_LINES);
-    glVertex3f(geom.p2[0], geom.p2[1], ZCONSTR);
-    glVertex3f(geom.ar3[0], geom.ar3[1], ZCONSTR);
-    glEnd();
-
-    // draw second arrowhead at elevated Z to render ON TOP of geometry lines
-    glBegin(GL_LINES);
-    glVertex3f(geom.ar3[0], geom.ar3[1], ZARROW_TEXT_OFFSET);
-    glVertex3f(geom.ar4[0], geom.ar4[1], ZARROW_TEXT_OFFSET);
-    glVertex3f(geom.ar3[0], geom.ar3[1], ZARROW_TEXT_OFFSET);
-    glVertex3f(geom.ar5[0], geom.ar5[1], ZARROW_TEXT_OFFSET);
-    glEnd();
-}
-
-void SoDatumLabel::drawArcLength(const SbVec3f* points, float& angle, SbVec3f& textOffset)
-{
-    // use shared geometry calculation
-    ArcLengthGeometry geom = calculateArcLengthGeometry(points);
-
-    // set output parameters
-    angle = geom.angle;
-    textOffset = geom.textOffset;
-
-    // draw arc
-    glDrawArc(geom.arcCenter, geom.arcRadius, geom.startangle, geom.endangle);
-
-    // draw lines
-    glDrawLine(geom.pnt1, geom.pnt2);
-    glDrawLine(geom.pnt3, geom.pnt4);
-
-    // create the arrowheads
-    float arrowLength = geom.margin * 2;
-    float arrowWidth = geom.margin * 0.5F;
-
-    glDrawArrow(geom.pnt2, geom.dirStart, arrowWidth, arrowLength);
-    glDrawArrow(geom.pnt4, geom.dirEnd, arrowWidth, arrowLength);
-}
-
-namespace
-{
-/*!
- * \brief Compute sketch rotation angle in screen space.
- *
- * Calculates the rotation of the sketch relative to the camera view.
- * The angle is measured from the camera right vector to the sketch's local X axis.
- *
- * \param state Current Coin3D traversal state used to retrieve view and model matrices.
- * \param viewVolume Active view volume describing the camera projection and orientation.
- * \param flip If true, the resulting angle is inverted to account for back-facing view direction.
- *
- * \return Rotation angle in radians in the range [-pi, pi].
- *         Positive values correspond to counter-clockwise (CCW) rotation,
- *         negative values correspond to clockwise (CW) rotation.
- */
-float getSketchRotationAngle(SoState* state, const SbViewVolume& viewVolume, bool flip)
-{
-    // Camera basis from view volume (screen space axes
-    SbVec3f camRight = viewVolume.lrf - viewVolume.llf;
-    SbVec3f camUp = viewVolume.ulf - viewVolume.llf;
-
-    camRight.normalize();
-    camUp.normalize();
-
-    // Sketch local X axis in world space
-    const SbMatrix& m = SoModelMatrixElement::get(state);
-    SbVec3f xWorld;
-    m.multDirMatrix(SbVec3f(1, 0, 0), xWorld);
-
-    // Compute angle in screen space
-    float cosA = xWorld.dot(camRight);
-    float sinA = xWorld.dot(camUp);
-
-    float angleRad = std::atan2(sinA, cosA);
-
-    // Optional flip correction (back-facing view)
-    return flip ? angleRad : -angleRad;
-}
-}  // unnamed namespace
-
-// NOLINTNEXTLINE
-void SoDatumLabel::drawText(SoState* state, int srcw, int srch, float angle, const SbVec3f& textOffset)
-{
-    SbVec2s imgsize;
-    int nc {};
-    const unsigned char* dataptr = this->image.getValue(imgsize, nc);
-
-    // Get the camera z-direction
-    const SbViewVolume& vv = SoViewVolumeElement::get(state);
-    SbVec3f z = vv.zVector();
-
-    bool flip = norm.getValue().dot(z) > std::numeric_limits<float>::epsilon();
-
-    const float sketchAngle = getSketchRotationAngle(state, vv, flip);
-    const float absLabelAngle = std::abs(sketchAngle + angle);
-
-    constexpr float quarter = 90.0F;  // vertical line
-    constexpr float hysteresis = 15.0F;  // extra to avoid flipping back and forth when close to vertical
-    constexpr float threshold = Base::toRadians(quarter + hysteresis);
-
-    if ((flip && absLabelAngle > threshold) || (!flip && absLabelAngle < threshold)) {
-        angle += std::numbers::pi;
-    }
-
-    static bool init = false;
-    static bool npot = false;
-    if (!init) {
-        init = true;
-        std::string ext = reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS));  // NOLINT
-        npot = (ext.find("GL_ARB_texture_non_power_of_two") != std::string::npos);
-    }
-
-    int w = srcw;
-    int h = srch;
-    if (!npot) {
-        // make power of two
-        if ((w & (w - 1)) != 0) {
-            int i = 1;
-            while (i < 8) {
-                if ((w >> i) == 0) {
-                    break;
-                }
-                i++;
-            }
-            w = (1 << i);
-        }
-        // make power of two
-        if ((h & (h - 1)) != 0) {
-            int i = 1;
-            while (i < 8) {
-                if ((h >> i) == 0) {
-                    break;
-                }
-                i++;
-            }
-            h = (1 << i);
-        }
-    }
-
-    glDisable(GL_DEPTH_TEST);
-    glEnable(GL_TEXTURE_2D);  // Enable Textures
-    glEnable(GL_BLEND);
-
-    // glGenTextures/glBindTexture was commented out but it must be active, see:
-    // #0000971: Tracing over a background image in Sketcher: image is overwritten by first
-    // dimensional constraint text #0001185: Planer image changes to number graphic when a part
-    // design constraint is made after the planar image
-    //
-    // Copy the text bitmap into memory and bind
-    GLuint myTexture {};
-    // generate a texture
-    glGenTextures(1, &myTexture);
-    glBindTexture(GL_TEXTURE_2D, myTexture);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-    if (!npot) {
-        QImage imagedata(w, h, QImage::Format_ARGB32_Premultiplied);
-        imagedata.fill(0x00000000);
-        int sx = (w - srcw) / 2;
-        int sy = (h - srch) / 2;
-        glTexImage2D(
-            GL_TEXTURE_2D,
-            0,
-            nc,
-            w,
-            h,
-            0,
-            GL_RGBA,
-            GL_UNSIGNED_BYTE,
-            (const GLvoid*)imagedata.bits()
-        );
-        glTexSubImage2D(
-            GL_TEXTURE_2D,
-            0,
-            sx,
-            sy,
-            srcw,
-            srch,
-            GL_RGBA,
-            GL_UNSIGNED_BYTE,
-            (const GLvoid*)dataptr
-        );
-    }
-    else {
-        glTexImage2D(GL_TEXTURE_2D, 0, nc, srcw, srch, 0, GL_RGBA, GL_UNSIGNED_BYTE, (const GLvoid*)dataptr);
-    }
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-
-    // Apply a rotation and translation matrix
-    glTranslatef(textOffset[0], textOffset[1], textOffset[2]);
-    glRotatef(Base::toDegrees<GLfloat>(angle), 0, 0, 1);
-    glBegin(GL_QUADS);
-
-    glColor3f(1.F, 1.F, 1.F);
-
-    glTexCoord2f(flip ? 0.F : 1.F, 1.F);
-    glVertex2f(-this->imgWidth / 2, this->imgHeight / 2);
-    glTexCoord2f(flip ? 0.F : 1.F, 0.F);
-    glVertex2f(-this->imgWidth / 2, -this->imgHeight / 2);
-    glTexCoord2f(flip ? 1.F : 0.F, 0.F);
-    glVertex2f(this->imgWidth / 2, -this->imgHeight / 2);
-    glTexCoord2f(flip ? 1.F : 0.F, 1.F);
-    glVertex2f(this->imgWidth / 2, this->imgHeight / 2);
-
-    glEnd();
-
-    // Reset the Mode
-    glPopMatrix();
-
-    // wmayer: see bug report below which is caused by generating but not
-    // deleting the texture.
-    // #0000721: massive memory leak when dragging an unconstrained model
-    glDeleteTextures(1, &myTexture);
 }
 
 void SoDatumLabel::setPoints(SbVec3f p1, SbVec3f p2)
@@ -1838,12 +1927,12 @@ SoDatumLabel::AngleGeometry SoDatumLabel::calculateAngleGeometry(const SbVec3f* 
     // set the text label angle to zero
     geom.angle = 0.F;
 
-    geom.v0 = getArcMidDirection(geom.startangle, geom.endangle);
+    geom.v0 = getAngleMidDirection(geom.startangle, geom.range);
 
     // leave some space for the text
     geom.textMargin = std::min(0.2F * abs(geom.range), this->imgWidth / (2 * geom.r));
 
-    geom.textOffset = getArcTextCenter(geom.p0, geom.startangle, geom.endangle, geom.r);
+    geom.textOffset = getAngleTextCenter(geom.p0, geom.startangle, geom.range, geom.r);
 
     // direction vectors for start and end lines
     geom.v1 = SbVec3f(cos(geom.startangle), sin(geom.startangle), 0);

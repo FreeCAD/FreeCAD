@@ -281,8 +281,26 @@ class _CommandStructure:
             movecallback=self.update,
             extradlg=[self.taskbox(), self.precast.form, self.dents.form],
             title=title,
+            hints=self.get_hints(),
         )
         FreeCADGui.draftToolBar.continueCmd.show()
+
+    def get_hints(self):
+        "returns status bar input hints for the current tool state"
+        from draftguitools import gui_tool_utils
+
+        if self.mode == StructureMode.BEAM and (self.bpoint is None):
+            label = translate("Arch", "%1 pick first point")
+        elif self.mode == StructureMode.BEAM:
+            label = translate("Arch", "%1 pick next point")
+        else:
+            label = translate("Arch", "%1 pick base point")
+        return (
+            [FreeCADGui.InputHint(label, FreeCADGui.UserInput.MouseLeft)]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+        )
 
     def getPoint(self, point=None, obj=None):
         "this function is called by the snapper when it has a 3D point"
@@ -308,6 +326,7 @@ class _CommandStructure:
                 extradlg=[self.taskbox(), self.precast.form, self.dents.form],
                 title=translate("Arch", "Next Point") + ":",
                 mode="line",
+                hints=self.get_hints(),
             )
             return
         self.wp._restore()

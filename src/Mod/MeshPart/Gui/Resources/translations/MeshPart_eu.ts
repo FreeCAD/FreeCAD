@@ -383,11 +383,6 @@ Baliorik txikiena 0 da.</translation>
       <translation>Erabili Netgen amaraun-sortzailea</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Fintasuna:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Oso latza</translation>
@@ -438,6 +433,11 @@ Baliorik txikiena 0 da.</translation>
 A value in the range of 0.1-1.</source>
       <translation>Parametro hau txikiagoa bada, amarauna meheagoa bihurtzen da.
 0.1-1 barrutiko balio bat.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Mehetasuna</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>

@@ -47,6 +47,7 @@
 #include <App/PropertyGeo.h>
 #include <App/PropertyFile.h>
 #include <App/PropertyUnits.h>
+#include <App/TransactionDefs.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
@@ -854,9 +855,9 @@ QWidget* PropertyStringItem::createEditor(
     FrameOption frameOption
 ) const
 {
+    Q_UNUSED(method);
     auto le = new ExpLineEdit(parent);
     le->setFrame(static_cast<bool>(frameOption));
-    QObject::connect(le, &ExpLineEdit::textChanged, method);
     if (isBound()) {
         le->bind(getPath());
         le->setAutoApply(autoApply());
@@ -1082,6 +1083,10 @@ void PropertyIntegerConstraintItem::setEditorData(QWidget* editor, const QVarian
         sb->setSingleStep(steps);
     }
 
+    if (prop && prop->isDerivedFrom<App::PropertyPercent>()) {
+        sb->setSuffix(QStringLiteral(" %"));
+    }
+
     sb->setValue(data.toInt());
 }
 
@@ -1094,6 +1099,11 @@ QVariant PropertyIntegerConstraintItem::editorData(QWidget* editor) const
 QString PropertyIntegerConstraintItem::toString(const QVariant& v) const
 {
     QString string(PropertyItem::toString(v));
+
+    const auto prop = getFirstProperty();
+    if (prop && prop->isDerivedFrom<App::PropertyPercent>()) {
+        string += QStringLiteral(" %");
+    }
 
     if (hasExpression()) {
         string += QStringLiteral("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
@@ -4724,8 +4734,8 @@ void LinkLabel::updatePropertyLink()
                        "</p></body></html>"
             )
                        .arg(
-                           QLatin1String(sobj.getDocumentName().c_str()),
-                           QLatin1String(sobj.getObjectName().c_str()),
+                           QString::fromStdString(sobj.getDocumentName()),
+                           QString::fromStdString(sobj.getObjectName()),
                            QString::fromUtf8(sobj.getSubName().c_str()),
                            linkcolor,
                            DlgPropertyLink::formatObject(
@@ -4876,6 +4886,160 @@ QVariant PropertyLinkItem::editorData(QWidget* editor) const
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyLinkListItem)
 
 PropertyLinkListItem::PropertyLinkListItem() = default;
+
+// --------------------------------------------------------------------
+
+static const char* PropertyMapDataProperty = "data";
+
+PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyMapItem)
+
+PropertyMapItem::PropertyMapItem() = default;
+
+QWidget* PropertyMapItem::
+    createEditor(QWidget* parent, const std::function<void()>& method, FrameOption /*frameOption*/) const
+{
+    QWidget* editor = new QWidget(parent);
+
+    auto layout = new QHBoxLayout(editor);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(2);
+
+    auto label = new QLabel(QStringLiteral("{ ... }"), editor);
+    label->setFrameShape(QFrame::Box);
+    label->setAutoFillBackground(true);
+
+    QPalette palette = label->palette();
+    palette.setColor(
+        QPalette::Base,
+        QApplication::palette().color(QPalette::Active, QPalette::Highlight)
+    );
+    palette.setColor(
+        QPalette::Text,
+        QApplication::palette().color(QPalette::Active, QPalette::HighlightedText)
+    );
+    label->setPalette(palette);
+    layout->addWidget(label);
+
+    auto button = new QPushButton(QStringLiteral("…"), parent);
+    button->setFixedWidth(button->height());
+    layout->addWidget(button);
+
+    connect(button, &QPushButton::clicked, this, [this, method, editor, label]() {
+        QDialog dialog(editor);
+        dialog.setWindowTitle(tr("Map"));
+
+        QFontMetrics metrics(dialog.font(), &dialog);
+        dialog.resize(metrics.horizontalAdvance(QStringLiteral("W")) * 36, metrics.height() * 15);
+
+        QDialogButtonBox box(&dialog);
+        box.setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+
+        PropertyMapEditor view(&dialog);
+        view.setMap(editor->property(PropertyMapDataProperty).toMap());
+        if (isBound()) {
+            view.bind(getPath());
+        }
+
+        QVBoxLayout layout(&dialog);
+        layout.addWidget(&view);
+        layout.addWidget(&box);
+
+        connect(&box, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
+        connect(&box, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
+
+        if (dialog.exec() == QDialog::Accepted) {
+            QVariantMap data = view.map();
+            editor->setProperty(PropertyMapDataProperty, data);
+            label->setText(this->toString(data));
+            method();
+
+            App::GetApplication().closeActiveTransaction(App::TransactionCloseMode::Commit);
+        }
+        else {
+            App::GetApplication().closeActiveTransaction(App::TransactionCloseMode::Abort);
+        }
+
+        static_cast<QWidget*>(editor->parent())->setFocus();
+    });
+
+    return editor;
+}
+
+void PropertyMapItem::setEditorData(QWidget* editor, const QVariant& data) const
+{
+    editor->setProperty(PropertyMapDataProperty, data);
+
+    QLabel* label = editor->findChild<QLabel*>();
+    if (label) {
+        label->setText(this->toString(data));
+    }
+}
+
+QVariant PropertyMapItem::editorData(QWidget* editor) const
+{
+    return editor->property(PropertyMapDataProperty);
+}
+
+QString PropertyMapItem::toString(const QVariant& prop) const
+{
+    QString result("");
+    QVariantMap map = prop.toMap();
+
+    auto total = map.size();
+    auto shown = std::min<decltype(total)>(total, 10);
+
+    result += QStringLiteral("{ ");
+    auto it = map.keyValueBegin();
+    for (decltype(shown) i = 0; i < shown; i++, it++) {
+        if (i > 0) {
+            result += QStringLiteral(" | ");
+        }
+        result += it->first;
+        result += QStringLiteral(" → ");
+        result += it->second.toString();
+    }
+
+    if (shown < total) {
+        result += QStringLiteral(" …");
+    }
+    result += QStringLiteral(" }");
+
+    return result;
+}
+
+QVariant PropertyMapItem::value(const App::Property* prop) const
+{
+    assert(prop && prop->isDerivedFrom<App::PropertyMap>());
+    const std::map<std::string, std::string>& values
+        = static_cast<const App::PropertyMap*>(prop)->getValues();
+
+    QVariantMap map;
+    for (const auto& it : values) {
+        map[QString::fromStdString(it.first)] = QString::fromStdString(it.second);
+    }
+
+    return {map};
+}
+
+void PropertyMapItem::setValue(const QVariant& value)
+{
+    if (hasExpression() || !value.canConvert<QVariantMap>()) {
+        return;
+    }
+    QVariantMap map = value.toMap();
+
+    std::ostringstream ss;
+    ss << "{";
+    for (auto it = map.keyValueBegin(); it != map.keyValueEnd(); it++) {
+        std::string k = Base::InterpreterSingleton::strToPython(it->first.toStdString());
+        std::string v = Base::InterpreterSingleton::strToPython(it->second.toString().toStdString());
+        ss << "\"" << k << "\": \"" << v << "\", ";
+    }
+    ss << "}";
+    setPropertyValue(ss.str());
+}
+
+// ---------------------------------------------------------------
 
 PropertyItemEditorFactory::PropertyItemEditorFactory() = default;
 

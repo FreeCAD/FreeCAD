@@ -503,7 +503,7 @@
                <string>Distance between horizontal axes</string>
               </property>
               <property name="text">
-               <string>0 </string>
+               <string>0</string>
               </property>
               <property name="unit" stdset="0">
                <string notr="true"/>
@@ -612,7 +612,7 @@
                <string>The vertical distance between each level</string>
               </property>
               <property name="text">
-               <string>0 </string>
+               <string>0</string>
               </property>
               <property name="unit" stdset="0">
                <string notr="true"/>

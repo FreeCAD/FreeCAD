@@ -1,30 +1,33 @@
-/***************************************************************************
- *   Copyright (c) 2005 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2005 Werner Mayer <wmayer[at]users.sourceforge.net>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <QApplication>
 #include <QDir>
 #include <QPrinter>
 #include <QFileInfo>
+#include <map>
 #include <Inventor/SoInput.h>
+#include <Inventor/SoPath.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <xercesc/util/TranscodingException.hpp>
@@ -69,6 +72,7 @@
 #include "WorkbenchManipulatorPython.h"
 #include "Inventor/MarkerBitmaps.h"
 #include "Language/Translator.h"
+#include "Selection/SoFCUnifiedSelection.h"
 
 
 using namespace Gui;
@@ -82,6 +86,158 @@ void requirePythonMainThread(const char* api)
     }
     catch (const Base::Exception& exception) {
         throw Py::RuntimeError(exception.what());
+    }
+}
+
+struct CoinActionTarget
+{
+    SoNode* node {nullptr};
+    SoPath* path {nullptr};
+};
+
+std::string pythonStringToStdString(PyObject* value)
+{
+    if (PyUnicode_Check(value)) {
+        const char* utf8 = PyUnicode_AsUTF8(value);
+        if (!utf8) {
+            throw Py::Exception();
+        }
+        return utf8;
+    }
+
+    if (PyBytes_Check(value)) {
+        char* data = nullptr;
+        Py_ssize_t size = 0;
+        if (PyBytes_AsStringAndSize(value, &data, &size) != 0) {
+            throw Py::Exception();
+        }
+        return std::string(data, static_cast<std::size_t>(size));
+    }
+
+    throw Py::TypeError("color override keys must be strings");
+}
+
+Base::Color pythonToColor(PyObject* value)
+{
+    Base::Color color;
+    if (PyTuple_Check(value) && (PyTuple_Size(value) == 3 || PyTuple_Size(value) == 4)) {
+        PyObject* item = PyTuple_GetItem(value, 0);
+        if (PyFloat_Check(item)) {
+            color.r = static_cast<float>(PyFloat_AsDouble(item));
+            item = PyTuple_GetItem(value, 1);
+            if (!PyFloat_Check(item)) {
+                throw Py::TypeError("color tuples must use consistent float components");
+            }
+            color.g = static_cast<float>(PyFloat_AsDouble(item));
+            item = PyTuple_GetItem(value, 2);
+            if (!PyFloat_Check(item)) {
+                throw Py::TypeError("color tuples must use consistent float components");
+            }
+            color.b = static_cast<float>(PyFloat_AsDouble(item));
+            if (PyTuple_Size(value) == 4) {
+                item = PyTuple_GetItem(value, 3);
+                if (!PyFloat_Check(item)) {
+                    throw Py::TypeError("color tuples must use consistent float components");
+                }
+                color.a = static_cast<float>(PyFloat_AsDouble(item));
+            }
+            return color;
+        }
+
+        if (PyLong_Check(item)) {
+            color.r = static_cast<float>(PyLong_AsLong(item)) / 255.0F;
+            item = PyTuple_GetItem(value, 1);
+            if (!PyLong_Check(item)) {
+                throw Py::TypeError("color tuples must use consistent integer components");
+            }
+            color.g = static_cast<float>(PyLong_AsLong(item)) / 255.0F;
+            item = PyTuple_GetItem(value, 2);
+            if (!PyLong_Check(item)) {
+                throw Py::TypeError("color tuples must use consistent integer components");
+            }
+            color.b = static_cast<float>(PyLong_AsLong(item)) / 255.0F;
+            if (PyTuple_Size(value) == 4) {
+                item = PyTuple_GetItem(value, 3);
+                if (!PyLong_Check(item)) {
+                    throw Py::TypeError("color tuples must use consistent integer components");
+                }
+                color.a = static_cast<float>(PyLong_AsLong(item)) / 255.0F;
+            }
+            return color;
+        }
+
+        throw Py::TypeError("color tuples must contain either floats or integers");
+    }
+
+    if (PyLong_Check(value)) {
+        color.setPackedValue(PyLong_AsUnsignedLong(value));
+        return color;
+    }
+
+    throw Py::TypeError("colors must be packed integers or RGB/RGBA tuples");
+}
+
+std::map<std::string, Base::Color> pythonToColorOverrideMap(PyObject* value)
+{
+    if (!PyDict_Check(value)) {
+        throw Py::TypeError("colors must be a dict mapping element names to colors");
+    }
+
+    std::map<std::string, Base::Color> colors;
+    PyObject* key = nullptr;
+    PyObject* item = nullptr;
+    Py_ssize_t pos = 0;
+    while (PyDict_Next(value, &pos, &key, &item)) {
+        colors.emplace(pythonStringToStdString(key), pythonToColor(item));
+    }
+    return colors;
+}
+
+CoinActionTarget pythonToCoinActionTarget(PyObject* proxy)
+{
+    CoinActionTarget target;
+    void* ptr = nullptr;
+
+    try {
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoPath *", proxy, &ptr, 0);
+    }
+    catch (const Base::Exception&) {
+        ptr = nullptr;
+    }
+    if (ptr) {
+        target.path = static_cast<SoPath*>(ptr);
+        return target;
+    }
+
+    try {
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", proxy, &ptr, 0);
+    }
+    catch (const Base::Exception&) {
+        ptr = nullptr;
+    }
+    if (ptr) {
+        target.node = static_cast<SoNode*>(ptr);
+        return target;
+    }
+
+    throw Py::TypeError("target must be of type coin.SoNode or coin.SoPath");
+}
+
+void applyElementColorOverrideAction(
+    const CoinActionTarget& target,
+    std::map<std::string, Base::Color> colors
+)
+{
+    SoSelectionElementAction action(SoSelectionElementAction::Color, true);
+    action.swapColors(colors);
+    if (target.path) {
+        action.apply(target.path);
+    }
+    else if (target.node) {
+        action.apply(target.node);
+    }
+    else {
+        throw Py::TypeError("target must be of type coin.SoNode or coin.SoPath");
     }
 }
 }  // namespace
@@ -554,6 +710,26 @@ PyMethodDef ApplicationPy::Methods[] = {
      "Remove all children from a group node.\n"
      "\n"
      "node : object"},
+    {"applyElementColorOverride",
+     (PyCFunction)ApplicationPy::sApplyElementColorOverride,
+     METH_VARARGS,
+     "applyElementColorOverride(target, colors) -> None\n"
+     "\n"
+     "Apply a secondary element color override to a Coin node or path.\n"
+     "\n"
+     "target : coin.SoNode | coin.SoPath\n"
+     "colors : dict[str, color]\n"
+     "    Maps element names such as 'Face', 'Face1', 'Edge3', or '' to colors.\n"
+     "    Color values use the same packed-int or RGB/RGBA tuple formats accepted by\n"
+     "    FreeCAD material colors."},
+    {"clearElementColorOverride",
+     (PyCFunction)ApplicationPy::sClearElementColorOverride,
+     METH_VARARGS,
+     "clearElementColorOverride(target) -> None\n"
+     "\n"
+     "Clear a previously applied secondary element color override from a Coin node or path.\n"
+     "\n"
+     "target : coin.SoNode | coin.SoPath"},
     {"suspendWaitCursor",
      (PyCFunction)ApplicationPy::sSuspendWaitCursor,
      METH_VARARGS,
@@ -1958,6 +2134,42 @@ PyObject* ApplicationPy::sCoinRemoveAllChildren(PyObject* /*self*/, PyObject* ar
         }
 
         coinRemoveAllChildren(static_cast<SoGroup*>(ptr));
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
+PyObject* ApplicationPy::sApplyElementColorOverride(PyObject* /*self*/, PyObject* args)
+{
+    PyObject* targetObj = nullptr;
+    PyObject* colorsObj = nullptr;
+    if (!PyArg_ParseTuple(args, "OO", &targetObj, &colorsObj)) {
+        return nullptr;
+    }
+
+    PY_TRY
+    {
+        requirePythonMainThread("FreeCADGui.applyElementColorOverride");
+        auto target = pythonToCoinActionTarget(targetObj);
+        auto colors = pythonToColorOverrideMap(colorsObj);
+        applyElementColorOverrideAction(target, std::move(colors));
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
+PyObject* ApplicationPy::sClearElementColorOverride(PyObject* /*self*/, PyObject* args)
+{
+    PyObject* targetObj = nullptr;
+    if (!PyArg_ParseTuple(args, "O", &targetObj)) {
+        return nullptr;
+    }
+
+    PY_TRY
+    {
+        requirePythonMainThread("FreeCADGui.clearElementColorOverride");
+        auto target = pythonToCoinActionTarget(targetObj);
+        applyElementColorOverrideAction(target, {});
         Py_Return;
     }
     PY_CATCH;

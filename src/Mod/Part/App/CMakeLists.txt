@@ -212,6 +212,10 @@ SET(Features_SRCS
     FeatureRevolution.h
     FeatureOffset.cpp
     FeatureOffset.h
+    LinearPatternExtension.cpp
+    LinearPatternExtension.h
+    PolarPatternExtension.cpp
+    PolarPatternExtension.h
     OCCTMessagePrinter.cpp
     OCCTMessagePrinter.h
     PartFeatures.cpp
@@ -608,6 +612,8 @@ SET(Part_SRCS
     FaceMakerBullseye.h
     FaceMakerBuildFace.cpp
     FaceMakerBuildFace.h
+    FaceMakerUnified.cpp
+    FaceMakerUnified.h
     WireJoiner.cpp
     WireJoiner.h
 )

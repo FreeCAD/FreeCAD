@@ -195,7 +195,7 @@ App::DatumElement* LocalCoordinateSystem::getDatumElement(const char* role) cons
 App::Line* LocalCoordinateSystem::getAxis(const char* role) const
 {
     App::DatumElement* feat = getDatumElement(role);
-    if (feat->isDerivedFrom<App::Line>()) {
+    if (feat && feat->isDerivedFrom<App::Line>()) {
         return static_cast<App::Line*>(feat);
     }
     std::stringstream err;
@@ -207,7 +207,7 @@ App::Line* LocalCoordinateSystem::getAxis(const char* role) const
 App::Plane* LocalCoordinateSystem::getPlane(const char* role) const
 {
     App::DatumElement* feat = getDatumElement(role);
-    if (feat->isDerivedFrom<App::Plane>()) {
+    if (feat && feat->isDerivedFrom<App::Plane>()) {
         return static_cast<App::Plane*>(feat);
     }
     std::stringstream err;
@@ -219,7 +219,7 @@ App::Plane* LocalCoordinateSystem::getPlane(const char* role) const
 App::Point* LocalCoordinateSystem::getPoint(const char* role) const
 {
     App::DatumElement* feat = getDatumElement(role);
-    if (feat->isDerivedFrom<App::Point>()) {
+    if (feat && feat->isDerivedFrom<App::Point>()) {
         return static_cast<App::Point*>(feat);
     }
     std::stringstream err;

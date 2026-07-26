@@ -55,6 +55,18 @@ echo -e "################"
 pixi list -e default > AppDir/packages.txt
 sed -i "1s/.*/\nLIST OF PACKAGES:/" AppDir/packages.txt
 
+echo "Running FreeCAD command-line smoke test..."
+if ! "${conda_env}/bin/freecadcmd" --safe-mode --version; then
+    echo "FreeCAD command-line smoke test failed; the Linux bundle cannot start."
+    exit 1
+fi
+
+echo "Running FreeCAD bundled Pivy smoke test..."
+if ! "${conda_env}/bin/freecadcmd" --safe-mode --console "import pivy; from pivy import coin; print(pivy.__file__); print(coin.SoDB.getVersion())"; then
+    echo "FreeCAD bundled Pivy smoke test failed; the Linux bundle cannot import the bundled Coin/Pivy runtime."
+    exit 1
+fi
+
 curl -LO https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-$(uname -m).AppImage
 chmod a+x appimagetool-$(uname -m).AppImage
 

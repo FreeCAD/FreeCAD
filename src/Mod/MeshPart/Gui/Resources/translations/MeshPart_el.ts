@@ -381,11 +381,6 @@ The smallest value is 0.</source>
       <translation>Χρησιμοποιήστε το Netgen για το πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Λεπτότητα:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Πολύ τραχύ</translation>
@@ -436,6 +431,11 @@ The smallest value is 0.</source>
 A value in the range of 0.1-1.</source>
       <translation>Εάν αυτή η παράμετρος είναι μικρότερη, το πλέγμα γίνεται λεπτότερο.
 Μια τιμή στο εύρος 0,1-1.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Λεπτότητα</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>

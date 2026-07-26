@@ -382,11 +382,6 @@ El valor más pequeño es 0.</translation>
       <translation>Usar el mallador Netgen</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Precisión:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Muy grueso</translation>
@@ -437,6 +432,11 @@ El valor más pequeño es 0.</translation>
 A value in the range of 0.1-1.</source>
       <translation>Si este parámetro es más pequeño, la malla se vuelve más fina.
 Un valor en el rango de 0.1-1.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Precisión</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>

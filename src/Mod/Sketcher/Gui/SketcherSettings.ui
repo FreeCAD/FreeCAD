@@ -205,7 +205,7 @@ Requires to re-enter edit mode to take effect.</string>
          <string>Group the polyline and line commands</string>
         </property>
         <property name="checked">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>UnifiedLineCommands</cstring>

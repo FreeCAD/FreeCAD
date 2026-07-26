@@ -382,11 +382,6 @@ The smallest value is 0.</source>
       <translation>Netgen 메셔를 사용합니다</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>세밀도:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>매우 거칠게</translation>
@@ -437,6 +432,11 @@ The smallest value is 0.</source>
 A value in the range of 0.1-1.</source>
       <translation>이 매개변수가 작을수록 메쉬가 더 세밀해집니다.
 0.1~1 범위의 값을 사용하세요.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation type="unfinished">Fineness</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>
