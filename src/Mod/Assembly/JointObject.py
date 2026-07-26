@@ -21,7 +21,6 @@
 #                                                                           *
 # **************************************************************************/
 
-import json
 import math
 
 import FreeCAD as App
@@ -1287,14 +1286,15 @@ class RigidGroupJoint:
         joint.ObjectsToRigidGroup = objects_to_rigid_group
 
         joint.addProperty(
-            "App::PropertyString",
-            "RigidSnapshot",
+            "App::PropertyPlacementList",
+            "RigidPlacements",
             "RigidGroup",
-            "Serialized relative transforms for restore",
+            "Relative placements for restore",
         )
-        joint.setPropertyStatus("RigidSnapshot", "Hidden")
-        joint.setPropertyStatus("RigidSnapshot", "ReadOnly")
+        joint.setPropertyStatus("RigidPlacements", "Hidden")
+        joint.setPropertyStatus("RigidPlacements", "ReadOnly")
 
+        self._write_rigid_placements(joint, [])
         self.updateStoredPositions(joint, True)
 
     def dumps(self):
@@ -1341,78 +1341,49 @@ class RigidGroupJoint:
 
         members = self._validMembers(fp)
         if len(members) < 2:
+            self._write_rigid_placements(fp, [])
             App.Console.PrintError("Assembly: Rigid group needs at least 2 valid components.\n")
             return
 
+        if getattr(fp, "ObjectsToRigidGroup", None) != members:
+            self._busy = True
+            try:
+                fp.ObjectsToRigidGroup = members
+            finally:
+                self._busy = False
+
         anchor = members[0]
         anchorPlc = anchor.Placement
-
-        data = {
-            "version": 1,
-            "anchor": anchor.Name,
-            "members": [],
-        }
+        placements = []
 
         for member in members:
-            rel = anchorPlc.inverse() * member.Placement
-            q = rel.Rotation.Q
-            data["members"].append(
-                {
-                    "name": member.Name,
-                    "pos": [rel.Base.x, rel.Base.y, rel.Base.z],
-                    "rot_q": list(q[:4]),
-                }
-            )
+            placements.append(anchorPlc.inverse() * member.Placement)
 
-        fp.RigidSnapshot = json.dumps(data, separators=(",", ":"))
+        self._write_rigid_placements(fp, placements)
+
         App.Console.PrintMessage("Assembly: Rigid group positions updated.\n")
 
-    def restoreFromSnapshot(self, fp):
-        snapshot = getattr(fp, "RigidSnapshot", "")
-        if not snapshot:
-            return
-
+    def _write_rigid_placements(self, fp, placements):
+        self._busy = True
         try:
-            data = json.loads(snapshot)
-        except Exception:
+            fp.setPropertyStatus("RigidPlacements", "-ReadOnly")
+            fp.RigidPlacements = placements
+            fp.setPropertyStatus("RigidPlacements", "ReadOnly")
+        finally:
+            self._busy = False
+
+    def restoreFromPlacements(self, fp):
+        members = self._validMembers(fp)
+        placements = getattr(fp, "RigidPlacements", None) or []
+        if len(members) < 2 or len(members) != len(placements):
             App.Console.PrintWarning(
-                "Assembly: Invalid rigid group snapshot, skipping restore. Possible Rigid Group corruption?\n"
+                "Assembly: Rigid group sync broken, skipping restore.\n"
             )
             return
 
-        if data.get("version") != 1:
-            App.Console.PrintWarning("Assembly: Unsupported rigid group snapshot version.\n")
-            return
-
-        membersNow = {obj.Name: obj for obj in self._validMembers(fp)}
-        if len(membersNow) < 2:
-            return
-
-        anchor = membersNow.get(data.get("anchor"))
-        if not anchor:
-            anchor = next(iter(membersNow.values()), None)
-            if not anchor:
-                return
-            App.Console.PrintWarning(
-                "Assembly: Rigid group snapshot anchor missing, using first available component instead.\n"
-            )
-
+        anchor = members[0]
         anchorPlcNow = anchor.Placement
-        for member in data.get("members", []):
-            name = member.get("name")
-            obj = membersNow.get(name)
-            if not obj:
-                continue
-
-            pos = member.get("pos", [0.0, 0.0, 0.0])
-            rotq = member.get("rot_q", [1.0, 0.0, 0.0, 0.0])
-            if len(pos) != 3 or len(rotq) != 4:
-                continue
-
-            rel = App.Placement(
-                App.Vector(float(pos[0]), float(pos[1]), float(pos[2])),
-                App.Rotation(float(rotq[0]), float(rotq[1]), float(rotq[2]), float(rotq[3])),
-            )
+        for obj, rel in zip(members, placements):
             obj.Placement = anchorPlcNow * rel
 
     def onChanged(self, fp, prop):
@@ -1420,10 +1391,14 @@ class RigidGroupJoint:
         if getattr(self, "_busy", False):
             return
 
+        if prop == "ObjectsToRigidGroup":
+            self.updateStoredPositions(fp, True)
+            return
+
         if prop == "Suppressed" and hasattr(fp, "Suppressed") and not fp.Suppressed:
             self._busy = True
             try:
-                self.restoreFromSnapshot(fp)
+                self.restoreFromPlacements(fp)
                 assembly = self.getAssembly(fp)
                 if assembly:
                     solveIfAllowed(assembly)
