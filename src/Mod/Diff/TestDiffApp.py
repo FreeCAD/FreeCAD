@@ -21,9 +21,8 @@
 #                                                                           *
 # **************************************************************************/
 
-import FreeCAD
+# flake8: noqa import
 
-import diff  # noqa: F401
+import TestApp
 
-
-FreeCAD.__unit_test__ += ["TestDiffApp"]
+from diff.app.test.test_objs import TestDiffDocument, TestDiffPropertyContainer, TestDiffProperty

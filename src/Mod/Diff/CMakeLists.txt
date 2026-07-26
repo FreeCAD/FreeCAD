@@ -6,7 +6,9 @@ SET(Diff_SRCS_python
   diff/app/report_diff.py
   diff/app/compute_diff.py
   diff/app/util.py
+  diff/app/test/test_objs.py
   Init.py
+  TestDiffApp.py
 )
 
 ADD_CUSTOM_TARGET(DiffScripts ALL
