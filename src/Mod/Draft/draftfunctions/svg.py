@@ -376,7 +376,7 @@ def _svg_dimension(
                 linewidth,
                 angle + math.pi,
             )
-
+    
     # drawing text
     svg += svgtext.get_text(
         plane, techdraw, tstroke, fontsize, vobj.FontName, tangle, tbase, prx.string
