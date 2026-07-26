@@ -30,6 +30,7 @@
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepPrimAPI_MakeHalfSpace.hxx>
+#include <BRep_Tool.hxx>
 #include <gp_Pln.hxx>
 #include <Precision.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
@@ -44,6 +45,7 @@
 
 
 #include "CrossSection.h"
+#include "ShapeAnalysis_FreeBoundsFix.h"
 #include "TopoShapeOpCode.h"
 
 
@@ -146,6 +148,7 @@ void CrossSection::sliceSolid(double d, const TopoDS_Shape& shape, std::list<Top
     FCBRepAlgoAPI_Cut mkCut(shape, solid);
 
     if (mkCut.IsDone()) {
+        Standard_Real fuzzyTol = mkCut.FuzzyValue();
         TopTools_IndexedMapOfShape mapOfFaces;
         TopExp::MapShapes(mkCut.Shape(), TopAbs_FACE, mapOfFaces);
         for (int i = 1; i <= mapOfFaces.Extent(); i++) {
@@ -153,8 +156,10 @@ void CrossSection::sliceSolid(double d, const TopoDS_Shape& shape, std::list<Top
             BRepAdaptor_Surface adapt(face);
             if (adapt.GetType() == GeomAbs_Plane) {
                 gp_Pln plane = adapt.Plane();
+                Standard_Real faceTol = BRep_Tool::Tolerance(face);
+                Standard_Real tol = faceTol + fuzzyTol;
                 if (plane.Axis().IsParallel(slicePlane.Axis(), Precision::Confusion())
-                    && plane.Distance(slicePlane.Location()) < Precision::Confusion()) {
+                    && plane.Distance(slicePlane.Location()) < tol) {
                     // sort and repair the wires
                     TopTools_IndexedMapOfShape mapOfWires;
                     TopExp::MapShapes(face, TopAbs_WIRE, mapOfWires);
@@ -211,7 +216,7 @@ void CrossSection::connectWires(
     }
 
     Handle(TopTools_HSequenceOfShape) hSorted = new TopTools_HSequenceOfShape();
-    ShapeAnalysis_FreeBounds::ConnectWiresToWires(hWires, Precision::Confusion(), false, hSorted);
+    Part::Fix_ShapeAnalysis_FreeBounds_ConnectWiresToWires(hWires, Precision::Confusion(), false, hSorted);
 
     for (int i = 1; i <= hSorted->Length(); i++) {
         const TopoDS_Wire& new_wire = TopoDS::Wire(hSorted->Value(i));

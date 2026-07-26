@@ -58,6 +58,7 @@
 #include <HLRBRep_HLRToShape.hxx>
 #include <Precision.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
+#include <Mod/Part/App/ShapeAnalysis_FreeBoundsFix.h>
 #include <ShapeExtend_WireData.hxx>
 #include <ShapeFix_ShapeTolerance.hxx>
 #include <ShapeFix_Wire.hxx>
@@ -1928,19 +1929,16 @@ std::vector<shared_ptr<Area>> Area::makeSections(
                 builder.MakeCompound(comp);
 
                 for (TopExp_Explorer xp(s.shape.Moved(loc), TopAbs_SOLID); xp.More(); xp.Next()) {
-                    TopoDS_Shape shape(xp.Current());
-                    ShapeFix_ShapeTolerance sTol;
-                    sTol.SetTolerance(shape, Precision::Confusion());
-
-                    showShape(shape, nullptr, "section_%zu_shape", i);
+                    showShape(xp.Current(), nullptr, "section_%zu_shape", i);
                     std::list<TopoDS_Wire> wires;
-                    Part::CrossSection section(a, b, c, shape);
+                    Part::CrossSection section(-a, -b, -c, xp.Current());
                     Part::FuzzyHelper::withBooleanFuzzy(.0, [&]() {
-                        // Workaround for https://github.com/FreeCAD/FreeCAD/issues/17748
-                        // needed to make finish pass work.
-                        // This fix might be better to move into Part::CrossSection but it is kept
-                        // here for now to be on the safe side.
-                        wires = section.slice(-d);
+                        // Disable the (default FreeCAD/Part) boolean fuzziness -- slicing already
+                        // handles boolean tolerances correctly.
+                        //
+                        // It might be desirable to move this override into Part::CrossSection to
+                        // avoid slicing with unnecessary fuzziness at other call sites.
+                        wires = section.slice(d);
                     });
                     showShapes(wires, nullptr, "section_%zu_wire", i);
                     if (wires.empty()) {
@@ -2835,7 +2833,12 @@ TopoDS_Shape Area::toShape(const CCurve& _c, const gp_Trsf* trsf, int reorient)
         pt = pnext;
     }
 
-    ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, Precision::Confusion(), Standard_False, hWires);
+    Part::Fix_ShapeAnalysis_FreeBounds_ConnectEdgesToWires(
+        hEdges,
+        Precision::Confusion(),
+        Standard_False,
+        hWires
+    );
     if (!hWires->Length()) {
         return shape;
     }

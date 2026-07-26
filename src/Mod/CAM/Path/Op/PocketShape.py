@@ -278,19 +278,12 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             keepOrder = getattr(obj, "SortingMode", None) == "Manual"
             self.horizontal = Path.Geom.combineHorizontalFaces(self.horiz, keepOrder=keepOrder)
 
-            # Move all faces to final depth less buffer before extrusion
-            # Small negative buffer is applied to compensate for internal significant digits/rounding issue
-            if self.job.GeometryTolerance.Value == 0.0:
-                buffer = 0.000001
-            else:
-                buffer = self.job.GeometryTolerance.Value / 10.0
+            # Move all faces to final depth before extrusion
             for h in self.horizontal:
-                h.translate(
-                    FreeCAD.Vector(0.0, 0.0, obj.FinalDepth.Value - h.BoundBox.ZMin - buffer)
-                )
+                h.translate(FreeCAD.Vector(0.0, 0.0, obj.FinalDepth.Value - h.BoundBox.ZMin))
 
-            # extrude all faces up to StartDepth plus buffer and those are the removal shapes
-            extent = FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value + buffer)
+            # extrude all faces up to StartDepth and those are the removal shapes
+            extent = FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value)
             self.removalshapes = [
                 (face.removeSplitter().extrude(extent), False) for face in self.horizontal
             ]

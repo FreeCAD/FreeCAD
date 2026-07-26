@@ -24,6 +24,7 @@
 import TestApp
 
 from CAMTests.TestAreaOperations import TestAreaOperations
+from CAMTests.TestSlicer import TestSlicer
 from CAMTests.TestCAMSanity import TestCAMSanity
 
 from CAMTests.TestLinkingGenerator import TestGetLinkingMoves
