@@ -25,16 +25,9 @@ import os
 import unittest
 
 import FreeCAD
+from PySide import QtCore, QtNetwork
 
 import BimBsdd
-
-try:
-    from PySide import QtCore, QtNetwork
-except ImportError:
-    try:
-        from PySide6 import QtCore, QtNetwork
-    except ImportError:
-        from PySide2 import QtCore, QtNetwork
 
 
 class _FakeReply(QtCore.QObject):
