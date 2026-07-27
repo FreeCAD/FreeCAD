@@ -43,6 +43,23 @@ def _save_image(image, path: Path) -> Path:
     return path
 
 
+def _exact_color_positions(path: Path, color: tuple[int, int, int]) -> set[tuple[int, int]]:
+    if _QtGuiModule is None:
+        raise unittest.SkipTest("Qt (PySide) not available")
+    image = _QtGuiModule.QImage(str(path)).convertToFormat(_QtGuiModule.QImage.Format_ARGB32)
+    if image.isNull():
+        raise AssertionError(f"unreadable image: {path}")
+
+    positions = set()
+    for y in range(image.height()):
+        for x in range(image.width()):
+            pixel = image.pixel(x, y)
+            rgb = ((pixel >> 16) & 0xFF, (pixel >> 8) & 0xFF, pixel & 0xFF)
+            if rgb == color:
+                positions.add((x, y))
+    return positions
+
+
 def _masked_image_difference(
     mask_path: Path,
     lhs_path: Path,
@@ -1165,15 +1182,17 @@ class CoinRenderPipelineTestCase(unittest.TestCase):
             finally:
                 root.unref()
 
-            self.assertTrue(
-                _region_pixels_similar(
-                    rendered[_RENDERER_LEGACY],
-                    rendered[_RENDERER_DRAW_LIST],
-                    (0, 0, width, height),
-                    tolerance=8,
-                    max_mismatched_fraction=0.002,
-                ),
-                "SoFCControlPoints geometry diverged between LegacyGL and DrawList",
+            legacy_knots = _exact_color_positions(rendered[_RENDERER_LEGACY], (255, 255, 0))
+            draw_list_knots = _exact_color_positions(rendered[_RENDERER_DRAW_LIST], (255, 255, 0))
+            self.assertGreaterEqual(
+                len(legacy_knots),
+                100,
+                "SoFCControlPoints knot markers rendered empty in LegacyGL",
+            )
+            self.assertEqual(
+                legacy_knots,
+                draw_list_knots,
+                "SoFCControlPoints knot marker coverage diverged between LegacyGL and DrawList",
             )
         finally:
             harness.close()
