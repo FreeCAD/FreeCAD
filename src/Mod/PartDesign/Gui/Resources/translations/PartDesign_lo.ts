@@ -206,17 +206,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2590"/>
+      <location filename="../../Command.cpp" line="2595"/>
       <source>PartDesign</source>
       <translation>ອອກແບບຊິ້ນສ່ວນ (PartDesign)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2591"/>
+      <location filename="../../Command.cpp" line="2596"/>
       <source>Boolean Operation</source>
       <translation>ການດຳເນີນການແບບບູລີນ (Boolean)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2592"/>
+      <location filename="../../Command.cpp" line="2597"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>ນຳໃຊ້ການດຳເນີນການແບບບູລີນກັບວັດຖຸທີ່ເລືອກ ແລະ ວັດຖຸທີ່ກຳລັງໃຊ້ງານຢູ່</translation>
     </message>
@@ -494,17 +494,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2459"/>
+      <location filename="../../Command.cpp" line="2464"/>
       <source>PartDesign</source>
       <translation>ອອກແບບຊິ້ນສ່ວນ (PartDesign)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2460"/>
+      <location filename="../../Command.cpp" line="2465"/>
       <source>Multi-Transform</source>
       <translation>ການແປງຮູບແບບຫຼາຍຊັ້ນ (Multi-Transform)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2461"/>
+      <location filename="../../Command.cpp" line="2466"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation>ນຳໃຊ້ການແປງຮູບແບບຫຼາຍຢ່າງກັບຄຸນສົມບັດທີ່ເລືອກ ຫຼື ວັດຖຸທີ່ໃຊ້ງານຢູ່</translation>
     </message>
@@ -602,17 +602,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2354"/>
+      <location filename="../../Command.cpp" line="2359"/>
       <source>PartDesign</source>
       <translation>ອອກແບບຊິ້ນສ່ວນ (PartDesign)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2355"/>
+      <location filename="../../Command.cpp" line="2360"/>
       <source>Polar Pattern</source>
       <translation>ຮູບແບບວົງມົນ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2356"/>
+      <location filename="../../Command.cpp" line="2361"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation>ເຮັດສຳເນົາຄຸນສົມບັດທີ່ເລືອກ ຫຼື ວັດຖຸທີ່ໃຊ້ງານຢູ່ ໃນຮູບແບບວົງມົນ</translation>
     </message>
@@ -638,17 +638,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2416"/>
+      <location filename="../../Command.cpp" line="2421"/>
       <source>PartDesign</source>
       <translation>ອອກແບບຊິ້ນສ່ວນ (PartDesign)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2417"/>
+      <location filename="../../Command.cpp" line="2422"/>
       <source>Scale</source>
       <translation>ຍໍ້-ຂະຫຍາຍ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2418"/>
+      <location filename="../../Command.cpp" line="2423"/>
       <source>Scales the selected features or the active body</source>
       <translation>ຍໍ້ ຫຼື ຂະຫຍາຍຄຸນສົມບັດທີ່ເລືອກ ຫຼື ວັດຖຸທີ່ໃຊ້ງານຢູ່</translation>
     </message>
@@ -905,7 +905,7 @@ so that self intersection is avoided.</source>
       <translation>ເຮັດສຳເນົາ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2514"/>
+      <location filename="../../Command.cpp" line="2519"/>
       <source>Convert to Multi-Transform feature</source>
       <translation>ປ່ຽນເປັນຄຸນສົມບັດການແປງຮູບແບບຫຼາຍຊັ້ນ</translation>
     </message>
@@ -926,13 +926,13 @@ so that self intersection is avoided.</source>
       <translation>ຮູບຮ່າງໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2611"/>
+      <location filename="../../Command.cpp" line="2616"/>
       <source>Create Boolean</source>
       <translation>ສ້າງບູລີນ (Boolean)</translation>
     </message>
     <message>
-      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <location filename="../../CommandBody.cpp" line="221"/>
+      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <source>Add a Body</source>
       <translation>ເພີ່ມວັດຖຸ</translation>
     </message>
@@ -3170,11 +3170,11 @@ measured along the specified direction</source>
       <translation>ບໍ່ມີໜ້າພຽງທີ່ໃຊ້ໄດ້ໃນເອກະສານນີ້</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="761"/>
       <location filename="../../Command.cpp" line="1152"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <location filename="../../ViewProvider.cpp" line="137"/>
+      <location filename="../../SketchWorkflow.cpp" line="761"/>
       <source>A dialog is already open in the task panel</source>
       <translation>ມີກ່ອງຂໍ້ຄວາມເປີດຢູ່ໃນແຜງໜ້າວຽກແລ້ວ</translation>
     </message>
@@ -3219,16 +3219,11 @@ measured along the specified direction</source>
       <translation>ບໍ່ມີຮູບຮ່າງຢູ່ໃນເອກະສານ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2206"/>
-      <source>Select only one feature in an active body.</source>
-      <translation>ເລືອກພຽງແຕ່ຄຸນສົມບັດດຽວໃນເນື້ອວັດຖຸທີ່ກຳລັງໃຊ້ງານ.</translation>
-    </message>
-    <message>
-      <location filename="../../SketchWorkflow.cpp" line="762"/>
       <location filename="../../Command.cpp" line="1153"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../ViewProvider.cpp" line="138"/>
+      <location filename="../../SketchWorkflow.cpp" line="762"/>
       <source>Close this dialog?</source>
       <translation>ປິດກ່ອງຂໍ້ຄວາມນີ້ບໍ?</translation>
     </message>
@@ -3253,6 +3248,11 @@ measured along the specified direction</source>
       <location filename="../../Command.cpp" line="1871"/>
       <source>Shape of the selected part is empty</source>
       <translation>ຮູບຊົງຂອງສ່ວນທີ່ເລືອກແມ່ນຫວ່າງເປົ່າ</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2206"/>
+      <source>Select only one feature in an active body.</source>
+      <translation>ເລືອກພຽງແຕ່ຄຸນສົມບັດດຽວໃນເນື້ອວັດຖຸທີ່ກຳລັງໃຊ້ງານ.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1844"/>
@@ -3513,10 +3513,10 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>ເພື່ອທີ່ຈະໃຊ້ຄຸນສົມບັດນີ້ ມັນຕ້ອງເປັນຂອງວັດຖຸສ່ວນໃນເອກະສານ.</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <location filename="../../ViewProvider.cpp" line="94"/>
       <location filename="../../ViewProviderTransformed.cpp" line="67"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <source>Edit %1</source>
       <translation>ແກ້ໄຂ %1</translation>
     </message>
@@ -3612,7 +3612,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
       <translation>ຍ້າຍຂໍ້ມູນດ້ວຍຕົນເອງ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBoolean.cpp" line="70"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="223"/>
       <source>Edit Boolean</source>
       <translation>ແກ້ໄຂບູລີນ</translation>
     </message>
@@ -4448,23 +4448,23 @@ over 90: larger hole radius at the bottom</source>
       <translation>ບໍ່ສາມາດເຮັດການປະຕິບັດການບູນລີນກັບຮູບຮ່າງພື້ນຖານທີ່ບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="600"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
       <location filename="../../../App/FeatureHelix.cpp" line="420"/>
       <location filename="../../../App/FeatureHelix.cpp" line="442"/>
       <location filename="../../../App/FeatureHelix.cpp" line="488"/>
       <location filename="../../../App/FeatureLoft.cpp" line="334"/>
       <location filename="../../../App/FeatureLoft.cpp" line="378"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="600"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>ຜົນໄດ້ຮັບມີຂອງແຂງຫຼາຍອັນ: ເປີດໃຊ້ 'Allow Compound' ໃນບອດີ້ທີ່ກຳລັງໃຊ້ງານ.</translation>
     </message>
@@ -4499,10 +4499,10 @@ over 90: larger hole radius at the bottom</source>
       <translation>ຜົນໄດ້ຮັບການດຶງຂຶ້ນທີ່ລວມກັນເປັນຄ່າຫວ່າງ.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="371"/>
       <location filename="../../../App/FeaturePipe.cpp" line="592"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="371"/>
       <source>Resulting shape is not a solid</source>
       <translation>ຮູບຮ່າງທີ່ໄດ້ຮັບບໍ່ແມ່ນຂອງແຂງ</translation>
     </message>
@@ -4645,9 +4645,9 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>ຂໍ້ຜິດພາດ: ໜ້າພຽງຕ້ອງເປັນແຜ່ນພຽງ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="499"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2454"/>
       <source>Error: Result is not a solid</source>
       <translation>ຂໍ້ຜິດພາດ: ຜົນໄດ້ຮັບບໍ່ແມ່ນຂອງແຂງ</translation>
     </message>
@@ -4800,8 +4800,8 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>Loft: ການສ້າງໜ້າພຽງຈາກແຜນຮ່າງບໍ່ສຳເລັດ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="304"/>
       <location filename="../../../App/FeaturePipe.cpp" line="500"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="304"/>
       <source>Loft: Failed to create shell</source>
       <translation>Loft: ການສ້າງເປືອກບໍ່ສຳເລັດ</translation>
     </message>
@@ -4908,14 +4908,14 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>ບໍ່ສາມາດລົບຄຸນລັກສະນະພື້ນຖານໄດ້ໂດຍບໍ່ມີຄຸນລັກສະນະຫຼັກ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="356"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="356"/>
       <source>Unknown operation type</source>
       <translation>ບໍ່ຮູ້ຈັກປະເພດການປະຕິບັດການ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="364"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="364"/>
       <source>Failed to perform boolean operation</source>
       <translation>ປະຕິບັດການບູນລີນບໍ່ສຳເລັດ</translation>
     </message>
@@ -5156,12 +5156,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2658"/>
+      <location filename="../../Command.cpp" line="2663"/>
       <source>Create Datum</source>
       <translation>ສ້າງເດຕັມ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2659"/>
+      <location filename="../../Command.cpp" line="2664"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>ສ້າງວັດຖຸເດຕັມ ຫຼື ລະບົບພິກັດທ້ອງຖິ່ນ</translation>
     </message>
@@ -5169,12 +5169,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2693"/>
+      <location filename="../../Command.cpp" line="2698"/>
       <source>Create Datum</source>
       <translation>ສ້າງເດຕັມ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2694"/>
+      <location filename="../../Command.cpp" line="2699"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>ສ້າງວັດຖຸເດຕັມ ຫຼື ລະບົບພິກັດທ້ອງຖິ່ນ</translation>
     </message>
@@ -5419,14 +5419,6 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     </message>
   </context>
   <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
-    <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input Error</source>
-      <translation>ຂໍ້ຜິດພາດໃນການປ້ອນຂໍ້ມູນ</translation>
-    </message>
-  </context>
-  <context>
     <name>PartDesignGui::TaskFeatureParameters</name>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="138"/>
@@ -5449,6 +5441,14 @@ Adjust the parameters and try again.</source>
       <translation>ບໍ່ສາມາດສ້າງຄຸນລັກສະນະໄດ້ດ້ວຍພາລາມິເຕີທີ່ໃຫ້ມາ.
 ເລຂາຄະນິດອາດບໍ່ຖືກຕ້ອງ ຫຼື ພາລາມິເຕີອາດບໍ່ເຂົ້າກັນ.
 ປັບພາລາມິເຕີແລ້ວລອງໃໝ່ອີກຄັ້ງ.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>ຂໍ້ຜິດພາດໃນການປ້ອນຂໍ້ມູນ</translation>
     </message>
   </context>
 </TS>

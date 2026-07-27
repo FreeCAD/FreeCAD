@@ -33,7 +33,7 @@ import Path.Base.Generator.linking as linking
 import Path.Base.MachineState as PathMachineState
 import Path.Op.Base as PathOp
 import Path.Op.CircularHoleBase as PathCircularHoleBase
-import PathScripts.PathUtils as PathUtils
+from Path.Op.Util import drillTipLength
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "CAM Drilling Operation"
@@ -281,9 +281,9 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         # Calculate offsets to add to target edge
         endoffset = 0.0
         if obj.ExtraOffset == "Drill Tip":
-            endoffset = PathUtils.drillTipLength(self.tool)
+            endoffset = drillTipLength(self.tool)
         elif obj.ExtraOffset == "2x Drill Tip":
-            endoffset = PathUtils.drillTipLength(self.tool) * 2
+            endoffset = drillTipLength(self.tool) * 2
 
         # compute the drilling targets
         edgelist = []
@@ -443,9 +443,9 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         # Calculate offsets to add to target edge
         endoffset = 0.0
         if obj.ExtraOffset == "Drill Tip":
-            endoffset = PathUtils.drillTipLength(self.tool)
+            endoffset = drillTipLength(self.tool)
         elif obj.ExtraOffset == "2x Drill Tip":
-            endoffset = PathUtils.drillTipLength(self.tool) * 2
+            endoffset = drillTipLength(self.tool) * 2
 
         # compute the tapping targets
         edgelist = []

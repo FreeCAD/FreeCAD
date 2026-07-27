@@ -57,13 +57,14 @@ void MultiTransform::positionBySupport()
             throw Base::TypeError("Transformation features must be subclasses of Transformed");
         }
 
-        transFeature->Placement.setValue(this->Placement.getValue());
-
-        // To avoid that a linked transform feature stays touched after a recompute
-        // we have to purge the touched state
-        if (this->isRecomputing()) {
-            transFeature->purgeTouched();
+        const auto& placement = this->Placement.getValue();
+        if (transFeature->Placement.getValue() != placement) {
+            transFeature->Placement.setValue(placement);
         }
+
+        // These objects only store transformation parameters. Their execution is handled by this
+        // MultiTransform, so synchronizing their placement must not schedule another document pass.
+        transFeature->purgeTouched();
     }
 }
 
@@ -104,6 +105,10 @@ const std::list<gp_Trsf> MultiTransform::getTransformations(
         }
 
         std::list<gp_Trsf> newTransformations = transFeature->getTransformations(originals);
+        // Computing transformations can update derived helper properties such as Spacings and
+        // Offset. The helper is not executed independently, so do not let those updates schedule
+        // the parent MultiTransform for a second document recompute pass.
+        transFeature->purgeTouched();
         if (result.empty()) {
             // First transformation Feature
             result = newTransformations;

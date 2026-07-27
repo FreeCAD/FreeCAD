@@ -4,7 +4,7 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="619"/>
+      <location filename="../../Application.cpp" line="621"/>
       <source>Unnamed</source>
       <translation>Nienazwany</translation>
     </message>
@@ -21,7 +21,7 @@
     <message>
       <location filename="../../Expression.cpp" line="587"/>
       <source>Null</source>
-      <translation type="unfinished">Null</translation>
+      <translation>Brak</translation>
     </message>
   </context>
   <context>
@@ -35,7 +35,7 @@
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../Document.cpp" line="1255"/>
+      <location filename="../../Document.cpp" line="1230"/>
       <source>
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.

@@ -4,7 +4,7 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="619"/>
+      <location filename="../../Application.cpp" line="621"/>
       <source>Unnamed</source>
       <translation>Безымянный</translation>
     </message>
@@ -21,7 +21,7 @@
     <message>
       <location filename="../../Expression.cpp" line="587"/>
       <source>Null</source>
-      <translation type="unfinished">Null</translation>
+      <translation>Ничего</translation>
     </message>
   </context>
   <context>
@@ -35,7 +35,7 @@
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../Document.cpp" line="1255"/>
+      <location filename="../../Document.cpp" line="1230"/>
       <source>
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.
@@ -90,8 +90,7 @@ The user should then click the Refresh button in the main toolbar.
       <location filename="../../Link.cpp" line="119"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
-      <translation>Сохраняет последний выбор пользователя — применять ли настройки копии при изменении ко всем ссылкам
-которая связывается с тем же настраиваемым объектом</translation>
+      <translation>Сохраняет последний выбор пользователя — применять ли при изменении настройки ко всем ссылкам которые ссылаются на тот же исходный настраиваемый объект</translation>
     </message>
   </context>
 </TS>

@@ -80,6 +80,7 @@ class SbBox2s;
 class SoVectorizeAction;
 class QImage;
 class SoGroup;  // NOLINT
+class SoGLRenderAction;
 class SoPickStyle;
 class NaviCube;
 class SoClipPlane;
@@ -145,8 +146,11 @@ public:
     /// decorations can be excluded from capture and export paths.
     enum class RenderIntent
     {
+        /// Interactive viewport traversal including viewer decorations.
         LiveInteractive,
+        /// Fresh raster output excluding screen-only viewer decorations.
         RasterCapture,
+        /// Vector output excluding screen-only viewer decorations.
         VectorExport
     };
 
@@ -227,16 +231,23 @@ public:
     static int getNumSamples();
     void setRenderType(RenderType type);
     RenderType getRenderType() const;
-    void renderToFramebuffer(QOpenGLFramebufferObject*);
+
+    /** Options for rendering the scene into a fresh image. */
+    struct RenderImageOptions
+    {
+        int width = 0;
+        int height = 0;
+        int samples = -1;
+        QColor background;
+        RenderIntent intent = RenderIntent::RasterCapture;
+        bool includeViewerLighting = true;
+    };
+
+    /** Render the scene into a new image using the requested capture policy. */
+    QImage renderToImage(const RenderImageOptions& options);
+
+    /** Capture the live viewport framebuffer as a raster-oriented image. */
     QImage grabFramebuffer();
-    void imageFromFramebuffer(
-        int width,
-        int height,
-        int samples,
-        const QColor& bgcolor,
-        QImage& img,
-        RenderIntent intent = RenderIntent::LiveInteractive
-    );
 
     void setViewing(bool enable) override;
     virtual void setCursorEnabled(bool enable);
@@ -621,6 +632,10 @@ private:
     void syncNaviCubeVisibility();
     void drawAxisCross();
     void drawSingleBackground(const QColor&);
+    void recoverFromRenderMemoryException();
+    void renderDelayedAnnotations(SoGLRenderAction* glra);
+    void renderGLActionScene(const QColor& backgroundColor, SoGLRenderAction* glra);
+    bool renderToFramebuffer(QOpenGLFramebufferObject*, bool includeViewerLighting = true);
     void setCursorRepresentation(int mode);
     void aboutToDestroyGLContext();
     void createStandardCursors();
@@ -643,6 +658,8 @@ private:
     SoDirectionalLight* backlight;
     SoDirectionalLight* fillLight;
     SoEnvironment* environment;
+    SoGroup* viewerLightingRoot;
+    SoSeparator* viewerSceneRoot;
 
     SoRotation* lightRotation;
 

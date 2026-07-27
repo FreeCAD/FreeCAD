@@ -1067,6 +1067,7 @@ void DSHBSplineControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
                 handler->resetSeekSecond = false;
                 unsetOnViewParameter(thirdParam.get());
                 unsetOnViewParameter(fourthParam.get());
+                getKeyManager()->resetMode();
                 setFocusToOnViewParameter(OnViewParameter::Third);
                 return;
             }

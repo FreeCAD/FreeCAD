@@ -2655,7 +2655,10 @@ bool TreeWidget::dropInDocument(
                 if (!link) {
                     continue;
                 }
-                FCMD_OBJ_CMD(link, "Label='" << obj->getLinkedObject(true)->Label.getValue() << "'");
+                std::string linkedLabel = Base::Tools::escapeEncodeString(
+                    obj->getLinkedObject(true)->Label.getValue()
+                );
+                FCMD_OBJ_CMD(link, "Label='" << linkedLabel << "'");
                 propPlacement = dynamic_cast<App::PropertyPlacement*>(
                     link->getPropertyByName("Placement")
                 );
@@ -3916,6 +3919,7 @@ void TreeWidget::setupText()
 
     this->closeDocAction->setText(tr("Close Document"));
     this->closeDocAction->setStatusTip(tr("Closes the document"));
+    this->closeDocAction->setIcon(BitmapFactory().iconFromTheme("Std_CloseActiveWindow"));
 
 #ifdef Q_OS_MAC
     this->openFileLocationAction->setText(tr("Reveal in Finder"));

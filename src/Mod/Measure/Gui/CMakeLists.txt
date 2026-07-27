@@ -17,7 +17,11 @@ set (Measure_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Measure_translation.qr
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
 qt_create_resource_file(${Measure_TR_QRC} ${QM_SRCS})
-qt_add_resources(MeasureGui_SRCS Resources/Measure.qrc ${Measure_TR_QRC})
+qt_add_resources(MeasureGui_SRCS
+    Resources/Measure.qrc
+    ${Measure_TR_QRC}
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 SET(MeasureGui_UIC_SRCS
     DlgPrefsMeasureAppearanceImp.ui

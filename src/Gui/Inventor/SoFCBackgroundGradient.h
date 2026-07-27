@@ -26,24 +26,29 @@
 #include <cstdint>
 
 #include <Inventor/SbColor.h>
-#include <Inventor/nodes/SoNode.h>
+#include <Inventor/fields/SoSFBool.h>
+#include <Inventor/fields/SoSFColor.h>
+#include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <FCGlobal.h>
 
+#include "SoFCScreenSpaceGroup.h"
+
 
 class SbColor;
-class SoGLRenderAction;
+class SoFaceSet;
 class SoSeparator;
 class SoSwitch;
-class SoFaceSet;
 class SoVertexProperty;
 
 namespace Gui
 {
 
-class GuiExport SoFCBackgroundGradient: public SoNode
+using SoFCScreenSpaceGroup = Inventor::SoFCScreenSpaceGroup;
+
+class GuiExport SoFCBackgroundGradient: public SoFCScreenSpaceGroup
 {
-    using inherited = SoNode;
+    using inherited = SoFCScreenSpaceGroup;
 
     SO_NODE_HEADER(Gui::SoFCBackgroundGradient);
 
@@ -57,21 +62,36 @@ public:
     static void finish();
     SoFCBackgroundGradient();
 
-    void GLRender(SoGLRenderAction* action) override;
+    SoSFEnum gradientMode;
+    SoSFColor fromColor;
+    SoSFColor toColor;
+    SoSFColor midColor;
+    SoSFBool useMidColor;
+
     void setGradient(Gradient grad);
     Gradient getGradient() const;
     void setColorGradient(const SbColor& fromColor, const SbColor& toColor);
     void setColorGradient(const SbColor& fromColor, const SbColor& toColor, const SbColor& midColor);
 
 private:
+    struct GeometryState
+    {
+        Gradient gradient {LINEAR};
+        uint32_t fromColor {0};
+        uint32_t toColor {0};
+        uint32_t midColor {0};
+        bool useMidColor {true};
+    };
+
     void ensureGeometry();
-    void updateLinearGeometry();
-    void updateRadialGeometry();
+    GeometryState currentGeometryState() const;
+    void updateLinearGeometry(const GeometryState& state);
+    void updateRadialGeometry(const GeometryState& state);
 
     static constexpr int CircleSegments = 32;
 
-    Gradient gradient;
-    bool geometryDirty {true};
+    bool geometryInitialized {false};
+    GeometryState appliedGeometryState;
 
     SoSwitch* gradientSwitch {nullptr};
     SoSeparator* linearSeparator {nullptr};
@@ -86,8 +106,7 @@ private:
 
 protected:
     ~SoFCBackgroundGradient() override;
-
-    SbColor fCol, tCol, mCol;
+    void prepareScreenSpaceGeometry(SoAction* action) override;
 };
 
 }  // namespace Gui

@@ -131,7 +131,7 @@ public:
     bool isInnerView() const { return m_innerView; }
     void isInnerView(bool state) { m_innerView = state; }
     QGIViewClip* getClipGroup();
-    void updatePositionFromFeatureXY();
+    virtual void updatePositionFromFeatureXY();
 
     bool isSnapping() { return snapping; }
     void snapPosition(QPointF& position);
@@ -176,6 +176,7 @@ public:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
     template <typename T>
     std::vector<T> getObjects(std::vector<int> indexes);

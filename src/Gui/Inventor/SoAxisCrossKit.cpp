@@ -27,7 +27,6 @@
 
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
@@ -38,6 +37,7 @@
 #include <Inventor/nodes/SoCube.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoFontStyle.h>
+#include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoLineSet.h>
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoPointSet.h>
@@ -50,6 +50,7 @@
 #include <Gui/ViewParams.h>
 
 #include "SoAxisCrossKit.h"
+#include "SoFCBoundingBox.h"
 #include "SoDevicePixelRatioElement.h"
 
 using namespace Gui;
@@ -81,7 +82,23 @@ void SoShapeScale::initClass()
 
 void SoShapeScale::GLRender(SoGLRenderAction* action)
 {
+    updateScale(action ? action->getState() : nullptr);
+    inherited::GLRender(action);
+}
+
+void SoShapeScale::doAction(SoAction* action)
+{
+    updateScale(action ? action->getState() : nullptr);
+    inherited::doAction(action);
+}
+
+void SoShapeScale::updateScale(SoState* state)
+{
     auto* scale = static_cast<SoScale*>(this->getAnyPart(SbName("scale"), true));
+    if (!scale || !state) {
+        return;
+    }
+
     if (!this->active.getValue()) {
         SbVec3f v(1.0f, 1.0f, 1.0f);
         if (scale->scaleFactor.getValue() != v) {
@@ -89,12 +106,22 @@ void SoShapeScale::GLRender(SoGLRenderAction* action)
         }
     }
     else {
-        SoState* state = action->getState();
+        if (!state->isElementEnabled(SoViewportRegionElement::getClassStackIndex())
+            || !state->isElementEnabled(SoViewVolumeElement::getClassStackIndex())
+            || !state->isElementEnabled(SoDevicePixelRatioElement::getClassStackIndex())) {
+            return;
+        }
+
         const SbViewportRegion& vp = SoViewportRegionElement::get(state);
         const SbViewVolume& vv = SoViewVolumeElement::get(state);
 
+        const SbVec2s viewportSize = vp.getViewportSizePixels();
+        if (viewportSize[0] <= 0) {
+            return;
+        }
+
         SbVec3f center(0.0f, 0.0f, 0.0f);
-        float nsize = this->scaleFactor.getValue() / float(vp.getViewportSizePixels()[0]);
+        float nsize = this->scaleFactor.getValue() / float(viewportSize[0]);
         SoModelMatrixElement::get(state).multVecMatrix(center, center);  // world coords
         float sf = vv.getWorldToScreenScale(center, nsize);
 
@@ -105,8 +132,6 @@ void SoShapeScale::GLRender(SoGLRenderAction* action)
             scale->scaleFactor = v;
         }
     }
-
-    inherited::GLRender(action);
 }
 
 // --------------------------------------------------------------
@@ -244,7 +269,7 @@ SO_NODE_SOURCE(SoRegPoint)
 
 void SoRegPoint::initClass()
 {
-    SO_NODE_INIT_CLASS(SoRegPoint, SoShape, "Shape");
+    SO_NODE_INIT_CLASS(SoRegPoint, SoSeparator, "Separator");
 }
 
 SoRegPoint::SoRegPoint()
@@ -257,18 +282,19 @@ SoRegPoint::SoRegPoint()
     SO_NODE_ADD_FIELD(color, (1.0f, 0.447059f, 0.337255f));
     SO_NODE_ADD_FIELD(text, (""));
 
-    root = new SoSeparator();
-    root->ref();
-
     auto* pickStyle = new SoPickStyle();
     pickStyle->style = SoPickStyle::UNPICKABLE;
-    root->addChild(pickStyle);
+    this->addChild(pickStyle);
+
+    auto* lightModel = new SoLightModel();
+    lightModel->model = SoLightModel::BASE_COLOR;
+    this->addChild(lightModel);
 
     const SbVec3f p1 = base.getValue();
     const SbVec3f p2 = p1 + normal.getValue() * length.getValue();
 
     geometryRoot = new SoSeparator();
-    root->addChild(geometryRoot);
+    this->addChild(geometryRoot);
 
     geometryColor = new SoBaseColor();
     geometryColor->rgb.setValue(this->color.getValue());
@@ -321,7 +347,10 @@ SoRegPoint::SoRegPoint()
     geometryRoot->addChild(tipPointSep);
 
     textRoot = new SoSeparator();
-    root->addChild(textRoot);
+    auto* textBBoxRoot = new SoSkipBoundingGroup();
+    textBBoxRoot->mode = SoSkipBoundingGroup::EXCLUDE_BBOX;
+    textBBoxRoot->addChild(textRoot);
+    this->addChild(textBBoxRoot);
 
     move = new SoTranslation();
     move->translation.setValue(p2);
@@ -345,8 +374,6 @@ SoRegPoint::SoRegPoint()
 
 SoRegPoint::~SoRegPoint()
 {
-    root->unref();
-    root = nullptr;
     geometryRoot = nullptr;
     geometryColor = nullptr;
     lineCoordinates = nullptr;
@@ -359,54 +386,6 @@ SoRegPoint::~SoRegPoint()
     move = nullptr;
     textColor = nullptr;
     label = nullptr;
-}
-
-/**
- * Renders the probe with text label and a bullet at the base point.
- */
-void SoRegPoint::GLRender(SoGLRenderAction* action)
-{
-    if (!shouldGLRender(action) || !action) {
-        return;
-    }
-
-    SoState* state = action->getState();
-    if (!state || !root) {
-        return;
-    }
-
-    state->push();
-    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-    root->GLRender(action);
-    state->pop();
-}
-
-void SoRegPoint::generatePrimitives(SoAction* action)
-{
-    // This node is implemented as a small internal scenegraph; delegate to it.
-    // This is primarily useful for non-GL actions and keeps behavior consistent.
-    if (root && action) {
-        root->doAction(action);
-    }
-}
-
-/**
- * Sets the bounding box of the probe to \a box and its center to \a center.
- */
-void SoRegPoint::computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center)
-{
-    root->doAction(action);
-    if (action->getTypeId().isDerivedFrom(SoGetBoundingBoxAction::getClassTypeId())) {
-        static_cast<SoGetBoundingBoxAction*>(action)->resetCenter();
-    }
-
-    SbVec3f p1 = base.getValue();
-    SbVec3f p2 = p1 + normal.getValue() * length.getValue();
-
-    box.extendBy(p1);
-    box.extendBy(p2);
-
-    center = box.getCenter();
 }
 
 void SoRegPoint::notify(SoNotList* node)
@@ -444,5 +423,5 @@ void SoRegPoint::notify(SoNotList* node)
         }
     }
 
-    SoShape::notify(node);
+    SoSeparator::notify(node);
 }

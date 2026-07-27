@@ -1195,15 +1195,15 @@ If unchecked, they will be sorted by their name.</source>
       <translation>그렇지 않으면 모든 변경 사항이 손실됩니다.</translation>
     </message>
     <message>
+      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../MaterialSave.cpp" line="568"/>
       <location filename="../../Array2D.cpp" line="170"/>
-      <location filename="../../ListEdit.cpp" line="142"/>
       <source>Confirm Delete</source>
       <translation>삭제 확인</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="144"/>
+      <location filename="../../Array2D.cpp" line="172"/>
       <source>Delete the row?</source>
       <translation>행을 삭제할까요?</translation>
     </message>

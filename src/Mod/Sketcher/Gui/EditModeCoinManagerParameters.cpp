@@ -58,6 +58,7 @@ int GeometryLayerParameters::getSubLayerIndex(const int geoId, const Sketcher::G
 }
 
 SbColor DrawingParameters::InformationColor(0.0f, 1.0f, 0.0f);  // #00FF00 -> (  0,255,  0)
+SbColor DrawingParameters::GridLineColor(0.7f, 0.7f, 0.7f);
 
 namespace
 {  // Anonymous namespace to avoid making those variables global
