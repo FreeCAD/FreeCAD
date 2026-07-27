@@ -383,12 +383,12 @@ def _svg_dimension(
 
     if abs(target) > math.pi / 2:
         tangle = tangle + math.pi
-        
+
         offset = App.Vector(0, 2.0 / scale, 0)
         offset = DraftVecUtils.rotate(offset, tangle)
 
         tbase += offset
-        
+
     # drawing text
     svg += svgtext.get_text(
         plane, techdraw, tstroke, fontsize, vobj.FontName, tangle, tbase, prx.string
