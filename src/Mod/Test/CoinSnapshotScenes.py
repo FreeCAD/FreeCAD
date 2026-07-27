@@ -1210,7 +1210,7 @@ SNAPSHOT_FIXTURES = {
     "SoPreviewShape": _fixture(
         _build_preview_shape_scene,
         required_modules=("PartGui",),
-        supported_renderers=LEGACY_ONLY,
+        supported_renderers=ALL_RENDERERS,
     ),
     "SoDrawingGrid": _fixture(_build_drawing_grid_scene, framing_policy=CameraPolicy.FIXED_OVERLAY),
     "SoRegPoint": _fixture(_build_reg_point_scene, framing_policy=CameraPolicy.FIXED_OVERLAY),
