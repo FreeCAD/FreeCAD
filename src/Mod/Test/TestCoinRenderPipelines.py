@@ -1197,6 +1197,55 @@ class CoinRenderPipelineTestCase(unittest.TestCase):
         finally:
             harness.close()
 
+    def test_navi_cube_matches_between_pipelines(self):
+        FreeCAD, FreeCADGui, coin = _require_gui()
+
+        width, height = _snapshot_dimensions()
+        out_dir = _snapshot_out_dir()
+        harness = _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height)
+        try:
+            if not {_RENDERER_LEGACY, _RENDERER_DRAW_LIST}.issubset(
+                set(harness.render_pipelines())
+            ):
+                raise unittest.SkipTest("SoNaviCube regression requires both pipelines")
+
+            fixture = get_snapshot_fixture("SoNaviCube")
+            runtime = SnapshotRuntime(coin, width, height, "SoNaviCube")
+            root = fixture.build(runtime)
+            root.ref()
+            try:
+                frame_snapshot_camera(runtime, root, fixture.framing_policy)
+                rendered = {}
+                for renderer_name in (_RENDERER_LEGACY, _RENDERER_DRAW_LIST):
+                    path = _renderer_output_path(
+                        out_dir,
+                        renderer_name,
+                        "actual",
+                        "SoNaviCubePipeline.png",
+                    )
+                    _render_png(harness, coin, root, path, renderer_name, frame_camera=False)
+                    self.assertGreater(
+                        _non_background_pixel_count(path),
+                        100,
+                        f"SoNaviCube rendered empty in {renderer_name}: {path}",
+                    )
+                    rendered[renderer_name] = path
+            finally:
+                root.unref()
+
+            self.assertTrue(
+                _region_pixels_similar(
+                    rendered[_RENDERER_LEGACY],
+                    rendered[_RENDERER_DRAW_LIST],
+                    (0, 0, width, height),
+                    tolerance=24,
+                    max_mismatched_fraction=0.01,
+                ),
+                "SoNaviCube geometry or line rasterization diverged between LegacyGL and DrawList",
+            )
+        finally:
+            harness.close()
+
     def test_viewer_lighting_matches_legacy_and_updates(self):
         FreeCAD, FreeCADGui, coin = _require_gui()
 
