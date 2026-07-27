@@ -106,6 +106,7 @@ class NavigationStyle;
 class SoFCUnifiedSelection;
 class Document;
 class GLGraphicsItem;
+class RubberbandOverlay;
 class SoShapeScale;
 class ViewerEventFilter;
 
@@ -258,6 +259,8 @@ public:
     std::list<GLGraphicsItem*> getGraphicsItems() const;
     std::list<GLGraphicsItem*> getGraphicsItemsOfType(const Base::Type&) const;
     void clearGraphicsItems();
+
+    RubberbandOverlay& rubberbandOverlay();
 
     /** @name Handling of view providers */
     //@{
@@ -591,6 +594,7 @@ Q_SIGNALS:
 protected:
     static GLenum getInternalTextureFormat();
     void renderScene();
+    void renderRubberbandOverlay();
     void renderFramebuffer();
     void renderGLImage();
     void animatedViewAll(const SbBox3f& bbox, int steps, int ms);
@@ -648,6 +652,7 @@ private:
     std::set<ViewProvider*> _ViewProviderSet;
     std::map<SoSeparator*, ViewProvider*> _ViewProviderMap;
     std::list<GLGraphicsItem*> graphicsItems;
+    std::unique_ptr<RubberbandOverlay> rubberbandOverlayRenderer;
     ViewProvider* editViewProvider;
     SoFCBackgroundGradient* pcBackGround;
     SoSeparator* backgroundroot;
