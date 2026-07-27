@@ -11,3 +11,11 @@
 #  define MbDFEMExport FREECAD_DECL_IMPORT
 # endif
 #endif
+
+#ifndef MbDFEMGuiExport
+# ifdef MbDFEMGui_EXPORTS
+#  define MbDFEMGuiExport FREECAD_DECL_EXPORT
+# else
+#  define MbDFEMGuiExport FREECAD_DECL_IMPORT
+# endif
+#endif

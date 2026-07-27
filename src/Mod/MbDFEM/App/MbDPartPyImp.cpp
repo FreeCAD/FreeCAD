@@ -38,3 +38,17 @@ PyObject* MbDFEM::MbDPartPy::addMarker(PyObject* args)
     getMbDPartPtr()->addMarker(static_cast<MbDFEM::MbDMarker*>(documentObject));
     Py_Return;
 }
+
+PyObject* MbDFEM::MbDPartPy::getMarkersFolder(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    auto* folder = getMbDPartPtr()->getMarkersFolder();
+    if (!folder) {
+        Py_Return;
+    }
+
+    return Py::new_reference_to(Py::asObject(folder->getPyObject()));
+}

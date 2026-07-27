@@ -1,73 +1,86 @@
 # MbDFEM Development Log
 
----
+This log records important development-environment milestones and decisions for
+the MbDFEM FreeCAD branch.
 
-## Goals
+## Current Branch State
 
-Develop a FreeCAD workbench integrating
+Active branch:
 
-- Assembly
-- Multibody Dynamics
-- Finite Element Analysis
+```text
+feature/mbdfem
+```
 
-using C++.
+Tracked remote branch:
 
----
+```text
+origin/feature/mbdfem
+```
 
-## Milestones
+Official FreeCAD remote:
 
-### Environment
+```text
+upstream/main
+```
 
-✔ Repository cloned
+The branch was merged with `upstream/main` and pushed to the fork. At the time
+of this note, the local branch and `origin/feature/mbdfem` are synchronized.
 
-✔ Branch created
+## Environment Milestones
 
-✔ Visual Studio configured
+- Windows 11 development environment selected.
+- Microsoft Visual Studio C++ toolchain selected for compiler, linker, and
+  debugger.
+- VS Code selected as the editor and debugger front end.
+- FreeCAD Debug LibPack `LibPack-26.3.0-v3.5.2-x64-Debug` selected.
+- FreeCAD Debug build configured under `build/debug`.
+- `FreeCAD_d.exe` builds and launches from VS Code.
+- MbDFEM source lives under `src/Mod/MbDFEM`.
+- MbDFEM is registered from `src/Mod/CMakeLists.txt`.
+- `BUILD_MBDFEM` build option is available from
+  `cMake/FreeCAD_Helpers/InitializeFreeCADBuildOptions.cmake`.
 
-✔ CMake configured
+## Debugging Milestones
 
-✔ Debug LibPack configured
+- Breakpoints in `src/Main/MainGui.cpp` originally did not bind.
+- Investigation found that `FreeCAD_d.pdb` did not contain `MainGui.cpp`.
+- Root cause was a Windows Debug PDB-name clash between `FreeCADMain` and
+  `FreeCADMainPy`.
+- Fixed by assigning `FreeCADMainPy` separate PDB names:
+  `FreeCADMainPy_d.pdb` for Debug and `FreeCADMainPy.pdb` for Release.
+- Verified that `FreeCAD_d.pdb` now contains `src\Main\MainGui.cpp`.
 
-✔ Successful build
+## Current MbDFEM Module Status
 
----
+The branch contains an initial built-in MbDFEM module with:
 
-### VS Code
+- `MbDFEM` Python extension module.
+- `MbDFEM::MbDAssembly`.
+- `MbDFEM::MbDPart`.
+- `MbDFEM::MbDMarker`.
+- Minimal GUI workbench registration through `InitGui.py`.
+- C++ ViewProviders for `MbDAssembly`, `MbDPart`, and `MbDMarker`.
+- Example model script at `src/Mod/MbDFEM/Examples/CreateMbDFEMModel.py`.
+- Python tests in `src/Mod/MbDFEM/TestMbDFEMApp.py`.
 
-✔ CMake Tools installed
+## Collaboration Decision
 
-✔ C/C++ extension installed
+Because `feature/mbdfem` is a shared collaborator branch, prefer:
 
-✔ FreeCAD launches from VS Code
+```powershell
+git fetch upstream main
+git merge upstream/main
+git push
+```
 
----
+Avoid rebasing the shared branch unless all collaborators agree, because rebase
+rewrites published history.
 
-### Current Work
+## Near-Term Development Tasks
 
-Investigating debugger symbol loading.
-
----
-
-## Next Major Tasks
-
-- Resolve debugger issue
-
-- Create MbDFEM workbench
-
-- Add App module
-
-- Add Gui module
-
-- Register workbench
-
-- Add first command
-
-- Add first document object
-
-- Display object in tree
-
-- Add ViewProvider
-
-- Add serialization
-
-- Add unit tests
+- Keep the setup documentation accurate as the environment changes.
+- Build and test the current branch after upstream merges.
+- Confirm MbDFEM workbench appears in the FreeCAD GUI.
+- Expand App objects for joints, forces, solver settings, and FEM coupling.
+- Add icons and richer behavior for user-visible MbDFEM ViewProviders.
+- Add focused tests for object creation, persistence, and document restore.

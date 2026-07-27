@@ -3,13 +3,16 @@
 from Base.Metadata import export
 
 from App.DocumentObject import DocumentObject
-from App.DocumentObjectGroup import DocumentObjectGroup
 
 
 @export(Include="Mod/MbDFEM/App/MbDPart.h", Namespace="MbDFEM")
-class MbDPart(DocumentObjectGroup):
+class MbDPart(DocumentObject):
     """A minimal multibody part."""
 
     def addMarker(self, marker: DocumentObject, /) -> None:
         """Add an MbDMarker to markers, ignoring duplicates."""
+        ...
+
+    def getMarkersFolder(self) -> DocumentObject:
+        """Return the lightweight Markers tree folder."""
         ...

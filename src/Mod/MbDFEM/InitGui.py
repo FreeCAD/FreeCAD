@@ -2,6 +2,8 @@
 
 import FreeCADGui as Gui
 
+import MbDFEMGui  # noqa: F401
+
 
 class MbDFEMWorkbench(Gui.Workbench):
     """Minimal MbDFEM workbench."""
@@ -11,6 +13,7 @@ class MbDFEMWorkbench(Gui.Workbench):
 
     def Initialize(self):
         import MbDFEM  # noqa: F401
+        import MbDFEMGui  # noqa: F401
 
     def GetClassName(self):
         return "Gui::PythonWorkbench"

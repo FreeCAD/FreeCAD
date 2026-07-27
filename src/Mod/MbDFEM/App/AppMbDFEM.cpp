@@ -4,9 +4,12 @@
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 
+#include "MbDAction.h"
 #include "MbDAssembly.h"
-#include "MbDGroup.h"
+#include "MbDFolders.h"
+#include "MbDJoint.h"
 #include "MbDMarker.h"
+#include "MbDMotion.h"
 #include "MbDPart.h"
 
 namespace MbDFEM
@@ -35,7 +38,14 @@ PyMOD_INIT_FUNC(MbDFEM)
     MbDFEM::MbDAssembly::init();
     MbDFEM::MbDPart::init();
     MbDFEM::MbDMarker::init();
-    MbDFEM::MbDGroup::init();
+    MbDFEM::MbDJoint::init();
+    MbDFEM::MbDMotion::init();
+    MbDFEM::MbDAction::init();
+    MbDFEM::MbDPartsFolder::init();
+    MbDFEM::MbDMarkersFolder::init();
+    MbDFEM::MbDJointsFolder::init();
+    MbDFEM::MbDMotionsFolder::init();
+    MbDFEM::MbDActionsFolder::init();
     Base::Console().log("Loading MbDFEM module... done\n");
     PyMOD_Return(module);
 }

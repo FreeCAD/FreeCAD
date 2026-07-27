@@ -1,0 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+#include "MbDMotion.h"
+
+PROPERTY_SOURCE(MbDFEM::MbDMotion, App::DocumentObject)

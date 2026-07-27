@@ -6,11 +6,11 @@
 
 #include <App/Document.h>
 
-#include "MbDGroup.h"
+#include "MbDFolders.h"
 #include "MbDMarker.h"
 #include "MbDPartPy.h"
 
-PROPERTY_SOURCE(MbDFEM::MbDPart, App::DocumentObjectGroup)
+PROPERTY_SOURCE(MbDFEM::MbDPart, App::DocumentObject)
 
 MbDFEM::MbDPart::MbDPart()
 {
@@ -24,11 +24,11 @@ MbDFEM::MbDPart::MbDPart()
                       "MbDFEM",
                       App::Prop_None,
                       "Markers belonging to this part");
-    ADD_PROPERTY_TYPE(_markersGroup,
+    ADD_PROPERTY_TYPE(_markersFolder,
                       (nullptr),
                       "MbDFEM",
                       App::Prop_Hidden,
-                      "Tree group containing this part's markers");
+                      "Tree folder containing this part's markers");
 }
 
 void MbDFEM::MbDPart::addMarker(MbDMarker* marker)
@@ -38,24 +38,35 @@ void MbDFEM::MbDPart::addMarker(MbDMarker* marker)
         values.push_back(marker);
         markers.setValues(values);
     }
+
     if (marker) {
-        ensureMarkersGroup()->addObject(marker);
+        auto* folder = ensureMarkersFolder();
+        if (folder && !folder->hasObject(marker)) {
+            folder->addObject(marker);
+        }
     }
 }
 
-App::DocumentObjectGroup* MbDFEM::MbDPart::ensureMarkersGroup()
+App::DocumentObjectGroup* MbDFEM::MbDPart::getMarkersFolder() const
 {
-    if (auto* group = dynamic_cast<App::DocumentObjectGroup*>(_markersGroup.getValue())) {
-        return group;
+    return dynamic_cast<App::DocumentObjectGroup*>(_markersFolder.getValue());
+}
+
+App::DocumentObjectGroup* MbDFEM::MbDPart::ensureMarkersFolder()
+{
+    if (auto* folder = getMarkersFolder()) {
+        return folder;
+    }
+    if (!getDocument()) {
+        return nullptr;
     }
 
     const std::string name = std::string(getNameInDocument()) + "_Markers";
-    auto* group = static_cast<App::DocumentObjectGroup*>(
-        getDocument()->addObject("MbDFEM::MbDGroup", name.c_str()));
-    group->Label.setValue("Markers");
-    _markersGroup.setValue(group);
-    App::GroupExtension::addObject(group);
-    return group;
+    auto* folder = static_cast<App::DocumentObjectGroup*>(
+        getDocument()->addObject("MbDFEM::MbDMarkersFolder", name.c_str()));
+    folder->Label.setValue("Markers");
+    _markersFolder.setValue(folder);
+    return folder;
 }
 
 PyObject* MbDFEM::MbDPart::getPyObject()

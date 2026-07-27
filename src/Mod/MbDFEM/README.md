@@ -430,7 +430,22 @@ script = Path(MbDFEM.__file__).parent / "Examples" / "CreateMbDFEMModel.py"
 exec(script.read_text(encoding="utf-8"))
 ```
 
-The Model tree should contain:
+The example creates these persistent relationships:
+
+```text
+MbDFEM_Doc
+├── MbDAssembly1.parts -> [MbDPart1, MbDPart2]
+├── MbDAssembly1.markers -> [MbDMarker1, MbDMarker2]
+├── MbDAssembly1.joints -> [MbDJoint1, MbDJoint2]
+├── MbDAssembly1.motions -> [MbDMotion1, MbDMotion2]
+├── MbDAssembly1.actions -> [MbDAction1, MbDAction2]
+├── MbDPart1.markers -> [MbDMarker11, MbDMarker12]
+└── MbDPart2.markers -> [MbDMarker21, MbDMarker22]
+```
+
+The `parts`, `markers`, `joints`, `motions`, and `actions` properties are the
+authoritative model relationships. MbDFEM also creates lightweight App folder
+objects for tree presentation, so the GUI is displayed as:
 
 ```text
 MbDFEM_Doc
@@ -438,15 +453,24 @@ MbDFEM_Doc
     ├── Markers
     │   ├── MbDMarker1
     │   └── MbDMarker2
-    └── Parts
-        ├── MbDPart1
-        │   └── Markers
-        │       ├── MbDMarker11
-        │       └── MbDMarker12
-        └── MbDPart2
-            └── Markers
-                ├── MbDMarker21
-                └── MbDMarker22
+    ├── Parts
+    │   ├── MbDPart1
+    │   │   └── Markers
+    │   │       ├── MbDMarker11
+    │   │       └── MbDMarker12
+    │   └── MbDPart2
+    │       └── Markers
+    │           ├── MbDMarker21
+    │           └── MbDMarker22
+    ├── Joints
+    │   ├── MbDJoint1
+    │   └── MbDJoint2
+    ├── Motions
+    │   ├── MbDMotion1
+    │   └── MbDMotion2
+    └── Actions
+        ├── MbDAction1
+        └── MbDAction2
 ```
 
 Run the module's registered Python tests with the current FreeCAD Test API:
@@ -465,7 +489,7 @@ Ran 2 tests
 OK
 ```
 
-The tests cover object creation, `TypeId`, placements, tree collections, saving,
+The tests cover object creation, `TypeId`, placements, relationships, saving,
 closing, and reopening.
 
 ## 11. Keep the fork synchronized

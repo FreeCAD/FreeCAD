@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/PropertyGeo.h>
 #include <App/PropertyLinks.h>
@@ -12,7 +13,7 @@ namespace MbDFEM
 
 class MbDMarker;
 
-class MbDFEMExport MbDPart: public App::DocumentObjectGroup
+class MbDFEMExport MbDPart: public App::DocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(MbDFEM::MbDPart);
 
@@ -27,10 +28,17 @@ public:
 
     PyObject* getPyObject() override;
 
-private:
-    App::PropertyLink _markersGroup;
+    App::DocumentObjectGroup* getMarkersFolder() const;
 
-    App::DocumentObjectGroup* ensureMarkersGroup();
+    const char* getViewProviderName() const override
+    {
+        return "MbDFEMGui::ViewProviderMbDPart";
+    }
+
+private:
+    App::PropertyLink _markersFolder;
+
+    App::DocumentObjectGroup* ensureMarkersFolder();
 };
 
 }  // namespace MbDFEM

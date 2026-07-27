@@ -6,12 +6,15 @@
 
 #include <App/Document.h>
 
+#include "MbDAction.h"
 #include "MbDAssemblyPy.h"
-#include "MbDGroup.h"
+#include "MbDFolders.h"
+#include "MbDJoint.h"
 #include "MbDMarker.h"
+#include "MbDMotion.h"
 #include "MbDPart.h"
 
-PROPERTY_SOURCE(MbDFEM::MbDAssembly, App::DocumentObjectGroup)
+PROPERTY_SOURCE(MbDFEM::MbDAssembly, App::DocumentObject)
 
 MbDFEM::MbDAssembly::MbDAssembly()
 {
@@ -30,16 +33,46 @@ MbDFEM::MbDAssembly::MbDAssembly()
                       "MbDFEM",
                       App::Prop_None,
                       "Markers belonging to this assembly");
-    ADD_PROPERTY_TYPE(_partsGroup,
+    ADD_PROPERTY_TYPE(joints,
+                      (nullptr),
+                      "MbDFEM",
+                      App::Prop_None,
+                      "Joints belonging to this assembly");
+    ADD_PROPERTY_TYPE(motions,
+                      (nullptr),
+                      "MbDFEM",
+                      App::Prop_None,
+                      "Motions belonging to this assembly");
+    ADD_PROPERTY_TYPE(actions,
+                      (nullptr),
+                      "MbDFEM",
+                      App::Prop_None,
+                      "Actions belonging to this assembly");
+    ADD_PROPERTY_TYPE(_partsFolder,
                       (nullptr),
                       "MbDFEM",
                       App::Prop_Hidden,
-                      "Tree group containing this assembly's parts");
-    ADD_PROPERTY_TYPE(_markersGroup,
+                      "Tree folder containing this assembly's parts");
+    ADD_PROPERTY_TYPE(_markersFolder,
                       (nullptr),
                       "MbDFEM",
                       App::Prop_Hidden,
-                      "Tree group containing this assembly's markers");
+                      "Tree folder containing this assembly's markers");
+    ADD_PROPERTY_TYPE(_jointsFolder,
+                      (nullptr),
+                      "MbDFEM",
+                      App::Prop_Hidden,
+                      "Tree folder containing this assembly's joints");
+    ADD_PROPERTY_TYPE(_motionsFolder,
+                      (nullptr),
+                      "MbDFEM",
+                      App::Prop_Hidden,
+                      "Tree folder containing this assembly's motions");
+    ADD_PROPERTY_TYPE(_actionsFolder,
+                      (nullptr),
+                      "MbDFEM",
+                      App::Prop_Hidden,
+                      "Tree folder containing this assembly's actions");
 }
 
 void MbDFEM::MbDAssembly::addPart(MbDPart* part)
@@ -50,9 +83,12 @@ void MbDFEM::MbDAssembly::addPart(MbDPart* part)
         parts.setValues(values);
     }
 
-    ensureMarkersGroup();
+    ensureMarkersFolder();
     if (part) {
-        ensurePartsGroup()->addObject(part);
+        auto* folder = ensurePartsFolder();
+        if (folder && !folder->hasObject(part)) {
+            folder->addObject(part);
+        }
     }
 }
 
@@ -65,39 +101,176 @@ void MbDFEM::MbDAssembly::addMarker(MbDMarker* marker)
     }
 
     if (marker) {
-        ensureMarkersGroup()->addObject(marker);
+        auto* folder = ensureMarkersFolder();
+        if (folder && !folder->hasObject(marker)) {
+            folder->addObject(marker);
+        }
     }
-    ensurePartsGroup();
+    ensurePartsFolder();
 }
 
-App::DocumentObjectGroup* MbDFEM::MbDAssembly::ensurePartsGroup()
+void MbDFEM::MbDAssembly::addJoint(MbDJoint* joint)
 {
-    if (auto* group = dynamic_cast<App::DocumentObjectGroup*>(_partsGroup.getValue())) {
-        return group;
+    auto values = joints.getValues();
+    if (joint && std::find(values.begin(), values.end(), joint) == values.end()) {
+        values.push_back(joint);
+        joints.setValues(values);
+    }
+
+    if (joint) {
+        auto* folder = ensureJointsFolder();
+        if (folder && !folder->hasObject(joint)) {
+            folder->addObject(joint);
+        }
+    }
+    ensureMotionsFolder();
+    ensureActionsFolder();
+}
+
+void MbDFEM::MbDAssembly::addMotion(MbDMotion* motion)
+{
+    auto values = motions.getValues();
+    if (motion && std::find(values.begin(), values.end(), motion) == values.end()) {
+        values.push_back(motion);
+        motions.setValues(values);
+    }
+
+    if (motion) {
+        auto* folder = ensureMotionsFolder();
+        if (folder && !folder->hasObject(motion)) {
+            folder->addObject(motion);
+        }
+    }
+    ensureJointsFolder();
+    ensureActionsFolder();
+}
+
+void MbDFEM::MbDAssembly::addAction(MbDAction* action)
+{
+    auto values = actions.getValues();
+    if (action && std::find(values.begin(), values.end(), action) == values.end()) {
+        values.push_back(action);
+        actions.setValues(values);
+    }
+
+    if (action) {
+        auto* folder = ensureActionsFolder();
+        if (folder && !folder->hasObject(action)) {
+            folder->addObject(action);
+        }
+    }
+    ensureJointsFolder();
+    ensureMotionsFolder();
+}
+
+App::DocumentObjectGroup* MbDFEM::MbDAssembly::getPartsFolder() const
+{
+    return dynamic_cast<App::DocumentObjectGroup*>(_partsFolder.getValue());
+}
+
+App::DocumentObjectGroup* MbDFEM::MbDAssembly::getMarkersFolder() const
+{
+    return dynamic_cast<App::DocumentObjectGroup*>(_markersFolder.getValue());
+}
+
+App::DocumentObjectGroup* MbDFEM::MbDAssembly::getJointsFolder() const
+{
+    return dynamic_cast<App::DocumentObjectGroup*>(_jointsFolder.getValue());
+}
+
+App::DocumentObjectGroup* MbDFEM::MbDAssembly::getMotionsFolder() const
+{
+    return dynamic_cast<App::DocumentObjectGroup*>(_motionsFolder.getValue());
+}
+
+App::DocumentObjectGroup* MbDFEM::MbDAssembly::getActionsFolder() const
+{
+    return dynamic_cast<App::DocumentObjectGroup*>(_actionsFolder.getValue());
+}
+
+App::DocumentObjectGroup* MbDFEM::MbDAssembly::ensurePartsFolder()
+{
+    if (auto* folder = getPartsFolder()) {
+        return folder;
+    }
+    if (!getDocument()) {
+        return nullptr;
     }
 
     const std::string name = std::string(getNameInDocument()) + "_Parts";
-    auto* group = static_cast<App::DocumentObjectGroup*>(
-        getDocument()->addObject("MbDFEM::MbDGroup", name.c_str()));
-    group->Label.setValue("Parts");
-    _partsGroup.setValue(group);
-    App::GroupExtension::addObject(group);
-    return group;
+    auto* folder = static_cast<App::DocumentObjectGroup*>(
+        getDocument()->addObject("MbDFEM::MbDPartsFolder", name.c_str()));
+    folder->Label.setValue("Parts");
+    _partsFolder.setValue(folder);
+    return folder;
 }
 
-App::DocumentObjectGroup* MbDFEM::MbDAssembly::ensureMarkersGroup()
+App::DocumentObjectGroup* MbDFEM::MbDAssembly::ensureMarkersFolder()
 {
-    if (auto* group = dynamic_cast<App::DocumentObjectGroup*>(_markersGroup.getValue())) {
-        return group;
+    if (auto* folder = getMarkersFolder()) {
+        return folder;
+    }
+    if (!getDocument()) {
+        return nullptr;
     }
 
     const std::string name = std::string(getNameInDocument()) + "_Markers";
-    auto* group = static_cast<App::DocumentObjectGroup*>(
-        getDocument()->addObject("MbDFEM::MbDGroup", name.c_str()));
-    group->Label.setValue("Markers");
-    _markersGroup.setValue(group);
-    App::GroupExtension::addObject(group);
-    return group;
+    auto* folder = static_cast<App::DocumentObjectGroup*>(
+        getDocument()->addObject("MbDFEM::MbDMarkersFolder", name.c_str()));
+    folder->Label.setValue("Markers");
+    _markersFolder.setValue(folder);
+    return folder;
+}
+
+App::DocumentObjectGroup* MbDFEM::MbDAssembly::ensureJointsFolder()
+{
+    if (auto* folder = getJointsFolder()) {
+        return folder;
+    }
+    if (!getDocument()) {
+        return nullptr;
+    }
+
+    const std::string name = std::string(getNameInDocument()) + "_Joints";
+    auto* folder = static_cast<App::DocumentObjectGroup*>(
+        getDocument()->addObject("MbDFEM::MbDJointsFolder", name.c_str()));
+    folder->Label.setValue("Joints");
+    _jointsFolder.setValue(folder);
+    return folder;
+}
+
+App::DocumentObjectGroup* MbDFEM::MbDAssembly::ensureMotionsFolder()
+{
+    if (auto* folder = getMotionsFolder()) {
+        return folder;
+    }
+    if (!getDocument()) {
+        return nullptr;
+    }
+
+    const std::string name = std::string(getNameInDocument()) + "_Motions";
+    auto* folder = static_cast<App::DocumentObjectGroup*>(
+        getDocument()->addObject("MbDFEM::MbDMotionsFolder", name.c_str()));
+    folder->Label.setValue("Motions");
+    _motionsFolder.setValue(folder);
+    return folder;
+}
+
+App::DocumentObjectGroup* MbDFEM::MbDAssembly::ensureActionsFolder()
+{
+    if (auto* folder = getActionsFolder()) {
+        return folder;
+    }
+    if (!getDocument()) {
+        return nullptr;
+    }
+
+    const std::string name = std::string(getNameInDocument()) + "_Actions";
+    auto* folder = static_cast<App::DocumentObjectGroup*>(
+        getDocument()->addObject("MbDFEM::MbDActionsFolder", name.c_str()));
+    folder->Label.setValue("Actions");
+    _actionsFolder.setValue(folder);
+    return folder;
 }
 
 PyObject* MbDFEM::MbDAssembly::getPyObject()

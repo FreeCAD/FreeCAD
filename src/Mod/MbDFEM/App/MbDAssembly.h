@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/PropertyGeo.h>
 #include <App/PropertyLinks.h>
@@ -12,8 +13,11 @@ namespace MbDFEM
 
 class MbDMarker;
 class MbDPart;
+class MbDJoint;
+class MbDMotion;
+class MbDAction;
 
-class MbDFEMExport MbDAssembly: public App::DocumentObjectGroup
+class MbDFEMExport MbDAssembly: public App::DocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(MbDFEM::MbDAssembly);
 
@@ -24,18 +28,41 @@ public:
     App::PropertyPlacement Placement;
     App::PropertyLinkList parts;
     App::PropertyLinkList markers;
+    App::PropertyLinkList joints;
+    App::PropertyLinkList motions;
+    App::PropertyLinkList actions;
 
     void addPart(MbDPart* part);
     void addMarker(MbDMarker* marker);
+    void addJoint(MbDJoint* joint);
+    void addMotion(MbDMotion* motion);
+    void addAction(MbDAction* action);
 
     PyObject* getPyObject() override;
 
-private:
-    App::PropertyLink _partsGroup;
-    App::PropertyLink _markersGroup;
+    App::DocumentObjectGroup* getPartsFolder() const;
+    App::DocumentObjectGroup* getMarkersFolder() const;
+    App::DocumentObjectGroup* getJointsFolder() const;
+    App::DocumentObjectGroup* getMotionsFolder() const;
+    App::DocumentObjectGroup* getActionsFolder() const;
 
-    App::DocumentObjectGroup* ensurePartsGroup();
-    App::DocumentObjectGroup* ensureMarkersGroup();
+    const char* getViewProviderName() const override
+    {
+        return "MbDFEMGui::ViewProviderMbDAssembly";
+    }
+
+private:
+    App::PropertyLink _partsFolder;
+    App::PropertyLink _markersFolder;
+    App::PropertyLink _jointsFolder;
+    App::PropertyLink _motionsFolder;
+    App::PropertyLink _actionsFolder;
+
+    App::DocumentObjectGroup* ensurePartsFolder();
+    App::DocumentObjectGroup* ensureMarkersFolder();
+    App::DocumentObjectGroup* ensureJointsFolder();
+    App::DocumentObjectGroup* ensureMotionsFolder();
+    App::DocumentObjectGroup* ensureActionsFolder();
 };
 
 }  // namespace MbDFEM

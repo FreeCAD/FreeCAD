@@ -10,14 +10,20 @@ generate_from_py(MbDPart)
 set(MbDFEM_SRCS
     ../MbDFEMGlobal.h
     AppMbDFEM.cpp
+    MbDAction.cpp
+    MbDAction.h
     MbDAssembly.cpp
     MbDAssembly.h
     MbDAssembly.pyi
     MbDAssemblyPyImp.cpp
-    MbDGroup.cpp
-    MbDGroup.h
+    MbDFolders.cpp
+    MbDFolders.h
+    MbDJoint.cpp
+    MbDJoint.h
     MbDMarker.cpp
     MbDMarker.h
+    MbDMotion.cpp
+    MbDMotion.h
     MbDPart.cpp
     MbDPart.h
     MbDPart.pyi

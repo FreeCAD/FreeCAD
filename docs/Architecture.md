@@ -1,369 +1,194 @@
 # MbDFEM Architecture
 
-## Purpose
+MbDFEM is a built-in FreeCAD module intended to combine Assembly, Multibody
+Dynamics, and Finite Element Analysis workflows while preserving FreeCAD's
+document model.
 
-This document describes the overall software architecture of the MbDFEM
-(Assembly + Multibody Dynamics + Finite Element Analysis) workbench for
-FreeCAD.
+This document describes the current architecture and the direction for future
+development.
 
-It is intended to remain stable throughout the lifetime of the project.
+## Current Source Layout
 
----
+The authoritative source is:
 
-# Vision
-
-MbDFEM extends FreeCAD with a tightly integrated environment capable of
-
-- Mechanical assembly
-- Multibody dynamics (MbD)
-- Finite element analysis (FEM)
-- Coupled MbD/FEM simulation
-- Visualization
-- Post-processing
-
-while preserving FreeCAD's document model.
-
----
-
-# Design Principles
-
-## 1. Native FreeCAD Objects
-
-Every user-visible object should be a FreeCAD DocumentObject.
-
-Avoid maintaining duplicate object trees.
-
----
-
-## 2. Separate Model and GUI
-
-Maintain a strict separation between
-
-- App
-- Gui
-
-The App module contains all engineering data.
-
-The Gui module only displays and edits that data.
-
----
-
-## 3. Composition over Inheritance
-
-Represent engineering systems using composition.
-
-Example
-
-Assembly
-    contains Parts
-
-Part
-    contains Bodies
-
-Body
-    contains Features
-
----
-
-## 4. Solver Independence
-
-MbDFEM should not depend on a single solver.
-
-Possible back ends include
-
-- MBDyn
-- CalculiX
-- Chrono
-- OpenSees
-- Future solvers
-
-The workbench owns the engineering model, not the solver.
-
----
-
-# Overall Architecture
-
+```text
+src/Mod/MbDFEM
 ```
+
+Current files include:
+
+```text
+src/Mod/MbDFEM
+├── App
+│   ├── AppMbDFEM.cpp
+│   ├── CMakeLists.txt
+│   ├── MbDAssembly.cpp
+│   ├── MbDAssembly.h
+│   ├── MbDAssembly.pyi
+│   ├── MbDAssemblyPyImp.cpp
+│   ├── MbDMarker.cpp
+│   ├── MbDMarker.h
+│   ├── MbDPart.cpp
+│   ├── MbDPart.h
+│   ├── MbDPart.pyi
+│   └── MbDPartPyImp.cpp
+├── Examples
+│   └── CreateMbDFEMModel.py
+├── CMakeLists.txt
+├── Init.py
+├── InitGui.py
+├── MbDFEMGlobal.h
+├── README.md
+└── TestMbDFEMApp.py
+```
+
+## Registration Points
+
+The module is connected to the FreeCAD build through:
+
+```text
+src/Mod/CMakeLists.txt
+cMake/FreeCAD_Helpers/InitializeFreeCADBuildOptions.cmake
+cMake/FreeCAD_Helpers/PrintFinalReport.cmake
+```
+
+The build option is:
+
+```cmake
+BUILD_MBDFEM
+```
+
+## Design Principles
+
+- Use native FreeCAD `App::DocumentObject` types for user-visible engineering
+  objects.
+- Keep engineering data in App classes.
+- Keep GUI behavior in Gui/ViewProvider classes as the module grows.
+- Use FreeCAD property links for relationships instead of a parallel ownership
+  graph.
+- Keep solver-specific logic behind exporter/adapter layers.
+- Prefer small incremental objects and tests over large speculative frameworks.
+
+## Current Object Model
+
+The current C++ objects are:
+
+```text
+MbDFEM::MbDAssembly
+MbDFEM::MbDPart
+MbDFEM::MbDMarker
+MbDFEM::MbDJoint
+MbDFEM::MbDMotion
+MbDFEM::MbDAction
+```
+
+The current persistent document relationships are:
+
+```text
 FreeCAD Document
-│
-├── MbDAssembly
-│   ├── MbDPart
-│   ├── MbDJoint
-│   ├── MbDForce
-│   ├── MbDMarker
-│   └── MbDSolver
-│
-└── FEMModel
-    ├── Materials
-    ├── Constraints
-    ├── Loads
-    └── Mesh
+├── MbDAssembly.parts -> [MbDPart, ...]
+├── MbDAssembly.markers -> [MbDMarker, ...]
+├── MbDAssembly.joints -> [MbDJoint, ...]
+├── MbDAssembly.motions -> [MbDMotion, ...]
+├── MbDAssembly.actions -> [MbDAction, ...]
+└── MbDPart.markers -> [MbDMarker, ...]
 ```
 
----
+The example script in `Examples/CreateMbDFEMModel.py` creates this kind of
+relationship graph for interactive testing. The `parts`, `markers`, `joints`,
+`motions`, and `actions` properties are the authoritative model relationships.
+Assemblies and parts also create lightweight App group objects for tree
+presentation, so the GUI can show named `Markers`, `Parts`, `Joints`, `Motions`,
+and `Actions` rows without making those folders the source of model truth.
 
-# Major Components
+## Planned Object Families
 
-## MbDAssembly
+Future App objects should likely include:
 
-Top-level multibody system.
+- `MbDForce` for force and torque definitions.
+- `MbDSolver` for simulation settings.
+- `MbDResult` for time-history and post-processing data.
+- FEM coupling objects that link to or reuse FreeCAD FEM workbench objects.
 
-Responsibilities
+## Solver Boundary
 
-- owns all MbD objects
-- manages simulation
-- stores global settings
+MbDFEM should own the FreeCAD document objects and engineering model. External
+solvers should be treated as back ends.
 
-Suggested base class
+Possible solver back ends:
 
-```
-App::DocumentObjectGroup
-```
+- MBDyn.
+- CalculiX through FreeCAD FEM conventions.
+- Chrono.
+- Other future solvers.
 
----
+The first stable boundary should be:
 
-## MbDPart
-
-Represents one rigid body.
-
-Stores
-
-- mass
-- inertia
-- reference frame
-- graphics
-- geometry links
-
----
-
-## MbDJoint
-
-Represents a kinematic constraint.
-
-Examples
-
-- Revolute
-- Prismatic
-- Cylindrical
-- Universal
-- Ball
-- Fixed
-
----
-
-## MbDMarker
-
-Reference coordinate system attached to a body.
-
-Used by
-
-- joints
-- loads
-- sensors
-
----
-
-## MbDForce
-
-External force or torque.
-
-Examples
-
-- Gravity
-- Spring
-- Damper
-- User function
-- Actuator
-
----
-
-## MbDSolver
-
-Stores simulation parameters.
-
-Examples
-
-- time step
-- end time
-- integrator
-- tolerances
-
-Responsible for launching the external solver.
-
----
-
-## FEMModel
-
-Represents the finite element portion of the model.
-
-Should reuse as much of the existing FEM workbench as possible.
-
----
-
-# Object Relationships
-
-```
-Assembly
-│
-├── Parts
-│      │
-│      ├── Markers
-│      └── Geometry
-│
-├── Joints
-│
-├── Forces
-│
-└── Solver
+```text
+FreeCAD Document Object Model
+    -> MbDFEM internal model validation
+    -> solver input exporter
+    -> external solver execution
+    -> result importer
+    -> visualization and post-processing
 ```
 
----
+## Python Interface
 
-# Document Structure
+The module exposes Python extension objects for interactive use and tests.
 
-Every engineering object is stored directly inside the FreeCAD document.
+Current tests import:
 
-Relationships use
-
-- App::PropertyLink
-- App::PropertyLinkList
-
-Avoid duplicate ownership trees.
-
----
-
-# Dependency Graph
-
-FreeCAD already computes execution order from PropertyLinks.
-
-MbDFEM should leverage this mechanism rather than introducing a second graph.
-
----
-
-# GUI Classes
-
-Each App object has a corresponding ViewProvider.
-
-Example
-
-```
-MbDAssembly
-        │
-        ▼
-ViewProviderMbDAssembly
-
-MbDPart
-        │
-        ▼
-ViewProviderMbDPart
+```python
+import MbDFEM
 ```
 
-Responsibilities
+and create objects with TypeIds such as:
 
-- icons
+```text
+MbDFEM::MbDAssembly
+MbDFEM::MbDPart
+MbDFEM::MbDMarker
+```
+
+The Python API should remain thin and FreeCAD-native. It should expose document
+objects and convenience methods without duplicating document ownership.
+
+## GUI Direction
+
+Current GUI registration is minimal through:
+
+```text
+src/Mod/MbDFEM/InitGui.py
+```
+
+As the module grows, user-visible objects should receive ViewProviders for:
+
 - tree display
-- colors
-- selection
-- visualization
+- icons
+- selection behavior
+- 3D visualization
+- task panels
+- edit modes
 
----
+Keep GUI code out of App classes.
 
-# Simulation Pipeline
+## Testing Direction
 
-```
-CAD Model
+Current tests live in:
 
-↓
-
-Assembly
-
-↓
-
-Mass Properties
-
-↓
-
-Joints
-
-↓
-
-Solver Input
-
-↓
-
-External Solver
-
-↓
-
-Results
-
-↓
-
-Visualization
-
-↓
-
-Animation
-
-↓
-
-Stress Recovery
-
-↓
-
-Post-processing
+```text
+src/Mod/MbDFEM/TestMbDFEMApp.py
 ```
 
----
+Tests should continue to cover:
 
-# Future Extensions
+- object creation
+- TypeId registration
+- property defaults
+- document save and restore
+- group membership
+- Python API convenience methods
 
-Possible future capabilities
-
-- Flexible bodies
-- Contact
-- Collision detection
-- Control systems
-- Optimization
-- Design studies
-- Co-simulation
-- Real-time simulation
-- GPU acceleration
-- AI-assisted model creation
-
----
-
-# Coding Guidelines
-
-- Modern C++
-- RAII
-- Smart pointers where appropriate
-- const correctness
-- Small classes
-- Single Responsibility Principle
-- Unit-tested algorithms
-- Minimal global state
-
----
-
-# Long-Term Goals
-
-1. Functional MbD workbench
-
-2. MbD/FEM coupling
-
-3. Plugin solver architecture
-
-4. High-performance simulation
-
-5. Commercial-quality engineering environment
-
-6. Contribution back to FreeCAD where appropriate
-
----
-
-# Living Document
-
-This document should evolve with the project.
-
-Architectural decisions should be recorded here before implementation whenever practical.
+Add C++ tests when implementation moves beyond simple object registration into
+shared algorithms or model validation.

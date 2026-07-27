@@ -31,6 +31,19 @@ def create_model():
     parts[0].Placement.Base = App.Vector(100, 0, 0)
     parts[1].Placement.Base = App.Vector(200, 0, 0)
 
+    joints = [
+        document.addObject("MbDFEM::MbDJoint", "MbDJoint1"),
+        document.addObject("MbDFEM::MbDJoint", "MbDJoint2"),
+    ]
+    motions = [
+        document.addObject("MbDFEM::MbDMotion", "MbDMotion1"),
+        document.addObject("MbDFEM::MbDMotion", "MbDMotion2"),
+    ]
+    actions = [
+        document.addObject("MbDFEM::MbDAction", "MbDAction1"),
+        document.addObject("MbDFEM::MbDAction", "MbDAction2"),
+    ]
+
     part_markers = [
         [
             document.addObject("MbDFEM::MbDMarker", "MbDMarker11"),
@@ -54,6 +67,15 @@ def create_model():
         assembly.addPart(part)
         for marker in markers:
             part.addMarker(marker)
+
+    for joint in joints:
+        assembly.addJoint(joint)
+
+    for motion in motions:
+        assembly.addMotion(motion)
+
+    for action in actions:
+        assembly.addAction(action)
 
     document.recompute()
     return document
