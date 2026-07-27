@@ -38,6 +38,8 @@
 #include "ui_SketcherSettingsAppearance.h"
 #include "ui_SketcherSettingsDisplay.h"
 #include "ui_SketcherSettingsGrid.h"
+#include "StyleParameters.h"
+#include "Base/ServiceProvider.h"
 
 
 using namespace SketcherGui;
@@ -688,7 +690,7 @@ SketcherSettingsAppearance::SketcherSettingsAppearance(QWidget* parent)
     ui->ExternalDefiningPattern->setItemDelegate(lineStyleDelegate);
     ui->InformationPattern->setIconSize(LineIconSize);
     ui->InformationPattern->setItemDelegate(lineStyleDelegate);
-    const QBrush brush = palette().windowText();
+
     for (auto style : PenStyles) {
         ui->EdgePattern->addItem(QString(), QVariant(style.pattern));
         ui->ConstructionPattern->addItem(QString(), QVariant(style.pattern));
@@ -712,7 +714,27 @@ bool SketcherSettingsAppearance::event(QEvent* event)
     if (event->type() == QEvent::StyleChange) {
         PreferencePage::event(event);
         const qreal dpr = devicePixelRatioF();
-        const QBrush brush = palette().windowText();
+
+        // Brush for pattern icon color - default to native palette value (always #fff)
+        QBrush brush = palette().windowText();
+
+        auto* styleParameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
+        if (styleParameterManager) {
+            // Override with yaml driven TextForegroundColor value (FreeCAD Dark/Light)
+            if (auto value = styleParameterManager->resolve("TextForegroundColor")) {
+                const Base::Color c = std::get<Base::Color>(*value);
+                brush = QBrush(QColor::fromRgbF(c.r, c.g, c.b, c.a));
+            }
+            else
+            {
+                // Resolve color from qss source (OpenTheme) - see src/Gui/Application.cpp (2869)
+                QLabel l1;
+                l1.show();
+                QColor textColor = l1.palette().color(QPalette::Text);
+                brush = QBrush(textColor);
+            }
+        }
+
         for (size_t i = 0; i < PenStyles.size(); ++i) {
             const QIcon icon = PenStyles[i].toIcon(LineIconSize, dpr, brush);
             ui->EdgePattern->setItemIcon(i, icon);
