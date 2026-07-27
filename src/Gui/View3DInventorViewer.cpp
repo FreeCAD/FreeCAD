@@ -327,7 +327,6 @@ View3DInventorViewer::RenderFrameResult View3DInventorViewer::renderFrame(
     const SbVec2s origin = options.viewport.getViewportOriginPixels();
     glViewport(origin[0], origin[1], size[0], size[1]);
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_LINE_SMOOTH);
 
     const QColor color = backgroundColor();
     glClearColor(float(color.redF()), float(color.greenF()), float(color.blueF()), 1.0F);
