@@ -372,6 +372,9 @@ class DraftToolBar:
     def _is_field_locked(self, key):
         return self._locks.is_locked(key)
 
+    def has_point_constraints(self):
+        return self._locks.any_locked()
+
     def _set_field_locked(self, key, locked):
         if locked:
             field = getattr(self, self._LOCK_FIELDS.get(key, ""), None)
@@ -872,6 +875,7 @@ class DraftToolBar:
 
     def redraw(self):
         """utility function that is performed after each clicked point"""
+        self.acceptPointInput()
         self.checkLocal()
 
     def setFocus(self, f=None):
@@ -1408,11 +1412,15 @@ class DraftToolBar:
                     else:
                         self.new_point = self.get_new_point(delta)
                         self.sourceCmd.numericInput(*self.new_point)
+                    self.acceptPointInput()
             elif self.textValue.isVisible():
                 return False
             else:
                 FreeCADGui.ActiveDocument.resetEdit()
         return True
+
+    def acceptPointInput(self):
+        self._locks.unlock_all()
 
     def finish(self, cont=None):
         """finish button action"""

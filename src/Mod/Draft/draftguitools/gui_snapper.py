@@ -1273,6 +1273,8 @@ class Snapper:
         provider = self.pointConstraintProvider
         if provider is None:
             return point
+        if hasattr(provider, "has_point_constraints") and not provider.has_point_constraints():
+            return point
         locked = provider.constrain_point(point, lastpoint)
         if noTracker or locked is None:
             return locked
@@ -1521,10 +1523,16 @@ class Snapper:
         def click(event_cb):
             if not self.ui.mouse:
                 return
+
             event = event_cb.getEvent()
-            if event.getButton() == 1:
-                if event.getState() == coin.SoMouseButtonEvent.DOWN:
-                    accept()
+            if (
+                event.getButton() == coin.SoMouseButtonEvent.BUTTON1
+                and event.getState() == coin.SoButtonEvent.DOWN
+            ):
+                # The active Draft command owns this pointer interaction.
+                # Prevent navigation styles from arming LMB box selection.
+                event_cb.setHandled()
+                accept()
 
         def accept():
             try:
@@ -1636,6 +1644,11 @@ class Snapper:
             self.radiusTracker.update(self.radius)
             self.radiusTracker.on()
 
+    def hideRadius(self):
+        """Hide the snap radius indicator."""
+        if self.radiusTracker:
+            self.radiusTracker.off()
+
     def isEnabled(self, snap):
         """Returns true if the given snap is on"""
         if "Lock" in self.active_snaps and snap in self.active_snaps:
@@ -1728,7 +1741,8 @@ class Snapper:
                 self.extLine2 = self.trackers[8][i]
                 self.holdTracker = self.trackers[9][i]
             else:
-                self.grid = trackers.gridTracker()
+                doc_name = App.ActiveDocument.Name if App.ActiveDocument is not None else None
+                self.grid = trackers.gridTracker(doc_name)
                 if params.get_param("alwaysShowGrid"):
                     self.grid.show_always = True
                 if params.get_param("grid"):
@@ -1754,6 +1768,8 @@ class Snapper:
                 self.trackers[8].append(self.extLine2)
                 self.trackers[9].append(self.holdTracker)
             self.activeview = v
+
+        self.hideRadius()
 
         if not update_grid:
             return

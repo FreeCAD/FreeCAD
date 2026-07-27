@@ -339,11 +339,13 @@ class DraftGuiManualInput(test_base.DraftTestCaseDoc):
 
     def test_snap_marker_uses_resolved_angle_point(self):
         class Tracker:
+            Visible = False
+
             def setCoords(self, point):
                 self.point = App.Vector(point)
 
             def on(self):
-                pass
+                self.Visible = True
 
         self._open_point_ui()
         self.tb.globalMode = True

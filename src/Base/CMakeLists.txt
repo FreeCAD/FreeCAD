@@ -217,6 +217,7 @@ SET(FreeCADBase_CPP_SRCS
     ServiceProvider.cpp
     SmartPtrPy.cpp
     Stream.cpp
+    StringUtils.cpp
     Swap.cpp
     ${SWIG_SRCS}
     SystemHandler.cpp
@@ -285,6 +286,7 @@ SET(FreeCADBase_HPP_SRCS
     Sequencer.h
     SmartPtrPy.h
     Stream.h
+    StringUtils.h
     Swap.h
     ${SWIG_HEADERS}
     SystemHandler.h

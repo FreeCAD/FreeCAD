@@ -29,10 +29,13 @@
 
 #include <Inventor/nodes/SoSeparator.h>
 
+#include <Base/Bitmask.h>
 #include <Base/ServiceProvider.h>
 
 #include <App/Application.h>
 #include <App/Services.h>
+
+#include <QString>
 
 #include <array>
 #include <optional>
@@ -74,11 +77,24 @@ public:
         Global,
         Custom
     };
+    enum class ReferencePlacementOption
+    {
+        None = 0,
+        UseSubObjectPlacement = 1 << 0,
+        UseSnapPosition = 1 << 1
+    };
+    using ReferencePlacementOptions = Base::Flags<ReferencePlacementOption>;
 
     struct CoordinateSystem
     {
         std::array<std::string, 3> labels;
         Base::Placement origin;
+    };
+    struct ReferencePlacement
+    {
+        Base::Placement documentPlacement;
+        Base::Placement objectPlacement;
+        QString label;
     };
 
     Q_ENUM(SelectionMode)
@@ -147,6 +163,10 @@ private:
 
     void resetReferencePlacement();
     void resetReferenceRotation();
+    std::optional<ReferencePlacement> referencePlacementFromSelection(
+        const SelectionChanges& msg,
+        ReferencePlacementOptions options
+    ) const;
     void setCustomCoordinateSystemFromSelection(const SelectionChanges& msg);
 
     ViewProviderDragger::DraggerComponents getRelevantComponents();
@@ -214,3 +234,5 @@ private:
     TaskTransform* transform;
 };
 }  // namespace Gui
+
+ENABLE_BITMASK_OPERATORS(Gui::TaskTransform::ReferencePlacementOption)

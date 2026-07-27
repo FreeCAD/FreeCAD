@@ -21,6 +21,7 @@ add_executable(App_tests_run
         MappedName.cpp
         Metadata.cpp
         ProjectFile.cpp
+        PropertyFile.cpp
         Property.h
         Property.cpp
         PropertyExpressionEngine.cpp
@@ -32,7 +33,6 @@ add_executable(App_tests_run
 target_compile_definitions(App_tests_run PRIVATE DATADIR="${CMAKE_SOURCE_DIR}/data")
 
 target_link_libraries(App_tests_run PRIVATE
-    GTest::gtest_main
     GTest::gmock_main
     ${Python3_LIBRARIES}
     FreeCADApp

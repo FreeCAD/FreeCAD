@@ -30,7 +30,6 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import codecs
 import csv
 import os.path
 
@@ -82,7 +81,7 @@ class CommandFillTemplateFields:
                         "CreatedDateChkLst",
                         "LastModifiedDateChkLst",
                     ]
-                    with codecs.open(file_path, encoding="utf-8") as fp:
+                    with open(file_path, encoding="utf-8", newline="") as fp:
                         reader = csv.DictReader(fp)
                         page = obj
                         texts = page.Template.EditableTexts

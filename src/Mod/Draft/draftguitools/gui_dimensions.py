@@ -488,7 +488,7 @@ class Dimension(gui_base_original.Creator):
                                                 for i in [0, 1]:
                                                     pt = e.Vertexes[i].Point
                                                     if pt.isEqual(
-                                                        self.center, 0.00001
+                                                        self.center, 0.0001
                                                     ):  # A relatively high tolerance is required.
                                                         pt = e.Vertexes[
                                                             i - 1

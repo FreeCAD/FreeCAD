@@ -867,19 +867,6 @@ public:
      * @{
      */
 
-    /**
-     * @brief Set the level of Undo/Redo.
-     *
-     * A mode of 0 disables Undo/Redo completely, while a nonzero value turns
-     * it on.
-     *
-     * @param[in] iMode The Undo/Redo mode.
-     */
-    void setUndoMode(int iMode);
-
-    /// Get the Undo/Redo mode.
-    int getUndoMode() const;
-
     /// Set the transaction mode.
     void setTransactionMode(int iMode);
 

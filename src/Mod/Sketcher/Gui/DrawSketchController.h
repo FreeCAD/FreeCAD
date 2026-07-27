@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include <cmath>
+
 #include <Base/Console.h>
 #include <Base/Tools2D.h>
 #include <Gui/EditableDatumLabel.h>
@@ -286,16 +288,20 @@ public:
     }
 
     /** @brief function triggered by the handler to ensure its operating position takes into
-     * account widget mandated parameters */
-    void enforceControlParameters(Base::Vector2d& onSketchPos)
+     * account widget mandated parameters. Returns false if the enforced position is not finite. */
+    bool enforceControlParameters(Base::Vector2d& onSketchPos)
     {
-        prevCursorPosition = onSketchPos;
-
         doEnforceControlParameters(onSketchPos);  // specialisation interface
 
+        if (!isFiniteSketchPosition(onSketchPos)) {
+            return false;
+        }
+
+        prevCursorPosition = onSketchPos;
         lastControlEnforcedPosition = onSketchPos;  // store enforced cursor position.
 
         afterEnforceControlParameters();  // NVI
+        return true;
     }
 
     /** function that is called by the handler when the construction mode changed */
@@ -878,6 +884,11 @@ private:
         return (ovpVisibilityManager.isVisibility(
             OnViewParameterVisibilityManager::OnViewParameterVisibility::Hidden
         ));
+    }
+
+    static bool isFiniteSketchPosition(const Base::Vector2d& onSketchPos)
+    {
+        return std::isfinite(onSketchPos.x) && std::isfinite(onSketchPos.y);
     }
     //@}
 

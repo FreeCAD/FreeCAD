@@ -30,16 +30,6 @@ class QSINT_EXPORT ActionGroup : public QWidget
 {
     Q_OBJECT
 
-    Q_PROPERTY(bool expandable READ isExpandable WRITE setExpandable NOTIFY expandableChanged)
-    Q_PROPERTY(bool header READ hasHeader WRITE setHeader NOTIFY headerChanged)
-    Q_PROPERTY(QString headerText READ headerText WRITE setHeaderText NOTIFY headerTextChanged)
-
-Q_SIGNALS:
-    void expandableChanged();
-    void headerChanged();
-    void headerTextChanged();
-
-
 public:
     /**
      * @brief Constructs an ActionGroup.
@@ -70,15 +60,6 @@ public:
     ~ActionGroup() override;
 
     /**
-     * @brief Creates and adds an action.
-     * @param action The QAction to add.
-     * @param addToLayout If `true` (default), adds the action to the group's layout.
-     * @param addStretch If `true` (default), aligns the ActionLabel to the left.
-     * @return The newly created ActionLabel.
-     */
-    ActionLabel* addAction(QAction *action, bool addToLayout = true, bool addStretch = true);
-
-    /**
      * @brief Adds an existing ActionLabel.
      * @param label The ActionLabel to add.
      * @param addToLayout If `true` (default), adds the label to the group's layout.
@@ -86,15 +67,6 @@ public:
      * @return The added ActionLabel.
      */
     ActionLabel* addActionLabel(ActionLabel *label, bool addToLayout = true, bool addStretch = true);
-
-    /**
-     * @brief Adds a widget to the group.
-     * @param widget The widget to add.
-     * @param addToLayout If `true` (default), adds the widget to the group's layout.
-     * @param addStretch If `true` (default), aligns the widget to the left.
-     * @return `true` if added successfully.
-     */
-    bool addWidget(QWidget *widget, bool addToLayout = true, bool addStretch = true);
 
     /**
      * @brief Returns the group's layout.

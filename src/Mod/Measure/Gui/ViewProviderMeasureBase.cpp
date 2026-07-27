@@ -35,6 +35,7 @@
 #include <Inventor/nodes/SoIndexedLineSet.h>
 #include <Inventor/nodes/SoMarkerSet.h>
 #include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoTransform.h>
 #include <Inventor/draggers/SoTranslate2Dragger.h>
 #include <Inventor/engines/SoComposeMatrix.h>
 #include <Inventor/engines/SoTransformVec3f.h>
@@ -47,6 +48,7 @@
 #include <Base/UnitsApi.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
+#include <Gui/SoLabelNodes.h>
 #include <Gui/ViewParams.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
 #include <Gui/View3DInventor.h>

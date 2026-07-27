@@ -231,7 +231,37 @@ class ToolControllerEditor(object):
         self.controller.spindleDirection.installEventFilter(self.blockScrollWheel)
         self.controller.tcNumber.setReadOnly(disableToolNumber)
 
+        self._injectFeedsSpeedsButton()
+
         self.editor = None
+
+    def _injectFeedsSpeedsButton(self):
+        from PySide import QtCore, QtGui, QtWidgets
+
+        self.feedsSpeedsButton = None
+        layout = self.controller.layout()
+        if layout is None:
+            return
+        row = QtWidgets.QHBoxLayout()
+        row.addStretch()
+        self.feedsSpeedsButton = QtWidgets.QPushButton()
+        self.feedsSpeedsButton.setIcon(QtGui.QIcon(":/icons/CAM_FeedsSpeeds.svg"))
+        self.feedsSpeedsButton.setIconSize(QtCore.QSize(24, 24))
+        self.feedsSpeedsButton.setToolTip(
+            translate("CAM_ToolController", "Feeds and Speeds Wizard")
+        )
+        self.feedsSpeedsButton.clicked.connect(self._onFeedsSpeedsClicked)
+        row.addWidget(self.feedsSpeedsButton)
+        layout.addLayout(row)
+
+    def _onFeedsSpeedsClicked(self):
+        from Path.Tool.Gui.FeedsSpeedsDialog import open_for
+
+        open_for(self.obj, parent=self.form)
+        # The F&S dialog may have written HorizFeed/VertFeed/SpindleSpeed
+        # directly to the TC. Re-sync the editor's spinboxes from the
+        # underlying property values so the user sees the new numbers.
+        self.updateUi()
 
     def selectInComboBox(self, name, combo):
         """selectInComboBox(name, combo) ...

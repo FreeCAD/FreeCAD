@@ -1083,6 +1083,10 @@ void PropertyIntegerConstraintItem::setEditorData(QWidget* editor, const QVarian
         sb->setSingleStep(steps);
     }
 
+    if (prop && prop->isDerivedFrom<App::PropertyPercent>()) {
+        sb->setSuffix(QStringLiteral(" %"));
+    }
+
     sb->setValue(data.toInt());
 }
 
@@ -1095,6 +1099,11 @@ QVariant PropertyIntegerConstraintItem::editorData(QWidget* editor) const
 QString PropertyIntegerConstraintItem::toString(const QVariant& v) const
 {
     QString string(PropertyItem::toString(v));
+
+    const auto prop = getFirstProperty();
+    if (prop && prop->isDerivedFrom<App::PropertyPercent>()) {
+        string += QStringLiteral(" %");
+    }
 
     if (hasExpression()) {
         string += QStringLiteral("  ( %1 )").arg(QString::fromStdString(getExpressionString()));

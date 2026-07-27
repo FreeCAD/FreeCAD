@@ -120,6 +120,7 @@
 #include "DocumentObjectGroupPy.h"
 #include "DocumentObserver.h"
 #include "DocumentPy.h"
+#include "DocumentSettingsPy.h"
 #include "ExpressionParser.h"
 #include "FeatureTest.h"
 #include "FeaturePython.h"
@@ -509,6 +510,7 @@ void Application::setupPythonTypes()
     Base::InterpreterSingleton::addType(&PropertyContainerPy::Type, pAppModule, "PropertyContainer");
     Base::InterpreterSingleton::addType(&ExtensionContainerPy::Type, pAppModule, "ExtensionContainer");
     Base::InterpreterSingleton::addType(&DocumentPy::Type, pAppModule, "Document");
+    Base::InterpreterSingleton::addType(&DocumentSettingsPy::Type, pAppModule, "DocumentSettings");
     Base::InterpreterSingleton::addType(&DocumentObjectPy::Type, pAppModule, "DocumentObject");
     Base::InterpreterSingleton::addType(&DocumentObjectGroupPy::Type, pAppModule, "DocumentObjectGroup");
     Base::InterpreterSingleton::addType(&GeoFeaturePy::Type, pAppModule, "GeoFeature");
@@ -2962,6 +2964,10 @@ void Application::initConfig(int argc, char ** argv)
     mConfig["BOOST_VERSION"] = BOOST_LIB_VERSION;
     mConfig["PYTHON_VERSION"] = PY_VERSION;
     mConfig["QT_VERSION"] = QT_VERSION_STR;
+    mConfig["COIN3D_VERSION"] = fcCoin3dVersion;
+    mConfig["COIN3D_SOURCE"] = fcCoin3dSource;
+    mConfig["PIVY_VERSION"] = fcPivyVersion;
+    mConfig["PIVY_SOURCE"] = fcPivySource;
     mConfig["EIGEN_VERSION"] = fcEigen3Version;
     mConfig["PYSIDE_VERSION"] = fcPysideVersion;
 #ifdef SMESH_VERSION_STR

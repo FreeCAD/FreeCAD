@@ -54,6 +54,14 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         # add editor with lines enumeration
         self.editor = CodeEditor()
+        toolTip = (
+            "Form to enter G-code"
+            "\n\nTo add an expression, surround string with characters '{{expression}}'"
+            "\nExample:"
+            "\nG0 Z{{VarSet.HeightZ.Value+5}}"
+            "\nG0 X{{Profile.Path.Commands[3].x}} Y{{Profile.Path.Commands[3].y}}"
+        )
+        self.editor.setToolTip(toolTip)
         form.txtGCodeBox.layout().removeWidget(form.txtGCode)
         form.txtGCode.deleteLater()
         form.txtGCodeBox.layout().addWidget(self.editor)

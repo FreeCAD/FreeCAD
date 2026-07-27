@@ -114,7 +114,6 @@ TaskTransform::TaskTransform(
     , ui(new Ui_TaskTransformDialog)
 {
     blockSelection(true);
-    clearDocumentScope();  // allow cross-document selection for links
 
     dragger->addStartCallback(dragStartCallback, this);
     dragger->addMotionCallback(dragMotionCallback, this);
@@ -448,7 +447,7 @@ void TaskTransform::setSelectionMode(SelectionMode mode)
             draggerPickStyle->style = SoPickStyle::UNPICKABLE;
             draggerPickStyle->setOverride(true);
             blockSelection(false);
-            ui->referenceLineEdit->setText(tr("Select face, edge, or vertex…"));
+            ui->referenceLineEdit->setText(tr("Select object, face, edge…"));
             ui->pickTransformOriginButton->setText(tr("Cancel"));
             break;
 
@@ -463,7 +462,7 @@ void TaskTransform::setSelectionMode(SelectionMode mode)
             draggerPickStyle->style = SoPickStyle::UNPICKABLE;
             draggerPickStyle->setOverride(true);
             blockSelection(false);
-            ui->customCSLineEdit->setText(tr("Select object…"));
+            ui->customCSLineEdit->setText(tr("Select object, face, edge…"));
             ui->pickCoordinateSystemReferenceButton->setText(tr("Cancel"));
             break;
 
@@ -542,58 +541,39 @@ void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
         return;
     }
 
-    if (!subObjectPlacementProvider) {
+    if (selectionMode != SelectionMode::SelectTransformOrigin
+        && selectionMode != SelectionMode::SelectAlignTarget) {
         return;
     }
 
-    if (!msg.pOriginalMsg) {
-        // this should not happen! Original should contain unresolved message.
+    auto reference = referencePlacementFromSelection(
+        msg,
+        ReferencePlacementOption::UseSubObjectPlacement
+            | (selectionMode == SelectionMode::SelectTransformOrigin
+                   ? ReferencePlacementOption::UseSnapPosition
+                   : ReferencePlacementOption::None)
+    );
+    if (!reference) {
         return;
     }
-
-    auto doc = Application::Instance->getDocument(msg.pDocName);
-    auto obj = doc->getDocument()->getObject(msg.pObjectName);
-
-    auto orgDoc = Application::Instance->getDocument(msg.pOriginalMsg->pDocName);
-    auto orgObj = orgDoc->getDocument()->getObject(msg.pOriginalMsg->pObjectName);
-
-    auto globalPlacement = App::GeoFeature::getGlobalPlacement(obj, orgObj, msg.pOriginalMsg->pSubName);
-    auto localPlacement = App::GeoFeature::getPlacementFromProp(obj, "Placement");
-    auto rootPlacement = App::GeoFeature::getGlobalPlacement(vp->getObject());
-    auto attachedPlacement = subObjectPlacementProvider->calculate(msg.Object, localPlacement);
-
-    auto selectedObjectPlacement = rootPlacement.inverse() * globalPlacement * attachedPlacement;
-
-    std::optional<Base::Vector3d> worldCursor;
-    if (msg.hasPickedPoint) {
-        worldCursor = Base::Vector3d(msg.x, msg.y, msg.z);
-    }
-    if (auto snapPos = subObjectPlacementProvider
-                           ->snapPosition(msg.Object, worldCursor, globalPlacement.toMatrix())) {
-        Base::Vector3d rootLocalSnapPos;
-        rootPlacement.inverse().toMatrix().multVec(*snapPos, rootLocalSnapPos);
-        selectedObjectPlacement.setPosition(rootLocalSnapPos);
-    }
-
-    auto label = linkedSelectionLabel(msg);
 
     switch (selectionMode) {
         case SelectionMode::SelectTransformOrigin: {
             if (msg.Type == SelectionChanges::AddSelection) {
-                ui->referenceLineEdit->setText(label);
-                customTransformOrigin = selectedObjectPlacement;
+                ui->referenceLineEdit->setText(reference->label);
+                customTransformOrigin = reference->objectPlacement;
                 updateTransformOrigin();
                 setSelectionMode(SelectionMode::None);
             }
             else {
-                vp->setTransformOrigin(selectedObjectPlacement);
+                vp->setTransformOrigin(reference->objectPlacement);
             }
 
             break;
         }
 
         case SelectionMode::SelectAlignTarget: {
-            vp->setDraggerPlacement(vp->getObjectPlacement() * selectedObjectPlacement);
+            vp->setDraggerPlacement(vp->getObjectPlacement() * reference->objectPlacement);
 
             if (msg.Type == SelectionChanges::AddSelection) {
                 moveObjectToDragger(getRelevantComponents());
@@ -610,44 +590,106 @@ void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
     }
 }
 
-void TaskTransform::setCustomCoordinateSystemFromSelection(const SelectionChanges& msg)
+std::optional<TaskTransform::ReferencePlacement> TaskTransform::referencePlacementFromSelection(
+    const SelectionChanges& msg,
+    ReferencePlacementOptions options
+) const
 {
+    const auto useSubObjectPlacement = options.testFlag(
+        ReferencePlacementOption::UseSubObjectPlacement
+    );
+    const auto useSnapPosition = options.testFlag(ReferencePlacementOption::UseSnapPosition);
+
     auto doc = Application::Instance->getDocument(msg.pDocName);
+    if (!doc) {
+        return std::nullopt;
+    }
+
     auto obj = doc->getDocument()->getObject(msg.pObjectName);
     if (!obj) {
-        return;
+        return std::nullopt;
     }
 
-    Base::Placement refPlacement;
+    auto rootPlacement = App::GeoFeature::getGlobalPlacement(vp->getObject());
+    Base::Placement documentPlacement;
     QString label;
 
-    if (msg.pOriginalMsg && subObjectPlacementProvider) {
+    if (msg.pOriginalMsg) {
+        if (useSubObjectPlacement && !subObjectPlacementProvider) {
+            return std::nullopt;
+        }
+
         auto orgDoc = Application::Instance->getDocument(msg.pOriginalMsg->pDocName);
+        if (!orgDoc) {
+            return std::nullopt;
+        }
+
         auto orgObj = orgDoc->getDocument()->getObject(msg.pOriginalMsg->pObjectName);
-        auto gp = App::GeoFeature::getGlobalPlacement(obj, orgObj, msg.pOriginalMsg->pSubName);
+        if (!orgObj) {
+            return std::nullopt;
+        }
+
+        auto globalPlacement
+            = App::GeoFeature::getGlobalPlacement(obj, orgObj, msg.pOriginalMsg->pSubName);
         auto localPlacement = App::GeoFeature::getPlacementFromProp(obj, "Placement");
-        try {
-            refPlacement = gp * subObjectPlacementProvider->calculate(msg.Object, localPlacement);
+
+        documentPlacement = globalPlacement;
+        if (useSubObjectPlacement) {
+            try {
+                documentPlacement = globalPlacement
+                    * subObjectPlacementProvider->calculate(msg.Object, localPlacement);
+            }
+            catch (const Base::Exception&) {
+                // Shape type unsupported for attacher (e.g. Solid): fall back to the
+                // link-aware placement already resolved above, preserving link-instance transforms.
+                documentPlacement = globalPlacement;
+            }
         }
-        catch (const Base::Exception&) {
-            // Shape type unsupported for attacher (e.g. Solid): fall back to the
-            // link-aware placement already resolved above, preserving link-instance transforms.
-            refPlacement = gp;
+
+        auto objectPlacement = rootPlacement.inverse() * documentPlacement;
+        if (useSnapPosition) {
+            std::optional<Base::Vector3d> worldCursor;
+            if (msg.hasPickedPoint) {
+                worldCursor = Base::Vector3d(msg.x, msg.y, msg.z);
+            }
+            if (auto snapPos = subObjectPlacementProvider->snapPosition(
+                    msg.Object,
+                    worldCursor,
+                    globalPlacement.toMatrix()
+                )) {
+                Base::Vector3d rootLocalSnapPos;
+                rootPlacement.inverse().toMatrix().multVec(*snapPos, rootLocalSnapPos);
+                objectPlacement.setPosition(rootLocalSnapPos);
+                documentPlacement = rootPlacement * objectPlacement;
+            }
         }
+
         label = linkedSelectionLabel(msg);
+        return ReferencePlacement {documentPlacement, objectPlacement, label};
     }
-    else if (obj->getDocument() == vp->getObject()->getDocument()) {
+
+    if (msg.Type == SelectionChanges::AddSelection
+        && obj->getDocument() == vp->getObject()->getDocument()) {
         // Tree-view pick without link resolution: only accept same-document objects
         // to avoid treating cross-document placements as if they were in this document's space.
-        refPlacement = App::GeoFeature::getGlobalPlacement(obj);
+        documentPlacement = App::GeoFeature::getGlobalPlacement(obj);
         label = QString::fromUtf8(obj->Label.getValue());
+        return ReferencePlacement {documentPlacement, rootPlacement.inverse() * documentPlacement, label};
     }
-    else {
+
+    return std::nullopt;
+}
+
+void TaskTransform::setCustomCoordinateSystemFromSelection(const SelectionChanges& msg)
+{
+    auto reference
+        = referencePlacementFromSelection(msg, ReferencePlacementOption::UseSubObjectPlacement);
+    if (!reference) {
         return;
     }
 
-    customCoordinateSystemPlacement = refPlacement;
-    ui->customCSLineEdit->setText(label);
+    customCoordinateSystemPlacement = reference->documentPlacement;
+    ui->customCSLineEdit->setText(reference->label);
     setSelectionMode(SelectionMode::None);
     showCoordinateSystemIndicator();
     updateInputLabels();
@@ -752,6 +794,10 @@ void TaskTransform::onPickCoordinateSystemReference()
 void TaskTransform::onPlacementModeChange([[maybe_unused]] int index)
 {
     placementMode = ui->placementComboBox->currentData().value<PlacementMode>();
+    if (placementMode != PlacementMode::Custom
+        && selectionMode == SelectionMode::SelectTransformOrigin) {
+        setSelectionMode(SelectionMode::None);
+    }
 
     updateTransformOrigin();
 }

@@ -27,7 +27,9 @@
 #include <Inventor/errors/SoError.h>
 #include <QCheckBox>
 #include <QCloseEvent>
+#include <QCoreApplication>
 #include <QDir>
+#include <QEvent>
 #include <QFileInfo>
 #include <QLocale>
 #include <QMessageBox>
@@ -35,6 +37,7 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QScreen>
+#include <QScopeGuard>
 #include <QStatusBar>
 #include <QStyle>
 #include <QSurfaceFormat>
@@ -2698,6 +2701,9 @@ void Application::runApplication()
     MainWindow mw;
     mw.setProperty("QuitOnClosed", true);
 
+    // Destroy deferred views while their GUI and Python owners are still alive.
+    auto shutdownGuard = qScopeGuard([&app]() { app.shutdown(); });
+
     // https://forum.freecad.org/viewtopic.php?f=3&t=15540
     // Needs to be set after app is created to override platform defaults (qt commit a2aa1f81a81)
     QApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
@@ -2726,6 +2732,13 @@ void Application::runApplication()
     runEventLoop(mainApp);
 
     Base::Console().log("Finish: Event loop left\n");
+}
+
+void Application::shutdown()
+{
+    d->isClosing = true;
+    App::GetApplication().closeAllDocuments();
+    QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
 }
 
 void Application::init3DMouse(MainWindow* mainWindow, QApplication* qtApp)

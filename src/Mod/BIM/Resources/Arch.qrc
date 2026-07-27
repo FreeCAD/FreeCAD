@@ -215,6 +215,7 @@
         <file>translations/Arch_ta.qm</file>
         <file>translations/Arch_ga-IE.qm</file>
         <file>translations/Arch_sv.qm</file>
+        <file>translations/Arch_lo.qm</file>
         <file>ui/ArchMaterial.ui</file>
         <file>ui/ArchMultiMaterial.ui</file>
         <file>ui/ArchNest.ui</file>

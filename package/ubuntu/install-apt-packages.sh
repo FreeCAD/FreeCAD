@@ -33,8 +33,8 @@ packages=(
   libboost-regex-dev
   libboost-serialization-dev
   libboost-thread-dev
-  libcoin-dev
   libeigen3-dev
+  libexpat1-dev
   libgtest-dev
   libgmock-dev
   libfmt-dev
@@ -71,7 +71,6 @@ packages=(
   python3-matplotlib
   python3-packaging
   python3-pip
-  python3-pivy
   python3-ply
   python3-pybind11
   python3-pyside6.qtcore

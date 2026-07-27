@@ -26,7 +26,6 @@ __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecad.org"
 
 
-import codecs
 from os.path import join
 
 from femmesh import meshtools
@@ -82,7 +81,7 @@ def write_mesh(ccxwriter):
             edgeVariant=edge_variant,
         )
 
-        inpfile = codecs.open(ccxwriter.file_name, "w", encoding="utf-8")
+        inpfile = open(ccxwriter.file_name, "w", encoding="utf-8")
         inpfile.write("{}\n".format(59 * "*"))
         inpfile.write(f"** {write_name}\n")
         inpfile.write(f"*INCLUDE,INPUT={file_name_split}\n")
@@ -99,7 +98,7 @@ def write_mesh(ccxwriter):
         )
 
         # reopen file with "append" to add all the rest
-        inpfile = codecs.open(ccxwriter.femmesh_file, "a", encoding="utf-8")
+        inpfile = open(ccxwriter.femmesh_file, "a", encoding="utf-8")
         inpfile.write("\n\n")
 
     return inpfile

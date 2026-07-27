@@ -30,6 +30,11 @@
 
 #include "DrawSketchHandler.h"
 
+namespace Part
+{
+class Geometry;
+}
+
 namespace SketcherGui
 {
 
@@ -70,7 +75,7 @@ private:
         Sketcher::PointPos posId = Sketcher::PointPos::none
     );
     bool hasMoved(const Base::Vector2d& actualPos) const;
-    Base::Vector2d getDirection(const Sketcher::GeoElementId& dragged, const Base::Vector2d& pos) const;
+    Base::Vector2d getDirection(const Part::Geometry* geometry) const;
     bool isExistingConstraint(
         const Sketcher::GeoElementId& dragged,
         const AutoConstraint& constraint

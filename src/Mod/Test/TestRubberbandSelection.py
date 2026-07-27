@@ -216,6 +216,118 @@ class TestRubberbandSelection(unittest.TestCase):
                     "Viewer callbacks should receive drag motion before box selection starts",
                 )
 
+    def test_scene_graph_handled_press_keeps_release(self):
+        for label, style in self.VIEWER_HANDOFF_STYLES:
+            with self.subTest(style=label):
+                FreeCADGui.Selection.clearSelection()
+                self.view.setNavigationType(style)
+                self._refresh_view()
+
+                state = {"presses": 0, "releases": 0}
+
+                def on_button(event_callback):
+                    event = event_callback.getEvent()
+                    if event.getButton() != coin.SoMouseButtonEvent.BUTTON1:
+                        return
+                    if event.getState() == coin.SoButtonEvent.DOWN:
+                        state["presses"] += 1
+                    else:
+                        state["releases"] += 1
+                    event_callback.setHandled()
+
+                button_callback = self.view.addEventCallbackPivy(
+                    coin.SoMouseButtonEvent.getClassTypeId(),
+                    on_button,
+                )
+
+                try:
+                    start = self.viewport.rect().center() + QtCore.QPoint(-60, 0)
+                    end = start + QtCore.QPoint(90, 0)
+                    self._drag_path(start, end)
+                finally:
+                    self.view.removeEventCallbackPivy(
+                        coin.SoMouseButtonEvent.getClassTypeId(),
+                        button_callback,
+                    )
+
+                self.assertEqual(state["presses"], 1)
+                self.assertEqual(
+                    state["releases"],
+                    1,
+                    "Box selection must not steal release after the scene graph handles press",
+                )
+
+    def test_box_select_does_not_swallow_next_viewer_press(self):
+        for label, style in self.VIEWER_HANDOFF_STYLES:
+            with self.subTest(style=label):
+                FreeCADGui.Selection.clearSelection()
+                self.view.setNavigationType(style)
+                self._refresh_view()
+
+                first_start = self.viewport.rect().center() + QtCore.QPoint(-120, 0)
+                first_end = first_start + QtCore.QPoint(90, 0)
+                self._drag_path(first_start, first_end)
+
+                state = {"presses": 0}
+
+                def on_button(event_callback):
+                    event = event_callback.getEvent()
+                    if event.getButton() != coin.SoMouseButtonEvent.BUTTON1:
+                        return
+                    if event.getState() == coin.SoButtonEvent.DOWN:
+                        state["presses"] += 1
+                    event_callback.setHandled()
+
+                button_callback = self.view.addEventCallbackPivy(
+                    coin.SoMouseButtonEvent.getClassTypeId(),
+                    on_button,
+                )
+
+                try:
+                    second_start = self.viewport.rect().center() + QtCore.QPoint(-20, 0)
+                    second_end = second_start + QtCore.QPoint(90, 0)
+                    self._drag_path(second_start, second_end)
+                finally:
+                    self.view.removeEventCallbackPivy(
+                        coin.SoMouseButtonEvent.getClassTypeId(),
+                        button_callback,
+                    )
+
+                self.assertEqual(
+                    state["presses"],
+                    1,
+                    "A fast drag after box selection must still deliver its press to the viewer",
+                )
+
+    def test_annotation_label_corner_drag_reaches_dragger(self):
+        self._ensure_selection_objects()
+        FreeCADGui.Selection.clearSelection()
+        self.view.setNavigationType("Gui::CADNavigationStyle")
+
+        label = self.doc.addObject("App::AnnotationLabel", "DragLabel")
+        label.LabelText = ["Drag me"]
+        label.BasePosition = FreeCAD.Vector(0, 0, 0)
+        label.TextPosition = FreeCAD.Vector(0, 0, 0)
+        self.doc.recompute()
+        label.ViewObject.DisplayMode = "Line"
+        label.ViewObject.FontSize = 18
+        label.ViewObject.Frame = True
+        label.ViewObject.BackgroundColor = (1.0, 1.0, 0.25, 0.0)
+        label.ViewObject.TextColor = (0.0, 0.0, 0.0, 0.0)
+        self._refresh_view()
+
+        bounds = self._annotation_label_bounds()
+        start = QtCore.QPoint(bounds.left() + 4, bounds.bottom() - 4)
+        end = start + QtCore.QPoint(80, -30)
+
+        self._drag_path(start, end)
+
+        self.assertNotEqual(
+            label.TextPosition,
+            FreeCAD.Vector(0, 0, 0),
+            "Dragging from the annotation label corner should move the annotation",
+        )
+
     def test_cubic_bezier_drag_release_is_not_stolen_when_selection_is_disabled(self):
         try:
             from draftguitools import gui_beziers
@@ -311,6 +423,38 @@ class TestRubberbandSelection(unittest.TestCase):
 
     def _selection_rect(self, obj):
         return self._object_rect(obj, pad=18)
+
+    def _annotation_label_bounds(self):
+        self._process_events()
+        image = self.viewer.grabFramebuffer()
+        min_x = image.width()
+        min_y = image.height()
+        max_x = -1
+        max_y = -1
+
+        for y in range(image.height()):
+            for x in range(image.width()):
+                color = image.pixelColor(x, y)
+                if color.red() > 190 and color.green() > 190 and color.blue() < 140:
+                    min_x = min(min_x, x)
+                    min_y = min(min_y, y)
+                    max_x = max(max_x, x)
+                    max_y = max(max_y, y)
+
+        if max_x < 0:
+            self.fail("Could not find the rendered annotation label")
+
+        image_to_widget_x = self.viewport.width() / image.width()
+        image_to_widget_y = self.viewport.height() / image.height()
+        top_left = QtCore.QPoint(
+            round(min_x * image_to_widget_x),
+            round(min_y * image_to_widget_y),
+        )
+        bottom_right = QtCore.QPoint(
+            round(max_x * image_to_widget_x),
+            round(max_y * image_to_widget_y),
+        )
+        return QtCore.QRect(top_left, bottom_right)
 
     def _ensure_selection_objects(self):
         if self.left_box and self.right_box:
