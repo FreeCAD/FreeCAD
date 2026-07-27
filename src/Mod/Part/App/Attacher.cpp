@@ -142,6 +142,42 @@ PlanarFaceInfo getPlanarFaceInfo(const TopoShape& shape, double precision)
     }
     return result;
 }
+
+gp_Dir getMidPlaneNormal(const PlanarFaceInfo& firstFace, const PlanarFaceInfo& secondFace)
+{
+    const gp_Vec firstNormal(firstFace.normal);
+    const gp_Vec secondNormal(secondFace.normal);
+    const gp_Vec normalSum = firstNormal.Added(secondNormal);
+    const gp_Vec normalDifference = firstNormal.Subtracted(secondNormal);
+
+    // The sum and difference are the normals of the two dihedral bisector planes. Select the
+    // one that separates the face centers, so the plane lies between the selected faces.
+    const gp_Vec centerDirection(firstFace.center, secondFace.center);
+    const auto alignment = [&centerDirection](const gp_Vec& normal) {
+        const double dotProduct = centerDirection.Dot(normal);
+        return dotProduct * dotProduct / normal.SquareMagnitude();
+    };
+
+    if (normalSum.SquareMagnitude() < Precision::SquareConfusion()) {
+        return gp_Dir(normalDifference);
+    }
+    if (normalDifference.SquareMagnitude() < Precision::SquareConfusion()) {
+        return gp_Dir(normalSum);
+    }
+    const double sumAlignment = alignment(normalSum);
+    const double differenceAlignment = alignment(normalDifference);
+    if (sumAlignment > differenceAlignment) {
+        return gp_Dir(normalSum);
+    }
+    if (differenceAlignment > sumAlignment) {
+        return gp_Dir(normalDifference);
+    }
+
+    // The center direction does not distinguish the two planes. Keep the acute-angle bisector.
+    return gp_Dir(
+        normalSum.SquareMagnitude() >= normalDifference.SquareMagnitude() ? normalSum : normalDifference
+    );
+}
 }  // namespace
 
 // These strings are for mode list enum property.
@@ -1618,14 +1654,7 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
             const PlanarFaceInfo firstFace = getPlanarFaceInfo(*shapes[0], precision);
             const PlanarFaceInfo secondFace = getPlanarFaceInfo(*shapes[1], precision);
 
-            gp_Vec firstNormal(firstFace.normal);
-            gp_Vec secondNormal(secondFace.normal);
-            // A plane has no intrinsic normal direction. Align the second face to the first so
-            // that opposite-facing parallel faces produce the same midplane orientation.
-            if (firstNormal.Dot(secondNormal) < 0.0) {
-                secondNormal.Reverse();
-            }
-            SketchNormal = gp_Dir(firstNormal.Added(secondNormal));
+            SketchNormal = getMidPlaneNormal(firstFace, secondFace);
             SketchBasePoint = gp_Pnt(
                 (firstFace.center.X() + secondFace.center.X()) * 0.5,
                 (firstFace.center.Y() + secondFace.center.Y()) * 0.5,

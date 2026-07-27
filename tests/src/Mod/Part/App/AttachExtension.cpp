@@ -2,10 +2,12 @@
 
 #include <gtest/gtest.h>
 
+#include <cmath>
 #include <numbers>
 
 #include <src/App/InitApplication.h>
 #include <App/Document.h>
+#include <Mod/Part/App/FeaturePartBox.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
 
 
@@ -128,6 +130,35 @@ TEST_F(AttachExtensionTest, testMidPlaneBisectsFaceAngle)
     EXPECT_NEAR(normal.x, expectedNormal.x, 1e-7);
     EXPECT_NEAR(normal.y, expectedNormal.y, 1e-7);
     EXPECT_NEAR(normal.z, expectedNormal.z, 1e-7);
+}
+
+TEST_F(AttachExtensionTest, testMidPlaneBisectsConnectedFaces)
+{
+    auto box = getDocument()->addObject<Part::Box>("Box");
+    auto midPlane = getDocument()->addObject<Part::Plane>("MidPlane");
+
+    ASSERT_TRUE(box);
+    ASSERT_TRUE(midPlane);
+
+    box->Length.setValue(100.0);
+    box->Width.setValue(60.0);
+    box->Height.setValue(20.0);
+    midPlane->AttachmentSupport.setValues({box, box}, {"Face6", "Face4"});
+    midPlane->MapMode.setValue("MidPlane");
+
+    getDocument()->recompute();
+
+    const Base::Placement placement = midPlane->Placement.getValue();
+    const Base::Vector3d position = placement.getPosition();
+    EXPECT_NEAR(position.x, 50.0, 1e-7);
+    EXPECT_NEAR(position.y, 45.0, 1e-7);
+    EXPECT_NEAR(position.z, 15.0, 1e-7);
+
+    Base::Vector3d normal;
+    placement.getRotation().multVec(Base::Vector3d(0, 0, 1), normal);
+    EXPECT_NEAR(normal.x, 0.0, 1e-7);
+    EXPECT_NEAR(normal.y, -std::sqrt(0.5), 1e-7);
+    EXPECT_NEAR(normal.z, std::sqrt(0.5), 1e-7);
 }
 
 TEST_F(AttachExtensionTest, testAttacherEngineType)
