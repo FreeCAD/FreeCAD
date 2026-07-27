@@ -1733,6 +1733,9 @@ void SoDatumLabel::renderAction(SoIRRenderAction* action)
     const bool hasText = prepareRenderScene(state);
 
     if (hasText) {
+        // Keep the DrawList sampler metadata consistent with the legacy
+        // renderer's explicit text-quality choice.
+        SoTextureQualityElement::set(state, this, 0.49F);
         SoShapeStyleElement::setTransparentTexture(state, TRUE);
         SoShapeStyleElement::setTransparencyType(state, SoGLRenderAction::BLEND);
         SoLazyElement::setTransparencyType(state, static_cast<int32_t>(SoGLRenderAction::BLEND));
