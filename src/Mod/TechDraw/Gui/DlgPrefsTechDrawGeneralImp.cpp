@@ -25,6 +25,8 @@
 
 #include <QComboBox>
 
+#include <App/Application.h>
+
 #include "DlgPrefsTechDrawGeneralImp.h"
 #include "ui_DlgPrefsTechDrawGeneral.h"
 #include "PreferencesGui.h"
