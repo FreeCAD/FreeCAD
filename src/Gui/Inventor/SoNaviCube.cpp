@@ -741,6 +741,15 @@ void SoNaviCube::buildAxisSection(SoSeparator* cubeGroup) const
         AxisNodes nodes;
         nodes.sep = new SoSeparator;
 
+        // Coordinate axes are a visual aid and must remain visible through the translucent cube.
+        // Keep this state on the axis subgraph so both LegacyGL and DrawList receive the same
+        // depth semantics.
+        auto* depth = new SoDepthBuffer;
+        depth->test = FALSE;
+        depth->write = FALSE;
+        depth->function = SoDepthBuffer::ALWAYS;
+        nodes.sep->addChild(depth);
+
         nodes.material = new SoMaterial;
         nodes.sep->addChild(nodes.material);
 

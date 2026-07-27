@@ -19,6 +19,7 @@ from CoinSnapshotHarness import (
     _render_png,
     _region_color_count,
     _region_luminance_range,
+    _region_pixels,
     _region_pixels_identical,
     _region_pixels_similar,
     _renderer_output_path,
@@ -58,6 +59,14 @@ def _exact_color_positions(path: Path, color: tuple[int, int, int]) -> set[tuple
             if rgb == color:
                 positions.add((x, y))
     return positions
+
+
+def _axis_color_pixel_count(path: Path, region: tuple[int, int, int, int]) -> int:
+    """Count saturated red/green pixels used by the NaviCube coordinate axes."""
+    return sum(
+        (red > green + 24 and red > blue + 24) or (green > red + 24 and green > blue + 24)
+        for red, green, blue in _region_pixels(path, region)
+    )
 
 
 def _masked_image_difference(
@@ -1292,6 +1301,21 @@ class CoinRenderPipelineTestCase(unittest.TestCase):
                 ),
                 "SoNaviCube transparency diverged between LegacyGL and DrawList",
             )
+
+            # The coordinate axes are intentionally depth-independent. This catches the
+            # regression where translucent cube faces hid the axes only in DrawList.
+            axis_region = (
+                int(width * 0.42),
+                int(height * 0.34),
+                int(width * 0.72),
+                int(height * 0.62),
+            )
+            for renderer_name, path in rendered.items():
+                self.assertGreater(
+                    _axis_color_pixel_count(path, axis_region),
+                    20,
+                    f"Translucent SoNaviCube coordinate axes were not visible in {renderer_name}",
+                )
         finally:
             harness.close()
 
