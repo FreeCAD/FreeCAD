@@ -1109,6 +1109,63 @@ class CoinRenderPipelineTestCase(unittest.TestCase):
         finally:
             harness.close()
 
+    def test_indexed_face_set_translucency_matches_between_pipelines(self):
+        FreeCAD, FreeCADGui, coin = _require_gui()
+
+        width, height = _snapshot_dimensions()
+        out_dir = _snapshot_out_dir()
+        harness = _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height)
+        fixture = get_snapshot_fixture("SoFCIndexedFaceSetTranslucent")
+        try:
+            if not {_RENDERER_LEGACY, _RENDERER_DRAW_LIST}.issubset(
+                set(harness.render_pipelines())
+            ):
+                raise unittest.SkipTest(
+                    "translucent SoFCIndexedFaceSet comparison requires both render pipelines"
+                )
+
+            if fixture.background_gradient is not None:
+                top, bottom = fixture.background_gradient
+                harness.viewer.setGradientBackground("LINEAR")
+                harness.viewer.setGradientBackgroundColor(top, bottom)
+
+            runtime = SnapshotRuntime(coin, width, height, "SoFCIndexedFaceSetTranslucent")
+            root = fixture.build(runtime)
+            root.ref()
+            try:
+                frame_snapshot_camera(runtime, root, fixture.framing_policy)
+                rendered = {}
+                for renderer_name in (_RENDERER_LEGACY, _RENDERER_DRAW_LIST):
+                    path = _renderer_output_path(
+                        out_dir,
+                        renderer_name,
+                        "actual",
+                        "IndexedFaceSetTranslucency.png",
+                    )
+                    _render_png(harness, coin, root, path, renderer_name, frame_camera=False)
+                    self.assertGreater(
+                        _non_background_pixel_count(path),
+                        10,
+                        f"translucent SoFCIndexedFaceSet rendered empty in {renderer_name}: {path}",
+                    )
+                    rendered[renderer_name] = path
+            finally:
+                root.unref()
+
+            self.assertTrue(
+                _images_are_similar(
+                    rendered[_RENDERER_LEGACY],
+                    rendered[_RENDERER_DRAW_LIST],
+                    tolerance=8,
+                    max_mismatched_fraction=0.01,
+                ),
+                "translucent SoFCIndexedFaceSet diverged between LegacyGL and DrawList",
+            )
+        finally:
+            if fixture.background_gradient is not None:
+                harness.viewer.setGradientBackground("NONE")
+            harness.close()
+
     def test_string_label_sampler_matches_between_pipelines(self):
         FreeCAD, FreeCADGui, coin = _require_gui()
 
