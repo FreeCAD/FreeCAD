@@ -194,7 +194,7 @@ void ThemeSelectorWidget::onLinkActivated(const QString& link)
 
 void ThemeSelectorWidget::preselectThemeFromSystemSettings()
 {
-    if (Gui::isInternalGuiTestRun()) {
+    if (Gui::isInternalGuiRun()) {
         return;
     }
 
