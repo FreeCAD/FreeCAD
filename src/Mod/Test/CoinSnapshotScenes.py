@@ -485,12 +485,82 @@ def _build_3d_annotation_scene(coin, _type_name: str, *, width=None, height=None
     line_transform = coin.SoTransform()
     line_transform.translation.setValue(0.0, 0.0, -0.55)
     line_transform.scaleFactor.setValue(0.95, 0.72, 0.55)
+    line_coordinates = coin.SoCoordinate3()
+    line_coordinates.point.setValues(
+        0,
+        8,
+        [
+            coin.SbVec3f(-1.0, -1.0, -1.0),
+            coin.SbVec3f(1.0, -1.0, -1.0),
+            coin.SbVec3f(1.0, 1.0, -1.0),
+            coin.SbVec3f(-1.0, 1.0, -1.0),
+            coin.SbVec3f(-1.0, -1.0, 1.0),
+            coin.SbVec3f(1.0, -1.0, 1.0),
+            coin.SbVec3f(1.0, 1.0, 1.0),
+            coin.SbVec3f(-1.0, 1.0, 1.0),
+        ],
+    )
+    line_edges = coin.SoIndexedLineSet()
+    line_edges.coordIndex.setValues(
+        0,
+        36,
+        [
+            0,
+            1,
+            -1,
+            1,
+            2,
+            -1,
+            2,
+            3,
+            -1,
+            3,
+            0,
+            -1,
+            4,
+            5,
+            -1,
+            5,
+            6,
+            -1,
+            6,
+            7,
+            -1,
+            7,
+            4,
+            -1,
+            0,
+            4,
+            -1,
+            1,
+            5,
+            -1,
+            2,
+            6,
+            -1,
+            3,
+            7,
+            -1,
+        ],
+    )
     line_group = coin.SoSeparator()
     line_group.addChild(line_material)
     line_group.addChild(line_style)
     line_group.addChild(line_transform)
-    line_group.addChild(coin.SoCube())
+    line_group.addChild(line_coordinates)
+    line_group.addChild(line_edges)
     annotation.addChild(line_group)
+
+    marker_material = coin.SoMaterial()
+    marker_material.diffuseColor.setValue(1.0, 0.75, 0.05)
+    marker_transform = coin.SoTransform()
+    marker_transform.translation.setValue(0.0, 0.0, -0.55)
+    marker_transform.scaleFactor.setValue(0.35, 0.35, 0.35)
+    marker_group = coin.SoSeparator()
+    marker_group.addChild(marker_material)
+    marker_group.addChild(marker_transform)
+    marker_group.addChild(coin.SoSphere())
+    annotation.addChild(marker_group)
     root.addChild(annotation)
     return root
 
