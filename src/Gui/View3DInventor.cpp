@@ -131,7 +131,7 @@ View3DInventor::View3DInventor(
     }
 
     if (smoothing) {
-        _viewer->getSoRenderManager()->getGLRenderAction()->setSmoothing(true);
+        _viewer->getSoRenderManager()->setAntialiasing(true, 1);
     }
 
     // create the inventor widget and set the defaults
