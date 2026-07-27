@@ -4,9 +4,8 @@
 
 #include "PreCompiled.h"
 
-#include <mutex>
-
-#include <Base/Console.h>
+#include <cassert>
+#include <exception>
 
 #include "RenderPipeline.h"
 
@@ -19,9 +18,11 @@ std::string_view renderPipelineName(RenderPipeline pipeline) noexcept
         case RenderPipeline::DrawList:
             return "DrawList";
         case RenderPipeline::LegacyGL:
-        default:
             return "LegacyGL";
     }
+
+    assert(false && "Unhandled RenderPipeline value");
+    std::terminate();
 }
 
 std::optional<RenderPipeline> parseRenderPipeline(std::string_view value) noexcept
@@ -33,23 +34,6 @@ std::optional<RenderPipeline> parseRenderPipeline(std::string_view value) noexce
         return RenderPipeline::DrawList;
     }
     return std::nullopt;
-}
-
-RenderPipeline parseRenderPipelineOrLegacy(std::string_view value) noexcept
-{
-    if (const auto pipeline = parseRenderPipeline(value)) {
-        return *pipeline;
-    }
-
-    static std::once_flag warned;
-    std::call_once(warned, [value]() {
-        Base::Console().warning(
-            "Unknown CoinRenderPipeline preference '%.*s'; using LegacyGL\n",
-            static_cast<int>(value.size()),
-            value.data()
-        );
-    });
-    return RenderPipeline::LegacyGL;
 }
 
 }  // namespace Gui
