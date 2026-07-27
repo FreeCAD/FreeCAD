@@ -1410,7 +1410,7 @@ class CoinRenderPipelineTestCase(unittest.TestCase):
                     rendered[_RENDERER_DRAW_LIST],
                     (0, 0, width, height),
                     tolerance=24,
-                    max_mismatched_fraction=0.08,
+                    max_mismatched_fraction=0.01,
                 ),
                 "SoFCBoundingBox differs between LegacyGL and DrawList",
             )
