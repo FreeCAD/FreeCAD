@@ -90,6 +90,7 @@ class SnapshotFixture:
     framing_policy: CameraPolicy = CameraPolicy.VIEW_ALL
     required_modules: tuple[str, ...] = ()
     supported_renderers: frozenset[str] = ALL_RENDERERS
+    background_gradient: tuple[tuple[float, float, float], tuple[float, float, float]] | None = None
 
     def build(self, runtime: SnapshotRuntime):
         for module_name in self.required_modules:
@@ -739,13 +740,6 @@ def _build_indexed_face_set_scene(coin, type_name: str, *, width=None, height=No
     if type_name == "SoFCIndexedFaceSetTranslucent":
         # A single quad makes the material alpha directly observable. A closed
         # cube blends its front and back faces and appears nearly opaque.
-        grad = _instantiate(coin, "SoFCBackgroundGradient")
-        _configure_fc_background_gradient(
-            grad,
-            coin.SbColor(*_TRANSLUCENCY_BACKGROUND_TOP),
-            coin.SbColor(*_TRANSLUCENCY_BACKGROUND_BOTTOM),
-        )
-        root.addChild(grad)
         _add_translucency_backplate(root, coin)
 
     coords = coin.SoCoordinate3()
@@ -1193,12 +1187,14 @@ def _fixture(
     framing_policy=CameraPolicy.VIEW_ALL,
     required_modules=(),
     supported_renderers=ALL_RENDERERS,
+    background_gradient=None,
 ):
     return SnapshotFixture(
         builder=builder,
         framing_policy=framing_policy,
         required_modules=tuple(required_modules),
         supported_renderers=frozenset(supported_renderers),
+        background_gradient=background_gradient,
     )
 
 
@@ -1268,7 +1264,13 @@ SNAPSHOT_FIXTURES = {
     **{
         name: _fixture(_build_indexed_face_set_scene, required_modules=("MeshGui",))
         for name in _INDEXED_FACE_SET_NODE_TYPES
+        if name != "SoFCIndexedFaceSetTranslucent"
     },
+    "SoFCIndexedFaceSetTranslucent": _fixture(
+        _build_indexed_face_set_scene,
+        required_modules=("MeshGui",),
+        background_gradient=(_TRANSLUCENCY_BACKGROUND_TOP, _TRANSLUCENCY_BACKGROUND_BOTTOM),
+    ),
 }
 
 

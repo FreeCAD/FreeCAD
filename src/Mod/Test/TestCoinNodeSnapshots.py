@@ -591,101 +591,114 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
             for type_name in node_types:
                 fixture = get_snapshot_fixture(type_name)
                 render_pipelines = harness.supported_pipelines(fixture)
-                for renderer_name in render_pipelines:
-                    with self.subTest(renderer=renderer_name, node=type_name):
-                        fixture = get_snapshot_fixture(type_name)
-                        runtime = SnapshotRuntime(coin, width, height, type_name)
-                        root = fixture.build(runtime)
+                try:
+                    if fixture.background_gradient is not None:
+                        top, bottom = fixture.background_gradient
+                        harness.viewer.setGradientBackground("LINEAR")
+                        harness.viewer.setGradientBackgroundColor(top, bottom)
 
-                        actual_path = _renderer_output_path(
-                            out_dir, renderer_name, "actual", f"{type_name}.png"
-                        )
-                        expected_path = _renderer_output_path(
-                            out_dir, renderer_name, "expected", f"{type_name}.png"
-                        )
-                        diff_path = _renderer_output_path(
-                            out_dir, renderer_name, "diff", f"{type_name}.png"
-                        )
-                        baseline_path = _comparison_baseline_path(
-                            baseline_dir, renderer_name, type_name
-                        )
-                        update_path = _update_baseline_path(baseline_dir, renderer_name, type_name)
+                    for renderer_name in render_pipelines:
+                        with self.subTest(renderer=renderer_name, node=type_name):
+                            fixture = get_snapshot_fixture(type_name)
+                            runtime = SnapshotRuntime(coin, width, height, type_name)
+                            root = fixture.build(runtime)
 
-                        frame_snapshot_camera(runtime, root, fixture.framing_policy)
+                            actual_path = _renderer_output_path(
+                                out_dir, renderer_name, "actual", f"{type_name}.png"
+                            )
+                            expected_path = _renderer_output_path(
+                                out_dir, renderer_name, "expected", f"{type_name}.png"
+                            )
+                            diff_path = _renderer_output_path(
+                                out_dir, renderer_name, "diff", f"{type_name}.png"
+                            )
+                            baseline_path = _comparison_baseline_path(
+                                baseline_dir, renderer_name, type_name
+                            )
+                            update_path = _update_baseline_path(
+                                baseline_dir, renderer_name, type_name
+                            )
 
-                        _render_png(
-                            harness,
-                            coin,
-                            root,
-                            actual_path,
-                            renderer_name,
-                            frame_camera=False,
-                        )
-                        self.assertTrue(actual_path.exists(), f"missing snapshot: {actual_path}")
-                        self.assertGreater(
-                            actual_path.stat().st_size, 0, f"empty snapshot: {actual_path}"
-                        )
+                            frame_snapshot_camera(runtime, root, fixture.framing_policy)
 
-                        did_render = True
-                        self.assertGreater(
-                            _non_background_pixel_count(actual_path),
-                            10,
-                            f"snapshot seems empty (all background): {actual_path}",
-                        )
-
-                        if type_name == "SoRegPoint":
-                            label_bbox = _pixel_bbox(
+                            _render_png(
+                                harness,
+                                coin,
+                                root,
                                 actual_path,
-                                lambda r, g, b, _a: r >= 200 and g <= 180 and b <= 160,
+                                renderer_name,
+                                frame_camera=False,
                             )
-                            self.assertIsNotNone(
-                                label_bbox,
-                                f"SoRegPoint marker and label are not visible: {actual_path}",
+                            self.assertTrue(
+                                actual_path.exists(), f"missing snapshot: {actual_path}"
                             )
-                            _min_x, min_y, max_x, _max_y = label_bbox
-                            self.assertLessEqual(
-                                min_y,
-                                int(height * 0.10),
-                                f"SoRegPoint label is missing or displaced: {actual_path}",
-                            )
-                            self.assertGreaterEqual(
-                                max_x,
-                                int(width * 0.95),
-                                f"SoRegPoint label is missing or clipped: {actual_path}",
+                            self.assertGreater(
+                                actual_path.stat().st_size, 0, f"empty snapshot: {actual_path}"
                             )
 
-                        if update_baseline:
-                            if update_path.exists() and _images_are_pixel_identical(
-                                update_path, actual_path
-                            ):
+                            did_render = True
+                            self.assertGreater(
+                                _non_background_pixel_count(actual_path),
+                                10,
+                                f"snapshot seems empty (all background): {actual_path}",
+                            )
+
+                            if type_name == "SoRegPoint":
+                                label_bbox = _pixel_bbox(
+                                    actual_path,
+                                    lambda r, g, b, _a: r >= 200 and g <= 180 and b <= 160,
+                                )
+                                self.assertIsNotNone(
+                                    label_bbox,
+                                    f"SoRegPoint marker and label are not visible: {actual_path}",
+                                )
+                                _min_x, min_y, max_x, _max_y = label_bbox
+                                self.assertLessEqual(
+                                    min_y,
+                                    int(height * 0.10),
+                                    f"SoRegPoint label is missing or displaced: {actual_path}",
+                                )
+                                self.assertGreaterEqual(
+                                    max_x,
+                                    int(width * 0.95),
+                                    f"SoRegPoint label is missing or clipped: {actual_path}",
+                                )
+
+                            if update_baseline:
+                                if update_path.exists() and _images_are_pixel_identical(
+                                    update_path, actual_path
+                                ):
+                                    continue
+                                update_path.parent.mkdir(parents=True, exist_ok=True)
+                                shutil.copyfile(actual_path, update_path)
                                 continue
-                            update_path.parent.mkdir(parents=True, exist_ok=True)
-                            shutil.copyfile(actual_path, update_path)
-                            continue
 
-                        if not baseline_path.exists():
+                            if not baseline_path.exists():
+                                if smoke_mode:
+                                    continue
+                                self.fail(
+                                    f"missing baseline: {baseline_path} (run with FC_VISUAL_UPDATE_BASELINE=1)"
+                                )
+
+                            expected_path.parent.mkdir(parents=True, exist_ok=True)
+                            shutil.copyfile(baseline_path, expected_path)
+
+                            ok, msg = _compare_images(
+                                expected_path,
+                                actual_path,
+                                diff_path,
+                                tolerance=tolerance,
+                                ignore_alpha=ignore_alpha,
+                                max_mismatched_pixels=max_mismatched_pixels,
+                            )
                             if smoke_mode:
-                                continue
-                            self.fail(
-                                f"missing baseline: {baseline_path} (run with FC_VISUAL_UPDATE_BASELINE=1)"
-                            )
-
-                        expected_path.parent.mkdir(parents=True, exist_ok=True)
-                        shutil.copyfile(baseline_path, expected_path)
-
-                        ok, msg = _compare_images(
-                            expected_path,
-                            actual_path,
-                            diff_path,
-                            tolerance=tolerance,
-                            ignore_alpha=ignore_alpha,
-                            max_mismatched_pixels=max_mismatched_pixels,
-                        )
-                        if smoke_mode:
-                            if not ok:
-                                print(f"SMOKE mismatch for {renderer_name}/{type_name}: {msg}")
-                        else:
-                            self.assertTrue(ok, msg)
+                                if not ok:
+                                    print(f"SMOKE mismatch for {renderer_name}/{type_name}: {msg}")
+                            else:
+                                self.assertTrue(ok, msg)
+                finally:
+                    if fixture.background_gradient is not None:
+                        harness.viewer.setGradientBackground("NONE")
         finally:
             harness.close()
         self.assertTrue(did_render, "No snapshots were rendered")
