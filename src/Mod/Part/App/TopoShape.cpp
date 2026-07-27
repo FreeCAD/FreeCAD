@@ -2899,7 +2899,7 @@ TopoDS_Shape TopoShape::makeOffset2D(
             TopoDS_Iterator it(_Shape);
             for (; it.More(); it.Next()) {
                 shapesToReturn.push_back(
-                    TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection)
+                    TopoShape(getHistoryAlgorithm(), it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection)
                 );
                 forceOutputCompound = true;
             }
@@ -2912,7 +2912,7 @@ TopoDS_Shape TopoShape::makeOffset2D(
                 if (it.Value().ShapeType() == TopAbs_COMPOUND) {
                     // recursively process subcompounds
                     shapesToReturn.push_back(
-                        TopoShape(it.Value())
+                        TopoShape(getHistoryAlgorithm(), it.Value())
                             .makeOffset2D(offset, joinType, fill, allowOpenResult, intersection)
                     );
                     forceOutputCompound = true;
@@ -4047,7 +4047,7 @@ void TopoShape::getFacesFromSubElement(
 
         // get the meshes of all faces and then merge them
         std::vector<Domain> domains;
-        TopoShape(shape).getDomains(domains);
+        TopoShape(getHistoryAlgorithm(), shape).getDomains(domains);
         getFacesFromDomains(domains, points, faces);
 
         (void)pointNormals;  // leave this empty
