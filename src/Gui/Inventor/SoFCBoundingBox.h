@@ -35,6 +35,7 @@
 #include <FCGlobal.h>
 
 class SbBox3f;
+class SoIRRenderAction;
 class SoState;
 
 namespace Gui
@@ -72,6 +73,7 @@ public:
 protected:
     ~SoFCBoundingBox() override;
     void GLRender(SoGLRenderAction* action) override;
+    void render(SoIRRenderAction* action) override;
     void generatePrimitives(SoAction* action) override;
     void computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center) override;
 

@@ -1206,7 +1206,7 @@ SNAPSHOT_FIXTURES = {
     "SoFCBoundingBox": _fixture(
         _build_bounding_box_scene,
         framing_policy=CameraPolicy.VIEW_ALL_WITH_MARGIN,
-        supported_renderers=LEGACY_ONLY,
+        supported_renderers=ALL_RENDERERS,
     ),
     "SoPreviewShape": _fixture(
         _build_preview_shape_scene,

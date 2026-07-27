@@ -1155,6 +1155,100 @@ class CoinRenderPipelineTestCase(unittest.TestCase):
         finally:
             harness.close()
 
+    def test_bounding_box_matches_between_pipelines(self):
+        FreeCAD, FreeCADGui, coin = _require_gui()
+
+        width, height = _snapshot_dimensions()
+        out_dir = _snapshot_out_dir()
+        harness = _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height)
+        try:
+            if not {_RENDERER_LEGACY, _RENDERER_DRAW_LIST}.issubset(
+                set(harness.render_pipelines())
+            ):
+                raise unittest.SkipTest("SoFCBoundingBox regression requires both pipelines")
+
+            fixture = get_snapshot_fixture("SoFCBoundingBox")
+            runtime = SnapshotRuntime(coin, width, height, "SoFCBoundingBox")
+            root = fixture.build(runtime)
+            root.ref()
+            try:
+                frame_snapshot_camera(runtime, root, fixture.framing_policy)
+                rendered = {}
+                for renderer_name in (_RENDERER_LEGACY, _RENDERER_DRAW_LIST):
+                    path = _renderer_output_path(
+                        out_dir,
+                        renderer_name,
+                        "actual",
+                        "SoFCBoundingBoxPipeline.png",
+                    )
+                    _render_png(harness, coin, root, path, renderer_name, frame_camera=False)
+                    self.assertGreater(
+                        _non_background_pixel_count(path),
+                        50,
+                        f"SoFCBoundingBox rendered empty in {renderer_name}: {path}",
+                    )
+                    rendered[renderer_name] = path
+            finally:
+                root.unref()
+
+            self.assertTrue(
+                _region_pixels_similar(
+                    rendered[_RENDERER_LEGACY],
+                    rendered[_RENDERER_DRAW_LIST],
+                    (0, 0, width, height),
+                    tolerance=24,
+                    max_mismatched_fraction=0.08,
+                ),
+                "SoFCBoundingBox differs between LegacyGL and DrawList",
+            )
+        finally:
+            harness.close()
+
+    def test_brep_face_highlight_matches_between_pipelines(self):
+        FreeCAD, FreeCADGui, coin = _require_gui()
+
+        width, height = _snapshot_dimensions()
+        out_dir = _snapshot_out_dir()
+        harness = _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height)
+        try:
+            if not {_RENDERER_LEGACY, _RENDERER_DRAW_LIST}.issubset(
+                set(harness.render_pipelines())
+            ):
+                raise unittest.SkipTest("SoBrepFaceSet highlight requires both pipelines")
+
+            fixture = get_snapshot_fixture("SoBrepFaceSetHighlight")
+            runtime = SnapshotRuntime(coin, width, height, "SoBrepFaceSetHighlight")
+            root = fixture.build(runtime)
+            root.ref()
+            try:
+                frame_snapshot_camera(runtime, root, fixture.framing_policy)
+                rendered = {}
+                for renderer_name in (_RENDERER_LEGACY, _RENDERER_DRAW_LIST):
+                    path = _renderer_output_path(
+                        out_dir,
+                        renderer_name,
+                        "actual",
+                        "SoBrepFaceSetHighlightPipeline.png",
+                    )
+                    _render_png(harness, coin, root, path, renderer_name, frame_camera=False)
+                    self.assertGreater(
+                        _non_background_pixel_count(path),
+                        50,
+                        f"SoBrepFaceSet highlight rendered empty in {renderer_name}: {path}",
+                    )
+                    rendered[renderer_name] = path
+            finally:
+                root.unref()
+
+            self.assertTrue(
+                _images_are_pixel_identical(
+                    rendered[_RENDERER_LEGACY], rendered[_RENDERER_DRAW_LIST]
+                ),
+                "SoBrepFaceSet explicit highlight opacity diverged between LegacyGL and DrawList",
+            )
+        finally:
+            harness.close()
+
     def test_control_points_match_between_pipelines(self):
         FreeCAD, FreeCADGui, coin = _require_gui()
 
