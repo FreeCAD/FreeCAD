@@ -216,7 +216,6 @@ struct View3DInventorViewer::RenderFrameOptions
     SbViewportRegion viewport;
     RenderIntent intent {RenderIntent::LiveInteractive};
     bool includeViewerLighting {true};
-    bool includeDecorations {true};
     std::optional<QColor> backgroundOverride;
 };
 
@@ -276,8 +275,7 @@ View3DInventorViewer::RenderFrameResult View3DInventorViewer::renderFrame(
 
     ScopedRenderIntent scopedIntent(*this, options.intent);
 
-    const bool includeDecorations = options.includeDecorations
-        && renderIntentIncludesDecorations(options.intent);
+    const bool includeDecorations = renderIntentIncludesDecorations(options.intent);
     const int previousDecorationChild = decorationSwitch ? decorationSwitch->whichChild.getValue()
                                                          : SO_SWITCH_NONE;
     auto restoreDecorations = qScopeGuard([this, previousDecorationChild]() {
@@ -2191,7 +2189,8 @@ void View3DInventorViewer::initializeRenderManager()
     rm->setRenderLayerRoot(SoRenderManager::RENDER_LAYER_FOREGROUND, combinedForegroundRoot);
     rm->addAfterMainSceneCallback(&View3DInventorViewer::afterMainSceneCB, this);
     rm->setLightingMode(shading ? SoRenderManager::LIT : SoRenderManager::UNLIT);
-    configuredPipeline = parseRenderPipelineOrLegacy(ViewParams::instance()->getRenderPipeline());
+    configuredPipeline = parseRenderPipeline(ViewParams::instance()->getRenderPipeline())
+                             .value_or(RenderPipeline::LegacyGL);
     rm->setRenderPipeline(toCoinRenderPipeline(configuredPipeline));
 }
 
@@ -3118,9 +3117,6 @@ void View3DInventorViewer::setRenderType(RenderType type)
                 if (fbo->format().samples() > 0 && hasFramebufferBlitSupport()) {
                     RenderFrameOptions frameOptions;
                     frameOptions.intent = currentRenderIntent();
-                    frameOptions.includeDecorations = renderIntentIncludesDecorations(
-                        frameOptions.intent
-                    );
                     if (!renderFrameToFramebuffer(*fbo, frameOptions).rendered) {
                         delete fbo;
                         break;
@@ -3143,9 +3139,6 @@ void View3DInventorViewer::setRenderType(RenderType type)
                     }
                     RenderFrameOptions frameOptions;
                     frameOptions.intent = currentRenderIntent();
-                    frameOptions.includeDecorations = renderIntentIncludesDecorations(
-                        frameOptions.intent
-                    );
                     if (!renderFrameToFramebuffer(*fbo, frameOptions).rendered) {
                         delete fbo;
                         break;
@@ -3254,7 +3247,6 @@ QImage View3DInventorViewer::renderToImage(const RenderImageOptions& options)
     RenderFrameOptions frameOptions;
     frameOptions.intent = options.intent;
     frameOptions.includeViewerLighting = options.includeViewerLighting;
-    frameOptions.includeDecorations = renderIntentIncludesDecorations(options.intent);
     frameOptions.backgroundOverride = overrideBackground ? std::optional<QColor>(opaqueBackground)
                                                          : std::nullopt;
     if (!renderFrameToFramebuffer(fbo, frameOptions).rendered) {
@@ -3477,7 +3469,6 @@ void View3DInventorViewer::renderScene()
     RenderFrameOptions options;
     options.viewport = viewport;
     options.intent = currentRenderIntent();
-    options.includeDecorations = renderIntentIncludesDecorations(options.intent);
 
     try {
         renderFrame(options);

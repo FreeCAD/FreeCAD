@@ -869,6 +869,27 @@ class CoinRenderPipelineTestCase(unittest.TestCase):
         finally:
             harness.close()
 
+    def test_invalid_render_pipeline_preference_migrates_to_legacy(self):
+        FreeCAD, FreeCADGui, _coin = _require_gui()
+
+        width, height = _snapshot_dimensions()
+        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
+        previous_pipeline = preferences.GetString("CoinRenderPipeline", "LegacyGL")
+        harness = None
+        try:
+            preferences.SetString("CoinRenderPipeline", "InvalidValue")
+            harness = _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height)
+
+            self.assertEqual(harness.viewer.getRenderPipeline(), "LegacyGL")
+            self.assertEqual(
+                preferences.GetString("CoinRenderPipeline", "LegacyGL"),
+                "LegacyGL",
+            )
+        finally:
+            if harness is not None:
+                harness.close()
+            preferences.SetString("CoinRenderPipeline", previous_pipeline)
+
     def test_viewer_runtime_pipeline_switch(self):
         FreeCAD, FreeCADGui, coin = _require_gui()
 

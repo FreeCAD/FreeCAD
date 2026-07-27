@@ -31,6 +31,5 @@ enum class RenderPipeline
 
 GuiExport std::string_view renderPipelineName(RenderPipeline pipeline) noexcept;
 GuiExport std::optional<RenderPipeline> parseRenderPipeline(std::string_view value) noexcept;
-GuiExport RenderPipeline parseRenderPipelineOrLegacy(std::string_view value) noexcept;
 
 }  // namespace Gui

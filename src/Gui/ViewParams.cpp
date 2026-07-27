@@ -489,18 +489,13 @@ void ViewParams::setRenderCache(long v)
 std::string ViewParams::getRenderPipeline() const
 {
     const auto value = getValue<std::string>("CoinRenderPipeline");
-    const auto pipeline = parseRenderPipelineOrLegacy(value);
-    if (value != renderPipelineName(pipeline)) {
-        const_cast<ViewParams*>(this)->setRenderPipeline(
-            std::string(renderPipelineName(pipeline))
-        );  // NOLINT
-    }
+    const auto pipeline = parseRenderPipeline(value).value_or(RenderPipeline::LegacyGL);
     return std::string(renderPipelineName(pipeline));
 }
 
 void ViewParams::setRenderPipeline(std::string v)
 {
-    const auto pipeline = parseRenderPipelineOrLegacy(v);
+    const auto pipeline = parseRenderPipeline(v).value_or(RenderPipeline::LegacyGL);
     setValue("CoinRenderPipeline", std::string(renderPipelineName(pipeline)));
 }
 
