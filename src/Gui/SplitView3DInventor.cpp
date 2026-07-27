@@ -685,7 +685,7 @@ SplitView3DInventor::SplitView3DInventor(
 
     if (smoothing) {
         for (std::vector<int>::size_type i = 0; i != _viewer.size(); i++) {
-            _viewer[i]->getSoRenderManager()->getGLRenderAction()->setSmoothing(true);
+            _viewer[i]->getSoRenderManager()->setAntialiasing(true, 1);
         }
     }
 
