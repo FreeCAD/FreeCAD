@@ -725,8 +725,7 @@ bool SketcherSettingsAppearance::event(QEvent* event)
                 const Base::Color c = std::get<Base::Color>(*value);
                 brush = QBrush(QColor::fromRgbF(c.r, c.g, c.b, c.a));
             }
-            else
-            {
+            else {
                 // Resolve color from qss source (OpenTheme) - see src/Gui/Application.cpp (2869)
                 QLabel l1;
                 l1.show();
