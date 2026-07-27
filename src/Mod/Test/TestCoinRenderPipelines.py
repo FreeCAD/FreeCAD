@@ -584,15 +584,19 @@ class CoinRenderPipelineTestCase(unittest.TestCase):
                     out_dir, _RENDERER_DRAW_LIST, "actual", "AfterMainSelectionSelected.png"
                 ),
             )
-            # Whole-object selection is represented by a wireframe bounding box. Sample its
-            # top edge, where a pre-clear selection would still fail the main-scene depth test.
-            edge_y = height // 2 - int(height * 0.27)
-            red, green, blue = _mean_rgb(selected, width // 2, edge_y, radius=2)
-            self.assertGreater(red, 100.0, "after-main selection was not rendered")
-            self.assertGreater(
-                green, 80.0, "after-main selection did not run after the depth clear"
+            # Whole-object selection is represented by a yellow wireframe bounding box. Count
+            # its color across the frame instead of probing a projected edge coordinate: a
+            # pre-clear selection is still blocked by the main-scene depth buffer and produces
+            # no yellow pixels, while the exact projected edge can move with rasterization.
+            yellow_pixels = sum(
+                red > 180 and green > 180 and blue < 120
+                for red, green, blue in _region_pixels(selected, (0, 0, width, height))
             )
-            self.assertLess(blue, 100.0, "after-main selection color was not applied")
+            self.assertGreater(
+                yellow_pixels,
+                100,
+                "after-main selection did not run after the depth clear",
+            )
         finally:
             harness.close()
 
