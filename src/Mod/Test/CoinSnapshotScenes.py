@@ -18,6 +18,7 @@ _RENDERER_LEGACY = "legacy"
 _RENDERER_DRAW_LIST = "draw_list"
 ALL_RENDERERS = frozenset({_RENDERER_LEGACY, _RENDERER_DRAW_LIST})
 LEGACY_ONLY = frozenset({_RENDERER_LEGACY})
+DRAW_LIST_ONLY = frozenset({_RENDERER_DRAW_LIST})
 
 _DEFAULT_FONT_FAMILY = "Noto Sans"
 _DEFAULT_FONT_SIZE = 18
@@ -294,6 +295,34 @@ def _build_string_label_scene(coin, _type_name: str, *, width=None, height=None)
     # snapshot background depending on the GL blending / alpha handling.
     label.textColor.setValue(0.05, 0.05, 0.05)
     root.addChild(label)
+    return root
+
+
+def _build_text2_scene(coin, _type_name: str, *, width=None, height=None):
+    del width, height
+    root = coin.SoSeparator()
+
+    camera = coin.SoOrthographicCamera()
+    camera.position.setValue(0.0, 0.0, 2.0)
+    camera.nearDistance.setValue(0.1)
+    camera.farDistance.setValue(10.0)
+    camera.height.setValue(2.0)
+    root.addChild(camera)
+
+    font = coin.SoFont()
+    font.name.setValue(_DEFAULT_FONT_FAMILY)
+    font.size.setValue(30.0)
+    root.addChild(font)
+
+    material = coin.SoMaterial()
+    material.diffuseColor.setValue(0.05, 0.25, 0.85)
+    material.transparency.setValue(0.15)
+    root.addChild(material)
+
+    text = coin.SoText2()
+    text.string.setValues(0, 2, ["SoText2", "Shared raster"])
+    text.justification.setValue(2)  # SoText2::CENTER
+    root.addChild(text)
     return root
 
 
@@ -1216,6 +1245,12 @@ SNAPSHOT_FIXTURES = {
     "SoRegPoint": _fixture(_build_reg_point_scene, framing_policy=CameraPolicy.FIXED_OVERLAY),
     "SoDatumLabel": _fixture(_build_datum_label_scene, framing_policy=CameraPolicy.FIXED_OVERLAY),
     "SoStringLabel": _fixture(_build_string_label_scene),
+    # LegacyGL's SoText2 path uses compatibility-only glDrawPixels.
+    "SoText2": _fixture(
+        _build_text2_scene,
+        framing_policy=CameraPolicy.FIXED_OVERLAY,
+        supported_renderers=DRAW_LIST_ONLY,
+    ),
     "SoColorBarLabel": _fixture(
         _build_color_bar_label_scene,
         framing_policy=CameraPolicy.FIXED_OVERLAY,
