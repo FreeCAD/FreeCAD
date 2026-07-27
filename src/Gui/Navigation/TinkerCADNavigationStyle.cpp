@@ -138,7 +138,7 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent* const ev)
                 }
 
                 // About to start rotating
-                if (press && (curmode == NavigationStyle::IDLE)) {
+                if (!viewer->isEditing() && press && (curmode == NavigationStyle::IDLE)) {
                     // Use this variable to spot move events
                     saveCursorPosition(ev);
                     this->centerTime = ev->getTime();
