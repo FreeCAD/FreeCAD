@@ -117,18 +117,22 @@ class ifc_observer:
 
     def slotCreatedObject(self, obj):
         """If this is an IFC document, turn the object into IFC"""
+        if getattr(FreeCAD, "activeDraftCommand", None) is not None:
+            # The Draft_Line and Draft_Wire commands create a temporary
+            # object that should not be converted.
+            return
         if not has_ifcopenshell():
             return
-
         doc = getattr(obj, "Document", None)
-        if doc:
-            if hasattr(doc, "IfcFilePath"):
-                from PySide import QtCore  # lazy loading
+        if doc is None:
+            return
+        if hasattr(doc, "IfcFilePath"):
+            from PySide import QtCore  # lazy loading
 
-                self.objname = obj.Name
-                self.docname = obj.Document.Name
-                # delaying to make sure all other properties are set
-                QtCore.QTimer.singleShot(100, self.convert)
+            self.objname = obj.Name
+            self.docname = obj.Document.Name
+            # delaying to make sure all other properties are set
+            QtCore.QTimer.singleShot(100, self.convert)
 
     def slotActivateDocument(self, doc):
         """Check if we need to lock"""
