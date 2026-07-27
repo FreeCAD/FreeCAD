@@ -922,7 +922,11 @@ def _build_brep_edge_set_scene(coin, type_name: str, *, width=None, height=None)
             coin.SbVec3f(0.0, 0.0, 0.0),
     ])
     style = coin.SoDrawStyle()
-    style.lineWidth.setValue(3.0)
+    # Keep the fixture on the portable one-pixel line path.  Wide legacy GL
+    # lines are implementation-dependent, while DrawList expands them in a
+    # shader, so a wider test line prevents the two renderers from sharing a
+    # deterministic snapshot.
+    style.lineWidth.setValue(1.0)
     material = coin.SoMaterial()
     material.diffuseColor.setValue(0.05, 0.05, 0.05)
 
