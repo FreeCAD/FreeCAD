@@ -285,9 +285,8 @@ class CommandPathInspect:
 
         # if everything is ok, execute
         FreeCADGui.addModule("Path.Main.Gui.Inspect")
-        FreeCADGui.doCommand(
-            "Path.Main.Gui.Inspect.show(FreeCAD.ActiveDocument." + selection[0].Name + ")"
-        )
+        FreeCADGui.doCommand(f"obj = FreeCAD.ActiveDocument.getObject('{selection[0].Name}')")
+        FreeCADGui.doCommand("Path.Main.Gui.Inspect.show(obj)")
 
 
 if FreeCAD.GuiUp:

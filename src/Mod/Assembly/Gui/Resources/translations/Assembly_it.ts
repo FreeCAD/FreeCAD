@@ -517,9 +517,14 @@ SLOPE definisce la pendenza della transizione tra 0 e H1 e H2 a 0 al tempo = T1 
       <translation>Si è verificato un errore durante il salvataggio dell'animazione</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1184"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1186"/>
       <source>PyAv is not installed. It is required for video export.</source>
       <translation>PyAv non è installato. È necessario per l'esportazione video.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1205"/>
+      <source>Unknown video export format</source>
+      <translation>Formato di esportazione video sconosciuto</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="170"/>
