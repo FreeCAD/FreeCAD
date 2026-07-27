@@ -26,6 +26,7 @@
 #include <QPrinter>
 #include <QFileInfo>
 #include <map>
+#include <string>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -37,6 +38,7 @@
 
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentPy.h>
+#include <App/MainThreadSignal.h>
 #include <App/PropertyFile.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
@@ -87,6 +89,18 @@ void requirePythonMainThread(const char* api)
     catch (const Base::Exception& exception) {
         throw Py::RuntimeError(exception.what());
     }
+}
+
+template<typename SendMessage>
+bool sendViewMessageOnMainThread(const SendMessage& sendMessage)
+{
+    if (App::MainThreadSignalConfig::isMainThread()) {
+        return sendMessage();
+    }
+
+    // View handlers may run Python on the GUI thread, so do not hold the worker's GIL.
+    Base::PyGILStateRelease release;
+    return App::MainThreadSignalConfig::invokeBlocking(sendMessage);
 }
 
 struct CoinActionTarget
@@ -1138,15 +1152,20 @@ PyObject* ApplicationPy::sSendActiveView(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
-    requirePythonMainThread("FreeCADGui.SendMsgToActiveView");
-
-    if (!Application::Instance->sendMsgToActiveView(psCommandStr)) {
-        if (!Base::asBoolean(suppress)) {
-            Base::Console().warning("Unknown view command: %s\n", psCommandStr);
+    PY_TRY
+    {
+        const std::string command(psCommandStr);
+        if (!sendViewMessageOnMainThread([&command]() {
+                return Application::Instance->sendMsgToActiveView(command.c_str());
+            })) {
+            if (!Base::asBoolean(suppress)) {
+                Base::Console().warning("Unknown view command: %s\n", command.c_str());
+            }
         }
-    }
 
-    Py_Return;
+        Py_Return;
+    }
+    PY_CATCH;
 }
 
 PyObject* ApplicationPy::sSendFocusView(PyObject* /*self*/, PyObject* args)
@@ -1158,15 +1177,20 @@ PyObject* ApplicationPy::sSendFocusView(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
-    requirePythonMainThread("FreeCADGui.SendMsgToFocusView");
-
-    if (!Application::Instance->sendMsgToFocusView(psCommandStr)) {
-        if (!Base::asBoolean(suppress)) {
-            Base::Console().warning("Unknown view command: %s\n", psCommandStr);
+    PY_TRY
+    {
+        const std::string command(psCommandStr);
+        if (!sendViewMessageOnMainThread([&command]() {
+                return Application::Instance->sendMsgToFocusView(command.c_str());
+            })) {
+            if (!Base::asBoolean(suppress)) {
+                Base::Console().warning("Unknown view command: %s\n", command.c_str());
+            }
         }
-    }
 
-    Py_Return;
+        Py_Return;
+    }
+    PY_CATCH;
 }
 
 PyObject* ApplicationPy::sGetMainWindow(PyObject* /*self*/, PyObject* args)

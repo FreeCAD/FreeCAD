@@ -83,6 +83,66 @@ class TestGuiDocument(unittest.TestCase):
 
         return predicate()
 
+    def _runWorkerWithGuiEvents(self, target, timeout=3.0):
+        exceptions = []
+
+        def run():
+            try:
+                target()
+            except Exception as exc:  # pragma: no cover - exercised through assertion below
+                exceptions.append(exc)
+
+        worker = threading.Thread(target=run, daemon=True)
+        worker.start()
+
+        self.assertTrue(
+            self._processEventsUntil(lambda: not worker.is_alive(), timeout),
+            "worker thread did not finish while the GUI event loop was being serviced",
+        )
+        worker.join()
+
+        if exceptions:
+            raise exceptions[0]
+
+    def _activeViewWidget(self):
+        main_window = FreeCADGui.getMainWindow()
+        mdi_area = main_window.findChild(QtWidgets.QMdiArea)
+        self.assertIsNotNone(mdi_area)
+
+        sub_window = mdi_area.activeSubWindow()
+        self.assertIsNotNone(sub_window)
+
+        view_widget = sub_window.widget()
+        self.assertIsNotNone(view_widget)
+        return view_widget
+
+    @staticmethod
+    def _focusIsWithin(widget):
+        focus = QtWidgets.QApplication.focusWidget()
+        while focus is not None:
+            if focus is widget:
+                return True
+            focus = focus.parentWidget()
+        return False
+
+    def _assertWorkerViewMessageChangesDirection(self, send_message):
+        view = FreeCADGui.getDocument(self.doc.Name).ActiveView
+        self.assertIsNotNone(view)
+
+        animation_enabled = view.isAnimationEnabled()
+        view.setAnimationEnabled(False)
+        try:
+            view.viewTop()
+            expected = view.getViewDirection()
+            view.viewAxonometric()
+            self.assertFalse(view.getViewDirection().isEqual(expected, 1e-12))
+
+            self._runWorkerWithGuiEvents(lambda: send_message("ViewTop", True))
+
+            self.assertTrue(view.getViewDirection().isEqual(expected, 1e-12))
+        finally:
+            view.setAnimationEnabled(animation_enabled)
+
     def _assertRecoveryArchiveContains(self, expected_label=None):
         archive = self._recoveryArchive()
         self.assertTrue(os.path.isfile(archive))
@@ -161,6 +221,21 @@ class TestGuiDocument(unittest.TestCase):
         self.assertIn("exception", result)
         self.assertIsInstance(result["exception"], RuntimeError)
         self.assertIn("main thread", str(result["exception"]).lower())
+
+    def testSendMsgToActiveViewFromWorkerThread(self):
+        self._assertWorkerViewMessageChangesDirection(FreeCADGui.SendMsgToActiveView)
+
+    def testSendMsgToFocusViewFromWorkerThread(self):
+        view_widget = self._activeViewWidget()
+        view_widget.activateWindow()
+        view_widget.setFocus(QtCore.Qt.FocusReason.OtherFocusReason)
+
+        self.assertTrue(
+            self._processEventsUntil(lambda: self._focusIsWithin(view_widget)),
+            "active MDI view did not receive focus",
+        )
+
+        self._assertWorkerViewMessageChangesDirection(FreeCADGui.sendMsgToFocusView)
 
     def testRefreshFallsBackToSyncForFeaturePython(self):
         params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Document")
