@@ -26,7 +26,6 @@ import os
 import shutil
 import tempfile
 
-import FreeCAD as App
 import Draft
 from bimtests import TestArchBase
 from importers import exportIFC
@@ -59,7 +58,7 @@ class TestIfcExportImport2D(TestArchBase.TestArchBase):
         self.document.recompute()
 
         # Export:
-        exportIFC.export(self.document.Objects, self.test_filename)
+        exportIFC.export([cir, arc, rec_1, rec_2], self.test_filename)
 
         # Import:
         ifc_import.insert(
