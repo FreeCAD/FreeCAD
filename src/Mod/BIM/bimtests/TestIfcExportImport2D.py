@@ -84,8 +84,8 @@ class TestIfcExportImport2D(TestArchBase.TestArchBase):
         # TOTAL:                14
 
         # 2D geometry is exported as "IfcAnnotation". We filter for that
-        # to exclude old objects and the BIM containers (building and level)
-        # created by the importer:
+        # to exclude old objects and the BIM containers (project and builing)
+        # created by the exporter:
         objs = Draft.getObjectsOfType(self.document.Objects, "IfcAnnotation")
         total_edges = sum(len(obj.Shape.Edges) for obj in objs)
         self.assertEqual(total_edges, 14)
