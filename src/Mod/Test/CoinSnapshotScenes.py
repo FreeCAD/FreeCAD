@@ -820,6 +820,9 @@ def _build_indexed_face_set_scene(coin, type_name: str, *, width=None, height=No
         # fmt: off
         faces.materialIndex.setValues(0, faces.coordIndex.getNum(), coord_index_values)
         # fmt: on
+        light_model = coin.SoLightModel()
+        light_model.model.setValue(coin.SoLightModel.BASE_COLOR)
+        root.addChild(light_model)
         root.addChild(bind)
     else:
         material.diffuseColor.setValue(0.70, 0.70, 0.75)
