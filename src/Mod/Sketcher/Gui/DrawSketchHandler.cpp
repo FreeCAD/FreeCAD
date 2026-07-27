@@ -852,15 +852,12 @@ void DrawSketchHandler::renderDirectionalAutoConstraintHints() const
     if (parallelPerpendicularRefGeoId != GeoEnum::GeoUndef) {
         SketchObject* obj = sketchgui->getSketchObject();
         Base::Vector2d startPoint;
-        const Part::Geometry* geometry =
-            obj ? obj->getGeometry(parallelPerpendicularRefGeoId) : nullptr;
-        if (
-            obj && getStartPointOfCurrentSegment(startPoint) && geometry
-            && geometry->is<Part::GeomLineSegment>()
-        ) {
+        const Part::Geometry* geometry = obj ? obj->getGeometry(parallelPerpendicularRefGeoId)
+                                             : nullptr;
+        if (obj && getStartPointOfCurrentSegment(startPoint) && geometry
+            && geometry->is<Part::GeomLineSegment>()) {
             auto* line = static_cast<const Part::GeomLineSegment*>(geometry);
-            Base::Vector2d lineDir =
-                toVector2d(line->getEndPoint() - line->getStartPoint());
+            Base::Vector2d lineDir = toVector2d(line->getEndPoint() - line->getStartPoint());
             if (lineDir.Sqr() > Precision::SquareConfusion()) {
                 lineDir.Normalize();
                 const Base::Vector2d perpDir(-lineDir.y, lineDir.x);
@@ -872,8 +869,7 @@ void DrawSketchHandler::renderDirectionalAutoConstraintHints() const
                 hintLines.push_back(startPoint + halfLength * perpDir);
 
                 if (parallelPerpendicularActiveHintLine >= 0) {
-                    activeLineIndex =
-                        firstReferenceLineIndex + parallelPerpendicularActiveHintLine;
+                    activeLineIndex = firstReferenceLineIndex + parallelPerpendicularActiveHintLine;
                 }
             }
         }
