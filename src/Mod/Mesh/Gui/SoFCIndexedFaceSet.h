@@ -54,8 +54,8 @@ public:
         std::vector<float>& vertex,
         std::vector<int32_t>& index
     );
-    void renderFacesGLArray(SoGLRenderAction* action);
-    void renderCoordsGLArray(SoGLRenderAction* action);
+    bool renderFacesGLArray(SoGLRenderAction* action);
+    bool renderCoordsGLArray(SoGLRenderAction* action);
     bool canRenderGLArray(SoGLRenderAction* action) const;
     bool matchMaterial(SoState*) const;
     void update();
