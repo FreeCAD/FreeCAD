@@ -298,6 +298,85 @@ class CoinRenderPipelineTestCase(unittest.TestCase):
         finally:
             harness.close()
 
+    def test_3d_annotation_wireframe_is_rendered_by_both_pipelines(self):
+        FreeCAD, FreeCADGui, coin = _require_gui()
+        width, height = _snapshot_dimensions()
+        out_dir = _snapshot_out_dir()
+        harness = _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height)
+        try:
+            if not {_RENDERER_LEGACY, _RENDERER_DRAW_LIST}.issubset(
+                set(harness.render_pipelines())
+            ):
+                raise unittest.SkipTest(
+                    "3D annotation wireframe regression requires both pipelines"
+                )
+
+            root = _make_annotation_stage_root(coin)
+            light_model = coin.SoLightModel()
+            light_model.model.setValue(coin.SoLightModel.BASE_COLOR)
+            root.addChild(light_model)
+
+            plate_material = coin.SoMaterial()
+            plate_material.diffuseColor.setValue(0.12, 0.30, 0.72)
+            plate_transform = coin.SoTransform()
+            plate_transform.scaleFactor.setValue(1.4, 1.0, 0.18)
+            plate_group = coin.SoSeparator()
+            plate_group.addChild(plate_material)
+            plate_group.addChild(plate_transform)
+            plate_group.addChild(coin.SoCube())
+            root.addChild(plate_group)
+
+            annotation = _instantiate(coin, "So3DAnnotation")
+            line_material = coin.SoMaterial()
+            line_material.diffuseColor.setValue(0.95, 0.16, 0.05)
+            line_style = coin.SoDrawStyle()
+            line_style.style.setValue(coin.SoDrawStyle.LINES)
+            line_style.lineWidth.setValue(3.0)
+            line_transform = coin.SoTransform()
+            line_transform.translation.setValue(0.0, 0.0, -0.55)
+            line_transform.scaleFactor.setValue(0.95, 0.72, 0.55)
+            line_group = coin.SoSeparator()
+            line_group.addChild(line_material)
+            line_group.addChild(line_style)
+            line_group.addChild(line_transform)
+            line_group.addChild(coin.SoCube())
+            annotation.addChild(line_group)
+            root.addChild(annotation)
+            root.ref()
+            try:
+                rendered = {}
+                for renderer_name in (_RENDERER_LEGACY, _RENDERER_DRAW_LIST):
+                    path = _renderer_output_path(
+                        out_dir,
+                        renderer_name,
+                        "actual",
+                        "So3DAnnotationWireframe.png",
+                    )
+                    _render_png(harness, coin, root, path, renderer_name, frame_camera=False)
+                    rendered[renderer_name] = path
+            finally:
+                root.unref()
+
+            image_region = (0, 0, width, height)
+            for renderer_name, path in rendered.items():
+                image = _QtGuiModule.QImage(str(path)).convertToFormat(
+                    _QtGuiModule.QImage.Format_ARGB32
+                )
+                red_pixels = 0
+                for y in range(image_region[1], image_region[3]):
+                    for x in range(image_region[0], image_region[2]):
+                        color = image.pixelColor(x, y)
+                        if color.red() > 150 and color.red() > color.green() * 1.8:
+                            red_pixels += 1
+                self.assertGreater(
+                    red_pixels,
+                    250,
+                    f"So3DAnnotation wireframe disappeared in {renderer_name}: {path}",
+                )
+
+        finally:
+            harness.close()
+
     def test_3d_annotation_bypasses_main_depth(self):
         FreeCAD, FreeCADGui, coin = _require_gui()
         width, height = _snapshot_dimensions()
