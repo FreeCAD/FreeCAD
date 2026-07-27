@@ -25,10 +25,12 @@ struct RootSelectionState
     SbColor highlightColor;
 };
 
-inline SbVec4f toVec4(const SbColor& color)
+inline SbVec4f toVec4(const SbColor& color, float alpha = 1.0f)
 {
-    return {color[0], color[1], color[2], 1.0f};
+    return {color[0], color[1], color[2], alpha};
 }
+
+constexpr float DEFAULT_HIGHLIGHT_ALPHA = 0.6f;
 
 inline void reset(SoRenderCommand& cmd)
 {
@@ -63,15 +65,15 @@ inline void applyPrimary(
 
     if (ctx && ctx->isHighlightAll()) {
         cmd.selection.highlightWholeObject = true;
-        cmd.selection.highlightColor = toVec4(ctx->highlightColor);
+        cmd.selection.highlightColor = toVec4(ctx->highlightColor, DEFAULT_HIGHLIGHT_ALPHA);
     }
     else if (root.highlighted) {
         cmd.selection.highlightWholeObject = true;
-        cmd.selection.highlightColor = toVec4(root.highlightColor);
+        cmd.selection.highlightColor = toVec4(root.highlightColor, DEFAULT_HIGHLIGHT_ALPHA);
     }
     else if (ctx && ctx->highlightIndex >= 0 && containsElement(ctx->highlightIndex)) {
         cmd.selection.highlightedElements.push_back(ctx->highlightIndex);
-        cmd.selection.highlightColor = toVec4(ctx->highlightColor);
+        cmd.selection.highlightColor = toVec4(ctx->highlightColor, DEFAULT_HIGHLIGHT_ALPHA);
     }
 
     if (ctx && ctx->isSelectAll()) {
@@ -138,7 +140,7 @@ inline void applyHighlightOverlay(
         return;
     }
 
-    cmd.selection.highlightColor = toVec4(overlayColor);
+    cmd.selection.highlightColor = toVec4(overlayColor, 1.0f);
     cmd.selection.highlightWholeObject = false;
     cmd.selection.highlightedElements.clear();
 
