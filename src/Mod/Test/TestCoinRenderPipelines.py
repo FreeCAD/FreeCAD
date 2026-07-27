@@ -29,6 +29,7 @@ from CoinSnapshotHarness import (
 )
 from CoinSnapshotScenes import (
     SnapshotRuntime,
+    _DEFAULT_FONT_FAMILY,
     _build_lighting_equivalence_scene,
     _frame_scene_camera,
     _find_descendant,
@@ -1318,6 +1319,57 @@ class CoinRenderPipelineTestCase(unittest.TestCase):
                     max_mismatched_fraction=0.08,
                 ),
                 "SoStringLabel text filtering differs between LegacyGL and DrawList",
+            )
+        finally:
+            harness.close()
+
+    def test_text2_pixel_rasterization_draw_list(self):
+        FreeCAD, FreeCADGui, coin = _require_gui()
+
+        width, height = _snapshot_dimensions()
+        out_dir = _snapshot_out_dir()
+        harness = _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height)
+        try:
+            if _RENDERER_DRAW_LIST not in harness.render_pipelines():
+                raise unittest.SkipTest("SoText2 regression requires the DrawList pipeline")
+            # LegacyGL's SoText2 path uses compatibility-only glDrawPixels; this
+            # core-profile harness can exercise the modern pixel-text path only.
+
+            root = coin.SoSeparator()
+
+            camera = coin.SoOrthographicCamera()
+            camera.position.setValue(0.0, 0.0, 2.0)
+            camera.nearDistance.setValue(0.1)
+            camera.farDistance.setValue(10.0)
+            camera.height.setValue(2.0)
+            root.addChild(camera)
+
+            font = coin.SoFont()
+            font.name.setValue(_DEFAULT_FONT_FAMILY)
+            font.size.setValue(30.0)
+            root.addChild(font)
+
+            material = coin.SoMaterial()
+            material.diffuseColor.setValue(0.05, 0.25, 0.85)
+            material.transparency.setValue(0.15)
+            root.addChild(material)
+
+            text = coin.SoText2()
+            text.string.setValues(0, 2, ["SoText2", "Shared raster"])
+            text.justification.setValue(2)  # SoText2::CENTER
+            root.addChild(text)
+
+            path = _renderer_output_path(
+                out_dir,
+                _RENDERER_DRAW_LIST,
+                "actual",
+                "SoText2Rasterization.png",
+            )
+            _render_png(harness, coin, root, path, _RENDERER_DRAW_LIST, frame_camera=True)
+            self.assertGreater(
+                _non_background_pixel_count(path),
+                100,
+                f"SoText2 rendered empty in DrawList: {path}",
             )
         finally:
             harness.close()
