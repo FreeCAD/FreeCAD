@@ -747,6 +747,9 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                         linkingMoves = linking.get_linking_moves(**linkingArgs)
                         self.commandlist.extend(linkingMoves)
                         machinestate.addCommands(linkingMoves)
+                    else:
+                        cmd = Path.Command("G0", {"X": hole["x"], "Y": hole["y"]})
+                        self.commandlist.append(cmd)
                     drillStep = obj.HelixMaxPitch.Value or obj.StepDown.Value
                     drillSteps = math.ceil(round((centerTop.z - centerBottom.z) / drillStep, 6))
                     for iDrill in range(1, drillSteps + 1):
