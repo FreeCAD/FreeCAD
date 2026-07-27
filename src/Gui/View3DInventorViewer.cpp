@@ -128,6 +128,7 @@
 #include "Command.h"
 #include "Document.h"
 #include "GLPainter.h"
+#include "RubberbandOverlay.h"
 #include "Inventor/SoAxisCrossKit.h"
 #include "Inventor/SoFCBackgroundGradient.h"
 #include "Inventor/SoFCBoundingBox.h"
@@ -1137,6 +1138,8 @@ void View3DInventorViewer::init()
     this->decorationroot->addChild(decorationBaseColor);
     this->decorationroot->addChild(naviCubeAnnotation);
 
+    rubberbandOverlayRenderer = std::unique_ptr<RubberbandOverlay>(new RubberbandOverlay);
+
     auto threePointLightingSeparator = new SoTransformSeparator;
     threePointLightingSeparator->addChild(lightRotation);
     threePointLightingSeparator->addChild(this->fillLight);
@@ -1320,6 +1323,8 @@ void View3DInventorViewer::init()
 
 View3DInventorViewer::~View3DInventorViewer()
 {
+    rubberbandOverlayRenderer.reset();
+
     // to prevent following OpenGL error message: "Texture is not valid in the current context.
     // Texture has not been destroyed"
     aboutToDestroyGLContext();
@@ -2890,6 +2895,11 @@ void View3DInventorViewer::clearGraphicsItems()
     this->graphicsItems.clear();
 }
 
+RubberbandOverlay& View3DInventorViewer::rubberbandOverlay()
+{
+    return *rubberbandOverlayRenderer;
+}
+
 int View3DInventorViewer::getNumSamples()
 {
     Gui::AntiAliasing msaa = Multisample::readMSAAFromSettings();
@@ -3400,6 +3410,7 @@ void View3DInventorViewer::renderScene()
         }
     }
 
+    renderRubberbandOverlay();
     // Workaround for inconsistent QT behavior related to handling custom OpenGL widgets that
     // leave non opaque alpha values in final output.
     // On wayland that can cause window to become transparent or blurry trail effect in the
@@ -3425,6 +3436,23 @@ void View3DInventorViewer::renderScene()
 
     glColorMask(colorMask[0], colorMask[1], colorMask[2], colorMask[3]);
     glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
+}
+
+void View3DInventorViewer::renderRubberbandOverlay()
+{
+    if (currentRenderIntent() != RenderIntent::LiveInteractive || !rubberbandOverlayRenderer) {
+        return;
+    }
+
+    auto* manager = getSoRenderManager();
+    auto* action = manager ? manager->getGLRenderAction() : nullptr;
+    if (!action) {
+        return;
+    }
+
+    ZoneScopedN("Rubberband overlay");
+    rubberbandOverlayRenderer->prepareGeometry(manager->getViewportRegion(), devicePixelRatio());
+    action->apply(rubberbandOverlayRenderer->sceneRoot());
 }
 
 void View3DInventorViewer::setSeekMode(bool on)
