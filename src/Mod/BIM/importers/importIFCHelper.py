@@ -941,10 +941,8 @@ def get2DShape(representation, scaling=1000, notext=False):
     if representation.is_a("IfcShapeRepresentation"):
         for item in representation.Items:
             if item.is_a() in ["IfcGeometricCurveSet", "IfcGeometricSet"]:
-                print("hxa")
                 result = getCurveSet(item)
             elif item.is_a("IfcMappedItem"):
-                print("hxb")
                 preresult = get2DShape(item.MappingSource.MappedRepresentation, scaling)
                 pla = getPlacement(item.MappingSource.MappingOrigin, scaling)
                 rot = getRotation(item.MappingTarget)
@@ -957,7 +955,6 @@ def get2DShape(representation, scaling=1000, notext=False):
                 else:
                     result = preresult
             elif item.is_a("IfcTextLiteral"):
-                print("hxc")
                 if notext:
                     continue
                 pl = getPlacement(item.Placement, scaling)
