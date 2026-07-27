@@ -31,6 +31,7 @@ from CoinSnapshotScenes import (
     SnapshotRuntime,
     _build_lighting_equivalence_scene,
     _frame_scene_camera,
+    _find_descendant,
     _instantiate,
     frame_snapshot_camera,
     get_snapshot_fixture,
@@ -1155,6 +1156,61 @@ class CoinRenderPipelineTestCase(unittest.TestCase):
                     max_mismatched_fraction=0.01,
                 ),
                 "per-vertex SoFCIndexedFaceSet colors diverged between LegacyGL and DrawList",
+            )
+        finally:
+            harness.close()
+
+    def test_indexed_face_set_per_vertex_color_shaded_matches_between_pipelines(self):
+        FreeCAD, FreeCADGui, coin = _require_gui()
+
+        width, height = _snapshot_dimensions()
+        out_dir = _snapshot_out_dir()
+        harness = _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height)
+        try:
+            if not {_RENDERER_LEGACY, _RENDERER_DRAW_LIST}.issubset(
+                set(harness.render_pipelines())
+            ):
+                raise unittest.SkipTest(
+                    "shaded per-vertex color comparison requires both render pipelines"
+                )
+
+            fixture = get_snapshot_fixture("SoFCIndexedFaceSetPerVertexColor")
+            runtime = SnapshotRuntime(coin, width, height, "SoFCIndexedFaceSetPerVertexColor")
+            root = fixture.build(runtime)
+            root.ref()
+            try:
+                light_model = _find_descendant(coin, root, "SoLightModel")
+                if light_model is None:
+                    raise AssertionError("per-vertex color scene has no light model")
+                light_model.model.setValue(coin.SoLightModel.PHONG)
+
+                frame_snapshot_camera(runtime, root, fixture.framing_policy)
+                rendered = {}
+                for renderer_name in (_RENDERER_LEGACY, _RENDERER_DRAW_LIST):
+                    path = _renderer_output_path(
+                        out_dir,
+                        renderer_name,
+                        "actual",
+                        "IndexedFaceSetPerVertexColorShaded.png",
+                    )
+                    _render_png(harness, coin, root, path, renderer_name, frame_camera=False)
+                    self.assertGreater(
+                        _non_background_pixel_count(path),
+                        10,
+                        f"shaded per-vertex color scene rendered empty in {renderer_name}: {path}",
+                    )
+                    rendered[renderer_name] = path
+            finally:
+                root.unref()
+
+            self.assertTrue(
+                _images_are_similar(
+                    rendered[_RENDERER_LEGACY],
+                    rendered[_RENDERER_DRAW_LIST],
+                    tolerance=40,
+                    max_mismatched_fraction=0.01,
+                ),
+                "shaded per-vertex SoFCIndexedFaceSet colors diverged between LegacyGL and DrawList",
             )
         finally:
             harness.close()
