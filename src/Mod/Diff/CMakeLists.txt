@@ -11,6 +11,14 @@ SET(Diff_SRCS_python
   TestDiffApp.py
 )
 
+if(BUILD_GUI)
+  list (APPEND Diff_SRCS_python
+    InitGui.py
+    diff/gui/init.py
+    diff/gui/show_diff.py
+  )
+endif(BUILD_GUI)
+
 ADD_CUSTOM_TARGET(DiffScripts ALL
   SOURCES ${Diff_SRCS_python}
 )
