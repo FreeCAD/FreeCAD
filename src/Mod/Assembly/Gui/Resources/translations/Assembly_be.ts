@@ -534,10 +534,15 @@ SLOPE - вызначае крутасць пераходу ад 0 да H1 і а�
       <translation>Пры захаванні анімацыі адбылася памылка</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1184"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1186"/>
       <source>PyAv is not installed. It is required for video export.</source>
       <translation>PyAv не ўсталяваны.
 Ён неабходны для экспартавання відэа.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1205"/>
+      <source>Unknown video export format</source>
+      <translation>Невядомы фармат экспарту відэа</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="170"/>
@@ -768,22 +773,22 @@ SLOPE - вызначае крутасць пераходу ад 0 да H1 і а�
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="113"/>
       <source>List of components captured in this snapshot.</source>
-      <translation type="unfinished">List of components captured in this snapshot.</translation>
+      <translation>Спіс кампанентаў, якія захаваныя на гэтым маментальным здымку.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="124"/>
       <source>List of corresponding placements for the components.</source>
-      <translation type="unfinished">List of corresponding placements for the components.</translation>
+      <translation>Спіс адпаведных месцаў размяшчэння кампанентаў.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="135"/>
       <source>List of visibility states for the components.</source>
-      <translation type="unfinished">List of visibility states for the components.</translation>
+      <translation>Спіс станаў бачнасці кампанентаў.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="146"/>
       <source>If true, applying the snapshot will solve the assembly after restoring the placements.</source>
-      <translation type="unfinished">If true, applying the snapshot will solve the assembly after restoring the placements.</translation>
+      <translation>Калі птушка, прымяненне маментальнага здымка прывядзе да рашэння праблемы з зборкай пасля аднаўлення размяшчэння.</translation>
     </message>
   </context>
   <context>
@@ -1646,22 +1651,23 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
       <source>Snapshot</source>
-      <translation type="unfinished">Snapshot</translation>
+      <translation>Маментальны здымак</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="53"/>
       <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
-      <translation type="unfinished">Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</translation>
+      <translation>Фіксуе бягучы стан зборкі (месца размяшчэння і бачнасць).
+Падвоеная пстрычка па аб'екце маментальнага здымка аднаўляе зборку да гэтага стану.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
       <source>Create Snapshot</source>
-      <translation type="unfinished">Create Snapshot</translation>
+      <translation>Стварыць маментальны здымак</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
-      <translation type="unfinished">Restore Snapshot</translation>
+      <translation>Аднавіць маментальны здымак</translation>
     </message>
   </context>
   <context>

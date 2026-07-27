@@ -931,8 +931,8 @@ so that self intersection is avoided.</source>
       <translation>பூலியன் உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <location filename="../../CommandBody.cpp" line="221"/>
+      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <source>Add a Body</source>
       <translation>ஒரு உடலைச் சேர்க்கவும்</translation>
     </message>
@@ -3170,11 +3170,11 @@ measured along the specified direction</source>
       <translation>இந்த ஆவணத்தில் செல்லுபடியாகும் விமானங்கள் இல்லை</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="761"/>
       <location filename="../../Command.cpp" line="1152"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <location filename="../../ViewProvider.cpp" line="137"/>
+      <location filename="../../SketchWorkflow.cpp" line="761"/>
       <source>A dialog is already open in the task panel</source>
       <translation>பணிப் பலகத்தில் ஏற்கனவே ஒரு உரையாடல் திறக்கப்பட்டுள்ளது</translation>
     </message>
@@ -3219,16 +3219,11 @@ measured along the specified direction</source>
       <translation>ஆவணத்தில் ச்கெட்ச் எதுவும் இல்லை</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2206"/>
-      <source>Select only one feature in an active body.</source>
-      <translation type="unfinished">Select only one feature in an active body.</translation>
-    </message>
-    <message>
-      <location filename="../../SketchWorkflow.cpp" line="762"/>
       <location filename="../../Command.cpp" line="1153"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../ViewProvider.cpp" line="138"/>
+      <location filename="../../SketchWorkflow.cpp" line="762"/>
       <source>Close this dialog?</source>
       <translation>இந்த உரையாடலை மூடவா?</translation>
     </message>
@@ -3253,6 +3248,11 @@ measured along the specified direction</source>
       <location filename="../../Command.cpp" line="1871"/>
       <source>Shape of the selected part is empty</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பகுதியின் வடிவம் காலியாக உள்ளது</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2206"/>
+      <source>Select only one feature in an active body.</source>
+      <translation type="unfinished">Select only one feature in an active body.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1844"/>
@@ -3516,10 +3516,10 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>இந்த அம்சத்தைப் பயன்படுத்த, அது ஆவணத்தில் உள்ள ஒரு பகுதிப் பொருளுக்குச் சொந்தமானதாக இருக்க வேண்டும்.</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <location filename="../../ViewProvider.cpp" line="94"/>
       <location filename="../../ViewProviderTransformed.cpp" line="67"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <source>Edit %1</source>
       <translation>திருத்த % 1</translation>
     </message>
@@ -4456,23 +4456,23 @@ over 90: larger hole radius at the bottom</source>
       <translation>தவறான அடிப்படை வடிவத்துடன் பூலியன் செயல்பாட்டைச் செய்ய முடியாது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="600"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
       <location filename="../../../App/FeatureHelix.cpp" line="420"/>
       <location filename="../../../App/FeatureHelix.cpp" line="442"/>
       <location filename="../../../App/FeatureHelix.cpp" line="488"/>
       <location filename="../../../App/FeatureLoft.cpp" line="334"/>
       <location filename="../../../App/FeatureLoft.cpp" line="378"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="600"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>முடிவு பல திடப்பொருட்களைக் கொண்டுள்ளது: செயலில் உள்ள உடலில் 'கலவையை இசைவு' என்பதை இயக்கவும்.</translation>
     </message>
@@ -4507,10 +4507,10 @@ over 90: larger hole radius at the bottom</source>
       <translation>இதன் விளைவாக இணைந்த வெளியேற்றம் பூச்யமானது.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="371"/>
       <location filename="../../../App/FeaturePipe.cpp" line="592"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="371"/>
       <source>Resulting shape is not a solid</source>
       <translation>விளைந்த வடிவம் திடமானது அல்ல</translation>
     </message>
@@ -4653,9 +4653,9 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>பிழை: முகம் சீராக இருக்க வேண்டும்</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="499"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2454"/>
       <source>Error: Result is not a solid</source>
       <translation>பிழை: முடிவு உறுதியானது அல்ல</translation>
     </message>
@@ -4808,8 +4808,8 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>லாஃப்ட்: ச்கெட்சிலிருந்து முகத்தை உருவாக்குவது தோல்வியடைந்தது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="304"/>
       <location filename="../../../App/FeaturePipe.cpp" line="500"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="304"/>
       <source>Loft: Failed to create shell</source>
       <translation>மாடி: செல் உருவாக்க முடியவில்லை</translation>
     </message>
@@ -4916,14 +4916,14 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>அடிப்படை நற்பொருத்தம் இல்லாமல் பழமையான அம்சத்தைக் கழிக்க முடியாது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="356"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="356"/>
       <source>Unknown operation type</source>
       <translation>அறியப்படாத செயல்பாட்டு வகை</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="364"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="364"/>
       <source>Failed to perform boolean operation</source>
       <translation>பூலியன் செயல்பாட்டைச் செய்ய முடியவில்லை</translation>
     </message>
@@ -5427,14 +5427,6 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     </message>
   </context>
   <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
-    <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input Error</source>
-      <translation>உள்ளீடு பிழை</translation>
-    </message>
-  </context>
-  <context>
     <name>PartDesignGui::TaskFeatureParameters</name>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="138"/>
@@ -5457,6 +5449,14 @@ Adjust the parameters and try again.</source>
       <translation type="unfinished">The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
 Adjust the parameters and try again.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>உள்ளீடு பிழை</translation>
     </message>
   </context>
 </TS>

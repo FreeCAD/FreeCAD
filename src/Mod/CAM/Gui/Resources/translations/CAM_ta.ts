@@ -709,10 +709,10 @@ For stock from the base object&apos;s bounding box it means the extra material i
       <translation>அனைத்து பொருட்களும் ஒரே செயல்பாட்டு பண்புகளைப் பயன்படுத்தி செயலாக்கப்படும்</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseGeometryEdit.ui" line="72"/>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="157"/>
       <location filename="../panels/PageBaseLocationEdit.ui" line="43"/>
       <location filename="../panels/PropertyBag.ui" line="62"/>
+      <location filename="../panels/PageBaseGeometryEdit.ui" line="72"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="157"/>
       <source>Add</source>
       <translation>சேர்</translation>
     </message>
@@ -722,16 +722,16 @@ For stock from the base object&apos;s bounding box it means the extra material i
       <translation>தற்போதைய வேலையில் அடிப்படை வடிவவியலுடன் செயல்பாடுகளின் பட்டியல்</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseGeometryEdit.ui" line="82"/>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="167"/>
       <location filename="../panels/PageBaseLocationEdit.ui" line="53"/>
       <location filename="../panels/PropertyBag.ui" line="48"/>
+      <location filename="../panels/PageBaseGeometryEdit.ui" line="82"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="167"/>
       <source>Remove</source>
       <translation>அகற்று</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseGeometryEdit.ui" line="92"/>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="149"/>
+      <location filename="../panels/PageBaseGeometryEdit.ui" line="92"/>
       <source>Clear</source>
       <translation>தெளிவு</translation>
     </message>
@@ -830,16 +830,16 @@ Reset deletes அனைத்தும் மின்னோட்ட்ம், 
       <translation>செயலாக்கப்பட வேண்டிய இடங்களின் பட்டியல்</translation>
     </message>
     <message>
+      <location filename="../panels/PageBaseLocationEdit.ui" line="24"/>
       <location filename="../panels/PageOpProbeEdit.ui" line="65"/>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="134"/>
-      <location filename="../panels/PageBaseLocationEdit.ui" line="24"/>
       <source>X</source>
       <translation>ஃச்</translation>
     </message>
     <message>
+      <location filename="../panels/PageBaseLocationEdit.ui" line="29"/>
       <location filename="../panels/PageOpProbeEdit.ui" line="82"/>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="139"/>
-      <location filename="../panels/PageBaseLocationEdit.ui" line="29"/>
       <source>Y</source>
       <translation>ஒய்</translation>
     </message>
@@ -869,32 +869,32 @@ Reset deletes அனைத்தும் மின்னோட்ட்ம், 
       <translation>திருத்து</translation>
     </message>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="39"/>
       <location filename="../panels/SetupGlobal.ui" line="36"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="39"/>
       <source>Start depth</source>
       <translation>தொடக்க ஆழம்</translation>
     </message>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="46"/>
       <location filename="../panels/PageDiametersEdit.ui" line="27"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="46"/>
       <source>Start depth of the operation. The highest point in Z-axis the operation needs to process.</source>
       <translation>செயல்பாட்டின் ஆழத்தைத் தொடங்கவும். இசட்-அச்சின் மிக உயர்ந்த புள்ளியானது செயல்பாட்டைச் செயல்படுத்த வேண்டும்.</translation>
     </message>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="59"/>
       <location filename="../panels/PageDiametersEdit.ui" line="43"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="59"/>
       <source>Transfer the Z value of the selected feature as the start depth for the operation</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட அம்சத்தின் சட் மதிப்பை செயல்பாட்டிற்கான தொடக்க ஆழமாக மாற்றவும்</translation>
     </message>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="85"/>
       <location filename="../panels/SetupGlobal.ui" line="52"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="85"/>
       <source>Final depth</source>
       <translation>இறுதி ஆழம்</translation>
     </message>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="92"/>
       <location filename="../panels/PageDiametersEdit.ui" line="64"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="92"/>
       <source>The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.</source>
       <translation>செயல்பாட்டின் ஆழம், இது Z-அச்சில் உள்ள மிகக் குறைந்த மதிப்புடன் தொடர்புடையது.</translation>
     </message>
@@ -904,9 +904,9 @@ Reset deletes அனைத்தும் மின்னோட்ட்ம், 
       <translation>செயல்பாட்டிற்கான இறுதி ஆழமாக தேர்ந்தெடுக்கப்பட்ட அம்சத்தின் சட் மதிப்பை மாற்றவும்</translation>
     </message>
     <message>
+      <location filename="../panels/SetupGlobal.ui" line="68"/>
       <location filename="../panels/PageDepthsEdit.ui" line="131"/>
       <location filename="../panels/PageHeightsEdit.ui" line="178"/>
-      <location filename="../panels/SetupGlobal.ui" line="68"/>
       <source>Step down</source>
       <translation>கீழே இறங்கு</translation>
     </message>
@@ -933,8 +933,8 @@ Reset deletes அனைத்தும் மின்னோட்ட்ம், 
       <translation>குறைந்தபட்ச விட்டம்</translation>
     </message>
     <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="57"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="334"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="57"/>
       <source>Max diameter</source>
       <translation>அதிகபட்ச விட்டம்</translation>
     </message>
@@ -1027,155 +1027,30 @@ Line of Sight: fastest - checks the பாதை centerline.
       <translation>டூல்பிட்டின் பக்கவாட்டு இயக்கம் எந்த சாதனங்களாலும் அல்லது பாகம்/பங்கு பொருளால் தடைபடாத உயரம்.</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="255"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="43"/>
       <location filename="../panels/PageOpVcarveEdit.ui" line="43"/>
+      <location filename="../panels/SetupGlobal.ui" line="255"/>
       <source>Coolant Mode</source>
       <translation>குளிரூட்டும் முறை</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="24"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="29"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="29"/>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="29"/>
       <location filename="../panels/SetupGlobal.ui" line="180"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="29"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="59"/>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="24"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="29"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="29"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="59"/>
       <source>Tool Controller</source>
       <translation>கருவி கட்டுப்படுத்தி</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="29"/>
-      <source>Tool controller that supplies the cutter geometry, feed and speed for this operation.</source>
-      <translation>இந்த செயல்பாட்டிற்கான கட்டர் வடிவியல், ஊட்டம் மற்றும் வேகத்தை வழங்கும் கருவி கட்டுப்படுத்தி.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="34"/>
-      <location filename="../panels/SetupGlobal.ui" line="249"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="43"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="33"/>
+      <location filename="../panels/SetupGlobal.ui" line="249"/>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="34"/>
       <source>Coolant</source>
       <translation>குளிர்வி</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="39"/>
-      <source>Coolant mode emitted at the start of the operation.</source>
-      <translation>செயல்பாட்டின் தொடக்கத்தில் குளிரூட்டும் முறை வெளியிடப்பட்டது.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="57"/>
-      <source>Climb: rotary advances in the positive direction. Conventional: rotary advances in the negative direction. Affects the sign of A in cutting moves; pick to match how the cutter engages the material on your machine.</source>
-      <translation>ஏறுதல்: நேர்மறை திசையில் சுழலும் முன்னேற்றங்கள். வழக்கமான: எதிர்மறை திசையில் சுழலும் முன்னேற்றங்கள். வெட்டு நகர்வுகளில் A இன் அடையாளத்தை பாதிக்கிறது; உங்கள் கணினியில் உள்ள பொருளை கட்டர் எவ்வாறு ஈடுபடுத்துகிறது என்பதை பொருத்த தேர்வு செய்யவும்.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="62"/>
-      <source>Cut Pattern</source>
-      <translation>வெட்டு முறை</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="67"/>
-      <source>Spiral: continuous helical sweep — fastest, best surface continuity. Parallel: axial zig-zag passes stepped over angularly. Rings: full-revolution rings stepped axially. All three produce continuous 4-axis XYZA motion.</source>
-      <translation>சுழல்: தொடர்ச்சியான எலிகல் ச்வீப் — வேகமான, சிறந்த மேற்பரப்பு தொடர்ச்சி. இணையாக: அச்சு சிக்-சாக் கடவுகள் கோணத்தில் படிகள். மோதிரங்கள்: முழு-புரட்சி வளையங்கள் அச்சில் அடியெடுத்து வைத்தன. மூன்றுமே தொடர்ச்சியான 4-அச்சு XYZA இயக்கத்தை உருவாக்குகின்றன.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="72"/>
-      <source>Feed Mode</source>
-      <translation>ஊட்ட முறை</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="77"/>
-      <source>How the tool controller&apos;s HorizFeed is interpreted. Axial Only: emit F=HorizFeed on every cut move; the controller&apos;s own feed math determines how the rotary keeps up — F values in the G-code are constant. Surface Speed: scale F per move so the cutter contact point holds HorizFeed (mm/min) along the surface — F = HorizFeed × 360 / (2π·r). F varies with radius and is capped by Max Feed.</source>
-      <translation>கருவி கட்டுப்படுத்தியின் HorizFeed எவ்வாறு விளக்கப்படுகிறது. அச்சு மட்டுமே: ஒவ்வொரு வெட்டு நகர்விலும் F=HorizFeed ஐ வெளியிடுங்கள்; கட்டுப்படுத்தியின் சொந்த ஊட்டக் கணிதமானது ரோட்டரி எவ்வாறு இயங்குகிறது என்பதைத் தீர்மானிக்கிறது - G-குறியீட்டில் F மதிப்புகள் நிலையானதாக இருக்கும். மேற்பரப்பு வேகம்: ஒவ்வொரு நகர்வுக்கும் அளவு F ஆக, கட்டர் தொடர்புப் புள்ளியானது மேற்பரப்பில் HorizFeed (மிமீ/நிமிடத்தை) வைத்திருக்கும் — F = HorizFeed × 360 / (2π·r). F ஆனது ஆரத்துடன் மாறுபடும் மற்றும் மேக்ச் ஃபீட் மூலம் மூடப்படும்.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="82"/>
-      <source>Start X</source>
-      <translation>ஃச் ஐ தொடங்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="87"/>
-      <source>Axial start position along the rotary axis (mm). Defines the lower end of the surfaced region.</source>
-      <translation>ரோட்டரி அச்சில் (மிமீ) அச்சு தொடக்க நிலை. மேற்பரப்பு பகுதியின் கீழ் முனையை வரையறுக்கிறது.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="92"/>
-      <source>Stop X</source>
-      <translation>ஃச் நிறுத்து</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="97"/>
-      <source>Axial stop position along the rotary axis (mm). Must be greater than Start X.</source>
-      <translation>ரோட்டரி அச்சில் (மிமீ) அச்சு நிறுத்த நிலை. தொடக்க ஃச் ஐ விட அதிகமாக இருக்க வேண்டும்.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="102"/>
-      <source>Start Angle</source>
-      <translation>தொடக்கக் கோணம்</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="107"/>
-      <source>Angular start position (degrees, unwound). Where the rotary begins; allows partial-revolution surfacing.</source>
-      <translation>கோண தொடக்க நிலை (டிகிரிகள், உடல் இல்லாதது). ரோட்டரி எங்கே தொடங்குகிறது; பகுதி-புரட்சி மேலோட்டத்தை அனுமதிக்கிறது.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="112"/>
-      <source>Stop Angle</source>
-      <translation>ச்டாப் ஆங்கிள்</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="117"/>
-      <source>Angular stop position (degrees, unwound). 360 covers a full revolution; warns at execute if it exceeds the machine&apos;s rotary axis limits.</source>
-      <translation>கோண நிறுத்த நிலை (டிகிரிகள், காயம்). 360 ஒரு முழுப் புரட்சியை உள்ளடக்கியது; இயந்திரத்தின் சுழல் அச்சு வரம்புகளை மீறினால், செயல்படுத்தும்போது எச்சரிக்கிறது.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="122"/>
-      <source>Step Over</source>
-      <translation>படி ஓவர்</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="127"/>
-      <source>Axial advance per full revolution (mm). Spiral: pitch. Rings: distance between rings. Parallel: also drives the angular stepover, derived as StepOver / max_radius.</source>
-      <translation>முழு புரட்சிக்கு அச்சு முன்னேற்றம் (மிமீ). சுழல்: சுருதி. மோதிரங்கள்: மோதிரங்களுக்கு இடையிலான தூரம். இணை: ச்டெப்ஓவர் / மேக்ச்_ரேடியச் என பெறப்பட்ட கோண ச்டெப்ஓவரையும் இயக்குகிறது.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="132"/>
-      <source>Angular Resolution</source>
-      <translation>கோணத் தீர்மானம்</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="137"/>
-      <source>Angular sample density along the cutting direction (degrees). Smaller = smoother surface but more G-code; 5–15° is typical.</source>
-      <translation>வெட்டு திசையில் (டிகிரி) கோண மாதிரி அடர்த்தி. சிறிய = மென்மையான மேற்பரப்பு ஆனால் அதிக G-குறியீடு; 5-15° என்பது பொதுவானது.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="142"/>
-      <source>Radial Stock To Leave</source>
-      <translation>ரேடியல் ச்டாக் வெளியேற வேண்டும்</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="147"/>
-      <source>Radial offset added to the cutter Z so the cutter stays this far above the part surface (mm). Use a small positive value for a finish allowance; 0 cuts directly to the surface.</source>
-      <translation>கட்டர் சட் இல் ரேடியல் ஆஃப்செட் சேர்க்கப்பட்டது, அதனால் கட்டர் பகுதி மேற்பரப்புக்கு (மிமீ) மேலே இருக்கும். பூச்சு கொடுப்பனவுக்கு சிறிய நேர்மறை மதிப்பைப் பயன்படுத்தவும்; 0 நேரடியாக மேற்பரப்பில் வெட்டுகிறது.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="152"/>
-      <source>Max Feed</source>
-      <translation>அதிகபட்ச ஊட்டம்</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="157"/>
-      <source>Upper cap on the effective rotary feed rate emitted in cutting moves (mm/min). Prevents the rotary from being asked to spin arbitrarily fast as the cut approaches the centerline. 0 = unset; falls back to max(HorizRapid, VertRapid, 1000). When Feed Mode = Surface Speed, the surface feed is scaled down so the rotary stays at this cap; clamp events are summarized in the log at end of path.</source>
-      <translation>கட்டிங் நகர்வுகளில் (மிமீ/நிமிடம்) வெளிப்படும் பயனுள்ள ரோட்டரி ஊட்ட விகிதத்தின் மேல் தொப்பி. கட் சென்டர்லைனை நெருங்கும் போது ரோட்டரி தன்னிச்சையாக வேகமாகச் சுழலும்படி கேட்கப்படுவதைத் தடுக்கிறது. 0 = அமைக்கப்படாதது; மீண்டும் அதிகபட்சம் (HorizRapid, VertRapid, 1000). ஊட்டப் பயன்முறை = மேற்பரப்பு விரைவு எனும்போது, ​​மேற்பரப்பு ஊட்டம் குறைக்கப்படும், அதனால் சுழலும் இந்த தொப்பியில் இருக்கும்; கிளாம்ப் நிகழ்வுகள் பாதையின் முடிவில் உள்ள பதிவில் சுருக்கப்பட்டுள்ளன.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="162"/>
-      <source>Restrict to Selected Faces</source>
-      <translation>தேர்ந்தெடுக்கப்பட்ட முகங்களுக்கு வரம்பிடவும்</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="163"/>
-      <source>When checked, restricts the toolpath to the projected (axial, angular) region of the faces selected on the part. When unchecked, the toolpath covers the full Start X…Stop X / Start Angle…Stop Angle window.</source>
-      <translation>சரிபார்க்கும் போது, ​​கருவிப்பாதையில் தேர்ந்தெடுக்கப்பட்ட முகங்களின் திட்டமிடப்பட்ட (அச்சு, கோண) பகுதிக்கு கட்டுப்படுத்துகிறது. தேர்வு செய்யப்படாத போது, ​​கருவிப்பாதை முழு தொடக்க X...Stop ஃச் / தொடங்கு Angle...Stop Angle சாளரத்தை உள்ளடக்கும்.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="122"/>
@@ -1212,120 +1087,38 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>எலிக்ச் நுழைவு கூம்பின் கோணம்</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="35"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="29"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="29"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="35"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="29"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="35"/>
       <location filename="../panels/PageOpDeburrEdit.ui" line="53"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="29"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="35"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="23"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="35"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="35"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="29"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="29"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="35"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="35"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="29"/>
       <source>Tool controller</source>
       <translation>கருவி கட்டுப்படுத்தி</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="59"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="57"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="53"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="59"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="57"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="59"/>
       <location filename="../panels/PageOpDeburrEdit.ui" line="99"/>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="43"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="57"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="57"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="49"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="97"/>
-      <location filename="../panels/PageOpTappingEdit.ui" line="79"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="57"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="43"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="57"/>
       <location filename="../panels/PageOpVcarveEdit.ui" line="57"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="43"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="79"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="49"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="59"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="53"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="57"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="57"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="97"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="59"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="59"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="57"/>
       <source>Edit Tool Controller</source>
       <translation>கருவிக் கட்டுப்படுத்தியைத் திருத்து</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="81"/>
-      <source>Clearing Pattern</source>
-      <translation>க்ளியர் பேட்டர்ன்</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="88"/>
-      <source>Pattern for clearing the face: ZigZag, Bidirectional, Directional, or Spiral</source>
-      <translation>முகத்தை தூய்மை செய்வதற்கான பேட்டர்ன்: சிக்சாக், இருதிசை, திசை அல்லது சுழல்</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="102"/>
-      <source>Climb or Conventional milling direction</source>
-      <translation>ஏறுதல் அல்லது வழக்கமான அரைக்கும் திசை</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="116"/>
-      <source>Rotation angle for angled facing operations</source>
-      <translation>கோணம் எதிர்கொள்ளும் செயல்பாடுகளுக்கான சுழற்சி கோணம்</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="119"/>
-      <source>°</source>
-      <translation>°</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="138"/>
-      <source>Reverse</source>
-      <translation>தலைகீழ்</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="141"/>
-      <source>Reverse the cutting direction for the selected pattern</source>
-      <translation>தேர்ந்தெடுக்கப்பட்ட வடிவத்திற்கான வெட்டு திசையை மாற்றவும்</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="155"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="192"/>
-      <source>The sideways distance* the cutting tool moves between successive passes (*a percentage of the tool&apos;s diameter).</source>
-      <translation>பக்கவாட்டு தூரம்* வெட்டுக் கருவி அடுத்தடுத்த கடவுகளுக்கு இடையே நகர்கிறது (*கருவியின் விட்டத்தின் சதவீதம்).</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="158"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="168"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="195"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="156"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="353"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="382"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="232"/>
-      <source>%</source>
-      <translation>%</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="180"/>
-      <source>Pass Extension</source>
-      <translation>பாச் நீட்டிப்பு</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="187"/>
-      <source>Distance to extend cuts beyond polygon boundary for tool disengagement</source>
-      <translation>கருவி துண்டிக்க பலகோண எல்லைக்கு அப்பால் வெட்டுக்களை நீட்டிப்பதற்கான தூரம்</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="203"/>
-      <source>Stock Extension</source>
-      <translation>பங்கு நீட்டிப்பு</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="210"/>
-      <source>Extends the boundary in both direction</source>
-      <translation>இரு திசைகளிலும் எல்லையை விரிவுபடுத்துகிறது</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="226"/>
-      <source>Stock To Leave (axial)</source>
-      <translation>வெளியேற வேண்டிய பங்கு (அச்சு)</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="233"/>
-      <source>Stock to leave for the operation</source>
-      <translation>ஆபரேசனுக்கு கிளம்ப வேண்டிய ச்டாக்</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="71"/>
@@ -1433,9 +1226,9 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>நிறுத்து</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="89"/>
       <location filename="../panels/PageOpDeburrEdit.ui" line="138"/>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="188"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="89"/>
       <source>Direction</source>
       <translation>திசை</translation>
     </message>
@@ -1531,8 +1324,8 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>பெக்</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="126"/>
       <location filename="../panels/PageOpTappingEdit.ui" line="134"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="126"/>
       <source>Extend depth</source>
       <translation>ஆழத்தை நீட்டவும்</translation>
     </message>
@@ -1562,8 +1355,8 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>சிப் முறிவு</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="166"/>
       <location filename="../panels/PageOpTappingEdit.ui" line="101"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="166"/>
       <source>Dwell</source>
       <translation>வசிக்கவும்</translation>
     </message>
@@ -1573,8 +1366,13 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>படிவம்</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="119"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="23"/>
+      <source>⚠ DEPRECATED: The Tapping operation is deprecated and will be removed in a future release. Please use the Drilling operation with Strategy set to &apos;Tapping&apos; instead. Existing Tapping operations will continue to work but you cannot create new ones.</source>
+      <translation>⚠ நிறுத்தப்பட்டது: தட்டுதல் செயல்பாடு நிராகரிக்கப்பட்டது மற்றும் எதிர்கால வெளியீட்டில் அகற்றப்படும். அதற்குப் பதிலாக &apos;தட்டுதல்&apos; என அமைக்கப்பட்ட வியூகத்துடன் துளையிடல் செயல்பாட்டைப் பயன்படுத்தவும். ஏற்கனவே உள்ள தட்டுதல் செயல்பாடுகள் தொடர்ந்து செயல்படும் ஆனால் புதியவற்றை உங்களால் உருவாக்க முடியாது.</translation>
+    </message>
+    <message>
       <location filename="../panels/PageOpTappingEdit.ui" line="94"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="119"/>
       <source>Time</source>
       <translation>நேரம்</translation>
     </message>
@@ -1595,18 +1393,13 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;இந்தச் செயல்பாட்டிற்குப் பயன்படுத்த வேண்டிய கருவியும் அதன் அமைப்புகளும்.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="23"/>
-      <source>⚠ DEPRECATED: The Tapping operation is deprecated and will be removed in a future release. Please use the Drilling operation with Strategy set to &apos;Tapping&apos; instead. Existing Tapping operations will continue to work but you cannot create new ones.</source>
-      <translation>⚠ நிறுத்தப்பட்டது: தட்டுதல் செயல்பாடு நிராகரிக்கப்பட்டது மற்றும் எதிர்கால வெளியீட்டில் அகற்றப்படும். அதற்குப் பதிலாக &apos;தட்டுதல்&apos; என அமைக்கப்பட்ட வியூகத்துடன் துளையிடல் செயல்பாட்டைப் பயன்படுத்தவும். ஏற்கனவே உள்ள தட்டுதல் செயல்பாடுகள் தொடர்ந்து செயல்படும் ஆனால் புதியவற்றை உங்களால் உருவாக்க முடியாது.</translation>
-    </message>
-    <message>
       <location filename="../panels/PageOpTappingEdit.ui" line="65"/>
       <source>ToolController</source>
       <translation>கருவிக் கட்டுப்படுத்தி</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="141"/>
       <location filename="../panels/PageOpTappingEdit.ui" line="109"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="141"/>
       <source>None</source>
       <translation>எதுவுமில்லை</translation>
     </message>
@@ -1774,21 +1567,21 @@ The latter can be used to face of the entire stock area to ensure uniform height
 பிந்தையது பின்வரும் செயல்பாடுகளுக்கு ஒரே மாதிரியான உயரத்தை உறுதி செய்வதற்காக முழு பங்கு பகுதியையும் எதிர்கொள்ள பயன்படுத்தப்படலாம்.</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="95"/>
       <location filename="../panels/PageOpMillFacingEdit.ui" line="95"/>
       <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="52"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="95"/>
       <source>Cut Mode</source>
       <translation>வெட்டு முறை</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="105"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="106"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="105"/>
       <source>Climb</source>
       <translation>ஏறுங்கள்</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="110"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="111"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="110"/>
       <source>Conventional</source>
       <translation>வழக்கமான</translation>
     </message>
@@ -1798,40 +1591,40 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>முறை</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="36"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="50"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="36"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="42"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="36"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="50"/>
       <location filename="../panels/PageOpDeburrEdit.ui" line="60"/>
       <location filename="../panels/PageOpDeburrEdit.ui" line="92"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="36"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="50"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="36"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="50"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="42"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="66"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="80"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="36"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="50"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="36"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="50"/>
       <location filename="../panels/PageOpVcarveEdit.ui" line="36"/>
       <location filename="../panels/PageOpVcarveEdit.ui" line="50"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="42"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="36"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="36"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="50"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="36"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="50"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="66"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="80"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="42"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="36"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="50"/>
       <source>The tool and its settings to be used for this operation</source>
       <translation>இந்தச் செயல்பாட்டிற்குப் பயன்படுத்த வேண்டிய கருவி மற்றும் அதன் அமைப்புகள்</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="52"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="43"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="46"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="49"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="43"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="52"/>
       <location filename="../panels/PageOpDeburrEdit.ui" line="85"/>
       <location filename="../panels/SetupGlobal.ui" line="261"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="73"/>
       <location filename="../panels/PageOpTappingEdit.ui" line="58"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="52"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="46"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="43"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="43"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="73"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="52"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="49"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="43"/>
       <source>Coolant mode</source>
       <translation>குளிரூட்டும் முறை</translation>
     </message>
@@ -1876,8 +1669,8 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>முக்கோணம்</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="109"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="171"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="109"/>
       <source>Angle</source>
       <translation>கோணம்</translation>
     </message>
@@ -1885,6 +1678,29 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpPocketFullEdit.ui" line="178"/>
       <source>Angle in which the pattern is applied</source>
       <translation>முறை பயன்படுத்தப்படும் கோணம்</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="192"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="155"/>
+      <source>The sideways distance* the cutting tool moves between successive passes (*a percentage of the tool&apos;s diameter).</source>
+      <translation>பக்கவாட்டு தூரம்* வெட்டுக் கருவி அடுத்தடுத்த கடவுகளுக்கு இடையே நகர்கிறது (*கருவியின் விட்டத்தின் சதவீதம்).</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="195"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="168"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="156"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="353"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="382"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="158"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="232"/>
+      <source>%</source>
+      <translation>%</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="278"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="221"/>
+      <source>Set picked point as start point</source>
+      <translation>தேர்ந்தெடுக்கப்பட்ட புள்ளியை தொடக்கப் புள்ளியாக அமைக்கவும்</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="214"/>
@@ -1912,9 +1728,9 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>இந்தச் செயல்பாடு ஒரு தொடக்கப் புள்ளியைப் பயன்படுத்துகிறதா என்பதைக் குறிப்பிடவும்</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="214"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="271"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="271"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="214"/>
       <source>Use start point</source>
       <translation>தொடக்க புள்ளியைப் பயன்படுத்தவும்</translation>
     </message>
@@ -1986,8 +1802,8 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>பிளாச்ஓல்டர்</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="96"/>
       <location filename="../panels/PageOpDeburrEdit.ui" line="145"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="96"/>
       <source>The direction in which the profile is performed, clockwise or counterclockwise</source>
       <translation>சுயவிவரம் செய்யப்படும் திசை, கடிகார திசையில் அல்லது எதிரெதிர் திசையில்</translation>
     </message>
@@ -2030,12 +1846,6 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpProfileFullEdit.ui" line="211"/>
       <source>Check if this operation should use a starting point</source>
       <translation>இந்தச் செயல்பாடு ஒரு தொடக்கப் புள்ளியைப் பயன்படுத்த வேண்டுமா எனச் சரிபார்க்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="221"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="278"/>
-      <source>Set picked point as start point</source>
-      <translation>தேர்ந்தெடுக்கப்பட்ட புள்ளியை தொடக்கப் புள்ளியாக அமைக்கவும்</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="171"/>
@@ -2098,6 +1908,71 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSlotEdit.ui" line="42"/>
       <source> The tool and its settings to be used for this operation</source>
       <translation>இந்தச் செயல்பாட்டிற்குப் பயன்படுத்த வேண்டிய கருவி மற்றும் அதன் அமைப்புகள்</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="81"/>
+      <source>Clearing Pattern</source>
+      <translation>க்ளியர் பேட்டர்ன்</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="88"/>
+      <source>Pattern for clearing the face: ZigZag, Bidirectional, Directional, or Spiral</source>
+      <translation>முகத்தை தூய்மை செய்வதற்கான பேட்டர்ன்: சிக்சாக், இருதிசை, திசை அல்லது சுழல்</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="102"/>
+      <source>Climb or Conventional milling direction</source>
+      <translation>ஏறுதல் அல்லது வழக்கமான அரைக்கும் திசை</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="116"/>
+      <source>Rotation angle for angled facing operations</source>
+      <translation>கோணம் எதிர்கொள்ளும் செயல்பாடுகளுக்கான சுழற்சி கோணம்</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="119"/>
+      <source>°</source>
+      <translation>°</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="138"/>
+      <source>Reverse</source>
+      <translation>தலைகீழ்</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="141"/>
+      <source>Reverse the cutting direction for the selected pattern</source>
+      <translation>தேர்ந்தெடுக்கப்பட்ட வடிவத்திற்கான வெட்டு திசையை மாற்றவும்</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="180"/>
+      <source>Pass Extension</source>
+      <translation>பாச் நீட்டிப்பு</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="187"/>
+      <source>Distance to extend cuts beyond polygon boundary for tool disengagement</source>
+      <translation>கருவி துண்டிக்க பலகோண எல்லைக்கு அப்பால் வெட்டுக்களை நீட்டிப்பதற்கான தூரம்</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="203"/>
+      <source>Stock Extension</source>
+      <translation>பங்கு நீட்டிப்பு</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="210"/>
+      <source>Extends the boundary in both direction</source>
+      <translation>இரு திசைகளிலும் எல்லையை விரிவுபடுத்துகிறது</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="226"/>
+      <source>Stock To Leave (axial)</source>
+      <translation>வெளியேற வேண்டிய பங்கு (அச்சு)</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="233"/>
+      <source>Stock to leave for the operation</source>
+      <translation>ஆபரேசனுக்கு கிளம்ப வேண்டிய ச்டாக்</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="78"/>
@@ -2185,8 +2060,8 @@ The latter can be used to face of the entire stock area to ensure uniform height
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="105"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="352"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="98"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="352"/>
       <source>Layer mode</source>
       <translation>அடுக்கு முறை</translation>
     </message>
@@ -2395,10 +2270,10 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>எல்லை சரிசெய்தல்</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="185"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="158"/>
       <location filename="../panels/PageOpMillFacingEdit.ui" line="148"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="166"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="158"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="185"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="222"/>
       <source>Step over</source>
       <translation>மேலே படி</translation>
@@ -2471,8 +2346,8 @@ Default: OpToolDiameter</source>
       <translation>ஆஃப்செட்</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="62"/>
       <location filename="../panels/SetupGlobal.ui" line="113"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="62"/>
       <source>Clearance</source>
       <translation>இசைவு</translation>
     </message>
@@ -2826,6 +2701,131 @@ If the radius is bigger than that which the tag shape itself supports, the resul
       <location filename="../panels/PageOpEngraveEdit.ui" line="77"/>
       <source>Specify the vertex number of the underlying shape string at which engraving should start</source>
       <translation>வேலைப்பாடு தொடங்க வேண்டிய அடிப்படை வடிவ சரத்தின் உச்சி எண்ணைக் குறிப்பிடவும்</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="29"/>
+      <source>Tool controller that supplies the cutter geometry, feed and speed for this operation.</source>
+      <translation>இந்த செயல்பாட்டிற்கான கட்டர் வடிவியல், ஊட்டம் மற்றும் வேகத்தை வழங்கும் கருவி கட்டுப்படுத்தி.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="39"/>
+      <source>Coolant mode emitted at the start of the operation.</source>
+      <translation>செயல்பாட்டின் தொடக்கத்தில் குளிரூட்டும் முறை வெளியிடப்பட்டது.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="57"/>
+      <source>Climb: rotary advances in the positive direction. Conventional: rotary advances in the negative direction. Affects the sign of A in cutting moves; pick to match how the cutter engages the material on your machine.</source>
+      <translation>ஏறுதல்: நேர்மறை திசையில் சுழலும் முன்னேற்றங்கள். வழக்கமான: எதிர்மறை திசையில் சுழலும் முன்னேற்றங்கள். வெட்டு நகர்வுகளில் A இன் அடையாளத்தை பாதிக்கிறது; உங்கள் கணினியில் உள்ள பொருளை கட்டர் எவ்வாறு ஈடுபடுத்துகிறது என்பதை பொருத்த தேர்வு செய்யவும்.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="62"/>
+      <source>Cut Pattern</source>
+      <translation>வெட்டு முறை</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="67"/>
+      <source>Spiral: continuous helical sweep — fastest, best surface continuity. Parallel: axial zig-zag passes stepped over angularly. Rings: full-revolution rings stepped axially. All three produce continuous 4-axis XYZA motion.</source>
+      <translation>சுழல்: தொடர்ச்சியான எலிகல் ச்வீப் — வேகமான, சிறந்த மேற்பரப்பு தொடர்ச்சி. இணையாக: அச்சு சிக்-சாக் கடவுகள் கோணத்தில் படிகள். மோதிரங்கள்: முழு-புரட்சி வளையங்கள் அச்சில் அடியெடுத்து வைத்தன. மூன்றுமே தொடர்ச்சியான 4-அச்சு XYZA இயக்கத்தை உருவாக்குகின்றன.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="72"/>
+      <source>Feed Mode</source>
+      <translation>ஊட்ட முறை</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="77"/>
+      <source>How the tool controller&apos;s HorizFeed is interpreted. Axial Only: emit F=HorizFeed on every cut move; the controller&apos;s own feed math determines how the rotary keeps up — F values in the G-code are constant. Surface Speed: scale F per move so the cutter contact point holds HorizFeed (mm/min) along the surface — F = HorizFeed × 360 / (2π·r). F varies with radius and is capped by Max Feed.</source>
+      <translation>கருவி கட்டுப்படுத்தியின் HorizFeed எவ்வாறு விளக்கப்படுகிறது. அச்சு மட்டுமே: ஒவ்வொரு வெட்டு நகர்விலும் F=HorizFeed ஐ வெளியிடுங்கள்; கட்டுப்படுத்தியின் சொந்த ஊட்டக் கணிதமானது ரோட்டரி எவ்வாறு இயங்குகிறது என்பதைத் தீர்மானிக்கிறது - G-குறியீட்டில் F மதிப்புகள் நிலையானதாக இருக்கும். மேற்பரப்பு வேகம்: ஒவ்வொரு நகர்வுக்கும் அளவு F ஆக, கட்டர் தொடர்புப் புள்ளியானது மேற்பரப்பில் HorizFeed (மிமீ/நிமிடத்தை) வைத்திருக்கும் — F = HorizFeed × 360 / (2π·r). F ஆனது ஆரத்துடன் மாறுபடும் மற்றும் மேக்ச் ஃபீட் மூலம் மூடப்படும்.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="82"/>
+      <source>Start X</source>
+      <translation>ஃச் ஐ தொடங்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="87"/>
+      <source>Axial start position along the rotary axis (mm). Defines the lower end of the surfaced region.</source>
+      <translation>ரோட்டரி அச்சில் (மிமீ) அச்சு தொடக்க நிலை. மேற்பரப்பு பகுதியின் கீழ் முனையை வரையறுக்கிறது.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="92"/>
+      <source>Stop X</source>
+      <translation>ஃச் நிறுத்து</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="97"/>
+      <source>Axial stop position along the rotary axis (mm). Must be greater than Start X.</source>
+      <translation>ரோட்டரி அச்சில் (மிமீ) அச்சு நிறுத்த நிலை. தொடக்க ஃச் ஐ விட அதிகமாக இருக்க வேண்டும்.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="102"/>
+      <source>Start Angle</source>
+      <translation>தொடக்கக் கோணம்</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="107"/>
+      <source>Angular start position (degrees, unwound). Where the rotary begins; allows partial-revolution surfacing.</source>
+      <translation>கோண தொடக்க நிலை (டிகிரிகள், உடல் இல்லாதது). ரோட்டரி எங்கே தொடங்குகிறது; பகுதி-புரட்சி மேலோட்டத்தை அனுமதிக்கிறது.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="112"/>
+      <source>Stop Angle</source>
+      <translation>ச்டாப் ஆங்கிள்</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="117"/>
+      <source>Angular stop position (degrees, unwound). 360 covers a full revolution; warns at execute if it exceeds the machine&apos;s rotary axis limits.</source>
+      <translation>கோண நிறுத்த நிலை (டிகிரிகள், காயம்). 360 ஒரு முழுப் புரட்சியை உள்ளடக்கியது; இயந்திரத்தின் சுழல் அச்சு வரம்புகளை மீறினால், செயல்படுத்தும்போது எச்சரிக்கிறது.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="122"/>
+      <source>Step Over</source>
+      <translation>படி ஓவர்</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="127"/>
+      <source>Axial advance per full revolution (mm). Spiral: pitch. Rings: distance between rings. Parallel: also drives the angular stepover, derived as StepOver / max_radius.</source>
+      <translation>முழு புரட்சிக்கு அச்சு முன்னேற்றம் (மிமீ). சுழல்: சுருதி. மோதிரங்கள்: மோதிரங்களுக்கு இடையிலான தூரம். இணை: ச்டெப்ஓவர் / மேக்ச்_ரேடியச் என பெறப்பட்ட கோண ச்டெப்ஓவரையும் இயக்குகிறது.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="132"/>
+      <source>Angular Resolution</source>
+      <translation>கோணத் தீர்மானம்</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="137"/>
+      <source>Angular sample density along the cutting direction (degrees). Smaller = smoother surface but more G-code; 5–15° is typical.</source>
+      <translation>வெட்டு திசையில் (டிகிரி) கோண மாதிரி அடர்த்தி. சிறிய = மென்மையான மேற்பரப்பு ஆனால் அதிக G-குறியீடு; 5-15° என்பது பொதுவானது.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="142"/>
+      <source>Radial Stock To Leave</source>
+      <translation>ரேடியல் ச்டாக் வெளியேற வேண்டும்</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="147"/>
+      <source>Radial offset added to the cutter Z so the cutter stays this far above the part surface (mm). Use a small positive value for a finish allowance; 0 cuts directly to the surface.</source>
+      <translation>கட்டர் சட் இல் ரேடியல் ஆஃப்செட் சேர்க்கப்பட்டது, அதனால் கட்டர் பகுதி மேற்பரப்புக்கு (மிமீ) மேலே இருக்கும். பூச்சு கொடுப்பனவுக்கு சிறிய நேர்மறை மதிப்பைப் பயன்படுத்தவும்; 0 நேரடியாக மேற்பரப்பில் வெட்டுகிறது.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="152"/>
+      <source>Max Feed</source>
+      <translation>அதிகபட்ச ஊட்டம்</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="157"/>
+      <source>Upper cap on the effective rotary feed rate emitted in cutting moves (mm/min). Prevents the rotary from being asked to spin arbitrarily fast as the cut approaches the centerline. 0 = unset; falls back to max(HorizRapid, VertRapid, 1000). When Feed Mode = Surface Speed, the surface feed is scaled down so the rotary stays at this cap; clamp events are summarized in the log at end of path.</source>
+      <translation>கட்டிங் நகர்வுகளில் (மிமீ/நிமிடம்) வெளிப்படும் பயனுள்ள ரோட்டரி ஊட்ட விகிதத்தின் மேல் தொப்பி. கட் சென்டர்லைனை நெருங்கும் போது ரோட்டரி தன்னிச்சையாக வேகமாகச் சுழலும்படி கேட்கப்படுவதைத் தடுக்கிறது. 0 = அமைக்கப்படாதது; மீண்டும் அதிகபட்சம் (HorizRapid, VertRapid, 1000). ஊட்டப் பயன்முறை = மேற்பரப்பு விரைவு எனும்போது, ​​மேற்பரப்பு ஊட்டம் குறைக்கப்படும், அதனால் சுழலும் இந்த தொப்பியில் இருக்கும்; கிளாம்ப் நிகழ்வுகள் பாதையின் முடிவில் உள்ள பதிவில் சுருக்கப்பட்டுள்ளன.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="162"/>
+      <source>Restrict to Selected Faces</source>
+      <translation>தேர்ந்தெடுக்கப்பட்ட முகங்களுக்கு வரம்பிடவும்</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="163"/>
+      <source>When checked, restricts the toolpath to the projected (axial, angular) region of the faces selected on the part. When unchecked, the toolpath covers the full Start X…Stop X / Start Angle…Stop Angle window.</source>
+      <translation>சரிபார்க்கும் போது, ​​கருவிப்பாதையில் தேர்ந்தெடுக்கப்பட்ட முகங்களின் திட்டமிடப்பட்ட (அச்சு, கோண) பகுதிக்கு கட்டுப்படுத்துகிறது. தேர்வு செய்யப்படாத போது, ​​கருவிப்பாதை முழு தொடக்க X...Stop ஃச் / தொடங்கு Angle...Stop Angle சாளரத்தை உள்ளடக்கும்.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="72"/>
@@ -3749,39 +3749,29 @@ See the file save policy below on how to deal with name conflicts.</source>
   <context>
     <name>TaskPathSimulator</name>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="14"/>
-      <location filename="../panels/TaskPathCamoticsSim.ui" line="14"/>
       <location filename="../panels/TaskPathSimulator.ui" line="14"/>
+      <location filename="../panels/TaskPathCamoticsSim.ui" line="14"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="14"/>
       <source>Path Simulator</source>
       <translation>பாதை சிமுலேட்டர்</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="31"/>
       <location filename="../panels/TaskPathSimulator.ui" line="229"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="31"/>
       <source>Accuracy</source>
       <translation>துல்லியம்</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="86"/>
       <location filename="../panels/TaskPathSimulator.ui" line="278"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="86"/>
       <source>Job</source>
       <translation>பணி</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="103"/>
       <location filename="../panels/TaskPathSimulator.ui" line="55"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="103"/>
       <source>Activate/resume simulation</source>
       <translation>உருவகப்படுத்துதலைச் செயல்படுத்தவும்/தொடக்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="127"/>
-      <source>Set default state in accordance with operations visibility</source>
-      <translation>செயல்பாடுகளின் தெரிவுநிலைக்கு ஏற்ப இயல்புநிலையை அமைக்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="130"/>
-      <source>Follow operations visibility</source>
-      <translation>செயல்பாடுகளின் தெரிவுநிலையைப் பின்பற்றவும்</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="35"/>
@@ -3794,8 +3784,8 @@ See the file save policy below on how to deal with name conflicts.</source>
       <translation>நிறுத்து</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="106"/>
       <location filename="../panels/TaskPathSimulator.ui" line="58"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="106"/>
       <source>Play</source>
       <translation>இயக்கு</translation>
     </message>
@@ -3858,6 +3848,16 @@ See the file save policy below on how to deal with name conflicts.</source>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="75"/>
       <source>New CAMotics File</source>
       <translation>புதிய CAMotics கோப்பு</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskCAMSimulator.ui" line="127"/>
+      <source>Set default state in accordance with operations visibility</source>
+      <translation>செயல்பாடுகளின் தெரிவுநிலைக்கு ஏற்ப இயல்புநிலையை அமைக்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskCAMSimulator.ui" line="130"/>
+      <source>Follow operations visibility</source>
+      <translation>செயல்பாடுகளின் தெரிவுநிலையைப் பின்பற்றவும்</translation>
     </message>
   </context>
   <context>
@@ -4651,17 +4651,17 @@ Default: 3 mm</source>
       <translation>ச்பின்டில் ஆர்பிஎம்</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="698"/>
+      <location filename="../../../Path/Op/Util.py" line="703"/>
       <source>Selected tool is not a drill</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட கருவி ஒரு பயிற்சி அல்ல</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="705"/>
+      <location filename="../../../Path/Op/Util.py" line="710"/>
       <source>Invalid Cutting Edge Angle %.2f, must be &gt;0° and &lt;=180°</source>
       <translation>தவறான கட்டிங் எட்ச் கோணம் %.2f, கண்டிப்பாக &gt;0° மற்றும் &lt;=180° ஆக இருக்க வேண்டும்</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="715"/>
+      <location filename="../../../Path/Op/Util.py" line="720"/>
       <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
       <translation>கட்டிங் எட்ச் ஆங்கிள் (%.2f) எதிர்மறையான கருவி முனை நீளத்தை விளைவிக்கும்</translation>
     </message>
@@ -4689,37 +4689,37 @@ Default: 3 mm</source>
   <context>
     <name>PathGeom</name>
     <message>
-      <location filename="../../../Path/Geom.py" line="185"/>
+      <location filename="../../../Path/Geom.py" line="192"/>
       <source>face %s not handled, assuming not vertical</source>
       <translation>முகம் %s கையாளப்படவில்லை, செங்குத்தாக இல்லை எனக் கருதப்படுகிறது</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="200"/>
+      <location filename="../../../Path/Geom.py" line="207"/>
       <source>edge %s not handled, assuming not vertical</source>
       <translation>விளிம்பு %s கையாளப்படவில்லை, செங்குத்தாக இல்லை எனக் கருதுகிறது</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="204"/>
+      <location filename="../../../Path/Geom.py" line="211"/>
       <source>isVertical(%s) not supported</source>
       <translation>isVertical(%s) ஆதரிக்கப்படவில்லை</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="234"/>
+      <location filename="../../../Path/Geom.py" line="241"/>
       <source>isHorizontal(%s) not supported</source>
       <translation>கிடைமட்டமானது(%is) ஆதரிக்கப்படவில்லை</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="740"/>
+      <location filename="../../../Path/Geom.py" line="747"/>
       <source>%s not supported for flipping</source>
       <translation>புரட்டுவதற்கு %s ஆதரிக்கப்படவில்லை</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="797"/>
+      <location filename="../../../Path/Geom.py" line="804"/>
       <source>Zero working area to process. Check your selection and settings.</source>
       <translation>செயலாக்க சுழிய வேலை பகுதி. உங்கள் தேர்வு மற்றும் அமைப்புகளைச் சரிபார்க்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="867"/>
+      <location filename="../../../Path/Geom.py" line="874"/>
       <source>Can not restore order of faces.</source>
       <translation>முகங்களின் வரிசையை மீட்டெடுக்க முடியாது.</translation>
     </message>
@@ -4735,7 +4735,6 @@ Default: 3 mm</source>
     <message>
       <location filename="../../../Path/Base/SetupSheet.py" line="126"/>
       <source>Default speed for horizontal rapid moves.</source>
-      <extracomment>float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=None) bool = field(default=False) str = field(default=&quot;G54&quot;) str = field(default=&quot;off&quot;) str = Z|R for G98/G99, for drill cycles float = field(default=None) int = field(default=0) int = field(default=None)</extracomment>
       <translation>கிடைமட்ட விரைவான நகர்வுகளுக்கான இயல்புநிலை விரைவு.</translation>
     </message>
     <message>
@@ -4797,8 +4796,8 @@ Default: 3 mm</source>
       <translation>புதிய செயல்பாடுகளுக்கான இயல்புநிலை மோதல் தவிர்ப்பு உத்தி.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Boundary.py" line="63"/>
       <location filename="../../../Path/Dressup/Tags.py" line="936"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="63"/>
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="57"/>
       <source>The base path to modify</source>
       <translation>மாற்றுவதற்கான அடிப்படை பாதை</translation>
@@ -4928,8 +4927,8 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
       <location filename="../../../Path/Dressup/Array.py" line="43"/>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="60"/>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="61"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="49"/>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="77"/>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="169"/>
       <source>The base toolpath to modify</source>
       <translation>மாற்றுவதற்கான அடிப்படை கருவிப்பாதை</translation>
     </message>
@@ -5047,24 +5046,36 @@ Only for styles: Arc, Line, Perpendicular and Tangent</source>
       <translation>G0 உடன் plunges செய்யவும்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="175"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="55"/>
       <source>Angle of ramp</source>
       <translation>சாய்வின் கோணம்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="181"/>
-      <source>Ramping Method</source>
-      <translation>ரேம்பிங் முறை</translation>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="71"/>
+      <source>Select ramping method.
+
+Ramp Method 0: Helix like path.
+Ramp Method 1: Ramp down at rampangle along the path and move backwards to the original plunge end point.
+Ramp Method 2: Travel at start depth along the path and Ramp backwards at rampangle along the path to the original plunge end point.
+Ramp Method 3: Ramp down along the path until traveled half of the Z distance, change direction and ramp backwards to the original plunge end point.</source>
+      <translation type="unfinished">Select ramping method.
+
+Ramp Method 0: Helix like path.
+Ramp Method 1: Ramp down at rampangle along the path and move backwards to the original plunge end point.
+Ramp Method 2: Travel at start depth along the path and Ramp backwards at rampangle along the path to the original plunge end point.
+Ramp Method 3: Ramp down along the path until traveled half of the Z distance, change direction and ramp backwards to the original plunge end point.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="190"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="91"/>
+      <source>The depth where the ramp dressup is enabled.
+Above this depth ramps are not generated, but motion commands are passed through as is.</source>
+      <translation type="unfinished">The depth where the ramp dressup is enabled.
+Above this depth ramps are not generated, but motion commands are passed through as is.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="80"/>
       <source>Should the dressup ignore motion commands above DressupStartDepth</source>
       <translation>DressupStartDepthக்கு மேலே உள்ள இயக்க கட்டளைகளை dressup புறக்கணிக்க வேண்டுமா</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="199"/>
-      <source>The depth where the ramp dressup is enabled. Above this ramps are not generated, but motion commands are passed through as is.</source>
-      <translation>வளைவு டிரச்அப் இயக்கப்பட்டிருக்கும் ஆழம். இதற்கு மேலே வளைவுகள் உருவாக்கப்படவில்லை, ஆனால் இயக்க கட்டளைகள் அப்படியே அனுப்பப்படுகின்றன.</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="67"/>
@@ -5082,112 +5093,112 @@ Only for styles: Arc, Line, Perpendicular and Tangent</source>
       <translation>பகுதிகளை இந்த நீளத்தின் சிறிய பகுதிகளாக உடைக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="121"/>
+      <location filename="../../../Path/Main/Job.py" line="122"/>
       <source>The G-code output file for this project</source>
       <translation>இந்த திட்டத்திற்கான G-குறியீடு வெளியீட்டு கோப்பு</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="127"/>
+      <location filename="../../../Path/Main/Job.py" line="128"/>
       <source>Select the Post Processor</source>
       <translation>போச்ட் செயலியைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="136"/>
+      <location filename="../../../Path/Main/Job.py" line="137"/>
       <source>Arguments for the Post Processor (specific to the script)</source>
       <translation>போச்ட் ப்ராசசருக்கான வாதங்கள் (ச்கிரிப்ட் குறிப்பிட்டது)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="142"/>
-      <location filename="../../../Path/Main/Job.py" line="149"/>
+      <location filename="../../../Path/Main/Job.py" line="143"/>
+      <location filename="../../../Path/Main/Job.py" line="150"/>
       <source>Last Time the Job was post processed</source>
       <translation>கடந்த முறை வேலை இடுகை செயலாக்கப்பட்டது</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="157"/>
+      <location filename="../../../Path/Main/Job.py" line="158"/>
       <source>An optional description for this job</source>
       <translation>இந்த வேலைக்கான விருப்ப விளக்கம்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="163"/>
+      <location filename="../../../Path/Main/Job.py" line="164"/>
       <source>Job Cycle Time Estimation</source>
       <translation>வேலை சுழற்சி நேர மதிப்பீடு</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="173"/>
+      <location filename="../../../Path/Main/Job.py" line="174"/>
       <source>For computing Paths; smaller increases accuracy, but slows down computation</source>
       <translation>கணிப்பொறி பாதைகளுக்கு; சிறியது துல்லியத்தை அதிகரிக்கிறது, ஆனால் கணக்கீட்டைக் குறைக்கிறது</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="180"/>
+      <location filename="../../../Path/Main/Job.py" line="181"/>
       <source>Solid object to be used as stock.</source>
       <translation>ச்டாக்காக பயன்படுத்தப்படும் திடமான பொருள்.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="189"/>
+      <location filename="../../../Path/Main/Job.py" line="190"/>
       <source>Compound path of all operations in the order they are processed.</source>
       <translation>அவை செயலாக்கப்படும் வரிசையில் அனைத்து செயல்பாடுகளின் கலவை பாதை.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="196"/>
+      <location filename="../../../Path/Main/Job.py" line="197"/>
       <source>Select the Type of Job</source>
       <translation>வேலை வகையைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="204"/>
-      <location filename="../../../Path/Main/Job.py" line="569"/>
+      <location filename="../../../Path/Main/Job.py" line="205"/>
+      <location filename="../../../Path/Main/Job.py" line="570"/>
       <source>Split output into multiple G-code files</source>
       <translation>பல G-குறியீடு கோப்புகளாக வெளியீட்டைப் பிரிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="210"/>
-      <location filename="../../../Path/Main/Job.py" line="560"/>
+      <location filename="../../../Path/Main/Job.py" line="211"/>
+      <location filename="../../../Path/Main/Job.py" line="561"/>
       <source>If multiple WCS, order the output this way</source>
       <translation>பல WCS இருந்தால், வெளியீட்டை இந்த வழியில் ஆர்டர் செய்யவும்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="216"/>
-      <location filename="../../../Path/Main/Job.py" line="551"/>
+      <location filename="../../../Path/Main/Job.py" line="217"/>
+      <location filename="../../../Path/Main/Job.py" line="552"/>
       <source>The Work Coordinate Systems for the Job</source>
       <translation>வேலைக்கான வேலை ஒருங்கிணைப்பு அமைப்புகள்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="222"/>
-      <location filename="../../../Path/Main/Job.py" line="500"/>
-      <location filename="../../../Path/Main/Job.py" line="509"/>
-      <location filename="../../../Path/Main/Job.py" line="587"/>
+      <location filename="../../../Path/Main/Job.py" line="223"/>
+      <location filename="../../../Path/Main/Job.py" line="501"/>
+      <location filename="../../../Path/Main/Job.py" line="510"/>
+      <location filename="../../../Path/Main/Job.py" line="588"/>
       <source>The Machine for the Job</source>
       <translation>வேலைக்கான இயந்திரம்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="231"/>
-      <location filename="../../../Path/Main/Job.py" line="597"/>
+      <location filename="../../../Path/Main/Job.py" line="232"/>
+      <location filename="../../../Path/Main/Job.py" line="598"/>
       <source>JSON dict of postprocessor properties that override machine defaults for this job</source>
       <translation>இந்த வேலைக்கான இயந்திர இயல்புநிலைகளை மீறும் பிந்தைய செயலி பண்புகளின் சாதொபொகு கட்டளை</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="325"/>
+      <location filename="../../../Path/Main/Job.py" line="326"/>
       <source>SetupSheet holding the settings for this job</source>
       <translation>SetupSheet இந்த வேலைக்கான அமைப்புகளை வைத்திருக்கும்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="344"/>
+      <location filename="../../../Path/Main/Job.py" line="345"/>
       <source>The base objects for all operations</source>
       <translation>அனைத்து செயல்பாடுகளுக்கும் அடிப்படை பொருள்கள்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="374"/>
+      <location filename="../../../Path/Main/Job.py" line="375"/>
       <source>Collection of all tool controllers for the job</source>
       <translation>வேலைக்கான அனைத்து கருவி கட்டுப்படுத்திகளின் சேகரிப்பு</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="297"/>
-      <location filename="../../../Path/Op/Base.py" line="570"/>
-      <location filename="../../../Path/Main/Job.py" line="542"/>
+      <location filename="../../../Path/Op/Base.py" line="296"/>
+      <location filename="../../../Path/Op/Base.py" line="569"/>
+      <location filename="../../../Path/Main/Job.py" line="543"/>
       <source>Operations Cycle Time Estimation</source>
       <translation>செயல்பாடுகள் சுழற்சி நேர மதிப்பீடு</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="578"/>
+      <location filename="../../../Path/Main/Job.py" line="579"/>
       <source>Select the type of Job</source>
       <translation>வேலை வகையைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
@@ -5262,7 +5273,7 @@ Only for styles: Arc, Line, Perpendicular and Tangent</source>
       <translation>ஃபிக்சர் ஆஃப்செட் எண்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="271"/>
+      <location filename="../../../Path/Op/Base.py" line="270"/>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="57"/>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="64"/>
       <source>Make False, to prevent operation from generating code</source>
@@ -5279,506 +5290,23 @@ Only for styles: Arc, Line, Perpendicular and Tangent</source>
       <translation>தழுவல் செயல்பாட்டின் வகை</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1574"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1958"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="159"/>
-      <location filename="../../../Path/Op/Helix.py" line="164"/>
-      <source>Percent of cutter diameter to step over on each pass</source>
-      <translation>ஒவ்வொரு பாசிலும் அடியெடுத்து வைக்க கட்டர் விட்டத்தின் விழுக்காடு</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1583"/>
-      <source>Lift distance for rapid moves</source>
-      <translation>விரைவான நகர்வுகளுக்கு தூரத்தை உயர்த்தவும்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1592"/>
-      <source>Max length of keep tool down path compared to direct distance between points</source>
-      <translation>புள்ளிகளுக்கு இடையே உள்ள நேரடி தூரத்துடன் ஒப்பிடும்போது கீப் டூல் பேரூர் பாத்தின் அதிகபட்ச நீளம்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1565"/>
-      <source>Influences calculation performance vs stability and accuracy.
-
-Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</source>
-      <translation>கணக்கீட்டு செயல்திறன் எதிராக நிலைத்தன்மை மற்றும் துல்லியத்தை பாதிக்கிறது. 
-
-பெரிய மதிப்புகள் (மேலும் வலதுபுறம்) வேகமாக கணக்கிடும்; சிறிய மதிப்புகள் (மேலும் இடதுபுறம்) மிகவும் துல்லியமான கருவிப்பாதைகளை ஏற்படுத்தும்.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1601"/>
-      <source>How much stock to leave in the XY plane (eg for finishing operation)</source>
-      <translation>XY விமானத்தில் எவ்வளவு இருப்பு வைக்க வேண்டும் (எ.கா. செயல்பாட்டை முடிக்க)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1610"/>
-      <source>How much stock to leave along the Z axis (eg for finishing operation). This property is only used if the ModelAwareExperiment is enabled.</source>
-      <translation>சட் அச்சில் எவ்வளவு இருப்பு வைக்க வேண்டும் (எ.கா. செயல்பாட்டை முடிக்க). ModelAwareExperiment இயக்கப்பட்டிருந்தால் மட்டுமே இந்த சொத்து பயன்படுத்தப்படும்.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1675"/>
-      <source>The maximum allowable helix ramp entry angle (degrees)
-Set to zero to disable limitation by ramp angle</source>
-      <translation>அதிகபட்ச அனுமதிக்கக்கூடிய எலிக்ச் வளைவு நுழைவு கோணம் (டிகிரிகள்) 
-சாய்வு கோணம் மூலம் வரம்பை முடக்க பூச்சியமாக அமைக்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1685"/>
-      <location filename="../../../Path/Op/Helix.py" line="288"/>
-      <location filename="../../../Path/Op/Helix.py" line="509"/>
-      <source>The maximum allowable descent in a single revolution of the helix
-Set to zero to disable limitation by pitch</source>
-      <translation>எலிக்ச் ஒரு ஒற்றை புரட்சியில் அதிகபட்ச அனுமதிக்கக்கூடிய வம்சாவளி 
-பிட்ச் மூலம் வரம்பை முடக்க பூச்சியமாக அமைக்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1703"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1897"/>
-      <source>Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter</source>
-      <translation>கருவி விட்டத்தின் சதவீதமாக, அதிகபட்ச (மற்றும் பெயரளவு) எலிக்ச் நுழைவு விட்டம்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1712"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1906"/>
-      <source>Minimum acceptable helix entry diameter, as a percentage of the tool diameter</source>
-      <translation>கருவி விட்டத்தின் சதவீதமாக ஏற்றுக்கொள்ளக்கூடிய குறைந்தபட்ச எலிக்ச் நுழைவு விட்டம்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1739"/>
-      <source>Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</source>
-      <translation>ஆர்டர்கள் ஆழத்திற்குப் பதிலாக பகுதி வாரியாக வெட்டப்படுகின்றன. ModelAwareExperiment இயக்கப்பட்டிருந்தால் மட்டுமே இந்த சொத்து பயன்படுத்தப்படும்.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1754"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1878"/>
-      <source>Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</source>
-      <translation>3டி வடிவவியலுக்கு மதிப்பளித்து, ஓவர்ஆங்கின் கீழ் வெட்டப்படுவதைத் தடுக்க, சோதனை மாதிரி விழிப்புணர்வு அம்சத்தை இயக்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1867"/>
-      <source>How much stock to leave along the Z axis (eg for finishing operation)</source>
-      <translation>சட் அச்சில் எவ்வளவு இருப்பு வைக்க வேண்டும் (எ.கா. செயல்பாட்டை முடிக்க)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1928"/>
-      <source>The maximum allowable descent in a single revolution of the helix. Set to 0 to disable the pitch limit.</source>
-      <translation>எலிக்ச் ஒரு ஒற்றை புரட்சியில் அதிகபட்ச அனுமதிக்கக்கூடிய வம்சாவளி. பிட்ச் வரம்பை முடக்க 0 என அமைக்கவும்.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1619"/>
-      <source>Force plunging into material inside and clearing towards the edges</source>
-      <translation>உள்ளே உள்ள பொருட்களில் மூழ்கி, விளிம்புகளை நோக்கி சுத்தப்படுத்தவும்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1628"/>
-      <source>To take a finishing profile path at the end</source>
-      <translation>முடிவில் ஒரு இறுதி சுயவிவர பாதையை எடுக்க</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1634"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1644"/>
-      <source>Stop processing</source>
-      <translation>செயலாக்கத்தை நிறுத்து</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1654"/>
-      <source>Internal input state</source>
-      <translation>உள் உள்ளீட்டு நிலை</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1663"/>
-      <source>Internal output state</source>
-      <translation>உள் வெளியீட்டு நிலை</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1694"/>
-      <source>Helix cone angle (degrees)</source>
-      <translation>எலிக்ச் கூம்பு கோணம் (டிகிரி)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1721"/>
-      <location filename="../../../Path/Op/PocketShape.py" line="168"/>
-      <source>Uses the outline of the base geometry.</source>
-      <translation>அடிப்படை வடிவவியலின் வெளிப்புறத்தைப் பயன்படுத்துகிறது.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1856"/>
-      <source>Orders cuts by region instead of depth.</source>
-      <translation>ஆர்டர்கள் ஆழத்திற்குப் பதிலாக பகுதி வாரியாக வெட்டப்படுகின்றன.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Area.py" line="100"/>
-      <location filename="../../../Path/Op/Area.py" line="159"/>
-      <source>Split Arcs into discrete segments</source>
-      <translation>வளைவுகளை தனித்தனி பிரிவுகளாக பிரிக்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="189"/>
-      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="142"/>
-      <source>The base geometry for this operation</source>
-      <translation>இந்த செயல்பாட்டிற்கான அடிப்படை வடிவியல்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="198"/>
-      <source>Holds the calculated value for the StartDepth</source>
-      <translation>StartDepth க்கான கணக்கிடப்பட்ட மதிப்பை வைத்திருக்கிறது</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="206"/>
-      <source>Holds the calculated value for the FinalDepth</source>
-      <translation>FinalDepth க்கான கணக்கிடப்பட்ட மதிப்பை வைத்திருக்கிறது</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="214"/>
-      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="100"/>
-      <source>Holds the diameter of the tool</source>
-      <translation>கருவியின் விட்டம் வைத்திருக்கிறது</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="222"/>
-      <source>Holds the max Z value of Stock</source>
-      <translation>ச்டாக்கின் அதிகபட்ச சட் மதிப்பை வைத்திருக்கிறது</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="229"/>
-      <source>Holds the min Z value of Stock</source>
-      <translation>பங்குகளின் min சட் மதிப்பை வைத்திருக்கிறது</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="246"/>
-      <source>Method collision detection to create optimal path between areas
-
-Clearance Height: no collision detection, uses clearance height for rapid moves between areas
-Retract Height: no collision detection, uses safe height for rapid moves between areas
-Line of Sight: fastest - checks the path centerline
-Tool Diameter: balanced - checks clearance using the tool diameter
-Tool Shape: safest - checks clearance using the cross section of the tool shape</source>
-      <translation>பகுதிகளுக்கு இடையே உகந்த பாதையை உருவாக்குவதற்கான மோதலை கண்டறிதல் முறை 
-
-கிளியரன்ச் உயரம்: மோதல் கண்டறிதல் இல்லை, பகுதிகளுக்கு இடையே விரைவான நகர்வுகளுக்கு கிளியரன்ச் உயரத்தைப் பயன்படுத்துகிறது 
-பின்வாங்கும் உயரம்: மோதல் கண்டறிதல் இல்லை, பகுதிகளுக்கு இடையே விரைவான நகர்வுகளுக்கு பாதுகாப்பான உயரத்தைப் பயன்படுத்துகிறது 
-பார்வைக் கோடு: வேகமாக - பாதையின் மையக் கோட்டைச் சரிபார்க்கிறது 
-கருவி விட்டம்: சமநிலை - கருவி விட்டத்தைப் பயன்படுத்தி அனுமதியை சரிபார்க்கிறது 
-கருவி வடிவம்: பாதுகாப்பானது - கருவி வடிவத்தின் குறுக்குவெட்டைப் பயன்படுத்தி அனுமதியை சரிபார்க்கிறது</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="259"/>
-      <source>Distance for collision detection</source>
-      <translation>மோதலை கண்டறிவதற்கான தூரம்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="279"/>
-      <location filename="../../../Path/Op/Base.py" line="579"/>
-      <source>Enable post processor to add block delete commands</source>
-      <translation>பிளாக் டெலிட் கட்டளைகளைச் சேர்க்க போச்ட் செயலியை இயக்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="285"/>
-      <source>An optional comment for this Operation</source>
-      <translation>இந்த செயல்பாட்டிற்கான விருப்ப கருத்து</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="291"/>
-      <source>User Assigned Label</source>
-      <translation>பயனர் ஒதுக்கப்பட்ட சிட்டை</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="308"/>
-      <location filename="../../../Path/Op/Base.py" line="607"/>
-      <source>The orientation of the tool for this operation. Default is (0, 0, 1) for standard Z-up milling.</source>
-      <translation>இந்த செயல்பாட்டிற்கான கருவியின் நோக்குநிலை. நிலையான Z-up மில்லிங்கிற்கு இயல்புநிலை (0, 0, 1) ஆகும்.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="322"/>
-      <source>Base locations for this operation</source>
-      <translation>இந்த செயல்பாட்டிற்கான அடிப்படை இடங்கள்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="333"/>
-      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="94"/>
-      <source>The tool controller that will be used to calculate the path</source>
-      <translation>பாதையைக் கணக்கிடப் பயன்படுத்தப்படும் கருவி கட்டுப்படுத்தி</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="342"/>
-      <source>Coolant mode for this operation</source>
-      <translation>இந்த செயல்பாட்டிற்கான குளிரூட்டும் முறை</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="350"/>
-      <source>Starting Depth of Tool- first cut depth in Z</source>
-      <translation>கருவியின் தொடக்க ஆழம்- சட் இல் முதல் வெட்டு ஆழம்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="356"/>
-      <source>Final Depth of Tool- lowest value in Z</source>
-      <translation>கருவியின் இறுதி ஆழம்- சட் இல் மிகக் குறைந்த மதிப்பு</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="370"/>
-      <source>Starting Depth internal use only for derived values</source>
-      <translation>பெறப்பட்ட மதிப்புகளுக்கு மட்டுமே தொடக்க ஆழம் உள் பயன்பாடு</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="381"/>
-      <location filename="../../../Path/Op/Base.py" line="587"/>
-      <source>Incremental Step Down of Tool</source>
-      <translation>கருவியின் அதிகரிக்கும் படி கீழே</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="389"/>
-      <source>Maximum material removed on final pass.</source>
-      <translation>இறுதிப் பயணத்தில் அதிகபட்ச பொருள் அகற்றப்பட்டது.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="400"/>
-      <source>The height needed to clear clamps and obstructions</source>
-      <translation>கவ்விகள் மற்றும் தடைகளை அழிக்க தேவையான உயரம்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="406"/>
-      <source>Rapid Safety Height between locations.</source>
-      <translation>இடங்களுக்கு இடையே விரைவான பாதுகாப்பு உயரம்.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="414"/>
-      <source>The start point of this path</source>
-      <translation>இந்தப் பாதையின் தொடக்கப் புள்ளி</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Surface.py" line="418"/>
-      <location filename="../../../Path/Op/Waterline.py" line="463"/>
-      <location filename="../../../Path/Op/Base.py" line="420"/>
-      <location filename="../../../Path/Op/Slot.py" line="223"/>
-      <source>Make True, if specifying a Start Point</source>
-      <translation>தொடக்கப் புள்ளியைக் குறிப்பிட்டால், உண்மையாக்கு</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="428"/>
-      <source>Lower limit of the turning diameter</source>
-      <translation>திருப்பு விட்டத்தின் கீழ் வரம்பு</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="434"/>
-      <source>Upper limit of the turning diameter.</source>
-      <translation>திருப்பு விட்டத்தின் மேல் வரம்பு.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Base.py" line="550"/>
-      <location filename="../../../CAMTests/TestTestPost.py" line="657"/>
-      <source>Coolant option for this operation</source>
-      <translation>இந்த செயல்பாட்டிற்கான குளிரூட்டி விருப்பம்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="84"/>
-      <source>List of disabled features</source>
-      <translation>முடக்கப்பட்ட அம்சங்களின் பட்டியல்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="91"/>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="298"/>
-      <source>Manual or Automatic mode sorting of holes</source>
-      <translation>கைமுறை அல்லது தானியங்கி முறையில் துளைகளை வரிசைப்படுத்துதல்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="102"/>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="312"/>
-      <source>Start point for automatic sorting (x,y used, z ignored)</source>
-      <translation>தானியங்கு வரிசையாக்கத்திற்கான தொடக்கப் புள்ளி (x,y பயன்படுத்தப்பட்டது, சட் புறக்கணிக்கப்பட்டது)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="109"/>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="321"/>
-      <source>Enable to use end point for automatic sorting</source>
-      <translation>தானாக வரிசைப்படுத்துவதற்கு இறுதிப் புள்ளியைப் பயன்படுத்துவதை இயக்கு</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="118"/>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="333"/>
-      <source>End point for automatic sorting (x,y used, z ignored)</source>
-      <translation>தானாக வரிசைப்படுத்துவதற்கான இறுதிப் புள்ளி (x,y பயன்படுத்தப்பட்டது, சட் புறக்கணிக்கப்பட்டது)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Custom.py" line="105"/>
-      <source>The G-code to be inserted</source>
-      <translation>சி-குறியீடு செருகப்பட வேண்டும்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Deburr.py" line="127"/>
-      <source>The desired width of the chamfer</source>
-      <translation>அறையின் விரும்பிய அகலம்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Deburr.py" line="133"/>
-      <source>The additional depth of the toolpath</source>
-      <translation>கருவிப்பாதையின் கூடுதல் ஆழம்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Deburr.py" line="147"/>
-      <source>Direction of toolpath</source>
-      <translation>கருவிப்பாதையின் திசை</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Deburr.py" line="154"/>
-      <source>Side of base object</source>
-      <translation>அடிப்படை பொருளின் பக்கம்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Deburr.py" line="162"/>
-      <source>The segment where the toolpath starts</source>
-      <translation>டூல்பாத் தொடங்கும் பகுதி</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Deburr.py" line="139"/>
-      <source>How to join chamfer segments</source>
-      <translation>சேம்பர் பிரிவுகளை எவ்வாறு இணைப்பது</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Drilling.py" line="109"/>
-      <location filename="../../../Path/Op/Drilling.py" line="182"/>
-      <source>Hole-making strategy (Drilling, Tapping, etc.)</source>
-      <translation>துளை உருவாக்கும் உத்தி (துளையிடுதல், தட்டுதல் போன்றவை)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Drilling.py" line="125"/>
-      <location filename="../../../Path/Op/Drilling.py" line="203"/>
-      <source>Use chipbreaking</source>
-      <translation>சிப்பிரேக்கிங் பயன்படுத்தவும்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Drilling.py" line="135"/>
-      <location filename="../../../Path/Op/Drilling.py" line="245"/>
-      <source>Use G85 boring cycle with feed out</source>
-      <translation>ஊட்டத்துடன் G85 போரிங் சுழற்சியைப் பயன்படுத்தவும்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Drilling.py" line="170"/>
-      <location filename="../../../Path/Op/Drilling.py" line="239"/>
-      <location filename="../../../Path/Op/Gui/Drilling.py" line="204"/>
-      <source>Apply G99 retraction: only retract to StartDepth between holes in this operation</source>
-      <translation>G99 திரும்பப் பெறுதலைப் பயன்படுத்தவும்: இந்தச் செயல்பாட்டில் உள்ள துளைகளுக்கு இடையே StartDepth க்கு மட்டும் பின்வாங்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Drilling.py" line="191"/>
-      <source>Incremental Drill depth before retracting to clear chips</source>
-      <translation>சில்லுகளைத் துடைக்க பின்வாங்குவதற்கு முன் அதிகரிக்கும் துளை ஆழம்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Drilling.py" line="197"/>
-      <source>Enable pecking</source>
-      <translation>பெக்கிங்கை இயக்கு</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Drilling.py" line="209"/>
-      <source>The time to dwell between peck cycles</source>
-      <translation>பெக் சுழற்சிகளுக்கு இடையில் வசிக்க வேண்டிய நேரம்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Drilling.py" line="215"/>
-      <location filename="../../../Path/Op/Tapping.py" line="117"/>
-      <source>Enable dwell</source>
-      <translation>குடியிருப்பை இயக்கு</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Drilling.py" line="224"/>
-      <location filename="../../../Path/Op/Tapping.py" line="126"/>
-      <source>Calculate the tip length and subtract from final depth</source>
-      <translation>முனை நீளத்தைக் கணக்கிட்டு இறுதி ஆழத்திலிருந்து கழிக்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Drilling.py" line="230"/>
-      <source>How far the drilling depth is extended</source>
-      <translation>துளையிடும் ஆழம் எவ்வளவு தூரம் நீட்டிக்கப்பட்டுள்ளது</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Engrave.py" line="72"/>
-      <location filename="../../../Path/Op/Vcarve.py" line="409"/>
-      <source>Additional base objects to be engraved</source>
-      <translation>பொறிக்கப்பட வேண்டிய கூடுதல் அடிப்படை பொருள்கள்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Engrave.py" line="82"/>
-      <source>The vertex index to start the toolpath from</source>
-      <translation>டூல்பாத்தை தொடங்குவதற்கான வெர்டெக்ச் இன்டெக்ச்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Engrave.py" line="89"/>
-      <location filename="../../../Path/Op/Engrave.py" line="150"/>
-      <source>Reverse milling direction</source>
-      <translation>தலைகீழ் அரைக்கும் திசை</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Engrave.py" line="95"/>
-      <location filename="../../../Path/Op/Engrave.py" line="157"/>
-      <source>Set the cut pattern for the operation</source>
-      <translation>செயல்பாட்டிற்கான வெட்டு வடிவத்தை அமைக்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Engrave.py" line="106"/>
-      <location filename="../../../Path/Op/Engrave.py" line="168"/>
-      <source>Approximate complex curves to arcs and lines</source>
-      <translation>வளைவுகள் மற்றும் கோடுகளுக்கு தோராயமான சிக்கலான வளைவுகள்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Engrave.py" line="117"/>
-      <location filename="../../../Path/Op/Engrave.py" line="180"/>
-      <source>Order processing of the wires
-
-Manual - Using order from selection without sorting
-Automatic - Sorting wires by the nearest neighbour method, further improved with 2-opt</source>
-      <translation>கம்பிகளின் செயலாக்கத்தை ஒழுங்குபடுத்துங்கள் 
-
-கையேடு - வரிசைப்படுத்தாமல் தேர்விலிருந்து வரிசையைப் பயன்படுத்துதல் 
-தானியங்கி - அருகிலுள்ள அண்டை முறை மூலம் கம்பிகளை வரிசைப்படுத்துதல், 2-ஆப்ட் மூலம் மேலும் மேம்படுத்தப்பட்டது</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Engrave.py" line="125"/>
-      <location filename="../../../Path/Op/Engrave.py" line="188"/>
-      <source>The start point for sorting</source>
-      <translation>வரிசைப்படுத்துவதற்கான தொடக்கப் புள்ளி</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Engrave.py" line="131"/>
-      <location filename="../../../Path/Op/Engrave.py" line="196"/>
-      <source>The end point for sorting</source>
-      <translation>வரிசைப்படுத்துவதற்கான இறுதிப் புள்ளி</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Engrave.py" line="137"/>
-      <location filename="../../../Path/Op/Engrave.py" line="204"/>
-      <source>Use end point for sorting</source>
-      <translation>வரிசைப்படுத்த இறுதிப் புள்ளியைப் பயன்படுத்தவும்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/FeatureExtension.py" line="478"/>
-      <source>Default length of extensions.</source>
-      <translation>நீட்டிப்புகளின் இயல்புநிலை நீளம்.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/FeatureExtension.py" line="485"/>
-      <source>List of features to extend.</source>
-      <translation>நீட்டிக்க வேண்டிய அம்சங்களின் பட்டியல்.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/FeatureExtension.py" line="495"/>
-      <source>When enabled connected extension edges are combined to wires.</source>
-      <translation>இயக்கப்பட்டால் இணைக்கப்பட்ட நீட்டிப்பு விளிம்புகள் கம்பிகளுடன் இணைக்கப்படும்.</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Op/Helix.py" line="137"/>
       <source>The direction of the circular cuts, ClockWise (CW) or CounterClockWise (CCW)</source>
       <translation>வட்ட வெட்டுகளின் திசை, ClockWise (CW) அல்லது CounterClockWise (CCW)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Helix.py" line="146"/>
-      <source>Start cutting from the inside or outside</source>
-      <translation>உள்ளே அல்லது வெளியே இருந்து வெட்டத் தொடங்குங்கள்</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="155"/>
       <location filename="../../../Path/Op/Helix.py" line="537"/>
       <source>The direction of the circular cuts</source>
       <translation>வட்ட வெட்டுகளின் திசை</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Helix.py" line="164"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="159"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1574"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1958"/>
+      <source>Percent of cutter diameter to step over on each pass</source>
+      <translation>ஒவ்வொரு பாசிலும் அடியெடுத்து வைக்க கட்டர் விட்டத்தின் விழுக்காடு</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="176"/>
@@ -5862,6 +5390,15 @@ Set -1 to calculate optimal angle automatically</source>
 தானாக உகந்த கோணத்தை கணக்கிட -1 ஐ அமைக்கவும்</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/Helix.py" line="288"/>
+      <location filename="../../../Path/Op/Helix.py" line="509"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1685"/>
+      <source>The maximum allowable descent in a single revolution of the helix
+Set to zero to disable limitation by pitch</source>
+      <translation>எலிக்ச் ஒரு ஒற்றை புரட்சியில் அதிகபட்ச அனுமதிக்கக்கூடிய வம்சாவளி 
+பிட்ச் மூலம் வரம்பை முடக்க பூச்சியமாக அமைக்கவும்</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Op/Helix.py" line="298"/>
       <location filename="../../../Path/Op/Helix.py" line="527"/>
       <source>The maximum allowable ramp entry angle
@@ -5877,6 +5414,480 @@ For External profile - profile radius</source>
       <translation>ஆஃப்செட் உள் ஆரம் 
 இயல்புநிலை உள் ஆரம் கருவி ஆரம் மற்றும் (-ToolRadius) ஐ விட குறைவாக இருக்கக்கூடாது 
 வெளிப்புற சுயவிவரத்திற்கு - சுயவிவர ஆரம்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1583"/>
+      <source>Lift distance for rapid moves</source>
+      <translation>விரைவான நகர்வுகளுக்கு தூரத்தை உயர்த்தவும்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1592"/>
+      <source>Max length of keep tool down path compared to direct distance between points</source>
+      <translation>புள்ளிகளுக்கு இடையே உள்ள நேரடி தூரத்துடன் ஒப்பிடும்போது கீப் டூல் பேரூர் பாத்தின் அதிகபட்ச நீளம்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1565"/>
+      <source>Influences calculation performance vs stability and accuracy.
+
+Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</source>
+      <translation>கணக்கீட்டு செயல்திறன் எதிராக நிலைத்தன்மை மற்றும் துல்லியத்தை பாதிக்கிறது. 
+
+பெரிய மதிப்புகள் (மேலும் வலதுபுறம்) வேகமாக கணக்கிடும்; சிறிய மதிப்புகள் (மேலும் இடதுபுறம்) மிகவும் துல்லியமான கருவிப்பாதைகளை ஏற்படுத்தும்.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1601"/>
+      <source>How much stock to leave in the XY plane (eg for finishing operation)</source>
+      <translation>XY விமானத்தில் எவ்வளவு இருப்பு வைக்க வேண்டும் (எ.கா. செயல்பாட்டை முடிக்க)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1610"/>
+      <source>How much stock to leave along the Z axis (eg for finishing operation). This property is only used if the ModelAwareExperiment is enabled.</source>
+      <translation>சட் அச்சில் எவ்வளவு இருப்பு வைக்க வேண்டும் (எ.கா. செயல்பாட்டை முடிக்க). ModelAwareExperiment இயக்கப்பட்டிருந்தால் மட்டுமே இந்த சொத்து பயன்படுத்தப்படும்.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1675"/>
+      <source>The maximum allowable helix ramp entry angle (degrees)
+Set to zero to disable limitation by ramp angle</source>
+      <translation>அதிகபட்ச அனுமதிக்கக்கூடிய எலிக்ச் வளைவு நுழைவு கோணம் (டிகிரிகள்) 
+சாய்வு கோணம் மூலம் வரம்பை முடக்க பூச்சியமாக அமைக்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1703"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1897"/>
+      <source>Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter</source>
+      <translation>கருவி விட்டத்தின் சதவீதமாக, அதிகபட்ச (மற்றும் பெயரளவு) எலிக்ச் நுழைவு விட்டம்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1712"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1906"/>
+      <source>Minimum acceptable helix entry diameter, as a percentage of the tool diameter</source>
+      <translation>கருவி விட்டத்தின் சதவீதமாக ஏற்றுக்கொள்ளக்கூடிய குறைந்தபட்ச எலிக்ச் நுழைவு விட்டம்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1739"/>
+      <source>Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</source>
+      <translation>ஆர்டர்கள் ஆழத்திற்குப் பதிலாக பகுதி வாரியாக வெட்டப்படுகின்றன. ModelAwareExperiment இயக்கப்பட்டிருந்தால் மட்டுமே இந்த சொத்து பயன்படுத்தப்படும்.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1754"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1878"/>
+      <source>Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</source>
+      <translation>3டி வடிவவியலுக்கு மதிப்பளித்து, ஓவர்ஆங்கின் கீழ் வெட்டப்படுவதைத் தடுக்க, சோதனை மாதிரி விழிப்புணர்வு அம்சத்தை இயக்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1867"/>
+      <source>How much stock to leave along the Z axis (eg for finishing operation)</source>
+      <translation>சட் அச்சில் எவ்வளவு இருப்பு வைக்க வேண்டும் (எ.கா. செயல்பாட்டை முடிக்க)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1928"/>
+      <source>The maximum allowable descent in a single revolution of the helix. Set to 0 to disable the pitch limit.</source>
+      <translation>எலிக்ச் ஒரு ஒற்றை புரட்சியில் அதிகபட்ச அனுமதிக்கக்கூடிய வம்சாவளி. பிட்ச் வரம்பை முடக்க 0 என அமைக்கவும்.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1619"/>
+      <source>Force plunging into material inside and clearing towards the edges</source>
+      <translation>உள்ளே உள்ள பொருட்களில் மூழ்கி, விளிம்புகளை நோக்கி சுத்தப்படுத்தவும்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1628"/>
+      <source>To take a finishing profile path at the end</source>
+      <translation>முடிவில் ஒரு இறுதி சுயவிவர பாதையை எடுக்க</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1634"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1644"/>
+      <source>Stop processing</source>
+      <translation>செயலாக்கத்தை நிறுத்து</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1654"/>
+      <source>Internal input state</source>
+      <translation>உள் உள்ளீட்டு நிலை</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1663"/>
+      <source>Internal output state</source>
+      <translation>உள் வெளியீட்டு நிலை</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1694"/>
+      <source>Helix cone angle (degrees)</source>
+      <translation>எலிக்ச் கூம்பு கோணம் (டிகிரி)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/PocketShape.py" line="168"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1721"/>
+      <source>Uses the outline of the base geometry.</source>
+      <translation>அடிப்படை வடிவவியலின் வெளிப்புறத்தைப் பயன்படுத்துகிறது.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1856"/>
+      <source>Orders cuts by region instead of depth.</source>
+      <translation>ஆர்டர்கள் ஆழத்திற்குப் பதிலாக பகுதி வாரியாக வெட்டப்படுகின்றன.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Area.py" line="100"/>
+      <location filename="../../../Path/Op/Area.py" line="153"/>
+      <source>Split Arcs into discrete segments</source>
+      <translation>வளைவுகளை தனித்தனி பிரிவுகளாக பிரிக்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="188"/>
+      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="142"/>
+      <source>The base geometry for this operation</source>
+      <translation>இந்த செயல்பாட்டிற்கான அடிப்படை வடிவியல்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="197"/>
+      <source>Holds the calculated value for the StartDepth</source>
+      <translation>StartDepth க்கான கணக்கிடப்பட்ட மதிப்பை வைத்திருக்கிறது</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="205"/>
+      <source>Holds the calculated value for the FinalDepth</source>
+      <translation>FinalDepth க்கான கணக்கிடப்பட்ட மதிப்பை வைத்திருக்கிறது</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="213"/>
+      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="100"/>
+      <source>Holds the diameter of the tool</source>
+      <translation>கருவியின் விட்டம் வைத்திருக்கிறது</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="221"/>
+      <source>Holds the max Z value of Stock</source>
+      <translation>ச்டாக்கின் அதிகபட்ச சட் மதிப்பை வைத்திருக்கிறது</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="228"/>
+      <source>Holds the min Z value of Stock</source>
+      <translation>பங்குகளின் min சட் மதிப்பை வைத்திருக்கிறது</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="245"/>
+      <source>Method collision detection to create optimal path between areas
+
+Clearance Height: no collision detection, uses clearance height for rapid moves between areas
+Retract Height: no collision detection, uses safe height for rapid moves between areas
+Line of Sight: fastest - checks the path centerline
+Tool Diameter: balanced - checks clearance using the tool diameter
+Tool Shape: safest - checks clearance using the cross section of the tool shape</source>
+      <translation>பகுதிகளுக்கு இடையே உகந்த பாதையை உருவாக்குவதற்கான மோதலை கண்டறிதல் முறை 
+
+கிளியரன்ச் உயரம்: மோதல் கண்டறிதல் இல்லை, பகுதிகளுக்கு இடையே விரைவான நகர்வுகளுக்கு கிளியரன்ச் உயரத்தைப் பயன்படுத்துகிறது 
+பின்வாங்கும் உயரம்: மோதல் கண்டறிதல் இல்லை, பகுதிகளுக்கு இடையே விரைவான நகர்வுகளுக்கு பாதுகாப்பான உயரத்தைப் பயன்படுத்துகிறது 
+பார்வைக் கோடு: வேகமாக - பாதையின் மையக் கோட்டைச் சரிபார்க்கிறது 
+கருவி விட்டம்: சமநிலை - கருவி விட்டத்தைப் பயன்படுத்தி அனுமதியை சரிபார்க்கிறது 
+கருவி வடிவம்: பாதுகாப்பானது - கருவி வடிவத்தின் குறுக்குவெட்டைப் பயன்படுத்தி அனுமதியை சரிபார்க்கிறது</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="258"/>
+      <source>Distance for collision detection</source>
+      <translation>மோதலை கண்டறிவதற்கான தூரம்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="278"/>
+      <location filename="../../../Path/Op/Base.py" line="578"/>
+      <source>Enable post processor to add block delete commands</source>
+      <translation>பிளாக் டெலிட் கட்டளைகளைச் சேர்க்க போச்ட் செயலியை இயக்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="284"/>
+      <source>An optional comment for this Operation</source>
+      <translation>இந்த செயல்பாட்டிற்கான விருப்ப கருத்து</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="290"/>
+      <source>User Assigned Label</source>
+      <translation>பயனர் ஒதுக்கப்பட்ட சிட்டை</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="307"/>
+      <location filename="../../../Path/Op/Base.py" line="606"/>
+      <source>The orientation of the tool for this operation. Default is (0, 0, 1) for standard Z-up milling.</source>
+      <translation>இந்த செயல்பாட்டிற்கான கருவியின் நோக்குநிலை. நிலையான Z-up மில்லிங்கிற்கு இயல்புநிலை (0, 0, 1) ஆகும்.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="321"/>
+      <source>Base locations for this operation</source>
+      <translation>இந்த செயல்பாட்டிற்கான அடிப்படை இடங்கள்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="332"/>
+      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="94"/>
+      <source>The tool controller that will be used to calculate the path</source>
+      <translation>பாதையைக் கணக்கிடப் பயன்படுத்தப்படும் கருவி கட்டுப்படுத்தி</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="341"/>
+      <source>Coolant mode for this operation</source>
+      <translation>இந்த செயல்பாட்டிற்கான குளிரூட்டும் முறை</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="349"/>
+      <source>Starting Depth of Tool- first cut depth in Z</source>
+      <translation>கருவியின் தொடக்க ஆழம்- சட் இல் முதல் வெட்டு ஆழம்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="355"/>
+      <source>Final Depth of Tool- lowest value in Z</source>
+      <translation>கருவியின் இறுதி ஆழம்- சட் இல் மிகக் குறைந்த மதிப்பு</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="369"/>
+      <source>Starting Depth internal use only for derived values</source>
+      <translation>பெறப்பட்ட மதிப்புகளுக்கு மட்டுமே தொடக்க ஆழம் உள் பயன்பாடு</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="380"/>
+      <location filename="../../../Path/Op/Base.py" line="586"/>
+      <source>Incremental Step Down of Tool</source>
+      <translation>கருவியின் அதிகரிக்கும் படி கீழே</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="388"/>
+      <source>Maximum material removed on final pass.</source>
+      <translation>இறுதிப் பயணத்தில் அதிகபட்ச பொருள் அகற்றப்பட்டது.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="399"/>
+      <source>The height needed to clear clamps and obstructions</source>
+      <translation>கவ்விகள் மற்றும் தடைகளை அழிக்க தேவையான உயரம்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="405"/>
+      <source>Rapid Safety Height between locations.</source>
+      <translation>இடங்களுக்கு இடையே விரைவான பாதுகாப்பு உயரம்.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="413"/>
+      <source>The start point of this path</source>
+      <translation>இந்தப் பாதையின் தொடக்கப் புள்ளி</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Surface.py" line="418"/>
+      <location filename="../../../Path/Op/Waterline.py" line="463"/>
+      <location filename="../../../Path/Op/Base.py" line="419"/>
+      <location filename="../../../Path/Op/Slot.py" line="223"/>
+      <source>Make True, if specifying a Start Point</source>
+      <translation>தொடக்கப் புள்ளியைக் குறிப்பிட்டால், உண்மையாக்கு</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="427"/>
+      <source>Lower limit of the turning diameter</source>
+      <translation>திருப்பு விட்டத்தின் கீழ் வரம்பு</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="433"/>
+      <source>Upper limit of the turning diameter.</source>
+      <translation>திருப்பு விட்டத்தின் மேல் வரம்பு.</translation>
+    </message>
+    <message>
+      <location filename="../../../CAMTests/TestTestPost.py" line="657"/>
+      <location filename="../../../Path/Op/Base.py" line="549"/>
+      <source>Coolant option for this operation</source>
+      <translation>இந்த செயல்பாட்டிற்கான குளிரூட்டி விருப்பம்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="84"/>
+      <source>List of disabled features</source>
+      <translation>முடக்கப்பட்ட அம்சங்களின் பட்டியல்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="91"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="298"/>
+      <source>Manual or Automatic mode sorting of holes</source>
+      <translation>கைமுறை அல்லது தானியங்கி முறையில் துளைகளை வரிசைப்படுத்துதல்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="102"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="312"/>
+      <source>Start point for automatic sorting (x,y used, z ignored)</source>
+      <translation>தானியங்கு வரிசையாக்கத்திற்கான தொடக்கப் புள்ளி (x,y பயன்படுத்தப்பட்டது, சட் புறக்கணிக்கப்பட்டது)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="109"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="321"/>
+      <source>Enable to use end point for automatic sorting</source>
+      <translation>தானாக வரிசைப்படுத்துவதற்கு இறுதிப் புள்ளியைப் பயன்படுத்துவதை இயக்கு</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="118"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="333"/>
+      <source>End point for automatic sorting (x,y used, z ignored)</source>
+      <translation>தானாக வரிசைப்படுத்துவதற்கான இறுதிப் புள்ளி (x,y பயன்படுத்தப்பட்டது, சட் புறக்கணிக்கப்பட்டது)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="106"/>
+      <source>The G-code to be inserted</source>
+      <translation>சி-குறியீடு செருகப்பட வேண்டும்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Deburr.py" line="127"/>
+      <source>The desired width of the chamfer</source>
+      <translation>அறையின் விரும்பிய அகலம்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Deburr.py" line="133"/>
+      <source>The additional depth of the toolpath</source>
+      <translation>கருவிப்பாதையின் கூடுதல் ஆழம்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Deburr.py" line="147"/>
+      <source>Direction of toolpath</source>
+      <translation>கருவிப்பாதையின் திசை</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Deburr.py" line="154"/>
+      <source>Side of base object</source>
+      <translation>அடிப்படை பொருளின் பக்கம்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Deburr.py" line="162"/>
+      <source>The segment where the toolpath starts</source>
+      <translation>டூல்பாத் தொடங்கும் பகுதி</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Deburr.py" line="139"/>
+      <source>How to join chamfer segments</source>
+      <translation>சேம்பர் பிரிவுகளை எவ்வாறு இணைப்பது</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Drilling.py" line="109"/>
+      <location filename="../../../Path/Op/Drilling.py" line="182"/>
+      <source>Hole-making strategy (Drilling, Tapping, etc.)</source>
+      <translation>துளை உருவாக்கும் உத்தி (துளையிடுதல், தட்டுதல் போன்றவை)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Drilling.py" line="125"/>
+      <location filename="../../../Path/Op/Drilling.py" line="203"/>
+      <source>Use chipbreaking</source>
+      <translation>சிப்பிரேக்கிங் பயன்படுத்தவும்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Drilling.py" line="135"/>
+      <location filename="../../../Path/Op/Drilling.py" line="245"/>
+      <source>Use G85 boring cycle with feed out</source>
+      <translation>ஊட்டத்துடன் G85 போரிங் சுழற்சியைப் பயன்படுத்தவும்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Drilling.py" line="170"/>
+      <location filename="../../../Path/Op/Drilling.py" line="239"/>
+      <location filename="../../../Path/Op/Gui/Drilling.py" line="204"/>
+      <source>Apply G99 retraction: only retract to StartDepth between holes in this operation</source>
+      <translation>G99 திரும்பப் பெறுதலைப் பயன்படுத்தவும்: இந்தச் செயல்பாட்டில் உள்ள துளைகளுக்கு இடையே StartDepth க்கு மட்டும் பின்வாங்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Drilling.py" line="191"/>
+      <source>Incremental Drill depth before retracting to clear chips</source>
+      <translation>சில்லுகளைத் துடைக்க பின்வாங்குவதற்கு முன் அதிகரிக்கும் துளை ஆழம்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Drilling.py" line="197"/>
+      <source>Enable pecking</source>
+      <translation>பெக்கிங்கை இயக்கு</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Drilling.py" line="209"/>
+      <source>The time to dwell between peck cycles</source>
+      <translation>பெக் சுழற்சிகளுக்கு இடையில் வசிக்க வேண்டிய நேரம்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="117"/>
+      <location filename="../../../Path/Op/Drilling.py" line="215"/>
+      <source>Enable dwell</source>
+      <translation>குடியிருப்பை இயக்கு</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="126"/>
+      <location filename="../../../Path/Op/Drilling.py" line="224"/>
+      <source>Calculate the tip length and subtract from final depth</source>
+      <translation>முனை நீளத்தைக் கணக்கிட்டு இறுதி ஆழத்திலிருந்து கழிக்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Drilling.py" line="230"/>
+      <source>How far the drilling depth is extended</source>
+      <translation>துளையிடும் ஆழம் எவ்வளவு தூரம் நீட்டிக்கப்பட்டுள்ளது</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Engrave.py" line="72"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="409"/>
+      <source>Additional base objects to be engraved</source>
+      <translation>பொறிக்கப்பட வேண்டிய கூடுதல் அடிப்படை பொருள்கள்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Engrave.py" line="82"/>
+      <source>The vertex index to start the toolpath from</source>
+      <translation>டூல்பாத்தை தொடங்குவதற்கான வெர்டெக்ச் இன்டெக்ச்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Engrave.py" line="89"/>
+      <location filename="../../../Path/Op/Engrave.py" line="150"/>
+      <source>Reverse milling direction</source>
+      <translation>தலைகீழ் அரைக்கும் திசை</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Engrave.py" line="95"/>
+      <location filename="../../../Path/Op/Engrave.py" line="157"/>
+      <source>Set the cut pattern for the operation</source>
+      <translation>செயல்பாட்டிற்கான வெட்டு வடிவத்தை அமைக்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Engrave.py" line="106"/>
+      <location filename="../../../Path/Op/Engrave.py" line="168"/>
+      <source>Approximate complex curves to arcs and lines</source>
+      <translation>வளைவுகள் மற்றும் கோடுகளுக்கு தோராயமான சிக்கலான வளைவுகள்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Engrave.py" line="117"/>
+      <location filename="../../../Path/Op/Engrave.py" line="180"/>
+      <source>Order processing of the wires
+
+Manual - Using order from selection without sorting
+Automatic - Sorting wires by the nearest neighbour method, further improved with 2-opt</source>
+      <translation>கம்பிகளின் செயலாக்கத்தை ஒழுங்குபடுத்துங்கள் 
+
+கையேடு - வரிசைப்படுத்தாமல் தேர்விலிருந்து வரிசையைப் பயன்படுத்துதல் 
+தானியங்கி - அருகிலுள்ள அண்டை முறை மூலம் கம்பிகளை வரிசைப்படுத்துதல், 2-ஆப்ட் மூலம் மேலும் மேம்படுத்தப்பட்டது</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Engrave.py" line="125"/>
+      <location filename="../../../Path/Op/Engrave.py" line="188"/>
+      <source>The start point for sorting</source>
+      <translation>வரிசைப்படுத்துவதற்கான தொடக்கப் புள்ளி</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Engrave.py" line="131"/>
+      <location filename="../../../Path/Op/Engrave.py" line="196"/>
+      <source>The end point for sorting</source>
+      <translation>வரிசைப்படுத்துவதற்கான இறுதிப் புள்ளி</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Engrave.py" line="137"/>
+      <location filename="../../../Path/Op/Engrave.py" line="204"/>
+      <source>Use end point for sorting</source>
+      <translation>வரிசைப்படுத்த இறுதிப் புள்ளியைப் பயன்படுத்தவும்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/FeatureExtension.py" line="478"/>
+      <source>Default length of extensions.</source>
+      <translation>நீட்டிப்புகளின் இயல்புநிலை நீளம்.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/FeatureExtension.py" line="485"/>
+      <source>List of features to extend.</source>
+      <translation>நீட்டிக்க வேண்டிய அம்சங்களின் பட்டியல்.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/FeatureExtension.py" line="495"/>
+      <source>When enabled connected extension edges are combined to wires.</source>
+      <translation>இயக்கப்பட்டால் இணைக்கப்பட்ட நீட்டிப்பு விளிம்புகள் கம்பிகளுடன் இணைக்கப்படும்.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Helix.py" line="146"/>
+      <source>Start cutting from the inside or outside</source>
+      <translation>உள்ளே அல்லது வெளியே இருந்து வெட்டத் தொடங்குங்கள்</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="145"/>
@@ -5899,10 +5910,10 @@ For External profile - profile radius</source>
       <translation>முகத்தின் உள்ளே துருவல் உயர்த்தப்பட்ட பகுதிகளைத் தவிர்க்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="119"/>
-      <location filename="../../../Path/Op/Surface.py" line="240"/>
       <location filename="../../../Path/Op/Pocket.py" line="67"/>
+      <location filename="../../../Path/Op/Surface.py" line="240"/>
       <location filename="../../../Path/Op/Waterline.py" line="267"/>
+      <location filename="../../../Path/Op/Profile.py" line="119"/>
       <source>Choose how to process multiple Base Geometry features.</source>
       <translation>பல அடிப்படை வடிவியல் அம்சங்களை எவ்வாறு செயலாக்குவது என்பதைத் தேர்வுசெய்யவும்.</translation>
     </message>
@@ -5945,6 +5956,17 @@ For External profile - profile radius</source>
       <translation>தேவையற்ற பின்வாங்கல்களைத் தவிர்க்க முயற்சிக்கும் தூரத்தை அமைக்கவும்.</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/PocketBase.py" line="206"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="303"/>
+      <location filename="../../../Path/Op/Profile.py" line="226"/>
+      <source>Order processing of the shapes
+Automatic: uses nearest neighbour algorithm to sort shapes
+Manual: uses order of shapes selection</source>
+      <translation>வடிவங்களின் வரிசை செயலாக்கம் 
+தானியங்கு: வடிவங்களை வரிசைப்படுத்த அருகிலுள்ள அண்டை அல்காரிதத்தைப் பயன்படுத்துகிறது 
+கையேடு: வடிவங்களின் தேர்வு வரிசையைப் பயன்படுத்துகிறது</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Op/PocketBase.py" line="215"/>
       <location filename="../../../Path/Op/PocketBase.py" line="281"/>
       <source>Force maximum stepover even if not all area is cleared. Without this flag set, the stepover may be reduced (for large stepover, &gt;50%) to ensure full area coverage.</source>
@@ -5961,10 +5983,10 @@ For External profile - profile radius</source>
       <translation>பாதையின் 3D வரிசையாக்கத்தைப் பயன்படுத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1730"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1845"/>
       <location filename="../../../Path/Op/PocketBase.py" line="195"/>
       <location filename="../../../Path/Op/PocketBase.py" line="271"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1730"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1845"/>
       <source>Skips machining regions that have already been cleared by previous operations.</source>
       <translation>முந்தைய செயல்பாடுகளால் ஏற்கனவே அழிக்கப்பட்ட எந்திர மண்டலங்களைத் தவிர்க்கிறது.</translation>
     </message>
@@ -5994,8 +6016,14 @@ For External profile - profile radius</source>
       <translation>ஆய்வு தரவு எழுதப்படுவதற்கான வெளியீட்டு இடம்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="110"/>
+      <location filename="../../../Path/Op/Probe.py" line="90"/>
+      <location filename="../../../Path/Op/Probe.py" line="102"/>
+      <source>Limit probe area by shape. Point should be inside shape at final depth</source>
+      <translation type="unfinished">Limit probe area by shape. Point should be inside shape at final depth</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Op/PocketBase.py" line="136"/>
+      <location filename="../../../Path/Op/Profile.py" line="110"/>
       <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
       <translation>கருவிப்பாதை ClockWise (CW) அல்லது CounterClockWise (CCW) பகுதியைச் சுற்றிச் செல்ல வேண்டிய திசை</translation>
     </message>
@@ -6050,17 +6078,6 @@ For External profile - profile radius</source>
 Shoud be used only with Individually HandleMultipleFeaturesand disabled UseStartPoint</source>
       <translation>தொடக்கப் புள்ளியை மேலெழுதவும் 
 தனித்தனியாக பல நற்பொருத்தங்கள் மற்றும் முடக்கப்பட்ட UseStartPoint உடன் மட்டுமே பயன்படுத்தப்பட வேண்டும்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Profile.py" line="226"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="206"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="303"/>
-      <source>Order processing of the shapes
-Automatic: uses nearest neighbour algorithm to sort shapes
-Manual: uses order of shapes selection</source>
-      <translation>வடிவங்களின் வரிசை செயலாக்கம் 
-தானியங்கு: வடிவங்களை வரிசைப்படுத்த அருகிலுள்ள அண்டை அல்காரிதத்தைப் பயன்படுத்துகிறது 
-கையேடு: வடிவங்களின் தேர்வு வரிசையைப் பயன்படுத்துகிறது</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="128"/>
@@ -6722,46 +6739,6 @@ If selection without sub elements:
       <translation>ஒரு பல்லுக்கு சிப்லோட்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="131"/>
-      <source>Set the cut mode for the operation.</source>
-      <translation>செயல்பாட்டிற்கான வெட்டு பயன்முறையை அமைக்கவும்.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="140"/>
-      <source>Set the clearing pattern for the operation.</source>
-      <translation>செயல்பாட்டிற்கான தீர்வு வடிவத்தை அமைக்கவும்.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="149"/>
-      <source>Set the angle for the operation.</source>
-      <translation>செயல்பாட்டிற்கான கோணத்தை அமைக்கவும்.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="158"/>
-      <source>Set the stepover percentage of tool diameter.</source>
-      <translation>கருவி விட்டத்தின் ச்டெப்ஓவர் சதவீதத்தை அமைக்கவும்.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="167"/>
-      <source>Set the stock to leave for the operation.</source>
-      <translation>ஆபரேசனுக்குப் புறப்படும்படி ச்டாக்கை அமைக்கவும்.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="176"/>
-      <source>Distance to extend cuts beyond polygon boundary for tool disengagement.</source>
-      <translation>கருவி துண்டிக்க பலகோண எல்லைக்கு அப்பால் வெட்டுக்களை நீட்டிப்பதற்கான தூரம்.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="185"/>
-      <source>Extends the boundary in both direction.</source>
-      <translation>இரு திசைகளிலும் எல்லையை விரிவுபடுத்துகிறது.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="194"/>
-      <source>Reverse the cutting direction for the selected pattern.</source>
-      <translation>தேர்ந்தெடுக்கப்பட்ட வடிவத்திற்கான வெட்டு திசையை மாற்றவும்.</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Op/RotarySurface.py" line="126"/>
       <source>Axial start position along the rotary axis.</source>
       <translation>ரோட்டரி அச்சில் அச்சு தொடக்க நிலை.</translation>
@@ -6832,19 +6809,44 @@ If selection without sub elements:
       <translation>டெசெலேசன் கோண விலகல். சிறியது = மெல்லிய கண்ணி.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="74"/>
-      <source>Hint indicating which op category this TC is intended for</source>
-      <translation type="unfinished">Hint indicating which op category this TC is intended for</translation>
+      <location filename="../../../Path/Op/MillFacing.py" line="131"/>
+      <source>Set the cut mode for the operation.</source>
+      <translation>செயல்பாட்டிற்கான வெட்டு பயன்முறையை அமைக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="86"/>
-      <source>Per-field provenance: which source set HorizFeed/VertFeed/SpindleSpeed</source>
-      <translation type="unfinished">Per-field provenance: which source set HorizFeed/VertFeed/SpindleSpeed</translation>
+      <location filename="../../../Path/Op/MillFacing.py" line="140"/>
+      <source>Set the clearing pattern for the operation.</source>
+      <translation>செயல்பாட்டிற்கான தீர்வு வடிவத்தை அமைக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/FeedsSpeeds/presets.py" line="103"/>
-      <source>JSON-encoded list of feeds &amp; speeds presets</source>
-      <translation type="unfinished">JSON-encoded list of feeds &amp; speeds presets</translation>
+      <location filename="../../../Path/Op/MillFacing.py" line="149"/>
+      <source>Set the angle for the operation.</source>
+      <translation>செயல்பாட்டிற்கான கோணத்தை அமைக்கவும்.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="158"/>
+      <source>Set the stepover percentage of tool diameter.</source>
+      <translation>கருவி விட்டத்தின் ச்டெப்ஓவர் சதவீதத்தை அமைக்கவும்.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="167"/>
+      <source>Set the stock to leave for the operation.</source>
+      <translation>ஆபரேசனுக்குப் புறப்படும்படி ச்டாக்கை அமைக்கவும்.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="176"/>
+      <source>Distance to extend cuts beyond polygon boundary for tool disengagement.</source>
+      <translation>கருவி துண்டிக்க பலகோண எல்லைக்கு அப்பால் வெட்டுக்களை நீட்டிப்பதற்கான தூரம்.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="185"/>
+      <source>Extends the boundary in both direction.</source>
+      <translation>இரு திசைகளிலும் எல்லையை விரிவுபடுத்துகிறது.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="194"/>
+      <source>Reverse the cutting direction for the selected pattern.</source>
+      <translation>தேர்ந்தெடுக்கப்பட்ட வடிவத்திற்கான வெட்டு திசையை மாற்றவும்.</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Mirror.py" line="42"/>
@@ -6875,6 +6877,21 @@ If selection without sub elements:
       <location filename="../../../Path/Dressup/Gui/Mirror.py" line="72"/>
       <source>Define the reference edge or plane for mirroring</source>
       <translation>பிரதிபலிப்பதற்கான குறிப்பு விளிம்பு அல்லது விமானத்தை வரையறுக்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/FeedsSpeeds/presets.py" line="103"/>
+      <source>JSON-encoded list of feeds &amp; speeds presets</source>
+      <translation type="unfinished">JSON-encoded list of feeds &amp; speeds presets</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="74"/>
+      <source>Hint indicating which op category this TC is intended for</source>
+      <translation type="unfinished">Hint indicating which op category this TC is intended for</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="86"/>
+      <source>Per-field provenance: which source set HorizFeed/VertFeed/SpindleSpeed</source>
+      <translation type="unfinished">Per-field provenance: which source set HorizFeed/VertFeed/SpindleSpeed</translation>
     </message>
   </context>
   <context>
@@ -6916,12 +6933,12 @@ If selection without sub elements:
   <context>
     <name>PathAreaOp</name>
     <message>
-      <location filename="../../../Path/Op/Area.py" line="118"/>
+      <location filename="../../../Path/Op/Area.py" line="122"/>
       <source>job %s has no Base.</source>
       <translation>வேலை %s க்கு அடிப்படை இல்லை.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Area.py" line="120"/>
+      <location filename="../../../Path/Op/Area.py" line="124"/>
       <source>no job for operation %s found.</source>
       <translation>%s செயல்பாட்டிற்கான வேலை கிடைக்கவில்லை.</translation>
     </message>
@@ -6949,14 +6966,14 @@ If selection without sub elements:
   <context>
     <name>PathProfile</name>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="257"/>
       <location filename="../../../Path/Op/Helix.py" line="98"/>
+      <location filename="../../../Path/Op/Profile.py" line="257"/>
       <source>Outside</source>
       <translation>வெளியே</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="258"/>
       <location filename="../../../Path/Op/Helix.py" line="97"/>
+      <location filename="../../../Path/Op/Profile.py" line="258"/>
       <source>Inside</source>
       <translation>உள்ளே</translation>
     </message>
@@ -7092,22 +7109,22 @@ If selection without sub elements:
       <translation>சி-குறியீட்டிற்கு மாற்ற வருடு தரவு இல்லை.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="2698"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="2692"/>
       <source>Failed to identify tool for operation.</source>
       <translation>செயல்பாட்டிற்கான கருவியை அடையாளம் காண முடியவில்லை.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="2708"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="2702"/>
       <source>Failed to map selected tool to an OCL tool type.</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட கருவியை OCL கருவி வகைக்கு வரைபடமாக்குவதில் தோல்வி.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="2720"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="2714"/>
       <source>Failed to translate active tool to OCL tool type.</source>
       <translation>செயலில் உள்ள கருவியை OCL கருவி வகைக்கு மொழிபெயர்ப்பதில் தோல்வி.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="2732"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="2726"/>
       <source>OCL tool not available. Cannot determine is cutter has tilt available.</source>
       <translation>OCL கருவி கிடைக்கவில்லை. கட்டரில் சாய்வு உள்ளதா என்பதை தீர்மானிக்க முடியாது.</translation>
     </message>
@@ -7130,27 +7147,27 @@ If selection without sub elements:
       <translation>அதற்கு பதிலாக வரம்புபொட்டி மையத்தைப் பயன்படுத்தவும்.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="489"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="483"/>
       <source>Face selection is unavailable for Rotational scans.</source>
       <translation>சுழலும் ச்கேன்களுக்கு முகம் தேர்வு இல்லை.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="491"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="485"/>
       <source>Ignoring selected faces.</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட முகங்களைப் புறக்கணித்தல்.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="588"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="582"/>
       <source>Failed to pre-process base as a whole.</source>
       <translation>ஒட்டுமொத்தமாக முன் செயலாக்கத் தளம் தோல்வியடைந்தது.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="2378"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="2372"/>
       <source>Failed to identify a horizontal cross-section for Face</source>
       <translation>முகத்திற்கான கிடைமட்ட குறுக்குவெட்டைக் கண்டறிய முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="2610"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="2604"/>
       <source>Diameter dimension missing from ToolBit shape.</source>
       <translation>ToolBit வடிவத்தில் விட்டம் பரிமாணம் இல்லை.</translation>
     </message>
@@ -7437,24 +7454,24 @@ FinalDepth ஐ கைமுறையாக அமைக்க வேண்டு
       <translation>AreaOp செயல்பாட்டை உருவாக்காதே</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1641"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1643"/>
       <source>Start Point Selection</source>
       <translation>தொடக்க புள்ளி தேர்வு</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1642"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1644"/>
       <source>Selects the start point</source>
       <translation>தொடக்கப் புள்ளியைத் தேர்ந்தெடுக்கிறது</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1692"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1694"/>
       <source>No suitable tool controller found.
 Aborting op creation</source>
       <translation>பொருத்தமான கருவி கட்டுப்படுத்தி இல்லை. 
 op உருவாக்கத்தை நிறுத்துகிறது</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1696"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1698"/>
       <source>No tool controller, aborting op creation</source>
       <translation>கருவி கட்டுப்படுத்தி இல்லை, op உருவாக்கத்தை நிறுத்துகிறது</translation>
     </message>
@@ -7493,37 +7510,37 @@ op உருவாக்கத்தை நிறுத்துகிறது<
   <context>
     <name>PathCustom</name>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="64"/>
+      <location filename="../../../Path/Op/Custom.py" line="65"/>
       <source>Text</source>
       <translation>உரை</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="65"/>
+      <location filename="../../../Path/Op/Custom.py" line="66"/>
       <source>File</source>
       <translation>கோப்பு</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="174"/>
+      <location filename="../../../Path/Op/Custom.py" line="175"/>
       <source>Can not parse expression from line %s: %s</source>
       <translation type="unfinished">Can not parse expression from line %s: %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="199"/>
+      <location filename="../../../Path/Op/Custom.py" line="203"/>
       <source>Total invalid lines in Custom Text G-code: %s</source>
       <translation>தனிப்பயன் உரை G-குறியீட்டில் மொத்த தவறான வரிகள்: %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="208"/>
+      <location filename="../../../Path/Op/Custom.py" line="212"/>
       <source>Custom file %s could not be found.</source>
       <translation>தனிப்பயன் கோப்பு %s ஐக் கண்டுபிடிக்க முடியவில்லை.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="226"/>
+      <location filename="../../../Path/Op/Custom.py" line="230"/>
       <source>Total invalid lines in Custom File G-code: %s</source>
       <translation>தனிப்பயன் கோப்பு சி-குறியீட்டில் மொத்த தவறான வரிகள்: %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="231"/>
+      <location filename="../../../Path/Op/Custom.py" line="235"/>
       <source>Check lines: %s</source>
       <translation>வரிகளை சரிபார்க்கவும்: %s</translation>
     </message>
@@ -7874,32 +7891,42 @@ Without sub selection all edges of the shape will be selected.</source>
   <context>
     <name>CAM_DressupRampEntry</name>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="231"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="118"/>
       <source>RampMethod1</source>
       <translation>ராம்ப் முறை 1</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="232"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="119"/>
       <source>RampMethod2</source>
       <translation>ராம்ப் முறை 2</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="233"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="120"/>
       <source>RampMethod3</source>
       <translation>ராம்ப் முறை 3</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="234"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="299"/>
+      <source>The selected object is not a path</source>
+      <translation>தேர்ந்தெடுக்கப்பட்ட பொருள் ஒரு பாதை அல்ல</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="304"/>
+      <source>Select a profile object</source>
+      <translation>சுயவிவரப் பொருளைத் தேர்ந்தெடுக்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="117"/>
       <source>Helix</source>
       <translation>எலிக்ச்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="746"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="265"/>
       <source>Ramp Entry</source>
       <translation>வளைவு நுழைவு</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="750"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="269"/>
       <source>Creates a ramp entry dress-up object from a selected toolpath</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட டூல்பாத்தில் இருந்து வளைவு நுழைவு டிரச்-அப் பொருளை உருவாக்குகிறது</translation>
     </message>
@@ -7907,13 +7934,13 @@ Without sub selection all edges of the shape will be selected.</source>
   <context>
     <name>CAM_Probe</name>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="315"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="325"/>
       <source>Select Probe Point File</source>
       <translation>தேட்டி புள்ளியம் கோப்பைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Probe.py" line="107"/>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="317"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="327"/>
       <source>All Files (*.*)</source>
       <translation>அனைத்து கோப்புகளும் (*.*)</translation>
     </message>
@@ -7951,22 +7978,22 @@ Without sub selection all edges of the shape will be selected.</source>
       <translation>கோப்பிலிருந்து போதுமான புள்ளிகள் (%s) கிடைக்கவில்லை: %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="171"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="181"/>
       <source>Failed to create surface from probe data: %s</source>
       <translation>ஆய்வுத் தரவிலிருந்து மேற்பரப்பை உருவாக்குவதில் தோல்வி: %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="234"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="244"/>
       <source>Path point %s is outside of the probe area %s, %s</source>
       <translation>பாதைப் புள்ளி %s என்பது ஆய்வுப் பகுதி %s, %sக்கு வெளியே உள்ளது</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="378"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="388"/>
       <source>Z Depth Correction</source>
       <translation>சட் ஆழம் திருத்தம்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="382"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="392"/>
       <source>Corrects Z depth using a probe map</source>
       <translation>ஆய்வு வரைபடத்தைப் பயன்படுத்தி சட் ஆழத்தை சரிசெய்கிறது</translation>
     </message>
@@ -7974,38 +8001,38 @@ Without sub selection all edges of the shape will be selected.</source>
   <context>
     <name>CAM_Job</name>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="276"/>
+      <location filename="../../../Path/Main/Job.py" line="277"/>
       <source>Fixture</source>
       <translation>பொருத்துதல்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="277"/>
+      <location filename="../../../Path/Main/Job.py" line="278"/>
       <source>Tool</source>
       <translation>கருவி</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="278"/>
+      <location filename="../../../Path/Main/Job.py" line="279"/>
       <source>Operation</source>
       <translation>செயல்பாடு</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="281"/>
+      <location filename="../../../Path/Main/Job.py" line="282"/>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="63"/>
       <source>2D</source>
       <translation>கூடும்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="282"/>
+      <location filename="../../../Path/Main/Job.py" line="283"/>
       <source>2.5D</source>
       <translation>2.5டி</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="283"/>
+      <location filename="../../../Path/Main/Job.py" line="284"/>
       <source>Lathe</source>
       <translation>கடைசல்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="284"/>
+      <location filename="../../../Path/Main/Job.py" line="285"/>
       <source>Multiaxis</source>
       <translation>மைல்டியாக்சிச்</translation>
     </message>
@@ -8602,8 +8629,8 @@ Without sub selection all edges of the shape will be selected.</source>
       <translation>மரபு CAM சிமுலேட்டர்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Simulator.py" line="625"/>
       <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="366"/>
+      <location filename="../../../Path/Main/Gui/Simulator.py" line="625"/>
       <source>Simulates G-code on stock</source>
       <translation>பங்குகளில் சி-குறியீட்டை உருவகப்படுத்துகிறது</translation>
     </message>
@@ -8644,17 +8671,17 @@ Without sub selection all edges of the shape will be selected.</source>
   <context>
     <name>CAM_Operation</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="487"/>
+      <location filename="../../../Path/Op/Base.py" line="486"/>
       <source>None</source>
       <translation>எதுவுமில்லை</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="488"/>
+      <location filename="../../../Path/Op/Base.py" line="487"/>
       <source>Flood</source>
       <translation>வெள்ளம்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="489"/>
+      <location filename="../../../Path/Op/Base.py" line="488"/>
       <source>Mist</source>
       <translation>மூடுபனி</translation>
     </message>
@@ -8677,62 +8704,62 @@ Without sub selection all edges of the shape will be selected.</source>
   <context>
     <name>CAM</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="838"/>
+      <location filename="../../../Path/Op/Base.py" line="843"/>
       <source>No parent job found for operation.</source>
       <translation>ஆபரேசனுக்கான பெற்றோர் வேலை எதுவும் கிடைக்கவில்லை.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="843"/>
+      <location filename="../../../Path/Op/Base.py" line="848"/>
       <source>Parent job %s doesn&apos;t have a base object</source>
       <translation>பெற்றோர் வேலை %s இல் அடிப்படை பொருள் இல்லை</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1114"/>
+      <location filename="../../../Path/Op/Base.py" line="1119"/>
       <source>No Tool Controller is selected. We need a tool to build a Path.</source>
       <translation>கருவி கட்டுப்படுத்தி தேர்ந்தெடுக்கப்படவில்லை. பாதையை உருவாக்க நமக்கு ஒரு கருவி தேவை.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1128"/>
+      <location filename="../../../Path/Op/Base.py" line="1133"/>
       <source>No Tool found or diameter is zero. We need a tool to build a Path.</source>
       <translation>எந்த கருவியும் இல்லை அல்லது விட்டம் பூச்சியமாக இல்லை. பாதையை உருவாக்க நமக்கு ஒரு கருவி தேவை.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1498"/>
+      <location filename="../../../Path/Op/Util.py" line="661"/>
       <source>No Tool Controller selected.</source>
       <translation>கருவி கட்டுப்படுத்தி தேர்ந்தெடுக்கப்படவில்லை.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1501"/>
+      <location filename="../../../Path/Op/Util.py" line="664"/>
       <source>Tool Error</source>
       <translation>கருவி பிழை</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1513"/>
+      <location filename="../../../Path/Op/Util.py" line="676"/>
       <source>Tool Controller feedrates required to calculate the cycle time.</source>
       <translation>சுழற்சி நேரத்தைக் கணக்கிடுவதற்கு தேவையான கருவிக் கட்டுப்படுத்தி ஊட்டங்கள்.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1516"/>
+      <location filename="../../../Path/Op/Util.py" line="679"/>
       <source>Tool Feedrate Error</source>
       <translation>டூல் ஃபீட்ரேட் பிழை</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1522"/>
+      <location filename="../../../Path/Op/Util.py" line="685"/>
       <source>Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</source>
       <translation>மிகவும் துல்லியமான சுழற்சி நேரங்களுக்கு, SetupSheet இல் டூல் கன்ட்ரோலர் ரேபிட் ச்பீட்களைச் சேர்க்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1531"/>
+      <location filename="../../../Path/Op/Util.py" line="693"/>
       <source>Cycletime Error</source>
       <translation>சைக்கிள் நேரப் பிழை</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1260"/>
+      <location filename="../../../Path/Op/Base.py" line="1265"/>
       <source>Base object %s.%s already in the list</source>
       <translation>%s.%s அடிப்படை பொருள் ஏற்கனவே பட்டியலில் உள்ளது</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1270"/>
+      <location filename="../../../Path/Op/Base.py" line="1275"/>
       <source>Base object %s.%s rejected by operation</source>
       <translation>அடிப்படை பொருள் %s.%s செயல்பாட்டால் நிராகரிக்கப்பட்டது</translation>
     </message>
@@ -8769,8 +8796,8 @@ Without sub selection all edges of the shape will be selected.</source>
       <translation>%s என்பது வேலைகளின் அடிப்படை மாதிரி பொருள் அல்ல</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Probe.py" line="70"/>
       <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="112"/>
+      <location filename="../../../Path/Op/Gui/Probe.py" line="70"/>
       <location filename="../../../Path/Op/Gui/Vcarve.py" line="176"/>
       <source>No valid toolcontroller</source>
       <translation>சரியான டூல்கண்ட்ரோலர் இல்லை</translation>
@@ -8988,9 +9015,9 @@ This will not delete the toolbits contained within it.</source>
 இது அதில் உள்ள டூல்பிட்களை நீக்காது.</translation>
     </message>
     <message>
+      <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="289"/>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="430"/>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="470"/>
-      <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="289"/>
       <source>Error</source>
       <translation>பிழை</translation>
     </message>
@@ -9386,9 +9413,99 @@ This will not delete the toolbits contained within it.</source>
       <translation type="unfinished">Whether to output the F parameter for G0 (rapid moves)</translation>
     </message>
     <message>
+      <location filename="../../../Path/Post/scripts/grbl_post.py" line="64"/>
+      <source>Grbl post processor</source>
+      <translation>Grbl போச்ட் செயலி</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="93"/>
+      <source>Path Blending Mode</source>
+      <translation>பாதை கலப்பு முறை</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="100"/>
+      <source>Path blending mode: EXACT_PATH (G61) stops at each point, EXACT_STOP (G61.1) stops at path ends, BLEND (G64) allows smooth motion</source>
+      <translation>பாதை கலப்பு முறை: EXACT_PATH (G61) ஒவ்வொரு புள்ளியிலும் நிறுத்தப்படும், EXACT_STOP (G61.1) பாதை முனைகளில் நிறுத்தப்படும், BLEND (G64) மென்மையான இயக்கத்தை அனுமதிக்கிறது</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="106"/>
+      <source>Blend Tolerance</source>
+      <translation>சகிப்புத்தன்மையை கலக்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="115"/>
+      <source>Tolerance for BLEND mode (P value): 0 = no tolerance (G64), &gt;0 = tolerance (G64 P-), in current units</source>
+      <translation>BLEND பயன்முறைக்கான சகிப்புத்தன்மை (P மதிப்பு): 0 = சகிப்புத்தன்மை இல்லை (G64), &gt;0 = சகிப்புத்தன்மை (G64 P-), தற்போதைய அலகுகளில்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="122"/>
+      <source>LinuxCNC post processor</source>
+      <translation>LinuxCNC போச்ட் செயலி</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/centroid_post.py" line="87"/>
+      <source>Centroid post processor</source>
+      <translation>சென்ட்ராய்டு போச்ட் செயலி</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Post/scripts/test_post.py" line="57"/>
       <source>Test post processor</source>
       <translation>சோதனை இடுகை செயலி</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/marlin_post.py" line="85"/>
+      <source>Marlin post processor</source>
+      <translation>மார்லின் போச்ட் செயலி</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="167"/>
+      <source>Automatic Tool Changer</source>
+      <translation>தானியங்கி கருவி மாற்றி</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="173"/>
+      <source>Enable if machine has automatic tool changer. If disabled, tool changes will pause for manual intervention.</source>
+      <translation>இயந்திரத்தில் தானியங்கி கருவி மாற்றி இருந்தால் இயக்கவும். முடக்கப்பட்டால், கருவி மாற்றங்கள் கைமுறையான தலையீட்டிற்கு இடைநிறுத்தப்படும்.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="178"/>
+      <source>Automatic Spindle Control</source>
+      <translation>தானியங்கி சுழல் கட்டுப்பாடு</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="184"/>
+      <source>Enable if machine has automatic spindle speed control. If disabled, spindle commands will prompt for manual adjustment.</source>
+      <translation>இயந்திரத்தில் தானியங்கி சுழல் வேகக் கட்டுப்பாடு இருந்தால் இயக்கவும். முடக்கப்பட்டிருந்தால், ச்பின்டில் கட்டளைகள் கைமுறையாக சரிசெய்யும்படி கேட்கும்.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="190"/>
+      <source>Suppressed (tolerated) G-code Commands</source>
+      <translation>அடக்கப்பட்ட (சகித்துக் கொள்ளப்பட்ட) சி-குறியீடு கட்டளைகள்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="196"/>
+      <source>List of G-code commands tolerated but suppressed by this post-processor (one per line). Commands this list will be filtered out</source>
+      <translation>G-code கட்டளைகளின் பட்டியல் இந்த பிந்தைய செயலி (ஒரு வரிக்கு ஒன்று) பொறுத்துக்கொள்ளப்படுகிறது ஆனால் அடக்கப்படுகிறது. கட்டளைகள் இந்த பட்டியல் வடிகட்டப்படும்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="203"/>
+      <source>OpenSBP post processor for ShopBot controllers</source>
+      <translation>ShopBot கட்டுப்படுத்திகளுக்கான OpenSBP போச்ட் செயலி</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/mach3_mach4_post.py" line="59"/>
+      <source>Mach3_Mach4 post processor</source>
+      <translation>Mach3_Mach4 இடுகை செயலி</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/masso_g3_post.py" line="61"/>
+      <source>Masso G3 post processor</source>
+      <translation>Masso Gz போச்ட் செயலி</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/smoothie_post.py" line="64"/>
+      <source>Refactored SmoothieBoard post processor</source>
+      <translation>மறுவடிவமைக்கப்பட்ட SmoothieBoard இடுகை செயலி</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="91"/>
@@ -9456,101 +9573,6 @@ This will not delete the toolbits contained within it.</source>
       <translation>பொதுவான பிளாச்மா போச்ட் செயலி</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/centroid_post.py" line="87"/>
-      <source>Centroid post processor</source>
-      <translation>சென்ட்ராய்டு போச்ட் செயலி</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/grbl_post.py" line="64"/>
-      <source>Grbl post processor</source>
-      <translation>Grbl போச்ட் செயலி</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/smoothie_post.py" line="64"/>
-      <source>Refactored SmoothieBoard post processor</source>
-      <translation>மறுவடிவமைக்கப்பட்ட SmoothieBoard இடுகை செயலி</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/masso_g3_post.py" line="61"/>
-      <source>Masso G3 post processor</source>
-      <translation>Masso Gz போச்ட் செயலி</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="93"/>
-      <source>Path Blending Mode</source>
-      <translation>பாதை கலப்பு முறை</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="100"/>
-      <source>Path blending mode: EXACT_PATH (G61) stops at each point, EXACT_STOP (G61.1) stops at path ends, BLEND (G64) allows smooth motion</source>
-      <translation>பாதை கலப்பு முறை: EXACT_PATH (G61) ஒவ்வொரு புள்ளியிலும் நிறுத்தப்படும், EXACT_STOP (G61.1) பாதை முனைகளில் நிறுத்தப்படும், BLEND (G64) மென்மையான இயக்கத்தை அனுமதிக்கிறது</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="106"/>
-      <source>Blend Tolerance</source>
-      <translation>சகிப்புத்தன்மையை கலக்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="115"/>
-      <source>Tolerance for BLEND mode (P value): 0 = no tolerance (G64), &gt;0 = tolerance (G64 P-), in current units</source>
-      <translation>BLEND பயன்முறைக்கான சகிப்புத்தன்மை (P மதிப்பு): 0 = சகிப்புத்தன்மை இல்லை (G64), &gt;0 = சகிப்புத்தன்மை (G64 P-), தற்போதைய அலகுகளில்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="122"/>
-      <source>LinuxCNC post processor</source>
-      <translation>LinuxCNC போச்ட் செயலி</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="167"/>
-      <source>Automatic Tool Changer</source>
-      <translation>தானியங்கி கருவி மாற்றி</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="173"/>
-      <source>Enable if machine has automatic tool changer. If disabled, tool changes will pause for manual intervention.</source>
-      <translation>இயந்திரத்தில் தானியங்கி கருவி மாற்றி இருந்தால் இயக்கவும். முடக்கப்பட்டால், கருவி மாற்றங்கள் கைமுறையான தலையீட்டிற்கு இடைநிறுத்தப்படும்.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="178"/>
-      <source>Automatic Spindle Control</source>
-      <translation>தானியங்கி சுழல் கட்டுப்பாடு</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="184"/>
-      <source>Enable if machine has automatic spindle speed control. If disabled, spindle commands will prompt for manual adjustment.</source>
-      <translation>இயந்திரத்தில் தானியங்கி சுழல் வேகக் கட்டுப்பாடு இருந்தால் இயக்கவும். முடக்கப்பட்டிருந்தால், ச்பின்டில் கட்டளைகள் கைமுறையாக சரிசெய்யும்படி கேட்கும்.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="190"/>
-      <source>Suppressed (tolerated) G-code Commands</source>
-      <translation>அடக்கப்பட்ட (சகித்துக் கொள்ளப்பட்ட) சி-குறியீடு கட்டளைகள்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="196"/>
-      <source>List of G-code commands tolerated but suppressed by this post-processor (one per line). Commands this list will be filtered out</source>
-      <translation>G-code கட்டளைகளின் பட்டியல் இந்த பிந்தைய செயலி (ஒரு வரிக்கு ஒன்று) பொறுத்துக்கொள்ளப்படுகிறது ஆனால் அடக்கப்படுகிறது. கட்டளைகள் இந்த பட்டியல் வடிகட்டப்படும்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="203"/>
-      <source>OpenSBP post processor for ShopBot controllers</source>
-      <translation>ShopBot கட்டுப்படுத்திகளுக்கான OpenSBP போச்ட் செயலி</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/mach3_mach4_post.py" line="59"/>
-      <source>Mach3_Mach4 post processor</source>
-      <translation>Mach3_Mach4 இடுகை செயலி</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/marlin_post.py" line="85"/>
-      <source>Marlin post processor</source>
-      <translation>மார்லின் போச்ட் செயலி</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/models/taperedballnose.py" line="53"/>
-      <source>{diameter} tip, {taper_angle} taper, {flutes}-flute tapered ball nose, {cutting_edge_height} cutting edge</source>
-      <translation>{diameter} முனை, {taper_angle} டேப்பர், {flutes}-புல்லாங்குழல் குறுகலான பந்து மூக்கு, {cutting_edge_height} வெட்டு விளிம்பு</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1303"/>
       <source>Exceeded length in cutTravelEnd</source>
       <translation>cutTravelEnd இல் நீளத்தை மீறியது</translation>
@@ -9564,6 +9586,11 @@ This will not delete the toolbits contained within it.</source>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="100"/>
       <source>CAM Inspect</source>
       <translation>CAM ஆய்வு</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/models/taperedballnose.py" line="53"/>
+      <source>{diameter} tip, {taper_angle} taper, {flutes}-flute tapered ball nose, {cutting_edge_height} cutting edge</source>
+      <translation>{diameter} முனை, {taper_angle} டேப்பர், {flutes}-புல்லாங்குழல் குறுகலான பந்து மூக்கு, {cutting_edge_height} வெட்டு விளிம்பு</translation>
     </message>
   </context>
   <context>
@@ -10826,6 +10853,7 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Base/Gui/PropertyBag.py" line="428"/>
       <source>Property Bag</source>
+      <extracomment>float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=None) bool = field(default=False) str = field(default=&quot;G54&quot;) str = field(default=&quot;off&quot;) str = Z|R for G98/G99, for drill cycles float = field(default=None) int = field(default=0) int = field(default=None)</extracomment>
       <translation>சொத்து பை</translation>
     </message>
     <message>
@@ -10942,96 +10970,81 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>ToolBitShape</name>
     <message>
-      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="34"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/custom.py" line="42"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="40"/>
       <location filename="../../../Path/Tool/shape/models/reamer.py" line="36"/>
-      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="40"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="36"/>
+      <location filename="../../../Path/Tool/shape/models/custom.py" line="42"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="34"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="36"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="36"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="36"/>
+      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="40"/>
       <source>Cutting edge height</source>
       <translation>கட்டிங் எட்ச் உயரம்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="38"/>
-      <location filename="../../../Path/Tool/shape/models/drill.py" line="36"/>
-      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/custom.py" line="46"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/drill.py" line="36"/>
       <location filename="../../../Path/Tool/shape/models/reamer.py" line="40"/>
-      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/custom.py" line="46"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="38"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="48"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="44"/>
       <source>Diameter</source>
       <translation>விட்டம்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="42"/>
-      <location filename="../../../Path/Tool/shape/models/drill.py" line="40"/>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="52"/>
-      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="52"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="52"/>
-      <location filename="../../../Path/Tool/shape/models/custom.py" line="50"/>
-      <location filename="../../../Path/Tool/shape/models/tap.py" line="44"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/drill.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/custom.py" line="50"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="42"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="52"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/tap.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="48"/>
       <source>Flutes</source>
       <translation>புல்லாங்குழல்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="46"/>
-      <location filename="../../../Path/Tool/shape/models/drill.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="56"/>
-      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="56"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="56"/>
-      <location filename="../../../Path/Tool/shape/models/custom.py" line="54"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/drill.py" line="44"/>
       <location filename="../../../Path/Tool/shape/models/reamer.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="52"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/custom.py" line="54"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="46"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="56"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="56"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="56"/>
+      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="52"/>
       <source>Overall tool length</source>
       <translation>மொத்த கருவி நீளம்</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="50"/>
+      <location filename="../../../Path/Tool/shape/models/vbit.py" line="56"/>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="60"/>
-      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="68"/>
+      <location filename="../../../Path/Tool/shape/models/reamer.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="50"/>
+      <location filename="../../../Path/Tool/shape/models/ballend.py" line="52"/>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="60"/>
       <location filename="../../../Path/Tool/shape/models/bullnose.py" line="60"/>
-      <location filename="../../../Path/Tool/shape/models/tap.py" line="52"/>
-      <location filename="../../../Path/Tool/shape/models/vbit.py" line="56"/>
-      <location filename="../../../Path/Tool/shape/models/reamer.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="56"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="56"/>
-      <location filename="../../../Path/Tool/shape/models/ballend.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/tap.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="68"/>
+      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="56"/>
       <source>Shank diameter</source>
       <translation>சாங்க் விட்டம்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="54"/>
-      <source>Included Taper angle</source>
-      <translation>டேப்பர் கோணம் சேர்க்கப்பட்டுள்ளது</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="58"/>
-      <source>Diameter at top of Taper</source>
-      <translation>டேப்பரின் மேல் விட்டம்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="66"/>
-      <source>Tapered Ball Nose</source>
-      <translation>குறுகலான பந்து மூக்கு</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="60"/>
@@ -11046,8 +11059,8 @@ Several operations can be used with identical tool controller and coolant mode</
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="60"/>
-      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="60"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="60"/>
+      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="60"/>
       <source>Tip diameter</source>
       <translation>முனை விட்டம்</translation>
     </message>
@@ -11215,6 +11228,21 @@ Several operations can be used with identical tool controller and coolant mode</
       <location filename="../../../Path/Tool/shape/models/radius.py" line="68"/>
       <source>Radius Mill</source>
       <translation>ரேடியச் மில்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="54"/>
+      <source>Included Taper angle</source>
+      <translation>டேப்பர் கோணம் சேர்க்கப்பட்டுள்ளது</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="58"/>
+      <source>Diameter at top of Taper</source>
+      <translation>டேப்பரின் மேல் விட்டம்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="66"/>
+      <source>Tapered Ball Nose</source>
+      <translation>குறுகலான பந்து மூக்கு</translation>
     </message>
   </context>
   <context>
@@ -11390,67 +11418,365 @@ Several operations can be used with identical tool controller and coolant mode</
     </message>
   </context>
   <context>
-    <name>CAM_MIllFacing</name>
+    <name>CAMSimulator::GuiDisplay</name>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="102"/>
-      <source>New property added to</source>
-      <translation>புதிய சொத்து சேர்க்கப்பட்டது</translation>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="39"/>
+      <source>Play simulation</source>
+      <translation>உருவகப்படுத்துதலை விளையாடு</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="53"/>
+      <source>Single step simulation</source>
+      <translation>ஒற்றை படி உருவகப்படுத்துதல்</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="67"/>
+      <source>Decrease simulation speed</source>
+      <translation>உருவகப்படுத்துதல் வேகத்தைக் குறைக்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="81"/>
+      <source>Increase simulation speed</source>
+      <translation>உருவகப்படுத்துதல் வேகத்தை அதிகரிக்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="98"/>
+      <source>x1</source>
+      <translation>x1</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="105"/>
+      <source>Reset camera</source>
+      <translation>கேமராவை மீட்டமைக்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="119"/>
+      <source>Toggle view simulation/model</source>
+      <translation>காட்சி உருவகப்படுத்துதல்/மாடலை நிலைமாற்று</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="136"/>
+      <source>Toggle turn table animation</source>
+      <translation>டர்ன் டேபிள் அனிமேசனை நிலைமாற்று</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="153"/>
+      <source>Show/hide tool path</source>
+      <translation>கருவி பாதையைக் காட்டு/மறை</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="170"/>
+      <source>Toggle ambient occlusion</source>
+      <translation>சுற்றுப்புற அடைப்பை நிலைமாற்று</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="99"/>
+      <source>x%1</source>
+      <translation>x% 1</translation>
     </message>
   </context>
   <context>
-    <name>CAM_MillFacing</name>
+    <name>FeedsSpeedsPresetEdit</name>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="104"/>
-      <source>Check default value(s).</source>
-      <translation>இயல்புநிலை மதிப்பை(களை) சரிபார்க்கவும்.</translation>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="14"/>
+      <source>Edit preset</source>
+      <translation type="unfinished">Edit preset</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="212"/>
-      <source>Climb</source>
-      <translation>ஏறுங்கள்</translation>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="22"/>
+      <source>Name:</source>
+      <translation type="unfinished">Name:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="213"/>
-      <source>Conventional</source>
-      <translation>வழக்கமான</translation>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="32"/>
+      <source>Material:</source>
+      <translation type="unfinished">Material:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="216"/>
-      <source>ZigZag</source>
-      <translation>சிக்சாக்</translation>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="41"/>
+      <source>(none)</source>
+      <translation>(எதுவுமில்லை)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="217"/>
-      <source>Bidirectional</source>
-      <translation>இருதரப்பு</translation>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="48"/>
+      <source>Browse…</source>
+      <translation>உலாவுக…</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="218"/>
-      <source>Directional</source>
-      <translation>திசைவழி</translation>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="55"/>
+      <source>Generic (any material)</source>
+      <translation type="unfinished">Generic (any material)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="219"/>
-      <source>Spiral</source>
-      <translation>சுழல்</translation>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="64"/>
+      <source>Op type:</source>
+      <translation type="unfinished">Op type:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/MillFacing.py" line="165"/>
-      <source>Mill Facing</source>
-      <translation>மில் எதிர்கொள்ளும்</translation>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="74"/>
+      <source>Surface speed:</source>
+      <translation type="unfinished">Surface speed:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/MillFacing.py" line="168"/>
-      <source>Create a Mill Facing Operation to machine the top surface of stock</source>
-      <translation>பங்குகளின் மேல் மேற்பரப்பை இயந்திரமாக்க மில் ஃபாசிங் ஆபரேசன் ஒன்றை உருவாக்கவும்</translation>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="94"/>
+      <source>Chipload (per tooth):</source>
+      <translation type="unfinished">Chipload (per tooth):</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="117"/>
+      <source>Vert feed ratio:</source>
+      <translation type="unfinished">Vert feed ratio:</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="145"/>
+      <source>Direct feed and speed</source>
+      <translation type="unfinished">Direct feed and speed</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="151"/>
+      <source>Horiz feed:</source>
+      <translation type="unfinished">Horiz feed:</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="174"/>
+      <source>Spindle speed:</source>
+      <translation type="unfinished">Spindle speed:</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="200"/>
+      <source>Tool diameter and/or flute count missing — surface speed and chipload won&apos;t auto-sync with direct feed/speed.</source>
+      <translation type="unfinished">Tool diameter and/or flute count missing — surface speed and chipload won&apos;t auto-sync with direct feed/speed.</translation>
     </message>
   </context>
   <context>
-    <name>Waterline</name>
+    <name>DlgPostProcess</name>
     <message>
-      <location filename="../../../Path/Op/Waterline.py" line="1385"/>
-      <source>: Steps below the model&apos;s top Face will be the only ones processed.</source>
-      <translation>: மாடலின் மேல் முகத்திற்குக் கீழே உள்ள படிகள் மட்டுமே செயலாக்கப்படும்.</translation>
+      <location filename="../panels/DlgPostProcess.ui" line="14"/>
+      <source>Post Processing</source>
+      <translation>பிந்தைய செயலாக்கம்</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="29"/>
+      <source>Post Processing - Job: (unknown)</source>
+      <translation>இடுகை செயலாக்கம் - வேலை: (தெரியாது)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="40"/>
+      <source>Overview</source>
+      <translation>கண்ணோட்டம்</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="46"/>
+      <location filename="../panels/DlgPostProcess.ui" line="55"/>
+      <source>Machine</source>
+      <translation>இயந்திரம்</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="68"/>
+      <source>Machine configuration (.fcm) to use for post-processing</source>
+      <translation>பிந்தைய செயலாக்கத்திற்கு பயன்படுத்த இயந்திர கட்டமைப்பு (.fcm).</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="78"/>
+      <source>Fixtures</source>
+      <translation>பொருத்துதல்கள்</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="90"/>
+      <source>Check fixtures to include in the G-code output</source>
+      <translation>சி-குறியீடு வெளியீட்டில் சேர்க்க சாதனங்களைச் சரிபார்க்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="100"/>
+      <source>Job Details</source>
+      <translation>வேலை விவரங்கள்</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="109"/>
+      <source>Author</source>
+      <translation>நூலாசிரியர்</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="116"/>
+      <source>Author name written into the G-code header comment</source>
+      <translation>G-குறியீடு தலைப்புக் கருத்தில் எழுதப்பட்ட ஆசிரியர் பெயர்</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="119"/>
+      <location filename="../panels/DlgPostProcess.ui" line="145"/>
+      <source>(optional)</source>
+      <translation>(விரும்பினால்)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="126"/>
+      <source>Comment</source>
+      <translation>கருத்து</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="142"/>
+      <source>Arbitrary comment written into the G-code header</source>
+      <translation>சி-குறியீடு தலைப்பில் எழுதப்பட்ட தன்னிச்சையான கருத்து</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="155"/>
+      <location filename="../panels/DlgPostProcess.ui" line="282"/>
+      <source>Options</source>
+      <translation>விருப்பங்கள்</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="161"/>
+      <source>Generate a full sanity/setup report alongside the G-code file</source>
+      <translation>சி-குறியீடு கோப்புடன் ஒரு முழு நல்லறிவு/அமைவு அறிக்கையை உருவாக்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="164"/>
+      <source>Generate HTML sanity report</source>
+      <translation>உஉகுமொ நல்லறிவு அறிக்கையை உருவாக்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="177"/>
+      <source>Post Processor Parameters</source>
+      <translation>பிந்தைய செயலி அளவுருக்கள்</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="186"/>
+      <source>(No additional parameters for this post processor)</source>
+      <translation>(இந்த இடுகை செயலிக்கு கூடுதல் அளவுருக்கள் இல்லை)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="213"/>
+      <source>Operations</source>
+      <translation>செயல்பாடுகள்</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="219"/>
+      <source>Check operations to include in the G-code output. Uncheck to skip.</source>
+      <translation>சி-குறியீடு வெளியீட்டில் சேர்க்க செயல்பாடுகளைச் சரிபார்க்கவும். தவிர்க்க தேர்வை நீக்கவும்.</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="232"/>
+      <source>Operation</source>
+      <translation>செயல்பாடு</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="242"/>
+      <source>Select All</source>
+      <translation>அனைத்தையும் தேர்ந்தெடு</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="249"/>
+      <source>Select None</source>
+      <translation>எதுவுமில்லை என்பதைத் தேர்ந்தெடுக்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="256"/>
+      <source>Show the workplan (postable items structure)</source>
+      <translation>பணித் திட்டத்தைக் காட்டு (அஞ்சல் உருப்படிகளின் அமைப்பு)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="259"/>
+      <source>Workplan</source>
+      <translation>வேலைத் திட்டம்</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="309"/>
+      <source>(Select a machine on the Overview tab to see machine output options)</source>
+      <translation>(இயந்திர வெளியீட்டு விருப்பங்களைப் பார்க்க மேலோட்டம் தாவலில் ஒரு இயந்திரத்தைத் தேர்ந்தெடுக்கவும்)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="337"/>
+      <source>Output</source>
+      <translation>வெளியீடு</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="345"/>
+      <source>Output folder</source>
+      <translation>வெளியீட்டு கோப்புறை</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="352"/>
+      <source>Folder where G-code files will be saved</source>
+      <translation>சி-கோட் கோப்புகள் சேமிக்கப்படும் கோப்புறை</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="355"/>
+      <source>(resolved when output is generated)</source>
+      <translation>(வெளியீடு உருவாக்கப்படும் போது தீர்க்கப்படும்)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="368"/>
+      <source>Browse…</source>
+      <translation>உலாவுக…</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="379"/>
+      <source>Filename template</source>
+      <translation>கோப்பு பெயர் டெம்ப்ளேட்</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="386"/>
+      <source>Filename template. Substitutions: %j=job name, %d=document, %T=tool, %W=fixture, %O=operation</source>
+      <translation>கோப்பு பெயர் டெம்ப்ளேட். மாற்றீடுகள்: %j=வேலையின் பெயர், %d=ஆவணம், %T=கருவிகள், %W=பிக்ச்ச்சர், %O=செயல்பாடு</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="389"/>
+      <source>e.g. %j.nc</source>
+      <translation>எ.கா. %j.nc</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="405"/>
+      <source>Regenerate output filenames using this template</source>
+      <translation>இந்த டெம்ப்ளேட்டைப் பயன்படுத்தி வெளியீட்டு கோப்புப் பெயர்களை மீண்டும் உருவாக்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="408"/>
+      <source>Apply</source>
+      <translation>செயற்படுத்து</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="420"/>
+      <source>Press &quot;Generate Output&quot; to preview G-code before saving.</source>
+      <translation>சேமிப்பதற்கு முன் G-குறியீட்டை முன்னோட்டமிட &quot;வெளியீட்டை உருவாக்கு&quot; என்பதை அழுத்தவும்.</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="440"/>
+      <source>Generated output files. Select a file to view or edit its contents.</source>
+      <translation>உருவாக்கப்பட்ட வெளியீட்டு கோப்புகள். அதன் உள்ளடக்கங்களைப் பார்க்க அல்லது திருத்த கோப்பைத் தேர்ந்தெடுக்கவும்.</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="451"/>
+      <source>G-code content for the selected file. You may edit before saving.</source>
+      <translation>தேர்ந்தெடுக்கப்பட்ட கோப்பிற்கான சி-குறியீடு உள்ளடக்கம். சேமிப்பதற்கு முன் நீங்கள் திருத்தலாம்.</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="464"/>
+      <source>Save to Disk</source>
+      <translation>வட்டில் சேமிக்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="487"/>
+      <source>Warnings</source>
+      <translation>எச்சரிக்கைகள்</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="496"/>
+      <source>No issues found</source>
+      <translation>சிக்கல்கள் எதுவும் கண்டறியப்படவில்லை</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="506"/>
+      <source>Validation issues found in the job. WARNING and CAUTION items should be addressed before machining.</source>
+      <translation>வேலையில் சரிபார்ப்புச் சிக்கல்கள் காணப்படுகின்றன. எந்திரம் செய்வதற்கு முன் முன்னறிவிப்பு மற்றும் முன்னறிவிப்பு பொருட்கள் கவனிக்கப்பட வேண்டும்.</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="528"/>
+      <source>Severity</source>
+      <translation>தீவிரம்</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="533"/>
+      <source>Note</source>
+      <translation>குறிப்பு</translation>
     </message>
   </context>
   <context>
@@ -11459,6 +11785,14 @@ Several operations can be used with identical tool controller and coolant mode</
       <location filename="../../../Path/Op/Helix.py" line="711"/>
       <source>Skipped hole at position %s</source>
       <translation>%s நிலையில் துளை தவிர்க்கப்பட்டது</translation>
+    </message>
+  </context>
+  <context>
+    <name>Waterline</name>
+    <message>
+      <location filename="../../../Path/Op/Waterline.py" line="1385"/>
+      <source>: Steps below the model&apos;s top Face will be the only ones processed.</source>
+      <translation>: மாடலின் மேல் முகத்திற்குக் கீழே உள்ள படிகள் மட்டுமே செயலாக்கப்படும்.</translation>
     </message>
   </context>
   <context>
@@ -11520,103 +11854,105 @@ Several operations can be used with identical tool controller and coolant mode</
     </message>
   </context>
   <context>
+    <name>CAM_MIllFacing</name>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="102"/>
+      <source>New property added to</source>
+      <translation>புதிய சொத்து சேர்க்கப்பட்டது</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_MillFacing</name>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="104"/>
+      <source>Check default value(s).</source>
+      <translation>இயல்புநிலை மதிப்பை(களை) சரிபார்க்கவும்.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="212"/>
+      <source>Climb</source>
+      <translation>ஏறுங்கள்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="213"/>
+      <source>Conventional</source>
+      <translation>வழக்கமான</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="216"/>
+      <source>ZigZag</source>
+      <translation>சிக்சாக்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="217"/>
+      <source>Bidirectional</source>
+      <translation>இருதரப்பு</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="218"/>
+      <source>Directional</source>
+      <translation>திசைவழி</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="219"/>
+      <source>Spiral</source>
+      <translation>சுழல்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/MillFacing.py" line="165"/>
+      <source>Mill Facing</source>
+      <translation>மில் எதிர்கொள்ளும்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/MillFacing.py" line="168"/>
+      <source>Create a Mill Facing Operation to machine the top surface of stock</source>
+      <translation>பங்குகளின் மேல் மேற்பரப்பை இயந்திரமாக்க மில் ஃபாசிங் ஆபரேசன் ஒன்றை உருவாக்கவும்</translation>
+    </message>
+  </context>
+  <context>
+    <name>MirrorDressup</name>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="105"/>
+      <source>No base operation</source>
+      <translation>அடிப்படை செயல்பாடு இல்லை</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="112"/>
+      <source>Base object &apos;%s&apos; is not derived from Path::Feature</source>
+      <translation>அடிப்படை பொருள் &apos;%s&apos; பாதை::அம்சத்திலிருந்து பெறப்படவில்லை</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="119"/>
+      <source>Base operation &apos;%s&apos; with empty path</source>
+      <translation>காலியான பாதையுடன் &apos;%s&apos; அடிப்படை செயல்பாடு</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_DressupMirror</name>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="266"/>
+      <source>Mirror</source>
+      <translation>கண்ணாடி</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="268"/>
+      <source>Creates mirror of a selected path</source>
+      <translation>தேர்ந்தெடுக்கப்பட்ட பாதையின் கண்ணாடியை உருவாக்குகிறது</translation>
+    </message>
+  </context>
+  <context>
     <name>CAM_FeedsSpeeds</name>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="329"/>
-      <source>Suggest Feeds &amp; Speeds</source>
-      <translation type="unfinished">Suggest Feeds &amp; Speeds</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="340"/>
-      <source>(no tool)</source>
-      <translation type="unfinished">(no tool)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="341"/>
-      <source>Tool:</source>
-      <translation type="unfinished">Tool:</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="345"/>
-      <source>(none — generic resolution)</source>
-      <translation type="unfinished">(none — generic resolution)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="345"/>
-      <source>Material:</source>
-      <translation type="unfinished">Material:</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="348"/>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="239"/>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="511"/>
-      <source>(any)</source>
-      <translation type="unfinished">(any)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="357"/>
-      <source>Op type:</source>
-      <translation type="unfinished">Op type:</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="365"/>
-      <source>Apply preset:</source>
-      <translation type="unfinished">Apply preset:</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="369"/>
-      <source>Suggestion</source>
-      <translation type="unfinished">Suggestion</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="373"/>
-      <source>Source:</source>
-      <translation type="unfinished">Source:</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="379"/>
-      <source>Confidence:</source>
-      <translation type="unfinished">Confidence:</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="384"/>
-      <source>Current</source>
-      <translation>மின்னோட்ட்ம், ஓட்டம்</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="386"/>
-      <source>Suggested</source>
-      <translation type="unfinished">Suggested</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="388"/>
-      <source>Δ</source>
-      <translation type="unfinished">Δ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="424"/>
-      <source>Auto (use resolver)</source>
-      <translation type="unfinished">Auto (use resolver)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="518"/>
-      <source>No suggestion available</source>
-      <translation type="unfinished">No suggestion available</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="529"/>
-      <source>No matching preset on this tool. Open the tool from the library to add presets.</source>
-      <translation type="unfinished">No matching preset on this tool. Open the tool from the library to add presets.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/MaterialPicker.py" line="58"/>
-      <source>Choose material</source>
-      <translation type="unfinished">Choose material</translation>
-    </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="214"/>
       <source>Optional, e.g. &apos;Aluminum aggressive&apos;</source>
       <translation type="unfinished">Optional, e.g. &apos;Aluminum aggressive&apos;</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="239"/>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="511"/>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="348"/>
+      <source>(any)</source>
+      <translation type="unfinished">(any)</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="428"/>
@@ -11678,36 +12014,90 @@ Several operations can be used with identical tool controller and coolant mode</
       <source>raw fallback</source>
       <translation type="unfinished">raw fallback</translation>
     </message>
-  </context>
-  <context>
-    <name>MirrorDressup</name>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="105"/>
-      <source>No base operation</source>
-      <translation>அடிப்படை செயல்பாடு இல்லை</translation>
+      <location filename="../../../Path/Tool/Gui/MaterialPicker.py" line="58"/>
+      <source>Choose material</source>
+      <translation type="unfinished">Choose material</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="112"/>
-      <source>Base object &apos;%s&apos; is not derived from Path::Feature</source>
-      <translation>அடிப்படை பொருள் &apos;%s&apos; பாதை::அம்சத்திலிருந்து பெறப்படவில்லை</translation>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="329"/>
+      <source>Suggest Feeds &amp; Speeds</source>
+      <translation type="unfinished">Suggest Feeds &amp; Speeds</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="119"/>
-      <source>Base operation &apos;%s&apos; with empty path</source>
-      <translation>காலியான பாதையுடன் &apos;%s&apos; அடிப்படை செயல்பாடு</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_DressupMirror</name>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="266"/>
-      <source>Mirror</source>
-      <translation>கண்ணாடி</translation>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="340"/>
+      <source>(no tool)</source>
+      <translation type="unfinished">(no tool)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="268"/>
-      <source>Creates mirror of a selected path</source>
-      <translation>தேர்ந்தெடுக்கப்பட்ட பாதையின் கண்ணாடியை உருவாக்குகிறது</translation>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="341"/>
+      <source>Tool:</source>
+      <translation type="unfinished">Tool:</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="345"/>
+      <source>(none — generic resolution)</source>
+      <translation type="unfinished">(none — generic resolution)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="345"/>
+      <source>Material:</source>
+      <translation type="unfinished">Material:</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="357"/>
+      <source>Op type:</source>
+      <translation type="unfinished">Op type:</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="365"/>
+      <source>Apply preset:</source>
+      <translation type="unfinished">Apply preset:</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="369"/>
+      <source>Suggestion</source>
+      <translation type="unfinished">Suggestion</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="373"/>
+      <source>Source:</source>
+      <translation type="unfinished">Source:</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="379"/>
+      <source>Confidence:</source>
+      <translation type="unfinished">Confidence:</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="384"/>
+      <source>Current</source>
+      <translation>மின்னோட்ட்ம், ஓட்டம்</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="386"/>
+      <source>Suggested</source>
+      <translation type="unfinished">Suggested</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="388"/>
+      <source>Δ</source>
+      <translation type="unfinished">Δ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="424"/>
+      <source>Auto (use resolver)</source>
+      <translation type="unfinished">Auto (use resolver)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="518"/>
+      <source>No suggestion available</source>
+      <translation type="unfinished">No suggestion available</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="529"/>
+      <source>No matching preset on this tool. Open the tool from the library to add presets.</source>
+      <translation type="unfinished">No matching preset on this tool. Open the tool from the library to add presets.</translation>
     </message>
   </context>
   <context>
@@ -12352,368 +12742,6 @@ Several operations can be used with identical tool controller and coolant mode</
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2340"/>
       <source>Failed to save: {}</source>
       <translation>சேமிக்க முடியவில்லை: {}</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAMSimulator::GuiDisplay</name>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="39"/>
-      <source>Play simulation</source>
-      <translation>உருவகப்படுத்துதலை விளையாடு</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="53"/>
-      <source>Single step simulation</source>
-      <translation>ஒற்றை படி உருவகப்படுத்துதல்</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="67"/>
-      <source>Decrease simulation speed</source>
-      <translation>உருவகப்படுத்துதல் வேகத்தைக் குறைக்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="81"/>
-      <source>Increase simulation speed</source>
-      <translation>உருவகப்படுத்துதல் வேகத்தை அதிகரிக்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="98"/>
-      <source>x1</source>
-      <translation>x1</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="105"/>
-      <source>Reset camera</source>
-      <translation>கேமராவை மீட்டமைக்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="119"/>
-      <source>Toggle view simulation/model</source>
-      <translation>காட்சி உருவகப்படுத்துதல்/மாடலை நிலைமாற்று</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="136"/>
-      <source>Toggle turn table animation</source>
-      <translation>டர்ன் டேபிள் அனிமேசனை நிலைமாற்று</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="153"/>
-      <source>Show/hide tool path</source>
-      <translation>கருவி பாதையைக் காட்டு/மறை</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="170"/>
-      <source>Toggle ambient occlusion</source>
-      <translation>சுற்றுப்புற அடைப்பை நிலைமாற்று</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="99"/>
-      <source>x%1</source>
-      <translation>x% 1</translation>
-    </message>
-  </context>
-  <context>
-    <name>FeedsSpeedsPresetEdit</name>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="14"/>
-      <source>Edit preset</source>
-      <translation type="unfinished">Edit preset</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="22"/>
-      <source>Name:</source>
-      <translation type="unfinished">Name:</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="32"/>
-      <source>Material:</source>
-      <translation type="unfinished">Material:</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="41"/>
-      <source>(none)</source>
-      <translation>(எதுவுமில்லை)</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="48"/>
-      <source>Browse…</source>
-      <translation>உலாவுக…</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="55"/>
-      <source>Generic (any material)</source>
-      <translation type="unfinished">Generic (any material)</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="64"/>
-      <source>Op type:</source>
-      <translation type="unfinished">Op type:</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="74"/>
-      <source>Surface speed:</source>
-      <translation type="unfinished">Surface speed:</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="94"/>
-      <source>Chipload (per tooth):</source>
-      <translation type="unfinished">Chipload (per tooth):</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="117"/>
-      <source>Vert feed ratio:</source>
-      <translation type="unfinished">Vert feed ratio:</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="145"/>
-      <source>Direct feed and speed</source>
-      <translation type="unfinished">Direct feed and speed</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="151"/>
-      <source>Horiz feed:</source>
-      <translation type="unfinished">Horiz feed:</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="174"/>
-      <source>Spindle speed:</source>
-      <translation type="unfinished">Spindle speed:</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="200"/>
-      <source>Tool diameter and/or flute count missing — surface speed and chipload won&apos;t auto-sync with direct feed/speed.</source>
-      <translation type="unfinished">Tool diameter and/or flute count missing — surface speed and chipload won&apos;t auto-sync with direct feed/speed.</translation>
-    </message>
-  </context>
-  <context>
-    <name>DlgPostProcess</name>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="14"/>
-      <source>Post Processing</source>
-      <translation>பிந்தைய செயலாக்கம்</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="29"/>
-      <source>Post Processing - Job: (unknown)</source>
-      <translation>இடுகை செயலாக்கம் - வேலை: (தெரியாது)</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="40"/>
-      <source>Overview</source>
-      <translation>கண்ணோட்டம்</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="46"/>
-      <location filename="../panels/DlgPostProcess.ui" line="55"/>
-      <source>Machine</source>
-      <translation>இயந்திரம்</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="68"/>
-      <source>Machine configuration (.fcm) to use for post-processing</source>
-      <translation>பிந்தைய செயலாக்கத்திற்கு பயன்படுத்த இயந்திர கட்டமைப்பு (.fcm).</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="78"/>
-      <source>Fixtures</source>
-      <translation>பொருத்துதல்கள்</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="90"/>
-      <source>Check fixtures to include in the G-code output</source>
-      <translation>சி-குறியீடு வெளியீட்டில் சேர்க்க சாதனங்களைச் சரிபார்க்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="100"/>
-      <source>Job Details</source>
-      <translation>வேலை விவரங்கள்</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="109"/>
-      <source>Author</source>
-      <translation>நூலாசிரியர்</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="116"/>
-      <source>Author name written into the G-code header comment</source>
-      <translation>G-குறியீடு தலைப்புக் கருத்தில் எழுதப்பட்ட ஆசிரியர் பெயர்</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="119"/>
-      <location filename="../panels/DlgPostProcess.ui" line="145"/>
-      <source>(optional)</source>
-      <translation>(விரும்பினால்)</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="126"/>
-      <source>Comment</source>
-      <translation>கருத்து</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="142"/>
-      <source>Arbitrary comment written into the G-code header</source>
-      <translation>சி-குறியீடு தலைப்பில் எழுதப்பட்ட தன்னிச்சையான கருத்து</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="155"/>
-      <location filename="../panels/DlgPostProcess.ui" line="282"/>
-      <source>Options</source>
-      <translation>விருப்பங்கள்</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="161"/>
-      <source>Generate a full sanity/setup report alongside the G-code file</source>
-      <translation>சி-குறியீடு கோப்புடன் ஒரு முழு நல்லறிவு/அமைவு அறிக்கையை உருவாக்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="164"/>
-      <source>Generate HTML sanity report</source>
-      <translation>உஉகுமொ நல்லறிவு அறிக்கையை உருவாக்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="177"/>
-      <source>Post Processor Parameters</source>
-      <translation>பிந்தைய செயலி அளவுருக்கள்</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="186"/>
-      <source>(No additional parameters for this post processor)</source>
-      <translation>(இந்த இடுகை செயலிக்கு கூடுதல் அளவுருக்கள் இல்லை)</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="213"/>
-      <source>Operations</source>
-      <translation>செயல்பாடுகள்</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="219"/>
-      <source>Check operations to include in the G-code output. Uncheck to skip.</source>
-      <translation>சி-குறியீடு வெளியீட்டில் சேர்க்க செயல்பாடுகளைச் சரிபார்க்கவும். தவிர்க்க தேர்வை நீக்கவும்.</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="232"/>
-      <source>Operation</source>
-      <translation>செயல்பாடு</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="242"/>
-      <source>Select All</source>
-      <translation>அனைத்தையும் தேர்ந்தெடு</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="249"/>
-      <source>Select None</source>
-      <translation>எதுவுமில்லை என்பதைத் தேர்ந்தெடுக்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="256"/>
-      <source>Show the workplan (postable items structure)</source>
-      <translation>பணித் திட்டத்தைக் காட்டு (அஞ்சல் உருப்படிகளின் அமைப்பு)</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="259"/>
-      <source>Workplan</source>
-      <translation>வேலைத் திட்டம்</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="309"/>
-      <source>(Select a machine on the Overview tab to see machine output options)</source>
-      <translation>(இயந்திர வெளியீட்டு விருப்பங்களைப் பார்க்க மேலோட்டம் தாவலில் ஒரு இயந்திரத்தைத் தேர்ந்தெடுக்கவும்)</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="337"/>
-      <source>Output</source>
-      <translation>வெளியீடு</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="345"/>
-      <source>Output folder</source>
-      <translation>வெளியீட்டு கோப்புறை</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="352"/>
-      <source>Folder where G-code files will be saved</source>
-      <translation>சி-கோட் கோப்புகள் சேமிக்கப்படும் கோப்புறை</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="355"/>
-      <source>(resolved when output is generated)</source>
-      <translation>(வெளியீடு உருவாக்கப்படும் போது தீர்க்கப்படும்)</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="368"/>
-      <source>Browse…</source>
-      <translation>உலாவுக…</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="379"/>
-      <source>Filename template</source>
-      <translation>கோப்பு பெயர் டெம்ப்ளேட்</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="386"/>
-      <source>Filename template. Substitutions: %j=job name, %d=document, %T=tool, %W=fixture, %O=operation</source>
-      <translation>கோப்பு பெயர் டெம்ப்ளேட். மாற்றீடுகள்: %j=வேலையின் பெயர், %d=ஆவணம், %T=கருவிகள், %W=பிக்ச்ச்சர், %O=செயல்பாடு</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="389"/>
-      <source>e.g. %j.nc</source>
-      <translation>எ.கா. %j.nc</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="405"/>
-      <source>Regenerate output filenames using this template</source>
-      <translation>இந்த டெம்ப்ளேட்டைப் பயன்படுத்தி வெளியீட்டு கோப்புப் பெயர்களை மீண்டும் உருவாக்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="408"/>
-      <source>Apply</source>
-      <translation>செயற்படுத்து</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="420"/>
-      <source>Press &quot;Generate Output&quot; to preview G-code before saving.</source>
-      <translation>சேமிப்பதற்கு முன் G-குறியீட்டை முன்னோட்டமிட &quot;வெளியீட்டை உருவாக்கு&quot; என்பதை அழுத்தவும்.</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="440"/>
-      <source>Generated output files. Select a file to view or edit its contents.</source>
-      <translation>உருவாக்கப்பட்ட வெளியீட்டு கோப்புகள். அதன் உள்ளடக்கங்களைப் பார்க்க அல்லது திருத்த கோப்பைத் தேர்ந்தெடுக்கவும்.</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="451"/>
-      <source>G-code content for the selected file. You may edit before saving.</source>
-      <translation>தேர்ந்தெடுக்கப்பட்ட கோப்பிற்கான சி-குறியீடு உள்ளடக்கம். சேமிப்பதற்கு முன் நீங்கள் திருத்தலாம்.</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="464"/>
-      <source>Save to Disk</source>
-      <translation>வட்டில் சேமிக்கவும்</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="487"/>
-      <source>Warnings</source>
-      <translation>எச்சரிக்கைகள்</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="496"/>
-      <source>No issues found</source>
-      <translation>சிக்கல்கள் எதுவும் கண்டறியப்படவில்லை</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="506"/>
-      <source>Validation issues found in the job. WARNING and CAUTION items should be addressed before machining.</source>
-      <translation>வேலையில் சரிபார்ப்புச் சிக்கல்கள் காணப்படுகின்றன. எந்திரம் செய்வதற்கு முன் முன்னறிவிப்பு மற்றும் முன்னறிவிப்பு பொருட்கள் கவனிக்கப்பட வேண்டும்.</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="528"/>
-      <source>Severity</source>
-      <translation>தீவிரம்</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="533"/>
-      <source>Note</source>
-      <translation>குறிப்பு</translation>
     </message>
   </context>
   <context>

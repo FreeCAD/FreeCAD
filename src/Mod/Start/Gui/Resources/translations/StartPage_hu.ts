@@ -105,7 +105,7 @@
     <message>
       <location filename="../../StartView.cpp" line="222"/>
       <source>Parametric Body</source>
-      <translation>Változós test</translation>
+      <translation>Parametrikus test</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="223"/>

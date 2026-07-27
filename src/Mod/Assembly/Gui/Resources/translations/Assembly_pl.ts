@@ -535,9 +535,14 @@ Wartości SLOPE = 1000 lub większe są odpowiednie.</translation>
       <translation>Wystąpił błąd podczas zapisywania animacji</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1184"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1186"/>
       <source>PyAv is not installed. It is required for video export.</source>
       <translation>PyAv nie jest zainstalowany. Jest wymagany do eksportu wideo.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1205"/>
+      <source>Unknown video export format</source>
+      <translation type="unfinished">Unknown video export format</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="170"/>

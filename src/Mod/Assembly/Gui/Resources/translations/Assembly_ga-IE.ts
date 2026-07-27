@@ -517,9 +517,14 @@ Sainmhíníonn FÁNA géire an aistrithe idir 0 agus H1 agus H2 go 0 thart ar am
       <translation>Tharla earráid agus an beochan á shábháil</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1184"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1186"/>
       <source>PyAv is not installed. It is required for video export.</source>
       <translation>Níl PyAv suiteáilte. Tá sé riachtanach le haghaidh easpórtáil físeáin.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1205"/>
+      <source>Unknown video export format</source>
+      <translation>Formáid easpórtála físe anaithnid</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="170"/>
