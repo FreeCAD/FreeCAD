@@ -5,7 +5,6 @@
 import FreeCAD
 import FreeCADGui
 
-
 translate = FreeCAD.Qt.translate
 
 
@@ -152,9 +151,7 @@ class PositionPanelMixin:
             self._position_dragger_camera_changed,
             None,
         )
-        if camera.getTypeId().isDerivedFrom(
-            coin.SoOrthographicCamera.getClassTypeId()
-        ):
+        if camera.getTypeId().isDerivedFrom(coin.SoOrthographicCamera.getClassTypeId()):
             sensor.attach(camera.height)
         else:
             sensor.attach(camera.position)
@@ -191,9 +188,7 @@ class PositionPanelMixin:
                 placement.Base.y,
                 placement.Base.z,
             )
-            self._position_dragger.rotation.setValue(
-                coin.SbRotation(placement.Rotation.Q)
-            )
+            self._position_dragger.rotation.setValue(coin.SbRotation(placement.Rotation.Q))
         finally:
             self._position_dragger_syncing = False
         self._update_position_dragger_scale()
@@ -208,12 +203,8 @@ class PositionPanelMixin:
             FreeCAD.Rotation(*quaternion),
         )
         current_global = _global_placement(self.stair)
-        parent_placement = current_global.multiply(
-            self.stair.Placement.inverse()
-        )
-        self.stair.Placement = parent_placement.inverse().multiply(
-            global_placement
-        )
+        parent_placement = current_global.multiply(self.stair.Placement.inverse())
+        self.stair.Placement = parent_placement.inverse().multiply(global_placement)
         self._update_position_dragger_scale()
 
     def _position_dragger_finished(self, dragger):

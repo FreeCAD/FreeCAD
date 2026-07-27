@@ -13,7 +13,6 @@ from .geometry_stringer_path import (
 )
 from .geometry_stringer_shapes import make_housed_stringer_shape, make_notched_stringer_shape
 
-
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 
@@ -33,12 +32,11 @@ from .object_utils import (
     get_flights,
 )
 
+
 def _stringer_run_plane(sections, side, width):
     """Return a flat board plane and its selected side-rail line."""
 
-    candidates = [
-        section for section in sections if section.locked_to_flight
-    ] or list(sections)
+    candidates = [section for section in sections if section.locked_to_flight] or list(sections)
     counts = {}
     for section in candidates:
         key = (
@@ -49,9 +47,7 @@ def _stringer_run_plane(sections, side, width):
     tangent_key = max(counts, key=counts.get)
     reference = min(
         candidates,
-        key=lambda section: (
-            section.tangent[0] - tangent_key[0]
-        ) ** 2
+        key=lambda section: (section.tangent[0] - tangent_key[0]) ** 2
         + (section.tangent[1] - tangent_key[1]) ** 2,
     )
     length = math.hypot(*tangent_key)
@@ -60,9 +56,7 @@ def _stringer_run_plane(sections, side, width):
         tangent_key[1] / max(length, 1e-9),
     )
     normal = (-direction[1], direction[0])
-    selected_origin = (
-        reference.left if side == "Left" else reference.right
-    )
+    selected_origin = reference.left if side == "Left" else reference.right
     right_origin = selected_origin
     if side == "Left":
         right_origin = (
@@ -100,8 +94,7 @@ def _line_intersection(first, second):
     first_origin, first_direction = first
     second_origin, second_direction = second
     denominator = (
-        first_direction[0] * second_direction[1]
-        - first_direction[1] * second_direction[0]
+        first_direction[0] * second_direction[1] - first_direction[1] * second_direction[0]
     )
     if abs(denominator) < 1e-9:
         return None
@@ -110,8 +103,7 @@ def _line_intersection(first, second):
         second_origin[1] - first_origin[1],
     )
     distance = (
-        difference[0] * second_direction[1]
-        - difference[1] * second_direction[0]
+        difference[0] * second_direction[1] - difference[1] * second_direction[0]
     ) / denominator
     return (
         first_origin[0] + first_direction[0] * distance,
@@ -123,11 +115,7 @@ def _stringer_center_line(rail_line, side, profile):
     """Return the plan centerline of a straight stringer board."""
 
     origin, direction = rail_line
-    inward = (
-        (direction[1], -direction[0])
-        if side == "Left"
-        else (-direction[1], direction[0])
-    )
+    inward = (direction[1], -direction[0]) if side == "Left" else (-direction[1], direction[0])
     thickness = max(float(profile["Thickness"]), 0.01)
     overlap = float(profile["StepOverlap"])
     center_offset = (
@@ -200,12 +188,9 @@ def _planar_stringer_runs(
         end_seam = None
         if run_index:
             previous_index = flight_runs[run_index - 1][0]
-            if (
-                previous_index + 1 == flight_index
-                and str(flights[previous_index].FlightType).startswith(
-                    "Straight"
-                )
-            ):
+            if previous_index + 1 == flight_index and str(
+                flights[previous_index].FlightType
+            ).startswith("Straight"):
                 previous_profile = profiles.get(previous_index)
                 current_profile = profiles.get(flight_index)
                 if previous_profile and current_profile:
@@ -226,12 +211,9 @@ def _planar_stringer_runs(
                     )
         if run_index + 1 < len(flight_runs):
             following_index = flight_runs[run_index + 1][0]
-            if (
-                flight_index + 1 == following_index
-                and str(flights[following_index].FlightType).startswith(
-                    "Straight"
-                )
-            ):
+            if flight_index + 1 == following_index and str(
+                flights[following_index].FlightType
+            ).startswith("Straight"):
                 current_profile = profiles.get(flight_index)
                 following_profile = profiles.get(following_index)
                 if current_profile and following_profile:
@@ -266,10 +248,7 @@ def _planar_stringer_runs(
                     end_seam,
                     (
                         profiles[flight_index].get("Nosing", 0.0)
-                        if profiles.get(flight_index, {}).get(
-                            "StringerType"
-                        )
-                        == "Housed stringer"
+                        if profiles.get(flight_index, {}).get("StringerType") == "Housed stringer"
                         else 0.0
                     ),
                 ),
@@ -307,15 +286,12 @@ def _stringer_parts_for_flights(
                 (
                     candidate
                     for candidate in unused
-                    if int(getattr(candidate, "FlightIndex", 0))
-                    == flight_index + 1
+                    if int(getattr(candidate, "FlightIndex", 0)) == flight_index + 1
                 ),
                 None,
             )
         if part is None and allow_structure_changes:
-            part = stair.Document.addObject(
-                "Part::Feature", f"{stair.Name}_{role}"
-            )
+            part = stair.Document.addObject("Part::Feature", f"{stair.Name}_{role}")
             _set_generated_properties(part, stair, role)
             group.addObject(part)
         if part is None:
@@ -428,18 +404,14 @@ def _set_stringer_part_properties(
         "Direction used for the position above nosings",
     )
     current_direction = (
-        defaults["NosingOffsetDirection"]
-        if added
-        else str(part.NosingOffsetDirection)
+        defaults["NosingOffsetDirection"] if added else str(part.NosingOffsetDirection)
     )
     directions = ["Perpendicular", "Vertical"]
     part.NosingOffsetDirection = directions
     if not part.OverrideNosingPosition:
         current_direction = defaults["NosingOffsetDirection"]
     part.NosingOffsetDirection = (
-        current_direction
-        if current_direction in directions
-        else "Perpendicular"
+        current_direction if current_direction in directions else "Perpendicular"
     )
     part.setEditorMode(
         "NosingOffsetDirection",
@@ -470,9 +442,7 @@ class StairStringerMixin:
                 self._remove_stringers_group(stair)
             return
         if not group and allow_structure_changes:
-            group = _make_component_group(
-                stair, "StringersGroup", "Stringers", "stringers"
-            )
+            group = _make_component_group(stair, "StringersGroup", "Stringers", "stringers")
         if not group:
             return
         group.PanelSection = "stringers"
@@ -508,9 +478,7 @@ class StairStringerMixin:
             "Width": _quantity_value(stair.StringerWidth),
             "StepOverlap": _quantity_value(stair.StringerStepOverlap),
             "NosingOffset": _quantity_value(stair.StringerNosingOffset),
-            "NosingOffsetDirection": str(
-                stair.StringerNosingOffsetDirection
-            ),
+            "NosingOffsetDirection": str(stair.StringerNosingOffsetDirection),
         }
         for side_index, side in enumerate(("Left", "Right"), start=1):
             role = f"{side}Stringer"
@@ -539,9 +507,7 @@ class StairStringerMixin:
                 allow_structure_changes,
             )
             profiles = {}
-            for (flight_index, _sections), part in zip(
-                source_runs, parts
-            ):
+            for (flight_index, _sections), part in zip(source_runs, parts):
                 stringer_type = str(
                     getattr(
                         flights[flight_index],
@@ -576,22 +542,12 @@ class StairStringerMixin:
                 if flight_index in profiles
             ]
             labels = {
-                ("Left", "Housed stringer"): translate(
-                    "BIM", "Left housed stringer"
-                ),
-                ("Right", "Housed stringer"): translate(
-                    "BIM", "Right housed stringer"
-                ),
-                ("Left", "Notched stringer"): translate(
-                    "BIM", "Left notched stringer"
-                ),
-                ("Right", "Notched stringer"): translate(
-                    "BIM", "Right notched stringer"
-                ),
+                ("Left", "Housed stringer"): translate("BIM", "Left housed stringer"),
+                ("Right", "Housed stringer"): translate("BIM", "Right housed stringer"),
+                ("Left", "Notched stringer"): translate("BIM", "Left notched stringer"),
+                ("Right", "Notched stringer"): translate("BIM", "Right notched stringer"),
             }
-            for (flight_index, sections), part in zip(
-                side_runs, parts
-            ):
+            for (flight_index, sections), part in zip(side_runs, parts):
                 stringer_type = profiles[flight_index]["StringerType"]
                 thickness = _quantity_value(part.Thickness)
                 width = _quantity_value(part.Width)
@@ -630,11 +586,7 @@ class StairStringerMixin:
                         width,
                         overlap,
                         end_extension,
-                        (
-                            _quantity_value(stair.RiserThickness)
-                            if stair.RisersEnabled
-                            else 0.0
-                        ),
+                        (_quantity_value(stair.RiserThickness) if stair.RisersEnabled else 0.0),
                     )
                 part.Label = (
                     f"{translate('BIM', 'Flight')} {flight_index + 1}: "

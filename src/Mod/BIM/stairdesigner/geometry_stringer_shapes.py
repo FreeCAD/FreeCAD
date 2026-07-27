@@ -29,6 +29,7 @@ from .geometry_stringer_path import (
     _stringer_slope,
 )
 
+
 def make_housed_stringer_shape(
     sections,
     riser_height,
@@ -119,14 +120,8 @@ def _make_housed_stringer_run(
         True,
     )
     if circular is not None:
-        circular_run = (
-            abs(circular["profile"].sweep) * circular["path_radius"]
-        )
-        slope = (
-            (elevations[-1] - elevations[0]) / circular_run
-            if circular_run > 1e-9
-            else 0.0
-        )
+        circular_run = abs(circular["profile"].sweep) * circular["path_radius"]
+        slope = (elevations[-1] - elevations[0]) / circular_run if circular_run > 1e-9 else 0.0
     else:
         slope = _stringer_slope(sections, elevations)
     slope_cosine = 1.0 / math.sqrt(1.0 + slope * slope)
@@ -139,52 +134,34 @@ def _make_housed_stringer_run(
     stations = list(sections)
     tops = [
         elevation
-        + (
-            0.0
-            if section.profile_nosing_aligned
-            else nosing_compensation
-        )
+        + (0.0 if section.profile_nosing_aligned else nosing_compensation)
         + vertical_offset
         for section, elevation in zip(sections, elevations)
     ]
     if circular is not None:
         profile = circular["profile"]
         direction = 1.0 if profile.sweep > 0.0 else -1.0
-        start_angle_extension = (
-            start_extension / circular["path_radius"]
-        )
+        start_angle_extension = start_extension / circular["path_radius"]
         end_angle_extension = end_extension / circular["path_radius"]
         angles = list(circular["angles"])
         circular_tops = list(tops)
-        circular_bottoms = [
-            max(top - vertical_width, 0.0) for top in tops
-        ]
+        circular_bottoms = [max(top - vertical_width, 0.0) for top in tops]
         if start_angle_extension > 1e-9:
-            angles.insert(
-                0, profile.start_angle - direction * start_angle_extension
-            )
+            angles.insert(0, profile.start_angle - direction * start_angle_extension)
             circular_tops.insert(0, tops[0] - slope * start_extension)
             circular_bottoms.insert(
                 0,
                 max(
-                    tops[0]
-                    - vertical_width
-                    - slope * start_extension,
+                    tops[0] - vertical_width - slope * start_extension,
                     0.0,
                 ),
             )
         if end_angle_extension > 1e-9:
-            angles.append(
-                profile.start_angle
-                + profile.sweep
-                + direction * end_angle_extension
-            )
+            angles.append(profile.start_angle + profile.sweep + direction * end_angle_extension)
             circular_tops.append(tops[-1] + slope * end_extension)
             circular_bottoms.append(
                 max(
-                    tops[-1]
-                    - vertical_width
-                    + slope * end_extension,
+                    tops[-1] - vertical_width + slope * end_extension,
                     0.0,
                 )
             )
@@ -235,8 +212,7 @@ def _make_housed_stringer_run(
             return result
 
     segments = [
-        Part.makeLoft([first, second], True, True)
-        for first, second in zip(wires, wires[1:])
+        Part.makeLoft([first, second], True, True) for first, second in zip(wires, wires[1:])
     ]
     result = segments[0]
     for segment in segments[1:]:
@@ -327,10 +303,7 @@ def _make_circular_notched_stringer_shape(
     slope = _stringer_slope(sections, elevations)
     slope_cosine = 1.0 / math.sqrt(1.0 + slope * slope)
     vertical_width = width / max(slope_cosine, 0.01)
-    bottoms = [
-        max(elevation - vertical_width, 0.0)
-        for elevation in elevations
-    ]
+    bottoms = [max(elevation - vertical_width, 0.0) for elevation in elevations]
     cell_count = len(sections) - 1
 
     def shifted_boundary(index):
@@ -340,9 +313,7 @@ def _make_circular_notched_stringer_shape(
         clearance = min(riser_clearance, max(available - 0.01, 0.0))
         return angles[index] + direction * clearance / path_radius
 
-    main_top = max(
-        elevation - step_thickness for elevation in elevations[:-1]
-    )
+    main_top = max(elevation - step_thickness for elevation in elevations[:-1])
     base = _make_helical_annular_solid(
         profile,
         main_top,
@@ -358,15 +329,9 @@ def _make_circular_notched_stringer_shape(
     def add_envelope(start_angle, end_angle, top):
         if abs(end_angle - start_angle) < 1e-8:
             return
-        sector = _circular_profile_between(
-            profile, start_angle, end_angle
-        )
+        sector = _circular_profile_between(profile, start_angle, end_angle)
         face = _annular_sector_face(sector, envelope_bottom)
-        envelopes.append(
-            face.extrude(
-                FreeCAD.Vector(0.0, 0.0, top - envelope_bottom)
-            )
-        )
+        envelopes.append(face.extrude(FreeCAD.Vector(0.0, 0.0, top - envelope_bottom)))
 
     first_start = shifted_boundary(0)
     first_riser_index = int(getattr(sections[0], "riser_index", 0))
@@ -378,11 +343,7 @@ def _make_circular_notched_stringer_shape(
         )
     for index in range(cell_count):
         start_angle = shifted_boundary(index)
-        end_angle = (
-            shifted_boundary(index + 1)
-            if index + 1 < cell_count
-            else angles[index + 1]
-        )
+        end_angle = shifted_boundary(index + 1) if index + 1 < cell_count else angles[index + 1]
         add_envelope(
             start_angle,
             end_angle,
@@ -417,11 +378,7 @@ def _make_circular_notched_stringer_shape(
                 extended = result.fuse(extension).removeSplitter()
             except (Part.OCCError, ValueError):
                 extended = Part.Shape()
-            if (
-                not extended.isNull()
-                and extended.isValid()
-                and len(extended.Solids) == 1
-            ):
+            if not extended.isNull() and extended.isValid() and len(extended.Solids) == 1:
                 result = extended
     return result
 
@@ -457,21 +414,18 @@ def _planar_notched_stringer_shape(
             section.tangent[1] / section_length,
         )
         if (
-            abs(
-                tangent[0] * section_tangent[1]
-                - tangent[1] * section_tangent[0]
-            )
-            > 1e-7
-            or tangent[0] * section_tangent[0]
-            + tangent[1] * section_tangent[1]
-            < 0.0
+            abs(tangent[0] * section_tangent[1] - tangent[1] * section_tangent[0]) > 1e-7
+            or tangent[0] * section_tangent[0] + tangent[1] * section_tangent[1] < 0.0
         ):
             return None
         rail = section.left if side == "Left" else section.right
-        if abs(
-            (rail[0] - first_rail[0]) * plan_normal[0]
-            + (rail[1] - first_rail[1]) * plan_normal[1]
-        ) > 1e-5:
+        if (
+            abs(
+                (rail[0] - first_rail[0]) * plan_normal[0]
+                + (rail[1] - first_rail[1]) * plan_normal[1]
+            )
+            > 1e-5
+        ):
             return None
 
     thickness = max(float(thickness), 0.01)
@@ -483,22 +437,15 @@ def _planar_notched_stringer_shape(
     slope = _stringer_slope(sections, elevations)
     slope_cosine = 1.0 / math.sqrt(1.0 + slope * slope)
     vertical_width = width / max(slope_cosine, 0.01)
-    bottoms = [
-        max(elevation - vertical_width, 0.0)
-        for elevation in elevations
-    ]
+    bottoms = [max(elevation - vertical_width, 0.0) for elevation in elevations]
 
     inward = _stringer_inward(sections[0], side)
 
     def point(section, elevation, distance=0.0):
         rail = section.left if side == "Left" else section.right
         return FreeCAD.Vector(
-            rail[0]
-            + tangent[0] * distance
-            + inward[0] * lateral_offset,
-            rail[1]
-            + tangent[1] * distance
-            + inward[1] * lateral_offset,
+            rail[0] + tangent[0] * distance + inward[0] * lateral_offset,
+            rail[1] + tangent[1] * distance + inward[1] * lateral_offset,
             elevation,
         )
 
@@ -514,9 +461,7 @@ def _planar_notched_stringer_shape(
     def clearance_after(section_index):
         if riser_clearance < 1e-9 or section_index + 1 >= len(sections):
             return 0.0
-        available = run_length(
-            sections[section_index], sections[section_index + 1]
-        )
+        available = run_length(sections[section_index], sections[section_index + 1])
         return min(riser_clearance, max(available - 0.01, 0.0))
 
     points = []
@@ -563,18 +508,11 @@ def _planar_notched_stringer_shape(
             )
         )
 
-    bottom_points = [
-        point(section, bottom)
-        for section, bottom in zip(sections, bottoms)
-    ]
+    bottom_points = [point(section, bottom) for section, bottom in zip(sections, bottoms)]
     if shifted_start:
         first_run = max(run_length(sections[0], sections[1]), 0.01)
-        start_bottom = bottoms[0] + (
-            bottoms[1] - bottoms[0]
-        ) * start_clearance / first_run
-        bottom_points[0] = point(
-            sections[0], start_bottom, start_clearance
-        )
+        start_bottom = bottoms[0] + (bottoms[1] - bottoms[0]) * start_clearance / first_run
+        bottom_points[0] = point(sections[0], start_bottom, start_clearance)
     if end_extension > 1e-9:
         bottom_points.append(
             point(
@@ -656,10 +594,7 @@ def _make_notched_stringer_run(
     slope = _stringer_slope(sections, elevations)
     slope_cosine = 1.0 / math.sqrt(1.0 + slope * slope)
     vertical_width = width / max(slope_cosine, 0.01)
-    bottoms = [
-        max(elevation - vertical_width, 0.0)
-        for elevation in elevations
-    ]
+    bottoms = [max(elevation - vertical_width, 0.0) for elevation in elevations]
     solids = []
     for index, (front, rear) in enumerate(zip(sections, sections[1:])):
         tread_bottom = elevations[index] - float(step_thickness)

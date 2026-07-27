@@ -25,6 +25,7 @@ from .taskpanel_handrails import HandrailPanelMixin
 
 from .taskpanel_position import PositionPanelMixin
 
+
 class StairDesignerTaskPanel(
     PositionPanelMixin,
     StepPanelMixin,
@@ -115,14 +116,10 @@ class StairDesignerTaskPanel(
             )
 
         if active_section in self.section_widgets:
-            self.section_tabs.setCurrentWidget(
-                self.section_widgets[active_section]
-            )
+            self.section_tabs.setCurrentWidget(self.section_widgets[active_section])
 
         self._loading = False
-        if {"stairs", "steps", "stringers", "handrails"}.intersection(
-            self.sections
-        ):
+        if {"stairs", "steps", "stringers", "handrails"}.intersection(self.sections):
             self._update_type_visibility()
         if "stairs" in self.sections:
             self._refresh_diagnostics()
@@ -161,16 +158,12 @@ class StairDesignerTaskPanel(
         proxy._updating = True
         try:
             if "stairs" in self.sections:
-                self.stair.StairType = str(
-                    self.stair_type.itemData(self.stair_type.currentIndex())
-                )
+                self.stair.StairType = str(self.stair_type.itemData(self.stair_type.currentIndex()))
                 self.stair.FloorHeight = self.floor_height.value()
                 self.stair.EndWithRiser = self.end_with_riser.isChecked()
                 self.stair.NumberOfSteps = self.step_count.value()
                 self.stair.ConcreteThickness = self.concrete_thickness.value()
-                self.stair.BottomCutDistance = (
-                    self.bottom_cut_distance.value()
-                )
+                self.stair.BottomCutDistance = self.bottom_cut_distance.value()
                 self.stair.TopCutDistance = self.top_cut_distance.value()
             if "steps" in self.sections:
                 wood = str(self.stair.StairType) == "Wood"
@@ -178,24 +171,18 @@ class StairDesignerTaskPanel(
                     self.stair.StepsEnabled = self.steps_enabled.isChecked()
                 self.stair.StepThickness = self.step_thickness.value()
                 self.stair.Nosing = self.nosing.value()
-                self.stair.StructureWidthOffset = (
-                    self.structure_width_offset.value()
-                )
+                self.stair.StructureWidthOffset = self.structure_width_offset.value()
                 self.stair.RisersEnabled = self.risers_group.isChecked()
                 self.stair.RiserThickness = self.riser_thickness.value()
                 self.stair.PriorityToRiser = self.priority_to_riser.isChecked()
-                self.stair.StepRiserOverlap = (
-                    self.step_riser_overlap.value() if wood else 0.0
-                )
+                self.stair.StepRiserOverlap = self.step_riser_overlap.value() if wood else 0.0
                 self.stair.RiserUpperOffset = self.riser_upper_offset.value()
                 self.stair.RiserLowerOffset = self.riser_lower_offset.value()
             if "stringers" in self.sections:
                 for record in self.stringer_flight_editors:
                     flight = record["flight"]
                     flight_proxy = flight.Proxy
-                    was_updating = getattr(
-                        flight_proxy, "_updating", False
-                    )
+                    was_updating = getattr(flight_proxy, "_updating", False)
                     flight_proxy._updating = True
                     try:
                         for side in ("Left", "Right"):
@@ -203,78 +190,46 @@ class StairDesignerTaskPanel(
                             setattr(
                                 flight,
                                 f"{side}StringerType",
-                                str(
-                                    editor.itemData(
-                                        editor.currentIndex()
-                                    )
-                                ),
+                                str(editor.itemData(editor.currentIndex())),
                             )
                     finally:
                         flight_proxy._updating = was_updating
-                self.stair.StringerThickness = (
-                    self.stringer_thickness.value()
-                )
-                self.stair.StringerCustomWidth = (
-                    self.stringer_custom_width.isChecked()
-                )
+                self.stair.StringerThickness = self.stringer_thickness.value()
+                self.stair.StringerCustomWidth = self.stringer_custom_width.isChecked()
                 if self.stair.StringerCustomWidth:
-                    self.stair.StringerWidth = (
-                        self.stringer_width.value()
-                    )
-                self.stair.StringerStepOverlap = (
-                    self.stringer_step_overlap.value()
-                )
-                self.stair.StringerStartExtension = (
-                    self.stringer_start_extension.value()
-                )
-                self.stair.StringerEndExtension = (
-                    self.stringer_end_extension.value()
-                )
+                    self.stair.StringerWidth = self.stringer_width.value()
+                self.stair.StringerStepOverlap = self.stringer_step_overlap.value()
+                self.stair.StringerStartExtension = self.stringer_start_extension.value()
+                self.stair.StringerEndExtension = self.stringer_end_extension.value()
                 self.stair.StringerNosingOffsetDirection = str(
                     self.stringer_nosing_direction.itemData(
                         self.stringer_nosing_direction.currentIndex()
                     )
                 )
-                self.stair.StringerNosingOffset = (
-                    self.stringer_nosing_offset.value()
-                )
+                self.stair.StringerNosingOffset = self.stringer_nosing_offset.value()
             if "handrails" in self.sections:
                 for record in self.handrail_flight_editors:
                     flight = record["flight"]
                     flight_proxy = flight.Proxy
-                    was_updating = getattr(
-                        flight_proxy, "_updating", False
-                    )
+                    was_updating = getattr(flight_proxy, "_updating", False)
                     flight_proxy._updating = True
                     try:
                         for side in ("Left", "Right"):
                             setattr(
                                 flight,
                                 f"{side}HandrailEnabled",
-                                record[
-                                    f"{side.lower()}_enabled"
-                                ].isChecked(),
+                                record[f"{side.lower()}_enabled"].isChecked(),
                             )
                     finally:
                         flight_proxy._updating = was_updating
-                self.stair.HandrailHeightAboveNosing = (
-                    self.handrail_height.value()
-                )
+                self.stair.HandrailHeightAboveNosing = self.handrail_height.value()
                 self.stair.HandrailOffset = self.handrail_offset.value()
-                self.stair.HandrailPicketMaximumSpacing = (
-                    self.handrail_picket_spacing.value()
-                )
+                self.stair.HandrailPicketMaximumSpacing = self.handrail_picket_spacing.value()
                 self.stair.HandrailPicketShape = str(
-                    self.handrail_picket_shape.itemData(
-                        self.handrail_picket_shape.currentIndex()
-                    )
+                    self.handrail_picket_shape.itemData(self.handrail_picket_shape.currentIndex())
                 )
-                self.stair.HandrailPicketWidth = (
-                    self.handrail_picket_width.value()
-                )
-                self.stair.HandrailPicketThickness = (
-                    self.handrail_picket_thickness.value()
-                )
+                self.stair.HandrailPicketWidth = self.handrail_picket_width.value()
+                self.stair.HandrailPicketThickness = self.handrail_picket_thickness.value()
                 self.stair.HandrailPicketStringerPenetration = (
                     self.handrail_picket_stringer_penetration.value()
                 )
@@ -282,33 +237,19 @@ class StairDesignerTaskPanel(
                     self.handrail_picket_top_rail_penetration.value()
                 )
                 self.stair.HandrailPostShape = str(
-                    self.handrail_post_shape.itemData(
-                        self.handrail_post_shape.currentIndex()
-                    )
+                    self.handrail_post_shape.itemData(self.handrail_post_shape.currentIndex())
                 )
-                self.stair.HandrailPostWidth = (
-                    self.handrail_post_width.value()
-                )
-                self.stair.HandrailPostThickness = (
-                    self.handrail_post_thickness.value()
-                )
-                self.stair.HandrailPostAboveTopRail = (
-                    self.handrail_post_above.value()
-                )
-                self.stair.HandrailPostBelowStringer = (
-                    self.handrail_post_below.value()
-                )
+                self.stair.HandrailPostWidth = self.handrail_post_width.value()
+                self.stair.HandrailPostThickness = self.handrail_post_thickness.value()
+                self.stair.HandrailPostAboveTopRail = self.handrail_post_above.value()
+                self.stair.HandrailPostBelowStringer = self.handrail_post_below.value()
                 self.stair.HandrailTopRailShape = str(
                     self.handrail_top_rail_shape.itemData(
                         self.handrail_top_rail_shape.currentIndex()
                     )
                 )
-                self.stair.HandrailTopRailWidth = (
-                    self.handrail_top_rail_width.value()
-                )
-                self.stair.HandrailTopRailThickness = (
-                    self.handrail_top_rail_thickness.value()
-                )
+                self.stair.HandrailTopRailWidth = self.handrail_top_rail_width.value()
+                self.stair.HandrailTopRailThickness = self.handrail_top_rail_thickness.value()
                 self.stair.HandrailTopRailPostPenetration = (
                     self.handrail_top_rail_penetration.value()
                 )
@@ -319,9 +260,7 @@ class StairDesignerTaskPanel(
                 flight_proxy._updating = True
                 try:
                     flight_type = str(
-                        record["flight_type"].itemData(
-                            record["flight_type"].currentIndex()
-                        )
+                        record["flight_type"].itemData(record["flight_type"].currentIndex())
                     )
                     flight.FlightType = flight_type
                     flight_proxy._update_dimension_visibility(flight)
@@ -333,20 +272,14 @@ class StairDesignerTaskPanel(
                     flight.Angle = record["angle"].value()
                     if record.get("turn_type") is not None:
                         flight.TurnType = str(
-                            record["turn_type"].itemData(
-                                record["turn_type"].currentIndex()
-                            )
+                            record["turn_type"].itemData(record["turn_type"].currentIndex())
                         )
                     if record.get("winding_local") is not None:
                         flight.WindingLocal = record["winding_local"].value()
-                        flight.WindingDistant = record[
-                            "winding_distant"
-                        ].value()
+                        flight.WindingDistant = record["winding_distant"].value()
                     if record.get("rotation") is not None:
                         flight.Rotation = str(
-                            record["rotation"].itemData(
-                                record["rotation"].currentIndex()
-                            )
+                            record["rotation"].itemData(record["rotation"].currentIndex())
                         )
                     if record.get("start_angle") is not None:
                         flight.StartAngle = record["start_angle"].value()
@@ -380,9 +313,7 @@ class StairDesignerTaskPanel(
             self._update_overlap_label()
         if "stringers" in self.sections:
             blocked = self.stringer_width.blockSignals(True)
-            self.stringer_width.setValue(
-                _value(self.stair.StringerWidth)
-            )
+            self.stringer_width.setValue(_value(self.stair.StringerWidth))
             self.stringer_width.blockSignals(blocked)
             self._update_stringer_selection()
         self._update_type_visibility()
@@ -391,9 +322,7 @@ class StairDesignerTaskPanel(
 
     def _update_type_visibility(self):
         if hasattr(self, "stair_type"):
-            stair_type = str(
-                self.stair_type.itemData(self.stair_type.currentIndex())
-            )
+            stair_type = str(self.stair_type.itemData(self.stair_type.currentIndex()))
         else:
             stair_type = str(self.stair.StairType)
         wood = stair_type == "Wood"

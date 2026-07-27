@@ -4,7 +4,6 @@
 
 import FreeCAD
 
-
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 
@@ -17,6 +16,7 @@ from .object_utils import (
     _add_property,
     _quantity_value,
 )
+
 
 def _make_component_group(stair, property_name, label, section):
     group = stair.Document.addObject("App::DocumentObjectGroupPython", f"{stair.Name}_{label}")
@@ -108,10 +108,7 @@ def _tread_extra_widths(stair, tread_count):
         return result
     for tread in _generated_parts(group, stair, "Tread"):
         index = int(getattr(tread, "Index", 0)) - 1
-        if (
-            0 <= index < len(result)
-            and "ExtraWidth" in tread.PropertiesList
-        ):
+        if 0 <= index < len(result) and "ExtraWidth" in tread.PropertiesList:
             result[index] = _quantity_value(tread.ExtraWidth)
     return result
 
@@ -125,10 +122,7 @@ def _tread_extra_heights(stair, tread_count):
         return result
     for tread in _generated_parts(group, stair, "Tread"):
         index = int(getattr(tread, "Index", 0)) - 1
-        if (
-            0 <= index < len(result)
-            and "ExtraHeight" in tread.PropertiesList
-        ):
+        if 0 <= index < len(result) and "ExtraHeight" in tread.PropertiesList:
             result[index] = _quantity_value(tread.ExtraHeight)
     return result
 

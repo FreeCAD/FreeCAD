@@ -6,7 +6,6 @@ from importlib import import_module
 
 import FreeCAD
 
-
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 
@@ -18,6 +17,7 @@ from .object_utils import (
     sync_circular_radii,
     sync_flight_side_lengths,
 )
+
 
 class FlightProxy:
     """Stores the dimensions and turn direction of one stair flight."""
@@ -56,9 +56,7 @@ class FlightProxy:
             "Circular landing",
         ]
         obj.FlightType = flight_types
-        obj.FlightType = (
-            flight_type if flight_type in flight_types else "Straight"
-        )
+        obj.FlightType = flight_type if flight_type in flight_types else "Straight"
         for side in ("Left", "Right"):
             property_name = f"{side}StringerType"
             added = _add_property(
@@ -68,9 +66,7 @@ class FlightProxy:
                 "Stringers",
                 "The stringer type on this side of this flight",
             )
-            current_type = (
-                "None" if added else str(getattr(obj, property_name))
-            )
+            current_type = "None" if added else str(getattr(obj, property_name))
             if current_type == "Cut stringer":
                 current_type = "Notched stringer"
             stringer_types = [
@@ -82,9 +78,7 @@ class FlightProxy:
             setattr(
                 obj,
                 property_name,
-                current_type
-                if current_type in stringer_types
-                else "None",
+                current_type if current_type in stringer_types else "None",
             )
             _add_property(
                 obj,
@@ -100,9 +94,7 @@ class FlightProxy:
         _add_property(
             obj, "App::PropertyLength", "RightLength", "Flight", "Right-side length", 3500.0
         )
-        _add_property(
-            obj, "App::PropertyLength", "Width", "Flight", "Flight width", 1000.0
-        )
+        _add_property(obj, "App::PropertyLength", "Width", "Flight", "Flight width", 1000.0)
         _add_property(
             obj,
             "App::PropertyLength",
@@ -222,11 +214,7 @@ class FlightProxy:
             obj.setEditorMode(name, 0 if circular else 2)
 
     def onChanged(self, obj, prop):
-        if (
-            getattr(self, "_updating", False)
-            or FreeCAD.isRestoring()
-            or obj.Document.Transacting
-        ):
+        if getattr(self, "_updating", False) or FreeCAD.isRestoring() or obj.Document.Transacting:
             return
         geometry_properties = {
             "FlightType",
@@ -302,12 +290,17 @@ class FlightProxy:
                     "Rotation",
                 }:
                     sync_flight_side_lengths(stair, obj)
-                if prop in geometry_properties and prop in {
-                    "FlightType",
-                    "Width",
-                    "Angle",
-                    "Rotation",
-                } and obj in flights:
+                if (
+                    prop in geometry_properties
+                    and prop
+                    in {
+                        "FlightType",
+                        "Width",
+                        "Angle",
+                        "Rotation",
+                    }
+                    and obj in flights
+                ):
                     index = flights.index(obj)
                     if index:
                         sync_flight_side_lengths(stair, flights[index - 1])
@@ -368,12 +361,8 @@ class ViewProviderStair:
     """View provider for the Stair Designer root object."""
 
     def __init__(self, vobj):
-        if not vobj.hasExtension(
-            "Gui::ViewProviderGeoFeatureGroupExtensionPython"
-        ):
-            vobj.addExtension(
-                "Gui::ViewProviderGeoFeatureGroupExtensionPython"
-            )
+        if not vobj.hasExtension("Gui::ViewProviderGeoFeatureGroupExtensionPython"):
+            vobj.addExtension("Gui::ViewProviderGeoFeatureGroupExtensionPython")
         vobj.Proxy = self
         self.Object = vobj.Object
 

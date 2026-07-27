@@ -8,6 +8,7 @@ import math
 BLONDEL_MINIMUM = 620.0
 BLONDEL_MAXIMUM = 640.0
 
+
 @dataclass(frozen=True)
 class StraightStairMetrics:
     """Computed dimensions for one straight flight."""
@@ -90,9 +91,7 @@ def flight_stair_metrics(
     flight_length = max(float(flight_length), 0.0)
     tread_count = max(int(tread_count), 0)
     riser_height = max(float(riser_height), 0.0)
-    tread_width, _goings = tread_goings(
-        flight_length, tread_count, extra_widths
-    )
+    tread_width, _goings = tread_goings(flight_length, tread_count, extra_widths)
     blondel_value = 2.0 * riser_height + tread_width
     return StraightStairMetrics(
         floor_height=tread_count * riser_height,
@@ -154,17 +153,13 @@ def tread_goings(total_length, tread_count, extra_widths=None):
     without changing the total run.
     """
 
-    return _distributed_dimensions(
-        total_length, tread_count, extra_widths
-    )
+    return _distributed_dimensions(total_length, tread_count, extra_widths)
 
 
 def tread_stations(total_length, tread_count, extra_widths=None):
     """Return the general going and cumulative tread boundary stations."""
 
-    general_going, goings = tread_goings(
-        total_length, tread_count, extra_widths
-    )
+    general_going, goings = tread_goings(total_length, tread_count, extra_widths)
     stations = [0.0]
     for going in goings:
         stations.append(stations[-1] + going)
@@ -176,17 +171,13 @@ def tread_stations(total_length, tread_count, extra_widths=None):
 def riser_heights(total_height, riser_count, extra_heights=None):
     """Return the general rise and each riser's effective signed-adjusted rise."""
 
-    return _distributed_dimensions(
-        total_height, riser_count, extra_heights
-    )
+    return _distributed_dimensions(total_height, riser_count, extra_heights)
 
 
 def riser_stations(total_height, riser_count, extra_heights=None):
     """Return the general rise and cumulative floor-to-floor elevations."""
 
-    general_height, heights = riser_heights(
-        total_height, riser_count, extra_heights
-    )
+    general_height, heights = riser_heights(total_height, riser_count, extra_heights)
     stations = [0.0]
     for height in heights:
         stations.append(stations[-1] + height)
@@ -282,12 +273,8 @@ def assign_section_elevations(sections, elevations):
     result = []
     for index, section in enumerate(sections):
         riser_index = int(getattr(section, "riser_index", 0))
-        if riser_index <= 0 and not getattr(
-            section, "level_to_next", False
-        ):
+        if riser_index <= 0 and not getattr(section, "level_to_next", False):
             riser_index = index + 1
         riser_index = min(max(riser_index, 0), len(elevations) - 1)
-        result.append(
-            replace(section, top_elevation=elevations[riser_index])
-        )
+        result.append(replace(section, top_elevation=elevations[riser_index]))
     return result

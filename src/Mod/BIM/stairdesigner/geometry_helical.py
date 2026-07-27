@@ -11,6 +11,7 @@ from .geometry_core import (
     _CircularProfile,
 )
 
+
 def _make_helical_annular_solid(
     profile,
     top_elevation,
@@ -93,14 +94,10 @@ def _helical_profile_edge(profile, radius, start_elevation, end_elevation):
                 start_elevation,
             )
 
-        return Part.Arc(
-            point(start_angle), point(middle_angle), point(end_angle)
-        ).toShape()
+        return Part.Arc(point(start_angle), point(middle_angle), point(end_angle)).toShape()
     cylinder = Part.Cylinder()
     cylinder.Radius = radius
-    cylinder.Center = FreeCAD.Vector(
-        profile.center[0], profile.center[1], 0.0
-    )
+    cylinder.Center = FreeCAD.Vector(profile.center[0], profile.center[1], 0.0)
     cylinder.Axis = FreeCAD.Vector(0.0, 0.0, 1.0)
     cylinder.rotate(
         FreeCAD.Placement(
@@ -144,8 +141,7 @@ def _make_helical_band_solid(
                 segment_profile,
                 top_front + (top_rear - top_front) * front_fraction,
                 top_front + (top_rear - top_front) * rear_fraction,
-                bottom_front
-                + (bottom_rear - bottom_front) * front_fraction,
+                bottom_front + (bottom_rear - bottom_front) * front_fraction,
                 bottom_front + (bottom_rear - bottom_front) * rear_fraction,
             )
             if segment is None:
@@ -170,22 +166,11 @@ def _make_helical_band_solid(
         profile.sweep,
     )
 
-    top_inner = _helical_profile_edge(
-        profile, profile.inner_radius, top_front, top_rear
-    )
-    top_outer = _helical_profile_edge(
-        profile, profile.outer_radius, top_front, top_rear
-    )
-    bottom_inner = _helical_profile_edge(
-        profile, profile.inner_radius, bottom_front, bottom_rear
-    )
-    bottom_outer = _helical_profile_edge(
-        profile, profile.outer_radius, bottom_front, bottom_rear
-    )
-    if any(
-        edge is None
-        for edge in (top_inner, top_outer, bottom_inner, bottom_outer)
-    ):
+    top_inner = _helical_profile_edge(profile, profile.inner_radius, top_front, top_rear)
+    top_outer = _helical_profile_edge(profile, profile.outer_radius, top_front, top_rear)
+    bottom_inner = _helical_profile_edge(profile, profile.inner_radius, bottom_front, bottom_rear)
+    bottom_outer = _helical_profile_edge(profile, profile.outer_radius, bottom_front, bottom_rear)
+    if any(edge is None for edge in (top_inner, top_outer, bottom_inner, bottom_outer)):
         return None
 
     def ruled_face(first, second):
@@ -236,10 +221,7 @@ def _make_helical_band_solid(
     )
     inner_face = cylindrical_face(profile.inner_radius)
     outer_face = cylindrical_face(profile.outer_radius)
-    if any(
-        face is None
-        for face in (top_face, bottom_face, inner_face, outer_face)
-    ):
+    if any(face is None for face in (top_face, bottom_face, inner_face, outer_face)):
         return None
 
     start_points = (
@@ -254,9 +236,7 @@ def _make_helical_band_solid(
         top_outer.Vertexes[-1].Point,
         top_inner.Vertexes[-1].Point,
     )
-    start_face = Part.Face(
-        Part.makePolygon((*start_points, start_points[0]))
-    )
+    start_face = Part.Face(Part.makePolygon((*start_points, start_points[0])))
     end_face = Part.Face(Part.makePolygon((*end_points, end_points[0])))
     try:
         sewn = Part.makeCompound(
@@ -278,9 +258,7 @@ def _make_helical_band_solid(
     if solid.isValid() and len(solid.Solids) == 1:
         result = solid.removeSplitter()
         translation = FreeCAD.Matrix()
-        translation.move(
-            FreeCAD.Vector(circle_center[0], circle_center[1], 0.0)
-        )
+        translation.move(FreeCAD.Vector(circle_center[0], circle_center[1], 0.0))
         return result.transformShape(translation, True)
     return None
 
@@ -293,10 +271,7 @@ def _make_sectioned_helical_band_solid(
 ):
     """Create a circular board whose pitch follows every stair section."""
 
-    if not (
-        len(angles) == len(top_elevations) == len(bottom_elevations)
-        and len(angles) >= 2
-    ):
+    if not (len(angles) == len(top_elevations) == len(bottom_elevations) and len(angles) >= 2):
         return None
 
     def interval_pitch(values, index):
@@ -330,9 +305,7 @@ def _make_sectioned_helical_band_solid(
 
     shapes = []
     for first, last in ranges:
-        segment_profile = _circular_profile_between(
-            profile, angles[first], angles[last]
-        )
+        segment_profile = _circular_profile_between(profile, angles[first], angles[last])
         segment = _make_helical_band_solid(
             segment_profile,
             top_elevations[first],

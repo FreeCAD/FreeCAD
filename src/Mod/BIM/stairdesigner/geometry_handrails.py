@@ -22,6 +22,7 @@ from .geometry_stringer_path import (
     _stringer_inward,
 )
 
+
 def make_handrail_path(
     sections,
     riser_height,
@@ -37,15 +38,11 @@ def make_handrail_path(
         return None
     elevations = _stringer_elevations(sections, riser_height)
     profile_elevations = list(elevations)
-    if (
-        abs(profile_elevations[-1] - profile_elevations[-2]) < 1e-9
-        and not any(section.landing_to_next for section in sections)
+    if abs(profile_elevations[-1] - profile_elevations[-2]) < 1e-9 and not any(
+        section.landing_to_next for section in sections
     ):
         profile_elevations[-1] += float(riser_height)
-    top_elevations = [
-        elevation + float(height_above_nosing)
-        for elevation in profile_elevations
-    ]
+    top_elevations = [elevation + float(height_above_nosing) for elevation in profile_elevations]
     support_elevations = list(elevations)
     if (
         len(support_elevations) >= 2
@@ -81,17 +78,12 @@ def make_handrail_path(
         radius = (profile.inner_radius + profile.outer_radius) / 2.0
         direction = 1.0 if profile.sweep >= 0.0 else -1.0
         slope = (
-            (top_elevations[-1] - top_elevations[0])
-            / (abs(profile.sweep) * radius)
+            (top_elevations[-1] - top_elevations[0]) / (abs(profile.sweep) * radius)
             if abs(profile.sweep) * radius > 1e-9
             else 0.0
         )
-        start_angle = (
-            profile.start_angle - direction * start_extension / radius
-        )
-        sweep = profile.sweep + direction * (
-            start_extension + end_extension
-        ) / radius
+        start_angle = profile.start_angle - direction * start_extension / radius
+        sweep = profile.sweep + direction * (start_extension + end_extension) / radius
         top_elevations[0] -= slope * start_extension
         top_elevations[-1] += slope * end_extension
         return {
@@ -113,11 +105,7 @@ def make_handrail_path(
     if length < 1e-9:
         return None
     tangent = (direction[0] / length, direction[1] / length)
-    slope = (
-        (top_elevations[-1] - top_elevations[0]) / length
-        if length > 1e-9
-        else 0.0
-    )
+    slope = (top_elevations[-1] - top_elevations[0]) / length if length > 1e-9 else 0.0
     start = (
         start[0] - tangent[0] * start_extension,
         start[1] - tangent[1] * start_extension,
@@ -146,9 +134,7 @@ def sample_handrail_path(path, fraction):
 
     fraction = min(max(float(fraction), 0.0), 1.0)
     top_elevations = path["top_elevations"]
-    top = top_elevations[0] + (
-        top_elevations[-1] - top_elevations[0]
-    ) * fraction
+    top = top_elevations[0] + (top_elevations[-1] - top_elevations[0]) * fraction
     if path["kind"] == "Circular":
         angle = path["start_angle"] + path["sweep"] * fraction
         direction = 1.0 if path["sweep"] >= 0.0 else -1.0
@@ -162,10 +148,8 @@ def sample_handrail_path(path, fraction):
         )
     else:
         point = (
-            path["start"][0]
-            + (path["end"][0] - path["start"][0]) * fraction,
-            path["start"][1]
-            + (path["end"][1] - path["start"][1]) * fraction,
+            path["start"][0] + (path["end"][0] - path["start"][0]) * fraction,
+            path["start"][1] + (path["end"][1] - path["start"][1]) * fraction,
         )
         tangent = path["tangent"]
 
@@ -203,10 +187,7 @@ def handrail_picket_fractions(
         int(math.ceil(path_length / maximum_center_spacing)) - 1,
         0,
     )
-    return [
-        (index + 1) / (picket_count + 1)
-        for index in range(picket_count)
-    ]
+    return [(index + 1) / (picket_count + 1) for index in range(picket_count)]
 
 
 def make_handrail_top_rail_shape(
@@ -228,11 +209,7 @@ def make_handrail_top_rail_shape(
     terminal_offset = post_penetration - post_size / 2.0
     top_front = path["top_elevations"][0]
     top_rear = path["top_elevations"][-1]
-    slope = (
-        (top_rear - top_front) / path["length"]
-        if path["length"] > 1e-9
-        else 0.0
-    )
+    slope = (top_rear - top_front) / path["length"] if path["length"] > 1e-9 else 0.0
 
     if path["kind"] == "Circular":
         direction = 1.0 if path["sweep"] >= 0.0 else -1.0
@@ -282,9 +259,7 @@ def make_handrail_top_rail_shape(
             tangent,
         )
         try:
-            return Part.Wire([edge]).makePipeShell(
-                [Part.Wire([circle])], True, False
-            )
+            return Part.Wire([edge]).makePipeShell([Part.Wire([circle])], True, False)
         except Part.OCCError:
             return Part.Shape()
 
@@ -344,9 +319,7 @@ def make_handrail_top_rail_shape(
         ),
     )
     try:
-        return Part.Face(
-            Part.makePolygon((*points, points[0]))
-        ).extrude(extrusion)
+        return Part.Face(Part.makePolygon((*points, points[0]))).extrude(extrusion)
     except Part.OCCError:
         return Part.Shape()
 
@@ -381,37 +354,29 @@ def make_handrail_vertical_member_shape(
     normal = (-tangent[1], tangent[0])
     points = (
         FreeCAD.Vector(
-            point[0] - normal[0] * width / 2.0
-            - tangent[0] * thickness / 2.0,
-            point[1] - normal[1] * width / 2.0
-            - tangent[1] * thickness / 2.0,
+            point[0] - normal[0] * width / 2.0 - tangent[0] * thickness / 2.0,
+            point[1] - normal[1] * width / 2.0 - tangent[1] * thickness / 2.0,
             bottom,
         ),
         FreeCAD.Vector(
-            point[0] + normal[0] * width / 2.0
-            - tangent[0] * thickness / 2.0,
-            point[1] + normal[1] * width / 2.0
-            - tangent[1] * thickness / 2.0,
+            point[0] + normal[0] * width / 2.0 - tangent[0] * thickness / 2.0,
+            point[1] + normal[1] * width / 2.0 - tangent[1] * thickness / 2.0,
             bottom,
         ),
         FreeCAD.Vector(
-            point[0] + normal[0] * width / 2.0
-            + tangent[0] * thickness / 2.0,
-            point[1] + normal[1] * width / 2.0
-            + tangent[1] * thickness / 2.0,
+            point[0] + normal[0] * width / 2.0 + tangent[0] * thickness / 2.0,
+            point[1] + normal[1] * width / 2.0 + tangent[1] * thickness / 2.0,
             bottom,
         ),
         FreeCAD.Vector(
-            point[0] - normal[0] * width / 2.0
-            + tangent[0] * thickness / 2.0,
-            point[1] - normal[1] * width / 2.0
-            + tangent[1] * thickness / 2.0,
+            point[0] - normal[0] * width / 2.0 + tangent[0] * thickness / 2.0,
+            point[1] - normal[1] * width / 2.0 + tangent[1] * thickness / 2.0,
             bottom,
         ),
     )
     try:
-        return Part.Face(
-            Part.makePolygon((*points, points[0]))
-        ).extrude(FreeCAD.Vector(0.0, 0.0, top - bottom))
+        return Part.Face(Part.makePolygon((*points, points[0]))).extrude(
+            FreeCAD.Vector(0.0, 0.0, top - bottom)
+        )
     except Part.OCCError:
         return Part.Shape()

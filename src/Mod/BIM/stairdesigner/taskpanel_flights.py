@@ -16,7 +16,6 @@ from .object_utils import (
     sync_all_flight_side_lengths,
 )
 
-
 translate = FreeCAD.Qt.translate
 
 from .taskpanel_widgets import (
@@ -25,6 +24,7 @@ from .taskpanel_widgets import (
     _percent_spin,
     _value,
 )
+
 
 class FlightPanelMixin:
     """Task-panel methods grouped by responsibility."""
@@ -38,9 +38,7 @@ class FlightPanelMixin:
         self.flight_tree.header().setSectionResizeMode(0, QtGui.QHeaderView.ResizeToContents)
         self.flight_tree.header().setSectionResizeMode(1, QtGui.QHeaderView.Stretch)
         self.flight_tree.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        self.flight_tree.customContextMenuRequested.connect(
-            self._show_flight_context_menu
-        )
+        self.flight_tree.customContextMenuRequested.connect(self._show_flight_context_menu)
 
         self._populate_flight_tree()
         return self.flight_tree
@@ -50,9 +48,7 @@ class FlightPanelMixin:
         self.flight_editors = []
         flights = get_flights(self.stair)
         single_flight = len(flights) == 1
-        all_straight = all(
-            str(flight.FlightType) == "Straight" for flight in flights
-        )
+        all_straight = all(str(flight.FlightType) == "Straight" for flight in flights)
         for index, flight in enumerate(flights):
             root = QtGui.QTreeWidgetItem(self.flight_tree)
             root.setText(0, flight.Label)
@@ -62,22 +58,14 @@ class FlightPanelMixin:
             flight_type = QtGui.QComboBox()
             flight_type.addItem(translate("BIM", "Straight flight"), "Straight")
             flight_type.addItem(translate("BIM", "Circular flight"), "Circular")
-            flight_type.addItem(
-                translate("BIM", "Straight landing"), "Straight landing"
-            )
-            flight_type.addItem(
-                translate("BIM", "Circular landing"), "Circular landing"
-            )
+            flight_type.addItem(translate("BIM", "Straight landing"), "Straight landing")
+            flight_type.addItem(translate("BIM", "Circular landing"), "Circular landing")
             self._select_data(flight_type, str(flight.FlightType))
             record["flight_type"] = flight_type
             record["left_length"] = _length_spin(_value(flight.LeftLength), 1.0)
             record["right_length"] = _length_spin(_value(flight.RightLength), 1.0)
-            record["inner_radius"] = _length_spin(
-                _value(flight.InnerRadius), 1.0
-            )
-            record["outer_radius"] = _length_spin(
-                _value(flight.OuterRadius), 1.0
-            )
+            record["inner_radius"] = _length_spin(_value(flight.InnerRadius), 1.0)
+            record["outer_radius"] = _length_spin(_value(flight.OuterRadius), 1.0)
             record["width"] = _length_spin(_value(flight.Width), 1.0)
             record["angle"] = self._angle_spin(_value(flight.Angle))
             rotation = QtGui.QComboBox()
@@ -87,12 +75,12 @@ class FlightPanelMixin:
             record["rotation"] = rotation
             is_circular = str(flight.FlightType).startswith("Circular")
             is_landing = str(flight.FlightType).endswith("landing")
-            previous_is_circular = index > 0 and str(
-                flights[index - 1].FlightType
-            ).startswith("Circular")
-            previous_is_landing = index > 0 and str(
-                flights[index - 1].FlightType
-            ).endswith("landing")
+            previous_is_circular = index > 0 and str(flights[index - 1].FlightType).startswith(
+                "Circular"
+            )
+            previous_is_landing = index > 0 and str(flights[index - 1].FlightType).endswith(
+                "landing"
+            )
             parameters = [(translate("BIM", "Type"), flight_type)]
             if index:
                 parameters.append((translate("BIM", "Rotation"), rotation))
@@ -131,18 +119,14 @@ class FlightPanelMixin:
                     )
             if index:
                 turn_type = QtGui.QComboBox()
-                turn_type.addItem(
-                    translate("BIM", "Herse balancing"), "Herse balancing"
-                )
+                turn_type.addItem(translate("BIM", "Herse balancing"), "Herse balancing")
                 turn_type.addItem(translate("BIM", "Landing"), "Landing")
                 self._select_data(turn_type, str(flight.TurnType))
                 record["turn_type"] = turn_type
                 if not is_circular:
                     parameters.append((translate("BIM", "Angle"), record["angle"]))
                     supports_winding = not (
-                        previous_is_circular
-                        or is_landing
-                        or previous_is_landing
+                        previous_is_circular or is_landing or previous_is_landing
                     )
                     if supports_winding:
                         local_winding = _percent_spin(flight.WindingLocal)
@@ -161,12 +145,8 @@ class FlightPanelMixin:
                         )
                         record["winding_local"] = local_winding
                         record["winding_distant"] = distant_winding
-                        parameters.append(
-                            (translate("BIM", "Turn type"), turn_type)
-                        )
-                        winding_rows.append(
-                            (translate("BIM", "Local winding"), local_winding)
-                        )
+                        parameters.append((translate("BIM", "Turn type"), turn_type))
+                        winding_rows.append((translate("BIM", "Local winding"), local_winding))
                         winding_rows.append(
                             (
                                 translate("BIM", "Distant winding"),
@@ -175,56 +155,30 @@ class FlightPanelMixin:
                         )
             if is_landing and not is_circular:
                 entry_direction = QtGui.QComboBox()
-                entry_direction.addItem(
-                    translate("BIM", "Straight"), "Straight"
-                )
-                entry_direction.addItem(
-                    translate("BIM", "From left"), "From left"
-                )
-                entry_direction.addItem(
-                    translate("BIM", "From right"), "From right"
-                )
-                self._select_data(
-                    entry_direction, str(flight.EntryDirection)
-                )
+                entry_direction.addItem(translate("BIM", "Straight"), "Straight")
+                entry_direction.addItem(translate("BIM", "From left"), "From left")
+                entry_direction.addItem(translate("BIM", "From right"), "From right")
+                self._select_data(entry_direction, str(flight.EntryDirection))
                 record["entry_direction"] = entry_direction
                 exit_direction = QtGui.QComboBox()
-                exit_direction.addItem(
-                    translate("BIM", "Straight"), "Straight"
-                )
-                exit_direction.addItem(
-                    translate("BIM", "To left"), "To left"
-                )
-                exit_direction.addItem(
-                    translate("BIM", "To right"), "To right"
-                )
+                exit_direction.addItem(translate("BIM", "Straight"), "Straight")
+                exit_direction.addItem(translate("BIM", "To left"), "To left")
+                exit_direction.addItem(translate("BIM", "To right"), "To right")
                 self._select_data(exit_direction, str(flight.ExitDirection))
                 record["exit_direction"] = exit_direction
-                parameters.append(
-                    (translate("BIM", "Entry direction"), entry_direction)
-                )
-                parameters.append(
-                    (translate("BIM", "Exit direction"), exit_direction)
-                )
+                parameters.append((translate("BIM", "Entry direction"), entry_direction))
+                parameters.append((translate("BIM", "Exit direction"), exit_direction))
             if index == 0 and all_straight:
                 record["start_angle"] = self._angle_spin(_value(flight.StartAngle))
                 record["start_angle"].setRange(-89.0, 89.0)
                 entry_direction = QtGui.QComboBox()
                 entry_direction.addItem(translate("BIM", "Straight"), "Straight")
-                entry_direction.addItem(
-                    translate("BIM", "From left"), "From left"
-                )
-                entry_direction.addItem(
-                    translate("BIM", "From right"), "From right"
-                )
+                entry_direction.addItem(translate("BIM", "From left"), "From left")
+                entry_direction.addItem(translate("BIM", "From right"), "From right")
                 self._select_data(entry_direction, str(flight.EntryDirection))
                 record["entry_direction"] = entry_direction
-                parameters.append(
-                    (translate("BIM", "Start angle"), record["start_angle"])
-                )
-                parameters.append(
-                    (translate("BIM", "Entry direction"), entry_direction)
-                )
+                parameters.append((translate("BIM", "Start angle"), record["start_angle"]))
+                parameters.append((translate("BIM", "Entry direction"), entry_direction))
             if index == len(flights) - 1 and all_straight:
                 record["end_angle"] = self._angle_spin(_value(flight.EndAngle))
                 record["end_angle"].setRange(-89.0, 89.0)
@@ -234,12 +188,8 @@ class FlightPanelMixin:
                 exit_direction.addItem(translate("BIM", "To right"), "To right")
                 self._select_data(exit_direction, str(flight.ExitDirection))
                 record["exit_direction"] = exit_direction
-                parameters.append(
-                    (translate("BIM", "End angle"), record["end_angle"])
-                )
-                parameters.append(
-                    (translate("BIM", "Exit direction"), exit_direction)
-                )
+                parameters.append((translate("BIM", "End angle"), record["end_angle"]))
+                parameters.append((translate("BIM", "Exit direction"), exit_direction))
             turn_type_item = None
             for label, editor in parameters:
                 child = QtGui.QTreeWidgetItem(root)
@@ -278,37 +228,27 @@ class FlightPanelMixin:
                 editor = record.get(key)
                 if editor:
                     editor.valueChanged.connect(
-                        lambda _value, current=record: self._turn_geometry_changed(
-                            current
-                        )
+                        lambda _value, current=record: self._turn_geometry_changed(current)
                     )
             for key in ("start_angle", "end_angle"):
                 editor = record.get(key)
                 if editor:
                     editor.valueChanged.connect(
-                        lambda _value, current=record: (
-                            self._endpoint_angle_changed(current)
-                        )
+                        lambda _value, current=record: (self._endpoint_angle_changed(current))
                     )
             for key in ("entry_direction", "exit_direction"):
                 editor = record.get(key)
                 if editor:
                     editor.currentIndexChanged.connect(self._apply)
             flight_type.currentIndexChanged.connect(
-                lambda _index, current=record: self._flight_type_changed(
-                    current
-                )
+                lambda _index, current=record: self._flight_type_changed(current)
             )
             record["rotation"].currentIndexChanged.connect(
-                lambda _index, current=record: self._turn_geometry_changed(
-                    current
-                )
+                lambda _index, current=record: self._turn_geometry_changed(current)
             )
             if record.get("turn_type") is not None:
                 record["turn_type"].currentIndexChanged.connect(
-                    lambda _index, current=record: self._turn_type_changed(
-                        current
-                    )
+                    lambda _index, current=record: self._turn_type_changed(current)
                 )
             for key in ("winding_local", "winding_distant"):
                 editor = record.get(key)
@@ -351,9 +291,7 @@ class FlightPanelMixin:
         if self._loading:
             return
         editor = record["turn_type"]
-        is_landing = (
-            str(editor.itemData(editor.currentIndex())) == "Landing"
-        )
+        is_landing = str(editor.itemData(editor.currentIndex())) == "Landing"
         for item in record.get("winding_items", ()):
             item.setHidden(is_landing)
         self._apply()
@@ -361,9 +299,7 @@ class FlightPanelMixin:
     def _endpoint_angle_changed(self, record):
         if self._loading:
             return
-        self._sync_flight_length_editors(
-            self.flight_editors.index(record), "LeftLength"
-        )
+        self._sync_flight_length_editors(self.flight_editors.index(record), "LeftLength")
         self._apply()
 
     def _flight_type_changed(self, record):
@@ -410,18 +346,12 @@ class FlightPanelMixin:
             self._sync_flight_radius_editors(index)
             return
         next_record = (
-            self.flight_editors[index + 1]
-            if index + 1 < len(self.flight_editors)
-            else None
+            self.flight_editors[index + 1] if index + 1 < len(self.flight_editors) else None
         )
-        previous_record = (
-            self.flight_editors[index - 1] if index > 0 else None
-        )
+        previous_record = self.flight_editors[index - 1] if index > 0 else None
         incoming_straight_turn = (
             previous_record
-            and not self._editor_flight_type(previous_record).startswith(
-                "Circular"
-            )
+            and not self._editor_flight_type(previous_record).startswith("Circular")
             and abs(record["angle"].value()) > 1e-7
         )
         straight_turn = (
@@ -451,8 +381,7 @@ class FlightPanelMixin:
                 turn_difference = -turn_difference
             signed_length_difference += turn_difference
         all_straight = all(
-            self._editor_flight_type(item) == "Straight"
-            for item in self.flight_editors
+            self._editor_flight_type(item) == "Straight" for item in self.flight_editors
         )
         if all_straight and index == 0 and record.get("start_angle") is not None:
             signed_length_difference += record["width"].value() * math.tan(
@@ -532,9 +461,7 @@ class FlightPanelMixin:
                 QtGui.QIcon(":/icons/Arch_Remove.svg"),
                 translate("BIM", "Delete Flight"),
             )
-            delete_action.setEnabled(
-                len(get_flights(self.stair)) > 1
-            )
+            delete_action.setEnabled(len(get_flights(self.stair)) > 1)
             delete_action.triggered.connect(self._remove_flight)
         menu.exec_(self.flight_tree.viewport().mapToGlobal(position))
 

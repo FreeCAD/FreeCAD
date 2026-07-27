@@ -16,6 +16,7 @@ from .geometry_core import (
     balanced_section_top,
 )
 
+
 def straight_stringer_sections(
     metrics,
     width,
@@ -35,8 +36,7 @@ def straight_stringer_sections(
     elevations = list(top_elevations or [])
     if len(elevations) != metrics.tread_count + 1:
         elevations = [
-            (index + 1) * metrics.riser_height
-            for index in range(metrics.tread_count + 1)
+            (index + 1) * metrics.riser_height for index in range(metrics.tread_count + 1)
         ]
     for index in range(metrics.tread_count + 1):
         station = stations[index]
@@ -106,14 +106,8 @@ def _monotone_profile_slopes(parameters, values):
     count = len(parameters)
     if count < 2:
         return [0.0] * count
-    intervals = [
-        parameters[index + 1] - parameters[index]
-        for index in range(count - 1)
-    ]
-    secants = [
-        (values[index + 1] - values[index]) / intervals[index]
-        for index in range(count - 1)
-    ]
+    intervals = [parameters[index + 1] - parameters[index] for index in range(count - 1)]
+    secants = [(values[index + 1] - values[index]) / intervals[index] for index in range(count - 1)]
     if count == 2:
         return [secants[0], secants[0]]
 
@@ -132,19 +126,16 @@ def _monotone_profile_slopes(parameters, values):
         )
 
     def endpoint_slope(first_interval, second_interval, first, second):
-        value = (
-            (2.0 * first_interval + second_interval) * first
-            - first_interval * second
-        ) / (first_interval + second_interval)
+        value = ((2.0 * first_interval + second_interval) * first - first_interval * second) / (
+            first_interval + second_interval
+        )
         if value * first <= 0.0:
             return 0.0
         if first * second < 0.0 and abs(value) > 3.0 * abs(first):
             return 3.0 * first
         return value
 
-    slopes[0] = endpoint_slope(
-        intervals[0], intervals[1], secants[0], secants[1]
-    )
+    slopes[0] = endpoint_slope(intervals[0], intervals[1], secants[0], secants[1])
     slopes[-1] = endpoint_slope(
         intervals[-1],
         intervals[-2],
@@ -184,8 +175,7 @@ def _profile_bezier_edges(
             ),
             point(
                 second_parameter - interval / 3.0,
-                values[index + 1]
-                - slopes[index + 1] * interval / 3.0,
+                values[index + 1] - slopes[index + 1] * interval / 3.0,
             ),
             point(second_parameter, values[index + 1]),
         )
@@ -237,10 +227,7 @@ def _make_planar_housed_stringer_shape(
             section_tangent[0] / section_length,
             section_tangent[1] / section_length,
         )
-        if (
-            abs(_cross(tangent, section_tangent)) > 1e-7
-            or _dot(tangent, section_tangent) < 0.0
-        ):
+        if abs(_cross(tangent, section_tangent)) > 1e-7 or _dot(tangent, section_tangent) < 0.0:
             return None
         inward = _stringer_inward(section, side)
         if _dot(first_inward, inward) < 1.0 - 1e-7:
@@ -267,48 +254,34 @@ def _make_planar_housed_stringer_shape(
     origin = surface_points[0]
     tolerance = max(axis_length, 1.0) * 1e-7
     if any(
-        abs(
-            (point[0] - origin[0]) * normal[0]
-            + (point[1] - origin[1]) * normal[1]
-        )
-        > tolerance
+        abs((point[0] - origin[0]) * normal[0] + (point[1] - origin[1]) * normal[1]) > tolerance
         for point in surface_points
     ):
         return None
 
     parameters = [
-        (point[0] - origin[0]) * direction[0]
-        + (point[1] - origin[1]) * direction[1]
+        (point[0] - origin[0]) * direction[0] + (point[1] - origin[1]) * direction[1]
         for point in surface_points
     ]
     if parameters[-1] < 1e-7:
         return None
-    if any(
-        following <= previous + 1e-7
-        for previous, following in zip(parameters, parameters[1:])
-    ):
+    if any(following <= previous + 1e-7 for previous, following in zip(parameters, parameters[1:])):
         # Aggressive winding can make the tread intersections backtrack
         # along a straight board.  A global loft then produces loops.  Keep
         # their distribution but restore the only physically meaningful
         # ordering before constructing the side profile.
         total = parameters[-1]
-        ordered = sorted(
-            min(max(parameter, 0.0), total)
-            for parameter in parameters
-        )
+        ordered = sorted(min(max(parameter, 0.0), total) for parameter in parameters)
         blend = 1e-5
         parameters = [
-            (1.0 - blend) * parameter
-            + blend * total * index / (len(ordered) - 1)
+            (1.0 - blend) * parameter + blend * total * index / (len(ordered) - 1)
             for index, parameter in enumerate(ordered)
         ]
         parameters[0] = 0.0
         parameters[-1] = total
 
     top_values = [float(top) for top in tops]
-    bottom_values = [
-        max(top - float(vertical_width), 0.0) for top in top_values
-    ]
+    bottom_values = [max(top - float(vertical_width), 0.0) for top in top_values]
     if len(bottom_values) >= 2:
         # The terminal section is the rear boundary of the final tread and
         # its top is deliberately raised one riser in
@@ -317,12 +290,8 @@ def _make_planar_housed_stringer_shape(
         # angled end makes one side longer.  Keep the terminal support at
         # least as deep as the preceding section.
         bottom_values[-1] = min(bottom_values[-1], bottom_values[-2])
-    top_edges = _profile_bezier_edges(
-        origin, direction, parameters, top_values
-    )
-    bottom_edges = _profile_bezier_edges(
-        origin, direction, parameters, bottom_values
-    )
+    top_edges = _profile_bezier_edges(origin, direction, parameters, top_values)
+    bottom_edges = _profile_bezier_edges(origin, direction, parameters, bottom_values)
     top_start = top_edges[0].Vertexes[0].Point
     top_end = top_edges[-1].Vertexes[-1].Point
     bottom_start = bottom_edges[0].Vertexes[0].Point
@@ -361,8 +330,7 @@ def _make_planar_housed_stringer_shape(
 
 def _stringer_elevations(sections, riser_height):
     return [
-        balanced_section_top(section, index, riser_height)
-        for index, section in enumerate(sections)
+        balanced_section_top(section, index, riser_height) for index, section in enumerate(sections)
     ]
 
 
@@ -408,10 +376,8 @@ def automatic_stringer_width(
     if str(offset_direction) == "Vertical":
         upper *= slope_cosine
     step_envelope = (
-        (max(float(riser_height), 0.0) + max(float(step_thickness), 0.0))
-        * slope_cosine
-        + max(float(nosing), 0.0) * slope_sine
-    )
+        max(float(riser_height), 0.0) + max(float(step_thickness), 0.0)
+    ) * slope_cosine + max(float(nosing), 0.0) * slope_sine
     return max(235.0, upper + step_envelope + 50.0)
 
 
@@ -419,10 +385,11 @@ def stringer_flight_runs(sections, flight_types=None):
     """Return ``(flight_index, sections)`` for each stair-bearing flight."""
 
     sections = [
-        replace(section, riser_index=index + 1)
-        if int(getattr(section, "riser_index", 0)) <= 0
-        and not section.level_to_next
-        else section
+        (
+            replace(section, riser_index=index + 1)
+            if int(getattr(section, "riser_index", 0)) <= 0 and not section.level_to_next
+            else section
+        )
         for index, section in enumerate(sections)
     ]
     runs = []
@@ -434,8 +401,7 @@ def stringer_flight_runs(sections, flight_types=None):
                 runs.append((flight_index, sections[start : index + 1]))
             section_type = (
                 str(flight_types[section.flight_index])
-                if flight_types
-                and section.flight_index < len(flight_types)
+                if flight_types and section.flight_index < len(flight_types)
                 else ""
             )
             if section_type.endswith("landing"):
@@ -468,9 +434,8 @@ def stringer_flight_runs(sections, flight_types=None):
                 if flight_types and section.flight_index < len(flight_types)
                 else ""
             )
-            tangent_junction = (
-                previous_type.startswith("Circular")
-                or following_type.startswith("Circular")
+            tangent_junction = previous_type.startswith("Circular") or following_type.startswith(
+                "Circular"
             )
             if tangent_junction and index - start >= 2:
                 runs.append((flight_index, sections[start:index]))
@@ -513,14 +478,12 @@ def planar_stringer_sections(
     selected_origin = left_origin if side == "Left" else right_origin
 
     def longitudinal(point):
-        return (
-            (point[0] - selected_origin[0]) * tangent[0]
-            + (point[1] - selected_origin[1]) * tangent[1]
-        )
+        return (point[0] - selected_origin[0]) * tangent[0] + (
+            point[1] - selected_origin[1]
+        ) * tangent[1]
 
     distances = [
-        longitudinal(section.left if side == "Left" else section.right)
-        for section in sections
+        longitudinal(section.left if side == "Left" else section.right) for section in sections
     ]
     nosing_aligned = [False] * len(sections)
     nosing = max(float(nosing), 0.0)
@@ -547,9 +510,7 @@ def planar_stringer_sections(
         distances[-1] = longitudinal(end_seam)
 
     result = []
-    for section, distance, aligned in zip(
-        sections, distances, nosing_aligned
-    ):
+    for section, distance, aligned in zip(sections, distances, nosing_aligned):
         right = (
             right_origin[0] + tangent[0] * distance,
             right_origin[1] + tangent[1] * distance,

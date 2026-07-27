@@ -11,6 +11,7 @@ from .geometry_core import (
     tread_stations,
 )
 
+
 def balanced_winder_sections(
     flight_specs,
     tread_count,
@@ -53,18 +54,12 @@ def balanced_winder_sections(
         direction = (math.cos(radians), math.sin(radians))
         directions.append(direction)
         start = vertices[-1]
-        vertices.append(
-            (start[0] + direction[0] * length, start[1] + direction[1] * length)
-        )
+        vertices.append((start[0] + direction[0] * length, start[1] + direction[1] * length))
 
     coefficient = max(float(winding_coefficient), 0.0)
-    corner_controls = _winding_controls(
-        len(specs) - 1, coefficient, winding_parameters
-    )
+    corner_controls = _winding_controls(len(specs) - 1, coefficient, winding_parameters)
     corner_types = list(turn_types or [])
-    corner_types.extend(
-        ["Herse balancing"] * (len(specs) - 1 - len(corner_types))
-    )
+    corner_types.extend(["Herse balancing"] * (len(specs) - 1 - len(corner_types)))
     corner_types = [
         "Landing" if str(value) == "Landing" else "Herse balancing"
         for value in corner_types[: len(specs) - 1]
@@ -87,27 +82,17 @@ def balanced_winder_sections(
         )
 
     corner_trims = _herse_corner_trims(specs, corner_controls)
-    start_trim = _endpoint_balance_trim(
-        specs[0][0], specs[0][1], coefficient, entry_direction
-    )
-    end_trim = _endpoint_balance_trim(
-        specs[-1][0], specs[-1][1], coefficient, exit_direction
-    )
+    start_trim = _endpoint_balance_trim(specs[0][0], specs[0][1], coefficient, entry_direction)
+    end_trim = _endpoint_balance_trim(specs[-1][0], specs[-1][1], coefficient, exit_direction)
     if corner_trims:
         incoming, outgoing = corner_trims[0]
-        start_trim, incoming = _fit_transition_trims(
-            start_trim, incoming, specs[0][0]
-        )
+        start_trim, incoming = _fit_transition_trims(start_trim, incoming, specs[0][0])
         corner_trims[0] = incoming, outgoing
         incoming, outgoing = corner_trims[-1]
-        outgoing, end_trim = _fit_transition_trims(
-            outgoing, end_trim, specs[-1][0]
-        )
+        outgoing, end_trim = _fit_transition_trims(outgoing, end_trim, specs[-1][0])
         corner_trims[-1] = incoming, outgoing
     elif start_trim or end_trim:
-        start_trim, end_trim = _fit_transition_trims(
-            start_trim, end_trim, specs[0][0]
-        )
+        start_trim, end_trim = _fit_transition_trims(start_trim, end_trim, specs[0][0])
 
     dense = []
 
@@ -135,11 +120,7 @@ def balanced_winder_sections(
         append_point(vertices[0], specs[0][1], 0)
     for index, (_length, width, _heading) in enumerate(specs):
         direction = directions[index]
-        flight_end_trim = (
-            corner_trims[index][0]
-            if index < len(corner_trims)
-            else end_trim
-        )
+        flight_end_trim = corner_trims[index][0] if index < len(corner_trims) else end_trim
         straight_end = (
             vertices[index + 1][0] - direction[0] * flight_end_trim,
             vertices[index + 1][1] - direction[1] * flight_end_trim,
@@ -185,13 +166,9 @@ def balanced_winder_sections(
 
     cumulative = [0.0]
     for first, second in zip(dense, dense[1:]):
-        cumulative.append(
-            cumulative[-1] + math.hypot(second[0] - first[0], second[1] - first[1])
-        )
+        cumulative.append(cumulative[-1] + math.hypot(second[0] - first[0], second[1] - first[1]))
     total_length = cumulative[-1]
-    going, stations = tread_stations(
-        total_length, tread_count, extra_widths
-    )
+    going, stations = tread_stations(total_length, tread_count, extra_widths)
     nosing = max(float(nosing), 0.0)
     sections = []
     for index in range(tread_count + 1):
@@ -214,11 +191,7 @@ def balanced_winder_sections(
         first = dense[segment]
         second = dense[segment + 1]
         segment_length = cumulative[segment + 1] - cumulative[segment]
-        ratio = (
-            (sample_station - cumulative[segment]) / segment_length
-            if segment_length
-            else 0.0
-        )
+        ratio = (sample_station - cumulative[segment]) / segment_length if segment_length else 0.0
         center = (
             first[0] + (second[0] - first[0]) * ratio,
             first[1] + (second[1] - first[1]) * ratio,
@@ -263,9 +236,7 @@ def balanced_winder_sections(
                 ),
             )
         )
-    sections = _fit_sections_to_flight_footprint(
-        sections, specs, vertices, directions
-    )
+    sections = _fit_sections_to_flight_footprint(sections, specs, vertices, directions)
     sections = _apply_endpoint_boundary_sections(
         sections,
         vertices,
@@ -288,9 +259,7 @@ def _winding_controls(count, coefficient, winding_parameters=None):
     parameters = list(winding_parameters)
     controls = []
     for index in range(count):
-        local, distant = (
-            parameters[index] if index < len(parameters) else (50.0, 50.0)
-        )
+        local, distant = parameters[index] if index < len(parameters) else (50.0, 50.0)
         local = min(max(float(local), 0.0), 100.0)
         distant = min(max(float(distant), 0.0), 100.0)
         controls.append((local, 1.5 - distant / 100.0))
@@ -301,9 +270,7 @@ def _herse_curve_point(start, corner, end, ratio, local):
     """Return a cubic Herse point with adjustable near-corner tightening."""
 
     ratio = min(max(float(ratio), 0.0), 1.0)
-    influence = 1.0 / 3.0 + 2.0 / 3.0 * min(
-        max(float(local), 0.0), 100.0
-    ) / 100.0
+    influence = 1.0 / 3.0 + 2.0 / 3.0 * min(max(float(local), 0.0), 100.0) / 100.0
     first_control = (
         start[0] + (corner[0] - start[0]) * influence,
         start[1] + (corner[1] - start[1]) * influence,
@@ -393,20 +360,14 @@ def _append_endpoint_transition(
         return
     normal = (-direction[1], direction[0])
     side_offset = side * width / 2.0
-    boundary_offset = side * width / 2.0 * _safe_angle_tangent(
-        boundary_angle
-    )
+    boundary_offset = side * width / 2.0 * _safe_angle_tangent(boundary_angle)
     if is_start:
         join = trim
         chord_length = max(join - boundary_offset, 0.01)
         endpoint_station = boundary_offset + chord_length / 2.0
         endpoint = (
-            vertex[0]
-            + direction[0] * endpoint_station
-            + normal[0] * side_offset,
-            vertex[1]
-            + direction[1] * endpoint_station
-            + normal[1] * side_offset,
+            vertex[0] + direction[0] * endpoint_station + normal[0] * side_offset,
+            vertex[1] + direction[1] * endpoint_station + normal[1] * side_offset,
         )
         control = (
             vertex[0] + direction[0] * endpoint_station,
@@ -423,12 +384,8 @@ def _append_endpoint_transition(
         chord_length = max(trim + boundary_offset, 0.01)
         endpoint_station = boundary_offset - chord_length / 2.0
         endpoint = (
-            vertex[0]
-            + direction[0] * endpoint_station
-            + normal[0] * side_offset,
-            vertex[1]
-            + direction[1] * endpoint_station
-            + normal[1] * side_offset,
+            vertex[0] + direction[0] * endpoint_station + normal[0] * side_offset,
+            vertex[1] + direction[1] * endpoint_station + normal[1] * side_offset,
         )
         control = (
             vertex[0] + direction[0] * endpoint_station,
@@ -525,9 +482,7 @@ def _apply_endpoint_boundary_sections(
         normal = (-direction[1], direction[0])
         boundary_offset = side * width / 2.0 * _safe_angle_tangent(angle)
         length = specs[0][0] if start else specs[-1][0]
-        trim = _endpoint_balance_trim(
-            length, width, coefficient, requested
-        )
+        trim = _endpoint_balance_trim(length, width, coefficient, requested)
         if start:
             first_station = boundary_offset
             second_station = trim
@@ -537,26 +492,17 @@ def _apply_endpoint_boundary_sections(
             second_station = boundary_offset
             tangent = (side * normal[0], side * normal[1])
         first = (
-            vertex[0]
-            + direction[0] * first_station
-            + normal[0] * side * width / 2.0,
-            vertex[1]
-            + direction[1] * first_station
-            + normal[1] * side * width / 2.0,
+            vertex[0] + direction[0] * first_station + normal[0] * side * width / 2.0,
+            vertex[1] + direction[1] * first_station + normal[1] * side * width / 2.0,
         )
         second = (
-            vertex[0]
-            + direction[0] * second_station
-            + normal[0] * side * width / 2.0,
-            vertex[1]
-            + direction[1] * second_station
-            + normal[1] * side * width / 2.0,
+            vertex[0] + direction[0] * second_station + normal[0] * side * width / 2.0,
+            vertex[1] + direction[1] * second_station + normal[1] * side * width / 2.0,
         )
         section_normal = (-tangent[1], tangent[0])
-        projection = (
-            (first[0] - second[0]) * section_normal[0]
-            + (first[1] - second[1]) * section_normal[1]
-        )
+        projection = (first[0] - second[0]) * section_normal[0] + (
+            first[1] - second[1]
+        ) * section_normal[1]
         left, right = (first, second) if projection >= 0.0 else (second, first)
         return BalancedSection(
             center=((first[0] + second[0]) / 2.0, (first[1] + second[1]) / 2.0),
@@ -698,36 +644,24 @@ def _landing_winder_sections(
 ):
     """Return sections with each landing kept as one unsampled corner interval."""
 
-    corner_controls = _winding_controls(
-        len(specs) - 1, coefficient, winding_parameters
-    )
+    corner_controls = _winding_controls(len(specs) - 1, coefficient, winding_parameters)
     corner_trims = _herse_corner_trims(specs, corner_controls)
 
     chunks = [[]]
 
     def append_point(chunk, point, width, flight_index):
-        if chunk and math.hypot(
-            point[0] - chunk[-1][0], point[1] - chunk[-1][1]
-        ) < 1e-9:
+        if chunk and math.hypot(point[0] - chunk[-1][0], point[1] - chunk[-1][1]) < 1e-9:
             chunk[-1] = (point[0], point[1], width, flight_index)
         else:
             chunk.append((point[0], point[1], width, flight_index))
 
-    start_trim = _endpoint_balance_trim(
-        specs[0][0], specs[0][1], coefficient, entry_direction
-    )
-    end_trim = _endpoint_balance_trim(
-        specs[-1][0], specs[-1][1], coefficient, exit_direction
-    )
+    start_trim = _endpoint_balance_trim(specs[0][0], specs[0][1], coefficient, entry_direction)
+    end_trim = _endpoint_balance_trim(specs[-1][0], specs[-1][1], coefficient, exit_direction)
     if len(specs) == 1:
-        start_trim, end_trim = _fit_transition_trims(
-            start_trim, end_trim, specs[0][0]
-        )
+        start_trim, end_trim = _fit_transition_trims(start_trim, end_trim, specs[0][0])
     if start_trim:
         _append_endpoint_transition(
-            lambda point, width, owner: append_point(
-                chunks[-1], point, width, owner
-            ),
+            lambda point, width, owner: append_point(chunks[-1], point, width, owner),
             vertices[0],
             directions[0],
             specs[0][1],
@@ -766,10 +700,7 @@ def _landing_winder_sections(
 
         corner = vertices[index + 1]
         outgoing_direction = directions[index + 1]
-        turn_sine = abs(
-            direction[0] * outgoing_direction[1]
-            - direction[1] * outgoing_direction[0]
-        )
+        turn_sine = abs(direction[0] * outgoing_direction[1] - direction[1] * outgoing_direction[0])
         is_landing = corner_types[index] == "Landing" and turn_sine > 1e-7
         if is_landing:
             incoming_trim = specs[index + 1][1] / (2.0 * turn_sine)
@@ -784,9 +715,7 @@ def _landing_winder_sections(
             )
             append_point(chunks[-1], entry, width, index)
             chunks.append([])
-            append_point(
-                chunks[-1], exit_point, specs[index + 1][1], index + 1
-            )
+            append_point(chunks[-1], exit_point, specs[index + 1][1], index + 1)
             landing_count += 1
             continue
 
@@ -815,9 +744,7 @@ def _landing_winder_sections(
             append_point(chunks[-1], point, curve_width, owner)
 
     chunk_lengths = [_dense_path_length(chunk) for chunk in chunks]
-    free_tread_count = tread_count - (
-        landing_count if landing_replaces_tread else 0
-    )
+    free_tread_count = tread_count - (landing_count if landing_replaces_tread else 0)
     distributed_tread_count = free_tread_count
     if not landing_replaces_tread:
         distributed_tread_count -= landing_count
@@ -827,10 +754,7 @@ def _landing_winder_sections(
             specs,
             tread_count,
             coefficient,
-            [
-                "Herse balancing" if value == "Landing" else value
-                for value in corner_types
-            ],
+            ["Herse balancing" if value == "Landing" else value for value in corner_types],
             start_angle,
             end_angle,
             entry_direction,
@@ -840,9 +764,7 @@ def _landing_winder_sections(
             extra_widths=extra_widths,
         )
 
-    chunk_tread_counts = distribute_treads(
-        chunk_lengths, distributed_tread_count
-    )
+    chunk_tread_counts = distribute_treads(chunk_lengths, distributed_tread_count)
     if not landing_replaces_tread:
         for index in range(min(landing_count, len(chunk_tread_counts) - 1)):
             chunk_tread_counts[index] += 1
@@ -911,9 +833,7 @@ def _landing_winder_sections(
                 riser_index=(riser_index if not landing_replaces_tread else 0),
             )
         )
-    sections = _fit_sections_to_flight_footprint(
-        sections, specs, vertices, directions
-    )
+    sections = _fit_sections_to_flight_footprint(sections, specs, vertices, directions)
     sections = _apply_endpoint_boundary_sections(
         sections,
         vertices,
@@ -936,9 +856,7 @@ def _dense_path_length(points):
 
 
 def _tangent_matches_direction(tangent, direction):
-    return abs(
-        tangent[0] * direction[1] - tangent[1] * direction[0]
-    ) < 1e-9
+    return abs(tangent[0] * direction[1] - tangent[1] * direction[0]) < 1e-9
 
 
 def _sample_dense_path(points, interval_count, extra_widths=None):
@@ -946,14 +864,9 @@ def _sample_dense_path(points, interval_count, extra_widths=None):
 
     cumulative = [0.0]
     for first, second in zip(points, points[1:]):
-        cumulative.append(
-            cumulative[-1]
-            + math.hypot(second[0] - first[0], second[1] - first[1])
-        )
+        cumulative.append(cumulative[-1] + math.hypot(second[0] - first[0], second[1] - first[1]))
     total_length = cumulative[-1]
-    _general_going, stations = tread_stations(
-        total_length, interval_count, extra_widths
-    )
+    _general_going, stations = tread_stations(total_length, interval_count, extra_widths)
     result = []
     for index in range(interval_count + 1):
         station = stations[index]
@@ -967,14 +880,8 @@ def _sample_dense_path(points, interval_count, extra_widths=None):
         first = points[segment]
         second = points[segment + 1]
         segment_length = cumulative[segment + 1] - cumulative[segment]
-        ratio = (
-            (station - cumulative[segment]) / segment_length
-            if segment_length
-            else 0.0
-        )
-        tangent_length = math.hypot(
-            second[0] - first[0], second[1] - first[1]
-        )
+        ratio = (station - cumulative[segment]) / segment_length if segment_length else 0.0
+        tangent_length = math.hypot(second[0] - first[0], second[1] - first[1])
         result.append(
             {
                 "center": (
@@ -996,14 +903,10 @@ def _sample_dense_path(points, interval_count, extra_widths=None):
 def _fit_sections_to_flight_footprint(sections, specs, vertices, directions):
     """Extend each nosing to the fixed union of the rectangular flights."""
 
-    start_extensions, end_extensions = _flight_corner_extensions(
-        specs, directions
-    )
+    start_extensions, end_extensions = _flight_corner_extensions(specs, directions)
     fitted = []
     for index, section in enumerate(sections):
-        if section.landing_to_next or (
-            index and sections[index - 1].landing_to_next
-        ):
+        if section.landing_to_next or (index and sections[index - 1].landing_to_next):
             fitted.append(section)
             continue
         normal = (-section.tangent[1], section.tangent[0])
@@ -1101,9 +1004,7 @@ def _flight_corner_extensions(specs, directions=None):
     for index in range(len(specs) - 1):
         incoming = directions[index]
         outgoing = directions[index + 1]
-        turn_sine = abs(
-            incoming[0] * outgoing[1] - incoming[1] * outgoing[0]
-        )
+        turn_sine = abs(incoming[0] * outgoing[1] - incoming[1] * outgoing[0])
         if turn_sine < 1e-7:
             continue
         ends[index] = specs[index + 1][1] / (2.0 * turn_sine)

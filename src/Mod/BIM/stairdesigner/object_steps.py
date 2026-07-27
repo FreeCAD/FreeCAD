@@ -20,7 +20,6 @@ from .geometry_straight import (
     plan_segments,
 )
 
-
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 
@@ -38,6 +37,7 @@ from .object_utils import (
     _quantity_value,
 )
 
+
 class StairStepsMixin:
     """Implementation methods grouped by responsibility."""
 
@@ -54,11 +54,7 @@ class StairStepsMixin:
         sketch.deleteAllGeometry(True)
         lines = []
         if balanced_sections:
-            lines.extend(
-                balanced_plan_geometry(
-                    balanced_sections, balanced_footprint
-                )
-            )
+            lines.extend(balanced_plan_geometry(balanced_sections, balanced_footprint))
         else:
             nosing = (
                 _quantity_value(stair.Nosing)
@@ -81,12 +77,8 @@ class StairStepsMixin:
                     nosing,
                     layout["tread_goings"],
                 ):
-                    start_point = plan_placement.multVec(
-                        FreeCAD.Vector(start[0], start[1], 0.0)
-                    )
-                    end_point = plan_placement.multVec(
-                        FreeCAD.Vector(end[0], end[1], 0.0)
-                    )
+                    start_point = plan_placement.multVec(FreeCAD.Vector(start[0], start[1], 0.0))
+                    end_point = plan_placement.multVec(FreeCAD.Vector(end[0], end[1], 0.0))
                     lines.append(Part.LineSegment(start_point, end_point))
         sketch.addGeometry(lines, False)
         sketch.Placement = _child_placement(stair)
@@ -115,11 +107,7 @@ class StairStepsMixin:
             else sum(layout["metrics"].tread_count for layout in layouts)
         )
         treads = _generated_parts(group, stair, "Tread")
-        riser_count = (
-            total_treads + (1 if stair.EndWithRiser else 0)
-            if stair.RisersEnabled
-            else 0
-        )
+        riser_count = total_treads + (1 if stair.EndWithRiser else 0) if stair.RisersEnabled else 0
         risers = _generated_parts(group, stair, "Riser")
         if allow_structure_changes:
             treads = _resize_generated_parts(group, stair, "Tread", total_treads)
@@ -131,9 +119,7 @@ class StairStepsMixin:
         nosing = max(_quantity_value(stair.Nosing), 0.0)
         riser_thickness = max(_quantity_value(stair.RiserThickness), 0.01)
         step_riser_overlap = (
-            0.0
-            if concrete_dressing
-            else max(_quantity_value(stair.StepRiserOverlap), 0.0)
+            0.0 if concrete_dressing else max(_quantity_value(stair.StepRiserOverlap), 0.0)
         )
         if balanced_sections:
             self._update_balanced_wood_parts(
@@ -162,12 +148,9 @@ class StairStepsMixin:
                 if stair.RisersEnabled:
                     if concrete_dressing:
                         is_last_tread = (
-                            layout is layouts[-1]
-                            and local_index == metrics.tread_count - 1
+                            layout is layouts[-1] and local_index == metrics.tread_count - 1
                         )
-                        if stair.PriorityToRiser and (
-                            not is_last_tread or stair.EndWithRiser
-                        ):
+                        if stair.PriorityToRiser and (not is_last_tread or stair.EndWithRiser):
                             back_extension = -riser_thickness
                     else:
                         back_extension = step_riser_overlap
@@ -197,9 +180,7 @@ class StairStepsMixin:
         for layout in layouts:
             metrics = layout["metrics"]
             local_riser_count = metrics.tread_count + (
-                1
-                if stair.EndWithRiser and layout is layouts[-1]
-                else 0
+                1 if stair.EndWithRiser and layout is layouts[-1] else 0
             )
             for local_index in range(local_riser_count):
                 riser = risers[generated_index]
@@ -240,12 +221,8 @@ class StairStepsMixin:
     ):
         tread_count = len(sections) - 1
         riser_height = _quantity_value(stair.RiserHeight)
-        base_faces = plan_shapes or balanced_tread_faces(
-            sections, footprint
-        )
-        for index, (front, rear, base_face) in enumerate(
-            zip(sections, sections[1:], base_faces)
-        ):
+        base_faces = plan_shapes or balanced_tread_faces(sections, footprint)
+        for index, (front, rear, base_face) in enumerate(zip(sections, sections[1:], base_faces)):
             tread = treads[index]
             tread.Label = f"{translate('BIM', 'Step')} {index + 1}"
             tread.Index = index + 1
@@ -253,9 +230,7 @@ class StairStepsMixin:
             back_extension = 0.0
             if stair.RisersEnabled:
                 if concrete_dressing:
-                    if stair.PriorityToRiser and (
-                        index < tread_count - 1 or stair.EndWithRiser
-                    ):
+                    if stair.PriorityToRiser and (index < tread_count - 1 or stair.EndWithRiser):
                         back_extension = -riser_thickness
                 else:
                     back_extension = step_riser_overlap
@@ -265,9 +240,7 @@ class StairStepsMixin:
                 front,
                 rear,
                 footprint,
-                balanced_section_top(
-                    front, index, riser_height
-                ),
+                balanced_section_top(front, index, riser_height),
                 step_thickness,
                 nosing,
                 back_extension,
@@ -287,17 +260,9 @@ class StairStepsMixin:
             return
         upper_offset = _quantity_value(stair.RiserUpperOffset)
         lower_offset = _quantity_value(stair.RiserLowerOffset)
-        riser_sections = list(
-            enumerate(
-                sections if stair.EndWithRiser else sections[:-1]
-            )
-        )
-        for generated_index, (riser, (index, section)) in enumerate(
-            zip(risers, riser_sections)
-        ):
-            top = balanced_section_top(
-                section, index, riser_height
-            )
+        riser_sections = list(enumerate(sections if stair.EndWithRiser else sections[:-1]))
+        for generated_index, (riser, (index, section)) in enumerate(zip(risers, riser_sections)):
+            top = balanced_section_top(section, index, riser_height)
             previous_top = (
                 balanced_section_top(
                     sections[index - 1],
@@ -311,25 +276,13 @@ class StairStepsMixin:
             if concrete_dressing:
                 base = (
                     previous_top
-                    - (
-                        step_thickness
-                        if stair.PriorityToRiser and index > 0
-                        else 0.0
-                    )
+                    - (step_thickness if stair.PriorityToRiser and index > 0 else 0.0)
                     + lower_offset
                 )
-                finished_top = (
-                    top
-                    - (step_thickness if index < tread_count else 0.0)
-                    - upper_offset
-                )
+                finished_top = top - (step_thickness if index < tread_count else 0.0) - upper_offset
                 height = finished_top - base
             else:
-                bottom_extension = (
-                    step_thickness
-                    if stair.PriorityToRiser and index > 0
-                    else 0.0
-                )
+                bottom_extension = step_thickness if stair.PriorityToRiser and index > 0 else 0.0
                 height = (
                     rise
                     - (0.0 if index == tread_count else step_thickness)
@@ -338,9 +291,7 @@ class StairStepsMixin:
                     - lower_offset
                 )
                 base = top - rise - bottom_extension + lower_offset
-            riser.Label = (
-                f"{translate('BIM', 'Riser')} {generated_index + 1}"
-            )
+            riser.Label = f"{translate('BIM', 'Riser')} {generated_index + 1}"
             riser.Index = generated_index + 1
             riser.FlightIndex = section.flight_index + 1
             riser.Shape = make_balanced_riser_shape(
@@ -350,8 +301,7 @@ class StairStepsMixin:
                 riser_thickness,
                 footprint,
                 local_expansion=(
-                    section.landing_to_next
-                    or (index > 0 and sections[index - 1].landing_to_next)
+                    section.landing_to_next or (index > 0 and sections[index - 1].landing_to_next)
                 ),
                 concrete_dressing=concrete_dressing,
             )
@@ -386,16 +336,8 @@ class StairStepsMixin:
                 balanced_plan_shapes,
                 _quantity_value(stair.BottomCutDistance),
                 _quantity_value(stair.TopCutDistance),
-                (
-                    _quantity_value(stair.StepThickness)
-                    if stair.StepsEnabled
-                    else 0.0
-                ),
-                (
-                    _quantity_value(stair.StructureWidthOffset)
-                    if stair.StepsEnabled
-                    else 0.0
-                ),
+                (_quantity_value(stair.StepThickness) if stair.StepsEnabled else 0.0),
+                (_quantity_value(stair.StructureWidthOffset) if stair.StepsEnabled else 0.0),
             )
         else:
             shapes = []
@@ -404,26 +346,10 @@ class StairStepsMixin:
                     layout["metrics"],
                     layout["width"],
                     _quantity_value(stair.ConcreteThickness),
-                    (
-                        _quantity_value(stair.BottomCutDistance)
-                        if index == 0
-                        else 0.0
-                    ),
-                    (
-                        _quantity_value(stair.TopCutDistance)
-                        if index == len(layouts) - 1
-                        else 0.0
-                    ),
-                    (
-                        _quantity_value(stair.StepThickness)
-                        if stair.StepsEnabled
-                        else 0.0
-                    ),
-                    (
-                        _quantity_value(stair.StructureWidthOffset)
-                        if stair.StepsEnabled
-                        else 0.0
-                    ),
+                    (_quantity_value(stair.BottomCutDistance) if index == 0 else 0.0),
+                    (_quantity_value(stair.TopCutDistance) if index == len(layouts) - 1 else 0.0),
+                    (_quantity_value(stair.StepThickness) if stair.StepsEnabled else 0.0),
+                    (_quantity_value(stair.StructureWidthOffset) if stair.StepsEnabled else 0.0),
                 )
                 shape.Placement = layout["placement"]
                 shapes.append(shape)

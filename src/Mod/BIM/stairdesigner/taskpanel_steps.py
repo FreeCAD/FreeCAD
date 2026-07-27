@@ -9,7 +9,6 @@ from PySide import QtGui
 from .geometry_core import BLONDEL_MAXIMUM, BLONDEL_MINIMUM
 from .object_components import _set_tread_properties
 
-
 translate = FreeCAD.Qt.translate
 
 from .taskpanel_widgets import (
@@ -17,6 +16,7 @@ from .taskpanel_widgets import (
     _load_task_form,
     _value,
 )
+
 
 class StepPanelMixin:
     """Task-panel methods grouped by responsibility."""
@@ -52,13 +52,9 @@ class StepPanelMixin:
         self.end_with_riser.setChecked(self.stair.EndWithRiser)
         self.step_count.setValue(self.stair.NumberOfSteps)
         self.concrete_thickness.setValue(_value(self.stair.ConcreteThickness))
-        self.bottom_cut_distance.setValue(
-            _value(self.stair.BottomCutDistance)
-        )
+        self.bottom_cut_distance.setValue(_value(self.stair.BottomCutDistance))
         self.top_cut_distance.setValue(_value(self.stair.TopCutDistance))
-        widget.ui.flight_tree_layout.addWidget(
-            self._make_multiflight_panel()
-        )
+        widget.ui.flight_tree_layout.addWidget(self._make_multiflight_panel())
 
         self._connect_stair_controls()
         self.snap_position.clicked.connect(self._snap_position)
@@ -87,12 +83,8 @@ class StepPanelMixin:
         self.steps_enabled.setChecked(self.stair.StepsEnabled)
         self.step_thickness.setValue(_value(self.stair.StepThickness))
         self.nosing.setValue(_value(self.stair.Nosing))
-        self.structure_width_offset.setValue(
-            _value(self.stair.StructureWidthOffset)
-        )
-        widget.ui.selected_step_layout.addWidget(
-            self._make_selected_step_widget()
-        )
+        self.structure_width_offset.setValue(_value(self.stair.StructureWidthOffset))
+        widget.ui.selected_step_layout.addWidget(self._make_selected_step_widget())
         self.risers_group.setChecked(self.stair.RisersEnabled)
         self.riser_thickness.setValue(_value(self.stair.RiserThickness))
         self.priority_to_riser.setChecked(self.stair.PriorityToRiser)
@@ -104,16 +96,12 @@ class StepPanelMixin:
         return widget
 
     def _make_selected_step_widget(self):
-        group = QtGui.QGroupBox(
-            translate("BIM", "Selected Step / Riser")
-        )
+        group = QtGui.QGroupBox(translate("BIM", "Selected Step / Riser"))
         layout = QtGui.QVBoxLayout(group)
         self.selected_step_name = QtGui.QLabel()
         layout.addWidget(self.selected_step_name)
         form = QtGui.QFormLayout()
-        self.selected_step_extra_width = _length_spin(
-            0.0, -1000000.0, 1000000.0
-        )
+        self.selected_step_extra_width = _length_spin(0.0, -1000000.0, 1000000.0)
         self.selected_step_extra_width.setToolTip(
             translate(
                 "BIM",
@@ -126,9 +114,7 @@ class StepPanelMixin:
             translate("BIM", "Extra width"),
             self.selected_step_extra_width,
         )
-        self.selected_step_extra_height = _length_spin(
-            0.0, -1000000.0, 1000000.0
-        )
+        self.selected_step_extra_height = _length_spin(0.0, -1000000.0, 1000000.0)
         self.selected_step_extra_height.setToolTip(
             translate(
                 "BIM",
@@ -142,15 +128,12 @@ class StepPanelMixin:
             self.selected_step_extra_height,
         )
         layout.addLayout(form)
-        self.selected_step_extra_width.valueChanged.connect(
-            self._apply_selected_step
-        )
-        self.selected_step_extra_height.valueChanged.connect(
-            self._apply_selected_step
-        )
+        self.selected_step_extra_width.valueChanged.connect(self._apply_selected_step)
+        self.selected_step_extra_height.valueChanged.connect(self._apply_selected_step)
         self.selected_step_widget = group
         group.hide()
         return group
+
     def _connect_stair_controls(self):
         for spin in (
             self.floor_height,
@@ -179,25 +162,15 @@ class StepPanelMixin:
         self.priority_to_riser.toggled.connect(self._priority_changed)
 
     def _apply_selected_step(self, *args):
-        if (
-            self._loading
-            or self._loading_override
-            or self.selected_step is None
-        ):
+        if self._loading or self._loading_override or self.selected_step is None:
             return
         try:
-            self.selected_step.ExtraWidth = (
-                self.selected_step_extra_width.value()
-            )
-            self.selected_step.ExtraHeight = (
-                self.selected_step_extra_height.value()
-            )
+            self.selected_step.ExtraWidth = self.selected_step_extra_width.value()
+            self.selected_step.ExtraHeight = self.selected_step_extra_height.value()
         except ReferenceError:
             self._update_step_selection()
             return
-        self.stair.Proxy.rebuild(
-            self.stair, allow_structure_changes=True
-        )
+        self.stair.Proxy.rebuild(self.stair, allow_structure_changes=True)
         self.stair.Document.recompute()
         self._update_step_selection()
 
@@ -212,14 +185,9 @@ class StepPanelMixin:
         candidates = []
         for candidate in FreeCADGui.Selection.getSelection():
             try:
-                if (
-                    getattr(candidate, "GeneratedBy", "")
-                    == self.stair.Name
-                    and str(
-                        getattr(candidate, "StairDesignerRole", "")
-                    )
-                    in ("Tread", "Riser")
-                ):
+                if getattr(candidate, "GeneratedBy", "") == self.stair.Name and str(
+                    getattr(candidate, "StairDesignerRole", "")
+                ) in ("Tread", "Riser"):
                     candidates.append(candidate)
             except ReferenceError:
                 continue
@@ -231,14 +199,9 @@ class StepPanelMixin:
                 (
                     child
                     for child in self.stair.StepsGroup.Group
-                    if getattr(child, "GeneratedBy", "")
-                    == self.stair.Name
-                    and str(
-                        getattr(child, "StairDesignerRole", "")
-                    )
-                    == "Tread"
-                    and int(getattr(child, "Index", 0))
-                    == component_index
+                    if getattr(child, "GeneratedBy", "") == self.stair.Name
+                    and str(getattr(child, "StairDesignerRole", "")) == "Tread"
+                    and int(getattr(child, "Index", 0)) == component_index
                 ),
                 None,
             )
@@ -250,22 +213,13 @@ class StepPanelMixin:
 
         self._loading_override = True
         try:
-            if any(
-                name not in selected.PropertiesList
-                for name in ("ExtraWidth", "ExtraHeight")
-            ):
+            if any(name not in selected.PropertiesList for name in ("ExtraWidth", "ExtraHeight")):
                 _set_tread_properties(selected)
             self.selected_step_name.setText(
-                translate("BIM", "Step {0} / Riser {0}").format(
-                    selected.Index
-                )
+                translate("BIM", "Step {0} / Riser {0}").format(selected.Index)
             )
-            self.selected_step_extra_width.setValue(
-                _value(selected.ExtraWidth)
-            )
-            self.selected_step_extra_height.setValue(
-                _value(selected.ExtraHeight)
-            )
+            self.selected_step_extra_width.setValue(_value(selected.ExtraWidth))
+            self.selected_step_extra_height.setValue(_value(selected.ExtraHeight))
         except ReferenceError:
             self.selected_step_component = None
             self.selected_step = None
@@ -291,8 +245,7 @@ class StepPanelMixin:
         compliant = bool(self.stair.BlondelCompliant)
         warning = translate(
             "BIM",
-            "Blondel law is outside "
-            f"{BLONDEL_MINIMUM:.0f}-{BLONDEL_MAXIMUM:.0f} mm.",
+            "Blondel law is outside " f"{BLONDEL_MINIMUM:.0f}-{BLONDEL_MAXIMUM:.0f} mm.",
         )
         if compliant:
             self.blondel_label.setText(translate("BIM", "Stair rule"))
@@ -300,11 +253,7 @@ class StepPanelMixin:
             self.blondel_label.setToolTip("")
             self.blondel_value.setToolTip("")
         else:
-            self.blondel_label.setText(
-                translate("BIM", "\u26a0 Stair rule")
-            )
-            self.blondel_label.setStyleSheet(
-                "color: #b71c1c; font-weight: bold;"
-            )
+            self.blondel_label.setText(translate("BIM", "\u26a0 Stair rule"))
+            self.blondel_label.setStyleSheet("color: #b71c1c; font-weight: bold;")
             self.blondel_label.setToolTip(warning)
             self.blondel_value.setToolTip(warning)
