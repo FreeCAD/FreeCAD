@@ -96,6 +96,15 @@ using DU = DrawUtil;
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(TechDraw::DrawViewPart, TechDraw::DrawView)
 
+const char* DrawViewPart::DisplayStyleEnums[] = {
+    "All Edges",
+    "Hidden Edges",
+    "Visible Edges",
+    "Shaded with Edges",
+    "Shaded",
+    nullptr
+};
+
 DrawViewPart::DrawViewPart()
     : geometryObject(nullptr),
       m_tempGeometryObject(nullptr),
@@ -135,7 +144,16 @@ DrawViewPart::DrawViewPart()
     ADD_PROPERTY_TYPE(IsoVisible, (Preferences::getPreferenceGroup("HLR")->GetBool("IsoViz", false)),
         sgroup, App::Prop_None, "Show Visible Iso u, v lines");
     ADD_PROPERTY_TYPE(HardHidden, (Preferences::getPreferenceGroup("HLR")->GetBool("HardHid", false)),
-        sgroup, App::Prop_None, "Show Hidden Hard lines");
+        sgroup, static_cast<App::PropertyType>(App::Prop_Hidden | App::Prop_ReadOnly),
+        "Compatibility property controlled by DisplayStyle");
+    DisplayStyle.setEnums(DisplayStyleEnums);
+    ADD_PROPERTY_TYPE(
+        DisplayStyle,
+        (HardHidden.getValue() ? static_cast<long>(ViewDisplayStyle::HiddenEdges)
+                               : static_cast<long>(ViewDisplayStyle::VisibleEdges)),
+        group,
+        App::Prop_None,
+        "Controls whether the view shows all, hidden, visible, or shaded geometry");
     ADD_PROPERTY_TYPE(SmoothHidden, (Preferences::getPreferenceGroup("HLR")->GetBool("SmoothHid", false)),
         sgroup, App::Prop_None, "Show Hidden Smooth lines");
     ADD_PROPERTY_TYPE(SeamHidden, (Preferences::getPreferenceGroup("HLR")->GetBool("SeamHid", false)),
@@ -164,6 +182,27 @@ DrawViewPart::~DrawViewPart()
         m_faceFuture.waitForFinished();
     }
     removeAllReferencesFromGeom();
+}
+
+ViewDisplayStyle DrawViewPart::getDisplayStyle() const
+{
+    return static_cast<ViewDisplayStyle>(DisplayStyle.getValue());
+}
+
+bool DrawViewPart::hasShadedDisplay() const
+{
+    auto style = getDisplayStyle();
+    return style == ViewDisplayStyle::ShadedWithEdges || style == ViewDisplayStyle::Shaded;
+}
+
+bool DrawViewPart::showsVisibleEdges() const
+{
+    return getDisplayStyle() != ViewDisplayStyle::Shaded;
+}
+
+bool DrawViewPart::hiddenEdgesAreSolid() const
+{
+    return getDisplayStyle() == ViewDisplayStyle::AllEdges;
 }
 
 //! returns a compound of all the shapes from the DocumentObjects in the Source &
@@ -262,6 +301,7 @@ short DrawViewPart::mustExecute() const
 
     if (Direction.isTouched() || Source.isTouched() || XSource.isTouched()
         || Perspective.isTouched() || Focus.isTouched() || Rotation.isTouched()
+        || DisplayStyle.isTouched()
         || SmoothVisible.isTouched() || SeamVisible.isTouched() || IsoVisible.isTouched()
         || HardHidden.isTouched() || SmoothHidden.isTouched() || SeamHidden.isTouched()
         || IsoHidden.isTouched() || IsoCount.isTouched() || CoarseView.isTouched()
@@ -274,6 +314,30 @@ short DrawViewPart::mustExecute() const
 
 void DrawViewPart::onChanged(const App::Property* prop)
 {
+    if (!m_syncingDisplayStyle && prop == &DisplayStyle) {
+        m_syncingDisplayStyle = true;
+        const auto style = getDisplayStyle();
+        const bool showHardHidden =
+            style == ViewDisplayStyle::AllEdges || style == ViewDisplayStyle::HiddenEdges;
+        if (HardHidden.getValue() != showHardHidden) {
+            HardHidden.setValue(showHardHidden);
+        }
+        m_syncingDisplayStyle = false;
+    }
+    else if (!m_syncingDisplayStyle && prop == &HardHidden) {
+        m_syncingDisplayStyle = true;
+        const auto style = getDisplayStyle();
+        const bool styleShowsHardHidden =
+            style == ViewDisplayStyle::AllEdges || style == ViewDisplayStyle::HiddenEdges;
+        if (HardHidden.getValue() && !styleShowsHardHidden) {
+            DisplayStyle.setValue(static_cast<long>(ViewDisplayStyle::HiddenEdges));
+        }
+        else if (!HardHidden.getValue() && styleShowsHardHidden) {
+            DisplayStyle.setValue(static_cast<long>(ViewDisplayStyle::VisibleEdges));
+        }
+        m_syncingDisplayStyle = false;
+    }
+
     // If the user has set PropertyVector Direction to zero, set it along the default value instead (Front View).
     // Otherwise bad things will happen because there'll be a normalization for direction calculations later.
     Base::Vector3d dir = Direction.getValue();
