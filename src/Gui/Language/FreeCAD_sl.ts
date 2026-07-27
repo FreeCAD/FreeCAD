@@ -26,8 +26,8 @@
       <translation>Položaj</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3015"/>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3015"/>
       <source>Enum</source>
       <translation>Številčnik</translation>
     </message>
@@ -58,7 +58,7 @@
       <translation>Uredi</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="907"/>
+      <location filename="../Application.cpp" line="910"/>
       <source>Import</source>
       <translation>Uvozi</translation>
     </message>
@@ -133,10 +133,10 @@
       <translation>Postavitev</translation>
     </message>
     <message>
-      <location filename="../ViewProviderAnnotation.cpp" line="510"/>
-      <location filename="../TaskTransform.cpp" line="153"/>
-      <location filename="../TaskTransform.cpp" line="1070"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="511"/>
       <location filename="../Transform.cpp" line="108"/>
+      <location filename="../TaskTransform.cpp" line="152"/>
+      <location filename="../TaskTransform.cpp" line="1069"/>
       <source>Transform</source>
       <translation>Premakni</translation>
     </message>
@@ -146,8 +146,8 @@
       <translation>Preklopi med prvinami razpostavitve</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="260"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
+      <location filename="../TaskView/TaskImage.cpp" line="260"/>
       <source>Edit image</source>
       <translation>Uredi sliko</translation>
     </message>
@@ -3215,197 +3215,187 @@ poleg barvne vrstice</translation>
       <translation>Splošno</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="41"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="152"/>
       <source>The application will create a new document when started</source>
       <translation>Program bo ob zagonu ustvaril nov dokument</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="44"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="155"/>
       <source>Create new document at start up</source>
       <translation>Ob zagonu ustvari nov dokument</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="188"/>
       <source>Document save compression level
 (0 = none, 9 = highest, 7 = default)</source>
       <translation>Stopnja stiskanja pri shranjevanju dokumenta
 (0 = brez, 9 = najvišja, 7 = privzeta)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="196"/>
       <source>Compression level for FCStd files</source>
       <translation>Raven stiskanja pri datotekah FCtd</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="129"/>
-      <source>All changes in documents are stored so that they can be undone/redone</source>
-      <translation>Vse spremembe v dokumentu so shranjene, da se jih lahko razveljavi oz. uveljavi</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="201"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="126"/>
       <source>Allow aborting recomputation</source>
       <translation>Dovoli prekinitev preračunavanja</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="236"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="217"/>
       <source>Storage</source>
       <translation>Shranjevanje</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="454"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="435"/>
       <source>Saving transactions (Auto-save)</source>
       <translation>Shranjevanje izmenjav (samodejno shranjevanje)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="263"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="244"/>
       <source>Discard saved transaction after saving document</source>
       <translation>Zavrzi shranjeno izmenjavo po shranjevanju dokumenta</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="435"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="416"/>
       <source>Run AutoRecovery at startup</source>
       <translation>Zaženi samodejno obnovitev ob zagonu</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="488"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="469"/>
       <source>How often a recovery file is written</source>
       <translation>Kako pogosto naj se naredi obnovitvena datoteka</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="297"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="278"/>
       <source>A thumbnail will be stored when document is saved</source>
       <translation>Pri shranjevanju datoteke se bo shranila tudi sličica</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="332"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="313"/>
       <source>Size</source>
       <translation>Velikost</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="381"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="362"/>
       <source>How many backup files will be kept when saving document</source>
       <translation>Koliko varnostnih kopij se ohrani po shranitvi dokumenta</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="247"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="228"/>
       <source>Show format documentation</source>
       <translation type="unfinished">Show format documentation</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="132"/>
-      <source>Using undo/redo in documents</source>
-      <translation type="unfinished">Using undo/redo in documents</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="165"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="65"/>
       <source>Maximum undo/redo steps</source>
       <translation type="unfinished">Maximum undo/redo steps</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="172"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="72"/>
       <source>How many undo/redo steps should be recorded</source>
       <translation type="unfinished">How many undo/redo steps should be recorded</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="197"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="103"/>
+      <source>This experimental feature allows more responsive GUI while recomputing features.</source>
+      <translation type="unfinished">This experimental feature allows more responsive GUI while recomputing features.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="106"/>
+      <source>Enables async document recomputation</source>
+      <translation type="unfinished">Enables async document recomputation</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="122"/>
       <source>Allow user aborting document recomputation by pressing Esc.
 This feature may slightly increase recomputation time.</source>
       <translation type="unfinished">Allow user aborting document recomputation by pressing Esc.
 This feature may slightly increase recomputation time.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="214"/>
-      <source>This experimental feature allows more responsive GUI while recomputing features.</source>
-      <translation type="unfinished">This experimental feature allows more responsive GUI while recomputing features.</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="220"/>
-      <source>Enables async document recomputation</source>
-      <translation type="unfinished">Enables async document recomputation</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="300"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="281"/>
       <source>Add thumbnail to project file when saving</source>
       <translation type="unfinished">Add thumbnail to project file when saving</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="339"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="320"/>
       <source>Sets the size of the thumbnail that is stored in the document.
 Common sizes are 128, 256 and 512.</source>
       <translation type="unfinished">Sets the size of the thumbnail that is stored in the document.
 Common sizes are 128, 256 and 512.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="384"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="365"/>
       <source>Maximum number of backup files to keep when resaving document</source>
       <translation>Največje število varnostnih kopij, ohranjenih pri ponovnem shranjevanju dokumenta</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="431"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="412"/>
       <source>If there is a recovery file available, the application will
 automatically run a file recovery when it is started</source>
       <translation type="unfinished">If there is a recovery file available, the application will
 automatically run a file recovery when it is started</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="467"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="448"/>
       <source>The program icon will be added to the thumbnail</source>
       <translation type="unfinished">The program icon will be added to the thumbnail</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="470"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="451"/>
       <source>Add program icon to the generated thumbnail</source>
       <translation type="unfinished">Add program icon to the generated thumbnail</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="491"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="472"/>
       <source>Save auto-recovery information every</source>
       <translation type="unfinished">Save auto-recovery information every</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="548"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="529"/>
       <source>Backup files will get extension '.FCbak' and file names
 get date suffix according to the specified format</source>
       <translation>Varnostne kopije bodo dobile pripono ".FCbak", imena datotek
 pa pripono glede na določen razpis</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="552"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="533"/>
       <source>Use date and FCBak extension</source>
       <translation>Uporabi datum in FCBak-ov razširitev</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="568"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="549"/>
       <source>Date format</source>
       <translation>Zapis datuma</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="590"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="571"/>
       <source>Suppresses the version mismatch warning when saving files created with an older FreeCAD version</source>
       <translation type="unfinished">Suppresses the version mismatch warning when saving files created with an older FreeCAD version</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="593"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="574"/>
       <source>Suppress older version warning on save</source>
       <translation type="unfinished">Suppress older version warning on save</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="612"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="593"/>
       <source>Document Objects</source>
       <translation type="unfinished">Document Objects</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="618"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="599"/>
       <source>Allow objects to have same label</source>
       <translation>Dovoli, da imajo lahko predmeti enako oznako</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="621"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="602"/>
       <source>Allow duplicate object labels in one document</source>
       <translation>Dovoli podvojene oznake predmetov v enem dokumentu</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="634"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="615"/>
       <source>Disable partial loading of external linked documents.
 Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
@@ -3418,22 +3408,22 @@ A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="641"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="622"/>
       <source>Disable partial loading of external linked objects</source>
       <translation>Onemogoči delno nalaganje zunanjih sklicnih predmetov</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="657"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="638"/>
       <source>Authoring and License</source>
       <translation>Avtorstvo in licenca</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="663"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="644"/>
       <source>Author name</source>
       <translation>Ime avtorja</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="670"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="651"/>
       <source>All documents that will be created will get the specified author name.
 Keep blank for anonymous.
 You can also use the form: John Doe &lt;john@doe.com&gt;</source>
@@ -3442,32 +3432,32 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
 Lahko uporabite tudi obliko: Neznanec &lt;ne@znanec.com&gt;</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="685"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="666"/>
       <source>The field 'Last modified by' will be set to specified author when saving the file</source>
       <translation>Polje "Zadnji spremenil" bo pri shranjevanju izpolnjeno z izbranim ustvarjalcem</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="688"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="669"/>
       <source>Set on save</source>
       <translation>Glede na shranjevanje</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="701"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="682"/>
       <source>Company</source>
       <translation>Podjetje</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="708"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="689"/>
       <source>Default company name to use for new files</source>
       <translation>Privzeto ime podjetja pri ustvarjanju novih datotek</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="721"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="702"/>
       <source>Default license</source>
       <translation>Privzeta licenca</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="731"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="712"/>
       <source>Default license for new documents</source>
       <translation>Privzeto dovoljenje za nove dokumente</translation>
     </message>
@@ -3537,12 +3527,12 @@ Lahko uporabite tudi obliko: Neznanec &lt;ne@znanec.com&gt;</translation>
       <translation>Drugo</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="747"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="728"/>
       <source>License URL</source>
       <translation>Spletni naslov dovoljenja</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="754"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="735"/>
       <source>URL describing more about the license</source>
       <translation>Spletni naslov s podrobnejšim opisom dovoljenja</translation>
     </message>
@@ -4823,41 +4813,37 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="642"/>
-      <location filename="../DocumentRecovery.cpp" line="706"/>
+      <location filename="../DocumentRecovery.cpp" line="651"/>
       <source>Delete</source>
       <translation>Izbriši</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="652"/>
-      <source>Delete the selected transient directories?</source>
-      <translation type="unfinished">Delete the selected transient directories?</translation>
+      <source>Delete the selected recovery documents?</source>
+      <translation type="unfinished">Delete the selected recovery documents?</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="654"/>
-      <source>When deleting the selected transient directory it is not possible to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting the selected transient directory it is not possible to recover any files afterwards.</translation>
+      <location filename="../DocumentRecovery.cpp" line="653"/>
+      <location filename="../DocumentRecovery.cpp" line="686"/>
+      <source>Recovery documents cannot be restored after deletion.</source>
+      <translation type="unfinished">Recovery documents cannot be restored after deletion.</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="688"/>
-      <source>Delete all transient directories?</source>
-      <translation type="unfinished">Delete all transient directories?</translation>
+      <location filename="../DocumentRecovery.cpp" line="685"/>
+      <source>Delete all recovery documents?</source>
+      <translation type="unfinished">Delete all recovery documents?</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="689"/>
-      <source>When deleting all transient directories it is not possible to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting all transient directories it is not possible to recover any files afterwards.</translation>
+      <location filename="../DocumentRecovery.cpp" line="703"/>
+      <source>Recovery documents deleted.</source>
+      <translation type="unfinished">Recovery documents deleted.</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="42"/>
-      <location filename="../DocumentRecovery.cpp" line="651"/>
-      <location filename="../DocumentRecovery.cpp" line="687"/>
+      <location filename="../DocumentRecovery.cpp" line="684"/>
+      <location filename="../DocumentRecovery.cpp" line="703"/>
       <source>Cleanup</source>
       <translation>Počisti</translation>
-    </message>
-    <message>
-      <location filename="../DocumentRecovery.cpp" line="706"/>
-      <source>Transient directories deleted.</source>
-      <translation>Začasne mape izbrisane.</translation>
     </message>
   </context>
   <context>
@@ -5943,15 +5929,15 @@ Save all changes?</translation>
       <translation>Točkovna slika</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="517"/>
-      <location filename="../CommandDoc.cpp" line="710"/>
-      <source>Export Graph</source>
-      <translation type="unfinished">Export Graph</translation>
-    </message>
-    <message>
       <location filename="../GraphvizView.cpp" line="609"/>
       <source>Export graph</source>
       <translation type="unfinished">Export graph</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="710"/>
+      <location filename="../GraphvizView.cpp" line="517"/>
+      <source>Export Graph</source>
+      <translation type="unfinished">Export Graph</translation>
     </message>
   </context>
   <context>
@@ -6110,7 +6096,7 @@ Save all changes?</translation>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="201"/>
-      <location filename="../MainWindow.cpp" line="2656"/>
+      <location filename="../MainWindow.cpp" line="2659"/>
       <source>Dimension</source>
       <translation>Mera</translation>
     </message>
@@ -6121,100 +6107,100 @@ Save all changes?</translation>
       <translation>Sistem enot</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="474"/>
+      <location filename="../MainWindow.cpp" line="477"/>
       <source>Preselection</source>
       <extracomment>A context menu action used to show or hide the preselection info in the status bar</extracomment>
       <translation type="unfinished">Preselection</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="489"/>
+      <location filename="../MainWindow.cpp" line="492"/>
       <source>Input Hints</source>
       <extracomment>A context menu action used to show or hide the input hints in the status bar</extracomment>
       <translation type="unfinished">Input Hints</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="529"/>
+      <location filename="../MainWindow.cpp" line="532"/>
       <source>Quick Measure</source>
       <extracomment>A context menu action used to enable or disable quick measure in the status bar</extracomment>
       <translation type="unfinished">Quick Measure</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="544"/>
+      <location filename="../MainWindow.cpp" line="547"/>
       <source>Toggles the bottom dock panels</source>
       <extracomment>Tooltip for the status bar button that toggles bottom dock panels</extracomment>
       <translation type="unfinished">Toggles the bottom dock panels</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="554"/>
+      <location filename="../MainWindow.cpp" line="557"/>
       <source>Bottom Panel Toggle</source>
       <extracomment>A context menu action used to show or hide the Toggle Bottom Panels button in the status bar</extracomment>
       <translation type="unfinished">Bottom Panel Toggle</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="573"/>
+      <location filename="../MainWindow.cpp" line="576"/>
       <source>Notifications</source>
       <extracomment>A context menu action used to show or hide the 'notificationArea' toolbar widget</extracomment>
       <translation type="unfinished">Notifications</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="631"/>
+      <location filename="../MainWindow.cpp" line="634"/>
       <source>Ready</source>
       <translation>Pripravljen</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1426"/>
+      <location filename="../MainWindow.cpp" line="1429"/>
       <source>Close All</source>
       <translation>Zapri vse</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1699"/>
-      <location filename="../MainWindow.cpp" line="1700"/>
-      <location filename="../MainWindow.cpp" line="1701"/>
+      <location filename="../MainWindow.cpp" line="1702"/>
+      <location filename="../MainWindow.cpp" line="1703"/>
+      <location filename="../MainWindow.cpp" line="1704"/>
       <source>Toggles this toolbar</source>
       <translation>Preklopi to orodno vrstico</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1720"/>
-      <location filename="../MainWindow.cpp" line="1721"/>
-      <location filename="../MainWindow.cpp" line="1722"/>
+      <location filename="../MainWindow.cpp" line="1723"/>
+      <location filename="../MainWindow.cpp" line="1724"/>
+      <location filename="../MainWindow.cpp" line="1725"/>
       <source>Toggles this dockable window</source>
       <translation>Preklopi to usidrivo okno</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1925"/>
+      <location filename="../MainWindow.cpp" line="1928"/>
       <source>Safe mode enabled</source>
       <translation>Varni način je vključen</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1926"/>
+      <location filename="../MainWindow.cpp" line="1929"/>
       <source>FreeCAD is now running in safe mode.</source>
       <translation>FreeCAD teče v varnem načinu.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1930"/>
+      <location filename="../MainWindow.cpp" line="1933"/>
       <source>Safe mode temporarily disables your configurations and addons. Restart the application to exit safe mode.</source>
       <translation>Varni način začasno onemogoči vaše nastavitve in dodatke. Za izhod iz varnega načina ponovno zaženite program.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2378"/>
-      <location filename="../MainWindow.cpp" line="2532"/>
+      <location filename="../MainWindow.cpp" line="2381"/>
+      <location filename="../MainWindow.cpp" line="2535"/>
       <source>Unsaved document</source>
       <translation>Neshranjen dokument</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2379"/>
+      <location filename="../MainWindow.cpp" line="2382"/>
       <source>The exported object contains external link. Save the documentat least once before exporting.</source>
       <translation type="unfinished">The exported object contains external link. Save the documentat least once before exporting.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2533"/>
+      <location filename="../MainWindow.cpp" line="2536"/>
       <source>To link to external objects, the document must be saved at least once.
 Save the document now?</source>
       <translation type="unfinished">To link to external objects, the document must be saved at least once.
 Save the document now?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="3039"/>
+      <location filename="../MainWindow.cpp" line="3046"/>
       <source>Safe Mode</source>
       <translation>Varni način</translation>
     </message>
@@ -7368,6 +7354,11 @@ Specify another directory?</translation>
       <translation type="unfinished">Irish</translation>
     </message>
     <message>
+      <location filename="Translator.cpp" line="258"/>
+      <source>Lao</source>
+      <translation type="unfinished">Lao</translation>
+    </message>
+    <message>
       <location filename="Translator.cpp" line="221"/>
       <source>Danish</source>
       <translation>Danščina</translation>
@@ -7396,7 +7387,7 @@ Specify another directory?</translation>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="4241"/>
+      <location filename="../Tree.cpp" line="4244"/>
       <source>Search</source>
       <translation>Poišči</translation>
     </message>
@@ -7439,153 +7430,153 @@ Specify another directory?</translation>
       <translation>Skupina</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3391"/>
-      <location filename="../Tree.cpp" line="3412"/>
+      <location filename="../Tree.cpp" line="3394"/>
+      <location filename="../Tree.cpp" line="3415"/>
       <source>Error</source>
       <translation>Napaka</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3391"/>
+      <location filename="../Tree.cpp" line="3394"/>
       <source>File does not exist.</source>
       <translation>Datoteka ne obstaja.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3412"/>
+      <location filename="../Tree.cpp" line="3415"/>
       <source>Failed to open directory.</source>
       <translation type="unfinished">Failed to open directory.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3891"/>
+      <location filename="../Tree.cpp" line="3894"/>
       <source>Labels &amp; Attributes</source>
       <translation>Oznake in atributi</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3892"/>
+      <location filename="../Tree.cpp" line="3895"/>
       <source>Description</source>
       <translation>Opis</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3893"/>
+      <location filename="../Tree.cpp" line="3896"/>
       <source>Internal name</source>
       <translation>Interno ime</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3895"/>
+      <location filename="../Tree.cpp" line="3898"/>
       <source>Show Items Hidden in Tree View</source>
       <translation type="unfinished">Show Items Hidden in Tree View</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3897"/>
+      <location filename="../Tree.cpp" line="3900"/>
       <source>Shows items that are marked as 'hidden' in the tree view</source>
       <translation type="unfinished">Shows items that are marked as 'hidden' in the tree view</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3900"/>
+      <location filename="../Tree.cpp" line="3903"/>
       <source>Toggle Visibility in Tree View</source>
       <translation type="unfinished">Toggle Visibility in Tree View</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3905"/>
+      <location filename="../Tree.cpp" line="3908"/>
       <source>Create Group</source>
       <translation type="unfinished">Create Group</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3906"/>
+      <location filename="../Tree.cpp" line="3909"/>
       <source>Creates a group</source>
       <translation type="unfinished">Creates a group</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3909"/>
+      <location filename="../Tree.cpp" line="3912"/>
       <source>Renames object</source>
       <translation type="unfinished">Renames object</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3911"/>
+      <location filename="../Tree.cpp" line="3914"/>
       <source>Finish Editing</source>
       <translation type="unfinished">Finish Editing</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3912"/>
+      <location filename="../Tree.cpp" line="3915"/>
       <source>Finishes editing object</source>
       <translation type="unfinished">Finishes editing object</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3914"/>
+      <location filename="../Tree.cpp" line="3917"/>
       <source>Add Dependent Objects to Selection</source>
       <translation type="unfinished">Add Dependent Objects to Selection</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3917"/>
+      <location filename="../Tree.cpp" line="3920"/>
       <source>Close Document</source>
       <translation type="unfinished">Close Document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3918"/>
+      <location filename="../Tree.cpp" line="3921"/>
       <source>Closes the document</source>
       <translation type="unfinished">Closes the document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3922"/>
+      <location filename="../Tree.cpp" line="3925"/>
       <source>Reveals the current file location in Finder</source>
       <translation type="unfinished">Reveals the current file location in Finder</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3925"/>
+      <location filename="../Tree.cpp" line="3928"/>
       <source>Opens the current file location</source>
       <translation type="unfinished">Opens the current file location</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3928"/>
+      <location filename="../Tree.cpp" line="3931"/>
       <source>Reload Document</source>
       <translation type="unfinished">Reload Document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3929"/>
+      <location filename="../Tree.cpp" line="3932"/>
       <source>Reloads a partially loaded document</source>
       <translation type="unfinished">Reloads a partially loaded document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3931"/>
+      <location filename="../Tree.cpp" line="3934"/>
       <source>Skip Recomputes</source>
       <translation type="unfinished">Skip Recomputes</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3932"/>
+      <location filename="../Tree.cpp" line="3935"/>
       <source>Enables or disables the recomputations of document</source>
       <translation type="unfinished">Enables or disables the recomputations of document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3934"/>
+      <location filename="../Tree.cpp" line="3937"/>
       <source>Allow Partial Recomputes</source>
       <translation type="unfinished">Allow Partial Recomputes</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3935"/>
+      <location filename="../Tree.cpp" line="3938"/>
       <source>Enables or disables the recomputating editing object when 'skip recomputation' is enabled</source>
       <translation type="unfinished">Enables or disables the recomputating editing object when 'skip recomputation' is enabled</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3939"/>
+      <location filename="../Tree.cpp" line="3942"/>
       <source>Mark to Recompute</source>
       <translation type="unfinished">Mark to Recompute</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3940"/>
+      <location filename="../Tree.cpp" line="3943"/>
       <source>Marks this object to be recomputed</source>
       <translation type="unfinished">Marks this object to be recomputed</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3943"/>
+      <location filename="../Tree.cpp" line="3946"/>
       <source>Recompute Object</source>
       <translation type="unfinished">Recompute Object</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3944"/>
+      <location filename="../Tree.cpp" line="3947"/>
       <source>Recomputes the selected object</source>
       <translation type="unfinished">Recomputes the selected object</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3902"/>
+      <location filename="../Tree.cpp" line="3905"/>
       <source>Toggles the visibility of selected items in the tree view</source>
       <translation>Preklopi vidnost izbranih elementov v v drevesni strukturi</translation>
     </message>
@@ -7605,33 +7596,33 @@ Specify another directory?</translation>
       <translation type="unfinished">Shows a description column for items. An item's description can be set by editing the 'label2' property.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3908"/>
-      <location filename="../Tree.cpp" line="6586"/>
+      <location filename="../Tree.cpp" line="3911"/>
+      <location filename="../Tree.cpp" line="6589"/>
       <source>Rename</source>
       <translation>Preimenuj</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3915"/>
+      <location filename="../Tree.cpp" line="3918"/>
       <source>Adds all dependent objects to the selection</source>
       <translation>Izboru doda vse odvisne objekte</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3921"/>
+      <location filename="../Tree.cpp" line="3924"/>
       <source>Reveal in Finder</source>
       <translation type="unfinished">Reveal in Finder</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3924"/>
+      <location filename="../Tree.cpp" line="3927"/>
       <source>Open File Location</source>
       <translation type="unfinished">Open File Location</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6554"/>
+      <location filename="../Tree.cpp" line="6557"/>
       <source> (but must be executed)</source>
       <translation> (vendar mora biti izvedeno)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6557"/>
+      <location filename="../Tree.cpp" line="6560"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, Interno ime: %2</translation>
     </message>
@@ -7852,47 +7843,47 @@ Specify another directory?</translation>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="733"/>
+      <location filename="../MainWindow.cpp" line="736"/>
       <source>Tasks</source>
       <translation>Opravila</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="750"/>
+      <location filename="../MainWindow.cpp" line="753"/>
       <source>Selection View</source>
       <translation>Pogled izbire</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="768"/>
+      <location filename="../MainWindow.cpp" line="771"/>
       <source>Report View</source>
       <translation type="unfinished">Report View</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="788"/>
+      <location filename="../MainWindow.cpp" line="791"/>
       <source>Python Console</source>
       <translation type="unfinished">Python Console</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="815"/>
+      <location filename="../MainWindow.cpp" line="818"/>
       <source>Tree View</source>
       <translation type="unfinished">Tree View</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="845"/>
+      <location filename="../MainWindow.cpp" line="848"/>
       <source>Property View</source>
       <translation type="unfinished">Property View</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="874"/>
+      <location filename="../MainWindow.cpp" line="877"/>
       <source>Task List</source>
       <translation>Seznam nalog</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="903"/>
+      <location filename="../MainWindow.cpp" line="906"/>
       <source>Model</source>
       <translation>Model</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="933"/>
+      <location filename="../MainWindow.cpp" line="936"/>
       <source>DAG View</source>
       <translation>DAG pogled</translation>
     </message>
@@ -7938,35 +7929,35 @@ Specify another directory?</translation>
       <translation>Python</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="866"/>
-      <location filename="../Application.cpp" line="973"/>
-      <location filename="../Application.cpp" line="1060"/>
+      <location filename="../Application.cpp" line="869"/>
+      <location filename="../Application.cpp" line="976"/>
+      <location filename="../Application.cpp" line="1063"/>
       <source>Unknown filetype</source>
       <translation>Neznana vrsta datoteke</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="867"/>
-      <location filename="../Application.cpp" line="974"/>
+      <location filename="../Application.cpp" line="870"/>
+      <location filename="../Application.cpp" line="977"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>Neznane vrste datoteke ni mogoče odpreti: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1050"/>
+      <location filename="../Application.cpp" line="1053"/>
       <source>Export failed</source>
       <translation>Izvažanje spodletelo</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1061"/>
+      <location filename="../Application.cpp" line="1064"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>Ni mogoče shraniti v neznano vrsto datoteke: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1259"/>
+      <location filename="../Application.cpp" line="1262"/>
       <source>Recomputation required</source>
       <translation>Zahtevan ponovni izračun</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1260"/>
+      <location filename="../Application.cpp" line="1263"/>
       <source>Some documents require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
 
 Recompute now?</source>
@@ -7975,24 +7966,24 @@ Recompute now?</source>
 Recompute now?</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1286"/>
+      <location filename="../Application.cpp" line="1289"/>
       <source>Failed to recompute some documents.
 Check the report view for more details.</source>
       <translation type="unfinished">Failed to recompute some documents.
 Check the report view for more details.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1285"/>
+      <location filename="../Application.cpp" line="1288"/>
       <source>Recompute error</source>
       <translation>Napaka pri preračunavanju</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="2035"/>
+      <location filename="../Application.cpp" line="2038"/>
       <source>Workbench failure</source>
       <translation>Napaka delovnega okolja</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="2036"/>
+      <location filename="../Application.cpp" line="2039"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
@@ -8062,18 +8053,18 @@ Check the report view for more details.</translation>
       <translation>Izjema</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1299"/>
-      <location filename="../Application.cpp" line="1314"/>
+      <location filename="../Application.cpp" line="1302"/>
+      <location filename="../Application.cpp" line="1317"/>
       <source>Error</source>
       <translation>Napaka</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1300"/>
+      <location filename="../Application.cpp" line="1303"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Med nalaganjem datoteke je prišlo do napake. Nekateri podatki so se lahko spremenili ali pa se sploh niso obnovili. Poglej v okno poročil za podrobnejše informacije o vpletenih objektih.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1315"/>
+      <location filename="../Application.cpp" line="1318"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>Pri nalaganju datoteke je prišlo do resnih napak. Določeni podatki so bili lahko spremenjeni ali pa sploh niso bili obnovljeni. Če projekt shranite, bo najverjetneje prišlo do izgube podatkov.</translation>
     </message>
@@ -8421,7 +8412,7 @@ Continue?</translation>
       <translation>Preveč odprtih nevsivljivih obvestil. Obvestila so prezrta!</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1419"/>
+      <location filename="../Document.cpp" line="1415"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
@@ -8430,44 +8421,44 @@ Continue?</translation>
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1420"/>
+      <location filename="../Document.cpp" line="1416"/>
       <source>Are you sure you want to continue?</source>
       <translation>Ali ste prepričani da želite nadaljevati?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1446"/>
+      <location filename="../Document.cpp" line="1442"/>
       <source>Check report view for more…</source>
       <translation type="unfinished">Check report view for more…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1450"/>
+      <location filename="../Document.cpp" line="1446"/>
       <source>Physical path:</source>
       <translation>Tvarna pot:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1451"/>
-      <location filename="../Document.cpp" line="1458"/>
+      <location filename="../Document.cpp" line="1447"/>
+      <location filename="../Document.cpp" line="1454"/>
       <source>Document:</source>
       <translation>Dokument:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1452"/>
-      <location filename="../Document.cpp" line="1459"/>
+      <location filename="../Document.cpp" line="1448"/>
+      <location filename="../Document.cpp" line="1455"/>
       <source>Path:</source>
       <translation>Pot:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1470"/>
+      <location filename="../Document.cpp" line="1466"/>
       <source>Identical physical path</source>
       <translation>Enaka tvarna pot</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1482"/>
+      <location filename="../Document.cpp" line="1478"/>
       <source>Could not save document</source>
       <translation>Dokumenta ni bilo mogoče shraniti</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1483"/>
+      <location filename="../Document.cpp" line="1479"/>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 "%1"
@@ -8480,19 +8471,19 @@ Would you like to save the file with a different name?</source>
 Ali želite datoteko shraniti z drugačnim imenom?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1497"/>
-      <location filename="../Document.cpp" line="1754"/>
-      <location filename="../Document.cpp" line="1863"/>
+      <location filename="../Document.cpp" line="1493"/>
+      <location filename="../Document.cpp" line="1750"/>
+      <location filename="../Document.cpp" line="1859"/>
       <source>Saving aborted</source>
       <translation>Shranjevanje prekinjeno</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1548"/>
+      <location filename="../Document.cpp" line="1544"/>
       <source>File Created with Older FreeCAD Version</source>
       <translation type="unfinished">File Created with Older FreeCAD Version</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1551"/>
+      <location filename="../Document.cpp" line="1547"/>
       <source>This file was created with %1, but you are using v%2.%3.
 
 Saving will upgrade the file format. The file may not be readable by older versions of FreeCAD after saving.
@@ -8507,122 +8498,122 @@ Use 'Save As…' to preserve the original file.
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1560"/>
+      <location filename="../Document.cpp" line="1556"/>
       <source>an unknown older version of FreeCAD</source>
       <translation type="unfinished">an unknown older version of FreeCAD</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1561"/>
+      <location filename="../Document.cpp" line="1557"/>
       <source>FreeCAD version %1</source>
       <translation type="unfinished">FreeCAD version %1</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1566"/>
+      <location filename="../Document.cpp" line="1562"/>
       <source>Save</source>
       <translation>Shrani</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1567"/>
+      <location filename="../Document.cpp" line="1563"/>
       <source>Save As…</source>
       <translation type="unfinished">Save As…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1571"/>
+      <location filename="../Document.cpp" line="1567"/>
       <source>Do not show this warning again</source>
       <translation type="unfinished">Do not show this warning again</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1636"/>
+      <location filename="../Document.cpp" line="1632"/>
       <source>Save dependent files</source>
       <translation>Shrani odvisne datoteke</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1637"/>
+      <location filename="../Document.cpp" line="1633"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
       <translation>Datoteka vsebuje zunanje odvisnosti. Ali želite shraniti tudi odvisne datoteke?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1683"/>
-      <location filename="../Document.cpp" line="1747"/>
+      <location filename="../Document.cpp" line="1679"/>
+      <location filename="../Document.cpp" line="1743"/>
       <source>Saving document failed</source>
       <translation>Shranjevanje dokumenta spodletelo</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1698"/>
+      <location filename="../Document.cpp" line="1694"/>
       <source>Save document under new filename…</source>
       <translation type="unfinished">Save document under new filename…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1715"/>
-      <location filename="../Document.cpp" line="1845"/>
+      <location filename="../Document.cpp" line="1711"/>
+      <location filename="../Document.cpp" line="1841"/>
       <location filename="../CommandDoc.cpp" line="621"/>
       <source>%1 document</source>
       <translation type="unfinished">%1 document</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1831"/>
+      <location filename="../Document.cpp" line="1827"/>
       <source>Save a copy of the document under new filename…</source>
       <translation type="unfinished">Save a copy of the document under new filename…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1713"/>
-      <location filename="../Document.cpp" line="1843"/>
+      <location filename="../Document.cpp" line="1709"/>
+      <location filename="../Document.cpp" line="1839"/>
       <source>Save %1 Document</source>
       <translation>Shrani dokument %1</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1769"/>
-      <location filename="../Document.cpp" line="1819"/>
+      <location filename="../Document.cpp" line="1765"/>
+      <location filename="../Document.cpp" line="1815"/>
       <source>Failed to save document</source>
       <translation>Shranjevanje dokumenta spodletelo</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1770"/>
+      <location filename="../Document.cpp" line="1766"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
       <translation>Dokumenti vsebujejo krožne odvisnosti. Jih vseeno želite shraniti?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2508"/>
+      <location filename="../Document.cpp" line="2504"/>
       <source>Document not closable</source>
       <translation>Dokumenta ni mogoče zapreti</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2509"/>
+      <location filename="../Document.cpp" line="2505"/>
       <source>The document is not closable for the moment.</source>
       <translation>Dokumenta trenutno ni mogoče zapreti.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2549"/>
+      <location filename="../Document.cpp" line="2545"/>
       <source>Failed to save document '%1'. Would you like to cancel the closure?</source>
       <translation>Dokumenta '%1' ni bilo mogoče shraniti. Želite preklicati zapiranje?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2551"/>
+      <location filename="../Document.cpp" line="2547"/>
       <source>Document saving failed. Would you like to cancel the closure?</source>
       <translation>Dokumenta ni bilo mogoče shraniti. Želite preklicati zapiranje?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2556"/>
+      <location filename="../Document.cpp" line="2552"/>
       <source>Unable to save document</source>
       <translation>Dokumenta ni mogoče shraniti</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2926"/>
+      <location filename="../Document.cpp" line="2922"/>
       <source>Undo</source>
       <translation>Razveljavi</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2926"/>
+      <location filename="../Document.cpp" line="2922"/>
       <source>Redo</source>
       <translation>Ponovno uveljavi</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2929"/>
+      <location filename="../Document.cpp" line="2925"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation>V sledečih dokumentih so skupinske izmenjava z drugimi predhodnimi izmenjavami</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2934"/>
+      <location filename="../Document.cpp" line="2930"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -8636,36 +8627,36 @@ Izberite "Prekini" za prekinitev</translation>
       <translation>Shrani makro</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="210"/>
-      <location filename="../MouseSelection.cpp" line="417"/>
+      <location filename="../MouseSelection.cpp" line="211"/>
+      <location filename="../MouseSelection.cpp" line="418"/>
       <source>Finish</source>
       <translation>Končaj</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="211"/>
-      <location filename="../MouseSelection.cpp" line="418"/>
+      <location filename="../MouseSelection.cpp" line="212"/>
+      <location filename="../MouseSelection.cpp" line="419"/>
       <source>Clear</source>
       <translation>Počisti</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="212"/>
-      <location filename="../MouseSelection.cpp" line="367"/>
-      <location filename="../MouseSelection.cpp" line="419"/>
+      <location filename="../MouseSelection.cpp" line="213"/>
+      <location filename="../MouseSelection.cpp" line="368"/>
+      <location filename="../MouseSelection.cpp" line="420"/>
       <source>Cancel</source>
       <translation>Prekliči</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="364"/>
+      <location filename="../MouseSelection.cpp" line="365"/>
       <source>Inner</source>
       <translation>Notranji</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="365"/>
+      <location filename="../MouseSelection.cpp" line="366"/>
       <source>Outer</source>
       <translation>Zunanji</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="366"/>
+      <location filename="../MouseSelection.cpp" line="367"/>
       <source>Split</source>
       <translation>Razdeli</translation>
     </message>
@@ -8690,12 +8681,12 @@ Izberite "Prekini" za prekinitev</translation>
       <translation>Sistemskega brskalnika ni mogoče odpreti.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3229"/>
+      <location filename="../View3DInventorViewer.cpp" line="3206"/>
       <source>Out of memory</source>
       <translation>Zmanjkalo je pomnilnika</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3230"/>
+      <location filename="../View3DInventorViewer.cpp" line="3207"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Ni dovolj pomnilnika za prikaz podatkov.</translation>
     </message>
@@ -8716,33 +8707,33 @@ Izberite "Prekini" za prekinitev</translation>
       <translation type="unfinished">Clarify Selection</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="998"/>
+      <location filename="../MainWindow.cpp" line="1001"/>
       <location filename="../CommandDoc.cpp" line="1369"/>
       <source>Unsaved Document</source>
       <translation type="unfinished">Unsaved Document</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1002"/>
+      <location filename="../MainWindow.cpp" line="1005"/>
       <source>Save all changes to document '%1' before closing?</source>
       <translation type="unfinished">Save all changes to document '%1' before closing?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1003"/>
+      <location filename="../MainWindow.cpp" line="1006"/>
       <source>Save all changes to document before closing?</source>
       <translation type="unfinished">Save all changes to document before closing?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1007"/>
+      <location filename="../MainWindow.cpp" line="1010"/>
       <source>Otherwise, all changes will be lost.</source>
       <translation>Sicer bodo vse spremembe izgubljene.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1133"/>
+      <location filename="../MainWindow.cpp" line="1136"/>
       <source>%1 Document(s) not saved</source>
       <translation>%1 Dokumenti niso shranjeni</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1134"/>
+      <location filename="../MainWindow.cpp" line="1137"/>
       <source>Some documents could not be saved. Cancel closing?</source>
       <translation type="unfinished">Some documents could not be saved. Cancel closing?</translation>
     </message>
@@ -8757,7 +8748,7 @@ Izberite "Prekini" za prekinitev</translation>
       <translation>Sistemskih makrov ni dovoljeno izbrisati</translation>
     </message>
     <message>
-      <location filename="../Inventor/Draggers/SoLinearDragger.cpp" line="282"/>
+      <location filename="../Inventor/Draggers/SoLinearDragger.cpp" line="283"/>
       <source>Translation:</source>
       <translation>Premik:</translation>
     </message>
@@ -8835,13 +8826,13 @@ Izberite "Prekini" za prekinitev</translation>
       <translation>Ni bilo mogoče dodati lastnosti v '%1': %2</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2767"/>
-      <location filename="../Tree.cpp" line="3164"/>
+      <location filename="../Tree.cpp" line="2770"/>
+      <location filename="../Tree.cpp" line="3167"/>
       <source>Drag &amp; drop failed</source>
       <translation>Povleci-spusti spodletelo</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1012"/>
+      <location filename="../MainWindow.cpp" line="1015"/>
       <location filename="../ViewProviderLink.cpp" line="3025"/>
       <source>Apply to all</source>
       <translation>Uveljavi za vse</translation>
@@ -8938,12 +8929,12 @@ the current copy will be lost.
       <translation>Uredi %1</translation>
     </message>
     <message>
-      <location filename="../SoFCColorGradient.cpp" line="101"/>
+      <location filename="../SoFCColorBar.cpp" line="763"/>
       <source>Color Gradient</source>
       <translation>Barvni preliv</translation>
     </message>
     <message>
-      <location filename="../SoFCColorLegend.cpp" line="86"/>
+      <location filename="../SoFCColorBar.cpp" line="766"/>
       <source>Color Legend</source>
       <translation>Legenda barv</translation>
     </message>
@@ -9085,7 +9076,7 @@ the current copy will be lost.
       <translation type="unfinished">Press Esc to hide hint</translation>
     </message>
     <message>
-      <location filename="../SoFCColorBar.cpp" line="364"/>
+      <location filename="../SoFCColorBar.cpp" line="770"/>
       <source>Options</source>
       <translation>Možnosti</translation>
     </message>
@@ -9120,19 +9111,24 @@ the current copy will be lost.
       <translation type="unfinished">Selects all objects that are children of this group</translation>
     </message>
     <message>
-      <location filename="../ViewProviderGroupExtension.cpp" line="206"/>
-      <source>The group '%1' contains %2 object(s). Do you want to delete them as well?</source>
-      <translation type="unfinished">The group '%1' contains %2 object(s). Do you want to delete them as well?</translation>
+      <location filename="../ViewProviderGroupExtension.cpp" line="243"/>
+      <source>The group '%1' contains %2 object(s). Delete them as well?</source>
+      <translation type="unfinished">The group '%1' contains %2 object(s). Delete them as well?</translation>
     </message>
     <message>
-      <location filename="../ViewProviderGroupExtension.cpp" line="212"/>
+      <location filename="../ViewProviderGroupExtension.cpp" line="249"/>
       <source>The group '%1' contains %2 direct children and %3 total descendants (including nested groups). Do you want to delete all of them recursively?</source>
       <translation type="unfinished">The group '%1' contains %2 direct children and %3 total descendants (including nested groups). Do you want to delete all of them recursively?</translation>
     </message>
     <message>
-      <location filename="../ViewProviderGroupExtension.cpp" line="223"/>
-      <source>Delete group contents recursively?</source>
-      <translation type="unfinished">Delete group contents recursively?</translation>
+      <location filename="../ViewProviderGroupExtension.cpp" line="260"/>
+      <source>Delete Group Contents Recursively?</source>
+      <translation type="unfinished">Delete Group Contents Recursively?</translation>
+    </message>
+    <message>
+      <location filename="../ViewProviderGroupExtension.cpp" line="270"/>
+      <source>Apply to all selected objects (%1) and their children</source>
+      <translation type="unfinished">Apply to all selected objects (%1) and their children</translation>
     </message>
     <message>
       <location filename="../ViewProviderImagePlane.cpp" line="171"/>
@@ -9148,12 +9144,12 @@ the current copy will be lost.
   <context>
     <name>SelectionFilter</name>
     <message>
-      <location filename="../Selection/Selection.cpp" line="984"/>
+      <location filename="../Selection/Selection.cpp" line="965"/>
       <source>Not allowed:</source>
       <translation>Ni dovoljeno:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1369"/>
+      <location filename="../Selection/Selection.cpp" line="1327"/>
       <source>Selection not allowed by filter</source>
       <translation>Sito ne dovoljuje izbora</translation>
     </message>
@@ -9467,7 +9463,7 @@ the current copy will be lost.
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../MainWindow.cpp" line="2649"/>
+      <location filename="../MainWindow.cpp" line="2652"/>
       <location filename="../DocumentRecovery.cpp" line="412"/>
       <source>Unnamed</source>
       <translation>Neimenovan</translation>
@@ -10865,12 +10861,12 @@ after FreeCAD launches</translation>
   <context>
     <name>NaviCubeDraggableCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1377"/>
+      <location filename="../NaviCube.cpp" line="1382"/>
       <source>Movable Navigation Cube</source>
       <translation type="unfinished">Movable Navigation Cube</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1378"/>
+      <location filename="../NaviCube.cpp" line="1383"/>
       <source>Drags and places the NaviCube</source>
       <translation type="unfinished">Drags and places the NaviCube</translation>
     </message>
@@ -12497,52 +12493,52 @@ the region are non-opaque.</translation>
       <translation>Preoblikuj</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="197"/>
+      <location filename="../TaskTransform.cpp" line="196"/>
       <source>Object origin</source>
       <translation>Izhodiče predmeta</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="203"/>
+      <location filename="../TaskTransform.cpp" line="202"/>
       <source>Center of mass / centroid</source>
       <translation type="unfinished">Center of mass / centroid</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="209"/>
-      <location filename="../TaskTransform.cpp" line="219"/>
+      <location filename="../TaskTransform.cpp" line="208"/>
+      <location filename="../TaskTransform.cpp" line="218"/>
       <source>Custom</source>
       <translation>Po meri</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="216"/>
+      <location filename="../TaskTransform.cpp" line="215"/>
       <source>Local</source>
       <translation>Krajevni</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="217"/>
+      <location filename="../TaskTransform.cpp" line="216"/>
       <source>Global</source>
       <translation>Obči</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="442"/>
-      <location filename="../TaskTransform.cpp" line="444"/>
+      <location filename="../TaskTransform.cpp" line="441"/>
+      <location filename="../TaskTransform.cpp" line="443"/>
       <source>Pick Reference</source>
       <translation type="unfinished">Pick Reference</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="443"/>
+      <location filename="../TaskTransform.cpp" line="442"/>
       <source>Move to Other Object</source>
       <translation type="unfinished">Move to Other Object</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="451"/>
-      <location filename="../TaskTransform.cpp" line="466"/>
+      <location filename="../TaskTransform.cpp" line="450"/>
+      <location filename="../TaskTransform.cpp" line="465"/>
       <source>Select object, face, edge…</source>
       <translation type="unfinished">Select object, face, edge…</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="452"/>
-      <location filename="../TaskTransform.cpp" line="458"/>
-      <location filename="../TaskTransform.cpp" line="467"/>
+      <location filename="../TaskTransform.cpp" line="451"/>
+      <location filename="../TaskTransform.cpp" line="457"/>
+      <location filename="../TaskTransform.cpp" line="466"/>
       <source>Cancel</source>
       <translation>Prekliči</translation>
     </message>
@@ -12850,22 +12846,22 @@ the region are non-opaque.</translation>
   <context>
     <name>Gui::Application</name>
     <message>
-      <location filename="../Application.cpp" line="493"/>
+      <location filename="../Application.cpp" line="496"/>
       <source>Built-in Parameters</source>
       <translation type="unfinished">Built-in Parameters</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="467"/>
+      <location filename="../Application.cpp" line="470"/>
       <source>Theme Parameters</source>
       <translation type="unfinished">Theme Parameters</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="502"/>
+      <location filename="../Application.cpp" line="505"/>
       <source>Theme Parameters - Fallback</source>
       <translation type="unfinished">Theme Parameters - Fallback</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="514"/>
+      <location filename="../Application.cpp" line="517"/>
       <source>User Parameters</source>
       <translation type="unfinished">User Parameters</translation>
     </message>
@@ -14331,7 +14327,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="4313"/>
+      <location filename="../Tree.cpp" line="4316"/>
       <source>Tree View</source>
       <translation type="unfinished">Tree View</translation>
     </message>
@@ -14339,48 +14335,48 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::Dialog::DlgExpressionInput</name>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="77"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="79"/>
       <source>Revert to last calculated value (as constant)</source>
       <translation>Povrni na zadnjo izračunano vrednost (kot nespremenljivko)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="402"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="404"/>
       <source> (Warning: unit discarded)</source>
       <translation type="unfinished"> (Warning: unit discarded)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="508"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="510"/>
       <source>Invalid property name: %1</source>
       <translation type="unfinished">Invalid property name: %1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="512"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="514"/>
       <source>Unknown object</source>
       <translation type="unfinished">Unknown object</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="518"/>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="967"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="520"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="934"/>
       <source>the name cannot be empty</source>
       <translation type="unfinished">the name cannot be empty</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="528"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="530"/>
       <source>%1 is a unit</source>
       <translation type="unfinished">%1 is a unit</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="533"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="535"/>
       <source>%1 is a constant</source>
       <translation type="unfinished">%1 is a constant</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="539"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="541"/>
       <source>%1 already exists</source>
       <translation type="unfinished">%1 already exists</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="963"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="930"/>
       <source>Invalid group name: %1</source>
       <translation type="unfinished">Invalid group name: %1</translation>
     </message>
@@ -14497,17 +14493,17 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="304"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="306"/>
       <source>Value out of range (%1 out of [%2, %3])</source>
       <translation type="unfinished">Value out of range (%1 out of [%2, %3])</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="387"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="389"/>
       <source>Not a Number</source>
       <translation type="unfinished">Not a Number</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="395"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="397"/>
       <source>Unit mismatch between result and required unit</source>
       <translation type="unfinished">Unit mismatch between result and required unit</translation>
     </message>
@@ -14618,19 +14614,19 @@ This makes the docked panel stay transparent at all times.</translation>
     </message>
   </context>
   <context>
+    <name>FileFormat</name>
+    <message>
+      <location filename="../FreeCADGuiInit.py" line="463"/>
+      <source>Portable Document Format</source>
+      <translation type="unfinished">Portable Document Format</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TaskCommandLinkDialog</name>
     <message>
       <location filename="../TaskCommandLink.ui" line="14"/>
       <source>Insert</source>
       <translation>Vstavi</translation>
-    </message>
-  </context>
-  <context>
-    <name>FileFormat</name>
-    <message>
-      <location filename="../FreeCADGuiInit.py" line="470"/>
-      <source>Portable Document Format</source>
-      <translation type="unfinished">Portable Document Format</translation>
     </message>
   </context>
   <context>
@@ -14736,6 +14732,45 @@ treated as shortcut key sequence 'F, F'.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdToggleSuppress</name>
+    <message>
+      <location filename="../CommandFeat.cpp" line="240"/>
+      <source>Toggle Suppressed</source>
+      <translation type="unfinished">Toggle Suppressed</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="242"/>
+      <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
+      <translation type="unfinished">Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleBottomPanels</name>
+    <message>
+      <location filename="../CommandView.cpp" line="3890"/>
+      <source>Toggle Bottom Panels</source>
+      <translation type="unfinished">Toggle Bottom Panels</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="3891"/>
+      <source>Toggles the bottom dock panels</source>
+      <translation type="unfinished">Toggles the bottom dock panels</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::PropertyMapEditor</name>
+    <message>
+      <location filename="../Widgets.cpp" line="1905"/>
+      <source>Key</source>
+      <translation>Ključ</translation>
+    </message>
+    <message>
+      <location filename="../Widgets.cpp" line="1905"/>
+      <source>Value</source>
+      <translation>Vrednost</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdAnnotationLabel</name>
     <message>
       <location filename="../CommandStd.cpp" line="983"/>
@@ -14754,19 +14789,6 @@ treated as shortcut key sequence 'F, F'.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdToggleBottomPanels</name>
-    <message>
-      <location filename="../CommandView.cpp" line="3890"/>
-      <source>Toggle Bottom Panels</source>
-      <translation type="unfinished">Toggle Bottom Panels</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="3891"/>
-      <source>Toggles the bottom dock panels</source>
-      <translation type="unfinished">Toggles the bottom dock panels</translation>
-    </message>
-  </context>
-  <context>
     <name>FileDialog</name>
     <message>
       <location filename="../FileDialog.cpp" line="578"/>
@@ -14781,29 +14803,11 @@ treated as shortcut key sequence 'F, F'.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdToggleSuppress</name>
+    <name>Gui</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="240"/>
-      <source>Toggle Suppressed</source>
-      <translation type="unfinished">Toggle Suppressed</translation>
-    </message>
-    <message>
-      <location filename="../CommandFeat.cpp" line="242"/>
-      <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
-      <translation type="unfinished">Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui::PropertyMapEditor</name>
-    <message>
-      <location filename="../Widgets.cpp" line="1905"/>
-      <source>Key</source>
-      <translation>Ključ</translation>
-    </message>
-    <message>
-      <location filename="../Widgets.cpp" line="1905"/>
-      <source>Value</source>
-      <translation>Vrednost</translation>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="284"/>
+      <source>New parameter…</source>
+      <translation type="unfinished">New parameter…</translation>
     </message>
   </context>
   <context>
@@ -14878,14 +14882,6 @@ treated as shortcut key sequence 'F, F'.</translation>
       <location filename="../propertyeditor/PropertyItem.cpp" line="4929"/>
       <source>Map</source>
       <translation>Zemljevid, Preslikava</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui</name>
-    <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="284"/>
-      <source>New parameter…</source>
-      <translation type="unfinished">New parameter…</translation>
     </message>
   </context>
 </TS>

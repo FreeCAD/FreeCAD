@@ -6,7 +6,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="90"/>
       <source>Select</source>
-      <translation>Kiválaszt</translation>
+      <translation>Kijelöl</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="91"/>
@@ -112,7 +112,7 @@
       <location filename="../../NavigationIndicatorGui.py" line="675"/>
       <source>Navigation Styles</source>
       <comment>A context menu action used to show or hide the &apos;Navigation indicator&apos; toolbar widget</comment>
-      <translation type="unfinished">Navigation Styles</translation>
+      <translation>Navigációs stílusok</translation>
     </message>
   </context>
 </TS>

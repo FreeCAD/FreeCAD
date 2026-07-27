@@ -17,27 +17,27 @@
   <context>
     <name>CmdSketcherCompConstrainRadDia</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9444"/>
+      <location filename="../../CommandConstraints.cpp" line="9461"/>
       <source>Radius/Diameter Dimension</source>
       <translation>Ograničenje poluprečnika/prečnika</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9445"/>
+      <location filename="../../CommandConstraints.cpp" line="9462"/>
       <source>Constrains the radius or diameter of an arc or a circle</source>
       <translation>Kotiraj poluprečnik ili prečnik kružnog luka ili kružnice</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9555"/>
+      <location filename="../../CommandConstraints.cpp" line="9572"/>
       <source>Constrain radius</source>
       <translation>Ograničenje poluprečnika</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9561"/>
+      <location filename="../../CommandConstraints.cpp" line="9578"/>
       <source>Constrain diameter</source>
       <translation>Ograničenje prečnika</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9567"/>
+      <location filename="../../CommandConstraints.cpp" line="9584"/>
       <source>Constrain auto radius/diameter</source>
       <translation>Automatsko ograničenje poluprečnika i prečnika</translation>
     </message>
@@ -319,365 +319,365 @@ nevažeća ograničenja, degenerisanu geometriju, itd</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4260"/>
+      <location filename="../../CommandConstraints.cpp" line="4277"/>
       <source>Add 'Lock' constraint</source>
       <translation>Dodaj ograničenje zaključavanjem</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4314"/>
+      <location filename="../../CommandConstraints.cpp" line="4331"/>
       <source>Add relative 'Lock' constraint</source>
       <translation>Dodaj relativno ograničenje zaključavanjem</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4380"/>
+      <location filename="../../CommandConstraints.cpp" line="4397"/>
       <source>Add fixed constraint</source>
       <translation type="unfinished">Add fixed constraint</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4599"/>
+      <location filename="../../CommandConstraints.cpp" line="4616"/>
       <source>Add block constraint</source>
       <translation>Dodaj ograničenje blokiranjem</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4939"/>
-      <location filename="../../CommandConstraints.cpp" line="5122"/>
+      <location filename="../../CommandConstraints.cpp" line="4956"/>
+      <location filename="../../CommandConstraints.cpp" line="5139"/>
       <source>Add coincident constraint</source>
       <translation>Dodaj ograničenje podudarnosti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5358"/>
-      <location filename="../../CommandConstraints.cpp" line="5681"/>
+      <location filename="../../CommandConstraints.cpp" line="5375"/>
+      <location filename="../../CommandConstraints.cpp" line="5698"/>
       <source>Add distance from horizontal axis constraint</source>
       <translation>Dodaj kotu rastojanja od horizontalne ose</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5370"/>
-      <location filename="../../CommandConstraints.cpp" line="5695"/>
+      <location filename="../../CommandConstraints.cpp" line="5387"/>
+      <location filename="../../CommandConstraints.cpp" line="5712"/>
       <source>Add distance from vertical axis constraint</source>
       <translation>Dodaj kotu rastojanja od vertikalne ose</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5382"/>
-      <location filename="../../CommandConstraints.cpp" line="5708"/>
+      <location filename="../../CommandConstraints.cpp" line="5399"/>
+      <location filename="../../CommandConstraints.cpp" line="5725"/>
       <source>Add point to point distance constraint</source>
       <translation>Dodaj kotu vertikalnog rastojanja od tačke do tačke</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2736"/>
+      <location filename="../../CommandConstraints.cpp" line="2753"/>
       <source>Add point to line Distance constraint</source>
       <translation>Dodaj kotu rastojanja od tačke do linije</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5506"/>
-      <location filename="../../CommandConstraints.cpp" line="5857"/>
+      <location filename="../../CommandConstraints.cpp" line="5523"/>
+      <location filename="../../CommandConstraints.cpp" line="5874"/>
       <source>Add circle to circle distance constraint</source>
       <translation>Dodaj ograničenje između dva kruga</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5549"/>
+      <location filename="../../CommandConstraints.cpp" line="5566"/>
       <source>Add circle to line distance constraint</source>
       <translation>Dodaj ograničenje rastojanja od kruga do linije</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2834"/>
-      <location filename="../../CommandConstraints.cpp" line="2857"/>
-      <location filename="../../CommandConstraints.cpp" line="2925"/>
-      <location filename="../../CommandConstraints.cpp" line="3009"/>
-      <location filename="../../CommandConstraints.cpp" line="5597"/>
-      <location filename="../../CommandConstraints.cpp" line="5624"/>
-      <location filename="../../CommandConstraints.cpp" line="5752"/>
+      <location filename="../../CommandConstraints.cpp" line="2851"/>
+      <location filename="../../CommandConstraints.cpp" line="2874"/>
+      <location filename="../../CommandConstraints.cpp" line="2942"/>
+      <location filename="../../CommandConstraints.cpp" line="3026"/>
+      <location filename="../../CommandConstraints.cpp" line="5614"/>
+      <location filename="../../CommandConstraints.cpp" line="5641"/>
+      <location filename="../../CommandConstraints.cpp" line="5769"/>
       <source>Add length constraint</source>
       <translation>Dodaj ograničenje dužine</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2054"/>
-      <location filename="../../CommandConstraints.cpp" line="2232"/>
-      <location filename="../../CommandConstraints.cpp" line="3650"/>
+      <location filename="../../CommandConstraints.cpp" line="2071"/>
+      <location filename="../../CommandConstraints.cpp" line="2249"/>
+      <location filename="../../CommandConstraints.cpp" line="3667"/>
       <source>Dimension</source>
       <translation>Kotiranje - Dimenziona ograničenja</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2705"/>
+      <location filename="../../CommandConstraints.cpp" line="2722"/>
       <source>Add lock constraint</source>
       <translation>Dodaj ograničenje zaključavanjem</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2701"/>
+      <location filename="../../CommandConstraints.cpp" line="2718"/>
       <source>Add 'Distance to origin' constraint</source>
       <translation>Dodaj ograničenje 'Rastojanje od koordinatnog početka'</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2717"/>
-      <location filename="../../CommandConstraints.cpp" line="3331"/>
-      <location filename="../../CommandConstraints.cpp" line="3568"/>
+      <location filename="../../CommandConstraints.cpp" line="2734"/>
+      <location filename="../../CommandConstraints.cpp" line="3348"/>
+      <location filename="../../CommandConstraints.cpp" line="3585"/>
       <source>Add Distance constraint</source>
       <translation>Dodaj ograničenje rastojanja</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2722"/>
-      <location filename="../../CommandConstraints.cpp" line="2751"/>
-      <location filename="../../CommandConstraints.cpp" line="2785"/>
+      <location filename="../../CommandConstraints.cpp" line="2739"/>
+      <location filename="../../CommandConstraints.cpp" line="2768"/>
+      <location filename="../../CommandConstraints.cpp" line="2802"/>
       <source>Add 'Horizontal' constraints</source>
       <translation>Dodaj 'horizontalna' ograničenja</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2726"/>
-      <location filename="../../CommandConstraints.cpp" line="2758"/>
-      <location filename="../../CommandConstraints.cpp" line="2792"/>
+      <location filename="../../CommandConstraints.cpp" line="2743"/>
+      <location filename="../../CommandConstraints.cpp" line="2775"/>
+      <location filename="../../CommandConstraints.cpp" line="2809"/>
       <source>Add 'Vertical' constraints</source>
       <translation>Dodaj 'vertikalna' ograničenja</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2741"/>
-      <location filename="../../CommandConstraints.cpp" line="2804"/>
+      <location filename="../../CommandConstraints.cpp" line="2758"/>
+      <location filename="../../CommandConstraints.cpp" line="2821"/>
       <source>Add Symmetry constraint</source>
       <translation>Dodaj ograničenje simetričnosti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2764"/>
-      <location filename="../../CommandConstraints.cpp" line="2936"/>
+      <location filename="../../CommandConstraints.cpp" line="2781"/>
+      <location filename="../../CommandConstraints.cpp" line="2953"/>
       <source>Add Symmetry constraints</source>
       <translation>Dodaj ograničenja simetričnosti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2809"/>
-      <location filename="../../CommandConstraints.cpp" line="2821"/>
+      <location filename="../../CommandConstraints.cpp" line="2826"/>
+      <location filename="../../CommandConstraints.cpp" line="2838"/>
       <source>Add Distance constraints</source>
       <translation>Dodaj ograničenja rastojanja</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2867"/>
+      <location filename="../../CommandConstraints.cpp" line="2884"/>
       <source>Add Horizontal constraint</source>
       <translation>Dodaj horizontalno ograničenje</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2872"/>
+      <location filename="../../CommandConstraints.cpp" line="2889"/>
       <source>Add Vertical constraint</source>
       <translation>Dodaj vertikalno ograničenje</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2876"/>
-      <location filename="../../CommandConstraints.cpp" line="4551"/>
+      <location filename="../../CommandConstraints.cpp" line="2893"/>
+      <location filename="../../CommandConstraints.cpp" line="4568"/>
       <source>Add Block constraint</source>
       <translation>Dodaj ograničenje blokiranjem</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2891"/>
+      <location filename="../../CommandConstraints.cpp" line="2908"/>
       <source>Add Angle constraint</source>
       <translation>Dodaj ograničenje ugla</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2901"/>
-      <location filename="../../CommandConstraints.cpp" line="3024"/>
-      <location filename="../../CommandConstraints.cpp" line="3034"/>
-      <location filename="../../CommandConstraints.cpp" line="3072"/>
+      <location filename="../../CommandConstraints.cpp" line="2918"/>
+      <location filename="../../CommandConstraints.cpp" line="3041"/>
+      <location filename="../../CommandConstraints.cpp" line="3051"/>
+      <location filename="../../CommandConstraints.cpp" line="3089"/>
       <source>Add Equality constraint</source>
       <translation>Dodaj ograničenje jednakosti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2912"/>
+      <location filename="../../CommandConstraints.cpp" line="2929"/>
       <source>Add Equality constraints</source>
       <translation>Dodaj ograničenja jednakosti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11068"/>
+      <location filename="../../CommandConstraints.cpp" line="11085"/>
       <source>Add Group constraint</source>
       <translation type="unfinished">Add Group constraint</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11492"/>
+      <location filename="../../CommandConstraints.cpp" line="11509"/>
       <source>Activate/Deactivate constraints</source>
       <translation>Aktiviraj/deaktiviraj ograničenja</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2960"/>
-      <location filename="../../CommandConstraints.cpp" line="2993"/>
+      <location filename="../../CommandConstraints.cpp" line="2977"/>
+      <location filename="../../CommandConstraints.cpp" line="3010"/>
       <source>Add arc angle constraint</source>
       <translation>Dodaj ograničenje ugla luka</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3014"/>
+      <location filename="../../CommandConstraints.cpp" line="3031"/>
       <source>Add concentric and length constraint</source>
       <translation>Dodaj ograničenje koncentričnosti i rastojanja</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3548"/>
+      <location filename="../../CommandConstraints.cpp" line="3565"/>
       <source>Add DistanceX constraint</source>
       <translation>Dodaj ograničenje rastojanje X</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3558"/>
+      <location filename="../../CommandConstraints.cpp" line="3575"/>
       <source>Add DistanceY constraint</source>
       <translation>Dodaj ograničenje rastojanje Y</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4859"/>
-      <location filename="../../CommandConstraints.cpp" line="5038"/>
+      <location filename="../../CommandConstraints.cpp" line="4876"/>
+      <location filename="../../CommandConstraints.cpp" line="5055"/>
       <source>Add point on object constraint</source>
       <translation>Dodaj tačku na ograničenje objekta</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2965"/>
-      <location filename="../../CommandConstraints.cpp" line="2997"/>
+      <location filename="../../CommandConstraints.cpp" line="2982"/>
+      <location filename="../../CommandConstraints.cpp" line="3014"/>
       <source>Add arc length constraint</source>
       <translation>Dodaj ograničenje dužine luka</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5425"/>
-      <location filename="../../CommandConstraints.cpp" line="5802"/>
+      <location filename="../../CommandConstraints.cpp" line="5442"/>
+      <location filename="../../CommandConstraints.cpp" line="5819"/>
       <source>Add point to line distance constraint</source>
       <translation>Napravi kotu rastojanja između tačke i duži</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5455"/>
+      <location filename="../../CommandConstraints.cpp" line="5472"/>
       <source>Add point to circle distance constraint</source>
       <translation>Napravi kotu rastojanja između tačke i kružnice</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6043"/>
-      <location filename="../../CommandConstraints.cpp" line="6169"/>
+      <location filename="../../CommandConstraints.cpp" line="6060"/>
+      <location filename="../../CommandConstraints.cpp" line="6186"/>
       <source>Add point to point horizontal distance constraint</source>
       <translation>Dodaj ograničenje horizontalnog rastojanja od tačke do tačke</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6084"/>
+      <location filename="../../CommandConstraints.cpp" line="6101"/>
       <source>Add fixed x-coordinate constraint</source>
       <translation>Kotiraj x-koordinatu</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6343"/>
-      <location filename="../../CommandConstraints.cpp" line="6465"/>
+      <location filename="../../CommandConstraints.cpp" line="6360"/>
+      <location filename="../../CommandConstraints.cpp" line="6482"/>
       <source>Add point to point vertical distance constraint</source>
       <translation>Dodaj ograničenje vertikalnog rastojanja od tačke do tačke</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6381"/>
+      <location filename="../../CommandConstraints.cpp" line="6398"/>
       <source>Add fixed y-coordinate constraint</source>
       <translation>Kotiraj y-koordinatu</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6613"/>
-      <location filename="../../CommandConstraints.cpp" line="6657"/>
+      <location filename="../../CommandConstraints.cpp" line="6630"/>
+      <location filename="../../CommandConstraints.cpp" line="6674"/>
       <source>Add parallel constraint</source>
       <translation>Dodaj ograničenje paralelnosti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6778"/>
-      <location filename="../../CommandConstraints.cpp" line="6816"/>
-      <location filename="../../CommandConstraints.cpp" line="6917"/>
-      <location filename="../../CommandConstraints.cpp" line="7081"/>
-      <location filename="../../CommandConstraints.cpp" line="7131"/>
-      <location filename="../../CommandConstraints.cpp" line="7280"/>
-      <location filename="../../CommandConstraints.cpp" line="7329"/>
-      <location filename="../../CommandConstraints.cpp" line="7385"/>
+      <location filename="../../CommandConstraints.cpp" line="6795"/>
+      <location filename="../../CommandConstraints.cpp" line="6833"/>
+      <location filename="../../CommandConstraints.cpp" line="6934"/>
+      <location filename="../../CommandConstraints.cpp" line="7098"/>
+      <location filename="../../CommandConstraints.cpp" line="7148"/>
+      <location filename="../../CommandConstraints.cpp" line="7297"/>
+      <location filename="../../CommandConstraints.cpp" line="7346"/>
+      <location filename="../../CommandConstraints.cpp" line="7402"/>
       <source>Add perpendicular constraint</source>
       <translation>Dodaj ograničenje upravnosti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6956"/>
+      <location filename="../../CommandConstraints.cpp" line="6973"/>
       <source>Add perpendicularity constraint</source>
       <translation>Dodaj ograničenje upravnosti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7521"/>
+      <location filename="../../CommandConstraints.cpp" line="7538"/>
       <source>Swap coincident+tangency with ptp tangency</source>
       <translation>Zameni podudarnost+tangentnost na tangentnost tačaka</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7651"/>
-      <location filename="../../CommandConstraints.cpp" line="7752"/>
-      <location filename="../../CommandConstraints.cpp" line="7801"/>
-      <location filename="../../CommandConstraints.cpp" line="8010"/>
-      <location filename="../../CommandConstraints.cpp" line="8203"/>
-      <location filename="../../CommandConstraints.cpp" line="8273"/>
-      <location filename="../../CommandConstraints.cpp" line="8306"/>
+      <location filename="../../CommandConstraints.cpp" line="7668"/>
+      <location filename="../../CommandConstraints.cpp" line="7769"/>
+      <location filename="../../CommandConstraints.cpp" line="7818"/>
+      <location filename="../../CommandConstraints.cpp" line="8027"/>
+      <location filename="../../CommandConstraints.cpp" line="8220"/>
+      <location filename="../../CommandConstraints.cpp" line="8290"/>
+      <location filename="../../CommandConstraints.cpp" line="8323"/>
       <source>Add tangent constraint</source>
       <translation>Dodaj ograničenje tangentnosti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7847"/>
-      <location filename="../../CommandConstraints.cpp" line="7861"/>
-      <location filename="../../CommandConstraints.cpp" line="7875"/>
-      <location filename="../../CommandConstraints.cpp" line="7902"/>
-      <location filename="../../CommandConstraints.cpp" line="7917"/>
-      <location filename="../../CommandConstraints.cpp" line="7944"/>
-      <location filename="../../CommandConstraints.cpp" line="7959"/>
-      <location filename="../../CommandConstraints.cpp" line="7987"/>
-      <location filename="../../CommandConstraints.cpp" line="8090"/>
-      <location filename="../../CommandConstraints.cpp" line="8104"/>
-      <location filename="../../CommandConstraints.cpp" line="8119"/>
-      <location filename="../../CommandConstraints.cpp" line="8146"/>
-      <location filename="../../CommandConstraints.cpp" line="8161"/>
-      <location filename="../../CommandConstraints.cpp" line="8188"/>
+      <location filename="../../CommandConstraints.cpp" line="7864"/>
+      <location filename="../../CommandConstraints.cpp" line="7878"/>
+      <location filename="../../CommandConstraints.cpp" line="7892"/>
+      <location filename="../../CommandConstraints.cpp" line="7919"/>
+      <location filename="../../CommandConstraints.cpp" line="7934"/>
+      <location filename="../../CommandConstraints.cpp" line="7961"/>
+      <location filename="../../CommandConstraints.cpp" line="7976"/>
+      <location filename="../../CommandConstraints.cpp" line="8004"/>
+      <location filename="../../CommandConstraints.cpp" line="8107"/>
+      <location filename="../../CommandConstraints.cpp" line="8121"/>
+      <location filename="../../CommandConstraints.cpp" line="8136"/>
+      <location filename="../../CommandConstraints.cpp" line="8163"/>
+      <location filename="../../CommandConstraints.cpp" line="8178"/>
+      <location filename="../../CommandConstraints.cpp" line="8205"/>
       <source>Add tangent constraint point</source>
       <translation>Dodaj tačku ograničenja tangentnosti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2969"/>
-      <location filename="../../CommandConstraints.cpp" line="2973"/>
-      <location filename="../../CommandConstraints.cpp" line="2980"/>
-      <location filename="../../CommandConstraints.cpp" line="2985"/>
-      <location filename="../../CommandConstraints.cpp" line="8525"/>
-      <location filename="../../CommandConstraints.cpp" line="8569"/>
-      <location filename="../../CommandConstraints.cpp" line="8598"/>
-      <location filename="../../CommandConstraints.cpp" line="8675"/>
+      <location filename="../../CommandConstraints.cpp" line="2986"/>
+      <location filename="../../CommandConstraints.cpp" line="2990"/>
+      <location filename="../../CommandConstraints.cpp" line="2997"/>
+      <location filename="../../CommandConstraints.cpp" line="3002"/>
+      <location filename="../../CommandConstraints.cpp" line="8542"/>
+      <location filename="../../CommandConstraints.cpp" line="8586"/>
+      <location filename="../../CommandConstraints.cpp" line="8615"/>
+      <location filename="../../CommandConstraints.cpp" line="8692"/>
       <source>Add radius constraint</source>
       <translation>Dodaj ograničenje poluprečnika</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8876"/>
-      <location filename="../../CommandConstraints.cpp" line="8908"/>
-      <location filename="../../CommandConstraints.cpp" line="8929"/>
-      <location filename="../../CommandConstraints.cpp" line="9005"/>
+      <location filename="../../CommandConstraints.cpp" line="8893"/>
+      <location filename="../../CommandConstraints.cpp" line="8925"/>
+      <location filename="../../CommandConstraints.cpp" line="8946"/>
+      <location filename="../../CommandConstraints.cpp" line="9022"/>
       <source>Add diameter constraint</source>
       <translation>Dodaj ograničenje prečnika</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9201"/>
-      <location filename="../../CommandConstraints.cpp" line="9249"/>
-      <location filename="../../CommandConstraints.cpp" line="9284"/>
-      <location filename="../../CommandConstraints.cpp" line="9373"/>
+      <location filename="../../CommandConstraints.cpp" line="9218"/>
+      <location filename="../../CommandConstraints.cpp" line="9266"/>
+      <location filename="../../CommandConstraints.cpp" line="9301"/>
+      <location filename="../../CommandConstraints.cpp" line="9390"/>
       <source>Add radiam constraint</source>
       <translation>Dodaj ograničenje poluprečnik-prečnik</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="542"/>
-      <location filename="../../CommandConstraints.cpp" line="9708"/>
-      <location filename="../../CommandConstraints.cpp" line="9824"/>
-      <location filename="../../CommandConstraints.cpp" line="9850"/>
-      <location filename="../../CommandConstraints.cpp" line="9939"/>
-      <location filename="../../CommandConstraints.cpp" line="9978"/>
+      <location filename="../../CommandConstraints.cpp" line="543"/>
+      <location filename="../../CommandConstraints.cpp" line="9725"/>
+      <location filename="../../CommandConstraints.cpp" line="9841"/>
+      <location filename="../../CommandConstraints.cpp" line="9867"/>
+      <location filename="../../CommandConstraints.cpp" line="9956"/>
+      <location filename="../../CommandConstraints.cpp" line="9995"/>
       <source>Add angle constraint</source>
       <translation>Dodaj ograničenje ugla</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7544"/>
+      <location filename="../../CommandConstraints.cpp" line="7561"/>
       <source>Swap point on object and tangency with point to curve tangency</source>
       <translation type="unfinished">Swap point on object and tangency with point to curve tangency</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10240"/>
-      <location filename="../../CommandConstraints.cpp" line="10295"/>
+      <location filename="../../CommandConstraints.cpp" line="10257"/>
+      <location filename="../../CommandConstraints.cpp" line="10312"/>
       <source>Add equality constraint</source>
       <translation>Dodaj ograničenje jednakosti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10464"/>
-      <location filename="../../CommandConstraints.cpp" line="10523"/>
-      <location filename="../../CommandConstraints.cpp" line="10544"/>
-      <location filename="../../CommandConstraints.cpp" line="10660"/>
-      <location filename="../../CommandConstraints.cpp" line="10701"/>
-      <location filename="../../CommandConstraints.cpp" line="10775"/>
+      <location filename="../../CommandConstraints.cpp" line="10481"/>
+      <location filename="../../CommandConstraints.cpp" line="10540"/>
+      <location filename="../../CommandConstraints.cpp" line="10561"/>
+      <location filename="../../CommandConstraints.cpp" line="10677"/>
+      <location filename="../../CommandConstraints.cpp" line="10718"/>
+      <location filename="../../CommandConstraints.cpp" line="10792"/>
       <source>Add symmetric constraint</source>
       <translation>Dodaj ograničenje simetričnosti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10937"/>
+      <location filename="../../CommandConstraints.cpp" line="10954"/>
       <source>Add Snell's law constraint</source>
       <translation>Dodaj ograničenje na osnovu Snellovog zakona</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11405"/>
+      <location filename="../../CommandConstraints.cpp" line="11422"/>
       <source>Toggle constraint to driving/reference</source>
       <translation>Prebaci između referentnog i ograničavajućeg režima kota</translation>
     </message>
@@ -853,8 +853,8 @@ nevažeća ograničenja, degenerisanu geometriju, itd</translation>
       <translation>Obriši svu geometriju</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2267"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1232"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2267"/>
       <source>Delete all constraints</source>
       <translation>Obriši sva ograničenja</translation>
     </message>
@@ -909,9 +909,9 @@ nevažeća ograničenja, degenerisanu geometriju, itd</translation>
       <translation>Prevuci ograničenje</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1337"/>
       <location filename="../../ViewProviderSketch.cpp" line="1659"/>
-      <location filename="../../CommandConstraints.cpp" line="11270"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1337"/>
+      <location filename="../../CommandConstraints.cpp" line="11287"/>
       <source>Modify sketch constraints</source>
       <translation>Izmeni ograničenja skice</translation>
     </message>
@@ -977,8 +977,8 @@ nevažeća ograničenja, degenerisanu geometriju, itd</translation>
       <translation>Pomoćna geometrija</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="1115"/>
-      <location filename="../../DrawSketchDefaultHandler.h" line="943"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="716"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1419"/>
       <source>Add Auto-Constraints</source>
       <translation>Napravi automatska ograničenja</translation>
     </message>
@@ -990,14 +990,14 @@ nevažeća ograničenja, degenerisanu geometriju, itd</translation>
       <translation>Napravi B-Splajn</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="130"/>
-      <source>Add sketch Text</source>
-      <translation type="unfinished">Add sketch Text</translation>
-    </message>
-    <message>
       <location filename="../../EditTextDialog.cpp" line="114"/>
       <source>Modify sketch text constraint</source>
       <translation type="unfinished">Modify sketch text constraint</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="130"/>
+      <source>Add sketch Text</source>
+      <translation type="unfinished">Add sketch Text</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="170"/>
@@ -1188,11 +1188,149 @@ nevažeća ograničenja, degenerisanu geometriju, itd</translation>
       <translation>Nemoj prikačiti</translation>
     </message>
     <message>
+      <location filename="../../CommandAlterGeometry.cpp" line="231"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="242"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="171"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="329"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="423"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="491"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="580"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="634"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1023"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1144"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="127"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="231"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="242"/>
+      <location filename="../../CommandConstraints.cpp" line="453"/>
+      <location filename="../../CommandConstraints.cpp" line="460"/>
+      <location filename="../../CommandConstraints.cpp" line="3327"/>
+      <location filename="../../CommandConstraints.cpp" line="3486"/>
+      <location filename="../../CommandConstraints.cpp" line="3502"/>
+      <location filename="../../CommandConstraints.cpp" line="3815"/>
+      <location filename="../../CommandConstraints.cpp" line="4222"/>
+      <location filename="../../CommandConstraints.cpp" line="4249"/>
+      <location filename="../../CommandConstraints.cpp" line="4254"/>
+      <location filename="../../CommandConstraints.cpp" line="4508"/>
+      <location filename="../../CommandConstraints.cpp" line="4541"/>
+      <location filename="../../CommandConstraints.cpp" line="4546"/>
+      <location filename="../../CommandConstraints.cpp" line="4840"/>
+      <location filename="../../CommandConstraints.cpp" line="4870"/>
+      <location filename="../../CommandConstraints.cpp" line="4893"/>
+      <location filename="../../CommandConstraints.cpp" line="4923"/>
+      <location filename="../../CommandConstraints.cpp" line="4940"/>
+      <location filename="../../CommandConstraints.cpp" line="5070"/>
+      <location filename="../../CommandConstraints.cpp" line="5092"/>
+      <location filename="../../CommandConstraints.cpp" line="5121"/>
+      <location filename="../../CommandConstraints.cpp" line="5332"/>
+      <location filename="../../CommandConstraints.cpp" line="5344"/>
+      <location filename="../../CommandConstraints.cpp" line="5593"/>
+      <location filename="../../CommandConstraints.cpp" line="5601"/>
+      <location filename="../../CommandConstraints.cpp" line="5667"/>
+      <location filename="../../CommandConstraints.cpp" line="5793"/>
+      <location filename="../../CommandConstraints.cpp" line="5898"/>
+      <location filename="../../CommandConstraints.cpp" line="5983"/>
+      <location filename="../../CommandConstraints.cpp" line="5996"/>
+      <location filename="../../CommandConstraints.cpp" line="6029"/>
+      <location filename="../../CommandConstraints.cpp" line="6091"/>
+      <location filename="../../CommandConstraints.cpp" line="6127"/>
+      <location filename="../../CommandConstraints.cpp" line="6162"/>
+      <location filename="../../CommandConstraints.cpp" line="6284"/>
+      <location filename="../../CommandConstraints.cpp" line="6297"/>
+      <location filename="../../CommandConstraints.cpp" line="6328"/>
+      <location filename="../../CommandConstraints.cpp" line="6390"/>
+      <location filename="../../CommandConstraints.cpp" line="6424"/>
+      <location filename="../../CommandConstraints.cpp" line="6458"/>
+      <location filename="../../CommandConstraints.cpp" line="6580"/>
+      <location filename="../../CommandConstraints.cpp" line="6615"/>
+      <location filename="../../CommandConstraints.cpp" line="6624"/>
+      <location filename="../../CommandConstraints.cpp" line="6663"/>
+      <location filename="../../CommandConstraints.cpp" line="6762"/>
+      <location filename="../../CommandConstraints.cpp" line="6774"/>
+      <location filename="../../CommandConstraints.cpp" line="6828"/>
+      <location filename="../../CommandConstraints.cpp" line="6906"/>
+      <location filename="../../CommandConstraints.cpp" line="6916"/>
+      <location filename="../../CommandConstraints.cpp" line="6957"/>
+      <location filename="../../CommandConstraints.cpp" line="6968"/>
+      <location filename="../../CommandConstraints.cpp" line="6998"/>
+      <location filename="../../CommandConstraints.cpp" line="7019"/>
+      <location filename="../../CommandConstraints.cpp" line="7197"/>
+      <location filename="../../CommandConstraints.cpp" line="7218"/>
+      <location filename="../../CommandConstraints.cpp" line="7397"/>
+      <location filename="../../CommandConstraints.cpp" line="7617"/>
+      <location filename="../../CommandConstraints.cpp" line="7629"/>
+      <location filename="../../CommandConstraints.cpp" line="7663"/>
+      <location filename="../../CommandConstraints.cpp" line="7734"/>
+      <location filename="../../CommandConstraints.cpp" line="7754"/>
+      <location filename="../../CommandConstraints.cpp" line="7763"/>
+      <location filename="../../CommandConstraints.cpp" line="7792"/>
+      <location filename="../../CommandConstraints.cpp" line="7801"/>
+      <location filename="../../CommandConstraints.cpp" line="7812"/>
+      <location filename="../../CommandConstraints.cpp" line="7840"/>
+      <location filename="../../CommandConstraints.cpp" line="8021"/>
+      <location filename="../../CommandConstraints.cpp" line="8064"/>
+      <location filename="../../CommandConstraints.cpp" line="8081"/>
+      <location filename="../../CommandConstraints.cpp" line="8273"/>
+      <location filename="../../CommandConstraints.cpp" line="8318"/>
+      <location filename="../../CommandConstraints.cpp" line="8443"/>
+      <location filename="../../CommandConstraints.cpp" line="8456"/>
+      <location filename="../../CommandConstraints.cpp" line="8522"/>
+      <location filename="../../CommandConstraints.cpp" line="8530"/>
+      <location filename="../../CommandConstraints.cpp" line="8686"/>
+      <location filename="../../CommandConstraints.cpp" line="8806"/>
+      <location filename="../../CommandConstraints.cpp" line="8819"/>
+      <location filename="../../CommandConstraints.cpp" line="8864"/>
+      <location filename="../../CommandConstraints.cpp" line="8882"/>
+      <location filename="../../CommandConstraints.cpp" line="9008"/>
+      <location filename="../../CommandConstraints.cpp" line="9016"/>
+      <location filename="../../CommandConstraints.cpp" line="9124"/>
+      <location filename="../../CommandConstraints.cpp" line="9137"/>
+      <location filename="../../CommandConstraints.cpp" line="9198"/>
+      <location filename="../../CommandConstraints.cpp" line="9206"/>
+      <location filename="../../CommandConstraints.cpp" line="9384"/>
+      <location filename="../../CommandConstraints.cpp" line="9669"/>
+      <location filename="../../CommandConstraints.cpp" line="9682"/>
+      <location filename="../../CommandConstraints.cpp" line="9718"/>
+      <location filename="../../CommandConstraints.cpp" line="9816"/>
+      <location filename="../../CommandConstraints.cpp" line="9829"/>
+      <location filename="../../CommandConstraints.cpp" line="9894"/>
+      <location filename="../../CommandConstraints.cpp" line="9988"/>
+      <location filename="../../CommandConstraints.cpp" line="10142"/>
+      <location filename="../../CommandConstraints.cpp" line="10156"/>
+      <location filename="../../CommandConstraints.cpp" line="10174"/>
+      <location filename="../../CommandConstraints.cpp" line="10181"/>
+      <location filename="../../CommandConstraints.cpp" line="10202"/>
+      <location filename="../../CommandConstraints.cpp" line="10235"/>
+      <location filename="../../CommandConstraints.cpp" line="10251"/>
+      <location filename="../../CommandConstraints.cpp" line="10306"/>
+      <location filename="../../CommandConstraints.cpp" line="10402"/>
+      <location filename="../../CommandConstraints.cpp" line="10417"/>
+      <location filename="../../CommandConstraints.cpp" line="10450"/>
+      <location filename="../../CommandConstraints.cpp" line="10461"/>
+      <location filename="../../CommandConstraints.cpp" line="10474"/>
+      <location filename="../../CommandConstraints.cpp" line="10502"/>
+      <location filename="../../CommandConstraints.cpp" line="10533"/>
+      <location filename="../../CommandConstraints.cpp" line="10583"/>
+      <location filename="../../CommandConstraints.cpp" line="10614"/>
+      <location filename="../../CommandConstraints.cpp" line="10629"/>
+      <location filename="../../CommandConstraints.cpp" line="10670"/>
+      <location filename="../../CommandConstraints.cpp" line="10694"/>
+      <location filename="../../CommandConstraints.cpp" line="10759"/>
+      <location filename="../../CommandConstraints.cpp" line="10769"/>
+      <location filename="../../CommandConstraints.cpp" line="10779"/>
+      <location filename="../../CommandConstraints.cpp" line="10855"/>
+      <location filename="../../CommandConstraints.cpp" line="10865"/>
+      <location filename="../../CommandConstraints.cpp" line="10890"/>
+      <location filename="../../CommandConstraints.cpp" line="10900"/>
+      <location filename="../../CommandConstraints.cpp" line="10918"/>
+      <location filename="../../CommandConstraints.cpp" line="11046"/>
+      <location filename="../../CommandConstraints.cpp" line="11056"/>
+      <location filename="../../CommandConstraints.cpp" line="11292"/>
+      <location filename="../../CommandConstraints.cpp" line="11368"/>
+      <location filename="../../CommandConstraints.cpp" line="11380"/>
+      <location filename="../../CommandConstraints.cpp" line="11416"/>
+      <location filename="../../CommandConstraints.cpp" line="11491"/>
+      <location filename="../../CommandConstraints.cpp" line="11503"/>
       <location filename="../../CommandSketcherTools.cpp" line="468"/>
       <location filename="../../CommandSketcherTools.cpp" line="1112"/>
       <location filename="../../CommandSketcherTools.cpp" line="1441"/>
@@ -1205,144 +1343,6 @@ nevažeća ograničenja, degenerisanu geometriju, itd</translation>
       <location filename="../../CommandSketcherTools.cpp" line="2339"/>
       <location filename="../../CommandSketcherTools.cpp" line="2386"/>
       <location filename="../../CommandSketcherTools.cpp" line="2451"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="171"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="329"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="423"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="491"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="580"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="634"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1023"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1144"/>
-      <location filename="../../CommandConstraints.cpp" line="452"/>
-      <location filename="../../CommandConstraints.cpp" line="459"/>
-      <location filename="../../CommandConstraints.cpp" line="3310"/>
-      <location filename="../../CommandConstraints.cpp" line="3469"/>
-      <location filename="../../CommandConstraints.cpp" line="3485"/>
-      <location filename="../../CommandConstraints.cpp" line="3798"/>
-      <location filename="../../CommandConstraints.cpp" line="4205"/>
-      <location filename="../../CommandConstraints.cpp" line="4232"/>
-      <location filename="../../CommandConstraints.cpp" line="4237"/>
-      <location filename="../../CommandConstraints.cpp" line="4491"/>
-      <location filename="../../CommandConstraints.cpp" line="4524"/>
-      <location filename="../../CommandConstraints.cpp" line="4529"/>
-      <location filename="../../CommandConstraints.cpp" line="4823"/>
-      <location filename="../../CommandConstraints.cpp" line="4853"/>
-      <location filename="../../CommandConstraints.cpp" line="4876"/>
-      <location filename="../../CommandConstraints.cpp" line="4906"/>
-      <location filename="../../CommandConstraints.cpp" line="4923"/>
-      <location filename="../../CommandConstraints.cpp" line="5053"/>
-      <location filename="../../CommandConstraints.cpp" line="5075"/>
-      <location filename="../../CommandConstraints.cpp" line="5104"/>
-      <location filename="../../CommandConstraints.cpp" line="5315"/>
-      <location filename="../../CommandConstraints.cpp" line="5327"/>
-      <location filename="../../CommandConstraints.cpp" line="5576"/>
-      <location filename="../../CommandConstraints.cpp" line="5584"/>
-      <location filename="../../CommandConstraints.cpp" line="5650"/>
-      <location filename="../../CommandConstraints.cpp" line="5776"/>
-      <location filename="../../CommandConstraints.cpp" line="5881"/>
-      <location filename="../../CommandConstraints.cpp" line="5966"/>
-      <location filename="../../CommandConstraints.cpp" line="5979"/>
-      <location filename="../../CommandConstraints.cpp" line="6012"/>
-      <location filename="../../CommandConstraints.cpp" line="6074"/>
-      <location filename="../../CommandConstraints.cpp" line="6110"/>
-      <location filename="../../CommandConstraints.cpp" line="6145"/>
-      <location filename="../../CommandConstraints.cpp" line="6267"/>
-      <location filename="../../CommandConstraints.cpp" line="6280"/>
-      <location filename="../../CommandConstraints.cpp" line="6311"/>
-      <location filename="../../CommandConstraints.cpp" line="6373"/>
-      <location filename="../../CommandConstraints.cpp" line="6407"/>
-      <location filename="../../CommandConstraints.cpp" line="6441"/>
-      <location filename="../../CommandConstraints.cpp" line="6563"/>
-      <location filename="../../CommandConstraints.cpp" line="6598"/>
-      <location filename="../../CommandConstraints.cpp" line="6607"/>
-      <location filename="../../CommandConstraints.cpp" line="6646"/>
-      <location filename="../../CommandConstraints.cpp" line="6745"/>
-      <location filename="../../CommandConstraints.cpp" line="6757"/>
-      <location filename="../../CommandConstraints.cpp" line="6811"/>
-      <location filename="../../CommandConstraints.cpp" line="6889"/>
-      <location filename="../../CommandConstraints.cpp" line="6899"/>
-      <location filename="../../CommandConstraints.cpp" line="6940"/>
-      <location filename="../../CommandConstraints.cpp" line="6951"/>
-      <location filename="../../CommandConstraints.cpp" line="6981"/>
-      <location filename="../../CommandConstraints.cpp" line="7002"/>
-      <location filename="../../CommandConstraints.cpp" line="7180"/>
-      <location filename="../../CommandConstraints.cpp" line="7201"/>
-      <location filename="../../CommandConstraints.cpp" line="7380"/>
-      <location filename="../../CommandConstraints.cpp" line="7600"/>
-      <location filename="../../CommandConstraints.cpp" line="7612"/>
-      <location filename="../../CommandConstraints.cpp" line="7646"/>
-      <location filename="../../CommandConstraints.cpp" line="7717"/>
-      <location filename="../../CommandConstraints.cpp" line="7737"/>
-      <location filename="../../CommandConstraints.cpp" line="7746"/>
-      <location filename="../../CommandConstraints.cpp" line="7775"/>
-      <location filename="../../CommandConstraints.cpp" line="7784"/>
-      <location filename="../../CommandConstraints.cpp" line="7795"/>
-      <location filename="../../CommandConstraints.cpp" line="7823"/>
-      <location filename="../../CommandConstraints.cpp" line="8004"/>
-      <location filename="../../CommandConstraints.cpp" line="8047"/>
-      <location filename="../../CommandConstraints.cpp" line="8064"/>
-      <location filename="../../CommandConstraints.cpp" line="8256"/>
-      <location filename="../../CommandConstraints.cpp" line="8301"/>
-      <location filename="../../CommandConstraints.cpp" line="8426"/>
-      <location filename="../../CommandConstraints.cpp" line="8439"/>
-      <location filename="../../CommandConstraints.cpp" line="8505"/>
-      <location filename="../../CommandConstraints.cpp" line="8513"/>
-      <location filename="../../CommandConstraints.cpp" line="8669"/>
-      <location filename="../../CommandConstraints.cpp" line="8789"/>
-      <location filename="../../CommandConstraints.cpp" line="8802"/>
-      <location filename="../../CommandConstraints.cpp" line="8847"/>
-      <location filename="../../CommandConstraints.cpp" line="8865"/>
-      <location filename="../../CommandConstraints.cpp" line="8991"/>
-      <location filename="../../CommandConstraints.cpp" line="8999"/>
-      <location filename="../../CommandConstraints.cpp" line="9107"/>
-      <location filename="../../CommandConstraints.cpp" line="9120"/>
-      <location filename="../../CommandConstraints.cpp" line="9181"/>
-      <location filename="../../CommandConstraints.cpp" line="9189"/>
-      <location filename="../../CommandConstraints.cpp" line="9367"/>
-      <location filename="../../CommandConstraints.cpp" line="9652"/>
-      <location filename="../../CommandConstraints.cpp" line="9665"/>
-      <location filename="../../CommandConstraints.cpp" line="9701"/>
-      <location filename="../../CommandConstraints.cpp" line="9799"/>
-      <location filename="../../CommandConstraints.cpp" line="9812"/>
-      <location filename="../../CommandConstraints.cpp" line="9877"/>
-      <location filename="../../CommandConstraints.cpp" line="9971"/>
-      <location filename="../../CommandConstraints.cpp" line="10125"/>
-      <location filename="../../CommandConstraints.cpp" line="10139"/>
-      <location filename="../../CommandConstraints.cpp" line="10157"/>
-      <location filename="../../CommandConstraints.cpp" line="10164"/>
-      <location filename="../../CommandConstraints.cpp" line="10185"/>
-      <location filename="../../CommandConstraints.cpp" line="10218"/>
-      <location filename="../../CommandConstraints.cpp" line="10234"/>
-      <location filename="../../CommandConstraints.cpp" line="10289"/>
-      <location filename="../../CommandConstraints.cpp" line="10385"/>
-      <location filename="../../CommandConstraints.cpp" line="10400"/>
-      <location filename="../../CommandConstraints.cpp" line="10433"/>
-      <location filename="../../CommandConstraints.cpp" line="10444"/>
-      <location filename="../../CommandConstraints.cpp" line="10457"/>
-      <location filename="../../CommandConstraints.cpp" line="10485"/>
-      <location filename="../../CommandConstraints.cpp" line="10516"/>
-      <location filename="../../CommandConstraints.cpp" line="10566"/>
-      <location filename="../../CommandConstraints.cpp" line="10597"/>
-      <location filename="../../CommandConstraints.cpp" line="10612"/>
-      <location filename="../../CommandConstraints.cpp" line="10653"/>
-      <location filename="../../CommandConstraints.cpp" line="10677"/>
-      <location filename="../../CommandConstraints.cpp" line="10742"/>
-      <location filename="../../CommandConstraints.cpp" line="10752"/>
-      <location filename="../../CommandConstraints.cpp" line="10762"/>
-      <location filename="../../CommandConstraints.cpp" line="10838"/>
-      <location filename="../../CommandConstraints.cpp" line="10848"/>
-      <location filename="../../CommandConstraints.cpp" line="10873"/>
-      <location filename="../../CommandConstraints.cpp" line="10883"/>
-      <location filename="../../CommandConstraints.cpp" line="10901"/>
-      <location filename="../../CommandConstraints.cpp" line="11029"/>
-      <location filename="../../CommandConstraints.cpp" line="11039"/>
-      <location filename="../../CommandConstraints.cpp" line="11275"/>
-      <location filename="../../CommandConstraints.cpp" line="11351"/>
-      <location filename="../../CommandConstraints.cpp" line="11363"/>
-      <location filename="../../CommandConstraints.cpp" line="11399"/>
-      <location filename="../../CommandConstraints.cpp" line="11474"/>
-      <location filename="../../CommandConstraints.cpp" line="11486"/>
       <source>Wrong selection</source>
       <translation>Pogrešan izbor</translation>
     </message>
@@ -1363,322 +1363,322 @@ nevažeća ograničenja, degenerisanu geometriju, itd</translation>
       <translation>Dimenzionalno ograničenje</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="453"/>
+      <location filename="../../CommandConstraints.cpp" line="454"/>
       <source>Cannot add a constraint between two external geometries.</source>
       <translation>Nije moguće dodati ograničenje između dve spoljne geometrije.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="460"/>
+      <location filename="../../CommandConstraints.cpp" line="461"/>
       <source>Cannot add a constraint between two fixed geometries. Fixed geometries include external geometry, blocked geometry, and special points such as B-spline knot points.</source>
       <translation>Nije moguće dodati ograničenje između dva nepokretna geometrijska elementa. Pod nepokretnim geometrijskim elementima podrazumevamo spoljašnju geometriju, blokiranu geometriju i posebne tačke kao što su tačke čvorova B-splajn krive.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1016"/>
+      <location filename="../../CommandConstraints.cpp" line="1033"/>
       <source>Sketcher Constraint Substitution</source>
       <translation>Zamena ograničenja</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1128"/>
+      <location filename="../../CommandConstraints.cpp" line="1145"/>
       <source>One of the selected has to be on the sketch.</source>
       <translation>Jedan od izabranih mora biti na skici.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3799"/>
+      <location filename="../../CommandConstraints.cpp" line="3816"/>
       <source>Select an edge from the sketch.</source>
       <translation>Izaberi ivicu sa skice.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3763"/>
-      <location filename="../../CommandConstraints.cpp" line="3772"/>
-      <location filename="../../CommandConstraints.cpp" line="3824"/>
-      <location filename="../../CommandConstraints.cpp" line="3848"/>
-      <location filename="../../CommandConstraints.cpp" line="3902"/>
-      <location filename="../../CommandConstraints.cpp" line="3936"/>
+      <location filename="../../CommandConstraints.cpp" line="3780"/>
+      <location filename="../../CommandConstraints.cpp" line="3789"/>
+      <location filename="../../CommandConstraints.cpp" line="3841"/>
+      <location filename="../../CommandConstraints.cpp" line="3865"/>
+      <location filename="../../CommandConstraints.cpp" line="3919"/>
+      <location filename="../../CommandConstraints.cpp" line="3953"/>
       <source>Impossible constraint</source>
       <translation>Nemoguće ograničenje</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3825"/>
-      <location filename="../../CommandConstraints.cpp" line="3937"/>
+      <location filename="../../CommandConstraints.cpp" line="3842"/>
+      <location filename="../../CommandConstraints.cpp" line="3954"/>
       <source>The selected edge is not a line segment.</source>
       <translation>Izabrana ivica nije linijski segment.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3755"/>
-      <location filename="../../CommandConstraints.cpp" line="4541"/>
-      <location filename="../../CommandConstraints.cpp" line="4593"/>
+      <location filename="../../CommandConstraints.cpp" line="3772"/>
+      <location filename="../../CommandConstraints.cpp" line="4558"/>
+      <location filename="../../CommandConstraints.cpp" line="4610"/>
       <source>Double constraint</source>
       <translation>Duplo ograničenje</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3756"/>
+      <location filename="../../CommandConstraints.cpp" line="3773"/>
       <source>The selected edge already has a horizontal constraint!</source>
       <translation>Izabrana ivica već ima horizontalno ograničenje!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3764"/>
+      <location filename="../../CommandConstraints.cpp" line="3781"/>
       <source>The selected edge already has a vertical constraint!</source>
       <translation>Izabrana ivica već ima vertikalno ograničenje!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3903"/>
+      <location filename="../../CommandConstraints.cpp" line="3920"/>
       <source>There are more than one fixed points selected. Select a maximum of one fixed point!</source>
       <translation>Izabrano je više nepokretnih tačaka. Izaberi najviše jednu nepokretnu tačku!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4206"/>
-      <location filename="../../CommandConstraints.cpp" line="4492"/>
-      <location filename="../../CommandConstraints.cpp" line="5316"/>
+      <location filename="../../CommandConstraints.cpp" line="4223"/>
+      <location filename="../../CommandConstraints.cpp" line="4509"/>
+      <location filename="../../CommandConstraints.cpp" line="5333"/>
       <source>Select vertices from the sketch.</source>
       <translation>Izaberi temena sa skice.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4233"/>
+      <location filename="../../CommandConstraints.cpp" line="4250"/>
       <source>Select one vertex from the sketch other than the origin.</source>
       <translation>Izaberi jedno teme sa skice osim koordinatnog početka.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4238"/>
+      <location filename="../../CommandConstraints.cpp" line="4255"/>
       <source>Select only vertices from the sketch. The last selected vertex may be the origin.</source>
       <translation>Izaberi samo temena sa skice. Poslednje izabrano teme može biti koordinatni početak.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4505"/>
+      <location filename="../../CommandConstraints.cpp" line="4522"/>
       <source>Wrong solver status</source>
       <translation>Pogrešan status algoritma za rešavanje</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4525"/>
+      <location filename="../../CommandConstraints.cpp" line="4542"/>
       <source>Select one edge from the sketch.</source>
       <translation>Izaberi jednu ivicu sa skice.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4530"/>
+      <location filename="../../CommandConstraints.cpp" line="4547"/>
       <source>Select only edges from the sketch.</source>
       <translation>Izaberi samo ivice sa skice.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4907"/>
+      <location filename="../../CommandConstraints.cpp" line="4924"/>
       <source>None of the selected points were constrained onto the respective curves, because they are part of the same element, they are both external geometry, or the edge is not eligible.</source>
       <translation>Nijedna od izabranih tačaka nije bila ograničena na dotične krive. Razlozi: jer su delovi istog elementa, jer su obe spoljašnje geometrije ili zato što ivica nije prihvatljiva.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8005"/>
+      <location filename="../../CommandConstraints.cpp" line="8022"/>
       <source>Only tangent-via-point is supported with a B-spline.</source>
       <translation>Na B-Splajn je moguće primeniti ograničenje tangentnosti samo kada su krajnje tačke podudarne.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8514"/>
-      <location filename="../../CommandConstraints.cpp" line="9190"/>
+      <location filename="../../CommandConstraints.cpp" line="8531"/>
+      <location filename="../../CommandConstraints.cpp" line="9207"/>
       <source>Select either only one or more B-spline poles or only one or more arcs or circles from the sketch, but not mixed.</source>
       <translation>Izaberi jednu ili više kontrolnih tačaka B-splajn krive ili samo jedan ili više lukova ili krugova sa skice, ali ne pomešano.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10386"/>
-      <location filename="../../CommandConstraints.cpp" line="10401"/>
-      <location filename="../../CommandConstraints.cpp" line="10486"/>
-      <location filename="../../CommandConstraints.cpp" line="10567"/>
-      <location filename="../../CommandConstraints.cpp" line="10678"/>
+      <location filename="../../CommandConstraints.cpp" line="10403"/>
+      <location filename="../../CommandConstraints.cpp" line="10418"/>
+      <location filename="../../CommandConstraints.cpp" line="10503"/>
+      <location filename="../../CommandConstraints.cpp" line="10584"/>
+      <location filename="../../CommandConstraints.cpp" line="10695"/>
       <source>Select two points and a symmetry line, two points and a symmetry point, an element and a symmetry line or an element and a symmetry point from the sketch.</source>
       <translation type="unfinished">Select two points and a symmetry line, two points and a symmetry point, an element and a symmetry line or an element and a symmetry point from the sketch.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10434"/>
-      <location filename="../../CommandConstraints.cpp" line="10613"/>
-      <location filename="../../CommandConstraints.cpp" line="10753"/>
+      <location filename="../../CommandConstraints.cpp" line="10451"/>
+      <location filename="../../CommandConstraints.cpp" line="10630"/>
+      <location filename="../../CommandConstraints.cpp" line="10770"/>
       <source>Cannot add a symmetry constraint because the first selected element has no endpoints. Select a line or an open curve instead.</source>
       <translation type="unfinished">Cannot add a symmetry constraint because the first selected element has no endpoints. Select a line or an open curve instead.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10445"/>
-      <location filename="../../CommandConstraints.cpp" line="10763"/>
+      <location filename="../../CommandConstraints.cpp" line="10462"/>
+      <location filename="../../CommandConstraints.cpp" line="10780"/>
       <source>Cannot add a symmetry constraint because the second selected element is not a line. Select a line or an axis instead.</source>
       <translation type="unfinished">Cannot add a symmetry constraint because the second selected element is not a line. Select a line or an axis instead.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10458"/>
-      <location filename="../../CommandConstraints.cpp" line="10598"/>
+      <location filename="../../CommandConstraints.cpp" line="10475"/>
+      <location filename="../../CommandConstraints.cpp" line="10615"/>
       <source>Cannot add a symmetry constraint between an element and its end points!</source>
       <translation type="unfinished">Cannot add a symmetry constraint between an element and its end points!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10743"/>
+      <location filename="../../CommandConstraints.cpp" line="10760"/>
       <source>Cannot add a symmetry constraint between an element and itself.</source>
       <translation type="unfinished">Cannot add a symmetry constraint between an element and itself.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10823"/>
+      <location filename="../../CommandConstraints.cpp" line="10840"/>
       <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second to n2, and the value sets the ratio n2/n1.</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>Izaberi dve krajnje tačke linija koje će delovati kao zraci i ivicu koja predstavlja granicu. Prva izabrana tačka odgovara indeksu loma n1, druga n2, a odnos n2/n1 je relativni indeks loma.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10849"/>
+      <location filename="../../CommandConstraints.cpp" line="10866"/>
       <source>Number of selected objects is not 3</source>
       <translation>Broj izabranih objekata nije 3</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="623"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1185"/>
-      <location filename="../../CommandConstraints.cpp" line="1045"/>
+      <location filename="../../CommandConstraints.cpp" line="1062"/>
       <source>Error</source>
       <translation>Greška</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4756"/>
+      <location filename="../../CommandConstraints.cpp" line="4773"/>
       <source>Endpoint to endpoint tangency was applied instead.</source>
       <translation>Umesto toga je primenjena tangentnost u krajnjim tačkama.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4924"/>
+      <location filename="../../CommandConstraints.cpp" line="4941"/>
       <source>Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
       <translation>Izaberi dva ili više temena sa skice za ograničenje podudarnosti, ili dva ili više krugova, elipsa, lukova ili lukova elipse za ograničenje koncentričnosti.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5105"/>
+      <location filename="../../CommandConstraints.cpp" line="5122"/>
       <source>Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
       <translation>Izaberi dva temena sa skice za ograničenje podudarnosti, ili dva kruga, elipse, lukove ili lukove elipse za ograničenje koncentričnosti.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5328"/>
+      <location filename="../../CommandConstraints.cpp" line="5345"/>
       <source>Select exactly one line or one point and one line or two points from the sketch.</source>
       <translation>Izaberi tačno jednu liniju ili jednu tačku i jednu liniju, ili dve tačke sa skice.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5585"/>
+      <location filename="../../CommandConstraints.cpp" line="5602"/>
       <source>Cannot add a length constraint on an axis!</source>
       <translation>Nije moguće kotirati osu ravni!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5651"/>
-      <location filename="../../CommandConstraints.cpp" line="5882"/>
+      <location filename="../../CommandConstraints.cpp" line="5668"/>
+      <location filename="../../CommandConstraints.cpp" line="5899"/>
       <source>Select exactly one line or one point and one line or two points or two circles from the sketch.</source>
       <translation>Izaberi tačno jednu liniju, jednu tačku i jednu liniju, dve tačke ili dva kruga na skici.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5777"/>
+      <location filename="../../CommandConstraints.cpp" line="5794"/>
       <source>This constraint does not make sense for non-linear curves.</source>
       <translation>Ovo ograničenje nema smisla za nelinearne krive.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4708"/>
+      <location filename="../../CommandConstraints.cpp" line="4725"/>
       <source>Endpoint to edge tangency was applied instead.</source>
       <translation>Umesto toga je primenjena tangentnost ivice u krajnjoj tački.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5967"/>
-      <location filename="../../CommandConstraints.cpp" line="6268"/>
-      <location filename="../../CommandConstraints.cpp" line="8427"/>
-      <location filename="../../CommandConstraints.cpp" line="8790"/>
-      <location filename="../../CommandConstraints.cpp" line="9108"/>
-      <location filename="../../CommandConstraints.cpp" line="9653"/>
+      <location filename="../../CommandConstraints.cpp" line="5984"/>
+      <location filename="../../CommandConstraints.cpp" line="6285"/>
+      <location filename="../../CommandConstraints.cpp" line="8444"/>
+      <location filename="../../CommandConstraints.cpp" line="8807"/>
+      <location filename="../../CommandConstraints.cpp" line="9125"/>
+      <location filename="../../CommandConstraints.cpp" line="9670"/>
       <source>Select the right things from the sketch.</source>
       <translation>Izaberi pravilne elemente sa skice.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4877"/>
-      <location filename="../../CommandConstraints.cpp" line="5054"/>
-      <location filename="../../CommandConstraints.cpp" line="6812"/>
-      <location filename="../../CommandConstraints.cpp" line="6952"/>
-      <location filename="../../CommandConstraints.cpp" line="7003"/>
-      <location filename="../../CommandConstraints.cpp" line="7202"/>
-      <location filename="../../CommandConstraints.cpp" line="7381"/>
-      <location filename="../../CommandConstraints.cpp" line="7647"/>
-      <location filename="../../CommandConstraints.cpp" line="7796"/>
-      <location filename="../../CommandConstraints.cpp" line="7824"/>
-      <location filename="../../CommandConstraints.cpp" line="8065"/>
-      <location filename="../../CommandConstraints.cpp" line="8302"/>
-      <location filename="../../CommandConstraints.cpp" line="8848"/>
-      <location filename="../../CommandConstraints.cpp" line="9000"/>
-      <location filename="../../CommandConstraints.cpp" line="9702"/>
-      <location filename="../../CommandConstraints.cpp" line="9800"/>
-      <location filename="../../CommandConstraints.cpp" line="9972"/>
-      <location filename="../../CommandConstraints.cpp" line="10902"/>
+      <location filename="../../CommandConstraints.cpp" line="4894"/>
+      <location filename="../../CommandConstraints.cpp" line="5071"/>
+      <location filename="../../CommandConstraints.cpp" line="6829"/>
+      <location filename="../../CommandConstraints.cpp" line="6969"/>
+      <location filename="../../CommandConstraints.cpp" line="7020"/>
+      <location filename="../../CommandConstraints.cpp" line="7219"/>
+      <location filename="../../CommandConstraints.cpp" line="7398"/>
+      <location filename="../../CommandConstraints.cpp" line="7664"/>
+      <location filename="../../CommandConstraints.cpp" line="7813"/>
+      <location filename="../../CommandConstraints.cpp" line="7841"/>
+      <location filename="../../CommandConstraints.cpp" line="8082"/>
+      <location filename="../../CommandConstraints.cpp" line="8319"/>
+      <location filename="../../CommandConstraints.cpp" line="8865"/>
+      <location filename="../../CommandConstraints.cpp" line="9017"/>
+      <location filename="../../CommandConstraints.cpp" line="9719"/>
+      <location filename="../../CommandConstraints.cpp" line="9817"/>
+      <location filename="../../CommandConstraints.cpp" line="9989"/>
+      <location filename="../../CommandConstraints.cpp" line="10919"/>
       <source>Select an edge that is not a B-spline weight.</source>
       <translation>Izaberi ivicu koja nije težina B-splajn kontrolne tačke.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4798"/>
+      <location filename="../../CommandConstraints.cpp" line="4815"/>
       <source>Select either several points, or several conics for concentricity.</source>
       <translation>Za Ograničenje koncentričnosti izaberi nekoliko tačaka ili nekoliko kružnica, lukova ili elipsa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4801"/>
+      <location filename="../../CommandConstraints.cpp" line="4818"/>
       <source>Select either one point and several curves, or one curve and several points</source>
       <translation>Izaberi ili jednu tačku i nekoliko krivih, ili jednu krivu i nekoliko tačaka</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4804"/>
+      <location filename="../../CommandConstraints.cpp" line="4821"/>
       <source>Select either one point and several curves or one curve and several points for pointOnObject, or several points for coincidence, or several conics for concentricity.</source>
       <translation>Izaberi jednu tačku i nekoliko krivih ili jednu krivu i nekoliko tačaka za Ograničenje tačka na objektu, nekoliko tačaka za Ograničenje podudarnosti ili nekoliko kružnica, lukova ili elipsa za Ograničenje koncentričnosti.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5076"/>
+      <location filename="../../CommandConstraints.cpp" line="5093"/>
       <source>None of the selected points were constrained onto the respective curves, either because they are parts of the same element, or because they are both external geometry.</source>
       <translation>Nijedna od izabranih tačaka nije bila ograničena na odgovarajuće krive, bilo zato što su delovi istog elementa, ili zato što su obe spoljašnje geometrije.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5577"/>
+      <location filename="../../CommandConstraints.cpp" line="5594"/>
       <source>Cannot add a length constraint on this selection!</source>
       <translation>Nije moguće napraviti kotu za izabrani geometrijski element!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5980"/>
-      <location filename="../../CommandConstraints.cpp" line="6111"/>
-      <location filename="../../CommandConstraints.cpp" line="6281"/>
-      <location filename="../../CommandConstraints.cpp" line="6408"/>
+      <location filename="../../CommandConstraints.cpp" line="5997"/>
+      <location filename="../../CommandConstraints.cpp" line="6128"/>
+      <location filename="../../CommandConstraints.cpp" line="6298"/>
+      <location filename="../../CommandConstraints.cpp" line="6425"/>
       <source>Select exactly one line or up to two points from the sketch.</source>
       <translation>Izaberi tačno jednu liniju ili najviše dve tačke sa skice.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6013"/>
+      <location filename="../../CommandConstraints.cpp" line="6030"/>
       <source>Cannot add a horizontal length constraint on an axis!</source>
       <translation>Nije moguće napraviti horizotalnu kotu na osi ravni!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6075"/>
+      <location filename="../../CommandConstraints.cpp" line="6092"/>
       <source>Cannot add a fixed x-coordinate constraint on the origin point!</source>
       <translation>Nije moguće ograničiti x-koordinatu koordinatnog početka!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6146"/>
-      <location filename="../../CommandConstraints.cpp" line="6442"/>
+      <location filename="../../CommandConstraints.cpp" line="6163"/>
+      <location filename="../../CommandConstraints.cpp" line="6459"/>
       <source>This constraint only makes sense on a line segment or a pair of points.</source>
       <translation>Ovo ograničenje ima smisla samo na segmentu linije ili paru tačaka.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6312"/>
+      <location filename="../../CommandConstraints.cpp" line="6329"/>
       <source>Cannot add a vertical length constraint on an axis!</source>
       <translation>Nije moguće napraviti vertikalnu kotu na osi ravni!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6374"/>
+      <location filename="../../CommandConstraints.cpp" line="6391"/>
       <source>Cannot add a fixed y-coordinate constraint on the origin point!</source>
       <translation>Nije moguće ograničiti y-koordinatu koordinatnog početka!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6564"/>
+      <location filename="../../CommandConstraints.cpp" line="6581"/>
       <source>Select two or more lines from the sketch.</source>
       <translation>Izaberi dve ili više linija sa skice.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6599"/>
+      <location filename="../../CommandConstraints.cpp" line="6616"/>
       <source>One selected edge is not a valid line.</source>
       <translation>Izabrana ivica nije važeća linija.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6608"/>
-      <location filename="../../CommandConstraints.cpp" line="10140"/>
+      <location filename="../../CommandConstraints.cpp" line="6625"/>
+      <location filename="../../CommandConstraints.cpp" line="10157"/>
       <source>Select at least two lines from the sketch.</source>
       <translation>Izaberi najmanje dve linije sa skice.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6647"/>
+      <location filename="../../CommandConstraints.cpp" line="6664"/>
       <source>The selected edge is not a valid line.</source>
       <translation>Izabrana ivica nije važeća linija.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6736"/>
+      <location filename="../../CommandConstraints.cpp" line="6753"/>
       <source>There is a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
@@ -1688,35 +1688,35 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 Prihvatljive kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; dve krive i tačka.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6741"/>
+      <location filename="../../CommandConstraints.cpp" line="6758"/>
       <source>Select some geometry from the sketch.</source>
       <comment>perpendicular constraint</comment>
       <translation>Izaberi neku geometriju sa skice.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6900"/>
-      <location filename="../../CommandConstraints.cpp" line="6941"/>
+      <location filename="../../CommandConstraints.cpp" line="6917"/>
+      <location filename="../../CommandConstraints.cpp" line="6958"/>
       <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
       <translation>Ne može se dodati ograničenje upravnosti na tačku pošto ona nije krajnja tačka!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6982"/>
-      <location filename="../../CommandConstraints.cpp" line="7181"/>
+      <location filename="../../CommandConstraints.cpp" line="6999"/>
+      <location filename="../../CommandConstraints.cpp" line="7198"/>
       <source>One of the selected edges should be a line.</source>
       <translation>Jedna od izabranih ivica bi trebala biti linija.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7532"/>
+      <location filename="../../CommandConstraints.cpp" line="7549"/>
       <source>Endpoint to endpoint tangency was applied. The coincident constraint was deleted.</source>
       <translation>Primenjena je tangentnost na krajnje tačke. Ograničenje podudarnosti je izbrisano.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7560"/>
+      <location filename="../../CommandConstraints.cpp" line="7577"/>
       <source>Endpoint to edge tangency was applied. The point on object constraint was deleted.</source>
       <translation>Primenjena je tangentnost između krajnje tačke i ivice. Ograničenje tačka na objektu je obrisano.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7591"/>
+      <location filename="../../CommandConstraints.cpp" line="7608"/>
       <source>There are a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
@@ -1726,194 +1726,194 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; dve krive i tačka.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7596"/>
+      <location filename="../../CommandConstraints.cpp" line="7613"/>
       <source>Select some geometry from the sketch.</source>
       <comment>tangent constraint</comment>
       <translation>Izaberi neku geometriju sa skice.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7747"/>
-      <location filename="../../CommandConstraints.cpp" line="7785"/>
-      <location filename="../../CommandConstraints.cpp" line="8257"/>
+      <location filename="../../CommandConstraints.cpp" line="7764"/>
+      <location filename="../../CommandConstraints.cpp" line="7802"/>
+      <location filename="../../CommandConstraints.cpp" line="8274"/>
       <source>Cannot add a tangency constraint at an unconnected point!</source>
       <translation>Ne može se dodati ograničenje tangentnosti u tačkama koje se ne poklapaju!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7738"/>
-      <location filename="../../CommandConstraints.cpp" line="7776"/>
+      <location filename="../../CommandConstraints.cpp" line="7755"/>
+      <location filename="../../CommandConstraints.cpp" line="7793"/>
       <source>Tangent constraint at B-spline knot is only supported with lines!</source>
       <translation>Ograničenje tangentnosti se može primeniti na čvor B-splajna samo ako je u pitanju linija!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="508"/>
+      <location filename="../../CommandConstraints.cpp" line="509"/>
       <source>One or two point-on-object constraints were deleted, since the latest constraint being applied internally applies point-on-object as well.</source>
       <translation>Jedno ili dva ograničenja Tačka na objektu su obrisana, jer poslednje primenjeno ograničenje interno primenjuje ovu vrstu ograničenja.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1022"/>
+      <location filename="../../CommandConstraints.cpp" line="1039"/>
       <source>Keep notifying about constraint substitutions</source>
       <translation>Nastavi da me obaveštavaš o zamenama ograničenja</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1046"/>
+      <location filename="../../CommandConstraints.cpp" line="1063"/>
       <source>Unexpected error. More information may be available in the report view.</source>
       <translation>Neočekivana greška. Potražite više informacija u Pregledaču objava.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1096"/>
+      <location filename="../../CommandConstraints.cpp" line="1113"/>
       <source>Only the sketch and its support are allowed to be selected</source>
       <translation>Dozvoljeno je da se izabere samo skica i njena osnova</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1107"/>
+      <location filename="../../CommandConstraints.cpp" line="1124"/>
       <source>Only the sketch and its support may be selected</source>
       <translation>Mogu se izabrati samo skica i njena osnova</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1119"/>
+      <location filename="../../CommandConstraints.cpp" line="1136"/>
       <source>Only the sketch and its support  may be selected</source>
       <translation>Mogu se izabrati samo skica i njena osnova</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3773"/>
-      <location filename="../../CommandConstraints.cpp" line="4542"/>
-      <location filename="../../CommandConstraints.cpp" line="4594"/>
+      <location filename="../../CommandConstraints.cpp" line="3790"/>
+      <location filename="../../CommandConstraints.cpp" line="4559"/>
+      <location filename="../../CommandConstraints.cpp" line="4611"/>
       <source>The selected edge already has a block constraint!</source>
       <translation>Izabrana ivica je već ograničena blokiranjem!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3849"/>
+      <location filename="../../CommandConstraints.cpp" line="3866"/>
       <source>The selected items cannot be constrained horizontally or vertically!</source>
       <translation>Na izabranu geometriju se ne može primeniti ograničenje horizontalnosti ili vertikalnosti!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4506"/>
+      <location filename="../../CommandConstraints.cpp" line="4523"/>
       <source>A block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</source>
       <translation>Ograničenje blokiranjem se ne može dodati ako je skica nerešena ili postoje suvišna i konfliktna ograničenja.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4776"/>
+      <location filename="../../CommandConstraints.cpp" line="4793"/>
       <source>B-spline knot to endpoint tangency was applied instead.</source>
       <translation>Umesto toga je primenjena tangentnost između čvora B-splajna i krajnje tačke.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6758"/>
-      <location filename="../../CommandConstraints.cpp" line="7613"/>
+      <location filename="../../CommandConstraints.cpp" line="6775"/>
+      <location filename="../../CommandConstraints.cpp" line="7630"/>
       <source>Wrong number of selected objects!</source>
       <translation>Pogrešan broj izabranih objekata!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6890"/>
-      <location filename="../../CommandConstraints.cpp" line="7718"/>
+      <location filename="../../CommandConstraints.cpp" line="6907"/>
+      <location filename="../../CommandConstraints.cpp" line="7735"/>
       <source>With 3 objects, there must be 2 curves and 1 point.</source>
       <translation>Kod 3 objekta, moraju postojati 2 krive i 1 tačka.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8048"/>
+      <location filename="../../CommandConstraints.cpp" line="8065"/>
       <source>Geometry cannot be tangent to itself</source>
       <translation type="unfinished">Geometry cannot be tangent to itself</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8440"/>
-      <location filename="../../CommandConstraints.cpp" line="8506"/>
-      <location filename="../../CommandConstraints.cpp" line="8803"/>
-      <location filename="../../CommandConstraints.cpp" line="8866"/>
-      <location filename="../../CommandConstraints.cpp" line="9121"/>
-      <location filename="../../CommandConstraints.cpp" line="9182"/>
+      <location filename="../../CommandConstraints.cpp" line="8457"/>
+      <location filename="../../CommandConstraints.cpp" line="8523"/>
+      <location filename="../../CommandConstraints.cpp" line="8820"/>
+      <location filename="../../CommandConstraints.cpp" line="8883"/>
+      <location filename="../../CommandConstraints.cpp" line="9138"/>
+      <location filename="../../CommandConstraints.cpp" line="9199"/>
       <source>Select one or more arcs or circles from the sketch.</source>
       <translation>Izaberi jedan ili više lukova ili krugova sa skice.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8670"/>
-      <location filename="../../CommandConstraints.cpp" line="8992"/>
-      <location filename="../../CommandConstraints.cpp" line="9368"/>
+      <location filename="../../CommandConstraints.cpp" line="8687"/>
+      <location filename="../../CommandConstraints.cpp" line="9009"/>
+      <location filename="../../CommandConstraints.cpp" line="9385"/>
       <source>Constraint only applies to arcs or circles.</source>
       <translation>Ograničenje se odnosi samo na lukove i kružnice.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9666"/>
-      <location filename="../../CommandConstraints.cpp" line="9878"/>
+      <location filename="../../CommandConstraints.cpp" line="9683"/>
+      <location filename="../../CommandConstraints.cpp" line="9895"/>
       <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
       <translation>Izaberi jednu ili dve linije sa skice, ili izaberi dve ivice i tačku.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="536"/>
+      <location filename="../../CommandConstraints.cpp" line="537"/>
       <source>Parallel lines</source>
       <translation>Paralelne linije</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="537"/>
+      <location filename="../../CommandConstraints.cpp" line="538"/>
       <source>An angle constraint cannot be set for two parallel lines.</source>
       <translation>Za dve paralelne prave ne može se postaviti ograničenje ugla.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9813"/>
+      <location filename="../../CommandConstraints.cpp" line="9830"/>
       <source>Cannot add an angle constraint on an axis!</source>
       <translation>Ne možete dodati ograničenje ugla na osu!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10126"/>
+      <location filename="../../CommandConstraints.cpp" line="10143"/>
       <source>Select two edges from the sketch.</source>
       <translation>Izaberi dve ivice sa skice.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10158"/>
+      <location filename="../../CommandConstraints.cpp" line="10175"/>
       <source>Select two or more compatible edges.</source>
       <translation>Izaberi dve ili više kompatibilnih ivica.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10165"/>
+      <location filename="../../CommandConstraints.cpp" line="10182"/>
       <source>Sketch axes cannot be used in equality constraints.</source>
       <translation>Na ose skice se ne može primeniti ograničenje jednakosti.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10186"/>
+      <location filename="../../CommandConstraints.cpp" line="10203"/>
       <source>Equality for B-spline edge currently unsupported.</source>
       <translation>Primena ograničenja jednakosti na B-splajn krivu trenutno nije podržana.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3311"/>
-      <location filename="../../CommandConstraints.cpp" line="10219"/>
-      <location filename="../../CommandConstraints.cpp" line="10235"/>
-      <location filename="../../CommandConstraints.cpp" line="10290"/>
+      <location filename="../../CommandConstraints.cpp" line="3328"/>
+      <location filename="../../CommandConstraints.cpp" line="10236"/>
+      <location filename="../../CommandConstraints.cpp" line="10252"/>
+      <location filename="../../CommandConstraints.cpp" line="10307"/>
       <source>Select two or more edges of similar type.</source>
       <translation>Izaberi dve ili više ivica sličnog tipa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10654"/>
+      <location filename="../../CommandConstraints.cpp" line="10671"/>
       <source>Cannot add a symmetry constraint between a line and its end points.</source>
       <translation>Nije moguće dodati ograničenje simetričnosti između linije i njenih krajnjih tačaka.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3470"/>
-      <location filename="../../CommandConstraints.cpp" line="3486"/>
-      <location filename="../../CommandConstraints.cpp" line="10517"/>
+      <location filename="../../CommandConstraints.cpp" line="3487"/>
+      <location filename="../../CommandConstraints.cpp" line="3503"/>
+      <location filename="../../CommandConstraints.cpp" line="10534"/>
       <source>Cannot add a symmetry constraint between a line and its end points!</source>
       <translation>Nije moguće dodati ograničenje simetričnosti između linije i njenih krajnjih tačaka!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10832"/>
-      <location filename="../../CommandConstraints.cpp" line="11024"/>
+      <location filename="../../CommandConstraints.cpp" line="10849"/>
+      <location filename="../../CommandConstraints.cpp" line="11041"/>
       <source>Selected objects are not just geometry from one sketch.</source>
       <translation>Izabrani objekti nisu samo geometrija iz jedne skice.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10874"/>
+      <location filename="../../CommandConstraints.cpp" line="10891"/>
       <source>Cannot create constraint with external geometry only.</source>
       <translation>Nije moguće kreirati ograničenje samo sa spoljnom geometrijom.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10884"/>
+      <location filename="../../CommandConstraints.cpp" line="10901"/>
       <source>Incompatible geometry is selected.</source>
       <translation>Izabrana je nekompatibilna geometrija.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11040"/>
+      <location filename="../../CommandConstraints.cpp" line="11057"/>
       <source>No geometries selected</source>
       <translation type="unfinished">No geometries selected</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11276"/>
+      <location filename="../../CommandConstraints.cpp" line="11293"/>
       <source>Select one dimensional constraint from the sketch.</source>
       <translation>Izaberi jedno dimenzionalno ograničenje sa skice.</translation>
     </message>
@@ -1921,11 +1921,11 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="117"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="158"/>
-      <location filename="../../CommandConstraints.cpp" line="11352"/>
-      <location filename="../../CommandConstraints.cpp" line="11364"/>
-      <location filename="../../CommandConstraints.cpp" line="11400"/>
-      <location filename="../../CommandConstraints.cpp" line="11475"/>
-      <location filename="../../CommandConstraints.cpp" line="11487"/>
+      <location filename="../../CommandConstraints.cpp" line="11369"/>
+      <location filename="../../CommandConstraints.cpp" line="11381"/>
+      <location filename="../../CommandConstraints.cpp" line="11417"/>
+      <location filename="../../CommandConstraints.cpp" line="11492"/>
+      <location filename="../../CommandConstraints.cpp" line="11504"/>
       <source>Select constraints from the sketch.</source>
       <translation>Izaberi ograničenja sa skice.</translation>
     </message>
@@ -2079,6 +2079,11 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
       <translation>Trenutno nije podržano premeštanje spoljašnje geometrije na drugi vizuelni sloj. Spoljašnja geometrija će biti izostavljena</translation>
     </message>
     <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1056"/>
+      <source>Polyline Parameters</source>
+      <translation>Parametri izlomljene linije</translation>
+    </message>
+    <message>
       <location filename="../../DrawSketchHandlerText.h" line="91"/>
       <source>Text</source>
       <translation>Tekst</translation>
@@ -2108,11 +2113,6 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
       <location filename="../../DrawSketchHandlerText.h" line="747"/>
       <source>%1 pick bottom-right point</source>
       <translation type="unfinished">%1 pick bottom-right point</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1056"/>
-      <source>Polyline Parameters</source>
-      <translation>Parametri izlomljene linije</translation>
     </message>
   </context>
   <context>
@@ -2548,12 +2548,12 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
       <translation>Odnos n2/n1:</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10913"/>
+      <location filename="../../CommandConstraints.cpp" line="10930"/>
       <source>Refractive Index Ratio</source>
       <translation>Relativni indeks loma</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10914"/>
+      <location filename="../../CommandConstraints.cpp" line="10931"/>
       <source>Ratio n2/n1:</source>
       <translation>Odnos n2/n1:</translation>
     </message>
@@ -4279,8 +4279,8 @@ Ovo se radi analizom geometrije i ograničenja skice.</translation>
   <context>
     <name>Sketcher_ConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9562"/>
-      <location filename="../../CommandConstraints.cpp" line="9564"/>
+      <location filename="../../CommandConstraints.cpp" line="9579"/>
+      <location filename="../../CommandConstraints.cpp" line="9581"/>
       <source>Fix the diameter of a circle or an arc</source>
       <translation>Kotiraj prečnik kruga ili luka</translation>
     </message>
@@ -4932,49 +4932,49 @@ Razmak mreže se menja ako postane manji od navedenog broja piksela.</translatio
       <translation type="unfinished">"%1" has partially redundant constraint(s).</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1058"/>
-      <location filename="../../../App/SketchObject.cpp" line="1102"/>
+      <location filename="../../../App/SketchObject.cpp" line="1063"/>
+      <location filename="../../../App/SketchObject.cpp" line="1107"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>Neupravljana promena svojstava ograničenja dovodi do neispravnih ograničenja</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1599"/>
+      <location filename="../../../App/SketchObject.cpp" line="1604"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabole su migrirale. Migrirane datoteke neće biti moguće otvarati u prethodnim verzijama FreeCAD-a!!
 </translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="200"/>
-      <location filename="../../DrawSketchHandlerText.h" line="181"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="229"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="523"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="147"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
       <location filename="../../DrawSketchHandlerExternal.h" line="209"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="150"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="193"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="174"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="144"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1390"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1971"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2408"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="390"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="685"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="762"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="225"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="154"/>
       <location filename="../../DrawSketchHandlerSplitting.h" line="170"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="193"/>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="212"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="341"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="220"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="226"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="341"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="479"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="511"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="1382"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="220"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="147"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="154"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="174"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="225"/>
+      <location filename="../../DrawSketchHandlerText.h" line="181"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="150"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="523"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="200"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="144"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="226"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="390"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="685"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="762"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="229"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="185"/>
-      <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1390"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1971"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2408"/>
       <source>Error</source>
       <translation>Greška</translation>
     </message>
@@ -5010,21 +5010,21 @@ Razmak mreže se menja ako postane manji od navedenog broja piksela.</translatio
       <translation>Ograničenje ima pogrešne indeksne informacije tako da je oštećeno.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1176"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="519"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="662"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="910"/>
-      <location filename="../../CommandConstraints.cpp" line="713"/>
-      <location filename="../../CommandConstraints.cpp" line="790"/>
-      <location filename="../../CommandConstraints.cpp" line="882"/>
-      <location filename="../../CommandConstraints.cpp" line="966"/>
-      <location filename="../../CommandConstraints.cpp" line="7116"/>
-      <location filename="../../CommandConstraints.cpp" line="7318"/>
+      <location filename="../../CommandConstraints.cpp" line="730"/>
+      <location filename="../../CommandConstraints.cpp" line="807"/>
+      <location filename="../../CommandConstraints.cpp" line="899"/>
+      <location filename="../../CommandConstraints.cpp" line="983"/>
+      <location filename="../../CommandConstraints.cpp" line="7133"/>
+      <location filename="../../CommandConstraints.cpp" line="7335"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1176"/>
       <source>Invalid Constraint</source>
       <translation>Neispravno ograničenje</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1036"/>
+      <location filename="../../CommandConstraints.cpp" line="1053"/>
       <source>Invalid constraint</source>
       <translation>Neispravno ograničenje</translation>
     </message>
@@ -5044,8 +5044,8 @@ Razmak mreže se menja ako postane manji od navedenog broja piksela.</translatio
       <translation>Greška prilikom pravljenja B-Splajn krive</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="686"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="1383"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="686"/>
       <source>Error deleting last pole/knot</source>
       <translation>Greška prilikom brisanja zadnje kontrolne tačke/čvora B-Splajn krive</translation>
     </message>
@@ -5080,26 +5080,26 @@ Razmak mreže se menja ako postane manji od navedenog broja piksela.</translatio
       <translation>Nije uspelo pravljenje zaobljenja</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="145"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="480"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="145"/>
       <source>Failed to add line</source>
       <translation>Dodavanje duži nije uspelo</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="236"/>
-      <location filename="../../DrawSketchHandlerArc.h" line="295"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="530"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="159"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="181"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="151"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="232"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="219"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="193"/>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="233"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="227"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="154"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="295"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="161"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="219"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="227"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="193"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="181"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="232"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="159"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="530"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="151"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="233"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="236"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="192"/>
       <source>Tool execution aborted</source>
       <translation>Izvršavanje alatke je prekinuto</translation>
@@ -5147,17 +5147,17 @@ Razmak mreže se menja ako postane manji od navedenog broja piksela.</translatio
       <translation>Greška vrednosti</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="1005"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1348"/>
       <source>Autoconstraints cause redundancy. Removing them</source>
       <translation>Auto-ograničenja izazivaju suvišnost. Uklanjam ih</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="1025"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="760"/>
       <source>Redundant constraint is not an autoconstraint. No autoconstraints or additional constraints were added. Please report!</source>
       <translation>Suvišno ograničenje nije auto-ograničenje. Nisu dodana nikakva auto-ograničenja ili dodatna ograničenja. Prijavite!</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="1076"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="790"/>
       <source>Unexpected Redundancy/Conflicting constraint. Check the constraints and autoconstraints of this operation.</source>
       <translation>Neočekivana pojava suvišnih/konfliktnih ograničenja. Proverite ograničenja i auto-ograničenja.</translation>
     </message>
@@ -5222,14 +5222,14 @@ Razmak mreže se menja ako postane manji od navedenog broja piksela.</translatio
       <translation>Nepravilan naziv ograničenja (ne sme da počinje brojem i može da sadrži samo alfanumeričke brojeve i donju crtu)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="182"/>
-      <source>Failed to add text</source>
-      <translation type="unfinished">Failed to add text</translation>
-    </message>
-    <message>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="226"/>
       <source>Failed to add arc of hyperbola</source>
       <translation type="unfinished">Failed to add arc of hyperbola</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="182"/>
+      <source>Failed to add text</source>
+      <translation type="unfinished">Failed to add text</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="186"/>
@@ -5240,12 +5240,12 @@ Razmak mreže se menja ako postane manji od navedenog broja piksela.</translatio
   <context>
     <name>CmdSketcherDimension</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3665"/>
+      <location filename="../../CommandConstraints.cpp" line="3682"/>
       <source>Dimension</source>
       <translation>Kotiranje - Dimenzionalna ograničenja</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3666"/>
+      <location filename="../../CommandConstraints.cpp" line="3683"/>
       <source>Constrains contextually based on the selection. The type can be changed with the M key.</source>
       <translation>Kontekstualno ograničavanje (ograniči na osnovu onoga šta si izabrao). Vrsta ograničenja se može menjati pomoću tipke M.</translation>
     </message>
@@ -5253,12 +5253,12 @@ Razmak mreže se menja ako postane manji od navedenog broja piksela.</translatio
   <context>
     <name>CmdSketcherCompDimensionTools</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1842"/>
+      <location filename="../../CommandConstraints.cpp" line="1859"/>
       <source>Dimension</source>
       <translation>Vrednost</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1843"/>
+      <location filename="../../CommandConstraints.cpp" line="1860"/>
       <source>Dimension tools</source>
       <translation>Alatke za kotiranje</translation>
     </message>
@@ -5791,12 +5791,12 @@ Umesto toga, između originalnih objekata i njihovih kopija se primenjuju ograni
   <context>
     <name>CmdSketcherCompConstrainTools</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1915"/>
+      <location filename="../../CommandConstraints.cpp" line="1932"/>
       <source>Constrain</source>
       <translation>Ograničenje</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1916"/>
+      <location filename="../../CommandConstraints.cpp" line="1933"/>
       <source>Constrain tools</source>
       <translation>Alatke ograničenja</translation>
     </message>
@@ -5929,8 +5929,8 @@ Umesto toga, između originalnih objekata i njihovih kopija se primenjuju ograni
   <context>
     <name>Sketcher_ConstrainRadius</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9556"/>
-      <location filename="../../CommandConstraints.cpp" line="9558"/>
+      <location filename="../../CommandConstraints.cpp" line="9573"/>
+      <location filename="../../CommandConstraints.cpp" line="9575"/>
       <source>Fix the radius of an arc or a circle</source>
       <translation>Kotiraj poluprečnik kruga ili luka</translation>
     </message>
@@ -5938,8 +5938,8 @@ Umesto toga, između originalnih objekata i njihovih kopija se primenjuju ograni
   <context>
     <name>Sketcher_ConstrainRadiam</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9569"/>
-      <location filename="../../CommandConstraints.cpp" line="9571"/>
+      <location filename="../../CommandConstraints.cpp" line="9586"/>
+      <location filename="../../CommandConstraints.cpp" line="9588"/>
       <source>Fix the radius/diameter of an arc or a circle</source>
       <translation>Kotiraj poluprečnik/prečnik kruga ili luka</translation>
     </message>
@@ -6055,42 +6055,42 @@ Ovo će obrisati osobinu Osnova ('AttachmentSupport'), ako postoji.</translation
   <context>
     <name>SketcherGui::GridSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1496"/>
+      <location filename="../../Command.cpp" line="1499"/>
       <source>Display grid</source>
       <translation>Prikaži koordinatnu mrežu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1497"/>
+      <location filename="../../Command.cpp" line="1500"/>
       <source>Toggles the visibility of the grid in the active sketch</source>
       <translation>Prikaži/Sakrij koordinatnu mrežu na aktivnoj skici</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1500"/>
+      <location filename="../../Command.cpp" line="1503"/>
       <source>Grid auto-spacing</source>
       <translation>Automatski razmak koordinatne mreže</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1501"/>
+      <location filename="../../Command.cpp" line="1504"/>
       <source>Automatically adjusts the grid spacing based on the zoom level</source>
       <translation>Automatski prilagodi razmak mreže u zavisnosti od dimenzija</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1504"/>
+      <location filename="../../Command.cpp" line="1507"/>
       <source>Spacing</source>
       <translation>Razmak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1505"/>
+      <location filename="../../Command.cpp" line="1508"/>
       <source>Distance between two subsequent grid lines</source>
       <translation>Rastojanje između dve sledeće linije koordinatne mreže</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1507"/>
+      <location filename="../../Command.cpp" line="1510"/>
       <source>Snap to grid</source>
       <translation>Uhvati koordinatnu mrežu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1509"/>
+      <location filename="../../Command.cpp" line="1512"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid spacing to a grid line to snap.</source>
       <translation>Nove tačke će se uhvatiti za najbližu liniju koordinatne mreže.
@@ -6100,12 +6100,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherGrid</name>
     <message>
-      <location filename="../../Command.cpp" line="1634"/>
+      <location filename="../../Command.cpp" line="1637"/>
       <source>Toggle Grid</source>
       <translation>Sakrij/Prikaži koordinatnu mrežu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1636"/>
+      <location filename="../../Command.cpp" line="1639"/>
       <source>Toggles the grid display in the active sketch</source>
       <translation>Prikaži sakrij koordinatnu mrežu na aktivnoj skici</translation>
     </message>
@@ -6113,22 +6113,22 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>SketcherGui::SnapSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1741"/>
+      <location filename="../../Command.cpp" line="1744"/>
       <source>Snap to objects</source>
       <translation>Uhvati objekat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1742"/>
+      <location filename="../../Command.cpp" line="1745"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
       <translation>Nove tačke će se uhvatiti za trenutno izabrani objekat. Takođe će se uhvatiti za sredinu linija i lukova.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1746"/>
+      <location filename="../../Command.cpp" line="1749"/>
       <source>Snap angle</source>
       <translation>Uhvati ugao</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1748"/>
+      <location filename="../../Command.cpp" line="1751"/>
       <source>Angular step for tools that use 'Snap at angle'. Hold Ctrl to enable 'Snap at angle'. The angle starts from the positive X axis of the sketch.</source>
       <translation>Ugaoni korak za alatke koje koriste 'Uhvati pod uglom'. Drži Ctrl da bi omogućio 'Uhvati pod uglom'. Ugao počinje od pozitivnog dela X ose skice.</translation>
     </message>
@@ -6136,12 +6136,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherSnap</name>
     <message>
-      <location filename="../../Command.cpp" line="1834"/>
+      <location filename="../../Command.cpp" line="1837"/>
       <source>Toggle Snap</source>
       <translation>Uključi/Isključi hvatanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1836"/>
+      <location filename="../../Command.cpp" line="1839"/>
       <source>Toggles snapping</source>
       <translation>Uključi/Isključi hvatanje</translation>
     </message>
@@ -6149,27 +6149,27 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>SketcherGui::RenderingOrderAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1943"/>
+      <location filename="../../Command.cpp" line="1946"/>
       <source>Normal geometry</source>
       <translation>Regularna geometrija</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1945"/>
+      <location filename="../../Command.cpp" line="1948"/>
       <source>Construction geometry</source>
       <translation>Pomoćna geometrija</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1947"/>
+      <location filename="../../Command.cpp" line="1950"/>
       <source>External geometry</source>
       <translation>Spoljna geometrija</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1950"/>
+      <location filename="../../Command.cpp" line="1953"/>
       <source>Unknown geometry</source>
       <translation>Nepoznata geometrija</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1991"/>
+      <location filename="../../Command.cpp" line="1994"/>
       <source>Rendering order</source>
       <translation>Redosled iscrtavanja</translation>
     </message>
@@ -6177,12 +6177,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdRenderingOrder</name>
     <message>
-      <location filename="../../Command.cpp" line="2076"/>
+      <location filename="../../Command.cpp" line="2079"/>
       <source>Rendering Order</source>
       <translation>Redosled iscrtavanja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2077"/>
+      <location filename="../../Command.cpp" line="2080"/>
       <source>Reorders items in the rendering order</source>
       <translation>Promeni redosled stavki redosleda iscrtavanja</translation>
     </message>
@@ -6203,12 +6203,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherCompToggleConstraints</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1946"/>
+      <location filename="../../CommandConstraints.cpp" line="1963"/>
       <source>Toggle Constraints</source>
       <translation>Uključi/Isključi ograničenja</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1947"/>
+      <location filename="../../CommandConstraints.cpp" line="1964"/>
       <source>Toggle constrain tools</source>
       <translation>Aktiviraj/Deaktiviraj ograničenja</translation>
     </message>
@@ -6216,12 +6216,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherCompHorizontalVertical</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3719"/>
+      <location filename="../../CommandConstraints.cpp" line="3736"/>
       <source>Horizontal/Vertical Constraint</source>
       <translation>Ograničenje horizontalnosti/vertikalnosti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3720"/>
+      <location filename="../../CommandConstraints.cpp" line="3737"/>
       <source>Constrains the selected elements either horizontally or vertically</source>
       <translation>Primeni ograničenje horizontalnosti ili vertikalnosti na izabrane elemente</translation>
     </message>
@@ -6229,12 +6229,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherConstrainHorVer</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4037"/>
+      <location filename="../../CommandConstraints.cpp" line="4054"/>
       <source>Horizontal/Vertical Constraint</source>
       <translation>Ograničenje horizontalnosti/vertikalnosti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4038"/>
+      <location filename="../../CommandConstraints.cpp" line="4055"/>
       <source>Constrains the selected elements either horizontally or vertically, based on their closest alignment</source>
       <translation>Primeni ograničenje horizontalnosti ili vertikalnosti na izabrane elemente. Izaberi ono stanje koje je bliže trenutnom položaju</translation>
     </message>
@@ -6242,12 +6242,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4083"/>
+      <location filename="../../CommandConstraints.cpp" line="4100"/>
       <source>Horizontal Constraint</source>
       <translation>Ograničenje horizontalnosti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4084"/>
+      <location filename="../../CommandConstraints.cpp" line="4101"/>
       <source>Constrains the selected elements horizontally</source>
       <translation>Primeni ograničenje horizontalnosti na izabrane elemente</translation>
     </message>
@@ -6255,12 +6255,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherConstrainVertical</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4128"/>
+      <location filename="../../CommandConstraints.cpp" line="4145"/>
       <source>Vertical Constraint</source>
       <translation>Ograničenje vertikalnosti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4129"/>
+      <location filename="../../CommandConstraints.cpp" line="4146"/>
       <source>Constrains the selected elements vertically</source>
       <translation>Primeni ograničenje vertikalnosti na izabrane elemente</translation>
     </message>
@@ -6268,12 +6268,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4174"/>
+      <location filename="../../CommandConstraints.cpp" line="4191"/>
       <source>Lock Position</source>
       <translation>Zaključaj položaj</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4175"/>
+      <location filename="../../CommandConstraints.cpp" line="4192"/>
       <source>Constrains the selected vertices by adding horizontal and vertical distance constraints</source>
       <translation>Ograniči izabrano teme pomoću horizontalne i vertikalne kote</translation>
     </message>
@@ -6281,12 +6281,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherConstrainBlock</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4460"/>
+      <location filename="../../CommandConstraints.cpp" line="4477"/>
       <source>Block Constraint</source>
       <translation>Ograničenje blokiranjem</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4461"/>
+      <location filename="../../CommandConstraints.cpp" line="4478"/>
       <source>Constrains the selected edges as fixed</source>
       <translation>Ograničava izabrane ivice kao fiksne</translation>
     </message>
@@ -6294,12 +6294,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherConstrainCoincidentUnified</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4661"/>
+      <location filename="../../CommandConstraints.cpp" line="4678"/>
       <source>Coincident Constraint</source>
       <translation>Ograničenje podudarnosti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4662"/>
+      <location filename="../../CommandConstraints.cpp" line="4679"/>
       <source>Constrains the selected elements to be coincident</source>
       <translation>Primeni ograničenje podudarnosti na izabrane elemente</translation>
     </message>
@@ -6307,12 +6307,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherConstrainCoincident</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5176"/>
+      <location filename="../../CommandConstraints.cpp" line="5193"/>
       <source>Coincident Constraint</source>
       <translation>Ograničenje podudarnosti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5177"/>
+      <location filename="../../CommandConstraints.cpp" line="5194"/>
       <source>Constrains the selected elements to be coincident</source>
       <translation>Primeni ograničenje podudarnosti na izabrane elemente</translation>
     </message>
@@ -6320,12 +6320,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherConstrainPointOnObject</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5226"/>
+      <location filename="../../CommandConstraints.cpp" line="5243"/>
       <source>Point-On-Object Constraint</source>
       <translation>Ograničenje tačka na objektu</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5227"/>
+      <location filename="../../CommandConstraints.cpp" line="5244"/>
       <source>Constrains the selected point onto the selected object</source>
       <translation>Primeni ograničenje podudarnosti između izabrane tačke i objekta</translation>
     </message>
@@ -6333,12 +6333,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherConstrainDistance</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5278"/>
+      <location filename="../../CommandConstraints.cpp" line="5295"/>
       <source>Distance Dimension</source>
       <translation>Kotiraj rastojanje</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5279"/>
+      <location filename="../../CommandConstraints.cpp" line="5296"/>
       <source>Constrains the vertical distance between two points, or from a point to the origin if one is selected</source>
       <translation>Kotiraj rastojanje između dva izabrana geometrijska elementa</translation>
     </message>
@@ -6346,12 +6346,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherConstrainDistanceX</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5932"/>
+      <location filename="../../CommandConstraints.cpp" line="5949"/>
       <source>Horizontal Dimension</source>
       <translation>Horizontalna kota</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5933"/>
+      <location filename="../../CommandConstraints.cpp" line="5950"/>
       <source>Constrains the horizontal distance between two points, or from a point to the origin if only one is selected</source>
       <translation>Kotiraj horizontalno rastojanje između dve tačke ili između tačke i koordinatnog početka ako je izabrana samo jedna tačka</translation>
     </message>
@@ -6359,12 +6359,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherConstrainDistanceY</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6233"/>
+      <location filename="../../CommandConstraints.cpp" line="6250"/>
       <source>Vertical Dimension</source>
       <translation>Vertikalna kota</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6234"/>
+      <location filename="../../CommandConstraints.cpp" line="6251"/>
       <source>Constrains the vertical distance between two points, or from a point to the origin if only one is selected</source>
       <translation type="unfinished">Constrains the vertical distance between two points, or from a point to the origin if only one is selected</translation>
     </message>
@@ -6372,12 +6372,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherConstrainParallel</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6528"/>
+      <location filename="../../CommandConstraints.cpp" line="6545"/>
       <source>Parallel Constraint</source>
       <translation>Ograničenje paralelnosti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6529"/>
+      <location filename="../../CommandConstraints.cpp" line="6546"/>
       <source>Constrains the selected lines to be parallel</source>
       <translation>Primeni ograničenje paralelnosti na izabrane duži</translation>
     </message>
@@ -6385,12 +6385,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherConstrainPerpendicular</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6691"/>
+      <location filename="../../CommandConstraints.cpp" line="6708"/>
       <source>Perpendicular Constraint</source>
       <translation>Ograničenje upravnosti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6692"/>
+      <location filename="../../CommandConstraints.cpp" line="6709"/>
       <source>Constrains the selected lines to be perpendicular</source>
       <translation>Primeni ograničenje upravnosti na izabrane duži</translation>
     </message>
@@ -6398,12 +6398,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7475"/>
+      <location filename="../../CommandConstraints.cpp" line="7492"/>
       <source>Tangent/Collinear Constraint</source>
       <translation>Ograničenje tangentnosti/kolinearnosti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7476"/>
+      <location filename="../../CommandConstraints.cpp" line="7493"/>
       <source>Constrains the selected elements to be tangent or collinear</source>
       <translation>Primeni ograničenje tangentnosti ili kolinearnosti na izabrane elemente</translation>
     </message>
@@ -6411,12 +6411,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherConstrainRadius</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8395"/>
+      <location filename="../../CommandConstraints.cpp" line="8412"/>
       <source>Radius Dimension</source>
       <translation>Kota poluprečnika</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8396"/>
+      <location filename="../../CommandConstraints.cpp" line="8413"/>
       <source>Constrains the radius of the selected circle or arc</source>
       <translation>Kotiraj poluprečnik izabranog kružnog luka ili kružnice</translation>
     </message>
@@ -6424,12 +6424,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8758"/>
+      <location filename="../../CommandConstraints.cpp" line="8775"/>
       <source>Diameter Dimension</source>
       <translation>Kota prečnika</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8759"/>
+      <location filename="../../CommandConstraints.cpp" line="8776"/>
       <source>Constrains the diameter of the selected circle or arc</source>
       <translation>Kotiraj prečnik izabranog kružnog luka ili kružnice</translation>
     </message>
@@ -6437,12 +6437,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherConstrainRadiam</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9076"/>
+      <location filename="../../CommandConstraints.cpp" line="9093"/>
       <source>Radius/Diameter Dimension</source>
       <translation>Ograničenje poluprečnika/prečnika</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9077"/>
+      <location filename="../../CommandConstraints.cpp" line="9094"/>
       <source>Constrains the radius of the selected arc or the diameter of the selected circle</source>
       <translation>Kotiraj poluprečnik izabranog kružnog luka ili prečnik izabrane kružnice</translation>
     </message>
@@ -6450,12 +6450,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9604"/>
+      <location filename="../../CommandConstraints.cpp" line="9621"/>
       <source>Angle Dimension</source>
       <translation>Kota ugla</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9605"/>
+      <location filename="../../CommandConstraints.cpp" line="9622"/>
       <source>Constrains the angle between two straight lines or between one line and the X-axis of the sketch if only one is selected</source>
       <translation>Kotiraj ugao između dve prave linije ili između jedne prave linije i X-ose skice ako je izabrana samo jedna prava linija</translation>
     </message>
@@ -6463,12 +6463,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10092"/>
+      <location filename="../../CommandConstraints.cpp" line="10109"/>
       <source>Equal Constraint</source>
       <translation>Ograničenje jednakosti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10094"/>
+      <location filename="../../CommandConstraints.cpp" line="10111"/>
       <source>Constrains the selected edges or circles to be equal</source>
       <translation>Primeni ograničenje jednakosti na izabrane elemente</translation>
     </message>
@@ -6476,12 +6476,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherConstrainSymmetric</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10342"/>
+      <location filename="../../CommandConstraints.cpp" line="10359"/>
       <source>Symmetric Constraint</source>
       <translation>Ograničenje simetričnosti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10343"/>
+      <location filename="../../CommandConstraints.cpp" line="10360"/>
       <source>Constrains the selected elements to be symmetric</source>
       <translation>Primeni ograničenje simetričnosti na izabrane elemente</translation>
     </message>
@@ -6489,12 +6489,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10804"/>
+      <location filename="../../CommandConstraints.cpp" line="10821"/>
       <source>Refraction Constraint</source>
       <translation>Ograničenje refrakcije</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10805"/>
+      <location filename="../../CommandConstraints.cpp" line="10822"/>
       <source>Constrains the selected elements based on the refraction law (Snell's Law)</source>
       <translation>Primeni ograničenje refrakcije (Snelov zakon) na izabrane elemente</translation>
     </message>
@@ -6502,12 +6502,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherChangeDimensionConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11240"/>
+      <location filename="../../CommandConstraints.cpp" line="11257"/>
       <source>Edit Value</source>
       <translation>Izmeni vrednost</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11241"/>
+      <location filename="../../CommandConstraints.cpp" line="11258"/>
       <source>Edits the value of a dimensional constraint</source>
       <translation>Uredi vrednost dimenzionalnog ograničenja</translation>
     </message>
@@ -6515,12 +6515,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11294"/>
+      <location filename="../../CommandConstraints.cpp" line="11311"/>
       <source>Toggle Driving/Reference Constraints</source>
       <translation>Ograničavajuće/referentne kote</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11295"/>
+      <location filename="../../CommandConstraints.cpp" line="11312"/>
       <source>Toggles between driving and reference mode of the selected constraints and commands</source>
       <translation>Prebacuje između ograničavajućeg i referentnog režima izabranih ograničenja i komandi</translation>
     </message>
@@ -6528,12 +6528,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherToggleActiveConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11449"/>
+      <location filename="../../CommandConstraints.cpp" line="11466"/>
       <source>Toggle Constraints</source>
       <translation>Uključi/Isključi ograničenja</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11450"/>
+      <location filename="../../CommandConstraints.cpp" line="11467"/>
       <source>Toggles the state of the selected constraints</source>
       <translation>Uključuje i isključuje izabrana ograničenja</translation>
     </message>
@@ -8330,32 +8330,6 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
     </message>
   </context>
   <context>
-    <name>TaskSketcherTool_c1_text</name>
-    <message>
-      <location filename="../../DrawSketchHandlerText.h" line="361"/>
-      <source>Width</source>
-      <translation>Širina</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerText.h" line="362"/>
-      <source>Height</source>
-      <translation>Visina</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_Text</name>
-    <message>
-      <location filename="../../DrawSketchHandlerText.h" line="368"/>
-      <source>Text</source>
-      <translation>Tekst</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerText.h" line="374"/>
-      <source>Font</source>
-      <translation>Font</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdSketcherCancelSketch</name>
     <message>
       <location filename="../../Command.cpp" line="409"/>
@@ -8379,53 +8353,6 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
       <location filename="../../Command.cpp" line="455"/>
       <source>Leaves the sketch editing mode</source>
       <translation>Napuštanje režima uređivanja skice</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdSketcherCreatePolylineLegacy</name>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="227"/>
-      <source>Polyline</source>
-      <translation>Izlomljena linija</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="228"/>
-      <source>Creates a continuous polyline. Press the 'M' key to switch segment modes</source>
-      <translation>Napravi izlomljenu liniju. Pritisni 'M' da prebacuješ vrstu segmenata</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdSketcherCreateText</name>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1393"/>
-      <source>Text</source>
-      <translation>Tekst</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1394"/>
-      <source>Creates text geometries controlled by a Text constraint.
-To Edit: Double-click the Text constraint to change the text content and font.
-To Position/Size: Apply constraints to the group's construction line.
-Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
-</source>
-      <translation type="unfinished">Creates text geometries controlled by a Text constraint.
-To Edit: Double-click the Text constraint to change the text content and font.
-To Position/Size: Apply constraints to the group's construction line.
-Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
-</translation>
-    </message>
-  </context>
-  <context>
-    <name>SketcherGui::EditTextDialog</name>
-    <message>
-      <location filename="../../EditTextDialog.cpp" line="72"/>
-      <source>Font not found</source>
-      <translation>Font nije pronađen</translation>
-    </message>
-    <message>
-      <location filename="../../EditTextDialog.cpp" line="73"/>
-      <source>The original font '%1' is not found on your system. A default font has been selected.</source>
-      <translation type="unfinished">The original font '%1' is not found on your system. A default font has been selected.</translation>
     </message>
   </context>
   <context>
@@ -8493,100 +8420,173 @@ Note: While the Text constraint is active, any constraints applied directly to t
     </message>
   </context>
   <context>
+    <name>CmdSketcherCreatePolylineLegacy</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="227"/>
+      <source>Polyline</source>
+      <translation>Izlomljena linija</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="228"/>
+      <source>Creates a continuous polyline. Press the 'M' key to switch segment modes</source>
+      <translation>Napravi izlomljenu liniju. Pritisni 'M' da prebacuješ vrstu segmenata</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCreateText</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1393"/>
+      <source>Text</source>
+      <translation>Tekst</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1394"/>
+      <source>Creates text geometries controlled by a Text constraint.
+To Edit: Double-click the Text constraint to change the text content and font.
+To Position/Size: Apply constraints to the group's construction line.
+Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
+</source>
+      <translation type="unfinished">Creates text geometries controlled by a Text constraint.
+To Edit: Double-click the Text constraint to change the text content and font.
+To Position/Size: Apply constraints to the group's construction line.
+Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
+</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::EditTextDialog</name>
+    <message>
+      <location filename="../../EditTextDialog.cpp" line="72"/>
+      <source>Font not found</source>
+      <translation>Font nije pronađen</translation>
+    </message>
+    <message>
+      <location filename="../../EditTextDialog.cpp" line="73"/>
+      <source>The original font '%1' is not found on your system. A default font has been selected.</source>
+      <translation type="unfinished">The original font '%1' is not found on your system. A default font has been selected.</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c1_text</name>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="361"/>
+      <source>Width</source>
+      <translation>Širina</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="362"/>
+      <source>Height</source>
+      <translation>Visina</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_Text</name>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="368"/>
+      <source>Text</source>
+      <translation>Tekst</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="374"/>
+      <source>Font</source>
+      <translation>Font</translation>
+    </message>
+  </context>
+  <context>
     <name>SketcherGui::DrawSketchHandlerDimension</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2326"/>
-      <location filename="../../CommandConstraints.cpp" line="2331"/>
-      <location filename="../../CommandConstraints.cpp" line="2337"/>
-      <location filename="../../CommandConstraints.cpp" line="2352"/>
-      <location filename="../../CommandConstraints.cpp" line="2375"/>
-      <location filename="../../CommandConstraints.cpp" line="2394"/>
+      <location filename="../../CommandConstraints.cpp" line="2343"/>
+      <location filename="../../CommandConstraints.cpp" line="2348"/>
+      <location filename="../../CommandConstraints.cpp" line="2354"/>
+      <location filename="../../CommandConstraints.cpp" line="2369"/>
+      <location filename="../../CommandConstraints.cpp" line="2392"/>
+      <location filename="../../CommandConstraints.cpp" line="2411"/>
       <source>%1 switch to distance</source>
       <translation type="unfinished">%1 switch to distance</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2327"/>
+      <location filename="../../CommandConstraints.cpp" line="2344"/>
       <source>%1 switch to lock</source>
       <translation type="unfinished">%1 switch to lock</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2332"/>
-      <location filename="../../CommandConstraints.cpp" line="2342"/>
+      <location filename="../../CommandConstraints.cpp" line="2349"/>
       <location filename="../../CommandConstraints.cpp" line="2359"/>
-      <location filename="../../CommandConstraints.cpp" line="2475"/>
+      <location filename="../../CommandConstraints.cpp" line="2376"/>
+      <location filename="../../CommandConstraints.cpp" line="2492"/>
       <source>%1 switch to horizontal</source>
       <translation type="unfinished">%1 switch to horizontal</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2333"/>
-      <location filename="../../CommandConstraints.cpp" line="2343"/>
+      <location filename="../../CommandConstraints.cpp" line="2350"/>
       <location filename="../../CommandConstraints.cpp" line="2360"/>
-      <location filename="../../CommandConstraints.cpp" line="2476"/>
+      <location filename="../../CommandConstraints.cpp" line="2377"/>
+      <location filename="../../CommandConstraints.cpp" line="2493"/>
       <source>%1 switch to vertical</source>
       <translation type="unfinished">%1 switch to vertical</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2338"/>
-      <location filename="../../CommandConstraints.cpp" line="2344"/>
-      <location filename="../../CommandConstraints.cpp" line="2351"/>
+      <location filename="../../CommandConstraints.cpp" line="2355"/>
+      <location filename="../../CommandConstraints.cpp" line="2361"/>
+      <location filename="../../CommandConstraints.cpp" line="2368"/>
       <source>%1 switch to symmetry</source>
       <translation type="unfinished">%1 switch to symmetry</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2358"/>
+      <location filename="../../CommandConstraints.cpp" line="2375"/>
       <source>%1 switch to length</source>
       <translation type="unfinished">%1 switch to length</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2361"/>
+      <location filename="../../CommandConstraints.cpp" line="2378"/>
       <source>%1 switch to block</source>
       <translation type="unfinished">%1 switch to block</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2366"/>
+      <location filename="../../CommandConstraints.cpp" line="2383"/>
       <source>%1 switch to equal length</source>
       <translation type="unfinished">%1 switch to equal length</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2377"/>
-      <location filename="../../CommandConstraints.cpp" line="2411"/>
+      <location filename="../../CommandConstraints.cpp" line="2394"/>
+      <location filename="../../CommandConstraints.cpp" line="2428"/>
       <source>%1 switch to equal radius</source>
       <translation type="unfinished">%1 switch to equal radius</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2397"/>
+      <location filename="../../CommandConstraints.cpp" line="2414"/>
       <source>%1 switch to angle</source>
       <translation type="unfinished">%1 switch to angle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2414"/>
+      <location filename="../../CommandConstraints.cpp" line="2431"/>
       <source>%1 switch to concentric distance</source>
       <translation type="unfinished">%1 switch to concentric distance</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2426"/>
-      <location filename="../../CommandConstraints.cpp" line="2436"/>
+      <location filename="../../CommandConstraints.cpp" line="2443"/>
+      <location filename="../../CommandConstraints.cpp" line="2453"/>
       <source>%1 switch to arc angle</source>
       <translation type="unfinished">%1 switch to arc angle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2427"/>
-      <location filename="../../CommandConstraints.cpp" line="2437"/>
+      <location filename="../../CommandConstraints.cpp" line="2444"/>
+      <location filename="../../CommandConstraints.cpp" line="2454"/>
       <source>%1 switch to arc length</source>
       <translation type="unfinished">%1 switch to arc length</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2454"/>
+      <location filename="../../CommandConstraints.cpp" line="2471"/>
       <source>%1 switch to weight</source>
       <translation type="unfinished">%1 switch to weight</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2467"/>
+      <location filename="../../CommandConstraints.cpp" line="2484"/>
       <source>%1 switch to radius</source>
       <translation type="unfinished">%1 switch to radius</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2470"/>
+      <location filename="../../CommandConstraints.cpp" line="2487"/>
       <source>%1 switch to diameter</source>
       <translation type="unfinished">%1 switch to diameter</translation>
     </message>
@@ -8594,12 +8594,12 @@ Note: While the Text constraint is active, any constraints applied directly to t
   <context>
     <name>CmdSketcherConstrainGroup</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11001"/>
+      <location filename="../../CommandConstraints.cpp" line="11018"/>
       <source>Group Constraint</source>
       <translation>Ograničenje grupisanjem</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11002"/>
+      <location filename="../../CommandConstraints.cpp" line="11019"/>
       <source>Constrains the selected geometries together as a single entity.The position and size of the grouped geometries can be defined by constraining the construction line that is generated.Constraints applied to grouped edges are ignored as long as the Group constraint is here.</source>
       <translation>Grupiše izabrane geometrijske elemente u jedan entitet. Položaj i veličina grupisanih elemenata se mogu kontrolisati ograničavanjem pomoćne linije koja se pojavi posle grupisanja. Ograničenja primenjena na grupisane elemente se zanemaruju sve dok je prisutno ograničenje grupisanjem.</translation>
     </message>

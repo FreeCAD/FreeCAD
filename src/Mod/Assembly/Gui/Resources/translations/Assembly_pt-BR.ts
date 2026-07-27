@@ -517,9 +517,14 @@ SLOPE define a firmeza da transição entre 0 e H1 e H2 para 0 sobre tempo = T1 
       <translation>Ocorreu um erro ao salvar a animação</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1184"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1186"/>
       <source>PyAv is not installed. It is required for video export.</source>
       <translation type="unfinished">PyAv is not installed. It is required for video export.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1205"/>
+      <source>Unknown video export format</source>
+      <translation type="unfinished">Unknown video export format</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="170"/>

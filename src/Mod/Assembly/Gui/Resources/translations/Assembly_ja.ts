@@ -517,9 +517,14 @@ SLOPEはそれぞれ時間 = T1とT2付近での、0とH1の間、またH2から
       <translation>アニメーションの保存中にエラーが発生しました</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1184"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1186"/>
       <source>PyAv is not installed. It is required for video export.</source>
       <translation>PyAvがインストールされていません。動画のエクスポートに必要です。</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1205"/>
+      <source>Unknown video export format</source>
+      <translation type="unfinished">Unknown video export format</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="170"/>
