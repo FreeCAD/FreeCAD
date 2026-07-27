@@ -931,7 +931,9 @@ def get2DShape(representation, scaling=1000, notext=False):
                             [p1, p2, p3] = index2points(segm)
                             result.append(Part.Arc(p1, p2, p3))
                         else:
-                            raise RuntimeError("Illegal IfcIndexedPolyCurve segment: " + segm.is_a())
+                            raise RuntimeError(
+                                "Illegal IfcIndexedPolyCurve segment: " + segm.is_a()
+                            )
             else:
                 print("importIFCHelper.getCurveSet: unhandled element: ", el)
 
