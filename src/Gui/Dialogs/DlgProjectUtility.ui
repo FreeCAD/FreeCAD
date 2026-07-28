@@ -96,7 +96,10 @@
         <item row="1" column="1">
          <widget class="Gui::FileChooser" name="createDest">
           <property name="mode">
-           <enum>Gui::FileChooser::Directory</enum>
+           <enum>Gui::FileChooser::File</enum>
+          </property>
+          <property name="acceptMode">
+           <enum>Gui::FileChooser::AcceptSave</enum>
           </property>
          </widget>
         </item>

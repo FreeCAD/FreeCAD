@@ -23,7 +23,6 @@
  ***************************************************************************/
 
 #include <sstream>
-#include <QDir>
 #include <QMessageBox>
 
 #include <App/Document.h>
@@ -47,6 +46,7 @@ DlgProjectUtility::DlgProjectUtility(QWidget* parent, Qt::WindowFlags fl)
     connect(ui->extractButton, &QPushButton::clicked, this, &DlgProjectUtility::extractButton);
     connect(ui->createButton, &QPushButton::clicked, this, &DlgProjectUtility::createButton);
     ui->extractSource->setFilter(QStringLiteral("%1 (*.FCStd)").arg(tr("Project file")));
+    ui->createDest->setFilter(QStringLiteral("%1 (*.FCStd)").arg(tr("Project file")));
 }
 
 /**
@@ -83,8 +83,6 @@ void DlgProjectUtility::createButton()
         QMessageBox::critical(this, tr("Empty Destination"), tr("No destination is defined."));
         return;
     }
-
-    dest = QDir(dest).absoluteFilePath(QStringLiteral("project.fcstd"));
 
     bool openFile = ui->checkLoadProject->isChecked();
     tryCreateArchive(source, dest, openFile);
