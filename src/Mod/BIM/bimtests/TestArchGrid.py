@@ -39,3 +39,19 @@ class TestArchGrid(TestArchBase.TestArchBase):
         grid = Arch.makeGrid(name="TestGrid")
         self.assertIsNotNone(grid, "makeGrid failed to create a grid object.")
         self.assertEqual(grid.Label, "TestGrid", "Grid label is incorrect.")
+
+    def test_bim_grid_policy_uses_document_unit_schema(self):
+        """BIM grid defaults must resolve from each document's unit schema."""
+        Arch.mark_bim_document(self.document)
+
+        self.document.UnitSchema = App.Units.Scheme.ImperialBuilding
+        imperial_settings = Arch.get_default_bim_grid_settings(document=self.document)
+        self.assertEqual(imperial_settings, {"spacing": "1in", "mainlines": 12})
+
+        self.document.UnitSchema = App.Units.Scheme.Centimeter
+        centimeter_settings = Arch.get_default_bim_grid_settings(document=self.document)
+        self.assertEqual(centimeter_settings, {"spacing": "10cm", "mainlines": 10})
+
+        self.document.UnitSchema = App.Units.Scheme.MKS
+        metric_settings = Arch.get_default_bim_grid_settings(document=self.document)
+        self.assertEqual(metric_settings, {"spacing": "0.1m", "mainlines": 10})

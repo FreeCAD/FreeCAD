@@ -698,6 +698,34 @@ class DocumentBasicCases(unittest.TestCase):
         FreeCAD.closeDocument("CreateTest")
 
 
+class DocumentUnitSchemaCases(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("UnitSchemaTest")
+        self.Schemas = self.Doc.getEnumerationsOfProperty("UnitSystem")
+
+    def tearDown(self):
+        FreeCAD.closeDocument("UnitSchemaTest")
+
+    def testUnitSchemaAccessors(self):
+        imperial = int(FreeCAD.Units.Scheme.ImperialBuilding)
+        self.Doc.UnitSchema = FreeCAD.Units.Scheme.ImperialBuilding
+
+        self.assertIsInstance(self.Doc.UnitSchema, int)
+        self.assertEqual(self.Doc.UnitSchema, imperial)
+        self.assertEqual(self.Doc.UnitSystem, self.Schemas[imperial])
+
+        metric = int(FreeCAD.Units.Scheme.MKS)
+        self.Doc.UnitSystem = self.Schemas[metric]
+        self.assertEqual(self.Doc.UnitSchema, metric)
+
+    def testUnitSchemaRejectsInvalidValues(self):
+        with self.assertRaises(ValueError):
+            self.Doc.UnitSchema = -1
+
+        with self.assertRaises(ValueError):
+            self.Doc.UnitSchema = len(self.Schemas)
+
+
 class DocumentDuplicateLabelCases(unittest.TestCase):
     """Tests for the DuplicateLabels document preference (issue #25519)."""
 

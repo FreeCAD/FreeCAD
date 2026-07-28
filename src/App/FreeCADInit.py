@@ -653,6 +653,14 @@ class Scheme(IntEnum):
 
 App.Units.Scheme = Scheme
 
+class MeasurementSystem(IntEnum):
+    Other = -1
+    Internal = 0
+    Metric = 1
+    Imperial = 2
+
+App.Units.MeasurementSystem = MeasurementSystem
+
 class NumberFormat(IntEnum):
     Default = 0
     Fixed = 1

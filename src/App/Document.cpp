@@ -980,6 +980,11 @@ Document::Document(const char* documentName)
         GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
     UnitSystem.setValue(hGrpu->GetInt("UserSchema", 0));
     ADD_PROPERTY_TYPE(Comment, (""), 0, Prop_None, "Additional tag to save a comment");
+    ADD_PROPERTY_TYPE(Context,
+                      (""),
+                      0,
+                      Prop_None,
+                      "Primary workflow context of the document");
     ADD_PROPERTY_TYPE(Meta, (), 0, Prop_None, "Map with additional meta information");
     ADD_PROPERTY_TYPE(Material, (), 0, Prop_None, "Map with material properties");
     // create the uuid for the document
@@ -1032,6 +1037,26 @@ Document::Document(const char* documentName)
                       PropertyType(Prop_Hidden | Prop_ReadOnly),
                       "Link of the tip object of the document");
     Uid.touch();
+}
+
+std::size_t Document::getUnitSchema() const
+{
+    const auto schema = UnitSystem.getValue();
+
+    if (schema < 0 || static_cast<std::size_t>(schema) >= Base::UnitsApi::count()) {
+        return Base::UnitsApi::getDefSchemaNum();
+    }
+
+    return static_cast<std::size_t>(schema);
+}
+
+void Document::setUnitSchema(std::size_t schema)
+{
+    if (schema >= Base::UnitsApi::count()) {
+        throw Base::ValueError("Invalid document unit schema");
+    }
+
+    UnitSystem.setValue(static_cast<long>(schema));
 }
 
 Document::~Document()

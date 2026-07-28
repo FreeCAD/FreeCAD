@@ -56,6 +56,9 @@ class Document(PropertyContainer):
     Name: Final[str] = ""
     """The internal name of the document"""
 
+    UnitSchema: int = 0
+    """Numeric unit-schema identifier represented by the document's UnitSystem."""
+
     RecomputesFrozen: bool = False
     """Returns or sets if automatic recomputes for this document are disabled."""
 

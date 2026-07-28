@@ -1039,6 +1039,21 @@ Py::String DocumentPy::getName() const
     return {getDocumentPtr()->getName()};
 }
 
+Py::Long DocumentPy::getUnitSchema() const
+{
+    return Py::Long(static_cast<long>(getDocumentPtr()->getUnitSchema()));
+}
+
+void DocumentPy::setUnitSchema(Py::Long arg)
+{
+    const auto value = arg.as_long();
+    if (value < 0) {
+        throw Base::ValueError("Invalid document unit schema");
+    }
+
+    getDocumentPtr()->setUnitSchema(static_cast<std::size_t>(value));
+}
+
 Py::Boolean DocumentPy::getRecomputesFrozen() const
 {
     return {getDocumentPtr()->testStatus(Document::Status::SkipRecompute)};
