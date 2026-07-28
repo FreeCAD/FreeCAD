@@ -98,6 +98,7 @@ public:
     enum {Type = UserType::QGIView};
     int type() const override { return Type;}
     QRectF boundingRect() const override;
+    QRectF contentBoundingRect() const { return frameRect(); }
     void paint( QPainter *painter,
                         const QStyleOptionGraphicsItem *option,
                         QWidget *widget = nullptr ) override;
@@ -204,12 +205,19 @@ public:
     bool isExporting() const;
 
     virtual void setMovableFlag();
+    void setFrameForcedVisible(bool visible);
+
+Q_SIGNALS:
+    void positionChanged();
+    void positionChangeFinished();
 
 protected:
     QGIView* getQGIVByName(std::string name) const;
 
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
     virtual void dragFinished();
+    bool isPositionSnapped() const { return m_snapped; }
+    void setPositionWithoutSnapping(const QPointF& position);
 
     // Preselection events:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
@@ -228,6 +236,15 @@ protected:
     bool borderIsVisible() const {return m_border->isVisible(); }
 
 private:
+    enum class SectionSnapTarget {
+        None,
+        Center,
+        SectionLine,
+        ViewDirection
+    };
+
+    void clearSectionSnap();
+
     TechDraw::DrawView *viewObj;
     std::string viewName;
 
@@ -235,6 +252,7 @@ private:
     bool m_innerView;                                                  //View is inside another View
     bool m_multiselectActivated;
     bool snapping;
+    bool m_frameForcedVisible{false};
 
     QRectF m_frameRect;
 
@@ -256,6 +274,7 @@ private:
     int m_zOrder{0};
     bool m_isHovered{false};
     bool m_snapped{false};
+    SectionSnapTarget m_sectionSnapTarget{SectionSnapTarget::None};
 
     void layoutDecorations(const QRectF& contentArea,
                        const QRectF& captionRect,
