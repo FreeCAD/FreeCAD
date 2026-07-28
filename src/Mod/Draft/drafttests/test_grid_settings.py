@@ -22,8 +22,10 @@
 # ***************************************************************************
 
 import unittest
+from types import SimpleNamespace
 
 import FreeCAD as App
+from draftguitools import gui_viewpolicy
 from draftutils import params
 
 
@@ -128,3 +130,26 @@ class DraftGridSettings(unittest.TestCase):
         self.assertFalse(params.set_grid_param("gridSize", 40, "MissingDocument"))
 
         self.assertEqual(params.get_param("gridSize"), 20)
+
+    def test_context_policy_factory_resolves_per_document(self):
+        registry = gui_viewpolicy.DraftViewPolicyRegistry()
+        metric_document = SimpleNamespace(Context="BIM", UnitSystem=App.Units.Scheme.MKS)
+        imperial_document = SimpleNamespace(
+            Context="BIM", UnitSystem=App.Units.Scheme.ImperialBuilding
+        )
+
+        def factory(document):
+            spacing = 100 if document.UnitSystem == App.Units.Scheme.MKS else 25.4
+            return gui_viewpolicy.DraftViewPolicy(spacing=spacing)
+
+        registry.register_context_policy("BIM", "test", factory)
+
+        self.assertEqual(registry.resolve(metric_document).spacing, 100)
+        self.assertEqual(registry.resolve(imperial_document).spacing, 25.4)
+
+    def test_measurement_system_returns_enum(self):
+        self.assertIsInstance(App.Units.getMeasurementSystem(), App.Units.MeasurementSystem)
+        self.assertIsInstance(
+            App.Units.getMeasurementSystem(App.Units.Scheme.ImperialBuilding),
+            App.Units.MeasurementSystem,
+        )

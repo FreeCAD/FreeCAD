@@ -42,6 +42,7 @@
 #include <vector>
 #include <utility>
 #include <list>
+#include <cstddef>
 #include <string>
 #include <string_view>
 
@@ -168,6 +169,13 @@ public:
     PropertyString Company;
     /// The Unit System for this document.
     PropertyEnumeration UnitSystem;
+
+    /// Return the numeric unit-schema identifier represented by UnitSystem.
+    std::size_t getUnitSchema() const;
+
+    /// Set the numeric unit-schema identifier represented by UnitSystem.
+    void setUnitSchema(std::size_t schema);
+
     /// A long comment or description (utf-8 with line breaks).
     PropertyString Comment;
     /// The Id, e.g. a Part number.
@@ -178,6 +186,8 @@ public:
     PropertyString License;
     /// The URL to the license description or contract.
     PropertyString LicenseURL;
+    /// Primary workflow context of the document, for example "BIM".
+    PropertyString Context;
     /// Meta descriptions.
     PropertyMap Meta;
     /// Material descriptions, used and defined in the Material module.

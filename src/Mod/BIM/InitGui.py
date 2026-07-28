@@ -620,6 +620,21 @@ class BIMWorkbench(Workbench):
             self.BimSelectObserver = BimSelect.Setup()
             FreeCADGui.addDocumentObserver(self.BimSelectObserver)
 
+    def _get_bim_view_policy(self, document=None):
+        import Arch
+
+        return Arch.get_bim_view_policy(document)
+
+    def _set_bim_view_policy(self, enabled):
+        owner = "BIMWorkbench"
+        snapper = getattr(FreeCADGui, "Snapper", None)
+        if snapper is None:
+            return
+        if enabled:
+            snapper.pushViewPolicy(owner, self._get_bim_view_policy)
+        else:
+            snapper.popViewPolicy(owner)
+
     def Activated(self):
 
         import WorkingPlane
@@ -634,6 +649,7 @@ class BIMWorkbench(Workbench):
             FreeCADGui.draftToolBar.Activated()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.show()
+            self._set_bim_view_policy(True)
         if hasattr(WorkingPlane, "_view_observer_start"):
             WorkingPlane._view_observer_start()
         else:
@@ -648,7 +664,6 @@ class BIMWorkbench(Workbench):
                 "Improper loading of grid_observer code. "
                 "The BIM Workbench will not work correctly.\n"
             )
-
         if PARAMS.GetBool("FirstTime", True) and (not hasattr(FreeCAD, "TestEnvironment")):
             todo.ToDo.delay(FreeCADGui.runCommand, "BIM_Welcome")
         todo.ToDo.delay(BimStatus.setStatusIcons, True)
@@ -732,6 +747,7 @@ class BIMWorkbench(Workbench):
         if hasattr(FreeCADGui, "draftToolBar"):
             FreeCADGui.draftToolBar.Deactivated()
         if hasattr(FreeCADGui, "Snapper"):
+            self._set_bim_view_policy(False)
             FreeCADGui.Snapper.hide()
         if hasattr(WorkingPlane, "_view_observer_stop"):
             WorkingPlane._view_observer_stop()

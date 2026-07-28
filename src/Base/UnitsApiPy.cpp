@@ -34,6 +34,21 @@
 
 using namespace Base;
 
+namespace
+{
+PyObject* measurementSystemToPyObject(PyObject* module, UnitsApi::MeasurementSystem system)
+{
+    PyObject* enumType = PyObject_GetAttrString(module, "MeasurementSystem");
+    if (enumType == nullptr) {
+        return nullptr;
+    }
+
+    PyObject* value = PyObject_CallFunction(enumType, "i", static_cast<int>(system));
+    Py_DECREF(enumType);
+    return value;
+}
+}  // namespace
+
 //**************************************************************************
 // Python stuff of UnitsApi
 
@@ -62,6 +77,12 @@ PyMethodDef UnitsApi::Methods[] = {
      METH_VARARGS,
      "setSchema(int) -> None\n\n"
      "Sets the current schema to the given number, if possible"},
+    {"getMeasurementSystem",
+     sGetMeasurementSystem,
+     METH_VARARGS,
+     "getMeasurementSystem() -> MeasurementSystem\n\n"
+     "getMeasurementSystem(int) -> MeasurementSystem\n\n"
+     "Returns the measurement-system classification for the current or given schema"},
     {"schemaTranslate",
      sSchemaTranslate,
      METH_VARARGS,
@@ -150,6 +171,27 @@ PyObject* UnitsApi::sSetSchema(PyObject* /*self*/, PyObject* args)
         schemas->select(index);
     }
     Py_Return;
+}
+
+PyObject* UnitsApi::sGetMeasurementSystem(PyObject* self, PyObject* args)
+{
+    if (PyArg_ParseTuple(args, "")) {
+        return measurementSystemToPyObject(self, UnitsApi::getMeasurementSystem());
+    }
+
+    PyErr_Clear();
+    int index {};
+    if (PyArg_ParseTuple(args, "i", &index)) {
+        if (index < 0 || index >= static_cast<int>(count())) {
+            PyErr_SetString(PyExc_ValueError, "invalid schema value");
+            return nullptr;
+        }
+
+        return measurementSystemToPyObject(self, UnitsApi::getMeasurementSystem(index));
+    }
+
+    PyErr_SetString(PyExc_TypeError, "int or empty argument list expected");
+    return nullptr;
 }
 
 PyObject* UnitsApi::sSchemaTranslate(PyObject* /*self*/, PyObject* args)

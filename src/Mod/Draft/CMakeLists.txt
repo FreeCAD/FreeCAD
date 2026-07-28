@@ -67,6 +67,7 @@ SET(Draft_tests
     drafttests/test_dwg.py
     drafttests/test_dxf.py
     drafttests/test_grid_settings.py
+    drafttests/test_view_policy_gui.py
     drafttests/test_import.py
     drafttests/test_import_gui.py
     drafttests/test_import_tools.py
@@ -271,6 +272,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_selectplane.py
     draftguitools/gui_snaps.py
     draftguitools/gui_snapper.py
+    draftguitools/gui_viewpolicy.py
     draftguitools/gui_trackers.py
     draftguitools/gui_edit_base_object.py
     draftguitools/gui_edit_draft_objects.py

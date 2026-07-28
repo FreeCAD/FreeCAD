@@ -116,15 +116,14 @@ from drafttests.test_dxf import DraftDXF as DraftTest06
 from drafttests.test_array import DraftArray as DraftTest10
 from drafttests.test_grid_settings import DraftGridSettings as DraftTest11
 
-# Use the modules so that code checkers don't complain (flake8)
-True if DraftTest01 else False
-True if DraftTest02 else False
-True if DraftTest03 else False
-True if DraftTest04 else False
-True if DraftTest05 else False
-True if DraftTest06 else False
-# True if DraftTest07 else False
-# True if DraftTest08 else False
-# True if DraftTest09 else False
-True if DraftTest10 else False
-True if DraftTest11 else False
+# Keep imported test classes referenced for static analysis.
+DRAFT_TEST_CLASSES = (
+    DraftTest01,
+    DraftTest02,
+    DraftTest03,
+    DraftTest04,
+    DraftTest05,
+    DraftTest06,
+    DraftTest10,
+    DraftTest11,
+)
