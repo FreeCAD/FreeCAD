@@ -122,7 +122,8 @@ void TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg, 
     if (const auto f = std::ranges::find(refs, subName); f != refs.end()) {
         refs.erase(f);  // it is in the list. Remove it
         removeItemFromListWidget(widget, msg.pSubName);
-        if (auto items = widget->findItems(QString::fromStdString(subName), Qt::MatchExactly); !items.empty()) {
+        if (auto items = widget->findItems(QString::fromStdString(subName), Qt::MatchExactly);
+            !items.empty()) {
             widget->setCurrentItem(items.front());
             items.front()->setSelected(true);
         }
