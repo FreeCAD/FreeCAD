@@ -1245,11 +1245,10 @@ SNAPSHOT_FIXTURES = {
     "SoRegPoint": _fixture(_build_reg_point_scene, framing_policy=CameraPolicy.FIXED_OVERLAY),
     "SoDatumLabel": _fixture(_build_datum_label_scene, framing_policy=CameraPolicy.FIXED_OVERLAY),
     "SoStringLabel": _fixture(_build_string_label_scene),
-    # LegacyGL's SoText2 path uses compatibility-only glDrawPixels.
     "SoText2": _fixture(
         _build_text2_scene,
         framing_policy=CameraPolicy.FIXED_OVERLAY,
-        supported_renderers=DRAW_LIST_ONLY,
+        supported_renderers=ALL_RENDERERS,
     ),
     "SoColorBarLabel": _fixture(
         _build_color_bar_label_scene,
