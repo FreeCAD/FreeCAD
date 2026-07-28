@@ -44,6 +44,7 @@ namespace App
 {
 
 class DocumentObject;
+class DynamicProperty;
 class DocumentObjectExecReturn;
 class ObjectIdentifier;
 class Expression;
@@ -100,8 +101,9 @@ protected:
     virtual void onRenameDynamicProperty(const App::Property& prop, const char* oldName) = 0;
 
 private:
+    friend class DynamicProperty;
     static void slotRelabelDocument(const App::Document& doc);
-    static void slotRenameDynamicProperty(const App::Property& prop, const char* oldName);
+    static void handleDynamicPropertyRename(const App::Property& prop, const char* oldName);
 };
 
 
