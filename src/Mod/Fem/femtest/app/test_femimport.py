@@ -25,9 +25,12 @@ __title__ = "Import FEM unit tests"
 __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecad.org"
 
+import math
 import unittest
 
 import FreeCAD
+
+from feminout import importCcxFrdResults
 
 from .support_utils import fcc_print
 
@@ -69,6 +72,16 @@ class TestFemImport(unittest.TestCase):
                 # to get an error message what was going wrong
                 __import__(f"{mod}")
             self.assertTrue(im, f"Problem importing {mod}")
+
+    def test_frd_nan_sanitization(self):
+        for nan_value in ("NAN(IND)", "-1.#IND0E+00"):
+            with self.subTest(nan_value=nan_value):
+                line = f"prefix{nan_value}suffix"
+                sanitized_line = importCcxFrdResults._sanitize_frd_line(line)
+                sanitized_value = sanitized_line[6:-6]
+
+                self.assertEqual(len(sanitized_line), len(line))
+                self.assertTrue(math.isnan(float(sanitized_value)))
 
 
 # ************************************************************************************************

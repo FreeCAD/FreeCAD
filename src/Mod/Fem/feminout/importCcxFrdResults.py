@@ -38,6 +38,14 @@ import FreeCAD
 from FreeCAD import Console
 from builtins import open as pyopen
 
+
+def _sanitize_frd_line(line):
+    """Normalize non-standard NaN values without changing FRD fixed-width columns."""
+    for nan_value in ("NAN(IND)", "-1.#IND0E+00"):
+        line = line.replace(nan_value, "NAN".rjust(len(nan_value)))
+    return line
+
+
 # ********* generic FreeCAD import and export methods *********
 
 
@@ -382,9 +390,9 @@ def read_frd_result(frd_input):
 
     for line in frd_file:
 
-        # depending on c runtime lib and possibly locale calculix may format NAN differently so we
-        # need to sanitize the file
-        line = line.replace("NAN(IND)", "NAN")
+        # Depending on the C runtime library and possibly locale, CalculiX may
+        # format NaN differently, so normalize it before parsing fixed-width fields.
+        line = _sanitize_frd_line(line)
         # Check if we found nodes section
         if line[4:6] == "2C":
             nodes_found = True
