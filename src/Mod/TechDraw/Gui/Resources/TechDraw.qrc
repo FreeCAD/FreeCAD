@@ -4,6 +4,18 @@
         <file>icons/actions/section-left.svg</file>
         <file>icons/actions/section-right.svg</file>
         <file>icons/actions/section-up.svg</file>
+        <file>icons/actions/section-offset-simple.svg</file>
+        <file>icons/actions/section-offset-notch.svg</file>
+        <file>icons/actions/section-offset-arc.svg</file>
+        <file>icons/actions/section-offset-arc-notch.svg</file>
+        <file>icons/actions/section-horizontal.svg</file>
+        <file>icons/actions/section-vertical.svg</file>
+        <file>icons/actions/section-center-direction.svg</file>
+        <file>icons/actions/section-center-point.svg</file>
+        <file>icons/actions/section-2points-partial.svg</file>
+        <file>icons/actions/section-center-2points.svg</file>
+        <file>icons/actions/section-2points.svg</file>
+		<file>icons/actions/section-2points-partial.svg</file>
         <file>icons/actions/TechDraw_2LineCenterline.svg</file>
         <file>icons/actions/TechDraw_2PointCenterline.svg</file>
         <file>icons/actions/TechDraw_ActiveView.svg</file>
@@ -55,7 +67,6 @@
         <file>icons/actions/TechDraw_View.svg</file>
         <file>icons/actions/TechDraw_WeldSymbol.svg</file>
         <file>icons/actions/TechDraw_SurfaceFinishSymbols.svg</file>
-        <file>icons/actions/TechDraw_ComplexSection.svg</file>
         <file>icons/actions/TechDraw_CosmeticCircle.svg</file>
         <file>icons/actions/TechDraw_BrokenView.svg</file>
         <file>icons/arrow-ccw.svg</file>
@@ -153,6 +164,7 @@
         <file>icons/TechDraw_ProjRight.svg</file>
         <file>icons/TechDraw_ProjTop.svg</file>
         <file>icons/TechDraw_RadiusDimension.svg</file>
+        <file>icons/TechDraw_SectionView_Pointer.svg</file>
         <file>icons/TechDraw_TreeHatch.svg</file>
         <file>icons/TechDraw_TreeMulti.svg</file>
         <file>icons/TechDraw_TreePage.svg</file>

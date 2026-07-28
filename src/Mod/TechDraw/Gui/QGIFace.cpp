@@ -23,6 +23,9 @@
 # include <cmath>
 
 # include <QFileInfo>
+# include <QGraphicsScene>
+# include <QGraphicsSceneHoverEvent>
+# include <QGraphicsSceneMouseEvent>
 # include <QGraphicsView>
 # include <QPainter>
 # include <QPainterPath>
@@ -51,6 +54,12 @@ using namespace TechDrawGui;
 using namespace TechDraw;
 
 using DU = DrawUtil;
+
+namespace
+{
+constexpr auto suppressFaceSelectionProperty =
+    "TechDrawSuppressFaceSelection";
+}
 
 QGIFace::QGIFace(int index) :
     projIndex(index),
@@ -166,6 +175,26 @@ void QGIFace::setPrettySel() {
     QGIPrimPath::setPrettySel();
 }
 
+void QGIFace::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
+{
+    if (scene()
+        && scene()->property(suppressFaceSelectionProperty).toBool()) {
+        event->ignore();
+        return;
+    }
+    QGIPrimPath::hoverEnterEvent(event);
+}
+
+void QGIFace::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
+    if (scene()
+        && scene()->property(suppressFaceSelectionProperty).toBool()) {
+        event->ignore();
+        return;
+    }
+    QGIPrimPath::mousePressEvent(event);
+}
+
 /// show or hide the edges of this face.  Usually just for debugging
 void QGIFace::setDrawEdges(bool state) {
     if (state) {
@@ -218,6 +247,24 @@ void QGIFace::setFillMode(FillMode mode)
 void QGIFace::setOutline(const QPainterPath & path)
 {
     setPath(path);
+}
+
+void QGIFace::setPaintClip(const QPainterPath& clip)
+{
+    prepareGeometryChange();
+    m_paintClip = clip;
+}
+
+void QGIFace::paint(QPainter* painter,
+                    const QStyleOptionGraphicsItem* option,
+                    QWidget* widget)
+{
+    painter->save();
+    if (!m_paintClip.isEmpty()) {
+        painter->setClipPath(m_paintClip, Qt::IntersectClip);
+    }
+    QGIPrimPath::paint(painter, option, widget);
+    painter->restore();
 }
 
 /// add PAT hatch line set
@@ -468,12 +515,13 @@ void QGIFace::getParameters()
 
 QRectF QGIFace::boundingRect() const
 {
-    return shape().controlPointRect();
+    return shape().boundingRect();
 }
 
 QPainterPath QGIFace::shape() const
 {
-    return path();
+    return m_paintClip.isEmpty()
+        ? path() : path().intersected(m_paintClip);
 }
 
 bool QGIFace::exporting() const
@@ -485,4 +533,3 @@ bool QGIFace::exporting() const
     return tdScene->getExportingSvg() ||
            tdScene->getExportingPdf();
 }
-
