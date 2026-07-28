@@ -172,6 +172,67 @@ def _add_transparent_stage_triangle(coin, parent):
     return faces
 
 
+def _make_alpha_composition_scene(coin, *, textured):
+    root = coin.SoSeparator()
+
+    camera = coin.SoOrthographicCamera()
+    camera.position.setValue(0.0, 0.0, 5.0)
+    camera.nearDistance.setValue(0.1)
+    camera.farDistance.setValue(10.0)
+    camera.height.setValue(2.0)
+    root.addChild(camera)
+
+    light_model = coin.SoLightModel()
+    light_model.model.setValue(coin.SoLightModel.BASE_COLOR)
+    root.addChild(light_model)
+
+    material = coin.SoMaterial()
+    material.diffuseColor.setValue(1.0, 0.1, 0.05)
+    material.transparency.setValue(0.5)
+    root.addChild(material)
+
+    vertex_property = coin.SoVertexProperty()
+    vertex_property.vertex.setValues(
+        0,
+        4,
+        [
+            coin.SbVec3f(-0.75, -0.75, 0.0),
+            coin.SbVec3f(0.75, -0.75, 0.0),
+            coin.SbVec3f(0.75, 0.75, 0.0),
+            coin.SbVec3f(-0.75, 0.75, 0.0),
+        ],
+    )
+
+    if textured:
+        texture = coin.SoTexture2()
+        texture.model.setValue(coin.SoTexture2.MODULATE)
+        # A single red texel with 50% alpha exercises texture alpha * material
+        # opacity without relying on filtering or texture-coordinate seams.
+        texture.image.setValue(coin.SbVec2s(1, 1), 4, bytes((255, 26, 13, 128)))
+        root.addChild(texture)
+        vertex_property.texCoord.setValues(
+            0,
+            4,
+            [
+                coin.SbVec2f(0.0, 0.0),
+                coin.SbVec2f(1.0, 0.0),
+                coin.SbVec2f(1.0, 1.0),
+                coin.SbVec2f(0.0, 1.0),
+            ],
+        )
+    else:
+        # Coin's orderedRGBA layout stores alpha in the low byte. The material
+        # alpha is intentionally composed with this vertex alpha by the IR.
+        vertex_property.orderedRGBA.setValues(0, 4, [0xFF1A0D80] * 4)
+        vertex_property.materialBinding.setValue(coin.SoVertexProperty.PER_VERTEX)
+
+    faces = coin.SoFaceSet()
+    faces.vertexProperty.setValue(vertex_property)
+    faces.numVertices.setValue(4)
+    root.addChild(faces)
+    return root
+
+
 def _render_annotation_stage_pair(harness, coin, root, out_dir, filename):
     rendered = {}
     for renderer_name in (_RENDERER_LEGACY, _RENDERER_DRAW_LIST):
@@ -1270,6 +1331,55 @@ class CoinRenderPipelineTestCase(unittest.TestCase):
         finally:
             if fixture.background_gradient is not None:
                 harness.viewer.setGradientBackground("NONE")
+            harness.close()
+
+    def test_material_opacity_composes_with_vertex_and_texture_alpha(self):
+        FreeCAD, FreeCADGui, coin = _require_gui()
+
+        width, height = _snapshot_dimensions()
+        out_dir = _snapshot_out_dir()
+        harness = _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height)
+        try:
+            if not {_RENDERER_LEGACY, _RENDERER_DRAW_LIST}.issubset(
+                set(harness.render_pipelines())
+            ):
+                raise unittest.SkipTest(
+                    "alpha composition regression requires both render pipelines"
+                )
+
+            for textured in (False, True):
+                case_name = "TextureAlpha" if textured else "VertexAlpha"
+                root = _make_alpha_composition_scene(coin, textured=textured)
+                root.ref()
+                try:
+                    rendered = {}
+                    for renderer_name in (_RENDERER_LEGACY, _RENDERER_DRAW_LIST):
+                        path = _renderer_output_path(
+                            out_dir,
+                            renderer_name,
+                            "actual",
+                            f"MaterialOpacity{case_name}.png",
+                        )
+                        _render_png(harness, coin, root, path, renderer_name, frame_camera=False)
+                        self.assertGreater(
+                            _non_background_pixel_count(path),
+                            100,
+                            f"{case_name} alpha scene rendered empty in {renderer_name}: {path}",
+                        )
+                        rendered[renderer_name] = path
+                finally:
+                    root.unref()
+
+                # Verify the explicit DrawList alpha contract directly. The
+                # legacy path treats packed per-vertex/texture colors as the
+                # complete material color and does not combine their alpha
+                # with SoMaterial transparency; its image is still rendered
+                # above to guard the existing LegacyGL path.
+                expected = (255.0, 198.0, 194.0) if not textured else (255.0, 192.0, 191.0)
+                actual = _mean_rgb(rendered[_RENDERER_DRAW_LIST], width // 2, height // 2, radius=0)
+                for actual_channel, expected_channel in zip(actual, expected):
+                    self.assertAlmostEqual(actual_channel, expected_channel, delta=2.0)
+        finally:
             harness.close()
 
     def test_string_label_sampler_matches_between_pipelines(self):
