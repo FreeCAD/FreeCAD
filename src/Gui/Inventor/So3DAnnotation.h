@@ -24,11 +24,16 @@
 #pragma once
 
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/SoPath.h>
+#include <Inventor/misc/SoRefPtr.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/elements/SoSubElement.h>
 #include <FCGlobal.h>
 #include <vector>
+
+class SoAction;
+class SoIRRenderAction;
 
 namespace Gui
 {
@@ -49,7 +54,7 @@ protected:
     // priority (lower renders first)
     struct PriorityPath
     {
-        SoPath* path;
+        SoRefPtr<SoPath> path;
         int priority;
 
         PriorityPath(SoPath* p, int pr = 0)
@@ -70,11 +75,13 @@ public:
 
     static bool hasDelayedPaths(SoState* state);
 
+    static bool isProcessingDelayedPaths(SoState* state);
+    static void setProcessingDelayedPaths(SoState* state, bool processing);
+
     static SoPathList getDelayedPaths(SoState* state);
 
     static void processDelayedPathsWithPriority(SoState* state, SoGLRenderAction* action);
-
-    static bool isProcessingDelayedPaths;
+    static void processDelayedPathsWithPriority(SoState* state, SoIRRenderAction* action);
 
     SbBool matches([[maybe_unused]] const SoElement* element) const override
     {
@@ -90,15 +97,13 @@ private:
     static SoDelayedAnnotationsElement* getElement(SoState* state);
 
     std::vector<PriorityPath> paths;
+    bool processingDelayedPaths {false};
 };
 
 /*! @brief 3D Annotation Node - Annotation with depth buffer
  *
- * This class is just like SoAnnotation with the difference that it does not disable
- * the depth buffer instead it clears it and renders on top of everything with proper
- * depth control.
- *
- * It should be used with caution as it does clear the depth buffer for each annotation!
+ * This class queues its subtree for the after-main stage, which clears the main-scene
+ * depth buffer once before rendering all delayed 3D annotations.
  */
 class GuiExport So3DAnnotation: public SoSeparator
 {
@@ -107,8 +112,6 @@ class GuiExport So3DAnnotation: public SoSeparator
     SO_NODE_HEADER(So3DAnnotation);
 
 public:
-    static bool render;
-
     So3DAnnotation();
 
     So3DAnnotation(const So3DAnnotation& other) = delete;
@@ -122,6 +125,9 @@ public:
     void GLRenderBelowPath(SoGLRenderAction* action) override;
     void GLRenderInPath(SoGLRenderAction* action) override;
     void GLRenderOffPath(SoGLRenderAction* action) override;
+
+private:
+    static void IRRender(SoAction* action, SoNode* node);
 
 protected:
     ~So3DAnnotation() override = default;

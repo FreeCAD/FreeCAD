@@ -34,6 +34,8 @@
 #endif
 
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoDepthBufferElement.h>
+#include <Inventor/actions/SoIRRenderAction.h>
 #include <algorithm>
 
 #include "So3DAnnotation.h"
@@ -43,12 +45,39 @@ using namespace Gui;
 
 SO_ELEMENT_SOURCE(SoDelayedAnnotationsElement);
 
-bool SoDelayedAnnotationsElement::isProcessingDelayedPaths = false;
+namespace
+{
+
+class DelayedPathsProcessingScope
+{
+public:
+    explicit DelayedPathsProcessingScope(SoState* state)
+        : state(state)
+        , previous(SoDelayedAnnotationsElement::isProcessingDelayedPaths(state))
+    {
+        SoDelayedAnnotationsElement::setProcessingDelayedPaths(this->state, true);
+    }
+
+    ~DelayedPathsProcessingScope()
+    {
+        SoDelayedAnnotationsElement::setProcessingDelayedPaths(this->state, this->previous);
+    }
+
+    DelayedPathsProcessingScope(const DelayedPathsProcessingScope&) = delete;
+    DelayedPathsProcessingScope& operator=(const DelayedPathsProcessingScope&) = delete;
+
+private:
+    SoState* state;
+    bool previous;
+};
+
+}  // namespace
 
 void SoDelayedAnnotationsElement::init(SoState* state)
 {
     SoElement::init(state);
     paths.clear();
+    processingDelayedPaths = false;
 }
 
 void SoDelayedAnnotationsElement::initClass()
@@ -56,6 +85,7 @@ void SoDelayedAnnotationsElement::initClass()
     SO_ELEMENT_INIT_CLASS(SoDelayedAnnotationsElement, inherited);
 
     SO_ENABLE(SoGLRenderAction, SoDelayedAnnotationsElement);
+    SO_ENABLE(SoIRRenderAction, SoDelayedAnnotationsElement);
 }
 
 SoDelayedAnnotationsElement* SoDelayedAnnotationsElement::getElement(SoState* state)
@@ -72,6 +102,16 @@ void SoDelayedAnnotationsElement::addDelayedPath(SoState* state, SoPath* path, i
 bool SoDelayedAnnotationsElement::hasDelayedPaths(SoState* state)
 {
     return !getElement(state)->paths.empty();
+}
+
+bool SoDelayedAnnotationsElement::isProcessingDelayedPaths(SoState* state)
+{
+    return getElement(state)->processingDelayedPaths;
+}
+
+void SoDelayedAnnotationsElement::setProcessingDelayedPaths(SoState* state, bool processing)
+{
+    getElement(state)->processingDelayedPaths = processing;
 }
 
 SoPathList SoDelayedAnnotationsElement::getDelayedPaths(SoState* state)
@@ -91,7 +131,7 @@ SoPathList SoDelayedAnnotationsElement::getDelayedPaths(SoState* state)
 
     SoPathList sortedPaths;
     for (const auto& priorityPath : elt->paths) {
-        sortedPaths.append(priorityPath.path);
+        sortedPaths.append(priorityPath.path.get());
     }
 
     // Clear storage
@@ -114,23 +154,42 @@ void SoDelayedAnnotationsElement::processDelayedPathsWithPriority(SoState* state
         [](const PriorityPath& a, const PriorityPath& b) { return a.priority < b.priority; }
     );
 
-    isProcessingDelayedPaths = true;
+    DelayedPathsProcessingScope processingScope(state);
 
     for (const auto& priorityPath : elt->paths) {
         SoPathList singlePath;
-        singlePath.append(priorityPath.path);
+        singlePath.append(priorityPath.path.get());
 
         action->apply(singlePath, TRUE);
     }
 
-    isProcessingDelayedPaths = false;
+    elt->paths.clear();
+}
+
+void SoDelayedAnnotationsElement::processDelayedPathsWithPriority(SoState* state, SoIRRenderAction* action)
+{
+    auto* elt = static_cast<SoDelayedAnnotationsElement*>(state->getElementNoPush(classStackIndex));
+
+    if (elt->paths.empty()) {
+        return;
+    }
+
+    std::stable_sort(
+        elt->paths.begin(),
+        elt->paths.end(),
+        [](const PriorityPath& a, const PriorityPath& b) { return a.priority < b.priority; }
+    );
+
+    DelayedPathsProcessingScope processingScope(state);
+    SoIRRenderStageScope stageScope(*action, SoRenderStage::AfterMain);
+    for (const auto& priorityPath : elt->paths) {
+        action->switchToPathTraversal(priorityPath.path.get());
+    }
 
     elt->paths.clear();
 }
 
 SO_NODE_SOURCE(So3DAnnotation);
-
-bool So3DAnnotation::render = false;
 
 So3DAnnotation::So3DAnnotation()
 {
@@ -140,6 +199,7 @@ So3DAnnotation::So3DAnnotation()
 void So3DAnnotation::initClass()
 {
     SO_NODE_INIT_CLASS(So3DAnnotation, SoSeparator, "3DAnnotation");
+    SoIRRenderAction::addMethod(So3DAnnotation::getClassTypeId(), So3DAnnotation::IRRender);
 }
 
 void So3DAnnotation::GLRender(SoGLRenderAction* action)
@@ -160,7 +220,7 @@ void So3DAnnotation::GLRender(SoGLRenderAction* action)
 
 void So3DAnnotation::GLRenderBelowPath(SoGLRenderAction* action)
 {
-    if (render) {
+    if (SoDelayedAnnotationsElement::isProcessingDelayedPaths(action->getState())) {
         inherited::GLRenderBelowPath(action);
     }
     else {
@@ -171,7 +231,7 @@ void So3DAnnotation::GLRenderBelowPath(SoGLRenderAction* action)
 
 void So3DAnnotation::GLRenderInPath(SoGLRenderAction* action)
 {
-    if (render) {
+    if (SoDelayedAnnotationsElement::isProcessingDelayedPaths(action->getState())) {
         inherited::GLRenderInPath(action);
     }
     else {
@@ -183,4 +243,24 @@ void So3DAnnotation::GLRenderInPath(SoGLRenderAction* action)
 void So3DAnnotation::GLRenderOffPath(SoGLRenderAction* /* action */)
 {
     // should never render, this is a separator node
+}
+
+void So3DAnnotation::IRRender(SoAction* action, SoNode* node)
+{
+    auto* annotation = static_cast<So3DAnnotation*>(node);
+    auto* renderAction = static_cast<SoIRRenderAction*>(action);
+    SoState* state = renderAction->getState();
+
+    if (SoDelayedAnnotationsElement::isProcessingDelayedPaths(state)) {
+        state->push();
+        // The after-main DrawList stage clears the main depth buffer once,
+        // then retains normal depth testing for annotation self-occlusion.
+        SoDepthBufferElement::set(state, TRUE, TRUE, SoDepthBufferElement::LEQUAL, SbVec2f(0.0F, 1.0F));
+        annotation->inherited::doAction(action);
+        state->pop();
+        return;
+    }
+
+    SoCacheElement::invalidate(state);
+    SoDelayedAnnotationsElement::addDelayedPath(state, action->getCurPath()->copy());
 }

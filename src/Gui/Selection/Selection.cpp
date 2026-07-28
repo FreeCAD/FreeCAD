@@ -27,6 +27,7 @@
 #include <set>
 
 #include <QApplication>
+#include <QCursor>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -903,6 +904,36 @@ bool SelectionSingleton::hasSelectionGate(App::Document* /*pDoc*/) const
     return ActiveGate != nullptr;
 }
 
+void SelectionSingleton::setSelectionGateCursorBlocked(bool blocked)
+{
+    if (!blocked) {
+        if (selectionGateCursorView) {
+            selectionGateCursorView->restoreOverrideCursor();
+        }
+        selectionGateCursorView.clear();
+        selectionGateCursorBlocked = false;
+        return;
+    }
+
+    auto* app = Gui::Application::Instance;
+    auto* doc = app ? app->activeDocument() : nullptr;
+    auto* view = doc ? doc->getActiveView() : nullptr;
+    if (!view) {
+        return;
+    }
+
+    if (selectionGateCursorView && selectionGateCursorView.data() != view) {
+        selectionGateCursorView->restoreOverrideCursor();
+    }
+
+    if (!selectionGateCursorBlocked || selectionGateCursorView.data() != view) {
+        view->setOverrideCursor(QCursor(Qt::ForbiddenCursor));
+    }
+
+    selectionGateCursorView = view;
+    selectionGateCursorBlocked = true;
+}
+
 int SelectionSingleton::setPreselect(
     const char* pDocName,
     const char* pObjectName,
@@ -924,6 +955,7 @@ int SelectionSingleton::setPreselect(
     }
 
     if (DocName == pDocName && FeatName == pObjectName && SubName == pSubName) {
+        setSelectionGateCursorBlocked(false);
         return -1;  // Already preselected
     }
 
@@ -973,13 +1005,11 @@ int SelectionSingleton::setPreselect(
 
             if (getMainWindow()) {
                 getMainWindow()->showMessage(msg);
-                Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-                mdi->setOverrideCursor(QCursor(Qt::ForbiddenCursor));
             }
+            setSelectionGateCursorBlocked(true);
             return 0;
         }
-        Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-        mdi->restoreOverrideCursor();
+        setSelectionGateCursorBlocked(false);
     }
 
     DocName = pDocName;
@@ -1126,6 +1156,10 @@ void SelectionSingleton::setPreselectCoord(float x, float y, float z)
 
 void SelectionSingleton::rmvPreselect(bool signal)
 {
+    if (!signal) {
+        setSelectionGateCursorBlocked(false);
+    }
+
     if (DocName.empty()) {
         return;
     }
@@ -1148,11 +1182,6 @@ void SelectionSingleton::rmvPreselect(bool signal)
     hx = 0;
     hy = 0;
     hz = 0;
-
-    if (ActiveGate && getMainWindow()) {
-        Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-        mdi->restoreOverrideCursor();
-    }
 
     FC_TRACE("rmv preselect");
 
@@ -1187,16 +1216,8 @@ void SelectionSingleton::rmvSelectionGate()
     if (ActiveGate) {
         delete ActiveGate;
         ActiveGate = nullptr;
-
-        if (Gui::Application::Instance) {
-            if (Gui::Document* doc = Gui::Application::Instance->activeDocument()) {
-                // if a document is about to be closed it has no MDI view any more
-                if (Gui::MDIView* mdi = doc->getActiveView()) {
-                    mdi->restoreOverrideCursor();
-                }
-            }
-        }
     }
+    setSelectionGateCursorBlocked(false);
 }
 
 App::Document* SelectionSingleton::getDocument(const char* pDocName) const
@@ -1327,8 +1348,6 @@ bool SelectionSingleton::addSelection(
                 msg = QCoreApplication::translate("SelectionFilter", "Selection not allowed by filter");
             }
             getMainWindow()->showMessage(msg);
-            Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-            mdi->setOverrideCursor(Qt::ForbiddenCursor);
         }
         QApplication::beep();
         return false;
@@ -1341,7 +1360,7 @@ bool SelectionSingleton::addSelection(
     _SelList.push_back(temp);
     _SelStackForward.clear();
 
-    if (clearPreselect) {
+    if (clearPreselect && !DocName.empty()) {
         rmvPreselect();
     }
 

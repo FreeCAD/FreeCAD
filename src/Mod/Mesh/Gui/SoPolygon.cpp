@@ -22,26 +22,23 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <limits>
-
 #include <FCConfig.h>
 
-#ifdef FC_OS_WIN32
-# include <Windows.h>
-#endif
-#ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-#else
-# include <GL/gl.h>
-#endif
 #include <algorithm>
+#include <limits>
+#include <vector>
 
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/bundles/SoTextureCoordinateBundle.h>
+#include <Inventor/actions/SoIRRenderAction.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoIndexedLineSet.h>
+#include <Inventor/nodes/SoLightModel.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoSeparator.h>
 
 #include "SoPolygon.h"
 
@@ -50,9 +47,37 @@ using namespace MeshGui;
 
 SO_NODE_SOURCE(SoPolygon)
 
+namespace
+{
+
+bool getPolygonRange(
+    const SoCoordinateElement* coords,
+    int32_t startIndex,
+    int32_t numVertices,
+    int32_t& begin,
+    int32_t& end
+)
+{
+    if (!coords || startIndex < 0 || numVertices <= 0) {
+        return false;
+    }
+
+    const int32_t coordinateCount = coords->getNum();
+    if (startIndex > coordinateCount || numVertices > coordinateCount - startIndex) {
+        return false;
+    }
+
+    begin = startIndex;
+    end = startIndex + numVertices;
+    return true;
+}
+
+}  // namespace
+
 void SoPolygon::initClass()
 {
     SO_NODE_INIT_CLASS(SoPolygon, SoShape, "Shape");
+    SoIRRenderAction::addMethod(SoPolygon::getClassTypeId(), SoPolygon::IRRender);
 }
 
 SoPolygon::SoPolygon()
@@ -63,6 +88,120 @@ SoPolygon::SoPolygon()
     SO_NODE_ADD_FIELD(numVertices, (0));
     SO_NODE_ADD_FIELD(highlight, (false));
     SO_NODE_ADD_FIELD(render, (true));
+
+    renderRoot = new SoSeparator;
+    renderRoot->ref();
+
+    renderCoordinates = new SoCoordinate3;
+    renderRoot->addChild(renderCoordinates);
+
+    auto* renderLightModel = new SoLightModel;
+    renderLightModel->model = SoLightModel::BASE_COLOR;
+    renderRoot->addChild(renderLightModel);
+
+    renderMaterial = new SoMaterial;
+    renderRoot->addChild(renderMaterial);
+
+    auto* renderDrawStyle = new SoDrawStyle;
+    renderDrawStyle->lineWidth = 3.0f;
+    renderRoot->addChild(renderDrawStyle);
+
+    renderLineSet = new SoIndexedLineSet;
+    renderRoot->addChild(renderLineSet);
+}
+
+SoPolygon::~SoPolygon()
+{
+    if (renderRoot) {
+        renderRoot->unref();
+        renderRoot = nullptr;
+    }
+}
+
+void SoPolygon::clearRenderGeometry()
+{
+    if (renderCoordinates) {
+        if (renderCoordinates->point.getNum() != 0) {
+            renderCoordinates->point.setNum(0);
+        }
+    }
+    if (renderLineSet) {
+        if (renderLineSet->coordIndex.getNum() != 0) {
+            renderLineSet->coordIndex.setNum(0);
+        }
+    }
+}
+
+bool SoPolygon::syncRenderGeometry(SoState* state)
+{
+    if (!state || !renderCoordinates || !renderMaterial || !renderLineSet) {
+        clearRenderGeometry();
+        return false;
+    }
+
+    const SoCoordinateElement* coords = SoCoordinateElement::getInstance(state);
+    if (!coords) {
+        clearRenderGeometry();
+        return false;
+    }
+
+    int32_t begin = 0;
+    int32_t end = 0;
+    if (!getPolygonRange(coords, startIndex.getValue(), numVertices.getValue(), begin, end)) {
+        clearRenderGeometry();
+        return false;
+    }
+
+    const int32_t count = end - begin;
+    if (count < 2) {
+        clearRenderGeometry();
+        return false;
+    }
+
+    bool coordinatesChanged = renderCoordinates->point.getNum() != count;
+    if (!coordinatesChanged) {
+        const SbVec3f* retainedPoints = renderCoordinates->point.getValues(0);
+        for (int32_t i = 0; i < count; ++i) {
+            if (retainedPoints[i] != coords->get3(begin + i)) {
+                coordinatesChanged = true;
+                break;
+            }
+        }
+    }
+    if (coordinatesChanged) {
+        std::vector<SbVec3f> polygonPoints;
+        polygonPoints.reserve(static_cast<size_t>(count));
+        for (int32_t i = begin; i < end; ++i) {
+            polygonPoints.push_back(coords->get3(i));
+        }
+        renderCoordinates->point.setNum(count);
+        renderCoordinates->point.setValues(0, count, polygonPoints.data());
+    }
+
+    updateLineIndices(count);
+    const int indexCount = static_cast<int>(lineIndices.size());
+    bool indicesChanged = renderLineSet->coordIndex.getNum() != indexCount;
+    if (!indicesChanged) {
+        const int32_t* retainedIndices = renderLineSet->coordIndex.getValues(0);
+        indicesChanged = !std::equal(lineIndices.begin(), lineIndices.end(), retainedIndices);
+    }
+    if (indicesChanged) {
+        renderLineSet->coordIndex.setNum(indexCount);
+        renderLineSet->coordIndex.setValues(0, indexCount, lineIndices.data());
+    }
+
+    const SbColor diffuse = SoLazyElement::getDiffuse(state, 0);
+    if (renderMaterial->diffuseColor.getNum() != 1
+        || renderMaterial->diffuseColor.getValues(0)[0] != diffuse) {
+        renderMaterial->diffuseColor.setValue(diffuse);
+    }
+    const float transparency = SoLazyElement::getTransparency(state, 0);
+    if (renderMaterial->transparency.getNum() != 1
+        || renderMaterial->transparency.getValues(0)[0] != transparency) {
+        renderMaterial->transparency.setValue(transparency);
+    }
+
+    return true;
 }
 
 /**
@@ -70,47 +209,54 @@ SoPolygon::SoPolygon()
  */
 void SoPolygon::GLRender(SoGLRenderAction* action)
 {
-    if (shouldGLRender(action) && render.getValue()) {
-        SoState* state = action->getState();
-        const SoCoordinateElement* coords = SoCoordinateElement::getInstance(state);
-        if (!coords) {
-            return;
-        }
-        const SbVec3f* points = coords->getArrayPtr3();
-        if (!points) {
-            return;
-        }
+    if (!action || !render.getValue() || !shouldGLRender(action)) {
+        return;
+    }
 
-        SoMaterialBundle mb(action);
-        SoTextureCoordinateBundle tb(action, true, false);
-        SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-        mb.sendFirst();  // make sure we have the correct material
+    if (!syncRenderGeometry(action->getState())) {
+        return;
+    }
 
-        int32_t len = coords->getNum();
-        drawPolygon(points, len);
+    renderRoot->GLRender(action);
+}
+
+void SoPolygon::updateLineIndices(int32_t vertexCount)
+{
+    if (vertexCount == cachedVertexCount) {
+        return;
+    }
+
+    cachedVertexCount = vertexCount;
+    lineIndices.clear();
+    lineIndices.reserve(static_cast<size_t>(vertexCount) * 3U);
+    for (int32_t i = 0; i < vertexCount; ++i) {
+        lineIndices.push_back(i);
+        lineIndices.push_back((i + 1) % vertexCount);
+        lineIndices.push_back(-1);
     }
 }
 
-/**
- * Renders the polygon.
- */
-void SoPolygon::drawPolygon(const SbVec3f* points, int32_t len) const
+void SoPolygon::IRRender(SoAction* action, SoNode* node)
 {
-    glLineWidth(3.0F);
-    int32_t beg = startIndex.getValue();
-    int32_t cnt = numVertices.getValue();
-    int32_t end = beg + cnt;
-    if (end > len) {
-        return;  // wrong setup, too few points
+    auto* polygon = static_cast<SoPolygon*>(node);
+    if (!polygon) {
+        return;
     }
-    // draw control mesh
-    glBegin(GL_LINES);
-    for (int32_t i = beg; i < end; ++i) {
-        int32_t j = (i - beg + 1) % cnt + beg;
-        glVertex3fv(points[i].getValue());
-        glVertex3fv(points[j].getValue());
+
+    polygon->renderAction(static_cast<SoIRRenderAction*>(action));
+}
+
+void SoPolygon::renderAction(SoIRRenderAction* action)
+{
+    if (!action || !render.getValue()) {
+        return;
     }
-    glEnd();
+
+    if (!syncRenderGeometry(action->getState())) {
+        return;
+    }
+
+    renderRoot->doAction(action);
 }
 
 /**
@@ -143,25 +289,20 @@ void SoPolygon::computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center)
     if (!coords) {
         return;
     }
-    const SbVec3f* points = coords->getArrayPtr3();
-    if (!points) {
-        return;
-    }
     constexpr float floatMax = std::numeric_limits<float>::max();
     float maxX = -floatMax, minX = floatMax, maxY = -floatMax, minY = floatMax, maxZ = -floatMax,
           minZ = floatMax;
-    int32_t len = coords->getNum();
-    int32_t beg = startIndex.getValue();
-    int32_t cnt = numVertices.getValue();
-    int32_t end = beg + cnt;
-    if (end <= len) {
-        for (int32_t i = beg; i < end; i++) {
-            maxX = std::max<float>(maxX, points[i][0]);
-            minX = std::min<float>(minX, points[i][0]);
-            maxY = std::max<float>(maxY, points[i][1]);
-            minY = std::min<float>(minY, points[i][1]);
-            maxZ = std::max<float>(maxZ, points[i][2]);
-            minZ = std::min<float>(minZ, points[i][2]);
+    int32_t begin = 0;
+    int32_t end = 0;
+    if (getPolygonRange(coords, startIndex.getValue(), numVertices.getValue(), begin, end)) {
+        for (int32_t i = begin; i < end; i++) {
+            const SbVec3f& point = coords->get3(i);
+            maxX = std::max<float>(maxX, point[0]);
+            minX = std::min<float>(minX, point[0]);
+            maxY = std::max<float>(maxY, point[1]);
+            minY = std::min<float>(minY, point[1]);
+            maxZ = std::max<float>(maxZ, point[2]);
+            minZ = std::min<float>(minZ, point[2]);
         }
 
         box.setBounds(minX, minY, minZ, maxX, maxY, maxZ);

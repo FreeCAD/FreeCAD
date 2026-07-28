@@ -47,6 +47,9 @@ public:
     long getRenderCache() const;
     void setRenderCache(long);
 
+    std::string getRenderPipeline() const;
+    void setRenderPipeline(std::string);
+
     bool getRandomColor() const;
     void setRandomColor(bool);
 

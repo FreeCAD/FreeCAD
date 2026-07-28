@@ -51,7 +51,7 @@
 
 #include "SoAxisCrossKit.h"
 #include "SoFCBoundingBox.h"
-#include "SoDevicePixelRatioElement.h"
+#include <Inventor/elements/SoDevicePixelRatioElement.h>
 
 using namespace Gui;
 

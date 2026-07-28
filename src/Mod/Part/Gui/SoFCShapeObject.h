@@ -43,6 +43,7 @@
 #include <Mod/Part/PartGlobal.h>
 
 class SoState;
+class SoIRRenderAction;
 
 namespace PartGui
 {
@@ -100,8 +101,10 @@ public:
 protected:
     ~SoFCControlPoints() override;
     void GLRender(SoGLRenderAction* action) override;
+    void render(SoIRRenderAction* action) override;
     void computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center) override;
     void generatePrimitives(SoAction* action) override;
+    void doAction(SoAction* action) override;
 
 private:
     void clearRenderGeometry();

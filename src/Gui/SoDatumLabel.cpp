@@ -33,9 +33,11 @@
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoIRRenderAction.h>
 #include <Inventor/elements/SoFocalDistanceElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
@@ -205,6 +207,7 @@ SO_NODE_SOURCE(SoDatumLabel)
 void SoDatumLabel::initClass()
 {
     SO_NODE_INIT_CLASS(SoDatumLabel, SoShape, "Shape");
+    SoIRRenderAction::addMethod(SoDatumLabel::getClassTypeId(), SoDatumLabel::IRRender);
 }
 
 // NOLINTNEXTLINE
@@ -1694,6 +1697,48 @@ void SoDatumLabel::GLRender(SoGLRenderAction* action)
         m_Root->GLRender(action);
     }
 
+    state->pop();
+}
+
+void SoDatumLabel::IRRender(SoAction* action, SoNode* node)
+{
+    auto* label = static_cast<SoDatumLabel*>(node);
+    if (!label || !action) {
+        return;
+    }
+
+    label->renderAction(static_cast<SoIRRenderAction*>(action));
+}
+
+void SoDatumLabel::renderAction(SoIRRenderAction* action)
+{
+    if (!action || !m_Root) {
+        return;
+    }
+
+    SoState* state = action->getState();
+    if (!state) {
+        return;
+    }
+
+    state->push();
+    SoLazyElement::setBackfaceCulling(state, FALSE);
+
+    const SoShapeStyleElement* shapestyle = SoShapeStyleElement::get(state);
+    if (shapestyle && (shapestyle->getFlags() & SoShapeStyleElement::INVISIBLE)) {
+        state->pop();
+        return;
+    }
+
+    const bool hasText = prepareRenderScene(state);
+
+    if (hasText) {
+        SoShapeStyleElement::setTransparentTexture(state, TRUE);
+        SoShapeStyleElement::setTransparencyType(state, SoGLRenderAction::BLEND);
+        SoLazyElement::setTransparencyType(state, static_cast<int32_t>(SoGLRenderAction::BLEND));
+    }
+
+    m_Root->doAction(action);
     state->pop();
 }
 
