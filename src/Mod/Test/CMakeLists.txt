@@ -73,6 +73,21 @@ ADD_CUSTOM_TARGET(Test ALL
     SOURCES ${Test_SRCS} ${TestData_SRCS}
 )
 
+# The Coin renderer pipeline tests load workbench plugins and Python resources
+# at runtime. Keep their targets in the Test dependency graph.
+if(BUILD_GUI)
+    foreach(_coin_render_pipeline_target
+            pivy
+            PartScripts
+            PartGui
+            MeshGui
+            MeshPartGui)
+        if(TARGET ${_coin_render_pipeline_target})
+            add_dependencies(Test ${_coin_render_pipeline_target})
+        endif()
+    endforeach()
+endif()
+
 fc_copy_sources(Test "${CMAKE_BINARY_DIR}/Mod/Test" ${Test_SRCS} ${TestData_SRCS})
 
 # Coin node snapshot visual test baselines (Python unittest `TestCoinNodeSnapshots`).
