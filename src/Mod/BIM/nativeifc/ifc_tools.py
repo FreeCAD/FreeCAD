@@ -67,6 +67,7 @@ SHORT = False  # If True, only Step ID attribute is created
 ROUND = 8  # rounding value for placements
 DEFAULT_SHAPEMODE = "Coin"  # Can be Shape, Coin or None
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
+PRESERVED_BUILDINGPART_PROPERTIES = {"Height", "LevelOffset"}
 
 
 def create_document(document, filename=None, shapemode=0, strategy=0, silent=False):
@@ -579,8 +580,11 @@ def add_object(document, otype=None, oname="IfcObject"):
             obj.ViewObject.ShowLabel = False
             obj.ViewObject.Proxy = ifc_viewproviders.ifc_vp_buildingpart(obj.ViewObject)
             obj.ViewObject.Proxy.attach(obj.ViewObject)
-        for p in obj.PropertiesList:
-            if obj.getGroupOfProperty(p) in ["BuildingPart", "IFC Attributes", "Children"]:
+        for p in list(obj.PropertiesList):
+            group = obj.getGroupOfProperty(p)
+            if group == "IFC Attributes" or group == "Children":
+                obj.removeProperty(p)
+            elif (group == "BuildingPart") and (p not in PRESERVED_BUILDINGPART_PROPERTIES):
                 obj.removeProperty(p)
         obj.Proxy = ifc_objects.ifc_object(otype)
     else:  # default case, standard IFC object
@@ -824,9 +828,89 @@ def add_properties(obj, ifcfile=None, ifcentity=None, links=False, shapemode=0, 
     elif ifcentity.is_a("IfcControl"):
         ifc_psets.show_psets(obj)
 
+    restore_spatial_data(obj, ifcentity, ifcfile)
+
     # link Label2 and Description
     if "Description" in obj.PropertiesList and hasattr(obj, "setExpression"):
         obj.setExpression("Label2", "Description")
+
+
+def get_quantity_value(ifcentity, quantity_name):
+    """Returns the raw value of a matching IfcElementQuantity item, if any."""
+
+    for rel in getattr(ifcentity, "IsDefinedBy", []):
+        if not rel.is_a("IfcRelDefinesByProperties"):
+            continue
+        pset = rel.RelatingPropertyDefinition
+        if not pset or not pset.is_a("IfcElementQuantity"):
+            continue
+        for quantity in getattr(pset, "Quantities", []) or []:
+            if quantity.Name != quantity_name:
+                continue
+            for attr in (
+                "LengthValue",
+                "AreaValue",
+                "VolumeValue",
+                "CountValue",
+                "TimeValue",
+                "WeightValue",
+            ):
+                if hasattr(quantity, attr):
+                    return getattr(quantity, attr)
+    return None
+
+
+def restore_freecad_property(obj, ifcentity, property_name, ifcfile, pset=None, scale=None):
+    """Restores a FreeCAD property from the exporter's FreeCADPropertySet."""
+
+    if property_name not in obj.PropertiesList:
+        return False
+    if not pset:
+        pset = ifc_psets.get_pset("FreeCADPropertySet", ifcentity)
+    if not pset:
+        return False
+    for prop in getattr(pset, "HasProperties", []) or []:
+        if prop.Name != f"FreeCAD_{property_name}" or not getattr(prop, "NominalValue", None):
+            continue
+        value = prop.NominalValue.wrappedValue
+        ptype = obj.getTypeIdOfProperty(property_name)
+        if ptype in ["App::PropertyLength", "App::PropertyDistance"]:
+            if scale is None:
+                scale = 1 / get_scale(ifcfile)
+            value = value * scale
+        elif ptype == "App::PropertyBool":
+            value = value in [".T.", True]
+        setattr(obj, property_name, value)
+        return True
+    return False
+
+
+def restore_spatial_data(obj, ifcentity, ifcfile):
+    """Restores placement and level metadata not covered by geometry import."""
+
+    if ifcentity.is_a("IfcAnnotation"):
+        return
+    placement = getattr(ifcentity, "ObjectPlacement", None)
+    if placement and ("Placement" in obj.PropertiesList):
+        obj.Placement = ifc_export.get_placement(placement, ifcfile)
+    if ifcentity.is_a("IfcBuildingStorey"):
+        elevation = getattr(ifcentity, "Elevation", None)
+        if (not placement) and ("Placement" in obj.PropertiesList) and (elevation is not None):
+            restored = FreeCAD.Placement(obj.Placement)
+            restored.Base.z = elevation * (1 / get_scale(ifcfile))
+            obj.Placement = restored
+        if "LevelOffset" in obj.PropertiesList:
+            restore_freecad_property(obj, ifcentity, "LevelOffset", ifcfile)
+        if ("Height" in obj.PropertiesList) and not restore_freecad_property(
+            obj, ifcentity, "Height", ifcfile
+        ):
+            quantity = get_quantity_value(ifcentity, "Height")
+            if quantity is not None:
+                obj.Height = quantity * (1 / get_scale(ifcfile))
+        if ("Elevation" in obj.PropertiesList) and ("Placement" in obj.PropertiesList):
+            obj.setExpression("Elevation", "Placement.Base.z")
+        if ("RefElevation" in obj.PropertiesList) and ("Elevation" in obj.PropertiesList):
+            obj.setExpression("RefElevation", "Elevation.Value")
 
 
 def remove_unused_properties(obj):
@@ -1295,6 +1379,10 @@ def aggregate(obj, parent, mode=None):
         else:
             newobj = exobj
         create_relationship(obj, newobj, parent, product, ifcfile, mode)
+        if new:
+            for prop in PRESERVED_BUILDINGPART_PROPERTIES:
+                if (prop in obj.PropertiesList) and (prop in newobj.PropertiesList):
+                    setattr(newobj, prop, obj.getPropertyByName(prop))
     base = getattr(obj, "Base", None)
     if base:
         # make sure the base is used only by this object before deleting

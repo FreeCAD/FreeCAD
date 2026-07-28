@@ -383,11 +383,6 @@ Najmanja vrijednost je 0</translation>
       <translation>Koristite Netgen izgradnju mreže</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Finoća:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Jako grubo</translation>
@@ -438,6 +433,11 @@ Najmanja vrijednost je 0</translation>
 A value in the range of 0.1-1.</source>
       <translation>Ako je ovaj parametar manji, mreža postaje finija.
 Vrijednost u rasponu 0.1-1.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Finoća</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>

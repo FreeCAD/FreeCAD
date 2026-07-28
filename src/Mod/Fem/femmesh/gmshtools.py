@@ -2008,7 +2008,7 @@ class GmshPreviewTools(GmshTools):
         # size fields
         self.write_size_fields(geo)
 
-        # estimate good max mesh size values for coarse visualizaion mesh
+        # estimate good max mesh size values for coarse visualization mesh
         area = self.part_obj.Shape.Area
         factor = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").GetInt(
             "previewMeshFactor", 5
@@ -2029,7 +2029,7 @@ class GmshPreviewTools(GmshTools):
         geo.write("Plugin(MeshSizeFieldView).Run;\n")
         geo.write("\n")
 
-        # save view msh for later data extraction (we have addiotional views for result size field)
+        # save view msh for later data extraction (we have additional views for result size field)
         geo.write(f"Save View[{len(self.result_view_settings)}] 'preview_data.msh';\n")
 
 

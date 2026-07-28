@@ -382,11 +382,6 @@ The smallest value is 0.</source>
       <translation>Использовать решатель сетки Netgen</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Точность:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Очень грубая</translation>
@@ -437,6 +432,11 @@ The smallest value is 0.</source>
 A value in the range of 0.1-1.</source>
       <translation>Если этот параметр меньше, то сетка становится лучше.
 Значение в диапазоне 0,1-1.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>точность</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>

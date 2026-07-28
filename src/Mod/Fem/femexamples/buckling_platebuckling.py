@@ -117,19 +117,19 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj)
 
     # constraints displacement
-    con_disp_x = ObjectsFem.makeConstraintDisplacement(doc, "ConstraintDisplacement_X")
+    con_disp_x = ObjectsFem.makeConstraintDisplacement(doc, "Displacement_X")
     con_disp_x.References = [(geom_obj, "Edge1")]
     con_disp_x.xDisplacement = 0
     con_disp_x.xFree = False
     analysis.addObject(con_disp_x)
 
-    con_disp_y = ObjectsFem.makeConstraintDisplacement(doc, "ConstraintDisplacement_Y")
+    con_disp_y = ObjectsFem.makeConstraintDisplacement(doc, "Displacement_Y")
     con_disp_y.References = [(geom_obj, "Vertex1")]
     con_disp_y.yDisplacement = 0
     con_disp_y.yFree = False
     analysis.addObject(con_disp_y)
 
-    con_disp_z = ObjectsFem.makeConstraintDisplacement(doc, "ConstraintDisplacement_Z")
+    con_disp_z = ObjectsFem.makeConstraintDisplacement(doc, "Displacement_Z")
     con_disp_z.References = [
         (geom_obj, "Edge1"),
         (geom_obj, "Edge2"),
@@ -141,7 +141,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_disp_z)
 
     # constraint force
-    con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
+    con_force = ObjectsFem.makeConstraintForce(doc, "Force")
     con_force.References = [(geom_obj, "Edge3")]
     con_force.Force = "17162160 N"
     con_force.Reversed = True

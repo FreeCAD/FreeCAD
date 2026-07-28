@@ -325,7 +325,7 @@ def _svg_dimension(
     if not nolines:
         svg += 'fill="none" stroke="'
         svg += stroke + '" '
-        svg += 'stroke-width="' + str(linewidth) + ' px" '
+        svg += 'stroke-width="' + str(linewidth) + 'px" '
         svg += 'style="stroke-width:' + str(linewidth)
         svg += ';stroke-miterlimit:4;stroke-dasharray:none;stroke-linecap:square" '
         svg += 'freecad:basepoint1="' + str(p1.x) + " " + str(p1.y) + '" '
@@ -707,7 +707,7 @@ def get_svg(
                         )
                         svg += '<path d="' + d1 + '" '
                         svg += 'fill="none" stroke="' + stroke + '" '
-                        svg += 'stroke-width="' + str(linewidth) + ' px" '
+                        svg += 'stroke-width="' + str(linewidth) + 'px" '
                         svg += 'style="stroke-width:' + str(linewidth)
                         svg += (
                             ";stroke-miterlimit:4;stroke-dasharray:"
@@ -716,7 +716,7 @@ def get_svg(
                         )
                         svg += '<path d="' + d2 + '" '
                         svg += 'fill="none" stroke="' + stroke + '" '
-                        svg += 'stroke-width="' + str(linewidth) + ' px" '
+                        svg += 'stroke-width="' + str(linewidth) + 'px" '
                         svg += 'style="stroke-width:' + str(linewidth)
                         svg += (
                             ";stroke-miterlimit:4;stroke-dasharray:"
@@ -803,7 +803,7 @@ def get_svg(
                 svg_path = "<path "
                 svg_path += 'fill="none" '
                 svg_path += 'stroke="{}" '.format(stroke)
-                svg_path += 'stroke-width="{}" '.format(linewidth)
+                svg_path += 'stroke-width="{}px" '.format(linewidth)
                 svg_path += 'stroke-linecap="square" '
                 svg_path += 'd="{}"'.format(path_dir_str)
                 svg_path += "/>"

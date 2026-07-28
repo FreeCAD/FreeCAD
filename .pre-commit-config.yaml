@@ -52,8 +52,6 @@ exclude: |
         src/Gui/QSint|
         src/Gui/Quarter|
         src/Mod/Fem/femexamples|
-        src/Mod/Import/App/SCL|
-        src/Mod/Import/App/SCL_output|
         src/Mod/Mesh/App/TestData|
         src/Mod/Mesh/App/WildMagic4|
         src/Mod/Robot/App/kdl_cp|
@@ -71,7 +69,7 @@ repos:
     -   id: check-added-large-files
     -   id: mixed-line-ending
 -   repo: https://github.com/psf/black-pre-commit-mirror
-    rev: fa505ab9c3e0fedafe1709fd7ac2b5f8996c670d  # frozen: 26.3.1
+    rev: 4160603246a6b365d4a2af661c6d71b0a0f50478  # frozen: 26.5.1
     hooks:
         -   id: black
             args: ['--line-length', '100']

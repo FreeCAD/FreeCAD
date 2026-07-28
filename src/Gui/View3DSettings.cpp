@@ -32,6 +32,7 @@
 
 #include "NaviCube.h"
 #include "Navigation/NavigationStyle.h"
+#include "Selection/SelectionColors.h"
 #include "SoFCSelectionAction.h"
 #include "View3DSettings.h"
 #include "View3DInventorViewer.h"
@@ -260,26 +261,16 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
         }
     }
     else if (strcmp(Reason, "HighlightColor") == 0) {
-        float transparency;
-        SbColor highlightColor(0.8f, 0.1f, 0.1f);
-        auto highlight = (unsigned long)(highlightColor.getPackedValue());
-        highlight = rGrp.GetUnsigned("HighlightColor", highlight);
-        highlightColor.setPackedValue((uint32_t)highlight, transparency);
         SoSFColor col;
-        col.setValue(highlightColor);
+        col.setValue(SelectionColors::defaultHighlightColor());
         SoFCHighlightColorAction cAct(col);
         for (auto _viewer : _viewers) {
             cAct.apply(_viewer->getSceneGraph());
         }
     }
     else if (strcmp(Reason, "SelectionColor") == 0) {
-        float transparency;
-        SbColor selectionColor(0.1f, 0.8f, 0.1f);
-        auto selection = (unsigned long)(selectionColor.getPackedValue());
-        selection = rGrp.GetUnsigned("SelectionColor", selection);
-        selectionColor.setPackedValue((uint32_t)selection, transparency);
         SoSFColor col;
-        col.setValue(selectionColor);
+        col.setValue(SelectionColors::defaultSelectionColor());
         SoFCSelectionColorAction cAct(col);
         for (auto _viewer : _viewers) {
             cAct.apply(_viewer->getSceneGraph());

@@ -729,7 +729,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="666"/>
       <source>Remove non-manifolds</source>
-      <translation>Eliminar no-variedades</translation>
+      <translation>Eliminar no manifolds</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="773"/>
@@ -934,7 +934,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="277"/>
       <source>Non-manifolds</source>
-      <translation>Sin múltiples</translation>
+      <translation>Sin no manifolds</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="357"/>
@@ -1013,23 +1013,23 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="622"/>
       <source>No non-manifolds</source>
-      <translation>Sin múltiples</translation>
+      <translation>Sin no manifolds</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="630"/>
       <source>%1 non-manifolds</source>
-      <translation>%1 sin múltiples</translation>
+      <translation>%1 no manifolds</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="685"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="688"/>
       <source>Non-manifolds</source>
-      <translation>Sin múltiples</translation>
+      <translation>No manifolds</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="688"/>
       <source>Cannot remove non-manifolds</source>
-      <translation>No se pueden eliminar los múltiples</translation>
+      <translation>No se pueden eliminar la geometría no manifold</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="728"/>
@@ -1089,19 +1089,19 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="927"/>
       <source>Duplicated Faces</source>
-      <translation type="unfinished">Duplicated Faces</translation>
+      <translation>Caras duplicadas</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
       <source>Duplicated Points</source>
-      <translation type="unfinished">Duplicated Points</translation>
+      <translation>Puntos duplicados</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1298"/>
       <source>Mesh Repair</source>
-      <translation type="unfinished">Mesh Repair</translation>
+      <translation>Reparación de la malla</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="963"/>
@@ -1570,6 +1570,10 @@ una apariencia más suave.</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="201"/>
+      <source>Time</source>
+      <translation>Tiempo</translation>
+    </message>
+    <message>
       <location filename="../../RemeshGmsh.cpp" line="259"/>
       <source>Time:</source>
       <translation>Tiempo:</translation>
@@ -1595,7 +1599,7 @@ una apariencia más suave.</translation>
     <message>
       <location filename="../../MeshEditor.cpp" line="255"/>
       <source>Cannot add triangle to avoid non-manifolds.</source>
-      <translation type="unfinished">Cannot add triangle to avoid non-manifolds.</translation>
+      <translation>No se puede agregar un triángulo para evitar los no manifolds.</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="407"/>

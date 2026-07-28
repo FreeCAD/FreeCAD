@@ -383,11 +383,6 @@ Cea mai mică valoare este 0.</translation>
       <translation>Utilizează plasa Netgen</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Finețe:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Foarte aspru</translation>
@@ -438,6 +433,11 @@ Cea mai mică valoare este 0.</translation>
 A value in the range of 0.1-1.</source>
       <translation>Dacă acest parametru este mai mic, ochiul devine mai mic.
 O valoare în intervalul 0.1-1.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Finețe</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>

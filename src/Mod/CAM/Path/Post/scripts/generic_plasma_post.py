@@ -237,16 +237,7 @@ class GenericPlasma(PostProcessor):
             "P",
         ]
 
-        values["MACHINE_NAME"] = "GenericPlasma"
         values["POSTPROCESSOR_FILE_NAME"] = __name__
-        #
-        # Load preamble from machine configuration if available
-        #
-        if self._machine and hasattr(self._machine, "postprocessor_properties"):
-            props = self._machine.postprocessor_properties
-            values["PREAMBLE"] = props.get("preamble", "")
-        else:
-            values["PREAMBLE"] = ""
 
     def _inject_pierce_delay(self, postables):
         """Inject pierce delay after torch ignition command."""
@@ -499,7 +490,7 @@ class GenericPlasma(PostProcessor):
         Path.Log.track("GenericPlasma.get_sanity_checks() called")
         squawks = []
 
-        # Test squawk.  Remove this.  It will always add a warning.
+        # Test squawk.  Remove this.  It will always add a warning. # FIXME: @sliptonic (rework test323_generic_plasma_sanity_checks_integration)
         Path.Log.track("Adding test squawk from GenericPlasma")
         squawks.append(self._create_squawk("WARNING", "This is a test warning message"))
 

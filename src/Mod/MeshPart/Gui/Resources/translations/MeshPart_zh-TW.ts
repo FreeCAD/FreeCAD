@@ -381,11 +381,6 @@ The smallest value is 0.</source>
       <translation>Use the Netgen mesher</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>精細度:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>非常粗糙</translation>
@@ -436,6 +431,11 @@ The smallest value is 0.</source>
 A value in the range of 0.1-1.</source>
       <translation>此參數越小, 網格越細.
 值範圍為 0.1-1.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>精細度</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>

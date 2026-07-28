@@ -175,12 +175,12 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj3)
 
     # constraint fixed
-    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "Fixed")
     con_fixed.References = [(doc.Box1, "Face1"), (doc.Box5, "Face2")]
     analysis.addObject(con_fixed)
 
     # constraint force
-    con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
+    con_force = ObjectsFem.makeConstraintForce(doc, "Force")
     con_force.References = [
         (doc.Box1, "Face6"),
         (doc.Box2, "Face6"),

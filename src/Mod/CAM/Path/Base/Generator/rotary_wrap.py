@@ -171,9 +171,7 @@ def _apply_rezero(commands, axis_letter):
         params[axis_letter] = relative
         new_cmd = _clone(cmd, params)
         if crossed:
-            ann = dict(getattr(new_cmd, "Annotations", {}) or {})
-            ann["rotary_rezero"] = axis_letter
-            new_cmd.Annotations = ann
+            new_cmd.addAnnotations({"rotary_rezero": axis_letter})
         out.append(new_cmd)
 
     return out

@@ -82,12 +82,12 @@ jobs:
       max-parallel: 6
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        os: [windows-2022, ubuntu-latest, macos-latest]
 
     steps:
     - name: Harden the runner (Audit all outbound calls)
       if: "!inputs.skipBuild"
-      uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+      uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
       with:
         egress-policy: audit
 
@@ -105,7 +105,7 @@ jobs:
 
     - name: Checkout
       if: "!inputs.skipBuild"
-      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
 
     - name: Add GCC Problem Matcher
       if: runner.os == 'Linux' && !inputs.skipBuild
@@ -132,9 +132,9 @@ jobs:
         echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
 
     - if: "!inputs.skipBuild"
-      uses: prefix-dev/setup-pixi@1b2de7f3351f171c8b4dfeb558c639cb58ed4ec0 # v0.9.5
+      uses: prefix-dev/setup-pixi@a09b6247153796b190642a2b53fac4241043cf6f # v0.10.0
       with:
-        pixi-version: v0.59.0
+        pixi-version: v0.68.1
         cache: false
 
     - name: Restore Compiler Cache

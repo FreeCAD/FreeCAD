@@ -376,7 +376,7 @@ class BIM_ProjectManager:
                 msg.setWindowTitle(translate("BIM", "Zero Level Height"))
                 msg.setText(translate("BIM", "Level height is zero. No levels will be created."))
                 msg.setInformativeText(
-                    translate("BIM", "Please set the level height to a non-zero value.")
+                    translate("BIM", "Set the level height to a non-zero value.")
                 )
                 msg.exec()
             if self.form.countLevels.value() and levelHeight:

@@ -71,6 +71,7 @@ public:
     QString toHtml() const;
 
 public Q_SLOTS:
+    void selectAll() override;
     void mergeCells();
     void splitCell();
     void deleteSelection();

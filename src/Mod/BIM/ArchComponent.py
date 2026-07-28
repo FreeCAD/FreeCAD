@@ -2506,7 +2506,7 @@ class ComponentTaskPanel:
         ]
         self.psetdefs = {}
         psetspath = os.path.join(
-            FreeCAD.getResourceDir(), "Mod", "Arch", "Presets", "pset_definitions.csv"
+            FreeCAD.getResourceDir(), "Mod", "BIM", "Presets", "pset_definitions.csv"
         )
         if os.path.exists(psetspath):
             with open(psetspath, "r") as csvfile:
@@ -2547,7 +2547,7 @@ class ComponentTaskPanel:
         self.ifcEditor.comboPset.addItems(
             [
                 QtGui.QApplication.translate("Arch", "Add property set", None),
-                QtGui.QApplication.translate("Arch", "New...", None),
+                QtGui.QApplication.translate("Arch", "New…", None),
             ]
             + self.psetkeys
         )

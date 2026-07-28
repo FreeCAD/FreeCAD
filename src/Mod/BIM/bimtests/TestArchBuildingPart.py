@@ -25,10 +25,38 @@
 
 import FreeCAD as App
 import Arch
+import ifcopenshell
 from bimtests import TestArchBase
+from nativeifc import ifc_export
+from nativeifc import ifc_tools
 
 
 class TestArchBuildingPart(TestArchBase.TestArchBase):
+
+    @staticmethod
+    def _get_pset(element, pset_name):
+        for rel in getattr(element, "IsDefinedBy", []) or []:
+            if not rel.is_a("IfcRelDefinesByProperties"):
+                continue
+            pset = rel.RelatingPropertyDefinition
+            if pset and getattr(pset, "Name", None) == pset_name:
+                return pset
+        return None
+
+    @staticmethod
+    def _get_quantity_value(element, quantity_name):
+        for rel in getattr(element, "IsDefinedBy", []) or []:
+            if not rel.is_a("IfcRelDefinesByProperties"):
+                continue
+            pset = rel.RelatingPropertyDefinition
+            if not pset or not pset.is_a("IfcElementQuantity"):
+                continue
+            for quantity in getattr(pset, "Quantities", []) or []:
+                if quantity.Name != quantity_name:
+                    continue
+                if hasattr(quantity, "LengthValue"):
+                    return quantity.LengthValue
+        return None
 
     def testMakeFloorEmpty(self):
         floor = Arch.makeFloor()
@@ -102,6 +130,139 @@ class TestArchBuildingPart(TestArchBase.TestArchBase):
         self.assertEqual(
             floor.IfcType, "Building Storey", "convertFloors failed to set IfcType correctly"
         )
+
+    def test_nativeifc_aggregate_storey_pset_respects_file_scale(self):
+        self.printTestMessage("Testing NativeIFC storey pset restore respects file scale")
+
+        class DummyStorey:
+            PropertiesList = ["Height", "LevelOffset"]
+            Height = 0
+            LevelOffset = 0
+
+            @staticmethod
+            def getTypeIdOfProperty(_property_name):
+                return "App::PropertyLength"
+
+        pset = type("Pset", (), {})()
+        pset.HasProperties = [
+            type(
+                "Prop",
+                (),
+                {
+                    "Name": "FreeCAD_Height",
+                    "NominalValue": type("NominalValue", (), {"wrappedValue": 9.842519685})(),
+                },
+            )(),
+            type(
+                "Prop",
+                (),
+                {
+                    "Name": "FreeCAD_LevelOffset",
+                    "NominalValue": type("NominalValue", (), {"wrappedValue": 0.4101049869})(),
+                },
+            )(),
+        ]
+        floor = DummyStorey()
+
+        self.assertTrue(
+            ifc_tools.restore_freecad_property(
+                floor,
+                object(),
+                "Height",
+                object(),
+                pset=pset,
+                scale=304.8,
+            )
+        )
+        self.assertTrue(
+            ifc_tools.restore_freecad_property(
+                floor,
+                object(),
+                "LevelOffset",
+                object(),
+                pset=pset,
+                scale=304.8,
+            )
+        )
+
+        self.assertAlmostEqual(floor.Height, 3000, delta=0.001)
+        self.assertAlmostEqual(floor.LevelOffset, 125, delta=0.001)
+
+    def test_nativeifc_aggregate_storey_preserves_level_data(self):
+        self.printTestMessage("Testing NativeIFC aggregated storey level data")
+
+        project = ifc_tools.create_document(self.document, silent=True)
+        site = ifc_tools.aggregate(Arch.makeSite(), project)
+        building = ifc_tools.aggregate(Arch.makeBuilding(), site)
+
+        source_storey = Arch.makeFloor(name="AggregatedLevel")
+        source_storey.Height = 3000
+        source_storey.LevelOffset = 125
+        source_storey.Placement.move(App.Vector(0, 0, 6000))
+
+        storey = ifc_tools.aggregate(source_storey, building)
+        self.document.recompute()
+
+        self.assertAlmostEqual(storey.Height.Value, 3000, delta=0.001)
+        self.assertAlmostEqual(storey.LevelOffset.Value, 125, delta=0.001)
+        self.assertAlmostEqual(storey.Placement.Base.z, 6000, delta=0.001)
+        self.assertAlmostEqual(storey.Elevation.Value, 6000, delta=0.001)
+
+        element = project.Proxy.ifcfile[storey.StepId]
+        self.assertAlmostEqual(element.Elevation, 6.0, delta=1e-6)
+        if getattr(element, "ObjectPlacement", None):
+            matrix = ifcopenshell.util.placement.get_local_placement(element.ObjectPlacement)
+            self.assertAlmostEqual(matrix[2][3], 6.0, delta=1e-6)
+
+        pset = self._get_pset(element, "FreeCADPropertySet")
+        self.assertIsNotNone(pset)
+        prop_values = {
+            prop.Name: prop.NominalValue.wrappedValue
+            for prop in getattr(pset, "HasProperties", []) or []
+            if getattr(prop, "NominalValue", None)
+        }
+        self.assertAlmostEqual(prop_values["FreeCAD_Height"], 3.0, delta=1e-6)
+        self.assertAlmostEqual(prop_values["FreeCAD_LevelOffset"], 0.125, delta=1e-6)
+        storey.Placement.move(App.Vector(0, 0, 500))
+        self.document.recompute()
+        self.assertAlmostEqual(storey.Elevation.Value, 6500, delta=0.001)
+
+    def test_strict_ifc_direct_conversion_preserves_level_data(self):
+        self.printTestMessage("Testing Strict IFC direct-conversion storey level data")
+
+        source_storey = Arch.makeFloor(name="ConvertedLevel")
+        source_storey.Height = 3000
+        source_storey.Placement.move(App.Vector(0, 0, 6000))
+
+        load_orphans = ifc_tools.PARAMS.GetBool("LoadOrphans", True)
+        try:
+            ifc_tools.PARAMS.SetBool("LoadOrphans", True)
+            ifc_export.direct_conversion([source_storey], self.document)
+            self.document.recompute()
+        finally:
+            ifc_tools.PARAMS.SetBool("LoadOrphans", load_orphans)
+
+        converted = [
+            obj
+            for obj in self.document.Objects
+            if getattr(obj, "IfcClass", "") == "IfcBuildingStorey"
+        ]
+        self.assertEqual(len(converted), 1)
+
+        storey = converted[0]
+        self.assertAlmostEqual(storey.Height.Value, 3000, delta=0.001)
+        self.assertAlmostEqual(storey.Placement.Base.z, 6000, delta=0.001)
+        self.assertAlmostEqual(storey.Elevation.Value, 6000, delta=0.001)
+
+        element = self.document.Proxy.ifcfile[storey.StepId]
+        self.assertAlmostEqual(element.Elevation, 6.0, delta=1e-6)
+        if getattr(element, "ObjectPlacement", None):
+            matrix = ifcopenshell.util.placement.get_local_placement(element.ObjectPlacement)
+            self.assertAlmostEqual(matrix[2][3], 6.0, delta=1e-6)
+        self.assertAlmostEqual(self._get_quantity_value(element, "Height"), 3.0, delta=1e-6)
+        storey.Placement.move(App.Vector(0, 0, 500))
+        self.document.recompute()
+        self.assertAlmostEqual(storey.Elevation.Value, 6500, delta=0.001)
 
     def test_make2DDrawing(self):
         """Test the make2DDrawing function."""

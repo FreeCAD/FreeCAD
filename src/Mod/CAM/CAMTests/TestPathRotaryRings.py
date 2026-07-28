@@ -99,7 +99,7 @@ class TestPathRotaryRings(PathTestBase):
 
         x_min, x_max = 0.0, 8.0
         axial_stepover = 2.0
-        expected_rings = int(math.ceil((x_max - x_min) / axial_stepover)) + 1
+        expected_rings = Path.Geom.ceil((x_max - x_min) / axial_stepover) + 1
 
         cmds = rotary_rings.generate(
             **_default_args(

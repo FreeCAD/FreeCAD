@@ -152,6 +152,13 @@ void View3DInventorViewerPy::init_type()
         &View3DInventorViewerPy::isRedirectedToSceneGraph,
         "isRedirectedToSceneGraph() -> bool: check whether event redirection is enabled."
     );
+    add_keyword_method(
+        "renderToImage",
+        &View3DInventorViewerPy::renderToImage,
+        "renderToImage(width=0, height=0, samples=-1, includeViewerLighting=True) -> QImage: "
+        "renders the scene into a fresh image without viewer decorations."
+    );
+
     add_varargs_method(
         "grabFramebuffer",
         &View3DInventorViewerPy::grabFramebuffer,
@@ -179,6 +186,11 @@ void View3DInventorViewerPy::init_type()
         &View3DInventorViewerPy::setNaviCubeCorner,
         "setNaviCubeCorner(int): sets the corner where to show the navi cube:\n"
         "0=top left, 1=top right, 2=bottom left, 3=bottom right"
+    );
+    add_noargs_method(
+        "isSpinning",
+        &View3DInventorViewerPy::isSpinning,
+        "isSpinning() -> bool: check whether a spinning animation is currently active."
     );
 
     add_varargs_method(
@@ -213,6 +225,7 @@ Py::Object View3DInventorViewerPy::repr()
 }
 
 View3DInventorViewerPy::method_varargs_handler View3DInventorViewerPy::pycxx_handler = nullptr;
+View3DInventorViewerPy::method_keyword_handler View3DInventorViewerPy::pycxx_keyword_handler = nullptr;
 
 PyObject* View3DInventorViewerPy::method_varargs_ext_handler(
     PyObject* _self_and_name_tuple,
@@ -227,6 +240,32 @@ PyObject* View3DInventorViewerPy::method_varargs_ext_handler(
     }
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
+    }
+    catch (const Py::Exception&) {
+        throw;
+    }
+    catch (...) {
+        throw Py::RuntimeError("Unknown C++ exception");
+    }
+}
+
+PyObject* View3DInventorViewerPy::method_keyword_ext_handler(
+    PyObject* _self_and_name_tuple,
+    PyObject* _args,
+    PyObject* _keywords
+)
+{
+    try {
+        return pycxx_keyword_handler(_self_and_name_tuple, _args, _keywords);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (const Py::Exception&) {
+        throw;
     }
     catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
@@ -245,10 +284,22 @@ Py::Object View3DInventorViewerPy::getattr(const char* attr)
         Py::Object obj = Py::PythonExtension<View3DInventorViewerPy>::getattr(attr);
         if (PyCFunction_Check(obj.ptr())) {
             auto op = reinterpret_cast<PyCFunctionObject*>(obj.ptr());
-            if (!pycxx_handler) {
-                pycxx_handler = op->m_ml->ml_meth;
+            if (op->m_ml->ml_flags & METH_KEYWORDS) {
+                if (!pycxx_keyword_handler) {
+                    pycxx_keyword_handler = reinterpret_cast<method_keyword_handler>(
+                        reinterpret_cast<void (*)()>(op->m_ml->ml_meth)
+                    );
+                }
+                op->m_ml->ml_meth = reinterpret_cast<PyCFunction>(
+                    reinterpret_cast<void (*)()>(method_keyword_ext_handler)
+                );
             }
-            op->m_ml->ml_meth = method_varargs_ext_handler;
+            else {
+                if (!pycxx_handler) {
+                    pycxx_handler = op->m_ml->ml_meth;
+                }
+                op->m_ml->ml_meth = method_varargs_ext_handler;
+            }
         }
         return obj;
     }
@@ -613,14 +664,15 @@ Py::Object View3DInventorViewerPy::setGradientBackgroundColor(const Py::Tuple& a
     };
 
     try {
-        SbColor midColor(-1, -1, -1);
         SbColor fromColor = tupleToColor(col1);
         SbColor toColor = tupleToColor(col2);
         if (col3) {
-            midColor = tupleToColor(col3);
+            const SbColor midColor = tupleToColor(col3);
+            _viewer->setGradientBackgroundColor(fromColor, toColor, midColor);
         }
-
-        _viewer->setGradientBackgroundColor(fromColor, toColor, midColor);
+        else {
+            _viewer->setGradientBackgroundColor(fromColor, toColor);
+        }
         _viewer->redraw();
         return Py::None();
     }
@@ -685,6 +737,44 @@ Py::Object View3DInventorViewerPy::isRedirectedToSceneGraph(const Py::Tuple& arg
     return Py::Boolean(ok);
 }
 
+Py::Object View3DInventorViewerPy::renderToImage(const Py::Tuple& args, const Py::Dict& kwds)
+{
+    int width = 0;
+    int height = 0;
+    int samples = -1;
+    int includeViewerLighting = 1;
+    static char* kwlist[] = {
+        const_cast<char*>("width"),
+        const_cast<char*>("height"),
+        const_cast<char*>("samples"),
+        const_cast<char*>("includeViewerLighting"),
+        nullptr
+    };
+    if (!PyArg_ParseTupleAndKeywords(
+            args.ptr(),
+            kwds.ptr(),
+            "|iiip",
+            kwlist,
+            &width,
+            &height,
+            &samples,
+            &includeViewerLighting
+        )) {
+        throw Py::Exception();
+    }
+
+    View3DInventorViewer::RenderImageOptions options;
+    options.width = width;
+    options.height = height;
+    options.samples = samples;
+    options.includeViewerLighting = includeViewerLighting != 0;
+    QImage img = _viewer->renderToImage(options);
+
+    PythonWrapper wrap;
+    wrap.loadGuiModule();
+    return wrap.fromQImage(img);
+}
+
 Py::Object View3DInventorViewerPy::grabFramebuffer(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), "")) {
@@ -694,11 +784,7 @@ Py::Object View3DInventorViewerPy::grabFramebuffer(const Py::Tuple& args)
 
     PythonWrapper wrap;
     wrap.loadGuiModule();
-#if QT_VERSION < QT_VERSION_CHECK(6, 9, 0)
-    return wrap.fromQImage(img.mirrored());
-#else
-    return wrap.fromQImage(img.flipped(Qt::Vertical));
-#endif
+    return wrap.fromQImage(img);
 }
 
 Py::Object View3DInventorViewerPy::setOverrideMode(const Py::Tuple& args)
@@ -755,4 +841,9 @@ Py::Object View3DInventorViewerPy::getNavigationStyle(const Py::Tuple& args)
         return Py::asObject(navigationStyle->getPyObject());
     }
     return Py::None();
+}
+
+Py::Object View3DInventorViewerPy::isSpinning()
+{
+    return Py::Boolean(_viewer->isSpinning());
 }

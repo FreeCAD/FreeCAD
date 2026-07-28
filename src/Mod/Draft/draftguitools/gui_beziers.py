@@ -125,11 +125,9 @@ class BezCurve(gui_lines.Line):
                 self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg, noTracker=True)
             if self.point:
                 self.ui.redraw()
+                if not self._append_point(self.point):
+                    return
                 self.pos = arg["Position"]
-                self.node.append(self.point)  # add point to "clicked list"
-                # sb add a control point,
-                # if mod(len(cpoints), 2) == 0
-                # then create 2 handle points?
                 self.drawUpdate(self.point)
                 if self.mode == "line" and len(self.node) == 2:
                     self.finish(cont=None, closed=False)

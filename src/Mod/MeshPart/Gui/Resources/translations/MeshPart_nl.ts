@@ -383,11 +383,6 @@ De kleinste waarde is 0.</translation>
       <translation>Gebruik de Netgenmesher</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Fijnheid:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Zeer grof</translation>
@@ -438,6 +433,11 @@ De kleinste waarde is 0.</translation>
 A value in the range of 0.1-1.</source>
       <translation>Als deze parameter kleiner is, wordt de mesh fijner.
 Een waarde tussen 0,1 en 1.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Nauwkeurigheid</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>

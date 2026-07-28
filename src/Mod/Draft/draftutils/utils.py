@@ -795,7 +795,7 @@ def get_rgb(color, testbw=True):
     ----------
     color : list or tuple with RGB values
         The values must be in the 0.0-1.0 range.
-    testwb : bool (default = True)
+    testbw : bool (default = True)
         Pure white will be converted into pure black.
     """
     r = str(hex(int(color[0] * 255)))[2:].zfill(2)

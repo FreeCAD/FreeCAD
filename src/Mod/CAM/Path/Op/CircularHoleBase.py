@@ -211,7 +211,7 @@ class ObjectOp(PathOp.ObjectOp):
         Path.Log.track()
 
         holes = []
-        for base, subs in obj.Base:
+        for base, subs in self.baseShapes(obj):
             for sub in subs:
                 Path.Log.debug("processing {} in {}".format(sub, base.Name))
                 if not self.isHoleEnabled(obj, base, sub):

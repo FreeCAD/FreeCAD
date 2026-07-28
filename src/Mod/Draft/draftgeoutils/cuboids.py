@@ -29,14 +29,18 @@
 # \ingroup draftgeoutils
 # \brief Provides various functions for cubic shapes (parallelepipeds).
 
-## \addtogroup draftgeoutils
-# @{
 import math
+import lazy_loader.lazy_loader as lz
 
 import FreeCAD as App
-import DraftVecUtils
 
 from draftgeoutils.general import geomType, vec, precision
+
+# Delay import of module until first use because it is heavy
+Part = lz.LazyLoader("Part", globals(), "Part")
+
+## \addtogroup draftgeoutils
+# @{
 
 
 def isCubic(shape):
@@ -74,12 +78,21 @@ def isCubic(shape):
 def getCubicDimensions(shape):
     """Return a list containing the placement, and dimensions of the shape.
 
-    The dimensios are length, width and height of a the parallelepiped,
-    rounded to the value indicated by `precision`.
-    The placement point is the lowest corner of the shape.
+    The dimensions are length, width and height of a the parallelepiped, rounded to
+    the value indicated by `precision`. With the length larger than or equal to width.
+    The placement point is the center of the lowest face.
 
     If it is not a parallelepiped (cuboid), return None.
     """
+
+    def _edge_vector(base_point, edge):
+        """Get a unit-vector from the vertices of an edge. The base_point
+        must match one of these points and determines the start point."""
+        points = [v.Point for v in edge.Vertexes]
+        if points[1].isEqual(base_point, 1e-6):
+            points.reverse()
+        return (points[1] - points[0]).normalize()
+
     if not isCubic(shape):
         return None
 
@@ -92,48 +105,38 @@ def getCubicDimensions(shape):
     if z[0] > 5:
         return None
 
-    base = shape.Faces[z[0]]
-    basepoint = base.Edges[0].Vertexes[0].Point
-    plpoint = base.CenterOfMass
-    # basenorm = base.normalAt(0.5, 0.5)
+    base_face = shape.Faces[z[0]]
+    base_norm = base_face.normalAt(0, 0)
+    base_vertex = base_face.Vertexes[0]
+    corner_edges = shape.ancestorsOfType(base_vertex, Part.Edge)
+    edge_z = None
+    for edge in corner_edges:
+        edge_vector = vec(edge).normalize()
+        if edge_vector.isEqual(base_norm, 1e-6) or edge_vector.isEqual(-base_norm, 1e-6):
+            edge_z = edge
+            break
 
-    # getting length and width
-    vx = vec(base.Edges[0])
-    vy = vec(base.Edges[1])
-    if round(vx.Length) == round(vy.Length):
-        vy = vec(base.Edges[2])
-
-    # getting rotations
-    rotZ = DraftVecUtils.angle(vx)
-    rotY = DraftVecUtils.angle(vx, App.Vector(vx.x, vx.y, 0))
-    rotX = DraftVecUtils.angle(vy, App.Vector(vy.x, vy.y, 0))
-
-    # getting height
-    vz = None
-    rpi = round(math.pi / 2, precision())
-    for i in range(1, 6):
-        for e in shape.Faces[i].Edges:
-            if basepoint in [e.Vertexes[0].Point, e.Vertexes[1].Point]:
-                vtemp = vec(e)
-                # print(vtemp)
-                if round(vtemp.getAngle(vx), precision()) == rpi:
-                    if round(vtemp.getAngle(vy), precision()) == rpi:
-                        vz = vtemp
-
-    if not vz:
+    if edge_z is None:
         return None
 
-    mat = App.Matrix()
-    mat.move(plpoint)
-    mat.rotateX(rotX)
-    mat.rotateY(rotY)
-    mat.rotateZ(rotZ)
+    corner_edges.remove(edge_z)
+    edge_x, edge_y = corner_edges
+    if edge_x.Length < edge_y.Length:
+        edge_x, edge_y = edge_y, edge_x
+
+    base_point = base_vertex.Point
+    rot = App.Rotation(
+        _edge_vector(base_point, edge_x),
+        _edge_vector(base_point, edge_y),
+        _edge_vector(base_point, edge_z),
+        "ZXY",
+    )
 
     return [
-        App.Placement(mat),
-        round(vx.Length, precision()),
-        round(vy.Length, precision()),
-        round(vz.Length, precision()),
+        App.Placement(base_face.CenterOfMass, rot),
+        round(edge_x.Length, precision()),
+        round(edge_y.Length, precision()),
+        round(edge_z.Length, precision()),
     ]
 
 

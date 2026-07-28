@@ -75,9 +75,7 @@ class Dimension(gui_base_original.Creator):
 
     def __init__(self):
         super().__init__()
-        self.max = 2
         self.chain = None  # Last chain's leg in ChainMode
-        self.contMode = None
         self.dir = None
         self.featureName = "Dimension"
 
@@ -96,36 +94,32 @@ class Dimension(gui_base_original.Creator):
 
     def Activated(self, dir_vec=None):
         """Execute when the command is called."""
-        if self.chain and not self.contMode:
-            self.finish()
-        else:
-            super().Activated(name=self.featureName)
-            if self.ui:
-                self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Dimension")
-                self.ui.continueCmd.show()
-                self.ui.chainedModeCmd.show()
-                self.ui.selectButton.show()
-                self.altdown = False
-                self.call = self.view.addEventCallback("SoEvent", self.action)
-                self.dimtrack = trackers.dimTracker()
-                self.arctrack = trackers.arcTracker()
-                self.link = None
-                self.dir = dir_vec
-                self.edges = []
-                self.angles = []
-                self.angledata = None
-                self.indices = []
-                self.center = None
-                self.arcmode = False
-                self.point1 = None
-                self.point2 = None
-                self.proj_point1 = None
-                self.proj_point2 = None
-                self.force = None
-                self.info = None
-                self.selectmode = False
-                self.set_selection()
-                _toolmsg(translate("draft", "Pick first point"))
+        super().Activated(name=self.featureName)
+        self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Dimension")
+        self.ui.continueCmd.show()
+        self.ui.chainedModeCmd.show()
+        self.ui.selectButton.show()
+        self.altdown = False
+        self.call = self.view.addEventCallback("SoEvent", self.action)
+        self.dimtrack = trackers.dimTracker()
+        self.arctrack = trackers.arcTracker()
+        self.link = []
+        self.dir = dir_vec
+        self.edges = []
+        self.angles = []
+        self.angledata = []
+        self.indices = []
+        self.center = None
+        self.arcmode = ""
+        self.point1 = None
+        self.point2 = None
+        self.proj_point1 = None
+        self.proj_point2 = None
+        self.force = 0
+        self.info = {}
+        self.selectmode = False
+        self.set_selection()
+        _toolmsg(translate("draft", "Pick first point"))
 
     def set_selection(self):
         """Fill the nodes according to the selected geometry."""
@@ -160,6 +154,7 @@ class Dimension(gui_base_original.Creator):
                         v2 = i
 
                 if v1 is not None and v2 is not None:  # note that v1 or v2 can be zero
+                    self.edges = [edge]
                     self.link = [sel_object.Object, v1, v2]
             elif geo_general.geomType(edge) == "Circle":
                 self.node.extend([edge.Curve.Center, edge.Vertexes[0].Point])
@@ -169,14 +164,16 @@ class Dimension(gui_base_original.Creator):
 
     def finish(self, cont=False):
         """Terminate the operation."""
-        self.end_callbacks(self.call)
+        if cont is False and self.chain:
+            cont = None
         self.chain = None
-        self.contMode = None
         self.dir = None
-        if self.ui:
-            self.dimtrack.finalize()
-            self.arctrack.finalize()
+        self.end_callbacks(self.call)
+        self.dimtrack.finalize()
+        self.arctrack.finalize()
         super().finish()
+        if cont or (cont is None and self.ui.continueMode):
+            self.Activated()
 
     def angle_dimension_normal(self, edge1, edge2):
         rot = App.Rotation(geo_general.vec(edge1), geo_general.vec(edge2), self.wp.axis, "XYZ")
@@ -278,35 +275,34 @@ class Dimension(gui_base_original.Creator):
         if self.angledata:
             # Angle dimension, with two angles provided
             self.create_angle_dimension()
-        elif self.link and not self.arcmode:
-            # Linear dimension, linked to a straight edge
-            if self.force == 1:
-                self.create_linear_dimension_obj("Y")
-            elif self.force == 2:
-                self.create_linear_dimension_obj("X")
-            else:
-                self.create_linear_dimension_obj()
         elif self.arcmode:
             # Radius or dimeter dimension, linked to a circular edge
             self.create_radial_dimension_obj()
         else:
-            # Linear dimension, not linked to any edge
-            self.create_linear_dimension()
-
-        if self.ui.chainedMode or self.ui.continueMode:
-            if self.ui.chainedMode:
-                self.chain = self.node[2]
-            if not self.dir:
-                if self.link:
-                    v1 = self.link[0].Shape.Vertexes[self.link[1]].Point
-                    v2 = self.link[0].Shape.Vertexes[self.link[2]].Point
-                    self.dir = v2.sub(v1)
+            # Linear dimension
+            if self.link:
+                # Linked to a straight edge
+                if self.force == 1:
+                    self.create_linear_dimension_obj("Y")
+                elif self.force == 2:
+                    self.create_linear_dimension_obj("X")
                 else:
-                    self.dir = self.node[1].sub(self.node[0])
+                    self.create_linear_dimension_obj()
+            else:
+                # Not linked to any edge
+                self.create_linear_dimension()
 
-            self.node = [self.node[1]]
-
-        self.link = None
+            if self.ui.chainedMode:
+                if not self.dir:
+                    if self.link:
+                        v1 = self.link[0].Shape.Vertexes[self.link[1]].Point
+                        v2 = self.link[0].Shape.Vertexes[self.link[2]].Point
+                        self.dir = v2.sub(v1)
+                    else:
+                        self.dir = self.node[1].sub(self.node[0])
+                self.chain = self.node[2]
+                self.node = [self.node[1]]
+                self.link = None
 
     def selectEdge(self):
         """Toggle the select mode to the opposite state."""
@@ -325,7 +321,7 @@ class Dimension(gui_base_original.Creator):
         """
         if arg["Type"] == "SoKeyboardEvent":
             if arg["Key"] == "ESCAPE":
-                self.finish()
+                self.finish(cont=None)
         elif arg["Type"] == "SoLocation2Event":  # mouse movement detection
             shift = gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_constrain_key())
             if self.arcmode or self.point2:
@@ -412,7 +408,7 @@ class Dimension(gui_base_original.Creator):
                         #     self.node[1] = self.point2
                         self.set_constraint_node()
                 else:
-                    self.force = None
+                    self.force = 0
                     self.proj_point1 = None
                     self.proj_point2 = None
                     if self.point1:
@@ -487,12 +483,12 @@ class Dimension(gui_base_original.Creator):
                                                     e.Length < 0.00003
                                                 ):  # Edge must be long enough for the tolerance of 0.00001mm to make sense.
                                                     _msg(translate("draft", "Edge too short!"))
-                                                    self.finish()
+                                                    self.finish(cont=None)
                                                     return
                                                 for i in [0, 1]:
                                                     pt = e.Vertexes[i].Point
                                                     if pt.isEqual(
-                                                        self.center, 0.00001
+                                                        self.center, 0.0001
                                                     ):  # A relatively high tolerance is required.
                                                         pt = e.Vertexes[
                                                             i - 1
@@ -501,7 +497,7 @@ class Dimension(gui_base_original.Creator):
                                             self.link = [self.link[0], ob]
                                         else:
                                             _msg(translate("draft", "Edges do not intersect!"))
-                                            self.finish()
+                                            self.finish(cont=None)
                                             return
                                 self.dimtrack.on()
                     else:
@@ -509,17 +505,15 @@ class Dimension(gui_base_original.Creator):
                     self.selectmode = False
                     # print("node", self.node)
                     self.dimtrack.update(self.node)
-                    if len(self.node) == 2:
-                        self.point2 = self.node[1]
                     if len(self.node) == 1:
                         self.dimtrack.on()
                         if self.planetrack:
                             self.planetrack.set(self.node[0])
-                    elif len(self.node) == 2 and self.chain:
-                        self.node.append(self.chain)
-                        self.createObject()
-                        if not self.chain:
-                            self.finish()
+                    elif len(self.node) == 2:
+                        self.point2 = self.node[1]
+                        if self.chain:
+                            self.node.append(self.chain)
+                            self.createObject()
                     elif len(self.node) == 3:
                         # for unlinked arc mode:
                         # if self.arcmode:
@@ -528,15 +522,12 @@ class Dimension(gui_base_original.Creator):
                         #     cen = self.node[0].add(v)
                         #     self.node = [self.node[0], self.node[1], cen]
                         self.createObject()
-                        if self.ui.continueMode:
-                            self.contMode = True
-                            self.Activated()
-                        elif not self.chain:
-                            self.finish()
+                        if self.arcmode or not self.chain:
+                            self.finish(cont=None)
                     elif self.angledata:
                         self.node.append(self.point)
                         self.createObject()
-                        self.finish()
+                        self.finish(cont=None)
                     self.update_hints()
 
     def numericInput(self, numx, numy, numz):
@@ -553,7 +544,7 @@ class Dimension(gui_base_original.Creator):
         elif len(self.node) == 3:
             self.createObject()
             if not self.chain:
-                self.finish()
+                self.finish(cont=None)
         self.update_hints()
 
     def set_constraint_node(self):

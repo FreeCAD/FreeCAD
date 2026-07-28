@@ -359,7 +359,6 @@ bool EditableDatumLabel::eventFilter(QObject* watched, QEvent* event)
     else if (event->type() == QEvent::FocusOut) {
         if (watched == spinBox) {
             Q_EMIT focusLost();
-            return true;
         }
     }
 

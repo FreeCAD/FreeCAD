@@ -28,6 +28,8 @@
 #include "Exceptions.h"
 #include "Library.h"
 
+#include <QDir>
+#include <QFile>
 
 using namespace Materials;
 

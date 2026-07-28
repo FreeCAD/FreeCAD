@@ -293,7 +293,8 @@ bool MeasureAngle::computeOriginFaceFace(TopoDS_Shape& s1, TopoDS_Shape& s2)
         }
     }
 
-    return false;
+    outOrigin = gp_Pnt((location1().XYZ() + location2().XYZ()) / 2.0);
+    return true;
 }
 
 bool MeasureAngle::computeOriginEdgeEdge(TopoDS_Shape& s1, TopoDS_Shape& s2)

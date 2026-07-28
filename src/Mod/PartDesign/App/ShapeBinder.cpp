@@ -470,7 +470,9 @@ SubShapeBinder::~SubShapeBinder()
 
 void SubShapeBinder::setupObject()
 {
-    _Version.setValue(2);
+    // Version 3 marks binders that default to FaceMakerBuildFace when turning
+    // bound wires into faces. Older binders keep the previous face maker.
+    _Version.setValue(3);
     checkPropertyStatus();
 }
 
@@ -703,7 +705,6 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options)
 
                 App::DocumentInitFlags initFlags {.createView = false, .temporary = true};
                 auto tmpDoc = App::GetApplication().newDocument("_tmp_binder", nullptr, initFlags);
-                tmpDoc->setUndoMode(0);
                 auto objs = tmpDoc->copyObject({obj}, true, true);
                 if (!objs.empty()) {
                     for (auto it = objs.rbegin(); it != objs.rend(); ++it) {
@@ -924,7 +925,14 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options)
             result = result.makeElementWires();
             if (MakeFace.getValue()) {
                 try {
-                    result = result.makeElementFace(nullptr, "Part::FaceMakerBuildFace");
+                    // FaceMakerBuildFace became the default only for binders
+                    // created with _Version >= 3. Binders from older documents
+                    // predate sketches producing faces by default, so they keep
+                    // the previous face maker (FaceMakerBullseye) to avoid
+                    // silently changing their generated topology on reopen.
+                    const char* faceMaker = _Version.getValue() >= 3 ? "Part::FaceMakerBuildFace"
+                                                                     : nullptr;
+                    result = result.makeElementFace(nullptr, faceMaker);
                 }
                 catch (...) {
                 }

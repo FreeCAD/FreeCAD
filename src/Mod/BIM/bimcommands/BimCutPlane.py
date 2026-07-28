@@ -42,7 +42,7 @@ class Arch_CutPlane:
         return {
             "Pixmap": "Arch_CutPlane",
             "MenuText": QT_TRANSLATE_NOOP("Arch_CutPlane", "Cut With Plane"),
-            "ToolTip": QT_TRANSLATE_NOOP("Arch_CutPlane", "Cut an object with a plane"),
+            "ToolTip": QT_TRANSLATE_NOOP("Arch_CutPlane", "Cuts an object with a plane"),
         }
 
     def IsActive(self):

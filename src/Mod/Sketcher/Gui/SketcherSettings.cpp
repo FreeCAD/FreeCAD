@@ -492,12 +492,15 @@ void SketcherSettingsDisplay::saveSettings()
     ui->checkBoxUseSystemDecimals->onSave();
     ui->checkBoxShowDimensionalName->onSave();
     ui->prefDimensionalStringFormat->onSave();
+    ui->checkBoxShowDirectionalAutoConstraintHints->onSave();
     ui->checkBoxTVHideDependent->onSave();
     ui->checkBoxTVShowLinks->onSave();
     ui->checkBoxTVShowSupport->onSave();
     ui->checkBoxTVRestoreCamera->onSave();
     ui->checkBoxTVForceOrtho->onSave();
     ui->checkBoxTVSectionView->onSave();
+    ui->axisTransparency->onSave();
+    ui->occludedAxisTransparency->onSave();
 }
 
 void SketcherSettingsDisplay::loadSettings()
@@ -515,6 +518,7 @@ void SketcherSettingsDisplay::loadSettings()
     ui->checkBoxUseSystemDecimals->onRestore();
     ui->checkBoxShowDimensionalName->onRestore();
     ui->prefDimensionalStringFormat->onRestore();
+    ui->checkBoxShowDirectionalAutoConstraintHints->onRestore();
     ui->checkBoxTVHideDependent->onRestore();
     ui->checkBoxTVShowLinks->onRestore();
     ui->checkBoxTVShowSupport->onRestore();
@@ -522,6 +526,8 @@ void SketcherSettingsDisplay::loadSettings()
     ui->checkBoxTVForceOrtho->onRestore();
     this->ui->checkBoxTVForceOrtho->setEnabled(this->ui->checkBoxTVRestoreCamera->isChecked());
     ui->checkBoxTVSectionView->onRestore();
+    ui->axisTransparency->onRestore();
+    ui->occludedAxisTransparency->onRestore();
 }
 
 /**
@@ -680,6 +686,8 @@ SketcherSettingsAppearance::SketcherSettingsAppearance(QWidget* parent)
     ui->ExternalPattern->setItemDelegate(lineStyleDelegate);
     ui->ExternalDefiningPattern->setIconSize(LineIconSize);
     ui->ExternalDefiningPattern->setItemDelegate(lineStyleDelegate);
+    ui->InformationPattern->setIconSize(LineIconSize);
+    ui->InformationPattern->setItemDelegate(lineStyleDelegate);
     const QBrush brush = palette().windowText();
     for (auto style : PenStyles) {
         ui->EdgePattern->addItem(QString(), QVariant(style.pattern));
@@ -687,6 +695,7 @@ SketcherSettingsAppearance::SketcherSettingsAppearance(QWidget* parent)
         ui->InternalPattern->addItem(QString(), QVariant(style.pattern));
         ui->ExternalPattern->addItem(QString(), QVariant(style.pattern));
         ui->ExternalDefiningPattern->addItem(QString(), QVariant(style.pattern));
+        ui->InformationPattern->addItem(QString(), QVariant(style.pattern));
     }
 }
 
@@ -711,6 +720,7 @@ bool SketcherSettingsAppearance::event(QEvent* event)
             ui->InternalPattern->setItemIcon(i, icon);
             ui->ExternalPattern->setItemIcon(i, icon);
             ui->ExternalDefiningPattern->setItemIcon(i, icon);
+            ui->InformationPattern->setItemIcon(i, icon);
         }
         return true;
     }
@@ -732,6 +742,8 @@ void SketcherSettingsAppearance::saveSettings()
     ui->FullyConstraintElementColor->onSave();
     ui->FullyConstraintConstructionElementColor->onSave();
     ui->FullyConstraintInternalAlignmentColor->onSave();
+    ui->InformationColor->onSave();
+    ui->GridLineColor->onSave();
 
     ui->ConstrainedColor->onSave();
     ui->NonDrivingConstraintColor->onSave();
@@ -748,6 +760,7 @@ void SketcherSettingsAppearance::saveSettings()
     ui->InternalWidth->onSave();
     ui->ExternalWidth->onSave();
     ui->ExternalDefiningWidth->onSave();
+    ui->InformationWidth->onSave();
 
     ui->InternalFaceColor->onSave();
 
@@ -773,6 +786,10 @@ void SketcherSettingsAppearance::saveSettings()
     data = ui->ExternalDefiningPattern->itemData(ui->ExternalDefiningPattern->currentIndex());
     pattern = data.toInt();
     hGrp->SetInt("ExternalDefiningPattern", pattern);
+
+    data = ui->InformationPattern->itemData(ui->InformationPattern->currentIndex());
+    pattern = data.toInt();
+    hGrp->SetInt("InformationPattern", pattern);
 }
 
 void SketcherSettingsAppearance::loadSettings()
@@ -790,6 +807,8 @@ void SketcherSettingsAppearance::loadSettings()
     ui->FullyConstraintElementColor->onRestore();
     ui->FullyConstraintConstructionElementColor->onRestore();
     ui->FullyConstraintInternalAlignmentColor->onRestore();
+    ui->InformationColor->onRestore();
+    ui->GridLineColor->onRestore();
 
     ui->ConstrainedColor->onRestore();
     ui->NonDrivingConstraintColor->onRestore();
@@ -806,6 +825,7 @@ void SketcherSettingsAppearance::loadSettings()
     ui->InternalWidth->onRestore();
     ui->ExternalWidth->onRestore();
     ui->ExternalDefiningWidth->onRestore();
+    ui->InformationWidth->onRestore();
 
     ui->InternalFaceColor->setAllowTransparency(true);
     ui->InternalFaceColor->onRestore();
@@ -847,6 +867,13 @@ void SketcherSettingsAppearance::loadSettings()
         index = 0;
     }
     ui->ExternalDefiningPattern->setCurrentIndex(index);
+
+    pattern = hGrp->GetInt("InformationPattern", 0b1111110011111100);
+    index = ui->InformationPattern->findData(QVariant(pattern));
+    if (index < 0) {
+        index = 0;
+    }
+    ui->InformationPattern->setCurrentIndex(index);
 }
 
 /**

@@ -499,36 +499,33 @@ class TestMeshGroups(unittest.TestCase):
 
         # information
         # fcc_print(fm)
-
-        expected_dict = {}
-        expected_dict["ids"] = []
-        expected_dict["names"] = [
+        current_ids = sorted(fm.Groups)
+        current_names = [fm.getGroupName(g) for g in fm.Groups]
+        current_types = [fm.getGroupElementType(g) for g in fm.Groups]
+        new_types = ["Node", "Edge", "Volume", "0DElement", "Ball"]
+        new_names = [
             "MyNodeGroup",
             "MyEdgeGroup",
             "MyVolumeGroup",
             "My0DElementGroup",
             "MyBallGroup",
         ]
-        expected_dict["types"] = ["Node", "Edge", "Volume", "0DElement", "Ball"]
-        expected_dict["count"] = fm.GroupCount + 5
-        result_dict = {}
 
         mygrpids = []
-        for name, typ in zip(expected_dict["names"], expected_dict["types"]):
+        for name, typ in zip(new_names, new_types):
             mygrpids.append(fm.addGroup(name, typ))
 
-        expected_dict["ids"] = sorted(tuple(mygrpids))
+        expected_dict = {}
+        expected_dict["count"] = len(current_ids) + 5
+        expected_dict["ids"] = sorted(current_ids + mygrpids)
+        expected_dict["types"] = current_types + new_types
+        expected_dict["names"] = current_names + new_names
 
-        # fcc_print("expected dict")
-        # fcc_print(expected_dict)
-
+        result_dict = {}
         result_dict["count"] = fm.GroupCount
         result_dict["ids"] = sorted(fm.Groups)
-        result_dict["types"] = list([fm.getGroupElementType(g) for g in fm.Groups])
-        result_dict["names"] = list([fm.getGroupName(g) for g in fm.Groups])
-
-        # fcc_print("result dict")
-        # fcc_print(result_dict)
+        result_dict["types"] = [fm.getGroupElementType(g) for g in fm.Groups]
+        result_dict["names"] = [fm.getGroupName(g) for g in fm.Groups]
 
         self.assertEqual(
             expected_dict,

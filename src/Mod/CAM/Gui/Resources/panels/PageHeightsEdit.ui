@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>282</width>
-    <height>242</height>
+    <height>420</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,67 +17,290 @@
    <iconset resource="../Path.qrc">
     <normaloff>:/icons/CAM_Heights.svg</normaloff>:/icons/CAM_Heights.svg</iconset>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QLabel" name="label_9">
-     <property name="text">
-      <string>Clearance height</string>
-     </property>
-    </widget>
+  <layout class="QVBoxLayout" name="outerLayout">
+   <item>
+    <layout class="QHBoxLayout" name="diagramFieldsLayout">
+     <item alignment="Qt::AlignTop">
+      <widget class="QLabel" name="heightsDiagram">
+       <property name="minimumSize">
+        <size>
+         <width>90</width>
+         <height>235</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>90</width>
+         <height>235</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item alignment="Qt::AlignTop">
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0" colspan="2">
+        <widget class="QLabel" name="label_9">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>34</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>34</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Clearance</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="Gui::QuantitySpinBox" name="clearanceHeight">
+         <property name="toolTip">
+          <string>The height where lateral movement of the toolbit is not obstructed by any fixtures or the part / stock material itself.</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="minimum">
+          <double>-999999999.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>999999999.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QLabel" name="label_7">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>34</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>34</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Retract</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="Gui::QuantitySpinBox" name="safeHeight">
+         <property name="toolTip">
+          <string>The height above which it is safe to move the tool bit with rapid movements. Below this height all lateral and downward movements are performed with feed rate speeds.</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="minimum">
+          <double>-999999999.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>999999999.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QLabel" name="startDepthLabel">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>34</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>34</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Start</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="Gui::QuantitySpinBox" name="startDepth">
+         <property name="toolTip">
+          <string>Start height of the operation. The highest point in Z-axis the operation needs to process.</string>
+         </property>
+         <property name="minimum" stdset="0">
+          <double>-999999999.000000000000000</double>
+         </property>
+         <property name="maximum" stdset="0">
+          <double>999999999.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="3">
+        <widget class="QToolButton" name="startDepthSet">
+         <property name="toolTip">
+          <string>Transfer the Z value of the selected feature as the start height for the operation</string>
+         </property>
+         <property name="text">
+          <string notr="true">…</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>:/icons/button_left.svg</normaloff>:/icons/button_left.svg</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="stepDownLabel">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>34</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>34</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Step down</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <widget class="Gui::QuantitySpinBox" name="stepDown">
+         <property name="toolTip">
+          <string>The depth in Z-axis the operation moves downwards between layers. This value depends on the tool being used, the material to be cut, available cooling and many other factors. Consult the tool manufacturers data sheets for the proper value.</string>
+         </property>
+         <property name="minimum" stdset="0">
+          <double>-999999999.000000000000000</double>
+         </property>
+         <property name="maximum" stdset="0">
+          <double>999999999.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" colspan="2">
+        <widget class="QLabel" name="finishDepthLabel">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>34</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>34</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Finish step down</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <widget class="Gui::QuantitySpinBox" name="finishDepth">
+         <property name="toolTip">
+          <string>Height of the final cut of the operation. Can be used to produce a cleaner finish.</string>
+         </property>
+         <property name="minimum" stdset="0">
+          <double>-999999999.000000000000000</double>
+         </property>
+         <property name="maximum" stdset="0">
+          <double>999999999.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="2">
+        <widget class="QLabel" name="finalDepthLabel">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>34</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>34</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Final</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2">
+        <widget class="Gui::QuantitySpinBox" name="finalDepth">
+         <property name="toolTip">
+          <string>The height of the operation which corresponds to the lowest value in Z-axis the operation needs to process.</string>
+         </property>
+         <property name="minimum" stdset="0">
+          <double>-999999999.000000000000000</double>
+         </property>
+         <property name="maximum" stdset="0">
+          <double>999999999.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="3">
+        <widget class="QToolButton" name="finalDepthSet">
+         <property name="toolTip">
+          <string>Transfer the Z value of the selected feature as the final height for the operation</string>
+         </property>
+         <property name="text">
+          <string notr="true">…</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>:/icons/button_left.svg</normaloff>:/icons/button_left.svg</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0" colspan="4">
+        <spacer name="fieldsExpander">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </item>
-   <item row="0" column="1">
-    <widget class="Gui::QuantitySpinBox" name="clearanceHeight">
-     <property name="toolTip">
-      <string>The height where lateral movement of the toolbit is not obstructed by any fixtures or the part / stock material itself.</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-     <property name="minimum">
-      <double>-999999999.000000000000000</double>
-     </property>
-     <property name="maximum">
-      <double>999999999.000000000000000</double>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="label_7">
-     <property name="text">
-      <string>Safe height</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="Gui::QuantitySpinBox" name="safeHeight">
-     <property name="toolTip">
-      <string>The height above which it is safe to move the tool bit with rapid movements. Below this height all lateral and downward movements are performed with feed rate speeds.</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-     <property name="minimum">
-      <double>-999999999.000000000000000</double>
-     </property>
-     <property name="maximum">
-      <double>999999999.000000000000000</double>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0" colspan="2">
+   <item>
     <widget class="QGroupBox" name="groupBoxLinking">
      <property name="title">
       <string>Linking</string>
      </property>
      <layout class="QGridLayout" name="gridLayoutLinking">
-      <item row="0" column="0">
+      <item row="0" column="1">
        <widget class="QLabel" name="labelCollisionAvoidanceStrategy">
         <property name="text">
          <string>Collision Avoidance Strategy</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
+      <item row="0" column="2">
        <widget class="QComboBox" name="CollisionAvoidanceStrategy">
         <property name="toolTip">
          <string>How collision detection is performed when the tool moves between features.
@@ -91,14 +314,14 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="1" column="1">
        <widget class="QLabel" name="labelCollisionClearance">
         <property name="text">
          <string>Collision Clearance</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="1" column="2">
        <widget class="Gui::QuantitySpinBox" name="CollisionClearance">
         <property name="toolTip">
          <string>Minimum clearance distance between the tool and any solid during linking moves. Applies to all linking modes.</string>
@@ -117,7 +340,7 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape
      </layout>
     </widget>
    </item>
-   <item row="3" column="0" colspan="2">
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -130,7 +353,7 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape
      </property>
     </spacer>
    </item>
-   </layout>
+  </layout>
  </widget>
  <customwidgets>
   <customwidget>
@@ -139,6 +362,16 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>clearanceHeight</tabstop>
+  <tabstop>safeHeight</tabstop>
+  <tabstop>startDepth</tabstop>
+  <tabstop>stepDown</tabstop>
+  <tabstop>finishDepth</tabstop>
+  <tabstop>finalDepth</tabstop>
+  <tabstop>startDepthSet</tabstop>
+  <tabstop>finalDepthSet</tabstop>
+ </tabstops>
  <resources>
   <include location="../Path.qrc"/>
  </resources>

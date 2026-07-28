@@ -43,7 +43,7 @@ void CAMSim::BeginSimulation(const Part::TopoShape& stock, float quality)
 
 void CAMSim::resetSimulation(Gui::Document* doc)
 {
-    DlgCAMSimulator::instance()->resetSimulation(doc);
+    DlgCAMSimulator::instance(doc)->resetSimulation();
 }
 
 void CAMSim::addTool(

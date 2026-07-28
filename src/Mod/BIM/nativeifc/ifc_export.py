@@ -33,10 +33,27 @@ from importers import exportIFC
 from importers import exportIFCHelper
 from importers import importIFCHelper
 
-from . import ifc_tools
 from . import ifc_import
+from . import ifc_layers
+from . import ifc_materials
+from . import ifc_psets
+from . import ifc_tools
 
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
+
+
+def add_freecad_storey_pset(obj, product, ifcfile):
+    """Persists storey-only FreeCAD properties used during NativeIFC recreation."""
+
+    properties = {}
+    if "Height" in obj.PropertiesList:
+        properties["FreeCAD_Height"] = get_scaled_value(obj.Height.Value, ifcfile)
+    if "LevelOffset" in obj.PropertiesList:
+        properties["FreeCAD_LevelOffset"] = get_scaled_value(obj.LevelOffset.Value, ifcfile)
+    if not properties:
+        return
+    pset = ifc_tools.api_run("pset.add_pset", ifcfile, product=product, name="FreeCADPropertySet")
+    ifc_tools.api_run("pset.edit_pset", ifcfile, pset=pset, properties=properties)
 
 
 def get_export_preferences(ifcfile, preferred_context=None, create=None):
@@ -160,6 +177,14 @@ def create_product(obj, parent, ifcfile, ifcclass=None):
     product = ifc_tools.api_run("root.create_entity", ifcfile, ifc_class=ifcclass, name=name)
     ifc_tools.set_attribute(ifcfile, product, "Description", description)
     ifc_tools.set_attribute(ifcfile, product, "ObjectPlacement", placement)
+    if ifcclass == "IfcBuildingStorey":
+        ifc_tools.set_attribute(
+            ifcfile,
+            product,
+            "Elevation",
+            get_scaled_value(obj.Placement.Base.z, ifcfile),
+        )
+        add_freecad_storey_pset(obj, product, ifcfile)
     # TODO below cannot be used at the moment because the ArchIFC exporter returns an
     # IfcProductDefinitionShape already and not an IfcShapeRepresentation
     # ifc_tools.api_run("geometry.assign_representation", ifcfile, product=product, representation=representation)

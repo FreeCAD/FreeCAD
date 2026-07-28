@@ -70,6 +70,7 @@ public:
 
 protected:
     void onChanged(const App::Property* prop) override;
+    void onBaseFeatureRerouted(App::DocumentObject* oldBase, App::DocumentObject* newBase) override;
 };
 
 }  // namespace PartDesign

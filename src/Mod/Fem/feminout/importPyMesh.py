@@ -32,7 +32,6 @@ __url__ = "https://www.freecad.org"
 import FreeCAD
 
 from femmesh import meshtools
-from builtins import open as pyopen
 
 # ************************************************************************************************
 # ********* generic FreeCAD import and export methods ********************************************
@@ -46,24 +45,13 @@ def export(objectslist, filename):
     if len(objectslist) != 1:
         FreeCAD.Console.PrintError("This exporter can only export one object.\n")
         return
+
     obj = objectslist[0]
     if not obj.isDerivedFrom("Fem::FemMeshObject"):
         FreeCAD.Console.PrintError("No FEM mesh object selected.\n")
         return
-    femnodes_mesh = obj.FemMesh.Nodes
-    femelement_table = meshtools.get_femelement_table(obj.FemMesh)
-    if meshtools.is_solid_femmesh(obj.FemMesh):
-        fem_mesh_type = "Solid"
-    elif meshtools.is_face_femmesh(obj.FemMesh):
-        fem_mesh_type = "Face"
-    elif meshtools.is_edge_femmesh(obj.FemMesh):
-        fem_mesh_type = "Edge"
-    else:
-        FreeCAD.Console.PrintError("Export of this FEM mesh to Python not supported.\n")
-        return
-    f = pyopen(filename, "w")
-    write_python_mesh_to_file(femnodes_mesh, femelement_table, fem_mesh_type, f)
-    f.close()
+
+    write(obj.FemMesh, filename)
 
 
 # ************************************************************************************************
@@ -93,46 +81,38 @@ def write(fem_mesh, filename):
     else:
         FreeCAD.Console.PrintError("Export of this FEM mesh to Python not supported.\n")
         return
-    f = pyopen(filename, "w")
-    write_python_mesh_to_file(femnodes_mesh, femelement_table, fem_mesh_type, f)
-    f.close()
-
-
-def write_python_mesh_to_file(femnodes_mesh, femelement_table, fem_mesh_type, f):
+    f = open(filename, "w")
 
     mesh_name = "femmesh"
-
     # nodes
-    f.write("def create_nodes(femmesh):\n")
+    f.write(f"def create_nodes({mesh_name}):\n")
     f.write("    # nodes\n")
-    for node in femnodes_mesh:
-        # print(node, ' --> ', femnodes_mesh[node])
-        vec = femnodes_mesh[node]
-        f.write(f"    {mesh_name}.addNode({vec.x}, {vec.y}, {vec.z}, {node})\n")
+    for idx, coord in fem_mesh.Nodes.items():
+        f.write(f"    {mesh_name}.addNode({coord.x}, {coord.y}, {coord.z}, {idx})\n")
     f.write("    return True\n")
     f.write("\n\n")
 
     # elements
     f.write("def create_elements(femmesh):\n")
     f.write("    # elements\n")
-    for element in femelement_table:
-        # print(element, ' --> ', femelement_table[element])
-        if fem_mesh_type == "Solid":
-            f.write(
-                "    {}.addVolume({}, {})\n".format(
-                    mesh_name, list(femelement_table[element]), element
-                )
-            )
-        elif fem_mesh_type == "Face":
-            f.write(
-                "    {}.addFace({}, {})\n".format(
-                    mesh_name, list(femelement_table[element]), element
-                )
-            )
-        elif fem_mesh_type == "Edge":
-            f.write(
-                "    {}.addEdge({}, {})\n".format(
-                    mesh_name, list(femelement_table[element]), element
-                )
-            )
+    for e in fem_mesh.Edges:
+        e_nodes = fem_mesh.getElementNodes(e)
+        f.write(f"    {mesh_name}.addEdge({list(e_nodes)}, {e})\n")
+    for e in fem_mesh.Faces:
+        e_nodes = fem_mesh.getElementNodes(e)
+        f.write(f"    {mesh_name}.addFace({list(e_nodes)}, {e})\n")
+    for e in fem_mesh.Volumes:
+        e_nodes = fem_mesh.getElementNodes(e)
+        f.write(f"    {mesh_name}.addVolume({list(e_nodes)}, {e})\n")
+
+    # groups
+    f.write("    # groups\n")
+    for grp in fem_mesh.Groups:
+        g_type = fem_mesh.getGroupElementType(grp)
+        g_name = fem_mesh.getGroupName(grp)
+        g_elem = fem_mesh.getGroupElements(grp)
+        f.write(f"    g = {mesh_name}.addGroup('{g_name}', '{g_type}')\n")
+        f.write(f"    {mesh_name}.addGroupElements(g, {list(g_elem)})\n")
+
     f.write("    return True\n")
+    f.close()

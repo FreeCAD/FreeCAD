@@ -30,7 +30,9 @@
 
 #include <App/Document.h>
 #include <Gui/Application.h>
+#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/ViewProvider.h>
 #include <Mod/Part/App/FeatureCompound.h>
 
 #include "ViewProviderCompound.h"
@@ -59,17 +61,33 @@ bool ViewProviderCompound::onDelete(const std::vector<std::string>& subNames)
     std::vector<App::DocumentObject*> pLinks = pComp->Links.getValues();
 
     if (!pLinks.empty()) {
+        const std::vector<std::string> groupDeletionMarker = {"group_recursive_deletion"};
+
         // check group deletion marker -> it means group called this VP to delete it's content
         // so delete everything recursively
         bool inGroupDeletion = !subNames.empty() && subNames[0] == "group_recursive_deletion";
 
-        if (inGroupDeletion) {
+        auto deleteAllLinks = [&]() -> bool {
             for (auto pLink : pLinks) {
-                if (pLink && pLink->isAttachedToDocument() && !pLink->isRemoving()) {
+                if (!pLink || !pLink->isAttachedToDocument() || pLink->isRemoving()) {
+                    continue;
+                }
+                if (auto guiDoc = Gui::Application::Instance->getDocument(pLink->getDocument())) {
+                    if (auto vp = guiDoc->getViewProvider(pLink);
+                        vp && !vp->onDelete(groupDeletionMarker)) {
+                        return false;
+                    }
+                }
+                if (pLink->isAttachedToDocument() && !pLink->isRemoving()) {
                     pLink->getDocument()->removeObject(pLink->getNameInDocument());
                 }
             }
             return true;
+        };
+
+        // Mirrors ViewProviderGroupExtension::extensionOnDelete()
+        if (inGroupDeletion) {
+            return deleteAllLinks();
         }
         QMessageBox::StandardButton choice = QMessageBox::question(
             Gui::getMainWindow(),
@@ -86,12 +104,7 @@ bool ViewProviderCompound::onDelete(const std::vector<std::string>& subNames)
         }
 
         if (choice == QMessageBox::Yes) {
-            for (auto pLink : pLinks) {
-                if (pLink && pLink->isAttachedToDocument() && !pLink->isRemoving()) {
-                    pLink->getDocument()->removeObject(pLink->getNameInDocument());
-                }
-            }
-            return true;
+            return deleteAllLinks();
         }
 
         for (auto pLink : pLinks) {

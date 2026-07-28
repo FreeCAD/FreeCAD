@@ -6114,8 +6114,8 @@ Evolumes
 
 ***********************************************************
 ** constraints fixed node sets
-** ConstraintFixed
-*NSET,NSET=ConstraintFixed
+** Fixed
+*NSET,NSET=Fixed
 1,
 2,
 3,
@@ -6160,8 +6160,8 @@ Evolumes
 
 ***********************************************************
 ** constraints temperature node sets
-** ConstraintTemperatureHot
-*NSET,NSET=ConstraintTemperatureHot
+** TemperatureHot
+*NSET,NSET=TemperatureHot
 1,
 4,
 5,
@@ -6996,8 +6996,8 @@ Evolumes
 2257,
 2258,
 2259,
-** ConstraintTemperatureNormal
-*NSET,NSET=ConstraintTemperatureNormal
+** TemperatureNormal
+*NSET,NSET=TemperatureNormal
 1,
 2,
 3,
@@ -7042,7 +7042,7 @@ Evolumes
 
 ***********************************************************
 ** constraints initial temperature node sets
-** ConstraintInitialTemperature
+** InitialTemperature
 
 ** Physical constants for SI(mm) unit system with Kelvins
 *PHYSICAL CONSTANTS, ABSOLUTE ZERO=0, STEFAN BOLTZMANN=5.670374419e-11
@@ -7076,7 +7076,7 @@ Evolumes
 ***********************************************************
 ** Initial temperature constraint
 *INITIAL CONDITIONS,TYPE=TEMPERATURE
-** ConstraintInitialTemperature
+** InitialTemperature
 Nall,273.0
 
 ***********************************************************
@@ -7092,22 +7092,22 @@ Nall,273.0
 
 ***********************************************************
 ** Fixed Constraints
-** ConstraintFixed
+** Fixed
 *BOUNDARY
-ConstraintFixed,1
-ConstraintFixed,2
-ConstraintFixed,3
+Fixed,1
+Fixed,2
+Fixed,3
 
 
 ***********************************************************
 ** Fixed temperature constraint applied
-** ConstraintTemperatureHot
+** TemperatureHot
 *BOUNDARY
-ConstraintTemperatureHot,11,11,373.0
+TemperatureHot,11,11,373.0
 
-** ConstraintTemperatureNormal
+** TemperatureNormal
 *BOUNDARY
-ConstraintTemperatureNormal,11,11,273.0
+TemperatureNormal,11,11,273.0
 
 
 ***********************************************************
@@ -7118,7 +7118,7 @@ U, NT
 S, E, HFL
 ** outputs --> dat file
 ** reaction forces for Constraint fixed
-*NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
+*NODE PRINT, NSET=Fixed, TOTALS=ONLY
 RF
 
 *OUTPUT, FREQUENCY=1

@@ -2208,14 +2208,32 @@ bool CDxfRead::ReadText()
         }
     }
     ResolveEntityAttributes();
-
+    // repeat_last_record() must be called before the OnRead callback so that exceptions
+    // thrown by the callback don't prevent the stream from being repositioned.
+    repeat_last_record();
     if ((this->*stringToUTF8)(textPrefix)) {
         OnReadText(insertionPoint, height, textPrefix, rotation);
     }
     else {
         ImportError("Unable to process encoding for TEXT/MTEXT '%s'\n", textPrefix);
     }
-    repeat_last_record();
+    return true;
+}
+
+bool CDxfRead::ReadSolid()
+{
+    Base::Vector3d first;
+    Base::Vector3d second;
+    Base::Vector3d third;
+    Base::Vector3d fourth;
+
+    Setup3DVectorAttribute(ePrimaryPoint, first);
+    Setup3DVectorAttribute(ePoint2, second);
+    Setup3DVectorAttribute(ePoint3, third);
+    Setup3DVectorAttribute(ePoint4, fourth);
+    ProcessAllEntityAttributes();
+
+    OnReadSolid(first, second, third, fourth);
     return true;
 }
 
@@ -2284,9 +2302,10 @@ bool CDxfRead::ReadLwPolyLine()
     }
 
     ResolveEntityAttributes();
-
-    OnReadPolyline(vertices, flags);
+    // repeat_last_record() must be called before OnReadPolyline() so that exceptions
+    // thrown by the callback (e.g. OCC) don't prevent the stream from being repositioned.
     repeat_last_record();
+    OnReadPolyline(vertices, flags);
     return true;
 }
 
@@ -2878,6 +2897,9 @@ bool CDxfRead::ReadEntity()
     }
     if (IsObjectName("TEXT")) {
         return ReadText();
+    }
+    if (IsObjectName("SOLID")) {
+        return ReadSolid();
     }
     if (IsObjectName("ELLIPSE")) {
         return ReadEllipse();

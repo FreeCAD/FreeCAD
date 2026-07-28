@@ -25,6 +25,7 @@
 
 #include <cassert>
 #include <xercesc/util/PlatformUtils.hpp>
+#include <xercesc/util/ParseException.hpp>
 #include <xercesc/util/XercesVersion.hpp>
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/dom/DOMImplementation.hpp>
@@ -80,6 +81,39 @@ public:
     }
 };
 
+std::map<std::string, std::string> initMap()
+{
+    // clang-format off
+    std::map<std::string, std::string> propMap = {{"Comment", ""},
+                                                  {"Company", ""},
+                                                  {"CreatedBy", ""},
+                                                  {"CreationDate", ""},
+                                                  {"Label", ""},
+                                                  {"LastModifiedBy", ""},
+                                                  {"LastModifiedDate", ""},
+                                                  {"License", ""},
+                                                  {"LicenseURL", ""},
+                                                  {"Uid", ""}};
+    return propMap;
+    // clang-format on
+}
+
+std::string readValue(DOMNode* node)
+{
+    if (node->getNodeType() == DOMNode::ELEMENT_NODE) {
+        if (DOMElement* child =
+            static_cast<DOMElement*>(node)->getFirstElementChild()) {  // NOLINT
+            if (DOMNode* nameAttr =
+                child->getAttributes()->getNamedItem(XStrLiteral("value").unicodeForm())) {
+                std::string value = StrX(nameAttr->getNodeValue()).c_str();
+                return value;
+            }
+        }
+    }
+
+    return {};
+}
+
 class DocumentMetadata
 {
 public:
@@ -127,22 +161,6 @@ private:
             }
         }
     }
-    static std::map<std::string, std::string> initMap()
-    {
-        // clang-format off
-        std::map<std::string, std::string> propMap = {{"Comment", ""},
-                                                      {"Company", ""},
-                                                      {"CreatedBy", ""},
-                                                      {"CreationDate", ""},
-                                                      {"Label", ""},
-                                                      {"LastModifiedBy", ""},
-                                                      {"LastModifiedDate", ""},
-                                                      {"License", ""},
-                                                      {"LicenseURL", ""},
-                                                      {"Uid", ""}};
-        return propMap;
-        // clang-format on
-    }
 
     void setMetadata(const std::map<std::string, std::string>& propMap)
     {
@@ -170,25 +188,111 @@ private:
         }
     }
 
-    static std::string readValue(DOMNode* node)
+private:
+    XERCES_CPP_NAMESPACE::DOMDocument* xmlDocument;
+    ProjectFile::Metadata metadata;
+};
+
+class MetaDataParser : public DOMLSParserFilter
+{
+    ProjectFile::Metadata& metadata;
+    std::map<std::string, std::string> propMap;
+    std::string currentProperty;
+
+public:
+    explicit MetaDataParser(ProjectFile::Metadata& metadata)
+        : metadata{metadata}
     {
-        if (node->getNodeType() == DOMNode::ELEMENT_NODE) {
-            if (DOMElement* child =
-                    static_cast<DOMElement*>(node)->getFirstElementChild()) {  // NOLINT
-                if (DOMNode* nameAttr =
-                        child->getAttributes()->getNamedItem(XStrLiteral("value").unicodeForm())) {
-                    std::string value = StrX(nameAttr->getNodeValue()).c_str();
-                    return value;
+        propMap = initMap();
+    }
+
+    ~MetaDataParser() override
+    {
+        setMetadata(propMap);
+    }
+
+    void setMetadata(const std::map<std::string, std::string>& propMap)
+    {
+        metadata.comment = propMap.at("Comment");
+        metadata.company = propMap.at("Company");
+        metadata.createdBy = propMap.at("CreatedBy");
+        metadata.creationDate = propMap.at("CreationDate");
+        metadata.label = propMap.at("Label");
+        metadata.lastModifiedBy = propMap.at("LastModifiedBy");
+        metadata.lastModifiedDate = propMap.at("LastModifiedDate");
+        metadata.license = propMap.at("License");
+        metadata.licenseURL = propMap.at("LicenseURL");
+        metadata.uuid = propMap.at("Uid");
+    }
+
+    FilterAction acceptNode([[maybe_unused]]DOMNode* node) override
+    {
+        return DOMLSParserFilter::FILTER_ACCEPT;
+    }
+
+    FilterAction startElement(DOMElement* node) override
+    {
+        std::array property = {chLatin_P,
+                               chLatin_r,
+                               chLatin_o,
+                               chLatin_p,
+                               chLatin_e,
+                               chLatin_r,
+                               chLatin_t,
+                               chLatin_y,
+                               chNull};
+        if (XMLString::equals(node->getNodeName(), property.data())) {
+            std::array name = {chLatin_n,
+                               chLatin_a,
+                               chLatin_m,
+                               chLatin_e,
+                               chNull};
+            if (DOMAttr* attr = node->getAttributeNode(name.data())) {
+                std::string value = StrX(attr->getNodeValue()).c_str();
+                auto it = propMap.find(value);
+                if (it != propMap.end()) {
+                    currentProperty = value;
+                }
+                else {
+                    currentProperty.clear();
                 }
             }
         }
 
-        return {};
+        std::array string = {chLatin_S,
+                             chLatin_t,
+                             chLatin_r,
+                             chLatin_i,
+                             chLatin_n,
+                             chLatin_g,
+                             chNull};
+        if (XMLString::equals(node->getNodeName(), string.data())) {
+            if (!currentProperty.empty()) {
+                propMap[currentProperty] = readValue(node->getParentNode());
+                currentProperty.clear();
+            }
+        }
+
+        // This is the node after the 'Properties' element of the document
+        std::array Objects = {chLatin_O,
+                              chLatin_b,
+                              chLatin_j,
+                              chLatin_e,
+                              chLatin_c,
+                              chLatin_t,
+                              chLatin_s,
+                              chNull};
+        if (XMLString::equals(node->getNodeName(), Objects.data())) {
+            ThrowXML(ParseException,XMLExcepts::Parser_Parse1);
+        }
+
+        return DOMLSParserFilter::FILTER_ACCEPT;
     }
 
-private:
-    XERCES_CPP_NAMESPACE::DOMDocument* xmlDocument;
-    ProjectFile::Metadata metadata;
+    DOMNodeFilter::ShowType getWhatToShow() const override
+    {
+        return DOMNodeFilter::SHOW_ALL;
+    }
 };
 }  // namespace
 
@@ -235,6 +339,7 @@ bool ProjectFile::loadDocument()
 
         try {
             Base::StdInputSource inputSource(*str, stdFile.c_str());
+
             parser->parse(inputSource);
             if (parser->getErrorCount() > 0) {
                 return false;
@@ -253,10 +358,49 @@ bool ProjectFile::loadDocument()
     return false;
 }
 
+ProjectFile::Metadata ProjectFile::parseMetadata() const
+{
+    auto project = ZipTools::open(stdFile);
+    if (!project) {
+        return {};
+    }
+
+    ProjectFile::Metadata meta;
+    std::unique_ptr<std::istream> str(project->getInputStream("Document.xml"));
+    if (str) {
+        static const std::array gLS = { chLatin_L, chLatin_S, chNull };
+
+        DOMImplementation* impl = DOMImplementationRegistry::getDOMImplementation(gLS.data());
+        DOMLSParser* domBuilder = impl->createLSParser(DOMImplementationLS::MODE_SYNCHRONOUS, nullptr);
+        DOMLSInput* input = impl->createLSInput();
+
+        try {
+            Base::StdInputSource inputSource(*str, stdFile.c_str());
+
+            input->setByteStream(&inputSource);
+            MetaDataParser filter(meta);
+            domBuilder->setFilter(&filter);
+            domBuilder->getDomConfig()->setParameter(XMLUni::fgDOMEntities, false);
+            domBuilder->parse(input);
+        }
+        catch (const XMLException&) {
+            // Do nothing
+        }
+        catch (const DOMException&) {
+            // Do nothing
+        }
+
+        input->release();
+        domBuilder->release();
+    }
+
+    return meta;
+}
+
 ProjectFile::Metadata ProjectFile::getMetadata() const
 {
     if (!xmlDocument) {
-        return {};
+        return parseMetadata();
     }
 
     DocumentMetadata reader(xmlDocument);

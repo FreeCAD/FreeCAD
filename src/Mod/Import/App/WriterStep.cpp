@@ -21,7 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-
+#include <Standard_Version.hxx>
 #include <APIHeaderSection_MakeHeader.hxx>
 #include <NCollection_Vector.hxx>
 #include <STEPCAFControl_Writer.hxx>
@@ -45,6 +45,15 @@ void WriterStep::write(Handle(TDocStd_Document) hDoc) const  // NOLINT
     std::string name8bit = Part::encodeFilename(utf8Name);
 
     STEPCAFControl_Writer writer;
+#if OCC_VERSION_HEX >= 0x070900
+    // Temporary workaround for OCCT 7.9+, see: https://github.com/Open-Cascade-SAS/OCCT/issues/1327
+    // TODO: Remove or refine the guards or remove when the issue is fixed in OCCT 8.0.1
+    writer.SetShapeFixParameters(DESTEP_Parameters::GetDefaultShapeFixParameters());
+    ShapeProcess::OperationsFlags aFlags;
+    aFlags.set(ShapeProcess::Operation::SplitCommonVertex);
+    aFlags.set(ShapeProcess::Operation::DirectFaces);
+    writer.SetShapeProcessFlags(aFlags);
+#endif
     Part::Interface::writeStepAssembly(Part::Interface::Assembly::On);
     writer.Transfer(hDoc, STEPControl_AsIs);
 

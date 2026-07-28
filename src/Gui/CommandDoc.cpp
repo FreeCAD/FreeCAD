@@ -268,7 +268,7 @@ void StdCmdImport::activated(int iMsg)
     );
     if (!fileList.isEmpty()) {
         const auto& selectedFilter = formatList[selectedFilterIndex];
-        hPath->SetASCII("FileImportFilter", selectedFilter.name.toLatin1().constData());
+        hPath->SetASCII("FileImportFilter", selectedFilter.name.toUtf8());
         SelectModule::Dict dict
             = SelectModule::importHandler(fileList, selectedFilter.toFilterString());
 
@@ -1497,6 +1497,19 @@ void StdCmdDelete::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     int tid = 0;
+    QPointer<QWidget> focusBefore;
+
+    // Restore focus to the widget the user was working in before the
+    // command opened any modal popup. Using a scope guard ensures the
+    // restore runs on every exit path: normal return, early return,
+    // and exception unwinding.
+    // Fixes https://github.com/FreeCAD/FreeCAD/issues/23798
+    auto focusGuard = qScopeGuard([&focusBefore]() {
+        if (focusBefore && focusBefore->isVisible() && focusBefore->isEnabled()) {
+            focusBefore->setFocus(Qt::OtherFocusReason);
+        }
+    });
+
     try {
         std::set<App::Document*> docs;
         std::vector<App::TransactionLocker> tlocks;
@@ -1511,6 +1524,13 @@ void StdCmdDelete::activated(int iMsg)
             // commitCommand();
             return;
         }
+
+        // Snapshot focus before any popup can steal it. After the delete
+        // completes and any modal dialogs close, restore focus so keyboard
+        // navigation continues from where the user was working.
+        // Fixes https://github.com/FreeCAD/FreeCAD/issues/23798
+        focusBefore = QApplication::focusWidget();
+
         // Ensure that the document from which we send the command
         // can undo it (e.g delete a subobject of an assembly
         // from the assembly file)

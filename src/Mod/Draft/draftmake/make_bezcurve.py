@@ -48,7 +48,7 @@ def make_bezcurve(pointslist, closed=False, placement=None, face=None, support=N
 
     Parameters
     ----------
-    pointlist : [Base.Vector]
+    pointslist : [Base.Vector]
         List of points to create the polyline.
         Instead of a pointslist, you can also pass a Part Wire.
         TODO: Change the name so!

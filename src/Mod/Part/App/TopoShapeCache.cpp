@@ -41,16 +41,16 @@ bool ShapeRelationKey::operator<(const ShapeRelationKey& other) const
 
 TopoShape TopoShapeCache::Ancestry::_getTopoShape(const TopoShape& parent, int index)
 {
-    TopoShape& foundTS = topoShapes[index - 1];
     TopoShape ts;
 
-    if (foundTS.isNull()) {
+    if (int(topoShapes.size()) >= index) {
+        ts = topoShapes[index - 1];
+    }
+
+    if (ts.isNull()) {
         ts = shapes.FindKey(index);
         ts.initCache();
         ts._cache->subLocation = ts._Shape.Location();
-    }
-    else {
-        ts = foundTS;
     }
 
     if (ts._Shape.IsEqual(parent._cache->shape)) {
