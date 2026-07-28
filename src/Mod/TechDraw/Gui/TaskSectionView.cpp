@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #include <QMessageBox>
+#include <QPushButton>
 #include <cmath>
 
 #include "Widgets/CompassWidget.h"
@@ -56,12 +57,10 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
     m_base(base),
     m_section(nullptr),
     m_saveScale(1.0),
-    m_dirName(""),
+    m_dirName("Aligned"),
     m_doc(nullptr),
     m_createMode(true),
     m_saved(false),
-    m_applyDeferred(0),
-    m_directionIsSet(false),
     m_modelIsDirty(false),
     m_scaleEdited(false),
     m_directionChanged(false)
@@ -76,9 +75,6 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
 
     ui->setupUi(this);
     setUiPrimary();
-
-    m_applyDeferred = 0;//setting the direction widgets causes an increment of the deferred count,
-                        //so we reset the counter and the message.
 }
 
 //ctor for edit
@@ -90,8 +86,6 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
     m_doc(nullptr),
     m_createMode(false),
     m_saved(false),
-    m_applyDeferred(0),
-    m_directionIsSet(true),
     m_modelIsDirty(false),
     m_scaleEdited(false),
     m_directionChanged(false)
@@ -114,10 +108,6 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
     m_dirName = m_section->SectionDirection.getValueAsString();
     saveSectionState();
     setUiEdit();
-
-    m_applyDeferred = 0;//setting the direction widgets causes an increment of the deferred count,
-                        //so we reset the counter and the message.
-    ui->lPendingUpdates->setText(QString());
 }
 
 void TaskSectionView::setUiPrimary()
@@ -144,12 +134,7 @@ void TaskSectionView::setUiPrimary()
 
     m_compass->setDialAngle(0.0);
     m_viewDirectionWidget->setValueNoNotify(Base::Vector3d(1.0, 0.0, 0.0));
-
-    //don't allow updates until a direction is picked
-    ui->pbUpdateNow->setEnabled(false);
-    ui->cbLiveUpdate->setEnabled(false);
-    QString msgLiteral = QObject::tr("No direction set");
-    ui->lPendingUpdates->setText(msgLiteral);
+    enableAll(true);
 }
 
 void TaskSectionView::setUiEdit()
@@ -216,7 +201,6 @@ void TaskSectionView::setUiCommon(Base::Vector3d origin)
     connect(ui->pbRight, &QToolButton::clicked, this, &TaskSectionView::onRightClicked);
     connect(ui->pbLeft, &QToolButton::clicked, this, &TaskSectionView::onLeftClicked);
 
-    connect(ui->pbUpdateNow, &QToolButton::clicked, this, &TaskSectionView::updateNowClicked);
     connect(ui->cbLiveUpdate, &QToolButton::clicked, this, &TaskSectionView::liveUpdateClicked);
 
     m_compass = new CompassWidget(this);
@@ -225,7 +209,7 @@ void TaskSectionView::setUiCommon(Base::Vector3d origin)
     connect(m_compass, &CompassWidget::angleChanged, this, &TaskSectionView::slotChangeAngle);
 
     m_viewDirectionWidget = new VectorEditWidget(this);
-    m_viewDirectionWidget->setLabel(QObject::tr("Current View Direction"));
+    m_viewDirectionWidget->setLabel(QObject::tr("As Vector"));
     m_viewDirectionWidget->setToolTip(QObject::tr("The view direction in BaseView coordinates"));
     auto editLayout = ui->viewDirectionLayout;
     editLayout->addWidget(m_viewDirectionWidget);
@@ -413,17 +397,16 @@ void TaskSectionView::enableAll(bool enable)
     }
 }
 
-void TaskSectionView::liveUpdateClicked() { apply(true); }
-
-void TaskSectionView::updateNowClicked() { apply(true); }
+void TaskSectionView::liveUpdateClicked()
+{
+    apply(true);
+}
 
 //******************************************************************************
 bool TaskSectionView::apply(bool forceUpdate)
 {
     if (!ui->cbLiveUpdate->isChecked() && !forceUpdate) {
         //nothing to do
-        m_applyDeferred++;
-        ui->lPendingUpdates->setText(tr("%n update(s) pending", "", m_applyDeferred));
         return false;
     }
 
@@ -457,8 +440,6 @@ bool TaskSectionView::apply(bool forceUpdate)
     checkAll(false);
 
     wc.restoreCursor();
-    m_applyDeferred = 0;
-    ui->lPendingUpdates->setText(QString());
     return true;
 }
 
@@ -473,9 +454,6 @@ void TaskSectionView::applyAligned()
 {
     m_dirName = "Aligned";
     enableAll(true);
-    m_directionIsSet = true;
-    ui->pbUpdateNow->setEnabled(true);
-    ui->cbLiveUpdate->setEnabled(true);
     apply();
 }
 
@@ -770,6 +748,20 @@ bool TaskDlgSectionView::reject()
 {
     widget->reject();
     return true;
+}
+
+void TaskDlgSectionView::clicked(int id)
+{
+    if (id == QDialogButtonBox::Apply) {
+        widget->apply(true);
+    }
+}
+
+void TaskDlgSectionView::modifyStandardButtons(QDialogButtonBox* buttonBox)
+{
+    if (QPushButton* applyButton = buttonBox->button(QDialogButtonBox::Apply)) {
+        applyButton->setToolTip(tr("Rebuild display now. May be slow for complex models."));
+    }
 }
 
 #include <Mod/TechDraw/Gui/moc_TaskSectionView.cpp>

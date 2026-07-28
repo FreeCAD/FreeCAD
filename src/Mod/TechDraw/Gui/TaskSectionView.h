@@ -51,13 +51,13 @@ public:
 
     virtual bool accept();
     virtual bool reject();
+    bool apply(bool forceUpdate = false);
 
 protected:
     void changeEvent(QEvent *event) override;
     void saveSectionState();
     void restoreSectionState();
 
-    bool apply(bool forceUpdate = false);
     void applyQuick(std::string dir);
     void applyAligned();
 
@@ -87,7 +87,6 @@ protected Q_SLOTS:
     void onZChanged();
     void scaleTypeChanged(int index);
     void liveUpdateClicked();
-    void updateNowClicked();
     void slotChangeAngle(double newAngle);
     void slotViewDirectionChanged(Base::Vector3d newDirection);
 
@@ -124,10 +123,8 @@ private:
     std::string m_saveBaseName;
     std::string m_savePageName;
 
-    int m_applyDeferred;
     CompassWidget* m_compass;
     VectorEditWidget* m_viewDirectionWidget;
-    bool m_directionIsSet;
     bool m_modelIsDirty;
 
     bool m_scaleEdited;
@@ -146,14 +143,17 @@ public:
     /// is called the TaskView when the dialog is opened
     void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-/*    virtual void clicked(int);*/
+    void clicked(int id) override;
     /// is called by the framework if the dialog is accepted (Ok)
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel;
+    }
+    void modifyStandardButtons(QDialogButtonBox* buttonBox) override;
 
     bool isAllowedAlterSelection() const override
     { return false; }

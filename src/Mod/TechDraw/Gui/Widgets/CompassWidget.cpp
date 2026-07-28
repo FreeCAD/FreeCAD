@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-// The CompassWidget has several children widgets - a CompassDialWidget, a fine
-// adjustment QDoubleSpinBox and QPushButtons that increment the spin box by a
-// (usually) larger step than the arrows on the spinbox
+// The CompassWidget has a clickable CompassDialWidget and a fine adjustment
+// QDoubleSpinBox.
 
 #include <QApplication>
 #include <QLabel>
 #include <QObject>
-#include <QPushButton>
+#include <QSignalBlocker>
 #include <QtGui>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QVBoxLayout>
@@ -46,8 +45,7 @@
 using namespace TechDrawGui;
 
 CompassWidget::CompassWidget(QWidget* parent)
-    : QWidget(parent), m_minimumWidth(200), m_minimumHeight(200), m_defaultMargin(10), m_angle(0.0),
-      m_advanceIncrement(10.0)
+    : QWidget(parent), m_minimumWidth(200), m_minimumHeight(200), m_defaultMargin(10), m_angle(0.0)
 {
     setObjectName(QStringLiteral("Compass"));
     m_rect = QRect(0, 0, m_minimumWidth, m_minimumHeight);
@@ -56,8 +54,8 @@ CompassWidget::CompassWidget(QWidget* parent)
 
     dsbAngle->installEventFilter(this);
 
-    connect(pbCWAdvance, &QPushButton::pressed, this, &CompassWidget::slotCWAdvance);
-    connect(pbCCWAdvance, &QPushButton::pressed, this, &CompassWidget::slotCCWAdvance);
+    connect(compassDial, &CompassDialWidget::angleSelected,
+            this, &CompassWidget::slotDialAngleSelected);
 }
 
 //trap Enter press in dsbAngle so as not to invoke task accept processing
@@ -86,33 +84,21 @@ void CompassWidget::buildWidget()
     setMinimumSize(QSize(m_minimumWidth, m_minimumHeight));
     compassLayout = new QVBoxLayout(this);
     compassLayout->setObjectName(QStringLiteral("CompassLayout"));
+    compassLayout->setContentsMargins(0, 0, 0, 0);
 
     compassDialLayout = new QHBoxLayout();
     compassDialLayout->setObjectName(QStringLiteral("compassDialLayout"));
-
-    pbCWAdvance = new QPushButton(this);
-    pbCWAdvance->setObjectName(QStringLiteral("pbCWAdvance"));
-    QIcon icon1;
-    icon1.addFile(QStringLiteral(":/icons/arrow-cw.svg"), QSize(), QIcon::Normal, QIcon::On);
-    pbCWAdvance->setIcon(icon1);
-    compassDialLayout->addWidget(pbCWAdvance);
+    compassDialLayout->setContentsMargins(0, 0, 0, 0);
 
     compassDial = new CompassDialWidget(this);
     compassDial->setObjectName(QStringLiteral("CompassDial"));
+    compassDial->setCursor(Qt::PointingHandCursor);
     compassDialLayout->addWidget(compassDial);
-
-    pbCCWAdvance = new QPushButton(this);
-    pbCCWAdvance->setObjectName(QStringLiteral("pbCCWAdvance"));
-    QIcon icon2;
-    icon2.addFile(QStringLiteral(":/icons/arrow-ccw.svg"), QSize(), QIcon::Normal, QIcon::On);
-    pbCCWAdvance->setIcon(icon2);
-    compassDialLayout->addWidget(pbCCWAdvance);
-
-    compassDialLayout->setStretch(1, 2);
     compassLayout->addLayout(compassDialLayout);
 
     compassControlLayout = new QHBoxLayout();
     compassControlLayout->setObjectName(QStringLiteral("compassControlLayout"));
+    compassControlLayout->setContentsMargins(0, 0, 0, 0);
     compassControlLabel = new QLabel(this);
     compassControlLabel->setObjectName(QStringLiteral("compassControlLabel"));
     QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Minimum);
@@ -130,8 +116,7 @@ void CompassWidget::buildWidget()
 
     compassControlLayout->addWidget(dsbAngle);
 
-    compassControlLayout->setStretch(0, 3);
-    compassControlLayout->setStretch(1, 2);
+    compassControlLayout->setStretch(1, 1);
 
     compassLayout->addLayout(compassControlLayout);
 
@@ -141,14 +126,12 @@ void CompassWidget::buildWidget()
 void CompassWidget::retranslateUi()
 {
     compassControlLabel->setText(
-        QApplication::translate("CompassWidget", "View Direction as Angle", nullptr));
+        QApplication::translate("CompassWidget", "As Angle", nullptr));
 #ifndef QT_NO_TOOLTIP
     dsbAngle->setToolTip(QApplication::translate(
         "CompassWidget", "The view direction angle relative to +X in the BaseView.", nullptr));
-    pbCWAdvance->setToolTip(QApplication::translate(
-        "CompassWidget", "Advance the view direction in clockwise direction.", nullptr));
-    pbCCWAdvance->setToolTip(QApplication::translate(
-        "CompassWidget", "Advance the view direction in anti-clockwise direction.", nullptr));
+    compassDial->setToolTip(QApplication::translate(
+        "CompassWidget", "Click to set the view direction angle, rounded to the nearest 5°.", nullptr));
 #endif// QT_NO_TOOLTIP
 }
 
@@ -191,27 +174,9 @@ void CompassWidget::slotSpinBoxEnter(double newAngle)
     }
 }
 
-void CompassWidget::slotCWAdvance()
+void CompassWidget::slotDialAngleSelected(double angle)
 {
-    double angle = m_angle - m_advanceIncrement;
-    if (angle < -360.0) {
-        angle = angle + 360.0;
-    }
+    const QSignalBlocker blocker(dsbAngle);
     setDialAngle(angle);
     Q_EMIT angleChanged(angle);
 }
-
-void CompassWidget::slotCCWAdvance()
-{
-    double angle = m_angle + m_advanceIncrement;
-    if (angle > dsbAngle->maximum()) {
-        angle = angle - dsbAngle->maximum();
-    }
-    if (angle < dsbAngle->minimum()) {
-        angle = angle + dsbAngle->minimum();
-    }
-    setDialAngle(angle);
-    Q_EMIT angleChanged(angle);
-}
-
-void CompassWidget::setAdvanceIncrement(double newIncrement) { m_advanceIncrement = newIncrement; }
