@@ -37,6 +37,8 @@ class SoTransform;
 class SoRotationXYZ;
 class SoImage;
 class SoCoordinate3;
+class SoSensor;
+class SoPickedPoint;
 
 namespace Gui
 {
@@ -140,6 +142,43 @@ private:
     std::optional<DragState> dragState;
 
     static const char* JustificationEnums[];
+};
+
+/**
+ * @brief The AnnotationBuilder class
+ * This is a helper class to asynchronously add an annotation to the document.
+ */
+class GuiExport AnnotationBuilder
+{
+public:
+    struct Info
+    {
+        std::string text;
+        std::string group = "Annotation";
+        std::string label = "Info";
+    };
+    static void schedule(
+        Gui::ViewProviderDocumentObject* vp,
+        const SoPickedPoint* point,
+        const Info& text
+    );
+
+private:
+    AnnotationBuilder(
+        Gui::ViewProviderDocumentObject* vp,
+        const Info& s,
+        const SbVec3f& p,
+        const SbVec3f& n
+    );
+
+    static void run(void* data, SoSensor* sensor);
+    void show();
+
+private:
+    Gui::ViewProviderDocumentObject* vp;
+    SbVec3f p;
+    SbVec3f n;
+    Info info;
 };
 
 }  // namespace Gui
