@@ -510,7 +510,7 @@ def export(exportList, filename, colors=None, preferences=None):
         # handle assemblies (arrays, app::parts, references, etc...)
 
         assemblyElements = []
-        assemblyTypes = ["IfcApp::Part", "IfcPart::Compound", "IfcElementAssembly"]
+        assemblyTypes = ["IfcApp::Part", "IfcElementAssembly"]
         is_nested_group = False
         if preferences["GROUPS_AS_ASSEMBLIES"] and ifctype == "IfcGroup":
             for p in obj.InListRecursive:
