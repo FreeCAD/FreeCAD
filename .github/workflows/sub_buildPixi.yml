@@ -223,6 +223,28 @@ jobs:
         builddir: ${{ env.builddir }}
         reportFile: ${{ env.reportdir }}${{ env.reportfilename }}
 
+    - name: Thread-affinity regression test on Windows
+      if: runner.os == 'Windows' && !inputs.skipBuild
+      timeout-minutes: 3
+      shell: pwsh
+      run: |
+        pixi run pwsh -NoProfile -File `
+          ".github/scripts/run-thread-affinity-debug.ps1" `
+          -BuildDir "${{ env.builddir }}" `
+          -TestRegex "^ThreadAffinity_Tests_run$" `
+          -TestProcessName "ThreadAffinity_Tests_run.exe" `
+          -OutputDir "${{ env.logdir }}thread-affinity" `
+          -TimeoutSeconds 90
+
+    - name: Upload thread-affinity diagnostics
+      if: runner.os == 'Windows' && !inputs.skipBuild && always()
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+      with:
+        name: thread-affinity-windows-${{ github.run_id }}
+        path: ${{ env.logdir }}thread-affinity
+        if-no-files-found: warn
+        retention-days: 7
+
     - name: CMake Install
       if: "!inputs.skipBuild"
       run: |
