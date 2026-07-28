@@ -94,4 +94,24 @@ TEST_F(DocumentTest, getStringHasherGivesExpectedHasher)
     EXPECT_EQ(hasher, foundHasher);
 }
 
+TEST_F(DocumentTest, newDocumentSignalsRelabelWhenDefaultLabelIsUnchanged)
+{
+    const App::Document* relabeledDocument {};
+    int relabelCount = 0;
+    auto connection = App::GetApplication().signalRelabelDocument.connect(
+        [&](const App::Document& document) {
+            relabeledDocument = &document;
+            ++relabelCount;
+        }
+    );
+
+    App::Document* defaultDocument = App::GetApplication().newDocument();
+    connection.disconnect();
+
+    EXPECT_EQ(relabeledDocument, defaultDocument);
+    EXPECT_EQ(relabelCount, 1);
+
+    App::GetApplication().closeDocument(defaultDocument);
+}
+
 // NOLINTEND(readability-magic-numbers)

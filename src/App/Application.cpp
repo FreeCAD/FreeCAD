@@ -670,7 +670,14 @@ Document* Application::newDocument(const char * proposedName, const char * propo
     setActiveDocumentNoSignal(doc);
     signalNewDocument(*doc, CreateFlags.createView);
 
+    const bool labelIsUnchanged = doc->Label.getValue() == label;
     doc->Label.setValue(label);
+    if (labelIsUnchanged) {
+        // Property::setValue() does not emit when the value is unchanged.  The
+        // first default document starts with the same "Unnamed" label, so GUI
+        // observers would otherwise never finish their relabel initialization.
+        signalRelabelDocument(*doc);
+    }
 
     // set the old document active again if the new is temporary
     if (CreateFlags.temporary && oldActiveDoc) {
