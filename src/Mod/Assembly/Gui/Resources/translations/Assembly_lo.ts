@@ -517,9 +517,14 @@ SLOPE ກຳນົດຄວາມຊັນຂອງການປ່ຽນລະ�
       <translation>ເກີດຂໍ້ຜິດພາດໃນຂະນະທີ່ບັນທຶກພາບເຄື່ອນໄຫວ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1184"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1186"/>
       <source>PyAv is not installed. It is required for video export.</source>
       <translation>ບໍ່ໄດ້ຕິດຕັ້ງ PyAv. ມັນຈຳເປັນສຳລັບການສົ່ງອອກວິດີໂອ.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1205"/>
+      <source>Unknown video export format</source>
+      <translation type="unfinished">Unknown video export format</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="170"/>

@@ -527,9 +527,14 @@ SLOPE définit la pente de la transition entre 0 et H1 et H2 à 0 à T1 et T2 re
       <translation>Une erreur est survenue lors de l'enregistrement de l'animation.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1184"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1186"/>
       <source>PyAv is not installed. It is required for video export.</source>
       <translation>PyAv n'est pas installé. Il est requis pour l'exportation vidéo.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1205"/>
+      <source>Unknown video export format</source>
+      <translation>Format inconnu d'exportation de la vidéo</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="170"/>
