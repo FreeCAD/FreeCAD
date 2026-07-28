@@ -29,20 +29,30 @@ def compound_all(shapes):
     return Part.makeCompound(shapes)
 
 
+def make_bracket_cheek(y_position):
+    """Return one ceiling bracket cheek with a rounded pin lug."""
+    lug = Part.makeCylinder(
+        18,
+        12,
+        Base.Vector(0, y_position, 192),
+        Base.Vector(0, 1, 0),
+    )
+    strap = Part.makeBox(36, 12, 38, Base.Vector(-18, y_position, 192))
+    pin_hole = Part.makeCylinder(
+        8,
+        14,
+        Base.Vector(0, y_position - 1, 192),
+        Base.Vector(0, 1, 0),
+    )
+
+    return lug.fuse(strap).removeSplitter().cut(pin_hole)
+
+
 def make_ceiling_bracket():
     """Return a ceiling-mounted support bracket for the hinge pin."""
     ceiling_plate = Part.makeBox(130, 90, 12, Base.Vector(-65, -45, 230))
-    left_cheek = Part.makeBox(36, 12, 66, Base.Vector(-18, -36, 164))
-    right_cheek = Part.makeBox(36, 12, 66, Base.Vector(-18, 24, 164))
-
-    pin_clearance = Part.makeCylinder(
-        10.5,
-        90,
-        Base.Vector(0, -45, 192),
-        Base.Vector(0, 1, 0),
-    )
-    left_cheek = left_cheek.cut(pin_clearance)
-    right_cheek = right_cheek.cut(pin_clearance)
+    left_cheek = make_bracket_cheek(-36)
+    right_cheek = make_bracket_cheek(24)
 
     return compound_all([ceiling_plate, left_cheek, right_cheek])
 
@@ -51,20 +61,20 @@ def make_pin():
     """Return the horizontal hinge pin shape."""
     pin = Part.makeCylinder(
         8,
-        88,
-        Base.Vector(0, -44, 192),
+        72,
+        Base.Vector(0, -36, 192),
         Base.Vector(0, 1, 0),
     )
     left_cap = Part.makeCylinder(
         11,
         4,
-        Base.Vector(0, -48, 192),
+        Base.Vector(0, -40, 192),
         Base.Vector(0, 1, 0),
     )
     right_cap = Part.makeCylinder(
         11,
         4,
-        Base.Vector(0, 44, 192),
+        Base.Vector(0, 36, 192),
         Base.Vector(0, 1, 0),
     )
 
@@ -80,7 +90,7 @@ def make_pendulum():
         Base.Vector(0, 1, 0),
     )
     pin_hole = Part.makeCylinder(
-        9.4,
+        8,
         14,
         Base.Vector(0, -7, 192),
         Base.Vector(0, 1, 0),
