@@ -4,7 +4,7 @@
 
 using namespace MbDFEMGui;
 
-PROPERTY_SOURCE(MbDFEMGui::ViewProviderMbDMotion, Gui::ViewProviderDocumentObject)
+PROPERTY_SOURCE(MbDFEMGui::ViewProviderMbDMotion, MbDFEMGui::ViewProviderMbDItemIJ)
 
 ViewProviderMbDMotion::ViewProviderMbDMotion()
 {

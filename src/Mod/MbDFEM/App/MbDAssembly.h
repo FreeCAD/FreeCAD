@@ -26,12 +26,14 @@ public:
     ~MbDAssembly() override = default;
 
     App::PropertyPlacement Placement;
+    App::PropertyLinkList assemblies;
     App::PropertyLinkList parts;
     App::PropertyLinkList markers;
     App::PropertyLinkList joints;
     App::PropertyLinkList motions;
     App::PropertyLinkList actions;
 
+    void addAssembly(MbDAssembly* assembly);
     void addPart(MbDPart* part);
     void addMarker(MbDMarker* marker);
     void addJoint(MbDJoint* joint);
@@ -40,6 +42,7 @@ public:
 
     PyObject* getPyObject() override;
 
+    App::DocumentObjectGroup* getAssembliesFolder() const;
     App::DocumentObjectGroup* getPartsFolder() const;
     App::DocumentObjectGroup* getMarkersFolder() const;
     App::DocumentObjectGroup* getJointsFolder() const;
@@ -52,12 +55,14 @@ public:
     }
 
 private:
+    App::PropertyLink _assembliesFolder;
     App::PropertyLink _partsFolder;
     App::PropertyLink _markersFolder;
     App::PropertyLink _jointsFolder;
     App::PropertyLink _motionsFolder;
     App::PropertyLink _actionsFolder;
 
+    App::DocumentObjectGroup* ensureAssembliesFolder();
     App::DocumentObjectGroup* ensurePartsFolder();
     App::DocumentObjectGroup* ensureMarkersFolder();
     App::DocumentObjectGroup* ensureJointsFolder();

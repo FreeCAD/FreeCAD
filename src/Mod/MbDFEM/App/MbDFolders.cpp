@@ -3,16 +3,23 @@
 #include "MbDFolders.h"
 
 #include "MbDAction.h"
+#include "MbDAssembly.h"
 #include "MbDJoint.h"
 #include "MbDMarker.h"
 #include "MbDMotion.h"
 #include "MbDPart.h"
 
+PROPERTY_SOURCE(MbDFEM::MbDAssembliesFolder, App::DocumentObjectGroup)
 PROPERTY_SOURCE(MbDFEM::MbDPartsFolder, App::DocumentObjectGroup)
 PROPERTY_SOURCE(MbDFEM::MbDMarkersFolder, App::DocumentObjectGroup)
 PROPERTY_SOURCE(MbDFEM::MbDJointsFolder, App::DocumentObjectGroup)
 PROPERTY_SOURCE(MbDFEM::MbDMotionsFolder, App::DocumentObjectGroup)
 PROPERTY_SOURCE(MbDFEM::MbDActionsFolder, App::DocumentObjectGroup)
+
+bool MbDFEM::MbDAssembliesFolder::allowObject(App::DocumentObject* object)
+{
+    return object && object->isDerivedFrom<MbDFEM::MbDAssembly>();
+}
 
 bool MbDFEM::MbDPartsFolder::allowObject(App::DocumentObject* object)
 {

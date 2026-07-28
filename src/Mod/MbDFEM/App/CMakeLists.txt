@@ -5,6 +5,7 @@ set(MbDFEM_LIBS
 )
 
 generate_from_py(MbDAssembly)
+generate_from_py(MbDItemIJ)
 generate_from_py(MbDPart)
 
 set(MbDFEM_SRCS
@@ -18,6 +19,10 @@ set(MbDFEM_SRCS
     MbDAssemblyPyImp.cpp
     MbDFolders.cpp
     MbDFolders.h
+    MbDItemIJ.cpp
+    MbDItemIJ.h
+    MbDItemIJ.pyi
+    MbDItemIJPyImp.cpp
     MbDJoint.cpp
     MbDJoint.h
     MbDMarker.cpp

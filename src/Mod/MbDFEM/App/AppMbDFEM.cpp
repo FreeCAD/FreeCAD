@@ -7,6 +7,7 @@
 #include "MbDAction.h"
 #include "MbDAssembly.h"
 #include "MbDFolders.h"
+#include "MbDItemIJ.h"
 #include "MbDJoint.h"
 #include "MbDMarker.h"
 #include "MbDMotion.h"
@@ -38,9 +39,11 @@ PyMOD_INIT_FUNC(MbDFEM)
     MbDFEM::MbDAssembly::init();
     MbDFEM::MbDPart::init();
     MbDFEM::MbDMarker::init();
+    MbDFEM::MbDItemIJ::init();
     MbDFEM::MbDJoint::init();
     MbDFEM::MbDMotion::init();
     MbDFEM::MbDAction::init();
+    MbDFEM::MbDAssembliesFolder::init();
     MbDFEM::MbDPartsFolder::init();
     MbDFEM::MbDMarkersFolder::init();
     MbDFEM::MbDJointsFolder::init();

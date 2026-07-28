@@ -2,4 +2,4 @@
 
 #include "MbDJoint.h"
 
-PROPERTY_SOURCE(MbDFEM::MbDJoint, App::DocumentObject)
+PROPERTY_SOURCE(MbDFEM::MbDJoint, MbDFEM::MbDItemIJ)

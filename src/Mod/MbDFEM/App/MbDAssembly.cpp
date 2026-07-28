@@ -23,6 +23,11 @@ MbDFEM::MbDAssembly::MbDAssembly()
                       "MbDFEM",
                       App::Prop_None,
                       "Placement of this assembly");
+    ADD_PROPERTY_TYPE(assemblies,
+                      (nullptr),
+                      "MbDFEM",
+                      App::Prop_None,
+                      "Subassemblies belonging to this assembly");
     ADD_PROPERTY_TYPE(parts,
                       (nullptr),
                       "MbDFEM",
@@ -53,6 +58,11 @@ MbDFEM::MbDAssembly::MbDAssembly()
                       "MbDFEM",
                       App::Prop_Hidden,
                       "Tree folder containing this assembly's parts");
+    ADD_PROPERTY_TYPE(_assembliesFolder,
+                      (nullptr),
+                      "MbDFEM",
+                      App::Prop_Hidden,
+                      "Tree folder containing this assembly's subassemblies");
     ADD_PROPERTY_TYPE(_markersFolder,
                       (nullptr),
                       "MbDFEM",
@@ -73,6 +83,24 @@ MbDFEM::MbDAssembly::MbDAssembly()
                       "MbDFEM",
                       App::Prop_Hidden,
                       "Tree folder containing this assembly's actions");
+}
+
+void MbDFEM::MbDAssembly::addAssembly(MbDAssembly* assembly)
+{
+    auto values = assemblies.getValues();
+    if (assembly && assembly != this && std::find(values.begin(), values.end(), assembly) == values.end()) {
+        values.push_back(assembly);
+        assemblies.setValues(values);
+    }
+
+    ensureMarkersFolder();
+    if (assembly && assembly != this) {
+        auto* folder = ensureAssembliesFolder();
+        if (folder && !folder->hasObject(assembly)) {
+            folder->addObject(assembly);
+        }
+    }
+    ensurePartsFolder();
 }
 
 void MbDFEM::MbDAssembly::addPart(MbDPart* part)
@@ -168,6 +196,11 @@ App::DocumentObjectGroup* MbDFEM::MbDAssembly::getPartsFolder() const
     return dynamic_cast<App::DocumentObjectGroup*>(_partsFolder.getValue());
 }
 
+App::DocumentObjectGroup* MbDFEM::MbDAssembly::getAssembliesFolder() const
+{
+    return dynamic_cast<App::DocumentObjectGroup*>(_assembliesFolder.getValue());
+}
+
 App::DocumentObjectGroup* MbDFEM::MbDAssembly::getMarkersFolder() const
 {
     return dynamic_cast<App::DocumentObjectGroup*>(_markersFolder.getValue());
@@ -202,6 +235,23 @@ App::DocumentObjectGroup* MbDFEM::MbDAssembly::ensurePartsFolder()
         getDocument()->addObject("MbDFEM::MbDPartsFolder", name.c_str()));
     folder->Label.setValue("Parts");
     _partsFolder.setValue(folder);
+    return folder;
+}
+
+App::DocumentObjectGroup* MbDFEM::MbDAssembly::ensureAssembliesFolder()
+{
+    if (auto* folder = getAssembliesFolder()) {
+        return folder;
+    }
+    if (!getDocument()) {
+        return nullptr;
+    }
+
+    const std::string name = std::string(getNameInDocument()) + "_Assemblies";
+    auto* folder = static_cast<App::DocumentObjectGroup*>(
+        getDocument()->addObject("MbDFEM::MbDAssembliesFolder", name.c_str()));
+    folder->Label.setValue("Assemblies");
+    _assembliesFolder.setValue(folder);
     return folder;
 }
 

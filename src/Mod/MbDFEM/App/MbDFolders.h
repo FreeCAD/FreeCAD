@@ -8,6 +8,22 @@
 namespace MbDFEM
 {
 
+class MbDFEMExport MbDAssembliesFolder: public App::DocumentObjectGroup
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(MbDFEM::MbDAssembliesFolder);
+
+public:
+    MbDAssembliesFolder() = default;
+    ~MbDAssembliesFolder() override = default;
+
+    bool allowObject(App::DocumentObject* object) override;
+
+    bool allowDuplicateLabel() const override
+    {
+        return true;
+    }
+};
+
 class MbDFEMExport MbDPartsFolder: public App::DocumentObjectGroup
 {
     PROPERTY_HEADER_WITH_OVERRIDE(MbDFEM::MbDPartsFolder);

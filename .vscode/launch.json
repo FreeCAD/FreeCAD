@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug FreeCAD",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/debug/bin/FreeCAD_d.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/build/debug/bin",
+            "environment": [],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug FreeCADCmd",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/debug/bin/FreeCADCmd_d.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/build/debug/bin",
+            "environment": [],
+            "console": "integratedTerminal"
+        }
+    ]
+}

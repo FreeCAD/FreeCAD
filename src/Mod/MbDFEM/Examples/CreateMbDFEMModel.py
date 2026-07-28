@@ -17,6 +17,9 @@ def create_model():
     assembly = document.addObject("MbDFEM::MbDAssembly", "MbDAssembly1")
     assembly.Placement.Base = App.Vector(0, 0, 0)
 
+    subassembly = document.addObject("MbDFEM::MbDAssembly", "MbDAssembly2")
+    subassembly.Placement.Base = App.Vector(50, 0, 0)
+
     assembly_markers = [
         document.addObject("MbDFEM::MbDMarker", "MbDMarker1"),
         document.addObject("MbDFEM::MbDMarker", "MbDMarker2"),
@@ -63,6 +66,8 @@ def create_model():
     for marker in assembly_markers:
         assembly.addMarker(marker)
 
+    assembly.addAssembly(subassembly)
+
     for part, markers in zip(parts, part_markers):
         assembly.addPart(part)
         for marker in markers:
@@ -76,6 +81,13 @@ def create_model():
 
     for action in actions:
         assembly.addAction(action)
+
+    joints[0].setMarkers(assembly_markers[0], part_markers[0][0])
+    joints[1].setMarkers(part_markers[0][1], part_markers[1][0])
+    motions[0].setMarkers(assembly_markers[0], part_markers[0][1])
+    motions[1].setMarkers(assembly_markers[1], part_markers[1][1])
+    actions[0].setMarkers(assembly_markers[0], part_markers[1][0])
+    actions[1].setMarkers(assembly_markers[1], part_markers[1][1])
 
     document.recompute()
     return document

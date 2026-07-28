@@ -11,6 +11,8 @@ set(MbDFEMGui_SRCS
     ViewProviderMbDAction.h
     ViewProviderMbDAssembly.cpp
     ViewProviderMbDAssembly.h
+    ViewProviderMbDItemIJ.cpp
+    ViewProviderMbDItemIJ.h
     ViewProviderMbDJoint.cpp
     ViewProviderMbDJoint.h
     ViewProviderMbDMarker.cpp

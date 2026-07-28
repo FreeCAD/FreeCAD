@@ -7,6 +7,7 @@
 
 #include "ViewProviderMbDAction.h"
 #include "ViewProviderMbDAssembly.h"
+#include "ViewProviderMbDItemIJ.h"
 #include "ViewProviderMbDJoint.h"
 #include "ViewProviderMbDMarker.h"
 #include "ViewProviderMbDMotion.h"
@@ -42,6 +43,7 @@ PyMOD_INIT_FUNC(MbDFEMGui)
     MbDFEMGui::ViewProviderMbDAssembly::init();
     MbDFEMGui::ViewProviderMbDPart::init();
     MbDFEMGui::ViewProviderMbDMarker::init();
+    MbDFEMGui::ViewProviderMbDItemIJ::init();
     MbDFEMGui::ViewProviderMbDJoint::init();
     MbDFEMGui::ViewProviderMbDMotion::init();
     MbDFEMGui::ViewProviderMbDAction::init();

@@ -42,7 +42,9 @@ install_manifest.txt
 moc_*.cpp
 qrc_*.cpp
 ui_*.h
-/.vscode/
+!/.vscode/
+/.vscode/*
+!/.vscode/launch.json
 /ALL_BUILD.dir/
 /Mod/
 /ZERO_CHECK.dir/

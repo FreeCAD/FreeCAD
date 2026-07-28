@@ -86,20 +86,26 @@ The current persistent document relationships are:
 
 ```text
 FreeCAD Document
+├── MbDAssembly.assemblies -> [MbDAssembly, ...]
 ├── MbDAssembly.parts -> [MbDPart, ...]
 ├── MbDAssembly.markers -> [MbDMarker, ...]
 ├── MbDAssembly.joints -> [MbDJoint, ...]
 ├── MbDAssembly.motions -> [MbDMotion, ...]
 ├── MbDAssembly.actions -> [MbDAction, ...]
-└── MbDPart.markers -> [MbDMarker, ...]
+├── MbDPart.markers -> [MbDMarker, ...]
+└── MbDItemIJ.markerI / markerJ -> MbDMarker
 ```
 
 The example script in `Examples/CreateMbDFEMModel.py` creates this kind of
-relationship graph for interactive testing. The `parts`, `markers`, `joints`,
-`motions`, and `actions` properties are the authoritative model relationships.
+relationship graph for interactive testing. The `assemblies`, `parts`,
+`markers`, `joints`, `motions`, and `actions` properties are the authoritative
+model relationships.
+`MbDJoint`, `MbDMotion`, and `MbDAction` derive from `MbDItemIJ`, which stores
+their `markerI` and `markerJ` links.
 Assemblies and parts also create lightweight App group objects for tree
-presentation, so the GUI can show named `Markers`, `Parts`, `Joints`, `Motions`,
-and `Actions` rows without making those folders the source of model truth.
+presentation, so the GUI can show named `Markers`, `Assemblies`, `Parts`,
+`Joints`, `Motions`, and `Actions` rows without making those folders the source
+of model truth.
 
 ## Planned Object Families
 

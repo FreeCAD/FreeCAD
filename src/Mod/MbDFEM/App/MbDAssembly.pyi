@@ -9,6 +9,10 @@ from App.DocumentObject import DocumentObject
 class MbDAssembly(DocumentObject):
     """A minimal multibody assembly."""
 
+    def addAssembly(self, assembly: DocumentObject, /) -> None:
+        """Add an MbDAssembly to assemblies, ignoring duplicates and self-links."""
+        ...
+
     def addPart(self, part: DocumentObject, /) -> None:
         """Add an MbDPart to parts, ignoring duplicates."""
         ...
@@ -27,6 +31,10 @@ class MbDAssembly(DocumentObject):
 
     def addAction(self, action: DocumentObject, /) -> None:
         """Add an MbDAction to actions, ignoring duplicates."""
+        ...
+
+    def getAssembliesFolder(self) -> DocumentObject:
+        """Return the lightweight Assemblies tree folder."""
         ...
 
     def getPartsFolder(self) -> DocumentObject:

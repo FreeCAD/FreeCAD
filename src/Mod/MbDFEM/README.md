@@ -434,18 +434,21 @@ The example creates these persistent relationships:
 
 ```text
 MbDFEM_Doc
+├── MbDAssembly1.assemblies -> [MbDAssembly2]
 ├── MbDAssembly1.parts -> [MbDPart1, MbDPart2]
 ├── MbDAssembly1.markers -> [MbDMarker1, MbDMarker2]
 ├── MbDAssembly1.joints -> [MbDJoint1, MbDJoint2]
 ├── MbDAssembly1.motions -> [MbDMotion1, MbDMotion2]
 ├── MbDAssembly1.actions -> [MbDAction1, MbDAction2]
 ├── MbDPart1.markers -> [MbDMarker11, MbDMarker12]
-└── MbDPart2.markers -> [MbDMarker21, MbDMarker22]
+├── MbDPart2.markers -> [MbDMarker21, MbDMarker22]
+└── MbDJoint/MbDMotion/MbDAction.markerI, markerJ -> MbDMarker
 ```
 
-The `parts`, `markers`, `joints`, `motions`, and `actions` properties are the
-authoritative model relationships. MbDFEM also creates lightweight App folder
-objects for tree presentation, so the GUI is displayed as:
+The `assemblies`, `parts`, `markers`, `joints`, `motions`, and `actions`
+properties are the authoritative model relationships. MbDFEM also creates
+lightweight App folder objects for tree presentation, so the GUI is displayed
+as:
 
 ```text
 MbDFEM_Doc
@@ -453,6 +456,8 @@ MbDFEM_Doc
     ├── Markers
     │   ├── MbDMarker1
     │   └── MbDMarker2
+    ├── Assemblies
+    │   └── MbDAssembly2
     ├── Parts
     │   ├── MbDPart1
     │   │   └── Markers
@@ -464,13 +469,25 @@ MbDFEM_Doc
     │           └── MbDMarker22
     ├── Joints
     │   ├── MbDJoint1
+    │   │   ├── MbDMarker1
+    │   │   └── MbDMarker11
     │   └── MbDJoint2
+    │       ├── MbDMarker12
+    │       └── MbDMarker21
     ├── Motions
     │   ├── MbDMotion1
+    │   │   ├── MbDMarker1
+    │   │   └── MbDMarker12
     │   └── MbDMotion2
+    │       ├── MbDMarker2
+    │       └── MbDMarker22
     └── Actions
         ├── MbDAction1
+        │   ├── MbDMarker1
+        │   └── MbDMarker21
         └── MbDAction2
+            ├── MbDMarker2
+            └── MbDMarker22
 ```
 
 Run the module's registered Python tests with the current FreeCAD Test API:

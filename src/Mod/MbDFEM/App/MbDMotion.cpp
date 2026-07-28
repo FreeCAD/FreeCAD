@@ -2,4 +2,4 @@
 
 #include "MbDMotion.h"
 
-PROPERTY_SOURCE(MbDFEM::MbDMotion, App::DocumentObject)
+PROPERTY_SOURCE(MbDFEM::MbDMotion, MbDFEM::MbDItemIJ)

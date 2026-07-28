@@ -24,6 +24,9 @@ std::vector<App::DocumentObject*> ViewProviderMbDAssembly::claimChildren() const
     if (auto* markersFolder = assembly->getMarkersFolder()) {
         children.push_back(markersFolder);
     }
+    if (auto* assembliesFolder = assembly->getAssembliesFolder()) {
+        children.push_back(assembliesFolder);
+    }
     if (auto* partsFolder = assembly->getPartsFolder()) {
         children.push_back(partsFolder);
     }

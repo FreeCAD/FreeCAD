@@ -2,13 +2,12 @@
 
 #pragma once
 
-#include <App/DocumentObject.h>
-#include <Mod/MbDFEM/MbDFEMGlobal.h>
+#include "MbDItemIJ.h"
 
 namespace MbDFEM
 {
 
-class MbDFEMExport MbDAction: public App::DocumentObject
+class MbDFEMExport MbDAction: public MbDItemIJ
 {
     PROPERTY_HEADER_WITH_OVERRIDE(MbDFEM::MbDAction);
 

@@ -2,4 +2,4 @@
 
 #include "MbDAction.h"
 
-PROPERTY_SOURCE(MbDFEM::MbDAction, App::DocumentObject)
+PROPERTY_SOURCE(MbDFEM::MbDAction, MbDFEM::MbDItemIJ)

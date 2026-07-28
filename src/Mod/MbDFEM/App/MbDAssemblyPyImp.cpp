@@ -43,6 +43,23 @@ PyObject* MbDFEM::MbDAssemblyPy::addPart(PyObject* args)
     Py_Return;
 }
 
+PyObject* MbDFEM::MbDAssemblyPy::addAssembly(PyObject* args)
+{
+    PyObject* object;
+    if (!PyArg_ParseTuple(args, "O!", &App::DocumentObjectPy::Type, &object)) {
+        return nullptr;
+    }
+
+    auto* documentObject = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
+    if (!documentObject->isDerivedFrom<MbDFEM::MbDAssembly>()) {
+        PyErr_SetString(PyExc_TypeError, "addAssembly expects an MbDFEM::MbDAssembly");
+        return nullptr;
+    }
+
+    getMbDAssemblyPtr()->addAssembly(static_cast<MbDFEM::MbDAssembly*>(documentObject));
+    Py_Return;
+}
+
 PyObject* MbDFEM::MbDAssemblyPy::addMarker(PyObject* args)
 {
     PyObject* object;
@@ -118,6 +135,20 @@ PyObject* MbDFEM::MbDAssemblyPy::getPartsFolder(PyObject* args)
     }
 
     auto* folder = getMbDAssemblyPtr()->getPartsFolder();
+    if (!folder) {
+        Py_Return;
+    }
+
+    return Py::new_reference_to(Py::asObject(folder->getPyObject()));
+}
+
+PyObject* MbDFEM::MbDAssemblyPy::getAssembliesFolder(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    auto* folder = getMbDAssemblyPtr()->getAssembliesFolder();
     if (!folder) {
         Py_Return;
     }
