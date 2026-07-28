@@ -574,8 +574,6 @@ def export(exportList, filename, colors=None, preferences=None):
         elif ifctype in assemblyTypes or is_nested_group:
             if hasattr(obj, "Group"):
                 group = obj.Group
-            elif hasattr(obj, "Links"):
-                group = obj.Links
             else:
                 group = [FreeCAD.ActiveDocument.getObject(n[:-1]) for n in obj.getSubObjects()]
             for subobj in group:
@@ -1756,7 +1754,7 @@ def getIfcTypeFromObj(obj):
         # https://forum.freecad.org/viewtopic.php?p=662934#p662927
     elif hasattr(obj, "IfcType"):
         ifctype = obj.IfcType.replace(" ", "")
-    elif dtype in ["App::Part", "Part::Compound"]:
+    elif dtype == "App::Part":
         ifctype = "IfcElementAssembly"
     elif dtype in ["App::DocumentObjectGroup"]:
         ifctype = "IfcGroup"
