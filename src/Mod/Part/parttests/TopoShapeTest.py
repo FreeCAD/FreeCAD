@@ -979,13 +979,12 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         self.assertEqual(len(cut1.ElementReverseMap.keys()), len(refkeys))
 
     def testTopoShapeVertex(self):
-        b=Part.makeBox(10,10,10)
+        b = Part.makeBox(10, 10, 10)
         v1 = b.Vertexes[0]
         v2 = Part.Vertex(v1)
-        self.assertEqual(v1,v2)
+        self.assertEqual(v1, v2)
         self.assertIn(v1, b.Vertexes)
-        self.assertIn(v2,b.Vertexes)
-        v3=Part.Vertex(tuple(v2))
-        self.assertNotEqual(v3,v1)
-        self.assertNotIn(v3,b.Vertexes)
-
+        self.assertIn(v2, b.Vertexes)
+        v3 = Part.Vertex(tuple(v2))
+        self.assertNotEqual(v3, v1)
+        self.assertNotIn(v3, b.Vertexes)
