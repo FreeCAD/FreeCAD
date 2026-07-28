@@ -44,6 +44,7 @@ namespace App
 {
 
 class DocumentObject;
+class DynamicProperty;
 class DocumentObjectExecReturn;
 class ObjectIdentifier;
 class Expression;
@@ -102,10 +103,11 @@ protected:
                                        const App::DocumentObject& targetObj) = 0;
 
 private:
+    friend class DynamicProperty;
     static void slotRelabelDocument(const App::Document& doc);
-    static void slotRenameDynamicProperty(const App::Property& prop, const char* oldName);
     static void slotMoveDynamicProperty(const App::Property& prop,
                                         const App::DocumentObject& targetObj);
+    static void handleDynamicPropertyRename(const App::Property& prop, const char* oldName);
 };
 
 
