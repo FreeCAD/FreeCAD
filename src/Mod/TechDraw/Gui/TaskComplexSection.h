@@ -66,13 +66,13 @@ public:
 
     virtual bool accept();
     virtual bool reject();
+    bool apply(bool forceUpdate = false);
 
 protected:
     void changeEvent(QEvent *event) override;
     void saveSectionState();
     void restoreSectionState();
 
-    bool apply(bool forceUpdate = false);
     void applyQuick(std::string dir);
     void applyAligned();
 
@@ -100,7 +100,6 @@ protected Q_SLOTS:
     void onScaleChanged();
     void scaleTypeChanged(int index);
     void liveUpdateClicked();
-    void updateNowClicked();
     void slotChangeAngle(double newAngle);
     void slotViewDirectionChanged(Base::Vector3d newDirection);
 
@@ -138,11 +137,9 @@ private:
     bool m_createMode;
     Base::Vector3d m_normal;
 
-    int m_applyDeferred;
     CompassWidget* m_compass;
     double m_angle;
     VectorEditWidget* m_viewDirectionWidget;
-    bool m_directionIsSet;
     bool m_modelIsDirty;
 
     bool m_scaleEdited;
@@ -171,6 +168,12 @@ public:
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
+    void clicked(int id) override;
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel;
+    }
+    void modifyStandardButtons(QDialogButtonBox* buttonBox) override;
     /// is called by the framework if the user presses the help button
     bool isAllowedAlterDocument() const override
                         { return false; }

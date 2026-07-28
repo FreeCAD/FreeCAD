@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #include <QMessageBox>
+#include <QPushButton>
 #include <gp_Pnt.hxx>
 
 #include <App/Document.h>
@@ -69,9 +70,7 @@ TaskComplexSection::TaskComplexSection(TechDraw::DrawPage* page, TechDraw::DrawV
     m_profileSubs(profileSubs),
     m_dirName("Aligned"),
     m_createMode(true),
-    m_applyDeferred(0),
     m_angle(0.0),
-    m_directionIsSet(false),
     m_modelIsDirty(false),
     m_scaleEdited(false)
 {
@@ -87,9 +86,6 @@ TaskComplexSection::TaskComplexSection(TechDraw::DrawPage* page, TechDraw::DrawV
 
     saveSectionState();
     setUiPrimary();
-
-    m_applyDeferred = 0;//setting the direction widgets causes an increment of the deferred count,
-                        //so we reset the counter and the message.
 }
 
 //ctor for edit
@@ -103,9 +99,7 @@ TaskComplexSection::TaskComplexSection(TechDraw::DrawComplexSection* complexSect
     m_sectionName(m_section->getNameInDocument()),
     m_savePageName(m_section->findParentPage()->getNameInDocument()),
     m_createMode(false),
-    m_applyDeferred(0),
     m_angle(0.0),
-    m_directionIsSet(true),
     m_modelIsDirty(false),
     m_scaleEdited(false)
 {
@@ -125,10 +119,6 @@ TaskComplexSection::TaskComplexSection(TechDraw::DrawComplexSection* complexSect
 
     saveSectionState();
     setUiEdit();
-
-    m_applyDeferred = 0;//setting the direction widgets causes an increment of the deferred count,
-                        //so we reset the counter and the message.
-    ui->lPendingUpdates->setText(QString());
 }
 
 void TaskComplexSection::setUiPrimary()
@@ -165,11 +155,7 @@ void TaskComplexSection::setUiPrimary()
         m_saveXDir = dirs.second;
         m_viewDirectionWidget->setValue(m_saveNormal * -1);//this will propagate to m_compass
     }
-
-    //don't allow updates until a direction is picked
-    ui->pbUpdateNow->setEnabled(false);
-    ui->cbLiveUpdate->setEnabled(false);
-    ui->lPendingUpdates->setText(tr("No direction set"));
+    enableAll(true);
 }
 
 void TaskComplexSection::setUiEdit()
@@ -212,7 +198,7 @@ void TaskComplexSection::setUiCommon()
     layout->addWidget(m_compass);
 
     m_viewDirectionWidget = new VectorEditWidget(this);
-    m_viewDirectionWidget->setLabel(QObject::tr("Current View Direction"));
+    m_viewDirectionWidget->setLabel(QObject::tr("As Vector"));
     m_viewDirectionWidget->setToolTip(QObject::tr("The view direction in BaseView coordinates"));
     auto editLayout = ui->viewDirectionLayout;
     editLayout->addWidget(m_viewDirectionWidget);
@@ -220,12 +206,11 @@ void TaskComplexSection::setUiCommon()
 
     connect(m_compass, &CompassWidget::angleChanged, this, &TaskComplexSection::slotChangeAngle);
 
-    connect(ui->pbUp, &QPushButton::clicked, this, &TaskComplexSection::onUpClicked);
-    connect(ui->pbDown, &QPushButton::clicked, this, &TaskComplexSection::onDownClicked);
-    connect(ui->pbRight, &QPushButton::clicked, this, &TaskComplexSection::onRightClicked);
-    connect(ui->pbLeft, &QPushButton::clicked, this, &TaskComplexSection::onLeftClicked);
+    connect(ui->pbUp, &QToolButton::clicked, this, &TaskComplexSection::onUpClicked);
+    connect(ui->pbDown, &QToolButton::clicked, this, &TaskComplexSection::onDownClicked);
+    connect(ui->pbRight, &QToolButton::clicked, this, &TaskComplexSection::onRightClicked);
+    connect(ui->pbLeft, &QToolButton::clicked, this, &TaskComplexSection::onLeftClicked);
 
-    connect(ui->pbUpdateNow, &QPushButton::clicked, this, &TaskComplexSection::updateNowClicked);
     connect(ui->cbLiveUpdate, &QCheckBox::clicked, this, &TaskComplexSection::liveUpdateClicked);
 
     connect(ui->pbSectionObjects, &QPushButton::clicked, this,
@@ -431,9 +416,10 @@ void TaskComplexSection::enableAll(bool enable)
     }
 }
 
-void TaskComplexSection::liveUpdateClicked() { apply(true); }
-
-void TaskComplexSection::updateNowClicked() { apply(true); }
+void TaskComplexSection::liveUpdateClicked()
+{
+    apply(true);
+}
 
 QString TaskComplexSection::sourcesToString()
 {
@@ -471,11 +457,6 @@ bool TaskComplexSection::apply(bool forceUpdate)
 {
     if (!ui->cbLiveUpdate->isChecked() && !forceUpdate) {
         //nothing to do
-        m_applyDeferred++;
-        QString msgLiteral =
-            QString::fromUtf8(QT_TRANSLATE_NOOP("TaskComplexSection", " updates pending"));
-        QString msgNumber = QString::number(m_applyDeferred);
-        ui->lPendingUpdates->setText(msgNumber + msgLiteral);
         return false;
     }
 
@@ -530,8 +511,6 @@ bool TaskComplexSection::apply(bool forceUpdate)
     checkAll(false);
 
     wc.restoreCursor();
-    m_applyDeferred = 0;
-    ui->lPendingUpdates->setText(QString());
     return true;
 }
 
@@ -539,9 +518,6 @@ void TaskComplexSection::applyAligned()
 {
     m_dirName = "Aligned";
     enableAll(true);
-    m_directionIsSet = true;
-    ui->pbUpdateNow->setEnabled(true);
-    ui->cbLiveUpdate->setEnabled(true);
     apply();
 }
 
@@ -609,17 +585,7 @@ void TaskComplexSection::createComplexSection()
             m_section->XSource.setValues(m_baseView->XSource.getValues());
         }
         else {
-            if (m_directionIsSet) {
-                //if we have changed the direction, use the local unit to create a CS
-                m_section->setCSFromLocalUnit(localUnit * -1.0);
-            }
-            else {
-                //if we have not changed the direction, we should use the 3d directions saved in the
-                //constructor
-                m_section->SectionNormal.setValue(m_saveNormal);
-                m_section->Direction.setValue(m_saveNormal);
-                m_section->XDirection.setValue(m_saveXDir);
-            }
+            m_section->setCSFromLocalUnit(localUnit * -1.0);
             m_section->Source.setValues(m_shapes);
             m_section->XSource.setValues(m_xShapes);
         }
@@ -852,6 +818,20 @@ bool TaskDlgComplexSection::reject()
 {
     widget->reject();
     return true;
+}
+
+void TaskDlgComplexSection::clicked(int id)
+{
+    if (id == QDialogButtonBox::Apply) {
+        widget->apply(true);
+    }
+}
+
+void TaskDlgComplexSection::modifyStandardButtons(QDialogButtonBox* buttonBox)
+{
+    if (QPushButton* applyButton = buttonBox->button(QDialogButtonBox::Apply)) {
+        applyButton->setToolTip(tr("Rebuild display now. May be slow for complex models."));
+    }
 }
 
 //NOLINTNEXTLINE
