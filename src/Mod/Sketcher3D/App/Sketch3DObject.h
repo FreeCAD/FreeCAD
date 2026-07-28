@@ -26,9 +26,9 @@
 #pragma once
 
 #include <memory>
+#include <unordered_map>
 #include <vector>
 
-#include <App/IndexedName.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PropertyGeometryList.h>
 #include <Mod/Sketcher3D/Sketcher3DGlobal.h>
@@ -42,7 +42,6 @@ class TopoDS_Shape;
 namespace Part
 {
 class Geometry;
-class TopoShape;
 }  // namespace Part
 
 namespace Sketcher3D
@@ -79,6 +78,12 @@ public:
 
     /// add a constraint. Returns its index in Constraints.
     int addConstraint(const Constraint3D& c);
+
+    /// Remove geometries and rewrite / drop affected constraints.
+    int delGeometries(std::vector<int> geoIds);
+
+    /// Remove constraints by index.
+    int delConstraints(std::vector<int> constraintIds);
 
     template<
         typename GeometryT = Part::Geometry,
@@ -122,8 +127,7 @@ public:
 private:
     const Part::Geometry* _getGeometry(int geoId) const;
 
-    /// Drop constraints whose referenced GeoIds are out of range or point
-    /// to null geometry slots. Runs at the top of execute().
+    /// Drop constraints whose GeoIds are out of range or point to null geometry.
     void acceptGeometry();
 
     /// Build Shape and ReferenceShape from the current geometry.
@@ -138,7 +142,7 @@ private:
 
     /// stable id map to current positional index in Geometry. Rebuilt by
     /// assignStableIds(). "g{stableId}"
-    std::map<long, int> stableToIndex;
+    std::unordered_map<long, int> stableToIndex;
 
     std::vector<int> lastMalformedConstraints;
 };

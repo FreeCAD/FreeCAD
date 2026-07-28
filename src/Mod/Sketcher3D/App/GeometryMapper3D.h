@@ -87,10 +87,12 @@ private:
 
     void clear(Solver3D& solver);
     void addGeometry(const std::vector<Part::Geometry*>& geoList, Solver3D& solver);
-    int addConstraints(const std::vector<Constraint3D>& constraints, Solver3D& solver);
+    void addConstraints(const std::vector<Constraint3D>& constraints, Solver3D& solver);
 
     /// Return tagId when the constraint was mapped, or -1 when malformed.
     int addConstraint(const Constraint3D& constraint, int tagId, Solver3D& solver);
+
+    const GeoDef* geoDefAt(int geoId) const;
 
     /// Return the solver point index for a geometry.
     int getPointId(const GeoElementId3D& ref) const;

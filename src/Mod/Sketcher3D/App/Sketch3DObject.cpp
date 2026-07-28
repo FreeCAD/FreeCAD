@@ -109,6 +109,85 @@ int Sketch3DObject::addConstraint(const Constraint3D& c)
     return idx;
 }
 
+int Sketch3DObject::delConstraints(std::vector<int> constraintIds)
+{
+    if (constraintIds.empty()) {
+        return 0;
+    }
+
+    const auto& current = Constraints.getConstraints();
+    std::sort(constraintIds.begin(), constraintIds.end());
+    constraintIds.erase(std::unique(constraintIds.begin(), constraintIds.end()), constraintIds.end());
+    if (constraintIds.front() < 0 || constraintIds.back() >= static_cast<int>(current.size())) {
+        return -1;
+    }
+
+    auto kept = current;
+    for (auto it = constraintIds.rbegin(); it != constraintIds.rend(); ++it) {
+        kept.erase(kept.begin() + *it);
+    }
+
+    Constraints.setConstraints(std::move(kept));
+    return static_cast<int>(constraintIds.size());
+}
+
+int Sketch3DObject::delGeometries(std::vector<int> geoIds)
+{
+    if (geoIds.empty()) {
+        return 0;
+    }
+
+    std::sort(geoIds.begin(), geoIds.end());
+    geoIds.erase(std::unique(geoIds.begin(), geoIds.end()), geoIds.end());
+    const auto& geos = Geometry.getValues();
+    if (geoIds.front() < 0 || geoIds.back() >= static_cast<int>(geos.size())) {
+        return -1;
+    }
+
+    auto isDeleted = [&geoIds](int geoId) {
+        return std::binary_search(geoIds.begin(), geoIds.end(), geoId);
+    };
+
+    std::vector<int> oldToNew(geos.size(), -1);
+    int newIdx = 0;
+    for (int old = 0; old < static_cast<int>(geos.size()); ++old) {
+        if (!isDeleted(old)) {
+            oldToNew[old] = newIdx++;
+        }
+    }
+
+    std::vector<Constraint3D> keptConstraints;
+    keptConstraints.reserve(Constraints.getSize());
+    for (auto& c : Constraints.getConstraints()) {
+        auto elements = c.getElements();
+        bool drop = false;
+        for (auto& el : elements) {
+            if (el.isRootPoint()) {
+                continue;
+            }
+            if (static_cast<std::size_t>(el.GeoId) >= geos.size() || isDeleted(el.GeoId)) {
+                drop = true;
+                break;
+            }
+            el.GeoId = oldToNew[el.GeoId];
+        }
+        if (!drop) {
+            Constraint3D kept = c;
+            kept.setElements(std::move(elements));
+            keptConstraints.push_back(std::move(kept));
+        }
+    }
+    Constraints.setConstraints(std::move(keptConstraints));
+
+    auto keptGeos = geos;
+    for (auto it = geoIds.rbegin(); it != geoIds.rend(); ++it) {
+        keptGeos.erase(keptGeos.begin() + *it);
+    }
+    Geometry.setValues(keptGeos);
+
+    return static_cast<int>(geoIds.size());
+}
+
 const Part::Geometry* Sketch3DObject::_getGeometry(int geoId) const
 {
     auto& geos = Geometry.getValues();
@@ -157,7 +236,7 @@ bool parseMappedName(const char* mapped, long& stableId, PointPos& pos)
 
 GeoElementId3D resolveSubNameInShape(
     const Part::TopoShape& shape,
-    const std::map<long, int>& stableToIndex,
+    const std::unordered_map<long, int>& stableToIndex,
     const std::vector<Part::Geometry*>& geos,
     const std::string& subname
 )
@@ -185,10 +264,8 @@ GeoElementId3D resolveSubNameInShape(
     if (it == stableToIndex.end()) {
         return {};
     }
+
     int geoId = it->second;
-    if (geoId < 0 || geoId >= static_cast<int>(geos.size())) {
-        return {};
-    }
     return {geoId, pos, kindOfGeometry(geos[geoId])};
 }
 
@@ -298,7 +375,7 @@ Part::TopoShape makeNamedGeometryShape(const Part::Geometry* geo)
         return {};
     }
 
-    const GeoKind kind = kindOfGeometry(geo);
+    auto kind = kindOfGeometry(geo);
     if (kind == GeoKind::Plane || kind == GeoKind::Unknown) {
         return {};
     }
@@ -492,7 +569,7 @@ void Sketch3DObject::acceptGeometry()
     auto& geos = Geometry.getValues();
     int n = static_cast<int>(geos.size());
 
-    auto current = Constraints.getConstraints();
+    auto& current = Constraints.getConstraints();
     std::vector<Constraint3D> kept;
     kept.reserve(current.size());
 
@@ -513,7 +590,7 @@ void Sketch3DObject::acceptGeometry()
     }
 
     if (kept.size() != current.size()) {
-        Constraints.setConstraints(kept);
+        Constraints.setConstraints(std::move(kept));
     }
 }
 

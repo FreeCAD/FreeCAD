@@ -159,6 +159,8 @@ public:
 
     Sketcher3D::Sketch3DObject* getSketch3DObject() const;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
+
+    bool onDelete(const std::vector<std::string>& subList) override;
     const char* getTransactionText() const override
     {
         return nullptr;

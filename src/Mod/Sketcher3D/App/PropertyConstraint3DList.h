@@ -47,18 +47,15 @@ public:
     /// Reset the list, optionally setting single constraint.
     void setValue(const Constraint3D* lValue = nullptr);
 
-    void setConstraints(const std::vector<Constraint3D>& v);
     const std::vector<Constraint3D>& getConstraints() const
     {
         return _constraints;
     }
 
     void setConstraintAt(int idx, const Constraint3D& c);
-    void setConstraint(const Constraint3D& c)
-    {
-        _constraints.clear();
-        _constraints.push_back(c);
-    }
+
+    /// Replace the whole list in one transaction.
+    void setConstraints(std::vector<Constraint3D> constraints);
 
     // Persistence
     void Save(Base::Writer& writer) const override;

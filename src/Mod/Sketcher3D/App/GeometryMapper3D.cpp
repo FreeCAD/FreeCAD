@@ -144,20 +144,16 @@ void GeometryMapper3D::addGeometry(const std::vector<Part::Geometry*>& geoList, 
     }
 }
 
-int GeometryMapper3D::addConstraints(const std::vector<Constraint3D>& constraints, Solver3D& solver)
+void GeometryMapper3D::addConstraints(const std::vector<Constraint3D>& constraints, Solver3D& solver)
 {
-    int result = -1;
-
     for (std::size_t i = 0; i < constraints.size(); ++i) {
         int tagId = static_cast<int>(i) + 1;
-        result = addConstraint(constraints[i], tagId, solver);
+        int result = addConstraint(constraints[i], tagId, solver);
         if (result < 0) {
             Base::Console().error("Sketcher3D constraint number %d is malformed!\n", tagId);
             MalformedConstraints.push_back(tagId);
         }
     }
-
-    return result;
 }
 
 int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, Solver3D& solver)
@@ -331,24 +327,19 @@ int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, S
                 return -1;
             }
             int point = getPointId(elements[pointIdx]);
-            if (point < 0) {
+            const GeoDef* curveDef = geoDefAt(elements[curveIdx].GeoId);
+            if (point < 0 || !curveDef) {
                 return -1;
             }
-            GeoDef& curveDef = Geoms[elements[curveIdx].GeoId];
-            switch (curveDef.type) {
-                case GeoKind::Line: {
-                    int line = getLineId(elements[curveIdx]);
-                    if (line < 0) {
-                        return -1;
-                    }
-                    solver.addConstraintPointOnLine(tagId, point, line);
+            switch (curveDef->type) {
+                case GeoKind::Line:
+                    solver.addConstraintPointOnLine(tagId, point, curveDef->index);
                     break;
-                }
                 case GeoKind::Arc:
-                    solver.addConstraintPointOnArc(tagId, point, curveDef.index);
+                    solver.addConstraintPointOnArc(tagId, point, curveDef->index);
                     break;
                 case GeoKind::Circle:
-                    solver.addConstraintPointOnCircle(tagId, point, curveDef.index);
+                    solver.addConstraintPointOnCircle(tagId, point, curveDef->index);
                     break;
                 default:
                     return -1;
@@ -400,13 +391,16 @@ int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, S
             if (elements.size() != 1) {
                 return -1;
             }
-            GeoDef& def = Geoms[elements[0].GeoId];
-            switch (def.type) {
+            const GeoDef* def = geoDefAt(elements[0].GeoId);
+            if (!def) {
+                return -1;
+            }
+            switch (def->type) {
                 case GeoKind::Circle:
-                    solver.addConstraintCircleRadius(tagId, def.index, constraint.Value);
+                    solver.addConstraintCircleRadius(tagId, def->index, constraint.Value);
                     return tagId;
                 case GeoKind::Arc:
-                    solver.addConstraintArcRadius(tagId, def.index, constraint.Value);
+                    solver.addConstraintArcRadius(tagId, def->index, constraint.Value);
                     return tagId;
                 default:
                     return -1;
@@ -430,9 +424,9 @@ int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, S
 
             // Line
             if (elements[0].Pos == PointPos::none && getLineId(elements[0]) >= 0) {
-                GeoDef& def = Geoms[elements[0].GeoId];
-                solver.addConstraintProjectOnPlane(tagId, def.startPointId, plane);
-                solver.addConstraintProjectOnPlane(tagId, def.endPointId, plane);
+                const GeoDef* def = geoDefAt(elements[0].GeoId);
+                solver.addConstraintProjectOnPlane(tagId, def->startPointId, plane);
+                solver.addConstraintProjectOnPlane(tagId, def->endPointId, plane);
                 return tagId;
             }
 
@@ -443,47 +437,47 @@ int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, S
     }
 }
 
+const GeometryMapper3D::GeoDef* GeometryMapper3D::geoDefAt(int geoId) const
+{
+    if (geoId < 0 || geoId >= static_cast<int>(Geoms.size())) {
+        return nullptr;
+    }
+    return &Geoms[geoId];
+}
+
 int GeometryMapper3D::getPointId(const GeoElementId3D& ref) const
 {
     if (ref == GeoElementId3D::RtPnt) {
         return rootPointId;
     }
 
-    if (ref.GeoId < 0 || ref.GeoId >= static_cast<int>(Geoms.size())) {
+    const GeoDef* def = geoDefAt(ref.GeoId);
+    if (!def) {
         return -1;
     }
-
-    const GeoDef& def = Geoms[ref.GeoId];
     switch (ref.Pos) {
         case PointPos::none:
-            return def.type == GeoKind::Point ? def.startPointId : -1;
+            return def->type == GeoKind::Point ? def->startPointId : -1;
         case PointPos::start:
-            return def.startPointId;
+            return def->startPointId;
         case PointPos::end:
-            return def.endPointId;
+            return def->endPointId;
         case PointPos::mid:
-            return def.midPointId;
+            return def->midPointId;
     }
     return -1;
 }
 
 int GeometryMapper3D::getLineId(const GeoElementId3D& ref) const
 {
-    if (ref.GeoId < 0 || ref.GeoId >= static_cast<int>(Geoms.size())) {
-        return -1;
-    }
-
-    const GeoDef& def = Geoms[ref.GeoId];
-    return def.type == GeoKind::Line ? def.index : -1;
+    const GeoDef* def = geoDefAt(ref.GeoId);
+    return def && def->type == GeoKind::Line ? def->index : -1;
 }
 
 int GeometryMapper3D::getPlaneId(const GeoElementId3D& ref) const
 {
-    if (ref.GeoId < 0 || ref.GeoId >= static_cast<int>(Geoms.size())) {
-        return -1;
-    }
-    const GeoDef& def = Geoms[ref.GeoId];
-    return def.type == GeoKind::Plane ? def.index : -1;
+    const GeoDef* def = geoDefAt(ref.GeoId);
+    return def && def->type == GeoKind::Plane ? def->index : -1;
 }
 
 void GeometryMapper3D::updateGeometry(const Solver3D& solver)

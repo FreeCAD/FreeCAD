@@ -28,10 +28,12 @@
 #include <FCConfig.h>
 
 // standard
+#include <algorithm>
 #include <cmath>
 #include <map>
 #include <memory>
 #include <sstream>
 #include <string>
+#include <unordered_map>
 #include <vector>
 #include <array>

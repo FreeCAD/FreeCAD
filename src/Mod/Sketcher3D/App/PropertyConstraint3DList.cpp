@@ -58,10 +58,10 @@ void PropertyConstraint3DList::setValue(const Constraint3D* lValue)
     hasSetValue();
 }
 
-void PropertyConstraint3DList::setConstraints(const std::vector<Constraint3D>& constraints)
+void PropertyConstraint3DList::setConstraints(std::vector<Constraint3D> constraints)
 {
     aboutToSetValue();
-    _constraints = constraints;
+    _constraints = std::move(constraints);
     hasSetValue();
 }
 

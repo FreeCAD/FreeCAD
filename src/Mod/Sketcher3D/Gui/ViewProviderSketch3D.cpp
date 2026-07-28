@@ -455,13 +455,9 @@ void ViewProviderSketch3D::updateData(const App::Property* prop)
     if (prop == &sketch->ReferenceShape) {
         updateReferenceGeometry();
     }
-    if (prop == &sketch->Geometry || prop == &sketch->Constraints) {
+    if (prop == &sketch->Shape || prop == &sketch->ReferenceShape) {
         if (activeUserPlaneGeoId >= 0 && !getActiveReferencePlane()) {
             activeUserPlaneGeoId = -1;
-        }
-        if (prop == &sketch->Geometry) {
-            Gui::Selection().clearSelection();
-            updateReferenceGeometry();
         }
         taskPanel->refresh();
     }
@@ -471,6 +467,29 @@ void ViewProviderSketch3D::setupContextMenu(QMenu* menu, QObject* receiver, cons
 {
     menu->addAction(tr("Edit 3D Sketch"), receiver, member);
     Gui::ViewProvider::setupContextMenu(menu, receiver, member);
+}
+
+bool ViewProviderSketch3D::onDelete(const std::vector<std::string>& subList)
+{
+    if (!isEditingSketch3D()) {
+        return PartGui::ViewProviderPart::onDelete(subList);
+    }
+
+    auto* sketch = getSketch3DObject();
+    std::vector<int> geoIds;
+    for (const auto& sub : subList) {
+        int geoId = sketch->resolveSubName(sub).GeoId;
+        if (geoId >= 0) {
+            geoIds.push_back(geoId);
+        }
+    }
+    if (geoIds.empty()) {
+        return false;
+    }
+
+    Gui::Selection().clearSelection();
+    sketch->delGeometries(std::move(geoIds));
+    return false;
 }
 
 bool ViewProviderSketch3D::setEdit(int ModNum)
