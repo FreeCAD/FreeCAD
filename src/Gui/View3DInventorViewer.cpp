@@ -2021,7 +2021,6 @@ void View3DInventorViewer::setEnabledFPSCounter(bool on)
             fpsCounter = new QLabel(this);
             fpsCounter->setAttribute(Qt::WA_TransparentForMouseEvents);
         }
-        // fpsCounter->show();
         if (!fpsUpdateTimer) {
             fpsUpdateTimer = new QTimer(this);
             fpsUpdateTimer->setInterval(250);  // 4 Hz

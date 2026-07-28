@@ -703,7 +703,6 @@ private:
     bool vboEnabled;
     bool naviCubeEnabled;
 
-
     // Screen-only viewer decorations such as the navicube are rendered only
     // when the active render intent allows them.
     mutable std::vector<RenderIntent> renderIntentOverrideStack;
@@ -734,7 +733,6 @@ private:
 
 private Q_SLOTS:
     void updateFPSLabel();
-
 
     // friends
     friend class NavigationStyle;
