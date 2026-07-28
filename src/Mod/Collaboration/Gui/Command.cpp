@@ -48,7 +48,7 @@ CmdCollaborationTopic::CmdCollaborationTopic()
 {
     sGroup = QT_TR_NOOP("Tools");
     sMenuText = QT_TR_NOOP("Topic");
-    sToolTipText = QT_TR_NOOP("Create a topic");
+    sToolTipText = QT_TR_NOOP("Creates a topic");
     sStatusTip = sToolTipText;
     sWhatsThis = "Collaboration_Topic";
     sPixmap = "Tree_Annotation";
