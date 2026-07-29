@@ -81,6 +81,7 @@ protected:
     void makeSectionLine();
     void makeExtensionLine();
     void makeArrows();
+    void makeArrowBases();
     void makeArrowsTrad();
     void makeArrowsISO();
     void makeSymbols();
@@ -102,6 +103,7 @@ private:
     QGraphicsPathItem* m_extend;
     QGIArrow*          m_arrow1;
     QGIArrow*          m_arrow2;
+    QGraphicsPathItem* m_arrowBases;
     QGCustomText*      m_symbol1;
     QGCustomText*      m_symbol2;
     QPointF            m_start;         //start of section line

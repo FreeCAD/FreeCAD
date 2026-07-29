@@ -19,7 +19,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QCheckBox>
@@ -34,7 +33,6 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 
-#include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -49,7 +47,6 @@
 
 #include <Mod/Spreadsheet/App/Sheet.h>
 
-#include <Mod/TechDraw/App/DrawComplexSection.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
@@ -70,7 +67,6 @@
 #include "QGVPage.h"
 #include "Rez.h"
 #include "TaskActiveView.h"
-#include "TaskComplexSection.h"
 #include "TaskDetail.h"
 #include "TaskProjGroup.h"
 #include "TaskProjection.h"
@@ -80,7 +76,6 @@
 #include "CommandHelpers.h"
 
 void execSimpleSection(Gui::Command* cmd);
-void execComplexSection(Gui::Command* cmd);
 void getSelectedShapes(Gui::Command* cmd,
                       std::vector<App::DocumentObject*>& shapes,
                       std::vector<App::DocumentObject*>& xShapes,
@@ -722,98 +717,6 @@ void CmdTechDrawActiveView::activated(int iMsg)
 bool CmdTechDrawActiveView::isActive() { return DrawGuiUtil::needPage(this, true); }
 
 //===========================================================================
-// TechDraw_SectionGroup
-//===========================================================================
-
-DEF_STD_CMD_ACL(CmdTechDrawSectionGroup)
-
-CmdTechDrawSectionGroup::CmdTechDrawSectionGroup() : Command("TechDraw_SectionGroup")
-{
-    sAppModule = "TechDraw";
-    sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Section View (Simple or Complex)");
-    sToolTipText = QT_TR_NOOP("Inserts a simple or complex section view in the current page");
-    sWhatsThis = "TechDraw_SectionGroup";
-    sStatusTip = sToolTipText;
-}
-
-void CmdTechDrawSectionGroup::activated(int iMsg)
-{
-    //    Base::Console().message("CMD::SectionGrp - activated(%d)\n", iMsg);
-    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-    if (dlg) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
-                             QObject::tr("Close active task dialog and try again"));
-        return;
-    }
-
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
-    switch (iMsg) {
-        case 0:
-            execSimpleSection(this);
-            break;
-        case 1:
-            execComplexSection(this);
-            break;
-        default:
-            Base::Console().message("CMD::SectionGrp - invalid iMsg: %d\n", iMsg);
-    };
-}
-
-Gui::Action* CmdTechDrawSectionGroup::createAction()
-{
-    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
-    pcAction->setDropDownMenu(true);
-    applyCommandData(this->className(), pcAction);
-
-    QAction* p1 = pcAction->addAction(QString());
-    p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_SectionView"));
-    p1->setObjectName(QStringLiteral("TechDraw_SectionView"));
-    p1->setWhatsThis(QStringLiteral("TechDraw_SectionView"));
-    QAction* p2 = pcAction->addAction(QString());
-    p2->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_ComplexSection"));
-    p2->setObjectName(QStringLiteral("TechDraw_ComplexSection"));
-    p2->setWhatsThis(QStringLiteral("TechDraw_ComplexSection"));
-
-    _pcAction = pcAction;
-    languageChange();
-
-    pcAction->setIcon(p1->icon());
-    int defaultId = 0;
-    pcAction->setProperty("defaultAction", QVariant(defaultId));
-
-    return pcAction;
-}
-
-void CmdTechDrawSectionGroup::languageChange()
-{
-    Command::languageChange();
-
-    if (!_pcAction)
-        return;
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
-
-    QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdTechDrawSectionGroup", "Section View"));
-    arc1->setToolTip(QApplication::translate("TechDraw_SectionView", "Inserts a simple section view"));
-    arc1->setStatusTip(arc1->toolTip());
-    QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdTechDrawSectionGroup", "Complex Section View"));
-    arc2->setToolTip(
-        QApplication::translate("TechDraw_ComplexSection", "Inserts a complex section view"));
-    arc2->setStatusTip(arc2->toolTip());
-}
-
-bool CmdTechDrawSectionGroup::isActive()
-{
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
-    return (havePage && haveView);
-}
-
-//===========================================================================
 // TechDraw_SectionView
 //===========================================================================
 
@@ -824,7 +727,7 @@ CmdTechDrawSectionView::CmdTechDrawSectionView() : Command("TechDraw_SectionView
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Section View");
-    sToolTipText = QT_TR_NOOP("Inserts a new section view based on the selected view in the current page");
+    sToolTipText = QT_TR_NOOP("Interactively inserts a new section view in the current page");
     sWhatsThis = "TechDraw_SectionView";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_SectionView";
@@ -846,160 +749,36 @@ void CmdTechDrawSectionView::activated(int iMsg)
 bool CmdTechDrawSectionView::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
     bool taskInProgress = false;
     if (havePage) {
         taskInProgress = Gui::Control().activeDialog();
     }
-    return (havePage && haveView && !taskInProgress);
+    return (havePage && !taskInProgress);
 }
 
 void execSimpleSection(Gui::Command* cmd)
 {
-    std::vector<App::DocumentObject*> baseObj =
-        cmd->getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
-    if (baseObj.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select at least 1 DrawViewPart object as base"));
-        return;
-    }
-
     TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
     if (!page) {
         return;
     }
 
-    TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(*baseObj.begin());
-    Gui::Control().showDialog(new TaskDlgSectionView(dvp));
+    auto* mdi = qobject_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    QGVPage* graphicsView = mdi && mdi->getPage() == page
+        ? mdi->getViewProviderPage()->getQGVPage()
+        : nullptr;
+    if (!graphicsView) {
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("No active drawing page"),
+            QObject::tr("Open the drawing page where the section view should be created."));
+        return;
+    }
+
+    Gui::Control().showDialog(new TaskDlgSectionView(page, graphicsView));
 
     cmd->updateActive();//ok here since dialog doesn't call doc.recompute()
     cmd->commitCommand();
-}
-
-//===========================================================================
-// TechDraw_ComplexSection
-//===========================================================================
-
-DEF_STD_CMD_A(CmdTechDrawComplexSection)
-
-CmdTechDrawComplexSection::CmdTechDrawComplexSection() : Command("TechDraw_ComplexSection")
-{
-    sAppModule = "TechDraw";
-    sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Complex Section View");
-    sToolTipText = QT_TR_NOOP("Inserts a complex section view based on the selected view in the current page");
-    sWhatsThis = "TechDraw_ComplexSection";
-    sStatusTip = sToolTipText;
-    sPixmap = "actions/TechDraw_ComplexSection";
-}
-
-void CmdTechDrawComplexSection::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-    if (dlg) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
-                             QObject::tr("Close active task dialog and try again"));
-        return;
-    }
-
-    execComplexSection(this);
-}
-
-bool CmdTechDrawComplexSection::isActive() { return DrawGuiUtil::needPage(this); }
-
-//Complex Sections can be created without a baseView, so the gathering of input
-//for the dialog is more involved that simple section
-void execComplexSection(Gui::Command* cmd)
-{
-    TechDraw::DrawViewPart* baseView(nullptr);
-    std::vector<App::DocumentObject*> shapes;
-    std::vector<App::DocumentObject*> xShapes;
-    App::DocumentObject* profileObject(nullptr);
-    std::vector<std::string> profileSubs;
-    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;
-    bool single = false;
-    auto selection = cmd->getSelection().getSelectionEx(
-        nullptr, App::DocumentObject::getClassTypeId(), resolve, single);
-    for (auto& sel : selection) {
-        bool is_linked = false;
-        auto obj = sel.getObject();
-        if (obj->isDerivedFrom<TechDraw::DrawPage>()) {
-            continue;
-        }
-        if (obj->isDerivedFrom<TechDraw::DrawViewPart>()) {
-            //use the dvp's Sources as sources for this ComplexSection &
-            //check the subelement(s) to see if they can be used as a profile
-            baseView = static_cast<TechDraw::DrawViewPart*>(obj);
-            if (!sel.getSubNames().empty()) {
-                //need to add profile subs as parameter
-                profileObject = baseView;
-                profileSubs = sel.getSubNames();
-            }
-            continue;
-        }
-        if (obj->isDerivedFrom<App::LinkElement>()
-            || obj->isDerivedFrom<App::LinkGroup>()
-            || obj->isDerivedFrom<App::Link>()) {
-            is_linked = true;
-        }
-        // If parent of the obj is a link to another document, we possibly need to treat non-link obj as linked, too
-        // 1st, is obj in another document?
-        if (obj->getDocument() != cmd->getDocument()) {
-            std::set<App::DocumentObject*> parents = obj->getInListEx(true);
-            for (auto& parent : parents) {
-                // Only consider parents in the current document, i.e. possible links in this View's document
-                if (parent->getDocument() != cmd->getDocument()) {
-                    continue;
-                }
-                // 2nd, do we really have a link to obj?
-                if (parent->isDerivedFrom<App::LinkElement>()
-                    || parent->isDerivedFrom<App::LinkGroup>()
-                    || parent->isDerivedFrom<App::Link>()) {
-                    // We have a link chain from this document to obj, and obj is in another document -> it is an XLink target
-                    is_linked = true;
-                }
-            }
-        }
-        if (is_linked) {
-            xShapes.push_back(obj);
-            continue;
-        }
-        //not a Link and not null.  assume to be drawable.  Undrawables will be
-        // skipped later.
-        if (TechDraw::DrawComplexSection::isProfileObject(obj)) {
-            profileObject = obj;
-        }
-        else {
-            shapes.push_back(obj);
-        }
-    }
-
-    if (!baseView) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("No base view selected"));
-        return;
-    }
-
-    if (shapes.empty() && xShapes.empty() && !baseView) {
-        QMessageBox::warning(
-            Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("No base view, shapes, groups, or links in this selection"));
-        return;
-    }
-    if (!profileObject) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("No profile object found in selection"));
-        return;
-    }
-
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
-    if (!page) {
-        return;
-    }
-
-    Gui::Control().showDialog(
-        new TaskDlgComplexSection(page, baseView, shapes, xShapes, profileObject, profileSubs));
 }
 
 //===========================================================================
@@ -1954,9 +1733,7 @@ void CreateTechDrawCommands()
     rcCmdMgr.addCommand(new CmdTechDrawPrintAll());
     rcCmdMgr.addCommand(new CmdTechDrawView());
     rcCmdMgr.addCommand(new CmdTechDrawActiveView());
-    rcCmdMgr.addCommand(new CmdTechDrawSectionGroup());
     rcCmdMgr.addCommand(new CmdTechDrawSectionView());
-    rcCmdMgr.addCommand(new CmdTechDrawComplexSection());
     rcCmdMgr.addCommand(new CmdTechDrawDetailView());
     rcCmdMgr.addCommand(new CmdTechDrawProjectionGroup());
     rcCmdMgr.addCommand(new CmdTechDrawClipGroup());
@@ -2103,4 +1880,3 @@ Base::Vector3d checkDirectionVsBasis(Base::Vector3d dir)
     return dir;
 
 }
-

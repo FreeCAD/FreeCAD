@@ -64,7 +64,6 @@ set(TechDrawGui_UIC_SRCS
     SymbolChooser.ui
     TaskMoveView.ui
     TaskProjection.ui
-    TaskComplexSection.ui
     TaskDimRepair.ui
     TaskCosmeticCircle.ui
 
@@ -202,9 +201,6 @@ SET(TechDrawGui_SRCS
     TaskProjection.cpp
     TaskProjection.h
     TaskProjection.ui
-    TaskComplexSection.cpp
-    TaskComplexSection.h
-    TaskComplexSection.ui
     TaskDimRepair.cpp
     TaskDimRepair.h
     TaskDimRepair.ui
@@ -435,7 +431,6 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskCustomizeFormat.ui
     TaskMoveView.ui
     TaskProjection.ui
-    TaskComplexSection.ui
     TaskDimRepair.ui
 )
 

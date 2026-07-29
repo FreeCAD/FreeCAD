@@ -30,6 +30,7 @@
 QT_BEGIN_NAMESPACE
 class QLabel;
 class QHBoxLayout;
+class QToolButton;
 class QVBoxLayout;
 QT_END_NAMESPACE
 
@@ -63,6 +64,7 @@ public:
 Q_SIGNALS:
     void angleChanged(double angle);
     void angleSet(double angle);
+    void directionReversed(double angle);
 
 public Q_SLOTS:
     void slotChangeAngle(double angle) { setDialAngle(angle); }
@@ -72,11 +74,13 @@ public Q_SLOTS:
     void setToNorth() { setDialAngle(90.0); }
     void setToWest() { setDialAngle(180.0); }
     void setToSouth() { setDialAngle(270.0); }
+    void reverseDirection();
     void slotDialAngleSelected(double angle);
 
 protected:
     void paintEvent(QPaintEvent* event) override;
     void buildWidget();
+    void positionReverseButton();
     double changeAngleConvention(double CWY) const;
 
 private:
@@ -91,6 +95,7 @@ private:
     QHBoxLayout* compassControlLayout;
 
     CompassDialWidget* compassDial;
+    QToolButton* reverseButton{nullptr};
     //    DoubleSpinBoxNoEnter* dsbAngle;
     Gui::QuantitySpinBox* dsbAngle;
     QLabel* compassControlLabel;
