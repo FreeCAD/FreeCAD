@@ -223,9 +223,9 @@ std::vector<Gui::ViewProvider::TreeGroup> ViewProviderBody::getTreeGroups() cons
         return {};
     }
 
-    TreeGroup sketches {tr("Sketches"), QStringLiteral("Sketcher_NewSketch"), {}};
-    TreeGroup datums {tr("Datums"), QStringLiteral("PartDesign_Plane"), {}};
-    TreeGroup references {tr("References"), QStringLiteral("PartDesign_SubShapeBinder"), {}};
+    TreeGroup sketches {tr("Sketches"), QStringLiteral("PartDesign_BodyGroupSketches"), {}};
+    TreeGroup datums {tr("Datums"), QStringLiteral("PartDesign_BodyGroupDatums"), {}};
+    TreeGroup references {tr("References"), QStringLiteral("PartDesign_BodyGroupReferences"), {}};
 
     for (auto* object : body->Group.getValues()) {
         if (!object || !object->isAttachedToDocument()) {
