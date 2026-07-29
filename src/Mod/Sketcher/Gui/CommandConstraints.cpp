@@ -3185,7 +3185,6 @@ protected:
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
             if (hasClickSelectedExtrema) {
                 createCircularRadialDistanceConstrain(extremaMode == AvailableConstraint::SECOND,
-                                                      Sketcher::Distance,
                                                       selCircleArc[0].GeoId,
                                                       selCircleArc[1].GeoId,
                                                       onSketchPos);
@@ -3202,7 +3201,6 @@ protected:
         if (availableConstraint == AvailableConstraint::SECOND) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add maximum distance constraint"));
             createCircularRadialDistanceConstrain(true,
-                                                  Sketcher::Distance,
                                                   selCircleArc[0].GeoId,
                                                   selCircleArc[1].GeoId,
                                                   onSketchPos);
@@ -3210,62 +3208,26 @@ protected:
         }
         if (availableConstraint == AvailableConstraint::THIRD) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add minimum horizontal distance constraint"));
-            if (hasClickSelectedExtrema) {
-                createCircularRadialDistanceConstrain(extremaMode == AvailableConstraint::SECOND,
-                                                      Sketcher::DistanceX,
-                                                      selCircleArc[0].GeoId,
-                                                      selCircleArc[1].GeoId,
-                                                      onSketchPos);
-            }
-            else {
-                createCircularAxialDistanceConstrain(
-                    Sketcher::DistanceX, false, selCircleArc[0].GeoId, selCircleArc[1].GeoId, onSketchPos);
-            }
+            createCircularAxialDistanceConstrain(
+                Sketcher::DistanceX, false, selCircleArc[0].GeoId, selCircleArc[1].GeoId, onSketchPos);
             selAllowed = true;
         }
         if (availableConstraint == AvailableConstraint::FOURTH) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add maximum horizontal distance constraint"));
-            if (hasClickSelectedExtrema) {
-                createCircularRadialDistanceConstrain(extremaMode == AvailableConstraint::SECOND,
-                                                      Sketcher::DistanceX,
-                                                      selCircleArc[0].GeoId,
-                                                      selCircleArc[1].GeoId,
-                                                      onSketchPos);
-            }
-            else {
-                createCircularAxialDistanceConstrain(
-                    Sketcher::DistanceX, true, selCircleArc[0].GeoId, selCircleArc[1].GeoId, onSketchPos);
-            }
+            createCircularAxialDistanceConstrain(
+                Sketcher::DistanceX, true, selCircleArc[0].GeoId, selCircleArc[1].GeoId, onSketchPos);
             selAllowed = true;
         }
         if (availableConstraint == AvailableConstraint::FIFTH) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add minimum vertical distance constraint"));
-            if (hasClickSelectedExtrema) {
-                createCircularRadialDistanceConstrain(extremaMode == AvailableConstraint::SECOND,
-                                                      Sketcher::DistanceY,
-                                                      selCircleArc[0].GeoId,
-                                                      selCircleArc[1].GeoId,
-                                                      onSketchPos);
-            }
-            else {
-                createCircularAxialDistanceConstrain(
-                    Sketcher::DistanceY, false, selCircleArc[0].GeoId, selCircleArc[1].GeoId, onSketchPos);
-            }
+            createCircularAxialDistanceConstrain(
+                Sketcher::DistanceY, false, selCircleArc[0].GeoId, selCircleArc[1].GeoId, onSketchPos);
             selAllowed = true;
         }
         if (availableConstraint == AvailableConstraint::SIXTH) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add maximum vertical distance constraint"));
-            if (hasClickSelectedExtrema) {
-                createCircularRadialDistanceConstrain(extremaMode == AvailableConstraint::SECOND,
-                                                      Sketcher::DistanceY,
-                                                      selCircleArc[0].GeoId,
-                                                      selCircleArc[1].GeoId,
-                                                      onSketchPos);
-            }
-            else {
-                createCircularAxialDistanceConstrain(
-                    Sketcher::DistanceY, true, selCircleArc[0].GeoId, selCircleArc[1].GeoId, onSketchPos);
-            }
+            createCircularAxialDistanceConstrain(
+                Sketcher::DistanceY, true, selCircleArc[0].GeoId, selCircleArc[1].GeoId, onSketchPos);
             selAllowed = true;
         }
         if (isCircularDistanceMode(availableConstraint)) {
@@ -3598,7 +3560,6 @@ protected:
     }
 
     void createCircularRadialDistanceConstrain(bool maximum,
-                                                Sketcher::ConstraintType type,
                                                 int geoId1,
                                                 int geoId2,
                                                 Base::Vector2d onSketchPos)
@@ -3633,23 +3594,11 @@ protected:
                               geoId2,
                               static_cast<int>(Sketcher::PointPos::mid),
                               lineGeoId);
-        if (type == Sketcher::Distance) {
-            Gui::cmdAppObjectArgs(Obj,
-                                  "addConstraint(Sketcher.Constraint('Distance',%d,%.8g))",
-                                  lineGeoId,
-                                  (point2 - point1).Length());
-            finishDimensionCreation(geoId1, geoId2, onSketchPos);
-        }
-        else {
-            createConstructionDistanceXYConstrain(type,
-                                                   lineGeoId,
-                                                   Sketcher::PointPos::start,
-                                                   lineGeoId,
-                                                   Sketcher::PointPos::end,
-                                                   geoId1,
-                                                   geoId2,
-                                                   onSketchPos);
-        }
+        Gui::cmdAppObjectArgs(Obj,
+                              "addConstraint(Sketcher.Constraint('Distance',%d,%.8g))",
+                              lineGeoId,
+                              (point2 - point1).Length());
+        finishDimensionCreation(geoId1, geoId2, onSketchPos);
     }
 
     void createCircleLineMaximumDistanceConstrain(int circleGeoId,
@@ -4358,10 +4307,10 @@ protected:
         const bool betweenY = onSketchPos.y > minY && onSketchPos.y < maxY;
 
         if (betweenX && !betweenY) {
-            suggested = AvailableConstraint::THIRD;
+            suggested = onSketchPos.y < minY ? AvailableConstraint::THIRD : AvailableConstraint::FOURTH;
         }
         else if (betweenY && !betweenX) {
-            suggested = AvailableConstraint::FIFTH;
+            suggested = onSketchPos.x < minX ? AvailableConstraint::FIFTH : AvailableConstraint::SIXTH;
         }
         else {
             suggested = extremaMode;
