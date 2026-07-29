@@ -42,7 +42,7 @@ struct StepImportSettings
     bool useBaseName = true;
     bool importHidden = true;
     bool reduceObjects = false;
-    bool showProgress = false;
+    bool showProgress = true;
     bool expandCompound = false;
     int mode = 0;
     int codePage = -1;
