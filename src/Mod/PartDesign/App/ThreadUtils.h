@@ -78,10 +78,8 @@ private:
     static const char* ThreadClass_UNEF_Enums[];
 
     /* NPT profile */
-    // static const char* HoleCutType_NPT_Enums[];
 
     /* BSP profile */
-    // static const char* HoleCutType_BSP_Enums[];
 
     /* BSW profile */
     static const char* ThreadClass_BSW_Enums[];

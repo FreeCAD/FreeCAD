@@ -49,7 +49,6 @@ public:
 
 protected:
     void changeEvent(QEvent* e) override;
-    // void referenceSele(const Gui::SelectionChanges& msg, QLineEdit* widget);
     void setThreadSelectionMode(threadSelectionModes mode);
     void changedObject(const App::Document&, const App::Property& Prop);
     void setThreadSelectionGate();

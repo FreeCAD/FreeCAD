@@ -51,7 +51,6 @@ public:
     //@{
     /// recalculate the feature
     App::DocumentObjectExecReturn* execute() override;
-    // short mustExecute() const override;
 
     /// returns the type name of the view provider
     const char* getViewProviderName() const override
@@ -66,7 +65,6 @@ protected:
 private:
     ThreadUtils threadUtils;
     void addThreadType();
-    void updateDiameterParam();
 };
 
 }  // namespace PartDesign

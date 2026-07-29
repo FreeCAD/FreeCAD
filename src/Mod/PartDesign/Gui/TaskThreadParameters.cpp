@@ -31,11 +31,10 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     ui->setupUi(proxy);
     this->groupLayout()->addWidget(proxy);
 
-    QMetaObject::connectSlotsByName(this);  // TODO: what this does?
+    QMetaObject::connectSlotsByName(this);
 
     PartDesign::Thread* pcThread = DressUpView->getObject<PartDesign::Thread>();
 
-    // Reloading Lateral Face
     const std::vector<std::string>& subNamesLateral = pcThread->LateralFace.getSubValues();
     if (!subNamesLateral.empty()) {
         ui->lateralFaceEdit->setText(QString::fromStdString(subNamesLateral.front()));
@@ -52,10 +51,6 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     setUpUI(pcThread);
 
     std::vector<std::string> strings = pcThread->Base.getSubValues();
-    // for (const auto& string : strings) {
-    // ui->listWidgetReferences->addItem(QString::fromStdString(string));
-    // }
-
 
     QMetaObject::connectSlotsByName(this);
 
@@ -70,8 +65,6 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     ui->upToGeometryWidget->setHidden(!isUpToGeometry);
     ui->Depth->setValue(pcThread->Depth.getValue());
 
-    // TODO: change hardcoded for enum loop
-    // TODO: change ui->standardCombo for a better name
     ui->standardCombo->addItem(tr("None"), QByteArray("None"));
     ui->standardCombo->addItem(tr("ISO metric regular"), QByteArray("ISO"));
     ui->standardCombo->addItem(tr("ISO metric fine"), QByteArray("ISO"));
@@ -85,7 +78,6 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     ui->standardCombo->addItem(tr("ISO tyre valves"), QByteArray("Other"));
     ui->standardCombo->setCurrentIndex(pcThread->ThreadType.getValue());
 
-    // diameter
     ui->diameterCombo->clear();
     std::vector<std::string> cursorDiameter = pcThread->ThreadSize.getEnumVector();
     for (const auto& it : cursorDiameter) {
@@ -93,7 +85,6 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     }
     ui->diameterCombo->setCurrentIndex(pcThread->ThreadSize.getValue());
 
-    // class
     ui->classCombo->clear();
     std::vector<std::string> cursorClass = pcThread->ThreadClass.getEnumVector();
     for (const auto& it : cursorClass) {
@@ -101,7 +92,6 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     }
     ui->classCombo->setCurrentIndex(pcThread->ThreadClass.getValue());
 
-    // pitch
     ui->pitchCombo->clear();
     std::vector<std::string> cursorPitch = pcThread->ThreadSizePitch.getEnumVector();
     for (const auto& it : cursorPitch) {
@@ -109,7 +99,6 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     }
     ui->pitchCombo->setCurrentIndex(pcThread->ThreadSizePitch.getValue());
 
-    // thread direction
     ui->directionCombo->clear();
     std::vector<std::string> cursorDirection = pcThread->ThreadDirection.getEnumVector();
     for (const auto& it : cursorDirection) {
@@ -117,11 +106,10 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     }
     ui->directionCombo->setCurrentIndex(pcThread->ThreadDirection.getValue());
 
-    // TODO: only allow to be visible when it is modelled thread
+
     ui->customClearanceCheck->setChecked(pcThread->UseCustomThreadClearance.getValue());
     ui->customClearanceField->setEnabled(ui->customClearanceCheck->isChecked());
     ui->classCombo->setEnabled(!ui->customClearanceCheck->isChecked());
-    // TODO: constraint clearance value
     ui->customClearanceField->setValue(pcThread->CustomThreadClearance.getValue());
 
     bool isModeled = pcThread->ModelThread.getValue();
@@ -172,43 +160,32 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
         &TaskThreadParameters::threadDirectionChanged
     );
 
-    // TODO: verificar se essa sentença ainda serve e tirar daqui
-    connect(ui->lateralFaceEdit, &QLineEdit::textChanged, this, &TaskThreadParameters::QLineEditSelected);
-
     connect(ui->selectLateralFace, &QPushButton::toggled, [this](bool checked) {
         if (checked) {
-            // Base::Console().message("então é lateral face\n");
-            // ui->selectLateralFace->setChecked(false); // Desliga o outro
+            ui->selectLateralFace->setChecked(false);
             setThreadSelectionMode(SideFaceSel);
         }
         else if (currentSelectionMode == SideFaceSel) {
-            // Base::Console().message("não é mais lateral face\n");
             setThreadSelectionMode(None);
         }
     });
 
     connect(ui->selectStart, &QPushButton::toggled, [this](bool checked) {
         if (checked) {
-            // Base::Console().message("então é start face\n");
-            // ui->selectStart->setChecked(false); // Desliga o outro
+            ui->selectStart->setChecked(false);
             setThreadSelectionMode(StartFaceSel);
         }
         else if (currentSelectionMode == StartFaceSel) {
-            // Base::Console().message("não é mais start face\n");
-            // Base::Console().message("então é start face\n");
             setThreadSelectionMode(None);
         }
     });
 
     connect(ui->selectUpToGeometry, &QPushButton::toggled, [this](bool checked) {
         if (checked) {
-            // Base::Console().message("então é start face\n");
-            // ui->selectStart->setChecked(false); // Desliga o outro
+            ui->selectUpToGeometry->setChecked(false);
             setThreadSelectionMode(UpToGeometrySel);
         }
         else if (currentSelectionMode == UpToGeometrySel) {
-            // Base::Console().message("não é mais start face\n");
-            // Base::Console().message("então é start face\n");
             setThreadSelectionMode(None);
         }
     });
@@ -255,17 +232,7 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     );
     // NOLINTEND
 
-    // if (connectPropChanged.connected()) {
-    // Base::Console().message("✅ signalChangePropertyEditor connected successfully!\n");
-    // }
-    // else {
-    // Base::Console().error("❌ Failed to connect signalChangePropertyEditor!\n");
-    // }
-
-    // setupGizmos(DressUpView);
-
     if (strings.size() == 0) {
-        // setSelectionMode(refSel);
         setThreadSelectionGate();
     }
     else {
@@ -295,7 +262,12 @@ void TaskThreadParameters::changeEvent(QEvent* e)
 }
 
 void TaskThreadParameters::apply()
-{}
+{
+    auto pcThread = getObject<PartDesign::Thread>();
+    if (pcThread->LateralFace.getSubValues().empty()) {
+        Base::Console().warning(tr("Empty thread created!\n").toStdString().c_str());
+    }
+}
 
 void TaskThreadParameters::onRefDeleted()
 {}
@@ -305,44 +277,13 @@ void TaskThreadParameters::setButtons(const PartDesignGui::TaskDressUpParameters
     Q_UNUSED(mode);
 }
 
-// void TaskThreadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
-// {
-//     // executed when the user selected something in the CAD object
-//     // adds/deletes the selection accordingly
-//     Base::Console().message("SELECTIONCHANGED\n");
-
-//     // 1. Tratamento quando algo é selecionado no CAD
-//     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-//         Base::Console().message("ta na hora campeao\n");
-//         if (selectionMode == refSel) {
-//             referenceQLineEditSelected(msg, ui->lateralFaceEdit);
-//         }
-//     }
-
-// }
-
 void TaskThreadParameters::setThreadSelectionMode(threadSelectionModes mode)
 {
-    // Base::Console().message("works!\n");
     currentSelectionMode = mode;
-
-    // Atualiza o estado visual dos botões
-    // ui->selectLateralFace->setChecked(mode == SideFaceSel);
-    // ui->selectStart->setChecked(mode == StartFaceSel);
-
-    // Configura os Gates de Seleção do FreeCAD se necessário
-    // (ex: restringir para que apenas FACES possam ser clicadas)
-    // if (mode != None) {
-    // Gui::Selection().addSelectionGate(new Gui::SelectionGateFilter("HasSubElement:Face"));
-    // } else {
-    // Gui::Selection().rmvSelectionGate();
-    // }
 }
 
 void TaskThreadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    // Base::Console().message("SELECTIONCHANGED\n");
-
     if (msg.Type != Gui::SelectionChanges::AddSelection) {
         return;
     }
@@ -359,15 +300,12 @@ void TaskThreadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             setupTransaction();
             pcThread->LateralFace.setValue(selObj, planes);
 
-            // ui->lateralFaceEdit->setText(QString::fromStdString(msg.SubName));
             referenceQLineEditSelected(msg, ui->lateralFaceEdit);
-            // Opcional: Se for seleção única, desmarca o botão após escolher
             ui->selectLateralFace->setChecked(false);
             break;
         }
 
         case StartFaceSel: {
-            // ui->startEdit->setText(QString::fromStdString(msg.SubName));
             auto pcThread = getObject<PartDesign::Thread>();
             std::vector<std::string> planes;
             App::DocumentObject* selObj = nullptr;
@@ -384,19 +322,10 @@ void TaskThreadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
 
         case UpToGeometrySel: {
-            // ui->startEdit->setText(QString::fromStdString(msg.SubName));
             auto pcThread = getObject<PartDesign::Thread>();
             std::vector<std::string> planes;
             App::DocumentObject* selObj = nullptr;
-            // Base::Console().message("Object = %s\n", msg.pObjectName);
-            // Base::Console().message("Type = %s\n", msg.pTypeName);
-            // Base::Console().message("SubName = %s\n", msg.pSubName);
             getReferencedSelection(pcThread, msg, selObj, planes);
-            // // Base::Console().message("selObj = %p\n", selObj);
-            // Base::Console().message("planes.size() = %zu\n", planes.size());
-            // for (const auto& p : planes) {
-            // Base::Console().message("plane = '%s'\n", p.c_str());
-            // }
 
             if (!selObj) {
                 return;
@@ -414,14 +343,8 @@ void TaskThreadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 }
 
-void TaskThreadParameters::QLineEditSelected(const QString& text)
-{
-    // Base::Console().message("SINAL RECEBIDO DE QLINEEDIT");
-}
-
 void TaskThreadParameters::threadTypeChanged(int index)
 {
-    // Base::Console().message("ESTOU mudando TYPE\n");
     if (index < 0) {
         return;
     }
@@ -431,14 +354,9 @@ void TaskThreadParameters::threadTypeChanged(int index)
         return;
     }
 
-    // store the current class
     QString ThreadClassString = ui->classCombo->currentText();
 
-    // now set the new type, this will reset the comboboxes to item 0
     pcThread->ThreadType.setValue(index);
-    // Base::Console().message("MUDEI THREAD TYPE\n");
-
-    // TODO: check a lot of new type consequences
 
     int threadClassIndex = ui->classCombo->findText(ThreadClassString, Qt::MatchContains);
     if (threadClassIndex > -1) {
@@ -458,19 +376,7 @@ void TaskThreadParameters::threadSizeChanged(int index)
     if (thread) {
         thread->ThreadSize.setValue(index);
         recomputeFeature();
-
-        // apply the recompute result to the widgets
-        // ui->HoleCutCustomValues->setDisabled(hole->HoleCutCustomValues.isReadOnly());
-        // ui->HoleCutCustomValues->setChecked(hole->HoleCutCustomValues.getValue());
     }
-
-    // pitch
-    // ui->pitchCombo->clear();
-    // std::vector<std::string> cursorPitch = thread->ThreadSizePitch.getEnumVector();
-    // for (const auto& it : cursorPitch) {
-    //     ui->pitchCombo->addItem(tr(it.c_str()));
-    // }
-    // ui->pitchCombo->setCurrentIndex(thread->ThreadSizePitch.getValue());
 }
 
 void TaskThreadParameters::threadSizePitchChanged(int index)
@@ -483,10 +389,6 @@ void TaskThreadParameters::threadSizePitchChanged(int index)
     if (thread) {
         thread->ThreadSizePitch.setValue(index);
         recomputeFeature();
-
-        // apply the recompute result to the widgets
-        // ui->HoleCutCustomValues->setDisabled(hole->HoleCutCustomValues.isReadOnly());
-        // ui->HoleCutCustomValues->setChecked(hole->HoleCutCustomValues.getValue());
     }
 }
 
@@ -504,14 +406,6 @@ void TaskThreadParameters::depthTypeChanged(int index)
     ui->Depth->setHidden(!isDimension);
     ui->upToGeometryWidget->setHidden(!isUpToGeometry);
     recomputeFeature();
-    // enabling must be handled after recompute
-    // bool DepthisDimension = (std::string(hole->DepthType.getValueAsString()) == "Dimension");
-    // ui->DrillPointAngled->setEnabled(DepthisDimension);
-    // ui->DrillPointAngle->setEnabled(DepthisDimension);
-    // ui->DrillForDepth->setEnabled(DepthisDimension);
-    // setCutDiagram();
-
-    // setGizmoPositions();
 }
 
 void TaskThreadParameters::depthChanged(double value)
@@ -553,19 +447,6 @@ void TaskThreadParameters::CustomClearanceCheckValuesChanged()
         ui->customClearanceField->setEnabled(ui->customClearanceCheck->isChecked());
         ui->classCombo->setEnabled(!ui->customClearanceCheck->isChecked());
 
-        if (ui->customClearanceCheck->isChecked()) {
-            // ui->HoleCutDiameter->setEnabled(true);
-            // ui->HoleCutDepth->setEnabled(true);
-            // if (!hole->HoleCutCountersinkAngle.isReadOnly()) {
-            // ui->HoleCutCountersinkAngle->setEnabled(true);
-            // }
-        }
-        else {
-            // ui->HoleCutDiameter->setEnabled(false);
-            // ui->HoleCutDepth->setEnabled(false);
-            // ui->HoleCutCountersinkAngle->setEnabled(false);
-        }
-
         recomputeFeature();
     }
 }
@@ -574,14 +455,12 @@ void TaskThreadParameters::threadModelChanged()
 {
     if (auto thread = getObject<PartDesign::Thread>()) {
         if (sender() == ui->cosmeticThreadRadio) {
-            // hole->ThreadDirection.setValue(0L);
             thread->CosmeticThread.setValue(true);
             thread->ModelThread.setValue(false);
         }
         else {
             thread->CosmeticThread.setValue(false);
             thread->ModelThread.setValue(true);
-            // hole->ThreadDirection.setValue(1L);
         }
         recomputeFeature();
     }
@@ -623,20 +502,6 @@ void TaskThreadParameters::changedObject(const App::Document&, const App::Proper
         widget->setDisabled(ro);
     };
 
-    // auto updateSpinBox = [&](Gui::PrefQuantitySpinBox* widget, double value) {
-    //     [[maybe_unused]] QSignalBlocker blocker(widget);
-    //     widget->setValue(value);
-    //     widget->setDisabled(ro);
-    // };
-
-    // if (&Prop == &hole->Threaded || &Prop == &hole->CosmeticThread) {
-    //     updateHoleTypeCombo();
-    // }
-    // else if (&Prop == &hole->ModelThread) {
-    //     updateHoleTypeCombo();
-    //     updateCheckable(ui->ModelThread, hole->ModelThread.getValue());
-    // }
-    // else
     if (&Prop == &thread->ThreadType) {
         ui->standardCombo->setEnabled(true);
         updateComboBox(ui->standardCombo, thread->ThreadType.getValue());
@@ -657,12 +522,6 @@ void TaskThreadParameters::changedObject(const App::Document&, const App::Proper
             thread->ThreadSize.getValue()
         );
 
-        // std::vector<std::string> translatedCutTypes;
-        // for (const auto& it : hole->HoleCutType.getEnumVector()) {
-        //     translatedCutTypes.push_back(tr(it.c_str()).toStdString());
-        // }
-        // updateComboBoxItems(ui->HoleCutType, translatedCutTypes, hole->HoleCutType.getValue());
-
         std::vector<std::string> translatedClassTypes;
         for (const auto& it : thread->ThreadClass.getEnumVector()) {
             translatedClassTypes.push_back(tr(it.c_str()).toStdString());
@@ -672,9 +531,6 @@ void TaskThreadParameters::changedObject(const App::Document&, const App::Proper
         ui->designationEdit->setText(thread->ThreadDesignation.getValue());
     }
     else if (&Prop == &thread->ThreadSize) {
-        // ui->ThreadSize->setEnabled(true);
-        // updateComboBox(ui->standardCombo, thread->ThreadSize.getValue());
-
         // Thread size also updates related properties
         auto updateComboBoxItems = [&](QComboBox* widget, const auto& values, int selected) {
             QSignalBlocker blocker(widget);
@@ -701,97 +557,6 @@ void TaskThreadParameters::changedObject(const App::Document&, const App::Proper
         ui->endTypeCombo->setEnabled(true);
         updateComboBox(ui->endTypeCombo, thread->DepthType.getValue());
     }
-    // else if (&Prop == &hole->ThreadClass) {
-    //     ui->ThreadClass->setEnabled(true);
-    //     updateComboBox(ui->ThreadClass, hole->ThreadClass.getValue());
-    // }
-    // else if (&Prop == &hole->ThreadFit) {
-    //     ui->ThreadFit->setEnabled(true);
-    //     updateComboBox(ui->ThreadFit, hole->ThreadFit.getValue());
-    // }
-    // else if (&Prop == &hole->Diameter) {
-    //     ui->Diameter->setEnabled(true);
-    //     updateSpinBox(ui->Diameter, hole->Diameter.getValue());
-    //     updateHoleCutLimits(hole);
-    // }
-    // else if (&Prop == &hole->ThreadDirection) {
-    //     ui->directionRightHand->setEnabled(true);
-    //     ui->directionLeftHand->setEnabled(true);
-
-    //     std::string direction(hole->ThreadDirection.getValueAsString());
-    //     updateRadio(ui->directionRightHand, direction == "Right");
-    //     updateRadio(ui->directionLeftHand, direction == "Left");
-    // }
-    // else if (&Prop == &hole->HoleCutType) {
-    //     ui->HoleCutType->setEnabled(true);
-    //     updateComboBox(ui->HoleCutType, hole->HoleCutType.getValue());
-    // }
-    // else if (&Prop == &hole->HoleCutDiameter) {
-    //     ui->HoleCutDiameter->setEnabled(true);
-    //     updateSpinBox(ui->HoleCutDiameter, hole->HoleCutDiameter.getValue());
-    // }
-    // else if (&Prop == &hole->HoleCutDepth) {
-    //     ui->HoleCutDepth->setEnabled(true);
-    //     updateSpinBox(ui->HoleCutDepth, hole->HoleCutDepth.getValue());
-    // }
-    // else if (&Prop == &hole->HoleCutCountersinkAngle) {
-    //     ui->HoleCutCountersinkAngle->setEnabled(true);
-    //     updateSpinBox(ui->HoleCutCountersinkAngle, hole->HoleCutCountersinkAngle.getValue());
-    // }
-    // else if (&Prop == &hole->DepthType) {
-    //     ui->DepthType->setEnabled(true);
-    //     updateComboBox(ui->DepthType, hole->DepthType.getValue());
-    // }
-    // else if (&Prop == &hole->Depth) {
-    //     ui->Depth->setEnabled(true);
-    //     updateSpinBox(ui->Depth, hole->Depth.getValue());
-    // }
-    // else if (&Prop == &hole->DrillPoint) {
-    //     ui->DrillPointAngled->setEnabled(true);
-    //     updateCheckable(
-    //         ui->DrillPointAngled,
-    //         hole->DrillPoint.getValueAsString() == std::string("Angled")
-    //     );
-    // }
-    // else if (&Prop == &hole->DrillPointAngle) {
-    //     ui->DrillPointAngle->setEnabled(true);
-    //     updateSpinBox(ui->DrillPointAngle, hole->DrillPointAngle.getValue());
-    // }
-    // else if (&Prop == &hole->DrillForDepth) {
-    //     ui->DrillForDepth->setEnabled(true);
-    //     updateCheckable(ui->DrillForDepth, hole->DrillForDepth.getValue());
-    // }
-    // else if (&Prop == &hole->Tapered) {
-    //     ui->Tapered->setEnabled(true);
-    //     updateCheckable(ui->Tapered, hole->Tapered.getValue());
-    // }
-    // else if (&Prop == &hole->TaperedAngle) {
-    //     ui->TaperedAngle->setEnabled(true);
-    //     updateSpinBox(ui->TaperedAngle, hole->TaperedAngle.getValue());
-    // }
-    // else if (&Prop == &hole->UseCustomThreadClearance) {
-    //     ui->UseCustomThreadClearance->setEnabled(true);
-    //     updateCheckable(ui->UseCustomThreadClearance, hole->UseCustomThreadClearance.getValue());
-    // }
-    // else if (&Prop == &hole->CustomThreadClearance) {
-    //     ui->CustomThreadClearance->setEnabled(true);
-    //     updateSpinBox(ui->CustomThreadClearance, hole->CustomThreadClearance.getValue());
-    // }
-    // else if (&Prop == &hole->ThreadDepthType) {
-    //     ui->ThreadDepthType->setEnabled(true);
-    //     updateComboBox(ui->ThreadDepthType, hole->ThreadDepthType.getValue());
-    // }
-    // else if (&Prop == &hole->ThreadDepth) {
-    //     ui->ThreadDepth->setEnabled(true);
-    //     updateSpinBox(ui->ThreadDepth, hole->ThreadDepth.getValue());
-    // }
-    // else if (&Prop == &hole->BaseProfileType) {
-    //     ui->BaseProfileType->setEnabled(true);
-    //     updateComboBox(
-    //         ui->BaseProfileType,
-    //         PartDesign::Hole::baseProfileOption_bitmaskToIdx(hole->BaseProfileType.getValue())
-    //     );
-    // }
 }
 
 void TaskThreadParameters::setThreadSelectionGate()

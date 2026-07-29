@@ -13,7 +13,6 @@
 
   <layout class="QVBoxLayout" name="verticalLayout">
 
-   <!-- Thread Location -->
    <item>
     <widget class="QGroupBox" name="groupThreadLocation">
      <property name="title">
@@ -177,14 +176,6 @@
         </widget>
      </item>
 
-    <!-- <item row="4" column="0">
-       <widget class="QLabel" name="upToGeometrySelection">
-        <property name="text">
-         <string>Select Geometry</string>
-        </property>
-       </widget>
-    </item> -->
-
      <item row="4" column="1">
         <widget class="QWidget" name="upToGeometryWidget">
          <layout class="QHBoxLayout" name="upToGeometryLayout">
@@ -220,7 +211,6 @@
     </widget>
    </item>
 
-   <!-- Thread Type -->
    <item>
     <widget class="QGroupBox" name="groupThreadType">
      <property name="title">
@@ -347,7 +337,6 @@
     </widget>
    </item>
 
-   <!-- Representation -->
    <item>
     <widget class="QGroupBox" name="groupRepresentation">
      <property name="title">
