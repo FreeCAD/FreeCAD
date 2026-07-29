@@ -243,10 +243,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
          <item row="1" column="1">
           <widget class="Gui::PrefSpinBox" name="gridLineWidth">
            <property name="toolTip">
-            <string>Distance between two subsequent grid lines</string>
-           </property>
-           <property name="unit" stdset="0">
-            <string notr="true">mm</string>
+            <string>Width of minor grid lines in pixels</string>
            </property>
            <property name="minimum">
             <number>1</number>
@@ -381,7 +378,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
          <item row="2" column="1">
           <widget class="Gui::PrefSpinBox" name="gridDivLineWidth">
            <property name="toolTip">
-            <string>Distance between two subsequent division lines</string>
+            <string>Width of major grid lines in pixels</string>
            </property>
            <property name="minimum">
             <number>1</number>
