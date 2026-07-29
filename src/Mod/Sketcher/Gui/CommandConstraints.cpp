@@ -2030,10 +2030,19 @@ public:
 class DrawSketchHandlerDimension : public DrawSketchHandler
 {
 public:
+    enum class CircularDistancePreference {
+        Automatic,
+        Radial,
+        Horizontal,
+        Vertical
+    };
+
     // Helper constants for hint texts
     static constexpr const char* PICK_POINT_OR_EDGE = "%1 pick point/edge";
     static constexpr const char* PICK_SECOND_POINT_OR_EDGE_OR_CLICK_TO_FINISH = "%1 pick next point/edge, or empty space to finish";
-    explicit DrawSketchHandlerDimension(std::vector<std::string> SubNames)
+    explicit DrawSketchHandlerDimension(
+        std::vector<std::string> SubNames,
+        CircularDistancePreference circularDistancePreference = CircularDistancePreference::Automatic)
         : specialConstraint(SpecialConstraint::None)
         , availableConstraint(AvailableConstraint::FIRST)
         , previousOnSketchPos(Base::Vector2d(0.f, 0.f))
@@ -2043,8 +2052,11 @@ public:
         , selEllipseAndCo({})
         , selSplineAndCo({})
         , initialSelection(std::move(SubNames))
+        , circlePickPositions({})
         , cstrIndexes({})
         , singleCircleReverseOrder(false)
+        , circularDistanceCreated(false)
+        , circularDistancePreference(circularDistancePreference)
     {
     }
     ~DrawSketchHandlerDimension() override
@@ -2229,10 +2241,15 @@ public:
         }
 
         std::vector<SelIdPair>& selVector = getSelectionVector(newselGeoType);
+        const bool isCircleSelection = newselGeoType == Part::GeomArcOfCircle::getClassTypeId()
+            || newselGeoType == Part::GeomCircle::getClassTypeId();
 
         if (notSelectedYet(selIdPair)) {
             //add the geometry to its type vector. Temporarily if not selAllowed
             selVector.push_back(selIdPair);
+            if (isCircleSelection) {
+                circlePickPositions.push_back(onSketchPos);
+            }
 
             bool selAllowed = makeAppropriateConstraint(onSketchPos);
 
@@ -2243,11 +2260,17 @@ public:
             }
             else {
                 selVector.pop_back();
+                if (isCircleSelection) {
+                    circlePickPositions.pop_back();
+                }
             }
         }
         else {
             //if it is already selected we unselect it.
             selVector.pop_back();
+            if (isCircleSelection) {
+                circlePickPositions.pop_back();
+            }
             if (!selectionEmpty()) {
                 makeAppropriateConstraint(onSketchPos);
             }
@@ -2303,9 +2326,12 @@ protected:
     std::vector<SelIdPair> selSplineAndCo;
 
     std::vector<std::string> initialSelection;
+    std::vector<Base::Vector2d> circlePickPositions;
 
     std::vector<int> cstrIndexes;
     bool singleCircleReverseOrder;
+    bool circularDistanceCreated;
+    CircularDistancePreference circularDistancePreference;
 
     Sketcher::SketchObject* Obj;
 
@@ -2564,7 +2590,9 @@ protected:
         selCircleArc.clear();
         selEllipseAndCo.clear();
         selSplineAndCo.clear();
+        circlePickPositions.clear();
         singleCircleReverseOrder = false;
+        circularDistanceCreated = false;
     }
 
     void handleInitialSelection()
@@ -3148,6 +3176,8 @@ protected:
 
     void makeCts_2Circle(bool& selAllowed, Base::Vector2d onSketchPos)
     {
+        initializeCircularDistanceMode();
+
         // Distance, maximum distance, horizontal/vertical distances, radial distance, equality
         if (availableConstraint == AvailableConstraint::FIRST) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
@@ -3202,6 +3232,80 @@ protected:
             createEqualityConstrain(selCircleArc[0].GeoId, selCircleArc[1].GeoId);
             availableConstraint = AvailableConstraint::RESET;
         }
+    }
+
+    void initializeCircularDistanceMode()
+    {
+        if (circularDistanceCreated) {
+            return;
+        }
+
+        circularDistanceCreated = true;
+
+        if (circularDistancePreference == CircularDistancePreference::Automatic) {
+            AvailableConstraint clickMode = AvailableConstraint::FIRST;
+            if (getCircularClickMode(clickMode)) {
+                availableConstraint = clickMode;
+            }
+            return;
+        }
+
+        switch (circularDistancePreference) {
+            case CircularDistancePreference::Radial:
+                availableConstraint = AvailableConstraint::FIRST;
+                break;
+            case CircularDistancePreference::Horizontal:
+                availableConstraint = AvailableConstraint::THIRD;
+                break;
+            case CircularDistancePreference::Vertical:
+                availableConstraint = AvailableConstraint::FIFTH;
+                break;
+            case CircularDistancePreference::Automatic:
+                break;
+        }
+    }
+
+    bool getCircularClickMode(AvailableConstraint& mode) const
+    {
+        if (circlePickPositions.size() != 2) {
+            return false;
+        }
+
+        const Part::Geometry* geometry1 = Obj->getGeometry(selCircleArc[0].GeoId);
+        const Part::Geometry* geometry2 = Obj->getGeometry(selCircleArc[1].GeoId);
+        if (!geometry1 || !geometry2 || !isCircle(*geometry1) || !isCircle(*geometry2)) {
+            return false;
+        }
+
+        const auto* circle1 = static_cast<const Part::GeomCircle*>(geometry1);
+        const auto* circle2 = static_cast<const Part::GeomCircle*>(geometry2);
+        Base::Vector3d direction = circle2->getCenter() - circle1->getCenter();
+        if (direction.Length() < Precision::Confusion()) {
+            return false;
+        }
+        direction = direction.Normalize();
+
+        const Base::Vector2d& pick1 = circlePickPositions[0];
+        const Base::Vector2d& pick2 = circlePickPositions[1];
+        const Base::Vector3d firstPick(pick1.x - circle1->getCenter().x,
+                                       pick1.y - circle1->getCenter().y,
+                                       0.0);
+        const Base::Vector3d secondPick(pick2.x - circle2->getCenter().x,
+                                        pick2.y - circle2->getCenter().y,
+                                        0.0);
+        const double firstSide = firstPick.Dot(direction);
+        const double secondSide = secondPick.Dot(direction);
+
+        if (firstSide > Precision::Confusion() && secondSide < -Precision::Confusion()) {
+            mode = AvailableConstraint::FIRST;
+            return true;
+        }
+        if (firstSide < -Precision::Confusion() && secondSide > Precision::Confusion()) {
+            mode = AvailableConstraint::SECOND;
+            return true;
+        }
+
+        return false;
     }
 
     int createConstructionPoint(const Base::Vector3d& point)
@@ -4113,17 +4217,21 @@ protected:
         const bool outsideY = onSketchPos.y < minY || onSketchPos.y > maxY;
 
         AvailableConstraint suggested = AvailableConstraint::FIRST;
-        if (outsideX && outsideY) {
-            suggested = AvailableConstraint::SECOND;
+        if (!getCircularClickMode(suggested)) {
+            if (outsideX && outsideY) {
+                suggested = AvailableConstraint::SECOND;
+            }
+            else if (outsideY) {
+                suggested = onSketchPos.y < minY ? AvailableConstraint::THIRD
+                                                  : AvailableConstraint::FOURTH;
+            }
+            else if (outsideX) {
+                suggested = onSketchPos.x < minX ? AvailableConstraint::FIFTH
+                                                  : AvailableConstraint::SIXTH;
+            }
         }
-        else if (outsideY) {
-            suggested = onSketchPos.y < minY ? AvailableConstraint::THIRD
-                                              : AvailableConstraint::FOURTH;
-        }
-        else if (outsideX) {
-            suggested = onSketchPos.x < minX ? AvailableConstraint::FIFTH
-                                              : AvailableConstraint::SIXTH;
-        }
+
+        suggested = preferredCircularDistanceMode(suggested);
 
         if (!isCircularDistanceModeAvailable(suggested)) {
             suggested = AvailableConstraint::FIRST;
@@ -4185,6 +4293,25 @@ protected:
         }
 
         return false;
+    }
+
+    AvailableConstraint preferredCircularDistanceMode(AvailableConstraint suggested) const
+    {
+        switch (circularDistancePreference) {
+            case CircularDistancePreference::Radial:
+                return suggested == AvailableConstraint::SECOND ? AvailableConstraint::SECOND
+                                                                 : AvailableConstraint::FIRST;
+            case CircularDistancePreference::Horizontal:
+                return suggested == AvailableConstraint::FOURTH ? AvailableConstraint::FOURTH
+                                                                 : AvailableConstraint::THIRD;
+            case CircularDistancePreference::Vertical:
+                return suggested == AvailableConstraint::SIXTH ? AvailableConstraint::SIXTH
+                                                                : AvailableConstraint::FIFTH;
+            case CircularDistancePreference::Automatic:
+                return suggested;
+        }
+
+        return suggested;
     }
 
     bool isCircularDistanceModeAvailable(AvailableConstraint constraint) const
@@ -4277,6 +4404,25 @@ protected:
         clearRefVectors();
     }
 };
+
+static bool isCircularPairSelection(const Sketcher::SketchObject* sketch,
+                                    const std::vector<std::string>& subNames)
+{
+    if (subNames.size() != 2) {
+        return false;
+    }
+
+    int geoId1;
+    int geoId2;
+    Sketcher::PointPos posId1;
+    Sketcher::PointPos posId2;
+    getIdsFromName(subNames[0], sketch, geoId1, posId1);
+    getIdsFromName(subNames[1], sketch, geoId2, posId2);
+
+    const Part::Geometry* geometry1 = sketch->getGeometry(geoId1);
+    const Part::Geometry* geometry2 = sketch->getGeometry(geoId2);
+    return geometry1 && geometry2 && isCircleOrArc(*geometry1) && isCircleOrArc(*geometry2);
+}
 
 DEF_STD_CMD_AU(CmdSketcherDimension)
 
@@ -5945,6 +6091,14 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
     auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
+    if (isCircularPairSelection(Obj, SubNames)) {
+        ActivateHandler(getActiveGuiDocument(),
+                        std::make_unique<DrawSketchHandlerDimension>(
+                            SubNames,
+                            DrawSketchHandlerDimension::CircularDistancePreference::Radial));
+        return;
+    }
+
     if (SubNames.empty() || SubNames.size() > 2) {
         Gui::TranslatedUserWarning(Obj,
             QObject::tr("Wrong selection"),
@@ -6596,6 +6750,14 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
     auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
+    if (isCircularPairSelection(Obj, SubNames)) {
+        ActivateHandler(getActiveGuiDocument(),
+                        std::make_unique<DrawSketchHandlerDimension>(
+                            SubNames,
+                            DrawSketchHandlerDimension::CircularDistancePreference::Horizontal));
+        return;
+    }
+
     if (SubNames.empty() || SubNames.size() > 2) {
         Gui::TranslatedUserWarning(
             Obj,
@@ -6896,6 +7058,14 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
     auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+
+    if (isCircularPairSelection(Obj, SubNames)) {
+        ActivateHandler(getActiveGuiDocument(),
+                        std::make_unique<DrawSketchHandlerDimension>(
+                            SubNames,
+                            DrawSketchHandlerDimension::CircularDistancePreference::Vertical));
+        return;
+    }
 
     if (SubNames.empty() || SubNames.size() > 2) {
         Gui::TranslatedUserWarning(
