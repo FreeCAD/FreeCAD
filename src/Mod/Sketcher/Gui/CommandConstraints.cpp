@@ -3362,6 +3362,32 @@ protected:
         return false;
     }
 
+    bool getCircularRadialPoints(bool maximum,
+                                 Base::Vector3d& point1,
+                                 Base::Vector3d& point2) const
+    {
+        const Part::Geometry* geometry1 = Obj->getGeometry(selCircleArc[0].GeoId);
+        const Part::Geometry* geometry2 = Obj->getGeometry(selCircleArc[1].GeoId);
+        if (!geometry1 || !geometry2) {
+            return false;
+        }
+
+        auto [radius1, center1] = getRadiusCenterCircleArc(geometry1);
+        auto [radius2, center2] = getRadiusCenterCircleArc(geometry2);
+        Base::Vector3d direction = center2 - center1;
+        if (direction.Length() < Precision::Confusion()) {
+            direction = Base::Vector3d(1.0, 0.0, 0.0);
+        }
+        else {
+            direction = direction.Normalize();
+        }
+
+        const double sign = maximum ? -1.0 : 1.0;
+        point1 = center1 + sign * direction * radius1;
+        point2 = center2 - sign * direction * radius2;
+        return true;
+    }
+
     int createConstructionPoint(const Base::Vector3d& point)
     {
         Gui::cmdAppObjectArgs(Obj,
@@ -3577,22 +3603,11 @@ protected:
                                                 int geoId2,
                                                 Base::Vector2d onSketchPos)
     {
-        const Part::Geometry* geometry1 = Obj->getGeometry(geoId1);
-        const Part::Geometry* geometry2 = Obj->getGeometry(geoId2);
-        auto [radius1, center1] = getRadiusCenterCircleArc(geometry1);
-        auto [radius2, center2] = getRadiusCenterCircleArc(geometry2);
-
-        Base::Vector3d direction = center2 - center1;
-        if (direction.Length() < Precision::Confusion()) {
-            direction = Base::Vector3d(1.0, 0.0, 0.0);
+        Base::Vector3d point1;
+        Base::Vector3d point2;
+        if (!getCircularRadialPoints(maximum, point1, point2)) {
+            return;
         }
-        else {
-            direction = direction.Normalize();
-        }
-
-        const double sign = maximum ? -1.0 : 1.0;
-        const Base::Vector3d point1 = center1 + sign * direction * radius1;
-        const Base::Vector3d point2 = center2 - sign * direction * radius2;
 
         Gui::cmdAppObjectArgs(Obj,
                               "addGeometry(Part.LineSegment(App.Vector(%f,%f,0), App.Vector(%f,%f,0)), True)",
@@ -4273,6 +4288,16 @@ protected:
 
     void updateCircularDistanceType(Base::Vector2d onSketchPos)
     {
+        AvailableConstraint suggested = AvailableConstraint::FIRST;
+        if (getCircularClickDistanceType(onSketchPos, suggested)) {
+            suggested = preferredCircularDistanceMode(suggested);
+            if (availableConstraint != suggested) {
+                availableConstraint = suggested;
+                makeAppropriateConstraint(onSketchPos);
+            }
+            return;
+        }
+
         double minX;
         double maxX;
         double minY;
@@ -4284,7 +4309,7 @@ protected:
         const bool outsideX = onSketchPos.x < minX || onSketchPos.x > maxX;
         const bool outsideY = onSketchPos.y < minY || onSketchPos.y > maxY;
 
-        AvailableConstraint suggested = AvailableConstraint::FIRST;
+        suggested = AvailableConstraint::FIRST;
         if (outsideX && outsideY) {
             suggested = AvailableConstraint::SECOND;
         }
@@ -4295,12 +4320,6 @@ protected:
         else if (outsideX) {
             suggested = onSketchPos.x < minX ? AvailableConstraint::FIFTH
                                               : AvailableConstraint::SIXTH;
-        }
-
-        AvailableConstraint extremaMode = AvailableConstraint::FIRST;
-        if (getCircularClickMode(extremaMode)
-            && (suggested == AvailableConstraint::FIRST || suggested == AvailableConstraint::SECOND)) {
-            suggested = extremaMode;
         }
 
         suggested = preferredCircularDistanceMode(suggested);
@@ -4315,6 +4334,40 @@ protected:
 
         availableConstraint = suggested;
         makeAppropriateConstraint(onSketchPos);
+    }
+
+    bool getCircularClickDistanceType(Base::Vector2d onSketchPos,
+                                      AvailableConstraint& suggested) const
+    {
+        AvailableConstraint extremaMode = AvailableConstraint::FIRST;
+        if (!getCircularClickMode(extremaMode)) {
+            return false;
+        }
+
+        Base::Vector3d point1;
+        Base::Vector3d point2;
+        if (!getCircularRadialPoints(extremaMode == AvailableConstraint::SECOND, point1, point2)) {
+            return false;
+        }
+
+        const double minX = std::min(point1.x, point2.x);
+        const double maxX = std::max(point1.x, point2.x);
+        const double minY = std::min(point1.y, point2.y);
+        const double maxY = std::max(point1.y, point2.y);
+        const bool betweenX = onSketchPos.x > minX && onSketchPos.x < maxX;
+        const bool betweenY = onSketchPos.y > minY && onSketchPos.y < maxY;
+
+        if (betweenX && !betweenY) {
+            suggested = AvailableConstraint::THIRD;
+        }
+        else if (betweenY && !betweenX) {
+            suggested = AvailableConstraint::FIFTH;
+        }
+        else {
+            suggested = extremaMode;
+        }
+
+        return true;
     }
 
     bool getCircularDistanceBounds(double& minX, double& maxX, double& minY, double& maxY) const
