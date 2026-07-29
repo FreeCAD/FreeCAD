@@ -37,6 +37,7 @@ class SoTransform;
 class SoRotationXYZ;
 class SoImage;
 class SoCoordinate3;
+class SoDragger;
 class SoSensor;
 class SoPickedPoint;
 
