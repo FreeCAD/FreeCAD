@@ -575,7 +575,8 @@ def suppressOpenCamLibWarning():
     return preferences().GetBool(WarningSuppressOpenCamLib, True)
 
 
-def setPreferencesAdvanced(ocl, warnSpeeds, warnRapids, warnModes, warnOCL):
+def setPreferencesAdvanced(experimental, ocl, warnSpeeds, warnRapids, warnModes, warnOCL):
+    preferences().SetBool(EnableExperimentalFeatures, experimental)
     preferences().SetBool(EnableAdvancedOCLFeatures, ocl)
     preferences().SetBool(WarningSuppressAllSpeeds, warnSpeeds)
     preferences().SetBool(WarningSuppressRapidSpeeds, warnRapids)
