@@ -386,8 +386,7 @@ def export(exportList, filename, colors=None, preferences=None):
     objectslist = [
         obj
         for obj in objectslist
-        if Draft.getType(obj)
-        not in ["Material", "MaterialContainer", "WorkingPlaneProxy"]
+        if Draft.getType(obj) not in ["Material", "MaterialContainer", "WorkingPlaneProxy"]
     ]
 
     # Note that the Draft.get_group_contents() function used later will also find children.
@@ -1610,7 +1609,12 @@ def export(exportList, filename, colors=None, preferences=None):
     for objName, assemblyExportType, assemblyElements in assemblyElementsTotal:
         assemblyElements = [products[name] for name in assemblyElements]
         ifcfile.createIfcRelAggregates(
-            ifcopenshell.guid.new(), history, assemblyExportType, "", products[objName], assemblyElements
+            ifcopenshell.guid.new(),
+            history,
+            assemblyExportType,
+            "",
+            products[objName],
+            assemblyElements,
         )
         if preferences["DEBUG"]:
             print("      aggregating", len(assemblyElements), "object(s)")
