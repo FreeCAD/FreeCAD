@@ -11,6 +11,16 @@ from __future__ import annotations
 from os import PathLike
 from typing import TypeAlias
 
+from Base.Metadata import module
+
+module(
+    Name="PySideUic",
+    Namespace="Gui",
+    Include="UiLoader.h",
+    Runtime="ExtensionModule",
+    ModuleClass="PySideUicModule",
+)
+
 _UiPath: TypeAlias = str | PathLike[str]
 
 def loadUiType(ui_file: _UiPath, /) -> tuple[type[object], type[object]] | None:
