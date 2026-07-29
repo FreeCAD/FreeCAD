@@ -166,6 +166,12 @@ void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)
 
 QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 {
+    if ((change == ItemPositionHasChanged
+         || change == ItemScenePositionHasChanged)
+        && scene()) {
+        Q_EMIT positionChanged();
+    }
+
     if(change == ItemPositionChange && scene()) {
         QPointF newPos = value.toPointF();            //position within parent!
         TechDraw::DrawView* viewObj = getViewObject();
@@ -1107,10 +1113,20 @@ void QGIView::updateFrameVisibility()
     }
 }
 
+void QGIView::setFrameForcedVisible(bool visible)
+{
+    m_frameForcedVisible = visible;
+    updateFrameVisibility();
+}
+
 bool QGIView::shouldShowFrame() const
 {
     if (isExporting()) {
         return false;
+    }
+
+    if (m_frameForcedVisible) {
+        return true;
     }
 
     ViewFrameMode frameMode = PreferencesGui::getViewFrameMode();

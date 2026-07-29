@@ -212,7 +212,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *views << "TechDraw_View";
     *views << "TechDraw_BrokenView";
     *views << "TechDraw_SectionView";
-    *views << "TechDraw_ComplexSection";
     *views << "TechDraw_DetailView";
     *views << "TechDraw_ProjectionGroup";
     *views << "TechDraw_ClipGroup";
@@ -300,7 +299,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *views << "TechDraw_View";
     *views << "TechDraw_BrokenView";
     *views << "TechDraw_ActiveView";
-    *views << "TechDraw_SectionGroup";
+    *views << "TechDraw_SectionView";
     *views << "TechDraw_DetailView";
     *views << "TechDraw_DraftView";
     *views << "TechDraw_ClipGroup";
@@ -416,7 +415,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     views->setCommand("Views");
     *views << "TechDraw_View";
     *views << "TechDraw_ActiveView";
-    *views << "TechDraw_SectionGroup";
+    *views << "TechDraw_SectionView";
     *views << "TechDraw_DetailView";
     *views << "TechDraw_DraftView";
     *views << "TechDraw_ClipGroup";

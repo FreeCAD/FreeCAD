@@ -93,6 +93,7 @@ public:
     enum {Type = UserType::QGIView};
     int type() const override { return Type;}
     QRectF boundingRect() const override;
+    QRectF contentBoundingRect() const { return frameRect(); }
     void paint( QPainter *painter,
                         const QStyleOptionGraphicsItem *option,
                         QWidget *widget = nullptr ) override;
@@ -188,6 +189,10 @@ public:
     bool isExporting() const;
 
     virtual void setMovableFlag();
+    void setFrameForcedVisible(bool visible);
+
+Q_SIGNALS:
+    void positionChanged();
 
 protected:
     QGIView* getQGIVByName(std::string name) const;
@@ -217,6 +222,7 @@ private:
     bool m_innerView;                                                  //View is inside another View
     bool m_multiselectActivated;
     bool snapping;
+    bool m_frameForcedVisible{false};
 
     QPen m_pen;
     QBrush m_brush;

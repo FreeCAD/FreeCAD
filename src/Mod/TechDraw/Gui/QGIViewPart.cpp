@@ -720,6 +720,8 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         return;
     if (!viewSection)
         return;
+    if (m_hiddenSectionLines.contains(viewSection->getNameInDocument()))
+        return;
 
     if (!viewSection->hasGeometry())
         return;
@@ -747,6 +749,7 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
 
         QGISectionLine* sectionLine = new QGISectionLine();
         addToGroupWithoutUpdate(sectionLine);
+        sectionLine->setData(10, QString::fromUtf8(viewSection->getNameInDocument()));
         sectionLine->setSymbol(const_cast<char*>(viewSection->SectionSymbol.getValue()));
         sectionLine->setPathMode(false);
 
@@ -819,6 +822,8 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
         return;
     if (!viewSection)
         return;
+    if (m_hiddenSectionLines.contains(viewSection->getNameInDocument()))
+        return;
     auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(viewPart));
     if (!vp) {
         return;
@@ -855,6 +860,7 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
 
     QGISectionLine* sectionLine = new QGISectionLine();
     addToGroupWithoutUpdate(sectionLine);
+    sectionLine->setData(10, QString::fromUtf8(viewSection->getNameInDocument()));
     sectionLine->setSymbol(const_cast<char*>(viewSection->SectionSymbol.getValue()));
 
     sectionLine->setPathMode(true);
@@ -900,6 +906,39 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
     sectionLine->setZValue(ZVALUE::SECTIONLINE);
     sectionLine->setRotation(-viewPart->Rotation.getValue());
     sectionLine->draw();
+}
+
+void QGIViewPart::setSectionLineVisible(TechDraw::DrawViewSection* viewSection, bool visible)
+{
+    if (!viewSection) {
+        return;
+    }
+    const QString sectionName = QString::fromUtf8(viewSection->getNameInDocument());
+    if (visible) {
+        m_hiddenSectionLines.erase(viewSection->getNameInDocument());
+    }
+    else {
+        m_hiddenSectionLines.insert(viewSection->getNameInDocument());
+    }
+    for (QGraphicsItem* child : childItems()) {
+        if (child->type() == QGISectionLine::Type && child->data(10).toString() == sectionName) {
+            child->setVisible(visible);
+        }
+    }
+}
+
+bool QGIViewPart::hasSectionLine(TechDraw::DrawViewSection* viewSection) const
+{
+    if (!viewSection) {
+        return false;
+    }
+    const QString sectionName = QString::fromUtf8(viewSection->getNameInDocument());
+    for (QGraphicsItem* child : childItems()) {
+        if (child->type() == QGISectionLine::Type && child->data(10).toString() == sectionName) {
+            return true;
+        }
+    }
+    return false;
 }
 
 //TODO: use Cosmetic::CenterLine object for this to make it usable for dims.
