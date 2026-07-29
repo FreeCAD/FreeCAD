@@ -26,6 +26,8 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include "TechDrawLeaderLineHandler.h"
+
 
 class QPushButton;
 class Ui_TaskWeldingSymbol;
@@ -96,6 +98,7 @@ class TechDrawGuiExport TaskWeldingSymbol : public QWidget
 public:
     TaskWeldingSymbol(TechDraw::DrawLeaderLine* leadFeat);
     TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weldFeat);
+    TaskWeldingSymbol(TechDraw::DrawPage* page);
     ~TaskWeldingSymbol() override;
 
     virtual bool accept();
@@ -160,6 +163,8 @@ private:
 
     bool m_createMode;
     bool m_otherDirty;
+
+    TechDrawLeaderLineHandler* m_leaderHandler {nullptr};
 };
 
 
@@ -170,6 +175,7 @@ class TaskDlgWeldingSymbol : public Gui::TaskView::TaskDialog
 public:
     explicit TaskDlgWeldingSymbol(TechDraw::DrawLeaderLine* leader);
     explicit TaskDlgWeldingSymbol(TechDraw::DrawWeldSymbol* weld);
+    explicit TaskDlgWeldingSymbol(TechDraw::DrawPage* page);
     ~TaskDlgWeldingSymbol() override;
 
     /// is called the TaskView when the dialog is opened
