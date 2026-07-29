@@ -11,8 +11,13 @@ static constexpr size_t ThreadRunout_size_utils = 24;
 class ThreadUtils
 {
 public:
-    TopoDS_Shape makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double length, const App::PropertyEnumeration &ThreadType,
-    const App::PropertyEnumeration &ThreadSize);
+    TopoDS_Shape makeThread(
+        const gp_Vec& xDir,
+        const gp_Vec& zDir,
+        double length,
+        const App::PropertyEnumeration& ThreadType,
+        const App::PropertyEnumeration& ThreadSize
+    );
     App::DocumentObjectExecReturn* validateParameters(const App::PropertyLinkSub& LateralFace);
     gp_Vec getThreadZAxis(const App::PropertyLinkSub& LateralFace);
     gp_Vec computePerpendicular(const gp_Vec&) const;

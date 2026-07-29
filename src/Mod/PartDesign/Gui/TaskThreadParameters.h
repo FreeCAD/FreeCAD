@@ -34,7 +34,7 @@ public:
     enum threadSelectionModes
     {
         None,
-        SideFaceSel,  
+        SideFaceSel,
         StartFaceSel,
         UpToGeometrySel
     };

@@ -354,7 +354,8 @@ const std::vector<ThreadUtils::ThreadDescription> ThreadUtils::threadDescription
     }
 };
 
-const char* ThreadUtils::DepthTypeEnums[] = {"Dimension", "ThroughAll", "UpToGeometry", /*, "UpToFirst", */ nullptr};
+const char* ThreadUtils::DepthTypeEnums[]
+    = {"Dimension", "ThroughAll", "UpToGeometry", /*, "UpToFirst", */ nullptr};
 
 const char* ThreadUtils::ThreadTypeEnums[] = {
     "None",
@@ -640,11 +641,11 @@ TopoDS_Shape ThreadUtils::makeThread(
     const gp_Vec& xDir,
     const gp_Vec& zDir,
     double length,
-    const App::PropertyEnumeration &ThreadType,
-    const App::PropertyEnumeration &ThreadSize
+    const App::PropertyEnumeration& ThreadType,
+    const App::PropertyEnumeration& ThreadSize
 )
 {
-    
+
     int threadType = ThreadType.getValue();
     int threadSize = ThreadSize.getValue();
 

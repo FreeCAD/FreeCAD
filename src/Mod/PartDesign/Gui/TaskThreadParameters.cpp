@@ -395,7 +395,7 @@ void TaskThreadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             // // Base::Console().message("selObj = %p\n", selObj);
             // Base::Console().message("planes.size() = %zu\n", planes.size());
             // for (const auto& p : planes) {
-                // Base::Console().message("plane = '%s'\n", p.c_str());
+            // Base::Console().message("plane = '%s'\n", p.c_str());
             // }
 
             if (!selObj) {
@@ -806,8 +806,7 @@ void TaskThreadParameters::setThreadSelectionGate()
     allow.setFlag(AllowSelection::FACE, allowFaces);
     allow.setFlag(AllowSelection::POINT, true);
 
-    Gui::Selection().addSelectionGate(
-        new ReferenceSelection(this->getBase(), allow));
+    Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allow));
 }
 
 
@@ -854,4 +853,3 @@ void TaskThreadParameters::Observer::slotChangedObject(
         }
     }
 }
-

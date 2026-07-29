@@ -202,8 +202,8 @@ App::DocumentObjectExecReturn* Thread::execute()
         }
         else if (method == "ThroughAll") {
             length = threadUtils.getThroughAllLength();
-        } 
-        else if (method == "UpToGeometry"){
+        }
+        else if (method == "UpToGeometry") {
             /* TODO */
             length = 10;
         }
@@ -221,7 +221,8 @@ App::DocumentObjectExecReturn* Thread::execute()
 
         // double length = ThreadDepth.getValue();
 
-        TopoDS_Shape thread = threadUtils.makeThread(emptyXDir, emptyZDir, testLength, ThreadType, ThreadSize);
+        TopoDS_Shape thread
+            = threadUtils.makeThread(emptyXDir, emptyZDir, testLength, ThreadType, ThreadSize);
     }
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
