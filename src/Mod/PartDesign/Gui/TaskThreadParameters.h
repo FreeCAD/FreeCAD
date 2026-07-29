@@ -34,8 +34,9 @@ public:
     enum threadSelectionModes
     {
         None,
-        SideFaceSel,  // Seleção da face lateral
-        StartFaceSel  // Seleção da face de início da rosca
+        SideFaceSel,  
+        StartFaceSel,
+        UpToGeometrySel
     };
     threadSelectionModes currentSelectionMode = None;
 
@@ -51,6 +52,7 @@ protected:
     // void referenceSele(const Gui::SelectionChanges& msg, QLineEdit* widget);
     void setThreadSelectionMode(threadSelectionModes mode);
     void changedObject(const App::Document&, const App::Property& Prop);
+    void setThreadSelectionGate();
 
 private Q_SLOTS:
     void threadTypeChanged(int index);

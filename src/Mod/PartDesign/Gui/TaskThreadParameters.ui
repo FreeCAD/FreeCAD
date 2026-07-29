@@ -126,6 +126,12 @@
                     <string>Through all</string>
                 </property>
             </item>
+
+            <item>
+                <property name="text">
+                    <string>Up to geometry</string>
+                </property>
+            </item>
         </widget>
       </item>
 
@@ -169,6 +175,45 @@
                 <double>0.000000000000000</double>
             </property>
         </widget>
+     </item>
+
+    <!-- <item row="4" column="0">
+       <widget class="QLabel" name="upToGeometrySelection">
+        <property name="text">
+         <string>Select Geometry</string>
+        </property>
+       </widget>
+    </item> -->
+
+     <item row="4" column="1">
+        <widget class="QWidget" name="upToGeometryWidget">
+         <layout class="QHBoxLayout" name="upToGeometryLayout">
+
+         <item>
+          <widget class="QPushButton" name="selectUpToGeometry">
+           <property name="checkable">
+             <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>Select Geometry</string>
+           </property>
+          </widget>
+         </item>
+
+
+         <item>
+          <widget class="QLineEdit" name="upToGeometryEdit">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>No geometry selected</string>
+           </property>
+          </widget>
+         </item>
+
+        </layout>
+       </widget>
      </item>
 
      </layout>

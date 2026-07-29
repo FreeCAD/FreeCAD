@@ -108,6 +108,10 @@ App::DocumentObjectExecReturn* Thread::execute()
 
     auto res = threadUtils.validateParameters(LateralFace);
     if (res != App::DocumentObject::StdReturn) {
+        Base::Console().error(
+            "Failed to create thread:\n"
+            "the selected lateral face must be cylindrical or conical.\n"
+        );
         return res;
     }
 
@@ -198,22 +202,26 @@ App::DocumentObjectExecReturn* Thread::execute()
         }
         else if (method == "ThroughAll") {
             length = threadUtils.getThroughAllLength();
+        } 
+        else if (method == "UpToGeometry"){
+            /* TODO */
+            length = 10;
         }
         else {
             return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Hole error: Unsupported length specification")
+                QT_TRANSLATE_NOOP("Exception", "Thread error: Unsupported length specification")
             );
         }
 
         if (length <= 0.0) {
             return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Hole error: Invalid hole depth")
+                QT_TRANSLATE_NOOP("Exception", "Thread error: Invalid Thread depth")
             );
         }
 
         // double length = ThreadDepth.getValue();
 
-        TopoDS_Shape thread = threadUtils.makeThread(emptyXDir, emptyZDir, testLength);
+        TopoDS_Shape thread = threadUtils.makeThread(emptyXDir, emptyZDir, testLength, ThreadType, ThreadSize);
     }
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());

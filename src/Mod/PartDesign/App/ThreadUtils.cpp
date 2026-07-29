@@ -354,7 +354,7 @@ const std::vector<ThreadUtils::ThreadDescription> ThreadUtils::threadDescription
     }
 };
 
-const char* ThreadUtils::DepthTypeEnums[] = {"Dimension", "ThroughAll", /*, "UpToFirst", */ nullptr};
+const char* ThreadUtils::DepthTypeEnums[] = {"Dimension", "ThroughAll", "UpToGeometry", /*, "UpToFirst", */ nullptr};
 
 const char* ThreadUtils::ThreadTypeEnums[] = {
     "None",
@@ -636,13 +636,20 @@ static FaceType getFaceType(const TopoDS_Face& face)
     }
 }
 
-TopoDS_Shape ThreadUtils::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double length)
+TopoDS_Shape ThreadUtils::makeThread(
+    const gp_Vec& xDir,
+    const gp_Vec& zDir,
+    double length,
+    const App::PropertyEnumeration &ThreadType,
+    const App::PropertyEnumeration &ThreadSize
+)
 {
+    
+    int threadType = ThreadType.getValue();
+    int threadSize = ThreadSize.getValue();
+
     TopoDS_Shape emptyTopoDS_Shape;
     return emptyTopoDS_Shape;
-
-    //     int threadType = ThreadType.getValue();
-    //     int threadSize = ThreadSize.getValue();
     //     if (threadType < 0) {
     //         throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread type out of range"));
     //     }

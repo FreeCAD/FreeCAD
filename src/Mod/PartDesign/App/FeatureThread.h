@@ -26,6 +26,7 @@ public:
 
     App::PropertyLinkSub LateralFace;
     App::PropertyLinkSub StartPlane;
+    App::PropertyLinkSub UpToGeometry;
     App::PropertyLength Depth;
     App::PropertyLength ThreadDepth;
     App::PropertyLength ThreadDiameter;

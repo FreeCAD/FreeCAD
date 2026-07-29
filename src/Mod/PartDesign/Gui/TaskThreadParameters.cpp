@@ -44,6 +44,10 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     if (!subNamesStart.empty()) {
         ui->startEdit->setText(QString::fromStdString(subNamesStart.front()));
     }
+    const std::vector<std::string>& subNamesGeometry = pcThread->UpToGeometry.getSubValues();
+    if (!subNamesGeometry.empty()) {
+        ui->upToGeometryEdit->setText(QString::fromStdString(subNamesGeometry.front()));
+    }
 
     setUpUI(pcThread);
 
@@ -59,9 +63,11 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
 
     ui->endTypeCombo->setCurrentIndex(pcThread->DepthType.getValue());
     bool isDimension = std::string(pcThread->DepthType.getValueAsString()) == "Dimension";
+    bool isUpToGeometry = std::string(pcThread->DepthType.getValueAsString()) == "UpToGeometry";
 
     ui->labelDepth->setHidden(!isDimension);
     ui->Depth->setHidden(!isDimension);
+    ui->upToGeometryWidget->setHidden(!isUpToGeometry);
     ui->Depth->setValue(pcThread->Depth.getValue());
 
     // TODO: change hardcoded for enum loop
@@ -194,6 +200,20 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
         }
     });
 
+    connect(ui->selectUpToGeometry, &QPushButton::toggled, [this](bool checked) {
+        if (checked) {
+            // Base::Console().message("então é start face\n");
+            // ui->selectStart->setChecked(false); // Desliga o outro
+            setThreadSelectionMode(UpToGeometrySel);
+        }
+        else if (currentSelectionMode == UpToGeometrySel) {
+            // Base::Console().message("não é mais start face\n");
+            // Base::Console().message("então é start face\n");
+            setThreadSelectionMode(None);
+        }
+    });
+
+
     connect(
         ui->endTypeCombo,
         qOverload<int>(&QComboBox::currentIndexChanged),
@@ -245,7 +265,8 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     // setupGizmos(DressUpView);
 
     if (strings.size() == 0) {
-        setSelectionMode(refSel);
+        // setSelectionMode(refSel);
+        setThreadSelectionGate();
     }
     else {
         hideOnError();
@@ -362,6 +383,32 @@ void TaskThreadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             break;
         }
 
+        case UpToGeometrySel: {
+            // ui->startEdit->setText(QString::fromStdString(msg.SubName));
+            auto pcThread = getObject<PartDesign::Thread>();
+            std::vector<std::string> planes;
+            App::DocumentObject* selObj = nullptr;
+            // Base::Console().message("Object = %s\n", msg.pObjectName);
+            // Base::Console().message("Type = %s\n", msg.pTypeName);
+            // Base::Console().message("SubName = %s\n", msg.pSubName);
+            getReferencedSelection(pcThread, msg, selObj, planes);
+            // // Base::Console().message("selObj = %p\n", selObj);
+            // Base::Console().message("planes.size() = %zu\n", planes.size());
+            // for (const auto& p : planes) {
+                // Base::Console().message("plane = '%s'\n", p.c_str());
+            // }
+
+            if (!selObj) {
+                return;
+            }
+            setupTransaction();
+            pcThread->UpToGeometry.setValue(selObj, planes);
+
+            referenceQLineEditSelected(msg, ui->upToGeometryEdit);
+            ui->selectUpToGeometry->setChecked(false);
+            break;
+        }
+
         default:
             break;
     }
@@ -452,8 +499,10 @@ void TaskThreadParameters::depthTypeChanged(int index)
     thread->DepthType.setValue(index);
 
     bool isDimension = std::string(thread->DepthType.getValueAsString()) == "Dimension";
+    bool isUpToGeometry = std::string(thread->DepthType.getValueAsString()) == "UpToGeometry";
     ui->labelDepth->setHidden(!isDimension);
     ui->Depth->setHidden(!isDimension);
+    ui->upToGeometryWidget->setHidden(!isUpToGeometry);
     recomputeFeature();
     // enabling must be handled after recompute
     // bool DepthisDimension = (std::string(hole->DepthType.getValueAsString()) == "Dimension");
@@ -745,6 +794,22 @@ void TaskThreadParameters::changedObject(const App::Document&, const App::Proper
     // }
 }
 
+void TaskThreadParameters::setThreadSelectionGate()
+{
+    if (selectionMode == none) {
+        Gui::Selection().rmvSelectionGate();
+        return;
+    }
+
+    AllowSelectionFlags allow;
+    allow.setFlag(AllowSelection::EDGE, allowEdges);
+    allow.setFlag(AllowSelection::FACE, allowFaces);
+    allow.setFlag(AllowSelection::POINT, true);
+
+    Gui::Selection().addSelectionGate(
+        new ReferenceSelection(this->getBase(), allow));
+}
+
 
 //**************************************************************************
 //**************************************************************************
@@ -789,3 +854,4 @@ void TaskThreadParameters::Observer::slotChangedObject(
         }
     }
 }
+
