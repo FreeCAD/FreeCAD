@@ -129,4 +129,19 @@ TEST(PathTest, getLength4)
     path.addCommand(cmd);
     EXPECT_GT(path.getLength(), 1.57);  // PI/2
 }
+
+TEST(PathTest, assign)
+{
+    Path::Toolpath path;
+    Path::Command cmd;
+    cmd.setFromGCode("G0 X0 Y0");
+    path.addCommand(cmd);
+    cmd.setFromGCode("G2 X1 Y1 I1 F10");
+    path.addCommand(cmd);
+
+    Path::Toolpath path2;
+    path2 = path;
+    EXPECT_GT(path.getLength(), 1.57);   // PI/2
+    EXPECT_GT(path2.getLength(), 1.57);  // PI/2
+}
 // NOLINTEND(cppcoreguidelines-*,readability-*)
