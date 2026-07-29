@@ -686,47 +686,6 @@ class PostProcessor:
                 getattr(self._job.Operations, "Group", []) if self._job is not None else []
             )
 
-        if self._operations:
-            self.processArrays()
-
-    # Prepare operations from arrays
-    def processArrays(self):
-        arrays = [
-            {"index": i, "array": op}
-            for i, op in enumerate(self._operations)
-            if getattr(op, "ArrayGroup", None) and op.Active
-        ]
-        if not arrays:
-            return
-
-        if self._job.OrderOutputBy == "Tool":
-            # place copies after base op to minimize tool changes
-            for array in reversed(arrays):
-                # remove Array object from operations list
-                del self._operations[array["index"]]
-                for opFromArray in reversed(array["array"].ArrayGroup):
-                    for i, op in enumerate(self._operations):
-                        if op.Name == opFromArray.Base[-1]:
-                            # insert copy after base op
-                            self._operations.insert(i + 1, opFromArray)
-                            break
-                        elif (
-                            isinstance(op.Proxy, Path.Op.Gui.Array.ObjectArrayChild)
-                            and op.Base[-1] == opFromArray.Base[-1]
-                        ):
-                            # export without base operation, add before previous array child
-                            self._operations.insert(i, opFromArray)
-                            break
-                    else:
-                        # export without base operation, add in the end
-                        self._operations.insert(array["index"], opFromArray)
-        else:
-            # replace array object by operation copies
-            for array in reversed(arrays):
-                i = array["index"]
-                # replace Array object by all copies
-                self._operations[i : i + 1] = [op for op in array["array"].ArrayGroup]
-
     @classmethod
     def exists(cls, processor):
         return processor in Path.Preferences.allAvailablePostProcessors()
