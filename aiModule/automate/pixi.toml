@@ -17,12 +17,12 @@ seaborn = ">=0.13,<1"
 tqdm = ">=4.66,<5"
 pyyaml = ">=6,<7"
 
-# Keep the AI runtime separate from FreeCAD. The NVIDIA driver installed on
-# the host is new enough to run the CUDA 11.8 runtime used by this environment.
-pytorch = ">=2.4,<2.5"
-pytorch-cuda = "11.8.*"
-pyg = ">=2.6,<2.7"
-pytorch-scatter = "*"
+# Keep the AI runtime separate from FreeCAD. PyTorch is installed from its
+# official CUDA 12.8 wheel below. This wheel contains kernels for both the
+# RTX 2060 SUPER (Turing, sm_75) and RTX 5060 Ti (Blackwell, sm_120), so the
+# same lock file can be used on either machine. The host must have an NVIDIA
+# driver new enough for CUDA 12.8; a system-wide CUDA Toolkit is not required
+# because the PyTorch wheel provides its own CUDA runtime.
 
 # Native AutoMate feature extractor build dependencies.
 cmake = ">=3.28,<5"
@@ -34,6 +34,9 @@ occt = ">=7.8,<7.9"
 [pypi-dependencies]
 dotmap = ">=1.3,<2"
 xxhash = ">=3.4,<4"
+torch = { version = "==2.7.1", index = "https://download.pytorch.org/whl/cu128" }
+torch-geometric = ">=2.6,<2.7"
+torch-scatter = { url = "https://data.pyg.org/whl/torch-2.7.0%2Bcu128/torch_scatter-2.1.2%2Bpt27cu128-cp310-cp310-win_amd64.whl" }
 
 [tasks]
 check = "python scripts/check_ai_environment.py"
