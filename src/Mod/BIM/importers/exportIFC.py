@@ -386,7 +386,8 @@ def export(exportList, filename, colors=None, preferences=None):
     objectslist = [
         obj
         for obj in objectslist
-        if Draft.getType(obj) not in ["Material", "MaterialContainer", "WorkingPlaneProxy"]
+        if Draft.getType(obj)
+        not in ["Material", "MaterialContainer", "WorkingPlaneProxy"]
     ]
 
     # Note that the Draft.get_group_contents() function used later will also find children.
@@ -513,59 +514,47 @@ def export(exportList, filename, colors=None, preferences=None):
         assemblyElements = []
         assemblyTypes = ["IfcApp::Part", "IfcPart::Compound", "IfcElementAssembly"]
 
-        if ifctype == "IfcArray":
-            clonedeltas = []
-            if obj.ArrayType == "ortho":
-                for i in range(obj.NumberX):
-                    clonedeltas.append(obj.Placement.Base + (i * obj.IntervalX))
-                    for j in range(obj.NumberY):
-                        if j > 0:
-                            clonedeltas.append(
-                                obj.Placement.Base + (i * obj.IntervalX) + (j * obj.IntervalY)
-                            )
-                        for k in range(obj.NumberZ):
-                            if k > 0:
-                                clonedeltas.append(
-                                    obj.Placement.Base
-                                    + (i * obj.IntervalX)
-                                    + (j * obj.IntervalY)
-                                    + (k * obj.IntervalZ)
-                                )
-            if clonedeltas:
-                ifctype = "IfcElementAssembly"
-                for delta in clonedeltas:
-                    # print("delta: {}".format(delta))
-                    representation, placement, shapetype = getRepresentation(
-                        ifcfile,
-                        context,
-                        obj.Base,
-                        forcebrep=(getBrepFlag(obj.Base, preferences)),
-                        colors=colors,
-                        preferences=preferences,
-                        forceclone=delta,
-                    )
-                    subproduct = createProduct(
-                        ifcfile,
-                        obj.Base,
-                        getIfcTypeFromObj(obj.Base),
-                        getUID(obj.Base, preferences),
-                        history,
-                        getText("Name", obj.Base),
-                        getText("Description", obj.Base),
-                        placement,
-                        representation,
-                        preferences,
-                    )
-                    products[obj.Base.Name] = subproduct
-                    assemblyElements.append(obj.Base.Name)
-                    exportIFCHelper.writeQuantities(
-                        ifcfile,
-                        obj.Base,
-                        subproduct,
-                        history,
-                        preferences["SCALE_FACTOR"],
-                        getIfcTypeFromObj(obj.Base),
-                    )
+        if ifctype == "IfcArray" and obj.ArrayType == "ortho":
+            ifctype = "IfcElementAssembly"
+            obj_pt = obj.Placement.Base
+            obj_base_name = obj.Base.Name
+            i = 0
+            for plc in obj.PlacementList:
+                pt = obj_pt + plc.Base
+                # print("pt: {}".format(pt))
+                representation, placement, shapetype = getRepresentation(
+                    ifcfile,
+                    context,
+                    obj.Base,
+                    forcebrep=(getBrepFlag(obj.Base, preferences)),
+                    colors=colors,
+                    preferences=preferences,
+                    forceclone=pt,
+                )
+                subproduct = createProduct(
+                    ifcfile,
+                    obj.Base,
+                    getIfcTypeFromObj(obj.Base),
+                    getUID(obj.Base, preferences),
+                    history,
+                    getText("Name", obj.Base),
+                    getText("Description", obj.Base),
+                    placement,
+                    representation,
+                    preferences,
+                )
+                i += 1
+                subname = obj_base_name + str(i)  # Unique name, does not end up in IFC.
+                products[subname] = subproduct
+                assemblyElements.append(subname)
+                exportIFCHelper.writeQuantities(
+                    ifcfile,
+                    obj.Base,
+                    subproduct,
+                    history,
+                    preferences["SCALE_FACTOR"],
+                    getIfcTypeFromObj(obj.Base),
+                )
 
         elif ifctype in assemblyTypes or ifctype == "IfcGroup":
             if hasattr(obj, "Group"):
@@ -1609,12 +1598,7 @@ def export(exportList, filename, colors=None, preferences=None):
     for objName, assemblyExportType, assemblyElements in assemblyElementsTotal:
         assemblyElements = [products[name] for name in assemblyElements]
         ifcfile.createIfcRelAggregates(
-            ifcopenshell.guid.new(),
-            history,
-            assemblyExportType,
-            "",
-            products[objName],
-            assemblyElements,
+            ifcopenshell.guid.new(), history, assemblyExportType, "", products[objName], assemblyElements
         )
         if preferences["DEBUG"]:
             print("      aggregating", len(assemblyElements), "object(s)")
