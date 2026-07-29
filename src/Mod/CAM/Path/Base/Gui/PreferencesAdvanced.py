@@ -42,11 +42,12 @@ class AdvancedPreferencesPage:
 
     def saveSettings(self):
         Path.Preferences.setPreferencesAdvanced(
-            self.form.EnableAdvancedOCLFeatures.isChecked(),
-            self.form.WarningSuppressAllSpeeds.isChecked(),
-            self.form.WarningSuppressRapidSpeeds.isChecked(),
-            self.form.WarningSuppressSelectionMode.isChecked(),
-            self.form.WarningSuppressOpenCamLib.isChecked(),
+            experimental=self.form.EnableExperimentalFeatures.isChecked(),
+            ocl=self.form.EnableAdvancedOCLFeatures.isChecked(),
+            warnSpeeds=self.form.WarningSuppressAllSpeeds.isChecked(),
+            warnRapids=self.form.WarningSuppressRapidSpeeds.isChecked(),
+            warnModes=self.form.WarningSuppressSelectionMode.isChecked(),
+            warnOCL=self.form.WarningSuppressOpenCamLib.isChecked(),
         )
 
     def loadSettings(self):
@@ -57,6 +58,9 @@ class AdvancedPreferencesPage:
         )
         self.form.WarningSuppressSelectionMode.setChecked(
             Path.Preferences.suppressSelectionModeWarning()
+        )
+        self.form.EnableExperimentalFeatures.setChecked(
+            Path.Preferences.experimentalFeaturesEnabled()
         )
         self.form.EnableAdvancedOCLFeatures.setChecked(
             Path.Preferences.advancedOCLFeaturesEnabled()
