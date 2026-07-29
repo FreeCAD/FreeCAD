@@ -96,6 +96,11 @@ public:
     void setHatchColor(QColor color);
     void setHatchScale(double scale);
 
+protected:
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+
+public:
     //svg fill parms & methods
     void setHatchFile(std::string fileSpec);
     void loadSvgHatch(std::string fileSpec);

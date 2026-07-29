@@ -24,9 +24,11 @@
 // QDoubleSpinBox.
 
 #include <QApplication>
+#include <QIcon>
 #include <QLabel>
 #include <QObject>
 #include <QSignalBlocker>
+#include <QToolButton>
 #include <QtGui>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QVBoxLayout>
@@ -53,9 +55,12 @@ CompassWidget::CompassWidget(QWidget* parent)
     compassDial->setSize(m_minimumHeight - 2 * m_defaultMargin);
 
     dsbAngle->installEventFilter(this);
+    compassDial->installEventFilter(this);
 
     connect(compassDial, &CompassDialWidget::angleSelected,
             this, &CompassWidget::slotDialAngleSelected);
+    connect(reverseButton, &QToolButton::clicked,
+            this, &CompassWidget::reverseDirection);
 }
 
 //trap Enter press in dsbAngle so as not to invoke task accept processing
@@ -69,6 +74,10 @@ bool CompassWidget::eventFilter(QObject* target, QEvent* event)
                 return true;
             }
         }
+    }
+    else if (target == compassDial
+             && event->type() == QEvent::Resize) {
+        positionReverseButton();
     }
     return QWidget::eventFilter(target, event);
 }
@@ -95,6 +104,17 @@ void CompassWidget::buildWidget()
     compassDial->setCursor(Qt::PointingHandCursor);
     compassDialLayout->addWidget(compassDial);
     compassLayout->addLayout(compassDialLayout);
+
+    reverseButton = new QToolButton(compassDial);
+    reverseButton->setObjectName(
+        QStringLiteral("reverseDirectionButton"));
+    reverseButton->setAutoRaise(true);
+    reverseButton->setIcon(
+        QIcon(QStringLiteral(":/icons/button_sort.svg")));
+    reverseButton->setIconSize(QSize(18, 18));
+    reverseButton->setFixedSize(QSize(26, 26));
+    reverseButton->raise();
+    positionReverseButton();
 
     compassControlLayout = new QHBoxLayout();
     compassControlLayout->setObjectName(QStringLiteral("compassControlLayout"));
@@ -126,13 +146,31 @@ void CompassWidget::buildWidget()
 void CompassWidget::retranslateUi()
 {
     compassControlLabel->setText(
-        QApplication::translate("CompassWidget", "As Angle", nullptr));
+        QApplication::translate("CompassWidget", "As angle", nullptr));
 #ifndef QT_NO_TOOLTIP
     dsbAngle->setToolTip(QApplication::translate(
         "CompassWidget", "The view direction angle relative to +X in the BaseView.", nullptr));
     compassDial->setToolTip(QApplication::translate(
-        "CompassWidget", "Click to set the view direction angle, rounded to the nearest 5°.", nullptr));
+        "CompassWidget",
+        "Sets the view direction angle by clicking or dragging, rounded to the nearest 5°",
+        nullptr
+    ));
+    reverseButton->setToolTip(QApplication::translate(
+        "CompassWidget", "Reverse the view direction", nullptr));
 #endif// QT_NO_TOOLTIP
+}
+
+void CompassWidget::positionReverseButton()
+{
+    if (!compassDial || !reverseButton) {
+        return;
+    }
+    constexpr int cornerMargin = 4;
+    reverseButton->move(
+        compassDial->width() - reverseButton->width()
+            - cornerMargin,
+        compassDial->height() - reverseButton->height()
+            - cornerMargin);
 }
 
 QSize CompassWidget::sizeHint() const { return m_rect.size(); }
@@ -179,4 +217,13 @@ void CompassWidget::slotDialAngleSelected(double angle)
     const QSignalBlocker blocker(dsbAngle);
     setDialAngle(angle);
     Q_EMIT angleChanged(angle);
+}
+
+void CompassWidget::reverseDirection()
+{
+    const double reversed =
+        std::fmod(m_angle + 540.0, 360.0);
+    const QSignalBlocker blocker(dsbAngle);
+    setDialAngle(reversed);
+    Q_EMIT directionReversed(reversed);
 }

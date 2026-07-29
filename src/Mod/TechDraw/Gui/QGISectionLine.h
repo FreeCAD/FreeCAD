@@ -28,6 +28,7 @@
 #include <QFont>
 #include <QPainterPath>
 #include <QPointF>
+#include <functional>
 
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
@@ -65,6 +66,8 @@ public:
     void setFont(const QFont& f);
     void setFont(const QFont& f, double fsize);
     void setSectionColor(QColor c);
+    void setArrowColor(QColor color);
+    void setArrowClickCallback(std::function<void()> callback);
     void setPathMode(bool mode) { m_pathMode = mode; }
     void setShowLine(bool state) { m_showLine = state; }
     bool pathMode() const { return m_pathMode; }
@@ -76,11 +79,13 @@ public:
 
 
 protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
     QColor getSectionColor();
     Qt::PenStyle getSectionStyle();
     void makeSectionLine();
     void makeExtensionLine();
     void makeArrows();
+    void makeArrowBases();
     void makeArrowsTrad();
     void makeArrowsISO();
     void makeSymbols();
@@ -102,6 +107,7 @@ private:
     QGraphicsPathItem* m_extend;
     QGIArrow*          m_arrow1;
     QGIArrow*          m_arrow2;
+    QGraphicsPathItem* m_arrowBases;
     QGCustomText*      m_symbol1;
     QGCustomText*      m_symbol2;
     QPointF            m_start;         //start of section line
@@ -128,6 +134,8 @@ private:
     TechDraw::ChangePointVector m_changePointData;
 
     bool m_showLine{true};
+    QColor m_arrowColor;
+    std::function<void()> m_arrowClickCallback;
 };
 
 }
