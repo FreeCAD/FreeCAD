@@ -283,6 +283,25 @@ struct DocumentP
 
     bool tryStartEditing(ViewProviderDocumentObject* svp, App::DocumentObject* sobj, int ModNum)
     {
+        try {
+            return startEditing(svp, sobj, ModNum);
+        }
+        catch (const Base::Exception& e) {
+            FC_ERR("startEditing:" << e.what());
+            return false;
+        }
+        catch (const std::exception& e) {
+            FC_ERR("startEditing:" << e.what());
+            return false;
+        }
+        catch (...) {
+            FC_ERR("startEditing: Unknown C++ exception");
+            return false;
+        }
+    }
+
+    bool startEditing(ViewProviderDocumentObject* svp, App::DocumentObject* sobj, int ModNum)
+    {
         _editingObject = sobj;
         _editMode = ModNum;
         _editViewProvider = svp;  // Used to resolve start editing (find the document in edit from
@@ -604,7 +623,15 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char* subname)
         return trySetEdit(p, ModNum, subname);
     }
     catch (const Base::Exception& e) {
-        FC_ERR("" << e.what());
+        FC_ERR("setEdit:" << e.what());
+        return false;
+    }
+    catch (const std::exception& e) {
+        FC_ERR("setEdit:" << e.what());
+        return false;
+    }
+    catch (...) {
+        FC_ERR("setEdit: Unknown C++ exception");
         return false;
     }
 }
