@@ -63,6 +63,8 @@ QGISectionLine::QGISectionLine() :
     addToGroup(m_line);
     m_extend = new QGraphicsPathItem();
     addToGroup(m_extend);
+    m_arrowBases = new QGraphicsPathItem();
+    addToGroup(m_arrowBases);
     m_arrow1 = new QGIArrow();
     addToGroup(m_arrow1);
     m_arrow2 = new QGIArrow();
@@ -138,6 +140,23 @@ void QGISectionLine::makeArrows()
     } else {
         makeArrowsISO();
     }
+    makeArrowBases();
+}
+
+void QGISectionLine::makeArrowBases()
+{
+    QPainterPath path;
+    const double baseLength = Rez::guiX(m_arrowSize * 1.35);
+    auto addBase = [&](QGIArrow* arrow, const Base::Vector3d& direction) {
+        QPointF screenDirection(direction.x, -direction.y);
+        screenDirection = normalizeQPointF(screenDirection);
+        const QPointF tip = arrow->pos();
+        path.moveTo(tip);
+        path.lineTo(tip - screenDirection * baseLength);
+    };
+    addBase(m_arrow1, m_arrowDir1);
+    addBase(m_arrow2, m_arrowDir2);
+    m_arrowBases->setPath(path);
 }
 
 //make Euro (ISO) Arrows
@@ -501,6 +520,10 @@ void QGISectionLine::paint ( QPainter * painter, const QStyleOptionGraphicsItem 
 void QGISectionLine::setTools()
 {
     m_line->setPen(m_pen);
+    QPen arrowBasePen(m_pen);
+    arrowBasePen.setStyle(Qt::SolidLine);
+    arrowBasePen.setCapStyle(Qt::FlatCap);
+    m_arrowBases->setPen(arrowBasePen);
     QColor currentColor = m_pen.color();
 
     m_arrow1->setNormalColor(currentColor);

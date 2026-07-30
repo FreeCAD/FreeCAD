@@ -30,7 +30,7 @@
 QT_BEGIN_NAMESPACE
 class QLabel;
 class QHBoxLayout;
-class QPushButton;
+class QToolButton;
 class QVBoxLayout;
 QT_END_NAMESPACE
 
@@ -60,12 +60,11 @@ public:
     double value() const { return m_angle; }
     double positiveValue() { return m_angle < 0.0 ? m_angle + 360.0 : m_angle; }
     void setDialAngle(double newAngle);
-    void setAdvanceIncrement(double newIncrement);
-    double advanceIncrement() const { return m_advanceIncrement; }
 
 Q_SIGNALS:
     void angleChanged(double angle);
     void angleSet(double angle);
+    void directionReversed(double angle);
 
 public Q_SLOTS:
     void slotChangeAngle(double angle) { setDialAngle(angle); }
@@ -75,12 +74,13 @@ public Q_SLOTS:
     void setToNorth() { setDialAngle(90.0); }
     void setToWest() { setDialAngle(180.0); }
     void setToSouth() { setDialAngle(270.0); }
-    void slotCWAdvance();
-    void slotCCWAdvance();
+    void reverseDirection();
+    void slotDialAngleSelected(double angle);
 
 protected:
     void paintEvent(QPaintEvent* event) override;
     void buildWidget();
+    void positionReverseButton();
     double changeAngleConvention(double CWY) const;
 
 private:
@@ -89,18 +89,16 @@ private:
     int m_minimumHeight;
     int m_defaultMargin;
     double m_angle;
-    double m_advanceIncrement;
 
     QVBoxLayout* compassLayout;
     QHBoxLayout* compassDialLayout;
     QHBoxLayout* compassControlLayout;
 
     CompassDialWidget* compassDial;
+    QToolButton* reverseButton{nullptr};
     //    DoubleSpinBoxNoEnter* dsbAngle;
     Gui::QuantitySpinBox* dsbAngle;
     QLabel* compassControlLabel;
-    QPushButton* pbCWAdvance;
-    QPushButton* pbCCWAdvance;
 };
 
 }//namespace TechDrawGui

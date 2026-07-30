@@ -23,6 +23,9 @@
 # include <cmath>
 
 # include <QFileInfo>
+# include <QGraphicsScene>
+# include <QGraphicsSceneHoverEvent>
+# include <QGraphicsSceneMouseEvent>
 # include <QGraphicsView>
 # include <QPainter>
 # include <QPainterPath>
@@ -51,6 +54,12 @@ using namespace TechDrawGui;
 using namespace TechDraw;
 
 using DU = DrawUtil;
+
+namespace
+{
+constexpr auto suppressFaceSelectionProperty =
+    "TechDrawSuppressFaceSelection";
+}
 
 QGIFace::QGIFace(int index) :
     projIndex(index),
@@ -164,6 +173,26 @@ void QGIFace::setPrettyPre() {
 void QGIFace::setPrettySel() {
     m_brush.setStyle(Qt::SolidPattern);
     QGIPrimPath::setPrettySel();
+}
+
+void QGIFace::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
+{
+    if (scene()
+        && scene()->property(suppressFaceSelectionProperty).toBool()) {
+        event->ignore();
+        return;
+    }
+    QGIPrimPath::hoverEnterEvent(event);
+}
+
+void QGIFace::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
+    if (scene()
+        && scene()->property(suppressFaceSelectionProperty).toBool()) {
+        event->ignore();
+        return;
+    }
+    QGIPrimPath::mousePressEvent(event);
 }
 
 /// show or hide the edges of this face.  Usually just for debugging
@@ -485,4 +514,3 @@ bool QGIFace::exporting() const
     return tdScene->getExportingSvg() ||
            tdScene->getExportingPdf();
 }
-
