@@ -210,9 +210,14 @@ void QGIBalloonLabel::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
 
 void QGIBalloonLabel::setPosFromCenter(const double& xCenter, const double& yCenter)
 {
+    //Get the font metrics to find the invisible descent space
+    QFontMetrics fm(m_labelText->font());
     
+    //Calculate the visual offset (push down by half the descent)
+    double visualYOffset = fm.descent() / 2.0;
+
     setPos(xCenter - boundingRect().center().x(),
-           yCenter - boundingRect().center().y());
+           yCenter - boundingRect().center().y() + visualYOffset);
 }
 
 Base::Vector3d QGIBalloonLabel::getLabelCenter() const
@@ -762,7 +767,8 @@ void QGIViewBalloon::drawBalloon(bool originDrag)
 
         //the vertical height wasn't scaled in the horizontal cell loop 
         //so we need to scale it
-        textHeight = (balloonLabel->boundingRect().height() * scale) + Rez::guiX(1.0);
+        double basePad = Rez::guiX(2.0);
+        textHeight = (balloonLabel->boundingRect().height() * scale) + (basePad * 2 * scale);
 
         balloonPath.addRect(lblCenter.x - (textWidth / 2.0),
                             lblCenter.y - (textHeight / 2.0),
