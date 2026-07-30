@@ -289,19 +289,11 @@ void QGIBalloonLabel::buildCells(const QString& text, bool split, double shapeSc
     double basePad = Rez::guiX(2.0);
     QFont font = m_labelText->font();
 
-    //we need to know the height so we can make the first cell a square
-    //and make the customBoundingRect 
+    //we need to know the height so we can make the customBoundingRect 
     double maxTextHeight = m_labelText->boundingRect().height();
-    double overallScaledHeight = (maxTextHeight * shapeScale) + Rez::guiX(1.0);
 
     for(int i=0; i < parts.size(); i++){
         QString cellString = parts[i];
-
-        //if we are on the first cell then we will just take the first character
-        //and ignore the rest 
-        if(i == 0){
-            cellString = cellString.left(1);
-        }
 
         QGCustomText* cell = new QGCustomText();
         cell->setParentItem(this);
@@ -314,11 +306,8 @@ void QGIBalloonLabel::buildCells(const QString& text, bool split, double shapeSc
         double rawTextWidth = cell->boundingRect().width();
         double cellWidth = 0;
 
-        if(i == 0){
-            cellWidth = overallScaledHeight;
-        }else{
-            cellWidth = (rawTextWidth * shapeScale) + (basePad * 2 * shapeScale);
-        }
+        cellWidth = (rawTextWidth * shapeScale) + (basePad * 2 * shapeScale);
+        
 
         double textOffsetX = (cellWidth - rawTextWidth) / 2.0;
         cell->setPos(currentX + textOffsetX, 0);
