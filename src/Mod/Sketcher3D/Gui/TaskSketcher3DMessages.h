@@ -22,19 +22,34 @@
  *                                                                         *
  ***************************************************************************/
 
+#pragma once
 
-#include "PreCompiled.h"
+#include <fastsignals/signal.h>
 
-#include <Gui/BitmapFactory.h>
-#include "TaskSketcher3DTool.h"
+#include <Gui/TaskView/TaskView.h>
 
+class QLabel;
 
-using namespace Sketcher3DGui;
-
-TaskSketcher3DTool::TaskSketcher3DTool()
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Tool Parameters"), true, nullptr)
+namespace Sketcher3DGui
 {
-    // need a draw tool to mount its parameter widget.
-}
 
-#include "moc_TaskSketcher3DTool.cpp"
+class ViewProviderSketch3D;
+
+class TaskSketcher3DMessages: public Gui::TaskView::TaskBox
+{
+    Q_OBJECT
+
+public:
+    explicit TaskSketcher3DMessages(ViewProviderSketch3D* sketchView);
+    ~TaskSketcher3DMessages() override;
+
+    void refresh();
+
+private:
+    ViewProviderSketch3D* sketchView {nullptr};
+    QLabel* statusLabel {nullptr};
+    fastsignals::connection connectionConstraintsChanged;
+    fastsignals::connection connectionElementsChanged;
+};
+
+}  // namespace Sketcher3DGui

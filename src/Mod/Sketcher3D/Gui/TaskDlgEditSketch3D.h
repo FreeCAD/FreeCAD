@@ -31,9 +31,11 @@ namespace Sketcher3DGui
 {
 
 class ViewProviderSketch3D;
+class TaskSketcher3DMessages;
 class TaskSketcher3DTool;
+class TaskSketcher3DConstraints;
+class TaskSketcher3DElements;
 
-// EditMode task dialog for Sketch3DObject.
 class TaskDlgEditSketch3D: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
@@ -64,8 +66,11 @@ public:
     QDialogButtonBox::StandardButtons getStandardButtons() const override;
 
 private:
-    ViewProviderSketch3D* sketchView;
-    TaskSketcher3DTool* toolPanel;
+    ViewProviderSketch3D* sketchView {nullptr};
+    TaskSketcher3DMessages* messagesPanel {nullptr};
+    TaskSketcher3DTool* toolPanel {nullptr};
+    TaskSketcher3DConstraints* constraintsPanel {nullptr};
+    TaskSketcher3DElements* elementsPanel {nullptr};
 };
 
 }  // namespace Sketcher3DGui

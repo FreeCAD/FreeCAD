@@ -24,53 +24,18 @@
 
 #pragma once
 
-#include <QStringList>
-
 #include <Gui/TaskView/TaskView.h>
-
-class QLabel;
-class QListWidget;
-class QListWidgetItem;
 
 namespace Sketcher3DGui
 {
-
-class ViewProviderSketch3D;
 
 class TaskSketcher3DTool: public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskSketcher3DTool(ViewProviderSketch3D* sketchView);
-    ~TaskSketcher3DTool() override;
-
-    /// rebuild lists
-    void refresh();
-
-    /// Update the hint line.
-    void setHint(const QString& text);
-
-private Q_SLOTS:
-    void onElementRowClicked(QListWidgetItem* item);
-    void onConstraintRowClicked(QListWidgetItem* item);
-
-private:
-    void populateStatus();
-    void populateElements();
-    void populateConstraints();
-    void selectSubNames(const QStringList& subnames) const;
-    /// Delete every currently-selected row of constraintsList.
-
-    ViewProviderSketch3D* sketchView {nullptr};
-
-    QLabel* hintLabel {nullptr};
-    QLabel* statusLabel {nullptr};
-    QLabel* planeLabel {nullptr};
-    QListWidget* elementsList {nullptr};
-    QListWidget* constraintsList {nullptr};
-    QLabel* elementsHeader {nullptr};
-    QLabel* constraintsHeader {nullptr};
+    TaskSketcher3DTool();
+    ~TaskSketcher3DTool() override = default;
 };
 
 }  // namespace Sketcher3DGui

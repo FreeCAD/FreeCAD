@@ -30,6 +30,9 @@
 #include <Gui/Document.h>
 
 #include "TaskDlgEditSketch3D.h"
+#include "TaskSketcher3DConstraints.h"
+#include "TaskSketcher3DElements.h"
+#include "TaskSketcher3DMessages.h"
 #include "TaskSketcher3DTool.h"
 #include "ViewProviderSketch3D.h"
 
@@ -40,16 +43,20 @@ using namespace Sketcher3DGui;
 TaskDlgEditSketch3D::TaskDlgEditSketch3D(ViewProviderSketch3D* view)
     : TaskDialog()
     , sketchView(view)
-    , toolPanel(nullptr)
 {
     assert(sketchView);
 
-    toolPanel = new TaskSketcher3DTool(sketchView);
-    Content.push_back(toolPanel);
+    messagesPanel = new TaskSketcher3DMessages(sketchView);
+    toolPanel = new TaskSketcher3DTool();
+    constraintsPanel = new TaskSketcher3DConstraints(sketchView);
+    elementsPanel = new TaskSketcher3DElements(sketchView);
 
-    if (auto* obj = sketchView->getObject()) {
-        associateToObject3dView(obj);
-    }
+    Content.push_back(messagesPanel);
+    Content.push_back(toolPanel);
+    Content.push_back(constraintsPanel);
+    Content.push_back(elementsPanel);
+
+    associateToObject3dView(sketchView->getObject());
 }
 
 TaskDlgEditSketch3D::~TaskDlgEditSketch3D() = default;
@@ -64,14 +71,11 @@ bool TaskDlgEditSketch3D::accept()
 
 bool TaskDlgEditSketch3D::reject()
 {
-    if (!sketchView) {
-        return true;
-    }
     auto* obj = sketchView->getObject();
     if (!obj || !obj->getDocument()) {
         return true;
     }
-    const std::string docName = obj->getDocument()->getName();
+    std::string docName = obj->getDocument()->getName();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.getDocument('%s').resetEdit()", docName.c_str());
     Gui::Command::doCommand(Gui::Command::Doc, "App.getDocument('%s').recompute()", docName.c_str());
     return true;

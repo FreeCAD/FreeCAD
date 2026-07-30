@@ -77,7 +77,6 @@
 #include "DrawSketchHandler3D.h"
 #include "SnapManager3D.h"
 #include "TaskDlgEditSketch3D.h"
-#include "TaskSketcher3DTool.h"
 #include "Utils.h"
 #include "ViewProviderSketch3D.h"
 
@@ -449,17 +448,21 @@ void ViewProviderSketch3D::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPart::updateData(prop);
     auto* sketch = getSketch3DObject();
-    if (!taskPanel || !sketch) {
+    if (!sketch) {
         return;
     }
     if (prop == &sketch->ReferenceShape) {
-        updateReferenceGeometry();
-    }
-    if (prop == &sketch->Shape || prop == &sketch->ReferenceShape) {
         if (activeUserPlaneGeoId >= 0 && !getActiveReferencePlane()) {
             activeUserPlaneGeoId = -1;
         }
-        taskPanel->refresh();
+        updateReferenceGeometry();
+    }
+    // Skip Geometry: solve can update it before Shape; Elements walks Shape.
+    if (prop == &sketch->Constraints) {
+        signalConstraintsChanged();
+    }
+    if (prop == &sketch->Shape || prop == &sketch->ReferenceShape) {
+        signalElementsChanged();
     }
 }
 
@@ -734,10 +737,6 @@ void ViewProviderSketch3D::applyActivePlaneChanges()
     updateActivePlaneFrame();
     updatePlaneScale();
     updatePlaneOverlayTransform();
-    // TODO: need to add plane in task panel
-    if (taskPanel) {
-        taskPanel->refresh();
-    }
 }
 
 void ViewProviderSketch3D::updateActivePlaneFrame()
@@ -797,9 +796,6 @@ void ViewProviderSketch3D::setPlaneBase(const Base::Vector3d& base)
     planeBase = base;
     updateActivePlaneFrame();
     updatePlaneOverlayTransform();
-    if (taskPanel) {
-        taskPanel->refresh();
-    }
 }
 
 void ViewProviderSketch3D::ensurePlaneOverlay()

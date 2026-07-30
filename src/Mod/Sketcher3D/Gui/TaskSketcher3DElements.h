@@ -22,19 +22,37 @@
  *                                                                         *
  ***************************************************************************/
 
+#pragma once
 
-#include "PreCompiled.h"
+#include <fastsignals/signal.h>
 
-#include <Gui/BitmapFactory.h>
-#include "TaskSketcher3DTool.h"
+#include <Gui/TaskView/TaskView.h>
 
+class QListWidget;
+class QListWidgetItem;
 
-using namespace Sketcher3DGui;
-
-TaskSketcher3DTool::TaskSketcher3DTool()
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Tool Parameters"), true, nullptr)
+namespace Sketcher3DGui
 {
-    // need a draw tool to mount its parameter widget.
-}
 
-#include "moc_TaskSketcher3DTool.cpp"
+class ViewProviderSketch3D;
+
+class TaskSketcher3DElements: public Gui::TaskView::TaskBox
+{
+    Q_OBJECT
+
+public:
+    explicit TaskSketcher3DElements(ViewProviderSketch3D* sketchView);
+    ~TaskSketcher3DElements() override;
+
+    void refresh();
+
+private Q_SLOTS:
+    void onElementRowClicked(QListWidgetItem* item);
+
+private:
+    ViewProviderSketch3D* sketchView {nullptr};
+    QListWidget* elementsList {nullptr};
+    fastsignals::connection connectionElementsChanged;
+};
+
+}  // namespace Sketcher3DGui

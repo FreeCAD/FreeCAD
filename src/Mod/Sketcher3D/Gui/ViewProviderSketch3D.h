@@ -30,6 +30,7 @@
 #include <QCoreApplication>
 
 #include <Base/Vector3D.h>
+#include <fastsignals/signal.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/Sketcher3D/App/GeoEnum3D.h>
@@ -64,7 +65,6 @@ namespace Sketcher3DGui
 
 class DrawSketchHandler3D;
 class SnapManager3D;
-class TaskSketcher3DTool;
 
 using Color3f = std::array<float, 3>;
 
@@ -144,14 +144,10 @@ public:
         return activeFrame.isUserPlane;
     }
 
-    void setTaskPanel(TaskSketcher3DTool* panel)
-    {
-        taskPanel = panel;
-    }
-    TaskSketcher3DTool* getTaskPanel() const
-    {
-        return taskPanel;
-    }
+    /// when Constraints changes.
+    fastsignals::signal<void()> signalConstraintsChanged;
+    /// when Shape / ReferenceShape changes.
+    fastsignals::signal<void()> signalElementsChanged;
 
     void updateData(const App::Property* prop) override;
     bool getElementPicked(const SoPickedPoint* pp, std::string& subname) const override;
@@ -272,7 +268,6 @@ private:
     Sketcher3D::GeoElementId3D snapTarget {};
 
     std::unique_ptr<DrawSketchHandler3D> handler;
-    TaskSketcher3DTool* taskPanel {nullptr};
 
     /// Workbench name from before setEdit.same as partdesign
     std::string oldWb;

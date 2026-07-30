@@ -31,6 +31,13 @@ SET(Sketcher3DGui_SRCS
     SnapManager3D.h
     TaskDlgEditSketch3D.cpp
     TaskDlgEditSketch3D.h
+    TaskSketcher3DConstraints.cpp
+    TaskSketcher3DConstraints.h
+    TaskSketcher3DElements.cpp
+    TaskSketcher3DElements.h
+    TaskSketcher3DMessages.cpp
+    TaskSketcher3DMessages.h
+    TaskSketcher3DPanelHelpers.h
     TaskSketcher3DTool.cpp
     TaskSketcher3DTool.h
     Utils.cpp
