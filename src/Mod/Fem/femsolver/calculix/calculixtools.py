@@ -195,7 +195,7 @@ class CalculiXTools(ObjectTools):
                 reader.Update()
                 multi_block = reader.GetOutput()
 
-                # normalize eigenvectors for frequency analysis. 
+                # normalize eigenvectors for frequency analysis.
                 # CalculiX outputs mass-normalized eigenvectors
                 # scaled with 1/sqrt(mass) -> small objects overly distorted
                 if self.obj.AnalysisType == "frequency":
