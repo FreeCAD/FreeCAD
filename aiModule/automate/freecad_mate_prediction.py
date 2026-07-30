@@ -1,8 +1,9 @@
 """Run the trained AutoMate model for two selected FreeCAD objects.
 
-In FreeCAD, select exactly two objects containing Shapes and execute:
+Start FreeCAD from the repository root, select exactly two objects containing
+Shapes, and execute:
 
-    exec(open(r"E:\FreeCAD\aiModule\automate\freecad_mate_prediction.py").read())
+    exec(open(r"aimodule\automate\freecad_mate_prediction.py", encoding="utf-8").read())
 """
 
 from __future__ import annotations
@@ -11,7 +12,9 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
+from pathlib import Path
 
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -19,11 +22,34 @@ import Import
 import Part
 
 
-SCRIPT_PATH = globals().get(
-    "__file__", r"E:\FreeCAD\aiModule\automate\freecad_mate_prediction.py"
-)
-AUTOMATE_ROOT = os.path.dirname(os.path.abspath(SCRIPT_PATH))
-DEFAULT_PIXI = r"C:\Users\666\.pixi\bin\pixi.exe"
+def _find_script_path():
+    script_path = globals().get("__file__")
+    if script_path:
+        return Path(script_path).resolve()
+
+    # FreeCAD's Python console does not define __file__ for exec(open(...)).
+    # Search relative to the working directory and FreeCAD executable/home so
+    # the same script works from the repository root and build/debug/bin.
+    search_roots = [Path.cwd(), Path(sys.executable).resolve().parent]
+    freecad_home = App.getHomePath()
+    if freecad_home:
+        search_roots.append(Path(freecad_home).resolve())
+
+    relative_script = Path("aimodule") / "automate" / "freecad_mate_prediction.py"
+    for root in search_roots:
+        for parent in (root, *root.parents):
+            for candidate in (parent / relative_script, parent / "freecad_mate_prediction.py"):
+                if candidate.is_file():
+                    return candidate.resolve()
+
+    raise RuntimeError(
+        "Cannot locate aimodule/automate/freecad_mate_prediction.py relative "
+        "to the current FreeCAD process. Start FreeCAD from the repository root."
+    )
+
+
+SCRIPT_PATH = _find_script_path()
+AUTOMATE_ROOT = str(SCRIPT_PATH.parent)
 TOP_K = 5
 # Experimental one-click placement: keep A fixed and transform B so the
 # rank-1 mating-coordinate frames coincide. Ctrl+Z restores B afterwards.
@@ -37,9 +63,10 @@ def _pixi_executable():
     executable = shutil.which("pixi")
     if executable:
         return executable
-    if os.path.isfile(DEFAULT_PIXI):
-        return DEFAULT_PIXI
-    raise RuntimeError("Cannot find pixi.exe; update DEFAULT_PIXI in this script.")
+    user_pixi = Path.home() / ".pixi" / "bin" / ("pixi.exe" if os.name == "nt" else "pixi")
+    if user_pixi.is_file():
+        return str(user_pixi)
+    raise RuntimeError("Cannot find pixi on PATH or in the current user's ~/.pixi/bin directory.")
 
 
 def _remove_previous(doc):

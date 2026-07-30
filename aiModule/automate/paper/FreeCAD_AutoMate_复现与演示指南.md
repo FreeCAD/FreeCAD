@@ -185,16 +185,25 @@ AutoMate 的 Python 流水线依赖 `automate_cpp`。本项目已经修改 `CMak
 
 ```powershell
 cd E:\FreeCAD\aiModule\automate
-$aiPrefix = (pixi run python -c "import sys; print(sys.prefix)").Trim()
+pixi run build-cpp
+pixi run check-cpp
+```
 
-pixi run cmake -S . -B build-ai -G Ninja `
-  -DCMAKE_BUILD_TYPE=Release `
-  "-DCMAKE_PREFIX_PATH=$aiPrefix\Library" `
-  "-DPython_EXECUTABLE=$aiPrefix\python.exe" `
-  "-DPython3_EXECUTABLE=$aiPrefix\python.exe"
+`configure-cpp` 会通过 Visual Studio Installer 的 `vswhere.exe` 自动定位
+带有 x64 C++ 工具链的 Visual Studio，激活 MSVC/Windows SDK 环境并生成
+`build-ai`。`build-cpp` 依赖 `configure-cpp`，因此可以直接执行，无需手工填写
+Visual Studio、Python 或 Pixi 环境的绝对路径。
 
-pixi run cmake --build build-ai
-pixi run check
+`check-cpp` 依赖完整的配置和构建流程，并额外验证：
+
+- `automate_cpp` 能从当前 Python 3.10 环境导入；
+- 当前 PyTorch 版本可用；
+- `runs/mate_multitask_v2/best.pt` 能以 `strict=True` 加载。
+
+因此在新电脑上也可以只执行以下一条命令完成配置、构建和验收：
+
+```powershell
+pixi run check-cpp
 ```
 
 期望生成：

@@ -40,6 +40,9 @@ torch-scatter = { url = "https://data.pyg.org/whl/torch-2.7.0%2Bcu128/torch_scat
 
 [tasks]
 check = "python scripts/check_ai_environment.py"
+configure-cpp = "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build_automate_cpp.ps1 configure"
+build-cpp = { cmd = "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build_automate_cpp.ps1 build", depends-on = ["configure-cpp"] }
+check-cpp = { cmd = "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build_automate_cpp.ps1 check", depends-on = ["build-cpp"] }
 validate-data = "python validate_dataset_sample.py"
 audit-mates = "python audit_mates.py --count 1000"
 audit-mates-5000 = "python audit_mates.py --count 5000 --stratified --output audit/mates_5000_stratified.jsonl --progress-every 100"
