@@ -1462,16 +1462,6 @@ void SketchObject::migrateSketch()
         }
     }
 
-    {
-        // Migrate point-line, circle-circle and circle-line distance from abs to signed
-        auto constraints = Constraints.getValues();
-        for (auto& constr : constraints) {
-            setOrientation(constr, false);
-        }
-
-        Constraints.setValues(std::move(constraints));
-    }
-
     /* parabola axis as internal geometry */
     auto constraints = Constraints.getValues();
     auto geometries = getInternalGeometry();

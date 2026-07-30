@@ -860,8 +860,7 @@ void ConstraintP2PAngle::evaluate()
 
 // --------------------------------------------------------
 // P2LDistance
-ConstraintP2LDistance::ConstraintP2LDistance(Point& p, Line& l, double* d, bool ccw)
-    : ccw(ccw)
+ConstraintP2LDistance::ConstraintP2LDistance(Point& p, Line& l, double* d)
 {
     pvec.push_back(p.x);
     pvec.push_back(p.y);
@@ -895,9 +894,8 @@ double ConstraintP2LDistance::signed_value()
 }
 double ConstraintP2LDistance::error()
 {
-    double dist = ccw ? std::abs(*distance()) : -std::abs(*distance());
-
-    return scale * (signed_value() - dist);
+    double dist = *distance();
+    return scale * (value() - dist);
 }
 
 double ConstraintP2LDistance::grad(double* param)
@@ -932,9 +930,12 @@ double ConstraintP2LDistance::grad(double* param)
         if (param == p2y()) {
             deriv += ((x1 - x0) * d - (dy / d) * area) / d2;
         }
+        if (area < 0) {
+            deriv *= -1;
+        }
     }
     if (param == distance()) {
-        deriv += ccw ? -1 : +1;
+        deriv += -1;
     }
 
     return scale * deriv;
@@ -995,6 +996,57 @@ double ConstraintP2LDistance::maxStep(MAP_pD_D& dir, double lim)
 void ConstraintP2LDistance::evaluate()
 {
     *distance() = value();
+}
+
+ConstraintP2LDistanceOriented::ConstraintP2LDistanceOriented(Point& p, Line& l, double* d, bool ccw)
+    : ConstraintP2LDistance(p, l, d)
+    , ccw(ccw)
+{}
+
+double ConstraintP2LDistanceOriented::error()
+{
+    double dist = ccw ? std::abs(*distance()) : -std::abs(*distance());
+
+    return scale * (signed_value() - dist);
+}
+double ConstraintP2LDistanceOriented::grad(double* param)
+{
+    double deriv = 0.;
+
+    if (param == p0x() || param == p0y() || param == p1x() || param == p1y() || param == p2x()
+        || param == p2y()) {
+        double x0 = *p0x(), x1 = *p1x(), x2 = *p2x();
+        double y0 = *p0y(), y1 = *p1y(), y2 = *p2y();
+        double dx = x2 - x1;
+        double dy = y2 - y1;
+        double d2 = dx * dx + dy * dy;
+        double d = sqrt(d2);
+        double area = -x0 * dy + y0 * dx + x1 * y2 - x2 * y1;
+
+        if (param == p0x()) {
+            deriv += (y1 - y2) / d;
+        }
+        if (param == p0y()) {
+            deriv += (x2 - x1) / d;
+        }
+        if (param == p1x()) {
+            deriv += ((y2 - y0) * d + (dx / d) * area) / d2;
+        }
+        if (param == p1y()) {
+            deriv += ((x0 - x2) * d + (dy / d) * area) / d2;
+        }
+        if (param == p2x()) {
+            deriv += ((y0 - y1) * d - (dx / d) * area) / d2;
+        }
+        if (param == p2y()) {
+            deriv += ((x1 - x0) * d - (dy / d) * area) / d2;
+        }
+    }
+    if (param == distance()) {
+        deriv += ccw ? -1 : +1;
+    }
+
+    return scale * deriv;
 }
 
 
@@ -2998,11 +3050,9 @@ void ConstraintC2CDistance::evaluate()
 
 // --------------------------------------------------------
 // ConstraintC2LDistance
-ConstraintC2LDistance::ConstraintC2LDistance(Circle& c, Line& l, double* d, bool ccw, bool internal)
+ConstraintC2LDistance::ConstraintC2LDistance(Circle& c, Line& l, double* d)
     : circle(c)
     , line(l)
-    , ccw(ccw)
-    , internal(internal)
 {
     pvec.push_back(d);
     this->circle.PushOwnParams(pvec);
@@ -3058,6 +3108,60 @@ double ConstraintC2LDistance::signed_value(double& deriValue, double* param)
 void ConstraintC2LDistance::errorgrad(double* err, double* grad, double* param)
 {
     double h, dh;
+    h = std::abs(signed_value(dh, param));
+
+    if (err) {
+        double target;
+        if (h < *circle.rad) {
+            *err = *circle.rad - std::abs(*distance()) - h;
+        }
+        else {
+            *err = *circle.rad + std::abs(*distance()) - h;
+        }
+        target = ccw ? target : -target;  // Solve for one side of the line or the other
+        *err = target - h;
+    }
+    else if (grad) {
+        if (param == distance() || param == circle.rad) {
+            if (h < *circle.rad) {
+                *grad = -1.0;
+            }
+            else {
+                *grad = 1.0;
+            }
+        }
+        else {
+            *grad = -dh;
+        }
+    }
+}
+void ConstraintC2LDistance::evaluate()
+{
+    double h, dh;
+    h = std::abs(signed_value(dh, nullptr));
+
+    if (h < *circle.rad) {
+        *distance() = *circle.rad - h;
+    }
+    else {
+        *distance() = h - *circle.rad;
+    }
+}
+
+ConstraintC2LDistanceOriented::ConstraintC2LDistanceOriented(
+    Circle& c,
+    Line& l,
+    double* d,
+    bool ccw,
+    bool internal
+)
+    : ConstraintC2LDistance(c, l, d)
+    , ccw(ccw)
+    , internal(internal)
+{}
+void ConstraintC2LDistanceOriented::errorgrad(double* err, double* grad, double* param)
+{
+    double h, dh;
     h = signed_value(dh, param);
 
     if (err) {
@@ -3078,18 +3182,6 @@ void ConstraintC2LDistance::errorgrad(double* err, double* grad, double* param)
         else {
             *grad = -dh;
         }
-    }
-}
-void ConstraintC2LDistance::evaluate()
-{
-    double h, dh;
-    h = std::abs(signed_value(dh, nullptr));
-
-    if (h < *circle.rad) {
-        *distance() = *circle.rad - h;
-    }
-    else {
-        *distance() = h - *circle.rad;
     }
 }
 

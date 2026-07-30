@@ -655,9 +655,24 @@ int System::addConstraintP2PAngle(Point& p1, Point& p2, double* angle, int /*tag
     return addConstraintP2PAngle(p1, p2, angle, 0., 0, driving);
 }
 
-int System::addConstraintP2LDistance(Point& p, Line& l, double* distance, bool ccw, int tagId, bool driving)
+int System::addConstraintP2LDistance(Point& p, Line& l, double* distance, int tagId, bool driving)
 {
-    Constraint* constr = new ConstraintP2LDistance(p, l, distance, ccw);
+    Constraint* constr = new ConstraintP2LDistance(p, l, distance);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+
+int System::addConstraintP2LDistanceOriented(
+    Point& p,
+    Line& l,
+    double* distance,
+    bool ccw,
+    int tagId,
+    bool driving
+)
+{
+    Constraint* constr = new ConstraintP2LDistanceOriented(p, l, distance, ccw);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
@@ -884,7 +899,14 @@ int System::addConstraintC2CDistance(
     return addConstraint(constr);
 }
 
-int System::addConstraintC2LDistance(
+int System::addConstraintC2LDistance(Circle& c, Line& l, double* dist, int tagId, bool driving)
+{
+    Constraint* constr = new ConstraintC2LDistance(c, l, dist);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+int System::addConstraintC2LDistanceOriented(
     Circle& c,
     Line& l,
     double* dist,
@@ -894,7 +916,7 @@ int System::addConstraintC2LDistance(
     bool driving
 )
 {
-    Constraint* constr = new ConstraintC2LDistance(c, l, dist, ccw, internal);
+    Constraint* constr = new ConstraintC2LDistanceOriented(c, l, dist, ccw, internal);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
@@ -1117,9 +1139,14 @@ int System::addConstraintPerpendicularArc2Arc(
     return addConstraintPerpendicular(a1.center, p1, a2.center, p2, tagId, driving);
 }
 
-int System::addConstraintTangent(Line& l, Circle& c, bool ccw, int tagId, bool driving)
+int System::addConstraintTangent(Line& l, Circle& c, int tagId, bool driving)
 {
-    return addConstraintP2LDistance(c.center, l, c.rad, ccw, tagId, driving);
+    return addConstraintP2LDistance(c.center, l, c.rad, tagId, driving);
+}
+
+int System::addConstraintTangentOriented(Line& l, Circle& c, bool ccw, int tagId, bool driving)
+{
+    return addConstraintP2LDistanceOriented(c.center, l, c.rad, ccw, tagId, driving);
 }
 
 int System::addConstraintTangent(Line& l, Ellipse& e, int tagId, bool driving)
@@ -1130,9 +1157,14 @@ int System::addConstraintTangent(Line& l, Ellipse& e, int tagId, bool driving)
     return addConstraint(constr);
 }
 
-int System::addConstraintTangent(Line& l, Arc& a, bool ccw, int tagId, bool driving)
+int System::addConstraintTangent(Line& l, Arc& a, int tagId, bool driving)
 {
-    return addConstraintP2LDistance(a.center, l, a.rad, ccw, tagId, driving);
+    return addConstraintP2LDistance(a.center, l, a.rad, tagId, driving);
+}
+
+int System::addConstraintTangentOriented(Line& l, Arc& a, bool ccw, int tagId, bool driving)
+{
+    return addConstraintP2LDistanceOriented(a.center, l, a.rad, ccw, tagId, driving);
 }
 
 int System::addConstraintTangent(Circle& c1, Circle& c2, int tagId, bool driving)

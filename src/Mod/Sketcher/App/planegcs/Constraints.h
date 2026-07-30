@@ -503,9 +503,7 @@ public:
 // P2LDistance
 class ConstraintP2LDistance: public Constraint
 {
-private:
-    bool ccw;
-
+protected:
     double* p0x()
     {
         return pvec[0];
@@ -538,7 +536,7 @@ private:
     double signed_value();
 
 public:
-    ConstraintP2LDistance(Point& p, Line& l, double* d, bool ccw);
+    ConstraintP2LDistance(Point& p, Line& l, double* d);
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     ConstraintP2LDistance()
     {}
@@ -547,8 +545,19 @@ public:
     double error() override;
     double grad(double*) override;
     double maxStep(MAP_pD_D& dir, double lim = 1.) override;
-    double abs(double darea);
     void evaluate() override;
+};
+
+class ConstraintP2LDistanceOriented: public ConstraintP2LDistance
+{
+private:
+    bool ccw;
+
+public:
+    ConstraintP2LDistanceOriented(Point& p, Line& l, double* d, bool ccw);
+
+    double error() override;
+    double grad(double*) override;
 };
 
 // PointOnLine
@@ -1336,7 +1345,7 @@ public:
 // C2LDistance
 class ConstraintC2LDistance: public Constraint
 {
-private:
+protected:
     Circle circle;
     Line line;
     bool ccw;
@@ -1354,8 +1363,20 @@ private:
     void evaluate() override;
 
 public:
-    ConstraintC2LDistance(Circle& c, Line& l, double* d, bool ccw, bool internal);
+    ConstraintC2LDistance(Circle& c, Line& l, double* d);
     ConstraintType getTypeId() override;
+};
+
+class ConstraintC2LDistanceOriented: public ConstraintC2LDistance
+{
+protected:
+    bool ccw;
+    bool internal;
+
+    void errorgrad(double* err, double* grad, double* param) override;
+
+public:
+    ConstraintC2LDistanceOriented(Circle& c, Line& l, double* d, bool ccw, bool internal);
 };
 
 // P2CDistance

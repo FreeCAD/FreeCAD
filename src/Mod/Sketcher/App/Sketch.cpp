@@ -3059,23 +3059,33 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2, ConstraintOrientation o
         if (Geoms[geoId2].type == Arc) {
             GCS::Arc& a = Arcs[Geoms[geoId2].index];
             int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintTangent(
-                l,
-                a,
-                orientation.testFlag(ConstraintOrientations::CounterClockwise),
-                tag
-            );
+            if (orientation.testFlag(ConstraintOrientations::None)) {
+                GCSsys.addConstraintTangent(l, a, tag);
+            }
+            else {
+                GCSsys.addConstraintTangentOriented(
+                    l,
+                    a,
+                    orientation.testFlag(ConstraintOrientations::CounterClockwise),
+                    tag
+                );
+            }
             return ConstraintsCounter;
         }
         else if (Geoms[geoId2].type == Circle) {
             GCS::Circle& c = Circles[Geoms[geoId2].index];
             int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintTangent(
-                l,
-                c,
-                orientation.testFlag(ConstraintOrientations::CounterClockwise),
-                tag
-            );
+            if (orientation.testFlag(ConstraintOrientations::None)) {
+                GCSsys.addConstraintTangent(l, c, tag);
+            }
+            else {
+                GCSsys.addConstraintTangentOriented(
+                    l,
+                    c,
+                    orientation.testFlag(ConstraintOrientations::CounterClockwise),
+                    tag
+                );
+            }
             return ConstraintsCounter;
         }
         else if (Geoms[geoId2].type == Ellipse) {
@@ -3584,14 +3594,19 @@ int Sketch::addDistanceConstraint(
         GCS::Line& l2 = Lines[Geoms[geoId2].index];
 
         int tag = ++ConstraintsCounter;
-        GCSsys.addConstraintP2LDistance(
-            p1,
-            l2,
-            value,
-            orientation.testFlag(ConstraintOrientations::CounterClockwise),
-            tag,
-            driving
-        );
+        if (orientation.testFlag(ConstraintOrientations::None)) {
+            GCSsys.addConstraintP2LDistance(p1, l2, value, tag, driving);
+        }
+        else {
+            GCSsys.addConstraintP2LDistanceOriented(
+                p1,
+                l2,
+                value,
+                orientation.testFlag(ConstraintOrientations::CounterClockwise),
+                tag,
+                driving
+            );
+        }
         return ConstraintsCounter;
     }
     else {
@@ -3665,15 +3680,21 @@ int Sketch::addDistanceConstraint(
 
         GCS::Line* l = &Lines[Geoms[geoId2].index];
         int tag = ++ConstraintsCounter;
-        GCSsys.addConstraintC2LDistance(
-            *c1,
-            *l,
-            value,
-            orientation.testFlag(ConstraintOrientations::CounterClockwise),
-            orientation.testFlag(ConstraintOrientations::Internal),
-            tag,
-            driving
-        );
+        if (orientation.testFlag(ConstraintOrientations::None)) {
+            GCSsys.addConstraintC2LDistance(*c1, *l, value, tag, driving);
+        }
+        else {
+            GCSsys.addConstraintC2LDistanceOriented(
+                *c1,
+                *l,
+                value,
+                orientation.testFlag(ConstraintOrientations::CounterClockwise),
+                orientation.testFlag(ConstraintOrientations::Internal),
+                tag,
+                driving
+            );
+        }
+
         return ConstraintsCounter;
     }
     else {

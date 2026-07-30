@@ -300,7 +300,8 @@ public:
         bool driving = true
     );
     int addConstraintP2PAngle(Point& p1, Point& p2, double* angle, int tagId = 0, bool driving = true);
-    int addConstraintP2LDistance(
+    int addConstraintP2LDistance(Point& p, Line& l, double* distance, int tagId = 0, bool driving = true);
+    int addConstraintP2LDistanceOriented(
         Point& p,
         Line& l,
         double* distance,
@@ -450,9 +451,11 @@ public:
         int tagId = 0,
         bool driving = true
     );
-    int addConstraintTangent(Line& l, Circle& c, bool ccw, int tagId = 0, bool driving = true);
+    int addConstraintTangent(Line& l, Circle& c, int tagId = 0, bool driving = true);
+    int addConstraintTangentOriented(Line& l, Circle& c, bool ccw, int tagId = 0, bool driving = true);
     int addConstraintTangent(Line& l, Ellipse& e, int tagId = 0, bool driving = true);
-    int addConstraintTangent(Line& l, Arc& a, bool ccw, int tagId = 0, bool driving = true);
+    int addConstraintTangent(Line& l, Arc& a, int tagId = 0, bool driving = true);
+    int addConstraintTangentOriented(Line& l, Arc& a, bool ccw, int tagId = 0, bool driving = true);
     int addConstraintTangent(Circle& c1, Circle& c2, int tagId = 0, bool driving = true);
     int addConstraintTangent(Arc& a1, Arc& a2, int tagId = 0, bool driving = true);
     int addConstraintTangent(Circle& c, Arc& a, int tagId = 0, bool driving = true);
@@ -491,7 +494,8 @@ public:
         int tagId,
         bool driving = true
     );
-    int addConstraintC2LDistance(
+    int addConstraintC2LDistance(Circle& c, Line& l, double* dist, int tagId, bool driving = true);
+    int addConstraintC2LDistanceOriented(
         Circle& c,
         Line& l,
         double* dist,
