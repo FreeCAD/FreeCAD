@@ -39,9 +39,9 @@ protected:
 
         _sketch->AttachmentSupport.setValue(_doc->getObject("XY_Plane"), "");
         _sketch->MapMode.setValue("FlatFace");
-        
+
         Part::GeomCircle circle;
-        circle.setRadius(10.0); 
+        circle.setRadius(10.0);
         _sketch->addGeometry(&circle, false);
     }
 
@@ -72,14 +72,14 @@ protected:
         auto doc = getDocument();
         auto body = getBody();
         auto sketch = getSketch();
-        
+
         auto pad = doc->addObject<PartDesign::Pad>("Pad");
         body->addObject(pad);
         pad->Profile.setValue(sketch, {""});
         pad->Direction.setValue(0.0, 0.0, 1.0);
         pad->Length.setValue(length);
         pad->Midplane.setValue(false);
-        
+
         doc->recompute();
         return pad;
     }
@@ -96,27 +96,22 @@ protected:
         double half = sideLength / 2.0;
 
         auto l1 = std::make_unique<Part::GeomLineSegment>();
-        l1->setPoints(Base::Vector3d(-half, -half, 0.0), Base::Vector3d( half, -half, 0.0));
+        l1->setPoints(Base::Vector3d(-half, -half, 0.0), Base::Vector3d(half, -half, 0.0));
         sketch->addGeometry(std::move(l1));
 
         auto l2 = std::make_unique<Part::GeomLineSegment>();
-        l2->setPoints(Base::Vector3d( half, -half, 0.0), Base::Vector3d( half,  half, 0.0));
+        l2->setPoints(Base::Vector3d(half, -half, 0.0), Base::Vector3d(half, half, 0.0));
         sketch->addGeometry(std::move(l2));
 
         auto l3 = std::make_unique<Part::GeomLineSegment>();
-        l3->setPoints(Base::Vector3d( half,  half, 0.0), Base::Vector3d(-half,  half, 0.0));
+        l3->setPoints(Base::Vector3d(half, half, 0.0), Base::Vector3d(-half, half, 0.0));
         sketch->addGeometry(std::move(l3));
 
         auto l4 = std::make_unique<Part::GeomLineSegment>();
-        l4->setPoints(Base::Vector3d(-half,  half, 0.0), Base::Vector3d(-half, -half, 0.0));
+        l4->setPoints(Base::Vector3d(-half, half, 0.0), Base::Vector3d(-half, -half, 0.0));
         sketch->addGeometry(std::move(l4));
 
-        int pairs[4][4] = {
-            {0, 2, 1, 1}, 
-            {1, 2, 2, 1}, 
-            {2, 2, 3, 1}, 
-            {3, 2, 0, 1}  
-        };
+        int pairs[4][4] = {{0, 2, 1, 1}, {1, 2, 2, 1}, {2, 2, 3, 1}, {3, 2, 0, 1}};
 
         for (int i = 0; i < 4; ++i) {
             auto c = new Sketcher::Constraint();
@@ -141,8 +136,7 @@ protected:
 
     std::optional<std::string> getLateralFaceName(PartDesign::Pad* pad)
     {
-        const TopoDS_Shape& shape =
-            Part::Feature::getShape(pad, Part::ShapeOption::NoFlag);
+        const TopoDS_Shape& shape = Part::Feature::getShape(pad, Part::ShapeOption::NoFlag);
 
         const Part::TopoShape& topo = pad->Shape.getShape();
 
@@ -153,8 +147,9 @@ protected:
 
             if (surface.GetType() == GeomAbs_Cylinder) {
                 int idx = topo.findShape(face);
-                if (idx > 0)
+                if (idx > 0) {
                     return "Face" + std::to_string(idx);
+                }
             }
         }
 
@@ -175,17 +170,16 @@ TEST_F(ThreadTest, ThreadCreationOnCylinder)
     ASSERT_NE(pad, nullptr);
     auto thread = doc->addObject<PartDesign::Thread>("Thread");
     body->addObject(thread);
-    
+
     auto lateralFace = getLateralFaceName(pad);
     thread->LateralFace.setValue(pad, {*lateralFace});
 
     doc->recompute();
 
     ASSERT_NE(thread, nullptr);
-    EXPECT_FALSE(thread->isError()) 
+    EXPECT_FALSE(thread->isError())
         << "A feature Thread falhou durante o recompute: " << thread->getStatusString();
-    EXPECT_TRUE(thread->isValid()) 
-        << "A feature Thread não está em estado válido.";
+    EXPECT_TRUE(thread->isValid()) << "A feature Thread não está em estado válido.";
 }
 
 TEST_F(ThreadTest, ThreadCreationOnCube)
@@ -196,12 +190,12 @@ TEST_F(ThreadTest, ThreadCreationOnCube)
     ASSERT_NE(pad, nullptr);
     auto thread = doc->addObject<PartDesign::Thread>("Thread");
     body->addObject(thread);
-    thread->LateralFace.setValue(pad,{"Face3"}); //any cube face works
+    thread->LateralFace.setValue(pad, {"Face3"});  // any cube face works
 
     doc->recompute();
-    
+
     ASSERT_NE(thread, nullptr);
-    EXPECT_TRUE(thread->isError()) 
+    EXPECT_TRUE(thread->isError())
         << "A feature Thread deveria ter falhado para uma face plana, mas não falhou.";
     EXPECT_FALSE(thread->isValid());
 }
@@ -218,10 +212,9 @@ TEST_F(ThreadTest, EmptyThread)
     doc->recompute();
 
     ASSERT_NE(thread, nullptr);
-    EXPECT_FALSE(thread->isError()) 
-        << "Feature thread has failed during recompute " << thread->getStatusString();        
-    EXPECT_TRUE(thread->isValid()) 
-        << "Feature Thread is not valid.";
+    EXPECT_FALSE(thread->isError())
+        << "Feature thread has failed during recompute " << thread->getStatusString();
+    EXPECT_TRUE(thread->isValid()) << "Feature Thread is not valid.";
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

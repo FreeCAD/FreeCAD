@@ -533,7 +533,7 @@ std::string ThreadUtils::getThreadDesignations(
 
     for (const auto& thread : ThreadUtils::threadDescription[threadType]) {
         if (std::abs(thread.diameter - targeDiameterDouble) < 0.001) {
-            if (std::abs(thread.pitch - targetPitchDouble) < 0.001) { 
+            if (std::abs(thread.pitch - targetPitchDouble) < 0.001) {
                 return thread.designation;
             }
         }
@@ -625,15 +625,13 @@ static TopoDS_Face getSelectedFace(const App::PropertyLinkSub& faceProp)
     return TopoDS::Face(subShape);
 }
 
-App::DocumentObjectExecReturn* ThreadUtils::validateParameters(
-    const App::PropertyLinkSub& LateralFace)
+App::DocumentObjectExecReturn* ThreadUtils::validateParameters(const App::PropertyLinkSub& LateralFace)
 {
     TopoDS_Face threadedFace = getSelectedFace(LateralFace);
 
     if (threadedFace.IsNull()) {
         return new App::DocumentObjectExecReturn(
-            QT_TRANSLATE_NOOP("Exception",
-                "Please select a cylindrical or conical face.")
+            QT_TRANSLATE_NOOP("Exception", "Please select a cylindrical or conical face.")
         );
     }
 
@@ -695,6 +693,6 @@ gp_Vec ThreadUtils::getThreadZAxis(const App::PropertyLinkSub& LateralFace)
 
 double ThreadUtils::getThroughAllLength() const
 {
-   /* TODO */
+    /* TODO */
     return 2.02;
 }

@@ -90,9 +90,7 @@ App::DocumentObjectExecReturn* Thread::execute()
 
     auto res = threadUtils.validateParameters(LateralFace);
     if (res != App::DocumentObject::StdReturn) {
-        Base::Console().error(
-            "Failed to create thread:\n%s\n",
-            res->Why.c_str());
+        Base::Console().error("Failed to create thread:\n%s\n", res->Why.c_str());
 
         throw Base::RuntimeError(res->Why.c_str());
 
