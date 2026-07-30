@@ -35,18 +35,9 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
 
     PartDesign::Thread* pcThread = DressUpView->getObject<PartDesign::Thread>();
 
-    const std::vector<std::string>& subNamesLateral = pcThread->LateralFace.getSubValues();
-    if (!subNamesLateral.empty()) {
-        ui->lateralFaceEdit->setText(QString::fromStdString(subNamesLateral.front()));
-    }
-    const std::vector<std::string>& subNamesStart = pcThread->StartPlane.getSubValues();
-    if (!subNamesStart.empty()) {
-        ui->startEdit->setText(QString::fromStdString(subNamesStart.front()));
-    }
-    const std::vector<std::string>& subNamesGeometry = pcThread->UpToGeometry.getSubValues();
-    if (!subNamesGeometry.empty()) {
-        ui->upToGeometryEdit->setText(QString::fromStdString(subNamesGeometry.front()));
-    }
+    setLinkSubText(ui->lateralFaceEdit, pcThread->LateralFace);
+    setLinkSubText(ui->startEdit, pcThread->StartPlane);
+    setLinkSubText(ui->upToGeometryEdit, pcThread->UpToGeometry);
 
     setUpUI(pcThread);
 
@@ -282,6 +273,21 @@ void TaskThreadParameters::setThreadSelectionMode(threadSelectionModes mode)
     currentSelectionMode = mode;
 }
 
+void TaskThreadParameters::setLinkSubText(QLineEdit* edit, const App::PropertyLinkSub& prop)
+{
+    const auto& subs = prop.getSubValues();
+
+    if (!subs.empty() && !subs.front().empty()) {
+        edit->setText(QString::fromStdString(subs.front()));
+    }
+    else if (auto obj = prop.getValue()) {
+        edit->setText(QString::fromUtf8(obj->Label.getValue()));
+    }
+    else {
+        edit->setText(QString::fromUtf8("No selection"));
+    }
+}
+
 void TaskThreadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type != Gui::SelectionChanges::AddSelection) {
@@ -299,9 +305,10 @@ void TaskThreadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             }
             setupTransaction();
             pcThread->LateralFace.setValue(selObj, planes);
-
-            referenceQLineEditSelected(msg, ui->lateralFaceEdit);
+            recomputeFeature();
+            setLinkSubText(ui->lateralFaceEdit, pcThread->LateralFace);
             ui->selectLateralFace->setChecked(false);
+            Gui::Selection().clearSelection();
             break;
         }
 
@@ -315,9 +322,10 @@ void TaskThreadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             }
             setupTransaction();
             pcThread->StartPlane.setValue(selObj, planes);
-
-            referenceQLineEditSelected(msg, ui->startEdit);
+            recomputeFeature();
+            setLinkSubText(ui->startEdit, pcThread->StartPlane);
             ui->selectStart->setChecked(false);
+            Gui::Selection().clearSelection();
             break;
         }
 
@@ -326,15 +334,18 @@ void TaskThreadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             std::vector<std::string> planes;
             App::DocumentObject* selObj = nullptr;
             getReferencedSelection(pcThread, msg, selObj, planes);
+            for (const auto& p : planes) {
+            }
 
             if (!selObj) {
                 return;
             }
             setupTransaction();
             pcThread->UpToGeometry.setValue(selObj, planes);
-
-            referenceQLineEditSelected(msg, ui->upToGeometryEdit);
+            recomputeFeature();
+            setLinkSubText(ui->upToGeometryEdit, pcThread->UpToGeometry);
             ui->selectUpToGeometry->setChecked(false);
+            Gui::Selection().clearSelection();
             break;
         }
 
@@ -342,6 +353,7 @@ void TaskThreadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             break;
     }
 }
+
 
 void TaskThreadParameters::threadTypeChanged(int index)
 {

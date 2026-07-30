@@ -605,7 +605,7 @@ static TopoDS_Face getSelectedFace(const App::PropertyLinkSub& faceProp)
     }
 
     const std::vector<std::string>& subs = faceProp.getSubValues();
-    if (subs.empty()) {
+    if (subs.size() != 1 || subs.front().empty()) {
         return TopoDS_Face();
     }
 
@@ -626,10 +626,16 @@ static TopoDS_Face getSelectedFace(const App::PropertyLinkSub& faceProp)
 }
 
 App::DocumentObjectExecReturn* ThreadUtils::validateParameters(
-    const App::PropertyLinkSub& LateralFace
-)
+    const App::PropertyLinkSub& LateralFace)
 {
     TopoDS_Face threadedFace = getSelectedFace(LateralFace);
+
+    if (threadedFace.IsNull()) {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception",
+                "Please select a cylindrical or conical face.")
+        );
+    }
 
     if (getFaceType(threadedFace) == FaceType::Invalid) {
         return new App::DocumentObjectExecReturn(

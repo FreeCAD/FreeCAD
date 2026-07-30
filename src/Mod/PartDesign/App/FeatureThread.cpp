@@ -74,10 +74,10 @@ App::DocumentObjectExecReturn* Thread::execute()
     TopShape.setTransform(Base::Matrix4D());
 
     // Faces where thread should be applied
-    const std::vector<std::string> SubVals = LateralFace.getSubValuesStartsWith("Face");
+    bool isThreadEmpty = (LateralFace.getValue() == nullptr);
 
     // If no element is selected, then we use a copy of previous feature.
-    if (SubVals.empty()) {
+    if (isThreadEmpty) {
         this->positionByBaseFeature();
         this->Shape.setValue(TopShape);
         std::cout << "SAIU 3" << std::endl;
@@ -91,12 +91,11 @@ App::DocumentObjectExecReturn* Thread::execute()
     auto res = threadUtils.validateParameters(LateralFace);
     if (res != App::DocumentObject::StdReturn) {
         Base::Console().error(
-            "Failed to create thread:\n"
-            "the selected lateral face must be cylindrical or conical.\n"
-        );
-        throw Base::RuntimeError(
-            QT_TRANSLATE_NOOP("Exception",
-                              "The selected face must be cylindrical or conical"));
+            "Failed to create thread:\n%s\n",
+            res->Why.c_str());
+
+        throw Base::RuntimeError(res->Why.c_str());
+
         return res;
     }
 

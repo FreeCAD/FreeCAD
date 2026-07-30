@@ -52,6 +52,7 @@ protected:
     void setThreadSelectionMode(threadSelectionModes mode);
     void changedObject(const App::Document&, const App::Property& Prop);
     void setThreadSelectionGate();
+    void setLinkSubText(QLineEdit* edit, const App::PropertyLinkSub& prop);
 
 private Q_SLOTS:
     void threadTypeChanged(int index);
