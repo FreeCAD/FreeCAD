@@ -131,10 +131,9 @@ protected:
     std::vector<Base::Vector3d> SelPoses;
     std::optional<std::string> LinkParentName = std::nullopt;
 
-    /// evaluate and set link parent from passed candidates
-    /// - if found, returns name of Link parent object and caches it
-    /// - returns empty string, if there is no parent link among candidates
-    std::string evaluateLinkParent(const std::vector<std::string>& candidates);
+    /// Evaluate and set link parent from passed candidates
+    /// If found, caches name of Link parent object
+    void evaluateLinkParent(const std::vector<std::string>& candidates);
 
 private:
     /// to make sure no duplicates of subnames

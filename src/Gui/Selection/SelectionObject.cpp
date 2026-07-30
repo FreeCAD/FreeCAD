@@ -25,7 +25,7 @@
 #include <sstream>
 #include <ranges>
 #include <algorithm>
-#include <boost/algorithm/string.hpp>
+#include <Base/Tools.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -54,9 +54,8 @@ SelectionObject::SelectionObject(const Gui::SelectionChanges& msg)
         SubNames.emplace_back(msg.pSubName);
         SelPoses.emplace_back(msg.x, msg.y, msg.z);
 
-        if (msg.pSubName && strlen(msg.pSubName) > 0) {
-            std::vector<std::string> subNameTokens;
-            boost::split(subNameTokens, msg.pSubName, boost::is_any_of("."));
+        if (strlen(msg.pSubName) > 0) {
+            std::vector<std::string> subNameTokens = Base::Tools::splitSubName(msg.pSubName);
             evaluateLinkParent(subNameTokens);
         }
     }
@@ -71,11 +70,11 @@ SelectionObject::SelectionObject(const App::DocumentObject* obj)
 
 SelectionObject::~SelectionObject() = default;
 
-std::string SelectionObject::evaluateLinkParent(const std::vector<std::string>& candidates)
+void SelectionObject::evaluateLinkParent(const std::vector<std::string>& candidates)
 {
     auto* selObj = getObject();
     if (!selObj) {
-        return {};
+        return;
     }
     const auto doc = selObj->getDocument();
     auto it = std::ranges::find_if(candidates, [doc](const std::string& name) {
@@ -86,10 +85,7 @@ std::string SelectionObject::evaluateLinkParent(const std::vector<std::string>& 
     if (it != candidates.end()) {
         const std::string& name = *it;
         LinkParentName = name;
-        return name;
     }
-
-    return {};
 }
 
 const App::DocumentObject* SelectionObject::getObject() const
