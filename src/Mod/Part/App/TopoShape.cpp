@@ -286,6 +286,19 @@ TopoShape::TopoShape(long tag, App::StringHasherRef hasher, const TopoDS_Shape& 
     setHistoryAlgorithm(historyAlgorithm);
 }
 
+TopoShape::TopoShape(long tag, App::StringHasherRef hasher, const App::HistoryAlgorithm& historyAlgorithm)
+{
+    Tag = tag;
+    Hasher = hasher;
+    setHistoryAlgorithm(historyAlgorithm);
+}
+
+TopoShape::TopoShape(long tag, const App::HistoryAlgorithm& historyAlgorithm)
+{
+    Tag = tag;
+    setHistoryAlgorithm(historyAlgorithm);
+}
+
 TopoShape::TopoShape(const TopoDS_Shape& shape, long tag, App::StringHasherRef hasher, const App::HistoryAlgorithm& historyAlgorithm)
     : _Shape(*this, shape)
 {

@@ -281,7 +281,7 @@ void TopoCrossSection::sliceNonSolid(
     if (cs.IsDone()) {
         std::string prefix(op);
         prefix += Data::indexSuffix(idx);
-        auto res = TopoShape()
+        auto res = TopoShape(shape.getHistoryAlgorithm())
                        .makeElementShape(cs, shape, prefix.c_str())
                        .makeElementWires()
                        .getSubTopoShapes(TopAbs_WIRE);
@@ -308,15 +308,14 @@ void TopoCrossSection::sliceSolid(
     refPoint.Translate(tempVector);
 
     BRepPrimAPI_MakeHalfSpace mkSolid(TopoDS::Face(face.getShape()), refPoint);
-    TopoShape solid(idx);
+    TopoShape solid(idx, shape.getHistoryAlgorithm());
     std::string prefix(op);
     prefix += Data::indexSuffix(idx);
-    solid.setHistoryAlgorithm(shape.getHistoryAlgorithm());
     solid.makeElementShape(mkSolid, face, prefix.c_str());
     FCBRepAlgoAPI_Cut mkCut(shape.getShape(), solid.getShape());
 
     if (mkCut.IsDone()) {
-        TopoShape res{shape.Tag, shape.Hasher, TopoDS_Shape(), shape.getHistoryAlgorithm()};
+        TopoShape res{shape.Tag, shape.Hasher, shape.getHistoryAlgorithm()};
         std::vector<TopoShape> shapes;
         shapes.push_back(shape);
         shapes.push_back(solid);
@@ -327,7 +326,7 @@ void TopoCrossSection::sliceSolid(
                 gp_Pln plane = adapt.Plane();
                 if (plane.Axis().IsParallel(slicePlane.Axis(), Precision::Confusion())
                     && plane.Distance(slicePlane.Location()) < Precision::Confusion()) {
-                    auto repaired_wires = TopoShape(face.Tag)
+                    auto repaired_wires = TopoShape(face.Tag, shape.getHistoryAlgorithm())
                                               .makeElementWires(
                                                   face.getSubTopoShapes(TopAbs_EDGE),
                                                   prefix.c_str(),

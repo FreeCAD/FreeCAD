@@ -826,6 +826,7 @@ PyObject* TopoShapePy::slice(PyObject* args) const
     try {
         Py::List wires;
         for (auto& w : getTopoShapePtr()->makeElementSlice(vec, d).getSubTopoShapes(TopAbs_WIRE)) {
+            Base::Console().warning("w v: %d\n", App::getHistoryAlgorithm(w.getHistoryAlgorithm()));
             wires.append(shape2pyshape(w));
         }
         return Py::new_reference_to(wires);

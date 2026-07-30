@@ -295,6 +295,15 @@ public:
         const App::HistoryAlgorithm& historyAlgorithm = App::HistoryAlgorithm::V1
     );  // Cannot be made explicit
     TopoShape(
+        long Tag,  // NOLINT google-explicit-constructor
+        App::StringHasherRef hasher,
+        const App::HistoryAlgorithm& historyAlgorithm
+    );  // Cannot be made explicit
+    TopoShape(
+        long Tag,  // NOLINT google-explicit-constructor
+        const App::HistoryAlgorithm& historyAlgorithm
+    );  // Cannot be made explicit
+    TopoShape(
         const TopoDS_Shape&,  // NOLINT google-explicit-constructor
         long Tag = 0,
         App::StringHasherRef hasher = App::StringHasherRef(),
