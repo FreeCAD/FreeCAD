@@ -63,6 +63,7 @@
 class QOpenGLFramebufferObject;
 class QOpenGLWidget;
 class QSurfaceFormat;
+class QTimer;
 
 class SoTranslation;
 class SoTransform;
@@ -606,6 +607,7 @@ private:
     // stuff needed to draw the fps counter
     bool fpsEnabled;
     QLabel* fpsCounter = nullptr;
+    QTimer* fpsUpdateTimer = nullptr;
     unsigned long previousAxisLetterColor = 0;
     bool vboEnabled;
     bool naviCubeEnabled;
@@ -629,6 +631,9 @@ private:
     static unsigned char XPM_pixel_data[YPM_WIDTH * YPM_HEIGHT * YPM_BYTES_PER_PIXEL + 1];
     static unsigned char YPM_pixel_data[YPM_WIDTH * YPM_HEIGHT * YPM_BYTES_PER_PIXEL + 1];
     static unsigned char ZPM_pixel_data[ZPM_WIDTH * ZPM_HEIGHT * ZPM_BYTES_PER_PIXEL + 1];
+
+private Q_SLOTS:
+    void updateFPSLabel();
 
     // friends
     friend class NavigationStyle;
