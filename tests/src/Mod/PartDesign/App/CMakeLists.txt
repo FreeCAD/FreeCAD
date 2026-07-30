@@ -6,6 +6,7 @@ add_executable(PartDesign_tests_run
         ShapeBinder.cpp
         Pad.cpp
         GeoFeatureGroupExtension.cpp
+        Thread.cpp
 )
 
 set(PartDesignTestData_Files
