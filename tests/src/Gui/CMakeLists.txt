@@ -27,3 +27,13 @@ target_link_libraries(Gui_tests_run PRIVATE
     FreeCADApp
     FreeCADGui
 )
+
+add_executable(Gui_navigation_tests
+        NavigationBehavior.cpp
+)
+
+target_link_libraries(Gui_navigation_tests PRIVATE
+    GTest::gmock_main
+    FreeCADApp
+    FreeCADGui
+)

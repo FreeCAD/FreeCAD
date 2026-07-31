@@ -76,6 +76,16 @@ runs:
           testLogFile: ${{ inputs.reportdir }}gui_gtest_test_log.txt
           testName: Gui
           shellCmd: ${{ inputs.shellCmd }}
+      - name: C++ Gui navigation tests
+        id: gui_navigation
+        uses: ./.github/workflows/actions/runCPPTests/runSingleTest
+        env:
+          QT_QPA_PLATFORM: offscreen
+        with:
+          testCommand: ${{ inputs.builddir }}/tests/Gui_navigation_tests --gtest_output=json:${{ inputs.reportdir }}gui_navigation_gtest_results.json
+          testLogFile: ${{ inputs.reportdir }}gui_navigation_gtest_test_log.txt
+          testName: Gui navigation
+          shellCmd: ${{ inputs.shellCmd }}
       - name: C++ Qt tests
         id: qttests
         uses: ./.github/workflows/actions/runCPPTests/runQtTests
