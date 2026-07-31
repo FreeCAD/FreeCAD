@@ -21,28 +21,20 @@
 
 #include <gtest/gtest.h>
 
-#include <Inventor/SoDB.h>
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/nodes/SoGroup.h>
-#include <QApplication>
 
 #include <Gui/Navigation/NavigationInputState.h>
 #include <Gui/Navigation/NavigationStyle.h>
 #include <Gui/Navigation/MappedNavigationStyle.h>
 #include <Gui/Navigation/MappedNavigationStyle.h>
 #include <Gui/Navigation/SiemensNXNavigationStyle.h>
-#include <Gui/Application.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Quarter/Quarter.h>
-#include <Gui/SoFCDB.h>
 #include <Gui/View3DInventorViewer.h>
 
-#include <src/App/InitApplication.h>
-
-#include <memory>
+#include "NavigationTestSupport.h"
 
 namespace
 {
@@ -116,38 +108,6 @@ const char* mouseButtonName(const MouseButton button)
 
 class NavigationStyleTest: public ::testing::Test
 {
-protected:
-    static void SetUpTestSuite()
-    {
-        tests::initApplication();
-
-        if (!QApplication::instance()) {
-            static int argc = 1;
-            static char appName[] = "Gui_navigation_tests";
-            static char* argv[] = {appName, nullptr};
-            qtApplication = std::make_unique<QApplication>(argc, argv);
-        }
-
-        Gui::Application::initApplication();
-        if (!SoDB::isInitialized()) {
-            Gui::Application::initOpenInventor();
-        }
-        guiApplication = std::make_unique<Gui::Application>(true);
-        mainWindow = std::make_unique<Gui::MainWindow>();
-    }
-
-    static void TearDownTestSuite()
-    {
-        // The GUI singleton and Qt widget tree intentionally live until process exit. Their
-        // normal static destruction order conflicts with Qt's accessibility teardown.
-        mainWindow.release();
-        guiApplication.release();
-        qtApplication.release();
-    }
-
-    static inline std::unique_ptr<QApplication> qtApplication;
-    static inline std::unique_ptr<Gui::Application> guiApplication;
-    static inline std::unique_ptr<Gui::MainWindow> mainWindow;
 };
 
 template<typename Style>
