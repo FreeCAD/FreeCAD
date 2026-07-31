@@ -50,8 +50,6 @@ class BIM_Slab:
         return v
 
     def Activated(self):
-        import DraftTools
-
         self.removeCallback()
         sel = FreeCADGui.Selection.getSelection()
         if sel:
@@ -67,16 +65,32 @@ class BIM_Slab:
                 )
             )
             self.view = FreeCADGui.ActiveDocument.ActiveView
-            self.callback = self.view.addEventCallback("SoEvent", DraftTools.selectObject)
+            self.callback = self.view.addEventCallback("SoEvent", self.selectObject)
 
-    def proceed(self):
+    def selectObject(self, event):
+        if event["Type"] == "SoKeyboardEvent":
+            if event["Key"] == "ESCAPE":
+                self.finish()
+        elif (
+            event["Type"] == "SoMouseButtonEvent"
+            and event["State"] == "DOWN"
+            and event["Button"] == "BUTTON1"
+            and not event["CtrlDown"]
+        ):
+            info = self.view.getObjectInfo((event["Position"][0], event["Position"][1]))
+            if info:
+                self.proceed(FreeCAD.ActiveDocument.getObject(info["Object"]))
+
+    def proceed(self, obj=None):
         self.removeCallback()
-        sel = FreeCADGui.Selection.getSelection()
-        if len(sel) == 1:
+        if obj is None:
+            sel = FreeCADGui.Selection.getSelection()
+            obj = sel[0] if len(sel) == 1 else None
+        if obj:
             FreeCADGui.addModule("Arch")
             FreeCAD.ActiveDocument.openTransaction("Create Slab")
             FreeCADGui.doCommand(
-                "s = Arch.makeStructure(FreeCAD.ActiveDocument." + sel[0].Name + ",height=200)"
+                "s = Arch.makeStructure(FreeCAD.ActiveDocument." + obj.Name + ",height=200)"
             )
             FreeCADGui.doCommand("s.Label = " + repr(translate("BIM", "Slab")))
             FreeCADGui.doCommand('s.IfcType = "Slab"')
