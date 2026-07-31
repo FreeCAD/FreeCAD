@@ -32,6 +32,7 @@
 #include <Gui/Navigation/NavigationInputState.h>
 #include <Gui/Navigation/NavigationStyle.h>
 #include <Gui/Navigation/MappedNavigationStyle.h>
+#include <Gui/Navigation/MappedNavigationStyle.h>
 #include <Gui/Navigation/SiemensNXNavigationStyle.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>

@@ -39,6 +39,7 @@
 #include <Base/UnitsApi.h>
 #include <Gui/Language/Translator.h>
 #include <Gui/Navigation/NavigationStyle.h>
+#include <Gui/Navigation/MappedNavigationStyle.h>
 
 using namespace StartGui;
 

@@ -31,18 +31,6 @@ using namespace Gui;
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::MappedNavigationStyle, Gui::UserNavigationStyle)
 
-NavigationInputState MappedNavigationStyle::currentInputState() const
-{
-    return {
-        .left = static_cast<bool>(button1down),
-        .middle = static_cast<bool>(button3down),
-        .right = static_cast<bool>(button2down),
-        .ctrl = static_cast<bool>(ctrldown),
-        .shift = static_cast<bool>(shiftdown),
-        .alt = static_cast<bool>(altdown),
-    };
-}
-
 MappedNavigationStyle::EventContext MappedNavigationStyle::createContext(const SoEvent* const ev)
 {
     const SbVec2s position(ev->getPosition());

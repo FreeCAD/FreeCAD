@@ -23,400 +23,356 @@
 
 #include <QApplication>
 
-#include <boost/statechart/custom_reaction.hpp>
-#include <boost/statechart/state_machine.hpp>
-#include <boost/statechart/state.hpp>
+#include <Inventor/events/SoKeyboardEvent.h>
+#include <Inventor/events/SoLocation2Event.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/events/SoMotion3Event.h>
 
 #include "Camera.h"
 #include "SiemensNXNavigationStyle.h"
 #include "View3DInventorViewer.h"
 
-// NOLINTBEGIN(cppcoreguidelines-pro-type-static-cast-downcast,
-//             cppcoreguidelines-avoid*,
-//             readability-avoid-const-params-in-decls)
+// NOLINTBEGIN(cppcoreguidelines-avoid*, readability-avoid-const-params-in-decls)
 using namespace Gui;
-namespace sc = boost::statechart;
-using SC = NavigationStateChart;
 using NS = SiemensNXNavigationStyle;
 
-struct NS::NaviMachine: public sc::state_machine<NS::NaviMachine, NS::IdleState>
+namespace
 {
-    using superclass = sc::state_machine<NS::NaviMachine, NS::IdleState>;
-    explicit NaviMachine(NS& ns)
-        : ns(ns)
-    {}
-    NS& ns;
-};
 
-struct NS::IdleState: public sc::state<NS::IdleState, NS::NaviMachine>
+bool noMouseButtons(const NavigationInputState& input)
 {
-    using reactions = sc::custom_reaction<SC::Event>;
-    explicit IdleState(my_context ctx)
-        : my_base(ctx)
-    {
-        auto& ns = this->outermost_context().ns;
-        ns.setViewingMode(NavigationStyle::IDLE);
-    }
-    sc::result react(const SC::Event& ev)
-    {
-        auto& ns = this->outermost_context().ns;
-        switch (ns.getViewingMode()) {
-            case NavigationStyle::SEEK_WAIT_MODE: {
-                if (ev.isPress(SoMouseButtonEvent::BUTTON1)) {
-                    ns.seekToPoint(ev.inventor_event->getPosition());
-                    ns.setViewingMode(NavigationStyle::SEEK_MODE);
-                    ev.flags->processed = true;
-                    return transit<NS::AwaitingReleaseState>();
-                }
-                break;
-            }
-            case NavigationStyle::SPINNING:
-            case NavigationStyle::SEEK_MODE: {
-                if (!ev.flags->processed) {
-                    if (ev.isMouseButtonEvent()) {
-                        ev.flags->processed = true;
-                        return transit<NS::AwaitingReleaseState>();
-                    }
-                    else if (ev.isKeyboardEvent() || ev.isMotion3Event()) {
-                        ns.setViewingMode(NavigationStyle::IDLE);
-                    }
-                }
+    return (input.chord() & NavigationInputState::ButtonMask) == 0U;
+}
 
-                break;
-            }
-            case NavigationStyle::BOXZOOM:
-                return forward_event();
-        }
-
-        // right-click
-        if (ev.isRelease(SoMouseButtonEvent::BUTTON2) && ev.mbstate() == 0
-            && !ns.viewer->isEditing() && ns.isPopupMenuEnabled()) {
-            ns.openPopupMenu(ev.inventor_event->getPosition());
-        }
-
-        if (ev.isPress(SoMouseButtonEvent::BUTTON3)) {
-            if (ev.isDownShift()) {
-                ev.flags->processed = true;
-                return transit<NS::PanState>();
-            }
-
-            if (ev.isDownButton(SC::Event::BUTTON3DOWN)) {
-                ev.flags->processed = true;
-                return transit<NS::AwaitingMoveState>();
-            }
-        }
-
-        // Use processClickEvent()
-
-        // Implement selection callback
-        // if (ev.isLocation2Event() && ev.isDownButton1()) {
-        //    ev.flags->processed = true;
-        //    return transit<NS::SelectionState>();
-        //}
-
-        return forward_event();
-    }
-};
-
-struct NS::AwaitingReleaseState: public sc::state<NS::AwaitingReleaseState, NS::NaviMachine>
-{
-    using reactions = sc::custom_reaction<NS::Event>;
-    explicit AwaitingReleaseState(my_context ctx)
-        : my_base(ctx)
-    {}
-
-    sc::result react(const NS::Event& /*ev*/)
-    {
-        return forward_event();
-    }
-};
-
-struct NS::InteractState: public sc::state<NS::InteractState, NS::NaviMachine>
-{
-    using reactions = sc::custom_reaction<NS::Event>;
-    explicit InteractState(my_context ctx)
-        : my_base(ctx)
-    {
-        auto& ns = this->outermost_context().ns;
-        ns.setViewingMode(NavigationStyle::INTERACT);
-    }
-
-    sc::result react(const NS::Event& /*ev*/)
-    {
-        return forward_event();
-    }
-};
-
-struct NS::AwaitingMoveState: public sc::state<NS::AwaitingMoveState, NS::NaviMachine>
-{
-    using reactions = sc::custom_reaction<NS::Event>;
-
-private:
-    SbVec2s base_pos;
-    SbTime since;
-
-public:
-    explicit AwaitingMoveState(my_context ctx)
-        : my_base(ctx)
-    {
-        auto& ns = this->outermost_context().ns;
-        ns.setViewingMode(NavigationStyle::DRAGGING);
-        this->base_pos
-            = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
-        this->since
-            = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getTime();
-    }
-    sc::result react(const NS::Event& ev)
-    {
-        // this state consumes all mouse events.
-        ev.flags->processed = ev.isMouseButtonEvent() || ev.isLocation2Event();
-
-        if (ev.isLocation2Event()) {
-            return transit<NS::RotateState>();
-        }
-
-        // right-click
-        if (ev.isPress(SoMouseButtonEvent::BUTTON2) && ev.isDownButton3()) {
-            return transit<NS::PanState>();
-        }
-
-        if (ev.isKeyPress(SoKeyboardEvent::LEFT_SHIFT)) {
-            ev.flags->processed = true;
-            return transit<NS::PanState>();
-        }
-
-        // left-click
-        if (ev.isPress(SoMouseButtonEvent::BUTTON1) && ev.isDownButton3()) {
-            return transit<NS::ZoomState>();
-        }
-
-        if (ev.isKeyPress(SoKeyboardEvent::LEFT_CONTROL)) {
-            ev.flags->processed = true;
-            return transit<NS::ZoomState>();
-        }
-
-        // middle-click
-        if (ev.isRelease(SoMouseButtonEvent::BUTTON3) && ev.isDownNoButton()) {
-            auto& ns = this->outermost_context().ns;
-            SbTime tmp = (ev.inventor_event->getTime() - this->since);
-            double dci = QApplication::doubleClickInterval() / 1000.0;
-
-            // is this a simple middle click?
-            if (tmp.getValue() < dci) {
-                ev.flags->processed = true;
-                SbVec2s pos = ev.inventor_event->getPosition();
-                ns.lookAtPoint(pos);
-            }
-            return transit<NS::IdleState>();
-        }
-
-        return forward_event();
-    }
-};
-
-struct NS::RotateState: public sc::state<NS::RotateState, NS::NaviMachine>
-{
-    using reactions = sc::custom_reaction<NS::Event>;
-    explicit RotateState(my_context ctx)
-        : my_base(ctx)
-    {
-        auto& ns = this->outermost_context().ns;
-        const auto inventorEvent
-            = static_cast<const NS::Event*>(this->triggering_event())->inventor_event;
-        ns.saveCursorPosition(inventorEvent);
-        ns.setViewingMode(NavigationStyle::DRAGGING);
-        this->base_pos = inventorEvent->getPosition();
-    }
-
-    sc::result react(const NS::Event& ev)
-    {
-        if (ev.isLocation2Event()) {
-            auto& ns = this->outermost_context().ns;
-            ns.addToLog(ev.inventor_event->getPosition(), ev.inventor_event->getTime());
-            const SbVec2s pos = ev.inventor_event->getPosition();
-            const SbVec2f posn = ns.normalizePixelPos(pos);
-            ns.spin(posn);
-            ns.moveCursorPosition();
-            ev.flags->processed = true;
-        }
-
-        // right-click
-        if (ev.isPress(SoMouseButtonEvent::BUTTON2) && ev.isDownButton3()) {
-            ev.flags->processed = true;
-            return transit<NS::PanState>();
-        }
-
-        if (ev.isKeyPress(SoKeyboardEvent::LEFT_SHIFT)) {
-            ev.flags->processed = true;
-            return transit<NS::PanState>();
-        }
-
-        // left-click
-        if (ev.isPress(SoMouseButtonEvent::BUTTON1) && ev.isDownButton3()) {
-            ev.flags->processed = true;
-            return transit<NS::ZoomState>();
-        }
-
-        if (ev.isKeyPress(SoKeyboardEvent::LEFT_CONTROL)) {
-            ev.flags->processed = true;
-            return transit<NS::ZoomState>();
-        }
-
-        if (ev.isRelease(SoMouseButtonEvent::BUTTON3) && ev.isDownNoButton()) {
-            ev.flags->processed = true;
-            return transit<NS::IdleState>();
-        }
-        return forward_event();
-    }
-
-private:
-    SbVec2s base_pos;
-};
-
-struct NS::PanState: public sc::state<NS::PanState, NS::NaviMachine>
-{
-    using reactions = sc::custom_reaction<NS::Event>;
-    explicit PanState(my_context ctx)
-        : my_base(ctx)
-    {
-        auto& ns = this->outermost_context().ns;
-        const NS::Event* ev = static_cast<const NS::Event*>(this->triggering_event());
-        ns.setViewingMode(NavigationStyle::PANNING);
-        this->base_pos = ev->inventor_event->getPosition();
-        this->ratio = ns.viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
-        ns.centerTime = ev->inventor_event->getTime();
-        ns.setupPanningPlane(ns.getCamera());
-    }
-    sc::result react(const NS::Event& ev)
-    {
-        if (ev.isLocation2Event()) {
-            ev.flags->processed = true;
-            SbVec2s pos = ev.inventor_event->getPosition();
-            auto& ns = this->outermost_context().ns;
-            ns.panCamera(
-                ns.viewer->getSoRenderManager()->getCamera(),
-                this->ratio,
-                ns.panningplane,
-                ns.normalizePixelPos(pos),
-                ns.normalizePixelPos(this->base_pos)
-            );
-            this->base_pos = pos;
-        }
-
-        if (ev.isRelease(SoMouseButtonEvent::BUTTON2) && ev.isDownButton3()) {
-            ev.flags->processed = true;
-            return transit<NS::RotateState>();
-        }
-
-        if (ev.isKeyRelease(SoKeyboardEvent::LEFT_SHIFT) && ev.isDownButton3()) {
-            ev.flags->processed = true;
-            return transit<NS::RotateState>();
-        }
-
-        if (ev.isRelease(SoMouseButtonEvent::BUTTON3)) {
-            ev.flags->processed = true;
-            return transit<NS::IdleState>();
-        }
-
-        return forward_event();
-    }
-
-private:
-    SbVec2s base_pos;
-    float ratio {1.0F};
-};
-
-struct NS::ZoomState: public sc::state<NS::ZoomState, NS::NaviMachine>
-{
-    using reactions = sc::custom_reaction<NS::Event>;
-    explicit ZoomState(my_context ctx)
-        : my_base(ctx)
-    {
-        auto& ns = this->outermost_context().ns;
-        const NS::Event* ev = static_cast<const NS::Event*>(this->triggering_event());
-        ns.setViewingMode(NavigationStyle::ZOOMING);
-        this->base_pos = ev->inventor_event->getPosition();
-    }
-
-    sc::result react(const NS::Event& ev)
-    {
-        if (ev.isLocation2Event()) {
-            ev.flags->processed = true;
-            SbVec2s pos = ev.inventor_event->getPosition();
-            auto& ns = this->outermost_context().ns;
-            ns.zoomByCursor(ns.normalizePixelPos(pos), ns.normalizePixelPos(this->base_pos));
-            this->base_pos = pos;
-        }
-
-        if (ev.isRelease(SoMouseButtonEvent::BUTTON1) && ev.isDownButton3()) {
-            ev.flags->processed = true;
-            return transit<NS::RotateState>();
-        }
-
-        if (ev.isKeyRelease(SoKeyboardEvent::LEFT_CONTROL) && ev.isDownButton3()) {
-            ev.flags->processed = true;
-            return transit<NS::RotateState>();
-        }
-
-        if (ev.isRelease(SoMouseButtonEvent::BUTTON3)) {
-            ev.flags->processed = true;
-            return transit<NS::IdleState>();
-        }
-
-        return forward_event();
-    }
-
-private:
-    SbVec2s base_pos;
-};
-
-struct NS::SelectionState: public sc::state<NS::SelectionState, NS::NaviMachine>
-{
-    using reactions = sc::custom_reaction<NS::Event>;
-    explicit SelectionState(my_context ctx)
-        : my_base(ctx)
-    {
-        auto& ns = this->outermost_context().ns;
-        const NS::Event* ev = static_cast<const NS::Event*>(this->triggering_event());
-
-        ns.setViewingMode(NavigationStyle::BOXZOOM);
-        ns.startSelection(NavigationStyle::Rubberband);
-        fakeLeftButtonDown(ev->inventor_event->getPosition());
-    }
-
-    void fakeLeftButtonDown(const SbVec2s& pos)
-    {
-        SoMouseButtonEvent mbe;
-        mbe.setButton(SoMouseButtonEvent::BUTTON1);
-        mbe.setState(SoMouseButtonEvent::DOWN);
-        mbe.setPosition(pos);
-
-        auto& ns = this->outermost_context().ns;
-        ns.processEvent(&mbe);
-    }
-
-    sc::result react(const NS::Event& /*ev*/)
-    {
-        // This isn't called while selection mode is active
-        return transit<NS::IdleState>();
-    }
-};
-
-// ----------------------------------------------------------------------------------
+}  // namespace
 
 /* TRANSLATOR Gui::SiemensNXNavigationStyle */
 
 TYPESYSTEM_SOURCE(Gui::SiemensNXNavigationStyle, Gui::UserNavigationStyle)
 
-SiemensNXNavigationStyle::SiemensNXNavigationStyle()
+SiemensNXNavigationStyle::SiemensNXNavigationStyle() = default;
+
+SiemensNXNavigationStyle::~SiemensNXNavigationStyle() = default;
+
+SbBool SiemensNXNavigationStyle::processSoEvent(const SoEvent* const event)
 {
-    naviMachine.reset(new NaviStateMachineT(new NaviMachine(*this)));
+    if (isSeekMode()) {
+        return inherited::processSoEvent(event);
+    }
+
+    if (!isAnimating() && isViewing()) {
+        setViewing(false);
+    }
+
+    syncModifierKeys(event);
+
+    if (!viewer->isEditing() && handleEventInForeground(event)) {
+        return true;
+    }
+
+    if (event->isOfType(SoMotion3Event::getClassTypeId())) {
+        processMotionEvent(static_cast<const SoMotion3Event*>(event));
+        return true;
+    }
+
+    bool processed = false;
+    if (event->isOfType(SoKeyboardEvent::getClassTypeId())) {
+        processed = processKeyboardEvent(static_cast<const SoKeyboardEvent*>(event));
+    }
+
+    updateInputState(event);
+
+    const NavigationEventView navigationEvent(event, currentInputState());
+    if (!processed) {
+        processed = dispatchEvent(navigationEvent);
+    }
+
+    if (!processed) {
+        return inherited::processSoEvent(event);
+    }
+
+    return processed;
 }
 
-SiemensNXNavigationStyle::~SiemensNXNavigationStyle()
-{}
+bool NS::dispatchEvent(const NavigationEventView& event)
+{
+    switch (state) {
+        case State::Idle:
+            return handleIdle(event);
+        case State::AwaitingRelease:
+            return handleAwaitingRelease(event);
+        case State::AwaitingMove:
+            return handleAwaitingMove(event);
+        case State::Rotate:
+            return handleRotate(event);
+        case State::Pan:
+            return handlePan(event);
+        case State::Zoom:
+            return handleZoom(event);
+    }
 
-const char* SiemensNXNavigationStyle::mouseButtons(ViewerMode mode)
+    return {};
+}
+
+bool NS::handleIdle(const NavigationEventView& event)
+{
+    switch (getViewingMode()) {
+        case NavigationStyle::SEEK_WAIT_MODE:
+            if (event.isPress(SoMouseButtonEvent::BUTTON1)) {
+                seekToPoint(event.event()->getPosition());
+                setViewingMode(NavigationStyle::SEEK_MODE);
+                transitionTo(State::AwaitingRelease, event.event());
+                return true;
+            }
+            break;
+
+        case NavigationStyle::SPINNING:
+        case NavigationStyle::SEEK_MODE:
+            if (event.isMouseButton()) {
+                transitionTo(State::AwaitingRelease, event.event());
+                return true;
+            }
+            if (event.isKeyboard()) {
+                setViewingMode(NavigationStyle::IDLE);
+            }
+            break;
+
+        case NavigationStyle::BOXZOOM:
+            return false;
+
+        default:
+            break;
+    }
+
+    if (event.isRelease(SoMouseButtonEvent::BUTTON2) && noMouseButtons(event.input())
+        && !viewer->isEditing() && isPopupMenuEnabled()) {
+        openPopupMenu(event.event()->getPosition());
+    }
+
+    if (event.isPress(SoMouseButtonEvent::BUTTON3)) {
+        if (event.input().shift) {
+            transitionTo(State::Pan, event.event());
+            return true;
+        }
+
+        if (event.input().middle) {
+            transitionTo(State::AwaitingMove, event.event());
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool NS::handleAwaitingRelease(const NavigationEventView& event)
+{
+    (void)event;
+    return false;
+}
+
+bool NS::handleAwaitingMove(const NavigationEventView& event)
+{
+    bool processed = event.isMouseButton() || event.isPointerMotion();
+
+    if (event.isPointerMotion()) {
+        transitionTo(State::Rotate, event.event());
+        return processed;
+    }
+
+    if (event.isPress(SoMouseButtonEvent::BUTTON2) && event.input().middle) {
+        transitionTo(State::Pan, event.event());
+        return processed;
+    }
+
+    if (event.isKeyPress(SoKeyboardEvent::LEFT_SHIFT)) {
+        transitionTo(State::Pan, event.event());
+        return true;
+    }
+
+    if (event.isPress(SoMouseButtonEvent::BUTTON1) && event.input().middle) {
+        transitionTo(State::Zoom, event.event());
+        return processed;
+    }
+
+    if (event.isKeyPress(SoKeyboardEvent::LEFT_CONTROL)) {
+        transitionTo(State::Zoom, event.event());
+        return true;
+    }
+
+    if (event.isRelease(SoMouseButtonEvent::BUTTON3) && noMouseButtons(event.input())) {
+        const auto& data = std::get<AwaitingMoveData>(stateData);
+        const SbTime elapsed = event.event()->getTime() - data.pressedAt;
+        const double doubleClickInterval = QApplication::doubleClickInterval() / 1000.0;
+        if (elapsed.getValue() < doubleClickInterval) {
+            processed = true;
+            lookAtPoint(event.event()->getPosition());
+        }
+        transitionTo(State::Idle, event.event());
+        return processed;
+    }
+
+    return processed;
+}
+
+bool NS::handleRotate(const NavigationEventView& event)
+{
+    bool processed = false;
+    if (event.isPointerMotion()) {
+        addToLog(event.event()->getPosition(), event.event()->getTime());
+        spin(normalizePixelPos(event.event()->getPosition()));
+        moveCursorPosition();
+        processed = true;
+    }
+
+    if (event.isPress(SoMouseButtonEvent::BUTTON2) && event.input().middle) {
+        transitionTo(State::Pan, event.event());
+        return true;
+    }
+
+    if (event.isKeyPress(SoKeyboardEvent::LEFT_SHIFT)) {
+        transitionTo(State::Pan, event.event());
+        return true;
+    }
+
+    if (event.isPress(SoMouseButtonEvent::BUTTON1) && event.input().middle) {
+        transitionTo(State::Zoom, event.event());
+        return true;
+    }
+
+    if (event.isKeyPress(SoKeyboardEvent::LEFT_CONTROL)) {
+        transitionTo(State::Zoom, event.event());
+        return true;
+    }
+
+    if (event.isRelease(SoMouseButtonEvent::BUTTON3) && noMouseButtons(event.input())) {
+        transitionTo(State::Idle, event.event());
+        return true;
+    }
+
+    return processed;
+}
+
+bool NS::handlePan(const NavigationEventView& event)
+{
+    auto& data = std::get<PanZoomData>(stateData);
+
+    bool processed = false;
+    if (event.isPointerMotion()) {
+        const SbVec2s position = event.event()->getPosition();
+        panCamera(
+            viewer->getSoRenderManager()->getCamera(),
+            data.viewportAspect,
+            panningplane,
+            normalizePixelPos(position),
+            normalizePixelPos(data.previousPosition)
+        );
+        data.previousPosition = position;
+        processed = true;
+    }
+
+    if (event.isRelease(SoMouseButtonEvent::BUTTON2) && event.input().middle) {
+        transitionTo(State::Rotate, event.event());
+        return true;
+    }
+
+    if (event.isKeyRelease(SoKeyboardEvent::LEFT_SHIFT) && event.input().middle) {
+        transitionTo(State::Rotate, event.event());
+        return true;
+    }
+
+    if (event.isRelease(SoMouseButtonEvent::BUTTON3)) {
+        transitionTo(State::Idle, event.event());
+        return true;
+    }
+
+    return processed;
+}
+
+bool NS::handleZoom(const NavigationEventView& event)
+{
+    bool processed = false;
+    if (event.isPointerMotion()) {
+        auto& data = std::get<PanZoomData>(stateData);
+        const SbVec2s position = event.event()->getPosition();
+        zoomByCursor(normalizePixelPos(position), normalizePixelPos(data.previousPosition));
+        data.previousPosition = position;
+        processed = true;
+    }
+
+    if (event.isRelease(SoMouseButtonEvent::BUTTON1) && event.input().middle) {
+        transitionTo(State::Rotate, event.event());
+        return true;
+    }
+
+    if (event.isKeyRelease(SoKeyboardEvent::LEFT_CONTROL) && event.input().middle) {
+        transitionTo(State::Rotate, event.event());
+        return true;
+    }
+
+    if (event.isRelease(SoMouseButtonEvent::BUTTON3)) {
+        transitionTo(State::Idle, event.event());
+        return true;
+    }
+
+    return processed;
+}
+
+void NS::transitionTo(const State next, const SoEvent* const event)
+{
+    state = next;
+    stateData = std::monostate {};
+
+    switch (next) {
+        case State::Idle:
+            setViewingMode(NavigationStyle::IDLE);
+            break;
+        case State::AwaitingRelease:
+            break;
+        case State::AwaitingMove:
+            enterAwaitingMove(event);
+            break;
+        case State::Rotate:
+            enterRotate(event);
+            break;
+        case State::Pan:
+            enterPan(event);
+            break;
+        case State::Zoom:
+            enterZoom(event);
+            break;
+    }
+}
+
+void NS::enterAwaitingMove(const SoEvent* const event)
+{
+    setViewingMode(NavigationStyle::DRAGGING);
+    stateData = AwaitingMoveData {.pressedAt = event->getTime()};
+}
+
+void NS::enterRotate(const SoEvent* const event)
+{
+    saveCursorPosition(event);
+    setViewingMode(NavigationStyle::DRAGGING);
+}
+
+void NS::enterPan(const SoEvent* const event)
+{
+    setViewingMode(NavigationStyle::PANNING);
+    const float viewportAspect
+        = viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
+    centerTime = event->getTime();
+    setupPanningPlane(getCamera());
+    stateData
+        = PanZoomData {.previousPosition = event->getPosition(), .viewportAspect = viewportAspect};
+}
+
+void NS::enterZoom(const SoEvent* const event)
+{
+    setViewingMode(NavigationStyle::ZOOMING);
+    stateData = PanZoomData {.previousPosition = event->getPosition()};
+}
+
+const char* NS::mouseButtons(const ViewerMode mode)
 {
     switch (mode) {
         case NavigationStyle::SELECTION:
@@ -432,12 +388,12 @@ const char* SiemensNXNavigationStyle::mouseButtons(ViewerMode mode)
     }
 }
 
-std::string SiemensNXNavigationStyle::userFriendlyName() const
+std::string NS::userFriendlyName() const
 {
     return {"Siemens NX"};
 }
 
-SbBool SiemensNXNavigationStyle::processKeyboardEvent(const SoKeyboardEvent* const event)
+SbBool NS::processKeyboardEvent(const SoKeyboardEvent* const event)
 {
     // See https://forum.freecad.org/viewtopic.php?t=96459
     // Isometric view: Home key button
@@ -451,18 +407,15 @@ SbBool SiemensNXNavigationStyle::processKeyboardEvent(const SoKeyboardEvent* con
                 return true;
             }
             break;
-        case SoKeyboardEvent::HOME: {
+        case SoKeyboardEvent::HOME:
             viewer->setCameraOrientation(Camera::rotation(Camera::Isometric));
             return true;
-        }
-        case SoKeyboardEvent::END: {
+        case SoKeyboardEvent::END:
             viewer->setCameraOrientation(Camera::rotation(Camera::Trimetric));
             return true;
-        }
-        case SoKeyboardEvent::F8: {
+        case SoKeyboardEvent::F8:
             viewer->setCameraOrientation(Camera::rotation(Camera::Top));
             return true;
-        }
         default:
             break;
     }
@@ -470,6 +423,4 @@ SbBool SiemensNXNavigationStyle::processKeyboardEvent(const SoKeyboardEvent* con
     return inherited::processKeyboardEvent(event);
 }
 
-// NOLINTEND(cppcoreguidelines-pro-type-static-cast-downcast,
-//           cppcoreguidelines-avoid*,
-//           readability-avoid-const-params-in-decls)
+// NOLINTEND(cppcoreguidelines-avoid*, readability-avoid-const-params-in-decls)

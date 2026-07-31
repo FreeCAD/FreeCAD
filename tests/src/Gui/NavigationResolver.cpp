@@ -23,6 +23,7 @@
 
 #include <Gui/Navigation/NavigationResolver.h>
 #include <Gui/Navigation/NavigationStyle.h>
+#include <Gui/Navigation/MappedNavigationStyle.h>
 
 #include <src/App/InitApplication.h>
 

@@ -106,8 +106,6 @@ protected:
     virtual void adjustResolvedMode(EventContext& context);
 
 private:
-    NavigationInputState currentInputState() const;
-
     EventContext createContext(const SoEvent* const ev);
 
     void processKeyboardEventCommon(EventContext& context);

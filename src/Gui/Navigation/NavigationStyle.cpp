@@ -2647,6 +2647,43 @@ std::string UserNavigationStyle::userFriendlyName() const
     return std::string {name};
 }
 
+NavigationInputState UserNavigationStyle::currentInputState() const
+{
+    return {
+        .left = static_cast<bool>(button1down),
+        .middle = static_cast<bool>(button3down),
+        .right = static_cast<bool>(button2down),
+        .ctrl = static_cast<bool>(ctrldown),
+        .shift = static_cast<bool>(shiftdown),
+        .alt = static_cast<bool>(altdown),
+    };
+}
+
+void UserNavigationStyle::updateInputState(const SoEvent* const ev)
+{
+    syncModifierKeys(ev);
+
+    if (!ev->isOfType(SoMouseButtonEvent::getClassTypeId())) {
+        return;
+    }
+
+    const auto* const mouseEvent = static_cast<const SoMouseButtonEvent*>(ev);
+    const SbBool press = mouseEvent->getState() == SoButtonEvent::DOWN;
+    switch (mouseEvent->getButton()) {
+        case SoMouseButtonEvent::BUTTON1:
+            button1down = press;
+            break;
+        case SoMouseButtonEvent::BUTTON2:
+            button2down = press;
+            break;
+        case SoMouseButtonEvent::BUTTON3:
+            button3down = press;
+            break;
+        default:
+            break;
+    }
+}
+
 std::map<Base::Type, std::string> UserNavigationStyle::getUserFriendlyNames()
 {
     std::map<Base::Type, std::string> names;

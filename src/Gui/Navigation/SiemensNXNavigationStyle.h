@@ -21,18 +21,20 @@
  *                                                                         *
  **************************************************************************/
 
-
 #pragma once
 
-#include <Gui/Navigation/NavigationStateChart.h>
+#include <Gui/Navigation/NavigationEventView.h>
+#include <Gui/Navigation/NavigationStyle.h>
+
+#include <variant>
 
 // NOLINTBEGIN(cppcoreguidelines-avoid*, readability-avoid-const-params-in-decls)
 namespace Gui
 {
 
-class GuiExport SiemensNXNavigationStyle: public NavigationStateChart
+class GuiExport SiemensNXNavigationStyle: public UserNavigationStyle
 {
-    using inherited = NavigationStateChart;
+    using inherited = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -43,18 +45,49 @@ public:
     std::string userFriendlyName() const override;
 
 protected:
+    SbBool processSoEvent(const SoEvent* const event) override;
     SbBool processKeyboardEvent(const SoKeyboardEvent* const event) override;
 
 private:
-    struct NaviMachine;
-    struct IdleState;
-    struct AwaitingReleaseState;
-    struct AwaitingMoveState;
-    struct InteractState;
-    struct RotateState;
-    struct PanState;
-    struct ZoomState;
-    struct SelectionState;
+    enum class State
+    {
+        Idle,
+        AwaitingRelease,
+        AwaitingMove,
+        Rotate,
+        Pan,
+        Zoom,
+    };
+
+    struct AwaitingMoveData
+    {
+        SbTime pressedAt;
+    };
+
+    struct PanZoomData
+    {
+        SbVec2s previousPosition;
+        float viewportAspect = 1.0F;
+    };
+
+    using StateData = std::variant<std::monostate, AwaitingMoveData, PanZoomData>;
+
+    bool dispatchEvent(const NavigationEventView& event);
+    bool handleIdle(const NavigationEventView& event);
+    bool handleAwaitingRelease(const NavigationEventView& event);
+    bool handleAwaitingMove(const NavigationEventView& event);
+    bool handleRotate(const NavigationEventView& event);
+    bool handlePan(const NavigationEventView& event);
+    bool handleZoom(const NavigationEventView& event);
+
+    void transitionTo(State next, const SoEvent* event);
+    void enterAwaitingMove(const SoEvent* event);
+    void enterRotate(const SoEvent* event);
+    void enterPan(const SoEvent* event);
+    void enterZoom(const SoEvent* event);
+
+    State state = State::Idle;
+    StateData stateData;
 };
 
 }  // namespace Gui

@@ -963,6 +963,7 @@ SET(Navigation_SRCS
     ${Navigation_CPP_SRCS}
     Navigation/MappedNavigationStyle.h
     Navigation/NavigationStateChart.h
+    Navigation/NavigationEventView.h
     Navigation/NavigationInputState.h
     Navigation/NavigationProfile.h
     Navigation/NavigationResolver.h

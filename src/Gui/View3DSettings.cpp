@@ -32,6 +32,7 @@
 
 #include "NaviCube.h"
 #include "Navigation/NavigationStyle.h"
+#include "Navigation/MappedNavigationStyle.h"
 #include "Selection/SelectionColors.h"
 #include "SoFCSelectionAction.h"
 #include "View3DSettings.h"
