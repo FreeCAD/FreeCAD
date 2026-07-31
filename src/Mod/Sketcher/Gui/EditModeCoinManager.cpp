@@ -558,6 +558,14 @@ void EditModeCoinManager::ParameterObserver::initParameters()
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updateWidth(drawingParameters.InformationWidth, param, 1);
          }},
+        {"AxisLineWidth",
+         [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
+             // TODO: Consider if it's necessary to extract & define a named function just for this
+             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                 "User parameter:BaseApp/Preferences/View"
+             );
+             drawingParameters.AxisLineWidth = hGrp->GetFloat(param.c_str(), 2.0F);
+         }},
         {"EdgePattern",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updatePattern(drawingParameters.CurvePattern, param, 0b1111111111111111);
@@ -2216,8 +2224,9 @@ void EditModeCoinManager::updateInventorNodeSizes()
     editModeScenegraphNodes.OriginPointSetOccluded->markerIndex
         = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", drawingParameters.markerSize);
 
-    editModeScenegraphNodes.RootCrossDrawStyle->lineWidth = 2 * drawingParameters.pixelScalingFactor;
-    editModeScenegraphNodes.RootCrossDrawStyleOccluded->lineWidth = 2
+    editModeScenegraphNodes.RootCrossDrawStyle->lineWidth = drawingParameters.AxisLineWidth
+        * drawingParameters.pixelScalingFactor;
+    editModeScenegraphNodes.RootCrossDrawStyleOccluded->lineWidth = drawingParameters.AxisLineWidth
         * drawingParameters.pixelScalingFactor;
     editModeScenegraphNodes.OriginPointDrawStyleOccluded->pointSize = 8
         * drawingParameters.pixelScalingFactor;

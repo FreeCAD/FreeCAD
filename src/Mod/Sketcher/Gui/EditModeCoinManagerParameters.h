@@ -153,6 +153,7 @@ struct DrawingParameters
     int ExternalWidth = 1;          // width of external edges
     int ExternalDefiningWidth = 1;  // width of external defining edges
     int InformationWidth = 1;       // width of information edges
+    double AxisLineWidth = 2;       // width of axis lines
 
     unsigned int CurvePattern = 0b1111111111111111;             // pattern of normal edges
     unsigned int ConstructionPattern = 0b1111110011111100;      // pattern of construction edges

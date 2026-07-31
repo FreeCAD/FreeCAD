@@ -268,6 +268,48 @@ will be shown at the lower left corner in opened files</string>
         </property>
        </widget>
       </item>
+      <item>
+       <layout class="QGridLayout" name="gridLayoutAxisLineWidth">
+        <item row="0" column="0">
+         <widget class="QLabel" name="AxisLineWidthLabel">
+          <property name="text">
+           <string>Axis Line Size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+            <widget class="Gui::PrefDoubleSpinBox" name="FloatSpinBox_AxisLineWidth">
+            <property name="toolTip">
+             <string>Adjust the axis line size</string>
+            </property>
+            <property name="inputMethodHints">
+            <set>Qt::ImhPreferNumbers</set>
+            </property>
+            <property name="decimals">
+            <number>2</number>
+            </property>
+            <property name="minimum">
+            <double>0.500000000000000</double>
+            </property>
+            <property name="maximum">
+            <double>9.000000000000000</double>
+            </property>
+            <property name="singleStep">
+            <double>0.050000000000000</double>
+            </property>
+            <property name="value">
+            <double>1.000000000000000</double>
+            </property>
+            <property name="prefEntry" stdset="0">
+                <cstring>AxisLineWidth</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+                <cstring>View</cstring>
+            </property>
+            </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>

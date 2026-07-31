@@ -379,6 +379,15 @@ void ViewParams::setup()
         "Mismatching signature"
     );
 
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getAxisLineWidth), Double::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setAxisLineWidth), Double::value_type>,
+        "Mismatching signature"
+    );
+
     addParameter("UseNewSelection", Bool {true});
     addParameter("UseSelectionRoot", Bool {true});
     addParameter("EnableSelection", Bool {true});
@@ -418,6 +427,7 @@ void ViewParams::setup()
     addParameter("SelectionColor", Unsigned {0x1cad1cff});
     addParameter("UseTightBoundingBox", Bool {true});
     addParameter("RenderProjectedBBox", Bool {true});
+    addParameter("AxisLineWidth", Double {2.0});
 }
 
 ViewParams::ViewParams()
@@ -823,4 +833,14 @@ bool ViewParams::getRenderProjectedBBox() const
 void ViewParams::setRenderProjectedBBox(bool v)
 {
     setValue("RenderProjectedBBox", v);
+}
+
+double ViewParams::getAxisLineWidth() const
+{
+    return getValue<double>("AxisLineWidth");
+}
+
+void ViewParams::setAxisLineWidth(double v)
+{
+    setValue("AxisLineWidth", v);
 }

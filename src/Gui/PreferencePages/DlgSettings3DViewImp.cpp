@@ -74,6 +74,7 @@ void DlgSettings3DViewImp::saveSettings()
     ui->xAxisColor->onSave();
     ui->yAxisColor->onSave();
     ui->zAxisColor->onSave();
+    ui->FloatSpinBox_AxisLineWidth->onSave();
 }
 
 void DlgSettings3DViewImp::loadSettings()
@@ -93,6 +94,7 @@ void DlgSettings3DViewImp::loadSettings()
     ui->xAxisColor->onRestore();
     ui->yAxisColor->onRestore();
     ui->zAxisColor->onRestore();
+    ui->FloatSpinBox_AxisLineWidth->onRestore();
 
     loadAntiAliasing();
     loadRenderCache();
