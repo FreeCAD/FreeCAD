@@ -126,16 +126,13 @@ private:
     std::optional<GestureOwnership> activeGesture;
 };
 
-class GuiExport InventorNavigationStyle: public UserNavigationStyle
+class GuiExport InventorNavigationStyle: public MappedNavigationStyle
 {
-    using inherited = UserNavigationStyle;
-
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     InventorNavigationStyle();
     ~InventorNavigationStyle() override;
-    const char* mouseButtons(ViewerMode) override;
     std::string userFriendlyName() const override;
     ClarifySelectionMode clarifySelectionMode() const override
     {
@@ -143,25 +140,24 @@ public:
     }
 
 protected:
-    SbBool processSoEvent(const SoEvent* const ev) override;
+    const NavigationProfile& profile() const override;
+    void processStyleButtonEvent(EventContext& context) override;
+    void adjustResolvedMode(EventContext& context) override;
+    bool shouldPropagate(const EventContext& context) const override;
 };
 
-class GuiExport CADNavigationStyle: public UserNavigationStyle
+class GuiExport CADNavigationStyle: public MappedNavigationStyle
 {
-    using inherited = UserNavigationStyle;
-
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     CADNavigationStyle();
     ~CADNavigationStyle() override;
-    const char* mouseButtons(ViewerMode) override;
 
 protected:
-    SbBool processSoEvent(const SoEvent* const ev) override;
-
-private:
-    SbBool lockButton1 {false};
+    const NavigationProfile& profile() const override;
+    void processStyleButtonEvent(EventContext& context) override;
+    void adjustResolvedMode(EventContext& context) override;
 };
 
 class GuiExport RevitNavigationStyle: public MappedNavigationStyle

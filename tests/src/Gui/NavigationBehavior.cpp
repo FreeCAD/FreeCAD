@@ -745,3 +745,268 @@ TEST_F(NavigationStyleTest, openSCADRotationInitializesCursorOnce)
 
     EXPECT_DOUBLE_EQ(style.centerTimeValue(), 3.0);
 }
+
+TEST_F(NavigationStyleTest, inventorDoesNotForceRotationWhenAddingPrimaryButton)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::InventorNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Middle, 0, NavigationStyle::PANNING, true},
+         {EventType::MousePress, MouseButton::Left, 0, NavigationStyle::ZOOMING, true},
+         {EventType::MouseRelease, MouseButton::Left, 0, NavigationStyle::PANNING, true},
+         {EventType::MouseRelease, MouseButton::Middle, 0, NavigationStyle::IDLE, true}}
+    );
+}
+
+TEST_F(NavigationStyleTest, inventorResumesRotationAfterSecondaryButtonRelease)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::InventorNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Middle, 0, NavigationStyle::PANNING, true},
+         {EventType::MousePress, MouseButton::Left, 0, NavigationStyle::ZOOMING, true},
+         {EventType::MouseRelease, MouseButton::Middle, 0, NavigationStyle::DRAGGING, true},
+         {EventType::PointerMotion, MouseButton::None, 0, NavigationStyle::DRAGGING, true},
+         {EventType::MouseRelease, MouseButton::Left, 0, NavigationStyle::IDLE, true}}
+    );
+
+    EXPECT_DOUBLE_EQ(style.centerTimeValue(), 3.0);
+}
+
+TEST_F(NavigationStyleTest, cadTransitionsFromPanningToRotation)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::CADNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Middle, 0, NavigationStyle::PANNING, false},
+         {EventType::MousePress, MouseButton::Right, 0, NavigationStyle::DRAGGING, true},
+         {EventType::MouseRelease, MouseButton::Right, 0, NavigationStyle::PANNING, true},
+         {EventType::MouseRelease, MouseButton::Middle, 0, NavigationStyle::IDLE, false}}
+    );
+}
+
+TEST_F(NavigationStyleTest, cadRestartsClickTimerWhenMiddleIsPressedDuringPanning)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::CADNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Right, CtrlDown, NavigationStyle::PANNING, false, 1.0},
+         {EventType::MousePress, MouseButton::Middle, CtrlDown, NavigationStyle::PANNING, false, 2.0}}
+    );
+
+    EXPECT_DOUBLE_EQ(style.centerTimeValue(), 2.0);
+}
+
+TEST_F(NavigationStyleTest, cadRotationContinuesWhenMiddleButtonReleasedFirst)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::CADNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Middle, 0, NavigationStyle::PANNING, false},
+         {EventType::MousePress, MouseButton::Right, 0, NavigationStyle::DRAGGING, true},
+         {EventType::MouseRelease, MouseButton::Middle, 0, NavigationStyle::DRAGGING, false},
+         {EventType::MouseRelease, MouseButton::Right, 0, NavigationStyle::IDLE, true}}
+    );
+}
+
+TEST_F(NavigationStyleTest, cadShortRotationReleaseEntersZoom)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::CADNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Middle, 0, NavigationStyle::PANNING, false, 1.0},
+         {EventType::MousePress, MouseButton::Left, 0, NavigationStyle::DRAGGING, true, 1.1},
+         {EventType::MouseRelease, MouseButton::Left, 0, NavigationStyle::ZOOMING, true, 1.2},
+         {EventType::PointerMotion, MouseButton::None, 0, NavigationStyle::ZOOMING, true, 1.3},
+         {EventType::KeyPress, MouseButton::None, ShiftDown, NavigationStyle::ZOOMING, false, 1.35},
+         {EventType::KeyRelease, MouseButton::None, 0, NavigationStyle::ZOOMING, false, 1.36},
+         {EventType::MouseRelease, MouseButton::Middle, 0, NavigationStyle::IDLE, true, 1.4}}
+    );
+}
+
+TEST_F(NavigationStyleTest, cadRotationReleaseCanStartSpinning)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::CADNavigationStyle> style;
+    configureStyle(style, viewer);
+    style.setSpinningAnimationEnabled(true);
+
+    const double now = SbTime::getTimeOfDay().getValue();
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Middle, 0, NavigationStyle::PANNING, false, now},
+         {EventType::MousePress, MouseButton::Right, 0, NavigationStyle::DRAGGING, true, now + 0.01},
+         {EventType::PointerMotion, MouseButton::None, 0, NavigationStyle::DRAGGING, true, now + 0.02},
+         {EventType::PointerMotion, MouseButton::None, 0, NavigationStyle::DRAGGING, true, now + 0.04},
+         {EventType::PointerMotion, MouseButton::None, 0, NavigationStyle::DRAGGING, true, now + 0.06},
+         {EventType::MouseRelease, MouseButton::Right, 0, NavigationStyle::SPINNING, true, now + 1.0}}
+    );
+    style.setSpinningAnimationEnabled(false);
+}
+
+TEST_F(NavigationStyleTest, popupMenuIsSuppressedAfterNavigation)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::BlenderNavigationStyle> style;
+    configureStyle(style, viewer);
+    style.setPopupMenuEnabled(true);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Right, 0, NavigationStyle::IDLE, false},
+         {EventType::MouseRelease, MouseButton::Right, 0, NavigationStyle::IDLE, false}}
+    );
+    EXPECT_TRUE(style.popupOpened);
+
+    style.popupOpened = false;
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Middle, 0, NavigationStyle::DRAGGING, false},
+         {EventType::PointerMotion, MouseButton::None, 0, NavigationStyle::DRAGGING, true},
+         {EventType::PointerMotion, MouseButton::None, 0, NavigationStyle::DRAGGING, true},
+         {EventType::MouseRelease, MouseButton::Right, 0, NavigationStyle::DRAGGING, true},
+         {EventType::MouseRelease, MouseButton::Middle, 0, NavigationStyle::IDLE, false}}
+    );
+    EXPECT_FALSE(style.popupOpened);
+}
+
+TEST_F(NavigationStyleTest, editingPreservesSelectionMode)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::RevitNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Left, 0, NavigationStyle::SELECTION, false}}
+    );
+    viewer.setEditing(true);
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Middle, 0, NavigationStyle::SELECTION, false}}
+    );
+    viewer.setEditing(false);
+}
+
+TEST_F(NavigationStyleTest, editingAllowsBlenderSecondaryButtonCancellation)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::BlenderNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Left, 0, NavigationStyle::SELECTION, false}}
+    );
+    viewer.setEditing(true);
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Right, 0, NavigationStyle::IDLE, false},
+         {EventType::MouseRelease, MouseButton::Right, 0, NavigationStyle::IDLE, false},
+         {EventType::MouseRelease, MouseButton::Left, 0, NavigationStyle::IDLE, true}}
+    );
+    viewer.setEditing(false);
+}
+
+TEST_F(NavigationStyleTest, gestureFlagsResetWhenReturningToIdle)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::BlenderNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Middle, ShiftDown, NavigationStyle::PANNING, false},
+         {EventType::PointerMotion, MouseButton::None, ShiftDown, NavigationStyle::PANNING, true},
+         {EventType::MouseRelease, MouseButton::Middle, 0, NavigationStyle::IDLE, false}}
+    );
+    EXPECT_FALSE(style.hasPannedFlag());
+    EXPECT_FALSE(style.hasDraggedFlag());
+    EXPECT_FALSE(style.hasZoomedFlag());
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Right, CtrlDown | ShiftDown, NavigationStyle::ZOOMING, false},
+         {EventType::PointerMotion, MouseButton::None, CtrlDown | ShiftDown, NavigationStyle::ZOOMING, true},
+         {EventType::MouseRelease, MouseButton::Right, 0, NavigationStyle::IDLE, true}}
+    );
+    EXPECT_FALSE(style.hasPannedFlag());
+    EXPECT_FALSE(style.hasDraggedFlag());
+    EXPECT_FALSE(style.hasZoomedFlag());
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Middle, 0, NavigationStyle::DRAGGING, false},
+         {EventType::PointerMotion, MouseButton::None, 0, NavigationStyle::DRAGGING, true},
+         {EventType::PointerMotion, MouseButton::None, 0, NavigationStyle::DRAGGING, true}}
+    );
+    EXPECT_TRUE(style.hasDraggedFlag());
+    runSequence(
+        style,
+        {{EventType::MouseRelease, MouseButton::Middle, 0, NavigationStyle::IDLE, false}}
+    );
+    EXPECT_FALSE(style.hasDraggedFlag());
+}
+
+TEST_F(NavigationStyleTest, rotationReleaseCanStartSpinning)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::InventorNavigationStyle> style;
+    configureStyle(style, viewer);
+    style.setSpinningAnimationEnabled(true);
+
+    const SbTime start = SbTime::getTimeOfDay();
+    auto sendMouse = [&](SoButtonEvent::State state, const SbVec2s position, const SbTime time) {
+        SoMouseButtonEvent event;
+        event.setButton(SoMouseButtonEvent::BUTTON1);
+        event.setState(state);
+        event.setPosition(position);
+        event.setTime(time);
+        return static_cast<bool>(style.processSoEvent(&event));
+    };
+    auto sendMotion = [&](const SbVec2s position, const SbTime time) {
+        SoLocation2Event event;
+        event.setPosition(position);
+        event.setTime(time);
+        return static_cast<bool>(style.processSoEvent(&event));
+    };
+
+    EXPECT_TRUE(sendMouse(SoButtonEvent::DOWN, SbVec2s(100, 100), start));
+    EXPECT_EQ(style.getViewingMode(), NavigationStyle::DRAGGING);
+    EXPECT_TRUE(sendMotion(SbVec2s(125, 105), start + SbTime(0.01)));
+    EXPECT_TRUE(sendMotion(SbVec2s(150, 115), start + SbTime(0.02)));
+    EXPECT_TRUE(sendMotion(SbVec2s(175, 130), start + SbTime(0.03)));
+
+    EXPECT_TRUE(sendMouse(SoButtonEvent::UP, SbVec2s(200, 145), start + SbTime(0.04)));
+    EXPECT_TRUE(style.isSpinning());
+}
