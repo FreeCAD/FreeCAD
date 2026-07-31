@@ -23,6 +23,7 @@
 
 #include <optional>
 
+#include <Gui/Navigation/NavigationStyle.h>
 #include <Gui/Navigation/NavigationResolver.h>
 
 // NOLINTBEGIN(cppcoreguidelines-avoid*, readability-avoid-const-params-in-decls)
@@ -104,12 +105,10 @@ protected:
      */
     virtual void adjustResolvedMode(EventContext& context);
 
-    /** Apply the style's editing-selection policy during shared selection handling. */
-    virtual void preserveEditingSelection(EventContext& context);
-
 private:
-    EventContext createContext(const SoEvent* const ev);
     NavigationInputState currentInputState() const;
+
+    EventContext createContext(const SoEvent* const ev);
 
     void processKeyboardEventCommon(EventContext& context);
     void processMouseButtonEventCommon(EventContext& context);
@@ -125,6 +124,145 @@ private:
 
     bool lockButton1 {false};
     std::optional<GestureOwnership> activeGesture;
+};
+
+class GuiExport InventorNavigationStyle: public UserNavigationStyle
+{
+    using inherited = UserNavigationStyle;
+
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    InventorNavigationStyle();
+    ~InventorNavigationStyle() override;
+    const char* mouseButtons(ViewerMode) override;
+    std::string userFriendlyName() const override;
+    ClarifySelectionMode clarifySelectionMode() const override
+    {
+        return ClarifySelectionMode::Ctrl;
+    }
+
+protected:
+    SbBool processSoEvent(const SoEvent* const ev) override;
+};
+
+class GuiExport CADNavigationStyle: public UserNavigationStyle
+{
+    using inherited = UserNavigationStyle;
+
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    CADNavigationStyle();
+    ~CADNavigationStyle() override;
+    const char* mouseButtons(ViewerMode) override;
+
+protected:
+    SbBool processSoEvent(const SoEvent* const ev) override;
+
+private:
+    SbBool lockButton1 {false};
+};
+
+class GuiExport TouchpadNavigationStyle: public UserNavigationStyle
+{
+    using inherited = UserNavigationStyle;
+
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    TouchpadNavigationStyle();
+    ~TouchpadNavigationStyle() override;
+    const char* mouseButtons(ViewerMode) override;
+
+protected:
+    SbBool processSoEvent(const SoEvent* const ev) override;
+
+private:
+    SbBool blockPan {false};  // Used to block the first pan in a mouse movement to prevent big jumps
+};
+
+class GuiExport OpenCascadeNavigationStyle: public UserNavigationStyle
+{
+    using inherited = UserNavigationStyle;
+
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    OpenCascadeNavigationStyle();
+    ~OpenCascadeNavigationStyle() override;
+    const char* mouseButtons(ViewerMode) override;
+
+protected:
+    SbBool processSoEvent(const SoEvent* const ev) override;
+};
+
+class GuiExport OpenSCADNavigationStyle: public UserNavigationStyle
+{
+    using inherited = UserNavigationStyle;
+
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    OpenSCADNavigationStyle();
+    ~OpenSCADNavigationStyle() override;
+    const char* mouseButtons(ViewerMode) override;
+    ClarifySelectionMode clarifySelectionMode() const override
+    {
+        return ClarifySelectionMode::Ctrl;
+    }
+
+protected:
+    SbBool processSoEvent(const SoEvent* const ev) override;
+};
+
+class GuiExport RevitNavigationStyle: public MappedNavigationStyle
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    RevitNavigationStyle();
+    ~RevitNavigationStyle() override;
+
+protected:
+    const NavigationProfile& profile() const override;
+};
+
+class GuiExport BlenderNavigationStyle: public MappedNavigationStyle
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    BlenderNavigationStyle();
+    ~BlenderNavigationStyle() override;
+
+protected:
+    const NavigationProfile& profile() const override;
+};
+
+class GuiExport SolidWorksNavigationStyle: public MappedNavigationStyle
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    SolidWorksNavigationStyle();
+    ~SolidWorksNavigationStyle() override;
+
+protected:
+    const NavigationProfile& profile() const override;
+};
+
+class GuiExport TinkerCADNavigationStyle: public MappedNavigationStyle
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    TinkerCADNavigationStyle();
+    ~TinkerCADNavigationStyle() override;
+
+protected:
+    const NavigationProfile& profile() const override;
+    void processStyleButtonEvent(EventContext& context) override;
 };
 
 }  // namespace Gui

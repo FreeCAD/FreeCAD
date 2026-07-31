@@ -36,6 +36,12 @@ enum class OwnerMatch
     AnyHeld,
 };
 
+enum class EditingSelectionPolicy
+{
+    Preserve,
+    CancelOnLeftRightChord,
+};
+
 struct GuiExport GestureOwnership
 {
     unsigned int buttons = 0U;
@@ -98,6 +104,7 @@ struct GuiExport NavigationProfile
     bool lockPrimaryAfterMultiButton = true;
     bool preserveModeOnUnmappedInput = false;
     bool recenterOnMiddleClick = true;
+    EditingSelectionPolicy editingSelectionPolicy = EditingSelectionPolicy::Preserve;
 };
 
 }  // namespace Gui

@@ -57,6 +57,7 @@
 #include "Inventor/Draggers/SoRotationDraggerGeometry.h"
 #include "Inventor/Draggers/Gizmo.h"
 #include "Navigation/GestureNavigationStyle.h"
+#include "Navigation/MappedNavigationStyle.h"
 #include "Navigation/NavigationStyle.h"
 #include "Navigation/SiemensNXNavigationStyle.h"
 #include "SelectionObject.h"

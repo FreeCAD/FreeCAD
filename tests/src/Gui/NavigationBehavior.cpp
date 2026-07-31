@@ -414,3 +414,36 @@ TEST_F(NavigationStyleTest, mappedStyleForwardsUnhandledEvents)
 
     root->removeChild(callback);
 }
+
+TEST_F(NavigationStyleTest, tinkerCADKeepsSimpleRightClickPopup)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::TinkerCADNavigationStyle> style;
+    configureStyle(style, viewer);
+    style.setPopupMenuEnabled(true);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Right, 0, NavigationStyle::DRAGGING, true},
+         {EventType::MouseRelease, MouseButton::Right, 0, NavigationStyle::IDLE, true}}
+    );
+
+    EXPECT_TRUE(style.popupOpened);
+}
+
+TEST_F(NavigationStyleTest, tinkerCADKeepsPanningWhenRightButtonIsAdded)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::TinkerCADNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Middle, 0, NavigationStyle::PANNING, false},
+         {EventType::MousePress, MouseButton::Right, 0, NavigationStyle::PANNING, false},
+         {EventType::MouseRelease, MouseButton::Right, 0, NavigationStyle::PANNING, true},
+         {EventType::MouseRelease, MouseButton::Middle, 0, NavigationStyle::IDLE, true}}
+    );
+}

@@ -31,6 +31,18 @@ using namespace Gui;
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::MappedNavigationStyle, Gui::UserNavigationStyle)
 
+NavigationInputState MappedNavigationStyle::currentInputState() const
+{
+    return {
+        .left = static_cast<bool>(button1down),
+        .middle = static_cast<bool>(button3down),
+        .right = static_cast<bool>(button2down),
+        .ctrl = static_cast<bool>(ctrldown),
+        .shift = static_cast<bool>(shiftdown),
+        .alt = static_cast<bool>(altdown),
+    };
+}
+
 MappedNavigationStyle::EventContext MappedNavigationStyle::createContext(const SoEvent* const ev)
 {
     const SbVec2s position(ev->getPosition());
@@ -46,18 +58,6 @@ MappedNavigationStyle::EventContext MappedNavigationStyle::createContext(const S
         .normalizedPosition = normalizedPosition,
         .previousNormalizedPosition = previousNormalizedPosition,
         .resolvedMode = currentmode,
-    };
-}
-
-NavigationInputState MappedNavigationStyle::currentInputState() const
-{
-    return {
-        .left = static_cast<bool>(button1down),
-        .middle = static_cast<bool>(button3down),
-        .right = static_cast<bool>(button2down),
-        .ctrl = static_cast<bool>(ctrldown),
-        .shift = static_cast<bool>(shiftdown),
-        .alt = static_cast<bool>(altdown),
     };
 }
 
@@ -324,7 +324,14 @@ void MappedNavigationStyle::applySelectionLockPolicy(EventContext& context)
 
     if (viewer->isEditing() && context.initialMode == NavigationStyle::SELECTION
         && context.resolvedMode != NavigationStyle::IDLE) {
-        preserveEditingSelection(context);
+        if (profile().editingSelectionPolicy == EditingSelectionPolicy::CancelOnLeftRightChord
+            && context.chord == (LeftDown | RightDown)) {
+            context.resolvedMode = NavigationStyle::IDLE;
+        }
+        else {
+            context.resolvedMode = NavigationStyle::SELECTION;
+        }
+        context.processed = false;
     }
 }
 
@@ -377,12 +384,6 @@ void MappedNavigationStyle::adjustResolvedMode(EventContext&)
 bool MappedNavigationStyle::shouldPropagate(const EventContext& context) const
 {
     return !context.selectionDragAttempted;
-}
-
-void MappedNavigationStyle::preserveEditingSelection(EventContext& context)
-{
-    context.resolvedMode = NavigationStyle::SELECTION;
-    context.processed = false;
 }
 
 void MappedNavigationStyle::applyModeEntryEffects(EventContext& context)

@@ -26,7 +26,7 @@
 #include <QApplication>
 
 
-#include "Navigation/NavigationStyle.h"
+#include "Navigation/MappedNavigationStyle.h"
 #include "View3DInventorViewer.h"
 
 
