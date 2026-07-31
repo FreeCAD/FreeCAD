@@ -960,6 +960,7 @@ SET(Navigation_CPP_SRCS
 SET(Navigation_SRCS
     ${Navigation_CPP_SRCS}
     Navigation/NavigationStateChart.h
+    Navigation/NavigationInputState.h
     Navigation/NavigationStyle.h
     Navigation/NavigationStyle.pyi
     Navigation/GestureNavigationStyle.h

@@ -25,6 +25,7 @@
 #pragma once
 
 #include <boost/statechart/event.hpp>
+#include <Gui/Navigation/NavigationInputState.h>
 #include <Gui/Navigation/NavigationStyle.h>
 
 // NOLINTBEGIN(cppcoreguidelines-avoid*, readability-avoid-const-params-in-decls)
@@ -69,15 +70,14 @@ public:
 
         enum
         {
-            // bits: 0-shift-ctrl-alt-0-lmb-mmb-rmb
-            BUTTON1DOWN = 0x00000100,
-            BUTTON2DOWN = 0x00000001,
-            BUTTON3DOWN = 0x00000010,
-            CTRLDOWN = 0x00100000,
-            SHIFTDOWN = 0x01000000,
-            ALTDOWN = 0x00010000,
-            MASKBUTTONS = BUTTON1DOWN | BUTTON2DOWN | BUTTON3DOWN,
-            MASKMODIFIERS = CTRLDOWN | SHIFTDOWN | ALTDOWN
+            BUTTON1DOWN = NavigationInputState::LeftDown,
+            BUTTON2DOWN = NavigationInputState::RightDown,
+            BUTTON3DOWN = NavigationInputState::MiddleDown,
+            CTRLDOWN = NavigationInputState::CtrlDown,
+            SHIFTDOWN = NavigationInputState::ShiftDown,
+            ALTDOWN = NavigationInputState::AltDown,
+            MASKBUTTONS = NavigationInputState::ButtonMask,
+            MASKMODIFIERS = NavigationInputState::ModifierMask
         };
 
         const SoEvent* inventor_event {nullptr};
@@ -89,6 +89,17 @@ public:
         unsigned int kbstate() const
         {
             return modifiers & MASKMODIFIERS;
+        }
+        [[nodiscard]] NavigationInputState inputState() const
+        {
+            return {
+                .left = (modifiers & BUTTON1DOWN) != 0,
+                .middle = (modifiers & BUTTON3DOWN) != 0,
+                .right = (modifiers & BUTTON2DOWN) != 0,
+                .ctrl = (modifiers & CTRLDOWN) != 0,
+                .shift = (modifiers & SHIFTDOWN) != 0,
+                .alt = (modifiers & ALTDOWN) != 0
+            };
         }
 
         struct Flags

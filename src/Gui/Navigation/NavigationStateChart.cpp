@@ -210,11 +210,15 @@ SbBool NavigationStateChart::processSoEvent(const SoEvent* const ev)
         }
     }
 
-    smev.modifiers = (this->button1down ? NS::Event::BUTTON1DOWN : 0)
-        | (this->button2down ? NS::Event::BUTTON2DOWN : 0)
-        | (this->button3down ? NS::Event::BUTTON3DOWN : 0)
-        | (this->ctrldown ? NS::Event::CTRLDOWN : 0) | (this->shiftdown ? NS::Event::SHIFTDOWN : 0)
-        | (this->altdown ? NS::Event::ALTDOWN : 0);
+    const NavigationInputState input {
+        .left = static_cast<bool>(this->button1down),
+        .middle = static_cast<bool>(this->button3down),
+        .right = static_cast<bool>(this->button2down),
+        .ctrl = static_cast<bool>(this->ctrldown),
+        .shift = static_cast<bool>(this->shiftdown),
+        .alt = static_cast<bool>(this->altdown)
+    };
+    smev.modifiers = input.chord();
 
     if (!smev.flags->processed) {
         this->naviMachine->process_event(smev);
