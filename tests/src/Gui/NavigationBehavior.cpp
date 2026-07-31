@@ -32,6 +32,7 @@
 #include <Gui/Navigation/NavigationInputState.h>
 #include <Gui/Navigation/NavigationStyle.h>
 #include <Gui/Navigation/MappedNavigationStyle.h>
+#include <Gui/Navigation/SiemensNXNavigationStyle.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Quarter/Quarter.h>
@@ -1009,4 +1010,154 @@ TEST_F(NavigationStyleTest, rotationReleaseCanStartSpinning)
 
     EXPECT_TRUE(sendMouse(SoButtonEvent::UP, SbVec2s(200, 145), start + SbTime(0.04)));
     EXPECT_TRUE(style.isSpinning());
+}
+
+TEST_F(NavigationStyleTest, siemensNXMiddleClickRecenters)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::SiemensNXNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Middle, 0, NavigationStyle::DRAGGING, true},
+         {EventType::MouseRelease, MouseButton::Middle, 0, NavigationStyle::IDLE, true, 1.1}}
+    );
+}
+
+TEST_F(NavigationStyleTest, siemensNXRotationStartsAfterMovement)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::SiemensNXNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Middle, 0, NavigationStyle::DRAGGING, true},
+         {EventType::PointerMotion, MouseButton::None, 0, NavigationStyle::DRAGGING, true},
+         {EventType::PointerMotion, MouseButton::None, 0, NavigationStyle::DRAGGING, true},
+         {EventType::MouseRelease, MouseButton::Middle, 0, NavigationStyle::IDLE, true}}
+    );
+}
+
+TEST_F(NavigationStyleTest, siemensNXSecondaryButtonReturnsToRotation)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::SiemensNXNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Middle, 0, NavigationStyle::DRAGGING, true},
+         {EventType::MousePress, MouseButton::Right, 0, NavigationStyle::PANNING, true},
+         {EventType::PointerMotion, MouseButton::None, 0, NavigationStyle::PANNING, true},
+         {EventType::MouseRelease, MouseButton::Right, 0, NavigationStyle::DRAGGING, true},
+         {EventType::MouseRelease, MouseButton::Middle, 0, NavigationStyle::IDLE, true}}
+    );
+}
+
+TEST_F(NavigationStyleTest, siemensNXShiftPanReturnsToRotation)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::SiemensNXNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Middle, ShiftDown, NavigationStyle::PANNING, true},
+         {EventType::PointerMotion, MouseButton::None, ShiftDown, NavigationStyle::PANNING, true},
+         {EventType::KeyRelease, MouseButton::None, 0, NavigationStyle::DRAGGING, true},
+         {EventType::MouseRelease, MouseButton::Middle, 0, NavigationStyle::IDLE, true}}
+    );
+}
+
+TEST_F(NavigationStyleTest, siemensNXLeftButtonZoomReturnsToRotation)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::SiemensNXNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Middle, 0, NavigationStyle::DRAGGING, true},
+         {EventType::MousePress, MouseButton::Left, 0, NavigationStyle::ZOOMING, true},
+         {EventType::PointerMotion, MouseButton::None, 0, NavigationStyle::ZOOMING, true},
+         {EventType::MouseRelease, MouseButton::Left, 0, NavigationStyle::DRAGGING, true},
+         {EventType::MouseRelease, MouseButton::Middle, 0, NavigationStyle::IDLE, true}}
+    );
+}
+
+TEST_F(NavigationStyleTest, siemensNXControlZoomReturnsToRotation)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::SiemensNXNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Middle, 0, NavigationStyle::DRAGGING, true},
+         {EventType::KeyPress,
+          MouseButton::None,
+          CtrlDown,
+          NavigationStyle::ZOOMING,
+          true,
+          -1.0,
+          SoKeyboardEvent::LEFT_CONTROL},
+         {EventType::PointerMotion, MouseButton::None, CtrlDown, NavigationStyle::ZOOMING, true},
+         {EventType::KeyRelease,
+          MouseButton::None,
+          0,
+          NavigationStyle::DRAGGING,
+          true,
+          -1.0,
+          SoKeyboardEvent::LEFT_CONTROL},
+         {EventType::MouseRelease, MouseButton::Middle, 0, NavigationStyle::IDLE, true}}
+    );
+}
+
+TEST_F(NavigationStyleTest, siemensNXPopupMenuIsAvailableAfterPlainRightClick)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::SiemensNXNavigationStyle> style;
+    configureStyle(style, viewer);
+    style.setPopupMenuEnabled(true);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Right, 0, NavigationStyle::IDLE, false},
+         {EventType::MouseRelease, MouseButton::Right, 0, NavigationStyle::IDLE, false}}
+    );
+    EXPECT_TRUE(style.popupOpened);
+}
+
+TEST_F(NavigationStyleTest, siemensNXForwardsUnhandledEvents)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::SiemensNXNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    bool handledByScene = false;
+    auto* callback = new SoEventCallback;
+    callback->addEventCallback(SoKeyboardEvent::getClassTypeId(), handleKeyboardEvent, &handledByScene);
+    auto* root = static_cast<SoGroup*>(viewer.getSoRenderManager()->getSceneGraph());
+    root->addChild(callback);
+
+    SoKeyboardEvent event;
+    event.setKey(SoKeyboardEvent::A);
+    event.setState(SoButtonEvent::DOWN);
+    event.setPosition(SbVec2s(100, 100));
+    event.setTime(SbTime::getTimeOfDay());
+
+    EXPECT_TRUE(style.processSoEvent(&event));
+    EXPECT_TRUE(handledByScene);
+
+    root->removeChild(callback);
 }
