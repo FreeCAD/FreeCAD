@@ -178,8 +178,8 @@ TEST_F(ThreadTest, ThreadCreationOnCylinder)
 
     ASSERT_NE(thread, nullptr);
     EXPECT_FALSE(thread->isError())
-        << "A feature Thread falhou durante o recompute: " << thread->getStatusString();
-    EXPECT_TRUE(thread->isValid()) << "A feature Thread não está em estado válido.";
+        << "Feature thread has failed during recompute: " << thread->getStatusString();
+    EXPECT_TRUE(thread->isValid()) << "Feature Thread is not valid.";
 }
 
 TEST_F(ThreadTest, ThreadCreationOnCube)
@@ -196,7 +196,7 @@ TEST_F(ThreadTest, ThreadCreationOnCube)
 
     ASSERT_NE(thread, nullptr);
     EXPECT_TRUE(thread->isError())
-        << "A feature Thread deveria ter falhado para uma face plana, mas não falhou.";
+        << "Feature Thread should have failed for a plane face, but didn't failed.";
     EXPECT_FALSE(thread->isValid());
 }
 
