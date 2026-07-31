@@ -1516,7 +1516,7 @@ private:
     std::unordered_map<NamingMapKey, std::vector<NamingMapValue>, NamingMapKeyHasher> map {};
     std::unordered_map<std::vector<NamingMapKey>, std::vector<NamingMapValue>, NamingMapKeyHasher>
         multiKeyMap {};
-    
+
     std::hash<TopoDS_Shape> shapeHasher;
 
     bool isBuilt = false;
@@ -2488,8 +2488,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
         std::hash<TopoDS_Shape> shapeHasher;
 
         for (const std::pair<const std::vector<Part::NamingMapKey>, std::vector<Part::NamingMapValue>>&
-                 generatedShapeEntry : generatedNamingMap.getMultiMap())
-        {
+                 generatedShapeEntry : generatedNamingMap.getMultiMap()) {
             std::vector<Data::MappedName> linkedNames;
 
             for (const NamingMapValue& generatedInfo : generatedShapeEntry.second) {
@@ -2568,15 +2567,19 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                     for (; xp.More(); xp.Next()) {
                         const TopoDS_Shape& foundSubshape = xp.Current();
                         std::string encodedMappedSection;
-                        auto namedGeneratedShapesIterator = namedGeneratedShapes.find(shapeHasher(foundSubshape));
+                        auto namedGeneratedShapesIterator = namedGeneratedShapes.find(
+                            shapeHasher(foundSubshape)
+                        );
 
                         if (namedGeneratedShapesIterator != namedGeneratedShapes.end()) {
                             encodedMappedSection = Data::MappedName::makeSection(
                                 namedGeneratedShapesIterator->second
                             );
-                        } else {
-                            auto namedGeneratedShapesIterator = namedGeneratedShapes.find(shapeHasher(foundSubshape));
-                            
+                        }
+                        else {
+                            auto namedGeneratedShapesIterator = namedGeneratedShapes.find(
+                                shapeHasher(foundSubshape)
+                            );
                         }
 
                         if (encodedMappedSection.size()) {
