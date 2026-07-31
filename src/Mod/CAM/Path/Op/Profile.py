@@ -141,7 +141,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 "Profile",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Extra value to stay away from final profile- good for roughing toolpath",
+                    "Set how much stock to leave on the walls for the operation.",
                 ),
             ),
             (

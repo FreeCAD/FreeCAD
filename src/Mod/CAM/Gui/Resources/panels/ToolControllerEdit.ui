@@ -18,7 +18,11 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="tcOperationCountLabel" />
+    <widget class="QLabel" name="tcOperationCountLabel">
+     <property name="styleSheet">
+      <string notr="true">QLabel { padding-bottom: 12px; }</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox_4">
@@ -73,9 +77,6 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
         <property name="minimum">
          <double>0.000000000000000</double>
         </property>
@@ -101,9 +102,6 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="minimum">
          <double>0.000000000000000</double>
@@ -131,9 +129,6 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
         <property name="minimum">
          <double>0.000000000000000</double>
         </property>
@@ -159,9 +154,6 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="minimum">
          <double>0.000000000000000</double>
@@ -189,9 +181,6 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
         <property name="minimum">
          <double>0.000000000000000</double>
         </property>
@@ -218,9 +207,6 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
         <property name="minimum">
          <double>0.000000000000000</double>
         </property>
@@ -246,9 +232,6 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="minimum">
          <double>0.000000000000000</double>
