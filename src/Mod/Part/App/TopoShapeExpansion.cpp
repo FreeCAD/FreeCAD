@@ -3380,7 +3380,7 @@ TopoShape& TopoShape::makeElementOffset(
         FC_THROWM(Base::CADKernelError, "BRepOffsetAPI_MakeOffsetShape not done");
     }
 
-    TopoShape res(Tag, Hasher, TopoDS_Shape(), getHistoryAlgorithm());
+    TopoShape res(Tag, Hasher, getHistoryAlgorithm());
     res.makeElementShape(mkOffset, shape, op);
     if (shape.hasSubShape(TopAbs_SOLID) && !res.hasSubShape(TopAbs_SOLID)) {
         try {
@@ -3456,10 +3456,10 @@ TopoShape& TopoShape::makeElementOffset(
             FC_THROWM(Base::CADKernelError, "ThruSections failed");
         }
 
-        shapes.push_back(TopoShape(Tag, Hasher, TopoDS_Shape(), getHistoryAlgorithm()).makeElementShape(aGenerator, wires));
+        shapes.push_back(TopoShape(Tag, Hasher, getHistoryAlgorithm()).makeElementShape(aGenerator, wires));
     }
 
-    TopoShape perimeterCompound(Tag, Hasher, TopoDS_Shape(), getHistoryAlgorithm());
+    TopoShape perimeterCompound(Tag, Hasher, getHistoryAlgorithm());
     perimeterCompound.makeElementCompound(shapes, op);
 
     // still had to sew. not using the passed in parameter for sew.
@@ -3488,7 +3488,7 @@ TopoShape& TopoShape::makeElementOffset(
     shapes.push_back(shape);
     shapes.push_back(res);
     shapes.push_back(perimeterCompound);
-    *this = TopoShape(Tag, Hasher, TopoDS_Shape(), getHistoryAlgorithm())
+    *this = TopoShape(Tag, Hasher, getHistoryAlgorithm())
                 .makeShapeWithElementMap(outputShape, MapperSewing(sewTool), shapes, op);
     return *this;
 }
@@ -3546,7 +3546,7 @@ TopoShape& TopoShape::makeElementOffsetFace(
         }
 
         if (std::abs(innerOffset) > Precision::Confusion()) {
-            TopoShape innerWires(0, Hasher, TopoDS_Shape(), getHistoryAlgorithm());
+            TopoShape innerWires(0, Hasher, getHistoryAlgorithm());
             innerWires.makeElementCompound(wires, "", SingleShapeCompoundCreationPolicy::returnShape);
             innerWires = innerWires.makeElementOffset2D(
                 innerOffset,
@@ -3561,7 +3561,7 @@ TopoShape& TopoShape::makeElementOffsetFace(
         wires.push_back(outerWire);
         gp_Pln pln;
         res.push_back(
-            TopoShape(0, Hasher, TopoDS_Shape(), getHistoryAlgorithm())
+            TopoShape(0, Hasher, getHistoryAlgorithm())
                 .makeElementFace(wires, nullptr, nullptr, face.findPlane(pln) ? &pln : nullptr)
         );
     }
@@ -3625,7 +3625,7 @@ TopoShape& TopoShape::makeElementOffset2D(
                 if (s.getShape().ShapeType() == TopAbs_COMPOUND) {
                     // recursively process subcompounds
                     shapesToReturn.push_back(
-                        TopoShape(Tag, Hasher, TopoDS_Shape(), getHistoryAlgorithm())
+                        TopoShape(Tag, Hasher, getHistoryAlgorithm())
                             .makeElementOffset2D(s, offset, joinType, fill, allowOpenResult, intersection, op)
                     );
                     outputPolicy = SingleShapeCompoundCreationPolicy::forceCompound;
@@ -3641,7 +3641,7 @@ TopoShape& TopoShape::makeElementOffset2D(
     }
 
     if (shapesToProcess.size() > 0) {
-        TopoShape res(Tag, Hasher, TopoDS_Shape(), getHistoryAlgorithm());
+        TopoShape res(Tag, Hasher, getHistoryAlgorithm());
 
         // although 2d offset supports offsetting a face directly, it seems there is
         // no way to do a collective offset of multiple faces. So, we are doing it
@@ -3727,7 +3727,7 @@ TopoShape& TopoShape::makeElementOffset2D(
             offsetShape = shape.makeElementShape(mkOffset, op).makeElementCopy();
         }
         else {
-            offsetShape = TopoShape(Tag, Hasher, TopoDS_Shape(), getHistoryAlgorithm())
+            offsetShape = TopoShape(Tag, Hasher, getHistoryAlgorithm())
                               .makeElementCompound(
                                   sourceWires,
                                   0,
@@ -3890,14 +3890,14 @@ TopoShape& TopoShape::makeElementOffset2D(
                 mkWire.Build();
 #endif
                 wiresForMakingFaces.push_back(
-                    TopoShape(Tag, Hasher, TopoDS_Shape(), getHistoryAlgorithm()).makeElementShape(mkWire, openWires, op)
+                    TopoShape(Tag, Hasher, getHistoryAlgorithm()).makeElementShape(mkWire, openWires, op)
                 );
             }
         }
 
         // make faces
         if (wiresForMakingFaces.size() > 0) {
-            TopoShape face(0, Hasher, TopoDS_Shape(), getHistoryAlgorithm());
+            TopoShape face(0, Hasher, getHistoryAlgorithm());
             face.makeElementFace(wiresForMakingFaces, nullptr, nullptr, &workingPlane);
             expandCompound(face, shapesToReturn);
         }
@@ -4758,7 +4758,7 @@ TopoShape& TopoShape::makeElementFilledFace(
                 shapes.begin() + params.boundary_begin,
                 shapes.begin() + params.boundary_end
             );
-            wires = TopoShape(0, Hasher, TopoDS_Shape(), getHistoryAlgorithm())
+            wires = TopoShape(0, Hasher, getHistoryAlgorithm())
                         .makeElementWires(edges, "", 0.0, ConnectionPolicy::requireSharedVertex, &output)
                         .getSubTopoShapes(TopAbs_WIRE);
             shapes.erase(shapes.begin() + params.boundary_begin, shapes.begin() + params.boundary_end);
@@ -4779,7 +4779,7 @@ TopoShape& TopoShape::makeElementFilledFace(
                 }
             }
             if (edges.size()) {
-                wires = TopoShape(0, Hasher, TopoDS_Shape(), getHistoryAlgorithm())
+                wires = TopoShape(0, Hasher, getHistoryAlgorithm())
                             .makeElementWires(edges, "", 0.0, ConnectionPolicy::requireSharedVertex, &output)
                             .getSubTopoShapes(TopAbs_WIRE);
             }
@@ -5241,7 +5241,7 @@ TopoShape& TopoShape::makeElementXor(
         const char* currentOp = (i == inputs.size() - 1) ? op : nullptr;
 
         // Step 1: Union(A, B) - intermediate result, no op code.
-        TopoShape tempUnion(0, Hasher, TopoDS_Shape(), getHistoryAlgorithm());
+        TopoShape tempUnion(0, Hasher, getHistoryAlgorithm());
         tempUnion.makeElementBoolean(
             Part::OpCodes::Fuse,
             {result, inputs[i]},
@@ -5251,7 +5251,7 @@ TopoShape& TopoShape::makeElementXor(
         );
 
         // Step 2: Common(A, B) - intermediate result, no op code.
-        TopoShape tempCommon(0, Hasher, TopoDS_Shape(), getHistoryAlgorithm());
+        TopoShape tempCommon(0, Hasher, getHistoryAlgorithm());
         tempCommon.makeElementBoolean(
             Part::OpCodes::Common,
             {result, inputs[i]},

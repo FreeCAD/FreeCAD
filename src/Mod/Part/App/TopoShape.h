@@ -950,7 +950,7 @@ public:
         RefineFail no_fail = RefineFail::throwException
     ) const
     {
-        return TopoShape(Tag, Hasher, TopoDS_Shape(), getHistoryAlgorithm()).makeElementRefine(*this, op, no_fail);
+        return TopoShape(Tag, Hasher, getHistoryAlgorithm()).makeElementRefine(*this, op, no_fail);
     }
 
 
@@ -1025,7 +1025,7 @@ public:
     ) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -1105,7 +1105,7 @@ public:
     ) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -1167,7 +1167,7 @@ public:
     ) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -1224,7 +1224,7 @@ public:
     ) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -1277,7 +1277,7 @@ public:
     ) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -1341,7 +1341,7 @@ public:
     ) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -1385,7 +1385,7 @@ public:
     TopoShape makeElementPrism(const gp_Vec& vec, const char* op = nullptr) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -1465,7 +1465,7 @@ public:
     ) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -1539,7 +1539,7 @@ public:
     TopoShape replaceElementShape(const std::vector<std::pair<TopoShape, TopoShape>>& s) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -1568,7 +1568,7 @@ public:
     TopoShape removeElementShape(const std::vector<TopoShape>& s) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -1626,7 +1626,7 @@ public:
     TopoShape makeElementFuse(const TopoShape& source, const char* op = nullptr, double tol = -1.0) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -1664,7 +1664,7 @@ public:
     TopoShape makeElementCut(const TopoShape& source, const char* op = nullptr, double tol = -1.0) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -1708,7 +1708,7 @@ public:
     ) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -1910,7 +1910,7 @@ public:
     )
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -2147,7 +2147,7 @@ public:
     ) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -2196,7 +2196,7 @@ public:
     ) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -2246,7 +2246,7 @@ public:
     ) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -2321,7 +2321,7 @@ public:
     ) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -2355,7 +2355,7 @@ public:
     TopoShape makeElementMirror(const gp_Ax2& ax, const char* op = nullptr) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -2396,7 +2396,7 @@ public:
     TopoShape makeElementSlice(const Base::Vector3d& dir, double distance, const char* op = nullptr) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -2441,7 +2441,7 @@ public:
     ) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -2490,7 +2490,7 @@ public:
     ) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -2543,7 +2543,7 @@ public:
     ) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -2629,7 +2629,7 @@ public:
         CopyType copy = CopyType::noCopy
     )
     {
-        return TopoShape(Tag, Hasher, TopoDS_Shape(), getHistoryAlgorithm())
+        return TopoShape(Tag, Hasher, getHistoryAlgorithm())
             .makeElementTransform(*this, mat, op, checkScale, copy);
     }
 
@@ -2670,7 +2670,7 @@ public:
         CopyType copy = CopyType::noCopy
     )
     {
-        return TopoShape(Tag, Hasher, TopoDS_Shape(), getHistoryAlgorithm())
+        return TopoShape(Tag, Hasher, getHistoryAlgorithm())
             .makeElementTransform(*this, trsf, op, copy);
     }
 
@@ -2722,7 +2722,7 @@ public:
     ) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -2855,7 +2855,7 @@ public:
     ) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -2926,7 +2926,7 @@ public:
     )
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -3023,7 +3023,7 @@ public:
     TopoShape makeElementSolid(const char* op = nullptr) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;
@@ -3091,7 +3091,7 @@ public:
     ) const
     {
         const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
-        TopoShape newShape {0, Hasher, TopoDS_Shape(), selectedHistoryVersion};
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
 
         if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
             newShape.Tag = Tag;

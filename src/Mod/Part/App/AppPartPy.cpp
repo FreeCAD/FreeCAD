@@ -1255,7 +1255,7 @@ private:
             throw Py::ValueError("No input shape");
         }
         return shape2pyshape(
-            TopoShape(0, shapes.front().Hasher, TopoDS_Shape(), shapes.front().getHistoryAlgorithm()).makeElementFilledFace(shapes, params, op)
+            TopoShape(0, shapes.front().Hasher, shapes.front().getHistoryAlgorithm()).makeElementFilledFace(shapes, params, op)
         );
     }
 
@@ -1340,7 +1340,7 @@ private:
             throw Py::ValueError("No input shape");
         }
         return shape2pyshape(
-            TopoShape(0, shapes.front().Hasher, TopoDS_Shape(), shapes.front().getHistoryAlgorithm()).makeElementFilledFace(shapes, params, op)
+            TopoShape(0, shapes.front().Hasher, shapes.front().getHistoryAlgorithm()).makeElementFilledFace(shapes, params, op)
         );
     }
 
@@ -2275,7 +2275,7 @@ private:
             TopoShape mShape = *static_cast<TopoShapePy*>(path)->getTopoShapePtr();
             // makeSweep uses GeomFill_Pipe which does not support shape
             // history. So use makEPipeShell() as a replacement
-            return shape2pyshape(TopoShape(0, mShape.Hasher, TopoDS_Shape(), mShape.getHistoryAlgorithm())
+            return shape2pyshape(TopoShape(0, mShape.Hasher, mShape.getHistoryAlgorithm())
                                      .makeElementPipeShell(
                                          {mShape,
                                           *static_cast<TopoShapePy*>(profile)->getTopoShapePtr()},
@@ -2407,13 +2407,13 @@ private:
             Py::List list2;
             MapperMaker mapper(splitShape);
             for (TopTools_ListIteratorOfListOfShape it(d); it.More(); it.Next()) {
-                TopoShape s(0, sources.front().Hasher, TopoDS_Shape(), sources.front().getHistoryAlgorithm());
+                TopoShape s(0, sources.front().Hasher, sources.front().getHistoryAlgorithm());
                 list1.append(shape2pyshape(
                     s.makeShapeWithElementMap(it.Value(), mapper, sources, Part::OpCodes::Split)
                 ));
             }
             for (TopTools_ListIteratorOfListOfShape it(l); it.More(); it.Next()) {
-                TopoShape s(0, sources.front().Hasher, TopoDS_Shape(), sources.front().getHistoryAlgorithm());
+                TopoShape s(0, sources.front().Hasher, sources.front().getHistoryAlgorithm());
                 list2.append(shape2pyshape(
                     s.makeShapeWithElementMap(it.Value(), mapper, sources, Part::OpCodes::Split)
                 ));
@@ -2821,7 +2821,7 @@ private:
         );
 
         if (Base::asBoolean(refine)) {
-            shape = TopoShape(0, shape.Hasher, TopoDS_Shape(), shape.getHistoryAlgorithm()).makeElementRefine(shape);
+            shape = TopoShape(0, shape.Hasher, shape.getHistoryAlgorithm()).makeElementRefine(shape);
         }
         Py::Object sret(shape2pyshape(shape));
         if (retType == 0) {

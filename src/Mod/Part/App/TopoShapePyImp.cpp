@@ -267,7 +267,7 @@ PyObject* TopoShapePy::copy(PyObject* args, PyObject* keywds) const
     auto elementMapPolicy = Base::asBoolean(noElementMap) ? ElementMapPolicy::Drop
                                                           : ElementMapPolicy::Propagate;
     return Py::new_reference_to(shape2pyshape(
-        TopoShape(self.Tag, hasher, TopoDS_Shape(), this->getTopoShapePtr()->getHistoryAlgorithm())
+        TopoShape(self.Tag, hasher, this->getTopoShapePtr()->getHistoryAlgorithm())
             .makeElementCopy(self, op, PyObject_IsTrue(copyGeom), PyObject_IsTrue(copyMesh), elementMapPolicy)
     ));
 }
@@ -3019,7 +3019,7 @@ PyObject* TopoShapePy::mapShapes(PyObject* args)
         PyShapeMapper mapper;
         mapper.init(generated, modified);
         TopoShape& self = *getTopoShapePtr();
-        TopoShape s(self.Tag, self.Hasher, TopoDS_Shape(), self.getHistoryAlgorithm());
+        TopoShape s(self.Tag, self.Hasher, self.getHistoryAlgorithm());
         s.makeShapeWithElementMap(self.getShape(), mapper, mapper.shapes, op);
         self = s;
         return IncRef();
