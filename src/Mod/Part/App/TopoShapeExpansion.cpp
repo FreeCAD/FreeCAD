@@ -2576,11 +2576,6 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                 namedGeneratedShapesIterator->second
                             );
                         }
-                        else {
-                            auto namedGeneratedShapesIterator = namedGeneratedShapes.find(
-                                shapeHasher(foundSubshape)
-                            );
-                        }
 
                         if (encodedMappedSection.size()) {
                             generatedConnectedElementMap[elementShape].push_back(encodedMappedSection);
