@@ -76,12 +76,12 @@
   <context>
     <name>CmdTechDrawActiveView</name>
     <message>
-      <location filename="../../Command.cpp" line="705"/>
+      <location filename="../../Command.cpp" line="702"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="706"/>
+      <location filename="../../Command.cpp" line="703"/>
       <source>Active View</source>
       <translation>Активни поглед</translation>
     </message>
@@ -125,17 +125,17 @@
   <context>
     <name>CmdTechDrawArchView</name>
     <message>
-      <location filename="../../Command.cpp" line="1677"/>
+      <location filename="../../Command.cpp" line="1673"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1678"/>
+      <location filename="../../Command.cpp" line="1674"/>
       <source>BIM View</source>
       <translation>Уметни БИМ објекат</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1679"/>
+      <location filename="../../Command.cpp" line="1675"/>
       <source>Inserts a view of a BIM section plane</source>
       <translation>Уметни пресек из БИМ радног окружења</translation>
     </message>
@@ -143,17 +143,17 @@
   <context>
     <name>CmdTechDrawBalloon</name>
     <message>
-      <location filename="../../Command.cpp" line="1284"/>
+      <location filename="../../Command.cpp" line="1281"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1285"/>
+      <location filename="../../Command.cpp" line="1282"/>
       <source>Balloon Annotation</source>
       <translation>Уметни позициону ознаку</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1286"/>
+      <location filename="../../Command.cpp" line="1283"/>
       <source>Inserts a new balloon annotation in the selected view</source>
       <translation>Уметни позициони ознаку у изабрани поглед</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdTechDrawClipGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1348"/>
+      <location filename="../../Command.cpp" line="1345"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1349"/>
+      <location filename="../../Command.cpp" line="1346"/>
       <source>Clip Group</source>
       <translation>Група погледа</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1350"/>
+      <location filename="../../Command.cpp" line="1347"/>
       <source>Inserts a new clip group for the selected view</source>
       <translation>Направи групу погледа</translation>
     </message>
@@ -202,17 +202,17 @@
   <context>
     <name>CmdTechDrawClipGroupAdd</name>
     <message>
-      <location filename="../../Command.cpp" line="1385"/>
+      <location filename="../../Command.cpp" line="1382"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1386"/>
+      <location filename="../../Command.cpp" line="1383"/>
       <source>Add View To Clip Group</source>
       <translation>Додај поглед у групу погледа</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1387"/>
+      <location filename="../../Command.cpp" line="1384"/>
       <source>Adds the selected view to a clip group</source>
       <translation>Додај изабрани поглед у групу погледа</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdTechDrawClipGroupRemove</name>
     <message>
-      <location filename="../../Command.cpp" line="1469"/>
+      <location filename="../../Command.cpp" line="1466"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1470"/>
+      <location filename="../../Command.cpp" line="1467"/>
       <source>Remove From Clip Group</source>
       <translation>Уклони поглед из Групе погледа</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1471"/>
+      <location filename="../../Command.cpp" line="1468"/>
       <source>Removes a view based on the selected clip group</source>
       <translation>Уклони изабрани поглед из групе погледа</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdTechDrawComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="891"/>
+      <location filename="../../Command.cpp" line="888"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="892"/>
+      <location filename="../../Command.cpp" line="889"/>
       <source>Complex Section View</source>
       <translation>Сложени пресек</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="893"/>
+      <location filename="../../Command.cpp" line="890"/>
       <source>Inserts a complex section view based on the selected view in the current page</source>
       <translation>Уметни на цртеж сложени пресек направљен на основу изабраног погледа</translation>
     </message>
@@ -329,17 +329,17 @@
   <context>
     <name>CmdTechDrawDetailView</name>
     <message>
-      <location filename="../../Command.cpp" line="1017"/>
+      <location filename="../../Command.cpp" line="1014"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1018"/>
+      <location filename="../../Command.cpp" line="1015"/>
       <source>Detail View</source>
       <translation>Детаљни поглед</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1019"/>
+      <location filename="../../Command.cpp" line="1016"/>
       <source>Inserts a new detail view based on the selected view in the current page</source>
       <translation>Уметни на цртеж детаљни поглед направљен на основу изабраног погледа</translation>
     </message>
@@ -387,17 +387,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="1610"/>
+      <location filename="../../Command.cpp" line="1606"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1611"/>
+      <location filename="../../Command.cpp" line="1607"/>
       <source>Draft View</source>
       <translation>Уметни објекат Цртање</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1613"/>
+      <location filename="../../Command.cpp" line="1609"/>
       <source>Inserts a view of a Draft object</source>
       <extracomment>&quot;Draft&quot; is a workbench and should not be translated</extracomment>
       <translation>Уметни 2Д објекат радног окружења Цртање</translation>
@@ -406,17 +406,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExportPageDXF</name>
     <message>
-      <location filename="../../Command.cpp" line="1868"/>
+      <location filename="../../Command.cpp" line="1864"/>
       <source>File</source>
       <translation>Датотека</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1869"/>
+      <location filename="../../Command.cpp" line="1865"/>
       <source>Export Page as DXF</source>
       <translation>Извези цртеж у DXF формату</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1870"/>
+      <location filename="../../Command.cpp" line="1866"/>
       <source>Exports the current page as a DXF</source>
       <translation>Извези тренутни цртеж као DXF</translation>
     </message>
@@ -424,17 +424,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExportPageSVG</name>
     <message>
-      <location filename="../../Command.cpp" line="1825"/>
+      <location filename="../../Command.cpp" line="1821"/>
       <source>File</source>
       <translation>Датотека</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1826"/>
+      <location filename="../../Command.cpp" line="1822"/>
       <source>Export Page as SVG</source>
       <translation>Извези цртеж у SVG формату</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1827"/>
+      <location filename="../../Command.cpp" line="1823"/>
       <source>Exports the current page as an SVG</source>
       <translation>Извези тренутни цртеж као SVG</translation>
     </message>
@@ -442,17 +442,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtendShortenLineGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1753"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1756"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1754"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1757"/>
       <source>Extend Line</source>
       <translation>Продужи линију</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1755"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1758"/>
       <source>Extends a selected cosmetic line or centerline at both ends by the specified delta distance</source>
       <translation>Продужи помоћну дуж или осну линију на оба краја за наведено делта растојање</translation>
     </message>
@@ -460,17 +460,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionAreaAnnotation</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1848"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1851"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1849"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1852"/>
       <source>Area Annotation</source>
       <translation>Ознака површине</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1850"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1853"/>
       <source>Calculates the area of multiple selected faces</source>
       <translation>Израчунај и означи површину изабраних страница</translation>
     </message>
@@ -574,17 +574,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionChangeLineAttributes</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="750"/>
+      <location filename="../../CommandExtensionPack.cpp" line="753"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="751"/>
+      <location filename="../../CommandExtensionPack.cpp" line="754"/>
       <source>Change Line Attributes</source>
       <translation>Промени својства линије</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="752"/>
+      <location filename="../../CommandExtensionPack.cpp" line="755"/>
       <source>Changes the selected cosmetic lines and centerlines to the specified attributes</source>
       <translation>Промени својства изабраних помоћних и осних линија на задана</translation>
     </message>
@@ -592,23 +592,23 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionCircleCenterLines</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="257"/>
+      <location filename="../../CommandExtensionPack.cpp" line="260"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="258"/>
-      <location filename="../../CommandExtensionPack.cpp" line="355"/>
+      <location filename="../../CommandExtensionPack.cpp" line="261"/>
+      <location filename="../../CommandExtensionPack.cpp" line="358"/>
       <source>Circle Centerlines</source>
       <translation>Симетрале кружнице</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="259"/>
+      <location filename="../../CommandExtensionPack.cpp" line="262"/>
       <source>Adds centerlines to the selected circles and arcs</source>
       <translation>Направи симетрале изабраним кружницама и кружним луковима</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="356"/>
+      <location filename="../../CommandExtensionPack.cpp" line="359"/>
       <source>Adds centerlines to selected circles and arcs:</source>
       <translation>Направи симетрале изабраним кружницама и кружним луковима:</translation>
     </message>
@@ -616,17 +616,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionCircleCenterLinesGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="288"/>
+      <location filename="../../CommandExtensionPack.cpp" line="291"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="289"/>
+      <location filename="../../CommandExtensionPack.cpp" line="292"/>
       <source>Circle Centerlines</source>
       <translation>Симетрале кружнице</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="290"/>
+      <location filename="../../CommandExtensionPack.cpp" line="293"/>
       <source>Adds centerlines to selected circles and arcs</source>
       <translation>Направи симетрале изабраним кружницама и кружним луковима</translation>
     </message>
@@ -894,17 +894,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionDrawCirclesGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1210"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1213"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1211"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1214"/>
       <source>Cosmetic 1 Point Circle</source>
       <translation>Помоћна кружница помоћу центра</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1212"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1215"/>
       <source>Adds a cosmetic circle based on two vertices, where the first selection is the centerpoint and the second is the radius</source>
       <translation>Направи помоћну кружницу помоћу изабраног центра и унетог полупречника</translation>
     </message>
@@ -912,23 +912,23 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionDrawCosmArc</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1056"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1059"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1057"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1313"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1060"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1316"/>
       <source>Cosmetic Arc</source>
       <translation>Помоћни кружни лук</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1058"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1061"/>
       <source>Adds a cosmetic counter clockwise arc based on three vertices, where the first selection is the center point and the second is the radius and start point</source>
       <translation>Направи помоћни кружни лук помоћу 3 тачке у смеру супротном од казаљке на сату. Прва тачка одређује центар, друга полупречник, а трећа почетну тачку</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1314"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1317"/>
       <source>Adds a cosmetic counter clockwise arc based on three vertices, where the first selection is the center point and the second is the radius and start point.</source>
       <translation>Направи помоћни кружни лук помоћу 3 тачке у смеру супротном од казаљке на сату. Прва тачка одређује центар, друга полупречник, а трећа почетну тачку.</translation>
     </message>
@@ -936,23 +936,23 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionDrawCosmCircle</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1116"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1119"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1117"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1298"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1120"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1301"/>
       <source>Cosmetic 2 Point Circle</source>
       <translation>Помоћна кружница помоћу 2 тачке</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1118"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1121"/>
       <source>Adds a cosmetic circle based on two selected vertices, where the first is the center point and the second is the radius</source>
       <translation>Додај помоћну кружницу помоћу 2 изабране тачке. Прва одређује центар, а друга полупречник</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1300"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1303"/>
       <source>Adds a cosmetic circle based on two vertices, where the first selection is the centerpoint and the second is the radius</source>
       <translation>Направи помоћну кружницу помоћу 2 изабране тачке. Прва одређује центар, а друга полупречник</translation>
     </message>
@@ -960,19 +960,19 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionDrawCosmCircle3Points</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1178"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1181"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1180"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1308"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1183"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1311"/>
       <source>Adds a cosmetic circle that passes through 3 selected perimeter points</source>
       <translation>Додај помоћну кружницу помоћу 3 изабране тачке на обиму</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1179"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1306"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1182"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1309"/>
       <source>Cosmetic 3 Point Circle</source>
       <translation>Помоћна кружница помоћу 3 тачке</translation>
     </message>
@@ -980,19 +980,19 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionExtendLine</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1689"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1692"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1690"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1820"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1693"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1823"/>
       <source>Extend Line</source>
       <translation>Продужи линију</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1691"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1821"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1694"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1824"/>
       <source>Extends a selected cosmetic line or centerline at both ends by the specified delta distance</source>
       <translation>Продужи помоћну дуж или осну линију на оба краја за наведено делта растојање</translation>
     </message>
@@ -1006,7 +1006,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="176"/>
-      <location filename="../../CommandExtensionPack.cpp" line="361"/>
+      <location filename="../../CommandExtensionPack.cpp" line="364"/>
       <source>Bolt Circle Centerlines</source>
       <translation>Симетрале кружно распоређених кружница</translation>
     </message>
@@ -1016,7 +1016,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <translation>Направи симетрале изабраним (три или више) кружно распоређеним кружницама</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="362"/>
+      <location filename="../../CommandExtensionPack.cpp" line="365"/>
       <source>Adds centerlines to a circular pattern of selected circles</source>
       <translation>Направи симетрале изабраним кружно распоређеним кружницама</translation>
     </message>
@@ -1120,17 +1120,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionLinePPGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1455"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1458"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1456"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1459"/>
       <source>Cosmetic Parallel Line</source>
       <translation>Помоћну паралелну дуж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1457"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1460"/>
       <source>Adds a cosmetic line parallel to the selected line through the selected vertex</source>
       <translation>Направи помоћну дуж кроз изабрану тачку, а паралелно другој дужи</translation>
     </message>
@@ -1138,23 +1138,23 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionLineParallel</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1392"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1395"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1393"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1523"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1396"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1526"/>
       <source>Cosmetic Parallel Line</source>
       <translation>Помоћну паралелну дуж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1394"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1397"/>
       <source>Adds a cosmetic circle to 3 selected vertices</source>
       <translation>Направи помоћну кружницу кроз 3 изабране тачке</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1525"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1528"/>
       <source>Adds a cosmetic line parallel to the selected line through the selected vertex</source>
       <translation>Направи помоћну дуж кроз изабрану тачку, а паралелно другој дужи</translation>
     </message>
@@ -1162,19 +1162,19 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionLinePerpendicular</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1423"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1426"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1424"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1529"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1427"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1532"/>
       <source>Cosmetic Perpendicular Line</source>
       <translation>Помоћна управна дуж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1426"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1531"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1429"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1534"/>
       <source>Adds a cosmetic line perpendicular to the selected line through the selected vertex</source>
       <translation>Направи помоћну дуж кроз изабрану тачку, а управно другој дужи</translation>
     </message>
@@ -1182,17 +1182,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionLockUnlockView</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1554"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1557"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1555"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1558"/>
       <source>Toggle View Lock</source>
       <translation>Закључај/Откључај поглед</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1556"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1559"/>
       <source>Locks or unlocks the position of the selected views</source>
       <translation>Закључај или откључај изабране погледе</translation>
     </message>
@@ -1308,17 +1308,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionSelectLineAttributes</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="718"/>
+      <location filename="../../CommandExtensionPack.cpp" line="721"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="719"/>
+      <location filename="../../CommandExtensionPack.cpp" line="722"/>
       <source>Select Line Attributes, Cascade Spacing and Delta Distance</source>
       <translation>Изабери својства линије, паралелно растојање и делта растојање</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="720"/>
+      <location filename="../../CommandExtensionPack.cpp" line="723"/>
       <source>Configures the default attributes for cosmetic lines and centerlines, including cascade spacing and delta distance</source>
       <translation>Изабери особине нових помоћних линија и осних линија, укључујући паралелно растојање између кота и делта растојање</translation>
     </message>
@@ -1326,19 +1326,19 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionShortenLine</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1721"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1724"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1722"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1825"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1725"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1828"/>
       <source>Shorten Line</source>
       <translation>Скрати линију</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1723"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1826"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1726"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1829"/>
       <source>Shortens a selected cosmetic line or centerline at both ends by the specified delta distance</source>
       <translation>Скрати помоћну дуж или осну линију на оба краја за наведено делта растојање</translation>
     </message>
@@ -1346,19 +1346,19 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionThreadBoltBottom</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="558"/>
+      <location filename="../../CommandExtensionPack.cpp" line="561"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="559"/>
-      <location filename="../../CommandExtensionPack.cpp" line="693"/>
+      <location filename="../../CommandExtensionPack.cpp" line="562"/>
+      <location filename="../../CommandExtensionPack.cpp" line="696"/>
       <source>Cosmetic Thread Bolt Bottom View</source>
       <translation>Додај приказ спреда (аксијални) спољашњег навоја</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="561"/>
-      <location filename="../../CommandExtensionPack.cpp" line="695"/>
+      <location filename="../../CommandExtensionPack.cpp" line="564"/>
+      <location filename="../../CommandExtensionPack.cpp" line="698"/>
       <source>Adds a cosmetic thread to the top or bottom view of the selected bolts/screws/rods</source>
       <translation>Прикажи спреда или отпозади упрошћени спољашњи навој</translation>
     </message>
@@ -1366,19 +1366,19 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionThreadBoltSide</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="455"/>
+      <location filename="../../CommandExtensionPack.cpp" line="458"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="456"/>
-      <location filename="../../CommandExtensionPack.cpp" line="685"/>
+      <location filename="../../CommandExtensionPack.cpp" line="459"/>
+      <location filename="../../CommandExtensionPack.cpp" line="688"/>
       <source>Cosmetic Thread Bolt Side View</source>
       <translation>Додај приказ са стране спољашњег навоја</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="457"/>
-      <location filename="../../CommandExtensionPack.cpp" line="688"/>
+      <location filename="../../CommandExtensionPack.cpp" line="460"/>
+      <location filename="../../CommandExtensionPack.cpp" line="691"/>
       <source>Adds a cosmetic thread to the side view of a bolt/screw/rod between two selected parallel lines</source>
       <translation>Прикажи са стране упрошћени спољашњи навој</translation>
     </message>
@@ -1386,23 +1386,23 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionThreadHoleBottom</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="507"/>
+      <location filename="../../CommandExtensionPack.cpp" line="510"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="508"/>
-      <location filename="../../CommandExtensionPack.cpp" line="678"/>
+      <location filename="../../CommandExtensionPack.cpp" line="511"/>
+      <location filename="../../CommandExtensionPack.cpp" line="681"/>
       <source>Cosmetic Thread Hole Bottom View</source>
       <translation>Додај приказ спреда (аксијални) унутрашњег навоја</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="509"/>
+      <location filename="../../CommandExtensionPack.cpp" line="512"/>
       <source>Adds a cosmetic thread to the top or bottom view of selected holes or circles</source>
       <translation>Прикажи спреда или отпозади упрошћени унутрашњи навој</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="681"/>
+      <location filename="../../CommandExtensionPack.cpp" line="684"/>
       <source>Adds a cosmetic thread to the top or bottom view of holes or circles</source>
       <translation>Прикажи спреда или отпозади упрошћени унутрашњи навој</translation>
     </message>
@@ -1410,23 +1410,23 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionThreadHoleSide</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="404"/>
+      <location filename="../../CommandExtensionPack.cpp" line="407"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="405"/>
-      <location filename="../../CommandExtensionPack.cpp" line="671"/>
+      <location filename="../../CommandExtensionPack.cpp" line="408"/>
+      <location filename="../../CommandExtensionPack.cpp" line="674"/>
       <source>Cosmetic Thread Hole Side View</source>
       <translation>Додај приказ са стране унутрашњег навоја</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="406"/>
+      <location filename="../../CommandExtensionPack.cpp" line="409"/>
       <source>Adds a cosmetic thread to the side view of a hole or circle</source>
       <translation>Прикажи са стране упрошћени унутрашњи навој</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="673"/>
+      <location filename="../../CommandExtensionPack.cpp" line="676"/>
       <source>Adds a cosmetic thread to the side view of a selected hole between two selected parallel lines</source>
       <translation>Прикажи са стране упрошћени унутрашњи навој</translation>
     </message>
@@ -1434,17 +1434,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionThreadsGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="590"/>
+      <location filename="../../CommandExtensionPack.cpp" line="593"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="591"/>
+      <location filename="../../CommandExtensionPack.cpp" line="594"/>
       <source>Cosmetic Thread Hole Side View</source>
       <translation>Додај приказ са стране унутрашњег навоја</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="592"/>
+      <location filename="../../CommandExtensionPack.cpp" line="595"/>
       <source>Adds a cosmetic thread to the side view of a selected hole between two selected parallel lines</source>
       <translation>Прикажи са стране упрошћени унутрашњи навој</translation>
     </message>
@@ -1452,17 +1452,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionVertexAtIntersection</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="808"/>
+      <location filename="../../CommandExtensionPack.cpp" line="811"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="809"/>
+      <location filename="../../CommandExtensionPack.cpp" line="812"/>
       <source>Cosmetic Intersection Vertices</source>
       <translation>Помоћне пресечне тачке</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="811"/>
+      <location filename="../../CommandExtensionPack.cpp" line="814"/>
       <source>Adds cosmetic vertices at the intersections of selected edges</source>
       <translation>Направи помоћне пресечне тачке на местима где се укрштају изабране линије</translation>
     </message>
@@ -1719,17 +1719,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1932"/>
+      <location filename="../../Command.cpp" line="1928"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1933"/>
+      <location filename="../../Command.cpp" line="1929"/>
       <source>Project Shape</source>
       <translation>Пројицирај објекат у 3Д</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1934"/>
+      <location filename="../../Command.cpp" line="1930"/>
       <source>Creates a projected geometry of the selected object in the 3D view from the current camera angle</source>
       <translation>Пројицирај изабрани објекат у 3Д погледу у смеру камере</translation>
     </message>
@@ -1737,17 +1737,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawProjectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1061"/>
+      <location filename="../../Command.cpp" line="1058"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1062"/>
+      <location filename="../../Command.cpp" line="1059"/>
       <source>Projection Group</source>
       <translation>Група основних погледа</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1063"/>
+      <location filename="../../Command.cpp" line="1060"/>
       <source>Inserts multiple new linked views of the selected objects in the current page</source>
       <translation>Уметни на цртеж нове повезане погледе изабраних објеката</translation>
     </message>
@@ -1827,27 +1827,27 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawSectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="736"/>
+      <location filename="../../Command.cpp" line="733"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="737"/>
+      <location filename="../../Command.cpp" line="734"/>
       <source>Section View (Simple or Complex)</source>
       <translation>Пун или сложени пресек</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="738"/>
+      <location filename="../../Command.cpp" line="735"/>
       <source>Inserts a simple or complex section view in the current page</source>
       <translation>Уметни пун или сложени пресек на тренутно активни цртеж</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="802"/>
+      <location filename="../../Command.cpp" line="799"/>
       <source>Section View</source>
       <translation>Пун пресек</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="806"/>
+      <location filename="../../Command.cpp" line="803"/>
       <source>Complex Section View</source>
       <translation>Сложени пресек</translation>
     </message>
@@ -1855,17 +1855,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawSectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="828"/>
+      <location filename="../../Command.cpp" line="825"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="829"/>
+      <location filename="../../Command.cpp" line="826"/>
       <source>Section View</source>
       <translation>Пун пресек</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="830"/>
+      <location filename="../../Command.cpp" line="827"/>
       <source>Inserts a new section view based on the selected view in the current page</source>
       <translation>Уметни на цртеж пресек направљен на основу изабраног погледа</translation>
     </message>
@@ -1891,17 +1891,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="1750"/>
+      <location filename="../../Command.cpp" line="1746"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1751"/>
+      <location filename="../../Command.cpp" line="1747"/>
       <source>Spreadsheet View</source>
       <translation>Уметни табелу</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1752"/>
+      <location filename="../../Command.cpp" line="1748"/>
       <source>Inserts a view of a spreadsheet in the current page</source>
       <translation>Уметни табелу на тренутно активни цртеж</translation>
     </message>
@@ -2037,17 +2037,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="1542"/>
+      <location filename="../../Command.cpp" line="1539"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1543"/>
+      <location filename="../../Command.cpp" line="1540"/>
       <source>Insert SVG</source>
       <translation>Уметни део SVG</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1544"/>
+      <location filename="../../Command.cpp" line="1541"/>
       <source>Inserts a symbol from an SVG file</source>
       <translation>Уметни симбол из SVG датотеке</translation>
     </message>
@@ -2136,65 +2136,65 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     </message>
     <message>
       <location filename="../../Command.cpp" line="363"/>
-      <location filename="../../Command.cpp" line="1724"/>
+      <location filename="../../Command.cpp" line="1720"/>
       <source>Create BIM view</source>
       <translation>Направи BIM поглед</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="488"/>
+      <location filename="../../Command.cpp" line="485"/>
       <source>Create image</source>
       <translation>Направи слику</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="506"/>
+      <location filename="../../Command.cpp" line="503"/>
       <source>Create view</source>
       <translation>Направи поглед</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="654"/>
+      <location filename="../../Command.cpp" line="651"/>
       <source>Create broken view</source>
       <translation>Направи скраћени поглед</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1911"/>
+      <location filename="../../Command.cpp" line="1907"/>
       <location filename="../../PagePrinter.cpp" line="444"/>
       <source>Save page to DXF</source>
       <translation>Сачувај цртеж у DXF формату</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="463"/>
-      <location filename="../../Command.cpp" line="1573"/>
+      <location filename="../../Command.cpp" line="1570"/>
       <source>Create Symbol</source>
       <translation>Направи симбол</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1145"/>
+      <location filename="../../Command.cpp" line="1142"/>
       <source>Create projection group</source>
       <translation>Направи групу основних погледа</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1366"/>
+      <location filename="../../Command.cpp" line="1363"/>
       <source>Create clip</source>
       <translation>Направи Групу погледа</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1438"/>
+      <location filename="../../Command.cpp" line="1435"/>
       <source>Add clip group</source>
       <translation>Додај групу погледа</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1509"/>
+      <location filename="../../Command.cpp" line="1506"/>
       <source>Remove clip group</source>
       <translation>Уклони групу погледа</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1648"/>
+      <location filename="../../Command.cpp" line="1644"/>
       <source>Create DraftView</source>
       <translation>Направи поглед окружења Цртање</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="343"/>
-      <location filename="../../Command.cpp" line="1776"/>
+      <location filename="../../Command.cpp" line="1772"/>
       <source>Create spreadsheet view</source>
       <translation>Направи поглед од табеле</translation>
     </message>
@@ -2413,12 +2413,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Котирај</translation>
     </message>
     <message>
-      <location filename="../../TaskHatch.cpp" line="200"/>
+      <location filename="../../TaskHatch.cpp" line="201"/>
       <source>Create Hatch</source>
       <translation>Направи шрафуру</translation>
     </message>
     <message>
-      <location filename="../../TaskHatch.cpp" line="237"/>
+      <location filename="../../TaskHatch.cpp" line="239"/>
       <source>Update Hatch</source>
       <translation>Ажурирај шрафуру</translation>
     </message>
@@ -2438,7 +2438,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Направи слику</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="509"/>
+      <location filename="../../QGIViewBalloon.cpp" line="511"/>
       <source>Drag Balloon</source>
       <translation>Превуци позициону ознаку</translation>
     </message>
@@ -2503,8 +2503,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Направи сложени пресек</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="648"/>
-      <location filename="../../TaskSectionView.cpp" line="572"/>
+      <location filename="../../TaskSectionView.cpp" line="573"/>
+      <location filename="../../TaskComplexSection.cpp" line="649"/>
       <source>Edit Section View</source>
       <translation>Уреди пун пресек</translation>
     </message>
@@ -2609,37 +2609,37 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Симетрале кружнице</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="384"/>
+      <location filename="../../CommandExtensionPack.cpp" line="387"/>
       <source>TechDraw Thread Hole Side</source>
       <translation>TechDraw унутрашњи навој</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="387"/>
+      <location filename="../../CommandExtensionPack.cpp" line="390"/>
       <source>Cosmetic Thread Hole Side</source>
       <translation>Додај унутрашњи навој</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="435"/>
+      <location filename="../../CommandExtensionPack.cpp" line="438"/>
       <source>TechDraw Thread Bolt Side</source>
       <translation>TechDraw Приказ са стране спољашњег навоја</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="438"/>
+      <location filename="../../CommandExtensionPack.cpp" line="441"/>
       <source>Cosmetic Thread Bolt Side</source>
       <translation>Додај спољашњи навој</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="487"/>
+      <location filename="../../CommandExtensionPack.cpp" line="490"/>
       <source>TechDraw Thread Hole Bottom</source>
       <translation>TechDraw Приказ спреда (аксијални) унутрашњег навоја</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="538"/>
+      <location filename="../../CommandExtensionPack.cpp" line="541"/>
       <source>TechDraw Thread Bolt Bottom</source>
       <translation>TechDraw Приказ спреда спољашњег навоја</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="541"/>
+      <location filename="../../CommandExtensionPack.cpp" line="544"/>
       <source>Cosmetic Thread Bolt Bottom</source>
       <translation>Додај спољашњи навој - Аксијални поглед</translation>
     </message>
@@ -2659,102 +2659,102 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>TechDraw Симетрале кружнице</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="490"/>
+      <location filename="../../CommandExtensionPack.cpp" line="493"/>
       <source>Cosmetic thread hole bottom</source>
       <translation>Упрошћени аксијални унутрашњи навој</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="764"/>
+      <location filename="../../CommandExtensionPack.cpp" line="767"/>
       <source>TechDraw change line attributes</source>
       <translation>TechDraw Промени својства линије</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="767"/>
+      <location filename="../../CommandExtensionPack.cpp" line="770"/>
       <source>Change line attributes</source>
       <translation>Промени својства линије</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="823"/>
+      <location filename="../../CommandExtensionPack.cpp" line="826"/>
       <source>TechDraw cosmetic intersection vertices</source>
       <translation>TechDraw Помоћне пресечне тачке</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="826"/>
+      <location filename="../../CommandExtensionPack.cpp" line="829"/>
       <source>Cosmetic intersection vertices</source>
       <translation>Помоћне пресечне тачке</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1019"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1022"/>
       <source>TechDraw cosmetic arc</source>
       <translation>TechDraw Помоћни кружни лук</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1022"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1025"/>
       <source>Cosmetic arc</source>
       <translation>Помоћни кружни лук</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1088"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1091"/>
       <source>TechDraw cosmetic circle</source>
       <translation>TechDraw Помоћна кружница</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1091"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1094"/>
       <source>Cosmetic Circle</source>
       <translation>Помоћна кружница</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1147"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1150"/>
       <source>TechDraw Cosmetic Circle 3 Points</source>
       <translation>TechDraw Помоћна кружница помоћу 3 тачке</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1150"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1153"/>
       <source>Cosmetic Circle 3 Points</source>
       <translation>Помоћна кружница помоћу 3 тачке</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1336"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1339"/>
       <source>TechDraw Cosmetic Line Parallel/Perpendicular</source>
       <translation>TechDraw Помоћна дуж паралелна/управна</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1339"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1342"/>
       <source>Cosmetic Line Parallel/Perpendicular</source>
       <translation>Помоћна дуж паралелна/управна</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1571"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1574"/>
       <source>Lock/Unlock View</source>
       <translation>Закључај/Откључај поглед</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1600"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1603"/>
       <source>TechDraw Extend/Shorten Line</source>
       <translation>TechDraw Продужи/Скрати линију</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1603"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1606"/>
       <source>Extend/shorten line</source>
       <translation>Продужи/Скрати линију</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1862"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1865"/>
       <source>TechDraw Calculate Selected Area</source>
       <translation>TechDraw Израчунај површину изабране странице</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1988"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1991"/>
       <source>TechDraw Calculate Selected Arc Length</source>
       <translation>TechDraw Израчунај дужину изабраног кружног лука</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1904"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1907"/>
       <source>Calculate Face Area</source>
       <translation>Израчунај површину региона</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2025"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2028"/>
       <source>Calculate Edge Length</source>
       <translation>Израчунај дужину ивице</translation>
     </message>
@@ -3050,26 +3050,24 @@ If no object is selected, a file browser opens to select an SVG or image file.</
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="638"/>
-      <location filename="../../Command.cpp" line="648"/>
-      <location filename="../../Command.cpp" line="865"/>
-      <location filename="../../Command.cpp" line="982"/>
-      <location filename="../../Command.cpp" line="989"/>
-      <location filename="../../Command.cpp" line="994"/>
-      <location filename="../../Command.cpp" line="1032"/>
-      <location filename="../../Command.cpp" line="1131"/>
-      <location filename="../../Command.cpp" line="1398"/>
-      <location filename="../../Command.cpp" line="1415"/>
-      <location filename="../../Command.cpp" line="1420"/>
-      <location filename="../../Command.cpp" line="1429"/>
-      <location filename="../../Command.cpp" line="1482"/>
-      <location filename="../../Command.cpp" line="1501"/>
-      <location filename="../../Command.cpp" line="1627"/>
-      <location filename="../../Command.cpp" line="1705"/>
-      <location filename="../../Command.cpp" line="1711"/>
-      <location filename="../../Command.cpp" line="1770"/>
-      <location filename="../../CommandHelpers.cpp" line="87"/>
-      <location filename="../../CommandHelpers.cpp" line="100"/>
+      <location filename="../../Command.cpp" line="635"/>
+      <location filename="../../Command.cpp" line="645"/>
+      <location filename="../../Command.cpp" line="862"/>
+      <location filename="../../Command.cpp" line="979"/>
+      <location filename="../../Command.cpp" line="986"/>
+      <location filename="../../Command.cpp" line="991"/>
+      <location filename="../../Command.cpp" line="1029"/>
+      <location filename="../../Command.cpp" line="1128"/>
+      <location filename="../../Command.cpp" line="1395"/>
+      <location filename="../../Command.cpp" line="1412"/>
+      <location filename="../../Command.cpp" line="1417"/>
+      <location filename="../../Command.cpp" line="1426"/>
+      <location filename="../../Command.cpp" line="1479"/>
+      <location filename="../../Command.cpp" line="1498"/>
+      <location filename="../../Command.cpp" line="1623"/>
+      <location filename="../../Command.cpp" line="1701"/>
+      <location filename="../../Command.cpp" line="1707"/>
+      <location filename="../../Command.cpp" line="1766"/>
       <location filename="../../CommandAnnotate.cpp" line="115"/>
       <location filename="../../CommandAnnotate.cpp" line="120"/>
       <location filename="../../CommandAnnotate.cpp" line="311"/>
@@ -3097,6 +3095,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1354"/>
       <location filename="../../CommandAnnotate.cpp" line="1361"/>
       <location filename="../../CommandAnnotate.cpp" line="1425"/>
+      <location filename="../../CommandHelpers.cpp" line="87"/>
+      <location filename="../../CommandHelpers.cpp" line="100"/>
       <source>Wrong selection</source>
       <translation>Погрешан избор</translation>
     </message>
@@ -3131,54 +3131,50 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Шаблон</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="599"/>
+      <location filename="../../Command.cpp" line="596"/>
       <source>Empty Selection</source>
       <translation>Ништа није изабрано</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="995"/>
+      <location filename="../../Command.cpp" line="992"/>
       <source>No profile object found in selection</source>
       <translation>Није изабран објекат са профилом</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1416"/>
+      <location filename="../../Command.cpp" line="1413"/>
       <source>Select exactly one view to add to clip group</source>
       <translation>Изабери један поглед који желиш да додаш у групу</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1483"/>
+      <location filename="../../Command.cpp" line="1480"/>
       <source>Select exactly one view to remove from clip group</source>
       <translation>Изабери један поглед који желиш да уклониш из групе</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1853"/>
+      <location filename="../../Command.cpp" line="1849"/>
       <source>FreeCAD could not find a page to export</source>
       <translation>FreeCAD није могао да пронађе цртеж за извоз</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="600"/>
+      <location filename="../../Command.cpp" line="597"/>
       <source>Select objects to break or a base view and break definition objects</source>
       <translation>Изабери поглед или објекат који треба скратити</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="639"/>
+      <location filename="../../Command.cpp" line="636"/>
       <source>No break objects found in this selection</source>
       <translation>Међу изабраним објектима није пронађен погодан за скраћивање</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="649"/>
-      <location filename="../../Command.cpp" line="1132"/>
+      <location filename="../../Command.cpp" line="646"/>
+      <location filename="../../Command.cpp" line="1129"/>
       <source>No shapes, groups, or links in this selection</source>
       <translation>Нису изабрани облици, групе или везе</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="748"/>
-      <location filename="../../Command.cpp" line="841"/>
-      <location filename="../../Command.cpp" line="904"/>
-      <location filename="../../CommandStack.cpp" line="73"/>
-      <location filename="../../CommandStack.cpp" line="189"/>
-      <location filename="../../CommandStack.cpp" line="249"/>
-      <location filename="../../CommandStack.cpp" line="309"/>
+      <location filename="../../Command.cpp" line="745"/>
+      <location filename="../../Command.cpp" line="838"/>
+      <location filename="../../Command.cpp" line="901"/>
       <location filename="../../CommandCreateDims.cpp" line="1499"/>
       <location filename="../../CommandCreateDims.cpp" line="1547"/>
       <location filename="../../CommandCreateDims.cpp" line="1595"/>
@@ -3190,18 +3186,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="1885"/>
       <location filename="../../CommandCreateDims.cpp" line="1981"/>
       <location filename="../../CommandCreateDims.cpp" line="2106"/>
-      <location filename="../../CommandExtensionDims.cpp" line="325"/>
-      <location filename="../../CommandExtensionDims.cpp" line="534"/>
-      <location filename="../../CommandExtensionDims.cpp" line="822"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1150"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1521"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1890"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2128"/>
-      <location filename="../../CommandExtensionPack.cpp" line="299"/>
-      <location filename="../../CommandExtensionPack.cpp" line="602"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1222"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1467"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1765"/>
       <location filename="../../CommandAnnotate.cpp" line="100"/>
       <location filename="../../CommandAnnotate.cpp" line="161"/>
       <location filename="../../CommandAnnotate.cpp" line="213"/>
@@ -3217,20 +3201,29 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1260"/>
       <location filename="../../CommandAnnotate.cpp" line="1341"/>
       <location filename="../../CommandAnnotate.cpp" line="1407"/>
+      <location filename="../../CommandStack.cpp" line="73"/>
+      <location filename="../../CommandStack.cpp" line="189"/>
+      <location filename="../../CommandStack.cpp" line="249"/>
+      <location filename="../../CommandStack.cpp" line="309"/>
+      <location filename="../../CommandExtensionPack.cpp" line="302"/>
+      <location filename="../../CommandExtensionPack.cpp" line="605"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1225"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1470"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1768"/>
+      <location filename="../../CommandExtensionDims.cpp" line="325"/>
+      <location filename="../../CommandExtensionDims.cpp" line="534"/>
+      <location filename="../../CommandExtensionDims.cpp" line="822"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1150"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1521"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1890"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2128"/>
       <source>Task in progress</source>
       <translation>Izvršenje zadatka u toku</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="749"/>
-      <location filename="../../Command.cpp" line="842"/>
-      <location filename="../../Command.cpp" line="905"/>
-      <location filename="../../CommandExtensionDims.cpp" line="326"/>
-      <location filename="../../CommandExtensionDims.cpp" line="535"/>
-      <location filename="../../CommandExtensionDims.cpp" line="823"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1151"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1522"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1891"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2129"/>
+      <location filename="../../Command.cpp" line="746"/>
+      <location filename="../../Command.cpp" line="839"/>
+      <location filename="../../Command.cpp" line="902"/>
       <location filename="../../CommandAnnotate.cpp" line="101"/>
       <location filename="../../CommandAnnotate.cpp" line="162"/>
       <location filename="../../CommandAnnotate.cpp" line="214"/>
@@ -3246,114 +3239,121 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1261"/>
       <location filename="../../CommandAnnotate.cpp" line="1342"/>
       <location filename="../../CommandAnnotate.cpp" line="1408"/>
+      <location filename="../../CommandExtensionDims.cpp" line="326"/>
+      <location filename="../../CommandExtensionDims.cpp" line="535"/>
+      <location filename="../../CommandExtensionDims.cpp" line="823"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1151"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1522"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1891"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2129"/>
       <source>Close active task dialog and try again</source>
       <translation>Затвори дијалог активног задатка и покушај поново</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="866"/>
-      <location filename="../../Command.cpp" line="1033"/>
+      <location filename="../../Command.cpp" line="863"/>
+      <location filename="../../Command.cpp" line="1030"/>
       <source>Select at least 1 DrawViewPart object as base</source>
       <translation>Изабери најмање један поглед као основни</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="983"/>
+      <location filename="../../Command.cpp" line="980"/>
       <source>No base view selected</source>
       <translation>Није изабран основни поглед</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="990"/>
+      <location filename="../../Command.cpp" line="987"/>
       <source>No base view, shapes, groups, or links in this selection</source>
       <translation>Нису изабрани облици, групе, везе или основни поглед</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1201"/>
+      <location filename="../../Command.cpp" line="1198"/>
       <location filename="../../CommandCreateDims.cpp" line="2371"/>
       <source>Select an object first</source>
       <translation>Прво изабери објекат</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1208"/>
+      <location filename="../../Command.cpp" line="1205"/>
       <location filename="../../CommandCreateDims.cpp" line="2379"/>
       <source>Too many objects selected</source>
       <translation>Превише објеката је изабрано</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1216"/>
+      <location filename="../../Command.cpp" line="1213"/>
       <source>Create a page first</source>
       <translation>Прво направи цртеж</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1228"/>
+      <location filename="../../Command.cpp" line="1225"/>
       <source>No view of a part in selection</source>
       <translation>Није изабран поглед дела</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1399"/>
+      <location filename="../../Command.cpp" line="1396"/>
       <source>Select one clip group and one view</source>
       <translation>Изабери једну групу погледа и један поглед</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1889"/>
+      <location filename="../../Command.cpp" line="1885"/>
       <source>Page contains a BIM view which will not be exported. Continue?</source>
       <translation>Цртеж садржи BIM поглед који неће бити извезен. Настави?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1903"/>
+      <location filename="../../Command.cpp" line="1899"/>
       <source>Save DXF file</source>
       <translation>Сачувај DXF датотеку</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2093"/>
+      <location filename="../../Command.cpp" line="2089"/>
       <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
       <translation type="unfinished">Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2098"/>
+      <location filename="../../Command.cpp" line="2094"/>
       <source>Direction is close to standard</source>
       <translation type="unfinished">Direction is close to standard</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1421"/>
+      <location filename="../../Command.cpp" line="1418"/>
       <source>Select exactly one clip group</source>
       <translation>Изабери само једну групу погледа</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1430"/>
+      <location filename="../../Command.cpp" line="1427"/>
       <source>Clip and view must be from same page</source>
       <translation>Група погледа и поглед морају бити са истог цртежа</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1499"/>
       <source>View does not belong to a clip</source>
       <translation>Поглед не припада групи погледа</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1628"/>
+      <location filename="../../Command.cpp" line="1624"/>
       <source>Select at least one object</source>
       <translation>Изабери бар један објекат</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1706"/>
+      <location filename="../../Command.cpp" line="1702"/>
       <source>Select only 1 BIM section plane</source>
       <translation>Изабери један BIM пресек</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1712"/>
+      <location filename="../../Command.cpp" line="1708"/>
       <source>No BIM section plane in selection</source>
       <translation>Није изабран ниједан BIM пресек</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1771"/>
+      <location filename="../../Command.cpp" line="1767"/>
       <source>Select exactly one spreadsheet object</source>
       <translation>Изабери један табеларни објекат</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1852"/>
+      <location filename="../../Command.cpp" line="1848"/>
       <source>No drawing page</source>
       <translation>Не постоји цртеж</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1888"/>
+      <location filename="../../Command.cpp" line="1884"/>
       <source>Cannot export selection</source>
       <translation>Изабрано се не може извести</translation>
     </message>
@@ -3434,21 +3434,21 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Прво направи страницу.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1565"/>
+      <location filename="../../Command.cpp" line="1562"/>
       <source>Choose an SVG file to open</source>
       <translation>Изабери SVG датотеку за отварање</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1197"/>
+      <location filename="../../Command.cpp" line="1204"/>
+      <location filename="../../Command.cpp" line="1212"/>
+      <location filename="../../Command.cpp" line="1224"/>
       <location filename="../../CommandDecorate.cpp" line="418"/>
       <location filename="../../CommandDecorate.cpp" line="425"/>
       <location filename="../../CommandDecorate.cpp" line="432"/>
       <location filename="../../CommandDecorate.cpp" line="439"/>
       <location filename="../../CommandDecorate.cpp" line="445"/>
-      <location filename="../../Command.cpp" line="1200"/>
-      <location filename="../../Command.cpp" line="1207"/>
-      <location filename="../../Command.cpp" line="1215"/>
-      <location filename="../../Command.cpp" line="1227"/>
-      <location filename="../../CommandAlign.cpp" line="53"/>
+      <location filename="../../TaskDimension.cpp" line="551"/>
       <location filename="../../TaskDimRepair.cpp" line="137"/>
       <location filename="../../TaskDimRepair.cpp" line="148"/>
       <location filename="../../CommandCreateDims.cpp" line="2007"/>
@@ -3463,9 +3463,9 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="2370"/>
       <location filename="../../CommandCreateDims.cpp" line="2378"/>
       <location filename="../../CommandCreateDims.cpp" line="2387"/>
-      <location filename="../../TaskDimension.cpp" line="551"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1878"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2002"/>
+      <location filename="../../CommandAlign.cpp" line="53"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1881"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2005"/>
       <source>Incorrect Selection</source>
       <translation>Погрешан избор</translation>
     </message>
@@ -3501,7 +3501,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="369"/>
-      <location filename="../../CommandExtensionPack.cpp" line="998"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1001"/>
       <source>Task In Progress</source>
       <translation>Задатак у току</translation>
     </message>
@@ -3513,27 +3513,27 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="370"/>
-      <location filename="../../CommandExtensionPack.cpp" line="300"/>
-      <location filename="../../CommandExtensionPack.cpp" line="603"/>
-      <location filename="../../CommandExtensionPack.cpp" line="999"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1223"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1468"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1766"/>
+      <location filename="../../CommandExtensionPack.cpp" line="303"/>
+      <location filename="../../CommandExtensionPack.cpp" line="606"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1002"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1226"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1471"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1769"/>
       <source>Close active task dialog and try again.</source>
       <translation>Затвори дијалог активног задатка и покушај поново.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="898"/>
+      <location filename="../../CommandExtensionPack.cpp" line="901"/>
       <source>Selection is empty.</source>
       <translation>Ништа није изабрано.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="921"/>
+      <location filename="../../CommandExtensionPack.cpp" line="924"/>
       <source>You must select a base View for the circle.</source>
       <translation>Мораш изабрати основни поглед за кружницу.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="943"/>
+      <location filename="../../CommandExtensionPack.cpp" line="946"/>
       <source>Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</source>
       <translation>Изабрано није помоћна кружница или помоћни кружни лук.</translation>
     </message>
@@ -3543,63 +3543,63 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Не могу направити кружницу рупе за %1</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="239"/>
+      <location filename="../../CommandExtensionPack.cpp" line="242"/>
       <source>TechDraw circle centerlines</source>
       <translation>TechDraw Симетрале кружнице</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="240"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1673"/>
+      <location filename="../../CommandExtensionPack.cpp" line="243"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1676"/>
       <source>Can not make centerlines for %1</source>
       <translation>Не могу направити осне линије за %1</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="979"/>
+      <location filename="../../CommandExtensionPack.cpp" line="982"/>
       <source>Select a center for the circle.</source>
       <translation>Изабери центар кружнице.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1672"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1675"/>
       <source>TechDraw extend/shorten line</source>
       <translation>TechDraw Продужи/Скрати линију</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1879"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1882"/>
       <source>No faces in selection</source>
       <translation>Није изабрана ниједна страница</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2003"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2006"/>
       <source>No edges in selection</source>
       <translation>Није изабрана ниједна ивица</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2217"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2220"/>
       <source>TechDraw create thread circle</source>
       <translation>TechDraw направи кружницу навоја</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2218"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2221"/>
       <source>Can not make thread circle for %1</source>
       <translation>Не могу направити кружницу навоја за %1</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2235"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2238"/>
       <source>TechDraw thread hole side</source>
       <translation>TechDraw унутрашњи навој са стране</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2236"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2239"/>
       <source>Select 2 straight lines</source>
       <translation>Изабери 2 праве линије</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="897"/>
-      <location filename="../../CommandExtensionPack.cpp" line="920"/>
-      <location filename="../../CommandExtensionPack.cpp" line="942"/>
-      <location filename="../../CommandExtensionPack.cpp" line="978"/>
       <location filename="../../CommandAnnotate.cpp" line="768"/>
       <location filename="../../CommandAnnotate.cpp" line="1021"/>
+      <location filename="../../CommandExtensionPack.cpp" line="900"/>
+      <location filename="../../CommandExtensionPack.cpp" line="923"/>
+      <location filename="../../CommandExtensionPack.cpp" line="945"/>
+      <location filename="../../CommandExtensionPack.cpp" line="981"/>
       <source>Wrong Selection</source>
       <translation>Погрешан избор</translation>
     </message>
@@ -3822,9 +3822,9 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>FreeCAD не може да отвори и уписује у датотеку %1. Датотека је можда отворена у другом програму.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="219"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="160"/>
       <location filename="../../ViewProviderTemplate.cpp" line="201"/>
+      <location filename="../../ViewProviderPage.cpp" line="219"/>
       <source>Are you sure you want to continue?</source>
       <translation>Да ли си сигуран да желиш да наставиш?</translation>
     </message>
@@ -3899,14 +3899,14 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Уреди сложени пресек</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="215"/>
       <location filename="../../TaskSectionView.cpp" line="228"/>
+      <location filename="../../TaskComplexSection.cpp" line="215"/>
       <source>Current View Direction</source>
       <translation>Тренутни правац погледа</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="216"/>
       <location filename="../../TaskSectionView.cpp" line="229"/>
+      <location filename="../../TaskComplexSection.cpp" line="216"/>
       <source>The view direction in BaseView coordinates</source>
       <translation>Правац погледа у координатама базног погледа</translation>
     </message>
@@ -3921,8 +3921,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Провери нормалу пресека, правац и/или X смер.</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="714"/>
-      <location filename="../../TaskSectionView.cpp" line="638"/>
+      <location filename="../../TaskSectionView.cpp" line="640"/>
+      <location filename="../../TaskComplexSection.cpp" line="716"/>
       <source>Operation Failed</source>
       <translation>Операција није извршена</translation>
     </message>
@@ -3957,8 +3957,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Уреди детаљни поглед</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="86"/>
       <location filename="../../ViewProviderDimension.cpp" line="139"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="86"/>
       <source>Edit %1</source>
       <translation>Уреди %1</translation>
     </message>
@@ -4092,15 +4092,15 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>TechDraw Прилагоди формат</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2344"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2143"/>
       <location filename="../../CommandAnnotate.cpp" line="1022"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2146"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2344"/>
       <source>Selection is empty</source>
       <translation>Ниси ништа изабрао</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="2153"/>
       <location filename="../../CommandExtensionDims.cpp" line="2360"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2150"/>
       <source>No object selected</source>
       <translation>Није изабран ниједан објекат</translation>
     </message>
@@ -4143,12 +4143,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
  дебела: %4</translation>
     </message>
     <message>
-      <location filename="../../TaskHatch.cpp" line="94"/>
+      <location filename="../../TaskHatch.cpp" line="95"/>
       <source>Create Face Hatch</source>
       <translation>Направи шрафуру странице</translation>
     </message>
     <message>
-      <location filename="../../TaskHatch.cpp" line="106"/>
+      <location filename="../../TaskHatch.cpp" line="107"/>
       <source>Edit Face Hatch</source>
       <translation>Уреди шрафуру странице</translation>
     </message>
@@ -4320,18 +4320,18 @@ it has a weld symbol that would become broken.</source>
       <translation>Не можеш обрисати овај поглед јер има један или више зависних објеката који ће постати неисправни.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="396"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="411"/>
-      <location filename="../../ViewProviderPage.cpp" line="222"/>
-      <location filename="../../ViewProviderLeader.cpp" line="212"/>
+      <location filename="../../ViewProviderWeld.cpp" line="143"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="146"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="163"/>
+      <location filename="../../ViewProviderLeader.cpp" line="212"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="174"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="182"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="190"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderWeld.cpp" line="143"/>
+      <location filename="../../ViewProviderPage.cpp" line="222"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="396"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="411"/>
       <source>Object dependencies</source>
       <translation>Међузависности објеката</translation>
     </message>
@@ -6825,12 +6825,12 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="555"/>
-      <location filename="../../TaskComplexSection.cpp" line="702"/>
+      <location filename="../../TaskComplexSection.cpp" line="704"/>
       <source>ComplexSection</source>
       <translation>Сложени пресек</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="713"/>
+      <location filename="../../TaskComplexSection.cpp" line="715"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>Не могу да наставим. Објекат * %1 или %2 није пронађен.</translation>
     </message>
@@ -8579,7 +8579,7 @@ using the given X/Y spacings</source>
       <translation>Нема шта да се примени. Још није одабран правац пресека</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="637"/>
+      <location filename="../../TaskSectionView.cpp" line="639"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>Не могу да наставим. Објекат * %1 или %2 није пронађен.</translation>
     </message>
@@ -9485,19 +9485,19 @@ there is an open task dialog.</source>
   <context>
     <name>CmdTechDrawCosmeticCircle</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="868"/>
+      <location filename="../../CommandExtensionPack.cpp" line="871"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="869"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1291"/>
+      <location filename="../../CommandExtensionPack.cpp" line="872"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1294"/>
       <source>Cosmetic 1 Point Circle</source>
       <translation>Помоћна кружница помоћу центра</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="870"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1293"/>
+      <location filename="../../CommandExtensionPack.cpp" line="873"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1296"/>
       <source>Adds a cosmetic circle based on a selected centerpoint</source>
       <translation>Направи помоћну кружницу у изабраном центру</translation>
     </message>
@@ -9505,17 +9505,17 @@ there is an open task dialog.</source>
   <context>
     <name>CmdTechDrawExtensionArcLengthAnnotation</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1973"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1976"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1974"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1977"/>
       <source>Arc Length Annotation</source>
       <translation>Напомена дужине кружног лука</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1975"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1978"/>
       <source>Inserts an annotation with the calculated arc length of the selected edges</source>
       <translation>Уметни напомену са израчунатом дужином кружног лука изабраних ивица</translation>
     </message>
@@ -9580,27 +9580,27 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_FillTemplateFields</name>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="139"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="138"/>
       <source>Fill Template Fields In </source>
       <translation>Попуни поља шаблона </translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="146"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="145"/>
       <source>Update</source>
       <translation>Ажурирање</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="406"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="405"/>
       <source>Update All</source>
       <translation>Ажурирај све</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandFillTemplateFields.py" line="50"/>
+      <location filename="../../../TechDrawTools/CommandFillTemplateFields.py" line="49"/>
       <source>Update Template Fields</source>
       <translation>Ажурирај поља шаблона</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandFillTemplateFields.py" line="54"/>
+      <location filename="../../../TechDrawTools/CommandFillTemplateFields.py" line="53"/>
       <source>Uses document info to populate the template fields</source>
       <translation>Ажурирај поља шаблона празног цртежа са информацијама из документа</translation>
     </message>
@@ -9608,27 +9608,27 @@ there is an open task dialog.</source>
   <context>
     <name>Techdraw_FillTemplateFields</name>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="82"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="81"/>
       <source> file does not contain the correct field names therefore exiting</source>
       <translation> датотека не садржи исправне називе поља, стога излазим</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="88"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="87"/>
       <source> file has not been found therefore exiting</source>
       <translation> датотека није пронађена стога излазим</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="109"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="108"/>
       <source>View or projection group missing</source>
       <translation>Недостаје поглед или група основних погледа</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="446"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="445"/>
       <source>Corresponding template fields missing</source>
       <translation>Недостају одговарајућа поља шаблона</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="535"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="534"/>
       <source>Fill template fields</source>
       <translation>Попуни поља шаблона</translation>
     </message>
@@ -9930,17 +9930,17 @@ there is an open task dialog.</source>
   <context>
     <name>CmdTechDrawBrokenView</name>
     <message>
-      <location filename="../../Command.cpp" line="556"/>
+      <location filename="../../Command.cpp" line="553"/>
       <source>TechDraw</source>
       <translation>Технички цртежи</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="557"/>
+      <location filename="../../Command.cpp" line="554"/>
       <source>Broken View</source>
       <translation>Скраћени поглед</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="558"/>
+      <location filename="../../Command.cpp" line="555"/>
       <source>Inserts a new broken view for the selected objects or base view and break definition objects</source>
       <translation>Уметни нови скраћени поглед изабраних објеката или основног погледа</translation>
     </message>
@@ -9948,22 +9948,22 @@ there is an open task dialog.</source>
   <context>
     <name>TechDrawGui::DirectionEditDialog</name>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="966"/>
+      <location filename="../../TaskProjGroup.cpp" line="968"/>
       <source>Direction</source>
       <translation>Правац</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="1003"/>
+      <location filename="../../TaskProjGroup.cpp" line="1005"/>
       <source>OK</source>
       <translation>У реду</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="1004"/>
+      <location filename="../../TaskProjGroup.cpp" line="1006"/>
       <source>Cancel</source>
       <translation>Откажи</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="1010"/>
+      <location filename="../../TaskProjGroup.cpp" line="1012"/>
       <source>Rotate by</source>
       <translation>Окрени за</translation>
     </message>
@@ -10154,7 +10154,7 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_SectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="803"/>
+      <location filename="../../Command.cpp" line="800"/>
       <source>Inserts a simple section view</source>
       <translation>Уметни пун пресек</translation>
     </message>
@@ -10162,7 +10162,7 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_ComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="808"/>
+      <location filename="../../Command.cpp" line="805"/>
       <source>Inserts a complex section view</source>
       <translation>Уметни сложени пресек</translation>
     </message>
@@ -10339,6 +10339,14 @@ there is an open task dialog.</source>
     </message>
   </context>
   <context>
+    <name>TechDrawGui::TaskDlgLineDecor</name>
+    <message>
+      <location filename="../../TaskLineDecor.cpp" line="454"/>
+      <source>Restore Invisible Lines</source>
+      <translation>Обнови невидљиве ивице</translation>
+    </message>
+  </context>
+  <context>
     <name>Cmd2LineCenterLine</name>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="653"/>
@@ -10352,14 +10360,6 @@ there is an open task dialog.</source>
       <location filename="../../CommandAnnotate.cpp" line="657"/>
       <source>Centerline Between 2 Points</source>
       <translation>Осна линија између 2 тачке</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDrawGui::TaskDlgLineDecor</name>
-    <message>
-      <location filename="../../TaskLineDecor.cpp" line="454"/>
-      <source>Restore Invisible Lines</source>
-      <translation>Обнови невидљиве ивице</translation>
     </message>
   </context>
 </TS>

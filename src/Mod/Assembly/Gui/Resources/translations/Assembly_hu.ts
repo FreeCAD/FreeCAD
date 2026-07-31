@@ -177,7 +177,7 @@
     <message>
       <location filename="../../../JointObject.py" line="1238"/>
       <source>Edit Joint</source>
-      <translation type="unfinished">Edit Joint</translation>
+      <translation>Csuklók szerkesztése</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1704"/>
@@ -354,7 +354,7 @@
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="495"/>
       <source>Enter your formula…</source>
-      <translation type="unfinished">Enter your formula…</translation>
+      <translation>Adja meg a képletet…</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="548"/>
@@ -484,22 +484,22 @@ A SLOPE határozza meg a 0 és H1, illetve H2 és 0 közötti átmenet meredeks�
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1046"/>
       <source>Not enough frames to create an animation.</source>
-      <translation type="unfinished">Not enough frames to create an animation.</translation>
+      <translation>Nincs elég képkocka az animáció elkészítéséhez.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1068"/>
       <source>Save Animation</source>
-      <translation type="unfinished">Save Animation</translation>
+      <translation>Animációk mentése</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1093"/>
       <source>Pillow (PIL) is not installed. It is required for video export.</source>
-      <translation type="unfinished">Pillow (PIL) is not installed. It is required for video export.</translation>
+      <translation>Pillow (PIL) nincs telepítve. Megléte szükséges a videó exportáláshoz.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1100"/>
       <source>Generating Frames…</source>
-      <translation type="unfinished">Generating Frames…</translation>
+      <translation>Képkockák generálása…</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1101"/>
@@ -509,17 +509,22 @@ A SLOPE határozza meg a 0 és H1, illetve H2 és 0 közötti átmenet meredeks�
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1128"/>
       <source>Assembling animation…</source>
-      <translation type="unfinished">Assembling animation…</translation>
+      <translation>Szerelés animálása…</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1150"/>
       <source>An error occurred while saving the animation</source>
-      <translation type="unfinished">An error occurred while saving the animation</translation>
+      <translation>Hiba történt az animáció mentésekor</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1184"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1186"/>
       <source>PyAv is not installed. It is required for video export.</source>
-      <translation type="unfinished">PyAv is not installed. It is required for video export.</translation>
+      <translation>PyAv nincs telepítve. Megléte szükséges a videó exportáláshoz.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1205"/>
+      <source>Unknown video export format</source>
+      <translation>Ismeretlen videó export formátum</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="170"/>

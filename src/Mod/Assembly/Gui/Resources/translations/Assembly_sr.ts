@@ -517,9 +517,14 @@ SLOPE дефинише нагиб прелаза између 0 и H1, и H2 д�
       <translation>Дошло је до грешке приликом снимања анимације</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1184"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1186"/>
       <source>PyAv is not installed. It is required for video export.</source>
       <translation type="unfinished">PyAv is not installed. It is required for video export.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1205"/>
+      <source>Unknown video export format</source>
+      <translation type="unfinished">Unknown video export format</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="170"/>

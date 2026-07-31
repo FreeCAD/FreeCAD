@@ -2760,9 +2760,9 @@ da se "MAXGS" mora povećati."</translation>
       <translation>Ulazni tlak</translation>
     </message>
     <message>
+      <location filename="../ui/InitialPressure.ui" line="20"/>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
       <location filename="../ui/ElementFluid1D.ui" line="308"/>
-      <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure</source>
       <translation>Tlak</translation>
     </message>
@@ -2892,12 +2892,12 @@ da se "MAXGS" mora povećati."</translation>
       <translation>Okretaja po sekundi</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
-      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
-      <location filename="../ui/ConstraintTie.ui" line="26"/>
       <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
+      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
+      <location filename="../ui/ConstraintTie.ui" line="26"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <source>Parameter</source>
       <translation>Parametar</translation>
     </message>
@@ -3195,8 +3195,8 @@ Napomena: nema učinka ako je odabrana krutina</translation>
       <translation>Parametri presjeka nosača</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <location filename="../ui/ElementRotation1D.ui" line="20"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <source>Cross-Section Parameter</source>
       <translation>Parametar poprečnog presjeka</translation>
     </message>
@@ -3207,14 +3207,14 @@ Napomena: nema učinka ako je odabrana krutina</translation>
       <translation>Širina</translation>
     </message>
     <message>
+      <location filename="../ui/MeshRegion.ui" line="44"/>
       <location filename="../ui/ElementGeometry2D.ui" line="44"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
       <location filename="../ui/ElementGeometry1D.ui" line="74"/>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
       <location filename="../ui/ElementGeometry1D.ui" line="148"/>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
-      <location filename="../ui/MeshRegion.ui" line="44"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -3236,8 +3236,8 @@ Napomena: nema učinka ako je odabrana krutina</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="37"/>
-      <location filename="../ui/ElementGeometry1D.ui" line="167"/>
       <location filename="../ui/MeshShape.ui" line="109"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="167"/>
       <source>Thickness</source>
       <translation>Debljina</translation>
     </message>
@@ -3315,14 +3315,14 @@ Napomena: nema učinka ako je odabrana krutina</translation>
       <translation>Okomito na granicu</translation>
     </message>
     <message>
-      <location filename="../ui/Electromagnetic.ui" line="14"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
-      <location filename="../ui/InitialPressure.ui" line="14"/>
-      <location filename="../ui/CurrentDensity.ui" line="14"/>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
-      <location filename="../ui/Magnetization.ui" line="14"/>
-      <location filename="../ui/FlowVelocity.ui" line="14"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/Electromagnetic.ui" line="14"/>
+      <location filename="../ui/CurrentDensity.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/FlowVelocity.ui" line="14"/>
       <source>Analysis Feature Properties</source>
       <translation>Svojstva elemenata analize</translation>
     </message>
@@ -3332,9 +3332,9 @@ Napomena: nema učinka ako je odabrana krutina</translation>
       <translation>Izvor topline</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="29"/>
-      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="25"/>
+      <location filename="../ui/BodyHeatSource.ui" line="35"/>
+      <location filename="../ui/CurrentDensity.ui" line="29"/>
       <source>Mode</source>
       <translation>Način</translation>
     </message>
@@ -3505,139 +3505,292 @@ s harmoničnom/oscilirajućom pogonskom silom</translation>
       <translation>Maksimalna veličina elementa</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="14"/>
-      <location filename="../ui/MeshPreviewSettings.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshDistance.ui" line="14"/>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="14"/>
-      <location filename="../ui/MeshAdvanced.ui" line="14"/>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
       <location filename="../ui/MeshPreview.ui" line="14"/>
       <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="14"/>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshDistance.ui" line="14"/>
-      <location filename="../ui/MeshManipulate.ui" line="14"/>
       <location filename="../ui/MeshShape.ui" line="14"/>
+      <location filename="../ui/MeshAdvanced.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="14"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshPreviewSettings.ui" line="14"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="14"/>
+      <location filename="../ui/MeshManipulate.ui" line="14"/>
       <source>Form</source>
       <translation>Obrazac</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
-      <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
-      <translation type="unfinished">Creates a structured mesh in a volume guided by its transfinite surfaces.</translation>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
+      <location filename="../ui/MeshAdvanced.ui" line="971"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
+      <source>Field</source>
+      <translation>Polje</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
+      <source>Frames</source>
+      <translation>Okviri</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="68"/>
+      <source>One field for each frame</source>
+      <translation>Jedno polje za svaki okvir</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
+      <source>Index</source>
+      <translation>Index</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="32"/>
+      <source>X field</source>
+      <translation>X polje</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
+      <source>Y field</source>
+      <translation>Y polje</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
+      <source>One Y field for each frame</source>
+      <translation>Jedno Y polje za svaki okvir</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="41"/>
+      <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
+      <translation type="unfinished">Define mesh element size based on the distance to the chosen reference geometries.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="68"/>
+      <location filename="../ui/MeshAdvanced.ui" line="210"/>
+      <location filename="../ui/MeshAdvanced.ui" line="399"/>
+      <location filename="../ui/MeshManipulate.ui" line="236"/>
+      <source>Mesh size when distance = DistanceMaximum</source>
+      <translation type="unfinished">Mesh size when distance = DistanceMaximum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="115"/>
+      <location filename="../ui/MeshAdvanced.ui" line="179"/>
+      <location filename="../ui/MeshManipulate.ui" line="283"/>
+      <source>Distance at which the mesh size will be SizeMaximum</source>
+      <translation type="unfinished">Distance at which the mesh size will be SizeMaximum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="140"/>
+      <source>Size</source>
+      <translation>Veličina</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="178"/>
+      <location filename="../ui/MeshAdvanced.ui" line="337"/>
+      <location filename="../ui/MeshAdvanced.ui" line="430"/>
+      <location filename="../ui/MeshManipulate.ui" line="346"/>
+      <source>Mesh size when distance &lt; DistanceMinimum</source>
+      <translation type="unfinished">Mesh size when distance &lt; DistanceMinimum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="197"/>
+      <location filename="../ui/MeshAdvanced.ui" line="63"/>
+      <location filename="../ui/MeshAdvanced.ui" line="283"/>
+      <source>Distance</source>
+      <translation>Udaljenost</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="219"/>
+      <location filename="../ui/MeshAdvanced.ui" line="368"/>
+      <location filename="../ui/MeshManipulate.ui" line="387"/>
+      <source>Distance up to which the mesh size will be SizeMinimum</source>
+      <translation type="unfinished">Distance up to which the mesh size will be SizeMinimum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="266"/>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
       <location filename="../ui/MeshAdvanced.ui" line="257"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="59"/>
-      <location filename="../ui/MeshDistance.ui" line="266"/>
       <location filename="../ui/MeshManipulate.ui" line="434"/>
       <source>Diagram</source>
       <translation type="unfinished">Diagram</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
-      <source>Select any number of 5- or 6-sided volumes</source>
-      <translation type="unfinished">Select any number of 5- or 6-sided volumes</translation>
+      <location filename="../ui/MeshDistance.ui" line="284"/>
+      <source>Interpolation</source>
+      <translation type="unfinished">Interpolation</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
-      <location filename="../ui/MeshAdvanced.ui" line="121"/>
-      <location filename="../ui/MeshAdvanced.ui" line="526"/>
-      <location filename="../ui/MeshAdvanced.ui" line="646"/>
-      <location filename="../ui/MeshAdvanced.ui" line="682"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
-      <location filename="../ui/MeshManipulate.ui" line="43"/>
-      <source>Icon</source>
-      <translation>Ikona</translation>
+      <location filename="../ui/MeshDistance.ui" line="291"/>
+      <source>Sampling size</source>
+      <translation type="unfinished">Sampling size</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
-      <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
-      <translation type="unfinished">All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</translation>
+      <location filename="../ui/MeshDistance.ui" line="304"/>
+      <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
+      <translation type="unfinished">Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
-      <source>Mixed mesh elements</source>
-      <translation type="unfinished">Mixed mesh elements</translation>
+      <location filename="../ui/MeshDistance.ui" line="326"/>
+      <location filename="../ui/MeshManipulate.ui" line="462"/>
+      <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
+      <translation type="unfinished">Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
-      <source>If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
-Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
-
-Notes:
-1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works with any number of volumes, either connected or unconnected </source>
-      <translation type="unfinished">If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
-Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
-
-Notes:
-1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works with any number of volumes, either connected or unconnected </translation>
+      <location filename="../ui/MeshDistance.ui" line="329"/>
+      <source>Linear</source>
+      <translation type="unfinished">Linear</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
-      <source>Auto apply transfinite surfaces and curves</source>
-      <translation type="unfinished">Auto apply transfinite surfaces and curves</translation>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
+      <source>Create a defined number of mesh nodes on edges with a structured algorithm.</source>
+      <translation type="unfinished">Create a defined number of mesh nodes on edges with a structured algorithm.</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
-      <source>Nodes</source>
-      <translation>Čvorovi</translation>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
+      <source>Number of nodes on the edge</source>
+      <translation type="unfinished">Number of nodes on the edge</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
-      <source>Distribution</source>
-      <translation type="unfinished">Distribution</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
-      <source>Constant</source>
-      <translation>Konstanta</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
-      <source>Bump</source>
-      <translation type="unfinished">Bump</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
-      <source>Bump Inverted</source>
-      <translation type="unfinished">Bump Inverted</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
       <source>Progression</source>
       <translation type="unfinished">Progression</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
-      <source>Progression Inverted</source>
-      <translation type="unfinished">Progression Inverted</translation>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="124"/>
+      <source>Invert</source>
+      <translation>Invertiraj</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
-      <source>Surface</source>
-      <translation>Površina</translation>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
+      <source>Nodes</source>
+      <translation>Čvorovi</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
-      <source>Recombine</source>
-      <translation type="unfinished">Recombine</translation>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
+      <source>Bump</source>
+      <translation type="unfinished">Bump</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
+      <source>Constant</source>
+      <translation>Konstanta</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
+      <source>Coefficient</source>
+      <translation>Koeficijent</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
+      <source>Coefficient for bump/progression growth rate</source>
+      <translation type="unfinished">Coefficient for bump/progression growth rate</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="96"/>
+      <location filename="../ui/MeshPreview.ui" line="109"/>
+      <source>The smallest mesh size in the refinement, marked green in the mesh preview.</source>
+      <translation type="unfinished">The smallest mesh size in the refinement, marked green in the mesh preview.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="99"/>
+      <source>Min</source>
+      <translation type="unfinished">Min</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="112"/>
+      <source>1.00e+02</source>
+      <translation type="unfinished">1.00e+02</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="138"/>
+      <location filename="../ui/MeshPreview.ui" line="151"/>
+      <source>The largest mesh size in the refinement, marked red in the mesh preview.</source>
+      <translation type="unfinished">The largest mesh size in the refinement, marked red in the mesh preview.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="141"/>
+      <source>Max</source>
+      <translation type="unfinished">Max</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="154"/>
+      <source>1.00e+03</source>
+      <translation type="unfinished">1.00e+03</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="184"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="187"/>
+      <source>Visualize</source>
+      <translation type="unfinished">Visualize</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="197"/>
+      <source>…</source>
+      <translation>…</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="38"/>
+      <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
+      <translation type="unfinished">Define mesh size inside and outside of the shape, with possible transition layer thickness</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="54"/>
+      <location filename="../ui/MeshShape.ui" line="70"/>
+      <source>Mesh size within the shape</source>
+      <translation type="unfinished">Mesh size within the shape</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="57"/>
+      <source>Size inside</source>
+      <translation type="unfinished">Size inside</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="80"/>
+      <location filename="../ui/MeshShape.ui" line="96"/>
+      <source>Mesh size outside of the shape</source>
+      <translation type="unfinished">Mesh size outside of the shape</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="83"/>
+      <source>Size outside</source>
+      <translation type="unfinished">Size outside</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="106"/>
+      <location filename="../ui/MeshShape.ui" line="122"/>
+      <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
+      <translation type="unfinished">Thickness of transition layer between in/out mesh sizes (added outside of the shape)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="145"/>
+      <source>Box</source>
+      <translation>Kutija</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="150"/>
+      <source>Sphere</source>
+      <translation>Kugla</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="155"/>
+      <source>Cylinder</source>
+      <translation>Valjak</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="34"/>
@@ -3661,13 +3814,6 @@ Notes:
       <translation type="unfinished">MathEvalAniso</translation>
     </message>
     <message>
-      <location filename="../ui/MeshAdvanced.ui" line="63"/>
-      <location filename="../ui/MeshAdvanced.ui" line="283"/>
-      <location filename="../ui/MeshDistance.ui" line="197"/>
-      <source>Distance</source>
-      <translation>Udaljenost</translation>
-    </message>
-    <message>
       <location filename="../ui/MeshAdvanced.ui" line="68"/>
       <location filename="../ui/MeshAdvanced.ui" line="964"/>
       <source>Result</source>
@@ -3679,45 +3825,26 @@ Notes:
       <translation type="unfinished">Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</translation>
     </message>
     <message>
+      <location filename="../ui/MeshAdvanced.ui" line="121"/>
+      <location filename="../ui/MeshAdvanced.ui" line="526"/>
+      <location filename="../ui/MeshAdvanced.ui" line="646"/>
+      <location filename="../ui/MeshAdvanced.ui" line="682"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
+      <location filename="../ui/MeshManipulate.ui" line="43"/>
+      <source>Icon</source>
+      <translation>Ikona</translation>
+    </message>
+    <message>
       <location filename="../ui/MeshAdvanced.ui" line="134"/>
       <location filename="../ui/MeshAdvanced.ui" line="695"/>
       <source>Anisotropic mesh refinements work only with the BAMG (2D) and MMG3D (3D) algorithms</source>
       <translation type="unfinished">Anisotropic mesh refinements work only with the BAMG (2D) and MMG3D (3D) algorithms</translation>
     </message>
     <message>
-      <location filename="../ui/MeshAdvanced.ui" line="179"/>
-      <location filename="../ui/MeshDistance.ui" line="115"/>
-      <location filename="../ui/MeshManipulate.ui" line="283"/>
-      <source>Distance at which the mesh size will be SizeMaximum</source>
-      <translation type="unfinished">Distance at which the mesh size will be SizeMaximum</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="210"/>
-      <location filename="../ui/MeshAdvanced.ui" line="399"/>
-      <location filename="../ui/MeshDistance.ui" line="68"/>
-      <location filename="../ui/MeshManipulate.ui" line="236"/>
-      <source>Mesh size when distance = DistanceMaximum</source>
-      <translation type="unfinished">Mesh size when distance = DistanceMaximum</translation>
-    </message>
-    <message>
       <location filename="../ui/MeshAdvanced.ui" line="315"/>
       <source>Size Tangent</source>
       <translation type="unfinished">Size Tangent</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="337"/>
-      <location filename="../ui/MeshAdvanced.ui" line="430"/>
-      <location filename="../ui/MeshDistance.ui" line="178"/>
-      <location filename="../ui/MeshManipulate.ui" line="346"/>
-      <source>Mesh size when distance &lt; DistanceMinimum</source>
-      <translation type="unfinished">Mesh size when distance &lt; DistanceMinimum</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="368"/>
-      <location filename="../ui/MeshDistance.ui" line="219"/>
-      <location filename="../ui/MeshManipulate.ui" line="387"/>
-      <source>Distance up to which the mesh size will be SizeMinimum</source>
-      <translation type="unfinished">Distance up to which the mesh size will be SizeMinimum</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="449"/>
@@ -3835,44 +3962,73 @@ Example: "F2 + Sin(z)"</translation>
       <translation type="unfinished">Uses a data field from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</translation>
     </message>
     <message>
-      <location filename="../ui/MeshAdvanced.ui" line="971"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
-      <source>Field</source>
-      <translation>Polje</translation>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
+      <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
+      <translation type="unfinished">Creates a structured mesh in a volume guided by its transfinite surfaces.</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
-      <source>Frames</source>
-      <translation>Okviri</translation>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
+      <source>Select any number of 5- or 6-sided volumes</source>
+      <translation type="unfinished">Select any number of 5- or 6-sided volumes</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="68"/>
-      <source>One field for each frame</source>
-      <translation>Jedno polje za svaki okvir</translation>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
+      <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
+      <translation type="unfinished">All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
-      <source>Index</source>
-      <translation>Index</translation>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
+      <source>Mixed mesh elements</source>
+      <translation type="unfinished">Mixed mesh elements</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="32"/>
-      <source>X field</source>
-      <translation>X polje</translation>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
+      <source>If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
+Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
+
+Notes:
+1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works with any number of volumes, either connected or unconnected </source>
+      <translation type="unfinished">If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
+Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
+
+Notes:
+1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works with any number of volumes, either connected or unconnected </translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
-      <source>Y field</source>
-      <translation>Y polje</translation>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
+      <source>Auto apply transfinite surfaces and curves</source>
+      <translation type="unfinished">Auto apply transfinite surfaces and curves</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
-      <source>One Y field for each frame</source>
-      <translation>Jedno Y polje za svaki okvir</translation>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
+      <source>Distribution</source>
+      <translation type="unfinished">Distribution</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
+      <source>Bump Inverted</source>
+      <translation type="unfinished">Bump Inverted</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
+      <source>Progression Inverted</source>
+      <translation type="unfinished">Progression Inverted</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
+      <source>Surface</source>
+      <translation>Površina</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
+      <source>Recombine</source>
+      <translation type="unfinished">Recombine</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
@@ -3899,78 +4055,6 @@ Example: "F2 + Sin(z)"</translation>
       <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
       <source>Preview mesh fineness</source>
       <translation type="unfinished">Preview mesh fineness</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
-      <source>Create a defined number of mesh nodes on edges with a structured algorithm.</source>
-      <translation type="unfinished">Create a defined number of mesh nodes on edges with a structured algorithm.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
-      <source>Number of nodes on the edge</source>
-      <translation type="unfinished">Number of nodes on the edge</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="124"/>
-      <source>Invert</source>
-      <translation>Invertiraj</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
-      <source>Coefficient</source>
-      <translation>Koeficijent</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
-      <source>Coefficient for bump/progression growth rate</source>
-      <translation type="unfinished">Coefficient for bump/progression growth rate</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="96"/>
-      <location filename="../ui/MeshPreview.ui" line="109"/>
-      <source>The smallest mesh size in the refinement, marked green in the mesh preview.</source>
-      <translation type="unfinished">The smallest mesh size in the refinement, marked green in the mesh preview.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="99"/>
-      <source>Min</source>
-      <translation type="unfinished">Min</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="112"/>
-      <source>1.00e+02</source>
-      <translation type="unfinished">1.00e+02</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="138"/>
-      <location filename="../ui/MeshPreview.ui" line="151"/>
-      <source>The largest mesh size in the refinement, marked red in the mesh preview.</source>
-      <translation type="unfinished">The largest mesh size in the refinement, marked red in the mesh preview.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="141"/>
-      <source>Max</source>
-      <translation type="unfinished">Max</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="154"/>
-      <source>1.00e+03</source>
-      <translation type="unfinished">1.00e+03</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="184"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="187"/>
-      <source>Visualize</source>
-      <translation type="unfinished">Visualize</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="197"/>
-      <source>…</source>
-      <translation>…</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
@@ -4030,42 +4114,6 @@ Notes:
       <location filename="../ui/MeshTransfiniteSurface.ui" line="236"/>
       <source>Auto apply transfinite curves</source>
       <translation type="unfinished">Auto apply transfinite curves</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="41"/>
-      <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
-      <translation type="unfinished">Define mesh element size based on the distance to the chosen reference geometries.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="140"/>
-      <source>Size</source>
-      <translation>Veličina</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="284"/>
-      <source>Interpolation</source>
-      <translation type="unfinished">Interpolation</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="291"/>
-      <source>Sampling size</source>
-      <translation type="unfinished">Sampling size</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="304"/>
-      <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
-      <translation type="unfinished">Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="326"/>
-      <location filename="../ui/MeshManipulate.ui" line="462"/>
-      <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
-      <translation type="unfinished">Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="329"/>
-      <source>Linear</source>
-      <translation type="unfinished">Linear</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="56"/>
@@ -4187,54 +4235,6 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
       <source>Kind</source>
       <translation type="unfinished">Kind</translation>
     </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="38"/>
-      <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
-      <translation type="unfinished">Define mesh size inside and outside of the shape, with possible transition layer thickness</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="54"/>
-      <location filename="../ui/MeshShape.ui" line="70"/>
-      <source>Mesh size within the shape</source>
-      <translation type="unfinished">Mesh size within the shape</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="57"/>
-      <source>Size inside</source>
-      <translation type="unfinished">Size inside</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="80"/>
-      <location filename="../ui/MeshShape.ui" line="96"/>
-      <source>Mesh size outside of the shape</source>
-      <translation type="unfinished">Mesh size outside of the shape</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="83"/>
-      <source>Size outside</source>
-      <translation type="unfinished">Size outside</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="106"/>
-      <location filename="../ui/MeshShape.ui" line="122"/>
-      <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
-      <translation type="unfinished">Thickness of transition layer between in/out mesh sizes (added outside of the shape)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="145"/>
-      <source>Box</source>
-      <translation>Kutija</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="150"/>
-      <source>Sphere</source>
-      <translation>Kugla</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="155"/>
-      <source>Cylinder</source>
-      <translation>Valjak</translation>
-    </message>
   </context>
   <context>
     <name>GmshMesh</name>
@@ -4354,14 +4354,14 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
       <translation>Trebate stvoriti ili aktivirati analizu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="155"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="899"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="155"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Dijalog je već otvoren u ploči zadataka</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="156"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="900"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="156"/>
       <source>Do you want to close this dialog?</source>
       <translation>Želite li zatvoriti ovaj dijalog?</translation>
     </message>
@@ -7809,9 +7809,9 @@ Ostavite prazno za korištenje zadanog Python izvršitelja</translation>
   <context>
     <name>TaskPostGlyph</name>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <source>The form of the glyph</source>
       <translation>Oblik simbola</translation>
@@ -7852,10 +7852,10 @@ Ostavite prazno za korištenje zadanog Python izvršitelja</translation>
       <translation>Kugla</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="66"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="82"/>
       <location filename="../ui/TaskPostGlyph.ui" line="75"/>
       <location filename="../ui/TaskPostGlyph.ui" line="91"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="66"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="82"/>
       <location filename="../ui/TaskPostLineplot.ui" line="81"/>
       <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <source>Which vector field is used to orient the glyphs</source>
@@ -7867,9 +7867,9 @@ Ostavite prazno za korištenje zadanog Python izvršitelja</translation>
       <translation>Orijentacija</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <source>None</source>
       <translation>Prazno</translation>
@@ -7891,9 +7891,9 @@ Ostavite prazno za korištenje zadanog Python izvršitelja</translation>
       <translation>Podaci</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <source>A constant multiplier the glyphs are scaled with</source>
       <translation>Stalni multiplikator s kojim se simboli skaliraju</translation>
@@ -7909,8 +7909,8 @@ Ostavite prazno za korištenje zadanog Python izvršitelja</translation>
       <translation>Mijenja faktor skaliranja za +/- 50% faktora postavljene ljestvice</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="166"/>
       <location filename="../ui/TaskPostGlyph.ui" line="226"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="166"/>
       <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation>Ako su podaci o skaliranju vektor, ovo svojstvo odlučuje je li simbol skaliran sa vektorskim ili pojedinačnim komponentama</translation>
@@ -8499,8 +8499,8 @@ Ostavite prazno za korištenje zadanog Python izvršitelja</translation>
     <name>PostHistogramEdit</name>
     <message>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Obrazac</translation>
     </message>
@@ -8718,102 +8718,6 @@ Ostavite prazno za korištenje zadanog Python izvršitelja</translation>
     </message>
   </context>
   <context>
-    <name>SolverElmer</name>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="14"/>
-      <source>Solver Elmer Control</source>
-      <translation>Kontrola Elmer alata za rješavanje</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="20"/>
-      <source>Working directory</source>
-      <translation>Radni Direktorij</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="35"/>
-      <source>Write</source>
-      <translation>Pisanje</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="45"/>
-      <source>Edit</source>
-      <translation>Uredi</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="56"/>
-      <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="74"/>
-      <source>Solver Parameters</source>
-      <translation>Parametri alata za rješavanje</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="82"/>
-      <source>Simulation type</source>
-      <translation>Vrsta simulacije</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="122"/>
-      <source>Time</source>
-      <translation>Vrijeme</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="129"/>
-      <source>Solver Version</source>
-      <translation>Verzija alata za rješavanje</translation>
-    </message>
-  </context>
-  <context>
-    <name>SolverZ88</name>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="14"/>
-      <source>Solver Z88 Control</source>
-      <translation type="unfinished">Solver Z88 Control</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="20"/>
-      <source>Working directory</source>
-      <translation>Radni Direktorij</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="35"/>
-      <source>Write</source>
-      <translation>Pisanje</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="45"/>
-      <source>Edit</source>
-      <translation>Uredi</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="56"/>
-      <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="74"/>
-      <source>Solver Parameters</source>
-      <translation>Parametri alata za rješavanje</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="82"/>
-      <source>Solver type</source>
-      <translation type="unfinished">Solver type</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="122"/>
-      <source>Time</source>
-      <translation>Vrijeme</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="129"/>
-      <source>Solver Version</source>
-      <translation>Verzija alata za rješavanje</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_ConstraintElectromagnetic</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="268"/>
@@ -8960,6 +8864,102 @@ Ostavite prazno za korištenje zadanog Python izvršitelja</translation>
     </message>
   </context>
   <context>
+    <name>SolverZ88</name>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="14"/>
+      <source>Solver Z88 Control</source>
+      <translation type="unfinished">Solver Z88 Control</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>Radni Direktorij</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="35"/>
+      <source>Write</source>
+      <translation>Pisanje</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="45"/>
+      <source>Edit</source>
+      <translation>Uredi</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="56"/>
+      <source>Path to working directory. Leave blank to use user preferences</source>
+      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation>Parametri alata za rješavanje</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="82"/>
+      <source>Solver type</source>
+      <translation type="unfinished">Solver type</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="122"/>
+      <source>Time</source>
+      <translation>Vrijeme</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation>Verzija alata za rješavanje</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolverElmer</name>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="14"/>
+      <source>Solver Elmer Control</source>
+      <translation>Kontrola Elmer alata za rješavanje</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>Radni Direktorij</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="35"/>
+      <source>Write</source>
+      <translation>Pisanje</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="45"/>
+      <source>Edit</source>
+      <translation>Uredi</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="56"/>
+      <source>Path to working directory. Leave blank to use user preferences</source>
+      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation>Parametri alata za rješavanje</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="82"/>
+      <source>Simulation type</source>
+      <translation>Vrsta simulacije</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="122"/>
+      <source>Time</source>
+      <translation>Vrijeme</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation>Verzija alata za rješavanje</translation>
+    </message>
+  </context>
+  <context>
     <name>FemToolsCcx</name>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="421"/>
@@ -8983,6 +8983,14 @@ Ostavite prazno za korištenje zadanog Python izvršitelja</translation>
     </message>
   </context>
   <context>
+    <name>FemGui::TaskDlgPost</name>
+    <message>
+      <location filename="../../TaskPostBoxes.cpp" line="403"/>
+      <source>Input Error</source>
+      <translation>Ulazna greška</translation>
+    </message>
+  </context>
+  <context>
     <name>FemGui::TaskDlgFemConstraintTransform</name>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="649"/>
@@ -8991,9 +8999,70 @@ Ostavite prazno za korištenje zadanog Python izvršitelja</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
+    <name>FemGui::TaskDlgFemConstraintPressure</name>
     <message>
-      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="121"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="321"/>
+      <source>Input Error</source>
+      <translation>Ulazna greška</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="809"/>
+      <source>Input Error</source>
+      <translation>Ulazna greška</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::DlgSettingsFemInOutVtkImp</name>
+    <message>
+      <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="78"/>
+      <source>All</source>
+      <translation>Sve</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="78"/>
+      <source>Highest</source>
+      <translation>Najviši</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintGear</name>
+    <message>
+      <location filename="../../TaskFemConstraintGear.cpp" line="355"/>
+      <source>Input Error</source>
+      <translation>Ulazna greška</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintTemperature</name>
+    <message>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="406"/>
+      <source>Input Error</source>
+      <translation>Ulazna greška</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintBearing</name>
+    <message>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="392"/>
+      <source>Input Error</source>
+      <translation>Ulazna greška</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
+    <message>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="632"/>
+      <source>Input Error</source>
+      <translation>Ulazna greška</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintSpring</name>
+    <message>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="334"/>
       <source>Input Error</source>
       <translation>Ulazna greška</translation>
     </message>
@@ -9015,41 +9084,9 @@ Ostavite prazno za korištenje zadanog Python izvršitelja</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintPulley</name>
+    <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintPulley.cpp" line="229"/>
-      <source>Input Error</source>
-      <translation>Ulazna greška</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
-    <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="809"/>
-      <source>Input Error</source>
-      <translation>Ulazna greška</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintGear</name>
-    <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="355"/>
-      <source>Input Error</source>
-      <translation>Ulazna greška</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
-    <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="650"/>
-      <source>Input Error</source>
-      <translation>Ulazna greška</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintPressure</name>
-    <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="321"/>
+      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="121"/>
       <source>Input Error</source>
       <translation>Ulazna greška</translation>
     </message>
@@ -9063,46 +9100,9 @@ Ostavite prazno za korištenje zadanog Python izvršitelja</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintBearing</name>
+    <name>FemGui::TaskDlgFemConstraintPulley</name>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="392"/>
-      <source>Input Error</source>
-      <translation>Ulazna greška</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintTemperature</name>
-    <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="406"/>
-      <source>Input Error</source>
-      <translation>Ulazna greška</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::DlgSettingsFemInOutVtkImp</name>
-    <message>
-      <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="78"/>
-      <source>All</source>
-      <translation>Sve</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="78"/>
-      <source>Highest</source>
-      <translation>Najviši</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgPost</name>
-    <message>
-      <location filename="../../TaskPostBoxes.cpp" line="403"/>
-      <source>Input Error</source>
-      <translation>Ulazna greška</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintSpring</name>
-    <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="334"/>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="229"/>
       <source>Input Error</source>
       <translation>Ulazna greška</translation>
     </message>

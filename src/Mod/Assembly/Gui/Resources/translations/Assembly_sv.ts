@@ -517,9 +517,14 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
       <translation>Ett fel inträffade när animationen skulle sparas</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1184"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1186"/>
       <source>PyAv is not installed. It is required for video export.</source>
       <translation type="unfinished">PyAv is not installed. It is required for video export.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1205"/>
+      <source>Unknown video export format</source>
+      <translation type="unfinished">Unknown video export format</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="170"/>

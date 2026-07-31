@@ -302,7 +302,6 @@ protected:
     bool areDirectionalAutoConstraintHintsVisible() const;
     void resetParallelPerpendicularHint();
     void clearParallelPerpendicularHintDrawing() const;
-    void renderParallelPerpendicularHint() const;
     bool updateParallelPerpendicularEndpointHint();
     bool snapToParallelPerpendicularHint(Base::Vector2d& point);
     void startHoverTimer();
@@ -412,7 +411,7 @@ protected:
 
     void resetTangentAutoConstraintHint();
     bool updateTangentAutoConstraintHint();
-    bool renderTangentAutoConstraintHint() const;
+    void renderDirectionalAutoConstraintHints() const;
     bool isDirectionCloseToTangentHint(const Base::Vector2d& direction) const;
     bool snapToTangentHint(Base::Vector2d& point);
 

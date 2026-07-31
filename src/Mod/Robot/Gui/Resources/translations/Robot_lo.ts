@@ -22,17 +22,17 @@
   <context>
     <name>CmdRobotConstraintAxle</name>
     <message>
-      <location filename="../../Command.cpp" line="201"/>
+      <location filename="../../Command.cpp" line="202"/>
       <source>Robot</source>
       <translation>ຫຸ່ນຍົນ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="202"/>
+      <location filename="../../Command.cpp" line="203"/>
       <source>Place Robot</source>
       <translation>ວາງຫຸ່ນຍົນ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="203"/>
+      <location filename="../../Command.cpp" line="204"/>
       <source>Places a robot in the scene</source>
       <translation>ວາງຫຸ່ນຍົນລົງໃນສາກ</translation>
     </message>
@@ -76,17 +76,17 @@
   <context>
     <name>CmdRobotExportKukaCompact</name>
     <message>
-      <location filename="../../CommandExport.cpp" line="46"/>
+      <location filename="../../CommandExport.cpp" line="47"/>
       <source>Robot</source>
       <translation>ຫຸ່ນຍົນ</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="47"/>
+      <location filename="../../CommandExport.cpp" line="48"/>
       <source>Kuka Compact Subroutine</source>
       <translation>ໂປຣແກຣມຍ່ອຍ Kuka ແບບກະທັດຮັດ</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="48"/>
+      <location filename="../../CommandExport.cpp" line="49"/>
       <source>Exports the trajectory as a compact KRL subroutine</source>
       <translation>ສົ່ງອອກເສັ້ນທາງການເຄື່ອນທີ່ເປັນໂປຣແກຣມຍ່ອຍ KRL ແບບກະທັດຮັດ</translation>
     </message>
@@ -94,17 +94,17 @@
   <context>
     <name>CmdRobotExportKukaFull</name>
     <message>
-      <location filename="../../CommandExport.cpp" line="128"/>
+      <location filename="../../CommandExport.cpp" line="130"/>
       <source>Robot</source>
       <translation>ຫຸ່ນຍົນ</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="129"/>
+      <location filename="../../CommandExport.cpp" line="131"/>
       <source>Kuka Full Subroutine</source>
       <translation>ໂປຣແກຣມຍ່ອຍ Kuka ແບບເຕັມ</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="130"/>
+      <location filename="../../CommandExport.cpp" line="132"/>
       <source>Exports the trajectory as a full KRL subroutine</source>
       <translation>ສົ່ງອອກເສັ້ນທາງການເຄື່ອນທີ່ເປັນໂປຣແກຣມຍ່ອຍ KRL ແບບເຕັມ</translation>
     </message>
@@ -148,17 +148,17 @@
   <context>
     <name>CmdRobotRestoreHomePos</name>
     <message>
-      <location filename="../../Command.cpp" line="146"/>
+      <location filename="../../Command.cpp" line="147"/>
       <source>Robot</source>
       <translation>ຫຸ່ນຍົນ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="147"/>
+      <location filename="../../Command.cpp" line="148"/>
       <source>Move to Home</source>
       <translation>ກັບຄືນໄປຕຳແໜ່ງເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="148"/>
+      <location filename="../../Command.cpp" line="149"/>
       <source>Moves to the home position</source>
       <translation>ເຄື່ອນທີ່ໄປຍັງຕຳແໜ່ງເລີ່ມຕົ້ນ (Home)</translation>
     </message>
@@ -202,17 +202,17 @@
   <context>
     <name>CmdRobotSetHomePos</name>
     <message>
-      <location filename="../../Command.cpp" line="83"/>
+      <location filename="../../Command.cpp" line="84"/>
       <source>Robot</source>
       <translation>ຫຸ່ນຍົນ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="84"/>
+      <location filename="../../Command.cpp" line="85"/>
       <source>Set Home Position</source>
       <translation>ກຳນົດຕຳແໜ່ງເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="85"/>
+      <location filename="../../Command.cpp" line="86"/>
       <source>Sets the home position</source>
       <translation>ກຳນົດຕຳແໜ່ງເລີ່ມຕົ້ນ (Home)</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdRobotSimulate</name>
     <message>
-      <location filename="../../Command.cpp" line="244"/>
+      <location filename="../../Command.cpp" line="247"/>
       <source>Robot</source>
       <translation>ຫຸ່ນຍົນ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="245"/>
+      <location filename="../../Command.cpp" line="248"/>
       <source>Simulate Trajectory</source>
       <translation>ຈຳລອງເສັ້ນທາງການເຄື່ອນທີ່</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="246"/>
+      <location filename="../../Command.cpp" line="249"/>
       <source>Simulates robot movement along a selected trajectory</source>
       <translation>ຈຳລອງການເຄື່ອນທີ່ຂອງຫຸ່ນຍົນໄປຕາມເສັ້ນທາງທີ່ເລືອກ</translation>
     </message>
@@ -292,76 +292,76 @@
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandInsertRobot.cpp" line="70"/>
+      <location filename="../../Command.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="168"/>
+      <location filename="../../Command.cpp" line="272"/>
       <location filename="../../CommandTrajectory.cpp" line="109"/>
       <location filename="../../CommandTrajectory.cpp" line="180"/>
       <location filename="../../CommandTrajectory.cpp" line="201"/>
       <location filename="../../CommandTrajectory.cpp" line="486"/>
-      <location filename="../../Command.cpp" line="104"/>
-      <location filename="../../Command.cpp" line="167"/>
-      <location filename="../../Command.cpp" line="269"/>
-      <location filename="../../CommandExport.cpp" line="63"/>
-      <location filename="../../CommandExport.cpp" line="145"/>
-      <location filename="../../CommandInsertRobot.cpp" line="70"/>
+      <location filename="../../CommandExport.cpp" line="64"/>
+      <location filename="../../CommandExport.cpp" line="147"/>
       <source>Wrong selection</source>
       <translation>ການເລືອກບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="54"/>
+      <location filename="../../Command.cpp" line="55"/>
       <source>Select VRML file for Robot</source>
       <translation>ເລືອກໄຟລ໌ VRML ສຳລັບຫຸ່ນຍົນ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="56"/>
+      <location filename="../../Command.cpp" line="57"/>
       <source>VRML Files (*.wrl *.vrml)</source>
       <translation>ໄຟລ໌ VRML (*.wrl *.vrml)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="68"/>
+      <location filename="../../Command.cpp" line="69"/>
       <source>Select Kinematic CSV file for Robot</source>
       <translation>ເລືອກໄຟລ໌ CSV ໄຄເນມາຕິກ ສຳລັບຫຸ່ນຍົນ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="70"/>
+      <location filename="../../Command.cpp" line="71"/>
       <source>CSV Files (*.csv)</source>
       <translation>ໄຟລ໌ CSV (*.csv)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="106"/>
       <source>Select one Robot to set home position</source>
       <translation>ເລືອກຫຸ່ນຍົນໜຶ່ງຕົວເພື່ອຕັ້ງຕຳແໜ່ງເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="168"/>
+      <location filename="../../Command.cpp" line="169"/>
       <source>Select one Robot</source>
       <translation>ເລືອກຫຸ່ນຍົນໜຶ່ງຕົວ</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="273"/>
       <location filename="../../CommandTrajectory.cpp" line="110"/>
-      <location filename="../../Command.cpp" line="270"/>
-      <location filename="../../CommandExport.cpp" line="64"/>
-      <location filename="../../CommandExport.cpp" line="146"/>
+      <location filename="../../CommandExport.cpp" line="65"/>
+      <location filename="../../CommandExport.cpp" line="148"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>ເລືອກຫຸ່ນຍົນໜຶ່ງຕົວ ແລະ ວັດຖຸເສັ້ນທາງການເຄື່ອນທີ່ໜຶ່ງອັນ.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="278"/>
+      <location filename="../../Command.cpp" line="281"/>
       <source>Trajectory not valid</source>
       <translation>ເສັ້ນທາງການເຄື່ອນທີ່ບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="279"/>
+      <location filename="../../Command.cpp" line="282"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
       <translation>ທ່ານຕ້ອງມີຢ່າງໜ້ອຍສອງຈຸດແວ່ໃນເສັ້ນທາງເພື່ອທຳການຈຳລອງ.</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="91"/>
-      <location filename="../../CommandExport.cpp" line="173"/>
+      <location filename="../../CommandExport.cpp" line="92"/>
+      <location filename="../../CommandExport.cpp" line="175"/>
       <source>KRL file</source>
       <translation>ໄຟລ໌ KRL</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="96"/>
-      <location filename="../../CommandExport.cpp" line="178"/>
+      <location filename="../../CommandExport.cpp" line="97"/>
+      <location filename="../../CommandExport.cpp" line="180"/>
       <source>Export program</source>
       <translation>ສົ່ງອອກໂປຣແກຣມ</translation>
     </message>
