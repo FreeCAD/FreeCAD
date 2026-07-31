@@ -1378,10 +1378,11 @@ struct NamingMapValue
 {
     NamingMapValue() = default;
 
+    std::vector<std::pair<Data::MappedName, Data::ElementIDRefs>> incomingElementMappedNames;
     Data::IndexedName incomingElementIndexName;
     TopoDS_Shape incomingElementShape;
     TopoShape incomingParentShape;
-    std::vector<std::pair<Data::MappedName, Data::ElementIDRefs>> incomingElementMappedNames;
+    size_t incomingElementShapeHash;
 
     bool operator==(const NamingMapValue& other) const
     {
@@ -1406,34 +1407,6 @@ struct NamingMapKey
     bool operator==(const TopoDS_Shape& otherElementShape) const
     {
         return newElementShape.IsSame(otherElementShape);
-    };
-};
-
-struct NamingMapValueHasher
-{
-    std::size_t operator()(const NamingMapValue& value) const
-    {
-        return std::hash<TopoDS_Shape> {}(value.incomingElementShape);
-    };
-
-    std::size_t operator()(const std::vector<NamingMapValue>& vector) const
-    {
-        std::size_t vectorHash = 0;
-        std::size_t singleValueHash = 0;
-
-        for (const NamingMapValue& value : vector) {
-            singleValueHash = operator()(value);
-
-            if (vectorHash == 0) {
-                vectorHash = singleValueHash;
-            }
-            else {
-                // This is the hash combine equation used by boost.
-                vectorHash ^= singleValueHash + 0x9e3779b9 + (vectorHash << 6) + (vectorHash >> 2);
-            }
-        }
-
-        return vectorHash;
     };
 };
 
@@ -1489,10 +1462,11 @@ public:
 
         NamingMapValue newValue;
 
+        newValue.incomingElementMappedNames = mapElementMappedNames;
         newValue.incomingElementIndexName = mapShapeIndexName;
+        newValue.incomingElementShapeHash = shapeHasher(mapElementShape);
         newValue.incomingElementShape = mapElementShape;
         newValue.incomingParentShape = incomingShape;
-        newValue.incomingElementMappedNames = mapElementMappedNames;
 
         res.first->second.push_back(newValue);
 
@@ -1542,6 +1516,8 @@ private:
     std::unordered_map<NamingMapKey, std::vector<NamingMapValue>, NamingMapKeyHasher> map {};
     std::unordered_map<std::vector<NamingMapKey>, std::vector<NamingMapValue>, NamingMapKeyHasher>
         multiKeyMap {};
+    
+    std::hash<TopoDS_Shape> shapeHasher;
 
     bool isBuilt = false;
 };
@@ -2512,14 +2488,13 @@ TopoShape& TopoShape::makeShapeWithElementMap(
         std::hash<TopoDS_Shape> shapeHasher;
 
         for (const std::pair<const std::vector<Part::NamingMapKey>, std::vector<Part::NamingMapValue>>&
-                 generatedShapeEntry : generatedNamingMap.getMultiMap()) {
-            std::vector<Data::MappedName> linkedNames {};
+                 generatedShapeEntry : generatedNamingMap.getMultiMap())
+        {
+            std::vector<Data::MappedName> linkedNames;
 
-            if (generatedShapeEntry.second.size()) {
-                for (const NamingMapValue& generatedInfo : generatedShapeEntry.second) {
-                    if (generatedInfo.incomingElementMappedNames.size()) {
-                        linkedNames.push_back(generatedInfo.incomingElementMappedNames.front().first);
-                    }
+            for (const NamingMapValue& generatedInfo : generatedShapeEntry.second) {
+                if (generatedInfo.incomingElementMappedNames.size()) {
+                    linkedNames.push_back(generatedInfo.incomingElementMappedNames.front().first);
                 }
             }
 
@@ -2564,7 +2539,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         masterTag
                     );
                 }
-                else if (generatedShapes > 0) {
+                else if (generatedShapes > 1) {
                     delayedGeneratedMap[generatedShapeEntry.first] = newNameSection;
                 }
             }
@@ -2592,13 +2567,19 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                     for (; xp.More(); xp.Next()) {
                         const TopoDS_Shape& foundSubshape = xp.Current();
-                        auto it = namedGeneratedShapes.find(shapeHasher(foundSubshape));
+                        std::string encodedMappedSection;
+                        auto namedGeneratedShapesIterator = namedGeneratedShapes.find(shapeHasher(foundSubshape));
 
-                        if (it != namedGeneratedShapes.end()) {
-                            std::string encodedMappedSection = Data::MappedName::makeSection(
-                                it->second
+                        if (namedGeneratedShapesIterator != namedGeneratedShapes.end()) {
+                            encodedMappedSection = Data::MappedName::makeSection(
+                                namedGeneratedShapesIterator->second
                             );
+                        } else {
+                            auto namedGeneratedShapesIterator = namedGeneratedShapes.find(shapeHasher(foundSubshape));
+                            
+                        }
 
+                        if (encodedMappedSection.size()) {
                             generatedConnectedElementMap[elementShape].push_back(encodedMappedSection);
                             allGeneratedConnectedElementNames.insert(encodedMappedSection);
                         }
