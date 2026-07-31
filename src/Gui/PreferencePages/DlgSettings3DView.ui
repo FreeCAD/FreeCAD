@@ -273,14 +273,14 @@ will be shown at the lower left corner in opened files</string>
         <item row="0" column="0">
          <widget class="QLabel" name="AxisLineWidthLabel">
           <property name="text">
-           <string>Axis Line Size</string>
+           <string>Axis Line Width</string>
           </property>
          </widget>
         </item>
         <item row="0" column="1">
             <widget class="Gui::PrefDoubleSpinBox" name="FloatSpinBox_AxisLineWidth">
             <property name="toolTip">
-             <string>Adjust the axis line size</string>
+             <string>Adjust the axis line width</string>
             </property>
             <property name="inputMethodHints">
             <set>Qt::ImhPreferNumbers</set>
@@ -295,7 +295,7 @@ will be shown at the lower left corner in opened files</string>
             <double>9.000000000000000</double>
             </property>
             <property name="singleStep">
-            <double>0.050000000000000</double>
+            <double>1.000000000000000</double>
             </property>
             <property name="value">
             <double>1.000000000000000</double>
