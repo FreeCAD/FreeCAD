@@ -164,58 +164,6 @@ private:
     SbBool lockButton1 {false};
 };
 
-class GuiExport TouchpadNavigationStyle: public UserNavigationStyle
-{
-    using inherited = UserNavigationStyle;
-
-    TYPESYSTEM_HEADER_WITH_OVERRIDE();
-
-public:
-    TouchpadNavigationStyle();
-    ~TouchpadNavigationStyle() override;
-    const char* mouseButtons(ViewerMode) override;
-
-protected:
-    SbBool processSoEvent(const SoEvent* const ev) override;
-
-private:
-    SbBool blockPan {false};  // Used to block the first pan in a mouse movement to prevent big jumps
-};
-
-class GuiExport OpenCascadeNavigationStyle: public UserNavigationStyle
-{
-    using inherited = UserNavigationStyle;
-
-    TYPESYSTEM_HEADER_WITH_OVERRIDE();
-
-public:
-    OpenCascadeNavigationStyle();
-    ~OpenCascadeNavigationStyle() override;
-    const char* mouseButtons(ViewerMode) override;
-
-protected:
-    SbBool processSoEvent(const SoEvent* const ev) override;
-};
-
-class GuiExport OpenSCADNavigationStyle: public UserNavigationStyle
-{
-    using inherited = UserNavigationStyle;
-
-    TYPESYSTEM_HEADER_WITH_OVERRIDE();
-
-public:
-    OpenSCADNavigationStyle();
-    ~OpenSCADNavigationStyle() override;
-    const char* mouseButtons(ViewerMode) override;
-    ClarifySelectionMode clarifySelectionMode() const override
-    {
-        return ClarifySelectionMode::Ctrl;
-    }
-
-protected:
-    SbBool processSoEvent(const SoEvent* const ev) override;
-};
-
 class GuiExport RevitNavigationStyle: public MappedNavigationStyle
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -250,6 +198,60 @@ public:
 
 protected:
     const NavigationProfile& profile() const override;
+};
+
+class GuiExport TouchpadNavigationStyle: public MappedNavigationStyle
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    TouchpadNavigationStyle();
+    ~TouchpadNavigationStyle() override;
+
+protected:
+    const NavigationProfile& profile() const override;
+    bool shouldForceRotationWhenButtonAdded(const EventContext& context) const override;
+    bool shouldProcessMouseButtonEvent(const SoEvent* event) const override;
+    void processStyleButtonEvent(EventContext& context) override;
+    bool processStylePointerMotionEvent(EventContext& context) override;
+    void adjustResolvedMode(EventContext& context) override;
+
+private:
+    SbBool blockPan {false};  // Used to block the first pan in a mouse movement to prevent big jumps
+};
+
+class GuiExport OpenCascadeNavigationStyle: public MappedNavigationStyle
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    OpenCascadeNavigationStyle();
+    ~OpenCascadeNavigationStyle() override;
+
+protected:
+    const NavigationProfile& profile() const override;
+    void processStyleButtonEvent(EventContext& context) override;
+    bool processStylePointerMotionEvent(EventContext& context) override;
+    void zoomByCursor(const SbVec2f& thispos, const SbVec2f& prevpos) override;
+};
+
+class GuiExport OpenSCADNavigationStyle: public MappedNavigationStyle
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    OpenSCADNavigationStyle();
+    ~OpenSCADNavigationStyle() override;
+    ClarifySelectionMode clarifySelectionMode() const override
+    {
+        return ClarifySelectionMode::Ctrl;
+    }
+
+protected:
+    const NavigationProfile& profile() const override;
+    void processStyleButtonEvent(EventContext& context) override;
+    bool processStylePointerMotionEvent(EventContext& context) override;
+    void zoomByCursor(const SbVec2f& thispos, const SbVec2f& prevpos) override;
 };
 
 class GuiExport TinkerCADNavigationStyle: public MappedNavigationStyle

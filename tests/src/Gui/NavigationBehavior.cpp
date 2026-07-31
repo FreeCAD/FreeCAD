@@ -148,6 +148,41 @@ protected:
     static inline std::unique_ptr<Gui::MainWindow> mainWindow;
 };
 
+template<typename Style>
+class StyleProbe: public Style
+{
+public:
+    using Style::processSoEvent;
+
+    bool hasPannedFlag() const
+    {
+        return this->hasPanned;
+    }
+
+    bool hasDraggedFlag() const
+    {
+        return this->hasDragged;
+    }
+
+    bool hasZoomedFlag() const
+    {
+        return this->hasZoomed;
+    }
+
+    double centerTimeValue() const
+    {
+        return this->centerTime.getValue();
+    }
+
+    bool popupOpened = false;
+
+protected:
+    void openPopupMenu(const SbVec2s&) override
+    {
+        popupOpened = true;
+    }
+};
+
 constexpr Gui::NavigationRule testRules[] {
     {std::nullopt, Gui::NavigationInputState::LeftDown, NavigationStyle::SELECTION},
     {std::nullopt,
@@ -446,4 +481,267 @@ TEST_F(NavigationStyleTest, tinkerCADKeepsPanningWhenRightButtonIsAdded)
          {EventType::MouseRelease, MouseButton::Right, 0, NavigationStyle::PANNING, true},
          {EventType::MouseRelease, MouseButton::Middle, 0, NavigationStyle::IDLE, true}}
     );
+}
+
+TEST_F(NavigationStyleTest, openCascadeCtrlLmbMotionEntersZoom)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::OpenCascadeNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Left, 0, NavigationStyle::SELECTION, false},
+         {EventType::PointerMotion, MouseButton::None, CtrlDown, NavigationStyle::ZOOMING, true},
+         {EventType::MouseRelease, MouseButton::Left, 0, NavigationStyle::IDLE, true}}
+    );
+}
+
+TEST_F(NavigationStyleTest, openCascadePreservesRotationAcrossModifierChanges)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::OpenCascadeNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Right, CtrlDown, NavigationStyle::DRAGGING, false},
+         {EventType::KeyPress, MouseButton::None, CtrlDown | ShiftDown, NavigationStyle::DRAGGING, false},
+         {EventType::KeyRelease, MouseButton::None, CtrlDown, NavigationStyle::DRAGGING, false},
+         {EventType::MouseRelease, MouseButton::Right, 0, NavigationStyle::IDLE, true}}
+    );
+}
+
+TEST_F(NavigationStyleTest, openCascadeSuppressesCtrlSelectionDrag)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::OpenCascadeNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Left, 0, NavigationStyle::SELECTION, false},
+         {EventType::KeyPress, MouseButton::None, CtrlDown, NavigationStyle::SELECTION, false},
+         {EventType::KeyPress, MouseButton::None, CtrlDown | ShiftDown, NavigationStyle::SELECTION, false},
+         {EventType::PointerMotion,
+          MouseButton::None,
+          CtrlDown | ShiftDown,
+          NavigationStyle::SELECTION,
+          false}}
+    );
+}
+
+TEST_F(NavigationStyleTest, touchpadNavigationModes)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::TouchpadNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::KeyPress, MouseButton::None, ShiftDown, NavigationStyle::PANNING, false},
+         {EventType::PointerMotion, MouseButton::None, ShiftDown, NavigationStyle::PANNING, true},
+         {EventType::KeyRelease, MouseButton::None, 0, NavigationStyle::IDLE, false},
+         {EventType::KeyPress,
+          MouseButton::None,
+          AltDown,
+          NavigationStyle::DRAGGING,
+          false,
+          -1.0,
+          SoKeyboardEvent::LEFT_ALT},
+         {EventType::MousePress, MouseButton::Left, AltDown, NavigationStyle::DRAGGING, true},
+         {EventType::MouseRelease, MouseButton::Left, AltDown, NavigationStyle::DRAGGING, false},
+         {EventType::KeyRelease,
+          MouseButton::None,
+          0,
+          NavigationStyle::IDLE,
+          false,
+          -1.0,
+          SoKeyboardEvent::LEFT_ALT},
+         {EventType::KeyPress,
+          MouseButton::None,
+          CtrlDown,
+          NavigationStyle::IDLE,
+          false,
+          -1.0,
+          SoKeyboardEvent::LEFT_CONTROL},
+         {EventType::KeyPress, MouseButton::None, CtrlDown | ShiftDown, NavigationStyle::ZOOMING, false},
+         {EventType::KeyRelease, MouseButton::None, CtrlDown, NavigationStyle::IDLE, false},
+         {EventType::KeyRelease,
+          MouseButton::None,
+          0,
+          NavigationStyle::IDLE,
+          false,
+          -1.0,
+          SoKeyboardEvent::LEFT_CONTROL},
+         {EventType::MousePress, MouseButton::Middle, 0, NavigationStyle::IDLE, false},
+         {EventType::MouseRelease, MouseButton::Middle, 0, NavigationStyle::IDLE, false}}
+    );
+}
+
+TEST_F(NavigationStyleTest, touchpadPreservesModeForUnmappedModifierCombinations)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::TouchpadNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::KeyPress,
+          MouseButton::None,
+          AltDown,
+          NavigationStyle::DRAGGING,
+          false,
+          -1.0,
+          SoKeyboardEvent::LEFT_ALT},
+         {EventType::KeyPress,
+          MouseButton::None,
+          AltDown | ShiftDown,
+          NavigationStyle::DRAGGING,
+          false,
+          -1.0,
+          SoKeyboardEvent::LEFT_SHIFT},
+         {EventType::KeyRelease,
+          MouseButton::None,
+          AltDown,
+          NavigationStyle::DRAGGING,
+          false,
+          -1.0,
+          SoKeyboardEvent::LEFT_SHIFT},
+         {EventType::KeyRelease,
+          MouseButton::None,
+          0,
+          NavigationStyle::IDLE,
+          false,
+          -1.0,
+          SoKeyboardEvent::LEFT_ALT},
+         {EventType::KeyPress,
+          MouseButton::None,
+          ShiftDown,
+          NavigationStyle::PANNING,
+          false,
+          -1.0,
+          SoKeyboardEvent::LEFT_SHIFT},
+         {EventType::KeyPress,
+          MouseButton::None,
+          ShiftDown | AltDown,
+          NavigationStyle::PANNING,
+          false,
+          -1.0,
+          SoKeyboardEvent::LEFT_ALT},
+         {EventType::KeyRelease,
+          MouseButton::None,
+          ShiftDown,
+          NavigationStyle::PANNING,
+          false,
+          -1.0,
+          SoKeyboardEvent::LEFT_ALT},
+         {EventType::KeyRelease,
+          MouseButton::None,
+          0,
+          NavigationStyle::IDLE,
+          false,
+          -1.0,
+          SoKeyboardEvent::LEFT_SHIFT},
+         {EventType::KeyPress,
+          MouseButton::None,
+          CtrlDown,
+          NavigationStyle::IDLE,
+          false,
+          -1.0,
+          SoKeyboardEvent::LEFT_CONTROL},
+         {EventType::KeyPress,
+          MouseButton::None,
+          CtrlDown | ShiftDown,
+          NavigationStyle::ZOOMING,
+          false,
+          -1.0,
+          SoKeyboardEvent::LEFT_SHIFT},
+         {EventType::KeyPress,
+          MouseButton::None,
+          CtrlDown | ShiftDown | AltDown,
+          NavigationStyle::ZOOMING,
+          false,
+          -1.0,
+          SoKeyboardEvent::LEFT_ALT},
+         {EventType::KeyRelease,
+          MouseButton::None,
+          CtrlDown | ShiftDown,
+          NavigationStyle::ZOOMING,
+          true,
+          -1.0,
+          SoKeyboardEvent::LEFT_ALT},
+         {EventType::KeyRelease,
+          MouseButton::None,
+          CtrlDown,
+          NavigationStyle::IDLE,
+          false,
+          -1.0,
+          SoKeyboardEvent::LEFT_SHIFT},
+         {EventType::KeyRelease,
+          MouseButton::None,
+          0,
+          NavigationStyle::IDLE,
+          false,
+          -1.0,
+          SoKeyboardEvent::LEFT_CONTROL}}
+    );
+}
+
+TEST_F(NavigationStyleTest, touchpadAltRotationInitializesCursorAnchor)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::TouchpadNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::KeyPress,
+          MouseButton::None,
+          AltDown,
+          NavigationStyle::DRAGGING,
+          false,
+          4.0,
+          SoKeyboardEvent::LEFT_ALT},
+         {EventType::PointerMotion, MouseButton::None, AltDown, NavigationStyle::DRAGGING, true, 4.1}}
+    );
+
+    EXPECT_DOUBLE_EQ(style.centerTimeValue(), 4.0);
+}
+
+TEST_F(NavigationStyleTest, openSCADSelectionMotionStartsRotation)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::OpenSCADNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Left, 0, NavigationStyle::SELECTION, false},
+         {EventType::PointerMotion, MouseButton::None, 0, NavigationStyle::DRAGGING, false},
+         {EventType::MouseRelease, MouseButton::Left, 0, NavigationStyle::IDLE, true}}
+    );
+}
+
+TEST_F(NavigationStyleTest, openSCADRotationInitializesCursorOnce)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::OpenSCADNavigationStyle> style;
+    configureStyle(style, viewer);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Left, 0, NavigationStyle::SELECTION, false, 2.0},
+         {EventType::PointerMotion, MouseButton::None, 0, NavigationStyle::DRAGGING, false, 3.0}}
+    );
+
+    EXPECT_DOUBLE_EQ(style.centerTimeValue(), 3.0);
 }
