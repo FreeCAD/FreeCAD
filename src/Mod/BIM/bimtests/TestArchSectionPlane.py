@@ -52,6 +52,11 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         self.assertEqual(
             section_plane.Label, "TestSectionPlane", "Section plane label is incorrect."
         )
+        self.assertNotIn(
+            "CutDistance",
+            section_plane.ViewObject.PropertiesList,
+            "New section planes should not have the deprecated CutDistance property.",
+        )
 
     def testSectionPlaneFitUsesLocalAxesAfterRotateY(self):
         """Resize-to-fit dimensions follow the rotated section plane axes."""
