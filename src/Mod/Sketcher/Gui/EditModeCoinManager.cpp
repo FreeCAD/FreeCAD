@@ -562,6 +562,10 @@ void EditModeCoinManager::ParameterObserver::initParameters()
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updateWidth(drawingParameters.InformationWidth, param, 1);
          }},
+        {"AxisLineWidth",
+         [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
+             updateWidth(drawingParameters.AxisLineWidth, param, 2);
+         }},
         {"EdgePattern",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updatePattern(drawingParameters.CurvePattern, param, 0b1111111111111111);
@@ -589,6 +593,10 @@ void EditModeCoinManager::ParameterObserver::initParameters()
         {"InformationPattern",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updatePattern(drawingParameters.InformationPattern, param, 0b1111110011111100);
+         }},
+        {"AxisLinePattern",
+         [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
+             updatePattern(drawingParameters.AxisLinePattern, param, 0b1111111111111111);
          }},
         {"EditedEdgeColor",
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {
@@ -2218,9 +2226,13 @@ void EditModeCoinManager::updateInventorNodeSizes()
     editModeScenegraphNodes.OriginPointSetOccluded->markerIndex
         = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", drawingParameters.markerSize);
 
-    editModeScenegraphNodes.RootCrossDrawStyle->lineWidth = 2 * drawingParameters.pixelScalingFactor;
-    editModeScenegraphNodes.RootCrossDrawStyleOccluded->lineWidth = 2
+    editModeScenegraphNodes.RootCrossDrawStyle->lineWidth = drawingParameters.AxisLineWidth
         * drawingParameters.pixelScalingFactor;
+    editModeScenegraphNodes.RootCrossDrawStyleOccluded->lineWidth = drawingParameters.AxisLineWidth
+        * drawingParameters.pixelScalingFactor;
+
+    editModeScenegraphNodes.RootCrossDrawStyle->linePattern = drawingParameters.AxisLinePattern;
+
     editModeScenegraphNodes.OriginPointDrawStyleOccluded->pointSize = 8
         * drawingParameters.pixelScalingFactor;
     editModeScenegraphNodes.EditCurvesDrawStyle->lineWidth = 3 * drawingParameters.pixelScalingFactor;
@@ -2263,6 +2275,7 @@ void EditModeCoinManager::updateInventorPatterns()
     editModeScenegraphNodes.CurvesExternalDefiningDrawStyle->linePattern
         = drawingParameters.ExternalDefiningPattern;
     editModeScenegraphNodes.InformationDrawStyle->linePattern = drawingParameters.InformationPattern;
+    editModeScenegraphNodes.RootCrossDrawStyle->linePattern = drawingParameters.AxisLinePattern;
 }
 
 void EditModeCoinManager::updateInventorColors()
