@@ -79,7 +79,7 @@ public:
 
     /* "None" thread profile */
     static const char* ThreadClass_None_Enums[];
-    
+
     /* ISO metric coarse profile */
     static const char* ThreadClass_ISOmetric_Enums[];
     static const double ThreadClass_ISOmetric_data[ThreadClass_ISOmetric_data_size_utils][2];
@@ -108,7 +108,7 @@ public:
 
     static const double ThreadRunout[ThreadRunout_size_utils][2];
 
-    private:
+private:
     static const char* ThreadDepthTypeEnums[];
 };
 
