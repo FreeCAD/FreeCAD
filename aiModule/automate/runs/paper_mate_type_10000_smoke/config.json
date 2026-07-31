@@ -1,0 +1,62 @@
+{
+  "task": "mate_type",
+  "device": "cuda",
+  "torch": "2.7.1+cu128",
+  "cuda_runtime": "12.8",
+  "model_config": {
+    "face_width": 63,
+    "loop_width": 39,
+    "edge_width": 73,
+    "vertex_width": 3,
+    "graph_width": 64,
+    "mcf_width": 64,
+    "message_passing_steps": 6,
+    "inference_types": 32,
+    "inference_embedding_width": 8,
+    "dropout": 0.1,
+    "num_mate_types": 8,
+    "normalize_graph_inputs": true
+  },
+  "mate_type_to_id": {
+    "BALL": 0,
+    "CYLINDRICAL": 1,
+    "FASTENED": 2,
+    "PARALLEL": 3,
+    "PIN_SLOT": 4,
+    "PLANAR": 5,
+    "REVOLUTE": 6,
+    "SLIDER": 7
+  },
+  "class_weights": [
+    30.662500381469727,
+    2.293952703475952,
+    0.19325104355812073,
+    7.359000205993652,
+    23.586538314819336,
+    1.174808382987976,
+    1.1300675868988037,
+    2.2601351737976074
+  ],
+  "train_samples": 7359,
+  "validation_samples": 1054,
+  "arguments": {
+    "index_dir": "dataset\\training\\mate_type_paper_10000",
+    "output_dir": "runs\\paper_mate_type_10000_smoke",
+    "epochs": 1,
+    "batch_size": 4,
+    "graph_width": 64,
+    "mcf_width": 64,
+    "message_passing_steps": 6,
+    "dropout": 0.1,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "gradient_clip": 1.0,
+    "num_workers": 0,
+    "seed": 20260730,
+    "device": "cuda",
+    "resume": null,
+    "max_train_batches": 2,
+    "max_val_batches": 1,
+    "detect_anomaly": false
+  }
+}

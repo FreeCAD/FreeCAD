@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "task": "mate_type",
+  "checkpoint": "D:\\freecad\\FreeCAD\\aiModule\\automate\\runs\\paper_mate_type_10000_e50\\best.pt",
+  "checkpoint_epoch": 8,
+  "split": "test",
+  "device": "cuda",
+  "samples": 971,
+  "elapsed_seconds": 6.7322009000054095,
+  "loss_unweighted": 2.341044945053442,
+  "loss_weighted_per_sample": 6.995898853309345,
+  "top3": 0.8918640576725025,
+  "accuracy": 0.5406796932220459,
+  "balanced_accuracy_supported": 0.2725083529949188,
+  "macro_f1_supported": 0.2507905066013336,
+  "macro_f1_all": 0.2507905066013336,
+  "absent_types": [],
+  "per_type": {
+    "BALL": {
+      "support": 6,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    "CYLINDRICAL": {
+      "support": 51,
+      "precision": 0.0476190485060215,
+      "recall": 0.019607843831181526,
+      "f1": 0.02777777798473835
+    },
+    "FASTENED": {
+      "support": 560,
+      "precision": 0.6673553586006165,
+      "recall": 0.5767857432365417,
+      "f1": 0.6187739372253418
+    },
+    "PARALLEL": {
+      "support": 17,
+      "precision": 0.1818181872367859,
+      "recall": 0.11764705926179886,
+      "f1": 0.1428571492433548
+    },
+    "PIN_SLOT": {
+      "support": 5,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    "PLANAR": {
+      "support": 129,
+      "precision": 0.673758864402771,
+      "recall": 0.7364341020584106,
+      "f1": 0.7037037014961243
+    },
+    "REVOLUTE": {
+      "support": 147,
+      "precision": 0.3279742896556854,
+      "recall": 0.6938775777816772,
+      "f1": 0.44541484117507935
+    },
+    "SLIDER": {
+      "support": 56,
+      "precision": 0.6666666865348816,
+      "recall": 0.0357142873108387,
+      "f1": 0.06779661774635315
+    }
+  },
+  "confusion_matrix": [
+    [
+      0,
+      0,
+      6,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      44,
+      0,
+      0,
+      0,
+      6,
+      0
+    ],
+    [
+      0,
+      16,
+      323,
+      2,
+      0,
+      39,
+      180,
+      0
+    ],
+    [
+      0,
+      1,
+      7,
+      2,
+      0,
+      6,
+      0,
+      1
+    ],
+    [
+      0,
+      1,
+      3,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      26,
+      6,
+      0,
+      95,
+      2,
+      0
+    ],
+    [
+      0,
+      0,
+      44,
+      0,
+      0,
+      1,
+      102,
+      0
+    ],
+    [
+      0,
+      2,
+      31,
+      0,
+      0,
+      0,
+      21,
+      2
+    ]
+  ],
+  "confusion_matrix_image": "D:\\freecad\\FreeCAD\\aiModule\\automate\\runs\\paper_mate_type_10000_e50\\confusion_matrix_test.png"
+}

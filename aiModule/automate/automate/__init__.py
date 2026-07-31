@@ -17,6 +17,14 @@ from .sbgcn import SBGCN, LinearBlock, BipartiteResMRConv
 from .eclasses import find_eclasses
 from .mate_dataset import MateBatch, MateDataset, MateSample, collate_mates, make_mate_dataloader
 from .mate_model import MateModelConfig, MateModelOutput, MatePairModel
+from .mate_type_dataset import (
+    MateTypeBatch,
+    MateTypeDataset,
+    MateTypeSample,
+    collate_mate_types,
+    make_mate_type_dataloader,
+)
+from .mate_type_model import MateTypeModel, MateTypeModelConfig
 
 from automate_cpp import Part, PartOptions
 
@@ -51,6 +59,13 @@ __all__ = [
     'MateModelConfig',
     'MateModelOutput',
     'MatePairModel',
+    'MateTypeBatch',
+    'MateTypeDataset',
+    'MateTypeSample',
+    'collate_mate_types',
+    'make_mate_type_dataloader',
+    'MateTypeModel',
+    'MateTypeModelConfig',
 ]
 
 if run_model is not None:
