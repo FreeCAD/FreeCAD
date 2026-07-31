@@ -31,6 +31,12 @@
 namespace Gui
 {
 
+struct NavigationEventOutcome
+{
+    bool processed = false;
+    bool propagated = false;
+};
+
 /** Read-only view of a Coin event and the normalized navigation input state. */
 class NavigationEventView
 {
