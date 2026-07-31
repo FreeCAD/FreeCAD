@@ -1,22 +1,43 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+/****************************************************************************
+ *                                                                          *
+ *   Copyright (c) 2026 Caio Venâncio <caio.venancio784@gmail.com>          *
+ *                                                                          *
+ *   This file is part of FreeCAD.                                          *
+ *                                                                          *
+ *   FreeCAD is free software: you can redistribute it and/or modify it     *
+ *   under the terms of the GNU Lesser General Public License as            *
+ *   published by the Free Software Foundation, either version 2.1 of the   *
+ *   License, or (at your option) any later version.                        *
+ *                                                                          *
+ *   FreeCAD is distributed in the hope that it will be useful, but         *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+ *   Lesser General Public License for more details.                        *
+ *                                                                          *
+ *   You should have received a copy of the GNU Lesser General Public       *
+ *   License along with FreeCAD. If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                       *
+ *                                                                          *
+ ***************************************************************************/
+
 #include <QWidget>
 #include <QEvent>
 #include <QLineEdit>
 
-#include <Base/Interpreter.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Base/Interpreter.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
-
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
 #include <Mod/PartDesign/App/FeatureThread.h>
 
-#include "TaskDressUpParameters.h"
-
 #include "ui_TaskThreadParameters.h"
 #include "TaskThreadParameters.h"
+
+#include "TaskDressUpParameters.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -38,8 +59,6 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     setLinkSubText(ui->lateralFaceEdit, pcThread->LateralFace);
     setLinkSubText(ui->startEdit, pcThread->StartPlane);
     setLinkSubText(ui->upToGeometryEdit, pcThread->UpToGeometry);
-
-    setUpUI(pcThread);
 
     std::vector<std::string> strings = pcThread->Base.getSubValues();
 
@@ -231,9 +250,6 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     }
 }
 
-void TaskThreadParameters::setUpUI(PartDesign::Thread* pcThread)
-{}
-
 TaskThreadParameters::~TaskThreadParameters()
 {
     try {
@@ -261,7 +277,9 @@ void TaskThreadParameters::apply()
 }
 
 void TaskThreadParameters::onRefDeleted()
-{}
+{
+    /*TODO*/
+}
 
 void TaskThreadParameters::setButtons(const PartDesignGui::TaskDressUpParameters::selectionModes mode)
 {

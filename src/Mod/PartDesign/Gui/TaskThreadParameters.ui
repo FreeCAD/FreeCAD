@@ -10,17 +10,13 @@
     <height>600</height>
    </rect>
   </property>
-
   <layout class="QVBoxLayout" name="verticalLayout">
-
    <item>
     <widget class="QGroupBox" name="groupThreadLocation">
      <property name="title">
       <string>Thread Location</string>
      </property>
-
      <layout class="QFormLayout" name="locationLayout">
-
       <item row="0" column="0">
        <widget class="QLabel" name="labelLateralFace">
         <property name="text">
@@ -28,11 +24,9 @@
         </property>
        </widget>
       </item>
-
       <item row="0" column="1">
        <widget class="QWidget" name="lateralFaceWidget">
         <layout class="QHBoxLayout" name="lateralFaceLayout">
-
          <item>
           <widget class="QLineEdit" name="lateralFaceEdit">
            <property name="readOnly">
@@ -43,7 +37,6 @@
            </property>
           </widget>
          </item>
-
          <item>
           <widget class="QPushButton" name="selectLateralFace">
            <property name="checkable">
@@ -54,11 +47,9 @@
            </property>
           </widget>
          </item>
-
         </layout>
        </widget>
       </item>
-
       <item row="1" column="0">
        <widget class="QLabel" name="labelStart">
         <property name="text">
@@ -66,11 +57,9 @@
         </property>
        </widget>
       </item>
-
       <item row="1" column="1">
        <widget class="QWidget" name="startWidget">
         <layout class="QHBoxLayout" name="startLayout">
-
          <item>
           <widget class="QLineEdit" name="startEdit">
            <property name="readOnly">
@@ -81,7 +70,6 @@
            </property>
           </widget>
          </item>
-
          <item>
           <widget class="QPushButton" name="selectStart">
            <property name="checkable">
@@ -92,11 +80,9 @@
            </property>
           </widget>
          </item>
-
         </layout>
        </widget>
       </item>
-
       <item row="2" column="0">
        <widget class="QLabel" name="labelEndType">
         <property name="text">
@@ -104,7 +90,6 @@
         </property>
        </widget>
       </item>
-
       <item row="2" column="1">
         <widget class="QComboBox" name="endTypeCombo">
             <property name="sizePolicy">
@@ -113,19 +98,16 @@
                     <verstretch>0</verstretch>
                 </sizepolicy>
             </property>
-
             <item>
                 <property name="text">
                     <string>Dimension</string>
                 </property>
             </item>
-
             <item>
                 <property name="text">
                     <string>Through all</string>
                 </property>
             </item>
-
             <item>
                 <property name="text">
                     <string>Up to geometry</string>
@@ -133,7 +115,6 @@
             </item>
         </widget>
       </item>
-
       <item row="3" column="0">
         <widget class="QLabel" name="labelDepth">
             <property name="text">
@@ -141,7 +122,6 @@
             </property>
         </widget>
      </item>
-
      <item row="3" column="1">
         <widget class="Gui::PrefQuantitySpinBox" name="Depth">
             <property name="sizePolicy">
@@ -150,36 +130,29 @@
                     <verstretch>0</verstretch>
                 </sizepolicy>
             </property>
-
             <property name="baseSize">
                 <size>
                     <width>0</width>
                     <height>0</height>
                 </size>
             </property>
-
             <property name="toolTip">
                 <string>Depth</string>
             </property>
-
             <property name="keyboardTracking">
                 <bool>false</bool>
             </property>
-
             <property name="unit" stdset="0">
                 <string notr="true">mm</string>
             </property>
-
             <property name="minimum" stdset="0">
                 <double>0.000000000000000</double>
             </property>
         </widget>
      </item>
-
      <item row="4" column="1">
         <widget class="QWidget" name="upToGeometryWidget">
          <layout class="QHBoxLayout" name="upToGeometryLayout">
-
          <item>
           <widget class="QPushButton" name="selectUpToGeometry">
            <property name="checkable">
@@ -190,8 +163,6 @@
            </property>
           </widget>
          </item>
-
-
          <item>
           <widget class="QLineEdit" name="upToGeometryEdit">
            <property name="readOnly">
@@ -202,23 +173,18 @@
            </property>
           </widget>
          </item>
-
         </layout>
        </widget>
      </item>
-
      </layout>
     </widget>
    </item>
-
    <item>
     <widget class="QGroupBox" name="groupThreadType">
      <property name="title">
       <string>Thread Type</string>
      </property>
-
      <layout class="QFormLayout" name="threadTypeLayout">
-
       <item row="0" column="0">
        <widget class="QLabel" name="labelDesignation">
         <property name="text">
@@ -226,11 +192,9 @@
         </property>
        </widget>
       </item>
-
       <item row="0" column="1">
        <widget class="QLineEdit" name="designationEdit"/>
       </item>
-
       <item row="1" column="0">
        <widget class="QLabel" name="labelStandard">
         <property name="text">
@@ -238,11 +202,9 @@
         </property>
        </widget>
       </item>
-
       <item row="1" column="1">
        <widget class="QComboBox" name="standardCombo"/>
       </item>
-
       <item row="2" column="0">
        <widget class="QLabel" name="labelDiameter">
         <property name="text">
@@ -250,11 +212,9 @@
         </property>
        </widget>
       </item>
-
       <item row="2" column="1">
        <widget class="QComboBox" name="diameterCombo"/>
       </item>
-
       <item row="3" column="0">
        <widget class="QLabel" name="labelPitch">
         <property name="text">
@@ -262,11 +222,9 @@
         </property>
        </widget>
       </item>
-
       <item row="3" column="1">
        <widget class="QComboBox" name="pitchCombo"/>
       </item>
-
       <item row="4" column="0">
        <widget class="QLabel" name="labelClass">
         <property name="text">
@@ -274,11 +232,9 @@
         </property>
        </widget>
       </item>
-
       <item row="4" column="1">
        <widget class="QComboBox" name="classCombo"/>
       </item>
-
       <item row="5" column="0">
        <widget class="QCheckBox" name="customClearanceCheck">
         <property name="text">
@@ -286,7 +242,6 @@
         </property>
        </widget>
       </item>
-
       <item row="5" column="1">
         <widget class="Gui::PrefQuantitySpinBox" name="customClearanceField">
             <property name="sizePolicy">
@@ -295,32 +250,26 @@
                     <verstretch>0</verstretch>
                 </sizepolicy>
             </property>
-
             <property name="baseSize">
                 <size>
                     <width>0</width>
                     <height>0</height>
                 </size>
             </property>
-
             <property name="toolTip">
                 <string>Clearance</string>
             </property>
-
             <property name="keyboardTracking">
                 <bool>false</bool>
             </property>
-
             <property name="unit" stdset="0">
                 <string notr="true">mm</string>
             </property>
-
             <property name="minimum" stdset="0">
                 <double>0.000000000000000</double>
             </property>
         </widget>
      </item>
-
       <item row="6" column="0">
        <widget class="QLabel" name="labelDirection">
         <property name="text">
@@ -328,23 +277,18 @@
         </property>
        </widget>
       </item>
-
       <item row="6" column="1">
        <widget class="QComboBox" name="directionCombo"/>
       </item>
-
      </layout>
     </widget>
    </item>
-
    <item>
     <widget class="QGroupBox" name="groupRepresentation">
      <property name="title">
       <string>Representation</string>
      </property>
-
      <layout class="QVBoxLayout" name="representationLayout">
-
       <item>
        <widget class="QRadioButton" name="cosmeticThreadRadio">
         <property name="text">
@@ -355,7 +299,6 @@
         </property>
        </widget>
       </item>
-
       <item>
        <widget class="QRadioButton" name="modelledThreadRadio">
         <property name="text">
@@ -363,11 +306,9 @@
         </property>
        </widget>
       </item>
-
      </layout>
     </widget>
    </item>
-
    <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
@@ -381,7 +322,6 @@
      </property>
     </spacer>
    </item>
-
   </layout>
  </widget>
  <customwidgets>

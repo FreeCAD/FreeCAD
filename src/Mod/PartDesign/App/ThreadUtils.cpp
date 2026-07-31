@@ -1,31 +1,51 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+/****************************************************************************
+ *                                                                          *
+ *   Copyright (c) 2026 Caio Venâncio <caio.venancio784@gmail.com>          *
+ *                                                                          *
+ *   This file is part of FreeCAD.                                          *
+ *                                                                          *
+ *   FreeCAD is free software: you can redistribute it and/or modify it     *
+ *   under the terms of the GNU Lesser General Public License as            *
+ *   published by the Free Software Foundation, either version 2.1 of the   *
+ *   License, or (at your option) any later version.                        *
+ *                                                                          *
+ *   FreeCAD is distributed in the hope that it will be useful, but         *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+ *   Lesser General Public License for more details.                        *
+ *                                                                          *
+ *   You should have received a copy of the GNU Lesser General Public       *
+ *   License along with FreeCAD. If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                       *
+ *                                                                          *
+ ***************************************************************************/
+
+#include <BRep_Tool.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <Geom_ConicalSurface.hxx>
+#include <Geom_CylindricalSurface.hxx>
+#include <Geom_Surface.hxx>
+#include <GeomAbs_SurfaceType.hxx>
 #include <gp_Circ.hxx>
-#include <gp_Dir.hxx>
 #include <gp_Cylinder.hxx>
+#include <gp_Dir.hxx>
+#include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Wire.hxx>
-#include <TopExp_Explorer.hxx>
-#include <Geom_CylindricalSurface.hxx>
-#include <Geom_ConicalSurface.hxx>
-#include <Geom_Surface.hxx>
-
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
-#include <QObject>
-
-#include "ThreadUtils.h"
 
 #include <App/PropertyLinks.h>
+#include <App/DocumentObject.h>
 #include <Mod/Part/App/TopoShape.h>
+#include <Base/Console.h>
+#include <QObject>
 #include "Feature.h"
 
-#include <TopoDS_Face.hxx>
-#include <TopoDS.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <GeomAbs_SurfaceType.hxx>
-#include <BRep_Tool.hxx>
+#include <iostream>
+
+#include "ThreadUtils.h"
 
 using namespace PartDesign;
 
@@ -353,128 +373,6 @@ const char* ThreadUtils::ThreadTypeEnums[] = {
     "ISOTyre",
     nullptr
 };
-
-std::vector<std::string> ThreadUtils::getDepthTypeEnums()
-{
-    std::vector<std::string> result;
-
-    for (int i = 0; DepthTypeEnums[i] != nullptr; ++i) {
-        result.push_back(std::string(DepthTypeEnums[i]));
-    }
-
-    return result;
-}
-
-std::vector<std::string> ThreadUtils::getThreadTypeEnums()
-{
-    std::vector<std::string> result;
-
-    for (int i = 0; ThreadTypeEnums[i] != nullptr; ++i) {
-        result.push_back(std::string(ThreadTypeEnums[i]));
-    }
-
-    return result;
-}
-
-std::vector<std::string> ThreadUtils::getThreadClass_None_Enums()
-{
-    std::vector<std::string> result;
-
-    for (int i = 0; ThreadClass_None_Enums[i] != nullptr; ++i) {
-        result.push_back(std::string(ThreadClass_None_Enums[i]));
-    }
-
-    return result;
-}
-
-std::vector<std::string> ThreadUtils::getThreadClass_ISOmetric_Enums()
-{
-    std::vector<std::string> result;
-
-    for (int i = 0; ThreadUtils::ThreadClass_ISOmetric_Enums[i] != nullptr; ++i) {
-        result.push_back(std::string(ThreadUtils::ThreadClass_ISOmetric_Enums[i]));
-    }
-
-    return result;
-}
-
-std::vector<std::string> ThreadUtils::getThreadClass_ISOmetricfine_Enums()
-{
-    std::vector<std::string> result;
-
-    for (int i = 0; ThreadUtils::ThreadClass_ISOmetricfine_Enums[i] != nullptr; ++i) {
-        result.push_back(std::string(ThreadUtils::ThreadClass_ISOmetricfine_Enums[i]));
-    }
-
-    return result;
-}
-
-std::vector<std::string> ThreadUtils::getThreadClass_UNC_Enums()
-{
-    std::vector<std::string> result;
-
-    for (int i = 0; ThreadUtils::ThreadClass_UNC_Enums[i] != nullptr; ++i) {
-        result.push_back(std::string(ThreadUtils::ThreadClass_UNC_Enums[i]));
-    }
-
-    return result;
-}
-
-std::vector<std::string> ThreadUtils::getThreadClass_UNF_Enums()
-{
-    std::vector<std::string> result;
-
-    for (int i = 0; ThreadUtils::ThreadClass_UNF_Enums[i] != nullptr; ++i) {
-        result.push_back(std::string(ThreadUtils::ThreadClass_UNF_Enums[i]));
-    }
-
-    return result;
-}
-
-std::vector<std::string> ThreadUtils::getThreadClass_UNEF_Enums()
-{
-    std::vector<std::string> result;
-
-    for (int i = 0; ThreadUtils::ThreadClass_UNEF_Enums[i] != nullptr; ++i) {
-        result.push_back(std::string(ThreadUtils::ThreadClass_UNEF_Enums[i]));
-    }
-
-    return result;
-}
-
-std::vector<std::string> ThreadUtils::getThreadClass_BSW_Enums()
-{
-    std::vector<std::string> result;
-
-    for (int i = 0; ThreadUtils::ThreadClass_BSW_Enums[i] != nullptr; ++i) {
-        result.push_back(std::string(ThreadUtils::ThreadClass_BSW_Enums[i]));
-    }
-
-    return result;
-}
-
-std::vector<std::string> ThreadUtils::getThreadClass_BSF_Enums()
-{
-    std::vector<std::string> result;
-
-    for (int i = 0; ThreadUtils::ThreadClass_BSF_Enums[i] != nullptr; ++i) {
-        result.push_back(std::string(ThreadUtils::ThreadClass_BSF_Enums[i]));
-    }
-
-    return result;
-}
-
-std::vector<std::string> ThreadUtils::getThreadDirectionEnums()
-{
-    std::vector<std::string> result;
-
-    for (int i = 0; ThreadUtils::ThreadDirectionEnums[i] != nullptr; ++i) {
-        result.push_back(std::string(ThreadUtils::ThreadDirectionEnums[i]));
-    }
-
-    return result;
-}
-
 
 std::vector<std::string> ThreadUtils::getThreadDiameters(const int threadType)
 {

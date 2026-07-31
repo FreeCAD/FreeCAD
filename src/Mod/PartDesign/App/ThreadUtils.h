@@ -1,5 +1,27 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+/****************************************************************************
+ *                                                                          *
+ *   Copyright (c) 2026 Caio Venâncio <caio.venancio784@gmail.com>          *
+ *                                                                          *
+ *   This file is part of FreeCAD.                                          *
+ *                                                                          *
+ *   FreeCAD is free software: you can redistribute it and/or modify it     *
+ *   under the terms of the GNU Lesser General Public License as            *
+ *   published by the Free Software Foundation, either version 2.1 of the   *
+ *   License, or (at your option) any later version.                        *
+ *                                                                          *
+ *   FreeCAD is distributed in the hope that it will be useful, but         *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+ *   Lesser General Public License for more details.                        *
+ *                                                                          *
+ *   You should have received a copy of the GNU Lesser General Public       *
+ *   License along with FreeCAD. If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                       *
+ *                                                                          *
+ ***************************************************************************/
+
 #pragma once
 
 namespace PartDesign
@@ -51,16 +73,13 @@ public:
     );
 
     double getThroughAllLength() const;
-
-private:
-    static const char* DepthTypeEnums[];
-    static const char* ThreadDepthTypeEnums[];
     static const char* ThreadTypeEnums[];
+    static const char* DepthTypeEnums[];
     static const char* ThreadDirectionEnums[];
 
     /* "None" thread profile */
     static const char* ThreadClass_None_Enums[];
-
+    
     /* ISO metric coarse profile */
     static const char* ThreadClass_ISOmetric_Enums[];
     static const double ThreadClass_ISOmetric_data[ThreadClass_ISOmetric_data_size_utils][2];
@@ -88,6 +107,9 @@ private:
     static const char* ThreadClass_BSF_Enums[];
 
     static const double ThreadRunout[ThreadRunout_size_utils][2];
+
+    private:
+    static const char* ThreadDepthTypeEnums[];
 };
 
 }  // namespace PartDesign
