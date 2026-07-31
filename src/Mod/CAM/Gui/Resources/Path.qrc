@@ -28,6 +28,7 @@
         <file>icons/CAM_Face.svg</file>
         <file>icons/CAM_FacePocket.svg</file>
         <file>icons/CAM_FaceProfile.svg</file>
+        <file>icons/CAM_FeedsSpeeds.svg</file>
         <file>icons/CAM_Heights.svg</file>
         <file>icons/CAM_HeightsDiagram.svg</file>
         <file>icons/CAM_HeightsDiagram_NoFinish.svg</file>
@@ -99,6 +100,7 @@
         <file>panels/DressupPathBoundary.ui</file>
         <file>panels/DragKnifeEdit.ui</file>
         <file>panels/DressUpLeadInOutEdit.ui</file>
+        <file>panels/FeedsSpeedsPresetEdit.ui</file>
         <file>panels/HoldingTagsEdit.ui</file>
         <file>panels/LibraryProperties.ui</file>
         <file>panels/PageBaseGeometryEdit.ui</file>

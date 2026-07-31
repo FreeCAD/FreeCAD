@@ -382,17 +382,17 @@
       <translation>Ryd baggrundsfarve</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="328"/>
+      <location filename="../../SheetTableView.cpp" line="327"/>
       <source>Insert Rows</source>
       <translation>Indsæt Rækker</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="355"/>
+      <location filename="../../SheetTableView.cpp" line="354"/>
       <source>Remove Rows</source>
       <translation>Fjern Rækker</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="341"/>
+      <location filename="../../SheetTableView.cpp" line="340"/>
       <source>Insert Columns</source>
       <translation>Indsæt Kolonner</translation>
     </message>
@@ -402,23 +402,23 @@
       <translation type="unfinished">Recompute Cells</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="368"/>
+      <location filename="../../SheetTableView.cpp" line="367"/>
       <source>Remove Columns</source>
       <translation>Fjern Kolonner</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="583"/>
+      <location filename="../../SheetTableView.cpp" line="582"/>
       <location filename="../../SpreadsheetView.cpp" line="179"/>
       <source>Clear Cells</source>
       <translation>Ryd Celler</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="204"/>
+      <location filename="../../DlgSheetConf.cpp" line="228"/>
       <source>Setup conf table</source>
       <translation type="unfinished">Setup conf table</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="309"/>
+      <location filename="../../DlgSheetConf.cpp" line="391"/>
       <source>Unsetup conf table</source>
       <translation type="unfinished">Unsetup conf table</translation>
     </message>
@@ -605,17 +605,32 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation type="unfinished">Optional property group name</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.ui" line="88"/>
+      <location filename="../../DlgSheetConf.ui" line="86"/>
+      <source>Orientation</source>
+      <translation type="unfinished">Orientation</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.ui" line="93"/>
+      <source>Horizontal</source>
+      <translation>Vandret</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.ui" line="103"/>
+      <source>Vertical</source>
+      <translation>Lodret</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.ui" line="115"/>
       <source>Unsetup</source>
       <translation>Fjern Opsætning</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.ui" line="95"/>
+      <location filename="../../DlgSheetConf.ui" line="122"/>
       <source>Cancel</source>
       <translation>Annuller</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.ui" line="102"/>
+      <location filename="../../DlgSheetConf.ui" line="129"/>
       <source>OK</source>
       <translation>Ok</translation>
     </message>
@@ -781,7 +796,7 @@ Regneark.mit_alias_navn i stedet for Regneark.B1</translation>
       <translation type="unfinished">Sets the spreadsheet cells background color</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="721"/>
+      <location filename="../../SheetTableView.cpp" line="720"/>
       <source>Copy &amp; Paste Failed</source>
       <translation>Kopiering &amp; Indsæt Mislykkedes</translation>
     </message>
@@ -1064,7 +1079,7 @@ Defaults to: %V = %A
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
       <location filename="../../SheetTableView.cpp" line="188"/>
-      <location filename="../../SheetTableView.cpp" line="565"/>
+      <location filename="../../SheetTableView.cpp" line="564"/>
       <source>Recompute</source>
       <translation type="unfinished">Recompute</translation>
     </message>
@@ -1090,24 +1105,24 @@ Defaults to: %V = %A
       </translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="564"/>
+      <location filename="../../SheetTableView.cpp" line="563"/>
       <source>Properties…</source>
       <translation>Egenskaber…</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="189"/>
-      <location filename="../../SheetTableView.cpp" line="573"/>
+      <location filename="../../SheetTableView.cpp" line="572"/>
       <source>Bind…</source>
       <translation>Bind…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="566"/>
+      <location filename="../../SheetTableView.cpp" line="565"/>
       <source>Configuration Table…</source>
       <translation>Konfigurationstabel…</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="194"/>
-      <location filename="../../SheetTableView.cpp" line="567"/>
+      <location filename="../../SheetTableView.cpp" line="566"/>
       <source>Merge Cells</source>
       <translation>Flet Celler</translation>
     </message>
@@ -1160,31 +1175,31 @@ Defaults to: %V = %A
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="199"/>
-      <location filename="../../SheetTableView.cpp" line="568"/>
+      <location filename="../../SheetTableView.cpp" line="567"/>
       <source>Split Cell</source>
       <translation>Opdel Celle</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="203"/>
-      <location filename="../../SheetTableView.cpp" line="571"/>
+      <location filename="../../SheetTableView.cpp" line="570"/>
       <source>Cut</source>
       <translation>Klip</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="204"/>
-      <location filename="../../SheetTableView.cpp" line="569"/>
+      <location filename="../../SheetTableView.cpp" line="568"/>
       <source>Copy</source>
       <translation>Kopier</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="205"/>
-      <location filename="../../SheetTableView.cpp" line="570"/>
+      <location filename="../../SheetTableView.cpp" line="569"/>
       <source>Paste</source>
       <translation>Indsæt</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="206"/>
-      <location filename="../../SheetTableView.cpp" line="572"/>
+      <location filename="../../SheetTableView.cpp" line="571"/>
       <source>Delete</source>
       <translation>Slette</translation>
     </message>
@@ -1245,12 +1260,12 @@ Defaults to: %V = %A
   <context>
     <name>SpreadsheetGui::DlgSheetConf</name>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="291"/>
+      <location filename="../../DlgSheetConf.cpp" line="363"/>
       <source>Setup Configuration Table</source>
       <translation>Opsætning Af Konfigurationstabel</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="348"/>
+      <location filename="../../DlgSheetConf.cpp" line="430"/>
       <source>Unsetup Configuration Table</source>
       <translation>Fjern Opsætning Af Konfigurationstabel</translation>
     </message>

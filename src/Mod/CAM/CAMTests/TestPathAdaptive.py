@@ -1091,6 +1091,12 @@ def getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=Tr
     # NOTE: Can NOT just check "if p.get("X")" or similar- that chokes when X is
     # zero. That becomes especially obvious when Z=0, and moves end up on the
     # wrong depth
+    def _round(value, decimals):
+        rval = round(value, decimals)
+        if rval == 0:
+            rval = 0.0  # exclude value -0.0
+        return rval
+
     gcode_list = list()
     last = FreeCAD.Vector(0.0, 0.0, 0.0)
     for c in cmdList:
@@ -1102,13 +1108,13 @@ def getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=Tr
             y = last.y
             z = last.z
             if "X" in p:
-                x = round(p["X"], 2)
+                x = _round(p["X"], 2)
             gcode += " X" + str(x)
             if "Y" in p:
-                y = round(p["Y"], 2)
+                y = _round(p["Y"], 2)
             gcode += " Y" + str(y)
             if "Z" in p:
-                z = round(p["Z"], 2)
+                z = _round(p["Z"], 2)
             gcode += " Z" + str(z)
             last.x = x
             last.y = y
@@ -1123,23 +1129,23 @@ def getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=Tr
             j = 0.0
             k = 0.0
             if "I" in p:
-                i = round(p["I"], 2)
+                i = _round(p["I"], 2)
             gcode += " I" + str(i)
             if "J" in p:
-                j = round(p["J"], 2)
+                j = _round(p["J"], 2)
             gcode += " J" + str(j)
             if "K" in p:
-                k = round(p["K"], 2)
+                k = _round(p["K"], 2)
             gcode += " K" + str(k)
 
             if "X" in p:
-                x = round(p["X"], 2)
+                x = _round(p["X"], 2)
             gcode += " X" + str(x)
             if "Y" in p:
-                y = round(p["Y"], 2)
+                y = _round(p["Y"], 2)
             gcode += " Y" + str(y)
             if "Z" in p:
-                z = round(p["Z"], 2)
+                z = _round(p["Z"], 2)
             gcode += " Z" + str(z)
 
             gcode_list.append(gcode)

@@ -52,6 +52,7 @@ from CAMTests.TestPathHelpers import TestPathHelpers
 from CAMTests.TestPathHelix import TestPathHelix
 from CAMTests.TestPathHelixGenerator import TestPathHelixGenerator
 from CAMTests.TestPathSpiralGenerator import TestPathSpiralGenerator
+from CAMTests.TestPathRampEntryGenerator import TestPathRampEntryGenerator
 from CAMTests.TestPathLog import TestPathLog
 from CAMTests.TestPathLogNew import TestPathLogNew
 from CAMTests.TestPathOpUtil import (
@@ -76,6 +77,7 @@ from CAMTests.TestPostOutput import (
     TestExport2Integration,
 )
 
+from CAMTests.TestPathCustom import TestPathCustomConverted
 from CAMTests.TestPathPreferences import TestPathPreferences
 from CAMTests.TestPathPocket import TestPathPocket
 from CAMTests.TestPathProfile import TestPathProfile, TestPathOpenProfile
@@ -114,6 +116,9 @@ from CAMTests.TestPathToolBitSerializer import (
     TestFCTBSerializer,
     TestYamlToolBitSerializer,
 )
+from CAMTests.TestFeedsSpeedsResolver import TestFeedsSpeedsResolver
+from CAMTests.TestFeedsSpeedsToolBitPresets import TestFeedsSpeedsToolBitPresets
+from CAMTests.TestFeedsSpeedsToolController import TestFeedsSpeedsToolController
 from CAMTests.TestPathToolLibrary import TestPathToolLibrary
 from CAMTests.TestPathToolLibrarySerializer import (
     TestCamoticsLibrarySerializer,

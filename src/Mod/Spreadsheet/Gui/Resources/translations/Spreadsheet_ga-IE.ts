@@ -382,17 +382,17 @@
       <translation>Dath cúlra soiléir</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="328"/>
+      <location filename="../../SheetTableView.cpp" line="327"/>
       <source>Insert Rows</source>
       <translation>Cuir Sraitheanna Isteach</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="355"/>
+      <location filename="../../SheetTableView.cpp" line="354"/>
       <source>Remove Rows</source>
       <translation>Bain Sraitheanna</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="341"/>
+      <location filename="../../SheetTableView.cpp" line="340"/>
       <source>Insert Columns</source>
       <translation>Cuir Colúin Isteach</translation>
     </message>
@@ -402,23 +402,23 @@
       <translation>Athríomh Cealla</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="368"/>
+      <location filename="../../SheetTableView.cpp" line="367"/>
       <source>Remove Columns</source>
       <translation>Bain Colúin</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="583"/>
+      <location filename="../../SheetTableView.cpp" line="582"/>
       <location filename="../../SpreadsheetView.cpp" line="179"/>
       <source>Clear Cells</source>
       <translation>Cealla Glan</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="204"/>
+      <location filename="../../DlgSheetConf.cpp" line="228"/>
       <source>Setup conf table</source>
       <translation>Socraigh tábla comhdhála</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="309"/>
+      <location filename="../../DlgSheetConf.cpp" line="391"/>
       <source>Unsetup conf table</source>
       <translation>Díchumasaigh an tábla comhdhála</translation>
     </message>
@@ -605,17 +605,32 @@ an dearaidh a athrú go dinimiciúil. Cruthófar an mhaoin mura bhfuil sí ann.<
       <translation>Ainm roghnach grúpa maoine</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.ui" line="88"/>
+      <location filename="../../DlgSheetConf.ui" line="86"/>
+      <source>Orientation</source>
+      <translation>Treoshuíomh</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.ui" line="93"/>
+      <source>Horizontal</source>
+      <translation>Cothrománach</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.ui" line="103"/>
+      <source>Vertical</source>
+      <translation>Ingearach</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.ui" line="115"/>
       <source>Unsetup</source>
       <translation>Díchumasaigh</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.ui" line="95"/>
+      <location filename="../../DlgSheetConf.ui" line="122"/>
       <source>Cancel</source>
       <translation>Cealaigh</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.ui" line="102"/>
+      <location filename="../../DlgSheetConf.ui" line="129"/>
       <source>OK</source>
       <translation>Ceart go leor</translation>
     </message>
@@ -781,7 +796,7 @@ Scarbhileog.m'ainm_leasainm in ionad Scarbhileog.B1</translation>
       <translation>Socraíonn sé dath cúlra na gcealla scarbhileog</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="721"/>
+      <location filename="../../SheetTableView.cpp" line="720"/>
       <source>Copy &amp; Paste Failed</source>
       <translation>Theip ar Chóipeáil &amp; Greamaigh</translation>
     </message>
@@ -1064,7 +1079,7 @@ Réamhshocraithe: %V = %A
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
       <location filename="../../SheetTableView.cpp" line="188"/>
-      <location filename="../../SheetTableView.cpp" line="565"/>
+      <location filename="../../SheetTableView.cpp" line="564"/>
       <source>Recompute</source>
       <translation>Athríomh</translation>
     </message>
@@ -1096,24 +1111,24 @@ Réamhshocraithe: %V = %A
       </translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="564"/>
+      <location filename="../../SheetTableView.cpp" line="563"/>
       <source>Properties…</source>
       <translation>Airíonna…</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="189"/>
-      <location filename="../../SheetTableView.cpp" line="573"/>
+      <location filename="../../SheetTableView.cpp" line="572"/>
       <source>Bind…</source>
       <translation>Ceangail…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="566"/>
+      <location filename="../../SheetTableView.cpp" line="565"/>
       <source>Configuration Table…</source>
       <translation>Tábla Cumraíochta…</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="194"/>
-      <location filename="../../SheetTableView.cpp" line="567"/>
+      <location filename="../../SheetTableView.cpp" line="566"/>
       <source>Merge Cells</source>
       <translation>Cumaisc Cealla</translation>
     </message>
@@ -1178,31 +1193,31 @@ Réamhshocraithe: %V = %A
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="199"/>
-      <location filename="../../SheetTableView.cpp" line="568"/>
+      <location filename="../../SheetTableView.cpp" line="567"/>
       <source>Split Cell</source>
       <translation>Scoilt Cill</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="203"/>
-      <location filename="../../SheetTableView.cpp" line="571"/>
+      <location filename="../../SheetTableView.cpp" line="570"/>
       <source>Cut</source>
       <translation>Gearr</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="204"/>
-      <location filename="../../SheetTableView.cpp" line="569"/>
+      <location filename="../../SheetTableView.cpp" line="568"/>
       <source>Copy</source>
       <translation>Cóipeáil</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="205"/>
-      <location filename="../../SheetTableView.cpp" line="570"/>
+      <location filename="../../SheetTableView.cpp" line="569"/>
       <source>Paste</source>
       <translation>Greamaigh</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="206"/>
-      <location filename="../../SheetTableView.cpp" line="572"/>
+      <location filename="../../SheetTableView.cpp" line="571"/>
       <source>Delete</source>
       <translation>Scrios</translation>
     </message>
@@ -1263,12 +1278,12 @@ Réamhshocraithe: %V = %A
   <context>
     <name>SpreadsheetGui::DlgSheetConf</name>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="291"/>
+      <location filename="../../DlgSheetConf.cpp" line="363"/>
       <source>Setup Configuration Table</source>
       <translation>Tábla Cumraíochta Socraithe</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="348"/>
+      <location filename="../../DlgSheetConf.cpp" line="430"/>
       <source>Unsetup Configuration Table</source>
       <translation>Tábla Cumraíochta Díshuiteála</translation>
     </message>

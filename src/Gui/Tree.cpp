@@ -468,11 +468,11 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem* option, const
         return;
     }
 
-    // Clear State_Enabled for hidden objects so QSS ::item:disabled rules can
+    // Clear State_Enabled for invisible objects so QSS ::item:disabled rules can
     // override the overlay stylesheet's blanket ::item { color } for text fading.
     if (item->type() == TreeWidget::ObjectType) {
         if (auto* docItem = static_cast<DocumentObjectItem*>(item);
-            docItem->object() && !docItem->object()->isShow()) {
+            docItem->object() && !docItem->isVisibleInTree()) {
             option->state &= ~QStyle::State_Enabled;
         }
     }
@@ -2015,6 +2015,7 @@ void TreeWidget::keyPressEvent(QKeyEvent* event)
 void TreeWidget::mousePressEvent(QMouseEvent* event)
 {
     expandIndicatorPressed = false;
+    visibilityIconPressed = false;
     if (isVisibilityIconEnabled()) {
         QTreeWidgetItem* item = itemAt(event->pos());
         if (item && item->type() == TreeWidget::ObjectType && event->button() == Qt::LeftButton) {
@@ -2064,6 +2065,7 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
                     obj->Visibility.setValue(!visible);
                 }
                 visibilityIconDoubleClickTimer.start();
+                visibilityIconPressed = true;
 
                 // to prevent selection of the item via QTreeWidget::mousePressEvent
                 event->accept();
@@ -2088,7 +2090,7 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
 
 void TreeWidget::mouseMoveEvent(QMouseEvent* event)
 {
-    if (expandIndicatorPressed) {
+    if (expandIndicatorPressed || visibilityIconPressed) {
         return;
     }
     QTreeWidget::mouseMoveEvent(event);
@@ -2097,6 +2099,11 @@ void TreeWidget::mouseMoveEvent(QMouseEvent* event)
 void TreeWidget::mouseReleaseEvent(QMouseEvent* event)
 {
     expandIndicatorPressed = false;
+    if (visibilityIconPressed) {
+        visibilityIconPressed = false;
+        event->accept();
+        return;
+    }
     QTreeWidget::mouseReleaseEvent(event);
 }
 
@@ -2648,7 +2655,10 @@ bool TreeWidget::dropInDocument(
                 if (!link) {
                     continue;
                 }
-                FCMD_OBJ_CMD(link, "Label='" << obj->getLinkedObject(true)->Label.getValue() << "'");
+                std::string linkedLabel = Base::Tools::escapeEncodeString(
+                    obj->getLinkedObject(true)->Label.getValue()
+                );
+                FCMD_OBJ_CMD(link, "Label='" << linkedLabel << "'");
                 propPlacement = dynamic_cast<App::PropertyPlacement*>(
                     link->getPropertyByName("Placement")
                 );
@@ -3909,6 +3919,7 @@ void TreeWidget::setupText()
 
     this->closeDocAction->setText(tr("Close Document"));
     this->closeDocAction->setStatusTip(tr("Closes the document"));
+    this->closeDocAction->setIcon(BitmapFactory().iconFromTheme("Std_CloseActiveWindow"));
 
 #ifdef Q_OS_MAC
     this->openFileLocationAction->setText(tr("Reveal in Finder"));
@@ -6440,13 +6451,8 @@ QIcon DocumentObjectItem::getVisibilityIcon(int currentStatus, QIcon& original_i
     return new_icon;
 }
 
-void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2)
+bool DocumentObjectItem::isVisibleInTree() const
 {
-    // guard against calling this during destruction when tree widget may be nullptr
-    if (!treeWidget()) {
-        return;
-    }
-
     App::DocumentObject* pObject = object()->getObject();
 
     int visible = -1;
@@ -6475,6 +6481,19 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     if (visible < 0) {
         visible = object()->isShow() ? 1 : 0;
     }
+
+    return visible != 0;
+}
+
+void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2)
+{
+    // guard against calling this during destruction when tree widget may be nullptr
+    if (!treeWidget()) {
+        return;
+    }
+
+    App::DocumentObject* pObject = object()->getObject();
+    auto visible = isVisibleInTree();
 
     auto obj = object()->getObject();
     auto linked = obj->getLinkedObject(false);

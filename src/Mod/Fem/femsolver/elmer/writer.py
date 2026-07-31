@@ -666,6 +666,20 @@ class Writer:
     def getMesh(self):
         return membertools.get_mesh_to_solve(self.analysis)
 
+    def getCoordSystemDimension(self):
+        dim = 0
+        match self.solver.CoordinateSystem:
+            case "Cartesian":
+                # defined by the mesh
+                dim = self.getMeshDimension()
+            case "Cartesian 1D":
+                dim = 1
+            case "Cartesian 2D" | "Polar 2D" | "Cylindric Symmetric" | "Axi Symmetric":
+                dim = 2
+            case "Cartesian 3D" | "Polar 3D" | "Cylindric":
+                dim = 3
+        return dim
+
     def _addOutputSolver(self):
         s = sifio.createSection(sifio.SOLVER)
         # Since FreeCAD meshes are in mm we let Elmer scale it
