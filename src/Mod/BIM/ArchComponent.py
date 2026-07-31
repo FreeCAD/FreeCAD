@@ -2141,6 +2141,7 @@ class SelectionTaskPanel:
         if hasattr(FreeCAD, "ArchObserver"):
             FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
             del FreeCAD.ArchObserver
+        FreeCADGui.HintManager.hide()
         return True
 
 
