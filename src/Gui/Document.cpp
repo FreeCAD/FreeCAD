@@ -58,6 +58,7 @@
 #include "Application.h"
 #include "Command.h"
 #include "Control.h"
+#include "Dialogs/DlgProjectInformationImp.h"
 #include "FileDialog.h"
 #include "MainWindow.h"
 #include "MDIView.h"
@@ -1688,9 +1689,36 @@ bool Document::save()
     }
 }
 
+/**
+ * Offers the document information dialog the first time a document is saved, so that
+ * the metadata is written into the file by the save that follows.
+ */
+void Document::showProjectInformationOnFirstSave()
+{
+    // Skip if no GUI (headless/scripted mode)
+    if (!getMainWindow()) {
+        return;
+    }
+
+    if (!App::GetApplication()
+             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
+             ->GetBool("AskProjectInfoOnFirstSave", true)) {
+        return;
+    }
+
+    Dialog::DlgProjectInformationImp dlg(getDocument(), getMainWindow());
+    dlg.setFirstSaveMode();
+
+    // Dismissing the dialog leaves the metadata untouched but must not abort the save
+    dlg.exec();
+}
+
 /// Save the document under a new file name
 bool Document::saveAs()
 {
+    // A document that has no file name yet is being saved for the first time
+    const bool firstSave = !getDocument()->isSaved();
+
     getMainWindow()->showMessage(QObject::tr("Save document under new filename…"));
 
     QString exe = qApp->applicationName();
@@ -1714,6 +1742,11 @@ bool Document::saveAs()
     if (!fn.isEmpty()) {
         QFileInfo fi;
         fi.setFile(fn);
+
+        if (firstSave) {
+            // Ask before writing, so the metadata ends up in the file being created
+            showProjectInformationOnFirstSave();
+        }
 
         const char* DocName = App::GetApplication().getDocumentName(getDocument());
 

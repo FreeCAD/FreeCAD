@@ -364,6 +364,8 @@ private:
     bool askIfSavingFailed(const QString&);
     /// Warn if saving a document from an older FreeCAD version (returns false if user cancels)
     bool warnIfOlderVersion();
+    /// Offer to fill in the document metadata the first time a document is saved
+    void showProjectInformationOnFirstSave();
 
     struct DocumentP* d;
     static int _iDocCount;
