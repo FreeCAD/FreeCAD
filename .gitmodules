@@ -13,5 +13,5 @@
 	branch = freecad-master
 [submodule "src/3rdParty/pivy"]
 	path = src/3rdParty/pivy
-	url = https://github.com/FreeCAD/pivy.git
-	branch = freecad-master
+	url = https://github.com/jacquesbeaurain/pivy.git
+	branch = jbfreecad-master
