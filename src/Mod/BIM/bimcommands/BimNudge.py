@@ -31,9 +31,12 @@ QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 
 
-if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
-    "UserSchema", 0
-) in [2, 3, 5, 7]:
+if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("UserSchema", 0) in [
+    2,
+    3,
+    5,
+    7,
+]:
     _NUDGE_DISTANCES = [1.5875, 3.175, 6.35, 25.4, 152.4, 304.8]
     _NUDGE_DISTANCES_STRINGS = ['1/16"', '1/8"', '1/4"', '1"', '6"', "1'"]
 else:
