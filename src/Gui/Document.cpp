@@ -83,6 +83,12 @@ namespace Gui
 // Pimpl class
 struct DocumentP
 {
+    struct VisibleSpaceState
+    {
+        std::string objectName;
+        int normalSceneVisibilityState;
+    };
+
     Thumbnail thumb;
     int _iWinCount;
     int _iDocId;
@@ -117,6 +123,8 @@ struct DocumentP
     std::map<SoSeparator*, ViewProviderDocumentObject*> _CoinMap;
     std::map<std::string, ViewProvider*> _ViewProviderMapAnnotation;
     std::list<ViewProviderDocumentObject*> _redoViewProviders;
+    bool _alternateVisibleSpaceActive {false};
+    std::vector<VisibleSpaceState> _visibleSpaceStates;
 
     using Connection = fastsignals::connection;
     using AdvancedConnection = fastsignals::advanced_connection;
@@ -941,6 +949,152 @@ void Document::setHide(const char* name)
     if (pcProv && pcProv->isDerivedFrom<ViewProviderDocumentObject>()) {
         static_cast<ViewProviderDocumentObject*>(pcProv)->Visibility.setValue(false);
     }
+}
+
+void Document::toggleVisibleSpace()
+{
+    if (d->_alternateVisibleSpaceActive) {
+        restoreNormalVisibleSpace();
+        d->_visibleSpaceStates.clear();
+        d->_alternateVisibleSpaceActive = false;
+        return;
+    }
+
+    d->_visibleSpaceStates.reserve(d->_ViewProviderMap.size());
+    for (const auto& [object, viewProvider] : d->_ViewProviderMap) {
+        if (!viewProvider->canToggleVisibility() || !viewProvider->canAddToSceneGraph()) {
+            continue;
+        }
+        d->_visibleSpaceStates.push_back({
+            object->getNameInDocument(),
+            viewProvider->getSceneVisibilityState(),
+        });
+    }
+    d->_alternateVisibleSpaceActive = true;
+    showAlternateVisibleSpace();
+}
+
+void Document::restoreNormalVisibleSpace()
+{
+    for (const auto& state : d->_visibleSpaceStates) {
+        auto* object = d->_pcDocument->getObject(state.objectName.c_str());
+        auto* viewProvider = object ? getViewProvider(object) : nullptr;
+        if (auto* documentViewProvider = freecad_cast<ViewProviderDocumentObject*>(viewProvider)) {
+            documentViewProvider->setSceneVisibilityState(state.normalSceneVisibilityState);
+        }
+    }
+}
+
+void Document::showAlternateVisibleSpace()
+{
+    if (!d->_alternateVisibleSpaceActive) {
+        return;
+    }
+
+    // All decisions are made against the normal scene. This prevents a
+    // container's alternate state from becoming input to the next update.
+    restoreNormalVisibleSpace();
+
+    struct ObjectState
+    {
+        ViewProviderDocumentObject* viewProvider;
+        bool visible;
+        bool required;
+    };
+
+    std::vector<ObjectState> states;
+    std::map<const App::DocumentObject*, std::size_t> stateIndex;
+    states.reserve(d->_ViewProviderMap.size());
+    for (const auto& [object, viewProvider] : d->_ViewProviderMap) {
+        if (!viewProvider->canToggleVisibility() || !viewProvider->canAddToSceneGraph()) {
+            continue;
+        }
+
+        stateIndex.emplace(object, states.size());
+        states.push_back({viewProvider, viewProvider->isVisibleInScene(), false});
+    }
+
+    std::vector<std::vector<std::size_t>> parents(states.size());
+    for (std::size_t index = 0; index < states.size(); ++index) {
+        for (auto* child : states[index].viewProvider->claimChildren3D()) {
+            auto it = stateIndex.find(child);
+            if (it != stateIndex.end()) {
+                parents[it->second].push_back(index);
+            }
+        }
+    }
+
+    // Every object that was not effectively visible belongs to the alternate
+    // space. Its 3D parents must remain visible so the object can be reached.
+    for (std::size_t index = 0; index < states.size(); ++index) {
+        const auto mode = states[index].viewProvider->getVisibleSpaceMode();
+        const bool visible = mode == ViewProvider::VisibleSpaceMode::Show
+            || (mode == ViewProvider::VisibleSpaceMode::Complement && !states[index].visible);
+        if (!visible) {
+            continue;
+        }
+
+        std::vector<std::size_t> pending {index};
+        while (!pending.empty()) {
+            const std::size_t current = pending.back();
+            pending.pop_back();
+            if (states[current].required) {
+                continue;
+            }
+
+            states[current].required = true;
+            pending.insert(pending.end(), parents[current].begin(), parents[current].end());
+        }
+    }
+
+    // Make the transition deterministic: first hide every participant, then
+    // reveal only the alternate-space objects and the containers required to
+    // reach them.
+    for (const auto& state : states) {
+        state.viewProvider->setSceneVisible(false);
+    }
+    for (const auto& state : states) {
+        if (state.required) {
+            state.viewProvider->setSceneVisible(true);
+        }
+    }
+}
+
+bool Document::updateVisibleSpaceVisibility(ViewProviderDocumentObject* viewProvider)
+{
+    if (!d->_alternateVisibleSpaceActive || !viewProvider) {
+        return false;
+    }
+
+    if (auto* object = viewProvider->getObject()) {
+        bool found = false;
+        for (auto& visibleSpaceState : d->_visibleSpaceStates) {
+            if (visibleSpaceState.objectName == object->getNameInDocument()) {
+                visibleSpaceState.normalSceneVisibilityState = viewProvider->getSceneVisibilityState();
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            d->_visibleSpaceStates.push_back({
+                object->getNameInDocument(),
+                viewProvider->getSceneVisibilityState(),
+            });
+        }
+    }
+
+    showAlternateVisibleSpace();
+    return true;
+}
+
+bool Document::toggleVisibleSpaceVisibility(ViewProviderDocumentObject* viewProvider)
+{
+    if (!d->_alternateVisibleSpaceActive || !viewProvider) {
+        return false;
+    }
+
+    viewProvider->Visibility.setValue(viewProvider->isVisibleInScene());
+    return true;
 }
 
 /// set the feature in Noshow
