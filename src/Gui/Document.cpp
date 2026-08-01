@@ -32,6 +32,7 @@
 #include <mutex>
 #include <QApplication>
 #include <QCheckBox>
+#include <QColor>
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QOpenGLWidget>
@@ -954,7 +955,9 @@ void Document::setHide(const char* name)
 void Document::toggleVisibleSpace()
 {
     if (d->_alternateVisibleSpaceActive) {
+        setVisibleSpaceBackground(false);
         restoreNormalVisibleSpace();
+        TreeWidget::updateVisibilityIcons();
         d->_visibleSpaceStates.clear();
         d->_alternateVisibleSpaceActive = false;
         return;
@@ -972,6 +975,17 @@ void Document::toggleVisibleSpace()
     }
     d->_alternateVisibleSpaceActive = true;
     showAlternateVisibleSpace();
+    setVisibleSpaceBackground(true);
+}
+
+void Document::setVisibleSpaceBackground(bool active)
+{
+    const QColor background = active ? QColor(95, 125, 150) : QColor();
+    for (auto* view : d->baseViews) {
+        if (auto* view3d = dynamic_cast<View3DInventor*>(view)) {
+            view3d->getViewer()->setTemporaryBackgroundColor(background);
+        }
+    }
 }
 
 void Document::restoreNormalVisibleSpace()
@@ -1058,6 +1072,7 @@ void Document::showAlternateVisibleSpace()
             state.viewProvider->setSceneVisible(true);
         }
     }
+    TreeWidget::updateVisibilityIcons();
 }
 
 bool Document::updateVisibleSpaceVisibility(ViewProviderDocumentObject* viewProvider)
@@ -2568,6 +2583,9 @@ void Document::attachView(Gui::BaseView* pcView, bool bPassiv)
 {
     if (!bPassiv) {
         d->baseViews.push_back(pcView);
+        if (d->_alternateVisibleSpaceActive) {
+            setVisibleSpaceBackground(true);
+        }
     }
     else {
         d->passiveViews.push_back(pcView);

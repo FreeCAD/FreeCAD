@@ -359,6 +359,7 @@ protected:
     Gui::DocumentPy* _pcDocPy;
 
 private:
+    void setVisibleSpaceBackground(bool active);
     void restoreNormalVisibleSpace();
     void showAlternateVisibleSpace();
     bool trySetEdit(Gui::ViewProvider* p, int ModNum, const char* subname);
