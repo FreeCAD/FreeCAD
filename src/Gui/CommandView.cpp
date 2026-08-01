@@ -1281,6 +1281,7 @@ StdCmdToggleObjects::StdCmdToggleObjects()
     sStatusTip = sToolTipText;
     sWhatsThis = "Std_ToggleObjects";
     sPixmap = "Std_ToggleObjects";
+    sAccel = "Shift+Space";
     eType = Alter3DView;
 }
 
