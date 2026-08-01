@@ -193,7 +193,7 @@ CmdSketcher3DCreateReferencePlane::CmdSketcher3DCreateReferencePlane()
     sAppModule = "Sketcher3D";
     sGroup = QT_TR_NOOP("Sketcher3D");
     sMenuText = QT_TR_NOOP("Reference plane");
-    sToolTipText = QT_TR_NOOP("Create a reference work plane through three points");
+    sToolTipText = QT_TR_NOOP("Create a reference work plane through three points or line and angle");
     sWhatsThis = "Sketcher3D_CreateReferencePlane";
     sStatusTip = sToolTipText;
     sPixmap = "PartDesign_Plane";

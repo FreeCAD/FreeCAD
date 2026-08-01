@@ -27,6 +27,7 @@ SET(Sketcher3DGui_SRCS
     DrawSketchHandlerReferencePlane3D.cpp
     DrawSketchHandlerReferencePlane3D.h
     PreCompiled.h
+    Sketcher3DToolWidget.h
     SnapManager3D.cpp
     SnapManager3D.h
     TaskDlgEditSketch3D.cpp

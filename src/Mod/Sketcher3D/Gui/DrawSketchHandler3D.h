@@ -45,6 +45,7 @@ class Sketch3DObject;
 namespace Sketcher3DGui
 {
 
+class Sketcher3DToolWidget;
 class ViewProviderSketch3D;
 
 class Sketcher3DGuiExport DrawSketchHandler3D
@@ -86,6 +87,10 @@ protected:
         return preview;
     }
 
+    void setToolWidget(std::unique_ptr<Sketcher3DToolWidget> widget);
+    void clearToolWidget();
+    Sketcher3DToolWidget* toolWidget() const;
+
     void setupLineRubberBandPreview();
     void setRubberBandVisible(bool visible);
 
@@ -93,15 +98,7 @@ protected:
     SoSwitch* rubberSwitch {nullptr};
     SoCoordinate3* rubberCoords {nullptr};
 
-    struct PreselectionData
-    {
-        int geoId {Sketcher3D::GeoEnum3D::GeoUndef};
-        Sketcher3D::PointPos posId {Sketcher3D::PointPos::none};
-        Sketcher3D::GeoKind kind {Sketcher3D::GeoKind::Unknown};
-        Base::Vector3d hitShapeDir {0.0, 0.0, 0.0};
-        bool isLine {false};
-    };
-    PreselectionData getPreselectionData() const;
+    const Sketcher3D::GeoElementId3D& getPreselection() const;
 
     int seekAutoConstraint(
         std::vector<AutoConstraint3D>& suggestedConstraints,

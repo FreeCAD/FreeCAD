@@ -22,37 +22,40 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#include <Mod/Sketcher3D/App/Sketch3DObject.h>
+#pragma once
 
-#include "SnapManager3D.h"
-#include "ViewProviderSketch3D.h"
+#include <functional>
 
+#include <QWidget>
 
-using namespace Sketcher3DGui;
+#include <Mod/Sketcher3D/Sketcher3DGlobal.h>
 
-
-SnapManager3D::SnapManager3D(ViewProviderSketch3D& vp)
-    : viewProvider(vp)
-{}
-
-SnapManager3D::~SnapManager3D() = default;
-
-void SnapManager3D::snap(const Base::Vector3d& rawProjected, const Sketcher3D::GeoElementId3D& preselection)
+namespace Sketcher3DGui
 {
-    snapPosition = rawProjected;
-    snapped = false;
 
-    if (!preselection.isValid()) {
-        return;
+class Sketcher3DGuiExport Sketcher3DToolWidget: public QWidget
+{
+public:
+    explicit Sketcher3DToolWidget(QWidget* parent = nullptr)
+        : QWidget(parent)
+    {}
+    ~Sketcher3DToolWidget() override = default;
+
+    void setAcceptCallback(std::function<void()> callback)
+    {
+        onAccept = std::move(callback);
     }
 
-    Base::Vector3d point;
-    if (!viewProvider.getSketch3DObject()->getPointAt(preselection, point)) {
-        return;
+    void accept()
+    {
+        if (onAccept) {
+            onAccept();
+        }
     }
 
-    snapPosition = point;
-    snapped = true;
-}
+private:
+    std::function<void()> onAccept;
+};
+
+}  // namespace Sketcher3DGui

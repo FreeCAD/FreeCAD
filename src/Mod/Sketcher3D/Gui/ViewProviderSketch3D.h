@@ -25,8 +25,6 @@
 
 #pragma once
 
-#include "PreCompiled.h"
-
 #include <QCoreApplication>
 
 #include <Base/Vector3D.h>
@@ -65,6 +63,8 @@ namespace Sketcher3DGui
 
 class DrawSketchHandler3D;
 class SnapManager3D;
+class Sketcher3DToolWidget;
+class TaskSketcher3DTool;
 
 using Color3f = std::array<float, 3>;
 
@@ -171,6 +171,14 @@ public:
         return handler.get();
     }
 
+    void setToolPanel(TaskSketcher3DTool* panel)
+    {
+        toolPanel = panel;
+    }
+    void setHandlerToolWidget(std::unique_ptr<Sketcher3DToolWidget> widget);
+    void clearHandlerToolWidget();
+    Sketcher3DToolWidget* handlerToolWidget() const;
+
     // Event forwarding from the viewer while in edit mode.
     bool mouseButtonPressed(
         int button,
@@ -181,9 +189,9 @@ public:
     bool mouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer) override;
     bool keyPressed(bool pressed, int key) override;
 
-    const Sketcher3D::GeoElementId3D& getSnapTarget() const
+    const Sketcher3D::GeoElementId3D& getPreselection() const
     {
-        return snapTarget;
+        return preselection;
     }
 
 protected:
@@ -214,13 +222,9 @@ private:
 
     std::string getPickedSubName(const SbVec2s& cursorPx, const Gui::View3DInventorViewer* viewer) const;
 
-    /// Resolve a snap target for the given cursor position. Updates snapTarget
-    /// and returns the (possibly snapped) world position.
-    Base::Vector3d applySnap(
-        const Base::Vector3d& raw,
-        const SbVec2s& cursorPos,
-        const Gui::View3DInventorViewer* viewer
-    );
+    void updatePreselection(const SbVec2s& cursorPos, const Gui::View3DInventorViewer* viewer);
+
+    Base::Vector3d snapPosition(const Base::Vector3d& raw);
 
     void ensureSnapMarker();
     void hideSnapMarker();
@@ -265,9 +269,10 @@ private:
     SoSeparator* snapMarker {nullptr};
     SoSwitch* snapMarkerSwitch {nullptr};
     SoTranslation* snapMarkerXf {nullptr};
-    Sketcher3D::GeoElementId3D snapTarget {};
+    Sketcher3D::GeoElementId3D preselection {};
 
     std::unique_ptr<DrawSketchHandler3D> handler;
+    TaskSketcher3DTool* toolPanel {nullptr};
 
     /// Workbench name from before setEdit.same as partdesign
     std::string oldWb;

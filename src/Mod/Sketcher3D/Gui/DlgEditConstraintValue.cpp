@@ -27,9 +27,6 @@
 
 #include <QByteArray>
 #include <QDialogButtonBox>
-#include <QFormLayout>
-#include <QPushButton>
-#include <QVBoxLayout>
 
 #include <Base/Quantity.h>
 #include <Gui/PrefWidgets.h>

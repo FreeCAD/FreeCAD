@@ -25,19 +25,12 @@
 
 #include "PreCompiled.h"
 
-#include <Inventor/events/SoKeyboardEvent.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoDrawStyle.h>
-#include <Inventor/nodes/SoLineSet.h>
-#include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoPickStyle.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoSwitch.h>
 
-#include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher3D/App/Sketch3DObject.h>
 
 #include "DrawSketchHandler3D.h"
+#include "Sketcher3DToolWidget.h"
 #include "Utils.h"
 #include "ViewProviderSketch3D.h"
 
@@ -64,6 +57,7 @@ void DrawSketchHandler3D::activate(ViewProviderSketch3D* v)
 
 void DrawSketchHandler3D::quit()
 {
+    clearToolWidget();
     if (preview && vp) {
         vp->getRoot()->removeChild(preview);
     }
@@ -72,6 +66,25 @@ void DrawSketchHandler3D::quit()
         preview = nullptr;
     }
     vp = nullptr;
+}
+
+void DrawSketchHandler3D::setToolWidget(std::unique_ptr<Sketcher3DToolWidget> widget)
+{
+    if (vp) {
+        vp->setHandlerToolWidget(std::move(widget));
+    }
+}
+
+void DrawSketchHandler3D::clearToolWidget()
+{
+    if (vp) {
+        vp->clearHandlerToolWidget();
+    }
+}
+
+Sketcher3DToolWidget* DrawSketchHandler3D::toolWidget() const
+{
+    return vp ? vp->handlerToolWidget() : nullptr;
 }
 
 bool DrawSketchHandler3D::keyPressed(int key)
@@ -131,34 +144,10 @@ void DrawSketchHandler3D::setRubberBandVisible(bool visible)
     }
 }
 
-DrawSketchHandler3D::PreselectionData DrawSketchHandler3D::getPreselectionData() const
+const Sketcher3D::GeoElementId3D& DrawSketchHandler3D::getPreselection() const
 {
-    PreselectionData preSelData;
-    if (!vp) {
-        return preSelData;
-    }
-
-    const Sketcher3D::GeoElementId3D& target = vp->getSnapTarget();
-    if (!target.isValid()) {
-        return preSelData;
-    }
-
-    preSelData.geoId = target.GeoId;
-    preSelData.posId = target.Pos;
-    preSelData.kind = target.Kind;
-
-    if (target.Kind == Sketcher3D::GeoKind::Line) {
-        const Sketcher3D::Sketch3DObject* sketch = getSketch();
-        if (!sketch) {
-            return preSelData;
-        }
-        if (auto* line = sketch->getGeometry<Part::GeomLineSegment>(target.GeoId)) {
-            preSelData.hitShapeDir = line->getEndPoint() - line->getStartPoint();
-            preSelData.isLine = true;
-        }
-    }
-
-    return preSelData;
+    static const Sketcher3D::GeoElementId3D empty;
+    return vp ? vp->getPreselection() : empty;
 }
 
 int DrawSketchHandler3D::seekAutoConstraint(
@@ -189,23 +178,23 @@ void DrawSketchHandler3D::seekPreselectionAutoConstraint(
     (void)Pos;
     (void)Dir;
 
-    PreselectionData preSel = getPreselectionData();
-    if (preSel.geoId == Sketcher3D::GeoEnum3D::GeoUndef) {
+    auto& preSel = getPreselection();
+    if (!preSel.isValid()) {
         return;
     }
     if (type != AutoConstraint3D::VERTEX && type != AutoConstraint3D::VERTEX_NO_TANGENCY) {
         return;
     }
 
-    bool isPoint = preSel.kind == Sketcher3D::GeoKind::Point;
-    bool isLineEndpoint = preSel.kind == Sketcher3D::GeoKind::Line
-        && (preSel.posId == Sketcher3D::PointPos::start || preSel.posId == Sketcher3D::PointPos::end);
+    bool isPoint = preSel.Kind == Sketcher3D::GeoKind::Point;
+    bool isLineEndpoint = preSel.Kind == Sketcher3D::GeoKind::Line
+        && (preSel.Pos == Sketcher3D::PointPos::start || preSel.Pos == Sketcher3D::PointPos::end);
     if (isPoint || isLineEndpoint) {
         AutoConstraint3D constr;
         constr.Type = Sketcher3D::Constraint3D::Coincident3D;
-        constr.GeoId = preSel.geoId;
-        constr.PosId = preSel.posId;
-        constr.Kind = preSel.kind;
+        constr.GeoId = preSel.GeoId;
+        constr.PosId = preSel.Pos;
+        constr.Kind = preSel.Kind;
         suggestedConstraints.push_back(constr);
     }
 }

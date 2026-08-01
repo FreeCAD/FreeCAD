@@ -62,6 +62,19 @@ std::unique_ptr<GeomReferencePlane3D> GeomReferencePlane3D::fromThreePoints(
     return std::make_unique<GeomReferencePlane3D>(origin, xDir, normal);
 }
 
+std::unique_ptr<GeomReferencePlane3D> GeomReferencePlane3D::fromLineAndAngle(
+    const Base::Vector3d& lineStart,
+    const Base::Vector3d& lineEnd,
+    const Base::Vector3d& normal,
+    double angleRad
+)
+{
+    Base::Vector3d axisDir = (lineEnd - lineStart).Normalized();
+    Base::Rotation rot(axisDir, angleRad);
+    Base::Vector3d n = rot.multVec(normal);
+    return std::make_unique<GeomReferencePlane3D>(lineStart, axisDir, n);
+}
+
 Part::Geometry* GeomReferencePlane3D::copy() const
 {
     auto* copied = new GeomReferencePlane3D(Handle(Geom_Plane)::DownCast(handle()->Copy()));

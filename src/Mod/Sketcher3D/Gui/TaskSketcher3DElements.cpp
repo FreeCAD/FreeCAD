@@ -42,6 +42,7 @@
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Sketcher3D/App/GeomReferencePlane3D.h>
 #include <Mod/Sketcher3D/App/Sketch3DObject.h>
 
 #include "TaskSketcher3DElements.h"
@@ -173,6 +174,18 @@ void TaskSketcher3DElements::refresh()
         sketch->ReferenceShape.getShape(),
         QString::fromStdString(Sketcher3D::Sketch3DObject::referencePrefix())
     );
+
+    auto refPrefix = QString::fromStdString(Sketcher3D::Sketch3DObject::referencePrefix());
+    for (int i = 0; i < static_cast<int>(geos.size()); ++i) {
+        if (!geos[i] || !geos[i]->is<Sketcher3D::GeomReferencePlane3D>()) {
+            continue;
+        }
+        addRow(
+            tr("Plane%1").arg(i + 1),
+            refPrefix + QStringLiteral("Face%1").arg(i + 1),
+            Gui::BitmapFactory().iconFromTheme("Std_Plane")
+        );
+    }
 
     setHeaderText(tr("Elements (%1)").arg(elementsList->count()));
 }

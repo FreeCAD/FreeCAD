@@ -70,6 +70,14 @@ public:
         const Base::Vector3d& thirdPoint
     );
 
+    /// line and angle to define the plane.
+    static std::unique_ptr<GeomReferencePlane3D> fromLineAndAngle(
+        const Base::Vector3d& lineStart,
+        const Base::Vector3d& lineEnd,
+        const Base::Vector3d& normal,
+        double angleRad
+    );
+
     Part::Geometry* copy() const override;
 
     TopoDS_Shape toShape() const override;

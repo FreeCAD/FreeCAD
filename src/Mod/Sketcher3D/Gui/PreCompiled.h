@@ -35,36 +35,36 @@
 # include <windows.h>
 #endif
 
-#ifdef _PreComp_
-
-# include <algorithm>
-# include <map>
-# include <memory>
-# include <sstream>
-# include <string>
-# include <vector>
-# include <set>
+// standard
+#include <algorithm>
+#include <map>
+#include <memory>
+#include <set>
+#include <sstream>
+#include <string>
+#include <vector>
 
 // Coin3D
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoFont.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoPointSet.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoTranslation.h>
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/events/SoKeyboardEvent.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoFont.h>
+#include <Inventor/nodes/SoIndexedLineSet.h>
+#include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoPointSet.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoText2.h>
+#include <Inventor/nodes/SoTranslation.h>
 
 // Qt
-# include <QComboBox>
-# include <QDoubleSpinBox>
-# include <QFormLayout>
-# include <QGridLayout>
-# include <QLabel>
-# include <QListWidget>
-# include <QPushButton>
-# include <QVBoxLayout>
-
-#endif  // _PreComp_
+#include <QComboBox>
+#include <QDoubleSpinBox>
+#include <QFormLayout>
+#include <QGridLayout>
+#include <QLabel>
+#include <QListWidget>
+#include <QPushButton>
+#include <QVBoxLayout>

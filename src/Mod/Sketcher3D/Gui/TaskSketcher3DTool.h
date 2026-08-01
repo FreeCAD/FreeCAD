@@ -26,16 +26,32 @@
 
 #include <Gui/TaskView/TaskView.h>
 
+#include "Sketcher3DToolWidget.h"
+
 namespace Sketcher3DGui
 {
 
+/// show the active tool's parameter.
 class TaskSketcher3DTool: public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
     TaskSketcher3DTool();
-    ~TaskSketcher3DTool() override = default;
+    ~TaskSketcher3DTool() override;
+
+    void setToolWidget(std::unique_ptr<Sketcher3DToolWidget> widget);
+    void clearToolWidget();
+    Sketcher3DToolWidget* toolWidget() const
+    {
+        return widget.get();
+    }
+
+protected:
+    bool eventFilter(QObject* watched, QEvent* event) override;
+
+private:
+    std::unique_ptr<Sketcher3DToolWidget> widget;
 };
 
 }  // namespace Sketcher3DGui

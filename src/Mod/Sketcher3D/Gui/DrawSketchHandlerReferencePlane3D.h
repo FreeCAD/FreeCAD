@@ -2,9 +2,14 @@
 
 #pragma once
 
-#include <array>
-
 #include "DrawSketchHandler3D.h"
+
+class SoTransform;
+
+namespace Sketcher3D
+{
+class GeomReferencePlane3D;
+}
 
 namespace Sketcher3DGui
 {
@@ -22,17 +27,22 @@ protected:
     void onActivated() override;
 
 private:
-    enum class State
+    enum class Phase
     {
-        PickFirst,
-        PickSecondPoint,
-        PickThirdPoint
+        None,
+        HaveLine,
+        CollectPoints
     };
 
-    void resetToPickFirst();
+    void reset();
+    void commitPlane(std::unique_ptr<Sketcher3D::GeomReferencePlane3D> plane, const Base::Vector3d& base);
 
-    State state {State::PickFirst};
-    std::array<Base::Vector3d, 3> threePoints;
+    Phase phase {Phase::None};
+    int nPoints {0};
+    Base::Vector3d points[3];
+
+    SoSwitch* arrowSwitch {nullptr};
+    SoTransform* arrowTransform {nullptr};
 };
 
 }  // namespace Sketcher3DGui

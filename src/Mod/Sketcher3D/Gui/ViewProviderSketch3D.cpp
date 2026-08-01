@@ -26,7 +26,6 @@
 
 #include <QMenu>
 
-#include <Inventor/SoPickedPoint.h>
 #include <Inventor/SbLine.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbVec2s.h>
@@ -34,27 +33,17 @@
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/details/SoPointDetail.h>
-#include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoFaceSet.h>
-#include <Inventor/nodes/SoIndexedLineSet.h>
-#include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoScale.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoSphere.h>
-#include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTransform.h>
-#include <Inventor/nodes/SoTranslation.h>
 
 #include <Precision.hxx>
 
 #include <Base/Console.h>
-#include <Base/Converter.h>
 #include <Base/Rotation.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
@@ -64,19 +53,17 @@
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
 #include <Mod/Part/Gui/SoBrepFaceSet.h>
 #include <Mod/Part/Gui/SoBrepPointSet.h>
 #include <Mod/Part/Gui/ViewProviderExt.h>
-#include <Mod/Sketcher3D/App/GeoEnum3D.h>
 #include <Mod/Sketcher3D/App/GeomReferencePlane3D.h>
 #include <Mod/Sketcher3D/App/Sketch3DObject.h>
 
 #include "DrawSketchHandler3D.h"
 #include "SnapManager3D.h"
 #include "TaskDlgEditSketch3D.h"
+#include "TaskSketcher3DTool.h"
 #include "Utils.h"
 #include "ViewProviderSketch3D.h"
 
@@ -251,7 +238,7 @@ void ViewProviderSketch3D::updateReferenceGeometry()
     ensureReferenceGeometry();
     auto* sketch = getSketch3DObject();
 
-    if (!isEditingSketch3D() || !sketch) {
+    if (!isEditingSketch3D()) {
         referenceGeometrySwitch->whichChild = SO_SWITCH_NONE;
         return;
     }
@@ -296,10 +283,6 @@ void ViewProviderSketch3D::updateReferencePlanes()
     planeGeoIds.clear();
 
     auto* sketch = getSketch3DObject();
-    if (!sketch) {
-        return;
-    }
-
     const auto& geos = sketch->Geometry.getValues();
     std::vector<Part::TopoShape> faceShapes;
     for (int i = 0; i < static_cast<int>(geos.size()); ++i) {
@@ -448,16 +431,13 @@ void ViewProviderSketch3D::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPart::updateData(prop);
     auto* sketch = getSketch3DObject();
-    if (!sketch) {
-        return;
-    }
     if (prop == &sketch->ReferenceShape) {
         if (activeUserPlaneGeoId >= 0 && !getActiveReferencePlane()) {
             activeUserPlaneGeoId = -1;
         }
         updateReferenceGeometry();
     }
-    // Skip Geometry: solve can update it before Shape; Elements walks Shape.
+
     if (prop == &sketch->Constraints) {
         signalConstraintsChanged();
     }
@@ -535,6 +515,7 @@ bool ViewProviderSketch3D::setEdit(int ModNum)
 
     auto* dlg = new TaskDlgEditSketch3D(this);
     Gui::Control().showDialog(dlg);
+    setToolPanel(dlg->getToolPanel());
 
     return true;
 }
@@ -553,6 +534,7 @@ void ViewProviderSketch3D::unsetEdit(int ModNum)
     }
 
     purgeHandler();
+    setToolPanel(nullptr);
     snapManager.reset();
     lastRenderedRefShape = Part::TopoShape();
     updateReferenceGeometry();
@@ -596,9 +578,7 @@ void ViewProviderSketch3D::activateHandler(std::unique_ptr<DrawSketchHandler3D> 
 {
     purgeHandler();
     handler = std::move(h);
-    if (handler) {
-        handler->activate(this);
-    }
+    handler->activate(this);
 }
 
 void ViewProviderSketch3D::purgeHandler()
@@ -609,13 +589,24 @@ void ViewProviderSketch3D::purgeHandler()
     }
 }
 
+void ViewProviderSketch3D::setHandlerToolWidget(std::unique_ptr<Sketcher3DToolWidget> widget)
+{
+    toolPanel->setToolWidget(std::move(widget));
+}
+
+void ViewProviderSketch3D::clearHandlerToolWidget()
+{
+    toolPanel->clearToolWidget();
+}
+
+Sketcher3DToolWidget* ViewProviderSketch3D::handlerToolWidget() const
+{
+    return toolPanel->toolWidget();
+}
+
 bool ViewProviderSketch3D::tryActivatePickedPlane(const std::string& subName)
 {
     auto* sketch = getSketch3DObject();
-    if (!sketch || subName.empty()) {
-        return false;
-    }
-
     Sketcher3D::GeoElementId3D id = sketch->resolveSubName(subName);
     if (!id.isValid()) {
         return false;
@@ -653,7 +644,8 @@ bool ViewProviderSketch3D::mouseButtonPressed(
     }
 
     Base::Vector3d raw = projectToSketchPlane(cursorPos, viewer);
-    Base::Vector3d p = applySnap(raw, cursorPos, viewer);
+    updatePreselection(cursorPos, viewer);
+    Base::Vector3d p = snapPosition(raw);
     hideSnapMarker();
     return handler->pressButton(p);
 }
@@ -667,8 +659,9 @@ bool ViewProviderSketch3D::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
 
     Base::Vector3d raw = projectToSketchPlane(cursorPos, viewer);
     updatePlaneOverlaySize(raw);
-    Base::Vector3d p = applySnap(raw, cursorPos, viewer);
-    if (snapTarget.isValid()) {
+    updatePreselection(cursorPos, viewer);
+    Base::Vector3d p = snapPosition(raw);
+    if (snapManager->isSnapped()) {
         showSnapMarker(p);
     }
     else {
@@ -681,9 +674,11 @@ bool ViewProviderSketch3D::keyPressed(bool pressed, int key)
 {
     if (key == SoKeyboardEvent::ESCAPE) {
         if (handler) {
-            if (!pressed) {
-                handler->keyPressed(key);
-            }
+            return !pressed ? handler->keyPressed(key) : true;
+        }
+        if (!pressed && activeUserPlaneGeoId >= 0) {
+            activeUserPlaneGeoId = -1;
+            applyActivePlaneChanges();
             return true;
         }
         return false;
@@ -696,10 +691,7 @@ bool ViewProviderSketch3D::keyPressed(bool pressed, int key)
         cyclePlane();
         return true;
     }
-    if (!handler) {
-        return false;
-    }
-    return handler->keyPressed(key);
+    return handler && handler->keyPressed(key);
 }
 
 const Sketcher3D::GeomReferencePlane3D* ViewProviderSketch3D::getActiveReferencePlane() const
@@ -707,11 +699,7 @@ const Sketcher3D::GeomReferencePlane3D* ViewProviderSketch3D::getActiveReference
     if (activeUserPlaneGeoId < 0) {
         return nullptr;
     }
-    auto* sketch = getSketch3DObject();
-    if (!sketch) {
-        return nullptr;
-    }
-    return sketch->getGeometry<Sketcher3D::GeomReferencePlane3D>(activeUserPlaneGeoId);
+    return getSketch3DObject()->getGeometry<Sketcher3D::GeomReferencePlane3D>(activeUserPlaneGeoId);
 }
 
 void ViewProviderSketch3D::cyclePlane()
@@ -776,9 +764,6 @@ void ViewProviderSketch3D::updateActivePlaneFrame()
 
 void ViewProviderSketch3D::updatePlaneOverlayTransform()
 {
-    if (!planeOverlayTransform) {
-        return;
-    }
     auto& frame = getActivePlaneFrame();
 
     planeOverlayTransform->translation.setValue(frame.origin.x, frame.origin.y, frame.origin.z);
@@ -887,9 +872,6 @@ void ViewProviderSketch3D::ensurePlaneOverlay()
 
 void ViewProviderSketch3D::updatePlaneOverlay()
 {
-    if (!planeOverlay) {
-        return;
-    }
     updateActivePlaneFrame();
     updatePlaneScale();
     updatePlaneOverlayTransform();
@@ -897,9 +879,6 @@ void ViewProviderSketch3D::updatePlaneOverlay()
 
 void ViewProviderSketch3D::updatePlaneScale()
 {
-    if (!planeOverlayScale) {
-        return;
-    }
     planeOverlayScale->scaleFactor.setValue(planeOverlaySize, planeOverlaySize, 1.0F);
 }
 
@@ -936,18 +915,18 @@ Base::Vector3d ViewProviderSketch3D::projectToSketchPlane(
     return Base::Vector3d(hit[0], hit[1], hit[2]);
 }
 
-Base::Vector3d ViewProviderSketch3D::applySnap(
-    const Base::Vector3d& raw,
+void ViewProviderSketch3D::updatePreselection(
     const SbVec2s& cursorPos,
     const Gui::View3DInventorViewer* viewer
 )
 {
-    if (!snapManager) {
-        snapTarget = {};
-        return raw;
-    }
-    std::string pickedSubName = getPickedSubName(cursorPos, viewer);
-    return snapManager->snap(raw, pickedSubName, snapTarget);
+    preselection = getSketch3DObject()->resolveSubName(getPickedSubName(cursorPos, viewer));
+}
+
+Base::Vector3d ViewProviderSketch3D::snapPosition(const Base::Vector3d& raw)
+{
+    snapManager->snap(raw, preselection);
+    return snapManager->position();
 }
 
 std::string ViewProviderSketch3D::getPickedSubName(
@@ -955,10 +934,6 @@ std::string ViewProviderSketch3D::getPickedSubName(
     const Gui::View3DInventorViewer* viewer
 ) const
 {
-    if (!viewer) {
-        return {};
-    }
-
     std::unique_ptr<SoPickedPoint> point(getPointOnRay(cursorPx, viewer));
     if (!point) {
         return {};
@@ -1010,16 +985,11 @@ void ViewProviderSketch3D::ensureSnapMarker()
 
 void ViewProviderSketch3D::hideSnapMarker()
 {
-    if (snapMarkerSwitch) {
-        snapMarkerSwitch->whichChild = SO_SWITCH_NONE;
-    }
+    snapMarkerSwitch->whichChild = SO_SWITCH_NONE;
 }
 
 void ViewProviderSketch3D::showSnapMarker(const Base::Vector3d& pos)
 {
-    if (!snapMarkerSwitch || !snapMarkerXf) {
-        return;
-    }
     snapMarkerXf->translation.setValue(pos.x, pos.y, pos.z);
     snapMarkerSwitch->whichChild = 0;
 }

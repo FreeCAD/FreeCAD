@@ -25,12 +25,6 @@
 
 #include "PreCompiled.h"
 
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoDrawStyle.h>
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoPointSet.h>
-#include <Inventor/nodes/SoSeparator.h>
-
 #include <Gui/Command.h>
 
 #include <Mod/Part/App/Geometry.h>

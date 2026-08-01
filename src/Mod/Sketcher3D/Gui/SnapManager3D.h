@@ -24,8 +24,6 @@
 
 #pragma once
 
-#include <string>
-
 #include <Base/Vector3D.h>
 #include <Mod/Sketcher3D/App/GeoEnum3D.h>
 
@@ -43,20 +41,21 @@ public:
     SnapManager3D(const SnapManager3D&) = delete;
     SnapManager3D& operator=(const SnapManager3D&) = delete;
 
-    Base::Vector3d snap(
-        const Base::Vector3d& rawProjected,
-        const std::string& pickedSubName,
-        Sketcher3D::GeoElementId3D& target
-    ) const;
+    void snap(const Base::Vector3d& rawProjected, const Sketcher3D::GeoElementId3D& preselection);
+
+    const Base::Vector3d& position() const
+    {
+        return snapPosition;
+    }
+    bool isSnapped() const
+    {
+        return snapped;
+    }
 
 private:
-    bool snapToPickedObject(
-        const std::string& pickedSubName,
-        Base::Vector3d& snapPos,
-        Sketcher3D::GeoElementId3D& target
-    ) const;
-
     ViewProviderSketch3D& viewProvider;
+    Base::Vector3d snapPosition;
+    bool snapped {false};
 };
 
 }  // namespace Sketcher3DGui

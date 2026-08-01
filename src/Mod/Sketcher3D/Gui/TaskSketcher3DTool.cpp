@@ -25,6 +25,8 @@
 
 #include "PreCompiled.h"
 
+#include <QKeyEvent>
+
 #include <Gui/BitmapFactory.h>
 #include "TaskSketcher3DTool.h"
 
@@ -34,7 +36,47 @@ using namespace Sketcher3DGui;
 TaskSketcher3DTool::TaskSketcher3DTool()
     : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Tool Parameters"), true, nullptr)
 {
-    // need a draw tool to mount its parameter widget.
+    hide();
+}
+
+TaskSketcher3DTool::~TaskSketcher3DTool() = default;
+
+void TaskSketcher3DTool::setToolWidget(std::unique_ptr<Sketcher3DToolWidget> w)
+{
+    clearToolWidget();
+    widget = std::move(w);
+    groupLayout()->addWidget(widget.get());
+    widget->installEventFilter(this);
+    for (auto* child : widget->findChildren<QWidget*>()) {
+        child->installEventFilter(this);
+    }
+    show();
+}
+
+void TaskSketcher3DTool::clearToolWidget()
+{
+    if (!widget) {
+        return;
+    }
+    widget->removeEventFilter(this);
+    for (auto* child : widget->findChildren<QWidget*>()) {
+        child->removeEventFilter(this);
+    }
+    groupLayout()->removeWidget(widget.get());
+    widget.reset();
+    hide();
+}
+
+bool TaskSketcher3DTool::eventFilter(QObject* watched, QEvent* event)
+{
+    if (event->type() == QEvent::KeyPress) {
+        auto* key = static_cast<QKeyEvent*>(event);
+        if (key->key() == Qt::Key_Return || key->key() == Qt::Key_Enter) {
+            widget->accept();
+            return true;
+        }
+    }
+    return Gui::TaskView::TaskBox::eventFilter(watched, event);
 }
 
 #include "moc_TaskSketcher3DTool.cpp"

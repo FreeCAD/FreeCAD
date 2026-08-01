@@ -22,10 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#include <QLabel>
-#include <QVBoxLayout>
+#include "PreCompiled.h"
 
 #include <Gui/BitmapFactory.h>
 #include <Mod/Part/App/Geometry.h>

@@ -25,14 +25,6 @@
 
 #include "PreCompiled.h"
 
-#include <Inventor/events/SoKeyboardEvent.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoDrawStyle.h>
-#include <Inventor/nodes/SoLineSet.h>
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoSwitch.h>
-
 #include <Gui/Command.h>
 
 #include <Mod/Part/App/Geometry.h>

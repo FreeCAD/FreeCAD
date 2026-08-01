@@ -25,8 +25,6 @@
 
 #include "PreCompiled.h"
 
-#include <Inventor/events/SoKeyboardEvent.h>
-
 #include <Gui/Command.h>
 
 #include <Mod/Part/App/OpenCascadeAll.h>
