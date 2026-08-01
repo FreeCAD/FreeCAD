@@ -388,8 +388,9 @@ void GridExtensionP::createGridPart(
     for (int i = 0; i < vlines; i++) {
         int iStep = (i + i_offset_x);
         bool atOrigin = iStep == 0;
-        if (!atOrigin && (((iStep % numberSubdiv == 0) && divLines)
-            || ((iStep % numberSubdiv != 0) && subDivLines))) {
+        if (!atOrigin
+            && (((iStep % numberSubdiv == 0) && divLines)
+                || ((iStep % numberSubdiv != 0) && subDivLines))) {
             vertex_coords[2 * i].setValue(iStep * computedGridValue, minY, gridZ);
             vertex_coords[2 * i + 1].setValue(iStep * computedGridValue, maxY, gridZ);
         }
@@ -407,8 +408,9 @@ void GridExtensionP::createGridPart(
     for (int i = vlines; i < nlines; i++) {
         int iStep = (i + i_offset_y);
         bool atOrigin = iStep == 0;
-        if (!atOrigin && (((iStep % numberSubdiv == 0) && divLines)
-            || ((iStep % numberSubdiv != 0) && subDivLines))) {
+        if (!atOrigin
+            && (((iStep % numberSubdiv == 0) && divLines)
+                || ((iStep % numberSubdiv != 0) && subDivLines))) {
             vertex_coords[2 * i].setValue(minX, iStep * computedGridValue, gridZ);
             vertex_coords[2 * i + 1].setValue(maxX, iStep * computedGridValue, gridZ);
         }
