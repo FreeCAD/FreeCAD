@@ -21,8 +21,11 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QAction>
+#include <QMenu>
 
 #include <App/DocumentObject.h>
+#include <Gui/ActionFunction.h>
 #include <Gui/Control.h>
 #include <Gui/Selection/Selection.h>
 
@@ -90,6 +93,18 @@ bool ViewProviderRichAnno::doubleClicked()
 //    Base::Console().message("VPRA::doubleClicked()\n");
     setEdit(ViewProvider::Default);
     return true;
+}
+
+void ViewProviderRichAnno::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    QAction* act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue())));
+    act->setData(QVariant((int)ViewProvider::Default));
+    func->trigger(act, [this](){
+        this->startDefaultEditMode();
+    });
+
+    ViewProviderDrawingView::setupContextMenu(menu, receiver, member);
 }
 
 void ViewProviderRichAnno::updateData(const App::Property* prop)
