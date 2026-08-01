@@ -83,6 +83,7 @@ public:
     ViewProviderBody* getBodyViewProvider();
 
     void toggleVisibility() override;
+    Gui::ViewProvider::VisibleSpaceMode getVisibleSpaceMode() const override;
 
     /// Provides preview shape
     Part::TopoShape getPreviewShape() const override;
