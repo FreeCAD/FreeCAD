@@ -195,33 +195,8 @@ class CalculiXTools(ObjectTools):
                 reader.Update()
                 multi_block = reader.GetOutput()
 
-                # normalize eigenvectors for frequency analysis. 
-                # CalculiX outputs mass-normalized eigenvectors
-                # scaled with 1/sqrt(mass) -> small objects overly distorted
                 if self.obj.AnalysisType == "frequency":
-                    nblocks = multi_block.GetNumberOfBlocks()
-                    span = None
-                    for i in range(nblocks):
-                        grid = multi_block.GetBlock(i)
-                        if grid is None:
-                            continue
-                        pd = grid.GetPointData()
-                        if (pd is None) or not pd.HasArray("DISP"):
-                            continue
-
-                        # only fetch the mesh the first time through
-                        if span is None:
-                            pos = vtk_np.vtk_to_numpy(grid.GetPoints().GetData())
-                            span = max(np.max(pos, axis=0) - np.min(pos, axis=0))
-
-                        # figure out how large the deformation should be relatively
-                        disp = vtk_np.vtk_to_numpy(pd.GetAbstractArray("DISP"))
-                        max_mag = float(np.max(np.linalg.norm(disp, axis=1)))
-                        if max_mag == 0.0:
-                            continue
-
-                        # scale referenced array values
-                        disp *= 0.01 * span / max_mag if span > 0.0 else 1.0 / max_mag
+                    multi_block = self._normalize_disp_mesh(multi_block)
 
                 multi_block = self._generate_derived_result(multi_block)
                 if self.obj.DisplaceMesh:
@@ -277,6 +252,42 @@ class CalculiXTools(ObjectTools):
                 return "Potential"
             case _:
                 return "None"
+
+    def _normalize_disp_mesh(self, mb):
+        # normalize eigenvectors for frequency analysis.
+        # CalculiX outputs mass-normalized eigenvectors
+        # scaled with 1/sqrt(mass) -> small objects overly distorted
+        try:
+            span = None
+            for i in range(mb.GetNumberOfBlocks()):
+                grid = mb.GetBlock(i)
+                if grid is None:
+                    continue
+                pd = grid.GetPointData()
+                if (pd is None) or not pd.HasArray("DISP"):
+                    continue
+
+                # normalize displacement
+                disp = vtk_np.vtk_to_numpy(pd.GetAbstractArray("DISP"))
+                max_mag = float(np.max(np.linalg.norm(disp, axis=1)))
+                if np.isclose(max_mag, 0.0):
+                    continue
+                disp *= 1.0 / max_mag
+
+                # scale displacement against bounding box
+                if span is None:
+                    span = grid.GetLength()
+                if span > 0.0:
+                    disp *= 0.01 * span
+
+            mb_out = vtkMultiBlockDataSet()
+            mb_out.DeepCopy(mb)
+
+            return mb_out
+
+        except Exception as e:
+            FreeCAD.Console.PrintWarning("Displacement mesh could not be normalized\n")
+            return mb
 
     def _generate_disp_mesh(self, mb):
         try:
