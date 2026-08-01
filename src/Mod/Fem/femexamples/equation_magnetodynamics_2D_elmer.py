@@ -187,6 +187,14 @@ def setup(doc=None, solvertype="elmer"):
     CurrentDensity.Mode = "Normal"
     analysis.addObject(CurrentDensity)
 
+    # constraint A potential vector
+    BoundaryPotential = ObjectsFem.makeConstraintElectromagnetic(doc, "BoundaryPotential")
+    BoundaryPotential.References = [(shell, "Edge6")]
+    BoundaryPotential.AV_re_3 = "0.0 Wb/m"
+    BoundaryPotential.AV_im_3 = "0.0 Wb/m"
+    BoundaryPotential.EnableAV_3 = True
+    analysis.addObject(BoundaryPotential)
+
     # mesh
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.Shape = shell
