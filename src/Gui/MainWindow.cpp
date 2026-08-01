@@ -46,8 +46,6 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QScreen>
-#include <QStyle>
-#include <QStyleOptionComboBox>
 #include <QSettings>
 #include <QSignalMapper>
 #include <QStatusBar>
@@ -58,7 +56,6 @@
 #include <QWhatsThis>
 #include <QWindow>
 #include <QPushButton>
-#include <QStyleOptionButton>
 #include <string>
 
 
@@ -195,7 +192,6 @@ private:
 class DimensionWidget: public QPushButton, WindowParameter
 {
     Q_OBJECT
-    int fixedWidthValue = 0;
     QMenu* unitMenu = nullptr;
 
 public:
@@ -204,7 +200,6 @@ public:
         , WindowParameter("Units")
     {
         setFlat(true);
-        setStyleSheet("QPushButton { text-align: right; padding-left: 6px; padding-right: 6px; }");
         setText(qApp->translate("Gui::MainWindow", "Dimension"));
         setMinimumWidth(120);
         //: A context menu action used to show or hide the unit system chooser in the status bar
@@ -253,15 +248,6 @@ public:
 
         Gui::Application::Instance->signalActiveDocument.connect(updateUnitLabel);
         Gui::Application::Instance->signalDeleteDocument.connect(updateUnitLabel);
-        updateFixedWidth();
-        setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
-    }
-
-    QSize sizeHint() const override
-    {
-        QSize s = QPushButton::sizeHint();
-        s.setWidth(fixedWidthValue);
-        return s;
     }
 
     ~DimensionWidget() override
@@ -286,22 +272,10 @@ public:
     {
         if (event->type() == QEvent::LanguageChange) {
             retranslateUi();
-            unitChanged();
-        }
-        else if (
-            event->type() == QEvent::FontChange || event->type() == QEvent::ApplicationFontChange
-            || event->type() == QEvent::StyleChange
-        ) {
-            QPushButton::changeEvent(event);
-            updateFixedWidth();
-            return;
         }
         else {
             QPushButton::changeEvent(event);
-            return;
         }
-
-        QPushButton::changeEvent(event);
     }
 
     void setUserSchema(int userSchema)
@@ -350,30 +324,6 @@ private:
         }
 
         unitMenu->move(menuPos);
-    }
-
-    void updateFixedWidth()
-    {
-        QFontMetrics fm(font());
-        int maxTextWidth = 0;
-
-        const auto abbreviations = Base::UnitsApi::getAbbreviations();
-        for (const auto& abbr : abbreviations) {
-            maxTextWidth = std::max(maxTextWidth, fm.horizontalAdvance(QString::fromStdString(abbr)));
-        }
-
-        QStyleOptionButton opt;
-        opt.initFrom(this);
-        opt.text = text();
-
-        // Ask the style how wide a push button must be to fit this content.
-        fixedWidthValue
-            = style()
-                  ->sizeFromContents(QStyle::CT_PushButton, &opt, QSize(maxTextWidth, fm.height()), this)
-                  .width();
-
-        setMinimumWidth(fixedWidthValue);
-        setMaximumWidth(fixedWidthValue);
     }
 
     void unitChanged()
@@ -432,7 +382,6 @@ private:
             actions[i]->setStatusTip(desc);
             actions[i]->setProperty("abbreviation", QString::fromStdString(abbreviations[i]));
         }
-        updateFixedWidth();
     }
 };
 
