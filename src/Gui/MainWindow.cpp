@@ -204,7 +204,7 @@ public:
         , WindowParameter("Units")
     {
         setFlat(true);
-        setStyleSheet("QPushButton { text-align: left; padding-left: 6px; padding-right: 6px; }");
+        setStyleSheet("QPushButton { text-align: right; padding-left: 6px; padding-right: 6px; }");
         setText(qApp->translate("Gui::MainWindow", "Dimension"));
         setMinimumWidth(120);
         //: A context menu action used to show or hide the unit system chooser in the status bar

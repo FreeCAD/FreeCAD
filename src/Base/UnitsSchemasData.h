@@ -51,7 +51,7 @@ using namespace Base::UnitsConvData;
 // NOLINTBEGIN
 // clang-format off
 inline const UnitsSchemaSpec s0
-{ 6, "MmMin", "mm" , false, false , QT_TRANSLATE_NOOP("UnitsApi", "Metric small parts & CNC (mm, mm/min)"), QT_TRANSLATE_NOOP("UnitsApi", "Metric CNC"), false,
+{ 6, "MmMin", "mm" , false, false , QT_TRANSLATE_NOOP("UnitsApi", "Metric small parts & CNC (mm, mm/min)"), QT_TRANSLATE_NOOP("UnitsApi", "Met CNC"), false,
     {
         { "Length",   {{ 0 , "mm"     , 1.0        }}},
         { "Angle",    {{ 0 , "°"      , 1.0        }}},
@@ -60,7 +60,7 @@ inline const UnitsSchemaSpec s0
 };
 
 inline const UnitsSchemaSpec s1
-{ 9, "MeterDecimal", "m", false, false, QT_TRANSLATE_NOOP("UnitsApi", "Meter decimal (m, m², m³)"), QT_TRANSLATE_NOOP("UnitsApi", "Metric Dec"), false,
+{ 9, "MeterDecimal", "m", false, false, QT_TRANSLATE_NOOP("UnitsApi", "Meter decimal (m, m², m³)"), QT_TRANSLATE_NOOP("UnitsApi", "Met Dec"), false,
     {
         { "Length",             {{ 0 , "m"    , 1e3 }}},
         { "Area",               {{ 0 , "m^2"  , 1e6 }}},
@@ -621,7 +621,7 @@ inline const UnitsSchemaSpec s6
 };
 
 inline const UnitsSchemaSpec s7
-{ 2, "Imperial", "in", false, false, QT_TRANSLATE_NOOP("UnitsApi", "US customary (in, lb)"), QT_TRANSLATE_NOOP("UnitsApi", "Imperial"), false,
+{ 2, "Imperial", "in", false, false, QT_TRANSLATE_NOOP("UnitsApi", "US customary (in, lb)"), QT_TRANSLATE_NOOP("UnitsApi", "US cust"), false,
     {
         { "Length", {
             { 0.00000254      , "in"       , in                },
