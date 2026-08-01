@@ -109,7 +109,7 @@ void StdCmdWorkbench::activated(int i)
     catch (...) {
         QMessageBox::critical(
             getMainWindow(),
-            QObject::tr("Cannot load workbench"),
+            QObject::tr("Cannot Load Workbench"),
             QObject::tr("A general error occurred while loading the workbench")
         );
     }
@@ -597,7 +597,7 @@ StdCmdFreeCADDonation::StdCmdFreeCADDonation()
 {
     sGroup = "Help";
     sMenuText = QT_TR_NOOP("Donate to FreeCA&D");
-    sToolTipText = QT_TR_NOOP("Support the FreeCAD development");
+    sToolTipText = QT_TR_NOOP("Opens the FreeCAD donation page");
     sWhatsThis = "Std_FreeCADDonation";
     sStatusTip = sToolTipText;
     sPixmap = "internet-web-browser";
@@ -629,7 +629,7 @@ StdCmdDevHandbook::StdCmdDevHandbook()
     sGroup = "Help";
     sMenuText = QT_TR_NOOP("Developers Handbook");
 
-    sToolTipText = QT_TR_NOOP("Handbook about FreeCAD development");
+    sToolTipText = QT_TR_NOOP("Opens the FreeCAD developers handbook");
 
     sWhatsThis = "Std_DevHandbook";
     sStatusTip = sToolTipText;
@@ -724,7 +724,7 @@ StdCmdFreeCADForum::StdCmdFreeCADForum()
 {
     sGroup = "Help";
     sMenuText = QT_TR_NOOP("FreeCAD &Forum");
-    sToolTipText = QT_TR_NOOP("The FreeCAD forum, where you can find help from other users");
+    sToolTipText = QT_TR_NOOP("Opens the FreeCAD forum to find help from other users");
     sWhatsThis = "Std_FreeCADForum";
     sStatusTip = sToolTipText;
     sPixmap = "internet-web-browser";

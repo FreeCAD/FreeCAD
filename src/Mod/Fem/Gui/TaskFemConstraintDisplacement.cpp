@@ -234,7 +234,7 @@ void TaskFemConstraintDisplacement::addToSelection()
     std::vector<Gui::SelectionObject> selection
         = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
     Fem::ConstraintDisplacement* pcConstraint
@@ -244,7 +244,7 @@ void TaskFemConstraintDisplacement::addToSelection()
 
     for (auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
 
@@ -252,7 +252,7 @@ void TaskFemConstraintDisplacement::addToSelection()
         if (obj->getDocument() != pcConstraint->getDocument()) {
             QMessageBox::warning(
                 this,
-                tr("Selection error"),
+                tr("Selection Error"),
                 tr("External object selection is not supported")
             );
             return;
@@ -296,7 +296,7 @@ void TaskFemConstraintDisplacement::addToSelection()
                         "Only one type of selection (vertex, face or edge) per "
                         "analysis feature allowed!"
                     );
-                    QMessageBox::warning(this, tr("Selection error"), msg);
+                    QMessageBox::warning(this, tr("Selection Error"), msg);
                     addMe = false;
                     break;
                 }
@@ -319,7 +319,7 @@ void TaskFemConstraintDisplacement::removeFromSelection()
     std::vector<Gui::SelectionObject> selection
         = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
     Fem::ConstraintDisplacement* pcConstraint
@@ -329,7 +329,7 @@ void TaskFemConstraintDisplacement::removeFromSelection()
     std::vector<size_t> itemsToDel;
     for (const auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
         const std::vector<std::string>& subNames = it.getSubNames();
@@ -418,23 +418,17 @@ std::string TaskFemConstraintDisplacement::get_spinzRotation() const
 
 std::string TaskFemConstraintDisplacement::get_xFormula() const
 {
-    QString xFormula = ui->DisplacementXFormulaLE->text();
-    xFormula.replace(QStringLiteral("\""), QStringLiteral("\\\""));
-    return xFormula.toStdString();
+    return ui->DisplacementXFormulaLE->text().toStdString();
 }
 
 std::string TaskFemConstraintDisplacement::get_yFormula() const
 {
-    QString yFormula = ui->DisplacementYFormulaLE->text();
-    yFormula.replace(QStringLiteral("\""), QStringLiteral("\\\""));
-    return yFormula.toStdString();
+    return ui->DisplacementYFormulaLE->text().toStdString();
 }
 
 std::string TaskFemConstraintDisplacement::get_zFormula() const
 {
-    QString zFormula = ui->DisplacementZFormulaLE->text();
-    zFormula.replace(QStringLiteral("\""), QStringLiteral("\\\""));
-    return zFormula.toStdString();
+    return ui->DisplacementZFormulaLE->text().toStdString();
 }
 
 bool TaskFemConstraintDisplacement::get_dispxfree() const
@@ -529,6 +523,7 @@ bool TaskDlgFemConstraintDisplacement::accept()
     std::string name = ConstraintView->getObject()->getNameInDocument();
     const TaskFemConstraintDisplacement* parameterDisplacement
         = static_cast<const TaskFemConstraintDisplacement*>(parameter);
+    auto* constraint = static_cast<Fem::ConstraintDisplacement*>(ConstraintView->getObject());
 
     try {
         Gui::Command::doCommand(
@@ -537,36 +532,23 @@ bool TaskDlgFemConstraintDisplacement::accept()
             name.c_str(),
             parameterDisplacement->get_spinxDisplacement().c_str()
         );
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            "App.ActiveDocument.%s.xDisplacementFormula = \"%s\"",
-            name.c_str(),
-            parameterDisplacement->get_xFormula().c_str()
-        );
+        // Formula fields are free-form user text and must never be interpolated into a
+        // Python command; set the property directly to avoid code injection.
+        constraint->xDisplacementFormula.setValue(parameterDisplacement->get_xFormula());
         Gui::Command::doCommand(
             Gui::Command::Doc,
             "App.ActiveDocument.%s.yDisplacement = \"%s\"",
             name.c_str(),
             parameterDisplacement->get_spinyDisplacement().c_str()
         );
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            "App.ActiveDocument.%s.yDisplacementFormula = \"%s\"",
-            name.c_str(),
-            parameterDisplacement->get_yFormula().c_str()
-        );
+        constraint->yDisplacementFormula.setValue(parameterDisplacement->get_yFormula());
         Gui::Command::doCommand(
             Gui::Command::Doc,
             "App.ActiveDocument.%s.zDisplacement = \"%s\"",
             name.c_str(),
             parameterDisplacement->get_spinzDisplacement().c_str()
         );
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            "App.ActiveDocument.%s.zDisplacementFormula = \"%s\"",
-            name.c_str(),
-            parameterDisplacement->get_zFormula().c_str()
-        );
+        constraint->zDisplacementFormula.setValue(parameterDisplacement->get_zFormula());
         Gui::Command::doCommand(
             Gui::Command::Doc,
             "App.ActiveDocument.%s.xRotation = \"%s\"",
@@ -647,7 +629,7 @@ bool TaskDlgFemConstraintDisplacement::accept()
         );
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(parameter, tr("Input Error"), QString::fromLatin1(e.what()));
         return false;
     }
 

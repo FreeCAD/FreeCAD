@@ -63,9 +63,14 @@ PyObject* GeoFeaturePy::getGlobalPlacementOf(PyObject* args)
 
     PyObject* pyTargetObj {nullptr};
     PyObject* pyRootObj {nullptr};
-    char* pname;
+    char* pname {nullptr};
 
-    if (!PyArg_ParseTuple(args, "OOs", &pyTargetObj, &pyRootObj, &pname)) {
+    if (!PyArg_ParseTuple(args, "O!O!s",
+                          &DocumentObjectPy::Type,
+                          &pyTargetObj,
+                          &DocumentObjectPy::Type,
+                          &pyRootObj,
+                          &pname)) {
         return nullptr;
     }
     auto* targetObj = static_cast<App::DocumentObjectPy*>(pyTargetObj)->getDocumentObjectPtr();

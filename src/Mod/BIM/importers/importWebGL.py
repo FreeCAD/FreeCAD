@@ -226,7 +226,7 @@ def export(
                 if obj.isDerivedFrom("App::Link"):
                     if obj.ViewObject.OverrideMaterial:
                         color = Draft.getrgb(
-                            obj.ViewObject.ShapeMaterial.DiffuseColor, testbw=False
+                            obj.ViewObject.ShapeAppearance[0].DiffuseColor, testbw=False
                         )
                     obj = obj.LinkedObject
                     if hasattr(obj, "__len__"):

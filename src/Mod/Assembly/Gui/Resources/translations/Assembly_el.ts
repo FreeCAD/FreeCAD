@@ -23,8 +23,8 @@
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="80"/>
-      <source>Component</source>
-      <translation>Εξάρτημα</translation>
+      <source>Insert Component</source>
+      <translation>Εισαγωγή Εξαρτήματος</translation>
     </message>
   </context>
   <context>
@@ -43,12 +43,12 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../../InitGui.py" line="75"/>
+      <location filename="../../../InitGui.py" line="84"/>
       <source>Assembly</source>
       <translation type="unfinished">Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="146"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="145"/>
       <source>Active object</source>
       <translation>Ενεργό αντικείμενο</translation>
     </message>
@@ -86,17 +86,17 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="112"/>
+      <location filename="../../../InitGui.py" line="122"/>
       <source>Assembly</source>
       <translation>Συναρμολόγηση</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="113"/>
+      <location filename="../../../InitGui.py" line="123"/>
       <source>Assembly Joints</source>
       <translation>Αρθρώσεις Συναρμολόγησης</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="116"/>
+      <location filename="../../../InitGui.py" line="126"/>
       <source>&amp;Assembly</source>
       <translation>&amp;Συναρμολόγηση</translation>
     </message>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1809"/>
+      <location filename="../../../JointObject.py" line="1896"/>
       <source>Distance</source>
       <translation>Απόσταση</translation>
     </message>
@@ -175,22 +175,27 @@
       <translation>Σπασμένος σύνδεσμος στο: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1628"/>
+      <location filename="../../../JointObject.py" line="1238"/>
+      <source>Edit Joint</source>
+      <translation type="unfinished">Edit Joint</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="1704"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Επιλέξτε 2 στοιχεία από 2 ξεχωριστά μέρη</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1811"/>
+      <location filename="../../../JointObject.py" line="1898"/>
       <source>Radius 1</source>
       <translation>Ακτίνα 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1813"/>
+      <location filename="../../../JointObject.py" line="1900"/>
       <source>Thread pitch</source>
       <translation>Βήμα Σπειρώματος</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1815"/>
+      <location filename="../../../JointObject.py" line="1902"/>
       <source>Pitch radius</source>
       <translation>Ακτίνα βήματος</translation>
     </message>
@@ -347,59 +352,59 @@
       <translation>Να μη γίνει σύνδεση</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="493"/>
+      <location filename="../../../CommandCreateSimulation.py" line="495"/>
       <source>Enter your formula…</source>
       <translation type="unfinished">Enter your formula…</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="546"/>
-      <source>In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</source>
-      <translation>Τα κεφαλαία γράμματα αντιπροσωπεύουν μεταβλητές που πρέπει να αντικαταστήσετε με πραγματικές τιμές. Περισσότερες λεπτομέρειες για κάθε παράδειγμα θα βρείτε στην αντίστοιχη αναδυόμενη συμβουλή (tooltip).</translation>
+      <location filename="../../../CommandCreateSimulation.py" line="548"/>
+      <source>In capital are variables that you need to replace with actual values. 'initialValue' is dynamically replaced by the current angle or distance. More details about each example in its tooltip.</source>
+      <translation type="unfinished">In capital are variables that you need to replace with actual values. 'initialValue' is dynamically replaced by the current angle or distance. More details about each example in its tooltip.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="549"/>
+      <location filename="../../../CommandCreateSimulation.py" line="551"/>
       <source> - Linear: C + VEL*time</source>
       <translation>- Γραμμική: C + VEL*time</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="551"/>
+      <location filename="../../../CommandCreateSimulation.py" line="553"/>
       <source> - Quadratic: C + VEL*time + ACC*time^2</source>
       <translation>- Τετραγωνική: C + VELtime + ACCtime^2</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="554"/>
+      <location filename="../../../CommandCreateSimulation.py" line="556"/>
       <source> - Harmonic: C + AMP*sin(VEL*time - PHASE)</source>
       <translation>- Αρμονική: C + AMPsin(VELtime - PHASE)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="557"/>
+      <location filename="../../../CommandCreateSimulation.py" line="559"/>
       <source> - Exponential: C*exp(time/TIMEC)</source>
       <translation>- Εκθετική: C*exp(time/TIMEC)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="563"/>
+      <location filename="../../../CommandCreateSimulation.py" line="565"/>
       <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
       <translation>- Ομαλή Μετάβαση (Smooth Step): L1 + (L2 - L1)*((1/2) + (1/pi)arctan(SLOPE(time - T0)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="570"/>
+      <location filename="../../../CommandCreateSimulation.py" line="572"/>
       <source> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</source>
       <translation>- Ομαλός Τετραγωνικός Παλμός: (H/pi)(arctan(SLOPE(time - T1)) - arctan(SLOPE*(time - T2)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="577"/>
+      <location filename="../../../CommandCreateSimulation.py" line="579"/>
       <source> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</source>
       <translation>- Παλμός με Ομαλή Κεκλιμένη Κορυφή: ((1/pi)(arctan(1000(time - T1)) - arctan(1000*(time - T2))))(((H2 - H1)/(T2 - T1))(time - T1) + H1)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="587"/>
+      <location filename="../../../CommandCreateSimulation.py" line="589"/>
       <source>C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</source>
       <translation>C είναι μια σταθερή μετατόπιση (offset).
 VEL είναι η ταχύτητα ή η κλίση (slope/gradient) της ευθείας γραμμής.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="595"/>
+      <location filename="../../../CommandCreateSimulation.py" line="597"/>
       <source>C is a constant offset.
 VEL is the velocity or slope or gradient of the straight line.
 ACC is the acceleration or coefficient of the second order. The function is a parabola.</source>
@@ -408,7 +413,7 @@ VEL είναι η ταχύτητα ή η κλίση (slope/gradient) της ευ
 ACC είναι η επιτάχυνση ή ο συντελεστής δεύτερης τάξης. Η συνάρτηση είναι παραβολική.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="604"/>
+      <location filename="../../../CommandCreateSimulation.py" line="606"/>
       <source>C is a constant offset.
 AMP is the amplitude of the sine wave.
 VEL is the angular velocity in radians per second.
@@ -419,14 +424,14 @@ VEL είναι η γωνιακή ταχύτητα σε ακτίνια ανά δ�
 PHASE είναι η φάση του ημιτονοειδούς κύματος.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="611"/>
+      <location filename="../../../CommandCreateSimulation.py" line="613"/>
       <source>C is a constant.
 TIMEC is the time constant of the exponential function.</source>
       <translation>C είναι μια σταθερά.
 TIMEC είναι η χρονική σταθερά της εκθετικής συνάρτησης.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="619"/>
+      <location filename="../../../CommandCreateSimulation.py" line="621"/>
       <source>L1 is step level before time = T0.
 L2 is step level after time = T0.
 SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</source>
@@ -435,7 +440,7 @@ L2 είναι το επίπεδο του βήματος μετά τον χρόν
 Η μεταβλητή SLOPE καθορίζει την απότομη μετάβαση μεταξύ L1 και L2 γύρω από τον χρόνο T0. Υψηλότερες τιμές δημιουργούν βήματα με πιο έντονες/αιχμηρές γωνίες. Τιμές SLOPE ίσες με 1000 ή μεγαλύτερες θεωρούνται κατάλληλες.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="628"/>
+      <location filename="../../../CommandCreateSimulation.py" line="630"/>
       <source>H is the height of the impulse.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -446,7 +451,7 @@ T2 είναι το τέλος του παλμού.
 Η μεταβλητή SLOPE καθορίζει την απότομη μετάβαση μεταξύ 0 και H γύρω από τους χρόνους T1 και T2. Υψηλότερες τιμές δημιουργούν παλμούς με πιο έντονες/αιχμηρές γωνίες. Τιμές SLOPE ίσες με 1000 ή μεγαλύτερες θεωρούνται κατάλληλες. </translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="639"/>
+      <location filename="../../../CommandCreateSimulation.py" line="641"/>
       <source>This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -461,98 +466,98 @@ H2 είναι το ύψος στο T2, στο τέλος της κλίσης.
 Η μεταβλητή SLOPE καθορίζει την απότομη μετάβαση μεταξύ 0 και H1, καθώς και από το H2 στο 0, γύρω από τους χρόνους T1 και T2 αντίστοιχα.Υψηλότερες τιμές δημιουργούν παλμούς με πιο έντονες/αιχμηρές γωνίες. Τιμές SLOPE ίσες με 1000 ή μεγαλύτερες θεωρούνται κατάλληλες.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="677"/>
-      <location filename="../../../CommandCreateSimulation.py" line="694"/>
+      <location filename="../../../CommandCreateSimulation.py" line="679"/>
+      <location filename="../../../CommandCreateSimulation.py" line="696"/>
       <source>Help</source>
       <translation>Βοήθεια</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="692"/>
+      <location filename="../../../CommandCreateSimulation.py" line="694"/>
       <source>Hide help</source>
       <translation>Απόκρυψη βοήθειας</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1044"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1045"/>
       <source>Animation</source>
       <translation type="unfinished">Animation</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1045"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1046"/>
       <source>Not enough frames to create an animation.</source>
       <translation type="unfinished">Not enough frames to create an animation.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1052"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1068"/>
       <source>Save Animation</source>
       <translation type="unfinished">Save Animation</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1074"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1093"/>
+      <source>Pillow (PIL) is not installed. It is required for video export.</source>
+      <translation type="unfinished">Pillow (PIL) is not installed. It is required for video export.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1100"/>
       <source>Generating Frames…</source>
       <translation type="unfinished">Generating Frames…</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1075"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1101"/>
       <source>Cancel</source>
       <translation>Ακύρωση</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1102"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1128"/>
       <source>Assembling animation…</source>
       <translation type="unfinished">Assembling animation…</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1118"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1150"/>
       <source>An error occurred while saving the animation</source>
       <translation type="unfinished">An error occurred while saving the animation</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1136"/>
-      <source>Pillow (PIL) is not installed. It is required for GIF export.</source>
-      <translation type="unfinished">Pillow (PIL) is not installed. It is required for GIF export.</translation>
+      <location filename="../../../CommandCreateSimulation.py" line="1186"/>
+      <source>PyAv is not installed. It is required for video export.</source>
+      <translation type="unfinished">PyAv is not installed. It is required for video export.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1159"/>
-      <source>OpenCV is not installed. It is required for video export.</source>
-      <translation type="unfinished">OpenCV is not installed. It is required for video export.</translation>
+      <location filename="../../../CommandCreateSimulation.py" line="1205"/>
+      <source>Unknown video export format</source>
+      <translation type="unfinished">Unknown video export format</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1176"/>
-      <source>Could not open video writer. Check codecs.</source>
-      <translation type="unfinished">Could not open video writer. Check codecs.</translation>
-    </message>
-    <message>
-      <location filename="../../../InitGui.py" line="160"/>
+      <location filename="../../../InitGui.py" line="170"/>
       <source>Create</source>
       <translation>Δημιουργήστε</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="176"/>
+      <location filename="../../../InitGui.py" line="186"/>
       <source>Activate</source>
       <translation>Ενεργοποίηση</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="210"/>
+      <location filename="../../../InitGui.py" line="220"/>
       <source>Insert</source>
       <translation>Εισαγωγή</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="221"/>
+      <location filename="../../../InitGui.py" line="231"/>
       <source>Grounding</source>
       <translation>Ακινητοποίηση</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="248"/>
+      <location filename="../../../InitGui.py" line="258"/>
       <source>Constraints</source>
       <translation>Περιορισμοί</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="264"/>
+      <location filename="../../../InitGui.py" line="274"/>
       <source>Tools</source>
       <translation>Εργαλεία</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="277"/>
+      <location filename="../../../InitGui.py" line="287"/>
       <source>Simulation</source>
       <translation>Προσομοίωση</translation>
     </message>
@@ -677,7 +682,7 @@ H2 είναι το ύψος στο T2, στο τέλος της κλίσης.
       <translation>{order} αναφορά της σύνδεσης</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1237"/>
+      <location filename="../../../JointObject.py" line="1288"/>
       <source>The object to ground</source>
       <translation>Το αντικείμενο προς ακινητοποίηση</translation>
     </message>
@@ -741,6 +746,26 @@ H2 είναι το ύψος στο T2, στο τέλος της κλίσης.
       <location filename="../../../CommandCreateSimulation.py" line="337"/>
       <source>The type of the motion</source>
       <translation>Ο τύπος της κίνησης</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="113"/>
+      <source>List of components captured in this snapshot.</source>
+      <translation type="unfinished">List of components captured in this snapshot.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="124"/>
+      <source>List of corresponding placements for the components.</source>
+      <translation type="unfinished">List of corresponding placements for the components.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="135"/>
+      <source>List of visibility states for the components.</source>
+      <translation type="unfinished">List of visibility states for the components.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="146"/>
+      <source>If true, applying the snapshot will solve the assembly after restoring the placements.</source>
+      <translation type="unfinished">If true, applying the snapshot will solve the assembly after restoring the placements.</translation>
     </message>
   </context>
   <context>
@@ -806,42 +831,52 @@ H2 είναι το ύψος στο T2, στο τέλος της κλίσης.
       <translation>Καθορίζει τη μετατόπιση προσάρτησης (offset) του δεύτερου δείκτη (σύστημα συντεταγμένων) της σύνδεσης</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="231"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="237"/>
       <source>Reverse the direction of the joint</source>
       <translation>Αντιστρέφη την κατεύθυνση σύνδεσης</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="234"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="240"/>
       <source>Reverse</source>
       <translation>Αντιστροφή</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="245"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="257"/>
+      <source>Rotate the joint 90 degrees</source>
+      <translation type="unfinished">Rotate the joint 90 degrees</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="260"/>
+      <source>Rotate</source>
+      <translation>Περιστροφή</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="291"/>
       <source>Limits</source>
       <translation>Όρια</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="251"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="297"/>
       <source>Min length</source>
       <translation>Ελάχιστο Μήκος</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="274"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="320"/>
       <source>Max length</source>
       <translation>Μέγιστο μήκος</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="297"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="343"/>
       <source>Min angle</source>
       <translation>Ελάχιστη Γωνία</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="326"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="372"/>
       <source>Max angle</source>
       <translation>Μέγιστη Γωνία</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="358"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="404"/>
       <source>Reverse rotation</source>
       <translation>Αντιστροφή Περιστροφής</translation>
     </message>
@@ -860,8 +895,8 @@ H2 είναι το ύψος στο T2, στο τέλος της κλίσης.
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
-      <source>Cannot find the part? </source>
-      <translation>Δεν βρίσκετε το εξάρτημα?</translation>
+      <source>Cannot find the part?</source>
+      <translation type="unfinished">Cannot find the part?</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>
@@ -939,52 +974,52 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="214"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="213"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Το αντικείμενο συνδέεται με μία ή περισσότερες αρθρώσεις.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="216"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="215"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Θέλετε να μετακινήσετε το αντικείμενο και να διαγράψετε τις σχετικές συνδέσεις?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1104"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1088"/>
       <source>Move part</source>
       <translation>Μετακίνηση εξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1819"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1805"/>
       <source>Empty Assembly</source>
       <translation>Κενή Συναρμολόγηση</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1831"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1817"/>
       <source>Over-constrained:</source>
       <translation>Υπερ-περιορισμένη:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1839"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1825"/>
       <source>Malformed joints:</source>
       <translation>Ελαττωματικές Συνδέσεις:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1802"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1790"/>
       <source>and %1 more</source>
       <translation>και %1 ακόμη</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1863"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1849"/>
       <source>Solver failed to converge</source>
       <translation>Ο επιλύτης (solver) δεν μπόρεσε να βρει λύση</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1871"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1857"/>
       <source>Under-constrained:</source>
       <translation>Μη πλήρως περιορισμένη:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1873"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1859"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n ελεύθερη κίνηση</numerusform>
@@ -992,7 +1027,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1877"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1863"/>
       <source>Fully constrained</source>
       <translation>Πλήρως περιορισμένη</translation>
     </message>
@@ -1128,7 +1163,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="690"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="704"/>
       <source>Joints</source>
       <translation>Συνδέσεις</translation>
     </message>
@@ -1256,27 +1291,27 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>0.00 s</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="256"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="278"/>
       <source>Step backward</source>
       <translation>Βήμα προς τα πίσω</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="276"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="310"/>
       <source>Play backward</source>
       <translation>Αναπαραγωγή προς τα πίσω</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="296"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="348"/>
       <source>Stop</source>
       <translation>Διακοπή</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="316"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="380"/>
       <source>Play forward</source>
       <translation>Αναπαραγωγή προς τα εμπρός</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="336"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="412"/>
       <source>Step forward</source>
       <translation>Βήμα προς τα εμπρός</translation>
     </message>
@@ -1322,8 +1357,8 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
-      <source>&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;1 - Εάν μια συναρμολόγηση είναι ενεργή: Δημιουργεί μια σύνδεση που κλειδώνει μόνιμα δύο εξαρτήματα μεταξύ τους, εμποδίζοντας οποιαδήποτε κίνηση ή περιστροφή.&lt;/p&gt;&lt;p&gt;2 - Εάν ένα εξάρτημα είναι ενεργό: Τοποθετεί υπο-εξαρτήματα ταιριάζοντας τα επιλεγμένα συστήματα συντεταγμένων. Το δεύτερο επιλεγμένο εξάρτημα θα μετακινηθεί.&lt;/p&gt;</translation>
+      <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1535,27 +1570,50 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
-      <source>Click to select these conflicting joints.</source>
-      <translation>Κάντε κλικ για να επιλέξετε αυτές τις συνδέσεις που έρχονται σε σύγκρουση περιορισμών μεταξύ τους.</translation>
+      <source>Selects these conflicting joints</source>
+      <translation type="unfinished">Selects these conflicting joints</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
-      <source>Click to select these redundant joints.</source>
-      <translation>Κάντε κλικ για να επιλέξετε αυτές τις πλεονάζουσες συνδέσεις.</translation>
+      <source>Selects these redundant joints</source>
+      <translation type="unfinished">Selects these redundant joints</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="62"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
-Click to select these unconstrained components.
+Selects these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
       <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom.
-Click to select these unconstrained components.
+Selects these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
-      <source>Click to select these malformed joints.</source>
-      <translation>Κάντε κλικ για να επιλέξετε αυτές τις ελαττωματικές συνδέσεις.</translation>
+      <source>Selects these malformed joints</source>
+      <translation type="unfinished">Selects these malformed joints</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_Snapshot</name>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="49"/>
+      <source>Snapshot</source>
+      <translation type="unfinished">Snapshot</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="53"/>
+      <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
+      <translation type="unfinished">Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="70"/>
+      <source>Create Snapshot</source>
+      <translation type="unfinished">Create Snapshot</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="249"/>
+      <source>Restore Snapshot</source>
+      <translation type="unfinished">Restore Snapshot</translation>
     </message>
   </context>
   <context>
@@ -1567,8 +1625,8 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="102"/>
-      <source>Go to linked Assembly</source>
-      <translation type="unfinished">Go to linked Assembly</translation>
+      <source>Go to Linked Assembly</source>
+      <translation type="unfinished">Go to Linked Assembly</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="103"/>
@@ -1585,8 +1643,8 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="166"/>
-      <source>Select conflicting constraints</source>
-      <translation type="unfinished">Select conflicting constraints</translation>
+      <source>Select Conflicting Constraints</source>
+      <translation>Επιλογή Συγκρουόμενων Περιορισμών</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="167"/>
@@ -1603,8 +1661,8 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="201"/>
-      <source>Select redundant constraints</source>
-      <translation type="unfinished">Select redundant constraints</translation>
+      <source>Select Redundant Constraints</source>
+      <translation>Επιλογή Περιττών Περιορισμών</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="202"/>
@@ -1621,8 +1679,8 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="234"/>
-      <source>Select malformed constraints</source>
-      <translation type="unfinished">Select malformed constraints</translation>
+      <source>Select Malformed Constraints</source>
+      <translation>Επιλογή Ελαττωματικών Περιορισμών</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="235"/>
@@ -1639,8 +1697,8 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="268"/>
-      <source>Select components with DoFs</source>
-      <translation type="unfinished">Select components with DoFs</translation>
+      <source>Select Components With DoFs</source>
+      <translation type="unfinished">Select Components With DoFs</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="269"/>
@@ -1657,8 +1715,8 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="311"/>
-      <source>Select component joints</source>
-      <translation type="unfinished">Select component joints</translation>
+      <source>Select Component Joints</source>
+      <translation type="unfinished">Select Component Joints</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="312"/>

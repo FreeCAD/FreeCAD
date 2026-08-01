@@ -538,12 +538,8 @@ Document::Document(App::Document* pcDocument, Application* app)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Document"
     );
-    if (hGrp->GetBool("UsingUndo", true)) {
-        d->_pcDocument->setUndoMode(1);
-        // set the maximum stack size
-        d->_pcDocument->setMaxUndoStackSize(hGrp->GetInt("MaxUndoSize", 20));
-    }
 
+    d->_pcDocument->setMaxUndoStackSize(hGrp->GetInt("MaxUndoSize", 20));
     d->_changeViewTouchDocument = hGrp->GetBool("ChangeViewProviderTouchDocument", true);
 }
 
@@ -963,7 +959,7 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
 {
     auto pcProvider = static_cast<ViewProviderDocumentObject*>(getViewProvider(&Obj));
     if (!pcProvider) {
-        std::string cName = Obj.getViewProviderNameStored();
+        std::string_view cName {Obj.getViewProviderNameStored()};
         for (;;) {
             if (cName.empty()) {
                 // handle document object with no view provider specified
@@ -971,7 +967,7 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
                 return;
             }
             Base::Type type = Base::Type::getTypeIfDerivedFrom(
-                cName.c_str(),
+                cName,
                 ViewProviderDocumentObject::getClassTypeId(),
                 true
             );
@@ -2681,7 +2677,7 @@ MDIView* Document::getActiveView() const
     MDIView* active = getMainWindow()->activeWindow();
 
     // get all MDI views of the document
-    std::list<MDIView*> mdis = getMDIViews(true);
+    std::list<MDIView*> mdis = getMDIViews();
 
     // check whether the active view is part of this document
     bool ok = false;
@@ -2786,7 +2782,7 @@ void Document::setActiveWindow(Gui::MDIView* view)
     }
 
     // get all MDI views of the document
-    std::list<MDIView*> mdis = getMDIViews(true);
+    std::list<MDIView*> mdis = getMDIViews();
 
     // this document is not active
     if (std::ranges::find(mdis, active) == mdis.end()) {

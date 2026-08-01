@@ -33,6 +33,10 @@ using namespace ReverseEngineeringGui;
 
 #if 0  // needed for Qt's lupdate utility
     qApp->translate("Workbench", "Reverse Engineering");
+    qApp->translate("Workbench", "&Reverse Engineering");
+    qApp->translate("Workbench", "Surface Reconstruction");
+    qApp->translate("Workbench", "Segmentation");
+    qApp->translate("Workbench", "Approximation");
 #endif
 
 /// @namespace ReverseEngineeringGui @class Workbench

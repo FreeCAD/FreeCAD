@@ -136,15 +136,32 @@ class Arch_Wall:
         # interactive mode
 
         FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
-        self.points = []
         self.wp = WorkingPlane.get_working_plane()
+        self.wp._save()
+        self.points = []
         self.tracker = DraftTrackers.boxTracker()
         FreeCADGui.Snapper.getPoint(
             callback=self.getPoint,
             extradlg=self.taskbox(),
             title=translate("Arch", "First Point of Wall"),
+            hints=self.get_hints(),
         )
         FreeCADGui.draftToolBar.continueCmd.show()
+
+    def get_hints(self):
+        """Return status bar input hints for the current tool state."""
+        from draftguitools import gui_tool_utils
+
+        if not self.points:
+            label = translate("Arch", "%1 pick first point")
+        else:
+            label = translate("Arch", "%1 pick next point")
+        return (
+            [FreeCADGui.InputHint(label, FreeCADGui.UserInput.MouseLeft)]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+        )
 
     def getPoint(self, point=None, obj=None):
         """Callback for clicks during interactive mode.
@@ -169,6 +186,7 @@ class Arch_Wall:
                 if not obj in self.existing:
                     self.existing.append(obj)
         if point is None:
+            self.wp._restore()
             FreeCAD.activeDraftCommand = None
             FreeCADGui.Snapper.off()
             self.tracker.finalize()
@@ -185,6 +203,7 @@ class Arch_Wall:
                 extradlg=self.taskbox(),
                 title=translate("Arch", "Next point"),
                 mode="line",
+                hints=self.get_hints(),
             )
 
         elif len(self.points) == 2:
@@ -380,12 +399,13 @@ class Arch_Wall:
         """Orchestrate wall creation according to the baseline mode."""
         from draftutils import params
 
-        p0 = self.wp.get_local_coords(self.points[0])
-        p1 = self.wp.get_local_coords(self.points[1])
-
-        self.tracker.off()
+        self.wp._restore()
         FreeCAD.activeDraftCommand = None
         FreeCADGui.Snapper.off()
+        self.tracker.off()
+
+        p0 = self.wp.get_local_coords(self.points[0])
+        p1 = self.wp.get_local_coords(self.points[1])
 
         self.doc.openTransaction(translate("Arch", "Create Wall"))
 

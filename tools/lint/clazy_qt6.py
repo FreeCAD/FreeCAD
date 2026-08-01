@@ -59,7 +59,8 @@ def main():
     parser.add_argument(
         "--files",
         required=True,
-        help="A space-separated list (or glob-expanded string) of C++ files to check.",
+        nargs="+",
+        help="List of C++ files to check.",
     )
     parser.add_argument(
         "--clazy-qt6-checks",
@@ -90,7 +91,7 @@ def main():
         f"-checks={args.clazy_qt6_checks}",
         "-p",
         build_dir,
-    ] + args.files.split()
+    ] + args.files
 
     stdout, stderr, _ = run_command(cmd)
     output = stdout + stderr
@@ -106,9 +107,7 @@ def main():
     warnings_count = count_occurrences(warning_pattern, output)
     notes_count = count_occurrences(note_pattern, output)
 
-    logging.info(
-        f"Found {errors_count} errors, {warnings_count} warnings, {notes_count} notes"
-    )
+    logging.info(f"Found {errors_count} errors, {warnings_count} warnings, {notes_count} notes")
 
     report = generate_markdown_report(output, errors_count, warnings_count, notes_count)
     append_file(args.report_file, report + "\n")

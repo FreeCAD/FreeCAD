@@ -637,7 +637,9 @@ class Writer:
         return varName
 
     def getAllBodies(self):
-        obj = self.getSingleMember("Fem::FemMeshObject")
+        obj = self.getMesh()
+        if not obj.FemMesh.Groups:
+            raise RuntimeError(f"Mesh object '{obj.Label}' has no groups, please remesh\n")
         bodyCount = 0
         prefix = ""
         if obj.Shape.Shape.Solids:
@@ -652,7 +654,7 @@ class Writer:
         return [prefix + str(i + 1) for i in range(bodyCount)]
 
     def getMeshDimension(self):
-        obj = self.getSingleMember("Fem::FemMeshObject")
+        obj = self.getMesh()
         if obj.Shape.Shape.Solids:
             return 3
         if obj.Shape.Shape.Faces:
@@ -660,6 +662,23 @@ class Writer:
         if obj.Shape.Shape.Edges:
             return 1
         return None
+
+    def getMesh(self):
+        return membertools.get_mesh_to_solve(self.analysis)
+
+    def getCoordSystemDimension(self):
+        dim = 0
+        match self.solver.CoordinateSystem:
+            case "Cartesian":
+                # defined by the mesh
+                dim = self.getMeshDimension()
+            case "Cartesian 1D":
+                dim = 1
+            case "Cartesian 2D" | "Polar 2D" | "Cylindric Symmetric" | "Axi Symmetric":
+                dim = 2
+            case "Cartesian 3D" | "Polar 3D" | "Cylindric":
+                dim = 3
+        return dim
 
     def _addOutputSolver(self):
         s = sifio.createSection(sifio.SOLVER)

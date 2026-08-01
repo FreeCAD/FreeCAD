@@ -16,10 +16,10 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="624"/>
       <source>US customary (in, lb)</source>
-      <translation>미국 관습 단위 (in, lb)</translation>
+      <translation>미국 관용 단위 (in, lb)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="679"/>
+      <location filename="../../UnitsSchemasData.h" line="681"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
       <translation>토목공학용 영국식 단위 (ft, lb, mph)</translation>
     </message>

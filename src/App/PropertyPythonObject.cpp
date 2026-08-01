@@ -151,14 +151,16 @@ bool isAllowedModule(const std::string& moduleName)
     // This is populated during startup by FreeCADInit.py and includes built-in workbenches,
     // user addons, and any additional configured module paths.
     Py::Module freecad(PyImport_ImportModule("FreeCAD"), true);
-    if (!freecad.hasAttr("__ModDirs__")) {
-        throw Py::RuntimeError("FreeCAD.__ModDirs__ not set -- FreeCADInit.py has not run yet");
+    if (!freecad.hasAttr("__ModDirs__") or !freecad.hasAttr("__MacroDirs__")) {
+        throw Py::RuntimeError("FreeCAD.__ModDirs__ or FreeCAD.__MacroDirs__ not set -- FreeCADInit.py has not run yet");
     }
-    Py::List modDirs(freecad.getAttr("__ModDirs__"));
+    Py::List allowedDirs(freecad.getAttr("__ModDirs__"));
+    allowedDirs.extend(freecad.getAttr("__MacroDirs__"));
+    const int allowedDirsSize = static_cast<int>(allowedDirs.size());
 
     auto isUnderFreeCAD = [&](const std::string& path) {
-        for (int i = 0; i < static_cast<int>(modDirs.size()); ++i) {
-            if (isUnderDirectory(path, Py::String(modDirs[i]).as_std_string())) {
+        for (int i = 0; i < allowedDirsSize; ++i) {
+            if (isUnderDirectory(path, Py::String(allowedDirs[i]).as_std_string())) {
                 return true;
             }
         }

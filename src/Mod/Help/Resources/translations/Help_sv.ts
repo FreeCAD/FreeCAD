@@ -175,7 +175,7 @@ Detta gäller endast om Markdown har valts ovan.</translation>
     <message>
       <location filename="../../Help.py" line="86"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
-      <translation>Det finns ingen Markdown-renderare installerad på ditt system, så den här hjälpsidan återges som den är. Installera Python-modulerna Markdown eller Pandoc för att förbättra återgivningen av den här sidan.</translation>
+      <translation>Det finns ingen Markdown-återgivare installerad på ditt system, så den här hjälpsidan återges som den är. Installera Markdown- eller Pandoc Python-modulerna för att förbättra återgivningen av den här sidan.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="118"/>

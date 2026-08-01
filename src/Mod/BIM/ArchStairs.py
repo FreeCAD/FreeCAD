@@ -910,12 +910,12 @@ class _Stairs(ArchComponent.Component):
                 railWireR, NU = _Stairs.returnOutlineWireFace(
                     obj.OutlineRightAll, self.OutlineRailArcRightAll, mode="notFaceAlso"
                 )
-            elif obj.OutlineLeft:
+            elif obj.OutlineRight:
                 railWireR, NU = _Stairs.returnOutlineWireFace(
-                    obj.OutlineLeft, self.OutlineRailArcRight, mode="notFaceAlso"
+                    obj.OutlineRight, self.OutlineRailArcRight, mode="notFaceAlso"
                 )
             else:
-                print(" No obj.OutlineRightAll or obj.OutlineLeft")
+                print(" No obj.OutlineRightAll or obj.OutlineRight")
 
             if railWireR:
                 if (
@@ -930,7 +930,7 @@ class _Stairs(ArchComponent.Component):
                 # update the Base object shape
                 railingRightObject.Base.Shape = railWireR
             else:
-                print(" No railWireL created ")
+                print(" No railWireR created ")
 
         # compute step data
         if obj.NumberOfSteps > 1:

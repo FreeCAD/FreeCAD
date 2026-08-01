@@ -273,7 +273,16 @@ void ProgramInformation::getLibraryVersions(std::stringstream& str)
     // report also the version numbers of the most important libraries in FreeCAD
     str << "Python " << PY_VERSION << ", ";
     str << "Qt " << QT_VERSION_STR << ", ";
-    str << "Coin " << fcCoin3dVersion << ", ";
+    str << "Coin " << fcCoin3dVersion;
+    if (*fcCoin3dSource) {
+        str << " (" << fcCoin3dSource << ")";
+    }
+    str << ", ";
+    str << "Pivy " << fcPivyVersion;
+    if (*fcPivySource) {
+        str << " (" << fcPivySource << ")";
+    }
+    str << ", ";
     str << "Vtk " << fcVtkVersion << ", ";
     str << "boost " << BOOST_LIB_VERSION << ", ";
     str << "Eigen3 " << fcEigen3Version << ", ";
@@ -283,6 +292,7 @@ void ProgramInformation::getLibraryVersions(std::stringstream& str)
     str << "SMESH " << SMESH_VERSION_STR << ", ";
 #endif
     str << "xerces-c " << fcXercescVersion << ", ";
+    str << "Clipper2 " << fcClipper2Version << ", ";
     getIfcInfo(str);
 #if defined(OCC_VERSION_STRING_EXT)
     str << "OCC " << OCC_VERSION_STRING_EXT << '\n';

@@ -665,11 +665,24 @@ void createNewConstraintsForTrim(
     bool isPoint1ConstrainedOnGeoId1 = false;
     bool isPoint2ConstrainedOnGeoId2 = false;
 
+    const auto* trimmedGeo = obj->getGeometry(GeoId);
+    const bool isTrimmedGeoConic = trimmedGeo
+        && (trimmedGeo->isDerivedFrom<Part::GeomConic>()
+            || trimmedGeo->isDerivedFrom<Part::GeomArcOfConic>());
+
     for (const auto& oldConstrId : idsOfOldConstraints) {
         // trim-specific changes first
         const Constraint* con = allConstraints[oldConstrId];
         if (con->Type == InternalAlignment) {
-            geoIdsToBeDeleted.insert(con->First);
+            if (isTrimmedGeoConic) {
+                auto* newCon = con->copy();
+                newCon->Second = newIds.front();
+                newConstraints.push_back(newCon);
+                newToOldConstraintMap[newConstraints.back()] = oldConstrId;
+            }
+            else {
+                geoIdsToBeDeleted.insert(con->First);
+            }
             continue;
         }
         if (auto newConstr = transformPreexistingConstraintForTrim(
@@ -777,7 +790,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             cutPoints[1]
         )) {
         // If no suitable trim points are found, then trim defaults to deleting the geometry
-        delGeometry(GeoId);
+        delGeometry(GeoId, DeleteOption::IncludeInternalGeometry);
         return 0;
     }
 
@@ -797,7 +810,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
     switch (paramsOfNewGeos.size()) {
         case 0: {
-            delGeometry(GeoId);
+            delGeometry(GeoId, DeleteOption::IncludeInternalGeometry);
             return 0;
         }
         case 1: {
@@ -1028,9 +1041,11 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
         return !allConstraints[i]->involvesGeoIdAndPosId(GeoId, PointPos::none);
     });
 
+    std::vector<const Part::Geometry*> newGeosConst(newGeos.begin(), newGeos.end());
+
     for (const auto& oldConstrId : idsOfOldConstraints) {
         Constraint* con = allConstraints[oldConstrId];
-        deriveConstraintsForPieces(GeoId, newIds, con, newConstraints);
+        deriveConstraintsForPieces(GeoId, newIds, newGeosConst, con, newConstraints);
     }
 
     // This also seems to reset SketchObject::Geometry.

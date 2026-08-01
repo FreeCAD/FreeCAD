@@ -119,7 +119,7 @@ void DlgRegularSolidImp::onCreateSolidButtonClicked()
         std::string cmd, name;
         App::Document* doc = App::GetApplication().getActiveDocument();
         if (!doc) {
-            QMessageBox::warning(this, tr("Create %1").arg(ui->comboBox1->currentText()), tr("No active document"));
+            QMessageBox::warning(this, tr("Create %1").arg(ui->comboBox1->currentText()), tr("No Active Document"));
             return;
         }
         switch (ui->comboBox1->currentIndex()) {

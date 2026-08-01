@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 #include "clipper.hpp"
+#include "clipper2/clipper.h"
 #include <vector>
 #include <list>
 #include <optional>
@@ -206,7 +207,6 @@ private:
         const Paths paths,
         MotionType mt = MotionType::mtCutting
     );
-    void AddPathToProgress(TPaths& progressPaths, const Path pth, MotionType mt = MotionType::mtCutting);
     void ApplyStockToLeave(Paths& inputPaths);
 
 private:

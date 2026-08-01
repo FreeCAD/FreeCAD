@@ -67,6 +67,7 @@ target_include_directories(
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 target_include_directories(
@@ -93,7 +94,9 @@ list(APPEND FreeCADApp_LIBS
 )
 
 generate_from_py(ApplicationDirectories)
+generate_from_py(DepEdge)
 generate_from_py(Document)
+generate_from_py(DocumentSettings)
 generate_from_py(DocumentObject)
 generate_from_py(Extension)
 generate_from_py(ExtensionContainer)
@@ -114,6 +117,10 @@ generate_from_py(ComplexGeoData)
 generate_from_py(PropertyContainer)
 generate_from_py(Material)
 generate_from_py(MeasureManager)
+generate_module_from_py(
+    FreeCAD
+    FreeCAD_MODULE_GENERATED_SRCS
+)
 
 generate_embed_from_py(FreeCADInit InitScript.h)
 generate_embed_from_py(FreeCADTest TestScript.h)
@@ -126,8 +133,10 @@ SET(FreeCADApp_Pyi_SRCS
     GroupExtension.pyi
     LinkBaseExtension.pyi
     Metadata.pyi
+    DepEdge.pyi
     DocumentObjectGroup.pyi
     DocumentObject.pyi
+    DocumentSettings.pyi
     GeoFeature.pyi
     GeoFeatureGroupExtension.pyi
     OriginGroupExtension.pyi
@@ -138,6 +147,7 @@ SET(FreeCADApp_Pyi_SRCS
     ComplexGeoData.pyi
     Material.pyi
     MeasureManager.pyi
+    FreeCAD.module.pyi
     StringHasher.pyi
     StringID.pyi
 )
@@ -150,6 +160,7 @@ SET(Document_CPP_SRCS
     Document.cpp
     RecoverySnapshot.cpp
     DocumentObject.cpp
+    DepEdgePyImp.cpp
     Extension.cpp
     ExtensionPyImp.cpp
     DocumentObjectExtension.cpp
@@ -167,6 +178,8 @@ SET(Document_CPP_SRCS
     DocumentObserver.cpp
     DocumentObserverPython.cpp
     DocumentPyImp.cpp
+    DocumentSettings.cpp
+    DocumentSettingsPyImp.cpp
     Expression.cpp
     ExpressionTokenizer.cpp
     FeaturePython.cpp
@@ -205,6 +218,7 @@ SET(Document_HPP_SRCS
     BackupPolicy.h
     Document.h
     RecoverySnapshot.h
+    DepEdge.h
     DocumentObject.h
     Extension.h
     ExtensionContainer.h
@@ -214,6 +228,7 @@ SET(Document_HPP_SRCS
     DocumentObjectGroup.h
     DocumentObserver.h
     DocumentObserverPython.h
+    DocumentSettings.h
     Expression.h
     ExpressionParser.h
     ExpressionTokenizer.h
@@ -293,8 +308,10 @@ SET(FreeCADApp_CPP_SRCS
     ApplicationDirectories.cpp
     ApplicationDirectoriesPyImp.cpp
     ApplicationPy.cpp
+    ${FreeCAD_MODULE_GENERATED_SRCS}
     AutoTransaction.cpp
     Branding.cpp
+    ByteArray.cpp
     CleanupProcess.cpp
     ColorModel.cpp
     ComplexGeoData.cpp
@@ -328,6 +345,7 @@ SET(FreeCADApp_HPP_SRCS
     ApplicationDirectories.h
     AutoTransaction.h
     Branding.h
+    ByteArray.h
     CleanupProcess.h
     ColorModel.h
     ComplexGeoData.h
@@ -353,7 +371,10 @@ qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
 qt_find_and_add_translation(QM_SRCS "${CMAKE_SOURCE_DIR}/src/Base/Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
 qt_create_resource_file(${FreeCADApp_TR_QRC} ${QM_SRCS})
-qt_add_resources(FreeCADApp_QRC_SRCS ${FreeCADApp_TR_QRC})
+qt_add_resources(FreeCADApp_QRC_SRCS
+    ${FreeCADApp_TR_QRC}
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 SET(FreeCADApp_SRCS
     ${FreeCADApp_QRC_SRCS}

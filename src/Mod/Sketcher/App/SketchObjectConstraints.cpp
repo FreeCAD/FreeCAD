@@ -172,10 +172,7 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
             std::vector<Part::Geometry*> geomlist = solvedSketch.extractGeometry();
             Part::PropertyGeometryList tmp;
             tmp.setValues(std::move(geomlist));
-            // Only set values if there is actual changes
-            if (Constraints.isTouched() || !Geometry.isSame(tmp)) {
-                Geometry.moveValues(std::move(tmp));
-            }
+            Geometry.moveValues(std::move(tmp));
         }
     }
 

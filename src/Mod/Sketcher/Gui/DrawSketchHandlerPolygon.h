@@ -35,7 +35,6 @@
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 
 #include "DrawSketchDefaultWidgetController.h"
@@ -45,8 +44,6 @@
 
 namespace SketcherGui
 {
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerPolygon;
 
@@ -275,14 +272,14 @@ private:
                  .hints =
                      {
                          {tr("%1 pick polygon center"), {MouseLeft}},
-                         {tr("%1/%2 increase / decrease number of sides"), {KeyU, KeyJ}},
+                         {tr("%1/%2 increase/decrease number of sides"), {KeyU, KeyJ}},
                      }},
                 {.state = SelectMode::SeekSecond,
                  .hints =
                      {
                          {tr("%1 pick rotation and size"), {MouseMove}},
                          {tr("%1 confirm"), {MouseLeft}},
-                         {tr("%1/%2 increase / decrease number of sides"), {KeyU, KeyJ}},
+                         {tr("%1/%2 increase/decrease number of sides"), {KeyU, KeyJ}},
                      }},
             });
     }
@@ -327,7 +324,7 @@ void DSHPolygonController::configureToolWidget()
 
     toolWidget->setParameterLabel(
         WParameter::First,
-        QApplication::translate("ToolWidgetManager_p4", "Sides (+'U'/ -'J')")
+        QApplication::translate("ToolWidgetManager_p4", "Sides")
     );
     toolWidget->setParameter(WParameter::First,
                              handler->numberOfCorners);  // unconditionally set

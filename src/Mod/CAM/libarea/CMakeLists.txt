@@ -121,7 +121,7 @@ else(MSVC)
     endif(BUILD_DYNAMIC_LINK_PYTHON)
 endif(MSVC)
 
-target_link_libraries(area-native ${area_native_LIBS} Import)
+target_link_libraries(area-native ${area_native_LIBS} Import Clipper2::Clipper2Z)
 SET_BIN_DIR(area-native area-native /Mod/CAM)
 
 target_link_libraries(area area-native ${area_LIBS} ${area_native_LIBS})

@@ -42,12 +42,8 @@ class GuiExport PythonEditor: public PythonTextEditor
 
 public:
     explicit PythonEditor(QWidget* parent = nullptr);
-    ~PythonEditor() override;
 
     void OnChange(Base::Subject<const char*>& rCaller, const char* rcReason) override;
-    void toggleBreakpoint();
-    void showDebugMarker(int line);
-    void hideDebugMarker();
 
 public Q_SLOTS:
     /** Inserts a '#' at the beginning of each selected line or the current line if
@@ -61,18 +57,11 @@ public Q_SLOTS:
      */
     void onUncomment();
     void onExecuteInConsole();
-    void setFileName(const QString&);
-    void startDebug();
 
 protected:
     /** Pops up the context menu with some extensions */
     void contextMenuEvent(QContextMenuEvent* e) override;
-    void drawMarker(int line, int x, int y, QPainter*) override;
     void keyPressEvent(QKeyEvent*) override;
-
-private:
-    // PythonSyntaxHighlighter* pythonSyntax;
-    struct PythonEditorP* d;
 };
 
 /**

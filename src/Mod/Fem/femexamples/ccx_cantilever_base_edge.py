@@ -107,12 +107,12 @@ def setup_cantilever_base_edge(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj)
 
     # constraint fixed
-    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "Fixed")
     con_fixed.References = [(geom_obj, "Vertex1")]
     analysis.addObject(con_fixed)
 
     # constraint force
-    con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
+    con_force = ObjectsFem.makeConstraintForce(doc, "Force")
     con_force.References = [(geom_obj, "Vertex2")]
     con_force.Force = "9000000.0 N"  # 9 MN
     con_force.Direction = (load_line, ["Edge1"])

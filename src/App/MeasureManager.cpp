@@ -80,7 +80,7 @@ MeasureHandler MeasureManager::getMeasureHandler(const App::MeasureSelectionItem
         sub = link->getLinkedObject(true);
     }
 
-    const char* className = sub->getTypeId().getName();
+    const auto className = sub->getTypeId().getName();
     std::string mod = Base::Type::getModuleName(className);
 
     return getMeasureHandler(mod.c_str());

@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="75"/>
       <source>Inspection…</source>
-      <translation type="unfinished">Inspection…</translation>
+      <translation>Inspectie…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="49"/>
       <source>Visual Inspection…</source>
-      <translation type="unfinished">Visual Inspection…</translation>
+      <translation>Visuele inspectie…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="50"/>
       <source>Inspects the objects visually</source>
-      <translation type="unfinished">Inspects the objects visually</translation>
+      <translation>Inspecteert de objecten visueel</translation>
     </message>
   </context>
   <context>
@@ -110,7 +110,7 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="572"/>
       <source>Leave Info Mode</source>
-      <translation type="unfinished">Leave Info Mode</translation>
+      <translation>Verlaat info-modus</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="709"/>

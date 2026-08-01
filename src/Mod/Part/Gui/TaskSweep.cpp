@@ -373,13 +373,13 @@ bool SweepWidget::accept()
 
     int count = d->ui.selector->selectedTreeWidget()->topLevelItemCount();
     if (count < 1) {
-        QMessageBox::critical(this, tr("Too few elements"), tr("At least one edge or wire is required."));
+        QMessageBox::critical(this, tr("Too Few Elements"), tr("At least one edge or wire is required."));
         return false;
     }
     if (!ok) {
         QMessageBox::critical(
             this,
-            tr("Invalid selection"),
+            tr("Invalid Selection"),
             tr("Select at least 1 edge from a single object.")
         );
         return false;
@@ -390,7 +390,7 @@ bool SweepWidget::accept()
         if (name == QLatin1String(spineObject.c_str())) {
             QMessageBox::critical(
                 this,
-                tr("Wrong selection"),
+                tr("Wrong Selection"),
                 tr("'%1' cannot be used as profile and path.").arg(QString::fromUtf8(spineLabel.c_str()))
             );
             return false;
@@ -408,20 +408,14 @@ bool SweepWidget::accept()
                   "App.getDocument('%5').ActiveObject.Solid=%3\n"
                   "App.getDocument('%5').ActiveObject.Frenet=%4\n"
         )
-                  .arg(
-                      list,
-                      QLatin1String(selection.c_str()),
-                      solid,
-                      frenet,
-                      QString::fromLatin1(d->document.c_str())
-                  );
+                  .arg(list, selection.c_str(), solid, frenet, d->document.c_str());
 
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
         if (!doc) {
             throw Base::RuntimeError("Document doesn't exist anymore");
         }
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Sweep"));
-        Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
+        Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
         doc->getDocument()->recompute();
         App::DocumentObject* obj = doc->getDocument()->getActiveObject();
         if (obj && !obj->isValid()) {
@@ -502,7 +496,7 @@ void SweepWidget::onButtonPathToggled(bool on)
             // check if path is valid
             const std::vector<Gui::SelectionObject>& result = edgeFilter.Result[0];
             if (!isPathValid(result.front())) {
-                QMessageBox::critical(this, tr("Sweep path"), tr("The selected sweep path is invalid."));
+                QMessageBox::critical(this, tr("Sweep Path"), tr("The selected sweep path is invalid."));
                 Gui::Selection().clearSelection();
             }
         }
@@ -510,7 +504,7 @@ void SweepWidget::onButtonPathToggled(bool on)
             // check if path is valid
             const std::vector<Gui::SelectionObject>& result = partFilter.Result[0];
             if (!isPathValid(result.front())) {
-                QMessageBox::critical(this, tr("Sweep path"), tr("The selected sweep path is invalid."));
+                QMessageBox::critical(this, tr("Sweep Path"), tr("The selected sweep path is invalid."));
                 Gui::Selection().clearSelection();
             }
         }

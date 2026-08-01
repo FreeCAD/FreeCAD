@@ -37,9 +37,9 @@
 # include <unistd.h>
 #endif
 
-#include "Parameter.h"
+#include "ParameterPy.h"
+
 #include "Exception.h"
-#include "Interpreter.h"
 
 #include <Tools.h>
 
@@ -101,83 +101,6 @@ private:
 };
 
 using ParameterGrpObserverList = std::list<ParameterGrpObserver*>;
-
-class ParameterGrpPy: public Py::PythonExtension<ParameterGrpPy>  // NOLINT
-{
-public:
-    static void init_type();  // announce properties and methods
-
-    explicit ParameterGrpPy(const Base::Reference<ParameterGrp>& rcParamGrp);
-    ~ParameterGrpPy() override;
-
-    Py::Object repr() override;
-
-    // NOLINTBEGIN
-    Py::Object getGroup(const Py::Tuple&);
-    Py::Object getGroupName(const Py::Tuple&);
-    Py::Object getGroups(const Py::Tuple&);
-    Py::Object remGroup(const Py::Tuple&);
-    Py::Object hasGroup(const Py::Tuple&);
-    Py::Object renameGroup(const Py::Tuple&);
-    Py::Object copyTo(const Py::Tuple&);
-
-    Py::Object getManager(const Py::Tuple&);
-    Py::Object getParent(const Py::Tuple&);
-
-    Py::Object isEmpty(const Py::Tuple&);
-    Py::Object clear(const Py::Tuple&);
-
-    Py::Object attach(const Py::Tuple&);
-    Py::Object attachManager(const Py::Tuple& args);
-    Py::Object detach(const Py::Tuple&);
-    Py::Object notify(const Py::Tuple&);
-    Py::Object notifyAll(const Py::Tuple&);
-
-    Py::Object setBool(const Py::Tuple&);
-    Py::Object getBool(const Py::Tuple&);
-    Py::Object getBools(const Py::Tuple&);
-    Py::Object remBool(const Py::Tuple&);
-
-    Py::Object setInt(const Py::Tuple&);
-    Py::Object getInt(const Py::Tuple&);
-    Py::Object getInts(const Py::Tuple&);
-    Py::Object remInt(const Py::Tuple&);
-
-    Py::Object setUnsigned(const Py::Tuple&);
-    Py::Object getUnsigned(const Py::Tuple&);
-    Py::Object getUnsigneds(const Py::Tuple&);
-    Py::Object remUnsigned(const Py::Tuple&);
-
-    Py::Object setFloat(const Py::Tuple&);
-    Py::Object getFloat(const Py::Tuple&);
-    Py::Object getFloats(const Py::Tuple&);
-    Py::Object remFloat(const Py::Tuple&);
-
-    Py::Object setString(const Py::Tuple&);
-    Py::Object getString(const Py::Tuple&);
-    Py::Object getStrings(const Py::Tuple&);
-    Py::Object remString(const Py::Tuple&);
-
-    Py::Object importFrom(const Py::Tuple&);
-    Py::Object insert(const Py::Tuple&);
-    Py::Object exportTo(const Py::Tuple&);
-
-    Py::Object getContents(const Py::Tuple&);
-    // NOLINTEND
-
-private:
-    void tryCall(
-        ParameterGrpObserver* obs,
-        ParameterGrp* Param,
-        ParameterGrp::ParamType Type,
-        const char* Name,
-        const char* Value
-    );
-
-private:
-    ParameterGrp::handle _cParamGrp;
-    ParameterGrpObserverList _observers;
-};
 
 // ---------------------------------------------------------
 
@@ -945,17 +868,16 @@ Py::Object ParameterGrpPy::getContents(const Py::Tuple& args)
     return list;  // NOLINT
 }
 
+PyTypeObject* ParameterGrpPy::type_object()
+{
+    return Py::PythonExtension<ParameterGrpPy>::type_object();
+}
+
 }  // namespace Base
 
 /** python wrapper function
  */
 PyObject* GetPyObject(const Base::Reference<ParameterGrp>& hcParamGrp)
 {
-    static bool init = false;
-    if (!init) {
-        init = true;
-        Base::ParameterGrpPy::init_type();
-    }
-
     return new Base::ParameterGrpPy(hcParamGrp);
 }

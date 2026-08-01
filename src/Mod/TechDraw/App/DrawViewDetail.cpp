@@ -172,7 +172,6 @@ App::DocumentObjectExecReturn* DrawViewDetail::execute()
     }
 
     detailExec(shape3d, dvp, dvs);
-    addPoints();
 
     dvp->requestPaint();//to refresh detail highlight in base view
     return DrawView::execute();
@@ -481,7 +480,7 @@ void DrawViewDetail::handleChangedPropertyType(Base::XMLReader &reader, const ch
     if (prop == &AnchorPoint) {
         // AnchorPoint was PropertyVector, then briefly PropertyPosition, now back to PropertyVector
         App::PropertyPosition tmp;
-        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
+        if (tmp.getTypeId().getName() == TypeName) {
             tmp.setContainer(this);
             tmp.Restore(reader);
             auto tmpValue = tmp.getValue();
@@ -493,7 +492,7 @@ void DrawViewDetail::handleChangedPropertyType(Base::XMLReader &reader, const ch
     if (prop == &Radius) {
         // Radius was PropertyFloat, then briefly PropertyLength, now back to PropertyFloat
         App::PropertyLength tmp;
-        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
+        if (tmp.getTypeId().getName() == TypeName) {
             tmp.setContainer(this);
             tmp.Restore(reader);
             auto tmpValue = tmp.getValue();

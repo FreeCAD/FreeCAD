@@ -65,7 +65,7 @@ class WriterList:
         return (el_range[0] + 1, el_range[-1] + 1)
 
     def fill_sorted_ranges(self, a, b, sort, value):
-        """Continuosly complete a list of sorted Z88 ranges from a bigger range (a, b)"""
+        """Continuously complete a list of sorted Z88 ranges from a bigger range (a, b)"""
         res = []
         if not sort:
             res.append((a, b, value))

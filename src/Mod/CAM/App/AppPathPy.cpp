@@ -168,6 +168,23 @@ public:
         initialize("This module is the Path module.");  // register with Python
 
         PyModule_AddObject(m_module, "Voronoi", voronoi.module().ptr());
+
+        // Expose Clipper2 join types
+        PyModule_AddIntConstant(
+            m_module,
+            "ClipperJoinTypeRound",
+            static_cast<int>(Clipper2Lib::JoinType::Round)
+        );
+        PyModule_AddIntConstant(
+            m_module,
+            "ClipperJoinTypeSquare",
+            static_cast<int>(Clipper2Lib::JoinType::Square)
+        );
+        PyModule_AddIntConstant(
+            m_module,
+            "ClipperJoinTypeMiter",
+            static_cast<int>(Clipper2Lib::JoinType::Miter)
+        );
     }
 
     ~Module() override

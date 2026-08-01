@@ -153,7 +153,7 @@ class TestLinuxCNCLibrarySerializer(TestPathToolLibrarySerializerBase):
         def format_D(v):
             # Convert and format to userPreferred
             # It is important to get the units for userPreferred from the actual `v`,
-            # because the units are dependant on the order-of-magnitude of v
+            # because the units are dependent on the order-of-magnitude of v
             # for some user-preference unit-systems.
             # E.g. U.S. Customary will give `thous` for 1mm, `"` (inch) for 6mm, etc.
             as_quantity = FreeCAD.Units.Quantity(v)

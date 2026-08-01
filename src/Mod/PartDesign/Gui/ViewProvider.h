@@ -82,6 +82,8 @@ public:
     // Returns the ViewProvider of the body the feature belongs to, or NULL, if not in a body
     ViewProviderBody* getBodyViewProvider();
 
+    void toggleVisibility() override;
+
     /// Provides preview shape
     Part::TopoShape getPreviewShape() const override;
     /// Toggles visibility of the preview

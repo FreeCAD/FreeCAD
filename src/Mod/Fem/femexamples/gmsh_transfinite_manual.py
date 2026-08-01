@@ -332,7 +332,7 @@ def setup(doc=None, solver=None):
                    " - The amount of subdivisions between the corner points need to be equal for the guiding surface. This "
                    "is the same as for normal 3 sided faces, just now one side is created of multiple edges, for which "
                    "the subdivisions are added up."
-                   " - In this example each edge has the same length, hence subdivisions. As each side of the transfinite surfce "
+                   " - In this example each edge has the same length, hence subdivisions. As each side of the transfinite surface "
                    "consists of 2 edges, the overall subdivision count is the same per side")
 
     part_obj, mesh_obj = create_example(doc, "Hexagon 3-Sided Surface Recombined", explanation)
@@ -362,7 +362,7 @@ def setup(doc=None, solver=None):
                    " - When connecting multiple edges into a single side of a transfinite surface the subdivisions of that side can"
                    " be simply calculated as the addition of all its edge subdivisions\n"
                    " - Therefore, the total subdivision count of N connected equally subdivided edges is N * (Node - N). This needs "
-                   "to be considerd when setting the transfinite curve node number for each edge\n"
+                   "to be considered when setting the transfinite curve node number for each edge\n"
                    " - For our example:\n"
                    "    - Side 1: 13 Nodes/Edge leads to 12 subdivisions (1*(13-1)=12)\n"
                    "    - Side 2:  5 Nodes/Edge leads to 12 subdivisions (3*(5-1)=12)\n"
@@ -436,7 +436,7 @@ def setup(doc=None, solver=None):
     # 17: Two faces, one oriented
     explanation = ("If we want to reorient the triangle we can do this with the manual definition of the corner points. As shown in "
                    "earlier examples this requires adding the Vertexes in the surface definition. As this can only be done for a single "
-                   "face, the second face requries a seperate transfinite surface object.\n\n"
+                   "face, the second face requires a separate transfinite surface object.\n\n"
                    " - The second transfinite surface refinement could have selected multiple faces again\n"
                    " - You can combine as many transfinite surface refinements as you like")
 
@@ -514,7 +514,7 @@ def setup(doc=None, solver=None):
     tf_vol.References = [(part_obj, ["Solid1"])]
 
     # 22: Wedge as 5 sided volume, mixed elements, Bumped
-    explanation = ("Further tuning of the sructured mesh algorithm can be done with well placed transfinite curves. The curves need "
+    explanation = ("Further tuning of the structured mesh algorithm can be done with well placed transfinite curves. The curves need "
                    "to be consistent for every surface, then it will be applied to the volume correctly.\n\n"
                    " - If the curves are not consistent to the surfaces some will fail to be generated and hence the volume will fail too")
 

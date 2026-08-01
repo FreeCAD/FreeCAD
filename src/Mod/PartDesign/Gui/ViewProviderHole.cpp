@@ -28,6 +28,7 @@
 
 #include <gp_Ax1.hxx>
 #include <gp_Dir.hxx>
+#include <gp_Lin.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Vec.hxx>
 #include <Poly_Triangle.hxx>
@@ -340,6 +341,14 @@ std::optional<gp_Pnt> ViewProviderHole::getHoleOrigin(const PartDesign::Hole* pc
     return std::nullopt;
 }
 
+std::vector<gp_Pnt> ViewProviderHole::getHoleLocations(const PartDesign::Hole* pcHole) const
+{
+    if (!pcHole) {
+        return {};
+    }
+    return pcHole->getHoleLocations();
+}
+
 std::vector<TopoDS_Face> ViewProviderHole::collectBoreFaces(const PartDesign::Hole* pcHole) const
 {
     std::vector<TopoDS_Face> boreFaces;
@@ -358,7 +367,13 @@ std::vector<TopoDS_Face> ViewProviderHole::collectBoreFaces(const PartDesign::Ho
     }
     gp_Dir holeAxis = *holeNormalOpt;
 
+    std::vector<gp_Pnt> validLocations = getHoleLocations(pcHole);
+    if (validLocations.empty()) {
+        return boreFaces;
+    }
+
     const double holeRadius = pcHole->Diameter.getValue() / 2.0;
+    const double distTolerance = 2 * Precision::Confusion();
     const bool isTapered = pcHole->Tapered.getValue();
     const double taperSemiAngleRad = isTapered
         ? Base::toRadians(90 - pcHole->TaperedAngle.getValue())
@@ -377,6 +392,8 @@ std::vector<TopoDS_Face> ViewProviderHole::collectBoreFaces(const PartDesign::Ho
         }
 
         gp_Ax1 axis;
+        bool isMatch = false;
+
         if (!isTapered) {
             if (!surf->IsKind(STANDARD_TYPE(Geom_CylindricalSurface))) {
                 continue;
@@ -397,6 +414,17 @@ std::vector<TopoDS_Face> ViewProviderHole::collectBoreFaces(const PartDesign::Ho
                 continue;
             }
             axis = con->Axis();
+        }
+
+        for (const auto& loc : validLocations) {
+            if (gp_Lin(axis).Distance(loc) < distTolerance) {
+                isMatch = true;
+                break;
+            }
+        }
+
+        if (!isMatch) {
+            continue;
         }
 
         if (!axis.Direction().IsParallel(holeAxis, Precision::Angular())) {

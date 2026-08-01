@@ -400,7 +400,7 @@ bool TaskDlgPost::accept()
     }
     catch (const Base::Exception& e) {
         m_view->getDocument()->abortCommand();
-        QMessageBox::warning(nullptr, tr("Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(nullptr, tr("Input Error"), QString::fromLatin1(e.what()));
         return false;
     }
 

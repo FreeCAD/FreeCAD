@@ -19,7 +19,7 @@
       <translation>Zwyczajowy USA (in, lb)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="679"/>
+      <location filename="../../UnitsSchemasData.h" line="681"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
       <translation>Brytyjski dla inżynierii lądowej (ft, lb, mph)</translation>
     </message>

@@ -84,24 +84,18 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         if obj.StartAt != str(self.form.startAt.currentData()):
             obj.StartAt = str(self.form.startAt.currentData())
 
-        if obj.StepOver != self.form.stepOverPercent.value():
-            obj.StepOver = self.form.stepOverPercent.value()
-
-        self.updateToolController(obj, self.form.toolController)
-        self.updateCoolant(obj, self.form.coolantController)
+        if obj.StepOver != self.form.stepOver.value():
+            obj.StepOver = self.form.stepOver.value()
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
         Path.Log.track()
         self.updateQuantitySpinBoxes()
 
-        self.form.stepOverPercent.setValue(obj.StepOver)
+        self.form.stepOver.setValue(obj.StepOver)
 
         self.selectInComboBox(obj.CutMode, self.form.cutMode)
         self.selectInComboBox(obj.StartAt, self.form.startAt)
-
-        self.setupToolController(obj, self.form.toolController)
-        self.setupCoolant(obj, self.form.coolantController)
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
@@ -110,12 +104,10 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals.append(self.form.helixMaxPitch.editingFinished)
         signals.append(self.form.helixMaxRampAngle.editingFinished)
         signals.append(self.form.radialStockToLeaveOuter.editingFinished)
-        signals.append(self.form.stepOverPercent.editingFinished)
+        signals.append(self.form.stepOver.editingFinished)
 
         signals.append(self.form.cutMode.currentIndexChanged)
         signals.append(self.form.startAt.currentIndexChanged)
-        signals.append(self.form.toolController.currentIndexChanged)
-        signals.append(self.form.coolantController.currentIndexChanged)
 
         return signals
 

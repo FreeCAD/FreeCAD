@@ -84,7 +84,8 @@ QGIView::QGIView()
     m_label(new QGCustomLabel()),
     m_border(new QGCustomBorder()),
     m_caption(new QGICaption()),
-    m_lock(new QGCustomImage())
+    m_lock(new QGCustomImage()),
+    m_inhibitSnapOnPosChange(false)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setHandlesChildEvents(false);
@@ -185,7 +186,10 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
         else {
             // For general views we check if we need to snap to a position
             if (!(QApplication::keyboardModifiers() & Qt::AltModifier)) {
-                snapPosition(newPos);
+                if (!m_inhibitSnapOnPosChange) {
+                    snapPosition(newPos);
+                }
+                m_inhibitSnapOnPosChange = false;
             }
         }
 
@@ -273,6 +277,10 @@ void QGIView::dragFinished()
 //! position, otherwise it is the position within the ProjectionGroup.
 void QGIView::snapPosition(QPointF& newPosition)
 {
+    if (m_inhibitSnapOnPosChange) {
+        return;
+    }
+
     if (!Preferences::SnapViews()) {
         return;
     }
@@ -512,6 +520,32 @@ void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
     event->setModifiers(originalModifiers);
 }
 
+void QGIView::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+    auto* feature = getViewObject();
+    if (!feature) {
+        QGraphicsItemGroup::mouseDoubleClickEvent(event);
+        return;
+    }
+
+    // a projection group item should edit its parent group, not itself
+    App::DocumentObject* target = feature;
+    if (auto* dpgi = freecad_cast<TechDraw::DrawProjGroupItem*>(feature)) {
+        if (auto* group = dpgi->getPGroup()) {
+            target = group;
+        }
+    }
+
+    auto* vp = getViewProvider(target);
+    if (vp && vp->doubleClicked()) {
+        event->accept();
+        return;
+    }
+
+    QGraphicsItemGroup::mouseDoubleClickEvent(event);
+}
+
+
 void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     QGraphicsItemGroup::hoverEnterEvent(event);
@@ -550,19 +584,15 @@ void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     drawBorder();
 }
 
-//sets position in /Gui(graphics), not /App
-void QGIView::setPosition(qreal xPos, qreal yPos)
+//! get the X&Y position from the feature in Page coords (could be parent coords?), convert to Qt coords and update
+//! this graphic item's scene position.
+void QGIView::updatePositionFromFeatureXY()
 {
-    double newX = xPos;
-    double newY = -yPos;
-    double oldX = pos().x();
-    double oldY = pos().y();
-
-    if (TechDraw::DrawUtil::fpCompare(newX, oldX) &&
-        TechDraw::DrawUtil::fpCompare(newY, oldY)) {
-        return;
-    } else {
-        setPos(newX, newY);
+    if (getViewObject()) {
+        m_inhibitSnapOnPosChange = true;
+        double xFeat = Rez::guiX(getViewObject()->X.getValue());
+        double yFeat = Rez::guiX(getViewObject()->Y.getValue());
+        setPos(xFeat, -yFeat);
     }
 }
 
@@ -579,14 +609,12 @@ QGIViewClip* QGIView::getClipGroup()
     return parentView;
 }
 
+//! called from ViewProvider when feature properties change.
 void QGIView::updateView(bool forceUpdate)
 {
-    setMovableFlag();
+    Q_UNUSED(forceUpdate);
 
-    if (getViewObject() && forceUpdate) {
-        setPosition(Rez::guiX(getViewObject()->X.getValue()),
-                    Rez::guiX(getViewObject()->Y.getValue()));
-    }
+    setMovableFlag();
 
     double appRotation = getViewObject()->Rotation.getValue();
     double guiRotation = rotation();
@@ -658,14 +686,6 @@ void QGIView::toggleCache(bool state)
 
 void QGIView::draw()
 {
-    double xFeat, yFeat;
-    if (getViewObject()) {
-        xFeat = Rez::guiX(getViewObject()->X.getValue());
-        yFeat = Rez::guiX(getViewObject()->Y.getValue());
-        if (!getViewObject()->LockPosition.getValue()) {
-            setPosition(xFeat, yFeat);
-        }
-    }
     if (isVisible()) {
         show();
     } else {

@@ -28,8 +28,8 @@
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="80"/>
-      <source>Component</source>
-      <translation>Кампанент</translation>
+      <source>Insert Component</source>
+      <translation>Уставіць кампанент</translation>
     </message>
   </context>
   <context>
@@ -48,12 +48,12 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../../InitGui.py" line="75"/>
+      <location filename="../../../InitGui.py" line="84"/>
       <source>Assembly</source>
       <translation type="unfinished">Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="146"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="145"/>
       <source>Active object</source>
       <translation>Бягучы аб'ект</translation>
     </message>
@@ -93,17 +93,17 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="112"/>
+      <location filename="../../../InitGui.py" line="122"/>
       <source>Assembly</source>
       <translation>Зборка</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="113"/>
+      <location filename="../../../InitGui.py" line="123"/>
       <source>Assembly Joints</source>
       <translation>Злучэнні зборкі</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="116"/>
+      <location filename="../../../InitGui.py" line="126"/>
       <source>&amp;Assembly</source>
       <translation>&amp;Зборка</translation>
     </message>
@@ -137,7 +137,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1809"/>
+      <location filename="../../../JointObject.py" line="1896"/>
       <source>Distance</source>
       <translation>Адлегласць</translation>
     </message>
@@ -182,22 +182,27 @@
       <translation>Непрацуючы спасылак у: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1628"/>
+      <location filename="../../../JointObject.py" line="1238"/>
+      <source>Edit Joint</source>
+      <translation>Змяніць злучэнне</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="1704"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Абраць два элемента з дзвюх асобных частак</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1811"/>
+      <location filename="../../../JointObject.py" line="1898"/>
       <source>Radius 1</source>
       <translation>Радыус 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1813"/>
+      <location filename="../../../JointObject.py" line="1900"/>
       <source>Thread pitch</source>
       <translation>Крок разьбы</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1815"/>
+      <location filename="../../../JointObject.py" line="1902"/>
       <source>Pitch radius</source>
       <translation>Радыус падачы</translation>
     </message>
@@ -360,60 +365,61 @@
       <translation>Не звязваць</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="493"/>
+      <location filename="../../../CommandCreateSimulation.py" line="495"/>
       <source>Enter your formula…</source>
       <translation>Увядзіце формулу…</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="546"/>
-      <source>In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</source>
-      <translation>Вялікімі літарамі пазначаны зменныя, якія вам трэба замяніць фактычнымі значэннямі.
-Больш падрабязная інфармацыя пра кожны прыклад прыведзена ва ўсплывальнай парадзе.</translation>
+      <location filename="../../../CommandCreateSimulation.py" line="548"/>
+      <source>In capital are variables that you need to replace with actual values. 'initialValue' is dynamically replaced by the current angle or distance. More details about each example in its tooltip.</source>
+      <translation>Вялікімі літарамі пазначаны зменныя, якія неабходна замяніць фактычнымі значэннямі.
+'initialValue' дынамічна замяняецца бягучых вуглом ці адлегласцю.
+Больш падрабязная інфармацыя пра кожны прыклад прыведзены ў усплывальнай падказцы.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="549"/>
+      <location filename="../../../CommandCreateSimulation.py" line="551"/>
       <source> - Linear: C + VEL*time</source>
       <translation> - Лінейны: C + VEL*time</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="551"/>
+      <location filename="../../../CommandCreateSimulation.py" line="553"/>
       <source> - Quadratic: C + VEL*time + ACC*time^2</source>
       <translation> - Квадратны: C + VEL*time + ACC*time^2</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="554"/>
+      <location filename="../../../CommandCreateSimulation.py" line="556"/>
       <source> - Harmonic: C + AMP*sin(VEL*time - PHASE)</source>
       <translation> - Гарманічны: C + AMP*sin(VEL*time - PHASE)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="557"/>
+      <location filename="../../../CommandCreateSimulation.py" line="559"/>
       <source> - Exponential: C*exp(time/TIMEC)</source>
       <translation> - Экспанентны: C*exp(time/TIMEC)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="563"/>
+      <location filename="../../../CommandCreateSimulation.py" line="565"/>
       <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
       <translation> - Плыўны крок: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="570"/>
+      <location filename="../../../CommandCreateSimulation.py" line="572"/>
       <source> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</source>
       <translation> - Плыўны квадратны імпульс: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="577"/>
+      <location filename="../../../CommandCreateSimulation.py" line="579"/>
       <source> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</source>
       <translation> - Плыўны нахіл верхняга імпульсу: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="587"/>
+      <location filename="../../../CommandCreateSimulation.py" line="589"/>
       <source>C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</source>
       <translation>C - пастаяннае зрушэнне.
 VEL - хуткасць, нахіл ці градыент прамой лініі.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="595"/>
+      <location filename="../../../CommandCreateSimulation.py" line="597"/>
       <source>C is a constant offset.
 VEL is the velocity or slope or gradient of the straight line.
 ACC is the acceleration or coefficient of the second order. The function is a parabola.</source>
@@ -422,7 +428,7 @@ VEL - хуткасць, нахіл ці градыент прамой лініі
 ACC - паскарэнне ці каэфіцыент другога парадку (функцыя ўяўляе сабой парабалу).</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="604"/>
+      <location filename="../../../CommandCreateSimulation.py" line="606"/>
       <source>C is a constant offset.
 AMP is the amplitude of the sine wave.
 VEL is the angular velocity in radians per second.
@@ -433,14 +439,14 @@ VEL - вуглаваня хуткасць у радыянах у секунду.
 PHASE - фаза сінусоіднай хвалі.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="611"/>
+      <location filename="../../../CommandCreateSimulation.py" line="613"/>
       <source>C is a constant.
 TIMEC is the time constant of the exponential function.</source>
       <translation>C - пастаянная.
 TIMEC - пастаянная часу экспаненцыяльнай функцыі.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="619"/>
+      <location filename="../../../CommandCreateSimulation.py" line="621"/>
       <source>L1 is step level before time = T0.
 L2 is step level after time = T0.
 SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</source>
@@ -449,7 +455,7 @@ L2 - узровень кроку па заканчэнні часу = T0.
 SLOPE - вызначае крутасць пераходу паміж L1 і L2 прыкладна ў момант часу = T0 (больш высокія значэнні даюць больш вострыя прыступкі на паваротах). Падыходзіць SLOPE = 1000 ці больш.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="628"/>
+      <location filename="../../../CommandCreateSimulation.py" line="630"/>
       <source>H is the height of the impulse.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -460,7 +466,7 @@ T2 - канец імпульсу.
 SLOPE вызначае крутасць пераходу ад 0 да H ў часе = T1 і T2 (Больш высокія значэнні забяспечваюць больш рэзкія павароты). Падыходзіць SLOPE = 1000 і больш.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="639"/>
+      <location filename="../../../CommandCreateSimulation.py" line="641"/>
       <source>This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -476,101 +482,100 @@ H2 - вышыня ў кропцы T2 у канцы рампы.
 SLOPE - вызначае крутасць пераходу ад 0 да H1 і ад H2 да 0 прыкладна праз час = T1 і T2 адпаведна (больш высокія значэнні даюць больш рэзкія імпульсы пры павароце). Падыходзіць SLOPE = 1000 ці больш.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="677"/>
-      <location filename="../../../CommandCreateSimulation.py" line="694"/>
+      <location filename="../../../CommandCreateSimulation.py" line="679"/>
+      <location filename="../../../CommandCreateSimulation.py" line="696"/>
       <source>Help</source>
       <translation>Даведка</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="692"/>
+      <location filename="../../../CommandCreateSimulation.py" line="694"/>
       <source>Hide help</source>
       <translation>Схаваць дапамогу</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1044"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1045"/>
       <source>Animation</source>
       <translation>Анімацыя</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1045"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1046"/>
       <source>Not enough frames to create an animation.</source>
       <translation>Недастаткова кадраў для стварэння анімацыі.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1052"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1068"/>
       <source>Save Animation</source>
       <translation>Захаваць анімацыю</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1074"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1093"/>
+      <source>Pillow (PIL) is not installed. It is required for video export.</source>
+      <translation>Pillow (PIL) не ўсталяваны.
+Ён неабходны для экспартавання файлаў відэа.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1100"/>
       <source>Generating Frames…</source>
       <translation>Стварэнне кадраў…</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1075"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1101"/>
       <source>Cancel</source>
       <translation>Скасаваць</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1102"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1128"/>
       <source>Assembling animation…</source>
       <translation>Зборка анімацыі…</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1118"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1150"/>
       <source>An error occurred while saving the animation</source>
       <translation>Пры захаванні анімацыі адбылася памылка</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1136"/>
-      <source>Pillow (PIL) is not installed. It is required for GIF export.</source>
-      <translation>Pillow (PIL) не ўсталяваны.
-Ён неабходны для экспартавання файлаў GIF.</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1159"/>
-      <source>OpenCV is not installed. It is required for video export.</source>
-      <translation>OpenCV не ўсталяваны.
+      <location filename="../../../CommandCreateSimulation.py" line="1186"/>
+      <source>PyAv is not installed. It is required for video export.</source>
+      <translation>PyAv не ўсталяваны.
 Ён неабходны для экспартавання відэа.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1176"/>
-      <source>Could not open video writer. Check codecs.</source>
-      <translation>Не атрымалася адчыніць праграму запісу відэа.
-Праверце кодэкі.</translation>
+      <location filename="../../../CommandCreateSimulation.py" line="1205"/>
+      <source>Unknown video export format</source>
+      <translation>Невядомы фармат экспарту відэа</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="160"/>
+      <location filename="../../../InitGui.py" line="170"/>
       <source>Create</source>
       <translation>Стварыць</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="176"/>
+      <location filename="../../../InitGui.py" line="186"/>
       <source>Activate</source>
       <translation>Задзейнічаць</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="210"/>
+      <location filename="../../../InitGui.py" line="220"/>
       <source>Insert</source>
       <translation>Уставіць</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="221"/>
+      <location filename="../../../InitGui.py" line="231"/>
       <source>Grounding</source>
       <translation>Зазямленне</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="248"/>
+      <location filename="../../../InitGui.py" line="258"/>
       <source>Constraints</source>
       <translation>Абмежаванні</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="264"/>
+      <location filename="../../../InitGui.py" line="274"/>
       <source>Tools</source>
       <translation>Інструменты</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="277"/>
+      <location filename="../../../InitGui.py" line="287"/>
       <source>Simulation</source>
       <translation>Мадэляванне</translation>
     </message>
@@ -698,7 +703,7 @@ SLOPE - вызначае крутасць пераходу ад 0 да H1 і а�
       <translation>{order} спасылак злучэння</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1237"/>
+      <location filename="../../../JointObject.py" line="1288"/>
       <source>The object to ground</source>
       <translation>Аб'ект для замацавання</translation>
     </message>
@@ -712,7 +717,7 @@ SLOPE - вызначае крутасць пераходу ад 0 да H1 і а�
       <location filename="../../../CommandCreateView.py" line="388"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Ход перамяшчэння.
-Канчатковае размяшчэнне з'яўляецца вынікам пачатковага размяшчэння * гэтае размяшчэння.</translation>
+Канцавое размяшчэнне з'яўляецца вынікам пачатковага размяшчэння * гэтае размяшчэння.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="397"/>
@@ -764,6 +769,26 @@ SLOPE - вызначае крутасць пераходу ад 0 да H1 і а�
       <location filename="../../../CommandCreateSimulation.py" line="337"/>
       <source>The type of the motion</source>
       <translation>Тып перамяшчэння</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="113"/>
+      <source>List of components captured in this snapshot.</source>
+      <translation>Спіс кампанентаў, якія захаваныя на гэтым маментальным здымку.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="124"/>
+      <source>List of corresponding placements for the components.</source>
+      <translation>Спіс адпаведных месцаў размяшчэння кампанентаў.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="135"/>
+      <source>List of visibility states for the components.</source>
+      <translation>Спіс станаў бачнасці кампанентаў.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="146"/>
+      <source>If true, applying the snapshot will solve the assembly after restoring the placements.</source>
+      <translation>Калі птушка, прымяненне маментальнага здымка прывядзе да рашэння праблемы з зборкай пасля аднаўлення размяшчэння.</translation>
     </message>
   </context>
   <context>
@@ -829,42 +854,52 @@ SLOPE - вызначае крутасць пераходу ад 0 да H1 і а�
       <translation>Задае зрушэнне мацавання другога маркера (сістэмы каардынат) злучэння</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="231"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="237"/>
       <source>Reverse the direction of the joint</source>
       <translation>Змяніць напрамак злучэння на супрацьлеглае</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="234"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="240"/>
       <source>Reverse</source>
       <translation>Перавярнуць</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="245"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="257"/>
+      <source>Rotate the joint 90 degrees</source>
+      <translation>Павярнуць шарнір на 90°</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="260"/>
+      <source>Rotate</source>
+      <translation>Павярнуць</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="291"/>
       <source>Limits</source>
       <translation>Абмежаванні</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="251"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="297"/>
       <source>Min length</source>
       <translation>Найменшая даўжыня</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="274"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="320"/>
       <source>Max length</source>
       <translation>Найбольшая даўжыня</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="297"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="343"/>
       <source>Min angle</source>
       <translation>Найменшы вугал</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="326"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="372"/>
       <source>Max angle</source>
       <translation>Найбольшы вугал</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="358"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="404"/>
       <source>Reverse rotation</source>
       <translation>Развярнуць напрамак</translation>
     </message>
@@ -883,8 +918,8 @@ SLOPE - вызначае крутасць пераходу ад 0 да H1 і а�
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
-      <source>Cannot find the part? </source>
-      <translation>Не атрымалася знайсці дэталь? </translation>
+      <source>Cannot find the part?</source>
+      <translation>Не атрымалася знайсці дэталь?</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>
@@ -963,52 +998,52 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="214"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="213"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Аб'ект, які звязаны з адным ці некалькімі злучэннямі.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="216"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="215"/>
       <source>Do you want to move the object and delete associated joints?</source>
-      <translation>Ці жадаеце вы перамясціць аб'ект і выдаліць звязаныя з ім злучэнні?</translation>
+      <translation>Ці сапраўды перамясціць аб'ект і выдаліць звязаныя з ім злучэнні?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1104"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1088"/>
       <source>Move part</source>
       <translation>Рухаць дэталь</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1819"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1805"/>
       <source>Empty Assembly</source>
       <translation>Пустая зборка</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1831"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1817"/>
       <source>Over-constrained:</source>
       <translation>Празмерна-абмежаваны:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1839"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1825"/>
       <source>Malformed joints:</source>
       <translation>Скажоныя злучэнні:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1802"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1790"/>
       <source>and %1 more</source>
       <translation>і яшчэ %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1863"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1849"/>
       <source>Solver failed to converge</source>
       <translation>Сродку рашэння не атрымалася сысціся</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1871"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1857"/>
       <source>Under-constrained:</source>
       <translation>Недастаткова абмежаваны:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1873"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1859"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n ступень свабоды</numerusform>
@@ -1018,7 +1053,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1877"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1863"/>
       <source>Fully constrained</source>
       <translation>Цалкам абмежаваны</translation>
     </message>
@@ -1166,7 +1201,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="690"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="704"/>
       <source>Joints</source>
       <translation>Злучэнні</translation>
     </message>
@@ -1295,27 +1330,27 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>0.00 с</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="256"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="278"/>
       <source>Step backward</source>
       <translation>Крок назад</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="276"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="310"/>
       <source>Play backward</source>
       <translation>Прайграванне ў зваротным парадку</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="296"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="348"/>
       <source>Stop</source>
       <translation>Спыніць</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="316"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="380"/>
       <source>Play forward</source>
       <translation>Прайграванне ў прамым парадку</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="336"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="412"/>
       <source>Step forward</source>
       <translation>Крок уперад</translation>
     </message>
@@ -1362,8 +1397,8 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
-      <source>&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation>1 - калі зборка актыўная: стварае злучэнне, надзейна фіксуе дзве дэталі разам, прадухіляючы любое перамяшчэнне ці паварот.
+      <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
+      <translation>1 - калі зборка актыўная: стварае злучэнне, статычна фіксуе дзве дэталі разам, прадухіляючы любое перамяшчэнне ці паварот.
 2 - калі бягучая дэталь: пазіцыянуе складовыя часткі, супастаўляючы абраныя сістэмы каардынат. Другая абраная дэталь будзе перамешчаная.</translation>
     </message>
   </context>
@@ -1588,27 +1623,51 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
-      <source>Click to select these conflicting joints.</source>
-      <translation>Пстрыкнуць, каб абраць злучэнні, якія канфліктуюць.</translation>
+      <source>Selects these conflicting joints</source>
+      <translation>Абірае гэтыя злучэнні, які канфліктуюць</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
-      <source>Click to select these redundant joints.</source>
-      <translation>Пстрыкнуць, каб абраць залішнія злучэнні.</translation>
+      <source>Selects these redundant joints</source>
+      <translation>Абірае гэтыя залішнія злучэнні</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="62"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
-Click to select these unconstrained components.
+Selects these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
       <translation>У зборцы ёсць кампаненты з неабмежаванымі магчымасцямі, якія забяспечваюць дадзеныя ступені свабоды.
-Націсніце, каб абраць гэтыя кампаненты з неабмежаванымі магчымасцямі.
+Абярыце гэтыя кампаненты з неабмежаванымі магчымасцямі.
 Заўвага: у бягучы час выбіраюцца толькі незвязаныя дэталі, а не абмежаваныя дэталі, якія ўсё яшчэ маюць свабодную ступень свабоды.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
-      <source>Click to select these malformed joints.</source>
-      <translation>Пстрыкнуць, каб абраць скажоныя злуэнні.</translation>
+      <source>Selects these malformed joints</source>
+      <translation>Абірае гэтыя скажоныя злучэнні</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_Snapshot</name>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="49"/>
+      <source>Snapshot</source>
+      <translation>Маментальны здымак</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="53"/>
+      <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
+      <translation>Фіксуе бягучы стан зборкі (месца размяшчэння і бачнасць).
+Падвоеная пстрычка па аб'екце маментальнага здымка аднаўляе зборку да гэтага стану.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="70"/>
+      <source>Create Snapshot</source>
+      <translation>Стварыць маментальны здымак</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="249"/>
+      <source>Restore Snapshot</source>
+      <translation>Аднавіць маментальны здымак</translation>
     </message>
   </context>
   <context>
@@ -1620,7 +1679,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="102"/>
-      <source>Go to linked Assembly</source>
+      <source>Go to Linked Assembly</source>
       <translation>Перайсці да звязанай зборцы</translation>
     </message>
     <message>
@@ -1638,7 +1697,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="166"/>
-      <source>Select conflicting constraints</source>
+      <source>Select Conflicting Constraints</source>
       <translation>Абраць абмежаванні, які канфліктуюць</translation>
     </message>
     <message>
@@ -1656,7 +1715,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="201"/>
-      <source>Select redundant constraints</source>
+      <source>Select Redundant Constraints</source>
       <translation>Абраць залішнія абмежаванні</translation>
     </message>
     <message>
@@ -1674,7 +1733,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="234"/>
-      <source>Select malformed constraints</source>
+      <source>Select Malformed Constraints</source>
       <translation>Абраць скажоныя абмежаванні</translation>
     </message>
     <message>
@@ -1692,8 +1751,8 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="268"/>
-      <source>Select components with DoFs</source>
-      <translation>Абраць кампаненты з глыбінёй рэзка адлюстроўванай прасторы</translation>
+      <source>Select Components With DoFs</source>
+      <translation>Абраць кампаненты з ступенямі свабоды</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="269"/>
@@ -1710,7 +1769,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="311"/>
-      <source>Select component joints</source>
+      <source>Select Component Joints</source>
       <translation>Абраць кампаненты злучэння</translation>
     </message>
     <message>

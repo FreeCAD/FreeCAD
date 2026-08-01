@@ -26,6 +26,7 @@
 
 namespace py = pybind11;
 
+using namespace heeks;
 
 std::list<CVertex> getVertices(const CCurve& curve)
 {

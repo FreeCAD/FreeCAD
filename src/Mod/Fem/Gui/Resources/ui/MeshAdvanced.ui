@@ -568,7 +568,7 @@
               <property name="toolTip">
                <string>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc. Supported opperators are +, -, *, /, ^.
+usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
 
 Example: &quot;F2 + Sin(z)&quot;</string>
               </property>
@@ -582,7 +582,7 @@ Example: &quot;F2 + Sin(z)&quot;</string>
               <property name="toolTip">
                <string>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc. Supported opperators are +, -, *, /, ^.
+usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
 
 Example: &quot;F2 + Sin(z)&quot;</string>
               </property>
@@ -734,7 +734,7 @@ Example: &quot;F2 + Sin(z)&quot;</string>
               <property name="toolTip">
                <string>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
+usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
 
 Example: &quot;F2 + Sin(z)&quot;</string>
               </property>
@@ -748,7 +748,7 @@ Example: &quot;F2 + Sin(z)&quot;</string>
               <property name="toolTip">
                <string>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
+usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
 
 Example: &quot;F2 + Sin(z)&quot;</string>
               </property>
@@ -776,7 +776,7 @@ Example: &quot;F2 + Sin(z)&quot;</string>
               <property name="toolTip">
                <string>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
+usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
 
 Example: &quot;F2 + Sin(z)&quot;</string>
               </property>
@@ -790,7 +790,7 @@ Example: &quot;F2 + Sin(z)&quot;</string>
               <property name="toolTip">
                <string>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
+usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
 
 Example: &quot;F2 + Sin(z)&quot;</string>
               </property>
@@ -818,7 +818,7 @@ Example: &quot;F2 + Sin(z)&quot;</string>
               <property name="toolTip">
                <string>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
+usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
 
 Example: &quot;F2 + Sin(z)&quot;</string>
               </property>
@@ -839,7 +839,7 @@ Example: &quot;F2 + Sin(z)&quot;</string>
               <property name="toolTip">
                <string>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
 functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
+usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
 
 Example: &quot;F2 + Sin(z)&quot;</string>
               </property>

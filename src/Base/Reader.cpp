@@ -28,6 +28,7 @@
 #include <string>
 #include <xercesc/sax2/XMLReaderFactory.hpp>
 #include <xercesc/sax2/Attributes.hpp>
+#include <xercesc/util/XMLUni.hpp>
 
 #include <locale>
 
@@ -67,6 +68,8 @@ Base::XMLReader::XMLReader(const char* FileName, std::istream& str)
     parser->setContentHandler(this);
     parser->setLexicalHandler(this);
     parser->setErrorHandler(this);
+    parser->setFeature(XMLUni::fgXercesDisableDefaultEntityResolution, true);
+    parser->setFeature(XMLUni::fgXercesLoadExternalDTD, false);
 
     try {
         StdInputSource file(str, _File.filePath().c_str());

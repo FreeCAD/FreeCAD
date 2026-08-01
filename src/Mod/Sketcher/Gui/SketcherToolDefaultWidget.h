@@ -25,6 +25,8 @@
 
 #pragma once
 
+#include <QLabel>
+
 #include <Base/Unit.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>

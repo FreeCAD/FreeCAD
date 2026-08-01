@@ -245,15 +245,6 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyBool",
-                name="GroupsOfNodes",
-                group="Mesh Parameters",
-                doc="For each group create not only the elements but the nodes too",
-                value=True,
-            )
-        )
-        prop.append(
-            _PropHelper(
                 type="App::PropertyEnumeration",
                 name="SubdivisionAlgorithm",
                 group="Mesh Parameters",

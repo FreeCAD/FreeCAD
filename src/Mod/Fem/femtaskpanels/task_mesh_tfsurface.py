@@ -68,8 +68,8 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
         ui = self.parameter_widget
 
-        # There is no known way to access the colors set by stylesheets. It is hence not posssible to make a universal
-        # correct desicion on which image to use. Workaround is to check stylesheet name if one ist set for "dark" and "ligth"
+        # There is no known way to access the colors set by stylesheets. It is hence not possible to make a universal
+        # correct decision on which image to use. Workaround is to check stylesheet name if one is set for "dark" and "light"
         stylesheet = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow").GetString(
             "StyleSheet"
         )

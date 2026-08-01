@@ -81,8 +81,7 @@
 #include "AssemblyObject.h"
 #include "AssemblyObjectPy.h"
 #include "AssemblyUtils.h"
-#include "JointGroup.h"
-#include "ViewGroup.h"
+#include "Groups.h"
 
 FC_LOG_LEVEL_INIT("Assembly", true, true, true)
 
@@ -140,6 +139,11 @@ App::DocumentObjectExecReturn* AssemblyObject::execute()
 void AssemblyObject::onChanged(const App::Property* prop)
 {
     if (prop == &Group) {
+        for (auto* obj : getInList()) {
+            if (auto* assemblyLink = freecad_cast<AssemblyLink*>(obj)) {
+                assemblyLink->updateContents();
+            }
+        }
         updateSolveStatus();
     }
     App::Part::onChanged(prop);
@@ -148,6 +152,8 @@ void AssemblyObject::onChanged(const App::Property* prop)
 int AssemblyObject::solve(bool enableRedo)
 {
     ensureIdentityPlacements();
+
+    syncGroundedJoints();
 
     mbdAssembly = makeMbdAssembly();
     objectPartMap.clear();
@@ -834,25 +840,13 @@ std::vector<App::DocumentObject*> AssemblyObject::getJointsOfPart(App::DocumentO
 
 std::unordered_set<App::DocumentObject*> AssemblyObject::getGroundedParts()
 {
-    std::vector<App::DocumentObject*> groundedJoints = getGroundedJoints();
-
     std::unordered_set<App::DocumentObject*> groundedSet;
-    for (auto gJoint : groundedJoints) {
-        if (!gJoint) {
-            continue;
-        }
-
-        auto* propObj = dynamic_cast<App::PropertyLink*>(gJoint->getPropertyByName("ObjectToGround"));
-
-        if (propObj) {
-            App::DocumentObject* objToGround = propObj->getValue();
-            if (objToGround) {
-                if (auto* asmLink = dynamic_cast<AssemblyLink*>(objToGround)) {
-                    if (!asmLink->isRigid()) {
-                        continue;
-                    }
-                }
-                groundedSet.insert(objToGround);
+    std::vector<App::DocumentObject*> allParts = getAssemblyComponents(this);
+    for (auto part : allParts) {
+        if (part) {
+            auto propPlc = part->getPlacementProperty();
+            if (propPlc && propPlc->isReadOnly()) {
+                groundedSet.insert(part);
             }
         }
     }
@@ -2090,6 +2084,78 @@ void AssemblyObject::ensureIdentityPlacements()
                 pPlc->setValue(plc * pPlc->getValue());
                 elt->purgeTouched();
             }
+        }
+    }
+}
+
+void AssemblyObject::syncGroundedJoints()
+{
+    if (App::GetApplication().isRestoring()) {
+        return;
+    }
+
+    std::vector<App::DocumentObject*> groundedJoints = getGroundedJoints();
+    std::map<App::DocumentObject*, App::DocumentObject*> groundedMap;
+    for (auto gJoint : groundedJoints) {
+        auto propObj = dynamic_cast<App::PropertyLink*>(gJoint->getPropertyByName("ObjectToGround"));
+        if (propObj && propObj->getValue()) {
+            groundedMap[propObj->getValue()] = gJoint;
+        }
+    }
+
+    std::vector<App::DocumentObject*> allParts = getAssemblyComponents(this);
+
+    for (auto part : allParts) {
+        if (!part) {
+            continue;
+        }
+        auto propPlc = part->getPlacementProperty();
+        if (!propPlc) {
+            continue;
+        }
+
+        bool isReadOnly = propPlc->isReadOnly();
+        auto it = groundedMap.find(part);
+        bool hasJoint = (it != groundedMap.end());
+
+        // Create grounding joint if placement is locked but no joint exists
+        if (isReadOnly && !hasJoint) {
+            Base::PyGILStateLocker lock;
+            try {
+                std::string docName = getDocument()->getName();
+                std::string asmName = getNameInDocument();
+                std::string partName = part->getNameInDocument();
+                std::string code = "import FreeCAD\n"
+                                   "try:\n"
+                                   "    import JointObject\n"
+                                   "    import UtilsAssembly\n"
+                                   "    doc = FreeCAD.getDocument('"
+                    + docName
+                    + "')\n"
+                      "    asm = doc.getObject('"
+                    + asmName
+                    + "')\n"
+                      "    part = doc.getObject('"
+                    + partName
+                    + "')\n"
+                      "    jg = UtilsAssembly.getJointGroup(asm)\n"
+                      "    if jg:\n"
+                      "        j = jg.newObject('App::FeaturePython', 'GroundedJoint')\n"
+                      "        JointObject.GroundedJoint(j, part)\n"
+                      "        if hasattr(JointObject, 'ViewProviderGroundedJoint') and getattr(j, "
+                      "'ViewObject', None):\n"
+                      "            JointObject.ViewProviderGroundedJoint(j.ViewObject)\n"
+                      "        j.recompute()\n"
+                      "except Exception as e:\n"
+                      "    FreeCAD.Console.PrintError(str(e) + '\\n')\n";
+                Base::Interpreter().runString(code.c_str());
+            }
+            catch (...) {
+            }
+        }
+        // Delete grounding joint if placement lock was lifted
+        else if (!isReadOnly && hasJoint) {
+            getDocument()->removeObject(it->second->getNameInDocument());
         }
     }
 }

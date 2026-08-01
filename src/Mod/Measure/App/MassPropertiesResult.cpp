@@ -184,41 +184,41 @@ MassPropertiesData CalculateMassProperties(
         principal = globalMassProps.PrincipalProperties();
 
         if (principal.HasSymmetryPoint()) {
-            data.principalAxisX = Base::Vector3d::UnitX;
-            data.principalAxisY = Base::Vector3d::UnitY;
-            data.principalAxisZ = Base::Vector3d::UnitZ;
+            data.principalAxis1 = Base::Vector3d::UnitX;
+            data.principalAxis2 = Base::Vector3d::UnitY;
+            data.principalAxis3 = Base::Vector3d::UnitZ;
         }
         else if (principal.HasSymmetryAxis()) {
-            gp_Vec zVec = principal.FirstAxisOfInertia();
-            Base::Vector3d zAxis {Base::convertTo<Base::Vector3d>(zVec)};
-            zAxis.Normalize();
+            gp_Vec axis3Vec = principal.FirstAxisOfInertia();
+            Base::Vector3d axis3 {Base::convertTo<Base::Vector3d>(axis3Vec)};
+            axis3.Normalize();
 
             Base::Vector3d ref {Base::Vector3d::UnitZ};
-            if (std::fabs(zAxis.z) > 0.9) {
+            if (std::fabs(axis3.z) > 0.9) {
                 ref = Base::Vector3d::UnitY;
             }
 
-            Base::Vector3d xAxis = ref.Cross(zAxis);
-            xAxis.Normalize();
+            Base::Vector3d axis1 = ref.Cross(axis3);
+            axis1.Normalize();
 
-            Base::Vector3d yAxis = zAxis.Cross(xAxis);
-            yAxis.Normalize();
+            Base::Vector3d axis2 = axis3.Cross(axis1);
+            axis2.Normalize();
 
-            data.principalAxisZ = zAxis;
-            data.principalAxisX = xAxis;
-            data.principalAxisY = yAxis;
+            data.principalAxis3 = axis3;
+            data.principalAxis1 = axis1;
+            data.principalAxis2 = axis2;
         }
         else {
             gp_Vec v1 = principal.FirstAxisOfInertia();
             gp_Vec v2 = principal.SecondAxisOfInertia();
 
-            gp_Dir Z = Base::convertTo<gp_Dir>(v1);
-            gp_Dir X = Base::convertTo<gp_Dir>(v2);
-            gp_Dir Y = Z.Crossed(X);
+            gp_Dir axis3 = Base::convertTo<gp_Dir>(v1);
+            gp_Dir axis1 = Base::convertTo<gp_Dir>(v2);
+            gp_Dir axis2 = axis3.Crossed(axis1);
 
-            data.principalAxisZ = Base::convertTo<Base::Vector3d>(Z);
-            data.principalAxisX = Base::convertTo<Base::Vector3d>(X);
-            data.principalAxisY = Base::convertTo<Base::Vector3d>(Y);
+            data.principalAxis3 = Base::convertTo<Base::Vector3d>(axis3);
+            data.principalAxis1 = Base::convertTo<Base::Vector3d>(axis1);
+            data.principalAxis2 = Base::convertTo<Base::Vector3d>(axis2);
         }
 
         auto axisMoment = [&](const Base::Vector3d& u) {
@@ -228,9 +228,9 @@ MassPropertiesData CalculateMassProperties(
         };
 
         data.inertiaJ = Base::Vector3d(
-            axisMoment(data.principalAxisX),
-            axisMoment(data.principalAxisY),
-            axisMoment(data.principalAxisZ)
+            axisMoment(data.principalAxis1),
+            axisMoment(data.principalAxis2),
+            axisMoment(data.principalAxis3)
         );
     }
     else if (mode == MassPropertiesMode::Custom) {
@@ -346,9 +346,9 @@ MassPropertiesData CalculateMassProperties(
         jacobi.Vector(2, v2);
         jacobi.Vector(3, v3);
 
-        data.principalAxisX = Base::Vector3d(v1(1), v1(2), v1(3));
-        data.principalAxisY = Base::Vector3d(v2(1), v2(2), v2(3));
-        data.principalAxisZ = Base::Vector3d(v3(1), v3(2), v3(3));
+        data.principalAxis1 = Base::Vector3d(v1(1), v1(2), v1(3));
+        data.principalAxis2 = Base::Vector3d(v2(1), v2(2), v2(3));
+        data.principalAxis3 = Base::Vector3d(v3(1), v3(2), v3(3));
     }
 
     return data;

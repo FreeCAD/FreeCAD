@@ -48,7 +48,7 @@ public:
      * such workbench exists then a workbench of class \a className gets created, if possible.
      * If the workbench cannot be created 0 is returned.
      */
-    Workbench* createWorkbench(const std::string& name, const std::string& className);
+    Workbench* createWorkbench(const std::string& name, std::string_view className);
     /** Removes the workbench with name \a name. If there is no such
      * workbench exists nothing happens.
      */
@@ -58,7 +58,7 @@ public:
      */
     Workbench* getWorkbench(const std::string& name) const;
     /** Activates the workbench with name \a name. */
-    bool activate(const std::string& name, const std::string& className);
+    bool activate(const std::string& name, std::string_view className);
     /** Returns the active workbench. */
     Workbench* active() const;
     /** Returns the name of the active workbench. */

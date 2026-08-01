@@ -57,7 +57,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         if (
             not sel.HasSubObjects
             and sel.Object.isDerivedFrom("Part::Feature")
-            and sel.Object.Shape.Volume == 0
+            and Path.Geom.isRoughly(sel.Object.Shape.Volume, 0)
         ):
             return True
 
@@ -82,7 +82,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                     % (sel.Object.Label)
                 )
                 continue
-            if base.isDerivedFrom("Part::Feature") and base.Shape.Volume == 0:
+            if base.isDerivedFrom("Part::Feature") and Path.Geom.isRoughly(base.Shape.Volume, 0):
                 if sel.HasSubObjects:
                     # selectively add some elements of the drawing to the Base
                     for sub in sel.SubElementNames:
@@ -141,21 +141,15 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         """getFields(obj) ... transfers values from UI to obj's properties"""
         if obj.StartVertex != self.form.startVertex.value():
             obj.StartVertex = self.form.startVertex.value()
-        self.updateToolController(obj, self.form.toolController)
-        self.updateCoolant(obj, self.form.coolantController)
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
         self.form.startVertex.setValue(obj.StartVertex)
-        self.setupToolController(obj, self.form.toolController)
-        self.setupCoolant(obj, self.form.coolantController)
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
         signals.append(self.form.startVertex.editingFinished)
-        signals.append(self.form.toolController.currentIndexChanged)
-        signals.append(self.form.coolantController.currentIndexChanged)
         return signals
 
     def taskPanelBaseGeometryPage(self, obj, features):

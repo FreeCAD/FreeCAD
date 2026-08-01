@@ -1317,7 +1317,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
             # Determine bounding box length for the OCL scan
             bbLength = math.fabs(ymax - ymin)
-            numScanLines = int(math.ceil(bbLength / smplInt) + 1)
+            numScanLines = Path.Geom.ceil(bbLength / smplInt) + 1
 
             # Run Scan (Grid  based)
             fd = depthparams[-1]
