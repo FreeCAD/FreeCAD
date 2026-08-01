@@ -1060,7 +1060,7 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
             if "libvpx-vp9" in av.codecs_available:
                 formats["WebM Video"] = ".webm"
         except ImportError:
-            pass
+            pass  # Error out later
 
         # Prompt user for file location and type
         file_path, selected_filter = QFileDialog.getSaveFileName(
@@ -1173,8 +1173,10 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
         )
         return True
 
-    def create_video(self, output_path, frame_files, fps, size):
-        """Creates a video file from a list of image files using OpenCV."""
+    def create_video(
+        self, output_path: str, frame_files: list[str], fps: int, size: tuple[int, int]
+    ):
+        """Creates a video file from a list of image files using PyAV."""
         try:
             import av
         except ImportError:
@@ -1187,33 +1189,36 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
         file_extension = Path(output_path).suffix.lower()
 
         # Select codec based on file type
-        output = av.open(output_path, "w")
-        stream = None
-        if file_extension == ".mp4":
-            try:
-                stream = output.add_stream("libx264", fps)
-            except av.codec.codec.UnknownCodecError:
+        with av.open(output_path, "w") as output:
+            stream = None
+            if file_extension == ".mp4":
+                try:
+                    stream = output.add_stream("libx264", fps)
+                except av.codec.codec.UnknownCodecError:
+                    stream = output.add_stream("mpeg4", fps)
+            elif file_extension == ".avi":
                 stream = output.add_stream("mpeg4", fps)
-        elif file_extension == ".avi":
-            stream = output.add_stream("mpeg4", fps)
-        elif file_extension == ".webm":
-            stream = output.add_stream("libvpx-vp9", fps)
+            elif file_extension == ".webm":
+                stream = output.add_stream("libvpx-vp9", fps)
+            else:
+                errMsg = translate("Assembly", "Unknown video export format")
+                QMessageBox.critical(self.form, "Error", errMsg)
+                return False
 
-        stream.width, stream.height = size
+            stream.width, stream.height = size
 
-        from PIL import Image
-        import numpy as np
+            from PIL import Image
+            import numpy as np
 
-        for file in frame_files:
-            img = Image.open(file).convert("RGB")
-            frame = av.VideoFrame.from_ndarray(np.array(img), format="rgb24")
-            packet = stream.encode(frame)
+            for file in frame_files:
+                img = Image.open(file).convert("RGB")
+                frame = av.VideoFrame.from_ndarray(np.array(img), format="rgb24")
+                packet = stream.encode(frame)
+                output.mux(packet)
+
+            # Flush & write
+            packet = stream.encode(None)
             output.mux(packet)
-
-        # Flush & write
-        packet = stream.encode(None)
-        output.mux(packet)
-        output.close()
 
         return True
 

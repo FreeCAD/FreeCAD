@@ -72,8 +72,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's properties"""
-        self.updateToolController(obj, self.form.toolController)
-        self.updateCoolant(obj, self.form.coolantController)
 
         if obj.BoundBox != str(self.form.boundBoxSelect.currentData()):
             obj.BoundBox = str(self.form.boundBoxSelect.currentData())
@@ -141,8 +139,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
-        self.setupToolController(obj, self.form.toolController)
-        self.setupCoolant(obj, self.form.coolantController)
         self.selectInComboBox(obj.BoundBox, self.form.boundBoxSelect)
         self.selectInComboBox(obj.ScanType, self.form.scanType)
         self.selectInComboBox(obj.LayerMode, self.form.layerMode)
@@ -203,8 +199,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
-        signals.append(self.form.toolController.currentIndexChanged)
-        signals.append(self.form.coolantController.currentIndexChanged)
         signals.append(self.form.boundBoxSelect.currentIndexChanged)
         signals.append(self.form.scanType.currentIndexChanged)
         signals.append(self.form.layerMode.currentIndexChanged)

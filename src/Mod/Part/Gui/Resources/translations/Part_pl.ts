@@ -1264,19 +1264,18 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
   <context>
     <name>CmdPartBox</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="113"/>
+      <location filename="../../CommandParametric.cpp" line="116"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="114"/>
-      <location filename="../../CommandParametric.cpp" line="125"/>
-      <location filename="../../CommandParametric.cpp" line="130"/>
+      <location filename="../../CommandParametric.cpp" line="117"/>
+      <location filename="../../CommandParametric.cpp" line="127"/>
       <source>Cube</source>
       <translation>Sześcian</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="115"/>
+      <location filename="../../CommandParametric.cpp" line="118"/>
       <source>Creates a solid cube</source>
       <translation>Tworzy bryłę sześcianu</translation>
     </message>
@@ -1464,19 +1463,18 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
   <context>
     <name>CmdPartCone</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="201"/>
+      <location filename="../../CommandParametric.cpp" line="204"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="202"/>
-      <location filename="../../CommandParametric.cpp" line="213"/>
-      <location filename="../../CommandParametric.cpp" line="218"/>
+      <location filename="../../CommandParametric.cpp" line="205"/>
+      <location filename="../../CommandParametric.cpp" line="215"/>
       <source>Cone</source>
       <translation>Stożek</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="203"/>
+      <location filename="../../CommandParametric.cpp" line="206"/>
       <source>Creates a solid cone</source>
       <translation>Tworzy bryłę stożka</translation>
     </message>
@@ -1520,19 +1518,18 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
   <context>
     <name>CmdPartCylinder</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="69"/>
+      <location filename="../../CommandParametric.cpp" line="72"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="70"/>
-      <location filename="../../CommandParametric.cpp" line="81"/>
-      <location filename="../../CommandParametric.cpp" line="86"/>
+      <location filename="../../CommandParametric.cpp" line="73"/>
+      <location filename="../../CommandParametric.cpp" line="83"/>
       <source>Cylinder</source>
       <translation>Walec</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="71"/>
+      <location filename="../../CommandParametric.cpp" line="74"/>
       <source>Creates a solid cylinder</source>
       <translation>Tworzy bryłę walca</translation>
     </message>
@@ -1720,17 +1717,17 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
   <context>
     <name>CmdPartMakeSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1243"/>
+      <location filename="../../Command.cpp" line="1241"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1244"/>
+      <location filename="../../Command.cpp" line="1242"/>
       <source>Convert to Solid</source>
       <translation>Przekształć na bryłę</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1245"/>
+      <location filename="../../Command.cpp" line="1243"/>
       <source>Converts the selected shell or compound to a solid</source>
       <translation>Konwertuje zaznaczoną powłokę lub złożenie na bryłę</translation>
     </message>
@@ -1887,17 +1884,17 @@ Widok ujęcie widoku określa kierunek rzutu.</translation>
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1336"/>
+      <location filename="../../Command.cpp" line="1334"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1337"/>
+      <location filename="../../Command.cpp" line="1335"/>
       <source>Reverse Shapes</source>
       <translation>Odwróć kształty</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1338"/>
+      <location filename="../../Command.cpp" line="1336"/>
       <source>Reverses the orientation of the selected shapes</source>
       <translation>Odwraca orientację wybranych kształtów</translation>
     </message>
@@ -2013,19 +2010,18 @@ Widok ujęcie widoku określa kierunek rzutu.</translation>
   <context>
     <name>CmdPartSphere</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="157"/>
+      <location filename="../../CommandParametric.cpp" line="160"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="158"/>
-      <location filename="../../CommandParametric.cpp" line="169"/>
-      <location filename="../../CommandParametric.cpp" line="174"/>
+      <location filename="../../CommandParametric.cpp" line="161"/>
+      <location filename="../../CommandParametric.cpp" line="171"/>
       <source>Sphere</source>
       <translation>Sfera</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="159"/>
+      <location filename="../../CommandParametric.cpp" line="162"/>
       <source>Creates a solid sphere</source>
       <translation>Tworzy bryłę sfery</translation>
     </message>
@@ -2079,19 +2075,18 @@ Widok ujęcie widoku określa kierunek rzutu.</translation>
   <context>
     <name>CmdPartTorus</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="245"/>
+      <location filename="../../CommandParametric.cpp" line="248"/>
       <source>Part</source>
       <translation>Część</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="246"/>
-      <location filename="../../CommandParametric.cpp" line="257"/>
-      <location filename="../../CommandParametric.cpp" line="262"/>
+      <location filename="../../CommandParametric.cpp" line="249"/>
+      <location filename="../../CommandParametric.cpp" line="259"/>
       <source>Torus</source>
       <translation>Torus</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="247"/>
+      <location filename="../../CommandParametric.cpp" line="250"/>
       <source>Creates a solid torus</source>
       <translation>Tworzy bryłę torusa</translation>
     </message>
@@ -2153,12 +2148,12 @@ Widok ujęcie widoku określa kierunek rzutu.</translation>
       <translation>Importuj część</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1212"/>
+      <location filename="../../Command.cpp" line="1214"/>
       <source>Import Curve Net</source>
       <translation>Importuj sieć krzywych</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1350"/>
+      <location filename="../../Command.cpp" line="1348"/>
       <source>Reverse</source>
       <translation>Odwróć</translation>
     </message>
@@ -2279,7 +2274,7 @@ Widok ujęcie widoku określa kierunek rzutu.</translation>
       <translation>Wyciągnięcie po ścieżce</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1615"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1620"/>
       <source>Project on surface</source>
       <translation>Rzut na powierzchnię</translation>
     </message>
@@ -4165,17 +4160,17 @@ Opcja przydatna w przypadku niektórych starszych plików STEP, z nieistotnymi a
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="140"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="141"/>
       <source>Projection object</source>
       <translation>Obiekt do rzutowania</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="167"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="168"/>
       <source>No active document</source>
       <translation>Brak aktywnego dokumentu</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="173"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="174"/>
       <source>Cannot create a projection object</source>
       <translation>Nie można utworzyć obiektu projekcji</translation>
     </message>
@@ -4359,12 +4354,12 @@ Opcja przydatna w przypadku niektórych starszych plików STEP, z nieistotnymi a
       <translation>Ustawianie zbyt małego odchylenia powoduje, że teselacja trwa dłużej, a tym samym zamraża lub spowalnia interfejs użytkownika.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="110"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="113"/>
       <source>Angle deflection</source>
       <translation>Odchylenie kątowe</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="111"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="114"/>
       <source>Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
       <translation>Ustawianie zbyt małego odchylenia powoduje, że teselacja trwa dłużej, a tym samym zamraża lub spowalnia interfejs użytkownika.</translation>
     </message>
@@ -6096,8 +6091,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="51"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="59"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
       <location filename="../../ViewProvider.cpp" line="53"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
       <source>Edit %1</source>
       <translation>Edytuj %1</translation>
     </message>
@@ -6744,10 +6739,10 @@ Czy chcesz je również usunąć?</translation>
       <translation>Nieprawidłowy wybór</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>Kontynuuj</translation>
     </message>
@@ -7361,7 +7356,7 @@ Polilinie mogą znajdować się na różnych płaszczyznach.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6701"/>
+      <location filename="../../../App/Geometry.cpp" line="6723"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Nie można ustalić przecięcia krzywych. Spróbuj dodać wiązanie zbieżności między wierzchołkami krzywych, które zamierzasz zaokrąglić.</translation>
     </message>
@@ -7794,12 +7789,12 @@ Zazwyczaj oznacza to błąd modelu.</translation>
     <message>
       <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
       <source>Unified facemaker</source>
-      <translation type="unfinished">Unified facemaker</translation>
+      <translation>Ujednolicona metoda tworzenia ścian</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
       <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
-      <translation type="unfinished">Unified: handles nested holes, overlapping wires, and curved surfaces</translation>
+      <translation>Ujednolicona metoda tworzenia ścian: obsługuje zagnieżdżone otwory, nakładające się polilinie oraz zakrzywione powierzchnie</translation>
     </message>
   </context>
   <context>

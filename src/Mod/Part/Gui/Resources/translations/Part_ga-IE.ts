@@ -1251,19 +1251,18 @@
   <context>
     <name>CmdPartBox</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="113"/>
+      <location filename="../../CommandParametric.cpp" line="116"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="114"/>
-      <location filename="../../CommandParametric.cpp" line="125"/>
-      <location filename="../../CommandParametric.cpp" line="130"/>
+      <location filename="../../CommandParametric.cpp" line="117"/>
+      <location filename="../../CommandParametric.cpp" line="127"/>
       <source>Cube</source>
       <translation>Ciúb</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="115"/>
+      <location filename="../../CommandParametric.cpp" line="118"/>
       <source>Creates a solid cube</source>
       <translation>Cruthaíonn ciúb soladach</translation>
     </message>
@@ -1451,19 +1450,18 @@
   <context>
     <name>CmdPartCone</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="201"/>
+      <location filename="../../CommandParametric.cpp" line="204"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="202"/>
-      <location filename="../../CommandParametric.cpp" line="213"/>
-      <location filename="../../CommandParametric.cpp" line="218"/>
+      <location filename="../../CommandParametric.cpp" line="205"/>
+      <location filename="../../CommandParametric.cpp" line="215"/>
       <source>Cone</source>
       <translation>Cón</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="203"/>
+      <location filename="../../CommandParametric.cpp" line="206"/>
       <source>Creates a solid cone</source>
       <translation>Cruthaíonn cón soladach</translation>
     </message>
@@ -1507,19 +1505,18 @@
   <context>
     <name>CmdPartCylinder</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="69"/>
+      <location filename="../../CommandParametric.cpp" line="72"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="70"/>
-      <location filename="../../CommandParametric.cpp" line="81"/>
-      <location filename="../../CommandParametric.cpp" line="86"/>
+      <location filename="../../CommandParametric.cpp" line="73"/>
+      <location filename="../../CommandParametric.cpp" line="83"/>
       <source>Cylinder</source>
       <translation>Sorcóir</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="71"/>
+      <location filename="../../CommandParametric.cpp" line="74"/>
       <source>Creates a solid cylinder</source>
       <translation>Cruthaíonn sorcóir soladach</translation>
     </message>
@@ -1707,17 +1704,17 @@
   <context>
     <name>CmdPartMakeSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1243"/>
+      <location filename="../../Command.cpp" line="1241"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1244"/>
+      <location filename="../../Command.cpp" line="1242"/>
       <source>Convert to Solid</source>
       <translation>Tiontaigh go Soladach</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1245"/>
+      <location filename="../../Command.cpp" line="1243"/>
       <source>Converts the selected shell or compound to a solid</source>
       <translation>Tiontaíonn sé an bhlaosc nó an comhdhúil roghnaithe go solad</translation>
     </message>
@@ -1875,17 +1872,17 @@ teilgean.</translation>
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1336"/>
+      <location filename="../../Command.cpp" line="1334"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1337"/>
+      <location filename="../../Command.cpp" line="1335"/>
       <source>Reverse Shapes</source>
       <translation>Cruthanna Droim ar Ais</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1338"/>
+      <location filename="../../Command.cpp" line="1336"/>
       <source>Reverses the orientation of the selected shapes</source>
       <translation>Aisiompaíonn sé treoshuíomh na gcruthanna roghnaithe</translation>
     </message>
@@ -2001,19 +1998,18 @@ teilgean.</translation>
   <context>
     <name>CmdPartSphere</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="157"/>
+      <location filename="../../CommandParametric.cpp" line="160"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="158"/>
-      <location filename="../../CommandParametric.cpp" line="169"/>
-      <location filename="../../CommandParametric.cpp" line="174"/>
+      <location filename="../../CommandParametric.cpp" line="161"/>
+      <location filename="../../CommandParametric.cpp" line="171"/>
       <source>Sphere</source>
       <translation>Sféar</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="159"/>
+      <location filename="../../CommandParametric.cpp" line="162"/>
       <source>Creates a solid sphere</source>
       <translation>Cruthaíonn sféar soladach</translation>
     </message>
@@ -2067,19 +2063,18 @@ teilgean.</translation>
   <context>
     <name>CmdPartTorus</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="245"/>
+      <location filename="../../CommandParametric.cpp" line="248"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="246"/>
-      <location filename="../../CommandParametric.cpp" line="257"/>
-      <location filename="../../CommandParametric.cpp" line="262"/>
+      <location filename="../../CommandParametric.cpp" line="249"/>
+      <location filename="../../CommandParametric.cpp" line="259"/>
       <source>Torus</source>
       <translation>Tóras</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="247"/>
+      <location filename="../../CommandParametric.cpp" line="250"/>
       <source>Creates a solid torus</source>
       <translation>Cruthaíonn sé tóras soladach</translation>
     </message>
@@ -2141,12 +2136,12 @@ teilgean.</translation>
       <translation>Cuid Iompórtála</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1212"/>
+      <location filename="../../Command.cpp" line="1214"/>
       <source>Import Curve Net</source>
       <translation>Iompórtáil Glan Cuar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1350"/>
+      <location filename="../../Command.cpp" line="1348"/>
       <source>Reverse</source>
       <translation>Droim ar ais</translation>
     </message>
@@ -2267,7 +2262,7 @@ teilgean.</translation>
       <translation>Scuab</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1615"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1620"/>
       <source>Project on surface</source>
       <translation>Tionscadal ar dhromchla</translation>
     </message>
@@ -4143,17 +4138,17 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="140"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="141"/>
       <source>Projection object</source>
       <translation>Réad teilgean</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="167"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="168"/>
       <source>No active document</source>
       <translation>Gan aon doiciméad gníomhach</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="173"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="174"/>
       <source>Cannot create a projection object</source>
       <translation>Ní féidir réad teilgean a chruthú</translation>
     </message>
@@ -4337,12 +4332,12 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
       <translation>Má shocraítear diall róbheag, tógfaidh an tessellation níos faide agus dá bhrí sin reoiteann nó moillíonn sé an grafach úsáideora.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="110"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="113"/>
       <source>Angle deflection</source>
       <translation>Diall uillinne</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="111"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="114"/>
       <source>Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
       <translation>Má shocraítear diall uillinne róbheag, tógfaidh an tessellation níos faide agus dá bhrí sin reoiteann nó moillíonn sé an grafach úsáideora.</translation>
     </message>
@@ -6068,8 +6063,8 @@ sreang sa radharc 3D don chonair scuabtha.</translation>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="51"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="59"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
       <location filename="../../ViewProvider.cpp" line="53"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
       <source>Edit %1</source>
       <translation>Cuir %1 in Eagar</translation>
     </message>
@@ -6713,10 +6708,10 @@ Leanúint ar aghaidh?</translation>
       <translation>Droch-Roghnú</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>Lean ar aghaidh</translation>
     </message>
@@ -7323,7 +7318,7 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6701"/>
+      <location filename="../../../App/Geometry.cpp" line="6723"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Ní féidir trasnú na gcuar a thomhas. Bain triail as srian comhthráthach a chur idir buaicphointí na gcuar atá beartaithe agat a líonadh.</translation>
     </message>

@@ -23,8 +23,10 @@
 
 import FreeCAD
 import Path
+import ast
 import glob
 import importlib.util
+import json
 import os
 import pathlib
 from collections import defaultdict
@@ -472,14 +474,27 @@ def postProcessorBlacklist():
     blacklist = pref.GetString(PostProcessorBlacklist, "")
     if not blacklist:
         return []
-    return eval(blacklist)
+    try:
+        parsed = json.loads(blacklist)
+    except ValueError:
+        # Migrate the legacy format, which stored the list as a Python repr
+        # (for example "['GRBL', 'linuxcnc']") that json cannot parse. Use
+        # ast.literal_eval, which only evaluates literals and cannot execute
+        # arbitrary code, unlike the eval() that was previously used here.
+        try:
+            parsed = ast.literal_eval(blacklist)
+        except (ValueError, SyntaxError):
+            return []
+    if not isinstance(parsed, list):
+        return []
+    return [str(item) for item in parsed]
 
 
 def setPostProcessorDefaults(processor, args, blacklist):
     pref = preferences()
     pref.SetString(PostProcessorDefault, processor)
     pref.SetString(PostProcessorDefaultArgs, args)
-    pref.SetString(PostProcessorBlacklist, "%s" % (blacklist))
+    pref.SetString(PostProcessorBlacklist, json.dumps(blacklist))
 
 
 def setOutputFileDefaults(fileName, policy):

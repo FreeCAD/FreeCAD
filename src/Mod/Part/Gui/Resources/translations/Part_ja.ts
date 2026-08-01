@@ -1251,19 +1251,18 @@
   <context>
     <name>CmdPartBox</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="113"/>
+      <location filename="../../CommandParametric.cpp" line="116"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="114"/>
-      <location filename="../../CommandParametric.cpp" line="125"/>
-      <location filename="../../CommandParametric.cpp" line="130"/>
+      <location filename="../../CommandParametric.cpp" line="117"/>
+      <location filename="../../CommandParametric.cpp" line="127"/>
       <source>Cube</source>
       <translation>立方体</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="115"/>
+      <location filename="../../CommandParametric.cpp" line="118"/>
       <source>Creates a solid cube</source>
       <translation>ソリッド立方体を作成</translation>
     </message>
@@ -1451,19 +1450,18 @@
   <context>
     <name>CmdPartCone</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="201"/>
+      <location filename="../../CommandParametric.cpp" line="204"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="202"/>
-      <location filename="../../CommandParametric.cpp" line="213"/>
-      <location filename="../../CommandParametric.cpp" line="218"/>
+      <location filename="../../CommandParametric.cpp" line="205"/>
+      <location filename="../../CommandParametric.cpp" line="215"/>
       <source>Cone</source>
       <translation>円錐</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="203"/>
+      <location filename="../../CommandParametric.cpp" line="206"/>
       <source>Creates a solid cone</source>
       <translation>ソリッド円錐を作成</translation>
     </message>
@@ -1507,19 +1505,18 @@
   <context>
     <name>CmdPartCylinder</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="69"/>
+      <location filename="../../CommandParametric.cpp" line="72"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="70"/>
-      <location filename="../../CommandParametric.cpp" line="81"/>
-      <location filename="../../CommandParametric.cpp" line="86"/>
+      <location filename="../../CommandParametric.cpp" line="73"/>
+      <location filename="../../CommandParametric.cpp" line="83"/>
       <source>Cylinder</source>
       <translation>円柱</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="71"/>
+      <location filename="../../CommandParametric.cpp" line="74"/>
       <source>Creates a solid cylinder</source>
       <translation>ソリッド円柱を作成</translation>
     </message>
@@ -1707,17 +1704,17 @@
   <context>
     <name>CmdPartMakeSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1243"/>
+      <location filename="../../Command.cpp" line="1241"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1244"/>
+      <location filename="../../Command.cpp" line="1242"/>
       <source>Convert to Solid</source>
       <translation>ソリッドに変換</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1245"/>
+      <location filename="../../Command.cpp" line="1243"/>
       <source>Converts the selected shell or compound to a solid</source>
       <translation>選択したシェルまたはコンパウンドをソリッドに変換</translation>
     </message>
@@ -1873,17 +1870,17 @@ of the projection.</source>
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1336"/>
+      <location filename="../../Command.cpp" line="1334"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1337"/>
+      <location filename="../../Command.cpp" line="1335"/>
       <source>Reverse Shapes</source>
       <translation>シェイプを反転</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1338"/>
+      <location filename="../../Command.cpp" line="1336"/>
       <source>Reverses the orientation of the selected shapes</source>
       <translation>選択したシェイプの方向を反転</translation>
     </message>
@@ -1999,19 +1996,18 @@ of the projection.</source>
   <context>
     <name>CmdPartSphere</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="157"/>
+      <location filename="../../CommandParametric.cpp" line="160"/>
       <source>Part</source>
       <translation>パーツ</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="158"/>
-      <location filename="../../CommandParametric.cpp" line="169"/>
-      <location filename="../../CommandParametric.cpp" line="174"/>
+      <location filename="../../CommandParametric.cpp" line="161"/>
+      <location filename="../../CommandParametric.cpp" line="171"/>
       <source>Sphere</source>
       <translation>球体</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="159"/>
+      <location filename="../../CommandParametric.cpp" line="162"/>
       <source>Creates a solid sphere</source>
       <translation>ソリッド球を作成</translation>
     </message>
@@ -2065,19 +2061,18 @@ of the projection.</source>
   <context>
     <name>CmdPartTorus</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="245"/>
+      <location filename="../../CommandParametric.cpp" line="248"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="246"/>
-      <location filename="../../CommandParametric.cpp" line="257"/>
-      <location filename="../../CommandParametric.cpp" line="262"/>
+      <location filename="../../CommandParametric.cpp" line="249"/>
+      <location filename="../../CommandParametric.cpp" line="259"/>
       <source>Torus</source>
       <translation>トーラス</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="247"/>
+      <location filename="../../CommandParametric.cpp" line="250"/>
       <source>Creates a solid torus</source>
       <translation>ソリッドトーラスを作成</translation>
     </message>
@@ -2139,12 +2134,12 @@ of the projection.</source>
       <translation>部品をインポート</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1212"/>
+      <location filename="../../Command.cpp" line="1214"/>
       <source>Import Curve Net</source>
       <translation>曲線ネットをインポート</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1350"/>
+      <location filename="../../Command.cpp" line="1348"/>
       <source>Reverse</source>
       <translation>反転</translation>
     </message>
@@ -2265,7 +2260,7 @@ of the projection.</source>
       <translation>スイープ</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1615"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1620"/>
       <source>Project on surface</source>
       <translation>サーフェスに投影</translation>
     </message>
@@ -4138,17 +4133,17 @@ Check one or more edge entities first.</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="140"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="141"/>
       <source>Projection object</source>
       <translation>投影オブジェクト</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="167"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="168"/>
       <source>No active document</source>
       <translation>アクティブなドキュメントがありません</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="173"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="174"/>
       <source>Cannot create a projection object</source>
       <translation>投影オブジェクトを作成できません</translation>
     </message>
@@ -4330,12 +4325,12 @@ Check one or more edge entities first.</source>
       <translation>小さすぎる偏差を設定すると、テッセレーションに時間がかかり、GUIがフリーズしたり遅くなったりします。</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="110"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="113"/>
       <source>Angle deflection</source>
       <translation>角度偏差</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="111"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="114"/>
       <source>Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
       <translation>小さすぎる角度を設定すると、テッセレーションに時間がかかり、GUIがフリーズしたり遅くなったりします。</translation>
     </message>
@@ -4450,7 +4445,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="261"/>
       <source>Always open attachment dialog for new sketches</source>
-      <translation type="unfinished">Always open attachment dialog for new sketches</translation>
+      <translation>新しいスケッチでアタッチメント・ダイアログを常に開く</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="292"/>
@@ -4460,7 +4455,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="295"/>
       <source>Displays the fully computed model in the 3D view while editing a feature, showing the final context rather than just the isolated feature</source>
-      <translation type="unfinished">Displays the fully computed model in the 3D view while editing a feature, showing the final context rather than just the isolated feature</translation>
+      <translation>フィーチャー編集中に全て計算されたモデルを3Dビューで描画し、個別フィーチャーでなく最終状態を表示</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="314"/>
@@ -4470,7 +4465,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="317"/>
       <source>Overlays a semi-transparent preview of the result while editing features to visualize changes before they are applied</source>
-      <translation type="unfinished">Overlays a semi-transparent preview of the result while editing features to visualize changes before they are applied</translation>
+      <translation>適用前に変更を視覚化するために、フィーチャー編集中に結果の半透明プレビューをオーバーレイ</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="339"/>
@@ -4480,7 +4475,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="342"/>
       <source>Visually highlights the source sketch or geometry used to generate the feature currently being edited</source>
-      <translation type="unfinished">Visually highlights the source sketch or geometry used to generate the feature currently being edited</translation>
+      <translation>現在編集しているフィーチャーの生成に使用される元スケッチまたはジオメトリーを視覚的に強調表示</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="361"/>
@@ -4500,7 +4495,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="386"/>
       <source>Enables on-screen handles (draggers) in the 3D view for interactively modifying dimensions and parameters of the feature being edited by dragging</source>
-      <translation type="unfinished">Enables on-screen handles (draggers) in the 3D view for interactively modifying dimensions and parameters of the feature being edited by dragging</translation>
+      <translation>ドラッグ編集中のフィーチャーの寸法とパラメーターをインタラクティブに変更するための、3Dビューでの画面上ハンドル（ドラッガー）を有効化</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="408"/>
@@ -4510,37 +4505,37 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="411"/>
       <source>Prevents the model from recalculating while manipulating draggers. The shape updates only after release of the mouse button.</source>
-      <translation type="unfinished">Prevents the model from recalculating while manipulating draggers. The shape updates only after release of the mouse button.</translation>
+      <translation>ドラッグ操作中にモデルが再計算されるのを防ぎます。シェイプはマウスボタンを離した後にだけ更新されます。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="424"/>
       <source>Enable coarse snapping while dragging</source>
-      <translation type="unfinished">Enable coarse snapping while dragging</translation>
+      <translation>ドラッグ中の低精度スナップを有効化</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="442"/>
       <source>Fine snap modifier</source>
-      <translation type="unfinished">Fine snap modifier</translation>
+      <translation>高精度スナップの修飾子</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="466"/>
       <source>Default coarse drag behavior</source>
-      <translation type="unfinished">Default coarse drag behavior</translation>
+      <translation>デフォルトの低精度ドラッグ動作</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="473"/>
       <source>Determines whether the drag is coarse or fine without holding the modifier key</source>
-      <translation type="unfinished">Determines whether the drag is coarse or fine without holding the modifier key</translation>
+      <translation>修飾キーを押していない時のドラッグの低精度、高精度を決定</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="493"/>
       <source>Coarse movement multiplier</source>
-      <translation type="unfinished">Coarse movement multiplier</translation>
+      <translation>低精度動作の乗数</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="523"/>
       <source>Coarse rotation step (degrees)</source>
-      <translation type="unfinished">Coarse rotation step (degrees)</translation>
+      <translation>低精度回転のステップ（度）</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
@@ -4766,13 +4761,13 @@ will be used or black.</source>
     <message>
       <location filename="../../Location.ui" line="32"/>
       <source>Set the placement location coordinates</source>
-      <translation type="unfinished">Set the placement location coordinates</translation>
+      <translation>配置位置の座標を設定</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="40"/>
       <location filename="../../Location.ui" line="50"/>
       <source>X coordinate of the placement location</source>
-      <translation type="unfinished">X coordinate of the placement location</translation>
+      <translation>配置位置のX座標</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="43"/>
@@ -4784,7 +4779,7 @@ will be used or black.</source>
       <location filename="../../Location.ui" line="63"/>
       <location filename="../../Location.ui" line="73"/>
       <source>Y coordinate of the placement location</source>
-      <translation type="unfinished">Y coordinate of the placement location</translation>
+      <translation>配置位置のY座標</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="66"/>
@@ -4796,7 +4791,7 @@ will be used or black.</source>
       <location filename="../../Location.ui" line="86"/>
       <location filename="../../Location.ui" line="96"/>
       <source>Z coordinate of the placement location</source>
-      <translation type="unfinished">Z coordinate of the placement location</translation>
+      <translation>配置位置のZ座標</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="89"/>
@@ -4812,7 +4807,7 @@ will be used or black.</source>
     <message>
       <location filename="../../Location.ui" line="145"/>
       <source>X-component of the rotation axis direction vector</source>
-      <translation type="unfinished">X-component of the rotation axis direction vector</translation>
+      <translation>回転軸方向ベクトルのX成分</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="155"/>
@@ -4822,7 +4817,7 @@ will be used or black.</source>
     <message>
       <location filename="../../Location.ui" line="177"/>
       <source>Y-component of the rotation axis direction vector</source>
-      <translation type="unfinished">Y-component of the rotation axis direction vector</translation>
+      <translation>回転軸方向ベクトルのY成分</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="187"/>
@@ -4832,7 +4827,7 @@ will be used or black.</source>
     <message>
       <location filename="../../Location.ui" line="209"/>
       <source>Z-component of the rotation axis direction vector</source>
-      <translation type="unfinished">Z-component of the rotation axis direction vector</translation>
+      <translation>回転軸方向ベクトルのZ成分</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="219"/>
@@ -4849,7 +4844,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../Location.ui" line="111"/>
       <source>Select a point in the 3D view to set the location automatically</source>
-      <translation type="unfinished">Select a point in the 3D view to set the location automatically</translation>
+      <translation>3Dビューで点を選択して位置を自動設定</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="114"/>
@@ -4860,7 +4855,7 @@ the sketch plane's normal vector will be used</source>
       <location filename="../../Location.ui" line="244"/>
       <location filename="../../Location.ui" line="254"/>
       <source>Rotation angle around the specified axis</source>
-      <translation type="unfinished">Rotation angle around the specified axis</translation>
+      <translation>指定軸を中心とした回転角度</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="247"/>
@@ -4883,7 +4878,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../TaskLoft.cpp" line="199"/>
       <source>Too Few Elements</source>
-      <translation type="unfinished">Too Few Elements</translation>
+      <translation>要素が少なすぎます</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="200"/>
@@ -5248,12 +5243,12 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="376"/>
       <source>Too Few Elements</source>
-      <translation type="unfinished">Too Few Elements</translation>
+      <translation>要素が少なすぎます</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="382"/>
       <source>Invalid Selection</source>
-      <translation type="unfinished">Invalid Selection</translation>
+      <translation>無効な選択</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="393"/>
@@ -5444,7 +5439,7 @@ of the object being attached.</source>
     <message>
       <location filename="../../TaskAttacher.cpp" line="436"/>
       <source>Attachment Offset (in its local coordinate system):</source>
-      <translation type="unfinished">Attachment Offset (in its local coordinate system):</translation>
+      <translation>アタッチメント・オフセット（ローカル座標系）：</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="437"/>
@@ -5616,7 +5611,7 @@ Individual boolean operation checks:</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1454"/>
       <source>Run Check</source>
-      <translation type="unfinished">Run Check</translation>
+      <translation>チェックを実行</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1288"/>
@@ -5785,12 +5780,12 @@ Individual boolean operation checks:</source>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1492"/>
       <source>%1 select reference</source>
-      <translation type="unfinished">%1 select reference</translation>
+      <translation>%1 参照を選択</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1498"/>
       <source>2x%1 select and confirm</source>
-      <translation type="unfinished">2x%1 select and confirm</translation>
+      <translation>2x%1 選択と確認</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1648"/>
@@ -6042,8 +6037,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="51"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="59"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
       <location filename="../../ViewProvider.cpp" line="53"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
       <source>Edit %1</source>
       <translation>%1を編集</translation>
     </message>
@@ -6462,7 +6457,7 @@ Continue?</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="185"/>
       <source>Distance in Parameter Space</source>
-      <translation type="unfinished">Distance in Parameter Space</translation>
+      <translation>パラメーター空間での距離</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="186"/>
@@ -6686,10 +6681,10 @@ Continue?</source>
       <translation>不適切な選択</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>続行</translation>
     </message>
@@ -7011,7 +7006,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../DlgScale.ui" line="14"/>
       <source>Scale</source>
-      <translation>尺度</translation>
+      <translation>拡大縮小</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="22"/>
@@ -7092,7 +7087,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../Command.cpp" line="1464"/>
       <source>Scale</source>
-      <translation>尺度</translation>
+      <translation>拡大縮小</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1465"/>
@@ -7293,7 +7288,7 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6701"/>
+      <location filename="../../../App/Geometry.cpp" line="6723"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>曲線の交点を推定できません。フィレット対象の曲線の頂点の間に一致拘束を追加してみてください。</translation>
     </message>
@@ -7725,12 +7720,12 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
       <source>Unified facemaker</source>
-      <translation type="unfinished">Unified facemaker</translation>
+      <translation>統合されたフェイスメーカー</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
       <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
-      <translation type="unfinished">Unified: handles nested holes, overlapping wires, and curved surfaces</translation>
+      <translation>統合: 入れ子となった穴、重複するワイヤー、曲面を制御</translation>
     </message>
   </context>
   <context>
@@ -7738,12 +7733,12 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
       <source>BuildFace facemaker</source>
-      <translation type="unfinished">BuildFace facemaker</translation>
+      <translation>面構築フェイスメーカー</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
       <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
-      <translation type="unfinished">Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</translation>
+      <translation>交点でエッジを分割し、すべての境界面領域を検出します。任意の重なったジオメトリーを処理します。</translation>
     </message>
   </context>
 </TS>

@@ -126,6 +126,12 @@ macro(SetupBundledCoinPivy)
         "$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src/3rdParty/coin/include>"
         "$<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/src/3rdParty/coin/include>"
     )
+    if (UNIX AND NOT APPLE)
+        # Coin directly loads sibling libraries such as libEGL.  The RUNPATH of
+        # a library that loads Coin is not used to resolve Coin's dependencies.
+        # Keep the bundled library relocatable in both Pixi and AppImage installs.
+        set_property(TARGET Coin PROPERTY INSTALL_RPATH "$ORIGIN")
+    endif ()
     install(TARGETS Coin
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} NAMELINK_SKIP

@@ -356,7 +356,7 @@ Une référence de sommet supplémentaire définit le point de contact.</transla
       <location filename="../../AttacherTexts.cpp" line="605"/>
       <source>Asymptote of a hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Asymptote d’une hyperbole.</translation>
+      <translation>Asymptote d’une hyperbole</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="609"/>
@@ -368,7 +368,7 @@ Une référence de sommet supplémentaire définit le point de contact.</transla
       <location filename="../../AttacherTexts.cpp" line="610"/>
       <source>Second asymptote of hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Deuxième asymptote de l’hyperbole.</translation>
+      <translation>Deuxième asymptote de l’hyperbole</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="614"/>
@@ -1283,19 +1283,18 @@ des plans vertical et horizontal avec un sommet ou le long d'une ligne.</transla
   <context>
     <name>CmdPartBox</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="113"/>
+      <location filename="../../CommandParametric.cpp" line="116"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="114"/>
-      <location filename="../../CommandParametric.cpp" line="125"/>
-      <location filename="../../CommandParametric.cpp" line="130"/>
+      <location filename="../../CommandParametric.cpp" line="117"/>
+      <location filename="../../CommandParametric.cpp" line="127"/>
       <source>Cube</source>
       <translation>Cube</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="115"/>
+      <location filename="../../CommandParametric.cpp" line="118"/>
       <source>Creates a solid cube</source>
       <translation>Crée un cube solide.</translation>
     </message>
@@ -1483,19 +1482,18 @@ des plans vertical et horizontal avec un sommet ou le long d'une ligne.</transla
   <context>
     <name>CmdPartCone</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="201"/>
+      <location filename="../../CommandParametric.cpp" line="204"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="202"/>
-      <location filename="../../CommandParametric.cpp" line="213"/>
-      <location filename="../../CommandParametric.cpp" line="218"/>
+      <location filename="../../CommandParametric.cpp" line="205"/>
+      <location filename="../../CommandParametric.cpp" line="215"/>
       <source>Cone</source>
       <translation>Cône</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="203"/>
+      <location filename="../../CommandParametric.cpp" line="206"/>
       <source>Creates a solid cone</source>
       <translation>Crée un cône solide.</translation>
     </message>
@@ -1539,19 +1537,18 @@ des plans vertical et horizontal avec un sommet ou le long d'une ligne.</transla
   <context>
     <name>CmdPartCylinder</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="69"/>
+      <location filename="../../CommandParametric.cpp" line="72"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="70"/>
-      <location filename="../../CommandParametric.cpp" line="81"/>
-      <location filename="../../CommandParametric.cpp" line="86"/>
+      <location filename="../../CommandParametric.cpp" line="73"/>
+      <location filename="../../CommandParametric.cpp" line="83"/>
       <source>Cylinder</source>
       <translation>Cylindre</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="71"/>
+      <location filename="../../CommandParametric.cpp" line="74"/>
       <source>Creates a solid cylinder</source>
       <translation>Crée un cylindre solide.</translation>
     </message>
@@ -1739,17 +1736,17 @@ des plans vertical et horizontal avec un sommet ou le long d'une ligne.</transla
   <context>
     <name>CmdPartMakeSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1243"/>
+      <location filename="../../Command.cpp" line="1241"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1244"/>
+      <location filename="../../Command.cpp" line="1242"/>
       <source>Convert to Solid</source>
       <translation>Convertir en solide</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1245"/>
+      <location filename="../../Command.cpp" line="1243"/>
       <source>Converts the selected shell or compound to a solid</source>
       <translation>Convertit une coque ou un composé sélectionné en un solide.</translation>
     </message>
@@ -1905,17 +1902,17 @@ projection.</translation>
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1336"/>
+      <location filename="../../Command.cpp" line="1334"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1337"/>
+      <location filename="../../Command.cpp" line="1335"/>
       <source>Reverse Shapes</source>
       <translation>Inverser des formes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1338"/>
+      <location filename="../../Command.cpp" line="1336"/>
       <source>Reverses the orientation of the selected shapes</source>
       <translation>Inverse l'orientation des formes sélectionnées.</translation>
     </message>
@@ -2031,19 +2028,18 @@ projection.</translation>
   <context>
     <name>CmdPartSphere</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="157"/>
+      <location filename="../../CommandParametric.cpp" line="160"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="158"/>
-      <location filename="../../CommandParametric.cpp" line="169"/>
-      <location filename="../../CommandParametric.cpp" line="174"/>
+      <location filename="../../CommandParametric.cpp" line="161"/>
+      <location filename="../../CommandParametric.cpp" line="171"/>
       <source>Sphere</source>
       <translation>Sphère</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="159"/>
+      <location filename="../../CommandParametric.cpp" line="162"/>
       <source>Creates a solid sphere</source>
       <translation>Crée une sphère solide.</translation>
     </message>
@@ -2097,19 +2093,18 @@ projection.</translation>
   <context>
     <name>CmdPartTorus</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="245"/>
+      <location filename="../../CommandParametric.cpp" line="248"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="246"/>
-      <location filename="../../CommandParametric.cpp" line="257"/>
-      <location filename="../../CommandParametric.cpp" line="262"/>
+      <location filename="../../CommandParametric.cpp" line="249"/>
+      <location filename="../../CommandParametric.cpp" line="259"/>
       <source>Torus</source>
       <translation>Tore</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="247"/>
+      <location filename="../../CommandParametric.cpp" line="250"/>
       <source>Creates a solid torus</source>
       <translation>Crée un tore solide.</translation>
     </message>
@@ -2171,12 +2166,12 @@ projection.</translation>
       <translation>Importer une pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1212"/>
+      <location filename="../../Command.cpp" line="1214"/>
       <source>Import Curve Net</source>
       <translation>Importer un réseau de courbe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1350"/>
+      <location filename="../../Command.cpp" line="1348"/>
       <source>Reverse</source>
       <translation>Inverser</translation>
     </message>
@@ -2297,7 +2292,7 @@ projection.</translation>
       <translation>Balayage</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1615"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1620"/>
       <source>Project on surface</source>
       <translation>Projeter sur une surface</translation>
     </message>
@@ -2649,7 +2644,7 @@ encodé dans la géométrie de la forme, au lieu d'être conservé dans la propr
     <message>
       <location filename="../../DlgExportStep.ui" line="139"/>
       <source>Write out curves in parametric space of surface</source>
-      <translation>Enregistrer les courbes dans l’espace paramétrique de surface</translation>
+      <translation>Enregistrer les courbes dans l’espace paramétrique des surfaces</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="123"/>
@@ -2679,16 +2674,15 @@ encodé dans la géométrie de la forme, au lieu d'être conservé dans la propr
     <message>
       <location filename="../../DlgExportStep.ui" line="29"/>
       <source>Scheme</source>
-      <translation>Standards</translation>
+      <translation>Standard</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.cpp" line="60"/>
       <source>This parameter indicates whether parametric curves (curves in parametric space of surface)
 should be written into the STEP file. This parameter can be set to off in order to minimize
 the size of the resulting STEP file.</source>
-      <translation>Ce paramètre indique si les courbes paramétriques (courbes dans l'espace paramétrique de surface)
-doivent être écrites dans le fichier STEP. Ce paramètre peut être désactivé afin de minimiser
-la taille du fichier STEP résultant.</translation>
+      <translation>Ce paramètre indique si les courbes paramétriques (courbes dans l'espace paramétrique des surfaces) doivent être écrites dans le fichier
+STEP. Ce paramètre peut être désactivé afin de minimiser la taille du fichier STEP résultant.</translation>
     </message>
   </context>
   <context>
@@ -3236,7 +3230,7 @@ transformations. Cela allonge la durée de l'importation, mais n'affecte ni la p
     <message>
       <location filename="../../DlgImportStep.ui" line="77"/>
       <source>Reduce number of objects using Link array</source>
-      <translation>Réduire le nombre d'objets en utilisant un réseau lié</translation>
+      <translation>Réduit le nombre d'objets en utilisant un réseau lié.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="80"/>
@@ -3246,12 +3240,12 @@ transformations. Cela allonge la durée de l'importation, mais n'affecte ni la p
     <message>
       <location filename="../../DlgImportStep.ui" line="93"/>
       <source>Expand compound shape with multiple solids</source>
-      <translation>Développer la forme composée avec plusieurs solides</translation>
+      <translation>Développe les formes composées en plusieurs solides.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="96"/>
       <source>Expand compound shape</source>
-      <translation>Développer la forme composée</translation>
+      <translation>Développer les formes composées</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="109"/>
@@ -3272,12 +3266,12 @@ transformations. Cela allonge la durée de l'importation, mais n'affecte ni la p
     <message>
       <location filename="../../DlgImportStep.ui" line="152"/>
       <source>CodePage</source>
-      <translation>Encodage de la page</translation>
+      <translation>Encodage des pages</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="179"/>
       <source>Mode</source>
-      <translation>Mode</translation>
+      <translation>Structure des documents</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="199"/>
@@ -4170,17 +4164,17 @@ transformations. Cela allonge la durée de l'importation, mais n'affecte ni la p
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="140"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="141"/>
       <source>Projection object</source>
       <translation>Objet de projection</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="167"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="168"/>
       <source>No active document</source>
       <translation>Aucun document actif</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="173"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="174"/>
       <source>Cannot create a projection object</source>
       <translation>Impossible de créer un objet de projection</translation>
     </message>
@@ -4363,12 +4357,12 @@ transformations. Cela allonge la durée de l'importation, mais n'affecte ni la p
       <translation>Si la déviation est trop faible, la tessellation prend plus de temps et l'interface graphique se fige ou ralentit.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="110"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="113"/>
       <source>Angle deflection</source>
       <translation>Déflexion angulaire</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="111"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="114"/>
       <source>Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
       <translation>Si l'écart angulaire est trop faible, la tessellation prend plus de temps et l'interface graphique se fige ou se ralentit.</translation>
     </message>
@@ -6103,8 +6097,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="51"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="59"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
       <location filename="../../ViewProvider.cpp" line="53"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
       <source>Edit %1</source>
       <translation>Éditer %1</translation>
     </message>
@@ -6747,10 +6741,10 @@ Continue?</source>
       <translation>Mauvaise sélection</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>Continuer</translation>
     </message>
@@ -7356,7 +7350,7 @@ volumes se chevauchant seront supprimés.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6701"/>
+      <location filename="../../../App/Geometry.cpp" line="6723"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Il n'est pas possible de déterminer l'intersection des courbes. Essayer d'ajouter une
 contrainte de coïncidence entre les sommets des courbes là où il est prévu des congés.</translation>

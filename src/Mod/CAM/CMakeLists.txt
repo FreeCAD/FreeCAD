@@ -457,6 +457,7 @@ SET(PathPythonBaseGenerator_SRCS
     Path/Base/Generator/bidirectional_facing.py
     Path/Base/Generator/helix.py
     Path/Base/Generator/linking.py
+    Path/Base/Generator/ramp_entry.py
     Path/Base/Generator/rotary_dropcutter.py
     Path/Base/Generator/rotary_parallel.py
     Path/Base/Generator/rotary_rings.py
@@ -565,6 +566,7 @@ SET(Tests_SRCS
     CAMTests/TestPathAdaptive.py
     CAMTests/TestPathCommandAnnotations.py
     CAMTests/TestPathCore.py
+    CAMTests/TestPathCustom.py
     CAMTests/TestPathDepthParams.py
     CAMTests/TestPathDressupArray.py
     CAMTests/TestPathDressupDogboneII.py
@@ -590,6 +592,7 @@ SET(Tests_SRCS
     CAMTests/TestPathPreferences.py
     CAMTests/TestPathProfile.py
     CAMTests/TestPathPropertyBag.py
+    CAMTests/TestPathRampEntryGenerator.py
     CAMTests/TestPathRotaryGenerators.py
     CAMTests/TestPathRotaryParallel.py
     CAMTests/TestPathRotaryRings.py

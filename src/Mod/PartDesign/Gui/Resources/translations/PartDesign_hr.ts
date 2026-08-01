@@ -206,17 +206,17 @@ tako da je izbjegnuto samopresjecanje.</translation>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2590"/>
+      <location filename="../../Command.cpp" line="2595"/>
       <source>PartDesign</source>
       <translation>Konstruktor dijelova</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2591"/>
+      <location filename="../../Command.cpp" line="2596"/>
       <source>Boolean Operation</source>
       <translation>Booleova operacija</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2592"/>
+      <location filename="../../Command.cpp" line="2597"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>Primjenjuje booleove operacije s odabranim objektima i aktivnim tijelom</translation>
     </message>
@@ -494,17 +494,17 @@ tako da je izbjegnuto samopresjecanje.</translation>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2459"/>
+      <location filename="../../Command.cpp" line="2464"/>
       <source>PartDesign</source>
       <translation>Konstruktor dijelova</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2460"/>
+      <location filename="../../Command.cpp" line="2465"/>
       <source>Multi-Transform</source>
       <translation>Višestruko transformiranje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2461"/>
+      <location filename="../../Command.cpp" line="2466"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation>Primjenjuje više transformacija na odabrane značajke ili aktivno tijelo</translation>
     </message>
@@ -602,17 +602,17 @@ tako da je izbjegnuto samopresjecanje.</translation>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2354"/>
+      <location filename="../../Command.cpp" line="2359"/>
       <source>PartDesign</source>
       <translation>Konstruktor dijelova</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2355"/>
+      <location filename="../../Command.cpp" line="2360"/>
       <source>Polar Pattern</source>
       <translation>Polarni uzorci</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2356"/>
+      <location filename="../../Command.cpp" line="2361"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation>Duplicira odabrane značajke ili aktivno tijelo u kružnom uzorku</translation>
     </message>
@@ -638,17 +638,17 @@ tako da je izbjegnuto samopresjecanje.</translation>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2416"/>
+      <location filename="../../Command.cpp" line="2421"/>
       <source>PartDesign</source>
       <translation>Konstruktor dijelova</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2417"/>
+      <location filename="../../Command.cpp" line="2422"/>
       <source>Scale</source>
       <translation>Skaliraj</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2418"/>
+      <location filename="../../Command.cpp" line="2423"/>
       <source>Scales the selected features or the active body</source>
       <translation>Skaliranje odabrane značajke ili aktivno tijelo</translation>
     </message>
@@ -905,7 +905,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
       <translation>Napravi kopiju</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2514"/>
+      <location filename="../../Command.cpp" line="2519"/>
       <source>Convert to Multi-Transform feature</source>
       <translation>Pretvori u značajku Višestruke transformacije</translation>
     </message>
@@ -926,13 +926,13 @@ tako da je izbjegnuto samopresjecanje.</translation>
       <translation>Nova skica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2611"/>
+      <location filename="../../Command.cpp" line="2616"/>
       <source>Create Boolean</source>
       <translation>Stvori logičku vrijednost</translation>
     </message>
     <message>
-      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <location filename="../../CommandBody.cpp" line="221"/>
+      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <source>Add a Body</source>
       <translation>Dodaj tjelo</translation>
     </message>
@@ -3167,11 +3167,11 @@ mjereno duž navedenog smjera</translation>
       <translation>Nema valjanih ravnina u ovom dokumentu</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="761"/>
       <location filename="../../Command.cpp" line="1152"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <location filename="../../ViewProvider.cpp" line="137"/>
+      <location filename="../../SketchWorkflow.cpp" line="761"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Dijalog je već otvoren u ploči zadataka</translation>
     </message>
@@ -3216,16 +3216,11 @@ mjereno duž navedenog smjera</translation>
       <translation>Nema skice u dokumentu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2206"/>
-      <source>Select only one feature in an active body.</source>
-      <translation type="unfinished">Select only one feature in an active body.</translation>
-    </message>
-    <message>
-      <location filename="../../SketchWorkflow.cpp" line="762"/>
       <location filename="../../Command.cpp" line="1153"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../ViewProvider.cpp" line="138"/>
+      <location filename="../../SketchWorkflow.cpp" line="762"/>
       <source>Close this dialog?</source>
       <translation>Zatvoriti ovaj dijalog?</translation>
     </message>
@@ -3250,6 +3245,11 @@ mjereno duž navedenog smjera</translation>
       <location filename="../../Command.cpp" line="1871"/>
       <source>Shape of the selected part is empty</source>
       <translation>Oblik odabranog dijela je prazan</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2206"/>
+      <source>Select only one feature in an active body.</source>
+      <translation type="unfinished">Select only one feature in an active body.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1844"/>
@@ -3514,10 +3514,10 @@ Za starije dokumente s objektima Part Designa kojima nedostaje tijelo, upotrijeb
       <translation>Da biste mogli koristiti ovu značajku ona mora pripadati objektu dio u dokumentu.</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <location filename="../../ViewProvider.cpp" line="94"/>
       <location filename="../../ViewProviderTransformed.cpp" line="67"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <source>Edit %1</source>
       <translation>Uređivanje %1</translation>
     </message>
@@ -3615,7 +3615,7 @@ Iako ćete moći migrirati u bilo svakom trenutku kasnije s 'Dizajn dijela -&gt;
       <translation>Migrirati ručno</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBoolean.cpp" line="70"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="223"/>
       <source>Edit Boolean</source>
       <translation>Uredi bolovu operaciju</translation>
     </message>
@@ -4459,23 +4459,23 @@ preko 90: veći polumjer rupe na dnu</translation>
       <translation>Ne može se izvršiti booleova operacija sa neispravnim baznim oblikom</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="600"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
       <location filename="../../../App/FeatureHelix.cpp" line="420"/>
       <location filename="../../../App/FeatureHelix.cpp" line="442"/>
       <location filename="../../../App/FeatureHelix.cpp" line="488"/>
       <location filename="../../../App/FeatureLoft.cpp" line="334"/>
       <location filename="../../../App/FeatureLoft.cpp" line="378"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="600"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Rezultat ima više čvrstih tijela: omogućite 'Dopusti spoj' u aktivnom tijelu.</translation>
     </message>
@@ -4510,10 +4510,10 @@ preko 90: veći polumjer rupe na dnu</translation>
       <translation>Rezultirajuća spojena ekstruzija je nula.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="371"/>
       <location filename="../../../App/FeaturePipe.cpp" line="592"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="371"/>
       <source>Resulting shape is not a solid</source>
       <translation>Stvoreni oblik nije volumen tijelo</translation>
     </message>
@@ -4656,9 +4656,9 @@ Nije dozvoljeno presjecanje elemenata na skici.</translation>
       <translation>Greška: Površina mora biti ravna</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="499"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2454"/>
       <source>Error: Result is not a solid</source>
       <translation>Greška: Rezultat nije volumensko tijelo</translation>
     </message>
@@ -4812,8 +4812,8 @@ Ukrštanje elemenata skice ili više površina u skici nije dozvoljeno za izradu
       <translation>Izvlačenje forme: Stvaranje lica iz skice nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="304"/>
       <location filename="../../../App/FeaturePipe.cpp" line="500"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="304"/>
       <source>Loft: Failed to create shell</source>
       <translation>Izvlačenje forme: Stvaranje ljuske nije uspjelo</translation>
     </message>
@@ -4920,14 +4920,14 @@ Nije dozvoljeno presjecanje elemenata ili višestruke površine na skici.</trans
       <translation>Nemoguće odrediti razliku primitivnog elementa bez baznog elementa</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="356"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="356"/>
       <source>Unknown operation type</source>
       <translation>Nepoznata vrsta operacije</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="364"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="364"/>
       <source>Failed to perform boolean operation</source>
       <translation>Izvođenje Booleove operacije nije uspjelo</translation>
     </message>
@@ -5168,12 +5168,12 @@ Nije dozvoljeno presjecanje elemenata ili višestruke površine na skici.</trans
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2658"/>
+      <location filename="../../Command.cpp" line="2663"/>
       <source>Create Datum</source>
       <translation>Stvori referencu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2659"/>
+      <location filename="../../Command.cpp" line="2664"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Stvara objekt reference ili lokalni koordinatni sustav</translation>
     </message>
@@ -5181,12 +5181,12 @@ Nije dozvoljeno presjecanje elemenata ili višestruke površine na skici.</trans
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2693"/>
+      <location filename="../../Command.cpp" line="2698"/>
       <source>Create Datum</source>
       <translation>Stvori referencu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2694"/>
+      <location filename="../../Command.cpp" line="2699"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Stvara objekt reference ili lokalni koordinatni sustav</translation>
     </message>
@@ -5431,14 +5431,6 @@ Nije dozvoljeno presjecanje elemenata ili višestruke površine na skici.</trans
     </message>
   </context>
   <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
-    <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input Error</source>
-      <translation>Ulazna greška</translation>
-    </message>
-  </context>
-  <context>
     <name>PartDesignGui::TaskFeatureParameters</name>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="138"/>
@@ -5461,6 +5453,14 @@ Adjust the parameters and try again.</source>
       <translation type="unfinished">The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
 Adjust the parameters and try again.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>Ulazna greška</translation>
     </message>
   </context>
 </TS>

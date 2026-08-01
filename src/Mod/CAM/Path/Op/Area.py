@@ -102,6 +102,10 @@ class ObjectOp(PathOp.ObjectOp):
 
         self.initAreaOp(obj)
 
+    def initAfterBase(self, obj):
+        if hasattr(obj, "Side"):
+            obj.Side = PathOpUtil.getOpSide(obj)
+
     def initAreaOp(self, obj):
         """initAreaOp(obj) ... overwrite if the receiver class needs initialisation.
         Can safely be overwritten by subclasses."""
@@ -133,16 +137,6 @@ class ObjectOp(PathOp.ObjectOp):
         # Path.Log.track(obj.Label, prop)
         if prop in ("AreaParams", "PathParams", "removalshape"):
             obj.setEditorMode(prop, 2)
-
-        if (
-            getattr(self, "init", False)
-            and hasattr(obj, "Side")
-            and prop == "FinalDepth"
-            and obj.Base
-        ):
-            # Offer side only while creating new operation
-            self.init = False
-            self.opSetDefaultSide(obj)
 
         self.areaOpOnChanged(obj, prop)
 
@@ -202,59 +196,11 @@ class ObjectOp(PathOp.ObjectOp):
             )
 
         self.areaOpSetDefaultValues(obj, job)
-        self.init = True  # using for offer 'Side' while creating new operation
 
     def areaOpSetDefaultValues(self, obj, job):
         """areaOpSetDefaultValues(obj, job) ... overwrite to set initial values of operation specific properties.
         Can safely be overwritten by subclasses."""
         pass
-
-    def opSetDefaultSide(self, obj):
-        """setDefaltSide(obj) ...  offer side while creating new operation"""
-        base, subNames = obj.Base[0]
-
-        # find parent boundbox
-        if isinstance(base.Shape, Part.Compound):
-            bbs = [shape.BoundBox for shape in base.Shape.SubShapes]
-        else:
-            bbs = [base.Shape.BoundBox]
-
-        subBb = None
-        if "Face" in subNames[0]:
-            faces = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Face")]
-            vFaces = [f for f in faces if not Path.Geom.isHorizontal(f)]
-            if vFaces:
-                # check if vertical faces creates a closed area
-                fzMin = min(e.BoundBox.ZMin for f in vFaces for e in f.Edges)
-                bottomEdges = [
-                    e for f in vFaces for e in f.Edges if isRoughly(e.BoundBox.ZMax, fzMin)
-                ]
-                wire = Part.Wire(Part.__sortEdges__(bottomEdges))
-                if not wire.isClosed():
-                    # for open area always offer 'Outside'
-                    obj.Side = "Outside"
-                    return
-            shape = Part.Compound(faces)
-            subBb = shape.BoundBox
-        elif "Edge" in subNames[0]:
-            edges = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Edge")]
-            wire = Part.Wire(Part.__sortEdges__(edges))
-            if not wire.isClosed():
-                # for open wire always offer 'Outside'
-                obj.Side = "Outside"
-                return
-            else:
-                subBb = wire.BoundBox
-
-        if subBb:
-            for bb in bbs:
-                if not bb.isInside(subBb):
-                    continue
-                if isRoughly(bb.XLength, subBb.XLength) and isRoughly(bb.YLength, subBb.YLength):
-                    obj.Side = "Outside"
-                else:
-                    obj.Side = "Inside"
-                return
 
     def getMiddlePointLongestEdge(self, shape):
         """getMiddlePointLongestEdge(shape) ... return middle point of longest edge from shape."""

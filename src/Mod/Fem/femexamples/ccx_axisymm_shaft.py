@@ -39,7 +39,7 @@ def get_information():
         "meshtype": "face",
         "meshelement": "Tria6",
         "constraints": ["fixed", "pressure"],
-        "solvers": ["calculix"],
+        "solvers": ["calculix", "elmer"],
         "material": "solid",
         "equations": ["mechanical"],
     }
@@ -94,15 +94,19 @@ def setup(doc=None, solvertype="calculix"):
         solver_obj.AnalysisType = "static"
         solver_obj.ModelSpace = "axisymmetric"
         analysis.addObject(solver_obj)
+        # 2D element thickness
+        thickness_obj = ObjectsFem.makeElementGeometry2D(doc, 1.0, "ShellThickness")
+        analysis.addObject(thickness_obj)
+    elif solvertype == "elmer":
+        solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
+        solver_obj.CoordinateSystem = "Axi Symmetric"
+        ObjectsFem.makeEquationElasticity(doc, solver_obj)
+        analysis.addObject(solver_obj)
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
-
-    # 2D element thickness
-    thickness_obj = ObjectsFem.makeElementGeometry2D(doc, 1.0, "ShellThickness")
-    analysis.addObject(thickness_obj)
 
     # material
     material_obj = ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterial")

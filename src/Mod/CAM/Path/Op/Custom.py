@@ -26,6 +26,7 @@ import re
 import os
 import Path
 import Path.Op.Base as PathOp
+import Constants
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -187,13 +188,16 @@ class ObjectCustom(PathOp.ObjectOp):
             for i, line in enumerate(obj.Gcode):
                 line = self.parseExpressions(obj, line, i)
                 try:
-                    newcommand = Path.Command(str(line))
+                    newcommand = Path.Command(
+                        str(line), {}, {Constants.ANNOT_ALLOW_UNSUPPORTED: "True"}
+                    )
                     self.commandlist.append(newcommand)
                 except ValueError:
                     errorNumLines.append(i)
                     if len(errorLines) < 7:
                         errorLines.append(f"{i}: {str(line).strip()}")
             if errorLines:
+                # FIXME: should throw
                 Path.Log.warning(
                     translate("PathCustom", "Total invalid lines in Custom Text G-code: %s")
                     % len(errorNumLines)

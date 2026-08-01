@@ -206,17 +206,17 @@ in modo da evitare l'intersezione automatica.</translation>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2590"/>
+      <location filename="../../Command.cpp" line="2595"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2591"/>
+      <location filename="../../Command.cpp" line="2596"/>
       <source>Boolean Operation</source>
       <translation>Operazione booleana</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2592"/>
+      <location filename="../../Command.cpp" line="2597"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>Applica operazioni booleane tra gli oggetti selezionati e il corpo attivo</translation>
     </message>
@@ -494,17 +494,17 @@ in modo da evitare l'intersezione automatica.</translation>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2459"/>
+      <location filename="../../Command.cpp" line="2464"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2460"/>
+      <location filename="../../Command.cpp" line="2465"/>
       <source>Multi-Transform</source>
       <translation>Trasformazione multipla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2461"/>
+      <location filename="../../Command.cpp" line="2466"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation>Applica trasformazioni multiple alle operazioni selezionate o al corpo attivo</translation>
     </message>
@@ -602,17 +602,17 @@ in modo da evitare l'intersezione automatica.</translation>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2354"/>
+      <location filename="../../Command.cpp" line="2359"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2355"/>
+      <location filename="../../Command.cpp" line="2360"/>
       <source>Polar Pattern</source>
       <translation>Serie polare</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2356"/>
+      <location filename="../../Command.cpp" line="2361"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation>Duplica le feature selezionate o il corpo attivo secondo una serie circolare</translation>
     </message>
@@ -638,17 +638,17 @@ in modo da evitare l'intersezione automatica.</translation>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2416"/>
+      <location filename="../../Command.cpp" line="2421"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2417"/>
+      <location filename="../../Command.cpp" line="2422"/>
       <source>Scale</source>
       <translation>Scala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2418"/>
+      <location filename="../../Command.cpp" line="2423"/>
       <source>Scales the selected features or the active body</source>
       <translation>Scala le operazioni selezionate o il corpo attivo</translation>
     </message>
@@ -905,7 +905,7 @@ in modo da evitare l'intersezione automatica.</translation>
       <translation>Crea copia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2514"/>
+      <location filename="../../Command.cpp" line="2519"/>
       <source>Convert to Multi-Transform feature</source>
       <translation>Converti in operazione di trasformazione multipla</translation>
     </message>
@@ -926,13 +926,13 @@ in modo da evitare l'intersezione automatica.</translation>
       <translation>Nuovo schizzo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2611"/>
+      <location filename="../../Command.cpp" line="2616"/>
       <source>Create Boolean</source>
       <translation>Crea pallinatura</translation>
     </message>
     <message>
-      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <location filename="../../CommandBody.cpp" line="221"/>
+      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <source>Add a Body</source>
       <translation>Aggiungi corpo</translation>
     </message>
@@ -3170,11 +3170,11 @@ misurata lungo la direzione specificata</translation>
       <translation>In questo documento non c'è nessun piano valido</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="761"/>
       <location filename="../../Command.cpp" line="1152"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <location filename="../../ViewProvider.cpp" line="137"/>
+      <location filename="../../SketchWorkflow.cpp" line="761"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Nel pannello azioni c'è già una finestra di dialogo aperta</translation>
     </message>
@@ -3219,16 +3219,11 @@ misurata lungo la direzione specificata</translation>
       <translation>Nel documento non è disponibile nessuno schizzo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2206"/>
-      <source>Select only one feature in an active body.</source>
-      <translation>Selezionare una sola funzione in un corpo attivo.</translation>
-    </message>
-    <message>
-      <location filename="../../SketchWorkflow.cpp" line="762"/>
       <location filename="../../Command.cpp" line="1153"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../ViewProvider.cpp" line="138"/>
+      <location filename="../../SketchWorkflow.cpp" line="762"/>
       <source>Close this dialog?</source>
       <translation>Chiudere questa finestra di dialogo?</translation>
     </message>
@@ -3253,6 +3248,11 @@ misurata lungo la direzione specificata</translation>
       <location filename="../../Command.cpp" line="1871"/>
       <source>Shape of the selected part is empty</source>
       <translation>La forma della parte selezionata è vuota</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2206"/>
+      <source>Select only one feature in an active body.</source>
+      <translation>Selezionare una sola funzione in un corpo attivo.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1844"/>
@@ -3511,10 +3511,10 @@ Per i documenti legacy con oggetti Part Design privi di corpo, utilizzare la fun
       <translation>Per poter utilizzare questa funzione essa deve appartenere a un oggetto parte del documento.</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <location filename="../../ViewProvider.cpp" line="94"/>
       <location filename="../../ViewProviderTransformed.cpp" line="67"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <source>Edit %1</source>
       <translation>Edita %1</translation>
     </message>
@@ -3613,7 +3613,7 @@ Comunque si può decidere di migrare in ogni momento con 'Part Design -&gt; Migr
       <translation>Migrazione manuale</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBoolean.cpp" line="70"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="223"/>
       <source>Edit Boolean</source>
       <translation>Modifica booleano</translation>
     </message>
@@ -4450,23 +4450,23 @@ over 90: larger hole radius at the bottom</source>
       <translation>Impossibile eseguire l'operazione booleana con una forma di base non valida</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="600"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
       <location filename="../../../App/FeatureHelix.cpp" line="420"/>
       <location filename="../../../App/FeatureHelix.cpp" line="442"/>
       <location filename="../../../App/FeatureHelix.cpp" line="488"/>
       <location filename="../../../App/FeatureLoft.cpp" line="334"/>
       <location filename="../../../App/FeatureLoft.cpp" line="378"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="600"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Il risultato ha più solidi: abilita 'Consenti Composta' nel corpo attivo.</translation>
     </message>
@@ -4501,10 +4501,10 @@ over 90: larger hole radius at the bottom</source>
       <translation>L'estrusione fusa risultante è nulla.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="371"/>
       <location filename="../../../App/FeaturePipe.cpp" line="592"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="371"/>
       <source>Resulting shape is not a solid</source>
       <translation>La forma risultante non è un solido</translation>
     </message>
@@ -4647,9 +4647,9 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
       <translation>Errore: la faccia deve essere planare</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="499"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2454"/>
       <source>Error: Result is not a solid</source>
       <translation>Errore: il risultato non è un solido</translation>
     </message>
@@ -4802,8 +4802,8 @@ Non è consentito intersecare entità schizzo o più facce in uno schizzo per cr
       <translation>Loft: impossibile creare una faccia dallo schizzo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="304"/>
       <location filename="../../../App/FeaturePipe.cpp" line="500"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="304"/>
       <source>Loft: Failed to create shell</source>
       <translation>Loft: Creazione della shell non riuscita</translation>
     </message>
@@ -4910,14 +4910,14 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
       <translation>Impossibile sottrarre la funzione primitiva senza la funzione di base</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="356"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="356"/>
       <source>Unknown operation type</source>
       <translation>Tipo di operazione sconosciuto</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="364"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="364"/>
       <source>Failed to perform boolean operation</source>
       <translation>Esecuzione dell'operazione booleana non riuscita</translation>
     </message>
@@ -5158,12 +5158,12 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2658"/>
+      <location filename="../../Command.cpp" line="2663"/>
       <source>Create Datum</source>
       <translation>Crea riferimento</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2659"/>
+      <location filename="../../Command.cpp" line="2664"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Crea un oggetto di riferimento o un sistema di coordinate locale</translation>
     </message>
@@ -5171,12 +5171,12 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2693"/>
+      <location filename="../../Command.cpp" line="2698"/>
       <source>Create Datum</source>
       <translation>Crea riferimento</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2694"/>
+      <location filename="../../Command.cpp" line="2699"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Crea un oggetto di riferimento o un sistema di coordinate locale</translation>
     </message>
@@ -5421,14 +5421,6 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
     </message>
   </context>
   <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
-    <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input Error</source>
-      <translation>Errore di input</translation>
-    </message>
-  </context>
-  <context>
     <name>PartDesignGui::TaskFeatureParameters</name>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="138"/>
@@ -5451,6 +5443,14 @@ Adjust the parameters and try again.</source>
       <translation>Impossibile eseguire questa operazione con i parametri specificati.
 La geometria potrebbe non essere valida o i parametri potrebbero essere incompatibili.
 Reimpostare i parametri e riprovare.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>Errore di input</translation>
     </message>
   </context>
 </TS>

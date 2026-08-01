@@ -506,12 +506,13 @@ TaskDlgDressUpParameters::TaskDlgDressUpParameters(ViewProviderDressUp* DressUpV
         // If there is a missing tag on the shadow sub, take a guess at a new name.
         if (boost::starts_with(shadowSub.oldName, Data::MISSING_PREFIX)) {
             Part::Feature::guessNewLink(displayName, base, shadowSub.newName.c_str());
-            newSubList.emplace_back(displayName);
             changed = true;
         }
+        newSubList.emplace_back(displayName);
     }
     if (changed) {
         pcDressUp->Base.setValue(base, newSubList);
+        pcDressUp->recomputeFeature(false);
     }
 }
 

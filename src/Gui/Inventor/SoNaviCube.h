@@ -257,16 +257,20 @@ private:
         bool buttonDirty {true};
         bool labelDirty {true};
         bool axisDirty {true};
-        SbColor buttonsBaseRgb;
-        SbColor buttonsHiliteRgb;
-        SbColor buttonsOutlineRgb;
+        SbColor buttonsBaseRgb {0.0F, 0.0F, 0.0F};
+        SbColor buttonsHiliteRgb {0.0F, 0.0F, 0.0F};
+        SbColor buttonsOutlineRgb {0.0F, 0.0F, 0.0F};
         float buttonsBaseTr {0.0F};
         float buttonsHiliteTr {0.0F};
         float buttonsOutlineTr {0.0F};
         float buttonsLineWidth {0.0F};
-        SbColor labelsRgb;
+        SbColor labelsRgb {0.0F, 0.0F, 0.0F};
         float labelsTr {0.0F};
-        std::array<SbColor, 3> axisRgb;
+        std::array<SbColor, 3> axisRgb {{
+            SbColor(0.0F, 0.0F, 0.0F),
+            SbColor(0.0F, 0.0F, 0.0F),
+            SbColor(0.0F, 0.0F, 0.0F),
+        }};
         float axisTr {0.0F};
         float axisBw {0.0F};
         bool showCS {false};
