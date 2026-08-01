@@ -199,6 +199,10 @@ class MgDyn2Dwriter:
                     )
             self.write.handled(obj)
 
+        for name in bodies:
+            if equation.CalculateJouleHeating:
+                self.write.bodyForce(name, "Joule Heat", True)
+
     def handleMagnetodynamic2DBndConditions(self, equation):
         for obj in self.write.getMember("Fem::ConstraintElectromagnetic"):
             if obj.References:
