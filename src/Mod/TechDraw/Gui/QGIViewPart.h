@@ -130,7 +130,8 @@ public:
     bool isExporting() const;
     bool hideCenterMarks() const;
 
-
+    void setMovableFlag() override;
+    void setMovableFlagProjGroupItem();
 
 protected:
     bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) override;
