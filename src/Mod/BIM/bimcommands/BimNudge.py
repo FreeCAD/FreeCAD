@@ -61,11 +61,14 @@ class BIM_Nudge:
                 nudgeValue = statuswidget.nudge.text().replace("&", "")
                 dist = 0
                 if "auto" in nudgeValue.lower():
-                    viewsize = (
-                        FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
-                        .getViewVolume()
-                        .getWidth()
-                    )
+                    if hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph"):
+                        viewsize = (
+                            FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
+                            .getViewVolume()
+                            .getWidth()
+                        )
+                    else:
+                        viewsize = 4000
                     if viewsize < 250:
                         dist = _NUDGE_DISTANCES[0]
                     elif viewsize < 750:
