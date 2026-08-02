@@ -56,6 +56,13 @@ ConstraintHeatflux::ConstraintHeatflux()
     ADD_PROPERTY_TYPE(CavityRadiation, (false), "ConstraintHeatflux", App::Prop_None, "Cavity radiation");
     ADD_PROPERTY_TYPE(CavityName, ("cav"), "ConstraintHeatflux", App::Prop_None, "Cavity name");
     ADD_PROPERTY_TYPE(
+        ClosedCavity,
+        (false),
+        "ConstraintHeatflux",
+        App::Prop_None,
+        "Use closed cavity radiation"
+    );
+    ADD_PROPERTY_TYPE(
         EnableAmplitude,
         (false),
         "ConstraintHeatflux",

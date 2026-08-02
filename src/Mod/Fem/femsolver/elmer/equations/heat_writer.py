@@ -130,6 +130,19 @@ class Heatwriter:
                         flux = obj.DistributedHeatFlux.getValueAs("W/m^2").Value
                         self.write.boundary(name, "Heat Flux BC", True)
                         self.write.boundary(name, "Heat Flux", flux)
+                    elif obj.ConstraintType == "Radiation":
+                        temp = obj.AmbientTemp.getValueAs("K").Value
+                        self.write.boundary(name, "Emissivity", obj.Emissivity)
+                        if obj.CavityRadiation:
+                            self.write.boundary(name, "Radiation", "Diffuse Gray")
+                            if obj.ClosedCavity:
+                                self.write.boundary(name, "Radiation Boundary Open", False)
+                            else:
+                                self.write.boundary(name, "Radiation Boundary Open", True)
+                                self.write.boundary(name, "External Temperature", temp)
+                        else:
+                            self.write.boundary(name, "Radiation", "Idealized")
+                            self.write.boundary(name, "External Temperature", temp)
                 self.write.handled(obj)
 
     def handleHeatInitial(self, bodies):
