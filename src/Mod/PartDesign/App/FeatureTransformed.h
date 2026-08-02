@@ -48,7 +48,8 @@ public:
     enum class Mode
     {
         Features,
-        WholeShape
+        WholeShape,
+        FeaturesAsShape
     };
 
     Transformed();
