@@ -299,6 +299,11 @@ App::DocumentObjectExecReturn* Transformed::recomputePreview()
     };
 
     switch (mode) {
+        case Mode::FeaturesAsShape:
+            // NOTE: this shows the same as Mode::Feature because to show a more accurate
+            // representation, we'd need to actually compute the boolean operations. Maybe a better
+            // idea would be to make each instance of the features a different color to show that
+            // they are actually independent ?
         case Mode::Features:
             PreviewShape.setValue(makeCompoundOfToolShapes());
             return StdReturn;
@@ -389,9 +394,8 @@ App::DocumentObjectExecReturn* Transformed::execute()
     gp_Trsf trsfInv = supportShape.getShape().Location().Transformation().Inverted();
     supportShape.setTransform(Base::Matrix4D());
 
-    Base::Console().log("Original count: %zu\n", originals.size());
-
-    auto getTransformedCompShape = [&](const Part::TopoShape& supportShape, const Part::TopoShape& origShape) {
+    auto getTransformedCompShape = [&](const Part::TopoShape& supportShape,
+                                       const Part::TopoShape& origShape) {
         std::vector<TopoShape> shapes = {supportShape};
 
         TopoShape shape(origShape);
@@ -399,6 +403,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
         int idx = 1;
         auto transformIter = transformations.cbegin();
 
+        // ignore first instance
         if (transformIter != transformations.end()) {
             transformIter++;
         }
@@ -409,9 +414,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
             }
 
             auto opName = Data::indexSuffix(idx++);
-            shapes.emplace_back(
-                shape.makeElementTransform(*transformIter, opName.c_str())
-            );
+            shapes.emplace_back(shape.makeElementTransform(*transformIter, opName.c_str()));
         }
 
         return shapes;
@@ -471,6 +474,8 @@ App::DocumentObjectExecReturn* Transformed::execute()
         }
 
         case Mode::FeaturesAsShape: {
+            // create a separate shape, apply all the features onto it, then transform it and fuse
+            // it to the supportShape
             Part::TopoShape bodyShape;
             bool first = true;
 
@@ -483,28 +488,30 @@ App::DocumentObjectExecReturn* Transformed::execute()
                     return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
                         "Exception",
                         "Only additive and subtractive features can be transformed"
-                        ));
+                    ));
                 }
 
                 feature->getAddSubShape(addShape, subShape);
 
                 if (addShape.isNull() && subShape.isNull()) {
                     return new App::DocumentObjectExecReturn(
-                        QT_TRANSLATE_NOOP(
-                            "Exception",
-                            "Shape of additive/subtractive feature is empty"
-                            )
-                        );
+                        QT_TRANSLATE_NOOP("Exception", "Shape of additive/subtractive feature is empty")
+                    );
+                }
+
+                gp_Trsf trsf = trsfInv.Multiplied(feature->getLocation().Transformation());
+                if (!addShape.isNull()) {
+                    addShape = addShape.makeElementTransform(trsf);
+                }
+                if (!subShape.isNull()) {
+                    subShape = subShape.makeElementTransform(trsf);
                 }
 
                 if (first) {
                     if (addShape.isNull()) {
                         return new App::DocumentObjectExecReturn(
-                            QT_TRANSLATE_NOOP(
-                                "Exception",
-                                "The first feature must be additive"
-                                )
-                            );
+                            QT_TRANSLATE_NOOP("Exception", "The first feature must be additive")
+                        );
                     }
 
                     bodyShape = addShape;
@@ -515,7 +522,6 @@ App::DocumentObjectExecReturn* Transformed::execute()
                 if (!addShape.isNull()) {
                     bodyShape = bodyShape.makeElementFuse(addShape);
                 }
-
                 if (!subShape.isNull()) {
                     bodyShape = bodyShape.makeElementCut(subShape);
                 }
@@ -546,7 +552,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
         }
     }
 
-    supportShape = refineShapeIfActive((supportShape));
+    supportShape = refineShapeIfActive(supportShape);
 
     this->Shape.setValue(getSolid(supportShape));
     if (singleSolidRuleMode() == SingleSolidRuleMode::Enforced) {
