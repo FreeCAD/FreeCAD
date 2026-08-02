@@ -22,20 +22,19 @@
  *                                                                            *
  ******************************************************************************/
 
-#include <Bnd_Box.hxx>
-#include <BRep_Builder.hxx>
-#include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
-#include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
+#include <BRep_Builder.hxx>
+#include <Bnd_Box.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+#include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 #include <Precision.hxx>
 #include <TopExp_Explorer.hxx>
 
-
+#include <algorithm>
 #include <array>
 #include <unordered_map>
-#include <algorithm>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -43,16 +42,15 @@
 #include <Base/Sequencer.h>
 #include <Mod/Part/App/modelRefine.h>
 
-#include "FeatureTransformed.h"
 #include "Body.h"
 #include "FeatureAddSub.h"
-#include "FeatureMultiTransform.h"
-#include "FeatureMirrored.h"
 #include "FeatureLinearPattern.h"
+#include "FeatureMirrored.h"
+#include "FeatureMultiTransform.h"
 #include "FeaturePolarPattern.h"
 #include "FeatureSketchBased.h"
+#include "FeatureTransformed.h"
 #include "Mod/Part/App/TopoShapeOpCode.h"
-
 
 using namespace PartDesign;
 
@@ -62,7 +60,8 @@ extern bool getPDRefineModelParameter();
 
 PROPERTY_SOURCE(PartDesign::Transformed, PartDesign::FeatureRefine)
 
-std::array<char const*, 3> transformModeEnums = {"Features", "Whole shape", nullptr};
+std::array<char const*, 4> transformModeEnums
+    = {"Features", "Whole shape", "Features as shape", nullptr};
 
 Transformed::Transformed()
 {
@@ -76,7 +75,8 @@ Transformed::Transformed()
 
 void Transformed::positionBySupport()
 {
-    // TODO May be here better to throw exception (silent=false) (2015-07-27, Fat-Zer)
+    // TODO May be here better to throw exception (silent=false) (2015-07-27,
+    // Fat-Zer)
     Part::Feature* support = getBaseObject(/* silent =*/true);
     if (support) {
         this->Placement.setValue(support->Placement.getValue());
@@ -92,8 +92,8 @@ Part::Feature* Transformed::getBaseObject(bool silent) const
 
     const char* err = nullptr;
     const std::vector<App::DocumentObject*>& originals = getOriginals();
-    // NOTE: may be here supposed to be last origin but in order to keep the old behaviour keep here
-    // first
+    // NOTE: may be here supposed to be last origin but in order to keep the old
+    // behaviour keep here first
     App::DocumentObject* firstOriginal = originals.empty() ? nullptr : originals.front();
     if (firstOriginal) {
         rv = freecad_cast<Part::Feature*>(firstOriginal);
@@ -162,8 +162,8 @@ std::vector<App::DocumentObject*> Transformed::getOriginals() const
         return feature != nullptr && feature->Suppressed.getValue();
     };
 
-    // Remove suppressed features from the list so the transformations behave as if they are not
-    // there
+    // Remove suppressed features from the list so the transformations behave as
+    // if they are not there
     auto [first, last] = std::ranges::remove_if(originals, isSuppressed);
     originals.erase(first, last);
 
@@ -201,8 +201,9 @@ void Transformed::Restore(Base::XMLReader& reader)
 
 bool Transformed::isMultiTransformChild() const
 {
-    // Checking for a MultiTransform in the dependency list is not reliable on initialization
-    // because the dependencies are only established after creation.
+    // Checking for a MultiTransform in the dependency list is not reliable on
+    // initialization because the dependencies are only established after
+    // creation.
     /*
     for (auto const* obj : getInList()) {
         auto mt = freecad_cast<PartDesign::MultiTransform*>(obj);
@@ -217,8 +218,9 @@ bool Transformed::isMultiTransformChild() const
     }
     */
 
-    // instead check for default property values because these are invalid for a standalone
-    // transform feature. This will mislabel standalone features during the initialization phase.
+    // instead check for default property values because these are invalid for a
+    // standalone transform feature. This will mislabel standalone features during
+    // the initialization phase.
     if (TransformMode.getValue() == 0 && Originals.getValue().empty()) {
         return true;
     }
@@ -237,8 +239,9 @@ void Transformed::handleChangedPropertyType(
     Base::Type inputType = Base::Type::fromName(TypeName);
     if (auto property = freecad_cast<App::PropertyFloat*>(prop);
         property != nullptr && inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
-        // Do not directly call the property's Restore method in case the implementation
-        // has changed. So, create a temporary PropertyFloat object and assign the value.
+        // Do not directly call the property's Restore method in case the
+        // implementation has changed. So, create a temporary PropertyFloat object
+        // and assign the value.
         App::PropertyFloat floatProp;
         floatProp.Restore(reader);
         property->setValue(floatProp.getValue());
@@ -334,7 +337,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
 
     std::vector<DocumentObject*> originals = getOriginals();
 
-    if (mode == Mode::Features && originals.empty()) {
+    if ((mode == Mode::Features || mode == Mode::FeaturesAsShape) && originals.empty()) {
         return App::DocumentObject::StdReturn;
     }
 
@@ -360,7 +363,8 @@ App::DocumentObjectExecReturn* Transformed::execute()
     }
 
     if (transformations.empty()) {
-        return App::DocumentObject::StdReturn;  // No transformations defined, exit silently
+        return App::DocumentObject::StdReturn;  // No transformations defined, exit
+                                                // silently
     }
 
     // Get the support
@@ -382,39 +386,50 @@ App::DocumentObjectExecReturn* Transformed::execute()
 
     // create an untransformed copy of the support shape
     Part::TopoShape supportShape(supportTopShape);
-
     gp_Trsf trsfInv = supportShape.getShape().Location().Transformation().Inverted();
-
     supportShape.setTransform(Base::Matrix4D());
 
-    auto getTransformedCompShape = [&](const auto& supportShape, const auto& origShape) {
+    Base::Console().log("Original count: %zu\n", originals.size());
+
+    auto getTransformedCompShape = [&](const Part::TopoShape& supportShape, const Part::TopoShape& origShape) {
         std::vector<TopoShape> shapes = {supportShape};
+
         TopoShape shape(origShape);
+
         int idx = 1;
         auto transformIter = transformations.cbegin();
-        transformIter++;
+
+        if (transformIter != transformations.end()) {
+            transformIter++;
+        }
+
         for (; transformIter != transformations.end(); transformIter++) {
             if (Base::Sequencer().wasCanceled()) {
                 return std::vector<TopoShape>();
             }
+
             auto opName = Data::indexSuffix(idx++);
-            shapes.emplace_back(shape.makeElementTransform(*transformIter, opName.c_str()));
+            shapes.emplace_back(
+                shape.makeElementTransform(*transformIter, opName.c_str())
+            );
         }
+
         return shapes;
     };
 
     switch (mode) {
-        case Mode::Features:
-            // NOTE: It would be possible to build a compound from all original addShapes/subShapes
-            // and then transform the compounds as a whole. But we choose to apply the
-            // transformations to each Original separately. This way it is easier to discover what
-            // feature causes a fuse/cut to fail. The downside is that performance suffers when
-            // there are many originals. But it seems safe to assume that in most cases there are
-            // few originals and many transformations
+        case Mode::Features: {
+            // NOTE: It would be possible to build a compound from all original
+            // addShapes/subShapes and then transform the compounds as a whole. But we
+            // choose to apply the transformations to each Original separately. This way
+            // it is easier to discover what feature causes a fuse/cut to fail. The
+            // downside is that performance suffers when there are many originals. But
+            // it seems safe to assume that in most cases there are few originals and
+            // many transformations
             for (auto original : originals) {
                 // Extract the original shape and determine whether to cut or to fuse
-                Part::TopoShape fuseShape;
-                Part::TopoShape cutShape;
+                Part::TopoShape addShape;
+                Part::TopoShape subShape;
 
                 auto feature = freecad_cast<PartDesign::FeatureAddSub*>(original);
                 if (!feature) {
@@ -424,28 +439,28 @@ App::DocumentObjectExecReturn* Transformed::execute()
                     ));
                 }
 
-                feature->getAddSubShape(fuseShape, cutShape);
-                if (fuseShape.isNull() && cutShape.isNull()) {
+                feature->getAddSubShape(addShape, subShape);
+                if (addShape.isNull() && subShape.isNull()) {
                     return new App::DocumentObjectExecReturn(
                         QT_TRANSLATE_NOOP("Exception", "Shape of additive/subtractive feature is empty")
                     );
                 }
                 gp_Trsf trsf = trsfInv.Multiplied(feature->getLocation().Transformation());
-                if (!fuseShape.isNull()) {
-                    fuseShape = fuseShape.makeElementTransform(trsf);
+                if (!addShape.isNull()) {
+                    addShape = addShape.makeElementTransform(trsf);
                 }
-                if (!cutShape.isNull()) {
-                    cutShape = cutShape.makeElementTransform(trsf);
+                if (!subShape.isNull()) {
+                    subShape = subShape.makeElementTransform(trsf);
                 }
-                if (!fuseShape.isNull()) {
-                    auto shapes = getTransformedCompShape(supportShape, fuseShape);
+                if (!addShape.isNull()) {
+                    auto shapes = getTransformedCompShape(supportShape, addShape);
                     if (Base::Sequencer().wasCanceled()) {
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
                     supportShape.makeElementFuse(shapes);
                 }
-                if (!cutShape.isNull()) {
-                    auto shapes = getTransformedCompShape(supportShape, cutShape);
+                if (!subShape.isNull()) {
+                    auto shapes = getTransformedCompShape(supportShape, subShape);
                     if (Base::Sequencer().wasCanceled()) {
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
@@ -453,6 +468,74 @@ App::DocumentObjectExecReturn* Transformed::execute()
                 }
             }
             break;
+        }
+
+        case Mode::FeaturesAsShape: {
+            Part::TopoShape bodyShape;
+            bool first = true;
+
+            for (auto original : originals) {
+                Part::TopoShape addShape;
+                Part::TopoShape subShape;
+
+                auto feature = freecad_cast<PartDesign::FeatureAddSub*>(original);
+                if (!feature) {
+                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                        "Exception",
+                        "Only additive and subtractive features can be transformed"
+                        ));
+                }
+
+                feature->getAddSubShape(addShape, subShape);
+
+                if (addShape.isNull() && subShape.isNull()) {
+                    return new App::DocumentObjectExecReturn(
+                        QT_TRANSLATE_NOOP(
+                            "Exception",
+                            "Shape of additive/subtractive feature is empty"
+                            )
+                        );
+                }
+
+                if (first) {
+                    if (addShape.isNull()) {
+                        return new App::DocumentObjectExecReturn(
+                            QT_TRANSLATE_NOOP(
+                                "Exception",
+                                "The first feature must be additive"
+                                )
+                            );
+                    }
+
+                    bodyShape = addShape;
+                    first = false;
+                    continue;
+                }
+
+                if (!addShape.isNull()) {
+                    bodyShape = bodyShape.makeElementFuse(addShape);
+                }
+
+                if (!subShape.isNull()) {
+                    bodyShape = bodyShape.makeElementCut(subShape);
+                }
+
+                if (Base::Sequencer().wasCanceled()) {
+                    return new App::DocumentObjectExecReturn("User aborted");
+                }
+            }
+
+            auto shapes = getTransformedCompShape(supportShape, bodyShape);
+
+            if (Base::Sequencer().wasCanceled()) {
+                return new App::DocumentObjectExecReturn("User aborted");
+            }
+
+            supportShape.makeElementFuse(shapes);
+
+            break;
+        }
+
         case Mode::WholeShape: {
             auto shapes = getTransformedCompShape(supportShape, supportShape);
             if (Base::Sequencer().wasCanceled()) {
