@@ -1996,6 +1996,11 @@ void OverlayTabWidget::onSplitterResize(int index)
     }
 
     saveTabs();
+    // A splitter resize can change the source pixmap used by the overlay
+    // graphics effect without causing a repaint of the affected dock widget.
+    // Schedule a refresh so a collapsed dock cannot leave stale pixels over
+    // the view when transparency is re-enabled.
+    scheduleRepaint();
 }
 
 void OverlayTabWidget::onCurrentChanged(int index)
