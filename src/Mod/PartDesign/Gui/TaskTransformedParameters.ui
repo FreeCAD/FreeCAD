@@ -16,6 +16,9 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QWidget" name="widget" native="true">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <property name="leftMargin">
        <number>0</number>
@@ -46,6 +49,16 @@
        <widget class="QRadioButton" name="radioTransformToolShapes">
         <property name="text">
          <string>Transform tool shapes</string>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">buttonGroupMode</string>
+        </attribute>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioTransformToolShapesAsBody">
+        <property name="text">
+         <string>Transform tool shapes as body</string>
         </property>
         <attribute name="buttonGroup">
          <string notr="true">buttonGroupMode</string>
