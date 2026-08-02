@@ -326,7 +326,7 @@ void PagePrinter::renderPage(ViewProviderPage* vpp, QPainter& painter, QRectF& s
 
 
 /// print the Page associated with the view provider
-void PagePrinter::print(ViewProviderPage* vpPage, QPrinter* printer, bool isPreview)
+void PagePrinter::print(ViewProviderPage* vpPage, QPrinter* printer)
 {
     QPageLayout pageLayout = printer->pageLayout();
 
