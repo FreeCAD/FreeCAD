@@ -561,10 +561,10 @@ void EditModeCoinManager::ParameterObserver::initParameters()
         {"AxisLineWidth",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              // TODO: Consider if it's necessary to extract & define a named function just for this
-             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                 "User parameter:BaseApp/Preferences/View"
-             );
-             drawingParameters.AxisLineWidth = hGrp->GetFloat(param.c_str(), 2.0F);
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Mod/Sketcher/View"
+            );
+            drawingParameters.AxisLineWidth = hGrp->GetFloat(param.c_str(), 2.0F);
          }},
         {"EdgePattern",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
@@ -589,6 +589,10 @@ void EditModeCoinManager::ParameterObserver::initParameters()
         {"InformationPattern",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updatePattern(drawingParameters.InformationPattern, param, 0b1111110011111100);
+         }},
+         {"AxisLinePattern",
+         [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
+             updatePattern(drawingParameters.AxisLinePattern, param, 0b1111111111111111);
          }},
         {"EditedEdgeColor",
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {
@@ -2228,6 +2232,9 @@ void EditModeCoinManager::updateInventorNodeSizes()
         * drawingParameters.pixelScalingFactor;
     editModeScenegraphNodes.RootCrossDrawStyleOccluded->lineWidth = drawingParameters.AxisLineWidth
         * drawingParameters.pixelScalingFactor;
+
+    editModeScenegraphNodes.RootCrossDrawStyle->linePattern = drawingParameters.AxisLinePattern;
+
     editModeScenegraphNodes.OriginPointDrawStyleOccluded->pointSize = 8
         * drawingParameters.pixelScalingFactor;
     editModeScenegraphNodes.EditCurvesDrawStyle->lineWidth = 3 * drawingParameters.pixelScalingFactor;
@@ -2268,6 +2275,7 @@ void EditModeCoinManager::updateInventorPatterns()
     editModeScenegraphNodes.CurvesExternalDefiningDrawStyle->linePattern
         = drawingParameters.ExternalDefiningPattern;
     editModeScenegraphNodes.InformationDrawStyle->linePattern = drawingParameters.InformationPattern;
+    editModeScenegraphNodes.RootCrossDrawStyle->linePattern = drawingParameters.AxisLinePattern;
 }
 
 void EditModeCoinManager::updateInventorColors()

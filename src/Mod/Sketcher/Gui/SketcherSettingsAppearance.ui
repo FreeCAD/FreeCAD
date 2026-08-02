@@ -36,25 +36,25 @@
          </widget>
         </item>
         <item row="3" column="1">
-         <widget class="Gui::PrefColorButton" name="CreateLineColor">
-          <property name="toolTip">
-           <string>Color used while new sketch elements are created</string>
-          </property>
-          <property name="color" stdset="0">
-           <color>
-            <red>127</red>
-            <green>127</green>
-            <blue>127</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>CreateLineColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
+       <widget class="Gui::PrefColorButton" name="CreateLineColor">
+        <property name="toolTip">
+         <string>Color used while new sketch elements are created</string>
+        </property>
+        <property name="color" stdset="0">
+         <color>
+          <red>127</red>
+          <green>127</green>
+          <blue>127</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>CreateLineColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
         <item row="3" column="2">
          <spacer name="horizontalSpacer_2">
           <property name="orientation">
@@ -69,65 +69,65 @@
          </spacer>
         </item>
         <item row="4" column="0">
-         <widget class="QLabel" name="label_5">
-          <property name="minimumSize">
-           <size>
-            <width>200</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Coordinate text</string>
-          </property>
-         </widget>
-        </item>
+       <widget class="QLabel" name="label_5">
+        <property name="minimumSize">
+         <size>
+          <width>200</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Coordinate text</string>
+        </property>
+       </widget>
+      </item>
         <item row="4" column="1">
-         <widget class="Gui::PrefColorButton" name="CursorTextColor">
-          <property name="toolTip">
-           <string>Text color of the coordinates</string>
-          </property>
-          <property name="color" stdset="0">
-           <color>
-            <red>0</red>
-            <green>0</green>
-            <blue>255</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>CursorTextColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
+       <widget class="Gui::PrefColorButton" name="CursorTextColor">
+        <property name="toolTip">
+         <string>Text color of the coordinates</string>
+        </property>
+        <property name="color" stdset="0">
+         <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>255</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>CursorTextColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
         <item row="5" column="0">
-         <widget class="QLabel" name="label_19">
-          <property name="text">
-           <string>Cursor crosshair</string>
-          </property>
-         </widget>
-        </item>
+       <widget class="QLabel" name="label_19">
+        <property name="text">
+         <string>Cursor crosshair</string>
+        </property>
+       </widget>
+      </item>
         <item row="5" column="1">
-         <widget class="Gui::PrefColorButton" name="CursorCrosshairColor">
-          <property name="toolTip">
-           <string>Color of the crosshair cursor</string>
-          </property>
-          <property name="color" stdset="0">
-           <color>
-            <red>255</red>
-            <green>255</green>
-            <blue>255</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>CursorCrosshairColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
+       <widget class="Gui::PrefColorButton" name="CursorCrosshairColor">
+        <property name="toolTip">
+         <string>Color of the crosshair cursor</string>
+        </property>
+        <property name="color" stdset="0">
+         <color>
+          <red>255</red>
+          <green>255</green>
+          <blue>255</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>CursorCrosshairColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
         </layout>
       </item>
      </layout>
@@ -804,6 +804,54 @@
         </property>
        </widget>
       </item>
+      <item row="16" column="0">
+       <widget class="QLabel" name="label_axislines">
+        <property name="text">
+         <string>Sketcher axes</string>
+        </property>
+       </widget>
+      </item>
+      <item row="16" column="3">
+       <widget class="QComboBox" name="AxisLinePattern">
+        <property name="toolTip">
+         <string>Line pattern of sketcher axes</string>
+        </property>
+        <property name="currentIndex">
+         <number>-1</number>
+        </property>
+       </widget>
+      </item>
+      <item row="16" column="4">
+       <widget class="Gui::PrefDoubleSpinBox" name="FloatSpinBox_AxisLineWidth">
+        <property name="toolTip">
+         <string>Width of the sketcher axes</string>
+        </property>
+        <property name="inputMethodHints">
+         <set>Qt::ImhPreferNumbers</set>
+        </property>
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="minimum">
+         <double>0.500000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>9.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AxisLineWidth</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/View</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -1108,6 +1156,11 @@
   <customwidget>
    <class>Gui::PrefSpinBox</class>
    <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
