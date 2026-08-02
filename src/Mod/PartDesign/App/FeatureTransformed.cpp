@@ -369,6 +369,11 @@ App::DocumentObjectExecReturn* Transformed::recomputePreview()
     };
 
     switch (mode) {
+        case Mode::FeaturesAsShape:
+            // NOTE: this shows the same as Mode::Feature because to show a more accurate
+            // representation, we'd need to actually compute the boolean operations. Maybe a better
+            // idea would be to make each instance of the features a different color to show that
+            // they are actually independent ?
         case Mode::Features:
             PreviewShape.setValue(makeCompoundOfToolShapes());
             return StdReturn;
@@ -599,6 +604,8 @@ App::DocumentObjectExecReturn* Transformed::execute()
         }
 
         case Mode::FeaturesAsShape: {
+            // create a separate shape, apply all the features onto it, then transform it and fuse
+            // it to the supportShape
             Part::TopoShape bodyShape;
             bool first = true;
 
@@ -637,7 +644,6 @@ App::DocumentObjectExecReturn* Transformed::execute()
                 if (!addShape.isNull()) {
                     bodyShape = bodyShape.makeElementFuse(addShape);
                 }
-
                 if (!subShape.isNull()) {
                     bodyShape = bodyShape.makeElementCut(subShape);
                 }
