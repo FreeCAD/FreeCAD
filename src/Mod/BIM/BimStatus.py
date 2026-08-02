@@ -50,26 +50,25 @@ def _get_nudge_tooltip():
         "BIM_Nudge_Shrink",
         "BIM_Nudge_Switch",
     ]
-    shortcuts = {}
+    shortcuts = []
     for nudge_command in nudge_commands:
         shortcut = FreeCADGui.CommandAction(nudge_command).getCommand().getShortcut()
-        if not shortcut:
-            shortcut = "?"
-        shortcuts[nudge_command] = shortcut
-    return translate(
+        shortcuts.append(shortcut if shortcut else "?")
+
+    #: BIM: tooltip for the status bar nudge widget, %1-%9 are keyboard shortcuts
+    tooltip = translate(
         "BIM",
-        "The value of the nudge movement (rotation is always 45°)."
-        "\nNudge shortcuts:"
-        f"\n{shortcuts['BIM_Nudge_Up']} to move up, "
-        f"{shortcuts['BIM_Nudge_Down']} to move down."
-        f"\n{shortcuts['BIM_Nudge_Left']} to move left, "
-        f"{shortcuts['BIM_Nudge_Right']} to move right."
-        f"\n{shortcuts['BIM_Nudge_RotateLeft']} to rotate left, "
-        f"{shortcuts['BIM_Nudge_RotateRight']} to rotate right."
-        f"\n{shortcuts['BIM_Nudge_Extend']} to extend height, "
-        f"{shortcuts['BIM_Nudge_Shrink']} to shrink height."
-        f"\n{shortcuts['BIM_Nudge_Switch']} to switch between auto and manual mode.",
+        "The value of the nudge movement (rotation is always 45°).\n"
+        "Nudge shortcuts:\n"
+        "%1 to move up, %2 to move down.\n"
+        "%3 to move left, %4 to move right.\n"
+        "%5 to rotate left, %6 to rotate right.\n"
+        "%7 to extend height, %8 to shrink height.\n"
+        "%9 to switch between auto and manual mode.",
     )
+    for index, shortcut in enumerate(shortcuts, start=1):
+        tooltip = tooltip.replace(f"%{index}", shortcut)
+    return tooltip
 
 
 def setStatusIcons(show=True):
