@@ -98,10 +98,11 @@ def setStatusIcons(show=True):
             # center the dialog over FreeCAD window
             mw = FreeCADGui.getMainWindow()
             form.move(mw.frameGeometry().topLeft() + mw.rect().center() - form.rect().center())
+            form.spinBox.setProperty("rawValue", BimNudge.BIM_Nudge().getNudgeValue("dist"))
             result = form.exec_()
             if not result:
                 return
-            utext = form.inputField.text()
+            utext = form.spinBox.text()
         action.parent().parent().parent().setText(utext)
 
     # main code
