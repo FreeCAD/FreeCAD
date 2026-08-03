@@ -307,7 +307,7 @@ StdCmdSendToPythonConsole::StdCmdSendToPythonConsole()
 bool StdCmdSendToPythonConsole::isActive()
 {
     // active only if at least 1 object is selected
-    return Gui::Selection().getSelectionEx().size();
+    return Gui::Selection().hasSelection();
 }
 
 void StdCmdSendToPythonConsole::activated(int iMsg)
@@ -328,8 +328,8 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
     cmd = QStringLiteral("objs, shps, subs, names = [], [], [], []");
     Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
     const App::DocumentObject* obj;
-    for (int i = 0; i < (int)sels.size(); i++) {
-        obj = sels[i].getObject();
+    for (const auto& sel : sels) {
+        obj = sel.getObject();
         if (!obj) {
             continue;
         }
@@ -362,8 +362,8 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
                     Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
                     cmd = QStringLiteral("shps.append(shp)");
                     Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
-                    if (sels[i].hasSubNames()) {
-                        std::vector<std::string> subnames = sels[i].getSubNames();
+                    if (sel.hasSubNames()) {
+                        std::vector<std::string> subnames = sel.getSubNames();
                         if (subnames.size()) {
                             std::ostringstream strm;
                             strm << "names = [";
@@ -384,17 +384,17 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
                     }
                 }
             }
-            // show the python console if it's not already visible, and set the keyboard focus to it
-            QWidget* pc = DockWindowManager::instance()->getDockWindow("Python console");
-            auto pcPython = qobject_cast<PythonConsole*>(pc);
-            if (pcPython) {
-                DockWindowManager::instance()->activate(pcPython);
-                pcPython->setFocus();
-            }
         }
         catch (const Base::Exception& e) {
             e.reportException();
         }
+    }
+    // show the python console if it's not already visible, and set the keyboard focus to it
+    QWidget* pc = DockWindowManager::instance()->getDockWindow("Python console");
+    auto pcPython = qobject_cast<PythonConsole*>(pc);
+    if (pcPython) {
+        DockWindowManager::instance()->activate(pcPython);
+        pcPython->setFocus();
     }
 }
 
