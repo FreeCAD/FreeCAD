@@ -151,6 +151,7 @@ public:
     /// utility function to swap the index in elements of the provided constraint from the
     /// fromGeoId GeoId to toGeoId
     void substituteIndex(int fromGeoId, int toGeoId);
+
     /// utility function to swap the index and position in elements of the provided
     /// constraint from {fromGeoId, fromPosId} to {toGeoId, toPosId}.
     void substituteIndexAndPos(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId);
@@ -160,6 +161,10 @@ public:
 
     /// utility function to check if (`geoId`, `posId`) is one of the points/curves
     bool involvesGeoIdAndPosId(int geoId, PointPos posId) const;
+
+    std::string toString() const;
+
+    std::string elementsToString() const;
 
     std::string typeToString() const
     {
@@ -276,7 +281,7 @@ public:
 
 private:
     // New way to access point ids and positions.
-    // While the old way is still supported, it is recommended to the getters and setters instead.
+    // While the old way is still supported, it is recommended to use the getters and setters instead.
     std::vector<GeoElementId> elements {GeoElementId(), GeoElementId(), GeoElementId()};
 
 protected:

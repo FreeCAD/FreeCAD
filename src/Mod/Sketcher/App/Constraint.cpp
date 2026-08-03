@@ -34,7 +34,9 @@
 #include "nlohmann/json.hpp"
 
 #include <fmt/ranges.h>
+#include <fmt/format.h>
 
+#include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
@@ -355,6 +357,32 @@ void Constraint::substituteIndexAndPos(int fromGeoId, PointPos fromPosId, int to
         }
     }
 #endif
+}
+
+std::string Constraint::toString() const
+{
+    return fmt::format(
+        "Type={}, IntAlignType={}, Elements={}",
+        this->typeToString(),
+        this->internalAlignmentTypeToString(),
+        this->elementsToString()
+    );
+}
+
+std::string Constraint::elementsToString() const
+{
+#if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
+    auto elements = std::views::iota(size_t {0}, this->elements.size())
+        | std::views::transform([&](size_t i) { return getElement(i); });
+#endif
+
+    return fmt::format(
+        "[{}]",
+        fmt::join(
+            elements | std::views::transform([](const auto& element) { return element.toString(); }),
+            ", "
+        )
+    );
 }
 
 std::string Constraint::typeToString(ConstraintType type)
