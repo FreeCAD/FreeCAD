@@ -299,10 +299,13 @@ class Writer:
                 else:
                     activeIn = self.getAllBodies()
                 solverSection = ELW.getElasticitySolver(equation)
+                solverEigenSection = ELW.getEigenSolver(equation)
                 for body in activeIn:
                     if not self.isBodyMaterialFluid(body):
                         self._addSolver(body, solverSection)
                         ELW.handleElasticityEquation(activeIn, equation)
+                        if solverEigenSection is not None:
+                            self._addSolver(body, solverEigenSection)
         if activeIn:
             ELW.handleElasticityConstants()
             ELW.handleElasticityBndConditions()
@@ -665,6 +668,20 @@ class Writer:
 
     def getMesh(self):
         return membertools.get_mesh_to_solve(self.analysis)
+
+    def getCoordSystemDimension(self):
+        dim = 0
+        match self.solver.CoordinateSystem:
+            case "Cartesian":
+                # defined by the mesh
+                dim = self.getMeshDimension()
+            case "Cartesian 1D":
+                dim = 1
+            case "Cartesian 2D" | "Polar 2D" | "Cylindric Symmetric" | "Axi Symmetric":
+                dim = 2
+            case "Cartesian 3D" | "Polar 3D" | "Cylindric":
+                dim = 3
+        return dim
 
     def _addOutputSolver(self):
         s = sifio.createSection(sifio.SOLVER)

@@ -30,12 +30,12 @@
   <context>
     <name>Assembly_SolveAssembly</name>
     <message>
-      <location filename="../../../CommandSolveAssembly.py" line="49"/>
+      <location filename="../../../CommandSolveAssembly.py" line="48"/>
       <source>Solve Assembly</source>
       <translation>சட்டசபையை தீர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../../CommandSolveAssembly.py" line="54"/>
+      <location filename="../../../CommandSolveAssembly.py" line="53"/>
       <source>Solves the currently active assembly.</source>
       <translation>தற்போது செயலில் உள்ள சட்டசபையை தீர்க்கிறது.</translation>
     </message>
@@ -43,7 +43,7 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../../InitGui.py" line="84"/>
+      <location filename="../../../InitGui.py" line="82"/>
       <source>Assembly</source>
       <translation type="unfinished">Assembly</translation>
     </message>
@@ -86,17 +86,17 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="122"/>
+      <location filename="../../../InitGui.py" line="120"/>
       <source>Assembly</source>
       <translation>தொகுப்பு</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="123"/>
+      <location filename="../../../InitGui.py" line="121"/>
       <source>Assembly Joints</source>
       <translation>பேரவை மூட்டுகள்</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="126"/>
+      <location filename="../../../InitGui.py" line="124"/>
       <source>&amp;Assembly</source>
       <translation>&amp;சட்டசபை</translation>
     </message>
@@ -527,37 +527,37 @@ SLOPE ஆனது 0 மற்றும் H1 மற்றும் H2 இலி
       <translation type="unfinished">Unknown video export format</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="170"/>
+      <location filename="../../../InitGui.py" line="168"/>
       <source>Create</source>
       <translation>உருவாக்கு</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="186"/>
+      <location filename="../../../InitGui.py" line="184"/>
       <source>Activate</source>
       <translation>செயல்படுத்து</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="220"/>
+      <location filename="../../../InitGui.py" line="218"/>
       <source>Insert</source>
       <translation>செருகவும்</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="231"/>
+      <location filename="../../../InitGui.py" line="229"/>
       <source>Grounding</source>
       <translation>நிலமிடுதல்</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="258"/>
+      <location filename="../../../InitGui.py" line="256"/>
       <source>Constraints</source>
       <translation>கட்டுப்பாடுகள்</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="274"/>
+      <location filename="../../../InitGui.py" line="272"/>
       <source>Tools</source>
       <translation>கருவிகள்</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="287"/>
+      <location filename="../../../InitGui.py" line="285"/>
       <source>Simulation</source>
       <translation>உருவகப்படுத்துதல்</translation>
     </message>
@@ -1036,12 +1036,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointScrew</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="318"/>
+      <location filename="../../../CommandCreateJoint.py" line="317"/>
       <source>Screw Joint</source>
       <translation>திருகு கூட்டு</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="324"/>
+      <location filename="../../../CommandCreateJoint.py" line="323"/>
       <source>&lt;p&gt;Creates a screw joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</source>
       <translation>&lt;p&gt;Creates a screw மூட்டு that links a பகுதி with a slider மூட்டு பெறுநர் a பகுதி with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same ஆயம் systems அச் the revolute and slider joints. சுருதி ஆரம் சுழலும் திருகுக்கும் நெகிழ் பகுதிக்கும் இடையே உள்ள இயக்க விகிதத்தை வரையறுக்கிறது.&lt;/p&gt;</translation>
     </message>
@@ -1049,12 +1049,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointGearBelt</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="391"/>
+      <location filename="../../../CommandCreateJoint.py" line="390"/>
       <source>Gears/Belt Joint</source>
       <translation>கியர்ச்/பெல்ட் கூட்டு</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="396"/>
+      <location filename="../../../CommandCreateJoint.py" line="395"/>
       <source>&lt;p&gt;Creates a gears or belt joint that links 2 rotating gears together&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
       <translation>&lt;p&gt;2 சுழலும் கியர்களை ஒன்றாக இணைக்கும் கியர்கள் அல்லது பெல்ட் கூட்டு உருவாக்குகிறது&lt;/p&gt;&lt;p&gt;ரிவால்யூட் மூட்டுகளின் அதே ஒருங்கிணைப்பு அமைப்புகளைத் தேர்ந்தெடுக்கவும்.&lt;/p&gt;</translation>
     </message>
@@ -1351,12 +1351,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointFixed</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="77"/>
+      <location filename="../../../CommandCreateJoint.py" line="76"/>
       <source>Fixed Joint</source>
       <translation>நிலையான கூட்டு</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="83"/>
+      <location filename="../../../CommandCreateJoint.py" line="82"/>
       <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
       <translation>&lt;p&gt;1 - ஒரு அசெம்பிளி செயலில் இருந்தால் : இரண்டு பகுதிகளை ஒன்றாகப் பூட்டி, எந்த இயக்கத்தையும் அல்லது சுழற்சியையும் தடுக்கும் ஒரு கூட்டு உருவாக்குகிறது&lt;/p&gt;&lt;p&gt;2 - ஒரு பகுதி செயலில் இருந்தால்: தேர்ந்தெடுக்கப்பட்ட ஒருங்கிணைப்பு அமைப்புகளைப் பொருத்துவதன் மூலம் துணைப் பகுதிகளை நிலைநிறுத்துகிறது. தேர்ந்தெடுக்கப்பட்ட இரண்டாவது பகுதி நகரும்.&lt;/p&gt;</translation>
     </message>
@@ -1364,12 +1364,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointRevolute</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="104"/>
+      <location filename="../../../CommandCreateJoint.py" line="103"/>
       <source>Revolute Joint</source>
       <translation>Revolute கூட்டு</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="109"/>
+      <location filename="../../../CommandCreateJoint.py" line="108"/>
       <source>Creates a revolute joint allowing rotation around a single axis between selected parts</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பகுதிகளுக்கு இடையில் ஒற்றை அச்சில் சுழல அனுமதிக்கும் ஒரு சுழல் கூட்டு உருவாக்குகிறது</translation>
     </message>
@@ -1377,12 +1377,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointCylindrical</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="127"/>
+      <location filename="../../../CommandCreateJoint.py" line="126"/>
       <source>Cylindrical Joint</source>
       <translation>உருளை கூட்டு</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="132"/>
+      <location filename="../../../CommandCreateJoint.py" line="131"/>
       <source>Creates a cylindrical joint that allows rotation around and translation along a single axis between assembled parts</source>
       <translation>ஒரு உருளை மூட்டை உருவாக்குகிறது, அது சுற்றிச் சுழலவும், கூடியிருந்த பகுதிகளுக்கு இடையே ஒற்றை அச்சில் மொழிபெயர்க்கவும் அனுமதிக்கிறது.</translation>
     </message>
@@ -1390,12 +1390,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointSlider</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="150"/>
+      <location filename="../../../CommandCreateJoint.py" line="149"/>
       <source>Slider Joint</source>
       <translation>ச்லைடர் கூட்டு</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="155"/>
+      <location filename="../../../CommandCreateJoint.py" line="154"/>
       <source>Creates a slider joint that allows linear movement along a single axis, but restricts rotation between selected parts</source>
       <translation>ஒற்றை அச்சில் நேரியல் இயக்கத்தை அனுமதிக்கும் ச்லைடர் கூட்டு உருவாக்குகிறது, ஆனால் தேர்ந்தெடுக்கப்பட்ட பகுதிகளுக்கு இடையே சுழற்சியை கட்டுப்படுத்துகிறது</translation>
     </message>
@@ -1403,12 +1403,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointBall</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="173"/>
+      <location filename="../../../CommandCreateJoint.py" line="172"/>
       <source>Ball Joint</source>
       <translation>பந்துமூட்டு</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="178"/>
+      <location filename="../../../CommandCreateJoint.py" line="177"/>
       <source>Creates a ball joint that connects parts at a point, allowing unrestricted movement as long as the connection points remain in contact</source>
       <translation>ஒரு புள்ளியில் பகுதிகளை இணைக்கும் ஒரு பந்து கூட்டு உருவாக்குகிறது, இணைப்பு புள்ளிகள் தொடர்பில் இருக்கும் வரை கட்டுப்பாடற்ற இயக்கத்தை அனுமதிக்கிறது</translation>
     </message>
@@ -1416,12 +1416,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointDistance</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="196"/>
+      <location filename="../../../CommandCreateJoint.py" line="195"/>
       <source>Distance Joint</source>
       <translation>தொலைவு கூட்டு</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="203"/>
+      <location filename="../../../CommandCreateJoint.py" line="202"/>
       <source>&lt;p&gt;Creates a distance joint that fixes the distance between the selected objects&lt;/p&gt;&lt;p&gt;Creates one of several different joints based on the selection. For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.&lt;/p&gt;</source>
       <translation>&lt;p&gt;தேர்ந்தெடுக்கப்பட்ட பொருட்களுக்கு இடையே உள்ள தூரத்தை நிர்ணயிக்கும் தொலைதூர இணைப்பை உருவாக்குகிறது&lt;/p&gt;&lt;p&gt;தேர்வின் அடிப்படையில் பல்வேறு மூட்டுகளில் ஒன்றை உருவாக்குகிறது. எடுத்துக்காட்டாக, ஒரு விமானத்திற்கும் சிலிண்டருக்கும் இடையே 0 தூரம் ஒரு தொடு இணைப்பு உருவாக்குகிறது. விமானங்களுக்கு இடையே உள்ள 0 தூரம் அவற்றை இணைத் திட்டமாக மாற்றும்.&lt;/p&gt;</translation>
     </message>
@@ -1429,12 +1429,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointParallel</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="221"/>
+      <location filename="../../../CommandCreateJoint.py" line="220"/>
       <source>Parallel Joint</source>
       <translation>இணை கூட்டு</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="226"/>
+      <location filename="../../../CommandCreateJoint.py" line="225"/>
       <source>Creates a parallel joint that makes the Z-axis of the selected coordinate systems parallel</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட ஒருங்கிணைப்பு அமைப்புகளின் Z- அச்சை இணையாக மாற்றும் இணை கூட்டு உருவாக்குகிறது</translation>
     </message>
@@ -1442,12 +1442,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointPerpendicular</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="246"/>
+      <location filename="../../../CommandCreateJoint.py" line="245"/>
       <source>Perpendicular Joint</source>
       <translation>செங்குத்து கூட்டு</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="251"/>
+      <location filename="../../../CommandCreateJoint.py" line="250"/>
       <source>Creates a perpendicular joint that makes the Z-axis of the selected coordinate systems perpendicular</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட ஒருங்கிணைப்பு அமைப்புகளின் Z- அச்சை செங்குத்தாக உருவாக்கும் செங்குத்து கூட்டு உருவாக்குகிறது</translation>
     </message>
@@ -1455,12 +1455,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointAngle</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="269"/>
+      <location filename="../../../CommandCreateJoint.py" line="268"/>
       <source>Angle Joint</source>
       <translation>கோண கூட்டு</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="274"/>
+      <location filename="../../../CommandCreateJoint.py" line="273"/>
       <source>Creates an angle joint that fixes the angle between the Z-axis of the selected coordinate systems</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட ஒருங்கிணைப்பு அமைப்புகளின் Z- அச்சுக்கு இடையே உள்ள கோணத்தை சரிசெய்யும் ஒரு கோண கூட்டு உருவாக்குகிறது</translation>
     </message>
@@ -1468,12 +1468,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointRackPinion</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="294"/>
+      <location filename="../../../CommandCreateJoint.py" line="293"/>
       <source>Rack and Pinion Joint</source>
       <translation>ரேக் மற்றும் பினியன் கூட்டு</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="300"/>
+      <location filename="../../../CommandCreateJoint.py" line="299"/>
       <source>&lt;p&gt;Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</source>
       <translation>&lt;p&gt;ஒரு ச்லைடர் கூட்டுடன் ஒரு பகுதியை இணைக்கும் ஒரு ரேக் மற்றும் பினியன் கூட்டு உருவாக்குகிறது. பிட்ச் ஆரம் ரேக் மற்றும் பினியனுக்கு இடையே உள்ள இயக்க விகிதத்தை வரையறுக்கிறது.&lt;/p&gt;</translation>
     </message>
@@ -1481,12 +1481,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointGears</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="342"/>
+      <location filename="../../../CommandCreateJoint.py" line="341"/>
       <source>Gears Joint</source>
       <translation>கியர்ச் கூட்டு</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="348"/>
+      <location filename="../../../CommandCreateJoint.py" line="347"/>
       <source>&lt;p&gt;Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
       <translation>&lt;p&gt;2 சுழலும் கியர்களை ஒன்றாக இணைக்கும் கியர்ச் கூட்டு உருவாக்குகிறது. அவை தலைகீழ் சுழற்சி திசையைக் கொண்டிருக்கும்.&lt;/p&gt;&lt;p&gt;சுழற்சி மூட்டுகளின் அதே ஒருங்கிணைப்பு அமைப்புகளைத் தேர்ந்தெடுக்கவும்.&lt;/p&gt;</translation>
     </message>
@@ -1494,12 +1494,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointBelt</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="366"/>
+      <location filename="../../../CommandCreateJoint.py" line="365"/>
       <source>Belt Joint</source>
       <translation>பெல்ட் கூட்டு</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="372"/>
+      <location filename="../../../CommandCreateJoint.py" line="371"/>
       <source>&lt;p&gt;Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
       <translation>&lt;p&gt;2 சுழலும் பொருட்களை ஒன்றாக இணைக்கும் பெல்ட் கூட்டு உருவாக்குகிறது. அவை ஒரே சுழற்சி திசையைக் கொண்டிருக்கும்.&lt;/p&gt;&lt;p&gt;சுழற்சி மூட்டுகளின் அதே ஒருங்கிணைப்பு அமைப்புகளைத் தேர்ந்தெடுக்கவும்.&lt;/p&gt;</translation>
     </message>
@@ -1507,12 +1507,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_ToggleGrounded</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="431"/>
+      <location filename="../../../CommandCreateJoint.py" line="430"/>
       <source>Toggle Grounded</source>
       <translation>நிலைமாற்றம்</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="437"/>
+      <location filename="../../../CommandCreateJoint.py" line="436"/>
       <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.</source>
       <translation>&lt;p&gt;ஒரு பகுதியின் தரையிறக்கத்தை நிலைமாற்றுகிறது.&lt;/p&gt;&lt;p&gt;ஒரு பகுதியை தரையிறக்குவது சட்டசபையில் அதன் நிலையை நிரந்தரமாகப் பூட்டி, அசைவு அல்லது சுழற்சியைத் தடுக்கிறது.</translation>
     </message>

@@ -236,16 +236,18 @@ void CmdPartDesignBody::activated(int iMsg)
         bodyString,
         Gui::asString(allowCompound)
     );
+    if (actPart) {
+        // BaseFeature placement is computed in the body's local coordinate system.
+        // Put the body in its final Part container before assigning the base.
+        doCommand(
+            Doc,
+            "App.activeDocument().%s.addObject(App.ActiveDocument.%s)",
+            actPart->getNameInDocument(),
+            bodyString
+        );
+    }
+
     if (baseFeature) {
-        if (partOfBaseFeature) {
-            // withdraw base feature from Part, otherwise visibility madness results
-            doCommand(
-                Doc,
-                "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
-                partOfBaseFeature->getNameInDocument(),
-                baseFeature->getNameInDocument()
-            );
-        }
         if (addtogroup) {
             doCommand(
                 Doc,
@@ -264,15 +266,6 @@ void CmdPartDesignBody::activated(int iMsg)
         }
     }
     addModule(Gui, "PartDesignGui");  // import the Gui module only once a session
-
-    if (actPart) {
-        doCommand(
-            Doc,
-            "App.activeDocument().%s.addObject(App.ActiveDocument.%s)",
-            actPart->getNameInDocument(),
-            bodyString
-        );
-    }
 
     doCommand(
         Gui::Command::Gui,
