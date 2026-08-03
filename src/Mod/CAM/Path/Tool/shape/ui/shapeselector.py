@@ -64,13 +64,12 @@ class ShapeSelector:
             button.clicked.connect(cb)
 
     def update_shapes(self):
-        # Retrieve each shape asset
+        # Retrieve each shape asset. Custom shapes come from the configured
+        # store search order; the explicit builtin fetch keeps stock shapes
+        # visible even when shadowed by a custom one.
         builtin = cam_assets.fetch(asset_type="toolbitshape", store="builtin")
         builtin = {c.id: c for c in builtin}
-        custom = cam_assets.fetch(
-            asset_type="toolbitshape",
-            store=cam_assets.get_default_search_stores(),
-        )
+        custom = cam_assets.fetch(asset_type="toolbitshape")
         for shape in custom:
             builtin.pop(shape.id, None)
 
