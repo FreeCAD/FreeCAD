@@ -67,7 +67,10 @@ class ShapeSelector:
         # Retrieve each shape asset
         builtin = cam_assets.fetch(asset_type="toolbitshape", store="builtin")
         builtin = {c.id: c for c in builtin}
-        custom = cam_assets.fetch(asset_type="toolbitshape", store="local")
+        custom = cam_assets.fetch(
+            asset_type="toolbitshape",
+            store=cam_assets.get_default_search_stores(),
+        )
         for shape in custom:
             builtin.pop(shape.id, None)
 

@@ -36,7 +36,9 @@ from typing import (
     Set,
     Mapping,
     Tuple,
+    Callable,
 )
+from Path import Preferences
 from dataclasses import dataclass
 from PySide import QtCore, QtGui
 from .store.base import AssetStore
@@ -68,6 +70,7 @@ class AssetManager:
         self._asset_classes: Dict[str, Type[Asset]] = {}
         self.asset_cache = AssetCache(max_size_bytes=cache_max_size_bytes)
         self._cacheable_stores: Set[str] = set()
+        self._asset_observers: List[Callable[[str, AssetUri, str], None]] = []
         logger.debug(f"AssetManager initialized (Thread: {threading.current_thread().name})")
 
     def register_store(self, store: AssetStore, cacheable: bool = False):
@@ -76,6 +79,37 @@ class AssetManager:
         self.stores[store.name] = store
         if cacheable:
             self._cacheable_stores.add(store.name)
+
+    def add_asset_observer(self, callback: Callable[[str, AssetUri, str], None]):
+        """Registers a callback for asset create/update/delete notifications."""
+        self._asset_observers.append(callback)
+
+    def _notify_asset_observers(self, store_name: str, uri: AssetUri, action: str):
+        for callback in list(self._asset_observers):
+            try:
+                callback(store_name, uri, action)
+            except Exception as exc:
+                logger.warning(f"Asset observer failed for {store_name}/{uri}: {exc}")
+
+    def _normalize_store_names(
+        self, store: Optional[Union[str, Sequence[str]]] = None
+    ) -> Sequence[str]:
+        if store is None:
+            return Preferences.getAssetStoreSearchOrder()
+        if isinstance(store, str):
+            return (store,)
+        return tuple(store)
+
+    def _get_write_store_name(self, store: Optional[str] = None) -> str:
+        if store:
+            return store
+        return Preferences.getAssetStoreWriteStore()
+
+    def get_default_search_stores(self) -> Sequence[str]:
+        return self._normalize_store_names(None)
+
+    def get_default_write_store(self) -> str:
+        return self._get_write_store_name(None)
 
     def get_serializer_for_class(self, asset_class: Type[Asset]):
         for serializer, theasset_class in self._serializers:
@@ -672,7 +706,7 @@ class AssetManager:
     def exists(
         self,
         uri: Union[AssetUri, str],
-        store: Union[str, Sequence[str]] = "local",
+        store: Optional[Union[str, Sequence[str]]] = None,
     ) -> bool:
         """
         Returns True if the asset exists in any of the specified stores, False otherwise.
@@ -708,7 +742,7 @@ class AssetManager:
                     continue  # Try next store
             return False  # Not found in any store
 
-        stores_list = [store] if isinstance(store, str) else store
+        stores_list = self._normalize_store_names(store)
         try:
             return asyncio.run(_exists_async(stores_list))
         except Exception as e:
@@ -723,18 +757,14 @@ class AssetManager:
         asset_type: Optional[str] = None,
         limit: Optional[int] = None,
         offset: Optional[int] = None,
-        store: Union[str, Sequence[str]] = "local",
+        store: Optional[Union[str, Sequence[str]]] = None,
         depth: Optional[int] = None,
     ) -> List[Asset]:
         """Fetches asset instances based on type, limit, and offset (synchronous), to a specified depth."""
-        stores_list = [store] if isinstance(store, str) else store
+        stores_list = self._normalize_store_names(store)
         logger.debug(f"Fetch(type='{asset_type}', stores='{stores_list}', depth='{depth}')")
-        # Note: list_assets currently only supports a single store.
-        # If fetching from multiple stores is needed for listing, this needs
-        # to be updated. For now, list from the first store.
-        list_store = stores_list[0] if stores_list else "local"
-        asset_uris = self.list_assets(asset_type, limit, offset, list_store)
-        results = self.get_bulk(asset_uris, stores_list, depth)  # Pass stores_list to get_bulk
+        asset_uris = self.list_assets(asset_type, limit, offset, stores_list)
+        results = self.get_bulk(asset_uris, stores_list, depth)
         # Filter out non-Asset objects (e.g., None for not found, or exceptions if collected)
         return [asset for asset in results if isinstance(asset, Asset)]
 
@@ -743,20 +773,14 @@ class AssetManager:
         asset_type: Optional[str] = None,
         limit: Optional[int] = None,
         offset: Optional[int] = None,
-        store: Union[str, Sequence[str]] = "local",
+        store: Optional[Union[str, Sequence[str]]] = None,
         depth: Optional[int] = None,
     ) -> List[Asset]:
         """Fetches asset instances based on type, limit, and offset (asynchronous), to a specified depth."""
-        stores_list = [store] if isinstance(store, str) else store
+        stores_list = self._normalize_store_names(store)
         logger.debug(f"FetchAsync(type='{asset_type}', stores='{stores_list}', depth='{depth}')")
-        # Note: list_assets_async currently only supports a single store.
-        # If fetching from multiple stores is needed for listing, this needs
-        # to be updated. For now, list from the first store.
-        list_store = stores_list[0] if stores_list else "local"
-        asset_uris = await self.list_assets_async(asset_type, limit, offset, list_store)
-        results = await self.get_bulk_async(
-            asset_uris, stores_list, depth
-        )  # Pass stores_list to get_bulk_async
+        asset_uris = await self.list_assets_async(asset_type, limit, offset, stores_list)
+        results = await self.get_bulk_async(asset_uris, stores_list, depth)
         return [asset for asset in results if isinstance(asset, Asset)]
 
     def list_assets(
@@ -764,37 +788,41 @@ class AssetManager:
         asset_type: Optional[str] = None,
         limit: Optional[int] = None,
         offset: Optional[int] = None,
-        store: Union[str, Sequence[str]] = "local",
+        store: Optional[Union[str, Sequence[str]]] = None,
     ) -> List[AssetUri]:
-        stores_list = [store] if isinstance(store, str) else store
+        stores_list = self._normalize_store_names(store)
         logger.debug(f"ListAssets(type='{asset_type}', stores='{stores_list}')")
-        # Note: list_assets_async currently only supports a single store.
-        # If listing from multiple stores is needed, this needs to be updated.
-        # For now, list from the first store.
-        list_store = stores_list[0] if stores_list else "local"
-        return asyncio.run(self.list_assets_async(asset_type, limit, offset, list_store))
+        return asyncio.run(self.list_assets_async(asset_type, limit, offset, stores_list))
 
     async def list_assets_async(
         self,
         asset_type: Optional[str] = None,
         limit: Optional[int] = None,
         offset: Optional[int] = None,
-        store: Union[str, Sequence[str]] = "local",
+        store: Optional[Union[str, Sequence[str]]] = None,
     ) -> List[AssetUri]:
-        stores_list = [store] if isinstance(store, str) else store
+        stores_list = self._normalize_store_names(store)
         logger.debug(f"ListAssetsAsync executing for type='{asset_type}', stores='{stores_list}'")
-        # Note: list_assets_async currently only supports a single store.
-        # If listing from multiple stores is needed, this needs to be updated.
-        # For now, list from the first store.
-        list_store = stores_list[0] if stores_list else "local"
-        logger.debug(
-            f"ListAssetsAsync: Looking up store '{list_store}'. Available stores: {list(self.stores.keys())}"
-        )
-        try:
-            selected_store = self.stores[list_store]
-        except KeyError:
-            raise ValueError(f"No store registered for name: {list_store}")
-        return await selected_store.list_assets(asset_type, limit, offset)
+
+        seen_uris: Set[AssetUri] = set()
+        merged_uris: List[AssetUri] = []
+        for store_name in stores_list:
+            logger.debug(
+                f"ListAssetsAsync: Looking up store '{store_name}'. Available stores: {list(self.stores.keys())}"
+            )
+            try:
+                selected_store = self.stores[store_name]
+            except KeyError:
+                raise ValueError(f"No store registered for name: {store_name}")
+
+            store_uris = await selected_store.list_assets(asset_type, limit, offset)
+            for uri in store_uris:
+                if uri in seen_uris:
+                    continue
+                seen_uris.add(uri)
+                merged_uris.append(uri)
+
+        return merged_uris
 
     def count_assets(
         self,
@@ -836,64 +864,71 @@ class AssetManager:
                 return True
         return False
 
-    async def add_async(self, obj: Asset, store: str = "local") -> AssetUri:
+    async def add_async(self, obj: Asset, store: Optional[str] = None) -> AssetUri:
         """
         Adds an asset to the store, either creating a new one or updating an existing one.
         Uses obj.get_url() to determine if the asset exists.
         """
-        logger.debug(f"AddAsync: Adding {type(obj).__name__} to store '{store}'")
+        target_store = self._get_write_store_name(store)
+        logger.debug(f"AddAsync: Adding {type(obj).__name__} to store '{target_store}'")
         uri = obj.get_uri()
         if not self._is_registered_type(obj):
             logger.warning(f"Asset has unregistered type '{uri.asset_type}' ({type(obj).__name__})")
 
         serializer = self.get_serializer_for_class(obj.__class__)
         data = obj.to_bytes(serializer)
-        return await self.add_raw_async(uri.asset_type, uri.asset_id, data, store)
+        return await self.add_raw_async(uri.asset_type, uri.asset_id, data, target_store)
 
-    def add(self, obj: Asset, store: str = "local") -> AssetUri:
+    def add(self, obj: Asset, store: Optional[str] = None) -> AssetUri:
         """Synchronous wrapper for adding an asset to the store."""
+        target_store = self._get_write_store_name(store)
         logger.debug(
-            f"Add: Adding {type(obj).__name__} to store '{store}' from T:{threading.current_thread().name}"
+            f"Add: Adding {type(obj).__name__} to store '{target_store}' from T:{threading.current_thread().name}"
         )
-        return asyncio.run(self.add_async(obj, store))
+        return asyncio.run(self.add_async(obj, target_store))
 
     async def add_raw_async(
-        self, asset_type: str, asset_id: str, data: bytes, store: str = "local"
+        self, asset_type: str, asset_id: str, data: bytes, store: Optional[str] = None
     ) -> AssetUri:
         """
         Adds raw asset data to the store, either creating a new asset or updating an existing one.
         """
-        logger.debug(f"AddRawAsync: type='{asset_type}', id='{asset_id}', store='{store}'")
+        target_store = self._get_write_store_name(store)
+        logger.debug(f"AddRawAsync: type='{asset_type}', id='{asset_id}', store='{target_store}'")
         if not asset_type or not asset_id:
             raise ValueError("asset_type and asset_id must be provided for add_raw.")
         if not isinstance(data, bytes):
             raise TypeError("Data for add_raw must be bytes.")
-        selected_store = self.stores.get(store)
+        selected_store = self.stores.get(target_store)
         if not selected_store:
-            raise ValueError(f"No store registered for name: {store}")
+            raise ValueError(f"No store registered for name: {target_store}")
         uri = AssetUri.build(asset_type=asset_type, asset_id=asset_id)
         try:
             uri = await selected_store.update(uri, data)
             logger.debug(f"AddRawAsync: Updated existing asset at {uri}")
+            action = "updated"
         except FileNotFoundError:
             logger.debug(
                 f"AddRawAsync: Asset not found, creating new asset with {asset_type} and {asset_id}"
             )
             uri = await selected_store.create(asset_type, asset_id, data)
+            action = "created"
 
-        if store in self._cacheable_stores:
+        if target_store in self._cacheable_stores:
             self.asset_cache.invalidate_for_uri(str(uri))  # Invalidate after add/update
+        self._notify_asset_observers(target_store, uri, action)
         return uri
 
     def add_raw(
-        self, asset_type: str, asset_id: str, data: bytes, store: str = "local"
+        self, asset_type: str, asset_id: str, data: bytes, store: Optional[str] = None
     ) -> AssetUri:
         """Synchronous wrapper for adding raw asset data to the store."""
+        target_store = self._get_write_store_name(store)
         logger.debug(
-            f"AddRaw: type='{asset_type}', id='{asset_id}', store='{store}' from T:{threading.current_thread().name}"
+            f"AddRaw: type='{asset_type}', id='{asset_id}', store='{target_store}' from T:{threading.current_thread().name}"
         )
         try:
-            return asyncio.run(self.add_raw_async(asset_type, asset_id, data, store))
+            return asyncio.run(self.add_raw_async(asset_type, asset_id, data, target_store))
         except Exception as e:
             logger.error(
                 f"AddRaw: Error for type='{asset_type}', id='{asset_id}': {e}",
@@ -1093,25 +1128,29 @@ class AssetManager:
         """
         return self.add_raw(asset_type, asset_id or path.stem, path.read_bytes(), store=store)
 
-    def delete(self, uri: Union[AssetUri, str], store: str = "local") -> None:
-        logger.debug(f"Delete URI '{uri}' from store '{store}'")
+    def delete(self, uri: Union[AssetUri, str], store: Optional[str] = None) -> None:
+        target_store = self._get_write_store_name(store)
+        logger.debug(f"Delete URI '{uri}' from store '{target_store}'")
         asset_uri_obj = AssetUri(uri) if isinstance(uri, str) else uri
 
         async def _do_delete_async():
-            selected_store = self.stores[store]
+            selected_store = self.stores[target_store]
             await selected_store.delete(asset_uri_obj)
-            if store in self._cacheable_stores:
+            if target_store in self._cacheable_stores:
                 self.asset_cache.invalidate_for_uri(str(asset_uri_obj))
+            self._notify_asset_observers(target_store, asset_uri_obj, "deleted")
 
         asyncio.run(_do_delete_async())
 
-    async def delete_async(self, uri: Union[AssetUri, str], store: str = "local") -> None:
-        logger.debug(f"DeleteAsync URI '{uri}' from store '{store}'")
+    async def delete_async(self, uri: Union[AssetUri, str], store: Optional[str] = None) -> None:
+        target_store = self._get_write_store_name(store)
+        logger.debug(f"DeleteAsync URI '{uri}' from store '{target_store}'")
         asset_uri_obj = AssetUri(uri) if isinstance(uri, str) else uri
-        selected_store = self.stores[store]
+        selected_store = self.stores[target_store]
         await selected_store.delete(asset_uri_obj)
-        if store in self._cacheable_stores:
+        if target_store in self._cacheable_stores:
             self.asset_cache.invalidate_for_uri(str(asset_uri_obj))
+        self._notify_asset_observers(target_store, asset_uri_obj, "deleted")
 
     async def is_empty_async(self, asset_type: Optional[str] = None, store: str = "local") -> bool:
         """Checks if the asset store has any assets of a given type (asynchronous)."""

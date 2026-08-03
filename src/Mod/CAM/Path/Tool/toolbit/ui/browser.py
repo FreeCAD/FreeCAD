@@ -482,7 +482,11 @@ class ToolBitBrowserWidget(QtGui.QWidget):
         libraries_with_toolbit = []
         try:
             # Get all libraries from the asset manager
-            all_libraries = self._asset_manager.fetch("toolbitlibrary", store="local", depth=1)
+            all_libraries = self._asset_manager.fetch(
+                "toolbitlibrary",
+                store=self._asset_manager.get_default_search_stores(),
+                depth=1,
+            )
 
             for library in all_libraries:
                 if isinstance(library, Library):

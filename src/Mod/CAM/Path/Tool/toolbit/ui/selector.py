@@ -51,7 +51,7 @@ class ToolBitSelector(QtWidgets.QDialog):
         # Use LibraryBrowserWithCombo which handles library selection and "All Tools" option
         self._browser_widget = LibraryBrowserWithCombo(
             asset_manager=cam_assets,
-            store="local",
+            store=cam_assets.get_default_write_store(),
             compact=compact,
             show_all_tools=show_all_tools,
         )

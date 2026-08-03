@@ -91,7 +91,11 @@ class LibraryBrowserWidget(ToolBitBrowserWidget, ToolBitTypeFilterMixin):
         library_uri = Path.Preferences.getLastToolLibrary()
         if library_uri:
             try:
-                library = self._asset_manager.get(library_uri, store="local", depth=1)
+                library = self._asset_manager.get(
+                    library_uri,
+                    store=self._asset_manager.get_default_search_stores(),
+                    depth=1,
+                )
                 self.set_current_library(library)
             except Exception as e:
                 Path.Log.warning(f"Failed to load last tool library: {e}")

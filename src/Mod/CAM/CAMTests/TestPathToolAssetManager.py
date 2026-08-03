@@ -10,6 +10,7 @@ from unittest.mock import Mock
 import pathlib
 import tempfile
 from typing import Any, Mapping, List, Type, Optional, cast
+from Path import Preferences
 from Path.Tool.assets import (
     AssetManager,
     FileStore,
@@ -472,6 +473,64 @@ class TestPathToolAssetManager(unittest.TestCase):
         # Test handling of non-existent store (should skip and not raise ValueError)
         # The test already asserts that the non-existent asset is None, which is the expected behavior.
         manager.get_bulk(uris, store="non_existent_store")
+
+    def test_list_assets_merges_multiple_stores_without_duplicates(self):
+        manager = AssetManager()
+        local_store = MemoryStore("memory_list_local")
+        remote_store = MemoryStore("memory_list_remote")
+        manager.register_store(local_store)
+        manager.register_store(remote_store)
+        manager.register_asset(MockAsset, DummyAssetSerializer)
+
+        manager.add_raw(MockAsset.asset_type, "shared_id", b"local data", "memory_list_local")
+        manager.add_raw(MockAsset.asset_type, "remote_only", b"remote data", "memory_list_remote")
+
+        listed = manager.list_assets(
+            MockAsset.asset_type, store=["memory_list_local", "memory_list_remote"]
+        )
+
+        self.assertEqual(len(listed), 2)
+        self.assertEqual(
+            {str(uri) for uri in listed},
+            {
+                "mock_asset://shared_id/1",
+                "mock_asset://remote_only/1",
+            },
+        )
+
+    def test_write_target_uses_configured_default_store(self):
+        manager = AssetManager()
+        local_store = MemoryStore("local")
+        remote_store = MemoryStore("loobric")
+        manager.register_store(local_store)
+        manager.register_store(remote_store)
+        manager.register_asset(MockAsset, DummyAssetSerializer)
+
+        Preferences.setAssetStoreWriteStore("loobric")
+        try:
+            uri = manager.add_raw(MockAsset.asset_type, "pref_target", b"prefer remote")
+            self.assertTrue(asyncio.run(remote_store.exists(uri)))
+            self.assertFalse(asyncio.run(local_store.exists(uri)))
+        finally:
+            Preferences.setAssetStoreWriteStore("local")
+
+    def test_asset_observer_notifies_on_changes(self):
+        manager = AssetManager()
+        store = MemoryStore("memory_observer")
+        manager.register_store(store)
+        manager.register_asset(MockAsset, DummyAssetSerializer)
+
+        notifications = []
+        manager.add_asset_observer(
+            lambda store_name, uri, action: notifications.append((store_name, str(uri), action))
+        )
+
+        uri = manager.add_raw(MockAsset.asset_type, "notify_me", b"data", "memory_observer")
+        manager.delete(uri, store="memory_observer")
+
+        self.assertEqual(notifications[0][0], "memory_observer")
+        self.assertEqual(notifications[0][2], "created")
+        self.assertEqual(notifications[1][2], "deleted")
 
     def test_fetch(self):
         # Setup AssetManager with a real MemoryStore and MockAsset class

@@ -36,7 +36,9 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-def ensure_library_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):
+def ensure_library_assets_initialized(
+    asset_manager: AssetManager, store_name: Optional[str] = None
+):
     """
     Ensures the given store is initialized with built-in library
     if it is currently empty.
@@ -48,7 +50,7 @@ def ensure_library_assets_initialized(asset_manager: AssetManager, store_name: s
             asset_manager.add_file("toolbitlibrary", path)
 
 
-def ensure_toolbits_have_shape_type(asset_manager: AssetManager, store_name: str = "local"):
+def ensure_toolbits_have_shape_type(asset_manager: AssetManager, store_name: Optional[str] = None):
     from .shape import ToolBitShape
 
     toolbit_uris = asset_manager.list_assets(
@@ -95,7 +97,9 @@ def ensure_toolbits_have_shape_type(asset_manager: AssetManager, store_name: str
             asset_manager.add_raw("toolbit", uri.asset_id, data, store=store_name)
 
 
-def ensure_toolbit_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):
+def ensure_toolbit_assets_initialized(
+    asset_manager: AssetManager, store_name: Optional[str] = None
+):
     """
     Ensures the given store is initialized with built-in bits
     if it is currently empty.
@@ -109,7 +113,9 @@ def ensure_toolbit_assets_initialized(asset_manager: AssetManager, store_name: s
     ensure_toolbits_have_shape_type(asset_manager, store_name)
 
 
-def ensure_toolbitshape_assets_present(asset_manager: AssetManager, store_name: str = "local"):
+def ensure_toolbitshape_assets_present(
+    asset_manager: AssetManager, store_name: Optional[str] = None
+):
     """
     Ensures the given store is initialized with built-in shapes
     if it is currently empty. This copies all built-in shapes,
@@ -149,7 +155,9 @@ def ensure_toolbitshape_assets_present(asset_manager: AssetManager, store_name: 
                 asset_manager.add_file("toolbitshapepng", path, asset_id=path.stem + ".png")
 
 
-def ensure_toolbitshape_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):
+def ensure_toolbitshape_assets_initialized(
+    asset_manager: AssetManager, store_name: Optional[str] = None
+):
     """
     Ensures the toolbitshape directory structure exists without adding any files.
     """
@@ -160,13 +168,14 @@ def ensure_toolbitshape_assets_initialized(asset_manager: AssetManager, store_na
     shape_path.mkdir(parents=True, exist_ok=True)
 
 
-def ensure_assets_initialized(asset_manager: AssetManager, store="local"):
+def ensure_assets_initialized(asset_manager: AssetManager, store: Optional[str] = None):
     """
     Ensures the given store is initialized with built-in assets.
     """
-    ensure_library_assets_initialized(asset_manager, store)
-    ensure_toolbit_assets_initialized(asset_manager, store)
-    ensure_toolbitshape_assets_initialized(asset_manager, store)
+    target_store = store or Preferences.getAssetStoreWriteStore()
+    ensure_library_assets_initialized(asset_manager, target_store)
+    ensure_toolbit_assets_initialized(asset_manager, target_store)
+    ensure_toolbitshape_assets_initialized(asset_manager, target_store)
 
 
 def _on_asset_path_changed(group, key, value):
