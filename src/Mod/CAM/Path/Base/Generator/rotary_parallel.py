@@ -190,12 +190,12 @@ def generate(
     # Axial sample density: same convention as the Spiral pattern's
     # grid x-step. Approximately 4 samples per axial_stepover.
     x_sample_step = max(axial_stepover * 0.25, 1e-3)
-    n_x_samples = max(2, int(math.ceil((x_max - x_min) / x_sample_step)) + 1)
+    n_x_samples = max(2, Path.Geom.ceil((x_max - x_min) / x_sample_step) + 1)
 
     # Angular pass count. Always include the start; the end is included
     # if it falls (within tolerance) on a stepover boundary.
     total_theta_span = direction * abs(theta_end - theta_start)
-    n_passes = max(1, int(math.ceil(abs(total_theta_span) / angular_step)) + 1)
+    n_passes = max(1, Path.Geom.ceil(abs(total_theta_span) / angular_step) + 1)
 
     commands = []
     feed_clamp = _FeedClamp()

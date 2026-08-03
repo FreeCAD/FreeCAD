@@ -29,8 +29,8 @@
       <translation>Создать</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="113"/>
       <location filename="../ui/dialogLayers.ui" line="36"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="113"/>
       <source>Delete</source>
       <translation>Удалить</translation>
     </message>
@@ -1087,10 +1087,10 @@ will be moved to the center of the view.</source>
       <translation>Толщина линии</translation>
     </message>
     <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="253"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="174"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="402"/>
-      <location filename="../ui/TaskSelectPlane.ui" line="253"/>
       <source> px</source>
       <translation> пикс.</translation>
     </message>
@@ -2091,8 +2091,8 @@ a raw wire from the original shape is added</source>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="120"/>
-      <source>Apply Cuts</source>
-      <translation>Применить резы</translation>
+      <source>Apply cuts</source>
+      <translation type="unfinished">Apply cuts</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="140"/>
@@ -2813,8 +2813,8 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="100"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Примечание:&lt;/span&gt; параметры DXF также применяются для файлов DWG.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Note: DXF options apply to DWG files as well.</source>
+      <translation type="unfinished">Note: DXF options apply to DWG files as well.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="26"/>
@@ -3110,9 +3110,9 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="809"/>
-      <location filename="../../draftguitools/gui_scale.py" line="226"/>
       <location filename="../../draftguitools/gui_rotate.py" line="289"/>
       <location filename="../../draftguitools/gui_move.py" line="218"/>
+      <location filename="../../draftguitools/gui_scale.py" line="226"/>
       <source>Copy</source>
       <translation>Копировать</translation>
     </message>
@@ -3652,23 +3652,23 @@ or try saving to a lower DWG version.</source>
       <translation>Задать пользовательский масштаб заметки в формате x:x, x=x</translation>
     </message>
     <message>
+      <location filename="../../draftutils/groups.py" line="101"/>
+      <location filename="../../draftutils/gui_utils.py" line="916"/>
+      <location filename="../../draftutils/utils.py" line="1141"/>
+      <location filename="../../draftfunctions/cut.py" line="60"/>
       <location filename="../../draftmake/make_pointarray.py" line="92"/>
-      <location filename="../../draftmake/make_label.py" line="201"/>
-      <location filename="../../draftmake/make_text.py" line="95"/>
-      <location filename="../../draftmake/make_text.py" line="178"/>
-      <location filename="../../draftmake/make_layer.py" line="56"/>
-      <location filename="../../draftmake/make_layer.py" line="146"/>
       <location filename="../../draftmake/make_patharray.py" line="179"/>
       <location filename="../../draftmake/make_patharray.py" line="328"/>
       <location filename="../../draftmake/make_array.py" line="85"/>
+      <location filename="../../draftmake/make_label.py" line="201"/>
+      <location filename="../../draftmake/make_layer.py" line="56"/>
+      <location filename="../../draftmake/make_layer.py" line="146"/>
       <location filename="../../draftmake/make_dimension.py" line="266"/>
       <location filename="../../draftmake/make_dimension.py" line="355"/>
       <location filename="../../draftmake/make_dimension.py" line="483"/>
       <location filename="../../draftmake/make_dimension.py" line="604"/>
-      <location filename="../../draftutils/groups.py" line="101"/>
-      <location filename="../../draftutils/utils.py" line="1141"/>
-      <location filename="../../draftutils/gui_utils.py" line="916"/>
-      <location filename="../../draftfunctions/cut.py" line="60"/>
+      <location filename="../../draftmake/make_text.py" line="95"/>
+      <location filename="../../draftmake/make_text.py" line="178"/>
       <source>No active document. Aborting.</source>
       <translation>Нет активного документа. Прерывание.</translation>
     </message>
@@ -3827,10 +3827,10 @@ or try saving to a lower DWG version.</source>
       <translation type="unfinished">%1 pick text point</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="95"/>
-      <location filename="../../draftguitools/gui_ellipses.py" line="76"/>
-      <location filename="../../draftguitools/gui_dimensions.py" line="122"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="71"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="122"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="77"/>
+      <location filename="../../draftguitools/gui_lines.py" line="95"/>
       <source>Pick first point</source>
       <translation>Укажите первую точку</translation>
     </message>
@@ -3848,6 +3848,13 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftguitools/gui_lines.py" line="207"/>
       <source>Create Wire</source>
       <translation>Создать кривую</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_lines.py" line="246"/>
+      <location filename="../../drafttests/test_lines_gui.py" line="56"/>
+      <location filename="../../drafttests/test_lines_gui.py" line="94"/>
+      <source>Point identical to previous point</source>
+      <translation type="unfinished">Point identical to previous point</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="327"/>
@@ -3870,6 +3877,8 @@ or try saving to a lower DWG version.</source>
       <translation>Полилиния</translation>
     </message>
     <message>
+      <location filename="../../draftguitools/gui_splines.py" line="153"/>
+      <location filename="../../draftguitools/gui_splines.py" line="158"/>
       <location filename="../../draftguitools/gui_beziers.py" line="158"/>
       <location filename="../../draftguitools/gui_beziers.py" line="161"/>
       <location filename="../../draftguitools/gui_lines.py" line="240"/>
@@ -3877,8 +3886,6 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftguitools/gui_lines.py" line="266"/>
       <location filename="../../draftguitools/gui_lines.py" line="274"/>
       <location filename="../../draftguitools/gui_lines.py" line="285"/>
-      <location filename="../../draftguitools/gui_splines.py" line="153"/>
-      <location filename="../../draftguitools/gui_splines.py" line="158"/>
       <source>Pick next point</source>
       <translation>Укажите следующую точку</translation>
     </message>
@@ -3965,9 +3972,9 @@ or try saving to a lower DWG version.</source>
       <translation>%1 укажите конечную точку</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="126"/>
       <location filename="../../draftguitools/gui_rotate.py" line="245"/>
       <location filename="../../draftguitools/gui_move.py" line="195"/>
+      <location filename="../../draftguitools/gui_scale.py" line="126"/>
       <source>No valid subelements selected</source>
       <translation>Действительные подэлементы не выбраны</translation>
     </message>
@@ -4143,10 +4150,10 @@ or try saving to a lower DWG version.</source>
       <translation>Создать дугу из 3 точек</translation>
     </message>
     <message>
+      <location filename="../../draftguitools/gui_rectangles.py" line="219"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="222"/>
       <location filename="../../draftguitools/gui_arcs.py" line="658"/>
       <location filename="../../draftguitools/gui_lines.py" line="318"/>
-      <location filename="../../draftguitools/gui_ellipses.py" line="221"/>
-      <location filename="../../draftguitools/gui_rectangles.py" line="219"/>
       <source>%1 pick first point</source>
       <translation>%1 укажите первую точку</translation>
     </message>
@@ -4316,8 +4323,8 @@ or try saving to a lower DWG version.</source>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="216"/>
-      <location filename="../../draftguitools/gui_points.py" line="189"/>
       <location filename="../../draftguitools/gui_texts.py" line="180"/>
+      <location filename="../../draftguitools/gui_points.py" line="189"/>
       <source>%1 pick point</source>
       <translation>%1 укажите точку</translation>
     </message>
@@ -4400,20 +4407,20 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Отсутствует новое выделение. Выберите непустые группы или объекты внутри групп.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="166"/>
+      <location filename="../../draftguitools/gui_layers.py" line="167"/>
       <location filename="../../draftguitools/gui_groups.py" line="279"/>
       <location filename="../../draftguitools/gui_groups.py" line="317"/>
       <source>New Layer</source>
       <translation>Новый слой</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="167"/>
+      <location filename="../../draftguitools/gui_layers.py" line="168"/>
       <location filename="../../draftguitools/gui_groups.py" line="318"/>
       <source>Layer name</source>
       <translation>Имя слоя</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="168"/>
+      <location filename="../../draftguitools/gui_layers.py" line="169"/>
       <location filename="../../draftguitools/gui_groups.py" line="319"/>
       <source>Layer</source>
       <comment>Object label</comment>
@@ -4573,15 +4580,15 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Смещение кривых Безье в настоящее время не поддерживается</translation>
     </message>
     <message>
+      <location filename="../../draftguitools/gui_offset.py" line="152"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="183"/>
+      <source>Pick distance</source>
+      <translation>Укажите расстояние</translation>
+    </message>
+    <message>
       <location filename="../../draftguitools/gui_offset.py" line="337"/>
       <source>%1 pick distance</source>
       <translation type="unfinished">%1 pick distance</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="183"/>
-      <location filename="../../draftguitools/gui_offset.py" line="152"/>
-      <source>Pick distance</source>
-      <translation>Укажите расстояние</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="229"/>
@@ -4769,25 +4776,25 @@ The final angle will be the base angle plus this amount.</source>
       <translation>%1 нажмите и перетащите, чтобы определить следующую точку и узел</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_ellipses.py" line="72"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="73"/>
       <source>Ellipse</source>
       <translation>Эллипс</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_ellipses.py" line="136"/>
-      <location filename="../../draftguitools/gui_ellipses.py" line="154"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="137"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="155"/>
       <source>Create Ellipse</source>
       <translation>Создать эллипс</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_ellipses.py" line="210"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="208"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="211"/>
       <source>Pick opposite point</source>
       <translation>Укажите противоположную точку</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_ellipses.py" line="225"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="223"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="226"/>
       <source>%1 pick opposite point</source>
       <translation>%1 укажите противоположную точку</translation>
     </message>
@@ -5049,12 +5056,12 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Даунгрейд</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="185"/>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="341"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="200"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="364"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="235"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="406"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="200"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="364"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="185"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="341"/>
       <source>Object:</source>
       <translation>Объект:</translation>
     </message>
@@ -5084,9 +5091,9 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Создать полярный массив</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="312"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="335"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="377"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="335"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="312"/>
       <source>Fuse:</source>
       <translation>Объединить:</translation>
     </message>
@@ -5106,8 +5113,8 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Полярный угол:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="346"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="371"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="346"/>
       <source>Center of rotation:</source>
       <translation>Центр вращения:</translation>
     </message>
@@ -5132,8 +5139,8 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Создать ортогональный массив</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="325"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="390"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="325"/>
       <source>Create link array:</source>
       <translation>Создать массив ссылок:</translation>
     </message>
@@ -5211,7 +5218,7 @@ The final angle will be the base angle plus this amount.</source>
       <translation>ТекстоваяГеометрия</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="505"/>
+      <location filename="../../draftutils/params.py" line="536"/>
       <source>Default</source>
       <translation>По умолчанию</translation>
     </message>
@@ -5231,9 +5238,9 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Круговой массив</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="177"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="188"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="223"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="188"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="177"/>
       <source>At least 1 element must be selected</source>
       <translation>Должен быть выбран хотя бы один элемент</translation>
     </message>
@@ -5243,9 +5250,9 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Количество слоёв должно быть не менее 2</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="184"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="199"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="234"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="199"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="184"/>
       <source>Selection is not suitable for array</source>
       <translation>Выбор не подходит для массива</translation>
     </message>
@@ -5413,11 +5420,11 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Невозможно построить форму:</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_pointarray.py" line="97"/>
       <location filename="../../draftmake/make_polararray.py" line="111"/>
-      <location filename="../../draftmake/make_orthoarray.py" line="149"/>
+      <location filename="../../draftmake/make_pointarray.py" line="97"/>
       <location filename="../../draftmake/make_patharray.py" line="184"/>
       <location filename="../../draftmake/make_patharray.py" line="333"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="149"/>
       <location filename="../../draftmake/make_circulararray.py" line="135"/>
       <source>Wrong input: base_object not in document.</source>
       <translation>Неверный ввод: base_object отсутствует в документе.</translation>
@@ -5429,23 +5436,23 @@ The final angle will be the base angle plus this amount.</source>
       <translation>"Неверный ввод: объекта нет в документе".</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_label.py" line="317"/>
       <location filename="../../draftmake/make_polararray.py" line="123"/>
-      <location filename="../../draftmake/make_orthoarray.py" line="139"/>
-      <location filename="../../draftmake/make_layer.py" line="185"/>
       <location filename="../../draftmake/make_patharray.py" line="195"/>
       <location filename="../../draftmake/make_patharray.py" line="266"/>
       <location filename="../../draftmake/make_patharray.py" line="273"/>
       <location filename="../../draftmake/make_patharray.py" line="343"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="139"/>
+      <location filename="../../draftmake/make_label.py" line="317"/>
+      <location filename="../../draftmake/make_layer.py" line="185"/>
       <source>Wrong input: must be a number.</source>
       <translation>Неверный ввод: должно быть число.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_label.py" line="209"/>
       <location filename="../../draftmake/make_polararray.py" line="135"/>
       <location filename="../../draftmake/make_patharray.py" line="202"/>
       <location filename="../../draftmake/make_patharray.py" line="253"/>
       <location filename="../../draftmake/make_patharray.py" line="260"/>
+      <location filename="../../draftmake/make_label.py" line="209"/>
       <location filename="../../draftmake/make_circulararray.py" line="165"/>
       <location filename="../../draftmake/make_dimension.py" line="272"/>
       <location filename="../../draftmake/make_dimension.py" line="278"/>
@@ -5692,16 +5699,16 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Неверный ввод: должно быть число от 0 до 100.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="284"/>
-      <location filename="../../draftviewproviders/view_base.py" line="470"/>
       <location filename="../../draftviewproviders/view_clone.py" line="71"/>
       <location filename="../../draftviewproviders/view_hatch.py" line="87"/>
+      <location filename="../../draftviewproviders/view_base.py" line="470"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="284"/>
       <source>Edit</source>
       <translation>Редактировать</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_base.py" line="475"/>
       <location filename="../../draftviewproviders/view_wire.py" line="208"/>
+      <location filename="../../draftviewproviders/view_base.py" line="475"/>
       <source>Flatten</source>
       <translation>Сплющить</translation>
     </message>
@@ -5853,42 +5860,42 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Текст</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="311"/>
+      <location filename="../../draftobjects/label.py" line="320"/>
       <source>No Target</source>
       <translation>Цель не задана</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="394"/>
+      <location filename="../../draftobjects/label.py" line="403"/>
       <source>Invalid label type</source>
       <translation>Недопустимый тип метки</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="409"/>
+      <location filename="../../draftobjects/label.py" line="418"/>
       <source>Tag not available for object</source>
       <translation>Тег недоступен для объекта</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="416"/>
+      <location filename="../../draftobjects/label.py" line="425"/>
       <source>Material not available for object</source>
       <translation>Материал не доступен для объекта</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="425"/>
+      <location filename="../../draftobjects/label.py" line="434"/>
       <source>Position not available for (sub)object</source>
       <translation>Позиция недоступна для (под)объекта</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="441"/>
+      <location filename="../../draftobjects/label.py" line="450"/>
       <source>Length not available for (sub)object</source>
       <translation>Длина недоступна для (под)объекта</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="455"/>
+      <location filename="../../draftobjects/label.py" line="464"/>
       <source>Area not available for (sub)object</source>
       <translation>Площадь недоступна для (под)объекта</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="468"/>
+      <location filename="../../draftobjects/label.py" line="477"/>
       <source>Volume not available for (sub)object</source>
       <translation>Объём недоступен для (под)объекта</translation>
     </message>
@@ -5918,12 +5925,12 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Открытие гиперссылки</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="171"/>
+      <location filename="../../draftguitools/gui_selectplane.py" line="172"/>
       <source>Select 3 vertices, one or more shapes or an object to define a working plane</source>
       <translation>Выберите 3 вершины, одну или несколько фигур или объект, чтобы определить рабочую плоскость</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="225"/>
+      <location filename="../../draftutils/params.py" line="256"/>
       <source>Do you want to update the SVG pattern options
 of existing objects in all opened documents?</source>
       <translation>Вы хотите обновить параметры шаблона SVG
@@ -5935,37 +5942,37 @@ of existing objects in all opened documents?</source>
       <translation>Эскиз слишком сложен для редактирования: рекомендуется использовать верстак Эскиз</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="88"/>
+      <location filename="../../draftguitools/gui_layers.py" line="89"/>
       <source>Create layer</source>
       <translation>Создать слой </translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="127"/>
+      <location filename="../../draftguitools/gui_layers.py" line="128"/>
       <source>Remove From Layer</source>
       <translation>Удалить из слоя</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="131"/>
+      <location filename="../../draftguitools/gui_layers.py" line="132"/>
       <source>Add to New Layer</source>
       <translation>Добавить в новый слой</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="152"/>
+      <location filename="../../draftguitools/gui_layers.py" line="153"/>
       <source>Remove from layer</source>
       <translation>Удалить из слоя</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="174"/>
+      <location filename="../../draftguitools/gui_layers.py" line="175"/>
       <source>Add to new layer</source>
       <translation>Добавить в новый слой </translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="192"/>
+      <location filename="../../draftguitools/gui_layers.py" line="193"/>
       <source>Add to layer</source>
       <translation>Добавить в слой</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="280"/>
+      <location filename="../../draftguitools/gui_layers.py" line="281"/>
       <source>Layers change</source>
       <translation>Изменить слои</translation>
     </message>
@@ -6146,13 +6153,6 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation type="unfinished">No valid faces for hatch</translation>
     </message>
     <message>
-      <location filename="../../drafttests/test_lines_gui.py" line="56"/>
-      <location filename="../../drafttests/test_lines_gui.py" line="94"/>
-      <location filename="../../draftguitools/gui_lines.py" line="246"/>
-      <source>Point identical to previous point</source>
-      <translation type="unfinished">Point identical to previous point</translation>
-    </message>
-    <message>
       <location filename="../../draftguitools/gui_field_locks.py" line="90"/>
       <source>Keeps the value fixed during 3D input. The lock icon or a double-click unlocks the field.</source>
       <translation type="unfinished">Keeps the value fixed during 3D input. The lock icon or a double-click unlocks the field.</translation>
@@ -6260,16 +6260,16 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Наклон</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="133"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="137"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="157"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="137"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="133"/>
       <source>True</source>
       <translation>Истина</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="137"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="141"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="159"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="141"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="137"/>
       <source>False</source>
       <translation>Ложь</translation>
     </message>
@@ -6339,113 +6339,113 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Запись состояния объектов показан/скрыт</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="399"/>
+      <location filename="../../draftguitools/gui_layers.py" line="400"/>
       <source>On</source>
       <translation>Включено</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="317"/>
-      <location filename="../../draftguitools/gui_layers.py" line="400"/>
+      <location filename="../../draftguitools/gui_layers.py" line="401"/>
+      <location filename="../../draftobjects/label.py" line="326"/>
       <source>Name</source>
       <translation>Название</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="401"/>
+      <location filename="../../draftguitools/gui_layers.py" line="402"/>
       <source>Line Width</source>
       <translation>Толщина линии</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="402"/>
+      <location filename="../../draftguitools/gui_layers.py" line="403"/>
       <source>Draw Style</source>
       <translation>Стиль отрисовки</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="403"/>
+      <location filename="../../draftguitools/gui_layers.py" line="404"/>
       <source>Line Color</source>
       <translation>Цвет линии штриховки</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="404"/>
+      <location filename="../../draftguitools/gui_layers.py" line="405"/>
       <source>Face Color</source>
       <translation>Цвет грани </translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="406"/>
+      <location filename="../../draftguitools/gui_layers.py" line="407"/>
       <source>Line Print Color</source>
       <translation>Цвет линий при печати</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="405"/>
+      <location filename="../../draftguitools/gui_layers.py" line="406"/>
       <source>Transparency</source>
       <translation>Прозрачность</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="428"/>
+      <location filename="../../draftguitools/gui_layers.py" line="429"/>
       <source>New Layer</source>
       <translation>Новый слой</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="316"/>
+      <location filename="../../draftobjects/label.py" line="325"/>
       <source>Custom</source>
       <translation>Пользовательский</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="318"/>
+      <location filename="../../draftobjects/label.py" line="327"/>
       <source>Label</source>
       <translation>Метка</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="319"/>
+      <location filename="../../draftobjects/label.py" line="328"/>
       <source>Position</source>
       <translation>Положение</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="320"/>
+      <location filename="../../draftobjects/label.py" line="329"/>
       <source>Length</source>
       <translation>Длина</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="321"/>
+      <location filename="../../draftobjects/label.py" line="330"/>
       <source>Area</source>
       <translation>Площадь</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="322"/>
+      <location filename="../../draftobjects/label.py" line="331"/>
       <source>Volume</source>
       <translation>Объём</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="323"/>
+      <location filename="../../draftobjects/label.py" line="332"/>
       <source>Tag</source>
       <translation>Тег</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="324"/>
+      <location filename="../../draftobjects/label.py" line="333"/>
       <source>Material</source>
       <translation>Материал</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="325"/>
+      <location filename="../../draftobjects/label.py" line="334"/>
       <source>Label + Position</source>
       <translation>Метка + Положение</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="326"/>
+      <location filename="../../draftobjects/label.py" line="335"/>
       <source>Label + Length</source>
       <translation>Метка + Длина</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="327"/>
+      <location filename="../../draftobjects/label.py" line="336"/>
       <source>Label + Area</source>
       <translation>Метка + Площадь</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="328"/>
+      <location filename="../../draftobjects/label.py" line="337"/>
       <source>Label + Volume</source>
       <translation>Метка + Объём</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="329"/>
+      <location filename="../../draftobjects/label.py" line="338"/>
       <source>Label + Material</source>
       <translation>Метка + Материал</translation>
     </message>
@@ -6728,12 +6728,12 @@ If the "Copy" option is active, it will create rotated copies.</source>
   <context>
     <name>Draft_Ellipse</name>
     <message>
-      <location filename="../../draftguitools/gui_ellipses.py" line="63"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="64"/>
       <source>Ellipse</source>
       <translation>Эллипс</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_ellipses.py" line="64"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="65"/>
       <source>Creates an ellipse</source>
       <translation>Создаёт эллипс</translation>
     </message>
@@ -6780,12 +6780,12 @@ If the "Copy" option is active, it will create rotated copies.</source>
   <context>
     <name>Draft_Layer</name>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="74"/>
+      <location filename="../../draftguitools/gui_layers.py" line="75"/>
       <source>New Layer</source>
       <translation>Новый слой</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="78"/>
+      <location filename="../../draftguitools/gui_layers.py" line="79"/>
       <source>Adds a layer to the document.
 Objects added to this layer can share the same visual properties.</source>
       <translation>Добавляет слой в документ.
@@ -7071,19 +7071,19 @@ set True for fusion or False for compound</source>
     </message>
     <message>
       <location filename="../../draftobjects/polygon.py" line="67"/>
+      <location filename="../../draftobjects/ellipse.py" line="64"/>
       <location filename="../../draftobjects/rectangle.py" line="61"/>
       <location filename="../../draftobjects/circle.py" line="61"/>
-      <location filename="../../draftobjects/ellipse.py" line="64"/>
       <source>Create a face</source>
       <translation>Создать грань</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/polygon.py" line="70"/>
-      <location filename="../../draftobjects/rectangle.py" line="70"/>
-      <location filename="../../draftobjects/bspline.py" line="57"/>
-      <location filename="../../draftobjects/circle.py" line="64"/>
       <location filename="../../draftobjects/wire.py" line="90"/>
+      <location filename="../../draftobjects/polygon.py" line="70"/>
+      <location filename="../../draftobjects/bspline.py" line="57"/>
+      <location filename="../../draftobjects/rectangle.py" line="70"/>
       <location filename="../../draftobjects/bezcurve.py" line="66"/>
+      <location filename="../../draftobjects/circle.py" line="64"/>
       <source>The area of this object</source>
       <translation>Площадь этого объекта</translation>
     </message>
@@ -7108,16 +7108,16 @@ set True for fusion or False for compound</source>
       <translation>Как следует построить многоугольник на основе задающей окружности</translation>
     </message>
     <message>
+      <location filename="../../draftobjects/wire.py" line="78"/>
       <location filename="../../draftobjects/polygon.py" line="61"/>
       <location filename="../../draftobjects/rectangle.py" line="55"/>
-      <location filename="../../draftobjects/wire.py" line="78"/>
       <source>Radius to use to fillet the corners</source>
       <translation>Радиус, используемый для скругления углов</translation>
     </message>
     <message>
+      <location filename="../../draftobjects/wire.py" line="81"/>
       <location filename="../../draftobjects/polygon.py" line="64"/>
       <location filename="../../draftobjects/rectangle.py" line="58"/>
-      <location filename="../../draftobjects/wire.py" line="81"/>
       <source>Size of the chamfer to give to the corners</source>
       <translation>Размер фаски, придаваемой углам</translation>
     </message>
@@ -7127,8 +7127,8 @@ set True for fusion or False for compound</source>
       <translation>Базовый объект, который будет продублирован.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="228"/>
       <location filename="../../draftobjects/pathtwistedarray.py" line="108"/>
+      <location filename="../../draftobjects/patharray.py" line="228"/>
       <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
       <translation>Объект вдоль которого будут распространяться копии. Он должен содержать 'Рёбра'.</translation>
     </message>
@@ -7143,18 +7143,18 @@ set True for fusion or False for compound</source>
       <translation>Коэффициент поворота закрученного массива.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="262"/>
-      <location filename="../../draftobjects/array.py" line="325"/>
       <location filename="../../draftobjects/pointarray.py" line="112"/>
+      <location filename="../../draftobjects/array.py" line="325"/>
       <location filename="../../draftobjects/pathtwistedarray.py" line="150"/>
+      <location filename="../../draftobjects/patharray.py" line="262"/>
       <source>Show the individual array elements (only for Link arrays)</source>
       <translation>Показать отдельные элементы массива (только для массивов ссылок)</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="269"/>
-      <location filename="../../draftobjects/array.py" line="148"/>
       <location filename="../../draftobjects/pointarray.py" line="118"/>
+      <location filename="../../draftobjects/array.py" line="148"/>
       <location filename="../../draftobjects/pathtwistedarray.py" line="159"/>
+      <location filename="../../draftobjects/patharray.py" line="269"/>
       <source>The placement for each array element</source>
       <translation>Размещение каждого элемента массива</translation>
     </message>
@@ -7288,8 +7288,8 @@ they will only be editable by changing the style through the 'Annotation style e
 аннотаций".</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="220"/>
       <location filename="../../draftobjects/array.py" line="101"/>
+      <location filename="../../draftobjects/patharray.py" line="220"/>
       <source>The base object that will be duplicated</source>
       <translation>Базовый объект, который будет дублироваться</translation>
     </message>
@@ -7428,10 +7428,10 @@ Otherwise the copies will have the same orientation as the original Base object.
 вокруг базового объекта.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="255"/>
-      <location filename="../../draftobjects/array.py" line="129"/>
       <location filename="../../draftobjects/pointarray.py" line="86"/>
+      <location filename="../../draftobjects/array.py" line="129"/>
       <location filename="../../draftobjects/pathtwistedarray.py" line="120"/>
+      <location filename="../../draftobjects/patharray.py" line="255"/>
       <source>Specifies if the copies should be fused together if they touch each other (slower)</source>
       <translation>Указывает, должны ли копии быть объединены (слиты вместе), 
 если они касаются друг друга (работает медленнее)</translation>
@@ -8012,8 +8012,8 @@ the 'First Angle' and 'Last Angle' properties.</source>
       <translation>Цвет текста</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_text.py" line="61"/>
       <location filename="../../draftviewproviders/view_label.py" line="78"/>
+      <location filename="../../draftviewproviders/view_text.py" line="61"/>
       <source>Line spacing (relative to font size)</source>
       <translation>Межстрочный интервал (относительно размера шрифта)</translation>
     </message>
@@ -8028,8 +8028,8 @@ the 'First Angle' and 'Last Angle' properties.</source>
       <translation>Максимальное количество символов в каждой строке текстового поля</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_text.py" line="56"/>
       <location filename="../../draftviewproviders/view_label.py" line="73"/>
+      <location filename="../../draftviewproviders/view_text.py" line="56"/>
       <source>Horizontal alignment</source>
       <translation>Горизонтальное выравнивание</translation>
     </message>
@@ -8169,18 +8169,18 @@ Use 'arch' to force US arch notation</source>
 систему измерения</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="144"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="159"/>
       <location filename="../../draftviewproviders/view_wire.py" line="67"/>
       <location filename="../../draftviewproviders/view_wire.py" line="80"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="144"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="159"/>
       <source>Arrow size</source>
       <translation>Размер стрелки</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="149"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="166"/>
       <location filename="../../draftviewproviders/view_wire.py" line="72"/>
       <location filename="../../draftviewproviders/view_wire.py" line="85"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="149"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="166"/>
       <source>Arrow type</source>
       <translation>Тип стрелки</translation>
     </message>
@@ -8493,12 +8493,12 @@ The construction group is created if it does not exist.</source>
   <context>
     <name>Draft_AddToLayer</name>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="107"/>
+      <location filename="../../draftguitools/gui_layers.py" line="108"/>
       <source>Add to Layer</source>
       <translation>Добавить в слой</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="111"/>
+      <location filename="../../draftguitools/gui_layers.py" line="112"/>
       <source>Adds selected objects to a layer, or removes them from any layer</source>
       <translation>Добавляет выбранные объекты в слой, или удаляет их из любого слоя</translation>
     </message>
@@ -8506,12 +8506,12 @@ The construction group is created if it does not exist.</source>
   <context>
     <name>Draft_LayerManager</name>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="206"/>
+      <location filename="../../draftguitools/gui_layers.py" line="207"/>
       <source>Manage Layers</source>
       <translation>Управление слоями</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="207"/>
+      <location filename="../../draftguitools/gui_layers.py" line="208"/>
       <source>Allows to modify the layers</source>
       <translation>Позволяет изменить слои</translation>
     </message>

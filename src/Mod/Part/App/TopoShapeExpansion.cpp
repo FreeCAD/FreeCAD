@@ -4759,7 +4759,7 @@ TopoShape& TopoShape::makeElementFilledFace(
                 shapes.begin() + params.boundary_end
             );
             wires = TopoShape(0, Hasher, getHistoryAlgorithm())
-                        .makeElementWires(edges, "", 0.0, ConnectionPolicy::requireSharedVertex, &output)
+                        .makeElementWires(edges, "", 0.0, ConnectionPolicy::mergeWithTolerance, &output)
                         .getSubTopoShapes(TopAbs_WIRE);
             shapes.erase(shapes.begin() + params.boundary_begin, shapes.begin() + params.boundary_end);
         }
@@ -4780,7 +4780,7 @@ TopoShape& TopoShape::makeElementFilledFace(
             }
             if (edges.size()) {
                 wires = TopoShape(0, Hasher, getHistoryAlgorithm())
-                            .makeElementWires(edges, "", 0.0, ConnectionPolicy::requireSharedVertex, &output)
+                            .makeElementWires(edges, "", 0.0, ConnectionPolicy::mergeWithTolerance, &output)
                             .getSubTopoShapes(TopAbs_WIRE);
             }
         }

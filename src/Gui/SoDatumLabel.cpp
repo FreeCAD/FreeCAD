@@ -1593,23 +1593,15 @@ void SoDatumLabel::ensureCoinText(SoState* state, int srcw, int srch, float angl
     m_TextSwitch->whichChild.setValue(0);
 }
 
-void SoDatumLabel::GLRender(SoGLRenderAction* action)
+bool SoDatumLabel::prepareRenderScene(SoState* state)
 {
-    SoState* state = action->getState();
-
-    if (!shouldGLRender(action)) {
-        return;
-    }
-    if (action->handleTransparency(true)) {
-        return;
-    }
-
-    const float scale = getScaleFactor(state);
-    bool hasText = hasDatumText();
-
+    const bool hasText = hasDatumText();
     int srcw = 1;
     int srch = 1;
+    float angle = 0.0F;
+    SbVec3f textOffset(0.0F, 0.0F, 0.0F);
 
+    const float scale = getScaleFactor(state);
     if (hasText) {
         getDimension(scale, srcw, srch);
     }
@@ -1619,14 +1611,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction* action)
         this->imgWidth = scale * 25.0F;
     }
 
-    // Get the points stored in the pnt field
     const SbVec3f* points = this->pnts.getValues(0);
-
-    state->push();
-
-    // Annotation faces should stay visible even when an ancestor enables back-face culling.
-    SoLazyElement::setBackfaceCulling(state, FALSE);
-
     const auto type = static_cast<Type>(datumtype.getValue());
     const int numPoints = this->pnts.getNum();
     const bool isDistance = type == DISTANCE || type == DISTANCEX || type == DISTANCEY;
@@ -1634,18 +1619,8 @@ void SoDatumLabel::GLRender(SoGLRenderAction* action)
         SoDebugError::postWarning("SoDatumLabel::GLRender", "Too few points to render distance label");
     }
 
-    if (hasText) {
-        // Text labels are rendered as SoTexture2 on a quad. Coin's default texture quality
-        // (0.5) enables mipmaps, which can blur small UI text. Keep linear filtering but
-        // avoid mipmaps for crisper results.
-        SoTextureQualityElement::set(state, this, 0.49F);
-        SoLazyElement::setTransparencyType(state, static_cast<int32_t>(SoGLRenderAction::BLEND));
-    }
-
     ensureCoinGeometry(points, numPoints);
 
-    float angle = 0.0F;
-    SbVec3f textOffset;
     if (hasText) {
         if (isDistance && numPoints >= 2) {
             const DistanceGeometry geom = calculateDistanceGeometry(points);
@@ -1662,16 +1637,57 @@ void SoDatumLabel::GLRender(SoGLRenderAction* action)
             angle = geom.angle;
             textOffset = geom.textOffset;
         }
-        else if (type == ARCLENGTH && this->pnts.getNum() >= 3) {
+        else if (type == ARCLENGTH && numPoints >= 3) {
             const ArcLengthGeometry geom = calculateArcLengthGeometry(points);
             angle = geom.angle;
             textOffset = geom.textOffset;
         }
-
-        ensureCoinText(state, srcw, srch, angle, textOffset);
     }
-    else if (m_TextSwitch) {
-        m_TextSwitch->whichChild.setValue(SO_SWITCH_NONE);
+
+    if (m_TextSwitch) {
+        if (hasText) {
+            ensureCoinText(state, srcw, srch, angle, textOffset);
+        }
+        else {
+            m_TextSwitch->whichChild.setValue(SO_SWITCH_NONE);
+        }
+    }
+
+    return hasText;
+}
+
+void SoDatumLabel::GLRender(SoGLRenderAction* action)
+{
+    if (!action) {
+        return;
+    }
+
+    SoState* state = action->getState();
+    if (!state) {
+        return;
+    }
+
+    state->push();
+    // Override inherited cull-face state before SoShape::shouldGLRender() decides
+    // whether this label is visible. Otherwise a flipped parent can cull the
+    // whole label before we get to render its two-sided geometry.
+    SoLazyElement::setBackfaceCulling(state, FALSE);
+
+    if (!shouldGLRender(action)) {
+        state->pop();
+        return;
+    }
+    if (action->handleTransparency(true)) {
+        state->pop();
+        return;
+    }
+
+    const bool hasText = prepareRenderScene(state);
+
+    if (hasText) {
+        // Avoid mipmaps for crisper annotation text while retaining linear filtering.
+        SoTextureQualityElement::set(state, this, 0.49F);
+        SoLazyElement::setTransparencyType(state, static_cast<int32_t>(SoGLRenderAction::BLEND));
     }
 
     if (m_Root) {

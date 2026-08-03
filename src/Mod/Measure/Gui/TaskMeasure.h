@@ -23,9 +23,10 @@
 
 #pragma once
 
-#include <qcolumnview.h>
+#include <QColumnView>
 #include <QString>
 #include <QComboBox>
+#include <QLabel>
 #include <QLineEdit>
 #include <QCheckBox>
 

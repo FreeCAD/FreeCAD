@@ -1089,19 +1089,19 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="927"/>
       <source>Duplicated Faces</source>
-      <translation type="unfinished">Duplicated Faces</translation>
+      <translation>Duplikált felület</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
       <source>Duplicated Points</source>
-      <translation type="unfinished">Duplicated Points</translation>
+      <translation>Duplikált pontok</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1298"/>
       <source>Mesh Repair</source>
-      <translation type="unfinished">Mesh Repair</translation>
+      <translation>Háló javítása</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="963"/>
@@ -2263,8 +2263,8 @@ Kérjük, látogasson el ide: https://openscad.org a telepítéshez.</translatio
       <translation>Kijelzőszín</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCurvature.cpp" line="535"/>
       <location filename="../../ViewProvider.cpp" line="1701"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="535"/>
       <source>Leave Info Mode</source>
       <translation>Hagyja az info módot</translation>
     </message>

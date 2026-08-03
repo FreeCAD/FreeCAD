@@ -49,6 +49,7 @@ public:
     App::PropertyEnumeration ConstraintType;
     App::PropertyBool CavityRadiation;
     App::PropertyString CavityName;
+    App::PropertyBool ClosedCavity;
 
     /// recalculate the object
     App::DocumentObjectExecReturn* execute() override;

@@ -40,6 +40,7 @@ __url__ = "https://www.freecad.org"
 __doc__ = "Functions to extract and convert between Path.Command and Part.Edge and utility functions to reason about them."
 
 Tolerance = 0.000001
+Decimal = 6
 
 translate = FreeCAD.Qt.translate
 
@@ -95,6 +96,12 @@ CmdMove = Constants.GCODE_MOVE
 CmdMoveAll = Constants.GCODE_MOVE_ALL
 
 
+def ceil(value, decimal=Decimal):
+    """ceil(value, [decimal=Decimal])
+    Rounding value to exclude precision error and returns ceiling result"""
+    return math.ceil(round(value, decimal))
+
+
 def isRoughly(float1, float2, error=Tolerance):
     """isRoughly(float1, float2, [error=Tolerance])
     Returns true if the two values are the same within a given error."""
@@ -108,7 +115,7 @@ def pointsCoincide(p1, p2, error=Tolerance):
 
 
 def edgesMatch(e0, e1, error=Tolerance):
-    """edgesMatch(e0, e1, [error=Tolerance]
+    """edgesMatch(e0, e1, [error=Tolerance])
     Return true if the edges start and end at the same point and have the same type of curve."""
     if type(e0.Curve) is not type(e1.Curve) or len(e0.Vertexes) != len(e1.Vertexes):
         return False
@@ -158,6 +165,20 @@ def diffAngle(a1, a2, direction="CW"):
             a2 += 2 * math.pi
         a = a2 - a1
     return a
+
+
+def compareVecs(vec1, vec2, exact=False, error=Tolerance):
+    """compareVecs(vec1, vec2, [exact=False, error=Tolerance])
+    Returns True if two vectors are aligned within a given error.
+    If exact is True, vectors must match direction.
+    Otherwise, alignment can indicate the vectors are the same or exactly opposite.
+    """
+    angle = vec1.getAngle(vec2)
+    angle = 0 if math.isnan(angle) else angle
+    if exact:
+        return Path.Geom.isRoughly(angle, 0, error)
+    else:
+        return Path.Geom.isRoughly(angle, 0, error) or Path.Geom.isRoughly(angle, math.pi, error)
 
 
 def isVertical(obj):
@@ -853,7 +874,7 @@ def combineHorizontalFaces(faces, keepOrder=False):
             horizontal = outer
 
     # restore order
-    if keepOrder:
+    if keepOrder and len(horizontal) > 1:
         ordered = [None] * len(faces)
         for face in horizontal:
             for i, f in enumerate(faces):

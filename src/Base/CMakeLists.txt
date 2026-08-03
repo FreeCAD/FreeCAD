@@ -109,6 +109,18 @@ generate_from_py(Axis)
 generate_from_py(Unit)
 generate_from_py(Quantity)
 generate_from_py(Precision)
+generate_module_from_py(
+    FreeCAD.Qt
+    Qt_MODULE_GENERATED_SRCS
+)
+generate_module_from_py(
+    FreeCAD.Console
+    Console_MODULE_GENERATED_SRCS
+)
+generate_module_from_py(
+    FreeCAD.Units
+    Units_MODULE_GENERATED_SRCS
+)
 generate_from_any(Parameter.xsd Parameter.inl xmlSchemeString)
 
 if(SWIG_FOUND)
@@ -140,6 +152,9 @@ SET(FreeCADBase_Pyi_SRCS
     Type.pyi
     Unit.pyi
     Precision.pyi
+    FreeCAD.Qt.module.pyi
+    FreeCAD.Console.module.pyi
+    FreeCAD.Units.module.pyi
 )
 SOURCE_GROUP("Pyi" FILES ${FreeCADBase_Pyi_SRCS})
 
@@ -147,6 +162,7 @@ SET(FreeCADBase_UNITAPI_SRCS
     UnitsApi.cpp
     UnitsApiPy.cpp
     UnitsApi.h
+    ${Units_MODULE_GENERATED_SRCS}
     UnitsConvData.h
     UnitsSchema.h
     UnitsSchema.cpp
@@ -179,6 +195,7 @@ SET(FreeCADBase_CPP_SRCS
     BoundBoxPyImp.cpp
     Builder3D.cpp
     Console.cpp
+    ${Console_MODULE_GENERATED_SRCS}
     ConsoleObserver.cpp
     Color.cpp
     CoordinateSystem.cpp
@@ -217,6 +234,7 @@ SET(FreeCADBase_CPP_SRCS
     ServiceProvider.cpp
     SmartPtrPy.cpp
     Stream.cpp
+    StringUtils.cpp
     Swap.cpp
     ${SWIG_SRCS}
     SystemHandler.cpp
@@ -224,6 +242,7 @@ SET(FreeCADBase_CPP_SRCS
     Tools2D.cpp
     Tools3D.cpp
     Translation.cpp
+    ${Qt_MODULE_GENERATED_SRCS}
     Translate.cpp
     Type.cpp
     TypePyImp.cpp
@@ -285,6 +304,7 @@ SET(FreeCADBase_HPP_SRCS
     Sequencer.h
     SmartPtrPy.h
     Stream.h
+    StringUtils.h
     Swap.h
     ${SWIG_HEADERS}
     SystemHandler.h
