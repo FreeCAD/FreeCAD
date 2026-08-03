@@ -8,8 +8,13 @@
 #include <string_view>
 #include <utility>
 
-#include <QLocale>
-#include <QString>
+#if (defined(FREECAD_TEST_HAS_QT) && FREECAD_TEST_HAS_QT) || defined(QT_CORE_LIB)
+# define FREECAD_TEST_LOCALE_HAS_QT 1
+# include <QLocale>
+# include <QString>
+#else
+# define FREECAD_TEST_LOCALE_HAS_QT 0
+#endif
 
 #include <Base/NumericFormatting.h>
 
@@ -30,6 +35,7 @@ inline icu::Locale toIcuLocale(std::string_view localeId)
     return icu::Locale::createFromName(localeName.c_str());
 }
 
+#if FREECAD_TEST_LOCALE_HAS_QT
 inline QLocale toQtLocale(std::string_view localeName)
 {
     return QLocale(QString::fromUtf8(localeName.data(), static_cast<int>(localeName.size())));
@@ -40,6 +46,7 @@ inline std::string toUtf8(const QString& text)
     const QByteArray utf8 = text.toUtf8();
     return std::string(utf8.constData(), utf8.size());
 }
+#endif
 }  // namespace detail
 
 class ScopedNumericLocaleContext
@@ -67,38 +74,49 @@ private:
 
 struct LocaleEnvironmentConfig
 {
+#if FREECAD_TEST_LOCALE_HAS_QT
     std::optional<std::string_view> qtLocale {};
+#endif
     std::optional<std::string_view> formattingLocale {};
     std::optional<std::string_view> icuLocale {};
+#if FREECAD_TEST_LOCALE_HAS_QT
     bool useQtSeparators {false};
+#endif
 };
 
 class ScopedLocaleEnvironment
 {
 public:
     explicit ScopedLocaleEnvironment(const LocaleEnvironmentConfig& config = {})
-        : previousQt {QLocale()}
-        , previousIcu {icu::Locale::getDefault()}
+        : previousIcu {icu::Locale::getDefault()}
         , previousFormatting {Base::currentNumericLocaleContext()}
         , previousCNumeric {currentCNumericLocale()}
     {
         std::setlocale(LC_NUMERIC, "C");
 
+#if FREECAD_TEST_LOCALE_HAS_QT
         std::optional<QLocale> qtLocale;
         if (config.qtLocale) {
             qtLocale = detail::toQtLocale(*config.qtLocale);
-            QLocale::setDefault(*qtLocale);
         }
+        QLocale::setDefault(qtLocale.value_or(QLocale::c()));
+#endif
 
         if (config.icuLocale) {
             UErrorCode status = U_ZERO_ERROR;
             icu::Locale::setDefault(detail::toIcuLocale(*config.icuLocale), status);
         }
 
-        if (config.formattingLocale || config.useQtSeparators) {
+        if (
+            config.formattingLocale
+#if FREECAD_TEST_LOCALE_HAS_QT
+            || config.useQtSeparators
+#endif
+        ) {
             auto formatting = config.formattingLocale
                 ? Base::createNumericLocaleContext(*config.formattingLocale)
                 : previousFormatting;
+#if FREECAD_TEST_LOCALE_HAS_QT
             if (config.useQtSeparators) {
                 const QLocale& locale = qtLocale ? *qtLocale : QLocale();
                 formatting.decimalSeparator = detail::toUtf8(QString(locale.decimalPoint()));
@@ -115,6 +133,7 @@ public:
                         : formatting.primaryGroupingSize;
                 }
             }
+#endif
             Base::publishNumericLocaleContext(std::move(formatting));
         }
     }
@@ -127,7 +146,9 @@ public:
 
         UErrorCode status = U_ZERO_ERROR;
         icu::Locale::setDefault(previousIcu, status);
+#if FREECAD_TEST_LOCALE_HAS_QT
         QLocale::setDefault(previousQt);
+#endif
     }
 
     ScopedLocaleEnvironment(const ScopedLocaleEnvironment&) = delete;
@@ -142,10 +163,14 @@ private:
         return name ? std::string(name) : std::string("C");
     }
 
-    QLocale previousQt;
+#if FREECAD_TEST_LOCALE_HAS_QT
+    QLocale previousQt {QLocale()};
+#endif
     icu::Locale previousIcu;
     Base::NumericLocaleContext previousFormatting;
     std::string previousCNumeric;
 };
 
 }  // namespace tests
+
+#undef FREECAD_TEST_LOCALE_HAS_QT
