@@ -240,7 +240,7 @@ void Reader3MF::LoadItem(DOMNamedNodeMap* nodeMap)
             std::optional<Base::Matrix4D> mat = ReadTransform(transformAttr);
             if (mat) {
                 auto it = std::find_if(meshes.begin(), meshes.end(), [idValue](const auto& element) {
-                    return element.index == idValue;
+                    return element.objectId == idValue;
                 });
                 if (it != meshes.end()) {
                     it->transform = mat.value();
@@ -444,7 +444,7 @@ void Reader3MF::LoadMesh(DOMNodeList* nodes, int id, const Component& comp, cons
             kernelTrsf.transform = comp.transform;
             kernelTrsf.kernel.Adopt(points, facets);
             kernelTrsf.name = name;
-            kernelTrsf.index = id;
+            kernelTrsf.objectId = id;
             meshes.push_back(kernelTrsf);
         }
     }

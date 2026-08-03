@@ -30,7 +30,6 @@
 #include <iosfwd>
 #include <memory>
 #include <optional>
-#include <unordered_map>
 #include <xercesc/util/XercesDefs.hpp>
 
 namespace XERCES_CPP_NAMESPACE
@@ -131,7 +130,7 @@ private:
         MeshKernel kernel;
         Base::Matrix4D transform;
         std::string name;
-        int index;
+        int objectId = -1;
     };
     std::vector<MeshKernelAndTransform> meshes;
     std::unique_ptr<zipios::FileCollection> file;
