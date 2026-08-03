@@ -25,23 +25,14 @@
 
 #include "PreCompiled.h"
 
-#include <Standard_Failure.hxx>
-#include <TopExp.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Vertex.hxx>
 
-#include <App/ElementMap.h>
-#include <App/IndexedName.h>
-#include <App/MappedName.h>
 #include <Base/Console.h>
-#include <Base/Vector3D.h>
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 
+#include "GeomReferencePlane3D.h"
 #include "GeometryMapper3D.h"
 #include "Sketch3DObject.h"
 #include "Solver3D.h"
@@ -186,6 +177,84 @@ int Sketch3DObject::delGeometries(std::vector<int> geoIds)
     Geometry.setValues(keptGeos);
 
     return static_cast<int>(geoIds.size());
+}
+
+bool Sketch3DObject::addMirror(const std::vector<int>& geoIdList, int planeGeoId)
+{
+    auto* plane = getGeometry<GeomReferencePlane3D>(planeGeoId);
+    if (!plane) {
+        return false;
+    }
+
+    auto origin = plane->getLocation();
+    auto normal = plane->getDir();
+    normal.Normalize();
+
+    auto isXYZDist = [](Constraint3D::Constraint3DType type) {
+        return type == Constraint3D::DistanceX3D || type == Constraint3D::DistanceY3D
+            || type == Constraint3D::DistanceZ3D;
+    };
+    auto isAlong = [](Constraint3D::Constraint3DType type) {
+        return type == Constraint3D::AlongX || type == Constraint3D::AlongY
+            || type == Constraint3D::AlongZ;
+    };
+
+    bool xyzAligned = std::max({std::fabs(normal.x), std::fabs(normal.y), std::fabs(normal.z)})
+        == 1.0;
+    std::map<int, int> geoIdMap;
+
+    for (int geoId : geoIdList) {
+        if (geoId == planeGeoId || geoIdMap.count(geoId)) {
+            continue;
+        }
+        const Part::Geometry* geo = _getGeometry(geoId);
+        if (!geo || kindOfGeometry(geo) == GeoKind::Plane) {
+            continue;
+        }
+
+        std::unique_ptr<Part::Geometry> copy(geo->copy());
+        Sketcher::GeometryFacade::setId(copy.get(), 0);
+        gp_Ax2 ax2(gp_Pnt(origin.x, origin.y, origin.z), gp_Dir(normal.x, normal.y, normal.z));
+        copy->handle()->Mirror(ax2);
+
+        int newId = addGeometry(std::move(copy), getConstruction(geoId));
+        geoIdMap[geoId] = newId;
+    }
+    if (geoIdMap.empty()) {
+        return false;
+    }
+
+    auto& constraints = Constraints.getConstraints();
+    auto updated = constraints;
+
+    for (const auto& c : constraints) {
+        if (isXYZDist(c.Type) || (!xyzAligned && isAlong(c.Type))) {
+            continue;
+        }
+
+        auto elements = c.getElements();
+        bool ok = true;
+        for (auto& el : elements) {
+            auto it = geoIdMap.find(el.GeoId);
+            if (it == geoIdMap.end()) {
+                ok = false;
+                break;
+            }
+            el.GeoId = it->second;
+        }
+        if (!ok) {
+            continue;
+        }
+
+        Constraint3D mirrored = c;
+        mirrored.setElements(std::move(elements));
+        updated.push_back(std::move(mirrored));
+    }
+
+    Constraints.setConstraints(std::move(updated));
+    Geometry.touch();
+
+    return true;
 }
 
 const Part::Geometry* Sketch3DObject::_getGeometry(int geoId) const

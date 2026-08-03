@@ -442,6 +442,7 @@ void ViewProviderSketch3D::updateData(const App::Property* prop)
         signalConstraintsChanged();
     }
     if (prop == &sketch->Shape || prop == &sketch->ReferenceShape) {
+        Gui::Selection().clearSelection();
         signalElementsChanged();
     }
 }

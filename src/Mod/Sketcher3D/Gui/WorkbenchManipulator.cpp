@@ -83,6 +83,7 @@ void WorkbenchManipulator::setupEditModeToolbar(Gui::ToolBarItem* toolBar)
             << "Sketcher3D_ToggleConstruction"
             << "Sketcher3D_CreateCircle"
             << "Sketcher3D_CreateArc"
+            << "Sketcher3D_Mirror"
             << "Separator"
             << "Sketcher3D_CompDimensionTools"
             << "Sketcher3D_ConstrainCoincident"

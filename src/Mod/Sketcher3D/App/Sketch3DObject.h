@@ -85,6 +85,9 @@ public:
     /// Remove constraints by index.
     int delConstraints(std::vector<int> constraintIds);
 
+    /// mirror geometry about a reference plane.
+    bool addMirror(const std::vector<int>& geoIdList, int planeGeoId);
+
     template<
         typename GeometryT = Part::Geometry,
         typename = typename std::enable_if<

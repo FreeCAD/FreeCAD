@@ -25,34 +25,26 @@
 
 #include "PreCompiled.h"
 
-#include <QDialog>
-#include <QObject>
-
 #include <Base/Console.h>
 #include <Base/Tools.h>
-#include <Base/Unit.h>
 #include <Gui/Action.h>
-#include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection/Selection.h>
 
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Sketcher3D/App/Constraint3D.h>
-#include <Mod/Sketcher3D/App/GeoEnum3D.h>
 #include <Mod/Sketcher3D/App/Sketch3DObject.h>
 
 #include "DlgEditConstraintValue.h"
+#include "DrawSketchHandlerArc3D.h"
+#include "DrawSketchHandlerCircle3D.h"
 #include "DrawSketchHandlerLine3D.h"
+#include "DrawSketchHandlerMirror3D.h"
 #include "DrawSketchHandlerPoint3D.h"
 #include "DrawSketchHandlerPolyline3D.h"
 #include "DrawSketchHandlerReferencePlane3D.h"
-#include "DrawSketchHandlerCircle3D.h"
-#include "DrawSketchHandlerArc3D.h"
 #include "Utils.h"
 #include "ViewProviderSketch3D.h"
-
 
 namespace Sketcher3DGui
 {
@@ -407,6 +399,61 @@ std::vector<Sketcher3D::GeoElementId3D> collectSelectedPointRefs(Sketcher3D::Ske
 std::vector<Sketcher3D::GeoElementId3D> collectSelectedLineRefs(Sketcher3D::Sketch3DObject* sketch)
 {
     return collectSketch3DSelection(sketch, false, true).lines;
+}
+
+DEF_STD_CMD_A(CmdSketcher3DMirror)
+
+CmdSketcher3DMirror::CmdSketcher3DMirror()
+    : Command("Sketcher3D_Mirror")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Mirror");
+    sToolTipText = QT_TR_NOOP("Mirror selected 3D geometry about a reference plane");
+    sWhatsThis = "Sketcher3D_Mirror";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_Symmetry";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DMirror::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    ViewProviderSketch3D* vp = getActiveSketch3DVP();
+    Sketcher3D::Sketch3DObject* sketch = activeSketch3D();
+    if (!vp || !sketch) {
+        return;
+    }
+
+    auto sel = collectSketch3DSelection(sketch, true, true, false);
+    std::set<int> geoIdSet;
+    for (const auto& id : sel.points) {
+        geoIdSet.insert(id.GeoId);
+    }
+    for (const auto& id : sel.lines) {
+        geoIdSet.insert(id.GeoId);
+    }
+    for (const auto& id : sel.arcs) {
+        geoIdSet.insert(id.GeoId);
+    }
+    for (const auto& id : sel.circles) {
+        geoIdSet.insert(id.GeoId);
+    }
+
+    if (geoIdSet.empty()) {
+        Base::Console().warning("Sketcher3D: select geometry to mirror.\n");
+        return;
+    }
+
+    vp->activateHandler(
+        std::make_unique<DrawSketchHandlerMirror3D>(std::vector<int>(geoIdSet.begin(), geoIdSet.end()))
+    );
+}
+
+bool CmdSketcher3DMirror::isActive()
+{
+    return isSketch3DInEdit();
 }
 
 // ---------------------------------------------------------------------------
@@ -1539,6 +1586,7 @@ void CreateSketcher3DCommands()
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DToggleConstruction());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreateCircle());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreateArc());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DMirror());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainDistance());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainRadius());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainAngle());

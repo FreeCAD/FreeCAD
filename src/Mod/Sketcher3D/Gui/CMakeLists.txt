@@ -26,6 +26,8 @@ SET(Sketcher3DGui_SRCS
     DrawSketchHandlerPolyline3D.h
     DrawSketchHandlerReferencePlane3D.cpp
     DrawSketchHandlerReferencePlane3D.h
+    DrawSketchHandlerMirror3D.cpp
+    DrawSketchHandlerMirror3D.h
     PreCompiled.h
     Sketcher3DToolWidget.h
     SnapManager3D.cpp
