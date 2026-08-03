@@ -139,53 +139,19 @@ class FCTLSerializer(AssetSerializer):
             f"FCTL DEEP_DESERIALIZE: Found {len(dependency_uris)} toolbit dependencies: {[uri.asset_id for uri in dependency_uris]}"
         )
 
-        # Fetch all toolbit dependencies
+        # Fetch all toolbit dependencies via the configured store search order
         resolved_dependencies = {}
         for dep_uri in dependency_uris:
             try:
-                Path.Log.info(
-                    f"FCTL DEEP_DESERIALIZE: Fetching toolbit '{dep_uri.asset_id}' from stores ['local', 'builtin']"
-                )
-
-                # Check if toolbit exists in each store individually for debugging
-                search_stores = cam_assets.get_default_search_stores()
-                exists_local = cam_assets.exists(
-                    dep_uri, store=search_stores[0] if search_stores else "local"
-                )
-                exists_builtin = cam_assets.exists(dep_uri, store="builtin")
-                Path.Log.info(
-                    f"FCTL DEEP_DESERIALIZE: Toolbit '{dep_uri.asset_id}' exists - local: {exists_local}, builtin: {exists_builtin}"
-                )
-
-                search_stores = cam_assets.get_default_search_stores()
-                toolbit = cam_assets.get(dep_uri, store=list(search_stores) + ["builtin"], depth=0)
+                toolbit = cam_assets.get(dep_uri, depth=0)
                 resolved_dependencies[dep_uri] = toolbit
-                Path.Log.info(
+                Path.Log.debug(
                     f"FCTL DEEP_DESERIALIZE: Successfully fetched toolbit '{dep_uri.asset_id}'"
                 )
             except Exception as e:
                 Path.Log.warning(
                     f"FCTL DEEP_DESERIALIZE: Failed to fetch toolbit '{dep_uri.asset_id}': {e}"
                 )
-
-                # Try to get more detailed error information
-                try:
-                    # Check what's actually in the stores
-                    search_stores = cam_assets.get_default_search_stores()
-                    local_toolbits = cam_assets.list_assets(
-                        "toolbit", store=search_stores if search_stores else ("local",)
-                    )
-                    local_ids = [uri.asset_id for uri in local_toolbits]
-                    Path.Log.info(
-                        f"FCTL DEBUG: Local store has {len(local_ids)} toolbits: {local_ids[:10]}{'...' if len(local_ids) > 10 else ''}"
-                    )
-
-                    if dep_uri.asset_id in local_ids:
-                        Path.Log.warning(
-                            f"FCTL DEBUG: Toolbit '{dep_uri.asset_id}' IS in local store list but get() failed!"
-                        )
-                except Exception as list_error:
-                    Path.Log.error(f"FCTL DEBUG: Failed to list local toolbits: {list_error}")
 
         Path.Log.info(
             f"FCTL DEEP_DESERIALIZE: Resolved {len(resolved_dependencies)} of {len(dependency_uris)} dependencies"
@@ -219,14 +185,10 @@ class FCTLSerializer(AssetSerializer):
         resolved_dependencies = {}
         for dep_uri in dependency_uris:
             try:
-                # First try to get from asset manager stores
-                Path.Log.info(
-                    f"FCTL EXTERNAL: Trying to fetch toolbit '{dep_uri.asset_id}' from stores ['local', 'builtin']"
-                )
-                search_stores = cam_assets.get_default_search_stores()
-                toolbit = cam_assets.get(dep_uri, store=list(search_stores) + ["builtin"], depth=0)
+                # First try to get from the search-order stores
+                toolbit = cam_assets.get(dep_uri, depth=0)
                 resolved_dependencies[dep_uri] = toolbit
-                Path.Log.info(
+                Path.Log.debug(
                     f"FCTL EXTERNAL: Successfully fetched toolbit '{dep_uri.asset_id}' from stores"
                 )
             except Exception as e:

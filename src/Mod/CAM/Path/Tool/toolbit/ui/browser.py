@@ -52,14 +52,19 @@ class ToolBitBrowserWidget(QtGui.QWidget):
     toolSelected = QtCore.Signal(str)  # Emits ToolBit URI string
     # Signal emitted when a tool is requested for editing (e.g., double-click)
     itemDoubleClicked = QtCore.Signal(ToolBit)  # Emits ToolBit URI string
+    # Emitted (possibly from a worker thread) when a store announces an
+    # asset change; delivery to the GUI thread is handled by Qt.
+    _assets_changed_externally = QtCore.Signal()
 
     # Debounce timer for search input
     _search_timer_interval = 300  # milliseconds
+    # Debounce timer for store-originated refreshes (e.g. sync workers)
+    _external_change_timer_interval = 250  # milliseconds
 
     def __init__(
         self,
         asset_manager: AssetManager,
-        store: str = "local",
+        store: Optional[Sequence[str]] = None,
         parent=None,
         tool_no_factory=None,
         tool_fetcher=None,
@@ -71,7 +76,10 @@ class ToolBitBrowserWidget(QtGui.QWidget):
         self._compact_mode = compact
 
         self._is_fetching = False
+        # None = browse the configured store search order. The write store
+        # is only consulted when saving, never to restrict what is shown.
         self._store_name = store
+        self._store_by_id: dict = {}  # asset_id -> name of the resolving store
         self._all_assets: Sequence[ToolBit] = []  # Store all fetched assets
         self._current_search = ""  # Track current search term
         self._sort_key = "tool_no" if tool_no_factory else "label"
@@ -129,6 +137,33 @@ class ToolBitBrowserWidget(QtGui.QWidget):
         # of items that need to be fetched.
         self.tool_fetcher = tool_fetcher or self._tool_fetcher
 
+        # Refresh when a store announces an out-of-band change (e.g. a sync
+        # worker pulled a teammate's tool). The observer may fire on any
+        # thread; the signal/timer pair trampolines to the GUI thread and
+        # debounces bursts.
+        self._external_change_timer = QtCore.QTimer(self)
+        self._external_change_timer.setSingleShot(True)
+        self._external_change_timer.setInterval(self._external_change_timer_interval)
+        self._external_change_timer.timeout.connect(self.refresh)
+        self._assets_changed_externally.connect(self._external_change_timer.start)
+        self._subscribe_to_asset_changes()
+
+    def _subscribe_to_asset_changes(self):
+        def observer(store_name, uri, action):
+            if uri.asset_type not in ("toolbit", "toolbitlibrary"):
+                return
+            try:
+                self._assets_changed_externally.emit()
+            except RuntimeError:
+                # The underlying C++ widget is already gone.
+                pass
+
+        manager = self._asset_manager
+        manager.add_asset_observer(observer)
+        # The lambda captures the manager and the callback, not the widget,
+        # so the cleanup survives the widget's destruction.
+        self.destroyed.connect(lambda *_: manager.remove_asset_observer(observer))
+
     def showEvent(self, event):
         """Handles the widget show event to trigger initial data fetch."""
         super().showEvent(event)
@@ -170,12 +205,40 @@ class ToolBitBrowserWidget(QtGui.QWidget):
         self._is_fetching = True
         try:
             self._all_assets = self.tool_fetcher()
+            self._refresh_store_attribution()
         finally:
             self._is_fetching = False
         Path.Log.debug(f"Loaded {len(self._all_assets)} ToolBits.")
 
         self._sort_assets()
         self._update_list()
+
+    def _refresh_store_attribution(self):
+        """Rebuilds the asset_id -> store name map used for store badges."""
+        try:
+            attributed = self._asset_manager.list_assets_attributed(
+                "toolbit", store=self._store_name
+            )
+            self._store_by_id = {uri.asset_id: name for uri, name in attributed}
+        except Exception as e:
+            Path.Log.debug(f"Store attribution unavailable: {e}")
+            self._store_by_id = {}
+
+    def _primary_store_name(self) -> Optional[str]:
+        """The first store in the browsed search order (assets from it get no badge)."""
+        if isinstance(self._store_name, str):
+            return self._store_name
+        if self._store_name:
+            return self._store_name[0]
+        stores = self._asset_manager.get_default_search_stores()
+        return stores[0] if stores else None
+
+    def _store_badge_for(self, toolbit) -> Optional[str]:
+        """Returns the badge to display for a toolbit, or None for the primary store."""
+        store_name = self._store_by_id.get(toolbit.get_id())
+        if not store_name or store_name == self._primary_store_name():
+            return None
+        return store_name
 
     def _sort_assets(self):
         """Sorts the in-memory assets based on the current sort key."""
@@ -214,16 +277,17 @@ class ToolBitBrowserWidget(QtGui.QWidget):
         # Iterate through filtered assets and update the list widget
         for i, asset in enumerate(filtered_assets):
             uri = str(asset.get_uri())
+            badge = self._store_badge_for(asset)
             if uri in current_items:
                 # Item exists, remove the old one and insert the new one
                 item = current_items[uri]
                 row = self._tool_list_widget.row(item)
                 self._tool_list_widget.takeItem(row)
-                self._tool_list_widget.insert_toolbit(i, asset)
+                self._tool_list_widget.insert_toolbit(i, asset, store_badge=badge)
                 del current_items[uri]
             else:
                 # Insert new item
-                self._tool_list_widget.insert_toolbit(i, asset)
+                self._tool_list_widget.insert_toolbit(i, asset, store_badge=badge)
 
         # Remove items that are no longer in filtered_assets
         for uri, item in current_items.items():
@@ -481,12 +545,8 @@ class ToolBitBrowserWidget(QtGui.QWidget):
 
         libraries_with_toolbit = []
         try:
-            # Get all libraries from the asset manager
-            all_libraries = self._asset_manager.fetch(
-                "toolbitlibrary",
-                store=self._asset_manager.get_default_search_stores(),
-                depth=1,
-            )
+            # Get all libraries from the asset manager (search order)
+            all_libraries = self._asset_manager.fetch("toolbitlibrary", depth=1)
 
             for library in all_libraries:
                 if isinstance(library, Library):

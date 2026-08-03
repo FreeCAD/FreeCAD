@@ -48,10 +48,11 @@ class ToolBitSelector(QtWidgets.QDialog):
         self.setMinimumSize(700, 500)
         self.setWindowTitle(FreeCAD.Qt.translate("CAM", "Select Toolbit"))
 
-        # Use LibraryBrowserWithCombo which handles library selection and "All Tools" option
+        # Use LibraryBrowserWithCombo which handles library selection and "All Tools" option.
+        # Browsing follows the configured store search order; the write store
+        # only matters when a tool is saved.
         self._browser_widget = LibraryBrowserWithCombo(
             asset_manager=cam_assets,
-            store=cam_assets.get_default_write_store(),
             compact=compact,
             show_all_tools=show_all_tools,
         )

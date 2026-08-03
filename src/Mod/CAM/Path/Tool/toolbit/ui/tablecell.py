@@ -46,6 +46,7 @@ class TwoLineTableCell(QtGui.QWidget):
         self.pocket = ""
         self.upper_text = ""
         self.lower_text = ""
+        self.store_badge = ""
         self.search_highlight = ""
 
         palette = self.palette()
@@ -60,6 +61,7 @@ class TwoLineTableCell(QtGui.QWidget):
         self.label_upper.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents)
 
         color = interpolate_colors(bg_color, fg_color, 0.8)
+        self._muted_color_name = color.name()
         style = "margin-bottom: 8px; color: {};".format(color.name())
         self.label_lower = QtGui.QLabel()
         self.label_lower.setStyleSheet(style)
@@ -112,7 +114,11 @@ class TwoLineTableCell(QtGui.QWidget):
         self.label_right.setText(text)
 
         text = self._highlight(self.upper_text)
-        self.label_upper.setText(f"<b>{text}</b>")
+        if self.store_badge:
+            badge = f' <font color="{self._muted_color_name}">[{self.store_badge}]</font>'
+        else:
+            badge = ""
+        self.label_upper.setText(f"<b>{text}</b>{badge}")
 
         text = self._highlight(self.lower_text)
         self.label_lower.setText(text)
@@ -128,6 +134,11 @@ class TwoLineTableCell(QtGui.QWidget):
 
     def set_upper_text(self, text):
         self.upper_text = text
+        self._update()
+
+    def set_store_badge(self, store_name):
+        """Shows which asset store the item resolves from ("" hides the badge)."""
+        self.store_badge = store_name or ""
         self._update()
 
     def set_lower_text(self, text):

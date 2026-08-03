@@ -54,7 +54,7 @@ class LibraryBrowserWidget(ToolBitBrowserWidget, ToolBitTypeFilterMixin):
     def __init__(
         self,
         asset_manager: AssetManager,
-        store: str = "local",
+        store=None,
         parent=None,
         compact=True,
         show_all_tools=False,
@@ -91,11 +91,7 @@ class LibraryBrowserWidget(ToolBitBrowserWidget, ToolBitTypeFilterMixin):
         library_uri = Path.Preferences.getLastToolLibrary()
         if library_uri:
             try:
-                library = self._asset_manager.get(
-                    library_uri,
-                    store=self._asset_manager.get_default_search_stores(),
-                    depth=1,
-                )
+                library = self._asset_manager.get(library_uri, store=self._store_name, depth=1)
                 self.set_current_library(library)
             except Exception as e:
                 Path.Log.warning(f"Failed to load last tool library: {e}")
@@ -425,7 +421,7 @@ class LibraryBrowserWidget(ToolBitBrowserWidget, ToolBitTypeFilterMixin):
             existing_toolbit = None
             try:
                 existing_toolbit = self._asset_manager.get(
-                    toolbit_uri, store=["local", "builtin"], depth=0
+                    toolbit_uri, store=self._store_name, depth=0
                 )
                 Path.Log.info(f"COPY PASTE: Found existing toolbit {original_id}, using reference")
             except FileNotFoundError:
@@ -480,7 +476,7 @@ class LibraryBrowserWidget(ToolBitBrowserWidget, ToolBitTypeFilterMixin):
             toolbit_uri = toolbit.get_uri()
             try:
                 existing_toolbit = self._asset_manager.get(
-                    toolbit_uri, store=["local", "builtin"], depth=0
+                    toolbit_uri, store=self._store_name, depth=0
                 )
                 Path.Log.info(f"CUT PASTE: Found existing toolbit {original_id}, using reference")
 
@@ -545,7 +541,7 @@ class LibraryBrowserWithCombo(LibraryBrowserWidget):
     def __init__(
         self,
         asset_manager: AssetManager,
-        store: str = "local",
+        store=None,
         parent=None,
         compact=True,
         show_all_tools=False,
