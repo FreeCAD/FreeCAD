@@ -1912,14 +1912,16 @@ class PostProcessor:
         header_part = gcode_lines[:num_header_lines]
         body_part = gcode_lines[num_header_lines:]
 
+        if body_part and self.values["FILTER_INEFFICIENT_MOVES"]:
+            # Must run before the modal passes below strip command words,
+            # or rapid chains are no longer recognizable.
+            body_part = filter_inefficient_moves(body_part)
+
         if body_part:
             if not self.values["OUTPUT_DUPLICATE_COMMANDS"]:
                 body_part = deduplicate_repeated_commands(body_part)
             if not self.values["OUTPUT_DOUBLES"]:
                 body_part = suppress_redundant_axes_words(body_part)
-
-        if body_part and self.values["FILTER_INEFFICIENT_MOVES"]:
-            body_part = filter_inefficient_moves(body_part)
 
         if body_part and self.values["OUTPUT_LINE_NUMBERS"]:
             start = self.values["LINE_NUMBER_START"]
@@ -2608,6 +2610,7 @@ class PostProcessor:
         This method can be overridden by derived postprocessors to customize rapid move handling.
         """
         from Path.Post.UtilsParse import format_command_line
+        from Path.Post.GcodeProcessingUtils import NO_COLLAPSE_ANNOTATION, NO_COLLAPSE_MARKER
 
         # Extract command components
         command_name = command.Name
@@ -2656,6 +2659,12 @@ class PostProcessor:
         # A bare move (G0, G1, G2, G3) or dwell (G4) with no parameters is meaningless.
         if params and len(command_line) == 1:
             return None
+
+        # Moves annotated as functional motion get a marker word which
+        # filter_inefficient_moves honors and strips; only emit it when that
+        # filter will actually run.
+        if annotations.get(NO_COLLAPSE_ANNOTATION) and self.values.get("FILTER_INEFFICIENT_MOVES"):
+            command_line.append(NO_COLLAPSE_MARKER)
 
         # Format the command line
         formatted_line = format_command_line(self.values, command_line)

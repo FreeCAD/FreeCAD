@@ -27,6 +27,7 @@ Test suite for DrillCycleExpander class.
 import unittest
 import Path
 from Path.Post.DrillCycleExpander import DrillCycleExpander
+from Path.Post.GcodeProcessingUtils import NO_COLLAPSE_ANNOTATION
 from Path.Base.MachineState import MachineState
 
 
@@ -390,3 +391,29 @@ class TestDrillCycleExpander(unittest.TestCase):
             self.assertEqual(
                 res.Parameters, exp.Parameters, f"Command {i} {exp}: parameters mismatch"
             )
+
+    def test_12_no_collapse_annotation(self):
+        """In-cycle rapids carry the no-collapse annotation; the preliminary
+        positioning rapids and pass-through commands do not."""
+        machine_state = MachineState({"ReturnMode": "Z"})  # G98
+        expander = DrillCycleExpander(machine_state)
+
+        input_cmds = [
+            Path.Command("G0", {"X": 0, "Y": 0, "Z": 1.0, "F": 1000}),
+            Path.Command("G83", {"X": 1.0, "Y": 1.0, "Z": -0.6, "R": 0.1, "Q": 0.2, "F": 10.0}),
+            Path.Command("G80", {}),
+        ]
+        result = expander.expand_commands(input_cmds)
+
+        first_feed = next(i for i, c in enumerate(result) if c.Name == "G1")
+        for i, cmd in enumerate(result):
+            if cmd.Name == "G0" and i > first_feed:
+                self.assertTrue(
+                    cmd.Annotations.get(NO_COLLAPSE_ANNOTATION),
+                    f"Command {i}: in-cycle rapid unmarked",
+                )
+            else:
+                self.assertNotIn(
+                    NO_COLLAPSE_ANNOTATION, cmd.Annotations, f"Command {i}: unexpected annotation"
+                )
+            self.assertNotIn("NOCOLLAPSE", cmd.Parameters, f"Command {i}: parameter pollution")
