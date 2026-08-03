@@ -35,6 +35,7 @@
 
 #include <fmt/ranges.h>
 
+#include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
@@ -374,6 +375,7 @@ bool Constraint::involvesGeoId(int geoId) const
         | std::views::transform([&](size_t i) { return getElement(i); });
 #endif
     return std::ranges::any_of(elements, [geoId](const auto& element) {
+        Base::Console().log("element: %d, %d\n", static_cast<int>(element.Pos), element.GeoId);
         return element.GeoId == geoId;
     });
 }

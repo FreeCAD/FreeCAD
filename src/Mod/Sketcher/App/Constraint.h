@@ -276,7 +276,7 @@ public:
 
 private:
     // New way to access point ids and positions.
-    // While the old way is still supported, it is recommended to the getters and setters instead.
+    // While the old way is still supported, it is recommended to use the getters and setters instead.
     std::vector<GeoElementId> elements {GeoElementId(), GeoElementId(), GeoElementId()};
 
 protected:
