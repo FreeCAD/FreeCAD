@@ -4490,6 +4490,10 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         return PartGui::ViewProvider2DObject::unsetEdit(ModNum);
     }
 
+    if (dragAutoConstraintHandler) {
+        dragAutoConstraintHandler->clear();
+    }
+
     setGridEnabled(nullptr);
     auto gridnode = getGridNode();
     pcRoot->removeChild(gridnode);

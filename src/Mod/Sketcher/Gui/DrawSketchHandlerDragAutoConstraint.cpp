@@ -28,8 +28,10 @@
 #include <memory>
 #include <numbers>
 
+#include <QTimer>
 #include <QWidget>
 
+#include <App/Application.h>
 #include <Precision.hxx>
 #include <Base/Vector3D.h>
 #include <Mod/Part/App/Geometry.h>
@@ -46,7 +48,23 @@ using namespace Sketcher;
 namespace
 {
 constexpr double DragAutoConstraintSnapDistanceFactor = 0.25;
+constexpr int DefaultDragAutoConstraintDelay = 400;
+
+int getDragAutoConstraintDelay()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General"
+    );
+    const auto delay = hGrp->GetInt("DragAutoConstraintDelay", DefaultDragAutoConstraintDelay);
+    return static_cast<int>(std::clamp(delay, 0L, static_cast<long>(std::numeric_limits<int>::max())));
 }
+}  // namespace
+
+DrawSketchHandlerDragAutoConstraint::DrawSketchHandlerDragAutoConstraint()
+    : dwellTimerContext(std::make_unique<QObject>())
+{}
+
+DrawSketchHandlerDragAutoConstraint::~DrawSketchHandlerDragAutoConstraint() = default;
 
 bool DrawSketchHandlerDragAutoConstraint::canSuggestFor(const std::vector<GeoElementId>& dragged) const
 {
@@ -56,7 +74,7 @@ bool DrawSketchHandlerDragAutoConstraint::canSuggestFor(const std::vector<GeoEle
 
 void DrawSketchHandlerDragAutoConstraint::initDragging(const std::vector<GeoElementId>& dragged)
 {
-    suggestedConstraints.clear();
+    clear();
 
     if (QWidget* widget = getCursorWidget()) {
         oldCursor = widget->cursor();
@@ -82,7 +100,9 @@ void DrawSketchHandlerDragAutoConstraint::addAutoConstraint(ConstraintType type,
 
 void DrawSketchHandlerDragAutoConstraint::clear()
 {
+    ++dwellTimerGeneration;
     suggestedConstraints.clear();
+    draggedElements.clear();
     unsetCursor();
 }
 
@@ -197,6 +217,25 @@ void DrawSketchHandlerDragAutoConstraint::update(
     const std::vector<GeoElementId>& draggedElements,
     const Base::Vector2d& /*pos*/
 )
+{
+    const auto timerGeneration = ++dwellTimerGeneration;
+    suggestedConstraints.clear();
+    unsetCursor();
+
+    this->draggedElements = draggedElements;
+
+    if (!canSuggestFor(this->draggedElements)) {
+        return;
+    }
+
+    QTimer::singleShot(getDragAutoConstraintDelay(), dwellTimerContext.get(), [this, timerGeneration]() {
+        if (timerGeneration == dwellTimerGeneration) {
+            updateSuggestions();
+        }
+    });
+}
+
+void DrawSketchHandlerDragAutoConstraint::updateSuggestions()
 {
     suggestedConstraints.clear();
 
