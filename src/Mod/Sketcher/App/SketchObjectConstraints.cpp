@@ -38,6 +38,7 @@
 #include <Base/Vector3D.h>
 
 #include <memory>
+#include <string>
 
 #include "GeoEnum.h"
 #include "SketchObject.h"
@@ -1342,7 +1343,6 @@ int SketchObject::transferConstraints(
                 // If it is, we need to be sure at most ONE of these is external
                 continue;
             }
-
             switch (vals[i]->Type) {
                 case Sketcher::Tangent:
                 case Sketcher::Perpendicular: {
@@ -1661,7 +1661,8 @@ bool SketchObject::deriveConstraintsForPieces(
     const int oldId,
     const std::vector<int>& newIds,
     const Constraint* con,
-    std::vector<Constraint*>& newConstraints
+    std::vector<Constraint*>& newConstraints,
+    const bool assumeTangency
 ) const
 {
     std::vector<const Part::Geometry*> newGeos;
@@ -1669,7 +1670,7 @@ bool SketchObject::deriveConstraintsForPieces(
         newGeos.push_back(getGeometry(newId));
     }
 
-    return deriveConstraintsForPieces(oldId, newIds, newGeos, con, newConstraints);
+    return deriveConstraintsForPieces(oldId, newIds, newGeos, con, newConstraints, assumeTangency);
 }
 
 bool SketchObject::deriveConstraintsForPieces(
@@ -1677,15 +1678,18 @@ bool SketchObject::deriveConstraintsForPieces(
     const std::vector<int>& newIds,
     const std::vector<const Part::Geometry*>& newGeos,
     const Constraint* con,
-    std::vector<Constraint*>& newConstraints
+    std::vector<Constraint*>& newConstraints,
+    const bool assumeTangency
 ) const
 {
     const Part::Geometry* geo = getGeometry(oldId);
-    int conId = con->First;
-    PointPos conPos = con->FirstPos;
+    const GeoElementId conGeoElementId = con->getElement(0);
+    int conId = conGeoElementId.GeoId;
+    PointPos conPos = conGeoElementId.Pos;
     if (conId == oldId) {
-        conId = con->Second;
-        conPos = con->SecondPos;
+        const GeoElementId second = con->getElement(1);
+        conId = second.GeoId;
+        conPos = second.Pos;
     }
 
     bool newGeosLikelyNotCreated = std::ranges::find(newGeos, nullptr) != newGeos.end();
@@ -1699,11 +1703,13 @@ bool SketchObject::deriveConstraintsForPieces(
         } break;
         case Tangent:
         case Perpendicular: {
-            if (geo->is<Part::GeomLineSegment>()) {
+            if (!assumeTangency && geo->is<Part::GeomLineSegment>()) {
                 transferToAll = true;
                 break;
             }
 
+            // we assume the parts are forced to be tangential, so we only need to apply it to the
+            // ones intersecting
             const Part::Geometry* conGeo = getGeometry(conId);
             if (!(conGeo && conGeo->isDerivedFrom<Part::GeomCurve>())) {
                 return false;
@@ -1716,14 +1722,31 @@ bool SketchObject::deriveConstraintsForPieces(
 
             // For now: just transfer to the first intersection
             // TODO: Actually check that there was perpendicularity earlier
-            // TODO: Choose piece based on parameters ("values" of the constraint)
             for (size_t i = 0; i < newIds.size(); ++i) {
-                std::vector<std::pair<Base::Vector3d, Base::Vector3d>> intersections;
-                bool intersects
-                    = static_cast<const Part::GeomCurve*>(newGeos[i])
-                          ->intersect(static_cast<const Part::GeomCurve*>(conGeo), intersections);
+                // by coincident or point on object constraint
+                const auto& constraints = this->Constraints.getValues();
 
-                if (intersects) {
+                const bool coincidentConstrFound = std::find_if(
+                                                       constraints.begin(),
+                                                       constraints.end(),
+                                                       [&](const auto* constraint) {
+                                                           return constraint->Type == Coincident
+                                                               && constraint->involvesGeoId(newIds[i])
+                                                               && constraint->involvesGeoId(conId);
+                                                       }
+                                                   )
+                    != constraints.end();
+
+                // by curve intersection
+                bool intersects = false;
+                if (!coincidentConstrFound) {
+                    std::vector<std::pair<Base::Vector3d, Base::Vector3d>> intersections;
+                    intersects
+                        = static_cast<const Part::GeomCurve*>(newGeos[i])
+                              ->intersect(static_cast<const Part::GeomCurve*>(conGeo), intersections);
+                }
+
+                if (coincidentConstrFound || intersects) {
                     Constraint* trans = con->copy();
                     trans->substituteIndex(oldId, newIds[i]);
                     newConstraints.push_back(trans);
@@ -1790,6 +1813,7 @@ bool SketchObject::deriveConstraintsForPieces(
         case Distance:
         case DistanceX:
         case DistanceY:
+        case Coincident:
         case PointOnObject: {
             if (con->FirstPos == PointPos::none && con->SecondPos == PointPos::none
                 && newIds.size() > 1) {
@@ -1858,10 +1882,19 @@ bool SketchObject::deriveConstraintsForPieces(
         return false;
     }
 
-    for (auto& newId : newIds) {
+    if (assumeTangency) {
+        // because the geometries are tangential, we can apply the constraint only to the first one
+        // and the rest will follow
         Constraint* trans = con->copy();
-        trans->substituteIndex(oldId, newId);
+        trans->substituteIndex(oldId, newIds[0]);
         newConstraints.push_back(trans);
+    }
+    else {
+        for (auto& newId : newIds) {
+            Constraint* trans = con->copy();
+            trans->substituteIndex(oldId, newId);
+            newConstraints.push_back(trans);
+        }
     }
 
     return true;
