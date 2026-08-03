@@ -560,11 +560,7 @@ void EditModeCoinManager::ParameterObserver::initParameters()
          }},
         {"AxisLineWidth",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
-             // TODO: Consider if it's necessary to extract & define a named function just for this
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Mod/Sketcher/View"
-            );
-            drawingParameters.AxisLineWidth = hGrp->GetFloat(param.c_str(), 2.0F);
+             updateWidth(drawingParameters.AxisLineWidth, param, 2);
          }},
         {"EdgePattern",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
@@ -590,7 +586,7 @@ void EditModeCoinManager::ParameterObserver::initParameters()
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updatePattern(drawingParameters.InformationPattern, param, 0b1111110011111100);
          }},
-         {"AxisLinePattern",
+        {"AxisLinePattern",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updatePattern(drawingParameters.AxisLinePattern, param, 0b1111111111111111);
          }},

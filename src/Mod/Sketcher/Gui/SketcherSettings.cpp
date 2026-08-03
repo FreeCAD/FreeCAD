@@ -766,7 +766,7 @@ void SketcherSettingsAppearance::saveSettings()
     ui->ExternalWidth->onSave();
     ui->ExternalDefiningWidth->onSave();
     ui->InformationWidth->onSave();
-    ui->FloatSpinBox_AxisLineWidth->onSave();
+    ui->SpinBox_AxisLineWidth->onSave();
 
     ui->InternalFaceColor->onSave();
 
@@ -836,7 +836,7 @@ void SketcherSettingsAppearance::loadSettings()
     ui->ExternalWidth->onRestore();
     ui->ExternalDefiningWidth->onRestore();
     ui->InformationWidth->onRestore();
-    ui->FloatSpinBox_AxisLineWidth->onRestore();
+    ui->SpinBox_AxisLineWidth->onRestore();
 
     ui->InternalFaceColor->setAllowTransparency(true);
     ui->InternalFaceColor->onRestore();
