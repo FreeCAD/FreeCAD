@@ -95,6 +95,13 @@ class AssetManager:
         """
         self._asset_observers.append(callback)
 
+    def remove_asset_observer(self, callback: Callable[[str, AssetUri, str], None]):
+        """Removes a previously registered asset observer. No-op if absent."""
+        try:
+            self._asset_observers.remove(callback)
+        except ValueError:
+            pass
+
     def notify_asset_changed(self, store_name: str, uri: Union[AssetUri, str], action: str) -> None:
         """Announces a store-originated asset change to all observers.
 
