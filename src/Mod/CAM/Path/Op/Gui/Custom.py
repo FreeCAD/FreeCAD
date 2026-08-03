@@ -60,6 +60,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             "\nExample:"
             "\nG0 Z{{VarSet.HeightZ.Value+5}}"
             "\nG0 X{{Profile.Path.Commands[3].x}} Y{{Profile.Path.Commands[3].y}}"
+            "\n\nLines which starts from '!' will be added without processing"
+            "\nExample:"
+            "\n!G666 X1"
         )
         self.editor.setToolTip(toolTip)
         form.txtGCodeBox.layout().removeWidget(form.txtGCode)
@@ -76,12 +79,15 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.GcodeFile = str(self.form.fileName.text())
         if obj.Gcode != str(self.editor.toPlainText().split("\n")):
             obj.Gcode = self.editor.toPlainText().split("\n")
+        if obj.AddWithoutProcessing != self.form.chkAsIs.isChecked():
+            obj.AddWithoutProcessing = self.form.chkAsIs.isChecked()
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
         self.selectInComboBox(obj.Source, self.form.source)
         self.form.fileName.setText(obj.GcodeFile)
         self.editor.setText("\n".join(obj.Gcode))
+        self.form.chkAsIs.setChecked(obj.AddWithoutProcessing)
 
         self.updateVisibility()
 
@@ -91,6 +97,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.source.currentIndexChanged)
         signals.append(self.form.fileName.editingFinished)
         signals.append(self.editor.textChanged)
+        signals.append(self.form.chkAsIs.checkStateChanged)
 
         return signals
 

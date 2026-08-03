@@ -210,3 +210,6 @@ ANNOT_ALLOW_UNSUPPORTED = "allow_unsupported"
 
 # G0 moves which can be replaced by G1 with No-Engagement Feed
 ANNOT_NO_ENGAGEMENT_FEED = "NoEngagementFeed"
+
+# Pass through string in annotation as command without any changes
+ANNOT_AS_IS = "as-is"

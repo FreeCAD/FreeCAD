@@ -105,6 +105,12 @@ class ObjectCustom(PathOp.ObjectOp):
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The G-code to be inserted"),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "AddWithoutProcessing",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Add lines without processing"),
+        )
 
         # populate the property enumerations
         for n in self.propertyEnumerations():
@@ -135,6 +141,13 @@ class ObjectCustom(PathOp.ObjectOp):
                 "GcodeFile",
                 "Path",
                 "File containing gcode to be inserted",
+            )
+        if not hasattr(obj, "AddWithoutProcessing"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "AddWithoutProcessing",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Add lines without processing"),
             )
 
         # populate the property enumerations
@@ -179,65 +192,56 @@ class ObjectCustom(PathOp.ObjectOp):
             line = re.sub(pattern, str(value), line, count=1)
         return line
 
-    def opExecute(self, obj):
-        self.commandlist.append(Path.Command("(Begin Custom)"))
-        errorNumLines = []
-        errorLines = []
-
-        if obj.Source == "Text" and obj.Gcode:
-            for i, line in enumerate(obj.Gcode):
+    def processLines(self, obj, lines):
+        for i, line in enumerate(lines, 1):
+            line = line.strip()
+            if line.startswith("!"):
+                newcommand = Path.Command("", {}, {Constants.ANNOT_AS_IS: line[1:]})
+                self.commandlist.append(newcommand)
+            elif obj.AddWithoutProcessing:
+                newcommand = Path.Command("", {}, {Constants.ANNOT_AS_IS: line})
+                self.commandlist.append(newcommand)
+            else:
                 line = self.parseExpressions(obj, line, i)
                 try:
-                    newcommand = Path.Command(
-                        str(line), {}, {Constants.ANNOT_ALLOW_UNSUPPORTED: "True"}
-                    )
+                    newcommand = Path.Command(line, {}, {Constants.ANNOT_ALLOW_UNSUPPORTED: "True"})
                     self.commandlist.append(newcommand)
                 except ValueError:
-                    errorNumLines.append(i)
-                    if len(errorLines) < 7:
-                        errorLines.append(f"{i}: {str(line).strip()}")
-            if errorLines:
-                # FIXME: should throw
-                Path.Log.warning(
-                    translate("PathCustom", "Total invalid lines in Custom Text G-code: %s")
-                    % len(errorNumLines)
-                )
+                    if len(self.errors) < 7:
+                        self.errors.append((i, line))
+                    else:
+                        self.errors.append((i, None))
 
-        elif obj.Source == "File" and len(obj.GcodeFile) > 0:
+    def opExecute(self, obj):
+        self.errors = []
+        self.commandlist.append(Path.Command("(Begin Custom)"))
+
+        if obj.Source == "Text" and obj.Gcode:
+            self.processLines(obj, obj.Gcode)
+        elif obj.Source == "File" and obj.GcodeFile:
             gcode_file = self.findGcodeFile(obj.GcodeFile)
-
-            # could not determine the path
-            if not gcode_file:
+            if not gcode_file:  # could not determine the path
                 Path.Log.error(
                     translate("PathCustom", "Custom file %s could not be found.") % obj.GcodeFile
                 )
-            else:
-                with open(gcode_file) as fd:
-                    for i, line in enumerate(fd.readlines()):
-                        line = line.strip()
-                        line = self.parseExpressions(obj, line, i)
-                        try:
-                            newcommand = Path.Command(str(line))
-                            self.commandlist.append(newcommand)
-                        except ValueError:
-                            errorNumLines.append(i)
-                            if len(errorLines) < 7:
-                                errorLines.append(f"{i}: {str(line).strip()}")
-                if errorLines:
-                    Path.Log.warning(gcode_file)
-                    Path.Log.warning(
-                        translate("PathCustom", "Total invalid lines in Custom File G-code: %s")
-                        % len(errorNumLines)
-                    )
+                obj.Path = Path.Path()
+                return
+            with open(gcode_file) as fd:
+                self.processLines(obj, fd.readlines())
 
-        if errorNumLines:
+        if self.errors:
             Path.Log.warning(
-                translate("PathCustom", "Check lines: %s") % ", ".join(map(str, errorNumLines))
+                translate("PathCustom", "Total invalid lines in Custom G-code: %s")
+                % len(self.errors)
             )
 
-            if len(errorLines) > 7:
-                errorLines.append("...")
-            Path.Log.warning("\n" + "\n".join(errorLines))
+            errorNums = ", ".join((str(i) for i, _ in self.errors))
+            Path.Log.warning(translate("PathCustom", "Check lines: %s") % errorNums)
+
+            errorLines = "\n" + "\n".join((f"{i} {line}" for i, line in self.errors[:7]))
+            if len(self.errors) > 7:
+                errorLines += "\n..."
+            Path.Log.warning(errorLines)
 
         self.commandlist.append(Path.Command("(End Custom)"))
 
