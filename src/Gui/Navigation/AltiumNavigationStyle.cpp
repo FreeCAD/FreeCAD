@@ -1,10 +1,21 @@
 #include <Inventor/nodes/SoCamera.h>
+#include <Inventor/SbVec2f.h>
+#include "Inventor/SoMouseWheelEvent.h"
 #include <QApplication>
 
 #include "Navigation/NavigationStyle.h"
 #include "View3DInventorViewer.h"
 
 #include <Base/Console.h>
+
+// forward declarations
+class SoEvent;
+class SoMouseWheelEvent;
+class SoMotion3Event;
+class SoQtViewer;
+class SoCamera;
+class SoSensor;
+class SbSphereSheetProjector;
 
 using namespace Gui;
 
@@ -40,11 +51,13 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
     // Events when in "ready-to-seek" mode are ignored, except those
     // which influence the seek mode itself -- these are handled further
     // up the inheritance hierarchy.
-    if (this->isSeekMode()) {
+    if (this->isSeekMode())
+    {
         return inherited::processSoEvent(ev);
     }
     // Switch off viewing mode (Bug #0000911)
-    if (!this->isSeekMode() && !this->isAnimating() && this->isViewing()) {
+    if (!this->isSeekMode() && !this->isAnimating() && this->isViewing())
+    {
         this->setViewing(false);  // by default disable viewing mode to render the scene
     }
 
@@ -73,28 +86,33 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
     syncModifierKeys(ev);
 
     // give the nodes in the foreground root the chance to handle events (e.g color bar)
-    if (!viewer->isEditing()) {
+    if (!viewer->isEditing())
+    {
         processed = handleEventInForeground(ev);
-        if (processed) {
+        if (processed)
+        {
             return true;
         }
     }
 
     // Keyboard handling
-    if (type.isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
+    if (type.isDerivedFrom(SoKeyboardEvent::getClassTypeId()))
+    {
         const auto event = static_cast<const SoKeyboardEvent*>(ev);
         processed = processKeyboardEvent(event);
     }
 
-    // Mouse Button / Spaceball Button handling
-    if (type.isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
+    // Mouse Button / Spaceball Button handling / NO mouse scroll
+    if (type.isDerivedFrom(SoMouseButtonEvent::getClassTypeId()))
+    {
         const auto event = (const SoMouseButtonEvent*)ev;
         const int button = event->getButton();
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
-        // Base::Console().message("mouse button = %d\n", button);  // TODO delete
+        Base::Console().message("mouse button = %d\n", button);  // TODO delete
 
-        switch (button) {
+        switch (button)
+        {
             case SoMouseButtonEvent::BUTTON1:
                 this->lockrecenter = true;
                 this->button1down = press;
@@ -111,13 +129,17 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
                 // !press means all buttons are up (has been released)
                 // Don't show the context menu after dragging, panning or zooming
                 // Only panning and dragging are important here since zooming is not done with button2
-                if (!press && (hasDragged || hasPanned || hasZoomed)) {
+                if (!press && (hasDragged || hasPanned || hasZoomed))
+                {
                     processed = true;
                 }
-                else if (!press && !viewer->isEditing()) {
+                else if (!press && !viewer->isEditing())
+                {
                     if (curmode != NavigationStyle::ZOOMING
-                        && curmode != NavigationStyle::DRAGGING) {
-                        if (this->isPopupMenuEnabled()) {
+                        && curmode != NavigationStyle::DRAGGING)
+                    {
+                        if (this->isPopupMenuEnabled())
+                        {
                             this->openPopupMenu(event->getPosition());
                         }
                     }
@@ -126,13 +148,15 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
             // if pressing button3, then we are zooming
             case SoMouseButtonEvent::BUTTON3:
                 this->button3down = press;
-                if (press) {
+                if (press)
+                {
                     newmode = NavigationStyle::ZOOMING;
                     saveCursorPosition(ev);
                     this->centerTime = ev->getTime(); // TODO is this needed?
                     processed = true;
                 }
-                else {
+                else
+                {
                     processed = true;
                 }
                 break;
@@ -142,19 +166,37 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
     }
 
     // Mouse scroll wheel
-    if (type.isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
+    if (type.isDerivedFrom(SoMouseWheelEvent::getClassTypeId()))
+    {
+        const auto event = (const SoMouseWheelEvent*)ev;
+        int scroll_delta = event->getDelta();
+        Base::Console().message("mouse wheel delta %i\n", scroll_delta);  // TODO delete
+        //todo
+        
+        float posn_x, posn_y;
+        posn.getValue(posn_x, posn_y);
+        
+        SbVec2f new_posn = SbVec2f(posn_x, posn_y + scroll_delta);
 
-    // Mouse Movement handling for  Zooming, dragging, panning
-    if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
+        float ratio = vp.getViewportAspectRatio();
+        panCamera(viewer->getSoRenderManager()->getCamera(), ratio, this->panningplane, new_posn, prevposn);
+
+        processed = true;
+    }
+    // Mouse Movement handling for zooming, dragging, panning
+    if (type.isDerivedFrom(SoLocation2Event::getClassTypeId()))
+    {
         this->lockrecenter = true;
         const auto event = (const SoLocation2Event*)ev;
         // Base::Console().message("mouse movement curmode %u\n", static_cast<int>(curmode)); TODO delete
-        if (curmode == NavigationStyle::ZOOMING) {
+        if (curmode == NavigationStyle::ZOOMING)
+        {
             this->setZoomAtCursor(true);
             this->zoomByCursor(posn, prevposn);
             processed = true;
         }
-        else if (curmode == NavigationStyle::PANNING) {
+        else if (curmode == NavigationStyle::PANNING)
+        {
             float ratio = vp.getViewportAspectRatio();
             panCamera(
                 viewer->getSoRenderManager()->getCamera(),
@@ -165,7 +207,8 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
             );
             processed = true;
         }
-        else if (curmode == NavigationStyle::DRAGGING) {
+        else if (curmode == NavigationStyle::DRAGGING)
+        {
             // TODO change the rotationcenter location only if starting a drag
             // shift down only locks and displays cursor position. need to also right click
             // to actually drag
@@ -178,9 +221,11 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
     }
 
     // Spaceball & Joystick handling
-    if (type.isDerivedFrom(SoMotion3Event::getClassTypeId())) {
+    if (type.isDerivedFrom(SoMotion3Event::getClassTypeId()))
+    {
         const auto event = static_cast<const SoMotion3Event*>(ev);
-        if (event) {
+        if (event)
+        {
             this->processMotionEvent(event);
         }
         processed = true;
@@ -198,13 +243,16 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
         | (this->button2down ? BUTTON2DOWN : 0) | (this->button3down ? BUTTON3DOWN : 0)
         | (this->ctrldown ? CTRLDOWN : 0) | (this->shiftdown ? SHIFTDOWN : 0);
 
-    switch (combo) {
+    switch (combo)
+    {
         case 0: // no button pressed
             newmode = NavigationStyle::IDLE;
             // The left mouse button has been released right now so unlock the flag
-            if (this->lockButton1) {
+            if (this->lockButton1)
+            {
                 this->lockButton1 = false;
-                if (curmode != NavigationStyle::SELECTION) {
+                if (curmode != NavigationStyle::SELECTION)
+                {
                     processed = true;
                 }
             }
@@ -215,10 +263,12 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
         case BUTTON1DOWN | CTRLDOWN:
             // make sure not to change the selection when stopping spinning
             if (curmode == NavigationStyle::SPINNING
-                || (this->lockButton1 && curmode != NavigationStyle::SELECTION)) {
+                || (this->lockButton1 && curmode != NavigationStyle::SELECTION))
+            {
                 newmode = NavigationStyle::IDLE;
             }
-            else {
+            else
+            {
                 newmode = NavigationStyle::SELECTION;
             }
             break;
@@ -267,15 +317,18 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
     // and the other button is released, don't switch to selection mode.
     // Process when selection button is pressed together with other buttons that could trigger
     // different actions.
-    if (this->button1down && (this->button2down || this->button3down)) {
+    if (this->button1down && (this->button2down || this->button3down))
+    {
         this->lockButton1 = true;
         processed = true;
     }
 
     // Prevent interrupting rubber-band selection in sketcher
     if (viewer->isEditing() && curmode == NavigationStyle::SELECTION
-        && newmode != NavigationStyle::IDLE) {
-        if (!button1down || !button2down) {  // Allow canceling rubber-band in sketcher if both
+        && newmode != NavigationStyle::IDLE)
+    {
+        if (!button1down || !button2down)
+        {  // Allow canceling rubber-band in sketcher if both
                                              // button 1 and button 2 are pressed
             newmode = NavigationStyle::SELECTION;
         }
@@ -283,19 +336,22 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
     }
 
     // Reset flags when newmode is IDLE and the buttons are released
-    if (newmode == IDLE && !button1down && !button2down && !button3down) {
+    if (newmode == IDLE && !button1down && !button2down && !button3down)
+    {
         hasPanned = false;
         hasDragged = false;
         hasZoomed = false;
     }
 
-    if (newmode != curmode) {
+    if (newmode != curmode)
+    {
         this->setViewingMode(newmode);
     }
 
     // If not handled in this class, pass on upwards in the inheritance
     // hierarchy.
-    if (!processed) {
+    if (!processed)
+    {
         processed = inherited::processSoEvent(ev);  // this will handle zoom by scroll or other things
     }
     return processed;

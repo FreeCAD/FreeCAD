@@ -251,7 +251,7 @@ void QGVPage::setNavigationStyle(std::string navParm)
         m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleSolidWorks(this));
     }
     else if (foundAltium != std::string::npos) {
-        m_navStyle = new QGVNavStyle(this);  // TODO update this?
+        m_navStyle = new QGVNavStyle(this);  // TODO update this with altiums navstyle for tech drawings
     }
     else {
         m_navStyle = new QGVNavStyle(this);
