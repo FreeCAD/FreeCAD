@@ -213,15 +213,19 @@ class CAMSanity:
         data["postprocessor"] = str(obj.PostProcessor)
         data["postprocessorFlags"] = str(obj.PostProcessorArgs)
 
-        if obj.PostProcessorOutputFile != "":
-            fname = obj.PostProcessorOutputFile
+        if str(obj.PostProcessorOutputFile) != "":
+            fname = str(obj.PostProcessorOutputFile)
             data["outputfilename"] = os.path.splitext(os.path.basename(fname))[0]
 
         for op in obj.Operations.Group:
             if "Stop" in op.Name and hasattr(op, "Stop") and op.Stop is True:
                 data["optionalstops"] = "True"
 
-        if obj.LastPostProcessOutput == "":
+        # Coerce to str before any filesystem access: a non-str value (e.g. a
+        # mock in tests) would otherwise be treated as a file descriptor by
+        # open()/os.stat() via __index__, hijacking and closing fd 1.
+        last_output = str(obj.LastPostProcessOutput)
+        if last_output == "":
             data["filesize"] = str(0.0)
             data["linecount"] = str(0)
             data["squawkData"].append(
@@ -231,9 +235,10 @@ class CAMSanity:
                 )
             )
         else:
-            if os.path.isfile(obj.LastPostProcessOutput):
-                data["filesize"] = str(os.path.getsize(obj.LastPostProcessOutput) / 1000)
-                data["linecount"] = str(sum(1 for line in open(obj.LastPostProcessOutput)))
+            if os.path.isfile(last_output):
+                data["filesize"] = str(os.path.getsize(last_output) / 1000)
+                with open(last_output) as gcode_file:
+                    data["linecount"] = str(sum(1 for line in gcode_file))
             else:
                 data["filesize"] = str(0.0)
                 data["linecount"] = str(0)
