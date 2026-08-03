@@ -2003,8 +2003,8 @@ int SketchObject::getSingleScaleDefiningConstraint() const
 
 const std::vector<std::map<int, Sketcher::PointPos>> SketchObject::getCoincidenceGroups()
 {
-    // this function is different from that in getCoincidentPoints in that:
-    // - getCoincidentPoints only considers direct coincidence (the points that are linked via a
+    // this function is different from getDirectlyCoincidentPoints in that:
+    // - getDirectlyCoincidentPoints only considers direct coincidence (the points that are linked via a
     // single coincidence)
     // - this function provides an array of maps of points, each map containing the points that are
     // coincident by virtue
@@ -2232,7 +2232,7 @@ bool SketchObject::hasBlockConstraint() const
     });
 }
 
-void SketchObject::getConstraintIndices(int GeoId, std::vector<int>& constraintList)
+void SketchObject::getConstraintIndices(int GeoId, std::vector<int>& constraintList) const
 {
     const std::vector<Constraint*>& constraints = this->Constraints.getValues();
     int i = 0;

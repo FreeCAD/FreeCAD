@@ -680,7 +680,7 @@ public:
     bool hasBlockConstraint() const;
 
     /// returns a list of indices of all constraints involving given GeoId
-    void getConstraintIndices(int GeoId, std::vector<int>& constraintList);
+    void getConstraintIndices(int GeoId, std::vector<int>& constraintList) const;
 
     /// generates a warning message about constraint conflicts and appends it to the given message
     static void appendConflictMsg(const std::vector<int>& conflicting, std::string& msg);
