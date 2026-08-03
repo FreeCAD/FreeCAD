@@ -143,9 +143,9 @@ TaskMeasure::TaskMeasure()
     setupShortcuts(taskbox);
 
     QSettings settings;
-    settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
-    mAutoSave = settings.value(QLatin1String(taskMeasureAutoSaveSettingsName), mAutoSave).toBool();
-    mGreedySelection = settings.value(QLatin1String(taskMeasureGreedySelection), false).toBool();
+    settings.beginGroup(taskMeasureSettingsGroup);
+    mAutoSave = settings.value(taskMeasureAutoSaveSettingsName, mAutoSave).toBool();
+    mGreedySelection = settings.value(taskMeasureGreedySelection, false).toBool();
     settings.endGroup();
 
     autoSaveAction = new QAction(tr("Auto Save"));
@@ -191,7 +191,10 @@ TaskMeasure::TaskMeasure()
     modeSwitch->addItem(tr("Auto"));
 
     for (App::MeasureType* mType : App::MeasureManager::getMeasureTypes()) {
-        modeSwitch->addItem(tr(mType->label.c_str()), QString::fromStdString(mType->identifier));
+        modeSwitch->addItem(
+            qApp->translate("TaskMeasure", mType->label.c_str()),
+            QString::fromStdString(mType->identifier)
+        );
     }
 
     // Connect dropdown's change signal to our onModeChange slot
@@ -353,12 +356,13 @@ void TaskMeasure::tryUpdate()
         }
     }
 
-    valueResult->setText(QLatin1String("-"));
+    valueResult->setText("-");
     if (typeInfo) {
         typeInfo->resetUIState();
     }
 
-    std::string mode = explicitMode ? modeSwitch->currentText().toStdString() : "";
+    std::string modeIdentifier = explicitMode ? modeSwitch->currentData().toString().toStdString()
+                                              : "";
 
     App::MeasureSelection selection;
     for (auto s : Gui::Selection().getSelection(doc->getName(), Gui::ResolveMode::NoResolve)) {
@@ -370,7 +374,7 @@ void TaskMeasure::tryUpdate()
 
     // Get valid measure type
     App::MeasureType* measureType = nullptr;
-    auto measureTypes = App::MeasureManager::getValidMeasureTypes(selection, mode);
+    auto measureTypes = App::MeasureManager::getValidMeasureTypes(selection, modeIdentifier);
     if (!measureTypes.empty()) {
         measureType = measureTypes.front();
     }
@@ -761,7 +765,7 @@ void TaskMeasure::setModeSilent(App::MeasureType* mode)
         modeSwitch->setCurrentIndex(0);
     }
     else {
-        modeSwitch->setCurrentText(QString::fromLatin1(mode->label.c_str()));
+        modeSwitch->setCurrentIndex(modeSwitch->findData(QString::fromStdString(mode->identifier)));
     }
     modeSwitch->blockSignals(false);
 }
@@ -807,8 +811,8 @@ TaskMeasureDistanceInfo::TaskMeasureDistanceInfo(
     : TaskMeasureTypeInfo(formLayout, std::move(measureObjectGetter))
 {
     QSettings settings;
-    settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
-    _delta = settings.value(QLatin1String(taskMeasureShowDeltaSettingsName), _delta).toBool();
+    settings.beginGroup(taskMeasureSettingsGroup);
+    _delta = settings.value(taskMeasureShowDeltaSettingsName, _delta).toBool();
     settings.endGroup();
 
     _showDelta = new QCheckBox();
@@ -823,7 +827,8 @@ TaskMeasureDistanceInfo::TaskMeasureDistanceInfo(
     showDeltaLayout->setContentsMargins(0, 0, 0, 0);
     showDeltaLayout->setSpacing(8);
     showDeltaLayout->addWidget(_showDelta, 0, Qt::AlignVCenter | Qt::AlignLeft);
-    showDeltaLayout->addWidget(new QLabel(tr("Show Delta")), 0, Qt::AlignVCenter | Qt::AlignLeft);
+    showDeltaLayout
+        ->addWidget(new QLabel(TaskMeasure::tr("Show Delta")), 0, Qt::AlignVCenter | Qt::AlignLeft);
     showDeltaLayout->addStretch(1);
 
     _deltaXResult = new QLineEdit();
@@ -848,9 +853,9 @@ TaskMeasureDistanceInfo::TaskMeasureDistanceInfo(
 
 void TaskMeasureDistanceInfo::resetUIState()
 {
-    _deltaXResult->setText(QLatin1String("-"));
-    _deltaYResult->setText(QLatin1String("-"));
-    _deltaZResult->setText(QLatin1String("-"));
+    _deltaXResult->setText("-");
+    _deltaYResult->setText("-");
+    _deltaZResult->setText("-");
 }
 
 void TaskMeasureDistanceInfo::update()
@@ -910,8 +915,8 @@ void TaskMeasureDistanceInfo::showDeltaChanged(int checkState)
     _delta = checkState == Qt::CheckState::Checked;
 
     QSettings settings;
-    settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
-    settings.setValue(QLatin1String(taskMeasureShowDeltaSettingsName), _delta);
+    settings.beginGroup(taskMeasureSettingsGroup);
+    settings.setValue(taskMeasureShowDeltaSettingsName, _delta);
     settings.endGroup();
     settings.sync();  // immediate write to the settings file
 
