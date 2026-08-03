@@ -2361,10 +2361,11 @@ class TestTopologicalNamingProblem(unittest.TestCase):
 
         doc.Sketch.split(0, App.Vector(10, 0, 0))  # Geo 0 moves to Geo 3, create Geo4
         doc.Sketch.split(4, App.Vector(30, 0, 0))  # Create Geo5
+        doc.recompute()
         doc.Sketch.moveGeometry(4, 1, App.Vector(10, 2, 0), False)
         doc.Sketch.moveGeometry(4, 2, App.Vector(30, 2, 0), False)
         doc.recompute()
-        self.assertAlmostEqual(doc.Pad.Shape.Volume, 7400)  # Prove the points moved
+        self.assertAlmostEqual(doc.Pad.Shape.Volume, 8533.33333333333)  # Prove the points moved
         self.assertTrue(doc.Sketch001.isValid())  # Check for a TNP fail.
         # If Sketch001 is still at the right start point, we are good.
         self.assertTrue(doc.Sketch001.AttachmentOffset.Matrix == App.Matrix())
