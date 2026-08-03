@@ -226,3 +226,6 @@ ANNOT_NO_ENGAGEMENT_FEED = "NoEngagementFeed"
 ANNOT_MODAL_BARRIER = "modal_barrier"
 # Don't optimize this G0 into next/previous ones, the motion is salient
 ANNOT_NO_COLLAPSE_G0 = "no_collapse_g0"
+
+# Pass through string in annotation as command without any changes
+ANNOT_AS_IS = "as-is"
