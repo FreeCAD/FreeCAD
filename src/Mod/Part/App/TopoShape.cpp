@@ -313,9 +313,16 @@ TopoShape::TopoShape(const TopoShape& shape)
     *this = shape;
 }
 
-TopoShape::TopoShape(const App::HistoryAlgorithm& historyAlgorithm, const TopoDS_Shape& shape)
+TopoShape::TopoShape(const App::HistoryAlgorithm& historyAlgorithm, const TopoDS_Shape& shape, long tag)
     : _Shape(*this, shape)
 {
+    Tag = tag;
+    setHistoryAlgorithm(historyAlgorithm);
+}
+
+TopoShape::TopoShape(const App::HistoryAlgorithm& historyAlgorithm, long tag)
+{
+    Tag = tag;
     setHistoryAlgorithm(historyAlgorithm);
 }
 

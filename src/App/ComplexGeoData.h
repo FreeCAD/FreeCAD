@@ -759,7 +759,7 @@ protected:
 
 private:
     ElementMapPtr _elementMap;
-    App::HistoryAlgorithm selectedHistoryAlgorithm;
+    App::HistoryAlgorithm selectedHistoryAlgorithm = App::HistoryAlgorithm::V2;
 
 protected:
     /// The persistence file name.

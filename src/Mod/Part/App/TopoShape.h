@@ -292,7 +292,7 @@ public:
         long Tag = 0,  // NOLINT google-explicit-constructor
         App::StringHasherRef hasher = App::StringHasherRef(),
         const TopoDS_Shape& shape = TopoDS_Shape(),
-        const App::HistoryAlgorithm& historyAlgorithm = App::HistoryAlgorithm::V1
+        const App::HistoryAlgorithm& historyAlgorithm = App::HistoryAlgorithm::V2
     );  // Cannot be made explicit
     TopoShape(
         long Tag,  // NOLINT google-explicit-constructor
@@ -307,10 +307,18 @@ public:
         const TopoDS_Shape&,  // NOLINT google-explicit-constructor
         long Tag = 0,
         App::StringHasherRef hasher = App::StringHasherRef(),
-        const App::HistoryAlgorithm& historyAlgorithm = App::HistoryAlgorithm::V1
+        const App::HistoryAlgorithm& historyAlgorithm = App::HistoryAlgorithm::V2
     );  // Cannot be made explicit
     TopoShape(const TopoShape&);
-    TopoShape(const App::HistoryAlgorithm& historyAlgorithm, const TopoDS_Shape& shape = TopoDS_Shape());
+    TopoShape(
+        const App::HistoryAlgorithm& historyAlgorithm,
+        const TopoDS_Shape& shape = TopoDS_Shape(),
+        long Tag = 0
+    );
+    TopoShape(
+        const App::HistoryAlgorithm& historyAlgorithm,
+        long Tag
+    );
     ~TopoShape() override;
 
     void setShape(const TopoDS_Shape& shape, bool resetElementMap = true);

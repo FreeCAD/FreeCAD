@@ -92,7 +92,7 @@ class AppExport DecodedMappedSection {
  * its contents into a datatype which is easy to use and
  * understand in the FreeCAD codebase.
  * 
- * The V2 does include a method to do this: `getDecodedMappedName()`.
+ * The V2 includes a method to do so: `getDecodedMappedName()`.
  * This returns a `DecodedMappedName` (or a `std::vector<DecodedMappedSection>`).
  * 
  */
@@ -506,12 +506,6 @@ public:
                 this->data.append(dataToAppend, size);
             }
             else {
-                const char* constData = this->postfix.constData();
-
-                if (strlen(constData) == 0 || constData[strlen(constData) - 1] != '|') {
-                    this->postfix.append("|", 1);
-                }
-
                 this->postfix.append(dataToAppend, size);
             }
         }

@@ -2432,20 +2432,20 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                     emptyConnectedElementsIndex++;
                                 }
 
-                                newName.append(
-                                    Data::MappedName::makeSection(
-                                        {},
-                                        {},
-                                        masterTag,
-                                        op,
-                                        index,
-                                        (*info->shapetype),
-                                        0,
-                                        {Data::MAPPER_FLAG_MODIFIED},
-                                        newConnectedElementNames
-                                    )
-                                        .c_str()
+                                std::string sectionToAppend {Data::NAME_SECTION_DELIMINATOR};
+                                sectionToAppend += Data::MappedName::makeSection(
+                                    {},
+                                    {},
+                                    masterTag,
+                                    op,
+                                    index,
+                                    (*info->shapetype),
+                                    0,
+                                    {Data::MAPPER_FLAG_MODIFIED},
+                                    newConnectedElementNames
                                 );
+
+                                newName.append(sectionToAppend.c_str());
                             }
 
                             bool skipMap = false;
@@ -5899,9 +5899,9 @@ TopoShape& TopoShape::makeElementFace(
         // See code comments in findPlane() for the description of the bug and
         // work around.
 
-        // ShapeFix_Shape fixer(getShape());
-        // fixer.Perform();
-        // setShape(fixer.Shape(), false);
+        ShapeFix_Shape fixer(getShape());
+        fixer.Perform();
+        setShape(fixer.Shape(), false);
 
         if (!isValid()) {
             FC_WARN("makeElementFace: resulting face is invalid");
@@ -7084,24 +7084,16 @@ TopoShape& TopoShape::makeElementBoolean(
 
     TopTools_ListOfShape shapeArguments, shapeTools;
 
+    std::vector<TopoShape> fixedInputs = inputs;
+
     int i = -1;
-    for (const auto& shape : inputs) {
+    for (auto& shape : fixedInputs) {
         if (shape.isNull()) {
             FC_THROWM(NullShapeException, "Null input shape");
         }
 
         if (!shape.isValid()) {
-            std::ostringstream details;
-            shape.analyze(false, details);
-
-            std::string message = "Invalid input shape for boolean ";
-            message += maker;
-            if (!details.str().empty()) {
-                message += ":\n";
-                message += details.str();
-            }
-
-            FC_THROWM(Base::CADKernelError, message.c_str());
+            shape.fix();
         }
 
         if (++i == 0) {
@@ -7131,7 +7123,7 @@ TopoShape& TopoShape::makeElementBoolean(
     if (Base::Sequencer().wasCanceled()) {
         FC_THROWM(Base::CADKernelError, "User aborted");
     }
-    makeElementShape(*mk, inputs, op, elementMapPolicy);
+    makeElementShape(*mk, fixedInputs, op, elementMapPolicy);
 
     if (buildShell) {
         makeElementShell(true, nullptr, elementMapPolicy);

@@ -122,7 +122,7 @@ protected:
     std::vector<TopoDS_Shape> myInputFaces;
     BRepAlgoAPI_BuilderAlgo mySplitter;
     Handle(BRepTools_History) myPreSplitHistory;
-    App::HistoryAlgorithm selectedHistoryAlgorithm = App::HistoryAlgorithm::V1;
+    App::HistoryAlgorithm selectedHistoryAlgorithm = App::HistoryAlgorithm::V2;
     TopoDS_Compound myPreSplitCompound;
     TopoShape myTopoShape;
     bool selectedHistoryAlgorithmUpdated = false;
