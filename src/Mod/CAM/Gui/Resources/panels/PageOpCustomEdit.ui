@@ -14,6 +14,13 @@
    <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QCheckBox" name="chkAsIs">
+     <property name="text">
+      <string>Add without processing</string>
+     </property>
+    </widget>
+   </item>
    <item row="0" column="0">
     <widget class="QWidget" name="widget">
      <layout class="QGridLayout" name="gridLayout_2">
