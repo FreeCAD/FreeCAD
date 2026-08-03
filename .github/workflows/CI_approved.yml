@@ -22,7 +22,8 @@
 # *                                                                         *
 # ***************************************************************************
 
-# This workflow runs label-gated CI jobs (macOS and Windows builds).
+# This workflow runs label-gated CI jobs (the Qt-independent core,
+# macOS, and Windows builds).
 # It lives in a separate workflow from CI_primary.yml so that adding a
 # label does not cancel the in-progress Linux build and lint run.
 #
@@ -150,6 +151,19 @@ jobs:
       artifactBasename: Prepare-approved-${{ github.run_id }}
       skipBuild: ${{ needs.Gate.outputs.should-run != 'true' }}
 
+  Core:
+    needs: [Gate, Prepare]
+    if: >-
+      needs.Prepare.result == 'success'
+      && !startsWith(github.head_ref, 'refs/heads/backport-')
+      && (github.event_name != 'pull_request'
+          || startsWith(github.event.pull_request.base.ref, 'releases/')
+          || contains(toJSON(github.event.pull_request.labels.*.name), 'Approved:'))
+    uses: ./.github/workflows/sub_buildCoreNoQt.yml
+    with:
+      artifactBasename: Core-${{ github.run_id }}
+      skipBuild: ${{ needs.Gate.outputs.should-run != 'true' }}
+
   Pixi:
     needs: [Gate, Prepare]
     if: >-
@@ -179,6 +193,7 @@ jobs:
     needs: [
         Gate,
         Prepare,
+        Core,
         Pixi,
         Windows
       ]
