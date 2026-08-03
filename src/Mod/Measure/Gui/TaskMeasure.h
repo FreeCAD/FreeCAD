@@ -55,6 +55,7 @@ class TaskMeasureTypeInfo;
 
 class TaskMeasure: public Gui::TaskView::TaskDialog, public Gui::SelectionObserver
 {
+    Q_OBJECT
 
 public:
     TaskMeasure();
