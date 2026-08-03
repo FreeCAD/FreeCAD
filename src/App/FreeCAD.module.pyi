@@ -12,16 +12,23 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Literal, TypeAlias, overload
 
-from . import Console as Console
-from . import Units as Units
+from Base.Metadata import module
+from . import Console as Console  # pylint: disable=no-name-in-module,unused-import
+from . import Units as Units  # pylint: disable=no-name-in-module,unused-import
+
+module(
+    Name="FreeCAD",
+    Namespace="App",
+    Include="ApplicationPy.h",
+    CallbackOwner="ApplicationPy",
+    CallbackPrefix="s",
+)
 
 if TYPE_CHECKING:
     from Part import Feature as _PartFeature
 
 _FileTypeModules: TypeAlias = dict[str, str | list[str] | None]
-_LogLevelName: TypeAlias = Literal[
-    "Default", "Error", "Warning", "Message", "Log", "Trace"
-]
+_LogLevelName: TypeAlias = Literal["Default", "Error", "Warning", "Message", "Log", "Trace"]
 GuiUp: int
 ActiveDocument: Document | None
 
@@ -31,7 +38,7 @@ def ParamGet(path: str, /) -> ParameterGrp:
     ...
 
 def saveParameter(name: str = "User parameter", /) -> None:
-    """Persist one named parameter tree to disk."""
+    """Persist one named parameter tree to disk, defaulting to the user parameter set."""
     ...
 
 def Version() -> list[str]:
@@ -73,10 +80,12 @@ def addExportType(extension: str, module: str, /) -> None:
     """Register one exporter module for a file extension."""
     ...
 
-def addTranslatableExportType(
-    description: str, extensions: list[str], module: str, /
-) -> None:
-    """Register one exporter together with a translated file-dialog description."""
+def addTranslatableExportType(description: str, extensions: list[str], module: str, /) -> None:
+    """Register one exporter together with a translated file-dialog description.
+
+    ``description`` should be registered with the translation system using the
+    ``FileFormat`` context.
+    """
     ...
 
 def changeExportModule(extension: str, old_module: str, new_module: str, /) -> None:
@@ -119,7 +128,7 @@ def getUserAppDataDir() -> str:
     ...
 
 def getUserMacroDir(actual: bool = False, /) -> str:
-    """Return the user macro directory, optionally resolving the effective path."""
+    """Return the standard user macro directory, or the effective user-defined path."""
     ...
 
 def getHelpDir() -> str:
@@ -132,17 +141,26 @@ def getHomePath() -> str:
 
 # Document lifecycle
 def loadFile(path: str, doc: str = "", module: str = "", /) -> None:
-    """Load one file into an existing or inferred document context."""
+    """Load one file by delegating to an importer module.
+
+    When ``module`` is empty, FreeCAD chooses an importer from the file extension.
+    If several importers match, the first registered importer is used; if none
+    matches, an exception is raised.
+    """
     ...
 
-def open(name: str, hidden: bool = False, temporary: bool = False, /) -> Document:
-    """Open a document file and return the created document."""
+def open(name: str, hidden: bool = False, temporary: bool = False) -> Document:
+    """Open a document file and return the created document; see ``openDocument``."""
     ...
 
-def openDocument(
-    name: str, hidden: bool = False, temporary: bool = False, /
-) -> Document:
-    """Open a document file explicitly through the document loader."""
+def openDocument(name: str, hidden: bool = False, temporary: bool = False) -> Document:
+    """Create a document, load an existing project file, and return it.
+
+    ``hidden`` suppresses creation of the document 3D view. ``temporary`` hides
+    the document in the tree view. An I/O exception is raised when the file does
+    not exist or cannot be loaded. Non-file restore failures may leave the
+    created document open for recovery.
+    """
     ...
 
 def newDocument(
@@ -150,13 +168,29 @@ def newDocument(
     label: str | None = None,
     hidden: bool = False,
     temp: bool = False,
-    /,
 ) -> Document:
-    """Create and return a new document."""
+    """Create and return a new document.
+
+    ``name`` is the internal document name and is made unique automatically.
+    ``label`` is the optional user-changeable label. ``hidden`` suppresses
+    creation of the document 3D view. ``temp`` marks the document as temporary
+    so it is not saved.
+    """
     ...
 
 def closeDocument(document: str | Document, /) -> None:
     """Close one document by name or object."""
+    ...
+
+def writeRecoverySnapshotToTransientDir(
+    document: Document,
+    /,
+    *,
+    compressed: bool = True,
+    save_binary_brep: bool = True,
+    save_thumbnail: bool = False,
+) -> bool:
+    """Write one recovery snapshot for a document into its transient directory."""
     ...
 
 # Document queries and observers
@@ -169,11 +203,11 @@ def setActiveDocument(name: str, /) -> None:
     ...
 
 def getDocument(name: str, /) -> Document:
-    """Return one loaded document by name."""
+    """Return one loaded document by name, raising if no such document exists."""
     ...
 
 def listDocuments(sort: bool = False, /) -> dict[str, Document]:
-    """Return the currently loaded documents keyed by name."""
+    """Return the loaded documents keyed by name, optionally sorted by dependency order."""
     ...
 
 def addDocumentObserver(observer: object, /) -> None:
@@ -203,7 +237,11 @@ def getLinksTo(
     maxCount: int = 0,
     /,
 ) -> tuple[DocumentObject, ...]:
-    """Return objects that link to the given object."""
+    """Return objects that link to the given object.
+
+    ``options & 1`` searches recursively. ``options & 2`` checks link arrays.
+    ``maxCount`` limits the number of returned links.
+    """
     ...
 
 def getDependentObjects(
@@ -211,11 +249,19 @@ def getDependentObjects(
     options: int = 0,
     /,
 ) -> tuple[DocumentObject, ...]:
-    """Return objects that depend on one object or object sequence."""
+    """Return objects that depend on one object or object sequence.
+
+    The result includes the input objects. ``options & 1`` sorts the result in
+    topological order; ``options & 2`` excludes Link-type dependencies.
+    """
     ...
 
 def setActiveTransaction(name: str, persist: bool = False, /) -> int:
-    """Start or select the active transaction and return its identifier."""
+    """Start or select the active transaction and return its identifier.
+
+    While active, document changes open transactions with this application-wide
+    name and identifier. ``persist`` is kept for compatibility and has no effect.
+    """
     ...
 
 def getActiveTransaction() -> tuple[str, int] | None:
@@ -231,5 +277,10 @@ def isRestoring() -> bool:
     ...
 
 def checkAbort() -> None:
-    """Raise if the current long-running operation has been asked to abort."""
+    """Raise ``Base.FreeCADAbort`` when the current operation was aborted.
+
+    This only works while a sequencer or Python progress indicator is active,
+    such as during document restore or recomputation. Users usually request the
+    abort by pressing Esc.
+    """
     ...

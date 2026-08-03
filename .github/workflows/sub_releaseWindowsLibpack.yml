@@ -1,0 +1,185 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2026 The FreeCAD project association AISBL
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+# Experimental Windows release build using the FreeCAD LibPack (OCCT 8, Qt 6, Python from LibPack).
+# This produces experimental portable and (x64 only) installer artifacts and uploads them to an
+# existing release. It runs alongside the primary conda-based release build and is non-blocking:
+# a failure here must never fail the release, so the Build job uses continue-on-error.
+
+name: Release Windows (LibPack, experimental)
+on:
+  workflow_call:
+    inputs:
+      build_tag:
+        description: "Release tag to attach the experimental artifacts to"
+        required: true
+        type: string
+      arch:
+        description: "Target architecture name used in artifact file names (x86_64 or arm64)"
+        required: true
+        type: string
+      runner:
+        description: "Runner label to build on"
+        required: false
+        type: string
+        default: "windows-2022"
+      cmakeArchitecture:
+        description: "Value for cmake -A (empty for x64, ARM64 for arm)"
+        required: false
+        type: string
+        default: ""
+      libpackDownloadUrl:
+        required: false
+        type: string
+        default: "https://github.com/FreeCAD/FreeCAD-LibPack/releases/download/3.5.3/LibPack-26.3.0-v3.5.3-x64-Release.7z"
+      libpackName:
+        required: false
+        type: string
+        default: "LibPack-26.3.0-v3.5.3-x64-Release"
+      makeInstaller:
+        description: "Whether to also build the NSIS installer (x64 only for now)"
+        required: false
+        type: string
+        default: "false"
+
+permissions:
+  contents: read
+
+jobs:
+  Build:
+    runs-on: ${{ inputs.runner }}
+    # Experimental platform: never block the release on a failure here.
+    continue-on-error: true
+    permissions:
+      contents: write
+    environment: weekly-build
+    env:
+      builddir: C:/FC/build/release/
+      stagingdir: C:/FC/install/
+      libpackdir: C:/FC/libpack/
+      config: release
+
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        with:
+          egress-policy: audit
+
+      - name: Checking out source code
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+          fetch-tags: true
+          # Coin/Pivy are built from FreeCAD's own submodules (no longer supplied by the LibPack).
+          submodules: 'recursive'
+
+      - name: Make needed directories
+        run: |
+          mkdir ${{ env.libpackdir }}
+          mkdir ${{ env.builddir }}
+
+      - name: Get Libpack
+        uses: ./.github/workflows/actions/windows/getLibpack
+        with:
+          libpackdir: ${{ env.libpackdir }}
+          libpackdownloadurl: ${{ inputs.libpackDownloadUrl }}
+          libpackname: ${{ inputs.libpackName }}
+
+      - name: Install cmake
+        uses: jwlawson/actions-setup-cmake@0d6a7d60b009d01c9e7523be22153ff8f19460d3 # v2.2.0
+        with:
+          cmake-version: '3.31.6'
+
+      - name: Configuring CMake
+        run: >
+          cmake -B"${{ env.builddir }}" .
+          --preset ${{ env.config }}
+          ${{ inputs.cmakeArchitecture != '' && format('-A {0}', inputs.cmakeArchitecture) || '' }}
+          -DCMAKE_VS_NO_COMPILE_BATCHING=ON
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_INSTALL_PREFIX="${{ env.stagingdir }}"
+          -DFREECAD_USE_PCH=OFF
+          -DFREECAD_RELEASE_PDB=OFF
+          -DFREECAD_LIBPACK_DIR="${{ env.libpackdir }}"
+          -DFREECAD_COPY_DEPEND_DIRS_TO_BUILD=ON
+          -DFREECAD_COPY_LIBPACK_BIN_TO_BUILD=ON
+          -DFREECAD_COPY_PLUGINS_BIN_TO_BUILD=ON
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@30375c66a4eea26614e0d39710365f22f8b0af57 # v3.0.0
+
+      - name: Compiling sources
+        run: |
+          cd $env:builddir
+          msbuild ALL_BUILD.vcxproj /m /p:Configuration=Release /p:TrackFileAccess=false
+
+      - name: Installing to staging tree
+        run: |
+          cmake --install "${{ env.builddir }}" --prefix "${{ env.stagingdir }}" --config Release
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5.4.0
+        with:
+          dotnet-version: '10.0.103'
+
+      - name: Install sign tool
+        run: |
+          # NOTE: The sign tool is ONLY available as a prerelease package, they never issue real releases.
+          dotnet tool install --global --prerelease sign
+          echo "$env:USERPROFILE\.dotnet\tools" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      # The NSIS installer script uses advanced logging (LogSet), which requires a log-enabled NSIS
+      # build. The stock choco/preinstalled NSIS lacks it, so use the same conda-forge log build the
+      # primary conda release uses (package/rattler-build/pixi.toml: nsis build "*_log*").
+      - name: Setup pixi (for log-enabled NSIS)
+        if: inputs.makeInstaller == 'true'
+        uses: prefix-dev/setup-pixi@a09b6247153796b190642a2b53fac4241043cf6f # v0.10.0
+        with:
+          pixi-version: v0.68.1
+          cache: false
+
+      - name: Install log-enabled NSIS
+        if: inputs.makeInstaller == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          pixi global install "nsis[build=*_log*]"
+          pixi_home="${PIXI_HOME:-${USERPROFILE:-$HOME}/.pixi}"
+          makensis="$(find "${pixi_home}" -iname makensis.exe 2>/dev/null | head -n 1)"
+          if [ -z "${makensis}" ]; then
+            echo "Could not locate the log-enabled makensis.exe under ${pixi_home}" >&2
+            exit 1
+          fi
+          echo "Using makensis: ${makensis}"
+          echo "MAKENSIS=${makensis}" >> "$GITHUB_ENV"
+
+      - name: Azure login for code signing
+        id: azure_login
+        continue-on-error: true
+        uses: azure/login@532459ea530d8321f2fb9bb10d1e0bcf23869a43 # v3.0.0
+        with:
+          creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+
+      - name: Bundle, sign, and upload experimental artifacts
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILD_TAG: ${{ inputs.build_tag }}
+          TARGET_ARCH: ${{ inputs.arch }}
+          STAGING_DIR: ${{ env.stagingdir }}
+          LIBPACK_DIR: ${{ env.libpackdir }}
+          MAKE_INSTALLER: ${{ inputs.makeInstaller }}
+          UPLOAD_RELEASE: "true"
+          WINDOWS_AZURE_ENDPOINT: ${{ vars.AZURE_TRUSTED_SIGNING_ENDPOINT }}
+          WINDOWS_AZURE_CERTIFICATE_PROFILE: ${{ vars.AZURE_TRUSTED_SIGNING_CERTIFICATE_PROFILE }}
+          WINDOWS_AZURE_SIGNING_ACCOUNT: ${{ vars.AZURE_TRUSTED_SIGNING_ACCOUNT }}
+        run: |
+          set -euo pipefail
+          if [[ "${{ steps.azure_login.outcome }}" == "success" ]]; then
+            export WINDOWS_SIGN_RELEASE=1
+          else
+            export WINDOWS_SIGN_RELEASE=0
+          fi
+          bash package/libpack-windows/create_bundle.sh
