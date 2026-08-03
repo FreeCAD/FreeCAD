@@ -4,7 +4,7 @@ General:
   UUID: "91efc25f-a841-4bb3-a4ca-6b4d70fd4e05"
   Name: "diagonal2"
   Author: "David Carter"
-  License: "All rights reserved"
+  License: "CC-BY-4.0"
 AppearanceModels:
   Pattern File:
     UUID: "c6596294-e97d-4812-87db-28e1d66521a3"

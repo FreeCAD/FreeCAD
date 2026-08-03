@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Grabber3d_h_
-#define Grabber3d_h_
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -48,4 +47,3 @@ public:
 };
 
 } //end namespace TechDrawGui
-#endif

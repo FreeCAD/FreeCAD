@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_MIRRORING_H
-#define PARTGUI_MIRRORING_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -48,6 +47,7 @@ public:
     ~Mirroring() override;
     bool accept();
     bool reject();
+    void setSelectionGate();
 
 protected:
     void changeEvent(QEvent* e) override;
@@ -60,6 +60,7 @@ private:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     QString document;
     std::unique_ptr<Ui_Mirroring> ui;
+    bool filterSelection;
 };
 
 class TaskMirroring: public Gui::TaskView::TaskDialog
@@ -91,5 +92,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_MIRRORING_H

@@ -162,6 +162,11 @@ QColorDialog QLabel {
 }
 */
 
+QFrame[class="popup"] {
+  background-color: @DialogBackgroundColor;
+  border: 1px solid @GeneralBorderColor;
+}
+
 /* QMainWindow ------------------------------------------------------------
 
 This adjusts the splitter in the dock widget, not qsplitter
@@ -911,16 +916,21 @@ QToolBar::handle:vertical:hover {
 }
 
 QToolBar::separator:horizontal {
-  width: 2px;
-  padding: 3px 5px;
-  image: url(qss:@IconsLocationFolderName/hsepartoolbar-darkgray.svg);
+  width: 1px;
+  margin: 5px;
+  background-color: @GeneralBorderColor;
 }
 
 QToolBar::separator:vertical {
-  height: 2px;
-  width: 5px;
-  padding: 3px 3px;
-  image: url(qss:@IconsLocationFolderName/vsepartoolbar-darkgray.svg);
+  height: 1px;
+  margin: 5px;
+  background-color: @GeneralBorderColor;
+}
+
+MRichTextEdit[floating="true"] {
+  border: 1px solid @GeneralBorderColor;
+  border-radius: 2px;
+  padding: 1px;
 }
 
 /*The "show more" button  (it can also be stylable with "QToolBarExtension"  icon is not working
@@ -1259,7 +1269,7 @@ QToolBar QToolButton {
   background-color: transparent;
   padding: @ToolbarButtonsPadding;
   outline: none;
-  border-style: none;
+  border: 1px solid transparent;
   border-radius: @InputFieldBorderRadius;
 }
 
@@ -1273,14 +1283,14 @@ QToolButton:disabled {
 }
 
 QToolButton:checked {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonBottomBackgroundColor, stop:0.7 @ButtonTopBackgroundColor, stop:1 @ButtonTopBackgroundColor);
+  background-color: @ToolButtonCheckedBackground;
   border-radius: @InputFieldBorderRadius;
-  border: 1px solid @AccentColor;
+  border: 1px solid @ToolButtonCheckedBorderColor;
 }
 
 QToolButton:checked:disabled {
   background-color: @GeneralDisabledBackgroundColor;
-  color: @AccentColor;
+  border: 1px solid @ButtonBorderColor;
 }
 
 QToolButton:checked:hover {
@@ -1500,24 +1510,16 @@ Gui--PropertyEditor--PropertyEditor {
   qproperty-groupBackground: @GeneralHeaderBackgroundColor;
 }
 
+Gui--TaskView--TaskPanel QSint--ActionPanel {
+  background-color: transparent;
+}
+
 /* Action group */
 QFrame[class="panel"] {}
 QSint--ActionGroup {
 /* if not reset, it might create problems with QPushButtons and other elements */
-/* if not reset, it might create problems with QPushButtons and other elements */
   border-radius: @InputFieldBorderRadius;
 }
-
-/* QSint--ActionGroup QGroupBox {
-  border: 1px solid @GeneralBorderColor;
-  background-color: @ButtonTopBackgroundColor;
-  padding-bottom: 3px;
-} */
-
-/* QSint--ActionGroup QGroupBox::title {
-  top: -18px;
-  left: 3px;
-} */
 
 /* Separator line */
 QSint--ActionGroup QFrame[height="1"],
@@ -1575,8 +1577,6 @@ QSint--ActionGroup QFrame[class="content"] {
   border-bottom-right-radius: 3px;
 }
 
-/* Fixs for tabs inside Task Panel */
-
 /* Fix for buttons with icons that showed cropped (still not happy with result) */
 QSint--ActionGroup QFrame[class="content"] > QWidget > QPushButton {
   padding: 2px;/* bigger padding crops text and icons... */
@@ -1602,9 +1602,8 @@ QSint--ActionGroup QFrame[class="content"] QToolButton {
   text-align: center;
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor );
   border: 1px solid @GeneralBorderColor;
-  padding: 1px 1px;/* different than regular QPushButton */
-/* different than regular QPushButton */
-  min-height: 16px;/* same as QTabBar QPushButton min-width */
+  padding: 1px 1px; /* different than regular QPushButton */
+  min-height: 16px; /* same as QTabBar QPushButton min-width */
   border-radius: @InputFieldBorderRadius;
 }
 

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _PointsAlgos_h_
-#define _PointsAlgos_h_
+#pragma once
 
 #include <Eigen/Core>
 
@@ -203,6 +202,3 @@ public:
 };
 
 }  // namespace Points
-
-
-#endif

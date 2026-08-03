@@ -21,12 +21,10 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_MODELLOADER_H
-#define MATERIAL_MODELLOADER_H
+#pragma once
 
 #include <memory>
 
-#include <QDir>
 #include <QString>
 #include <yaml-cpp/yaml.h>
 
@@ -133,5 +131,3 @@ private:
 };
 
 }  // namespace Materials
-
-#endif  // MATERIAL_MODELLOADER_H

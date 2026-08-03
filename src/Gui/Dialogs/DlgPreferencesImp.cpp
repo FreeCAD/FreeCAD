@@ -32,6 +32,7 @@
 #include <QComboBox>
 #include <QCursor>
 #include <QDebug>
+#include <QFontComboBox>
 #include <QFrame>
 #include <QGroupBox>
 #include <QLabel>
@@ -48,6 +49,7 @@
 #include <QTimer>
 #include <QToolButton>
 #include <QToolTip>
+#include <QTextDocument>
 #include <QProcess>
 #include <QPushButton>
 #include <QWindow>
@@ -918,7 +920,7 @@ void DlgPreferencesImp::applyChanges()
                     ui->groupWidgetStack->setCurrentIndex(i);
                     pagesStackWidget->setCurrentIndex(j);
 
-                    QMessageBox::warning(this, tr("Wrong parameter"), QString::fromLatin1(e.what()));
+                    QMessageBox::warning(this, tr("Wrong Parameter"), QString::fromLatin1(e.what()));
 
                     this->invalidParameter = true;
 
@@ -957,8 +959,8 @@ void DlgPreferencesImp::applyChanges()
 void DlgPreferencesImp::restartIfRequired()
 {
     if (restartRequired) {
-        QMessageBox restartBox(parentWidget());  // current window likely already closed, cant
-                                                 // parent to it
+        QMessageBox restartBox(parentWidget());  // current window likely already closed,
+                                                 // can't parent to it
 
         restartBox.setIcon(QMessageBox::Warning);
         restartBox.setWindowTitle(tr("Restart Required"));
@@ -1276,7 +1278,7 @@ PreferencesSearchController::PreferencesSearchController(DlgPreferencesImp* pare
     // Create the search results popup list
     m_searchResultsList = new QListWidget(m_parentDialog);
     m_searchResultsList->setWindowFlags(
-        Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint
+        Qt::ToolTip | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint
     );
     m_searchResultsList->setVisible(false);
     m_searchResultsList->setMinimumWidth(300);
@@ -1435,8 +1437,7 @@ void PreferencesSearchController::performSearch(const QString& searchText)
 void PreferencesSearchController::clearHighlights()
 {
     // Restore original styles for all highlighted widgets
-    for (int i = 0; i < m_highlightedWidgets.size(); ++i) {
-        QWidget* widget = m_highlightedWidgets.at(i);
+    for (auto widget : m_highlightedWidgets) {
         if (widget && m_originalStyles.contains(widget)) {
             widget->setStyleSheet(m_originalStyles[widget]);
         }
@@ -1457,8 +1458,6 @@ void PreferencesSearchController::collectSearchResults(
     if (!widget) {
         return;
     }
-
-    const QString lowerSearchText = searchText.toLower();
 
     // First, check if the page display name itself matches (highest priority)
     int pageScore = 0;
@@ -1528,7 +1527,7 @@ void PreferencesSearchController::navigateToCurrentSearchResult(PopupAction acti
     }
 
     // Get the result index directly from the item data
-    bool ok;
+    bool ok = false;
     int resultIndex = currentItem->data(Qt::UserRole).toInt(&ok);
 
     if (ok && resultIndex >= 0 && resultIndex < m_searchResults.size()) {
@@ -1561,7 +1560,7 @@ void PreferencesSearchController::populateSearchResultsList()
         const SearchResult& result = m_searchResults.at(i);
 
         // Create item without setting DisplayRole
-        QListWidgetItem* item = new QListWidgetItem();
+        auto* item = new QListWidgetItem();
 
         // Store path and widget text in separate roles
         if (result.isPageLevelMatch) {
@@ -1612,20 +1611,20 @@ void PreferencesSearchController::showSearchResultsList()
 QString PreferencesSearchController::findGroupBoxForWidget(QWidget* widget)
 {
     if (!widget) {
-        return QString();
+        return {};
     }
 
     // Walk up the parent hierarchy to find a QGroupBox
     QWidget* parent = widget->parentWidget();
     while (parent) {
-        QGroupBox* groupBox = qobject_cast<QGroupBox*>(parent);
+        auto* groupBox = qobject_cast<QGroupBox*>(parent);
         if (groupBox) {
             return groupBox->title();
         }
         parent = parent->parentWidget();
     }
 
-    return QString();
+    return {};
 }
 
 
@@ -1644,21 +1643,21 @@ void PreferencesSearchController::searchWidgetType(
     for (WidgetType* widget : widgets) {
         QString widgetText;
 
-        // Get text based on widget type
+        // Get text based on widget type and strip any rich text formatting
         if constexpr (std::is_same_v<WidgetType, QLabel>) {
-            widgetText = widget->text();
+            widgetText = toPlainText(widget->text());
         }
         else if constexpr (std::is_same_v<WidgetType, QCheckBox>) {
-            widgetText = widget->text();
+            widgetText = toPlainText(widget->text());
         }
         else if constexpr (std::is_same_v<WidgetType, QGroupBox>) {
-            widgetText = widget->title();
+            widgetText = toPlainText(widget->title());
         }
         else if constexpr (std::is_same_v<WidgetType, QRadioButton>) {
-            widgetText = widget->text();
+            widgetText = toPlainText(widget->text());
         }
         else if constexpr (std::is_same_v<WidgetType, QPushButton>) {
-            widgetText = widget->text();
+            widgetText = toPlainText(widget->text());
         }
 
         if (!widgetText.isEmpty()) {
@@ -1679,16 +1678,17 @@ void PreferencesSearchController::searchWidgetType(
             }
         }
 
-        // search tooltip text for all widget types
-        QString tooltip = widget->toolTip();
-        if (!tooltip.isEmpty()) {
+        // normalise text and search tooltip text for all widget types
+        QString plainTooltip = toPlainText(widget->toolTip());
+        if (!plainTooltip.isEmpty()) {
+
             int tooltipScore = 0;
-            if (fuzzyMatch(searchText, tooltip, tooltipScore)) {
+            if (fuzzyMatch(searchText, plainTooltip, tooltipScore)) {
                 SearchResult result {
                     .groupName = groupName,
                     .pageName = pageName,
                     .widget = widget,
-                    .matchText = QStringLiteral("Tooltip: ") + tooltip,
+                    .matchText = QStringLiteral("Tooltip: ") + plainTooltip,
                     .groupBoxName = findGroupBoxForWidget(widget),
                     .tabName = tabName,
                     .pageDisplayName = pageDisplayName,
@@ -1701,8 +1701,21 @@ void PreferencesSearchController::searchWidgetType(
 
         // search throughout combobox items
         if constexpr (std::is_same_v<WidgetType, QComboBox>) {
+
+            // check if widget is marked with "doNotSearch" aka. do not search
+            QVariant doNotSearch = widget->property("doNotSearch");
+            if (doNotSearch.isValid() && doNotSearch.toBool()) {
+                return;  // skip search items in this combobox
+            }
+
+            // skip QFontComboBox widgets (including PrefFontBox), ie. used in draft wb
+            // these auto-populate with system fonts
+            if (qobject_cast<QFontComboBox*>(widget)) {
+                return;
+            }
+
             for (int i = 0; i < widget->count(); ++i) {
-                QString itemText = widget->itemText(i);
+                QString itemText = toPlainText(widget->itemText(i));
                 if (!itemText.isEmpty()) {
                     int itemScore = 0;
                     if (fuzzyMatch(searchText, itemText, itemScore)) {
@@ -1725,7 +1738,7 @@ void PreferencesSearchController::searchWidgetType(
     }
 }
 
-int PreferencesSearchController::calculatePopupHeight(int popupWidth)
+int PreferencesSearchController::calculatePopupHeight(int popupWidth) const
 {
     int totalHeight = 0;
     int itemCount = m_searchResultsList->count();
@@ -1898,6 +1911,16 @@ bool PreferencesSearchController::fuzzyMatch(
     return false;
 }
 
+QString PreferencesSearchController::toPlainText(const QString& text)
+{
+    if (Qt::mightBeRichText(text)) {
+        QTextDocument doc;
+        doc.setHtml(text);
+        return doc.toPlainText();
+    }
+    return text;
+}
+
 void PreferencesSearchController::ensureSearchBoxFocus()
 {
     if (m_searchBox && !m_searchBox->hasFocus()) {
@@ -1907,28 +1930,31 @@ void PreferencesSearchController::ensureSearchBoxFocus()
 
 QString PreferencesSearchController::getHighlightStyleForWidget(QWidget* widget)
 {
-    const QString baseStyle = QStringLiteral(
+    const auto baseStyle = QStringLiteral(
         "background-color: #E3F2FD; color: #1565C0; border: 2px solid #2196F3; border-radius: 3px;"
     );
 
     if (qobject_cast<QLabel*>(widget)) {
         return QStringLiteral("QLabel { ") + baseStyle + QStringLiteral(" padding: 2px; }");
     }
-    else if (qobject_cast<QCheckBox*>(widget)) {
+
+    if (qobject_cast<QCheckBox*>(widget)) {
         return QStringLiteral("QCheckBox { ") + baseStyle + QStringLiteral(" padding: 2px; }");
     }
-    else if (qobject_cast<QRadioButton*>(widget)) {
+
+    if (qobject_cast<QRadioButton*>(widget)) {
         return QStringLiteral("QRadioButton { ") + baseStyle + QStringLiteral(" padding: 2px; }");
     }
-    else if (qobject_cast<QGroupBox*>(widget)) {
+
+    if (qobject_cast<QGroupBox*>(widget)) {
         return QStringLiteral("QGroupBox::title { ") + baseStyle + QStringLiteral(" padding: 2px; }");
     }
-    else if (qobject_cast<QPushButton*>(widget)) {
+
+    if (qobject_cast<QPushButton*>(widget)) {
         return QStringLiteral("QPushButton { ") + baseStyle + QStringLiteral(" }");
     }
-    else {
-        return QStringLiteral("QWidget { ") + baseStyle + QStringLiteral(" padding: 2px; }");
-    }
+
+    return QStringLiteral("QWidget { ") + baseStyle + QStringLiteral(" padding: 2px; }");
 }
 
 void PreferencesSearchController::applyHighlightToWidget(QWidget* widget)
@@ -1944,19 +1970,15 @@ void PreferencesSearchController::applyHighlightToWidget(QWidget* widget)
 
 bool PreferencesSearchController::handleSearchBoxKeyPress(QKeyEvent* keyEvent)
 {
-    if (!m_searchResultsList->isVisible() || m_searchResults.isEmpty()) {
-        return false;
-    }
-
     switch (keyEvent->key()) {
         case Qt::Key_Down: {
             // Move selection down in popup, skipping separators
-            int currentRow = m_searchResultsList->currentRow();
-            int totalItems = m_searchResultsList->count();
+            const int currentRow = m_searchResultsList->currentRow();
+            const int totalItems = m_searchResultsList->count();
             for (int i = 1; i < totalItems; ++i) {
-                int nextRow = (currentRow + i) % totalItems;
-                QListWidgetItem* item = m_searchResultsList->item(nextRow);
-                if (item && (item->flags() & Qt::ItemIsSelectable)) {
+                const int nextRow = (currentRow + i) % totalItems;
+                if (QListWidgetItem* item = m_searchResultsList->item(nextRow);
+                    item && (item->flags() & Qt::ItemIsSelectable)) {
                     m_searchResultsList->setCurrentRow(nextRow);
                     break;
                 }
@@ -1965,8 +1987,8 @@ bool PreferencesSearchController::handleSearchBoxKeyPress(QKeyEvent* keyEvent)
         }
         case Qt::Key_Up: {
             // Move selection up in popup, skipping separators
-            int currentRow = m_searchResultsList->currentRow();
-            int totalItems = m_searchResultsList->count();
+            const int currentRow = m_searchResultsList->currentRow();
+            const int totalItems = m_searchResultsList->count();
             for (int i = 1; i < totalItems; ++i) {
                 int prevRow = (currentRow - i + totalItems) % totalItems;
                 QListWidgetItem* item = m_searchResultsList->item(prevRow);
@@ -1989,7 +2011,7 @@ bool PreferencesSearchController::handleSearchBoxKeyPress(QKeyEvent* keyEvent)
     }
 }
 
-bool PreferencesSearchController::handlePopupKeyPress(QKeyEvent* keyEvent)
+bool PreferencesSearchController::handlePopupKeyPress(const QKeyEvent* keyEvent)
 {
     switch (keyEvent->key()) {
         case Qt::Key_Return:
@@ -2005,16 +2027,15 @@ bool PreferencesSearchController::handlePopupKeyPress(QKeyEvent* keyEvent)
     }
 }
 
-bool PreferencesSearchController::isClickOutsidePopup(QMouseEvent* mouseEvent)
+bool PreferencesSearchController::isClickOutsidePopup(const QMouseEvent* mouseEvent) const
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QPoint globalPos = mouseEvent->globalPos();
 #else
-    QPoint globalPos = mouseEvent->globalPosition().toPoint();
+    const QPoint globalPos = mouseEvent->globalPosition().toPoint();
 #endif
-    QRect searchBoxRect = QRect(m_searchBox->mapToGlobal(QPoint(0, 0)), m_searchBox->size());
-    QRect popupRect
-        = QRect(m_searchResultsList->mapToGlobal(QPoint(0, 0)), m_searchResultsList->size());
+    const auto searchBoxRect = QRect(m_searchBox->mapToGlobal(QPoint(0, 0)), m_searchBox->size());
+    auto popupRect = QRect(m_searchResultsList->mapToGlobal(QPoint(0, 0)), m_searchResultsList->size());
 
     return !searchBoxRect.contains(globalPos) && !popupRect.contains(globalPos);
 }
@@ -2023,13 +2044,13 @@ bool DlgPreferencesImp::eventFilter(QObject* obj, QEvent* event)
 {
     // Handle search box key presses
     if (obj == ui->searchBox && event->type() == QEvent::KeyPress) {
-        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+        auto* keyEvent = static_cast<QKeyEvent*>(event);
         return m_searchController->handleSearchBoxKeyPress(keyEvent);
     }
 
     // Handle popup key presses
     if (obj == m_searchController->getSearchResultsList() && event->type() == QEvent::KeyPress) {
-        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+        auto* keyEvent = static_cast<QKeyEvent*>(event);
         return m_searchController->handlePopupKeyPress(keyEvent);
     }
 
@@ -2041,7 +2062,7 @@ bool DlgPreferencesImp::eventFilter(QObject* obj, QEvent* event)
 
     // Handle search box focus loss
     if (obj == ui->searchBox && event->type() == QEvent::FocusOut) {
-        QFocusEvent* focusEvent = static_cast<QFocusEvent*>(event);
+        auto* focusEvent = static_cast<QFocusEvent*>(event);
         if (focusEvent->reason() != Qt::PopupFocusReason
             && focusEvent->reason() != Qt::MouseFocusReason) {
             // Only hide if focus is going somewhere else, not due to popup interaction
@@ -2055,8 +2076,8 @@ bool DlgPreferencesImp::eventFilter(QObject* obj, QEvent* event)
 
     // Handle clicks outside popup
     if (event->type() == QEvent::MouseButtonPress) {
-        QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
-        QWidget* widget = qobject_cast<QWidget*>(obj);
+        auto* mouseEvent = static_cast<QMouseEvent*>(event);
+        auto widget = qobject_cast<QWidget*>(obj);
 
         // Check if click is outside search area
         if (m_searchController->isPopupVisible() && obj != m_searchController->getSearchResultsList()

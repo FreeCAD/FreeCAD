@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ROBOT_WAYPOINT_H
-#define ROBOT_WAYPOINT_H
+#pragma once
 
 #include <Base/Persistence.h>
 #include <Base/Placement.h>
@@ -78,6 +79,3 @@ public:
 };
 
 }  // namespace Robot
-
-
-#endif  // ROBOT_WAYPOINT_H

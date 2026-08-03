@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEW3DSETTINGS_H
-#define GUI_VIEW3DSETTINGS_H
+#pragma once
 
 #include <Base/Parameter.h>
 #include <QApplication>
@@ -72,9 +71,7 @@ private:
     void parameterChanged(ParameterGrp::MessageType pName);
     ParameterGrp::handle hGrp;
     View3DInventorViewer* _viewer;
-    boost::signals2::connection connectParameterChanged;
+    fastsignals::connection connectParameterChanged;
 };
 
 }  // namespace Gui
-
-#endif  // GUI_VIEW3DSETTINGS_H

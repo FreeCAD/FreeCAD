@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FEATUREFILLET_H
-#define PARTDESIGN_FEATUREFILLET_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
@@ -63,6 +64,3 @@ protected:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_FEATUREFILLET_H

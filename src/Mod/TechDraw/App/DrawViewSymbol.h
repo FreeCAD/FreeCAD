@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DrawViewSymbol_h_
-#define DrawViewSymbol_h_
+#pragma once
 
 #include <QDomDocument>
 
@@ -82,6 +81,3 @@ using DrawViewSymbolPython = App::FeaturePythonT<DrawViewSymbol>;
 
 
 } //namespace TechDraw
-
-
-#endif

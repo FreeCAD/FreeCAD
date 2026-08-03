@@ -166,7 +166,9 @@ PyObject* BRepOffsetAPI_MakeFillingPy::setConstrParam(PyObject* args, PyObject* 
     double tolCurv = 0.1;
 
     static const std::array<const char*, 5> keywords {"Tol2d", "Tol3d", "TolAng", "TolCurv", nullptr};
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|dddd", keywords, &tol2d, &tol3d, &tolAng, &tolCurv)) {
+    if (
+        !Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|dddd", keywords, &tol2d, &tol3d, &tolAng, &tolCurv)
+    ) {
         return nullptr;
     }
 
@@ -264,7 +266,9 @@ PyObject* BRepOffsetAPI_MakeFillingPy::add(PyObject* args, PyObject* kwds)
     // 1st
     PyObject* pnt;
     static const std::array<const char*, 2> keywords_pnt {"Point", nullptr};
-    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!", keywords_pnt, &Base::VectorPy::Type, &pnt)) {
+    if (
+        Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!", keywords_pnt, &Base::VectorPy::Type, &pnt)
+    ) {
         try {
             Base::Vector3d vec = static_cast<Base::VectorPy*>(pnt)->value();
             getBRepOffsetAPI_MakeFillingPtr()->Add(gp_Pnt(vec.x, vec.y, vec.z));

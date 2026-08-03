@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************** 
  *  \author 
  *  	Erwin Aertbelien, Div. PMA, Dep. of Mech. Eng., K.U.Leuven
@@ -20,8 +22,7 @@
  */
 
 
-#ifndef KDL_UTILITY_H
-#define KDL_UTILITY_H
+#pragma once
 
 #include "kdl-config.h"
 #include <cstdlib>
@@ -293,7 +294,3 @@ inline double addDelta(double a,double da,double dt) {
 
 
 }
-
-
-
-#endif

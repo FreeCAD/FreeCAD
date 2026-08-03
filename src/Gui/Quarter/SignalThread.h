@@ -1,5 +1,4 @@
-#ifndef QUARTER_SIGNALTHREAD_H
-#define QUARTER_SIGNALTHREAD_H
+#pragma once
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -63,5 +62,3 @@ private:
 };
 
 }}} // namespace
-
-#endif // QUARTER_SIGNALTHREAD_H

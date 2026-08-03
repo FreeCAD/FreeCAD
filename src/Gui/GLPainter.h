@@ -1,28 +1,27 @@
-/***************************************************************************
- *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2013 Werner Mayer <wmayer[at]users.sourceforge.net>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
 
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
-#ifndef GUI_GLPAINTER_H
-#define GUI_GLPAINTER_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -75,12 +74,21 @@ public:
     //@}
 
 private:
-    GLfloat depthrange[2];
-    GLdouble projectionmatrix[16];
     GLint width {0}, height {0};
-    QOpenGLWidget* viewer {nullptr};
+    QOpenGLWidget* glWidget {nullptr};
+    View3DInventorViewer* viewer {nullptr};
+
+    float lineWidth {1.0f};
+    float pointSize {1.0f};
+    float colorR {1.0f};
+    float colorG {1.0f};
+    float colorB {1.0f};
+    float transparency {0.0f};
+
     bool logicOp {false};
     bool lineStipple {false};
+    GLint lineStippleFactor {1};
+    GLushort lineStipplePattern {0xFFFF};
 };
 
 class GuiExport GLGraphicsItem: public Base::BaseClass
@@ -141,5 +149,3 @@ public:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_GLPAINTER_H

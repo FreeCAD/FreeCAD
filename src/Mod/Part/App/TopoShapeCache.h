@@ -22,8 +22,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_TOPOSHAPECACHE_H
-#define FREECAD_TOPOSHAPECACHE_H
+#pragma once
 
 #include <TopoDS.hxx>
 #include <TopoDS_Compound.hxx>
@@ -32,7 +31,8 @@
 #include <TopoDS_Vertex.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 #include <utility>
 
 #include <App/ElementMap.h>
@@ -144,5 +144,3 @@ public:
 };
 
 }  // namespace Part
-
-#endif  // FREECAD_TOPOSHAPECACHE_H

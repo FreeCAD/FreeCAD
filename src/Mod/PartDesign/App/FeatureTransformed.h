@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -21,8 +23,7 @@
  ******************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureTransformed_H
-#define PARTDESIGN_FeatureTransformed_H
+#pragma once
 
 #include <gp_Trsf.hxx>
 
@@ -66,6 +67,10 @@ public:
     Part::Feature* getBaseObject(bool silent = false) const override;
 
     virtual std::vector<App::DocumentObject*> getOriginals() const;
+    /** Returns the list of original features sorted in chronological order of
+     *  the parent Body's history (retaining suppressed features).
+     */
+    std::vector<App::DocumentObject*> getSortedOriginals() const;
 
     /// Return the sketch of the first original
     App::DocumentObject* getSketchObject() const;
@@ -117,6 +122,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_FeatureTransformed_H

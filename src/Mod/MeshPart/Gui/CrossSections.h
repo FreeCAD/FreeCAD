@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHPARTGUI_CROSSSECTIONS_H
-#define MESHPARTGUI_CROSSSECTIONS_H
+#pragma once
 
 #include <QDialog>
 #include <QPointer>
@@ -114,5 +113,3 @@ private:
 };
 
 }  // namespace MeshPartGui
-
-#endif  // MESHPARTGUI_CROSSSECTIONS_H

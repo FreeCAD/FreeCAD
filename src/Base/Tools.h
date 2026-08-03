@@ -23,30 +23,22 @@
  ***************************************************************************/
 
 
-#ifndef SRC_BASE_TOOLS_H_
-#define SRC_BASE_TOOLS_H_
+#pragma once
 
-#ifndef FC_GLOBAL_H
-# include <FCGlobal.h>
-#endif
+#include <FCGlobal.h>
+#include <algorithm>
 #include <cmath>
 #include <numbers>
 #include <ostream>
 #include <string>
 #include <vector>
-
-#include <boost/signals2/shared_connection_block.hpp>
-
-namespace boost
-{
-namespace signals2
-{
-class connection;
-}
-}  // namespace boost
-
+#include <fastsignals/signal.h>
 
 class QString;
+
+#include <string_view>
+#include <vector>
+#include <fastsignals/signal.h>
 
 namespace Base
 {
@@ -180,6 +172,18 @@ inline T fmod(T numerator, T denominator)
 {
     T modulo = std::fmod(numerator, denominator);
     return (modulo >= T(0)) ? modulo : modulo + denominator;
+}
+
+// copied from boost::hash_combine.
+// Copyright 2005-2014 Daniel James.
+// Copyright 2021, 2022, 2025 Peter Dimov.
+// Distributed under the Boost Software License, Version 1.0.
+// https://www.boost.org/LICENSE_1_0.txt
+template<class S, class T>
+inline void hash_combine(S& seed, const T& v)
+{
+    std::hash<T> hasher;
+    seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
 }
 
 template<std::floating_point T>
@@ -332,12 +336,10 @@ private:
 
 class ConnectionBlocker
 {
-    using Connection = boost::signals2::connection;
-    using ConnectionBlock = boost::signals2::shared_connection_block;
-    ConnectionBlock blocker;
+    fastsignals::shared_connection_block blocker;
 
 public:
-    ConnectionBlocker(Connection& c)
+    ConnectionBlocker(fastsignals::advanced_connection& c)
         : blocker(c)
     {}
     ~ConnectionBlocker() = default;
@@ -346,66 +348,88 @@ public:
 
 // ----------------------------------------------------------------------------
 
-struct BaseExport Tools
+namespace Tools
 {
-    /**
-     * Given an arbitrary string, ensure that it conforms to Python3 identifier rules, replacing
-     * invalid characters with an underscore. If the first character is invalid, prepends an
-     * underscore to the name. See https://unicode.org/reports/tr31/ for complete naming rules.
-     * @param String to be checked and sanitized.
-     * @return A std::string that is a valid Python 3 identifier.
-     */
-    static std::string getIdentifier(const std::string& name);
-    static std::wstring widen(const std::string& str);
-    static std::string narrow(const std::wstring& str);
-    static std::string escapedUnicodeFromUtf8(const char* s);
-    static std::string escapedUnicodeToUtf8(const std::string& s);
-    static std::string escapeQuotesFromString(const std::string& s);
 
-    static QString escapeEncodeString(const QString& s);
-    static std::string escapeEncodeString(const std::string& s);
-    static QString escapeEncodeFilename(const QString& s);
-    static std::string escapeEncodeFilename(const std::string& s);
+/**
+ * Given an arbitrary string, ensure that it conforms to Python3 identifier rules, replacing
+ * invalid characters with an underscore. If the first character is invalid, prepends an
+ * underscore to the name. See https://unicode.org/reports/tr31/ for complete naming rules.
+ * @param String to be checked and sanitized.
+ * @return A std::string that is a valid Python 3 identifier.
+ */
+BaseExport std::string getIdentifier(std::string_view name);
+BaseExport std::wstring widen(const std::string& str);
 
-    /**
-     * @brief quoted Creates a quoted string.
-     * @param String to be quoted.
-     * @return A quoted std::string.
-     */
-    static std::string quoted(const char*);
-    /**
-     * @brief quoted Creates a quoted string.
-     * @param String to be quoted.
-     * @return A quoted std::string.
-     */
-    static std::string quoted(const std::string&);
+/**
+ * Locale-dependent, per-character "narrowing" of a std::wstring into a std::string using the
+ * C++ locale facet std::ctype<char>. Characters outside the locale's representable set get
+ * replaced with 0, producing embedded NULs (and corrupt the string). Use with caution! Most
+ * code should prefer wstringToString().
+ */
+BaseExport std::string narrow(const std::wstring& str);
 
-    static constexpr bool isNullOrEmpty(const char* str)
-    {
-        return !str || str[0] == '\0';
-    }
+#ifdef FC_OS_WIN32
+/**
+ * True UTF-16 to UTF-8 conversion. Handles full Unicode range, including surrogate pairs. Only
+ * needed on Windows, and internally uses a Win32 API call to do its work.
+ */
+BaseExport std::string wstringToString(const std::wstring& str);
+#endif
 
-    /**
-     * @brief joinList
-     * Join the vector of strings \a vec using the separator \a sep
-     * @param vec
-     * @param sep
-     * @return
-     */
-    static std::string joinList(const std::vector<std::string>& vec, const std::string& sep = ", ");
+BaseExport std::string escapedUnicodeFromUtf8(const char* s);
+BaseExport std::string escapedUnicodeToUtf8(const std::string& s);
+BaseExport std::string escapeQuotesFromString(const std::string& s);
 
-    static std::string currentDateTimeString();
+BaseExport std::string escapeEncodeString(const std::string& s);
+BaseExport std::string escapeEncodeFilename(const std::string& s);
 
-    static std::vector<std::string> splitSubName(const std::string& subname);
-};
+/**
+ * @brief quoted Creates a quoted string.
+ * @param String to be quoted.
+ * @return A quoted std::string.
+ */
+BaseExport std::string quoted(const char*);
+/**
+ * @brief quoted Creates a quoted string.
+ * @param String to be quoted.
+ * @return A quoted std::string.
+ */
+BaseExport std::string quoted(const std::string&);
 
-struct BaseExport ZipTools
+BaseExport constexpr bool isNullOrEmpty(const char* str)
 {
-    /**
-     * @brief rewrite Rewrite a zip file under a new name.
-     */
-    static void rewrite(const std::string& source, const std::string& target);
-};
+    return !str || str[0] == '\0';
+}
+
+/**
+ * @brief joinList
+ * Join the vector of strings \a vec using the separator \a sep
+ * @param vec
+ * @param sep
+ * @return
+ */
+BaseExport std::string joinList(const std::vector<std::string>& vec, const std::string& sep = ", ");
+
+/**
+ * @brief currentDateTimeString
+ * @return Current time formatted as an ISO 8601 UTC timestamp, ending in 'Z'.
+ */
+BaseExport std::string currentDateTimeString();
+
+BaseExport bool isCLocaleName(std::string_view localeName);
+BaseExport void setOperatingSystemNumericLocale(std::string_view localeName);
+BaseExport std::string getOperatingSystemNumericLocale();
+BaseExport void setIcuDefaultLocale(std::string_view icuLocaleId);
+
+BaseExport std::vector<std::string> splitSubName(const std::string& subname);
+
+}  // namespace Tools
+
+namespace ZipTools
+{
+BaseExport void rewrite(const std::string& source, const std::string& target);
+}
 
 
 /**
@@ -439,6 +463,3 @@ template<class... Ts>
 Overloads(Ts...) -> Overloads<Ts...>;
 
 }  // namespace Base
-
-
-#endif  // SRC_BASE_TOOLS_H_

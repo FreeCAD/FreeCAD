@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskFemConstraint_H
-#define GUI_TASKVIEW_TaskFemConstraint_H
+#pragma once
 
 #include <Gui/DocumentObserver.h>
 #include <Gui/Selection/Selection.h>
@@ -112,6 +111,7 @@ public:
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
+
     bool isAllowedAlterDocument() const override
     {
         return false;
@@ -134,5 +134,3 @@ protected:
 };
 
 }  // namespace FemGui
-
-#endif  // GUI_TASKVIEW_TaskFemConstraint_H

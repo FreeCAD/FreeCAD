@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -22,10 +24,7 @@
 
 
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Precision.hxx>
 #include <QMenu>
-
 
 #include <App/Document.h>
 #include <App/Origin.h>
@@ -37,19 +36,15 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MDIView.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/ViewProviderCoordinateSystem.h>
 #include <Gui/ViewProviderDatum.h>
 #include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/DatumCS.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
 #include <Mod/PartDesign/App/FeatureBase.h>
+#include <Mod/PartDesign/App/ShapeBinder.h>
 
 #include "ViewProviderBody.h"
 #include "Utils.h"
 #include "ViewProvider.h"
-#include "ViewProviderDatum.h"
 
 
 using namespace PartDesignGui;
@@ -69,8 +64,7 @@ ViewProviderBody::ViewProviderBody()
     Gui::ViewProviderOriginGroupExtension::initExtension(this);
 }
 
-ViewProviderBody::~ViewProviderBody()
-{}
+ViewProviderBody::~ViewProviderBody() = default;
 
 void ViewProviderBody::attach(App::DocumentObject* pcFeat)
 {
@@ -79,6 +73,66 @@ void ViewProviderBody::attach(App::DocumentObject* pcFeat)
 
     // set default display mode
     onChanged(&DisplayModeBody);
+
+    if (App::Document* doc = pcFeat->getDocument()) {
+        m_RecomputedConn = doc->signalRecomputed.connect(
+            [this](const App::Document& doc, const std::vector<App::DocumentObject*>& recomputedObjs) {
+                this->afterRecompute(doc, recomputedObjs);
+            }
+        );
+    }
+    m_ChangedConn = Gui::Application::Instance->signalChangedObject.connect(
+        [this](const Gui::ViewProvider& vp, const App::Property& prop) {
+            this->onChangedObject(vp, prop);
+        }
+    );
+}
+
+void ViewProviderBody::onChangedObject(const Gui::ViewProvider& vp, const App::Property& prop)
+{
+    static const std::unordered_set<std::string> watchedProps {"Visibility"};
+    if (!watchedProps.contains(prop.getName())) {
+        return;
+    }
+    auto* vpd = dynamic_cast<const Gui::ViewProviderDocumentObject*>(&vp);
+    if (!vpd) {
+        return;
+    }
+    auto* changedObj = vpd->getObject();
+    if (!changedObj) {
+        return;
+    }
+
+    auto* body = this->getObject<PartDesign::Body>();
+    if (!body) {
+        return;
+    }
+    const auto& features = body->Group.getValues();
+    bool isRelevantChange = (changedObj == body)
+        || (std::ranges::find(features, changedObj) != features.end());
+
+    if (isRelevantChange) {
+        refreshOverlays();
+    }
+}
+
+void ViewProviderBody::afterRecompute(const App::Document& /* doc */, const std::vector<App::DocumentObject*>& /* recomputedObjs */)
+{
+    refreshOverlays();
+}
+
+void ViewProviderBody::refreshOverlays()
+{
+    auto* body = getObject<PartDesign::Body>();
+    if (!body) {
+        return;
+    }
+    for (auto* obj : body->Group.getValues()) {
+        Gui::ViewProvider* vpBase = Gui::Application::Instance->getViewProvider(obj);
+        if (auto* vpPartDesign = dynamic_cast<PartDesignGui::ViewProvider*>(vpBase)) {
+            vpPartDesign->updateOverlay();
+        }
+    }
 }
 
 // TODO on activating the body switch to the "Through" mode (2015-09-05, Fat-Zer)
@@ -110,6 +164,29 @@ void ViewProviderBody::setOverrideMode(const std::string& mode)
     }
     else {
         overrideMode = mode;
+
+        // Propagate the override mode to child features.
+        // When the Body is an external link, the global viewport loop
+        // won't reach these children automatically.
+        if (pcObject && !isRestoring()) {
+            Gui::Document* gdoc = Gui::Application::Instance->getDocument(pcObject->getDocument());
+            if (gdoc) {
+                PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+                auto features = body->Group.getValues();
+                for (auto feature : features) {
+                    if (feature && feature->isDerivedFrom<PartDesign::Feature>()) {
+                        if (Gui::ViewProvider* vp = gdoc->getViewProvider(feature)) {
+                            vp->setOverrideMode(mode);
+                        }
+                    }
+                }
+                if (App::DocumentObject* base = body->BaseFeature.getValue()) {
+                    if (Gui::ViewProvider* vp = gdoc->getViewProvider(base)) {
+                        vp->setOverrideMode(mode);
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -193,7 +270,6 @@ bool ViewProviderBody::doubleClicked()
     toggleActiveBody();
     return true;
 }
-
 
 // TODO To be deleted (2015-09-08, Fat-Zer)
 // void ViewProviderBody::updateTree()
@@ -309,7 +385,6 @@ void ViewProviderBody::onChanged(const App::Property* prop)
     }
 }
 
-
 void ViewProviderBody::unifyVisualProperty(const App::Property* prop)
 {
 
@@ -348,6 +423,21 @@ void ViewProviderBody::unifyVisualProperty(const App::Property* prop)
         }
     }
 }
+
+std::map<std::string, Base::Color> ViewProviderBody::getElementColors(const char* element) const
+{
+    // A PartDesign Body doesn't really have element colors on its own: it's a sort of container,
+    // and its subshapes are the ones that have actual colors. If you query a body's ViewProvider
+    // for its element colors, what you are really asking for is the element colors of its tip.
+    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+    if (App::DocumentObject* tip = body->Tip.getValue()) {
+        Gui::Document* guiDoc = Gui::Application::Instance->getDocument(tip->getDocument());
+        Gui::ViewProvider* vp = guiDoc->getViewProvider(tip);
+        return vp->getElementColors(element);
+    }
+    return ViewProviderPart::getElementColors(element);
+}
+
 
 void ViewProviderBody::setVisualBodyMode(bool bodymode)
 {
@@ -431,6 +521,9 @@ bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
     else if (obj->isDerivedFrom<App::LocalCoordinateSystem>()) {
         return !obj->isDerivedFrom<App::Origin>();
     }
+    else if (obj->isDerivedFrom<PartDesign::SubShapeBinder>()) {
+        return true;
+    }
     else if (obj->isDerivedFrom<Part::Part2DObject>()) {
         return true;
     }
@@ -496,6 +589,7 @@ void ViewProviderBody::dropObject(App::DocumentObject* obj)
         }
     }
 }
+
 bool ViewProviderBody::canDragObjectToTarget(App::DocumentObject* obj, App::DocumentObject* target) const
 {
     if (obj->isDerivedFrom<PartDesign::Feature>()) {
@@ -503,4 +597,45 @@ bool ViewProviderBody::canDragObjectToTarget(App::DocumentObject* obj, App::Docu
     }
 
     return ViewProviderPart::canDragObjectToTarget(obj, target);
+}
+
+void ViewProviderBody::show()
+{
+    // Call the base version first to ensure normal behavior
+    PartGui::ViewProviderPart::show();
+
+    auto* body = static_cast<PartDesign::Body*>(getObject());
+
+    auto tip = body->Tip.getValue();
+    if (!tip || tip->Visibility.getValue()) {
+        return;
+    }
+
+    auto features = body->Group.getValues();
+    if (features.empty()) {
+        return;
+    }
+
+    bool foundVisible = false;
+    for (const auto feature : features) {
+        if (!feature) {
+            continue;
+        }
+
+        auto vp = Gui::Application::Instance->getViewProvider(feature);
+        if (!vp) {
+            continue;
+        }
+
+        if (vp->isDerivedFrom(PartDesignGui::ViewProvider::getClassTypeId())) {
+            if (feature->Visibility.getValue()) {
+                foundVisible = true;
+                break;
+            }
+        }
+    }
+
+    if (!foundVisible) {
+        tip->Visibility.setValue(true);
+    }
 }

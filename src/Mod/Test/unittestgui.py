@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 GUI framework and application for use with Python unit testing framework.
 Execute tests written using the framework provided by the 'unittest' module.
@@ -34,7 +33,6 @@ from tkinter import messagebox as tkMessageBox
 import traceback
 
 import string
-
 
 ##############################################################################
 # GUI framework classes

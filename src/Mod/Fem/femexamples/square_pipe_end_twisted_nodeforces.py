@@ -33,6 +33,7 @@ import ObjectsFem
 from . import manager
 from .manager import get_meshname
 from .manager import init_doc
+from .meshes import generate_mesh
 
 
 def get_information():
@@ -41,7 +42,7 @@ def get_information():
         "meshtype": "face",
         "meshelement": "Tria6",
         "constraints": ["force", "fixed"],
-        "solvers": ["ccxtools"],
+        "solvers": ["ccxtools", "z88"],
         "material": "solid",
         "equations": ["mechanical"],
     }
@@ -207,6 +208,9 @@ def setup(doc=None, solvertype="ccxtools"):
     if solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
         solver_obj.WorkingDir = ""
+    elif solvertype == "z88":
+        solver_obj = ObjectsFem.makeSolverZ88(doc, "SolverZ88")
+        solver_obj.SolverType = "sorcg"
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
@@ -215,7 +219,7 @@ def setup(doc=None, solvertype="ccxtools"):
     if solvertype == "ccxtools":
         solver_obj.SplitInputWriter = False
         solver_obj.AnalysisType = "static"
-        solver_obj.GeometricalNonlinearity = "linear"
+        solver_obj.GeometricalNonlinearity = False
         solver_obj.ThermoMechSteadyState = False
         solver_obj.MatrixSolverType = "default"
         solver_obj.IterationsControlParameterTimeUse = False
@@ -235,7 +239,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj)
 
     # constraint fixed
-    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "Fixed")
     con_fixed.References = [
         (geofixes_obj, "Vertex6"),
         (geofixes_obj, "Vertex15"),
@@ -289,7 +293,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_fixed)
 
     # con_force1
-    con_force1 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce1")
+    con_force1 = ObjectsFem.makeConstraintForce(doc, name="Force1")
     con_force1.References = [(geoforces_obj, "Vertex1"), (geoforces_obj, "Vertex14")]
     con_force1.Force = "5555.56 N"
     con_force1.Direction = (geom_obj, ["Edge9"])
@@ -297,7 +301,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_force1)
 
     # con_force2
-    con_force2 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce2")
+    con_force2 = ObjectsFem.makeConstraintForce(doc, name="Force2")
     con_force2.References = [(geoforces_obj, "Vertex2"), (geoforces_obj, "Vertex8")]
     con_force2.Force = "5555.56 N"
     con_force2.Direction = (geom_obj, ["Edge3"])
@@ -305,7 +309,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_force2)
 
     # con_force3
-    con_force3 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce3")
+    con_force3 = ObjectsFem.makeConstraintForce(doc, name="Force3")
     con_force3.References = [
         (geoforces_obj, "Vertex20"),
         (geoforces_obj, "Vertex21"),
@@ -319,7 +323,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_force3)
 
     # con_force4
-    con_force4 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce4")
+    con_force4 = ObjectsFem.makeConstraintForce(doc, name="Force4")
     con_force4.References = [
         (geoforces_obj, "Vertex9"),
         (geoforces_obj, "Vertex10"),
@@ -333,7 +337,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_force4)
 
     # con_force5
-    con_force5 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce5")
+    con_force5 = ObjectsFem.makeConstraintForce(doc, name="Force5")
     con_force5.References = [
         (geoforces_obj, "Vertex43"),
         (geoforces_obj, "Vertex44"),
@@ -348,7 +352,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_force5)
 
     # con_force6
-    con_force6 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce6")
+    con_force6 = ObjectsFem.makeConstraintForce(doc, name="Force6")
     con_force6.References = [
         (geoforces_obj, "Vertex31"),
         (geoforces_obj, "Vertex32"),
@@ -363,7 +367,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_force6)
 
     # con_force7
-    con_force7 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce7")
+    con_force7 = ObjectsFem.makeConstraintForce(doc, name="Force7")
     con_force7.References = [(geoforces_obj, "Vertex1"), (geoforces_obj, "Vertex2")]
     con_force7.Force = "5555.56 N"
     con_force7.Direction = (geom_obj, ["Edge11"])
@@ -371,7 +375,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_force7)
 
     # con_force8
-    con_force8 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce8")
+    con_force8 = ObjectsFem.makeConstraintForce(doc, name="Force8")
     con_force8.References = [(geoforces_obj, "Vertex8"), (geoforces_obj, "Vertex14")]
     con_force8.Force = "5555.56 N"
     con_force8.Direction = (geom_obj, ["Edge6"])
@@ -379,7 +383,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_force8)
 
     # con_force9
-    con_force9 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce9")
+    con_force9 = ObjectsFem.makeConstraintForce(doc, name="Force9")
     con_force9.References = [
         (geoforces_obj, "Vertex3"),
         (geoforces_obj, "Vertex4"),
@@ -393,7 +397,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_force9)
 
     # con_force10
-    con_force10 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce10")
+    con_force10 = ObjectsFem.makeConstraintForce(doc, name="Force10")
     con_force10.References = [
         (geoforces_obj, "Vertex15"),
         (geoforces_obj, "Vertex16"),
@@ -407,7 +411,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_force10)
 
     # con_force11
-    con_force11 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce11")
+    con_force11 = ObjectsFem.makeConstraintForce(doc, name="Force11")
     con_force11.References = [
         (geoforces_obj, "Vertex25"),
         (geoforces_obj, "Vertex26"),
@@ -422,7 +426,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_force11)
 
     # con_force12
-    con_force12 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce12")
+    con_force12 = ObjectsFem.makeConstraintForce(doc, name="Force12")
     con_force12.References = [
         (geoforces_obj, "Vertex37"),
         (geoforces_obj, "Vertex38"),
@@ -439,13 +443,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # mesh
     from .meshes.mesh_square_pipe_end_twisted_tria6 import create_nodes, create_elements
 
-    fem_mesh = Fem.FemMesh()
-    control = create_nodes(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating nodes.\n")
-    control = create_elements(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating elements.\n")
+    fem_mesh = generate_mesh.mesh_from_existing(create_nodes, create_elements)
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Shape = geom_obj

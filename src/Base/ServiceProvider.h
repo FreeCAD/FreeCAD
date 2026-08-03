@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef APP_SERVICE_PROVIDER_H
-#define APP_SERVICE_PROVIDER_H
+#pragma once
 
 #include <FCGlobal.h>
 
@@ -199,6 +198,3 @@ void registerServiceImplementation(T* implementation)
 }
 
 }  // namespace Base
-
-
-#endif  // APP_SERVICE_PROVIDER_H

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_SYNTAXHIGHLIGHTER_H
-#define GUI_SYNTAXHIGHLIGHTER_H
+#pragma once
 
 #include <QSyntaxHighlighter>
 #include <FCGlobal.h>
@@ -74,5 +73,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SYNTAXHIGHLIGHTER_H

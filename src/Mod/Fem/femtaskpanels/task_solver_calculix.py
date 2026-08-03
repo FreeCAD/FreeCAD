@@ -35,29 +35,25 @@ from PySide import QtGui
 import FreeCAD
 import FreeCADGui
 
-import FemGui
-
 from femsolver.calculix import calculixtools
 
 from . import base_femlogtaskpanel
 
 
-class _TaskPanel(base_femlogtaskpanel._BaseLogTaskPanel):
+class _TaskPanel(base_femlogtaskpanel._BaseWorkerTaskPanel):
     """
     The TaskPanel for run CalculiX solver
     """
 
     def __init__(self, obj):
-        super().__init__(obj, calculixtools.CalculiXTools(obj))
-
+        # set Tool, form and observer before init base class
+        calculixtools.CalculiXTools(obj)
         self.form = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/SolverCalculiX.ui"
         )
+        self.observer = _Observer(self)
 
-        self.text_log = self.form.te_output
-        self.text_time = self.form.l_time
-        self.prepared = False
-        self.run_complete = False
+        super().__init__(obj)
 
         self.setup_connections()
 
@@ -65,25 +61,9 @@ class _TaskPanel(base_femlogtaskpanel._BaseLogTaskPanel):
         super().setup_connections()
 
         QtCore.QObject.connect(
-            self.form.ckb_working_directory,
-            QtCore.SIGNAL("toggled(bool)"),
-            self.working_directory_toggled,
-        )
-        QtCore.QObject.connect(
             self.form.cb_analysis_type,
             QtCore.SIGNAL("currentIndexChanged(int)"),
             self.analysis_type_changed,
-        )
-        QtCore.QObject.connect(
-            self.form.pb_write_input, QtCore.SIGNAL("clicked()"), self.write_input_clicked
-        )
-        QtCore.QObject.connect(
-            self.form.pb_edit_input, QtCore.SIGNAL("clicked()"), self.edit_input_clicked
-        )
-        QtCore.QObject.connect(
-            self.form.fc_working_directory,
-            QtCore.SIGNAL("fileNameSelected(QString)"),
-            self.working_directory_selected,
         )
         QtCore.QObject.connect(
             self.form.pb_solver_version, QtCore.SIGNAL("clicked()"), self.get_version
@@ -91,27 +71,6 @@ class _TaskPanel(base_femlogtaskpanel._BaseLogTaskPanel):
 
         self.get_object_params()
         self.set_widgets()
-
-    def preparation_finished(self):
-        # override base class method to not auto compute
-        self.prepared = True
-        if not self.run_complete:
-            self.timer.stop()
-            self.form.pb_edit_input.setEnabled(True)
-        else:
-            super().preparation_finished()
-
-    def apply(self):
-        self.text_log.clear()
-        self.elapsed.restart()
-        if self.prepared:
-            self.timer.start(100)
-            self.tool.compute()
-        else:
-            # run complete process if 'Apply' is pressed without
-            # previously write the input files
-            self.run_complete = True
-            super().apply()
 
     def get_object_params(self):
         self.analysis_type = self.obj.AnalysisType
@@ -121,37 +80,20 @@ class _TaskPanel(base_femlogtaskpanel._BaseLogTaskPanel):
 
     def set_widgets(self):
         "fills the widgets"
+        super().set_widgets()
+
         self.analysis_type_enum = self.obj.getEnumerationsOfProperty("AnalysisType")
         index = self.analysis_type_enum.index(self.analysis_type)
         self.form.cb_analysis_type.addItems(self.analysis_type_enum)
         self.form.cb_analysis_type.setCurrentIndex(index)
 
-        self.form.fc_working_directory.setProperty("fileName", self.obj.WorkingDirectory)
-        self.form.ckb_working_directory.setChecked(False)
-        self.form.gpb_working_directory.setVisible(False)
-
     def analysis_type_changed(self, index):
         self.analysis_type = self.analysis_type_enum[index]
         self.obj.AnalysisType = self.analysis_type
 
-    def working_directory_selected(self):
-        self.obj.WorkingDirectory = self.form.fc_working_directory.property("fileName")
 
-    def write_input_clicked(self):
-        self.prepared = False
-        self.run_complete = False
-        self.run_process()
-
-    def edit_input_clicked(self):
-        ccx_param = self.tool.fem_param.GetGroup("Ccx")
-        internal = ccx_param.GetBool("UseInternalEditor", True)
-        ext_editor_path = ccx_param.GetString("ExternalEditorPath", "")
-        if internal or not ext_editor_path:
-            FemGui.open(self.tool.model_file)
-        else:
-            ext_editor_process = QtCore.QProcess()
-            ext_editor_process.start(ext_editor_path, [self.tool.model_file])
-            ext_editor_process.waitForFinished()
-
-    def working_directory_toggled(self, bool_value):
-        self.form.gpb_working_directory.setVisible(bool_value)
+class _Observer(base_femlogtaskpanel._WorkerObserver):
+    def __init__(self, task):
+        super().__init__(task)
+        # define property groups to be observed
+        self.groups = ["AnalysisType", "ElementModel", "Solver", "TimeIncrement"]

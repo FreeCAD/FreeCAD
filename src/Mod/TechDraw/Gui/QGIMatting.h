@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGIMATTING_H
-#define DRAWINGGUI_QGIMATTING_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -79,5 +78,3 @@ private:
 };
 
 } // namespace MDIViewPageGui
-
-#endif // DRAWINGGUI_QGIMATTING_H

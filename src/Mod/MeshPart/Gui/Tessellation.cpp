@@ -237,17 +237,17 @@ bool Tessellation::accept()
     std::list<App::SubObjectT> shapeObjects;
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     if (!activeDoc) {
-        QMessageBox::critical(this, windowTitle(), tr("No active document"));
+        QMessageBox::critical(this, windowTitle(), tr("No Active Document"));
         return false;
     }
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
     if (!activeGui) {
-        QMessageBox::critical(this, windowTitle(), tr("No active document"));
+        QMessageBox::critical(this, windowTitle(), tr("No Active Document"));
         return false;
     }
 
-    this->document = QString::fromLatin1(activeDoc->getName());
+    this->document = QString::fromUtf8(activeDoc->getName());
 
     bool bodyWithNoTip = false;
     bool partWithNoFace = false;
@@ -318,8 +318,8 @@ void Tessellation::process(int method, App::Document* doc, const std::list<App::
 
         doc->openTransaction("Meshing");
         for (auto& info : shapeObjects) {
-            QString subname = QString::fromLatin1(info.getSubName().c_str());
-            QString objname = QString::fromLatin1(info.getObjectName().c_str());
+            QString subname = QString::fromUtf8(info.getSubName().c_str());
+            QString objname = QString::fromUtf8(info.getObjectName().c_str());
 
             auto obj = info.getObject();
             if (!obj) {
@@ -334,7 +334,8 @@ void Tessellation::process(int method, App::Document* doc, const std::list<App::
                 continue;
             }
 
-            QString label = QString::fromUtf8(sobj->Label.getValue());
+            std::string label = sobj->Label.getValue();
+            label = Base::Tools::escapeEncodeString(label);
 
             QString param = getMeshingParameters(method, sobj);
 
@@ -347,7 +348,13 @@ void Tessellation::process(int method, App::Document* doc, const std::list<App::
                               "__mesh__.Label=\"%5 (Meshed)\"\n"
                               "del __doc__, __mesh__, __part__, __shape__\n"
             )
-                              .arg(this->document, objname, subname, param, label);
+                              .arg(
+                                  QString::fromUtf8(doc->getName()),
+                                  objname,
+                                  subname,
+                                  param,
+                                  QString::fromUtf8(label.c_str())
+                              );
 
             Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
 
@@ -397,6 +404,7 @@ void Tessellation::setFaceColors(int method, App::Document* doc, App::DocumentOb
 
                 vpmesh->highlightSegments(diff_col);
                 addFaceColors(vpmesh->getObject<Mesh::Feature>(), diff_col);
+                vpmesh->Coloring.setValue(true);
             }
         }
     }
@@ -424,6 +432,7 @@ void Tessellation::addFaceColors(Mesh::Feature* mesh, const std::vector<Base::Co
             prop->setValues(colorPerFace);
         }
     }
+    mesh->purgeTouched();
 }
 
 std::vector<Base::Color> Tessellation::getUniqueColors(const std::vector<Base::Color>& colors) const
@@ -496,8 +505,8 @@ QString Tessellation::getStandardParameters(App::DocumentObject* obj) const
         //
         param += QStringLiteral(",GroupColors=Gui.getDocument('%1').getObject('%2').DiffuseColor")
                      .arg(
-                         QString::fromLatin1(obj->getDocument()->getName()),
-                         QString::fromLatin1(obj->getNameInDocument())
+                         QString::fromUtf8(obj->getDocument()->getName()),
+                         QString::fromUtf8(obj->getNameInDocument())
                      );
     }
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -22,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskSketchBasedParameters_H
-#define GUI_TASKVIEW_TaskSketchBasedParameters_H
+#pragma once
 
 #include <Gui/Selection/Selection.h>
 #include "ViewProvider.h"
@@ -99,5 +100,3 @@ public:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TaskSketchBasedParameters_H

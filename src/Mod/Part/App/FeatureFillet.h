@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATUREFILLET_H
-#define PART_FEATUREFILLET_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -53,6 +52,3 @@ public:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_FEATUREFILLET_H

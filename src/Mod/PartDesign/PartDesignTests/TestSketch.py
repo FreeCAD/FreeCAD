@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2024 Werner Mayer <wmayer[at]users.sourceforge.net>     *
 # *                                                                         *
@@ -29,7 +31,6 @@ import FreeCAD
 class TestSketch(unittest.TestCase):
     def setUp(self):
         self.doc = FreeCAD.newDocument("PartDesignTestSketch")
-        self.doc.UndoMode = True
 
     def testIssue17553(self):
         self.doc.openTransaction("Create box")

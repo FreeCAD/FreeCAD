@@ -52,7 +52,7 @@
 
 using namespace Gui;
 
-using Connection = boost::signals2::connection;
+using Connection = fastsignals::connection;
 
 namespace sp = std::placeholders;
 
@@ -890,7 +890,7 @@ NotificationArea::NotificationArea(QWidget* parent)
     : QPushButton(parent)
 {
     // QPushButton appearance
-    setText(QString());
+    setText(QString::number(0));
     setFlat(true);
 
     // Initialisation of pImpl structure

@@ -22,14 +22,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_TOOLS_H
-#define MESH_TOOLS_H
+#pragma once
 
 #include <functional>
 #include <limits>
 
-#include <Mod/Mesh/App/WildMagic4/Wm4DistVector3Triangle3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4Sphere3.h>
+#include <Wm4DistVector3Triangle3.h>
+#include <Wm4Sphere3.h>
 
 #include "Algorithm.h"
 #include "Iterator.h"
@@ -227,6 +226,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-
-#endif  // MESH_TOOLS_H

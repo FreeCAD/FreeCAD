@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#ifndef __millpathline_h__
-#define __millpathline_h__
+#pragma once
+
 #include <vector>
 
-namespace MillSim
+namespace CAMSimulator
 {
 
 struct MillPathPosition
@@ -16,8 +16,8 @@ struct MillPathPosition
 class MillPathLine
 {
 public:
-    MillPathLine();
     void GenerateModel();
+    void SetupVertexAttibs();
     void Clear();
     void Render();
 
@@ -25,11 +25,8 @@ public:
     std::vector<MillPathPosition> MillPathPointsBuffer;
 
 protected:
-    unsigned int mVbo;
-    unsigned int mVao;
+    unsigned int mVbo = 0;
     int mNumVerts;
 };
 
-}  // namespace MillSim
-
-#endif  // !__millpathline_h__
+}  // namespace CAMSimulator

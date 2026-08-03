@@ -27,8 +27,7 @@
 // LeastSquareConformalMapping + fem relaxing
 // ------------------------------------------
 //
-#ifndef UNWRAP_H
-#define UNWRAP_H
+#pragma once
 
 // 1: local coordinates 2d representation  q_l_0
 // 2: least square conformal map -> flat_vertices_0
@@ -125,5 +124,4 @@ public:
 
 }
 
-#endif
 // clang-format on

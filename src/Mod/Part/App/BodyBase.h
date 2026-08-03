@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_BodyBase_H
-#define PART_BodyBase_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 #include <App/OriginGroupExtension.h>
@@ -97,6 +96,3 @@ protected:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_BodyBase_H

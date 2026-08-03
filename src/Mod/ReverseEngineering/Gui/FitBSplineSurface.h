@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef REENGUI_FITBSPLINESURFACE_H
-#define REENGUI_FITBSPLINESURFACE_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -76,5 +75,3 @@ private:
 };
 
 }  // namespace ReenGui
-
-#endif  // REENGUI_FITBSPLINESURFACE_H

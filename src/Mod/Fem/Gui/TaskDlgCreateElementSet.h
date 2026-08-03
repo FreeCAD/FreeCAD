@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef FemGui_TaskDlgCreateElementSet_H
-#define FemGui_TaskDlgCreateElementSet_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Mod/Fem/App/FemSetElementNodesObject.h>
@@ -65,6 +64,9 @@ public:
     /// is called by the framework if the user press the help button
     void helpRequested() override;
 
+    void activate() override;
+    void deactivate() override;
+
     /// returns for Close and Help button
     QDialogButtonBox::StandardButtons getStandardButtons() const override
     {
@@ -80,5 +82,3 @@ protected:
 
 
 }  // namespace FemGui
-
-#endif  // FemGui_TaskDlgCreateElementSet_H

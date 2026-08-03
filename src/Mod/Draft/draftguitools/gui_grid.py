@@ -25,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to enable and disable the working plane grid."""
+
 ## @package gui_grid
 # \ingroup draftguitools
 # \brief Provides GUI tools to enable and disable the working plane grid.

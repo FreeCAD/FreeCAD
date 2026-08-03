@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_STARTUPPROCESS_H
-#define GUI_STARTUPPROCESS_H
+#pragma once
 
 #include <FCGlobal.h>
 #include <QStringList>
@@ -63,11 +62,13 @@ private:
     void setWindowTitle();
     void setProcessMessages();
     void setAutoSaving();
+    void checkQtSvgImageFormatSupport();
     void setToolBarIconSize();
     void setWheelEventFilter();
     void setLocale();
     void setCursorFlashing();
     void setQtStyle();
+    void migrateOldTheme(const std::string& style);
     void checkOpenGL();
     void loadOpenInventor();
     void setBranding();
@@ -88,5 +89,3 @@ private:
 
 
 }  // namespace Gui
-
-#endif  // GUI_STARTUPPROCESS_H

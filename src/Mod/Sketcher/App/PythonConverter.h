@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER_PythonConverter_H
-#define SKETCHER_PythonConverter_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -102,6 +103,3 @@ private:
 };
 
 }  // namespace Sketcher
-
-
-#endif  // SKETCHER_PythonConverter_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerPolygon_H
-#define SKETCHERGUI_DrawSketchHandlerPolygon_H
+#pragma once
 
 #include <QApplication>
 
@@ -34,7 +35,6 @@
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 
 #include "DrawSketchDefaultWidgetController.h"
@@ -45,8 +45,6 @@
 namespace SketcherGui
 {
 
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
-
 class DrawSketchHandlerPolygon;
 
 using DSHPolygonController = DrawSketchDefaultWidgetController<
@@ -56,7 +54,8 @@ using DSHPolygonController = DrawSketchDefaultWidgetController<
     /*OnViewParametersT =*/OnViewParameters<4>,
     /*WidgetParametersT =*/WidgetParameters<1>,
     /*WidgetCheckboxesT =*/WidgetCheckboxes<0>,
-    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>,
+    /*WidgetLineEditsT =*/WidgetLineEdits<0>>;
 
 using DSHPolygonControllerBase = DSHPolygonController::ControllerBase;
 
@@ -65,6 +64,8 @@ using DrawSketchHandlerPolygonBase = DrawSketchControllableHandler<DSHPolygonCon
 
 class DrawSketchHandlerPolygon: public DrawSketchHandlerPolygonBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerPolygon)
+
     friend DSHPolygonController;
     friend DSHPolygonControllerBase;
 
@@ -104,7 +105,7 @@ private:
     {
         unsetCursor();
         resetPositionText();
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add polygon"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Add polygon"));
 
         try {
             Gui::Command::doCommand(
@@ -121,7 +122,7 @@ private:
                 constructionModeAsBooleanText()
             );
 
-            Gui::Command::commitCommand();
+            commitCommand();
 
             tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
         }
@@ -132,7 +133,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to add polygon")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(
@@ -271,14 +272,14 @@ private:
                  .hints =
                      {
                          {tr("%1 pick polygon center"), {MouseLeft}},
-                         {tr("%1/%2 increase / decrease number of sides"), {KeyU, KeyJ}},
+                         {tr("%1/%2 increase/decrease number of sides"), {KeyU, KeyJ}},
                      }},
                 {.state = SelectMode::SeekSecond,
                  .hints =
                      {
                          {tr("%1 pick rotation and size"), {MouseMove}},
                          {tr("%1 confirm"), {MouseLeft}},
-                         {tr("%1/%2 increase / decrease number of sides"), {KeyU, KeyJ}},
+                         {tr("%1/%2 increase/decrease number of sides"), {KeyU, KeyJ}},
                      }},
             });
     }
@@ -323,7 +324,7 @@ void DSHPolygonController::configureToolWidget()
 
     toolWidget->setParameterLabel(
         WParameter::First,
-        QApplication::translate("ToolWidgetManager_p4", "Sides (+'U'/ -'J')")
+        QApplication::translate("ToolWidgetManager_p4", "Sides")
     );
     toolWidget->setParameter(WParameter::First,
                              handler->numberOfCorners);  // unconditionally set
@@ -574,6 +575,3 @@ void DSHPolygonController::addConstraints()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerPolygon_H

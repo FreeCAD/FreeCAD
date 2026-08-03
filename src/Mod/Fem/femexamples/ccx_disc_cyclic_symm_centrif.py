@@ -30,6 +30,7 @@ import ObjectsFem
 from . import manager
 from .manager import get_meshname
 from .manager import init_doc
+from .meshes import generate_mesh
 
 
 def get_information():
@@ -136,7 +137,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj)
 
     # constraint tie
-    con_tie = ObjectsFem.makeConstraintTie(doc, "ConstraintTie")
+    con_tie = ObjectsFem.makeConstraintTie(doc, "Tie")
     con_tie.References = [
         (geom_obj, "Face2"),
         (geom_obj, "Face3"),
@@ -148,14 +149,14 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_tie)
     
     # constraint centrif
-    con_centrif = ObjectsFem.makeConstraintCentrif(doc, "ConstraintCentrif")
+    con_centrif = ObjectsFem.makeConstraintCentrif(doc, "CentrifugalForce")
     con_centrif.References = [(geom_obj, "Solid1")]
     con_centrif.RotationFrequency = "50 Hz"
     con_centrif.RotationAxis = [(axis, "Edge1")]
     analysis.addObject(con_centrif)
     
     # constraint displacement
-    con_disp = ObjectsFem.makeConstraintDisplacement(doc, "ConstraintDisplacement")
+    con_disp = ObjectsFem.makeConstraintDisplacement(doc, "Displacement")
     con_disp.References = [(geom_obj, ("Vertex8"))]
     analysis.addObject(con_disp)
     con_disp.zFree = False
@@ -169,10 +170,7 @@ def setup(doc=None, solvertype="ccxtools"):
     femmesh_obj.ViewObject.Visibility = False
 
     # generate the mesh
-    from femmesh import gmshtools
-
-    gmsh_mesh = gmshtools.GmshTools(femmesh_obj, analysis)
-    gmsh_mesh.create_mesh()
+    generate_mesh.mesh_from_mesher(femmesh_obj, "gmsh")
 
     doc.recompute()
     return doc

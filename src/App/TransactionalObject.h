@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_TRANSACTIONALOBJECT_H
-#define APP_TRANSACTIONALOBJECT_H
+#pragma once
 
 #include <App/ExtensionContainer.h>
 
@@ -70,6 +71,3 @@ protected:
 };
 
 }  // namespace App
-
-
-#endif  // APP_TRANSACTIONALOBJECT_H

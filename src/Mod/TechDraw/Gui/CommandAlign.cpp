@@ -121,7 +121,7 @@ CmdTechDrawAlignVertexesVertically::CmdTechDrawAlignVertexesVertically()
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Align Vertices/Edge Vertically");
     sToolTipText    = QT_TR_NOOP("Aligns the selected vertices or edges vertically to the view rotation");
-    sWhatsThis      = "TechDraw_AlignGroup";
+    sWhatsThis      = "TechDraw_AlignVertexesVertically";
     sStatusTip      = sToolTipText;
 }
 
@@ -154,7 +154,7 @@ CmdTechDrawAlignVertexesHorizontally::CmdTechDrawAlignVertexesHorizontally()
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Align Vertices/Edge Horizontally");
     sToolTipText    = QT_TR_NOOP("Aligns the selected vertices or edges horizontally to the view rotation");
-    sWhatsThis      = "TechDraw_AlignGroup";
+    sWhatsThis      = "TechDraw_AlignVertexesHorizontally";
     sStatusTip      = sToolTipText;
 }
 

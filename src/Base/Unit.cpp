@@ -77,6 +77,7 @@ constexpr auto unitSpecs = std::to_array<UnitSpec>({
     { "Force"                                 , {  1,  1, -2                     } },
     { "Frequency"                             , {  0,  0, -1                     } },
     { "HeatFlux"                              , {  0,  1, -3                     } },
+    { "Inertia"                               , {  2,  1                         } },
     { "InverseArea"                           , { -2                             } },
     { "InverseLength"                         , { -1                             } },
     { "InverseVolume"                         , { -3                             } },
@@ -102,6 +103,7 @@ constexpr auto unitSpecs = std::to_array<UnitSpec>({
     { "VacuumPermittivity"                    , { -3, -1,  4,  2                 } },
     { "Velocity"                              , {  1,  0, -1                     } },
     { "Volume"                                , {  3                             } },
+    { "Concentration"                         , { -3,  0,  0,  0,  0,  1         } },
     { "VolumeChargeDensity"                   , { -3,  0,  1,  1                 } },
     { "VolumeFlowRate"                        , {  3,  0, -1                     } },
     { "VolumetricThermalExpansionCoefficient" , {  0,  0,  0,  0, -1             } },
@@ -327,6 +329,7 @@ constexpr Unit Unit::Angle                                 = make("Angle"       
 constexpr Unit Unit::Acceleration                          = make("Acceleration"                );
 constexpr Unit Unit::AngleOfFriction                       = make("Angle"                       );
 constexpr Unit Unit::Area                                  = make("Area"                        );
+constexpr Unit Unit::Concentration                         = make("Concentration"               );
 constexpr Unit Unit::CompressiveStrength                   = make("Pressure"                    );
 constexpr Unit Unit::CurrentDensity                        = make("CurrentDensity"              );
 constexpr Unit Unit::Density                               = make("Density"                     );
@@ -343,6 +346,7 @@ constexpr Unit Unit::ElectromagneticPotential              = make("Electromagnet
 constexpr Unit Unit::Force                                 = make("Force"                       );
 constexpr Unit Unit::Frequency                             = make("Frequency"                   );
 constexpr Unit Unit::HeatFlux                              = make("HeatFlux"                    );
+constexpr Unit Unit::Inertia                               = make("Inertia"                     );
 constexpr Unit Unit::InverseArea                           = make("InverseArea"                 );
 constexpr Unit Unit::InverseLength                         = make("InverseLength"               );
 constexpr Unit Unit::InverseVolume                         = make("InverseVolume"               );

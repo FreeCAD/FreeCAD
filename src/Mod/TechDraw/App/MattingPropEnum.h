@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MATTINGENUMS_H_
-#define MATTINGENUMS_H_
+#pragma once
 
 #include <string>
 #include <vector>
@@ -46,4 +45,3 @@ private:
 };
 
 } //end namespace TechDraw
-#endif

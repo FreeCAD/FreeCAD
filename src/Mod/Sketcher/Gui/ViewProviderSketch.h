@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
@@ -20,14 +22,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_VIEWPROVIDERSKETCH_H
-#define SKETCHERGUI_VIEWPROVIDERSKETCH_H
+#pragma once
+
+#include <boost/smart_ptr/scoped_ptr.hpp>
 
 #include <Inventor/SoRenderManager.h>
+#include <Inventor/lists/SoPickedPointList.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <QCoreApplication>
 #include <QMetaObject>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <memory>
 
 #include <Base/Parameter.h>
@@ -41,7 +45,9 @@
 #include <Mod/Sketcher/App/GeoList.h>
 #include <Mod/Sketcher/App/GeoEnum.h>
 
+#include "EditModeCoinManager.h"
 #include "PropertyVisualLayerList.h"
+#include "AutoConstraint.h"
 
 #include "ShortcutListener.h"
 #include "Utils.h"
@@ -55,6 +61,7 @@ class TopoDS_Face;
 class SoSeparator;
 class SbLine;
 class SbVec2f;
+class SbVec2s;
 class SbVec3f;
 class SoCoordinate3;
 class SoInfo;
@@ -63,6 +70,7 @@ class SoTransform;
 class SoLineSet;
 class SoMarkerSet;
 class SoPickedPoint;
+class SoPickedPointList;
 class SoRayPickAction;
 
 class SoImage;
@@ -97,6 +105,8 @@ namespace SketcherGui
 class EditModeCoinManager;
 class SnapManager;
 class DrawSketchHandler;
+class DrawSketchHandlerDragAutoConstraint;
+class ViewProviderSketchCommandConstraintsAttorney;
 
 using GeoList = Sketcher::GeoList;
 using GeoListFacade = Sketcher::GeoListFacade;
@@ -449,6 +459,7 @@ private:
         std::set<int> SelPointSet;       // Indices as PreselectPoint (and -1 for rootpoint)
         std::set<int> SelCurvSet;        // also holds cross axes at -1 and -2
         std::set<int> SelConstraintSet;  // ConstraintN, N = index + 1.
+        bool selectionBuffering {false};
     };
     //@}
 
@@ -473,6 +484,9 @@ private:
         bool isShownVirtualSpace = false;  // indicates whether the present virtual space view is the
                                            // Real Space or the Virtual Space (virtual space 1 or 2)
         bool buttonPress = false;
+        bool hasLastPreselectionResult = false;
+        SbVec2s lastPreselectionCursorPos;
+        EditModeCoinManager::PreselectionResult lastPreselectionResult;
 
         int stdCountSegments = 50;  // preferences controlled default geometry sampling for selection
     };
@@ -545,6 +559,13 @@ public:
     void purgeHandler();
     //@}
 
+    bool isConstructionMode() const;
+
+    // set the current GeometryCreationMode mode
+    void setGeometryCreationMode(GeometryCreationMode geometryCreationMode);
+
+    // gets the GeometryCreationMode
+    GeometryCreationMode getGeometryCreationMode() const;
 
     // TODO: SketchMode should be refactored. DrawSketchHandler, its inheritance and free functions
     // should access this mode via the DrawSketchHandler Attorney. I will not refactor this at this
@@ -577,6 +598,10 @@ public:
     {
         return Mode;
     }
+
+    /// returns whether the sketch is in edit mode.
+    bool isInEditMode() const;
+    //@}
 
     // create right click context menu based on selection in the 3D view
     void generateContextMenu();
@@ -655,6 +680,8 @@ public:
     void attach(App::DocumentObject*) override;
     void updateData(const App::Property*) override;
 
+    void setActive(bool active) override;
+
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     /// is called when the Provider is in edit and a deletion request occurs
     bool onDelete(const std::vector<std::string>&) override;
@@ -701,30 +728,41 @@ public:
     /** @name Signals for controlling information in Task dialogs */
     //@{
     /// signals if the constraints list has changed
-    boost::signals2::signal<void()> signalConstraintsChanged;
+    fastsignals::signal<void()> signalConstraintsChanged;
     /// signals if the sketch has been set up
-    boost::signals2::signal<
+    fastsignals::signal<
         void(const QString& state, const QString& msg, const QString& url, const QString& linkText)>
         signalSetUp;
     /// signals if the elements list has changed
-    boost::signals2::signal<void()> signalElementsChanged;
+    fastsignals::signal<void()> signalElementsChanged;
     //@}
 
     /** @name Register slot for signal */
     //@{
     template<typename F>
-    boost::signals2::connection registerToolChanged(F&& f)
+    fastsignals::connection registerToolChanged(F&& f)
     {
         return signalToolChanged.connect(std::forward<F>(f));
     }
     //@}
+
+    bool getPreselectionAtViewportPos(
+        const SbVec2s& pos,
+        const Gui::View3DInventorViewer* viewer,
+        std::vector<std::string>& subElementNames,
+        Base::Vector3d& pickedPoint
+    );
 
     /** @name Attorneys for collaboration with helper classes */
     //@{
     friend class ViewProviderSketchDrawSketchHandlerAttorney;
     friend class ViewProviderSketchCoinAttorney;
     friend class ViewProviderSketchSnapAttorney;
+    friend class ViewProviderSketchCommandConstraintsAttorney;
     //@}
+
+    bool editingCancelled;
+
 protected:
     /** @name enter/exit edit mode */
     //@{
@@ -744,7 +782,7 @@ protected:
     /// get called if a subelement is double clicked while editing
     void editDoubleClicked();
     /// get called when an edge is double clicked to select/unselect the whole wire
-    void toggleWireSelelection(int geoId);
+    void toggleWireSelection(int geoId);
     //@}
 
     /** @name Solver Information */
@@ -766,6 +804,7 @@ protected:
     void slotUndoDocument(const Gui::Document&);
     void slotRedoDocument(const Gui::Document&);
     void slotSolverUpdate();
+    void slotConstraintAdded(Sketcher::Constraint* constraint);
     void forceUpdateData();
     //@}
 
@@ -780,7 +819,19 @@ protected:
     void finishRestoring() override;
 
     bool getElementPicked(const SoPickedPoint* pp, std::string& subname) const override;
+    std::vector<std::pair<std::string, std::string>> getRelatedElements(
+        const std::string& subname,
+        const SbVec3f& pickPoint
+    ) const override;
     bool getDetailPath(const char* subname, SoFullPath* pPath, bool append, SoDetail*& det) const override;
+
+    Base::BoundBox3d _getBoundingBox(
+        const char* subname = nullptr,
+        const Base::Matrix4D* mat = nullptr,
+        bool transform = true,
+        const Gui::View3DInventorViewer* viewer = nullptr,
+        int depth = 0
+    ) const override;
 
 private:
     /// function to handle OCCT BSpline weight calculation singularities and representation
@@ -792,16 +843,34 @@ private:
     /** @name geometry and coordinates auxiliary functions */
     //@{
     /// give the coordinates of a line on the sketch plane in sketcher (2D) coordinates
-    void getCoordsOnSketchPlane(const SbVec3f& point, const SbVec3f& normal, double& u, double& v) const;
+    /// returns false when the input cannot produce finite sketch coordinates
+    bool getCoordsOnSketchPlane(const SbVec3f& point, const SbVec3f& normal, double& u, double& v) const;
 
-    /// give projecting line of position
-    void getProjectingLine(const SbVec2s&, const Gui::View3DInventorViewer* viewer, SbLine&) const;
+    /// give projecting line of position, returns false for invalid view projection state
+    bool getProjectingLine(const SbVec2s&, const Gui::View3DInventorViewer* viewer, SbLine&) const;
     //@}
 
     /** @name preselection functions */
     //@{
+    SoPickedPointList getPickedPointsOnRay(
+        const SbVec2s& pos,
+        const Gui::View3DInventorViewer* viewer
+    ) const;
+    EditModeCoinManager::PreselectionResult getPreselectionResultAtViewportPos(
+        const SbVec2s& pos,
+        const Gui::View3DInventorViewer* viewer
+    ) const;
+    void cachePreselectionResult(
+        const SbVec2s& pos,
+        const EditModeCoinManager::PreselectionResult& result
+    );
+    EditModeCoinManager::PreselectionResult resolveClickPreselectionResult(
+        const EditModeCoinManager::PreselectionResult& clickResult,
+        const SbVec2s& cursorPos,
+        const Gui::View3DInventorViewer* viewer
+    ) const;
     /// helper to detect preselection
-    bool detectAndShowPreselection(SoPickedPoint* Point);
+    bool detectAndShowPreselection(const EditModeCoinManager::PreselectionResult& result);
     int getPreselectPoint() const;
     int getPreselectCurve() const;
     int getPreselectCross() const;
@@ -816,10 +885,13 @@ private:
     //@{
     /// dragging helpers
     void initDragging(int geoId, Sketcher::PointPos pos, Gui::View3DInventorViewer* viewer);
-    void doDragStep(double x, double y);
+    bool doDragStep(double x, double y);
     void commitDragMove(double x, double y);
 
     //@}
+
+    // the active sketch GeometryCreationMode
+    GeometryCreationMode geometryCreationMode = GeometryCreationMode::Normal;
 
     /** @name Selection functions */
     //@{
@@ -834,11 +906,7 @@ private:
     void removeSelectPoint(int SelectPoint);
     void clearSelectPoints();
 
-    void preselectToSelection(
-        const std::stringstream& ss,
-        boost::scoped_ptr<SoPickedPoint>& pp,
-        bool toggle
-    );
+    void preselectToSelection(const std::stringstream& ss, const Base::Vector3d& pickedPoint, bool toggle);
     //@}
 
     /** @name miscelanea utilities */
@@ -852,20 +920,21 @@ private:
         OffsetMode offset = NoOffset
     );
     void moveAngleConstraint(Sketcher::Constraint*, int constNum, const Base::Vector2d& toPos);
-
-    /// returns whether the sketch is in edit mode.
-    bool isInEditMode() const;
     //@}
+
+    void setupActiveAndInEdit();
+    void unsetupActiveAndInEdit();
 
     /** @name signals*/
     //@{
     /// signals a tool change
-    boost::signals2::signal<void(const std::string& toolname)> signalToolChanged;
+    fastsignals::signal<void(const std::string& toolname)> signalToolChanged;
     //@}
 
     void slotToolWidgetChanged(QWidget* newwidget);
 
     void updateColorPropertiesVisibility();
+    void updateAutomaticColorProperties();
 
     /** @name Attorney functions*/
     //@{
@@ -883,6 +952,9 @@ private:
     /// or null if it doesn't exist.
     Sketcher::Constraint* getConstraint(int constid) const;
 
+    // Return true if the constraint is active, includes checking if it's not in a group
+    bool isConstraintActiveInSketch(const Sketcher::Constraint* cstr) const;
+
     // gets the list of geometry of the sketchobject or of the solver instance
     const GeoList getGeoList() const;
 
@@ -893,6 +965,7 @@ private:
     std::unique_ptr<SoRayPickAction> getRayPickAction() const;
 
     SbVec2f getScreenCoordinates(SbVec2f sketchcoordinates) const;
+    SbVec2f getScreenCoordinates(SbVec3f sketchcoordinates) const;
 
     QFont getApplicationFont() const;
 
@@ -933,6 +1006,9 @@ private:
     /// draw the edit curve
     void drawEdit(const std::vector<Base::Vector2d>& EditCurve);
     void drawEdit(const std::list<std::vector<Base::Vector2d>>& list);
+    void drawLineExtensionAutoConstraintHint(const std::vector<Base::Vector2d>& HintCurve);
+    bool isLineExtensionAutoConstraintHintVisible(const std::vector<Base::Vector2d>& HintCurve) const;
+    void drawParallelPerpendicularHint(const std::vector<Base::Vector2d>& HintLines, int activeLineIndex);
     /// draw the edit markers
     void drawEditMarkers(
         const std::vector<Base::Vector2d>& EditMarkers,
@@ -966,9 +1042,10 @@ private:
     //@}
 
 private:
-    boost::signals2::connection connectUndoDocument;
-    boost::signals2::connection connectRedoDocument;
-    boost::signals2::connection connectSolverUpdate;
+    fastsignals::connection connectUndoDocument;
+    fastsignals::connection connectRedoDocument;
+    fastsignals::connection connectSolverUpdate;
+    fastsignals::connection connectConstraintAdded;
 
     QMetaObject::Connection screenChangeConnection;
 
@@ -990,7 +1067,7 @@ private:
     Gui::CoinPtr<SoSketchFaces> pcSketchFaces;
     Gui::CoinPtr<SoToggleSwitch> pcSketchFacesToggle;
 
-    ShortcutListener* listener;
+    std::unique_ptr<ShortcutListener> listener;
 
     std::unique_ptr<EditModeCoinManager> editCoinManager;
 
@@ -1000,18 +1077,18 @@ private:
 
     std::unique_ptr<DrawSketchHandler> sketchHandler;
 
+    std::unique_ptr<DrawSketchHandlerDragAutoConstraint> dragAutoConstraintHandler;
+
     ViewProviderParameters viewProviderParameters;
 
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectionToolWidget;
 
     SoNodeSensor cameraSensor;
     int viewOrientationFactor;  // stores if sketch viewed from front or back
 
     bool blockContextMenu;
+    std::stringstream sketchBackup;
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_VIEWPROVIDERSKETCH_H

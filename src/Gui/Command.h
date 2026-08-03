@@ -21,14 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_COMMAND_H
-#define GUI_COMMAND_H
+#pragma once
 
 #include <list>
 #include <map>
 #include <string>
 #include <vector>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <Base/Type.h>
 #include <Gui/Application.h>
@@ -474,11 +473,24 @@ public:
     /** @name Helper methods for the Undo/Redo and Update handling */
     //@{
     /// Open a new Undo transaction on the active document
-    static void openCommand(const char* sName = nullptr);
+    int openCommand(App::TransactionName name);
+    int openCommand(std::string name);
+    static int openActiveDocumentCommand(App::TransactionName name, int tid = App::NullTransaction);
+    static int openActiveDocumentCommand(std::string name, int tid = App::NullTransaction);
+
+    void rename(const std::string& name);
+
     /// Commit the Undo transaction on the active document
-    static void commitCommand();
+    void commitCommand();
+    static void commitCommand(int tid);
+
     /// Abort the Undo transaction on the active document
-    static void abortCommand();
+    void abortCommand();
+    static void abortCommand(int tid);
+
+    int transactionID() const;
+    void resetTransactionID();
+
     /// Check if an Undo transaction is open on the active document
     static bool hasPendingCommand();
     /// Updates the (active) document (propagate changes)
@@ -716,6 +728,8 @@ protected:
     /// Indicate if the command shall log to MacroManager
     bool bCanLog;
     //@}
+
+    int currentTransactionID {0};  // TransactionID created in _invoke
 private:
     static int _busy;
     bool bEnabled;
@@ -829,9 +843,9 @@ protected:
     /// the activation sequence
     std::string Activation;
     //// set the parameters on action creation
-    void onActionInit() const;
+    void onActionInit();
 
-    boost::signals2::connection connPyCmdInitialized;
+    fastsignals::connection connPyCmdInitialized;
 };
 
 /** The Python group command class
@@ -880,13 +894,13 @@ protected:
     /// Returns the resource values
     const char* getResource(const char* sName) const;
     //// set the parameters on action creation
-    void onActionInit() const;
+    void onActionInit();
     /// a pointer to the Python command object
     PyObject* _pcPyCommand;
     /// the command object resources
     PyObject* _pcPyResource;
 
-    boost::signals2::connection connPyCmdInitialized;
+    fastsignals::connection connPyCmdInitialized;
 };
 
 
@@ -1019,10 +1033,10 @@ public:
     }
 
     /// Signal on any addition or removal of command
-    boost::signals2::signal<void()> signalChanged;
+    fastsignals::signal<void()> signalChanged;
 
     /// Signal to Python command on first workbench activation
-    boost::signals2::signal<void()> signalPyCmdInitialized;
+    fastsignals::signal<void()> signalPyCmdInitialized;
 
     /**
      * Returns a pointer to a conflicting command, or nullptr if there is no conflict.
@@ -1287,5 +1301,3 @@ private:
         X& operator=(const X&) = delete; \
         X& operator=(X&&) = delete; \
     };
-
-#endif  // GUI_COMMAND_H

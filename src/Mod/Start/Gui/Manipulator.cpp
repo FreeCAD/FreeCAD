@@ -58,6 +58,12 @@ void CmdStart::activated(int iMsg)
     if (!existingView) {
         existingView = gsl::owner<StartGui::StartView*>(new StartGui::StartView(mw));
         mw->addWindow(existingView);  // Transfers ownership
+        QObject::connect(
+            mw,
+            &Gui::MainWindow::recentFileAdded,
+            existingView,
+            &StartGui::StartView::recentFileAdded
+        );
     }
     Gui::getMainWindow()->setActiveWindow(existingView);
     existingView->show();

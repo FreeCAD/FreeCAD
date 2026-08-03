@@ -254,11 +254,45 @@ class TestPathCommandAnnotations(PathTestBase):
 
         # Verify GCode parameters were also restored correctly
         self.assertEqual(restored.Name, "G1")
+        self.assertEqual(
+            restored.Parameters["X"], 10.0, "as float"
+        )  # ensures it wasn't string'ified etc.
         # Note: Parameters are restored via GCode parsing
 
+    def test11_comment_roundtrip(self):
+        """Test that comments w/annotations make round-trip
+        Comments are handled slightly differently than G/M codes.
+        """
+        for comment_text, annotation in [
+            # (gcode, annotation)
+            ("(A Comment)", None),
+            ("(A Comment)", {}),
+            # Comments and actual G/M codes seem to be handled differently
+            ("(A Comment)", {"annotkey": "somevalue"}),
+            ("G1", {"annotkey": "somevalue"}),
+        ]:
+            comment = (
+                Path.Command(comment_text)
+                if annotation is None
+                else Path.Command(comment_text, {}, annotation)
+            )
+
+            dumped = comment.dumpContent()
+            restored = Path.Command()
+            restored.restoreContent(dumped)
+            self.assertEqual(
+                comment.Name, restored.Name, f"for dumpContent() round trip: {comment.toGCode()}"
+            )
+
+            gcode = comment.toGCode()
+            parsed = Path.Command(gcode)
+            self.assertEqual(
+                comment.Name, parsed.Name, f"for toGCode() round trip: {comment.toGCode()}"
+            )
+
     def test12(self):
-        """Test save/restore with empty and complex annotations (in-memory)."""
-        # Test 1: Empty annotations (should work and use compact format)
+        """Test save/restore with empty annotations (in-memory)."""
+        # Test empty annotations (should work and use compact format)
         simple = Path.Command("G0", {"Z": 5.0})
         self.assertEqual(simple.Annotations, {})
 
@@ -269,7 +303,9 @@ class TestPathCommandAnnotations(PathTestBase):
         self.assertEqual(simple_restored.Annotations, {})
         self.assertEqual(simple_restored.Name, "G0")
 
-        # Test 2: Complex CAM annotations with edge cases
+    def test13(self):
+        """Test save/restore with complex annotations and edge cases (in-memory)."""
+        # Test complex CAM annotations with edge cases
         complex_cmd = Path.Command("G84", {"X": 25.4, "Y": 12.7, "Z": -8.0})
         complex_cmd.Annotations = {
             # Mixed types with edge cases
@@ -311,3 +347,68 @@ class TestPathCommandAnnotations(PathTestBase):
         # Check scientific notation (now only 6 decimal places)
         self.assertAlmostEqual(complex_restored.Annotations["scientific"], 1.23e-6, places=6)
         self.assertIsInstance(complex_restored.Annotations["scientific"], float)
+
+    def test14(self):
+        """Test Command constructor with positional annotations parameter."""
+        # Test constructor with string annotations (positional)
+        c1 = Path.Command("G1", {"X": 10.0, "Y": 5.0}, {"note": "Rapid move"})
+        self.assertEqual(c1.Name, "G1")
+        self.assertEqual(c1.Parameters["X"], 10.0)
+        self.assertEqual(c1.Parameters["Y"], 5.0)
+        self.assertEqual(c1.Annotations["note"], "Rapid move")
+
+    def test15(self):
+        """Test Command constructor with keyword annotations parameter."""
+        # Test constructor with annotations keyword argument
+        c1 = Path.Command("G1", {"X": 10.0, "Y": 5.0}, annotations={"note": "Rapid move"})
+        self.assertEqual(c1.Name, "G1")
+        self.assertEqual(c1.Parameters["X"], 10.0)
+        self.assertEqual(c1.Parameters["Y"], 5.0)
+        self.assertEqual(c1.Annotations["note"], "Rapid move")
+
+    def test16(self):
+        """Test Command constructor with numeric annotations."""
+        # Test constructor with numeric annotations
+        c1 = Path.Command("G2", {"X": 20.0, "Y": 15.0}, {"priority": 1})
+        self.assertEqual(c1.Name, "G2")
+        self.assertEqual(c1.Parameters["X"], 20.0)
+        self.assertEqual(c1.Parameters["Y"], 15.0)
+        self.assertEqual(c1.Annotations["priority"], 1)
+
+    def test17(self):
+        """Test Command constructor with mixed string and numeric annotations."""
+        # Test constructor with mixed annotations
+        c1 = Path.Command("G3", {"X": 30.0, "Y": 25.0}, {"note": "Arc move", "speed": 1500})
+        self.assertEqual(c1.Name, "G3")
+        self.assertEqual(c1.Parameters["X"], 30.0)
+        self.assertEqual(c1.Parameters["Y"], 25.0)
+        self.assertEqual(c1.Annotations["note"], "Arc move")
+        self.assertEqual(c1.Annotations["speed"], 1500)
+
+    def test18(self):
+        """Test Command constructor with empty annotations."""
+        # Test constructor with empty annotations dict
+        c1 = Path.Command("G0", {"X": 0.0, "Y": 0.0}, {})
+        self.assertEqual(c1.Name, "G0")
+        self.assertEqual(c1.Parameters["X"], 0.0)
+        self.assertEqual(c1.Parameters["Y"], 0.0)
+        self.assertEqual(c1.Annotations, {})
+
+    def test19(self):
+        """Test Command constructor without annotations (backward compatibility)."""
+        # Test constructor without annotations (should work as before)
+        c1 = Path.Command("G1", {"X": 10.0, "Y": 5.0})
+        self.assertEqual(c1.Name, "G1")
+        self.assertEqual(c1.Parameters["X"], 10.0)
+        self.assertEqual(c1.Parameters["Y"], 5.0)
+        self.assertEqual(c1.Annotations, {})
+
+    def test20(self):
+        """Test Command constructor with floating point annotations."""
+        # Test constructor with floating point annotations
+        c1 = Path.Command("G1", {"X": 10.0, "Y": 5.0}, {"retract": 15.5, "angle": 30.25})
+        self.assertEqual(c1.Name, "G1")
+        self.assertEqual(c1.Parameters["X"], 10.0)
+        self.assertEqual(c1.Parameters["Y"], 5.0)
+        self.assertEqual(c1.Annotations["retract"], 15.5)
+        self.assertEqual(c1.Annotations["angle"], 30.25)

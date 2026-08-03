@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -22,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_DATUMPOINT_H
-#define PARTDESIGN_DATUMPOINT_H
+#pragma once
 
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
@@ -57,6 +58,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_DATUMPOINT_H

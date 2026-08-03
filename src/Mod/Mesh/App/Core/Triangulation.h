@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_TRIANGULATION_H
-#define MESH_TRIANGULATION_H
+#pragma once
 
 #include "Elements.h"
 
@@ -282,6 +281,3 @@ protected:
 #endif
 
 }  // namespace MeshCore
-
-
-#endif  // MESH_TRIANGULATION_H

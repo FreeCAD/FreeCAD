@@ -45,11 +45,7 @@
 //typedef unsigned short UShortType;
 typedef short ShortType;
 typedef int   LongType;
-#ifdef VTK_CELL_ARRAY_V2
 typedef const vtkIdType* vtkIdTypePtr;
-#else
-typedef vtkIdType* vtkIdTypePtr;
-#endif
 class SMDS_MeshNode;
 class SMDS_MeshEdge;
 class SMDS_MeshFace;

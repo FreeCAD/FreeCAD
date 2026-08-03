@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DOCKWND_TOOLBOX_H
-#define GUI_DOCKWND_TOOLBOX_H
+#pragma once
 
 #include <QWidget>
 #include <FCGlobal.h>
@@ -110,5 +109,3 @@ private:
 
 }  // namespace DockWnd
 }  // namespace Gui
-
-#endif  // GUI_DOCKWND_TOOLBOX_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_MATERIAL_H
-#define APP_MATERIAL_H
+#pragma once
 
 #include <Base/Color.h>
 
@@ -167,5 +168,3 @@ private:
 };
 
 }  // namespace App
-
-#endif  // APP_MATERIAL_H

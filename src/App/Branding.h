@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_BRANDING_H
-#define APP_BRANDING_H
+#pragma once
 
 #include <string>
 #include <QDomDocument>
@@ -52,5 +53,3 @@ private:
 };
 
 }  // namespace App
-
-#endif  // APP_BRANDING_H

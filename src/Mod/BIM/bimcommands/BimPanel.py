@@ -103,7 +103,8 @@ class Arch_Panel:
         # interactive mode
 
         FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
-        WorkingPlane.get_working_plane()
+        self.wp = WorkingPlane.get_working_plane()
+        self.wp._save()
         self.points = []
         self.tracker = DraftTrackers.boxTracker()
         self.tracker.width(self.Width)
@@ -111,15 +112,34 @@ class Arch_Panel:
         self.tracker.length(self.Length)
         self.tracker.on()
         FreeCADGui.Snapper.getPoint(
-            callback=self.getPoint, movecallback=self.update, extradlg=self.taskbox()
+            callback=self.getPoint,
+            movecallback=self.update,
+            extradlg=self.taskbox(),
+            hints=self.get_hints(),
         )
         FreeCADGui.draftToolBar.continueCmd.show()
+
+    def get_hints(self):
+        "returns status bar input hints for the current tool state"
+        from draftguitools import gui_tool_utils
+
+        return (
+            [
+                FreeCADGui.InputHint(
+                    translate("Arch", "%1 pick point"), FreeCADGui.UserInput.MouseLeft
+                )
+            ]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+        )
 
     def getPoint(self, point=None, obj=None):
         "this function is called by the snapper when it has a 3D point"
 
         import DraftVecUtils
 
+        self.wp._restore()
         FreeCAD.activeDraftCommand = None
         FreeCADGui.Snapper.off()
         self.tracker.finalize()
@@ -177,7 +197,7 @@ class Arch_Panel:
 
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        w.setWindowTitle(translate("Arch", "Panel options"))
+        w.setWindowTitle(translate("Arch", "Panel Options"))
         grid = QtGui.QGridLayout(w)
 
         # presets box

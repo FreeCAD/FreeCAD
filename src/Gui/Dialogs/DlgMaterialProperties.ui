@@ -46,6 +46,9 @@
         <property name="text">
          <string>Diffuse color</string>
         </property>
+		<property name="toolTip">
+			 <string>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</string>
+		 </property>
        </widget>
       </item>
       <item row="4" column="0">
@@ -53,6 +56,9 @@
         <property name="text">
          <string>Shininess</string>
         </property>
+		<property name="toolTip">
+			 <string>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</string>
+		 </property>
        </widget>
       </item>
       <item row="0" column="1">
@@ -70,6 +76,9 @@
         <property name="text">
          <string>Reset</string>
         </property>
+		<property name="toolTip">
+			 <string>Reverts changes done in the dialogue.</string>
+		 </property>
        </widget>
       </item>
       <item row="0" column="0">
@@ -77,6 +86,9 @@
         <property name="text">
          <string>Ambient color</string>
         </property>
+		<property name="toolTip">
+			 <string>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</string>
+		 </property>
        </widget>
       </item>
       <item row="4" column="1">
@@ -113,6 +125,9 @@
         <property name="text">
          <string>Specular color</string>
         </property>
+		<property name="toolTip">
+			 <string>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</string>
+		 </property>
        </widget>
       </item>
       <item row="3" column="1">
@@ -130,6 +145,9 @@
         <property name="text">
          <string>Default</string>
         </property>
+		<property name="toolTip">
+			 <string>Changes all values to default values</string>
+		 </property>
        </widget>
       </item>
       <item row="1" column="1">
@@ -147,6 +165,9 @@
         <property name="text">
          <string>Emissive color</string>
         </property>
+		<property name="toolTip">
+			 <string>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</string>
+		 </property>
        </widget>
       </item>
       <item row="5" column="0">
@@ -154,6 +175,9 @@
         <property name="text">
          <string>Transparency</string>
         </property>
+		<property name="toolTip">
+			 <string>Defines how much light passes through an object, making it partially or fully see-through</string>
+		 </property>
        </widget>
       </item>
       <item row="5" column="1">

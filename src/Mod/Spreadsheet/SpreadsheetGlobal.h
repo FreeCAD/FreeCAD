@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SPREADSHEET_GLOBAL_H
-#define SPREADSHEET_GLOBAL_H
+#pragma once
 
 #include <FCGlobal.h>
 
@@ -45,5 +44,3 @@
 #  define SpreadsheetGuiExport FREECAD_DECL_IMPORT
 # endif
 #endif
-
-#endif  // SPREADSHEET_GLOBAL_H

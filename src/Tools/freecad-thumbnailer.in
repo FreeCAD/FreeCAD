@@ -32,6 +32,7 @@ NOTE: To make sure FreeCAD saves thumbnail information:
 
     Edit → Preferences → Document → Save thumbnail into project when saving document
 """
+
 import sys
 import zipfile
 import getopt

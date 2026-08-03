@@ -23,12 +23,9 @@
  ***************************************************************************/
 
 
-#ifndef BASE_TOOLS3D_H
-#define BASE_TOOLS3D_H
+#pragma once
 
-#ifndef FC_GLOBAL_H
-# include <FCGlobal.h>
-#endif
+#include <FCGlobal.h>
 
 #include <cmath>
 #include <vector>
@@ -148,5 +145,3 @@ using Polygon3f = Polygon3<float>;
 using Polygon3d = Polygon3<double>;
 
 }  // namespace Base
-
-#endif  // BASE_TOOLS3D_H

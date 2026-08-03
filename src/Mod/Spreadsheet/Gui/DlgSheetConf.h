@@ -22,8 +22,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef DLG_SHEETCONF_H
-#define DLG_SHEETCONF_H
+#pragma once
 
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <QDialog>
@@ -55,13 +54,13 @@ public:
     );
 
 public Q_SLOTS:
+    void onOrientationChanged();
     void onDiscard();
 
 private:
     Spreadsheet::Sheet* sheet;
     Ui::DlgSheetConf* ui;
+    App::Range originalRange;
 };
 
 }  // namespace SpreadsheetGui
-
-#endif  // DLG_SHEETCONF_H

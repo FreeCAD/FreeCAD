@@ -29,8 +29,7 @@
 
 
 // Public header for FT2FC.cpp
-#ifndef FT2FC_H
-#define FT2FC_H
+#pragma once
 // public functions
 PyObject* FT2FC(
     const Py_UCS4* unichars,
@@ -48,5 +47,3 @@ PyObject* FT2FC(
     const double stringheight,
     const double tracking
 );
-
-#endif  // FT2FC_H

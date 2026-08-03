@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 # ***************************************************************************
-# *   Copyright (c) 2025 Jakub Michalski <jakub.j.michalski[at]gmail.com>         *
+# *   Copyright (c) 2025 Jakub Michalski <jakub.j.michalski[at]gmail.com>   *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
@@ -30,6 +30,7 @@ import ObjectsFem
 from . import manager
 from .manager import get_meshname
 from .manager import init_doc
+from .meshes import generate_mesh
 
 
 def get_information():
@@ -117,12 +118,12 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj)
 
     # constraint fixed
-    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "Fixed")
     con_fixed.References = [(extrude, "Face2")]
     analysis.addObject(con_fixed)
 
     # constraint rigid body
-    con_rb = ObjectsFem.makeConstraintRigidBody(doc, "ConstraintRigidBody")
+    con_rb = ObjectsFem.makeConstraintRigidBody(doc, "RigidBody")
     con_rb.References = [(extrude, "Face3")]
     con_rb.ReferenceNode = App.Vector(0.000000, 0.000000, 1000.000000)
     con_rb.Rotation = App.Rotation(App.Vector(0.000000, 0.000000, 1.000000), Radian=0.000000)
@@ -138,14 +139,7 @@ def setup(doc=None, solvertype="ccxtools"):
     femmesh_obj.ViewObject.Visibility = False
 
     # generate the mesh
-    from femmesh import gmshtools
-
-    gmsh_mesh = gmshtools.GmshTools(femmesh_obj, analysis)
-    try:
-        error = gmsh_mesh.create_mesh()
-    except Exception:
-        error = sys.exc_info()[1]
-        FreeCAD.Console.PrintError(f"Unexpected error when creating mesh: {error}\n")
+    generate_mesh.mesh_from_mesher(femmesh_obj, "gmsh")
 
     doc.recompute()
     return doc

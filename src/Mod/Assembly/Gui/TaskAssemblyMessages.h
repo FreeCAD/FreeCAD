@@ -22,8 +22,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskAssemblyMessages_H
-#define GUI_TASKVIEW_TaskAssemblyMessages_H
+#pragma once
 
 #include <Gui/TaskView/TaskSolverMessages.h>
 
@@ -44,12 +43,10 @@ public:
 private:
     void onLabelStatusLinkClicked(const QString&) override;
 
-    void updateToolTip(const QString& link);
+    void updateToolTip(const QString& link) override;
 
 protected:
     ViewProviderAssembly* vp;
 };
 
 }  // namespace AssemblyGui
-
-#endif  // GUI_TASKVIEW_TaskAssemblyMessages_H

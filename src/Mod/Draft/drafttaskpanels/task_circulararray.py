@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the task panel code for the Draft CircularArray tool."""
+
 ## @package task_circulararray
 # \ingroup drafttaskpanels
 # \brief Provides the task panel code for the Draft CircularArray tool.
@@ -34,15 +35,24 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
+import WorkingPlane
 import Draft_rc  # include resources, icons, ui files
 import DraftVecUtils
 from FreeCAD import Units as U
+from draftguitools.gui_field_locks import InputFieldLockGroup
 from draftutils import params
 from draftutils.messages import _err, _log, _msg, _wrn
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 bool(Draft_rc.__name__)
+
+
+def _quantity(st):
+    # workaround for improper handling of plus sign
+    # in Building US unit system
+    # https://github.com/FreeCAD/FreeCAD/issues/11345
+    return U.Quantity(st.replace("+", "--")).Value
 
 
 class TaskPanelCircularArray:
@@ -90,13 +100,18 @@ class TaskPanelCircularArray:
         self.center = App.Vector()
         # TODO: the axis is currently fixed, it should be editable
         # or selectable from the task panel
-        self.axis = App.Vector(0, 0, 1)
+        self.axis = WorkingPlane.get_working_plane(update=False).axis
         self.r_distance = 100
         self.tan_distance = 50
         self.number = 3
         self.symmetry = 1
         self.fuse = params.get_param("Draft_array_fuse")
         self.use_link = params.get_param("Draft_array_Link")
+
+        self.locks = InputFieldLockGroup()
+        self.locks.add_field("x", self.form.input_c_x)
+        self.locks.add_field("y", self.form.input_c_y)
+        self.locks.add_field("z", self.form.input_c_z)
 
         self.form.input_c_x.setProperty("rawValue", self.center.x)
         self.form.input_c_y.setProperty("rawValue", self.center.y)
@@ -142,9 +157,9 @@ class TaskPanelCircularArray:
         """Execute when clicking the OK button or Enter key."""
         self.selection = Gui.Selection.getSelection()
 
-        (self.r_distance, self.tan_distance) = self.get_distances()
+        self.r_distance, self.tan_distance = self.get_distances()
 
-        (self.number, self.symmetry) = self.get_number_symmetry()
+        self.number, self.symmetry = self.get_number_symmetry()
 
         self.axis = self.get_axis()
         self.center = self.get_center()
@@ -266,7 +281,7 @@ class TaskPanelCircularArray:
         """Get the distance parameters from the widgets."""
         r_d_str = self.form.spinbox_r_distance.text()
         tan_d_str = self.form.spinbox_tan_distance.text()
-        return (U.Quantity(r_d_str).Value, U.Quantity(tan_d_str).Value)
+        return _quantity(r_d_str), _quantity(tan_d_str)
 
     def get_number_symmetry(self):
         """Get the number and symmetry parameters from the widgets."""
@@ -279,10 +294,20 @@ class TaskPanelCircularArray:
         c_x_str = self.form.input_c_x.text()
         c_y_str = self.form.input_c_y.text()
         c_z_str = self.form.input_c_z.text()
-        center = App.Vector(
-            U.Quantity(c_x_str).Value, U.Quantity(c_y_str).Value, U.Quantity(c_z_str).Value
-        )
+        center = App.Vector(_quantity(c_x_str), _quantity(c_y_str), _quantity(c_z_str))
         return center
+
+    def constrain_point(self, point, last=None):
+        """Apply locked center coordinates to a snapped point."""
+        constrained = App.Vector(point)
+        for key in ("x", "y", "z"):
+            value = self.locks.locked_value(key)
+            if value is not None:
+                setattr(constrained, key, value)
+        return constrained
+
+    def has_point_constraints(self):
+        return self.locks.any_locked()
 
     def get_axis(self):
         """Get the axis that will be used for the array. NOT IMPLEMENTED.
@@ -294,6 +319,7 @@ class TaskPanelCircularArray:
 
     def reset_point(self):
         """Reset the center point to the original distance."""
+        self.locks.unlock_all()
         self.form.input_c_x.setProperty("rawValue", 0)
         self.form.input_c_y.setProperty("rawValue", 0)
         self.form.input_c_z.setProperty("rawValue", 0)
@@ -384,23 +410,11 @@ class TaskPanelCircularArray:
         # sby = self.form.spinbox_c_y
         # sbz = self.form.spinbox_c_z
         if d_p:
-            if self.mask in ("y", "z"):
-                # sbx.setText(displayExternal(d_p.x, None, 'Length'))
+            if not self.locks.is_locked("x"):
                 self.form.input_c_x.setProperty("rawValue", d_p.x)
-            else:
-                # sbx.setText(displayExternal(d_p.x, None, 'Length'))
-                self.form.input_c_x.setProperty("rawValue", d_p.x)
-            if self.mask in ("x", "z"):
-                # sby.setText(displayExternal(d_p.y, None, 'Length'))
+            if not self.locks.is_locked("y"):
                 self.form.input_c_y.setProperty("rawValue", d_p.y)
-            else:
-                # sby.setText(displayExternal(d_p.y, None, 'Length'))
-                self.form.input_c_y.setProperty("rawValue", d_p.y)
-            if self.mask in ("x", "y"):
-                # sbz.setText(displayExternal(d_p.z, None, 'Length'))
-                self.form.input_c_z.setProperty("rawValue", d_p.z)
-            else:
-                # sbz.setText(displayExternal(d_p.z, None, 'Length'))
+            if not self.locks.is_locked("z"):
                 self.form.input_c_z.setProperty("rawValue", d_p.z)
 
         if plane:

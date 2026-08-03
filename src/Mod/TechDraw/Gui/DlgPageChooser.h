@@ -19,8 +19,7 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                 *
  *                                                                          *
  ****************************************************************************/
-#ifndef GUI_DLGPAGECHOOSER_H
-#define GUI_DLGPAGECHOOSER_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -56,7 +55,3 @@ private:
 };
 
 } // namespace Gui
-
-
-#endif // GUI_DLGPAGECHOOSER_H
-

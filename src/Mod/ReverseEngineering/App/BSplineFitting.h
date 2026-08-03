@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef REEN_BSPLINEFITTING_H
-#define REEN_BSPLINEFITTING_H
+#pragma once
 
 #if defined(HAVE_PCL_OPENNURBS)
 # include <vector>
@@ -63,5 +62,3 @@ private:
 }  // namespace Reen
 
 #endif  // HAVE_PCL_OPENNURBS
-
-#endif  // REEN_BSPLINEFITTING_H

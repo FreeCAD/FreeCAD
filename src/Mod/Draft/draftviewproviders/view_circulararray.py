@@ -26,6 +26,7 @@
 
 Currently unused.
 """
+
 ## @package view_circulararray
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the circular Array object.

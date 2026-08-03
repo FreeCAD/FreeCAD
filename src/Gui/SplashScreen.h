@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SPLASHSCREEN_H
-#define GUI_SPLASHSCREEN_H
+#pragma once
 
 #include <QSplashScreen>
 
@@ -42,11 +41,15 @@ public:
     explicit SplashScreen(const QPixmap& pixmap = QPixmap(), Qt::WindowFlags f = Qt::WindowFlags());
     ~SplashScreen() override;
 
+    void finish(QWidget* w);
+
+    void show();
     void setShowMessages(bool on);
 
     static QPixmap splashImage();
 
 protected:
+    bool event(QEvent* e) override;
     void drawContents(QPainter* painter) override;
 
 private:
@@ -54,5 +57,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SPLASHSCREEN_H

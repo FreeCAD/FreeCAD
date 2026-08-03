@@ -58,9 +58,10 @@ class _PropHelper:
     """
 
     def __init__(self, **kwds):
-        self.value = kwds.pop("value")
+        for k, v in kwds.items():
+            setattr(self, k, v)
+        kwds.pop("value")
         self.info = kwds
-        self.name = kwds["name"]
 
     def add_to_object(self, obj):
         obj.addProperty(**self.info)

@@ -20,11 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DOCUMENTOBSERVER_H
-#define GUI_DOCUMENTOBSERVER_H
+#pragma once
 
 #include <Base/BaseClass.h>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 
 namespace App
@@ -370,7 +369,7 @@ private:
     virtual void slotDeleteDocument(const Document& Doc);
 
 private:
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     Connection connectDocumentCreatedObject;
     Connection connectDocumentDeletedObject;
     Connection connectDocumentChangedObject;
@@ -388,5 +387,3 @@ private:
 #endif
 
 }  // namespace Gui
-
-#endif  // GUI_DOCUMENTOBSERVER_H

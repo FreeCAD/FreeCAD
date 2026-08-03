@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -23,6 +25,7 @@
 #include <QMessageBox>
 
 
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -85,26 +88,28 @@ void CmdRobotExportKukaCompact::activated(int)
     }
     // std::string TrakName = pcTrajectoryObject->getNameInDocument();
 
-    QStringList filter;
-    filter << QStringLiteral("%1 (*.src)").arg(QObject::tr("KRL file"));
-    filter << QStringLiteral("%1 (*.*)").arg(QObject::tr("All Files"));
+    const Gui::FileDialog::FilterList filter {
+        {QObject::tr("KRL file"), {"*.src"}},
+        Gui::FileDialog::Filter::AllFiles(),
+    };
     QString fn = Gui::FileDialog::getSaveFileName(
         Gui::getMainWindow(),
         QObject::tr("Export program"),
         QString(),
-        filter.join(QLatin1String(";;"))
+        filter
     );
     if (fn.isEmpty()) {
         return;
     }
 
     doCommand(Doc, "from KukaExporter import ExportCompactSub");
+    const std::string fileName = Base::Tools::escapeEncodeString(fn.toStdString());
     doCommand(
         Doc,
         "ExportCompactSub(App.activeDocument().%s,App.activeDocument().%s,'%s')",
         pcRobotObject->getNameInDocument(),
         pcTrajectoryObject->getNameInDocument(),
-        (const char*)fn.toLatin1()
+        fileName.c_str()
     );
 }
 
@@ -166,26 +171,28 @@ void CmdRobotExportKukaFull::activated(int)
     }
     // std::string TrakName = pcTrajectoryObject->getNameInDocument();
 
-    QStringList filter;
-    filter << QStringLiteral("%1 (*.src)").arg(QObject::tr("KRL file"));
-    filter << QStringLiteral("%1 (*.*)").arg(QObject::tr("All Files"));
+    const Gui::FileDialog::FilterList filter {
+        {QObject::tr("KRL file"), {"*.src"}},
+        Gui::FileDialog::Filter::AllFiles(),
+    };
     QString fn = Gui::FileDialog::getSaveFileName(
         Gui::getMainWindow(),
         QObject::tr("Export program"),
         QString(),
-        filter.join(QLatin1String(";;"))
+        filter
     );
     if (fn.isEmpty()) {
         return;
     }
 
     doCommand(Doc, "from KukaExporter import ExportFullSub");
+    const std::string fileName = Base::Tools::escapeEncodeString(fn.toStdString());
     doCommand(
         Doc,
         "ExportFullSub(App.activeDocument().%s,App.activeDocument().%s,'%s')",
         pcRobotObject->getNameInDocument(),
         pcTrajectoryObject->getNameInDocument(),
-        (const char*)fn.toLatin1()
+        fileName.c_str()
     );
 }
 

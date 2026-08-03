@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *                                                                          *
  *   Copyright (c) 2024 Kacper Donat <kacper@kadet.net>                     *
@@ -21,12 +22,12 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef APP_SERVICES_H
-#define APP_SERVICES_H
+#pragma once
 
 #include "DocumentObject.h"
 
 #include <optional>
+#include <Base/Matrix.h>
 #include <Base/Placement.h>
 
 namespace App
@@ -45,6 +46,19 @@ public:
     * Returns placement of sub object relative to the base placement.
     */
     virtual Base::Placement calculate(SubObjectT object, Base::Placement basePlacement) const = 0;
+
+    /**
+    * Given a hovered sub-object and the world-space cursor position, optionally returns a
+    * world-space snap position (e.g. an edge endpoint).
+    */
+    virtual std::optional<Base::Vector3d> snapPosition(
+        const SubObjectT&,
+        std::optional<Base::Vector3d>,
+        const Base::Matrix4D&
+    ) const
+    {
+        return std::nullopt;
+    }
 };
 
 /**
@@ -55,6 +69,7 @@ class CenterOfMassProvider
 public:
     virtual ~CenterOfMassProvider() = default;
 
+    virtual bool supports(DocumentObject* object) const = 0;
     virtual std::optional<Base::Vector3d> ofDocumentObject(DocumentObject* object) const = 0;
 };
 
@@ -66,9 +81,29 @@ class NullCenterOfMass final : public CenterOfMassProvider
 {
 public:
     std::optional<Base::Vector3d> ofDocumentObject(DocumentObject* object) const override;
+    bool supports(DocumentObject* object) const override;
+};
+
+/**
+* This service should provide custom attribute access of a Python object
+*/
+class CustomAttributeProvider
+{
+public:
+    virtual ~CustomAttributeProvider() = default;
+
+    virtual std::optional<PyObject*> getAttribute(DocumentObject* object, const char* attr) const = 0;
+};
+
+/**
+* This service should provide access to shape elements
+*/
+class PseudoShapeProvider
+{
+public:
+    virtual ~PseudoShapeProvider() = default;
+
+    virtual Py::Object getElement(const Py::Object& module, const Py::Object& object, const std::string& subname) const = 0;
 };
 
 }
-
-
-#endif // APP_SERVICES_H

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_VTK_TOOLS_H
-#define FEM_VTK_TOOLS_H
+#pragma once
 
 #include <vtkDataSet.h>
 #include <vtkSmartPointer.h>
@@ -42,6 +41,12 @@ public:
     // data
     static void importVTKMesh(vtkSmartPointer<vtkDataSet> grid, FemMesh* mesh, float scale = 1.0);
 
+    // uses the content of the cell array and convert it into FemMeshGroup. Ever unique entry in the
+    // cell array becomes a group, and  this group contains all elements with the entry. If the cell
+    // array is a Integer array the value becomes the groupID, if it is a string array the value
+    // becomes the group name. Other cell types are not supported.
+    static void importVTKCellGroup(vtkSmartPointer<vtkDataSet> grid, FemMesh* mesh, std::string arrayname);
+
     // extract data from FreCAD FEM mesh and fill a vtkUnstructuredGrid instance with that data. Set
     // `highest` to false to export all elements levels.
     static void exportVTKMesh(
@@ -60,10 +65,17 @@ public:
     static void exportFreeCADResult(const App::DocumentObject* result, vtkSmartPointer<vtkDataSet> grid);
 
     // FemMesh read from vtkUnstructuredGrid data file
-    static FemMesh* readVTKMesh(const char* filename, FemMesh* mesh);
+    static FemMesh* readVTKMesh(const char* filename, FemMesh* mesh, const char* group_array = nullptr);
 
     // FemMesh write to vtkUnstructuredGrid data file
     static void writeVTKMesh(const char* Filename, const FemMesh* mesh, bool highest = true);
+    static void writeVTKMeshWithGroups(
+        std::string Filename,
+        FemMesh* mesh,
+        std::string group_array,
+        std::map<std::string, int> index_map,
+        bool highest = true
+    );
 
     // FemResult (activeObject or created if res= NULL) read from vtkUnstructuredGrid dataset file
     static App::DocumentObject* readResult(const char* Filename, App::DocumentObject* res = nullptr);
@@ -72,7 +84,10 @@ public:
     static void writeResult(const char* filename, const App::DocumentObject* res = nullptr);
 
     static void frdToVTK(const char* filename, bool binary = true);
+
+    static void addArrayFromFunction(
+        vtkSmartPointer<vtkDataObject>& data,
+        const std::map<std::string, std::string>& functions
+    );
 };
 }  // namespace Fem
-
-#endif  // FEM_VTK_TOOLS_H

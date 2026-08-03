@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 // Copyright  (C)  2007  Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
 
 // Version: 1.0
@@ -19,8 +21,7 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDL_STIFFNESS_H
-#define KDL_STIFFNESS_H
+#pragma once
 #include "frames.hpp"
  
 
@@ -114,7 +115,3 @@ inline void random(Stiffness& F) {
 
 
 } 
-#endif
-
-
-

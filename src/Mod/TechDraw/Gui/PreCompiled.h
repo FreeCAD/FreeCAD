@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_PRECOMPILED_H
-#define DRAWINGGUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -64,5 +63,3 @@
 
 // Open Inventor
 #include <Inventor/SbVec3f.h>
-
-#endif // DRAWINGGUI_PRECOMPILED_H

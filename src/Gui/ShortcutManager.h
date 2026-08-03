@@ -20,8 +20,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_SHORTCUT_MANAGER_H
-#define GUI_SHORTCUT_MANAGER_H
+#pragma once
 
 #include <unordered_map>
 
@@ -172,5 +171,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SHORTCUT_MANAGER_H

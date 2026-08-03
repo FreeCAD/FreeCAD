@@ -1291,9 +1291,10 @@ bool ClipperBase::AddPath(const Path& pg, PolyType PolyTyp, bool Closed)
         if (E->Prev == E->Next) {
             break;  // only two vertices
         }
-        else if (Closed && SlopesEqual(E->Prev->Curr, E->Curr, E->Next->Curr, m_UseFullRange)
-                 && (!m_PreserveCollinear
-                     || !Pt2IsBetweenPt1AndPt3(E->Prev->Curr, E->Curr, E->Next->Curr))) {
+        else if (
+            Closed && SlopesEqual(E->Prev->Curr, E->Curr, E->Next->Curr, m_UseFullRange)
+            && (!m_PreserveCollinear || !Pt2IsBetweenPt1AndPt3(E->Prev->Curr, E->Curr, E->Next->Curr))
+        ) {
             // Collinear edges are allowed for open paths but in closed paths
             // the default is to merge adjacent collinear edges into a single edge.
             // However, if the PreserveCollinear property is enabled, only overlapping
@@ -2168,8 +2169,10 @@ OutPt* Clipper::AddLocalMinPoly(TEdge* e1, TEdge* e2, const IntPoint& Pt)
     if (prevE && prevE->OutIdx >= 0 && prevE->Top.Y < Pt.Y && e->Top.Y < Pt.Y) {
         cInt xPrev = TopX(*prevE, Pt.Y);
         cInt xE = TopX(*e, Pt.Y);
-        if (xPrev == xE && (e->WindDelta != 0) && (prevE->WindDelta != 0)
-            && SlopesEqual(IntPoint(xPrev, Pt.Y), prevE->Top, IntPoint(xE, Pt.Y), e->Top, m_UseFullRange)) {
+        if (
+            xPrev == xE && (e->WindDelta != 0) && (prevE->WindDelta != 0)
+            && SlopesEqual(IntPoint(xPrev, Pt.Y), prevE->Top, IntPoint(xE, Pt.Y), e->Top, m_UseFullRange)
+        ) {
             OutPt* outPt = AddOutPt(prevE, Pt);
             AddJoin(result, outPt, e->Top);
         }
@@ -2436,8 +2439,7 @@ void Clipper::IntersectEdges(TEdge* e1, TEdge* e2, IntPoint& Pt)
         }
 
         // if intersecting a subj line with a subj poly ...
-        else if (e1->PolyTyp == e2->PolyTyp && e1->WindDelta != e2->WindDelta
-                 && m_ClipType == ctUnion) {
+        else if (e1->PolyTyp == e2->PolyTyp && e1->WindDelta != e2->WindDelta && m_ClipType == ctUnion) {
             if (e1->WindDelta == 0) {
                 if (e2Contributing) {
                     AddOutPt(e1, Pt);
@@ -2464,8 +2466,10 @@ void Clipper::IntersectEdges(TEdge* e1, TEdge* e2, IntPoint& Pt)
                     e1->OutIdx = Unassigned;
                 }
             }
-            else if ((e2->WindDelta == 0) && (abs(e1->WindCnt) == 1)
-                     && (m_ClipType != ctUnion || e1->WindCnt2 == 0)) {
+            else if (
+                (e2->WindDelta == 0) && (abs(e1->WindCnt) == 1)
+                && (m_ClipType != ctUnion || e1->WindCnt2 == 0)
+            ) {
                 AddOutPt(e2, Pt);
                 if (e2Contributing) {
                     e2->OutIdx = Unassigned;
@@ -3210,9 +3214,11 @@ void Clipper::ProcessHorizontal(TEdge* horzEdge)
                 OutPt* op2 = AddOutPt(ePrev, horzEdge->Bot);
                 AddJoin(op1, op2, horzEdge->Top);
             }
-            else if (eNext && eNext->Curr.X == horzEdge->Bot.X && eNext->Curr.Y == horzEdge->Bot.Y
-                     && eNext->WindDelta != 0 && eNext->OutIdx >= 0 && eNext->Curr.Y > eNext->Top.Y
-                     && SlopesEqual(*horzEdge, *eNext, m_UseFullRange)) {
+            else if (
+                eNext && eNext->Curr.X == horzEdge->Bot.X && eNext->Curr.Y == horzEdge->Bot.Y
+                && eNext->WindDelta != 0 && eNext->OutIdx >= 0 && eNext->Curr.Y > eNext->Top.Y
+                && SlopesEqual(*horzEdge, *eNext, m_UseFullRange)
+            ) {
                 OutPt* op2 = AddOutPt(eNext, horzEdge->Bot);
                 AddJoin(op1, op2, horzEdge->Top);
             }
@@ -3510,10 +3516,12 @@ void Clipper::ProcessEdgesAtTopOfScanbeam(const cInt topY)
                 OutPt* op2 = AddOutPt(ePrev, e->Bot);
                 AddJoin(op, op2, e->Top);
             }
-            else if (eNext && eNext->Curr.X == e->Bot.X && eNext->Curr.Y == e->Bot.Y && op
-                     && eNext->OutIdx >= 0 && eNext->Curr.Y > eNext->Top.Y
-                     && SlopesEqual(e->Curr, e->Top, eNext->Curr, eNext->Top, m_UseFullRange)
-                     && (e->WindDelta != 0) && (eNext->WindDelta != 0)) {
+            else if (
+                eNext && eNext->Curr.X == e->Bot.X && eNext->Curr.Y == e->Bot.Y && op
+                && eNext->OutIdx >= 0 && eNext->Curr.Y > eNext->Top.Y
+                && SlopesEqual(e->Curr, e->Top, eNext->Curr, eNext->Top, m_UseFullRange)
+                && (e->WindDelta != 0) && (eNext->WindDelta != 0)
+            ) {
                 OutPt* op2 = AddOutPt(eNext, e->Bot);
                 AddJoin(op, op2, e->Top);
             }

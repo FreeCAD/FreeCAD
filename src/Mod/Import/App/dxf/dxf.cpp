@@ -497,7 +497,7 @@ std::string CDxfWrite::getPlateFile(std::string fileSpec)
     }
     else {
         string line;
-        ifstream inFile(fi.filePath());
+        Base::ifstream inFile(fi);
 
         while (!inFile.eof()) {
             getline(inFile, line);
@@ -1880,7 +1880,7 @@ void CDxfWrite::writeObjectsSection()
 const DxfUnits DxfUnits::Instance;
 
 CDxfRead::CDxfRead(const std::string& filepath)
-    : m_ifs(new ifstream(filepath))
+    : m_ifs(new Base::ifstream(Base::FileInfo(filepath)))
 {
     if (!(*m_ifs)) {
         m_fail = true;
@@ -2182,6 +2182,7 @@ bool CDxfRead::ReadText()
     // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
     double height = 0.03082;
     double rotation = 0;
+    // NOLINTEND(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
     std::string textPrefix;
 
     Setup3DVectorAttribute(ePrimaryPoint, insertionPoint);
@@ -2207,14 +2208,32 @@ bool CDxfRead::ReadText()
         }
     }
     ResolveEntityAttributes();
-
+    // repeat_last_record() must be called before the OnRead callback so that exceptions
+    // thrown by the callback don't prevent the stream from being repositioned.
+    repeat_last_record();
     if ((this->*stringToUTF8)(textPrefix)) {
         OnReadText(insertionPoint, height, textPrefix, rotation);
     }
     else {
         ImportError("Unable to process encoding for TEXT/MTEXT '%s'\n", textPrefix);
     }
-    repeat_last_record();
+    return true;
+}
+
+bool CDxfRead::ReadSolid()
+{
+    Base::Vector3d first;
+    Base::Vector3d second;
+    Base::Vector3d third;
+    Base::Vector3d fourth;
+
+    Setup3DVectorAttribute(ePrimaryPoint, first);
+    Setup3DVectorAttribute(ePoint2, second);
+    Setup3DVectorAttribute(ePoint3, third);
+    Setup3DVectorAttribute(ePoint4, fourth);
+    ProcessAllEntityAttributes();
+
+    OnReadSolid(first, second, third, fourth);
     return true;
 }
 
@@ -2283,9 +2302,10 @@ bool CDxfRead::ReadLwPolyLine()
     }
 
     ResolveEntityAttributes();
-
-    OnReadPolyline(vertices, flags);
+    // repeat_last_record() must be called before OnReadPolyline() so that exceptions
+    // thrown by the callback (e.g. OCC) don't prevent the stream from being repositioned.
     repeat_last_record();
+    OnReadPolyline(vertices, flags);
     return true;
 }
 
@@ -2877,6 +2897,9 @@ bool CDxfRead::ReadEntity()
     }
     if (IsObjectName("TEXT")) {
         return ReadText();
+    }
+    if (IsObjectName("SOLID")) {
+        return ReadSolid();
     }
     if (IsObjectName("ELLIPSE")) {
         return ReadEllipse();

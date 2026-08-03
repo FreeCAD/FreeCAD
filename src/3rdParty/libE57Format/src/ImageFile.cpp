@@ -265,19 +265,19 @@ read-only). There is no API support for appending data onto an existing E57 data
 
 @post Resulting ImageFile is in @c open state if constructor succeeds (no exception thrown).
 
-@throw ::ErrorBadAPIArgument
-@throw ::ErrorOpenFailed
-@throw ::ErrorSeekFailed
-@throw ::ErrorReadFailed
-@throw ::ErrorWriteFailed
-@throw ::ErrorBadChecksum
-@throw ::ErrorBadFileSignature
-@throw ::ErrorUnknownFileVersion
-@throw ::ErrorBadFileLength
-@throw ::ErrorXMLParserInit
-@throw ::ErrorXMLParser
-@throw ::ErrorBadXMLFormat
-@throw ::ErrorBadConfiguration
+@throw ::ErrorBadAPIArgument (n/c)
+@throw ::ErrorOpenFailed (n/c)
+@throw ::ErrorSeekFailed (n/c)
+@throw ::ErrorReadFailed (n/c)
+@throw ::ErrorWriteFailed (n/c)
+@throw ::ErrorBadChecksum (n/c)
+@throw ::ErrorBadFileSignature (n/c)
+@throw ::ErrorUnknownFileVersion (n/c)
+@throw ::ErrorBadFileLength (n/c)
+@throw ::ErrorXMLParserInit (n/c)
+@throw ::ErrorXMLParser (n/c)
+@throw ::ErrorBadXMLFormat (n/c)
+@throw ::ErrorBadConfiguration (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see IntegerNode, ScaledIntegerNode, FloatNode, StringNode, BlobNode, StructureNode, VectorNode,
@@ -307,7 +307,7 @@ is empty in a newly created write mode ImageFile.
 
 @return A smart StructureNode handle referencing the underlying object.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see StructureNode.
@@ -339,11 +339,11 @@ It is not an error if ImageFile is already closed.
 
 @post ImageFile is in @c closed state.
 
-@throw ::ErrorSeekFailed
-@throw ::ErrorReadFailed
-@throw ::ErrorWriteFailed
-@throw ::ErrorCloseFailed
-@throw ::ErrorBadChecksum
+@throw ::ErrorSeekFailed (n/c)
+@throw ::ErrorReadFailed (n/c)
+@throw ::ErrorWriteFailed (n/c)
+@throw ::ErrorCloseFailed (n/c)
+@throw ::ErrorBadChecksum (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see ImageFile::cancel, ImageFile::isOpen
@@ -432,7 +432,7 @@ CompressedVectorWriter objects are created by the CompressedVectorNode::writer f
 
 @return The current number of open CompressedVectorWriter objects writing to ImageFile.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see  CompressedVectorNode::writer, CompressedVectorWriter
@@ -454,7 +454,7 @@ CompressedVectorReader objects are created by the CompressedVectorNode::reader f
 
 @return The current number of open CompressedVectorReader objects reading from ImageFile.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see CompressedVectorNode::reader, CompressedVectorReader
@@ -496,11 +496,11 @@ See the class discussion at bottom of ImageFile page for more details about name
 @pre prefix != ""
 @pre uri != ""
 
-@throw ::ErrorBadAPIArgument
-@throw ::ErrorImageFileNotOpen
-@throw ::ErrorFileReadOnly
-@throw ::ErrorDuplicateNamespacePrefix
-@throw ::ErrorDuplicateNamespaceURI
+@throw ::ErrorBadAPIArgument (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
+@throw ::ErrorFileReadOnly (n/c)
+@throw ::ErrorDuplicateNamespacePrefix (n/c)
+@throw ::ErrorDuplicateNamespaceURI (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see ImageFile::extensionsCount, ImageFile::extensionsLookupPrefix, ImageFile::extensionsLookupUri
@@ -524,8 +524,8 @@ an error if @a prefix contains an illegal character combination for E57 namespac
 
 @return true if prefix is declared in the ImageFile.
 
-@throw ::ErrorBadAPIArgument
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorBadAPIArgument (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see ImageFile::extensionsLookupUri
@@ -554,8 +554,8 @@ namespace prefixes. It is not an error if @a prefix is well-formed, but not defi
 
 @return true if prefix is declared in the ImageFile.
 
-@throw ::ErrorBadAPIArgument
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorBadAPIArgument (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
 
 @throw ::ErrorInternal All objects in undocumented state
 
@@ -584,8 +584,8 @@ function just returns false).
 
 @return true if URI is declared in the ImageFile.
 
-@throw ::ErrorBadAPIArgument
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorBadAPIArgument (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see ImageFile::extensionsLookupPrefix
@@ -606,7 +606,7 @@ The default E57 namespace does not count as an extension.
 
 @return The number of E57 extensions defined in the ImageFile.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see ImageFile::extensionsPrefix, ImageFile::extensionsUri
@@ -632,8 +632,8 @@ counted as an extension.
 
 @return The E57 extension prefix at the given index.
 
-@throw ::ErrorBadAPIArgument
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorBadAPIArgument (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see  ImageFile::extensionsCount, ImageFile::extensionsUri
@@ -659,8 +659,8 @@ as an extension.
 
 @return The E57 extension URI at the given index.
 
-@throw ::ErrorBadAPIArgument
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorBadAPIArgument (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see ImageFile::extensionsCount, ImageFile::extensionsPrefix
@@ -704,7 +704,7 @@ prefixed form, the prefix does not have to be declared in the ImageFile.
 
 @post No visible state is modified.
 
-@throw ::ErrorBadPathName
+@throw ::ErrorBadPathName (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see ImageFile::isElementNameExtended

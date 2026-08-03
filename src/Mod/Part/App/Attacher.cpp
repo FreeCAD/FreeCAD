@@ -545,6 +545,11 @@ void AttachEngine::suggestMapModes(SuggestResult& result) const
             }
         }
     }
+
+    // A mode already in allApplicableModes should not also appear in reachableModes
+    for (eMapMode mode : mlist) {
+        mlist_reachable.erase(mode);
+    }
 }
 
 void AttachEngine::EnableAllSupportedModes()
@@ -983,7 +988,8 @@ void AttachEngine::readLinks(
         // considered later, when the need arises.
         types[i] = getShapeType(shapes[i]->getShape());
 
-        if (subs[i].length() == 0) {
+        std::string elementName = Data::findElementName(subs[i].c_str());
+        if (elementName.length() == 0) {
             types[i] = eRefType(types[i] | rtFlagHasPlacement);
         }
     }
@@ -1726,6 +1732,12 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                 Handle(Geom_Curve) hCurve = BRep_Tool::Curve(path, u1, u2);
 
                 GeomAPI_ProjectPointOnCurve projector(p_in, hCurve);
+                if (projector.NbPoints() < 1) {
+                    throw Base::ValueError(
+                        "AttachEngine3D::calculateAttachedPlacement: projecting "
+                        "point onto curve failed."
+                    );
+                }
                 u = projector.LowerDistanceParameter();
             }
             else {

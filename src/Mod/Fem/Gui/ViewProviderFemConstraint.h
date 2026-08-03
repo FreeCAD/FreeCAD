@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDERFEMCONSTRAINT_H
-#define GUI_VIEWPROVIDERFEMCONSTRAINT_H
+#pragma once
 
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewProviderFeaturePython.h>
@@ -140,6 +139,3 @@ using ViewProviderFemConstraintPython = Gui::ViewProviderFeaturePythonT<ViewProv
 
 
 }  // namespace FemGui
-
-
-#endif  // GUI_VIEWPROVIDERFEMCONSTRAINT_H

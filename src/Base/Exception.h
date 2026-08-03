@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_EXCEPTION_H
-#define BASE_EXCEPTION_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -165,6 +164,9 @@ class BaseExport Exception: public BaseClass
 
 public:
     explicit Exception(std::string message = "FreeCAD Exception");
+    Exception(const Exception& inst);
+    Exception(Exception&& inst) noexcept;
+
     ~Exception() noexcept override = default;
 
     Exception& operator=(const Exception& inst);
@@ -197,10 +199,6 @@ public:
 
     virtual PyObject* getPyExceptionType() const;
     virtual void setPyException() const;
-
-protected:
-    Exception(const Exception& inst);
-    Exception(Exception&& inst) noexcept;
 
 private:
     std::string errorMessage;
@@ -567,5 +565,3 @@ private:
 #endif
 
 }  // namespace Base
-
-#endif  // BASE_EXCEPTION_H

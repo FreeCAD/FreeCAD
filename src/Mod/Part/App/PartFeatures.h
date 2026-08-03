@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATURES_H
-#define PART_FEATURES_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
@@ -210,6 +209,3 @@ public:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_FEATURES_H

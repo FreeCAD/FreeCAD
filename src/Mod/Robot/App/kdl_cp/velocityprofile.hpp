@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
   tag: Erwin Aertbelien  Mon Jan 10 16:38:38 CET 2005  velocityprofile.h
 
@@ -42,8 +44,7 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef KDL_VELOCITYPROFILE_H
-#define KDL_VELOCITYPROFILE_H
+#pragma once
 
 #include "utilities/utility.h"
 #include "utilities/utility_io.h"
@@ -102,6 +103,3 @@ class VelocityProfile
 		virtual ~VelocityProfile() {}
 	};
 }
-
-
-#endif

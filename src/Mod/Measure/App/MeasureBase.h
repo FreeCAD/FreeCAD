@@ -22,13 +22,11 @@
  **************************************************************************/
 
 
-#ifndef MEASURE_MEASUREBASE_H
-#define MEASURE_MEASUREBASE_H
+#pragma once
 
 #include <Mod/Measure/MeasureGlobal.h>
 
 #include <memory>
-#include <QString>
 
 #include <App/DocumentObject.h>
 #include <App/MeasureManager.h>
@@ -57,8 +55,11 @@ public:
     ~MeasureBase() override = default;
 
     App::PropertyPlacement Placement;
+    App::PropertyString DisplayUnit;
 
-    // boost::signals2::signal<void (const MeasureBase*)> signalGuiInit;
+    std::string formatQuantity(const Base::Quantity& qty) const;
+
+    // fastsignals::signal<void (const MeasureBase*)> signalGuiInit;
 
     // return PyObject as MeasureBasePy
     PyObject* getPyObject() override;
@@ -67,14 +68,13 @@ public:
     virtual void parseSelection(const App::MeasureSelection& selection);
 
 
-    virtual QString getResultString();
+    virtual std::string getResultString();
 
     virtual std::vector<std::string> getInputProps();
     virtual App::Property* getResultProp()
     {
         return {};
     }
-    virtual Base::Placement getPlacement();
 
     // Return the objects that are measured
     virtual std::vector<App::DocumentObject*> getSubject() const;
@@ -128,7 +128,7 @@ public:
         }
 
         // Get the Geometry handler based on the module
-        const char* className = sub->getTypeId().getName();
+        const auto className = sub->getTypeId().getName();
         std::string mod = Base::Type::getModuleName(className);
 
         auto handler = getGeometryHandler(mod);
@@ -164,6 +164,3 @@ private:
 
 
 }  // namespace Measure
-
-
-#endif  // MEASURE_MEASUREBASE_H

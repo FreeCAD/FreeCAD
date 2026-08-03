@@ -19,7 +19,7 @@
      <item row="3" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>X factor</string>
+        <string>X-factor</string>
        </property>
       </widget>
      </item>
@@ -61,7 +61,7 @@
      <item row="5" column="0">
       <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>Z factor</string>
+        <string>Z-factor</string>
        </property>
       </widget>
      </item>
@@ -71,7 +71,7 @@
         <string>Scale the object by a single factor in all directions.</string>
        </property>
        <property name="text">
-        <string>Uniform Scaling</string>
+        <string>Uniform scaling</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -109,7 +109,7 @@
      <item row="4" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>Y factor</string>
+        <string>Y-factor</string>
        </property>
       </widget>
      </item>

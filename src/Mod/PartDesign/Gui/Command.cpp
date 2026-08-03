@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -54,6 +56,7 @@
 #include <Mod/PartDesign/App/DatumPoint.h>
 #include <Mod/PartDesign/App/FeatureDressUp.h>
 #include <Mod/PartDesign/App/ShapeBinder.h>
+#include <Mod/PartDesign/App/PartDesignParameter.h>
 
 #include "DlgActiveBody.h"
 #include "ReferenceSelection.h"
@@ -103,8 +106,9 @@ void UnifiedDatumCommand(Gui::Command& cmd, Base::Type type, std::string name)
         PartDesign::Body* pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */ true);
 
         if (bEditSelected) {
-            std::string tmp = std::string("Edit ") + name;
-            cmd.openCommand(tmp.c_str());
+            pcActiveBody->getDocument()->openTransaction(
+                std::string(std::string("Edit ") + name).c_str()
+            );  // Will be closed in the edit dialog accept/reject
             PartDesignGui::setEdit(support.getValue(), pcActiveBody);
         }
         else if (pcActiveBody) {
@@ -112,9 +116,9 @@ void UnifiedDatumCommand(Gui::Command& cmd, Base::Type type, std::string name)
             // TODO Check how this will work outside of a body (2015-10-20, Fat-Zer)
             std::string FeatName = cmd.getUniqueObjectName(name.c_str(), pcActiveBody);
 
-            std::string tmp = std::string("Create ") + name;
-
-            cmd.openCommand(tmp.c_str());
+            pcActiveBody->getDocument()->openTransaction(
+                std::string(std::string("Create ") + name).c_str()
+            );  // Will be closed in the edit dialog accept/reject
             FCMD_OBJ_CMD(pcActiveBody, "newObject('" << fullTypeName << "','" << FeatName << "')");
 
             // remove the body from links in case it's selected as
@@ -143,7 +147,7 @@ void UnifiedDatumCommand(Gui::Command& cmd, Base::Type type, std::string name)
                 else {
                     QMessageBox::information(
                         Gui::getMainWindow(),
-                        QObject::tr("Invalid selection"),
+                        QObject::tr("Invalid Selection"),
                         QObject::tr("There are no attachment modes that fit selected objects. Select something else.")
                     );
                 }
@@ -500,6 +504,7 @@ void CmdPartDesignClone::activated(int iMsg)
     std::vector<App::DocumentObject*> objs = getSelection().getObjectsOfType(
         Part::Feature::getClassTypeId()
     );
+
     if (objs.size() == 1) {
         // As suggested in https://forum.freecad.org/viewtopic.php?f=3&t=25265&p=198547#p207336
         // put the clone into its own new body.
@@ -511,6 +516,7 @@ void CmdPartDesignClone::activated(int iMsg)
         auto objCmd = getObjectCmd(obj);
         std::string cloneName = getUniqueObjectName("Clone", obj);
         std::string bodyName = getUniqueObjectName("Body", obj);
+        bool allowCompound = PartDesign::PartDesignParameter::instance()->getAllowCompoundDefault();
 
         // Create body and clone
         Gui::cmdAppDocument(
@@ -525,19 +531,13 @@ void CmdPartDesignClone::activated(int iMsg)
         auto bodyObj = obj->getDocument()->getObject(bodyName.c_str());
         auto cloneObj = obj->getDocument()->getObject(cloneName.c_str());
 
-        Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup(
-            "BaseApp/Preferences/Mod/PartDesign"
-        );
-
-        bool allowCompound = hGrp->GetBool("AllowCompoundDefault", true);
-
         // In the first step set the group link and tip of the body
-        Gui::cmdAppObject(bodyObj, std::stringstream() << "Group = [" << getObjectCmd(cloneObj) << "]");
-        Gui::cmdAppObject(bodyObj, std::stringstream() << "Tip = " << getObjectCmd(cloneObj));
         Gui::cmdAppObject(
             bodyObj,
-            std::stringstream() << "AllowCompound = " << (allowCompound ? "True" : "False")
+            std::stringstream() << "AllowCompound = " << Gui::asString(allowCompound)
         );
+        Gui::cmdAppObject(bodyObj, std::stringstream() << "Group = [" << getObjectCmd(cloneObj) << "]");
+        Gui::cmdAppObject(bodyObj, std::stringstream() << "Tip = " << getObjectCmd(cloneObj));
 
         // In the second step set the link of the base feature
         Gui::cmdAppObject(cloneObj, std::stringstream() << "BaseFeature = " << objCmd);
@@ -624,6 +624,9 @@ static void finishFeature(
 
     if (updateDocument) {
         cmd->updateActive();
+    }
+    else {
+        feature->recomputeFeature();
     }
 
     auto base = dynamic_cast<PartDesign::Feature*>(feature);
@@ -779,6 +782,7 @@ bool importExternalElements(App::PropertyLinkSub& prop, std::vector<App::SubObje
     std::vector<App::SubObjectT> sobjs;
     auto docName = editObj->getDocument()->getName();
     auto inList = editObj->getInListEx(true);
+    auto inListProp = editObj->getInListExProp(true);
     for (auto sobjT : _sobjs) {
         auto sobj = sobjT.getSubObject();
         if (sobj == editObj) {
@@ -787,11 +791,24 @@ bool importExternalElements(App::PropertyLinkSub& prop, std::vector<App::SubObje
         if (!sobj) {
             FC_THROWM(Base::RuntimeError, "Object not found: " << sobjT.getSubObjectFullName(docName));
         }
-        if (inList.count(sobj)) {
-            FC_THROWM(
-                Base::RuntimeError,
-                "Cyclic dependency on object " << sobjT.getSubObjectFullName(docName)
-            );
+        if (App::GetApplication().isFineGrainedRecomputeEnabled()) {
+            // Fully mimics the else block except for taking into account input properties.
+            for (const auto& [fromObj, fromProp, toObj, toProp] : inListProp) {
+                if (fromObj == sobj && !toObj->isInputProperty(toProp)) {
+                    FC_THROWM(
+                        Base::RuntimeError,
+                        "Cyclic dependency on object " << sobjT.getSubObjectFullName(docName)
+                    );
+                }
+            }
+        }
+        else {
+            if (inList.count(sobj)) {
+                FC_THROWM(
+                    Base::RuntimeError,
+                    "Cyclic dependency on object " << sobjT.getSubObjectFullName(docName)
+                );
+            }
         }
         sobjT.normalized();
         // Make sure that if a subelement is chosen for some object,
@@ -870,7 +887,7 @@ void prepareProfileBased(
 
         std::string FeatName = cmd->getUniqueObjectName(which.c_str(), pcActiveBody);
 
-        Gui::Command::openCommand((std::string("Make ") + which).c_str());
+        cmd->openCommand(std::string("Make ") + which);
 
         FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::" << which << "','" << FeatName << "')");
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
@@ -1107,7 +1124,7 @@ void prepareProfileBased(
         }
 
         if (!dlg.radioXRef->isChecked()) {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make Copy"));
+            cmd->openCommand(QT_TRANSLATE_NOOP("Command", "Make Copy"));
             auto copy = PartDesignGui::TaskFeaturePick::makeCopy(
                 sketches[0],
                 "",
@@ -1158,7 +1175,7 @@ void prepareProfileBased(
         // if (!bNoSketchWasSelected && extReference)
         //    pickDlg->showExternal(true);
 
-        Gui::Control().showDialog(pickDlg);
+        Gui::Control().showDialog(pickDlg, cmd->getDocument());
     }
     else {
         std::vector<App::DocumentObject*> theSketch;
@@ -1882,11 +1899,12 @@ bool dressupGetSelected(
 }
 
 void finishDressupFeature(
-    const Gui::Command* cmd,
+    Gui::Command* cmd,
     const std::string& which,
     Part::Feature* base,
     const std::vector<std::string>& SubNames,
-    const bool useAllEdges
+    const bool useAllEdges,
+    const bool updateDocument = true
 )
 {
     std::ostringstream str;
@@ -1902,15 +1920,15 @@ void finishDressupFeature(
     if (!body) {
         return;
     }
-    cmd->openCommand((std::string("Make ") + which).c_str());
+    cmd->openCommand(std::string("Make ") + which);
     FCMD_OBJ_CMD(body, "newObject('PartDesign::" << which << "','" << FeatName << "')");
     auto Feat = body->getDocument()->getObject(FeatName.c_str());
     FCMD_OBJ_CMD(Feat, "Base = " << str.str());
     if (useAllEdges && (which.compare("Fillet") == 0 || which.compare("Chamfer") == 0)) {
         FCMD_OBJ_CMD(Feat, "UseAllEdges = True");
     }
-    cmd->doCommand(cmd->Gui, "Gui.Selection.clearSelection()");
-    finishFeature(cmd, Feat, base);
+    Gui::Command::doCommand(cmd->Gui, "Gui.Selection.clearSelection()");
+    finishFeature(cmd, Feat, base, /* hidePreviousSolid = */ true, updateDocument);
 
     App::DocumentObject* baseFeature = static_cast<PartDesign::DressUp*>(Feat)->Base.getValue();
     if (baseFeature) {
@@ -1944,7 +1962,7 @@ void makeChamferOrFillet(Gui::Command* cmd, const std::string& which)
         SubNames = std::vector<std::string>(selected.getSubNames());
     }
 
-    finishDressupFeature(cmd, which, base, SubNames, useAllEdges);
+    finishDressupFeature(cmd, which, base, SubNames, useAllEdges, !noSelection);
 }
 
 //===========================================================================
@@ -2148,7 +2166,7 @@ void prepareTransformed(
     auto worker = [=](std::vector<App::DocumentObject*> features) {
         std::string msg("Make ");
         msg += which;
-        Gui::Command::openCommand(msg.c_str());
+        cmd->openCommand(msg.c_str());
         FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::" << which << "','" << FeatName << "')");
         // FIXME: There seems to be kind of a race condition here, leading to sporadic errors like
         // Exception (Thu Sep  6 11:52:01 2012): 'App.Document' object has no attribute 'Mirrored'
@@ -2189,7 +2207,7 @@ void prepareTransformed(
             QMessageBox::warning(
                 Gui::getMainWindow(),
                 QObject::tr("Selection is not in the active body"),
-                QObject::tr("Please select only one feature in an active body.")
+                QObject::tr("Select only one feature in an active body.")
             );
             return;
         }
@@ -2312,6 +2330,11 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
                     Feat,
                     "Direction = (" << Gui::Command::getObjectCmd(pcActiveBody->getOrigin()->getX())
                                     << ",[''])"
+                );
+                FCMD_OBJ_CMD(
+                    Feat,
+                    "Direction2 = ("
+                        << Gui::Command::getObjectCmd(pcActiveBody->getOrigin()->getY()) << ",[''])"
                 );
             }
             FCMD_OBJ_CMD(Feat, "Length = 100");

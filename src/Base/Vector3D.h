@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_VECTOR3D_H
-#define BASE_VECTOR3D_H
+#pragma once
 
 #include <limits>
 #include <cmath>
@@ -287,5 +286,3 @@ using Vector3f = Vector3<float>;
 using Vector3d = Vector3<double>;
 
 }  // namespace Base
-
-#endif  // BASE_VECTOR3D_H

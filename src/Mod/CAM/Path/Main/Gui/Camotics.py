@@ -134,6 +134,7 @@ class CamoticsSimulation(QtCore.QObject):
     SHAPEMAP = {
         "ballend": "Ballnose",
         "endmill": "Cylindrical",
+        "taperedballnose": "Ballnose",
         "v-bit": "Conical",
         "chamfer": "Snubnose",
     }

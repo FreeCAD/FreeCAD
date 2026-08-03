@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDER_H
-#define GUI_VIEWPROVIDER_H
+#pragma once
 
 #include <bitset>
 #include <map>
 #include <string>
 #include <vector>
+#include <memory>
 #include <QIcon>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <boost/intrusive_ptr.hpp>
 
 #include <App/Material.h>
@@ -87,26 +87,102 @@ enum ViewStatus
 };
 
 
-/** Convenience smart pointer to wrap coin node.
+/** Convenience smart pointer to manage the lifetime of coin nodes.
  *
- * It is basically boost::intrusive plus implicit pointer conversion to save the
- * trouble of typing get() all the time.
+ * This class is copied from Inventor/misc/SoRefPtr.h and can be removed when the
+ * minimum supported coin version provides this header.
  */
-template<class T>
-class CoinPtr: public boost::intrusive_ptr<T>
+template<typename T>
+class SoRefPtr
 {
 public:
-    // Too bad, VC2013 does not support constructor inheritance
-    // using boost::intrusive_ptr<T>::intrusive_ptr;
-    using inherited = boost::intrusive_ptr<T>;
-    CoinPtr() = default;
-    CoinPtr(T* p, bool add_ref = true)
-        : inherited(p, add_ref)
+    SoRefPtr(void) noexcept
+        : ptr(NULL)
     {}
-    template<class Y>
-    CoinPtr(CoinPtr<Y> const& r)
-        : inherited(r)
-    {}
+
+    explicit SoRefPtr(T* p)
+        : ptr(p)
+    {
+        if (this->ptr) {
+            this->ptr->ref();
+        }
+    }
+
+    SoRefPtr(const SoRefPtr& other)
+        : ptr(other.ptr)
+    {
+        if (this->ptr) {
+            this->ptr->ref();
+        }
+    }
+
+    SoRefPtr(SoRefPtr&& other) noexcept
+        : ptr(other.ptr)
+    {
+        other.ptr = NULL;
+    }
+
+    ~SoRefPtr(void)
+    {
+        if (this->ptr) {
+            this->ptr->unref();
+        }
+    }
+
+    SoRefPtr& operator=(SoRefPtr other) noexcept
+    {
+        this->swap(other);
+        return *this;
+    }
+
+    void reset(T* p = NULL)
+    {
+        SoRefPtr tmp(p);
+        this->swap(tmp);
+    }
+
+    T* get(void) const noexcept
+    {
+        return this->ptr;
+    }
+    T& operator*(void) const
+    {
+        return *this->ptr;
+    }
+    T* operator->(void) const noexcept
+    {
+        return this->ptr;
+    }
+    explicit operator bool(void) const noexcept
+    {
+        return this->ptr != NULL;
+    }
+
+    void swap(SoRefPtr& other) noexcept
+    {
+        using std::swap;
+        swap(this->ptr, other.ptr);
+    }
+
+private:
+    T* ptr;
+};
+
+/** Convenience smart pointer to wrap coin node.
+ *
+ * This class isn't merged with SoRefPtr because it can be removed in the future
+ */
+template<class T>
+class CoinPtr: public SoRefPtr<T>
+{
+public:
+    using SoRefPtr<T>::SoRefPtr;
+
+    CoinPtr& operator=(T* ptr)
+    {
+        SoRefPtr<T>::reset(ptr);
+        return *this;
+    }
 
     operator T*() const
     {
@@ -158,8 +234,13 @@ public:
     {
         return pcTransform;
     }
-    // returns the root for the Annotations.
-    SoSeparator* getAnnotation();
+    // returns the annotation root, or nullptr if it doesn't exist
+    SoSeparator* getAnnotation() const
+    {
+        return pcAnnotation;
+    }
+    // returns the annotation root, creating it if it doesn't exist
+    SoSeparator* getOrCreateAnnotation();
     // returns the root node of the Provider (3D)
     virtual SoSeparator* getFrontRoot() const;
     // returns the root node where the children gets collected(3D)
@@ -203,6 +284,23 @@ public:
     {}
     /// return a hit element given the picked point which contains the full node path
     virtual bool getElementPicked(const SoPickedPoint*, std::string& subname) const;
+    /** Return additional sub-element names related to a picked element.
+     *
+     * Lets a view provider expand a single pick into a set of logically related
+     * sub-elements (for example, adjacent faces of the same feature). The
+     * default implementation returns an empty vector.
+     *
+     * @param subname    the picked sub-element name (e.g. "Face1")
+     * @param pickPoint  3D pick location, used to filter results by proximity
+     * @return pairs of (element, subName), where @c element is the bare name
+     *         for display/categorization (e.g. "Face1") and @c subName is the
+     *         full sub-element reference used for selection (e.g.
+     *         "InternalFace1").
+     */
+    virtual std::vector<std::pair<std::string, std::string>> getRelatedElements(
+        const std::string& subname,
+        const SbVec3f& pickPoint
+    ) const;
     /// return a hit element to the selection path or 0
     virtual std::string getElement(const SoDetail*) const
     {
@@ -253,14 +351,26 @@ public:
 
     /** Return the bound box of this view object
      *
+     * @param subname: optional subname path to a sub object
+     * @param mat: optional initial transformation
+     * @param transform: whether to transform using current view object placement
+     * @param view: view of this view object, if null, use the current active view
+     * @param depth: current traversal depth, internal use to prevent infinite recursion.
+     *
      * This method shall work regardless whether the current view object is
      * visible or not.
      */
     Base::BoundBox3d getBoundingBox(
         const char* subname = nullptr,
+        const Base::Matrix4D* mat = nullptr,
         bool transform = true,
-        MDIView* view = nullptr
+        const View3DInventorViewer* view = nullptr,
+        int depth = 0
     ) const;
+
+    /** Convenience function to obtain the current active viewer
+     */
+    const View3DInventorViewer* getActiveViewer() const;
 
     /**
      * Get called if the object is about to get deleted.
@@ -401,6 +511,12 @@ public:
         return {};
     }
 
+    /// Override to remap the drop cursor icon shown when dragging over this view provider.
+    virtual Qt::DropAction getDropActionForTarget(Qt::DropAction action) const
+    {
+        return action;
+    }
+
     /** Add an object with full qualified name to the view provider by drag and drop
      *
      * @param obj: the object being dropped
@@ -445,17 +561,22 @@ public:
     {
         return true;
     }
+    /** Tell if the tree item should be auto collapsed*/
+    bool isAutoCollapseOnDeactivation() const
+    {
+        return autoCollapseOnDeactivation;
+    }
 
     /** @name Signals of the view provider */
     //@{
     /// signal on icon change
-    boost::signals2::signal<void()> signalChangeIcon;
+    fastsignals::signal<void()> signalChangeIcon;
     /// signal on tooltip change
-    boost::signals2::signal<void(const QString&)> signalChangeToolTip;
+    fastsignals::signal<void(const QString&)> signalChangeToolTip;
     /// signal on status tip change
-    boost::signals2::signal<void(const QString&)> signalChangeStatusTip;
+    fastsignals::signal<void(const QString&)> signalChangeStatusTip;
     /// signal on highlight change
-    boost::signals2::signal<void(bool, Gui::HighlightMode)> signalChangeHighlight;
+    fastsignals::signal<void(bool, Gui::HighlightMode)> signalChangeHighlight;
     //@}
 
     /** update the content of the ViewProvider
@@ -555,6 +676,8 @@ public:
     virtual ViewProvider* startEditing(int ModNum = 0);
     bool isEditing() const;
     void finishEditing();
+    virtual void setActive(bool active);
+
     /// adjust viewer settings when editing a view provider
     virtual void setEditViewer(View3DInventorViewer*, int ModNum);
     /// restores viewer settings when leaving editing mode
@@ -655,9 +778,15 @@ public:
     std::vector<std::string> getDisplayMaskModes() const;
     void setDefaultMode(int);
     int getDefaultMode() const;
+    /// Returns the underlying display mask mode, ignoring any active override mode.
+    int getActualMode() const;
     //@}
 
     virtual void setRenderCacheMode(int);
+    /** Called by Std_ToggleVisibility. Override to redirect the toggle to a different target
+     *  (e.g. a container that owns this feature). The default implementation toggles self.
+     */
+    virtual void toggleVisibility();
 
 protected:
     /** Helper method to check that the node is valid, i.e. it must not cause
@@ -696,6 +825,15 @@ protected:
         toggleVisibilityMode = mode;
     }
 
+    /// Internal use to customize bounding box retrieval
+    virtual Base::BoundBox3d _getBoundingBox(
+        const char* subname = 0,
+        const Base::Matrix4D* mat = 0,
+        bool transform = true,
+        const View3DInventorViewer* view = 0,
+        int depth = 0
+    ) const;
+
 protected:
     /// The root Separator of the ViewProvider
     SoSeparator* pcRoot;
@@ -707,6 +845,7 @@ protected:
     /// The root separator for annotations
     SoSeparator* pcAnnotation {nullptr};
     ViewProviderPy* pyViewObject {nullptr};
+    bool autoCollapseOnDeactivation {true};
     std::string overrideMode;
     std::bitset<32> StatusBits;
     /// whether visibility can toggled
@@ -723,5 +862,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_VIEWPROVIDER_H

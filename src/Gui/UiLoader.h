@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_UILOADER_H
-#define GUI_UILOADER_H
+#pragma once
 
 #if !defined(__MINGW32__)
 # define HAVE_QT_UI_TOOLS
@@ -97,6 +96,7 @@ namespace Gui
 
 class PySideUicModule: public Py::ExtensionModule<PySideUicModule>
 {
+    friend class PySideUicModulePy;
 
 public:
     PySideUicModule();
@@ -187,5 +187,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_UILOADER_H

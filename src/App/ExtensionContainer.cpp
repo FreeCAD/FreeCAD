@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -457,7 +459,7 @@ void ExtensionContainer::restoreExtensions(Base::XMLReader& reader)
 
                 ext->initExtension(this);
             }
-            if (ext && strcmp(ext->getExtensionTypeId().getName(), Type) == 0) {
+            if (ext && ext->getExtensionTypeId().getName() == Type) {
                 ext->extensionRestore(reader);
             }
         }

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /*
  * treeiksolver.hpp
  *
@@ -5,8 +7,7 @@
  *      Author: rubensmits
  */
 
-#ifndef TREEIKSOLVER_HPP_
-#define TREEIKSOLVER_HPP_
+#pragma once
 
 #include "tree.hpp"
 #include "jntarray.hpp"
@@ -73,5 +74,3 @@ public:
 };
 
 }
-
-#endif /* TREEIKSOLVER_HPP_ */

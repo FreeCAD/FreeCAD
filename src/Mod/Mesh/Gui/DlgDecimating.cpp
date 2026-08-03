@@ -163,7 +163,7 @@ bool TaskDecimating::accept()
     Gui::Selection().clearSelection();
 
     Gui::WaitCursor wc;
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Decimating"));
+
 
     float tolerance = float(widget->tolerance());
     float reduction = float(widget->reduction());
@@ -172,6 +172,13 @@ bool TaskDecimating::accept()
     if (absolute) {
         targetSize = widget->targetNumberOfTriangles();
     }
+
+    // Here we assume that all meshes are in the same document
+    // if it turns out to not be the case then the transaction can be
+    // opened in the loop with the tid as an argument - theo-vt
+    int tid = meshes[0]->getDocument()->openTransaction(
+        QT_TRANSLATE_NOOP("Command", "Mesh Decimating")
+    );
     for (auto mesh : meshes) {
         if (absolute) {
             Gui::cmdAppObjectArgs(mesh, "decimate(%i)", targetSize);
@@ -180,8 +187,7 @@ bool TaskDecimating::accept()
             Gui::cmdAppObjectArgs(mesh, "decimate(%f, %f)", tolerance, reduction);
         }
     }
-
-    Gui::Command::commitCommand();
+    App::GetApplication().commitTransaction(tid);
     return true;
 }
 

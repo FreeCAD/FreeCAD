@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_COMMAND_T_H
-#define GUI_COMMAND_T_H
+#pragma once
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -80,6 +79,11 @@ public:
         return toStr(f % std::forward<T>(t), std::forward<Args>(args)...);
     }
 };
+
+inline const char* asString(bool value)
+{
+    return value ? "True" : "False";
+}
 
 /** @defgroup CommandFuncs Helper functions for running commands through Python interpreter */
 //@{
@@ -544,5 +548,3 @@ void copyVisualT(Args&&... args)
 //@}
 
 };  // namespace Gui
-
-#endif  // GUI_COMMAND_T_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FeatureReference_H
-#define PART_FeatureReference_H
+#pragma once
 
 #include <App/GeoFeature.h>
 
@@ -69,6 +68,3 @@ protected:
 
 
 }  // namespace Part
-
-
-#endif  // PART_FeatureReference_H

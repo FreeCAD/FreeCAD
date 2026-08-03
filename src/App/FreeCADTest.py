@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
 # *   Copyright (c) 2025 Frank Martínez <mnesarco at gmail dot com>         *
@@ -53,9 +55,7 @@ Log("░░░▀▀▀░▀░▀░▀▀▀░░▀░░░░░▀░░
 import sys
 import TestApp
 
-testCase = FreeCAD.ConfigGet("TestCase")
-
-testResult = TestApp.TestText(testCase)
+testResult = TestApp.RunConfiguredTextTest()
 
 Log("FreeCAD test done\n")
 

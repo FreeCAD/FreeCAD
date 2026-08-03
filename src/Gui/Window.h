@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_WINDOW_H
-#define GUI_WINDOW_H
+#pragma once
 
 #include <Base/Parameter.h>
 #include <functional>
@@ -55,7 +54,7 @@ protected:
 
 private:
     ParameterGrp::handle _handle;
-    boost::signals2::connection connParamChanged;
+    fastsignals::connection connParamChanged;
 };
 
 
@@ -71,5 +70,3 @@ inline void WindowParameter::setSlotParamChanged(S slot, T* obsPtr)
 }
 
 }  // namespace Gui
-
-#endif  // GUI_WINDOW_H

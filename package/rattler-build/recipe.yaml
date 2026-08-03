@@ -1,5 +1,5 @@
 context:
-  version: "1.1.0dev"
+  version: "26.3.0dev"
 
 package:
   name: freecad
@@ -11,6 +11,13 @@ source:
 
 build:
   number: 0
+  script:
+    # The build runs inside a pixi/rattler-build sandbox that does not inherit the
+    # host environment, so forward the deployment target through explicitly.
+    # Without this, build.sh falls back to its default and the macOS 15 package
+    # builds the legacy QuickLook generator instead of the modern .appex.
+    env:
+      MACOS_DEPLOYMENT_TARGET: ${{ env.get("MACOS_DEPLOYMENT_TARGET", default="11.0") }}
 
 requirements:
   build:
@@ -18,11 +25,12 @@ requirements:
     - cmake
     - compilers>=1.10,<1.11
     - doxygen
+    - gtest
     - ninja
     - noqt5
     - python>=3.11,<3.12
     - qt6-main>=6.8,<6.9
-    - swig
+    - swig>=4.3,<4.4
 
     - if: linux and x86_64
       then:
@@ -52,6 +60,7 @@ requirements:
         - pixman-cos7-x86_64
         - sed
         - sysroot_linux-64
+        - xcb-util-cursor==0.1.5  ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726
         - xorg-x11-server-common-cos7-x86_64
         - xorg-x11-server-xvfb-cos7-x86_64
         - xorg-xproto
@@ -84,6 +93,7 @@ requirements:
         - pixman-cos7-aarch64
         - sed
         - sysroot_linux-aarch64
+        - xcb-util-cursor==0.1.5  ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726
         - xorg-x11-server-common-cos7-aarch64
         - xorg-x11-server-xvfb-cos7-aarch64
         - xorg-xproto
@@ -97,18 +107,17 @@ requirements:
         - cross-python_${{ target_platform }}
 
   host:
-    - coin3d
-    - eigen
-    - fmt
+    - eigen >=3.3,<5
+    - fmt >=12.1,<12.2
     - freetype
     - hdf5
+    - lark
     - libboost-devel
     - matplotlib-base
     - noqt5
     - numpy>=1.26,<2
     - occt>=7.8,<7.9
     - pcl
-    - pivy
     - ply
     - pybind11
     - pyside6
@@ -136,6 +145,7 @@ requirements:
         - xorg-xproto
 
   run:
+    - av
     - blas * openblas*
     - blinker
     - calculix
@@ -154,10 +164,8 @@ requirements:
     - occt>=7.8,<7.9
     - olefile
     - opencamlib
-    - opencv
     - pandas
     - pip
-    - pivy
     - ply
     - pycollada
     - pyside6
@@ -175,3 +183,5 @@ requirements:
     - if: linux
       then:
         - libspnav
+        - qt6-wayland
+        - xcb-util-cursor==0.1.5  ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726

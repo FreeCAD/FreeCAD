@@ -22,8 +22,7 @@
  **************************************************************************/
 
 
-#ifndef MATGUI_WORKBENCHMANIPULATOR_H
-#define MATGUI_WORKBENCHMANIPULATOR_H
+#pragma once
 
 #include <Gui/WorkbenchManipulator.h>
 
@@ -49,6 +48,3 @@ private:
 };
 
 } // namespace MatGui
-
-
-#endif // MATGUI_WORKBENCHMANIPULATOR_H

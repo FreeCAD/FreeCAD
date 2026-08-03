@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_COSMETIC_H
-#define TECHDRAW_COSMETIC_H
+#pragma once
 
 #include <QColor>
 
@@ -120,5 +119,3 @@ protected:
 };
 
 } //end namespace TechDraw
-
-#endif //TECHDRAW_COSMETIC_H

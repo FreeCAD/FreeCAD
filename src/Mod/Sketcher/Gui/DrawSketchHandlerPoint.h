@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerPoint_H
-#define SKETCHERGUI_DrawSketchHandlerPoint_H
+#pragma once
 
 #include <Gui/BitmapFactory.h>
 #include <Gui/Notifications.h>
@@ -31,7 +32,6 @@
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
-#include "GeometryCreationMode.h"
 
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"
@@ -41,8 +41,6 @@
 
 namespace SketcherGui
 {
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerPoint;
 
@@ -56,6 +54,8 @@ using DrawSketchHandlerPointBase = DrawSketchControllableHandler<DSHPointControl
 
 class DrawSketchHandlerPoint: public DrawSketchHandlerPointBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerPoint)
+
     // Allow specialisations of controllers access to private members
     friend DSHPointController;
 
@@ -76,11 +76,13 @@ private:
     {
         switch (state()) {
             case SelectMode::SeekFirst: {
-                toolWidgetManager.drawPositionAtCursor(onSketchPos);
-
-                editPoint = onSketchPos;
-
                 seekAndRenderAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f));
+
+                Base::Vector2d snapPoint;
+                editPoint = getLineExtensionAutoConstraintSnapPoint(snapPoint) ? snapPoint
+                                                                               : onSketchPos;
+
+                toolWidgetManager.drawPositionAtCursor(editPoint);
             } break;
             default:
                 break;
@@ -90,7 +92,7 @@ private:
     void executeCommands() override
     {
         try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch point"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch point"));
             Gui::cmdAppObjectArgs(
                 sketchgui->getObject(),
                 "addGeometry(Part.Point(App.Vector(%f,%f,0)), %s)",
@@ -99,7 +101,7 @@ private:
                 isConstructionMode() ? "True" : "False"
             );
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception&) {
             Gui::NotifyError(
@@ -108,7 +110,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to add point")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
         }
     }
 
@@ -300,6 +302,3 @@ void DSHPointController::addConstraints()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerPoint_H

@@ -30,8 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef QUARTER_QUARTERP_H
-#define QUARTER_QUARTERP_H
+#pragma once
 #include <Inventor/SbName.h>
 #include <QCursor>
 #ifndef _MSC_VER
@@ -67,5 +66,3 @@ class QuarterP {
 
 #define COMPILE_ONLY_BEFORE(MAJOR,MINOR,MICRO,REASON) \
   COIN_CT_ASSERT( (QUARTER_MAJOR_VERSION < MAJOR) || (QUARTER_MAJOR_VERSION == MAJOR && ((QUARTER_MINOR_VERSION < MINOR) || ( QUARTER_MINOR_VERSION == MINOR && (QUARTER_MICRO_VERSION < MICRO )))))
-
-#endif //QUARTER_QUARTERP_H

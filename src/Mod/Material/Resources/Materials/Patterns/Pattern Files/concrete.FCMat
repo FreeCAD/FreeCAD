@@ -4,7 +4,7 @@ General:
   UUID: "39221178-f9a4-40f5-927f-eed2f17c748d"
   Name: "concrete"
   Author: "David Carter"
-  License: "All rights reserved"
+  License: "CC-BY-4.0"
 AppearanceModels:
   Pattern File:
     UUID: "c6596294-e97d-4812-87db-28e1d66521a3"

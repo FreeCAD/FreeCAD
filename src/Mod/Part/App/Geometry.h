@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_GEOMETRY_H
-#define PART_GEOMETRY_H
+#pragma once
 
 #include <Adaptor3d_Curve.hxx>
 #include <Approx_ParametrizationType.hxx>
@@ -68,6 +67,7 @@
 #include <Base/Placement.h>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
+#include <Base/BoundBox.h>
 #include <Mod/Part/PartGlobal.h>
 #include <BRepAdaptor_Surface.hxx>
 
@@ -93,6 +93,7 @@ public:
     static std::unique_ptr<Geometry> fromShape(const TopoDS_Shape& s, bool silent = false);
     virtual TopoDS_Shape toShape() const = 0;
     virtual const Handle(Geom_Geometry) & handle() const = 0;
+    virtual Base::BoundBox3d getBoundBox() const;
     // Persistence implementer ---------------------
     unsigned int getMemSize() const override;
     void Save(Base::Writer& /*writer*/) const override;
@@ -312,6 +313,7 @@ private:
     Handle(Geom_BezierCurve) myCurve;
 };
 
+using GeomBSplineCurvePtr = std::shared_ptr<GeomBSplineCurve>;
 class PartExport GeomBSplineCurve: public GeomBoundedCurve
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -378,6 +380,7 @@ public:
     void setPeriodic() const;
     bool isRational() const;
     bool join(const Handle(Geom_BoundedCurve) &);
+    std::tuple<GeomBSplineCurvePtr, GeomBSplineCurvePtr> split(double u, double tol) const;
     void makeC1Continuous(double, double);
     std::list<Geometry*> toBiArcs(double tolerance) const;
 
@@ -1418,6 +1421,34 @@ PartExport std::unique_ptr<GeomCurve> makeFromTrimmedCurve(
 );
 
 PartExport std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve&, bool silent = false);
-}  // namespace Part
 
-#endif  // PART_GEOMETRY_H
+/**
+ * @brief Creates a series of edges representing a text string.
+ *
+ * This function generates geometric edges for a given text string using a specified font file.
+ * The text is scaled and positioned within a bounding box defined by two points.
+ *
+ * @param geos Output vector to be populated with geometry (GeomTrimmedCurve). The vector is cleared
+ * first.
+ * @param p1 The origin point for the text's baseline.
+ * @param p2 A point used to define the height and orientation. The text height will be
+ * (p2-p1).Length() and its orientation angle will be the angle of the vector (p2-p1).
+ * @param plainText The string to be rendered.
+ * @param fontFile The absolute path to the TTF, OTF, etc., font file.
+ * @param tracking Additional spacing between characters.
+ */
+PartExport void transformAndConvertToGeometry(
+    std::vector<std::unique_ptr<Part::Geometry>>& geos,
+    const std::vector<TopoDS_Shape>& baseShapes,
+    const Base::Vector3d& p1,
+    const Base::Vector3d& p2,
+    bool height
+);
+
+PartExport std::vector<TopoDS_Shape> makeTextWires(
+    std::string& text,
+    std::string& fontFile,
+    double height = 1.0,
+    double tracking = 0.0
+);
+}  // namespace Part

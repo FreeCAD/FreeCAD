@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
   tag: Erwin Aertbelien  Mon Jan 10 16:38:38 CET 2005  velocityprofile_traphalf.h
 
@@ -43,8 +45,7 @@
  *      Experimental
  ****************************************************************************/
 
-#ifndef KDL_MOTION_VELOCITYPROFILE_TRAPHALF_H
-#define KDL_MOTION_VELOCITYPROFILE_TRAPHALF_H
+#pragma once
 
 #include "velocityprofile.hpp"
 
@@ -131,6 +132,3 @@ class VelocityProfile_TrapHalf : public VelocityProfile
 
 
 }
-
-
-#endif

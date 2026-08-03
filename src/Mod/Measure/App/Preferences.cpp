@@ -77,3 +77,13 @@ int Preferences::defaultFontSize()
 {
     return getPreferenceGroup("Appearance")->GetInt("DefaultFontSize", 18);
 }
+
+int Preferences::defaultArrowRadius()
+{
+    return getPreferenceGroup("Appearance")->GetInt("DefaultArrowRadius", 6);
+}
+
+int Preferences::defaultArrowHeight()
+{
+    return getPreferenceGroup("Appearance")->GetInt("DefaultArrowHeight", 18);
+}

@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *                                                                          *
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>               *
@@ -40,6 +41,7 @@
 
 #include <boost/iostreams/device/array.hpp>
 #include <boost/iostreams/stream.hpp>
+#include <boost/algorithm/string/predicate.hpp>
 
 
 using namespace Data;
@@ -122,6 +124,16 @@ void ComplexGeoData::getLinesFromSubElement(const Segment* segment,
     (void)lines;
 }
 
+bool ComplexGeoData::getFirstVertexFromSubElement(
+    const Data::Segment* segment,
+    Base::Vector3d& Point
+) const
+{
+    (void)segment;
+    (void)Point;
+    return false;
+}
+
 void ComplexGeoData::getFacesFromSubElement(const Segment* segment,
                                             std::vector<Base::Vector3d>& Points,
                                             std::vector<Base::Vector3d>& PointNormals,
@@ -199,12 +211,12 @@ const std::string& ComplexGeoData::elementMapPrefix()
 
 std::string ComplexGeoData::getElementMapVersion() const
 {
-    return "4";
+    return "5";
 }
 
 bool ComplexGeoData::checkElementMapVersion(const char* ver) const
 {
-    return !boost::equals(ver, "3") && !boost::equals(ver, "4") && !boost::starts_with(ver, "3.");
+    return !boost::ends_with(ver, "5");
 }
 
 size_t ComplexGeoData::getElementMapSize(bool flush) const

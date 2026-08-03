@@ -109,7 +109,7 @@ PyObject* DrawSVGTemplatePy::getEditFieldContent(PyObject* args)
     if (!PyArg_ParseTuple(args, "s", &fieldName)) {
         return nullptr;
     }
-    std::string content = getDrawSVGTemplatePtr()->EditableTexts[fieldName];
+    std::string content = getDrawSVGTemplatePtr()->EditableTexts.getValue(fieldName);
     if (!content.empty()) {
         return PyUnicode_FromString(content.c_str());
     }

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PROGRAMOPTIONSUTILITIES_H
-#define PROGRAMOPTIONSUTILITIES_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -89,4 +90,3 @@ std::pair<std::string, std::string> customSyntax(std::string_view strIn)
 }
 
 }  // namespace App::Util
-#endif  // PROGRAMOPTIONSUTILITIES_H

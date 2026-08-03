@@ -22,17 +22,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_SOFCINDEXEDFACESET_H
-#define MESHGUI_SOFCINDEXEDFACESET_H
+#pragma once
 
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/fields/SoMFColor.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <vector>
-#ifndef MESH_GLOBAL_H
-# include <Mod/Mesh/MeshGlobal.h>
-#endif
+#include <Mod/Mesh/MeshGlobal.h>
 
 
 class SoGLCoordinateElement;
@@ -153,6 +150,3 @@ private:
 // NOLINTEND
 
 }  // namespace MeshGui
-
-
-#endif  // MESHGUI_SOFCINDEXEDFACESET_H

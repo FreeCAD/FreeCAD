@@ -5,8 +5,7 @@
 // This program is released under the BSD license. See the file COPYING for details.
 // modified 2018 wandererfan
 
-#ifndef Included_dxf_h_
-#define Included_dxf_h_
+#pragma once
 
 #ifdef _MSC_VER
 # pragma warning(disable : 4251)
@@ -651,6 +650,7 @@ private:
     // Readers for specific entity types
     bool ReadLine();
     bool ReadText();
+    bool ReadSolid();
     bool ReadArc();
     bool ReadCircle();
     bool ReadEllipse();
@@ -945,6 +945,13 @@ public:
         const double /*rotation*/
     )
     {}
+    virtual void OnReadSolid(
+        const Base::Vector3d& /*first*/,
+        const Base::Vector3d& /*second*/,
+        const Base::Vector3d& /*third*/,
+        const Base::Vector3d& /*fourth*/
+    )
+    {}
     virtual void OnReadArc(
         const Base::Vector3d& /*start*/,
         const Base::Vector3d& /*end*/,
@@ -1012,4 +1019,3 @@ protected:
     }
 #endif
 };
-#endif

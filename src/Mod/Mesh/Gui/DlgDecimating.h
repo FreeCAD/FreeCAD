@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef MESHGUI_DLGDECIMATING_H
-#define MESHGUI_DLGDECIMATING_H
+#pragma once
 
 #include <Mod/Mesh/MeshGlobal.h>
 
@@ -86,5 +85,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-#endif  // MESHGUI_DLGDECIMATING_H

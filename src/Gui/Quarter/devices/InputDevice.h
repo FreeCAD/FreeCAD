@@ -1,5 +1,4 @@
-#ifndef QUARTER_INPUTDEVICE_H
-#define QUARTER_INPUTDEVICE_H
+#pragma once
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -39,6 +38,7 @@
 class QEvent;
 class SoEvent;
 class QInputEvent;
+class QPointF;
 
 namespace SIM { namespace Coin3D { namespace Quarter {
 
@@ -55,6 +55,12 @@ public:
   */
   virtual const SoEvent * translateEvent(QEvent * event) = 0;
 
+  static SbVec2s toDevicePixelPosition(
+      const QPointF& logicalPosition,
+      const SbVec2s& logicalWindowSize,
+      qreal devicePixelRatio
+  );
+
   void setMousePosition(const SbVec2s & pos);
   void setWindowSize(const SbVec2s & size);
   void setModifiers(SoEvent * soevent, const QInputEvent * qevent);
@@ -66,5 +72,3 @@ protected:
 };
 
 }}} // namespace
-
-#endif // QUARTER_INPUTDEVICE_H

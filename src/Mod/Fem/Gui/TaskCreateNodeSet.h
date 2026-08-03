@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskCreateNodeSet_H
-#define GUI_TASKVIEW_TaskCreateNodeSet_H
+#pragma once
 
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Fem/App/FemSetNodesObject.h>
@@ -59,6 +58,8 @@ public:
     explicit TaskCreateNodeSet(Fem::FemSetNodesObject* pcObject, QWidget* parent = nullptr);
     ~TaskCreateNodeSet() override;
 
+    void setSelectionGate();
+
     std::set<long> tempSet;
     ViewProviderFemMesh* MeshViewProvider;
 
@@ -86,5 +87,3 @@ private:
 };
 
 }  // namespace FemGui
-
-#endif  // GUI_TASKVIEW_TaskCreateNodeSet_H

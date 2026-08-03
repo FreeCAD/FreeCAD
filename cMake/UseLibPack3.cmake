@@ -1,7 +1,22 @@
 set(ENV{PATH} "${FREECAD_LIBPACK_DIR};$ENV{PATH}")
 list(PREPEND CMAKE_PREFIX_PATH "${FREECAD_LIBPACK_DIR}")
 
-set (Python3_EXECUTABLE ${FREECAD_LIBPACK_DIR}/bin/python.exe)
+# Python console-script entry points (e.g. mypy's stubgen) are installed under bin/Scripts, which is
+# not one of the directories find_program() searches by default. Add it so those tools are found.
+list(APPEND CMAKE_PROGRAM_PATH "${FREECAD_LIBPACK_DIR}/bin/Scripts")
+
+# Make really, really, REALLY sure that CMake doesn't do that thing where it decides that the LibPack's Python isn't
+# good enough, and just finds some other one to use. If there is a problem with the LibPack's Python, that is a fatal
+# error and should stop generation.
+set (Python_FIND_REGISTRY NEVER)
+set (Python3_FIND_REGISTRY NEVER)
+set (Python_FIND_STRATEGY LOCATION)
+set (Python3_FIND_STRATEGY LOCATION)
+set (Python_ROOT_DIR    "${FREECAD_LIBPACK_DIR}/bin")
+set (Python3_ROOT_DIR   "${FREECAD_LIBPACK_DIR}/bin")
+set (Python_EXECUTABLE  "${FREECAD_LIBPACK_DIR}/bin/python.exe")
+set (Python3_EXECUTABLE "${FREECAD_LIBPACK_DIR}/bin/python.exe")
+
 find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 
 # Make sure we are using the shared versions of Boost here: the LibPack includes both
@@ -36,11 +51,22 @@ endif()
 find_package(yaml-cpp REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/lib/cmake NO_DEFAULT_PATH)
 message(STATUS "Found LibPack 3 yaml-cpp ${yaml-cpp_VERSION}")
 
-find_package(Coin REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/lib/cmake NO_DEFAULT_PATH)
+# LibPacks older than 3.5.3 do not ship the build-time dependencies required to
+# compile the bundled Coin and Pivy (notably the Expat CMake config), but they do
+# provide prebuilt Coin and Pivy. Fall back to those automatically on old LibPacks.
+if(NOT FREECAD_USE_EXTERNAL_COIN_PIVY AND FREECAD_LIBPACK_VERSION VERSION_LESS "3.5.3")
+    message(STATUS "LibPack ${FREECAD_LIBPACK_VERSION} predates 3.5.3 which cannot build the "
+                   "bundled Coin and Pivy; using the LibPack's prebuilt Coin and Pivy instead.")
+    set(FREECAD_USE_EXTERNAL_COIN_PIVY ON)
+endif()
 
-message(STATUS "Found LibPack 3 Coin ${Coin_VERSION}")
-# For compatibility with the rest of the cMake scripts:
-set (COIN3D_FOUND TRUE)
+if(FREECAD_USE_EXTERNAL_COIN_PIVY)
+    find_package(Coin REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/lib/cmake NO_DEFAULT_PATH)
+
+    message(STATUS "Found LibPack 3 Coin ${Coin_VERSION}")
+    # For compatibility with the rest of the cMake scripts:
+    set (COIN3D_FOUND TRUE)
+endif()
 
 set (NETGENDATA ${FREECAD_LIBPACK_DIR}/include/netgen)
 

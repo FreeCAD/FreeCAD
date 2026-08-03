@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_CircleEllipseConstructionMethod_H
-#define SKETCHERGUI_CircleEllipseConstructionMethod_H
+#pragma once
 
 namespace SketcherGui::ConstructionMethods
 {
@@ -35,6 +36,3 @@ enum class CircleEllipseConstructionMethod
 };
 
 }  // namespace SketcherGui::ConstructionMethods
-
-
-#endif  // SKETCHERGUI_CircleEllipseConstructionMethod_H

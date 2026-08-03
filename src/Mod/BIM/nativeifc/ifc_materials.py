@@ -72,7 +72,13 @@ def show_material(obj):
     if not material:
         return
     if not hasattr(obj, "Material"):
-        obj.addProperty("App::PropertyLink", "Material", "IFC", locked=True)
+        obj.addProperty("App::PropertyLinkGlobal", "Material", "IFC", locked=True)
+    elif obj.getTypeIdOfProperty("Material") == "App::PropertyLink":
+        mat = obj.Material
+        obj.setPropertyStatus("Material", "-LockDynamic")
+        obj.removeProperty("Material")
+        obj.addProperty("App::PropertyLinkGlobal", "Material", "IFC", locked=True)
+        obj.Material = mat
     project = ifc_tools.get_project(obj)
     matobj = create_material(material, project, recursive=True)
     obj.Material = matobj
@@ -82,12 +88,13 @@ def load_materials(obj):
     """Recursively loads materials of child objects"""
 
     show_material(obj)
-    if isinstance(obj, FreeCAD.DocumentObject):
-        group = obj.Group
-    else:
-        group = obj.Objects
-    for child in group:
-        load_materials(child)
+    if isinstance(obj, FreeCAD.DocumentObject) and hasattr(obj, "Group"):
+        for child in group:
+            load_materials(child)
+    elif isinstance(obj, FreeCAD.Document):
+        for child in obj.Objects:
+            # Recursion not needed here.
+            show_material(child)
 
 
 def get_material(obj):

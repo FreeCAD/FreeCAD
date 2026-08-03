@@ -550,7 +550,7 @@ void TaskComplexSection::applyAligned()
 //pointer to created view is not returned, but stored in m_section
 void TaskComplexSection::createComplexSection()
 {
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Complex Section"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create Complex Section"));
     if (!m_section) {
         const std::string objectName{QT_TR_NOOP("ComplexSection")};
         m_sectionName = m_page->getDocument()->getUniqueObjectName(objectName.c_str());
@@ -561,14 +561,15 @@ void TaskComplexSection::createComplexSection()
         // we pluck the generated suffix from the object name and append it to "Section" to generate
         // unique Labels
         QString qTemp = ui->leSymbol->text();
-        std::string temp = qTemp.toStdString();
+        std::string temp = Base::Tools::escapeEncodeString(qTemp.toStdString());
+        std::string sectionLabel = Base::Tools::escapeEncodeString(makeSectionLabel(qTemp));
         //NOLINTBEGIN
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Label = '%s'",
                            m_sectionName.c_str(),
-                           makeSectionLabel(qTemp).c_str());
+                           sectionLabel.c_str());
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.addView(App.ActiveDocument.%s)",
                            m_page->getNameInDocument(), m_sectionName.c_str());
 
@@ -635,7 +636,7 @@ void TaskComplexSection::createComplexSection()
                            m_sectionName.c_str(), rotation);
 
     }
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
 }
 
 void TaskComplexSection::updateComplexSection()
@@ -645,19 +646,20 @@ void TaskComplexSection::updateComplexSection()
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Section View"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Edit Section View"));
     if (m_section) {
         QString qTemp = ui->leSymbol->text();
-        std::string temp = qTemp.toStdString();
+        std::string temp = Base::Tools::escapeEncodeString(qTemp.toStdString());
+        std::string sectionLabel = Base::Tools::escapeEncodeString(makeSectionLabel(qTemp));
         //NOLINTBEGIN
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Label = '%s'",
                            m_sectionName.c_str(),
-                           makeSectionLabel(qTemp).c_str());
+                           sectionLabel.c_str());
         Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawViewSection', 'Section', '%s')",
-              m_sectionName.c_str(), makeSectionLabel(qTemp).c_str());
+              m_sectionName.c_str(), sectionLabel.c_str());
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.7f",
                            m_sectionName.c_str(), ui->sbScale->value());
@@ -694,7 +696,7 @@ void TaskComplexSection::updateComplexSection()
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Rotation = %.6f",
                            m_sectionName.c_str(), rotation);
     }
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
 }
 
 std::string TaskComplexSection::makeSectionLabel(const QString& symbol)

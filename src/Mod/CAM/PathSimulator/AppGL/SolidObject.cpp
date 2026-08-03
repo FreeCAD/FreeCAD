@@ -23,11 +23,13 @@
  ***************************************************************************/
 
 #include "SolidObject.h"
-#include "Shader.h"
+
 #include <algorithm>
 
 #define NUM_PROFILE_POINTS 4
-using namespace MillSim;
+
+namespace CAMSimulator
+{
 
 SolidObject::SolidObject()
 {
@@ -37,11 +39,16 @@ SolidObject::SolidObject()
 
 SolidObject::~SolidObject()
 {
+    Clear();
+}
+
+void SolidObject::Clear()
+{
     isValid = false;
     shape.FreeResources();
 }
 
-void MillSim::SolidObject::SetPosition(vec3 position)
+void SolidObject::SetPosition(vec3 position)
 {
     mat4x4_translate(mModelMat, position[0], position[1], position[2]);
 }
@@ -55,14 +62,14 @@ void SolidObject::render()
     shape.Render(mModelMat, mModelMat);  // model is not rotated hence both are identity matrix
 }
 
-void SolidObject::GenerateSolid(std::vector<Vertex>& verts, std::vector<GLushort>& indices)
+void SolidObject::GenerateSolid(const std::vector<Vertex>& verts, const std::vector<GLushort>& indices)
 {
     shape.SetModelData(verts, indices);
 
     // calculate object's bounding box:
     float x = 999999.0f, y = 999999.0f, z = 999999.0f;
     float l = -999999.0f, w = -999999.0f, h = -999999.0f;
-    for (auto& vert : verts) {
+    for (const auto& vert : verts) {
         x = std::fminf(x, vert.x);
         y = std::fminf(y, vert.y);
         z = std::fminf(z, vert.z);
@@ -78,3 +85,5 @@ void SolidObject::GenerateSolid(std::vector<Vertex>& verts, std::vector<GLushort
     vec3_set(size, l, w, h);
     isValid = true;
 }
+
+}  // namespace CAMSimulator

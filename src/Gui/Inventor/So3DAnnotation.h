@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Kacper Donat <kacper@kadet.net>                    *
  *                                                                         *
@@ -19,8 +21,7 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-#ifndef GUI_SO3DANNOTATION_H
-#define GUI_SO3DANNOTATION_H
+#pragma once
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/nodes/SoSeparator.h>
@@ -67,6 +68,8 @@ public:
 
     static void addDelayedPath(SoState* state, SoPath* path, int priority = 0);
 
+    static bool hasDelayedPaths(SoState* state);
+
     static SoPathList getDelayedPaths(SoState* state);
 
     static void processDelayedPathsWithPriority(SoState* state, SoGLRenderAction* action);
@@ -84,6 +87,8 @@ public:
     }
 
 private:
+    static SoDelayedAnnotationsElement* getElement(SoState* state);
+
     std::vector<PriorityPath> paths;
 };
 
@@ -123,5 +128,3 @@ protected:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SO3DANNOTATION_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef EXPRESSIONTOKENIZER_H
-#define EXPRESSIONTOKENIZER_H
+#pragma once
 
 #include <QString>
 #include <FCGlobal.h>
@@ -51,5 +52,3 @@ private:
 };
 
 }  // namespace App
-
-#endif  // EXPRESSIONTOKENIZER_H

@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="246"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="247"/>
@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="248"/>
       <source>Approximates a cylinder</source>
-      <translation type="unfinished">Approximates a cylinder</translation>
+      <translation>Henger megbecsülése</translation>
     </message>
   </context>
   <context>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="141"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="142"/>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="143"/>
       <source>Approximates a plane</source>
-      <translation type="unfinished">Approximates a plane</translation>
+      <translation>Sík megbecsülése</translation>
     </message>
   </context>
   <context>
@@ -42,17 +42,17 @@
     <message>
       <location filename="../../Command.cpp" line="362"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="363"/>
       <source>Polynomial Surface</source>
-      <translation type="unfinished">Polynomial Surface</translation>
+      <translation>Polinomfelület</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="364"/>
       <source>Approximates a polynomial surface</source>
-      <translation type="unfinished">Approximates a polynomial surface</translation>
+      <translation>Polinomfelületet megbecsülése</translation>
     </message>
   </context>
   <context>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="314"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="315"/>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Approximates a sphere</source>
-      <translation type="unfinished">Approximates a sphere</translation>
+      <translation>Gömb megbecsülése</translation>
     </message>
   </context>
   <context>
@@ -78,17 +78,17 @@
     <message>
       <location filename="../../Command.cpp" line="102"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Approximate B-Spline Surface…</source>
-      <translation type="unfinished">Approximate B-Spline Surface…</translation>
+      <translation>B-görbe felület megbecsülése…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Approximates a B-spline surface</source>
-      <translation type="unfinished">Approximates a B-spline surface</translation>
+      <translation>B-görbék felületének megbecsülése</translation>
     </message>
   </context>
   <context>
@@ -96,17 +96,17 @@
     <message>
       <location filename="../../Command.cpp" line="531"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="532"/>
       <source>Wire From Mesh Boundary…</source>
-      <translation type="unfinished">Wire From Mesh Boundary…</translation>
+      <translation>Drótháló a háló szegélyből…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="533"/>
       <source>Creates a wire from mesh boundaries</source>
-      <translation type="unfinished">Creates a wire from mesh boundaries</translation>
+      <translation>Drótháló létrehozása a háló szegélyeiből</translation>
     </message>
   </context>
   <context>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="596"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="597"/>
@@ -132,17 +132,17 @@
     <message>
       <location filename="../../Command.cpp" line="419"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="420"/>
       <source>Mesh Segmentation…</source>
-      <translation type="unfinished">Mesh Segmentation…</translation>
+      <translation>Háló szakaszolás…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="421"/>
       <source>Creates separate mesh segments based on surface types</source>
-      <translation type="unfinished">Creates separate mesh segments based on surface types</translation>
+      <translation>Külön hálószakaszokat hoz létre felülettípusok alapján</translation>
     </message>
   </context>
   <context>
@@ -150,17 +150,17 @@
     <message>
       <location filename="../../Command.cpp" line="481"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="482"/>
       <source>From Components</source>
-      <translation type="unfinished">From Components</translation>
+      <translation>Összetevőkből</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="483"/>
       <source>Creates mesh segments from components</source>
-      <translation type="unfinished">Creates mesh segments from components</translation>
+      <translation>Háló szakaszok létrehozása az összetevőkből</translation>
     </message>
   </context>
   <context>
@@ -168,17 +168,17 @@
     <message>
       <location filename="../../Command.cpp" line="451"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="452"/>
       <source>Manual Segmentation…</source>
-      <translation type="unfinished">Manual Segmentation…</translation>
+      <translation>Háló szakaszolás…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="453"/>
       <source>Creates mesh segments manually</source>
-      <translation type="unfinished">Creates mesh segments manually</translation>
+      <translation>Háló szakaszok létrehozása kézzel</translation>
     </message>
   </context>
   <context>
@@ -186,17 +186,17 @@
     <message>
       <location filename="../../Command.cpp" line="633"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="634"/>
       <source>Structured Point Clouds</source>
-      <translation type="unfinished">Structured Point Clouds</translation>
+      <translation>Rendezett pontfelhők</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="635"/>
       <source>Triangulates structured point clouds</source>
-      <translation type="unfinished">Triangulates structured point clouds</translation>
+      <translation>Rendezett pontfelhők háromszögelése</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="636"/>
@@ -238,7 +238,7 @@
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="242"/>
-      <location filename="../../FitBSplineCurve.cpp" line="138"/>
+      <location filename="../../FitBSplineCurve.cpp" line="152"/>
       <source>Fit B-spline</source>
       <translation>B-görbe illesztése</translation>
     </message>
@@ -270,17 +270,17 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="14"/>
       <source>Fit B-Spline Surface</source>
-      <translation type="unfinished">Fit B-Spline Surface</translation>
+      <translation>Illeszti a felületet a B-görbéhez</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="20"/>
       <source>U-Direction</source>
-      <translation type="unfinished">U-Direction</translation>
+      <translation>U-irány</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="87"/>
       <source>V-Direction</source>
-      <translation type="unfinished">V-Direction</translation>
+      <translation>V-irány</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="154"/>
@@ -305,12 +305,12 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="231"/>
       <source>Create Placement</source>
-      <translation type="unfinished">Create Placement</translation>
+      <translation>Elhelyezés létrehozása</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="247"/>
       <source>Total weight</source>
-      <translation type="unfinished">Total weight</translation>
+      <translation>Összsúly</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="238"/>
@@ -338,8 +338,8 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="171"/>
       <location filename="../../FitBSplineSurface.cpp" line="249"/>
-      <source>Input error</source>
-      <translation>Bemeneti hiba</translation>
+      <source>Input Error</source>
+      <translation>Beviteli hiba</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="215"/>
@@ -349,7 +349,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="216"/>
       <source>Select a single placement object to get the local orientation.</source>
-      <translation type="unfinished">Select a single placement object to get the local orientation.</translation>
+      <translation>Kiválaszt egy önállóan elhelyezett objektumot az irány meghatározásához.</translation>
     </message>
   </context>
   <context>
@@ -381,8 +381,8 @@
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="94"/>
-      <source>Input error</source>
-      <translation>Bemeneti hiba</translation>
+      <source>Input Error</source>
+      <translation>Beviteli hiba</translation>
     </message>
   </context>
   <context>
@@ -397,17 +397,17 @@
     <message>
       <location filename="../../Command.cpp" line="82"/>
       <source>Select a point cloud.</source>
-      <translation type="unfinished">Select a point cloud.</translation>
+      <translation>Kiválaszt egy pontfelhőt.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="121"/>
       <source>Select a point cloud or mesh.</source>
-      <translation type="unfinished">Select a point cloud or mesh.</translation>
+      <translation>Kiválaszt egy pontfelhőt vagy hálót.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="613"/>
       <source>Select a single point cloud.</source>
-      <translation type="unfinished">Select a single point cloud.</translation>
+      <translation>Kiválaszt egy egypontú felhőt.</translation>
     </message>
   </context>
   <context>
@@ -423,7 +423,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>Háló szakaszolás</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
@@ -491,12 +491,12 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="14"/>
       <source>Manual Mesh Segmentation</source>
-      <translation type="unfinished">Manual Mesh Segmentation</translation>
+      <translation>Kézi háló szakaszolás</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="98"/>
       <source>Pick Triangle</source>
-      <translation type="unfinished">Pick Triangle</translation>
+      <translation>Háromszög választása</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="105"/>
@@ -547,12 +547,12 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>
       <source>Region Options</source>
-      <translation type="unfinished">Region Options</translation>
+      <translation>Területi beállítások</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="297"/>
       <source>Respect only triangles with screen-facing normals</source>
-      <translation type="unfinished">Respect only triangles with screen-facing normals</translation>
+      <translation>Csak azokat a háromszögeket vegyük figyelembe, amelyek aktuális vektora a képernyő felé néz</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="287"/>
@@ -588,7 +588,27 @@
     <message>
       <location filename="../../Workbench.cpp" line="35"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="36"/>
+      <source>&amp;Reverse Engineering</source>
+      <translation>&amp;Visszafejtés</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="37"/>
+      <source>Surface Reconstruction</source>
+      <translation>Felület helyreállítása</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="38"/>
+      <source>Segmentation</source>
+      <translation>Szegmentálás</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="39"/>
+      <source>Approximation</source>
+      <translation>Közelítés</translation>
     </message>
   </context>
   <context>
@@ -596,7 +616,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="14"/>
       <source>Fit B-Spline Curve</source>
-      <translation type="unfinished">Fit B-Spline Curve</translation>
+      <translation>Illessze az összetett B-görbét</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="20"/>
@@ -620,8 +640,8 @@
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>
-      <source>Iso-Parametric</source>
-      <translation>Iso-parametrikus</translation>
+      <source>Equidistant</source>
+      <translation>Egyenlő távolságú</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>
@@ -704,25 +724,25 @@
     <message>
       <location filename="../../Command.cpp" line="67"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="68"/>
       <source>Approximate B-Spline Curve…</source>
-      <translation type="unfinished">Approximate B-Spline Curve…</translation>
+      <translation>B-görbe megbecsülése…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="69"/>
       <source>Approximates a B-spline curve</source>
-      <translation type="unfinished">Approximates a B-spline curve</translation>
+      <translation>Bonyolult B-görbe megbecsülése</translation>
     </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineCurveWidget</name>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="89"/>
-      <source>Input error</source>
-      <translation>Bemeneti hiba</translation>
+      <location filename="../../FitBSplineCurve.cpp" line="103"/>
+      <source>Input Error</source>
+      <translation>Beviteli hiba</translation>
     </message>
   </context>
 </TS>

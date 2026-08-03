@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef ROBOT_ViewProviderTrajectoryCompound_H
-#define ROBOT_ViewProviderTrajectoryCompound_H
+#pragma once
 
 #include <Mod/Robot/RobotGlobal.h>
 
@@ -45,6 +46,3 @@ protected:
 };
 
 }  // namespace RobotGui
-
-
-#endif  // ROBOT_ViewProviderTrajectoryCompound_H

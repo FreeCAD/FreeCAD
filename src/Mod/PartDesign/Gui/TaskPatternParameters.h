@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -20,12 +22,11 @@
  *                                                                            *
  ******************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskPatternParameters_H
-#define GUI_TASKVIEW_TaskPatternParameters_H
+#pragma once
 
 #include "TaskTransformedParameters.h"
 #include "ViewProviderTransformed.h"
-
+#include <Mod/PartDesign/App/FeatureLinearPattern.h>
 
 class QTimer;
 class Ui_TaskPatternParameters;
@@ -73,6 +74,7 @@ private:
 
     void updateUI();
     void kickUpdateViewTimer() const;
+    void updateSpacingLabels();
 
     void bindProperties();
 
@@ -80,6 +82,8 @@ private:
     void showOriginAxes(bool show);
     void enterReferenceSelectionMode();
     void exitReferenceSelectionMode();  // Ensure this clears gates etc.
+
+    Base::Vector3d getStartPoint() const;
 
     PartGui::PatternParametersWidget* parametersWidget = nullptr;
     PartGui::PatternParametersWidget* parametersWidget2 = nullptr;
@@ -101,5 +105,3 @@ public:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TaskPatternParameters_H

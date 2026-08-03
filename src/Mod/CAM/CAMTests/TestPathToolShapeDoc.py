@@ -6,7 +6,6 @@ from unittest.mock import patch, MagicMock, call
 from Path.Tool.shape import doc
 import os
 
-
 mock_freecad = MagicMock(Name="FreeCAD_Mock")
 mock_freecad.Console = MagicMock()
 mock_freecad.Console.PrintWarning = MagicMock()

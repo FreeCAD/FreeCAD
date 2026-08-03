@@ -28,6 +28,7 @@
 This module contains auxiliary functions to translate strings
 using the QtCore module.
 """
+
 ## @package translate
 # \ingroup draftutils
 # \brief Provides utility functions that wrap around the Qt translate function.

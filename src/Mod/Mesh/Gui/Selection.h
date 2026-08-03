@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_SELECTION_H
-#define MESHGUI_SELECTION_H
+#pragma once
 
 #include <Mod/Mesh/MeshGlobal.h>
 
@@ -65,5 +64,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-#endif  // MESHGUI_SELECTION_H

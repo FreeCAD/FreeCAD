@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_START_FILECARDDELEGATE_H
-#define FREECAD_START_FILECARDDELEGATE_H
+#pragma once
 
 #include <Base/Parameter.h>
 #include <QCache>
@@ -61,6 +60,3 @@ private:
     static QCache<QString, QPixmap> _thumbnailCache;  // cache key structure: "path:modtime:size"
     static constexpr const int CACHE_SIZE_MB = 50;    // 50MB cache limit
 };
-
-
-#endif  // FREECAD_START_FILECARDDELEGATE_H

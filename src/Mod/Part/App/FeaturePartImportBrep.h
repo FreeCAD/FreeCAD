@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATUREPARTIMPORTBREP_H
-#define PART_FEATUREPARTIMPORTBREP_H
+#pragma once
 
 #include "PartFeature.h"
 
@@ -54,6 +53,3 @@ public:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_FEATUREPARTIMPORTBREP_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGPROJECTUTILITY_H
-#define GUI_DIALOG_DLGPROJECTUTILITY_H
+#pragma once
 
 #include <QDialog>
 #include <memory>
@@ -54,6 +55,3 @@ protected:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-
-#endif  // GUI_DIALOG_DLGPROJECTUTILITY_H

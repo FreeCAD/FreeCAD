@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef POINTS_PRECOMPILED_H
-#define POINTS_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -47,5 +46,3 @@
 
 // Qt
 #include <QtConcurrentMap>
-
-#endif

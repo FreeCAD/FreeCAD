@@ -20,8 +20,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_AxisOrigin_H
-#define GUI_AxisOrigin_H
+#pragma once
 
 #include "ViewProvider.h"
 
@@ -125,5 +124,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_AxisOrigin_H

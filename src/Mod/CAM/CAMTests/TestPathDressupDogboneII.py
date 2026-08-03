@@ -71,7 +71,12 @@ class MockFeaturePython(object):
     def __setattr__(self, name, val):
         if name == "prop":
             return super().__setattr__(name, val)
-        self.prop[name] = (self.prop[name][0], val)
+        if name in self.prop:
+            self.prop[name] = (self.prop[name][0], val)
+        else:
+            # Handle assignment to properties that don't exist yet
+            # Default to App::PropertyString for unknown properties
+            self.prop[name] = ("App::PropertyString", val)
 
     def __getattr__(self, name):
         if name == "prop":
@@ -80,7 +85,7 @@ class MockFeaturePython(object):
         if typ is None and val is None:
             raise AttributeError
         if typ == "App::PropertyLength":
-            if type(val) == float or type(val) == int:
+            if isinstance(val, (float, int)):
                 return FreeCAD.Units.Quantity(val, FreeCAD.Units.Length)
             return FreeCAD.Units.Quantity(val)
         return val
@@ -129,7 +134,7 @@ class TestDressupDogboneII(PathTestUtils.PathTestBase):
         """Verify adaptive length"""
 
         def adaptive(k, a, n):
-            return Path.Dressup.DogboneII.calc_length_adaptive(k, a, n, n)
+            return Path.Dressup.DogboneII.calc_length_adaptive(k, a, n, 0)
 
         if True:
             # horizontal bones

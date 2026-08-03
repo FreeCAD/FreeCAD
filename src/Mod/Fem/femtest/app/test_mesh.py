@@ -499,36 +499,33 @@ class TestMeshGroups(unittest.TestCase):
 
         # information
         # fcc_print(fm)
-
-        expected_dict = {}
-        expected_dict["ids"] = []
-        expected_dict["names"] = [
+        current_ids = sorted(fm.Groups)
+        current_names = [fm.getGroupName(g) for g in fm.Groups]
+        current_types = [fm.getGroupElementType(g) for g in fm.Groups]
+        new_types = ["Node", "Edge", "Volume", "0DElement", "Ball"]
+        new_names = [
             "MyNodeGroup",
             "MyEdgeGroup",
             "MyVolumeGroup",
             "My0DElementGroup",
             "MyBallGroup",
         ]
-        expected_dict["types"] = ["Node", "Edge", "Volume", "0DElement", "Ball"]
-        expected_dict["count"] = fm.GroupCount + 5
-        result_dict = {}
 
         mygrpids = []
-        for name, typ in zip(expected_dict["names"], expected_dict["types"]):
+        for name, typ in zip(new_names, new_types):
             mygrpids.append(fm.addGroup(name, typ))
 
-        expected_dict["ids"] = sorted(tuple(mygrpids))
+        expected_dict = {}
+        expected_dict["count"] = len(current_ids) + 5
+        expected_dict["ids"] = sorted(current_ids + mygrpids)
+        expected_dict["types"] = current_types + new_types
+        expected_dict["names"] = current_names + new_names
 
-        # fcc_print("expected dict")
-        # fcc_print(expected_dict)
-
+        result_dict = {}
         result_dict["count"] = fm.GroupCount
         result_dict["ids"] = sorted(fm.Groups)
-        result_dict["types"] = list([fm.getGroupElementType(g) for g in fm.Groups])
-        result_dict["names"] = list([fm.getGroupName(g) for g in fm.Groups])
-
-        # fcc_print("result dict")
-        # fcc_print(result_dict)
+        result_dict["types"] = [fm.getGroupElementType(g) for g in fm.Groups]
+        result_dict["names"] = [fm.getGroupName(g) for g in fm.Groups]
 
         self.assertEqual(
             expected_dict,
@@ -606,4 +603,65 @@ class TestMeshGroups(unittest.TestCase):
                     elements_to_be_added, elements_returned
                 )
             ),
+        )
+
+    def test_group_vtk_handling(self):
+        """
+        See if groups can be exported and imported correctly to and from vtk files
+        """
+
+        mesh = Fem.FemMesh()
+        mesh.addNode(0, 0, 0, 1)
+        mesh.addNode(1, 0, 0, 2)
+        mesh.addNode(2, 0, 0, 3)
+        mesh.addNode(3, 0, 0, 4)
+        mesh.addNode(4, 0, 0, 5)
+        mesh.addEdge(1, 2)
+        mesh.addEdge(2, 3)
+        mesh.addEdge(3, 4)
+
+        testfile = join(testtools.get_fem_test_tmp_dir(), "group_mesh.vtu")
+
+        elements_to_be_added = [2, 3]
+        group_id = mesh.addGroup("mynodegroup", "Edge")
+        mesh.addGroupElements(group_id, elements_to_be_added)
+
+        # check workbench export and read with string data
+        mesh.write(testfile, vtk_cell_group_array="groups", highest=False)
+        new_fm = Fem.FemMesh()
+        new_fm.read(testfile, vtk_cell_group_array="groups")
+
+        self.assertEqual(new_fm.GroupCount, 1, msg="Wrong number of groups detected")
+        self.assertEqual(
+            new_fm.getGroupName(new_fm.Groups[0]), "mynodegroup", msg="Group name not retained"
+        )
+        self.assertEqual(
+            new_fm.getGroupElementType(new_fm.Groups[0]), "Edge", msg="Group type not retained"
+        )
+
+        self.assertEqual(
+            mesh.getGroupElements(mesh.Groups[0]),
+            new_fm.getGroupElements(new_fm.Groups[0]),
+            msg="Group elements not retained",
+        )
+
+        # try if this works with integer array data
+        name_id_map = {"mynodegroup": 3}
+        mesh.write(
+            testfile, vtk_cell_group_array="groups", vtk_group_id_map=name_id_map, highest=False
+        )
+        new_fm = Fem.FemMesh()
+        new_fm.read(testfile, vtk_cell_group_array="groups")
+        self.assertEqual(new_fm.GroupCount, 1, msg="Wrong number of groups detected")
+        self.assertEqual(
+            new_fm.getGroupName(new_fm.Groups[0]), "3", msg="Group name not set to group id"
+        )
+        self.assertEqual(
+            new_fm.getGroupElementType(new_fm.Groups[0]), "Edge", msg="Group type not retained"
+        )
+
+        self.assertEqual(
+            mesh.getGroupElements(mesh.Groups[0]),
+            new_fm.getGroupElements(new_fm.Groups[0]),
+            msg="Group elements not retained",
         )

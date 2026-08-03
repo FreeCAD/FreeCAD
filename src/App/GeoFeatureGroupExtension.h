@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
@@ -22,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_GeoFeatureGroup_H
-#define APP_GeoFeatureGroup_H
+#pragma once
 
 #include <unordered_set>
 #include "DocumentObject.h"
@@ -157,6 +158,3 @@ using GeoFeatureGroupExtensionPython =
 
 
 }  // namespace App
-
-
-#endif  // APP_GeoFeatureGroup_H

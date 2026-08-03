@@ -30,6 +30,7 @@ Tests ensure that invalid objects are gracefully skipped without causing
 AttributeError crashes.
 """
 
+from AssemblyTests.TestCore import AssemblyTestBase
 import unittest
 from unittest.mock import patch, MagicMock
 
@@ -46,53 +47,8 @@ def _msg(text, end="\n"):
 
 
 @unittest.skipIf(not App.GuiUp, "GUI tests require FreeCAD GUI mode")
-class TestCommandInsertLink(unittest.TestCase):
+class TestCommandInsertLink(AssemblyTestBase):
     """Unit tests for CommandInsertLink module."""
-
-    @classmethod
-    def setUpClass(cls):
-        """setUpClass()...
-        This method is called upon instantiation of this test class.  Add code and objects here
-        that are needed for the duration of the test() methods in this class.  In other words,
-        set up the 'global' test environment here; use the `setUp()` method to set up a 'local'
-        test environment.
-        This method does not have access to the class `self` reference, but it
-        is able to call static methods within this same class.
-        """
-
-    @classmethod
-    def tearDownClass(cls):
-        """tearDownClass()...
-        This method is called prior to destruction of this test class.  Add code and objects here
-        that cleanup the test environment after the test() methods in this class have been executed.
-        This method does not have access to the class `self` reference.  This method
-        is able to call static methods within this same class.
-        """
-
-    def setUp(self):
-        """setUp()...
-        This method is called prior to each `test()` method.  Add code and objects here
-        that are needed for multiple `test()` methods.
-        """
-        doc_name = self.__class__.__name__
-        if App.ActiveDocument:
-            if App.ActiveDocument.Name != doc_name:
-                App.newDocument(doc_name)
-        else:
-            App.newDocument(doc_name)
-        App.setActiveDocument(doc_name)
-        self.doc = App.ActiveDocument
-
-        self.assembly = App.ActiveDocument.addObject("Assembly::AssemblyObject", "Assembly")
-
-        _msg(f"  Temporary document '{self.doc.Name}'")
-
-    def tearDown(self):
-        """tearDown()...
-        This method is called after each test() method. Add cleanup instructions here.
-        Such cleanup instructions will likely undo those in the setUp() method.
-        """
-        App.closeDocument(self.doc.Name)
 
     @patch("FreeCADGui.PySideUic.loadUi")
     @patch("CommandInsertLink.TaskAssemblyInsertLink.adjustTreeWidgetSize")

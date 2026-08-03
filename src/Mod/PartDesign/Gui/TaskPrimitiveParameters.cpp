@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -27,12 +29,16 @@
 #include <App/Document.h>
 #include <App/Origin.h>
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/InputHint.h>
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
+#include <Gui/Inventor/Draggers/Gizmo.h>
+#include <Gui/Utilities.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeaturePrimitive.h>
 
@@ -42,9 +48,86 @@
 
 using namespace PartDesignGui;
 
+namespace
+{
+bool isSubtractivePrimitive(PartDesign::FeaturePrimitive* primitive)
+{
+    return primitive->getAddSubType() == PartDesign::FeatureAddSub::Subtractive;
+}
+
+const char* primitiveTypeName(PartDesign::FeaturePrimitive::Type type)
+{
+    switch (type) {
+        case PartDesign::FeaturePrimitive::Box:
+            return "Box";
+        case PartDesign::FeaturePrimitive::Cylinder:
+            return "Cylinder";
+        case PartDesign::FeaturePrimitive::Sphere:
+            return "Sphere";
+        case PartDesign::FeaturePrimitive::Cone:
+            return "Cone";
+        case PartDesign::FeaturePrimitive::Ellipsoid:
+            return "Ellipsoid";
+        case PartDesign::FeaturePrimitive::Torus:
+            return "Torus";
+        case PartDesign::FeaturePrimitive::Prism:
+            return "Prism";
+        case PartDesign::FeaturePrimitive::Wedge:
+            return "Wedge";
+    }
+
+    return "Primitive";
+}
+
+std::string primitiveTaskIconName(ViewProviderPrimitive* vp)
+{
+    auto* primitive = vp->getObject<PartDesign::FeaturePrimitive>();
+    std::string iconName = "PartDesign_";
+    iconName += isSubtractivePrimitive(primitive) ? "Subtractive" : "Additive";
+    iconName += primitiveTypeName(primitive->getPrimitiveType());
+    return iconName;
+}
+
+QString primitiveTaskTitle(ViewProviderPrimitive* vp)
+{
+    auto* primitive = vp->getObject<PartDesign::FeaturePrimitive>();
+    const bool subtractive = isSubtractivePrimitive(primitive);
+
+    switch (primitive->getPrimitiveType()) {
+        case PartDesign::FeaturePrimitive::Box:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Box Parameters")
+                               : TaskBoxPrimitives::tr("Additive Box Parameters");
+        case PartDesign::FeaturePrimitive::Cylinder:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Cylinder Parameters")
+                               : TaskBoxPrimitives::tr("Additive Cylinder Parameters");
+        case PartDesign::FeaturePrimitive::Sphere:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Sphere Parameters")
+                               : TaskBoxPrimitives::tr("Additive Sphere Parameters");
+        case PartDesign::FeaturePrimitive::Cone:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Cone Parameters")
+                               : TaskBoxPrimitives::tr("Additive Cone Parameters");
+        case PartDesign::FeaturePrimitive::Ellipsoid:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Ellipsoid Parameters")
+                               : TaskBoxPrimitives::tr("Additive Ellipsoid Parameters");
+        case PartDesign::FeaturePrimitive::Torus:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Torus Parameters")
+                               : TaskBoxPrimitives::tr("Additive Torus Parameters");
+        case PartDesign::FeaturePrimitive::Prism:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Prism Parameters")
+                               : TaskBoxPrimitives::tr("Additive Prism Parameters");
+        case PartDesign::FeaturePrimitive::Wedge:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Wedge Parameters")
+                               : TaskBoxPrimitives::tr("Additive Wedge Parameters");
+    }
+
+    return subtractive ? TaskBoxPrimitives::tr("Subtractive Primitive Parameters")
+                       : TaskBoxPrimitives::tr("Additive Primitive Parameters");
+}
+}  // namespace
+
 // clang-format off
 TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
-  : TaskBox(QPixmap(),tr("Primitive Parameters"), true, parent)
+  : TaskBox(Gui::BitmapFactory().pixmap(primitiveTaskIconName(vp).c_str()), primitiveTaskTitle(vp), true, parent)
   , ui(new Ui_DlgPrimitives)
   , vp(vp)
 {
@@ -367,6 +450,8 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             this, &TaskBoxPrimitives::onWedgeZ2maxChanged);
     connect(ui->wedgeZ2min, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &TaskBoxPrimitives::onWedgeZ2minChanged);
+
+    setupGizmos();
 }
 // clang-format on
 
@@ -375,6 +460,8 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
  */
 TaskBoxPrimitives::~TaskBoxPrimitives()
 {
+    Gui::getMainWindow()->hideHints();
+
     // hide the parts coordinate system axis for selection
     try {
         auto obj = getObject();
@@ -808,6 +895,11 @@ void TaskBoxPrimitives::onWedgeZmaxChanged(double v)
     }
 }
 
+void TaskBoxPrimitives::onPlacementChanged()
+{
+    setGizmoPositions();
+}
+
 
 bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
 {
@@ -996,6 +1088,87 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
     return true;
 }
 
+void TaskBoxPrimitives::setupGizmos()
+{
+    if (!Gui::GizmoContainer::isEnabled()) {
+        return;
+    }
+
+    switch (getObject<PartDesign::FeaturePrimitive>()->getPrimitiveType()) {
+        case PartDesign::FeaturePrimitive::Box:
+            lengthGizmo = new Gui::LinearGizmo(ui->boxLength);
+            widthGizmo = new Gui::LinearGizmo(ui->boxWidth);
+            heightGizmo = new Gui::LinearGizmo(ui->boxHeight);
+
+            gizmoContainer = Gui::GizmoContainer::create({widthGizmo, heightGizmo, lengthGizmo}, vp);
+            break;
+        case PartDesign::FeaturePrimitive::Cylinder:
+            heightGizmo = new Gui::LinearGizmo(ui->cylinderHeight);
+            radiusGizmo = new Gui::LinearGizmo(ui->cylinderRadius);
+
+            gizmoContainer = Gui::GizmoContainer::create({heightGizmo, radiusGizmo}, vp);
+            break;
+        case PartDesign::FeaturePrimitive::Sphere:
+            radiusGizmo = new Gui::LinearGizmo(ui->sphereRadius);
+
+            gizmoContainer = Gui::GizmoContainer::create({radiusGizmo}, vp);
+            break;
+        default:
+            return;
+    }
+
+    setGizmoPositions();
+
+    if (Gui::GizmoContainer::isCoarseSnapEnabled()) {
+        const Gui::InputHint::UserInput key = Gui::GizmoContainer::getFineSnapKey();
+        const bool coarseByDefault = Gui::GizmoContainer::isCoarseByDefault();
+
+        QString message;
+        if (coarseByDefault) {
+            message = tr("%1 fine dragging");
+        }
+        else {
+            message = tr("%1 coarse dragging");
+        }
+
+        Gui::getMainWindow()->showHints({{
+            .message = message,
+            .sequences = {{key}},
+        }});
+    }
+}
+
+void TaskBoxPrimitives::setGizmoPositions()
+{
+    if (!gizmoContainer) {
+        return;
+    }
+
+    SbVec3f pos = Base::convertTo<SbVec3f>(vp->getObjectPlacement().getPosition());
+    SbRotation rot = Base::convertTo<SbRotation>(vp->getObjectPlacement().getRotation());
+    auto getVec = [rot](SbVec3f vec) {
+        rot.multVec(vec, vec);
+
+        return vec;
+    };
+    switch (getObject<PartDesign::FeaturePrimitive>()->getPrimitiveType()) {
+        case PartDesign::FeaturePrimitive::Box:
+            lengthGizmo->setDraggerPlacement(pos, getVec({1, 0, 0}));
+            widthGizmo->setDraggerPlacement(pos, getVec({0, 1, 0}));
+            heightGizmo->setDraggerPlacement(pos, getVec({0, 0, 1}));
+            break;
+        case PartDesign::FeaturePrimitive::Cylinder:
+            heightGizmo->setDraggerPlacement(pos, getVec({0, 0, 1}));
+            radiusGizmo->setDraggerPlacement(pos, getVec({1, 1, 0}));
+            break;
+        case PartDesign::FeaturePrimitive::Sphere:
+            radiusGizmo->setDraggerPlacement(pos, getVec({1, 1, 0}));
+            break;
+        default:
+            return;
+    }
+}
+
 TaskDlgPrimitiveParameters::TaskDlgPrimitiveParameters(ViewProviderPrimitive* PrimitiveView)
     : TaskDlgFeatureParameters(PrimitiveView)
     , vp_prm(PrimitiveView)
@@ -1007,6 +1180,13 @@ TaskDlgPrimitiveParameters::TaskDlgPrimitiveParameters(ViewProviderPrimitive* Pr
     parameter = new PartGui::TaskAttacher(PrimitiveView, nullptr, QString(), tr("Attachment"));
     Content.push_back(parameter);
     Content.push_back(preview);
+
+    connect(
+        parameter,
+        &PartGui::TaskAttacher::placementUpdated,
+        primitive,
+        &TaskBoxPrimitives::onPlacementChanged
+    );
 }
 
 TaskDlgPrimitiveParameters::~TaskDlgPrimitiveParameters() = default;
@@ -1026,7 +1206,8 @@ bool TaskDlgPrimitiveParameters::accept()
 bool TaskDlgPrimitiveParameters::reject()
 {
     // roll back the done things
-    Gui::Command::abortCommand();
+    // Gui::Command::abortCommand();
+    vp_prm->getDocument()->abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
 
     return true;

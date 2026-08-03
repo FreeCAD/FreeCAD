@@ -6,8 +6,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACTIONPANELSCHEME_H
-#define ACTIONPANELSCHEME_H
+#pragma once
 
 #include "qsint_global.h"
 
@@ -137,5 +136,3 @@ private:
 };
 
 } // namespace QSint
-
-#endif // ACTIONPANELSCHEME_H

@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #include <limits>
+#include <functional>
 
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/nodes/SoClipPlane.h>
@@ -28,6 +29,8 @@
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <QDockWidget>
 #include <QPointer>
+
+#include <App/Application.h>
 
 #include "Clipping.h"
 #include "ui_Clipping.h"
@@ -51,6 +54,10 @@ public:
     bool flipY {false};
     bool flipZ {false};
     SoTimerSensor* sensor;
+    App::Document* shownOn {nullptr};
+    QDockWidget* dockWidget {nullptr};
+    fastsignals::scoped_connection activeDocConnection;
+
     Private()
     {
         clipX = new SoClipPlane();
@@ -99,7 +106,7 @@ public:
 
 /* TRANSLATOR Gui::Dialog::Clipping */
 
-Clipping::Clipping(Gui::View3DInventor* view, QWidget* parent)
+Clipping::Clipping(Gui::View3DInventor* view, App::Document* showOn, QWidget* parent)
     : QDialog(parent)
     , d(new Private)
 {
@@ -124,15 +131,20 @@ Clipping::Clipping(Gui::View3DInventor* view, QWidget* parent)
     d->ui.dirZ->setRange(-max, max);
     d->ui.dirZ->setSingleStep(0.1f);
     d->ui.dirZ->setValue(1.0f);
+    d->shownOn = showOn;
 
     d->view = view;
     View3DInventorViewer* viewer = view->getViewer();
     d->node = static_cast<SoGroup*>(viewer->getSceneGraph());
     d->node->ref();
-    d->node->insertChild(d->clipX, 0);
-    d->node->insertChild(d->clipY, 0);
-    d->node->insertChild(d->clipZ, 0);
-    d->node->insertChild(d->clipView, 0);
+    int index = -1;
+    if (auto editingRoot = viewer->getEditingRoot()) {
+        index = d->node->findChild(editingRoot);
+    }
+    d->node->insertChild(d->clipX, index + 1);
+    d->node->insertChild(d->clipY, index + 1);
+    d->node->insertChild(d->clipZ, index + 1);
+    d->node->insertChild(d->clipView, index + 1);
 
     SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
     action.apply(viewer->getSceneGraph());
@@ -186,14 +198,15 @@ Clipping::Clipping(Gui::View3DInventor* view, QWidget* parent)
     }
 }
 
-Clipping* Clipping::makeDockWidget(Gui::View3DInventor* view)
+Clipping* Clipping::makeDockWidget(Gui::View3DInventor* view, App::Document* showOn)
 {
     // embed this dialog into a QDockWidget
-    auto clipping = new Clipping(view);
+    auto clipping = new Clipping(view, showOn);
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
     QDockWidget* dw = pDockMgr->addDockWindow("Clipping", clipping, Qt::LeftDockWidgetArea);
     dw->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     dw->show();
+    clipping->d->dockWidget = dw;
 
     return clipping;
 }
@@ -201,6 +214,7 @@ Clipping* Clipping::makeDockWidget(Gui::View3DInventor* view)
 /** Destroys the object and frees any allocated resources */
 Clipping::~Clipping()
 {
+    d->activeDocConnection.disconnect();
     d->node->removeChild(d->clipX);
     d->node->removeChild(d->clipY);
     d->node->removeChild(d->clipZ);
@@ -212,6 +226,8 @@ Clipping::~Clipping()
 void Clipping::setupConnections()
 {
     // clang-format off
+    d->activeDocConnection = App::GetApplication().signalActiveDocument.connect(
+            std::bind(&Clipping::onActiveDocument, this, std::placeholders::_1));
     connect(d->ui.groupBoxX, &QGroupBox::toggled,
             this, &Clipping::onGroupBoxXToggled);
     connect(d->ui.groupBoxY, &QGroupBox::toggled,
@@ -255,7 +271,18 @@ void Clipping::reject()
         dw->deleteLater();
     }
 }
-
+void Clipping::onActiveDocument(const App::Document& doc)
+{
+    if (!d || !d->dockWidget) {
+        return;
+    }
+    if (&doc == d->shownOn) {
+        d->dockWidget->show();
+    }
+    else {
+        d->dockWidget->hide();
+    }
+}
 void Clipping::onGroupBoxXToggled(bool on)
 {
     if (on) {

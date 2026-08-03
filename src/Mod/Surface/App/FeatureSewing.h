@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACE_FEATURESEWING_H
-#define SURFACE_FEATURESEWING_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 #include <Mod/Part/App/PartFeature.h>
@@ -54,5 +53,3 @@ public:
 };
 
 }  // Namespace Surface
-
-#endif  // SURFACE_FEATURESEWING_H

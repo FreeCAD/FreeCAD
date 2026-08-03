@@ -28,6 +28,7 @@ of the Draft Workbench, both in `Draft.py` and `DraftTools.py`.
 They operate on the internal shapes (`Part::TopoShape`) of different objects
 and on their subelements, that is, vertices, edges, and faces.
 """
+
 ## \defgroup DRAFTGEOMUTILS DraftGeomUtils
 #  \ingroup UTILITIES
 #  \brief Shape manipulation utilities for the Draft workbench

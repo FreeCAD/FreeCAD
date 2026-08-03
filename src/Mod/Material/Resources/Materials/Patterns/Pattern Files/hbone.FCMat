@@ -4,7 +4,7 @@ General:
   UUID: "92232ced-d96b-4cc8-a052-4e13f7d943ab"
   Name: "hbone"
   Author: "David Carter"
-  License: "All rights reserved"
+  License: "CC-BY-4.0"
 AppearanceModels:
   Pattern File:
     UUID: "c6596294-e97d-4812-87db-28e1d66521a3"

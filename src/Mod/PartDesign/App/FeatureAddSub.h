@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,12 +23,11 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureAdditive_H
-#define PARTDESIGN_FeatureAdditive_H
+#pragma once
 
 #include "FeatureRefine.h"
 
-#include <QtCore>
+#include <QCoreApplication>
 
 /// Base class of all additive features in PartDesign
 namespace PartDesign
@@ -83,6 +84,3 @@ public:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_FeatureAdditive_H

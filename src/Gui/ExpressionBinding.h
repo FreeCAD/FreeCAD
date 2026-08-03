@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef EXPRESSIONBINDING_H
-#define EXPRESSIONBINDING_H
+#pragma once
 
 #include <memory>
 #include <string>
 #include <App/ObjectIdentifier.h>
 #include <QPalette>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 
 namespace App
@@ -50,7 +49,7 @@ public:
     virtual void bind(const App::ObjectIdentifier& _path);
     virtual void bind(const App::Property& prop);
     bool isBound() const;
-    void unbind();
+    virtual void unbind();
     virtual bool apply(const std::string& propName);
     virtual bool apply();
     bool hasExpression() const;
@@ -89,9 +88,9 @@ protected:
     void expressionChange(const App::ObjectIdentifier& id);
     void objectDeleted(const App::DocumentObject&);
     void onDocumentDeleted(const App::Document&);
-    boost::signals2::scoped_connection expressionchanged;
-    boost::signals2::scoped_connection objectdeleted;
-    boost::signals2::scoped_connection documentdeleted;
+    fastsignals::scoped_connection expressionchanged;
+    fastsignals::scoped_connection objectdeleted;
+    fastsignals::scoped_connection documentdeleted;
     bool m_autoApply {false};
 };
 
@@ -100,6 +99,7 @@ class GuiExport ExpressionWidget: public ExpressionBinding
 public:
     ExpressionWidget();
     QPixmap getIcon(const char* name, const QSize& size) const;
+    void unbind() override;
 
 protected:
     void makeLabel(QLineEdit* parent);
@@ -111,5 +111,3 @@ protected:
 };
 
 }  // namespace Gui
-
-#endif  // EXPRESSIONBINDING_H

@@ -43,7 +43,6 @@ from FreeCAD import Console
 
 from femmesh import meshtools
 
-
 # ************************************************************************************************
 # ********* generic FreeCAD export methods *******************************************************
 # names are fix given from FreeCAD, these methods are called from FreeCAD

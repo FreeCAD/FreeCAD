@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,10 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_TaskDlgEditSketch_H
-#define SKETCHERGUI_TaskDlgEditSketch_H
+#pragma once
 
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <Gui/TaskView/TaskDialog.h>
 
@@ -35,7 +36,7 @@
 #include "ViewProviderSketch.h"
 
 
-using Connection = boost::signals2::connection;
+using Connection = fastsignals::connection;
 
 namespace SketcherGui
 {
@@ -57,6 +58,8 @@ public:
 public:
     /// is called the TaskView when the dialog is opened
     void open() override;
+    /// is called by the framework when the dialog is closed
+    void closed() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
     void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
@@ -67,13 +70,14 @@ public:
     {
         return false;
     }
+    void autoClosedOnResetEdit() override;
     void autoClosedOnClosedView() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override;
 
     /** @brief Function used to register a slot to be triggered when the tool widget is changed. */
     template<typename F>
-    boost::signals2::connection registerToolWidgetChanged(F&& f)
+    fastsignals::connection registerToolWidgetChanged(F&& f)
     {
         return ToolSettings->registerToolWidgetChanged(std::forward<F>(f));
     }
@@ -84,6 +88,7 @@ protected:
 
 private:
     void slotToolChanged(const std::string& toolname);
+    void saveDialogState() const;
 
 protected:
     ViewProviderSketch* sketchView;
@@ -95,9 +100,8 @@ protected:
 
 private:
     Connection connectionToolSettings;
+    bool isEscapeAction {false};
 };
 
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_TaskDlgEditSketch_H

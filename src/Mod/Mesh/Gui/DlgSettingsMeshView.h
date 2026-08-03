@@ -22,12 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_DLGSETTINGSMESHVIEW_H
-#define MESHGUI_DLGSETTINGSMESHVIEW_H
+#pragma once
 
-#ifndef MESH_GLOBAL_H
-# include <Mod/Mesh/MeshGlobal.h>
-#endif
+#include <Mod/Mesh/MeshGlobal.h>
 #include <memory>
 
 #include <Gui/PropertyPage.h>
@@ -61,5 +58,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-#endif  // MESHGUI_DLGSETTINGSMESHVIEW_H

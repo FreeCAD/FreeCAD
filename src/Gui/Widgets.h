@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_WIDGETS_H
-#define GUI_WIDGETS_H
+#pragma once
 
 #include <memory>
 #include <FCGlobal.h>
@@ -39,6 +38,7 @@
 #include <QPointer>
 #include <QPushButton>
 #include <QToolButton>
+#include <QTreeWidget>
 
 #include <Base/Parameter.h>
 #include "ExpressionBinding.h"
@@ -615,14 +615,21 @@ public:
 
     void keyPressEvent(QKeyEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
+    void mouseDoubleClickEvent(QMouseEvent* event) override;
+    void focusOutEvent(QFocusEvent* event) override;
 
 private Q_SLOTS:
     void finishFormulaDialog();
     void openFormulaDialog();
     void onChange() override;
+    void stashExpression();
 
 private:
+    bool isValueTouched() const;
     bool autoClose;
+    bool m_tentativeDiscard {false};
+    std::shared_ptr<App::Expression> m_savedExpr;
+    QString m_textAtDiscard;
 };
 
 /*!
@@ -644,6 +651,29 @@ private:
     bool _exclusive;
 };
 
+// ----------------------------------------------------------------------
+
+class GuiExport PropertyMapEditor: public QTreeWidget, public ExpressionBinding
+{
+    Q_OBJECT
+
+public:
+    PropertyMapEditor(QWidget* parent);
+    virtual ~PropertyMapEditor() override;
+
+    virtual QVariantMap map() const;
+    virtual void setMap(const QVariantMap& data);
+
+    virtual App::ObjectIdentifier getMapItemPath(const QString& key) const;
+
+protected:
+    class PropertyMapEditorItemDelegate;
+
+    void resizeEvent(QResizeEvent* event) override;
+
+    PropertyMapEditorItemDelegate* delegate;
+};
+
 /**
  * Adjusts the position of the given dialog to ensure it remains within the bounds of the main
  * window. This helps prevent dialogs from appearing partially or fully off-screen relative to the
@@ -656,5 +686,3 @@ private:
 void adjustDialogPosition(QDialog* dialog);
 
 }  // namespace Gui
-
-#endif  // GUI_WIDGETS_H

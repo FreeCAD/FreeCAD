@@ -58,7 +58,9 @@
 #include <GProp_GProps.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
+#if OCC_VERSION_HEX < 0x080000
 #include <TopTools_ListIteratorOfListOfShape.hxx>
+#endif
 #include <TopoDS.hxx>
 
 #include <Standard_Failure.hxx>
@@ -112,7 +114,11 @@ namespace netgen {
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, int, int, char*);
 #endif
   DLL_HEADER extern MeshingParameters mparam;
-  DLL_HEADER extern volatile multithreadt multithread;
+#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,2601)
+    using ngcore::multithread;
+#else
+    DLL_HEADER extern volatile multithreadt multithread;
+#endif
 }
 using namespace nglib;
 using namespace std;
@@ -537,8 +543,12 @@ bool NETGENPlugin_NETGEN_3D::compute(SMESH_Mesh&                     aMesh,
   {
     SMESH_Comment str("Exception in  netgen::OCCGenerateMesh()");
     str << " at " << netgen::multithread.task
-        << ": " << ex.DynamicType()->Name();
-    if ( ex.GetMessageString() && strlen( ex.GetMessageString() ))
+#if OCC_VERSION_HEX < 0x080000
+            << ": " << ex.DynamicType()->Name();
+#else
+      << ": " << ex.ExceptionType();
+#endif
+      if ( ex.GetMessageString() && strlen( ex.GetMessageString() ))
       str << ": " << ex.GetMessageString();
     error(str);
   }

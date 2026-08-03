@@ -38,7 +38,6 @@ import FreeCAD
 from FreeCAD import Console
 from builtins import open as pyopen
 
-
 # ********* generic FreeCAD import and export methods *********
 
 
@@ -383,6 +382,9 @@ def read_frd_result(frd_input):
 
     for line in frd_file:
 
+        # depending on c runtime lib and possibly locale calculix may format NAN differently so we
+        # need to sanitize the file
+        line = line.replace("NAN(IND)", "NAN")
         # Check if we found nodes section
         if line[4:6] == "2C":
             nodes_found = True

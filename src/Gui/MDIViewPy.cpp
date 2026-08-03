@@ -64,6 +64,7 @@ void MDIViewPy::init_type()
         "getActiveObject(name,resolve=True)\nreturns the active object for the given type"
     );
     add_varargs_method("cast_to_base", &MDIViewPy::cast_to_base, "cast_to_base() cast to MDIView class");
+    behaviors().readyType();
 }
 
 PyObject* MDIViewPy::extension_object_new(struct _typeobject* /*type*/, PyObject* /*args*/, PyObject* /*kwds*/)
@@ -101,7 +102,7 @@ Py::Object MDIViewPy::repr()
         throw Py::RuntimeError("Cannot print representation of deleted object");
     }
 
-    return Py::String(_view->getTypeId().getName());
+    return Base::toPyString(_view->getTypeId().getName());
 }
 
 Py::Object MDIViewPy::printView(const Py::Tuple& args)
@@ -179,7 +180,6 @@ Py::Object MDIViewPy::redoActions(const Py::Tuple& args)
 
 Py::Object MDIViewPy::sendMessage(const Py::Tuple& args)
 {
-    const char** ppReturn = nullptr;
     char* psMsgStr;
     if (!PyArg_ParseTuple(args.ptr(), "s;Message string needed (string)", &psMsgStr)) {
         throw Py::Exception();
@@ -188,7 +188,7 @@ Py::Object MDIViewPy::sendMessage(const Py::Tuple& args)
     try {
         bool ok = false;
         if (_view) {
-            ok = _view->onMsg(psMsgStr, ppReturn);
+            ok = _view->onMsg(psMsgStr);
         }
         return Py::Boolean(ok);
     }

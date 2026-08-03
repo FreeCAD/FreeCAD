@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureRefine_H
-#define PARTDESIGN_FeatureRefine_H
+#pragma once
 
 #include "Feature.h"
 
@@ -45,6 +44,7 @@ public:
     FeatureRefine();
 
     App::PropertyBool Refine;
+    App::PropertyFloatConstraint FuzzyTolerance;
 
 protected:
     // store the shape before refinement
@@ -70,6 +70,3 @@ protected:
 using FeatureRefinePython = App::FeaturePythonT<FeatureRefine>;
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_FeatureRefine_H

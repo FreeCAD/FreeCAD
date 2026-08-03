@@ -301,6 +301,18 @@ class SketchObject(Part2DObject):
         """
         ...
 
+    def setAllowUnaligned(self, state: bool, /) -> None:
+        """
+        Set whether unaligned geometry is allowed in the sketch.
+
+        setAllowUnaligned(state:bool)
+
+            Args:
+                state: `True` allows unaligned geometry,
+                    `False` enforces aligned geometry.
+        """
+        ...
+
     def carbonCopy(self, objName: str, asConstruction: bool = True, /) -> None:
         """
         Copy another sketch's geometry and constraints into this sketch.
@@ -338,6 +350,17 @@ class SketchObject(Part2DObject):
 
             Args:
                 extGeoId: The zero-based index of the external geometry to remove.
+        """
+        ...
+
+    def delExternals(self, extGeoIds: List[int], /) -> None:
+        """
+        Delete a list of external geometry links from the sketch.
+
+        delExternals(extGeoIds:List(int))
+
+            Args:
+                extGeoIds: A list of zero-based indices of the external geometry to remove.
         """
         ...
 
@@ -383,6 +406,23 @@ class SketchObject(Part2DObject):
                 value (float or Quantity): The value to set for the constraint. When
                     using floats, values for linear dimensions are interpreted as
                     millimeter, angular ones as radians.
+        """
+        ...
+
+    def setTextAndFont(
+        self, constraint: int, text: str, font: str, isheight: bool, isConstruction: bool
+    ) -> None:
+        """
+        Set the text and font of a Text constraint.
+
+        setTextAndFont(constraint: int, text: str, font: str, isHeight: bool, isConstruction: bool)
+
+            Args:
+                constraint: The index of the Text constraint.
+                text: The text string to display.
+                font: The full path to the font file (.ttf, .otf, etc.).
+                isHeight: Is the line handle of the group the height of the text.
+                isConstruction: Are text geometry construction of not.
         """
         ...
 

@@ -326,7 +326,7 @@ PyObject* AttachEnginePy::getModeInfo(PyObject* args)
             Py::Object submod(module.getAttr("AttachEngineResources"));
             Py::Callable method(submod.getAttr("getModeStrings"));
             Py::Tuple arg(2);
-            arg.setItem(0, Py::String(this->getAttachEnginePtr()->getTypeId().getName()));
+            arg.setItem(0, Base::toPyString(this->getAttachEnginePtr()->getTypeId().getName()));
             arg.setItem(1, Py::Long(mmode));
             Py::List strs = method.apply(arg);
             assert(strs.size() == 2);

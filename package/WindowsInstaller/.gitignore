@@ -1,4 +1,5 @@
 *.exe
+*.pfx
 *-SHA256.txt
 MSVCRedist
 FreeCAD

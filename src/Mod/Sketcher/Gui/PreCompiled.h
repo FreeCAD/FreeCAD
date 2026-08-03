@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_GUI_PRECOMPILED_H
-#define SKETCHER_GUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -36,6 +37,7 @@
 #include <limits>
 #include <map>
 #include <memory>
+#include <string_view>
 #include <vector>
 
 // Boost
@@ -68,5 +70,3 @@
 
 // all of Inventor
 #include <Gui/InventorAll.h>
-
-#endif  // SKETCHER_GUI_PRECOMPILED_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGPARAMETER_H
-#define GUI_DIALOG_DLGPARAMETER_H
+#pragma once
 
 #include <Base/Parameter.h>
 
@@ -382,5 +383,3 @@ protected:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLGPARAMETER_H

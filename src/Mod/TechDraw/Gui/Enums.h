@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_ENUMS_H
-#define TECHDRAW_ENUMS_H
+#pragma once
 
 namespace TechDrawGui {
 
@@ -33,5 +32,3 @@ enum class DragState : int {
 };
 
 }
-
-#endif

@@ -29,6 +29,7 @@ The working plane is mostly intended to be used in the Draft Workbench
 to draw 2D objects in various orientations, not only in the standard XY,
 YZ, and XZ planes.
 """
+
 ## @package WorkingPlane
 #  \ingroup DRAFT
 #  \brief This module handles the Working Plane and grid of the Draft module.
@@ -43,13 +44,13 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import DraftVecUtils
 from FreeCAD import Vector
+from draftgeoutils import geometry as geo_geometry
 from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
 from draftutils.messages import _wrn
 from draftutils.translate import translate
 
-DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 Part = lz.LazyLoader("Part", globals(), "Part")
 FreeCADGui = lz.LazyLoader("FreeCADGui", globals(), "FreeCADGui")
 
@@ -243,6 +244,87 @@ class PlaneBase:
         self.position = pos + (self.axis * offset)
         return True
 
+    def align_to_straight_edge(self, edge, offset=0):
+        """Align the WP to a straight edge.
+
+        Used when a single straight edge is selected and does not define a
+        plane. The edge direction becomes the WP `u` axis. All three axes are
+        recomputed using XZY priority so the result is always a valid
+        orthonormal frame.
+
+        Parameters
+        ----------
+        edge: Part.Edge
+            A straight edge.
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`.
+
+        Returns
+        -------
+        `True`/`False`
+            `True` if successful.
+        """
+        tol = 1e-7
+        if edge.Length <= tol:
+            return False
+        u = edge.derivative1At(edge.FirstParameter).normalize()
+        rot = FreeCAD.Rotation(u, self.v, self.axis, "XZY")
+        self.u, self.v, self.axis = self._axes_from_rotation(rot)
+        self.position = edge.Vertexes[0].Point + (self.axis * offset)
+        return True
+
+    def align_to_vertex(self, vertex, offset=0):
+        """Move the WP origin to a vertex, keeping the current orientation.
+
+        Parameters
+        ----------
+        vertex: Part.Vertex
+            A vertex.
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`.
+
+        Returns
+        -------
+        `True`
+            Always successful.
+        """
+        self.position = vertex.Point + (self.axis * offset)
+        return True
+
+    def align_to_two_vertices(self, v1, v2, offset=0):
+        """Align the WP to two vertices.
+
+        The direction from `v1` to `v2` defines the WP `u` axis. The `v` and
+        `axis` vectors are recomputed using XZY priority. The WP origin is set
+        to `v1`.
+
+        Parameters
+        ----------
+        v1: Part.Vertex
+            First vertex (WP origin).
+        v2: Part.Vertex
+            Second vertex (defines u axis direction).
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`.
+
+        Returns
+        -------
+        `True`/`False`
+            `True` if successful.
+        """
+        tol = 1e-7
+        u = v2.Point - v1.Point
+        if u.Length <= tol:
+            return False
+        u.normalize()
+        rot = FreeCAD.Rotation(u, self.v, self.axis, "XZY")
+        self.u, self.v, self.axis = self._axes_from_rotation(rot)
+        self.position = v1.Point + (self.axis * offset)
+        return True
+
     def align_to_face(self, face, offset=0):
         """Align the WP to a face with an optional offset.
 
@@ -250,7 +332,7 @@ class PlaneBase:
 
         The center of gravity of the face defines the WP `position` and the
         normal of the face the WP `axis`. The WP `u` and `v` vectors are
-        determined by the DraftGeomUtils.uv_vectors_from_face function.
+        determined by the draftgeoutils.geometry.uv_vectors_from_face function.
         See there.
 
         Parameters
@@ -268,7 +350,7 @@ class PlaneBase:
         """
         if face.Surface.isPlanar() is False:
             return False
-        place = DraftGeomUtils.placement_from_face(face)
+        place = geo_geometry.placement_from_face(face)
         self.u, self.v, self.axis = self._axes_from_rotation(place.Rotation)
         self.position = place.Base + (self.axis * offset)
         return True
@@ -478,6 +560,21 @@ class PlaneBase:
 
         return True
 
+    def align_to_rotation(self, rot):
+        """Align the WP to a rotation.
+
+        Parameter
+        ---------
+        rot: Base.Rotation
+            Rotation.
+
+        Returns
+        -------
+        `True`
+        """
+        self.u, self.v, self.axis = self._axes_from_rotation(rot)
+        return True
+
     def get_global_coords(self, point, as_vector=False):
         """Translate a point or vector from the local (WP) coordinate system to
         the global coordinate system.
@@ -573,13 +670,13 @@ class PlaneBase:
             Direction of projection.
         force_projection: bool, optional
             Defaults to `True`.
-            See DraftGeomUtils.project_point_on_plane
+            See draftgeoutils.geometry.project_point_on_plane
 
         Returns
         -------
         Base.Vector
         """
-        return DraftGeomUtils.project_point_on_plane(
+        return geo_geometry.project_point_on_plane(
             point, self.position, self.axis, direction, force_projection
         )
 
@@ -688,7 +785,7 @@ class Plane(PlaneBase):
 
         The returned value is the negative of the local Z coordinate of the point.
         """
-        return -DraftGeomUtils.distance_to_plane(point, self.position, self.axis)
+        return -geo_geometry.distance_to_plane(point, self.position, self.axis)
 
     def projectPoint(self, point, direction=None, force_projection=True):
         """See PlaneBase.project_point."""
@@ -757,7 +854,7 @@ class Plane(PlaneBase):
 
         The center of gravity of the face defines the WP `position` and the
         normal of the face the WP `axis`. The WP `u` and `v` vectors are
-        determined by the DraftGeomUtils.uv_vectors_from_face function.
+        determined by the draftgeoutils.geometry.uv_vectors_from_face function.
         See there.
 
         Parameters
@@ -777,7 +874,7 @@ class Plane(PlaneBase):
             `True` if successful.
         """
         if shape.ShapeType == "Face" and shape.Surface.isPlanar():
-            place = DraftGeomUtils.placement_from_face(shape)
+            place = geo_geometry.placement_from_face(shape)
             if parent:
                 place = parent.getGlobalPlacement() * place
             super().align_to_placement(place, offset)
@@ -864,17 +961,17 @@ class Plane(PlaneBase):
 
         normal = None
         for n in range(len(shapes)):
-            if not DraftGeomUtils.is_planar(shapes[n]):
+            if not geo_geometry.is_planar(shapes[n]):
                 _wrn(translate("draft", "'{}' object is not planar".format(names[n])) + "\n")
                 return False
             if not normal:
-                normal = DraftGeomUtils.get_normal(shapes[n])
+                normal = geo_geometry.get_normal(shapes[n])
                 shape_ref = n
 
         # test if all shapes are coplanar
         if normal:
             for n in range(len(shapes)):
-                if not DraftGeomUtils.are_coplanar(shapes[shape_ref], shapes[n]):
+                if not geo_geometry.are_coplanar(shapes[shape_ref], shapes[n]):
                     _wrn(
                         translate(
                             "draft", "{} and {} are not coplanar".format(names[shape_ref], names[n])
@@ -887,10 +984,10 @@ class Plane(PlaneBase):
             points = [vertex.Point for shape in shapes for vertex in shape.Vertexes]
             if len(points) >= 3:
                 poly = Part.makePolygon(points)
-                if not DraftGeomUtils.is_planar(poly):
+                if not geo_geometry.is_planar(poly):
                     _wrn(translate("draft", "All shapes must be coplanar") + "\n")
                     return False
-                normal = DraftGeomUtils.get_normal(poly)
+                normal = geo_geometry.get_normal(poly)
             else:
                 normal = None
 
@@ -1040,7 +1137,7 @@ class Plane(PlaneBase):
         if rebase:
             super().align_to_placement(place)
         else:
-            super()._axes_from_rotation(place.Rotation)
+            super().align_to_rotation(place.Rotation)
 
     def inverse(self):
         """Invert the direction of the plane.
@@ -1271,7 +1368,13 @@ class PlaneGui(PlaneBase):
     def align_to_selection(self, offset=0, _hist_add=True):
         """Align the WP to a selection with an optional offset.
 
-        The selection must define a plane.
+        For a single face the WP is aligned to that face. For a single curved
+        edge or wire the WP is aligned to the plane of that shape. For a
+        single straight edge the WP u-axis is aligned along the edge while the
+        WP axis (normal) is preserved. For a single vertex the WP origin is
+        moved to that point while the orientation is preserved. For two
+        vertices the direction from the first to the second defines the WP
+        u-axis; selection order matters.
 
         Parameter
         ---------
@@ -1298,7 +1401,11 @@ class PlaneGui(PlaneBase):
 
         if len(objs) != 1:
             ret = False
-            if all(
+            if len(objs) == 2 and all(
+                obj[0].isNull() is False and obj[0].ShapeType == "Vertex" for obj in objs
+            ):
+                ret = self.align_to_two_vertices(objs[0][0], objs[1][0], offset, _hist_add)
+            elif all(
                 [
                     obj[0].isNull() is False and obj[0].ShapeType in ["Edge", "Vertex"]
                     for obj in objs
@@ -1336,8 +1443,12 @@ class PlaneGui(PlaneBase):
             ret = self.align_to_face(shape, offset, _hist_add)
         elif shape.ShapeType == "Edge":
             ret = self.align_to_edge_or_wire(shape, offset, _hist_add)
+            if ret is False:
+                ret = self.align_to_straight_edge(shape, offset, _hist_add)
         elif shape.Solids:
             ret = self.align_to_obj_placement(obj, offset, place, _hist_add)
+        elif shape.ShapeType == "Vertex":
+            ret = self.align_to_vertex(shape, offset, _hist_add)
         else:
             ret = self.align_to_edges_vertexes(shape.Vertexes, offset, _hist_add)
 
@@ -1369,6 +1480,26 @@ class PlaneGui(PlaneBase):
     def align_to_edge_or_wire(self, shape, offset=0, _hist_add=True):
         """See PlaneBase.align_to_edge_or_wire."""
         if super().align_to_edge_or_wire(shape, offset) is False:
+            return False
+        self._handle_custom(_hist_add)
+        return True
+
+    def align_to_straight_edge(self, edge, offset=0, _hist_add=True):
+        """See PlaneBase.align_to_straight_edge."""
+        if super().align_to_straight_edge(edge, offset) is False:
+            return False
+        self._handle_custom(_hist_add)
+        return True
+
+    def align_to_vertex(self, vertex, offset=0, _hist_add=True):
+        """See PlaneBase.align_to_vertex."""
+        super().align_to_vertex(vertex, offset)
+        self._handle_custom(_hist_add)
+        return True
+
+    def align_to_two_vertices(self, v1, v2, offset=0, _hist_add=True):
+        """See PlaneBase.align_to_two_vertices."""
+        if super().align_to_two_vertices(v1, v2, offset) is False:
             return False
         self._handle_custom(_hist_add)
         return True
@@ -1876,17 +2007,17 @@ if FreeCAD.GuiUp:
 def getPlacementFromPoints(points):
     """Return a placement from a list of 3 or 4 points. The 4th point is no longer used.
 
-    Calls DraftGeomUtils.placement_from_points(). See there.
+    Calls draftgeoutils.geometry.placement_from_points(). See there.
     """
     utils.use_instead("DraftGeomUtils.placement_from_points")
-    return DraftGeomUtils.placement_from_points(*points[:3])
+    return geo_geometry.placement_from_points(*points[:3])
 
 
 # Compatibility function (v1.0, 2023):
 def getPlacementFromFace(face, rotated=False):
     """Return a placement from a face.
 
-    Calls DraftGeomUtils.placement_from_face(). See there.
+    Calls draftgeoutils.geometry.placement_from_face(). See there.
     """
     utils.use_instead("DraftGeomUtils.placement_from_face")
-    return DraftGeomUtils.placement_from_face(face, rotated=rotated)
+    return geo_geometry.placement_from_face(face, rotated=rotated)

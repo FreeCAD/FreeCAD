@@ -21,13 +21,11 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_MATERIALSEDITOR_H
-#define MATGUI_MATERIALSEDITOR_H
+#pragma once
 
 #include <memory>
 
 #include <QDialog>
-#include <QDir>
 #include <QIcon>
 #include <QPoint>
 #include <QStandardItem>
@@ -155,7 +153,7 @@ private:
     bool updateTexturePreview() const;
     bool updateMaterialPreview() const;
     void updatePreview() const;
-    static QString getColorHash(const QString& colorString, int colorRange = 255);
+    static QString getColorHash(const QString& colorString);
 
     static void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);
     static void addExpanded(QTreeView* tree,
@@ -241,5 +239,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_MATERIALSEDITOR_H

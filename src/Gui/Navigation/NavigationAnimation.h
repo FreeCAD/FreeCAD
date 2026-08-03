@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef GUI_NAVIGATIONANIMATION_H
-#define GUI_NAVIGATIONANIMATION_H
+#pragma once
 
 #include "Navigation/NavigationStyle.h"
 #include <Inventor/SbRotation.h>
@@ -40,6 +39,8 @@ public:
     using QVariantAnimation::state;
 
 Q_SIGNALS:
+    // QVariantAnimation::finished is intentionally hidden by protected inheritance.
+    void completed();
     void interrupted();
 
 protected:
@@ -101,5 +102,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_NAVIGATIONANIMATION_H

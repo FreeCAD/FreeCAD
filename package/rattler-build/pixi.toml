@@ -8,7 +8,7 @@ preview = ["pixi-build"]
 
 [package]
 name = "freecad"
-version = "1.1.0dev"
+version = "26.3.0dev"
 homepage = "https://freecad.org"
 repository = "https://github.com/FreeCAD/FreeCAD"
 description = "FreeCAD"
@@ -19,6 +19,9 @@ backend = { name = "pixi-build-rattler-build", version = "*" }
 [feature.freecad.dependencies]
 freecad = { path = "." }
 
+[feature.freecad.target.win-64.dependencies]
+ucrt = "==10.0.20348.0"
+
 [feature.package.dependencies]
 python = ">=3.11,<3.12"
 
@@ -28,10 +31,12 @@ create_bundle = 'bash -c "cd $(bash scripts/get_os.bash) && bash create_bundle.s
 ## Linux (x86-64)
 [feature.package.target.linux-64.dependencies]
 coreutils = "*"
+xcb-util-cursor = "==0.1.5"  ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726
 
 ## Linux (aarch64)
 [feature.package.target.linux-aarch64.dependencies]
 coreutils = "*"
+xcb-util-cursor = "==0.1.5"  ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726
 
 ## macOS (Intel)
 [feature.package.target.osx-64.dependencies]
@@ -52,6 +57,7 @@ sed = "*"
 git = "*"
 nsis = { version = "*", build = "*_log*" }
 7zip = "*"
+ucrt = "==10.0.20348.0"
 vs2022_win-64 = "*"
 
 [environments]

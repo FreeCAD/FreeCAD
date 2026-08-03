@@ -43,6 +43,12 @@ def write_meshdata_constraint(f, femobj, den_obj, ccxwriter):
     if ccxwriter.solver_obj.ElectromagneticMode != "electrostatic":
         return
 
+    if den_obj.Concentrated and den_obj.Mode == "Total Source":
+        f.write(f"*NSET,NSET={den_obj.Name}\n")
+        for n in femobj["Nodes"]:
+            f.write(f"{n},\n")
+        return
+
     if den_obj.Mode in ["Source", "Total Source"]:
         f.write(f"*ELSET,ELSET={den_obj.Name}\n")
         for refs, surf, is_sub_el in femobj["ChargeDensityElements"]:
@@ -71,6 +77,14 @@ def write_constraint(f, femobj, den_obj, ccxwriter):
 
     # floats read from ccx should use {:.13G}, see comment in writer module
     if ccxwriter.solver_obj.ElectromagneticMode != "electrostatic":
+        return
+
+    if den_obj.Concentrated and den_obj.Mode == "Total Source":
+        nodes = len(femobj["Nodes"])
+        node_charge = den_obj.TotalCharge.getValueAs("C").Value / nodes
+        f.write("*CFLUX\n")
+        f.write("{},11,{:.13G}\n".format(den_obj.Name, node_charge))
+        f.write("\n")
         return
 
     match den_obj.Mode:

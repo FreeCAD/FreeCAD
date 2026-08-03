@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATUREPARTFUSE_H
-#define PART_FEATUREPARTFUSE_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -66,6 +65,9 @@ public:
     App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     //@}
+
+    void Restore(Base::XMLReader& reader) override;
+
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override
     {
@@ -74,5 +76,3 @@ public:
 };
 
 }  // namespace Part
-
-#endif  // PART_FEATUREPARTFUSE_H

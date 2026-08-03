@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2018 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
@@ -21,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_ANALYSE_H
-#define SKETCHER_ANALYSE_H
+#pragma once
 
 #include <vector>
 
@@ -65,5 +66,3 @@ struct Constraint_Equal
 };
 
 }  // namespace Sketcher
-
-#endif  // SKETCHER_ANALYSE_H

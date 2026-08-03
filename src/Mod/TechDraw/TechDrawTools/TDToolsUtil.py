@@ -155,3 +155,68 @@ def getCoordinateVectors(view):
     py = wire2D.Edges[1].Vertexes[0].Point
     pz = wire2D.Edges[2].Vertexes[0].Point
     return (px,py,pz)
+    
+
+# +/- the same as getSelVertexes, but returns the vertex name instead of the vertex object.
+def getSelVertexNames(nVertex=1, nSel=0):
+    '''
+    vertexNames = getSelVertexNames(nVertex)
+    nVertex=1 ... min. number of selected vertexes
+    nSel=0 ... number of selected view, 0 = first selected
+    Return a list of the names of the selected vertexes if at least nVertex vertexes are selected, otherwise return False
+    '''
+    view = getSelView(nSel)
+    if not view:
+        return False
+        
+    if not Gui.Selection.getSelectionEx():
+        displayMessage('TechDraw_Utils',
+                        QT_TRANSLATE_NOOP('TechDraw_Utils','No vertex selected'))
+        return False
+    objectList = Gui.Selection.getSelectionEx()[nSel].SubElementNames
+
+    vertexNames = []
+    for objectString in objectList:
+        if objectString[0:6] == 'Vertex':
+            vertexNames.append(objectString)
+
+    if (len(vertexNames) < nVertex):
+        displayMessage('TechDraw_Utils',
+                        QT_TRANSLATE_NOOP('TechDraw_Utils','Select at least ')+
+                        str(nVertex)+
+                        QT_TRANSLATE_NOOP('TechDraw_Utils',' vertexes'))
+        return False
+
+    return vertexNames
+
+# +/- the same as getSelEdges, but returns the edge name instead of the vertex object.
+def getSelEdgeNames(nEdge=1, nSel=0):
+    '''
+    edges = getSelEdgeNames(nEdge)
+    nEdge=1 ... min. number of selected edges
+    nSel=0 ... number of selected view, 0 = first selected
+    Return a list of names for selected edges if at least nedge edges are selected, otherwise return False
+    '''
+    view = getSelView(nSel)
+    if not view:
+        return False
+        
+    if not Gui.Selection.getSelectionEx():
+        displayMessage('TechDraw_Utils',
+                        QT_TRANSLATE_NOOP('TechDraw_Utils','No edge selected'))
+        return False
+    objectList = Gui.Selection.getSelectionEx()[nSel].SubElementNames
+
+    edgeNames = []
+    for objectString in objectList:
+        if objectString[0:4] == 'Edge':
+            edgeNames.append(objectString)
+
+    if (len(edgeNames) < nEdge):
+        displayMessage('TechDraw_Utils',
+                        QT_TRANSLATE_NOOP('TechDraw_Utils','Select at least ')+
+                        str(nEdge)+
+                        QT_TRANSLATE_NOOP('TechDraw_Utils',' edges'))
+        return False
+    else:
+        return edgeNames

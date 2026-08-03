@@ -308,6 +308,11 @@ void DlgSettingsEditor::loadSettings()
     }
 #endif
     ui->fontFamily->addItems(fixedFamilyNames);
+
+    // mark this combobox to be excluded from preference search
+    // users do not search for specific font names, aka. font family like "droid sans"
+    ui->fontFamily->setProperty("doNotSearch", true);
+
     int index = fixedFamilyNames.indexOf(
         QString::fromLatin1(hGrp->GetASCII("Font", defaultMonospaceFont).c_str())
     );

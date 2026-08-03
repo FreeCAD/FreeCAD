@@ -3,7 +3,7 @@
 General:
   UUID: "add2d6b2-c8fb-4777-a80a-52bae97300ae"
   Author: "David Carter"
-  License: "GPL-2.0-or-later"
+  License: "CC-BY-4.0"
   Name: "Neon PHC"
   Description: "Defines the Neon PHC appearance properties"
 AppearanceModels:

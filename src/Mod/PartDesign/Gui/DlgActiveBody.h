@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /**************************************************************************
  *   Copyright (c) 2021 FreeCAD Developers                                 *
  *   Author: Ajinkya Dahale                                                *
@@ -23,8 +25,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGNGUI_DLGACTIVEBODY_H
-#define PARTDESIGNGUI_DLGACTIVEBODY_H
+#pragma once
 
 #include <QDialog>
 #include <memory>
@@ -61,5 +62,3 @@ private:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // PARTDESIGNGUI_DLGACTIVEBODY_H

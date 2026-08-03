@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 set(SketcherGui_LIBS
     Sketcher
     PartGui
@@ -8,7 +10,11 @@ set (Sketcher_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Sketcher_translation.
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
 qt_create_resource_file(${Sketcher_TR_QRC} ${QM_SRCS})
-qt_add_resources(SketcherGui_SRCS Resources/Sketcher.qrc ${Sketcher_TR_QRC})
+qt_add_resources(SketcherGui_SRCS
+    Resources/Sketcher.qrc
+    ${Sketcher_TR_QRC}
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 generate_from_py(ViewProviderSketchGeometryExtension)
 
@@ -19,6 +25,7 @@ set(SketcherGui_UIC_SRCS
     TaskSketcherSolverAdvanced.ui
     TaskSketcherValidation.ui
     InsertDatum.ui
+    EditTextDialog.ui
     SketchOrientationDialog.ui
     SketchMirrorDialog.ui
     SketcherSettings.ui
@@ -51,8 +58,11 @@ SET(SketcherGui_SRCS
     DrawSketchHandlerArcOfHyperbola.h
     DrawSketchHandlerArcOfParabola.h
     DrawSketchHandlerArcSlot.h
+    DrawSketchHandlerText.h
     DrawSketchHandlerBSpline.h
     DrawSketchHandlerPoint.h
+    DrawSketchHandlerDragAutoConstraint.h
+    DrawSketchHandlerDragAutoConstraint.cpp
     DrawSketchHandlerFillet.h
     DrawSketchHandlerTranslate.h
     DrawSketchHandlerTrimming.h
@@ -134,6 +144,9 @@ SET(SketcherGui_SRCS
     Workbench.h
     EditDatumDialog.cpp
     EditDatumDialog.h
+    EditTextDialog.ui
+    EditTextDialog.cpp
+    EditTextDialog.h
     PropertyVisualLayerList.cpp
     PropertyVisualLayerList.h
     SketchOrientationDialog.cpp

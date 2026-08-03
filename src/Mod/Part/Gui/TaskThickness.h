@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_TASKTHICKNESS_H
-#define PARTGUI_TASKTHICKNESS_H
+#pragma once
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
@@ -101,5 +100,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_TASKTHICKNESS_H

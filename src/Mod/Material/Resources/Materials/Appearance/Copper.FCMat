@@ -3,7 +3,7 @@
 General:
   UUID: "524cad9b-b841-4037-9851-badeca7dcee2"
   Author: "David Carter"
-  License: "GPL-2.0-or-later"
+  License: "CC-BY-4.0"
   Name: "Copper"
   Description: "Defines the Copper appearance properties"
 AppearanceModels:

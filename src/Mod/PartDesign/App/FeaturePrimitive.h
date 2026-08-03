@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FeaturePrimitive_H
-#define PARTDESIGN_FeaturePrimitive_H
+#pragma once
 
 #include "FeatureAddSub.h"
 #include <Mod/Part/App/AttachExtension.h>
@@ -416,6 +417,3 @@ class PartDesignExport SubtractiveWedge: public Wedge
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_FeaturePrimitive_H

@@ -24,8 +24,7 @@
  *   Volumetric Path simulation engine                                     *
  ***************************************************************************/
 
-#ifndef PATHSIMULATOR_VolSim_H
-#define PATHSIMULATOR_VolSim_H
+#pragma once
 
 #include <vector>
 
@@ -270,5 +269,3 @@ public:
 private:
     cStock* stock;
 };
-
-#endif  // PATHSIMULATOR_VolSim_H

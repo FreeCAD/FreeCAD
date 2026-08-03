@@ -26,6 +26,7 @@
 
 Many viewprovider classes may inherit this class in order to have
 the same basic behavior."""
+
 ## @package view_base
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the base Draft object.
@@ -283,52 +284,52 @@ class ViewProviderDraft(object):
         """
         # treatment of patterns and image textures
         if prop in ("TextureImage", "Pattern", "ShapeAppearance"):
-            if hasattr(self.Object, "Shape"):
-                if self.Object.Shape.Faces:
-                    path = None
-                    if hasattr(vobj, "TextureImage"):
-                        if vobj.TextureImage:
-                            path = vobj.TextureImage
-                    if not path:
-                        if hasattr(vobj, "Pattern"):
-                            if str(vobj.Pattern) in utils.svg_patterns():
-                                path = utils.svg_patterns()[vobj.Pattern][1]
-                            else:
-                                path = "None"
-                    if path and vobj.RootNode:
-                        switch = gui_utils.find_coin_node(vobj.RootNode, coin.SoSwitch)
-                        if switch is not None:
-                            if switch.getChildren().getLength() > 0:
-                                innodes = switch.getChild(0).getChildren().getLength()
-                                if innodes > 2:
-                                    r = switch.getChild(0).getChild(innodes - 1)
-                                    i = QtCore.QFileInfo(path)
-                                    if self.texture:
-                                        r.removeChild(self.texture)
-                                        self.texture = None
-                                    if self.texcoords:
-                                        r.removeChild(self.texcoords)
-                                        self.texcoords = None
-                                    if i.exists():
-                                        size = None
-                                        if ".SVG" in path.upper():
-                                            size = params.get_param("HatchPatternResolution")
-                                            if not size:
-                                                size = 128
-                                        im = gui_utils.load_texture(path, size)
-                                        if im:
-                                            self.texture = coin.SoTexture2()
-                                            self.texture.image = im
-                                            r.insertChild(self.texture, 1)
-                                            if size:
-                                                s = 1
-                                                if hasattr(vobj, "PatternSize"):
-                                                    if vobj.PatternSize:
-                                                        s = vobj.PatternSize
-                                                self.texcoords = coin.SoTextureCoordinatePlane()
-                                                self.texcoords.directionS.setValue(s, 0, 0)
-                                                self.texcoords.directionT.setValue(0, s, 0)
-                                                r.insertChild(self.texcoords, 2)
+            if hasattr(self.Object, "Shape") and self.Object.Shape.Faces:
+                path = None
+                if hasattr(vobj, "TextureImage"):
+                    if vobj.TextureImage:
+                        path = vobj.TextureImage
+                if not path:
+                    if hasattr(vobj, "Pattern"):
+                        if str(vobj.Pattern) in utils.svg_patterns():
+                            path = utils.svg_patterns()[vobj.Pattern][1]
+                        else:
+                            path = "None"
+                if path and vobj.RootNode:
+                    switch = gui_utils.find_coin_node(vobj.RootNode, coin.SoSwitch)
+                    if switch is not None and switch.getChildren().getLength() > 0:
+                        flat_lines_node = switch.getChild(0)
+                        # Get the Shaded sub-node of the Flat Lines node. The name in
+                        # Std_SceneInspector is "Shaded", but the actual name is "FlatRoot")
+                        shaded_node = gui_utils.find_coin_node_by_name(flat_lines_node, "FlatRoot")
+                        if shaded_node is not None:
+                            i = QtCore.QFileInfo(path)
+                            if self.texture:
+                                shaded_node.removeChild(self.texture)
+                                self.texture = None
+                            if self.texcoords:
+                                shaded_node.removeChild(self.texcoords)
+                                self.texcoords = None
+                            if i.exists():
+                                size = None
+                                if ".SVG" in path.upper():
+                                    size = params.get_param("HatchPatternResolution")
+                                    if not size:
+                                        size = 128
+                                im = gui_utils.load_texture(path, size)
+                                if im:
+                                    self.texture = coin.SoTexture2()
+                                    self.texture.image = im
+                                    shaded_node.insertChild(self.texture, 1)
+                                    if size:
+                                        s = 1
+                                        if hasattr(vobj, "PatternSize"):
+                                            if vobj.PatternSize:
+                                                s = vobj.PatternSize
+                                        self.texcoords = coin.SoTextureCoordinatePlane()
+                                        self.texcoords.directionS.setValue(s, 0, 0)
+                                        self.texcoords.directionT.setValue(0, s, 0)
+                                        shaded_node.insertChild(self.texcoords, 2)
         elif prop == "PatternSize":
             if hasattr(self, "texcoords"):
                 if self.texcoords:
@@ -479,9 +480,9 @@ class ViewProviderDraft(object):
 
         # The default Part::FeaturePython context menu contains a `Set colors`
         # option. This option makes no sense for objects without a face or that
-        # can only have a single face. In those cases we override this menu and
-        # have to add our own `Transform` item.
+        # can only have a single face.
         # To override the default menu this function must return `True`.
+
         if tp in (
             "Wire",
             "Circle",
@@ -497,20 +498,10 @@ class ViewProviderDraft(object):
             "PanelSheet",
             "Profile",
         ):
-            action_transform = QtGui.QAction(
-                Gui.getIcon("Std_TransformManip.svg"),
-                translate("Command", "Transform"),  # Context `Command` instead of `draft`.
-                menu,
-            )
-            QtCore.QObject.connect(action_transform, QtCore.SIGNAL("triggered()"), self.transform)
-            menu.addAction(action_transform)
             return True
 
     def edit(self):
         Gui.ActiveDocument.setEdit(self.Object, 0)
-
-    def transform(self):
-        Gui.ActiveDocument.setEdit(self.Object, 1)
 
     def getIcon(self):
         """Return the path to the icon used by the view provider.
@@ -597,6 +588,10 @@ class ViewProviderDraftAlt(ViewProviderDraft):
 
     def claimChildren(self):
         return []
+
+    def updateData(self, obj, prop):
+        if prop == "AutoUpdate":
+            obj.ViewObject.signalChangeIcon()
 
 
 # Alias for compatibility with v0.18 and earlier

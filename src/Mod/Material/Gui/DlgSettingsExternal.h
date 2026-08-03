@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_DLGSETTINGSEXTERNAL_H
-#define MATGUI_DLGSETTINGSEXTERNAL_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <memory>
@@ -56,5 +55,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_DLGSETTINGSDATABASE_H

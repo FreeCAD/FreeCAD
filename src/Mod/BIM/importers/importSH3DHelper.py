@@ -751,7 +751,7 @@ class SH3DImporter:
         handler = self.handlers[xpath]
 
         def _process(tuple):
-            (i, elm) = tuple
+            i, elm = tuple
             _msg(
                 f"Importing {tag_name}#{i} ({self.current_object_count + 1}/{self.total_object_count})…"
             )
@@ -923,7 +923,7 @@ class SH3DImporter:
         handler = self.handlers[ET_XPATH_LEVEL]
 
         def _create_slab(tuple):
-            (i, floor) = tuple
+            i, floor = tuple
             _msg(f"Creating slab#{i} for floor '{floor.Label}'…")
             try:
                 # with Transaction(f"Creating slab#{i} for floor '{floor.Label}'"):
@@ -1598,7 +1598,7 @@ class RoomHandler(BaseHandler):
             for j in range(i + 1, len(edges)):  # Avoid duplicate checks
                 e1 = edges[i]
                 e2 = edges[j]
-                (dist, vectors, _) = e1.distToShape(e2)
+                dist, vectors, _ = e1.distToShape(e2)
                 if dist > 0:
                     continue
                 for v1, v2 in vectors:
@@ -2008,7 +2008,7 @@ class WallHandler(BaseHandler):
         Returns:
             Rectangle, Rectangle, spine: both section and the line for the wall
         """
-        (start, end, _, _, _, _) = wall_details
+        start, end, _, _, _, _ = wall_details
 
         a1, a2, _ = self._get_normal_angles(wall_details)
 
@@ -2030,7 +2030,7 @@ class WallHandler(BaseHandler):
         Returns:
             Rectangle, Rectangle, spine: both section and the arc for the wall
         #"""
-        (start, end, _, _, _, _) = wall_details
+        start, end, _, _, _, _ = wall_details
 
         a1, a2, (invert_angle, center, radius) = self._get_normal_angles(wall_details)
 
@@ -2096,8 +2096,8 @@ class WallHandler(BaseHandler):
             # In case the walls are to be joined we determine the intersection
             # of both wall which depends on their respective thickness.
             # Calculate the left and right side of each wall
-            (start, end, thickness, height_start, height_end, _) = wall_details
-            (s_start, s_end, s_thickness, _, _, _) = sibling_details
+            start, end, thickness, height_start, height_end, _ = wall_details
+            s_start, s_end, s_thickness, _, _, _ = sibling_details
 
             lside, rside = self._get_sides(start, end, thickness)
             s_lside, s_rside = self._get_sides(s_start, s_end, s_thickness)
@@ -2118,7 +2118,7 @@ class WallHandler(BaseHandler):
             if debug_geometry:
                 _log(f"section: {section}")
         else:
-            (start, end, thickness, height_start, height_end, _) = wall_details
+            start, end, thickness, height_start, height_end, _ = wall_details
             height = height_start if at_start else height_end
             center = start if at_start else end
             z_rotation = a1 if at_start else a2
@@ -2173,7 +2173,7 @@ class WallHandler(BaseHandler):
             Vector: the center of the circle for a curved wall section
             float: the radius of said circle
         """
-        (start, end, _, _, _, arc_extent) = wall_details
+        start, end, _, _, _, arc_extent = wall_details
 
         angle_start = angle_end = 0
         invert_angle = False
@@ -2298,7 +2298,7 @@ class WallHandler(BaseHandler):
         if self.importer.preferences["DECORATE_SURFACES"]:
             floor = App.ActiveDocument.getObject(obj.ReferenceFloorName)
 
-            (left_face_name, left_face, right_face_name, right_face) = self.get_faces(obj)
+            left_face_name, left_face, right_face_name, right_face = self.get_faces(obj)
 
             self._create_facebinders(floor, obj, left_face_name, right_face_name)
 
@@ -2693,7 +2693,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
                 )
 
         # Get the left and right face for the main_wall
-        (_, wall_lface, _, wall_rface) = self.get_faces(main_wall)
+        _, wall_lface, _, wall_rface = self.get_faces(main_wall)
 
         # The general process is as follow:
         # 1- Find the bounding box face whose normal is properly oriented
@@ -2767,12 +2767,12 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         #   correspondence between a catalog ID and a specific window preset from
         #   the parts library. Only using Opening / Fixed / Simple Door
         catalog_id = elm.get("catalogId")
-        (windowtype, ifc_type) = DOOR_MODELS.get(catalog_id, (None, None))
+        windowtype, ifc_type = DOOR_MODELS.get(catalog_id, (None, None))
         if not windowtype:
             _wrn(
                 f"Unknown catalogId {catalog_id} for element {elm.get('id')}. Defaulting to 'Simple Door'"
             )
-            (windowtype, ifc_type) = ("Simple door", "Door")
+            windowtype, ifc_type = ("Simple door", "Door")
 
         # See the https://wiki.freecad.org/Arch_Window for details about these values
         # NOTE: These are simple heuristic to get reasonable windows

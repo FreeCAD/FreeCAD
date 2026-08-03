@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_VIEWPROVIDERDRAWINGVIEWEXTENSION_H
-#define TECHDRAWGUI_VIEWPROVIDERDRAWINGVIEWEXTENSION_H
+#pragma once
 
 #include <Gui/ViewProviderExtension.h>
 #include <Gui/ViewProviderExtensionPython.h>
@@ -58,5 +57,3 @@ using ViewProviderDrawingViewExtensionPython =
     Gui::ViewProviderExtensionPythonT<TechDrawGui::ViewProviderDrawingViewExtension>;
 
 }// namespace TechDrawGui
-
-#endif// TECHDRAWGUI_VIEWPROVIDERDRAWINGVIEWEXTENSION_H

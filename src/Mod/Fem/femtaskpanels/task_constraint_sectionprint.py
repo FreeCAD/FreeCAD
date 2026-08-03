@@ -63,7 +63,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
         # geometry selection widget
         self.selectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.References, ["Face"], False, False
+            obj.References, ["Edge", "Face"], False, False
         )
 
         # form made from param and selection widget

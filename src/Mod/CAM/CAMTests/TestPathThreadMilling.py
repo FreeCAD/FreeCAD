@@ -37,7 +37,7 @@ class TestObject(object):
         self.FinalDepth = FreeCAD.Units.Quantity(zBottom, FreeCAD.Units.Length)
 
 
-def radii(internal, major, minor, toolDia, toolCrest):
+def radii(internal, major, minor, toolDia, toolCrest, cuttingAngle=60.0):
     """test radii function for simple testing"""
     if internal:
         return (minor, major)
@@ -81,6 +81,64 @@ class TestPathThreadMilling(PathTestBase):
         """Verify internal radii with tool crest."""
         self.assertRadii(PathThreadMilling.threadRadii(True, 20, 18, 2, 0.1), (8, 9.113397))
 
+    def test02(self):
+        """Verify crest compensation uses cutting angle, not hardcoded 60°.
+
+        Bug: threadRadii() hardcodes SQRT_3_DIVIDED_BY_2 (the crest-to-tip
+        factor for a 60° profile).  For a non-60° profile the factor should
+        be 1 / (2 * tan(cuttingAngle / 2)).
+
+        For 60° ISO:      factor = 1/(2*tan(30°)) = √3/2 ≈ 0.86603
+        For 55° Whitworth: factor = 1/(2*tan(27.5°))    ≈ 0.96050
+
+        With major=20, minor=18, toolDia=2, crest=0.1 (internal):
+          H = 1.6,  outerTip = 10.2
+          60° -> toolTip = 10.2 - 0.1*0.86603 = 10.11340 -> max_r = 9.11340
+          55° -> toolTip = 10.2 - 0.1*0.96050 = 10.10395 -> max_r = 9.10395
+
+        This test will FAIL until threadRadii accepts a cuttingAngle
+        parameter and uses it instead of the hardcoded constant.
+        """
+        major, minor, toolDia, crest = 20, 18, 2, 0.1
+        cutting_angle_55 = 55.0
+
+        # Expected max radius for a 55° profile
+        H = ((major - minor) / 2.0) * 1.6
+        outerTip = major / 2.0 + H / 8.0
+        factor_55 = 1.0 / (2.0 * math.tan(math.radians(cutting_angle_55 / 2.0)))
+        toolTip_55 = outerTip - crest * factor_55
+        expected_max_radius_55 = toolTip_55 - toolDia / 2.0
+
+        # threadRadii must accept cuttingAngle and produce the correct result
+        result = PathThreadMilling.threadRadii(True, major, minor, toolDia, crest, cutting_angle_55)
+        self.assertRadii(result, (8.0, expected_max_radius_55))
+
+    def test03(self):
+        """Verify crest compensation for external thread with non-60° angle.
+
+        Same bug as test02 but for external threads.
+
+        With major=20, minor=18, toolDia=2, crest=0.1 (external):
+          H = 1.6,  innerTip = 8.6
+          60° -> toolTip = 8.6 + 0.1*0.86603 = 8.68660 -> min_r = 9.68660
+          55° -> toolTip = 8.6 + 0.1*0.96050 = 8.69605 -> min_r = 9.69605
+
+        This test will FAIL until threadRadii accepts cuttingAngle.
+        """
+        major, minor, toolDia, crest = 20, 18, 2, 0.1
+        cutting_angle_55 = 55.0
+
+        H = ((major - minor) / 2.0) * 1.6
+        innerTip = minor / 2.0 - H / 4.0
+        factor_55 = 1.0 / (2.0 * math.tan(math.radians(cutting_angle_55 / 2.0)))
+        toolTip_55 = innerTip + crest * factor_55
+        expected_min_radius_55 = toolTip_55 + toolDia / 2.0
+
+        result = PathThreadMilling.threadRadii(
+            False, major, minor, toolDia, crest, cutting_angle_55
+        )
+        self.assertRadii(result, (11.0, expected_min_radius_55))
+
     def test10(self):
         """Verify internal thread passes."""
         self.assertList(PathThreadMilling.threadPasses(1, radii, True, 10, 9, 0, 0), [10])
@@ -97,7 +155,7 @@ class TestPathThreadMilling(PathTestBase):
 
     def test21(self):
         """Verify external radii with tool crest."""
-        self.assertRadii(PathThreadMilling.threadRadii(False, 20, 18, 2, 0.1), (11, 9.513397))
+        self.assertRadii(PathThreadMilling.threadRadii(False, 20, 18, 2, 0.1), (11, 9.686603))
 
     def test30(self):
         """Verify external thread passes."""

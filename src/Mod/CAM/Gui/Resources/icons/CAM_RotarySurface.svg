@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" version="1.1">
+  <title>CAM Rotary Surface</title>
+  <defs>
+    <linearGradient id="cyl" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9ec5ff"/>
+      <stop offset="0.5" stop-color="#3674d8"/>
+      <stop offset="1" stop-color="#1a3a78"/>
+    </linearGradient>
+  </defs>
+  <!-- Cylindrical part on horizontal rotary axis -->
+  <ellipse cx="14" cy="32" rx="4" ry="14" fill="#1a3a78" stroke="#0a1a3a" stroke-width="1"/>
+  <rect x="14" y="18" width="36" height="28" fill="url(#cyl)" stroke="#0a1a3a" stroke-width="1"/>
+  <ellipse cx="50" cy="32" rx="4" ry="14" fill="#5388d6" stroke="#0a1a3a" stroke-width="1"/>
+  <!-- Spiral toolpath as a polyline of helix segments -->
+  <path d="M16 22 Q22 26 28 22 Q34 18 40 22 Q46 26 50 22"
+        fill="none" stroke="#ff7a00" stroke-width="2" stroke-linecap="round"/>
+  <path d="M16 30 Q22 34 28 30 Q34 26 40 30 Q46 34 50 30"
+        fill="none" stroke="#ff7a00" stroke-width="2" stroke-linecap="round"/>
+  <path d="M16 38 Q22 42 28 38 Q34 34 40 38 Q46 42 50 38"
+        fill="none" stroke="#ff7a00" stroke-width="2" stroke-linecap="round"/>
+  <!-- Tool tip indicator -->
+  <rect x="30" y="6" width="4" height="10" fill="#444"/>
+  <polygon points="28,16 36,16 32,22" fill="#888"/>
+  <!-- Rotation arrow -->
+  <path d="M50 50 A8 8 0 1 0 56 42" fill="none" stroke="#cc2c2c" stroke-width="2"/>
+  <polygon points="56,40 58,44 54,44" fill="#cc2c2c"/>
+</svg>

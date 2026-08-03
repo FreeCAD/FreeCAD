@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskSketcherConstraints_H
-#define GUI_TASKVIEW_TaskSketcherConstraints_H
+#pragma once
 
 #include <QListWidget>
 
@@ -32,6 +33,7 @@
 
 #include "ConstraintFilters.h"
 
+class ConstraintItem;
 
 namespace App
 {
@@ -68,12 +70,16 @@ Q_SIGNALS:
     void emitCenterSelectedItems();
     void emitHideSelection3DVisibility();
     void emitShowSelection3DVisibility();
+    void emitDeleteAllConstraints();
+    void emitDeleteConstraints(const QList<int>&);
 
 protected Q_SLOTS:
     void modifyCurrentItem();
     void renameCurrentItem();
     void centerSelectedItems();
     void deleteSelectedItems();
+    void deleteAllItems();
+    void deleteFilterItems();
     void doSelectConstraints();
     void updateDrivingStatus();
     void updateActiveStatus();
@@ -117,6 +123,8 @@ private:
         {QT_TR_NOOP("Equality"), 1},
         {QT_TR_NOOP("Symmetric"), 1},
         {QT_TR_NOOP("Block"), 1},
+        {QT_TR_NOOP("Group"), 1},
+        {QT_TR_NOOP("Text"), 1},
         {QT_TR_NOOP("Internal Alignment"), 1},
         {QT_TR_NOOP("Datums"), 0},
         {QT_TR_NOOP("Horizontal Distance"), 1},
@@ -185,6 +193,8 @@ public:
     void onListWidgetConstraintsEmitCenterSelectedItems();
     void onListWidgetConstraintsEmitShowSelection3DVisibility();
     void onListWidgetConstraintsEmitHideSelection3DVisibility();
+    void onDeleteAllConstraints();
+    void onDeleteConstraints(const QList<int>&);
     void onFilterBoxStateChanged(int val);
     void onShowHideButtonClicked(bool);
     void onSettingsRestrictVisibilityChanged(bool value = false);
@@ -197,7 +207,7 @@ public:
 protected:
     void changeEvent(QEvent* e) override;
     ViewProviderSketch* sketchView;
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectionConstraintsChanged;
 
 private:
@@ -218,9 +228,20 @@ private:
                                                             // constraints associated with the
                                                             // selected geometry
     ConstraintFilterList* filterList;
-    boost::signals2::scoped_connection changedSketchView;
+    fastsignals::advanced_scoped_connection changedSketchView;
+
+    // Buffering structures
+    std::unordered_map<int, ConstraintItem*> constraintMap;
+
+    struct PendingSelectionUpdate
+    {
+        ConstraintItem* item;
+        bool select;
+    };
+    std::vector<PendingSelectionUpdate> selectionBuffer;
+    bool selectionUpdateTimerPending = false;
+
+    void processSelectionBuffer();
 };
 
 }  // namespace SketcherGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

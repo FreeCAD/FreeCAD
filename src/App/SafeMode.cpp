@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Benjamin Nauck <benjamin@nauck.se>                 *
  *                                                                         *
@@ -56,10 +58,10 @@ static void _replaceDirs()
     };
 
     for (auto const d : dirs) {
-        auto const path = temp_base + PATHSEP + d + PATHSEP;
-        auto const qpath = QString::fromStdString(path);
+        auto const path = temp_base + "/" + d + "/";
+        auto const qpath = QDir::cleanPath(QString::fromStdString(path));
         QDir().mkpath(qpath);
-        config[d] = path;
+        config[d] = QDir::toNativeSeparators(qpath).toStdString();
     }
 }
 

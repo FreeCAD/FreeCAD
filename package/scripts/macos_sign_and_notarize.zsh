@@ -96,6 +96,13 @@ function run_codesign {
     /usr/bin/codesign --options runtime -f -s ${SIGNING_KEY_ID} --timestamp --entitlements entitlements.plist "$1"
 }
 
+function run_codesign_extension {
+    local target="$1"
+    local entitlements_file="$2"
+    echo "Signing extension $target with entitlements $entitlements_file"
+    /usr/bin/codesign --options runtime -f -s ${SIGNING_KEY_ID} --timestamp --entitlements "$entitlements_file" "$target"
+}
+
 IFS=$'\n'
 dylibs=($(/usr/bin/find "${CONTAINING_FOLDER}/${APP_NAME}" -name "*.dylib"))
 shared_objects=($(/usr/bin/find "${CONTAINING_FOLDER}/${APP_NAME}" -name "*.so"))
@@ -108,12 +115,45 @@ signed_files=("${dylibs[@]}" "${shared_objects[@]}" "${bundles[@]}" "${executabl
 # This list of files is generated from:
 # file `find . -type f -perm +111 -print` | grep "Mach-O 64-bit executable" | sed 's/:.*//g'
 for exe in ${signed_files}; do
-    run_codesign "${exe}"
+    # Skip .appex executables as they will be signed separately with their bundles
+    if [[ "$exe" != */Contents/PlugIns/*.appex/* ]]; then
+        run_codesign "${exe}"
+    fi
 done
 
 # Two additional files that must be signed that aren't caught by the above searches:
 run_codesign "${CONTAINING_FOLDER}/${APP_NAME}/Contents/packages.txt"
-run_codesign "${CONTAINING_FOLDER}/${APP_NAME}/Contents/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/QuicklookFCStd"
+
+# Sign legacy QuickLook generator if present (not built for macOS 15.0+)
+if [ -f "${CONTAINING_FOLDER}/${APP_NAME}/Contents/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/QuicklookFCStd" ]; then
+    run_codesign "${CONTAINING_FOLDER}/${APP_NAME}/Contents/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/QuicklookFCStd"
+fi
+
+# Sign new Swift QuickLook extensions (macOS 15.0+) with their specific entitlements
+# These must be signed before the app itself to avoid overriding the extension signatures
+if [ -d "${CONTAINING_FOLDER}/${APP_NAME}/Contents/PlugIns" ]; then
+    # Find the entitlements files relative to script location
+    # Script is in package/scripts/, entitlements are in src/MacAppBundle/QuickLook/modern/
+    SCRIPT_DIR="${0:A:h}"  # zsh equivalent of dirname with full path resolution
+    PREVIEW_ENTITLEMENTS="${SCRIPT_DIR}/../../src/MacAppBundle/QuickLook/modern/PreviewExtension.entitlements"
+    THUMBNAIL_ENTITLEMENTS="${SCRIPT_DIR}/../../src/MacAppBundle/QuickLook/modern/ThumbnailExtension.entitlements"
+
+    # Sign individual executables within .appex bundles first
+    if [ -f "${CONTAINING_FOLDER}/${APP_NAME}/Contents/PlugIns/FreeCADThumbnailExtension.appex/Contents/MacOS/FreeCADThumbnailExtension" ]; then
+        run_codesign "${CONTAINING_FOLDER}/${APP_NAME}/Contents/PlugIns/FreeCADThumbnailExtension.appex/Contents/MacOS/FreeCADThumbnailExtension"
+    fi
+    if [ -f "${CONTAINING_FOLDER}/${APP_NAME}/Contents/PlugIns/FreeCADPreviewExtension.appex/Contents/MacOS/FreeCADPreviewExtension" ]; then
+        run_codesign "${CONTAINING_FOLDER}/${APP_NAME}/Contents/PlugIns/FreeCADPreviewExtension.appex/Contents/MacOS/FreeCADPreviewExtension"
+    fi
+
+    # Then sign the .appex bundles themselves with extension-specific entitlements
+    if [ -d "${CONTAINING_FOLDER}/${APP_NAME}/Contents/PlugIns/FreeCADThumbnailExtension.appex" ] && [ -f "$THUMBNAIL_ENTITLEMENTS" ]; then
+        run_codesign_extension "${CONTAINING_FOLDER}/${APP_NAME}/Contents/PlugIns/FreeCADThumbnailExtension.appex" "$THUMBNAIL_ENTITLEMENTS"
+    fi
+    if [ -d "${CONTAINING_FOLDER}/${APP_NAME}/Contents/PlugIns/FreeCADPreviewExtension.appex" ] && [ -f "$PREVIEW_ENTITLEMENTS" ]; then
+        run_codesign_extension "${CONTAINING_FOLDER}/${APP_NAME}/Contents/PlugIns/FreeCADPreviewExtension.appex" "$PREVIEW_ENTITLEMENTS"
+    fi
+fi
 
 # Finally, sign the app itself (must be done last)
 run_codesign "${CONTAINING_FOLDER}/${APP_NAME}"
@@ -205,9 +245,57 @@ if [[ -z "$id" ]]; then
 fi
 print "Notarization submission ID: $id"
 
+# We are getting occasional (well, really somewhat frequent) failures of the "staple" action
+# from Apple's server. I don't know if this is because of a flaky GitHub connection, or flaky
+# Apple server, or what, but we should be quite flexible in detecting and handling these failures.
+# *Sometimes*, but not always, the staple action will emit failure text, but still return 0, so
+# we have to check for both the bad exit code, as well as a few different possible error strings.
+#
+# To handle significant network stability issues, we use a very long timeout and backoff.
+staple_with_retry() {
+  local target="$1"
+  local max_attempts=120
+  local attempt=0
+  local out rc
+  while :; do
+    (( attempt++ ))
+    out=$(xcrun stapler staple "${target}" 2>&1)
+    rc=$?
+    print -r -- "$out"
+
+    local looks_failed=0
+    if [[ $rc -ne 0 ]]; then
+      looks_failed=1
+    elif print -r -- "$out" | grep -E -q -e 'The staple and validate action failed' \
+                                          -e 'Error 68' \
+                                          -e "CloudKit's response is inconsistent" \
+                                          -e 'Could not validate ticket'; then
+      looks_failed=1
+    fi
+
+    if [[ $looks_failed -eq 0 ]]; then
+      if xcrun stapler validate "${target}" >/dev/null 2>&1; then
+        return 0
+      fi
+      print -r -- "Staple appeared to succeed but stapler validate failed." >&2
+    fi
+
+    if [[ $attempt -ge $max_attempts ]]; then
+      print -r -- "Failed to staple after ${attempt} attempts" >&2
+      return 1
+    fi
+
+    print -r -- "Staple attempt ${attempt} failed, retrying..."
+    sleep $(( (attempt<6?2**attempt:60) + RANDOM%5 ))  # Increasing timeout plus jitter for multi-run safety
+  done
+}
+
 if wait_for_notarization_result "$id"; then
   print "✅ Notarization succeeded. Stapling..."
-  xcrun stapler staple "${DMG_NAME}"
+  if ! staple_with_retry "${DMG_NAME}"; then
+    print "❌ Failed to staple ${DMG_NAME}" >&2
+    exit 1
+  fi
   print "Stapled: ${DMG_NAME}"
   rm -f "${ID_FILE}"
 else

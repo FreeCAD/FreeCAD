@@ -28,6 +28,7 @@
 
 See https://en.wikipedia.org/wiki/B-spline
 """
+
 ## @package gui_splines
 # \ingroup draftguitools
 # \brief Provides GUI tools to create BSpline objects.
@@ -114,8 +115,9 @@ class BSpline(gui_lines.Line):
                 self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg, noTracker=True)
             if self.point:
                 self.ui.redraw()
+                if not self._append_point(self.point):
+                    return
                 self.pos = arg["Position"]
-                self.node.append(self.point)
                 self.drawUpdate(self.point)
                 if self.mode == "line" and len(self.node) == 2:
                     self.finish(cont=None, closed=False)

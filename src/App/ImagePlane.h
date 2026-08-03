@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef App_ImagePlane_H
-#define App_ImagePlane_H
+#pragma once
 
 #include <App/GeoFeature.h>
 #include <App/PropertyFile.h>
@@ -59,6 +60,3 @@ public:
 };
 
 }  // namespace Image
-
-
-#endif  // App_ImagePlane_H

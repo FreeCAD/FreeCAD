@@ -34,7 +34,6 @@
 # include <BRepLib.hxx>
 # include <BRepLProp_CLProps.hxx>
 # include <BRepTools.hxx>
-# include <BRepLProp_CurveTool.hxx>
 # include <GC_MakeArcOfCircle.hxx>
 # include <GC_MakeEllipse.hxx>
 # include <GC_MakeCircle.hxx>
@@ -1616,40 +1615,45 @@ TopoDS_Edge GeometryUtils::asCircle(const TopoDS_Edge& splineEdge, bool& arc)
 {
     double radius{0};
     Base::Vector3d center;
-    bool isArc = false;
-    bool canMakeCircle = GeometryUtils::getCircleParms(splineEdge, radius, center, isArc);
+    bool canMakeCircle = GeometryUtils::getCircleParms(splineEdge, radius, center, arc);
     if (!canMakeCircle) {
-        throw Base::RuntimeError("GU::asCircle received non-circular edge!");
+        throw Base::RuntimeError("GU::asCircle received non-circular spline edge!");
     }
-    arc = isArc;
 
     gp_Pnt gCenter = Base::convertTo<gp_Pnt>(center);
     gp_Dir gNormal{0, 0, 1};
     Handle(Geom_Circle) circleFromParms = GC_MakeCircle(gCenter, gNormal, radius);
 
-    if (!isArc) {
+    if (!arc) {
         return BRepBuilderAPI_MakeEdge(circleFromParms);
     }
 
-    // find the ends of the edge from the underlying curve
+    // find the ends of the arc from the underlying curve
     BRepAdaptor_Curve curveAdapt(splineEdge);
     double firstParam = curveAdapt.FirstParameter();
     double lastParam = curveAdapt.LastParameter();
+
     gp_Pnt startPoint = curveAdapt.Value(firstParam);
     gp_Pnt endPoint = curveAdapt.Value(lastParam);
 
-    double midRange = (lastParam + firstParam) / 2;
-    gp_Pnt midPoint = curveAdapt.Value(midRange);
+    gp_Vec startVec = startPoint.XYZ() - gCenter.XYZ();
+    gp_Vec endVec = endPoint.XYZ() - gCenter.XYZ();
 
-    // this should be using circleFromParms as a base instead of points on the original spline.
-    // could be problems with very small errors??  other versions of GC_MakeArcOfCircle have
-    // poorly explained parameters.
-    GC_MakeArcOfCircle mkArc(startPoint, midPoint, endPoint);
-    auto circleArc = mkArc.Value();
-    if (!mkArc.IsDone()) {
-        throw Base::RuntimeError("GU::asCircle failed to create arc");
-    }
-    return BRepBuilderAPI_MakeEdge(circleArc);
+    double startAngle = std::atan2(startVec.Y(), startVec.X());  // range [-π, +π] radians
+    double endAngle = std::atan2(endVec.Y(), endVec.X());
+
+    // Find the best match of larger and smaller arcs between startAngle and endAngle.
+    // The last parameter here is the OCCT "sense" boolean which is not explained very well,
+    // but has something to do with the parameterization direction of the curve.  Setting
+    // this to false does not seem to change anything.
+    GC_MakeArcOfCircle mkArc1(circleFromParms->Circ(), startAngle, endAngle, true);
+    GC_MakeArcOfCircle mkArc2(circleFromParms->Circ(), endAngle, startAngle, true);
+
+    opencascade::handle< Geom_TrimmedCurve > splineArcHandle =
+            new Geom_TrimmedCurve(curveAdapt.Curve().Curve(), firstParam, lastParam);
+    auto arcToUse = bestFitArc(splineArcHandle, mkArc1.Value(), mkArc2.Value());
+
+    return BRepBuilderAPI_MakeEdge(arcToUse);
 }
 
 bool GeometryUtils::isLine(const TopoDS_Edge& occEdge)
@@ -1659,6 +1663,7 @@ bool GeometryUtils::isLine(const TopoDS_Edge& occEdge)
     Handle(Geom_BSplineCurve) spline = adapt.BSpline();
     double firstParm = adapt.FirstParameter();
     double lastParm = adapt.LastParameter();
+    spline->Segment(firstParm, lastParm);
     auto startPoint = Base::convertTo<Base::Vector3d>(adapt.Value(firstParm));
     auto endPoint = Base::convertTo<Base::Vector3d>(adapt.Value(lastParm));
     auto edgeLong = edgeLength(occEdge);
@@ -1687,7 +1692,7 @@ bool GeometryUtils::isLine(const TopoDS_Edge& occEdge)
         lenTotal += (v2-v1).Length();
     }
 
-    return DrawUtil::fpCompare(lenTotal, endPointLength, tolerance);
+    return DrawUtil::fpCompare(lenTotal, endPointLength, EWTOLERANCE);
 }
 
 
@@ -1712,8 +1717,8 @@ double GeometryUtils::edgeLength(TopoDS_Edge occEdge)
 {
     BRepAdaptor_Curve adapt(occEdge);
     const Handle(Geom_Curve) curve = adapt.Curve().Curve();
-    double first = BRepLProp_CurveTool::FirstParameter(adapt);
-    double last = BRepLProp_CurveTool::LastParameter(adapt);
+    double first = adapt.FirstParameter();
+    double last = adapt.LastParameter();
     try {
         GeomAdaptor_Curve adaptor(curve);
         return GCPnts_AbscissaPoint::Length(adaptor,first,last,Precision::Confusion());
@@ -1777,7 +1782,8 @@ TopoDS_Face GeometryUtils::makePerforatedFace(FacePtr bigCheese,  const std::vec
 }
 
 
-//! find faces within the bounds of the input face
+//! Find faces within the bounds of the input face.  For area dimensions, we only want the first
+//! "level" (term?) of holes.
 std::vector<FacePtr> GeometryUtils::findHolesInFace(const DrawViewPart* dvp, const std::string& bigCheeseSubRef)
 {
     if (!dvp || bigCheeseSubRef.empty()) {
@@ -1793,10 +1799,11 @@ std::vector<FacePtr> GeometryUtils::findHolesInFace(const DrawViewPart* dvp, con
         // tarfu
         throw Base::RuntimeError("GU::findHolesInFace - no holes to find!!");
     }
-
-    auto bigCheeseFace = facesAll.at(bigCheeseIndex);
-    auto bigCheeseOCCFace = bigCheeseFace->toOccFace();
-    auto bigCheeseArea = bigCheeseFace->getArea();
+    
+    if (facesAll.at(bigCheeseIndex)->wires.empty()) {
+        return {};
+    }
+    TopoDS_Wire bigCheeseWire = facesAll.at(bigCheeseIndex)->wires.front()->toOccWire();
 
     int iFace{0};
     for (auto& face : facesAll) {
@@ -1804,24 +1811,115 @@ std::vector<FacePtr> GeometryUtils::findHolesInFace(const DrawViewPart* dvp, con
             iFace++;
             continue;
         }
-        if (face->getArea() > bigCheeseArea) {
+        TopoDS_Wire faceWire = face->wires.front()->toOccWire();
+        if (!Part::FaceMakerCheese::isInside(bigCheeseWire, faceWire)) {
             iFace++;
             continue;
         }
-        auto faceCenter = Base::convertTo<gp_Pnt>(face->getCenter());
-        auto faceCenterVertex = BRepBuilderAPI_MakeVertex(faceCenter);
-        auto distance = DU::simpleMinDist(faceCenterVertex, bigCheeseOCCFace);
-        if (distance > EWTOLERANCE) {
-            // hole center not within outer contour.  not the best test but cheese maker handles it
-            // for us?
-            // FaceMakerCheese does not support partial overlaps and just ignores them?
-            iFace++;
-            continue;
-        }
+
         holes.push_back(face);
         iFace++;
     }
 
-    return holes;
+    return removeNestedHoles(holes);
 }
+
+//! Remove level 2+ faces.  Expects holes to be sorted by size?
+std::vector<FacePtr> GeometryUtils::removeNestedHoles(const std::vector<FacePtr>& holes)
+{
+    if (holes.empty()) {
+        return {};
+    }
+
+    std::vector<FacePtr> unNestedFaces;
+    if (holes.size() == 1) {
+        // no nesting present
+        unNestedFaces.push_back(holes.front());
+        return unNestedFaces;
+    }
+
+    std::vector<int> nestedFaceIndices = findNestedFaceIndices(holes);
+
+    std::reverse(nestedFaceIndices.begin(), nestedFaceIndices.end());
+
+    int ihole{0};
+    for (auto& hole : holes) {
+        if (std::find(nestedFaceIndices.begin(), nestedFaceIndices.end(), ihole) == nestedFaceIndices.end()) {
+            unNestedFaces.push_back(hole);
+        }
+        ihole++;
+    }
+    return unNestedFaces;
+}
+
+
+//! returns (unique) indices of holes contained within another hole.
+std::vector<int> GeometryUtils::findNestedFaceIndices(const std::vector<FacePtr>& holes)
+{
+    int iouter{0};
+    std::vector<int> nestedFaceIndices;
+    for (auto& outer : holes) {
+        TopoDS_Wire outerWire = outer->wires.front()->toOccWire();
+        int iinner{0};
+        for (auto& inner : holes) {
+             if (iouter == iinner) {
+                 iinner++;
+                 continue;
+             }
+             TopoDS_Wire innerWire = inner->wires.front()->toOccWire();
+             if (Part::FaceMakerCheese::isInside(outerWire, innerWire)) {
+                nestedFaceIndices.push_back(iinner);
+             }
+             iinner++;
+        }
+        iouter++;
+    }
+
+    std::sort(nestedFaceIndices.begin(), nestedFaceIndices.end());
+    auto last = std::unique(nestedFaceIndices.begin(), nestedFaceIndices.end());
+    if (last != nestedFaceIndices.end()) {
+        nestedFaceIndices.erase(last, nestedFaceIndices.end());
+    }
+    return nestedFaceIndices;
+}
+
+//! get a description for a GeomType.  Needs to always be in sync with the
+//! GeomType enum.
+std::string GeometryUtils::getGeomTypeName(GeomType typeEnumValue)
+{
+    switch (typeEnumValue) {
+        case GeomType::NOTDEF: return "Not Defined";
+        case GeomType::CIRCLE: return "Circle";
+        case GeomType::ARCOFCIRCLE: return "Arc of Circle";
+        case GeomType::ELLIPSE: return "Ellipse";
+        case GeomType::ARCOFELLIPSE: return "Arc of Ellipse";
+        case GeomType::BEZIER: return "Bezier Curve";
+        case GeomType::BSPLINE: return "B-spline Curve";
+        case GeomType::GENERIC: return "Line";
+    }
+
+    return "Not Defined";
+}
+
+gp_Pnt GeometryUtils::midPoint(const opencascade::handle<Geom_TrimmedCurve> &curve)
+{
+    double midParam = (curve->FirstParameter() + curve->LastParameter()) / 2;
+    return curve->Value(midParam);
+}
+
+//! Returns the arc of a circle that is a better approximation of a spline.
+opencascade::handle<Geom_TrimmedCurve> GeometryUtils::bestFitArc(opencascade::handle<Geom_TrimmedCurve> splineActual,
+                                                                 opencascade::handle<Geom_TrimmedCurve> circleArc0,
+                                                                 opencascade::handle<Geom_TrimmedCurve> circleArc1)
+{
+    gp_Pnt midActual = midPoint(splineActual);
+    gp_Pnt mid0 = midPoint(circleArc0);
+    gp_Pnt mid1 = midPoint(circleArc1);
+    if (midActual.Distance(mid0) < midActual.Distance(mid1)) {
+        return circleArc0;
+    }
+
+    return circleArc1;
+}
+
 

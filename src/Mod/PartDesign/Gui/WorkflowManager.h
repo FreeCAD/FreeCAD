@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef WORKFLOWMANAGER_H_PB7A5GCM
-#define WORKFLOWMANAGER_H_PB7A5GCM
+#pragma once
 
 namespace App
 {
@@ -100,9 +101,9 @@ private:
 private:
     std::map<const App::Document*, Workflow> dwMap;
 
-    boost::signals2::connection connectNewDocument;
-    boost::signals2::connection connectFinishRestoreDocument;
-    boost::signals2::connection connectDeleteDocument;
+    fastsignals::connection connectNewDocument;
+    fastsignals::connection connectFinishRestoreDocument;
+    fastsignals::connection connectDeleteDocument;
 
     static WorkflowManager* _instance;
 };
@@ -132,5 +133,3 @@ inline bool isModernWorkflow(App::Document* doc)
 }
 
 }  // namespace PartDesignGui
-
-#endif /* end of include guard: WORKFLOWMANAGER_H_PB7A5GCM */

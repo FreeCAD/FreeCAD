@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_CROSSSECTIONS_H
-#define PARTGUI_CROSSSECTIONS_H
+#pragma once
 
 #include <QDialog>
 #include <QPointer>
@@ -114,5 +113,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_CROSSSECTIONS_H

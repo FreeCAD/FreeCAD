@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DrawViewDraft_h_
-#define DrawViewDraft_h_
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -77,6 +76,3 @@ using DrawViewDraftPython = App::FeaturePythonT<DrawViewDraft>;
 
 
 } //namespace TechDraw
-
-
-#endif

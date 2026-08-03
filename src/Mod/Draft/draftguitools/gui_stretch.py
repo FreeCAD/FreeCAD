@@ -31,6 +31,7 @@ It essentially moves the points that are located within a selection area,
 while keeping other points intact. This means the lines tied by the points
 that were moved are 'stretched'.
 """
+
 ## @package gui_stretch
 # \ingroup draftguitools
 # \brief Provides GUI tools to stretch Draft objects.
@@ -109,6 +110,8 @@ class Stretch(gui_base_original.Modifier):
                                 self.sel.append(
                                     [obj.Base.Base, obj.Placement.multiply(obj.Base.Placement)]
                                 )
+                elif utils.getType(obj) == "Wall" and not obj.Base:  # baseless walls
+                    self.sel.append([obj, App.Placement()])
             elif utils.getType(obj) in ["Offset2D", "Array"]:
                 base = None
                 if hasattr(obj, "Source") and obj.Source:
@@ -129,6 +132,8 @@ class Stretch(gui_base_original.Modifier):
             self.nodetracker = []
             self.displacement = None
             _toolmsg(translate("draft", "Pick first point of selection rectangle"))
+            self.selection_done = True
+            self.update_hints()
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -169,6 +174,7 @@ class Stretch(gui_base_original.Modifier):
             if self.planetrack:
                 self.planetrack.set(point)
             self.step = 2
+            self.update_hints()
         elif self.step == 2:
             # second rectangle point
             _toolmsg(translate("draft", "Pick start point of displacement"))
@@ -222,6 +228,18 @@ class Stretch(gui_base_original.Modifier):
                             nodes.append(p)
                     if iso:
                         self.ops.append([o, np])
+                elif tp == "Wall":
+                    np = []
+                    iso = False
+                    # For baseless walls, get endpoints from our new API method
+                    for p in o.Proxy.calc_endpoints(o):
+                        isi = self.rectracker.isInside(p)
+                        np.append(isi)
+                        if isi:
+                            iso = True
+                            nodes.append(p)
+                    if iso:
+                        self.ops.append([o, np])
                 else:
                     p = o.Placement.Base
                     p = vispla.multVec(p)
@@ -233,6 +251,7 @@ class Stretch(gui_base_original.Modifier):
                 nt.on()
                 self.nodetracker.append(nt)
             self.step = 3
+            self.update_hints()
         elif self.step == 3:
             # first point of displacement line
             _toolmsg(translate("draft", "Pick end point of displacement"))
@@ -240,6 +259,7 @@ class Stretch(gui_base_original.Modifier):
             # print("first point:", point)
             self.node = [point]
             self.step = 4
+            self.update_hints()
         elif self.step == 4:
             # print("second point:", point)
             self.displacement = point.sub(self.displacement)
@@ -477,6 +497,28 @@ class Stretch(gui_base_original.Modifier):
                             commitops.append("w = " + _cmd)
                             commitops.append(_format)
                             commitops.append(_hide)
+                    elif tp == "Wall":
+                        npts = []
+                        # Reconstruct the new endpoints after applying displacement
+                        for i, pt in enumerate(ops[0].Proxy.calc_endpoints(ops[0])):
+                            if ops[1][i]:
+                                npts.append(pt.add(self.displacement))
+                            else:
+                                npts.append(pt)
+                        # Construct the points list string
+                        points_str = (
+                            "["
+                            + ", ".join([f"FreeCAD.Vector({p.x}, {p.y}, {p.z})" for p in npts])
+                            + "]"
+                        )
+
+                        commitops.append("import FreeCAD")
+                        commitops.append(
+                            f"wall_obj = FreeCAD.ActiveDocument.getObject('{ops[0].Name}')"
+                        )
+                        commitops.append(
+                            f"wall_obj.Proxy.set_from_endpoints(wall_obj, {points_str})"
+                        )
                     else:
                         _pl = _doc + ops[0].Name
                         _pl += ".Placement.Base=FreeCAD."
@@ -487,6 +529,22 @@ class Stretch(gui_base_original.Modifier):
             Gui.addModule("Draft")
             self.commit(translate("draft", "Stretch"), commitops)
         self.finish()
+
+    def get_action_hints(self):
+        if self.step == 1:
+            label = translate("draft", "%1 pick first point of selection rectangle")
+        elif self.step == 2:
+            label = translate("draft", "%1 pick opposite point of selection rectangle")
+        elif self.step == 3:
+            label = translate("draft", "%1 pick start point of displacement")
+        else:
+            label = translate("draft", "%1 pick end point of displacement")
+        return (
+            [Gui.InputHint(label, Gui.UserInput.MouseLeft)]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+        )
 
 
 Gui.addCommand("Draft_Stretch", Stretch())

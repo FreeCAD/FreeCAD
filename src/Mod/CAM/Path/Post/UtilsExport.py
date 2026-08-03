@@ -283,7 +283,7 @@ def export_common(values: Values, objectslist, filename: str) -> str:
             print("Please select only path and Compounds.")
             return ""
 
-    print(f'PostProcessor:  {values["POSTPROCESSOR_FILE_NAME"]} postprocessing...')
+    # print(f'PostProcessor:  {values["POSTPROCESSOR_FILE_NAME"]} postprocessing...')  # Commented to reduce test noise
 
     check_canned_cycles(values)
     output_header(values, gcode)
@@ -381,5 +381,5 @@ def export_common(values: Values, objectslist, filename: str) -> str:
                 # that is running the postprocessor uses".
                 gfile.write(final)
 
-    print("done postprocessing.")
+    # print("done postprocessing.")  # Commented to reduce test noise
     return final

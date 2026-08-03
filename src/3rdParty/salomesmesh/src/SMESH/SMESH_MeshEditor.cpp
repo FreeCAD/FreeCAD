@@ -57,6 +57,7 @@
 #include "utilities.h"
 #include "chrono.hxx"
 
+#include <vtkVersion.h>
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>
@@ -74,7 +75,6 @@
 #include <TopAbs_State.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
 #include <TopTools_ListOfShape.hxx>
 #include <TopTools_SequenceOfShape.hxx>
 #include <TopoDS.hxx>
@@ -11348,7 +11348,7 @@ bool SMESH_MeshEditor::DoubleNodesOnGroupBoundaries( const std::vector<TIDSorted
             {
               int oldId = *itn;
               //MESSAGE("     node " << oldId);
-#if VTK_VERSION_NUMBER_QUICK >= 90300000000
+#if VTK_VERSION_NUMBER >= VTK_VERSION_CHECK(9, 2, 20221112)
               vtkCellLinks::Link l = static_cast<vtkCellLinks*>(grid->GetLinks())->GetLink(oldId);
 #else
               vtkCellLinks::Link l = static_cast<vtkCellLinks*>(grid->GetCellLinks())->GetLink(oldId);
@@ -11712,7 +11712,7 @@ bool SMESH_MeshEditor::DoubleNodesOnGroupBoundaries( const std::vector<TIDSorted
         {
           int oldId = itnod->first;
           //MESSAGE("     node " << oldId);
-#if VTK_VERSION_NUMBER_QUICK >= 90300000000
+#if VTK_VERSION_NUMBER >= VTK_VERSION_CHECK(9, 2, 20221112)
           vtkCellLinks::Link l = static_cast<vtkCellLinks*>(grid->GetLinks())->GetLink(oldId);
 #else
           vtkCellLinks::Link l = static_cast<vtkCellLinks*>(grid->GetCellLinks())->GetLink(oldId);

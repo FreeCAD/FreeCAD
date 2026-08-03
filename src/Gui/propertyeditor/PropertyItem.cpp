@@ -47,6 +47,7 @@
 #include <App/PropertyGeo.h>
 #include <App/PropertyFile.h>
 #include <App/PropertyUnits.h>
+#include <App/TransactionDefs.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
@@ -61,6 +62,7 @@
 #include <Gui/SpinBox.h>
 #include <Gui/VectorListEditor.h>
 #include <Gui/ViewProviderDocumentObject.h>
+#include <Gui/Document.h>
 
 // NOLINTBEGIN(cppcoreguidelines-pro-*,cppcoreguidelines-prefer-member-initializer)
 using namespace Gui::PropertyEditor;
@@ -574,18 +576,14 @@ void PropertyItem::setPropertyName(const QString& name, const QString& realName)
     setObjectName(propName);
 
     QString display;
-    bool upper = false;
+    // Camel case splitting
     for (auto&& i : name) {
         if (i.isUpper() && !display.isEmpty()) {
-            // if there is a sequence of capital letters do not insert spaces
-            if (!upper) {
-                QChar last = display.at(display.length() - 1);
-                if (!last.isSpace()) {
-                    display += QLatin1String(" ");
-                }
+            QChar last = display.at(display.length() - 1);
+            if (last.isLower()) {
+                display += QLatin1String(" ");
             }
         }
-        upper = i.isUpper();
         display += i;
     }
 
@@ -650,6 +648,11 @@ void PropertyItem::setPropertyValue(const std::string& value)
     }
 }
 
+void PropertyItem::setNameToolTipOverride(const QString& name)
+{
+    nameToolTipOverride = name;
+}
+
 void PropertyItem::setPropertyValue(const QString& value)
 {
     setPropertyValue(value.toStdString());
@@ -676,6 +679,9 @@ QVariant PropertyItem::dataPropertyName(int role) const
     }
     // no properties set
     if (propertyItems.empty()) {
+        if (role == Qt::ToolTipRole && nameToolTipOverride.size()) {
+            return nameToolTipOverride;
+        }
         return {};
     }
     if (role == Qt::ToolTipRole) {
@@ -849,9 +855,9 @@ QWidget* PropertyStringItem::createEditor(
     FrameOption frameOption
 ) const
 {
+    Q_UNUSED(method);
     auto le = new ExpLineEdit(parent);
     le->setFrame(static_cast<bool>(frameOption));
-    QObject::connect(le, &ExpLineEdit::textChanged, method);
     if (isBound()) {
         le->bind(getPath());
         le->setAutoApply(autoApply());
@@ -870,6 +876,15 @@ QVariant PropertyStringItem::editorData(QWidget* editor) const
 {
     auto le = qobject_cast<QLineEdit*>(editor);
     return {le->text()};
+}
+
+QVariant PropertyStringItem::toolTip(const App::Property* prop) const
+{
+    // For the FileName property, show the actual file path in the tooltip
+    if (prop && std::string(prop->getName()) == "FileName") {
+        return value(prop);
+    }
+    return PropertyItem::toolTip(prop);
 }
 
 // --------------------------------------------------------------------
@@ -1068,6 +1083,10 @@ void PropertyIntegerConstraintItem::setEditorData(QWidget* editor, const QVarian
         sb->setSingleStep(steps);
     }
 
+    if (prop && prop->isDerivedFrom<App::PropertyPercent>()) {
+        sb->setSuffix(QStringLiteral(" %"));
+    }
+
     sb->setValue(data.toInt());
 }
 
@@ -1080,6 +1099,11 @@ QVariant PropertyIntegerConstraintItem::editorData(QWidget* editor) const
 QString PropertyIntegerConstraintItem::toString(const QVariant& v) const
 {
     QString string(PropertyItem::toString(v));
+
+    const auto prop = getFirstProperty();
+    if (prop && prop->isDerivedFrom<App::PropertyPercent>()) {
+        string += QStringLiteral(" %");
+    }
 
     if (hasExpression()) {
         string += QStringLiteral("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
@@ -2637,12 +2661,14 @@ PlacementEditor::~PlacementEditor() = default;
 
 void PlacementEditor::browse()
 {
-    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(
+        Gui::Application::Instance->activeDocument()->getDocument()
+    );
     Gui::Dialog::TaskPlacement* task {};
     task = qobject_cast<Gui::Dialog::TaskPlacement*>(dlg);
     if (dlg && !task) {
         // there is already another task dialog which must be closed first
-        Gui::Control().showDialog(dlg);
+        Gui::Control().showDialog(dlg, Gui::Application::Instance->activeDocument()->getDocument());
         return;
     }
     if (!task) {
@@ -2656,7 +2682,7 @@ void PlacementEditor::browse()
     task->setPropertyName(propertyname);
     task->setSelection(Gui::Selection().getSelectionEx());
     task->bindObject();
-    Gui::Control().showDialog(task);
+    Gui::Control().showDialog(task, Gui::Application::Instance->activeDocument()->getDocument());
 }
 
 void PlacementEditor::showValue(const QVariant& d)
@@ -3557,21 +3583,41 @@ PropertyMaterialItem::PropertyMaterialItem()
     diffuse = static_cast<PropertyColorItem*>(PropertyColorItem::create());
     diffuse->setParent(this);
     diffuse->setPropertyName(QLatin1String("DiffuseColor"));
+    diffuse->setNameToolTipOverride(
+        tr("Defines the base color of a surface when illuminated by light. It represents how the "
+           "object scatters light evenly in all directions, independent of the viewer’s angle. "
+           "This property will influence the material color the most.")
+    );
     this->appendChild(diffuse);
 
     ambient = static_cast<PropertyColorItem*>(PropertyColorItem::create());
     ambient->setParent(this);
     ambient->setPropertyName(QLatin1String("AmbientColor"));
+    ambient->setNameToolTipOverride(
+        tr("Defines the color of a surface under indirect, uniform lighting, representing how it "
+           "appears when illuminated only by ambient light in a scene, without directional light, "
+           "shading, or highlights")
+    );
     this->appendChild(ambient);
 
     specular = static_cast<PropertyColorItem*>(PropertyColorItem::create());
     specular->setParent(this);
     specular->setPropertyName(QLatin1String("SpecularColor"));
+    specular->setNameToolTipOverride(
+        tr("Defines the color and intensity of the bright, mirror-like highlights that appear on "
+           "shiny or reflective surfaces when light hits them directly. Set to bright colors for "
+           "shiny objects.")
+    );
     this->appendChild(specular);
 
     emissive = static_cast<PropertyColorItem*>(PropertyColorItem::create());
     emissive->setParent(this);
     emissive->setPropertyName(QLatin1String("EmissiveColor"));
+    emissive->setNameToolTipOverride(
+        tr("Defines the color of a surface that appears to emit as if it were a light source, "
+           "independent of external lighting, making the object look self-illuminated. Set to "
+           "black to have no emissive color.")
+    );
     this->appendChild(emissive);
 
     shininess = static_cast<PropertyIntegerConstraintItem*>(PropertyIntegerConstraintItem::create());
@@ -3579,6 +3625,11 @@ PropertyMaterialItem::PropertyMaterialItem()
     shininess->setStepSize(steps);
     shininess->setParent(this);
     shininess->setPropertyName(QLatin1String("Shininess"));
+    shininess->setNameToolTipOverride(
+        tr("Defines the size and sharpness of specular highlights on a surface. Higher values "
+           "produce small, sharp highlights, while lower values create broad, soft highlights. "
+           "Note that the highlight intensity is defined by specular color.")
+    );
     this->appendChild(shininess);
 
     transparency = static_cast<PropertyIntegerConstraintItem*>(PropertyIntegerConstraintItem::create());
@@ -3586,6 +3637,10 @@ PropertyMaterialItem::PropertyMaterialItem()
     transparency->setStepSize(steps);
     transparency->setParent(this);
     transparency->setPropertyName(QLatin1String("Transparency"));
+    transparency->setNameToolTipOverride(
+        tr("Defines how much light passes through an object, making it "
+           "partially or fully see-through")
+    );
     this->appendChild(transparency);
 }
 
@@ -3894,21 +3949,41 @@ PropertyMaterialListItem::PropertyMaterialListItem()
     diffuse = static_cast<PropertyColorItem*>(PropertyColorItem::create());
     diffuse->setParent(this);
     diffuse->setPropertyName(QLatin1String("DiffuseColor"));
+    diffuse->setNameToolTipOverride(
+        tr("Defines the base color of a surface when illuminated by light. It represents how the "
+           "object scatters light evenly in all directions, independent of the viewer’s angle. "
+           "This property will influence the material color the most.")
+    );
     this->appendChild(diffuse);
 
     ambient = static_cast<PropertyColorItem*>(PropertyColorItem::create());
     ambient->setParent(this);
     ambient->setPropertyName(QLatin1String("AmbientColor"));
+    ambient->setNameToolTipOverride(
+        tr("Defines the color of a surface under indirect, uniform lighting, representing how it "
+           "appears when illuminated only by ambient light in a scene, without directional light, "
+           "shading, or highlights")
+    );
     this->appendChild(ambient);
 
     specular = static_cast<PropertyColorItem*>(PropertyColorItem::create());
     specular->setParent(this);
     specular->setPropertyName(QLatin1String("SpecularColor"));
+    specular->setNameToolTipOverride(
+        tr("Defines the color and intensity of the bright, mirror-like highlights that appear on "
+           "shiny or reflective surfaces when light hits them directly. Set to bright colors for "
+           "shiny objects.")
+    );
     this->appendChild(specular);
 
     emissive = static_cast<PropertyColorItem*>(PropertyColorItem::create());
     emissive->setParent(this);
     emissive->setPropertyName(QLatin1String("EmissiveColor"));
+    emissive->setNameToolTipOverride(
+        tr("Defines the color of a surface that appears to emit as if it were a light source, "
+           "independent of external lighting, making the object look self-illuminated. Set to "
+           "black to have no emissive color.")
+    );
     this->appendChild(emissive);
 
     shininess = static_cast<PropertyIntegerConstraintItem*>(PropertyIntegerConstraintItem::create());
@@ -3916,6 +3991,11 @@ PropertyMaterialListItem::PropertyMaterialListItem()
     shininess->setStepSize(steps);
     shininess->setParent(this);
     shininess->setPropertyName(QLatin1String("Shininess"));
+    shininess->setNameToolTipOverride(
+        tr("Defines the size and sharpness of specular highlights on a surface. Higher values "
+           "produce small, sharp highlights, while lower values create broad, soft highlights. "
+           "Note that the highlight intensity is defined by specular color.")
+    );
     this->appendChild(shininess);
 
     transparency = static_cast<PropertyIntegerConstraintItem*>(PropertyIntegerConstraintItem::create());
@@ -3923,6 +4003,10 @@ PropertyMaterialListItem::PropertyMaterialListItem()
     transparency->setStepSize(steps);
     transparency->setParent(this);
     transparency->setPropertyName(QLatin1String("Transparency"));
+    transparency->setNameToolTipOverride(
+        tr("Defines how much light passes through an object, making it "
+           "partially or fully see-through")
+    );
     this->appendChild(transparency);
 }
 
@@ -4650,8 +4734,8 @@ void LinkLabel::updatePropertyLink()
                        "</p></body></html>"
             )
                        .arg(
-                           QLatin1String(sobj.getDocumentName().c_str()),
-                           QLatin1String(sobj.getObjectName().c_str()),
+                           QString::fromStdString(sobj.getDocumentName()),
+                           QString::fromStdString(sobj.getObjectName()),
                            QString::fromUtf8(sobj.getSubName().c_str()),
                            linkcolor,
                            DlgPropertyLink::formatObject(
@@ -4802,6 +4886,160 @@ QVariant PropertyLinkItem::editorData(QWidget* editor) const
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyLinkListItem)
 
 PropertyLinkListItem::PropertyLinkListItem() = default;
+
+// --------------------------------------------------------------------
+
+static const char* PropertyMapDataProperty = "data";
+
+PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyMapItem)
+
+PropertyMapItem::PropertyMapItem() = default;
+
+QWidget* PropertyMapItem::
+    createEditor(QWidget* parent, const std::function<void()>& method, FrameOption /*frameOption*/) const
+{
+    QWidget* editor = new QWidget(parent);
+
+    auto layout = new QHBoxLayout(editor);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(2);
+
+    auto label = new QLabel(QStringLiteral("{ ... }"), editor);
+    label->setFrameShape(QFrame::Box);
+    label->setAutoFillBackground(true);
+
+    QPalette palette = label->palette();
+    palette.setColor(
+        QPalette::Base,
+        QApplication::palette().color(QPalette::Active, QPalette::Highlight)
+    );
+    palette.setColor(
+        QPalette::Text,
+        QApplication::palette().color(QPalette::Active, QPalette::HighlightedText)
+    );
+    label->setPalette(palette);
+    layout->addWidget(label);
+
+    auto button = new QPushButton(QStringLiteral("…"), parent);
+    button->setFixedWidth(button->height());
+    layout->addWidget(button);
+
+    connect(button, &QPushButton::clicked, this, [this, method, editor, label]() {
+        QDialog dialog(editor);
+        dialog.setWindowTitle(tr("Map"));
+
+        QFontMetrics metrics(dialog.font(), &dialog);
+        dialog.resize(metrics.horizontalAdvance(QStringLiteral("W")) * 36, metrics.height() * 15);
+
+        QDialogButtonBox box(&dialog);
+        box.setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+
+        PropertyMapEditor view(&dialog);
+        view.setMap(editor->property(PropertyMapDataProperty).toMap());
+        if (isBound()) {
+            view.bind(getPath());
+        }
+
+        QVBoxLayout layout(&dialog);
+        layout.addWidget(&view);
+        layout.addWidget(&box);
+
+        connect(&box, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
+        connect(&box, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
+
+        if (dialog.exec() == QDialog::Accepted) {
+            QVariantMap data = view.map();
+            editor->setProperty(PropertyMapDataProperty, data);
+            label->setText(this->toString(data));
+            method();
+
+            App::GetApplication().closeActiveTransaction(App::TransactionCloseMode::Commit);
+        }
+        else {
+            App::GetApplication().closeActiveTransaction(App::TransactionCloseMode::Abort);
+        }
+
+        static_cast<QWidget*>(editor->parent())->setFocus();
+    });
+
+    return editor;
+}
+
+void PropertyMapItem::setEditorData(QWidget* editor, const QVariant& data) const
+{
+    editor->setProperty(PropertyMapDataProperty, data);
+
+    QLabel* label = editor->findChild<QLabel*>();
+    if (label) {
+        label->setText(this->toString(data));
+    }
+}
+
+QVariant PropertyMapItem::editorData(QWidget* editor) const
+{
+    return editor->property(PropertyMapDataProperty);
+}
+
+QString PropertyMapItem::toString(const QVariant& prop) const
+{
+    QString result("");
+    QVariantMap map = prop.toMap();
+
+    auto total = map.size();
+    auto shown = std::min<decltype(total)>(total, 10);
+
+    result += QStringLiteral("{ ");
+    auto it = map.keyValueBegin();
+    for (decltype(shown) i = 0; i < shown; i++, it++) {
+        if (i > 0) {
+            result += QStringLiteral(" | ");
+        }
+        result += it->first;
+        result += QStringLiteral(" → ");
+        result += it->second.toString();
+    }
+
+    if (shown < total) {
+        result += QStringLiteral(" …");
+    }
+    result += QStringLiteral(" }");
+
+    return result;
+}
+
+QVariant PropertyMapItem::value(const App::Property* prop) const
+{
+    assert(prop && prop->isDerivedFrom<App::PropertyMap>());
+    const std::map<std::string, std::string>& values
+        = static_cast<const App::PropertyMap*>(prop)->getValues();
+
+    QVariantMap map;
+    for (const auto& it : values) {
+        map[QString::fromStdString(it.first)] = QString::fromStdString(it.second);
+    }
+
+    return {map};
+}
+
+void PropertyMapItem::setValue(const QVariant& value)
+{
+    if (hasExpression() || !value.canConvert<QVariantMap>()) {
+        return;
+    }
+    QVariantMap map = value.toMap();
+
+    std::ostringstream ss;
+    ss << "{";
+    for (auto it = map.keyValueBegin(); it != map.keyValueEnd(); it++) {
+        std::string k = Base::InterpreterSingleton::strToPython(it->first.toStdString());
+        std::string v = Base::InterpreterSingleton::strToPython(it->second.toString().toStdString());
+        ss << "\"" << k << "\": \"" << v << "\", ";
+    }
+    ss << "}";
+    setPropertyValue(ss.str());
+}
+
+// ---------------------------------------------------------------
 
 PropertyItemEditorFactory::PropertyItemEditorFactory() = default;
 

@@ -69,7 +69,8 @@ def add_common_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentPa
     parser.add_argument(
         "--files",
         required=True,
-        help="A space-separated list or glob pattern of files to check.",
+        nargs="+",
+        help="List of files to check.",
     )
     parser.add_argument(
         "--log-dir", required=True, help="Directory where log files will be written."

@@ -24,14 +24,15 @@
 
 #include <limits>
 
+#include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoDepthBuffer.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoLineSet.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoTransparencyType.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoBaseColor.h>
 #include <Inventor/SbVec3f.h>
 
 #include <QApplication>
@@ -64,6 +65,11 @@ App::PropertyQuantityConstraint::Constraints ViewProviderGridExtension::GridSize
 namespace PartGui
 {
 
+namespace
+{
+constexpr float GRID_Z_OFFSET {0.002F};
+}
+
 class GridExtensionP
 {
 public:
@@ -72,7 +78,7 @@ public:
 
     void drawGrid(bool cameraUpdate = false);
 
-    void setEnabled(bool enable);
+    void setEnabled(Gui::View3DInventor* view_);
     bool getEnabled();
 
     SoSeparator* getGridRoot();
@@ -91,6 +97,7 @@ public:
     int GridDivLineWidth = 2;
     unsigned int GridLineColor;
     unsigned int GridDivLineColor;
+    float GridTransparency = 0.6f;
 
 private:
     void computeGridSize(const Gui::View3DInventorViewer* viewer);
@@ -100,7 +107,7 @@ private:
         bool divLines,
         bool subDivLines,
         int pattern,
-        SoBaseColor* color,
+        SoMaterial* material,
         int lineWidth = 1
     );
 
@@ -110,6 +117,8 @@ private:
     void createEditModeInventorNodes();
 
     Base::Vector3d getCamCenterInSketchCoordinates() const;
+    Base::Vector3d getPointInSketchCoordinates(const SbVec3f& point) const;
+    int getViewOrientationFactor() const;
 
     SbVec3f camCenterPointOnFocalPlane;
     float camMaxDimension;
@@ -120,7 +129,7 @@ private:
 private:
     ViewProviderGridExtension* vp;
 
-    bool enabled = false;
+    Gui::View3DInventor* view {nullptr};
     double computedGridValue = 10;
 
     bool isTooManySegmentsNotified = false;
@@ -191,7 +200,7 @@ bool GridExtensionP::checkCameraTranslationChange(const Gui::View3DInventorViewe
 {
     // Then we check if user moved by more than 10% of camera dimension (must be after updating
     // camera dimension).
-    SbVec3f newCamCenterPointOnFocalPlane = viewer->getCenterPointOnFocalPlane();
+    SbVec3f newCamCenterPointOnFocalPlane = viewer->getFocalPoint();
 
     if ((camCenterPointOnFocalPlane - newCamCenterPointOnFocalPlane).length()
         > 0.1 * camMaxDimension) {
@@ -244,10 +253,6 @@ void GridExtensionP::computeGridSize(const Gui::View3DInventorViewer* viewer)
 
 void GridExtensionP::createGrid(bool cameraUpdate)
 {
-    auto view = dynamic_cast<Gui::View3DInventor*>(
-        Gui::Application::Instance->editDocument()->getActiveView()
-    );
-
     if (!view) {
         return;
     }
@@ -268,13 +273,14 @@ void GridExtensionP::createGrid(bool cameraUpdate)
 
     computeGridSize(viewer);
 
-    auto getColor = [](auto unpackedcolor) {
-        SoBaseColor* lineColor = new SoBaseColor;
-        float transparency;
+    auto getMaterial = [this](auto unpackedcolor) {
+        SoMaterial* mat = new SoMaterial;
+        float unused;
         SbColor lineCol(0.7f, 0.7f, 0.7f);
-        lineCol.setPackedValue(unpackedcolor, transparency);
-        lineColor->rgb.setValue(lineCol);
-        return lineColor;
+        lineCol.setPackedValue(unpackedcolor, unused);
+        mat->diffuseColor.setValue(lineCol);
+        mat->transparency.setValue(GridTransparency);
+        return mat;
     };
 
     // First we create the subdivision lines
@@ -283,7 +289,7 @@ void GridExtensionP::createGrid(bool cameraUpdate)
         true,
         (GridNumberSubdivision == 1),
         GridLinePattern,
-        getColor(GridLineColor),
+        getMaterial(GridLineColor),
         GridLineWidth
     );
 
@@ -294,7 +300,7 @@ void GridExtensionP::createGrid(bool cameraUpdate)
             false,
             true,
             GridDivLinePattern,
-            getColor(GridDivLineColor),
+            getMaterial(GridDivLineColor),
             GridDivLineWidth
         );
     }
@@ -305,17 +311,22 @@ void GridExtensionP::createGridPart(
     bool subDivLines,
     bool divLines,
     int pattern,
-    SoBaseColor* color,
+    SoMaterial* material,
     int lineWidth
 )
 {
+    float gridZ = getViewOrientationFactor() * GRID_Z_OFFSET;
+
     auto* parent = new Gui::SoSkipBoundingGroup();
     parent->mode = Gui::SoSkipBoundingGroup::EXCLUDE_BBOX;
 
     GridRoot->addChild(parent);
     SoVertexProperty* vts;
 
-    parent->addChild(color);
+    SoTransparencyType* transparencyType = new SoTransparencyType;
+    transparencyType->value = SoTransparencyType::DELAYED_BLEND;
+    parent->addChild(transparencyType);
+    parent->addChild(material);
 
     SoDrawStyle* DefaultStyle = new SoDrawStyle;
     DefaultStyle->lineWidth = lineWidth;
@@ -378,8 +389,8 @@ void GridExtensionP::createGridPart(
         int iStep = (i + i_offset_x);
         if (((iStep % numberSubdiv == 0) && divLines)
             || ((iStep % numberSubdiv != 0) && subDivLines)) {
-            vertex_coords[2 * i].setValue(iStep * computedGridValue, minY, 0);
-            vertex_coords[2 * i + 1].setValue(iStep * computedGridValue, maxY, 0);
+            vertex_coords[2 * i].setValue(iStep * computedGridValue, minY, gridZ);
+            vertex_coords[2 * i + 1].setValue(iStep * computedGridValue, maxY, gridZ);
         }
         else {
             /*the number of vertices is defined before. To know the number of vertices ahead it would
@@ -396,8 +407,8 @@ void GridExtensionP::createGridPart(
         int iStep = (i + i_offset_y);
         if (((iStep % numberSubdiv == 0) && divLines)
             || ((iStep % numberSubdiv != 0) && subDivLines)) {
-            vertex_coords[2 * i].setValue(minX, iStep * computedGridValue, 0);
-            vertex_coords[2 * i + 1].setValue(maxX, iStep * computedGridValue, 0);
+            vertex_coords[2 * i].setValue(minX, iStep * computedGridValue, gridZ);
+            vertex_coords[2 * i + 1].setValue(maxX, iStep * computedGridValue, gridZ);
         }
         else {
             vertex_coords[2 * i].setValue(0, 0, 0);
@@ -412,31 +423,55 @@ void GridExtensionP::createGridPart(
 
 Base::Vector3d GridExtensionP::getCamCenterInSketchCoordinates() const
 {
+    return getPointInSketchCoordinates(camCenterPointOnFocalPlane);
+}
+
+Base::Vector3d GridExtensionP::getPointInSketchCoordinates(const SbVec3f& point) const
+{
     Base::Vector3d xaxis(1, 0, 0), yaxis(0, 1, 0);
 
     gridRotation.multVec(xaxis, xaxis);
     gridRotation.multVec(yaxis, yaxis);
 
     float x, y, z;
-    camCenterPointOnFocalPlane.getValue(x, y, z);
+    point.getValue(x, y, z);
 
-    Base::Vector3d center(x, y, z);
+    Base::Vector3d result(x, y, z);
+    result.TransformToCoordinateSystem(gridOrigin, xaxis, yaxis);
 
-    center.TransformToCoordinateSystem(gridOrigin, xaxis, yaxis);
-
-    return center;
+    return result;
 }
 
-void GridExtensionP::setEnabled(bool enable)
+int GridExtensionP::getViewOrientationFactor() const
 {
-    enabled = enable;
+    if (!view) {
+        return 1;
+    }
+
+    auto* viewer = view->getViewer();
+    if (!viewer) {
+        return 1;
+    }
+
+    auto* camera = viewer->getSoRenderManager()->getCamera();
+    if (!camera) {
+        return 1;
+    }
+
+    auto cameraPosition = getPointInSketchCoordinates(camera->position.getValue());
+    return cameraPosition.z < 0 ? -1 : 1;
+}
+
+void GridExtensionP::setEnabled(Gui::View3DInventor* view_)
+{
+    view = view_;
 
     drawGrid();
 }
 
 bool GridExtensionP::getEnabled()
 {
-    return enabled;
+    return view != nullptr;
 }
 
 void GridExtensionP::createEditModeInventorNodes()
@@ -454,7 +489,7 @@ SoSeparator* GridExtensionP::getGridRoot()
 
 void GridExtensionP::drawGrid(bool cameraUpdate)
 {
-    if (vp->ShowGrid.getValue() && enabled) {
+    if (vp->ShowGrid.getValue() && getEnabled()) {
         createGrid(cameraUpdate);
     }
     else {
@@ -496,9 +531,9 @@ ViewProviderGridExtension::ViewProviderGridExtension()
 
 ViewProviderGridExtension::~ViewProviderGridExtension() = default;
 
-void ViewProviderGridExtension::setGridEnabled(bool enable)
+void ViewProviderGridExtension::setGridEnabled(Gui::View3DInventor* view)
 {
-    pImpl->setEnabled(enable);
+    pImpl->setEnabled(view);
 }
 
 void ViewProviderGridExtension::drawGrid(bool cameraUpdate)
@@ -589,6 +624,12 @@ void ViewProviderGridExtension::setGridLineColor(const Base::Color& color)
 void ViewProviderGridExtension::setGridDivLineColor(const Base::Color& color)
 {
     pImpl->GridDivLineColor = color.getPackedValue();
+    drawGrid(false);
+}
+
+void ViewProviderGridExtension::setGridTransparency(float transparency)
+{
+    pImpl->GridTransparency = transparency;
     drawGrid(false);
 }
 

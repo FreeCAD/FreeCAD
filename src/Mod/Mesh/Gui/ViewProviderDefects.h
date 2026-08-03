@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_VIEWPROVIDER_MESH_DEFECTS_H
-#define MESHGUI_VIEWPROVIDER_MESH_DEFECTS_H
+#pragma once
 
 #include "ViewProvider.h"
 
@@ -241,6 +240,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-
-#endif  // MESHGUI_VIEWPROVIDER_MESH_DEFECTS_H

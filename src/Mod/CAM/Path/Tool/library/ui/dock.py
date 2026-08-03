@@ -24,6 +24,7 @@
 # ***************************************************************************
 
 """ToolBit Library Dock Widget."""
+
 import FreeCAD
 import FreeCADGui
 import Path
@@ -172,7 +173,7 @@ class ToolBitLibraryDock(object):
             QtGui.QMessageBox.information(
                 self.form,
                 translate("CAM_ToolBit", "No Job Found"),
-                translate("CAM_ToolBit", "Please create a Job first."),
+                translate("CAM_ToolBit", "Create a Job first."),
             )
             return
         elif self.defaultJob or len(jobs) == 1:

@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_PYWRAPPARSETUPLEANDKEYWORDS_H
-#define FREECAD_PYWRAPPARSETUPLEANDKEYWORDS_H
+#pragma once
 
 #include <Python.h>
 #include <array>
@@ -69,5 +68,3 @@ bool Wrapped_ParseTupleAndKeywords(
 }
 
 }  // namespace Base
-
-#endif  // FREECAD_PYWRAPPARSETUPLEANDKEYWORDS_H

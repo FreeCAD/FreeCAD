@@ -21,6 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides support functions to edit Part objects."""
+
 ## @package gui_edit_part_objects
 # \ingroup draftguitools
 # \brief Provides support functions to edit Part objects.

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2006 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_FEATUREPYTHON_H
-#define APP_FEATUREPYTHON_H
+#pragma once
 
 #include <App/GeoFeature.h>
 #include <App/PropertyPythonObject.h>
@@ -82,6 +83,8 @@ public:
 
     int canLoadPartial() const;
 
+    ValueT supportsAsyncRecompute() const;
+
     /// return true to activate tree view group object handling
     ValueT hasChildElement() const;
     /// Get sub-element visibility
@@ -90,6 +93,11 @@ public:
     int setElementVisible(const char*, bool);
 
     bool editProperty(const char* propName);
+
+    ValueT isLink() const;
+    ValueT isLinkGroup() const;
+
+    bool getPlacementOf(Base::Placement& ret, const char* subname, App::DocumentObject* target) const;
 
 private:
     App::DocumentObject* object;
@@ -111,10 +119,14 @@ private:
     FC_PY_ELEMENT(allowDuplicateLabel)                                                             \
     FC_PY_ELEMENT(redirectSubName)                                                                 \
     FC_PY_ELEMENT(canLoadPartial)                                                                  \
+    FC_PY_ELEMENT(supportsAsyncRecompute)                                                          \
     FC_PY_ELEMENT(hasChildElement)                                                                 \
     FC_PY_ELEMENT(isElementVisible)                                                                \
     FC_PY_ELEMENT(setElementVisible)                                                               \
-    FC_PY_ELEMENT(editProperty)
+    FC_PY_ELEMENT(editProperty)                                                                    \
+    FC_PY_ELEMENT(isLink)                                                                          \
+    FC_PY_ELEMENT(isLinkGroup)                                                                     \
+    FC_PY_ELEMENT(getPlacementOf)
 
 #define FC_PY_ELEMENT_DEFINE(_name) Py::Object py_##_name;
 
@@ -334,6 +346,15 @@ public:
         return FeatureT::canLoadPartial();
     }
 
+    bool canRecomputeOnWorker() const override
+    {
+        if (!FeatureT::canRecomputeOnWorker()) {
+            return false;
+        }
+
+        return imp->supportsAsyncRecompute() == FeaturePythonImp::Accepted;
+    }
+
     /**
      * @brief Called when a property is edited by the user.
      *
@@ -347,6 +368,41 @@ public:
         if (!imp->editProperty(propName)) {
             FeatureT::editProperty(propName);
         }
+    }
+
+    bool isLink() const override
+    {
+        switch (imp->isLink()) {
+            case FeaturePythonImp::Accepted:
+                return true;
+            case FeaturePythonImp::Rejected:
+                return false;
+            default:
+                return FeatureT::isLink();
+        }
+    }
+
+    bool isLinkGroup() const override
+    {
+        switch (imp->isLinkGroup()) {
+            case FeaturePythonImp::Accepted:
+                return true;
+            case FeaturePythonImp::Rejected:
+                return false;
+            default:
+                return FeatureT::isLinkGroup();
+        }
+    }
+
+    Base::Placement getPlacementOf(const std::string& sub, DocumentObject* targetObj = nullptr) override
+    {
+        Base::Placement ret;
+        // Try to call the python implementation first
+        if (imp->getPlacementOf(ret, sub.c_str(), targetObj)) {
+            return ret;
+        }
+        // Fallback to C++ implementation
+        return FeatureT::getPlacementOf(sub, targetObj);
     }
 
     PyObject* getPyObject() override
@@ -415,5 +471,3 @@ using FeaturePython = FeaturePythonT<DocumentObject>;
 using GeometryPython = FeaturePythonT<GeoFeature>;
 
 }  // namespace App
-
-#endif  // APP_FEATUREPYTHON_H

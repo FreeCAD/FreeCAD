@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DLG_ABOUT_H
-#define GUI_DLG_ABOUT_H
+#pragma once
 
 #include <QDialog>
 #include <QTextBrowser>
@@ -89,7 +90,6 @@ protected:
     void showCollectionInformation();
     void showPrivacyPolicy();
     void showOrHideImage(const QRect& rect);
-    void addModuleInfo(QTextStream& inout_str, const QString& modPath, bool& inout_first);
 
 protected:
     QPixmap aboutImage() const;
@@ -102,5 +102,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DLG_ABOUT_H

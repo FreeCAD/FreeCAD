@@ -4,7 +4,7 @@ General:
   UUID: "7e8510f7-7d87-4782-894d-068b0d3f04b7"
   Name: "Square"
   Author: "David Carter"
-  License: "All rights reserved"
+  License: "CC-BY-4.0"
 AppearanceModels:
   PAT:
     UUID: "0326c759-4e3d-46ca-bb7d-146ebebea65e"

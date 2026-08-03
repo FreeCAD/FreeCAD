@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TOC_Entry_HEADER
-#define TOC_Entry_HEADER
+#pragma once
 
 #include <istream>
 #include <stdint.h>
@@ -74,6 +73,3 @@ struct TOC_Entry
     I32 Segment_Length;
     U32 Segment_Attributes;
 };
-
-
-#endif

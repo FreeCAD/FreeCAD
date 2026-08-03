@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,7 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <boost/signals2/connection.hpp>
+#include <fastsignals/connection.h>
 
 #include <QAction>
 #include <QHeaderView>
@@ -37,7 +39,6 @@
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Command.h"
-#include "Window.h"
 #include "PrefWidgets.h"
 #include "ShortcutManager.h"
 #include "CommandCompleter.h"
@@ -67,16 +68,9 @@ struct GroupMap_find
 
 /* TRANSLATOR Gui::Dialog::DlgCustomKeyboardImp */
 
-/**
- *  Constructs a DlgCustomKeyboardImp which is a child of 'parent', with the
- *  name 'name' and widget flags set to 'f'
- *
- *  The dialog will by default be modeless, unless you set 'modal' to
- *  true to construct a modal dialog.
- */
 DlgCustomKeyboardImp::DlgCustomKeyboardImp(QWidget* parent)
-    : CustomizeActionPage(parent)
-    , ui(new Ui_DlgCustomKeyboard)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgSettingsKeyboard)
     , firstShow(true)
 {
     ui->setupUi(this);
@@ -108,19 +102,27 @@ DlgCustomKeyboardImp::DlgCustomKeyboardImp(QWidget* parent)
         ui->buttonUp,
         ui->buttonDown,
         ui->editShortcut,
-        ui->accelLineEditShortcut
+        ui->currentShortcut
     );
-
-    ui->shortcutTimeout->onRestore();
-    QTimer* timer = new QTimer(this);
-    QObject::connect(ui->shortcutTimeout, qOverload<int>(&QSpinBox::valueChanged), timer, [=](int) {
-        timer->start(100);
-    });
-    QObject::connect(timer, &QTimer::timeout, [this]() { ui->shortcutTimeout->onSave(); });
 }
 
-/** Destroys the object and frees any allocated resources */
 DlgCustomKeyboardImp::~DlgCustomKeyboardImp() = default;
+
+void DlgCustomKeyboardImp::saveSettings()
+{
+    // Note that shortcuts are currently saved as soon as modified
+    ui->shortcutTimeout->onSave();
+}
+
+void DlgCustomKeyboardImp::loadSettings()
+{
+    ui->shortcutTimeout->onRestore();
+}
+
+void DlgCustomKeyboardImp::resetSettingsToDefaults()
+{
+    ShortcutManager::instance()->resetAll();
+}
 
 void DlgCustomKeyboardImp::setupConnections()
 {
@@ -228,7 +230,7 @@ void DlgCustomKeyboardImp::populateCommandList(
     commandTreeWidget->resizeColumnToContents(3);
 }
 
-boost::signals2::connection DlgCustomKeyboardImp::initCommandList(
+fastsignals::connection DlgCustomKeyboardImp::initCommandList(
     QTreeWidget* commandTreeWidget,
     QTreeWidgetItem* separatorItem,
     QComboBox* combo
@@ -315,7 +317,7 @@ void DlgCustomKeyboardImp::initPriorityList(
     });
 }
 
-boost::signals2::connection DlgCustomKeyboardImp::initCommandWidgets(
+fastsignals::connection DlgCustomKeyboardImp::initCommandWidgets(
     QTreeWidget* commandTreeWidget,
     QTreeWidgetItem* separatorItem,
     QComboBox* comboGroups,
@@ -469,10 +471,10 @@ void DlgCustomKeyboardImp::onCommandTreeWidgetCurrentItemChanged(QTreeWidgetItem
         QKeySequence ks2 = QString::fromLatin1(cmd->getAccel());
         QKeySequence ks3 = ui->editShortcut->text();
         if (ks.isEmpty()) {
-            ui->accelLineEditShortcut->clear();
+            ui->currentShortcut->clear();
         }
         else {
-            ui->accelLineEditShortcut->setKeySequence(ks);
+            ui->currentShortcut->setKeySequence(ks);
         }
 
         ui->buttonAssign->setEnabled(!ui->editShortcut->text().isEmpty() && (ks != ks3));
@@ -485,7 +487,7 @@ void DlgCustomKeyboardImp::onCategoryBoxActivated(int)
 {
     ui->buttonAssign->setEnabled(false);
     ui->buttonReset->setEnabled(false);
-    ui->accelLineEditShortcut->clear();
+    ui->currentShortcut->clear();
     ui->editShortcut->clear();
 }
 
@@ -503,11 +505,11 @@ void DlgCustomKeyboardImp::setShortcutOfCurrentAction(const QString& accelText)
     if (!accelText.isEmpty()) {
         QKeySequence shortcut = accelText;
         portableText = shortcut.toString(QKeySequence::PortableText);
-        ui->accelLineEditShortcut->setKeySequence(shortcut);
+        ui->currentShortcut->setKeySequence(shortcut);
         ui->editShortcut->clear();
     }
     else {
-        ui->accelLineEditShortcut->clear();
+        ui->currentShortcut->clear();
         ui->editShortcut->clear();
     }
     ShortcutManager::instance()->setShortcut(name, portableText.toLatin1());
@@ -541,7 +543,7 @@ void DlgCustomKeyboardImp::onButtonResetClicked()
     ShortcutManager::instance()->reset(name);
 
     QString txt = ShortcutManager::instance()->getShortcut(name);
-    ui->accelLineEditShortcut->setKeySequence(QKeySequence(txt));
+    ui->currentShortcut->setKeySequence(QKeySequence(txt));
     ui->buttonReset->setEnabled(false);
 }
 
@@ -571,21 +573,6 @@ void DlgCustomKeyboardImp::onEditShortcutTextChanged(const QKeySequence&)
                 ui->buttonAssign->setEnabled(false);  // both key sequences are empty
             }
         }
-    }
-}
-
-void DlgCustomKeyboardImp::onAddMacroAction(const QByteArray&)
-{}
-
-void DlgCustomKeyboardImp::onRemoveMacroAction(const QByteArray&)
-{}
-
-void DlgCustomKeyboardImp::onModifyMacroAction(const QByteArray&)
-{
-    QVariant data = ui->categoryBox->itemData(ui->categoryBox->currentIndex(), Qt::UserRole);
-    QString group = data.toString();
-    if (group == QLatin1String("Macros")) {
-        ui->categoryBox->activated(ui->categoryBox->currentIndex());
     }
 }
 

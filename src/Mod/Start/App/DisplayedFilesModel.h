@@ -21,10 +21,10 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_START_DISPLAYED_FILES_MODEL_H
-#define FREECAD_START_DISPLAYED_FILES_MODEL_H
+#pragma once
 
 #include <QAbstractListModel>
+#include <QMutex>
 #include <Base/Parameter.h>
 
 #include "../StartGlobal.h"
@@ -50,6 +50,7 @@ using FileStats = std::map<DisplayedFilesModelRoles, std::string>;
 
 /// A model for displaying a list of files including a thumbnail or icon, plus various file
 /// statistics.
+/// Manipulation operations are thread-safe.
 class StartExport DisplayedFilesModel: public QAbstractListModel
 {
     Q_OBJECT
@@ -69,14 +70,16 @@ protected:
     /// DisplayedFilesModelRoles enumeration
     QHash<int, QByteArray> roleNames() const override;
 
+    /// Process incoming metadata & thumbnail about an FCStd file
+    void processNewFcstdInfo(const QString& filePath, const FileStats& stats, const QByteArray& thumbnail);
+
     /// Process a new thumbnail produces by some sort of worker thread
     void processNewThumbnail(const QString& file, const QByteArray& thumbnail);
 
 private:
+    mutable QMutex _mutex;
     std::vector<FileStats> _fileInfoCache;
     QMap<QString, QByteArray> _imageCache;
 };
 
 }  // namespace Start
-
-#endif  // FREECAD_START_DISPLAYED_FILES_MODEL_H

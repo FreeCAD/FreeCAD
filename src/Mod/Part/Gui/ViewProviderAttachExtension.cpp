@@ -28,6 +28,7 @@
 #include <Gui/ActionFunction.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
+#include <Gui/Document.h>
 #include <Mod/Part/App/AttachExtension.h>
 
 #include "ViewProviderAttachExtension.h"
@@ -97,7 +98,7 @@ void ViewProviderAttachExtension::extensionSetupContextMenu(QMenu* menu, QObject
     if (attach) {
         // toggle command to display components
         Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-        QAction* act = menu->addAction(QObject::tr("Attachment Editor"));
+        QAction* act = menu->addAction(QObject::tr("Edit Attachment"));
         if (Gui::Control().activeDialog()) {
             act->setDisabled(true);
         }
@@ -110,12 +111,11 @@ void ViewProviderAttachExtension::showAttachmentEditor(
     std::function<void()> onReject
 )
 {
-    if (Gui::Control().activeDialog()) {
-        Gui::Control().closeDialog();
+    if (Gui::Control().activeDialog(getExtendedViewProvider()->getDocument()->getDocument())) {
+        Gui::Control().closeDialog(getExtendedViewProvider()->getDocument()->getDocument());
     }
-
-    TaskDlgAttacher* task = new TaskDlgAttacher(getExtendedViewProvider(), true, onAccept, onReject);
-    Gui::Control().showDialog(task);
+    auto* task = new TaskDlgAttacher(getExtendedViewProvider(), true, onAccept, onReject);
+    Gui::Control().showDialog(task, getExtendedViewProvider()->getDocument()->getDocument());
 }
 
 namespace Gui

@@ -2,7 +2,8 @@
 # File created by ConvertFCMat.py
 General:
   UUID: "e359c5b5-eae2-42b1-9ef6-edde21d706ee"
-  License: "GPL-2.0-or-later"
+  Author: "Uwe Stoehr"
+  License: "LGPL-2.1-or-later"
   Name: "Argon"
   Description: "Argon properties at 20 Degrees Celsius and 1 atm"
 Models:

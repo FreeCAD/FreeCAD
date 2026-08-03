@@ -24,7 +24,6 @@
 #include <App/Document.h>
 #include <App/SuppressibleExtension.h>
 
-#include "ActionFunction.h"
 #include "Control.h"
 #include "Document.h"
 
@@ -34,7 +33,6 @@
 #include "ViewProviderSuppressibleExtension.h"
 #include "BitmapFactory.h"
 #include "ViewProviderDocumentObject.h"
-#include "qmenu.h"
 
 
 using namespace Gui;
@@ -84,21 +82,6 @@ QIcon ViewProviderSuppressibleExtension::extensionMergeColorfullOverlayIcons(con
             = Gui::BitmapFactoryInst::mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::TopLeft);
     }
     return Gui::ViewProviderExtension::extensionMergeColorfullOverlayIcons(mergedicon);
-}
-
-
-void ViewProviderSuppressibleExtension::extensionSetupContextMenu(QMenu* menu, QObject*, const char*)
-{
-    auto vp = getExtendedViewProvider();
-    auto obj = vp->getObject()->getExtensionByType<App::SuppressibleExtension>();
-    // Show Suppressed toggle action if the Suppressed property is visible
-    if (obj && !obj->Suppressed.testStatus(App::Property::Hidden)) {
-        Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-        QAction* act = menu->addAction(QObject::tr("Suppressed"));
-        act->setCheckable(true);
-        act->setChecked(obj->Suppressed.getValue());
-        func->trigger(act, [obj]() { obj->Suppressed.setValue(!obj->Suppressed.getValue()); });
-    }
 }
 
 

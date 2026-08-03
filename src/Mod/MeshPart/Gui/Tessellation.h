@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHPARTGUI_TESSELLATION_H
-#define MESHPARTGUI_TESSELLATION_H
+#pragma once
 
 #include <QPointer>
 #include <memory>
@@ -144,5 +143,3 @@ private:
 };
 
 }  // namespace MeshPartGui
-
-#endif  // MESHPARTGUI_TESSELLATION_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_SOZOOMTRANSLATION_H
-#define SKETCHERGUI_SOZOOMTRANSLATION_H
+#pragma once
 
 #include <Inventor/nodes/SoTranslation.h>
 
@@ -62,4 +63,3 @@ protected:
 };
 
 }  // namespace SketcherGui
-#endif  // SKETCHERGUI_SOZOOMTRANSLATION_H

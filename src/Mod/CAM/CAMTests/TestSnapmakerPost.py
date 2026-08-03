@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # SPDX-License-Identifier: EUPL-1.2
 
 # ***************************************************************************
@@ -18,6 +17,7 @@
 # *  implied. See the Licence for the specific language governing           *
 # *  permissions and limitations under the Licence.                         *
 # ***************************************************************************
+
 import argparse
 import re
 from typing import List
@@ -42,7 +42,7 @@ class TestSnapmakerPost(PathTestUtils.PathTestBase):
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
         cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/CAMTests/boxtest.fcstd")
         cls.job = cls.doc.getObject("Job")
-        cls.post = PostProcessorFactory.get_post_processor(cls.job, "snapmaker")
+        cls.post = PostProcessorFactory.get_post_processor(cls.job, "snapmaker_legacy")
         # locate the operation named "Profile"
         for op in cls.job.Operations.Group:
             if op.Label == "Profile":
@@ -80,7 +80,7 @@ class TestSnapmakerPost(PathTestUtils.PathTestBase):
 ;Header Start
 ;header_type: cnc
 ;machine: Snapmaker 2 A350 50W CNC module
-;Post Processor: snapmaker_post
+;Post Processor: snapmaker_legacy_post
 ;CAM File: boxtest.fcstd
 ;Output Time: \\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{0,6}
 ;thumbnail: deactivated."""

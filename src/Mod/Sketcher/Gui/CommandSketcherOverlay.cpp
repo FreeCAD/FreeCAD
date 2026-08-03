@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 Florian Foinant-Willig <flachyjoe@gmail.com>       *
  *                                                                         *
@@ -149,7 +151,7 @@ CmdSketcherBSplineKnotMultiplicity::CmdSketcherBSplineKnotMultiplicity()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Toggle B-spline knot multiplicity");
+    sMenuText = QT_TR_NOOP("Toggle B-Spline Knot Multiplicity");
     sToolTipText = QT_TR_NOOP("Toggles the visibility of the knot multiplicity for all B-splines");
     sWhatsThis = "Sketcher_BSplineKnotMultiplicity";
     sStatusTip = sToolTipText;

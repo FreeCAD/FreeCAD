@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SOFCSELECTION_H
-#define GUI_SOFCSELECTION_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -153,5 +152,3 @@ private:
 
 
 }  // namespace Gui
-
-#endif  // !GUI_SOFCSELECTION_H

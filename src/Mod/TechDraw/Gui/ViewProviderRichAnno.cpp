@@ -57,7 +57,7 @@ const char* ViewProviderRichAnno::LineStyleEnums[] = { "NoLine",
 
 ViewProviderRichAnno::ViewProviderRichAnno()
 {
-    sPixmap = "actions/TechDraw_RichTextAnnotation";
+    sPixmap = "actions/TechDraw_Annotation";
 
     static const char *group = "Frame Format";
 
@@ -69,6 +69,21 @@ ViewProviderRichAnno::ViewProviderRichAnno()
     StackOrder.setValue(ZVALUE::DIMENSION);
 }
 
+
+bool ViewProviderRichAnno::setEdit(int ModNum)
+{
+    if (ModNum != Gui::ViewProvider::Default) {
+        return Gui::ViewProviderDocumentObject::setEdit(ModNum);
+    }
+    if (Gui::Control().activeDialog()) {
+        return false;  // TaskPanel already open!
+    }
+
+    // clear the selection (convenience)
+    Gui::Selection().clearSelection();
+    Gui::Control().showDialog(new TaskDlgRichAnno(this));
+    return true;
+}
 
 bool ViewProviderRichAnno::doubleClicked()
 {
@@ -200,4 +215,21 @@ std::vector<App::DocumentObject*> ViewProviderRichAnno::claimChildren() const
        }
    }
    return temp;
+}
+
+bool ViewProviderRichAnno::onDelete(const std::vector<std::string>& subs)
+{
+    Q_UNUSED(subs);
+
+    // Check if there is an active dialog
+    if (Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog()) {
+        // Check if the active dialog is our RichAnno dialog
+        if (auto* richAnnoDlg = dynamic_cast<TaskDlgRichAnno*>(dlg)) {
+            // Check if the dialog is for THIS specific view provider
+            if (richAnnoDlg->isFor(this)) {
+                Gui::Control().closeDialog();  // Close the dialog gracefully
+            }
+        }
+    }
+    return true;  // Allow deletion to proceed
 }

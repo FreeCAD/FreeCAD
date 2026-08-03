@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Pocket_H
-#define PARTDESIGN_Pocket_H
+#pragma once
 
 #include "FeatureExtrude.h"
 
@@ -62,6 +63,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PART_Pocket_H

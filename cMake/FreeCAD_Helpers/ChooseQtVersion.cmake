@@ -41,7 +41,7 @@
 
 # If it is set to Auto(default), FreeCAD finds and uses the
 # version installed on the system. If both versions are
-# found, Qt5 is preferred.
+# found, Qt6 is preferred.
 
 # The output variable is FREECAD_QT_MAJOR_VERSION, which will be either 5 or 6
 

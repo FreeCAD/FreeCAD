@@ -24,17 +24,14 @@
 
 #include <FCGlobal.h>
 
-#ifndef DRAFT_GLOBAL_H
-# define DRAFT_GLOBAL_H
+#pragma once
 
 
 // Draft
-# ifndef DraftUtilsExport
-#  ifdef DraftUtils_EXPORTS
-#   define DraftUtilsExport FREECAD_DECL_EXPORT
-#  else
-#   define DraftUtilsExport FREECAD_DECL_IMPORT
-#  endif
+#ifndef DraftUtilsExport
+# ifdef DraftUtils_EXPORTS
+#  define DraftUtilsExport FREECAD_DECL_EXPORT
+# else
+#  define DraftUtilsExport FREECAD_DECL_IMPORT
 # endif
-
-#endif  // DRAFT_GLOBAL_H
+#endif

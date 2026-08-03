@@ -20,8 +20,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_ViewProviderVarSet_H
-#define GUI_ViewProviderVarSet_H
+#pragma once
 
 #include "ViewProviderDocumentObject.h"
 #include "Dialogs/DlgAddProperty.h"
@@ -53,5 +52,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif

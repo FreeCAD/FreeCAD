@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMWELDSYMBOL_H
-#define DRAWINGGUI_QGRAPHICSITEMWELDSYMBOL_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -73,7 +72,6 @@ public:
                         QWidget * widget = nullptr ) override;
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
-    double getEdgeFuzz() const;
 
     void drawBorder() override;
     void updateView(bool update = false) override;
@@ -134,5 +132,3 @@ private:
 };
 
 }
-
-#endif // DRAWINGGUI_QGRAPHICSITEMWELDSYMBOL_H

@@ -26,10 +26,11 @@
 #include <QSignalBlocker>
 #include <QString>
 #include <algorithm>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <Base/Console.h>
 #include <Gui/Application.h>
+#include <Gui/Command.h>
 #include <Gui/DockWindowManager.h>
 #include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
@@ -58,7 +59,7 @@ namespace sp = std::placeholders;
 
 class DlgMaterialImp::Private
 {
-    using DlgMaterialImp_Connection = boost::signals2::connection;
+    using DlgMaterialImp_Connection = fastsignals::connection;
 
 public:
     Ui::DlgMaterial ui;
@@ -258,17 +259,26 @@ TaskMaterial::TaskMaterial()
     taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
+
+    tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Set Material"));
 }
 
 TaskMaterial::~TaskMaterial() = default;
 
 QDialogButtonBox::StandardButtons TaskMaterial::getStandardButtons() const
 {
-    return QDialogButtonBox::Close;
+    return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+}
+
+bool TaskMaterial::accept()
+{
+    Gui::Command::commitCommand(tid);
+    return true;
 }
 
 bool TaskMaterial::reject()
 {
+    Gui::Command::abortCommand(tid);
     widget->reject();
     return (widget->result() == QDialog::Rejected);
 }

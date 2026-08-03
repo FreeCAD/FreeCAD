@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_BITMASK_H
-#define BASE_BITMASK_H
+#pragma once
 
 #include <type_traits>
 
@@ -177,5 +176,3 @@ public:
 }
 // clang-format on
 // NOLINTEND
-
-#endif

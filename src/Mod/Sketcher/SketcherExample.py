@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # Example how to use the basic sketcher tools
 from Sketcher import *
 from Part import *

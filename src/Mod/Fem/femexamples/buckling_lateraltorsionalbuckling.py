@@ -29,6 +29,7 @@ import ObjectsFem
 from . import manager
 from .manager import get_meshname
 from .manager import init_doc
+from .meshes import generate_mesh
 
 
 def get_information():
@@ -120,7 +121,7 @@ def setup(doc=None, solvertype="ccxtools"):
     if solvertype == "ccxtools":
         solver_obj.SplitInputWriter = False
         solver_obj.AnalysisType = "buckling"
-        solver_obj.GeometricalNonlinearity = "linear"
+        solver_obj.GeometricalNonlinearity = False
         solver_obj.ThermoMechSteadyState = False
         solver_obj.MatrixSolverType = "default"
         solver_obj.IterationsControlParameterTimeUse = False
@@ -145,13 +146,13 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj)
 
     # constraints displacement
-    con_disp_x = ObjectsFem.makeConstraintDisplacement(doc, "ConstraintDisplacement_X")
+    con_disp_x = ObjectsFem.makeConstraintDisplacement(doc, "Displacement_X")
     con_disp_x.References = [(geom_obj, "Vertex2")]
     con_disp_x.xDisplacement = 0
     con_disp_x.xFree = False
     analysis.addObject(con_disp_x)
 
-    con_disp_yz = ObjectsFem.makeConstraintDisplacement(doc, "ConstraintDisplacement_YZ")
+    con_disp_yz = ObjectsFem.makeConstraintDisplacement(doc, "Displacement_YZ")
     con_disp_yz.References = [(geom_obj, ("Edge15", "Edge16"))]
     con_disp_yz.yDisplacement = 0
     con_disp_yz.yFree = False
@@ -177,13 +178,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # mesh
     from .meshes.mesh_buckling_ibeam_tria6 import create_nodes, create_elements
 
-    fem_mesh = Fem.FemMesh()
-    control = create_nodes(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating nodes.\n")
-    control = create_elements(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating elements.\n")
+    fem_mesh = generate_mesh.mesh_from_existing(create_nodes, create_elements)
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Shape = geom_obj

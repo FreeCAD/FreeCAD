@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_VIEWPROVIDERANNOTATION_H
-#define DRAWINGGUI_VIEWPROVIDERANNOTATION_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -57,6 +56,3 @@ public:
 };
 
 }// namespace TechDrawGui
-
-
-#endif// DRAWINGGUI_VIEWPROVIDERANNOTATION_H

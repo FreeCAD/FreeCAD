@@ -25,8 +25,8 @@ import FreeCADGui
 import Path
 import Path.Base.Util as PathUtil
 from PySide import QtGui, QtCore
-
-from PySide import QtCore, QtGui
+from ...Tool.toolbit.ui.util import natural_sort_key
+import functools
 
 __title__ = "CAM UI helper and utility functions"
 __author__ = "sliptonic (Brad Collette)"
@@ -473,7 +473,6 @@ def disableItem(item):
 
 
 def findItem(docitem, objname):
-    print(docitem.text(0))
     for i in range(0, docitem.childCount()):
         if docitem.child(i).text(0) == objname:
             return docitem.child(i)
@@ -481,3 +480,33 @@ def findItem(docitem, objname):
         if res:
             return res
     return None
+
+
+@functools.total_ordering
+class NaturalSortTableWidgetItem(QtGui.QTableWidgetItem):
+    """Custom QTableWidgetItem that implements natural (alphanumeric) sorting.
+
+    This handles mixed text and numbers correctly, so that:
+    - "Face9" comes before "Face10"
+    - "Model-Body.Face9" comes before "Model-Body.Face10"
+    - "0.5 mm" comes before "10 mm"
+
+    Uses the existing natural_sort_key function from Path.Tool.toolbit.ui.util
+    """
+
+    def __eq__(self, other):
+        """Compare items by display text for ordering purposes."""
+        if not isinstance(other, QtGui.QTableWidgetItem):
+            return NotImplemented
+        return self.text() == other.text()
+
+    def __lt__(self, other):
+        """Override less-than comparison for natural sorting."""
+
+        try:
+            self_text = self.text()
+            other_text = other.text()
+            return natural_sort_key(self_text) < natural_sort_key(other_text)
+        except (AttributeError, ValueError):
+            # Fallback to default comparison if conversion fails
+            return super(NaturalSortTableWidgetItem, self).__lt__(other)

@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPGENERAL_H
-#define DRAWINGGUI_DLGPREFSTECHDRAWIMPGENERAL_H
+#pragma once
 
 #include <memory>
 
@@ -51,5 +50,3 @@ private:
 };
 
 } // namespace TechDrawGui
-
-#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPGENERAL_H

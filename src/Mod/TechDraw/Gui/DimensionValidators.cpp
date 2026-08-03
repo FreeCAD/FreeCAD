@@ -71,16 +71,27 @@ TechDraw::DrawViewPart* TechDraw::getReferencesFromSelection(ReferenceVector& re
             }
             for (auto& sub : selItem.getSubNames()) {
                 // plain ordinary 2d view + geometry reference
-
                 ReferenceEntry ref(dvp, ShapeFinder::getLastTerm(sub));
                 references2d.push_back(ref);
             }
         } else if (!selItem.getObject()->isDerivedFrom<TechDraw::DrawView>()) {
             App::DocumentObject* obj3d = selItem.getObject();
-            // this is a regular 3d reference in form obj + long subelement
-            for (auto& sub3d : selItem.getSubNames()) {
-                ReferenceEntry ref(obj3d, sub3d);
+            // obj3d is a point object, in which case the sub will be empty instead of
+            // containing Vertex1.  Inserting "Vertex1" here gets us through
+            // validation, but doesn't work in Measure::shapefinder.
+            if (ShapeExtractor::isPointType(obj3d)) {
+                ReferenceEntry ref(obj3d, "Vertex1");
                 references3d.push_back(ref);
+            } else {
+                // this is a regular 3d reference in form obj + long subelement
+                for (auto& sub3d : selItem.getSubNames()) {
+                    if (!isValidSubElement(sub3d)) {
+                        // sub is not a vertex, edge or face.
+                        continue;
+                    }
+                    ReferenceEntry ref(obj3d, sub3d);
+                    references3d.push_back(ref);
+                }
             }
         }
     }
@@ -91,6 +102,7 @@ TechDraw::DrawViewPart* TechDraw::getReferencesFromSelection(ReferenceVector& re
             return dim->getViewPart();
         }
     }
+
     return dvp;
 }
 
@@ -209,6 +221,8 @@ DimensionGeometry TechDraw::validateDimSelection3d(
 
     return DimensionGeometry::isInvalid;
 }
+
+
 bool TechDraw::validateSubnameList(const StringVector& subNames, const GeometrySet& acceptableGeometrySet)
 {
     for (auto& sub : subNames) {    // NOLINT (std::ranges::all_of())
@@ -475,7 +489,7 @@ DimensionGeometry TechDraw::isValidSingleFace(const ReferenceEntry& ref)
 DimensionGeometry TechDraw::isValidSingleFace3d(DrawViewPart* dvp, const ReferenceEntry& ref)
 {
     (void)dvp;
-    //the Name starts with "Edge"
+    //the Name starts with "Face"
     std::string geomName = DrawUtil::getGeomTypeFromName(ref.getSubName());
     if (geomName != "Face") {
         return DimensionGeometry::isInvalid;
@@ -783,4 +797,27 @@ DimensionGeometry TechDraw::lineOrientation(const Base::Vector3d& point0,
     //        }
 
     return DimensionGeometry::isDiagonal;
+}
+
+
+bool TechDraw::isValidSubElement(const std::string& subElementName)
+{
+    if (subElementName.empty()) {
+        return false;
+    }
+
+    std::string last = ShapeFinder::getLastTerm(subElementName);
+
+    if (last.empty()) {
+        return false;
+    }
+
+    std::string lastGeom = DrawUtil::getGeomTypeFromName(last);
+    if (lastGeom == "Vertex" ||
+        lastGeom == "Edge" ||
+        lastGeom == "Face") {
+        return true;
+    }
+
+    return false;
 }

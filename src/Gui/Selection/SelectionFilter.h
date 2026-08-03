@@ -22,12 +22,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_SelectionFilter_H
-#define GUI_SelectionFilter_H
+#pragma once
 
 #include <limits>
 #include <memory>
 #include <string>
+#include <unordered_set>
+#include <vector>
+
 #include <CXX/Extensions.hxx>
 #include "Selection.h"
 
@@ -91,6 +93,11 @@ public:
         return Ast ? true : false;
     }
 
+    std::shared_ptr<const Node_Block> getAst()
+    {
+        return Ast;
+    }
+
 protected:
     std::string Filter;
     std::string Errors;
@@ -116,6 +123,11 @@ public:
     explicit SelectionFilterGate(SelectionFilter* filter);
     ~SelectionFilterGate() override;
     bool allow(App::Document*, App::DocumentObject*, const char*) override;
+
+
+    std::unordered_set<std::string> getGatedTypes(
+        const std::vector<const char*>& allTypesForGeometry
+    ) const override;
 
 protected:
     static SelectionFilter* nullPointer()
@@ -218,6 +230,3 @@ struct Node_Block
 
 
 }  // namespace Gui
-
-
-#endif  // GUI_SelectionFilter_H

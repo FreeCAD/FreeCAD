@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Fem_FemSetFacesObject_H
-#define Fem_FemSetFacesObject_H
+#pragma once
 
 #include "FemSetObject.h"
 #include <App/DocumentObject.h>
@@ -53,6 +52,3 @@ public:
 };
 
 }  // namespace Fem
-
-
-#endif  // Fem_FemSetFacesObject_H

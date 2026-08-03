@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGCUSTOMIZE_IMP_H
-#define GUI_DIALOG_DLGCUSTOMIZE_IMP_H
+#pragma once
 
 #include <QDialog>
 
@@ -81,5 +82,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLGCUSTOMIZE_IMP_H

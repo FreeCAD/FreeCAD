@@ -48,6 +48,7 @@ FitBSplineCurveWidget::FitBSplineCurveWidget(const App::DocumentObjectT& obj, QW
 {
     Q_UNUSED(parent);
     d->ui.setupUi(this);
+    setParametrizationTypes();
     d->obj = obj;
 
     // clang-format off
@@ -61,6 +62,19 @@ FitBSplineCurveWidget::FitBSplineCurveWidget(const App::DocumentObjectT& obj, QW
 FitBSplineCurveWidget::~FitBSplineCurveWidget()
 {
     delete d;
+}
+
+void FitBSplineCurveWidget::setParametrizationTypes()
+{
+    d->ui.paramType->setItemData(0, QStringLiteral("ChordLength"));
+    d->ui.paramType->setItemData(1, QStringLiteral("Centripetal"));
+    d->ui.paramType->setItemData(2, QStringLiteral("Uniform"));
+}
+
+QString FitBSplineCurveWidget::getCurrentParametrizationType() const
+{
+    int index = d->ui.paramType->currentIndex();
+    return d->ui.paramType->itemData(index).toString();
 }
 
 void FitBSplineCurveWidget::toggleParametrizationType(bool on)
@@ -85,8 +99,8 @@ bool FitBSplineCurveWidget::accept()
         tryAccept();
     }
     catch (const Base::Exception& e) {
-        Gui::Command::abortCommand();
-        QMessageBox::warning(this, tr("Input error"), QString::fromLatin1(e.what()));
+        d->obj.getDocument()->abortTransaction();
+        QMessageBox::warning(this, tr("Input Error"), QString::fromLatin1(e.what()));
         return false;
     }
 
@@ -112,8 +126,8 @@ void FitBSplineCurveWidget::tryAccept()
         arguments.append(QStringLiteral("Closed = False"));
     }
     if (d->ui.checkBox->isChecked()) {
-        int index = d->ui.paramType->currentIndex();
-        arguments.append(QStringLiteral("ParametrizationType = %1").arg(index));
+        QString type = getCurrentParametrizationType();
+        arguments.append(QStringLiteral("ParametrizationType = \"%1\"").arg(type));
     }
     if (d->ui.groupBoxSmooth->isChecked()) {
         arguments.append(QStringLiteral("Weight1 = %1").arg(d->ui.curveLength->value()));
@@ -135,9 +149,9 @@ void FitBSplineCurveWidget::exeCommand(const QString& cmd)
 {
     Gui::WaitCursor wc;
     Gui::Command::addModule(Gui::Command::App, "ReverseEngineering");
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Fit B-spline"));
+    d->obj.getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Fit B-spline"));
     Gui::Command::runCommand(Gui::Command::Doc, cmd.toLatin1());
-    Gui::Command::commitCommand();
+    d->obj.getDocument()->commitTransaction();
     Gui::Command::updateActive();
 }
 
@@ -147,7 +161,7 @@ void FitBSplineCurveWidget::tryCommand(const QString& cmd)
         exeCommand(cmd);
     }
     catch (const Base::Exception& e) {
-        Gui::Command::abortCommand();
+        d->obj.getDocument()->abortTransaction();
         e.reportException();
     }
 }

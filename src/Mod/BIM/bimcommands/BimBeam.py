@@ -27,6 +27,7 @@
 import FreeCAD
 import FreeCADGui
 import ArchStructure
+from ArchStructure import StructureMode
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
@@ -35,7 +36,7 @@ class BIM_Beam(ArchStructure._CommandStructure):
 
     def __init__(self):
         super().__init__()
-        self.beammode = True
+        self.mode = StructureMode.BEAM
         self.featureName = "Beam"
 
     def IsActive(self):

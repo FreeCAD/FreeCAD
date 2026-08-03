@@ -28,7 +28,6 @@ from .base import ToolBitShape
 
 class ToolBitShapeProbe(ToolBitShape):
     name = "Probe"
-    aliases = ("probe",)
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:

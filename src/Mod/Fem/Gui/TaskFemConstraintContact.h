@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskFemConstraintContact_H
-#define GUI_TASKVIEW_TaskFemConstraintContact_H
+#pragma once
 
 #include <QObject>
 #include <memory>
@@ -53,6 +52,8 @@ public:
     bool getFriction() const;
     const std::string getStickSlope() const;
     double getFrictionCoeff() const;
+    const std::vector<bool> getRevMaster() const;
+    const std::vector<bool> getRevSlave() const;
 
 private Q_SLOTS:
     void onReferenceDeletedSlave();
@@ -81,5 +82,3 @@ public:
 };
 
 }  // namespace FemGui
-
-#endif  // GUI_TASKVIEW_TaskFemConstraintContact_H

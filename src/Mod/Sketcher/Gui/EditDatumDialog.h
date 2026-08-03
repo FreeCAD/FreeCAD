@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_EditDatumDialog_H
-#define SKETCHERGUI_EditDatumDialog_H
+#pragma once
 
 #include <QObject>
 #include <memory>
@@ -45,8 +46,8 @@ class EditDatumDialog: public QObject
     Q_OBJECT
 
 public:
-    EditDatumDialog(ViewProviderSketch* vp, int ConstrNbr);
-    EditDatumDialog(Sketcher::SketchObject* pcSketch, int ConstrNbr);
+    EditDatumDialog(int tid, ViewProviderSketch* vp, int ConstrNbr);
+    EditDatumDialog(int tid, Sketcher::SketchObject* pcSketch, int ConstrNbr);
     ~EditDatumDialog() override;
 
     int exec(bool atCursor = true);
@@ -58,6 +59,7 @@ private:
     int ConstrNbr;
     bool success;
     std::unique_ptr<Ui_InsertDatum> ui_ins_datum;
+    int transactionID;
 
 private Q_SLOTS:
     void accepted();
@@ -65,10 +67,10 @@ private Q_SLOTS:
     void drivingToggled(bool);
     void datumChanged();
     void formEditorOpened(bool);
+    void typeChanged(bool);
 
 private:
     void performAutoScale(double newDatum);
 };
 
 }  // namespace SketcherGui
-#endif  // SKETCHERGUI_DrawSketchHandler_H

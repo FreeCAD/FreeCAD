@@ -19,6 +19,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Auto code generator for overlay widgets related parameters in Preferences/View"""
+
 import cog
 import inspect, sys
 from os import path
@@ -101,12 +102,10 @@ class ParamAnimationCurve(ParamProxy):
 
     def init_widget(self, param, row, group_name):
         super().init_widget(param, row, group_name)
-        cog.out(
-            f"""
+        cog.out(f"""
     {auto_comment()}
     for (const auto &item : OverlayParams::AnimationCurveTypes)
-        {param.widget_name}->addItem(item);"""
-        )
+        {param.widget_name}->addItem(item);""")
         cog.out(
             f"""
     {param.widget_name}->setCurrentIndex({param.namespace}::{param.class_name}::default{param.name}());"""
@@ -295,40 +294,30 @@ Params = [
 
 
 def declare():
-    cog.out(
-        f"""
+    cog.out(f"""
 {auto_comment()}
 #include <QString>
-"""
-    )
+""")
 
     params_utils.declare_begin(sys.modules[__name__])
-    cog.out(
-        f"""
+    cog.out(f"""
     {auto_comment()}
     static const std::vector<QString> AnimationCurveTypes;
-"""
-    )
+""")
     params_utils.declare_end(sys.modules[__name__])
 
 
 def define():
     params_utils.define(sys.modules[__name__])
-    cog.out(
-        f"""
+    cog.out(f"""
 {auto_comment()}
-const std::vector<QString> OverlayParams::AnimationCurveTypes = {{"""
-    )
+const std::vector<QString> OverlayParams::AnimationCurveTypes = {{""")
     for item in AnimationCurveTypes:
-        cog.out(
-            f"""
-    QStringLiteral("{item}"),"""
-        )
-    cog.out(
-        f"""
+        cog.out(f"""
+    QStringLiteral("{item}"),""")
+    cog.out(f"""
 }};
-"""
-    )
+""")
 
 
 params_utils.init_params(Params, NameSpace, ClassName, ParamPath)

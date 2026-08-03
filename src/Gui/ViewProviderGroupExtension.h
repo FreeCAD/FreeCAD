@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDERGROUPEXTENSION_H
-#define GUI_VIEWPROVIDERGROUPEXTENSION_H
+#pragma once
 
 #include "ViewProviderExtensionPython.h"
 
@@ -46,18 +45,12 @@ public:
     bool extensionCanDropObject(App::DocumentObject*) const override;
     void extensionDropObject(App::DocumentObject*) override;
 
-    void extensionHide() override;
-    void extensionShow() override;
-
     bool extensionOnDelete(const std::vector<std::string>&) override;
 
 private:
-    bool guard {false};
     std::vector<ViewProvider*> nodes;
 };
 
 using ViewProviderGroupExtensionPython = ViewProviderExtensionPythonT<Gui::ViewProviderGroupExtension>;
 
 }  // namespace Gui
-
-#endif  // GUI_VIEWPROVIDERGROUPEXTENSION_H

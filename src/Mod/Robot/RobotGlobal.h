@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ROBOT_GLOBAL_H
-#define ROBOT_GLOBAL_H
+#pragma once
 
 #include <FCGlobal.h>
 
@@ -42,5 +43,3 @@
 #  define RobotGuiExport FREECAD_DECL_IMPORT
 # endif
 #endif
-
-#endif  // ROBOT_GLOBAL_H

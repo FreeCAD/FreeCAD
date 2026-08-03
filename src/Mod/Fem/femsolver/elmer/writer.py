@@ -57,7 +57,6 @@ from .equations import magnetodynamic_writer as MgDyn_writer
 from .equations import magnetodynamic2D_writer as MgDyn2D_writer
 from .equations import staticcurrent_writer as SC_writer
 
-
 _STARTINFO_NAME = "ELMERSOLVER_STARTINFO"
 _SIF_NAME = "case.sif"
 _ELMERGRID_IFORMAT = "8"
@@ -236,6 +235,9 @@ class Writer:
         # the solver that we have another scale
         self._simulation("Coordinate Scaling", 0.001)
         self._simulation("Simulation Type", self.solver.SimulationType)
+        param = ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Elmer")
+        out_level = 10 if self.testmode else param.GetInt("MaxOutputLevel", 10)
+        self._simulation("Max Output Level", out_level)
         if self.solver.SimulationType == "Steady State":
             self._simulation("Steady State Max Iterations", self.solver.SteadyStateMaxIterations)
             self._simulation("Steady State Min Iterations", self.solver.SteadyStateMinIterations)
@@ -297,10 +299,13 @@ class Writer:
                 else:
                     activeIn = self.getAllBodies()
                 solverSection = ELW.getElasticitySolver(equation)
+                solverEigenSection = ELW.getEigenSolver(equation)
                 for body in activeIn:
                     if not self.isBodyMaterialFluid(body):
                         self._addSolver(body, solverSection)
                         ELW.handleElasticityEquation(activeIn, equation)
+                        if solverEigenSection is not None:
+                            self._addSolver(body, solverEigenSection)
         if activeIn:
             ELW.handleElasticityConstants()
             ELW.handleElasticityBndConditions()
@@ -635,7 +640,9 @@ class Writer:
         return varName
 
     def getAllBodies(self):
-        obj = self.getSingleMember("Fem::FemMeshObject")
+        obj = self.getMesh()
+        if not obj.FemMesh.Groups:
+            raise RuntimeError(f"Mesh object '{obj.Label}' has no groups, please remesh\n")
         bodyCount = 0
         prefix = ""
         if obj.Shape.Shape.Solids:
@@ -650,7 +657,7 @@ class Writer:
         return [prefix + str(i + 1) for i in range(bodyCount)]
 
     def getMeshDimension(self):
-        obj = self.getSingleMember("Fem::FemMeshObject")
+        obj = self.getMesh()
         if obj.Shape.Shape.Solids:
             return 3
         if obj.Shape.Shape.Faces:
@@ -658,6 +665,23 @@ class Writer:
         if obj.Shape.Shape.Edges:
             return 1
         return None
+
+    def getMesh(self):
+        return membertools.get_mesh_to_solve(self.analysis)
+
+    def getCoordSystemDimension(self):
+        dim = 0
+        match self.solver.CoordinateSystem:
+            case "Cartesian":
+                # defined by the mesh
+                dim = self.getMeshDimension()
+            case "Cartesian 1D":
+                dim = 1
+            case "Cartesian 2D" | "Polar 2D" | "Cylindric Symmetric" | "Axi Symmetric":
+                dim = 2
+            case "Cartesian 3D" | "Polar 3D" | "Cylindric":
+                dim = 3
+        return dim
 
     def _addOutputSolver(self):
         s = sifio.createSection(sifio.SOLVER)

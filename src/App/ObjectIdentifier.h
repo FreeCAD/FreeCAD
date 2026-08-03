@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -21,10 +23,10 @@
  ***************************************************************************/
 
 
-#ifndef APP_PATH_H
-#define APP_PATH_H
+#pragma once
 
 #include <bitset>
+#include <climits>
 #include <map>
 #include <limits>
 #include <set>
@@ -1640,5 +1642,3 @@ struct hash<App::ObjectIdentifier>
     }
 };
 }  // namespace std
-
-#endif

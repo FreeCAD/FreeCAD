@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _CurveProjector_h_
-#define _CurveProjector_h_
+#pragma once
 
 #include <limits>
 
@@ -276,5 +275,3 @@ private:
 };
 
 }  // namespace MeshPart
-
-#endif

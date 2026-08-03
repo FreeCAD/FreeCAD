@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef IMPORT_EXPORTOCAFGUI_H
-#define IMPORT_EXPORTOCAFGUI_H
+#pragma once
 
 #include <Mod/Import/App/ExportOCAF.h>
 
@@ -37,5 +36,3 @@ public:
 };
 
 }  // namespace ImportGui
-
-#endif  // IMPORT_EXPORTOCAFGUI_H

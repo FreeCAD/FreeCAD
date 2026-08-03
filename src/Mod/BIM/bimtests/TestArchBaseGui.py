@@ -56,6 +56,20 @@ class TestArchBaseGui(TestArchBase):
         """
         super().setUp()
 
+    def tearDown(self):
+        """
+        Ensure GUI events are processed and dialogs closed before the document is destroyed.
+        This prevents race conditions where pending GUI tasks try to access a closed document.
+        """
+        # Process any pending Qt events (like todo.delay calls) while the doc is still open
+        self.pump_gui_events()
+
+        # Close any open task panels
+        if FreeCAD.GuiUp:
+            FreeCADGui.Control.closeDialog()
+
+        super().tearDown()
+
     def pump_gui_events(self, timeout_ms=200):
         """Run the Qt event loop briefly so queued GUI callbacks execute.
 

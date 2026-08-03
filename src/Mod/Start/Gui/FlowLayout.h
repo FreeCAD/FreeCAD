@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef FREECAD_FLOWLAYOUT_H
-#define FREECAD_FLOWLAYOUT_H
+#pragma once
 
 #include <QLayout>
 #include <QList>
@@ -68,5 +67,3 @@ private:
 };
 
 }  // namespace StartGui
-
-#endif  // FREECAD_FLOWLAYOUT_H

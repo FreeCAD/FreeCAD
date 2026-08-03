@@ -4,7 +4,7 @@ General:
   UUID: "0f8f1e63-885e-4940-a562-afed029b172a"
   Name: "glass"
   Author: "David Carter"
-  License: "All rights reserved"
+  License: "CC-BY-4.0"
 AppearanceModels:
   Pattern File:
     UUID: "c6596294-e97d-4812-87db-28e1d66521a3"

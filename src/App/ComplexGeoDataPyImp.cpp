@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -391,7 +393,7 @@ PyObject* ComplexGeoDataPy::setElementName(PyObject* args, PyObject* kwds)
         {"element", "name", "postfix", "overwrite", "sid", "tag", nullptr};
     if (!Wrapped_ParseTupleAndKeywords(args,
                                        kwds,
-                                       "s|sssOOi",
+                                       "s|ssOOi",
                                        kwlist,
                                        &element,
                                        &name,
@@ -399,7 +401,7 @@ PyObject* ComplexGeoDataPy::setElementName(PyObject* args, PyObject* kwds)
                                        &overwrite,
                                        &pySid,
                                        &tag)) {
-        return NULL;
+        return nullptr;
     }
     ElementIDRefs sids;
     if (pySid != Py_None) {
@@ -428,6 +430,10 @@ PyObject* ComplexGeoDataPy::setElementName(PyObject* args, PyObject* kwds)
         Data::MappedName mapped = Data::MappedName::fromRawData(name);
         std::ostringstream ss;
         ElementMapPtr map = getComplexGeoDataPtr()->resetElementMap();
+        if (!map) {
+            throw Py::RuntimeError("no element map");
+        }
+
         map->encodeElementName(getComplexGeoDataPtr()->elementType(index),
                                mapped,
                                ss,

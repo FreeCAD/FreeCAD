@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SPLITVIEW3DINVENTOR_H
-#define GUI_SPLITVIEW3DINVENTOR_H
+#pragma once
 
 #include "MDIView.h"
 #include "MDIViewPy.h"
@@ -56,7 +55,7 @@ public:
     const char* getName() const override;
 
     /// Message handler
-    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onMsg(const char* pMsg) override;
     bool onHasMsg(const char* pMsg) const override;
     void onUpdate() override;
     void deleteSelf() override;
@@ -129,5 +128,3 @@ public:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SPLITVIEW3DINVENTOR_H

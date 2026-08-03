@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # Involute Gears Generation Script
 # by Marcin Wanczyk (dj_who)
 # (c) 2011 LGPL

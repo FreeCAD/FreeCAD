@@ -44,7 +44,7 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
             section_plane.Label, "TestSectionPlane", "Section plane label is incorrect."
         )
 
-    def testViewGeneration(self):
+    def testTechDrawViewGeneration(self):
         """Tests the whole TD view generation workflow"""
 
         # Create a few objects
@@ -100,3 +100,33 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         view.Y = "15cm"
         App.ActiveDocument.recompute()
         assert True
+
+    def testShape2DViewGeneration(self):
+        """Tests Draft_Shape2DView face with hole creation"""
+
+        # Create a wall based on a clock-wise wire starting at the lower left corner.
+        # Such a wire would previously result in an invalid face in the Shape2DView.
+        wire = Draft.make_wire(
+            [
+                App.Vector(0, 0, 0),
+                App.Vector(0, 1000, 0),
+                App.Vector(2000, 1000, 0),
+                App.Vector(2000, 0, 0),
+            ],
+            closed=True,
+        )
+        wire.MakeFace = False
+        wall = Arch.makeWall(wire, height=3000, width=200)
+        App.ActiveDocument.recompute()
+
+        section = Arch.makeSectionPlane(wall)
+        shp_view = Draft.make_shape2dview(section)
+        shp_view.InPlace = False
+        shp_view.ProjectionMode = "Cutfaces"
+        App.ActiveDocument.recompute()
+
+        face = shp_view.Shape.Faces[0]
+        self.assertTrue(face.isValid())
+
+        area_expected = 1200 * 2200 - 800 * 1800
+        self.assertAlmostEqual(face.Area, area_expected)

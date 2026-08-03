@@ -240,7 +240,7 @@ QModelIndex PropertyModel::propertyIndexFromPath(const QStringList& path) const
 
 static void setPropertyItemName(PropertyItem* item, const char* propName, QString groupName)
 {
-    QString name = QString::fromLatin1(propName);
+    QString name = QString::fromUtf8(propName);
     QString realName = name;
     if (name.size() > groupName.size() + 1 && name.startsWith(groupName + QLatin1Char('_'))) {
         name = name.right(name.size() - groupName.size() - 1);
@@ -271,9 +271,7 @@ PropertyModel::GroupInfo& PropertyModel::getGroupInfo(App::Property* prop)
 {
     const char* group = prop->getGroup();
     bool isEmpty = Base::Tools::isNullOrEmpty(group);
-    QString groupName = QString::fromLatin1(
-        isEmpty ? QT_TRANSLATE_NOOP("App::Property", "Base") : group
-    );
+    QString groupName = QString::fromUtf8(isEmpty ? QT_TRANSLATE_NOOP("App::Property", "Base") : group);
 
     auto res = groupItems.insert(std::make_pair(groupName, GroupInfo()));
     if (res.second) {

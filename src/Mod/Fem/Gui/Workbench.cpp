@@ -89,6 +89,7 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
     StdWorkbench::setupContextMenu(recipient, item);
     *item << "Separator"
           << "FEM_MeshClear"
+          << "FEM_MeshClearGroups"
           << "FEM_MeshDisplayInfo";
 }
 
@@ -155,31 +156,16 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *mesh << "FEM_MeshNetgenFromShape"
           << "FEM_MeshGmshFromShape"
           << "Separator"
-          << "FEM_MeshBoundaryLayer"
           << "FEM_MeshRegion"
           << "FEM_MeshGroup"
+          << "FEM_MeshGMSHRefinement"
           << "Separator"
           << "FEM_FEMMesh2Mesh";
 
     Gui::ToolBarItem* solve = new Gui::ToolBarItem(root);
     solve->setCommand("Solve");
-    if (!Fem::Tools::checkIfBinaryExists("Ccx", "ccx", "ccx").empty()) {
-        *solve << "FEM_SolverCalculiX";
-    }
-    if (!Fem::Tools::checkIfBinaryExists("Elmer", "elmer", "ElmerSolver").empty()) {
-        *solve << "FEM_SolverElmer";
-    }
-    // also check the multi-CPU Elmer build
-    else if (!Fem::Tools::checkIfBinaryExists("Elmer", "elmer", "ElmerSolver_mpi").empty()) {
-        *solve << "FEM_SolverElmer";
-    }
-    if (!Fem::Tools::checkIfBinaryExists("Mystran", "mystran", "mystran").empty()) {
-        *solve << "FEM_SolverMystran";
-    }
-    if (!Fem::Tools::checkIfBinaryExists("Z88", "z88", "z88r").empty()) {
-        *solve << "FEM_SolverZ88";
-    }
-    *solve << "Separator"
+    *solve << "FEM_CompSolvers"
+           << "Separator"
            << "FEM_CompMechEquations"
            << "FEM_CompEmEquations"
            << "FEM_EquationFlow"
@@ -250,7 +236,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     Gui::MenuItem* elec = new Gui::MenuItem;
     elec->setCommand("&Electromagnetic Boundary Conditions");
-    *elec << "FEM_ConstraintElectrostaticPotential"
+    *elec << "FEM_ConstraintElectromagnetic"
           << "FEM_ConstraintCurrentDensity"
           << "FEM_ConstraintMagnetization"
           << "FEM_ConstraintElectricChargeDensity";
@@ -320,10 +306,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *mesh << "FEM_MeshNetgenFromShape"
           << "FEM_MeshGmshFromShape"
           << "Separator"
-          << "FEM_MeshBoundaryLayer"
           << "FEM_MeshRegion"
           << "FEM_MeshGroup"
-          << "Separator"
+          << "FEM_MeshGMSHRefinement"
           // << "FEM_CreateNodesSet"
           << "FEM_CreateElementsSet"
           << "FEM_FEMMesh2Mesh";
@@ -331,10 +316,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* solve = new Gui::MenuItem;
     root->insertItem(item, solve);
     solve->setCommand("&Solve");
-    *solve << "FEM_SolverCalculiX"
-           << "FEM_SolverElmer"
-           << "FEM_SolverMystran"
-           << "FEM_SolverZ88"
+    *solve << "FEM_CompSolvers"
            << "Separator"
            << "FEM_CompMechEquations"
            << "FEM_CompEmEquations"

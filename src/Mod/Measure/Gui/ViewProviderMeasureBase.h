@@ -21,19 +21,20 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_VIEWPROVIDER_MEASUREMENTBASE_H
-#define GUI_VIEWPROVIDER_MEASUREMENTBASE_H
+#pragma once
 
 #include <Mod/Measure/MeasureGlobal.h>
 
 #include <QString>
 
+#include <Inventor/SbVec3f.h>
+#include <Inventor/fields/SoSFFloat.h>
+
 #include <App/Application.h>
 #include <App/PropertyStandard.h>
 #include <Base/Parameter.h>
-#include <Gui/ViewProviderDocumentObject.h>
-#include <Gui/SoTextLabel.h>
 #include <Gui/ViewProviderDocumentObjectGroup.h>
+#include <Gui/ViewProviderDocumentObject.h>
 
 #include <Mod/Measure/App/MeasureBase.h>
 
@@ -48,6 +49,11 @@ class SoCoordinate3;
 class SoIndexedLineSet;
 class SoTranslate2Dragger;
 // NOLINTEND
+
+namespace Gui
+{
+class SoFrameLabel;
+}
 
 
 namespace MeasureGui
@@ -88,10 +94,18 @@ public:
     App::PropertyColor TextBackgroundColor;
     App::PropertyColor LineColor;
     App::PropertyInteger FontSize;
+    // Arrow properties
+    App::PropertyFloat ArrowHeight;
+    App::PropertyFloat ArrowRadius;
+
+    App::PropertyVector LabelPosition;
     // NOLINTEND
 
     // Fields
     SoSFFloat fieldFontSize;
+    // Arrow fields
+    SoSFFloat fieldArrowHeight;
+    SoSFFloat fieldArrowRadius;
 
     /**
      * Attaches the document object to this view provider.
@@ -133,11 +147,15 @@ public:
     void connectToSubject(std::vector<App::DocumentObject*> subject);
 
 protected:
+    static void draggerStartCallback(void* data, SoDragger*);
     static void draggerChangedCallback(void* data, SoDragger*);
+    static void draggerFinishCallback(void* data, SoDragger*);
     void onChanged(const App::Property* prop) override;
+    virtual void onLabelMoveStart();
     virtual void onLabelMoved() {};
+    virtual void onLabelMoveFinish();
     void setLabelValue(const Base::Quantity& value);
-    void setLabelValue(const QString& value);
+    void setLabelValue(const std::string& value);
     void setLabelTranslation(const SbVec3f& position);
     void updateIcon();
 
@@ -159,7 +177,7 @@ protected:
     SoSeparator* pGlobalSeparator;  // Separator in the global coordinate space
     Gui::SoFrameLabel* pLabel;
     SoTranslate2Dragger* pDragger;
-    SoTransform* pDraggerOrientation;
+    SoTransform* pDraggerFrame;
     SoTransform* pLabelTranslation;
     SoBaseColor* pColor;
     SoSeparator* pRootSeparator;
@@ -168,7 +186,7 @@ protected:
     SoSeparator* pLineSeparatorSecondary;
 
 private:
-    boost::signals2::connection _mVisibilityChangedConnection;
+    fastsignals::connection _mVisibilityChangedConnection;
 };
 
 
@@ -245,6 +263,17 @@ public:
     }
 };
 
+class ViewProviderMeasureDiameter: public ViewProviderMeasure
+{
+    PROPERTY_HEADER(MeasureGui::ViewProviderMeasureDiameter);
+
+public:
+    ViewProviderMeasureDiameter()
+    {
+        sPixmap = "Measurement-Diameter";
+    }
+};
+
 class ViewProviderMeasureCOM: public ViewProviderMeasure
 {
     PROPERTY_HEADER(MeasureGui::ViewProviderMeasureCOM);
@@ -258,5 +287,3 @@ public:
 
 
 }  // namespace MeasureGui
-
-#endif  // GUI_VIEWPROVIDER_MEASUREMENTBASE_H

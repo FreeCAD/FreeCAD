@@ -20,12 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <FCConfig.h>
+
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoError.h>
 #include <QCheckBox>
 #include <QCloseEvent>
+#include <QCoreApplication>
 #include <QDir>
+#include <QEvent>
 #include <QFileInfo>
 #include <QLocale>
 #include <QMessageBox>
@@ -33,22 +37,24 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QScreen>
+#include <QScopeGuard>
 #include <QStatusBar>
 #include <QStyle>
 #include <QSurfaceFormat>
 #include <QTextStream>
 #include <QTimer>
+#include <QThread>
 #include <QWindow>
+#include <QStyleFactory>
 
 #include <QLoggingCategory>
 #include <fmt/format.h>
 #include <list>
 #include <ranges>
 
-#include <FCConfig.h>
-
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
+#include <App/MainThreadSignal.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/Exception.h>
@@ -73,25 +79,30 @@
 #include "PreferencePages/DlgSettingsCacheDirectory.h"
 #include "DocumentPy.h"
 #include "DocumentRecovery.h"
+#include "EditableDatumLabelPy.h"
 #include "EditorView.h"
 #include "ExpressionBindingPy.h"
 #include "FileDialog.h"
 #include "GuiApplication.h"
 #include "GuiInitScript.h"
+#include "GuiTestScript.h"
 #include "InputHintPy.h"
 #include "LinkViewPy.h"
 #include "MainWindow.h"
 #include "Macro.h"
+#include "FreeCADGuiModulePy.h"
 #include "PreferencePackManager.h"
 #include "PythonConsolePy.h"
-#include "PythonDebugger.h"
 #include "MainWindowPy.h"
 #include "MDIViewPy.h"
+#include "MDIViewWithCamera.h"
 #include "Placement.h"
 #include "SoFCDB.h"
 #include "Selection.h"
 #include "SelectionFilterPy.h"
+#include "SelectionModulePy.h"
 #include "SoQtOffscreenRendererPy.h"
+#include "SpaceMouseParameter.h"
 #include "SplitView3DInventor.h"
 #include "StartupProcess.h"
 #include "TaskView/TaskView.h"
@@ -141,6 +152,7 @@
 #include "Inventor/SoFCPlacementIndicatorKit.h"
 #include "QtWidgets.h"
 
+#include <FreeCADStyle.h>
 #include <OverlayManager.h>
 #include <ParamHandler.h>
 #include <Base/ServiceProvider.h>
@@ -158,8 +170,26 @@ FC_LOG_LEVEL_INIT("Gui")
 
 Application* Application::Instance = nullptr;
 
+#ifdef USE_3DCONNEXION_NAVLIB
+extern "C" {
+extern const long NlErrorCode;  // initialized before main() by navlib_load.cpp
+}
+#endif
+
 namespace Gui
 {
+
+void requireMainThread(const char* api)
+{
+    if (App::MainThreadSignalConfig::isMainThread()) {
+        return;
+    }
+
+    Base::Console().error("GUI API '%s' may only be used from the main thread.\n", api);
+    throw Base::RuntimeError(
+        std::string("GUI API '") + api + "' may only be used from the main thread"
+    );
+}
 
 class ViewProviderMap
 {
@@ -225,7 +255,7 @@ struct ApplicationP
     std::map<const App::Document*, Gui::Document*> documents;
     /// Active document
     Gui::Document* activeDocument {nullptr};
-    Gui::Document* editDocument {nullptr};
+    std::vector<Gui::Document*> editDocuments;
 
     MacroManager* macroMngr;
     PreferencePackManager* prefPackManager;
@@ -241,7 +271,7 @@ struct ApplicationP
     std::bitset<32> StatusBits;
 };
 
-static PyObject* FreeCADGui_subgraphFromObject(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sSubgraphFromObject(PyObject* /*self*/, PyObject* args)
 {
     PyObject* o;
     if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &o)) {
@@ -305,7 +335,7 @@ static PyObject* FreeCADGui_subgraphFromObject(PyObject* /*self*/, PyObject* arg
     return Py_None;
 }
 
-static PyObject* FreeCADGui_exportSubgraph(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sExportSubgraph(PyObject* /*self*/, PyObject* args)
 {
     const char* format = "VRML";
     PyObject* proxy;
@@ -347,7 +377,7 @@ static PyObject* FreeCADGui_exportSubgraph(PyObject* /*self*/, PyObject* args)
     }
 }
 
-static PyObject* FreeCADGui_getSoDBVersion(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetSoDBVersion(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -355,26 +385,47 @@ static PyObject* FreeCADGui_getSoDBVersion(PyObject* /*self*/, PyObject* args)
     return PyUnicode_FromString(SoDB::getVersion());
 }
 
-struct PyMethodDef FreeCADGui_methods[] = {
-    {"subgraphFromObject",
-     FreeCADGui_subgraphFromObject,
-     METH_VARARGS,
-     "subgraphFromObject(object) -> Node\n\n"
-     "Return the Inventor subgraph to an object"},
-    {"exportSubgraph",
-     FreeCADGui_exportSubgraph,
-     METH_VARARGS,
-     "exportSubgraph(Node, File or Buffer, [Format='VRML']) -> None\n\n"
-     "Exports the sub-graph in the requested format"
-     "The format string can be VRML or IV"},
-    {"getSoDBVersion",
-     FreeCADGui_getSoDBVersion,
-     METH_VARARGS,
-     "getSoDBVersion() -> String\n\n"
-     "Return a text string containing the name\n"
-     "of the Coin library and version information"},
-    {nullptr, nullptr, 0, nullptr} /* sentinel */
+class MainThreadInvoker final: public QObject
+{
+public:
+    static MainThreadInvoker* instance()
+    {
+        static MainThreadInvoker* inst = [] {
+            auto* obj = new MainThreadInvoker();
+            // Ensure the object lives on the GUI thread
+            if (qApp && qApp->thread() && QThread::currentThread() != qApp->thread()) {
+                obj->moveToThread(qApp->thread());
+            }
+            return obj;
+        }();
+        return inst;
+    }
+
+private:
+    MainThreadInvoker() = default;
+    ~MainThreadInvoker() override = default;
 };
+
+// Hook: are we currently on the GUI (main) thread?
+bool qtIsMainThread()
+{
+    return !qApp || (QThread::currentThread() == qApp->thread());
+}
+
+// Hook: invoke a functor on the GUI thread, either blocking or queued.
+void qtInvokeOnMain(std::function<void()>&& fn, bool blocking)
+{
+    if (!qApp) {
+        fn();
+        return;
+    }
+
+    QMetaObject::invokeMethod(
+        MainThreadInvoker::instance(),
+        [f = std::move(fn)]() mutable { f(); },
+        blocking ? Qt::BlockingQueuedConnection : Qt::QueuedConnection
+    );
+}
 
 }  // namespace Gui
 
@@ -412,6 +463,7 @@ void Application::initStyleParameterManager()
             bool tiledBG = hGrp->GetBool("TiledBackground", false);
 
             setStyleSheet(QString::fromStdString(sheet), tiledBG);
+            OverlayManager::instance()->refresh(nullptr, true);
         }
     );
 
@@ -455,11 +507,14 @@ void Application::initStyleParameterManager()
 
     Base::registerServiceImplementation(d->styleParameterManager);
 }
+
 // clang-format off
 Application::Application(bool GUIenabled)
 {
     // App::GetApplication().Attach(this);
     if (GUIenabled) {
+        App::MainThreadSignalConfig::setHooks(&qtIsMainThread, &qtInvokeOnMain);
+
         // NOLINTBEGIN
         App::GetApplication().signalNewDocument.connect(
             std::bind(&Gui::Application::slotNewDocument, this, sp::_1, sp::_2));
@@ -482,12 +537,12 @@ Application::Application(bool GUIenabled)
             hPGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str());
         GetWidgetFactorySupplier();
 
-        // Coin3d disabled VBO support for all Intel drivers but in the meantime they have improved
-        // so we can try to override the workaround by setting COIN_VBO
+        // Coin3d disables VBO support for some (typically very old) drivers and hardware.
+        // Force it on if the preference says to.
         ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/View");
         if (hViewGrp->GetBool("UseVBO", false)) {
-            (void)coin_setenv("COIN_VBO", "0", true);
+            (void)coin_setenv("COIN_VBO", "1", true);
         }
 
         // Check for the symbols for group separator and decimal point. They must be different
@@ -508,17 +563,6 @@ Application::Application(bool GUIenabled)
         // setting up Python binding
         Base::PyGILStateLocker lock;
 
-        PyDoc_STRVAR(
-            FreeCADGui_doc,
-            "The functions in the FreeCADGui module allow working with GUI documents,\n"
-            "view providers, views, workbenches and much more.\n\n"
-            "The FreeCADGui instance provides a list of references of GUI documents which\n"
-            "can be addressed by a string. These documents contain the view providers for\n"
-            "objects in the associated App document. An App and GUI document can be\n"
-            "accessed with the same name.\n\n"
-            "The FreeCADGui module also provides a set of functions to work with so called\n"
-            "workbenches.");
-
         // if this returns a valid pointer then the 'FreeCADGui' Python module was loaded,
         // otherwise the executable was launched
         PyObject* modules = PyImport_GetModuleDict();
@@ -526,9 +570,9 @@ Application::Application(bool GUIenabled)
         if (!module) {
             static struct PyModuleDef FreeCADGuiModuleDef = {PyModuleDef_HEAD_INIT,
                                                              "FreeCADGui",
-                                                             FreeCADGui_doc,
+                                                             Gui::FreeCADGuiModulePy::moduleDocumentation(),
                                                              -1,
-                                                             ApplicationPy::Methods,
+                                                             Gui::FreeCADGuiModulePy::Methods,
                                                              nullptr,
                                                              nullptr,
                                                              nullptr,
@@ -537,9 +581,10 @@ Application::Application(bool GUIenabled)
 
             PyDict_SetItemString(modules, "FreeCADGui", module);
         }
-        else {
-            // extend the method list
-            PyModule_AddFunctions(module, ApplicationPy::Methods);
+        else if (Gui::FreeCADGuiModulePy::addModuleMethods(module) != 0) {
+            // FreeCADCmd can import a bootstrap-only FreeCADGui module before the GUI app exists;
+            // upgrade it to the full GUI surface now.
+            throw Py::Exception();
         }
         Py::Module(module).setAttr(std::string("ActiveDocument"), Py::None());
         Py::Module(module).setAttr(std::string("HasQtBug_129596"),
@@ -566,17 +611,22 @@ Application::Application(bool GUIenabled)
                                     module,
                                     "ExpressionBinding");
 
+        Base::Interpreter().addType(&EditableDatumLabelPy::Type,
+                                    module,
+                                    "EditableDatumLabel");
+
         // insert Selection module
         static struct PyModuleDef SelectionModuleDef = {PyModuleDef_HEAD_INIT,
                                                         "Selection",
-                                                        "Selection module",
+                                                        Gui::SelectionModulePy::moduleDocumentation(),
                                                         -1,
-                                                        SelectionSingleton::Methods,
+                                                        nullptr,
                                                         nullptr,
                                                         nullptr,
                                                         nullptr,
                                                         nullptr};
         PyObject* pSelectionModule = PyModule_Create(&SelectionModuleDef);
+        Gui::SelectionModulePy::addModuleMethods(pSelectionModule);
         Py_INCREF(pSelectionModule);
         PyModule_AddObject(module, "Selection", pSelectionModule);
 
@@ -627,19 +677,6 @@ Application::Application(bool GUIenabled)
 
     Base::PyGILStateLocker lock;
     PyObject* module = PyImport_AddModule("FreeCADGui");
-    PyMethodDef* meth = FreeCADGui_methods;
-    PyObject* dict = PyModule_GetDict(module);
-    for (; meth->ml_name != nullptr; meth++) {
-        PyObject* descr;
-        descr = PyCFunction_NewEx(meth, nullptr, nullptr);
-        if (!descr) {
-            break;
-        }
-        if (PyDict_SetItemString(dict, meth->ml_name, descr) != 0) {
-            break;
-        }
-        Py_DECREF(descr);
-    }
 
     SoQtOffscreenRendererPy::init_type();
     Base::Interpreter().addType(SoQtOffscreenRendererPy::type_object(),
@@ -650,7 +687,6 @@ Application::Application(bool GUIenabled)
 
     // clang-format off
     // Python console binding
-    PythonDebugModule           ::init_module();
     PythonStdout                ::init_type();
     PythonStderr                ::init_type();
     OutputStdout                ::init_type();
@@ -673,19 +709,6 @@ Application::Application(bool GUIenabled)
     // instantiate the workbench dictionary
     _pcWorkbenchDictionary = PyDict_New();
 
-#ifdef USE_3DCONNEXION_NAVLIB
-    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/View"
-    );
-    if (!hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
-        // Instantiate the 3Dconnexion controller
-        pNavlibInterface = new NavlibInterface();
-    }
-    else {
-        pNavlibInterface = nullptr;
-    }
-#endif
-
     if (GUIenabled) {
         createStandardOperations();
         MacroCommand::load();
@@ -697,7 +720,9 @@ Application::~Application()
 {
     Base::Console().log("Destruct Gui::Application\n");
 #ifdef USE_3DCONNEXION_NAVLIB
-    delete pNavlibInterface;
+    if (pNavlibInterface) {
+        delete pNavlibInterface;
+    }
 #endif
     WorkbenchManager::destruct();
     WorkbenchManipulator::removeAll();
@@ -791,7 +816,7 @@ void Application::open(const char* FileName, const char* Module)
             getMainWindow()->appendRecentFile(filename);
             FileDialog::setWorkingDirectory(filename);
         }
-        catch (const Base::PyException& e) {
+        catch (const Base::Exception& e) {
             // Usually thrown if the file is invalid somehow
             e.reportException();
         }
@@ -874,10 +899,8 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                         "User parameter:BaseApp/Preferences/View"
                     );
                     if (hGrp->GetBool("AutoFitToView", true)) {
-                        MDIView* view = doc->getActiveView();
-                        if (view) {
-                            const char* ret = nullptr;
-                            if (view->onMsg("ViewFit", &ret)) {
+                        if (MDIView* view = doc->getActiveView()) {
+                            if (view->onMsg("ViewFit")) {
                                 updateActions(true);
                             }
                         }
@@ -900,7 +923,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
             }
             FileDialog::setWorkingDirectory(filename);
         }
-        catch (const Base::PyException& e) {
+        catch (const Base::Exception& e) {
             // Usually thrown if the file is invalid somehow
             e.reportException();
         }
@@ -1285,6 +1308,9 @@ void Application::slotActiveDocument(const App::Document& Doc)
                 Py::Module("FreeCADGui").setAttr(std::string("ActiveDocument"), Py::None());
             }
         }
+        if (!d->activeDocument->workbench().empty()) {
+            activateWorkbench(d->activeDocument->workbench().c_str());
+        }
 
         // Update the application to show the unit change
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -1402,10 +1428,10 @@ void Application::onLastWindowClosed(Gui::Document* pcDoc)
 }
 
 /// send Messages to the active view
-bool Application::sendMsgToActiveView(const char* pMsg, const char** ppReturn)
+bool Application::sendMsgToActiveView(const char* pMsg)
 {
     MDIView* pView = getMainWindow()->activeWindow();
-    bool res = pView ? pView->onMsg(pMsg, ppReturn) : false;
+    bool res = pView ? pView->onMsg(pMsg) : false;
     updateActions(true);
     return res;
 }
@@ -1417,7 +1443,7 @@ bool Application::sendHasMsgToActiveView(const char* pMsg)
 }
 
 /// send Messages to the active view
-bool Application::sendMsgToFocusView(const char* pMsg, const char** ppReturn)
+bool Application::sendMsgToFocusView(const char* pMsg)
 {
     MDIView* pView = getMainWindow()->activeWindow();
     if (!pView) {
@@ -1425,7 +1451,7 @@ bool Application::sendMsgToFocusView(const char* pMsg, const char** ppReturn)
     }
     for (auto focus = qApp->focusWidget(); focus; focus = focus->parentWidget()) {
         if (focus == pView) {
-            bool res = pView->onMsg(pMsg, ppReturn);
+            bool res = pView->onMsg(pMsg);
             updateActions(true);
             return res;
         }
@@ -1491,26 +1517,64 @@ Gui::Document* Application::activeDocument() const
 
 Gui::Document* Application::editDocument() const
 {
-    return d->editDocument;
-}
-
-Gui::MDIView* Application::editViewOfNode(SoNode* node) const
-{
-    return d->editDocument ? d->editDocument->getViewOfNode(node) : nullptr;
-}
-
-void Application::setEditDocument(Gui::Document* doc)
-{
-    if (!doc) {
-        d->editDocument = nullptr;
+    if (d->editDocuments.empty()) {
+        return nullptr;
     }
-    else if (doc == d->editDocument) {
+    return d->editDocuments[0];
+}
+Gui::Document* Application::editDocument(const std::function<bool(Gui::Document*)>& eval)
+{
+    auto found = std::ranges::find_if(d->editDocuments, eval);
+
+    return found == d->editDocuments.end() ? nullptr : *found;
+}
+std::vector<Gui::Document*> Application::editDocuments() const
+{
+    return d->editDocuments;
+}
+bool Application::isInEdit(Gui::Document* pcDocument) const
+{
+    return std::ranges::find(d->editDocuments, pcDocument) != d->editDocuments.end();
+}
+void Application::unsetEditDocument(Gui::Document* pcDocument)
+{
+    if (std::erase(d->editDocuments, pcDocument) == 0) {
         return;
     }
-    for (auto& v : d->documents) {
-        v.second->_resetEdit();
+
+    pcDocument->_resetEdit();
+    updateActions();
+}
+void Application::unsetEditDocumentIf(const std::function<bool(Gui::Document*)>& eval)
+{
+    std::vector<Gui::Document*> matched, unmatched;
+    ranges::partition_copy(d->editDocuments, back_inserter(matched), back_inserter(unmatched), eval);
+    std::swap(d->editDocuments, unmatched);
+    for (auto doc : matched) {
+        doc->_resetEdit();
     }
-    d->editDocument = doc;
+    updateActions();
+}
+Gui::MDIView* Application::editViewOfNode(SoNode* node) const
+{
+    for (auto editDoc : d->editDocuments) {
+        if (Gui::MDIView* view = editDoc->getViewOfNode(node)) {
+            return view;
+        }
+    }
+    return nullptr;
+}
+
+void Application::setEditDocument(Gui::Document* pcDocument)
+{
+    if (pcDocument == nullptr) {
+        return;
+    }
+    if (std::ranges::find(d->editDocuments, pcDocument) != d->editDocuments.end()) {
+        return;
+    }
+    d->editDocuments.push_back(pcDocument);
+
     updateActions();
 }
 
@@ -1531,12 +1595,18 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
             return;
         }
     }
+    if (d->activeDocument) {
+        d->activeDocument->setIsActive(false);
+    }
     d->activeDocument = pcDocument;
+
     std::string nameApp, nameGui;
 
     // This adds just a line to the macro file but does not set the active document
     // Macro recording of this is problematic, thus it's written out as comment.
     if (pcDocument) {
+        pcDocument->setIsActive(true);
+
         nameApp += "App.setActiveDocument(\"";
         nameApp += pcDocument->getDocument()->getName();
         nameApp += "\")\n";
@@ -1609,6 +1679,7 @@ Gui::Document* Application::getDocument(const App::Document* pDoc) const
 
 void Application::showViewProvider(const App::DocumentObject* obj)
 {
+    requireMainThread("Gui::Application::showViewProvider");
     ViewProvider* vp = getViewProvider(obj);
     if (vp) {
         vp->show();
@@ -1617,6 +1688,7 @@ void Application::showViewProvider(const App::DocumentObject* obj)
 
 void Application::hideViewProvider(const App::DocumentObject* obj)
 {
+    requireMainThread("Gui::Application::hideViewProvider");
     ViewProvider* vp = getViewProvider(obj);
     if (vp) {
         vp->hide();
@@ -1625,6 +1697,7 @@ void Application::hideViewProvider(const App::DocumentObject* obj)
 
 Gui::ViewProvider* Application::getViewProvider(const App::DocumentObject* obj) const
 {
+    requireMainThread("Gui::Application::getViewProvider");
     return d->viewproviderMap.getViewProvider(obj);
 }
 
@@ -1893,6 +1966,9 @@ bool Application::activateWorkbench(const char* name)
             }
             newWb->activated();
         }
+        if (activeDocument()) {
+            activeDocument()->setWorkbench(name);
+        }
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
@@ -2130,13 +2206,7 @@ void Application::setupContextMenu(const char* recipient, MenuItem* items) const
                 method.apply(args);
             }
             catch (Py::Exception& e) {
-                Py::Object o = Py::type(e);
-                e.clear();
-                if (o.isString()) {
-                    Py::String s(o);
-                    std::clog << "Application::setupContextMenu: " << s.as_std_string("utf-8")
-                              << std::endl;
-                }
+                PyErr_Print();
             }
         }
         actWb->createContextMenu(recipient, items);
@@ -2188,6 +2258,12 @@ void setCategoryFilterRules()
     stream.flush();
     QLoggingCategory::setFilterRules(filter);
 }
+
+bool isSuppressedQtWarning(const QMessageLogContext& context, const QString& msg)
+{
+    return context.category && strcmp(context.category, "qt.text.font.db") == 0
+        && msg.startsWith(QStringLiteral("OpenType support missing for "));
+}
 }  // namespace
 
 using _qt_msg_handler_old = void (*)(QtMsgType, const QMessageLogContext&, const QString&);
@@ -2195,6 +2271,10 @@ _qt_msg_handler_old old_qtmsg_handler = nullptr;
 
 void messageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
+    if (type == QtWarningMsg && isSuppressedQtWarning(context, msg)) {
+        return;
+    }
+
     QByteArray output;
     if (context.category && strcmp(context.category, "default") != 0) {
         output.append('(');
@@ -2283,6 +2363,7 @@ void Application::initApplication()
     try {
         initTypes();
         new Base::ScriptProducer("FreeCADGuiInit", FreeCADGuiInit);
+        new Base::ScriptProducer("FreeCADGuiTest", FreeCADGuiTest);
         init_resources();
         setCategoryFilterRules();
         old_qtmsg_handler = qInstallMessageHandler(messageHandler);
@@ -2301,6 +2382,7 @@ void Application::initTypes()
     // views
     Gui::BaseView                               ::init();
     Gui::MDIView                                ::init();
+    Gui::MDIViewWithCamera						::init();
     Gui::View3DInventor                         ::init();
     Gui::AbstractSplitView                      ::init();
     Gui::SplitView3DInventor                    ::init();
@@ -2442,13 +2524,12 @@ void tryRunEventLoop(GUISingleApplication& mainApp)
 {
     std::stringstream out;
     out << App::Application::getUserCachePath() << App::Application::getExecutableName() << "_"
-        << App::Application::applicationPid() << ".lock";
+        << App::Application::uniqueInstanceId() << ".lock";
 
     // open a lock file with the PID
     Base::FileInfo fi(out.str());
     Base::ofstream lock(fi);
 
-    // In case the file_lock cannot be created start FreeCAD without IPC support.
 #if !defined(FC_OS_WIN32) || (BOOST_VERSION < 107600)
     std::string filename = out.str();
 #else
@@ -2473,17 +2554,21 @@ void tryRunEventLoop(GUISingleApplication& mainApp)
             fi.deleteFile();
         }
         else {
-            Base::Console().warning(
+            Base::Console().error(
                 "Failed to create a file lock for the IPC.\n"
-                "The application will be terminated\n"
+                "The application will be terminated.\n"
+                "Attempted lock file: %s",
+                fi.filePath().c_str()
             );
         }
     }
     catch (const boost::interprocess::interprocess_exception& e) {
         QString msg = QString::fromLocal8Bit(e.what());
-        Base::Console().warning(
-            "Failed to create a file lock for the IPC: %s\n",
-            msg.toUtf8().constData()
+        Base::Console().error(
+            "Failed to create a file lock for the IPC: %s\n"
+            "Attempted lock file: %s\n",
+            msg.toUtf8().constData(),
+            fi.filePath().c_str()
         );
     }
 }
@@ -2575,6 +2660,9 @@ void Application::runApplication()
     MainWindow mw;
     mw.setProperty("QuitOnClosed", true);
 
+    // Destroy deferred views while their GUI and Python owners are still alive.
+    auto shutdownGuard = qScopeGuard([&app]() { app.shutdown(); });
+
     // https://forum.freecad.org/viewtopic.php?f=3&t=15540
     // Needs to be set after app is created to override platform defaults (qt commit a2aa1f81a81)
     QApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
@@ -2585,6 +2673,8 @@ void Application::runApplication()
 
     StartupPostProcess postProcess(&mw, app, &mainApp);
     postProcess.execute();
+
+    init3DMouse(&mw, &mainApp);
 
     Instance->d->startingUp = false;
 
@@ -2598,15 +2688,47 @@ void Application::runApplication()
     // https://forum.freecad.org/viewtopic.php?f=10&t=21665
     Gui::getMainWindow()->setProperty("eventLoop", true);
 
-#ifdef USE_3DCONNEXION_NAVLIB
-    if (Instance->pNavlibInterface) {
-        Instance->pNavlibInterface->enableNavigation();
-    }
-#endif
-
     runEventLoop(mainApp);
 
     Base::Console().log("Finish: Event loop left\n");
+}
+
+void Application::shutdown()
+{
+    d->isClosing = true;
+    App::GetApplication().closeAllDocuments();
+    QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
+}
+
+void Application::init3DMouse(MainWindow* mainWindow, QApplication* qtApp)
+{
+    Instance->pNavlibInterface = nullptr;
+#ifdef USE_3DCONNEXION_NAVLIB
+    if (NlErrorCode) {
+        Base::Console().log("Init: 3Dconnexion driver not installed\n");
+    }
+    else {
+        Base::Console().log("Init: 3Dconnexion Navigation Framework present\n");
+    }
+    if (!SpaceMouseParameter::instance()->getLegacySpaceMouseDevices()) {
+        if (!NlErrorCode) {
+            // Instantiate the 3Dconnexion controller
+            Instance->pNavlibInterface = new NavlibInterface();
+            Base::Console().log("Init: Enabling 3Dconnexion Navigation Framework\n");
+            Instance->pNavlibInterface->enableNavigation();
+        }
+    }
+    else {
+        Base::Console().log("Init: Using legacy SpaceMouse support\n");
+    }
+#endif
+    if (!Instance->pNavlibInterface) {
+        // initialize spaceball.
+        if (auto fcApp = qobject_cast<GUIApplicationNativeEventAware*>(qtApp)) {
+            Base::Console().log("Init: Initializing 3D mouse event handling\n");
+            fcApp->initSpaceball(mainWindow);
+        }
+    }
 }
 
 bool Application::hiddenMainWindow()
@@ -2768,6 +2890,38 @@ QString Application::replaceVariablesInQss(const QString& qssText)
     return QString::fromStdString(d->styleParameterManager->replacePlaceholders(qssText.toStdString()));
 }
 
+void Application::setStyle(const QString& name)
+{
+    const auto createStyleFromName = [](const QString& name) -> QStyle* {
+        if (name == QStringLiteral("FreeCAD")) {
+            return new FreeCADStyle();
+        }
+
+        if (name.compare(QStringLiteral("System"), Qt::CaseInsensitive) == 0) {
+            return nullptr;
+        }
+
+        return QStyleFactory::create(name);
+    };
+
+    const auto requiresEventFilter = [](QStyle* style) {
+        // for now only FreeCAD style requires additional event processing
+        return qobject_cast<FreeCADStyle*>(style) != nullptr;
+    };
+
+    if (auto* current = qApp->style(); current && requiresEventFilter(current)) {
+        qApp->removeEventFilter(current);
+    }
+
+    if (auto* style = createStyleFromName(name)) {
+        qApp->setStyle(style);
+
+        if (requiresEventFilter(style)) {
+            qApp->installEventFilter(style);
+        }
+    }
+}
+
 void Application::checkForDeprecatedSettings()
 {
     // From 0.21, `FCBak` will be the intended default backup format
@@ -2895,42 +3049,4 @@ App::Document* Application::reopen(App::Document* doc)
         }
     }
     return doc;
-}
-
-void Application::getVerboseDPIStyleInfo(QTextStream& str)
-{
-    // Add Stylesheet/Theme/Qtstyle information
-    std::string styleSheet = App::GetApplication()
-                                 .GetParameterGroupByPath(
-                                     "User parameter:BaseApp/Preferences/MainWindow"
-                                 )
-                                 ->GetASCII("StyleSheet");
-    std::string theme = App::GetApplication()
-                            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-                            ->GetASCII("Theme");
-#if QT_VERSION >= QT_VERSION_CHECK(6, 1, 0)
-    std::string style = qApp->style()->name().toStdString();
-#else
-    std::string style = App::GetApplication()
-                            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-                            ->GetASCII("QtStyle");
-    if (style.empty()) {
-        style = "Qt default";
-    }
-#endif
-    if (styleSheet.empty()) {
-        styleSheet = "unset";
-    }
-    if (theme.empty()) {
-        theme = "unset";
-    }
-
-    str << "Stylesheet/Theme/QtStyle: " << QString::fromStdString(styleSheet) << "/"
-        << QString::fromStdString(theme) << "/" << QString::fromStdString(style) << "\n";
-
-    // Add DPI information
-    str << "Logical DPI/Physical DPI/Pixel Ratio: "
-        << QApplication::primaryScreen()->logicalDotsPerInch() << "/"
-        << QApplication::primaryScreen()->physicalDotsPerInch() << "/"
-        << QApplication::primaryScreen()->devicePixelRatio() << "\n";
 }

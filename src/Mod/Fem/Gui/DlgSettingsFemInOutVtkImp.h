@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEMGUI_DLGSETTINGSFEMINOUTVTKIMP_H
-#define FEMGUI_DLGSETTINGSFEMINOUTVTKIMP_H
+#pragma once
 
 #include <memory>
 
@@ -53,5 +52,3 @@ private:
 };
 
 }  // namespace FemGui
-
-#endif  // FEMGUI_DLGSETTINGSFEMINOUTVTKIMP_H

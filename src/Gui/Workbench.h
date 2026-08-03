@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_WORKBENCH_H
-#define GUI_WORKBENCH_H
+#pragma once
 
 #include <list>
 #include <string>
@@ -335,6 +334,3 @@ protected:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_WORKBENCH_H

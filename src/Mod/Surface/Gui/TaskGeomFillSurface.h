@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACEGUI_TASKGEOMFILLSURFACE_H
-#define SURFACEGUI_TASKGEOMFILLSURFACE_H
+#pragma once
 
 #include <GeomFill_FillingStyle.hxx>
 
@@ -88,6 +87,7 @@ public:
     bool accept();
     bool reject();
     void setEditedObject(Surface::GeomFillSurface* obj);
+    void setSelectionGate();
 
 protected:
     void changeEvent(QEvent* e) override;
@@ -140,5 +140,3 @@ private:
 };
 
 }  // namespace SurfaceGui
-
-#endif  // SURFACEGUI_TASKGEOMFILLSURFACE_H

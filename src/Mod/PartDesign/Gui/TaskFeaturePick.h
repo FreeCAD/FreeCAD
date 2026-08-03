@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -20,8 +22,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#ifndef PARTDESIGNGUI_FeaturePickDialog_H
-#define PARTDESIGNGUI_FeaturePickDialog_H
+#pragma once
 
 #include <functional>
 #include <QListWidgetItem>
@@ -128,7 +129,7 @@ public:
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
-    /// is called by the framework if the user presses the help button
+
     bool isAllowedAlterDocument() const override
     {
         return false;
@@ -152,5 +153,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // PARTDESIGNGUI_FeaturePickDialog_H

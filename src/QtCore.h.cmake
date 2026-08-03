@@ -21,13 +21,10 @@
  *                                                                         *
  **************************************************************************/
 
+#pragma once
 
-#ifndef FREECAD_QTCORE_H
-#define FREECAD_QTCORE_H
 
 /* QtCore.h.  Generated from QtCore.h.cmake by cmake.  */
 
 /* Define to 1 Qt provides the macro Q_DISABLE_COPY_MOVE. */
 #cmakedefine HAVE_Q_DISABLE_COPY_MOVE
-
-#endif  // FREECAD_QTCORE_H

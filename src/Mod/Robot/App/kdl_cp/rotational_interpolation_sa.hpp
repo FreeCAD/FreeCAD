@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
   tag: Erwin Aertbelien  Mon Jan 10 16:38:39 CET 2005  rotational_interpolation_sa.h
 
@@ -41,8 +43,7 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef KDL_ROTATIONALINTERPOLATION_SINGLEAXIS_H
-#define KDL_ROTATIONALINTERPOLATION_SINGLEAXIS_H
+#pragma once
 
 #include "frames.hpp"
 #include "frames_io.hpp"
@@ -79,6 +80,3 @@ class RotationalInterpolation_SingleAxis: public RotationalInterpolation
 	};
 
 }
-
-
-#endif

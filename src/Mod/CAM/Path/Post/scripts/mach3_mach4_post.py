@@ -47,6 +47,8 @@ else:
 Values = Dict[str, Any]
 Visible = Dict[str, bool]
 
+POST_TYPE = "machine"
+
 
 class Mach3_Mach4(PostProcessor):
     """The Mach3_Mach4 post processor class."""
@@ -116,9 +118,7 @@ class Mach3_Mach4(PostProcessor):
         # Any commands in this value will be output as the last commands
         # in the G-code file.
         #
-        values[
-            "POSTAMBLE"
-        ] = """M05
+        values["POSTAMBLE"] = """M05
 G17 G54 G90 G80 G40
 M2"""
         values["POSTPROCESSOR_FILE_NAME"] = __name__

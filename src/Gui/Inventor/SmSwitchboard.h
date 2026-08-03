@@ -1,5 +1,6 @@
-#ifndef SMALLCHANGE_SWITCHBOARD_H
-#define SMALLCHANGE_SWITCHBOARD_H
+// SPDX-License-Identifier: BSD-3-Clause
+
+#pragma once
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -62,5 +63,3 @@ public:
 protected:
     ~SmSwitchboard() override;
 };
-
-#endif  // !SMALLCHANGE_SWITCHBOARD_H

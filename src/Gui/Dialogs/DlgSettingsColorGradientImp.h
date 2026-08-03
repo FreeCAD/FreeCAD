@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGSETTINGSCOLORGRADIENT_IMP_H
-#define GUI_DIALOG_DLGSETTINGSCOLORGRADIENT_IMP_H
+#pragma once
 
 #include <App/ColorModel.h>
 #include <QDialog>
@@ -105,5 +106,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLGSETTINGSCOLORGRADIENT_IMP_H

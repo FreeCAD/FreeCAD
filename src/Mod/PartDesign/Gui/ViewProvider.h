@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProvider_H
-#define PARTGUI_ViewProvider_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <Gui/ViewProviderFeaturePython.h>
@@ -81,6 +82,8 @@ public:
     // Returns the ViewProvider of the body the feature belongs to, or NULL, if not in a body
     ViewProviderBody* getBodyViewProvider();
 
+    void toggleVisibility() override;
+
     /// Provides preview shape
     Part::TopoShape getPreviewShape() const override;
     /// Toggles visibility of the preview
@@ -89,6 +92,12 @@ public:
     PyObject* getPyObject() override;
 
     QIcon mergeColorfulOverlayIcons(const QIcon& orig) const override;
+
+    /// Default implementation is a no-op; derived classes override if needed.
+    /// Called on recompute and when any feature in the Body changes visibility.
+    /// Serves as the entry point for ViewProviders that apply visual overlays
+    /// (e.g. textures, highlights, thread visualization).
+    virtual void updateOverlay() {};
 
 protected:
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
@@ -120,6 +129,3 @@ private:
 using ViewProviderPython = Gui::ViewProviderFeaturePythonT<ViewProvider>;
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderHole_H

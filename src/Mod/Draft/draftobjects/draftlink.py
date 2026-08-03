@@ -32,6 +32,7 @@ NOTE: this class is a bit mysterious. We need more documentation
 on how the properties are being set, and how the code interacts with
 the arrays that use it.
 """
+
 ## @package draftlink
 # \ingroup draftobjects
 # \brief Provides the base class for Link objects used by other objects.
@@ -40,14 +41,13 @@ import lazy_loader.lazy_loader as lz
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
+from draftgeoutils import general as geo_general
+from draftobjects.base import DraftObject
 from draftutils import gui_utils
 from draftutils.messages import _log
 
-from draftobjects.base import DraftObject
-
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
-DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 ## \addtogroup draftobjects
 # @{
@@ -228,7 +228,7 @@ class DraftLink(DraftObject):
                 else:
                     obj.Shape = Part.makeCompound(base)
 
-                if not DraftGeomUtils.isNull(pl):
+                if not geo_general.isNull(pl):
                     obj.Placement = pl
 
         if self.use_link:
@@ -252,6 +252,54 @@ class DraftLink(DraftObject):
                     obj.setPropertyStatus("PlacementList", "-Immutable")
                 else:
                     obj.setPropertyStatus("PlacementList", "Immutable")
+
+    def getPlacementOf(self, fp, subname, targetObj=None):
+        """
+        Return the placement of the sub-object relative to the link object.
+        """
+
+        # _getShowElementValue is mapped to ExpandArray.
+        if getattr(fp, "ExpandArray", False):
+            # Return None to fall back to the C++ implementation
+            return None
+
+        # We start with the object's own placement.
+        plc = fp.Placement
+
+        if not subname:
+            return plc
+
+        names = subname.split(".")
+
+        linked_obj = getattr(fp, "Base", None)
+        if not names or fp == targetObj or not linked_obj:
+            return plc
+
+        doc = linked_obj.Document
+
+        try:
+            i = int(names[0])
+        except ValueError:
+            return None
+
+        # Check bounds in PlacementList
+        plcs = fp.PlacementList
+        if i < 0 or i >= len(plcs):
+            return plc
+
+        # Accumulate the element placement
+        plc = plc * plcs[i]
+
+        if len(names) < 2:
+            return plc
+
+        subObj = doc.getObject(names[1])
+        if not subObj:
+            return plc
+
+        newSub = ".".join(names[2:])
+
+        return plc * subObj.getPlacementOf(newSub, targetObj)
 
 
 # Alias for compatibility with old versions of v0.19

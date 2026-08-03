@@ -115,12 +115,12 @@
        <widget class="QComboBox" name="filletType">
         <item>
          <property name="text">
-          <string>Constant Radius</string>
+          <string>Constant radius</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Variable Radius</string>
+          <string>Variable radius</string>
          </property>
         </item>
        </widget>

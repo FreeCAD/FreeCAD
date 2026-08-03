@@ -21,12 +21,10 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_MODELLIBRARY_H
-#define MATERIAL_MODELLIBRARY_H
+#pragma once
 
 #include <memory>
 
-#include <QDir>
 #include <QString>
 
 #include <Base/BaseClass.h>
@@ -101,5 +99,3 @@ private:
 
 Q_DECLARE_METATYPE(std::shared_ptr<Materials::ModelLibrary>)
 Q_DECLARE_METATYPE(std::shared_ptr<Materials::ModelLibraryLocal>)
-
-#endif  // MATERIAL_MODELLIBRARY_H

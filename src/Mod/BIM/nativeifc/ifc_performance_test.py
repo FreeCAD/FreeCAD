@@ -30,7 +30,6 @@ import FreeCAD
 
 from . import ifc_import
 
-
 FILES = [
     "IfcOpenHouse_IFC4.ifc",
     "FZK_haus.ifc",

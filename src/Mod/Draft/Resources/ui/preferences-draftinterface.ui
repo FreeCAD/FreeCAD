@@ -31,15 +31,12 @@
        <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutRelative">
         <property name="maximumSize">
          <size>
-          <width>25</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
          <string>R</string>
-        </property>
-        <property name="maxLength">
-         <number>1</number>
         </property>
         <property name="clearButtonEnabled">
          <bool>false</bool>
@@ -79,15 +76,12 @@
        <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutGlobal">
         <property name="maximumSize">
          <size>
-          <width>25</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
          <string>G</string>
-        </property>
-        <property name="maxLength">
-         <number>1</number>
         </property>
         <property name="clearButtonEnabled">
          <bool>false</bool>
@@ -127,15 +121,12 @@
        <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutLength">
         <property name="maximumSize">
          <size>
-          <width>25</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
          <string>L</string>
-        </property>
-        <property name="maxLength">
-         <number>1</number>
         </property>
         <property name="clearButtonEnabled">
          <bool>false</bool>
@@ -175,15 +166,12 @@
        <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutMakeFace">
         <property name="maximumSize">
          <size>
-          <width>25</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
          <string>F</string>
-        </property>
-        <property name="maxLength">
-         <number>1</number>
         </property>
         <property name="clearButtonEnabled">
          <bool>false</bool>
@@ -207,15 +195,12 @@
        <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutSelectEdge">
         <property name="maximumSize">
          <size>
-          <width>25</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
          <string>E</string>
-        </property>
-        <property name="maxLength">
-         <number>1</number>
         </property>
         <property name="clearButtonEnabled">
          <bool>false</bool>
@@ -239,15 +224,12 @@
        <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutSubelementMode">
         <property name="maximumSize">
          <size>
-          <width>25</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
          <string>B</string>
-        </property>
-        <property name="maxLength">
-         <number>1</number>
         </property>
         <property name="clearButtonEnabled">
          <bool>false</bool>
@@ -271,15 +253,12 @@
        <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutCopy">
         <property name="maximumSize">
          <size>
-          <width>25</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
          <string>C</string>
-        </property>
-        <property name="maxLength">
-         <number>1</number>
         </property>
         <property name="clearButtonEnabled">
          <bool>false</bool>
@@ -303,15 +282,12 @@
        <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutUndo">
         <property name="maximumSize">
          <size>
-          <width>25</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
          <string notr="true">/</string>
-        </property>
-        <property name="maxLength">
-         <number>1</number>
         </property>
         <property name="clearButtonEnabled">
          <bool>false</bool>
@@ -335,15 +311,12 @@
        <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutWipe">
         <property name="maximumSize">
          <size>
-          <width>25</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
          <string>W</string>
-        </property>
-        <property name="maxLength">
-         <number>1</number>
         </property>
         <property name="clearButtonEnabled">
          <bool>false</bool>
@@ -367,15 +340,12 @@
        <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutClose">
         <property name="maximumSize">
          <size>
-          <width>25</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
          <string>O</string>
-        </property>
-        <property name="maxLength">
-         <number>1</number>
         </property>
         <property name="clearButtonEnabled">
          <bool>false</bool>
@@ -399,15 +369,12 @@
        <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutExit">
         <property name="maximumSize">
          <size>
-          <width>25</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
          <string>A</string>
-        </property>
-        <property name="maxLength">
-         <number>1</number>
         </property>
         <property name="clearButtonEnabled">
          <bool>false</bool>
@@ -431,15 +398,12 @@
        <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutContinue">
         <property name="maximumSize">
          <size>
-          <width>25</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
          <string>N</string>
-        </property>
-        <property name="maxLength">
-         <number>1</number>
         </property>
         <property name="clearButtonEnabled">
          <bool>false</bool>
@@ -463,15 +427,12 @@
        <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutCycleSnap">
         <property name="maximumSize">
          <size>
-          <width>25</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
          <string notr="true">`</string>
-        </property>
-        <property name="maxLength">
-         <number>1</number>
         </property>
         <property name="clearButtonEnabled">
          <bool>false</bool>
@@ -495,15 +456,12 @@
        <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutAddHold">
         <property name="maximumSize">
          <size>
-          <width>25</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
          <string>Q</string>
-        </property>
-        <property name="maxLength">
-         <number>1</number>
         </property>
         <property name="clearButtonEnabled">
          <bool>false</bool>
@@ -527,15 +485,12 @@
        <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutSetWP">
         <property name="maximumSize">
          <size>
-          <width>25</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
          <string>U</string>
-        </property>
-        <property name="maxLength">
-         <number>1</number>
         </property>
         <property name="clearButtonEnabled">
          <bool>false</bool>
@@ -559,15 +514,12 @@
        <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutSnap">
         <property name="maximumSize">
          <size>
-          <width>25</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
          <string>S</string>
-        </property>
-        <property name="maxLength">
-         <number>1</number>
         </property>
         <property name="clearButtonEnabled">
          <bool>false</bool>
@@ -591,15 +543,12 @@
        <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutIncreaseRadius">
         <property name="maximumSize">
          <size>
-          <width>25</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
          <string notr="true">P</string>
-        </property>
-        <property name="maxLength">
-         <number>1</number>
         </property>
         <property name="clearButtonEnabled">
          <bool>false</bool>
@@ -623,15 +572,12 @@
        <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutDecreaseRadius">
         <property name="maximumSize">
          <size>
-          <width>25</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
          <string notr="true">M</string>
-        </property>
-        <property name="maxLength">
-         <number>1</number>
         </property>
         <property name="clearButtonEnabled">
          <bool>false</bool>
@@ -655,15 +601,12 @@
        <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutRestrictX">
         <property name="maximumSize">
          <size>
-          <width>25</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
          <string>X</string>
-        </property>
-        <property name="maxLength">
-         <number>1</number>
         </property>
         <property name="clearButtonEnabled">
          <bool>false</bool>
@@ -687,15 +630,12 @@
        <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutRestrictY">
         <property name="maximumSize">
          <size>
-          <width>25</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
          <string>Y</string>
-        </property>
-        <property name="maxLength">
-         <number>1</number>
         </property>
         <property name="clearButtonEnabled">
          <bool>false</bool>
@@ -719,15 +659,12 @@
        <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutRestrictZ">
         <property name="maximumSize">
          <size>
-          <width>25</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
          <string>Z</string>
-        </property>
-        <property name="maxLength">
-         <number>1</number>
         </property>
         <property name="clearButtonEnabled">
          <bool>false</bool>
@@ -751,15 +688,12 @@
        <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutRecenter">
         <property name="maximumSize">
          <size>
-          <width>25</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
          <string>D</string>
-        </property>
-        <property name="maxLength">
-         <number>1</number>
         </property>
         <property name="clearButtonEnabled">
          <bool>false</bool>

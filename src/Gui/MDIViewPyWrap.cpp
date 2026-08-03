@@ -212,16 +212,16 @@ PyObject* MDIViewPyWrap::getPyObject()
     return MDIView::getPyObject();
 }
 
-bool MDIViewPyWrap::onMsg(const char* pMsg, const char** ppReturn)
+bool MDIViewPyWrap::onMsg(const char* pMsg)
 {
     try {
         if (ptr->onMsg(pMsg)) {
             return true;
         }
-        return MDIView::onMsg(pMsg, ppReturn);
+        return MDIView::onMsg(pMsg);
     }
     catch (const std::exception&) {
-        return MDIView::onMsg(pMsg, ppReturn);
+        return MDIView::onMsg(pMsg);
     }
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;

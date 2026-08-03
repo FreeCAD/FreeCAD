@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWPART_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEWPART_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -74,6 +73,7 @@ public:
     void toggleCosmeticLines(bool state);
     void setViewPartFeature(TechDraw::DrawViewPart *obj);
     void updateView(bool update = false) override;
+    void updateFrameVisibility() override;
     void tidy();
     QRectF boundingRect() const override;
 
@@ -115,6 +115,7 @@ public:
                                      double x, double y,
                                      double curx, double cury);
 
+    void addToGroupWithoutUpdate(QGraphicsItem* item);
     bool getGroupSelection() override;
     void setGroupSelection(bool isSelected) override;
     void setGroupSelection(bool isSelected, const std::vector<std::string> &subNames) override;
@@ -126,10 +127,10 @@ public:
     virtual double getLineWidth();
     virtual double getVertexSize();
 
-    bool isExporting() const;
     bool hideCenterMarks() const;
 
-
+    void setMovableFlag() override;
+    void setMovableFlagProjGroupItem();
 
 protected:
     bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) override;
@@ -164,5 +165,3 @@ private:
 };
 
 } // namespace
-
-#endif // DRAWINGGUI_QGRAPHICSITEMVIEWPART_H

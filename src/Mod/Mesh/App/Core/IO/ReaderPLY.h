@@ -22,8 +22,7 @@
  **************************************************************************/
 
 
-#ifndef MESH_IO_READER_PLY_H
-#define MESH_IO_READER_PLY_H
+#pragma once
 
 #include <Mod/Mesh/App/Core/MeshKernel.h>
 #include <Mod/Mesh/MeshGlobal.h>
@@ -136,6 +135,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-
-#endif  // MESH_IO_READER_PLY_H

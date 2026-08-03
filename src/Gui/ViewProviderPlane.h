@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_ViewProviderPlane_H
-#define GUI_ViewProviderPlane_H
+#pragma once
 
 #include "ViewProviderDatum.h"
 
@@ -72,6 +71,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_ViewProviderPlane_H

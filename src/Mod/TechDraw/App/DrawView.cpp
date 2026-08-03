@@ -99,7 +99,7 @@ DrawView::DrawView():
 
     ScaleType.setEnums(ScaleTypeEnums);
     ADD_PROPERTY_TYPE(ScaleType, (prefScaleType()), group, App::Prop_Output, "Scale Type");
-    ADD_PROPERTY_TYPE(Scale, (prefScale()), group, App::Prop_None, "Scale factor of the view. Scale factors like 1:100 can be written as =1/100");
+    ADD_PROPERTY_TYPE(Scale, (prefScale()), group, App::Prop_None, "Scale factor of the view (decimal value). For fractions, use an expression (e.g. =1/10).");
     Scale.setConstraints(&scaleRange);
 
     ADD_PROPERTY_TYPE(Caption, (""), group, App::Prop_Output, "Short text about the view");
@@ -198,8 +198,9 @@ void DrawView::onChanged(const App::Property* prop)
         }
         if (ScaleType.isValue("Page")) {
             Scale.setStatus(App::Property::ReadOnly, true);
-            if(std::abs(page->Scale.getValue() - getScale()) > std::numeric_limits<float>::epsilon()) {
-               Scale.setValue(page->Scale.getValue());
+            if (std::abs(page->Scale.getValue() - Scale.getValue())
+                > std::numeric_limits<float>::epsilon()) {
+                Scale.setValue(page->Scale.getValue());
             }
         } else if ( ScaleType.isValue("Custom") ) {
             //don't change Scale
@@ -583,7 +584,7 @@ void DrawView::handleChangedPropertyType(Base::XMLReader &reader, const char * T
 {
     if (prop == &Scale) {
         App::PropertyFloat tmp;
-        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {                   //property in file is Float
+        if (tmp.getTypeId().getName() == TypeName) {  // property in file is Float
             tmp.setContainer(this);
             tmp.Restore(reader);
             double tmpValue = tmp.getValue();
@@ -598,7 +599,7 @@ void DrawView::handleChangedPropertyType(Base::XMLReader &reader, const char * T
         && strcmp(prop->getName(), "Source") == 0) {
         App::PropertyLinkGlobal glink;
         App::PropertyLink link;
-        if (strcmp(glink.getTypeId().getName(), TypeName) == 0) {            //property in file is plg
+        if (glink.getTypeId().getName() == TypeName) {  // property in file is plg
             glink.setContainer(this);
             glink.Restore(reader);
             if (glink.getValue()) {
@@ -606,7 +607,7 @@ void DrawView::handleChangedPropertyType(Base::XMLReader &reader, const char * T
                 static_cast<App::PropertyLinkList*>(prop)->setValue(glink.getValue());
             }
         }
-        else if (strcmp(link.getTypeId().getName(), TypeName) == 0) {            //property in file is pl
+        else if (link.getTypeId().getName() == TypeName) {  // property in file is pl
             link.setContainer(this);
             link.Restore(reader);
             if (link.getValue()) {
@@ -675,21 +676,25 @@ void DrawView::setScaleAttribute()
 }
 
 //! Due to changes made for the "intelligent" view creation tool, testing for a view being an
-//! instance of DrawProjGroupItem is no longer reliable, as views not in a group are sometimes
-//! created as DrawProjGroupItem without belonging to a group.  We now need to test for the
-//! existence of the parent DrawProjGroup
+//! instance of DrawProjGroupItem is no longer reliable, as views are sometimes
+//! created as DrawProjGroupItem without belonging to a group or as a DrawViewPart that does
+//! belong to a group.  We now need to test for the existence of the parent DrawProjGroup
 bool DrawView::isProjGroupItem(DrawViewPart* item)
 {
-    auto dpgi = freecad_cast<DrawProjGroupItem*>(item);
-    if (!dpgi) {
-        return false;
+    // we check if any object that points to us (as in the Views property of a collection)
+    // is a projection group.
+    std::vector<App::DocumentObject*> inlist = item->getInList();
+    for (auto& obj : inlist) {
+        auto* dpg = freecad_cast<DrawProjGroup*>(obj);
+        if (dpg) {
+            // if a dpg points at item, item must be considered a dpgi. Front is sometime a dvp,
+            // and not a dpgi.
+            return true;
+        }
     }
-    auto group = dpgi->getPGroup();
-    if (!group) {
-        return false;
-    }
-    return true;
+    return false;
 }
+
 int DrawView::prefScaleType()
 {
     return Preferences::getPreferenceGroup("General")->GetInt("DefaultScaleType", 0);

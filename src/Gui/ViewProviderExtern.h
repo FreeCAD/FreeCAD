@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDER_EXTERN_H
-#define GUI_VIEWPROVIDER_EXTERN_H
+#pragma once
 
 #include "ViewProvider.h"
 
@@ -63,5 +62,3 @@ protected:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_VIEWPROVIDER_EXTERN_H

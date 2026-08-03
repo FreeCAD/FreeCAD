@@ -31,6 +31,7 @@
 #include <TopTools_IndexedMapOfShape.hxx>
 
 
+#include <SignalException.h>
 #include "FeatureChamfer.h"
 #include "TopoShapeOpCode.h"
 
@@ -103,6 +104,7 @@ App::DocumentObjectExecReturn* Chamfer::execute()
         }
         Edges.setValues(edges);
 
+        Part::SignalException sig;
         TopoDS_Shape shape = mkChamfer.Shape();
         if (shape.IsNull()) {
             return new App::DocumentObjectExecReturn("Resulting shape is null");
@@ -114,5 +116,10 @@ App::DocumentObjectExecReturn* Chamfer::execute()
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
+    }
+    catch (...) {
+        return new App::DocumentObjectExecReturn(
+            "Chamfer failed: OCC kernel error in chamfer computation"
+        );
     }
 }

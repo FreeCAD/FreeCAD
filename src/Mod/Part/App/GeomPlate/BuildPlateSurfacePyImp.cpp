@@ -25,7 +25,10 @@
 #include <Mod/Part/PartGlobal.h>
 
 #include <Standard_Failure.hxx>
-
+#include <TColGeom2d_HArray1OfCurve.hxx>
+#include <TColStd_HArray1OfInteger.hxx>
+#include <TColgp_SequenceOfXY.hxx>
+#include <TColgp_SequenceOfXYZ.hxx>
 
 #include "GeomPlate/BuildPlateSurfacePy.h"
 #include "GeomPlate/BuildPlateSurfacePy.cpp"
@@ -336,9 +339,8 @@ PyObject* BuildPlateSurfacePy::curveConstraint(PyObject* args) const
     }
 
     try {
-        Handle(GeomPlate_CurveConstraint) hCC = getGeomPlate_BuildPlateSurfacePtr()->CurveConstraint(
-            index
-        );
+        Handle(GeomPlate_CurveConstraint)
+            hCC = getGeomPlate_BuildPlateSurfacePtr()->CurveConstraint(index);
         if (hCC.IsNull()) {
             Py_Return;
         }
@@ -360,9 +362,8 @@ PyObject* BuildPlateSurfacePy::pointConstraint(PyObject* args) const
     }
 
     try {
-        Handle(GeomPlate_PointConstraint) hPC = getGeomPlate_BuildPlateSurfacePtr()->PointConstraint(
-            index
-        );
+        Handle(GeomPlate_PointConstraint)
+            hPC = getGeomPlate_BuildPlateSurfacePtr()->PointConstraint(index);
         if (hPC.IsNull()) {
             Py_Return;
         }

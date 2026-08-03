@@ -56,9 +56,8 @@ int ParabolaPy::PyInit(PyObject* args, PyObject* kwds)
 {
     static const std::array<const char*, 1> keywords_n {nullptr};
     if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
-        Handle(Geom_Parabola) parabola = Handle(Geom_Parabola)::DownCast(
-            getGeomParabolaPtr()->handle()
-        );
+        Handle(Geom_Parabola)
+            parabola = Handle(Geom_Parabola)::DownCast(getGeomParabolaPtr()->handle());
         parabola->SetFocal(1.0);
         return 0;
     }
@@ -68,12 +67,10 @@ int ParabolaPy::PyInit(PyObject* args, PyObject* kwds)
     PyObject* pParab;
     if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!", keywords_e, &(ParabolaPy::Type), &pParab)) {
         ParabolaPy* pParabola = static_cast<ParabolaPy*>(pParab);
-        Handle(Geom_Parabola) Parab1 = Handle(Geom_Parabola)::DownCast(
-            pParabola->getGeomParabolaPtr()->handle()
-        );
-        Handle(Geom_Parabola) Parab2 = Handle(Geom_Parabola)::DownCast(
-            this->getGeomParabolaPtr()->handle()
-        );
+        Handle(Geom_Parabola)
+            Parab1 = Handle(Geom_Parabola)::DownCast(pParabola->getGeomParabolaPtr()->handle());
+        Handle(Geom_Parabola)
+            Parab2 = Handle(Geom_Parabola)::DownCast(this->getGeomParabolaPtr()->handle());
         Parab2->SetParab(Parab1->Parab());
         return 0;
     }
@@ -112,9 +109,8 @@ int ParabolaPy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle(Geom_Parabola) parabola = Handle(Geom_Parabola)::DownCast(
-            getGeomParabolaPtr()->handle()
-        );
+        Handle(Geom_Parabola)
+            parabola = Handle(Geom_Parabola)::DownCast(getGeomParabolaPtr()->handle());
         parabola->SetParab(mc.Value());
         return 0;
     }

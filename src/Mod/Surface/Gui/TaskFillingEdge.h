@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACEGUI_TASKFILLINGEDGE_H
-#define SURFACEGUI_TASKFILLINGEDGE_H
+#pragma once
 
 #include <Gui/DocumentObserver.h>
 #include <Gui/Selection/SelectionFilter.h>
@@ -77,6 +76,8 @@ public:
     void setEditedObject(Surface::Filling* obj);
     void appendButtons(Gui::ButtonGroup*);
 
+    void setSelectionGate();
+
 protected:
     void changeEvent(QEvent* e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
@@ -103,5 +104,3 @@ private:
 };
 
 }  // namespace SurfaceGui
-
-#endif  // SURFACEGUI_TASKFILLINGEDGE_H

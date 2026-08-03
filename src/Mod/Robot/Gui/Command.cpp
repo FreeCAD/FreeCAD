@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -23,6 +25,7 @@
 #include <QMessageBox>
 
 
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
@@ -214,12 +217,14 @@ void CmdRobotConstraintAxle::activated([[maybe_unused]] int msg)
 
     openCommand("Place robot");
     doCommand(Doc, "App.activeDocument().addObject(\"Robot::RobotObject\",\"%s\")", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.RobotVrmlFile = \"%s\"", FeatName.c_str(), WrlPath.c_str());
+    const std::string wrlPath = Base::Tools::escapeEncodeString(WrlPath);
+    const std::string kinematicPath = Base::Tools::escapeEncodeString(KinematicPath);
+    doCommand(Doc, "App.activeDocument().%s.RobotVrmlFile = \"%s\"", FeatName.c_str(), wrlPath.c_str());
     doCommand(
         Doc,
         "App.activeDocument().%s.RobotKinematicFile = \"%s\"",
         FeatName.c_str(),
-        KinematicPath.c_str()
+        kinematicPath.c_str()
     );
     updateActive();
     commitCommand();

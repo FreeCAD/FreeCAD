@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEATUREGEOMFILLSURFACE_H
-#define FEATUREGEOMFILLSURFACE_H
+#pragma once
 
 #include <App/PropertyLinks.h>
 #include <Mod/Part/App/FeaturePartSpline.h>
@@ -98,5 +97,3 @@ private:
 };
 
 }  // namespace Surface
-
-#endif  // FEATUREGEOMFILLSURFACE_H

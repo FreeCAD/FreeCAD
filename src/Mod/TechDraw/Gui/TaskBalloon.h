@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TASKBALLOON_H
-#define GUI_TASKVIEW_TASKBALLOON_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -64,7 +63,7 @@ private Q_SLOTS:
     void onShapeScaleChanged();
     void onEndSymbolChanged();
     void onEndSymbolScaleChanged();
-    void onLineVisibleChanged();
+    void onLineVisibleChanged(bool isVisible);
     void onLineWidthChanged();
     void onKinkLengthChanged();
 
@@ -110,5 +109,3 @@ private:
 };
 
 } //namespace TechDrawGui
-
-#endif // #ifndef GUI_TASKVIEW_TASKBALLOON_H

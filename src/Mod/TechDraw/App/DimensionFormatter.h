@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DIMENSIONFORMATTER_H
-#define DIMENSIONFORMATTER_H
+#pragma once
 
 #include <QString>
 
@@ -67,4 +66,3 @@ private:
 };
 
 }  // end namespace TechDraw
-#endif

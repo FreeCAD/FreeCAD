@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef FEM_CONSTRAINTCONTACT_H
-#define FEM_CONSTRAINTCONTACT_H
+#pragma once
 
 #include "FemConstraint.h"
 
@@ -53,6 +52,8 @@ public:
     App::PropertyStiffnessDensity StickSlope;
     App::PropertyBool EnableThermalContact;
     App::PropertyStringList ThermalContactConductance;
+    App::PropertyBoolList ReversedMaster;
+    App::PropertyBoolList ReversedSlave;
     App::PropertyEnumeration SurfaceBehavior;
 
     // etc
@@ -74,6 +75,3 @@ protected:
 };
 
 }  // namespace Fem
-
-
-#endif  // FEM_CONSTRAINTCONTACT_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -39,6 +41,9 @@
 #include <sstream>
 #include <stack>
 #include <string>
+#include <fmt/format.h>
+
+#include <QObject>
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>
@@ -559,6 +564,37 @@ static inline bool anyToDouble(double &res, const App::any &value) {
     return true;
 }
 
+std::string anyToString(const App::any &value) {
+    if (is_type(value, typeid(bool))) {
+        return (cast<bool>(value) ? QObject::tr("True") : QObject::tr("False")).toStdString();
+    }
+    else if (is_type(value, typeid(int))) {
+        return std::to_string(cast<int>(value));
+    }
+    else if (is_type(value, typeid(long))) {
+        return std::to_string(cast<long>(value));
+    }
+    else if (is_type(value, typeid(float)) || is_type(value, typeid(double))) {
+        Quantity q(is_type(value, typeid(float)) ? cast<float>(value) : cast<double>(value));
+        return q.getUserString();
+    }
+    else if (is_type(value, typeid(Quantity))) {
+        const Quantity& q = cast<Quantity>(value);
+        return q.getUserString();
+    }
+    else if (is_type(value, typeid(const char*))) {
+        const char* p = cast<const char*>(value);
+        return p ? std::string(p) : QObject::tr("Null").toStdString();
+    }
+    else if (is_type(value, typeid(std::string))) {
+        return cast<std::string>(value);
+    }
+    else {
+        Base::PyGILStateLocker lock;
+        return pyObjectFromAny(value).as_string();
+    }
+}
+
 bool isAnyEqual(const App::any &v1, const App::any &v2) {
     if(v1.empty())
         return v2.empty();
@@ -566,6 +602,23 @@ bool isAnyEqual(const App::any &v1, const App::any &v2) {
         return false;
 
     if(!is_type(v1,v2.type())) {
+        // As long as anyToQuantity() throws for strings, these must be handled first
+        bool v1_string = is_type(v1, typeid(std::string));
+        bool v1_charptr = is_type(v1, typeid(const char*));
+        bool v2_string = is_type(v2, typeid(std::string));
+        bool v2_charptr = is_type(v2, typeid(const char*));
+
+        if (v1_string || v1_charptr || v2_string || v2_charptr) {
+            if (v1_string && v2_charptr) {
+                auto c = cast<const char*>(v2);
+                return c && cast<std::string>(v1) == c;
+            } else if (v2_string && v1_charptr) {
+                auto c = cast<const char*>(v1);
+                return c && cast<std::string>(v2) == c;
+            }
+            return false;
+        }
+
         if(is_type(v1,typeid(Quantity)))
             return cast<Quantity>(v1) == anyToQuantity(v2);
         else if(is_type(v2,typeid(Quantity)))
@@ -582,20 +635,6 @@ bool isAnyEqual(const App::any &v1, const App::any &v2) {
                 return false;
         }else if(anyToDouble(d1,v1))
            return anyToDouble(d2,v2) && essentiallyEqual(d1,d2);
-
-        if(is_type(v1,typeid(std::string))) {
-            if(is_type(v2,typeid(const char*))) {
-                auto c = cast<const char*>(v2);
-                return c && cast<std::string>(v1)==c;
-            }
-            return false;
-        }else if(is_type(v1,typeid(const char*))) {
-            if(is_type(v2,typeid(std::string))) {
-                auto c = cast<const char*>(v1);
-                return c && cast<std::string>(v2)==c;
-            }
-            return false;
-        }
     }
 
     if (is_type(v1,typeid(int)))
@@ -633,25 +672,31 @@ bool isAnyEqual(const App::any &v1, const App::any &v2) {
     return !!res;
 }
 
-Expression* expressionFromPy(const DocumentObject *owner, const Py::Object &value) {
+ExpressionPtr expressionFromPy(const DocumentObject* owner, const Py::Object& value)
+{
     if (value.isNone())
-        return new PyObjectExpression(owner);
+        return std::make_unique<PyObjectExpression>(owner);
     if(value.isString()) {
-        return new StringExpression(owner,value.as_string());
+        return std::make_unique<StringExpression>(owner, value.as_string());
     } else if (PyObject_TypeCheck(value.ptr(),&QuantityPy::Type)) {
-        return new NumberExpression(owner,
-                *static_cast<QuantityPy*>(value.ptr())->getQuantityPtr());
+        return std::make_unique<NumberExpression>(
+            owner,
+            *static_cast<QuantityPy*>(value.ptr())->getQuantityPtr()
+        );
     } else if (value.isBoolean()) {
-        if(value.isTrue())
-            return new ConstantExpression(owner,"True",Quantity(1.0));
-        else
-            return new ConstantExpression(owner,"False",Quantity(0.0));
+        if (value.isTrue()) {
+            return std::make_unique<ConstantExpression>(owner, "True", Quantity(1.0));
+        }
+        else {
+            return std::make_unique<ConstantExpression>(owner, "False", Quantity(0.0));
+        }
     } else {
         Quantity q;
-        if(pyToQuantity(q,value))
-            return new NumberExpression(owner,q);
+        if (pyToQuantity(q, value)) {
+            return std::make_unique<NumberExpression>(owner, q);
+        }
     }
-    return new PyObjectExpression(owner,value.ptr());
+    return std::make_unique<PyObjectExpression>(owner, value.ptr());
 }
 
 } // namespace App
@@ -683,12 +728,7 @@ Expression::Component::Component(const Component &other)
     ,e3(other.e3?other.e3->copy():nullptr)
 {}
 
-Expression::Component::~Component()
-{
-    delete e1;
-    delete e2;
-    delete e3;
-}
+Expression::Component::~Component() = default;
 
 Expression::Component* Expression::Component::copy() const {
     return new Component(*this);
@@ -878,7 +918,7 @@ int Expression::priority() const {
     return 20;
 }
 
-Expression * Expression::parse(const DocumentObject *owner, const std::string &buffer)
+ExpressionPtr Expression::parse(const DocumentObject* owner, const std::string& buffer)
 {
     return ExpressionParser::parse(owner, buffer.c_str());
 }
@@ -905,14 +945,15 @@ ExpressionDeps Expression::getDeps(int option)  const {
     return deps;
 }
 
-void Expression::getDepObjects(
-        std::map<App::DocumentObject*,bool> &deps, std::vector<std::string> *labels) const
+void Expression::getDepObjects(std::map<App::DocumentObject*, bool>& deps,
+                               std::vector<std::string>* labels,
+                               std::map<std::pair<std::string, App::DocumentObject*>, bool>* propDeps) const
 {
     for(auto &v : getIdentifiers()) {
         bool hidden = v.second;
         const ObjectIdentifier &var = v.first;
         std::vector<std::string> strings;
-        for(auto &dep : var.getDep(false, &strings)) {
+        for(auto &dep : var.getDep(propDeps != nullptr, &strings)) {
             DocumentObject *obj = dep.first;
             if (!obj->testStatus(ObjectStatus::Remove)) {
                 if (labels) {
@@ -922,6 +963,11 @@ void Expression::getDepObjects(
                 auto res = deps.insert(std::make_pair(obj, hidden));
                 if (!hidden || res.second)
                     res.first->second = hidden;
+                if (propDeps) {
+                    for (auto &propName : dep.second) {
+                        (*propDeps)[std::make_pair(propName, obj)] = hidden;
+                    }
+                }
             }
 
             strings.clear();
@@ -1010,7 +1056,7 @@ ExpressionPtr Expression::importSubNames(const std::map<std::string,std::string>
                 if(key.second.empty() || subNameMap.contains(key))
                     continue;
                 std::string imported = PropertyLinkBase::tryImportSubName(
-                               obj,key.second.c_str(),owner->getDocument(), nameMap);
+                               obj, key.second.c_str(), owner->getDocument(), nameMap);
                 if(!imported.empty())
                     subNameMap.emplace(std::move(key),std::move(imported));
             }
@@ -1021,7 +1067,7 @@ ExpressionPtr Expression::importSubNames(const std::map<std::string,std::string>
     ImportSubNamesExpressionVisitor v(subNameMap);
     auto res = copy();
     res->visit(v);
-    return ExpressionPtr(res);
+    return res;
 }
 
 class UpdateLabelExpressionVisitor : public ExpressionVisitor {
@@ -1053,7 +1099,7 @@ ExpressionPtr Expression::updateLabelReference(
             UpdateLabelExpressionVisitor v(obj,ref,newLabel);
             auto expr = copy();
             expr->visit(v);
-            return ExpressionPtr(expr);
+            return expr;
         }
     }
     return {};
@@ -1098,7 +1144,7 @@ ExpressionPtr Expression::replaceObject(const DocumentObject *parent,
     auto expr = copy();
     v.collect = false;
     expr->visit(v);
-    return ExpressionPtr(expr);
+    return expr;
 }
 
 App::any Expression::getValueAsAny() const {
@@ -1132,9 +1178,10 @@ void Expression::visit(ExpressionVisitor &v) {
     v.visit(*this);
 }
 
-Expression* Expression::eval() const {
+ExpressionPtr Expression::eval() const
+{
     Base::PyGILStateLocker lock;
-    return expressionFromPy(owner,getPyValue());
+    return expressionFromPy(owner, getPyValue());
 }
 
 bool Expression::isSame(const Expression &other, bool checkComment) const {
@@ -1172,8 +1219,9 @@ void Expression::toString(std::ostream &ss, bool persistent, bool checkPriority,
         c->toString(ss,persistent);
 }
 
-Expression* Expression::copy() const {
-    auto expr = _copy();
+ExpressionPtr Expression::copy() const
+{
+    auto expr = std::unique_ptr<Expression>(_copy());
     copy_vector(expr->components,components);
     expr->comment = comment;
     return expr;
@@ -1210,14 +1258,6 @@ void UnitExpression::setQuantity(const Quantity &_quantity)
     }
 }
 
-/**
-  * Set unit information.
-  *
-  * @param _unit    A unit object
-  * @param _unitstr The unit expressed as a string
-  * @param _scaler  Scale factor to convert unit into internal unit.
-  */
-
 void UnitExpression::setUnit(const Quantity &_quantity)
 {
     quantity = _quantity;
@@ -1228,32 +1268,15 @@ void UnitExpression::setUnit(const Quantity &_quantity)
     }
 }
 
-/**
-  * Simplify the expression. In this case, a NumberExpression is returned,
-  * as it cannot be simplified any more.
-  */
-
-Expression *UnitExpression::simplify() const
+ExpressionPtr UnitExpression::simplify() const
 {
-    return new NumberExpression(owner, quantity);
+    return std::make_unique<NumberExpression>(owner, quantity);
 }
-
-/**
-  * Return a string representation, in this case the unit string.
-  */
-
-/**
-  * Return a string representation of the expression.
-  */
 
 void UnitExpression::_toString(std::ostream &ss, bool,int) const
 {
     ss << unitStr;
 }
-
-/**
-  * Return a copy of the expression.
-  */
 
 Expression *UnitExpression::_copy() const
 {
@@ -1277,28 +1300,15 @@ NumberExpression::NumberExpression(const DocumentObject *_owner, const Quantity 
 {
 }
 
-/**
-  * Simplify the expression. For NumberExpressions, we return a copy(), as it cannot
-  * be simplified any more.
-  */
-
-Expression *NumberExpression::simplify() const
+ExpressionPtr NumberExpression::simplify() const
 {
     return copy();
 }
-
-/**
-  * Create and return a copy of the expression.
-  */
 
 Expression *NumberExpression::_copy() const
 {
     return new NumberExpression(owner, getQuantity());
 }
-
-/**
-  * Negate the stored value.
-  */
 
 void NumberExpression::negate()
 {
@@ -1349,10 +1359,6 @@ OperatorExpression::~OperatorExpression()
     delete left;
     delete right;
 }
-
-/**
-  * Determine whether the expression is touched or not, i.e relies on properties that are touched.
-  */
 
 bool OperatorExpression::isTouched() const
 {
@@ -1475,34 +1481,18 @@ Py::Object OperatorExpression::_getPyValue() const {
     return calc(this,op,left,right,false);
 }
 
-/**
-  * Simplify the expression. For OperatorExpressions, we return a NumberExpression if
-  * both the left and right side can be simplified to NumberExpressions. In this case
-  * we can calculate the final value of the expression.
-  *
-  * @returns Simplified expression.
-  */
-
-Expression *OperatorExpression::simplify() const
+ExpressionPtr OperatorExpression::simplify() const
 {
-    Expression * v1 = left->simplify();
-    Expression * v2 = right->simplify();
+    ExpressionPtr v1 = left->simplify();
+    ExpressionPtr v2 = right->simplify();
 
     // Both arguments reduced to numerics? Then evaluate and return answer
-    if (freecad_cast<NumberExpression*>(v1) && freecad_cast<NumberExpression*>(v2)) {
-        delete v1;
-        delete v2;
+    if (freecad_cast<NumberExpression*>(v1.get()) && freecad_cast<NumberExpression*>(v2.get())) {
         return eval();
     }
     else
-        return new OperatorExpression(owner, v1, op, v2);
+        return std::make_unique<OperatorExpression>(owner, v1.release(), op, v2.release());
 }
-
-/**
-  * Create a string representation of the expression.
-  *
-  * @returns A string representing the expression.
-  */
 
 void OperatorExpression::_toString(std::ostream &s, bool persistent,int) const
 {
@@ -1605,21 +1595,10 @@ void OperatorExpression::_toString(std::ostream &s, bool persistent,int) const
         right->toString(s,persistent);
 }
 
-/**
-  * A deep copy of the expression.
-  */
-
 Expression *OperatorExpression::_copy() const
 {
-    return new OperatorExpression(owner, left->copy(), op, right->copy());
+    return new OperatorExpression(owner, left->copy().release(), op, right->copy().release());
 }
-
-/**
-  * Return the operators priority. This is used to add parentheses where
-  * needed when creating a string representation of the expression.
-  *
-  * @returns The operator's priority.
-  */
 
 int OperatorExpression::priority() const
 {
@@ -1781,6 +1760,7 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
         if (args.size() != 2)
             ARGUMENT_THROW("exactly two required.");
         break;
+    case ADDRESS:
     case CATH:
     case HYPOT:
     case ROTATION:
@@ -1846,13 +1826,6 @@ FunctionExpression::~FunctionExpression()
         ++i;
     }
 }
-
-/**
-  * Determine whether the expressions is considered touched, i.e one or both of its arguments
-  * are touched.
-  *
-  * @return True if touched, false if not.
-  */
 
 bool FunctionExpression::isTouched() const
 {
@@ -2353,6 +2326,38 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         initialiseObject(&vector, args);
         return vector;
     }
+    case ADDRESS: {
+        Py::Object row = args[0]->getPyValue();
+        Py::Object col = args[1]->getPyValue();
+        bool absRow = true;
+        bool absCol = true;
+
+        if (!PyLong_Check(row.ptr()))
+            _EXPR_THROW("Function requires the first argument to be an integer.", expr);
+        if (!PyLong_Check(col.ptr()))
+            _EXPR_THROW("Function requires the second argument to be an integer.", expr);
+
+        if (args.size() > 2) {
+            Py::Object refType = args[2]->getPyValue();
+            if (!PyLong_Check(refType.ptr()))
+                _EXPR_THROW("Function requires the third argument to be an integer.", expr);
+
+            auto value = PyLong_AsLong(refType.ptr());
+            if (value < 1 || value > 4)
+                _EXPR_THROW("Invalid reference type: must be 1, 2, 3, or 4.", expr);
+
+            // 1 is Absolute, 2 is Absolute Row / Relative Column,
+            // 3 is Relative Row / Absolute Column, 4 is Relative
+            absRow = value == 1 || value == 2;
+            absCol = value == 1 || value == 3;
+        }
+
+        auto cell = CellAddress(PyLong_AsLong(row.ptr()) - 1, PyLong_AsLong(col.ptr()) - 1, absRow, absCol);
+        if (!cell.isValid())
+            _EXPR_THROW("Cell address out of bounds.", expr);
+
+        return Py::String(cell.toString());
+    }
     case HIDDENREF:
     case HREF:
         return args[0]->getPyValue();
@@ -2655,24 +2660,19 @@ Py::Object FunctionExpression::_getPyValue() const {
     return evaluate(this,f,args);
 }
 
-/**
-  * Try to simplify the expression, i.e calculate all constant expressions.
-  *
-  * @returns A simplified expression.
-  */
-
-Expression *FunctionExpression::simplify() const
+ExpressionPtr FunctionExpression::simplify() const
 {
     size_t numerics = 0;
     std::vector<Expression*> simplifiedArgs;
 
     // Try to simplify each argument to function
     for (auto it : args) {
-        Expression * v = it->simplify();
+        ExpressionPtr v = it->simplify();
 
-        if (freecad_cast<NumberExpression*>(v))
+        if (freecad_cast<NumberExpression*>(v.get())) {
             ++numerics;
-        simplifiedArgs.push_back(v);
+        }
+        simplifiedArgs.push_back(v.release());
     }
 
     if (numerics == args.size()) {
@@ -2685,15 +2685,13 @@ Expression *FunctionExpression::simplify() const
         return eval();
     }
     else
-        return new FunctionExpression(owner, f, std::string(fname),
-                                      std::move(simplifiedArgs));
+        return std::make_unique<FunctionExpression>(
+            owner,
+            f,
+            std::string(fname),
+            std::move(simplifiedArgs)
+        );
 }
-
-/**
-  * Create a string representation of the expression.
-  *
-  * @returns A string representing the expression.
-  */
 
 void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
 {
@@ -2812,6 +2810,8 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
         ss << "tuple("; break;;
     case VECTOR:
         ss << "vector("; break;;
+    case ADDRESS:
+        ss << "address("; break;;
     case HIDDENREF:
         ss << "hiddenref("; break;;
     case HREF:
@@ -2845,19 +2845,13 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
     ss << ')';
 }
 
-/**
-  * Create a copy of the expression.
-  *
-  * @returns A deep copy of the expression.
-  */
-
 Expression *FunctionExpression::_copy() const
 {
     std::vector<Expression*>::const_iterator i = args.begin();
     std::vector<Expression*> a;
 
     while (i != args.end()) {
-        a.push_back((*i)->copy());
+        a.push_back((*i)->copy().release());
         ++i;
     }
     return new FunctionExpression(owner, f, std::string(fname), std::move(a));
@@ -2888,29 +2882,10 @@ VariableExpression::VariableExpression(const DocumentObject *_owner, const Objec
 
 VariableExpression::~VariableExpression() = default;
 
-/**
-  * Determine if the expression is touched or not, i.e whether the Property object it
-  * refers to is touched().
-  *
-  * @returns True if the Property object is touched, false if not.
-  */
-
 bool VariableExpression::isTouched() const
 {
     return var.isTouched();
 }
-
-/**
-  * Find the property this expression referse to.
-  *
-  * Unqualified names (i.e the name only without any dots) are resolved in the owning DocumentObjects.
-  * Qualified names are looked up in the owning Document. It is first looked up by its internal name.
-  * If not found, the DocumentObjects' labels searched.
-  *
-  * If something fails, an exception is thrown.
-  *
-  * @returns The Property object if it is derived from either PropertyInteger, PropertyFloat, or PropertyString.
-  */
 
 const Property * VariableExpression::getProperty() const
 {
@@ -2932,16 +2907,16 @@ void VariableExpression::addComponent(Component *c) {
         }
         long l1=0,l2=0,l3=1;
         if(c->e3) {
-            auto n3 = freecad_cast<NumberExpression*>(c->e3);
+            auto n3 = freecad_cast<NumberExpression*>(c->e3.get());
             if(!n3 || !essentiallyEqual(n3->getValue(),(double)l3))
                 break;
         }
         if(c->e1) {
-            auto n1 = freecad_cast<NumberExpression*>(c->e1);
+            auto n1 = freecad_cast<NumberExpression*>(c->e1.get());
             if(!n1) {
                 if(c->e2 || c->e3)
                     break;
-                auto s = freecad_cast<StringExpression*>(c->e1);
+                auto s = freecad_cast<StringExpression*>(c->e1.get());
                 if(!s)
                     break;
                 var << ObjectIdentifier::MapComponent(
@@ -2958,7 +2933,7 @@ void VariableExpression::addComponent(Component *c) {
                 return;
             }
         }
-        auto n2 = freecad_cast<NumberExpression*>(c->e2);
+        auto n2 = freecad_cast<NumberExpression*>(c->e2.get());
         if(n2 && essentiallyInteger(n2->getValue(),l2)) {
             var << ObjectIdentifier::RangeComponent(l1,l2,l3);
             return;
@@ -2983,21 +2958,10 @@ void VariableExpression::_toString(std::ostream &ss, bool persistent,int) const 
         ss << var.toString();
 }
 
-/**
-  * Simplify the expression. Simplification of VariableExpression objects is
-  * not possible (if it is instantiated it would be an evaluation instead).
-  *
-  * @returns A copy of the expression.
-  */
-
-Expression *VariableExpression::simplify() const
+ExpressionPtr VariableExpression::simplify() const
 {
     return copy();
 }
-
-/**
-  * Return a copy of the expression.
-  */
 
 Expression *VariableExpression::_copy() const
 {
@@ -3199,11 +3163,7 @@ StringExpression::~StringExpression() {
     }
 }
 
-/**
-  * Simplify the expression. For strings, this is a simple copy of the object.
-  */
-
-Expression *StringExpression::simplify() const
+ExpressionPtr StringExpression::simplify() const
 {
     return copy();
 }
@@ -3212,10 +3172,6 @@ void StringExpression::_toString(std::ostream &ss, bool,int) const
 {
     ss << quote(text);
 }
-
-/**
-  * Return a copy of the expression.
-  */
 
 Expression *StringExpression::_copy() const
 {
@@ -3255,18 +3211,26 @@ Py::Object ConditionalExpression::_getPyValue() const {
         return falseExpr->getPyValue();
 }
 
-Expression *ConditionalExpression::simplify() const
+ExpressionPtr ConditionalExpression::simplify() const
 {
-    std::unique_ptr<Expression> e(condition->simplify());
+    ExpressionPtr e = condition->simplify();
     NumberExpression * v = freecad_cast<NumberExpression*>(e.get());
 
-    if (!v)
-        return new ConditionalExpression(owner, condition->simplify(), trueExpr->simplify(), falseExpr->simplify());
+    if (!v) {
+        return std::make_unique<ConditionalExpression>(
+            owner,
+            condition->simplify().release(),
+            trueExpr->simplify().release(),
+            falseExpr->simplify().release()
+        );
+    }
     else {
-        if (fabs(v->getValue()) >= Base::Precision::Confusion())
+        if (fabs(v->getValue()) >= Base::Precision::Confusion()) {
             return trueExpr->simplify();
-        else
+        }
+        else {
             return falseExpr->simplify();
+        }
     }
 }
 
@@ -3293,7 +3257,12 @@ void ConditionalExpression::_toString(std::ostream &ss, bool persistent,int) con
 
 Expression *ConditionalExpression::_copy() const
 {
-    return new ConditionalExpression(owner, condition->copy(), trueExpr->copy(), falseExpr->copy());
+    return new ConditionalExpression(
+        owner,
+        condition->copy().release(),
+        trueExpr->copy().release(),
+        falseExpr->copy().release()
+    );
 }
 
 int ConditionalExpression::priority() const
@@ -3389,7 +3358,7 @@ Expression *RangeExpression::_copy() const
     return new RangeExpression(owner, begin, end);
 }
 
-Expression *RangeExpression::simplify() const
+ExpressionPtr RangeExpression::simplify() const
 {
     return copy();
 }
@@ -3546,9 +3515,10 @@ bool isModuleImported(PyObject *module) {
 }
 
 /**
- * Error function for parser. Throws a generic Base::Exception with the parser error.
+ * @brief Error function for parser.
+ *
+ * @throws Base::Exception A generic parser error.
  */
-
 void ExpressionParser_yyerror(const char *errorinfo)
 {
     (void)errorinfo;
@@ -3584,12 +3554,24 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
     return ret_val;
 }
 
-static Expression * ScanResult = nullptr;                    /**< The resulting expression after a successful parsing */
-static const App::DocumentObject * DocumentObject = nullptr; /**< The DocumentObject that will own the expression */
-static bool unitExpression = false;                    /**< True if the parsed string is a unit only */
-static bool valueExpression = false;                   /**< True if the parsed string is a full expression */
-static std::stack<std::string> labels;                /**< Label string primitive */
-static std::map<std::string, FunctionExpression::Function> registered_functions;                /**< Registered functions */
+/// The resulting expression after a successful parsing.
+static ExpressionPtr ScanResult = ExpressionPtr {};
+
+/// The DocumentObject that will own the expression.
+static const App::DocumentObject* DocumentObject = nullptr;
+
+/// Whether the parsed string is a unit only.
+static bool unitExpression = false;
+
+/// Whether the parsed string is a full expression.
+static bool valueExpression = false;
+
+/// Label string primitive.
+static std::stack<std::string> labels;
+
+/// Registered functions during parsing.
+static std::map<std::string, FunctionExpression::Function> registered_functions;
+
 static int last_column;
 static int column;
 
@@ -3653,7 +3635,7 @@ static void initParser(const App::DocumentObject *owner)
 
     using namespace App::ExpressionParser;
 
-    ScanResult = nullptr;
+    ScanResult.reset();
     App::ExpressionParser::DocumentObject = owner;
     labels = std::stack<std::string>();
     column = 0;
@@ -3720,6 +3702,7 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["tuple"] = FunctionExpression::TUPLE;
         registered_functions["vector"] = FunctionExpression::VECTOR;
 
+        registered_functions["address"] = FunctionExpression::ADDRESS;
         registered_functions["hiddenref"] = FunctionExpression::HIDDENREF;
         registered_functions["href"] = FunctionExpression::HREF;
 
@@ -3773,7 +3756,7 @@ std::vector<std::tuple<int, int, std::string> > tokenize(const std::string &str)
   *
   */
 
-Expression * App::ExpressionParser::parse(const App::DocumentObject *owner, const char* buffer)
+ExpressionPtr App::ExpressionParser::parse(const App::DocumentObject* owner, const char* buffer)
 {
     // parse from buffer
     ExpressionParser::YY_BUFFER_STATE my_string_buffer = ExpressionParser::ExpressionParser_scan_string (buffer);
@@ -3784,21 +3767,25 @@ Expression * App::ExpressionParser::parse(const App::DocumentObject *owner, cons
     // run the parser
     int result = ExpressionParser::ExpressionParser_yyparse ();
 
-    if (result != 0)
-        throw ParserError("Failed to parse expression.");
+    if (result != 0) {
+        throw ParserError(fmt::format("Failed to parse expression '{}'", buffer));
+    }
 
-    if (!ScanResult)
-        throw ParserError("Unknown error in expression");
+    if (!ScanResult) {
+        throw ParserError(fmt::format("Unknown error in expression '{}'", buffer));
+    }
 
-    if (valueExpression)
-        return ScanResult;
-    else {
-        delete ScanResult;
+    if (!valueExpression) {
+        ScanResult.reset();
         throw Expression::Exception("Expression can not evaluate to a value.");
     }
+    return std::exchange(ScanResult, nullptr);
 }
 
-UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, const char* buffer)
+std::unique_ptr<UnitExpression> ExpressionParser::parseUnit(
+    const App::DocumentObject* owner,
+    const char* buffer
+)
 {
     // parse from buffer
     ExpressionParser::YY_BUFFER_STATE my_string_buffer = ExpressionParser::ExpressionParser_scan_string (buffer);
@@ -3816,10 +3803,10 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
         throw ParserError("Unknown error in expression");
 
     // Simplify expression
-    Expression * simplified = ScanResult->simplify();
+    ExpressionPtr simplified = ScanResult->simplify();
 
     if (!unitExpression) {
-        OperatorExpression * fraction = freecad_cast<OperatorExpression*>(ScanResult);
+        auto* fraction = freecad_cast<OperatorExpression*>(ScanResult.get());
 
         if (fraction && fraction->getOperator() == OperatorExpression::DIV) {
             NumberExpression * nom = freecad_cast<NumberExpression*>(fraction->getLeft());
@@ -3830,21 +3817,16 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
                 unitExpression = true;
         }
     }
-    delete ScanResult;
+    ScanResult.reset();
 
-    if (unitExpression) {
-        NumberExpression * num = freecad_cast<NumberExpression*>(simplified);
-
-        if (num) {
-           simplified = new UnitExpression(num->getOwner(), num->getQuantity());
-            delete num;
-        }
-        return freecad_cast<UnitExpression*>(simplified);
-    }
-    else {
-        delete simplified;
+    if (!unitExpression) {
         throw Expression::Exception("Expression is not a unit.");
     }
+
+    if (auto num = freecad_cast<NumberExpression*>(simplified.get()); num) {
+        return std::make_unique<UnitExpression>(num->getOwner(), num->getQuantity());
+    }
+    return std::unique_ptr<UnitExpression>(freecad_cast<UnitExpression*>(simplified.release()));
 }
 
 namespace {
@@ -3883,3 +3865,4 @@ bool ExpressionParser::isTokenAUnit(const std::string & str)
 #if defined(__clang__)
 # pragma clang diagnostic pop
 #endif
+

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef APP_PropertyGeometryList_H
-#define APP_PropertyGeometryList_H
+#pragma once
 
 #include <vector>
 
@@ -104,6 +103,3 @@ private:
 };
 
 }  // namespace Part
-
-
-#endif  // APP_PropertyGeometryList_H

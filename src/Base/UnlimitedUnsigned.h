@@ -22,15 +22,15 @@
  ***************************************************************************/
 
 
-#ifndef SRC_BASE_UNLIMITEDUNSIGNED_H_
-#define SRC_BASE_UNLIMITEDUNSIGNED_H_
+#pragma once
 
-#ifndef FC_GLOBAL_H
-# include <FCGlobal.h>
-#endif
-#include <vector>
-#include <string>
+#include <FCGlobal.h>
+
+#include <charconv>
 #include <stdexcept>
+#include <string>
+#include <string_view>
+#include <vector>
 
 // ----------------------------------------------------------------------------
 
@@ -61,7 +61,7 @@ public:
     {}
     // Parse a decimal digit string into an UnlimitedUnsigned. There should be no white space,
     // only digits. a zero-length string parses as zero.
-    static UnlimitedUnsigned fromString(const std::string& text)
+    static UnlimitedUnsigned fromString(std::string_view text)
     {
         std::vector<PartType> result((text.size() + partDigitCount - 1) / partDigitCount);
         size_t minimumSize = 0;
@@ -70,13 +70,19 @@ public:
         for (size_t i = 0; i < result.size(); i++) {
             if (partDigitCount >= lastStartPosition) {
                 // partial chunk of leading digits
-                result[i] = static_cast<PartType>(std::stoul(text.substr(0, lastStartPosition)));
+                const auto sub = text.substr(0, lastStartPosition);
+                const auto [ptr, err] = std::from_chars(sub.data(), sub.data() + sub.size(), result[i]);
+                if (err != std::errc {}) {
+                    result[i] = 0;
+                }
             }
             else {
                 lastStartPosition -= partDigitCount;
-                result[i] = static_cast<PartType>(
-                    std::stoul(text.substr(lastStartPosition, partDigitCount))
-                );
+                const auto sub = text.substr(lastStartPosition, partDigitCount);
+                const auto [ptr, err] = std::from_chars(sub.data(), sub.data() + sub.size(), result[i]);
+                if (err != std::errc {}) {
+                    result[i] = 0;
+                }
             }
             if (result[i] != 0) {
                 minimumSize = i + 1;
@@ -236,5 +242,3 @@ private:
     std::vector<PartType> parts;
 };
 }  // namespace Base
-
-#endif  // SRC_BASE_UNLIMITEDUNSIGNED_H_

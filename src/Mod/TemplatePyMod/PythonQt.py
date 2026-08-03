@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 """
 Examples for customizing the FreeCAD application with PySide facilities.
 (c) 2007 Werner Mayer LGPL

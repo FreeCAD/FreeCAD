@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATH_ViewProviderPath_H
-#define PATH_ViewProviderPath_H
+#pragma once
 
 #include <App/PropertyGeo.h>
 #include <Gui/Selection/Selection.h>
@@ -79,7 +78,6 @@ public:
     void setDisplayMode(const char* ModeName) override;
     std::vector<std::string> getDisplayModes() const override;
     void updateData(const App::Property*) override;
-    void recomputeBoundingBox();
     QIcon getIcon() const override;
 
     bool useNewSelectionModel() const override;
@@ -99,6 +97,14 @@ private:
     long findFirstFeedMoveIndex(const Path::Toolpath& path) const;
 
 protected:
+    Base::BoundBox3d _getBoundingBox(
+        const char* subname = nullptr,
+        const Base::Matrix4D* mat = nullptr,
+        bool transform = true,
+        const Gui::View3DInventorViewer* viewer = nullptr,
+        int depth = 0
+    ) const override;
+
     void onChanged(const App::Property* prop) override;
     unsigned long getBoundColor() const override;
 
@@ -124,11 +130,11 @@ protected:
     int edgeStart;
     int coordStart;
     int coordEnd;
+
+    mutable Base::BoundBox3d bboxCache;
+    mutable bool bboxCached;
 };
 
 using ViewProviderPathPython = Gui::ViewProviderFeaturePythonT<ViewProviderPath>;
 
 }  // namespace PathGui
-
-
-#endif  // PATH_VIEWPROVIDERPATH_H

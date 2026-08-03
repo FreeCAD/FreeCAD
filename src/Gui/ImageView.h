@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_IMAGE_VIEW_H
-#define GUI_IMAGE_VIEW_H
+#pragma once
 
 #include <Gui/MDIView.h>
 
@@ -49,7 +48,7 @@ public:
     }
 
     /// Message handler
-    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onMsg(const char* pMsg) override;
     /// Message handler test
     bool onHasMsg(const char* pMsg) const override;
 
@@ -98,5 +97,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_IMAGE_VIEW_H

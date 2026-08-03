@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGUNDOREDO_H
-#define GUI_DIALOG_DLGUNDOREDO_H
+#pragma once
 
 #include <QMenu>
 
@@ -65,5 +66,3 @@ protected Q_SLOTS:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLGUNDOREDO_H

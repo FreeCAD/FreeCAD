@@ -21,15 +21,15 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_BASEDELEGATE_H
-#define MATGUI_BASEDELEGATE_H
+#pragma once
 
 #include <QDialog>
-#include <QDir>
 #include <QStandardItem>
 #include <QStyledItemDelegate>
 #include <QSvgWidget>
 #include <QTreeView>
+
+#include <Base/Color.h>
 
 #include <Mod/Material/App/MaterialManager.h>
 #include <Mod/Material/App/Materials.h>
@@ -37,6 +37,8 @@
 
 namespace MatGui
 {
+
+using Base::Color;
 
 class BaseDelegate: public QStyledItemDelegate
 {
@@ -70,7 +72,7 @@ protected:
     virtual void notifyChanged(const QAbstractItemModel* model, const QModelIndex& index) const = 0;
 
     QString getStringValue(const QModelIndex& index) const;
-    QRgb parseColor(const QString& color) const;
+    Color parseColor(const QString& color) const;
 
     void paintQuantity(QPainter* painter,
                        const QStyleOptionViewItem& option,
@@ -98,5 +100,3 @@ protected:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_BASEDELEGATE_H

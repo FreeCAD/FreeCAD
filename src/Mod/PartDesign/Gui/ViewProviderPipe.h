@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderPipe_H
-#define PARTGUI_ViewProviderPipe_H
+#pragma once
 
 #include "ViewProvider.h"
 
@@ -68,6 +69,3 @@ private:
 
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderPipe_H

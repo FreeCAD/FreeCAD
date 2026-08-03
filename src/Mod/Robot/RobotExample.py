@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # Example how to use the basic robot class Robot6Axis which represent a 6-Axis
 # industrial robot. The Robot Module is dependent on Part but not on other Modules.
 # It works mostly with the basic types Placement, Vector and Matrix. So we need
@@ -114,7 +116,7 @@ ExportCompactSub(
 
 # and that's kind of how its done:
 for w in App.activeDocument().Trajectory.Trajectory.Waypoints:
-    (A, B, C) = w.Pos.Rotation.toEuler()
+    A, B, C = w.Pos.Rotation.toEuler()
     print(
         "LIN {X %.3f,Y %.3f,Z %.3f,A %.3f,B %.3f,C %.3f} ; %s"
         % (w.Pos.Base.x, w.Pos.Base.y, w.Pos.Base.z, A, B, C, w.Name)

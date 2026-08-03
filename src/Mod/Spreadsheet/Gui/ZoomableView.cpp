@@ -26,6 +26,8 @@
 
 #include "ZoomableView.h"
 #include "ui_Sheet.h"
+#include "Base/Console.h"
+#include <Mod/Spreadsheet/App/SheetParameter.h>
 
 
 ZoomableView::ZoomableView(Ui::Sheet* ui)
@@ -86,6 +88,9 @@ ZoomableView::ZoomableView(Ui::Sheet* ui)
 
     connect(dummySB_h, &QAbstractSlider::rangeChanged, realSB_h, &QAbstractSlider::setRange);
     connect(dummySB_v, &QAbstractSlider::rangeChanged, realSB_v, &QAbstractSlider::setRange);
+
+    connect(dummySB_h, &QAbstractSlider::valueChanged, realSB_h, &QAbstractSlider::setSliderPosition);
+    connect(dummySB_v, &QAbstractSlider::valueChanged, realSB_v, &QAbstractSlider::setSliderPosition);
 
     connect(dummySB_h, &QAbstractSlider::valueChanged, this, &ZoomableView::updateView);
     connect(dummySB_v, &QAbstractSlider::valueChanged, this, &ZoomableView::updateView);
@@ -171,10 +176,7 @@ void ZoomableView::zoomOut(void)
 
 void ZoomableView::resetZoom(void)
 {
-    constexpr const char* path = "User parameter:BaseApp/Preferences/Mod/Spreadsheet";
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(path);
-    const int defaultZoomLevel = static_cast<int>(hGrp->GetInt("DefaultZoomLevel", 100));
-
+    const int defaultZoomLevel = Spreadsheet::SheetParameter::instance()->getDefaultZoomLevel();
     setZoomLevel(defaultZoomLevel);
 }
 
@@ -183,25 +185,29 @@ void ZoomableView::updateView(void)
     /* QGraphicsView has hardcoded margins therefore we have to avoid fitInView
      * Find more information at https://bugreports.qt.io/browse/QTBUG-42331 */
 
-    const qreal scale_factor = static_cast<qreal>(m_zoomLevel) / 100.0,
-                new_w = static_cast<qreal>(viewport()->rect().width()) / scale_factor,
-                new_h = static_cast<qreal>(viewport()->rect().height()) / scale_factor;
+    const qreal scale_factor = static_cast<qreal>(m_zoomLevel) / 100.0;
+    const qreal new_w = static_cast<qreal>(viewport()->rect().width()) / scale_factor;
+    const qreal new_h = static_cast<qreal>(viewport()->rect().height()) / scale_factor;
 
-    const QRectF new_geometry {0.0, 0.0, new_w, new_h};
+    const QRectF new_geometry_f {0.0, 0.0, new_w, new_h};
+    const QRect new_geometry = new_geometry_f.toRect();
 
-    const QRect old_geometry {stv->geometry()};
-    stv->setGeometry(1, 1, old_geometry.width() - 1, old_geometry.height() - 1);
+    stv->setGeometry(1, 1, new_geometry.width() - 1, new_geometry.height() - 1);
 
     resetTransform();
-    qpw->setGeometry(new_geometry);
-    setSceneRect(new_geometry);
+    qpw->setGeometry(new_geometry_f);
+    setSceneRect(new_geometry_f);
     scale(scale_factor, scale_factor);
-    centerOn(new_geometry.center());
+    centerOn(new_geometry_f.center());
 }
 
 void ZoomableView::focusOutEvent(QFocusEvent* event)
 {
-    Q_UNUSED(event);
+    if (event->reason() == Qt::FocusReason::PopupFocusReason) {
+        return;
+    }
+
+    QGraphicsView::focusOutEvent(event);
 }
 
 void ZoomableView::keyPressEvent(QKeyEvent* event)

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_CYLINDER_FIT_H
-#define MESH_CYLINDER_FIT_H
+#pragma once
 
 #include <Eigen/Eigenvalues>
 
@@ -191,5 +190,3 @@ private:
 
 
 }  // namespace MeshCoreFit
-
-#endif  // MESH_CYLINDER_FIT_H

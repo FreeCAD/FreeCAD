@@ -22,8 +22,7 @@
  **************************************************************************/
 
 
-#ifndef GUI_WORKBENCHMANIPULATOR_H
-#define GUI_WORKBENCHMANIPULATOR_H
+#pragma once
 
 #include <memory>
 #include <set>
@@ -131,6 +130,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_WORKBENCHMANIPULATOR_H

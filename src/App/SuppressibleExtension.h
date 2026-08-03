@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Florian Foinant-Willig <ffw@2f2v.fr>               *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SUPPRESSIBLEEXTENSION_H
-#define SUPPRESSIBLEEXTENSION_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectExtension.h>
@@ -60,5 +61,3 @@ using SuppressibleExtensionPython =
     ExtensionPythonT<SuppressibleExtensionPythonT<SuppressibleExtension>>;
 
 }  // namespace App
-
-#endif  // SUPPRESSIBLEEXTENSION_H

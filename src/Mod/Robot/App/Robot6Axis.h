@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ROBOT_ROBOT6AXIS_H
-#define ROBOT_ROBOT6AXIS_H
+#pragma once
 
 #include "kdl_cp/chain.hpp"
 #include "kdl_cp/jntarray.hpp"
@@ -92,5 +93,3 @@ protected:
 };
 
 }  // namespace Robot
-
-#endif  // ROBOT_ROBOT6AXIS_H

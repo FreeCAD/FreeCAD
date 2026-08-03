@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #include <unordered_map>
 #ifndef FC_DEBUG
 #include <random>
@@ -12,6 +14,7 @@
 #include "DocumentObject.h"
 
 #include <boost/algorithm/string/classification.hpp>
+#include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/io/ios_state.hpp>
 
@@ -771,10 +774,8 @@ MappedName ElementMap::renameDuplicateElement(int index,
     ss << ELEMENT_MAP_PREFIX << 'D' << std::hex << idx;
     MappedName renamed(name);
     encodeElementName(element.getType()[0], renamed, ss, &sids, masterTag);
-    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-        FC_WARN("duplicate element mapping '"  // NOLINT
-                << name << " -> " << renamed << ' ' << element << '/' << element2);
-    }
+    FC_TRACE("resolved duplicate element mapping '"  // NOLINT
+             << name << " -> " << renamed << ' ' << element << '/' << element2);
     return renamed;
 }
 
@@ -1192,7 +1193,11 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
 
         // do child mapping only if the child element count >= 5
         const int threshold {5};
-        if ((child.count >= threshold && child.tag != 0) || !child.elementMap) {
+
+        // skip encoding only when masterTag=0, child.tag=0, and count is exactly at threshold
+        bool skipEncoding = (masterTag == 0 && child.tag == 0 && child.count == threshold && child.elementMap);
+
+        if ((child.count >= threshold && !skipEncoding) || !child.elementMap) {
             encodeElementName(child.indexedName[0],
                               tmp,
                               ss,

@@ -72,6 +72,12 @@ DlgSettingsDocumentImp::DlgSettingsDocumentImp(QWidget* parent)
         this,
         &DlgSettingsDocumentImp::onLicenseTypeChanged
     );
+    connect(
+        ui->prefSaveBackupDateFormat,
+        &QLineEdit::textChanged,
+        this,
+        &DlgSettingsDocumentImp::onDateFormatChanged
+    );
 }
 
 /**
@@ -79,12 +85,56 @@ DlgSettingsDocumentImp::DlgSettingsDocumentImp(QWidget* parent)
  */
 DlgSettingsDocumentImp::~DlgSettingsDocumentImp() = default;
 
+void DlgSettingsDocumentImp::onDateFormatChanged(const QString& text)
+{
+    std::time_t now = std::time(nullptr);
+    std::tm local_tm {};
+#if defined(_WIN32)
+    localtime_s(&local_tm, &now);
+#else
+    localtime_r(&now, &local_tm);
+#endif
+    constexpr size_t bufferLength = 128;
+    std::array<char, bufferLength> buffer {};
+    std::strftime(buffer.data(), bufferLength, text.toUtf8().constData(), &local_tm);
+    QString preview = QString::fromUtf8(buffer.data());
+
+    QString invalidChars;
+#if defined(_WIN32)
+    invalidChars = QStringLiteral("<>:\"/\\|?*");
+#else
+    invalidChars = QStringLiteral("/");
+#endif
+
+    bool hasInvalid = false;
+    for (const auto& ch : preview) {
+        if (invalidChars.contains(ch)) {
+            hasInvalid = true;
+            break;
+        }
+    }
+
+    if (hasInvalid) {
+        ui->prefSaveBackupDateFormat->setToolTip(
+            tr("Warning: The format '%1' produces '%2' which contains invalid characters. "
+               "They will be replaced with '-' when saving.")
+                .arg(text, preview)
+        );
+        ui->prefSaveBackupDateFormat->setStyleSheet(
+            QStringLiteral("QLineEdit { background-color:yellow }")
+        );
+    }
+    else {
+        ui->prefSaveBackupDateFormat->setToolTip(QString());
+        ui->prefSaveBackupDateFormat->setStyleSheet(QString());
+    }
+}
+
 void DlgSettingsDocumentImp::saveSettings()
 {
     ui->prefCheckNewDoc->onSave();
     ui->prefCompression->onSave();
 
-    ui->prefUndoRedo->onSave();
     ui->prefUndoRedoSize->onSave();
     ui->prefSaveTransaction->onSave();
     ui->prefDiscardTransaction->onSave();
@@ -95,6 +145,7 @@ void DlgSettingsDocumentImp::saveSettings()
     ui->prefCountBackupFiles->onSave();
     ui->prefSaveBackupExtension->onSave();
     ui->prefSaveBackupDateFormat->onSave();
+    ui->prefDisableVersionCheckOnSave->onSave();
     ui->prefDuplicateLabel->onSave();
     ui->prefPartialLoading->onSave();
     ui->prefLicenseType->onSave();
@@ -106,6 +157,7 @@ void DlgSettingsDocumentImp::saveSettings()
     ui->prefAutoSaveEnabled->onSave();
     ui->prefAutoSaveTimeout->onSave();
     ui->prefCanAbortRecompute->onSave();
+    ui->prefEnableAsyncRecompute->onSave();
 
     int timeout = ui->prefAutoSaveTimeout->value();
     if (!ui->prefAutoSaveEnabled->isChecked()) {
@@ -119,7 +171,6 @@ void DlgSettingsDocumentImp::loadSettings()
     ui->prefCheckNewDoc->onRestore();
     ui->prefCompression->onRestore();
 
-    ui->prefUndoRedo->onRestore();
     ui->prefUndoRedoSize->onRestore();
     ui->prefSaveTransaction->onRestore();
     ui->prefDiscardTransaction->onRestore();
@@ -130,6 +181,7 @@ void DlgSettingsDocumentImp::loadSettings()
     ui->prefCountBackupFiles->onRestore();
     ui->prefSaveBackupExtension->onRestore();
     ui->prefSaveBackupDateFormat->onRestore();
+    ui->prefDisableVersionCheckOnSave->onRestore();
     ui->prefDuplicateLabel->onRestore();
     ui->prefPartialLoading->onRestore();
     ui->prefLicenseType->onRestore();
@@ -141,6 +193,7 @@ void DlgSettingsDocumentImp::loadSettings()
     ui->prefAutoSaveEnabled->onRestore();
     ui->prefAutoSaveTimeout->onRestore();
     ui->prefCanAbortRecompute->onRestore();
+    ui->prefEnableAsyncRecompute->onRestore();
 }
 
 /**

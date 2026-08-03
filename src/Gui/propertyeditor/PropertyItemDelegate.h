@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef PROPERTYITEMDELEGATE_H
-#define PROPERTYITEMDELEGATE_H
+#pragma once
 
 #include <QItemDelegate>
 #include <QPointer>
@@ -70,5 +69,3 @@ private:
 
 }  // namespace PropertyEditor
 }  // namespace Gui
-
-#endif  // PROPERTYITEMDELEGATE_H

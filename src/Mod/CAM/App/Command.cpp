@@ -47,6 +47,16 @@ Command::Command(const char* name, const std::map<std::string, double>& paramete
     , Annotations()
 {}
 
+Command::Command(
+    const char* name,
+    const std::map<std::string, double>& parameters,
+    const std::map<std::string, std::variant<std::string, double>>& annotations
+)
+    : Name(name)
+    , Parameters(parameters)
+    , Annotations(annotations)
+{}
+
 Command::Command()
     : Annotations()
 {}
@@ -140,7 +150,7 @@ std::string Command::toGCode(int precision, bool padzero) const
 
     // Add annotations as a comment if they exist
     if (!Annotations.empty()) {
-        str << " ; ";
+        str << "; ";
         bool first = true;
         for (const auto& pair : Annotations) {
             if (!first) {
@@ -181,7 +191,8 @@ void Command::setFromGCode(const std::string& str)
     std::string key;
     std::string value;
     for (unsigned int i = 0; i < gcode_part.size(); i++) {
-        if ((isdigit(gcode_part[i])) || (gcode_part[i] == '-') || (gcode_part[i] == '.')) {
+        if ((isdigit(gcode_part[i])) || (gcode_part[i] == '-') || (gcode_part[i] == '.')
+            || ((gcode_part[i] == 'e') && (i > 0) && (isdigit(gcode_part[i - 1])))) {
             value += gcode_part[i];
         }
         else if (isalpha(gcode_part[i])) {
@@ -348,6 +359,7 @@ Command Command::transform(const Base::Placement& other)
         }
         c.Parameters[k] = v;
     }
+    c.Annotations = Annotations;
     return c;
 }
 

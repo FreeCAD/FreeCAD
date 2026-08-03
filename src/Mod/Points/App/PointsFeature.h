@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef POINTS_FEATURE_H
-#define POINTS_FEATURE_H
+#pragma once
 
 #include <App/FeatureCustom.h>
 #include <App/FeaturePython.h>
@@ -90,6 +89,3 @@ using FeatureCustom = App::FeatureCustomT<Feature>;
 using FeaturePython = App::FeaturePythonT<Feature>;
 
 }  // namespace Points
-
-
-#endif

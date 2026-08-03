@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DIALOG_DLGEXPRESSIONINPUT_H
-#define GUI_DIALOG_DLGEXPRESSIONINPUT_H
+#pragma once
 
 #include <QDialog>
 #include <QTreeWidget>
@@ -157,6 +158,3 @@ private:
 };
 
 }  // namespace Gui::Dialog
-
-
-#endif  // GUI_DIALOG_EXPRESSIONINPUT_H

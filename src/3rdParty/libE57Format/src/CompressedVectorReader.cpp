@@ -162,29 +162,19 @@ destroyed.
 
 @return The number of records read.
 
-@throw ::ErrorImageFileNotOpen
-@throw ::ErrorReaderNotOpen
-@throw ::ErrorConversionRequired            This CompressedVectorReader
-in undocumented state
-@throw ::ErrorValueNotRepresentable        This CompressedVectorReader
-in undocumented state
-@throw ::ErrorScaledValueNotRepresentable This CompressedVectorReader
-in undocumented state
-@throw ::ErrorReal64TooLarge               This CompressedVectorReader
-in undocumented state
-@throw ::ErrorExpectingNumeric              This CompressedVectorReader
-in undocumented state
-@throw ::ErrorExpectingUString              This CompressedVectorReader
-in undocumented state
-@throw ::ErrorBadCVPacket      This CompressedVectorReader, associated
-ImageFile in undocumented state
-@throw ::ErrorSeekFailed       This CompressedVectorReader, associated
-ImageFile in undocumented state
-@throw ::ErrorReadFailed        This CompressedVectorReader, associated
-ImageFile in undocumented state
-@throw ::ErrorBadChecksum       This CompressedVectorReader, associated
-ImageFile in undocumented state
-@throw ::ErrorInternal           All objects in undocumented state
+@throw ::ErrorImageFileNotOpen (n/c)
+@throw ::ErrorReaderNotOpen (n/c)
+@throw ::ErrorConversionRequired This CompressedVectorReader in undocumented state
+@throw ::ErrorValueNotRepresentable This CompressedVectorReader in undocumented state
+@throw ::ErrorScaledValueNotRepresentable This CompressedVectorReader in undocumented state
+@throw ::ErrorReal64TooLarge This CompressedVectorReader in undocumented state
+@throw ::ErrorExpectingNumeric This CompressedVectorReader in undocumented state
+@throw ::ErrorExpectingUString This CompressedVectorReader in undocumented state
+@throw ::ErrorBadCVPacket This CompressedVectorReader, associated ImageFile in undocumented state
+@throw ::ErrorSeekFailed This CompressedVectorReader, associated ImageFile in undocumented state
+@throw ::ErrorReadFailed This CompressedVectorReader, associated ImageFile in undocumented state
+@throw ::ErrorBadChecksum This CompressedVectorReader, associated ImageFile in undocumented state
+@throw ::ErrorInternal  All objects in undocumented state
 
 @see CompressedVectorReader::read(std::vector<SourceDestBuffer>&),
 CompressedVectorNode::reader, SourceDestBuffer,
@@ -230,11 +220,11 @@ detect that a memory buffer been destroyed.
 
 @return The number of records read.
 
-@throw ::ErrorImageFileNotOpen
-@throw ::ErrorReaderNotOpen
-@throw ::ErrorPathUndefined
-@throw ::ErrorBufferSizeMismatch
-@throw ::ErrorBufferDuplicatePathName
+@throw ::ErrorImageFileNotOpen nc
+@throw ::ErrorReaderNotOpen (n/c)
+@throw ::ErrorPathUndefined (n/c)
+@throw ::ErrorBufferSizeMismatch (n/c)
+@throw ::ErrorBufferDuplicatePathName (n/c)
 @throw ::ErrorConversionRequired This CompressedVectorReader in undocumented state
 @throw ::ErrorValueNotRepresentable This CompressedVectorReader in undocumented state
 @throw ::ErrorScaledValueNotRepresentable This CompressedVectorReader in undocumented state
@@ -269,13 +259,13 @@ childCount() (i.e. to one record past end of CompressedVectorNode).
 @pre The associated ImageFile must be open.
 @pre This CompressedVectorReader must be open (i.e isOpen())
 
-@throw ::ErrorBadAPIArgument
-@throw ::ErrorImageFileNotOpen
-@throw ::ErrorReaderNotOpen
-@throw ::ErrorBadCVPacket
-@throw ::ErrorSeekFailed
-@throw ::ErrorReadFailed
-@throw ::ErrorBadChecksum
+@throw ::ErrorBadAPIArgument (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
+@throw ::ErrorReaderNotOpen (n/c)
+@throw ::ErrorBadCVPacket (n/c)
+@throw ::ErrorSeekFailed (n/c)
+@throw ::ErrorReadFailed (n/c)
+@throw ::ErrorBadChecksum (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see CompressedVectorNode::reader
@@ -308,7 +298,7 @@ void CompressedVectorReader::close()
 
 @pre The associated ImageFile must be open.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal           All objects in undocumented state
 
 @see CompressedVectorReader::close, CompressedVectorNode::reader
@@ -328,7 +318,7 @@ It is not an error if this CompressedVectorReader is closed.
 
 @return A smart CompressedVectorNode handle referencing the underlying object being read from.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal           All objects in undocumented state
 
 @see CompressedVectorReader::close, CompressedVectorNode::reader

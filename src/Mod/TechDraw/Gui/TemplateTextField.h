@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_TEMPLATETEXTFIELD_H
-#define DRAWINGGUI_TEMPLATETEXTFIELD_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -55,9 +54,11 @@ class TechDrawGuiExport TemplateTextField : public QGraphicsItemGroup
         int type() const override { return Type;}
 
         /// Returns the field name that this TemplateTextField represents
-        std::string fieldName() const { return fieldNameStr; }
+        const std::string& getFieldName() const { return fieldName; }
 
-        void setAutofill(const QString& autofillString);
+        const std::string &getAutofillId() const { return autofillId; }
+        void setAutofillId(const std::string& id) { this->autofillId = id; }
+
         void setRectangle(QRectF rect);
         void setLine(QPointF from, QPointF to);
         void setLineColor(QColor color);
@@ -76,12 +77,10 @@ class TechDrawGuiExport TemplateTextField : public QGraphicsItemGroup
 
     private:
         TechDraw::DrawTemplate *tmplte;
-        std::string fieldNameStr;
-        QString m_autofillString;
+        std::string fieldName;
+        std::string autofillId;
 
         QGraphicsRectItem* m_rect;
         QGraphicsPathItem* m_line;
 };
 }   // namespace TechDrawGui
-
-#endif // #ifndef DRAWINGGUI_TEMPLATETEXTFIELD_H

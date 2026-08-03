@@ -23,26 +23,23 @@
 
 #include <FCGlobal.h>
 
-#ifndef SURFACE_GLOBAL_H
-# define SURFACE_GLOBAL_H
+#pragma once
 
 
 // Surface
-# ifndef SurfaceExport
-#  ifdef Surface_EXPORTS
-#   define SurfaceExport FREECAD_DECL_EXPORT
-#  else
-#   define SurfaceExport FREECAD_DECL_IMPORT
-#  endif
+#ifndef SurfaceExport
+# ifdef Surface_EXPORTS
+#  define SurfaceExport FREECAD_DECL_EXPORT
+# else
+#  define SurfaceExport FREECAD_DECL_IMPORT
 # endif
+#endif
 
 // SurfaceGui
-# ifndef SurfaceGuiExport
-#  ifdef SurfaceGui_EXPORTS
-#   define SurfaceGuiExport FREECAD_DECL_EXPORT
-#  else
-#   define SurfaceGuiExport FREECAD_DECL_IMPORT
-#  endif
+#ifndef SurfaceGuiExport
+# ifdef SurfaceGui_EXPORTS
+#  define SurfaceGuiExport FREECAD_DECL_EXPORT
+# else
+#  define SurfaceGuiExport FREECAD_DECL_IMPORT
 # endif
-
-#endif  // SURFACE_GLOBAL_H
+#endif

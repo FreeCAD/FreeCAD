@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # **************************************************************************
 #   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
 #   Copyright (c) 2021 Emmanuel O'Brien                                   *
@@ -26,6 +28,8 @@ from SketcherTests.TestSketcherSolver import TestSketcherSolver
 from SketcherTests.TestSketchFillet import TestSketchFillet
 from SketcherTests.TestSketchExpression import TestSketchExpression
 from SketcherTests.TestSketchValidateCoincidents import TestSketchValidateCoincidents
+from SketcherTests.TestSketchCarbonCopyReverseMapping import TestSketchCarbonCopyReverseMapping
+from SketcherTests.TestSketchInternalFaces import TestSketchInternalFaces
 
 # Path and PartDesign tests use these functions that used to live here
 # but moved to SketcherTests/TestSketcherSolver.py

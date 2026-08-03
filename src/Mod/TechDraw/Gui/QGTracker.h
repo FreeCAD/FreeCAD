@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_TRACKER_H
-#define DRAWINGGUI_TRACKER_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -123,5 +122,3 @@ private:
 };
 
 } // namespace
-
-#endif // DRAWINGGUI_TRACKER_H

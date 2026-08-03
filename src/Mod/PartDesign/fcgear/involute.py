@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # (c) 2014 David Douard <david.douard@gmail.com>
 # (c) 2023 Jonas Bähr <jonas.baehr@web.de>
 # Based on https://github.com/attoparsec/inkscape-extensions.git

@@ -32,6 +32,7 @@
 The copies will be created along a path, like a polyline, B-spline,
 or Bezier curve.
 """
+
 ## @package gui_patharray
 # \ingroup draftguitools
 # \brief Provides GUI tools to create PathArray objects.

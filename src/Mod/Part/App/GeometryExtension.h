@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_GEOMETRYEXTENSION_H
-#define PART_GEOMETRYEXTENSION_H
+#pragma once
 
 #include <memory>
 #include <string>
@@ -94,5 +93,3 @@ protected:
 };
 
 }  // namespace Part
-
-#endif  // PART_GEOMETRYEXTENSION_H

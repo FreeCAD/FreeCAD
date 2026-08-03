@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef PART_BREPMESH_H
-#define PART_BREPMESH_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 #include <App/ComplexGeoData.h>
@@ -49,5 +48,3 @@ private:
 };
 
 }  // namespace Part
-
-#endif  // PART_BREPMESH_H

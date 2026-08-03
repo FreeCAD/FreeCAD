@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_MACRO_H
-#define GUI_MACRO_H
+#pragma once
 
 #include <stack>
 #include <tuple>
@@ -36,7 +35,6 @@ namespace Gui
 {
 struct ApplicationP;
 class PythonConsole;
-class PythonDebugger;
 
 class MacroFile
 {
@@ -207,8 +205,6 @@ public:
      */
     void setModule(const char* sModule);
     void run(MacroType eType, const char* sName);
-    /// Get the Python debugger
-    PythonDebugger* debugger() const;
     PythonConsole* getPythonConsole() const;
     /** Observes its parameter group. */
     void OnChange(Base::Subject<const char*>& rCaller, const char* sReason) override;
@@ -230,14 +226,10 @@ private:
     MacroOutputOption option;
     bool localEnv {true};
     mutable PythonConsole* pyConsole {nullptr};  // link to the python console
-    PythonDebugger* pyDebugger;
-    Base::Reference<ParameterGrp> params;  // link to the Macro parameter group
+    Base::Reference<ParameterGrp> params;        // link to the Macro parameter group
     static std::stack<std::function<void(LineType, const char*)>> redirectFuncs;
 
     friend struct ApplicationP;
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_MACRO_H

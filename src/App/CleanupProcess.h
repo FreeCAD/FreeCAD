@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef APP_CLEANUPPROCESS_H
-#define APP_CLEANUPPROCESS_H
+#pragma once
 
 #include <functional>
 #include <FCGlobal.h>
@@ -53,5 +52,3 @@ public:
 };
 
 }  // namespace App
-
-#endif  // APP_CLEANUPPROCESS_H

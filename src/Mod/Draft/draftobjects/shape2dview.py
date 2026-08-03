@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the object code for the Shape2dView object."""
+
 ## @package shape2dview
 # \ingroup draftobjects
 # \brief Provides the object code for the Shape2dView object.
@@ -33,6 +34,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import DraftVecUtils
+from draftgeoutils import wires as geo_wires
 from draftobjects.base import DraftObject
 from draftutils import groups
 from draftutils import gui_utils
@@ -155,7 +157,6 @@ class Shape2DView(DraftObject):
         "returns projected edges from a shape and a direction"
         import Part
         import TechDraw
-        import DraftGeomUtils
 
         edges = []
         _groups = TechDraw.projectEx(shape, direction)
@@ -168,7 +169,7 @@ class Shape2DView(DraftObject):
                     edges.append(g)
         edges = self.cleanExcluded(obj, edges)
         if getattr(obj, "Tessellation", False):
-            return DraftGeomUtils.cleanProjection(
+            return geo_wires.cleanProjection(
                 Part.makeCompound(edges), obj.Tessellation, obj.SegmentLength
             )
         else:
@@ -199,11 +200,6 @@ class Shape2DView(DraftObject):
                     nedges.append(e)
         return nedges
 
-    def excludeNames(self, obj, objs):
-        if hasattr(obj, "ExclusionNames"):
-            objs = [o for o in objs if not (o.Name in obj.ExclusionNames)]
-            return objs
-
     def _get_shapes(self, shape, onlysolids=False):
         if onlysolids:
             return shape.Solids
@@ -220,21 +216,19 @@ class Shape2DView(DraftObject):
             return
 
         import Part
-        import DraftGeomUtils
 
         pl = obj.Placement
         if obj.Base:
             if utils.get_type(obj.Base) in ["BuildingPart", "SectionPlane", "IfcAnnotation"]:
                 objs = []
                 if utils.get_type(obj.Base) == "SectionPlane":
-                    objs = self.excludeNames(obj, obj.Base.Objects)
+                    objs = obj.Base.Objects
                     cutplane = obj.Base.Shape
                 elif utils.get_type(obj.Base) == "IfcAnnotation":
                     # this is a NativeIFC section plane
                     objs, cutplane = obj.Base.Proxy.get_section_data(obj.Base)
-                    objs = self.excludeNames(obj, objs)
                 else:
-                    objs = self.excludeNames(obj, obj.Base.Group)
+                    objs = obj.Base.Group
                     cutplane = Part.makePlane(1000, 1000, App.Vector(-500, -500, 0))
                     m = 1
                     if obj.Base.ViewObject and hasattr(obj.Base.ViewObject, "CutMargin"):
@@ -253,7 +247,15 @@ class Shape2DView(DraftObject):
                     except:
                         print("Shape2DView: BIM not present, unable to recompute")
                         return
-                    objs = groups.get_group_contents(objs, walls=True)
+                    excluded = (
+                        set(obj.ExclusionNames)
+                        if hasattr(obj, "ExclusionNames") and obj.ExclusionNames
+                        else None
+                    )
+                    objs = groups.get_group_contents(objs, walls=True, exclude_names=excluded)
+                    if not objs:
+                        obj.Shape = Part.Shape()
+                        return
                     if getattr(obj, "VisibleOnly", True):
                         objs = gui_utils.remove_hidden(objs)
                     shapes = []
@@ -349,35 +351,20 @@ class Shape2DView(DraftObject):
                                 if hasattr(obj, "InPlace"):
                                     if obj.InPlace:
                                         faces = facesOrg
-                                    # Alternative approach in https://forum.freecad.org/viewtopic.php?p=807314#p807314, not adopted
                                     else:
                                         for faceOrg in facesOrg:
-                                            if len(faceOrg.Wires) == 1:
-                                                wireProj = self.getProjected(obj, faceOrg, proj)
-                                                # return Compound
-                                                wireProjWire = Part.Wire(wireProj.Edges)
-                                                faceProj = Part.Face(wireProjWire)
-                                            elif len(faceOrg.Wires) == 2:
-                                                wireClosedOuter = faceOrg.OuterWire
-                                                for w in faceOrg.Wires:
-                                                    if not w.isEqual(wireClosedOuter):
-                                                        wireClosedInner = w
-                                                        break
-                                                wireProjOuter = self.getProjected(
-                                                    obj, wireClosedOuter, proj
-                                                )
-                                                # return Compound
-                                                wireProjOuterWire = Part.Wire(wireProjOuter.Edges)
-                                                faceProj = Part.Face(wireProjOuterWire)
-                                                wireProjInner = self.getProjected(
-                                                    obj, wireClosedInner, proj
-                                                )
-                                                # return Compound
-                                                wireProjInnerWire = Part.Wire(wireProjInner.Edges)
-                                                faceProj.cutHoles(
-                                                    [wireProjInnerWire]
-                                                )  # (list of wires)
-                                            faces.append(faceProj)
+                                            edge_compounds = [
+                                                self.getProjected(obj, w, proj)
+                                                for w in faceOrg.Wires
+                                            ]
+                                            wires = [
+                                                Part.Wire(comp.Edges) for comp in edge_compounds
+                                            ]
+                                            faces.extend(
+                                                Part.makeFace(
+                                                    wires, "Part::FaceMakerBullseye"
+                                                ).Faces
+                                            )
                             else:
                                 c = sh.section(cutp)
                                 if hasattr(obj, "InPlace"):
@@ -385,7 +372,7 @@ class Shape2DView(DraftObject):
                                         c = self.getProjected(obj, c, proj)
                             # faces = []
                             # if (obj.ProjectionMode == "Cutfaces") and (sh.ShapeType == "Solid"):
-                            #    wires = DraftGeomUtils.findWires(c.Edges)
+                            #    wires = geo_wires.findWires(c.Edges)
                             #    for w in wires:
                             #        if w.isClosed():
                             #            faces.append(Part.Face(w))
@@ -401,7 +388,12 @@ class Shape2DView(DraftObject):
 
             elif obj.Base.isDerivedFrom("App::DocumentObjectGroup"):
                 shapes = []
-                objs = self.excludeNames(obj, groups.get_group_contents(obj.Base))
+                excluded = (
+                    set(obj.ExclusionNames)
+                    if hasattr(obj, "ExclusionNames") and obj.ExclusionNames
+                    else None
+                )
+                objs = groups.get_group_contents(obj.Base, exclude_names=excluded)
                 for o in objs:
                     if hasattr(o, "Shape"):
                         shapes.extend(self._get_shapes(o.Shape))

@@ -192,6 +192,10 @@ public:
         add_varargs_method("makeLeader", &Module::makeLeader,
             "makeLeader(parent - DrawViewPart, points - [Vector], startSymbol - int, endSymbol - int) - Creates a leader line attached to parent. Points are in page coordinates with (0, 0) at lowerleft.s"
         );
+        add_varargs_method("nearestFraction", &Module::nearestFraction,
+        "nearestFraction(float) - returns the numerator and denominator of the nearest fraction as a tuple."
+        );
+
         initialize("This is a module for making drawings"); // register with Python
     }
     ~Module() override {}
@@ -1347,6 +1351,18 @@ private:
         // return the new leader as DrawLeaderPy
         return Py::asObject(new DrawLeaderLinePy(newLeader));
    }
+
+    Py::Object nearestFraction(const Py::Tuple& args)
+    {
+        double valueWithDecimals{0.0};
+        if (!PyArg_ParseTuple(args.ptr(), "d", &valueWithDecimals)) {
+            throw Py::TypeError("expected (valueWithDecimals)");
+        }
+
+        std::pair<int, int> numAndDen = DrawUtil::nearestFraction(valueWithDecimals);
+        PyObject* pyNumAndDen = Py_BuildValue("(ii)", numAndDen.first, numAndDen.second);
+        return Py::asObject(pyNumAndDen);
+    }
 
  };
 

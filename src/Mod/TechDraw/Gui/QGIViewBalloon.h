@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_QGIVBALLOON_H
-#define TECHDRAWGUI_QGIVBALLOON_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -202,6 +201,8 @@ public:
     TechDraw::ArrowType prefDefaultArrow() const;
     bool prefOrthoPyramid() const;
 
+    void updatePositionFromFeatureXY() override;
+
     TechDraw::DrawViewBalloon* getBalloonFeat()
     {
         return dvBalloon;
@@ -253,5 +254,3 @@ private:
 };
 
 }// namespace TechDrawGui
-
-#endif// TECHDRAWGUI_QGIVBALLOON_H

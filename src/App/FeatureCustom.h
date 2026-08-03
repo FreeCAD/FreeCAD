@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_FEATURECUSTOM_H
-#define APP_FEATURECUSTOM_H
+#pragma once
 
 #include <App/PropertyContainer.h>
 
@@ -102,5 +103,3 @@ public:
 };
 
 }  // namespace App
-
-#endif  // APP_FEATURECUSTOM_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_GeoList_H
-#define SKETCHER_GeoList_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -272,6 +273,3 @@ using GeoListFacade = GeoListModel<GeometryFacadeUniquePtr>;
 GeoListFacade getGeoListFacade(const GeoList& geolist);
 
 }  // namespace Sketcher
-
-
-#endif  // SKETCHER_GeoList_H

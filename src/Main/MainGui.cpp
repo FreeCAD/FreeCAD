@@ -33,6 +33,8 @@
 # include <config.h>
 #endif  // HAVE_CONFIG_H
 
+#include <Build/Version.h>  // For FCCopyrightYear
+
 #include <cstdio>
 #include <map>
 #include <stdexcept>
@@ -40,21 +42,27 @@
 #include <QApplication>
 #include <QLocale>
 #include <QMessageBox>
+#include <QStandardPaths>
 
 // FreeCAD header
 #include <App/Application.h>
+#include <App/ProgramInformation.h>
 #include <Base/ConsoleObserver.h>
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
+#include <Gui/ProgramInformation.h>
 
 
 void PrintInitHelp();
 
-const char sBanner[]
-    = "(C) 2001-2025 FreeCAD contributors\n"
-      "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n\n";
+const auto sBanner = fmt::format(
+    "(C) 2001-{} FreeCAD contributors\n"
+    "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n\n",
+    FCCopyrightYear
+);
 
 #if defined(_MSC_VER)
 void InitMiniDumpWriter(const std::string&);
@@ -97,26 +105,40 @@ static bool inGuiMode()
         || App::Application::Config()["RunMode"] == "Internal";
 }
 
-static void displayInfo(const QString& msg, bool preformatted = true)
+#if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
+static bool desktopFileIsAvailable(const QString& desktopFileName)
+{
+    const QString desktopFile = desktopFileName + QStringLiteral(".desktop");
+    return !QStandardPaths::locate(QStandardPaths::ApplicationsLocation, desktopFile).isEmpty();
+}
+#else
+static bool desktopFileIsAvailable(const QString&)
+{
+    return true;
+}
+#endif
+
+static void displayInfo(const std::string& msg, bool preformatted = true)
 {
     if (inGuiMode()) {
-        QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
+        QString qMsg = QString::fromStdString(msg);
+        QString appName = QString::fromStdString(App::Application::getExecutableName());
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Information);
         msgBox.setWindowTitle(appName);
-        msgBox.setDetailedText(msg);
-        msgBox.setText(preformatted ? QStringLiteral("<pre>%1</pre>").arg(msg) : msg);
+        msgBox.setDetailedText(qMsg);
+        msgBox.setText(preformatted ? QStringLiteral("<pre>%1</pre>").arg(qMsg) : qMsg);
         msgBox.exec();
     }
     else {
-        std::cout << msg.toStdString();
+        std::cout << msg;
     }
 }
 
 static void displayCritical(const QString& msg, bool preformatted = true)
 {
     if (inGuiMode()) {
-        QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
+        QString appName = QString::fromStdString(App::Application::getExecutableName());
         QString title = QObject::tr("Initialization of %1 failed").arg(appName);
         QString text = preformatted ? QStringLiteral("<pre>%1</pre>").arg(msg) : msg;
         QMessageBox::critical(nullptr, title, text);
@@ -129,7 +151,11 @@ static void displayCritical(const QString& msg, bool preformatted = true)
 int main(int argc, char** argv)
 {
 #if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
-    setlocale(LC_ALL, "");       // use native environment settings
+    setlocale(LC_ALL, "");  // use native environment settings
+    // Preserve the resolved numeric locale before forcing LC_NUMERIC=C for XML parsing.
+    if (const char* localeName = setlocale(LC_NUMERIC, nullptr)) {
+        Base::Tools::setOperatingSystemNumericLocale(localeName);
+    }
     setlocale(LC_NUMERIC, "C");  // except for numbers to not break XML import
     // See https://github.com/FreeCAD/FreeCAD/issues/16724
 
@@ -218,10 +244,14 @@ int main(int argc, char** argv)
 #else
         App::Application::init(argc, argv);
 #endif
-        // to set window icon on wayland, the desktop file has to be available to the compositor
-        QGuiApplication::setDesktopFileName(
-            QString::fromStdString(App::Application::Config()["DesktopFileName"])
+        // To set the window icon on Wayland, the desktop file has to be available to the
+        // compositor. Qt also uses the desktop file name to register with the portal registry.
+        const QString desktopFileName = QString::fromStdString(
+            App::Application::Config()["DesktopFileName"]
         );
+        if (desktopFileIsAvailable(desktopFileName)) {
+            QGuiApplication::setDesktopFileName(desktopFileName);
+        }
 
 #if defined(_MSC_VER)
         // create a dump file when the application crashes
@@ -256,37 +286,29 @@ int main(int argc, char** argv)
     }
     catch (const Base::ProgramInformation& e) {
         QApplication app(argc, argv);
-        QString msg = QString::fromUtf8(e.what());
-        if (msg == QLatin1String(App::Application::verboseVersionEmitMessage)) {
-            QString data;
-            QTextStream str(&data);
-            const std::map<std::string, std::string> config = App::Application::Config();
-
-            App::Application::getVerboseCommonInfo(str, config);
-            Gui::Application::getVerboseDPIStyleInfo(str);
-            App::Application::getVerboseAddOnsInfo(str, config);
-
-            msg = data;
+        if (std::strcmp(e.what(), App::ProgramInformation::verboseVersionEmitMessage) == 0) {
+            displayInfo(Gui::ProgramInformation::collect());
         }
-        displayInfo(msg);
+        else {
+            displayInfo(e.what());
+        }
         exit(0);
     }
     catch (const Base::Exception& e) {
         // Popup an own dialog box instead of that one of Windows
         QApplication app(argc, argv);
-        QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
-        QString msg;
-        msg = QObject::tr(
-                  "While initializing %1 the following exception occurred: '%2'\n\n"
-                  "Python is searching for its files in the following directories:\n%3\n\n"
-                  "Python version information:\n%4\n"
-        )
-                  .arg(
-                      appName,
-                      QString::fromUtf8(e.what()),
-                      QString::fromStdString(Base::Interpreter().getPythonPath()),
-                      QString::fromLatin1(Py_GetVersion())
-                  );
+        QString appName = QString::fromStdString(App::Application::getExecutableName());
+        QString msg = QObject::tr("While initializing %1 the following exception occurred: '%2'\n\n")
+                          .arg(appName, QString::fromUtf8(e.what()));
+        if (Py_IsInitialized()) {
+            msg += QObject::tr("Python is searching for its files in the following directories:\n%1\n\n")
+                       .arg(QString::fromStdString(Base::Interpreter().getPythonPath()));
+        }
+        else {
+            msg += QObject::tr("Python has not initialized yet.\n\n");
+        }
+        msg += QObject::tr("Python version information:\n%1\n")
+                   .arg(QString::fromLatin1(Py_GetVersion()));
         const char* pythonhome = getenv("PYTHONHOME");
         if (pythonhome) {
             msg += QObject::tr("\nThe environment variable PYTHONHOME is set to '%1'.")
@@ -308,7 +330,7 @@ int main(int argc, char** argv)
     catch (...) {
         // Popup an own dialog box instead of that one of Windows
         QApplication app(argc, argv);
-        QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
+        QString appName = QString::fromStdString(App::Application::getExecutableName());
         QString msg = QObject::tr(
                           "Unknown runtime error occurred while initializing %1.\n\n"
                           "Please contact the application's support team for more information.\n\n"
@@ -355,12 +377,12 @@ int main(int argc, char** argv)
     std::cerr.rdbuf(oldcerr);
 
     // Destruction phase ===========================================================
-    Base::Console().log("%s terminating...\n", App::Application::Config()["ExeName"].c_str());
+    Base::Console().log("%s terminating...\n", App::Application::getExecutableName().c_str());
 
     // cleans up
     App::Application::destruct();
 
-    Base::Console().log("%s completely terminated\n", App::Application::Config()["ExeName"].c_str());
+    Base::Console().log("%s completely terminated\n", App::Application::getExecutableName().c_str());
 
     return 0;
 }

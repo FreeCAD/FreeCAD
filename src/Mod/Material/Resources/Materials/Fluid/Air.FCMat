@@ -2,7 +2,8 @@
 # File created by ConvertFCMat.py
 General:
   UUID: "94370b96-c97e-4a3f-83b2-11d7461f7da7"
-  License: "GPL-2.0-or-later"
+  Author: "Qingfeng Xia"
+  License: "LGPL-2.1-or-later"
   Name: "Air"
   Description: "Dry air properties at 20 Degrees Celsius and 1 atm"
 Models:

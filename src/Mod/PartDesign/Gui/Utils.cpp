@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
@@ -36,6 +38,7 @@
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
+#include <Mod/PartDesign/App/PartDesignParameter.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "Utils.h"
@@ -213,11 +216,7 @@ void needActiveBodyError()
 
 PartDesign::Body* makeBody(App::Document* doc)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup(
-        "BaseApp/Preferences/Mod/PartDesign"
-    );
-
-    bool allowCompound = hGrp->GetBool("AllowCompoundDefault", true);
+    bool allowCompound = PartDesign::PartDesignParameter::instance()->getAllowCompoundDefault();
 
     // This is intended as a convenience when starting a new document.
     auto bodyName(doc->getUniqueObjectName("Body"));
@@ -232,7 +231,7 @@ PartDesign::Body* makeBody(App::Document* doc)
         "App.getDocument('%s').getObject('%s').AllowCompound = %s",
         doc->getName(),
         bodyName.c_str(),
-        allowCompound ? "True" : "False"
+        Gui::asString(allowCompound)
     );
 
 
@@ -284,7 +283,11 @@ App::Part* getActivePart()
 {
     Gui::MDIView* activeView = Gui::Application::Instance->activeView();
     if (activeView) {
-        return activeView->getActiveObject<App::Part*>(PARTKEY);
+        auto* obj = activeView->getActiveObject<App::Part*>(PARTKEY);
+        if (!obj) {
+            obj = activeView->getActiveObject<App::Part*>(ASSEMBLYKEY);
+        }
+        return obj;
     }
     else {
         return nullptr;

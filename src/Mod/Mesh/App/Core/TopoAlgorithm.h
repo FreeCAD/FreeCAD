@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_TOPOALGORITHM_H
-#define MESH_TOPOALGORITHM_H
+#pragma once
 
 #include <map>
 #include <vector>
@@ -369,5 +368,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-#endif  // MESH_TOPOALGORITHM_H

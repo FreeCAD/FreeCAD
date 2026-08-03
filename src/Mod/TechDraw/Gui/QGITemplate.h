@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMTEMPLATE_H
-#define DRAWINGGUI_QGRAPHICSITEMTEMPLATE_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -73,5 +72,3 @@ protected:
 };
 
 } // namespace
-
-#endif // DRAWINGGUI_QGRAPHICSITEMTEMPLATE_H

@@ -75,11 +75,11 @@ void Gui::ExpressionBinding::setExpression(std::shared_ptr<Expression> expr)
 
     lastExpression = getExpression();
 
-    bool transaction = !App::GetApplication().getActiveTransaction();
+    bool transaction = docObj->getDocument()->getBookedTransactionID() == 0;
     if (transaction) {
         std::ostringstream ss;
         ss << (expr ? "Set" : "Discard") << " expression " << docObj->Label.getValue();
-        App::GetApplication().setActiveTransaction(ss.str().c_str());
+        docObj->getDocument()->openTransaction(ss.str().c_str());
     }
 
     docObj->ExpressionEngine.setValue(path, expr);
@@ -89,7 +89,7 @@ void Gui::ExpressionBinding::setExpression(std::shared_ptr<Expression> expr)
     }
 
     if (transaction) {
-        App::GetApplication().closeActiveTransaction();
+        docObj->getDocument()->commitTransaction();
     }
 }
 
@@ -97,7 +97,7 @@ void ExpressionBinding::bind(const App::ObjectIdentifier& _path)
 {
     const Property* prop = _path.getProperty();
 
-    Q_ASSERT(prop != nullptr);
+    Q_ASSERT(prop);
 
     path = prop->canonicalPath(_path);
 
@@ -126,14 +126,19 @@ void ExpressionBinding::bind(const Property& prop)
 
 bool ExpressionBinding::hasExpression() const
 {
-    return isBound() && getExpression() != nullptr;
+    try {
+        return isBound() && getExpression() != nullptr;
+    }
+    catch (const Base::Exception&) {
+        return false;
+    }
 }
 
 std::shared_ptr<App::Expression> ExpressionBinding::getExpression() const
 {
     DocumentObject* docObj = path.getDocumentObject();
 
-    Q_ASSERT(isBound() && docObj != nullptr);
+    Q_ASSERT(isBound() && docObj);
 
     return docObj->getExpression(path).expression;
 }
@@ -214,11 +219,11 @@ bool ExpressionBinding::apply(const std::string& propName)
             throw Base::RuntimeError("Document object not found.");
         }
 
-        bool transaction = !App::GetApplication().getActiveTransaction();
+        bool transaction = docObj->getDocument()->getBookedTransactionID() == 0;
         if (transaction) {
             std::ostringstream ss;
             ss << "Set expression " << docObj->Label.getValue();
-            App::GetApplication().setActiveTransaction(ss.str().c_str());
+            docObj->getDocument()->openTransaction(ss.str().c_str());
         }
         Gui::Command::doCommand(
             Gui::Command::Doc,
@@ -229,7 +234,7 @@ bool ExpressionBinding::apply(const std::string& propName)
             getEscapedExpressionString().c_str()
         );
         if (transaction) {
-            App::GetApplication().closeActiveTransaction();
+            docObj->getDocument()->commitTransaction();
         }
         return true;
     }
@@ -242,11 +247,11 @@ bool ExpressionBinding::apply(const std::string& propName)
             }
 
             if (lastExpression) {
-                bool transaction = !App::GetApplication().getActiveTransaction();
+                bool transaction = docObj->getDocument()->getBookedTransactionID() == 0;
                 if (transaction) {
                     std::ostringstream ss;
                     ss << "Discard expression " << docObj->Label.getValue();
-                    App::GetApplication().setActiveTransaction(ss.str().c_str());
+                    docObj->getDocument()->openTransaction(ss.str().c_str());
                 }
                 Gui::Command::doCommand(
                     Gui::Command::Doc,
@@ -256,7 +261,7 @@ bool ExpressionBinding::apply(const std::string& propName)
                     path.toEscapedString().c_str()
                 );
                 if (transaction) {
-                    App::GetApplication().closeActiveTransaction();
+                    docObj->getDocument()->commitTransaction();
                 }
             }
         }
@@ -332,6 +337,12 @@ QPixmap ExpressionWidget::getIcon(const char* name, const QSize& size) const
         QPixmapCache::insert(key, icon);
     }
     return icon;
+}
+
+void ExpressionWidget::unbind()
+{
+    iconLabel->hide();
+    ExpressionBinding::unbind();
 }
 
 void ExpressionWidget::makeLabel(QLineEdit* le)

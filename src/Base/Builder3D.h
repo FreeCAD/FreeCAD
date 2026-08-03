@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_BUILDER3D_H
-#define BASE_BUILDER3D_H
+#pragma once
 
 // Std. configurations
 
@@ -32,9 +31,7 @@
 #include <vector>
 #include <cstdint>
 #include <Base/Tools3D.h>
-#ifndef FC_GLOBAL_H
-# include <FCGlobal.h>
-#endif
+#include <FCGlobal.h>
 
 #include "Placement.h"
 
@@ -865,5 +862,3 @@ BaseExport Base::Vector3f stringToVector(std::string);
 BaseExport std::string vectorToString(Vector3f);
 
 }  // namespace Base
-
-#endif  // BASE_BUILDER3D_H

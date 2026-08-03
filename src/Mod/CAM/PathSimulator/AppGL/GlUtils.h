@@ -22,11 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __glutils_h__
-#define __glutils_h__
-#include "OpenGlWrapper.h"
-#include "linmath.h"
+#pragma once
 
+#include "linmath.h"
 
 constexpr auto EPSILON = 0.00001f;
 #define EQ_FLOAT(x, y) (fabs((x) - (y)) < EPSILON)
@@ -38,35 +36,9 @@ constexpr auto EPSILON = 0.00001f;
 #define MS_KBD_CONTROL 0x10
 #define MS_KBD_ALT 0x20
 
-#define GL(x) \
-    { \
-        GLClearError(); \
-        x; \
-        if (GLLogError()) \
-            __debugbreak(); \
-    }
-
-
-#define GLDELETE(type, x) \
-    { \
-        if (x != 0) \
-            glDelete##type(1, &x); \
-        x = 0; \
-    }
-
-#define GLDELETE_FRAMEBUFFER(x) GLDELETE(Framebuffers, x)
-#define GLDELETE_TEXTURE(x) GLDELETE(Textures, x)
-#define GLDELETE_VERTEXARRAY(x) GLDELETE(VertexArrays, x)
-#define GLDELETE_RENDERBUFFER(x) GLDELETE(Renderbuffers, x)
-#define GLDELETE_BUFFER(x) GLDELETE(Buffers, x)
-
-namespace MillSim
+namespace CAMSimulator
 {
-void GLClearError();
-bool GLLogError();
-extern mat4x4 identityMat;
-extern int gDebug;
-extern int gWindowSizeW;
-extern int gWindowSizeH;
-}  // namespace MillSim
-#endif  // !__glutils_h__
+
+extern const mat4x4 identityMat;
+
+}  // namespace CAMSimulator

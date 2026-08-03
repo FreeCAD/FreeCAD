@@ -138,8 +138,8 @@ double Toolpath::getLength()
         else if ((name == "G2") || (name == "G02") || (name == "G3") || (name == "G03")) {
             // arc
             Vector3d center = (*it)->getCenter();
-            double radius = (last - center).Length();
-            double angle = (next - center).GetAngle(last - center);
+            double radius = center.Length();
+            double angle = (next - last - center).GetAngle(-center);
             l += angle * radius;
             last = next;
         }
@@ -206,8 +206,8 @@ double Toolpath::getCycleTime(double hFeed, double vFeed, double hRapid, double 
         else if ((name == "G2") || (name == "G02") || (name == "G3") || (name == "G03")) {
             // Arc Move
             Vector3d center = (*it)->getCenter();
-            double radius = (last - center).Length();
-            double angle = (next - center).GetAngle(last - center);
+            double radius = center.Length();
+            double angle = (next - last - center).GetAngle(-center);
             l += angle * radius;
         }
 

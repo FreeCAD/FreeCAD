@@ -261,7 +261,7 @@ class PathSimulation:
             if self.skipStep:
                 self.curpos = self.RapidMove(cmd, self.curpos)
             else:
-                (pathSolid, self.curpos) = self.GetPathSolid(self.tool, cmd, self.curpos)
+                pathSolid, self.curpos = self.GetPathSolid(self.tool, cmd, self.curpos)
 
         if cmd.Name == "G80":
             self.firstDrill = True
@@ -336,7 +336,7 @@ class PathSimulation:
                 else:
                     da = -((-da) % (2 * math.pi))
                 r = math.sqrt((cmd.i or 0) ** 2 + (cmd.j or 0) ** 2)
-                n = math.ceil(math.sqrt(r / self.resolution * da * da))
+                n = Path.Geom.ceil(math.sqrt(r / self.resolution * da * da))
                 da = da / n
                 dz = (cmd.z - self.curpos.Base.z) / n
                 cmd.Name = "G1"

@@ -4,18 +4,18 @@
   <context>
     <name>TestGui::UnitTest</name>
     <message>
-      <location filename="../../UnitTest.ui" line="17"/>
-      <source>FreeCAD UnitTest</source>
-      <translation>FreeCAD UnitTest</translation>
-    </message>
-    <message>
       <location filename="../../UnitTest.ui" line="32"/>
       <source>Test</source>
       <translation>Percubaan</translation>
     </message>
     <message>
+      <location filename="../../UnitTest.ui" line="17"/>
+      <source>FreeCAD Unit Test</source>
+      <translation>FreeCAD UnitTest</translation>
+    </message>
+    <message>
       <location filename="../../UnitTest.ui" line="44"/>
-      <source>Select test name:</source>
+      <source>Select test name</source>
       <translation>Pilih nama percubaan</translation>
     </message>
     <message>
@@ -65,28 +65,28 @@
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="188"/>
-      <source>Run:</source>
-      <translation>Uji lari:</translation>
+      <source>Run</source>
+      <translation type="unfinished">Run</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="205"/>
-      <source>Failures:</source>
-      <translation>Kegagalan:</translation>
+      <source>Failures</source>
+      <translation type="unfinished">Failures</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="222"/>
-      <source>Errors:</source>
-      <translation>Kesalahan:</translation>
+      <source>Errors</source>
+      <translation>Kesilapan</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="239"/>
-      <source>Remaining:</source>
-      <translation>Baki:</translation>
+      <source>Remaining</source>
+      <translation type="unfinished">Remaining</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="259"/>
-      <source>Failures and errors</source>
-      <translation>Kegagalan dan kesilapan</translation>
+      <source>Failures and Errors</source>
+      <translation type="unfinished">Failures and Errors</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="275"/>
@@ -102,12 +102,12 @@
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="165"/>
+      <location filename="../../UnitTestImp.cpp" line="167"/>
       <source>Help</source>
       <translation>Bantuan</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="166"/>
+      <location filename="../../UnitTestImp.cpp" line="168"/>
       <source>Enter the name of a callable object which, when called, will return a TestCase.
 Click 'start', and the test thus produced will be run.
 
@@ -116,12 +116,12 @@ Double click on an error in the tree view to see more information about it, incl
 Klik dua kali pada ralat dalam paparan pokok untuk melihat maklumat lanjut mengenainya, termasuk jejak tumpukan.</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="179"/>
+      <location filename="../../UnitTestImp.cpp" line="182"/>
       <source>About FreeCAD UnitTest</source>
       <translation>Tentang FreeCAD Unittest</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="180"/>
+      <location filename="../../UnitTestImp.cpp" line="183"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>

@@ -25,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to repair objects created with older versions."""
+
 ## @package gui_heal
 # \ingroup draftguitools
 # \brief Provides GUI tools to repair objects created with older versions.
@@ -34,8 +35,8 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
-import Draft
-import draftguitools.gui_base as gui_base
+from draftfunctions import heal
+from draftguitools import gui_base
 
 from draftutils.translate import translate
 
@@ -50,7 +51,7 @@ class Heal(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(Heal, self).__init__(name=translate("draft", "Heal"))
+        super().__init__(name=translate("draft", "Heal"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -67,14 +68,14 @@ class Heal(gui_base.GuiCommandSimplest):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Heal, self).Activated()
+        super().Activated()
 
         s = Gui.Selection.getSelection()
         self.doc.openTransaction("Heal")
         if s:
-            Draft.heal(s)
+            heal.heal(s)
         else:
-            Draft.heal()
+            heal.heal()
         self.doc.commitTransaction()
 
 

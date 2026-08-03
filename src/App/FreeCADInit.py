@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 #***************************************************************************
 #*   Copyright (c) 2001,2002 Jürgen Riegel <juergen.riegel@web.de>         *
 #*   Copyright (c) 2025 Frank Martínez <mnesarco at gmail dot com>         *
@@ -454,6 +456,8 @@ App.Units.Minute        = App.Units.Quantity('min')
 App.Units.Hour          = App.Units.Quantity('h')
 
 App.Units.Ampere        = App.Units.Quantity('A')
+App.Units.NanoAmpere    = App.Units.Quantity('nA')
+App.Units.MicroAmpere   = App.Units.Quantity('uA')
 App.Units.MilliAmpere   = App.Units.Quantity('mA')
 App.Units.KiloAmpere    = App.Units.Quantity('kA')
 App.Units.MegaAmpere    = App.Units.Quantity('MA')
@@ -462,8 +466,10 @@ App.Units.Kelvin        = App.Units.Quantity('K')
 App.Units.MilliKelvin   = App.Units.Quantity('mK')
 App.Units.MicroKelvin   = App.Units.Quantity('uK')
 
-App.Units.MilliMole     = App.Units.Quantity('mmol')
 App.Units.Mole          = App.Units.Quantity('mol')
+App.Units.NanoMole      = App.Units.Quantity('nmol')
+App.Units.MicroMole     = App.Units.Quantity('umol')
+App.Units.MilliMole     = App.Units.Quantity('mmol')
 
 App.Units.Candela       = App.Units.Quantity('cd')
 
@@ -509,6 +515,8 @@ App.Units.KSI           = App.Units.Quantity('ksi')
 App.Units.MPSI          = App.Units.Quantity('Mpsi')
 
 App.Units.Watt          = App.Units.Quantity('W')
+App.Units.NanoWatt      = App.Units.Quantity('nW')
+App.Units.MicroWatt     = App.Units.Quantity('uW')
 App.Units.MilliWatt     = App.Units.Quantity('mW')
 App.Units.KiloWatt      = App.Units.Quantity('kW')
 App.Units.VoltAmpere    = App.Units.Quantity('VA')
@@ -669,6 +677,7 @@ class PropertyType(IntEnum):
     Prop_Output = 8
     Prop_NoRecompute = 16
     Prop_NoPersist = 32
+    Prop_Input = 64
 
 App.PropertyType = PropertyType
 
@@ -717,6 +726,10 @@ class Transient:
 
 transient = Transient()
 
+@transient
+@functools.cache
+def resolve_path(path: Path) -> Path:
+    return path.resolve()
 
 @transient
 def call_in_place(fn):
@@ -1012,7 +1025,7 @@ class ExtMod(Mod):
     Module based Mod (aka extension module).
 
     This kind of Mods are loaded using python module system, no direct filesystem or
-    copile/execute hacks are used.
+    compile/execute hacks are used.
 
     extension modules must be defined in namespace freecad.*, i.e. freecad.MyAddon.
     """
@@ -1269,7 +1282,7 @@ class DirModScanner:
         """
         Scan in base with higher priority.
         """
-        if (key := str(base.resolve())) in self.visited:
+        if (key := str(resolve_path(base))) in self.visited:
             return
 
         self.visited.add(key)
@@ -1277,14 +1290,15 @@ class DirModScanner:
         if not base.exists():
             if warning:
                 Wrn(warning)
-            else:
-                Wrn(f"No modules found in {base!s}")
             return
 
         if warning:
             Wrn(warning)
 
         if flat:
+            resolved = resolve_path(base)
+            if any(resolve_path(mod.path) == resolved for mod in self.mods.values()):
+                return
             self.mods[str(base)] = DirMod(base)
             return
 
@@ -1311,8 +1325,14 @@ class InitPipeline:
     """
 
     std_home = Path(App.getHomePath()).resolve()
-    std_lib = Path(App.getLibraryDir()).resolve()
     user_home = Path(App.getUserAppDataDir()).resolve()
+    try:
+        std_lib = Path(App.getLibraryDir()).resolve()
+    except OSError:
+        # The library path is not strictly required, so if the OS itself raises an error when trying
+        # to resolve it, just fall back to something reasonable. See #26864.
+        std_lib = std_home / "lib"
+        Log(f"Resolving library directory '{App.getLibraryDir()}' failed, using fallback '{std_lib}'")
     dir_mod_scanner = DirModScanner()
     ext_mod_scanner = ExtModScanner()
     search_paths = SearchPaths()
@@ -1328,6 +1348,56 @@ class InitPipeline:
         paths.add(vendor_path)
         paths.add(packages)
         return paths
+
+    def check_bundled_pivy(self) -> None:
+        """
+        Verify that bundled builds resolve the bundled Pivy package.
+        """
+        if App.ConfigGet("PIVY_SOURCE") != "bundled":
+            return
+
+        expected = (self.std_home / "Mod" / "pivy").resolve()
+
+        def block_system_pivy(message: str) -> None:
+            for name in list(sys.modules):
+                if name == "pivy" or name.startswith("pivy."):
+                    del sys.modules[name]
+            sys.modules["pivy"] = None
+            raise RuntimeError(message)
+
+        def path_from_import_origin(origin: str) -> Path:
+            path = Path(origin).resolve()
+            return path.parent if path.name == "__init__.py" else path
+
+        def find_pivy_path() -> Path:
+            module = sys.modules.get("pivy")
+            module_file = getattr(module, "__file__", None) if module else None
+            if module_file:
+                return path_from_import_origin(module_file)
+
+            spec = importlib.util.find_spec("pivy")
+            if spec is None:
+                block_system_pivy(
+                    f"Bundled Pivy is enabled, but pivy was not found. "
+                    f"Expected bundled Pivy at {expected!s}."
+                )
+            if spec.submodule_search_locations:
+                return Path(next(iter(spec.submodule_search_locations))).resolve()
+            if spec.origin:
+                return path_from_import_origin(spec.origin)
+            block_system_pivy(
+                f"Bundled Pivy is enabled, but pivy has no import location. "
+                f"Expected bundled Pivy at {expected!s}."
+            )
+
+        resolved = find_pivy_path()
+        if resolved != expected:
+            block_system_pivy(
+                f"Bundled Pivy is enabled, but Python resolves pivy from {resolved!s}. "
+                f"Expected bundled Pivy at {expected!s}."
+            )
+
+        Log(f"Init:   Using bundled Pivy from {expected!s}")
 
     def scan(self) -> None:
         """
@@ -1430,6 +1500,7 @@ class InitPipeline:
         # Update search paths to make Mods visible to import system.
         search_paths = self.search_paths
         search_paths.commit()
+        self.check_bundled_pivy()
 
         # Dir Mods first
         for mod in self.dir_mod_scanner.iter():
@@ -1474,6 +1545,8 @@ class InitPipeline:
             env_path=PathPriority.Ignore,
             sys_path=PathPriority.FallbackLast,
         )
+        self.search_paths.commit()
+        App.__MacroDirs__ = list({str(user_macro), str(user_macro_default), str(std_macro)})
 
     def post(self) -> None:
         """

@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_START_RECENTFILESMODEL_H
-#define FREECAD_START_RECENTFILESMODEL_H
+#pragma once
 
 #include <QAbstractListModel>
 #include <Base/Parameter.h>
@@ -42,11 +41,10 @@ public:
     explicit RecentFilesModel(QObject* parent = nullptr);
 
     void loadRecentFiles();
+    void recentFileAdded(const QString& filename);
 
 private:
     Base::Reference<ParameterGrp> _parameterGroup;
 };
 
 }  // namespace Start
-
-#endif  // FREECAD_START_RECENTFILESMODEL_H

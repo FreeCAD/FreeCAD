@@ -125,7 +125,7 @@ void TextDocumentEditorView::refresh()
 
 void TextDocumentEditorView::saveToObject()
 {
-    boost::signals2::shared_connection_block textBlock {textConnection};
+    fastsignals::shared_connection_block textBlock {textConnection};
     textDocument->Text.setValue(getEditor()->document()->toPlainText().toUtf8());
     textDocument->purgeTouched();
 }
@@ -177,10 +177,8 @@ bool TextDocumentEditorView::onHasMsg(const char* msg) const
     return false;
 }
 
-bool TextDocumentEditorView::onMsg(const char* msg, const char** output)
+bool TextDocumentEditorView::onMsg(const char* msg)
 {
-    Q_UNUSED(output)
-
     // don't allow any actions if the editor is being closed
     if (aboutToClose) {
         return false;

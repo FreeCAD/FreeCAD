@@ -19,12 +19,11 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef GUI_PARAM_HANDLER_H
-#define GUI_PARAM_HANDLER_H
+#pragma once
 
 #include <map>
 #include <memory>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <QTimer>
 
 #include <FCGlobal.h>
@@ -261,10 +260,8 @@ public:
 protected:
     std::map<ParamKey, std::shared_ptr<ParamHandler>> handlers;
     std::set<std::shared_ptr<ParamHandler>> pendings;
-    boost::signals2::scoped_connection conn;
+    fastsignals::scoped_connection conn;
     QTimer timer;
 };
 
 }  // namespace Gui
-
-#endif  // GUI_PARAM_HANDLER_H

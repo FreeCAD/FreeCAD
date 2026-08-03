@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Konstantinos Poulios <logari81@gmail.com>          *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PLANEGCS_UTIL_H
-#define PLANEGCS_UTIL_H
+#pragma once
 
 #include <map>
 #include <set>
@@ -39,5 +40,3 @@ using MAP_pD_I = std::map<double*, int>;
 using SET_pD = std::set<double*>;
 using SET_I = std::set<int>;
 }  // namespace GCS
-
-#endif  // PLANEGCS_UTIL_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Kacper Donat <kacper@kadet.net>                    *
  *                                                                         *
@@ -56,17 +58,25 @@ void SoDelayedAnnotationsElement::initClass()
     SO_ENABLE(SoGLRenderAction, SoDelayedAnnotationsElement);
 }
 
+SoDelayedAnnotationsElement* SoDelayedAnnotationsElement::getElement(SoState* state)
+{
+    return static_cast<SoDelayedAnnotationsElement*>(state->getElementNoPush(classStackIndex));
+}
+
 void SoDelayedAnnotationsElement::addDelayedPath(SoState* state, SoPath* path, int priority)
 {
-    auto elt = static_cast<SoDelayedAnnotationsElement*>(state->getElementNoPush(classStackIndex));
-
     // add to unified storage with specified priority (default = 0)
-    elt->paths.emplace_back(path, priority);
+    getElement(state)->paths.emplace_back(path, priority);
+}
+
+bool SoDelayedAnnotationsElement::hasDelayedPaths(SoState* state)
+{
+    return !getElement(state)->paths.empty();
 }
 
 SoPathList SoDelayedAnnotationsElement::getDelayedPaths(SoState* state)
 {
-    auto elt = static_cast<SoDelayedAnnotationsElement*>(state->getElementNoPush(classStackIndex));
+    auto* elt = getElement(state);
 
     if (elt->paths.empty()) {
         return {};

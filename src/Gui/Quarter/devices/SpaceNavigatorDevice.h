@@ -1,5 +1,4 @@
-#ifndef QUARTER_SPACENAVIGATORDEVICE_H
-#define QUARTER_SPACENAVIGATORDEVICE_H
+#pragma once
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -52,4 +51,3 @@ class QUARTER_DLL_API SpaceNavigatorDevice : public InputDevice {
 };
 
 }}}
-#endif // !QUARTER_SPACENAVIGATORDEVICE_H

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_DLGSETTINGS3DVIEWIMP_H
-#define PARTGUI_DLGSETTINGS3DVIEWIMP_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <memory>
@@ -52,7 +51,7 @@ protected:
 
 private:
     void onMaxDeviationValueChanged(double);
-    void onMaxAngularDeflectionValueChanged(double);
+    void onMaxAngularDeflectionEditingFinished();
 
 private:
     std::unique_ptr<Ui_DlgSettings3DViewPart> ui;
@@ -60,5 +59,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_DLGSETTINGS3DVIEWIMP_H

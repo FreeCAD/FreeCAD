@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef FEMGUI_TaskTetParameter_H
-#define FEMGUI_TaskTetParameter_H
+#pragma once
 
 #include <Gui/TaskView/TaskView.h>
 
@@ -85,5 +84,3 @@ private:
 };
 
 }  // namespace FemGui
-
-#endif  // FEMGUI_TaskTetParameter_H

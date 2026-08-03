@@ -193,8 +193,10 @@ void ViewProviderFemConstraint::handleChangedPropertyName(
         color.Restore(reader);
         ShapeAppearance.setDiffuseColor(color.getValue());
     }
-    else if (strcmp(propName, "ShapeMaterial") == 0
-             && Base::Type::fromName(typeName) == App::PropertyMaterial::getClassTypeId()) {
+    else if (
+        strcmp(propName, "ShapeMaterial") == 0
+        && Base::Type::fromName(typeName) == App::PropertyMaterial::getClassTypeId()
+    ) {
         // nothing
     }
     else {

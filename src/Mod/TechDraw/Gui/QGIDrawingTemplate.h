@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMDRAWINGTEMPLATE_H
-#define DRAWINGGUI_QGRAPHICSITEMDRAWINGTEMPLATE_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -64,5 +63,3 @@ protected:
 };
 
 } // namespace MDIViewPageGui
-
-#endif // DRAWINGGUI_QGRAPHICSITEMDRAWINGTEMPLATE_H

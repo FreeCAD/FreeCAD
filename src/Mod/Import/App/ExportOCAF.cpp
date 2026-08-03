@@ -47,7 +47,6 @@
 #include <App/Part.h>
 #include <Mod/Part/App/Interface.h>
 #include <Mod/Part/App/PartFeature.h>
-#include <Mod/PartDesign/App/Body.h>
 
 #include "ExportOCAF.h"
 #include "Tools.h"
@@ -64,8 +63,6 @@ ExportOCAF::ExportOCAF(Handle(TDocStd_Document) hDoc, bool explicitPlacement)
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
 
     if (keepExplicitPlacement) {
-        // rootLabel = aShapeTool->NewShape();
-        // TDataStd_Name::Set(rootLabel, "ASSEMBLY");
         Part::Interface::writeStepAssembly(Part::Interface::Assembly::Auto);
     }
     else {
@@ -105,12 +102,10 @@ std::vector<App::DocumentObject*> ExportOCAF::filterPart(App::Part* part) const
                     break;
                 }
             }
-
             if (accept) {
                 keepObjects.push_back(it);
             }
         }
-
         entries.swap(keepObjects);
     }
 
@@ -177,26 +172,12 @@ int ExportOCAF::exportObject(
         return_label = root_id;
     }
 
-    // keep a copy of the original object for naming purposes
-    App::DocumentObject* originalObj = obj;
-
-    if (obj->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
-        PartDesign::Body* body = static_cast<PartDesign::Body*>(obj);
-        App::DocumentObject* tip = body->Tip.getValue();
-        if (tip && tip->isDerivedFrom<Part::Feature>()) {
-            // use the tip instead of the body for export
-            obj = tip;
-        }
-    }
-
     if (obj->isDerivedFrom<Part::Feature>()) {
         Part::Feature* part = static_cast<Part::Feature*>(obj);
         std::vector<Base::Color> colors;
         findColors(part, colors);
 
-        const char* label = (originalObj != obj) ? originalObj->Label.getValue() : nullptr;
-        return_label
-            = saveShape(part, colors, hierarchical_label, hierarchical_loc, hierarchical_part, label);
+        return_label = saveShape(part, colors, hierarchical_label, hierarchical_loc, hierarchical_part);
     }
 
     return return_label;
@@ -240,8 +221,7 @@ int ExportOCAF::saveShape(
     const std::vector<Base::Color>& colors,
     std::vector<TDF_Label>& hierarchical_label,
     std::vector<TopLoc_Location>& hierarchical_loc,
-    std::vector<App::DocumentObject*>& hierarchical_part,
-    const char* labelOverride
+    std::vector<App::DocumentObject*>& hierarchical_part
 )
 {
     const TopoDS_Shape& shape = part->Shape.getValue();
@@ -276,15 +256,7 @@ int ExportOCAF::saveShape(
     TDF_Label shapeLabel = aShapeTool->NewShape();
     aShapeTool->SetShape(shapeLabel, baseShape);
 
-    const char* labelToUse = labelOverride ? labelOverride : part->Label.getValue();
-    TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(labelToUse, true));
-
-    /*
-        if (keepExplicitPlacement) {
-            aShapeTool->AddComponent(aShapeTool->BaseLabel(), shapeLabel, aLoc);
-            XCAFDoc_Location::Set(shapeLabel,MyLoc);
-        }
-    */
+    TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(part->Label.getValue(), true));
 
     // Add color information
     Quantity_ColorRGBA col;
@@ -310,7 +282,6 @@ int ExportOCAF::saveShape(
                 // If faceLabel is null we check if for the current face a label already
                 // exists. If yes then faceLabel is equal to shapeLabel.
                 TDF_Label faceLabel = aShapeTool->AddSubShape(shapeLabel, xp.Current());
-                // TDF_Label faceLabel= TDF_TagSource::NewChild(shapeLabel);
                 if (!faceLabel.IsNull()) {
                     aShapeTool->SetShape(faceLabel, xp.Current());
                 }

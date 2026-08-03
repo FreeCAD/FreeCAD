@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef WEB_APP_PRECOMPILED_H
-#define WEB_APP_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -37,5 +36,3 @@
 // Qt
 #include <QCoreApplication>
 #include <QTcpSocket>
-
-#endif

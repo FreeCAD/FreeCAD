@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_STARTVIEW_H
-#define FREECAD_STARTVIEW_H
+#pragma once
 
 #include <Mod/Start/StartGlobal.h>
 #include <Base/Type.h>
@@ -71,6 +70,7 @@ public:
     void newAssemblyFile();
     void newDraftFile();
     void newArchFile();
+    void recentFileAdded(const QString& filename);
 
     bool onHasMsg(const char* pMsg) const override;
 
@@ -118,9 +118,8 @@ private:
     QPushButton* _openFirstStart;
     QCheckBox* _showOnStartupCheckBox;
 
+    bool isInitialized = false;
 
 };  // namespace StartGui
 
 }  // namespace StartGui
-
-#endif  // FREECAD_STARTVIEW_H

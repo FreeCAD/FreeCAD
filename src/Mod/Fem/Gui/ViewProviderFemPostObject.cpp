@@ -75,11 +75,7 @@
 using namespace FemGui;
 namespace sp = std::placeholders;
 
-#ifdef VTK_CELL_ARRAY_V2
 using vtkIdTypePtr = const vtkIdType*;
-#else
-using vtkIdTypePtr = vtkIdType*;
-#endif
 
 // ----------------------------------------------------------------------------
 
@@ -139,7 +135,7 @@ public:
 
 private:
     std::set<ViewProviderFemPostObject*> views;
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     Connection connectSelection;
 };
 
@@ -169,6 +165,13 @@ ViewProviderFemPostObject::ViewProviderFemPostObject()
         "Object Style",
         App::Prop_None,
         "Set wireframe line color."
+    );
+    ADD_PROPERTY_TYPE(
+        NoneFieldColor,
+        (0.8f, 0.8f, 0.8f),
+        "Object Style",
+        App::Prop_None,
+        "Shape color used if Field property is None."
     );
     ADD_PROPERTY_TYPE(
         PlainColorEdgeOnSurface,
@@ -436,14 +439,12 @@ void ViewProviderFemPostObject::updateProperties()
             colorArrays.push_back(FieldName);
         }
     }
+    // don't add cell data arrays until they are supported in the 3d view
+    // vtkCellData* cell = poly->GetCellData();
+    // for (int i = 0; i < cell->GetNumberOfArrays(); ++i) {
+    //    colorArrays.emplace_back(cell->GetArrayName(i));
+    //}
 
-    vtkCellData* cell = poly->GetCellData();
-    for (int i = 0; i < cell->GetNumberOfArrays(); ++i) {
-        colorArrays.emplace_back(cell->GetArrayName(i));
-    }
-
-    App::Enumeration empty;
-    Field.setValue(empty);
     m_coloringEnum.setEnums(colorArrays);
     Field.setValue(m_coloringEnum);
 
@@ -499,7 +500,6 @@ void ViewProviderFemPostObject::updateProperties()
         }
     }
 
-    Component.setValue(empty);
     m_vectorEnum.setEnums(colorArrays);
     Component.setValue(m_vectorEnum);
 
@@ -692,7 +692,8 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
     }
 
     if (Field.getEnumVector().empty() || Field.getValue() == 0) {
-        m_material->diffuseColor.setValue(SbColor(0.8, 0.8, 0.8));
+        Base::Color cNone = NoneFieldColor.getValue();
+        m_material->diffuseColor.setValue(SbColor(cNone.r, cNone.g, cNone.b));
         float trans = Base::fromPercent(Transparency.getValue());
         m_material->transparency.setValue(trans);
         m_materialBinding->value = SoMaterialBinding::OVERALL;
@@ -869,6 +870,9 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop)
             && (strcmp("Surface with Edges", DisplayMode.getValueAsString()) == 0);
         int child = plainColor ? 1 : 0;
         m_switchMatEdges->whichChild.setValue(child);
+    }
+    else if (prop == &NoneFieldColor) {
+        WriteColorData(ResetColorBarRange);
     }
 
     ViewProviderDocumentObject::onChanged(prop);

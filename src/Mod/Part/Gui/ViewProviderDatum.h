@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderDatum_H
-#define PARTGUI_ViewProviderDatum_H
+#pragma once
 
 #include <Gui/ViewProviderLine.h>
 #include <Gui/ViewProviderPlane.h>
@@ -88,6 +87,3 @@ public:
 };
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_ViewProviderDatum_H

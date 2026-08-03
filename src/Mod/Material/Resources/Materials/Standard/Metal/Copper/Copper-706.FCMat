@@ -1,0 +1,84 @@
+﻿---
+# File created by FreeCAD 1.0.2 Revision: 39319 (Git)
+General:
+  UUID: "a014c57e-72e8-4fd2-99bd-a7583026a2b1"
+  Name: "Copper-706"
+  Author: "Joe Da Silva"
+  License: "LGPL-2.0-or-later"
+  SourceURL: "https://copper.org/publications/pub_list/pdf/144-8-mechanical.pdf"
+  ReferenceSource: "144-8-mechanical.pdf"
+  Tags:
+    - "C70600"
+    - "Annealed"
+    - "Copper nickel"
+    - "Cupro nickel"
+  Description: >
+    Copper-706, 90-10, Cu90Ni10, Copper Nickel 10%, Annealed 677°C 40min.
+    Cu=89% Pb=0.02% Fe=1.16% Zn=0.07% Ni=9.98%. IACS=9%.
+    Values for 295°K imported from 'cda144-8-mechanical-low-temperature.pdf'
+    with permission and credit to the 'Copper Development Association' (CDA).
+    For your own production accuracy, please use values provided by the
+    material vendors you are working with.
+Inherits:
+  Silver:
+    UUID: "62839fb0-d854-4b44-92df-b7249213de49"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Metal"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Annealed"
+    StandardCode: "Copper-706"
+  LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    Density: "8940 kg/m^3"
+    UltimateStrain: "28.4"
+    UltimateTensileStrength: "342 MPa"
+    YieldStrain: "1.1"
+    YieldStrength: "148 MPa"
+    Elongation: "37"
+    FractureStrength: "211 MPa"
+    ReductionOfArea: "79"
+    YoungsModulus: "122 GPa"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "377 J/kg/K"
+    ThermalConductivity: "45 W/m/K"
+    ThermalExpansionCoefficient: "17.1 µm/m/K"
+    ThermalExpansionReferenceTemperature: "293.00 K"
+  Electromagnetic:
+    UUID: 'b2eb5f48-74b3-4193-9fbb-948674f427f3'
+    ElectricalConductivity: "5.22 MS/m"
+  Hardness:
+    UUID: '3d1a6141-d032-4d82-8bb5-a8f339fff8ad'
+    Hardness: "33"
+    HardnessUnits: "HRB"
+  Toughness:
+    UUID: '5bd8188b-2e72-4891-b9fb-7c5abc62ff2d'
+    ImpactCharpy: "155 J"
+    NotchTensileStrength: "448 MPa"
+  IsotropicLinearElasticArrays:
+    UUID: '2afbba4b-55c0-4c4a-a6dc-4f5716cc5571'
+    ElasticProperties:
+      - [["295 K", "", "", "", "122 GPa"],
+         ["195 K", "", "", "", ""],
+         ["76 K",  "", "", "", "134 GPa"],
+         ["20 K",  "", "", "", ""],
+         ["4 K",   "", "", "", "141 GPa"]]
+  LinearElasticArrays:
+    UUID: '767bb39f-f32b-4401-88e3-1d019e6056a1'
+    PlasticUniaxialProperties:
+      - [["295 K", "28.4", "342 MPa", "1.1",  "148 MPa", "37.0", "211 MPa", "79.0"],
+         ["195 K", "33",   "377 MPa", "1.35", "170 MPa", "42.0", "228 MPa", "77.0"],
+         ["76 K",  "38.5", "496 MPa", "0.71", "171 MPa", "50.0", "367 MPa", "77.0"],
+         ["20 K",  "41.5", "569 MPa", "1.1",  "208 MPa", "50.0", "500 MPa", "73.0"],
+         ["4 K",   "47",   "556 MPa", "0.77", "172 MPa", "53.0", "471 MPa", "73.0"]]
+  ToughnessArrays:
+    UUID: '930ae69e-f51e-4cb4-831f-05f233fc0360'
+    PlasticTriaxialProperties:
+      - [["295 K", "155 J", "448 MPa"],
+         ["195 K", "153 J", "504 MPa"],
+         ["76 K",  "160 J", "601 MPa"],
+         ["20 K",  "157 J", "667 MPa"],
+         ["4 K",   "",      "689 MPa"]]

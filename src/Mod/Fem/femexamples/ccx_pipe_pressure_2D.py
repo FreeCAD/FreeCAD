@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 # ***************************************************************************
-# *   Copyright (c) 2025 Jakub Michalski <jakub.j.michalski[at]gmail.com>         *
+# *   Copyright (c) 2025 Jakub Michalski <jakub.j.michalski[at]gmail.com>   *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
@@ -29,6 +29,7 @@ import ObjectsFem
 from . import manager
 from .manager import get_meshname
 from .manager import init_doc
+from .meshes import generate_mesh
 
 
 def get_information():
@@ -117,21 +118,21 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj)
 
     # constraint displacement 1
-    con_disp1 = ObjectsFem.makeConstraintDisplacement(doc, "ConstraintDisplacement1")
+    con_disp1 = ObjectsFem.makeConstraintDisplacement(doc, "Displacement1")
     con_disp1.References = [(faceobj, "Edge2")]
     con_disp1.yFree = False
     con_disp1.yDisplacement = "0.0 mm"
     analysis.addObject(con_disp1)
 
     # constraint displacement 2
-    con_disp2 = ObjectsFem.makeConstraintDisplacement(doc, "ConstraintDisplacement2")
+    con_disp2 = ObjectsFem.makeConstraintDisplacement(doc, "Displacement2")
     con_disp2.References = [(faceobj, "Edge4")]
     con_disp2.xFree = False
     con_disp2.xDisplacement = "0.0 mm"
     analysis.addObject(con_disp2)
     
     # constraint pressure
-    con_press = ObjectsFem.makeConstraintPressure(doc, "ConstraintPressure")
+    con_press = ObjectsFem.makeConstraintPressure(doc, "Pressure")
     con_press.References = [(faceobj, "Edge1")]
     con_press.Pressure = "1 MPa"
     analysis.addObject(con_press)
@@ -144,10 +145,7 @@ def setup(doc=None, solvertype="ccxtools"):
     femmesh_obj.ViewObject.Visibility = False
 
     # generate the mesh
-    from femmesh import gmshtools
-
-    gmsh_mesh = gmshtools.GmshTools(femmesh_obj, analysis)
-    gmsh_mesh.create_mesh()
+    generate_mesh.mesh_from_mesher(femmesh_obj, "gmsh")
 
     doc.recompute()
     return doc

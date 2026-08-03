@@ -45,7 +45,6 @@ from .serializer import AssetSerializer
 from .uri import AssetUri
 from .cache import AssetCache, CacheKey
 
-
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.ERROR)
 

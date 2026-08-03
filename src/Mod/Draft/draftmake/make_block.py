@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create Block objects."""
+
 ## @package make_block
 # \ingroup draftmake
 # \brief Provides functions to create Block objects.
@@ -45,7 +46,7 @@ def make_block(objectslist):
 
     Parameters
     ----------
-    objectlist : list
+    objectslist : list
         Major radius of the ellipse.
 
     """

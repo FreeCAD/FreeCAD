@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -75,6 +77,7 @@ DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc, QWidget* 
             return str;
         }
 
+        dt = dt.toLocalTime();
         QLocale loc = QLocale::system();
         return loc.toString(dt);
     };

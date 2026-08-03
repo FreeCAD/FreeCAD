@@ -36,7 +36,6 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from PySide import QtCore, QtGui
 
-
 __title__ = "CAM Thread Milling Operation UI."
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
@@ -66,6 +65,21 @@ def fillThreads(form, dataFile, defaultSelect):
         form.threadName.setCurrentText(defaultSelect)
     form.threadName.setEnabled(True)
     form.threadName.blockSignals(False)
+
+
+class TaskPanelToolControllerPage(PathOpGui.TaskPanelToolControllerPage):
+    """Tool Controller page that reports ThreadMilling's threadmilling tool requirement."""
+
+    def getFields(self, obj):
+        try:
+            super(TaskPanelToolControllerPage, self).getFields(obj)
+        except PathUtils.PathNoTCExistsException:
+            title = translate("CAM", "No valid toolcontroller")
+            message = translate(
+                "CAM",
+                "This operation requires a tool controller with a threadmilling tool",
+            )
+            self.show_error_message(title, message)
 
 
 class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
@@ -106,17 +120,6 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         obj.LeadInOut = self.form.leadInOut.checkState() == QtCore.Qt.Checked
         obj.TPI = self.form.threadTPI.value()
 
-        try:
-            self.updateToolController(obj, self.form.toolController)
-        except PathUtils.PathNoTCExistsException:
-            title = translate("CAM", "No valid toolcontroller")
-            message = translate(
-                "CAM",
-                "This operation requires a tool controller with a threadmilling tool",
-            )
-
-            self.show_error_message(title, message)
-
     def setFields(self, obj):
         """setFields(obj) ... update UI with obj properties' values"""
         Path.Log.track()
@@ -140,7 +143,6 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.minorDia.updateWidget()
         self.pitch.updateWidget()
 
-        self.setupToolController(obj, self.form.toolController)
         self._updateFromThreadType()
 
     def _isThreadCustom(self):
@@ -235,14 +237,17 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         else:  # Qt version < 6.7.0
             signals.append(self.form.leadInOut.stateChanged)
 
-        signals.append(self.form.toolController.currentIndexChanged)
-
         return signals
 
     def registerSignalHandlers(self, obj):
         self.form.threadType.currentIndexChanged.connect(self._updateFromThreadType)
         self.form.threadName.currentIndexChanged.connect(self._updateFromThreadName)
         self.form.threadFit.valueChanged.connect(self._updateFromThreadName)
+
+    def taskPanelToolControllerPage(self, obj, features):
+        """taskPanelToolControllerPage(obj, features) ... report ThreadMilling's
+        threadmilling tool requirement if an incompatible tool controller is selected."""
+        return TaskPanelToolControllerPage(obj, features)
 
 
 Command = PathOpGui.SetupOperation(

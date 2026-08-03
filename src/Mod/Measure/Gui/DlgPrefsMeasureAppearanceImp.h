@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MeasureGui_DlgPrefsAppearanceImp_H
-#define MeasureGui_DlgPrefsAppearanceImp_H
+#pragma once
 
 #include <memory>
 
@@ -53,5 +52,3 @@ private:
 };
 
 }  // namespace MeasureGui
-
-#endif  // MeasureGui_DlgPrefsAppearanceImp_H

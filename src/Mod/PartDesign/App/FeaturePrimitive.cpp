@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -124,7 +126,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
                 );
         }
         try {
-            boolOp.makeElementBoolean(maker, {base, primitiveShape});
+            boolOp.makeElementBoolean(maker, {base, primitiveShape}, nullptr, FuzzyTolerance.getValue());
         }
         catch (Standard_Failure&) {
             return new App::DocumentObjectExecReturn(
