@@ -159,17 +159,17 @@
   <context>
     <name>CmdSketcherMapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="651"/>
+      <location filename="../../Command.cpp" line="653"/>
       <source>Attach Sketch</source>
       <translation>ச்கெட்சை இணைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="652"/>
+      <location filename="../../Command.cpp" line="654"/>
       <source>Attaches a sketch to the selected geometry element</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட வடிவியல் உறுப்புக்கு ஒரு ஓவியத்தை இணைக்கிறது</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="743"/>
+      <location filename="../../Command.cpp" line="745"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட சில பொருள்கள் வரைபடமாக்கப்பட வேண்டிய ஓவியத்தைப் பொறுத்தது. வட்ட சார்புகள் அனுமதிக்கப்படாது.</translation>
     </message>
@@ -177,48 +177,48 @@
   <context>
     <name>CmdSketcherMergeSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="1160"/>
+      <location filename="../../Command.cpp" line="1162"/>
       <source>Skipping external geometry #%1
 </source>
       <translation type="unfinished">Skipping external geometry #%1
 </translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1203"/>
+      <location filename="../../Command.cpp" line="1205"/>
       <source>External geometry '%1' is out of scope:
 </source>
       <translation type="unfinished">External geometry '%1' is out of scope:
 </translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1254"/>
+      <location filename="../../Command.cpp" line="1256"/>
       <source>Merge Sketches</source>
       <translation>ஓவியங்களை ஒன்றிணைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1255"/>
+      <location filename="../../Command.cpp" line="1257"/>
       <source>Creates a new sketch by merging at least 2 selected sketches</source>
       <translation>குறைந்தது 2 தேர்ந்தெடுக்கப்பட்ட ஓவியங்களை இணைப்பதன் மூலம் புதிய ஓவியத்தை உருவாக்குகிறது</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1270"/>
+      <location filename="../../Command.cpp" line="1272"/>
       <source>Wrong selection</source>
       <translation>தவறான தேர்வு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1271"/>
+      <location filename="../../Command.cpp" line="1273"/>
       <source>Select at least 2 sketches</source>
       <translation>குறைந்தது 2 ஓவியங்களைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1360"/>
+      <location filename="../../Command.cpp" line="1362"/>
       <source>Copied %1 of %2 constraints from '%3'. Some were skipped.
 </source>
       <translation type="unfinished">Copied %1 of %2 constraints from '%3'. Some were skipped.
 </translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1376"/>
+      <location filename="../../Command.cpp" line="1378"/>
       <source>Skipping constraint #%1 of '%2': references unmerged geometry.
 </source>
       <translation type="unfinished">Skipping constraint #%1 of '%2': references unmerged geometry.
@@ -228,12 +228,12 @@
   <context>
     <name>CmdSketcherMirrorSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="947"/>
+      <location filename="../../Command.cpp" line="949"/>
       <source>Mirror Sketch</source>
       <translation>மிரர் ச்கெட்ச்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="948"/>
+      <location filename="../../Command.cpp" line="950"/>
       <source>Creates a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference</source>
@@ -242,12 +242,12 @@ X அல்லது ஒய் அச்சுகள் அல்லது ம�
 பிரதிபலிப்பு குறிப்பாக</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="965"/>
+      <location filename="../../Command.cpp" line="967"/>
       <source>Wrong selection</source>
       <translation>தவறான தேர்வு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="966"/>
+      <location filename="../../Command.cpp" line="968"/>
       <source>Select at least 1 sketch</source>
       <translation>குறைந்தது 1 ஓவியத்தைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
@@ -294,24 +294,24 @@ X அல்லது ஒய் அச்சுகள் அல்லது ம�
   <context>
     <name>CmdSketcherValidateSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="907"/>
+      <location filename="../../Command.cpp" line="909"/>
       <source>Validate Sketch</source>
       <translation>ச்கெட்சை சரிபார்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="908"/>
+      <location filename="../../Command.cpp" line="910"/>
       <source>Validates a sketch by checking for missing coincidences,
 invalid constraints, and degenerate geometry</source>
       <translation>விடுபட்ட தற்செயல் நிகழ்வுகளைச் சரிபார்ப்பதன் மூலம் ஒரு ஓவியத்தை சரிபார்க்கிறது, 
 தவறான கட்டுப்பாடுகள் மற்றும் சிதைந்த வடிவவியல்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="924"/>
+      <location filename="../../Command.cpp" line="926"/>
       <source>Wrong selection</source>
       <translation>தவறான தேர்வு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="925"/>
+      <location filename="../../Command.cpp" line="927"/>
       <source>Select only 1 sketch.</source>
       <translation>1 ஓவியத்தை மட்டும் தேர்ந்தெடுக்கவும்.</translation>
     </message>
@@ -687,32 +687,32 @@ invalid constraints, and degenerate geometry</source>
       <translation>முகத்தில் ஒரு புதிய ஓவியத்தை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="290"/>
+      <location filename="../../Command.cpp" line="291"/>
       <source>Create a new sketch</source>
       <translation>புதிய ஓவியத்தை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="624"/>
+      <location filename="../../Command.cpp" line="626"/>
       <source>Reorient sketch</source>
       <translation>மறுசீரமைப்பு ஓவியம்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="833"/>
+      <location filename="../../Command.cpp" line="835"/>
       <source>Attach sketch</source>
       <translation>ஓவியத்தை இணைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="842"/>
+      <location filename="../../Command.cpp" line="844"/>
       <source>Detach sketch</source>
       <translation>ஓவியத்தை பிரிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="981"/>
+      <location filename="../../Command.cpp" line="983"/>
       <source>Create a mirrored sketch for each selected sketch</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட ஒவ்வொரு ஓவியத்திற்கும் பிரதிபலித்த ஓவியத்தை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1280"/>
+      <location filename="../../Command.cpp" line="1282"/>
       <source>Merge sketches</source>
       <translation>ஓவியங்களை ஒன்றிணைக்கவும்</translation>
     </message>
@@ -909,9 +909,9 @@ invalid constraints, and degenerate geometry</source>
       <translation>இழுத்தல் கட்டுப்பாடு</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1659"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1337"/>
       <location filename="../../CommandConstraints.cpp" line="11287"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1337"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1659"/>
       <source>Modify sketch constraints</source>
       <translation>ச்கெட்ச் கட்டுப்பாடுகளை மாற்றவும்</translation>
     </message>
@@ -936,7 +936,7 @@ invalid constraints, and degenerate geometry</source>
       <translation>ச்கெட்ச் ஆர்க் ச்லாட்டைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="148"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="210"/>
       <source>Rotate geometries</source>
       <translation>வடிவவியலைச் சுழற்று</translation>
     </message>
@@ -946,7 +946,7 @@ invalid constraints, and degenerate geometry</source>
       <translation>அளவிலான வடிவவியல்</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="121"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="127"/>
       <source>Translate geometries</source>
       <translation>வடிவவியலை மொழிபெயர்க்கவும்</translation>
     </message>
@@ -967,7 +967,7 @@ invalid constraints, and degenerate geometry</source>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="940"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1269"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1271"/>
       <source>Add sketch polyline</source>
       <translation type="unfinished">Add sketch polyline</translation>
     </message>
@@ -977,8 +977,8 @@ invalid constraints, and degenerate geometry</source>
       <translation>கட்டுமான வடிவவியலை மாற்றவும்</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="716"/>
-      <location filename="../../DrawSketchHandler.cpp" line="1419"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1596"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="717"/>
       <source>Add Auto-Constraints</source>
       <translation>தானியங்கு கட்டுப்பாடுகளைச் சேர்க்கவும்</translation>
     </message>
@@ -990,9 +990,9 @@ invalid constraints, and degenerate geometry</source>
       <translation>ச்கெட்ச் பி-ச்ப்லைனைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../EditTextDialog.cpp" line="114"/>
-      <source>Modify sketch text constraint</source>
-      <translation type="unfinished">Modify sketch text constraint</translation>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="170"/>
+      <source>Add sketch arc of parabola</source>
+      <translation type="unfinished">Add sketch arc of parabola</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="130"/>
@@ -1000,9 +1000,9 @@ invalid constraints, and degenerate geometry</source>
       <translation type="unfinished">Add sketch Text</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="170"/>
-      <source>Add sketch arc of parabola</source>
-      <translation type="unfinished">Add sketch arc of parabola</translation>
+      <location filename="../../EditTextDialog.cpp" line="114"/>
+      <source>Modify sketch text constraint</source>
+      <translation type="unfinished">Modify sketch text constraint</translation>
     </message>
   </context>
   <context>
@@ -1016,54 +1016,54 @@ invalid constraints, and degenerate geometry</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2815"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2817"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>முடிச்சுப் பெருக்கத்தில் எந்த மாற்றத்தையும் நீங்கள் கோரவில்லை.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2807"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2985"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2809"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2987"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>B-spline Geometry குறியெண் (GeoID) எல்லைக்கு வெளியே உள்ளது.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2824"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3001"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2826"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3003"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>வழங்கப்பட்ட சியோமெட்ரி இன்டெக்ச் (சியோஐடி) பி-ச்ப்லைன் அல்ல.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2836"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2838"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>முடிச்சு குறியீட்டு எல்லைக்கு வெளியே உள்ளது. OCC குறியீட்டின்படி, முதல் முடிச்சு குறியீட்டு 1 ஐக் கொண்டுள்ளது மற்றும் பூச்சியமாக இல்லை.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2852"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2854"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>பி-ச்ப்லைனின் அளவைத் தாண்டி பெருக்கத்தை அதிகரிக்க முடியாது.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2863"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2865"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>பூச்சியத்திற்கு மேல் பெருக்கத்தை குறைக்க முடியாது.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2879"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2881"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC ஆல் அதிகபட்ச சகிப்புத்தன்மைக்குள் பெருக்கத்தைக் குறைக்க முடியவில்லை.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2992"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2994"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>முடிச்சு சுழிய பெருக்கத்தைக் கொண்டிருக்க முடியாது.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3014"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3016"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>முடிச்சுப் பெருக்கம் பி-ச்ப்லைனின் அளவை விட அதிகமாக இருக்க முடியாது.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3024"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3026"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>B-spline அளவுரு வரம்பிற்கு வெளியே முடிச்சைச் செருக முடியாது.</translation>
     </message>
@@ -1183,25 +1183,11 @@ invalid constraints, and degenerate geometry</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="205"/>
-      <location filename="../../Command.cpp" line="772"/>
+      <location filename="../../Command.cpp" line="774"/>
       <source>Do not attach</source>
       <translation>இணைக்க வேண்டாம்</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="231"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="242"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="171"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="329"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="423"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="491"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="580"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="634"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1023"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1144"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="127"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <location filename="../../CommandConstraints.cpp" line="453"/>
       <location filename="../../CommandConstraints.cpp" line="460"/>
       <location filename="../../CommandConstraints.cpp" line="3327"/>
@@ -1343,6 +1329,20 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../CommandSketcherTools.cpp" line="2339"/>
       <location filename="../../CommandSketcherTools.cpp" line="2386"/>
       <location filename="../../CommandSketcherTools.cpp" line="2451"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="171"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="329"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="423"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="491"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="580"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="634"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1023"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1144"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="127"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="231"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="242"/>
       <source>Wrong selection</source>
       <translation>தவறான தேர்வு</translation>
     </message>
@@ -1518,9 +1518,9 @@ invalid constraints, and degenerate geometry</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருட்களின் எண்ணிக்கை 3 அல்ல</translation>
     </message>
     <message>
+      <location filename="../../CommandConstraints.cpp" line="1062"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="623"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1185"/>
-      <location filename="../../CommandConstraints.cpp" line="1062"/>
       <source>Error</source>
       <translation>பிழை</translation>
     </message>
@@ -1918,14 +1918,14 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>ச்கெட்சிலிருந்து ஒரு பரிமாணக் கட்டுப்பாட்டைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="117"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="158"/>
       <location filename="../../CommandConstraints.cpp" line="11369"/>
       <location filename="../../CommandConstraints.cpp" line="11381"/>
       <location filename="../../CommandConstraints.cpp" line="11417"/>
       <location filename="../../CommandConstraints.cpp" line="11492"/>
       <location filename="../../CommandConstraints.cpp" line="11504"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="117"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="158"/>
       <source>Select constraints from the sketch.</source>
       <translation>ச்கெட்சிலிருந்து கட்டுப்பாடுகளைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
@@ -3421,54 +3421,64 @@ the characters listed here will be drawn using a substitute font.</translation>
       <translation>கர்சர் ஆயத்தொகுப்புகள் குறுகிய வடிவத்திற்குப் பதிலாக கணினி தசம அமைப்பைப் பயன்படுத்தும்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="541"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="511"/>
+      <source>Shows helper lines for directional autoconstraints such as parallel, perpendicular, and tangent</source>
+      <translation type="unfinished">Shows helper lines for directional autoconstraints such as parallel, perpendicular, and tangent</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="514"/>
+      <source>Show directional autoconstraint helpers</source>
+      <translation type="unfinished">Show directional autoconstraint helpers</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="560"/>
       <source>Visibility Automation</source>
       <translation>தெரிவுநிலை ஆட்டோமேசன்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="547"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="566"/>
       <source>Hides all object features that depend on the opened sketch</source>
       <translation>திறக்கப்பட்ட ச்கெட்ச் சார்ந்து அனைத்து பொருள் அம்சங்களையும் மறைக்கிறது</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="566"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="585"/>
       <source>Shows source objects which are used for external geometry in the opened sketch</source>
       <translation>திறந்த ஓவியத்தில் வெளிப்புற வடிவவியலுக்குப் பயன்படுத்தப்படும் மூலப் பொருட்களைக் காட்டுகிறது</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="585"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="604"/>
       <source>Shows objects the opened sketch is attached to</source>
       <translation>திறக்கப்பட்ட ஓவியம் இணைக்கப்பட்டுள்ள பொருட்களைக் காட்டுகிறது</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="604"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="623"/>
       <source>Restores the camera position after closing the sketch</source>
       <translation>ச்கெட்சை மூடிய பிறகு கேமரா நிலையை மீட்டெடுக்கிறது</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="623"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="642"/>
       <source>Forces the camera to an orthographic view when editing a sketch.
 Works only when "Restore camera position after editing" is enabled.</source>
       <translation>ச்கெட்சைத் திருத்தும்போது கேமராவை ஆர்த்தோகிராஃபிக் காட்சிக்கு கட்டாயப்படுத்துகிறது. 
 "எடிட்டிங் செய்த பிறகு கேமரா நிலையை மீட்டமை" இயக்கப்பட்டால் மட்டுமே வேலை செய்யும்.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="643"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="662"/>
       <source>Opens a sketch in section view mode, showing only objects behind the sketch plane</source>
       <translation>ச்கெட்ச் விமானத்தின் பின்னால் உள்ள பொருட்களை மட்டும் காட்டும், பிரிவுக் காட்சி பயன்முறையில் ஒரு ஓவியத்தைத் திறக்கும்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="646"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="665"/>
       <source>Open sketch in section view mode</source>
       <translation>பகுதிக் காட்சி பயன்முறையில் ஓவியத்தைத் திறக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="687"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="706"/>
       <source>Applies current visibility automation settings to all sketches in the open documents</source>
       <translation>திறந்த ஆவணங்களில் உள்ள அனைத்து ஓவியங்களுக்கும் தற்போதைய தெரிவுநிலை தன்னியக்க அமைப்புகளைப் பயன்படுத்துகிறது</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="690"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="709"/>
       <source>Apply to Existing Sketches</source>
       <translation>ஏற்கனவே உள்ள ஓவியங்களுக்கு விண்ணப்பிக்கவும்</translation>
     </message>
@@ -3511,47 +3521,47 @@ Defaults to: %N = %V
       <translation>கர்சர் ஆயத்தொகுப்புகளுக்கு கணினி தசம அமைப்பைப் பயன்படுத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="550"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="569"/>
       <source>Hide all objects that depend on the sketch</source>
       <translation>ச்கெட்ச் சார்ந்த அனைத்து பொருட்களையும் மறைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="569"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="588"/>
       <source>Show objects used for external geometry</source>
       <translation>வெளிப்புற வடிவவியலுக்குப் பயன்படுத்தப்படும் பொருட்களைக் காட்டு</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="588"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="607"/>
       <source>Show objects that the sketch is attached to</source>
       <translation>ச்கெட்ச் இணைக்கப்பட்டுள்ள பொருட்களைக் காட்டு</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="607"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="626"/>
       <source>Restore camera position after editing</source>
       <translation>திருத்திய பின் கேமரா நிலையை மீட்டெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="627"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="646"/>
       <source>Force orthographic camera when entering edit</source>
       <translation>திருத்தத்தை உள்ளிடும்போது ஆர்த்தோகிராஃபிக் கேமராவை கட்டாயப்படுத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="668"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="687"/>
       <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</source>
       <translation>குறிப்பு: இந்த அமைப்புகள் புதிய ஓவியங்களுக்குப் பயன்படுத்தப்படும் இயல்புநிலையாகும். பார்வை தாவலில் உள்ள பண்புகளாக ஒவ்வொரு ஓவியத்திற்கும் நடத்தை தனித்தனியாக நினைவில் வைக்கப்படும்.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="582"/>
+      <location filename="../../SketcherSettings.cpp" line="584"/>
       <source>Unexpected C++ exception</source>
       <translation>எதிர்பாராத C++ விதிவிலக்கு</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="585"/>
+      <location filename="../../SketcherSettings.cpp" line="587"/>
       <source>Sketcher</source>
       <translation>ஓவியங்கள்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="609"/>
+      <location filename="../../SketcherSettings.cpp" line="611"/>
       <source>Glyphs not present:</source>
       <translation type="unfinished">Glyphs not present:</translation>
     </message>
@@ -4110,112 +4120,112 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4144"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4152"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4168"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4176"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>ச்கெட்ச் தவறானது மற்றும் திருத்த முடியாது.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4364"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4372"/>
       <source>The following constraint is partially redundant:</source>
       <translation>பின்வரும் கட்டுப்பாடு ஓரளவு தேவையற்றது:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4365"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4373"/>
       <source>The following constraints are partially redundant:</source>
       <translation>பின்வரும் கட்டுப்பாடுகள் ஓரளவு தேவையற்றவை:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4117"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4125"/>
       <source>Edit Sketch</source>
       <translation>ச்கெட்சைத் திருத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4145"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4153"/>
       <source>Close this dialog?</source>
       <translation>இந்த உரையாடலை மூடவா?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4166"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4174"/>
       <source>Invalid Sketch</source>
       <translation>தவறான ச்கெட்ச்</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4167"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4175"/>
       <source>Open the sketch validation tool?</source>
       <translation>ச்கெட்ச் சரிபார்ப்புக் கருவியைத் திறக்கவா?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4350"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4358"/>
       <source>Remove the following constraint:</source>
       <translation>பின்வரும் தடையை நீக்கவும்:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4351"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4359"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>பின்வரும் கட்டுப்பாடுகளில் ஒன்றையாவது நீக்கவும்:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4357"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4365"/>
       <source>Remove the following redundant constraint:</source>
       <translation>பின்வரும் தேவையற்ற தடையை நீக்கவும்:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4358"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4366"/>
       <source>Remove the following redundant constraints:</source>
       <translation>பின்வரும் தேவையற்ற கட்டுப்பாடுகளை அகற்றவும்:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4371"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4379"/>
       <source>Remove the following malformed constraint:</source>
       <translation>பின்வரும் தவறான தடையை நீக்கவும்:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4372"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4380"/>
       <source>Remove the following malformed constraints:</source>
       <translation>பின்வரும் தவறான தடைகளை நீக்கவும்:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4431"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4439"/>
       <source>Empty sketch</source>
       <translation>வெற்று ஓவியம்</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4436"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4444"/>
       <source>Over-constrained:</source>
       <translation>அதிகப்படியான கட்டுப்பாடு:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4442"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4450"/>
       <source>Malformed constraints:</source>
       <translation>தவறான கட்டுப்பாடுகள்:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4450"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4458"/>
       <source>Redundant constraints:</source>
       <translation>தேவையற்ற கட்டுப்பாடுகள்:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4456"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4464"/>
       <source>Partially redundant:</source>
       <translation>பகுதி தேவையற்றது:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4463"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4471"/>
       <source>Solver failed to converge</source>
       <translation>கரைப்பான் ஒன்றிணைக்க முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4469"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4477"/>
       <source>Under-constrained:</source>
       <translation>கீழ்-கட்டுப்படுத்தப்பட்டவை:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4471"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4479"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Degrees of Freedom</numerusform>
@@ -4223,7 +4233,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4475"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4483"/>
       <source>Fully constrained</source>
       <translation>முழுமையாக கட்டுப்படுத்தப்பட்டது</translation>
     </message>
@@ -4307,74 +4317,74 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>Sketcher_MapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="697"/>
+      <location filename="../../Command.cpp" line="699"/>
       <source>No sketch found</source>
       <translation>ஓவியம் எதுவும் கிடைக்கவில்லை</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="699"/>
+      <location filename="../../Command.cpp" line="701"/>
       <source>Cannot attach sketch to itself!</source>
       <translation>ஓவியத்தை அதனுடன் இணைக்க முடியாது!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="700"/>
+      <location filename="../../Command.cpp" line="702"/>
       <source>The document does not contain a sketch</source>
       <translation>ஆவணத்தில் ச்கெட்ச் இல்லை</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="716"/>
+      <location filename="../../Command.cpp" line="718"/>
       <source>Select Sketch</source>
       <translation>ச்கெட்ச் என்பதைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="718"/>
+      <location filename="../../Command.cpp" line="720"/>
       <source>Select a sketch (some sketches not shown to prevent a circular dependency)</source>
       <translation>ஒரு ஓவியத்தைத் தேர்ந்தெடுக்கவும் (வட்ட சார்புநிலையைத் தடுக்க சில ஓவியங்கள் காட்டப்படவில்லை)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="720"/>
+      <location filename="../../Command.cpp" line="722"/>
       <source>Select a sketch from the list</source>
       <translation>பட்டியலிலிருந்து ஒரு ஓவியத்தைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="785"/>
+      <location filename="../../Command.cpp" line="787"/>
       <source> (incompatible with selection)</source>
       <translation>(தேர்வுடன் பொருந்தாது)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="786"/>
+      <location filename="../../Command.cpp" line="788"/>
       <source> (current)</source>
       <translation>(தற்போதைய)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="794"/>
+      <location filename="../../Command.cpp" line="796"/>
       <source> (suggested)</source>
       <translation>(பரிந்துரைக்கப்பட்டது)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="801"/>
+      <location filename="../../Command.cpp" line="803"/>
       <source>Sketch Attachment</source>
       <translation>ச்கெட்ச் இணைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="803"/>
+      <location filename="../../Command.cpp" line="805"/>
       <source>Current attachment mode is incompatible with the new selection.
 Select the method to attach this sketch to selected objects.</source>
       <translation>தற்போதைய இணைப்பு முறை புதிய தேர்வுடன் பொருந்தாது. 
 தேர்ந்தெடுக்கப்பட்ட பொருட்களுடன் இந்த ஓவியத்தை இணைக்கும் முறையைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="807"/>
+      <location filename="../../Command.cpp" line="809"/>
       <source>Select the method to attach this sketch to selected objects.</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருட்களுடன் இந்த ஓவியத்தை இணைக்கும் முறையைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="853"/>
+      <location filename="../../Command.cpp" line="855"/>
       <source>Map sketch</source>
       <translation>வரைபட ஓவியம்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="854"/>
+      <location filename="../../Command.cpp" line="856"/>
       <source>Can't map a sketch to support:
 %1</source>
       <translation>ஆதரிக்க ச்கெட்சை வரைபடமாக்க முடியவில்லை: 
@@ -4406,12 +4416,12 @@ Select the method to attach this sketch to selected objects.</source>
   <context>
     <name>Sketcher_ReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="529"/>
+      <location filename="../../Command.cpp" line="531"/>
       <source>Sketch Has Support</source>
       <translation>ச்கெட்ச் உதவி உள்ளது</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="530"/>
+      <location filename="../../Command.cpp" line="532"/>
       <source>Sketch with a support face cannot be reoriented.
 Detach it from the support?</source>
       <translation>உதவி முகத்துடன் கூடிய ச்கெட்சை மறுசீரமைக்க முடியாது. 
@@ -4714,7 +4724,7 @@ Eigen Sparse QR அல்காரிதம் ச்பேர்ச் மெ�
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4414"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4422"/>
       <source>and %1 more</source>
       <translation>மேலும் % 1</translation>
     </message>
@@ -4929,49 +4939,49 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation type="unfinished">"%1" has partially redundant constraint(s).</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1063"/>
-      <location filename="../../../App/SketchObject.cpp" line="1107"/>
+      <location filename="../../../App/SketchObject.cpp" line="1088"/>
+      <location filename="../../../App/SketchObject.cpp" line="1132"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>கட்டுப்படுத்தப்படாத சொத்துக்களின் நிர்வகிக்கப்படாத மாற்றம் தவறான கட்டுப்பாட்டு குறியீடுகளில் விளைகிறது</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1604"/>
+      <location filename="../../../App/SketchObject.cpp" line="1636"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>பரபோலாக்கள் இடம்பெயர்ந்தனர். FreeCAD இன் முந்தைய பதிப்புகளில் இடம்பெயர்ந்த கோப்புகள் திறக்கப்படாது!!
 </translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="147"/>
-      <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="209"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="154"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="170"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="193"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="212"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="220"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="341"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="479"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="511"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1382"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="174"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="225"/>
-      <location filename="../../DrawSketchHandlerText.h" line="181"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="150"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="523"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1384"/>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="200"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="144"/>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="226"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="185"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="390"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="685"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="762"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="229"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="185"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="220"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="170"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="225"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="341"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="523"/>
       <location filename="../../CommandSketcherTools.cpp" line="1390"/>
       <location filename="../../CommandSketcherTools.cpp" line="1971"/>
       <location filename="../../CommandSketcherTools.cpp" line="2408"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="150"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="226"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="209"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="144"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="154"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="229"/>
+      <location filename="../../DrawSketchHandlerText.h" line="181"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="212"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="154"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="193"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="237"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
       <source>Error</source>
       <translation>பிழை</translation>
     </message>
@@ -5007,9 +5017,6 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>தடையானது தவறான குறியீட்டுத் தகவலைக் கொண்டுள்ளது மற்றும் தவறாக வடிவமைக்கப்பட்டுள்ளது.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="519"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="662"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="910"/>
       <location filename="../../CommandConstraints.cpp" line="730"/>
       <location filename="../../CommandConstraints.cpp" line="807"/>
       <location filename="../../CommandConstraints.cpp" line="899"/>
@@ -5017,6 +5024,9 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <location filename="../../CommandConstraints.cpp" line="7133"/>
       <location filename="../../CommandConstraints.cpp" line="7335"/>
       <location filename="../../CommandSketcherTools.cpp" line="1176"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="519"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="662"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="910"/>
       <source>Invalid Constraint</source>
       <translation>தவறான கட்டுப்பாடு</translation>
     </message>
@@ -5041,7 +5051,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>பி-ச்ப்லைனை உருவாக்குவதில் பிழை</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1383"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1385"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="686"/>
       <source>Error deleting last pole/knot</source>
       <translation>கடைசி துருவம்/முடிச்சை நீக்குவதில் பிழை</translation>
@@ -5083,21 +5093,26 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>வரியைச் சேர்க்க முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="154"/>
-      <location filename="../../DrawSketchHandlerArc.h" line="295"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="161"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="219"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="227"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="193"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="181"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="232"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="159"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="530"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="151"/>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="233"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="236"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="186"/>
+      <source>Failed to add arc of parabola</source>
+      <translation type="unfinished">Failed to add arc of parabola</translation>
+    </message>
+    <message>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="192"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="227"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="232"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="530"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="159"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="233"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="151"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="161"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="236"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="219"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="161"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="295"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="244"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="193"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
       <source>Tool execution aborted</source>
       <translation>கருவி செயலாக்கம் நிறுத்தப்பட்டது</translation>
     </message>
@@ -5144,17 +5159,17 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>மதிப்பு பிழை</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="1348"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1525"/>
       <source>Autoconstraints cause redundancy. Removing them</source>
       <translation>தன்னியக்க கட்டுப்பாடுகள் பணிநீக்கத்தை ஏற்படுத்துகின்றன. அவற்றை நீக்குதல்</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="760"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="761"/>
       <source>Redundant constraint is not an autoconstraint. No autoconstraints or additional constraints were added. Please report!</source>
       <translation>தேவையற்ற கட்டுப்பாடு ஒரு தன்னியக்கக் கட்டுப்பாடு அல்ல. தன்னியக்கக் கட்டுப்பாடுகள் அல்லது கூடுதல் கட்டுப்பாடுகள் எதுவும் சேர்க்கப்படவில்லை. புகாரளிக்கவும்!</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="790"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="791"/>
       <source>Unexpected Redundancy/Conflicting constraint. Check the constraints and autoconstraints of this operation.</source>
       <translation>எதிர்பாராத பணிநீக்கம்/முரண்பாடு கட்டுப்பாடு. இந்த செயல்பாட்டின் கட்டுப்பாடுகள் மற்றும் தன்னியக்க கட்டுப்பாடுகளை சரிபார்க்கவும்.</translation>
     </message>
@@ -5189,7 +5204,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>நீள்வட்டத்தைச் சேர்ப்பதில் தோல்வி</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="175"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="238"/>
       <source>Failed to rotate</source>
       <translation>சுழற்ற முடியவில்லை</translation>
     </message>
@@ -5204,7 +5219,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>அளவிட முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="148"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="155"/>
       <source>Failed to translate</source>
       <translation>மொழிபெயர்க்க முடியவில்லை</translation>
     </message>
@@ -5227,11 +5242,6 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <location filename="../../DrawSketchHandlerText.h" line="182"/>
       <source>Failed to add text</source>
       <translation type="unfinished">Failed to add text</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="186"/>
-      <source>Failed to add arc of parabola</source>
-      <translation type="unfinished">Failed to add arc of parabola</translation>
     </message>
   </context>
   <context>
@@ -5392,12 +5402,12 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation type="unfinished">Deletes the original geometry. If creating a single copy, this effectively performs a 'Move' operation.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="480"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="560"/>
       <source>Apply equal constraints</source>
       <translation>சமமான கட்டுப்பாடுகளைப் பயன்படுத்துங்கள்</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="485"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="565"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>இந்த விருப்பம் தேர்ந்தெடுக்கப்பட்டால் பரிமாணக் கட்டுப்பாடுகள் செயல்பாட்டில் இருந்து விலக்கப்படும். 
@@ -5641,62 +5651,92 @@ Instead equal constraints are applied between the original objects and their cop
       <translation>தவறான ஓவியம்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="706"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="703"/>
+      <source>Information layer</source>
+      <translation type="unfinished">Information layer</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="716"/>
+      <source>Color of arc and line helpers and also bspline polygon, comb...</source>
+      <translation type="unfinished">Color of arc and line helpers and also bspline polygon, comb...</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="736"/>
+      <source>Line pattern of information edges</source>
+      <translation type="unfinished">Line pattern of information edges</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="746"/>
+      <source>Width of information edges</source>
+      <translation type="unfinished">Width of information edges</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="774"/>
+      <source>Grid and inactive helpers</source>
+      <translation type="unfinished">Grid and inactive helpers</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="790"/>
+      <source>Color of sketch grid lines and inactive helper lines</source>
+      <translation type="unfinished">Color of sketch grid lines and inactive helper lines</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="813"/>
       <source>Constraint Colors</source>
       <translation>கட்டுப்பாடு நிறங்கள்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="747"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="854"/>
       <source>Dimensional constraints</source>
       <translation>பரிமாணக் கட்டுப்பாடுகள்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="754"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="861"/>
       <source>Color of dimensional driving constraints in edit mode</source>
       <translation>திருத்த பயன்முறையில் பரிமாண ஓட்டுநர் கட்டுப்பாடுகளின் நிறம்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="774"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="881"/>
       <source>Reference constraints</source>
       <translation>குறிப்பு கட்டுப்பாடுகள்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="828"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="935"/>
       <source>Deactivated constraints</source>
       <translation>முடக்கப்பட்ட கட்டுப்பாடுகள்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="873"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="980"/>
       <source>Colors Outside Sketcher</source>
       <translation>நிறங்கள் வெளியே ச்கெட்சர்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="879"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="986"/>
       <source>Vertex</source>
       <translation>உச்சி</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="886"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="993"/>
       <source>Color of vertices outside edit mode</source>
       <translation>திருத்தப் பயன்முறைக்கு வெளியே செங்குத்துகளின் நிறம்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="925"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="1032"/>
       <source>Edge</source>
       <translation>விளிம்பு</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="932"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="1039"/>
       <source>Color of edges outside edit mode</source>
       <translation>திருத்து பயன்முறைக்கு வெளியே விளிம்புகளின் நிறம்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="952"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="1059"/>
       <source>Face</source>
       <translation>முகம்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="965"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="1072"/>
       <source>Color of internal faces formed by intersecting geometry or closed loops in the sketch</source>
       <translation>ஓவியத்தில் வடிவியல் அல்லது மூடிய சுழல்களை வெட்டுவதன் மூலம் உருவாகும் உள் முகங்களின் நிறம்</translation>
     </message>
@@ -5726,55 +5766,34 @@ Instead equal constraints are applied between the original objects and their cop
       <translation>தவறான ஓவியத்தைக் குறிக்கும் வடிவவியலின் நிறம்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="720"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="827"/>
       <source>Constraint symbols</source>
       <translation>கட்டுப்பாடு சின்னங்கள்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="727"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="834"/>
       <source>Color of driving constraints in edit mode</source>
       <translation>திருத்த பயன்முறையில் ஓட்டுநர் கட்டுப்பாடுகளின் நிறம்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="781"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="888"/>
       <source>Color of reference constraints in edit mode</source>
       <translation>தொகு பயன்முறையில் குறிப்புக் கட்டுப்பாடுகளின் நிறம்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="801"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="908"/>
       <source>Expression dependent constraint</source>
       <translation>வெளிப்பாடு சார்ந்த கட்டுப்பாடு</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="808"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="915"/>
       <source>Color of expression dependent constraints in edit mode</source>
       <translation>திருத்து பயன்முறையில் வெளிப்பாடு சார்ந்த கட்டுப்பாடுகளின் நிறம்</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="835"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="942"/>
       <source>Color of deactivated constraints in edit mode</source>
       <translation>திருத்து பயன்முறையில் செயலிழந்த கட்டுப்பாடுகளின் நிறம்</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_p4_rotate</name>
-    <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="509"/>
-      <source>Copies (+'U'/ -'J')</source>
-      <translation>பிரதிகள் (+'U'/ -'J')</translation>
-    </message>
-  </context>
-  <context>
-    <name>ToolWidgetManager_p4</name>
-    <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="327"/>
-      <source>Sides (+'U'/ -'J')</source>
-      <translation>பக்கங்கள் (+'U'/ -'J')</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="994"/>
-      <source>Degree (+'U'/ -'J')</source>
-      <translation>பட்டம் (+'U'/ -'J')</translation>
     </message>
   </context>
   <context>
@@ -5796,22 +5815,6 @@ Instead equal constraints are applied between the original objects and their cop
       <location filename="../../CommandConstraints.cpp" line="1933"/>
       <source>Constrain tools</source>
       <translation>கருவிகளைக் கட்டுப்படுத்துங்கள்</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_p3_translate</name>
-    <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="568"/>
-      <source>Copies (+'U'/-'J')</source>
-      <translation>பிரதிகள் (+'U'/-'J')</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_p5_translate</name>
-    <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="572"/>
-      <source>Rows (+'R'/-'F')</source>
-      <translation>வரிசைகள் (+'R'/-'F')</translation>
     </message>
   </context>
   <context>
@@ -5869,17 +5872,17 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>Sketcher_CreateLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="356"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="365"/>
       <source>Point, length, angle</source>
       <translation>புள்ளி, நீளம், கோணம்</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="357"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="366"/>
       <source>Point, width, height</source>
       <translation>புள்ளி, அகலம், உயரம்</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="358"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="367"/>
       <source>2 points</source>
       <translation>2 புள்ளிகள்</translation>
     </message>
@@ -5944,12 +5947,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="532"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="607"/>
       <source>Apply equal constraints</source>
       <translation>சமமான கட்டுப்பாடுகளைப் பயன்படுத்துங்கள்</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="536"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="611"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>இந்த விருப்பம் தேர்ந்தெடுக்கப்பட்டால் பரிமாணக் கட்டுப்பாடுகள் செயல்பாட்டில் இருந்து விலக்கப்படும். 
@@ -5972,12 +5975,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>CmdSketcherEditSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="338"/>
+      <location filename="../../Command.cpp" line="340"/>
       <source>Edit Sketch</source>
       <translation>ச்கெட்சைத் திருத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="339"/>
+      <location filename="../../Command.cpp" line="341"/>
       <source>Opens the selected sketch for editing</source>
       <translation>திருத்துவதற்காக தேர்ந்தெடுக்கப்பட்ட ஓவியத்தைத் திறக்கும்</translation>
     </message>
@@ -5985,12 +5988,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="369"/>
+      <location filename="../../Command.cpp" line="371"/>
       <source>Leave Sketch</source>
       <translation>ச்கெட்சை விடுங்கள்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="370"/>
+      <location filename="../../Command.cpp" line="372"/>
       <source>Finishes editing the active sketch. Press Escape to exit.</source>
       <translation type="unfinished">Finishes editing the active sketch. Press Escape to exit.</translation>
     </message>
@@ -5998,12 +6001,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>CmdSketcherStopOperation</name>
     <message>
-      <location filename="../../Command.cpp" line="477"/>
+      <location filename="../../Command.cpp" line="479"/>
       <source>Stop Operation</source>
       <translation>செயல்பாட்டை நிறுத்து</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="478"/>
+      <location filename="../../Command.cpp" line="480"/>
       <source>Stops the active operation while in edit mode</source>
       <translation>திருத்து பயன்முறையில் இருக்கும்போது செயலில் உள்ள செயல்பாட்டை நிறுத்துகிறது</translation>
     </message>
@@ -6011,12 +6014,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>CmdSketcherReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="513"/>
+      <location filename="../../Command.cpp" line="515"/>
       <source>Reorient Sketch</source>
       <translation>மறுசீரமைப்பு ச்கெட்ச்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="514"/>
+      <location filename="../../Command.cpp" line="516"/>
       <source>Places the selected sketch on one of the global coordinate planes.
 This will clear the AttachmentSupport property.</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட ஓவியத்தை உலகளாவிய ஒருங்கிணைப்பு விமானங்களில் ஒன்றில் வைக்கிறது. 
@@ -6026,12 +6029,12 @@ This will clear the AttachmentSupport property.</source>
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="875"/>
+      <location filename="../../Command.cpp" line="877"/>
       <source>Align View to Sketch</source>
       <translation>பார்வையை ச்கெட்சிற்கு சீரமைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="876"/>
+      <location filename="../../Command.cpp" line="878"/>
       <source>Aligns the camera orientation perpendicular to the active sketch plane</source>
       <translation>செயலில் உள்ள ச்கெட்ச் விமானத்திற்கு செங்குத்தாக கேமரா நோக்குநிலையை சீரமைக்கிறது</translation>
     </message>
@@ -6039,12 +6042,12 @@ This will clear the AttachmentSupport property.</source>
   <context>
     <name>CmdSketcherViewSection</name>
     <message>
-      <location filename="../../Command.cpp" line="1421"/>
+      <location filename="../../Command.cpp" line="1423"/>
       <source>Toggle Section View</source>
       <translation>பிரிவு காட்சியை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1422"/>
+      <location filename="../../Command.cpp" line="1424"/>
       <source>Toggles between section view and full view</source>
       <translation>பகுதி பார்வைக்கும் முழு பார்வைக்கும் இடையில் மாறுகிறது</translation>
     </message>
@@ -6052,42 +6055,42 @@ This will clear the AttachmentSupport property.</source>
   <context>
     <name>SketcherGui::GridSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1499"/>
+      <location filename="../../Command.cpp" line="1501"/>
       <source>Display grid</source>
       <translation>காட்சி கட்டம்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1500"/>
+      <location filename="../../Command.cpp" line="1502"/>
       <source>Toggles the visibility of the grid in the active sketch</source>
       <translation>செயலில் உள்ள ச்கெட்சில் கட்டத்தின் தெரிவுநிலையை மாற்றுகிறது</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1503"/>
+      <location filename="../../Command.cpp" line="1505"/>
       <source>Grid auto-spacing</source>
       <translation>கட்டம் தானாக இடைவெளி</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1504"/>
+      <location filename="../../Command.cpp" line="1506"/>
       <source>Automatically adjusts the grid spacing based on the zoom level</source>
       <translation>சூம் நிலையின் அடிப்படையில் கட்ட இடைவெளியை தானாக சரிசெய்கிறது</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1507"/>
+      <location filename="../../Command.cpp" line="1509"/>
       <source>Spacing</source>
       <translation>இடைவெளி</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1508"/>
+      <location filename="../../Command.cpp" line="1510"/>
       <source>Distance between two subsequent grid lines</source>
       <translation>இரண்டு அடுத்தடுத்த கட்டக் கோடுகளுக்கு இடையே உள்ள தூரம்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1510"/>
+      <location filename="../../Command.cpp" line="1512"/>
       <source>Snap to grid</source>
       <translation>கட்டத்திற்கு ச்னாப்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1512"/>
+      <location filename="../../Command.cpp" line="1514"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid spacing to a grid line to snap.</source>
       <translation>புதிய புள்ளிகள் அருகிலுள்ள கட்டக் கோட்டிற்குச் செல்லும். 
@@ -6097,12 +6100,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherGrid</name>
     <message>
-      <location filename="../../Command.cpp" line="1637"/>
+      <location filename="../../Command.cpp" line="1639"/>
       <source>Toggle Grid</source>
       <translation>கட்டத்தை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1639"/>
+      <location filename="../../Command.cpp" line="1641"/>
       <source>Toggles the grid display in the active sketch</source>
       <translation>செயலில் உள்ள ச்கெட்சில் கட்டம் காட்சியை நிலைமாற்றுகிறது</translation>
     </message>
@@ -6110,22 +6113,22 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::SnapSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1744"/>
+      <location filename="../../Command.cpp" line="1746"/>
       <source>Snap to objects</source>
       <translation>பொருள்களுக்கு ச்னாப்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1745"/>
+      <location filename="../../Command.cpp" line="1747"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
       <translation>தற்போது முன்தேர்ந்தெடுக்கப்பட்ட பொருளுக்கு புதிய புள்ளிகள் வரும். இது கோடுகள் மற்றும் வளைவுகளின் நடுவிலும் ஒடிவிடும்.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1749"/>
+      <location filename="../../Command.cpp" line="1751"/>
       <source>Snap angle</source>
       <translation>ச்னாப் கோணம்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1751"/>
+      <location filename="../../Command.cpp" line="1753"/>
       <source>Angular step for tools that use 'Snap at angle'. Hold Ctrl to enable 'Snap at angle'. The angle starts from the positive X axis of the sketch.</source>
       <translation>'ச்னாப் அட் ஆங்கிள்' பயன்படுத்தும் கருவிகளுக்கான கோணப் படி. 'ச்னாப் அட் ஆங்கிள்' என்பதை இயக்க கட்டுப்பாடு ஐ அழுத்திப் பிடிக்கவும். கோணமானது ஓவியத்தின் நேர்மறை ஃச் அச்சில் இருந்து தொடங்குகிறது.</translation>
     </message>
@@ -6133,12 +6136,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherSnap</name>
     <message>
-      <location filename="../../Command.cpp" line="1837"/>
+      <location filename="../../Command.cpp" line="1839"/>
       <source>Toggle Snap</source>
       <translation>ச்னாப்பை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1839"/>
+      <location filename="../../Command.cpp" line="1841"/>
       <source>Toggles snapping</source>
       <translation>ச்னாப்பிங்கை மாற்றுகிறது</translation>
     </message>
@@ -6146,27 +6149,27 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::RenderingOrderAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1946"/>
+      <location filename="../../Command.cpp" line="1948"/>
       <source>Normal geometry</source>
       <translation>சாதாரண வடிவியல்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1948"/>
+      <location filename="../../Command.cpp" line="1950"/>
       <source>Construction geometry</source>
       <translation>கட்டுமான வடிவியல்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1950"/>
+      <location filename="../../Command.cpp" line="1952"/>
       <source>External geometry</source>
       <translation>வெளிப்புற வடிவியல்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1953"/>
+      <location filename="../../Command.cpp" line="1955"/>
       <source>Unknown geometry</source>
       <translation>அறியப்படாத வடிவியல்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1994"/>
+      <location filename="../../Command.cpp" line="1996"/>
       <source>Rendering order</source>
       <translation>வழங்குதல் ஆர்டர்</translation>
     </message>
@@ -6174,12 +6177,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdRenderingOrder</name>
     <message>
-      <location filename="../../Command.cpp" line="2079"/>
+      <location filename="../../Command.cpp" line="2081"/>
       <source>Rendering Order</source>
       <translation>வழங்குதல் ஆர்டர்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2080"/>
+      <location filename="../../Command.cpp" line="2082"/>
       <source>Reorders items in the rendering order</source>
       <translation>வழங்குதல் வரிசையில் பொருட்களை மறுவரிசைப்படுத்துகிறது</translation>
     </message>
@@ -7576,8 +7579,8 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2513"/>
-      <source>Rotates the selected geometry by creating 'n' copies, enabling circular pattern creation</source>
-      <translation>'n' நகல்களை உருவாக்கி, வட்ட வடிவ உருவாக்கத்தை செயல்படுத்துவதன் மூலம் தேர்ந்தெடுக்கப்பட்ட வடிவவியலைச் சுழற்றுகிறது</translation>
+      <source>Rotates the selected geometry by creating 'n' total elements, enabling circular pattern creation</source>
+      <translation type="unfinished">Rotates the selected geometry by creating 'n' total elements, enabling circular pattern creation</translation>
     </message>
   </context>
   <context>
@@ -7602,8 +7605,8 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2581"/>
-      <source>Translates the selected geometries and enables the creation of 'i' * 'j' copies</source>
-      <translation>தேர்ந்தெடுக்கப்பட்ட வடிவவியலை மொழிபெயர்த்து 'i' * 'j' பிரதிகளை உருவாக்குவதை செயல்படுத்துகிறது</translation>
+      <source>Translates the selected geometries and enables the creation of 'i' * 'j' total elements</source>
+      <translation type="unfinished">Translates the selected geometries and enables the creation of 'i' * 'j' total elements</translation>
     </message>
   </context>
   <context>
@@ -7971,21 +7974,21 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <translation>வரி அளவுருக்கள்</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="284"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="293"/>
       <source>%1 switch mode</source>
       <translation>% 1 சுவிட்ச் பயன்முறை</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="293"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="307"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="321"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="302"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="316"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="330"/>
       <source>%1 pick first point</source>
       <translation>% 1 முதல் புள்ளியைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="299"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="313"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="327"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="308"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="322"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="336"/>
       <source>%1 pick second point</source>
       <translation>% 1 தேர்வு இரண்டாவது புள்ளி</translation>
     </message>
@@ -8139,25 +8142,31 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerRotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="100"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="98"/>
+      <source>%1/%2 increase/decrease number of elements</source>
+      <comment>Sketcher Rotate: hint</comment>
+      <translation type="unfinished">%1/%2 increase/decrease number of elements</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRotate.h" line="108"/>
       <source>%1 pick center point</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>%1 தேர்வு மையப் புள்ளி</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="105"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="114"/>
       <source>%1 set start angle</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>% 1 தொடக்கக் கோணத்தை அமைத்தது</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="110"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="120"/>
       <source>%1 set rotation angle</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>% 1 தொகுப்பு சுழற்சி கோணம்</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="222"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="285"/>
       <source>Rotate Parameters</source>
       <translation>அளவுருக்களை சுழற்று</translation>
     </message>
@@ -8224,24 +8233,36 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerTranslate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="195"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="202"/>
       <source>Translate Parameters</source>
       <translation>அளவுருக்களை மொழிபெயர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="463"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="513"/>
+      <source>%1/%2 increase/decrease number of elements</source>
+      <comment>Sketcher Translate: hint</comment>
+      <translation type="unfinished">%1/%2 increase/decrease number of elements</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="517"/>
+      <source>%1/%2 increase/decrease number of rows</source>
+      <comment>Sketcher Translate: hint</comment>
+      <translation type="unfinished">%1/%2 increase/decrease number of rows</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="527"/>
       <source>%1 pick reference point</source>
       <comment>Sketcher Translate: hint</comment>
       <translation>% 1 தேர்வு குறிப்பு புள்ளி</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="465"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="532"/>
       <source>%1 set translation vector</source>
       <comment>Sketcher Translate: hint</comment>
       <translation>% 1 தொகுப்பு மொழிபெயர்ப்பு திசையன்</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="468"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="539"/>
       <source>%1 set second translation vector</source>
       <comment>Sketcher Translate: hint</comment>
       <translation>% 1 செட் இரண்டாவது மொழிபெயர்ப்பு வெக்டார்</translation>
@@ -8327,32 +8348,6 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     </message>
   </context>
   <context>
-    <name>CmdSketcherCancelSketch</name>
-    <message>
-      <location filename="../../Command.cpp" line="409"/>
-      <source>Cancel Editing</source>
-      <translation type="unfinished">Cancel Editing</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="410"/>
-      <source>Leaves 'edit' mode and reverts any changes</source>
-      <translation type="unfinished">Leaves 'edit' mode and reverts any changes</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdSketcherLeaveGroup</name>
-    <message>
-      <location filename="../../Command.cpp" line="454"/>
-      <source>Leave</source>
-      <translation type="unfinished">Leave</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="455"/>
-      <source>Leaves the sketch editing mode</source>
-      <translation type="unfinished">Leaves the sketch editing mode</translation>
-    </message>
-  </context>
-  <context>
     <name>SketcherGui::DrawSketchHandlerPolyLine</name>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="1012"/>
@@ -8393,12 +8388,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>Sketcher_CreatePolyline</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1717"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1729"/>
       <source>Line</source>
       <translation>வரி</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1718"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1730"/>
       <source>Arc</source>
       <translation>பரிதி</translation>
     </message>
@@ -8406,87 +8401,14 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>TaskSketcherTool_c1_PolyLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1724"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1736"/>
       <source>Fillet (F)</source>
       <translation type="unfinished">Fillet (F)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1728"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1740"/>
       <source>Adds a fillet between the current and previous line</source>
       <translation type="unfinished">Adds a fillet between the current and previous line</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdSketcherCreatePolylineLegacy</name>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="227"/>
-      <source>Polyline</source>
-      <translation>பாலிலைன்</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="228"/>
-      <source>Creates a continuous polyline. Press the 'M' key to switch segment modes</source>
-      <translation>தொடர்ச்சியான பாலிலைனை உருவாக்குகிறது. பிரிவு முறைகளை மாற்ற 'M' விசையை அழுத்தவும்</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdSketcherCreateText</name>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1393"/>
-      <source>Text</source>
-      <translation>உரை</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1394"/>
-      <source>Creates text geometries controlled by a Text constraint.
-To Edit: Double-click the Text constraint to change the text content and font.
-To Position/Size: Apply constraints to the group's construction line.
-Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
-</source>
-      <translation type="unfinished">Creates text geometries controlled by a Text constraint.
-To Edit: Double-click the Text constraint to change the text content and font.
-To Position/Size: Apply constraints to the group's construction line.
-Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
-</translation>
-    </message>
-  </context>
-  <context>
-    <name>SketcherGui::EditTextDialog</name>
-    <message>
-      <location filename="../../EditTextDialog.cpp" line="72"/>
-      <source>Font not found</source>
-      <translation type="unfinished">Font not found</translation>
-    </message>
-    <message>
-      <location filename="../../EditTextDialog.cpp" line="73"/>
-      <source>The original font '%1' is not found on your system. A default font has been selected.</source>
-      <translation type="unfinished">The original font '%1' is not found on your system. A default font has been selected.</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_c1_text</name>
-    <message>
-      <location filename="../../DrawSketchHandlerText.h" line="361"/>
-      <source>Width</source>
-      <translation>அகலம்</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerText.h" line="362"/>
-      <source>Height</source>
-      <translation>உயரம்</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_Text</name>
-    <message>
-      <location filename="../../DrawSketchHandlerText.h" line="368"/>
-      <source>Text</source>
-      <translation>உரை</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerText.h" line="374"/>
-      <source>Font</source>
-      <translation type="unfinished">Font</translation>
     </message>
   </context>
   <context>
@@ -8599,6 +8521,168 @@ Note: While the Text constraint is active, any constraints applied directly to t
       <location filename="../../CommandConstraints.cpp" line="11019"/>
       <source>Constrains the selected geometries together as a single entity.The position and size of the grouped geometries can be defined by constraining the construction line that is generated.Constraints applied to grouped edges are ignored as long as the Group constraint is here.</source>
       <translation type="unfinished">Constrains the selected geometries together as a single entity.The position and size of the grouped geometries can be defined by constraining the construction line that is generated.Constraints applied to grouped edges are ignored as long as the Group constraint is here.</translation>
+    </message>
+  </context>
+  <context>
+    <name>ToolWidgetManager_p4</name>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="994"/>
+      <source>Degree</source>
+      <translation>பட்டம்</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="327"/>
+      <source>Sides</source>
+      <translation>பக்கங்கள்</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCancelSketch</name>
+    <message>
+      <location filename="../../Command.cpp" line="411"/>
+      <source>Cancel Editing</source>
+      <translation type="unfinished">Cancel Editing</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="412"/>
+      <source>Leaves 'edit' mode and reverts any changes</source>
+      <translation type="unfinished">Leaves 'edit' mode and reverts any changes</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherLeaveGroup</name>
+    <message>
+      <location filename="../../Command.cpp" line="456"/>
+      <source>Leave</source>
+      <translation type="unfinished">Leave</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="457"/>
+      <source>Leaves the sketch editing mode</source>
+      <translation type="unfinished">Leaves the sketch editing mode</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c2_translate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="621"/>
+      <source>Symmetric</source>
+      <translation>சமச்சீர்</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="625"/>
+      <source>Distribute the elements symmetrically around the original position.</source>
+      <translation type="unfinished">Distribute the elements symmetrically around the original position.</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_p3_translate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="654"/>
+      <source>Elements</source>
+      <translation>கூறுகள்</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_p5_translate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="658"/>
+      <source>Rows</source>
+      <translation>வரிசைகள்</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c1_text</name>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="361"/>
+      <source>Width</source>
+      <translation>அகலம்</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="362"/>
+      <source>Height</source>
+      <translation>உயரம்</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_Text</name>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="368"/>
+      <source>Text</source>
+      <translation>உரை</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="374"/>
+      <source>Font</source>
+      <translation type="unfinished">Font</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c2_rotate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerRotate.h" line="576"/>
+      <source>Symmetric</source>
+      <translation>சமச்சீர்</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRotate.h" line="580"/>
+      <source>Distribute the elements symmetrically around the original position.</source>
+      <translation type="unfinished">Distribute the elements symmetrically around the original position.</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_p4_rotate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerRotate.h" line="600"/>
+      <source>Elements</source>
+      <translation>கூறுகள்</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCreatePolylineLegacy</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="227"/>
+      <source>Polyline</source>
+      <translation>பாலிலைன்</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="228"/>
+      <source>Creates a continuous polyline. Press the 'M' key to switch segment modes</source>
+      <translation>தொடர்ச்சியான பாலிலைனை உருவாக்குகிறது. பிரிவு முறைகளை மாற்ற 'M' விசையை அழுத்தவும்</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCreateText</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1393"/>
+      <source>Text</source>
+      <translation>உரை</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1394"/>
+      <source>Creates text geometries controlled by a Text constraint.
+To Edit: Double-click the Text constraint to change the text content and font.
+To Position/Size: Apply constraints to the group's construction line.
+Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
+</source>
+      <translation type="unfinished">Creates text geometries controlled by a Text constraint.
+To Edit: Double-click the Text constraint to change the text content and font.
+To Position/Size: Apply constraints to the group's construction line.
+Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
+</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::EditTextDialog</name>
+    <message>
+      <location filename="../../EditTextDialog.cpp" line="72"/>
+      <source>Font not found</source>
+      <translation type="unfinished">Font not found</translation>
+    </message>
+    <message>
+      <location filename="../../EditTextDialog.cpp" line="73"/>
+      <source>The original font '%1' is not found on your system. A default font has been selected.</source>
+      <translation type="unfinished">The original font '%1' is not found on your system. A default font has been selected.</translation>
     </message>
   </context>
 </TS>

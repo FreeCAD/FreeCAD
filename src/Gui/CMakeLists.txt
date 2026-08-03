@@ -898,6 +898,7 @@ SET(View3D_CPP_SRCS
     Flag.cpp
     GLBuffer.cpp
     GLPainter.cpp
+    RubberbandOverlay.cpp
     Multisample.cpp
     MouseSelection.cpp
     SplitView3DInventor.cpp
@@ -917,6 +918,7 @@ SET(View3D_SRCS
     Camera.h
     Flag.h
     GLBuffer.h
+    RubberbandOverlay.h
     GLPainter.h
     Multisample.h
     MouseSelection.h

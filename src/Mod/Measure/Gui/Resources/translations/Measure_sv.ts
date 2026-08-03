@@ -264,17 +264,17 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="555"/>
       <source>%1 add to measurement</source>
-      <translation type="unfinished">%1 add to measurement</translation>
+      <translation>%1 lägg till i mätningen</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="780"/>
       <source>%1 new measurement, %2 toggle auto-save</source>
-      <translation type="unfinished">%1 new measurement, %2 toggle auto-save</translation>
+      <translation>%1 ny mätning, %2 växla automatisk lagring</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="785"/>
       <source>%1 add to measurement, %2 toggle auto-save</source>
-      <translation type="unfinished">%1 add to measurement, %2 toggle auto-save</translation>
+      <translation>%1 lägg till i mätningen, %2 växla automatisk lagring</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="281"/>
@@ -408,7 +408,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="214"/>
       <source>Surface area</source>
-      <translation type="unfinished">Surface area</translation>
+      <translation>Ytarea</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="254"/>
@@ -437,7 +437,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="503"/>
       <source>Inertia Matrix</source>
-      <translation type="unfinished">Inertia Matrix</translation>
+      <translation>Tröghetsmatris</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="531"/>
@@ -472,7 +472,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="625"/>
       <source>Principal Moments of Inertia</source>
-      <translation type="unfinished">Principal Moments of Inertia</translation>
+      <translation>Huvudtröghetsmoment</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="650"/>
@@ -492,12 +492,12 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="749"/>
       <source>Create Principal Axes LCS</source>
-      <translation type="unfinished">Create Principal Axes LCS</translation>
+      <translation>Skapa lokalt koordinatsystem för huvudaxlar</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="790"/>
       <source>Inertia around axis</source>
-      <translation type="unfinished">Inertia around axis</translation>
+      <translation>Tröghet runt axel</translation>
     </message>
   </context>
   <context>
@@ -558,7 +558,7 @@
     <message>
       <location filename="../../TaskMassProperties.cpp" line="1119"/>
       <source> (Average)</source>
-      <translation type="unfinished"> (Average)</translation>
+      <translation> (Medelvärde)</translation>
     </message>
   </context>
 </TS>

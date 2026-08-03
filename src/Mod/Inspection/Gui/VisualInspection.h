@@ -24,24 +24,30 @@
 
 #pragma once
 
-#include <QDialog>
+#include <Gui/TaskView/TaskDialog.h>
+
+#include <QWidget>
 
 
 class QTreeWidgetItem;
-class QPushButton;
+class QDialogButtonBox;
 
 namespace InspectionGui
 {
 class Ui_VisualInspection;
-class VisualInspection: public QDialog
+class VisualInspection: public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit VisualInspection(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit VisualInspection(QWidget* parent = nullptr);
     ~VisualInspection() override;
 
-    void accept() override;
+    bool accept();
+    bool isAcceptable() const;
+
+Q_SIGNALS:
+    void acceptabilityChanged(bool acceptable);
 
 protected Q_SLOTS:
     void onActivateItem(QTreeWidgetItem*);
@@ -50,7 +56,23 @@ protected Q_SLOTS:
 
 private:
     Ui_VisualInspection* ui;
-    QPushButton* buttonOk;
+    bool acceptable {false};
+};
+
+class TaskVisualInspection: public Gui::TaskView::TaskDialog
+{
+    Q_OBJECT
+
+public:
+    TaskVisualInspection();
+    ~TaskVisualInspection() override;
+
+    QDialogButtonBox::StandardButtons getStandardButtons() const override;
+    bool accept() override;
+    void modifyStandardButtons(QDialogButtonBox* box) override;
+
+private:
+    VisualInspection* widget;
 };
 
 }  // namespace InspectionGui

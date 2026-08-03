@@ -29,8 +29,8 @@
       <translation>Új</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="113"/>
       <location filename="../ui/dialogLayers.ui" line="36"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="113"/>
       <source>Delete</source>
       <translation>Törlés</translation>
     </message>
@@ -1089,10 +1089,10 @@ a nézet középpontjába kerül.</translation>
       <translation>Vonalvastagság</translation>
     </message>
     <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="253"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="174"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="402"/>
-      <location filename="../ui/TaskSelectPlane.ui" line="253"/>
       <source> px</source>
       <translation> px</translation>
     </message>
@@ -1737,6 +1737,7 @@ a szabványos mintákhoz hozzáadandó mintadefiníciókkal</translation>
       <translation>Betűméret</translation>
     </message>
     <message>
+      <location filename="../ui/preferences-dxf.ui" line="557"/>
       <location filename="../ui/preferences-drafttexts.ui" line="130"/>
       <location filename="../ui/preferences-drafttexts.ui" line="335"/>
       <location filename="../ui/preferences-drafttexts.ui" line="423"/>
@@ -1744,7 +1745,6 @@ a szabványos mintákhoz hozzáadandó mintadefiníciókkal</translation>
       <location filename="../ui/preferences-drafttexts.ui" line="653"/>
       <location filename="../ui/preferences-drafttexts.ui" line="682"/>
       <location filename="../ui/preferences-drafttexts.ui" line="711"/>
-      <location filename="../ui/preferences-dxf.ui" line="557"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -3085,8 +3085,8 @@ ha a globális koordináta-rendszer X, Y vagy Z tengelyekkel megegyeznek</transl
     </message>
     <message>
       <location filename="../../DraftGui.py" line="809"/>
-      <location filename="../../draftguitools/gui_move.py" line="218"/>
       <location filename="../../draftguitools/gui_rotate.py" line="289"/>
+      <location filename="../../draftguitools/gui_move.py" line="218"/>
       <location filename="../../draftguitools/gui_scale.py" line="226"/>
       <source>Copy</source>
       <translation>Másolás</translation>
@@ -3627,29 +3627,29 @@ vagy próbáld meg alacsonyabb DWG verzióra menteni.</translation>
       <translation>Egyéni jegyzetméret beállítása x:x, x=x formátumban</translation>
     </message>
     <message>
+      <location filename="../../draftutils/groups.py" line="101"/>
       <location filename="../../draftutils/gui_utils.py" line="916"/>
       <location filename="../../draftutils/utils.py" line="1141"/>
-      <location filename="../../draftutils/groups.py" line="101"/>
       <location filename="../../draftfunctions/cut.py" line="60"/>
-      <location filename="../../draftmake/make_text.py" line="95"/>
-      <location filename="../../draftmake/make_text.py" line="178"/>
+      <location filename="../../draftmake/make_pointarray.py" line="92"/>
+      <location filename="../../draftmake/make_patharray.py" line="179"/>
+      <location filename="../../draftmake/make_patharray.py" line="328"/>
       <location filename="../../draftmake/make_array.py" line="85"/>
+      <location filename="../../draftmake/make_label.py" line="201"/>
+      <location filename="../../draftmake/make_layer.py" line="56"/>
+      <location filename="../../draftmake/make_layer.py" line="146"/>
       <location filename="../../draftmake/make_dimension.py" line="266"/>
       <location filename="../../draftmake/make_dimension.py" line="355"/>
       <location filename="../../draftmake/make_dimension.py" line="483"/>
       <location filename="../../draftmake/make_dimension.py" line="604"/>
-      <location filename="../../draftmake/make_layer.py" line="56"/>
-      <location filename="../../draftmake/make_layer.py" line="146"/>
-      <location filename="../../draftmake/make_label.py" line="201"/>
-      <location filename="../../draftmake/make_pointarray.py" line="92"/>
-      <location filename="../../draftmake/make_patharray.py" line="179"/>
-      <location filename="../../draftmake/make_patharray.py" line="328"/>
+      <location filename="../../draftmake/make_text.py" line="95"/>
+      <location filename="../../draftmake/make_text.py" line="178"/>
       <source>No active document. Aborting.</source>
       <translation>Nincs aktív dokumentum. Megszakítás.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="924"/>
       <location filename="../../draftutils/groups.py" line="137"/>
+      <location filename="../../draftutils/gui_utils.py" line="924"/>
       <source>Wrong input: object {} not in document.</source>
       <translation>Helytelen bemenet: {} objektum nincs a dokumentumban.</translation>
     </message>
@@ -3802,10 +3802,10 @@ vagy próbáld meg alacsonyabb DWG verzióra menteni.</translation>
       <translation>%1 szöveg pont kiválasztása</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="122"/>
-      <location filename="../../draftguitools/gui_ellipses.py" line="76"/>
-      <location filename="../../draftguitools/gui_lines.py" line="95"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="71"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="122"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="77"/>
+      <location filename="../../draftguitools/gui_lines.py" line="95"/>
       <source>Pick first point</source>
       <translation>Első pont kiválasztása</translation>
     </message>
@@ -3813,31 +3813,6 @@ vagy próbáld meg alacsonyabb DWG verzióra menteni.</translation>
       <location filename="../../draftguitools/gui_dimensions.py" line="499"/>
       <source>Edges do not intersect!</source>
       <translation>Élek nem metszők!</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="581"/>
-      <source>%1 pick dimension position</source>
-      <translation>%1 mérési pont kiválasztása</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="583"/>
-      <source>%1 select edge</source>
-      <translation>%1 él kiválasztása</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="600"/>
-      <source>%1 pick next dimension point</source>
-      <translation>%1 a következő mérési pont kiválasztása</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="608"/>
-      <source>%1 pick first dimension point</source>
-      <translation>%1 első mérési pont kiválasztása</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="617"/>
-      <source>%1 pick second dimension point</source>
-      <translation>%1 második mérési pont kiválasztása</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="184"/>
@@ -3962,18 +3937,6 @@ vagy próbáld meg alacsonyabb DWG verzióra menteni.</translation>
       <translation>Végpont kiválasztása</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="195"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="245"/>
-      <location filename="../../draftguitools/gui_scale.py" line="126"/>
-      <source>No valid subelements selected</source>
-      <translation>Nincsenek érvényes részelemek kiválasztva</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_move.py" line="220"/>
-      <source>Move</source>
-      <translation>Mozgat</translation>
-    </message>
-    <message>
       <location filename="../../draftguitools/gui_move.py" line="252"/>
       <source>%1 pick start point</source>
       <translation>%1 kezdő pont kiválasztása</translation>
@@ -3982,6 +3945,18 @@ vagy próbáld meg alacsonyabb DWG verzióra menteni.</translation>
       <location filename="../../draftguitools/gui_move.py" line="256"/>
       <source>%1 pick end point</source>
       <translation>%1 végpont kiválasztása</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rotate.py" line="245"/>
+      <location filename="../../draftguitools/gui_move.py" line="195"/>
+      <location filename="../../draftguitools/gui_scale.py" line="126"/>
+      <source>No valid subelements selected</source>
+      <translation>Nincsenek érvényes részelemek kiválasztva</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_move.py" line="220"/>
+      <source>Move</source>
+      <translation>Mozgat</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="90"/>
@@ -4150,16 +4125,16 @@ vagy próbáld meg alacsonyabb DWG verzióra menteni.</translation>
       <translation>Körív létrehozása 3 ponttal</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_ellipses.py" line="221"/>
-      <location filename="../../draftguitools/gui_lines.py" line="318"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="219"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="222"/>
       <location filename="../../draftguitools/gui_arcs.py" line="658"/>
+      <location filename="../../draftguitools/gui_lines.py" line="318"/>
       <source>%1 pick first point</source>
       <translation>%1 első pont választó</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="322"/>
       <location filename="../../draftguitools/gui_arcs.py" line="662"/>
+      <location filename="../../draftguitools/gui_lines.py" line="322"/>
       <source>%1 pick second point</source>
       <translation>%1 második pont választó</translation>
     </message>
@@ -4202,13 +4177,6 @@ vagy próbáld meg alacsonyabb DWG verzióra menteni.</translation>
       <location filename="../../draftguitools/gui_edit.py" line="384"/>
       <source>%1 options for hovered node/edge</source>
       <translation>%1 lehetőségek a megjelölt csomópontra/élre</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_edit.py" line="387"/>
-      <location filename="../../draftguitools/gui_dimensions.py" line="602"/>
-      <location filename="../../draftguitools/gui_subelements.py" line="180"/>
-      <source>%1 finish</source>
-      <translation>%1 burkolat</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="392"/>
@@ -4330,8 +4298,8 @@ vagy próbáld meg alacsonyabb DWG verzióra menteni.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="216"/>
-      <location filename="../../draftguitools/gui_points.py" line="189"/>
       <location filename="../../draftguitools/gui_texts.py" line="180"/>
+      <location filename="../../draftguitools/gui_points.py" line="189"/>
       <source>%1 pick point</source>
       <translation>%1 pont kiválasztása</translation>
     </message>
@@ -4414,20 +4382,20 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
       <translation>Nincs új kiválasztás. Válasszon ki nem üres csoportokat vagy a csoportokon belüli objektumokat.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="166"/>
+      <location filename="../../draftguitools/gui_layers.py" line="167"/>
       <location filename="../../draftguitools/gui_groups.py" line="279"/>
       <location filename="../../draftguitools/gui_groups.py" line="317"/>
       <source>New Layer</source>
       <translation>Új réteg</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="167"/>
+      <location filename="../../draftguitools/gui_layers.py" line="168"/>
       <location filename="../../draftguitools/gui_groups.py" line="318"/>
       <source>Layer name</source>
       <translation>Réteg neve</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="168"/>
+      <location filename="../../draftguitools/gui_layers.py" line="169"/>
       <location filename="../../draftguitools/gui_groups.py" line="319"/>
       <source>Layer</source>
       <comment>Object label</comment>
@@ -4587,15 +4555,15 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
       <translation>Bézier görbék eltolása jelenleg nem támogatott</translation>
     </message>
     <message>
+      <location filename="../../draftguitools/gui_offset.py" line="152"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="183"/>
+      <source>Pick distance</source>
+      <translation>Távolság kiválasztása</translation>
+    </message>
+    <message>
       <location filename="../../draftguitools/gui_offset.py" line="337"/>
       <source>%1 pick distance</source>
       <translation>%1 távolság kiválasztás</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="183"/>
-      <location filename="../../draftguitools/gui_offset.py" line="152"/>
-      <source>Pick distance</source>
-      <translation>Távolság kiválasztása</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="229"/>
@@ -4783,25 +4751,25 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
       <translation>%1 fogd és vidd a következő pont és csomó meghatározásához</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_ellipses.py" line="72"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="73"/>
       <source>Ellipse</source>
       <translation>Ellipszis</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_ellipses.py" line="136"/>
-      <location filename="../../draftguitools/gui_ellipses.py" line="154"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="137"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="155"/>
       <source>Create Ellipse</source>
       <translation>Ellipszis létrehozása</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_ellipses.py" line="210"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="208"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="211"/>
       <source>Pick opposite point</source>
       <translation>Ellenkező pont kiválasztása</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_ellipses.py" line="225"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="223"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="226"/>
       <source>%1 pick opposite point</source>
       <translation>%1 ellenkező pont kiválasztása</translation>
     </message>
@@ -4872,6 +4840,38 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
       <location filename="../../draftguitools/gui_dimensions.py" line="485"/>
       <source>Edge too short!</source>
       <translation>Él túl rövid!</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="581"/>
+      <source>%1 pick dimension position</source>
+      <translation>%1 mérési pont kiválasztása</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="583"/>
+      <source>%1 select edge</source>
+      <translation>%1 él kiválasztása</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="600"/>
+      <source>%1 pick next dimension point</source>
+      <translation>%1 a következő mérési pont kiválasztása</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="602"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="180"/>
+      <location filename="../../draftguitools/gui_edit.py" line="387"/>
+      <source>%1 finish</source>
+      <translation>%1 burkolat</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="608"/>
+      <source>%1 pick first dimension point</source>
+      <translation>%1 első mérési pont kiválasztása</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="617"/>
+      <source>%1 pick second dimension point</source>
+      <translation>%1 második mérési pont kiválasztása</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="80"/>
@@ -4990,8 +4990,8 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
       <translation>Nem lehet objektumokat klónozni alakzat nélkül, kihagyja ezeket</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_downgrade.py" line="76"/>
       <location filename="../../draftguitools/gui_upgrade.py" line="76"/>
+      <location filename="../../draftguitools/gui_downgrade.py" line="76"/>
       <source>Select an object to upgrade</source>
       <translation>Jelöljön ki egy objektumot a frissítéshez</translation>
     </message>
@@ -5031,12 +5031,12 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
       <translation>Visszaminősít</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="185"/>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="341"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="235"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="406"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="200"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="364"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="185"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="341"/>
       <source>Object:</source>
       <translation>Objektum:</translation>
     </message>
@@ -5066,9 +5066,9 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
       <translation>Sarki elrendezés létrehozása</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="312"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="377"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="335"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="312"/>
       <source>Fuse:</source>
       <translation>Egybeolvaszt:</translation>
     </message>
@@ -5088,8 +5088,8 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
       <translation>Poláris szög:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="346"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="371"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="346"/>
       <source>Center of rotation:</source>
       <translation>Forgatás középpontja:</translation>
     </message>
@@ -5114,8 +5114,8 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
       <translation>Készítsen merőleges elrendezést</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="325"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="390"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="325"/>
       <source>Create link array:</source>
       <translation>Hozzon létre kapcsolási elrendezést:</translation>
     </message>
@@ -5193,7 +5193,7 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
       <translation>AlakzatSzövegből</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="505"/>
+      <location filename="../../draftutils/params.py" line="536"/>
       <source>Default</source>
       <translation>Alapértelmezett</translation>
     </message>
@@ -5213,9 +5213,9 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
       <translation>Kör alakú elrendezés</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="177"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="223"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="188"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="177"/>
       <source>At least 1 element must be selected</source>
       <translation>Legalább egy elemet ki kell választani</translation>
     </message>
@@ -5225,9 +5225,9 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
       <translation>A rétegek számának legalább 2-nek kell lennie</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="184"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="234"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="199"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="184"/>
       <source>Selection is not suitable for array</source>
       <translation>A kijelölés nem megfelelő tömbhöz</translation>
     </message>
@@ -5395,12 +5395,12 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
       <translation>Alakzat nem hozható létre:</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_circulararray.py" line="135"/>
-      <location filename="../../draftmake/make_orthoarray.py" line="149"/>
       <location filename="../../draftmake/make_polararray.py" line="111"/>
       <location filename="../../draftmake/make_pointarray.py" line="97"/>
       <location filename="../../draftmake/make_patharray.py" line="184"/>
       <location filename="../../draftmake/make_patharray.py" line="333"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="149"/>
+      <location filename="../../draftmake/make_circulararray.py" line="135"/>
       <source>Wrong input: base_object not in document.</source>
       <translation>Helytelen bemenet: forrás_objektum elem nincs a dokumentumban.</translation>
     </message>
@@ -5411,18 +5411,24 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
       <translation>Helytelen bemenet: útvonal_objektum elem nincs a dokumentumban.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_layer.py" line="185"/>
-      <location filename="../../draftmake/make_orthoarray.py" line="139"/>
-      <location filename="../../draftmake/make_label.py" line="317"/>
       <location filename="../../draftmake/make_polararray.py" line="123"/>
       <location filename="../../draftmake/make_patharray.py" line="195"/>
       <location filename="../../draftmake/make_patharray.py" line="266"/>
       <location filename="../../draftmake/make_patharray.py" line="273"/>
       <location filename="../../draftmake/make_patharray.py" line="343"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="139"/>
+      <location filename="../../draftmake/make_label.py" line="317"/>
+      <location filename="../../draftmake/make_layer.py" line="185"/>
       <source>Wrong input: must be a number.</source>
       <translation>Rossz bemenet: számnak kell lennie.</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_polararray.py" line="135"/>
+      <location filename="../../draftmake/make_patharray.py" line="202"/>
+      <location filename="../../draftmake/make_patharray.py" line="253"/>
+      <location filename="../../draftmake/make_patharray.py" line="260"/>
+      <location filename="../../draftmake/make_label.py" line="209"/>
+      <location filename="../../draftmake/make_circulararray.py" line="165"/>
       <location filename="../../draftmake/make_dimension.py" line="272"/>
       <location filename="../../draftmake/make_dimension.py" line="278"/>
       <location filename="../../draftmake/make_dimension.py" line="285"/>
@@ -5432,12 +5438,6 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
       <location filename="../../draftmake/make_dimension.py" line="610"/>
       <location filename="../../draftmake/make_dimension.py" line="635"/>
       <location filename="../../draftmake/make_dimension.py" line="642"/>
-      <location filename="../../draftmake/make_circulararray.py" line="165"/>
-      <location filename="../../draftmake/make_label.py" line="209"/>
-      <location filename="../../draftmake/make_polararray.py" line="135"/>
-      <location filename="../../draftmake/make_patharray.py" line="202"/>
-      <location filename="../../draftmake/make_patharray.py" line="253"/>
-      <location filename="../../draftmake/make_patharray.py" line="260"/>
       <source>Wrong input: must be a vector.</source>
       <translation>Rossz bemenet: vektornak kell lennie.</translation>
     </message>
@@ -5464,9 +5464,9 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
       <translation>Bemenet: vektorosra bővített egyetlen érték.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_circulararray.py" line="153"/>
-      <location filename="../../draftmake/make_orthoarray.py" line="113"/>
       <location filename="../../draftmake/make_polararray.py" line="117"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="113"/>
+      <location filename="../../draftmake/make_circulararray.py" line="153"/>
       <source>Wrong input: must be an integer number.</source>
       <translation>Helytelen bemenet: egész számnak kell lennie.</translation>
     </message>
@@ -5478,9 +5478,9 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
       <translation>Bemenet: az elemek számának legalább 1-nek kell lennie. 1-re van állítva.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_text.py" line="113"/>
-      <location filename="../../draftmake/make_label.py" line="217"/>
       <location filename="../../draftmake/make_pointarray.py" line="119"/>
+      <location filename="../../draftmake/make_label.py" line="217"/>
+      <location filename="../../draftmake/make_text.py" line="113"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
       <translation>Helytelen bemenet: elhelyezésnek, vektornak vagy forgatásnak kell lennie.</translation>
     </message>
@@ -5515,10 +5515,10 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
       <translation>Helytelen bevitel: cimke típusnak az alábbiak egyikének kell lennie:</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_text.py" line="101"/>
-      <location filename="../../draftmake/make_text.py" line="105"/>
       <location filename="../../draftmake/make_label.py" line="285"/>
       <location filename="../../draftmake/make_label.py" line="289"/>
+      <location filename="../../draftmake/make_text.py" line="101"/>
+      <location filename="../../draftmake/make_text.py" line="105"/>
       <source>Wrong input: must be a list of strings or a single string.</source>
       <translation>Helytelen bemenet: karakterláncnak vagy egyetlen karakternek kell lennie.</translation>
     </message>
@@ -5675,15 +5675,15 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_clone.py" line="71"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="284"/>
       <location filename="../../draftviewproviders/view_hatch.py" line="87"/>
       <location filename="../../draftviewproviders/view_base.py" line="470"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="284"/>
       <source>Edit</source>
       <translation>Szerkesztés</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_base.py" line="475"/>
       <location filename="../../draftviewproviders/view_wire.py" line="208"/>
+      <location filename="../../draftviewproviders/view_base.py" line="475"/>
       <source>Flatten</source>
       <translation>Laposítás</translation>
     </message>
@@ -5900,12 +5900,12 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
       <translation>Hiperhivatkozás megnyitása</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="171"/>
+      <location filename="../../draftguitools/gui_selectplane.py" line="172"/>
       <source>Select 3 vertices, one or more shapes or an object to define a working plane</source>
       <translation>Válasszon ki 3 csúcsot, egy vagy több alakzatot vagy egy objektumot a munkasík meghatározásához</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="225"/>
+      <location filename="../../draftutils/params.py" line="256"/>
       <source>Do you want to update the SVG pattern options
 of existing objects in all opened documents?</source>
       <translation>Szeretné frissíteni a meglévő objektumok SVG minta lehetőségeket az összes megnyitott dokumentumban?</translation>
@@ -5916,37 +5916,37 @@ of existing objects in all opened documents?</source>
       <translation>A vázlat túl bonyolult a szerkesztéshez: javasolt az alapértelmezett vázlatszerkesztő használata</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="88"/>
+      <location filename="../../draftguitools/gui_layers.py" line="89"/>
       <source>Create layer</source>
       <translation>Réteg létrehozása</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="127"/>
+      <location filename="../../draftguitools/gui_layers.py" line="128"/>
       <source>Remove From Layer</source>
       <translation>Eltávolítás a rétegből</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="131"/>
+      <location filename="../../draftguitools/gui_layers.py" line="132"/>
       <source>Add to New Layer</source>
       <translation>Hozzáadás új réteghez</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="152"/>
+      <location filename="../../draftguitools/gui_layers.py" line="153"/>
       <source>Remove from layer</source>
       <translation>Eltávolítás a rétegből</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="174"/>
+      <location filename="../../draftguitools/gui_layers.py" line="175"/>
       <source>Add to new layer</source>
       <translation>Hozzáadás új réteghez</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="192"/>
+      <location filename="../../draftguitools/gui_layers.py" line="193"/>
       <source>Add to layer</source>
       <translation>Réteghez adás</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="280"/>
+      <location filename="../../draftguitools/gui_layers.py" line="281"/>
       <source>Layers change</source>
       <translation>Rétegek változtatása</translation>
     </message>
@@ -6234,16 +6234,16 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Lejtő</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="133"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="157"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="137"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="133"/>
       <source>True</source>
       <translation>Igaz</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="137"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="159"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="141"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="137"/>
       <source>False</source>
       <translation>Hamis</translation>
     </message>
@@ -6313,48 +6313,48 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Tárgy megjelenítés/elrejtés állapotának kiírása</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="399"/>
+      <location filename="../../draftguitools/gui_layers.py" line="400"/>
       <source>On</source>
       <translation>Be</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="400"/>
+      <location filename="../../draftguitools/gui_layers.py" line="401"/>
       <location filename="../../draftobjects/label.py" line="317"/>
       <source>Name</source>
       <translation>Név</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="401"/>
+      <location filename="../../draftguitools/gui_layers.py" line="402"/>
       <source>Line Width</source>
       <translation>Vonalszélesség</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="402"/>
+      <location filename="../../draftguitools/gui_layers.py" line="403"/>
       <source>Draw Style</source>
       <translation>Rajzolási stílus</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="403"/>
+      <location filename="../../draftguitools/gui_layers.py" line="404"/>
       <source>Line Color</source>
       <translation>Vonal színe</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="404"/>
+      <location filename="../../draftguitools/gui_layers.py" line="405"/>
       <source>Face Color</source>
       <translation>Felület színe</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="406"/>
+      <location filename="../../draftguitools/gui_layers.py" line="407"/>
       <source>Line Print Color</source>
       <translation>Vonal nyomtatási szín</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="405"/>
+      <location filename="../../draftguitools/gui_layers.py" line="406"/>
       <source>Transparency</source>
       <translation>Áttetszőség</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="428"/>
+      <location filename="../../draftguitools/gui_layers.py" line="429"/>
       <source>New Layer</source>
       <translation>Új réteg</translation>
     </message>
@@ -6698,12 +6698,12 @@ Ha a "Másolás" beállítás be van kapcsolva, forgatott példányok jönnek l�
   <context>
     <name>Draft_Ellipse</name>
     <message>
-      <location filename="../../draftguitools/gui_ellipses.py" line="63"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="64"/>
       <source>Ellipse</source>
       <translation>Ellipszis</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_ellipses.py" line="64"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="65"/>
       <source>Creates an ellipse</source>
       <translation>Ellipszis létrehozása</translation>
     </message>
@@ -6750,12 +6750,12 @@ Ha a "Másolás" beállítás be van kapcsolva, forgatott példányok jönnek l�
   <context>
     <name>Draft_Layer</name>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="74"/>
+      <location filename="../../draftguitools/gui_layers.py" line="75"/>
       <source>New Layer</source>
       <translation>Új réteg</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="78"/>
+      <location filename="../../draftguitools/gui_layers.py" line="79"/>
       <source>Adds a layer to the document.
 Objects added to this layer can share the same visual properties.</source>
       <translation>Hozzáad egy réteget a dokumentumhoz.
@@ -7032,18 +7032,18 @@ Igazra állítva egyesíti vagy hamisra az összekapcsoláshoz</translation>
     <message>
       <location filename="../../draftobjects/polygon.py" line="67"/>
       <location filename="../../draftobjects/ellipse.py" line="64"/>
-      <location filename="../../draftobjects/circle.py" line="61"/>
       <location filename="../../draftobjects/rectangle.py" line="61"/>
+      <location filename="../../draftobjects/circle.py" line="61"/>
       <source>Create a face</source>
       <translation>Felület létrehozása</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/bspline.py" line="57"/>
-      <location filename="../../draftobjects/polygon.py" line="70"/>
       <location filename="../../draftobjects/wire.py" line="90"/>
-      <location filename="../../draftobjects/circle.py" line="64"/>
+      <location filename="../../draftobjects/polygon.py" line="70"/>
+      <location filename="../../draftobjects/bspline.py" line="57"/>
       <location filename="../../draftobjects/rectangle.py" line="70"/>
       <location filename="../../draftobjects/bezcurve.py" line="66"/>
+      <location filename="../../draftobjects/circle.py" line="64"/>
       <source>The area of this object</source>
       <translation>Ennek az objektumnak a területe</translation>
     </message>
@@ -7068,15 +7068,15 @@ Igazra állítva egyesíti vagy hamisra az összekapcsoláshoz</translation>
       <translation>Hogyan kell a sokszöget rajzolni a vezérlő körről</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/polygon.py" line="61"/>
       <location filename="../../draftobjects/wire.py" line="78"/>
+      <location filename="../../draftobjects/polygon.py" line="61"/>
       <location filename="../../draftobjects/rectangle.py" line="55"/>
       <source>Radius to use to fillet the corners</source>
       <translation>Sarkok lekerekítéséhez használt rádiusz</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/polygon.py" line="64"/>
       <location filename="../../draftobjects/wire.py" line="81"/>
+      <location filename="../../draftobjects/polygon.py" line="64"/>
       <location filename="../../draftobjects/rectangle.py" line="58"/>
       <source>Size of the chamfer to give to the corners</source>
       <translation>Sarkokhoz használt letörés mérete</translation>
@@ -7104,16 +7104,16 @@ Igazra állítva egyesíti vagy hamisra az összekapcsoláshoz</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="112"/>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="150"/>
       <location filename="../../draftobjects/array.py" line="325"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="150"/>
       <location filename="../../draftobjects/patharray.py" line="262"/>
       <source>Show the individual array elements (only for Link arrays)</source>
       <translation>Az egyes tömbelemek megmutatása (csak összekötött tömbökhöz)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="118"/>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="159"/>
       <location filename="../../draftobjects/array.py" line="148"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="159"/>
       <location filename="../../draftobjects/patharray.py" line="269"/>
       <source>The placement for each array element</source>
       <translation>Összes elrendezési elem elhelyezkedése</translation>
@@ -7359,8 +7359,8 @@ Ellenkező esetben a másolatok tájolása megegyezik az eredeti forrásobjektum
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="86"/>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="120"/>
       <location filename="../../draftobjects/array.py" line="129"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="120"/>
       <location filename="../../draftobjects/patharray.py" line="255"/>
       <source>Specifies if the copies should be fused together if they touch each other (slower)</source>
       <translation>Itt adható meg, hogy a másolatokat össze kell-e olvasztani, ha megérintik egymást (lassabb)</translation>
@@ -8079,18 +8079,18 @@ Hagyja üresen a rendszer alapértelmezetthez.
 Használja az 'arch' kifejezést amerikai US arch jelölésének kikényszeréhez</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="144"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="159"/>
       <location filename="../../draftviewproviders/view_wire.py" line="67"/>
       <location filename="../../draftviewproviders/view_wire.py" line="80"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="144"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="159"/>
       <source>Arrow size</source>
       <translation>Nyíl méret</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="149"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="166"/>
       <location filename="../../draftviewproviders/view_wire.py" line="72"/>
       <location filename="../../draftviewproviders/view_wire.py" line="85"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="149"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="166"/>
       <source>Arrow type</source>
       <translation>Nyíl típus</translation>
     </message>
@@ -8395,12 +8395,12 @@ Az szerkesztő csoport létrejön, ha még nem létezik.</translation>
   <context>
     <name>Draft_AddToLayer</name>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="107"/>
+      <location filename="../../draftguitools/gui_layers.py" line="108"/>
       <source>Add to Layer</source>
       <translation>Réteghez ad</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="111"/>
+      <location filename="../../draftguitools/gui_layers.py" line="112"/>
       <source>Adds selected objects to a layer, or removes them from any layer</source>
       <translation>Hozzáadja a kiválasztott objektumokat egy réteghez, vagy eltávolítja azokat</translation>
     </message>
@@ -8408,12 +8408,12 @@ Az szerkesztő csoport létrejön, ha még nem létezik.</translation>
   <context>
     <name>Draft_LayerManager</name>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="206"/>
+      <location filename="../../draftguitools/gui_layers.py" line="207"/>
       <source>Manage Layers</source>
       <translation>Rétegek kezelése</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="207"/>
+      <location filename="../../draftguitools/gui_layers.py" line="208"/>
       <source>Allows to modify the layers</source>
       <translation>Lehetővé teszi a rétegek módosítását</translation>
     </message>

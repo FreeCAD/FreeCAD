@@ -4,7 +4,7 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="621"/>
+      <location filename="../../Application.cpp" line="607"/>
       <source>Unnamed</source>
       <translation>Namnlös</translation>
     </message>
@@ -21,7 +21,7 @@
     <message>
       <location filename="../../Expression.cpp" line="587"/>
       <source>Null</source>
-      <translation type="unfinished">Null</translation>
+      <translation>Null</translation>
     </message>
   </context>
   <context>

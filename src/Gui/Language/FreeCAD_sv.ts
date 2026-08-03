@@ -26,8 +26,8 @@
       <translation>Position</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3015"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
       <source>Enum</source>
       <translation>Enum</translation>
     </message>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../CommandTest.cpp" line="706"/>
       <source>Runs test cases to verify console messages</source>
-      <translation type="unfinished">Runs test cases to verify console messages</translation>
+      <translation>Kör testfall för att verifiera konsolmeddelanden</translation>
     </message>
   </context>
   <context>
@@ -58,7 +58,7 @@
       <translation>Redigera</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="910"/>
+      <location filename="../Application.cpp" line="869"/>
       <source>Import</source>
       <translation>Importera</translation>
     </message>
@@ -105,7 +105,7 @@
     <message>
       <location filename="../CommandStd.cpp" line="1030"/>
       <source>Create Annotation Label</source>
-      <translation type="unfinished">Create Annotation Label</translation>
+      <translation>Skapa kommentaretikett</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="64"/>
@@ -113,12 +113,12 @@
       <translation>Lägg till en del</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="147"/>
+      <location filename="../CommandStructure.cpp" line="146"/>
       <source>Add a group</source>
       <translation>Lägg till en grupp</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="216"/>
+      <location filename="../CommandStructure.cpp" line="215"/>
       <source>Add a variable set</source>
       <translation>Lägg till en variabeluppsättning</translation>
     </message>
@@ -146,8 +146,8 @@
       <translation>Växla arrayelement</translation>
     </message>
     <message>
+      <location filename="../TaskView/TaskImage.cpp" line="342"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
-      <location filename="../TaskView/TaskImage.cpp" line="260"/>
       <source>Edit image</source>
       <translation>Redigera bild</translation>
     </message>
@@ -164,7 +164,7 @@
     <message>
       <location filename="../CommandFeat.cpp" line="259"/>
       <source>Toggle suppress</source>
-      <translation type="unfinished">Toggle suppress</translation>
+      <translation>Växla undertryckning</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="426"/>
@@ -172,17 +172,17 @@
       <translation>Hoppa över beräknar om</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="984"/>
+      <location filename="../CommandView.cpp" line="985"/>
       <source>Toggle Visibility</source>
       <translation>Växla synlighet</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1019"/>
+      <location filename="../CommandView.cpp" line="1020"/>
       <source>Toggle Transparency</source>
       <translation>Växla genomskinlighet</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1138"/>
+      <location filename="../CommandView.cpp" line="1139"/>
       <source>Toggle Selectability</source>
       <translation>Växla valbarhet</translation>
     </message>
@@ -350,7 +350,7 @@ Egenskapen för detta objekt kommer att referera till egenskapen i variabelupps�
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="187"/>
       <source>Store in Variable Set…</source>
-      <translation type="unfinished">Store in Variable Set…</translation>
+      <translation>Lagra i variabeluppsättning …</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="260"/>
@@ -549,12 +549,12 @@ Egenskapen för detta objekt kommer att referera till egenskapen i variabelupps�
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="51"/>
       <source>Press middle or ctrl+right mouse button</source>
-      <translation type="unfinished">Press middle or ctrl+right mouse button</translation>
+      <translation>Tryck på den mellersta musknappen eller Ctrl+höger musknapp</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="53"/>
       <source>Press middle+left, middle+right or shift+right mouse button</source>
-      <translation type="unfinished">Press middle+left, middle+right or shift+right mouse button</translation>
+      <translation>Tryck på mitten+vänster, mitten+höger eller Skift+höger musknapp</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="55"/>
@@ -1105,7 +1105,7 @@ medan du gör ett vänster- eller högerklick och flyttar musen uppåt eller ned
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="194"/>
       <source>Pack Already Exists</source>
-      <translation type="unfinished">Pack Already Exists</translation>
+      <translation>Paketet finns redan</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="195"/>
@@ -1212,7 +1212,7 @@ medan du gör ett vänster- eller högerklick och flyttar musen uppåt eller ned
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="309"/>
       <source>No Item Selected</source>
-      <translation type="unfinished">No Item Selected</translation>
+      <translation>Inget objekt har valts</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="213"/>
@@ -1871,7 +1871,7 @@ Kanske ett fel i filbehörigheten?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="179"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
-      <translation type="unfinished">Defines how much light passes through an object, making it partially or fully see-through</translation>
+      <translation>Definierar hur mycket ljus som passerar genom ett objekt och gör det delvis eller helt genomskinligt.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="192"/>
@@ -1896,7 +1896,7 @@ Kanske ett fel i filbehörigheten?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="50"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
-      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+      <translation>Definierar grundfärgen på en yta när den belyses. Den anger hur objektet sprider ljuset jämnt i alla riktningar, oberoende av betraktarens vinkel. Den här egenskapen påverkar materialets färg mest.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="57"/>
@@ -1906,12 +1906,12 @@ Kanske ett fel i filbehörigheten?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="60"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
-      <translation type="unfinished">Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</translation>
+      <translation>Definierar storleken och skärpan på spegelblänk på en yta. Högre värden ger små, skarpa blänk, medan lägre värden ger breda, mjuka blänk. Observera att blänkets intensitet definieras av spegelfärgen.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="80"/>
       <source>Reverts changes done in the dialogue.</source>
-      <translation type="unfinished">Reverts changes done in the dialogue.</translation>
+      <translation>Återställer ändringar som gjorts i dialogrutan.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="87"/>
@@ -1921,7 +1921,7 @@ Kanske ett fel i filbehörigheten?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="90"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
-      <translation type="unfinished">Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</translation>
+      <translation>Definierar färgen på en yta vid indirekt, jämn belysning och anger hur den ser ut när den endast belyses av omgivningsljus i en scen, utan riktat ljus, skuggning eller högdagrar.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="126"/>
@@ -1931,7 +1931,7 @@ Kanske ett fel i filbehörigheten?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="129"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
-      <translation type="unfinished">Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</translation>
+      <translation>Definierar färgen och intensiteten hos de ljusa, spegelliknande högdagrar som visas på blanka eller reflekterande ytor när ljus träffar dem direkt. Använd ljusa färger för blanka objekt.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="146"/>
@@ -1951,7 +1951,7 @@ Kanske ett fel i filbehörigheten?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="169"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
-      <translation type="unfinished">Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</translation>
+      <translation>Definierar färgen på en yta som ser ut att avge ljus som om den vore en ljuskälla, oberoende av extern belysning, så att objektet ser självlysande ut. Ställ in svart för att inte använda någon emissiv färg.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="176"/>
@@ -2102,7 +2102,7 @@ Ange en annan katalog.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterFind.cpp" line="314"/>
       <source>%1 not found. Would you like to start from the beginning?</source>
-      <translation type="unfinished">%1 not found. Would you like to start from the beginning?</translation>
+      <translation>%1 hittades inte. Vill du börja från början?</translation>
     </message>
   </context>
   <context>
@@ -2238,72 +2238,72 @@ Ange en annan katalog.</translation>
   <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="786"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="787"/>
       <source>Reset Page '%1'</source>
       <translation>Återställ sidan '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="789"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="790"/>
       <source>Resets the user settings for the page '%1'</source>
       <translation>Återställer användarinställningarna för sidan '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="793"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="794"/>
       <source>Reset Group '%1'</source>
       <translation>Återställ grupp '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="801"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="802"/>
       <source>Reset All</source>
       <translation>Återställ allt</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="819"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="820"/>
       <source>Clear User Settings</source>
       <translation>Rensa användarinställningar</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="820"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="821"/>
       <source>Clear all your user settings?</source>
       <translation>Rensa alla dina användarinställningar?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="821"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="822"/>
       <source>All settings will be cleared.</source>
       <translation>Alla inställningar kommer att raderas.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="922"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="923"/>
       <source>Wrong Parameter</source>
       <translation>Fel parameter</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="965"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="966"/>
       <source>Restart Required</source>
       <translation>Omstart krävs</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="966"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="967"/>
       <source>Restart FreeCAD for changes to take effect.</source>
       <translation>Starta om FreeCAD för att ändringarna ska träda i kraft.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="971"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="972"/>
       <source>Restart Now</source>
       <translation>Starta om nu</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="972"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="973"/>
       <source>Restart Later</source>
       <translation>Starta om senare</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="798"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="799"/>
       <source>Resets the user settings for the group '%1'</source>
       <translation>Återställer användarinställningarna för gruppen '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="803"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="804"/>
       <source>Resets the user settings entirely</source>
       <translation>Återställer användarinställningarna helt och hållet</translation>
     </message>
@@ -2459,7 +2459,7 @@ Ange en annan katalog.</translation>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="67"/>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="83"/>
       <source>Empty Destination</source>
-      <translation type="unfinished">Empty Destination</translation>
+      <translation>Tom destination</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="103"/>
@@ -2828,20 +2828,20 @@ forcibly enabled.
 
 Note: Turning this on is typically not required. If you do,
 remember to report this setting as enabled when seeking support.</source>
-      <translation type="unfinished">A VBO is an OpenGL feature that enables uploading geometry data
-to the graphics card, and is how efficient 3D rendering is done
-on modern hardware.
-This feature might not be used by default if you are running old
-hardware or drivers. By selecting this option its usage will be
-forcibly enabled.
+      <translation>En VBO är en OpenGL-funktion som gör det möjligt att överföra geometridata
+till grafikkortet och används för effektiv 3D-rendering
+på modern maskinvara.
+Funktionen används kanske inte som standard om du kör gammal
+maskinvara eller gamla drivrutiner. Om du väljer det här alternativet
+tvingas funktionen att användas.
 
-Note: Turning this on is typically not required. If you do,
-remember to report this setting as enabled when seeking support.</translation>
+Obs! Det är normalt inte nödvändigt att aktivera detta. Om du gör det,
+kom ihåg att uppge att inställningen är aktiverad när du söker support.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="314"/>
       <source>Force use of OpenGL VBO (Vertex Buffer Object)</source>
-      <translation type="unfinished">Force use of OpenGL VBO (Vertex Buffer Object)</translation>
+      <translation>Tvinga användning av OpenGL-VBO (Vertex Buffer Object)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="406"/>
@@ -3301,12 +3301,12 @@ förutom färgfältet</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="103"/>
       <source>This experimental feature allows more responsive GUI while recomputing features.</source>
-      <translation type="unfinished">This experimental feature allows more responsive GUI while recomputing features.</translation>
+      <translation>Den här experimentella funktionen gör det grafiska gränssnittet mer responsivt medan formelement beräknas om.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="106"/>
       <source>Enables async document recomputation</source>
-      <translation type="unfinished">Enables async document recomputation</translation>
+      <translation>Aktiverar asynkron omberäkning av dokument</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="122"/>
@@ -3374,12 +3374,12 @@ får datumsuffix enligt angivet format</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="571"/>
       <source>Suppresses the version mismatch warning when saving files created with an older FreeCAD version</source>
-      <translation type="unfinished">Suppresses the version mismatch warning when saving files created with an older FreeCAD version</translation>
+      <translation>Undertrycker varningen om versionsskillnad när filer som skapats med en äldre FreeCAD-version sparas</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="574"/>
       <source>Suppress older version warning on save</source>
-      <translation type="unfinished">Suppress older version warning on save</translation>
+      <translation>Undertryck varning om äldre version vid lagring</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="593"/>
@@ -3403,11 +3403,11 @@ Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</source>
-      <translation type="unfinished">Disable partial loading of external linked documents.
-Then only referenced objects and their dependencies will be loaded
-when a linked document is auto-opened together with the main document.
-A partially loaded document cannot be edited. Double click the document
-icon in the tree view to fully reload it.</translation>
+      <translation>Inaktivera partiell inläsning av externt länkade dokument.
+Då läses endast refererade objekt och deras beroenden in
+när ett länkat dokument öppnas automatiskt tillsammans med huvuddokumentet.
+Ett delvis inläst dokument kan inte redigeras. Dubbelklicka på dokumentikonen
+i trädvyn för att läsa in det fullständigt.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="622"/>
@@ -3559,7 +3559,7 @@ Du kan också använda formuläret: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocumentImp.cpp" line="119"/>
       <source>Warning: The format '%1' produces '%2' which contains invalid characters. They will be replaced with '-' when saving.</source>
-      <translation type="unfinished">Warning: The format '%1' produces '%2' which contains invalid characters. They will be replaced with '-' when saving.</translation>
+      <translation>Varning: Formatet ”%1” ger ”%2”, som innehåller ogiltiga tecken. De ersätts med ”-” när filen sparas.</translation>
     </message>
   </context>
   <context>
@@ -4382,7 +4382,7 @@ horisontellt utrymme i Python-konsolen</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="26"/>
       <source>The color used for highlighting selected objects in the 3D view</source>
-      <translation type="unfinished">The color used for highlighting selected objects in the 3D view</translation>
+      <translation>Färgen som används för att markera valda objekt i 3D-vyn</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="70"/>
@@ -4401,7 +4401,7 @@ Ett större värde gör det lättare att välja element, men kan förhindra val 
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="131"/>
       <source>The color used for highlighting preselected objects in the 3D view</source>
-      <translation type="unfinished">The color used for highlighting preselected objects in the 3D view</translation>
+      <translation>Färgen som används för att markera förvalda objekt i 3D-vyn</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="160"/>
@@ -4426,7 +4426,7 @@ Ett större värde gör det lättare att välja element, men kan förhindra val 
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="207"/>
       <source>Selecting an item in the Tree View automatically activates its document and switches to its 3D view.</source>
-      <translation type="unfinished">Selecting an item in the Tree View automatically activates its document and switches to its 3D view.</translation>
+      <translation>När ett objekt väljs i trädvyn aktiveras dess dokument automatiskt och vyn växlar till dokumentets 3D-vy.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="220"/>
@@ -4436,7 +4436,7 @@ Ett större värde gör det lättare att välja element, men kan förhindra val 
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="255"/>
       <source>Provides persistent selection toggles for each item. Simplifies batch operations and complex multi-selection without holding modifier keys (Ctrl/Shift).</source>
-      <translation type="unfinished">Provides persistent selection toggles for each item. Simplifies batch operations and complex multi-selection without holding modifier keys (Ctrl/Shift).</translation>
+      <translation>Ger beständiga markeringsväxlar för varje objekt. Förenklar satsvisa åtgärder och komplex flermarkering utan att modifierartangenter (Ctrl/Skift) behöver hållas ned.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="49"/>
@@ -4456,7 +4456,7 @@ Ett större värde gör det lättare att välja element, men kan förhindra val 
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="223"/>
       <source>Locates and reveals the selected object within the tree hierarchy. Prevents manual scrolling in deep, complex document structures.</source>
-      <translation type="unfinished">Locates and reveals the selected object within the tree hierarchy. Prevents manual scrolling in deep, complex document structures.</translation>
+      <translation>Lokaliserar och visar det valda objektet i trädhierarkin. Du behöver inte rulla manuellt i djupa och komplexa dokumentstrukturer.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="236"/>
@@ -4466,7 +4466,7 @@ Ett större värde gör det lättare att välja element, men kan förhindra val 
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="239"/>
       <source>Enables selection history. Use 'Back' and 'Forward' navigation to toggle between previously selected objects without re-searching the tree.</source>
-      <translation type="unfinished">Enables selection history. Use 'Back' and 'Forward' navigation to toggle between previously selected objects without re-searching the tree.</translation>
+      <translation>Aktiverar markeringshistorik. Använd navigeringen ”Bakåt” och ”Framåt” för att växla mellan tidigare valda objekt utan att söka igenom trädet på nytt.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="252"/>
@@ -4614,12 +4614,12 @@ Ett större värde gör det lättare att välja element, men kan förhindra val 
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="150"/>
       <source>Central</source>
-      <translation type="unfinished">Central</translation>
+      <translation>Centralt</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="151"/>
       <source>Midway</source>
-      <translation type="unfinished">Midway</translation>
+      <translation>Halvvägs</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="152"/>
@@ -4824,23 +4824,23 @@ Kolumnen "Status" visar om dokumentet kunde återställas.</translation>
     <message>
       <location filename="../DocumentRecovery.cpp" line="652"/>
       <source>Delete the selected recovery documents?</source>
-      <translation type="unfinished">Delete the selected recovery documents?</translation>
+      <translation>Ta bort de valda återställningsdokumenten?</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="653"/>
       <location filename="../DocumentRecovery.cpp" line="686"/>
       <source>Recovery documents cannot be restored after deletion.</source>
-      <translation type="unfinished">Recovery documents cannot be restored after deletion.</translation>
+      <translation>Återställningsdokument kan inte återställas efter att de har tagits bort.</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="685"/>
       <source>Delete all recovery documents?</source>
-      <translation type="unfinished">Delete all recovery documents?</translation>
+      <translation>Ta bort alla återställningsdokument?</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="703"/>
       <source>Recovery documents deleted.</source>
-      <translation type="unfinished">Recovery documents deleted.</translation>
+      <translation>Återställningsdokumenten togs bort.</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="42"/>
@@ -5208,7 +5208,7 @@ Kolumnen "Status" visar om dokumentet kunde återställas.</translation>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="967"/>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="1014"/>
       <source>Existing Item</source>
-      <translation type="unfinished">Existing Item</translation>
+      <translation>Befintligt objekt</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="830"/>
@@ -6114,13 +6114,13 @@ Spara alla ändringar?</translation>
       <location filename="../MainWindow.cpp" line="477"/>
       <source>Preselection</source>
       <extracomment>A context menu action used to show or hide the preselection info in the status bar</extracomment>
-      <translation type="unfinished">Preselection</translation>
+      <translation>Förval</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="492"/>
       <source>Input Hints</source>
       <extracomment>A context menu action used to show or hide the input hints in the status bar</extracomment>
-      <translation type="unfinished">Input Hints</translation>
+      <translation>Inmatningstips</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="532"/>
@@ -6132,13 +6132,13 @@ Spara alla ändringar?</translation>
       <location filename="../MainWindow.cpp" line="547"/>
       <source>Toggles the bottom dock panels</source>
       <extracomment>Tooltip for the status bar button that toggles bottom dock panels</extracomment>
-      <translation type="unfinished">Toggles the bottom dock panels</translation>
+      <translation>Växlar de nedre dockningspanelerna</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="557"/>
       <source>Bottom Panel Toggle</source>
       <extracomment>A context menu action used to show or hide the Toggle Bottom Panels button in the status bar</extracomment>
-      <translation type="unfinished">Bottom Panel Toggle</translation>
+      <translation>Växla nedre panel</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="576"/>
@@ -6555,18 +6555,18 @@ Hur vill du gå vidare?</translation>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1022"/>
       <source>The property %1 in object %2 (%3) in document %4 is referenced by:</source>
-      <translation type="unfinished">The property %1 in object %2 (%3) in document %4 is referenced by:</translation>
+      <translation>Egenskapen %1 i objektet %2 (%3) i dokumentet %4 refereras av:</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1038"/>
       <source>(No references found.)</source>
-      <translation type="unfinished">(No references found.)</translation>
+      <translation>(Inga referenser hittades.)</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1056"/>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1144"/>
       <source>Property Uses</source>
-      <translation type="unfinished">Property Uses</translation>
+      <translation>Egenskapsanvändning</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1086"/>
@@ -6587,7 +6587,7 @@ Hur vill du gå vidare?</translation>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1112"/>
       <source>Cannot rename group: one or more properties have names that start with the group name</source>
-      <translation type="unfinished">Cannot rename group: one or more properties have names that start with the group name</translation>
+      <translation>Det går inte att byta namn på gruppen: en eller flera egenskaper har namn som börjar med gruppnamnet</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1121"/>
@@ -6799,7 +6799,7 @@ Avsluta utan att spara alla data?</translation>
     <message>
       <location filename="../Action.cpp" line="892"/>
       <source>Clear the list of recent files?</source>
-      <translation type="unfinished">Clear the list of recent files?</translation>
+      <translation>Rensa listan över senast använda filer?</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="979"/>
@@ -6868,7 +6868,7 @@ Avsluta utan att spara alla data?</translation>
     <message>
       <location filename="../EditorView.cpp" line="879"/>
       <source>No results</source>
-      <translation type="unfinished">No results</translation>
+      <translation>Inga resultat</translation>
     </message>
   </context>
   <context>
@@ -7350,17 +7350,17 @@ Ange en annan katalog?</translation>
     <message>
       <location filename="Translator.cpp" line="256"/>
       <source>Tamil</source>
-      <translation type="unfinished">Tamil</translation>
+      <translation>Tamil</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="257"/>
       <source>Irish</source>
-      <translation type="unfinished">Irish</translation>
+      <translation>Iriska</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="258"/>
       <source>Lao</source>
-      <translation type="unfinished">Lao</translation>
+      <translation>Lao</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="221"/>
@@ -7391,7 +7391,7 @@ Ange en annan katalog?</translation>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="4244"/>
+      <location filename="../Tree.cpp" line="4251"/>
       <source>Search</source>
       <translation>Sök</translation>
     </message>
@@ -7434,153 +7434,153 @@ Ange en annan katalog?</translation>
       <translation>Grupp</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3394"/>
-      <location filename="../Tree.cpp" line="3415"/>
+      <location filename="../Tree.cpp" line="3400"/>
+      <location filename="../Tree.cpp" line="3421"/>
       <source>Error</source>
       <translation>Fel</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3394"/>
+      <location filename="../Tree.cpp" line="3400"/>
       <source>File does not exist.</source>
       <translation>Filen finns inte.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3415"/>
+      <location filename="../Tree.cpp" line="3421"/>
       <source>Failed to open directory.</source>
       <translation>Misslyckades med att öppna katalogen.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3894"/>
+      <location filename="../Tree.cpp" line="3900"/>
       <source>Labels &amp; Attributes</source>
       <translation>Etiketter och attribut</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3895"/>
+      <location filename="../Tree.cpp" line="3901"/>
       <source>Description</source>
       <translation>Beskrivning</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3896"/>
+      <location filename="../Tree.cpp" line="3902"/>
       <source>Internal name</source>
       <translation>Internt namn</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3898"/>
+      <location filename="../Tree.cpp" line="3904"/>
       <source>Show Items Hidden in Tree View</source>
       <translation>Visa dolda objekt i trädvyn</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3900"/>
+      <location filename="../Tree.cpp" line="3906"/>
       <source>Shows items that are marked as 'hidden' in the tree view</source>
       <translation>Visar objekt som är markerade som "dolda" i trädvyn</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3903"/>
+      <location filename="../Tree.cpp" line="3909"/>
       <source>Toggle Visibility in Tree View</source>
       <translation>Växla synlighet i trädvyn</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3908"/>
+      <location filename="../Tree.cpp" line="3914"/>
       <source>Create Group</source>
       <translation>Skapa grupp</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3909"/>
+      <location filename="../Tree.cpp" line="3915"/>
       <source>Creates a group</source>
       <translation>Skapar en grupp</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3912"/>
+      <location filename="../Tree.cpp" line="3918"/>
       <source>Renames object</source>
       <translation>Byter namn på objekt</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3914"/>
+      <location filename="../Tree.cpp" line="3920"/>
       <source>Finish Editing</source>
       <translation>Avsluta redigeringen</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3915"/>
+      <location filename="../Tree.cpp" line="3921"/>
       <source>Finishes editing object</source>
       <translation>Avslutar redigering av objekt</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3917"/>
+      <location filename="../Tree.cpp" line="3923"/>
       <source>Add Dependent Objects to Selection</source>
       <translation>Lägg till beroende objekt i markering</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3920"/>
+      <location filename="../Tree.cpp" line="3926"/>
       <source>Close Document</source>
       <translation>Stäng dokument</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3921"/>
+      <location filename="../Tree.cpp" line="3927"/>
       <source>Closes the document</source>
       <translation>Stänger dokumentet</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3925"/>
+      <location filename="../Tree.cpp" line="3932"/>
       <source>Reveals the current file location in Finder</source>
       <translation>Visar den aktuella filplatsen i Finder</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3928"/>
+      <location filename="../Tree.cpp" line="3935"/>
       <source>Opens the current file location</source>
       <translation>Öppnar den aktuella filplatsen</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3931"/>
+      <location filename="../Tree.cpp" line="3938"/>
       <source>Reload Document</source>
       <translation>Läs om dokument</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3932"/>
+      <location filename="../Tree.cpp" line="3939"/>
       <source>Reloads a partially loaded document</source>
       <translation>Laddar om ett delvis laddat dokument</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3934"/>
+      <location filename="../Tree.cpp" line="3941"/>
       <source>Skip Recomputes</source>
       <translation>Hoppa över omräkningar</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3935"/>
+      <location filename="../Tree.cpp" line="3942"/>
       <source>Enables or disables the recomputations of document</source>
       <translation>Aktiverar eller inaktiverar omräkningar av dokument</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3937"/>
+      <location filename="../Tree.cpp" line="3944"/>
       <source>Allow Partial Recomputes</source>
       <translation>Tillåt partiella omräkningar</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3938"/>
+      <location filename="../Tree.cpp" line="3945"/>
       <source>Enables or disables the recomputating editing object when 'skip recomputation' is enabled</source>
       <translation>Aktiverar eller inaktiverar omräkning av redigeringsobjektet när "hoppa över omräkning" är aktiverat</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3942"/>
+      <location filename="../Tree.cpp" line="3949"/>
       <source>Mark to Recompute</source>
       <translation>Markera för att beräkna om</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3943"/>
+      <location filename="../Tree.cpp" line="3950"/>
       <source>Marks this object to be recomputed</source>
       <translation>Markerar detta objekt för att beräknas på nytt</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3946"/>
+      <location filename="../Tree.cpp" line="3953"/>
       <source>Recompute Object</source>
       <translation>Omberäkna objekt</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3947"/>
+      <location filename="../Tree.cpp" line="3954"/>
       <source>Recomputes the selected object</source>
       <translation>Beräknar om det valda objektet</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3905"/>
+      <location filename="../Tree.cpp" line="3911"/>
       <source>Toggles the visibility of selected items in the tree view</source>
       <translation>Växlar synligheten för markerade objekt i trädvyn</translation>
     </message>
@@ -7600,33 +7600,33 @@ Ange en annan katalog?</translation>
       <translation>Visar en beskrivningskolumn för objekt. Ett objekts beskrivning kan ställas in genom att redigera egenskapen ”label2”.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3911"/>
-      <location filename="../Tree.cpp" line="6589"/>
+      <location filename="../Tree.cpp" line="3917"/>
+      <location filename="../Tree.cpp" line="6604"/>
       <source>Rename</source>
       <translation>Byt namn</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3918"/>
+      <location filename="../Tree.cpp" line="3924"/>
       <source>Adds all dependent objects to the selection</source>
       <translation>Lägger till alla beroende objekt i markering</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3924"/>
+      <location filename="../Tree.cpp" line="3931"/>
       <source>Reveal in Finder</source>
       <translation>Avslöja i Finder</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3927"/>
+      <location filename="../Tree.cpp" line="3934"/>
       <source>Open File Location</source>
       <translation>Öppna filens plats</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6557"/>
+      <location filename="../Tree.cpp" line="6572"/>
       <source> (but must be executed)</source>
       <translation> (men måste verkställas)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6560"/>
+      <location filename="../Tree.cpp" line="6575"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, Internt namn: %2</translation>
     </message>
@@ -7933,35 +7933,35 @@ Ange en annan katalog?</translation>
       <translation>Python</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="869"/>
-      <location filename="../Application.cpp" line="976"/>
-      <location filename="../Application.cpp" line="1063"/>
+      <location filename="../Application.cpp" line="828"/>
+      <location filename="../Application.cpp" line="935"/>
+      <location filename="../Application.cpp" line="1022"/>
       <source>Unknown filetype</source>
       <translation>Okänd filtyp</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="870"/>
-      <location filename="../Application.cpp" line="977"/>
+      <location filename="../Application.cpp" line="829"/>
+      <location filename="../Application.cpp" line="936"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>Kan inte öppna okänd filtyp: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1053"/>
+      <location filename="../Application.cpp" line="1012"/>
       <source>Export failed</source>
       <translation>Exportering misslyckades</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1064"/>
+      <location filename="../Application.cpp" line="1023"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>Kan inte spara till okänd filtyp: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1262"/>
+      <location filename="../Application.cpp" line="1221"/>
       <source>Recomputation required</source>
       <translation>Omberäkning krävs</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1263"/>
+      <location filename="../Application.cpp" line="1222"/>
       <source>Some documents require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
 
 Recompute now?</source>
@@ -7970,24 +7970,24 @@ Recompute now?</source>
 Omberäkna nu?</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1289"/>
+      <location filename="../Application.cpp" line="1248"/>
       <source>Failed to recompute some documents.
 Check the report view for more details.</source>
       <translation>Misslyckades med att räkna om vissa dokument.
 Kontrollera rapportvyn för mer information.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1288"/>
+      <location filename="../Application.cpp" line="1247"/>
       <source>Recompute error</source>
       <translation>Beräkna felet på nytt</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="2038"/>
+      <location filename="../Application.cpp" line="1997"/>
       <source>Workbench failure</source>
       <translation>Fel på arbetsbänk</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="2039"/>
+      <location filename="../Application.cpp" line="1998"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
@@ -8029,9 +8029,9 @@ Kontrollera rapportvyn för mer information.</translation>
     <message numerus="yes">
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="499"/>
       <source>%n file(s) could not be copied and were skipped. A full list has been saved to %1 in your new configuration directory.</source>
-      <translation type="unfinished">
-        <numerusform>%n file(s) could not be copied and were skipped. A full list has been saved to %1 in your new configuration directory.</numerusform>
-        <numerusform>%n file(s) could not be copied and were skipped. A full list has been saved to %1 in your new configuration directory.</numerusform>
+      <translation>
+        <numerusform>%n fil kunde inte kopieras och hoppades över. En fullständig lista har sparats i %1 i den nya konfigurationskatalogen.</numerusform>
+        <numerusform>%n filer kunde inte kopieras och hoppades över. En fullständig lista har sparats i %1 i den nya konfigurationskatalogen.</numerusform>
       </translation>
     </message>
     <message>
@@ -8055,18 +8055,18 @@ Kontrollera rapportvyn för mer information.</translation>
       <translation>Undantag</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1302"/>
-      <location filename="../Application.cpp" line="1317"/>
+      <location filename="../Application.cpp" line="1261"/>
+      <location filename="../Application.cpp" line="1276"/>
       <source>Error</source>
       <translation>Fel</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1303"/>
+      <location filename="../Application.cpp" line="1262"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Det uppstod fel under inläsningen av filen. Vissa data kan ha ändrats eller inte återställts alls. Titta i rapportvyn för mer specifik information om de berörda objekten.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1318"/>
+      <location filename="../Application.cpp" line="1277"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>Det uppstod allvarliga fel under inläsningen av filen. Vissa data kan ha ändrats eller inte återställts alls. Att spara projektet kommer troligen att leda till förlust av data.</translation>
     </message>
@@ -8096,6 +8096,13 @@ Kontrollera rapportvyn för mer information.</translation>
       <location filename="../CommandDoc.cpp" line="631"/>
       <source>Merge Document</source>
       <translation>Slå samman dokument</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="621"/>
+      <location filename="../Document.cpp" line="1711"/>
+      <location filename="../Document.cpp" line="1841"/>
+      <source>%1 document</source>
+      <translation>%1 dokument</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="632"/>
@@ -8196,77 +8203,77 @@ Kontrollera rapportvyn för mer information.</translation>
       <translation>I felsäkert läge inaktiveras konfigurationen och tillägg tillfälligt.</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="347"/>
-      <location filename="../CommandView.cpp" line="625"/>
+      <location filename="../CommandView.cpp" line="348"/>
+      <location filename="../CommandView.cpp" line="626"/>
       <source>&amp;Save Views…</source>
       <translation>&amp;Spara vyer…</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="349"/>
-      <location filename="../CommandView.cpp" line="626"/>
+      <location filename="../CommandView.cpp" line="350"/>
+      <location filename="../CommandView.cpp" line="627"/>
       <source>&amp;Load Views…</source>
       <translation>&amp;Läs in vyer…</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="352"/>
-      <location filename="../CommandView.cpp" line="627"/>
+      <location filename="../CommandView.cpp" line="353"/>
+      <location filename="../CommandView.cpp" line="628"/>
       <source>F&amp;reeze View</source>
       <translation>F&amp;rys vy</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="355"/>
-      <location filename="../CommandView.cpp" line="628"/>
+      <location filename="../CommandView.cpp" line="356"/>
+      <location filename="../CommandView.cpp" line="629"/>
       <source>&amp;Clear Views</source>
       <translation>&amp;Klara vyer</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="460"/>
+      <location filename="../CommandView.cpp" line="461"/>
       <source>Save Frozen Views</source>
       <translation>Spara frysta vyer</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="506"/>
-      <location filename="../CommandView.cpp" line="533"/>
+      <location filename="../CommandView.cpp" line="507"/>
+      <location filename="../CommandView.cpp" line="534"/>
       <source>Restore Views</source>
       <translation>Återställ vyer</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="462"/>
-      <location filename="../CommandView.cpp" line="524"/>
+      <location filename="../CommandView.cpp" line="463"/>
+      <location filename="../CommandView.cpp" line="525"/>
       <source>Frozen views</source>
       <translation>Frysna vyer</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="507"/>
+      <location filename="../CommandView.cpp" line="508"/>
       <source>Importing the restored views would clear the already stored views.
 Continue?</source>
       <translation>Import av de återställda vyerna skulle rensa de redan lagrade vyerna.
 Fortsätta?</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="522"/>
+      <location filename="../CommandView.cpp" line="523"/>
       <source>Restore Frozen Views</source>
       <translation>Återställ frysta vyer</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2159"/>
+      <location filename="../CommandView.cpp" line="2160"/>
       <source>Save Image</source>
       <translation>Spara bild</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2335"/>
+      <location filename="../CommandView.cpp" line="2334"/>
       <source>Choose an Image File to Open</source>
       <translation>Välj en bildfil att öppna</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="534"/>
+      <location filename="../CommandView.cpp" line="535"/>
       <source>Cannot open file '%1'.</source>
       <translation>Kan inte öppna fil '%1'.</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="408"/>
-      <location filename="../CommandView.cpp" line="600"/>
-      <location filename="../CommandView.cpp" line="632"/>
+      <location filename="../CommandView.cpp" line="409"/>
+      <location filename="../CommandView.cpp" line="601"/>
+      <location filename="../CommandView.cpp" line="633"/>
       <source>Restore View &amp;%1</source>
       <translation>Återställ vy &amp;%1</translation>
     </message>
@@ -8295,7 +8302,7 @@ Fortsätta?</translation>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="812"/>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="838"/>
       <source>New Text Item</source>
-      <translation type="unfinished">New Text Item</translation>
+      <translation>Nytt textobjekt</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="839"/>
@@ -8492,11 +8499,11 @@ Saving will upgrade the file format. The file may not be readable by older versi
 
 Use 'Save As…' to preserve the original file.
 </source>
-      <translation type="unfinished">This file was created with %1, but you are using v%2.%3.
+      <translation>Den här filen skapades med %1, men du använder v%2.%3.
 
-Saving will upgrade the file format. The file may not be readable by older versions of FreeCAD after saving.
+När filen sparas uppgraderas filformatet. Efter lagring kan filen kanske inte läsas av äldre versioner av FreeCAD.
 
-Use 'Save As…' to preserve the original file.
+Använd ”Spara som …” för att bevara originalfilen.
 </translation>
     </message>
     <message>
@@ -8507,7 +8514,7 @@ Use 'Save As…' to preserve the original file.
     <message>
       <location filename="../Document.cpp" line="1557"/>
       <source>FreeCAD version %1</source>
-      <translation>FreeCAD version %1</translation>
+      <translation>FreeCAD-version %1</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1562"/>
@@ -8544,13 +8551,6 @@ Use 'Save As…' to preserve the original file.
       <location filename="../Document.cpp" line="1694"/>
       <source>Save document under new filename…</source>
       <translation>Spara dokumentet under nytt filnamn…</translation>
-    </message>
-    <message>
-      <location filename="../Document.cpp" line="1711"/>
-      <location filename="../Document.cpp" line="1841"/>
-      <location filename="../CommandDoc.cpp" line="621"/>
-      <source>%1 document</source>
-      <translation>%1 dokument</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1827"/>
@@ -8683,12 +8683,12 @@ Välj "Avbryt" för att avbryta</translation>
       <translation>Kan inte öppna din systemwebbläsare.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3206"/>
+      <location filename="../View3DInventorViewer.cpp" line="3294"/>
       <source>Out of memory</source>
       <translation>Slut på minne</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3207"/>
+      <location filename="../View3DInventorViewer.cpp" line="3295"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Det finns inte tillräckligt med minne för att visa datan.</translation>
     </message>
@@ -8709,8 +8709,8 @@ Välj "Avbryt" för att avbryta</translation>
       <translation>Förtydliga markering</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1001"/>
       <location filename="../CommandDoc.cpp" line="1369"/>
+      <location filename="../MainWindow.cpp" line="1001"/>
       <source>Unsaved Document</source>
       <translation>Osparat dokument</translation>
     </message>
@@ -8828,8 +8828,8 @@ Välj "Avbryt" för att avbryta</translation>
       <translation>Det gick inte att lägga till en egenskap i '%1': %2</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2770"/>
-      <location filename="../Tree.cpp" line="3167"/>
+      <location filename="../Tree.cpp" line="2776"/>
+      <location filename="../Tree.cpp" line="3173"/>
       <source>Drag &amp; drop failed</source>
       <translation>Drag &amp; släpp misslyckades</translation>
     </message>
@@ -9090,7 +9090,7 @@ den aktuella kopian kommer att gå förlorade.
     <message>
       <location filename="../ViewProviderPart.cpp" line="105"/>
       <source>Override colors…</source>
-      <translation type="unfinished">Override colors…</translation>
+      <translation>Åsidosätt färger …</translation>
     </message>
     <message>
       <location filename="../ViewProviderTextDocument.cpp" line="107"/>
@@ -9115,22 +9115,22 @@ den aktuella kopian kommer att gå förlorade.
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="243"/>
       <source>The group '%1' contains %2 object(s). Delete them as well?</source>
-      <translation type="unfinished">The group '%1' contains %2 object(s). Delete them as well?</translation>
+      <translation>Gruppen ”%1” innehåller %2 objekt. Ska även de tas bort?</translation>
     </message>
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="249"/>
       <source>The group '%1' contains %2 direct children and %3 total descendants (including nested groups). Do you want to delete all of them recursively?</source>
-      <translation>%1?</translation>
+      <translation>Gruppen ”%1” innehåller %2 direkta underobjekt och totalt %3 underordnade objekt (inklusive kapslade grupper). Vill du ta bort dem alla rekursivt?</translation>
     </message>
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="260"/>
       <source>Delete Group Contents Recursively?</source>
-      <translation type="unfinished">Delete Group Contents Recursively?</translation>
+      <translation>Ta bort gruppinnehåll rekursivt?</translation>
     </message>
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="270"/>
       <source>Apply to all selected objects (%1) and their children</source>
-      <translation type="unfinished">Apply to all selected objects (%1) and their children</translation>
+      <translation>Tillämpa på alla valda objekt (%1) och deras underobjekt</translation>
     </message>
     <message>
       <location filename="../ViewProviderImagePlane.cpp" line="171"/>
@@ -9141,6 +9141,11 @@ den aktuella kopian kommer att gå förlorade.
       <location filename="../FileDialog.cpp" line="301"/>
       <source>All Files</source>
       <translation>Alla filer</translation>
+    </message>
+    <message>
+      <location filename="../CommandStructure.cpp" line="78"/>
+      <source>Part</source>
+      <translation>Detalj</translation>
     </message>
   </context>
   <context>
@@ -9301,7 +9306,7 @@ den aktuella kopian kommer att gå förlorade.
     <message>
       <location filename="../CommandMacro.cpp" line="64"/>
       <source>S&amp;top Macro Recording</source>
-      <translation type="unfinished">S&amp;top Macro Recording</translation>
+      <translation>S&amp;toppa makroinspelning</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="67"/>
@@ -9394,18 +9399,18 @@ den aktuella kopian kommer att gå förlorade.
     <message>
       <location filename="../CommandStd.cpp" line="727"/>
       <source>Opens the FreeCAD forum to find help from other users</source>
-      <translation type="unfinished">Opens the FreeCAD forum to find help from other users</translation>
+      <translation>Öppnar FreeCAD-forumet där du kan få hjälp av andra användare</translation>
     </message>
   </context>
   <context>
     <name>StdCmdFreezeViews</name>
     <message>
-      <location filename="../CommandView.cpp" line="332"/>
+      <location filename="../CommandView.cpp" line="333"/>
       <source>F&amp;reeze Display</source>
       <translation>&amp;Frys visning</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="333"/>
+      <location filename="../CommandView.cpp" line="334"/>
       <source>Freezes the current view position</source>
       <translation>Fryser den nuvarande vypositionen</translation>
     </message>
@@ -9689,12 +9694,12 @@ den aktuella kopian kommer att gå förlorade.
   <context>
     <name>StdCmdViewBottom</name>
     <message>
-      <location filename="../CommandView.cpp" line="1438"/>
+      <location filename="../CommandView.cpp" line="1439"/>
       <source>Bottom</source>
       <translation>Botten</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1439"/>
+      <location filename="../CommandView.cpp" line="1440"/>
       <source>Sets the camera to the bottom view</source>
       <translation>Ställer in kameran på bottenvy</translation>
     </message>
@@ -9702,12 +9707,12 @@ den aktuella kopian kommer att gå förlorade.
   <context>
     <name>StdCmdViewDimetric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1642"/>
+      <location filename="../CommandView.cpp" line="1643"/>
       <source>&amp;Dimetric</source>
       <translation>&amp;Dimetrisk</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1643"/>
+      <location filename="../CommandView.cpp" line="1644"/>
       <source>Sets the camera to the dimetric view</source>
       <translation>Ställer in kameran på dimetrisk vy</translation>
     </message>
@@ -9741,12 +9746,12 @@ den aktuella kopian kommer att gå förlorade.
   <context>
     <name>StdCmdViewFront</name>
     <message>
-      <location filename="../CommandView.cpp" line="1467"/>
+      <location filename="../CommandView.cpp" line="1468"/>
       <source>Front</source>
       <translation>Framsida</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1468"/>
+      <location filename="../CommandView.cpp" line="1469"/>
       <source>Sets the camera to the front view</source>
       <translation>Ställer in kameran så att den visar framsidan</translation>
     </message>
@@ -9754,12 +9759,12 @@ den aktuella kopian kommer att gå förlorade.
   <context>
     <name>StdCmdViewHome</name>
     <message>
-      <location filename="../CommandView.cpp" line="1414"/>
+      <location filename="../CommandView.cpp" line="1415"/>
       <source>&amp;Home</source>
       <translation>&amp;Hem</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1415"/>
+      <location filename="../CommandView.cpp" line="1416"/>
       <source>Sets the camera to the default home view</source>
       <translation>Ställer in kameran på den förvalda hemvyn</translation>
     </message>
@@ -9767,12 +9772,12 @@ den aktuella kopian kommer att gå förlorade.
   <context>
     <name>StdCmdViewIsometric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1613"/>
+      <location filename="../CommandView.cpp" line="1614"/>
       <source>&amp;Isometric</source>
       <translation>&amp;Isometrisk</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1614"/>
+      <location filename="../CommandView.cpp" line="1615"/>
       <source>Sets the camera to the isometric view</source>
       <translation>Ställer in kameran på isometrisk vy</translation>
     </message>
@@ -9780,12 +9785,12 @@ den aktuella kopian kommer att gå förlorade.
   <context>
     <name>StdCmdViewLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="1496"/>
+      <location filename="../CommandView.cpp" line="1497"/>
       <source>Left</source>
       <translation>Vänster</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1497"/>
+      <location filename="../CommandView.cpp" line="1498"/>
       <source>Sets the camera to the left view</source>
       <translation>Ställer in kameran på vänster vy</translation>
     </message>
@@ -9793,12 +9798,12 @@ den aktuella kopian kommer att gå förlorade.
   <context>
     <name>StdCmdViewRear</name>
     <message>
-      <location filename="../CommandView.cpp" line="1525"/>
+      <location filename="../CommandView.cpp" line="1526"/>
       <source>Rear</source>
       <translation>Baksida</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1526"/>
+      <location filename="../CommandView.cpp" line="1527"/>
       <source>Sets the camera to the rear view</source>
       <translation>Ställer in kameran på bakifrån</translation>
     </message>
@@ -9806,12 +9811,12 @@ den aktuella kopian kommer att gå förlorade.
   <context>
     <name>StdCmdViewRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="1554"/>
+      <location filename="../CommandView.cpp" line="1555"/>
       <source>Right</source>
       <translation>Höger</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1555"/>
+      <location filename="../CommandView.cpp" line="1556"/>
       <source>Sets the camera to the right view</source>
       <translation>Ställer in kameran på rätt vy</translation>
     </message>
@@ -9819,12 +9824,12 @@ den aktuella kopian kommer att gå förlorade.
   <context>
     <name>StdCmdViewRotateLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="1698"/>
+      <location filename="../CommandView.cpp" line="1699"/>
       <source>Rotate &amp;Left</source>
       <translation>Rotera åt &amp;vänster</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1699"/>
+      <location filename="../CommandView.cpp" line="1700"/>
       <source>Rotates the view by 90° counter-clockwise</source>
       <translation>Roterar vyn med 90° moturs</translation>
     </message>
@@ -9832,12 +9837,12 @@ den aktuella kopian kommer att gå förlorade.
   <context>
     <name>StdCmdViewTop</name>
     <message>
-      <location filename="../CommandView.cpp" line="1583"/>
+      <location filename="../CommandView.cpp" line="1584"/>
       <source>Top</source>
       <translation>Topp</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1584"/>
+      <location filename="../CommandView.cpp" line="1585"/>
       <source>Sets the camera to the top view</source>
       <translation>Ställer in kameran på en vy uppifrån</translation>
     </message>
@@ -9845,12 +9850,12 @@ den aktuella kopian kommer att gå förlorade.
   <context>
     <name>StdCmdViewTrimetric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1670"/>
+      <location filename="../CommandView.cpp" line="1671"/>
       <source>&amp;Trimetric</source>
       <translation>&amp;Trimetrisk</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1671"/>
+      <location filename="../CommandView.cpp" line="1672"/>
       <source>Sets the camera to the trimetric view</source>
       <translation>Ställer in kameran på den trimetriska vyn</translation>
     </message>
@@ -9897,12 +9902,12 @@ den aktuella kopian kommer att gå förlorade.
   <context>
     <name>StdMainFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1908"/>
+      <location filename="../CommandView.cpp" line="1909"/>
       <source>Fullscreen</source>
       <translation>Helskärm</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1909"/>
+      <location filename="../CommandView.cpp" line="1910"/>
       <source>Displays the main window in fullscreen mode</source>
       <translation>Visar huvudfönstret i helskärmsläge</translation>
     </message>
@@ -9910,12 +9915,12 @@ den aktuella kopian kommer att gå förlorade.
   <context>
     <name>StdOrthographicCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="146"/>
+      <location filename="../CommandView.cpp" line="147"/>
       <source>Orthographic View</source>
       <translation>Ortografisk vy</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="147"/>
+      <location filename="../CommandView.cpp" line="148"/>
       <source>Switches to orthographic view mode</source>
       <translation>Växlar till ortografiskt visningsläge</translation>
     </message>
@@ -9923,12 +9928,12 @@ den aktuella kopian kommer att gå förlorade.
   <context>
     <name>StdPerspectiveCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="193"/>
+      <location filename="../CommandView.cpp" line="194"/>
       <source>Perspective View</source>
       <translation>Perspektivisk vy</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="194"/>
+      <location filename="../CommandView.cpp" line="195"/>
       <source>Switches to perspective view mode</source>
       <translation>Växlar till perspektivt visningsläge</translation>
     </message>
@@ -9951,7 +9956,7 @@ den aktuella kopian kommer att gå förlorade.
     <message>
       <location filename="../CommandView.cpp" line="3446"/>
       <source>Preselection</source>
-      <translation type="unfinished">Preselection</translation>
+      <translation>Förval</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3447"/>
@@ -9962,12 +9967,12 @@ den aktuella kopian kommer att gå förlorade.
   <context>
     <name>StdViewDock</name>
     <message>
-      <location filename="../CommandView.cpp" line="1846"/>
+      <location filename="../CommandView.cpp" line="1847"/>
       <source>&amp;Docked</source>
       <translation>&amp;Dockad</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1847"/>
+      <location filename="../CommandView.cpp" line="1848"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
       <translation>Visar den aktiva vyn antingen i helskärmsläge, odockat eller dockat läge</translation>
     </message>
@@ -9975,12 +9980,12 @@ den aktuella kopian kommer att gå förlorade.
   <context>
     <name>StdViewFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1943"/>
+      <location filename="../CommandView.cpp" line="1944"/>
       <source>&amp;Fullscreen</source>
       <translation>&amp;Helskärm</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1944"/>
+      <location filename="../CommandView.cpp" line="1945"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
       <translation>Visar den aktiva vyn antingen i helskärmsläge, odockat eller dockat läge</translation>
     </message>
@@ -9988,12 +9993,12 @@ den aktuella kopian kommer att gå förlorade.
   <context>
     <name>StdViewScreenShot</name>
     <message>
-      <location filename="../CommandView.cpp" line="2114"/>
+      <location filename="../CommandView.cpp" line="2115"/>
       <source>Save &amp;Image…</source>
       <translation>Spara &amp;bild…</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2115"/>
+      <location filename="../CommandView.cpp" line="2116"/>
       <source>Creates a screenshot of the active view</source>
       <translation>Ta en skärmbild på den aktiva vyn</translation>
     </message>
@@ -10001,12 +10006,12 @@ den aktuella kopian kommer att gå förlorade.
   <context>
     <name>StdViewUndock</name>
     <message>
-      <location filename="../CommandView.cpp" line="1877"/>
+      <location filename="../CommandView.cpp" line="1878"/>
       <source>&amp;Undocked</source>
       <translation>&amp;Odockad</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1878"/>
+      <location filename="../CommandView.cpp" line="1879"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
       <translation>Visar den aktiva vyn antingen i helskärmsläge, odockat eller dockat läge</translation>
     </message>
@@ -10059,72 +10064,72 @@ Fortsätta?
   <context>
     <name>Std_DrawStyle</name>
     <message>
-      <location filename="../CommandView.cpp" line="843"/>
+      <location filename="../CommandView.cpp" line="844"/>
       <source>Normal mode</source>
       <translation>Normalt läge</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="842"/>
+      <location filename="../CommandView.cpp" line="843"/>
       <source>As Is</source>
-      <translation type="unfinished">As Is</translation>
+      <translation>Som det är</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="845"/>
+      <location filename="../CommandView.cpp" line="846"/>
       <source>Points</source>
       <translation>Punkter</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="846"/>
+      <location filename="../CommandView.cpp" line="847"/>
       <source>Points mode</source>
       <translation>Punktläge</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="848"/>
+      <location filename="../CommandView.cpp" line="849"/>
       <source>Wireframe</source>
       <translation>Trådram</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="849"/>
+      <location filename="../CommandView.cpp" line="850"/>
       <source>Wireframe mode</source>
       <translation>Trådramsläge</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="851"/>
+      <location filename="../CommandView.cpp" line="852"/>
       <source>Hidden Line</source>
       <translation>Dold linje</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="852"/>
+      <location filename="../CommandView.cpp" line="853"/>
       <source>Hidden line mode</source>
       <translation>Dold linje-läge</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="854"/>
+      <location filename="../CommandView.cpp" line="855"/>
       <source>No Shading</source>
       <translation>Ingen skuggning</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="855"/>
+      <location filename="../CommandView.cpp" line="856"/>
       <source>No shading mode</source>
       <translation>Utan skuggning-läge</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="857"/>
+      <location filename="../CommandView.cpp" line="858"/>
       <source>Shaded</source>
       <translation>Skuggad</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="858"/>
+      <location filename="../CommandView.cpp" line="859"/>
       <source>Shaded mode</source>
       <translation>Skuggläge</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="860"/>
+      <location filename="../CommandView.cpp" line="861"/>
       <source>Flat Lines</source>
       <translation>Platta linjer</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="861"/>
+      <location filename="../CommandView.cpp" line="862"/>
       <source>Flat lines mode</source>
       <translation>Platta linjer-läge</translation>
     </message>
@@ -10147,7 +10152,7 @@ Spara dokumentet nu?</translation>
   <context>
     <name>Std_Group</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="151"/>
+      <location filename="../CommandStructure.cpp" line="150"/>
       <source>Group</source>
       <translation>Grupp</translation>
     </message>
@@ -10339,23 +10344,28 @@ Spara dokumentet nu?</translation>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Om den är markerad visas meddelandeområdet i statusfältet: en knapp med det aktuella antalet meddelanden, som kan expandera den detaljerade meddelandelistan. Eventuellt med ytterligare popup-aviseringar.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="66"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="32"/>
+      <source>Enables non-intrusive pop-up notifications above the notification area. Pop-up notifications can be dismissed manually by clicking on them, or automatically after a set duration.</source>
+      <translation>Aktiverar diskreta popupaviseringar ovanför aviseringsområdet. Popupaviseringar kan stängas manuellt genom att du klickar på dem eller automatiskt efter en angiven tid.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="64"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum amount of time the notification will be shown (unless mouse buttons are clicked). It also controls when user notifications will be removed if the &amp;quot;Auto-remove user notifications&amp;quot; setting is checked.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximal tid som meddelandet visas (om inte musknapparna klickas). Den styr också när användarnotiser ska tas bort om inställningen &amp;quot;Ta bort användarnotiser automatiskt&amp;quot; är markerad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="69"/>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="94"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="67"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="92"/>
       <source> s</source>
       <translation> s</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="91"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="89"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum amount of time the notification will be shown (unless the notification bubble is dismissed by clicking on it).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minsta tid som meddelandet visas (om inte meddelandebubblan avfärdas genom att du klickar på den).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="117"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="115"/>
       <source>Maximum number of notifications that will be simultaneously present on the notification bubble.</source>
       <translation>Maximalt antal meddelanden som samtidigt visas i meddelandebubblan.</translation>
     </message>
@@ -10365,126 +10375,117 @@ Spara dokumentet nu?</translation>
       <translation>Aktivera meddelandefält</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="32"/>
-      <source>Enables non-intrusive pop-up notifications above the status bar notification area. Pop-up notifications can be manually dismissed by clicking on them, and also automatically dismissed by specifying a maximum and minimum duration for them to be displayed.
-
-Additionally, pop-up notifications can be disabled. In this case the user can still use the notification area as a quick-access location to view notifications, without the distracton of an additional pop-up.</source>
-      <translation>Aktiverar icke-påträngande popup-meddelanden ovanför statusfältets meddelandeområde. Popup-meddelanden kan avaktiveras manuellt genom att klicka på dem, och även automatiskt genom att ange en maximal och minimal tid för hur länge de ska visas.
-
-Dessutom kan popup-meddelanden inaktiveras. I det här fallet kan användaren fortfarande använda meddelandefältet som en snabbåtkomstplats för att visa meddelanden, utan att distraheras av ytterligare en popup.</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="37"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="35"/>
       <source>Enable Pop-Up Notifications</source>
       <translation>Aktivera popup-meddelanden</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="49"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="47"/>
       <source>Minimum duration</source>
       <translation>Minimum varaktighet</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="59"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="57"/>
       <source>Maximum duration</source>
       <translation>Maximum varaktighet</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="110"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="108"/>
       <source>Maximum concurrent notification count</source>
       <translation>Maximalt antal samtidiga meddelanden</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="133"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="131"/>
       <source>Notification bubble width</source>
       <translation>Notifieringsbubblans bredd</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="140"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="138"/>
       <source>Width of the pop-up notification bubble in pixels.</source>
       <translation>Bredd på popup-meddelandebubblan i pixlar.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="143"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="141"/>
       <source> px</source>
       <translation> bildpunkter</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="168"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="166"/>
       <source>Any open pop-up notifications will disappear when another window is activated.</source>
       <translation>Alla öppna popup-meddelanden försvinner när ett annat fönster aktiveras.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="187"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="185"/>
       <source>Prevent pop-up notifications from appearing when the FreeCAD window is not the active window.</source>
       <translation>Förhindra att popup-meddelanden visas när FreeCAD-fönstret inte är det aktiva fönstret.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="190"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="188"/>
       <source>Do not show when window is inactive</source>
       <translation>Visa inte när fönstret är inaktivt</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="209"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="207"/>
       <source>Additional notification sources to show in the notification area.</source>
       <translation>Ytterligare meddelandekällor som ska visas i meddelandefältet.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="212"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="210"/>
       <source>Additional Data Sources</source>
       <translation>Ytterligare datakällor</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="218"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="216"/>
       <source>Errors intended for developers will appear in the notification area.</source>
       <translation>Fel som är avsedda för utvecklare kommer att visas i meddelandefältet.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="237"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="235"/>
       <source>Warnings intended for developers will appear in the notification area.</source>
       <translation>Varningar som är avsedda för utvecklare visas i meddelandefältet.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="259"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="257"/>
       <source>Controls the amount of notifications to show in the list.</source>
       <translation>Styr hur många meddelanden som ska visas i listan.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="262"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="260"/>
       <source>Notifications List</source>
       <translation>Notifieringslista</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="287"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="285"/>
       <source>Maximum notification count</source>
       <translation>Maximalt antal meddelanden</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="268"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="266"/>
       <source>Limits the number of notifications that will be kept in the list. If 0, there is no limit.</source>
       <translation>Begränsar antalet meddelanden som ska sparas i listan. Om 0, finns det ingen gräns.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="294"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="292"/>
       <source>Removes the user notifications from the notifications list after the maximum duration for pop-up notifications has lapsed.</source>
       <translation>Tar bort användarmeddelanden från meddelandelistan efter att den maximala tiden för popup-meddelanden har löpt ut.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="297"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="295"/>
       <source>Auto-remove user notifications</source>
       <translation>Ta bort användarmeddelanden automatiskt</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="221"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="219"/>
       <source>Debug errors</source>
       <translation>Felsökningsfel</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="240"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="238"/>
       <source>Debug warnings</source>
       <translation>Felsökningsvarningar</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="171"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="169"/>
       <source>Hide when other window is activated</source>
       <translation>Dölj när ett annat fönster är aktiverat</translation>
     </message>
@@ -10693,13 +10694,63 @@ efter att FreeCAD startas</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="260"/>
+      <source>Snap rotation to line</source>
+      <translation type="unfinished">Snap rotation to line</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.ui" line="263"/>
+      <source>Rotate the image to align the drawn line to the nearest 45 degree angle</source>
+      <translation type="unfinished">Rotate the image to align the drawn line to the nearest 45 degree angle</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.ui" line="273"/>
+      <source>Center on midpoint</source>
+      <translation type="unfinished">Center on midpoint</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.ui" line="276"/>
+      <source>Center the image on the midpoint of the drawn line</source>
+      <translation type="unfinished">Center the image on the midpoint of the drawn line</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.ui" line="288"/>
       <source>Apply</source>
       <translation>Verkställ</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="267"/>
+      <location filename="../TaskView/TaskImage.ui" line="295"/>
       <source>Cancel</source>
       <translation>Avbryt</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="215"/>
+      <source>%1 snap angle</source>
+      <translation type="unfinished">%1 snap angle</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="216"/>
+      <source>%1 toggle centering</source>
+      <translation type="unfinished">%1 toggle centering</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="217"/>
+      <source>%1 toggle rotating to line</source>
+      <translation type="unfinished">%1 toggle rotating to line</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="218"/>
+      <source>%1 accept distance</source>
+      <translation type="unfinished">%1 accept distance</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="224"/>
+      <source>%1 pick first point</source>
+      <translation>%1 välj första punkten</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="226"/>
+      <source>%1 pick second point</source>
+      <translation>%1 välj andra punkten</translation>
     </message>
   </context>
   <context>
@@ -10850,12 +10901,12 @@ efter att FreeCAD startas</translation>
   <context>
     <name>StdViewLoadImage</name>
     <message>
-      <location filename="../CommandView.cpp" line="2314"/>
+      <location filename="../CommandView.cpp" line="2313"/>
       <source>&amp;Load Image…</source>
       <translation>&amp;Läs in bild…</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2315"/>
+      <location filename="../CommandView.cpp" line="2314"/>
       <source>Loads an image</source>
       <translation>Läser in en bild</translation>
     </message>
@@ -10870,7 +10921,7 @@ efter att FreeCAD startas</translation>
     <message>
       <location filename="../NaviCube.cpp" line="1383"/>
       <source>Drags and places the NaviCube</source>
-      <translation type="unfinished">Drags and places the NaviCube</translation>
+      <translation>Drar och placerar NaviCube</translation>
     </message>
   </context>
   <context>
@@ -11309,12 +11360,12 @@ visa startskärmen.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="363"/>
       <source>Activate fine-grained recomputation of documents</source>
-      <translation type="unfinished">Activate fine-grained recomputation of documents</translation>
+      <translation>Aktivera finkornig omberäkning av dokument</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="366"/>
       <source>Fine-grained recompute (experimental)</source>
-      <translation type="unfinished">Fine-grained recompute (experimental)</translation>
+      <translation>Finkornig omberäkning (experimentell)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="385"/>
@@ -12535,7 +12586,7 @@ regionen inte är ogenomskinliga.</translation>
       <location filename="../TaskTransform.cpp" line="450"/>
       <location filename="../TaskTransform.cpp" line="465"/>
       <source>Select object, face, edge…</source>
-      <translation type="unfinished">Select object, face, edge…</translation>
+      <translation>Välj objekt, yta, kant …</translation>
     </message>
     <message>
       <location filename="../TaskTransform.cpp" line="451"/>
@@ -12848,22 +12899,22 @@ regionen inte är ogenomskinliga.</translation>
   <context>
     <name>Gui::Application</name>
     <message>
-      <location filename="../Application.cpp" line="496"/>
+      <location filename="../Application.cpp" line="477"/>
       <source>Built-in Parameters</source>
       <translation>Inbyggda parametrar</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="470"/>
+      <location filename="../Application.cpp" line="451"/>
       <source>Theme Parameters</source>
       <translation>Parametrar för tema</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="505"/>
+      <location filename="../Application.cpp" line="486"/>
       <source>Theme Parameters - Fallback</source>
       <translation>Temaparametrar - Fallback</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="517"/>
+      <location filename="../Application.cpp" line="498"/>
       <source>User Parameters</source>
       <translation>Användarparametrar</translation>
     </message>
@@ -12902,7 +12953,7 @@ regionen inte är ogenomskinliga.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="696"/>
       <source>Export Dependency &amp;Graph…</source>
-      <translation type="unfinished">Export Dependency &amp;Graph…</translation>
+      <translation>Exportera beroende&amp;graf …</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="697"/>
@@ -12928,7 +12979,7 @@ regionen inte är ogenomskinliga.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="843"/>
       <source>Save a Cop&amp;y…</source>
-      <translation type="unfinished">Save a Cop&amp;y…</translation>
+      <translation>Spara en ko&amp;pia …</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="845"/>
@@ -13350,7 +13401,7 @@ Fortsätta?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="466"/>
       <source>Cu&amp;stomize</source>
-      <translation type="unfinished">Cu&amp;stomize</translation>
+      <translation>An&amp;passa</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="467"/>
@@ -13381,7 +13432,7 @@ Fortsätta?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="600"/>
       <source>Opens the FreeCAD donation page</source>
-      <translation type="unfinished">Opens the FreeCAD donation page</translation>
+      <translation>Öppnar FreeCADs donationssida</translation>
     </message>
   </context>
   <context>
@@ -13394,7 +13445,7 @@ Fortsätta?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="632"/>
       <source>Opens the FreeCAD developers handbook</source>
-      <translation type="unfinished">Opens the FreeCAD developers handbook</translation>
+      <translation>Öppnar FreeCADs utvecklarhandbok</translation>
     </message>
   </context>
   <context>
@@ -13452,12 +13503,12 @@ Fortsätta?</translation>
   <context>
     <name>StdCmdGroup</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="132"/>
+      <location filename="../CommandStructure.cpp" line="131"/>
       <source>New Group</source>
       <translation>Ny prisgrupp</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="133"/>
+      <location filename="../CommandStructure.cpp" line="132"/>
       <source>Creates a group, which is a general-purpose container to group objects in the tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</source>
       <translation>Skapar en grupp, som är en generell behållare för att gruppera objekt i trädvyn, oavsett deras datatyp. Det är en enkel mapp för att organisera objekten i en modell.</translation>
     </message>
@@ -13465,12 +13516,12 @@ Fortsätta?</translation>
   <context>
     <name>StdCmdVarSet</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="204"/>
+      <location filename="../CommandStructure.cpp" line="203"/>
       <source>Variable Set</source>
       <translation>Variabeluppsättning</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="206"/>
+      <location filename="../CommandStructure.cpp" line="205"/>
       <source>Creates a variable set, which is an object that maintains a set of properties to be used as variables</source>
       <translation>Skapar en variabeluppsättning, vilket är ett objekt som innehåller en uppsättning egenskaper som kan användas som variabler</translation>
     </message>
@@ -13478,12 +13529,12 @@ Fortsätta?</translation>
   <context>
     <name>StdCmdViewSaveCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="249"/>
+      <location filename="../CommandView.cpp" line="250"/>
       <source>Save Current Camera</source>
       <translation>Spara aktuell kamera</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="250"/>
+      <location filename="../CommandView.cpp" line="251"/>
       <source>Saves the current camera settings</source>
       <translation>Sparar de aktuella kamerainställningarna</translation>
     </message>
@@ -13491,12 +13542,12 @@ Fortsätta?</translation>
   <context>
     <name>StdCmdViewRestoreCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="275"/>
+      <location filename="../CommandView.cpp" line="276"/>
       <source>Restore Saved Camera</source>
       <translation>Återställ sparad kamera</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="276"/>
+      <location filename="../CommandView.cpp" line="277"/>
       <source>Restores the saved camera settings</source>
       <translation>Återställer de sparade kamerainställningarna</translation>
     </message>
@@ -13504,12 +13555,12 @@ Fortsätta?</translation>
   <context>
     <name>StdCmdToggleClipPlane</name>
     <message>
-      <location filename="../CommandView.cpp" line="676"/>
+      <location filename="../CommandView.cpp" line="677"/>
       <source>Clippin&amp;g View</source>
       <translation>Clippin&amp;g Visa</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="677"/>
+      <location filename="../CommandView.cpp" line="678"/>
       <source>Toggles clipping of the active view</source>
       <translation>Inaktiverar klippning av den aktiva vyn</translation>
     </message>
@@ -13517,12 +13568,12 @@ Fortsätta?</translation>
   <context>
     <name>StdCmdDrawStyle</name>
     <message>
-      <location filename="../CommandView.cpp" line="762"/>
+      <location filename="../CommandView.cpp" line="763"/>
       <source>&amp;Draw Style</source>
       <translation>&amp;Ritstil</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="763"/>
+      <location filename="../CommandView.cpp" line="764"/>
       <source>Changes the draw style of the objects</source>
       <translation>Ändrar ritstilen för objekten</translation>
     </message>
@@ -13530,12 +13581,12 @@ Fortsätta?</translation>
   <context>
     <name>StdCmdToggleVisibility</name>
     <message>
-      <location filename="../CommandView.cpp" line="969"/>
+      <location filename="../CommandView.cpp" line="970"/>
       <source>Toggle &amp;Visibility</source>
       <translation>Växla s&amp;ynlighet</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="970"/>
+      <location filename="../CommandView.cpp" line="971"/>
       <source>Toggles the visibility of the selection</source>
       <translation>Växlar synligheten för markeringen</translation>
     </message>
@@ -13543,12 +13594,12 @@ Fortsätta?</translation>
   <context>
     <name>StdCmdToggleTransparency</name>
     <message>
-      <location filename="../CommandView.cpp" line="1003"/>
+      <location filename="../CommandView.cpp" line="1004"/>
       <source>Toggle Transparenc&amp;y</source>
       <translation>Växla &amp;genomskinlighet</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1005"/>
+      <location filename="../CommandView.cpp" line="1006"/>
       <source>Toggles the transparency of the selected objects. Transparency can be fine-tuned in the appearance task dialog</source>
       <translation>Växlar transparensen för de markerade objekten. Transparensen kan finjusteras i dialogrutan för utseendeuppgifter</translation>
     </message>
@@ -13556,12 +13607,12 @@ Fortsätta?</translation>
   <context>
     <name>StdCmdToggleSelectability</name>
     <message>
-      <location filename="../CommandView.cpp" line="1116"/>
+      <location filename="../CommandView.cpp" line="1117"/>
       <source>Toggle Se&amp;lectability</source>
       <translation>Växla val&amp;barhet</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1117"/>
+      <location filename="../CommandView.cpp" line="1118"/>
       <source>Toggles the property of the objects to get selected in the 3D view</source>
       <translation>Växlar egenskapen för de objekt som ska markeras i 3D-vyn</translation>
     </message>
@@ -13569,12 +13620,12 @@ Fortsätta?</translation>
   <context>
     <name>StdCmdShowSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1178"/>
+      <location filename="../CommandView.cpp" line="1179"/>
       <source>Sho&amp;w Selection</source>
       <translation>Visa &amp;markering</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1179"/>
+      <location filename="../CommandView.cpp" line="1180"/>
       <source>Shows all selected objects</source>
       <translation>Visar alla markerade objekt</translation>
     </message>
@@ -13582,12 +13633,12 @@ Fortsätta?</translation>
   <context>
     <name>StdCmdHideSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1206"/>
+      <location filename="../CommandView.cpp" line="1207"/>
       <source>&amp;Hide Selection</source>
       <translation>&amp;Dölj markering</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1207"/>
+      <location filename="../CommandView.cpp" line="1208"/>
       <source>Hides all selected objects</source>
       <translation>Döljer alla markerade objekt</translation>
     </message>
@@ -13595,12 +13646,12 @@ Fortsätta?</translation>
   <context>
     <name>StdCmdSelectVisibleObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1234"/>
+      <location filename="../CommandView.cpp" line="1235"/>
       <source>&amp;Select Visible Objects</source>
       <translation>&amp;Välj synliga objekt</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1235"/>
+      <location filename="../CommandView.cpp" line="1236"/>
       <source>Selects all visible objects in the active document</source>
       <translation>Markerar alla synliga objekt i det aktiva dokumentet</translation>
     </message>
@@ -13608,12 +13659,12 @@ Fortsätta?</translation>
   <context>
     <name>StdCmdToggleObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1278"/>
+      <location filename="../CommandView.cpp" line="1279"/>
       <source>To&amp;ggle All Objects</source>
       <translation>Väx&amp;la alla objekt</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1279"/>
+      <location filename="../CommandView.cpp" line="1280"/>
       <source>Toggles the visibility of all objects in the active document</source>
       <translation>Växlar synligheten för alla objekt i det aktiva dokumentet</translation>
     </message>
@@ -13621,12 +13672,12 @@ Fortsätta?</translation>
   <context>
     <name>StdCmdShowObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1330"/>
+      <location filename="../CommandView.cpp" line="1331"/>
       <source>Show &amp;All Objects</source>
       <translation>Visa &amp;alla objekt</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1331"/>
+      <location filename="../CommandView.cpp" line="1332"/>
       <source>Shows all objects in the document</source>
       <translation>Visar alla objekt i dokumentet</translation>
     </message>
@@ -13634,12 +13685,12 @@ Fortsätta?</translation>
   <context>
     <name>StdCmdHideObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1372"/>
+      <location filename="../CommandView.cpp" line="1373"/>
       <source>Hide All &amp;Objects</source>
       <translation>Dölj alla &amp;objekt</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1373"/>
+      <location filename="../CommandView.cpp" line="1374"/>
       <source>Hides all objects in the document</source>
       <translation>Döljer alla objekt i dokumentet</translation>
     </message>
@@ -13647,12 +13698,12 @@ Fortsätta?</translation>
   <context>
     <name>StdCmdViewRotateRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="1723"/>
+      <location filename="../CommandView.cpp" line="1724"/>
       <source>Rotates &amp;Right</source>
       <translation>Rotera åt &amp;höger</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1724"/>
+      <location filename="../CommandView.cpp" line="1725"/>
       <source>Rotates the view by 90° clockwise</source>
       <translation>Roterar vyn med 90° medurs</translation>
     </message>
@@ -13660,12 +13711,12 @@ Fortsätta?</translation>
   <context>
     <name>StdCmdViewFitAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="1748"/>
+      <location filename="../CommandView.cpp" line="1749"/>
       <source>&amp;Fit All</source>
       <translation>An&amp;passa till allt</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1749"/>
+      <location filename="../CommandView.cpp" line="1750"/>
       <source>Fits all content into the 3D view</source>
       <translation>Passar in allt innehåll i 3D-vyn</translation>
     </message>
@@ -13673,12 +13724,12 @@ Fortsätta?</translation>
   <context>
     <name>StdCmdViewFitSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1777"/>
+      <location filename="../CommandView.cpp" line="1778"/>
       <source>Fit &amp;Selection</source>
       <translation>Anpassa till &amp;markering</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1778"/>
+      <location filename="../CommandView.cpp" line="1779"/>
       <source>Fits the selected content into the 3D view</source>
       <translation>Passar in det valda innehållet i 3D-vyn</translation>
     </message>
@@ -13686,12 +13737,12 @@ Fortsätta?</translation>
   <context>
     <name>StdCmdViewGroup</name>
     <message>
-      <location filename="../CommandView.cpp" line="1807"/>
+      <location filename="../CommandView.cpp" line="1808"/>
       <source>Standard &amp;Views</source>
       <translation>Standard&amp;vyer</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1808"/>
+      <location filename="../CommandView.cpp" line="1809"/>
       <source>Changes to a standard view</source>
       <translation>Ändringar i en standardvy</translation>
     </message>
@@ -13699,12 +13750,12 @@ Fortsätta?</translation>
   <context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1975"/>
+      <location filename="../CommandView.cpp" line="1976"/>
       <source>D&amp;ocument Window</source>
       <translation>D&amp;ocument-fönster</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1976"/>
+      <location filename="../CommandView.cpp" line="1977"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
       <translation>Visar den aktiva vyn antingen i helskärmsläge, odockat eller dockat läge</translation>
     </message>
@@ -13712,12 +13763,12 @@ Fortsätta?</translation>
   <context>
     <name>StdCmdViewVR</name>
     <message>
-      <location filename="../CommandView.cpp" line="2086"/>
+      <location filename="../CommandView.cpp" line="2087"/>
       <source>FreeCAD VR</source>
       <translation>FreeCAD VR</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2087"/>
+      <location filename="../CommandView.cpp" line="2088"/>
       <source>Extends the FreeCAD 3D Window to a VR device</source>
       <translation>Förlänger FreeCAD 3D-fönstret till en VR-enhet</translation>
     </message>
@@ -13725,12 +13776,12 @@ Fortsätta?</translation>
   <context>
     <name>StdCmdViewCreate</name>
     <message>
-      <location filename="../CommandView.cpp" line="2361"/>
+      <location filename="../CommandView.cpp" line="2360"/>
       <source>New 3D View</source>
       <translation>Ny 3D-vy</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2362"/>
+      <location filename="../CommandView.cpp" line="2361"/>
       <source>Opens a new 3D view window for the active document</source>
       <translation>Öppnar ett nytt 3D-vyfönster för det aktiva dokumentet</translation>
     </message>
@@ -13738,12 +13789,12 @@ Fortsätta?</translation>
   <context>
     <name>StdCmdToggleNavigation</name>
     <message>
-      <location filename="../CommandView.cpp" line="2390"/>
+      <location filename="../CommandView.cpp" line="2389"/>
       <source>Toggle Navigation/&amp;Edit Mode</source>
       <translation>Växla navigering/&amp;redigeringsläge</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2391"/>
+      <location filename="../CommandView.cpp" line="2390"/>
       <source>Toggles between navigation and edit mode</source>
       <translation>Växlar mellan navigerings- och redigeringsläge</translation>
     </message>
@@ -13751,12 +13802,12 @@ Fortsätta?</translation>
   <context>
     <name>StdCmdAxisCross</name>
     <message>
-      <location filename="../CommandView.cpp" line="2438"/>
+      <location filename="../CommandView.cpp" line="2437"/>
       <source>Toggle A&amp;xis Cross</source>
       <translation>Växla a&amp;xelkors</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2439"/>
+      <location filename="../CommandView.cpp" line="2438"/>
       <source>Toggles the axis cross at the origin</source>
       <translation>Växlar axelkorset vid origo</translation>
     </message>
@@ -13974,7 +14025,7 @@ Fortsätta?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3387"/>
       <source>Sync View</source>
-      <translation type="unfinished">Sync View</translation>
+      <translation>Synkronisera vy</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3388"/>
@@ -13987,7 +14038,7 @@ Fortsätta?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3407"/>
       <source>Sync Selection</source>
-      <translation type="unfinished">Sync Selection</translation>
+      <translation>Synkronisera markering</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3408"/>
@@ -14013,7 +14064,7 @@ Fortsätta?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3466"/>
       <source>Record Selection</source>
-      <translation type="unfinished">Record Selection</translation>
+      <translation>Spela in markering</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3468"/>
@@ -14070,7 +14121,7 @@ Fortsätta?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3611"/>
       <source>Toggles overlay mode for all docked panels</source>
-      <translation type="unfinished">Toggles overlay mode for all docked panels</translation>
+      <translation>Växlar överlagringsläge för alla dockade paneler</translation>
     </message>
   </context>
   <context>
@@ -14275,7 +14326,7 @@ Detta gör att den dockade panelen alltid är transparent.</translation>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1082"/>
+      <location filename="../ExpressionCompleter.cpp" line="1108"/>
       <source>Exact Match</source>
       <translation>Exakt matchning</translation>
     </message>
@@ -14283,7 +14334,7 @@ Detta gör att den dockade panelen alltid är transparent.</translation>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1271"/>
+      <location filename="../ExpressionCompleter.cpp" line="1297"/>
       <source>Exact Match</source>
       <translation>Exakt matchning</translation>
     </message>
@@ -14329,7 +14380,7 @@ Detta gör att den dockade panelen alltid är transparent.</translation>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="4316"/>
+      <location filename="../Tree.cpp" line="4323"/>
       <source>Tree View</source>
       <translation>Trädvy</translation>
     </message>
@@ -14358,7 +14409,7 @@ Detta gör att den dockade panelen alltid är transparent.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="520"/>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="934"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="925"/>
       <source>the name cannot be empty</source>
       <translation>namnet får inte vara tomt</translation>
     </message>
@@ -14378,7 +14429,7 @@ Detta gör att den dockade panelen alltid är transparent.</translation>
       <translation>%1 finns redan</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="930"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="921"/>
       <source>Invalid group name: %1</source>
       <translation>Ogiltigt gruppnamn: %1</translation>
     </message>
@@ -14403,7 +14454,7 @@ Detta gör att den dockade panelen alltid är transparent.</translation>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="71"/>
       <source>Tuple</source>
-      <translation type="unfinished">Tuple</translation>
+      <translation>Tupel</translation>
     </message>
   </context>
   <context>
@@ -14502,7 +14553,7 @@ Detta gör att den dockade panelen alltid är transparent.</translation>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="389"/>
       <source>Not a Number</source>
-      <translation type="unfinished">Not a Number</translation>
+      <translation>Inte ett tal</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="397"/>
@@ -14616,19 +14667,19 @@ Detta gör att den dockade panelen alltid är transparent.</translation>
     </message>
   </context>
   <context>
-    <name>FileFormat</name>
-    <message>
-      <location filename="../FreeCADGuiInit.py" line="463"/>
-      <source>Portable Document Format</source>
-      <translation type="unfinished">Portable Document Format</translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::TaskCommandLinkDialog</name>
     <message>
       <location filename="../TaskCommandLink.ui" line="14"/>
       <source>Insert</source>
       <translation>infoga</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileFormat</name>
+    <message>
+      <location filename="../FreeCADGuiInit.py" line="463"/>
+      <source>Portable Document Format</source>
+      <translation>Portabelt dokumentformat</translation>
     </message>
   </context>
   <context>
@@ -14720,7 +14771,7 @@ behandlas som genvägstangentsekvensen "F, F".</translation>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="234"/>
       <source>Priority List</source>
-      <translation type="unfinished">Priority List</translation>
+      <translation>Prioritetslista</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="293"/>
@@ -14738,25 +14789,12 @@ behandlas som genvägstangentsekvensen "F, F".</translation>
     <message>
       <location filename="../CommandFeat.cpp" line="240"/>
       <source>Toggle Suppressed</source>
-      <translation type="unfinished">Toggle Suppressed</translation>
+      <translation>Växla undertryckt status</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="242"/>
       <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
-      <translation type="unfinished">Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdToggleBottomPanels</name>
-    <message>
-      <location filename="../CommandView.cpp" line="3890"/>
-      <source>Toggle Bottom Panels</source>
-      <translation type="unfinished">Toggle Bottom Panels</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="3891"/>
-      <source>Toggles the bottom dock panels</source>
-      <translation type="unfinished">Toggles the bottom dock panels</translation>
+      <translation>Växlar undertryckt status för de valda objekten. Ett undertryckt objekt beter sig som om det hade tagits bort.</translation>
     </message>
   </context>
   <context>
@@ -14770,24 +14808,6 @@ behandlas som genvägstangentsekvensen "F, F".</translation>
       <location filename="../Widgets.cpp" line="1905"/>
       <source>Value</source>
       <translation>Värde</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdAnnotationLabel</name>
-    <message>
-      <location filename="../CommandStd.cpp" line="983"/>
-      <source>Tools</source>
-      <translation>Verktyg</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="984"/>
-      <source>Annotation Label</source>
-      <translation type="unfinished">Annotation Label</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="985"/>
-      <source>Creates a new annotation label at the picked location in the 3D view</source>
-      <translation type="unfinished">Creates a new annotation label at the picked location in the 3D view</translation>
     </message>
   </context>
   <context>
@@ -14805,11 +14825,34 @@ behandlas som genvägstangentsekvensen "F, F".</translation>
     </message>
   </context>
   <context>
-    <name>Gui</name>
+    <name>StdCmdAnnotationLabel</name>
     <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="284"/>
-      <source>New parameter…</source>
-      <translation>Ny parameter…</translation>
+      <location filename="../CommandStd.cpp" line="983"/>
+      <source>Tools</source>
+      <translation>Verktyg</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="984"/>
+      <source>Annotation Label</source>
+      <translation>Kommentaretikett</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="985"/>
+      <source>Creates a new annotation label at the picked location in the 3D view</source>
+      <translation>Skapar en ny kommentaretikett på den valda platsen i 3D-vyn</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleBottomPanels</name>
+    <message>
+      <location filename="../CommandView.cpp" line="3890"/>
+      <source>Toggle Bottom Panels</source>
+      <translation>Växla nedre paneler</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="3891"/>
+      <source>Toggles the bottom dock panels</source>
+      <translation>Växlar de nedre dockningspanelerna</translation>
     </message>
   </context>
   <context>
@@ -14817,32 +14860,32 @@ behandlas som genvägstangentsekvensen "F, F".</translation>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3587"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
-      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+      <translation>Definierar grundfärgen på en yta när den belyses. Den anger hur objektet sprider ljuset jämnt i alla riktningar, oberoende av betraktarens vinkel. Den här egenskapen påverkar materialets färg mest.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3597"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
-      <translation type="unfinished">Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</translation>
+      <translation>Definierar färgen på en yta vid indirekt, jämn belysning och anger hur den ser ut när den endast belyses av omgivningsljus i en scen, utan riktat ljus, skuggning eller högdagrar.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3607"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
-      <translation type="unfinished">Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</translation>
+      <translation>Definierar färgen och intensiteten hos de ljusa, spegelliknande högdagrar som visas på blanka eller reflekterande ytor när ljus träffar dem direkt. Använd ljusa färger för blanka objekt.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3617"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
-      <translation type="unfinished">Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</translation>
+      <translation>Definierar färgen på en yta som ser ut att avge ljus som om den vore en ljuskälla, oberoende av extern belysning, så att objektet ser självlysande ut. Ställ in svart för att inte använda någon emissiv färg.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3629"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
-      <translation type="unfinished">Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</translation>
+      <translation>Definierar storleken och skärpan på spegelblänk på en yta. Högre värden ger små, skarpa blänk, medan lägre värden ger breda, mjuka blänk. Observera att blänkets intensitet definieras av spegelfärgen.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3641"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
-      <translation type="unfinished">Defines how much light passes through an object, making it partially or fully see-through</translation>
+      <translation>Definierar hur mycket ljus som passerar genom ett objekt och gör det delvis eller helt genomskinligt.</translation>
     </message>
   </context>
   <context>
@@ -14850,32 +14893,32 @@ behandlas som genvägstangentsekvensen "F, F".</translation>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3953"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
-      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+      <translation>Definierar grundfärgen på en yta när den belyses. Den anger hur objektet sprider ljuset jämnt i alla riktningar, oberoende av betraktarens vinkel. Den här egenskapen påverkar materialets färg mest.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3963"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
-      <translation type="unfinished">Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</translation>
+      <translation>Definierar färgen på en yta vid indirekt, jämn belysning och anger hur den ser ut när den endast belyses av omgivningsljus i en scen, utan riktat ljus, skuggning eller högdagrar.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3973"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
-      <translation type="unfinished">Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</translation>
+      <translation>Definierar färgen och intensiteten hos de ljusa, spegelliknande högdagrar som visas på blanka eller reflekterande ytor när ljus träffar dem direkt. Använd ljusa färger för blanka objekt.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3983"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
-      <translation type="unfinished">Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</translation>
+      <translation>Definierar färgen på en yta som ser ut att avge ljus som om den vore en ljuskälla, oberoende av extern belysning, så att objektet ser självlysande ut. Ställ in svart för att inte använda någon emissiv färg.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3995"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
-      <translation type="unfinished">Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</translation>
+      <translation>Definierar storleken och skärpan på spegelblänk på en yta. Högre värden ger små, skarpa blänk, medan lägre värden ger breda, mjuka blänk. Observera att blänkets intensitet definieras av spegelfärgen.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="4007"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
-      <translation type="unfinished">Defines how much light passes through an object, making it partially or fully see-through</translation>
+      <translation>Definierar hur mycket ljus som passerar genom ett objekt och gör det delvis eller helt genomskinligt.</translation>
     </message>
   </context>
   <context>
@@ -14884,6 +14927,14 @@ behandlas som genvägstangentsekvensen "F, F".</translation>
       <location filename="../propertyeditor/PropertyItem.cpp" line="4929"/>
       <source>Map</source>
       <translation>Karta</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui</name>
+    <message>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="284"/>
+      <source>New parameter…</source>
+      <translation>Ny parameter…</translation>
     </message>
   </context>
 </TS>
