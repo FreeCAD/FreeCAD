@@ -39,6 +39,27 @@ bool GeoElementId::operator!=(const GeoElementId& obj) const
     return this->GeoId != obj.GeoId || this->Pos != obj.Pos;
 }
 
+std::string GeoElementId::pointPosToString(PointPos Pos)
+{
+    switch (Pos) {
+        case PointPos::none:
+            return "none";
+        case PointPos::start:
+            return "start";
+        case PointPos::end:
+            return "end";
+        case PointPos::mid:
+            return "mid";
+        default:
+            return "unknown";
+    }
+}
+
+std::string GeoElementId::toString() const
+{
+    return "GeoId=" + std::to_string(GeoId) + ", Pos=" + pointPosToString(Pos);
+}
+
 #ifdef FC_OS_WIN32
 constexpr const GeoElementId GeoElementId::RtPnt = GeoElementId(GeoEnum::RtPnt, PointPos::start);
 constexpr const GeoElementId GeoElementId::HAxis = GeoElementId(GeoEnum::HAxis, PointPos::none);

@@ -130,6 +130,14 @@ public:
 
     int posIdAsInt() const;
 
+    std::string toString() const;
+
+    std::string pointPosToString() const
+    {
+        return pointPosToString(Pos);
+    }
+    static std::string pointPosToString(PointPos Pos);
+
     /** @brief GeoElementId of the Root Point
      */
     static const GeoElementId RtPnt;
