@@ -62,7 +62,6 @@ ENABLE_BITMASK_OPERATORS(Sketcher::DeleteOption)
 
 namespace Sketcher
 {
-
 class SketchAnalysis;
 
 struct ExternalToAdd
@@ -1068,19 +1067,6 @@ protected:
 
     void updateGeoHistory();
     void generateId(const Part::Geometry* geo);
-
-    /*!
-     \brief Transfer constraints on lines being filleted.
-
-     Since filleting moves the endpoints of the input geometry, existing constraints may no longer
-     be sensible. If fillet() was called with preserveCorner=false, the constraints are simply
-     deleted. But if the lines are coincident and preserveCorner=true, we can preserve most
-     constraints on the old end points by moving them to the preserved corner, or transforming
-     distance constraints on straight lines into point-to-point distance constraints.
-
-     \param geoId1, podId1, geoId2, posId2 - The two lines that have just been filleted
-     */
-    void transferFilletConstraints(int geoId1, PointPos posId1, int geoId2, PointPos posId2);
 
     // refactoring functions
     // check whether constraint may be changed driving status
