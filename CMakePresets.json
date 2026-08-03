@@ -44,10 +44,10 @@
         }
       },
       {
-        "name": "qtless",
-        "displayName": "Qt-less",
+        "name": "core-no-qt",
+        "displayName": "Qt-independent core",
         "description": "Build core FreeCAD targets without Qt support",
-        "binaryDir": "${sourceDir}/build/qtless",
+        "binaryDir": "${sourceDir}/build/core-no-qt",
         "inherits": [
           "common"
         ],
