@@ -312,6 +312,7 @@ SET(FemSolverCalculix_SRCS
 SET(FemSolverCodeAster_SRCS
     femsolver/codeaster/__init__.py
     femsolver/codeaster/add_con_fixed.py
+    femsolver/codeaster/add_con_displacement.py
     femsolver/codeaster/add_con_force.py
     femsolver/codeaster/add_femelement_geometry.py
     femsolver/codeaster/add_femelement_material.py

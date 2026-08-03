@@ -111,7 +111,7 @@ def add_shell2D(commtxt, mat_objs, ele_name, ca_writer):
 def add_shell_laminate(commtxt, mat_objs, ele_name, ca_writer):
     """Adds a shell laminate type object"""
 
-    lams = []
+    layups = []
     LU_id = 0
     for shelllam in ca_writer.member.geos_shelllaminate:
         shelllam_obj = shelllam["Object"]
@@ -122,14 +122,14 @@ def add_shell_laminate(commtxt, mat_objs, ele_name, ca_writer):
         ), f"{len(thicknesses)} ply thicknesses given, {len(orientations)} orientation angles given, these should match (i.e provide one thickness and one angle for every ply"
 
         if len(shelllam_obj.Windall["elements"]) == 0:
-            commtxt, lam = apply_con_layup(
+            commtxt, layup = apply_con_layup(
                 commtxt, shelllam_obj, ele_name, mat_objs, LU_id, ca_writer
             )
-            lams.append(lam)
+            layups.append(layup)
         else:
-            commtxt, lams = apply_vari_layup(commtxt, shelllam_obj, ele_name, mat_objs)
+            commtxt, layups = apply_vari_layup(commtxt, shelllam_obj, ele_name, mat_objs, ca_writer)
         LU_id += 1
-    return commtxt, lams
+    return commtxt, layups
 
 
 def apply_con_layup(commtxt, shelllam_obj, ele_name, mat_objs, LU_id, ca_writer):
@@ -151,40 +151,15 @@ def apply_con_layup(commtxt, shelllam_obj, ele_name, mat_objs, LU_id, ca_writer)
             matnames.append(cardname)
     elif len(matnames) == len(thicknesses):
         FreeCAD.Console.PrintMessage("Multiple materials applied to each ply\n")
-        mat_obj_names = []
-        for mo in mat_objs:
-            cardname = mo.Material["CardName"]
-            cardname = cardname.replace(" ", "")
-            cardname = cardname.replace("-", "_")
-            mat_obj_names.append(cardname)
-        mns = []
-        for mn in matnames:
-            mn = mn.replace(" ", "")
-            mn = mn.replace("-", "_")
-            if mn not in mat_obj_names:
-                raise IndexError(
-                    f"Material named {mn} is in ply materials list but is not present in analysis"
-                )
-            mns.append(mn)
-        matnames = mns
+        matnames = make_mat_list(mat_objs, matnames, True)
     else:
         raise Exception(
             "Number of plies in materials list not equal to number of plies in thickness list"
         )
 
     shelllam_obj.Materials = matnames
-    geoms = []
-
-    if len(shelllam_obj.References) == 0:
-        femmesh = ca_writer.mesh_object.FemMesh
-        for g in femmesh.Groups:
-            if femmesh.getGroupElementType(g) == "Face":
-                geoms.append(femmesh.getGroupName(g))
-    else:
-        for ref in shelllam_obj.References:
-            for geom in ref[1]:
-                geoms.append(geom)
-
+    geoms = make_geom_list(shelllam_obj, ca_writer)
+    print("GEOMS", geoms)
     matname = "LAYUP" + str(LU_id)
     layup = {
         "name": matname,
@@ -193,66 +168,68 @@ def apply_con_layup(commtxt, shelllam_obj, ele_name, mat_objs, LU_id, ca_writer)
         "thicknesses": thicknesses,
         "orientations": orientations,
     }
-
+    print("***********LAYUP**********")
+    print(layup)
     commtxt += add_layup(layup)
     ori_vec = shelllam_obj.Orientation
     commtxt += add_laminate([layup], ele_name, ori_vec)
     return commtxt, layup
 
 
-def apply_vari_layup(commtxt, shelllam_obj, ele_name, mat_objs):
+def apply_vari_layup(commtxt, shelllam_obj, ele_name, mat_objs, ca_writer):
     """Apply a layup which varies across elements"""
     FreeCAD.Console.PrintMessage("Applying variable layup\n")
-    matnames = []
     thicknesses = shelllam_obj.Thicknesses
     orientations = shelllam_obj.Orientations
-    for mo in mat_objs:
-        matnames.append(mo.Name)
-
+    matnames = make_mat_list(mat_objs)
     commtxt += "# WindAll object detected\n"
-    geoms = []
-    i = 0
-    for ref in shelllam_obj.References:
-        # TODO: work out how to create group of all elements and apply to that in case where len(shelllam_obj.References) == 0.
-        for geom in ref[1]:
-            geoms.append(geom)
-        # Set default layup
-        baselayup = {
-            "group": ref[0].Name,
-            "matnames": [matnames[0]],
-            "thicknesses": [thicknesses[0]],
-            "orientations": [orientations[0]],
+    geoms = make_geom_list(shelllam_obj, ca_writer)
+    print("GEOMS", geoms)
+    baselayup = {
+        "name": "base",
+        "group": str(geoms)[1:-1],
+        "matnames": [matnames[0]],
+        "thicknesses": [thicknesses[0]],
+        "orientations": [orientations[0]],
+    }
+    layups = [baselayup]
+    print("***********LAYUP**********")
+    print(layups)
+    ori_vec = shelllam_obj.Orientation
+    commtxt += add_layup(baselayup)
+    for e, t, o in zip(
+        shelllam_obj.Windall["elements"],
+        shelllam_obj.Windall["thicknesslists"],
+        shelllam_obj.Windall["orientationlists"],
+    ):
+        mn = [matnames[0]]
+        for i in range(1, len(t)):
+            mn.append(matnames[1])
+        gname = "LU" + str(e)
+        # TODO: WORK OUT WHY IT'S NOT PUTTING IN THE EXTRA PLIES!
+        layup = {
+            "name": gname,
+            "group": f"'{gname}'",
+            "matnames": mn,
+            "thicknesses": t,
+            "orientations": o,
         }
-        layups = [baselayup]
-        lams = [ref[0].Name]
-        ori_vec = shelllam_obj.Orientation
-        commtxt += add_layup(ref[0].Name, baselayup)
-        for e, t, o in zip(
-            shelllam_obj.Windall["elements"],
-            shelllam_obj.Windall["thicknesslists"],
-            shelllam_obj.Windall["orientationlists"],
-        ):
-            mn = [matnames[0]]
-            for i in range(1, len(t)):
-                mn.append(matnames[1])
-            gname = "E" + str(e)
-            lams.append(gname)
-            # TODO: WORK OUT WHY IT'S NOT PUTTING IN THE EXTRA PLIES!
-            layup = {"group": gname, "matnames": mn, "thicknesses": t, "orientations": o}
-            layups.append(layup)
-            commtxt += add_layup(layup["group"], layup)
-        commtxt += add_grps(layups)
-        commtxt += add_laminate(layups, ele_name, ori_vec)
-    return commtxt, lams
+        layups.append(layup)
+        print("***********LAYUP**********")
+        print(layups)
+        commtxt += add_layup(layup)
+    commtxt += add_grps(layups)
+    commtxt += add_laminate(layups, ele_name, ori_vec)
+    return commtxt, layups
 
 
 def add_grps(layups):
     commtxt = "# Adding WindAll groups\n"
     commtxt += "grps = DEFI_GROUP(MAILLAGE=mesh, CREA_GROUP_MA = (\n"
     for layup in layups[1:]:
-        commtxt += f"                                                  _F(GROUP_MA = ('{layups[0]['group']}',),\n"
-        commtxt += f"                                                     NUME_INIT = {layup['group'][1:]},\n"
-        commtxt += f"                                                     NUME_FIN = {layup['group'][1:]},\n"
+        commtxt += f"                                                  _F(GROUP_MA = ({layups[0]['group']},),\n"
+        commtxt += f"                                                     NUME_INIT = {layup['group'][2:]},\n"
+        commtxt += f"                                                     NUME_FIN = {layup['group'][2:]},\n"
         commtxt += (
             f"                                                     NOM = '{layup['group']}'),\n"
         )
@@ -291,6 +268,44 @@ def add_laminate(layups, ele_name, ori_vec):
     commtxt += "                          ),\n"
     commtxt += "                          MODELE=model)\n\n"
     return commtxt
+
+
+def make_geom_list(shelllam_obj, ca_writer):
+    geoms = []
+    if len(shelllam_obj.References) == 0:
+        femmesh = ca_writer.mesh_object.FemMesh
+        for g in femmesh.Groups:
+            if femmesh.getGroupElementType(g) == "Face":
+                geoms.append(femmesh.getGroupName(g))
+    else:
+        for ref in shelllam_obj.References:
+            for geom in ref[1]:
+                geoms.append(geom)
+    return geoms
+
+
+def make_mat_list(mat_objs, matnames=[], check=False):
+    mat_obj_names = []
+    for mo in mat_objs:
+        cardname = mo.Material["CardName"]
+        cardname = cardname.replace(" ", "")
+        cardname = cardname.replace("-", "_")
+        mat_obj_names.append(cardname)
+    mns = []
+    if check:
+        for mn in matnames:
+            mn = mn.replace(" ", "")
+            mn = mn.replace("-", "_")
+            if mn not in mat_obj_names:
+                raise IndexError(
+                    f"Material named {mn} is in ply materials list but is not present in analysis"
+                )
+            mns.append(mn)
+        matnames = mns
+    else:
+        matnames = mat_obj_names
+
+    return matnames
 
 
 ##  @}

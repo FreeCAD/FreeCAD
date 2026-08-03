@@ -39,6 +39,7 @@ from . import add_femelement_material
 from . import add_femelement_geometry
 from . import add_con_force
 from . import add_con_fixed
+from . import add_con_displacement
 from .. import writerbase
 from .equations import elasticity_writer
 
@@ -64,6 +65,7 @@ class FemInputWriterCodeAster(writerbase.FemInputWriter):
         self.IPmesh_file = join(self.dir_name, self.basename + ".med")
         self.OPmesh_file = join(self.dir_name, self.basename + ".rmed")
         self.fixes = []
+        self.disps = []
         self.forces = []
         # only use the first material object TODO deal better with multi materials
         self.mat_objs = [ML["Object"] for ML in self.member.mats_linear]
@@ -98,11 +100,18 @@ class FemInputWriterCodeAster(writerbase.FemInputWriter):
         commtxt, layups = add_femelement_geometry.add_femelement_geometry(commtxt, ele_name, self)
         commtxt = add_femelement_material.assign_femelement_material(commtxt, layups, self)
         commtxt = add_con_fixed.add_con_fixed(commtxt, self)
+        commtxt = add_con_displacement.add_con_displacement(commtxt, self)
         commtxt = add_con_force.add_con_force(commtxt, self)
         commtxt += f"{result_name} = MECA_STATIQUE(CARA_ELEM=elemprop,\n"
         commtxt += "                       CHAM_MATER=fieldmat,\n"
-        commtxt += f"                       EXCIT=(_F(CHARGE={self.fixes[0]}),\n"
-        commtxt += f"                              _F(CHARGE={self.forces[0]})),\n"
+        commtxt += "                       EXCIT=(\n"
+        for fix in self.fixes:
+            commtxt += f"                              _F(CHARGE={fix}),\n"
+        for disp in self.disps:
+            commtxt += f"                              _F(CHARGE={disp}),\n"
+        for force in self.forces:
+            commtxt += f"                              _F(CHARGE={force}),\n"
+        commtxt += "                              ),\n"
         commtxt += "                       MODELE=model,\n"
         commtxt += (
             f"                       SOLVEUR=_F(RESI_RELA = {self.solver_obj.SolverPrecision}))\n\n"
