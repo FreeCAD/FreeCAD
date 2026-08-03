@@ -84,22 +84,22 @@ short Revolved::mustExecute() const
 
 void Revolved::onChanged(const App::Property* prop)
 {
-    if (!isRestoring() && prop == &Midplane) {
-        App::DocumentObject* obj = Profile.getValue();
-        auto baseName = obj ? obj->getNameInDocument() : "";
-        Base::Console().warning(
-            "The 'Midplane' property being set for the revolution of %s is deprecated and has "
-            "been replaced by the 'SideType' property in Revolved. Please update your script,"
-            " this property will be removed in a future version.\n",
-            baseName
-        );
-        if (Midplane.getValue()) {
-            SideType.setValue("Symmetric");
-        }
-        else {
-            Base::Console()
-                .warning("Deprecated Midplane property was explicitly set to False: assuming SideType='One side'\n");
-            SideType.setValue("One side");
+    if (prop == &Midplane && !isRestoring() && !migratingDeprecatedProperties) {
+        const char* impliedSideType = Midplane.getValue() ? "Symmetric" : "One side";
+
+        // Scripts routinely assign every property, so only scream when the write actually
+        // asks for something SideType is not already saying.
+        if (SideType.getValueAsString() != std::string(impliedSideType)) {
+            App::DocumentObject* obj = Profile.getValue();
+            auto baseName = obj ? obj->getNameInDocument() : "";
+            Base::Console().warning(
+                "The 'Midplane' property being set for the revolution of %s is deprecated and has "
+                "been replaced by the 'SideType' property in Revolved; assuming SideType='%s'."
+                " Please update your script, this property will be removed in a future version.\n",
+                baseName,
+                impliedSideType
+            );
+            SideType.setValue(impliedSideType);
         }
     }
 
@@ -710,6 +710,8 @@ void Revolved::updateProperties()
 
 void Revolved::onDocumentRestored()
 {
+    Base::StateLocker migrating(migratingDeprecatedProperties);
+
     if (isLegacyTwoAngles(Type.getValueAsString())) {
         Type.setValue("Angle");
         Type2.setValue("Angle");
