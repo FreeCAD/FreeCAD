@@ -21,6 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
+#include <QFileInfo>
 #include <QMenu>
 #include <QMessageBox>
 #include <QTreeView>

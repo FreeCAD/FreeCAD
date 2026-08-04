@@ -134,17 +134,13 @@ class PathGeometryGenerator:
         # get X, Y, Z spans; Compute center of rotation
         self.deltaX = self.shape.BoundBox.XLength
         self.deltaY = self.shape.BoundBox.YLength
-        self.deltaC = (
-            self.shape.BoundBox.DiagonalLength
-        )  # math.sqrt(self.deltaX**2 + self.deltaY**2)
-        lineLen = self.deltaC + (
-            2.0 * self.toolDiam
-        )  # Line length to span boundbox diag with 2x cutter diameter extra on each end
-        self.halfDiag = math.ceil(lineLen / 2.0)
-        cutPasses = (
-            math.ceil(lineLen / self.cutOut) + 1
-        )  # Number of lines(passes) required to cover boundbox diagonal
-        self.halfPasses = math.ceil(cutPasses / 2.0)
+        self.deltaC = self.shape.BoundBox.DiagonalLength
+        # Line length to span boundbox diag with 2x cutter diameter extra on each end
+        lineLen = self.deltaC + 2.0 * self.toolDiam
+        self.halfDiag = Path.Geom.ceil(lineLen / 2.0)
+        # Number of lines(passes) required to cover boundbox diagonal
+        cutPasses = Path.Geom.ceil(lineLen / self.cutOut) + 1
+        self.halfPasses = Path.Geom.ceil(cutPasses / 2.0)
 
     # Public methods
     def setDebugObjectsGroup(self, tmpGrpObject):
@@ -266,7 +262,7 @@ class PathGeometryGenerator:
         loopCnt = 0
         segCnt = 0
         twoPi = 2.0 * math.pi
-        maxDist = math.ceil(self.cutOut * self._getRadialPasses())  # self.halfDiag
+        maxDist = Path.Geom.ceil(self.cutOut * self._getRadialPasses())  # self.halfDiag
         move = self.centerOfPattern  # Use to translate the center of the spiral
         lastPoint = FreeCAD.Vector(0.0, 0.0, 0.0)
 
@@ -378,12 +374,10 @@ class PathGeometryGenerator:
                 dist = CORNERS[c].sub(self.centerOfPattern).Length
                 if dist > dMax:
                     dMax = dist
-            diag = dMax + (
-                2.0 * self.toolDiam
-            )  # Line length to span boundbox diag with 2x cutter diameter extra on each end
-            radialPasses = (
-                math.ceil(diag / self.cutOut) + 1
-            )  # Number of lines(passes) required to cover boundbox diagonal
+            # Line length to span boundbox diag with 2x cutter diameter extra on each end
+            diag = dMax + 2.0 * self.toolDiam
+            # Number of lines(passes) required to cover boundbox diagonal
+            radialPasses = Path.Geom.ceil(diag / self.cutOut) + 1
 
         return radialPasses
 

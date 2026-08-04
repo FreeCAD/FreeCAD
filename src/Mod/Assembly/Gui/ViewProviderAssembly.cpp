@@ -71,9 +71,7 @@
 #include <Mod/Assembly/App/AssemblyLink.h>
 #include <Mod/Assembly/App/AssemblyObject.h>
 #include <Mod/Assembly/App/AssemblyUtils.h>
-#include <Mod/Assembly/App/JointGroup.h>
-#include <Mod/Assembly/App/ViewGroup.h>
-#include <Mod/Assembly/App/BomGroup.h>
+#include <Mod/Assembly/App/Groups.h>
 #include <Mod/PartDesign/App/Body.h>
 
 #include "TaskAssemblyMessages.h"
@@ -323,7 +321,7 @@ bool ViewProviderAssembly::setEdit(int mode)
             [this](const QString& name) { this->onWorkbenchActivated(name); }
         );
 
-        assembly->solve();
+        assembly->recomputeFeature(true);
 
         return true;
     }

@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+import math
 import time
 import unittest
 
@@ -149,8 +150,6 @@ class SketcherGuiTestCases(unittest.TestCase):
     def setUp(self):
         self.doc = FreeCAD.newDocument("SketchGuiTest")
         self.sketch = self.doc.addObject("Sketcher::SketchObject", "Sketch")
-        constraint_id, self.probe_point = self.build_issue_25840_sketch(self.sketch)
-        self.expected_constraint_name = f"Constraint{constraint_id + 1}"
         self.doc.recompute()
 
         FreeCADGui.getMainWindow().show()
@@ -174,6 +173,11 @@ class SketcherGuiTestCases(unittest.TestCase):
             self.pump_gui_events(4, 0.01)
 
     def testPointOnObjectPreselectionMatchesTiltedHitArea(self):
+        constraint_id, self.probe_point = self.build_issue_25840_sketch(self.sketch)
+        self.expected_constraint_name = f"Constraint{constraint_id + 1}"
+        self.doc.recompute()
+        self.pump_gui_events(6)
+
         tilt_y = FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), 2.0)
 
         counts_by_state = {}
@@ -216,3 +220,119 @@ class SketcherGuiTestCases(unittest.TestCase):
             0.20,
             detail,
         )
+
+    def testPointMarkerWinsOverOverlappingConstraintLabel(self):
+        start_point = FreeCAD.Vector(80.0, 100.0, 0.0)
+        end_point = FreeCAD.Vector(120.0, 140.0, 0.0)
+        marker_point = FreeCAD.Vector(92.0, 88.0, 0.0)
+
+        line_id = self.sketch.addGeometry(
+            Part.LineSegment(start_point, end_point),
+            False,
+        )
+        self.sketch.addGeometry(Part.Point(marker_point), False)
+        self.doc.recompute()
+        self.pump_gui_events(6)
+
+        self.configure_view_state(self.view)
+        self.pump_gui_events(8)
+
+        marker_coin = tuple(int(value) for value in self.view.getPointOnViewport(marker_point))
+
+        vertex_offsets = []
+        for dy in range(-12, 13, 2):
+            for dx in range(-12, 13, 2):
+                probe_coin = (marker_coin[0] + dx, marker_coin[1] + dy)
+                probe_info = SketcherGui.getActiveSketchPreselection(probe_coin)
+                probe_kind = self.classify_preselection(probe_info, "Constraint0")
+                if probe_kind == "vertex":
+                    vertex_offsets.append((dx, dy))
+
+        constraint_id = self.sketch.addConstraint(
+            Sketcher.Constraint("Distance", line_id, 1, line_id, 2, 40.0)
+        )
+        self.sketch.setLabelDistance(constraint_id, -12.0 * math.sqrt(2.0))
+        self.sketch.setLabelPosition(constraint_id, 0.0)
+        self.expected_constraint_name = f"Constraint{constraint_id + 1}"
+        self.doc.recompute()
+        self.pump_gui_events(12)
+
+        marker_info = SketcherGui.getActiveSketchPreselection(marker_coin)
+        marker_kind = self.classify_preselection(marker_info, self.expected_constraint_name)
+
+        probe_results = []
+        for dx, dy in vertex_offsets:
+            probe_coin = (marker_coin[0] + dx, marker_coin[1] + dy)
+            probe_info = SketcherGui.getActiveSketchPreselection(probe_coin)
+            probe_kind = self.classify_preselection(probe_info, self.expected_constraint_name)
+            probe_results.append((dx, dy, probe_kind, probe_info))
+
+        unexpected_probe_results = [result for result in probe_results if result[2] != "vertex"]
+
+        detail = (
+            f"marker_info={marker_info}, vertex_offsets={vertex_offsets}, "
+            f"probe_results={probe_results}, marker_coin={marker_coin}"
+        )
+
+        self.assertGreater(len(vertex_offsets), 0, detail)
+        self.assertEqual(marker_kind, "vertex", detail)
+        self.assertEqual(unexpected_probe_results, [], detail)
+
+    def testCurveWinsOverOverlappingDistanceDimensionLine(self):
+        start_point = FreeCAD.Vector(80.0, 100.0, 0.0)
+        end_point = FreeCAD.Vector(130.0, 100.0, 0.0)
+        midpoint = FreeCAD.Vector(105.0, 100.0, 0.0)
+
+        line_id = self.sketch.addGeometry(
+            Part.LineSegment(start_point, end_point),
+            False,
+        )
+        self.doc.recompute()
+        self.pump_gui_events(6)
+
+        self.configure_view_state(self.view)
+        self.pump_gui_events(8)
+
+        midpoint_coin = tuple(int(value) for value in self.view.getPointOnViewport(midpoint))
+
+        edge_offsets = []
+        for dy in range(-10, 11, 2):
+            for dx in range(-16, 17, 2):
+                probe_coin = (midpoint_coin[0] + dx, midpoint_coin[1] + dy)
+                probe_info = SketcherGui.getActiveSketchPreselection(probe_coin)
+                probe_kind = self.classify_preselection(probe_info, "Constraint0")
+                if probe_kind == "edge":
+                    edge_offsets.append((dx, dy))
+
+        constraint_id = self.sketch.addConstraint(
+            Sketcher.Constraint(
+                "Distance",
+                line_id,
+                1,
+                line_id,
+                2,
+                start_point.distanceToPoint(end_point),
+            )
+        )
+        self.sketch.setLabelDistance(constraint_id, 0.0)
+        self.sketch.setLabelPosition(constraint_id, 0.0)
+        self.expected_constraint_name = f"Constraint{constraint_id + 1}"
+        self.doc.recompute()
+        self.pump_gui_events(12)
+
+        probe_results = []
+        for dx, dy in edge_offsets:
+            probe_coin = (midpoint_coin[0] + dx, midpoint_coin[1] + dy)
+            probe_info = SketcherGui.getActiveSketchPreselection(probe_coin)
+            probe_kind = self.classify_preselection(probe_info, self.expected_constraint_name)
+            probe_results.append((dx, dy, probe_kind, probe_info))
+
+        unexpected_probe_results = [result for result in probe_results if result[2] != "edge"]
+
+        detail = (
+            f"edge_offsets={edge_offsets}, probe_results={probe_results}, "
+            f"midpoint_coin={midpoint_coin}"
+        )
+
+        self.assertGreater(len(edge_offsets), 0, detail)
+        self.assertEqual(unexpected_probe_results, [], detail)

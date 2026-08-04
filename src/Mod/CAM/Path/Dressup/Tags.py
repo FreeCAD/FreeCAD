@@ -707,12 +707,7 @@ class PathData:
             and Path.Geom.isRoughly(e.Vertexes[1].Point.z, minZ)
         ]
         self.bottomEdges = Part.sortEdges(bottom)
-        wires = []
-        for edgesSorted in self.bottomEdges:
-            wire = Part.Wire(edgesSorted)
-            if wire.isClosed():
-                wires.append(wire)
-        return wires
+        return [Part.Wire(se) for se in self.bottomEdges]
 
     def supportsTagGeneration(self):
         return self.baseWires is not None
@@ -741,7 +736,7 @@ class PathData:
         tags = []
         maxLength = max(w.Length for w in self.baseWires)
         for wire in self.baseWires:
-            optimalCount = math.ceil(round(wire.Length / maxLength * maxCount, 6))
+            optimalCount = Path.Geom.ceil(wire.Length / maxLength * maxCount)
             numberTags = max(minCount, optimalCount)
 
             # copy edge list into python array for (much) faster random access
@@ -866,7 +861,7 @@ class PathData:
         tagCount = 0
         currentLength += edge.Length
         if edge.Length >= minLength:
-            steps = max(0, math.ceil((currentLength - lastTagLength) / tagDistance) - 1)
+            steps = max(0, Path.Geom.ceil((currentLength - lastTagLength) / tagDistance) - 1)
             tagCount += steps
             lastTagLength += steps * tagDistance
             if tagCount > 0:

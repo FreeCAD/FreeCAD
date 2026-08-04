@@ -370,9 +370,6 @@ TEST_F(RenameProperty, renamePropertyWithExpression)
 // Tests whether we can rename a property and undo it
 TEST_F(RenameProperty, undoRenameProperty)
 {
-    // Arrange
-    _doc->setUndoMode(1);
-
     // Act
     bool isRenamed = false;
     {
@@ -403,9 +400,6 @@ TEST_F(RenameProperty, undoRenameProperty)
 // Tests whether we can rename a property, undo, and redo it
 TEST_F(RenameProperty, redoRenameProperty)
 {
-    // Arrange
-    _doc->setUndoMode(1);
-
     // Act
     bool isRenamed = false;
     {

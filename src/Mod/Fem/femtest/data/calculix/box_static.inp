@@ -436,8 +436,8 @@ Evolumes
 
 ***********************************************************
 ** constraints fixed node sets
-** FemConstraintFixed
-*NSET,NSET=FemConstraintFixed
+** Fixed
+*NSET,NSET=Fixed
 1,
 2,
 3,
@@ -506,16 +506,16 @@ Evolumes
 
 ***********************************************************
 ** Fixed Constraints
-** FemConstraintFixed
+** Fixed
 *BOUNDARY
-FemConstraintFixed,1
-FemConstraintFixed,2
-FemConstraintFixed,3
+Fixed,1
+Fixed,2
+Fixed,3
 
 
 ***********************************************************
 ** constraints force node loads
-** FemConstraintForce
+** Force
 *CLOAD
 ** node loads on shape: Box:Face6
 1,3,-0
@@ -564,7 +564,7 @@ FemConstraintFixed,3
 
 ***********************************************************
 ** constraints pressure element face loads
-** FemConstraintPressure
+** Pressure
 *DLOAD
 ** Box.Face2
 147,P1,1000.0
@@ -592,7 +592,7 @@ U
 S, E
 ** outputs --> dat file
 ** reaction forces for Constraint fixed
-*NODE PRINT, NSET=FemConstraintFixed, TOTALS=ONLY
+*NODE PRINT, NSET=Fixed, TOTALS=ONLY
 RF
 
 *OUTPUT, FREQUENCY=1

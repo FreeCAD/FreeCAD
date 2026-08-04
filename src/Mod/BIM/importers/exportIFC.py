@@ -563,7 +563,12 @@ def export(exportList, filename, colors=None, preferences=None):
                     products[obj.Base.Name] = subproduct
                     assemblyElements.append(subproduct)
                     exportIFCHelper.writeQuantities(
-                        ifcfile, obj.Base, subproduct, history, preferences["SCALE_FACTOR"]
+                        ifcfile,
+                        obj.Base,
+                        subproduct,
+                        history,
+                        preferences["SCALE_FACTOR"],
+                        getIfcTypeFromObj(obj.Base),
                     )
 
         elif ifctype in assemblyTypes or is_nested_group:
@@ -972,7 +977,14 @@ def export(exportList, filename, colors=None, preferences=None):
 
         # Quantities
 
-        exportIFCHelper.writeQuantities(ifcfile, obj, product, history, preferences["SCALE_FACTOR"])
+        exportIFCHelper.writeQuantities(
+            ifcfile,
+            obj,
+            product,
+            history,
+            preferences["SCALE_FACTOR"],
+            ifctype,
+        )
 
         if preferences["FULL_PARAMETRIC"]:
 
@@ -2587,6 +2599,8 @@ def createProduct(
         kwargs = exportIFC2X3Attributes(obj, kwargs, preferences["SCALE_FACTOR"])
     else:
         kwargs = exportIfcAttributes(obj, kwargs, preferences["SCALE_FACTOR"])
+    if (ifctype == "IfcBuildingStorey") and ("Elevation" not in kwargs):
+        kwargs["Elevation"] = obj.Placement.Base.z * preferences["SCALE_FACTOR"]
     # in some cases object have wrong ifctypes, thus set it
     # https://forum.freecad.org/viewtopic.php?f=39&t=50085
     if ifctype not in ArchIFCSchema.IfcProducts:

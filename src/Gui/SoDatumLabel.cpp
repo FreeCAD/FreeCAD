@@ -39,6 +39,7 @@
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoBaseColor.h>
 #include <Inventor/nodes/SoDepthBuffer.h>
@@ -186,6 +187,16 @@ float getSketchRotationAngle(SoState* state, const SbViewVolume& viewVolume, boo
     return flip ? angle : -angle;
 }
 
+SbVec3f getAngleMidDirection(float startAngle, float range)
+{
+    const float midAngle = startAngle + 0.5F * range;
+    return SbVec3f(cos(midAngle), sin(midAngle), 0);
+}
+
+SbVec3f getAngleTextCenter(const SbVec3f& center, float startAngle, float range, float distanceFromCenter)
+{
+    return center + getAngleMidDirection(startAngle, range) * distanceFromCenter;
+}
 }  // namespace
 
 
@@ -820,9 +831,8 @@ SbVec3f SoDatumLabel::getLabelTextCenterAngle(const SbVec3f& p0)
     float startangle = param2.getValue();
     float range = param3.getValue();
     float len2 = 2.0F * length;
-    float endangle = startangle + range;
 
-    return getArcTextCenter(p0, startangle, endangle, len2);
+    return getAngleTextCenter(p0, startangle, range, len2);
 }
 
 SbVec3f SoDatumLabel::getLabelTextCenterArcLength(
@@ -1583,23 +1593,15 @@ void SoDatumLabel::ensureCoinText(SoState* state, int srcw, int srch, float angl
     m_TextSwitch->whichChild.setValue(0);
 }
 
-void SoDatumLabel::GLRender(SoGLRenderAction* action)
+bool SoDatumLabel::prepareRenderScene(SoState* state)
 {
-    SoState* state = action->getState();
-
-    if (!shouldGLRender(action)) {
-        return;
-    }
-    if (action->handleTransparency(true)) {
-        return;
-    }
-
-    const float scale = getScaleFactor(state);
-    bool hasText = hasDatumText();
-
+    const bool hasText = hasDatumText();
     int srcw = 1;
     int srch = 1;
+    float angle = 0.0F;
+    SbVec3f textOffset(0.0F, 0.0F, 0.0F);
 
+    const float scale = getScaleFactor(state);
     if (hasText) {
         getDimension(scale, srcw, srch);
     }
@@ -1609,29 +1611,18 @@ void SoDatumLabel::GLRender(SoGLRenderAction* action)
         this->imgWidth = scale * 25.0F;
     }
 
-    // Get the points stored in the pnt field
     const SbVec3f* points = this->pnts.getValues(0);
-
-    state->push();
-
-    // Annotation faces should stay visible even when an ancestor enables back-face culling.
-    SoLazyElement::setBackfaceCulling(state, FALSE);
-
-    if (hasText) {
-        // Text labels are rendered as SoTexture2 on a quad. Coin's default texture quality
-        // (0.5) enables mipmaps, which can blur small UI text. Keep linear filtering but
-        // avoid mipmaps for crisper results.
-        SoTextureQualityElement::set(state, this, 0.49F);
-        SoLazyElement::setTransparencyType(state, static_cast<int32_t>(SoGLRenderAction::BLEND));
+    const auto type = static_cast<Type>(datumtype.getValue());
+    const int numPoints = this->pnts.getNum();
+    const bool isDistance = type == DISTANCE || type == DISTANCEX || type == DISTANCEY;
+    if (isDistance && numPoints < 2) {
+        SoDebugError::postWarning("SoDatumLabel::GLRender", "Too few points to render distance label");
     }
 
-    ensureCoinGeometry(points, this->pnts.getNum());
+    ensureCoinGeometry(points, numPoints);
 
-    float angle = 0.0F;
-    SbVec3f textOffset;
     if (hasText) {
-        const auto type = static_cast<Type>(datumtype.getValue());
-        if (type == DISTANCE || type == DISTANCEX || type == DISTANCEY) {
+        if (isDistance && numPoints >= 2) {
             const DistanceGeometry geom = calculateDistanceGeometry(points);
             angle = geom.angle;
             textOffset = geom.textOffset;
@@ -1646,16 +1637,57 @@ void SoDatumLabel::GLRender(SoGLRenderAction* action)
             angle = geom.angle;
             textOffset = geom.textOffset;
         }
-        else if (type == ARCLENGTH && this->pnts.getNum() >= 3) {
+        else if (type == ARCLENGTH && numPoints >= 3) {
             const ArcLengthGeometry geom = calculateArcLengthGeometry(points);
             angle = geom.angle;
             textOffset = geom.textOffset;
         }
-
-        ensureCoinText(state, srcw, srch, angle, textOffset);
     }
-    else if (m_TextSwitch) {
-        m_TextSwitch->whichChild.setValue(SO_SWITCH_NONE);
+
+    if (m_TextSwitch) {
+        if (hasText) {
+            ensureCoinText(state, srcw, srch, angle, textOffset);
+        }
+        else {
+            m_TextSwitch->whichChild.setValue(SO_SWITCH_NONE);
+        }
+    }
+
+    return hasText;
+}
+
+void SoDatumLabel::GLRender(SoGLRenderAction* action)
+{
+    if (!action) {
+        return;
+    }
+
+    SoState* state = action->getState();
+    if (!state) {
+        return;
+    }
+
+    state->push();
+    // Override inherited cull-face state before SoShape::shouldGLRender() decides
+    // whether this label is visible. Otherwise a flipped parent can cull the
+    // whole label before we get to render its two-sided geometry.
+    SoLazyElement::setBackfaceCulling(state, FALSE);
+
+    if (!shouldGLRender(action)) {
+        state->pop();
+        return;
+    }
+    if (action->handleTransparency(true)) {
+        state->pop();
+        return;
+    }
+
+    const bool hasText = prepareRenderScene(state);
+
+    if (hasText) {
+        // Avoid mipmaps for crisper annotation text while retaining linear filtering.
+        SoTextureQualityElement::set(state, this, 0.49F);
+        SoLazyElement::setTransparencyType(state, static_cast<int32_t>(SoGLRenderAction::BLEND));
     }
 
     if (m_Root) {
@@ -1895,12 +1927,12 @@ SoDatumLabel::AngleGeometry SoDatumLabel::calculateAngleGeometry(const SbVec3f* 
     // set the text label angle to zero
     geom.angle = 0.F;
 
-    geom.v0 = getArcMidDirection(geom.startangle, geom.endangle);
+    geom.v0 = getAngleMidDirection(geom.startangle, geom.range);
 
     // leave some space for the text
     geom.textMargin = std::min(0.2F * abs(geom.range), this->imgWidth / (2 * geom.r));
 
-    geom.textOffset = getArcTextCenter(geom.p0, geom.startangle, geom.endangle, geom.r);
+    geom.textOffset = getAngleTextCenter(geom.p0, geom.startangle, geom.range, geom.r);
 
     // direction vectors for start and end lines
     geom.v1 = SbVec3f(cos(geom.startangle), sin(geom.startangle), 0);

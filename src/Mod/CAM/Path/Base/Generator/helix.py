@@ -186,7 +186,7 @@ def generate(
     else:
         Path.Log.debug("(annulus mode)\n")
         work_distance = outer_radius - inner_radius
-        nr = math.ceil(round(work_distance / step, 6)) + 1
+        nr = Path.Geom.ceil(work_distance / step) + 1
         radii = linspace(outer_radius, inner_radius, nr)
 
     if startAt == "Inside":
@@ -202,7 +202,7 @@ def generate(
 
         lengthOneTurn = math.tau * r
         depthPerOneCircle = min(lengthOneTurn * math.tan(ramp_angle_rad), pitch)
-        turncount = math.ceil(round(helixHeight / depthPerOneCircle, 6))
+        turncount = Path.Geom.ceil(helixHeight / depthPerOneCircle)
         zsteps = linspace(topCenterPoint.z, bottomCenterPoint.z, 2 * turncount + 1)
 
         arc_cmd = "G2" if direction == "CW" else "G3"
@@ -286,7 +286,7 @@ def generate(
 
         lengthOneTurn = math.tau * bottomRadius
         depthPerOneCircle = min(lengthOneTurn * math.tan(ramp_angle_rad), pitch)
-        turncount = math.ceil(round(helixHeight / depthPerOneCircle, 6))
+        turncount = Path.Geom.ceil(helixHeight / depthPerOneCircle)
         stepsPerRev = 6
         stepRotate = math.tau / stepsPerRev  # step angle for rotate
         stepRotate = -stepRotate if direction == "CCW" else stepRotate

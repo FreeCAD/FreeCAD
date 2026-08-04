@@ -146,6 +146,15 @@ private:
         ::SoTexture2* texture {nullptr};
     };
 
+    struct ButtonHitRect
+    {
+        bool active {false};
+        float left {0.0F};
+        float top {0.0F};
+        float right {0.0F};
+        float bottom {0.0F};
+    };
+
     void renderCoin(SoGLRenderAction* action);
     void ensureSceneGraph() const;
     void rebuildSceneGraph() const;
@@ -248,16 +257,20 @@ private:
         bool buttonDirty {true};
         bool labelDirty {true};
         bool axisDirty {true};
-        SbColor buttonsBaseRgb;
-        SbColor buttonsHiliteRgb;
-        SbColor buttonsOutlineRgb;
+        SbColor buttonsBaseRgb {0.0F, 0.0F, 0.0F};
+        SbColor buttonsHiliteRgb {0.0F, 0.0F, 0.0F};
+        SbColor buttonsOutlineRgb {0.0F, 0.0F, 0.0F};
         float buttonsBaseTr {0.0F};
         float buttonsHiliteTr {0.0F};
         float buttonsOutlineTr {0.0F};
         float buttonsLineWidth {0.0F};
-        SbColor labelsRgb;
+        SbColor labelsRgb {0.0F, 0.0F, 0.0F};
         float labelsTr {0.0F};
-        std::array<SbColor, 3> axisRgb;
+        std::array<SbColor, 3> axisRgb {{
+            SbColor(0.0F, 0.0F, 0.0F),
+            SbColor(0.0F, 0.0F, 0.0F),
+            SbColor(0.0F, 0.0F, 0.0F),
+        }};
         float axisTr {0.0F};
         float axisBw {0.0F};
         bool showCS {false};
@@ -271,6 +284,7 @@ private:
     mutable std::array<std::vector<SbVec3f>, kPickIdCount> buttonOverlayVerts;
     mutable std::array<std::vector<int>, kPickIdCount> buttonTriangleIndices;
     mutable std::array<std::vector<std::int32_t>, kPickIdCount> buttonOutlineIndices;
+    mutable std::array<ButtonHitRect, kPickIdCount> buttonHitRects;
     mutable std::vector<SbVec3f> cubeCoordsData;
     mutable std::vector<std::int32_t> cubeCoordIndexData;
     mutable std::vector<SbVec3f> edgeCoordsData;

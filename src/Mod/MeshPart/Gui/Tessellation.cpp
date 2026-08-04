@@ -334,7 +334,8 @@ void Tessellation::process(int method, App::Document* doc, const std::list<App::
                 continue;
             }
 
-            QString label = QString::fromUtf8(sobj->Label.getValue());
+            std::string label = sobj->Label.getValue();
+            label = Base::Tools::escapeEncodeString(label);
 
             QString param = getMeshingParameters(method, sobj);
 
@@ -347,7 +348,13 @@ void Tessellation::process(int method, App::Document* doc, const std::list<App::
                               "__mesh__.Label=\"%5 (Meshed)\"\n"
                               "del __doc__, __mesh__, __part__, __shape__\n"
             )
-                              .arg(QString::fromUtf8(doc->getName()), objname, subname, param, label);
+                              .arg(
+                                  QString::fromUtf8(doc->getName()),
+                                  objname,
+                                  subname,
+                                  param,
+                                  QString::fromUtf8(label.c_str())
+                              );
 
             Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
 
@@ -397,6 +404,7 @@ void Tessellation::setFaceColors(int method, App::Document* doc, App::DocumentOb
 
                 vpmesh->highlightSegments(diff_col);
                 addFaceColors(vpmesh->getObject<Mesh::Feature>(), diff_col);
+                vpmesh->Coloring.setValue(true);
             }
         }
     }
@@ -424,6 +432,7 @@ void Tessellation::addFaceColors(Mesh::Feature* mesh, const std::vector<Base::Co
             prop->setValues(colorPerFace);
         }
     }
+    mesh->purgeTouched();
 }
 
 std::vector<Base::Color> Tessellation::getUniqueColors(const std::vector<Base::Color>& colors) const

@@ -42,12 +42,13 @@ next to the wrapper source. Keep stub-only module function signatures and
 support nodes in source-adjacent `*.module.pyi` files such as
 `src/App/FreeCAD.module.pyi` or `src/Base/FreeCAD.Console.module.pyi`.
 
-These source-adjacent stub files are consumed by `stubgen` only. The
-legacy binding generator still reads only the binding `.pyi` files that are
-registered through CMake. Plain type-stub `.pyi` files can also contribute
-top-level support nodes such as imports, helper aliases, helper protocols, and
-non-method class members to the merged public stub output. Do not edit
-generated output directly; edit the curated source inputs and regenerate.
+Plain source-adjacent type-stub `.pyi` files are consumed by `stubgen` only.
+Source-adjacent `*.module.pyi` files can also be registered through CMake with
+`generate_module_from_py(...)` when they are the source of generated module
+bindings. Plain type-stub `.pyi` files can also contribute top-level support
+nodes such as imports, helper aliases, helper protocols, and non-method class
+members to the merged public stub output. Do not edit generated output directly;
+edit the curated source inputs and regenerate.
 
 Use package-shaped overlay paths that mirror the public import tree, such as
 `src/Tools/typing/inputs/overlays/PySide/QtCore.pyi`. Third-party packages such as Pivy should

@@ -51,8 +51,9 @@ public:
     );
 
     ViewCAMSimulator* clone() override;
+    ViewCAMSimulator* clone(Gui::Document* doc);
 
-    static ViewCAMSimulator& instance();
+    static ViewCAMSimulator& instance(Gui::Document* doc = nullptr);
     DlgCAMSimulator& dlg();
 
     bool onMsg(const char* pMsg) override;

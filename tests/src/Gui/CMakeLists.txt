@@ -7,6 +7,7 @@ add_subdirectory(propertyeditor)
 add_executable(Gui_tests_run
         Assistant.cpp
         Camera.cpp
+        ColorScaleOverlayTest.cpp
         FileDialog.cpp
         StyleParameters/StyleParametersApplicationTest.cpp
         StyleParameters/ParserTest.cpp
@@ -20,7 +21,6 @@ add_executable(Gui_tests_run
 setup_qt_test(QuantitySpinBox)
 
 target_link_libraries(Gui_tests_run PRIVATE
-    GTest::gtest_main
     GTest::gmock_main
     FreeCADApp
     FreeCADGui

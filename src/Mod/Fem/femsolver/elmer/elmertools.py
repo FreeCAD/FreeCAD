@@ -29,7 +29,6 @@ __url__ = "https://www.freecad.org"
 from PySide.QtCore import QProcess, QProcessEnvironment
 import os
 import re
-import shutil
 
 import FreeCAD
 
@@ -90,10 +89,10 @@ class ElmerTools(ObjectTools):
 
         if num_proc > 1:
             # MPI parallel computing version
-            mpi = shutil.which("mpiexec")
+            mpi_bin = settings.get_binary("MPIElmer")
             self._result_format = ".pvtu"
             command_list = ["-n", str(num_proc), elmer_bin]
-            self.process.start(mpi, command_list)
+            self.process.start(mpi_bin, command_list)
         else:
             self._result_format = ".vtu"
             command_list = []
@@ -115,6 +114,11 @@ class ElmerTools(ObjectTools):
             base, ext = os.path.splitext(path)
             if ext in [".vtu", ".vtp", ".pvtu", ".pvd", ".dat"]:
                 os.remove(path)
+                # for .dat try to remove names file
+                if ext == ".dat":
+                    f_names = f + ".names"
+                    if f_names in dir_content:
+                        os.remove(path + ".names")
 
     def _load_vtk_results(self):
         # search current pipeline
@@ -170,12 +174,18 @@ class ElmerTools(ObjectTools):
             self.obj.Results = tmp
 
         files = os.listdir(self.obj.WorkingDirectory)
+        dat_text = ""
         for f in files:
             if f.endswith(".dat"):
+                f_names = f + ".names"
+                if f_names in files:
+                    names_file = os.path.join(self.obj.WorkingDirectory, f_names)
+                    with open(names_file, "r") as file:
+                        dat_text += file.read() + "\n"
                 dat_file = os.path.join(self.obj.WorkingDirectory, f)
                 with open(dat_file, "r") as file:
-                    dat.Text = file.read()
-                break
+                    dat_text += file.read() + "\n\n"
+        dat.Text = dat_text
 
     def _get_default_field(self):
         default = "None"

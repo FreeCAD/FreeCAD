@@ -161,10 +161,15 @@ class Linuxcnc(PostProcessor):
             values["BLEND_MODE"] = "BLEND"
             values["BLEND_TOLERANCE"] = 0.0
 
-    def _collect_preamble_lines(self) -> list:
+    def _expand_prefix(self, postables):
         """inject blend command"""
-        blend = self._get_blend_command().split("\n")
-        return [x for x in super()._collect_preamble_lines() + blend if x]
+        blend = self._get_blend_command()
+
+        if self.values["PREAMBLE"] is None:
+            self.values["PREAMBLE"] = ""
+        self.values["PREAMBLE"] += blend
+
+        super()._expand_prefix(postables)
 
     def _get_blend_command(self) -> str:
         """Generate the path blending G-code command based on current settings.

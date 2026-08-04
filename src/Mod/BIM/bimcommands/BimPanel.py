@@ -112,9 +112,27 @@ class Arch_Panel:
         self.tracker.length(self.Length)
         self.tracker.on()
         FreeCADGui.Snapper.getPoint(
-            callback=self.getPoint, movecallback=self.update, extradlg=self.taskbox()
+            callback=self.getPoint,
+            movecallback=self.update,
+            extradlg=self.taskbox(),
+            hints=self.get_hints(),
         )
         FreeCADGui.draftToolBar.continueCmd.show()
+
+    def get_hints(self):
+        "returns status bar input hints for the current tool state"
+        from draftguitools import gui_tool_utils
+
+        return (
+            [
+                FreeCADGui.InputHint(
+                    translate("Arch", "%1 pick point"), FreeCADGui.UserInput.MouseLeft
+                )
+            ]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+        )
 
     def getPoint(self, point=None, obj=None):
         "this function is called by the snapper when it has a 3D point"

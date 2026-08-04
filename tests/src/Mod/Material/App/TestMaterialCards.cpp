@@ -22,6 +22,7 @@
 
 #include <gtest/gtest.h>
 
+#include <QDir>
 #include <QMetaType>
 #include <QString>
 

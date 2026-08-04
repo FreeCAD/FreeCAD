@@ -23,10 +23,11 @@ import DraftVecUtils
 import FreeCAD
 import FreeCADGui
 import Path
-import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
 import Path.Base.Util as PathUtil
 from Path.Dressup.Utils import toolController
+from Path.Op.Util import getCycleTimeEstimate
+import tsp_solver
 
 import random
 import math
@@ -128,6 +129,15 @@ class ObjectArray:
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Make copies in X direction before Y in Linear 2D pattern",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "ReverseDirection",
+            "Pattern",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Start from farthest repeat",
             ),
         )
         obj.addProperty(
@@ -278,7 +288,18 @@ class ObjectArray:
                 "Path",
                 QT_TRANSLATE_NOOP("App::Property", "Operations cycle time estimation"),
             )
-            obj.CycleTime = self.getCycleTimeEstimate(obj)
+            obj.CycleTime = getCycleTimeEstimate(obj)
+
+        if not hasattr(obj, "ReverseDirection"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "ReverseDirection",
+                "Pattern",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Start from farthest repeat",
+                ),
+            )
 
         if not hasattr(obj, "PointsSource"):
             obj.addProperty(
@@ -353,6 +374,7 @@ class ObjectArray:
             obj.Angle.Value,
             obj.Centre,
             obj.SwapDirection,
+            obj.ReverseDirection,
             jitterMagnitude,
             jitterAngle,
             obj.PointsSource,
@@ -361,7 +383,7 @@ class ObjectArray:
         )
 
         obj.Path = pa.getPath()
-        obj.CycleTime = PathOp.getCycleTimeEstimate(obj)
+        obj.CycleTime = getCycleTimeEstimate(obj)
 
     def isBaseCompatible(self, obj):
         if not obj.Base:
@@ -411,6 +433,7 @@ class PathArray:
         angle,
         centre,
         swapDirection,
+        reverse,
         jitterMagnitude,
         jitterAngle,
         pointsSource,
@@ -426,6 +449,7 @@ class PathArray:
         self.polarAngle = angle
         self.polarCentre = centre
         self.swapDirection = swapDirection
+        self.reverse = reverse
         self.jitterMagnitude = jitterMagnitude
         self.jitterAngle = jitterAngle
         self.pointsSource = pointsSource
@@ -503,7 +527,7 @@ class PathArray:
 
     def getLinear1DArray(self, commands):
         """Array type Linear1D"""
-        for i in range(self.copies):
+        for i in reversed(range(self.copies)) if self.reverse else range(self.copies):
             pos = FreeCAD.Vector(
                 self.offsetVector.x * (i + 1),
                 self.offsetVector.y * (i + 1),
@@ -521,8 +545,10 @@ class PathArray:
 
     def getLinear2DXYArray(self, commands):
         """Array type Linear2D with initial X direction"""
-        for i in range(self.copiesY + 1):
-            for j in range(self.copiesX + 1):
+        rngX = list(reversed(range(self.copiesX + 1))) if self.reverse else range(self.copiesX + 1)
+        rngY = reversed(range(self.copiesY + 1)) if self.reverse else range(self.copiesY + 1)
+        for i in rngY:
+            for j in rngX:
                 if (i % 2) == 0:
                     pos = FreeCAD.Vector(
                         self.offsetVector.x * j,
@@ -549,8 +575,10 @@ class PathArray:
 
     def getLinear2DYXArray(self, commands):
         """Array type Linear2D with initial Y direction"""
-        for i in range(self.copiesX + 1):
-            for j in range(self.copiesY + 1):
+        rngX = reversed(range(self.copiesX + 1)) if self.reverse else range(self.copiesX + 1)
+        rngY = list(reversed(range(self.copiesY + 1))) if self.reverse else range(self.copiesY + 1)
+        for i in rngX:
+            for j in rngY:
                 if (i % 2) == 0:
                     pos = FreeCAD.Vector(
                         self.offsetVector.x * i,
@@ -585,7 +613,7 @@ class PathArray:
         else:
             stepAng = self.polarAngle / self.copies
 
-        for i in range(self.copies):
+        for i in reversed(range(self.copies)) if self.reverse else range(self.copies):
             # prepare placement for polar pattern
             ang = stepAng * (i + 1)
             pl = FreeCAD.Placement()
@@ -694,11 +722,11 @@ class PathArray:
                         "a": pos["angle"],
                     }
                 )
-            routes = PathUtils.sort_tunnels_tsp(routes, routeStartPoint=basePathEndPoint)
+            routes = tsp_solver.solveTunnels(routes, routeStartPoint=basePathEndPoint)
             if routes:
                 points = [{"point": pos["point"], "angle": pos["a"]} for pos in routes]
 
-        for pos in points:
+        for pos in reversed(points) if self.reverse else points:
             # apply jitter
             point, alpha = self.calculateJitter(pos["point"])
 

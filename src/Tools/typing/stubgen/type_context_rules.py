@@ -62,21 +62,6 @@ TYPE_CONTEXT_RULES = (
         internal_reason="Python console sys.stdin replacement; not exported from a FreeCAD module",
     ),
     TypeContextRule(
-        source="src/Gui/PythonDebugger.cpp",
-        context_name="PythonDebugStdout",
-        internal_reason="debugger sys.stdout replacement; not exported from a FreeCAD module",
-    ),
-    TypeContextRule(
-        source="src/Gui/PythonDebugger.cpp",
-        context_name="PythonDebugStderr",
-        internal_reason="debugger sys.stderr replacement; not exported from a FreeCAD module",
-    ),
-    TypeContextRule(
-        source="src/Gui/PythonDebugger.cpp",
-        context_name="PythonDebugExcept",
-        internal_reason="debugger excepthook replacement; not exported from a FreeCAD module",
-    ),
-    TypeContextRule(
         source="src/Base/ParameterPy.cpp",
         context_name="ParameterGrp",
         public_targets=(PublicTypeTarget("FreeCAD", "ParameterGrp"),),

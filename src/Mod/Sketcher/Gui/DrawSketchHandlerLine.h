@@ -36,7 +36,6 @@
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"
 
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 
 #include <vector>
@@ -44,8 +43,6 @@
 
 namespace SketcherGui
 {
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerLine;
 
@@ -257,6 +254,15 @@ private:
         toolWidgetManager.resetControls();
     }
 
+    bool getStartPointOfCurrentSegment(Base::Vector2d& point) const override
+    {
+        if (state() == SelectMode::SeekSecond) {
+            point = startPoint;
+            return true;
+        }
+        return false;
+    }
+
 private:
     Base::Vector2d startPoint, endPoint;
     double length;
@@ -362,7 +368,7 @@ void DSHLineController::configureToolWidget()
         };
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
-        if (isConstructionMode()) {
+        if (handler->isConstructionMode()) {
             toolWidget->setComboboxItemIcon(
                 WCombobox::FirstCombo,
                 0,
@@ -619,7 +625,7 @@ void DSHLineController::adaptParameters(Base::Vector2d onSketchPos)
                         Base::Unit::Angle
                     );
                 }
-                else if (vec.Length() > Precision::Confusion()) {
+                else if (fourthParam->hasFinishedEditing && vec.Length() > Precision::Confusion()) {
                     double ovpRange = Base::toRadians(fourthParam->getValue());
                     if (fabs(range - ovpRange) > Precision::Confusion()) {
                         setOnViewParameterValue(

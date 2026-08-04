@@ -283,6 +283,9 @@ class TaskPanelPolarArray:
                 setattr(constrained, key, value)
         return constrained
 
+    def has_point_constraints(self):
+        return self.locks.any_locked()
+
     def get_axis(self):
         """Get the axis that will be used for the array. NOT IMPLEMENTED.
 

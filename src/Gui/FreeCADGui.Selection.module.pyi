@@ -9,14 +9,22 @@ close to the GUI selection implementation.
 from __future__ import annotations
 
 from collections.abc import Sequence
-from enum import Enum, IntEnum
-from typing import Literal, Protocol, overload
+from enum import IntEnum
+from typing import Protocol, overload
 
+from Base.Metadata import module
 from FreeCAD import DocumentObject
 from FreeCADGui import SelectionObject
 
+module(
+    Name="Selection",
+    Namespace="Gui",
+    Include="Selection/Selection.h",
+    CallbackOwner="SelectionSingleton",
+    CallbackPrefix="s",
+)
+
 _Point3 = tuple[float, float, float]
-_RGBColor = tuple[float, float, float]
 
 class ResolveMode(IntEnum):
     """How selection queries should resolve linked or mapped elements."""
@@ -31,13 +39,6 @@ class SelectionStyle(IntEnum):
 
     NormalSelection = 0
     GreedySelection = 1
-
-class SelectionActionMode(str, Enum):
-    """Low-level Coin selection action accepted by :func:`applyCoinSelection`."""
-
-    Append = "append"
-    Remove = "remove"
-    All = "all"
 
 class _SelectionGate(Protocol):
     """Protocol for custom selection-gate objects."""
@@ -85,7 +86,11 @@ def addSelection(
     clear: bool = True,
     /,
 ) -> None:
-    """Add a selection by document name, object name, and optional picked point."""
+    """Add a selection by document name, object name, and optional picked point.
+
+    ``x``, ``y``, and ``z`` store the picked point. ``clear`` controls whether
+    the current preselection is cleared after adding the selection.
+    """
     ...
 
 @overload
@@ -98,7 +103,11 @@ def addSelection(
     clear: bool = True,
     /,
 ) -> None:
-    """Add a selection from an object reference plus one optional subname."""
+    """Add a selection from an object reference plus one optional subname.
+
+    ``x``, ``y``, and ``z`` store the picked point. ``clear`` controls whether
+    the current preselection is cleared after adding the selection.
+    """
     ...
 
 @overload
@@ -112,7 +121,7 @@ def addSelection(
     ...
 
 def updateSelection(show: bool, obj: DocumentObject, sub_name: str = "", /) -> None:
-    """Update one object's selected state explicitly."""
+    """Show or hide one object's selected state explicitly."""
     ...
 
 @overload
@@ -127,12 +136,12 @@ def removeSelection(obj: DocumentObject, sub_name: str = "", /) -> None:
 
 @overload
 def clearSelection(clear_preselect: bool = True, /) -> None:
-    """Clear the active selection globally."""
+    """Clear the complete selection, optionally clearing preselection too."""
     ...
 
 @overload
 def clearSelection(doc_name: str | None, clear_preselect: bool = True, /) -> None:
-    """Clear the active selection only for one document name."""
+    """Clear one document selection, or all documents when ``doc_name`` is None or ``"*"``."""
     ...
 
 # Selection state
@@ -160,47 +169,10 @@ def clearPreselection() -> None:
     """Clear the current preselection target."""
     ...
 
-def applyCoinHighlight(
-    path: object,
-    detail: object | None = None,
-    color: _RGBColor | None = None,
-) -> None:
-    """Apply a low-level Coin highlight to one scene-graph path.
-
-    ``detail`` may target one specific Coin sub-element detail. When omitted,
-    the whole path is highlighted. ``color`` overrides the current View
-    preference highlight color for this action only.
-    """
-    ...
-
-def clearCoinHighlight(path: object) -> None:
-    """Clear a low-level Coin highlight from one scene-graph path."""
-    ...
-
-def applyCoinSelection(
-    path: object,
-    detail: object | None = None,
-    mode: (
-        SelectionActionMode | Literal["append", "remove", "all"] | None
-    ) = SelectionActionMode.Append,
-    color: _RGBColor | None = None,
-) -> None:
-    """Apply a low-level Coin selection action to one scene-graph path.
-
-    ``detail`` may target one specific Coin sub-element detail. When omitted,
-    the whole path is targeted. ``color`` overrides the current View preference
-    selection color for this action only.
-    """
-    ...
-
-def clearCoinSelection(path: object) -> None:
-    """Clear low-level Coin selection state from one scene-graph path."""
-    ...
-
 def countObjectsOfType(
     type_name: str, doc_name: str | None = None, resolve: ResolveMode | int = 1, /
 ) -> int:
-    """Count selected objects of one type, optionally in one document."""
+    """Count selected objects of one type, using the active document when omitted."""
     ...
 
 def getSelection(
@@ -209,11 +181,14 @@ def getSelection(
     single: bool = False,
     /,
 ) -> list[DocumentObject]:
-    """Return the current object selection."""
+    """Return selected objects, using the active document when omitted.
+
+    When ``single`` is true, return a result only if exactly one object is selected.
+    """
     ...
 
 def getPickedList(doc_name: str | None = None, /) -> list[SelectionObject]:
-    """Return the picked selection entries for one document or globally."""
+    """Return selection entries generated by the last mouse pick."""
     ...
 
 def enablePickedList(enable: bool = True, /) -> None:
@@ -230,7 +205,11 @@ def getSelectionEx(
     single: bool = False,
     /,
 ) -> list[SelectionObject]:
-    """Return the extended selection objects with subelement details."""
+    """Return extended selection objects, using the active document when omitted.
+
+    The returned objects preserve subelement names. When ``single`` is true,
+    return a result only if exactly one selection object is selected.
+    """
     ...
 
 def getSelectionObject(
@@ -240,20 +219,20 @@ def getSelectionObject(
     point: _Point3 = ...,
     /,
 ) -> SelectionObject:
-    """Build one SelectionObject wrapper from explicit selection components."""
+    """Build one SelectionObject wrapper from explicit selection components and picked point."""
     ...
 
 def hasSelection(doc_name: str | None = None, resolve: ResolveMode | int = 0, /) -> bool:
-    """Return whether any selection exists."""
+    """Return whether selection exists, across all documents only when no arguments are given."""
     ...
 
 def hasSubSelection(doc_name: str | None = None, sub_element: bool = False, /) -> bool:
-    """Return whether any subelement selection exists."""
+    """Return whether subelement selection exists, using the active document when omitted."""
     ...
 
 # Observers and filters
 def setSelectionStyle(selection_style: SelectionStyle | int, /) -> None:
-    """Set the active selection interaction style."""
+    """Set the active selection interaction style: 0 for normal, 1 for greedy."""
     ...
 
 def addObserver(observer: object, resolve: ResolveMode | int = 1, /) -> None:
@@ -269,7 +248,13 @@ def addSelectionGate(
     resolve: ResolveMode | int = 1,
     /,
 ) -> None:
-    """Install one selection gate or filter object."""
+    """Install one selection gate or filter object.
+
+    String filters use the selection filter syntax, for example
+    ``"SELECT Part::Feature SUBELEMENT Edge"`` or ``"SELECT Robot::RobotObject"``.
+    A ``Filter`` instance or an object implementing ``allow(doc, obj, sub)`` can
+    also be passed for custom selection policy.
+    """
     ...
 
 def removeSelectionGate(doc_name: str = "", /) -> None:
@@ -282,7 +267,11 @@ def setVisible(visible: bool | None = None, /) -> None:
     ...
 
 def pushSelStack(clear_forward: bool = True, overwrite: bool = False, /) -> None:
-    """Push the current selection onto the history stack."""
+    """Push the current selection onto the history stack.
+
+    ``clear_forward`` clears the forward history. ``overwrite`` replaces the
+    current top back-stack entry with the current selection.
+    """
     ...
 
 def getSelectionFromStack(
@@ -291,5 +280,9 @@ def getSelectionFromStack(
     index: int = 0,
     /,
 ) -> list[SelectionObject]:
-    """Return one stored selection state from the history stack."""
+    """Return one stored selection state, using the active document when omitted.
+
+    ``index`` selects the stack entry: ``0`` is the last pushed selection,
+    positive values trace backward, and negative values trace forward.
+    """
     ...

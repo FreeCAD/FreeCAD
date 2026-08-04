@@ -273,7 +273,16 @@ void ProgramInformation::getLibraryVersions(std::stringstream& str)
     // report also the version numbers of the most important libraries in FreeCAD
     str << "Python " << PY_VERSION << ", ";
     str << "Qt " << QT_VERSION_STR << ", ";
-    str << "Coin " << fcCoin3dVersion << ", ";
+    str << "Coin " << fcCoin3dVersion;
+    if (*fcCoin3dSource) {
+        str << " (" << fcCoin3dSource << ")";
+    }
+    str << ", ";
+    str << "Pivy " << fcPivyVersion;
+    if (*fcPivySource) {
+        str << " (" << fcPivySource << ")";
+    }
+    str << ", ";
     str << "Vtk " << fcVtkVersion << ", ";
     str << "boost " << BOOST_LIB_VERSION << ", ";
     str << "Eigen3 " << fcEigen3Version << ", ";

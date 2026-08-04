@@ -696,54 +696,12 @@ Py::Object View3DInventorPy::viewDefaultOrientation(const Py::Tuple& args)
     }
 
     try {
-        std::string newDocView;
-        SbRotation rot(0, 0, 0, 1);
+        SbRotation rot;
         if (view) {
-            newDocView = view;
+            rot = Camera::rotation(view, Camera::Top);
         }
         else {
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/View"
-            );
-            newDocView = hGrp->GetASCII("NewDocumentCameraOrientation", "Trimetric");
-        }
-
-        if (newDocView == "Top") {
-            rot = Camera::rotation(Camera::Top);
-        }
-        else if (newDocView == "Bottom") {
-            rot = Camera::rotation(Camera::Bottom);
-        }
-        else if (newDocView == "Front") {
-            rot = Camera::rotation(Camera::Front);
-        }
-        else if (newDocView == "Rear") {
-            rot = Camera::rotation(Camera::Rear);
-        }
-        else if (newDocView == "Left") {
-            rot = Camera::rotation(Camera::Left);
-        }
-        else if (newDocView == "Right") {
-            rot = Camera::rotation(Camera::Right);
-        }
-        else if (newDocView == "Isometric") {
-            rot = Camera::rotation(Camera::Isometric);
-        }
-        else if (newDocView == "Dimetric") {
-            rot = Camera::rotation(Camera::Dimetric);
-        }
-        else if (newDocView == "Trimetric") {
-            rot = Camera::rotation(Camera::Trimetric);
-        }
-        else if (newDocView == "Custom") {
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/View/Custom"
-            );
-            auto q0 = static_cast<float>(hGrp->GetFloat("Q0", 0));
-            auto q1 = static_cast<float>(hGrp->GetFloat("Q1", 0));
-            auto q2 = static_cast<float>(hGrp->GetFloat("Q2", 0));
-            auto q3 = static_cast<float>(hGrp->GetFloat("Q3", 1));
-            rot.setValue(q0, q1, q2, q3);
+            rot = Camera::defaultOrientation("Trimetric");
         }
 
         auto* viewer = getView3DInventorPtr()->getViewer();

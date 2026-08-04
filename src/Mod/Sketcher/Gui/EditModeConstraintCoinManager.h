@@ -24,12 +24,15 @@
 
 #pragma once
 
+#include <cstdint>
+#include <set>
 #include <vector>
 
 #include <QColor>
 #include <QImage>
 #include <QRect>
 
+#include <Base/Vector3D.h>
 #include <Inventor/nodes/SoImage.h>
 #include <Inventor/nodes/SoInfo.h>
 
@@ -95,6 +98,25 @@ private:
     };
 
 public:
+    struct ConstraintPreselectionResult
+    {
+        enum class HitKind : std::uint8_t
+        {
+            None,
+            Icon,
+            DatumLabel
+        };
+
+        HitKind Kind = HitKind::None;
+        std::set<int> ConstrIndices;
+        Base::Vector3d PickedPoint;
+
+        [[nodiscard]] bool hasHit() const
+        {
+            return Kind != HitKind::None && !ConstrIndices.empty();
+        }
+    };
+
     explicit EditModeConstraintCoinManager(
         ViewProviderSketch& vp,
         DrawingParameters& drawingParams,
@@ -134,8 +156,11 @@ public:
     void setConstraintSelectability(bool enabled = true);
     //@}
 
-    std::set<int> detectPreselectionConstr(const SoPickedPoint* Point, const SbVec2s& cursorScreenPos);
-    std::set<int> detectPreselectionConstr(
+    ConstraintPreselectionResult detectPreselectionConstr(
+        const SoPickedPoint* Point,
+        const SbVec2s& cursorScreenPos
+    );
+    ConstraintPreselectionResult detectPreselectionConstr(
         const SbVec2s& cursorScreenPos,
         Base::Vector3d* pickedPoint = nullptr
     );
@@ -172,7 +197,7 @@ private:
         QString& constrIdsStr,
         Base::Vector3d* pickedPoint = nullptr
     ) const;
-    std::set<int> detectPreselectionIcon(
+    ConstraintPreselectionResult detectPreselectionIcon(
         SoSeparator* sep,
         SoImage* iconNode,
         int iconIndex,

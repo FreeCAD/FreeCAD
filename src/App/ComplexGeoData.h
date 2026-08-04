@@ -58,7 +58,7 @@ namespace Data
 // struct MappedChildElements;
 
 /// Option for App::GeoFeature::searchElementCache()
-enum class SearchOption
+enum class SearchOption: int
 {
     CheckGeometry = 1, ///< Whether to compare shape geometry
     SingleResult = 2, ///< Stop at first found result

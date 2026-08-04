@@ -41,6 +41,48 @@ if App.GuiUp:
     from draftviewproviders.view_clone import ViewProviderClone
 
 
+def _make_bim_clone(selected_base):
+
+    try:
+        import Arch
+    except:
+        # BIM not present
+        return None
+
+    if utils.get_type(selected_base) == "BuildingPart":
+        cl = Arch.makeComponent()
+    else:
+        try:  # new-style make function
+            cl = getattr(Arch, "make_" + selected_base.Proxy.Type.lower())()
+        except Exception:
+            try:  # old-style make function
+                cl = getattr(Arch, "make" + selected_base.Proxy.Type)()
+            except Exception:
+                return None
+
+    base = utils.get_clone_base(selected_base)
+    prefix = params.get_param("ClonePrefix")
+    cl.Label = prefix + base.Label
+    cl.CloneOf = base
+    if utils.get_type(selected_base) != "BuildingPart":
+        cl.Placement = selected_base.Placement
+    if utils.get_type(selected_base) == "Stairs":
+        if selected_base.RailingLeft:
+            cl.RailingLeft = _make_bim_clone(selected_base.RailingLeft)
+        if selected_base.RailingRight:
+            cl.RailingRight = _make_bim_clone(selected_base.RailingRight)
+
+    for prop in ("Description", "IfcType", "Material", "Subvolume", "Tag"):
+        try:
+            setattr(cl, prop, getattr(base, prop))
+        except Exception:
+            pass
+    if App.GuiUp:
+        # Shape of clone may not yet be available (v1.1 regression). See below.
+        QtCore.QTimer.singleShot(0, lambda: gui_utils.format_object(cl, base))
+    return cl
+
+
 def make_clone(obj, delta=None, forcedraft=False):
     """clone(obj,[delta,forcedraft])
 
@@ -86,41 +128,15 @@ def make_clone(obj, delta=None, forcedraft=False):
         and not forcedraft
     ):
         # arch objects can be clones
-        try:
-            import Arch
-        except:
-            # BIM not present
-            pass
-        else:
-            if utils.get_type(obj[0]) == "BuildingPart":
-                cl = Arch.makeComponent()
-            else:
-                try:  # new-style make function
-                    cl = getattr(Arch, "make_" + obj[0].Proxy.Type.lower())()
-                except Exception:
-                    try:  # old-style make function
-                        cl = getattr(Arch, "make" + obj[0].Proxy.Type)()
-                    except Exception:
-                        pass  # not a standard Arch object... Fall back to Draft mode
-            if cl:
-                base = utils.get_clone_base(obj[0])
-                cl.Label = prefix + base.Label
-                cl.CloneOf = base
-                if utils.get_type(obj[0]) != "BuildingPart":
-                    cl.Placement = obj[0].Placement
-                for prop in ("Description", "IfcType", "Material", "Subvolume", "Tag"):
-                    try:
-                        setattr(cl, prop, getattr(base, prop))
-                    except Exception:
-                        pass
-                if App.GuiUp:
-                    # Shape of clone may not yet be available (v1.1 regression). See below.
-                    QtCore.QTimer.singleShot(0, lambda: gui_utils.format_object(cl, base))
-                    gui_utils.select(cl)
-                return cl
+        cl = _make_bim_clone(obj[0])
+        if cl is not None:
+            if App.GuiUp:
+                # Delay required in case a stairs with railings is cloned:
+                QtCore.QTimer.singleShot(0, lambda: gui_utils.select(cl))
+            return cl
 
     # fall back to Draft clone mode
-    if not cl:
+    if cl is None:
         cl = App.ActiveDocument.addObject("Part::FeaturePython", "Clone")
         cl.addExtension("Part::AttachExtensionPython")
         cl.Label = prefix + obj[0].Label

@@ -200,6 +200,7 @@ public:
     bool replaceProjectFile(const std::string& name, bool keepfile = false);
 
 private:
+    Metadata parseMetadata() const;
     void findFiles(XERCES_CPP_NAMESPACE::DOMNode*, std::list<std::string>&) const;
     void findFiles(XERCES_CPP_NAMESPACE::DOMNode*, std::list<PropertyFile>&) const;
 

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from Base.Metadata import constmethod
 from Base.Matrix import Matrix
+from DepEdge import DepEdge
 from Document import Document
 from DocumentObjectGroup import DocumentObjectGroup
 from ExtensionContainer import ExtensionContainer
@@ -21,6 +22,9 @@ class DocumentObject(ExtensionContainer):
         Label: str = ...
         Label2: str = ...
 
+    OutListProp: Final[List[DepEdge]] = []
+    """A list of all objects which link to this object with properties."""
+
     OutList: Final[List["DocumentObject"]] = []
     """A list of all objects this object links to."""
 
@@ -29,6 +33,9 @@ class DocumentObject(ExtensionContainer):
 
     InList: Final[List["DocumentObject"]] = []
     """A list of all objects which link to this object."""
+
+    InListProp: Final[List[DepEdge]] = []
+    """A list of all objects which link to this object with properties."""
 
     InListRecursive: Final[List["DocumentObject"]] = []
     """A list of all objects which link to this object recursively."""

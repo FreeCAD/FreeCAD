@@ -21,6 +21,8 @@
  ***************************************************************************/
 
 
+#include <algorithm>
+
 #include <QDockWidget>
 #include <QStatusBar>
 
@@ -43,6 +45,7 @@
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>
+#include <App/SuppressibleExtension.h>
 #include <Base/Interpreter.h>
 #include <Gui/ComboView.h>
 #include <Gui/TaskView/TaskView.h>
@@ -657,6 +660,18 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
     }
     else if (strcmp(recipient, "Tree") == 0) {
         if (!sels.empty()) {
+            bool hasSuppressible
+                = std::any_of(sels.begin(), sels.end(), [](const SelectionSingleton::SelObj& sel) {
+                      App::DocumentObject* obj = sel.pObject;
+                      if (!obj) {
+                          return false;
+                      }
+                      auto ext = obj->getExtensionByType<App::SuppressibleExtension>(true);
+                      return ext && !ext->Suppressed.testStatus(App::Property::Hidden);
+                  });
+            if (hasSuppressible) {
+                *item << "Std_ToggleSuppress";
+            }
             *item << "Std_ToggleFreeze" << "Separator"
                   << "Std_ToggleVisibility" << "Std_ShowSelection"
                   << "Std_HideSelection"

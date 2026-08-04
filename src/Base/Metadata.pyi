@@ -24,6 +24,12 @@ def module(**kwargs: Any) -> None:
     """
     ...
 
+def callback(symbol: str, /) -> Callable[[_FuncT], _FuncT]:
+    """
+    Bind a module function declaration to an existing C++ callback symbol.
+    """
+    ...
+
 def constmethod(method: _FuncT, /) -> _FuncT: ...
 def no_args(method: _FuncT, /) -> _FuncT: ...
 def forward_declarations(source_code: str, /) -> Callable[[_ClassT], _ClassT]:
@@ -42,6 +48,12 @@ def typing_only(method: _FuncT, /) -> _FuncT:
     """
     Mark a method as typing-only so it is ignored by binding code generation.
     Use class-body if TYPE_CHECKING blocks for typing-only attributes.
+    """
+    ...
+
+def bootstrap_export(method: _FuncT, /) -> _FuncT:
+    """
+    Mark a module function for export from bootstrap-only module import paths.
     """
     ...
 

@@ -60,7 +60,7 @@ using namespace SketcherGui;
 
 bool SketcherGui::checkConstraintName(const Sketcher::SketchObject* sketch, std::string constraintName)
 {
-    if (constraintName != Base::Tools::getIdentifier(constraintName)) {
+    if (!constraintName.empty() && constraintName != Base::Tools::getIdentifier(constraintName)) {
         Gui::NotifyUserError(
             sketch,
             QT_TRANSLATE_NOOP("Notifications", "Value Error"),
@@ -292,7 +292,7 @@ void EditDatumDialog::accepted()
 
                     Gui::cmdAppObjectArgs(
                         sketch,
-                        "setDatum(%i,App.Units.Quantity('%f %s'))",
+                        "setDatum(%i,App.Units.Quantity('%.8g %s'))",
                         ConstrNbr,
                         newDatum,
                         unitString
@@ -303,11 +303,8 @@ void EditDatumDialog::accepted()
             std::string constraintName = ui_ins_datum->name->text().trimmed().toStdString();
             std::string currConstraintName = sketch->Constraints[ConstrNbr]->Name;
 
-            if (constraintName != currConstraintName) {
-                if (!SketcherGui::checkConstraintName(sketch, constraintName)) {
-                    constraintName = currConstraintName;
-                }
-
+            if (constraintName != currConstraintName
+                && SketcherGui::checkConstraintName(sketch, constraintName)) {
                 Gui::cmdAppObjectArgs(
                     sketch,
                     "renameConstraint(%d, u'%s')",
