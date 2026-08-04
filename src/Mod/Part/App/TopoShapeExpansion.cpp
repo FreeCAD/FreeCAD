@@ -73,6 +73,7 @@
 #include <BRepPrimAPI_MakeCylinder.hxx>
 #include <BRepPrimAPI_MakeRevol.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
+#include <BRepPrimAPI_MakeSphere.hxx>
 #include <BRepPrimAPI_MakeTorus.hxx>
 #include <BRepProj_Projection.hxx>
 #include <BRepTools_WireExplorer.hxx>
@@ -4268,6 +4269,98 @@ TopoShape& TopoShape::makeElementFillet(
             }
             if (selectedOnFace.size() == mostSelectedEdges) {
                 endCaps.push_back({face, plane, std::move(selectedOnFace)});
+            }
+        }
+
+        // A single circular outer edge consumes both the end face and the
+        // cylindrical wall when its radius equals both the cylinder radius
+        // and height.  The exact limiting solid is a hemisphere; constructing
+        // that analytic primitive avoids the zero-area faces produced by the
+        // regular 3D fillet builder at the limit.
+        if (endCaps.size() == 1 && mostSelectedEdges == 1 && edges.size() == 1) {
+            const TopoDS_Edge selectedEdge
+                = TopoDS::Edge(endCaps[0].selectedEdges[0].getShape());
+            BRepAdaptor_Curve selectedCurve(selectedEdge);
+            TopTools_IndexedMapOfShape outerWireEdges;
+            TopExp::MapShapes(
+                BRepTools::OuterWire(TopoDS::Face(endCaps[0].shape.getShape())),
+                TopAbs_EDGE,
+                outerWireEdges
+            );
+            if (selectedCurve.GetType() == GeomAbs_Circle
+                && outerWireEdges.Contains(selectedEdge)) {
+                const double edgeRadius = selectedCurve.Circle().Radius();
+                for (const auto& oppositeCap : shape.getSubTopoShapes(TopAbs_FACE)) {
+                    if (oppositeCap.getShape().IsSame(endCaps[0].shape.getShape())) {
+                        continue;
+                    }
+                    gp_Pln oppositePlane;
+                    if (!oppositeCap.findPlane(oppositePlane)
+                        || !endCaps[0].plane.Axis().Direction().IsParallel(
+                            oppositePlane.Axis().Direction(),
+                            Precision::Angular()
+                        )) {
+                        continue;
+                    }
+
+                    const gp_Dir capDirection = endCaps[0].plane.Axis().Direction();
+                    const gp_Vec planeOffset(
+                        endCaps[0].plane.Location(),
+                        oppositePlane.Location()
+                    );
+                    const gp_Vec prismVector(
+                        capDirection.XYZ() * planeOffset.Dot(capDirection)
+                    );
+                    const double prismLength = prismVector.Magnitude();
+                    const double lengthTolerance
+                        = std::max(Precision::Confusion(), prismLength * 1.0e-9);
+                    if (prismLength <= Precision::Confusion()
+                        || std::abs(prismLength - radius1) > lengthTolerance
+                        || std::abs(edgeRadius - radius1) > lengthTolerance
+                        || !selectedCurve.Circle().Axis().Direction().IsParallel(
+                            gp_Dir(prismVector),
+                            Precision::Angular()
+                        )) {
+                        continue;
+                    }
+
+                    BRepPrimAPI_MakePrism originalPrism(
+                        endCaps[0].shape.getShape(),
+                        prismVector
+                    );
+                    originalPrism.Build();
+                    if (!originalPrism.IsDone()
+                        || !sameSolid(shape.getShape(), originalPrism.Shape())) {
+                        continue;
+                    }
+
+                    try {
+                        const gp_Pnt sphereCenter
+                            = selectedCurve.Circle().Location().Translated(prismVector);
+                        BRepPrimAPI_MakeSphere hemisphereBuilder(
+                            gp_Ax2(sphereCenter, gp_Dir(-prismVector)),
+                            radius1,
+                            0.0,
+                            std::acos(-1.0) / 2.0
+                        );
+                        hemisphereBuilder.Build();
+                        if (!hemisphereBuilder.IsDone()) {
+                            continue;
+                        }
+                        FCBRepAlgoAPI_Common exactFillet(
+                            shape.getShape(),
+                            hemisphereBuilder.Shape()
+                        );
+                        exactFillet.Build();
+                        if (exactFillet.IsDone() && !exactFillet.Shape().IsNull()
+                            && BRepCheck_Analyzer(exactFillet.Shape()).IsValid()) {
+                            return makeElementShape(exactFillet, shape, op);
+                        }
+                    }
+                    catch (const Standard_Failure&) {
+                        continue;
+                    }
+                }
             }
         }
 

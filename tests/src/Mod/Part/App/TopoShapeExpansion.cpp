@@ -2732,6 +2732,52 @@ TEST_F(TopoShapeExpansionTest, makeElementFilletBothCircularEdgesOfCylinderAtLim
     EXPECT_EQ(cylindricalFaces, 0);
 }
 
+TEST_F(TopoShapeExpansionTest, makeElementFilletTopCircularEdgeOfCylinderToHemisphere)
+{
+    // Arrange: the top circular edge of a radius-10, height-10 cylinder.
+    TopoShape cylinder {BRepPrimAPI_MakeCylinder(10.0, 10.0).Shape(), 1L};
+    std::vector<TopoShape> topEdge;
+    for (const auto& edge : cylinder.getSubTopoShapes(TopAbs_EDGE)) {
+        BRepAdaptor_Curve curve(TopoDS::Edge(edge.getShape()));
+        if (curve.GetType() == GeomAbs_Circle
+            && std::abs(curve.Circle().Location().Z() - 10.0) < Precision::Confusion()) {
+            topEdge.push_back(edge);
+        }
+    }
+    ASSERT_EQ(topEdge.size(), 1U);
+
+    TopoShape belowLimit;
+    belowLimit.makeElementFillet(cylinder, topEdge, 9.999, 9.999);
+    EXPECT_TRUE(BRepCheck_Analyzer(belowLimit.getShape()).IsValid());
+
+    // Act: radius 10 consumes both the top face and the complete cylindrical side face.
+    TopoShape hemisphere;
+    hemisphere.makeElementFillet(cylinder, topEdge, 10.0, 10.0);
+
+    // Assert: only a hemispherical surface and its planar base remain.
+    EXPECT_TRUE(BRepCheck_Analyzer(hemisphere.getShape()).IsValid());
+    EXPECT_NEAR(getVolume(hemisphere.getShape()), 2000.0 * std::acos(-1.0) / 3.0, 1e-6);
+    int sphericalFaces = 0;
+    int cylindricalFaces = 0;
+    int planarFaces = 0;
+    for (const auto& face : hemisphere.getSubTopoShapes(TopAbs_FACE)) {
+        const GeomAbs_SurfaceType type
+            = BRepAdaptor_Surface(TopoDS::Face(face.getShape())).GetType();
+        if (type == GeomAbs_Sphere) {
+            ++sphericalFaces;
+        }
+        else if (type == GeomAbs_Cylinder) {
+            ++cylindricalFaces;
+        }
+        else if (type == GeomAbs_Plane) {
+            ++planarFaces;
+        }
+    }
+    EXPECT_EQ(sphericalFaces, 1);
+    EXPECT_EQ(cylindricalFaces, 0);
+    EXPECT_EQ(planarFaces, 1);
+}
+
 TEST_F(TopoShapeExpansionTest, makeElementFilletBothSidesOfSquareThroughPocketAtLimit)
 {
     // Arrange: cut a 10 mm square through a 30 x 30 x 10 mm body.
