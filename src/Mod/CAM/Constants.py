@@ -232,3 +232,6 @@ ANNOT_NO_COLLAPSE_G0 = "no_collapse_g0"
 
 # Pass through string in annotation as command without any changes
 ANNOT_AS_IS = "as-is"
+
+# Moves from linking generator
+ANNOT_LINKING = {"type": "linking"}
