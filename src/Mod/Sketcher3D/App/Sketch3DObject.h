@@ -76,6 +76,9 @@ public:
 
     bool getConstruction(int geoId) const;
 
+    /// Flip construction flag.
+    int toggleConstruction(int geoId);
+
     /// add a constraint. Returns its index in Constraints.
     int addConstraint(const Constraint3D& c);
 

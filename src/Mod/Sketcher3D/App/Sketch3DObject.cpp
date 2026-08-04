@@ -93,6 +93,20 @@ bool Sketch3DObject::getConstruction(int geoId) const
     return geo && Sketcher::GeometryFacade::getConstruction(geo);
 }
 
+int Sketch3DObject::toggleConstruction(int geoId)
+{
+    auto* geo = _getGeometry(geoId);
+    if (!geo || kindOfGeometry(geo) == GeoKind::Plane) {
+        return -1;
+    }
+
+    std::unique_ptr<Part::Geometry> copy(geo->clone());
+    auto gf = Sketcher::GeometryFacade::getFacade(copy.get());
+    gf->setConstruction(!gf->getConstruction());
+    Geometry.set1Value(geoId, std::move(copy));
+    return 0;
+}
+
 int Sketch3DObject::addConstraint(const Constraint3D& c)
 {
     int idx = Constraints.getSize();

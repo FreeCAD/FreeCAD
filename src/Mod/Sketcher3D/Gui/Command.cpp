@@ -216,7 +216,7 @@ CmdSketcher3DToggleConstruction::CmdSketcher3DToggleConstruction()
     sGroup = QT_TR_NOOP("Sketcher3D");
     sMenuText = QT_TR_NOOP("Toggle reference geometry");
     sToolTipText = QT_TR_NOOP(
-        "Toggle between normal and reference (construction) geometry while drawing"
+        "Toggle reference (construction) creation mode, or toggle selected geometry"
     );
     sWhatsThis = "Sketcher3D_ToggleConstruction";
     sStatusTip = sToolTipText;
@@ -252,7 +252,38 @@ void CmdSketcher3DToggleConstruction::updateAction(int mode)
 void CmdSketcher3DToggleConstruction::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    toggleConstructionCreationMode();
+
+    Sketcher3D::Sketch3DObject* sketch = activeSketch3D();
+    if (!sketch) {
+        return;
+    }
+
+    std::set<int> geoIds;
+    for (auto& s :
+         getSelection().getSelectionEx(nullptr, Sketcher3D::Sketch3DObject::getClassTypeId())) {
+        if (s.getObject() != sketch) {
+            continue;
+        }
+        for (const auto& sub : s.getSubNames()) {
+            auto id = sketch->resolveSubName(sub);
+            if (id.isValid() && id.GeoId >= 0 && id.Kind != Sketcher3D::GeoKind::Plane) {
+                geoIds.insert(id.GeoId);
+            }
+        }
+    }
+
+    if (geoIds.empty()) {
+        toggleConstructionCreationMode();
+        return;
+    }
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Toggle reference geometry"));
+    for (int geoId : geoIds) {
+        sketch->toggleConstruction(geoId);
+    }
+    sketch->recomputeFeature();
+    commitCommand();
+    getSelection().clearSelection();
 }
 
 bool CmdSketcher3DToggleConstruction::isActive()
