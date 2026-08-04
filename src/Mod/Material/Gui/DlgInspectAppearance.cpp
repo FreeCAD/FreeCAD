@@ -169,13 +169,13 @@ void DlgInspectAppearance::update(std::vector<Gui::ViewProvider*>& views)
                 ui->editSubShape->setText(QStringLiteral(""));
             }
 
-            auto subShapeType = QString::fromUtf8(obj->getTypeId().getName());
-            subShapeType.remove(subShapeType.indexOf(QStringLiteral("::")), subShapeType.size());
-            ui->editSubShapeType->setText(subShapeType);
-            ui->editShapeType->setText(QString::fromUtf8(obj->getTypeId().getName()));
+            auto shapeType = obj->getTypeId().getName();
+            auto subShapeType = shapeType.substr(0, shapeType.find("::"));
+            ui->editSubShapeType->setText(QString::fromUtf8(subShapeType.data(), subShapeType.size()));
+            ui->editShapeType->setText(QString::fromUtf8(shapeType.data(), shapeType.size()));
 
             ui->tabAppearance->clear();
-            if (labelProp && QString::fromUtf8(labelProp->getValue()).size() > 0) {
+            if (labelProp && labelProp->getValue()) {
                 auto* prop =
                     dynamic_cast<App::PropertyMaterialList*>(view->getPropertyByName("ShapeAppearance"));
                 if (prop) {

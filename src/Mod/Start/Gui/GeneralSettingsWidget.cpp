@@ -248,13 +248,11 @@ void GeneralSettingsWidget::retranslateUi()
     );
     std::map<Base::Type, std::string> styles = Gui::UserNavigationStyle::getUserFriendlyNames();
     for (const auto& style : styles) {
-        QByteArray data(style.first.getName());
-        QString name = QApplication::translate(
-            std::string {style.first.getName()}.c_str(),
-            style.second.c_str()
-        );
-        _navigationStyleComboBox->addItem(name, data);
-        if (navStyleName == style.first.getName()) {
+        const auto name = style.first.getName();
+        QByteArray data(name.data(), name.size());
+        QString styleName = QApplication::translate(std::string {name}.c_str(), style.second.c_str());
+        _navigationStyleComboBox->addItem(styleName, data);
+        if (navStyleName == name) {
             _navigationStyleComboBox->setCurrentIndex(_navigationStyleComboBox->count() - 1);
         }
     }

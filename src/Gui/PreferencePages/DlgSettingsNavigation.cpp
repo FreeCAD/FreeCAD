@@ -363,13 +363,11 @@ void DlgSettingsNavigation::retranslate()
     // add submenu at the end to select navigation style
     std::map<Base::Type, std::string> styles = UserNavigationStyle::getUserFriendlyNames();
     for (const auto& style : styles) {
-        QByteArray data(style.first.getName());
-        QString name = QApplication::translate(
-            std::string {style.first.getName()}.c_str(),
-            style.second.c_str()
-        );
+        const auto name = style.first.getName();
+        QByteArray data(name.data(), name.size());
+        QString styleName = QApplication::translate(std::string {name}.c_str(), style.second.c_str());
 
-        ui->comboNavigationStyle->addItem(name, data);
+        ui->comboNavigationStyle->addItem(styleName, data);
     }
 }
 

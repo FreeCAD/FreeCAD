@@ -28,6 +28,7 @@
 #include <QClipboard>
 #include <QDateTime>
 #include <QMessageBox>
+#include <QScopeGuard>
 #include <QTextStream>
 #include <QTreeWidgetItem>
 

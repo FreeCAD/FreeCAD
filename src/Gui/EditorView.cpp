@@ -949,7 +949,11 @@ void SearchBar::highlightSearchResults(const SearchResults& matches)
     }
 
     cleaned += searchSelections;
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    textEditor->setExtraSelections(cleaned.toList());
+#else
     textEditor->setExtraSelections(cleaned);
+#endif
 }
 
 void SearchBar::findPrevious()

@@ -962,9 +962,9 @@ void PropertyEditor::removeProperties(const std::unordered_set<App::Property*>& 
     App::GetApplication().commitTransaction(tid);
 }
 
-static inline std::string indent(int level)
+static inline QString indent(int level)
 {
-    return std::string(2 * level, ' ');
+    return QString(2 * level, ' ');
 }
 
 void PropertyEditor::getPropUsesObj(
