@@ -271,8 +271,9 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
     Base::Vector3d p1 = arc->getStartPoint(true);
     Base::Vector3d p2 = arc->getEndPoint(true);
 
-    const auto newP1 = reverse ? p1 : p2;
-    const auto newP2 = reverse ? p2 : p1;
+    if(!reverse) {
+        std::swap(p1, p2);
+    }
 
     if (trim) {
         if (createCorner) {
@@ -319,8 +320,8 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
                     return {newId, pos};
                 };
 
-                const auto newId1 = splitCornerPiece(GeoId1, PosId1, newP1);
-                const auto newId2 = splitCornerPiece(GeoId2, PosId2, newP2);
+                const auto newId1 = splitCornerPiece(GeoId1, PosId1, p1);
+                const auto newId2 = splitCornerPiece(GeoId2, PosId2, p2);
             }
         }
         else {
@@ -328,18 +329,10 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
             delConstraintOnPoint(GeoId2, PosId2, false);
         }
 
-        if (reverse) {
-            filletPosId1 = PointPos::start;
-            filletPosId2 = PointPos::end;
-            moveGeometry(GeoId1, PosId1, p1, false, true);
-            moveGeometry(GeoId2, PosId2, p2, false, true);
-        }
-        else {
-            filletPosId1 = PointPos::end;
-            filletPosId2 = PointPos::start;
-            moveGeometry(GeoId1, PosId1, p2, false, true);
-            moveGeometry(GeoId2, PosId2, p1, false, true);
-        }
+        filletPosId1 = reverse ? PointPos::start : PointPos::end;
+        filletPosId2 = reverse ? PointPos::end : PointPos::start;
+        moveGeometry(GeoId1, PosId1, p1, false, true);
+        moveGeometry(GeoId2, PosId2, p2, false, true);
 
         auto tangent1 = std::make_unique<Sketcher::Constraint>();
         tangent1->Type = Sketcher::Tangent;
@@ -1134,6 +1127,10 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
 
     std::vector<const Part::Geometry*> newGeosConst(newGeos.begin(), newGeos.end());
 
+    if (!isOriginalCurveClosed && newIds.size() > 1) {
+        transferConstraints(GeoId, PointPos::start, newIds.front(), PointPos::start, true);
+        transferConstraints(GeoId, PointPos::end, newIds.back(), PointPos::end, true);
+    }
     for (const auto& oldConstrId : idsOfOldConstraints) {
         Constraint* con = allConstraints[oldConstrId];
         deriveConstraintsForPieces(GeoId, newIds, newGeosConst, con, newConstraints);
@@ -1150,9 +1147,6 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
         joint->Second = newIds.back();
         joint->SecondPos = PointPos::start;
         newConstraints.push_back(joint);
-
-        transferConstraints(GeoId, PointPos::start, newIds.front(), PointPos::start, true);
-        transferConstraints(GeoId, PointPos::end, newIds.back(), PointPos::end, true);
     }
 
     // This additional constraint is there to maintain existing behavior.

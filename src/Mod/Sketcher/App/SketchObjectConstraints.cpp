@@ -38,6 +38,7 @@
 #include <Base/Vector3D.h>
 
 #include <memory>
+#include <string>
 
 #include "GeoEnum.h"
 #include "SketchObject.h"
@@ -1470,11 +1471,13 @@ bool SketchObject::deriveConstraintsForPieces(
 ) const
 {
     const Part::Geometry* geo = getGeometry(oldId);
-    int conId = con->First;
-    PointPos conPos = con->FirstPos;
+    const GeoElementId conGeoElementId = con->getElement(0);
+    int conId = conGeoElementId.GeoId;
+    PointPos conPos = conGeoElementId.Pos;
     if (conId == oldId) {
-        conId = con->Second;
-        conPos = con->SecondPos;
+        const GeoElementId second = con->getElement(1);
+        conId = second.GeoId;
+        conPos = second.Pos;
     }
 
     bool newGeosLikelyNotCreated = std::ranges::find(newGeos, nullptr) != newGeos.end();
@@ -1489,8 +1492,9 @@ bool SketchObject::deriveConstraintsForPieces(
         case Tangent:
         case Perpendicular: {
             // we assume the parts are forced to be tangential, so we only need to apply it to the
-            // ones intersecting if (geo->is<Part::GeomLineSegment>()) {
-            //     transferToAll = false;
+            // ones intersecting
+            // if (geo->is<Part::GeomLineSegment>()) {
+            //     transferToAll = true;
             //     break;
             // }
 
@@ -1506,29 +1510,37 @@ bool SketchObject::deriveConstraintsForPieces(
 
             // For now: just transfer to the first intersection
             // TODO: Actually check that there was perpendicularity earlier
-            // TODO: Choose piece based on parameters ("values" of the constraint)
             for (size_t i = 0; i < newIds.size(); ++i) {
                 std::vector<std::pair<Base::Vector3d, Base::Vector3d>> intersections;
                 bool intersects
                     = static_cast<const Part::GeomCurve*>(newGeos[i])
                           ->intersect(static_cast<const Part::GeomCurve*>(conGeo), intersections);
 
-                if (newGeos[i]->is<Part::GeomLineSegment>() && conGeo->is<Part::GeomLineSegment>()) {
-                    const Base::Vector3d p11
-                        = static_cast<const Part::GeomLineSegment*>(newGeos[i])->getStartPoint();
-                    const Base::Vector3d p12
-                        = static_cast<const Part::GeomLineSegment*>(newGeos[i])->getEndPoint();
-                    const Base::Vector3d p21
-                        = static_cast<const Part::GeomLineSegment*>(conGeo)->getStartPoint();
-                    const Base::Vector3d p22
-                        = static_cast<const Part::GeomLineSegment*>(conGeo)->getEndPoint();
-
-                    if (p11 == p21 || p11 == p22 || p12 == p21 || p12 == p22) {
-                        Constraint* trans = con->copy();
-                        trans->substituteIndex(oldId, newIds[i]);
-                        newConstraints.push_back(trans);
-                        return true;
+                bool found = false;
+                const auto& constraints = this->Constraints.getValues();
+                for (const auto* constraint : constraints) {
+                    if ((constraint->Type == Coincident || constraint->Type == PointOnObject)
+                        && constraint->involvesGeoId(newIds[i]) && constraint->involvesGeoId(conId)) {
+                        found = true;
                     }
+                }
+
+                if (found) {
+                    /*if(newGeos[i]->is<Part::GeomLineSegment>() &&
+                       conGeo->is<Part::GeomLineSegment>()) { const Base::Vector3d p11 =
+                       static_cast<const Part::GeomLineSegment*>(newGeos[i])->getStartPoint(); const
+                       Base::Vector3d p12 = static_cast<const
+                       Part::GeomLineSegment*>(newGeos[i])->getEndPoint(); const Base::Vector3d p21
+                       = static_cast<const Part::GeomLineSegment*>(conGeo)->getStartPoint(); const
+                       Base::Vector3d p22 = static_cast<const
+                       Part::GeomLineSegment*>(conGeo)->getEndPoint();
+
+                        if(p11 == p21 || p11 == p22 || p12 == p21 || p12 == p22) {*/
+                    Constraint* trans = con->copy();
+                    trans->substituteIndex(oldId, newIds[i]);
+                    newConstraints.push_back(trans);
+                    return true;
+                    //}
                 }
                 else if (intersects) {
                     Constraint* trans = con->copy();
@@ -1664,6 +1676,12 @@ bool SketchObject::deriveConstraintsForPieces(
 
     if (!transferToAll) {
         return false;
+    }
+
+    for (auto& newId : newIds) {
+        Constraint* trans = con->copy();
+        trans->substituteIndex(oldId, newId);
+        newConstraints.push_back(trans);
     }
 
     return true;
@@ -2004,7 +2022,7 @@ bool SketchObject::hasBlockConstraint() const
     });
 }
 
-void SketchObject::getConstraintIndices(int GeoId, std::vector<int>& constraintList)
+void SketchObject::getConstraintIndices(int GeoId, std::vector<int>& constraintList) const
 {
     const std::vector<Constraint*>& constraints = this->Constraints.getValues();
     int i = 0;
