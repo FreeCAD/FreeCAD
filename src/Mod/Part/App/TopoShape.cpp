@@ -694,8 +694,11 @@ void TopoShape::read(const char* FileName)
     Base::FileInfo File(FileName);
 
     // checking on the file
-    if (!File.isReadable()) {
+    if (!File.exists()) {
         throw Base::FileNotFoundException(FileName);
+    }
+    if (!File.isReadable()) {
+        throw Base::FileReadPermissionException(FileName);
     }
 
     if (File.hasExtension({"igs", "iges"})) {
@@ -758,7 +761,7 @@ void TopoShape::importIges(const char* FileName)
         // http://www.opencascade.org/org/forum/thread_20603/?forum=3
         aReader.SetReadVisible(Standard_True);
         if (aReader.ReadFile(encodeFilename(FileName).c_str()) != IFSelect_RetDone) {
-            throw Base::FileReadException(FileName, "Error in reading IGES");
+            throw Base::FileReadException(FileName);
         }
 
         // make brep
@@ -777,7 +780,7 @@ void TopoShape::importStep(const char* FileName)
     try {
         STEPControl_Reader aReader;
         if (aReader.ReadFile(encodeFilename(FileName).c_str()) != IFSelect_RetDone) {
-            throw Base::FileReadException(FileName, "Error in reading STEP");
+            throw Base::FileReadException(FileName);
         }
 
         // Root transfers
@@ -884,7 +887,7 @@ void TopoShape::exportIges(const char* filename) const
         aWriter.AddShape(this->_Shape);
         aWriter.ComputeModel();
         if (aWriter.Write(encodeFilename(filename).c_str()) != IFSelect_RetDone) {
-            throw Base::FileWriteException(filename, "Writing of IGES failed");
+            throw Base::FileWriteException(filename);
         }
     }
     catch (Standard_Failure& e) {
@@ -915,7 +918,7 @@ void TopoShape::exportStep(const char* filename) const
         Handle(Transfer_FinderProcess) hFinder = hTransferWriter->FinderProcess();
 
         if (aWriter.Transfer(this->_Shape, STEPControl_AsIs) != IFSelect_RetDone) {
-            throw Base::FileWriteException(filename, "Error in transferring STEP");
+            throw Base::FileException("Error in transferring STEP", filename);
         }
 
         APIHeaderSection_MakeHeader makeHeader(aWriter.Model());
@@ -927,7 +930,7 @@ void TopoShape::exportStep(const char* filename) const
         makeHeader.SetDescriptionValue(1, new TCollection_HAsciiString("FreeCAD Model"));
 
         if (aWriter.Write(encodeFilename(filename).c_str()) != IFSelect_RetDone) {
-            throw Base::FileWriteException(filename, "Writing of STEP failed");
+            throw Base::FileWriteException(filename);
         }
     }
     catch (Standard_Failure& e) {
@@ -945,11 +948,11 @@ void TopoShape::exportBrep(const char* filename) const
             Standard_False,
             TopTools_FormatVersion_VERSION_1
         )) {
-        throw Base::FileWriteException(filename, "Writing of BREP failed");
+        throw Base::FileWriteException(filename);
     }
 #else
     if (!BRepTools::Write(this->_Shape, encodeFilename(filename).c_str())) {
-        throw Base::FileWriteException(filename, "Writing of BREP failed");
+        throw Base::FileWriteException(filename);
     }
 #endif
 }
