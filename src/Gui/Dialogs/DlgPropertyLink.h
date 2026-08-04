@@ -36,6 +36,9 @@ class QTreeWidgetItem;
 
 namespace Gui
 {
+
+class MDIView;
+
 namespace Dialog
 {
 
@@ -113,6 +116,7 @@ private:
     QPushButton* refreshButton;
 
     QPointer<QWidget> parentView;
+    QPointer<Gui::MDIView> savedActiveView;
     std::vector<App::SubObjectT> savedSelections;
 
     App::DocumentObjectT objProp;
