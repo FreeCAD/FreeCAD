@@ -19,6 +19,10 @@ add_executable(Gui_tests_run
 
 # Qt tests
 setup_qt_test(QuantitySpinBox)
+setup_qt_test(ThreadAffinity)
+# Keep CTest as the authoritative timeout. The Windows watchdog fires first so
+# it can capture a dump before CTest terminates the process.
+set_tests_properties(ThreadAffinity_Tests_run PROPERTIES TIMEOUT 120)
 
 target_link_libraries(Gui_tests_run PRIVATE
     GTest::gmock_main
