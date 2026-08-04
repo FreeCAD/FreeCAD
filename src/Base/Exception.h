@@ -175,6 +175,9 @@ public:
     virtual const char* what() const noexcept;
     virtual void reportException() const;  // once only
 
+    /// Message looked up in the "Exceptions" context when it is marked translatable
+    virtual std::string getTranslatedMessage() const;
+
     inline void setMessage(const std::string& message);
     // what may differ from the message given by the user in
     // derived classes
@@ -257,6 +260,7 @@ public:
 
     const char* what() const noexcept override;
     void reportException() const override;
+    std::string getTranslatedMessage() const override;
     std::string getFileName() const;
     PyObject* getPyObject() override;
 
@@ -272,100 +276,53 @@ private:
     void setFileName(const std::string& fileName);
 };
 
-/** File not found or does not exist */
 class BaseExport FileNotFoundException: public FileException
 {
 public:
-    explicit FileNotFoundException(const std::string& fileName)
-        : FileException("File not found", fileName)
-    {
-        setTranslatable(true);
-    }
-    explicit FileNotFoundException(const FileInfo& file)
-        : FileException("File not found", file)
-    {
-        setTranslatable(true);
-    }
+    explicit FileNotFoundException(const std::string& fileName);
+    explicit FileNotFoundException(const FileInfo& file);
 };
 
-/** No write permission for file or file is read-only */
-class BaseExport FilePermissionException: public FileException
+class BaseExport FileReadPermissionException: public FileException
 {
 public:
-    explicit FilePermissionException(const std::string& fileName)
-        : FileException("No write permission for file or file is read-only", fileName)
-    {
-        setTranslatable(true);
-    }
-    explicit FilePermissionException(const FileInfo& file)
-        : FileException("No write permission for file or file is read-only", file)
-    {
-        setTranslatable(true);
-    }
+    explicit FileReadPermissionException(const std::string& fileName);
+    explicit FileReadPermissionException(const FileInfo& file);
 };
 
-/** File extension or format not supported */
+class BaseExport FileWritePermissionException: public FileException
+{
+public:
+    explicit FileWritePermissionException(const std::string& fileName);
+    explicit FileWritePermissionException(const FileInfo& file);
+};
+
 class BaseExport FileFormatException: public FileException
 {
 public:
-    explicit FileFormatException(const std::string& fileName)
-        : FileException("File extension not supported", fileName)
-    {
-        setTranslatable(true);
-    }
-    explicit FileFormatException(const FileInfo& file)
-        : FileException("File extension not supported", file)
-    {
-        setTranslatable(true);
-    }
+    explicit FileFormatException(const std::string& fileName = "");
+    explicit FileFormatException(const FileInfo& file);
 };
 
-/** Error reading from file */
 class BaseExport FileReadException: public FileException
 {
 public:
-    explicit FileReadException(const std::string& fileName, const std::string& details = "")
-        : FileException(details.empty() ? "Error reading from file" : details, fileName)
-    {
-        setTranslatable(details.empty());
-    }
-    explicit FileReadException(const FileInfo& file, const std::string& details = "")
-        : FileException(details.empty() ? "Error reading from file" : details, file)
-    {
-        setTranslatable(details.empty());
-    }
+    explicit FileReadException(const std::string& fileName);
+    explicit FileReadException(const FileInfo& file);
 };
 
-/** Error writing to file */
 class BaseExport FileWriteException: public FileException
 {
 public:
-    explicit FileWriteException(const std::string& fileName, const std::string& details = "")
-        : FileException(details.empty() ? "Error writing to file" : details, fileName)
-    {
-        setTranslatable(details.empty());
-    }
-    explicit FileWriteException(const FileInfo& file, const std::string& details = "")
-        : FileException(details.empty() ? "Error writing to file" : details, file)
-    {
-        setTranslatable(details.empty());
-    }
+    explicit FileWriteException(const std::string& fileName);
+    explicit FileWriteException(const FileInfo& file);
 };
 
-/** Directory does not exist */
 class BaseExport DirectoryNotFoundException: public FileException
 {
 public:
-    explicit DirectoryNotFoundException(const std::string& dirName)
-        : FileException("Directory does not exist", dirName)
-    {
-        setTranslatable(true);
-    }
-    explicit DirectoryNotFoundException(const FileInfo& file)
-        : FileException("Directory does not exist", file)
-    {
-        setTranslatable(true);
-    }
+    explicit DirectoryNotFoundException(const std::string& dirName);
+    explicit DirectoryNotFoundException(const FileInfo& directory);
 };
 
 class BaseExport FileSystemError: public Exception
