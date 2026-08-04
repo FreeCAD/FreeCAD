@@ -65,6 +65,10 @@ protected:
 
 private:
     std::unique_ptr<Ui_TaskFilletParameters> ui;
+    double lastValidRadius = 0.0;
+
+    bool isRadiusAllowed(double radius) const;
+    void clearRadiusError();
 
     std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
     Gui::LinearGizmo* radiusGizmo = nullptr;

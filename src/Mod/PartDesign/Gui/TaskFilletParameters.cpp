@@ -26,7 +26,9 @@
 #include <QAction>
 #include <QListWidget>
 #include <QMessageBox>
+#include <QSignalBlocker>
 
+#include <Precision.hxx>
 
 #include <Base/Interpreter.h>
 #include <Base/Converter.h>
@@ -64,10 +66,11 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp* DressUpView, QWi
     ui->buttonRefSel->setEnabled(!useAllEdges);
     ui->listWidgetReferences->setEnabled(!useAllEdges);
     double r = pcFillet->Radius.getValue();
+    lastValidRadius = r;
 
     ui->filletRadius->setUnit(Base::Unit::Length);
     ui->filletRadius->setValue(r);
-    ui->filletRadius->setMinimum(0);
+    ui->filletRadius->setMinimum(Precision::Confusion());
     ui->filletRadius->selectNumber();
     ui->filletRadius->bind(pcFillet->Radius);
     QMetaObject::invokeMethod(ui->filletRadius, "setFocus", Qt::QueuedConnection);
@@ -119,12 +122,14 @@ void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         if (selectionMode == refSel) {
             referenceSelected(msg, ui->listWidgetReferences);
+            clearRadiusError();
         }
     }
     else if (msg.Type == Gui::SelectionChanges::ClrSelection) {
         // TODO: the gizmo position should be only recalculated when the feature associated
         // with the gizmo is removed from the list
         setGizmoPositions();
+        clearRadiusError();
     }
 }
 
@@ -139,6 +144,7 @@ void TaskFilletParameters::onCheckBoxUseAllEdgesToggled(bool checked)
         ui->listWidgetReferences->setEnabled(!checked);
         fillet->UseAllEdges.setValue(checked);
         fillet->recomputeFeature();
+        clearRadiusError();
     }
 }
 
@@ -152,11 +158,13 @@ void TaskFilletParameters::onRefDeleted()
 {
     TaskDressUpParameters::deleteRef(ui->listWidgetReferences);
     setGizmoPositions();
+    clearRadiusError();
 }
 
 void TaskFilletParameters::onAddAllEdges()
 {
     TaskDressUpParameters::addAllEdges(ui->listWidgetReferences);
+    clearRadiusError();
 }
 
 void TaskFilletParameters::onLengthChanged(double len)
@@ -164,11 +172,63 @@ void TaskFilletParameters::onLengthChanged(double len)
     if (auto fillet = getObject<PartDesign::Fillet>()) {
         setSelectionMode(none);
         setupTransaction();
+
+        if (!isRadiusAllowed(len)) {
+            QSignalBlocker blocker(ui->filletRadius);
+            fillet->Radius.setValue(lastValidRadius);
+            ui->filletRadius->setValue(lastValidRadius);
+            fillet->recomputeFeature();
+            ui->radiusErrorLabel->show();
+            hideOnError();
+            return;
+        }
+
+        lastValidRadius = len;
+        clearRadiusError();
         fillet->Radius.setValue(len);
         fillet->recomputeFeature();
         // hide the fillet if there was a computation error
         hideOnError();
     }
+}
+
+bool TaskFilletParameters::isRadiusAllowed(double radius) const
+{
+    if (radius <= Precision::Confusion()) {
+        return false;
+    }
+
+    auto fillet = getObject<PartDesign::Fillet>();
+    if (!fillet) {
+        return false;
+    }
+
+    try {
+        Part::TopoShape baseShape = fillet->getBaseTopoShape(true);
+        if (baseShape.isNull()) {
+            return true;
+        }
+        baseShape.setTransform(Base::Matrix4D());
+
+        const auto edges = fillet->UseAllEdges.getValue()
+            ? baseShape.getSubTopoShapes(TopAbs_EDGE)
+            : fillet->getContinuousEdges(baseShape);
+        if (edges.empty()) {
+            return true;
+        }
+
+        Part::TopoShape result;
+        result.makeElementFillet(baseShape, edges, radius, radius);
+        return !result.isNull();
+    }
+    catch (...) {
+        return false;
+    }
+}
+
+void TaskFilletParameters::clearRadiusError()
+{
+    ui->radiusErrorLabel->hide();
 }
 
 double TaskFilletParameters::getLength() const

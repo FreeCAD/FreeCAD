@@ -57,6 +57,22 @@
     </layout>
    </item>
    <item>
+    <widget class="QLabel" name="radiusErrorLabel">
+     <property name="visible">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #c42b1c;</string>
+     </property>
+     <property name="text">
+      <string>This radius is not permitted by the selected geometry. The previous valid value has been restored.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QCheckBox" name="checkBoxUseAllEdges">
      <property name="text">
       <string>Use all edges</string>
