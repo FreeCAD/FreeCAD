@@ -319,15 +319,15 @@ PyObject* FileException::getPyExceptionType() const
 namespace
 {
 constexpr const char* fileNotFoundMsg = QT_TRANSLATE_NOOP("Exceptions", "File not found");
-constexpr const char* fileReadPermissionMsg =
-    QT_TRANSLATE_NOOP("Exceptions", "No permission to read the file");
-constexpr const char* fileWritePermissionMsg =
-    QT_TRANSLATE_NOOP("Exceptions", "No write permission for the file or the file is read-only");
+constexpr const char* fileReadPermissionMsg
+    = QT_TRANSLATE_NOOP("Exceptions", "No permission to read the file");
+constexpr const char* fileWritePermissionMsg
+    = QT_TRANSLATE_NOOP("Exceptions", "No write permission for the file or the file is read-only");
 constexpr const char* fileFormatMsg = QT_TRANSLATE_NOOP("Exceptions", "File format not supported");
 constexpr const char* fileReadMsg = QT_TRANSLATE_NOOP("Exceptions", "Error reading from file");
 constexpr const char* fileWriteMsg = QT_TRANSLATE_NOOP("Exceptions", "Error writing to file");
-constexpr const char* directoryNotFoundMsg =
-    QT_TRANSLATE_NOOP("Exceptions", "Directory does not exist");
+constexpr const char* directoryNotFoundMsg
+    = QT_TRANSLATE_NOOP("Exceptions", "Directory does not exist");
 }  // namespace
 
 FileNotFoundException::FileNotFoundException(const std::string& fileName)
