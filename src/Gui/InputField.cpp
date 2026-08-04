@@ -207,6 +207,14 @@ void InputField::resizeEvent(QResizeEvent* /*event*/)
     iconLabel->move(width() - (iconSize.width() + 2 * getMargin()), (height() - iconSize.height()) / 2);
 }
 
+void InputField::changeEvent(QEvent* event)
+{
+    QLineEdit::changeEvent(event);
+    if (event->type() == QEvent::LocaleChange && validInput) {
+        updateText(actQuantity);
+    }
+}
+
 void InputField::updateIconLabel(const QString& text)
 {
     iconLabel->setVisible(text.isEmpty());
@@ -646,12 +654,14 @@ void InputField::setHistorySize(int i)
 
 void InputField::selectNumber()
 {
-    QString expr = QStringLiteral("^([%1%2]?[0-9\\%3]*)\\%4?([0-9]+(%5[%1%2]?[0-9]+)?)")
+    const QString zeroDigit = QString(locale().zeroDigit());
+    QString expr = QStringLiteral("^([%1%2]?[0-9\\%3%6]*)\\%4?([0-9%6]+(%5[%1%2]?[0-9%6]+)?)")
                        .arg(locale().negativeSign())
                        .arg(locale().positiveSign())
                        .arg(locale().groupSeparator())
                        .arg(locale().decimalPoint())
-                       .arg(locale().exponential());
+                       .arg(locale().exponential())
+                       .arg(zeroDigit);
     auto rmatch = QRegularExpression(expr).match(text());
     if (rmatch.hasMatch()) {
         setSelection(0, rmatch.capturedLength());
