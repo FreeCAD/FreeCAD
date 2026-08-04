@@ -23,8 +23,10 @@
 #include <BRepCheck_Analyzer.hxx>
 #include <BRep_Tool.hxx>
 #include <BRepFeat_SplitShape.hxx>
+#include <BRepAlgoAPI_Cut.hxx>
 #include <BRepOffsetAPI_MakeEvolved.hxx>
 #include <BRepPrimAPI_MakeBox.hxx>
+#include <BRepPrimAPI_MakeCylinder.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <GeomAPI_PointsToBSpline.hxx>
@@ -2692,6 +2694,160 @@ TEST_F(TopoShapeExpansionTest, makeElementFilletAllEdgesOfLPrismAtLimit)
         aboveLimit.makeElementFillet(lSection, allEdges, 5.001, 5.001),
         Base::CADKernelError
     );
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementFilletBothCircularEdgesOfCylinderAtLimit)
+{
+    // Arrange: opposing radius-5 fillets exactly consume the 10 mm cylindrical side face.
+    TopoShape cylinder {BRepPrimAPI_MakeCylinder(10.0, 10.0).Shape(), 1L};
+    std::vector<TopoShape> circularEdges;
+    for (const auto& edge : cylinder.getSubTopoShapes(TopAbs_EDGE)) {
+        if (BRepAdaptor_Curve(TopoDS::Edge(edge.getShape())).GetType() == GeomAbs_Circle) {
+            circularEdges.push_back(edge);
+        }
+    }
+    ASSERT_EQ(circularEdges.size(), 2U);
+
+    TopoShape belowLimit;
+    belowLimit.makeElementFillet(cylinder, circularEdges, 4.999, 4.999);
+    EXPECT_TRUE(BRepCheck_Analyzer(belowLimit.getShape()).IsValid());
+
+    // Act
+    TopoShape result;
+    result.makeElementFillet(cylinder, circularEdges, 5.0, 5.0);
+
+    // Assert: the limiting solid has no residual cylindrical strip between the fillets.
+    EXPECT_TRUE(BRepCheck_Analyzer(result.getShape()).IsValid());
+    EXPECT_NEAR(
+        getVolume(result.getShape()),
+        1250.0 * std::acos(-1.0) / 3.0 + 125.0 * std::pow(std::acos(-1.0), 2),
+        1e-6
+    );
+    int cylindricalFaces = 0;
+    for (const auto& face : result.getSubTopoShapes(TopAbs_FACE)) {
+        if (BRepAdaptor_Surface(TopoDS::Face(face.getShape())).GetType() == GeomAbs_Cylinder) {
+            ++cylindricalFaces;
+        }
+    }
+    EXPECT_EQ(cylindricalFaces, 0);
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementFilletBothSidesOfSquareThroughPocketAtLimit)
+{
+    // Arrange: cut a 10 mm square through a 30 x 30 x 10 mm body.
+    const TopoDS_Shape outer = BRepPrimAPI_MakeBox(30.0, 30.0, 10.0).Shape();
+    const TopoDS_Shape tool
+        = BRepPrimAPI_MakeBox(gp_Pnt(10.0, 10.0, -1.0), 10.0, 10.0, 12.0).Shape();
+    BRepAlgoAPI_Cut pocketCut(outer, tool);
+    TopExp_Explorer pocketSolids(pocketCut.Shape(), TopAbs_SOLID);
+    ASSERT_TRUE(pocketSolids.More());
+    TopoShape pocket {pocketSolids.Current(), 1L};
+    pocketSolids.Next();
+    ASSERT_FALSE(pocketSolids.More());
+    std::vector<TopoShape> pocketEdges;
+    for (const auto& edge : pocket.getSubTopoShapes(TopAbs_EDGE)) {
+        const TopoDS_Edge occEdge = TopoDS::Edge(edge.getShape());
+        if (BRepAdaptor_Curve(occEdge).GetType() != GeomAbs_Line) {
+            continue;
+        }
+        TopoDS_Vertex first;
+        TopoDS_Vertex last;
+        TopExp::Vertices(occEdge, first, last);
+        const gp_Pnt firstPoint = BRep_Tool::Pnt(first);
+        const gp_Pnt lastPoint = BRep_Tool::Pnt(last);
+        const bool onEndFace
+            = std::abs(firstPoint.Z() - lastPoint.Z()) < Precision::Confusion()
+            && (std::abs(firstPoint.Z()) < Precision::Confusion()
+                || std::abs(firstPoint.Z() - 10.0) < Precision::Confusion());
+        const bool onPocketBoundary
+            = firstPoint.X() >= 10.0 - Precision::Confusion()
+            && firstPoint.X() <= 20.0 + Precision::Confusion()
+            && firstPoint.Y() >= 10.0 - Precision::Confusion()
+            && firstPoint.Y() <= 20.0 + Precision::Confusion()
+            && lastPoint.X() >= 10.0 - Precision::Confusion()
+            && lastPoint.X() <= 20.0 + Precision::Confusion()
+            && lastPoint.Y() >= 10.0 - Precision::Confusion()
+            && lastPoint.Y() <= 20.0 + Precision::Confusion();
+        if (onEndFace && onPocketBoundary) {
+            pocketEdges.push_back(edge);
+        }
+    }
+    ASSERT_EQ(pocketEdges.size(), 8U);
+
+    TopoShape belowLimit;
+    belowLimit.makeElementFillet(pocket, pocketEdges, 4.999, 4.999);
+    EXPECT_TRUE(BRepCheck_Analyzer(belowLimit.getShape()).IsValid());
+
+    // Act
+    TopoShape result;
+    result.makeElementFillet(pocket, pocketEdges, 5.0, 5.0);
+
+    // Assert: top and bottom fillets meet halfway through every pocket wall.
+    EXPECT_TRUE(BRepCheck_Analyzer(result.getShape()).IsValid());
+    EXPECT_NEAR(
+        getVolume(result.getShape()),
+        13000.0 / 3.0 + 1000.0 * std::acos(-1.0),
+        1e-6
+    );
+    int verticalPlanarFaces = 0;
+    for (const auto& face : result.getSubTopoShapes(TopAbs_FACE)) {
+        gp_Pln plane;
+        if (face.findPlane(plane)
+            && std::abs(plane.Axis().Direction().Dot(gp_Dir(0.0, 0.0, 1.0)))
+                < Precision::Angular()) {
+            ++verticalPlanarFaces;
+        }
+    }
+    EXPECT_EQ(verticalPlanarFaces, 4);
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementFilletBothCircularEdgesOfThroughPocketAtLimit)
+{
+    // Arrange: cut a radius-5 cylinder through a 30 x 30 x 10 mm body.
+    const TopoDS_Shape outer = BRepPrimAPI_MakeBox(30.0, 30.0, 10.0).Shape();
+    const TopoDS_Shape tool = BRepPrimAPI_MakeCylinder(
+                                  gp_Ax2(gp_Pnt(15.0, 15.0, -1.0), gp_Dir(0.0, 0.0, 1.0)),
+                                  5.0,
+                                  12.0
+    )
+                                  .Shape();
+    BRepAlgoAPI_Cut pocketCut(outer, tool);
+    TopExp_Explorer pocketSolids(pocketCut.Shape(), TopAbs_SOLID);
+    ASSERT_TRUE(pocketSolids.More());
+    TopoShape pocket {pocketSolids.Current(), 1L};
+    pocketSolids.Next();
+    ASSERT_FALSE(pocketSolids.More());
+    std::vector<TopoShape> circularEdges;
+    for (const auto& edge : pocket.getSubTopoShapes(TopAbs_EDGE)) {
+        if (BRepAdaptor_Curve(TopoDS::Edge(edge.getShape())).GetType() == GeomAbs_Circle) {
+            circularEdges.push_back(edge);
+        }
+    }
+    ASSERT_EQ(circularEdges.size(), 2U);
+
+    TopoShape belowLimit;
+    belowLimit.makeElementFillet(pocket, circularEdges, 4.999, 4.999);
+    EXPECT_TRUE(BRepCheck_Analyzer(belowLimit.getShape()).IsValid());
+
+    // Act
+    TopoShape result;
+    result.makeElementFillet(pocket, circularEdges, 5.0, 5.0);
+
+    // Assert: the two entrance fillets meet without a residual cylindrical wall.
+    EXPECT_TRUE(BRepCheck_Analyzer(result.getShape()).IsValid());
+    EXPECT_NEAR(
+        getVolume(result.getShape()),
+        9000.0 - 3500.0 * std::acos(-1.0) / 3.0
+            + 250.0 * std::pow(std::acos(-1.0), 2),
+        1e-6
+    );
+    int cylindricalFaces = 0;
+    for (const auto& face : result.getSubTopoShapes(TopAbs_FACE)) {
+        if (BRepAdaptor_Surface(TopoDS::Face(face.getShape())).GetType() == GeomAbs_Cylinder) {
+            ++cylindricalFaces;
+        }
+    }
+    EXPECT_EQ(cylindricalFaces, 0);
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementSlice)
