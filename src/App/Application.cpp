@@ -2660,21 +2660,30 @@ void processProgramOptions(const boost::program_options::variables_map& vm, std:
 
     if (vm.contains("run-test") || vm.contains("run-open")) {
         std::vector<std::string> testCases;
+        bool runAll = false;
+        bool printAll = false;
         for (const std::string& key : {"run-open", "run-test"}) {
             if (vm.contains(key)) {
                 auto v = vm[key].as<std::vector<std::string>>();
+                for (const auto& s : v) {
+                    if (s == "0") {
+                        runAll = true;
+                    }
+                    else if (s.empty()) {
+                        printAll = true;
+                    }
+                }
                 testCases.insert(testCases.end(), v.begin(), v.end());
             }
         }
 
-        if (testCases.size() == 1) {
-            if (testCases[0] == "0") {
-                testCases[0] = "TestApp.All";
-            }
-            else if (testCases[0].empty()) {
-                testCases[0] = "TestApp.PrintAll";
-            }
+        if (printAll) {
+            testCases = {"TestApp.PrintAll"};
         }
+        else if (runAll) {
+            testCases = {"TestApp.All"};
+        }
+
         mConfig["TestCase"] = boost::join(testCases, ",");
         mConfig["RunMode"] = "Internal";
         mConfig["ScriptFileName"] = "FreeCADTest";
