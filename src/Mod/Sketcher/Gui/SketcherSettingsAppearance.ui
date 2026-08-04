@@ -820,7 +820,7 @@
          <number>-1</number>
         </property>
        </widget>
-      </item>   
+      </item>
       <item row="16" column="4">
         <widget class="Gui::PrefSpinBox" name="SpinBox_AxisLineWidth">
          <property name="toolTip">
