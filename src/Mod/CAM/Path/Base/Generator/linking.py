@@ -22,6 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+import Constants
 import Part
 import Path
 from FreeCAD import Vector
@@ -102,6 +103,7 @@ def get_linking_moves(
     retract_height_offset: Optional[float] = None,
     skip_if_no_collision: bool = False,
     collision_clearance: float = 1,
+    split_plunge_height: Optional[float] = None,
 ) -> list:
     """
     Generate linking moves from start to target position.
@@ -150,7 +152,13 @@ def get_linking_moves(
 
     # Try each height
     for i in range(len(heights)):
-        wire = make_linking_wire(start_position, target_position, heights[: i + 1])
+        plunge_heights = heights[: i + 1]
+        if (
+            split_plunge_height is not None
+            and max(plunge_heights) > split_plunge_height > target_position.z
+        ):
+            plunge_heights = sorted(plunge_heights + [split_plunge_height])
+        wire = make_linking_wire(start_position, target_position, plunge_heights)
         if is_travel_collision_free(
             wire, collision_model, tool_shape, tool_diameter, collision_clearance
         ):
@@ -158,6 +166,7 @@ def get_linking_moves(
             for e in wire.Edges:
                 cmd = Path.Geom.cmdsForEdge(e)[0]
                 cmd.Name = "G0"
+                cmd.Annotations = Constants.ANNOT_LINKING
                 commands.append(cmd)
             return commands
 
