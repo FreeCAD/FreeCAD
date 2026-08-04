@@ -160,10 +160,8 @@ class CAMSimulation:
         """Get the edge profile of a tool solid. Basically locating the
         side edge that OCC creates on any revolved object
         """
-        originalPlacement = tool.Placement
-        tool.Placement = Placement(Vector(0, 0, 0), Rotation(Vector(0, 0, 1), 0), Vector(0, 0, 0))
-        shape = tool.Shape
-        tool.Placement = originalPlacement
+        shape = tool.Shape.copy()
+        shape.Placement = Placement()
         sideEdgeList = []
         for _i, edge in enumerate(shape.Edges):
             if not edge.isClosed():

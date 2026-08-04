@@ -48,6 +48,7 @@
 
 
 #include <App/Document.h>
+#include <Mod/Part/App/PartFeature.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
@@ -90,7 +91,7 @@ public:
             return false;
         }
 
-        auto subShape = aPart->Shape.getShape().getSubShape(sSubName, true);
+        auto subShape = Part::Feature::getShape(aPart, Part::ShapeOption::NeedSubElement, sSubName);
         if (subShape.IsNull()) {
             return false;
         }
@@ -123,7 +124,7 @@ public:
             return false;
         }
 
-        auto subShape = aPart->Shape.getShape().getSubShape(sSubName, true);
+        auto subShape = Part::Feature::getShape(aPart, Part::ShapeOption::NeedSubElement, sSubName);
         if (subShape.IsNull()) {
             return false;
         }
@@ -451,7 +452,11 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(
                 if (!it->getSubNames().empty()) {
                     auto parentShape = currentShapeStore.inputShape;
                     for (const auto& itName : selObj.front().getSubNames()) {
-                        auto currentShape = aPart->Shape.getShape().getSubShape(itName.c_str(), true);
+                        auto currentShape = Part::Feature::getShape(
+                            aPart,
+                            Part::ShapeOption::NeedSubElement,
+                            itName.c_str()
+                        );
                         if (currentShape.IsNull()) {
                             continue;
                         }

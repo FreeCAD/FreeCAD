@@ -45,6 +45,7 @@
 #include <array>
 
 #include <Inventor/SbBox.h>
+#include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/SoEventManager.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -56,6 +57,7 @@
 #include <Inventor/annex/Profiler/SoProfiler.h>
 #include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
 #include <Inventor/details/SoDetail.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
@@ -70,6 +72,7 @@
 #include <Inventor/nodes/SoCube.h>
 #include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoEventCallback.h>
+#include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
@@ -88,6 +91,7 @@
 #include <Inventor/nodes/SoTextureCoordinate2.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <QBitmap>
+#include <QElapsedTimer>
 #include <QEventLoop>
 #if defined(Q_OS_LINUX) && QT_VERSION < QT_VERSION_CHECK(6, 6, 0)
 # include <QGuiApplication>
@@ -98,6 +102,7 @@
 #include <QMimeData>
 #include <QOpenGLFramebufferObject>
 #include <QOpenGLWidget>
+#include <QScopeGuard>
 #include <QSurfaceFormat>
 #include <QTimer>
 #include <QVariantAnimation>
@@ -119,9 +124,11 @@
 
 #include "View3DInventorViewer.h"
 #include "Application.h"
+#include "Camera.h"
 #include "Command.h"
 #include "Document.h"
 #include "GLPainter.h"
+#include "RubberbandOverlay.h"
 #include "Inventor/SoAxisCrossKit.h"
 #include "Inventor/SoFCBackgroundGradient.h"
 #include "Inventor/SoFCBoundingBox.h"
@@ -143,6 +150,7 @@
 #include "SoFCVectorizeU3DAction.h"
 #include "SoTouchEvents.h"
 #include "SpaceballEvent.h"
+#include "SpaceMouseParameter.h"
 #include "View3DInventorRiftViewer.h"
 #include "View3DViewerPy.h"
 #include "ViewParams.h"
@@ -184,6 +192,68 @@ private:
 
 namespace
 {
+constexpr qint64 DimensionPaneUpdateIntervalMs = 100;
+
+struct DimensionPaneState
+{
+    QString text;
+    QElapsedTimer updateTimer;
+};
+
+DimensionPaneState& dimensionPaneState()
+{
+    static DimensionPaneState state;
+    return state;
+}
+
+QString dimensionText(const View3DInventorViewer& viewer)
+{
+    float fHeight = -1.0;
+    float fWidth = -1.0;
+    viewer.getDimensions(fHeight, fWidth);
+
+    std::string dim;
+
+    if (fWidth >= 0.0 && fHeight >= 0.0) {
+        // Translate screen units into user's unit schema
+        Base::Quantity qWidth(Base::Quantity::MilliMetre);
+        Base::Quantity qHeight(Base::Quantity::MilliMetre);
+        qWidth.setValue(fWidth);
+        qHeight.setValue(fHeight);
+        auto wStr = Base::UnitsApi::schemaTranslate(qWidth);
+        auto hStr = Base::UnitsApi::schemaTranslate(qHeight);
+
+        // Create final string and update window
+        dim = fmt::format("{} x {}", wStr, hStr);
+    }
+
+    return QString::fromStdString(dim);
+}
+
+void updateDimensionPane(const View3DInventorViewer& viewer, bool forceUpdate)
+{
+    auto& state = dimensionPaneState();
+    if (!forceUpdate && state.updateTimer.isValid()
+        && state.updateTimer.elapsed() < DimensionPaneUpdateIntervalMs) {
+        return;
+    }
+
+    auto text = dimensionText(viewer);
+    if (text == state.text) {
+        state.updateTimer.restart();
+        return;
+    }
+
+    state.text = text;
+    state.updateTimer.restart();
+    getMainWindow()->setPaneText(2, text);
+}
+
+void clearDimensionPaneState()
+{
+    dimensionPaneState() = {};
+}
+
 int qImageByteCount(const QImage& image)
 {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
@@ -202,6 +272,29 @@ void setOverlayCacheContext(SoGLRenderAction& action, const View3DInventorViewer
     if (auto* glra = viewer->getSoRenderManager()->getGLRenderAction()) {
         action.setCacheContext(glra->getCacheContext());
     }
+}
+
+/**
+ * Reset the main render action's lazy GL cache after overlay rendering.
+ *
+ * Overlay render actions share the viewer's OpenGL context, but keep their own
+ * Coin lazy state. They can leave the real GL state different from what the
+ * main render action has cached, so reset the cache and let the next traversal
+ * resend the state through Coin instead of restoring individual GL flags here.
+ */
+void resetMainLazyGLState(const View3DInventorViewer* viewer)
+{
+    if (!viewer || !viewer->getSoRenderManager()) {
+        return;
+    }
+
+    SoGLRenderAction* mainAction = viewer->getSoRenderManager()->getGLRenderAction();
+    if (!mainAction || !mainAction->getState()) {
+        return;
+    }
+
+    SoGLLazyElement::getInstance(mainAction->getState())
+        ->reset(mainAction->getState(), SoLazyElement::ALL_MASK);
 }
 
 SoSeparator* create2DOverlayRoot(int viewportWidth, int viewportHeight)
@@ -235,6 +328,7 @@ void applyOverlay(SoNode* root, int viewportWidth, int viewportHeight, const Vie
     setOverlayCacheContext(action, viewer);
     action.setTransparencyType(SoGLRenderAction::BLEND);
     action.apply(root);
+    resetMainLazyGLState(viewer);
 }
 
 struct OverlayImageState
@@ -307,6 +401,15 @@ OverlayImageState& overlayImageState()
 bool hasFramebufferBlitSupport()
 {
     return QOpenGLFramebufferObject::hasOpenGLFramebufferBlit();
+}
+
+QImage flipVertically(const QImage& image)
+{
+#if QT_VERSION < QT_VERSION_CHECK(6, 9, 0)
+    return image.mirrored();
+#else
+    return image.flipped(Qt::Vertical);
+#endif
 }
 
 void renderOverlayImage(
@@ -481,6 +584,8 @@ struct OverlayAxisCrossState
         SoTexture2* texture {nullptr};
         SoVertexProperty* vertices {nullptr};
         SoFaceSet* quad {nullptr};
+        int width {0};
+        int height {0};
     };
 
     Letter xLetter;
@@ -575,6 +680,8 @@ struct OverlayAxisCrossState
         lettersRoot->addChild(lettersMaterial);
 
         auto buildLetter = [](Letter& out, int w, int h) {
+            out.width = w;
+            out.height = h;
             out.root = new SoSeparator;
 
             out.position = new SoTranslation;
@@ -1031,9 +1138,15 @@ void View3DInventorViewer::init()
     this->decorationroot->addChild(decorationBaseColor);
     this->decorationroot->addChild(naviCubeAnnotation);
 
+    rubberbandOverlayRenderer = std::unique_ptr<RubberbandOverlay>(new RubberbandOverlay);
+
     auto threePointLightingSeparator = new SoTransformSeparator;
     threePointLightingSeparator->addChild(lightRotation);
     threePointLightingSeparator->addChild(this->fillLight);
+
+    viewerLightingRoot = new SoGroup;
+    viewerLightingRoot->addChild(threePointLightingSeparator);
+    viewerLightingRoot->addChild(environment);
 
     this->foregroundroot->addChild(cam);
     this->foregroundroot->addChild(foregroundLightModel);
@@ -1047,8 +1160,11 @@ void View3DInventorViewer::init()
 
     // set the ViewProvider root node
     pcViewProviderRoot = selectionRoot;
-    pcViewProviderRoot->addChild(threePointLightingSeparator);
-    pcViewProviderRoot->addChild(environment);
+
+    viewerSceneRoot = new SoSeparator;
+    viewerSceneRoot->ref();
+    viewerSceneRoot->addChild(viewerLightingRoot);
+    viewerSceneRoot->addChild(pcViewProviderRoot);
 
     // add a global hidden anchor object to ensure transparent objects work correctly
     // in empty scenes - OpenInventor's two-pass transparency rendering requires at least
@@ -1059,9 +1175,14 @@ void View3DInventorViewer::init()
     auto hiddenAnchor = new SoSkipBoundingGroup();
     hiddenAnchor->mode = SoSkipBoundingGroup::EXCLUDE_BBOX;
     auto hiddenSep = new SoSeparator();
+    // The zero scale that hides the cube also makes the model matrix singular, so keep it out of
+    // the ray-casting calculations during object picking.
+    auto hiddenPickStyle = new SoPickStyle();
+    hiddenPickStyle->style = SoPickStyle::UNPICKABLE;
     auto hiddenScale = new SoScale();
     hiddenScale->scaleFactor = SbVec3f(0, 0, 0);
     auto hiddenCube = new SoCube();
+    hiddenSep->addChild(hiddenPickStyle);
     hiddenSep->addChild(hiddenScale);
     hiddenSep->addChild(hiddenCube);
     hiddenAnchor->addChild(hiddenSep);
@@ -1070,7 +1191,7 @@ void View3DInventorViewer::init()
     // increase refcount before passing it to setScenegraph(), to avoid
     // premature destruction
     pcViewProviderRoot->ref();
-    setSceneGraph(pcViewProviderRoot);
+    setSceneGraph(viewerSceneRoot);
     // Event callback node
     pEventCallback = new SoEventCallback();
     pEventCallback->setUserData(this);
@@ -1161,11 +1282,8 @@ void View3DInventorViewer::init()
     // filter a few qt events
     viewerEventFilter = new ViewerEventFilter;
     installEventFilter(viewerEventFilter);
-    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/View"
-    );
 #if defined(USE_3DCONNEXION_NAVLIB)
-    if (hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
+    if (SpaceMouseParameter::instance()->getLegacySpaceMouseDevices()) {
         getEventFilter()->registerInputDevice(new SpaceNavigatorDevice);
     }
 #else
@@ -1194,6 +1312,9 @@ void View3DInventorViewer::init()
     );
 
     naviCube = new NaviCube(this);
+    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
     naviCubeEnabled = hViewGrp->GetBool("ShowNaviCube", true);
     syncNaviCubeVisibility();
 
@@ -1202,6 +1323,8 @@ void View3DInventorViewer::init()
 
 View3DInventorViewer::~View3DInventorViewer()
 {
+    rubberbandOverlayRenderer.reset();
+
     // to prevent following OpenGL error message: "Texture is not valid in the current context.
     // Texture has not been destroyed"
     aboutToDestroyGLContext();
@@ -1234,6 +1357,9 @@ View3DInventorViewer::~View3DInventorViewer()
     this->pcBackGround = nullptr;
 
     setSceneGraph(nullptr);
+    this->viewerSceneRoot->unref();
+    this->viewerLightingRoot = nullptr;
+    this->viewerSceneRoot = nullptr;
     this->pEventCallback->unref();
     this->pEventCallback = nullptr;
     // Note: It can happen that there is still someone who references
@@ -1267,6 +1393,7 @@ View3DInventorViewer::~View3DInventorViewer()
     if (getMainWindow()) {
         getMainWindow()->setPaneText(2, QLatin1String(""));
     }
+    clearDimensionPaneState();
 
     detachSelection();
 
@@ -1899,11 +2026,64 @@ void View3DInventorViewer::setEnabledFPSCounter(bool on)
             fpsCounter = new QLabel(this);
             fpsCounter->setAttribute(Qt::WA_TransparentForMouseEvents);
         }
+        if (!fpsUpdateTimer) {
+            fpsUpdateTimer = new QTimer(this);
+            fpsUpdateTimer->setInterval(250);  // 4 Hz
+            connect(fpsUpdateTimer, &QTimer::timeout, this, &View3DInventorViewer::updateFPSLabel);
+        }
         fpsCounter->show();
+        fpsUpdateTimer->start();
     }
-    else if (fpsCounter) {
-        fpsCounter->hide();
+    else {
+        if (fpsUpdateTimer) {
+            fpsUpdateTimer->stop();
+        }
+        if (fpsCounter) {
+            fpsCounter->hide();
+        }
     }
+}
+
+void View3DInventorViewer::updateFPSLabel()
+{
+    if (!fpsEnabled || !fpsCounter) {
+        return;
+    }
+
+    fpsCounter->setText(
+        QString::fromStdString(
+            fmt::format("{:.1f} ms / {:.1f} fps", framesPerSecond[0], framesPerSecond[1])
+        )
+    );
+
+    // update color from user preference (only when it changes)
+    ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
+
+    unsigned long axisLetterColor = hGrpView->GetUnsigned("AxisLetterColor", 4294902015);  // default
+                                                                                           // yellow
+
+    if (axisLetterColor != previousAxisLetterColor) {
+        previousAxisLetterColor = axisLetterColor;
+        Base::Color c(static_cast<uint32_t>(axisLetterColor));
+        fpsCounter->setStyleSheet(
+            QString::fromLatin1("color: rgb(%1,%2,%3); background: transparent;")
+                .arg(int(c.r * 255))
+                .arg(int(c.g * 255))
+                .arg(int(c.b * 255))
+        );
+    }
+
+    // size must be current before we use width()/height() for positioning
+    fpsCounter->adjustSize();
+
+    // position, bottom left, accounting for left-side overlay widgets
+    ParameterGrp::handle hGrpOverlayL = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/MainWindow/DockWindows/OverlayLeft"
+    );
+    int xOffset = hGrpOverlayL->GetASCII("Widgets", "").empty() ? 10 : fpsCounter->width() + 20;
+    fpsCounter->move(xOffset, height() - fpsCounter->height() - 5);
 }
 
 
@@ -2286,23 +2466,24 @@ void View3DInventorViewer::savePicture(
     }
 
     auto self = const_cast<View3DInventorViewer*>(this);  // NOLINT
-    ScopedRenderIntent scopedIntent(*self, intent);
-
     if (useFramebufferObject) {
-        self->imageFromFramebuffer(width, height, sample, bg, img, intent);
+        RenderImageOptions options;
+        options.width = width;
+        options.height = height;
+        options.samples = sample;
+        options.background = bg;
+        options.intent = intent;
+        img = self->renderToImage(options);
         return;
     }
 
     if (useGrabFramebuffer) {
         img = self->grabFramebuffer();
-#if QT_VERSION < QT_VERSION_CHECK(6, 9, 0)
-        img = img.mirrored();
-#else
-        img = img.flipped(Qt::Vertical);
-#endif
         img = img.scaledToWidth(width);
         return;
     }
+
+    ScopedRenderIntent scopedIntent(*self, intent);
 
     // if no valid color use the current background
     bool useBackground = false;
@@ -2669,6 +2850,7 @@ void View3DInventorViewer::interactionFinishCB(void* ud, SoQTQuarterAdaptor* vie
     Q_UNUSED(ud)
     SoGLRenderAction* glra = viewer->getSoRenderManager()->getGLRenderAction();
     SoFCInteractiveElement::set(glra->getState(), viewer->getSceneGraph(), false);
+    updateDimensionPane(*static_cast<View3DInventorViewer*>(viewer), true);
     viewer->redraw();
 }
 
@@ -2711,6 +2893,11 @@ std::list<GLGraphicsItem*> View3DInventorViewer::getGraphicsItemsOfType(const Ba
 void View3DInventorViewer::clearGraphicsItems()
 {
     this->graphicsItems.clear();
+}
+
+RubberbandOverlay& View3DInventorViewer::rubberbandOverlay()
+{
+    return *rubberbandOverlayRenderer;
 }
 
 int View3DInventorViewer::getNumSamples()
@@ -2791,7 +2978,10 @@ void View3DInventorViewer::setRenderType(RenderType type)
                 fboFormat.setAttachment(QOpenGLFramebufferObject::Depth);
                 auto fbo = new QOpenGLFramebufferObject(width, height, fboFormat);
                 if (fbo->format().samples() > 0 && hasFramebufferBlitSupport()) {
-                    renderToFramebuffer(fbo);
+                    if (!renderToFramebuffer(fbo)) {
+                        delete fbo;
+                        break;
+                    }
                     framebuffer = new QOpenGLFramebufferObject(fbo->size());
                     // this is needed to be able to render the texture later
                     QOpenGLFramebufferObject::blitFramebuffer(framebuffer, fbo);
@@ -2808,14 +2998,18 @@ void View3DInventorViewer::setRenderType(RenderType type)
                         fallbackFormat.setAttachment(QOpenGLFramebufferObject::Depth);
                         fbo = new QOpenGLFramebufferObject(width, height, fallbackFormat);
                     }
-                    renderToFramebuffer(fbo);
+                    if (!renderToFramebuffer(fbo)) {
+                        delete fbo;
+                        break;
+                    }
                     framebuffer = fbo;
                 }
             }
             break;
-        case Image: {
-            glImage = grabFramebuffer();
-        } break;
+        case Image:
+            // renderOverlayImage() consumes OpenGL-oriented rows.
+            glImage = flipVertically(grabFramebuffer());
+            break;
     }
 }
 
@@ -2829,61 +3023,34 @@ QImage View3DInventorViewer::grabFramebuffer()
     auto gl = static_cast<QOpenGLWidget*>(this->viewport());  // NOLINT
     gl->makeCurrent();
 
-    QImage res;
-    const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
-    SbVec2s size = vp.getViewportSizePixels();
-    int width = size[0];
-    int height = size[1];
-
-    int samples = getNumSamples();
-    if (samples == 0) {
-        // if anti-aliasing is off we can directly use glReadPixels
-        QImage img(QSize(width, height), QImage::Format_RGB32);
-        glReadPixels(0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, img.bits());
-        res = img;
-    }
-    else {
-        QOpenGLFramebufferObjectFormat fboFormat;
-        fboFormat.setSamples(getNumSamples());
-        fboFormat.setAttachment(QOpenGLFramebufferObject::Depth);
-        fboFormat.setTextureTarget(GL_TEXTURE_2D);
-        fboFormat.setInternalTextureFormat(getInternalTextureFormat());
-
-        QOpenGLFramebufferObject fbo(width, height, fboFormat);
-        renderToFramebuffer(&fbo);
-
-        res = fbo.toImage(false);
-
-        QImage image(res.width(), res.height(), QImage::Format_RGB32);
-        QPainter painter(&image);
-        painter.fillRect(image.rect(), Qt::black);
-        painter.drawImage(0, 0, res);
-        painter.end();
-        res = image;
-    }
-
-    return res;
+    // QOpenGLWidget resolves multisampling and renders the live widget as
+    // necessary before reading its framebuffer.
+    return gl->grabFramebuffer().convertToFormat(QImage::Format_RGB32);
 }
 
-void View3DInventorViewer::imageFromFramebuffer(
-    int width,
-    int height,
-    int samples,
-    const QColor& bgcolor,
-    QImage& img,
-    RenderIntent intent
-)
+QImage View3DInventorViewer::renderToImage(const RenderImageOptions& options)
 {
-    auto self = const_cast<View3DInventorViewer*>(this);  // NOLINT
-    ScopedRenderIntent scopedIntent(*self, intent);
+    const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
+    const SbVec2s size = vp.getViewportSizePixels();
+    const int width = options.width > 0 ? options.width : size[0];
+    const int height = options.height > 0 ? options.height : size[1];
+
+    if (width <= 0 || height <= 0) {
+        Base::Console().warning("renderToImage failed because the viewport is empty\n");
+        return {};
+    }
+
+    const int samples = options.samples >= 0 ? options.samples : getNumSamples();
+    QImage img;
+    ScopedRenderIntent scopedIntent(*this, options.intent);
 
     auto gl = static_cast<QOpenGLWidget*>(this->viewport());  // NOLINT
     gl->makeCurrent();
 
     const QOpenGLContext* context = QOpenGLContext::currentContext();
     if (!context) {
-        Base::Console().warning("imageFromFramebuffer failed because no context is active\n");
-        return;
+        Base::Console().warning("renderToImage failed because no context is active\n");
+        return {};
     }
 
     QOpenGLFramebufferObjectFormat fboFormat;
@@ -2897,34 +3064,56 @@ void View3DInventorViewer::imageFromFramebuffer(
     fboFormat.setInternalTextureFormat(getInternalTextureFormat());
 
     QOpenGLFramebufferObject fbo(width, height, fboFormat);
-
-    const QColor col = backgroundColor();
-    auto grad = getGradientBackground();
+    if (!fbo.isValid()) {
+        Base::Console().warning(
+            "renderToImage failed to create a %dx%d framebuffer with %d samples\n",
+            width,
+            height,
+            samples
+        );
+        return {};
+    }
 
     constexpr const int maxAlpha = 255;
     int alpha = maxAlpha;
-    QColor bgopaque = bgcolor;
-    if (bgopaque.isValid()) {
-        // force an opaque background color
-        alpha = bgopaque.alpha();
-        if (alpha < maxAlpha) {
-            bgopaque.setRgb(maxAlpha, maxAlpha, maxAlpha);
+    QColor opaqueBackground = options.background;
+    const bool overrideBackground = opaqueBackground.isValid();
+    const QColor previousBackground = backgroundColor();
+    const Background previousGradient = getGradientBackground();
+    auto restoreBackground = qScopeGuard(
+        [this, overrideBackground, previousBackground, previousGradient]() {
+            if (overrideBackground) {
+                setBackgroundColor(previousBackground);
+                setGradientBackground(previousGradient);
+            }
         }
-        setBackgroundColor(bgopaque);
+    );
+
+    if (overrideBackground) {
+        // force an opaque background color
+        alpha = opaqueBackground.alpha();
+        if (alpha < maxAlpha) {
+            opaqueBackground.setRgb(maxAlpha, maxAlpha, maxAlpha);
+        }
+        setBackgroundColor(opaqueBackground);
         setGradientBackground(Background::NoGradient);
     }
 
-    renderToFramebuffer(&fbo);
-    setBackgroundColor(col);
-    setGradientBackground(grad);
+    if (!renderToFramebuffer(&fbo, options.includeViewerLighting)) {
+        return {};
+    }
     img = fbo.toImage();
+    if (img.isNull()) {
+        Base::Console().warning("renderToImage failed to read the framebuffer\n");
+        return {};
+    }
 
     // if background color isn't opaque manipulate the image
     if (alpha < maxAlpha) {
         QImage image(img.constBits(), img.width(), img.height(), QImage::Format_ARGB32);
         img = image.copy();
-        QRgb rgba = bgcolor.rgba();
-        QRgb rgb = bgopaque.rgb();
+        QRgb rgba = options.background.rgba();
+        QRgb rgb = opaqueBackground.rgb();
         QRgb* bits = (QRgb*)img.bits();
         for (int yy = 0; yy < height; yy++) {
             for (int xx = 0; xx < width; xx++) {
@@ -2943,12 +3132,18 @@ void View3DInventorViewer::imageFromFramebuffer(
         painter.end();
         img = image;
     }
+
+    return img;
 }
 
-void View3DInventorViewer::renderToFramebuffer(QOpenGLFramebufferObject* fbo)
+bool View3DInventorViewer::renderToFramebuffer(QOpenGLFramebufferObject* fbo, bool includeViewerLighting)
 {
     static_cast<QOpenGLWidget*>(this->viewport())->makeCurrent();  // NOLINT
-    fbo->bind();
+    if (!fbo->bind()) {
+        Base::Console().warning("renderToFramebuffer failed to bind the framebuffer\n");
+        return false;
+    }
+    auto releaseFramebuffer = qScopeGuard([fbo]() { fbo->release(); });
     int width = fbo->size().width();
     int height = fbo->size().height();
 
@@ -2977,17 +3172,25 @@ void View3DInventorViewer::renderToFramebuffer(QOpenGLFramebufferObject* fbo)
     // while creating a new render action has it set to GL_LEQUAL. So, in order to get
     // the exact same result set it explicitly to GL_LESS.
     glDepthFunc(GL_LESS);
-    gl.apply(this->getSoRenderManager()->getSceneGraph());
+    if (includeViewerLighting) {
+        gl.apply(this->getSoRenderManager()->getSceneGraph());
+    }
+    else {
+        gl.apply(this->getSoRenderManager()->getCamera());
+        SoNode* scene = this->getSceneGraph();
+        gl.apply(scene == this->viewerSceneRoot ? this->selectionRoot : scene);
+    }
+    renderDelayedAnnotations(&gl);
     gl.apply(this->foregroundroot);
     if (shouldRenderDecorations(currentRenderIntent())) {
         gl.apply(this->decorationroot);
     }
 
-    if (this->axiscrossEnabled) {
+    if (shouldRenderDecorations(currentRenderIntent()) && this->axiscrossEnabled) {
         this->drawAxisCross();
     }
 
-    fbo->release();
+    return true;
 }
 
 void View3DInventorViewer::actualRedraw()
@@ -3079,14 +3282,94 @@ void View3DInventorViewer::renderGLImage()
     }
 }
 
-// #define ENABLE_GL_DEPTH_RANGE
-// The calls of glDepthRange inside renderScene() causes problems with transparent objects
-// so that's why it is disabled now:
-// https://forum.freecad.org/viewtopic.php?f=3&t=6037&hilit=transparency
+void View3DInventorViewer::recoverFromRenderMemoryException()
+{
+    for (auto it : _ViewProviderSet) {
+        it->hide();
+    }
 
-// Documented in superclass. Overrides this method to be able to draw
-// the axis cross, if selected, and to keep a continuous animation
-// upon spin.
+    inherited::actualRedraw();
+    QMessageBox::warning(
+        parentWidget(),
+        QObject::tr("Out of memory"),
+        QObject::tr("Not enough memory available to display the data.")
+    );
+}
+
+void View3DInventorViewer::renderDelayedAnnotations(SoGLRenderAction* glra)
+{
+    SoState* state = glra->getState();
+
+    if (!Gui::SoDelayedAnnotationsElement::hasDelayedPaths(state)) {
+        return;
+    }
+
+    class ScopedAnnotationRender
+    {
+    public:
+        ScopedAnnotationRender()
+        {
+            So3DAnnotation::render = true;
+        }
+
+        ~ScopedAnnotationRender()
+        {
+            So3DAnnotation::render = false;
+        }
+    } annotationRender;
+
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+    if (Gui::Selection().isClarifySelectionActive()) {
+        Gui::SoDelayedAnnotationsElement::processDelayedPathsWithPriority(state, glra);
+    }
+    else {
+        glra->apply(Gui::SoDelayedAnnotationsElement::getDelayedPaths(state));
+    }
+}
+
+void View3DInventorViewer::renderGLActionScene(const QColor& backgroundColor, SoGLRenderAction* glra)
+{
+    SoState* state = glra->getState();
+
+    {
+        ZoneScopedN("Background");
+        SoDevicePixelRatioElement::set(state, devicePixelRatio());
+        SoGLWidgetElement::set(state, qobject_cast<QOpenGLWidget*>(this->getGLWidget()));
+        SoGLRenderActionElement::set(state, glra);
+        SoGLVBOActivatedElement::set(state, this->vboEnabled);
+        drawSingleBackground(backgroundColor);
+        glra->apply(this->backgroundroot);
+    }
+
+    if (!this->shading) {
+        state->push();
+        SoLightModelElement::set(state, selectionRoot, SoLightModelElement::BASE_COLOR);
+        SoOverrideElement::setLightModelOverride(state, selectionRoot, true);
+    }
+
+    try {
+        // Render normal scenegraph.
+        inherited::actualRedraw();
+        renderDelayedAnnotations(glra);
+    }
+    catch (const Base::MemoryException&) {
+        this->recoverFromRenderMemoryException();
+    }
+
+    if (!this->shading) {
+        state->pop();
+    }
+
+    {
+        ZoneScopedN("Foreground");
+        glra->apply(this->foregroundroot);
+        if (shouldRenderDecorations(currentRenderIntent())) {
+            glra->apply(this->decorationroot);
+        }
+    }
+}
+
 void View3DInventorViewer::renderScene()
 {
     ZoneScoped;
@@ -3105,136 +3388,29 @@ void View3DInventorViewer::renderScene()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
-#if defined(ENABLE_GL_DEPTH_RANGE)
-    // using 90% of the z-buffer for the background and the main node
-    glDepthRange(0.1, 1.0);
-#endif
+    this->renderGLActionScene(col, this->getSoRenderManager()->getGLRenderAction());
 
-    SoGLRenderAction* glra = this->getSoRenderManager()->getGLRenderAction();
-    SoState* state = glra->getState();
-
-    // Render our scenegraph with the image.
-    {
-        ZoneScopedN("Background");
-        SoDevicePixelRatioElement::set(state, devicePixelRatio());
-        SoGLWidgetElement::set(state, qobject_cast<QOpenGLWidget*>(this->getGLWidget()));
-        SoGLRenderActionElement::set(state, glra);
-        SoGLVBOActivatedElement::set(state, this->vboEnabled);
-        drawSingleBackground(col);
-        glra->apply(this->backgroundroot);
-    }
-
-    if (!this->shading) {
-        state->push();
-        SoLightModelElement::set(state, selectionRoot, SoLightModelElement::BASE_COLOR);
-        SoOverrideElement::setLightModelOverride(state, selectionRoot, true);
-    }
-
-    try {
-        // Render normal scenegraph.
-        inherited::actualRedraw();
-
-        So3DAnnotation::render = true;
-        glClear(GL_DEPTH_BUFFER_BIT);
-
-        // process delayed paths with priority support
-        if (Gui::Selection().isClarifySelectionActive()) {
-            Gui::SoDelayedAnnotationsElement::processDelayedPathsWithPriority(state, glra);
-        }
-        else {
-            // standard processing for normal delayed annotations
-            glra->apply(Gui::SoDelayedAnnotationsElement::getDelayedPaths(state));
-        }
-
-        So3DAnnotation::render = false;
-    }
-    catch (const Base::MemoryException&) {
-        // FIXME: If this exception appears then the background and camera position get broken
-        // somehow. (Werner 2006-02-01)
-        for (auto it : _ViewProviderSet) {
-            it->hide();
-        }
-
-        inherited::actualRedraw();
-        QMessageBox::warning(
-            parentWidget(),
-            QObject::tr("Out of memory"),
-            QObject::tr("Not enough memory available to display the data.")
-        );
-    }
-
-    if (!this->shading) {
-        state->pop();
-    }
-
-#if defined(ENABLE_GL_DEPTH_RANGE)
-    // using 10% of the z-buffer for the foreground node
-    glDepthRange(0.0, 0.1);
-#endif
-
-    // Render overlay front scenegraph.
-    {
-        ZoneScopedN("Foreground");
-        glra->apply(this->foregroundroot);
-        if (shouldRenderDecorations(currentRenderIntent())) {
-            glra->apply(this->decorationroot);
-        }
-    }
-
-    if (this->axiscrossEnabled) {
+    if (shouldRenderDecorations(currentRenderIntent()) && this->axiscrossEnabled) {
         this->drawAxisCross();
     }
-
-#if defined(ENABLE_GL_DEPTH_RANGE)
-    // using the main portion of z-buffer again (for frontbuffer highlighting)
-    glDepthRange(0.1, 1.0);
-#endif
 
     // Immediately reschedule to get continuous animation.
     if (this->isAnimating()) {
         this->getSoRenderManager()->scheduleRedraw();
     }
 
-    printDimension();
+    if (shouldRenderDecorations(currentRenderIntent())) {
+        printDimension();
 
-    {
-        ZoneScopedN("Graphics items");
-        for (auto it : this->graphicsItems) {
-            it->paintGL();
+        {
+            ZoneScopedN("Graphics items");
+            for (auto it : this->graphicsItems) {
+                it->paintGL();
+            }
         }
     }
 
-    if (fpsEnabled && fpsCounter) {
-        std::stringstream stream;
-        stream.precision(1);
-        stream.setf(std::ios::fixed | std::ios::showpoint);
-        stream << framesPerSecond[0] << " ms / " << framesPerSecond[1] << " fps";
-
-        ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/View"
-        );
-        unsigned long axisLetterColor = hGrpView->GetUnsigned("AxisLetterColor", 4294902015);
-        if (axisLetterColor != previousAxisLetterColor) {
-            previousAxisLetterColor = axisLetterColor;
-            Base::Color c(static_cast<uint32_t>(axisLetterColor));
-            fpsCounter->setStyleSheet(
-                QString::fromLatin1("color: rgb(%1,%2,%3); background: transparent;")
-                    .arg(int(c.r * 255))
-                    .arg(int(c.g * 255))
-                    .arg(int(c.b * 255))
-            );
-        }
-
-        fpsCounter->setText(QString::fromStdString(stream.str()));
-        fpsCounter->adjustSize();
-
-        ParameterGrp::handle hGrpOverlayL = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/MainWindow/DockWindows/OverlayLeft"
-        );
-        int xOffset = hGrpOverlayL->GetASCII("Widgets", "").empty() ? 10 : fpsCounter->width() + 20;
-        fpsCounter->move(xOffset, height() - fpsCounter->height() - 5);
-    }
-
+    renderRubberbandOverlay();
     // Workaround for inconsistent QT behavior related to handling custom OpenGL widgets that
     // leave non opaque alpha values in final output.
     // On wayland that can cause window to become transparent or blurry trail effect in the
@@ -3260,6 +3436,23 @@ void View3DInventorViewer::renderScene()
 
     glColorMask(colorMask[0], colorMask[1], colorMask[2], colorMask[3]);
     glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
+}
+
+void View3DInventorViewer::renderRubberbandOverlay()
+{
+    if (currentRenderIntent() != RenderIntent::LiveInteractive || !rubberbandOverlayRenderer) {
+        return;
+    }
+
+    auto* manager = getSoRenderManager();
+    auto* action = manager ? manager->getGLRenderAction() : nullptr;
+    if (!action) {
+        return;
+    }
+
+    ZoneScopedN("Rubberband overlay");
+    rubberbandOverlayRenderer->prepareGeometry(manager->getViewportRegion(), devicePixelRatio());
+    action->apply(rubberbandOverlayRenderer->sceneRoot());
 }
 
 void View3DInventorViewer::setSeekMode(bool on)
@@ -3336,26 +3529,7 @@ void View3DInventorViewer::getDimensions(float& fHeight, float& fWidth) const
 
 void View3DInventorViewer::printDimension() const
 {
-    float fHeight = -1.0;
-    float fWidth = -1.0;
-    getDimensions(fHeight, fWidth);
-
-    std::string dim;
-
-    if (fWidth >= 0.0 && fHeight >= 0.0) {
-        // Translate screen units into user's unit schema
-        Base::Quantity qWidth(Base::Quantity::MilliMetre);
-        Base::Quantity qHeight(Base::Quantity::MilliMetre);
-        qWidth.setValue(fWidth);
-        qHeight.setValue(fHeight);
-        auto wStr = Base::UnitsApi::schemaTranslate(qWidth);
-        auto hStr = Base::UnitsApi::schemaTranslate(qHeight);
-
-        // Create final string and update window
-        dim = fmt::format("{} x {}", wStr, hStr);
-    }
-
-    getMainWindow()->setPaneText(2, QString::fromStdString(dim));
+    updateDimensionPane(*this, false);
 }
 
 void View3DInventorViewer::selectAll()
@@ -4113,7 +4287,95 @@ void View3DInventorViewer::moveCameraTo(const SbRotation& orientation, const SbV
     camera->position.setValue(position);
 }
 
-void View3DInventorViewer::animatedViewAll(int steps, int ms)
+bool View3DInventorViewer::getSceneBoundBox(Base::BoundBox3d& box) const
+{
+    if (!inventorSelection) {
+        return false;
+    }
+
+    SoGetBoundingBoxAction action(this->getSoRenderManager()->getViewportRegion());
+    SoSkipBoundingBoxElement::set(action.getState(), SoSkipBoundingGroup::EXCLUDE_BBOX);
+
+    if (guiDocument && ViewParams::instance()->getUseTightBoundingBox()) {
+        for (int i = 0; i < pcViewProviderRoot->getNumChildren(); ++i) {
+            auto node = pcViewProviderRoot->getChild(i);
+            auto vp = guiDocument->getViewProvider(node);
+            if (!vp) {
+                action.apply(node);
+                auto bbox = action.getBoundingBox();
+                if (isValidBBox(bbox)) {
+                    float minx, miny, minz, maxx, maxy, maxz;
+                    bbox.getBounds(minx, miny, minz, maxx, maxy, maxz);
+                    box.Add(Base::BoundBox3d(minx, miny, minz, maxx, maxy, maxz));
+                }
+                continue;
+            }
+            if (!vp->isVisible()) {
+                continue;
+            }
+            auto sbox = vp->getBoundingBox(nullptr, nullptr, true, this);
+            if (sbox.IsValid()) {
+                box.Add(sbox);
+            }
+        }
+    }
+    else {
+        action.apply(pcViewProviderRoot);
+        auto bbox = action.getBoundingBox();
+        if (isValidBBox(bbox)) {
+            float minx, miny, minz, maxx, maxy, maxz;
+            bbox.getBounds(minx, miny, minz, maxx, maxy, maxz);
+            box.MinX = minx;
+            box.MinY = miny;
+            box.MinZ = minz;
+            box.MaxX = maxx;
+            box.MaxY = maxy;
+            box.MaxZ = maxz;
+        }
+    }
+
+    if (pcEditingRoot) {
+        action.apply(pcEditingRoot);
+        auto bbox = action.getBoundingBox();
+        if (isValidBBox(bbox)) {
+            float minx, miny, minz, maxx, maxy, maxz;
+            bbox.getBounds(minx, miny, minz, maxx, maxy, maxz);
+            box.Add(Base::BoundBox3d(minx, miny, minz, maxx, maxy, maxz));
+        }
+    }
+
+    if (!box.IsValid()) {
+        return false;
+    }
+
+    // Coin3D camera seems stuck if zoomed to close because the boundbox is too
+    // small. So, we limit the boundbox size
+    const double minLength = 1e-7;
+    if (std::fabs(box.MinX - box.MaxX) < minLength && std::fabs(box.MinY - box.MaxY) < minLength
+        && std::fabs(box.MinZ - box.MaxZ) < minLength) {
+        const double margin = 0.1;
+        box.MinX -= margin;
+        box.MinY -= margin;
+        box.MinZ -= margin;
+        box.MaxX += margin;
+        box.MaxY += margin;
+        box.MaxZ += margin;
+    }
+    return true;
+}
+
+bool View3DInventorViewer::getSceneBoundBox(SbBox3f& box) const
+{
+    Base::BoundBox3d fcbox;
+    getSceneBoundBox(fcbox);
+    if (!fcbox.IsValid()) {
+        return false;
+    }
+    box.setBounds(fcbox.MinX, fcbox.MinY, fcbox.MinZ, fcbox.MaxX, fcbox.MaxY, fcbox.MaxZ);
+    return true;
+}
+
+void View3DInventorViewer::animatedViewAll(const SbBox3f& box, int steps, int ms)
 {
     SoCamera* cam = this->getSoRenderManager()->getCamera();
     if (!cam) {
@@ -4123,13 +4385,8 @@ void View3DInventorViewer::animatedViewAll(int steps, int ms)
     SbVec3f campos = cam->position.getValue();
     SbRotation camrot = cam->orientation.getValue();
     SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
-    SbBox3f box = getBoundingBox();
 
     float aspectRatio = vp.getViewportAspectRatio();
-
-    if (box.isEmpty()) {
-        return;
-    }
 
     SbSphere sphere;
     sphere.circumscribe(box);
@@ -4221,56 +4478,54 @@ SbBox3f View3DInventorViewer::getBoundingBox() const
     return action.getBoundingBox();
 }
 
+void View3DInventorViewer::viewHome()
+{
+    SoCamera* camera = getCamera();
+    if (!camera) {
+        return;
+    }
+
+    const SbRotation orientation = Camera::defaultOrientation("Top");
+    if (Camera::rotationsMatch(camera->orientation.getValue(), orientation)) {
+        viewAll();
+        return;
+    }
+
+    auto animation = setCameraOrientation(orientation, true);
+    if (animation && animation->state() == QAbstractAnimation::Running) {
+        QObject::connect(
+            animation.get(),
+            &NavigationAnimation::completed,
+            this,
+            [this]() { viewAll(); },
+            // Let NavigationAnimator finish its cleanup before fitting the scene.
+            Qt::QueuedConnection
+        );
+        return;
+    }
+
+    viewAll();
+}
+
 void View3DInventorViewer::viewAll()
 {
-    // in the scene graph we may have objects which we want to exclude
-    // when doing a fit all. Such objects must be part of the group
-    // SoSkipBoundingGroup.
-    SoSearchAction sa;
-    sa.setType(SoSkipBoundingGroup::getClassTypeId());
-    sa.setInterest(SoSearchAction::ALL);
-    sa.apply(this->getSoRenderManager()->getSceneGraph());
-    const SoPathList& pathlist = sa.getPaths();
-
-    for (int i = 0; i < pathlist.getLength(); i++) {
-        SoPath* path = pathlist[i];
-        auto group = static_cast<SoSkipBoundingGroup*>(path->getTail());  // NOLINT
-        group->mode = SoSkipBoundingGroup::EXCLUDE_BBOX;
+    SbBox3f box;
+    if (!getSceneBoundBox(box)) {
+        return;
     }
 
-    SbBox3f box = getBoundingBox();
+    // Set the height angle to 45 deg
+    SoCamera* cam = this->getSoRenderManager()->getCamera();
 
-    if (!box.isEmpty()) {
-        SbSphere sphere;
-        sphere.circumscribe(box);
-        if (sphere.getRadius() != 0) {
-            // Set the height angle to 45 deg
-            SoCamera* cam = this->getSoRenderManager()->getCamera();
-
-            if (cam && cam->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
-                static_cast<SoPerspectiveCamera*>(cam)->heightAngle = (float)(std::numbers::pi
-                                                                              / 4.0);  // NOLINT
-            }
-
-            if (isAnimationEnabled()) {
-                animatedViewAll(10, 20);  // NOLINT
-            }
-
-            // make sure everything is visible
-            if (cam) {
-                cam->viewAll(
-                    getSoRenderManager()->getSceneGraph(),
-                    this->getSoRenderManager()->getViewportRegion()
-                );
-            }
-        }
+    if (cam && cam->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
+        static_cast<SoPerspectiveCamera*>(cam)->heightAngle = (float)(M_PI / 4.0);
     }
 
-    for (int i = 0; i < pathlist.getLength(); i++) {
-        SoPath* path = pathlist[i];
-        auto group = static_cast<SoSkipBoundingGroup*>(path->getTail());  // NOLINT
-        group->mode = SoSkipBoundingGroup::INCLUDE_BBOX;
+    if (isAnimationEnabled()) {
+        animatedViewAll(box, 10, 20);
     }
+
+    viewBoundBox(box);
 }
 
 void View3DInventorViewer::viewAll(float factor)
@@ -4285,86 +4540,150 @@ void View3DInventorViewer::viewAll(float factor)
     }
 
     if (factor != 1.0F) {
-        SoSearchAction sa;
-        sa.setType(SoSkipBoundingGroup::getClassTypeId());
-        sa.setInterest(SoSearchAction::ALL);
-        sa.apply(this->getSoRenderManager()->getSceneGraph());
-        const SoPathList& pathlist = sa.getPaths();
-
-        for (int i = 0; i < pathlist.getLength(); i++) {
-            SoPath* path = pathlist[i];
-            auto group = static_cast<SoSkipBoundingGroup*>(path->getTail());  // NOLINT
-            group->mode = SoSkipBoundingGroup::EXCLUDE_BBOX;
+        SbBox3f box;
+        if (!getSceneBoundBox(box)) {
+            return;
         }
 
-        SbBox3f box = getBoundingBox();
-        float minx {};
-        float miny {};
-        float minz {};
-        float maxx {};
-        float maxy {};
-        float maxz {};
-        box.getBounds(minx, miny, minz, maxx, maxy, maxz);
+        float dx, dy, dz;
+        box.getSize(dx, dy, dz);
 
-        for (int i = 0; i < pathlist.getLength(); i++) {
-            SoPath* path = pathlist[i];
-            auto group = static_cast<SoSkipBoundingGroup*>(path->getTail());  // NOLINT
-            group->mode = SoSkipBoundingGroup::INCLUDE_BBOX;
-        }
+        float x, y, z;
+        box.getCenter().getValue(x, y, z);
 
-        auto cube = new SoCube();
-        cube->width = factor * (maxx - minx);
-        cube->height = factor * (maxy - miny);
-        cube->depth = factor * (maxz - minz);
+        box.setBounds(
+            x - (dx / 2.0f) * factor,
+            y - (dy / 2.0f) * factor,
+            z - (dz / 2.0f) * factor,
+            x + (dx / 2.0f) * factor,
+            y + (dy / 2.0f) * factor,
+            z + (dz / 2.0f) * factor
+        );
 
-        // fake a scenegraph with the desired bounding size
-        auto graph = new SoSeparator();
-        graph->ref();
-        auto tr = new SoTranslation();
-        tr->translation.setValue(box.getCenter());
-
-        graph->addChild(tr);
-        graph->addChild(cube);
-        cam->viewAll(graph, this->getSoRenderManager()->getViewportRegion());
-        graph->unref();
+        viewBoundBox(box);
     }
     else {
         viewAll();
     }
 }
 
-void View3DInventorViewer::viewSelection()
+void View3DInventorViewer::viewSelection(bool extend)
 {
-    Base::BoundBox3d bbox;
-    for (auto& sel : Selection().getSelection(nullptr, ResolveMode::NoResolve)) {
-        auto vp = Application::Instance->getViewProvider(sel.pObject);
-        if (!vp) {
-            continue;
-        }
-        bbox.Add(vp->getBoundingBox(sel.SubName, true));
+    // Disable extended view selection if there is an editing view provider, so
+    // that we don't mess up the current editing view.
+    if (extend && editViewProvider) {
+        return;
+    }
+
+    if (!guiDocument) {
+        return;
+    }
+
+    auto sels = Gui::Selection().getSelectionT(
+        guiDocument->getDocument()->getName(),
+        ResolveMode::NoResolve
+    );
+    if (sels.empty()) {
+        return;
+    }
+    else if (ViewParams::instance()->getMaxViewSelections() < (int)sels.size()) {
+        sels.resize(ViewParams::instance()->getMaxViewSelections());
+    }
+    viewObjects(sels, extend);
+}
+
+void View3DInventorViewer::viewObjects(const std::vector<App::SubObjectT>& objs, bool extend)
+{
+    if (!guiDocument) {
+        return;
     }
 
     SoCamera* cam = this->getSoRenderManager()->getCamera();
-    if (cam && bbox.IsValid()) {
-        SbBox3f box(
-            float(bbox.MinX),
-            float(bbox.MinY),
-            float(bbox.MinZ),
-            float(bbox.MaxX),
-            float(bbox.MaxY),
-            float(bbox.MaxZ)
+    if (!cam) {
+        return;
+    }
+
+    // When calling with extend = true, we are supposed to make sure the
+    // current view volume at least include some geometry sub-element of all
+    // given objects. The volume does not have to include the whole object. The
+    // implementation below uses the screen dimension as a rectangle selection
+    // and recursively test intersection. The algorithm used is similar to
+    // Command Std_BoxElementSelection.
+    SbViewVolume vv = cam->getViewVolume();
+    ViewVolumeProjection proj(vv);
+    Base::Polygon2d polygon;
+    SbViewportRegion viewport = getSoRenderManager()->getViewportRegion();
+    const SbVec2s& sp = viewport.getViewportSizePixels();
+    auto pos = getGLPolygon({{0, 0}, sp});
+    polygon.Add(Base::Vector2d(pos[0][0], pos[1][1]));
+    polygon.Add(Base::Vector2d(pos[0][0], pos[0][1]));
+    polygon.Add(Base::Vector2d(pos[1][0], pos[0][1]));
+    polygon.Add(Base::Vector2d(pos[1][0], pos[1][1]));
+
+    Base::BoundBox3d bbox;
+    for (auto& objT : objs) {
+        auto vp = Base::freecad_cast<ViewProviderDocumentObject*>(
+            guiDocument->getViewProvider(objT.getObject())
         );
-        float aspectratio = getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
-        switch (cam->viewportMapping.getValue()) {
-            case SoCamera::CROP_VIEWPORT_FILL_FRAME:
-            case SoCamera::CROP_VIEWPORT_LINE_FRAME:
-            case SoCamera::CROP_VIEWPORT_NO_FRAME:
-                aspectratio = 1.0F;
-                break;
-            default:
-                break;
+        if (!vp) {
+            continue;
         }
-        cam->viewBoundingBox(box, aspectratio, 1.0);
+
+        bbox.Add(vp->getBoundingBox(objT.getSubName().c_str()));
+    }
+
+    if (bbox.IsValid()) {
+        SbBox3f box(bbox.MinX, bbox.MinY, bbox.MinZ, bbox.MaxX, bbox.MaxY, bbox.MaxZ);
+        if (extend) {  // whether to extend the current view volume to include the objects
+            float vx, vy, vz;
+            SbVec3f vcenter = vv.getProjectionPoint()
+                + vv.getProjectionDirection() * (vv.getDepth() * 0.5 + vv.getNearDist());
+            vcenter.getValue(vx, vy, vz);
+
+            float radius = std::max(vv.getWidth(), vv.getHeight()) * 0.5f;
+
+            // A rough estimation of the view bounding box. Note that
+            // SoCamera::viewBoundingBox() is not accurate as well. It uses a
+            // sphere to surround the bounding box for easy calculation.
+            SbBox3f vbox(vx - radius, vy - radius, vz - radius, vx + radius, vy + radius, vz + radius);
+
+            // extend the view box to include the selection
+            vbox.extendBy(box);
+
+            // obtain the entire scene bounding box
+            SbBox3f scenebox;
+            getSceneBoundBox(scenebox);
+
+            // extend to include the selection, just to be sure
+            scenebox.extendBy(box);
+
+            float minx, miny, minz, maxx, maxy, maxz;
+            vbox.getBounds(minx, miny, minz, maxx, maxy, maxz);
+
+            // clip the extended current view box to the scene box
+            float minx2, miny2, minz2, maxx2, maxy2, maxz2;
+            scenebox.getBounds(minx2, miny2, minz2, maxx2, maxy2, maxz2);
+            if (minx < minx2) {
+                minx = minx2;
+            }
+            if (miny < miny2) {
+                miny = miny2;
+            }
+            if (minz < minz2) {
+                minz = minz2;
+            }
+            if (maxx > maxx2) {
+                maxx = maxx2;
+            }
+            if (maxy > maxy2) {
+                maxy = maxy2;
+            }
+            if (maxz > maxz2) {
+                maxz = maxz2;
+            }
+            box.setBounds(minx, miny, minz, maxx, maxy, maxz);
+        }
+        viewBoundBox(box);
     }
 }
 
@@ -4570,6 +4889,30 @@ void View3DInventorViewer::alignToSelection()
 
         setCameraOrientation(orientation);
     }
+}
+
+void View3DInventorViewer::viewBoundBox(const SbBox3f& box)
+{
+    if (isAnimationEnabled()) {
+        animatedViewAll(box, 10, 20);
+    }
+
+    SoCamera* cam = getSoRenderManager()->getCamera();
+    if (!cam) {
+        return;
+    }
+
+    float aspectratio = getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
+    switch (cam->viewportMapping.getValue()) {
+        case SoCamera::CROP_VIEWPORT_FILL_FRAME:
+        case SoCamera::CROP_VIEWPORT_LINE_FRAME:
+        case SoCamera::CROP_VIEWPORT_NO_FRAME:
+            aspectratio = 1.0f;
+            break;
+        default:
+            break;
+    }
+    cam->viewBoundingBox(box, aspectratio, 1.0);
 }
 
 /**
@@ -4880,18 +5223,25 @@ void View3DInventorViewer::drawAxisCross()
     vv.getMatrices(affine, projection);
 
     const SbMatrix comb = model.multRight(projection);
-    SbVec3f xpos;
-    comb.multVecMatrix(SbVec3f(1, 0, 0), xpos);
-    xpos[0] = (1 + xpos[0]) * static_cast<float>(viewWidth) / 2.0f;
-    xpos[1] = (1 + xpos[1]) * static_cast<float>(viewHeight) / 2.0f;
-    SbVec3f ypos;
-    comb.multVecMatrix(SbVec3f(0, 1, 0), ypos);
-    ypos[0] = (1 + ypos[0]) * static_cast<float>(viewWidth) / 2.0f;
-    ypos[1] = (1 + ypos[1]) * static_cast<float>(viewHeight) / 2.0f;
-    SbVec3f zpos;
-    comb.multVecMatrix(SbVec3f(0, 0, 1), zpos);
-    zpos[0] = (1 + zpos[0]) * static_cast<float>(viewWidth) / 2.0f;
-    zpos[1] = (1 + zpos[1]) * static_cast<float>(viewHeight) / 2.0f;
+    auto projectOverlayPoint = [&comb](const SbVec3f& point) {
+        SbVec3f projected;
+        comb.multVecMatrix(point, projected);
+        return projected;
+    };
+
+    // Anchor each letter slightly past its axis tip so centered glyphs do not
+    // sit on top of the arrow geometry.
+    constexpr float letterDistance = 1.15f;
+    auto projectLetterAnchor = [&projectOverlayPoint](const SbVec3f& axis) {
+        return projectOverlayPoint(axis * letterDistance);
+    };
+
+    const SbVec3f xTipProjected = projectOverlayPoint(SbVec3f(1, 0, 0));
+    const SbVec3f yTipProjected = projectOverlayPoint(SbVec3f(0, 1, 0));
+    const SbVec3f zTipProjected = projectOverlayPoint(SbVec3f(0, 0, 1));
+    const SbVec3f xLetterProjected = projectLetterAnchor(SbVec3f(1, 0, 0));
+    const SbVec3f yLetterProjected = projectLetterAnchor(SbVec3f(0, 1, 0));
+    const SbVec3f zLetterProjected = projectLetterAnchor(SbVec3f(0, 0, 1));
 
     auto& overlay = overlayAxisCrossState();
     overlay.ensureCreated();
@@ -4914,9 +5264,9 @@ void View3DInventorViewer::drawAxisCross()
     overlay.zMaterial->diffuseColor.setValue(m_zColor.r, m_zColor.g, m_zColor.b);
 
     std::array<std::pair<float, SoNode*>, 3> axes = {
-        std::pair<float, SoNode*> {xpos[2], overlay.xAxis},
-        std::pair<float, SoNode*> {ypos[2], overlay.yAxis},
-        std::pair<float, SoNode*> {zpos[2], overlay.zAxis},
+        std::pair<float, SoNode*> {xTipProjected[2], overlay.xAxis},
+        std::pair<float, SoNode*> {yTipProjected[2], overlay.yAxis},
+        std::pair<float, SoNode*> {zTipProjected[2], overlay.zAxis},
     };
     std::sort(axes.begin(), axes.end(), [](const auto& a, const auto& b) {
         return a.first > b.first;
@@ -4926,26 +5276,57 @@ void View3DInventorViewer::drawAxisCross()
         overlay.axisGroup->addChild(axis.second);
     }
 
-    overlay.lettersCamera->aspectRatio.setValue(
-        static_cast<float>(viewWidth) / static_cast<float>(viewHeight)
+    const float miniViewportSize = static_cast<float>(pixelarea);
+    const float miniViewportCenter = miniViewportSize / 2.0f;
+
+    overlay.lettersCamera->aspectRatio.setValue(1.0f);
+    overlay.lettersCamera->height.setValue(miniViewportSize);
+
+    // Axis endpoints are projected into centered [-1, 1] coordinates. Convert
+    // them into the square overlay viewport's local pixel space before mapping
+    // them back to the centered coordinate system used by the letters camera.
+    auto toMiniViewportPixel = [miniViewportSize](const SbVec3f& projectedEndpoint) {
+        return SbVec2f(
+            (1.0f + projectedEndpoint[0]) * miniViewportSize / 2.0f,
+            (1.0f + projectedEndpoint[1]) * miniViewportSize / 2.0f
+        );
+    };
+
+    // Keep labels proportional to the corner widget, with readable bounds for
+    // very small or very large viewports. These values are framebuffer pixels
+    // because the letters camera is sized to the square overlay viewport.
+    constexpr float letterHeightFraction = 0.07f;
+    constexpr float minLetterHeight = 8.0f;
+    constexpr float maxLetterHeight = 18.0f;
+    const float deviceScale = static_cast<float>(devicePixelRatio());
+    const float targetLetterHeight = std::clamp(
+        miniViewportSize * letterHeightFraction,
+        minLetterHeight * deviceScale,
+        maxLetterHeight * deviceScale
     );
-    overlay.lettersCamera->height.setValue(static_cast<float>(viewHeight));
+    const float letterScale = targetLetterHeight / static_cast<float>(XPM_HEIGHT);
+    overlay.xLetter.scale->scaleFactor.setValue(letterScale, letterScale, 1.0f);
+    overlay.yLetter.scale->scaleFactor.setValue(letterScale, letterScale, 1.0f);
+    overlay.zLetter.scale->scaleFactor.setValue(letterScale, letterScale, 1.0f);
 
-    // The overlay viewport above is sized in physical framebuffer pixels, so
-    // the axis letters must scale by the device pixel ratio to keep the same
-    // perceived size as the axis cross on HiDPI displays.
-    const float scale = static_cast<float>(axiscrossSize) / 30.0f
-        * static_cast<float>(devicePixelRatio());
-    overlay.xLetter.scale->scaleFactor.setValue(scale, scale, 1.0f);
-    overlay.yLetter.scale->scaleFactor.setValue(scale, scale, 1.0f);
-    overlay.zLetter.scale->scaleFactor.setValue(scale, scale, 1.0f);
+    auto placeLetter = [letterScale, miniViewportCenter, toMiniViewportPixel](
+                           OverlayAxisCrossState::Letter& letter,
+                           const SbVec3f& projectedEndpoint
+                       ) {
+        const SbVec2f local = toMiniViewportPixel(projectedEndpoint);
+        const float halfLetterWidth = static_cast<float>(letter.width) * letterScale / 2.0f;
+        const float halfLetterHeight = static_cast<float>(letter.height) * letterScale / 2.0f;
 
-    overlay.xLetter.position->translation
-        .setValue(xpos[0] - 0.5f * viewWidth, xpos[1] - 0.5f * viewHeight, 0.0f);
-    overlay.yLetter.position->translation
-        .setValue(ypos[0] - 0.5f * viewWidth, ypos[1] - 0.5f * viewHeight, 0.0f);
-    overlay.zLetter.position->translation
-        .setValue(zpos[0] - 0.5f * viewWidth, zpos[1] - 0.5f * viewHeight, 0.0f);
+        letter.position->translation.setValue(
+            local[0] - miniViewportCenter - halfLetterWidth,
+            local[1] - miniViewportCenter - halfLetterHeight,
+            0.0f
+        );
+    };
+
+    placeLetter(overlay.xLetter, xLetterProjected);
+    placeLetter(overlay.yLetter, yLetterProjected);
+    placeLetter(overlay.zLetter, zLetterProjected);
 
     overlay.xLetter.texture->image.setValue(SbVec2s(XPM_WIDTH, XPM_HEIGHT), 4, XPM_pixel_data);
     overlay.yLetter.texture->image.setValue(SbVec2s(YPM_WIDTH, YPM_HEIGHT), 4, YPM_pixel_data);
@@ -4954,15 +5335,21 @@ void View3DInventorViewer::drawAxisCross()
     SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
     vp.setViewportPixels(origin[0], origin[1], pixelarea, pixelarea);
 
-    SoGLRenderAction axisAction(vp);
-    setOverlayCacheContext(axisAction, this);
-    axisAction.setTransparencyType(SoGLRenderAction::BLEND);
-    axisAction.apply(overlay.axisRoot);
+    {
+        SoGLRenderAction axisAction(vp);
+        setOverlayCacheContext(axisAction, this);
+        axisAction.setTransparencyType(SoGLRenderAction::BLEND);
+        axisAction.apply(overlay.axisRoot);
+    }
 
-    SoGLRenderAction letterAction(vp);
-    setOverlayCacheContext(letterAction, this);
-    letterAction.setTransparencyType(SoGLRenderAction::BLEND);
-    letterAction.apply(overlay.lettersRoot);
+    {
+        SoGLRenderAction letterAction(vp);
+        setOverlayCacheContext(letterAction, this);
+        letterAction.setTransparencyType(SoGLRenderAction::BLEND);
+        letterAction.apply(overlay.lettersRoot);
+    }
+
+    resetMainLazyGLState(this);
 }
 
 void View3DInventorViewer::drawSingleBackground(const QColor& col)

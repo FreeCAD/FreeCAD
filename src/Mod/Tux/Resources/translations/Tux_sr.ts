@@ -4,115 +4,115 @@
   <context>
     <name>NavigationIndicator</name>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="89"/>
+      <location filename="../../NavigationIndicatorGui.py" line="90"/>
       <source>Select</source>
       <translation>Изабери</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="90"/>
+      <location filename="../../NavigationIndicatorGui.py" line="91"/>
       <source>Zoom</source>
       <translation>Зумирај</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="91"/>
+      <location filename="../../NavigationIndicatorGui.py" line="92"/>
       <source>Rotate</source>
       <translation>Окрени</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="92"/>
+      <location filename="../../NavigationIndicatorGui.py" line="93"/>
       <source>Pan</source>
       <translation>Помери</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="93"/>
+      <location filename="../../NavigationIndicatorGui.py" line="94"/>
       <source>Tilt</source>
       <translation>Нагни</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="94"/>
+      <location filename="../../NavigationIndicatorGui.py" line="95"/>
       <source>Navigation style</source>
       <translation>Стил навигације</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="95"/>
+      <location filename="../../NavigationIndicatorGui.py" line="96"/>
       <source>Page Up or Page Down key.</source>
       <translation>Типке Page Up или Page Down.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="96"/>
+      <location filename="../../NavigationIndicatorGui.py" line="97"/>
       <source>Rotation focus</source>
       <translation>Центар ротације</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="97"/>
+      <location filename="../../NavigationIndicatorGui.py" line="98"/>
       <source>Middle mouse button or H key.</source>
       <translation>Средњи тастер миша или тастер „H“ на тастатури.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="99"/>
+      <location filename="../../NavigationIndicatorGui.py" line="100"/>
       <source>Middle mouse button.</source>
       <translation>Средњи тастер миша.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="102"/>
+      <location filename="../../NavigationIndicatorGui.py" line="103"/>
       <source>Navigation style not recognized.</source>
       <translation>Стил навигације није препознат.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="653"/>
+      <location filename="../../NavigationIndicatorGui.py" line="654"/>
       <source>Settings</source>
       <translation>Подешавања</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="654"/>
+      <location filename="../../NavigationIndicatorGui.py" line="655"/>
       <source>Orbit style</source>
       <translation>Начин окретања орбит</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="655"/>
+      <location filename="../../NavigationIndicatorGui.py" line="656"/>
       <source>Compact</source>
       <translation>Збијено</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="656"/>
+      <location filename="../../NavigationIndicatorGui.py" line="657"/>
       <source>Tooltip</source>
       <translation>Кратак опис алатке</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="657"/>
+      <location filename="../../NavigationIndicatorGui.py" line="658"/>
       <source>Turntable</source>
       <translation>Обртни сто</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="658"/>
+      <location filename="../../NavigationIndicatorGui.py" line="659"/>
       <source>Free Turntable</source>
       <translation>Слободни обртни сто</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="659"/>
+      <location filename="../../NavigationIndicatorGui.py" line="660"/>
       <source>Trackball</source>
       <translation>Trackball</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="660"/>
+      <location filename="../../NavigationIndicatorGui.py" line="661"/>
       <source>Trackball Classic</source>
       <translation>Класични Trackball</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="661"/>
+      <location filename="../../NavigationIndicatorGui.py" line="662"/>
       <source>Rounded Arcball</source>
       <translation>Заобљени Arcball</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="662"/>
+      <location filename="../../NavigationIndicatorGui.py" line="663"/>
       <source>Undefined</source>
       <translation>Недефинисано</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="674"/>
-      <source>Navigation Indicator</source>
+      <location filename="../../NavigationIndicatorGui.py" line="675"/>
+      <source>Navigation Styles</source>
       <comment>A context menu action used to show or hide the &apos;Navigation indicator&apos; toolbar widget</comment>
-      <translation>Показивач навигације</translation>
+      <translation type="unfinished">Navigation Styles</translation>
     </message>
   </context>
 </TS>

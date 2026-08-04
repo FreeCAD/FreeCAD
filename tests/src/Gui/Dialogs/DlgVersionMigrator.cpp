@@ -214,6 +214,29 @@ private Q_SLOTS:
         QCOMPARE(newPath, expectedPath);
     }
 
+    void generateNewUserAppPathString_version_in_current_with_trailing_separator()
+    {
+        // Regression test for issue #30409: the migration worker is always constructed with paths
+        // that have a trailing separator (getUserAppDataDir() appends PATHSEP). A trailing
+        // separator makes path::filename() empty, which previously caused isVersionedPath() to miss
+        // the version component and produce a doubled path like '.../v1-0/v1-1/' instead of
+        // '.../v1-1/'.
+        auto worker = makeWorker(1, 1);
+        std::filesystem::path testPath = std::filesystem::temp_directory_path() / "foo" / "bar"
+            / "v1-0";
+        std::string oldPath = Base::FileInfo::pathToString(testPath);
+        oldPath += std::filesystem::path::preferred_separator;
+        std::string newPath = worker->testableGenerateNewUserAppPathString(oldPath);
+
+        std::string expectedAddition = App::ApplicationDirectories::versionStringForPath(1, 1);
+
+        std::string expectedPath = Base::FileInfo::pathToString(
+            testPath.parent_path() / expectedAddition
+        );
+        expectedPath += std::filesystem::path::preferred_separator;
+        QCOMPARE(newPath, expectedPath);
+    }
+
     void locateNewPreferences()
     {
         auto worker = makeWorker(1, 1);

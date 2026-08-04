@@ -356,8 +356,8 @@ Evolumes
 
 ***********************************************************
 ** constraints fixed node sets
-** ConstraintFixed
-*NSET,NSET=ConstraintFixed
+** Fixed
+*NSET,NSET=Fixed
 1,
 2,
 3,
@@ -374,8 +374,8 @@ Evolumes
 
 ***********************************************************
 ** constraints displacement node sets
-** ConstraintDisplacementPrescribed
-*NSET,NSET=ConstraintDisplacementPrescribed
+** Displacement
+*NSET,NSET=Displacement
 5,
 6,
 7,
@@ -416,18 +416,18 @@ Evolumes
 
 ***********************************************************
 ** Fixed Constraints
-** ConstraintFixed
+** Fixed
 *BOUNDARY
-ConstraintFixed,1
-ConstraintFixed,2
-ConstraintFixed,3
+Fixed,1
+Fixed,2
+Fixed,3
 
 
 ***********************************************************
 ** Displacement constraint applied
-** ConstraintDisplacementPrescribed
+** Displacement
 *BOUNDARY
-ConstraintDisplacementPrescribed,3,3,-250
+Displacement,3,3,-250
 
 
 ***********************************************************
@@ -438,10 +438,10 @@ U
 S, E
 ** outputs --> dat file
 ** reaction forces for Constraint fixed
-*NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
+*NODE PRINT, NSET=Fixed, TOTALS=ONLY
 RF
 ** reaction forces for Constraint displacement constraining translation
-*NODE PRINT, NSET=ConstraintDisplacementPrescribed, TOTALS=ONLY
+*NODE PRINT, NSET=Displacement, TOTALS=ONLY
 RF
 
 *OUTPUT, FREQUENCY=1

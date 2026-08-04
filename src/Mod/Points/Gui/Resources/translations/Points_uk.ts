@@ -280,7 +280,7 @@
     <message>
       <location filename="../../Command.cpp" line="224"/>
       <source>Distance</source>
-      <translation>Відстань</translation>
+      <translation>Відстань Х</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="225"/>

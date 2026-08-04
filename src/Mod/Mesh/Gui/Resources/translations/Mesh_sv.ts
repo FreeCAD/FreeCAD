@@ -1089,19 +1089,19 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="927"/>
       <source>Duplicated Faces</source>
-      <translation type="unfinished">Duplicated Faces</translation>
+      <translation>Duplicerade ytor</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
       <source>Duplicated Points</source>
-      <translation type="unfinished">Duplicated Points</translation>
+      <translation>Duplicerade punkter</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1298"/>
       <source>Mesh Repair</source>
-      <translation type="unfinished">Mesh Repair</translation>
+      <translation>Reparera nät</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="963"/>
@@ -1530,7 +1530,7 @@ till ett mjukare utseende.
     <message>
       <location filename="../../DlgSmoothing.ui" line="95"/>
       <source>Mu</source>
-      <translation type="unfinished">Mu</translation>
+      <translation>Mu</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="118"/>
@@ -1553,7 +1553,7 @@ till ett mjukare utseende.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="103"/>
       <source>Frontal</source>
-      <translation type="unfinished">Frontal</translation>
+      <translation>Frontal</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="106"/>
@@ -1601,7 +1601,7 @@ till ett mjukare utseende.
     <message>
       <location filename="../../MeshEditor.cpp" line="255"/>
       <source>Cannot add triangle to avoid non-manifolds.</source>
-      <translation type="unfinished">Cannot add triangle to avoid non-manifolds.</translation>
+      <translation>Det går inte att lägga till triangeln utan att skapa icke-mångfaldiga element.</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="407"/>
@@ -2388,7 +2388,7 @@ Besök https://openscad.org/ för att installera det.</translation>
     <message>
       <location filename="../../../Init.py" line="19"/>
       <source>STL Mesh</source>
-      <translation type="unfinished">STL Mesh</translation>
+      <translation>STL-nät</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="20"/>
@@ -2405,7 +2405,7 @@ Besök https://openscad.org/ för att installera det.</translation>
       <location filename="../../../Init.py" line="27"/>
       <source>Object File Format Mesh</source>
       <extracomment>Translation note: "Object File Format" is the official name and should not be translated</extracomment>
-      <translation type="unfinished">Object File Format Mesh</translation>
+      <translation>Nät i Object File Format</translation>
     </message>
   </context>
 </TS>

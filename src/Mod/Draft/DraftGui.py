@@ -372,6 +372,9 @@ class DraftToolBar:
     def _is_field_locked(self, key):
         return self._locks.is_locked(key)
 
+    def has_point_constraints(self):
+        return self._locks.any_locked()
+
     def _set_field_locked(self, key, locked):
         if locked:
             field = getattr(self, self._LOCK_FIELDS.get(key, ""), None)
@@ -855,6 +858,7 @@ class DraftToolBar:
         task.setAutoCloseOnDeletedDocument(True)
 
     def taskUi(self, title="Draft", extra=None, icon="Draft_Draft"):
+        self._locks.dispose()
         # reset InputField values
         self.reset_ui_values()
         self.isTaskOn = True
@@ -871,6 +875,7 @@ class DraftToolBar:
 
     def redraw(self):
         """utility function that is performed after each clicked point"""
+        self.acceptPointInput()
         self.checkLocal()
 
     def setFocus(self, f=None):
@@ -1096,6 +1101,7 @@ class DraftToolBar:
         todo.delay(self.setFocus, "radius")
 
     def offUi(self):
+        self._locks.dispose()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.clearPointConstraintProvider(self)
         todo.delay(FreeCADGui.Control.closeDialog, None)
@@ -1406,11 +1412,15 @@ class DraftToolBar:
                     else:
                         self.new_point = self.get_new_point(delta)
                         self.sourceCmd.numericInput(*self.new_point)
+                    self.acceptPointInput()
             elif self.textValue.isVisible():
                 return False
             else:
                 FreeCADGui.ActiveDocument.resetEdit()
         return True
+
+    def acceptPointInput(self):
+        self._locks.unlock_all()
 
     def finish(self, cont=None):
         """finish button action"""

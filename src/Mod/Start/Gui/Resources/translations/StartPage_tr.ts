@@ -174,29 +174,29 @@
       <translation>FreeCAD Açık</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="250"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="251"/>
       <source>Theme</source>
       <translation>Tema</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="253"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="254"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
       <translation>Daha fazla tema mı arıyorsunuz? Bunları &lt;a href="freecad:Std_AddonMgr"&gt;Eklenti Yöneticisi&lt;/a&gt;’ni kullanarak edinebilirsiniz.</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="260"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="261"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD Koyu</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="261"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="262"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD Açık</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="262"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="263"/>
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD Klasik</translation>

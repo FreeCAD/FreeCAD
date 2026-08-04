@@ -14,12 +14,21 @@ from collections.abc import Sequence
 from enum import IntEnum
 from typing import Any, ClassVar, Literal, Protocol, TypeAlias, overload
 
+from Base.Metadata import bootstrap_export, module, typing_only
 from FreeCAD import DocumentObject
 
 _Pathish: TypeAlias = str | bytes | bytearray
 _IconContent: TypeAlias = str | bytes | bytearray | memoryview
 _WorkbenchMenu: TypeAlias = str | Sequence[str]
 _WorkbenchCommands: TypeAlias = str | Sequence[str]
+
+module(
+    Name="FreeCADGui",
+    Namespace="Gui",
+    Include="ApplicationPy.h",
+    CallbackOwner="ApplicationPy",
+    CallbackPrefix="s",
+)
 
 class UserInput(IntEnum):
     """Enum of keyboard, mouse, and modifier tokens used by GUI input hints."""
@@ -331,11 +340,11 @@ ActiveDocument: Document | None
 
 # Scene graph and workbenches
 def subgraphFromObject(obj: DocumentObject, /) -> object | None:
-    """Return the Coin scene subgraph that represents one document object."""
+    """Return the Coin/Inventor scene subgraph that represents one document object."""
     ...
 
 def exportSubgraph(node: object, output: object, format: str = "VRML", /) -> None:
-    """Serialize one Coin scene subgraph to an output target."""
+    """Serialize one Coin scene subgraph to an output target as VRML or Inventor."""
     ...
 
 def getSoDBVersion() -> str:
@@ -343,7 +352,7 @@ def getSoDBVersion() -> str:
     ...
 
 def activateWorkbench(name: str, /) -> bool:
-    """Activate one registered workbench by name."""
+    """Activate one registered workbench by name; return False if it is already active."""
     ...
 
 def addWorkbench(workbench: Workbench | type[Workbench], /) -> None:
@@ -384,7 +393,7 @@ def addIcon(name: str, content: _IconContent, format: str = "XPM", /) -> None:
     ...
 
 def getIcon(name: str, /) -> object | None:
-    """Return the cached icon object for one symbolic name."""
+    """Return the cached icon object for one symbolic name, or None for a null icon."""
     ...
 
 def isIconCached(name: str, /) -> bool:
@@ -404,11 +413,11 @@ def getLocale() -> str:
     ...
 
 def setLocale(name: str, /) -> None:
-    """Set the GUI locale name."""
+    """Set the GUI locale by language name or top-level domain code."""
     ...
 
 def supportedLocales() -> dict[str, str]:
-    """Return the locale names supported by the GUI."""
+    """Return supported GUI locales, mapping language names to domain codes."""
     ...
 
 # Dialogs, preferences, and commands
@@ -434,44 +443,49 @@ def runCommand(name: str, index: int = 0, /) -> None:
     """Run one registered GUI command."""
     ...
 
+@typing_only
 def listCommands() -> list[str]:
     """Return the registered GUI command names."""
     ...
 
+@typing_only
 def isCommandActive(name: str, /) -> bool:
     """Return whether one command is active in the current GUI context."""
     ...
 
 def SendMsgToActiveView(name: str, suppress: bool = False, /) -> None:
-    """Send one named message to the active view."""
+    """Send one named message to the active view. Deprecated; use view methods instead.
+
+    ``suppress`` controls whether failure warnings are emitted.
+    """
     ...
 
 def sendMsgToFocusView(name: str, suppress: bool = False, /) -> None:
-    """Send one named message to the focused view."""
+    """Send one named message to the focused view, optionally suppressing failure warnings."""
     ...
 
 def doCommand(cmd: str, /) -> None:
-    """Execute one command string in the Python console context."""
+    """Print, record, and execute one Python command in the main console context."""
     ...
 
 def doCommandGui(cmd: str, /) -> None:
-    """Execute one GUI-scoped command string."""
+    """Print, record as GUI-scoped, and execute one Python command."""
     ...
 
 def doCommandEval(cmd: str, /) -> Any:
-    """Evaluate one command string and return its result."""
+    """Evaluate one Python expression without printing or recording it, and return the result."""
     ...
 
 def doCommandSkip(cmd: str, /) -> None:
-    """Execute one command string without recording it in the console."""
+    """Record one command in the macro stream without executing it."""
     ...
 
 def addModule(mod: str, /) -> None:
-    """Import one module into the GUI command environment."""
+    """Record one module import in GUI command macros, emitting it only once."""
     ...
 
 def showDownloads() -> None:
-    """Open the downloads or addon presentation."""
+    """Open the downloads manager window."""
     ...
 
 def showPreferences(grp: str = "", index: int = 0, /) -> None:
@@ -484,11 +498,11 @@ def showPreferencesByName(grp: str, pagename: str = "", /) -> None:
 
 # Document visibility and file I/O
 def hide(name: str, /) -> None:
-    """Hide one named object in the active GUI document."""
+    """Hide one named object in the active GUI document. Deprecated."""
     ...
 
 def show(name: str, /) -> None:
-    """Show one named object in the active GUI document."""
+    """Show one named object in the active GUI document. Deprecated."""
     ...
 
 def hideObject(obj: DocumentObject, /) -> None:
@@ -500,15 +514,18 @@ def showObject(obj: DocumentObject, /) -> None:
     ...
 
 def open(fileName: _Pathish, /) -> None:
-    """Open one document file through the GUI layer."""
+    """Open a macro, Inventor, VRML, or other GUI-supported file."""
     ...
 
 def insert(fileName: _Pathish, docName: str = "", /) -> None:
-    """Insert one file into an existing GUI document."""
+    """Insert a macro, Inventor, VRML, or GUI-supported file into a document.
+
+    When ``docName`` is omitted, the active document is used.
+    """
     ...
 
 def export(objs: Sequence[DocumentObject], fileName: _Pathish, /) -> None:
-    """Export GUI document objects to one file."""
+    """Export GUI document objects to a scene file such as Inventor or VRML."""
     ...
 
 def activeDocument() -> Document | None:
@@ -528,11 +545,16 @@ def getDocument(doc: str | App.Document, /) -> Document:
     ...
 
 def reload(name: str, /) -> App.Document | None:
-    """Reload one document by name through the GUI layer."""
+    """Reload a partially opened document by name, or return None when it is not open."""
     ...
 
 def loadFile(fileName: str, module: str = "", /) -> None:
-    """Load one file through the GUI import pipeline."""
+    """Load one file through the GUI import pipeline.
+
+    When ``module`` is empty, FreeCAD chooses an importer from the file extension.
+    If several importers match, the first registered importer is used; if none
+    matches, an exception is raised.
+    """
     ...
 
 # Main window and view helpers
@@ -607,26 +629,38 @@ def coinRemoveAllChildren(node: object, /) -> None:
     """Remove all Coin child nodes from one parent node."""
     ...
 
+def applyElementColorOverride(target: object, colors: dict[str, object], /) -> None:
+    """Apply secondary element color overrides to one Coin node or path."""
+    ...
+
+def clearElementColorOverride(target: object, /) -> None:
+    """Clear secondary element color overrides from one Coin node or path."""
+    ...
+
 def suspendWaitCursor() -> None:
-    """Temporarily suspend the global wait cursor."""
+    """Temporarily suspend the application's wait cursor and event filter."""
     ...
 
 def resumeWaitCursor() -> None:
-    """Resume the global wait cursor after suspension."""
+    """Resume the application's wait cursor and event filter."""
     ...
 
+@bootstrap_export
 def showMainWindow(inThread: bool = False, /) -> None:
-    """Show the main application window."""
+    """Create the main application window if needed, then show it."""
     ...
 
+@bootstrap_export
 def exec_loop() -> None:
-    """Enter the GUI event loop."""
+    """Enter the GUI event loop and block until it terminates."""
     ...
 
+@bootstrap_export
 def setupWithoutGUI() -> None:
-    """Initialize GUI services without showing the main window."""
+    """Initialize GUI services without showing the main window or running the event loop."""
     ...
 
+@bootstrap_export
 def embedToWindow(pointer: str, /) -> None:
     """Embed the GUI into an existing native window handle."""
     ...

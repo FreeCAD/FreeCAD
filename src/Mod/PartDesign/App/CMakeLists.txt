@@ -113,6 +113,8 @@ SET(Module_SRCS
     PreCompiled.h
     Measure.cpp
     Measure.h
+    PartDesignParameter.cpp
+    PartDesignParameter.h
 )
 SOURCE_GROUP("Module" FILES ${Module_SRCS})
 

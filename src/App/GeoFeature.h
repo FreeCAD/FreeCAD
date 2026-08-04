@@ -27,9 +27,21 @@
 
 #include "DocumentObject.h"
 #include "PropertyGeo.h"
-#include "MappedElement.h"
 #include "Material.h"
-#include "ComplexGeoData.h"
+#include <Base/Bitmask.h>
+
+namespace Data
+{
+enum class SearchOption : int;
+typedef Base::Flags<SearchOption> SearchOptions;
+}  // namespace Data
+
+namespace Data
+{
+class IndexedName;
+struct MappedElement;
+class MappedName;
+}  // namespace Data
 
 namespace App
 {
@@ -183,7 +195,7 @@ public:
      */
     virtual const std::vector<std::string>&
     searchElementCache(const std::string& element,
-                       Data::SearchOptions options = Data::SearchOption::CheckGeometry,
+                       Data::SearchOptions options,
                        double tol = 1e-7,
                        double atol = 1e-10) const;
 

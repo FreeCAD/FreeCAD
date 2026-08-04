@@ -39,11 +39,11 @@
 using Base::Quantity;
 using Base::QuantityFormat;
 using Base::RuntimeError;
-using Base::Tools;
 using Base::Unit;
 using Base::UnitsApi;
 using Base::UnitsSchema;
 using Base::UnitsSchemas;
+namespace Tools = Base::Tools;
 
 class SchemaTest: public testing::Test
 {

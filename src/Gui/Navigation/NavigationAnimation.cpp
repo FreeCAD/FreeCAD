@@ -31,7 +31,12 @@ using namespace Gui;
 
 NavigationAnimation::NavigationAnimation(NavigationStyle* navigation)
     : navigation(navigation)
-{}
+{
+    auto* animation = static_cast<QVariantAnimation*>(this);
+    QObject::connect(animation, &QVariantAnimation::finished, animation, [this]() {
+        Q_EMIT completed();
+    });
+}
 
 void NavigationAnimation::updateCurrentValue(const QVariant& value)
 {

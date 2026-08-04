@@ -36,14 +36,11 @@
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"
 
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 
 
 namespace SketcherGui
 {
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerBSpline;
 
@@ -959,7 +956,7 @@ void DSHBSplineController::configureToolWidget()
         );
         syncCheckboxToHandler(WCheckbox::FirstBox, handler->periodic);
 
-        if (isConstructionMode()) {
+        if (handler->isConstructionMode()) {
             toolWidget->setComboboxItemIcon(
                 WCombobox::FirstCombo,
                 0,
@@ -994,7 +991,7 @@ void DSHBSplineController::configureToolWidget()
 
         toolWidget->setParameterLabel(
             WParameter::First,
-            QApplication::translate("ToolWidgetManager_p4", "Degree (+'U'/ -'J')")
+            QApplication::translate("ToolWidgetManager_p4", "Degree")
         );
         toolWidget->configureParameterUnit(WParameter::First, Base::Unit());
         toolWidget->configureParameterMin(WParameter::First, 1.0);  // NOLINT
@@ -1070,6 +1067,7 @@ void DSHBSplineControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
                 handler->resetSeekSecond = false;
                 unsetOnViewParameter(thirdParam.get());
                 unsetOnViewParameter(fourthParam.get());
+                getKeyManager()->resetMode();
                 setFocusToOnViewParameter(OnViewParameter::Third);
                 return;
             }

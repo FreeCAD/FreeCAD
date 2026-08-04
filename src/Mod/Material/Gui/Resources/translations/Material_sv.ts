@@ -251,7 +251,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="204"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
-      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+      <translation>Definierar grundfärgen på en yta när den belyses. Den anger hur objektet sprider ljuset jämnt i alla riktningar, oberoende av betraktarens vinkel. Den här egenskapen påverkar materialets färg mest.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="215"/>
@@ -261,7 +261,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="217"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
-      <translation type="unfinished">Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</translation>
+      <translation>Definierar färgen på en yta vid indirekt, jämn belysning och anger hur den ser ut när den endast belyses av omgivningsljus i en scen, utan riktat ljus, skuggning eller högdagrar.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="228"/>
@@ -271,7 +271,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="230"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
-      <translation type="unfinished">Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</translation>
+      <translation>Definierar färgen på en yta som ser ut att avge ljus som om den vore en ljuskälla, oberoende av extern belysning, så att objektet ser självlysande ut. Ställ in svart för att inte använda någon emissiv färg.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="241"/>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="243"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
-      <translation type="unfinished">Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</translation>
+      <translation>Definierar färgen och intensiteten hos de ljusa, spegelliknande högdagrar som visas på blanka eller reflekterande ytor när ljus träffar dem direkt. Använd ljusa färger för blanka objekt.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="254"/>
@@ -291,7 +291,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="256"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
-      <translation type="unfinished">Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</translation>
+      <translation>Definierar storleken och skärpan på spegelblänk på en yta. Högre värden ger små, skarpa blänk, medan lägre värden ger breda, mjuka blänk. Observera att blänkets intensitet definieras av spegelfärgen.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="268"/>
@@ -301,7 +301,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="269"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
-      <translation type="unfinished">Defines how much light passes through an object, making it partially or fully see-through</translation>
+      <translation>Definierar hur mycket ljus som passerar genom ett objekt och gör det delvis eller helt genomskinligt.</translation>
     </message>
   </context>
   <context>
@@ -652,7 +652,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
       <location filename="../../ImageEdit.cpp" line="207"/>
       <location filename="../../ImageEdit.cpp" line="223"/>
       <source>Image files</source>
-      <translation type="unfinished">Image files</translation>
+      <translation>Bildfiler</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="208"/>
@@ -715,68 +715,68 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
       <translation>Ny mapp</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="96"/>
+      <location filename="../../MaterialSave.cpp" line="97"/>
       <source>Delete</source>
       <translation>Ta bort</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="198"/>
+      <location filename="../../MaterialSave.cpp" line="199"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
       <translation>Om du sparar över originalfilen kan det leda till att andra dokument går sönder. Detta är inte att rekommendera.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="222"/>
+      <location filename="../../MaterialSave.cpp" line="223"/>
       <source>Save as new material</source>
       <translation>Spara som nytt material</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="195"/>
+      <location filename="../../MaterialSave.cpp" line="196"/>
       <source>Save over &apos;%1&apos;?</source>
       <translation>Spara över "%1"?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="220"/>
+      <location filename="../../MaterialSave.cpp" line="221"/>
       <source>Confirm Save as New Material</source>
       <translation>Bekräfta Spara som nytt material</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="225"/>
+      <location filename="../../MaterialSave.cpp" line="226"/>
       <source>This material already exists in this library. Save as a new material?</source>
       <translation>Det här materialet finns redan i det här biblioteket. Spara som ett nytt material?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="247"/>
+      <location filename="../../MaterialSave.cpp" line="248"/>
       <source>Confirm Save as Copy</source>
       <translation>Bekräfta Spara som kopia</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="249"/>
+      <location filename="../../MaterialSave.cpp" line="250"/>
       <source>Save as copy</source>
       <translation>Spara som kopia</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="252"/>
+      <location filename="../../MaterialSave.cpp" line="253"/>
       <source>Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</source>
       <translation>Att spara en kopia är inte att rekommendera eftersom det kan förstöra andra dokument. Vi rekommenderar att du sparar som ett nytt material.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="255"/>
+      <location filename="../../MaterialSave.cpp" line="256"/>
       <source>Save Copy</source>
       <translation>Spara kopia</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="256"/>
+      <location filename="../../MaterialSave.cpp" line="257"/>
       <source>Save As New</source>
       <translation>Spara som ny</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="488"/>
-      <location filename="../../MaterialSave.cpp" line="498"/>
+      <location filename="../../MaterialSave.cpp" line="489"/>
+      <location filename="../../MaterialSave.cpp" line="499"/>
       <source>New folder</source>
       <translation>Ny mapp</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="538"/>
+      <location filename="../../MaterialSave.cpp" line="539"/>
       <source>Context Menu</source>
       <translation>Kontextmeny</translation>
     </message>
@@ -1154,23 +1154,23 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
       <translation>Material</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="192"/>
+      <location filename="../../MaterialSave.cpp" line="193"/>
       <source>Confirm Overwrite</source>
       <translation>Bekräfta överskrivning</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="382"/>
       <location filename="../../MaterialSave.cpp" line="383"/>
+      <location filename="../../MaterialSave.cpp" line="384"/>
       <source>No writeable library</source>
       <translation>Inget skrivbart bibliotek</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="570"/>
+      <location filename="../../MaterialSave.cpp" line="571"/>
       <source>Delete &apos;%1&apos;?</source>
       <translation>Ta bort "%1"?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="574"/>
+      <location filename="../../MaterialSave.cpp" line="575"/>
       <source>Removing this will also remove all contents.</source>
       <translation>Om du tar bort detta tas även allt innehåll bort.</translation>
     </message>
@@ -1195,15 +1195,15 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
       <translation>Annars kommer alla ändringar att gå förlorade.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="567"/>
-      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
+      <location filename="../../MaterialSave.cpp" line="568"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
       <source>Confirm Delete</source>
       <translation>Bekräfta borttagning</translation>
     </message>
     <message>
-      <location filename="../../ListEdit.cpp" line="144"/>
       <location filename="../../Array2D.cpp" line="172"/>
+      <location filename="../../ListEdit.cpp" line="144"/>
       <source>Delete the row?</source>
       <translation>Ta bort raden?</translation>
     </message>
@@ -1444,7 +1444,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../../DlgMaterialImp.cpp" line="263"/>
       <source>Set Material</source>
-      <translation type="unfinished">Set Material</translation>
+      <translation>Ange material</translation>
     </message>
   </context>
 </TS>

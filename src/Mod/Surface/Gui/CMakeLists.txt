@@ -6,7 +6,10 @@ set(SurfaceGui_LIBS
     FreeCADGui
 )
 
-qt_add_resources(SurfaceGui_QRC_SRCS Resources/Surface.qrc)
+qt_add_resources(SurfaceGui_QRC_SRCS
+    Resources/Surface.qrc
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 SET(SurfaceGui_UIC_SRCS
     TaskFilling.ui

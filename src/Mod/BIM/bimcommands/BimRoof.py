@@ -55,6 +55,7 @@ class Arch_Roof:
 
         sel = FreeCADGui.Selection.getSelectionEx()
         if sel:
+            FreeCADGui.HintManager.hide()
             sel = sel[0]
             obj = sel.Object
             FreeCADGui.Control.closeDialog()
@@ -91,6 +92,12 @@ class Arch_Roof:
                 FreeCAD.Console.PrintMessage(translate("Arch", "Unable to create a roof"))
         else:
             FreeCAD.Console.PrintMessage(translate("Arch", "Select a base object") + "\n")
+            FreeCADGui.HintManager.show(
+                FreeCADGui.InputHint(
+                    translate("Arch", "%1 select a base object"),
+                    FreeCADGui.UserInput.MouseLeft,
+                )
+            )
             FreeCADGui.Control.showDialog(ArchComponent.SelectionTaskPanel())
             FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(nextCommand="Arch_Roof")
             FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)

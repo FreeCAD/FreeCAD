@@ -1,7 +1,7 @@
 name: Build Release
 on:
   release:
-    types: [created]
+    types: [published]
   schedule:
    - cron: "0 0 * * 3"
   workflow_dispatch:
@@ -24,12 +24,12 @@ jobs:
       build_tag: ${{ steps.get_tag.outputs.build_tag }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
         with:
           egress-policy: audit
 
       - name: Checkout source
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           ref: ${{ github.sha }}
           fetch-depth: 2
@@ -118,14 +118,14 @@ jobs:
           - { target: osx-64, os: macos-15-intel, deploy_target: "10.13" }
           - { target: osx-arm64, os: macos-latest, deploy_target: "11.0" }
           - { target: osx-arm64, os: macos-latest, deploy_target: "15.0" }
-          - { target: win-64, os: windows-latest }
+          - { target: win-64, os: windows-2022 }
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
     environment: weekly-build
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
         with:
           egress-policy: audit
 
@@ -149,16 +149,16 @@ jobs:
           fi
 
       - name: Checkout source
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           ref: ${{ github.sha }}
           fetch-depth: 2
           fetch-tags: true
           submodules: 'recursive'
 
-      - uses: prefix-dev/setup-pixi@5185adfbffb4bd703da3010310260805d89ebb11 # v0.9.6
+      - uses: prefix-dev/setup-pixi@a09b6247153796b190642a2b53fac4241043cf6f # v0.10.0
         with:
-          pixi-version: v0.59.0
+          pixi-version: v0.68.1
           cache: false
 
       - name: Install the Apple certificate and provisioning profile
@@ -207,7 +207,7 @@ jobs:
 
       - name: Setup .NET 10 SDK
         if: runner.os == 'Windows'
-        uses: actions/setup-dotnet@9a946fdbd5fb07b82b2f5a4466058b876ab72bb2 # v5.3.0
+        uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5.4.0
         with:
           dotnet-version: '10.0.103'
 
@@ -288,3 +288,38 @@ jobs:
       #   run: |
       #     security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
       #     rm ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision
+
+  # Experimental Windows binaries built against the latest LibPack (OCCT 8, Qt 6, Python from the
+  # LibPack) for both Intel (x64) and ARM64. These are uploaded to the same release as the primary
+  # conda-based build, distinguished by an "experimental" file name. This path is non-blocking (the
+  # reusable workflow's Build job uses continue-on-error), so a failure here never fails the release.
+  windows_experimental:
+    needs: upload_src
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x86_64
+            runner: windows-2022
+            cmakeArchitecture: ""
+            makeInstaller: "true"
+            libpackDownloadUrl: https://github.com/FreeCAD/FreeCAD-LibPack/releases/download/3.5.3/LibPack-26.3.0-v3.5.3-x64-Release.7z
+            libpackName: LibPack-26.3.0-v3.5.3-x64-Release
+          - arch: arm64
+            runner: windows-11-arm
+            cmakeArchitecture: ARM64
+            makeInstaller: "false"
+            libpackDownloadUrl: https://github.com/FreeCAD/FreeCAD-LibPack/releases/download/3.5.3/LibPack-26.3.0-v3.5.3-ARM64-Release.7z
+            libpackName: LibPack-26.3.0-v3.5.3-ARM64-Release
+    uses: ./.github/workflows/sub_releaseWindowsLibpack.yml
+    with:
+      build_tag: ${{ needs.upload_src.outputs.build_tag }}
+      arch: ${{ matrix.arch }}
+      runner: ${{ matrix.runner }}
+      cmakeArchitecture: ${{ matrix.cmakeArchitecture }}
+      libpackDownloadUrl: ${{ matrix.libpackDownloadUrl }}
+      libpackName: ${{ matrix.libpackName }}
+      makeInstaller: ${{ matrix.makeInstaller }}
+    secrets: inherit

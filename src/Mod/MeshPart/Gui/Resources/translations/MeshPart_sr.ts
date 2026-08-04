@@ -154,7 +154,7 @@
     <message>
       <location filename="../../CrossSections.ui" line="92"/>
       <source>Count</source>
-      <translation>Бројати</translation>
+      <translation>Број</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="128"/>

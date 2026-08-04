@@ -56,7 +56,9 @@ ui_*.h
 /src/Tools/offlinedoc/*.txt
 /src/Tools/offlinedoc/localwiki/
 /src/Mod/CAM/research/
-OpenSCAD_rc.py
+/src/3rdParty/Clipper2/Clipper2Lib/include/clipper2/clipper.version.h
+*_rc.py
+*_rc.rcc
 tags
 /CMakeUserPresets.json
 Testing

@@ -140,7 +140,7 @@ class TestPathRotaryParallel(PathTestBase):
         )
         # Expected: angular_step = axial_stepover / radius
         expected_angular_step = axial_stepover / radius
-        expected_passes = int(math.ceil(abs(theta_end - theta_start) / expected_angular_step)) + 1
+        expected_passes = Path.Geom.ceil(abs(theta_end - theta_start) / expected_angular_step) + 1
 
         a_values = [c.Parameters["A"] for c in commands if c.Name == "G1" and "A" in c.Parameters]
         # Distinct A values within float tolerance.

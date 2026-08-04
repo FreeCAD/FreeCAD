@@ -221,13 +221,34 @@ class TestExternalFacePreselection(SketcherGuiTestCase):
         view.fitAll()
         self.pump(300)
 
+        face_center_3d = FreeCAD.Vector(0, -20, 10)
+
+        def face_center_is_framed():
+            width, height = view.getSize()
+            if width <= 0 or height <= 0:
+                return False
+            # Re-fit each probe: offscreen the viewport size/aspect may not be
+            # settled when fitAll() first runs, so fit until it frames the face.
+            view.fitAll()
+            screen_x, screen_y = view.getPointOnScreen(face_center_3d)
+            margin_x = width * 0.1
+            margin_y = height * 0.1
+            return (
+                margin_x < screen_x < width - margin_x and margin_y < screen_y < height - margin_y
+            )
+
+        self.assertTrue(
+            self.wait_until(face_center_is_framed, timeout_ms=5000, step_ms=100),
+            "Camera never framed the Pad face; getPointOnScreen stayed at the "
+            "viewport edge, so no valid interior hover point could be computed.",
+        )
+
         # Activate External Geometry tool
         FreeCADGui.runCommand("Sketcher_Projection", 0)
         self.pump(300)
 
         # Simulate mouse hover over the front face center
         viewport = view.graphicsView().viewport()
-        face_center_3d = FreeCAD.Vector(0, -20, 10)
         screen_pt = view.getPointOnScreen(face_center_3d)
         hover_pos = self.viewport_to_qpoint(view, viewport, screen_pt)
         presel = self.hover_for_preselection(viewport, hover_pos)

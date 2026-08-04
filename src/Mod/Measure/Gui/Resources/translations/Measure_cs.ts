@@ -38,7 +38,7 @@
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="112"/>
       <source>Background color</source>
-      <translation type="unfinished">Background color</translation>
+      <translation>Barva pozadí</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="166"/>
@@ -72,28 +72,28 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="212"/>
       <source>Total area: %1</source>
-      <translation type="unfinished">Total area: %1</translation>
+      <translation>Celková plocha: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="223"/>
       <location filename="../../QuickMeasure.cpp" line="262"/>
       <source>Nominal distance: %1</source>
-      <translation type="unfinished">Nominal distance: %1</translation>
+      <translation>Nominální vzdálenost: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="226"/>
       <source>Area: %1</source>
-      <translation type="unfinished">Area: %1</translation>
+      <translation>Plocha: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="232"/>
       <source>Area: %1, Radius: %2</source>
-      <translation type="unfinished">Area: %1, Radius: %2</translation>
+      <translation>Plocha: %1, poloměr: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="236"/>
       <source>Area: %1, Diameter: %2</source>
-      <translation type="unfinished">Area: %1, Diameter: %2</translation>
+      <translation>Plocha: %1, průměr: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="245"/>
@@ -108,27 +108,27 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="259"/>
       <source>Total length: %1</source>
-      <translation type="unfinished">Total length: %1</translation>
+      <translation>Celková délka: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="265"/>
       <source>Angle: %1, Total length: %2</source>
-      <translation type="unfinished">Angle: %1, Total length: %2</translation>
+      <translation>Úhel: %1, celková délka: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="269"/>
       <source>Length: %1</source>
-      <translation type="unfinished">Length: %1</translation>
+      <translation>Délka: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="272"/>
       <source>Radius: %1</source>
-      <translation type="unfinished">Radius: %1</translation>
+      <translation>Poloměr: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="275"/>
       <source>Diameter: %1</source>
-      <translation type="unfinished">Diameter: %1</translation>
+      <translation>Průměr: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="278"/>
@@ -138,7 +138,7 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="281"/>
       <source>Minimum distance: %1</source>
-      <translation type="unfinished">Minimum distance: %1</translation>
+      <translation>Minimální vzdálenost: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="285"/>
@@ -190,13 +190,13 @@
     <message>
       <location filename="../../Command.cpp" line="51"/>
       <source>&amp;Measure</source>
-      <translation type="unfinished">&amp;Measure</translation>
+      <translation>&amp;Měřit</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <location filename="../../Command.cpp" line="54"/>
       <source>Measures a feature</source>
-      <translation type="unfinished">Measures a feature</translation>
+      <translation>Změřit prvek</translation>
     </message>
   </context>
   <context>
@@ -214,7 +214,7 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="159"/>
       <source>Auto Save</source>
-      <translation type="unfinished">Auto Save</translation>
+      <translation>Automatické uložení</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="163"/>

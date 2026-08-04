@@ -391,9 +391,7 @@ PyObject* SheetPy::setStyle(PyObject* args)
 
     if (strcmp(options, "replace") == 0) {
         Range rangeIter(cell);
-        do {
-            getSheetPtr()->setStyle(*rangeIter, style);
-        } while (rangeIter.next());
+        getSheetPtr()->setStyle(rangeIter, style);
     }
     else if (strcmp(options, "add") == 0) {
         Range rangeIter(cell);
@@ -522,9 +520,7 @@ PyObject* SheetPy::setDisplayUnit(PyObject* args)
     try {
         Range rangeIter(cell);
 
-        do {
-            getSheetPtr()->setDisplayUnit(*rangeIter, value);
-        } while (rangeIter.next());
+        getSheetPtr()->setDisplayUnit(rangeIter, value);
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ValueError, e.what());
@@ -693,9 +689,7 @@ PyObject* SheetPy::setAlignment(PyObject* args)
     if (strcmp(options, "replace") == 0) {
         Range rangeIter(cell);
 
-        do {
-            getSheetPtr()->setAlignment(*rangeIter, alignment);
-        } while (rangeIter.next());
+        getSheetPtr()->setAlignment(rangeIter, alignment);
     }
     else if (strcmp(options, "keep") == 0) {
         Range rangeIter(cell);
@@ -823,9 +817,7 @@ PyObject* SheetPy::setForeground(PyObject* args)
         decodeColor(value, c);
 
         Range rangeIter(range);
-        do {
-            getSheetPtr()->setForeground(*rangeIter, c);
-        } while (rangeIter.next());
+        getSheetPtr()->setForeground(rangeIter, c);
         Py_Return;
     }
     catch (const Base::TypeError& e) {
@@ -912,9 +904,7 @@ PyObject* SheetPy::setBackground(PyObject* args)
         decodeColor(value, c);
         Range rangeIter(strAddress);
 
-        do {
-            getSheetPtr()->setBackground(*rangeIter, c);
-        } while (rangeIter.next());
+        getSheetPtr()->setBackground(rangeIter, c);
         Py_Return;
     }
     catch (const Base::TypeError& e) {
