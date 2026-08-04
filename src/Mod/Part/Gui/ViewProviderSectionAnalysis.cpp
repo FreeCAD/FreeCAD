@@ -112,8 +112,12 @@ void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
     ViewProviderPart::attach(pcFeat);
 
     visibilityConn = pcFeat->getDocument()->signalChangedObject.connect(
-        std::bind(&ViewProviderSectionAnalysis::slotChangedObject, this,
-                  std::placeholders::_1, std::placeholders::_2)
+        std::bind(
+            &ViewProviderSectionAnalysis::slotChangedObject,
+            this,
+            std::placeholders::_1,
+            std::placeholders::_2
+        )
     );
 
     // Create the translucent cutting plane visual
@@ -318,7 +322,7 @@ void ViewProviderSectionAnalysis::updateClipPlaneEquation()
     // section face (which lies exactly on the cutting plane).
     constexpr double clipEps = 0.01;  // 10 microns
     const double dClip = d - clipEps;
-    const Base::Vector3d gNormal(-n.x, -n.y, -n.z);          // global half-space normal
+    const Base::Vector3d gNormal(-n.x, -n.y, -n.z);                      // global half-space normal
     const Base::Vector3d gPoint(n.x * dClip, n.y * dClip, n.z * dClip);  // global point on plane
 
     // Each node lives inside its object's view provider, so its plane must be
@@ -341,12 +345,16 @@ void ViewProviderSectionAnalysis::updateClipPlaneEquation()
         }
 
         node->plane.setValue(SbPlane(
-            SbVec3f(static_cast<float>(localNormal.x),
-                    static_cast<float>(localNormal.y),
-                    static_cast<float>(localNormal.z)),
-            SbVec3f(static_cast<float>(localPoint.x),
-                    static_cast<float>(localPoint.y),
-                    static_cast<float>(localPoint.z))
+            SbVec3f(
+                static_cast<float>(localNormal.x),
+                static_cast<float>(localNormal.y),
+                static_cast<float>(localNormal.z)
+            ),
+            SbVec3f(
+                static_cast<float>(localPoint.x),
+                static_cast<float>(localPoint.y),
+                static_cast<float>(localPoint.z)
+            )
         ));
         node->on.setValue(TRUE);
     }
