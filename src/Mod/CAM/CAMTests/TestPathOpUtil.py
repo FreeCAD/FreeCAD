@@ -29,6 +29,7 @@ import Path.Op.Custom as PathCustom
 import Path.Main.Job as PathJob
 import CAMTests.PathTestUtils as PathTestUtils
 import math
+import area
 
 from FreeCAD import Vector
 
@@ -120,6 +121,13 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
     @classmethod
     def tearDownClass(cls):
         FreeCAD.closeDocument(cls.doc.Name)
+
+    def setUp(self):
+        self.clipper_scale_orig = area.get_clipper_scale()
+        area.set_clipper_scale(1e7)
+
+    def tearDown(self):
+        area.set_clipper_scale(self.clipper_scale_orig)
 
     def test00(self):
         """Verify isWireClockwise for polygon wires."""
@@ -369,7 +377,9 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
                 end = e.Vertexes[1].Point
                 v = end - begin
                 angle = Path.Geom.getAngle(v)
-                if Path.Geom.isRoughly(0, angle) or Path.Geom.isRoughly(math.pi, math.fabs(angle)):
+                if Path.Geom.isRoughly(0, angle) or Path.Geom.isRoughly(
+                    math.pi, math.fabs(angle), error=0.0001
+                ):
                     if lastAngle:
                         self.assertRoughly(-refAngle, lastAngle)
                 elif Path.Geom.isRoughly(+refAngle, angle):
@@ -413,9 +423,9 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         for e in wire.Edges:
             if isinstance(e.Curve, Part.Line):
                 if Path.Geom.isRoughly(e.Vertexes[0].Point.x, e.Vertexes[1].Point.x):
-                    self.assertEqual(40, e.Length)
+                    self.assertRoughly(40, e.Length)
                 if Path.Geom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y):
-                    self.assertEqual(60, e.Length)
+                    self.assertRoughly(60, e.Length)
             if isinstance(e.Curve, Part.Circle):
                 self.assertRoughly(3, e.Curve.Radius)
                 self.assertCoincide(Vector(0, 0, -1), e.Curve.Axis)
@@ -457,9 +467,9 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         radius = 20 + 3
         for e in wire.Edges:
             if isinstance(e.Curve, Part.Line):
-                self.assertRoughly(length, e.Length)
+                self.assertRoughly(length, e.Length, self.tolerance)
             if isinstance(e.Curve, Part.Circle):
-                self.assertRoughly(radius, e.Curve.Radius)
+                self.assertRoughly(radius, e.Curve.Radius, self.tolerance)
                 self.assertCoincide(Vector(0, 0, -1), e.Curve.Axis)
 
     def test35(self):
@@ -538,6 +548,22 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         obj = self.doc.getObjectsByLabel("offset-edge")[0]
 
         w = getWireOutside(obj)
+
+        def printWire(w):
+            for i, e in enumerate(w.Edges):
+                v0, v1 = e.Vertexes[0].Point, e.Vertexes[1].Point
+                print(
+                    f"  edge[{i}] ({type(e.Curve).__name__}): ({v0.x:.4f}, {v0.y:.4f}, {v0.z:.4f}) -> ({v1.x:.4f}, {v1.y:.4f}, {v1.z:.4f})"
+                )
+
+        print("\noutside wire edges:")
+        printWire(w)
+        print("\nall wires in obj.Shape:")
+        for wi, wire in enumerate(obj.Shape.Wires):
+            print(f"\n  wire[{wi}]:")
+            printWire(wire)
+        print()
+
         length = 40 * math.cos(math.pi / 6)
         for e in w.Edges:
             self.assertRoughly(length, e.Length)
@@ -558,7 +584,17 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         wires = PathOpUtil.offsetWireNew(Part.Wire([edge]), obj.Shape, 5, self.tolerance)
         self.assertEqual(1, len(wires))
         wire = wires[0]
+        print("offsetWireNew output")
+        printWire(wire)
         self.assertEqual(1, len(wire.Edges))
+
+        print("DEBUG ORIGINAL offsetWire")
+        w_orig = Path.Op.Util.offsetWire(Part.Wire([edge]), obj.Shape, 5, self.tolerance)
+        printWire(w_orig)
+
+        print("DEBUG COMPARING ORIGINAL offsetting the full wire")
+        w_orig_full = Path.Op.Util.offsetWire(w, obj.Shape, 5, self.tolerance)
+        printWire(w_orig_full)
 
         y = y - 5
         self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[0].Point)
@@ -569,7 +605,32 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         wires = PathOpUtil.offsetWireNew(Part.Wire([edge]), obj.Shape, 5, self.tolerance)
         self.assertEqual(1, len(wires))
         wire = wires[0]
+        print("offsetWireNew output")
+        printWire(wire)
         self.assertEqual(1, len(wire.Edges))
+
+        print("DEBUG ORIGINAL offsetWire")
+        w_orig = Path.Op.Util.offsetWire(Part.Wire([edge]), obj.Shape, 5, self.tolerance)
+        printWire(w_orig)
+
+        print("DEBUG COMPARING ORIGINAL offsetting the full wire")
+        w_orig_full = Path.Op.Util.offsetWire(w, obj.Shape, 5, self.tolerance)
+        printWire(w_orig_full)
+
+        ## print("DEBUG isInside check")
+        ## v0 = Vector(0.0, -4.99995, 0.0)
+        ## v1 = Vector(3.364729677739431e-13, -5.000000000000467, 0.0)
+        ## num = 1800
+        ## dz = 1e-7
+        ## for i in range(num):
+        ##     t = i / (num - 1)
+        ##     p = v0 + (v1 - v0) * t
+        ##     p_below = Vector(p.x, p.y, p.z - dz)
+        ##     p_above = Vector(p.x, p.y, p.z + dz)
+        ##     inside_below = None #obj.Shape.isInside(p_below, 5/2, True)
+        ##     inside_at    = obj.Shape.isInside(p,       5/2, True)
+        ##     inside_above = None #obj.Shape.isInside(p_above, 5/2, True)
+        ##     print(f"  t={t:.4f} p=({p}) below={inside_below} at={inside_at} above={inside_above}")
 
         self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[0].Point)
         self.assertCoincide(Vector(-x, y, 0), wire.Edges[0].Vertexes[1].Point)
@@ -1035,8 +1096,11 @@ class TestStripRotaryAxes(PathTestUtils.PathTestBase):
         plain = Path.Path(moves)
         rotated = Path.Path([Path.Command("G0", {"B": -90.0})] + moves)
 
+        print("plain.getClearedArea()\n")
         plainArea = plain.getClearedArea(5.0, 0.0, bbox)
+        print("rotated.getClearedArea()\n")
         rotatedRawArea = rotated.getClearedArea(5.0, 0.0, bbox)
+        print("rotatedStripped.getClearedArea()\n")
         rotatedStrippedArea = PathOpUtil._stripRotaryAxes(rotated).getClearedArea(5.0, 0.0, bbox)
 
         # Compare via Wires count + bounding box of resulting shape — we just

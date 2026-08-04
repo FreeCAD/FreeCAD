@@ -509,14 +509,27 @@ def offsetWireNew(wire, base, offset, tolerance=0.01):
         print(f"DEBUG offsetWireNew: cAreaToWires returned {len(result_wires)} wires")
         print()
 
+        # TODO testing out flipping all the wires to be backwards because I think PathOpUtil expects it (yikes :'()
+        print(f"DEBUG offsetWireNew: flipping wires")
+        print()
+        result_wires = [Path.Geom.flipWire(w) for w in result_wires]
+
         if not result_wires:
             return []
 
         # Check if the offset went in the right direction
         # This test is copied from the original offsetWire implementation; it's a bit brittle
-        test_point = result_wires[0].Edges[0].Vertexes[0].Point
+        test_edge = result_wires[0].Edges[0]
+        test_point = test_edge.valueAt((test_edge.FirstParameter + test_edge.LastParameter) / 2)
         is_inside = base.isInside(test_point, offset / 2, True)
-        print(f"DEBUG offsetWireNew: test_point={test_point}, is_inside={is_inside}")
+        dts = Part.Vertex(test_point).distToShape(base)[0]
+        dts_inside = (
+            dts < abs(offset / 2) - tolerance
+        )  # TODO this is just a test, but I think what I should actually do is compute dts on a point from each side, and if one is smaller by tolerance or more that's probably the inside direction
+        print(
+            f"DEBUG offsetWireNew: test_point={test_point}, is_inside={is_inside} dts={dts} dts_inside={dts_inside}"
+        )
+        is_inside = dts_inside
 
         if is_inside:
             print(
@@ -530,11 +543,25 @@ def offsetWireNew(wire, base, offset, tolerance=0.01):
             print(
                 f"DEBUG offsetWireNew: cAreaToWires after correction returned {len(result_wires)} wires"
             )
-            result_wires = [Path.Geom.flipWire(w) for w in result_wires]
+            # TODO testing: I'm pretty sure I have the offset function set up
+            # to return all wires in the CCW direciton. And then in this
+            # function I reverse the positive-offset wires to make them CW, for
+            # CW outer, CCW inner. I think this is what the original
+            # offsetWires did with most wires, however for circular single-edge wires (i.e. circular holes, but arcs as well)
+            # it seems to make them all CW. For compatibility, I'm going to implement
+            # that inconsistency/change for single-edge wires
+            result_wires = [
+                (
+                    Path.Geom.flipWire(w)
+                    if len(w.Edges) == 1 and isinstance(w.Edges[0].Curve, Part.Circle)
+                    else w
+                )
+                for w in result_wires
+            ]
 
         # Return all wires, oriented appropriately
         # For inside wires (holes), orientation is reversed
-        print(f"DEBUG offsetWireNew: returning {len(result_wires)} wires, is_inside={is_inside}")
+        print(f"DEBUG offsetWireNew: returning {len(result_wires)} wires")
         return result_wires
     finally:
         # Restore original accuracy
@@ -636,12 +663,17 @@ def offsetWire(wire, base, offset, tolerance=0.01):
                 offset / 2,
                 True,
             ):
+                print(
+                    f"first direction failed, going the other way"
+                    f" (test point {edge.valueAt((edge.FirstParameter + edge.LastParameter) / 2)})"
+                )
                 edge.translate(-2 * o)
 
             # flip the edge if it's not on the right side of the original edge
             v1 = edge.Vertexes[1].Point - p0
             left = Path.Geom.Side.Left == Path.Geom.Side.of(v0, v1)
             if not left:
+                print("now flipping the edge")
                 edge = Path.Geom.flipEdge(edge)
             return Part.Wire([edge])
 

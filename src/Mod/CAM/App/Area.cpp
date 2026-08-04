@@ -696,7 +696,7 @@ std::shared_ptr<Area> Area::getClearedArea(
     // heuristic arc fitting. I am unsure what would be a better estimate now so I am leaving it as
     // is, but is definitely a conservative estimate now (very conservative? I'm not sure the 2.3
     // applies at all any more, and arc precision is much improved by the new fitting process) so it
-    // should be ok.
+    // should be ok. The old/original comment on precision follows:
     //
     // Precision losses in arc/segment conversions (multiples of Accuracy):
     //
@@ -2030,6 +2030,11 @@ TopoDS_Shape Area::getPlane(gp_Trsf* trsf)
         *trsf = myTrsf;
     }
     return myShapePlane;
+}
+
+CArea Area::copyCArea() const
+{
+    return myArea ? *myArea : CArea();
 }
 
 bool Area::isBuilt() const

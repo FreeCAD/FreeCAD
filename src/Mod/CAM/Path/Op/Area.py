@@ -294,8 +294,8 @@ class ObjectOp(PathOp.ObjectOp):
 
         return pp
 
-    def _buildProfileOpenEdges(self, obj, edgeList, isHole, start):
-        """_buildPathArea(obj, edgeList, isHole, start) ... internal function."""
+    def _buildProfileOpenEdges(self, obj, openWire, start):
+        """_buildPathArea(obj, openWire, start) ... internal function."""
         Path.Log.track()
 
         paths = []
@@ -429,7 +429,7 @@ class ObjectOp(PathOp.ObjectOp):
 
             try:
                 if profileEdgesIsOpen:
-                    pp = self._buildProfileOpenEdges(obj, shape, isHole, start)
+                    pp = self._buildProfileOpenEdges(obj, shape, start)
                 else:
                     pp = self._buildPathArea(obj, shape, isHole, start)
             except Exception as e:

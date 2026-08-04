@@ -190,16 +190,16 @@ class TestPathProfile(PathTestBase):
         self.doc.recompute()
 
         expected_moves = (
-            "G1 X16.47 Y16.47 Z10.0;  G3 I-2.48 J-2.48 K0.0 X13.93 Y17.5 Z10.0;  "
-            "G1 X-13.93 Y17.5 Z10.0;  G3 I-0.06 J-3.51 K0.0 X-17.5 Y13.93 Z10.0;  "
-            "G1 X-17.5 Y-13.93 Z10.0;  G3 I3.51 J-0.06 K0.0 X-13.93 Y-17.5 Z10.0;  "
-            "G1 X13.93 Y-17.5 Z10.0;  G3 I0.06 J3.51 K0.0 X17.5 Y-13.93 Z10.0;  "
-            "G1 X17.5 Y13.93 Z10.0;  G3 I-3.51 J0.06 K0.0 X16.47 Y16.47 Z10.0;  "
-            "G1 X23.54 Y23.54 Z10.0;  G2 I-9.55 J-9.55 K0.0 X27.5 Y14.0 Z10.0;  "
-            "G1 X27.5 Y-14.0 Z10.0;  G2 I-13.5 J0.0 K0.0 X14.0 Y-27.5 Z10.0;  "
-            "G1 X-14.0 Y-27.5 Z10.0;  G2 I0.0 J13.5 K0.0 X-27.5 Y-14.0 Z10.0;  "
-            "G1 X-27.5 Y14.0 Z10.0;  G2 I13.5 J0.0 K0.0 X-14.0 Y27.5 Z10.0;  "
-            "G1 X14.0 Y27.5 Z10.0;  G2 I0.0 J-13.5 K0.0 X23.54 Y23.54 Z10.0"
+            "G1 X16.47 Y16.47 Z10.0;  G3 I-2.475 J-2.475 K0.0 X14 Y17.5 Z10.0;  "
+            "G1 X-14   Y17.5  Z10.0;  G3 I0      J-3.5   K0.0 X-17.5 Y14    Z10.0;  "
+            "G1 X-17.5 Y-14   Z10.0;  G3 I3.5    J0      K0.0 X-14   Y-17.5 Z10.0;  "
+            "G1 X14    Y-17.5 Z10.0;  G3 I0      J3.5    K0.0 X17.5  Y-14   Z10.0;  "
+            "G1 X17.5  Y14    Z10.0;  G3 I-3.5   J0      K0.0 X16.47 Y16.47 Z10.0;  "
+            "G1 X23.54 Y23.54 Z10.0;  G2 I-9.54  J-9.54  K0.0 X27.5  Y14    Z10.0;  "
+            "G1 X27.5  Y-14   Z10.0;  G2 I-13.5  J0.0    K0.0 X14.0  Y-27.5 Z10.0;  "
+            "G1 X-14   Y-27.5 Z10.0;  G2 I0.0    J13.5   K0.0 X-27.5 Y-14   Z10.0;  "
+            "G1 X-27.5 Y14    Z10.0;  G2 I13.5   J0.0    K0.0 X-14.0 Y27.5  Z10.0;  "
+            "G1 X14.0  Y27.5  Z10.0;  G2 I0.0    J-13.5  K0.0 X23.54 Y23.54 Z10.0"
         )
         expected_commands = [Path.Command(x) for x in expected_moves.split(";  ")]
         self.checkGcode(expected_commands, profile.Path.Commands, includeRapids=False, tol=0.02)

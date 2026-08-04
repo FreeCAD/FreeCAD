@@ -198,6 +198,7 @@ public:
     ~Area() override;
 
     bool isBuilt() const;
+    CArea copyCArea() const;
 
     /** Set a working plane
      *

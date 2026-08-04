@@ -65,6 +65,8 @@ public:
     {}
     CVertex(int type, const Point& p, const Point& c);
     CVertex(const Point& p);
+
+    bool operator==(const CVertex& other) const = default;
 };
 
 class Span

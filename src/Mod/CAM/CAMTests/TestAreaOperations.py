@@ -75,7 +75,9 @@ class TestAreaOperations(unittest.TestCase):
         if tolerance is None:
             tolerance = abs(expected_area) * 0.01
         if msg is None:
-            msg = f"Area {actual:.2f} not near expected {expected_area:.2f}"
+            msg = f"Area {actual:.2f} not near expected {expected_area:.2f}" + format_area(
+                area_obj, "area"
+            )
         self.assertAlmostEqual(actual, expected_area, delta=tolerance, msg=msg)
 
     # ========================================================================
@@ -541,8 +543,8 @@ class TestAreaOperations(unittest.TestCase):
     # Geometry Manipulation Tests
     # ========================================================================
 
-    def test_thicken(self):
-        """Test thickening an area."""
+    def test_thicken_closed(self):
+        """Test thickening a closed area."""
         a = self.create_square(0, 0, 10)
 
         # Thicken adds material
@@ -561,6 +563,21 @@ class TestAreaOperations(unittest.TestCase):
         # Check area
         corners = 4 * (2 * 2 - math.pi * 2 * 2 / 4)
         self.assertAreaNear(a, 14 * 14 - 6 * 6 - corners, msg="Square offset both ways")
+
+    def test_thicken_open(self):
+        """Test thickening an open path."""
+        x = 5
+        r = 2
+        a = make_area(make_curve([(0, 0), (x, 0)]))
+
+        a.Thicken(r)
+
+        curves = a.getCurves()
+        self.assertEqual(len(curves), 1, format_area(a, "result"))
+        self.assertFalse(curves[0].IsClockwise(), format_area(a, "result"))
+
+        expected = x * (2 * r) + math.pi * r**2
+        self.assertAreaNear(a, expected)
 
     def test_reorder(self):
         """Test Reorder doesn't break the area."""
