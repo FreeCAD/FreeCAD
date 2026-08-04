@@ -60,6 +60,8 @@
 #include <BRepBuilderAPI_Transform.hxx>
 #include <BRepFilletAPI_MakeChamfer.hxx>
 #include <BRepFilletAPI_MakeFillet.hxx>
+#include <BRepFilletAPI_MakeFillet2d.hxx>
+#include <BRepGProp.hxx>
 #include <BRepLib.hxx>
 #include <BRepOffsetAPI_DraftAngle.hxx>
 #include <BRepOffsetAPI_MakeFilling.hxx>
@@ -73,12 +75,14 @@
 #include <GeomConvert.hxx>
 #include <GeomFill_BezierCurves.hxx>
 #include <GeomFill_BSplineCurves.hxx>
+#include <GProp_GProps.hxx>
 #include <Precision.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
 #include <ShapeBuild_ReShape.hxx>
 #include <ShapeConstruct_Curve.hxx>
 #include <ShapeUpgrade_ShellSewing.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 #include <ShapeFix_Shape.hxx>
 #include <ShapeFix_ShapeTolerance.hxx>
 #include <gp_Pln.hxx>
@@ -4172,7 +4176,195 @@ TopoShape& TopoShape::makeElementFillet(
         }
         mkFillet.Add(radius1, radius2, TopoDS::Edge(edge));
     }
-    return makeElementShape(mkFillet, shape, op);
+
+    std::string kernelError;
+    try {
+        mkFillet.Build();
+        if (mkFillet.IsDone()) {
+            return makeElementShape(mkFillet, shape, op);
+        }
+    }
+    catch (const Standard_Failure& failure) {
+        kernelError = failure.GetMessageString();
+    }
+
+    // A 3D fillet cannot currently consume an adjacent face in OCCT.  For a
+    // verified prism, perform the equivalent operation on the complete end
+    // profile and sweep that profile.  BRepFilletAPI_MakeFillet2d correctly
+    // removes a zero-length segment when two fillets meet at their exact limit,
+    // so this produces the requested geometry without reducing the radius.
+    const double radiusTolerance = std::max(
+        Precision::Confusion(),
+        std::max(std::abs(radius1), std::abs(radius2)) * 1.0e-12
+    );
+    if (shape.getShape().ShapeType() == TopAbs_SOLID
+        && std::abs(radius1 - radius2) <= radiusTolerance) {
+        auto shapeVolume = [](const TopoDS_Shape& value) {
+            GProp_GProps properties;
+            BRepGProp::VolumeProperties(value, properties);
+            return std::abs(properties.Mass());
+        };
+
+        auto sameSolid = [&shapeVolume](const TopoDS_Shape& first, const TopoDS_Shape& second) {
+            try {
+                FCBRepAlgoAPI_Common common(first, second);
+                common.Build();
+                if (!common.IsDone() || common.Shape().IsNull()) {
+                    return false;
+                }
+
+                const double firstVolume = shapeVolume(first);
+                const double secondVolume = shapeVolume(second);
+                const double commonVolume = shapeVolume(common.Shape());
+                const double tolerance
+                    = std::max({1.0, firstVolume, secondVolume}) * 1.0e-9;
+                return std::abs(firstVolume - secondVolume) <= tolerance
+                    && std::abs(firstVolume - commonVolume) <= tolerance;
+            }
+            catch (const Standard_Failure&) {
+                return false;
+            }
+        };
+
+        for (auto& cap : shape.getSubTopoShapes(TopAbs_FACE)) {
+            gp_Pln capPlane;
+            if (!cap.findPlane(capPlane)) {
+                continue;
+            }
+
+            TopTools_IndexedMapOfShape capVertices;
+            TopExp::MapShapes(cap.getShape(), TopAbs_VERTEX, capVertices);
+            TopTools_IndexedMapOfShape filletVertices;
+            gp_Vec prismVector;
+            bool haveVector = false;
+            bool matchesSelectedEdges = true;
+
+            for (const auto& selected : edges) {
+                const TopoDS_Edge selectedEdge = TopoDS::Edge(selected.getShape());
+                BRepAdaptor_Curve curve(selectedEdge);
+                if (curve.GetType() != GeomAbs_Line) {
+                    matchesSelectedEdges = false;
+                    break;
+                }
+
+                TopoDS_Vertex firstVertex;
+                TopoDS_Vertex lastVertex;
+                TopExp::Vertices(selectedEdge, firstVertex, lastVertex);
+                const bool firstOnCap = capVertices.Contains(firstVertex);
+                const bool lastOnCap = capVertices.Contains(lastVertex);
+                if (firstOnCap == lastOnCap) {
+                    matchesSelectedEdges = false;
+                    break;
+                }
+
+                const TopoDS_Vertex capVertex = firstOnCap ? firstVertex : lastVertex;
+                const TopoDS_Vertex otherVertex = firstOnCap ? lastVertex : firstVertex;
+                const gp_Vec edgeVector(BRep_Tool::Pnt(capVertex), BRep_Tool::Pnt(otherVertex));
+                if (edgeVector.Magnitude() <= Precision::Confusion()) {
+                    matchesSelectedEdges = false;
+                    break;
+                }
+
+                if (!haveVector) {
+                    prismVector = edgeVector;
+                    haveVector = true;
+                }
+                else {
+                    const double linearTolerance
+                        = std::max(Precision::Confusion(), prismVector.Magnitude() * 1.0e-9);
+                    if ((edgeVector - prismVector).Magnitude() > linearTolerance) {
+                        matchesSelectedEdges = false;
+                        break;
+                    }
+                }
+                filletVertices.Add(capVertex);
+            }
+
+            if (!matchesSelectedEdges || !haveVector
+                || filletVertices.Extent() != static_cast<int>(edges.size())
+                || !capPlane.Axis().Direction().IsParallel(
+                    gp_Dir(prismVector),
+                    Precision::Angular()
+                )) {
+                continue;
+            }
+
+            BRepPrimAPI_MakePrism originalPrism(cap.getShape(), prismVector);
+            originalPrism.Build();
+            if (!originalPrism.IsDone()
+                || !sameSolid(shape.getShape(), originalPrism.Shape())) {
+                continue;
+            }
+
+            auto profileWorks = [&cap, &filletVertices](double radius) {
+                try {
+                    BRepFilletAPI_MakeFillet2d profileFillet(TopoDS::Face(cap.getShape()));
+                    for (int index = 1; index <= filletVertices.Extent(); ++index) {
+                        if (profileFillet
+                                .AddFillet(TopoDS::Vertex(filletVertices(index)), radius)
+                                .IsNull()) {
+                            return false;
+                        }
+                    }
+                    profileFillet.Build();
+                    return profileFillet.IsDone() && !profileFillet.Shape().IsNull();
+                }
+                catch (const Standard_Failure&) {
+                    return false;
+                }
+            };
+
+            BRepFilletAPI_MakeFillet2d profileFillet(TopoDS::Face(cap.getShape()));
+            bool profileDone = true;
+            for (int index = 1; index <= filletVertices.Extent(); ++index) {
+                if (profileFillet
+                        .AddFillet(TopoDS::Vertex(filletVertices(index)), radius1)
+                        .IsNull()) {
+                    profileDone = false;
+                    break;
+                }
+            }
+            if (!profileDone) {
+                double lower = 0.0;
+                double upper = radius1;
+                for (int iteration = 0; iteration < 50; ++iteration) {
+                    const double trial = (lower + upper) * 0.5;
+                    if (profileWorks(trial)) {
+                        lower = trial;
+                    }
+                    else {
+                        upper = trial;
+                    }
+                }
+                FC_THROWM(
+                    Base::CADKernelError,
+                    "Requested fillet radius " << radius1 << " exceeds the approximately "
+                                               << lower << " maximum for this prismatic profile"
+                );
+            }
+
+            profileFillet.Build();
+            if (!profileFillet.IsDone()) {
+                continue;
+            }
+
+            TopoShape profile(0, Hasher);
+            profile.makeElementShape(profileFillet, cap, op);
+            TopoShape swept(0, Hasher);
+            swept.makeElementPrism(profile, prismVector, op);
+            if (!BRepCheck_Analyzer(swept.getShape()).IsValid()) {
+                continue;
+            }
+
+            *this = swept;
+            return *this;
+        }
+    }
+
+    if (!kernelError.empty()) {
+        FC_THROWM(Base::CADKernelError, kernelError);
+    }
+    FC_THROWM(Base::CADKernelError, "Fillet operation failed");
 }
 
 TopoShape& TopoShape::makeElementChamfer(

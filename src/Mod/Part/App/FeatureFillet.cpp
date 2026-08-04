@@ -24,6 +24,8 @@
 
 #include <FCConfig.h>
 
+#include <cmath>
+
 #include <BRepFilletAPI_MakeFillet.hxx>
 #include <Precision.hxx>
 #include <TopExp.hxx>
@@ -66,6 +68,12 @@ App::DocumentObjectExecReturn* Fillet::execute()
         TopTools_IndexedMapOfShape mapOfEdges;
         TopExp::MapShapes(baseShape, TopAbs_EDGE, mapOfEdges);
         std::vector<Part::FilletElement> edges = Edges.getValues();
+        std::vector<TopoShape> selectedEdges;
+        selectedEdges.reserve(edges.size());
+        double commonRadius1 = 0.0;
+        double commonRadius2 = 0.0;
+        bool haveCommonRadius = false;
+        bool uniformRadii = true;
         std::string fullErrMsg;
 
         const auto& vals = EdgeLinks.getSubValues(true);
@@ -105,6 +113,16 @@ App::DocumentObjectExecReturn* Fillet::execute()
 
             double radius1 = info.radius1;
             double radius2 = info.radius2;
+            selectedEdges.push_back(baseTopoShape.getSubTopoShape(TopAbs_EDGE, id));
+            if (!haveCommonRadius) {
+                commonRadius1 = radius1;
+                commonRadius2 = radius2;
+                haveCommonRadius = true;
+            }
+            else if (std::abs(commonRadius1 - radius1) > Precision::Confusion()
+                     || std::abs(commonRadius2 - radius2) > Precision::Confusion()) {
+                uniformRadii = false;
+            }
             mkFillet.Add(radius1, radius2, TopoDS::Edge(edge));
         }
 
@@ -113,14 +131,28 @@ App::DocumentObjectExecReturn* Fillet::execute()
         }
         Edges.setValues(edges);
 
-        TopoDS_Shape shape = mkFillet.Shape();
-        if (shape.IsNull()) {
-            return new App::DocumentObjectExecReturn("Resulting shape is null");
-        }
-
         TopoShape res(0);
-        this->Shape.setValue(res.makeElementShape(mkFillet, baseTopoShape, Part::OpCodes::Fillet));
+        if (uniformRadii && haveCommonRadius) {
+            res.makeElementFillet(
+                baseTopoShape,
+                selectedEdges,
+                commonRadius1,
+                commonRadius2,
+                Part::OpCodes::Fillet
+            );
+        }
+        else {
+            TopoDS_Shape shape = mkFillet.Shape();
+            if (shape.IsNull()) {
+                return new App::DocumentObjectExecReturn("Resulting shape is null");
+            }
+            res.makeElementShape(mkFillet, baseTopoShape, Part::OpCodes::Fillet);
+        }
+        this->Shape.setValue(res);
         return Part::FilletBase::execute();
+    }
+    catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

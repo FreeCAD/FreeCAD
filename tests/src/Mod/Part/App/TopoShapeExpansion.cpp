@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+#include <cmath>
+
 #include <TColgp_Array2OfPnt.hxx>
 #include <gtest/gtest.h>
 #include "src/App/InitApplication.h"
@@ -14,12 +16,16 @@
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakePolygon.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
+#include <BRepCheck_Analyzer.hxx>
+#include <BRep_Tool.hxx>
 #include <BRepFeat_SplitShape.hxx>
 #include <BRepOffsetAPI_MakeEvolved.hxx>
 #include <BRepPrimAPI_MakeBox.hxx>
+#include <BRepPrimAPI_MakePrism.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <GeomAPI_PointsToBSpline.hxx>
 #include <Geom_BezierCurve.hxx>
@@ -29,6 +35,7 @@
 #include <ShapeFix_Wireframe.hxx>
 #include <ShapeBuild_ReShape.hxx>
 #include <TopExp_Explorer.hxx>
+#include <TopExp.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TColgp_Array1OfPnt.hxx>
 
@@ -2422,6 +2429,231 @@ TEST_F(TopoShapeExpansionTest, makeElementFillet)
             "Vertex8;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
         }
     ));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementFilletConsumesFaceAtExactLimit)
+{
+    // Arrange: the two selected longitudinal edges bound a 10 mm wide top face.
+    TopoShape box {BRepPrimAPI_MakeBox(20.0, 10.0, 10.0).Shape(), 1L};
+    std::vector<TopoShape> topEdges;
+    for (const auto& edge : box.getSubTopoShapes(TopAbs_EDGE)) {
+        TopoDS_Vertex first;
+        TopoDS_Vertex last;
+        TopExp::Vertices(TopoDS::Edge(edge.getShape()), first, last);
+        const gp_Pnt firstPoint = BRep_Tool::Pnt(first);
+        const gp_Pnt lastPoint = BRep_Tool::Pnt(last);
+        if (std::abs(firstPoint.Z() - 10.0) < Precision::Confusion()
+            && std::abs(lastPoint.Z() - 10.0) < Precision::Confusion()
+            && std::abs(std::abs(firstPoint.X() - lastPoint.X()) - 20.0)
+                < Precision::Confusion()) {
+            topEdges.push_back(edge);
+        }
+    }
+    ASSERT_EQ(topEdges.size(), 2U);
+
+    TopoShape belowLimit;
+    belowLimit.makeElementFillet(box, topEdges, 4.999, 4.999);
+    int belowLimitHorizontalFaces = 0;
+    for (const auto& face : belowLimit.getSubTopoShapes(TopAbs_FACE)) {
+        gp_Pln plane;
+        if (face.findPlane(plane)
+            && plane.Axis().Direction().IsParallel(
+                gp_Dir(0.0, 0.0, 1.0),
+                Precision::Angular()
+            )) {
+            ++belowLimitHorizontalFaces;
+        }
+    }
+    EXPECT_EQ(belowLimitHorizontalFaces, 2);
+
+    // Act: both 5 mm fillets meet exactly, consuming the intervening top face.
+    TopoShape result;
+    result.makeElementFillet(box, topEdges, 5.0, 5.0);
+
+    // Assert: the exact full-round geometry is valid and has no horizontal top face.
+    EXPECT_TRUE(BRepCheck_Analyzer(result.getShape()).IsValid());
+    EXPECT_NEAR(getVolume(result.getShape()), 1000.0 + 250.0 * std::acos(-1.0), 1e-6);
+    int horizontalFaces = 0;
+    for (const auto& face : result.getSubTopoShapes(TopAbs_FACE)) {
+        gp_Pln plane;
+        if (face.findPlane(plane)
+            && plane.Axis().Direction().IsParallel(
+                gp_Dir(0.0, 0.0, 1.0),
+                Precision::Angular()
+            )) {
+            ++horizontalFaces;
+        }
+    }
+    EXPECT_EQ(horizontalFaces, 1);
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementFilletRejectsRadiusBeyondFaceCollapse)
+{
+    // Arrange
+    TopoShape box {BRepPrimAPI_MakeBox(20.0, 10.0, 10.0).Shape(), 1L};
+    std::vector<TopoShape> topEdges;
+    for (const auto& edge : box.getSubTopoShapes(TopAbs_EDGE)) {
+        TopoDS_Vertex first;
+        TopoDS_Vertex last;
+        TopExp::Vertices(TopoDS::Edge(edge.getShape()), first, last);
+        const gp_Pnt firstPoint = BRep_Tool::Pnt(first);
+        const gp_Pnt lastPoint = BRep_Tool::Pnt(last);
+        if (std::abs(firstPoint.Z() - 10.0) < Precision::Confusion()
+            && std::abs(lastPoint.Z() - 10.0) < Precision::Confusion()
+            && std::abs(std::abs(firstPoint.X() - lastPoint.X()) - 20.0)
+                < Precision::Confusion()) {
+            topEdges.push_back(edge);
+        }
+    }
+    ASSERT_EQ(topEdges.size(), 2U);
+
+    // Act / Assert: overlapping constant-radius fillets remain an error.
+    TopoShape result;
+    EXPECT_THROW(result.makeElementFillet(box, topEdges, 5.001, 5.001), Base::CADKernelError);
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementFilletInnerEdgeOfLProfileAtLimit)
+{
+    // Arrange: extrude an L profile whose two edges adjoining the concave corner are 10 mm long.
+    BRepBuilderAPI_MakePolygon polygon;
+    polygon.Add(gp_Pnt(0.0, 0.0, 0.0));
+    polygon.Add(gp_Pnt(20.0, 0.0, 0.0));
+    polygon.Add(gp_Pnt(20.0, 10.0, 0.0));
+    polygon.Add(gp_Pnt(10.0, 10.0, 0.0));
+    polygon.Add(gp_Pnt(10.0, 20.0, 0.0));
+    polygon.Add(gp_Pnt(0.0, 20.0, 0.0));
+    polygon.Close();
+    const TopoDS_Face profile = BRepBuilderAPI_MakeFace(polygon.Wire()).Face();
+    TopoShape lSection {BRepPrimAPI_MakePrism(profile, gp_Vec(0.0, 0.0, 20.0)).Shape(), 1L};
+
+    std::vector<TopoShape> innerEdges;
+    for (const auto& edge : lSection.getSubTopoShapes(TopAbs_EDGE)) {
+        TopoDS_Vertex first;
+        TopoDS_Vertex last;
+        TopExp::Vertices(TopoDS::Edge(edge.getShape()), first, last);
+        const gp_Pnt firstPoint = BRep_Tool::Pnt(first);
+        const gp_Pnt lastPoint = BRep_Tool::Pnt(last);
+        if (std::abs(firstPoint.X() - 10.0) < Precision::Confusion()
+            && std::abs(firstPoint.Y() - 10.0) < Precision::Confusion()
+            && std::abs(lastPoint.X() - 10.0) < Precision::Confusion()
+            && std::abs(lastPoint.Y() - 10.0) < Precision::Confusion()
+            && std::abs(std::abs(firstPoint.Z() - lastPoint.Z()) - 20.0)
+                < Precision::Confusion()) {
+            innerEdges.push_back(edge);
+        }
+    }
+    ASSERT_EQ(innerEdges.size(), 1U);
+
+    // Act / Assert: a radius below the limit leaves short portions of both adjoining edges.
+    constexpr double belowRadius = 9.999;
+    TopoShape belowLimit;
+    belowLimit.makeElementFillet(lSection, innerEdges, belowRadius, belowRadius);
+    EXPECT_TRUE(BRepCheck_Analyzer(belowLimit.getShape()).IsValid());
+    EXPECT_NEAR(
+        getVolume(belowLimit.getShape()),
+        20.0 * (300.0 + belowRadius * belowRadius * (1.0 - std::acos(-1.0) / 4.0)),
+        1e-6
+    );
+
+    // At exactly 10 mm the fillet consumes both perpendicular edges without changing the radius.
+    TopoShape atLimit;
+    atLimit.makeElementFillet(lSection, innerEdges, 10.0, 10.0);
+    EXPECT_TRUE(BRepCheck_Analyzer(atLimit.getShape()).IsValid());
+    EXPECT_NEAR(getVolume(atLimit.getShape()), 8000.0 - 500.0 * std::acos(-1.0), 1e-6);
+
+    // A radius larger than either perpendicular edge cannot be represented by this profile.
+    TopoShape aboveLimit;
+    EXPECT_THROW(
+        aboveLimit.makeElementFillet(lSection, innerEdges, 10.001, 10.001),
+        Base::CADKernelError
+    );
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementFilletConcaveAndConvexEdgesOfLProfileMeetTangent)
+{
+    // Arrange: the concave corner and adjacent convex top corner share a 10 mm profile edge.
+    BRepBuilderAPI_MakePolygon polygon;
+    polygon.Add(gp_Pnt(0.0, 0.0, 0.0));
+    polygon.Add(gp_Pnt(20.0, 0.0, 0.0));
+    polygon.Add(gp_Pnt(20.0, 10.0, 0.0));
+    polygon.Add(gp_Pnt(10.0, 10.0, 0.0));
+    polygon.Add(gp_Pnt(10.0, 20.0, 0.0));
+    polygon.Add(gp_Pnt(0.0, 20.0, 0.0));
+    polygon.Close();
+    const TopoDS_Face profile = BRepBuilderAPI_MakeFace(polygon.Wire()).Face();
+    TopoShape lSection {BRepPrimAPI_MakePrism(profile, gp_Vec(0.0, 0.0, 20.0)).Shape(), 1L};
+
+    std::vector<TopoShape> selectedEdges;
+    for (const auto& edge : lSection.getSubTopoShapes(TopAbs_EDGE)) {
+        TopoDS_Vertex first;
+        TopoDS_Vertex last;
+        TopExp::Vertices(TopoDS::Edge(edge.getShape()), first, last);
+        const gp_Pnt firstPoint = BRep_Tool::Pnt(first);
+        const gp_Pnt lastPoint = BRep_Tool::Pnt(last);
+        const bool atSelectedCorner
+            = (std::abs(firstPoint.Y() - 10.0) < Precision::Confusion()
+               || std::abs(firstPoint.Y() - 20.0) < Precision::Confusion())
+            && std::abs(firstPoint.X() - 10.0) < Precision::Confusion()
+            && std::abs(lastPoint.X() - firstPoint.X()) < Precision::Confusion()
+            && std::abs(lastPoint.Y() - firstPoint.Y()) < Precision::Confusion()
+            && std::abs(std::abs(firstPoint.Z() - lastPoint.Z()) - 20.0)
+                < Precision::Confusion();
+        if (atSelectedCorner) {
+            selectedEdges.push_back(edge);
+        }
+    }
+    ASSERT_EQ(selectedEdges.size(), 2U);
+
+    // Act: the two 5 mm fillets exactly consume their shared 10 mm side face.
+    TopoShape result;
+    result.makeElementFillet(lSection, selectedEdges, 5.0, 5.0);
+
+    // Assert: the concave and convex profile arcs meet at one point with a common tangent.
+    EXPECT_TRUE(BRepCheck_Analyzer(result.getShape()).IsValid());
+    EXPECT_NEAR(getVolume(result.getShape()), 6000.0, 1e-6);
+    std::vector<TopoDS_Edge> bottomArcs;
+    for (const auto& edge : result.getSubTopoShapes(TopAbs_EDGE)) {
+        const TopoDS_Edge occEdge = TopoDS::Edge(edge.getShape());
+        BRepAdaptor_Curve curve(occEdge);
+        TopoDS_Vertex first;
+        TopoDS_Vertex last;
+        TopExp::Vertices(occEdge, first, last);
+        if (curve.GetType() == GeomAbs_Circle
+            && std::abs(BRep_Tool::Pnt(first).Z()) < Precision::Confusion()
+            && std::abs(BRep_Tool::Pnt(last).Z()) < Precision::Confusion()) {
+            EXPECT_NEAR(curve.Circle().Radius(), 5.0, 1e-9);
+            bottomArcs.push_back(occEdge);
+        }
+    }
+    ASSERT_EQ(bottomArcs.size(), 2U);
+
+    TopoDS_Vertex tangentVertex;
+    ASSERT_TRUE(TopExp::CommonVertex(bottomArcs[0], bottomArcs[1], tangentVertex));
+    const gp_Pnt tangentPoint = BRep_Tool::Pnt(tangentVertex);
+    EXPECT_NEAR(tangentPoint.X(), 10.0, 1e-9);
+    EXPECT_NEAR(tangentPoint.Y(), 15.0, 1e-9);
+    EXPECT_NEAR(tangentPoint.Z(), 0.0, 1e-9);
+
+    auto tangentAt = [&tangentPoint](const TopoDS_Edge& edge) {
+        BRepAdaptor_Curve curve(edge);
+        gp_Pnt point;
+        gp_Pnt firstPoint;
+        curve.D0(curve.FirstParameter(), firstPoint);
+        const double parameter = firstPoint.Distance(tangentPoint) < Precision::Confusion()
+            ? curve.FirstParameter()
+            : curve.LastParameter();
+        gp_Vec tangent;
+        curve.D1(parameter, point, tangent);
+        return tangent;
+    };
+    const gp_Vec firstTangent = tangentAt(bottomArcs[0]);
+    const gp_Vec secondTangent = tangentAt(bottomArcs[1]);
+    EXPECT_NEAR(
+        std::abs(firstTangent.Dot(secondTangent))
+            / (firstTangent.Magnitude() * secondTangent.Magnitude()),
+        1.0,
+        1e-9
+    );
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementSlice)

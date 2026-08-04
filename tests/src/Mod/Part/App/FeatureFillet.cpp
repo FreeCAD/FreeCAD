@@ -2,6 +2,12 @@
 
 #include <gtest/gtest.h>
 
+#include <cmath>
+
+#include <BRep_Tool.hxx>
+#include <Precision.hxx>
+#include <TopExp.hxx>
+
 #include <src/App/InitApplication.h>
 
 #include "PartTestHelpers.h"
@@ -100,6 +106,44 @@ TEST_F(FeatureFilletTest, testMostEdges)
     double filletVolume = PartTestHelpers::getVolume(_fillet->Shape.getValue());
     // Assert
     EXPECT_NEAR(filletVolume, 118.38763, 1e-5);
+}
+
+TEST_F(FeatureFilletTest, testExactFaceCollapse)
+{
+    // Arrange
+    _boxes[0]->Length.setValue(20.0);
+    _boxes[0]->Width.setValue(10.0);
+    _boxes[0]->Height.setValue(10.0);
+    _boxes[0]->execute();
+    _fillet->Base.setValue(_boxes[0]);
+
+    std::vector<int> topEdgeIndexes;
+    const auto boxEdges = _boxes[0]->Shape.getShape().getSubTopoShapes(TopAbs_EDGE);
+    for (std::size_t index = 0; index < boxEdges.size(); ++index) {
+        TopoDS_Vertex first;
+        TopoDS_Vertex last;
+        TopExp::Vertices(TopoDS::Edge(boxEdges[index].getShape()), first, last);
+        const gp_Pnt firstPoint = BRep_Tool::Pnt(first);
+        const gp_Pnt lastPoint = BRep_Tool::Pnt(last);
+        if (std::abs(firstPoint.Z() - 10.0) < Precision::Confusion()
+            && std::abs(lastPoint.Z() - 10.0) < Precision::Confusion()
+            && std::abs(std::abs(firstPoint.X() - lastPoint.X()) - 20.0)
+                < Precision::Confusion()) {
+            topEdgeIndexes.push_back(static_cast<int>(index + 1));
+        }
+    }
+    ASSERT_EQ(topEdgeIndexes.size(), 2U);
+    _fillet->Edges.setValues(PartTestHelpers::_getFilletEdges(topEdgeIndexes, 5.0, 5.0));
+
+    // Act
+    _fillet->execute();
+
+    // Assert
+    EXPECT_NEAR(
+        PartTestHelpers::getVolume(_fillet->Shape.getValue()),
+        1000.0 + 250.0 * std::acos(-1.0),
+        1e-6
+    );
 }
 
 // Worth noting that FeaturePartCommon with insufficient parameters says MustExecute false,
