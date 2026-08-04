@@ -55,10 +55,10 @@ public:
     FC_VIEW_PARAM(BoundingBoxColor, unsigned long, Unsigned, 4294967295UL) \
     FC_VIEW_PARAM(AnnotationTextColor, unsigned long, Unsigned, 4294967295UL) \
     FC_VIEW_PARAM(MarkerSize, int, Int, 9) \
-    FC_VIEW_PARAM(DefaultLinkColor, unsigned long, Unsigned, 0x66FFFF00) \
+    FC_VIEW_PARAM(DefaultLinkColor, unsigned long, Unsigned, 0x66FFFFFF) \
     FC_VIEW_PARAM(DefaultShapeLineColor, unsigned long, Unsigned, 421075455UL) \
     FC_VIEW_PARAM(DefaultShapeVertexColor, unsigned long, Unsigned, 421075455UL) \
-    FC_VIEW_PARAM(DefaultShapeColor, unsigned long, Unsigned, 0xCCCCCC00) \
+    FC_VIEW_PARAM(DefaultShapeColor, unsigned long, Unsigned, 0xCCCCCCFF) \
     FC_VIEW_PARAM(DefaultShapeTransparency, int, Int, 0) \
     FC_VIEW_PARAM(DefaultShapeLineWidth, int, Int, 2) \
     FC_VIEW_PARAM(DefaultShapePointSize, int, Int, 2) \
@@ -66,11 +66,11 @@ public:
     FC_VIEW_PARAM(EnablePropertyViewForInactiveDocument, bool, Bool, true) \
     FC_VIEW_PARAM(ShowSelectionBoundingBox, bool, Bool, false) \
     FC_VIEW_PARAM(PropertyViewTimer, unsigned long, Unsigned, 100) \
-    FC_VIEW_PARAM(AxisXColor, unsigned long, Unsigned, 0xCC333300) \
-    FC_VIEW_PARAM(AxisYColor, unsigned long, Unsigned, 0x33CC3300) \
-    FC_VIEW_PARAM(AxisZColor, unsigned long, Unsigned, 0x3333CC00) \
-    FC_VIEW_PARAM(OriginColor, unsigned long, Unsigned, 0xFBD62900) \
-    FC_VIEW_PARAM(NeutralColor, unsigned long, Unsigned, 0xB3B38000) \
+    FC_VIEW_PARAM(AxisXColor, unsigned long, Unsigned, 0xCC3333FF) \
+    FC_VIEW_PARAM(AxisYColor, unsigned long, Unsigned, 0x33CC33FF) \
+    FC_VIEW_PARAM(AxisZColor, unsigned long, Unsigned, 0x3333CCFF) \
+    FC_VIEW_PARAM(OriginColor, unsigned long, Unsigned, 0xFBD629FF) \
+    FC_VIEW_PARAM(NeutralColor, unsigned long, Unsigned, 0xB3B380FF) \
     FC_VIEW_PARAM(PlacementIndicatorScale, double, Float, 40.0) \
     FC_VIEW_PARAM(DraggerScale, double, Float, 0.03) \
     FC_VIEW_PARAM(DatumScale, double, Float, 100.0) \
