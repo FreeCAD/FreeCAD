@@ -2854,9 +2854,9 @@ def _import_dxf_file(filename, doc_name=None):
         from DxfImportDialog import DxfImportDialog
 
         dlg = DxfImportDialog(entity_counts)
-        FreeCADGui.suspendWaitCursor()
+        FreeCADGui.suspendCursor()
         if dlg.exec_():
-            FreeCADGui.resumeWaitCursor()
+            FreeCADGui.resumeCursor()
 
             # Save the integer mode from the pop-up dialog.
             hGrp.SetInt("DxfImportMode", dlg.get_selected_mode())
@@ -2924,7 +2924,6 @@ def _import_dxf_file(filename, doc_name=None):
     doc.recompute()
 
     processing_end_time = time.perf_counter()
-    FreeCADGui.suspendWaitCursor()
 
     # Return the results for the reporter
     return doc, stats, processing_start_time, processing_end_time
