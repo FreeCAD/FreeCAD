@@ -4199,6 +4199,14 @@ TopoShape& TopoShape::makeElementFillet(
     );
     if (shape.getShape().ShapeType() == TopAbs_SOLID
         && std::abs(radius1 - radius2) <= radiusTolerance) {
+        const auto sourceEdges = shape.getSubTopoShapes(TopAbs_EDGE);
+        TopTools_IndexedMapOfShape selectedEdgeMap;
+        for (const auto& edge : edges) {
+            selectedEdgeMap.Add(edge.getShape());
+        }
+        const bool allEdgesSelected
+            = selectedEdgeMap.Extent() == static_cast<int>(sourceEdges.size());
+
         auto shapeVolume = [](const TopoDS_Shape& value) {
             GProp_GProps properties;
             BRepGProp::VolumeProperties(value, properties);
@@ -4241,18 +4249,21 @@ TopoShape& TopoShape::makeElementFillet(
 
             for (const auto& selected : edges) {
                 const TopoDS_Edge selectedEdge = TopoDS::Edge(selected.getShape());
-                BRepAdaptor_Curve curve(selectedEdge);
-                if (curve.GetType() != GeomAbs_Line) {
-                    matchesSelectedEdges = false;
-                    break;
-                }
-
                 TopoDS_Vertex firstVertex;
                 TopoDS_Vertex lastVertex;
                 TopExp::Vertices(selectedEdge, firstVertex, lastVertex);
                 const bool firstOnCap = capVertices.Contains(firstVertex);
                 const bool lastOnCap = capVertices.Contains(lastVertex);
                 if (firstOnCap == lastOnCap) {
+                    if (allEdgesSelected) {
+                        continue;
+                    }
+                    matchesSelectedEdges = false;
+                    break;
+                }
+
+                BRepAdaptor_Curve curve(selectedEdge);
+                if (curve.GetType() != GeomAbs_Line) {
                     matchesSelectedEdges = false;
                     break;
                 }
@@ -4280,8 +4291,10 @@ TopoShape& TopoShape::makeElementFillet(
                 filletVertices.Add(capVertex);
             }
 
+            const int expectedFilletVertices
+                = allEdgesSelected ? capVertices.Extent() : static_cast<int>(edges.size());
             if (!matchesSelectedEdges || !haveVector
-                || filletVertices.Extent() != static_cast<int>(edges.size())
+                || filletVertices.Extent() != expectedFilletVertices
                 || !capPlane.Axis().Direction().IsParallel(
                     gp_Dir(prismVector),
                     Precision::Angular()
@@ -4354,6 +4367,58 @@ TopoShape& TopoShape::makeElementFillet(
             swept.makeElementPrism(profile, prismVector, op);
             if (!BRepCheck_Analyzer(swept.getShape()).IsValid()) {
                 continue;
+            }
+
+            // Selecting every edge also requests fillets around both ends of
+            // the prism.  Once the exact-limit profile has been swept, those
+            // end-cap edges form a regular 3D fillet problem that OCCT can
+            // solve without the zero-length profile faces that caused the
+            // original all-at-once operation to fail.
+            if (allEdgesSelected) {
+                TopTools_IndexedMapOfShape endCapEdgeMap;
+                int endCapCount = 0;
+                for (const auto& face : swept.getSubTopoShapes(TopAbs_FACE)) {
+                    gp_Pln plane;
+                    if (!face.findPlane(plane)
+                        || !plane.Axis().Direction().IsParallel(
+                            gp_Dir(prismVector),
+                            Precision::Angular()
+                        )) {
+                        continue;
+                    }
+                    ++endCapCount;
+                    TopExp::MapShapes(face.getShape(), TopAbs_EDGE, endCapEdgeMap);
+                }
+                if (endCapCount != 2 || endCapEdgeMap.IsEmpty()) {
+                    continue;
+                }
+
+                std::vector<TopoShape> endCapEdges;
+                endCapEdges.reserve(endCapEdgeMap.Extent());
+                for (int index = 1; index <= endCapEdgeMap.Extent(); ++index) {
+                    endCapEdges.emplace_back(endCapEdgeMap(index), 0, Hasher);
+                }
+
+                try {
+                    TopoShape fullyRounded(0, Hasher);
+                    fullyRounded.makeElementFillet(
+                        swept,
+                        endCapEdges,
+                        radius1,
+                        radius2,
+                        op
+                    );
+                    if (!BRepCheck_Analyzer(fullyRounded.getShape()).IsValid()) {
+                        continue;
+                    }
+                    swept = fullyRounded;
+                }
+                catch (const Base::Exception&) {
+                    continue;
+                }
+                catch (const Standard_Failure&) {
+                    continue;
+                }
             }
 
             *this = swept;

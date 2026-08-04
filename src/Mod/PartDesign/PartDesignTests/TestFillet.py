@@ -26,6 +26,7 @@ from math import pi
 import unittest
 
 import FreeCAD
+import Part
 
 
 class TestFillet(unittest.TestCase):
@@ -88,6 +89,41 @@ class TestFillet(unittest.TestCase):
         self.Fillet.Base = (self.Box, ["Face1"])
         self.Doc.recompute()
         self.assertNotAlmostEqual(self.Fillet.Shape.Volume, 4 / 3 * pi * 5**3, places=3)
+
+    def testFilletAllEdgesOfLPrismAtExactLimit(self):
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        base = self.Doc.addObject("PartDesign::Feature", "LPrism")
+        body.addObject(base)
+        points = [
+            FreeCAD.Vector(0.0, 0.0, 0.0),
+            FreeCAD.Vector(20.0, 0.0, 0.0),
+            FreeCAD.Vector(20.0, 10.0, 0.0),
+            FreeCAD.Vector(10.0, 10.0, 0.0),
+            FreeCAD.Vector(10.0, 20.0, 0.0),
+            FreeCAD.Vector(0.0, 20.0, 0.0),
+        ]
+        base.Shape = Part.Face(Part.makePolygon(points + [points[0]])).extrude(
+            FreeCAD.Vector(0.0, 0.0, 20.0)
+        )
+        self.assertEqual(len(base.Shape.Edges), 18)
+
+        fillet = self.Doc.addObject("PartDesign::Fillet", "Fillet")
+        body.addObject(fillet)
+        fillet.Base = (base, [""])
+        fillet.UseAllEdges = True
+
+        fillet.Radius = 4.999
+        self.Doc.recompute()
+        self.assertTrue(fillet.isValid())
+
+        fillet.Radius = 5.0
+        self.Doc.recompute()
+        self.assertTrue(fillet.isValid())
+        self.assertAlmostEqual(fillet.Shape.Volume, 4925.847214064, places=6)
+
+        fillet.Radius = 5.001
+        self.Doc.recompute()
+        self.assertFalse(fillet.isValid())
 
     def testDeletingPreviousFeatureRelinksUniqueMatchingBaseEdge(self):
         body, box, fillet = self._create_box_with_fillet()

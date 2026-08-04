@@ -2656,6 +2656,44 @@ TEST_F(TopoShapeExpansionTest, makeElementFilletConcaveAndConvexEdgesOfLProfileM
     );
 }
 
+TEST_F(TopoShapeExpansionTest, makeElementFilletAllEdgesOfLPrismAtLimit)
+{
+    // Arrange: the shortest L-profile segments are 10 mm, and the prism is 20 mm high.
+    BRepBuilderAPI_MakePolygon polygon;
+    polygon.Add(gp_Pnt(0.0, 0.0, 0.0));
+    polygon.Add(gp_Pnt(20.0, 0.0, 0.0));
+    polygon.Add(gp_Pnt(20.0, 10.0, 0.0));
+    polygon.Add(gp_Pnt(10.0, 10.0, 0.0));
+    polygon.Add(gp_Pnt(10.0, 20.0, 0.0));
+    polygon.Add(gp_Pnt(0.0, 20.0, 0.0));
+    polygon.Close();
+    const TopoDS_Face profile = BRepBuilderAPI_MakeFace(polygon.Wire()).Face();
+    TopoShape lSection {BRepPrimAPI_MakePrism(profile, gp_Vec(0.0, 0.0, 20.0)).Shape(), 1L};
+    const auto allEdges = lSection.getSubTopoShapes(TopAbs_EDGE);
+    ASSERT_EQ(allEdges.size(), 18U);
+
+    // A radius just below the limit continues to use the standard OCCT path.
+    TopoShape belowLimit;
+    belowLimit.makeElementFillet(lSection, allEdges, 4.999, 4.999);
+    EXPECT_TRUE(BRepCheck_Analyzer(belowLimit.getShape()).IsValid());
+
+    // Act: apply all 18 edge fillets in one operation at the exact profile limit.
+    TopoShape atLimit;
+    atLimit.makeElementFillet(lSection, allEdges, 5.0, 5.0);
+
+    // Assert: adjoining radius-5 fillets meet without residual sliver faces.
+    EXPECT_TRUE(BRepCheck_Analyzer(atLimit.getShape()).IsValid());
+    EXPECT_NEAR(getVolume(atLimit.getShape()), 4925.847214064, 1e-6);
+    EXPECT_EQ(atLimit.getSubTopoShapes(TopAbs_EDGE).size(), 56U);
+
+    // A radius above the half-length of the shortest profile edges remains invalid.
+    TopoShape aboveLimit;
+    EXPECT_THROW(
+        aboveLimit.makeElementFillet(lSection, allEdges, 5.001, 5.001),
+        Base::CADKernelError
+    );
+}
+
 TEST_F(TopoShapeExpansionTest, makeElementSlice)
 {
     // Arrange
