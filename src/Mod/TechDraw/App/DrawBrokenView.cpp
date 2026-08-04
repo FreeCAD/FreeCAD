@@ -96,12 +96,15 @@ using SU = ShapeUtils;
 // DrawBrokenView
 //===========================================================================
 
+// Kept as a DrawBrokenView symbol for source and binary compatibility.
 // NOLINTNEXTLINE
-const char *DrawBrokenView::BreakTypeEnums[] = {
+const char* DrawBrokenView::BreakTypeEnums[] = {
     QT_TRANSLATE_NOOP("DrawBrokenView", "None"),
     QT_TRANSLATE_NOOP("DrawBrokenView", "ZigZag"),
     QT_TRANSLATE_NOOP("DrawBrokenView", "Simple"),
+    QT_TRANSLATE_NOOP("DrawBrokenView", "Sinusoid"),
     nullptr};
+
 PROPERTY_SOURCE(TechDraw::DrawBrokenView, TechDraw::DrawViewPart)
 
 DrawBrokenView::DrawBrokenView()
@@ -156,9 +159,13 @@ App::DocumentObjectExecReturn* DrawBrokenView::execute()
     BRepBuilderAPI_Copy BuilderCopy(shape);
     TopoDS_Shape safeShape = BuilderCopy.Shape();
     m_unbrokenCenter = SU::findCentroidVec(safeShape, getProjectionCS());
+    setBreakSourceCentroid(m_unbrokenCenter);
 
     TopoDS_Shape brokenShape = breakShape(safeShape);
     m_compressedShape = compressShape(brokenShape);
+    if (getBreakCount() > 0) {
+        m_compressedShape = applyViewBreaks(m_compressedShape);
+    }
 
     partExec(m_compressedShape);
 
