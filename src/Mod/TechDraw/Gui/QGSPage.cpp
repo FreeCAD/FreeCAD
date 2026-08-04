@@ -22,6 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <algorithm>
+
 #include <QApplication>
 #include <QDomDocument>
 #include <QFile>
@@ -69,6 +71,7 @@
 #include "QGILeaderLine.h"
 #include "QGIProjGroup.h"
 #include "QGIRichAnno.h"
+#include "QGISketch.h"
 #include "QGISVGTemplate.h"
 #include "QGITemplate.h"
 #include "QGIUserTypes.h"
@@ -85,6 +88,7 @@
 #include "QGIViewSymbol.h"
 #include "QGIWeldSymbol.h"
 #include "QGSPage.h"
+#include "MDIViewPage.h"
 #include "Rez.h"
 #include "ScreenScalable.h"
 #include "ViewProviderDrawingView.h"
@@ -133,6 +137,28 @@ void QGSPage::mousePressEvent(QGraphicsSceneMouseEvent * event)
     }
 
     QGraphicsScene::mousePressEvent(event);
+}
+
+void QGSPage::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
+{
+    QGraphicsItem* item = itemAt(event->scenePos(), QTransform());
+    while (item) {
+        if (auto* sketchItem = dynamic_cast<QGISketch*>(item)) {
+            auto* pageView = m_vpPage ? m_vpPage->getMDIViewPage() : nullptr;
+            if (pageView
+                && pageView->editSketch(
+                    sketchItem->getSketchObject(),
+                    sketchItem->getOwnerView()
+                )) {
+                event->accept();
+                return;
+            }
+            break;
+        }
+        item = item->parentItem();
+    }
+
+    QGraphicsScene::mouseDoubleClickEvent(event);
 }
 
 
@@ -194,6 +220,9 @@ void QGSPage::addChildrenToPage()
                 attachView(childView);
             }
         }
+    }
+    for (auto* sketch : m_vpPage->getDrawPage()->getSketches()) {
+        attachSketch(sketch);
     }
     // when restoring, it is possible for an item (ex a Dimension) to be loaded before the ViewPart
     // it applies to therefore we need to make sure parentage of the graphics representation is set
@@ -310,6 +339,42 @@ std::vector<QGIView*> QGSPage::getViews() const
     return result;
 }
 
+std::vector<QGISketch*> QGSPage::getSketches() const
+{
+    std::vector<QGISketch*> result;
+    for (auto* item : items()) {
+        if (auto* sketch = dynamic_cast<QGISketch*>(item)) {
+            result.push_back(sketch);
+        }
+    }
+    return result;
+}
+
+QGISketch* QGSPage::findSketchForDocObj(App::DocumentObject* obj) const
+{
+    for (auto* sketch : getSketches()) {
+        if (sketch->getSketchObject() == obj) {
+            return sketch;
+        }
+    }
+    return nullptr;
+}
+
+TechDraw::DrawView* QGSPage::findSketchOwner(App::DocumentObject* obj) const
+{
+    for (auto* pageView : m_vpPage->getDrawPage()->getAllViews()) {
+        auto* view = freecad_cast<TechDraw::DrawView*>(pageView);
+        if (!view) {
+            continue;
+        }
+        const auto sketches = view->Sketches.getValues();
+        if (std::find(sketches.begin(), sketches.end(), obj) != sketches.end()) {
+            return view;
+        }
+    }
+    return nullptr;
+}
+
 int QGSPage::removeQView(QGIView* view)
 {
     if (view) {
@@ -364,6 +429,10 @@ bool QGSPage::addView(const App::DocumentObject* obj)
 
 bool QGSPage::attachView(App::DocumentObject* obj)
 {
+    if (TechDraw::DrawPage::isSketch(obj)) {
+        return attachSketch(obj);
+    }
+
     if (findQViewForDocObj(obj)) {
         return true;
     }
@@ -423,6 +492,57 @@ bool QGSPage::attachView(App::DocumentObject* obj)
     }
 
     return (qview != nullptr);
+}
+
+bool QGSPage::attachSketch(App::DocumentObject* obj)
+{
+    if (!TechDraw::DrawPage::isSketch(obj)) {
+        return false;
+    }
+    if (findSketchForDocObj(obj)) {
+        return true;
+    }
+
+    auto* owner = findSketchOwner(obj);
+    auto* sketchItem = new QGISketch(obj, owner);
+    if (owner) {
+        if (auto* parent = findQViewForDocObj(owner)) {
+            sketchItem->setParentItem(parent);
+            sketchItem->setPos(0.0, 0.0);
+        }
+        else {
+            addItem(sketchItem);
+        }
+    }
+    else {
+        addItem(sketchItem);
+    }
+    return true;
+}
+
+void QGSPage::updateSketch(App::DocumentObject* obj)
+{
+    if (auto* sketch = findSketchForDocObj(obj)) {
+        auto* owner = findSketchOwner(obj);
+        QGIView* desiredParent = owner ? findQViewForDocObj(owner) : nullptr;
+        if (sketch->getOwnerView() != owner || sketch->parentItem() != desiredParent) {
+            sketch->setParentItem(nullptr);
+            sketch->setPos(0.0, 0.0);
+            if (desiredParent) {
+                sketch->setParentItem(desiredParent);
+            }
+            sketch->setOwnerView(owner);
+        }
+        sketch->updateView();
+    }
+}
+
+void QGSPage::syncSketches()
+{
+    fixOrphans();
+    for (auto* sketch : m_vpPage->getDrawPage()->getSketches()) {
+        updateSketch(sketch);
+    }
 }
 
 
@@ -852,6 +972,9 @@ void QGSPage::refreshViews()
             itemView->updateView(true);
         }
     }
+    for (auto* sketch : getSketches()) {
+        sketch->updateView();
+    }
 
     updateScreenScale();
 }
@@ -925,6 +1048,21 @@ void QGSPage::fixOrphans(bool force)
         if (!qv)
             attachView(dv);
     }
+
+    const std::vector<App::DocumentObject*> pageSketches = thisPage->getSketches();
+    for (auto* sketch : pageSketches) {
+        if (!sketch->isRemoving() && !findSketchForDocObj(sketch)) {
+            attachSketch(sketch);
+        }
+    }
+    for (auto* qSketch : getSketches()) {
+        if (std::find(pageSketches.begin(), pageSketches.end(), qSketch->getSketchObject())
+            == pageSketches.end()) {
+            removeItem(qSketch);
+            delete qSketch;
+        }
+    }
+
     // if qView doesn't have a Feature on this Page, delete it
     std::vector<QGIView*> qvss = getViews();
     // qvss may contain an item and its child item(s) and to avoid to access a deleted item a QPointer is needed
