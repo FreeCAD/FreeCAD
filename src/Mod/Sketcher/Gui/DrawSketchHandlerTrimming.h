@@ -34,10 +34,10 @@
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
-#include "DrawSketchHandler.h"
+#include "DrawSketchControllableHandler.h"
+#include "DrawSketchDefaultWidgetController.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
-#include "SnapManager.h"
 
 
 namespace SketcherGui
