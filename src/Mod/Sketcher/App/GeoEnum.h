@@ -25,6 +25,7 @@
 #pragma once
 
 #include <functional>
+#include <string>
 
 #include <FCConfig.h>
 
@@ -71,7 +72,7 @@ enum GeoEnum
     RtPnt = -1,   // GeoId of the Root Point
     HAxis = -1,   // GeoId of the Horizontal Axis
     VAxis = -2,   // GeoId of the Vertical Axis
-    RefExt = -3,  // Starting GeoID of external geometry ( negative geoIds starting at this index)
+    RefExt = -3,  // Starting GeoID of external geometry (negative geoIds starting at this index)
     GeoUndef = -2000  // GeoId of an undefined Geometry (uninitialised or unused GeoId)
 };
 

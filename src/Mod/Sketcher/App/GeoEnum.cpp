@@ -26,6 +26,7 @@
 #include "GeoEnum.h"
 
 #include <FCConfig.h>
+#include <string>
 
 using namespace Sketcher;
 
