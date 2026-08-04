@@ -81,13 +81,44 @@ App::Property* PropertyContainer::addDynamicProperty(
     return dynamicProps.addDynamicProperty(*this, type, name, group, doc, attr, ro, hidden);
 }
 
-Property *PropertyContainer::getPropertyByName(const char* name) const
+void PropertyContainer::addPropertyAlias(
+    const char* canonicalName, const char* alias, PropertyAliasType aliasType)
+{
+    if (!canonicalName || !alias || canonicalName[0] == '\0' || alias[0] == '\0') {
+        return;
+    }
+    _propertyAliases[alias] = {.canonicalName = canonicalName, .type = aliasType};
+}
+
+Property *PropertyContainer::getPropertyByName(const char* name, PropertyLookupMode mode) const
 {
     auto prop = dynamicProps.getDynamicPropertyByName(name);
     if (prop) {
         return prop;
     }
-    return getPropertyData().getPropertyByName(this,name);
+    prop = getPropertyData().getPropertyByName(this, name);
+    if (prop) {
+        return prop;
+    }
+    // Alias fallback — only reached when normal lookup finds nothing.
+    if (mode == PropertyLookupMode::WithoutAliases || _propertyAliases.empty()) {
+        return nullptr;
+    }
+    if (auto it = _propertyAliases.find(name); it != _propertyAliases.end()) {
+        const auto& entry = it->second;
+        if (entry.type == PropertyAliasType::Deprecated) {
+            FC_WARN("Property '" << name << "' in '" << getFullName()
+                    << "' is deprecated, use '" << entry.canonicalName << "' instead.");
+        }
+        // Resolve the canonical name directly without going through the alias map again,
+        // which prevents infinite loops if aliases are accidentally chained or cyclic.
+        auto resolved = dynamicProps.getDynamicPropertyByName(entry.canonicalName.c_str());
+        if (!resolved) {
+            resolved = getPropertyData().getPropertyByName(this, entry.canonicalName.c_str());
+        }
+        return resolved;
+    }
+    return nullptr;
 }
 
 void PropertyContainer::getPropertyMap(std::map<std::string,Property*> &Map) const
@@ -333,7 +364,8 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
 
     for (int i=0;i<transientCount; ++i) {
         reader.readElement("_Property");
-        Property* prop = getPropertyByName(reader.getAttribute<const char*>("name"));
+        Property* prop = getPropertyByName(reader.getAttribute<const char*>("name"),
+                                           PropertyLookupMode::WithoutAliases);
         if(prop)
             FC_TRACE("restore transient '" << prop->getName() << "'");
         if(prop && reader.hasAttribute("status"))
@@ -349,7 +381,7 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
         // not its name. In this case we would force to read-in a wrong property
         // type and the behaviour would be undefined.
         try {
-            auto prop = getPropertyByName(PropName.c_str());
+            auto prop = getPropertyByName(PropName.c_str(), PropertyLookupMode::WithoutAliases);
             if (!prop || prop->getContainer() != this) {
                 prop = dynamicProps.restore(*this,PropName.c_str(),TypeName.c_str(),reader);
             }
