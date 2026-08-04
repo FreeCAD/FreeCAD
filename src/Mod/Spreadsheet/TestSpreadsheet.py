@@ -1598,7 +1598,6 @@ class SpreadsheetCases(unittest.TestCase):
         """Test deleted aliases by undo remains in database"""
         sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
 
-        self.doc.UndoMode = 1
         self.doc.openTransaction("create alias")
         sheet.setAlias("B2", "test")
         self.doc.commitTransaction()
@@ -1711,7 +1710,6 @@ class SpreadsheetCases(unittest.TestCase):
         )
 
         self.doc.recompute()
-        self.doc.UndoMode = 0
         self.doc.removeObject("Body")
         sheet.clearAll()
 

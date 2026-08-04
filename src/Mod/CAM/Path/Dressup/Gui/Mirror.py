@@ -285,7 +285,7 @@ class CommandPathDressup:
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "MirrorDressup")'
         )
         FreeCADGui.doCommand("Path.Dressup.Gui.Mirror.ObjectDressup(obj)")
-        FreeCADGui.doCommand("baseOp = FreeCAD.ActiveDocument." + op.Name)
+        FreeCADGui.doCommand(f"baseOp = FreeCAD.ActiveDocument.getObject('{op.Name}')")
         FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(baseOp)")
         FreeCADGui.doCommand("obj.Base = baseOp")
         FreeCADGui.doCommand("job.Proxy.addOperation(obj, baseOp)")

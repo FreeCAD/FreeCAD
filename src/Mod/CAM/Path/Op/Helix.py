@@ -169,7 +169,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "Helix Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Offset inner radius"
+                "Set how much stock to leave on the inner wall for the operation."
                 "\nDefault inner radius for Internal profile is Tool radius,"
                 " and can not be less than (-ToolRadius)"
                 "\nFor External profile - profile radius",
@@ -181,7 +181,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "Helix Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Extra offset from the profile",
+                "Set how much stock to leave on the outer wall for the operation.",
             ),
         )
         obj.addProperty(
@@ -307,6 +307,8 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         if not obj.Document.Restoring:
             self.opCheckParameters(obj)
 
+        super().opOnChanged(obj, prop)
+
     def opSetEditorModes(self, obj):
         obj.setEditorMode("Direction", ("ReadOnly", "Hidden"))
         obj.setPropertyStatus("Direction", ("ReadOnly", "Output"))
@@ -363,7 +365,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 "Helix Drill",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Offset inner radius"
+                    "Set how much stock to leave on the inner wall for the operation."
                     "\nDefault inner radius is Tool radius"
                     " and can not be less than (-ToolRadius)"
                     "\nFor External profile - profile radius",
@@ -379,7 +381,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 "Helix Drill",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Extra offset from the profile",
+                    "Set how much stock to leave on the outer wall for the operation.",
                 ),
             )
         if hasattr(obj, "OffsetExtra"):
@@ -711,7 +713,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
             # Split depth by step down
             work_distance = obj.StartDepth.Value - obj.FinalDepth.Value
-            iters = math.ceil(round(work_distance / obj.StepDown.Value, 6))
+            iters = Path.Geom.ceil(work_distance / obj.StepDown.Value)
             centerTop = FreeCAD.Vector(hole["x"], hole["y"], obj.StartDepth.Value)
             centerBottom = FreeCAD.Vector(centerTop.x, centerTop.y, centerTop.z)
             retractDistance = safeHeight - obj.StartDepth.Value

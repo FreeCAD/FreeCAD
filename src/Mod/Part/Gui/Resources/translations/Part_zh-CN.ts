@@ -1251,19 +1251,18 @@
   <context>
     <name>CmdPartBox</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="113"/>
+      <location filename="../../CommandParametric.cpp" line="116"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="114"/>
-      <location filename="../../CommandParametric.cpp" line="125"/>
-      <location filename="../../CommandParametric.cpp" line="130"/>
+      <location filename="../../CommandParametric.cpp" line="117"/>
+      <location filename="../../CommandParametric.cpp" line="127"/>
       <source>Cube</source>
       <translation>立方体</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="115"/>
+      <location filename="../../CommandParametric.cpp" line="118"/>
       <source>Creates a solid cube</source>
       <translation>创建一个实心立方体</translation>
     </message>
@@ -1451,19 +1450,18 @@
   <context>
     <name>CmdPartCone</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="201"/>
+      <location filename="../../CommandParametric.cpp" line="204"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="202"/>
-      <location filename="../../CommandParametric.cpp" line="213"/>
-      <location filename="../../CommandParametric.cpp" line="218"/>
+      <location filename="../../CommandParametric.cpp" line="205"/>
+      <location filename="../../CommandParametric.cpp" line="215"/>
       <source>Cone</source>
       <translation>圆锥体</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="203"/>
+      <location filename="../../CommandParametric.cpp" line="206"/>
       <source>Creates a solid cone</source>
       <translation>创建一个实心圆锥</translation>
     </message>
@@ -1507,19 +1505,18 @@
   <context>
     <name>CmdPartCylinder</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="69"/>
+      <location filename="../../CommandParametric.cpp" line="72"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="70"/>
-      <location filename="../../CommandParametric.cpp" line="81"/>
-      <location filename="../../CommandParametric.cpp" line="86"/>
+      <location filename="../../CommandParametric.cpp" line="73"/>
+      <location filename="../../CommandParametric.cpp" line="83"/>
       <source>Cylinder</source>
       <translation>圆柱体</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="71"/>
+      <location filename="../../CommandParametric.cpp" line="74"/>
       <source>Creates a solid cylinder</source>
       <translation>创建一个实心圆柱</translation>
     </message>
@@ -1707,17 +1704,17 @@
   <context>
     <name>CmdPartMakeSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1243"/>
+      <location filename="../../Command.cpp" line="1241"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1244"/>
+      <location filename="../../Command.cpp" line="1242"/>
       <source>Convert to Solid</source>
       <translation>转换为实体</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1245"/>
+      <location filename="../../Command.cpp" line="1243"/>
       <source>Converts the selected shell or compound to a solid</source>
       <translation>将选定的壳体或复合体转换为实体</translation>
     </message>
@@ -1873,17 +1870,17 @@ of the projection.</source>
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1336"/>
+      <location filename="../../Command.cpp" line="1334"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1337"/>
+      <location filename="../../Command.cpp" line="1335"/>
       <source>Reverse Shapes</source>
       <translation>反转形状</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1338"/>
+      <location filename="../../Command.cpp" line="1336"/>
       <source>Reverses the orientation of the selected shapes</source>
       <translation>反转选定形状的方向</translation>
     </message>
@@ -1999,19 +1996,18 @@ of the projection.</source>
   <context>
     <name>CmdPartSphere</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="157"/>
+      <location filename="../../CommandParametric.cpp" line="160"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="158"/>
-      <location filename="../../CommandParametric.cpp" line="169"/>
-      <location filename="../../CommandParametric.cpp" line="174"/>
+      <location filename="../../CommandParametric.cpp" line="161"/>
+      <location filename="../../CommandParametric.cpp" line="171"/>
       <source>Sphere</source>
       <translation>球体</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="159"/>
+      <location filename="../../CommandParametric.cpp" line="162"/>
       <source>Creates a solid sphere</source>
       <translation>创建一个实心球体</translation>
     </message>
@@ -2065,19 +2061,18 @@ of the projection.</source>
   <context>
     <name>CmdPartTorus</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="245"/>
+      <location filename="../../CommandParametric.cpp" line="248"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="246"/>
-      <location filename="../../CommandParametric.cpp" line="257"/>
-      <location filename="../../CommandParametric.cpp" line="262"/>
+      <location filename="../../CommandParametric.cpp" line="249"/>
+      <location filename="../../CommandParametric.cpp" line="259"/>
       <source>Torus</source>
       <translation>圆环体</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="247"/>
+      <location filename="../../CommandParametric.cpp" line="250"/>
       <source>Creates a solid torus</source>
       <translation>创建一个实心圆环体</translation>
     </message>
@@ -2139,12 +2134,12 @@ of the projection.</source>
       <translation>导入部件</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1212"/>
+      <location filename="../../Command.cpp" line="1214"/>
       <source>Import Curve Net</source>
       <translation>导入曲线网络</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1350"/>
+      <location filename="../../Command.cpp" line="1348"/>
       <source>Reverse</source>
       <translation>反转</translation>
     </message>
@@ -2179,17 +2174,17 @@ of the projection.</source>
       <translation>添加坐标系</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2574"/>
+      <location filename="../../Command.cpp" line="2575"/>
       <source>Add datum plane</source>
       <translation>添加基准平面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2607"/>
+      <location filename="../../Command.cpp" line="2609"/>
       <source>Add datum line</source>
       <translation>添加基准线</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2640"/>
+      <location filename="../../Command.cpp" line="2643"/>
       <source>Add datum point</source>
       <translation>添加基准点</translation>
     </message>
@@ -2265,7 +2260,7 @@ of the projection.</source>
       <translation>扫掠</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1615"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1620"/>
       <source>Project on surface</source>
       <translation>投影到曲面</translation>
     </message>
@@ -4139,17 +4134,17 @@ Check one or more edge entities first.</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="140"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="141"/>
       <source>Projection object</source>
       <translation>投影对象</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="167"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="168"/>
       <source>No active document</source>
       <translation>没有活动文档</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="173"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="174"/>
       <source>Cannot create a projection object</source>
       <translation>无法创建投影对象</translation>
     </message>
@@ -4331,12 +4326,12 @@ Check one or more edge entities first.</source>
       <translation>设置过小的偏差会导致细分曲面计算时间更长，从而冻结或减慢 GUI。</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="110"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="113"/>
       <source>Angle deflection</source>
       <translation>角度偏差</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="111"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="114"/>
       <source>Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
       <translation>设置过小的角度偏差会导致细分曲面计算时间更长，从而冻结或减慢 GUI。</translation>
     </message>
@@ -5004,17 +4999,17 @@ the sketch plane's normal vector will be used</source>
   <context>
     <name>PartGui::ResultModel</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="363"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="364"/>
       <source>Name</source>
       <translation>名称</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="365"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="366"/>
       <source>Type</source>
       <translation>类型</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="367"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="368"/>
       <source>Error</source>
       <translation>错误</translation>
     </message>
@@ -5494,28 +5489,28 @@ of the object being attached.</source>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1188"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1189"/>
       <source>Shape Content</source>
       <translation>造型内容</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1200"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1455"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1201"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1456"/>
       <source>Settings</source>
       <translation>设置</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1210"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1211"/>
       <source>Default: false</source>
       <translation>默认：false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1217"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1218"/>
       <source>Run boolean operation check</source>
       <translation>运行布尔操作检查</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1219"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1220"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
@@ -5523,165 +5518,165 @@ mean the checked object is unusable.  Default: false</source>
 这些错误并不总是意味着被检查对象不可用。默认：false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1228"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1229"/>
       <source>Single-threaded</source>
       <translation>单线程</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1230"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1231"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation>在单线程中运行几何检查。这较慢，
 但更稳定。默认：false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1243"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1244"/>
       <source>Log errors</source>
       <translation>记录错误</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1244"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1245"/>
       <source>Log errors to report view.  Default: true</source>
       <translation>将错误记录到报告视图。默认：true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1255"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1256"/>
       <source>Expand shape content</source>
       <translation>展开形状内容</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1257"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1258"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>展开形状内容。更改将在下次使用
 几何检查工具时生效。默认：false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1270"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1271"/>
       <source>Advanced shape content</source>
       <translation>高级形状内容</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1272"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1273"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>显示高级形状内容。更改将在下次使用
 几何检查工具时生效。默认：false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1284"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1285"/>
       <source>
 Individual boolean operation checks:</source>
       <translation>
 单独的布尔操作检查：</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1287"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1288"/>
       <source>Bad type</source>
       <translation>错误类型</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1299"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1300"/>
       <source>Self-intersect</source>
       <translation>自相交</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1311"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1312"/>
       <source>Too small edge</source>
       <translation>边过小</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1323"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1324"/>
       <source>Nonrecoverable face</source>
       <translation>不可恢复的面</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1335"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1336"/>
       <source>Continuity</source>
       <translation>连续性</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1347"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1348"/>
       <source>Incompatibility of face</source>
       <translation>面不兼容</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1359"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1360"/>
       <source>Incompatibility of vertex</source>
       <translation>顶点不兼容</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1371"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1372"/>
       <source>Incompatibility of edge</source>
       <translation>边不兼容</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1383"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1384"/>
       <source>Invalid curve on surface</source>
       <translation>曲面上的无效曲线</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1454"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1455"/>
       <source>Run Check</source>
       <translation>运行检查</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1288"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1289"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>检查错误的参数类型。默认：true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1207"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1208"/>
       <source>Skip this settings page</source>
       <translation>跳过此设置页面</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1210"/>
       <source>Skip this settings page and run the geometry check automatically</source>
       <translation>跳过此设置页面并自动运行几何检查</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1300"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1301"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation>检查自相交。默认：true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1312"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1313"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation>检查过小的边。默认：true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1324"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1325"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation>检查不可恢复的面。默认：true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1336"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1337"/>
       <source>Check for continuity.  Default: true</source>
       <translation>检查连续性。默认：true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1348"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1349"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation>检查不兼容的面。默认：true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1360"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1361"/>
       <source>Check for incompatible vertices.  Default: true</source>
       <translation>检查不兼容的顶点。默认：true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1372"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1373"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation>检查不兼容的边。默认：true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1384"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1385"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation>检查曲面上的无效曲线。默认：true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1466"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1467"/>
       <source>Results</source>
       <translation>结果</translation>
     </message>
@@ -5689,95 +5684,95 @@ Individual boolean operation checks:</source>
   <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="402"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="403"/>
       <source>Check Geometry Results</source>
       <translation>几何检查结果</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="425"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="426"/>
       <source>Check is running…</source>
       <translation>检查正在运行…</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="454"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="455"/>
       <source>Boolean operation check…</source>
       <translation>布尔操作检查…</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="457"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="458"/>
       <source>Check geometry</source>
       <translation>检查几何体</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="489"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="490"/>
       <source>Null shape</source>
       <translation>空形状</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="490"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="502"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="491"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="503"/>
       <source>Skipped</source>
       <translation>已跳过</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="501"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="502"/>
       <source>Infinite shape</source>
       <translation>无限形状</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="528"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="529"/>
       <source>Invalid</source>
       <translation>无效</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="554"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="555"/>
       <source>Checking</source>
       <translation>检查中</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="578"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="579"/>
       <source>No errors</source>
       <translation>无错误</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="590"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="591"/>
       <source>%1 processed out of %2 selected</source>
       <translation>已处理 %1，共 %2 个选定项</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskCheckGeometry.cpp" line="591"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="592"/>
       <source>%n invalid shapes.</source>
       <translation>
         <numerusform>%n 个无效形状。</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="592"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="593"/>
       <source>to report view.</source>
       <translation>到报告视图。</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="739"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="740"/>
       <source>Global minimum</source>
       <translation>全局最小值</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="747"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="748"/>
       <source>Global average</source>
       <translation>全局平均值</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="755"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="756"/>
       <source>Global maximum</source>
       <translation>全局最大值</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="714"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="715"/>
       <source>Checked object</source>
       <translation>已检查对象</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="731"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="732"/>
       <source>Tolerance information</source>
       <translation>公差信息</translation>
     </message>
@@ -6049,8 +6044,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="51"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="59"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
       <location filename="../../ViewProvider.cpp" line="53"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
       <source>Edit %1</source>
       <translation>编辑 %1</translation>
     </message>
@@ -6148,292 +6143,292 @@ Continue?</source>
       <translation>没有参照被选中</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Edge</source>
       <translation>边</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
       <source>Vertex</source>
       <translation>顶点</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="77"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
       <source>Compound</source>
       <translation>组合</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
       <source>Compound solid</source>
       <translation>复合实体</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
       <source>Solid</source>
       <translation>实体</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Shell</source>
       <translation>壳体</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Wire</source>
       <translation>线框</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="86"/>
       <source>Shape</source>
       <translation>形状</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="101"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
       <source>No error</source>
       <translation>无错误</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="103"/>
       <source>Invalid point on curve</source>
       <translation>曲线上的无效点</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="104"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
       <source>Invalid point on curve on surface</source>
       <translation>曲面上曲线上的无效点</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
       <source>Invalid point on surface</source>
       <translation>曲面上的无效点</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
       <source>No 3D curve</source>
       <translation>无3D曲线</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
       <source>Multiple 3D curves</source>
       <translation>多个3D曲线</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
       <source>Invalid 3D curve</source>
       <translation>无效的3D曲线</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
       <source>No curve on surface</source>
       <translation>曲面上无曲线</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
       <source>Invalid curve on surface</source>
       <translation>曲面上的无效曲线</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
       <source>Invalid curve on closed surface</source>
       <translation>封闭曲面上的无效曲线</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
       <source>Invalid same range flag</source>
       <translation>无效的相同范围标志</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
       <source>Invalid same parameter flag</source>
       <translation>无效的相同参数标志</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
       <source>Invalid degenerated flag</source>
       <translation>无效的退化标志</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
       <source>Free edge</source>
       <translation>自由边</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
       <source>Invalid multi-connexity</source>
       <translation>无效的多连通性</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
       <source>Invalid range</source>
       <translation>无效范围</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
       <source>Empty wire</source>
       <translation>空线框</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
       <source>Redundant edge</source>
       <translation>冗余边</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
       <source>Self-intersecting wire</source>
       <translation>自相交线框</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
       <source>No surface</source>
       <translation>无曲面</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
       <source>Invalid wire</source>
       <translation>无效线框</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
       <source>Redundant wire</source>
       <translation>冗余线框</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
       <source>Intersecting wires</source>
       <translation>相交线框</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
       <source>Invalid imbrication of wires</source>
       <translation>无效的线框叠覆</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
       <source>Empty shell</source>
       <translation>空壳体</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
       <source>Redundant face</source>
       <translation>冗余面</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
       <source>Unorientable shape</source>
       <translation>不可定向形状</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
       <source>Not closed</source>
       <translation>未封闭</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
       <source>Not connected</source>
       <translation>未连接</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="135"/>
       <source>Sub-shape not in shape</source>
       <translation>子形状不在形状内</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="135"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="136"/>
       <source>Bad orientation</source>
       <translation>方向错误</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="136"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="137"/>
       <source>Bad orientation of sub-shape</source>
       <translation>子形状方向错误</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="137"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="138"/>
       <source>Invalid tolerance value</source>
       <translation>无效的容差值</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="138"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="139"/>
       <source>Check failed</source>
       <translation>检查失败</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="147"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="148"/>
       <source>No result</source>
       <translation>无结果</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="150"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="151"/>
       <source>Out of enum range:</source>
       <translation>超出枚举范围：</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="162"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
       <source>Boolean operation: unknown check</source>
       <translation>布尔操作：未知检查</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
       <source>Boolean operation: bad type</source>
       <translation>布尔操作：类型错误</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
       <source>Boolean operation: self-intersection found</source>
       <translation>布尔操作：发现自相交</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
       <source>Boolean operation: edge too small</source>
       <translation>布尔操作：边过小</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
       <source>Boolean operation: non-recoverable face</source>
       <translation>布尔操作：不可恢复的面</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="168"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="169"/>
       <source>Boolean operation: incompatibility of vertex</source>
       <translation>布尔操作：顶点不兼容</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="171"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="172"/>
       <source>Boolean operation: incompatibility of edge</source>
       <translation>布尔操作：边不兼容</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="174"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="175"/>
       <source>Boolean operation: incompatibility of face</source>
       <translation>布尔操作：面不兼容</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="176"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="177"/>
       <source>Boolean operation: aborted</source>
       <translation>布尔操作：已中止</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="179"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="180"/>
       <source>Boolean operation: invalid curve on surface</source>
       <translation>布尔操作：曲面上的无效曲线</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="181"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="182"/>
       <source>Boolean operation: not valid</source>
       <translation>布尔操作：无效</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="177"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="178"/>
       <source>Boolean operation: GeomAbs_C0</source>
       <translation>布尔操作：GeomAbs_C0</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="857"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="858"/>
       <source>Invalid</source>
       <translation>无效</translation>
     </message>
@@ -6694,10 +6689,10 @@ Continue?</source>
       <translation>选择错误</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>继续</translation>
     </message>
@@ -7158,12 +7153,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part::FaceMakerExtrusion</name>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="421"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="427"/>
       <source>Part Extrude facemaker</source>
       <translation>报表视图拉伸面生成器</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="426"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="432"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation>支持用孔制作面孔, 不支持嵌套。</translation>
     </message>
@@ -7283,17 +7278,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2663"/>
+      <location filename="../../Command.cpp" line="2667"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2664"/>
+      <location filename="../../Command.cpp" line="2668"/>
       <source>Datums</source>
       <translation>基准</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2666"/>
+      <location filename="../../Command.cpp" line="2670"/>
       <source>Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</source>
       <translation>创建一个基准对象（坐标系、平面、线或点），可以附着到其他对象</translation>
     </message>
@@ -7301,7 +7296,7 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6701"/>
+      <location filename="../../../App/Geometry.cpp" line="6723"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>无法猜测曲线的交点。请尝试在要倒角的曲线的顶点之间添加重合约束。</translation>
     </message>
@@ -7309,17 +7304,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatumPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="2562"/>
+      <location filename="../../Command.cpp" line="2563"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2563"/>
+      <location filename="../../Command.cpp" line="2564"/>
       <source>Datum Plane</source>
       <translation>基准面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2564"/>
+      <location filename="../../Command.cpp" line="2565"/>
       <source>Creates a datum plane that can be attached to other objects</source>
       <translation>创建一个可以附着到其他对象的基准平面</translation>
     </message>
@@ -7327,17 +7322,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatumLine</name>
     <message>
-      <location filename="../../Command.cpp" line="2595"/>
+      <location filename="../../Command.cpp" line="2597"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2596"/>
+      <location filename="../../Command.cpp" line="2598"/>
       <source>Datum Line</source>
       <translation>基准线</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2597"/>
+      <location filename="../../Command.cpp" line="2599"/>
       <source>Creates a datum line that can be attached to other objects</source>
       <translation>创建一个可以附着到其他对象的基准线</translation>
     </message>
@@ -7345,17 +7340,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatumPoint</name>
     <message>
-      <location filename="../../Command.cpp" line="2628"/>
+      <location filename="../../Command.cpp" line="2631"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2629"/>
+      <location filename="../../Command.cpp" line="2632"/>
       <source>Datum Point</source>
       <translation>基准点</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2630"/>
+      <location filename="../../Command.cpp" line="2633"/>
       <source>Creates a datum point that can be attached to other objects</source>
       <translation>创建一个可以附着到其他对象的基准点</translation>
     </message>
@@ -7695,18 +7690,18 @@ Overlapping volumes of the shapes will be removed.</source>
       <translation>角度间距</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="423"/>
-      <location filename="../../PatternParametersWidget.cpp" line="519"/>
+      <location filename="../../PatternParametersWidget.cpp" line="425"/>
+      <location filename="../../PatternParametersWidget.cpp" line="521"/>
       <source>Spacing %1</source>
       <translation>间距 %1</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="439"/>
+      <location filename="../../PatternParametersWidget.cpp" line="441"/>
       <source>Remove this spacing definition.</source>
       <translation>移除此间距定义。</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="940"/>
+      <location filename="../../PatternParametersWidget.cpp" line="942"/>
       <source>Reset spacing</source>
       <translation>重置间距</translation>
     </message>
@@ -7739,6 +7734,19 @@ Overlapping volumes of the shapes will be removed.</source>
       <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
       <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
       <translation>在交叉处分割边线，并找出所有封闭的面区域。能够处理任意重叠的几何体。</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerUnified</name>
+    <message>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
+      <source>Unified facemaker</source>
+      <translation>统一制面工具</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
+      <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
+      <translation>统一：处理嵌套孔、重叠线和弯曲表面</translation>
     </message>
   </context>
 </TS>

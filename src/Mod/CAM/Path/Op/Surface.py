@@ -1608,7 +1608,7 @@ class ObjectSurface(PathOp.ObjectOp):
         ALL = []
         PTS = []
         optLinTrans = obj.OptimizeStepOverTransitions
-        safe = math.ceil(obj.SafeHeight.Value)
+        safe = Path.Geom.ceil(obj.SafeHeight.Value)
 
         if optLinTrans is True:
             for P in LN:
@@ -1667,7 +1667,7 @@ class ObjectSurface(PathOp.ObjectOp):
     def _planarMultipassProcess(self, obj, PNTS, lMax):
         output = []
         optimize = obj.OptimizeLinearPaths
-        safe = math.ceil(obj.SafeHeight.Value)
+        safe = Path.Geom.ceil(obj.SafeHeight.Value)
         lenPNTS = len(PNTS)
         prcs = True
         onHold = False

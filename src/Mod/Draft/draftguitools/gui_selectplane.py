@@ -92,6 +92,7 @@ class Draft_SelectPlane:
         if hasattr(Gui, "Snapper"):
             Gui.Snapper.setTrackers()
             self.grid = Gui.Snapper.grid
+        self.doc_name = App.ActiveDocument.Name if App.ActiveDocument is not None else None
         self.offset = 0
         self.center = params.get_param("CenterPlaneOnView")
 
@@ -104,12 +105,12 @@ class Draft_SelectPlane:
         form.fieldOffset.setText(Units.Quantity(self.offset, Units.Length).UserString)
         form.checkCenter.setChecked(self.center)
         try:
-            q = Units.Quantity(params.get_param("gridSpacing"))
+            q = Units.Quantity(params.get_grid_param("gridSpacing", self.doc_name))
         except ValueError:
             q = Units.Quantity("1 mm")
         form.fieldGridSpacing.setText(q.UserString)
-        form.fieldGridMainLine.setValue(params.get_param("gridEvery"))
-        form.fieldGridExtension.setValue(params.get_param("gridSize"))
+        form.fieldGridMainLine.setValue(params.get_grid_param("gridEvery", self.doc_name))
+        form.fieldGridExtension.setValue(params.get_grid_param("gridSize", self.doc_name))
         form.fieldSnapRadius.setValue(params.get_param("snapRange"))
 
         # Set icons
@@ -269,33 +270,30 @@ class Draft_SelectPlane:
         self.center = bool(getattr(val, "value", val))
         params.set_param("CenterPlaneOnView", self.center)
 
+    def _update_grid(self):
+        params.refresh_grid(self.doc_name)
+        if self.grid is not None:
+            self.grid.show_during_command = True
+            self.grid.on()
+
     def on_set_grid_size(self, text):
         try:
             q = Units.Quantity(text)
-        except Exception:
+        except (TypeError, ValueError):
             pass
         else:
-            params.set_param("gridSpacing", q.UserString)
-            # ParamObserver handles grid changes. See params.py.
-            if self.grid is not None:
-                self.grid.show_during_command = True
-                self.grid.on()
+            if params.set_grid_param("gridSpacing", q.UserString, self.doc_name):
+                self._update_grid()
 
     def on_set_main_line(self, i):
         if i > 1:
-            params.set_param("gridEvery", i)
-            # ParamObserver handles grid changes. See params.py.
-            if self.grid is not None:
-                self.grid.show_during_command = True
-                self.grid.on()
+            if params.set_grid_param("gridEvery", i, self.doc_name):
+                self._update_grid()
 
     def on_set_extension(self, i):
         if i > 1:
-            params.set_param("gridSize", i)
-            # ParamObserver handles grid changes. See params.py.
-            if self.grid is not None:
-                self.grid.show_during_command = True
-                self.grid.on()
+            if params.set_grid_param("gridSize", i, self.doc_name):
+                self._update_grid()
 
     def on_set_snap_radius(self, i):
         params.set_param("snapRange", i)

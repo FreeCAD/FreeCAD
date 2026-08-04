@@ -141,7 +141,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 "Profile",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Extra value to stay away from final profile- good for roughing toolpath",
+                    "Set how much stock to leave on the walls for the operation.",
                 ),
             ),
             (
@@ -1306,7 +1306,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             E = useWire.Edges[e]
             LE = E.Length
             if LE > (self.radius * 2):
-                nt = math.ceil(LE / (tagRad * math.pi))  # (tagRad * 2 * math.pi) is circumference
+                nt = Path.Geom.ceil(LE / (tagRad * math.pi))
+                # (tagRad * 2 * math.pi) is circumference
             else:
                 nt = 4  # desired + 1
             mid = LE / nt

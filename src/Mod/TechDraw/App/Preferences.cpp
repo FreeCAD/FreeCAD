@@ -89,7 +89,7 @@ Base::Color Preferences::selectColor()
                                              .GetGroup("BaseApp")
                                              ->GetGroup("Preferences")
                                              ->GetGroup("View");
-    unsigned int defColor = hGrp->GetUnsigned("SelectionColor", 0x00FF00FF);//#00FF00 lime
+    unsigned int defColor = hGrp->GetUnsigned("SelectionColor", 0x00ABFFFF);  //#00ABFF blue
 
     Base::Color fcColor;
     fcColor.setPackedValue(getPreferenceGroup("Colors")->GetUnsigned("SelectColor", defColor));
@@ -103,7 +103,7 @@ Base::Color Preferences::preselectColor()
                                              .GetGroup("BaseApp")
                                              ->GetGroup("Preferences")
                                              ->GetGroup("View");
-    unsigned int defColor = hGrp->GetUnsigned("HighlightColor", 0xFFFF00FF);//#FFFF00 yellow
+    unsigned int defColor = hGrp->GetUnsigned("HighlightColor", 0x0AC8FFFF);  //#0AC8FF cyan
 
     Base::Color fcColor;
     fcColor.setPackedValue(getPreferenceGroup("Colors")->GetUnsigned("PreSelectColor", defColor));

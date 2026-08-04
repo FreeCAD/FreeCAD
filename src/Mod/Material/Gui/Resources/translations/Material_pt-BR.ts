@@ -72,7 +72,7 @@
       <location filename="../../Array3D.cpp" line="231"/>
       <location filename="../../Array3D.cpp" line="302"/>
       <source>Context Menu</source>
-      <translation>Menu de Contexto</translation>
+      <translation>Menu contextual</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="263"/>
@@ -339,7 +339,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="81"/>
       <source>Shape.TypeID / TypeID</source>
-      <translation>Shape.TypeID / TypeID</translation>
+      <translation>Shape, TypeID / TypeID</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="94"/>
@@ -364,7 +364,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="172"/>
       <source>Internal name: </source>
-      <translation>Nome interno:</translation>
+      <translation>Nome interno: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="190"/>
@@ -375,7 +375,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="192"/>
       <source>TypeID: </source>
-      <translation>TypeID: </translation>
+      <translation>TypeID </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="221"/>
@@ -456,7 +456,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="333"/>
       <source>Has value: </source>
-      <translation>Possui valor: </translation>
+      <translation>Tem valor: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="333"/>
@@ -1195,8 +1195,8 @@ Se desmarcado, eles serão classificados pelo nome.</translation>
       <translation type="unfinished">Otherwise, all changes will be lost.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="568"/>
       <location filename="../../Array2D.cpp" line="170"/>
+      <location filename="../../MaterialSave.cpp" line="568"/>
       <location filename="../../ListEdit.cpp" line="142"/>
       <source>Confirm Delete</source>
       <translation>Confirmar a exclusão</translation>
@@ -1336,7 +1336,7 @@ Se desmarcado, eles serão classificados pelo nome.</translation>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="75"/>
       <source>Migrating models…</source>
-      <translation type="unfinished">Migrating models…</translation>
+      <translation>Migrando Modelos…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="81"/>
@@ -1444,7 +1444,7 @@ Se desmarcado, eles serão classificados pelo nome.</translation>
     <message>
       <location filename="../../DlgMaterialImp.cpp" line="263"/>
       <source>Set Material</source>
-      <translation type="unfinished">Set Material</translation>
+      <translation>Definir Material</translation>
     </message>
   </context>
 </TS>

@@ -73,6 +73,7 @@
 #include "SoFCVectorizeSVGAction.h"
 #include "View3DInventorViewer.h"
 #include "View3DPy.h"
+#include "ViewParams.h"
 #include "ViewProvider.h"
 #include "ViewProviderDocumentObject.h"
 #include "WaitCursor.h"
@@ -338,15 +339,13 @@ void View3DInventor::print(QPrinter* printer)
     }
 
     QRect rect = printer->pageLayout().paintRectPixels(printer->resolution());
-    QImage img;
-    _viewer->imageFromFramebuffer(
-        rect.width(),
-        rect.height(),
-        8,
-        QColor(255, 255, 255),
-        img,
-        View3DInventorViewer::RenderIntent::RasterCapture
-    );
+    View3DInventorViewer::RenderImageOptions options;
+    options.width = rect.width();
+    options.height = rect.height();
+    options.samples = 8;
+    options.background = QColor(255, 255, 255);
+    options.intent = View3DInventorViewer::RenderIntent::RasterCapture;
+    QImage img = _viewer->renderToImage(options);
     p.drawImage(0, 0, img);
     p.end();
 }
@@ -374,7 +373,11 @@ bool View3DInventor::onMsg(const char* pMsg)
         return true;
     }
     else if (strcmp("ViewSelection", pMsg) == 0) {
-        _viewer->viewSelection();
+        _viewer->viewSelection(ViewParams::instance()->getViewSelectionExtend());
+        return true;
+    }
+    else if (strcmp("ViewSelectionExtend", pMsg) == 0) {
+        _viewer->viewSelection(true);
         return true;
     }
     else if (strncmp("Dump", pMsg, 4) == 0) {
@@ -383,37 +386,30 @@ bool View3DInventor::onMsg(const char* pMsg)
     }
     else if (strcmp("ViewBottom", pMsg) == 0) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Bottom));
-        _viewer->viewAll();
         return true;
     }
     else if (strcmp("ViewFront", pMsg) == 0) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Front));
-        _viewer->viewAll();
         return true;
     }
     else if (strcmp("ViewLeft", pMsg) == 0) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Left));
-        _viewer->viewAll();
         return true;
     }
     else if (strcmp("ViewRear", pMsg) == 0) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Rear));
-        _viewer->viewAll();
         return true;
     }
     else if (strcmp("ViewRight", pMsg) == 0) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Right));
-        _viewer->viewAll();
         return true;
     }
     else if (strcmp("ViewTop", pMsg) == 0) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Top));
-        _viewer->viewAll();
         return true;
     }
     else if (strcmp("ViewAxo", pMsg) == 0) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Isometric));
-        _viewer->viewAll();
         return true;
     }
     else if (strcmp("ViewDimetric", pMsg) == 0) {
@@ -450,10 +446,6 @@ bool View3DInventor::onMsg(const char* pMsg)
     }
     else if (strcmp("SaveCopy", pMsg) == 0) {
         getGuiDocument()->saveCopy();
-        return true;
-    }
-    else if (strcmp("AlignToSelection", pMsg) == 0) {
-        _viewer->alignToSelection();
         return true;
     }
     else if (strcmp("ZoomIn", pMsg) == 0) {
@@ -559,9 +551,6 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
         return true;
     }
     else if (strncmp("Dump", pMsg, 4) == 0) {
-        return true;
-    }
-    else if (strcmp("AlignToSelection", pMsg) == 0) {
         return true;
     }
     else if (strcmp("ZoomIn", pMsg) == 0) {

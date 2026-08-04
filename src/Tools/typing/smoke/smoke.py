@@ -152,6 +152,7 @@ def exercise(
     main_window = cast(FreeCADGui._MainWindow, object())
     mdi_view = cast(FreeCADGui._MDIView, object())
     task_dialog = cast(FreeCADGui._TaskDialog, object())
+    split_view = cast(FreeCADGui._AbstractSplitView, object())
     view = cast(FreeCADGui._View3DInventor, object())
     viewer = cast(FreeCADGui._View3DInventorViewer, object())
     resource = cast(FreeCADGui._PyResource, object())
@@ -454,6 +455,8 @@ def exercise(
     assert_type(main_window.getActiveWindow(), FreeCADGui._MDIView | None)
     assert_type(mdi_view.undoActions(), list[str])
     assert_type(mdi_view.sendMessage("ViewFit"), bool)
+    assert_type(len(split_view), int)
+    assert_type(split_view[0], FreeCADGui._View3DInventorViewer)
     assert_type(
         resource.value("objectName", "propertyName"),
         str | int | float | bool | list[str] | None,
