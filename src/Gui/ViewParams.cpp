@@ -401,8 +401,8 @@ void ViewParams::setup()
     addParameter("AxisXColor", Unsigned {0xCC3333FF});
     addParameter("AxisYColor", Unsigned {0x33CC33FF});
     addParameter("AxisZColor", Unsigned {0x3333CCFF});
-    addParameter("OriginColor", Unsigned {0xFBD62900});
-    addParameter("NeutralColor", Unsigned {0xB3B38000});
+    addParameter("OriginColor", Unsigned {0xFBD629FF});
+    addParameter("NeutralColor", Unsigned {0xB3B380FF});
     addParameter("PlacementIndicatorScale", Double {40.0});
     addParameter("DraggerScale", Double {0.03});
     addParameter("DatumScale", Double {100.0});
