@@ -62,17 +62,12 @@ class TechDrawExport DrawBrokenView: public TechDraw::DrawViewPart
 // NOLINTEND
 
 public:
-    enum class BreakType : int {
-        NONE,
-        ZIGZAG,
-        SIMPLE
-    };
+    using BreakType = DrawViewPart::BreakType;
     static const char* BreakTypeEnums[];    // NOLINT
 
     DrawBrokenView();
     ~DrawBrokenView() override = default;
 
-    App::PropertyLinkList Breaks;   // NOLINT
     App::PropertyLength   Gap;      // NOLINT
 
     App::DocumentObjectExecReturn* execute() override;
