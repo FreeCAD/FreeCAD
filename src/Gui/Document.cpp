@@ -264,6 +264,14 @@ struct DocumentP
         _editObjs.insert(sobjs.begin(), sobjs.end());
     }
 
+    void resetFailedEditing()
+    {
+        _editViewProvider = nullptr;
+        _editViewProviderParent = nullptr;
+        _editObjs.clear();
+        _editingObject = nullptr;
+    }
+
     bool tryStartEditing(
         ViewProviderDocumentObject* vp,
         App::DocumentObject* obj,
@@ -287,14 +295,17 @@ struct DocumentP
             return startEditing(svp, sobj, ModNum);
         }
         catch (const Base::Exception& e) {
+            resetFailedEditing();
             FC_ERR("startEditing:" << e.what());
             return false;
         }
         catch (const std::exception& e) {
+            resetFailedEditing();
             FC_ERR("startEditing:" << e.what());
             return false;
         }
         catch (...) {
+            resetFailedEditing();
             FC_ERR("startEditing: Unknown C++ exception");
             return false;
         }
@@ -308,9 +319,7 @@ struct DocumentP
                                   // within the viewprovider)
         _editViewProvider = svp->startEditing(ModNum);
         if (!_editViewProvider) {
-            _editViewProviderParent = nullptr;
-            _editObjs.clear();
-            _editingObject = nullptr;
+            resetFailedEditing();
             FC_LOG("object '" << sobj->getFullName() << "' refuse to edit");
             return false;
         }
