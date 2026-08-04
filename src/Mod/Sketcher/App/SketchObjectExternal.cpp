@@ -875,8 +875,7 @@ int SketchObject::addExternal(App::DocumentObject* Obj, const char* SubName, boo
     return ExternalGeometry.getValues().size() - 1;
 }
 
-int SketchObject::addExternals(App::DocumentObject* Obj,
-                               const std::vector<std::string>& SubNames)
+int SketchObject::addExternals(App::DocumentObject* Obj, const std::vector<std::string>& SubNames)
 {
     Base::StateLocker lock(managedoperation, true);
 

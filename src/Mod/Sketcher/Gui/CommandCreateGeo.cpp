@@ -84,8 +84,7 @@ bool isExternalGeometryCommandActive(Gui::Document* document)
     if (document) {
         auto* activeView = document->getActiveView();
         if (activeView) {
-            const QVariant capability =
-                activeView->property("SketcherExternalGeometryEnabled");
+            const QVariant capability = activeView->property("SketcherExternalGeometryEnabled");
             if (capability.isValid() && !capability.toBool()) {
                 return false;
             }
