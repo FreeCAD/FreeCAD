@@ -85,6 +85,7 @@
 #include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
+#include <fastsignals/connection.h>
 #include <Inventor/SoDB.h>
 #include <DAGView/DAGView.h>
 #include <TaskView/TaskView.h>
@@ -193,6 +194,8 @@ class DimensionWidget: public QPushButton, WindowParameter
 {
     Q_OBJECT
     QMenu* unitMenu = nullptr;
+    fastsignals::scoped_connection activeDocumentConnection;
+    fastsignals::scoped_connection deleteDocumentConnection;
 
 public:
     explicit DimensionWidget(QWidget* parent)
@@ -242,12 +245,12 @@ public:
         unitChanged();
         getWindowParameter()->Attach(this);
 
-        auto updateUnitLabel = [this](const Gui::Document&) {
-            unitChanged();
-        };
-
-        Gui::Application::Instance->signalActiveDocument.connect(updateUnitLabel);
-        Gui::Application::Instance->signalDeleteDocument.connect(updateUnitLabel);
+        activeDocumentConnection = Gui::Application::Instance->signalActiveDocument.connect(
+            [this](const Gui::Document&) { unitChanged(); }
+        );
+        deleteDocumentConnection = Gui::Application::Instance->signalDeleteDocument.connect(
+            [this](const Gui::Document&) { unitChanged(); }
+        );
     }
 
     ~DimensionWidget() override
@@ -354,7 +357,7 @@ private:
         QAction* act = actions[userSchema];
         QString abbreviation = act ? act->property("abbreviation").toString() : QString();
         if (!act || abbreviation.isEmpty()) {
-            setText("Units");
+            setText(qApp->translate("Gui::MainWindow", "Units"));
             setToolTip(QString());
             return;
         }
@@ -377,10 +380,11 @@ private:
         assert(actions.size() <= static_cast<qsizetype>(descriptions.size()));
         for (qsizetype i = 0; i < actions.size(); ++i) {
             const QString desc = QString::fromStdString(descriptions[i]);
+            const QString abbreviation = QString::fromStdString(abbreviations[i]);
             actions[i]->setText(desc);
             actions[i]->setToolTip(desc);
             actions[i]->setStatusTip(desc);
-            actions[i]->setProperty("abbreviation", QString::fromStdString(abbreviations[i]));
+            actions[i]->setProperty("abbreviation", abbreviation);
         }
     }
 };

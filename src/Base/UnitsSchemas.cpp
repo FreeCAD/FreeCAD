@@ -74,7 +74,9 @@ std::vector<std::string> UnitsSchemas::descriptions()
 
 std::vector<std::string> UnitsSchemas::abbreviations()
 {
-    return getVec([](const UnitsSchemaSpec& spec) { return spec.abbreviation; });
+    return getVec([](const UnitsSchemaSpec& spec) {
+        return Translation::translate("UnitsApi", spec.abbreviation);
+    });
 }
 
 std::size_t UnitsSchemas::getDecimals() const
