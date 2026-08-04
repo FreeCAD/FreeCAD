@@ -20,6 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
+# include <algorithm>
 # include <sstream>
 
 # include <Precision.hxx>
@@ -231,6 +232,19 @@ int DrawPage::getOrientation() const
 
 int DrawPage::addView(App::DocumentObject* docObj, bool setPosition)
 {
+    if (!docObj) {
+        return -1;
+    }
+
+    if (isSketch(docObj)) {
+        std::vector<App::DocumentObject*> pageItems(Views.getValues());
+        if (std::find(pageItems.begin(), pageItems.end(), docObj) == pageItems.end()) {
+            pageItems.push_back(docObj);
+            Views.setValues(pageItems);
+        }
+        return Views.getSize();
+    }
+
     if (!docObj->isDerivedFrom<DrawView>()
         && !docObj->isDerivedFrom<App::Link>()) {
         return -1;
@@ -280,7 +294,10 @@ int DrawPage::addView(App::DocumentObject* docObj, bool setPosition)
 //Note Views might be removed from document elsewhere so need to check if a View is still in Document here
 int DrawPage::removeView(App::DocumentObject* docObj)
 {
-    if (!docObj->isDerivedFrom<DrawView>() && !docObj->isDerivedFrom<App::Link>()) {
+    if (!docObj
+        || (!docObj->isDerivedFrom<DrawView>()
+            && !docObj->isDerivedFrom<App::Link>()
+            && !isSketch(docObj))) {
         return -1;
     }
 
@@ -391,6 +408,23 @@ std::vector<App::DocumentObject*> DrawPage::getViews() const
         }
     }
     return allViews;
+}
+
+bool DrawPage::isSketch(const App::DocumentObject* obj)
+{
+    return obj
+        && obj->isDerivedFrom(Base::Type::fromName("Sketcher::SketchObject"));
+}
+
+std::vector<App::DocumentObject*> DrawPage::getSketches() const
+{
+    std::vector<App::DocumentObject*> sketches;
+    for (auto* item : Views.getValues()) {
+        if (isSketch(item)) {
+            sketches.push_back(item);
+        }
+    }
+    return sketches;
 }
 
 std::vector<App::DocumentObject*> DrawPage::getAllViews() const
