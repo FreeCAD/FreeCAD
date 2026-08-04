@@ -1799,9 +1799,6 @@ void EditModeCoinManager::createEditModeInventorNodes()
 
     editModeScenegraphNodes.OriginPointMaterial = new SoMaterial;
     editModeScenegraphNodes.OriginPointMaterial->setName("OriginPointMaterial");
-    editModeScenegraphNodes.OriginPointMaterial->transparency.setValue(
-        drawingParameters.axisTransparency
-    );
     visibleOrigin->addChild(editModeScenegraphNodes.OriginPointMaterial);
 
     editModeScenegraphNodes.OriginPointDrawStyle = new SoDrawStyle;
@@ -1900,9 +1897,6 @@ void EditModeCoinManager::createEditModeInventorNodes()
     editModeScenegraphNodes.OriginPointMaterialOccluded->setName("OriginPointMaterialOccluded");
     editModeScenegraphNodes.OriginPointMaterialOccluded->diffuseColor.setValue(
         drawingParameters.FullyConstraintElementColor
-    );
-    editModeScenegraphNodes.OriginPointMaterialOccluded->transparency.setValue(
-        drawingParameters.occludedAxisTransparency
     );
     occludedOverlayRoot->addChild(editModeScenegraphNodes.OriginPointMaterialOccluded);
 
@@ -2271,20 +2265,12 @@ void EditModeCoinManager::updateInventorColors()
     editModeScenegraphNodes.RootCrossVMaterials->transparency.setValue(
         drawingParameters.axisTransparency
     );
-    editModeScenegraphNodes.OriginPointMaterial->transparency.setValue(
-        drawingParameters.axisTransparency
-    );
-
     editModeScenegraphNodes.RootCrossMaterialsOccludedH->transparency.setValue(
         drawingParameters.occludedAxisTransparency
     );
     editModeScenegraphNodes.RootCrossMaterialsOccludedV->transparency.setValue(
         drawingParameters.occludedAxisTransparency
     );
-    editModeScenegraphNodes.OriginPointMaterialOccluded->transparency.setValue(
-        drawingParameters.occludedAxisTransparency
-    );
-
     editModeScenegraphNodes.textMaterial->diffuseColor = drawingParameters.CursorTextColor;
 }
 

@@ -299,10 +299,13 @@ class Writer:
                 else:
                     activeIn = self.getAllBodies()
                 solverSection = ELW.getElasticitySolver(equation)
+                solverEigenSection = ELW.getEigenSolver(equation)
                 for body in activeIn:
                     if not self.isBodyMaterialFluid(body):
                         self._addSolver(body, solverSection)
                         ELW.handleElasticityEquation(activeIn, equation)
+                        if solverEigenSection is not None:
+                            self._addSolver(body, solverEigenSection)
         if activeIn:
             ELW.handleElasticityConstants()
             ELW.handleElasticityBndConditions()
