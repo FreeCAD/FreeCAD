@@ -24,12 +24,9 @@
 
 #include <QCheckBox>
 #include <QComboBox>
-#include <QDoubleSpinBox>
 #include <QGroupBox>
 #include <QLabel>
 #include <QMessageBox>
-#include <QSlider>
-#include <QTimer>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QGridLayout>
@@ -77,9 +74,6 @@ SectionAnalysisWidget::SectionAnalysisWidget(
 {
     setupUi();
     setupConnections();
-    updateSliderRange();
-
-    // Enable hatching by default
     onHatchToggled(true);
 }
 
@@ -129,25 +123,6 @@ void SectionAnalysisWidget::setupUi()
         presetCombo->setCurrentIndex(4);  // Custom
     }
 
-    // Normal spinboxes (hidden — internal state, angles/presets are the user interface)
-    normalX = new QDoubleSpinBox(this);
-    normalX->setRange(-1.0, 1.0);
-    normalX->setDecimals(4);
-    normalX->setValue(n.x);
-    normalX->setVisible(false);
-
-    normalY = new QDoubleSpinBox(this);
-    normalY->setRange(-1.0, 1.0);
-    normalY->setDecimals(4);
-    normalY->setValue(n.y);
-    normalY->setVisible(false);
-
-    normalZ = new QDoubleSpinBox(this);
-    normalZ->setRange(-1.0, 1.0);
-    normalZ->setDecimals(4);
-    normalZ->setValue(n.z);
-    normalZ->setVisible(false);
-
     // Angle adjustments (tilt the plane from the preset orientation)
     angleLabel1 = new QLabel(tr("X Angle:"), this);
     planeLayout->addWidget(angleLabel1, 1, 0);
@@ -190,21 +165,7 @@ void SectionAnalysisWidget::setupUi()
         }
     }
 
-    // Offset is driven by the cutting-plane dragger and, per review pierreporte feedback
-    // Intentionally not shown in the task panel.
-    offsetSpin = new Gui::QuantitySpinBox(this);
-    offsetSpin->setUnit(Base::Unit::Length);
-    offsetSpin->setRange(-1e9, 1e9);
-    offsetSpin->setSingleStep(0.01);
-    offsetSpin->setValue(feature->PlaneOffset.getValue());
-    offsetSpin->hide();
-
-    offsetSlider = new QSlider(Qt::Horizontal, this);
-    offsetSlider->setRange(0, 1000);
-    offsetSlider->setValue(500);
-    offsetSlider->hide();
-
-    // Flip
+    // Offset is driven by the cutting-plane dragger, not the task panel
     flipCheck = new QCheckBox(tr("Flip Direction"), this);
     flipCheck->setChecked(feature->FlipCut.getValue());
     planeLayout->addWidget(flipCheck, 5, 0, 1, 2);
@@ -258,24 +219,6 @@ void SectionAnalysisWidget::setupConnections()
         &SectionAnalysisWidget::onPresetChanged
     );
     connect(
-        normalX,
-        qOverload<double>(&QDoubleSpinBox::valueChanged),
-        this,
-        &SectionAnalysisWidget::onNormalXChanged
-    );
-    connect(
-        normalY,
-        qOverload<double>(&QDoubleSpinBox::valueChanged),
-        this,
-        &SectionAnalysisWidget::onNormalYChanged
-    );
-    connect(
-        normalZ,
-        qOverload<double>(&QDoubleSpinBox::valueChanged),
-        this,
-        &SectionAnalysisWidget::onNormalZChanged
-    );
-    connect(
         angle1Spin,
         qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
         this,
@@ -287,13 +230,6 @@ void SectionAnalysisWidget::setupConnections()
         this,
         &SectionAnalysisWidget::onAngle2Changed
     );
-    connect(
-        offsetSpin,
-        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-        this,
-        &SectionAnalysisWidget::onOffsetChanged
-    );
-    connect(offsetSlider, &QSlider::valueChanged, this, &SectionAnalysisWidget::onSliderMoved);
     connect(flipCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onFlipToggled);
     connect(sectionColorBtn, &Gui::ColorButton::changed, this, [this]() {
         onSectionColorChanged(sectionColorBtn->color());
@@ -302,81 +238,6 @@ void SectionAnalysisWidget::setupConnections()
     connect(perSolidColorCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onPerSolidColorToggled);
     connect(showPlaneCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onShowPlaneToggled);
     connect(updateViewCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onUpdateViewToggled);
-}
-
-void SectionAnalysisWidget::updateSliderRange()
-{
-    App::DocumentObject* source = feature->Source.getValue();
-    if (!source) {
-        return;
-    }
-
-    TopoDS_Shape sourceShape = Part::Feature::getShape(
-        source,
-        Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
-    );
-    if (sourceShape.IsNull()) {
-        return;
-    }
-
-    Bnd_Box bbox;
-    BRepBndLib::Add(sourceShape, bbox);
-    if (bbox.IsVoid()) {
-        return;
-    }
-
-    double xmin, ymin, zmin, xmax, ymax, zmax;
-    bbox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
-
-    // Project bounding box onto the normal direction
-    Base::Vector3d n = feature->PlaneNormal.getValue();
-    double len = n.Length();
-    if (len < 1e-10) {
-        return;
-    }
-    n = n / len;
-
-    // Find min/max projection
-    double corners[8][3] = {
-        {xmin, ymin, zmin},
-        {xmax, ymin, zmin},
-        {xmin, ymax, zmin},
-        {xmax, ymax, zmin},
-        {xmin, ymin, zmax},
-        {xmax, ymin, zmax},
-        {xmin, ymax, zmax},
-        {xmax, ymax, zmax}
-    };
-
-    double projMin = 1e20, projMax = -1e20;
-    for (auto& corner : corners) {
-        double proj = corner[0] * n.x + corner[1] * n.y + corner[2] * n.z;
-        projMin = std::min(projMin, proj);
-        projMax = std::max(projMax, proj);
-    }
-
-    // Shift so the spinbox is always [0, range].  The gizmo only does
-    // positive values, so we stash projMin and add it back ourselves.
-    offsetBase = projMin;
-    sliderMin = 0.0;
-    sliderMax = projMax - projMin;
-
-    offsetSpin->setRange(sliderMin, sliderMax);
-
-    // Map current PlaneOffset to shifted spinbox value
-    double val = feature->PlaneOffset.getValue() - offsetBase;
-    offsetSpin->blockSignals(true);
-    offsetSpin->setValue(val);
-    offsetSpin->blockSignals(false);
-
-    int sliderPos = 0;
-    if (sliderMax > sliderMin) {
-        sliderPos = static_cast<int>(val / sliderMax * 1000.0);
-        sliderPos = std::clamp(sliderPos, 0, 1000);
-    }
-    offsetSlider->blockSignals(true);
-    offsetSlider->setValue(sliderPos);
-    offsetSlider->blockSignals(false);
 }
 
 void SectionAnalysisWidget::onPresetChanged(int index)
@@ -455,16 +316,6 @@ void SectionAnalysisWidget::onPresetChanged(int index)
     flipCheck->blockSignals(false);
     feature->FlipCut.setValue(needFlip);
 
-    normalX->blockSignals(true);
-    normalY->blockSignals(true);
-    normalZ->blockSignals(true);
-    normalX->setValue(normal.x);
-    normalY->setValue(normal.y);
-    normalZ->setValue(normal.z);
-    normalX->blockSignals(false);
-    normalY->blockSignals(false);
-    normalZ->blockSignals(false);
-
     feature->PlaneNormal.setValue(normal);
 
     // Center the offset on the bounding box
@@ -487,7 +338,6 @@ void SectionAnalysisWidget::onPresetChanged(int index)
         }
     }
 
-    updateSliderRange();
     recompute();
 }
 
@@ -525,9 +375,11 @@ void SectionAnalysisWidget::applyAngles()
             break;
         }
         case 3:  // View Direction — use current normal as base
-        default:
-            baseNormal = Base::Vector3d(normalX->value(), normalY->value(), normalZ->value());
+        default: {
+            double len = curN.Length();
+            baseNormal = (len > 1e-10) ? curN / len : Base::Vector3d(0, 0, 1);
             break;
+        }
     }
 
     // Negate X angle to match the gizmo arc drag direction
@@ -568,19 +420,7 @@ void SectionAnalysisWidget::applyAngles()
         n = n / len;
     }
 
-    normalX->blockSignals(true);
-    normalY->blockSignals(true);
-    normalZ->blockSignals(true);
-    normalX->setValue(n.x);
-    normalY->setValue(n.y);
-    normalZ->setValue(n.z);
-    normalX->blockSignals(false);
-    normalY->blockSignals(false);
-    normalZ->blockSignals(false);
-
-    // When the normal rotates, we must adjust the offset to keep the plane
-    // passing through the same geometric point. The plane point is oldN * oldD.
-    // New offset = dot(oldPlanePoint, newNormal).
+    // Keep the plane passing through the same geometric point as it tilts
     Base::Vector3d oldN = feature->PlaneNormal.getValue();
     double oldD = feature->PlaneOffset.getValue();
     double oldLen = oldN.Length();
@@ -588,95 +428,15 @@ void SectionAnalysisWidget::applyAngles()
                                                     : Base::Vector3d(0, 0, 0);
     double newOffset = oldPlanePoint.x * n.x + oldPlanePoint.y * n.y + oldPlanePoint.z * n.z;
 
-    Base::Console().log(
-        "SectionAnalysis: angle change — planePoint (%.2f,%.2f,%.2f) "
-        "old offset %.2f → new normal (%.4f,%.4f,%.4f) new offset %.2f\n",
-        oldPlanePoint.x,
-        oldPlanePoint.y,
-        oldPlanePoint.z,
-        oldD,
-        n.x,
-        n.y,
-        n.z,
-        newOffset
-    );
-
     feature->PlaneNormal.setValue(n);
     feature->PlaneOffset.setValue(newOffset);
-    updateSliderRange();
     recompute();
-}
-
-void SectionAnalysisWidget::onNormalXChanged(double val)
-{
-    Base::Vector3d n(val, normalY->value(), normalZ->value());
-    feature->PlaneNormal.setValue(n);
-    updateSliderRange();
-    recompute();
-}
-
-void SectionAnalysisWidget::onNormalYChanged(double val)
-{
-    Base::Vector3d n(normalX->value(), val, normalZ->value());
-    feature->PlaneNormal.setValue(n);
-    updateSliderRange();
-    recompute();
-}
-
-void SectionAnalysisWidget::onNormalZChanged(double val)
-{
-    Base::Vector3d n(normalX->value(), normalY->value(), val);
-    feature->PlaneNormal.setValue(n);
-    updateSliderRange();
-    recompute();
-}
-
-void SectionAnalysisWidget::onOffsetChanged(double val)
-{
-    feature->PlaneOffset.setValue(val + offsetBase);
-
-    int sliderPos = 0;
-    if (sliderMax > 0) {
-        sliderPos = static_cast<int>(val / sliderMax * 1000.0);
-        sliderPos = std::clamp(sliderPos, 0, 1000);
-    }
-    offsetSlider->blockSignals(true);
-    offsetSlider->setValue(sliderPos);
-    offsetSlider->blockSignals(false);
-
-    deferRecompute();
-}
-
-void SectionAnalysisWidget::onSliderMoved(int val)
-{
-    double spinVal = sliderMax * val / 1000.0;
-
-    offsetSpin->blockSignals(true);
-    offsetSpin->setValue(spinVal);
-    offsetSpin->blockSignals(false);
-
-    feature->PlaneOffset.setValue(spinVal + offsetBase);
-    deferRecompute();
 }
 
 void SectionAnalysisWidget::onFlipToggled(bool on)
 {
     feature->FlipCut.setValue(on);
     recompute();
-}
-
-void SectionAnalysisWidget::deferRecompute()
-{
-    // Delay the expensive OCCT recompute so interactive dragging stays responsive.
-    // The visual clip plane + plane quad update instantly via ViewProvider::updateData().
-    // The cross-section faces (OCCT boolean) update 300ms after the last change.
-    if (!recomputeTimer) {
-        recomputeTimer = new QTimer(this);
-        recomputeTimer->setSingleShot(true);
-        recomputeTimer->setInterval(300);
-        connect(recomputeTimer, &QTimer::timeout, this, [this]() { recompute(); });
-    }
-    recomputeTimer->start();
 }
 
 void SectionAnalysisWidget::onSectionColorChanged(const QColor& color)
@@ -738,21 +498,15 @@ void SectionAnalysisWidget::recompute()
 
 void SectionAnalysisWidget::updateFromFeature()
 {
-    // Read values from feature and update all controls (without triggering signals).
-    // Keeps the current preset — decomposes the normal into angles relative to it.
+    // Sync controls from the feature without triggering signals; decomposes
+    // the normal into angles relative to the current preset.
     Base::Vector3d n = feature->PlaneNormal.getValue();
     bool flip = feature->FlipCut.getValue();
 
-    normalX->blockSignals(true);
-    normalY->blockSignals(true);
-    normalZ->blockSignals(true);
     flipCheck->blockSignals(true);
     angle1Spin->blockSignals(true);
     angle2Spin->blockSignals(true);
 
-    normalX->setValue(n.x);
-    normalY->setValue(n.y);
-    normalZ->setValue(n.z);
     flipCheck->setChecked(flip);
 
     // Decompose the current normal into angles relative to the current preset.
@@ -795,26 +549,15 @@ void SectionAnalysisWidget::updateFromFeature()
 
     angle1Spin->blockSignals(false);
     angle2Spin->blockSignals(false);
-    normalX->blockSignals(false);
-    normalY->blockSignals(false);
-    normalZ->blockSignals(false);
     flipCheck->blockSignals(false);
-
-    updateSliderRange();
 }
 
 bool SectionAnalysisWidget::accept()
 {
     try {
-        Gui::cmdAppObjectArgs(
-            feature,
-            "PlaneNormal = FreeCAD.Vector(%f, %f, %f)",
-            normalX->value(),
-            normalY->value(),
-            normalZ->value()
-        );
-        double offsetValue = offsetSpin->value().getValue() + offsetBase;
-        Gui::cmdAppObjectArgs(feature, "PlaneOffset = %f", offsetValue);
+        Base::Vector3d n = feature->PlaneNormal.getValue();
+        Gui::cmdAppObjectArgs(feature, "PlaneNormal = FreeCAD.Vector(%f, %f, %f)", n.x, n.y, n.z);
+        Gui::cmdAppObjectArgs(feature, "PlaneOffset = %f", feature->PlaneOffset.getValue());
         Gui::cmdAppObjectArgs(feature, "FlipCut = %s", flipCheck->isChecked() ? "True" : "False");
 
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");

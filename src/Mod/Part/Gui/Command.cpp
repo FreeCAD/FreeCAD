@@ -53,6 +53,7 @@
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
 
+#include <App/GeoFeatureGroupExtension.h>
 #include <App/Part.h>
 #include <Mod/Part/App/Datums.h>
 #include <Mod/Part/App/FeatureSectionAnalysis.h>
@@ -2472,21 +2473,40 @@ void CmdPartSectionAnalysis::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    // Find source: use selection if available, otherwise find the first
-    // visible shape in the document (supports no-selection workflow).
+    // An object only counts as shown if it and all its claiming ancestors
+    // (Body, Part, ...) are visible. Any features inside hidden Bodies keep
+    // their own Visibility bool flag
+    auto effectivelyVisible = [](App::DocumentObject* obj) {
+        for (auto* o = obj; o; o = App::GeoFeatureGroupExtension::getGroupOfObject(o)) {
+            if (!o->Visibility.getValue()) {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    // Find source: first shown selected object, otherwise the first shown
+    // top-level shape in the document (no selection required).
     App::DocumentObject* source = nullptr;
     auto sel = Gui::Selection().getSelectionEx();
-    if (!sel.empty()) {
-        source = sel.front().getObject();
+    for (auto& selObj : sel) {
+        auto* obj = selObj.getObject();
+        if (obj && effectivelyVisible(obj)) {
+            source = obj;
+            break;
+        }
     }
-    else {
-        // Auto-detect: prefer active Part/Body, then any visible shape
+    if (!source) {
         auto* doc = App::GetApplication().getActiveDocument();
         for (auto* obj : doc->getObjects()) {
             if (obj->isDerivedFrom(Part::Feature::getClassTypeId())
                 || obj->getTypeId().isDerivedFrom(App::Part::getClassTypeId())) {
-                auto* vp = Gui::Application::Instance->getViewProvider(obj);
-                if (vp && vp->isVisible()) {
+                // Skip objects claimed inside a Bodies or Parts. Their container is
+                // the candidate, not the internal feature.
+                if (App::GeoFeatureGroupExtension::getGroupOfObject(obj)) {
+                    continue;
+                }
+                if (effectivelyVisible(obj)) {
                     source = obj;
                     break;
                 }

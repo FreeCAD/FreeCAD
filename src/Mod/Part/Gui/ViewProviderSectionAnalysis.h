@@ -23,6 +23,8 @@
 
 #include <vector>
 
+#include <fastsignals/signal.h>
+
 #include <Mod/Part/PartGlobal.h>
 
 #include <Mod/Part/Gui/ViewProvider.h>
@@ -38,14 +40,15 @@ class SoSwitch;
 class SoTexture2;
 class SoTextureCoordinatePlane;
 
+namespace App
+{
+class DocumentObject;
+class Property;
+}  // namespace App
+
 namespace Part
 {
 class SectionAnalysis;
-}
-
-namespace PartGui
-{
-class SoFCStencilCap;
 }
 
 namespace PartGui
@@ -88,15 +91,20 @@ private:
     void updateClipPlaneEquation();
     void updatePlaneVisual();
     void updateHatchProjection();
-    void updateStencilCap();
     void applyPerSolidColors();
+
+    /// Cache the source bbox; expensive on large assemblies, so refreshed only
+    /// when the geometry can have changed not on every plane move.
+    void refreshSourceBBoxCache();
+
+    /// Recompute the section when visibility of an object under Source changes
+    void slotChangedObject(const App::DocumentObject& obj, const App::Property& prop);
 
     static void sectionDragStartCallback(void* data, SoDragger* d);
     static void sectionDragMotionCallback(void* data, SoDragger* d);
     static void sectionDragFinishCallback(void* data, SoDragger* d);
     Base::Placement draggerStartPlacement;
 
-    SoFCStencilCap* pcStencilCap = nullptr;
     SoSwitch* pcPlaneSwitch = nullptr;
     SoSeparator* pcPlaneRoot = nullptr;
     SoShapeHints* pcPlaneHints = nullptr;
@@ -105,13 +113,22 @@ private:
     SoFaceSet* pcPlaneFaceSet = nullptr;
     SoMaterial* pcPlaneBorderMaterial = nullptr;
     SoIndexedLineSet* pcPlaneBorderLines = nullptr;
-    SoClipPlane* pcClipPlane = nullptr;
     SoTexture2* pcHatchTexture = nullptr;
     SoTextureCoordinatePlane* pcHatchCoordGen = nullptr;
     bool clipInstalled = false;
     bool hatchEnabled = true;
     bool usePerSolidColors = false;
     std::vector<App::DocumentObject*> clippedObjects;
+    // One clip plane per clipped object (parallel to clippedObjects), holding
+    // the cutting plane in that object's local frame.
+    std::vector<SoClipPlane*> clipNodes;
+
+    // Cached source bbox (xmin,ymin,zmin,xmax,ymax,zmax) for sizing the plane
+    // quad without recomputing the source shape on every move.
+    bool sourceBBoxValid = false;
+    double sourceBBox[6] = {0, 0, 0, 0, 0, 0};
+
+    fastsignals::scoped_connection visibilityConn;
 };
 
 }  // namespace PartGui

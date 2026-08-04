@@ -67,18 +67,15 @@ public:
     }
 
 private:
+    /// Fallback capping: half-space Boolean cut, collect the on-plane faces.
     void collectSectionFaces(
         const TopoDS_Shape& solid,
         const gp_Pln& slicePlane,
         std::vector<TopoDS_Face>& faces
     ) const;
 
-    /// Make a solid safe to feed to the OCCT boolean engine.
-    /// A degenerate edge without a pcurve makes the boolean ProcessDE step
-    /// dereference a null Geom2d_Curve and crash.
-    /// This detects that condition and attempts a ShapeFix repair
-    /// returns a null shape if the solid is still unsafe so the caller can skip it instead of
-    /// crashing. Fingers crossed
+    /// Repair a solid whose degenerate edges would crash the OCCT boolean
+    /// engine; returns a null shape if unrepairable so the caller can skip it.
     TopoDS_Shape prepareSolidForSection(const TopoDS_Shape& solid) const;
 };
 

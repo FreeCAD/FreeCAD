@@ -28,10 +28,7 @@
 
 class QComboBox;
 class QCheckBox;
-class QDoubleSpinBox;
 class QLabel;
-class QSlider;
-class QTimer;
 
 namespace Gui
 {
@@ -70,16 +67,10 @@ public:
 private:
     void setupUi();
     void setupConnections();
-    void updateSliderRange();
     void onPresetChanged(int index);
-    void onNormalXChanged(double val);
-    void onNormalYChanged(double val);
-    void onNormalZChanged(double val);
     void onAngle1Changed(double val);
     void onAngle2Changed(double val);
     void applyAngles();
-    void onOffsetChanged(double val);
-    void onSliderMoved(int val);
     void onFlipToggled(bool on);
     void onSectionColorChanged(const QColor& color);
     void onHatchToggled(bool on);
@@ -87,16 +78,10 @@ private:
     void onShowPlaneToggled(bool on);
     void onUpdateViewToggled(bool on);
     void recompute();
-    void deferRecompute();
 
     Part::SectionAnalysis* feature;
     ViewProviderSectionAnalysis* viewProvider;
     QComboBox* presetCombo = nullptr;
-    QDoubleSpinBox* normalX = nullptr;
-    QDoubleSpinBox* normalY = nullptr;
-    QDoubleSpinBox* normalZ = nullptr;
-    Gui::QuantitySpinBox* offsetSpin = nullptr;
-    QSlider* offsetSlider = nullptr;
     QLabel* angleLabel1 = nullptr;
     QLabel* angleLabel2 = nullptr;
     Gui::QuantitySpinBox* angle1Spin = nullptr;
@@ -107,10 +92,6 @@ private:
     QCheckBox* perSolidColorCheck = nullptr;
     QCheckBox* showPlaneCheck = nullptr;
     QCheckBox* updateViewCheck = nullptr;
-    double sliderMin = 0.0;
-    double sliderMax = 100.0;
-    double offsetBase = 0.0;  // projMin — added to spinbox value to get PlaneOffset
-    QTimer* recomputeTimer = nullptr;
 };
 
 class TaskSectionAnalysis: public Gui::TaskView::TaskDialog

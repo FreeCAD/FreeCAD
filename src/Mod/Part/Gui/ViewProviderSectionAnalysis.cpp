@@ -20,9 +20,11 @@
  ******************************************************************************/
 
 #include <cstring>
+#include <functional>
 
 #include <QAction>
 #include <QMenu>
+#include <QTimer>
 
 #include <Bnd_Box.hxx>
 #include <BRepBndLib.hxx>
@@ -42,9 +44,12 @@
 #include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/nodes/SoTextureCoordinatePlane.h>
 
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/GeoFeature.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include <App/Material.h>
+#include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
@@ -55,8 +60,6 @@
 #include <Gui/ViewProvider.h>
 #include <Mod/Part/App/FeatureSectionAnalysis.h>
 
-#include "SoBrepFaceSet.h"
-#include "SoFCStencilCap.h"
 #include "ViewProviderExt.h"
 #include "ViewProviderSectionAnalysis.h"
 #include "TaskSectionAnalysis.h"
@@ -94,10 +97,6 @@ ViewProviderSectionAnalysis::ViewProviderSectionAnalysis()
 ViewProviderSectionAnalysis::~ViewProviderSectionAnalysis()
 {
     removeClipPlane();
-    if (pcClipPlane) {
-        pcClipPlane->unref();
-        pcClipPlane = nullptr;
-    }
     if (pcHatchTexture) {
         pcHatchTexture->unref();
         pcHatchTexture = nullptr;
@@ -111,6 +110,11 @@ ViewProviderSectionAnalysis::~ViewProviderSectionAnalysis()
 void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
 {
     ViewProviderPart::attach(pcFeat);
+
+    visibilityConn = pcFeat->getDocument()->signalChangedObject.connect(
+        std::bind(&ViewProviderSectionAnalysis::slotChangedObject, this,
+                  std::placeholders::_1, std::placeholders::_2)
+    );
 
     // Create the translucent cutting plane visual
     pcPlaneRoot = new SoSeparator();
@@ -190,16 +194,6 @@ void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
     pcHatchCoordGen->ref();
     updateHatchProjection();
 
-
-    // Create the clip plane node (not yet inserted into source VP)
-    pcClipPlane = new SoClipPlane();
-    pcClipPlane->ref();
-
-    // GPU stencil-buffer capping node — renders filled cross-section
-    // without OCCT computation.
-    pcStencilCap = new SoFCStencilCap();
-    pcRoot->addChild(pcStencilCap);
-
     updatePlaneVisual();
 }
 
@@ -211,14 +205,13 @@ void ViewProviderSectionAnalysis::finishRestoring()
     hatchEnabled = ShowHatching.getValue();
     usePerSolidColors = PerBodyColors.getValue();
 
-    // After document restore, shapes are computed and the scene graph is
-    // fully built.  Safe to set up clip planes, plane visual, and hatching.
+    // After document restore the scene graph is fully built it is safe to set up
+    // clip planes, plane visual and hatching(s)
     if (Visibility.getValue()) {
         installClipPlane();
     }
     updatePlaneVisual();
     updateHatchProjection();
-    updateStencilCap();
     if (usePerSolidColors) {
         applyPerSolidColors();
     }
@@ -236,15 +229,19 @@ void ViewProviderSectionAnalysis::installClipPlane()
         return;
     }
 
-    updateClipPlaneEquation();
-
-    // Install the clip plane on ALL visible objects in the document,
-    // except the SectionAnalysis itself.  Coin3D supports shared nodes
-    // (multi-parent), so one pcClipPlane with one equation update
-    // affects every VP it is inserted into.
-    auto* doc = feat->getDocument();
-    for (auto* obj : doc->getObjects()) {
-        if (obj->isDerivedFrom(Part::SectionAnalysis::getClassTypeId())) {
+    // Clip exactly the objects that contributed section geometry (SourceParts,
+    // computed by execute()), so clipping and capping always agree.
+    // Each object gets its own clip plane node, inserted just before the mode switch
+    // so the full global placement is in effect when
+    // the node is traversed: updateClipPlaneEquation() then only needs the
+    // inverse global placement. A shared node can't work as each insertion point
+    // sits under a different accumulated transform.
+    std::vector<App::DocumentObject*> targets = feat->SourceParts.getValues();
+    if (targets.empty() && feat->Source.getValue()) {
+        targets.push_back(feat->Source.getValue());
+    }
+    for (auto* obj : targets) {
+        if (!obj || obj == feat) {
             continue;
         }
         auto* vp = Gui::Application::Instance->getViewProvider(obj);
@@ -255,44 +252,43 @@ void ViewProviderSectionAnalysis::installClipPlane()
         if (!root) {
             continue;
         }
-        root->insertChild(pcClipPlane, 0);
+        int switchIdx = root->findChild(vp->getModeSwitch());
+        auto* node = new SoClipPlane;
+        node->ref();
+        root->insertChild(node, switchIdx >= 0 ? switchIdx : 1);
         clippedObjects.push_back(obj);
+        clipNodes.push_back(node);
     }
-    clipInstalled = !clippedObjects.empty();
+    clipInstalled = !clipNodes.empty();
+    updateClipPlaneEquation();
 }
 
 void ViewProviderSectionAnalysis::removeClipPlane()
 {
-    if (!pcClipPlane) {
-        return;
-    }
-
-    for (auto* obj : clippedObjects) {
-        auto* vp = Gui::Application::Instance->getViewProvider(obj);
-        if (!vp) {
+    for (size_t i = 0; i < clippedObjects.size(); ++i) {
+        SoClipPlane* node = (i < clipNodes.size()) ? clipNodes[i] : nullptr;
+        if (!node) {
             continue;
         }
-        auto* root = dynamic_cast<SoSeparator*>(vp->getRoot());
-        if (!root) {
-            continue;
+        if (auto* vp = Gui::Application::Instance->getViewProvider(clippedObjects[i])) {
+            if (auto* root = dynamic_cast<SoSeparator*>(vp->getRoot())) {
+                int idx = root->findChild(node);
+                if (idx >= 0) {
+                    root->removeChild(idx);
+                }
+            }
         }
-        int idx = root->findChild(pcClipPlane);
-        if (idx >= 0) {
-            root->removeChild(idx);
-        }
+        node->unref();
     }
     clippedObjects.clear();
+    clipNodes.clear();
     clipInstalled = false;
 }
 
 void ViewProviderSectionAnalysis::updateClipPlaneEquation()
 {
-    if (!pcClipPlane) {
-        return;
-    }
-
     auto* feat = getObject<Part::SectionAnalysis>();
-    if (!feat) {
+    if (!feat || clipNodes.empty()) {
         return;
     }
 
@@ -311,43 +307,105 @@ void ViewProviderSectionAnalysis::updateClipPlaneEquation()
         d = -d;
     }
 
-    // The cutting plane passes through point (n * d) with normal n.
-    // OCCT keeps the negative-normal side (where n.p < d).
-    // SoClipPlane keeps the positive-normal half-space.
-    // So we negate the normal to keep the same side as OCCT.
+    // The cutting plane passes through point (n * d) with normal vect n.
+    // OCCT keeps the negative normal side (where n.p < d).
+    // SoClipPlane keeps the positive normal half space, so we negate the
+    // normal to keep the same side as OCCT.
     //
     // Offset the clip plane by a tiny epsilon toward the remaining solid
-    // so it clips slightly past the section face.  This prevents z-fighting
+    // so it clips slightly past the section face. This prevents Z fighting
     // between the source body's surface at the clip boundary and the
     // section face (which lies exactly on the cutting plane).
     constexpr double clipEps = 0.01;  // 10 microns
-    double dClip = d - clipEps;
-    SbVec3f planePoint(n.x * dClip, n.y * dClip, n.z * dClip);
-    SbVec3f clipNormal(-n.x, -n.y, -n.z);
-    pcClipPlane->plane.setValue(SbPlane(clipNormal, planePoint));
-    pcClipPlane->on.setValue(TRUE);
+    const double dClip = d - clipEps;
+    const Base::Vector3d gNormal(-n.x, -n.y, -n.z);          // global half-space normal
+    const Base::Vector3d gPoint(n.x * dClip, n.y * dClip, n.z * dClip);  // global point on plane
+
+    // Each node lives inside its object's view provider, so its plane must be
+    // expressed in that object's local frame: transform the global plane by the
+    // inverse of the object's global placement. Objects with identity placement
+    // get the global plane unchanged.
+    for (size_t i = 0; i < clipNodes.size(); ++i) {
+        SoClipPlane* node = clipNodes[i];
+        if (!node) {
+            continue;
+        }
+        App::DocumentObject* obj = (i < clippedObjects.size()) ? clippedObjects[i] : nullptr;
+
+        Base::Vector3d localNormal = gNormal;
+        Base::Vector3d localPoint = gPoint;
+        if (obj && obj->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+            const Base::Placement inv = App::GeoFeature::getGlobalPlacement(obj).inverse();
+            inv.getRotation().multVec(gNormal, localNormal);  // rotate the normal only
+            inv.multVec(gPoint, localPoint);                  // full transform for the point
+        }
+
+        node->plane.setValue(SbPlane(
+            SbVec3f(static_cast<float>(localNormal.x),
+                    static_cast<float>(localNormal.y),
+                    static_cast<float>(localNormal.z)),
+            SbVec3f(static_cast<float>(localPoint.x),
+                    static_cast<float>(localPoint.y),
+                    static_cast<float>(localPoint.z))
+        ));
+        node->on.setValue(TRUE);
+    }
 }
 
-void ViewProviderSectionAnalysis::updatePlaneVisual()
+void ViewProviderSectionAnalysis::slotChangedObject(
+    const App::DocumentObject& obj,
+    const App::Property& prop
+)
 {
-    if (!pcPlaneCoords || !pcPlaneFaceSet) {
+    auto* feat = getObject<Part::SectionAnalysis>();
+    if (!feat || &obj == feat || &prop != &obj.Visibility) {
+        return;
+    }
+    if (feat->getDocument()->testStatus(App::Document::Restoring)
+        || feat->getDocument()->testStatus(App::Document::Recomputing)) {
         return;
     }
 
-    // Default to hidden — will be enabled if we successfully compute coordinates
-    pcPlaneFaceSet->numVertices.set1Value(0, 0);
-    pcPlaneBorderLines->coordIndex.setNum(0);  // clear border indices too
+    // Figure out if there's a dependency, so that we dont cut hidden objects
+    App::DocumentObject* src = feat->Source.getValue();
+    auto isAncestorOrSelf = [](const App::DocumentObject* a, const App::DocumentObject* b) {
+        for (const auto* o = b; o; o = App::GeoFeatureGroupExtension::getGroupOfObject(o)) {
+            if (o == a) {
+                return true;
+            }
+        }
+        return false;
+    };
+    if (!isAncestorOrSelf(src, &obj) && !isAncestorOrSelf(&obj, src)) {
+        return;
+    }
+
+    // Defer the recompute out of the property-change signal
+    feat->enforceRecompute();
+    std::string docName = feat->getDocument()->getName();
+    QTimer::singleShot(0, [docName]() {
+        if (auto* doc = App::GetApplication().getDocument(docName.c_str())) {
+            doc->recompute();
+        }
+    });
+}
+
+void ViewProviderSectionAnalysis::refreshSourceBBoxCache()
+{
+    sourceBBoxValid = false;
 
     auto* feat = getObject<Part::SectionAnalysis>();
     if (!feat) {
         return;
     }
-
     App::DocumentObject* source = feat->Source.getValue();
     if (!source) {
         return;
     }
 
+    // Resolving the whole source shape is the expensive part on large
+    // assemblies, which is exactly why the result is cached here rather than
+    // recomputed on every plane move.
     TopoDS_Shape sourceShape = Part::Feature::getShape(
         source,
         Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
@@ -362,8 +420,39 @@ void ViewProviderSectionAnalysis::updatePlaneVisual()
         return;
     }
 
-    double xmin, ymin, zmin, xmax, ymax, zmax;
-    bbox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
+    bbox.Get(sourceBBox[0], sourceBBox[1], sourceBBox[2], sourceBBox[3], sourceBBox[4], sourceBBox[5]);
+    sourceBBoxValid = true;
+}
+
+void ViewProviderSectionAnalysis::updatePlaneVisual()
+{
+    if (!pcPlaneCoords || !pcPlaneFaceSet) {
+        return;
+    }
+
+    // Default to hidden and will be enabled if we successfully compute coordinates
+    pcPlaneFaceSet->numVertices.set1Value(0, 0);
+    pcPlaneBorderLines->coordIndex.setNum(0);  // clear border indices too
+
+    auto* feat = getObject<Part::SectionAnalysis>();
+    if (!feat) {
+        return;
+    }
+
+    // Use cached source bounding box (refreshed only when the geometry can
+    // have changed) so dragging the plane stays cheap on large assemblies.
+    if (!sourceBBoxValid) {
+        refreshSourceBBoxCache();
+    }
+    if (!sourceBBoxValid) {
+        return;
+    }
+    const double xmin = sourceBBox[0];
+    const double ymin = sourceBBox[1];
+    const double zmin = sourceBBox[2];
+    const double xmax = sourceBBox[3];
+    const double ymax = sourceBBox[4];
+    const double zmax = sourceBBox[5];
 
     Base::Vector3d n = feat->PlaneNormal.getValue();
     double d = feat->PlaneOffset.getValue();
@@ -556,47 +645,6 @@ void ViewProviderSectionAnalysis::applyPerSolidColors()
     }
 }
 
-void ViewProviderSectionAnalysis::updateStencilCap()
-{
-    if (!pcStencilCap) {
-        return;
-    }
-
-    auto* feat = getObject<Part::SectionAnalysis>();
-    if (!feat) {
-        return;
-    }
-
-    // Sync hatching parameters
-    if (pcHatchCoordGen) {
-        pcStencilCap->hatchDirS.setValue(pcHatchCoordGen->directionS.getValue());
-        pcStencilCap->hatchDirT.setValue(pcHatchCoordGen->directionT.getValue());
-    }
-
-    pcStencilCap->hatchEnabled.setValue(hatchEnabled);
-
-    // Pass section face tessellation data for per-solid hatching
-    const auto& solidCounts = feat->SolidFaceCounts.getValues();
-    const auto& solidSrcIdx = feat->SolidSourceIndex.getValues();
-    if (hatchEnabled && solidCounts.size() > 1 && coords && faceset) {
-        int numVerts = coords->point.getNum();
-        int numIndices = faceset->coordIndex.getNum();
-        int numParts = faceset->partIndex.getNum();
-        if (numVerts > 0 && numIndices > 0 && numParts > 0) {
-            pcStencilCap->setSectionFaces(
-                coords->point.getValues(0),
-                numVerts,
-                faceset->coordIndex.getValues(0),
-                numIndices,
-                faceset->partIndex.getValues(0),
-                numParts,
-                solidCounts,
-                solidSrcIdx
-            );
-        }
-    }
-}
-
 void ViewProviderSectionAnalysis::setHatching(bool on)
 {
     hatchEnabled = on;
@@ -779,7 +827,7 @@ void ViewProviderSectionAnalysis::sectionDragFinishCallback(void* data, SoDragge
         vp->transformDragger->clearIncrementCounts();
     }
 
-    // Trigger deferred recompute for the OCCT section faces
+    // Recompute the section faces once for the final plane pose
     auto* feat = vp->getObject<Part::SectionAnalysis>();
     if (feat) {
         feat->recomputeFeature();
@@ -791,7 +839,6 @@ void ViewProviderSectionAnalysis::show()
     installClipPlane();
     updatePlaneVisual();
     updateHatchProjection();
-    updateStencilCap();
     if (usePerSolidColors) {
         applyPerSolidColors();
     }
@@ -824,32 +871,30 @@ void ViewProviderSectionAnalysis::updateData(const App::Property* prop)
     }
 
     if (prop == &feat->PlaneNormal || prop == &feat->PlaneOffset || prop == &feat->FlipCut) {
+        // Runs on every gizmo motion and so must stay cheap
         updateClipPlaneEquation();
         updatePlaneVisual();
         if (prop == &feat->PlaneNormal) {
             updateHatchProjection();
         }
-        updateStencilCap();
     }
 
-    if (prop == &feat->Source) {
+    // The clipped set follows SourceParts, which execute() rebuilds
+    if (prop == &feat->Source || prop == &feat->SourceParts) {
         removeClipPlane();
         if (Visibility.getValue()) {
             installClipPlane();
         }
+        refreshSourceBBoxCache();
         updatePlaneVisual();
-        updateStencilCap();
     }
 
-    // After a shape recompute, the face set geometry is rebuilt and all
-    // source shapes are now available (important on document load where
-    // show() runs before the recompute).
     if (prop == &feat->Shape) {
         if (!clipInstalled && Visibility.getValue()) {
             installClipPlane();
         }
+        refreshSourceBBoxCache();
         updatePlaneVisual();
-        updateStencilCap();
         if (usePerSolidColors) {
             applyPerSolidColors();
         }

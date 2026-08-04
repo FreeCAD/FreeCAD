@@ -50,6 +50,7 @@
 #include <utility>
 #include <vector>
 
+#include <App/GeoFeatureGroupExtension.h>
 #include <Base/Console.h>
 
 #include "FaceMakerBullseye.h"
@@ -125,34 +126,28 @@ void SectionAnalysis::collectSectionFaces(
     std::vector<TopoDS_Face>& faces
 ) const
 {
-    // Extract plane coefficients: ax + by + cz + d_coeff = 0
-    // The offset-from-origin is -d_coeff.
     double a, b, c, d_coeff;
     slicePlane.Coefficients(a, b, c, d_coeff);
     double d = -d_coeff;
 
-    // Create a face on the cutting plane
     BRepBuilderAPI_MakeFace mkFace(slicePlane);
     TopoDS_Face planeFace = mkFace.Face();
 
-    // Create a reference point on the positive normal side
+    // Half-space on the positive-normal side of the plane
     gp_Vec tempVector(a, b, c);
     tempVector.Normalize();
     tempVector *= (d + 1.0);
     gp_Pnt refPoint(0.0, 0.0, 0.0);
     refPoint.Translate(tempVector);
-
-    // Create half-space containing the reference point
     BRepPrimAPI_MakeHalfSpace mkSolid(planeFace, refPoint);
     TopoDS_Solid halfSpace = mkSolid.Solid();
 
-    // Cut the solid with the half-space (use raw OCCT, not FC wrapper which logs errors)
     BRepAlgoAPI_Cut mkCut(solid, halfSpace);
     if (!mkCut.IsDone()) {
         return;
     }
 
-    // Find faces that lie on the cutting plane
+    // Collect the cut faces lying on the cutting plane
     TopTools_IndexedMapOfShape mapOfFaces;
     TopExp::MapShapes(mkCut.Shape(), TopAbs_FACE, mapOfFaces);
     for (int i = 1; i <= mapOfFaces.Extent(); i++) {
@@ -160,13 +155,16 @@ void SectionAnalysis::collectSectionFaces(
         BRepAdaptor_Surface adapt(face);
         if (adapt.GetType() == GeomAbs_Plane) {
             gp_Pln plane = adapt.Plane();
-            if (plane.Axis().IsParallel(slicePlane.Axis(), Precision::Confusion())
-                && plane.Distance(slicePlane.Location()) < Precision::Confusion()) {
-                // Ensure consistent face orientation — the effective normal
-                // (geometric normal ± topological orientation) should match
-                // the slice plane direction so lighting/hatching is stable.
-                // BRepAdaptor_Surface::Plane() returns the geometric normal
-                // which ignores face topology, so check Orientation() too.
+            // The boolean leaves the cap face only approximately coincident
+            // with the slice plane on geometry's angular/positional drift.
+
+            const double angTol = 1.0e-3;   // radians (~0.06°)
+            const double distTol = 1.0e-3;  // mm
+            if (plane.Axis().IsParallel(slicePlane.Axis(), angTol)
+                && plane.Distance(slicePlane.Location()) < distTol) {
+
+                // Orient the face along the slice normal so lighting/hatching
+                // is stable; the geometric normal ignores face topology.
                 gp_Dir effectiveNormal = plane.Axis().Direction();
                 if (face.Orientation() == TopAbs_REVERSED) {
                     effectiveNormal.Reverse();
@@ -189,6 +187,19 @@ namespace
 /// This is the exact condition that makes OCCT's boolean ProcessDE step
 /// dereference a null Geom2d_Curve and crash with a signal we cannot catch
 /// portably, so it is what we detect and repair before sectioning.
+/// True if the object and every claiming ancestor (Body, Part, ...) are
+/// visible. An object's own Visibility stays true when its container is
+/// hidden, so the plain property is not enough.
+bool isEffectivelyVisible(const App::DocumentObject* obj)
+{
+    for (const auto* o = obj; o; o = App::GeoFeatureGroupExtension::getGroupOfObject(o)) {
+        if (!o->Visibility.getValue()) {
+            return false;
+        }
+    }
+    return true;
+}
+
 bool hasDegenerateEdgeWithoutPCurve(const TopoDS_Shape& shape)
 {
     for (TopExp_Explorer faceXp(shape, TopAbs_FACE); faceXp.More(); faceXp.Next()) {
@@ -208,17 +219,15 @@ bool hasDegenerateEdgeWithoutPCurve(const TopoDS_Shape& shape)
     }
     return false;
 }
+
 }  // namespace
 
 TopoDS_Shape SectionAnalysis::prepareSolidForSection(const TopoDS_Shape& solid) const
 {
-    // Common case: the solid is already safe to section, pass it through.
     if (!hasDegenerateEdgeWithoutPCurve(solid)) {
         return solid;
     }
 
-    // Try to repair the missing pcurves; ShapeFix_Shape rebuilds them as part
-    // of its wire/edge fixes.
     try {
         ShapeFix_Shape fixer(solid);
         fixer.Perform();
@@ -232,8 +241,6 @@ TopoDS_Shape SectionAnalysis::prepareSolidForSection(const TopoDS_Shape& solid) 
     catch (...) {
     }
 
-    // Still unsafe — return null so the caller skips this solid rather than
-    // risk a hard crash in the boolean engine.
     return {};
 }
 
@@ -244,44 +251,41 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
         return new App::DocumentObjectExecReturn("No source shape linked.");
     }
 
-    // Collect shapes recursively — handles nested App::Part containers
-    // (e.g., STEP imports from Fusion 360 with sub-assemblies).  Each shape is
-    // kept paired with the object it came from so every resulting solid can be
-    // attributed to a source object for per-body colouring and hatching.
+    // Collect shapes, recursing into containers via subname paths so nested
+    // placements compose correctly. Hidden objects are excluded — the section
+    // shows what the user sees. Each shape stays paired with the object that
+    // produced it, for per-body colouring.
     std::vector<std::pair<TopoDS_Shape, App::DocumentObject*>> parts;
-
-    TopoDS_Shape sourceShape
-        = Feature::getShape(source, ShapeOption::ResolveLink | ShapeOption::Transform);
-
-    if (!sourceShape.IsNull()) {
-        // Single resolved shape (e.g. a Body or compound). Every solid it
-        // contains is attributed to the source object itself.
-        parts.emplace_back(sourceShape, source);
-    }
-    else {
-        // Recursive collection for nested Part containers — attribute each
-        // leaf shape to the leaf object that produced it.
-        std::function<void(App::DocumentObject*)> collectShapes;
-        collectShapes = [&](App::DocumentObject* obj) {
-            TopoDS_Shape shape
-                = Feature::getShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform);
-            if (!shape.IsNull()) {
-                parts.emplace_back(shape, obj);
-                return;
-            }
-            // Recurse into children (App::Part, App::DocumentObjectGroup, etc.)
-            for (auto* child : obj->getOutList()) {
-                collectShapes(child);
-            }
-        };
-
-        for (auto* child : source->getOutList()) {
-            collectShapes(child);
+    std::function<void(const std::string&)> collectShapes = [&](const std::string& sub) {
+        App::DocumentObject* obj = sub.empty() ? source : source->getSubObject(sub.c_str());
+        // The root must be effectively visible (its containers too); nested
+        // objects only need their own flag, their path is already checked.
+        if (!obj || (sub.empty() ? !isEffectivelyVisible(obj) : !obj->Visibility.getValue())) {
+            return;
         }
-    }
+        TopoDS_Shape shape = Feature::getShape(
+            source,
+            ShapeOption::ResolveLink | ShapeOption::Transform,
+            sub.empty() ? nullptr : sub.c_str()
+        );
+        if (!shape.IsNull()) {
+            parts.emplace_back(shape, obj);
+            return;
+        }
+        for (const auto& child : obj->getSubObjects()) {
+            collectShapes(sub + child);
+        }
+    };
+    collectShapes({});
 
+    // Nothing visible is a valid state (e.g. all bodies hidden) — publish an
+    // empty section rather than erroring out and leaving a stale Shape behind.
     if (parts.empty()) {
-        return new App::DocumentObjectExecReturn("Source shape is empty.");
+        SolidFaceCounts.setValues({});
+        SolidSourceIndex.setValues({});
+        SourceParts.setValues({});
+        this->Shape.setValue(TopoDS_Shape());
+        return App::DocumentObject::StdReturn;
     }
 
     Base::Vector3d n = PlaneNormal.getValue();
@@ -304,19 +308,14 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
     }
 
     gp_Pln slicePlane(a, b, c, -d);
-    TopExp_Explorer xp;
     std::vector<TopoDS_Face> sectionFaces;
     std::vector<long> faceCounts;
 
-    // Flatten all collected parts into solids, keeping each solid attributed to
-    // its source object. MAgic. This is the single source of truth for the
-    // solid-to-source mapping; SolidFaceCounts and SolidSourceIndex below are
-    // built in lockstep with this order so consumers never have to re-derive it.
+    // Flatten to solids, each attributed to its source object. SolidFaceCounts
+    // and SolidSourceIndex are built in lockstep with this order.
     std::vector<std::pair<TopoDS_Shape, App::DocumentObject*>> solids;
     for (const auto& part : parts) {
-        for (xp.Init(part.first, TopAbs_SOLID); xp.More(); xp.Next()) {
-            // Repair (or drop) solids whose degenerate edges would crash the
-            // OCCT boolean engine; skipped solids simply produce no section.
+        for (TopExp_Explorer xp(part.first, TopAbs_SOLID); xp.More(); xp.Next()) {
             TopoDS_Shape prepared = prepareSolidForSection(xp.Current());
             if (prepared.IsNull()) {
                 Base::Console().warning(
@@ -331,16 +330,11 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
     int solidCount = static_cast<int>(solids.size());
 
     if (solidCount == 0) {
-        Base::Console().warning(
-            "SectionAnalysis: no solids found in source shape. "
-            "For nested Part containers (e.g. STEP imports), try selecting "
-            "individual bodies or creating a compound first.\n"
-        );
+        Base::Console().warning("SectionAnalysis: no solids found in source shape.\n");
     }
 
-    // Build the distinct source-object list and the per-solid index into it.
-    // A single object contributing several solids appears once, so all its
-    // solids share one colour and hatch angle downstream.
+    // Distinct source objects and the per-solid index into them; an object
+    // contributing several solids appears once so they share one colour.
     std::vector<App::DocumentObject*> uniqueParts;
     std::vector<long> solidSourceIdx;
     solidSourceIdx.reserve(solids.size());
@@ -357,18 +351,11 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
         solidSourceIdx.push_back(idx);
     }
 
-    // Section each solid, with a per-solid fallback. The primary path
-    // (BRepAlgoAPI_Section + FaceMakerBullseye) yields clean planar faces with
-    // proper hole nesting, but complex profiles can defeat FaceMakerBullseye.
-    // When a solid produces no face that way, fall back to the half-space
-    // Boolean cut for that solid alone. Doing this per solid (rather than only
-    // when every solid failed) ensures bodies whose profile beats the primary
-    // path still get a filled cap instead of being left clipped-but-uncapped.
+    // Section each solid. The primary path (BRepAlgoAPI_Section +
+    // FaceMakerBullseye) yields clean planar faces with proper hole nesting;
+    // when a profile defeats it, fall back to a half-space Boolean cut for
+    // that solid alone.
     const gp_Dir sliceNormal = slicePlane.Axis().Direction();
-    long cappedPrimary = 0;
-    long cappedFallback = 0;
-    long uncapped = 0;
-
     for (const auto& solidEntry : solids) {
         const TopoDS_Shape& currentSolid = solidEntry.first;
         const size_t facesBefore = sectionFaces.size();
@@ -426,11 +413,7 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
         catch (...) {
         }
 
-        bool viaPrimary = sectionFaces.size() > facesBefore;
-
-        // Per-solid fallback: half-space Boolean cut caps closed solids robustly
-        // even when the section profile defeats the primary path.
-        if (!viaPrimary) {
+        if (sectionFaces.size() == facesBefore) {
             try {
                 collectSectionFaces(currentSolid, slicePlane, sectionFaces);
             }
@@ -438,27 +421,9 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
             }
         }
 
-        if (sectionFaces.size() > facesBefore) {
-            (viaPrimary ? cappedPrimary : cappedFallback)++;
-        }
-        else {
-            uncapped++;
-        }
         faceCounts.push_back(static_cast<long>(sectionFaces.size() - facesBefore));
     }
 
-    if (uncapped > 0) {
-        Base::Console().log(
-            "SectionAnalysis: %d solids capped (primary), %d via fallback, "
-            "%d produced no cross-section face.\n",
-            cappedPrimary,
-            cappedFallback,
-            uncapped
-        );
-    }
-
-    // faceCounts, solidSourceIdx and the solids list are all in the same order
-    // and length, giving consumers an authoritative solid-to-source mapping.
     SolidFaceCounts.setValues(faceCounts);
     SolidSourceIndex.setValues(solidSourceIdx);
     SourceParts.setValues(uniqueParts);
