@@ -70,11 +70,13 @@
 
 
 /* First part of user prologue.  */
+#line 26 "Quantity.y"
 
     #define YYSTYPE Quantity
     #define yyparse Quantity_yyparse
     #define yyerror Quantity_yyerror
 
+#line 77 "Quantity.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -1231,154 +1233,229 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* input: %empty  */
+#line 46 "Quantity.y"
                                                 { QuantResult = Quantity(std::numeric_limits<double>::min()); /* empty input */ }
+#line 1236 "Quantity.tab.c"
     break;
 
   case 3: /* input: num  */
+#line 47 "Quantity.y"
                                                 { QuantResult = yyvsp[0];             }
+#line 1242 "Quantity.tab.c"
     break;
 
   case 4: /* input: unit  */
+#line 48 "Quantity.y"
                                                 { QuantResult = yyvsp[0];             }
+#line 1248 "Quantity.tab.c"
     break;
 
   case 5: /* input: quantity  */
+#line 49 "Quantity.y"
                                                 { QuantResult = yyvsp[0];             }
+#line 1254 "Quantity.tab.c"
     break;
 
   case 6: /* input: quantity quantity  */
+#line 50 "Quantity.y"
                                                 { QuantResult = yyvsp[-1] + yyvsp[0];        }
+#line 1260 "Quantity.tab.c"
     break;
 
   case 7: /* input: quantity quantity quantity  */
+#line 51 "Quantity.y"
                                                 { QuantResult = yyvsp[-2] + yyvsp[-1] + yyvsp[0];	}
+#line 1266 "Quantity.tab.c"
     break;
 
   case 8: /* num: NUM  */
+#line 53 "Quantity.y"
                                                 { yyval = yyvsp[0]; }
+#line 1272 "Quantity.tab.c"
     break;
 
   case 9: /* num: ONE  */
+#line 54 "Quantity.y"
                                                 { yyval = yyvsp[0]; }
+#line 1278 "Quantity.tab.c"
     break;
 
   case 10: /* num: num '+' num  */
+#line 55 "Quantity.y"
                                                 { yyval = Quantity(yyvsp[-2].getValue() + yyvsp[0].getValue());     }
+#line 1284 "Quantity.tab.c"
     break;
 
   case 11: /* num: num MINUSSIGN num  */
+#line 56 "Quantity.y"
                                                 { yyval = Quantity(yyvsp[-2].getValue() - yyvsp[0].getValue());     }
+#line 1290 "Quantity.tab.c"
     break;
 
   case 12: /* num: num '*' num  */
+#line 57 "Quantity.y"
                                                 { yyval = Quantity(yyvsp[-2].getValue() * yyvsp[0].getValue());     }
+#line 1296 "Quantity.tab.c"
     break;
 
   case 13: /* num: num '/' num  */
+#line 58 "Quantity.y"
                                                 { yyval = Quantity(yyvsp[-2].getValue() / yyvsp[0].getValue());     }
+#line 1302 "Quantity.tab.c"
     break;
 
   case 14: /* num: '+' num  */
-                                                { yyval = Quantity(yyvsp[0].getValue());                    }
+#line 59 "Quantity.y"
+                                                { yyval = Quantity(yyvsp[0].getValue());                     }
+#line 1308 "Quantity.tab.c"
     break;
 
   case 15: /* num: MINUSSIGN num  */
+#line 60 "Quantity.y"
                                                 { yyval = Quantity(-yyvsp[0].getValue());                    }
+#line 1314 "Quantity.tab.c"
     break;
 
   case 16: /* num: num '^' num  */
+#line 61 "Quantity.y"
                                                 { yyval = Quantity(pow(yyvsp[-2].getValue(), yyvsp[0].getValue())); }
+#line 1320 "Quantity.tab.c"
     break;
 
   case 17: /* num: '(' num ')'  */
+#line 62 "Quantity.y"
                                                 { yyval = yyvsp[-1]; }
+#line 1326 "Quantity.tab.c"
     break;
 
   case 18: /* num: ACOS '(' num ')'  */
+#line 63 "Quantity.y"
                                                 { yyval = Quantity(acos(yyvsp[-1].getValue()));   }
+#line 1332 "Quantity.tab.c"
     break;
 
   case 19: /* num: ASIN '(' num ')'  */
+#line 64 "Quantity.y"
                                                 { yyval = Quantity(asin(yyvsp[-1].getValue()));   }
+#line 1338 "Quantity.tab.c"
     break;
 
   case 20: /* num: ATAN '(' num ')'  */
+#line 65 "Quantity.y"
                                                 { yyval = Quantity(atan(yyvsp[-1].getValue()));   }
+#line 1344 "Quantity.tab.c"
     break;
 
   case 21: /* num: ABS '(' num ')'  */
+#line 66 "Quantity.y"
                                                 { yyval = Quantity(fabs(yyvsp[-1].getValue()));   }
+#line 1350 "Quantity.tab.c"
     break;
 
   case 22: /* num: EXP '(' num ')'  */
+#line 67 "Quantity.y"
                                                 { yyval = Quantity(exp(yyvsp[-1].getValue()));    }
+#line 1356 "Quantity.tab.c"
     break;
 
   case 23: /* num: LOG '(' num ')'  */
+#line 68 "Quantity.y"
                                                 { yyval = Quantity(log(yyvsp[-1].getValue()));    }
+#line 1362 "Quantity.tab.c"
     break;
 
   case 24: /* num: LOG10 '(' num ')'  */
+#line 69 "Quantity.y"
                                                 { yyval = Quantity(log10(yyvsp[-1].getValue()));  }
+#line 1368 "Quantity.tab.c"
     break;
 
   case 25: /* num: SIN '(' num ')'  */
+#line 70 "Quantity.y"
                                                 { yyval = Quantity(sin(yyvsp[-1].getValue()));    }
+#line 1374 "Quantity.tab.c"
     break;
 
   case 26: /* num: SINH '(' num ')'  */
+#line 71 "Quantity.y"
                                                 { yyval = Quantity(sinh(yyvsp[-1].getValue()));   }
+#line 1380 "Quantity.tab.c"
     break;
 
   case 27: /* num: TAN '(' num ')'  */
+#line 72 "Quantity.y"
                                                 { yyval = Quantity(tan(yyvsp[-1].getValue()));    }
+#line 1386 "Quantity.tab.c"
     break;
 
   case 28: /* num: TANH '(' num ')'  */
+#line 73 "Quantity.y"
                                                 { yyval = Quantity(tanh(yyvsp[-1].getValue()));   }
+#line 1392 "Quantity.tab.c"
     break;
 
   case 29: /* num: SQRT '(' num ')'  */
+#line 74 "Quantity.y"
                                                 { yyval = Quantity(sqrt(yyvsp[-1].getValue()));   }
+#line 1398 "Quantity.tab.c"
     break;
 
   case 30: /* num: COS '(' num ')'  */
+#line 75 "Quantity.y"
                                                 { yyval = Quantity(cos(yyvsp[-1].getValue()));    }
+#line 1404 "Quantity.tab.c"
     break;
 
   case 31: /* unit: UNIT  */
+#line 78 "Quantity.y"
                                                 { yyval = yyvsp[0];                  }
+#line 1410 "Quantity.tab.c"
     break;
 
   case 32: /* unit: ONE '/' unit  */
+#line 79 "Quantity.y"
                                                 { yyval = Quantity(1.0)/yyvsp[0];    }
+#line 1416 "Quantity.tab.c"
     break;
 
   case 33: /* unit: unit '*' unit  */
+#line 80 "Quantity.y"
                                                 { yyval = yyvsp[-2] * yyvsp[0];             }
+#line 1422 "Quantity.tab.c"
     break;
 
   case 34: /* unit: unit '/' unit  */
+#line 81 "Quantity.y"
                                                 { yyval = yyvsp[-2] / yyvsp[0];             }
+#line 1428 "Quantity.tab.c"
     break;
 
   case 35: /* unit: unit '^' num  */
+#line 82 "Quantity.y"
                                                 { yyval = yyvsp[-2].pow (yyvsp[0]);         }
+#line 1434 "Quantity.tab.c"
     break;
 
   case 36: /* unit: '(' unit ')'  */
+#line 83 "Quantity.y"
                                                 { yyval = yyvsp[-1];                  }
+#line 1440 "Quantity.tab.c"
     break;
 
   case 37: /* quantity: num unit  */
+#line 85 "Quantity.y"
                                                 { yyval = yyvsp[-1]*yyvsp[0];               }
+#line 1446 "Quantity.tab.c"
     break;
 
   case 38: /* quantity: num '/' unit  */
+#line 86 "Quantity.y"
                                                 { yyval = Quantity(yyvsp[-2])/yyvsp[0];     }
+#line 1452 "Quantity.tab.c"
     break;
 
 
+#line 1456 "Quantity.tab.c"
 
       default: break;
     }
@@ -1570,3 +1647,5 @@ yyreturnlab:
 
   return yyresult;
 }
+
+#line 89 "Quantity.y"
