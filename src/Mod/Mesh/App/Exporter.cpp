@@ -144,7 +144,7 @@ void Exporter::throwIfNoPermission(const std::string& filename)
     Base::FileInfo fi(filename);
     Base::FileInfo di(fi.dirPath());
     if ((fi.exists() && !fi.isWritable()) || !di.exists() || !di.isWritable()) {
-        throw Base::FilePermissionException(fi);
+        throw Base::FileWritePermissionException(fi);
     }
 }
 

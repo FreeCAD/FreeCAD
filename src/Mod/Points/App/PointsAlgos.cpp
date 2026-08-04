@@ -53,8 +53,11 @@ void PointsAlgos::Load(PointKernel& points, const char* FileName)
     Base::FileInfo File(FileName);
 
     // checking on the file
-    if (!File.isReadable()) {
+    if (!File.exists()) {
         throw Base::FileNotFoundException(FileName);
+    }
+    if (!File.isReadable()) {
+        throw Base::FileReadPermissionException(FileName);
     }
 
     if (File.hasExtension("asc")) {

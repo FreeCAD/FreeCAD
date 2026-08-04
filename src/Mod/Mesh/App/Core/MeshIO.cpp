@@ -228,7 +228,7 @@ bool MeshInput::LoadAny(const char* FileName)
         throw Base::FileNotFoundException(FileName);
     }
     if (!fi.isReadable()) {
-        throw Base::FilePermissionException(FileName);
+        throw Base::FileReadPermissionException(FileName);
     }
 
     Base::ifstream str(fi, std::ios::in | std::ios::binary);
@@ -308,7 +308,7 @@ bool MeshInput::LoadFormat(std::istream& input, MeshIO::Format fmt)
         case MeshIO::NAS:
             return LoadNastran(input);
         default:
-            throw Base::FileFormatException("");
+            throw Base::FileFormatException();
     }
 }
 
@@ -1394,10 +1394,10 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
     Base::FileInfo file(FileName);
     Base::FileInfo directory(file.dirPath());
     if (!directory.exists()) {
-        throw Base::DirectoryNotFoundException(FileName);
+        throw Base::DirectoryNotFoundException(directory);
     }
     if ((file.exists() && !file.isWritable()) || !directory.isWritable()) {
-        throw Base::FilePermissionException(FileName);
+        throw Base::FileWritePermissionException(FileName);
     }
 
     MeshIO::Format fileformat = format;
@@ -1418,7 +1418,7 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
         bool ok = false;
         ok = aWriter.SaveBinarySTL(str);
         if (!ok) {
-            throw Base::FileWriteException(FileName, "Export of STL mesh failed");
+            throw Base::FileWriteException(FileName);
         }
     }
     else if (fileformat == MeshIO::ASTL) {
@@ -1430,37 +1430,37 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
         bool ok = false;
         ok = aWriter.SaveAsciiSTL(str);
         if (!ok) {
-            throw Base::FileWriteException(FileName, "Export of STL mesh failed");
+            throw Base::FileWriteException(FileName);
         }
     }
     else if (fileformat == MeshIO::OBJ) {
         // write file
         if (!SaveOBJ(str, FileName)) {
-            throw Base::FileWriteException(FileName, "Export of OBJ mesh failed");
+            throw Base::FileWriteException(FileName);
         }
     }
     else if (fileformat == MeshIO::SMF) {
         // write file
         if (!SaveSMF(str)) {
-            throw Base::FileWriteException(FileName, "Export of SMF mesh failed");
+            throw Base::FileWriteException(FileName);
         }
     }
     else if (fileformat == MeshIO::OFF) {
         // write file
         if (!SaveOFF(str)) {
-            throw Base::FileWriteException(FileName, "Export of OFF mesh failed");
+            throw Base::FileWriteException(FileName);
         }
     }
     else if (fileformat == MeshIO::PLY) {
         // write file
         if (!SaveBinaryPLY(str)) {
-            throw Base::FileWriteException(FileName, "Export of PLY mesh failed");
+            throw Base::FileWriteException(FileName);
         }
     }
     else if (fileformat == MeshIO::APLY) {
         // write file
         if (!SaveAsciiPLY(str)) {
-            throw Base::FileWriteException(FileName, "Export of PLY mesh failed");
+            throw Base::FileWriteException(FileName);
         }
     }
     else if (fileformat == MeshIO::IDTF) {
@@ -1545,7 +1545,7 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
         }
     }
     else {
-        throw Base::FileException("File format not supported", FileName);
+        throw Base::FileFormatException(FileName);
     }
 
     return true;
@@ -1595,7 +1595,7 @@ bool MeshOutput::SaveFormat(std::ostream& str, MeshIO::Format fmt) const
         case MeshIO::ASY:
             return SaveAsymptote(str);
         default:
-            throw Base::FileException("Unsupported file format");
+            throw Base::FileFormatException();
     }
 }
 
