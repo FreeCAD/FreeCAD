@@ -271,6 +271,9 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
     Base::Vector3d p1 = arc->getStartPoint(true);
     Base::Vector3d p2 = arc->getEndPoint(true);
 
+    const auto newP1 = reverse ? p1 : p2;
+    const auto newP2 = reverse ? p2 : p1;
+
     if (trim) {
         if (createCorner) {
             // If the lines don't intersect, there's no original corner to work with so
@@ -316,8 +319,8 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
                     return {newId, pos};
                 };
 
-                const auto newId1 = splitCornerPiece(GeoId1, PosId1, reverse ? p1 : p2);
-                const auto newId2 = splitCornerPiece(GeoId2, PosId2, reverse ? p2 : p1);
+                const auto newId1 = splitCornerPiece(GeoId1, PosId1, newP1);
+                const auto newId2 = splitCornerPiece(GeoId2, PosId2, newP2);
             }
         }
         else {
@@ -339,19 +342,29 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         }
 
         auto tangent1 = std::make_unique<Sketcher::Constraint>();
-        auto tangent2 = std::make_unique<Sketcher::Constraint>();
-
         tangent1->Type = Sketcher::Tangent;
+#ifdef SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
         tangent1->First = GeoId1;
         tangent1->FirstPos = PosId1;
         tangent1->Second = filletId;
         tangent1->SecondPos = filletPosId1;
+#else
+        // TODO: check why this causes SIGSEGV ?
+        tangent1->addElement(GeoElementId(GeoId1, PosId1));
+        tangent1->addElement(GeoElementId(filletId, filletPosId1));
+#endif
 
+        auto tangent2 = std::make_unique<Sketcher::Constraint>();
         tangent2->Type = Sketcher::Tangent;
+#ifdef SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
         tangent2->First = GeoId2;
         tangent2->FirstPos = PosId2;
         tangent2->Second = filletId;
         tangent2->SecondPos = filletPosId2;
+#else
+        tangent2->addElement(GeoElementId(GeoId2, PosId2));
+        tangent2->addElement(GeoElementId(filletId, filletPosId2));
+#endif
 
         addConstraint(std::move(tangent1));
         addConstraint(std::move(tangent2));
@@ -360,30 +373,47 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
     if (chamfer) {
         auto line = std::make_unique<Part::GeomLineSegment>();
         line->setPoints(p1, p2);
-        int lineGeoId = addGeometry(line.get());
+        int lineGeoId = addGeometry(std::move(line));
 
         auto coinc1 = std::make_unique<Sketcher::Constraint>();
         auto coinc2 = std::make_unique<Sketcher::Constraint>();
 
         coinc1->Type = Sketcher::Coincident;
+        coinc2->Type = Sketcher::Coincident;
+#ifdef SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
         coinc1->First = lineGeoId;
         coinc1->FirstPos = filletPosId1;
 
-        coinc2->Type = Sketcher::Coincident;
         coinc2->First = lineGeoId;
         coinc2->FirstPos = filletPosId2;
+#else
+        coinc1->addElement(GeoElementId(lineGeoId, filletPosId1));
+        coinc2->addElement(GeoElementId(lineGeoId, filletPosId2));
+#endif
 
         if (trim) {
+#ifdef SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
             coinc1->Second = GeoId1;
             coinc1->SecondPos = PosId1;
+
             coinc2->Second = GeoId2;
             coinc2->SecondPos = PosId2;
+#else
+            coinc1->addElement(GeoElementId(GeoId1, PosId1));
+            coinc2->addElement(GeoElementId(GeoId2, PosId2));
+#endif
         }
         else {
+#ifdef SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
             coinc1->Second = filletId;
             coinc1->SecondPos = PointPos::start;
+
             coinc2->Second = filletId;
             coinc2->SecondPos = PointPos::end;
+#else
+            coinc1->addElement(GeoElementId(filletId, PointPos::start));
+            coinc2->addElement(GeoElementId(filletId, PointPos::end));
+#endif
         }
 
         addConstraint(std::move(coinc1));
@@ -1087,7 +1117,17 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
     // TODO: figure out why, and if that check must be used
     geoAsCurve = getGeometry<Part::GeomCurve>(GeoId);
 
-    const int newId = getHighestCurveIndex() + 1;
+    for (int i : idsOfOldConstraints) {
+        auto* c = allConstraints[i];
+        Base::Console().log(
+            "id=%d type=%s elements=%s match=%d\n",
+            i,
+            c->typeToString().c_str(),
+            c->elementsToString().c_str(),
+            c->involvesGeoIdAndPosId(GeoId, PointPos::none)
+        );
+    }
+
     std::erase_if(idsOfOldConstraints, [&GeoId, &allConstraints](const auto& i) {
         return !allConstraints[i]->involvesGeoIdAndPosId(GeoId, PointPos::none);
     });

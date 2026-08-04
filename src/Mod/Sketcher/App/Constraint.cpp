@@ -358,6 +358,49 @@ void Constraint::substituteIndexAndPos(int fromGeoId, PointPos fromPosId, int to
 #endif
 }
 
+std::string Constraint::toString() const
+{
+    std::string result;
+
+    result += this->typeToString();
+    result += "(";
+    result += this->internalAlignmentTypeToString();
+    result += ") ";
+    result += this->elementsToString();
+
+    return result;
+}
+
+std::string Constraint::elementsToString() const
+{
+    std::string result;
+
+#if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
+    auto elementsView = std::views::iota(size_t {0}, this->elements.size())
+        | std::views::transform([&](size_t i) { return getElement(i); });
+
+    for (const auto& element : elementsView) {
+        if (!result.empty()) {
+            result += ", ";
+        }
+        result += "(";
+        result += element.toString();
+        result += ")";
+    }
+#else
+    for (const auto& element : this->elements) {
+        if (!result.empty()) {
+            result += ", ";
+        }
+        result += element.toString();
+    }
+#endif
+
+    result = "[" + result + "]";
+
+    return result;
+}
+
 std::string Constraint::typeToString(ConstraintType type)
 {
     return type2str[type];
@@ -375,7 +418,6 @@ bool Constraint::involvesGeoId(int geoId) const
         | std::views::transform([&](size_t i) { return getElement(i); });
 #endif
     return std::ranges::any_of(elements, [geoId](const auto& element) {
-        Base::Console().log("element: %d, %d\n", static_cast<int>(element.Pos), element.GeoId);
         return element.GeoId == geoId;
     });
 }

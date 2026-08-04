@@ -1488,10 +1488,11 @@ bool SketchObject::deriveConstraintsForPieces(
         } break;
         case Tangent:
         case Perpendicular: {
-            if (geo->is<Part::GeomLineSegment>()) {
-                transferToAll = true;
-                break;
-            }
+            // we assume the parts are forced to be tangential, so we only need to apply it to the
+            // ones intersecting if (geo->is<Part::GeomLineSegment>()) {
+            //     transferToAll = false;
+            //     break;
+            // }
 
             const Part::Geometry* conGeo = getGeometry(conId);
             if (!(conGeo && conGeo->isDerivedFrom<Part::GeomCurve>())) {
@@ -1512,7 +1513,24 @@ bool SketchObject::deriveConstraintsForPieces(
                     = static_cast<const Part::GeomCurve*>(newGeos[i])
                           ->intersect(static_cast<const Part::GeomCurve*>(conGeo), intersections);
 
-                if (intersects) {
+                if (newGeos[i]->is<Part::GeomLineSegment>() && conGeo->is<Part::GeomLineSegment>()) {
+                    const Base::Vector3d p11
+                        = static_cast<const Part::GeomLineSegment*>(newGeos[i])->getStartPoint();
+                    const Base::Vector3d p12
+                        = static_cast<const Part::GeomLineSegment*>(newGeos[i])->getEndPoint();
+                    const Base::Vector3d p21
+                        = static_cast<const Part::GeomLineSegment*>(conGeo)->getStartPoint();
+                    const Base::Vector3d p22
+                        = static_cast<const Part::GeomLineSegment*>(conGeo)->getEndPoint();
+
+                    if (p11 == p21 || p11 == p22 || p12 == p21 || p12 == p22) {
+                        Constraint* trans = con->copy();
+                        trans->substituteIndex(oldId, newIds[i]);
+                        newConstraints.push_back(trans);
+                        return true;
+                    }
+                }
+                else if (intersects) {
                     Constraint* trans = con->copy();
                     trans->substituteIndex(oldId, newIds[i]);
                     newConstraints.push_back(trans);
