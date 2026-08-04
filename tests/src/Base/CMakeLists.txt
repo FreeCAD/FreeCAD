@@ -15,6 +15,7 @@ add_executable(Base_tests_run
         Handle.cpp
         Matrix.cpp
         NumericFormatting.cpp
+        NumericInput.cpp
         Parameter.cpp
         ParameterObserver.cpp
         Placement.cpp

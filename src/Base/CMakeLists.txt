@@ -170,6 +170,10 @@ SET(FreeCADBase_UNITAPI_SRCS
     UnitsSchemas.h
     UnitsSchemasData.h
     UnitsSchemasSpecs.h
+    NumericInput.h
+    NumericInput.cpp
+    NumericInputLocale.h
+    NumericInputLocale.cpp
     Quantity.h
     Quantity.cpp
     QuantityPyImp.cpp
