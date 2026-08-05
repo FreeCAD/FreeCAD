@@ -2,11 +2,16 @@
 
 set(MbDFEMGui_LIBS
     MbDFEM
+    PartGui
     FreeCADGui
 )
 
 set(MbDFEMGui_SRCS
     AppMbDFEMGui.cpp
+    ViewProviderAxisTriad.cpp
+    ViewProviderAxisTriad.h
+    ViewProviderUtils.cpp
+    ViewProviderUtils.h
     ViewProviderMbDAction.cpp
     ViewProviderMbDAction.h
     ViewProviderMbDAssembly.cpp
@@ -15,6 +20,8 @@ set(MbDFEMGui_SRCS
     ViewProviderMbDItemIJ.h
     ViewProviderMbDJoint.cpp
     ViewProviderMbDJoint.h
+    ViewProviderMbDGravity.cpp
+    ViewProviderMbDGravity.h
     ViewProviderMbDMarker.cpp
     ViewProviderMbDMarker.h
     ViewProviderMbDMotion.cpp

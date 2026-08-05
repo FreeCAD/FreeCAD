@@ -72,6 +72,38 @@ namespace
 {
 constexpr const int lowPrec = 2;
 constexpr const int highPrec = 16;
+
+QString scientificNumber(double value)
+{
+    const QLocale locale;
+    QString text = locale.toString(value, 'e', std::numeric_limits<double>::max_digits10 - 1);
+
+    const qsizetype exponentIndex = text.indexOf(QLatin1Char('e'));
+    if (exponentIndex <= 0) {
+        return text;
+    }
+
+    QString mantissa = text.left(exponentIndex);
+    const QString exponent = text.mid(exponentIndex);
+    const QString decimalPoint = locale.decimalPoint();
+    if (mantissa.contains(decimalPoint)) {
+        while (mantissa.endsWith(QLatin1Char('0'))) {
+            mantissa.chop(1);
+        }
+        if (mantissa.endsWith(decimalPoint)) {
+            mantissa += QLatin1Char('0');
+        }
+    }
+
+    return mantissa + exponent;
+}
+
+QString scientificQuantity(const Base::Quantity& value)
+{
+    const QString number = scientificNumber(value.getValue());
+    const QString unit = QString::fromStdString(value.getUnit().getString());
+    return unit.isEmpty() ? number : QStringLiteral("%1 %2").arg(number, unit);
+}
 }  // namespace
 
 
@@ -577,10 +609,12 @@ void PropertyItem::setPropertyName(const QString& name, const QString& realName)
 
     QString display;
     // Camel case splitting
-    for (auto&& i : name) {
+    for (qsizetype index = 0; index < name.size(); ++index) {
+        const QChar i = name.at(index);
         if (i.isUpper() && !display.isEmpty()) {
             QChar last = display.at(display.length() - 1);
-            if (last.isLower()) {
+            const bool nextIsLower = index + 1 < name.size() && name.at(index + 1).isLower();
+            if ((last.isLower() && nextIsLower) || (last.isUpper() && nextIsLower)) {
                 display += QLatin1String(" ");
             }
         }
@@ -1122,8 +1156,7 @@ PropertyFloatItem::PropertyFloatItem() = default;
 QString PropertyFloatItem::toString(const QVariant& prop) const
 {
     double value = prop.toDouble();
-    // show the actual value, not the 2 decimal UI version
-    QString data = QLocale().toString(value, 'g', highPrec);
+    QString data = scientificNumber(value);
 
     if (hasExpression()) {
         data += QStringLiteral("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
@@ -1196,12 +1229,12 @@ PropertyUnitItem::PropertyUnitItem() = default;
 QString PropertyUnitItem::toString(const QVariant& prop) const
 {
     const Base::Quantity& unit = prop.value<Base::Quantity>();
-    std::string str = unit.getUserString();
+    QString str = scientificQuantity(unit);
     if (hasExpression()) {
-        str += fmt::format("  ( {} )", getExpressionString());
+        str += QStringLiteral("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
     }
 
-    return QString::fromStdString(str);
+    return str;
 }
 
 QVariant PropertyUnitItem::value(const App::Property* prop) const
@@ -1301,8 +1334,7 @@ PropertyFloatConstraintItem::PropertyFloatConstraintItem() = default;
 QString PropertyFloatConstraintItem::toString(const QVariant& prop) const
 {
     double value = prop.toDouble();
-    // same as above, show the real value not 2 decimals
-    return QLocale().toString(value, 'g', highPrec);
+    return scientificNumber(value);
 }
 
 QVariant PropertyFloatConstraintItem::value(const App::Property* prop) const
@@ -1471,9 +1503,9 @@ public:
                 const Base::Vector3d& value = data.value<Base::Vector3d>();
 
                 QString str = QStringLiteral("(%1, %2, %3)")
-                                  .arg(value.x, 0, 'f', decimals)
-                                  .arg(value.y, 0, 'f', decimals)
-                                  .arg(value.z, 0, 'f', decimals);
+                                  .arg(scientificNumber(value.x),
+                                       scientificNumber(value.y),
+                                       scientificNumber(value.z));
 
                 Gui::Command::doCommand(
                     Gui::Command::Doc,
@@ -1512,13 +1544,12 @@ PropertyVectorItem::PropertyVectorItem()
 
 QString PropertyVectorItem::toString(const QVariant& prop) const
 {
-    QLocale loc;
     const Base::Vector3d& value = prop.value<Base::Vector3d>();
     QString data = QStringLiteral("[%1 %2 %3]")
                        .arg(
-                           loc.toString(value.x, 'f', lowPrec),
-                           loc.toString(value.y, 'f', lowPrec),
-                           loc.toString(value.z, 'f', lowPrec)
+                           scientificNumber(value.x),
+                           scientificNumber(value.y),
+                           scientificNumber(value.z)
                        );
     if (hasExpression()) {
         data += QStringLiteral("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
@@ -1567,14 +1598,13 @@ QWidget* PropertyVectorItem::createEditor(
 
 void PropertyVectorItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
-    QLocale loc;
     auto le = qobject_cast<QLineEdit*>(editor);
     const Base::Vector3d& value = data.value<Base::Vector3d>();
     QString text = QStringLiteral("[%1 %2 %3]")
                        .arg(
-                           loc.toString(value.x, 'f', lowPrec),
-                           loc.toString(value.y, 'f', lowPrec),
-                           loc.toString(value.z, 'f', lowPrec)
+                           scientificNumber(value.x),
+                           scientificNumber(value.y),
+                           scientificNumber(value.z)
                        );
     le->setProperty("coords", data);
     le->setText(text);
@@ -1706,7 +1736,6 @@ void VectorListWidget::buttonClicked()
 
 void VectorListWidget::showValue(const QVariant& d)
 {
-    QLocale loc;
     QString data;
     const QList<Base::Vector3d>& value = d.value<QList<Base::Vector3d>>();
     if (value.isEmpty()) {
@@ -1715,9 +1744,9 @@ void VectorListWidget::showValue(const QVariant& d)
     else {
         data = QStringLiteral("[%1 %2 %3], ...")
                    .arg(
-                       loc.toString(value[0].x, 'f', lowPrec),
-                       loc.toString(value[0].y, 'f', lowPrec),
-                       loc.toString(value[0].z, 'f', lowPrec)
+                       scientificNumber(value[0].x),
+                       scientificNumber(value[0].y),
+                       scientificNumber(value[0].z)
                    );
     }
     lineEdit->setText(data);
@@ -1734,12 +1763,11 @@ QString PropertyVectorListItem::toString(const QVariant& prop) const
     if (value.isEmpty()) {
         return QStringLiteral("[]");
     }
-    QLocale loc;
     QString data = QStringLiteral("[%1 %2 %3], ...")
                        .arg(
-                           loc.toString(value[0].x, 'f', lowPrec),
-                           loc.toString(value[0].y, 'f', lowPrec),
-                           loc.toString(value[0].z, 'f', lowPrec)
+                           scientificNumber(value[0].x),
+                           scientificNumber(value[0].y),
+                           scientificNumber(value[0].z)
                        );
 
     if (hasExpression()) {
@@ -1821,16 +1849,16 @@ PropertyVectorDistanceItem::PropertyVectorDistanceItem()
 QString PropertyVectorDistanceItem::toString(const QVariant& prop) const
 {
     const Base::Vector3d& value = prop.value<Base::Vector3d>();
-    std::string str = fmt::format(
-        "[{} {} {}]",
-        Base::Quantity(value.x, Base::Unit::Length).getUserString(),
-        Base::Quantity(value.y, Base::Unit::Length).getUserString(),
-        Base::Quantity(value.z, Base::Unit::Length).getUserString()
-    );
+    QString str = QStringLiteral("[%1 %2 %3]")
+                      .arg(
+                          scientificQuantity(Base::Quantity(value.x, Base::Unit::Length)),
+                          scientificQuantity(Base::Quantity(value.y, Base::Unit::Length)),
+                          scientificQuantity(Base::Quantity(value.z, Base::Unit::Length))
+                      );
     if (hasExpression()) {
-        str += fmt::format("  ( {} )", getExpressionString());
+        str += QStringLiteral("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
     }
-    return QString::fromStdString(str);
+    return str;
 }
 
 
@@ -2025,29 +2053,28 @@ PropertyMatrixItem::PropertyMatrixItem()
 
 QString PropertyMatrixItem::toString(const QVariant& prop) const
 {
-    QLocale loc;
     const Base::Matrix4D& value = prop.value<Base::Matrix4D>();
     // NOLINTBEGIN
     QString text = QStringLiteral("[%1 %2 %3 %4 %5 %6 %7 %8 %9 %10 %11 %12 %13 %14 %15 %16]")
                        .arg(
-                           loc.toString(value[0][0], 'f', lowPrec),  //(unsigned short usNdx)
-                           loc.toString(value[0][1], 'f', lowPrec),
-                           loc.toString(value[0][2], 'f', lowPrec),
-                           loc.toString(value[0][3], 'f', lowPrec),
-                           loc.toString(value[1][0], 'f', lowPrec),
-                           loc.toString(value[1][1], 'f', lowPrec),
-                           loc.toString(value[1][2], 'f', lowPrec),
-                           loc.toString(value[1][3], 'f', lowPrec),
-                           loc.toString(value[2][0], 'f', lowPrec)
+                           scientificNumber(value[0][0]),  //(unsigned short usNdx)
+                           scientificNumber(value[0][1]),
+                           scientificNumber(value[0][2]),
+                           scientificNumber(value[0][3]),
+                           scientificNumber(value[1][0]),
+                           scientificNumber(value[1][1]),
+                           scientificNumber(value[1][2]),
+                           scientificNumber(value[1][3]),
+                           scientificNumber(value[2][0])
                        )
                        .arg(
-                           loc.toString(value[2][1], 'f', lowPrec),
-                           loc.toString(value[2][2], 'f', lowPrec),
-                           loc.toString(value[2][3], 'f', lowPrec),
-                           loc.toString(value[3][0], 'f', lowPrec),
-                           loc.toString(value[3][1], 'f', lowPrec),
-                           loc.toString(value[3][2], 'f', lowPrec),
-                           loc.toString(value[3][3], 'f', lowPrec)
+                           scientificNumber(value[2][1]),
+                           scientificNumber(value[2][2]),
+                           scientificNumber(value[2][3]),
+                           scientificNumber(value[3][0]),
+                           scientificNumber(value[3][1]),
+                           scientificNumber(value[3][2]),
+                           scientificNumber(value[3][3])
                        );
     // NOLINTEND
     return text;
@@ -2555,17 +2582,16 @@ QVariant PropertyRotationItem::toolTip(const App::Property* prop) const
     p.getRawValue(dir, angle);
     angle = Base::toDegrees<double>(angle);
 
-    QLocale loc;
     QString data
         = QStringLiteral(
               "Axis: (%1 %2 %3)\n"
               "Angle: %4"
         )
               .arg(
-                  loc.toString(dir.x, 'f', decimals()),
-                  loc.toString(dir.y, 'f', decimals()),
-                  loc.toString(dir.z, 'f', decimals()),
-                  QString::fromStdString(Base::Quantity(angle, Base::Unit::Angle).getUserString())
+                  scientificNumber(dir.x),
+                  scientificNumber(dir.y),
+                  scientificNumber(dir.z),
+                  scientificQuantity(Base::Quantity(angle, Base::Unit::Angle))
               );
     return {data};
 }
@@ -2578,14 +2604,13 @@ QString PropertyRotationItem::toString(const QVariant& prop) const
     p.getRawValue(dir, angle);
     angle = Base::toDegrees<double>(angle);
 
-    QLocale loc;
     QString data
         = QStringLiteral("[(%1 %2 %3); %4]")
               .arg(
-                  loc.toString(dir.x, 'f', lowPrec),
-                  loc.toString(dir.y, 'f', lowPrec),
-                  loc.toString(dir.z, 'f', lowPrec),
-                  QString::fromStdString(Base::Quantity(angle, Base::Unit::Angle).getUserString())
+                  scientificNumber(dir.x),
+                  scientificNumber(dir.y),
+                  scientificNumber(dir.z),
+                  scientificQuantity(Base::Quantity(angle, Base::Unit::Angle))
               );
     return data;
 }
@@ -2699,16 +2724,15 @@ void PlacementEditor::showValue(const QVariant& d)
     angle = Base::toDegrees<double>(angle);
     pos = p.getPosition();
 
-    QLocale loc;
     QString data = QString::fromUtf8("[(%1 %2 %3);%4 \xc2\xb0;(%5 %6 %7)]")
                        .arg(
-                           loc.toString(dir.x, 'f', lowPrec),
-                           loc.toString(dir.y, 'f', lowPrec),
-                           loc.toString(dir.z, 'f', lowPrec),
-                           loc.toString(angle, 'f', lowPrec),
-                           loc.toString(pos.x, 'f', lowPrec),
-                           loc.toString(pos.y, 'f', lowPrec),
-                           loc.toString(pos.z, 'f', lowPrec)
+                           scientificNumber(dir.x),
+                           scientificNumber(dir.y),
+                           scientificNumber(dir.z),
+                           scientificNumber(angle),
+                           scientificNumber(pos.x),
+                           scientificNumber(pos.y),
+                           scientificNumber(pos.z)
                        );
     getLabel()->setText(data);
 }
@@ -2878,7 +2902,6 @@ QVariant PropertyPlacementItem::toolTip(const App::Property* prop) const
     angle = Base::toDegrees<double>(angle);
     pos = p.getPosition();
 
-    QLocale loc;
     QString data
         = QStringLiteral(
               "Axis: (%1 %2 %3)\n"
@@ -2886,13 +2909,13 @@ QVariant PropertyPlacementItem::toolTip(const App::Property* prop) const
               "Position: (%5  %6  %7)"
         )
               .arg(
-                  loc.toString(dir.x, 'f', decimals()),
-                  loc.toString(dir.y, 'f', decimals()),
-                  loc.toString(dir.z, 'f', decimals()),
-                  QString::fromStdString(Base::Quantity(angle, Base::Unit::Angle).getUserString()),
-                  QString::fromStdString(Base::Quantity(pos.x, Base::Unit::Length).getUserString()),
-                  QString::fromStdString(Base::Quantity(pos.y, Base::Unit::Length).getUserString()),
-                  QString::fromStdString(Base::Quantity(pos.z, Base::Unit::Length).getUserString())
+                  scientificNumber(dir.x),
+                  scientificNumber(dir.y),
+                  scientificNumber(dir.z),
+                  scientificQuantity(Base::Quantity(angle, Base::Unit::Angle)),
+                  scientificQuantity(Base::Quantity(pos.x, Base::Unit::Length)),
+                  scientificQuantity(Base::Quantity(pos.y, Base::Unit::Length)),
+                  scientificQuantity(Base::Quantity(pos.z, Base::Unit::Length))
               );
     return {data};
 }
@@ -2907,17 +2930,16 @@ QString PropertyPlacementItem::toString(const QVariant& prop) const
     angle = Base::toDegrees<double>(angle);
     pos = p.getPosition();
 
-    QLocale loc;
     QString data
         = QStringLiteral("[(%1 %2 %3); %4; (%5  %6  %7)]")
               .arg(
-                  loc.toString(dir.x, 'f', lowPrec),
-                  loc.toString(dir.y, 'f', lowPrec),
-                  loc.toString(dir.z, 'f', lowPrec),
-                  QString::fromStdString(Base::Quantity(angle, Base::Unit::Angle).getUserString()),
-                  QString::fromStdString(Base::Quantity(pos.x, Base::Unit::Length).getUserString()),
-                  QString::fromStdString(Base::Quantity(pos.y, Base::Unit::Length).getUserString()),
-                  QString::fromStdString(Base::Quantity(pos.z, Base::Unit::Length).getUserString())
+                  scientificNumber(dir.x),
+                  scientificNumber(dir.y),
+                  scientificNumber(dir.z),
+                  scientificQuantity(Base::Quantity(angle, Base::Unit::Angle)),
+                  scientificQuantity(Base::Quantity(pos.x, Base::Unit::Length)),
+                  scientificQuantity(Base::Quantity(pos.y, Base::Unit::Length)),
+                  scientificQuantity(Base::Quantity(pos.z, Base::Unit::Length))
               );
     return data;
 }
@@ -3392,7 +3414,7 @@ QVariant PropertyFloatListItem::value(const App::Property* prop) const
     QStringList list;
     const std::vector<double>& value = static_cast<const App::PropertyFloatList*>(prop)->getValues();
     for (double jt : value) {
-        list << QString::number(jt, 'f', decimals());
+        list << scientificNumber(jt);
     }
 
     return {list};

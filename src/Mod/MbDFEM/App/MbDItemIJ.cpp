@@ -14,11 +14,13 @@ MbDFEM::MbDItemIJ::MbDItemIJ()
                       "MbDFEM",
                       App::Prop_None,
                       "First marker referenced by this item");
+    markerI.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(markerJ,
                       (nullptr),
                       "MbDFEM",
                       App::Prop_None,
                       "Second marker referenced by this item");
+    markerJ.setScope(App::LinkScope::Global);
 }
 
 void MbDFEM::MbDItemIJ::setMarkerI(MbDMarker* marker)

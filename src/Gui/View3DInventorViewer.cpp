@@ -64,6 +64,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/events/SoKeyboardEvent.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/events/SoMotion3Event.h>
 #include <Inventor/manips/SoClipPlaneManip.h>
 #include <Inventor/nodes/SoAnnotation.h>
@@ -87,8 +88,10 @@
 #include <Inventor/nodes/SoTranslation.h>
 #include <Inventor/nodes/SoDepthBuffer.h>
 #include <Inventor/nodes/SoFaceSet.h>
+#include <Inventor/nodes/SoFontStyle.h>
 #include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/nodes/SoTextureCoordinate2.h>
+#include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <QBitmap>
 #include <QElapsedTimer>
@@ -570,6 +573,11 @@ struct OverlayAxisCrossState
     SoMaterial* zMaterial {nullptr};
     SoRotation* zRotation {nullptr};
 
+    SoSeparator* gravityAxis {nullptr};
+    SoMaterial* gravityMaterial {nullptr};
+    SoRotation* gravityRotation {nullptr};
+    SoScale* gravityScale {nullptr};
+
     SoSeparator* lettersRoot {nullptr};
     SoOrthographicCamera* lettersCamera {nullptr};
     SoDepthBuffer* lettersDepth {nullptr};
@@ -591,6 +599,12 @@ struct OverlayAxisCrossState
     Letter xLetter;
     Letter yLetter;
     Letter zLetter;
+
+    SoSwitch* gravityLetterRoot {nullptr};
+    SoTranslation* gravityLetterPosition {nullptr};
+    SoScale* gravityLetterScale {nullptr};
+    SoMaterial* gravityLetterMaterial {nullptr};
+    SoText2* gravityLetterText {nullptr};
 
     void ensureCreated()
     {
@@ -658,6 +672,18 @@ struct OverlayAxisCrossState
         zAxis->addChild(zRotation);
         zAxis->addChild(arrow);
 
+        gravityAxis = new SoSeparator;
+        gravityAxis->ref();
+        gravityMaterial = new SoMaterial;
+        gravityMaterial->diffuseColor.setValue(0.0f, 0.65f, 0.85f);
+        gravityAxis->addChild(gravityMaterial);
+        gravityRotation = new SoRotation;
+        gravityAxis->addChild(gravityRotation);
+        gravityScale = new SoScale;
+        gravityScale->scaleFactor.setValue(0.85f, 0.85f, 0.85f);
+        gravityAxis->addChild(gravityScale);
+        gravityAxis->addChild(arrow);
+
         lettersRoot = new SoSeparator;
         lettersRoot->ref();
 
@@ -724,8 +750,28 @@ struct OverlayAxisCrossState
         lettersRoot->addChild(xLetter.root);
         lettersRoot->addChild(yLetter.root);
         lettersRoot->addChild(zLetter.root);
+
+        gravityLetterRoot = new SoSwitch;
+        gravityLetterRoot->whichChild.setValue(SO_SWITCH_NONE);
+        gravityLetterPosition = new SoTranslation;
+        gravityLetterRoot->addChild(gravityLetterPosition);
+        gravityLetterScale = new SoScale;
+        gravityLetterRoot->addChild(gravityLetterScale);
+        gravityLetterMaterial = new SoMaterial;
+        gravityLetterMaterial->diffuseColor.setValue(0.0f, 0.65f, 0.85f);
+        gravityLetterRoot->addChild(gravityLetterMaterial);
+        auto* gravityFont = new SoFontStyle;
+        gravityFont->size.setValue(14.0f);
+        gravityFont->style.setValue(SoFontStyle::BOLD);
+        gravityLetterRoot->addChild(gravityFont);
+        gravityLetterText = new SoText2;
+        gravityLetterText->string.setValue("g");
+        gravityLetterRoot->addChild(gravityLetterText);
+        lettersRoot->addChild(gravityLetterRoot);
     }
 };
+
+constexpr int defaultCornerCoordinateSystemSize = 18;
 
 OverlayAxisCrossState& overlayAxisCrossState()
 {
@@ -1468,7 +1514,7 @@ void View3DInventorViewer::initialize()
     navigation->setViewer(this);
 
     this->axiscrossEnabled = true;
-    this->axiscrossSize = 10;  // NOLINT
+    this->axiscrossSize = defaultCornerCoordinateSystemSize;
 }
 
 /// @cond DOXERR
@@ -2243,6 +2289,41 @@ void View3DInventorViewer::setAxisCross(bool on)
 bool View3DInventorViewer::hasAxisCross()
 {
     return axisGroup;
+}
+
+void View3DInventorViewer::setCornerGravityIndicator(
+    bool on,
+    const SbVec3f& gravity,
+    const char* documentName,
+    const char* objectName
+)
+{
+    if (on && gravity.sqrLength() <= 1.0e-12f) {
+        on = false;
+    }
+
+    SbVec3f normalized = gravity;
+    if (on) {
+        normalized.normalize();
+    }
+
+    const std::string newDocumentName = documentName ? documentName : "";
+    const std::string newObjectName = objectName ? objectName : "";
+
+    if (cornerGravityIndicatorEnabled == on && cornerGravityVector == normalized
+        && cornerGravityDocumentName == newDocumentName
+        && cornerGravityObjectName == newObjectName) {
+        return;
+    }
+
+    cornerGravityIndicatorEnabled = on;
+    cornerGravityVector = normalized;
+    cornerGravityDocumentName = newDocumentName;
+    cornerGravityObjectName = newObjectName;
+
+    if (this->isFeedbackVisible() && this->isViewing()) {
+        this->getSoRenderManager()->scheduleRedraw();
+    }
 }
 
 void View3DInventorViewer::showRotationCenter(bool show)
@@ -3566,6 +3647,10 @@ bool View3DInventorViewer::processSoEvent(const SoEvent* ev)
             processed = navigation->processEvent(ev);
         }
 
+        if (selectCornerGravityIndicator(ev)) {
+            processed = true;
+        }
+
         return processed;
     }
 
@@ -3582,7 +3667,149 @@ bool View3DInventorViewer::processSoEvent(const SoEvent* ev)
         }
     }
 
-    return navigation->processEvent(ev);
+    bool processed = navigation->processEvent(ev);
+    if (selectCornerGravityIndicator(ev)) {
+        processed = true;
+    }
+    return processed;
+}
+
+bool View3DInventorViewer::selectCornerGravityIndicator(const SoEvent* ev)
+{
+    if (!cornerGravityIndicatorEnabled || cornerGravityDocumentName.empty()
+        || cornerGravityObjectName.empty()) {
+        return false;
+    }
+
+    if (!ev->isOfType(SoMouseButtonEvent::getClassTypeId())) {
+        return false;
+    }
+
+    const auto* mouseEvent = static_cast<const SoMouseButtonEvent*>(ev);
+    if (!SoMouseButtonEvent::isButtonReleaseEvent(mouseEvent, SoMouseButtonEvent::BUTTON1)) {
+        return false;
+    }
+
+    if (!isOnCornerGravityIndicator(mouseEvent->getPosition())) {
+        return false;
+    }
+
+    if (!mouseEvent->wasCtrlDown()) {
+        Gui::Selection().clearSelection(cornerGravityDocumentName.c_str());
+    }
+    Gui::Selection().addSelection(
+        cornerGravityDocumentName.c_str(),
+        cornerGravityObjectName.c_str()
+    );
+
+    auto* appDocument = App::GetApplication().getDocument(cornerGravityDocumentName.c_str());
+    auto* object =
+        appDocument ? appDocument->getObject(cornerGravityObjectName.c_str()) : nullptr;
+    auto* guiDocument =
+        appDocument ? Gui::Application::Instance->getDocument(appDocument) : nullptr;
+    auto* viewProvider = object && guiDocument
+        ? dynamic_cast<Gui::ViewProviderDocumentObject*>(guiDocument->getViewProvider(object))
+        : nullptr;
+    if (viewProvider) {
+        guiDocument->signalExpandObject(*viewProvider, Gui::TreeItemMode::ExpandPath, nullptr, nullptr);
+        guiDocument->signalScrollToObject(*viewProvider);
+    }
+
+    return true;
+}
+
+bool View3DInventorViewer::isOnCornerGravityIndicator(const SbVec2s& position) const
+{
+    const SbVec2s view = this->getSoRenderManager()->getSize();
+    const int viewWidth = view[0];
+    const int viewHeight = view[1];
+    if (viewWidth <= 0 || viewHeight <= 0) {
+        return false;
+    }
+
+    const int effectiveAxisCrossSize =
+        std::max(this->axiscrossSize, defaultCornerCoordinateSystemSize);
+    const int pixelarea = static_cast<int>(
+        static_cast<float>(effectiveAxisCrossSize) / 100.0F * std::min(viewWidth, viewHeight)
+    );
+    if (pixelarea <= 0) {
+        return false;
+    }
+
+    const float x = static_cast<float>(position[0]);
+    const float y = static_cast<float>(position[1]);
+    const float left = static_cast<float>(viewWidth - pixelarea);
+    const float bottom = 0.0F;
+    const float right = static_cast<float>(viewWidth);
+    const float top = static_cast<float>(pixelarea);
+    if (x < left || x > right || y < bottom || y > top) {
+        return false;
+    }
+
+    constexpr float nearVal = 0.1F;
+    constexpr float farVal = 10.0F;
+    const float dim = nearVal * static_cast<float>(std::tan(std::numbers::pi / 8.0));
+
+    SbMatrix model;
+    SoCamera* cam = this->getSoRenderManager()->getCamera();
+    if (cam) {
+        model = cam->orientation.getValue();
+    }
+    else {
+        model = SbMatrix::identity();
+    }
+    model = model.inverse();
+    model[3][0] = 0.0F;
+    model[3][1] = 0.0F;
+    model[3][2] = -3.5F;
+
+    SbViewVolume vv;
+    vv.frustum(-dim, dim, -dim, dim, nearVal, farVal);
+    SbMatrix affine;
+    SbMatrix projection;
+    vv.getMatrices(affine, projection);
+
+    const SbMatrix comb = model.multRight(projection);
+    auto projectToOverlayPixel = [comb, pixelarea, left](const SbVec3f& point) {
+        SbVec3f projected;
+        comb.multVecMatrix(point, projected);
+        const float size = static_cast<float>(pixelarea);
+        return SbVec2f(left + (1.0F + projected[0]) * size / 2.0F,
+                       (1.0F + projected[1]) * size / 2.0F);
+    };
+
+    const float size = static_cast<float>(pixelarea);
+    const SbVec2f center(left + size / 2.0F, size / 2.0F);
+    const SbVec2f tip = projectToOverlayPixel(cornerGravityVector);
+    const SbVec2f label = projectToOverlayPixel(cornerGravityVector * 1.15F);
+    const SbVec2f point(x, y);
+
+    auto distanceSquared = [](const SbVec2f& a, const SbVec2f& b) {
+        const float dx = a[0] - b[0];
+        const float dy = a[1] - b[1];
+        return dx * dx + dy * dy;
+    };
+    auto distanceToSegmentSquared = [distanceSquared](const SbVec2f& p,
+                                                      const SbVec2f& a,
+                                                      const SbVec2f& b) {
+        const SbVec2f ab(b[0] - a[0], b[1] - a[1]);
+        const SbVec2f ap(p[0] - a[0], p[1] - a[1]);
+        const float len2 = ab[0] * ab[0] + ab[1] * ab[1];
+        if (len2 <= 1.0e-6F) {
+            return distanceSquared(p, a);
+        }
+        const float t = std::clamp((ap[0] * ab[0] + ap[1] * ab[1]) / len2, 0.0F, 1.0F);
+        return distanceSquared(p, SbVec2f(a[0] + ab[0] * t, a[1] + ab[1] * t));
+    };
+
+    const float deviceScale = static_cast<float>(devicePixelRatio());
+    const float shaftPickRadius = std::max(8.0F * deviceScale, size * 0.045F);
+    const float tipPickRadius = std::max(10.0F * deviceScale, size * 0.055F);
+    const float labelPickRadius = std::max(11.0F * deviceScale, size * 0.06F);
+
+    return distanceToSegmentSquared(point, center, tip) <= shaftPickRadius * shaftPickRadius
+        || distanceSquared(point, tip) <= tipPickRadius * tipPickRadius
+        || distanceSquared(point, label) <= labelPickRadius * labelPickRadius;
 }
 
 bool View3DInventorViewer::processSoEventBase(const SoEvent* const ev)
@@ -5190,8 +5417,10 @@ void View3DInventorViewer::drawAxisCross()
         return;
     }
 
+    const int effectiveAxisCrossSize =
+        std::max(this->axiscrossSize, defaultCornerCoordinateSystemSize);
     const int pixelarea = static_cast<int>(
-        static_cast<float>(this->axiscrossSize) / 100.0F * std::min(viewWidth, viewHeight)
+        static_cast<float>(effectiveAxisCrossSize) / 100.0F * std::min(viewWidth, viewHeight)
     );
     if (pixelarea <= 0) {
         return;
@@ -5239,9 +5468,11 @@ void View3DInventorViewer::drawAxisCross()
     const SbVec3f xTipProjected = projectOverlayPoint(SbVec3f(1, 0, 0));
     const SbVec3f yTipProjected = projectOverlayPoint(SbVec3f(0, 1, 0));
     const SbVec3f zTipProjected = projectOverlayPoint(SbVec3f(0, 0, 1));
+    const SbVec3f gravityTipProjected = projectOverlayPoint(cornerGravityVector);
     const SbVec3f xLetterProjected = projectLetterAnchor(SbVec3f(1, 0, 0));
     const SbVec3f yLetterProjected = projectLetterAnchor(SbVec3f(0, 1, 0));
     const SbVec3f zLetterProjected = projectLetterAnchor(SbVec3f(0, 0, 1));
+    const SbVec3f gravityLetterProjected = projectLetterAnchor(cornerGravityVector);
 
     auto& overlay = overlayAxisCrossState();
     overlay.ensureCreated();
@@ -5262,12 +5493,16 @@ void View3DInventorViewer::drawAxisCross()
     overlay.xMaterial->diffuseColor.setValue(m_xColor.r, m_xColor.g, m_xColor.b);
     overlay.yMaterial->diffuseColor.setValue(m_yColor.r, m_yColor.g, m_yColor.b);
     overlay.zMaterial->diffuseColor.setValue(m_zColor.r, m_zColor.g, m_zColor.b);
+    overlay.gravityRotation->rotation.setValue(SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), cornerGravityVector));
 
-    std::array<std::pair<float, SoNode*>, 3> axes = {
+    std::vector<std::pair<float, SoNode*>> axes = {
         std::pair<float, SoNode*> {xTipProjected[2], overlay.xAxis},
         std::pair<float, SoNode*> {yTipProjected[2], overlay.yAxis},
         std::pair<float, SoNode*> {zTipProjected[2], overlay.zAxis},
     };
+    if (cornerGravityIndicatorEnabled) {
+        axes.emplace_back(gravityTipProjected[2], overlay.gravityAxis);
+    }
     std::sort(axes.begin(), axes.end(), [](const auto& a, const auto& b) {
         return a.first > b.first;
     });
@@ -5308,6 +5543,7 @@ void View3DInventorViewer::drawAxisCross()
     overlay.xLetter.scale->scaleFactor.setValue(letterScale, letterScale, 1.0f);
     overlay.yLetter.scale->scaleFactor.setValue(letterScale, letterScale, 1.0f);
     overlay.zLetter.scale->scaleFactor.setValue(letterScale, letterScale, 1.0f);
+    overlay.gravityLetterScale->scaleFactor.setValue(letterScale, letterScale, 1.0f);
 
     auto placeLetter = [letterScale, miniViewportCenter, toMiniViewportPixel](
                            OverlayAxisCrossState::Letter& letter,
@@ -5328,9 +5564,19 @@ void View3DInventorViewer::drawAxisCross()
     placeLetter(overlay.yLetter, yLetterProjected);
     placeLetter(overlay.zLetter, zLetterProjected);
 
+    const SbVec2f gravityLabel = toMiniViewportPixel(gravityLetterProjected);
+    overlay.gravityLetterPosition->translation.setValue(
+        gravityLabel[0] - miniViewportCenter,
+        gravityLabel[1] - miniViewportCenter,
+        0.0f
+    );
+
     overlay.xLetter.texture->image.setValue(SbVec2s(XPM_WIDTH, XPM_HEIGHT), 4, XPM_pixel_data);
     overlay.yLetter.texture->image.setValue(SbVec2s(YPM_WIDTH, YPM_HEIGHT), 4, YPM_pixel_data);
     overlay.zLetter.texture->image.setValue(SbVec2s(ZPM_WIDTH, ZPM_HEIGHT), 4, ZPM_pixel_data);
+    overlay.gravityLetterRoot->whichChild.setValue(
+        cornerGravityIndicatorEnabled ? SO_SWITCH_ALL : SO_SWITCH_NONE
+    );
 
     SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
     vp.setViewportPixels(origin[0], origin[1], pixelarea, pixelarea);

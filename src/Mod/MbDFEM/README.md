@@ -435,8 +435,8 @@ The example creates these persistent relationships:
 ```text
 MbDFEM_Doc
 ├── MbDAssembly1.assemblies -> [MbDAssembly2]
+├── MbDAssembly1.fixedparts -> []
 ├── MbDAssembly1.parts -> [MbDPart1, MbDPart2]
-├── MbDAssembly1.markers -> [MbDMarker1, MbDMarker2]
 ├── MbDAssembly1.joints -> [MbDJoint1, MbDJoint2]
 ├── MbDAssembly1.motions -> [MbDMotion1, MbDMotion2]
 ├── MbDAssembly1.actions -> [MbDAction1, MbDAction2]
@@ -445,7 +445,7 @@ MbDFEM_Doc
 └── MbDJoint/MbDMotion/MbDAction.markerI, markerJ -> MbDMarker
 ```
 
-The `assemblies`, `parts`, `markers`, `joints`, `motions`, and `actions`
+The `assemblies`, `fixedparts`, `parts`, `joints`, `motions`, and `actions`
 properties are the authoritative model relationships. MbDFEM also creates
 lightweight App folder objects for tree presentation, so the GUI is displayed
 as:
@@ -453,11 +453,9 @@ as:
 ```text
 MbDFEM_Doc
 └── MbDAssembly1
-    ├── Markers
-    │   ├── MbDMarker1
-    │   └── MbDMarker2
     ├── Assemblies
     │   └── MbDAssembly2
+    ├── FixedParts
     ├── Parts
     │   ├── MbDPart1
     │   │   └── Markers

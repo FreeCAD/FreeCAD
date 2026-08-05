@@ -2,30 +2,38 @@
 
 #pragma once
 
-#include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
-#include <App/PropertyGeo.h>
+#include <App/OriginGroupExtension.h>
 #include <App/PropertyLinks.h>
 #include <Mod/MbDFEM/MbDFEMGlobal.h>
+#include <Mod/Part/App/PartFeature.h>
 
 namespace MbDFEM
 {
 
 class MbDMarker;
 
-class MbDFEMExport MbDPart: public App::DocumentObject
+class MbDFEMExport MbDPart: public Part::Feature, public App::OriginGroupExtension
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(MbDFEM::MbDPart);
+    PROPERTY_HEADER_WITH_EXTENSIONS(MbDFEM::MbDPart);
 
 public:
     MbDPart();
     ~MbDPart() override = default;
 
-    App::PropertyPlacement Placement;
     App::PropertyLinkList markers;
 
     void addMarker(MbDMarker* marker);
+    void removeMarker(MbDMarker* marker);
 
+    int setElementVisible(const char* element, bool visible) override;
+    int isElementVisible(const char* element) const override;
+    App::DocumentObject* getSubObject(const char* subname,
+                                      PyObject** pyObj = nullptr,
+                                      Base::Matrix4D* mat = nullptr,
+                                      bool transform = true,
+                                      int depth = 0) const override;
+    void unsetupObject() override;
     PyObject* getPyObject() override;
 
     App::DocumentObjectGroup* getMarkersFolder() const;

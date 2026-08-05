@@ -3,14 +3,24 @@
 from Base.Metadata import export
 
 from App.DocumentObject import DocumentObject
+from PartFeature import PartFeature
 
 
-@export(Include="Mod/MbDFEM/App/MbDPart.h", Namespace="MbDFEM")
-class MbDPart(DocumentObject):
+@export(
+    Include="Mod/MbDFEM/App/MbDPart.h",
+    Namespace="MbDFEM",
+    FatherInclude="Mod/Part/App/PartFeaturePy.h",
+    FatherNamespace="Part",
+)
+class MbDPart(PartFeature):
     """A minimal multibody part."""
 
     def addMarker(self, marker: DocumentObject, /) -> None:
         """Add an MbDMarker to markers, ignoring duplicates."""
+        ...
+
+    def removeMarker(self, marker: DocumentObject, /) -> None:
+        """Remove an MbDMarker from markers without deleting it."""
         ...
 
     def getMarkersFolder(self) -> DocumentObject:

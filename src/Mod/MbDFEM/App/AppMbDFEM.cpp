@@ -11,6 +11,7 @@
 #include "MbDJoint.h"
 #include "MbDMarker.h"
 #include "MbDMotion.h"
+#include "MbDParameters.h"
 #include "MbDPart.h"
 
 namespace MbDFEM
@@ -35,6 +36,15 @@ PyObject* initModule()
 
 PyMOD_INIT_FUNC(MbDFEM)
 {
+    // load dependent module
+    try {
+        Base::Interpreter().runString("import Part");
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_ImportError, e.what());
+        PyMOD_Return(nullptr);
+    }
+
     PyObject* module = MbDFEM::initModule();
     MbDFEM::MbDAssembly::init();
     MbDFEM::MbDPart::init();
@@ -43,8 +53,12 @@ PyMOD_INIT_FUNC(MbDFEM)
     MbDFEM::MbDJoint::init();
     MbDFEM::MbDMotion::init();
     MbDFEM::MbDAction::init();
+    MbDFEM::MbDGravity::init();
+    MbDFEM::MbDSimulationParameters::init();
+    MbDFEM::MbDAnimationParameters::init();
     MbDFEM::MbDAssembliesFolder::init();
     MbDFEM::MbDPartsFolder::init();
+    MbDFEM::MbDFixedPartsFolder::init();
     MbDFEM::MbDMarkersFolder::init();
     MbDFEM::MbDJointsFolder::init();
     MbDFEM::MbDMotionsFolder::init();

@@ -7,8 +7,8 @@
 
 #include "MbDAction.h"
 #include "MbDJoint.h"
-#include "MbDMarker.h"
 #include "MbDMotion.h"
+#include "MbDParameters.h"
 #include "MbDPart.h"
 
 std::string MbDFEM::MbDAssemblyPy::representation() const
@@ -43,6 +43,74 @@ PyObject* MbDFEM::MbDAssemblyPy::addPart(PyObject* args)
     Py_Return;
 }
 
+PyObject* MbDFEM::MbDAssemblyPy::removePart(PyObject* args)
+{
+    PyObject* object;
+    if (!PyArg_ParseTuple(args, "O!", &App::DocumentObjectPy::Type, &object)) {
+        return nullptr;
+    }
+
+    auto* documentObject = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
+    if (!documentObject->isDerivedFrom<MbDFEM::MbDPart>()) {
+        PyErr_SetString(PyExc_TypeError, "removePart expects an MbDFEM::MbDPart");
+        return nullptr;
+    }
+
+    getMbDAssemblyPtr()->removePart(static_cast<MbDFEM::MbDPart*>(documentObject));
+    Py_Return;
+}
+
+PyObject* MbDFEM::MbDAssemblyPy::addFixedPart(PyObject* args)
+{
+    PyObject* object;
+    if (!PyArg_ParseTuple(args, "O!", &App::DocumentObjectPy::Type, &object)) {
+        return nullptr;
+    }
+
+    auto* documentObject = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
+    if (!documentObject->isDerivedFrom<MbDFEM::MbDPart>()) {
+        PyErr_SetString(PyExc_TypeError, "addFixedPart expects an MbDFEM::MbDPart");
+        return nullptr;
+    }
+
+    getMbDAssemblyPtr()->addFixedPart(static_cast<MbDFEM::MbDPart*>(documentObject));
+    Py_Return;
+}
+
+PyObject* MbDFEM::MbDAssemblyPy::removeFixedPart(PyObject* args)
+{
+    PyObject* object;
+    if (!PyArg_ParseTuple(args, "O!", &App::DocumentObjectPy::Type, &object)) {
+        return nullptr;
+    }
+
+    auto* documentObject = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
+    if (!documentObject->isDerivedFrom<MbDFEM::MbDPart>()) {
+        PyErr_SetString(PyExc_TypeError, "removeFixedPart expects an MbDFEM::MbDPart");
+        return nullptr;
+    }
+
+    getMbDAssemblyPtr()->removeFixedPart(static_cast<MbDFEM::MbDPart*>(documentObject));
+    Py_Return;
+}
+
+PyObject* MbDFEM::MbDAssemblyPy::groundPart(PyObject* args)
+{
+    PyObject* object;
+    if (!PyArg_ParseTuple(args, "O!", &App::DocumentObjectPy::Type, &object)) {
+        return nullptr;
+    }
+
+    auto* documentObject = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
+    if (!documentObject->isDerivedFrom<MbDFEM::MbDPart>()) {
+        PyErr_SetString(PyExc_TypeError, "groundPart expects an MbDFEM::MbDPart");
+        return nullptr;
+    }
+
+    getMbDAssemblyPtr()->groundPart(static_cast<MbDFEM::MbDPart*>(documentObject));
+    Py_Return;
+}
+
 PyObject* MbDFEM::MbDAssemblyPy::addAssembly(PyObject* args)
 {
     PyObject* object;
@@ -57,23 +125,6 @@ PyObject* MbDFEM::MbDAssemblyPy::addAssembly(PyObject* args)
     }
 
     getMbDAssemblyPtr()->addAssembly(static_cast<MbDFEM::MbDAssembly*>(documentObject));
-    Py_Return;
-}
-
-PyObject* MbDFEM::MbDAssemblyPy::addMarker(PyObject* args)
-{
-    PyObject* object;
-    if (!PyArg_ParseTuple(args, "O!", &App::DocumentObjectPy::Type, &object)) {
-        return nullptr;
-    }
-
-    auto* documentObject = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
-    if (!documentObject->isDerivedFrom<MbDFEM::MbDMarker>()) {
-        PyErr_SetString(PyExc_TypeError, "addMarker expects an MbDFEM::MbDMarker");
-        return nullptr;
-    }
-
-    getMbDAssemblyPtr()->addMarker(static_cast<MbDFEM::MbDMarker*>(documentObject));
     Py_Return;
 }
 
@@ -142,6 +193,20 @@ PyObject* MbDFEM::MbDAssemblyPy::getPartsFolder(PyObject* args)
     return Py::new_reference_to(Py::asObject(folder->getPyObject()));
 }
 
+PyObject* MbDFEM::MbDAssemblyPy::getFixedPartsFolder(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    auto* folder = getMbDAssemblyPtr()->getFixedPartsFolder();
+    if (!folder) {
+        Py_Return;
+    }
+
+    return Py::new_reference_to(Py::asObject(folder->getPyObject()));
+}
+
 PyObject* MbDFEM::MbDAssemblyPy::getAssembliesFolder(PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
@@ -198,16 +263,86 @@ PyObject* MbDFEM::MbDAssemblyPy::getActionsFolder(PyObject* args)
     return Py::new_reference_to(Py::asObject(folder->getPyObject()));
 }
 
-PyObject* MbDFEM::MbDAssemblyPy::getMarkersFolder(PyObject* args)
+PyObject* MbDFEM::MbDAssemblyPy::getSimulationParameters(PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
     }
 
-    auto* folder = getMbDAssemblyPtr()->getMarkersFolder();
-    if (!folder) {
+    auto* parameters = getMbDAssemblyPtr()->getSimulationParameters();
+    if (!parameters) {
         Py_Return;
     }
 
-    return Py::new_reference_to(Py::asObject(folder->getPyObject()));
+    return Py::new_reference_to(Py::asObject(parameters->getPyObject()));
+}
+
+PyObject* MbDFEM::MbDAssemblyPy::getAnimationParameters(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    auto* parameters = getMbDAssemblyPtr()->getAnimationParameters();
+    if (!parameters) {
+        Py_Return;
+    }
+
+    return Py::new_reference_to(Py::asObject(parameters->getPyObject()));
+}
+
+PyObject* MbDFEM::MbDAssemblyPy::getGravity(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    auto* gravity = getMbDAssemblyPtr()->getGravity();
+    if (!gravity) {
+        Py_Return;
+    }
+
+    return Py::new_reference_to(Py::asObject(gravity->getPyObject()));
+}
+
+PyObject* MbDFEM::MbDAssemblyPy::ensureSimulationParameters(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    auto* parameters = getMbDAssemblyPtr()->ensureSimulationParameters();
+    if (!parameters) {
+        Py_Return;
+    }
+
+    return Py::new_reference_to(Py::asObject(parameters->getPyObject()));
+}
+
+PyObject* MbDFEM::MbDAssemblyPy::ensureGravity(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    auto* gravity = getMbDAssemblyPtr()->ensureGravity();
+    if (!gravity) {
+        Py_Return;
+    }
+
+    return Py::new_reference_to(Py::asObject(gravity->getPyObject()));
+}
+
+PyObject* MbDFEM::MbDAssemblyPy::ensureAnimationParameters(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    auto* parameters = getMbDAssemblyPtr()->ensureAnimationParameters();
+    if (!parameters) {
+        Py_Return;
+    }
+
+    return Py::new_reference_to(Py::asObject(parameters->getPyObject()));
 }

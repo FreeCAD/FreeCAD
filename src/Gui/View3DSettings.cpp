@@ -360,7 +360,7 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
     }
     else if (strcmp(Reason, "CornerCoordSystemSize") == 0) {
         for (auto _viewer : _viewers) {
-            _viewer->setFeedbackSize(rGrp.GetInt("CornerCoordSystemSize", 10));
+            _viewer->setFeedbackSize(rGrp.GetInt("CornerCoordSystemSize", 18));
         }
     }
     else if (strcmp(Reason, "AxisLetterColor") == 0) {

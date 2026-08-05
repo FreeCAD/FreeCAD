@@ -63,9 +63,6 @@ def create_model():
     part_markers[1][0].Placement.Base = App.Vector(210, 10, 0)
     part_markers[1][1].Placement.Base = App.Vector(220, 10, 0)
 
-    for marker in assembly_markers:
-        assembly.addMarker(marker)
-
     assembly.addAssembly(subassembly)
 
     for part, markers in zip(parts, part_markers):

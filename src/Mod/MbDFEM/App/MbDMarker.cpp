@@ -2,4 +2,28 @@
 
 #include "MbDMarker.h"
 
-PROPERTY_SOURCE(MbDFEM::MbDMarker, App::GeoFeature)
+#include <cstring>
+
+PROPERTY_SOURCE(MbDFEM::MbDMarker, Part::Feature)
+
+MbDFEM::MbDMarker::MbDMarker()
+{
+    ADD_PROPERTY_TYPE(Geometry,
+                      (nullptr),
+                      "MbDFEM",
+                      App::Prop_None,
+                      "Circular edge or cylindrical face referenced by this marker");
+}
+
+void MbDFEM::MbDMarker::handleChangedPropertyName(Base::XMLReader& reader,
+                                                  const char* typeName,
+                                                  const char* propName)
+{
+    Base::Type type = Base::Type::fromName(typeName);
+    if (Geometry.getTypeId() == type && std::strcmp(propName, "Edge") == 0) {
+        Geometry.Restore(reader);
+    }
+    else {
+        Part::Feature::handleChangedPropertyName(reader, typeName, propName);
+    }
+}

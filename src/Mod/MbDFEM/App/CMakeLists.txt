@@ -2,6 +2,7 @@
 
 set(MbDFEM_LIBS
     FreeCADApp
+    Part
 )
 
 generate_from_py(MbDAssembly)
@@ -19,6 +20,8 @@ set(MbDFEM_SRCS
     MbDAssemblyPyImp.cpp
     MbDFolders.cpp
     MbDFolders.h
+    MbDGroupUtils.cpp
+    MbDGroupUtils.h
     MbDItemIJ.cpp
     MbDItemIJ.h
     MbDItemIJ.pyi
@@ -29,6 +32,8 @@ set(MbDFEM_SRCS
     MbDMarker.h
     MbDMotion.cpp
     MbDMotion.h
+    MbDParameters.cpp
+    MbDParameters.h
     MbDPart.cpp
     MbDPart.h
     MbDPart.pyi

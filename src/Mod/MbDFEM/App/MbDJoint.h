@@ -12,8 +12,16 @@ class MbDFEMExport MbDJoint: public MbDItemIJ
     PROPERTY_HEADER_WITH_OVERRIDE(MbDFEM::MbDJoint);
 
 public:
-    MbDJoint() = default;
+    static const char* JointTypeEnums[];
+
+    MbDJoint();
     ~MbDJoint() override = default;
+
+    App::PropertyEnumeration jointType;
+    App::PropertyFloat gearRatio;
+    App::PropertyFloat pitchRadius;
+
+    void onChanged(const App::Property* prop) override;
 
     const char* getViewProviderName() const override
     {

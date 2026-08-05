@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <iosfwd>
+
 #include <App/DocumentObjectGroup.h>
 #include <Mod/MbDFEM/MbDFEMGlobal.h>
 
@@ -17,6 +19,9 @@ public:
     ~MbDAssembliesFolder() override = default;
 
     bool allowObject(App::DocumentObject* object) override;
+    bool redirectSubName(std::ostringstream& ss,
+                         App::DocumentObject* topParent,
+                         App::DocumentObject* child) const override;
 
     bool allowDuplicateLabel() const override
     {
@@ -33,6 +38,28 @@ public:
     ~MbDPartsFolder() override = default;
 
     bool allowObject(App::DocumentObject* object) override;
+    bool redirectSubName(std::ostringstream& ss,
+                         App::DocumentObject* topParent,
+                         App::DocumentObject* child) const override;
+
+    bool allowDuplicateLabel() const override
+    {
+        return true;
+    }
+};
+
+class MbDFEMExport MbDFixedPartsFolder: public App::DocumentObjectGroup
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(MbDFEM::MbDFixedPartsFolder);
+
+public:
+    MbDFixedPartsFolder() = default;
+    ~MbDFixedPartsFolder() override = default;
+
+    bool allowObject(App::DocumentObject* object) override;
+    bool redirectSubName(std::ostringstream& ss,
+                         App::DocumentObject* topParent,
+                         App::DocumentObject* child) const override;
 
     bool allowDuplicateLabel() const override
     {
@@ -49,6 +76,9 @@ public:
     ~MbDMarkersFolder() override = default;
 
     bool allowObject(App::DocumentObject* object) override;
+    bool redirectSubName(std::ostringstream& ss,
+                         App::DocumentObject* topParent,
+                         App::DocumentObject* child) const override;
 
     bool allowDuplicateLabel() const override
     {
@@ -65,6 +95,9 @@ public:
     ~MbDJointsFolder() override = default;
 
     bool allowObject(App::DocumentObject* object) override;
+    bool redirectSubName(std::ostringstream& ss,
+                         App::DocumentObject* topParent,
+                         App::DocumentObject* child) const override;
 
     bool allowDuplicateLabel() const override
     {
@@ -81,6 +114,9 @@ public:
     ~MbDMotionsFolder() override = default;
 
     bool allowObject(App::DocumentObject* object) override;
+    bool redirectSubName(std::ostringstream& ss,
+                         App::DocumentObject* topParent,
+                         App::DocumentObject* child) const override;
 
     bool allowDuplicateLabel() const override
     {
@@ -97,6 +133,9 @@ public:
     ~MbDActionsFolder() override = default;
 
     bool allowObject(App::DocumentObject* object) override;
+    bool redirectSubName(std::ostringstream& ss,
+                         App::DocumentObject* topParent,
+                         App::DocumentObject* child) const override;
 
     bool allowDuplicateLabel() const override
     {

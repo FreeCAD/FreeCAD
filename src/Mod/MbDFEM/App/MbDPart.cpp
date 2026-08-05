@@ -3,48 +3,165 @@
 #include "MbDPart.h"
 
 #include <algorithm>
+#include <cstring>
 
 #include <App/Document.h>
+#include <App/GeoFeatureGroupExtension.h>
 
+#include "MbDAssembly.h"
 #include "MbDFolders.h"
+#include "MbDGroupUtils.h"
 #include "MbDMarker.h"
 #include "MbDPartPy.h"
 
-PROPERTY_SOURCE(MbDFEM::MbDPart, App::DocumentObject)
+PROPERTY_SOURCE_WITH_EXTENSIONS(MbDFEM::MbDPart, Part::Feature)
+
+namespace
+{
+
+App::DocumentObjectGroup* matchingFolder(const char* subname,
+                                         const char*& rest,
+                                         App::DocumentObjectGroup* folder)
+{
+    rest = nullptr;
+    const char* dot = subname ? std::strchr(subname, '.') : nullptr;
+    if (!dot || !folder) {
+        return nullptr;
+    }
+
+    if (std::string(subname, dot) == folder->getNameInDocument()) {
+        rest = dot + 1;
+        return folder;
+    }
+    return nullptr;
+}
+
+App::DocumentObject* findDirectChildByInternalName(const char* element,
+                                                   const std::vector<App::DocumentObject*>& children)
+{
+    if (!element || !*element) {
+        return nullptr;
+    }
+
+    std::string name(element);
+    if (!name.empty() && name.back() == '.') {
+        name.pop_back();
+    }
+
+    for (auto* child : children) {
+        if (!child) {
+            continue;
+        }
+        if (name == child->getNameInDocument()) {
+            return child;
+        }
+    }
+    return nullptr;
+}
+
+bool parentAssemblyVisible(const App::DocumentObject* object)
+{
+    auto* group = object ? App::GeoFeatureGroupExtension::getGroupOfObject(object) : nullptr;
+    auto* assembly = freecad_cast<MbDFEM::MbDAssembly*>(group);
+    return !assembly || assembly->Visibility.getValue();
+}
+
+}  // namespace
 
 MbDFEM::MbDPart::MbDPart()
 {
-    ADD_PROPERTY_TYPE(Placement,
-                      (Base::Placement()),
-                      "MbDFEM",
-                      App::Prop_None,
-                      "Placement of this part");
     ADD_PROPERTY_TYPE(markers,
                       (nullptr),
                       "MbDFEM",
                       App::Prop_None,
                       "Markers belonging to this part");
+    markers.setScope(App::LinkScope::Child);
     ADD_PROPERTY_TYPE(_markersFolder,
                       (nullptr),
                       "MbDFEM",
                       App::Prop_Hidden,
                       "Tree folder containing this part's markers");
+    _markersFolder.setScope(App::LinkScope::Hidden);
+
+    App::OriginGroupExtension::initExtension(this);
 }
 
 void MbDFEM::MbDPart::addMarker(MbDMarker* marker)
 {
-    auto values = markers.getValues();
-    if (marker && std::find(values.begin(), values.end(), marker) == values.end()) {
-        values.push_back(marker);
-        markers.setValues(values);
+    if (!marker) {
+        return;
     }
 
-    if (marker) {
-        auto* folder = ensureMarkersFolder();
-        if (folder && !folder->hasObject(marker)) {
-            folder->addObject(marker);
+    addChildToListFolderAndGeoGroup(this, markers, ensureMarkersFolder(), marker);
+}
+
+void MbDFEM::MbDPart::removeMarker(MbDMarker* marker)
+{
+    removeChildFromListFolderAndGeoGroup(this, markers, getMarkersFolder(), marker);
+}
+
+int MbDFEM::MbDPart::setElementVisible(const char* element, bool visible)
+{
+    auto* child = findDirectChildByInternalName(element, markers.getValues());
+    if (!child) {
+        return Part::Feature::setElementVisible(element, visible);
+    }
+
+    child->Visibility.setValue(visible);
+    return visible ? 1 : 0;
+}
+
+int MbDFEM::MbDPart::isElementVisible(const char* element) const
+{
+    if (!Visibility.getValue() || !parentAssemblyVisible(this)) {
+        return 0;
+    }
+
+    auto* child = findDirectChildByInternalName(element, markers.getValues());
+    if (!child) {
+        return Part::Feature::isElementVisible(element);
+    }
+
+    return child->Visibility.getValue() ? 1 : 0;
+}
+
+App::DocumentObject* MbDFEM::MbDPart::getSubObject(const char* subname,
+                                                   PyObject** pyObj,
+                                                   Base::Matrix4D* mat,
+                                                   bool transform,
+                                                   int depth) const
+{
+    const char* rest = nullptr;
+    auto* folder = matchingFolder(subname, rest, getMarkersFolder());
+    if (folder) {
+        if (!rest || *rest == '\0') {
+            return folder;
+        }
+        return Part::Feature::getSubObject(rest, pyObj, mat, transform, depth);
+    }
+
+    return Part::Feature::getSubObject(subname, pyObj, mat, transform, depth);
+}
+
+void MbDFEM::MbDPart::unsetupObject()
+{
+    auto* document = getDocument();
+    if (document) {
+        const auto markerValues = markers.getValues();
+        for (auto* marker : markerValues) {
+            if (marker && marker->isAttachedToDocument() && !marker->isRemoving()) {
+                document->removeObject(marker->getNameInDocument());
+            }
+        }
+
+        if (auto* folder = getMarkersFolder()) {
+            if (folder->isAttachedToDocument() && !folder->isRemoving()) {
+                document->removeObject(folder->getNameInDocument());
+            }
         }
     }
+
+    Part::Feature::unsetupObject();
 }
 
 App::DocumentObjectGroup* MbDFEM::MbDPart::getMarkersFolder() const

@@ -39,6 +39,23 @@ PyObject* MbDFEM::MbDPartPy::addMarker(PyObject* args)
     Py_Return;
 }
 
+PyObject* MbDFEM::MbDPartPy::removeMarker(PyObject* args)
+{
+    PyObject* object;
+    if (!PyArg_ParseTuple(args, "O!", &App::DocumentObjectPy::Type, &object)) {
+        return nullptr;
+    }
+
+    auto* documentObject = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
+    if (!documentObject->isDerivedFrom<MbDFEM::MbDMarker>()) {
+        PyErr_SetString(PyExc_TypeError, "removeMarker expects an MbDFEM::MbDMarker");
+        return nullptr;
+    }
+
+    getMbDPartPtr()->removeMarker(static_cast<MbDFEM::MbDMarker*>(documentObject));
+    Py_Return;
+}
+
 PyObject* MbDFEM::MbDPartPy::getMarkersFolder(PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {

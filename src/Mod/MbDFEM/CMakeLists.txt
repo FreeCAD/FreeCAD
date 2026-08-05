@@ -15,7 +15,7 @@ set(MbDFEM_Examples
 )
 
 if(BUILD_GUI)
-    list(APPEND MbDFEM_Scripts InitGui.py)
+    list(APPEND MbDFEM_Scripts InitGui.py TestMbDFEMGui.py)
 endif()
 
 add_custom_target(MbDFEMScripts ALL
