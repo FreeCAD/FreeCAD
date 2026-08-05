@@ -18,7 +18,6 @@ from pathlib import Path
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import Import
 import Part
 
 
@@ -120,6 +119,28 @@ def _selected_face_signature(face):
     }, separators=(",", ":"))
 
 
+def _geometry_object(obj):
+    """Return the untransformed source object behind an App::Link."""
+    try:
+        linked = obj.getLinkedObject(True)
+        if linked is not None and hasattr(linked, "Shape"):
+            return linked
+    except Exception:
+        pass
+    return obj
+
+
+def _geometry_shape(obj):
+    return _geometry_object(obj).Shape
+
+
+def _global_placement(obj):
+    try:
+        return App.Placement(obj.getGlobalPlacement())
+    except Exception:
+        return App.Placement(obj.Placement)
+
+
 def _two_selected_faces():
     entries = [entry for entry in Gui.Selection.getSelectionEx()
                if hasattr(entry.Object, "Shape")]
@@ -131,23 +152,34 @@ def _two_selected_faces():
                  if name.startswith("Face")]
         if len(faces) != 1 or len(entry.SubElementNames) != 1:
             raise RuntimeError("Side {} must have exactly one selected FaceN subelement.".format(side))
-        name, face = faces[0]
+        name, _selected_subobject = faces[0]
         try:
             index = int(name[4:]) - 1
         except ValueError as exc:
             raise RuntimeError("Invalid selected face name: {}".format(name)) from exc
-        selected.append((entry.Object, name, index, _selected_face_signature(face)))
+        # SelectionEx.SubObjects may be returned in document/global coordinates
+        # for links and assembly objects.  Inference is deliberately performed
+        # on obj.Shape in its local coordinates, so the signature must use the
+        # same local shape as the exported STEP file.
+        local_face = _geometry_shape(entry.Object).getElement(name)
+        selected.append((entry.Object, name, index, _selected_face_signature(local_face)))
     if selected[0][0] is selected[1][0]:
         raise RuntimeError("Select faces on two different objects.")
     return selected
 
 
-def _rank1_placement(object_b, recommendation, align_opposite=True):
-    """Return the global delta that maps the recommended B frame onto A."""
+def _rank1_placement(object_a, recommendation, align_opposite=True):
+    """Return B's final Placement from two part-local recommended frames.
+
+    Both model frames are generated from local ``obj.Shape`` geometry.  Only
+    A's frame is converted to document coordinates here.  This avoids applying
+    an existing object Placement twice when STEP export bakes it into geometry.
+    """
     frame_a = _frame_in_freecad_units(recommendation["a"])
     frame_b = _frame_in_freecad_units(recommendation["b"])
-    origin_a = App.Vector(*frame_a["origin"])
-    axis_a = App.Vector(*frame_a["axis"])
+    placement_a = _global_placement(object_a)
+    origin_a = placement_a.multVec(App.Vector(*frame_a["origin"]))
+    axis_a = placement_a.Rotation.multVec(App.Vector(*frame_a["axis"]))
     origin_b = App.Vector(*frame_b["origin"])
     axis_b = App.Vector(*frame_b["axis"])
     if axis_a.Length < 1.0e-12 or axis_b.Length < 1.0e-12:
@@ -163,7 +195,7 @@ def _rank1_placement(object_b, recommendation, align_opposite=True):
 
 def _selected_local_face(obj, face_name):
     try:
-        return obj.Shape.getElement(face_name)
+        return _geometry_shape(obj).getElement(face_name)
     except Exception as exc:
         raise RuntimeError("Cannot resolve {} on '{}'".format(face_name, obj.Label)) from exc
 
@@ -187,8 +219,11 @@ def _axial_face_bounds(obj, face_name, placement, axis):
 
 def _candidate_placement(object_a, object_b, face_name_a, face_name_b,
                          original_b, recommendation):
-    delta = _rank1_placement(object_b, recommendation, ALIGN_OPPOSITE)
-    placement = delta.multiply(original_b)
+    desired_global = _rank1_placement(object_a, recommendation, ALIGN_OPPOSITE)
+    current_global_b = _global_placement(object_b)
+    parent_global_b = current_global_b.multiply(original_b.inverse())
+    placement = parent_global_b.inverse().multiply(desired_global)
+    delta = placement.multiply(original_b.inverse())
     correction = 0.0
     correction_enabled = (
         AXIAL_CONTACT_CORRECTION
@@ -197,18 +232,20 @@ def _candidate_placement(object_a, object_b, face_name_a, face_name_b,
     )
     if correction_enabled:
         frame_a = _frame_in_freecad_units(recommendation["a"])
-        axis = App.Vector(*frame_a["axis"])
+        placement_a = _global_placement(object_a)
+        axis = placement_a.Rotation.multVec(App.Vector(*frame_a["axis"]))
         if axis.Length < 1.0e-12:
             raise ValueError("Cannot correct a zero-length mating axis")
         axis.normalize()
         bounds_a = _axial_face_bounds(
-            object_a, face_name_a, App.Placement(object_a.Placement), axis
+            object_a, face_name_a, placement_a, axis
         )
-        bounds_b = _axial_face_bounds(object_b, face_name_b, placement, axis)
+        bounds_b = _axial_face_bounds(object_b, face_name_b, desired_global, axis)
         corrections = [a_value - b_value for a_value in bounds_a for b_value in bounds_b]
         correction = min(corrections, key=abs)
         axial_delta = App.Placement(axis * correction, App.Rotation())
-        placement = axial_delta.multiply(placement)
+        desired_global = axial_delta.multiply(desired_global)
+        placement = parent_global_b.inverse().multiply(desired_global)
         delta = placement.multiply(original_b.inverse())
     return {
         "placement": placement,
@@ -216,6 +253,33 @@ def _candidate_placement(object_a, object_b, face_name_a, face_name_b,
         "axial_correction_mm": correction,
         "axial_correction_enabled": correction_enabled,
     }
+
+
+def _refresh_object_document(obj):
+    """Recompute the document that owns obj, which may not be ActiveDocument."""
+    owner = getattr(obj, "Document", None)
+    if owner is not None:
+        owner.recompute()
+    try:
+        Gui.updateGui()
+    except Exception:
+        pass
+
+
+def _global_bbox_stats(obj):
+    box = _geometry_shape(obj).BoundBox
+    placement = _global_placement(obj)
+    points = [
+        placement.multVec(App.Vector(x, y, z))
+        for x in (box.XMin, box.XMax)
+        for y in (box.YMin, box.YMax)
+        for z in (box.ZMin, box.ZMax)
+    ]
+    minimum = [min(getattr(point, axis) for point in points) for axis in ("x", "y", "z")]
+    maximum = [max(getattr(point, axis) for point in points) for axis in ("x", "y", "z")]
+    center = [(low + high) * 0.5 for low, high in zip(minimum, maximum)]
+    size = [high - low for low, high in zip(minimum, maximum)]
+    return center, size
 
 
 def _preview_topk(object_b, original_placement, recommendations, placements):
@@ -269,8 +333,11 @@ def _preview_topk(object_b, original_placement, recommendations, placements):
 
     def preview(index):
         object_b.Placement = App.Placement(placements[index]["placement"])
-        App.ActiveDocument.recompute()
-        Gui.activeDocument().activeView().redraw()
+        _refresh_object_document(object_b)
+        try:
+            Gui.activeDocument().activeView().redraw()
+        except Exception:
+            pass
 
     combo.currentIndexChanged.connect(preview)
     buttons.accepted.connect(dialog.accept)
@@ -283,11 +350,14 @@ def _preview_topk(object_b, original_placement, recommendations, placements):
     dialog.finished.connect(lambda _result: event_loop.quit())
     dialog.show()
     dialog.raise_()
-    event_loop.exec_()
+    if hasattr(event_loop, "exec"):
+        event_loop.exec()
+    else:
+        event_loop.exec_()
     accepted = dialog.result() == QtWidgets.QDialog.Accepted
     selected_index = combo.currentIndex()
     object_b.Placement = App.Placement(original_placement)
-    App.ActiveDocument.recompute()
+    _refresh_object_document(object_b)
     if not accepted:
         return None
     return selected_index
@@ -309,13 +379,30 @@ def run(top_k=TOP_K):
     doc = App.ActiveDocument
     if doc is None:
         raise RuntimeError("No active FreeCAD document.")
+    App.Console.PrintMessage(
+        "AutoMate objects: A='{}' document='{}'; B='{}' document='{}'; "
+        "active document='{}'.\n".format(
+            selected[0].Label, selected[0].Document.Name,
+            selected[1].Label, selected[1].Document.Name, doc.Name,
+        )
+    )
+    print(
+        "AutoMate objects: A='{}' document='{}'; B='{}' document='{}'; "
+        "active document='{}'.".format(
+            selected[0].Label, selected[0].Document.Name,
+            selected[1].Label, selected[1].Document.Name, doc.Name,
+        )
+    )
 
     with tempfile.TemporaryDirectory(prefix="freecad_automate_predict_") as temporary:
         step_a = os.path.join(temporary, "part_a.step")
         step_b = os.path.join(temporary, "part_b.step")
         output = os.path.join(temporary, "predictions.json")
-        Import.export([selected[0]], step_a)
-        Import.export([selected[1]], step_b)
+        # Export local TopoShapes, never document-placed objects.  The model
+        # consequently has one stable coordinate convention for normal parts,
+        # App::Links, and objects imported with large global CAD offsets.
+        _geometry_shape(selected[0]).exportStep(step_a)
+        _geometry_shape(selected[1]).exportStep(step_b)
         command = [
             _pixi_executable(), "run", "python", "scripts/infer_selected_faces.py",
             step_a, step_b,
@@ -392,8 +479,13 @@ def run(top_k=TOP_K):
         chosen_recommendation = result["recommendations"][selected_recommendation_index]
         applied_delta = chosen["delta"]
         selected[1].Placement = App.Placement(chosen["placement"])
+        _refresh_object_document(selected[1])
         moved_placement = App.Placement(selected[1].Placement)
-        group.addProperty("App::PropertyLink", "MovedObject", "AutoMate")
+        link_type = (
+            "App::PropertyLink" if selected[1].Document is doc
+            else "App::PropertyXLink"
+        )
+        group.addProperty(link_type, "MovedObject", "AutoMate")
         group.addProperty("App::PropertyPlacement", "OriginalPlacement", "AutoMate")
         group.addProperty("App::PropertyPlacement", "AppliedDelta", "AutoMate")
         group.addProperty("App::PropertyBool", "AxesOpposed", "AutoMate")
@@ -412,8 +504,8 @@ def run(top_k=TOP_K):
             )
         )
     diagonal = max(
-        selected[0].Shape.BoundBox.DiagonalLength,
-        selected[1].Shape.BoundBox.DiagonalLength,
+        _geometry_shape(selected[0]).BoundBox.DiagonalLength,
+        _geometry_shape(selected[1]).BoundBox.DiagonalLength,
         1.0,
     )
     length = diagonal * 0.10
@@ -424,12 +516,29 @@ def run(top_k=TOP_K):
         probability = recommendation["probability"]
         mate_type = recommendation.get("mate_type", "UNKNOWN")
         mate_type_confidence = recommendation.get("mate_type_confidence", 0.0)
-        a = _frame_in_freecad_units(recommendation["a"])
-        b = _frame_in_freecad_units(recommendation["b"])
-        # B has already moved using the chosen rank, so draw its candidate
-        # frames under that same global delta.
-        if applied_delta is not None:
-            b = _transform_frame(b, applied_delta)
+        a = _transform_frame(
+            _frame_in_freecad_units(recommendation["a"]), _global_placement(selected[0])
+        )
+        placed_center, placed_size = _global_bbox_stats(selected[1])
+        App.Console.PrintMessage(
+            "AutoMate B global bbox center=({:.3f}, {:.3f}, {:.3f}) mm, "
+            "size=({:.3f}, {:.3f}, {:.3f}) mm.\n".format(
+                *placed_center, *placed_size,
+            )
+        )
+        placed_center, placed_size = _global_bbox_stats(selected[1])
+        print(
+            "AutoMate Placement: rank={} B-local={} B-global={} bbox-center={} "
+            "bbox-size={}".format(
+                chosen_recommendation["rank"], moved_placement,
+                _global_placement(selected[1]),
+                tuple(round(value, 3) for value in placed_center),
+                tuple(round(value, 3) for value in placed_size),
+            )
+        )
+        b = _transform_frame(
+            _frame_in_freecad_units(recommendation["b"]), _global_placement(selected[1])
+        )
         obj_a = _add_axis(
             doc, "AutoMate_R{}_A".format(rank),
             "AutoMate #{} A [{} {:.1%}]".format(
