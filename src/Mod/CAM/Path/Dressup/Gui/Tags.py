@@ -82,7 +82,7 @@ class PathDressupTagTaskPanel:
     def clicked(self, button):
         if button == QtGui.QDialogButtonBox.Apply:
             self.getFields()
-            self.obj.Proxy.execute(self.obj)
+            self.obj.Proxy.execute(self.obj, False)
             self.isDirty = False
 
     def modifyStandardButtons(self, buttonBox):
@@ -203,7 +203,7 @@ class PathDressupTagTaskPanel:
     def generateNewTags(self):
         self.getFields()
         if not self.obj.Proxy.generateTags(self.obj):
-            self.obj.Proxy.execute(self.obj)
+            self.obj.Proxy.execute(self.obj, False)
         self.Positions = self.obj.Positions
         self.Disabled = self.obj.Disabled
         self.updateTagsView()
@@ -220,7 +220,7 @@ class PathDressupTagTaskPanel:
         if r:
             index = form.uiToolController.currentIndex()
             if not self.obj.Proxy.copyTags(self.obj, tags[index]):
-                self.obj.Proxy.execute(self.obj)
+                self.obj.Proxy.execute(self.obj, False)
             self.Positions = self.obj.Positions
             self.Disabled = self.obj.Disabled
             self.updateTagsView()
