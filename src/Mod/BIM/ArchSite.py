@@ -1811,7 +1811,7 @@ class _ViewProviderSite:
             # ReferenceError: vobj no longer exists
             # see https://github.com/FreeCAD/FreeCAD/issues/24543
             return
-        
+
         import math
         import Part
         import datetime
