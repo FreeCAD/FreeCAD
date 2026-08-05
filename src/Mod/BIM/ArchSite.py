@@ -1805,6 +1805,13 @@ class _ViewProviderSite:
 
     def updateSunPosition(self, vobj):
         """Calculates sun position and updates the sphere, path arc, and ray object."""
+        try:
+            vobj.ShowSunPosition
+        except (ReferenceError, AttributeError):
+            # ReferenceError: vobj no longer exists
+            # see https://github.com/FreeCAD/FreeCAD/issues/24543
+            return
+
         import math
         import Part
         import datetime
