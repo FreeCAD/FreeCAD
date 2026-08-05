@@ -290,6 +290,11 @@ void CmdPartDesignBody::activated(int iMsg)
                 if (it->isDerivedFrom<PartDesign::FeatureBase>()) {
                     PartDesign::FeatureBase* base = static_cast<PartDesign::FeatureBase*>(it);
                     if (base && base->BaseFeature.getValue() == baseFeature) {
+                        copyVisual(base, "ShapeAppearance", baseFeature);
+                        copyVisual(base, "LineColor", baseFeature);
+                        copyVisual(base, "PointColor", baseFeature);
+                        copyVisual(base, "Transparency", baseFeature);
+                        copyVisual(base, "DisplayMode", baseFeature);
                         Gui::Application::Instance->hideViewProvider(baseFeature);
                         break;
                     }
