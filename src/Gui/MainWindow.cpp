@@ -340,11 +340,16 @@ private:
             return;
         }
 
+        ParameterGrp::handle hGrpu = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Units"
+        );
+        bool ignore = hGrpu->GetBool("IgnoreProjectSchema", false);
+
         int userSchema = getWindowParameter()->GetInt("UserSchema", 0);
 
         App::Document* doc = App::GetApplication().getActiveDocument();
 
-        if (doc) {
+        if (doc && !ignore) {
             userSchema = doc->UnitSystem.getValue();
         }
 
