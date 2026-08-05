@@ -16,7 +16,7 @@
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
 // Uncomment the line below to save temporary test-generated documents
-//#define PIPE_SAVE_TEST_FCSTD 1
+// #define PIPE_SAVE_TEST_FCSTD 1
 
 // from tests/src/Mod/Part/App/TopoShapeExpansion.cpp
 double getVolume(const TopoDS_Shape& shape)
@@ -47,8 +47,10 @@ protected:
         body_->addObject(sketch_circle_);
         sketch_circle_->MapReversed.setValue(false);
         auto origin = body_->getObject("Origin");
-        sketch_circle_->AttachmentOffset.setValue(Base::Placement(Base::Vector3d(0,0,0), Base::Rotation()));
-        sketch_circle_->AttachmentSupport.setValue(origin, std::vector<std::string>{"XY_Plane."});
+        sketch_circle_->AttachmentOffset.setValue(
+            Base::Placement(Base::Vector3d(0, 0, 0), Base::Rotation())
+        );
+        sketch_circle_->AttachmentSupport.setValue(origin, std::vector<std::string> {"XY_Plane."});
         sketch_circle_->MapPathParameter.setValue(0.0);
         sketch_circle_->MapMode.setValue("FlatFace");
 
@@ -81,19 +83,20 @@ protected:
             diameter.First = 0;
             diameter.setValue(1.0);
             sketch_circle_->addConstraint(&diameter);
-            //auto kind = diameter.typeToString();
+            // auto kind = diameter.typeToString();
         }
 
-        auto obj = std::vector<std::pair<int,long>>{{0,1}};
+        auto obj = std::vector<std::pair<int, long>> {{0, 1}};
         sketch_circle_->setGeometryIds(obj);
 
         try {
             sketch_circle_->solve();
-        } catch (const Base::Exception &e) {
+        }
+        catch (const Base::Exception& e) {
             std::string break_on_me;
         }
 
-        //sketch_circle_->setDatum(1, Base::Quantity(1.0, "mm"));
+        // sketch_circle_->setDatum(1, Base::Quantity(1.0, "mm"));
         doc_->recompute();
 
 #ifdef PIPE_SAVE_TEST_FCSTD
@@ -111,7 +114,7 @@ protected:
         // Attach the sketch to body origin, reference: tests/src/Mod/Part/Attacher.cpp
         body_->addObject(sketch_line_);
         sketch_line_->MapReversed.setValue(false);
-        sketch_line_->AttachmentSupport.setValue(origin, std::vector<std::string>{"XZ_Plane."});
+        sketch_line_->AttachmentSupport.setValue(origin, std::vector<std::string> {"XZ_Plane."});
         sketch_line_->MapPathParameter.setValue(0.0);
         sketch_line_->MapMode.setValue("FlatFace");
 
@@ -170,7 +173,7 @@ protected:
     // Volume of a cylinder is
     // V = pi * r^2 * h
     // calculated for the values in this unit test
-    static constexpr double volume_expected_ = M_PI * 0.5*0.5 * 1;
+    static constexpr double volume_expected_ = M_PI * 0.5 * 0.5 * 1;
 
     // NOLINTEND(cppcoreguidelines-non-private-member-variables-in-classes)
 };
