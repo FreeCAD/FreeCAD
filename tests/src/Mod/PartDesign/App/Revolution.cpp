@@ -170,12 +170,27 @@ TEST_F(RevolutionTest, TwoSidesAngles)
     EXPECT_NEAR(volumeOf(revolution->Shape.getValue()), torusVolume(180.0), volumeTolerance);
 }
 
+// A negative second angle turns back into side 1. XOR removes the overlap, so the
+// effective sweep is the signed total: 90 + (-10) = 80 degrees.
+TEST_F(RevolutionTest, TwoSidesSignedAngles)
+{
+    // Arrange
+    auto revolution = addRevolution();
+    revolution->SideType.setValue("Two sides");
+    revolution->Angle.setValue(90.0);
+    revolution->Angle2.setValue(-10.0);
+
+    // Act
+    getDocument()->recompute();
+
+    // Assert
+    ASSERT_FALSE(revolution->isError()) << revolution->getStatusString();
+    EXPECT_NEAR(volumeOf(revolution->Shape.getValue()), torusVolume(80.0), volumeTolerance);
+}
+
 // Two sides that *do* overlap. Side 1 sweeps [0, 200] and side 2 sweeps [-200, 0], so
 // between them they cover the whole circle with a 40 degree overlap. The result should
 // simply be a complete torus.
-//
-// NOTE: This fails with the current code, which does an XOR so actually slices away the
-// overlapping chunk.
 TEST_F(RevolutionTest, TwoSidesOverlappingAngles)
 {
     // Arrange

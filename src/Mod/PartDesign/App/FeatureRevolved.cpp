@@ -234,36 +234,63 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
     bool fuseSideResults = false;
 
     if (sideType == "Two sides") {
-        fuseSideResults = usesBRepFeatRevolution(method, revolMode)
-            || usesBRepFeatRevolution(method2, revolMode);
+        constexpr double fullRevolution = 2.0 * std::numbers::pi;
+        const double combinedAngle = angle + angle2;
+        const bool isThroughAll = revolMode == Part::RevolMode::CutFromBase
+            && (method == RevolMethod::ThroughAll || method2 == RevolMethod::ThroughAll);
+        const bool coversFullRevolution = method == RevolMethod::Angle
+            && method2 == RevolMethod::Angle
+            && std::fabs(combinedAngle) >= fullRevolution - Precision::Angular();
 
-        addRevolution(generateSingleRevolutionSide(
-            method,
-            angle,
-            UpToFace,
-            sketchshape.makeElementCopy(),
-            base,
-            supportface,
-            pnt,
-            dir,
-            invObjLoc,
-            revolMode
-        ));
+        if (isThroughAll || coversFullRevolution) {
+            // Through all is direction-independent, so either side makes the other one
+            // irrelevant. Likewise, cap overlapping two-angle sweeps at one full turn.
+            // Smaller signed totals still need the XOR below (for example 90 + (-10) = 80).
+            addRevolution(generateSingleRevolutionSide(
+                isThroughAll ? RevolMethod::ThroughAll : RevolMethod::Angle,
+                fullRevolution,
+                UpToFace,
+                sketchshape.makeElementCopy(),
+                base,
+                supportface,
+                pnt,
+                dir,
+                invObjLoc,
+                revolMode
+            ));
+        }
+        else {
+            fuseSideResults = usesBRepFeatRevolution(method, revolMode)
+                || usesBRepFeatRevolution(method2, revolMode);
 
-        gp_Dir dir2 = dir;
-        dir2.Reverse();
-        addRevolution(generateSingleRevolutionSide(
-            method2,
-            angle2,
-            UpToFace2,
-            sketchshape.makeElementCopy(),
-            base,
-            supportface,
-            pnt,
-            dir2,
-            invObjLoc,
-            revolMode
-        ));
+            addRevolution(generateSingleRevolutionSide(
+                method,
+                angle,
+                UpToFace,
+                sketchshape.makeElementCopy(),
+                base,
+                supportface,
+                pnt,
+                dir,
+                invObjLoc,
+                revolMode
+            ));
+
+            gp_Dir dir2 = dir;
+            dir2.Reverse();
+            addRevolution(generateSingleRevolutionSide(
+                method2,
+                angle2,
+                UpToFace2,
+                sketchshape.makeElementCopy(),
+                base,
+                supportface,
+                pnt,
+                dir2,
+                invObjLoc,
+                revolMode
+            ));
+        }
     }
     else if (sideType == "Symmetric") {
         const bool isThroughAll = method == RevolMethod::ThroughAll
