@@ -110,7 +110,7 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant& valu
         bool selectState = value.toBool();
         if (!selectState && !isUnderMouse()) {
             // hide everything
-            bool hideCenters = hideCenterMarks();
+            bool hideCenters = !showCenterMarks();
             for (auto& child : childItems()) {
                 if (child->type() == UserType::QGIVertex) {
                     child->hide();
@@ -146,7 +146,7 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant& valu
                 // When selection changes, if the mouse is not over the view,
                 // hide any non-selected vertices.
                 if (!isUnderMouse()) {
-                    bool hideCenters = hideCenterMarks();
+                    bool hideCenters = !showCenterMarks();
                     for (auto* child : childItems()) {
                         if (child->type() == UserType::QGIVertex &&
                             !child->isSelected()) {
@@ -496,7 +496,6 @@ void QGIViewPart::drawAllVertexes()
     // dvp and vp already validated
     auto dvp(static_cast<TechDraw::DrawViewPart*>(getViewObject()));
     auto vp(static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject())));
-    ViewProviderPage* vpPage = vp->getViewProviderPage();
     QColor vertexColor = PreferencesGui::getAccessibleQColor(PreferencesGui::vertexQColor());
 
     const std::vector<TechDraw::VertexPtr>& verts = dvp->getVertexGeometry();
@@ -510,11 +509,7 @@ void QGIViewPart::drawAllVertexes()
             cmItem->setSize(getVertexSize() * vp->CenterScale.getValue());
             cmItem->setPrettyNormal();
             cmItem->setZValue(ZVALUE::VERTEX);
-            bool showMark =
-                ( (!isExporting() && vp->ArcCenterMarks.getValue()) ||
-                  (isExporting() && Preferences::printCenterMarks()) ||
-                  (vpPage->getFrameState() && PreferencesGui::getViewFrameMode() == ViewFrameMode::Manual));
-            cmItem->setVisible(showMark);
+            cmItem->setVisible(showCenterMarks());
         } else {
             //regular Vertex
             if (showVertices()) {
@@ -1222,6 +1217,7 @@ QRectF QGIViewPart::boundingRect() const
     //    return customChildrenBoundingRect();
     return QGIView::boundingRect();
 }
+
 void QGIViewPart::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     QStyleOptionGraphicsItem myOption(*option);
@@ -1397,7 +1393,7 @@ void QGIViewPart::updateFrameVisibility()
             child->setVisible(showDecorations || child->isSelected());
         }
         if (child->type() == UserType::QGICMark) {
-            child->setVisible(showDecorations || child->isSelected() || !hideCenterMarks());
+            child->setVisible(showCenterMarks());
         }
     }
 }
@@ -1412,7 +1408,7 @@ void QGIViewPart::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
             child->setVisible(showDecorations);
             continue;
         }
-        if (child->type() == UserType::QGICMark && !hideCenterMarks()) {
+        if (child->type() == UserType::QGICMark && showCenterMarks()) {
             child->show();
         }
     }
@@ -1434,7 +1430,7 @@ void QGIViewPart::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
         if (child->type() == UserType::QGICMark) {
             if (child->isSelected()) continue;
-            if (hideCenterMarks() || !showDecorations) {
+            if (!showCenterMarks()) {
                 child->hide();
             }
         }
@@ -1452,36 +1448,30 @@ bool QGIViewPart::showVertices() const
     return !dvp->CoarseView.getValue();
 }
 
-
-// returns true if arc center marks should be shown
+//! simplified logic for centermark display
 bool QGIViewPart::showCenterMarks() const
 {
-    // dvp and vp already validated
-    auto dvp(static_cast<TechDraw::DrawViewPart*>(getViewObject()));
-    auto vp(static_cast<ViewProviderViewPart*>(getViewProvider(dvp)));
-
-    if (isExporting() && Preferences::printCenterMarks()) {
-        return true;
+    if (isExporting()) {
+        return showCenterMarksExporting();
     }
 
-    return vp->ArcCenterMarks.getValue();
+    return showCenterMarksScreen();
 }
 
-//! true if center marks (type of vertex) should be hidden
-bool QGIViewPart::hideCenterMarks() const
+bool QGIViewPart::showCenterMarksExporting() const
 {
-    // printing
-    if (isExporting() &&
-        Preferences::printCenterMarks()) {
-        return false;
-    }
+    auto dvp{static_cast<TechDraw::DrawViewPart*>(getViewObject())};
+    auto vp{static_cast<ViewProviderViewPart*>(getViewProvider(dvp))};
 
-    // on screen
-    if (showCenterMarks()) {
-        return false;
-    }
+    return vp->ArcCenterMarks.getValue() || Preferences::printCenterMarks();
+}
 
-    return true;
+bool QGIViewPart::showCenterMarksScreen() const
+{
+    auto dvp{static_cast<TechDraw::DrawViewPart*>(getViewObject())};
+    auto vp{static_cast<ViewProviderViewPart*>(getViewProvider(dvp))};
+
+    return borderIsVisible() && vp->ArcCenterMarks.getValue();
 }
 
 void QGIViewPart::setMovableFlag()
