@@ -619,8 +619,6 @@ class Writer:
 
     def getDensity(self, m):
         density = self.convert(m["Density"], "M/L^3")
-        if self.getMeshDimension() == 2:
-            density *= 1e3
         return density
 
     def _hasExpression(self, equation):
