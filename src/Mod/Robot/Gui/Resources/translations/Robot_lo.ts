@@ -40,17 +40,17 @@
   <context>
     <name>CmdRobotCreateTrajectory</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="55"/>
+      <location filename="../../CommandTrajectory.cpp" line="56"/>
       <source>Robot</source>
       <translation>ຫຸ່ນຍົນ</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="56"/>
+      <location filename="../../CommandTrajectory.cpp" line="57"/>
       <source>Trajectory</source>
       <translation type="unfinished">Trajectory</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="57"/>
+      <location filename="../../CommandTrajectory.cpp" line="58"/>
       <source>Creates a new empty trajectory</source>
       <translation>ສ້າງເສັ້ນທາງການເຄື່ອນທີ່ຫວ່າງເປົ່າອັນໃໝ່</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdRobotEdge2Trac</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="379"/>
+      <location filename="../../CommandTrajectory.cpp" line="382"/>
       <source>Robot</source>
       <translation>ຫຸ່ນຍົນ</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="380"/>
+      <location filename="../../CommandTrajectory.cpp" line="383"/>
       <source>Edge to Trajectory</source>
       <translation>ປ່ຽນຂອບເປັນເສັ້ນທາງການເຄື່ອນທີ່</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="381"/>
+      <location filename="../../CommandTrajectory.cpp" line="384"/>
       <source>Generates a trajectory from the selected edges</source>
       <translation>ສ້າງເສັ້ນທາງການເຄື່ອນທີ່ຈາກຂອບທີ່ຖືກເລືອກ</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdRobotInsertWaypoint</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="91"/>
+      <location filename="../../CommandTrajectory.cpp" line="92"/>
       <source>Robot</source>
       <translation>ຫຸ່ນຍົນ</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="92"/>
+      <location filename="../../CommandTrajectory.cpp" line="93"/>
       <source>Insert in Trajectory</source>
       <translation>ແຊກລົງໃນເສັ້ນທາງການເຄື່ອນທີ່</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="93"/>
+      <location filename="../../CommandTrajectory.cpp" line="94"/>
       <source>Inserts the robot tool location into the trajectory</source>
       <translation>ແຊກຕຳແໜ່ງເຄື່ອງມືຫຸ່ນຍົນລົງໃນເສັ້ນທາງການເຄື່ອນທີ່</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdRobotInsertWaypointPreselect</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="164"/>
+      <location filename="../../CommandTrajectory.cpp" line="165"/>
       <source>Robot</source>
       <translation>ຫຸ່ນຍົນ</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="165"/>
+      <location filename="../../CommandTrajectory.cpp" line="166"/>
       <source>Insert in Trajectory</source>
       <translation>ແຊກລົງໃນເສັ້ນທາງການເຄື່ອນທີ່</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="166"/>
+      <location filename="../../CommandTrajectory.cpp" line="167"/>
       <source>Inserts the preselection position into the trajectory (W)</source>
       <translation>ແຊກຕຳແໜ່ງທີ່ເລືອກໄວ້ລ່ວງໜ້າລົງໃນເສັ້ນທາງການເຄື່ອນທີ່ (W)</translation>
     </message>
@@ -166,17 +166,17 @@
   <context>
     <name>CmdRobotSetDefaultOrientation</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="250"/>
+      <location filename="../../CommandTrajectory.cpp" line="251"/>
       <source>Robot</source>
       <translation>ຫຸ່ນຍົນ</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="251"/>
+      <location filename="../../CommandTrajectory.cpp" line="252"/>
       <source>Set Default Orientation</source>
       <translation>ກຳນົດການວາງທິດທາງເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="252"/>
+      <location filename="../../CommandTrajectory.cpp" line="253"/>
       <source>Sets the default orientation for subsequent commands for waypoint creation</source>
       <translation>ກຳນົດການວາງທິດທາງເລີ່ມຕົ້ນສຳລັບຄຳສັ່ງສ້າງຈຸດແວ່ຕໍ່ໆໄປ</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdRobotSetDefaultValues</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="290"/>
+      <location filename="../../CommandTrajectory.cpp" line="291"/>
       <source>Robot</source>
       <translation>ຫຸ່ນຍົນ</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="291"/>
+      <location filename="../../CommandTrajectory.cpp" line="292"/>
       <source>Set Default Values</source>
       <translation>ກຳນົດຄ່າເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="292"/>
+      <location filename="../../CommandTrajectory.cpp" line="293"/>
       <source>Sets the default values for speed, acceleration, and continuity for subsequent commands of waypoint creation</source>
       <translation>ກຳນົດຄ່າເລີ່ມຕົ້ນສຳລັບຄວາມໄວ, ຄວາມເລັ່ງ ແລະ ຄວາມຕໍ່ເນື່ອງ ສຳລັບຄຳສັ່ງສ້າງຈຸດແວ່ຕໍ່ໆໄປ</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdRobotTrajectoryCompound</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="506"/>
+      <location filename="../../CommandTrajectory.cpp" line="509"/>
       <source>Robot</source>
       <translation>ຫຸ່ນຍົນ</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="507"/>
+      <location filename="../../CommandTrajectory.cpp" line="510"/>
       <source>Trajectory Compound</source>
       <translation>ລວມເສັ້ນທາງການເຄື່ອນທີ່</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="508"/>
+      <location filename="../../CommandTrajectory.cpp" line="511"/>
       <source>Groups and connects multiple trajectories into one</source>
       <translation>ຈັດກຸ່ມ ແລະ ເຊື່ອມຕໍ່ຫຼາຍເສັ້ນທາງການເຄື່ອນທີ່ເຂົ້າເປັນອັນດຽວ</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdRobotTrajectoryDressUp</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="442"/>
+      <location filename="../../CommandTrajectory.cpp" line="445"/>
       <source>Robot</source>
       <translation>ຫຸ່ນຍົນ</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="443"/>
+      <location filename="../../CommandTrajectory.cpp" line="446"/>
       <source>Dress-Up Trajectory</source>
       <translation>ປັບແຕ່ງເສັ້ນທາງການເຄື່ອນທີ່</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="444"/>
+      <location filename="../../CommandTrajectory.cpp" line="447"/>
       <source>Creates a dress-up object that overrides aspects of a trajectory</source>
       <translation>ສ້າງວັດຖຸປັບແຕ່ງເພື່ອປ່ຽນແປງຄຸນລັກສະນະຂອງເສັ້ນທາງການເຄື່ອນທີ່</translation>
     </message>
@@ -292,20 +292,6 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="70"/>
-      <location filename="../../Command.cpp" line="105"/>
-      <location filename="../../Command.cpp" line="168"/>
-      <location filename="../../Command.cpp" line="272"/>
-      <location filename="../../CommandTrajectory.cpp" line="109"/>
-      <location filename="../../CommandTrajectory.cpp" line="180"/>
-      <location filename="../../CommandTrajectory.cpp" line="201"/>
-      <location filename="../../CommandTrajectory.cpp" line="486"/>
-      <location filename="../../CommandExport.cpp" line="64"/>
-      <location filename="../../CommandExport.cpp" line="147"/>
-      <source>Wrong selection</source>
-      <translation>ການເລືອກບໍ່ຖືກຕ້ອງ</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="55"/>
       <source>Select VRML file for Robot</source>
       <translation>ເລືອກໄຟລ໌ VRML ສຳລັບຫຸ່ນຍົນ</translation>
@@ -326,6 +312,20 @@
       <translation>ໄຟລ໌ CSV (*.csv)</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="168"/>
+      <location filename="../../Command.cpp" line="272"/>
+      <location filename="../../CommandTrajectory.cpp" line="110"/>
+      <location filename="../../CommandTrajectory.cpp" line="181"/>
+      <location filename="../../CommandTrajectory.cpp" line="202"/>
+      <location filename="../../CommandTrajectory.cpp" line="489"/>
+      <location filename="../../CommandExport.cpp" line="64"/>
+      <location filename="../../CommandExport.cpp" line="147"/>
+      <location filename="../../CommandInsertRobot.cpp" line="70"/>
+      <source>Wrong selection</source>
+      <translation>ການເລືອກບໍ່ຖືກຕ້ອງ</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Select one Robot to set home position</source>
       <translation>ເລືອກຫຸ່ນຍົນໜຶ່ງຕົວເພື່ອຕັ້ງຕຳແໜ່ງເລີ່ມຕົ້ນ</translation>
@@ -337,7 +337,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="273"/>
-      <location filename="../../CommandTrajectory.cpp" line="110"/>
+      <location filename="../../CommandTrajectory.cpp" line="111"/>
       <location filename="../../CommandExport.cpp" line="65"/>
       <location filename="../../CommandExport.cpp" line="148"/>
       <source>Select one Robot and one Trajectory object.</source>
@@ -371,53 +371,53 @@
       <translation>ເລືອກຫຸ່ນຍົນໜຶ່ງຕົວ ແລະ ຫນຶ່ງຮູບຊົງ ຫຼື ວັດຖຸ VRML.</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="181"/>
-      <location filename="../../CommandTrajectory.cpp" line="202"/>
+      <location filename="../../CommandTrajectory.cpp" line="182"/>
+      <location filename="../../CommandTrajectory.cpp" line="203"/>
       <source>Select one Trajectory object.</source>
       <translation>ເລືອກວັດຖຸເສັ້ນທາງການເຄື່ອນທີ່ໜຶ່ງອັນ.</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="211"/>
+      <location filename="../../CommandTrajectory.cpp" line="212"/>
       <source>No preselection</source>
       <translation>ບໍ່ມີການເລືອກໄວ້ລ່ວງໜ້າ</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="212"/>
+      <location filename="../../CommandTrajectory.cpp" line="213"/>
       <source>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</source>
       <translation>ທ່ານຕ້ອງວາງເມົາສ໌ໄວ້ເທິງເລຂາຄະນິດ (ການເລືອກໄວ້ລ່ວງໜ້າ) ເພື່ອໃຊ້ຄຳສັ່ງນີ້. ເບິ່ງລາຍລະອຽດໃນເອກະສານອ້າງອີງ.</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="308"/>
+      <location filename="../../CommandTrajectory.cpp" line="309"/>
       <source>Set default speed</source>
       <translation>ກຳນົດຄວາມໄວເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="309"/>
+      <location filename="../../CommandTrajectory.cpp" line="310"/>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
       <translation>ຄວາມໄວ: (ຕົວຢ່າງ: 1 m/s ຫຼື 3 cm/s)</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="324"/>
+      <location filename="../../CommandTrajectory.cpp" line="326"/>
       <source>Set default continuity</source>
       <translation>ກຳນົດຄວາມຕໍ່ເນື່ອງເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="325"/>
+      <location filename="../../CommandTrajectory.cpp" line="327"/>
       <source>continuous ?</source>
       <translation>ຕໍ່ເນື່ອງບໍ່?</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="340"/>
+      <location filename="../../CommandTrajectory.cpp" line="342"/>
       <source>Set default acceleration</source>
       <translation>ກຳນົດຄວາມເລັ່ງເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="341"/>
+      <location filename="../../CommandTrajectory.cpp" line="343"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
       <translation>ຄວາມເລັ່ງ: (ຕົວຢ່າງ: 1 m/s^2 ຫຼື 3 cm/s^2)</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="487"/>
+      <location filename="../../CommandTrajectory.cpp" line="490"/>
       <source>Select the Trajectory which you want to dress up.</source>
       <translation>ເລືອກເສັ້ນທາງການເຄື່ອນທີ່ທີ່ທ່ານຕ້ອງການປັບແຕ່ງ.</translation>
     </message>

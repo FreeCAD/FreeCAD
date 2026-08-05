@@ -2177,17 +2177,17 @@ of the projection.</source>
       <translation>Добавить систему координат</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2574"/>
+      <location filename="../../Command.cpp" line="2575"/>
       <source>Add datum plane</source>
       <translation>Добавить опорную плоскость</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2607"/>
+      <location filename="../../Command.cpp" line="2609"/>
       <source>Add datum line</source>
       <translation>Добавить опорную линию</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2640"/>
+      <location filename="../../Command.cpp" line="2643"/>
       <source>Add datum point</source>
       <translation>Добавить опорную точку</translation>
     </message>
@@ -4523,29 +4523,49 @@ Check one or more edge entities first.</source>
       <translation type="unfinished">Enable coarse snapping while dragging</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="442"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="427"/>
+      <source>Enables larger snapping increments while  manipulating draggers</source>
+      <translation type="unfinished">Enables larger snapping increments while  manipulating draggers</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="445"/>
       <source>Fine snap modifier</source>
       <translation type="unfinished">Fine snap modifier</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="466"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="452"/>
+      <source>Defines the modifier key used for fine snapping while dragging</source>
+      <translation type="unfinished">Defines the modifier key used for fine snapping while dragging</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="472"/>
       <source>Default coarse drag behavior</source>
       <translation type="unfinished">Default coarse drag behavior</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="473"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="479"/>
       <source>Determines whether the drag is coarse or fine without holding the modifier key</source>
       <translation type="unfinished">Determines whether the drag is coarse or fine without holding the modifier key</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="493"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="499"/>
       <source>Coarse movement multiplier</source>
       <translation type="unfinished">Coarse movement multiplier</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="523"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="515"/>
+      <source>Multiplies the base movement increment when coarse snapping is active</source>
+      <translation type="unfinished">Multiplies the base movement increment when coarse snapping is active</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="532"/>
       <source>Coarse rotation step (degrees)</source>
       <translation type="unfinished">Coarse rotation step (degrees)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="548"/>
+      <source>Sets the rotation step in degrees applied when coarse snapping is active</source>
+      <translation type="unfinished">Sets the rotation step in degrees applied when coarse snapping is active</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
@@ -5008,17 +5028,17 @@ the sketch plane's normal vector will be used</source>
   <context>
     <name>PartGui::ResultModel</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="363"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="364"/>
       <source>Name</source>
       <translation>Название</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="365"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="366"/>
       <source>Type</source>
       <translation>Тип</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="367"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="368"/>
       <source>Error</source>
       <translation>Ошибка</translation>
     </message>
@@ -5504,28 +5524,28 @@ of the object being attached.</source>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1188"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1189"/>
       <source>Shape Content</source>
       <translation>Содержимое фигуры</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1200"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1455"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1201"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1456"/>
       <source>Settings</source>
       <translation>Настройки</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1210"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1211"/>
       <source>Default: false</source>
       <translation>По умолчанию: ложь</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1217"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1218"/>
       <source>Run boolean operation check</source>
       <translation>Запустить проверку логической операции</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1219"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1220"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
@@ -5534,164 +5554,164 @@ mean the checked object is unusable.  Default: false</source>
 означают, что проверенный объект непригоден для использования.  По умолчанию: ложь</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1228"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1229"/>
       <source>Single-threaded</source>
       <translation>Однопоточный</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1230"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1231"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation>Запустить проверку геометрии в одном потоке.  Это медленнее, но более стабильно.  По умолчанию: ложь</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1243"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1244"/>
       <source>Log errors</source>
       <translation>Журнал ошибок</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1244"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1245"/>
       <source>Log errors to report view.  Default: true</source>
       <translation>Посмотреть журнал ошибок в Отчёте. По умолчанию: истина</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1255"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1256"/>
       <source>Expand shape content</source>
       <translation>Развернуть содержимое фигуры</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1257"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1258"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Развернуть содержимое фигуры.  Изменения вступят в силу при следующем использовании  
 инструмента проверки геометрии.  По умолчанию: ложь</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1270"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1271"/>
       <source>Advanced shape content</source>
       <translation>Расширенное содержимое фигуры</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1272"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1273"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Развернуть содержимое формы. Изменения вступят в силу при следующем использовании 
 инструмента геометрии проверки. По умолчанию: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1284"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1285"/>
       <source>
 Individual boolean operation checks:</source>
       <translation>
 Проверки отдельных булевых операций:</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1287"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1288"/>
       <source>Bad type</source>
       <translation>Некорректный тип</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1299"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1300"/>
       <source>Self-intersect</source>
       <translation>Самопересечение</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1311"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1312"/>
       <source>Too small edge</source>
       <translation>Слишком маленькое ребро</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1323"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1324"/>
       <source>Nonrecoverable face</source>
       <translation>Невоспроизводимая грань</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1335"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1336"/>
       <source>Continuity</source>
       <translation>Непрерывность</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1347"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1348"/>
       <source>Incompatibility of face</source>
       <translation>Несовместимость грани</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1359"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1360"/>
       <source>Incompatibility of vertex</source>
       <translation>Несовместимость вершины</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1371"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1372"/>
       <source>Incompatibility of edge</source>
       <translation>Несовместимость ребра</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1383"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1384"/>
       <source>Invalid curve on surface</source>
       <translation>Недопустимая кривая на поверхности</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1454"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1455"/>
       <source>Run Check</source>
       <translation type="unfinished">Run Check</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1288"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1289"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>Отметьте для некорректных типов аргументов. По умолчанию: истина</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1207"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1208"/>
       <source>Skip this settings page</source>
       <translation>Пропустить эту страницу настроек</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1210"/>
       <source>Skip this settings page and run the geometry check automatically</source>
       <translation>Пропустить эту страницу настроек и запускать проверку геометрии автоматически</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1300"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1301"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation>Проверка на самопересечения. По умолчанию: истина</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1312"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1313"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation>Проверка слишком маленького ребра. По умолчанию: да</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1324"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1325"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation>Проверка на наличие невоспроизводимых граней.  По умолчанию: истина</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1336"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1337"/>
       <source>Check for continuity.  Default: true</source>
       <translation>Проверка на непрерывность.  По умолчанию: истина</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1348"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1349"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation>Проверка на наличие несовместимых граней.  По умолчанию: истина</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1360"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1361"/>
       <source>Check for incompatible vertices.  Default: true</source>
       <translation>Проверка на наличие несовместимых вершин.  По умолчанию: истина</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1372"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1373"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation>Проверка на наличие несовместимых рёбер.  По умолчанию: истина</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1384"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1385"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation>Проверять на недопустимые кривые на поверхностях. По умолчанию: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1466"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1467"/>
       <source>Results</source>
       <translation>Результаты</translation>
     </message>
@@ -5699,63 +5719,63 @@ Individual boolean operation checks:</source>
   <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="402"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="403"/>
       <source>Check Geometry Results</source>
       <translation>Результаты проверки геометрии</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="425"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="426"/>
       <source>Check is running…</source>
       <translation>Проверка выполняется…</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="454"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="455"/>
       <source>Boolean operation check…</source>
       <translation>Проверка логической операции…</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="457"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="458"/>
       <source>Check geometry</source>
       <translation>Проверить геометрию</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="489"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="490"/>
       <source>Null shape</source>
       <translation>Пустая фигура</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="490"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="502"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="491"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="503"/>
       <source>Skipped</source>
       <translation>Пропущено</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="501"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="502"/>
       <source>Infinite shape</source>
       <translation>Бесконечная форма</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="528"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="529"/>
       <source>Invalid</source>
       <translation>Недопустимый</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="554"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="555"/>
       <source>Checking</source>
       <translation>Проверка</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="578"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="579"/>
       <source>No errors</source>
       <translation>Ошибок нет</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="590"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="591"/>
       <source>%1 processed out of %2 selected</source>
       <translation>%1 обработано из %2 выбрано</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskCheckGeometry.cpp" line="591"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="592"/>
       <source>%n invalid shapes.</source>
       <translation>
         <numerusform>%n неверная фигура.</numerusform>
@@ -5765,32 +5785,32 @@ Individual boolean operation checks:</source>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="592"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="593"/>
       <source>to report view.</source>
       <translation>смотреть отчёт.</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="739"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="740"/>
       <source>Global minimum</source>
       <translation>Глобальный минимум</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="747"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="748"/>
       <source>Global average</source>
       <translation>Глобальное среднее</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="755"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="756"/>
       <source>Global maximum</source>
       <translation>Глобальный максимум</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="714"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="715"/>
       <source>Checked object</source>
       <translation>Проверяемый объект</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="731"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="732"/>
       <source>Tolerance information</source>
       <translation>Информация о допуске</translation>
     </message>
@@ -6164,292 +6184,292 @@ Continue?</source>
       <translation>Не выбрано ни одного ориентира</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
       <source>Face</source>
       <translation>Грань</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Edge</source>
       <translation>Ребро</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
       <source>Vertex</source>
       <translation>Вершина</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="77"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
       <source>Compound</source>
       <translation>Группировать</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
       <source>Compound solid</source>
       <translation>Составное тело</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
       <source>Solid</source>
       <translation>Твёрдое тело</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Shell</source>
       <translation>Оболочка</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Wire</source>
       <translation>Ломаная</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="86"/>
       <source>Shape</source>
       <translation>Фигура(ы)</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="101"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
       <source>No error</source>
       <translation>Нет ошибок</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="103"/>
       <source>Invalid point on curve</source>
       <translation>Неверная точка на кривой</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="104"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
       <source>Invalid point on curve on surface</source>
       <translation>Неверная точка на кривой на поверхности</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
       <source>Invalid point on surface</source>
       <translation>Неверная точка на поверхности</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
       <source>No 3D curve</source>
       <translation>Нет 3D кривой</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
       <source>Multiple 3D curves</source>
       <translation>Множественная 3D кривая</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
       <source>Invalid 3D curve</source>
       <translation>Недопустимая 3D кривая</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
       <source>No curve on surface</source>
       <translation>Нет кривой на поверхности</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
       <source>Invalid curve on surface</source>
       <translation>Недопустимая кривая на поверхности</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
       <source>Invalid curve on closed surface</source>
       <translation>Недопустимая кривая на замкнутой поверхности</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
       <source>Invalid same range flag</source>
       <translation>Недопустимый флаг того же диапазона</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
       <source>Invalid same parameter flag</source>
       <translation>Недопустимый флаг того же параметра</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
       <source>Invalid degenerated flag</source>
       <translation>Недопустимый флаг вырожденности</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
       <source>Free edge</source>
       <translation>Свободное ребро</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
       <source>Invalid multi-connexity</source>
       <translation>Недопустимая многосвязность</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
       <source>Invalid range</source>
       <translation>Недопустимый диапазон</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
       <source>Empty wire</source>
       <translation>Пустая кривая</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
       <source>Redundant edge</source>
       <translation>Избыточное ребро</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
       <source>Self-intersecting wire</source>
       <translation>Самопересекающаяся кривая</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
       <source>No surface</source>
       <translation>Нет поверхности</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
       <source>Invalid wire</source>
       <translation>Недопустимая кривая</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
       <source>Redundant wire</source>
       <translation>Избыточная кривая</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
       <source>Intersecting wires</source>
       <translation>Пересекающиеся кривые</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
       <source>Invalid imbrication of wires</source>
       <translation>Неправильное присоединение кривых</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
       <source>Empty shell</source>
       <translation>Пустая оболочка</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
       <source>Redundant face</source>
       <translation>Избыточная грань</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
       <source>Unorientable shape</source>
       <translation>Неориентированная фигура</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
       <source>Not closed</source>
       <translation>Не замкнуто</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
       <source>Not connected</source>
       <translation>Не присоединено</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="135"/>
       <source>Sub-shape not in shape</source>
       <translation>Подформа не находится в форме</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="135"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="136"/>
       <source>Bad orientation</source>
       <translation>Некорректная ориентация</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="136"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="137"/>
       <source>Bad orientation of sub-shape</source>
       <translation>Некорректная ориентация подформы</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="137"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="138"/>
       <source>Invalid tolerance value</source>
       <translation>Неверное значение допуска</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="138"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="139"/>
       <source>Check failed</source>
       <translation>Проверка не удалась</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="147"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="148"/>
       <source>No result</source>
       <translation>Нет результата</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="150"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="151"/>
       <source>Out of enum range:</source>
       <translation>Вне диапазона:</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="162"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
       <source>Boolean operation: unknown check</source>
       <translation>Булевая операция: проверка неизвестного</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
       <source>Boolean operation: bad type</source>
       <translation>Булевая операция: неверный тип</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
       <source>Boolean operation: self-intersection found</source>
       <translation>Булева операция: выявлено самопересечение</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
       <source>Boolean operation: edge too small</source>
       <translation>Булева операция: ребро слишком мало</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
       <source>Boolean operation: non-recoverable face</source>
       <translation>Булева операция: невоссоздаваемая грань</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="168"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="169"/>
       <source>Boolean operation: incompatibility of vertex</source>
       <translation>Булева операция: несовместимость вершин</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="171"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="172"/>
       <source>Boolean operation: incompatibility of edge</source>
       <translation>Булева операция: несовместимость рёбер</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="174"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="175"/>
       <source>Boolean operation: incompatibility of face</source>
       <translation>Булева операция: несовместимость граней</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="176"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="177"/>
       <source>Boolean operation: aborted</source>
       <translation>Булева операция: прервано</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="179"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="180"/>
       <source>Boolean operation: invalid curve on surface</source>
       <translation>Булева операция: недопустимая кривая на поверхности</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="181"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="182"/>
       <source>Boolean operation: not valid</source>
       <translation>Булева операция: недопустимо</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="177"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="178"/>
       <source>Boolean operation: GeomAbs_C0</source>
       <translation>Булева операция: GeomAbs_C0</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="857"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="858"/>
       <source>Invalid</source>
       <translation>Недопустимый</translation>
     </message>
@@ -7310,17 +7330,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2663"/>
+      <location filename="../../Command.cpp" line="2667"/>
       <source>Part</source>
       <translation>Деталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2664"/>
+      <location filename="../../Command.cpp" line="2668"/>
       <source>Datums</source>
       <translation>Опорные элементы</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2666"/>
+      <location filename="../../Command.cpp" line="2670"/>
       <source>Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</source>
       <translation>Создаёт опорный объект (система координат, плоскость, линия или точка), который может быть присоединён к другим объектам</translation>
     </message>
@@ -7336,17 +7356,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatumPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="2562"/>
+      <location filename="../../Command.cpp" line="2563"/>
       <source>Part</source>
       <translation>Деталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2563"/>
+      <location filename="../../Command.cpp" line="2564"/>
       <source>Datum Plane</source>
       <translation>Опорная плоскость</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2564"/>
+      <location filename="../../Command.cpp" line="2565"/>
       <source>Creates a datum plane that can be attached to other objects</source>
       <translation>Создаёт опорную плоскость, которая может быть присоединена к другим объектам</translation>
     </message>
@@ -7354,17 +7374,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatumLine</name>
     <message>
-      <location filename="../../Command.cpp" line="2595"/>
+      <location filename="../../Command.cpp" line="2597"/>
       <source>Part</source>
       <translation>Деталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2596"/>
+      <location filename="../../Command.cpp" line="2598"/>
       <source>Datum Line</source>
       <translation>Опорная линия</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2597"/>
+      <location filename="../../Command.cpp" line="2599"/>
       <source>Creates a datum line that can be attached to other objects</source>
       <translation>Создаёт опорную линию, которая может быть присоединена к другим объектам</translation>
     </message>
@@ -7372,17 +7392,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatumPoint</name>
     <message>
-      <location filename="../../Command.cpp" line="2628"/>
+      <location filename="../../Command.cpp" line="2631"/>
       <source>Part</source>
       <translation>Деталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2629"/>
+      <location filename="../../Command.cpp" line="2632"/>
       <source>Datum Point</source>
       <translation>Опорная точка</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2630"/>
+      <location filename="../../Command.cpp" line="2633"/>
       <source>Creates a datum point that can be attached to other objects</source>
       <translation>Создаёт опорную точку, которая может быть присоединена к другим объектам</translation>
     </message>
@@ -7725,18 +7745,18 @@ Overlapping volumes of the shapes will be removed.</source>
       <translation type="unfinished">Angular Spacing</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="423"/>
-      <location filename="../../PatternParametersWidget.cpp" line="519"/>
+      <location filename="../../PatternParametersWidget.cpp" line="425"/>
+      <location filename="../../PatternParametersWidget.cpp" line="521"/>
       <source>Spacing %1</source>
       <translation>Интервал %1</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="439"/>
+      <location filename="../../PatternParametersWidget.cpp" line="441"/>
       <source>Remove this spacing definition.</source>
       <translation>Удалите это значение интервала.</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="940"/>
+      <location filename="../../PatternParametersWidget.cpp" line="942"/>
       <source>Reset spacing</source>
       <translation type="unfinished">Reset spacing</translation>
     </message>
@@ -7759,19 +7779,6 @@ Overlapping volumes of the shapes will be removed.</source>
     </message>
   </context>
   <context>
-    <name>Part::FaceMakerUnified</name>
-    <message>
-      <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
-      <source>Unified facemaker</source>
-      <translation type="unfinished">Unified facemaker</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
-      <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
-      <translation type="unfinished">Unified: handles nested holes, overlapping wires, and curved surfaces</translation>
-    </message>
-  </context>
-  <context>
     <name>Part::FaceMakerBuildFace</name>
     <message>
       <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
@@ -7782,6 +7789,19 @@ Overlapping volumes of the shapes will be removed.</source>
       <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
       <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
       <translation type="unfinished">Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerUnified</name>
+    <message>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
+      <source>Unified facemaker</source>
+      <translation type="unfinished">Unified facemaker</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
+      <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
+      <translation type="unfinished">Unified: handles nested holes, overlapping wires, and curved surfaces</translation>
     </message>
   </context>
 </TS>

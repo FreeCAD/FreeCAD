@@ -24,6 +24,7 @@
 
 
 #include <App/Document.h>
+#include <App/GeoFeature.h>
 #include <App/VarSet.h>
 #include <App/Origin.h>
 #include <Base/Placement.h>
@@ -444,6 +445,7 @@ void Body::onChanged(const App::Property* prop)
         && !this->getDocument()->isPerformingTransaction()) {
         if (prop == &BaseFeature) {
             FeatureBase* bf = nullptr;
+            bool createdBaseFeature = false;
             auto first = Group.getValues().empty() ? nullptr : Group.getValues().front();
 
             if (BaseFeature.getValue()) {
@@ -451,6 +453,7 @@ void Body::onChanged(const App::Property* prop)
                 if (!first || !first->isDerivedFrom<FeatureBase>()) {
                     bf = getDocument()->addObject<FeatureBase>("BaseFeature");
                     insertObject(bf, first, false);
+                    createdBaseFeature = true;
 
                     if (!Tip.getValue()) {
                         Tip.setValue(bf);
@@ -463,6 +466,14 @@ void Body::onChanged(const App::Property* prop)
 
             if (bf && (bf->BaseFeature.getValue() != BaseFeature.getValue())) {
                 bf->BaseFeature.setValue(BaseFeature.getValue());
+            }
+            if (bf && createdBaseFeature) {
+                if (auto* base = freecad_cast<App::GeoFeature*>(BaseFeature.getValue())) {
+                    // Initial placement is derived from the current global placements. Set the
+                    // Body placement before assigning BaseFeature to keep the source feature's
+                    // global position when the internal FeatureBase is created.
+                    bf->Placement.setValue(this->globalPlacement().inverse() * base->globalPlacement());
+                }
             }
         }
         else if (prop == &Group) {

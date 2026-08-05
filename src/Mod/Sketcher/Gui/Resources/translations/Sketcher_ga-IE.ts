@@ -159,17 +159,17 @@
   <context>
     <name>CmdSketcherMapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="651"/>
+      <location filename="../../Command.cpp" line="653"/>
       <source>Attach Sketch</source>
       <translation>Ceangail Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="652"/>
+      <location filename="../../Command.cpp" line="654"/>
       <source>Attaches a sketch to the selected geometry element</source>
       <translation>Ceanglaíonn sé sceitse leis an eilimint gheoiméadrach roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="743"/>
+      <location filename="../../Command.cpp" line="745"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
       <translation>Braitheann cuid de na rudaí roghnaithe ar an sceitse atá le mapáil. Ní cheadaítear spleáchais chiorclacha.</translation>
     </message>
@@ -177,48 +177,48 @@
   <context>
     <name>CmdSketcherMergeSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="1160"/>
+      <location filename="../../Command.cpp" line="1162"/>
       <source>Skipping external geometry #%1
 </source>
       <translation>Ag scipeáil geoiméadracht sheachtrach #%1
 </translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1203"/>
+      <location filename="../../Command.cpp" line="1205"/>
       <source>External geometry '%1' is out of scope:
 </source>
       <translation>Tá geoiméadracht sheachtrach '%1' lasmuigh den raon feidhme:
 </translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1254"/>
+      <location filename="../../Command.cpp" line="1256"/>
       <source>Merge Sketches</source>
       <translation>Cumaisc Sceitsí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1255"/>
+      <location filename="../../Command.cpp" line="1257"/>
       <source>Creates a new sketch by merging at least 2 selected sketches</source>
       <translation>Cruthaíonn sé sceitse nua trí dhá sceitse roghnaithe ar a laghad a chumasc</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1270"/>
+      <location filename="../../Command.cpp" line="1272"/>
       <source>Wrong selection</source>
       <translation>Rogha mícheart</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1271"/>
+      <location filename="../../Command.cpp" line="1273"/>
       <source>Select at least 2 sketches</source>
       <translation>Roghnaigh 2 sceitse ar a laghad</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1360"/>
+      <location filename="../../Command.cpp" line="1362"/>
       <source>Copied %1 of %2 constraints from '%3'. Some were skipped.
 </source>
       <translation>Cóipeáladh %1 de %2 srianta ó '%3'. Scaipeadh cuid acu.
 </translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1376"/>
+      <location filename="../../Command.cpp" line="1378"/>
       <source>Skipping constraint #%1 of '%2': references unmerged geometry.
 </source>
       <translation>Srian scipeála #%1 de '%2': tagraíonn sé do gheoiméadracht neamhchumaiscthe.
@@ -228,12 +228,12 @@
   <context>
     <name>CmdSketcherMirrorSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="947"/>
+      <location filename="../../Command.cpp" line="949"/>
       <source>Mirror Sketch</source>
       <translation>Sceitse Scátháin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="948"/>
+      <location filename="../../Command.cpp" line="950"/>
       <source>Creates a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference</source>
@@ -242,12 +242,12 @@ trí úsáid a bhaint as na haiseanna X nó Y, nó an pointe tionscnaimh,
 mar thagairt scáthánaithe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="965"/>
+      <location filename="../../Command.cpp" line="967"/>
       <source>Wrong selection</source>
       <translation>Rogha mícheart</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="966"/>
+      <location filename="../../Command.cpp" line="968"/>
       <source>Select at least 1 sketch</source>
       <translation>Roghnaigh sceitse amháin ar a laghad</translation>
     </message>
@@ -294,24 +294,24 @@ mar thagairt scáthánaithe</translation>
   <context>
     <name>CmdSketcherValidateSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="907"/>
+      <location filename="../../Command.cpp" line="909"/>
       <source>Validate Sketch</source>
       <translation>Bailíochtú Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="908"/>
+      <location filename="../../Command.cpp" line="910"/>
       <source>Validates a sketch by checking for missing coincidences,
 invalid constraints, and degenerate geometry</source>
       <translation>Déanann sé sceitse a bhailíochtú trí sheiceáil le haghaidh comhtharlaíochtaí atá ar iarraidh,
 srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="924"/>
+      <location filename="../../Command.cpp" line="926"/>
       <source>Wrong selection</source>
       <translation>Rogha mícheart</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="925"/>
+      <location filename="../../Command.cpp" line="927"/>
       <source>Select only 1 sketch.</source>
       <translation>Roghnaigh sceitse amháin.</translation>
     </message>
@@ -687,32 +687,32 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <translation>Cruthaigh sceitse nua ar aghaidh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="290"/>
+      <location filename="../../Command.cpp" line="291"/>
       <source>Create a new sketch</source>
       <translation>Cruthaigh sceitse nua</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="624"/>
+      <location filename="../../Command.cpp" line="626"/>
       <source>Reorient sketch</source>
       <translation>Aththreoraigh an sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="833"/>
+      <location filename="../../Command.cpp" line="835"/>
       <source>Attach sketch</source>
       <translation>Ceangail sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="842"/>
+      <location filename="../../Command.cpp" line="844"/>
       <source>Detach sketch</source>
       <translation>Scar sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="981"/>
+      <location filename="../../Command.cpp" line="983"/>
       <source>Create a mirrored sketch for each selected sketch</source>
       <translation>Cruthaigh sceitse scáthánaithe do gach sceitse roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1280"/>
+      <location filename="../../Command.cpp" line="1282"/>
       <source>Merge sketches</source>
       <translation>Cumaisc sceitsí</translation>
     </message>
@@ -909,9 +909,9 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <translation>Srian Tarraingthe</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1659"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1337"/>
       <location filename="../../CommandConstraints.cpp" line="11287"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1337"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1659"/>
       <source>Modify sketch constraints</source>
       <translation>Modhnaigh srianta sceitse</translation>
     </message>
@@ -936,7 +936,7 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <translation>Cuir sliotán stua sceitse leis</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="148"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="202"/>
       <source>Rotate geometries</source>
       <translation>Rothlaigh geoiméadrachtaí</translation>
     </message>
@@ -946,7 +946,7 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <translation>Geoiméadrachtaí scála</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="121"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="127"/>
       <source>Translate geometries</source>
       <translation>Aistrigh geoiméadrachtaí</translation>
     </message>
@@ -967,7 +967,7 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="940"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1269"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1271"/>
       <source>Add sketch polyline</source>
       <translation>Cuir polalíne sceitse leis</translation>
     </message>
@@ -977,8 +977,8 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <translation>Scoránaigh geoiméadracht tógála</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="716"/>
-      <location filename="../../DrawSketchHandler.cpp" line="1419"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1565"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="717"/>
       <source>Add Auto-Constraints</source>
       <translation>Cuir Srianta Uathoibríocha leis</translation>
     </message>
@@ -990,9 +990,9 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <translation>Cuir Sceitse B-Spline leis</translation>
     </message>
     <message>
-      <location filename="../../EditTextDialog.cpp" line="114"/>
-      <source>Modify sketch text constraint</source>
-      <translation>Modhnaigh srian téacs sceitse</translation>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="170"/>
+      <source>Add sketch arc of parabola</source>
+      <translation>Cuir stua sceitse den pharabóil leis</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="130"/>
@@ -1000,9 +1000,9 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <translation>Cuir Téacs sceitse leis</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="170"/>
-      <source>Add sketch arc of parabola</source>
-      <translation>Cuir stua sceitse den pharabóil leis</translation>
+      <location filename="../../EditTextDialog.cpp" line="114"/>
+      <source>Modify sketch text constraint</source>
+      <translation>Modhnaigh srian téacs sceitse</translation>
     </message>
   </context>
   <context>
@@ -1016,54 +1016,54 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2815"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2817"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Níl tú ag iarraidh aon athrú ar iolracht snaidhmeanna.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2807"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2985"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2809"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2987"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Tá Innéacs Geoiméadrachta B-spline (GeoID) lasmuigh de theorainneacha.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2824"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3001"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2826"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3003"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>Ní splíne-B é an tInnéacs Geoiméadrachta (GeoId) a chuirtear ar fáil.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2836"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2838"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Tá innéacs an snaidhme lasmuigh de theorainneacha. Tabhair faoi deara, de réir nótaíocht OCC, go bhfuil innéacs 1 ag an gcéad snaidhm agus ní nialas.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2852"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2854"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Ní féidir an iolracht a mhéadú thar chéim an B-splíne.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2863"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2865"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Ní féidir an iolracht a laghdú thar náid.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2879"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2881"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>Ní féidir le OCC an iolracht a laghdú laistigh den lamháltas uasta.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2992"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2994"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Ní féidir iolracht nialasach a bheith ag snaidhm.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3014"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3016"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>Ní féidir le hiolracht snaidhmeanna a bheith níos airde ná céim an B-splíne.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3024"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3026"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Ní féidir snaidhm a chur isteach lasmuigh de raon paraiméadar B-spline.</translation>
     </message>
@@ -1183,25 +1183,11 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="205"/>
-      <location filename="../../Command.cpp" line="772"/>
+      <location filename="../../Command.cpp" line="774"/>
       <source>Do not attach</source>
       <translation>Ná ceangail</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="231"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="242"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="171"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="329"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="423"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="491"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="580"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="634"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1023"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1144"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="127"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <location filename="../../CommandConstraints.cpp" line="453"/>
       <location filename="../../CommandConstraints.cpp" line="460"/>
       <location filename="../../CommandConstraints.cpp" line="3327"/>
@@ -1343,6 +1329,20 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <location filename="../../CommandSketcherTools.cpp" line="2339"/>
       <location filename="../../CommandSketcherTools.cpp" line="2386"/>
       <location filename="../../CommandSketcherTools.cpp" line="2451"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="171"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="329"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="423"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="491"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="580"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="634"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1023"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1144"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="127"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="231"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="242"/>
       <source>Wrong selection</source>
       <translation>Rogha mícheart</translation>
     </message>
@@ -1518,9 +1518,9 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <translation>Ní ionann líon na réad roghnaithe agus 3</translation>
     </message>
     <message>
+      <location filename="../../CommandConstraints.cpp" line="1062"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="623"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1185"/>
-      <location filename="../../CommandConstraints.cpp" line="1062"/>
       <source>Error</source>
       <translation>Earráid</translation>
     </message>
@@ -1918,14 +1918,14 @@ Teaglaim inghlactha: dhá chuar; críochphointe agus cuar; dhá chríochphointe;
       <translation>Roghnaigh srian aontoiseach ón sceitse.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="117"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="158"/>
       <location filename="../../CommandConstraints.cpp" line="11369"/>
       <location filename="../../CommandConstraints.cpp" line="11381"/>
       <location filename="../../CommandConstraints.cpp" line="11417"/>
       <location filename="../../CommandConstraints.cpp" line="11492"/>
       <location filename="../../CommandConstraints.cpp" line="11504"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="117"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="158"/>
       <source>Select constraints from the sketch.</source>
       <translation>Roghnaigh srianta ón sceitse.</translation>
     </message>
@@ -3420,54 +3420,64 @@ the characters listed here will be drawn using a substitute font.</source>
       <translation>Úsáidfidh comhordanáidí an chúrsóra socrú deachúlacha an chórais in ionad an fhoirm ghearr</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="541"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="511"/>
+      <source>Shows helper lines for directional autoconstraints such as parallel, perpendicular, and tangent</source>
+      <translation>Taispeánann sé línte cúnta le haghaidh uathshrianta treorach amhail comhthreomhar, ingearach agus tadhlaíoch</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="514"/>
+      <source>Show directional autoconstraint helpers</source>
+      <translation>Taispeáin cúntóirí uathshrianta treorach</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="560"/>
       <source>Visibility Automation</source>
       <translation>Uathoibriú Infheictheachta</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="547"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="566"/>
       <source>Hides all object features that depend on the opened sketch</source>
       <translation>Folaíonn sé gach gné réada a bhraitheann ar an sceitse oscailte</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="566"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="585"/>
       <source>Shows source objects which are used for external geometry in the opened sketch</source>
       <translation>Taispeánann sé réada foinseacha a úsáidtear le haghaidh geoiméadracht sheachtrach sa sceitse oscailte</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="585"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="604"/>
       <source>Shows objects the opened sketch is attached to</source>
       <translation>Taispeánann sé rudaí a bhfuil an sceitse oscailte ceangailte leo</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="604"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="623"/>
       <source>Restores the camera position after closing the sketch</source>
       <translation>Athbhunaíonn sé suíomh an cheamara tar éis an sceitse a dhúnadh</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="623"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="642"/>
       <source>Forces the camera to an orthographic view when editing a sketch.
 Works only when "Restore camera position after editing" is enabled.</source>
       <translation>Éiríonn sé seo leis an gceamara radharc ortagrafach a úsáid agus sceitse á chur in eagar.
 Ní oibríonn sé seo ach amháin nuair a bhíonn "Athchóirigh suíomh an cheamara tar éis eagarthóireachta" cumasaithe.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="643"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="662"/>
       <source>Opens a sketch in section view mode, showing only objects behind the sketch plane</source>
       <translation>Osclaíonn sé sceitse i mód radhairc rannóige, ag taispeáint rudaí taobh thiar den phlána sceitse amháin</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="646"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="665"/>
       <source>Open sketch in section view mode</source>
       <translation>Oscail sceitse i mód radhairc rannóige</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="687"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="706"/>
       <source>Applies current visibility automation settings to all sketches in the open documents</source>
       <translation>Cuireann sé socruithe uathoibrithe infheictheachta reatha i bhfeidhm ar gach sceitse sna doiciméid oscailte</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="690"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="709"/>
       <source>Apply to Existing Sketches</source>
       <translation>Cuir i bhFeidhm ar Sceitsí atá ann cheana</translation>
     </message>
@@ -3510,47 +3520,47 @@ Réamhshocraithe go: %N = %V
       <translation>Úsáid socruithe deachúlacha an chórais le haghaidh comhordanáidí cúrsóra</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="550"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="569"/>
       <source>Hide all objects that depend on the sketch</source>
       <translation>Folaigh gach réad a bhraitheann ar an sceitse</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="569"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="588"/>
       <source>Show objects used for external geometry</source>
       <translation>Taispeáin réada a úsáidtear le haghaidh geoiméadracht sheachtrach</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="588"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="607"/>
       <source>Show objects that the sketch is attached to</source>
       <translation>Taispeáin na rudaí a bhfuil an sceitse ceangailte leo</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="607"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="626"/>
       <source>Restore camera position after editing</source>
       <translation>Athchóirigh suíomh an cheamara tar éis eagarthóireachta</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="627"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="646"/>
       <source>Force orthographic camera when entering edit</source>
       <translation>Fórsaigh ceamara ortagrafach agus tú ag dul isteach in eagar</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="668"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="687"/>
       <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</source>
       <translation>Tabhair faoi deara: is socruithe réamhshocraithe iad seo a chuirtear i bhfeidhm ar sceitsí nua. Cuimhnítear ar an iompraíocht do gach sceitse ina haonar mar airíonna ar an táb Amharc.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="582"/>
+      <location filename="../../SketcherSettings.cpp" line="584"/>
       <source>Unexpected C++ exception</source>
       <translation>Eisceacht C++ gan choinne</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="585"/>
+      <location filename="../../SketcherSettings.cpp" line="587"/>
       <source>Sketcher</source>
       <translation>Sceitseálaí</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="609"/>
+      <location filename="../../SketcherSettings.cpp" line="611"/>
       <source>Glyphs not present:</source>
       <translation>Glifí nach bhfuil i láthair:</translation>
     </message>
@@ -4109,112 +4119,112 @@ Déantar é seo trí gheoiméadrachtaí agus srianta an sceitse a anailísiú.</
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4144"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4152"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4168"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4176"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Tá an sceitse neamhbhailí agus ní féidir é a chur in eagar.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4364"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4372"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Tá an srian seo a leanas iomarcach go páirteach:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4365"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4373"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Tá na srianta seo a leanas iomarcach go páirteach:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4117"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4125"/>
       <source>Edit Sketch</source>
       <translation>Cuir Sceitse in Eagar</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4145"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4153"/>
       <source>Close this dialog?</source>
       <translation>An bhfuil tú ag iarraidh an dialóg seo a dhúnadh?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4166"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4174"/>
       <source>Invalid Sketch</source>
       <translation>Sceitse Neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4167"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4175"/>
       <source>Open the sketch validation tool?</source>
       <translation>An uirlis bailíochtaithe sceitse a oscailt?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4350"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4358"/>
       <source>Remove the following constraint:</source>
       <translation>Bain an srian seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4351"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4359"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Bain ceann amháin ar a laghad de na srianta seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4357"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4365"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Bain an srian iomarcach seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4358"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4366"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Bain na srianta iomarcacha seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4371"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4379"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Bain an srian mífhoirmithe seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4372"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4380"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Bain na srianta mífhoirmithe seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4431"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4439"/>
       <source>Empty sketch</source>
       <translation>Sceitse folamh</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4436"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4444"/>
       <source>Over-constrained:</source>
       <translation>Ró-shrianta:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4442"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4450"/>
       <source>Malformed constraints:</source>
       <translation>Srianta mífhoirmithe:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4450"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4458"/>
       <source>Redundant constraints:</source>
       <translation>Srianta iomarcacha:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4456"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4464"/>
       <source>Partially redundant:</source>
       <translation>Go páirteach iomarcach:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4463"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4471"/>
       <source>Solver failed to converge</source>
       <translation>Theip ar an réiteoir teacht le chéile</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4469"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4477"/>
       <source>Under-constrained:</source>
       <translation>Faoi shrianta:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4471"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4479"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Céim Saoirse</numerusform>
@@ -4225,7 +4235,7 @@ Déantar é seo trí gheoiméadrachtaí agus srianta an sceitse a anailísiú.</
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4475"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4483"/>
       <source>Fully constrained</source>
       <translation>Srianta go hiomlán</translation>
     </message>
@@ -4309,74 +4319,74 @@ Déantar é seo trí gheoiméadrachtaí agus srianta an sceitse a anailísiú.</
   <context>
     <name>Sketcher_MapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="697"/>
+      <location filename="../../Command.cpp" line="699"/>
       <source>No sketch found</source>
       <translation>Níor aimsíodh aon sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="699"/>
+      <location filename="../../Command.cpp" line="701"/>
       <source>Cannot attach sketch to itself!</source>
       <translation>Ní féidir sceitse a cheangal leis féin!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="700"/>
+      <location filename="../../Command.cpp" line="702"/>
       <source>The document does not contain a sketch</source>
       <translation>Níl sceitse sa cháipéis</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="716"/>
+      <location filename="../../Command.cpp" line="718"/>
       <source>Select Sketch</source>
       <translation>Roghnaigh Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="718"/>
+      <location filename="../../Command.cpp" line="720"/>
       <source>Select a sketch (some sketches not shown to prevent a circular dependency)</source>
       <translation>Roghnaigh sceitse (ní thaispeántar roinnt sceitsí chun spleáchas ciorclach a chosc)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="720"/>
+      <location filename="../../Command.cpp" line="722"/>
       <source>Select a sketch from the list</source>
       <translation>Roghnaigh sceitse ón liosta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="785"/>
+      <location filename="../../Command.cpp" line="787"/>
       <source> (incompatible with selection)</source>
       <translation> (neamh-chomhoiriúnach leis an roghnú)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="786"/>
+      <location filename="../../Command.cpp" line="788"/>
       <source> (current)</source>
       <translation> (reatha)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="794"/>
+      <location filename="../../Command.cpp" line="796"/>
       <source> (suggested)</source>
       <translation> (molta)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="801"/>
+      <location filename="../../Command.cpp" line="803"/>
       <source>Sketch Attachment</source>
       <translation>Ceangaltán Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="803"/>
+      <location filename="../../Command.cpp" line="805"/>
       <source>Current attachment mode is incompatible with the new selection.
 Select the method to attach this sketch to selected objects.</source>
       <translation>Tá an modh ceangail reatha neamh-chomhoiriúnach leis an roghnú nua.
 Roghnaigh an modh chun an sceitse seo a cheangal leis na réada roghnaithe.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="807"/>
+      <location filename="../../Command.cpp" line="809"/>
       <source>Select the method to attach this sketch to selected objects.</source>
       <translation>Roghnaigh an modh chun an sceitse seo a cheangal le réada roghnaithe.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="853"/>
+      <location filename="../../Command.cpp" line="855"/>
       <source>Map sketch</source>
       <translation>Sceitse léarscáile</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="854"/>
+      <location filename="../../Command.cpp" line="856"/>
       <source>Can't map a sketch to support:
 %1</source>
       <translation>Ní féidir sceitse a mhapáil chun tacú le:
@@ -4408,12 +4418,12 @@ Roghnaigh an modh chun an sceitse seo a cheangal leis na réada roghnaithe.</tra
   <context>
     <name>Sketcher_ReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="529"/>
+      <location filename="../../Command.cpp" line="531"/>
       <source>Sketch Has Support</source>
       <translation>Tá tacaíocht ag Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="530"/>
+      <location filename="../../Command.cpp" line="532"/>
       <source>Sketch with a support face cannot be reoriented.
 Detach it from the support?</source>
       <translation>Ní féidir sceitse le haghaidh tacaíochta a ath-threoshuíomh.
@@ -4716,7 +4726,7 @@ Tá algartam Eigen Sparse QR optamaithe do mhaitrísí tanaí; is gnách go mbí
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4414"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4422"/>
       <source>and %1 more</source>
       <translation>agus %1 eile</translation>
     </message>
@@ -4931,49 +4941,49 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
       <translation>Tá srianta atá iomarcach go páirteach ag "%1".</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1063"/>
-      <location filename="../../../App/SketchObject.cpp" line="1107"/>
+      <location filename="../../../App/SketchObject.cpp" line="1088"/>
+      <location filename="../../../App/SketchObject.cpp" line="1132"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>Bíonn innéacsanna srianta neamhbhailí mar thoradh ar athrú neamhbhainistithe ar Mhaoin Srianta</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1604"/>
+      <location filename="../../../App/SketchObject.cpp" line="1636"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Aistríodh na parabóil. Ní osclófar comhaid aistrithe i leaganacha roimhe seo de FreeCAD!!
 </translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="147"/>
-      <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="209"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="154"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="170"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="193"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="212"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="220"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="341"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="479"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="511"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1382"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="174"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="225"/>
-      <location filename="../../DrawSketchHandlerText.h" line="181"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="150"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="523"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1384"/>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="200"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="144"/>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="226"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="185"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="390"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="685"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="762"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="229"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="185"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="220"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="170"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="225"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="341"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="523"/>
       <location filename="../../CommandSketcherTools.cpp" line="1390"/>
       <location filename="../../CommandSketcherTools.cpp" line="1971"/>
       <location filename="../../CommandSketcherTools.cpp" line="2408"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="150"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="226"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="209"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="144"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="154"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="229"/>
+      <location filename="../../DrawSketchHandlerText.h" line="181"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="212"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="154"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="193"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="229"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
       <source>Error</source>
       <translation>Earráid</translation>
     </message>
@@ -5009,9 +5019,6 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
       <translation>Tá faisnéis innéacs neamhbhailí sa srian agus tá sé mífhoirmithe.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="519"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="662"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="910"/>
       <location filename="../../CommandConstraints.cpp" line="730"/>
       <location filename="../../CommandConstraints.cpp" line="807"/>
       <location filename="../../CommandConstraints.cpp" line="899"/>
@@ -5019,6 +5026,9 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
       <location filename="../../CommandConstraints.cpp" line="7133"/>
       <location filename="../../CommandConstraints.cpp" line="7335"/>
       <location filename="../../CommandSketcherTools.cpp" line="1176"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="519"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="662"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="910"/>
       <source>Invalid Constraint</source>
       <translation>Srian Neamhbhailí</translation>
     </message>
@@ -5043,7 +5053,7 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
       <translation>Earráid ag cruthú B-spline</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1383"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1385"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="686"/>
       <source>Error deleting last pole/knot</source>
       <translation>Earráid ag scriosadh an chuaille/an snaidhm dheireanaigh</translation>
@@ -5085,21 +5095,26 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
       <translation>Theip ar líne a chur leis</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="154"/>
-      <location filename="../../DrawSketchHandlerArc.h" line="295"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="161"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="219"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="227"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="193"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="181"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="232"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="159"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="530"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="151"/>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="233"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="236"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="186"/>
+      <source>Failed to add arc of parabola</source>
+      <translation>Theip ar stua na parabóile a chur leis</translation>
+    </message>
+    <message>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="192"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="227"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="232"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="530"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="159"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="233"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="151"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="161"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="236"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="219"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="161"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="295"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="236"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="193"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
       <source>Tool execution aborted</source>
       <translation>Cuireadh deireadh le forghníomhú na huirlise</translation>
     </message>
@@ -5146,17 +5161,17 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
       <translation>Earráid Luach</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="1348"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1494"/>
       <source>Autoconstraints cause redundancy. Removing them</source>
       <translation>Is cúis le srianta uathoibríocha iomarcaíocht. Baintear iad</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="760"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="761"/>
       <source>Redundant constraint is not an autoconstraint. No autoconstraints or additional constraints were added. Please report!</source>
       <translation>Ní uathshrianadh é srian iomarcach. Níor cuireadh aon uathshrianta ná srianta breise leis. Tuairiscigh le do thoil!</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="790"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="791"/>
       <source>Unexpected Redundancy/Conflicting constraint. Check the constraints and autoconstraints of this operation.</source>
       <translation>Iomarcaíocht/Srianadh Coimhlinte Gan Choinne. Seiceáil srianta agus uathshrianta na hoibríochta seo.</translation>
     </message>
@@ -5191,7 +5206,7 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
       <translation>Theip ar an eilips a chur leis</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="175"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="230"/>
       <source>Failed to rotate</source>
       <translation>Theip ar rothlú</translation>
     </message>
@@ -5206,7 +5221,7 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
       <translation>Theip ar an scálú</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="148"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="155"/>
       <source>Failed to translate</source>
       <translation>Theip ar an aistriúchán</translation>
     </message>
@@ -5229,11 +5244,6 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
       <location filename="../../DrawSketchHandlerText.h" line="182"/>
       <source>Failed to add text</source>
       <translation>Theip ar théacs a chur leis</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="186"/>
-      <source>Failed to add arc of parabola</source>
-      <translation>Theip ar stua na parabóile a chur leis</translation>
     </message>
   </context>
   <context>
@@ -5394,12 +5404,12 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
       <translation>Scriosann sé an geoiméadracht bhunaidh. Má tá cóip aonair á cruthú, déantar oibríocht 'Bog' go héifeachtach leis seo.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="480"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="552"/>
       <source>Apply equal constraints</source>
       <translation>Cuir srianta comhionanna i bhfeidhm</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="485"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="557"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>Má roghnaítear an rogha seo, eisiatar srianta tríthoiseacha ón oibríocht.
@@ -5643,62 +5653,92 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
       <translation>Sceitse neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="706"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="703"/>
+      <source>Information layer</source>
+      <translation>Sraith faisnéise</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="716"/>
+      <source>Color of arc and line helpers and also bspline polygon, comb...</source>
+      <translation>Dath stua agus cúntóirí líne agus polagán bspline, cíor...</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="736"/>
+      <source>Line pattern of information edges</source>
+      <translation>Patrún líne imill faisnéise</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="746"/>
+      <source>Width of information edges</source>
+      <translation>Leithead imill faisnéise</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="774"/>
+      <source>Grid and inactive helpers</source>
+      <translation>Cúntóirí eangaí agus neamhghníomhacha</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="790"/>
+      <source>Color of sketch grid lines and inactive helper lines</source>
+      <translation>Dath línte eangaí sceitse agus línte cúnta neamhghníomhacha</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="813"/>
       <source>Constraint Colors</source>
       <translation>Dathanna Srianta</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="747"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="854"/>
       <source>Dimensional constraints</source>
       <translation>Srianta toisí</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="754"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="861"/>
       <source>Color of dimensional driving constraints in edit mode</source>
       <translation>Dath srianta tiomána tríthoiseacha i mód eagarthóireachta</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="774"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="881"/>
       <source>Reference constraints</source>
       <translation>Srianta tagartha</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="828"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="935"/>
       <source>Deactivated constraints</source>
       <translation>Srianta díghníomhachtaithe</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="873"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="980"/>
       <source>Colors Outside Sketcher</source>
       <translation>Sceitseálaí Dathanna Lasmuigh</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="879"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="986"/>
       <source>Vertex</source>
       <translation>Buaicphointe</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="886"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="993"/>
       <source>Color of vertices outside edit mode</source>
       <translation>Dath na mbarrphointe lasmuigh den mhodh eagarthóireachta</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="925"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="1032"/>
       <source>Edge</source>
       <translation>Imeall</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="932"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="1039"/>
       <source>Color of edges outside edit mode</source>
       <translation>Dath imeall lasmuigh den mhodh eagarthóireachta</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="952"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="1059"/>
       <source>Face</source>
       <translation>Aghaidh</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="965"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="1072"/>
       <source>Color of internal faces formed by intersecting geometry or closed loops in the sketch</source>
       <translation>Dath na n-aghaidheanna inmheánacha a fhoirmítear trí gheoiméadracht thrasnaitheach nó lúba dúnta sa sceitse</translation>
     </message>
@@ -5728,42 +5768,34 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
       <translation>Dath geoiméadrachta a léiríonn sceitse neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="720"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="827"/>
       <source>Constraint symbols</source>
       <translation>Siombailí srianta</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="727"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="834"/>
       <source>Color of driving constraints in edit mode</source>
       <translation>Dath srianta tiomána i mód eagarthóireachta</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="781"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="888"/>
       <source>Color of reference constraints in edit mode</source>
       <translation>Dath srianta tagartha i mód eagarthóireachta</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="801"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="908"/>
       <source>Expression dependent constraint</source>
       <translation>Srianadh atá ag brath ar an léiriú</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="808"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="915"/>
       <source>Color of expression dependent constraints in edit mode</source>
       <translation>Dath srianta atá ag brath ar léiriú i mód eagarthóireachta</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="835"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="942"/>
       <source>Color of deactivated constraints in edit mode</source>
       <translation>Dath srianta díghníomhachtaithe i mód eagarthóireachta</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_p4_rotate</name>
-    <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="509"/>
-      <source>Copies (+'U'/ -'J')</source>
-      <translation>Cóipeanna (+'U'/ -'J')</translation>
     </message>
   </context>
   <context>
@@ -5801,17 +5833,9 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
     </message>
   </context>
   <context>
-    <name>TaskSketcherTool_p3_translate</name>
-    <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="568"/>
-      <source>Copies (+'U'/-'J')</source>
-      <translation>Cóipeanna (+'U'/-'J')</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskSketcherTool_p5_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="572"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="635"/>
       <source>Rows (+'R'/-'F')</source>
       <translation>Sraitheanna (+'R'/-'F')</translation>
     </message>
@@ -5871,17 +5895,17 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
   <context>
     <name>Sketcher_CreateLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="356"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="365"/>
       <source>Point, length, angle</source>
       <translation>Pointe, fad, uillinn</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="357"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="366"/>
       <source>Point, width, height</source>
       <translation>Pointe, leithead, airde</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="358"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="367"/>
       <source>2 points</source>
       <translation>2 phointe</translation>
     </message>
@@ -5946,12 +5970,12 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
   <context>
     <name>TaskSketcherTool_c1_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="532"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="584"/>
       <source>Apply equal constraints</source>
       <translation>Cuir srianta comhionanna i bhfeidhm</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="536"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="588"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>Má roghnaítear an rogha seo, eisiatar srianta tríthoiseacha ón oibríocht.
@@ -5974,12 +5998,12 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
   <context>
     <name>CmdSketcherEditSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="338"/>
+      <location filename="../../Command.cpp" line="340"/>
       <source>Edit Sketch</source>
       <translation>Cuir Sceitse in Eagar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="339"/>
+      <location filename="../../Command.cpp" line="341"/>
       <source>Opens the selected sketch for editing</source>
       <translation>Osclaíonn an sceitse roghnaithe le haghaidh eagarthóireachta</translation>
     </message>
@@ -5987,12 +6011,12 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
   <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="369"/>
+      <location filename="../../Command.cpp" line="371"/>
       <source>Leave Sketch</source>
       <translation>Fág Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="370"/>
+      <location filename="../../Command.cpp" line="372"/>
       <source>Finishes editing the active sketch. Press Escape to exit.</source>
       <translation>Críochnaíonn sé seo ag eagarthóireacht an sceitse ghníomhach. Brúigh Escape le scoir.</translation>
     </message>
@@ -6000,12 +6024,12 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
   <context>
     <name>CmdSketcherStopOperation</name>
     <message>
-      <location filename="../../Command.cpp" line="477"/>
+      <location filename="../../Command.cpp" line="479"/>
       <source>Stop Operation</source>
       <translation>Stop Oibríocht</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="478"/>
+      <location filename="../../Command.cpp" line="480"/>
       <source>Stops the active operation while in edit mode</source>
       <translation>Stopann sé an oibríocht ghníomhach agus í i mód eagarthóireachta</translation>
     </message>
@@ -6013,12 +6037,12 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
   <context>
     <name>CmdSketcherReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="513"/>
+      <location filename="../../Command.cpp" line="515"/>
       <source>Reorient Sketch</source>
       <translation>Aththreorú Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="514"/>
+      <location filename="../../Command.cpp" line="516"/>
       <source>Places the selected sketch on one of the global coordinate planes.
 This will clear the AttachmentSupport property.</source>
       <translation>Cuireann sé an sceitse roghnaithe ar cheann de na pláin chomhordanáidí domhanda.
@@ -6028,12 +6052,12 @@ Glanfaidh sé seo an mhaoin AttachmentSupport.</translation>
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="875"/>
+      <location filename="../../Command.cpp" line="877"/>
       <source>Align View to Sketch</source>
       <translation>Ailínigh an Radharc leis an Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="876"/>
+      <location filename="../../Command.cpp" line="878"/>
       <source>Aligns the camera orientation perpendicular to the active sketch plane</source>
       <translation>Ailíníonn sé treoshuíomh an cheamara go hingearach leis an eitleán sceitse gníomhach</translation>
     </message>
@@ -6041,12 +6065,12 @@ Glanfaidh sé seo an mhaoin AttachmentSupport.</translation>
   <context>
     <name>CmdSketcherViewSection</name>
     <message>
-      <location filename="../../Command.cpp" line="1421"/>
+      <location filename="../../Command.cpp" line="1423"/>
       <source>Toggle Section View</source>
       <translation>Amharc Rannóige a Athraigh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1422"/>
+      <location filename="../../Command.cpp" line="1424"/>
       <source>Toggles between section view and full view</source>
       <translation>Athraíonn idir radharc rannóige agus radharc iomlán</translation>
     </message>
@@ -6054,42 +6078,42 @@ Glanfaidh sé seo an mhaoin AttachmentSupport.</translation>
   <context>
     <name>SketcherGui::GridSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1499"/>
+      <location filename="../../Command.cpp" line="1501"/>
       <source>Display grid</source>
       <translation>Eangach taispeána</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1500"/>
+      <location filename="../../Command.cpp" line="1502"/>
       <source>Toggles the visibility of the grid in the active sketch</source>
       <translation>Athraíonn sé infheictheacht an ghreille sa sceitse gníomhach</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1503"/>
+      <location filename="../../Command.cpp" line="1505"/>
       <source>Grid auto-spacing</source>
       <translation>Spásáil uathoibríoch ghreille</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1504"/>
+      <location filename="../../Command.cpp" line="1506"/>
       <source>Automatically adjusts the grid spacing based on the zoom level</source>
       <translation>Coigeartaíonn sé an spásáil eangaí go huathoibríoch bunaithe ar an leibhéal súmála</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1507"/>
+      <location filename="../../Command.cpp" line="1509"/>
       <source>Spacing</source>
       <translation>Spásáil</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1508"/>
+      <location filename="../../Command.cpp" line="1510"/>
       <source>Distance between two subsequent grid lines</source>
       <translation>Fad idir dhá líne ghreille ina dhiaidh sin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1510"/>
+      <location filename="../../Command.cpp" line="1512"/>
       <source>Snap to grid</source>
       <translation>Snapáil chuig an ngreille</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1512"/>
+      <location filename="../../Command.cpp" line="1514"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid spacing to a grid line to snap.</source>
       <translation>Snapálfaidh pointí nua go dtí an líne eangaí is gaire.
@@ -6099,12 +6123,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherGrid</name>
     <message>
-      <location filename="../../Command.cpp" line="1637"/>
+      <location filename="../../Command.cpp" line="1639"/>
       <source>Toggle Grid</source>
       <translation>Eangach a Athrú</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1639"/>
+      <location filename="../../Command.cpp" line="1641"/>
       <source>Toggles the grid display in the active sketch</source>
       <translation>Athraíonn an taispeáint eangaí sa sceitse gníomhach</translation>
     </message>
@@ -6112,22 +6136,22 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>SketcherGui::SnapSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1744"/>
+      <location filename="../../Command.cpp" line="1746"/>
       <source>Snap to objects</source>
       <translation>Snapáil chuig réada</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1745"/>
+      <location filename="../../Command.cpp" line="1747"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
       <translation>Snapálfaidh pointí nua chuig an réad atá réamhroghnaithe faoi láthair. Snapálfaidh sé freisin chuig lár línte agus áirsí.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1749"/>
+      <location filename="../../Command.cpp" line="1751"/>
       <source>Snap angle</source>
       <translation>Uillinn snap</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1751"/>
+      <location filename="../../Command.cpp" line="1753"/>
       <source>Angular step for tools that use 'Snap at angle'. Hold Ctrl to enable 'Snap at angle'. The angle starts from the positive X axis of the sketch.</source>
       <translation>Céim uilleach le haghaidh uirlisí a úsáideann 'Snap ag uillinn'. Coinnigh Ctrl chun 'Snap ag uillinn' a chumasú. Tosaíonn an uillinn ón ais X dhearfach den sceitse.</translation>
     </message>
@@ -6135,12 +6159,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherSnap</name>
     <message>
-      <location filename="../../Command.cpp" line="1837"/>
+      <location filename="../../Command.cpp" line="1839"/>
       <source>Toggle Snap</source>
       <translation>Scoránaigh Snap</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1839"/>
+      <location filename="../../Command.cpp" line="1841"/>
       <source>Toggles snapping</source>
       <translation>Scoránaigh sé snapáil</translation>
     </message>
@@ -6148,27 +6172,27 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>SketcherGui::RenderingOrderAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1946"/>
+      <location filename="../../Command.cpp" line="1948"/>
       <source>Normal geometry</source>
       <translation>Geoiméadracht gnáth</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1948"/>
+      <location filename="../../Command.cpp" line="1950"/>
       <source>Construction geometry</source>
       <translation>Geoiméadracht tógála</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1950"/>
+      <location filename="../../Command.cpp" line="1952"/>
       <source>External geometry</source>
       <translation>Geoiméadracht sheachtrach</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1953"/>
+      <location filename="../../Command.cpp" line="1955"/>
       <source>Unknown geometry</source>
       <translation>Geoiméadracht anaithnid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1994"/>
+      <location filename="../../Command.cpp" line="1996"/>
       <source>Rendering order</source>
       <translation>Ord rindreála</translation>
     </message>
@@ -6176,12 +6200,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdRenderingOrder</name>
     <message>
-      <location filename="../../Command.cpp" line="2079"/>
+      <location filename="../../Command.cpp" line="2081"/>
       <source>Rendering Order</source>
       <translation>Ordú Rindreála</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2080"/>
+      <location filename="../../Command.cpp" line="2082"/>
       <source>Reorders items in the rendering order</source>
       <translation>Athordaíonn sé míreanna san ord rindreála</translation>
     </message>
@@ -7578,8 +7602,8 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2513"/>
-      <source>Rotates the selected geometry by creating 'n' copies, enabling circular pattern creation</source>
-      <translation>Rothlaíonn sé an geoiméadracht roghnaithe trí 'n' cóipeanna a chruthú, rud a chuireann ar chumas patrún ciorclach a chruthú</translation>
+      <source>Rotates the selected geometry by creating 'n' total elements, enabling circular pattern creation</source>
+      <translation>Rothlaíonn sé an geoiméadracht roghnaithe trí 'n' eilimintí san iomlán a chruthú, rud a chuireann ar chumas patrún ciorclach a chruthú</translation>
     </message>
   </context>
   <context>
@@ -7604,8 +7628,8 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2581"/>
-      <source>Translates the selected geometries and enables the creation of 'i' * 'j' copies</source>
-      <translation>Aistríonn sé na geoiméadrachtaí roghnaithe agus cumasaíonn sé cruthú cóipeanna 'i' * 'j'</translation>
+      <source>Translates the selected geometries and enables the creation of 'i' * 'j' total elements</source>
+      <translation>Aistríonn sé na geoiméadrachtaí roghnaithe agus cuireann sé ar chumas eilimintí iomlána 'i' * 'j' a chruthú</translation>
     </message>
   </context>
   <context>
@@ -7973,21 +7997,21 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
       <translation>Paraiméadair Líne</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="284"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="293"/>
       <source>%1 switch mode</source>
       <translation>%1 mód lasctha</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="293"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="307"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="321"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="302"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="316"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="330"/>
       <source>%1 pick first point</source>
       <translation>%1 roghnaigh an chéad phointe</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="299"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="313"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="327"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="308"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="322"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="336"/>
       <source>%1 pick second point</source>
       <translation>%1 roghnaigh an dara pointe</translation>
     </message>
@@ -8141,25 +8165,25 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>SketcherGui::DrawSketchHandlerRotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="100"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="103"/>
       <source>%1 pick center point</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>%1 roghnaigh pointe lárnach</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="105"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="108"/>
       <source>%1 set start angle</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>%1 socraigh uillinn tosaigh</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="110"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="113"/>
       <source>%1 set rotation angle</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>%1 socraigh uillinn rothlaithe</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="222"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="277"/>
       <source>Rotate Parameters</source>
       <translation>Rothlaigh Paraiméadair</translation>
     </message>
@@ -8226,24 +8250,24 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>SketcherGui::DrawSketchHandlerTranslate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="195"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="202"/>
       <source>Translate Parameters</source>
       <translation>Aistrigh Paraiméadair</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="463"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="515"/>
       <source>%1 pick reference point</source>
       <comment>Sketcher Translate: hint</comment>
       <translation>%1 pointe tagartha roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="465"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="517"/>
       <source>%1 set translation vector</source>
       <comment>Sketcher Translate: hint</comment>
       <translation>%1 tacar veicteoir aistriúcháin</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="468"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="520"/>
       <source>%1 set second translation vector</source>
       <comment>Sketcher Translate: hint</comment>
       <translation>%1 socraigh an dara veicteoir aistriúcháin</translation>
@@ -8329,32 +8353,6 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
     </message>
   </context>
   <context>
-    <name>CmdSketcherCancelSketch</name>
-    <message>
-      <location filename="../../Command.cpp" line="409"/>
-      <source>Cancel Editing</source>
-      <translation>Cealaigh an Eagarthóireacht</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="410"/>
-      <source>Leaves 'edit' mode and reverts any changes</source>
-      <translation>Fágann sé mód 'eagarthóireachta' agus aisiompaíonn sé aon athruithe</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdSketcherLeaveGroup</name>
-    <message>
-      <location filename="../../Command.cpp" line="454"/>
-      <source>Leave</source>
-      <translation>Fág</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="455"/>
-      <source>Leaves the sketch editing mode</source>
-      <translation>Fágann sé an modh eagarthóireachta sceitse</translation>
-    </message>
-  </context>
-  <context>
     <name>SketcherGui::DrawSketchHandlerPolyLine</name>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="1012"/>
@@ -8395,12 +8393,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>Sketcher_CreatePolyline</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1717"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1729"/>
       <source>Line</source>
       <translation>Líne</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1718"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1730"/>
       <source>Arc</source>
       <translation>Arc</translation>
     </message>
@@ -8408,87 +8406,14 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>TaskSketcherTool_c1_PolyLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1724"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1736"/>
       <source>Fillet (F)</source>
       <translation>Filléad (F)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1728"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1740"/>
       <source>Adds a fillet between the current and previous line</source>
       <translation>Cuireann filléid idir an líne reatha agus an líne roimhe seo</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdSketcherCreatePolylineLegacy</name>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="227"/>
-      <source>Polyline</source>
-      <translation>Polalíne</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="228"/>
-      <source>Creates a continuous polyline. Press the 'M' key to switch segment modes</source>
-      <translation>Cruthaíonn sé seo polalíne leanúnach. Brúigh an eochair 'M' chun modhanna deighleog a athrú</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdSketcherCreateText</name>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1393"/>
-      <source>Text</source>
-      <translation>Téacs</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1394"/>
-      <source>Creates text geometries controlled by a Text constraint.
-To Edit: Double-click the Text constraint to change the text content and font.
-To Position/Size: Apply constraints to the group's construction line.
-Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
-</source>
-      <translation>Cruthaíonn sé geoiméadrachtaí téacs atá faoi rialú srian Téacs.
-Chun Eagarthóireacht a dhéanamh: Cliceáil faoi dhó ar an srian Téacs chun ábhar agus cló an téacs a athrú.
-Chun Suíomh/Méid: Cuir srianta i bhfeidhm ar líne tógála an ghrúpa.
-Nóta: Cé go bhfuil an srian Téacs gníomhach, déanfar neamhaird d'aon srianta a chuirtear i bhfeidhm go díreach ar na geoiméadrachtaí téacs.
-</translation>
-    </message>
-  </context>
-  <context>
-    <name>SketcherGui::EditTextDialog</name>
-    <message>
-      <location filename="../../EditTextDialog.cpp" line="72"/>
-      <source>Font not found</source>
-      <translation>Níor aimsíodh cló</translation>
-    </message>
-    <message>
-      <location filename="../../EditTextDialog.cpp" line="73"/>
-      <source>The original font '%1' is not found on your system. A default font has been selected.</source>
-      <translation>Ní bhfuarthas an cló bunaidh '%1' ar do chóras. Tá cló réamhshocraithe roghnaithe.</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_c1_text</name>
-    <message>
-      <location filename="../../DrawSketchHandlerText.h" line="361"/>
-      <source>Width</source>
-      <translation>Leithead</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerText.h" line="362"/>
-      <source>Height</source>
-      <translation>Airde</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_Text</name>
-    <message>
-      <location filename="../../DrawSketchHandlerText.h" line="368"/>
-      <source>Text</source>
-      <translation>Téacs</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerText.h" line="374"/>
-      <source>Font</source>
-      <translation>Cló</translation>
     </message>
   </context>
   <context>
@@ -8601,6 +8526,147 @@ Nóta: Cé go bhfuil an srian Téacs gníomhach, déanfar neamhaird d'aon sriant
       <location filename="../../CommandConstraints.cpp" line="11019"/>
       <source>Constrains the selected geometries together as a single entity.The position and size of the grouped geometries can be defined by constraining the construction line that is generated.Constraints applied to grouped edges are ignored as long as the Group constraint is here.</source>
       <translation>Cuireann sé srian ar na geoiméadrachtaí roghnaithe le chéile mar aonán amháin. Is féidir suíomh agus méid na geoiméadrachtaí grúpáilte a shainiú tríd an líne tógála a ghintear a shrianadh. Déantar neamhaird ar shrianta a chuirtear i bhfeidhm ar imill ghrúpáilte chomh fada agus a bhíonn an srian Grúpa anseo.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCancelSketch</name>
+    <message>
+      <location filename="../../Command.cpp" line="411"/>
+      <source>Cancel Editing</source>
+      <translation>Cealaigh an Eagarthóireacht</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="412"/>
+      <source>Leaves 'edit' mode and reverts any changes</source>
+      <translation>Fágann sé mód 'eagarthóireachta' agus aisiompaíonn sé aon athruithe</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherLeaveGroup</name>
+    <message>
+      <location filename="../../Command.cpp" line="456"/>
+      <source>Leave</source>
+      <translation>Fág</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="457"/>
+      <source>Leaves the sketch editing mode</source>
+      <translation>Fágann sé an modh eagarthóireachta sceitse</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c2_translate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="598"/>
+      <source>Symmetric</source>
+      <translation>Siméadrach</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="602"/>
+      <source>Distribute the elements symmetrically around the original position.</source>
+      <translation>Dáil na heilimintí go siméadrach timpeall an tsuímh bhunaidh.</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_p3_translate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="631"/>
+      <source>Elements (+'U'/-'J')</source>
+      <translation>Eilimintí (+'U'/-'J')</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c1_text</name>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="361"/>
+      <source>Width</source>
+      <translation>Leithead</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="362"/>
+      <source>Height</source>
+      <translation>Airde</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_Text</name>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="368"/>
+      <source>Text</source>
+      <translation>Téacs</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="374"/>
+      <source>Font</source>
+      <translation>Cló</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c2_rotate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerRotate.h" line="568"/>
+      <source>Symmetric</source>
+      <translation>Siméadrach</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRotate.h" line="572"/>
+      <source>Distribute the elements symmetrically around the original position.</source>
+      <translation>Dáil na heilimintí go siméadrach timpeall an tsuímh bhunaidh.</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_p4_rotate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerRotate.h" line="592"/>
+      <source>Elements (+'U'/ -'J')</source>
+      <translation>Eilimintí (+'U'/ -'J')</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCreatePolylineLegacy</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="227"/>
+      <source>Polyline</source>
+      <translation>Polalíne</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="228"/>
+      <source>Creates a continuous polyline. Press the 'M' key to switch segment modes</source>
+      <translation>Cruthaíonn sé seo polalíne leanúnach. Brúigh an eochair 'M' chun modhanna deighleog a athrú</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCreateText</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1393"/>
+      <source>Text</source>
+      <translation>Téacs</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1394"/>
+      <source>Creates text geometries controlled by a Text constraint.
+To Edit: Double-click the Text constraint to change the text content and font.
+To Position/Size: Apply constraints to the group's construction line.
+Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
+</source>
+      <translation>Cruthaíonn sé geoiméadrachtaí téacs atá faoi rialú srian Téacs.
+Chun Eagarthóireacht a dhéanamh: Cliceáil faoi dhó ar an srian Téacs chun ábhar agus cló an téacs a athrú.
+Chun Suíomh/Méid: Cuir srianta i bhfeidhm ar líne tógála an ghrúpa.
+Nóta: Cé go bhfuil an srian Téacs gníomhach, déanfar neamhaird d'aon srianta a chuirtear i bhfeidhm go díreach ar na geoiméadrachtaí téacs.
+</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::EditTextDialog</name>
+    <message>
+      <location filename="../../EditTextDialog.cpp" line="72"/>
+      <source>Font not found</source>
+      <translation>Níor aimsíodh cló</translation>
+    </message>
+    <message>
+      <location filename="../../EditTextDialog.cpp" line="73"/>
+      <source>The original font '%1' is not found on your system. A default font has been selected.</source>
+      <translation>Ní bhfuarthas an cló bunaidh '%1' ar do chóras. Tá cló réamhshocraithe roghnaithe.</translation>
     </message>
   </context>
 </TS>

@@ -268,6 +268,24 @@ class TestPathGeom(PathTestBase):
         self.assertFalse(Path.Geom.isHorizontal(xzCylinder))
         self.assertFalse(Path.Geom.isHorizontal(yzCylinder))
 
+    def test05(self):
+        """Test CompareVecs"""
+
+        # Vec and origin
+        v1 = Vector(0, 0, 10)
+        v2 = Vector(0, 0, 0)
+        self.assertTrue(Path.Geom.compareVecs(v1, v2))
+
+        # two valid vectors
+        v1 = Vector(0, 10, 0)
+        v2 = Vector(0, 20, 0)
+        self.assertTrue(Path.Geom.compareVecs(v1, v2))
+
+        # two valid vectors not aligned
+        v1 = Vector(0, 10, 0)
+        v2 = Vector(10, 0, 0)
+        self.assertFalse(Path.Geom.compareVecs(v1, v2))
+
     def test07(self):
         """Verify speed interpolation works for different pitches"""
         # horizontal

@@ -99,6 +99,20 @@ class ElasticityWriter:
                 if equation.PlaneStress:
                     self.write.equation(b, "Plane Stress", equation.PlaneStress)
 
+    def getEigenSolver(self, equation):
+        if not equation.EigenAnalysis:
+            return None
+        s = sifio.createSection(sifio.SOLVER)
+        s["Procedure"] = sifio.FileAttr("SaveData/SaveScalars")
+        s["Exec Solver"] = "After all"
+        if equation.StabilityAnalysis:
+            s["Filename"] = sifio.FileAttr("buckling.dat")
+            s["Save Eigenvalues"] = True
+        else:
+            s["Filename"] = sifio.FileAttr("frequencies.dat")
+            s["Save Eigenfrequencies"] = True
+        return s
+
     def _updateElasticitySolver(self, equation):
         # updates older Elasticity equations
         if not hasattr(equation, "Variable"):
