@@ -1,0 +1,54 @@
+{
+  "task": "mcf_location",
+  "device": "cuda",
+  "torch": "2.7.1+cu128",
+  "cuda_runtime": "12.8",
+  "model_config": {
+    "face_width": 63,
+    "loop_width": 39,
+    "edge_width": 73,
+    "vertex_width": 3,
+    "graph_width": 64,
+    "mcf_width": 64,
+    "message_passing_steps": 6,
+    "inference_types": 32,
+    "inference_embedding_width": 8,
+    "dropout": 0.1,
+    "normalize_graph_inputs": true,
+    "normalize_intermediate": true
+  },
+  "dataset_signature": {
+    "examples": 262625,
+    "split_counts": {
+      "train": 209290,
+      "validation": 26657,
+      "test": 26678
+    },
+    "cache_root": "dataset\\cache\\brep_graph_paper_full",
+    "seed": 20260725
+  },
+  "train_samples": 209290,
+  "validation_samples": 26657,
+  "arguments": {
+    "index_dir": "D:\\freecad\\FreeCAD\\aiModule\\automate\\dataset\\training\\location_paper_full",
+    "output_dir": "runs\\location_stability_probe_500b_geometry_fix",
+    "epochs": 1,
+    "max_candidate_pairs": 24000,
+    "max_samples": 32,
+    "graph_width": 64,
+    "mcf_width": 64,
+    "message_passing_steps": 6,
+    "dropout": 0.1,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "gradient_clip": 1.0,
+    "num_workers": 0,
+    "seed": 20260803,
+    "device": "auto",
+    "resume": null,
+    "max_train_batches": 500,
+    "max_val_batches": 50,
+    "stop_after_epoch": null,
+    "detect_anomaly": false
+  }
+}

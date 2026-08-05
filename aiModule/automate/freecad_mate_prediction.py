@@ -1,7 +1,7 @@
 """Run the trained AutoMate model for two selected FreeCAD objects.
 
-Start FreeCAD from the repository root, select exactly two objects containing
-Shapes, and execute:
+Start FreeCAD from the repository root, select one mating face on each of two
+objects (A then B), and execute:
 
     exec(open(r"aimodule\automate\freecad_mate_prediction.py", encoding="utf-8").read())
 """
@@ -54,6 +54,11 @@ TOP_K = 5
 # Experimental one-click placement: keep A fixed and transform B so the
 # rank-1 mating-coordinate frames coincide. Ctrl+Z restores B afterwards.
 APPLY_BEST = True
+# Show all Location Top-K placements interactively before committing one.
+SHOW_TOPK_PREVIEW = True
+# For two selected cylindrical faces, snap the nearest pair of axial face
+# boundaries after MCF alignment. This resolves insertion depth, not roll.
+AXIAL_CONTACT_CORRECTION = True
 # Face normals usually oppose each other when two mating surfaces contact.
 ALIGN_OPPOSITE = True
 METERS_TO_FREECAD = 1000.0
@@ -106,6 +111,37 @@ def _frame_in_freecad_units(frame):
     }
 
 
+def _selected_face_signature(face):
+    center = face.CenterOfMass
+    return json.dumps({
+        "area_m2": float(face.Area) / (METERS_TO_FREECAD ** 2),
+        "center_m": [center.x / METERS_TO_FREECAD, center.y / METERS_TO_FREECAD,
+                     center.z / METERS_TO_FREECAD],
+    }, separators=(",", ":"))
+
+
+def _two_selected_faces():
+    entries = [entry for entry in Gui.Selection.getSelectionEx()
+               if hasattr(entry.Object, "Shape")]
+    if len(entries) != 2:
+        raise RuntimeError("Select exactly one face on each of two objects, in A then B order.")
+    selected = []
+    for side, entry in zip(("A", "B"), entries):
+        faces = [(name, shape) for name, shape in zip(entry.SubElementNames, entry.SubObjects)
+                 if name.startswith("Face")]
+        if len(faces) != 1 or len(entry.SubElementNames) != 1:
+            raise RuntimeError("Side {} must have exactly one selected FaceN subelement.".format(side))
+        name, face = faces[0]
+        try:
+            index = int(name[4:]) - 1
+        except ValueError as exc:
+            raise RuntimeError("Invalid selected face name: {}".format(name)) from exc
+        selected.append((entry.Object, name, index, _selected_face_signature(face)))
+    if selected[0][0] is selected[1][0]:
+        raise RuntimeError("Select faces on two different objects.")
+    return selected
+
+
 def _rank1_placement(object_b, recommendation, align_opposite=True):
     """Return the global delta that maps the recommended B frame onto A."""
     frame_a = _frame_in_freecad_units(recommendation["a"])
@@ -125,6 +161,138 @@ def _rank1_placement(object_b, recommendation, align_opposite=True):
     return App.Placement(translation, rotation)
 
 
+def _selected_local_face(obj, face_name):
+    try:
+        return obj.Shape.getElement(face_name)
+    except Exception as exc:
+        raise RuntimeError("Cannot resolve {} on '{}'".format(face_name, obj.Label)) from exc
+
+
+def _is_cylindrical_face(obj, face_name):
+    surface_name = type(_selected_local_face(obj, face_name).Surface).__name__.lower()
+    return "cylinder" in surface_name
+
+
+def _axial_face_bounds(obj, face_name, placement, axis):
+    face = _selected_local_face(obj, face_name)
+    values = []
+    for vertex in face.Vertexes:
+        point = placement.multVec(vertex.Point)
+        values.append(point.dot(axis))
+    if not values:
+        point = placement.multVec(face.CenterOfMass)
+        values.append(point.dot(axis))
+    return min(values), max(values)
+
+
+def _candidate_placement(object_a, object_b, face_name_a, face_name_b,
+                         original_b, recommendation):
+    delta = _rank1_placement(object_b, recommendation, ALIGN_OPPOSITE)
+    placement = delta.multiply(original_b)
+    correction = 0.0
+    correction_enabled = (
+        AXIAL_CONTACT_CORRECTION
+        and _is_cylindrical_face(object_a, face_name_a)
+        and _is_cylindrical_face(object_b, face_name_b)
+    )
+    if correction_enabled:
+        frame_a = _frame_in_freecad_units(recommendation["a"])
+        axis = App.Vector(*frame_a["axis"])
+        if axis.Length < 1.0e-12:
+            raise ValueError("Cannot correct a zero-length mating axis")
+        axis.normalize()
+        bounds_a = _axial_face_bounds(
+            object_a, face_name_a, App.Placement(object_a.Placement), axis
+        )
+        bounds_b = _axial_face_bounds(object_b, face_name_b, placement, axis)
+        corrections = [a_value - b_value for a_value in bounds_a for b_value in bounds_b]
+        correction = min(corrections, key=abs)
+        axial_delta = App.Placement(axis * correction, App.Rotation())
+        placement = axial_delta.multiply(placement)
+        delta = placement.multiply(original_b.inverse())
+    return {
+        "placement": placement,
+        "delta": delta,
+        "axial_correction_mm": correction,
+        "axial_correction_enabled": correction_enabled,
+    }
+
+
+def _preview_topk(object_b, original_placement, recommendations, placements):
+    if not SHOW_TOPK_PREVIEW or not recommendations:
+        return 0
+    try:
+        try:
+            from PySide import QtCore, QtWidgets
+        except ImportError:
+            try:
+                from PySide2 import QtCore, QtWidgets
+            except ImportError:
+                from PySide import QtCore, QtGui as QtWidgets
+    except ImportError:
+        App.Console.PrintWarning("AutoMate: Qt unavailable; applying Rank 1 without preview.\n")
+        return 0
+
+    dialog = QtWidgets.QDialog(Gui.getMainWindow())
+    dialog.setWindowTitle("AutoMate Top-K Placement Preview")
+    dialog.setModal(False)
+    dialog.setWindowModality(QtCore.Qt.NonModal)
+    layout = QtWidgets.QVBoxLayout(dialog)
+    layout.addWidget(QtWidgets.QLabel(
+        "Choose a Location candidate. Switching the row previews object B; "
+        "Cancel restores its original Placement."
+    ))
+    combo = QtWidgets.QComboBox(dialog)
+    for recommendation, candidate in zip(recommendations, placements):
+        combo.addItem(
+            "Rank {rank}: {mate_type} ({confidence:.1%}), Location {probability:.1%}, "
+            "axial snap {correction:+.3f} mm".format(
+                rank=recommendation["rank"],
+                mate_type=recommendation.get("mate_type", "UNKNOWN"),
+                confidence=recommendation.get("mate_type_confidence", 0.0),
+                probability=recommendation.get("probability", 0.0),
+                correction=candidate["axial_correction_mm"],
+            )
+        )
+    layout.addWidget(combo)
+    note = QtWidgets.QLabel(
+        "Cylindrical correction aligns the nearest axial boundaries. "
+        "Rotation about the cylinder axis remains unconstrained."
+    )
+    note.setWordWrap(True)
+    layout.addWidget(note)
+    buttons = QtWidgets.QDialogButtonBox(
+        QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel,
+        parent=dialog,
+    )
+    layout.addWidget(buttons)
+
+    def preview(index):
+        object_b.Placement = App.Placement(placements[index]["placement"])
+        App.ActiveDocument.recompute()
+        Gui.activeDocument().activeView().redraw()
+
+    combo.currentIndexChanged.connect(preview)
+    buttons.accepted.connect(dialog.accept)
+    buttons.rejected.connect(dialog.reject)
+    preview(0)
+    # QDialog.exec_() forces application modality in FreeCAD. A local event
+    # loop keeps this script waiting for the final choice while the modeless
+    # dialog leaves the main window and 3D view fully interactive.
+    event_loop = QtCore.QEventLoop()
+    dialog.finished.connect(lambda _result: event_loop.quit())
+    dialog.show()
+    dialog.raise_()
+    event_loop.exec_()
+    accepted = dialog.result() == QtWidgets.QDialog.Accepted
+    selected_index = combo.currentIndex()
+    object_b.Placement = App.Placement(original_placement)
+    App.ActiveDocument.recompute()
+    if not accepted:
+        return None
+    return selected_index
+
+
 def _transform_frame(frame, placement):
     origin = placement.multVec(App.Vector(*frame["origin"]))
     axis = placement.Rotation.multVec(App.Vector(*frame["axis"]))
@@ -136,9 +304,8 @@ def _transform_frame(frame, placement):
 
 
 def run(top_k=TOP_K):
-    selected = [obj for obj in Gui.Selection.getSelection() if hasattr(obj, "Shape")]
-    if len(selected) != 2:
-        raise RuntimeError("Select exactly two objects containing Shapes, in A then B order.")
+    face_selections = _two_selected_faces()
+    selected = [item[0] for item in face_selections]
     doc = App.ActiveDocument
     if doc is None:
         raise RuntimeError("No active FreeCAD document.")
@@ -150,8 +317,13 @@ def run(top_k=TOP_K):
         Import.export([selected[0]], step_a)
         Import.export([selected[1]], step_b)
         command = [
-            _pixi_executable(), "run", "python", "scripts/infer_mate.py",
-            step_a, step_b, "--output", output, "--top-k", str(int(top_k)),
+            _pixi_executable(), "run", "python", "scripts/infer_selected_faces.py",
+            step_a, step_b,
+            "--face-a", str(face_selections[0][2]),
+            "--face-b", str(face_selections[1][2]),
+            "--face-signature-a", face_selections[0][3],
+            "--face-signature-b", face_selections[1][3],
+            "--output", output, "--top-k", str(int(top_k)),
         ]
         completed = subprocess.run(
             command,
@@ -169,23 +341,57 @@ def run(top_k=TOP_K):
         with open(output, "r", encoding="utf-8") as stream:
             result = json.load(stream)
 
+    original_placement = App.Placement(selected[1].Placement)
+    candidate_placements = [
+        _candidate_placement(
+            selected[0], selected[1], face_selections[0][1], face_selections[1][1],
+            original_placement, recommendation,
+        )
+        for recommendation in result["recommendations"]
+    ]
+    selected_recommendation_index = None
+    if APPLY_BEST and result["recommendations"]:
+        selected_recommendation_index = _preview_topk(
+            selected[1], original_placement, result["recommendations"], candidate_placements
+        )
+        if selected_recommendation_index is None:
+            App.Console.PrintMessage("AutoMate: placement preview cancelled; no document changes.\n")
+            return None, result
+
     _remove_previous(doc)
-    doc.openTransaction("Apply AutoMate rank 1")
+    doc.openTransaction("Apply AutoMate selected placement")
     group = doc.addObject("App::DocumentObjectGroup", "AutoMate_Predictions")
     group.Label = "AutoMate Top-{} predictions".format(top_k)
-    group.addProperty("App::PropertyString", "Checkpoint", "AutoMate")
-    group.addProperty("App::PropertyInteger", "CheckpointEpoch", "AutoMate")
+    group.addProperty("App::PropertyString", "LocationCheckpoint", "AutoMate")
+    group.addProperty("App::PropertyInteger", "LocationCheckpointEpoch", "AutoMate")
+    group.addProperty("App::PropertyString", "MateTypeCheckpoint", "AutoMate")
+    group.addProperty("App::PropertyInteger", "MateTypeCheckpointEpoch", "AutoMate")
+    group.addProperty("App::PropertyString", "SelectedFaceA", "AutoMate")
+    group.addProperty("App::PropertyString", "SelectedFaceB", "AutoMate")
+    group.addProperty("App::PropertyInteger", "ResolvedFaceIndexA", "AutoMate")
+    group.addProperty("App::PropertyInteger", "ResolvedFaceIndexB", "AutoMate")
+    group.addProperty("App::PropertyInteger", "AppliedRank", "AutoMate")
+    group.addProperty("App::PropertyFloat", "AxialCorrectionMm", "AutoMate")
+    group.addProperty("App::PropertyBool", "AxialCorrectionEnabled", "AutoMate")
     group.addProperty("App::PropertyBool", "AutoPlacementEnabled", "AutoMate")
-    group.Checkpoint = result.get("checkpoint", "")
-    group.CheckpointEpoch = int(result.get("checkpoint_epoch", -1))
+    group.LocationCheckpoint = result.get("location_checkpoint", "")
+    group.LocationCheckpointEpoch = int(result.get("location_checkpoint_epoch", -1))
+    group.MateTypeCheckpoint = result.get("mate_type_checkpoint", "")
+    group.MateTypeCheckpointEpoch = int(result.get("mate_type_checkpoint_epoch", -1))
+    group.SelectedFaceA = face_selections[0][1]
+    group.SelectedFaceB = face_selections[1][1]
+    group.ResolvedFaceIndexA = int(result["parts"][0]["selected_face"])
+    group.ResolvedFaceIndexB = int(result["parts"][1]["selected_face"])
+    group.AppliedRank = 0
+    group.AxialCorrectionMm = 0.0
+    group.AxialCorrectionEnabled = False
     group.AutoPlacementEnabled = bool(APPLY_BEST)
     applied_delta = None
-    original_placement = App.Placement(selected[1].Placement)
-    if APPLY_BEST and result["recommendations"]:
-        applied_delta = _rank1_placement(
-            selected[1], result["recommendations"][0], ALIGN_OPPOSITE
-        )
-        selected[1].Placement = applied_delta.multiply(selected[1].Placement)
+    if selected_recommendation_index is not None:
+        chosen = candidate_placements[selected_recommendation_index]
+        chosen_recommendation = result["recommendations"][selected_recommendation_index]
+        applied_delta = chosen["delta"]
+        selected[1].Placement = App.Placement(chosen["placement"])
         moved_placement = App.Placement(selected[1].Placement)
         group.addProperty("App::PropertyLink", "MovedObject", "AutoMate")
         group.addProperty("App::PropertyPlacement", "OriginalPlacement", "AutoMate")
@@ -195,8 +401,13 @@ def run(top_k=TOP_K):
         group.OriginalPlacement = original_placement
         group.AppliedDelta = applied_delta
         group.AxesOpposed = ALIGN_OPPOSITE
+        group.AppliedRank = int(chosen_recommendation["rank"])
+        group.AxialCorrectionMm = float(chosen["axial_correction_mm"])
+        group.AxialCorrectionEnabled = bool(chosen["axial_correction_enabled"])
         App.Console.PrintMessage(
-            "AutoMate Placement: B before={} delta={} after={}\n".format(
+            "AutoMate Placement: selected Rank {}, axial correction={:+.3f} mm; "
+            "B before={} delta={} after={}\n".format(
+                chosen_recommendation["rank"], chosen["axial_correction_mm"],
                 original_placement, applied_delta, moved_placement
             )
         )
@@ -215,8 +426,8 @@ def run(top_k=TOP_K):
         mate_type_confidence = recommendation.get("mate_type_confidence", 0.0)
         a = _frame_in_freecad_units(recommendation["a"])
         b = _frame_in_freecad_units(recommendation["b"])
-        # B has already moved, so draw all of its candidate frames in the new
-        # global placement. Rank 1 will coincide with the selected A frame.
+        # B has already moved using the chosen rank, so draw its candidate
+        # frames under that same global delta.
         if applied_delta is not None:
             b = _transform_frame(b, applied_delta)
         obj_a = _add_axis(
@@ -252,39 +463,46 @@ def run(top_k=TOP_K):
                 ensure_ascii=False,
                 sort_keys=True,
             )
-        # Only show the best recommendation initially; toggle the others in tree view.
-        obj_a.ViewObject.Visibility = rank == 1
-        obj_b.ViewObject.Visibility = rank == 1
+        visible_rank = (
+            result["recommendations"][selected_recommendation_index]["rank"]
+            if selected_recommendation_index is not None else 1
+        )
+        obj_a.ViewObject.Visibility = rank == visible_rank
+        obj_b.ViewObject.Visibility = rank == visible_rank
         group.addObject(obj_a)
         group.addObject(obj_b)
 
     doc.recompute()
     doc.commitTransaction()
     App.Console.PrintMessage(
-        "AutoMate: A MCFs={}, B MCFs={}, pairs={}, Top-K={}, inference={:.2f}s\n".format(
-            result["parts"][0]["mcf_count"], result["parts"][1]["mcf_count"],
+        "AutoMate: selected faces {}->{}, {}->{}; local MCFs={}, {}; "
+        "pairs={}, Top-K={}, inference={:.2f}s\n".format(
+            face_selections[0][1], result["parts"][0]["selected_face"],
+            face_selections[1][1], result["parts"][1]["selected_face"],
+            result["parts"][0]["local_mcf_count"], result["parts"][1]["local_mcf_count"],
             result["pair_count"], len(result["recommendations"]),
             result["elapsed_seconds"],
         )
     )
     App.Console.PrintMessage(
-        "AutoMate: red=A, blue=B; only rank 1 is visible initially. "
+        "AutoMate: red=A, blue=B; only the selected rank is visible initially. "
         "Toggle other ranks under AutoMate Predictions.\n"
     )
     if result["recommendations"]:
         best = result["recommendations"][0]
         App.Console.PrintMessage(
             "AutoMate: rank 1 predicts mate type {} ({:.1%} confidence); "
-            "automatic Placement is {}.\n".format(
+            "selected Placement rank is {}.\n".format(
                 best.get("mate_type", "UNKNOWN"),
                 best.get("mate_type_confidence", 0.0),
-                "enabled" if APPLY_BEST else "disabled",
+                (result["recommendations"][selected_recommendation_index]["rank"]
+                 if selected_recommendation_index is not None else "none"),
             )
         )
     if applied_delta is not None:
         App.Console.PrintMessage(
-            "AutoMate: applied rank 1 to '{}'; Ctrl+Z restores its previous Placement.\n".format(
-                selected[1].Label
+            "AutoMate: applied selected rank to '{}'; Ctrl+Z restores its previous Placement.\n".format(
+                selected[1].Label,
             )
         )
     return group, result

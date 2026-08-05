@@ -25,9 +25,11 @@ class SBGCN(torch.nn.Module):
         crv_emb_dim=64,
         srf_emb_dim=64,
         normalize_inputs=False,
+        normalize_intermediate=False,
     ):
         super().__init__()
         self.normalize_inputs = normalize_inputs
+        self.normalize_intermediate = normalize_intermediate
         self.use_uvnet_features = use_uvnet_features
         self.crv_in_dim = crv_in_dim
         self.srf_in_dim = srf_in_dim
@@ -96,20 +98,26 @@ class SBGCN(torch.nn.Module):
         x_e = self.embed_e_in(x_e)
         x_v = self.embed_v_in(x_v)
 
+        def stabilize(values):
+            if not self.normalize_intermediate:
+                return values
+            scale = values.detach().abs().amax(dim=1, keepdim=True).clamp_min(1.0)
+            return values / scale
+
 
         # Upward Pass ([[1,0]] flips downwards graph edges)
-        x_e = self.V2E(x_v, x_e, data.edge_to_vertex[[1,0]])
-        x_l = self.E2L(x_e, x_l, data.loop_to_edge[[1,0]])
-        x_f = self.L2F(x_l, x_f, data.face_to_loop[[1,0]])
+        x_e = stabilize(self.V2E(x_v, x_e, data.edge_to_vertex[[1,0]]))
+        x_l = stabilize(self.E2L(x_e, x_l, data.loop_to_edge[[1,0]]))
+        x_f = stabilize(self.L2F(x_l, x_f, data.face_to_loop[[1,0]]))
         
         # Meta-Edge Spine
         for conv in self.ffLayers:
-            x_f = conv(x_f, x_f, data.face_to_face[:2,:])
+            x_f = stabilize(conv(x_f, x_f, data.face_to_face[:2,:]))
         
         # Downward Pass
-        x_l = self.F2L(x_f, x_l, data.face_to_loop)
-        x_e = self.L2E(x_l, x_e, data.loop_to_edge)
-        x_v = self.E2V(x_e, x_v, data.edge_to_vertex)
+        x_l = stabilize(self.F2L(x_f, x_l, data.face_to_loop))
+        x_e = stabilize(self.L2E(x_l, x_e, data.loop_to_edge))
+        x_v = stabilize(self.E2V(x_e, x_v, data.edge_to_vertex))
         
         # Flatten Topology Representations
         n_topos = x_f.size(0) + x_l.size(0) + x_e.size(0) + x_v.size(0)

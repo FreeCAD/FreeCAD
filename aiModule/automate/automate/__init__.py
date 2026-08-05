@@ -25,6 +25,18 @@ from .mate_type_dataset import (
     make_mate_type_dataloader,
 )
 from .mate_type_model import MateTypeModel, MateTypeModelConfig
+from .location_dataset import (
+    CandidateBudgetBatchSampler,
+    LocationBatch,
+    LocationDataset,
+    LocationSample,
+    collate_locations,
+    make_location_dataloader,
+)
+from .location_model import (
+    LocationModel, LocationModelConfig, location_ranking_statistics,
+    multi_positive_location_loss,
+)
 
 from automate_cpp import Part, PartOptions
 
@@ -66,6 +78,16 @@ __all__ = [
     'make_mate_type_dataloader',
     'MateTypeModel',
     'MateTypeModelConfig',
+    'CandidateBudgetBatchSampler',
+    'LocationBatch',
+    'LocationDataset',
+    'LocationSample',
+    'collate_locations',
+    'make_location_dataloader',
+    'LocationModel',
+    'LocationModelConfig',
+    'multi_positive_location_loss',
+    'location_ranking_statistics',
 ]
 
 if run_model is not None:

@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-07-31",
+  "status": "frozen",
+  "run_name": "paper_mate_type_10000_e50",
+  "purpose": "Paper-style independent eight-class Mate Type SB-GCN checkpoint",
+  "training": {
+    "epochs": 50,
+    "best_checkpoint_epoch": 8,
+    "accepted_samples": 9384,
+    "train_samples": 7359,
+    "validation_samples": 1054,
+    "test_samples": 971,
+    "graph_width": 64,
+    "mcf_width": 64,
+    "face_to_face_layers": 6,
+    "location_head": false,
+    "mate_type_head": true,
+    "mate_type_classes": 8
+  },
+  "test_metrics": {
+    "samples": 971,
+    "accuracy": 0.5406796932220459,
+    "top3": 0.8918640576725025,
+    "balanced_accuracy_supported": 0.2725083529949188,
+    "macro_f1_all": 0.2507905066013336
+  },
+  "sha256": {
+    "best.pt": "c06917f3915e334cd4c8deeebe213e8acd5232d733eb72a2601f714083bd0f4a",
+    "last.pt": "5b2f09aaf8dcd806ee2430931efea39c3d9bfac9bfdbd3fc43b4ec4820d29034",
+    "metrics.jsonl": "bf3128c35938016c9441546655eb99b9827e41eb1033c2893e3b9f1d5b4cbe07",
+    "config.json": "c5834f108f73d355f5d4378a2adfc782749c5d838efb18692362211a1796b28c",
+    "evaluation_test.json": "c3c4f0b940eaf3a67771de460be071443d650272111f525a36b8589ab2daea8e",
+    "confusion_matrix_test.png": "bfb02e772b043a3059b1d882aa7606d1be8ac94d97cebd4d8b54cd25d85c69b9"
+  }
+}

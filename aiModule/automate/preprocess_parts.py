@@ -7,6 +7,7 @@ import hashlib
 import json
 import math
 import os
+import subprocess
 import sys
 import time
 import traceback
@@ -95,11 +96,21 @@ def build_options(PartOptions, PartFeatures):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--mates", type=Path, default=DEFAULT_MATES)
+    parser.add_argument("--part-list", type=Path)
     parser.add_argument("--cache-dir", type=Path, default=DEFAULT_CACHE)
     parser.add_argument("--limit", type=int, default=0)
     parser.add_argument("--overwrite", action="store_true")
     parser.add_argument("--progress-every", type=int, default=25)
+    parser.add_argument("--workers", type=int, default=4)
+    parser.add_argument("--manifest-name", default="manifest.jsonl")
+    parser.add_argument("--summary-name", default="summary.json")
     args = parser.parse_args()
+
+    if args.workers > 1 and not args.part_list:
+        command = [sys.executable, str(ROOT / "parallel_preprocess_parts.py"),
+                   "--mates", str(args.mates), "--cache-dir", str(args.cache_dir),
+                   "--workers", str(args.workers), "--progress-every", str(args.progress_every)]
+        raise SystemExit(subprocess.call(command))
 
     sys.path.insert(0, str(BUILD_DIR))
     dll_dir = None
@@ -109,13 +120,16 @@ def main():
     from automate.brep import PartFeatures, part_to_graph
 
     part_options, graph_options = build_options(PartOptions, PartFeatures)
-    part_ids = collect_part_ids(args.mates)
+    if args.part_list:
+        part_ids = [line.strip() for line in args.part_list.read_text(encoding="utf-8").splitlines() if line.strip()]
+    else:
+        part_ids = collect_part_ids(args.mates)
     if args.limit > 0:
         part_ids = part_ids[: args.limit]
 
     args.cache_dir.mkdir(parents=True, exist_ok=True)
-    manifest_path = args.cache_dir / "manifest.jsonl"
-    summary_path = args.cache_dir / "summary.json"
+    manifest_path = args.cache_dir / args.manifest_name
+    summary_path = args.cache_dir / args.summary_name
     step_dir = DATASET / "step"
     start = time.perf_counter()
     counts = {"built": 0, "skipped": 0, "failed": 0}

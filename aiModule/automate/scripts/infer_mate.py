@@ -33,7 +33,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def build_graph(path):
+def build_graph(path, return_part=False):
     part_options = PartOptions()
     part_options.tesselate = False
     part_options.num_uv_samples = 0
@@ -58,7 +58,7 @@ def build_graph(path):
     graph.mcf_refs = graph.mcf_refs[:, valid]
     if graph.mcfs.shape[0] == 0:
         raise ValueError(f"No valid MCF candidates in {path}")
-    return graph
+    return (graph, part) if return_part else graph
 
 
 def update_topk(best_scores, best_flat_indices, scores, flat_indices, top_k):

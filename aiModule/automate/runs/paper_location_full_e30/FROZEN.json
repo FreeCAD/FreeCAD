@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-08-04",
+  "status": "frozen",
+  "run_name": "paper_location_full_e30",
+  "purpose": "Paper-style face-conditioned MCF Location ranking with a six-layer SB-GCN",
+  "training": {
+    "epochs": 30,
+    "best_checkpoint_epoch": 7,
+    "last_checkpoint_epoch": 29,
+    "accepted_samples": 262625,
+    "train_samples": 209290,
+    "validation_samples": 26657,
+    "test_samples": 26678,
+    "graph_width": 64,
+    "mcf_width": 64,
+    "face_to_face_layers": 6,
+    "max_candidate_pairs_per_batch": 24000,
+    "max_samples_per_batch": 32,
+    "multiple_equivalent_positives": true,
+    "face_conditioned": true,
+    "location_head": true,
+    "mate_type_head": false
+  },
+  "validation_selection": {
+    "metric": "mrr",
+    "best_epoch": 7,
+    "best_mrr": 0.6947120790637502
+  },
+  "test_metrics": {
+    "samples": 26678,
+    "loss": 1.7655076321338157,
+    "top1": 0.5875627858160282,
+    "top5": 0.7584901416897818,
+    "mrr": 0.665370750021237,
+    "mean_rank": 21.71279706124897,
+    "candidate_pairs": 20127538,
+    "positive_pairs": 106146,
+    "mean_candidates": 754.4620286378289
+  },
+  "sha256": {
+    "best.pt": "43ab381154929250417303f0e2d9ecca3d880d021e5fc528cad0452894df8ece",
+    "last.pt": "28d39ec541b1de7d4666a13c9b4cadfdc747d04a6edbb957551e761d344230c9",
+    "metrics.jsonl": "e77b1ed4e6e8c8d7c59c5ea6d1adb4a0dc5432e7c4d92b945923c59ac06296cc",
+    "config.json": "66d153f46609a21ce6902e584ed720bb45cacb744540098291930eeb7e72481d",
+    "evaluation_test.json": "1d589e6e16ec1a5ef7064323e0ebc54150884fc092860953760d6473903b7bbc"
+  }
+}

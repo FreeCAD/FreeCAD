@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "task": "mcf_location_evaluation",
+  "checkpoint": "D:\\freecad\\FreeCAD\\aiModule\\automate\\runs\\paper_location_full_e30\\best.pt",
+  "checkpoint_epoch": 7,
+  "checkpoint_best_validation_mrr": 0.6947120790637502,
+  "split": "test",
+  "device": "cuda",
+  "seconds": 133.298175573349,
+  "batches": 971,
+  "overall": {
+    "samples": 26678,
+    "loss": 1.7655076321338157,
+    "top1": 0.5875627858160282,
+    "top5": 0.7584901416897818,
+    "mrr": 0.665370750021237,
+    "mean_rank": 21.71279706124897,
+    "candidate_pairs": 20127538,
+    "positive_pairs": 106146,
+    "mean_candidates": 754.4620286378289
+  },
+  "by_mate_type": {
+    "BALL": {
+      "samples": 127,
+      "loss": 2.4932284505348505,
+      "top1": 0.2125984251968504,
+      "top5": 0.7401574803149606,
+      "mrr": 0.40941500825462734,
+      "mean_rank": 5.74015748031496,
+      "candidate_pairs": 34412,
+      "positive_pairs": 1120,
+      "mean_candidates": 270.96062992125985
+    },
+    "CYLINDRICAL": {
+      "samples": 2034,
+      "loss": 1.068390801417089,
+      "top1": 0.6696165191740413,
+      "top5": 0.8495575221238938,
+      "mrr": 0.7458721074425329,
+      "mean_rank": 3.948377581120944,
+      "candidate_pairs": 1231025,
+      "positive_pairs": 9424,
+      "mean_candidates": 605.2236971484759
+    },
+    "FASTENED": {
+      "samples": 16226,
+      "loss": 1.4883497515912563,
+      "top1": 0.6055096758289166,
+      "top5": 0.8001355848637989,
+      "mrr": 0.6898885035192598,
+      "mean_rank": 13.069209910020954,
+      "candidate_pairs": 13836332,
+      "positive_pairs": 72047,
+      "mean_candidates": 852.7259953161592
+    },
+    "PARALLEL": {
+      "samples": 446,
+      "loss": 2.20338012725783,
+      "top1": 0.6412556053811659,
+      "top5": 0.6838565022421524,
+      "mrr": 0.6637260587502835,
+      "mean_rank": 36.74887892376682,
+      "candidate_pairs": 185144,
+      "positive_pairs": 670,
+      "mean_candidates": 415.1210762331838
+    },
+    "PIN_SLOT": {
+      "samples": 47,
+      "loss": 1.4126254802054548,
+      "top1": 0.44680851063829785,
+      "top5": 0.8297872340425532,
+      "mrr": 0.6112811375467281,
+      "mean_rank": 10.446808510638299,
+      "candidate_pairs": 35072,
+      "positive_pairs": 130,
+      "mean_candidates": 746.2127659574468
+    },
+    "PLANAR": {
+      "samples": 4275,
+      "loss": 3.1537211942393877,
+      "top1": 0.5223391812865497,
+      "top5": 0.6070175438596491,
+      "mrr": 0.5701235860792602,
+      "mean_rank": 67.90643274853801,
+      "candidate_pairs": 2768117,
+      "positive_pairs": 8674,
+      "mean_candidates": 647.5127485380117
+    },
+    "REVOLUTE": {
+      "samples": 2177,
+      "loss": 1.47906858509267,
+      "top1": 0.5130914101975195,
+      "top5": 0.7216352779053744,
+      "mrr": 0.6267274517235186,
+      "mean_rank": 7.850252641249426,
+      "candidate_pairs": 1443298,
+      "positive_pairs": 7848,
+      "mean_candidates": 662.9756545705098
+    },
+    "SLIDER": {
+      "samples": 1346,
+      "loss": 2.0128612838032343,
+      "top1": 0.5973254086181278,
+      "top5": 0.6835066864784547,
+      "mrr": 0.6397581053626682,
+      "mean_rank": 25.38038632986627,
+      "candidate_pairs": 594138,
+      "positive_pairs": 6233,
+      "mean_candidates": 441.4101040118871
+    }
+  },
+  "by_candidate_count": {
+    "00001-00100": {
+      "samples": 1474,
+      "loss": 0.6949355700122777,
+      "top1": 0.6560379918588873,
+      "top5": 0.9938941655359566,
+      "mrr": 0.7600030152268968,
+      "mean_rank": 1.932157394843962,
+      "candidate_pairs": 94518,
+      "positive_pairs": 3693,
+      "mean_candidates": 64.12347354138399
+    },
+    "00101-00500": {
+      "samples": 17140,
+      "loss": 1.3692085254081072,
+      "top1": 0.6988914819136522,
+      "top5": 0.8358809801633605,
+      "mrr": 0.7634929797977792,
+      "mean_rank": 7.016452742123687,
+      "candidate_pairs": 4110639,
+      "positive_pairs": 56700,
+      "mean_candidates": 239.82724620770128
+    },
+    "00501-01000": {
+      "samples": 3408,
+      "loss": 2.21379247232572,
+      "top1": 0.4289906103286385,
+      "top5": 0.7121478873239436,
+      "mrr": 0.5471074039882649,
+      "mean_rank": 23.5431338028169,
+      "candidate_pairs": 2374749,
+      "positive_pairs": 15630,
+      "mean_candidates": 696.8160211267606
+    },
+    "01001-05000": {
+      "samples": 4034,
+      "loss": 3.0542904267999047,
+      "top1": 0.288795240456123,
+      "top5": 0.4600892414476946,
+      "mrr": 0.38106023867924443,
+      "mean_rank": 68.02107089737234,
+      "candidate_pairs": 9015504,
+      "positive_pairs": 25311,
+      "mean_candidates": 2234.8795240456125
+    },
+    "05001-10000": {
+      "samples": 622,
+      "loss": 4.40841017198716,
+      "top1": 0.1639871382636656,
+      "top5": 0.2572347266881029,
+      "mrr": 0.22911208241770062,
+      "mean_rank": 163.20257234726688,
+      "candidate_pairs": 4532128,
+      "positive_pairs": 4812,
+      "mean_candidates": 7286.3794212218645
+    }
+  }
+}

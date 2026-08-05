@@ -1,0 +1,248 @@
+{
+  "schema_version": 2,
+  "workflow": "selected_faces_location_then_mate_type",
+  "device": "cuda",
+  "elapsed_seconds": 2.029343100031838,
+  "location_checkpoint": "D:\\freecad\\FreeCAD\\aiModule\\automate\\runs\\paper_location_full_e30\\best.pt",
+  "location_checkpoint_epoch": 7,
+  "mate_type_checkpoint": "D:\\freecad\\FreeCAD\\aiModule\\automate\\runs\\paper_mate_type_10000_e50\\best.pt",
+  "mate_type_checkpoint_epoch": 8,
+  "parts": [
+    {
+      "path": "D:\\freecad\\FreeCAD\\aiModule\\automate\\dataset\\step\\63ee4c5b8dd03594097a77ee_1de77c272d62d15694a32236_37e2bd42ae7f96c27e072e39_default_jndtgra.step",
+      "face_count": 6,
+      "mcf_count": 78,
+      "requested_face": 0,
+      "selected_face": 0,
+      "face_match": null,
+      "local_mcf_count": 4
+    },
+    {
+      "path": "D:\\freecad\\FreeCAD\\aiModule\\automate\\dataset\\step\\18d10b4f8540968b5e63b93a_80aa03c01fe89371d9b82aa7_2014aca0020b60b0755752f1_default_jndxura.step",
+      "face_count": 212,
+      "mcf_count": 5722,
+      "requested_face": 0,
+      "selected_face": 0,
+      "face_match": null,
+      "local_mcf_count": 15
+    }
+  ],
+  "pair_count": 60,
+  "recommendations": [
+    {
+      "rank": 1,
+      "score": 4.140792369842529,
+      "probability": 0.9813653826713562,
+      "a": {
+        "index": 1,
+        "axis": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "origin": [
+          0.0,
+          -0.22499999403953552,
+          0.0
+        ]
+      },
+      "b": {
+        "index": 0,
+        "axis": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "origin": [
+          0.0,
+          -0.04719797149300575,
+          0.0
+        ]
+      },
+      "mate_type": "REVOLUTE",
+      "mate_type_confidence": 0.8540171384811401,
+      "mate_type_probabilities": {
+        "BALL": 2.563977068348322e-05,
+        "CYLINDRICAL": 0.02598351612687111,
+        "FASTENED": 0.08962992578744888,
+        "PARALLEL": 0.0008447031141258776,
+        "PIN_SLOT": 0.0009067815262824297,
+        "PLANAR": 0.0036372856702655554,
+        "REVOLUTE": 0.8540171384811401,
+        "SLIDER": 0.02495497465133667
+      }
+    },
+    {
+      "rank": 2,
+      "score": -0.7407388687133789,
+      "probability": 0.007444038987159729,
+      "a": {
+        "index": 1,
+        "axis": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "origin": [
+          0.0,
+          -0.22499999403953552,
+          0.0
+        ]
+      },
+      "b": {
+        "index": 1,
+        "axis": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "origin": [
+          0.0,
+          -0.05000000074505806,
+          0.0
+        ]
+      },
+      "mate_type": "FASTENED",
+      "mate_type_confidence": 0.9410029053688049,
+      "mate_type_probabilities": {
+        "BALL": 4.588515523096248e-08,
+        "CYLINDRICAL": 0.0031994110904634,
+        "FASTENED": 0.9410029053688049,
+        "PARALLEL": 0.002132900059223175,
+        "PIN_SLOT": 0.0005038325907662511,
+        "PLANAR": 0.0012882190058007836,
+        "REVOLUTE": 0.022620799019932747,
+        "SLIDER": 0.02925184555351734
+      }
+    },
+    {
+      "rank": 3,
+      "score": -0.9797277450561523,
+      "probability": 0.005861612036824226,
+      "a": {
+        "index": 1,
+        "axis": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "origin": [
+          0.0,
+          -0.22499999403953552,
+          0.0
+        ]
+      },
+      "b": {
+        "index": 5,
+        "axis": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "origin": [
+          0.0,
+          -0.05000000074505806,
+          0.0
+        ]
+      },
+      "mate_type": "FASTENED",
+      "mate_type_confidence": 0.5627791881561279,
+      "mate_type_probabilities": {
+        "BALL": 0.00027427964960224926,
+        "CYLINDRICAL": 0.047444332391023636,
+        "FASTENED": 0.5627791881561279,
+        "PARALLEL": 0.04967141151428223,
+        "PIN_SLOT": 0.025532769039273262,
+        "PLANAR": 0.029087264090776443,
+        "REVOLUTE": 0.14237017929553986,
+        "SLIDER": 0.14284056425094604
+      }
+    },
+    {
+      "rank": 4,
+      "score": -1.8278789520263672,
+      "probability": 0.002509976737201214,
+      "a": {
+        "index": 0,
+        "axis": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "origin": [
+          -2.552724445219679e-20,
+          -0.22499999403953552,
+          -2.0905186829622835e-05
+        ]
+      },
+      "b": {
+        "index": 0,
+        "axis": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "origin": [
+          0.0,
+          -0.04719797149300575,
+          0.0
+        ]
+      },
+      "mate_type": "SLIDER",
+      "mate_type_confidence": 0.34633347392082214,
+      "mate_type_probabilities": {
+        "BALL": 0.002268511103466153,
+        "CYLINDRICAL": 0.02300453558564186,
+        "FASTENED": 0.10018858313560486,
+        "PARALLEL": 0.08499116450548172,
+        "PIN_SLOT": 0.03191952034831047,
+        "PLANAR": 0.08517438918352127,
+        "REVOLUTE": 0.3261198103427887,
+        "SLIDER": 0.34633347392082214
+      }
+    },
+    {
+      "rank": 5,
+      "score": -2.458308219909668,
+      "probability": 0.0013362192548811436,
+      "a": {
+        "index": 1,
+        "axis": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "origin": [
+          0.0,
+          -0.22499999403953552,
+          0.0
+        ]
+      },
+      "b": {
+        "index": 14,
+        "axis": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "origin": [
+          0.0,
+          -0.048598986119031906,
+          0.0
+        ]
+      },
+      "mate_type": "REVOLUTE",
+      "mate_type_confidence": 0.8114308714866638,
+      "mate_type_probabilities": {
+        "BALL": 7.461888890247792e-05,
+        "CYLINDRICAL": 0.030053572729229927,
+        "FASTENED": 0.11316347867250443,
+        "PARALLEL": 0.0017112529603764415,
+        "PIN_SLOT": 0.001862641191110015,
+        "PLANAR": 0.006932260002940893,
+        "REVOLUTE": 0.8114308714866638,
+        "SLIDER": 0.03477131947875023
+      }
+    }
+  ]
+}
