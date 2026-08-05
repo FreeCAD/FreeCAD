@@ -703,6 +703,7 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
             toolbar->setObjectName(name);
 
             getMainWindow()->addToolBar(toolbar);
+            setToolBarIconSize(toolbar);
 
             if (nameAsToolTip) {
                 auto tooltip = QChar::fromLatin1('[')
