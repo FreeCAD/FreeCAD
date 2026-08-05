@@ -4198,22 +4198,19 @@ TopoShape& TopoShape::makeElementFillet(
     // the radius and leaving a sliver face.  Longitudinal edges can be handled
     // by filleting and sweeping the end profile.  Opposing end edges require a
     // full-radius pipe around the profile at the prism mid-plane.
-    const double radiusTolerance = std::max(
-        Precision::Confusion(),
-        std::max(std::abs(radius1), std::abs(radius2)) * 1.0e-12
-    );
+    const double radiusTolerance
+        = std::max(Precision::Confusion(), std::max(std::abs(radius1), std::abs(radius2)) * 1.0e-12);
     const TopAbs_ShapeEnum sourceShapeType = shape.getShape().ShapeType();
     const bool isSingleSolid = sourceShapeType == TopAbs_SOLID
-        || (sourceShapeType == TopAbs_COMPOUND
-            && shape.countSubShapes(TopAbs_SOLID) == 1);
+        || (sourceShapeType == TopAbs_COMPOUND && shape.countSubShapes(TopAbs_SOLID) == 1);
     if (isSingleSolid && std::abs(radius1 - radius2) <= radiusTolerance) {
         const auto sourceEdges = shape.getSubTopoShapes(TopAbs_EDGE);
         TopTools_IndexedMapOfShape selectedEdgeMap;
         for (const auto& edge : edges) {
             selectedEdgeMap.Add(edge.getShape());
         }
-        const bool allEdgesSelected
-            = selectedEdgeMap.Extent() == static_cast<int>(sourceEdges.size());
+        const bool allEdgesSelected = selectedEdgeMap.Extent()
+            == static_cast<int>(sourceEdges.size());
 
         auto shapeVolume = [](const TopoDS_Shape& value) {
             GProp_GProps properties;
@@ -4232,8 +4229,7 @@ TopoShape& TopoShape::makeElementFillet(
                 const double firstVolume = shapeVolume(first);
                 const double secondVolume = shapeVolume(second);
                 const double commonVolume = shapeVolume(common.Shape());
-                const double tolerance
-                    = std::max({1.0, firstVolume, secondVolume}) * 1.0e-9;
+                const double tolerance = std::max({1.0, firstVolume, secondVolume}) * 1.0e-9;
                 return std::abs(firstVolume - secondVolume) <= tolerance
                     && std::abs(firstVolume - commonVolume) <= tolerance;
             }
@@ -4242,25 +4238,23 @@ TopoShape& TopoShape::makeElementFillet(
             }
         };
 
-        auto containsSolid = [&shapeVolume](
-            const TopoDS_Shape& container,
-            const TopoDS_Shape& contained
-        ) {
-            try {
-                FCBRepAlgoAPI_Common common(container, contained);
-                common.Build();
-                if (!common.IsDone() || common.Shape().IsNull()) {
+        auto containsSolid =
+            [&shapeVolume](const TopoDS_Shape& container, const TopoDS_Shape& contained) {
+                try {
+                    FCBRepAlgoAPI_Common common(container, contained);
+                    common.Build();
+                    if (!common.IsDone() || common.Shape().IsNull()) {
+                        return false;
+                    }
+                    const double containedVolume = shapeVolume(contained);
+                    const double commonVolume = shapeVolume(common.Shape());
+                    const double tolerance = std::max(1.0, containedVolume) * 1.0e-9;
+                    return std::abs(containedVolume - commonVolume) <= tolerance;
+                }
+                catch (const Standard_Failure&) {
                     return false;
                 }
-                const double containedVolume = shapeVolume(contained);
-                const double commonVolume = shapeVolume(common.Shape());
-                const double tolerance = std::max(1.0, containedVolume) * 1.0e-9;
-                return std::abs(containedVolume - commonVolume) <= tolerance;
-            }
-            catch (const Standard_Failure&) {
-                return false;
-            }
-        };
+            };
 
         struct EndCap
         {
@@ -4300,8 +4294,7 @@ TopoShape& TopoShape::makeElementFillet(
         // and wall height.  Replace that verified local cylinder with an exact
         // hemisphere while preserving any solid joined at its opposite end.
         if (endCaps.size() == 1 && mostSelectedEdges == 1 && edges.size() == 1) {
-            const TopoDS_Edge selectedEdge
-                = TopoDS::Edge(endCaps[0].selectedEdges[0].getShape());
+            const TopoDS_Edge selectedEdge = TopoDS::Edge(endCaps[0].selectedEdges[0].getShape());
             BRepAdaptor_Curve selectedCurve(selectedEdge);
             TopTools_IndexedMapOfShape outerWireEdges;
             TopExp::MapShapes(
@@ -4309,15 +4302,13 @@ TopoShape& TopoShape::makeElementFillet(
                 TopAbs_EDGE,
                 outerWireEdges
             );
-            if (selectedCurve.GetType() == GeomAbs_Circle
-                && outerWireEdges.Contains(selectedEdge)) {
+            if (selectedCurve.GetType() == GeomAbs_Circle && outerWireEdges.Contains(selectedEdge)) {
                 const double edgeRadius = selectedCurve.Circle().Radius();
                 for (const auto& wallFace : shape.getSubTopoShapes(TopAbs_FACE)) {
                     const TopoDS_Face face = TopoDS::Face(wallFace.getShape());
                     BRepAdaptor_Surface wallSurface(face);
                     if (wallSurface.GetType() != GeomAbs_Cylinder
-                        || std::abs(wallSurface.Cylinder().Radius() - edgeRadius)
-                            > radiusTolerance) {
+                        || std::abs(wallSurface.Cylinder().Radius() - edgeRadius) > radiusTolerance) {
                         continue;
                     }
                     TopTools_IndexedMapOfShape wallEdges;
@@ -4355,10 +4346,7 @@ TopoShape& TopoShape::makeElementFillet(
                             continue;
                         }
 
-                        const gp_Ax2 cylinderAxis(
-                            selectedCurve.Circle().Location(),
-                            gp_Dir(wallVector)
-                        );
+                        const gp_Ax2 cylinderAxis(selectedCurve.Circle().Location(), gp_Dir(wallVector));
                         const TopoDS_Shape localCylinder
                             = BRepPrimAPI_MakeCylinder(cylinderAxis, edgeRadius, wallLength).Shape();
                         if (!containsSolid(shape.getShape(), localCylinder)) {
@@ -4384,19 +4372,15 @@ TopoShape& TopoShape::makeElementFillet(
                             }
 
                             const double expectedVolume = shapeVolume(shape.getShape())
-                                - shapeVolume(localCylinder)
-                                + shapeVolume(hemisphereBuilder.Shape());
-                            const double volumeTolerance
-                                = std::max(1.0, expectedVolume) * 1.0e-9;
+                                - shapeVolume(localCylinder) + shapeVolume(hemisphereBuilder.Shape());
+                            const double volumeTolerance = std::max(1.0, expectedVolume) * 1.0e-9;
                             const double baseVolume = baseBuilder.Shape().IsNull()
                                 ? 0.0
                                 : shapeVolume(baseBuilder.Shape());
                             if (baseVolume <= volumeTolerance) {
                                 if (BRepCheck_Analyzer(hemisphereBuilder.Shape()).IsValid()
-                                    && std::abs(
-                                           shapeVolume(hemisphereBuilder.Shape())
-                                           - expectedVolume
-                                    ) <= volumeTolerance) {
+                                    && std::abs(shapeVolume(hemisphereBuilder.Shape()) - expectedVolume)
+                                        <= volumeTolerance) {
                                     return makeElementShape(hemisphereBuilder, shape, op);
                                 }
                                 continue;
@@ -4430,10 +4414,7 @@ TopoShape& TopoShape::makeElementFillet(
                 Precision::Angular()
             )) {
             gp_Dir prismDirection = endCaps[0].plane.Axis().Direction();
-            const gp_Vec planeOffset(
-                endCaps[0].plane.Location(),
-                endCaps[1].plane.Location()
-            );
+            const gp_Vec planeOffset(endCaps[0].plane.Location(), endCaps[1].plane.Location());
             double prismLength = planeOffset.Dot(prismDirection);
             if (prismLength < 0.0) {
                 prismDirection.Reverse();
@@ -4466,10 +4447,8 @@ TopoShape& TopoShape::makeElementFillet(
                         );
                         if (firstCurve.GetType() == GeomAbs_Circle
                             && secondCurve.GetType() == GeomAbs_Circle
-                            && std::abs(
-                                   firstCurve.Circle().Radius()
-                                   - secondCurve.Circle().Radius()
-                            ) <= lengthTolerance) {
+                            && std::abs(firstCurve.Circle().Radius() - secondCurve.Circle().Radius())
+                                <= lengthTolerance) {
                             const gp_Pnt firstCenter = firstCurve.Circle().Location();
                             const gp_Pnt secondCenter = secondCurve.Circle().Location();
                             const gp_Vec centerVector(firstCenter, secondCenter);
@@ -4506,13 +4485,12 @@ TopoShape& TopoShape::makeElementFillet(
                                                                   .Shape();
                                     FCBRepAlgoAPI_Fuse envelopeBuilder(core, pipe);
                                     envelopeBuilder.Build();
-                                    const TopoDS_Shape localCylinder
-                                        = BRepPrimAPI_MakeCylinder(
-                                              gp_Ax2(firstCenter, axis),
-                                              edgeRadius,
-                                              prismLength
+                                    const TopoDS_Shape localCylinder = BRepPrimAPI_MakeCylinder(
+                                                                           gp_Ax2(firstCenter, axis),
+                                                                           edgeRadius,
+                                                                           prismLength
                                     )
-                                              .Shape();
+                                                                           .Shape();
                                     if (envelopeBuilder.IsDone()) {
                                         FCBRepAlgoAPI_Cut removalBuilder(
                                             localCylinder,
@@ -4526,13 +4504,12 @@ TopoShape& TopoShape::makeElementFillet(
                                 }
                                 else if (!isOuterEdge) {
                                     const double spineRadius = edgeRadius + radius1;
-                                    const TopoDS_Shape expandedCylinder
-                                        = BRepPrimAPI_MakeCylinder(
-                                              gp_Ax2(firstCenter, axis),
-                                              spineRadius,
-                                              prismLength
-                                        )
-                                              .Shape();
+                                    const TopoDS_Shape expandedCylinder = BRepPrimAPI_MakeCylinder(
+                                                                              gp_Ax2(firstCenter, axis),
+                                                                              spineRadius,
+                                                                              prismLength
+                                    )
+                                                                              .Shape();
                                     const TopoDS_Shape pipe = BRepPrimAPI_MakeTorus(
                                                                   gp_Ax2(middle, axis),
                                                                   spineRadius,
@@ -4583,16 +4560,12 @@ TopoShape& TopoShape::makeElementFillet(
                             int parallelEdges = 0;
                             int normalEdges = 0;
                             for (const auto& direction : rectangleDirections) {
-                                if (direction.IsParallel(
-                                        rectangleDirections[0],
-                                        Precision::Angular()
-                                    )) {
+                                if (direction.IsParallel(rectangleDirections[0], Precision::Angular())) {
                                     ++parallelEdges;
                                 }
-                                else if (direction.IsNormal(
-                                             rectangleDirections[0],
-                                             Precision::Angular()
-                                         )) {
+                                else if (
+                                    direction.IsNormal(rectangleDirections[0], Precision::Angular())
+                                ) {
                                     ++normalEdges;
                                 }
                                 else {
@@ -4600,8 +4573,8 @@ TopoShape& TopoShape::makeElementFillet(
                                     break;
                                 }
                             }
-                            isRectangularPocket
-                                = isRectangularPocket && parallelEdges == 2 && normalEdges == 2;
+                            isRectangularPocket = isRectangularPocket && parallelEdges == 2
+                                && normalEdges == 2;
                         }
                         else {
                             isRectangularPocket = false;
@@ -4780,21 +4753,17 @@ TopoShape& TopoShape::makeElementFillet(
                 filletVertices.Add(capVertex);
             }
 
-            const int expectedFilletVertices
-                = allEdgesSelected ? capVertices.Extent() : static_cast<int>(edges.size());
+            const int expectedFilletVertices = allEdgesSelected ? capVertices.Extent()
+                                                                : static_cast<int>(edges.size());
             if (!matchesSelectedEdges || !haveVector
                 || filletVertices.Extent() != expectedFilletVertices
-                || !capPlane.Axis().Direction().IsParallel(
-                    gp_Dir(prismVector),
-                    Precision::Angular()
-                )) {
+                || !capPlane.Axis().Direction().IsParallel(gp_Dir(prismVector), Precision::Angular())) {
                 continue;
             }
 
             BRepPrimAPI_MakePrism originalPrism(cap.getShape(), prismVector);
             originalPrism.Build();
-            if (!originalPrism.IsDone()
-                || !sameSolid(shape.getShape(), originalPrism.Shape())) {
+            if (!originalPrism.IsDone() || !sameSolid(shape.getShape(), originalPrism.Shape())) {
                 continue;
             }
 
@@ -4802,8 +4771,7 @@ TopoShape& TopoShape::makeElementFillet(
                 try {
                     BRepFilletAPI_MakeFillet2d profileFillet(TopoDS::Face(cap.getShape()));
                     for (int index = 1; index <= filletVertices.Extent(); ++index) {
-                        if (profileFillet
-                                .AddFillet(TopoDS::Vertex(filletVertices(index)), radius)
+                        if (profileFillet.AddFillet(TopoDS::Vertex(filletVertices(index)), radius)
                                 .IsNull()) {
                             return false;
                         }
@@ -4819,9 +4787,7 @@ TopoShape& TopoShape::makeElementFillet(
             BRepFilletAPI_MakeFillet2d profileFillet(TopoDS::Face(cap.getShape()));
             bool profileDone = true;
             for (int index = 1; index <= filletVertices.Extent(); ++index) {
-                if (profileFillet
-                        .AddFillet(TopoDS::Vertex(filletVertices(index)), radius1)
-                        .IsNull()) {
+                if (profileFillet.AddFillet(TopoDS::Vertex(filletVertices(index)), radius1).IsNull()) {
                     profileDone = false;
                     break;
                 }
@@ -4840,8 +4806,8 @@ TopoShape& TopoShape::makeElementFillet(
                 }
                 FC_THROWM(
                     Base::CADKernelError,
-                    "Requested fillet radius " << radius1 << " exceeds the approximately "
-                                               << lower << " maximum for this prismatic profile"
+                    "Requested fillet radius " << radius1 << " exceeds the approximately " << lower
+                                               << " maximum for this prismatic profile"
                 );
             }
 
@@ -4890,13 +4856,7 @@ TopoShape& TopoShape::makeElementFillet(
 
                 try {
                     TopoShape fullyRounded(0, Hasher);
-                    fullyRounded.makeElementFillet(
-                        swept,
-                        endCapEdges,
-                        radius1,
-                        radius2,
-                        op
-                    );
+                    fullyRounded.makeElementFillet(swept, endCapEdges, radius1, radius2, op);
                     if (!BRepCheck_Analyzer(fullyRounded.getShape()).IsValid()) {
                         continue;
                     }

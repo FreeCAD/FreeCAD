@@ -127,8 +127,7 @@ TEST_F(FeatureFilletTest, testExactFaceCollapse)
         const gp_Pnt lastPoint = BRep_Tool::Pnt(last);
         if (std::abs(firstPoint.Z() - 10.0) < Precision::Confusion()
             && std::abs(lastPoint.Z() - 10.0) < Precision::Confusion()
-            && std::abs(std::abs(firstPoint.X() - lastPoint.X()) - 20.0)
-                < Precision::Confusion()) {
+            && std::abs(std::abs(firstPoint.X() - lastPoint.X()) - 20.0) < Precision::Confusion()) {
             topEdgeIndexes.push_back(static_cast<int>(index + 1));
         }
     }

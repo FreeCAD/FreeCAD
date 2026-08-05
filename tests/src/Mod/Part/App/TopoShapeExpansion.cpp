@@ -2446,8 +2446,7 @@ TEST_F(TopoShapeExpansionTest, makeElementFilletConsumesFaceAtExactLimit)
         const gp_Pnt lastPoint = BRep_Tool::Pnt(last);
         if (std::abs(firstPoint.Z() - 10.0) < Precision::Confusion()
             && std::abs(lastPoint.Z() - 10.0) < Precision::Confusion()
-            && std::abs(std::abs(firstPoint.X() - lastPoint.X()) - 20.0)
-                < Precision::Confusion()) {
+            && std::abs(std::abs(firstPoint.X() - lastPoint.X()) - 20.0) < Precision::Confusion()) {
             topEdges.push_back(edge);
         }
     }
@@ -2459,10 +2458,7 @@ TEST_F(TopoShapeExpansionTest, makeElementFilletConsumesFaceAtExactLimit)
     for (const auto& face : belowLimit.getSubTopoShapes(TopAbs_FACE)) {
         gp_Pln plane;
         if (face.findPlane(plane)
-            && plane.Axis().Direction().IsParallel(
-                gp_Dir(0.0, 0.0, 1.0),
-                Precision::Angular()
-            )) {
+            && plane.Axis().Direction().IsParallel(gp_Dir(0.0, 0.0, 1.0), Precision::Angular())) {
             ++belowLimitHorizontalFaces;
         }
     }
@@ -2479,10 +2475,7 @@ TEST_F(TopoShapeExpansionTest, makeElementFilletConsumesFaceAtExactLimit)
     for (const auto& face : result.getSubTopoShapes(TopAbs_FACE)) {
         gp_Pln plane;
         if (face.findPlane(plane)
-            && plane.Axis().Direction().IsParallel(
-                gp_Dir(0.0, 0.0, 1.0),
-                Precision::Angular()
-            )) {
+            && plane.Axis().Direction().IsParallel(gp_Dir(0.0, 0.0, 1.0), Precision::Angular())) {
             ++horizontalFaces;
         }
     }
@@ -2502,8 +2495,7 @@ TEST_F(TopoShapeExpansionTest, makeElementFilletRejectsRadiusBeyondFaceCollapse)
         const gp_Pnt lastPoint = BRep_Tool::Pnt(last);
         if (std::abs(firstPoint.Z() - 10.0) < Precision::Confusion()
             && std::abs(lastPoint.Z() - 10.0) < Precision::Confusion()
-            && std::abs(std::abs(firstPoint.X() - lastPoint.X()) - 20.0)
-                < Precision::Confusion()) {
+            && std::abs(std::abs(firstPoint.X() - lastPoint.X()) - 20.0) < Precision::Confusion()) {
             topEdges.push_back(edge);
         }
     }
@@ -2539,8 +2531,7 @@ TEST_F(TopoShapeExpansionTest, makeElementFilletInnerEdgeOfLProfileAtLimit)
             && std::abs(firstPoint.Y() - 10.0) < Precision::Confusion()
             && std::abs(lastPoint.X() - 10.0) < Precision::Confusion()
             && std::abs(lastPoint.Y() - 10.0) < Precision::Confusion()
-            && std::abs(std::abs(firstPoint.Z() - lastPoint.Z()) - 20.0)
-                < Precision::Confusion()) {
+            && std::abs(std::abs(firstPoint.Z() - lastPoint.Z()) - 20.0) < Precision::Confusion()) {
             innerEdges.push_back(edge);
         }
     }
@@ -2592,14 +2583,12 @@ TEST_F(TopoShapeExpansionTest, makeElementFilletConcaveAndConvexEdgesOfLProfileM
         TopExp::Vertices(TopoDS::Edge(edge.getShape()), first, last);
         const gp_Pnt firstPoint = BRep_Tool::Pnt(first);
         const gp_Pnt lastPoint = BRep_Tool::Pnt(last);
-        const bool atSelectedCorner
-            = (std::abs(firstPoint.Y() - 10.0) < Precision::Confusion()
-               || std::abs(firstPoint.Y() - 20.0) < Precision::Confusion())
+        const bool atSelectedCorner = (std::abs(firstPoint.Y() - 10.0) < Precision::Confusion()
+                                       || std::abs(firstPoint.Y() - 20.0) < Precision::Confusion())
             && std::abs(firstPoint.X() - 10.0) < Precision::Confusion()
             && std::abs(lastPoint.X() - firstPoint.X()) < Precision::Confusion()
             && std::abs(lastPoint.Y() - firstPoint.Y()) < Precision::Confusion()
-            && std::abs(std::abs(firstPoint.Z() - lastPoint.Z()) - 20.0)
-                < Precision::Confusion();
+            && std::abs(std::abs(firstPoint.Z() - lastPoint.Z()) - 20.0) < Precision::Confusion();
         if (atSelectedCorner) {
             selectedEdges.push_back(edge);
         }
@@ -2690,10 +2679,7 @@ TEST_F(TopoShapeExpansionTest, makeElementFilletAllEdgesOfLPrismAtLimit)
 
     // A radius above the half-length of the shortest profile edges remains invalid.
     TopoShape aboveLimit;
-    EXPECT_THROW(
-        aboveLimit.makeElementFillet(lSection, allEdges, 5.001, 5.001),
-        Base::CADKernelError
-    );
+    EXPECT_THROW(aboveLimit.makeElementFillet(lSection, allEdges, 5.001, 5.001), Base::CADKernelError);
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementFilletBothCircularEdgesOfCylinderAtLimit)
@@ -2761,8 +2747,7 @@ TEST_F(TopoShapeExpansionTest, makeElementFilletTopCircularEdgeOfCylinderToHemis
     int cylindricalFaces = 0;
     int planarFaces = 0;
     for (const auto& face : hemisphere.getSubTopoShapes(TopAbs_FACE)) {
-        const GeomAbs_SurfaceType type
-            = BRepAdaptor_Surface(TopoDS::Face(face.getShape())).GetType();
+        const GeomAbs_SurfaceType type = BRepAdaptor_Surface(TopoDS::Face(face.getShape())).GetType();
         if (type == GeomAbs_Sphere) {
             ++sphericalFaces;
         }
@@ -2782,15 +2767,9 @@ TEST_F(TopoShapeExpansionTest, makeElementFilletTopOfCylindricalBossToHemisphere
 {
     // Arrange: a centered diameter-20, height-10 boss on a 20 x 20 x 10 mm box.
     const TopoDS_Shape box = BRepPrimAPI_MakeBox(20.0, 20.0, 10.0).Shape();
-    const TopoDS_Shape cylinder = BRepPrimAPI_MakeCylinder(
-                                      gp_Ax2(
-                                          gp_Pnt(10.0, 10.0, 10.0),
-                                          gp_Dir(0.0, 0.0, 1.0)
-                                      ),
-                                      10.0,
-                                      10.0
-    )
-                                      .Shape();
+    const TopoDS_Shape cylinder
+        = BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(10.0, 10.0, 10.0), gp_Dir(0.0, 0.0, 1.0)), 10.0, 10.0)
+              .Shape();
     BRepAlgoAPI_Fuse bossFuse(box, cylinder);
     TopExp_Explorer fusedSolids(bossFuse.Shape(), TopAbs_SOLID);
     ASSERT_TRUE(fusedSolids.More());
@@ -2818,16 +2797,11 @@ TEST_F(TopoShapeExpansionTest, makeElementFilletTopOfCylindricalBossToHemisphere
 
     // Assert: the box is preserved and supports an exact hemisphere.
     EXPECT_TRUE(BRepCheck_Analyzer(result.getShape()).IsValid());
-    EXPECT_NEAR(
-        getVolume(result.getShape()),
-        4000.0 + 2000.0 * std::acos(-1.0) / 3.0,
-        1e-6
-    );
+    EXPECT_NEAR(getVolume(result.getShape()), 4000.0 + 2000.0 * std::acos(-1.0) / 3.0, 1e-6);
     int sphericalFaces = 0;
     int cylindricalFaces = 0;
     for (const auto& face : result.getSubTopoShapes(TopAbs_FACE)) {
-        const GeomAbs_SurfaceType type
-            = BRepAdaptor_Surface(TopoDS::Face(face.getShape())).GetType();
+        const GeomAbs_SurfaceType type = BRepAdaptor_Surface(TopoDS::Face(face.getShape())).GetType();
         if (type == GeomAbs_Sphere) {
             ++sphericalFaces;
         }
@@ -2843,15 +2817,9 @@ TEST_F(TopoShapeExpansionTest, makeElementFilletTopOfOffsetCylindricalBossToHemi
 {
     // Arrange: place the boss center on the midpoint of the box's lower Y edge.
     const TopoDS_Shape box = BRepPrimAPI_MakeBox(20.0, 20.0, 10.0).Shape();
-    const TopoDS_Shape cylinder = BRepPrimAPI_MakeCylinder(
-                                      gp_Ax2(
-                                          gp_Pnt(10.0, 0.0, 10.0),
-                                          gp_Dir(0.0, 0.0, 1.0)
-                                      ),
-                                      10.0,
-                                      10.0
-    )
-                                      .Shape();
+    const TopoDS_Shape cylinder
+        = BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(10.0, 0.0, 10.0), gp_Dir(0.0, 0.0, 1.0)), 10.0, 10.0)
+              .Shape();
     BRepAlgoAPI_Fuse bossFuse(box, cylinder);
     TopExp_Explorer fusedSolids(bossFuse.Shape(), TopAbs_SOLID);
     ASSERT_TRUE(fusedSolids.More());
@@ -2882,16 +2850,11 @@ TEST_F(TopoShapeExpansionTest, makeElementFilletTopOfOffsetCylindricalBossToHemi
     // Assert: the offset box-plus-hemisphere remains one valid solid.
     EXPECT_TRUE(BRepCheck_Analyzer(result.getShape()).IsValid());
     EXPECT_EQ(result.getSubTopoShapes(TopAbs_SOLID).size(), 1U);
-    EXPECT_NEAR(
-        getVolume(result.getShape()),
-        4000.0 + 2000.0 * std::acos(-1.0) / 3.0,
-        1e-6
-    );
+    EXPECT_NEAR(getVolume(result.getShape()), 4000.0 + 2000.0 * std::acos(-1.0) / 3.0, 1e-6);
     int sphericalFaces = 0;
     int cylindricalFaces = 0;
     for (const auto& face : result.getSubTopoShapes(TopAbs_FACE)) {
-        const GeomAbs_SurfaceType type
-            = BRepAdaptor_Surface(TopoDS::Face(face.getShape())).GetType();
+        const GeomAbs_SurfaceType type = BRepAdaptor_Surface(TopoDS::Face(face.getShape())).GetType();
         if (type == GeomAbs_Sphere) {
             ++sphericalFaces;
         }
@@ -2909,15 +2872,9 @@ TEST_F(TopoShapeExpansionTest, makeElementFilletTopOfCompoundWrappedExtendedBoss
     // matches the one-solid compound produced by the Part Design Pad feature.
     const TopoDS_Shape extendedBase
         = BRepPrimAPI_MakeBox(gp_Pnt(0.0, -10.0, 0.0), 20.0, 30.0, 10.0).Shape();
-    const TopoDS_Shape cylinder = BRepPrimAPI_MakeCylinder(
-                                      gp_Ax2(
-                                          gp_Pnt(10.0, 0.0, 10.0),
-                                          gp_Dir(0.0, 0.0, 1.0)
-                                      ),
-                                      10.0,
-                                      10.0
-    )
-                                      .Shape();
+    const TopoDS_Shape cylinder
+        = BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(10.0, 0.0, 10.0), gp_Dir(0.0, 0.0, 1.0)), 10.0, 10.0)
+              .Shape();
     BRepAlgoAPI_Fuse bossFuse(extendedBase, cylinder);
     TopExp_Explorer fusedSolids(bossFuse.Shape(), TopAbs_SOLID);
     ASSERT_TRUE(fusedSolids.More());
@@ -2953,16 +2910,11 @@ TEST_F(TopoShapeExpansionTest, makeElementFilletTopOfCompoundWrappedExtendedBoss
     // Assert: the extended base and exact hemisphere remain one valid solid.
     EXPECT_TRUE(BRepCheck_Analyzer(result.getShape()).IsValid());
     EXPECT_EQ(result.getSubTopoShapes(TopAbs_SOLID).size(), 1U);
-    EXPECT_NEAR(
-        getVolume(result.getShape()),
-        6000.0 + 2000.0 * std::acos(-1.0) / 3.0,
-        1e-6
-    );
+    EXPECT_NEAR(getVolume(result.getShape()), 6000.0 + 2000.0 * std::acos(-1.0) / 3.0, 1e-6);
     int sphericalFaces = 0;
     int cylindricalFaces = 0;
     for (const auto& face : result.getSubTopoShapes(TopAbs_FACE)) {
-        const GeomAbs_SurfaceType type
-            = BRepAdaptor_Surface(TopoDS::Face(face.getShape())).GetType();
+        const GeomAbs_SurfaceType type = BRepAdaptor_Surface(TopoDS::Face(face.getShape())).GetType();
         if (type == GeomAbs_Sphere) {
             ++sphericalFaces;
         }
@@ -2978,8 +2930,7 @@ TEST_F(TopoShapeExpansionTest, makeElementFilletBothSidesOfSquareThroughPocketAt
 {
     // Arrange: cut a 10 mm square through a 30 x 30 x 10 mm body.
     const TopoDS_Shape outer = BRepPrimAPI_MakeBox(30.0, 30.0, 10.0).Shape();
-    const TopoDS_Shape tool
-        = BRepPrimAPI_MakeBox(gp_Pnt(10.0, 10.0, -1.0), 10.0, 10.0, 12.0).Shape();
+    const TopoDS_Shape tool = BRepPrimAPI_MakeBox(gp_Pnt(10.0, 10.0, -1.0), 10.0, 10.0, 12.0).Shape();
     BRepAlgoAPI_Cut pocketCut(outer, tool);
     TopExp_Explorer pocketSolids(pocketCut.Shape(), TopAbs_SOLID);
     ASSERT_TRUE(pocketSolids.More());
@@ -2997,12 +2948,10 @@ TEST_F(TopoShapeExpansionTest, makeElementFilletBothSidesOfSquareThroughPocketAt
         TopExp::Vertices(occEdge, first, last);
         const gp_Pnt firstPoint = BRep_Tool::Pnt(first);
         const gp_Pnt lastPoint = BRep_Tool::Pnt(last);
-        const bool onEndFace
-            = std::abs(firstPoint.Z() - lastPoint.Z()) < Precision::Confusion()
+        const bool onEndFace = std::abs(firstPoint.Z() - lastPoint.Z()) < Precision::Confusion()
             && (std::abs(firstPoint.Z()) < Precision::Confusion()
                 || std::abs(firstPoint.Z() - 10.0) < Precision::Confusion());
-        const bool onPocketBoundary
-            = firstPoint.X() >= 10.0 - Precision::Confusion()
+        const bool onPocketBoundary = firstPoint.X() >= 10.0 - Precision::Confusion()
             && firstPoint.X() <= 20.0 + Precision::Confusion()
             && firstPoint.Y() >= 10.0 - Precision::Confusion()
             && firstPoint.Y() <= 20.0 + Precision::Confusion()
@@ -3026,17 +2975,12 @@ TEST_F(TopoShapeExpansionTest, makeElementFilletBothSidesOfSquareThroughPocketAt
 
     // Assert: top and bottom fillets meet halfway through every pocket wall.
     EXPECT_TRUE(BRepCheck_Analyzer(result.getShape()).IsValid());
-    EXPECT_NEAR(
-        getVolume(result.getShape()),
-        13000.0 / 3.0 + 1000.0 * std::acos(-1.0),
-        1e-6
-    );
+    EXPECT_NEAR(getVolume(result.getShape()), 13000.0 / 3.0 + 1000.0 * std::acos(-1.0), 1e-6);
     int verticalPlanarFaces = 0;
     for (const auto& face : result.getSubTopoShapes(TopAbs_FACE)) {
         gp_Pln plane;
         if (face.findPlane(plane)
-            && std::abs(plane.Axis().Direction().Dot(gp_Dir(0.0, 0.0, 1.0)))
-                < Precision::Angular()) {
+            && std::abs(plane.Axis().Direction().Dot(gp_Dir(0.0, 0.0, 1.0))) < Precision::Angular()) {
             ++verticalPlanarFaces;
         }
     }
@@ -3047,12 +2991,9 @@ TEST_F(TopoShapeExpansionTest, makeElementFilletBothCircularEdgesOfThroughPocket
 {
     // Arrange: cut a radius-5 cylinder through a 30 x 30 x 10 mm body.
     const TopoDS_Shape outer = BRepPrimAPI_MakeBox(30.0, 30.0, 10.0).Shape();
-    const TopoDS_Shape tool = BRepPrimAPI_MakeCylinder(
-                                  gp_Ax2(gp_Pnt(15.0, 15.0, -1.0), gp_Dir(0.0, 0.0, 1.0)),
-                                  5.0,
-                                  12.0
-    )
-                                  .Shape();
+    const TopoDS_Shape tool
+        = BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(15.0, 15.0, -1.0), gp_Dir(0.0, 0.0, 1.0)), 5.0, 12.0)
+              .Shape();
     BRepAlgoAPI_Cut pocketCut(outer, tool);
     TopExp_Explorer pocketSolids(pocketCut.Shape(), TopAbs_SOLID);
     ASSERT_TRUE(pocketSolids.More());
@@ -3079,8 +3020,7 @@ TEST_F(TopoShapeExpansionTest, makeElementFilletBothCircularEdgesOfThroughPocket
     EXPECT_TRUE(BRepCheck_Analyzer(result.getShape()).IsValid());
     EXPECT_NEAR(
         getVolume(result.getShape()),
-        9000.0 - 3500.0 * std::acos(-1.0) / 3.0
-            + 250.0 * std::pow(std::acos(-1.0), 2),
+        9000.0 - 3500.0 * std::acos(-1.0) / 3.0 + 250.0 * std::pow(std::acos(-1.0), 2),
         1e-6
     );
     int cylindricalFaces = 0;

@@ -185,12 +185,8 @@ void TaskFilletParameters::onLengthChanged(double len)
             QSignalBlocker blocker(ui->filletRadius);
             std::optional<double> maximumRadius;
             if (suggestedMaximum > lastValidRadius && suggestedMaximum < len) {
-                const double tolerance = std::max(
-                    Precision::Confusion(),
-                    std::abs(len) * 1.0e-9
-                );
-                const double rounded
-                    = std::round(suggestedMaximum / tolerance) * tolerance;
+                const double tolerance = std::max(Precision::Confusion(), std::abs(len) * 1.0e-9);
+                const double rounded = std::round(suggestedMaximum / tolerance) * tolerance;
                 if (rounded <= len && isRadiusAllowed(rounded)) {
                     maximumRadius = rounded;
                 }
@@ -236,8 +232,7 @@ void TaskFilletParameters::onLengthChanged(double len)
     }
 }
 
-std::optional<double>
-TaskFilletParameters::findMaximumAllowedRadius(double requestedRadius) const
+std::optional<double> TaskFilletParameters::findMaximumAllowedRadius(double requestedRadius) const
 {
     // Only infer an upper bound when the user increased a currently valid
     // radius. Other failures need not be monotonic and retain the previous
@@ -248,10 +243,7 @@ TaskFilletParameters::findMaximumAllowedRadius(double requestedRadius) const
 
     double lower = lastValidRadius;
     double upper = requestedRadius;
-    const double tolerance = std::max(
-        Precision::Confusion(),
-        std::abs(requestedRadius) * 1.0e-9
-    );
+    const double tolerance = std::max(Precision::Confusion(), std::abs(requestedRadius) * 1.0e-9);
     for (int iteration = 0; iteration < 50 && upper - lower > tolerance; ++iteration) {
         const double trial = (lower + upper) * 0.5;
         if (isRadiusAllowed(trial)) {
@@ -290,9 +282,8 @@ bool TaskFilletParameters::isRadiusAllowed(double radius, double* maximumRadius)
         }
         baseShape.setTransform(Base::Matrix4D());
 
-        const auto edges = fillet->UseAllEdges.getValue()
-            ? baseShape.getSubTopoShapes(TopAbs_EDGE)
-            : fillet->getContinuousEdges(baseShape);
+        const auto edges = fillet->UseAllEdges.getValue() ? baseShape.getSubTopoShapes(TopAbs_EDGE)
+                                                          : fillet->getContinuousEdges(baseShape);
         if (edges.empty()) {
             return true;
         }

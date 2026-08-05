@@ -119,8 +119,10 @@ App::DocumentObjectExecReturn* Fillet::execute()
                 commonRadius2 = radius2;
                 haveCommonRadius = true;
             }
-            else if (std::abs(commonRadius1 - radius1) > Precision::Confusion()
-                     || std::abs(commonRadius2 - radius2) > Precision::Confusion()) {
+            else if (
+                std::abs(commonRadius1 - radius1) > Precision::Confusion()
+                || std::abs(commonRadius2 - radius2) > Precision::Confusion()
+            ) {
                 uniformRadii = false;
             }
             mkFillet.Add(radius1, radius2, TopoDS::Edge(edge));
