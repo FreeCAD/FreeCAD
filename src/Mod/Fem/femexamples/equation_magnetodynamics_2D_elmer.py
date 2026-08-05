@@ -125,7 +125,7 @@ def setup(doc=None, solvertype="elmer"):
         solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
         solver_obj.CoordinateSystem = "Axi Symmetric"
         equation_magnetodynamic2D = ObjectsFem.makeEquationMagnetodynamic2D(doc, solver_obj)
-        equation_magnetodynamic2D.AngularFrequency = "50 kHz"
+        equation_magnetodynamic2D.Frequency = "50 kHz"
         equation_magnetodynamic2D.CalculateCurrentDensity = True
         equation_magnetodynamic2D.CalculateElectricField = True
         equation_magnetodynamic2D.CalculateJouleHeating = True
