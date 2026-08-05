@@ -105,7 +105,7 @@ static CArea copy_area(const CArea& area)
 {
     CArea copy;
     copy.m_curves = area.m_curves;
-    copy.m_arc_fitting_map = area.m_arc_fitting_map;
+    copy.m_metadata = area.m_metadata;
     return copy;
 }
 
