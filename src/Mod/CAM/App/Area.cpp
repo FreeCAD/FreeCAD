@@ -710,7 +710,6 @@ std::shared_ptr<Area> Area::getClearedArea(
     const double buffer = params.Accuracy * 3;
     params.Accuracy = params.Accuracy * .7 / 4;  // 2.3 already encoded in gcode; 4 * .7/4 = 3 total
     params.SubjectFill = Clipper2Lib::FillRule::NonZero;
-    params.ClipFill = Clipper2Lib::FillRule::NonZero;
 
     CAreaConfig conf(params);
 
@@ -773,12 +772,7 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
 
     // remaining = clearable - prevCleared
     CArea remaining(clearable);
-    remaining.Clip(
-        Clipper2Lib::ClipType::Difference,
-        *(clearedAreasInPlane.myArea),
-        myParams.SubjectFill,
-        myParams.ClipFill
-    );
+    remaining.Clip(Clipper2Lib::ClipType::Difference, *(clearedAreasInPlane.myArea), myParams.SubjectFill);
 
     // rest = intersect(clearable, offset(remaining, dTool))
     // add buffer to dTool to compensate for oversizing in getClearedArea
@@ -790,7 +784,7 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
         params.MiterLimit,
         roundPrecision
     );
-    restCArea.Clip(Clipper2Lib::ClipType::Intersection, clearable, myParams.SubjectFill, myParams.ClipFill);
+    restCArea.Clip(Clipper2Lib::ClipType::Intersection, clearable, myParams.SubjectFill);
 
     if (restCArea.m_curves.size() == 0) {
         return {};
@@ -2117,7 +2111,7 @@ void Area::build()
                         myArea->m_curves.splice(myArea->m_curves.end(), areaClip.m_curves);
                     }
                     else {
-                        myArea->Clip(toClipperOp(op), areaClip, myParams.SubjectFill, myParams.ClipFill);
+                        myArea->Clip(toClipperOp(op), areaClip, myParams.SubjectFill);
                         areaClip.m_curves.clear();
                     }
                 }
@@ -2141,7 +2135,7 @@ void Area::build()
                 myArea->m_curves.splice(myArea->m_curves.end(), areaClip.m_curves);
             }
             else {
-                myArea->Clip(toClipperOp(op), areaClip, myParams.SubjectFill, myParams.ClipFill);
+                myArea->Clip(toClipperOp(op), areaClip, myParams.SubjectFill);
             }
         }
         myArea->m_curves.splice(myArea->m_curves.end(), myAreaOpen->m_curves);
@@ -2653,7 +2647,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG, AREA_PARAMS_POCK
                 myParams.MiterLimit,
                 myParams.RoundPrecision
             );
-            out.Clip(Clipper2Lib::ClipType::Intersection, area, myParams.SubjectFill, myParams.ClipFill);
+            out.Clip(Clipper2Lib::ClipType::Intersection, area, myParams.SubjectFill);
             done = true;
             break;
         }

@@ -98,7 +98,11 @@ class CArea
 {
 public:
     std::list<CCurve> m_curves;
-    ConversionMetadata m_metadata;
+
+    // Either empty or one entry for each edge in each curve
+    // Meant to store values 1/0/-1 set in NaiveOffset, recording how each offset edge was produced
+    std::list<std::list<int>> m_edgeTags;
+
     static double m_accuracy;
     static double m_clipper_clean_distance;
     static bool m_fit_arcs;
@@ -177,51 +181,39 @@ public:
     CAREA_PARAM_DECLARE(double, accuracy)
     CAREA_PARAM_DECLARE(double, clipper_scale)
 
-    void PopulateClipper(Clipper2Lib::Clipper64& c, bool as_clip);
+    void PopulateClipper(Clipper2Lib::Clipper64& c, bool as_clip, ConversionMetadata& metadata) const;
 
     // Following functions is add to operate on possible open curves
     void Clip(
         Clipper2Lib::ClipType op,
         const CArea& clip_area,
-        Clipper2Lib::FillRule subjFillType = Clipper2Lib::FillRule::EvenOdd,
-        Clipper2Lib::FillRule clipFillType = Clipper2Lib::FillRule::EvenOdd
+        Clipper2Lib::FillRule subjFillType = Clipper2Lib::FillRule::EvenOdd
     );
 
     // Reorders open paths so they match the original input order and direction.
     // Must be run after Clipper operations, before converting back to arcs.
-    void ReorderOpenPaths(Clipper2Lib::Paths64& paths);
+    void ReorderOpenPaths(Clipper2Lib::Paths64& paths, const ConversionMetadata& metadata);
 
 private:
-    // Z-callback for Clipper intersection handling
-    void ZCallback(
-        const Clipper2Lib::Point64& e1bot,
-        const Clipper2Lib::Point64& e1top,
-        const Clipper2Lib::Point64& e2bot,
-        const Clipper2Lib::Point64& e2top,
-        Clipper2Lib::Point64& pt
-    );
-
-    // Helper to create bound Z callback
-    Clipper2Lib::ZCallback64 MakeZCallback();
-
     // Returns (minZ, maxZ) of the vertices of the parent edge
-    std::pair<int64_t, int64_t> getParentEdge(
+    static std::pair<int64_t, int64_t> getParentEdge(
         const Clipper2Lib::Point64& p1,
-        const Clipper2Lib::Point64& p2
+        const Clipper2Lib::Point64& p2,
+        const ConversionMetadata& metadata
     );
 
-    std::list<std::list<int>> NaiveOffset(double offset, double arcTolerance = 0);
+    void NaiveOffset(double offset, double arcTolerance = 0);
 
-    Clipper2Lib::Path64 MakePoly(const CCurve& curve, std::list<int> edge_orientations = {});
-
-    void _Union(
-        const std::list<std::list<int>>& orientations,
-        std::optional<std::reference_wrapper<CArea>> cNeg = std::nullopt
-    );
+    Clipper2Lib::Path64 MakePoly(
+        const CCurve& curve,
+        ConversionMetadata& metadata,
+        std::list<int> edge_orientations = {}
+    ) const;
 
     void SetFromResult(
         Clipper2Lib::Paths64& paths,
         bool isClosed,
+        ConversionMetadata& metadata,
         std::optional<std::reference_wrapper<CArea>> cNeg = std::nullopt
     );
 
@@ -230,9 +222,9 @@ private:
         Clipper2Lib::ClipType op,
         const CArea& clip_area,
         Clipper2Lib::FillRule subjFillType,
-        Clipper2Lib::FillRule clipFillType,
-        bool reverseOpenPathContents,
-        bool reverseOpenPathOrder
+        bool reverseOpenPathContents = false,
+        bool reverseOpenPathOrder = false,
+        std::optional<std::reference_wrapper<CArea>> cNeg = std::nullopt
     );
 };
 

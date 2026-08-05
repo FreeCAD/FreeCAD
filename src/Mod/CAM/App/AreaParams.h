@@ -46,15 +46,7 @@
       Clipper2Lib::FillRule::NonZero, \
       "Clipper2 subject fill rule. \nSee " \
       "http://www.angusj.com/clipper2/Docs/Units/Clipper/Types/FillRule.htm", \
-      AREA_CLIPPER_FILL_TYPE))( \
-        (enum2, \
-         clip_fill, \
-         ClipFill, \
-         Clipper2Lib::FillRule::NonZero, \
-         "Clipper2 clip fill rule. \nSee " \
-         "http://www.angusj.com/clipper2/Docs/Units/Clipper/Types/FillRule.htm", \
-         AREA_CLIPPER_FILL_TYPE) \
-    )
+      AREA_CLIPPER_FILL_TYPE))
 
 /** Deflection parameter */
 #define AREA_PARAMS_DEFLECTION \
