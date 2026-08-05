@@ -85,6 +85,7 @@ input:     exp                                  { ScanResult = std::unique_ptr<E
      ;
 
 unit_num: num unit_exp %prec NUM_AND_UNIT       { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT, $2);  }
+        | '(' exp ')' unit_exp %prec NUM_AND_UNIT { $$ = new OperatorExpression(DocumentObject, $2, OperatorExpression::UNIT, $4); }
         | num us_building_unit num us_building_unit %prec NUM_AND_UNIT   { $$ = new OperatorExpression(DocumentObject, new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT, $2), OperatorExpression::ADD, new OperatorExpression(DocumentObject, $3, OperatorExpression::UNIT, $4));}
         ;
 

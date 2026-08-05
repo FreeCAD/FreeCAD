@@ -161,7 +161,6 @@ public:
     void stepBy(int steps) override;
     void clear() override;
     QValidator::State validate(QString& input, int& pos) const override;
-    void fixup(QString& str) const override;
 
     /// This is a helper function to determine the size this widget requires to fully display the text
     QSize sizeForText(const QString&) const;
@@ -191,6 +190,7 @@ protected:
     void showEvent(QShowEvent* event) override;
     void hideEvent(QHideEvent* event) override;
     void closeEvent(QCloseEvent* event) override;
+    void changeEvent(QEvent* event) override;
     void focusInEvent(QFocusEvent* event) override;
     void focusOutEvent(QFocusEvent* event) override;
     void keyPressEvent(QKeyEvent* event) override;
@@ -232,6 +232,7 @@ Q_SIGNALS:
      *  focus out.
      */
     void returnPressed();
+    void inputRejected(const QString& message, int errorStart, int errorLength);
 
 private:
     QScopedPointer<QuantitySpinBoxPrivate> d_ptr;

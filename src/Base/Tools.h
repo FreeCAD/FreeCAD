@@ -417,11 +417,6 @@ BaseExport std::string joinList(const std::vector<std::string>& vec, const std::
  */
 BaseExport std::string currentDateTimeString();
 
-BaseExport bool isCLocaleName(std::string_view localeName);
-BaseExport void setOperatingSystemNumericLocale(std::string_view localeName);
-BaseExport std::string getOperatingSystemNumericLocale();
-BaseExport void setIcuDefaultLocale(std::string_view icuLocaleId);
-
 BaseExport std::vector<std::string> splitSubName(const std::string& subname);
 
 }  // namespace Tools

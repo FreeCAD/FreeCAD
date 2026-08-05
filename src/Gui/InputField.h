@@ -161,8 +161,6 @@ public:
     /// set the number portion selected (use after setValue())
     void selectNumber();
     /// input validation
-    void fixup(QString& input) const;
-    /// input validation
     QValidator::State validate(QString& input, int& pos) const;
 
     /** @name history and default management */
@@ -210,6 +208,7 @@ protected Q_SLOTS:
 
 protected:
     void showEvent(QShowEvent* event) override;
+    void changeEvent(QEvent* event) override;
     void focusInEvent(QFocusEvent* event) override;
     void focusOutEvent(QFocusEvent* event) override;
     void keyPressEvent(QKeyEvent* event) override;
@@ -222,6 +221,7 @@ private:
     QPixmap getValidationIcon(const char* name, const QSize& size) const;
     void updateText(const Base::Quantity&);
     void notifyValueChanged();
+    void commitInput();
 
 private:
     QByteArray m_sPrefGrp;
