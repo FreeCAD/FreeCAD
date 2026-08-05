@@ -6,6 +6,7 @@ import unittest
 
 import FreeCAD as App
 import MbDFEM  # noqa: F401
+import Part
 
 
 class MbDFEMAssemblyTest(unittest.TestCase):
@@ -164,6 +165,10 @@ class MbDFEMAssemblyTest(unittest.TestCase):
                 self.assertEqual(joint.pitchRadius, 12.0)
                 self.assertEqual(joint.Label, "Gear MbDJoint")
                 self.assertEqual(gravity.TypeId, "MbDFEM::MbDGravity")
+                gravity_objects = [
+                    obj for obj in reopened.Objects if obj.TypeId == "MbDFEM::MbDGravity"
+                ]
+                self.assertEqual(gravity_objects, [gravity])
                 self.assertEqual(simulation_parameters.TypeId, "MbDFEM::MbDSimulationParameters")
                 self.assertEqual(animation_parameters.TypeId, "MbDFEM::MbDAnimationParameters")
                 self.assertIs(assembly.getGravity(), gravity)
@@ -362,21 +367,32 @@ class MbDFEMAssemblyTest(unittest.TestCase):
         try:
             assembly = document.addObject("MbDFEM::MbDAssembly", "Assembly")
             part = document.addObject("MbDFEM::MbDPart", "Part")
+            fixed_part = document.addObject("MbDFEM::MbDPart", "FixedPart")
             marker = document.addObject("MbDFEM::MbDMarker", "Marker")
             gravity = assembly.ensureGravity()
             simulation_parameters = assembly.ensureSimulationParameters()
             animation_parameters = assembly.ensureAnimationParameters()
 
+            fixed_part.Shape = Part.makeBox(1, 1, 1)
             assembly.addPart(part)
+            assembly.addFixedPart(fixed_part)
             part.addMarker(marker)
 
             part_path = f"{assembly.getPartsFolder().Name}.{part.Name}."
+            fixed_part_path = f"{fixed_part.Name}."
+            fixed_part_edge_path = f"{fixed_part.Name}.Edge1"
+            fixed_part_face_path = f"{fixed_part.Name}.Face1"
             marker_path = f"{part.getMarkersFolder().Name}.{marker.Name}."
             gravity_path = f"{gravity.Name}."
             simulation_path = f"{simulation_parameters.Name}."
             animation_path = f"{animation_parameters.Name}."
 
             self.assertIs(assembly.getSubObject(part_path, retType=1), part)
+            self.assertIs(assembly.getSubObject(fixed_part_path, retType=1), fixed_part)
+            self.assertIs(assembly.getSubObject(fixed_part_edge_path, retType=1), fixed_part)
+            self.assertIsNotNone(assembly.getSubObject(fixed_part_edge_path))
+            self.assertIs(assembly.getSubObject(fixed_part_face_path, retType=1), fixed_part)
+            self.assertIsNotNone(assembly.getSubObject(fixed_part_face_path))
             self.assertIs(part.getSubObject(marker_path, retType=1), marker)
             self.assertIs(assembly.getSubObject(gravity_path, retType=1), gravity)
             self.assertIs(assembly.getSubObject(simulation_path, retType=1), simulation_parameters)

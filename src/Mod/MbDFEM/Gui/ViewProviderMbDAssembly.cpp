@@ -79,18 +79,11 @@ void ViewProviderMbDAssembly::attach(App::DocumentObject* object)
 {
     Gui::ViewProviderPart::attach(object);
     setOriginInTreeVisible(object, true);
-    if (auto* assembly = freecad_cast<MbDFEM::MbDAssembly*>(object);
-        assembly && !assembly->isRestoring()) {
-        assembly->ensureGravity();
-    }
 }
 
 void ViewProviderMbDAssembly::finishRestoring()
 {
     Gui::ViewProviderPart::finishRestoring();
-    if (auto* assembly = getObject<MbDFEM::MbDAssembly>()) {
-        assembly->ensureGravity();
-    }
 }
 
 std::vector<App::DocumentObject*> ViewProviderMbDAssembly::claimChildren() const

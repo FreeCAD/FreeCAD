@@ -141,6 +141,24 @@ App::DocumentObject* findDirectChildByInternalName(const char* element,
     return nullptr;
 }
 
+App::DocumentObject* matchingDirectChild(const char* subname,
+                                         const char*& rest,
+                                         const MbDFEM::MbDAssembly* assembly)
+{
+    rest = nullptr;
+    const char* dot = subname ? std::strchr(subname, '.') : nullptr;
+    if (!dot) {
+        return findDirectChildByInternalName(subname, assembly);
+    }
+
+    const std::string segment(subname, dot);
+    auto* child = findDirectChildByInternalName(segment.c_str(), assembly);
+    if (child) {
+        rest = dot + 1;
+    }
+    return child;
+}
+
 MbDFEM::MbDGravity* findExistingGravity(MbDFEM::MbDAssembly* assembly)
 {
     auto* document = assembly ? assembly->getDocument() : nullptr;
@@ -393,6 +411,14 @@ App::DocumentObject* MbDFEM::MbDAssembly::getSubObject(const char* subname,
         return parameter;
     }
 
+    auto* child = matchingDirectChild(subname, rest, this);
+    if (child) {
+        if (!rest || *rest == '\0') {
+            return child;
+        }
+        return child->getSubObject(rest, pyObj, mat, transform, depth + 1);
+    }
+
     return App::Part::getSubObject(subname, pyObj, mat, transform, depth);
 }
 
@@ -599,16 +625,15 @@ App::DocumentObjectGroup* MbDFEM::MbDAssembly::ensureActionsFolder()
 
 MbDFEM::MbDGravity* MbDFEM::MbDAssembly::ensureGravity()
 {
-    if (auto* existingGravity = findExistingGravity(this)) {
-        if (getGravity() != existingGravity) {
-            _gravity.setValue(existingGravity);
-        }
-        return existingGravity;
-    }
-
     if (auto* gravityObject = getGravity()) {
         return gravityObject;
     }
+
+    if (auto* existingGravity = findExistingGravity(this)) {
+        _gravity.setValue(existingGravity);
+        return existingGravity;
+    }
+
     if (!getDocument()) {
         return nullptr;
     }
