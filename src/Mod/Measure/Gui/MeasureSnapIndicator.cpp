@@ -1,0 +1,257 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+/***************************************************************************
+ *   Copyright (c) 2026 Krrish777 <777krrish[at]gmail.com>                 *
+ *                                                                         *
+ *   This file is part of FreeCAD.                                         *
+ *                                                                         *
+ *   FreeCAD is free software: you can redistribute it and/or modify it    *
+ *   under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the  *
+ *   License, or (at your option) any later version.                       *
+ *                                                                         *
+ *   FreeCAD is distributed in the hope that it will be useful, but        *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+ *   Lesser General Public License for more details.                       *
+ *                                                                         *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with FreeCAD. If not, see                               *
+ *   <https://www.gnu.org/licenses/>.                                      *
+ *                                                                         *
+ **************************************************************************/
+
+
+#include <cmath>
+#include <list>
+
+#include <Inventor/SbVec3f.h>
+#include <Inventor/nodes/SoAnnotation.h>
+#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoMarkerSet.h>
+#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSwitch.h>
+
+#include <Gui/Application.h>
+#include <Gui/Document.h>
+#include <Gui/Inventor/MarkerBitmaps.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
+#include <Gui/ViewParams.h>
+
+#include "MeasureSnapIndicator.h"
+
+using namespace MeasureGui;
+
+namespace
+{
+// pSwitch children; one branch is selected at a time, never both.
+constexpr int MarkerChild = 0;
+constexpr int AxisChild = 1;
+constexpr unsigned short AxisLinePattern = 0xF0F0;
+
+// Copy OCCT points into a Coin coordinate node.
+void writePoints(SoCoordinate3* coords, const std::vector<gp_Pnt>& points)
+{
+    const auto count = static_cast<int>(points.size());
+    coords->point.setNum(count);
+    SbVec3f* verts = coords->point.startEditing();
+    for (int i = 0; i < count; ++i) {
+        const gp_Pnt& p = points[i];
+        verts[i].setValue(
+            static_cast<float>(p.X()),
+            static_cast<float>(p.Y()),
+            static_cast<float>(p.Z())
+        );
+    }
+    coords->point.finishEditing();
+}
+
+// Distinct built-in marker per snap type; nullptr for types this overlay does not draw.
+const char* markerName(Measure::MeasureSnapMode type)
+{
+    switch (type) {
+        case Measure::MeasureSnapMode::Vertex:
+            return "SQUARE_FILLED";
+        case Measure::MeasureSnapMode::Center:
+            return "CIRCLE_LINE";
+        case Measure::MeasureSnapMode::Midpoint:
+            return "DIAMOND_FILLED";
+        default:
+            return nullptr;
+    }
+}
+
+// Unregistered sizes silently fall back to a filled circle, so snap to the nearest registered one.
+int nearestSupportedSize(const char* name, int desired)
+{
+    const std::list<int> sizes = Gui::Inventor::MarkerBitmaps::getSupportedSizes(name);
+    if (sizes.empty()) {
+        return desired;
+    }
+    int best = sizes.front();
+    for (int size : sizes) {
+        if (std::abs(size - desired) < std::abs(best - desired)) {
+            best = size;
+        }
+    }
+    return best;
+}
+
+// Scene-graph root of the active 3D view, or nullptr when there is none.
+SoGroup* activeSceneGraph()
+{
+    auto* guiDoc = Gui::Application::Instance->activeDocument();
+    if (!guiDoc) {
+        return nullptr;
+    }
+    auto* view = dynamic_cast<Gui::View3DInventor*>(guiDoc->getActiveView());
+    if (!view) {
+        return nullptr;
+    }
+    return static_cast<SoGroup*>(view->getViewer()->getSceneGraph());
+}
+}  // namespace
+
+MeasureSnapIndicator::MeasureSnapIndicator()
+{
+    pRoot = new SoAnnotation;
+    pRoot->ref();
+
+    // The overlay sits exactly on the hovered geometry; keep it out of ray picks
+    // so it cannot steal the preselection it is illustrating.
+    pPickStyle = new SoPickStyle;
+    pPickStyle->ref();
+    pPickStyle->style = SoPickStyle::UNPICKABLE;
+
+    pSwitch = new SoSwitch;
+    pSwitch->ref();
+    pSwitch->whichChild = SO_SWITCH_NONE;
+
+    pSep = new SoSeparator;
+    pSep->ref();
+
+    pColor = new SoBaseColor;
+    pColor->ref();
+    pColor->rgb.setValue(1.0F, 1.0F, 0.0F);
+
+    pCoords = new SoCoordinate3;
+    pCoords->ref();
+
+    pMarkerSet = new SoMarkerSet;
+    pMarkerSet->ref();
+
+    pSep->addChild(pColor);
+    pSep->addChild(pCoords);
+    pSep->addChild(pMarkerSet);
+
+    pAxisSep = new SoSeparator;
+    pAxisSep->ref();
+
+    pAxisColor = new SoBaseColor;
+    pAxisColor->ref();
+    pAxisColor->rgb.setValue(1.0F, 1.0F, 0.0F);
+
+    pAxisStyle = new SoDrawStyle;
+    pAxisStyle->ref();
+    pAxisStyle->lineWidth = 2.0F;
+    pAxisStyle->linePattern = AxisLinePattern;
+
+    pAxisCoords = new SoCoordinate3;
+    pAxisCoords->ref();
+
+    pAxisLine = new SoLineSet;
+    pAxisLine->ref();
+    pAxisLine->numVertices.setValue(2);
+
+    pAxisSep->addChild(pAxisColor);
+    pAxisSep->addChild(pAxisStyle);
+    pAxisSep->addChild(pAxisCoords);
+    pAxisSep->addChild(pAxisLine);
+
+    pSwitch->addChild(pSep);
+    pSwitch->addChild(pAxisSep);
+    pRoot->addChild(pPickStyle);
+    pRoot->addChild(pSwitch);
+}
+
+MeasureSnapIndicator::~MeasureSnapIndicator()
+{
+    detach();
+    pAxisLine->unref();
+    pAxisCoords->unref();
+    pAxisStyle->unref();
+    pAxisColor->unref();
+    pAxisSep->unref();
+    pMarkerSet->unref();
+    pCoords->unref();
+    pColor->unref();
+    pSep->unref();
+    pSwitch->unref();
+    pPickStyle->unref();
+    pRoot->unref();
+}
+
+bool MeasureSnapIndicator::attach()
+{
+    SoGroup* sg = activeSceneGraph();
+    if (!sg) {
+        return attached;
+    }
+    if (attached && pSceneGraph == sg) {
+        return true;
+    }
+    detach();
+    sg->addChild(pRoot);
+    // The ref keeps the group valid even if its view is destroyed while we are
+    // attached; there is no per-view deletion signal to learn about that.
+    sg->ref();
+    pSceneGraph = sg;
+    attached = true;
+    return true;
+}
+
+void MeasureSnapIndicator::detach()
+{
+    if (attached && pSceneGraph) {
+        pSceneGraph->removeChild(pRoot);
+        pSceneGraph->unref();
+    }
+    pSceneGraph = nullptr;
+    attached = false;
+}
+
+void MeasureSnapIndicator::show(const std::vector<gp_Pnt>& points, Measure::MeasureSnapMode type)
+{
+    if (type == Measure::MeasureSnapMode::Axis) {
+        if (points.size() != 2 || !attach()) {
+            hide();
+            return;
+        }
+        writePoints(pAxisCoords, points);
+        pSwitch->whichChild = AxisChild;
+        return;
+    }
+
+    const char* name = markerName(type);
+    if (points.empty() || !name || !attach()) {
+        hide();
+        return;
+    }
+
+    writePoints(pCoords, points);
+    const int desiredSize = static_cast<int>(Gui::ViewParams::instance()->getMarkerSize());
+    const int size = nearestSupportedSize(name, desiredSize);
+    pMarkerSet->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex(name, size);
+    pMarkerSet->numPoints = static_cast<int>(points.size());
+    pSwitch->whichChild = MarkerChild;
+}
+
+void MeasureSnapIndicator::hide()
+{
+    pSwitch->whichChild = SO_SWITCH_NONE;
+}
