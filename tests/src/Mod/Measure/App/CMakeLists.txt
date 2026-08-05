@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 add_executable(Measure_tests_run
+        MeasureElementType.cpp
         MeasureDistance.cpp
         MeasurePosition.cpp
 )
