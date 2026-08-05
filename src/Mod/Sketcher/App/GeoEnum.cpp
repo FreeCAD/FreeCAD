@@ -43,16 +43,16 @@ bool GeoElementId::operator!=(const GeoElementId& obj) const
 std::string GeoElementId::pointPosToString(PointPos Pos)
 {
     switch (Pos) {
-    case PointPos::none:
-        return "none";
-    case PointPos::start:
-        return "start";
-    case PointPos::end:
-        return "end";
-    case PointPos::mid:
-        return "mid";
-    default:
-        return "unknown";
+        case PointPos::none:
+            return "none";
+        case PointPos::start:
+            return "start";
+        case PointPos::end:
+            return "end";
+        case PointPos::mid:
+            return "mid";
+        default:
+            return "unknown";
     }
 }
 
