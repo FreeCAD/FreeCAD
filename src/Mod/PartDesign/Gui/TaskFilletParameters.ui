@@ -65,7 +65,7 @@
       <string notr="true">color: #c42b1c;</string>
      </property>
      <property name="text">
-      <string>This radius is not permitted by the selected geometry. The previous valid value has been restored.</string>
+      <string>This radius is not permitted by the selected geometry.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

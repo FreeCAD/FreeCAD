@@ -25,6 +25,8 @@
 
 #pragma once
 
+#include <optional>
+
 #include <Gui/Inventor/Draggers/Gizmo.h>
 
 #include "TaskDressUpParameters.h"
@@ -67,7 +69,8 @@ private:
     std::unique_ptr<Ui_TaskFilletParameters> ui;
     double lastValidRadius = 0.0;
 
-    bool isRadiusAllowed(double radius) const;
+    bool isRadiusAllowed(double radius, double* maximumRadius = nullptr) const;
+    std::optional<double> findMaximumAllowedRadius(double requestedRadius) const;
     void clearRadiusError();
 
     std::unique_ptr<Gui::GizmoContainer> gizmoContainer;

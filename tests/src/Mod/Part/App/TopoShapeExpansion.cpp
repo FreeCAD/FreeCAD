@@ -2778,6 +2778,202 @@ TEST_F(TopoShapeExpansionTest, makeElementFilletTopCircularEdgeOfCylinderToHemis
     EXPECT_EQ(planarFaces, 1);
 }
 
+TEST_F(TopoShapeExpansionTest, makeElementFilletTopOfCylindricalBossToHemisphere)
+{
+    // Arrange: a centered diameter-20, height-10 boss on a 20 x 20 x 10 mm box.
+    const TopoDS_Shape box = BRepPrimAPI_MakeBox(20.0, 20.0, 10.0).Shape();
+    const TopoDS_Shape cylinder = BRepPrimAPI_MakeCylinder(
+                                      gp_Ax2(
+                                          gp_Pnt(10.0, 10.0, 10.0),
+                                          gp_Dir(0.0, 0.0, 1.0)
+                                      ),
+                                      10.0,
+                                      10.0
+    )
+                                      .Shape();
+    BRepAlgoAPI_Fuse bossFuse(box, cylinder);
+    TopExp_Explorer fusedSolids(bossFuse.Shape(), TopAbs_SOLID);
+    ASSERT_TRUE(fusedSolids.More());
+    TopoShape boss {fusedSolids.Current(), 1L};
+    fusedSolids.Next();
+    ASSERT_FALSE(fusedSolids.More());
+
+    std::vector<TopoShape> topEdge;
+    for (const auto& edge : boss.getSubTopoShapes(TopAbs_EDGE)) {
+        BRepAdaptor_Curve curve(TopoDS::Edge(edge.getShape()));
+        if (curve.GetType() == GeomAbs_Circle
+            && std::abs(curve.Circle().Location().Z() - 20.0) < Precision::Confusion()) {
+            topEdge.push_back(edge);
+        }
+    }
+    ASSERT_EQ(topEdge.size(), 1U);
+
+    TopoShape belowLimit;
+    belowLimit.makeElementFillet(boss, topEdge, 9.999, 9.999);
+    EXPECT_TRUE(BRepCheck_Analyzer(belowLimit.getShape()).IsValid());
+
+    // Act: consume the boss cap and cylindrical wall at their common radius/height limit.
+    TopoShape result;
+    result.makeElementFillet(boss, topEdge, 10.0, 10.0);
+
+    // Assert: the box is preserved and supports an exact hemisphere.
+    EXPECT_TRUE(BRepCheck_Analyzer(result.getShape()).IsValid());
+    EXPECT_NEAR(
+        getVolume(result.getShape()),
+        4000.0 + 2000.0 * std::acos(-1.0) / 3.0,
+        1e-6
+    );
+    int sphericalFaces = 0;
+    int cylindricalFaces = 0;
+    for (const auto& face : result.getSubTopoShapes(TopAbs_FACE)) {
+        const GeomAbs_SurfaceType type
+            = BRepAdaptor_Surface(TopoDS::Face(face.getShape())).GetType();
+        if (type == GeomAbs_Sphere) {
+            ++sphericalFaces;
+        }
+        else if (type == GeomAbs_Cylinder) {
+            ++cylindricalFaces;
+        }
+    }
+    EXPECT_EQ(sphericalFaces, 1);
+    EXPECT_EQ(cylindricalFaces, 0);
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementFilletTopOfOffsetCylindricalBossToHemisphere)
+{
+    // Arrange: place the boss center on the midpoint of the box's lower Y edge.
+    const TopoDS_Shape box = BRepPrimAPI_MakeBox(20.0, 20.0, 10.0).Shape();
+    const TopoDS_Shape cylinder = BRepPrimAPI_MakeCylinder(
+                                      gp_Ax2(
+                                          gp_Pnt(10.0, 0.0, 10.0),
+                                          gp_Dir(0.0, 0.0, 1.0)
+                                      ),
+                                      10.0,
+                                      10.0
+    )
+                                      .Shape();
+    BRepAlgoAPI_Fuse bossFuse(box, cylinder);
+    TopExp_Explorer fusedSolids(bossFuse.Shape(), TopAbs_SOLID);
+    ASSERT_TRUE(fusedSolids.More());
+    TopoShape boss {fusedSolids.Current(), 1L};
+    fusedSolids.Next();
+    ASSERT_FALSE(fusedSolids.More());
+
+    std::vector<TopoShape> topEdge;
+    for (const auto& edge : boss.getSubTopoShapes(TopAbs_EDGE)) {
+        BRepAdaptor_Curve curve(TopoDS::Edge(edge.getShape()));
+        if (curve.GetType() == GeomAbs_Circle
+            && std::abs(curve.Circle().Location().X() - 10.0) < Precision::Confusion()
+            && std::abs(curve.Circle().Location().Y()) < Precision::Confusion()
+            && std::abs(curve.Circle().Location().Z() - 20.0) < Precision::Confusion()) {
+            topEdge.push_back(edge);
+        }
+    }
+    ASSERT_EQ(topEdge.size(), 1U);
+
+    TopoShape belowLimit;
+    belowLimit.makeElementFillet(boss, topEdge, 9.999, 9.999);
+    EXPECT_TRUE(BRepCheck_Analyzer(belowLimit.getShape()).IsValid());
+
+    // Act: the limiting hemisphere meets the box across half of its equatorial plane.
+    TopoShape result;
+    result.makeElementFillet(boss, topEdge, 10.0, 10.0);
+
+    // Assert: the offset box-plus-hemisphere remains one valid solid.
+    EXPECT_TRUE(BRepCheck_Analyzer(result.getShape()).IsValid());
+    EXPECT_EQ(result.getSubTopoShapes(TopAbs_SOLID).size(), 1U);
+    EXPECT_NEAR(
+        getVolume(result.getShape()),
+        4000.0 + 2000.0 * std::acos(-1.0) / 3.0,
+        1e-6
+    );
+    int sphericalFaces = 0;
+    int cylindricalFaces = 0;
+    for (const auto& face : result.getSubTopoShapes(TopAbs_FACE)) {
+        const GeomAbs_SurfaceType type
+            = BRepAdaptor_Surface(TopoDS::Face(face.getShape())).GetType();
+        if (type == GeomAbs_Sphere) {
+            ++sphericalFaces;
+        }
+        else if (type == GeomAbs_Cylinder) {
+            ++cylindricalFaces;
+        }
+    }
+    EXPECT_EQ(sphericalFaces, 1);
+    EXPECT_EQ(cylindricalFaces, 0);
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementFilletTopOfCompoundWrappedExtendedBossToHemisphere)
+{
+    // Arrange: extending the offset boss support underneath the whole cylinder
+    // matches the one-solid compound produced by the Part Design Pad feature.
+    const TopoDS_Shape extendedBase
+        = BRepPrimAPI_MakeBox(gp_Pnt(0.0, -10.0, 0.0), 20.0, 30.0, 10.0).Shape();
+    const TopoDS_Shape cylinder = BRepPrimAPI_MakeCylinder(
+                                      gp_Ax2(
+                                          gp_Pnt(10.0, 0.0, 10.0),
+                                          gp_Dir(0.0, 0.0, 1.0)
+                                      ),
+                                      10.0,
+                                      10.0
+    )
+                                      .Shape();
+    BRepAlgoAPI_Fuse bossFuse(extendedBase, cylinder);
+    TopExp_Explorer fusedSolids(bossFuse.Shape(), TopAbs_SOLID);
+    ASSERT_TRUE(fusedSolids.More());
+    TopoShape bossSolid {fusedSolids.Current(), 1L};
+    fusedSolids.Next();
+    ASSERT_FALSE(fusedSolids.More());
+
+    TopoShape boss;
+    boss.makeElementCompound(
+        {bossSolid},
+        "Compound",
+        TopoShape::SingleShapeCompoundCreationPolicy::forceCompound
+    );
+    ASSERT_EQ(boss.getShape().ShapeType(), TopAbs_COMPOUND);
+    ASSERT_EQ(boss.getSubTopoShapes(TopAbs_SOLID).size(), 1U);
+
+    std::vector<TopoShape> topEdge;
+    for (const auto& edge : boss.getSubTopoShapes(TopAbs_EDGE)) {
+        BRepAdaptor_Curve curve(TopoDS::Edge(edge.getShape()));
+        if (curve.GetType() == GeomAbs_Circle
+            && std::abs(curve.Circle().Location().X() - 10.0) < Precision::Confusion()
+            && std::abs(curve.Circle().Location().Y()) < Precision::Confusion()
+            && std::abs(curve.Circle().Location().Z() - 20.0) < Precision::Confusion()) {
+            topEdge.push_back(edge);
+        }
+    }
+    ASSERT_EQ(topEdge.size(), 1U);
+
+    // Act: consume the complete 10 mm boss height at the exact limiting radius.
+    TopoShape result;
+    result.makeElementFillet(boss, topEdge, 10.0, 10.0);
+
+    // Assert: the extended base and exact hemisphere remain one valid solid.
+    EXPECT_TRUE(BRepCheck_Analyzer(result.getShape()).IsValid());
+    EXPECT_EQ(result.getSubTopoShapes(TopAbs_SOLID).size(), 1U);
+    EXPECT_NEAR(
+        getVolume(result.getShape()),
+        6000.0 + 2000.0 * std::acos(-1.0) / 3.0,
+        1e-6
+    );
+    int sphericalFaces = 0;
+    int cylindricalFaces = 0;
+    for (const auto& face : result.getSubTopoShapes(TopAbs_FACE)) {
+        const GeomAbs_SurfaceType type
+            = BRepAdaptor_Surface(TopoDS::Face(face.getShape())).GetType();
+        if (type == GeomAbs_Sphere) {
+            ++sphericalFaces;
+        }
+        else if (type == GeomAbs_Cylinder) {
+            ++cylindricalFaces;
+        }
+    }
+    EXPECT_EQ(sphericalFaces, 1);
+    EXPECT_EQ(cylindricalFaces, 0);
+}
+
 TEST_F(TopoShapeExpansionTest, makeElementFilletBothSidesOfSquareThroughPocketAtLimit)
 {
     // Arrange: cut a 10 mm square through a 30 x 30 x 10 mm body.

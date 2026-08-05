@@ -4202,8 +4202,11 @@ TopoShape& TopoShape::makeElementFillet(
         Precision::Confusion(),
         std::max(std::abs(radius1), std::abs(radius2)) * 1.0e-12
     );
-    if (shape.getShape().ShapeType() == TopAbs_SOLID
-        && std::abs(radius1 - radius2) <= radiusTolerance) {
+    const TopAbs_ShapeEnum sourceShapeType = shape.getShape().ShapeType();
+    const bool isSingleSolid = sourceShapeType == TopAbs_SOLID
+        || (sourceShapeType == TopAbs_COMPOUND
+            && shape.countSubShapes(TopAbs_SOLID) == 1);
+    if (isSingleSolid && std::abs(radius1 - radius2) <= radiusTolerance) {
         const auto sourceEdges = shape.getSubTopoShapes(TopAbs_EDGE);
         TopTools_IndexedMapOfShape selectedEdgeMap;
         for (const auto& edge : edges) {
@@ -4233,6 +4236,26 @@ TopoShape& TopoShape::makeElementFillet(
                     = std::max({1.0, firstVolume, secondVolume}) * 1.0e-9;
                 return std::abs(firstVolume - secondVolume) <= tolerance
                     && std::abs(firstVolume - commonVolume) <= tolerance;
+            }
+            catch (const Standard_Failure&) {
+                return false;
+            }
+        };
+
+        auto containsSolid = [&shapeVolume](
+            const TopoDS_Shape& container,
+            const TopoDS_Shape& contained
+        ) {
+            try {
+                FCBRepAlgoAPI_Common common(container, contained);
+                common.Build();
+                if (!common.IsDone() || common.Shape().IsNull()) {
+                    return false;
+                }
+                const double containedVolume = shapeVolume(contained);
+                const double commonVolume = shapeVolume(common.Shape());
+                const double tolerance = std::max(1.0, containedVolume) * 1.0e-9;
+                return std::abs(containedVolume - commonVolume) <= tolerance;
             }
             catch (const Standard_Failure&) {
                 return false;
@@ -4272,11 +4295,10 @@ TopoShape& TopoShape::makeElementFillet(
             }
         }
 
-        // A single circular outer edge consumes both the end face and the
-        // cylindrical wall when its radius equals both the cylinder radius
-        // and height.  The exact limiting solid is a hemisphere; constructing
-        // that analytic primitive avoids the zero-area faces produced by the
-        // regular 3D fillet builder at the limit.
+        // A single circular outer edge consumes both the end face and its
+        // cylindrical wall when the radius equals both the cylinder radius
+        // and wall height.  Replace that verified local cylinder with an exact
+        // hemisphere while preserving any solid joined at its opposite end.
         if (endCaps.size() == 1 && mostSelectedEdges == 1 && edges.size() == 1) {
             const TopoDS_Edge selectedEdge
                 = TopoDS::Edge(endCaps[0].selectedEdges[0].getShape());
@@ -4290,75 +4312,111 @@ TopoShape& TopoShape::makeElementFillet(
             if (selectedCurve.GetType() == GeomAbs_Circle
                 && outerWireEdges.Contains(selectedEdge)) {
                 const double edgeRadius = selectedCurve.Circle().Radius();
-                for (const auto& oppositeCap : shape.getSubTopoShapes(TopAbs_FACE)) {
-                    if (oppositeCap.getShape().IsSame(endCaps[0].shape.getShape())) {
+                for (const auto& wallFace : shape.getSubTopoShapes(TopAbs_FACE)) {
+                    const TopoDS_Face face = TopoDS::Face(wallFace.getShape());
+                    BRepAdaptor_Surface wallSurface(face);
+                    if (wallSurface.GetType() != GeomAbs_Cylinder
+                        || std::abs(wallSurface.Cylinder().Radius() - edgeRadius)
+                            > radiusTolerance) {
                         continue;
                     }
-                    gp_Pln oppositePlane;
-                    if (!oppositeCap.findPlane(oppositePlane)
-                        || !endCaps[0].plane.Axis().Direction().IsParallel(
-                            oppositePlane.Axis().Direction(),
-                            Precision::Angular()
-                        )) {
-                        continue;
-                    }
-
-                    const gp_Dir capDirection = endCaps[0].plane.Axis().Direction();
-                    const gp_Vec planeOffset(
-                        endCaps[0].plane.Location(),
-                        oppositePlane.Location()
-                    );
-                    const gp_Vec prismVector(
-                        capDirection.XYZ() * planeOffset.Dot(capDirection)
-                    );
-                    const double prismLength = prismVector.Magnitude();
-                    const double lengthTolerance
-                        = std::max(Precision::Confusion(), prismLength * 1.0e-9);
-                    if (prismLength <= Precision::Confusion()
-                        || std::abs(prismLength - radius1) > lengthTolerance
-                        || std::abs(edgeRadius - radius1) > lengthTolerance
-                        || !selectedCurve.Circle().Axis().Direction().IsParallel(
-                            gp_Dir(prismVector),
-                            Precision::Angular()
-                        )) {
+                    TopTools_IndexedMapOfShape wallEdges;
+                    TopExp::MapShapes(face, TopAbs_EDGE, wallEdges);
+                    if (!wallEdges.Contains(selectedEdge)) {
                         continue;
                     }
 
-                    BRepPrimAPI_MakePrism originalPrism(
-                        endCaps[0].shape.getShape(),
-                        prismVector
-                    );
-                    originalPrism.Build();
-                    if (!originalPrism.IsDone()
-                        || !sameSolid(shape.getShape(), originalPrism.Shape())) {
-                        continue;
-                    }
-
-                    try {
-                        const gp_Pnt sphereCenter
-                            = selectedCurve.Circle().Location().Translated(prismVector);
-                        BRepPrimAPI_MakeSphere hemisphereBuilder(
-                            gp_Ax2(sphereCenter, gp_Dir(-prismVector)),
-                            radius1,
-                            0.0,
-                            std::acos(-1.0) / 2.0
-                        );
-                        hemisphereBuilder.Build();
-                        if (!hemisphereBuilder.IsDone()) {
+                    for (int index = 1; index <= wallEdges.Extent(); ++index) {
+                        const TopoDS_Edge oppositeEdge = TopoDS::Edge(wallEdges(index));
+                        if (oppositeEdge.IsSame(selectedEdge)) {
                             continue;
                         }
-                        FCBRepAlgoAPI_Common exactFillet(
-                            shape.getShape(),
-                            hemisphereBuilder.Shape()
-                        );
-                        exactFillet.Build();
-                        if (exactFillet.IsDone() && !exactFillet.Shape().IsNull()
-                            && BRepCheck_Analyzer(exactFillet.Shape()).IsValid()) {
-                            return makeElementShape(exactFillet, shape, op);
+                        BRepAdaptor_Curve oppositeCurve(oppositeEdge);
+                        if (oppositeCurve.GetType() != GeomAbs_Circle
+                            || std::abs(oppositeCurve.Circle().Radius() - edgeRadius)
+                                > radiusTolerance) {
+                            continue;
                         }
-                    }
-                    catch (const Standard_Failure&) {
-                        continue;
+
+                        const gp_Vec wallVector(
+                            selectedCurve.Circle().Location(),
+                            oppositeCurve.Circle().Location()
+                        );
+                        const double wallLength = wallVector.Magnitude();
+                        const double lengthTolerance
+                            = std::max(Precision::Confusion(), wallLength * 1.0e-9);
+                        if (wallLength <= Precision::Confusion()
+                            || std::abs(wallLength - radius1) > lengthTolerance
+                            || std::abs(edgeRadius - radius1) > lengthTolerance
+                            || !wallSurface.Cylinder().Axis().Direction().IsParallel(
+                                gp_Dir(wallVector),
+                                Precision::Angular()
+                            )) {
+                            continue;
+                        }
+
+                        const gp_Ax2 cylinderAxis(
+                            selectedCurve.Circle().Location(),
+                            gp_Dir(wallVector)
+                        );
+                        const TopoDS_Shape localCylinder
+                            = BRepPrimAPI_MakeCylinder(cylinderAxis, edgeRadius, wallLength).Shape();
+                        if (!containsSolid(shape.getShape(), localCylinder)) {
+                            continue;
+                        }
+
+                        try {
+                            const gp_Pnt sphereCenter = oppositeCurve.Circle().Location();
+                            BRepPrimAPI_MakeSphere hemisphereBuilder(
+                                gp_Ax2(sphereCenter, gp_Dir(-wallVector)),
+                                radius1,
+                                0.0,
+                                std::acos(-1.0) / 2.0
+                            );
+                            hemisphereBuilder.Build();
+                            if (!hemisphereBuilder.IsDone()) {
+                                continue;
+                            }
+                            FCBRepAlgoAPI_Cut baseBuilder(shape.getShape(), localCylinder);
+                            baseBuilder.Build();
+                            if (!baseBuilder.IsDone()) {
+                                continue;
+                            }
+
+                            const double expectedVolume = shapeVolume(shape.getShape())
+                                - shapeVolume(localCylinder)
+                                + shapeVolume(hemisphereBuilder.Shape());
+                            const double volumeTolerance
+                                = std::max(1.0, expectedVolume) * 1.0e-9;
+                            const double baseVolume = baseBuilder.Shape().IsNull()
+                                ? 0.0
+                                : shapeVolume(baseBuilder.Shape());
+                            if (baseVolume <= volumeTolerance) {
+                                if (BRepCheck_Analyzer(hemisphereBuilder.Shape()).IsValid()
+                                    && std::abs(
+                                           shapeVolume(hemisphereBuilder.Shape())
+                                           - expectedVolume
+                                    ) <= volumeTolerance) {
+                                    return makeElementShape(hemisphereBuilder, shape, op);
+                                }
+                                continue;
+                            }
+
+                            FCBRepAlgoAPI_Fuse exactFillet(
+                                baseBuilder.Shape(),
+                                hemisphereBuilder.Shape()
+                            );
+                            exactFillet.Build();
+                            if (exactFillet.IsDone() && !exactFillet.Shape().IsNull()
+                                && BRepCheck_Analyzer(exactFillet.Shape()).IsValid()
+                                && std::abs(shapeVolume(exactFillet.Shape()) - expectedVolume)
+                                    <= volumeTolerance) {
+                                return makeElementShape(exactFillet, shape, op);
+                            }
+                        }
+                        catch (const Standard_Failure&) {
+                            continue;
+                        }
                     }
                 }
             }
