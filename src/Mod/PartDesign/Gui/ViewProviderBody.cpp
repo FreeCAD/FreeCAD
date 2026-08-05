@@ -232,11 +232,8 @@ App::DocumentObject* ViewProviderBody::getDeleteTarget(App::DocumentObject* cont
 
     App::DocumentObject* activeParent = nullptr;
     std::string activeSubName;
-    auto* activeBody = activeView->getActiveObject<PartDesign::Body*>(
-        PDBODYKEY,
-        &activeParent,
-        &activeSubName
-    );
+    auto* activeBody
+        = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY, &activeParent, &activeSubName);
     if (activeBody != getObject() || !activeParent) {
         return context;
     }
