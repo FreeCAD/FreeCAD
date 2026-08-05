@@ -1045,6 +1045,7 @@ void DocumentObject::onChanged(const Property* prop)
 
     if (prop == &Label && _pDoc && oldLabel != Label.getStrValue()) {
         _pDoc->signalRelabelObject(*this);
+        oldLabel = Label.getStrValue();
     }
 
     bool fineGrained = GetApplication().isFineGrainedRecomputeEnabled();
