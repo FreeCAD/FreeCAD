@@ -59,16 +59,19 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.stepOver.valueChanged.connect(lambda: self.updateStepOverDistance(obj))
         self.form.stepOverDistance.valueChanged.connect(lambda: self.updateStepOverPercent(obj))
         self.form.stepOverDistance.editingFinished.connect(lambda: self.updateStepOverDistance(obj))
-        self.form.toolController.currentIndexChanged.connect(
-            lambda: self.updateStepOverDistance(obj)
-        )
+
+    def updateData(self, obj, prop):
+        """updateData(obj, prop) ... react to ToolController changes made on the
+        shared Tool Controller page to keep step over distance in sync with the
+        (possibly new) tool diameter."""
+        if prop == "ToolController":
+            self.updateStepOverDistance(obj)
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
         signals.append(self.form.Side.currentIndexChanged)
         signals.append(self.form.OperationType.currentIndexChanged)
-        signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.stepOver.valueChanged)
         signals.append(self.form.Tolerance.valueChanged)
         signals.append(self.form.HelixMaxRampAngle.valueChanged)
@@ -79,7 +82,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.LiftDistance.valueChanged)
         signals.append(self.form.KeepToolDownRatio.valueChanged)
         signals.append(self.form.StockToLeave.valueChanged)
-        signals.append(self.form.coolantController.currentIndexChanged)
         if hasattr(self.form.ForceInsideOut, "checkStateChanged"):  # Qt version >= 6.7.0
             signals.append(self.form.ForceInsideOut.checkStateChanged)
             signals.append(self.form.FinishingProfile.checkStateChanged)
@@ -151,8 +153,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.FinishingProfile.setChecked(obj.FinishingProfile)
         self.form.useOutline.setChecked(obj.UseOutline)
         self.form.useRestMachining.setChecked(obj.UseRestMachining)
-        self.setupToolController(obj, self.form.toolController)
-        self.setupCoolant(obj, self.form.coolantController)
         self.form.StopButton.setChecked(obj.Stopped)
         obj.setEditorMode("AdaptiveInputState", 2)  # hide this property
         obj.setEditorMode("AdaptiveOutputState", 2)  # hide this property
@@ -196,8 +196,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.StopButton.setChecked(False)  # reset the button
             obj.StopProcessing = True
 
-        self.updateToolController(obj, self.form.toolController)
-        self.updateCoolant(obj, self.form.coolantController)
         obj.setEditorMode("AdaptiveInputState", 2)  # hide this property
         obj.setEditorMode("AdaptiveOutputState", 2)  # hide this property
         obj.setEditorMode("StopProcessing", 2)  # hide this property

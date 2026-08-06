@@ -169,7 +169,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "Helix Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Offset inner radius"
+                "Set how much stock to leave on the inner wall for the operation."
                 "\nDefault inner radius for Internal profile is Tool radius,"
                 " and can not be less than (-ToolRadius)"
                 "\nFor External profile - profile radius",
@@ -181,7 +181,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "Helix Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Extra offset from the profile",
+                "Set how much stock to leave on the outer wall for the operation.",
             ),
         )
         obj.addProperty(
@@ -365,7 +365,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 "Helix Drill",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Offset inner radius"
+                    "Set how much stock to leave on the inner wall for the operation."
                     "\nDefault inner radius is Tool radius"
                     " and can not be less than (-ToolRadius)"
                     "\nFor External profile - profile radius",
@@ -381,7 +381,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 "Helix Drill",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Extra offset from the profile",
+                    "Set how much stock to leave on the outer wall for the operation.",
                 ),
             )
         if hasattr(obj, "OffsetExtra"):

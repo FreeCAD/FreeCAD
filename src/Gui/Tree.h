@@ -496,6 +496,7 @@ public:
     Gui::ViewProviderDocumentObject* object() const;
     void testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2);
     void testStatus(bool resetStatus);
+    bool isVisibleInTree() const;
     void displayStatusInfo();
     void setExpandedStatus(bool);
     void setData(int column, int role, const QVariant& value) override;

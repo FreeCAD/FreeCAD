@@ -477,6 +477,7 @@ bool DrawViewDetail::debugDetail() const
 
 void DrawViewDetail::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
 {
+    DrawViewPart::handleChangedPropertyType(reader, TypeName, prop);
     if (prop == &AnchorPoint) {
         // AnchorPoint was PropertyVector, then briefly PropertyPosition, now back to PropertyVector
         App::PropertyPosition tmp;

@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QOpenGLFramebufferObject>
 #include <QPixmap>
 #include <QMenu>
 #include <Inventor/SbBox.h>
@@ -32,6 +31,7 @@
 #include <FCConfig.h>
 
 #include "MouseSelection.h"
+#include "RubberbandOverlay.h"
 #include "Selection/BoxSelection.h"
 #include "Selection/SelectionColors.h"
 #include "View3DInventorViewer.h"
@@ -562,24 +562,24 @@ int FreehandSelection::locationEvent(const SoLocation2Event* const e, const QPoi
 RubberbandSelection::RubberbandSelection()
 {
     const SbColor color = SelectionColors::defaultSelectionColor();
-    rubberband.setColor(color[0], color[1], color[2], 0.5);
+    rubberbandColor = QColor::fromRgbF(color[0], color[1], color[2], 0.5F);
 }
 
 RubberbandSelection::~RubberbandSelection() = default;
 
 void RubberbandSelection::setColor(float r, float g, float b, float a)
 {
-    rubberband.setColor(r, g, b, a);
+    rubberbandColor = QColor::fromRgbF(r, g, b, a);
+    if (_pcView3D) {
+        _pcView3D->rubberbandOverlay().setBorderColor(rubberbandColor);
+    }
 }
 
 void RubberbandSelection::initialize()
 {
-    rubberband.setViewer(_pcView3D);
-    rubberband.setWorking(false);
-    _pcView3D->addGraphicsItem(&rubberband);
-    if (QOpenGLFramebufferObject::hasOpenGLFramebufferObjects()) {
-        _pcView3D->setRenderType(View3DInventorViewer::Image);
-    }
+    auto& overlay = _pcView3D->rubberbandOverlay();
+    overlay.setBorderColor(rubberbandColor);
+    overlay.setVisible(false);
     _pcView3D->redraw();
 }
 
@@ -587,11 +587,30 @@ void RubberbandSelection::terminate(bool abort)
 {
     Q_UNUSED(abort)
 
-    _pcView3D->removeGraphicsItem(&rubberband);
-    if (QOpenGLFramebufferObject::hasOpenGLFramebufferObjects()) {
-        _pcView3D->setRenderType(View3DInventorViewer::Native);
+    if (_pcView3D) {
+        _pcView3D->rubberbandOverlay().setVisible(false);
+        _pcView3D->redraw();
     }
-    _pcView3D->redraw();
+}
+
+void RubberbandSelection::updateOverlayPosition()
+{
+    if (!_pcView3D) {
+        return;
+    }
+
+    const qreal dpr = _pcView3D->devicePixelRatio();
+    const qreal scale = dpr > 0.0 ? dpr : 1.0;
+    _pcView3D->rubberbandOverlay().setRectangle(
+        QRectF(QPointF(m_iXold / scale, m_iYold / scale), QPointF(m_iXnew / scale, m_iYnew / scale))
+    );
+}
+
+void RubberbandSelection::setOverlayVisible(bool visible)
+{
+    if (_pcView3D) {
+        _pcView3D->rubberbandOverlay().setVisible(visible);
+    }
 }
 
 void RubberbandSelection::draw()
@@ -609,9 +628,10 @@ int RubberbandSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, con
     if (press) {
         switch (button) {
             case SoMouseButtonEvent::BUTTON1: {
-                rubberband.setWorking(true);
                 m_iXold = m_iXnew = pos.x();
                 m_iYold = m_iYnew = pos.y();
+                setOverlayVisible(true);
+                updateOverlayPosition();
             } break;
 
             default: {
@@ -621,7 +641,7 @@ int RubberbandSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, con
     else {
         switch (button) {
             case SoMouseButtonEvent::BUTTON1: {
-                rubberband.setWorking(false);
+                setOverlayVisible(false);
                 releaseMouseModel();
                 _clPoly.push_back(e->getPosition());
                 ret = Finish;
@@ -639,7 +659,7 @@ int RubberbandSelection::locationEvent(const SoLocation2Event* const, const QPoi
 {
     m_iXnew = pos.x();
     m_iYnew = pos.y();
-    rubberband.setCoords(m_iXold, m_iYold, m_iXnew, m_iYnew);
+    updateOverlayPosition();
     draw();
     return Continue;
 }
@@ -654,7 +674,7 @@ int RubberbandSelection::keyboardEvent(const SoKeyboardEvent* const)
 RectangleSelection::RectangleSelection()
     : RubberbandSelection()
 {
-    rubberband.setColor(0.0, 0.0, 1.0, 1.0);
+    rubberbandColor = QColor(0, 0, 255);
 }
 
 RectangleSelection::~RectangleSelection() = default;
@@ -706,14 +726,14 @@ void BoxSelectSelection::initialize()
     selectionEnabled = _pcView3D->isSelectionEnabled();
     _pcView3D->setSelectionEnabled(false);
 
-    rubberband.setWorking(true);
     const QPoint start = toWidgetPoint(startPosition);
     const QPoint current = toWidgetPoint(currentPosition);
     m_iXold = start.x();
     m_iYold = start.y();
     m_iXnew = current.x();
     m_iYnew = current.y();
-    rubberband.setCoords(m_iXold, m_iYold, m_iXnew, m_iYnew);
+    setOverlayVisible(true);
+    updateOverlayPosition();
     draw();
 }
 
@@ -739,7 +759,7 @@ int BoxSelectSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, cons
     _clPoly.clear();
     _clPoly.push_back(startPosition);
     _clPoly.push_back(currentPosition);
-    rubberband.setWorking(false);
+    setOverlayVisible(false);
     releaseMouseModel();
     return FinishAndConsume;
 }
@@ -750,7 +770,7 @@ int BoxSelectSelection::locationEvent(const SoLocation2Event* const e, const QPo
     currentPosition = e->getPosition();
     m_iXnew = pos.x();
     m_iYnew = pos.y();
-    rubberband.setCoords(m_iXold, m_iYold, m_iXnew, m_iYnew);
+    updateOverlayPosition();
     draw();
     return Continue;
 }
@@ -758,7 +778,7 @@ int BoxSelectSelection::locationEvent(const SoLocation2Event* const e, const QPo
 int BoxSelectSelection::keyboardEvent(const SoKeyboardEvent* const e)
 {
     if (e->getKey() == SoKeyboardEvent::ESCAPE && e->getState() == SoButtonEvent::UP) {
-        rubberband.setWorking(false);
+        setOverlayVisible(false);
         releaseMouseModel(true);
         return Cancel;
     }

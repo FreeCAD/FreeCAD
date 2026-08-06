@@ -431,23 +431,16 @@ class BIM_Views:
 
         top_elevation = 0.0
         if siblings:
-
-            def _elev(o):
-                z = o.Placement.Base.z
-                if z == 0 and hasattr(o, "Elevation"):
-                    z = o.Elevation.Value
-                return z
-
-            highest = max(siblings, key=_elev)
+            highest = max(siblings, key=getObjectElevation)
             h = getattr(highest, "Height", None)
             # Use the explicit height of the level below when set, otherwise a
             # default spacing, so the new level does not overlap the one below.
             spacing = h.Value if (h is not None and h.Value) else DEFAULT_SPACING
-            top_elevation = _elev(highest) + spacing
+            top_elevation = getObjectElevation(highest) + spacing
 
         FreeCAD.ActiveDocument.openTransaction("Create Level")
         obj = Arch.makeFloor()
-        obj.Placement.Base.z = top_elevation
+        setObjectElevation(obj, top_elevation)
         if parent is not None and hasattr(parent, "addObject"):
             parent.addObject(obj)
         FreeCAD.ActiveDocument.commitTransaction()
@@ -539,11 +532,7 @@ class BIM_Views:
                 obj.Label = text
             elif column == 1:
                 if text:
-                    q = FreeCAD.Units.parseQuantity(text)
-                    if hasattr(obj, "Elevation") and obj.Placement.Base.z == 0:
-                        obj.Elevation = q
-                    else:
-                        obj.Placement.Base.z = q
+                    setObjectElevation(obj, FreeCAD.Units.parseQuantity(text))
             elif column == 2:
                 if text and hasattr(obj, "Height"):
                     obj.Height = FreeCAD.Units.parseQuantity(text)
@@ -800,18 +789,16 @@ def getTreeViewItem(obj):
     """
     Build a QTreeWidgetItem for obj with three columns: label, elevation, height.
 
-    Elevation comes from Placement.Base.z, falling back to the IFC Elevation
-    property when the placement is at the origin. Height comes from the
+    Elevation is always read from Placement.Base.z, which is the source of
+    truth for a level's position. The IFC Elevation attribute is derived from
+    this placement and must never be used as a fallback. Height comes from the
     BuildingPart Height property when present. Returns the item together with
     the elevation as a number, used to sort levels vertically.
     """
     from PySide import QtCore, QtGui
 
-    z = obj.Placement.Base.z
+    z = getObjectElevation(obj)
     elevStr = FreeCAD.Units.Quantity(z, FreeCAD.Units.Length).UserString
-    if z == 0 and hasattr(obj, "Elevation"):
-        z = obj.Elevation.Value
-        elevStr = obj.Elevation.UserString
 
     heightStr = ""
     if hasattr(obj, "Height") and hasattr(obj.Height, "UserString"):
@@ -824,6 +811,22 @@ def getTreeViewItem(obj):
         if hasattr(obj.ViewObject, "Icon"):
             it.setIcon(0, obj.ViewObject.Icon)
     return (it, z)
+
+
+def getObjectElevation(obj):
+    """Return the elevation represented by an object's placement."""
+
+    return obj.Placement.Base.z
+
+
+def setObjectElevation(obj, elevation):
+    """Set an object's elevation through its Placement property.
+
+    Placement is the source of truth; IFC Elevation is derived from it.
+    Assign the complete placement to notify dependent objects.
+    """
+
+    obj.Placement.Base.z = elevation
 
 
 def getAllItemsInTree(tree_widget):

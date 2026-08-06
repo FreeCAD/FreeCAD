@@ -42,12 +42,13 @@ next to the wrapper source. Keep stub-only module function signatures and
 support nodes in source-adjacent `*.module.pyi` files such as
 `src/App/FreeCAD.module.pyi` or `src/Base/FreeCAD.Console.module.pyi`.
 
-These source-adjacent stub files are consumed by `stubgen` only. The
-legacy binding generator still reads only the binding `.pyi` files that are
-registered through CMake. Plain type-stub `.pyi` files can also contribute
-top-level support nodes such as imports, helper aliases, helper protocols, and
-non-method class members to the merged public stub output. Do not edit
-generated output directly; edit the curated source inputs and regenerate.
+Plain source-adjacent type-stub `.pyi` files are consumed by `stubgen` only.
+Source-adjacent `*.module.pyi` files can also be registered through CMake with
+`generate_module_from_py(...)` when they are the source of generated module
+bindings. Plain type-stub `.pyi` files can also contribute top-level support
+nodes such as imports, helper aliases, helper protocols, and non-method class
+members to the merged public stub output. Do not edit generated output directly;
+edit the curated source inputs and regenerate.
 
 Use package-shaped overlay paths that mirror the public import tree, such as
 `src/Tools/typing/inputs/overlays/PySide/QtCore.pyi`. Third-party packages such as Pivy should
@@ -86,6 +87,16 @@ smaller slice while documentation coverage is still being filled in.
 Prefer generated stubs for classes that already have binding `.pyi` specs.
 Those files are close to the C++ wrapper source of truth and can be improved
 without creating a second hand-written API surface.
+
+Binding stubs should use the keyword-only `Metadata.deprecated(...)` decorator with
+`deprecated_in` and `removed_in` releases. The public stub generator converts that
+metadata to `typing_extensions.deprecated(...)` for binding classes,
+source-adjacent type stubs, and `*.module.pyi` functions. Positional PEP 702
+decorators are emitted only in the generated public stubs; source metadata is always
+structured.
+When binding classes use structured `@deprecated_attributes(...)` metadata, the
+public stub generator rewrites those members as deprecated properties in the emitted
+stubs so the lifecycle remains visible in the standard public typing surface.
 
 When the same binding class is exported through multiple public module paths,
 the merged public stubs keep one canonical class body and make the other

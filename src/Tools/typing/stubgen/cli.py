@@ -28,7 +28,11 @@ from .generator import (
 )
 from .model import DEFAULT_OVERLAY_DIR, DEFAULT_SOURCE_DIR, DEFAULT_STUBS_OUT_DIR
 from .parsing import iter_source_files
-from .source_inputs import collect_binding_classes, load_stub_signature_overrides
+from .source_inputs import (
+    collect_binding_classes,
+    load_stub_signature_overrides,
+    supplement_module_methods_from_stub_signatures,
+)
 
 DESCRIPTION = """Generate type-checker stubs for FreeCAD Python bindings.
 
@@ -176,6 +180,7 @@ def run_generate(args: argparse.Namespace) -> int:
 
     type_registrations = collect_type_registrations(root, list(iter_source_files(root, source_dir)))
     methods = collect_methods(root, source_dir)
+    methods = supplement_module_methods_from_stub_signatures(root, source_dir, methods)
     classes = collect_binding_classes(root, source_dir, type_registrations)
     stub_signature_overrides = load_stub_signature_overrides(
         root,

@@ -58,7 +58,7 @@
       <translation>ແກ້ໄຂ</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="907"/>
+      <location filename="../Application.cpp" line="910"/>
       <source>Import</source>
       <translation>ນຳເຂົ້າ</translation>
     </message>
@@ -113,12 +113,12 @@
       <translation>ເພີ່ມຊິ້ນສ່ວນ</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="147"/>
+      <location filename="../CommandStructure.cpp" line="146"/>
       <source>Add a group</source>
       <translation>ເພີ່ມກຸ່ມ</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="216"/>
+      <location filename="../CommandStructure.cpp" line="215"/>
       <source>Add a variable set</source>
       <translation>ເພີ່ມຊຸດຕົວປ່ຽນ</translation>
     </message>
@@ -133,10 +133,10 @@
       <translation>ການວາງຕຳແໜ່ງ</translation>
     </message>
     <message>
-      <location filename="../ViewProviderAnnotation.cpp" line="510"/>
-      <location filename="../TaskTransform.cpp" line="153"/>
-      <location filename="../TaskTransform.cpp" line="1070"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="511"/>
       <location filename="../Transform.cpp" line="108"/>
+      <location filename="../TaskTransform.cpp" line="152"/>
+      <location filename="../TaskTransform.cpp" line="1069"/>
       <source>Transform</source>
       <translation>ແປງຮູບ</translation>
     </message>
@@ -172,17 +172,17 @@
       <translation>ຂ້າມການຄິດໄລ່ໃໝ່</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="984"/>
+      <location filename="../CommandView.cpp" line="985"/>
       <source>Toggle Visibility</source>
       <translation>ສະຫຼັບການເບິ່ງເຫັນ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1019"/>
+      <location filename="../CommandView.cpp" line="1020"/>
       <source>Toggle Transparency</source>
       <translation>ສະຫຼັບຄວາມໂປ່ງໃສ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1138"/>
+      <location filename="../CommandView.cpp" line="1139"/>
       <source>Toggle Selectability</source>
       <translation>ສະຫຼັບການເລືອກໄດ້</translation>
     </message>
@@ -2232,72 +2232,72 @@ Specify another directory.</source>
   <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="786"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="787"/>
       <source>Reset Page '%1'</source>
       <translation>ຣີເຊັດໜ້າ '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="789"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="790"/>
       <source>Resets the user settings for the page '%1'</source>
       <translation>ຣີເຊັດການຕັ້ງຄ່າຜູ້ໃຊ້ສຳລັບໜ້າ '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="793"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="794"/>
       <source>Reset Group '%1'</source>
       <translation>ຣີເຊັດກຸ່ມ '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="801"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="802"/>
       <source>Reset All</source>
       <translation>ຣີເຊັດທັງໝົດ</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="819"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="820"/>
       <source>Clear User Settings</source>
       <translation>ລຶບການຕັ້ງຄ່າຜູ້ໃຊ້</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="820"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="821"/>
       <source>Clear all your user settings?</source>
       <translation>ລຶບການຕັ້ງຄ່າຜູ້ໃຊ້ທັງໝົດຂອງທ່ານບໍ່?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="821"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="822"/>
       <source>All settings will be cleared.</source>
       <translation>ການຕັ້ງຄ່າທັງໝົດຈະຖືກລຶບອອກ.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="922"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="923"/>
       <source>Wrong Parameter</source>
       <translation>ພາຣາມິເຕີບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="965"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="966"/>
       <source>Restart Required</source>
       <translation>ຈຳເປັນຕ້ອງເລີ່ມຕົ້ນໃໝ່</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="966"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="967"/>
       <source>Restart FreeCAD for changes to take effect.</source>
       <translation>ເລີ່ມຕົ້ນ FreeCAD ໃໝ່ເພື່ອໃຫ້ການປ່ຽນແປງມີຜົນ.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="971"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="972"/>
       <source>Restart Now</source>
       <translation>ເລີ່ມຕົ້ນໃໝ່ດຽວນີ້</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="972"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="973"/>
       <source>Restart Later</source>
       <translation>ເລີ່ມຕົ້ນໃໝ່ພາຍຫຼັງ</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="798"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="799"/>
       <source>Resets the user settings for the group '%1'</source>
       <translation>ຣີເຊັດການຕັ້ງຄ່າຜູ້ໃຊ້ສຳລັບກຸ່ມ '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="803"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="804"/>
       <source>Resets the user settings entirely</source>
       <translation>ຣີເຊັດການຕັ້ງຄ່າຜູ້ໃຊ້ທັງໝົດ</translation>
     </message>
@@ -3211,197 +3211,187 @@ besides the color bar</source>
       <translation>ທົ່ວໄປ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="41"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="152"/>
       <source>The application will create a new document when started</source>
       <translation>ໂປຣແກຣມຈະສ້າງເອກະສານໃໝ່ເມື່ອເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="44"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="155"/>
       <source>Create new document at start up</source>
       <translation>ສ້າງເອກະສານໃໝ່ເມື່ອເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="188"/>
       <source>Document save compression level
 (0 = none, 9 = highest, 7 = default)</source>
       <translation>ລະດັບການບີບອັດໃນການບັນທຶກເອກະສານ
 (0 = ບໍ່ບີບອັດ, 9 = ສູງສຸດ, 7 = ຄ່າເລີ່ມຕົ້ນ)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="196"/>
       <source>Compression level for FCStd files</source>
       <translation>ລະດັບການບີບອັດສຳລັບໄຟລ໌ FCStd</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="129"/>
-      <source>All changes in documents are stored so that they can be undone/redone</source>
-      <translation>ທຸກໆການປ່ຽນແປງໃນເອກະສານຈະຖືກເກັບໄວ້ເພື່ອໃຫ້ສາມາດ Undo/Redo ໄດ້</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="201"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="126"/>
       <source>Allow aborting recomputation</source>
       <translation>ອະນຸຍາດໃຫ້ຍົກເລີກການຄິດໄລ່ຄືນໃໝ່</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="236"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="217"/>
       <source>Storage</source>
       <translation>ບ່ອນຈັດເກັບ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="454"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="435"/>
       <source>Saving transactions (Auto-save)</source>
       <translation>ການບັນທຶກລາຍການ (ບັນທຶກອັດຕະໂນມັດ)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="263"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="244"/>
       <source>Discard saved transaction after saving document</source>
       <translation>ຖິ້ມລາຍການທີ່ບັນທຶກໄວ້ຫຼັງຈາກບັນທຶກເອກະສານ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="435"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="416"/>
       <source>Run AutoRecovery at startup</source>
       <translation>ລັນການກູ້ຄືນອັດຕະໂນມັດເມື່ອເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="488"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="469"/>
       <source>How often a recovery file is written</source>
       <translation>ຄວາມຖີ່ໃນການຂຽນໄຟລ໌ກູ້ຄືນ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="297"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="278"/>
       <source>A thumbnail will be stored when document is saved</source>
       <translation>ຮູບຕົວຢ່າງ (Thumbnail) ຈະຖືກເກັບໄວ້ເມື່ອບັນທຶກເອກະສານ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="332"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="313"/>
       <source>Size</source>
       <translation>ຂະໜາດ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="381"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="362"/>
       <source>How many backup files will be kept when saving document</source>
       <translation>ຈຳນວນໄຟລ໌ສຳຮອງທີ່ຈະຖືກເກັບໄວ້ເມື່ອບັນທຶກເອກະສານ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="247"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="228"/>
       <source>Show format documentation</source>
       <translation>ສະແດງເອກະສານຮູບແບບ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="132"/>
-      <source>Using undo/redo in documents</source>
-      <translation>ການໃຊ້ Undo/Redo ໃນເອກະສານ</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="165"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="65"/>
       <source>Maximum undo/redo steps</source>
       <translation>ຂັ້ນຕອນ Undo/Redo ສູງສຸດ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="172"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="72"/>
       <source>How many undo/redo steps should be recorded</source>
       <translation>ຈຳນວນຂັ້ນຕອນ Undo/Redo ທີ່ຄວນຈະຖືກບັນທຶກໄວ້</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="197"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="103"/>
+      <source>This experimental feature allows more responsive GUI while recomputing features.</source>
+      <translation>ຟີເຈີທົດລອງນີ້ຊ່ວຍໃຫ້ GUI ຕອບສະໜອງໄດ້ດີຂຶ້ນໃນຂະນະທີ່ກຳລັງຄິດໄລ່ຟີເຈີຄືນໃໝ່.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="106"/>
+      <source>Enables async document recomputation</source>
+      <translation>ເປີດໃຊ້ການຄິດໄລ່ເອກະສານຄືນໃໝ່ແບບບໍ່ພ້ອມກັນ (Async)</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="122"/>
       <source>Allow user aborting document recomputation by pressing Esc.
 This feature may slightly increase recomputation time.</source>
       <translation>ອະນຸຍາດໃຫ້ຜູ້ໃຊ້ຍົກເລີກການຄິດໄລ່ເອກະສານຄືນໃໝ່ໂດຍການກົດ Esc.
 ຟີເຈີນີ້ອາດຈະເຮັດໃຫ້ເວລາໃນການຄິດໄລ່ຄືນໃໝ່ເພີ່ມຂຶ້ນເລັກນ້ອຍ.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="214"/>
-      <source>This experimental feature allows more responsive GUI while recomputing features.</source>
-      <translation>ຟີເຈີທົດລອງນີ້ຊ່ວຍໃຫ້ GUI ຕອບສະໜອງໄດ້ດີຂຶ້ນໃນຂະນະທີ່ກຳລັງຄິດໄລ່ຟີເຈີຄືນໃໝ່.</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="220"/>
-      <source>Enables async document recomputation</source>
-      <translation>ເປີດໃຊ້ການຄິດໄລ່ເອກະສານຄືນໃໝ່ແບບບໍ່ພ້ອມກັນ (Async)</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="300"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="281"/>
       <source>Add thumbnail to project file when saving</source>
       <translation>ເພີ່ມຮູບຕົວຢ່າງໃສ່ໄຟລ໌ໂປຣເຈັກເມື່ອບັນທຶກ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="339"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="320"/>
       <source>Sets the size of the thumbnail that is stored in the document.
 Common sizes are 128, 256 and 512.</source>
       <translation>ຕັ້ງຄ່າຂະໜາດຂອງຮູບຕົວຢ່າງທີ່ຈະຖືກເກັບໄວ້ໃນເອກະສານ.
 ຂະໜາດທົ່ວໄປແມ່ນ 128, 256 ແລະ 512.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="384"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="365"/>
       <source>Maximum number of backup files to keep when resaving document</source>
       <translation>ຈຳນວນສູງສຸດຂອງໄຟລ໌ສຳຮອງທີ່ຈະເກັບໄວ້ເມື່ອບັນທຶກເອກະສານຄືນໃໝ່</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="431"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="412"/>
       <source>If there is a recovery file available, the application will
 automatically run a file recovery when it is started</source>
       <translation>ຫາກມີໄຟລ໌ກູ້ຄືນທີ່ມີຢູ່, ໂປຣແກຣມຈະ
 ລັນການກູ້ຄືນໄຟລ໌ໂດຍອັດຕະໂນມັດເມື່ອເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="467"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="448"/>
       <source>The program icon will be added to the thumbnail</source>
       <translation>ໄອຄອນຂອງໂປຣແກຣມຈະຖືກເພີ່ມໃສ່ໃນຮູບຕົວຢ່າງ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="470"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="451"/>
       <source>Add program icon to the generated thumbnail</source>
       <translation>ເພີ່ມໄອຄອນໂປຣແກຣມໃສ່ໃນຮູບຕົວຢ່າງທີ່ສ້າງຂຶ້ນ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="491"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="472"/>
       <source>Save auto-recovery information every</source>
       <translation>ບັນທຶກຂໍ້ມູນການກູ້ຄືນອັດຕະໂນມັດທຸກໆ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="548"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="529"/>
       <source>Backup files will get extension '.FCbak' and file names
 get date suffix according to the specified format</source>
       <translation>ໄຟລ໌ສຳຮອງຈະໄດ້ຮັບນາມສະກຸນ '.FCbak' ແລະ ຊື່ໄຟລ໌
 ຈະມີວັນທີຕໍ່ທ້າຍຕາມຮູບແບບທີ່ລະບຸ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="552"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="533"/>
       <source>Use date and FCBak extension</source>
       <translation>ໃຊ້ວັນທີ ແລະ ນາມສະກຸນ FCBak</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="568"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="549"/>
       <source>Date format</source>
       <translation>ຮູບແບບວັນທີ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="590"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="571"/>
       <source>Suppresses the version mismatch warning when saving files created with an older FreeCAD version</source>
       <translation>ປິດການແຈ້ງເຕືອນເມື່ອເວີຊັນບໍ່ກົງກັນໃນເວລາບັນທຶກໄຟລ໌ທີ່ສ້າງດ້ວຍ FreeCAD ເວີຊັນເກົ່າ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="593"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="574"/>
       <source>Suppress older version warning on save</source>
       <translation>ປິດການແຈ້ງເຕືອນເວີຊັນເກົ່າເມື່ອບັນທຶກ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="612"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="593"/>
       <source>Document Objects</source>
       <translation>ວັດຖຸໃນເອກະສານ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="618"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="599"/>
       <source>Allow objects to have same label</source>
       <translation>ອະນຸຍາດໃຫ້ວັດຖຸມີປ້າຍຊື່ດຽວກັນ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="621"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="602"/>
       <source>Allow duplicate object labels in one document</source>
       <translation>ອະນຸຍາດໃຫ້ມີປ້າຍຊື່ວັດຖຸຊ້ຳກັນໃນເອກະສານດຽວ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="634"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="615"/>
       <source>Disable partial loading of external linked documents.
 Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
@@ -3414,22 +3404,22 @@ icon in the tree view to fully reload it.</source>
 ໃນມຸມເບິ່ງແບບຕົ້ນໄມ້ (Tree view) ເພື່ອໂຫຼດມັນຄືນໃໝ່ທັງໝົດ.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="641"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="622"/>
       <source>Disable partial loading of external linked objects</source>
       <translation>ປິດການໂຫຼດບາງສ່ວນຂອງວັດຖຸທີ່ເຊື່ອມຕໍ່ພາຍນອກ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="657"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="638"/>
       <source>Authoring and License</source>
       <translation>ຜູ້ສ້າງ ແລະ ໃບອະນຸຍາດ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="663"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="644"/>
       <source>Author name</source>
       <translation>ຊື່ຜູ້ຂຽນ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="670"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="651"/>
       <source>All documents that will be created will get the specified author name.
 Keep blank for anonymous.
 You can also use the form: John Doe &lt;john@doe.com&gt;</source>
@@ -3438,32 +3428,32 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
 ທ່ານຍັງສາມາດໃຊ້ໃນຮູບແບບ: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="685"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="666"/>
       <source>The field 'Last modified by' will be set to specified author when saving the file</source>
       <translation>ຫົວຂໍ້ 'ແກ້ໄຂຫຼ້າສຸດໂດຍ' ຈະຖືກຕັ້ງເປັນຊື່ຜູ້ຂຽນທີ່ລະບຸເມື່ອບັນທຶກໄຟລ໌</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="688"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="669"/>
       <source>Set on save</source>
       <translation>ຕັ້ງຄ່າເມື່ອບັນທຶກ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="701"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="682"/>
       <source>Company</source>
       <translation>ບໍລິສັດ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="708"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="689"/>
       <source>Default company name to use for new files</source>
       <translation>ຊື່ບໍລິສັດເລີ່ມຕົ້ນທີ່ຈະໃຊ້ສຳລັບໄຟລ໌ໃໝ່</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="721"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="702"/>
       <source>Default license</source>
       <translation>ໃບອະນຸຍາດເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="731"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="712"/>
       <source>Default license for new documents</source>
       <translation>ໃບອະນຸຍາດເລີ່ມຕົ້ນສຳລັບເອກະສານໃໝ່</translation>
     </message>
@@ -3533,12 +3523,12 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
       <translation>ອື່ນໆ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="747"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="728"/>
       <source>License URL</source>
       <translation>URL ໃບອະນຸຍາດ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="754"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="735"/>
       <source>URL describing more about the license</source>
       <translation>URL ທີ່ອະທິບາຍເພີ່ມເຕີມກ່ຽວກັບໃບອະນຸຍາດ</translation>
     </message>
@@ -4821,41 +4811,37 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="642"/>
-      <location filename="../DocumentRecovery.cpp" line="706"/>
+      <location filename="../DocumentRecovery.cpp" line="651"/>
       <source>Delete</source>
       <translation>ລົບ</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="652"/>
-      <source>Delete the selected transient directories?</source>
-      <translation>ລຶບໂຟນເດີຊົ່ວຄາວທີ່ເລືອກໄວ້ຫຼືບໍ່?</translation>
+      <source>Delete the selected recovery documents?</source>
+      <translation>ລຶບເອກະສານການກູ້ຄືນທີ່ເລືອກບໍ?</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="654"/>
-      <source>When deleting the selected transient directory it is not possible to recover any files afterwards.</source>
-      <translation>ເມື່ອລຶບໂຟນເດີຊົ່ວຄາວທີ່ເລືອກແລ້ວ ຈະບໍ່ສາມາດກູ້ຄືນໄຟລ໌ໃດໆໄດ້ອີກໃນພາຍຫຼັງ.</translation>
+      <location filename="../DocumentRecovery.cpp" line="653"/>
+      <location filename="../DocumentRecovery.cpp" line="686"/>
+      <source>Recovery documents cannot be restored after deletion.</source>
+      <translation>ເອກະສານການກູ້ຄືນບໍ່ສາມາດຄືນຄ່າໄດ້ຫຼັງຈາກລຶບຖິ້ມ.</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="688"/>
-      <source>Delete all transient directories?</source>
-      <translation>ລຶບທຸກໆໂຟນເດີຊົ່ວຄາວຫຼືບໍ່?</translation>
+      <location filename="../DocumentRecovery.cpp" line="685"/>
+      <source>Delete all recovery documents?</source>
+      <translation>ລຶບເອກະສານການກູ້ຄືນທັງໝົດບໍ?</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="689"/>
-      <source>When deleting all transient directories it is not possible to recover any files afterwards.</source>
-      <translation>ເມື່ອລຶບທຸກໆໂຟນເດີຊົ່ວຄາວແລ້ວ ຈະບໍ່ສາມາດກູ້ຄືນໄຟລ໌ໃດໆໄດ້ອີກໃນພາຍຫຼັງ.</translation>
+      <location filename="../DocumentRecovery.cpp" line="703"/>
+      <source>Recovery documents deleted.</source>
+      <translation>ລຶບເອກະສານການກູ້ຄືນແລ້ວ.</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="42"/>
-      <location filename="../DocumentRecovery.cpp" line="651"/>
-      <location filename="../DocumentRecovery.cpp" line="687"/>
+      <location filename="../DocumentRecovery.cpp" line="684"/>
+      <location filename="../DocumentRecovery.cpp" line="703"/>
       <source>Cleanup</source>
       <translation>ທຳຄວາມສະອາດ</translation>
-    </message>
-    <message>
-      <location filename="../DocumentRecovery.cpp" line="706"/>
-      <source>Transient directories deleted.</source>
-      <translation>ລຶບໂຟນເດີຊົ່ວຄາວແລ້ວ.</translation>
     </message>
   </context>
   <context>
@@ -5940,14 +5926,14 @@ Save all changes?</source>
       <translation>ບິດແມັບ (Bitmap)</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="517"/>
-      <location filename="../CommandDoc.cpp" line="710"/>
-      <source>Export Graph</source>
+      <location filename="../GraphvizView.cpp" line="609"/>
+      <source>Export graph</source>
       <translation>ສົ່ງອອກກຣາຟ</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="609"/>
-      <source>Export graph</source>
+      <location filename="../CommandDoc.cpp" line="710"/>
+      <location filename="../GraphvizView.cpp" line="517"/>
+      <source>Export Graph</source>
       <translation>ສົ່ງອອກກຣາຟ</translation>
     </message>
   </context>
@@ -6107,7 +6093,7 @@ Save all changes?</source>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="201"/>
-      <location filename="../MainWindow.cpp" line="2656"/>
+      <location filename="../MainWindow.cpp" line="2659"/>
       <source>Dimension</source>
       <translation>ຂະໜາດ</translation>
     </message>
@@ -6118,100 +6104,100 @@ Save all changes?</source>
       <translation>ລະບົບຫົວໜ່ວຍ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="474"/>
+      <location filename="../MainWindow.cpp" line="477"/>
       <source>Preselection</source>
       <extracomment>A context menu action used to show or hide the preselection info in the status bar</extracomment>
       <translation>ການເລືອກລ່ວງໜ້າ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="489"/>
+      <location filename="../MainWindow.cpp" line="492"/>
       <source>Input Hints</source>
       <extracomment>A context menu action used to show or hide the input hints in the status bar</extracomment>
       <translation>ຄຳແນະນຳການປ້ອນຂໍ້ມູນ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="529"/>
+      <location filename="../MainWindow.cpp" line="532"/>
       <source>Quick Measure</source>
       <extracomment>A context menu action used to enable or disable quick measure in the status bar</extracomment>
       <translation>ການວັດແທກແບບໄວ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="544"/>
+      <location filename="../MainWindow.cpp" line="547"/>
       <source>Toggles the bottom dock panels</source>
       <extracomment>Tooltip for the status bar button that toggles bottom dock panels</extracomment>
       <translation>ເປີດ/ປິດ ແຜງທີ່ຕິດຢູ່ດ້ານລຸ່ມ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="554"/>
+      <location filename="../MainWindow.cpp" line="557"/>
       <source>Bottom Panel Toggle</source>
       <extracomment>A context menu action used to show or hide the Toggle Bottom Panels button in the status bar</extracomment>
       <translation>ປຸ່ມສະຫຼັບແຜງດ້ານລຸ່ມ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="573"/>
+      <location filename="../MainWindow.cpp" line="576"/>
       <source>Notifications</source>
       <extracomment>A context menu action used to show or hide the 'notificationArea' toolbar widget</extracomment>
       <translation>ການແຈ້ງເຕືອນ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="631"/>
+      <location filename="../MainWindow.cpp" line="634"/>
       <source>Ready</source>
       <translation>ພ້ອມແລ້ວ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1426"/>
+      <location filename="../MainWindow.cpp" line="1429"/>
       <source>Close All</source>
       <translation>ປິດທັງໝົດ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1699"/>
-      <location filename="../MainWindow.cpp" line="1700"/>
-      <location filename="../MainWindow.cpp" line="1701"/>
+      <location filename="../MainWindow.cpp" line="1702"/>
+      <location filename="../MainWindow.cpp" line="1703"/>
+      <location filename="../MainWindow.cpp" line="1704"/>
       <source>Toggles this toolbar</source>
       <translation>ສະຫຼັບການສະແດງແຖບເຄື່ອງມືນີ້</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1720"/>
-      <location filename="../MainWindow.cpp" line="1721"/>
-      <location filename="../MainWindow.cpp" line="1722"/>
+      <location filename="../MainWindow.cpp" line="1723"/>
+      <location filename="../MainWindow.cpp" line="1724"/>
+      <location filename="../MainWindow.cpp" line="1725"/>
       <source>Toggles this dockable window</source>
       <translation>ສະຫຼັບການສະແດງໜ້າຕ່າງນີ້</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1925"/>
+      <location filename="../MainWindow.cpp" line="1928"/>
       <source>Safe mode enabled</source>
       <translation>ເປີດໃຊ້ໂໝດປອດໄພແລ້ວ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1926"/>
+      <location filename="../MainWindow.cpp" line="1929"/>
       <source>FreeCAD is now running in safe mode.</source>
       <translation>ຕອນນີ້ FreeCAD ກຳລັງເຮັດວຽກໃນໂໝດປອດໄພ.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1930"/>
+      <location filename="../MainWindow.cpp" line="1933"/>
       <source>Safe mode temporarily disables your configurations and addons. Restart the application to exit safe mode.</source>
       <translation>ໂໝດປອດໄພຈະປິດການຕັ້ງຄ່າ ແລະ ສ່ວນເສີມຂອງທ່ານຊົ່ວຄາວ. ໃຫ້ເລີ່ມແອັບພລິເຄຊັນໃໝ່ເພື່ອອອກຈາກໂໝດປອດໄພ.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2378"/>
-      <location filename="../MainWindow.cpp" line="2532"/>
+      <location filename="../MainWindow.cpp" line="2381"/>
+      <location filename="../MainWindow.cpp" line="2535"/>
       <source>Unsaved document</source>
       <translation>ເອກະສານທີ່ຍັງບໍ່ທັນບັນທຶກ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2379"/>
+      <location filename="../MainWindow.cpp" line="2382"/>
       <source>The exported object contains external link. Save the documentat least once before exporting.</source>
       <translation>ວັດຖຸທີ່ສົ່ງອອກມີການເຊື່ອມຕໍ່ພາຍນອກ. ກະລຸນາບັນທຶກເອກະສານຢ່າງໜ້ອຍໜຶ່ງຄັ້ງກ່ອນການສົ່ງອອກ.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2533"/>
+      <location filename="../MainWindow.cpp" line="2536"/>
       <source>To link to external objects, the document must be saved at least once.
 Save the document now?</source>
       <translation>ເພື່ອເຊື່ອມຕໍ່ຫາວັດຖຸພາຍນອກ, ເອກະສານຕ້ອງໄດ້ຮັບການບັນທຶກຢ່າງໜ້ອຍໜຶ່ງຄັ້ງ.
 ບັນທຶກເອກະສານດຽວນີ້ເລີຍບໍ່?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="3039"/>
+      <location filename="../MainWindow.cpp" line="3046"/>
       <source>Safe Mode</source>
       <translation>ໂໝດປອດໄພ</translation>
     </message>
@@ -7365,6 +7351,11 @@ Specify another directory?</source>
       <translation>ພາສາໄອຣິຊ</translation>
     </message>
     <message>
+      <location filename="Translator.cpp" line="258"/>
+      <source>Lao</source>
+      <translation>ລາວ</translation>
+    </message>
+    <message>
       <location filename="Translator.cpp" line="221"/>
       <source>Danish</source>
       <translation>ພາສາເດນມາກ</translation>
@@ -7393,7 +7384,7 @@ Specify another directory?</source>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="4241"/>
+      <location filename="../Tree.cpp" line="4245"/>
       <source>Search</source>
       <translation>ຊອກຫາ</translation>
     </message>
@@ -7436,153 +7427,153 @@ Specify another directory?</source>
       <translation>ກຸ່ມ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3391"/>
-      <location filename="../Tree.cpp" line="3412"/>
+      <location filename="../Tree.cpp" line="3394"/>
+      <location filename="../Tree.cpp" line="3415"/>
       <source>Error</source>
       <translation>ຂໍ້ຜິດພາດ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3391"/>
+      <location filename="../Tree.cpp" line="3394"/>
       <source>File does not exist.</source>
       <translation>ບໍ່ມີໄຟລ໌ນີ້ຢູ່.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3412"/>
+      <location filename="../Tree.cpp" line="3415"/>
       <source>Failed to open directory.</source>
       <translation>ເປີດໂຟນເດີຫຼົ້ມເຫຼວ.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3891"/>
+      <location filename="../Tree.cpp" line="3894"/>
       <source>Labels &amp; Attributes</source>
       <translation>ປ້າຍຊື່ ແລະ ຄຸນລັກສະນະ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3892"/>
+      <location filename="../Tree.cpp" line="3895"/>
       <source>Description</source>
       <translation>ຄຳອະທິບາຍ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3893"/>
+      <location filename="../Tree.cpp" line="3896"/>
       <source>Internal name</source>
       <translation>ຊື່ພາຍໃນ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3895"/>
+      <location filename="../Tree.cpp" line="3898"/>
       <source>Show Items Hidden in Tree View</source>
       <translation>ສະແດງລາຍການທີ່ເຊື່ອງໄວ້ໃນມຸມມອງແບບຕົ້ນໄມ້</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3897"/>
+      <location filename="../Tree.cpp" line="3900"/>
       <source>Shows items that are marked as 'hidden' in the tree view</source>
       <translation>ສະແດງລາຍການທີ່ຖືກໝາຍວ່າ 'ເຊື່ອງ' ໃນມຸມມອງແບບຕົ້ນໄມ້</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3900"/>
+      <location filename="../Tree.cpp" line="3903"/>
       <source>Toggle Visibility in Tree View</source>
       <translation>ສະຫຼັບການສະແດງຜົນໃນມຸມມອງແບບຕົ້ນໄມ້</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3905"/>
+      <location filename="../Tree.cpp" line="3908"/>
       <source>Create Group</source>
       <translation>ສ້າງກຸ່ມ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3906"/>
+      <location filename="../Tree.cpp" line="3909"/>
       <source>Creates a group</source>
       <translation>ສ້າງກຸ່ມ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3909"/>
+      <location filename="../Tree.cpp" line="3912"/>
       <source>Renames object</source>
       <translation>ປ່ຽນຊື່ວັດຖຸ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3911"/>
+      <location filename="../Tree.cpp" line="3914"/>
       <source>Finish Editing</source>
       <translation>ສິ້ນສຸດການແກ້ໄຂ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3912"/>
+      <location filename="../Tree.cpp" line="3915"/>
       <source>Finishes editing object</source>
       <translation>ສິ້ນສຸດການແກ້ໄຂວັດຖຸ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3914"/>
+      <location filename="../Tree.cpp" line="3917"/>
       <source>Add Dependent Objects to Selection</source>
       <translation>ເພີ່ມວັດຖຸທີ່ກ່ຽວຂ້ອງເຂົ້າໃນການເລືອກ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3917"/>
+      <location filename="../Tree.cpp" line="3920"/>
       <source>Close Document</source>
       <translation>ປິດເອກະສານ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3918"/>
+      <location filename="../Tree.cpp" line="3921"/>
       <source>Closes the document</source>
       <translation>ປິດເອກະສານນີ້</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3922"/>
+      <location filename="../Tree.cpp" line="3926"/>
       <source>Reveals the current file location in Finder</source>
       <translation>ສະແດງທີ່ຕັ້ງໄຟລ໌ປັດຈຸບັນໃນ Finder</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3925"/>
+      <location filename="../Tree.cpp" line="3929"/>
       <source>Opens the current file location</source>
       <translation>ເປີດທີ່ຕັ້ງໄຟລ໌ປັດຈຸບັນ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3928"/>
+      <location filename="../Tree.cpp" line="3932"/>
       <source>Reload Document</source>
       <translation>ໂຫຼດເອກະສານຄືນໃໝ່</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3929"/>
+      <location filename="../Tree.cpp" line="3933"/>
       <source>Reloads a partially loaded document</source>
       <translation>ໂຫຼດເອກະສານທີ່ໂຫຼດມາບໍ່ຄົບຖ້ວນຄືນໃໝ່</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3931"/>
+      <location filename="../Tree.cpp" line="3935"/>
       <source>Skip Recomputes</source>
       <translation>ຂ້າມການຄິດໄລ່ຄືນໃໝ່</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3932"/>
+      <location filename="../Tree.cpp" line="3936"/>
       <source>Enables or disables the recomputations of document</source>
       <translation>ເປີດ ຫຼື ປິດການຄິດໄລ່ຄືນຂອງເອກະສານ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3934"/>
+      <location filename="../Tree.cpp" line="3938"/>
       <source>Allow Partial Recomputes</source>
       <translation>ອະນຸຍາດໃຫ້ຄິດໄລ່ຄືນບາງສ່ວນ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3935"/>
+      <location filename="../Tree.cpp" line="3939"/>
       <source>Enables or disables the recomputating editing object when 'skip recomputation' is enabled</source>
       <translation>ເປີດ ຫຼື ປິດການຄິດໄລ່ຄືນຂອງວັດຖຸທີ່ກຳລັງແກ້ໄຂ ເມື່ອເປີດໃຊ້ 'ຂ້າມການຄິດໄລ່ຄືນ'</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3939"/>
+      <location filename="../Tree.cpp" line="3943"/>
       <source>Mark to Recompute</source>
       <translation>ໝາຍໄວ້ເພື່ອຄິດໄລ່ຄືນ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3940"/>
+      <location filename="../Tree.cpp" line="3944"/>
       <source>Marks this object to be recomputed</source>
       <translation>ໝາຍວັດຖຸນີ້ເພື່ອໃຫ້ຄິດໄລ່ຄືນ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3943"/>
+      <location filename="../Tree.cpp" line="3947"/>
       <source>Recompute Object</source>
       <translation>ຄິດໄລ່ວັດຖຸຄືນໃໝ່</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3944"/>
+      <location filename="../Tree.cpp" line="3948"/>
       <source>Recomputes the selected object</source>
       <translation>ຄິດໄລ່ວັດຖຸທີ່ເລືອກຄືນໃໝ່</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3902"/>
+      <location filename="../Tree.cpp" line="3905"/>
       <source>Toggles the visibility of selected items in the tree view</source>
       <translation>ເປີດ/ປິດການສະແດງຜົນຂອງລາຍການທີ່ເລືອກໃນມຸມມອງແບບຕົ້ນໄມ້</translation>
     </message>
@@ -7602,33 +7593,33 @@ Specify another directory?</source>
       <translation>ສະແດງຖັນລາຍລະອຽດສໍາລັບລາຍການ. ສາມາດຕັ້ງຄ່າຄໍາອະທິບາຍຂອງລາຍການໄດ້ໂດຍການແກ້ໄຂຄຸນສົມບັດ 'label2'.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3908"/>
-      <location filename="../Tree.cpp" line="6586"/>
+      <location filename="../Tree.cpp" line="3911"/>
+      <location filename="../Tree.cpp" line="6590"/>
       <source>Rename</source>
       <translation>ປ່ຽນຊື່</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3915"/>
+      <location filename="../Tree.cpp" line="3918"/>
       <source>Adds all dependent objects to the selection</source>
       <translation>ເພີ່ມວັດຖຸທີ່ກ່ຽວຂ້ອງທັງໝົດເຂົ້າໃນການເລືອກ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3921"/>
+      <location filename="../Tree.cpp" line="3925"/>
       <source>Reveal in Finder</source>
       <translation>ສະແດງໃນ Finder</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3924"/>
+      <location filename="../Tree.cpp" line="3928"/>
       <source>Open File Location</source>
       <translation>ເປີດທີ່ຕັ້ງໄຟລ໌</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6554"/>
+      <location filename="../Tree.cpp" line="6558"/>
       <source> (but must be executed)</source>
       <translation> (ແຕ່ຕ້ອງໄດ້ຮັບການປະຕິບັດ)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6557"/>
+      <location filename="../Tree.cpp" line="6561"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, ຊື່ພາຍໃນ: %2</translation>
     </message>
@@ -7849,47 +7840,47 @@ Specify another directory?</source>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="733"/>
+      <location filename="../MainWindow.cpp" line="736"/>
       <source>Tasks</source>
       <translation>ໜ້າວຽກ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="750"/>
+      <location filename="../MainWindow.cpp" line="753"/>
       <source>Selection View</source>
       <translation>ມຸມມອງການເລືອກ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="768"/>
+      <location filename="../MainWindow.cpp" line="771"/>
       <source>Report View</source>
       <translation>ມຸມມອງລາຍງານ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="788"/>
+      <location filename="../MainWindow.cpp" line="791"/>
       <source>Python Console</source>
       <translation>ຄອນໂຊນ Python</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="815"/>
+      <location filename="../MainWindow.cpp" line="818"/>
       <source>Tree View</source>
       <translation>ມຸມມອງຜັງຕົ້ນໄມ້</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="845"/>
+      <location filename="../MainWindow.cpp" line="848"/>
       <source>Property View</source>
       <translation>ມຸມມອງຄຸນສົມບັດ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="874"/>
+      <location filename="../MainWindow.cpp" line="877"/>
       <source>Task List</source>
       <translation>ລາຍການໜ້າວຽກ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="903"/>
+      <location filename="../MainWindow.cpp" line="906"/>
       <source>Model</source>
       <translation>ແບບຈຳລອງ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="933"/>
+      <location filename="../MainWindow.cpp" line="936"/>
       <source>DAG View</source>
       <translation>ມຸມມອງ DAG</translation>
     </message>
@@ -7935,35 +7926,35 @@ Specify another directory?</source>
       <translation>Python</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="866"/>
-      <location filename="../Application.cpp" line="973"/>
-      <location filename="../Application.cpp" line="1060"/>
+      <location filename="../Application.cpp" line="869"/>
+      <location filename="../Application.cpp" line="976"/>
+      <location filename="../Application.cpp" line="1063"/>
       <source>Unknown filetype</source>
       <translation>ປະເພດໄຟລ໌ທີ່ບໍ່ຮູ້ຈັກ</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="867"/>
-      <location filename="../Application.cpp" line="974"/>
+      <location filename="../Application.cpp" line="870"/>
+      <location filename="../Application.cpp" line="977"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>ບໍ່ສາມາດເປີດປະເພດໄຟລ໌ທີ່ບໍ່ຮູ້ຈັກ: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1050"/>
+      <location filename="../Application.cpp" line="1053"/>
       <source>Export failed</source>
       <translation>ການສົ່ງອອກບໍ່ສຳເລັດ</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1061"/>
+      <location filename="../Application.cpp" line="1064"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>ບໍ່ສາມາດບັນທຶກເປັນປະເພດໄຟລ໌ທີ່ບໍ່ຮູ້ຈັກ: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1259"/>
+      <location filename="../Application.cpp" line="1262"/>
       <source>Recomputation required</source>
       <translation>ຈຳເປັນຕ້ອງຄິດໄລ່ຄືນໃໝ່</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1260"/>
+      <location filename="../Application.cpp" line="1263"/>
       <source>Some documents require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
 
 Recompute now?</source>
@@ -7972,23 +7963,23 @@ Recompute now?</source>
 ຄິດໄລ່ຄືນໃໝ່ດຽວນີ້ເລີຍບໍ່?</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1286"/>
+      <location filename="../Application.cpp" line="1289"/>
       <source>Failed to recompute some documents.
 Check the report view for more details.</source>
       <translation>ບໍ່ສາມາດຄິດໄລ່ບາງເອກະສານຄືນໃໝ່ໄດ້. ກວດເບິ່ງມຸມມອງລາຍງານສຳລັບລາຍລະອຽດເພີ່ມເຕີມ.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1285"/>
+      <location filename="../Application.cpp" line="1288"/>
       <source>Recompute error</source>
       <translation>ຂໍ້ຜິດພາດໃນການຄິດໄລ່ຄືນ</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="2035"/>
+      <location filename="../Application.cpp" line="2038"/>
       <source>Workbench failure</source>
       <translation>ໂຕະເຮັດວຽກຂັດຂ້ອງ</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="2036"/>
+      <location filename="../Application.cpp" line="2039"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
@@ -8055,18 +8046,18 @@ Check the report view for more details.</source>
       <translation>ຂໍ້ຍົກເວັ້ນ (Exception)</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1299"/>
-      <location filename="../Application.cpp" line="1314"/>
+      <location filename="../Application.cpp" line="1302"/>
+      <location filename="../Application.cpp" line="1317"/>
       <source>Error</source>
       <translation>ຂໍ້ຜິດພາດ</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1300"/>
+      <location filename="../Application.cpp" line="1303"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>ມີຂໍ້ຜິດພາດເກີດຂຶ້ນໃນຂະນະທີ່ໂຫຼດໄຟລ໌. ຂໍ້ມູນບາງຢ່າງອາດຈະຖືກປ່ຽນແປງ ຫຼື ບໍ່ສາມາດກູ້ຄືນໄດ້ເລີຍ. ເບິ່ງໃນມຸມມອງລາຍງານສຳລັບຂໍ້ມູນສະເພາະກ່ຽວກັບວັດຖຸທີ່ກ່ຽວຂ້ອງ.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1315"/>
+      <location filename="../Application.cpp" line="1318"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>ມີຂໍ້ຜິດພາດຮ້າຍແຮງໃນຂະນະທີ່ໂຫຼດໄຟລ໌. ຂໍ້ມູນບາງຢ່າງອາດຈະຖືກປ່ຽນແປງ ຫຼື ບໍ່ສາມາດກູ້ຄືນໄດ້ເລີຍ. ການບັນທຶກໂຄງການອາດຈະເຮັດໃຫ້ສູນເສຍຂໍ້ມູນ.</translation>
     </message>
@@ -8096,6 +8087,13 @@ Check the report view for more details.</source>
       <location filename="../CommandDoc.cpp" line="631"/>
       <source>Merge Document</source>
       <translation>ຮວມເອກະສານ</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="621"/>
+      <location filename="../Document.cpp" line="1711"/>
+      <location filename="../Document.cpp" line="1841"/>
+      <source>%1 document</source>
+      <translation>ເອກະສານ %1</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="632"/>
@@ -8195,77 +8193,77 @@ Check the report view for more details.</source>
       <translation>ໂໝດປອດໄພຈະປິດການຕັ້ງຄ່າ ແລະ ສ່ວນເສີມຊົ່ວຄາວ.</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="347"/>
-      <location filename="../CommandView.cpp" line="625"/>
+      <location filename="../CommandView.cpp" line="348"/>
+      <location filename="../CommandView.cpp" line="626"/>
       <source>&amp;Save Views…</source>
       <translation>&amp;ບັນທຶກມຸມມອງ...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="349"/>
-      <location filename="../CommandView.cpp" line="626"/>
+      <location filename="../CommandView.cpp" line="350"/>
+      <location filename="../CommandView.cpp" line="627"/>
       <source>&amp;Load Views…</source>
       <translation>&amp;ໂຫຼດມຸມມອງ...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="352"/>
-      <location filename="../CommandView.cpp" line="627"/>
+      <location filename="../CommandView.cpp" line="353"/>
+      <location filename="../CommandView.cpp" line="628"/>
       <source>F&amp;reeze View</source>
       <translation>ແ&amp;ຊ່ແຂງມຸມມອງ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="355"/>
-      <location filename="../CommandView.cpp" line="628"/>
+      <location filename="../CommandView.cpp" line="356"/>
+      <location filename="../CommandView.cpp" line="629"/>
       <source>&amp;Clear Views</source>
       <translation>&amp;ລ້າງມຸມມອງ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="460"/>
+      <location filename="../CommandView.cpp" line="461"/>
       <source>Save Frozen Views</source>
       <translation>ບັນທຶກມຸມມອງທີ່ແຊ່ແຂງໄວ້</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="506"/>
-      <location filename="../CommandView.cpp" line="533"/>
+      <location filename="../CommandView.cpp" line="507"/>
+      <location filename="../CommandView.cpp" line="534"/>
       <source>Restore Views</source>
       <translation>ກູ້ຄືນມຸມມອງ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="462"/>
-      <location filename="../CommandView.cpp" line="524"/>
+      <location filename="../CommandView.cpp" line="463"/>
+      <location filename="../CommandView.cpp" line="525"/>
       <source>Frozen views</source>
       <translation>ມຸມມອງທີ່ແຊ່ແຂງໄວ້</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="507"/>
+      <location filename="../CommandView.cpp" line="508"/>
       <source>Importing the restored views would clear the already stored views.
 Continue?</source>
       <translation>ການນຳເຂົ້າສ່ວນທີ່ກູ້ຄືນຈະລ້າງມຸມມອງທີ່ບັນທຶກໄວ້ກ່ອນໜ້າ.
 ດຳເນີນການຕໍ່ບໍ່?</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="522"/>
+      <location filename="../CommandView.cpp" line="523"/>
       <source>Restore Frozen Views</source>
       <translation>ກູ້ຄືນມຸມມອງທີ່ແຊ່ແຂງໄວ້</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2159"/>
+      <location filename="../CommandView.cpp" line="2160"/>
       <source>Save Image</source>
       <translation>ບັນທຶກຮູບພາບ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2335"/>
+      <location filename="../CommandView.cpp" line="2334"/>
       <source>Choose an Image File to Open</source>
       <translation>ເລືອກໄຟລ໌ຮູບພາບເພື່ອເປີດ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="534"/>
+      <location filename="../CommandView.cpp" line="535"/>
       <source>Cannot open file '%1'.</source>
       <translation>ບໍ່ສາມາດເປີດໄຟລ໌ '%1' ໄດ້.</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="408"/>
-      <location filename="../CommandView.cpp" line="600"/>
-      <location filename="../CommandView.cpp" line="632"/>
+      <location filename="../CommandView.cpp" line="409"/>
+      <location filename="../CommandView.cpp" line="601"/>
+      <location filename="../CommandView.cpp" line="633"/>
       <source>Restore View &amp;%1</source>
       <translation>ກູ້ຄືນມຸມມອງ &amp;%1</translation>
     </message>
@@ -8413,7 +8411,7 @@ Continue?</source>
       <translation>ມີການແຈ້ງເຕືອນທີ່ບໍ່ລົບກວນເປີດຫຼາຍເກີນໄປ. ການແຈ້ງເຕືອນຈະຖືກລະເວັ້ນ!</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1419"/>
+      <location filename="../Document.cpp" line="1415"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
@@ -8422,44 +8420,44 @@ Continue?</source>
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1420"/>
+      <location filename="../Document.cpp" line="1416"/>
       <source>Are you sure you want to continue?</source>
       <translation>ເຈົ້າມີຄວາມໝັ້ນໃຈແລ້ວບໍ່ທີ່ຈະດຳເນີນການຕໍ່?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1446"/>
+      <location filename="../Document.cpp" line="1442"/>
       <source>Check report view for more…</source>
       <translation>ກວດເບິ່ງມຸມມອງລາຍງານສຳລັບຂໍ້ມູນເພີ່ມເຕີມ...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1450"/>
+      <location filename="../Document.cpp" line="1446"/>
       <source>Physical path:</source>
       <translation>ເສັ້ນທາງໄຟລ໌:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1451"/>
-      <location filename="../Document.cpp" line="1458"/>
+      <location filename="../Document.cpp" line="1447"/>
+      <location filename="../Document.cpp" line="1454"/>
       <source>Document:</source>
       <translation>ເອກະສານ:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1452"/>
-      <location filename="../Document.cpp" line="1459"/>
+      <location filename="../Document.cpp" line="1448"/>
+      <location filename="../Document.cpp" line="1455"/>
       <source>Path:</source>
       <translation>ເສັ້ນທາງ:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1470"/>
+      <location filename="../Document.cpp" line="1466"/>
       <source>Identical physical path</source>
       <translation>ເສັ້ນທາງໄຟລ໌ທີ່ຄືກັນ</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1482"/>
+      <location filename="../Document.cpp" line="1478"/>
       <source>Could not save document</source>
       <translation>ບໍ່ສາມາດບັນທຶກເອກະສານໄດ້</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1483"/>
+      <location filename="../Document.cpp" line="1479"/>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 "%1"
@@ -8472,19 +8470,19 @@ Would you like to save the file with a different name?</source>
 ທ່ານຕ້ອງການບັນທຶກໄຟລ໌ດ້ວຍຊື່ໃໝ່ບໍ່?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1497"/>
-      <location filename="../Document.cpp" line="1754"/>
-      <location filename="../Document.cpp" line="1863"/>
+      <location filename="../Document.cpp" line="1493"/>
+      <location filename="../Document.cpp" line="1750"/>
+      <location filename="../Document.cpp" line="1859"/>
       <source>Saving aborted</source>
       <translation>ການບັນທຶກຖືກຍົກເລີກ</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1548"/>
+      <location filename="../Document.cpp" line="1544"/>
       <source>File Created with Older FreeCAD Version</source>
       <translation>ໄຟລ໌ຖືກສ້າງຂຶ້ນດ້ວຍ FreeCAD ເວີຊັນເກົ່າ</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1551"/>
+      <location filename="../Document.cpp" line="1547"/>
       <source>This file was created with %1, but you are using v%2.%3.
 
 Saving will upgrade the file format. The file may not be readable by older versions of FreeCAD after saving.
@@ -8499,122 +8497,115 @@ Use 'Save As…' to preserve the original file.
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1560"/>
+      <location filename="../Document.cpp" line="1556"/>
       <source>an unknown older version of FreeCAD</source>
       <translation>FreeCAD ເວີຊັນເກົ່າທີ່ບໍ່ຮູ້ຈັກ</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1561"/>
+      <location filename="../Document.cpp" line="1557"/>
       <source>FreeCAD version %1</source>
       <translation>FreeCAD ເວີຊັນ %1</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1566"/>
+      <location filename="../Document.cpp" line="1562"/>
       <source>Save</source>
       <translation>ບັນທຶກ</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1567"/>
+      <location filename="../Document.cpp" line="1563"/>
       <source>Save As…</source>
       <translation>ບັນທຶກເປັນ…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1571"/>
+      <location filename="../Document.cpp" line="1567"/>
       <source>Do not show this warning again</source>
       <translation>ບໍ່ຕ້ອງສະແດງຄຳເຕືອນນີ້ອີກ</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1636"/>
+      <location filename="../Document.cpp" line="1632"/>
       <source>Save dependent files</source>
       <translation>ບັນທຶກໄຟລ໌ທີ່ກ່ຽວຂ້ອງ</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1637"/>
+      <location filename="../Document.cpp" line="1633"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
       <translation>ໄຟລ໌ນີ້ມີການອ້າງອີງພາຍນອກ. ທ່ານຕ້ອງການບັນທຶກໄຟລ໌ທີ່ກ່ຽວຂ້ອງນຳດ້ວຍບໍ່?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1683"/>
-      <location filename="../Document.cpp" line="1747"/>
+      <location filename="../Document.cpp" line="1679"/>
+      <location filename="../Document.cpp" line="1743"/>
       <source>Saving document failed</source>
       <translation>ການບັນທຶກເອກະສານບໍ່ສຳເລັດ</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1698"/>
+      <location filename="../Document.cpp" line="1694"/>
       <source>Save document under new filename…</source>
       <translation>ບັນທຶກເອກະສານດ້ວຍຊື່ໄຟລ໌ໃໝ່...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1715"/>
-      <location filename="../Document.cpp" line="1845"/>
-      <location filename="../CommandDoc.cpp" line="621"/>
-      <source>%1 document</source>
-      <translation>ເອກະສານ %1</translation>
-    </message>
-    <message>
-      <location filename="../Document.cpp" line="1831"/>
+      <location filename="../Document.cpp" line="1827"/>
       <source>Save a copy of the document under new filename…</source>
       <translation>ບັນທຶກສຳເນົາເອກະສານດ້ວຍຊື່ໄຟລ໌ໃໝ່...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1713"/>
-      <location filename="../Document.cpp" line="1843"/>
+      <location filename="../Document.cpp" line="1709"/>
+      <location filename="../Document.cpp" line="1839"/>
       <source>Save %1 Document</source>
       <translation>ບັນທຶກເອກະສານ %1</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1769"/>
-      <location filename="../Document.cpp" line="1819"/>
+      <location filename="../Document.cpp" line="1765"/>
+      <location filename="../Document.cpp" line="1815"/>
       <source>Failed to save document</source>
       <translation>ບໍ່ສາມາດບັນທຶກເອກະສານໄດ້</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1770"/>
+      <location filename="../Document.cpp" line="1766"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
       <translation>ເອກະສານມີການຂຶ້ນຕໍ່ກັນແບບວົງຈອນ. ທ່ານຍັງຕ້ອງການບັນທຶກພວກມັນຢູ່ບໍ່?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2508"/>
+      <location filename="../Document.cpp" line="2504"/>
       <source>Document not closable</source>
       <translation>ເອກະສານບໍ່ສາມາດປິດໄດ້</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2509"/>
+      <location filename="../Document.cpp" line="2505"/>
       <source>The document is not closable for the moment.</source>
       <translation>ເອກະສານຍັງບໍ່ສາມາດປິດໄດ້ໃນເວລານີ້.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2549"/>
+      <location filename="../Document.cpp" line="2545"/>
       <source>Failed to save document '%1'. Would you like to cancel the closure?</source>
       <translation>ບັນທຶກເອກະສານ '%1' ບໍ່ສຳເລັດ. ທ່ານຕ້ອງການຍົກເລີກການປິດບໍ່?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2551"/>
+      <location filename="../Document.cpp" line="2547"/>
       <source>Document saving failed. Would you like to cancel the closure?</source>
       <translation>ການບັນທຶກເອກະສານບໍ່ສຳເລັດ. ທ່ານຕ້ອງການຍົກເລີກການປິດບໍ່?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2556"/>
+      <location filename="../Document.cpp" line="2552"/>
       <source>Unable to save document</source>
       <translation>ບໍ່ສາມາດບັນທຶກເອກະສານໄດ້</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2926"/>
+      <location filename="../Document.cpp" line="2922"/>
       <source>Undo</source>
       <translation>ຍົກເລີກ</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2926"/>
+      <location filename="../Document.cpp" line="2922"/>
       <source>Redo</source>
       <translation>ເຮັດຄືນ</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2929"/>
+      <location filename="../Document.cpp" line="2925"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation>ມີທຸລະກຳທີ່ຖືກຈັດກຸ່ມໃນເອກະສານຕໍ່ໄປນີ້ຮ່ວມກັບທຸລະກຳອື່ນໆກ່ອນໜ້າ</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2934"/>
+      <location filename="../Document.cpp" line="2930"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -8628,36 +8619,36 @@ Choose 'Abort' to abort</source>
       <translation>ບັນທຶກມາກໂຄ</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="210"/>
-      <location filename="../MouseSelection.cpp" line="417"/>
+      <location filename="../MouseSelection.cpp" line="211"/>
+      <location filename="../MouseSelection.cpp" line="418"/>
       <source>Finish</source>
       <translation>ສຳເລັດ</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="211"/>
-      <location filename="../MouseSelection.cpp" line="418"/>
+      <location filename="../MouseSelection.cpp" line="212"/>
+      <location filename="../MouseSelection.cpp" line="419"/>
       <source>Clear</source>
       <translation>ລ້າງຂໍ້ມູນ</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="212"/>
-      <location filename="../MouseSelection.cpp" line="367"/>
-      <location filename="../MouseSelection.cpp" line="419"/>
+      <location filename="../MouseSelection.cpp" line="213"/>
+      <location filename="../MouseSelection.cpp" line="368"/>
+      <location filename="../MouseSelection.cpp" line="420"/>
       <source>Cancel</source>
       <translation>ຍົກເລີກ</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="364"/>
+      <location filename="../MouseSelection.cpp" line="365"/>
       <source>Inner</source>
       <translation>ດ້ານໃນ</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="365"/>
+      <location filename="../MouseSelection.cpp" line="366"/>
       <source>Outer</source>
       <translation>ດ້ານນອກ</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="366"/>
+      <location filename="../MouseSelection.cpp" line="367"/>
       <source>Split</source>
       <translation>ແຍກອອກ</translation>
     </message>
@@ -8682,12 +8673,12 @@ Choose 'Abort' to abort</source>
       <translation>ບໍ່ສາມາດເປີດບຣາວເຊີຂອງລະບົບໄດ້.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3229"/>
+      <location filename="../View3DInventorViewer.cpp" line="3231"/>
       <source>Out of memory</source>
       <translation>ໜ່ວຍຄວາມຈຳເຕັມ</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3230"/>
+      <location filename="../View3DInventorViewer.cpp" line="3232"/>
       <source>Not enough memory available to display the data.</source>
       <translation>ມີໜ່ວຍຄວາມຈຳບໍ່ພຽງພໍທີ່ຈະສະແດງຜົນຂໍ້ມູນ.</translation>
     </message>
@@ -8708,33 +8699,33 @@ Choose 'Abort' to abort</source>
       <translation>ເຮັດໃຫ້ການເລືອກຊັດເຈນ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="998"/>
       <location filename="../CommandDoc.cpp" line="1369"/>
+      <location filename="../MainWindow.cpp" line="1001"/>
       <source>Unsaved Document</source>
       <translation>ເອກະສານທີ່ຍັງບໍ່ທັນບັນທຶກ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1002"/>
+      <location filename="../MainWindow.cpp" line="1005"/>
       <source>Save all changes to document '%1' before closing?</source>
       <translation>ບັນທຶກການປ່ຽນແປງທັງໝົດໃນເອກະສານ '%1' ກ່ອນປິດບໍ່?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1003"/>
+      <location filename="../MainWindow.cpp" line="1006"/>
       <source>Save all changes to document before closing?</source>
       <translation>ບັນທຶກການປ່ຽນແປງທັງໝົດໃນເອກະສານກ່ອນປິດບໍ່?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1007"/>
+      <location filename="../MainWindow.cpp" line="1010"/>
       <source>Otherwise, all changes will be lost.</source>
       <translation>ຖ້າບໍ່ດັ່ງນັ້ນ, ການປ່ຽນແປງທັງໝົດຈະສູນຫາຍ.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1133"/>
+      <location filename="../MainWindow.cpp" line="1136"/>
       <source>%1 Document(s) not saved</source>
       <translation>%1 ເອກະສານຍັງບໍ່ໄດ້ບັນທຶກ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1134"/>
+      <location filename="../MainWindow.cpp" line="1137"/>
       <source>Some documents could not be saved. Cancel closing?</source>
       <translation>ບາງເອກະສານບໍ່ສາມາດບັນທຶກໄດ້. ຍົກເລີກການປິດບໍ່?</translation>
     </message>
@@ -8749,7 +8740,7 @@ Choose 'Abort' to abort</source>
       <translation>ບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ລຶບມາກໂຄຂອງລະບົບ</translation>
     </message>
     <message>
-      <location filename="../Inventor/Draggers/SoLinearDragger.cpp" line="282"/>
+      <location filename="../Inventor/Draggers/SoLinearDragger.cpp" line="283"/>
       <source>Translation:</source>
       <translation>ການຍ້າຍ:</translation>
     </message>
@@ -8827,13 +8818,13 @@ Choose 'Abort' to abort</source>
       <translation>ເພີ່ມຄຸນສົມບັດໃຫ້ '%1' ບໍ່ສຳເລັດ: %2</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2767"/>
-      <location filename="../Tree.cpp" line="3164"/>
+      <location filename="../Tree.cpp" line="2770"/>
+      <location filename="../Tree.cpp" line="3167"/>
       <source>Drag &amp; drop failed</source>
       <translation>ການລາກ ແລະ ວາງ ບໍ່ສຳເລັດ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1012"/>
+      <location filename="../MainWindow.cpp" line="1015"/>
       <location filename="../ViewProviderLink.cpp" line="3025"/>
       <source>Apply to all</source>
       <translation>ນຳໃຊ້ກັບທັງໝົດ</translation>
@@ -8929,12 +8920,12 @@ the current copy will be lost.
       <translation>ແກ້ໄຂ %1</translation>
     </message>
     <message>
-      <location filename="../SoFCColorGradient.cpp" line="101"/>
+      <location filename="../SoFCColorBar.cpp" line="763"/>
       <source>Color Gradient</source>
       <translation>ການໄລ່ລະດັບສີ</translation>
     </message>
     <message>
-      <location filename="../SoFCColorLegend.cpp" line="86"/>
+      <location filename="../SoFCColorBar.cpp" line="766"/>
       <source>Color Legend</source>
       <translation>ຄຳອະທິບາຍສີ</translation>
     </message>
@@ -9076,7 +9067,7 @@ the current copy will be lost.
       <translation>ກົດ Esc ເພື່ອເຊື່ອງຄຳແນະນຳ</translation>
     </message>
     <message>
-      <location filename="../SoFCColorBar.cpp" line="364"/>
+      <location filename="../SoFCColorBar.cpp" line="770"/>
       <source>Options</source>
       <translation>ທາງເລືອກ</translation>
     </message>
@@ -9111,19 +9102,24 @@ the current copy will be lost.
       <translation>ເລືອກວັດຖຸທັງໝົດທີ່ເປັນລູກຂອງກຸ່ມນີ້</translation>
     </message>
     <message>
-      <location filename="../ViewProviderGroupExtension.cpp" line="206"/>
-      <source>The group '%1' contains %2 object(s). Do you want to delete them as well?</source>
-      <translation>ກຸ່ມ '%1' ມີ %2 ວັດຖຸ. ທ່ານຕ້ອງການລຶບພວກມັນນຳດ້ວຍບໍ່?</translation>
+      <location filename="../ViewProviderGroupExtension.cpp" line="243"/>
+      <source>The group '%1' contains %2 object(s). Delete them as well?</source>
+      <translation>ກຸ່ມ '%1' ມີ %2 ວັດຖຸ. ຕ້ອງການລຶບພວກມັນນຳບໍ?</translation>
     </message>
     <message>
-      <location filename="../ViewProviderGroupExtension.cpp" line="212"/>
+      <location filename="../ViewProviderGroupExtension.cpp" line="249"/>
       <source>The group '%1' contains %2 direct children and %3 total descendants (including nested groups). Do you want to delete all of them recursively?</source>
       <translation>ກຸ່ມ '%1' ມີລູກໂດຍກົງ %2 ແລະ ວັດຖຸສືບທອດທັງໝົດ %3 (ຮ່ວມທັງກຸ່ມທີ່ຊ້ອນຢູ່). ທ່ານຕ້ອງການລຶບທັງໝົດແບບຕໍ່ເນື່ອງບໍ່?</translation>
     </message>
     <message>
-      <location filename="../ViewProviderGroupExtension.cpp" line="223"/>
-      <source>Delete group contents recursively?</source>
-      <translation>ລຶບເນື້ອໃນກຸ່ມແບບຕໍ່ເນື່ອງບໍ່?</translation>
+      <location filename="../ViewProviderGroupExtension.cpp" line="260"/>
+      <source>Delete Group Contents Recursively?</source>
+      <translation>ລຶບເນື້ອໃນໃນກຸ່ມແບບຊ້ອນກັນບໍ?</translation>
+    </message>
+    <message>
+      <location filename="../ViewProviderGroupExtension.cpp" line="270"/>
+      <source>Apply to all selected objects (%1) and their children</source>
+      <translation>ນຳໃຊ້ກັບວັດຖຸທີ່ເລືອກທັງໝົດ (%1) ແລະ ວັດຖຸລູກຂອງພວກມັນ</translation>
     </message>
     <message>
       <location filename="../ViewProviderImagePlane.cpp" line="171"/>
@@ -9135,16 +9131,21 @@ the current copy will be lost.
       <source>All Files</source>
       <translation>ໄຟລ໌ທັງໝົດ</translation>
     </message>
+    <message>
+      <location filename="../CommandStructure.cpp" line="78"/>
+      <source>Part</source>
+      <translation>Part</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
     <message>
-      <location filename="../Selection/Selection.cpp" line="984"/>
+      <location filename="../Selection/Selection.cpp" line="965"/>
       <source>Not allowed:</source>
       <translation>ບໍ່ໄດ້ຮັບອະນຸຍາດ:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1369"/>
+      <location filename="../Selection/Selection.cpp" line="1327"/>
       <source>Selection not allowed by filter</source>
       <translation>ການເລືອກບໍ່ໄດ້ຮັບອະນຸຍາດໂດຍຕົວຕອງ</translation>
     </message>
@@ -9393,12 +9394,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdFreezeViews</name>
     <message>
-      <location filename="../CommandView.cpp" line="332"/>
+      <location filename="../CommandView.cpp" line="333"/>
       <source>F&amp;reeze Display</source>
       <translation>ແ&amp;ຊ່ແຂງການສະແດງຜົນ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="333"/>
+      <location filename="../CommandView.cpp" line="334"/>
       <source>Freezes the current view position</source>
       <translation>ແຊ່ແຂງຕຳແໜ່ງມຸມມອງປັດຈຸບັນ</translation>
     </message>
@@ -9458,7 +9459,7 @@ the current copy will be lost.
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../MainWindow.cpp" line="2649"/>
+      <location filename="../MainWindow.cpp" line="2652"/>
       <location filename="../DocumentRecovery.cpp" line="412"/>
       <source>Unnamed</source>
       <translation>ບໍ່ມີຊື່</translation>
@@ -9682,12 +9683,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewBottom</name>
     <message>
-      <location filename="../CommandView.cpp" line="1438"/>
+      <location filename="../CommandView.cpp" line="1439"/>
       <source>Bottom</source>
       <translation>ດ້ານລຸ່ມ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1439"/>
+      <location filename="../CommandView.cpp" line="1440"/>
       <source>Sets the camera to the bottom view</source>
       <translation>ຕັ້ງຄ່າມຸມມອງກ້ອງໄປດ້ານລຸ່ມ</translation>
     </message>
@@ -9695,12 +9696,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewDimetric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1642"/>
+      <location filename="../CommandView.cpp" line="1643"/>
       <source>&amp;Dimetric</source>
       <translation>&amp;ໄດເມຕຣິກ (Dimetric)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1643"/>
+      <location filename="../CommandView.cpp" line="1644"/>
       <source>Sets the camera to the dimetric view</source>
       <translation>ຕັ້ງຄ່າມຸມມອງກ້ອງໄປແບບໄດເມຕຣິກ</translation>
     </message>
@@ -9708,12 +9709,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewExample1</name>
     <message>
-      <location filename="../CommandView.cpp" line="2488"/>
+      <location filename="../CommandView.cpp" line="2487"/>
       <source>Inventor Example #1</source>
       <translation>ຕົວຢ່າງ Inventor #1</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2489"/>
+      <location filename="../CommandView.cpp" line="2488"/>
       <source>Shows a 3D texture with manipulator</source>
       <translation>ສະແດງພື້ນຜິວ 3D ພ້ອມເຄື່ອງມືຈັດການ</translation>
     </message>
@@ -9721,12 +9722,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewExample2</name>
     <message>
-      <location filename="../CommandView.cpp" line="2516"/>
+      <location filename="../CommandView.cpp" line="2515"/>
       <source>Inventor Example #2</source>
       <translation>ຕົວຢ່າງ Inventor #2</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2517"/>
+      <location filename="../CommandView.cpp" line="2516"/>
       <source>Shows spheres and drag-lights</source>
       <translation>ສະແດງຮູບຊົງກົມ ແລະ ແສງໄຟ</translation>
     </message>
@@ -9734,12 +9735,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewFront</name>
     <message>
-      <location filename="../CommandView.cpp" line="1467"/>
+      <location filename="../CommandView.cpp" line="1468"/>
       <source>Front</source>
       <translation>ດ້ານໜ້າ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1468"/>
+      <location filename="../CommandView.cpp" line="1469"/>
       <source>Sets the camera to the front view</source>
       <translation>ຕັ້ງຄ່າມຸມມອງກ້ອງໄປດ້ານໜ້າ</translation>
     </message>
@@ -9747,12 +9748,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewHome</name>
     <message>
-      <location filename="../CommandView.cpp" line="1414"/>
+      <location filename="../CommandView.cpp" line="1415"/>
       <source>&amp;Home</source>
       <translation>&amp;ໜ້າຫຼັກ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1415"/>
+      <location filename="../CommandView.cpp" line="1416"/>
       <source>Sets the camera to the default home view</source>
       <translation>ຕັ້ງຄ່າມຸມມອງກ້ອງໄປຍັງມຸມມອງຫຼັກເລີ່ມຕົ້ນ</translation>
     </message>
@@ -9760,12 +9761,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIsometric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1613"/>
+      <location filename="../CommandView.cpp" line="1614"/>
       <source>&amp;Isometric</source>
       <translation>&amp;ໄອໂຊເມຕຣິກ (Isometric)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1614"/>
+      <location filename="../CommandView.cpp" line="1615"/>
       <source>Sets the camera to the isometric view</source>
       <translation>ຕັ້ງຄ່າມຸມມອງກ້ອງໄປແບບໄອໂຊເມຕຣິກ</translation>
     </message>
@@ -9773,12 +9774,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="1496"/>
+      <location filename="../CommandView.cpp" line="1497"/>
       <source>Left</source>
       <translation>ດ້ານຊ້າຍ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1497"/>
+      <location filename="../CommandView.cpp" line="1498"/>
       <source>Sets the camera to the left view</source>
       <translation>ຕັ້ງຄ່າມຸມມອງກ້ອງໄປດ້ານຊ້າຍ</translation>
     </message>
@@ -9786,12 +9787,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRear</name>
     <message>
-      <location filename="../CommandView.cpp" line="1525"/>
+      <location filename="../CommandView.cpp" line="1526"/>
       <source>Rear</source>
       <translation>ດ້ານຫຼັງ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1526"/>
+      <location filename="../CommandView.cpp" line="1527"/>
       <source>Sets the camera to the rear view</source>
       <translation>ຕັ້ງຄ່າມຸມມອງກ້ອງໄປດ້ານຫຼັງ</translation>
     </message>
@@ -9799,12 +9800,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="1554"/>
+      <location filename="../CommandView.cpp" line="1555"/>
       <source>Right</source>
       <translation>ດ້ານຂວາ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1555"/>
+      <location filename="../CommandView.cpp" line="1556"/>
       <source>Sets the camera to the right view</source>
       <translation>ຕັ້ງຄ່າມຸມມອງກ້ອງໄປດ້ານຂວາ</translation>
     </message>
@@ -9812,12 +9813,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRotateLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="1698"/>
+      <location filename="../CommandView.cpp" line="1699"/>
       <source>Rotate &amp;Left</source>
       <translation>ໝຸນໄປທາງ&amp;ຊ້າຍ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1699"/>
+      <location filename="../CommandView.cpp" line="1700"/>
       <source>Rotates the view by 90° counter-clockwise</source>
       <translation>ໝຸນມຸມມອງໄປ 90 ອົງສາ ທວນເຂັມໂມງ</translation>
     </message>
@@ -9825,12 +9826,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewTop</name>
     <message>
-      <location filename="../CommandView.cpp" line="1583"/>
+      <location filename="../CommandView.cpp" line="1584"/>
       <source>Top</source>
       <translation>ດ້ານເທິງ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1584"/>
+      <location filename="../CommandView.cpp" line="1585"/>
       <source>Sets the camera to the top view</source>
       <translation>ຕັ້ງຄ່າມຸມມອງກ້ອງໄປດ້ານເທິງ</translation>
     </message>
@@ -9838,12 +9839,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewTrimetric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1670"/>
+      <location filename="../CommandView.cpp" line="1671"/>
       <source>&amp;Trimetric</source>
       <translation>&amp;ໄຕຣເມຕຣິກ (Trimetric)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1671"/>
+      <location filename="../CommandView.cpp" line="1672"/>
       <source>Sets the camera to the trimetric view</source>
       <translation>ຕັ້ງຄ່າມຸມມອງກ້ອງໄປແບບໄຕຣເມຕຣິກ</translation>
     </message>
@@ -9890,12 +9891,12 @@ the current copy will be lost.
   <context>
     <name>StdMainFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1908"/>
+      <location filename="../CommandView.cpp" line="1909"/>
       <source>Fullscreen</source>
       <translation>ເຕັມຈໍ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1909"/>
+      <location filename="../CommandView.cpp" line="1910"/>
       <source>Displays the main window in fullscreen mode</source>
       <translation>ສະແດງໜ້າຕ່າງຫຼັກໃນໂໝດເຕັມຈໍ</translation>
     </message>
@@ -9903,12 +9904,12 @@ the current copy will be lost.
   <context>
     <name>StdOrthographicCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="146"/>
+      <location filename="../CommandView.cpp" line="147"/>
       <source>Orthographic View</source>
       <translation>ມຸມມອງແບບອໍໂທກຣາຟິກ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="147"/>
+      <location filename="../CommandView.cpp" line="148"/>
       <source>Switches to orthographic view mode</source>
       <translation>ສະຫຼັບໄປໃຊ້ມຸມມອງແບບອໍໂທກຣາຟິກ</translation>
     </message>
@@ -9916,12 +9917,12 @@ the current copy will be lost.
   <context>
     <name>StdPerspectiveCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="193"/>
+      <location filename="../CommandView.cpp" line="194"/>
       <source>Perspective View</source>
       <translation>ມຸມມອງແບບເປີສະເປັກທິບ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="194"/>
+      <location filename="../CommandView.cpp" line="195"/>
       <source>Switches to perspective view mode</source>
       <translation>ສະຫຼັບໄປໃຊ້ມຸມມອງແບບເປີສະເປັກທິບ</translation>
     </message>
@@ -9929,12 +9930,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeCollapseDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3344"/>
+      <location filename="../CommandView.cpp" line="3343"/>
       <source>Collapse/E&amp;xpand</source>
       <translation>ຫຍໍ້ເຂົ້າ/&amp;ຂະຫຍາຍອອກ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3345"/>
+      <location filename="../CommandView.cpp" line="3344"/>
       <source>Expands the active document and collapses all others</source>
       <translation>ຂະຫຍາຍເອກະສານທີ່ໃຊ້ງານຢູ່ ແລະ ຫຍໍ້ເອກະສານອື່ນໆທັງໝົດ</translation>
     </message>
@@ -9942,12 +9943,12 @@ the current copy will be lost.
   <context>
     <name>StdTreePreSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3446"/>
+      <location filename="../CommandView.cpp" line="3445"/>
       <source>Preselection</source>
       <translation>ການເລືອກລ່ວງໜ້າ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3447"/>
+      <location filename="../CommandView.cpp" line="3446"/>
       <source>Preselects the object in 3D view when hovering the cursor over the tree item</source>
       <translation>ເລືອກວັດຖຸໃນມຸມມອງ 3D ລ່ວງໜ້າເມື່ອວາງເຄີເຊີເທິງລາຍການໃນຜັງຕົ້ນໄມ້</translation>
     </message>
@@ -9955,12 +9956,12 @@ the current copy will be lost.
   <context>
     <name>StdViewDock</name>
     <message>
-      <location filename="../CommandView.cpp" line="1846"/>
+      <location filename="../CommandView.cpp" line="1847"/>
       <source>&amp;Docked</source>
       <translation>&amp;ຕິດແໜ້ນ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1847"/>
+      <location filename="../CommandView.cpp" line="1848"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
       <translation>ສະແດງມຸມມອງທີ່ໃຊ້ງານຢູ່ແບບເຕັມຈໍ, ແຍກວິນໂດ ຫຼື ແບບຕິດໃນໜ້າຈໍ</translation>
     </message>
@@ -9968,12 +9969,12 @@ the current copy will be lost.
   <context>
     <name>StdViewFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1943"/>
+      <location filename="../CommandView.cpp" line="1944"/>
       <source>&amp;Fullscreen</source>
       <translation>&amp;ເຕັມຈໍ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1944"/>
+      <location filename="../CommandView.cpp" line="1945"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
       <translation>ສະແດງມຸມມອງທີ່ໃຊ້ງານຢູ່ແບບເຕັມຈໍ, ແຍກວິນໂດ ຫຼື ແບບຕິດໃນໜ້າຈໍ</translation>
     </message>
@@ -9981,12 +9982,12 @@ the current copy will be lost.
   <context>
     <name>StdViewScreenShot</name>
     <message>
-      <location filename="../CommandView.cpp" line="2114"/>
+      <location filename="../CommandView.cpp" line="2115"/>
       <source>Save &amp;Image…</source>
       <translation>ບັນທຶກ&amp;ຮູບພາບ...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2115"/>
+      <location filename="../CommandView.cpp" line="2116"/>
       <source>Creates a screenshot of the active view</source>
       <translation>ຖ່າຍພາບໜ້າຈໍຂອງມຸມມອງທີ່ກຳລັງໃຊ້ງານ</translation>
     </message>
@@ -9994,12 +9995,12 @@ the current copy will be lost.
   <context>
     <name>StdViewUndock</name>
     <message>
-      <location filename="../CommandView.cpp" line="1877"/>
+      <location filename="../CommandView.cpp" line="1878"/>
       <source>&amp;Undocked</source>
       <translation>ປົດການເຊື່ອມຕໍ່ (&amp;U)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1878"/>
+      <location filename="../CommandView.cpp" line="1879"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
       <translation>ສະແດງມຸມມອງທີ່ໃຊ້ງານຢູ່ແບບເຕັມຈໍ, ແຍກວິນໂດ ຫຼື ແບບຕິດໃນໜ້າຈໍ</translation>
     </message>
@@ -10007,12 +10008,12 @@ the current copy will be lost.
   <context>
     <name>StdViewZoomIn</name>
     <message>
-      <location filename="../CommandView.cpp" line="2631"/>
+      <location filename="../CommandView.cpp" line="2630"/>
       <source>Zoom &amp;In</source>
       <translation>ຂະຫຍາຍເຂົ້າ (&amp;I)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2632"/>
+      <location filename="../CommandView.cpp" line="2631"/>
       <source>Increases the zoom factor by a fixed amount</source>
       <translation>ເພີ່ມອັດຕາການຂະຫຍາຍຕາມຈຳນວນທີ່ກຳນົດ</translation>
     </message>
@@ -10020,12 +10021,12 @@ the current copy will be lost.
   <context>
     <name>StdViewZoomOut</name>
     <message>
-      <location filename="../CommandView.cpp" line="2660"/>
+      <location filename="../CommandView.cpp" line="2659"/>
       <source>Zoom &amp;Out</source>
       <translation>ຫຍໍ້ອອກ (&amp;O)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2661"/>
+      <location filename="../CommandView.cpp" line="2660"/>
       <source>Decreases the zoom factor by a fixed amount</source>
       <translation>ຫຼຸດອັດຕາການຂະຫຍາຍຕາມຈຳນວນທີ່ກຳນົດ</translation>
     </message>
@@ -10052,72 +10053,72 @@ Continue?
   <context>
     <name>Std_DrawStyle</name>
     <message>
-      <location filename="../CommandView.cpp" line="843"/>
+      <location filename="../CommandView.cpp" line="844"/>
       <source>Normal mode</source>
       <translation>ໂໝດປົກກະຕິ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="842"/>
+      <location filename="../CommandView.cpp" line="843"/>
       <source>As Is</source>
       <translation>ຕາມທີ່ເປັນຢູ່</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="845"/>
+      <location filename="../CommandView.cpp" line="846"/>
       <source>Points</source>
       <translation>ຈຸດ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="846"/>
+      <location filename="../CommandView.cpp" line="847"/>
       <source>Points mode</source>
       <translation>ໂໝດຈຸດ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="848"/>
+      <location filename="../CommandView.cpp" line="849"/>
       <source>Wireframe</source>
       <translation>ໂຄງລວດ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="849"/>
+      <location filename="../CommandView.cpp" line="850"/>
       <source>Wireframe mode</source>
       <translation>ໂໝດໂຄງລວດ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="851"/>
+      <location filename="../CommandView.cpp" line="852"/>
       <source>Hidden Line</source>
       <translation>ເສັ້ນທີ່ຖືກເຊື່ອງ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="852"/>
+      <location filename="../CommandView.cpp" line="853"/>
       <source>Hidden line mode</source>
       <translation>ໂໝດເສັ້ນທີ່ຖືກເຊື່ອງ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="854"/>
+      <location filename="../CommandView.cpp" line="855"/>
       <source>No Shading</source>
       <translation>ບໍ່ໃສ່ເງົາ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="855"/>
+      <location filename="../CommandView.cpp" line="856"/>
       <source>No shading mode</source>
       <translation>ໂໝດບໍ່ໃສ່ເງົາ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="857"/>
+      <location filename="../CommandView.cpp" line="858"/>
       <source>Shaded</source>
       <translation>ໃສ່ເງົາ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="858"/>
+      <location filename="../CommandView.cpp" line="859"/>
       <source>Shaded mode</source>
       <translation>ໂໝດໃສ່ເງົາ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="860"/>
+      <location filename="../CommandView.cpp" line="861"/>
       <source>Flat Lines</source>
       <translation>ເສັ້ນແບບພຽງ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="861"/>
+      <location filename="../CommandView.cpp" line="862"/>
       <source>Flat lines mode</source>
       <translation>ໂໝດເສັ້ນແບບພຽງ</translation>
     </message>
@@ -10140,7 +10141,7 @@ Save the document now?</source>
   <context>
     <name>Std_Group</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="151"/>
+      <location filename="../CommandStructure.cpp" line="150"/>
       <source>Group</source>
       <translation>ກຸ່ມ</translation>
     </message>
@@ -10332,23 +10333,28 @@ Save the document now?</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ຖ້າເລືອກ, ຈະສະແດງເຂດການແຈ້ງເຕືອນໃນແຖບສະຖານະ: ປຸ່ມທີ່ມີຕົວເລກນັບການແຈ້ງເຕືອນປັດຈຸບັນ ເຊິ່ງສາມາດຂະຫຍາຍເພື່ອເບິ່ງລາຍການແຈ້ງເຕືອນລະອຽດໄດ້. ແລະ ສາມາດເລືອກໃຫ້ມີການແຈ້ງເຕືອນແບບປັອບອັບເພີ່ມເຕີມໄດ້.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="66"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="32"/>
+      <source>Enables non-intrusive pop-up notifications above the notification area. Pop-up notifications can be dismissed manually by clicking on them, or automatically after a set duration.</source>
+      <translation>ເປີດໃຊ້ການແຈ້ງເຕືອນແບບປັອບອັບທີ່ບໍ່ລົບກວນ ຢູ່ເທິງພື້ນທີ່ການແຈ້ງເຕືອນ. ສາມາດປິດການແຈ້ງເຕືອນແບບປັອບອັບດ້ວຍຕົນເອງໂດຍການຄລິກໃສ່ພວກມັນ, ຫຼື ຈະຫາຍໄປໂດຍອັດຕະໂນມັດຫຼັງຈາກຄົບກຳນົດເວລາທີ່ຕັ້ງໄວ້.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="64"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum amount of time the notification will be shown (unless mouse buttons are clicked). It also controls when user notifications will be removed if the &amp;quot;Auto-remove user notifications&amp;quot; setting is checked.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ໄລຍະເວລາສູງສຸດທີ່ຈະສະແດງການແຈ້ງເຕືອນ (ນອກຈາກຈະມີການຄລິກເມົາສ໌). ມັນຍັງຄວບຄຸມເວລາທີ່ຈະລົບການແຈ້ງເຕືອນຜູ້ໃຊ້ອອກ ຫາກມີການເລືອກການຕັ້ງຄ່າ &amp;quot;ລົບການແຈ້ງເຕືອນຜູ້ໃຊ້ໂດຍອັດຕະໂນມັດ&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="69"/>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="94"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="67"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="92"/>
       <source> s</source>
       <translation> ວິນາທີ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="91"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="89"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum amount of time the notification will be shown (unless the notification bubble is dismissed by clicking on it).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ໄລຍະເວລາຕ່ຳສຸດທີ່ຈະສະແດງການແຈ້ງເຕືອນ (ນອກຈາກຈະມີການຄລິກເພື່ອປິດມັນອອກ).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="117"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="115"/>
       <source>Maximum number of notifications that will be simultaneously present on the notification bubble.</source>
       <translation>ຈຳນວນການແຈ້ງເຕືອນສູງສຸດທີ່ຈະສະແດງພ້ອມກັນໃນປັອບອັບການແຈ້ງເຕືອນ.</translation>
     </message>
@@ -10358,126 +10364,117 @@ Save the document now?</source>
       <translation>ເປີດໃຊ້ເຂດການແຈ້ງເຕືອນ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="32"/>
-      <source>Enables non-intrusive pop-up notifications above the status bar notification area. Pop-up notifications can be manually dismissed by clicking on them, and also automatically dismissed by specifying a maximum and minimum duration for them to be displayed.
-
-Additionally, pop-up notifications can be disabled. In this case the user can still use the notification area as a quick-access location to view notifications, without the distracton of an additional pop-up.</source>
-      <translation>ເປີດໃຊ້ການແຈ້ງເຕືອນແບບປັອບອັບທີ່ບໍ່ລົບກວນຢູ່ເໜືອເຂດການແຈ້ງເຕືອນຂອງແຖບສະຖານະ. ປັອບອັບການແຈ້ງເຕືອນສາມາດປິດໄດ້ດ້ວຍຕົນເອງໂດຍການຄລິກໃສ່ພວກມັນ, ແລະ ຍັງສາມາດປິດໄດ້ໂດຍອັດຕະໂນມັດໂດຍການກຳນົດໄລຍະເວລາສູງສຸດ ແລະ ຕ່ຳສຸດໃນການສະແດງຜົນ.
-
-ນອກຈາກນີ້, ຍັງສາມາດປິດການແຈ້ງເຕືອນແບບປັອບອັບໄດ້. ໃນກໍລະນີນີ້ນັກພັດທະນາຍັງສາມາດໃຊ້ເຂດການແຈ້ງເຕືອນເປັນບ່ອນເຂົ້າເຖິງດ່ວນເພື່ອເບິ່ງການແຈ້ງເຕືອນໄດ້ ໂດຍບໍ່ມີສິ່ງລົບກວນຈາກປັອບອັບເພີ່ມເຕີມ.</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="37"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="35"/>
       <source>Enable Pop-Up Notifications</source>
       <translation>ເປີດໃຊ້ການແຈ້ງເຕືອນແບບປັອບອັບ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="49"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="47"/>
       <source>Minimum duration</source>
       <translation>ໄລຍະເວລາຕ່ຳສຸດ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="59"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="57"/>
       <source>Maximum duration</source>
       <translation>ໄລຍະເວລາສູງສຸດ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="110"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="108"/>
       <source>Maximum concurrent notification count</source>
       <translation>ຈຳນວນການແຈ້ງເຕືອນພ້ອມກັນສູງສຸດ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="133"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="131"/>
       <source>Notification bubble width</source>
       <translation>ຄວາມກວ້າງຂອງປັອບອັບການແຈ້ງເຕືອນ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="140"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="138"/>
       <source>Width of the pop-up notification bubble in pixels.</source>
       <translation>ຄວາມກວ້າງຂອງປັອບອັບການແຈ້ງເຕືອນໃນຮູບແບບພິກເຊວ.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="143"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="141"/>
       <source> px</source>
       <translation> px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="168"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="166"/>
       <source>Any open pop-up notifications will disappear when another window is activated.</source>
       <translation>ປັອບອັບການແຈ້ງເຕືອນທີ່ເປີດຢູ່ທັງໝົດຈະຫາຍໄປເມື່ອມີການເປີດໜ້າຕ່າງອື່ນຂຶ້ນມາ.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="187"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="185"/>
       <source>Prevent pop-up notifications from appearing when the FreeCAD window is not the active window.</source>
       <translation>ປ້ອງກັນບໍ່ໃຫ້ປັອບອັບການແຈ້ງເຕືອນສະແດງຂຶ້ນມາເມື່ອໜ້າຕ່າງ FreeCAD ບໍ່ໄດ້ຖືກໃຊ້ງານຢູ່.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="190"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="188"/>
       <source>Do not show when window is inactive</source>
       <translation>ບໍ່ຕ້ອງສະແດງເມື່ອໜ້າຕ່າງບໍ່ໄດ້ຖືກໃຊ້ງານ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="209"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="207"/>
       <source>Additional notification sources to show in the notification area.</source>
       <translation>ແຫຼ່ງຂໍ້ມູນການແຈ້ງເຕືອນເພີ່ມເຕີມທີ່ຈະສະແດງໃນເຂດການແຈ້ງເຕືອນ.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="212"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="210"/>
       <source>Additional Data Sources</source>
       <translation>ແຫຼ່ງຂໍ້ມູນເພີ່ມເຕີມ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="218"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="216"/>
       <source>Errors intended for developers will appear in the notification area.</source>
       <translation>ຂໍ້ຜິດພາດສຳລັບນັກພັດທະນາຈະສະແດງໃນເຂດການແຈ້ງເຕືອນ.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="237"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="235"/>
       <source>Warnings intended for developers will appear in the notification area.</source>
       <translation>ຄຳເຕືອນສຳລັບນັກພັດທະນາຈະສະແດງໃນເຂດການແຈ້ງເຕືອນ.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="259"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="257"/>
       <source>Controls the amount of notifications to show in the list.</source>
       <translation>ຄວບຄຸມຈຳນວນການແຈ້ງເຕືອນທີ່ຈະສະແດງໃນລາຍການ.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="262"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="260"/>
       <source>Notifications List</source>
       <translation>ລາຍການການແຈ້ງເຕືອນ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="287"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="285"/>
       <source>Maximum notification count</source>
       <translation>ຈຳນວນການແຈ້ງເຕືອນສູງສຸດ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="268"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="266"/>
       <source>Limits the number of notifications that will be kept in the list. If 0, there is no limit.</source>
       <translation>ຈຳກັດຈຳນວນການແຈ້ງເຕືອນທີ່ຈະຖືກເກັບໄວ້ໃນລາຍການ. ຫາກເປັນ 0 ຈະບໍ່ມີການຈຳກັດ.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="294"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="292"/>
       <source>Removes the user notifications from the notifications list after the maximum duration for pop-up notifications has lapsed.</source>
       <translation>ລົບການແຈ້ງເຕືອນຜູ້ໃຊ້ອອກຈາກລາຍການແຈ້ງເຕືອນ ຫຼັງຈາກໝົດໄລຍະເວລາສູງສຸດຂອງປັອບອັບການແຈ້ງເຕືອນ.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="297"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="295"/>
       <source>Auto-remove user notifications</source>
       <translation>ລົບການແຈ້ງເຕືອນຜູ້ໃຊ້ໂດຍອັດຕະໂນມັດ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="221"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="219"/>
       <source>Debug errors</source>
       <translation>ຂໍ້ຜິດພາດໃນການດີບັກ (Debug errors)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="240"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="238"/>
       <source>Debug warnings</source>
       <translation>ຄຳເຕືອນໃນການດີບັກ (Debug warnings)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="171"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="169"/>
       <source>Hide when other window is activated</source>
       <translation>ເຊື່ອງເມື່ອໜ້າຕ່າງອື່ນຖືກໃຊ້ງານ</translation>
     </message>
@@ -10843,12 +10840,12 @@ after FreeCAD launches</source>
   <context>
     <name>StdViewLoadImage</name>
     <message>
-      <location filename="../CommandView.cpp" line="2314"/>
+      <location filename="../CommandView.cpp" line="2313"/>
       <source>&amp;Load Image…</source>
       <translation>ໂຫຼດຮູບພາບ… (&amp;L)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2315"/>
+      <location filename="../CommandView.cpp" line="2314"/>
       <source>Loads an image</source>
       <translation>ໂຫຼດຮູບພາບ</translation>
     </message>
@@ -10856,12 +10853,12 @@ after FreeCAD launches</source>
   <context>
     <name>NaviCubeDraggableCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1377"/>
+      <location filename="../NaviCube.cpp" line="1382"/>
       <source>Movable Navigation Cube</source>
       <translation>ກ້ອນນຳທາງທີ່ເຄື່ອນຍ້າຍໄດ້</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1378"/>
+      <location filename="../NaviCube.cpp" line="1383"/>
       <source>Drags and places the NaviCube</source>
       <translation>ລາກ ແລະ ວາງກ້ອນນຳທາງ (NaviCube)</translation>
     </message>
@@ -12488,52 +12485,52 @@ the region are non-opaque.</source>
       <translation>ແປງຮູບ</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="197"/>
+      <location filename="../TaskTransform.cpp" line="196"/>
       <source>Object origin</source>
       <translation>ຈຸດກຳເນີດວັດຖຸ</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="203"/>
+      <location filename="../TaskTransform.cpp" line="202"/>
       <source>Center of mass / centroid</source>
       <translation>ຈຸດສູນກາງມວນ / ຈຸດສູນກາງເລຂາຄະນິດ</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="209"/>
-      <location filename="../TaskTransform.cpp" line="219"/>
+      <location filename="../TaskTransform.cpp" line="208"/>
+      <location filename="../TaskTransform.cpp" line="218"/>
       <source>Custom</source>
       <translation>ກຳນົດເອງ</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="216"/>
+      <location filename="../TaskTransform.cpp" line="215"/>
       <source>Local</source>
       <translation>ພາຍໃນ (Local)</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="217"/>
+      <location filename="../TaskTransform.cpp" line="216"/>
       <source>Global</source>
       <translation>ໂດຍລວມ (Global)</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="442"/>
-      <location filename="../TaskTransform.cpp" line="444"/>
+      <location filename="../TaskTransform.cpp" line="441"/>
+      <location filename="../TaskTransform.cpp" line="443"/>
       <source>Pick Reference</source>
       <translation>ເລືອກຈຸດອ້າງອີງ</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="443"/>
+      <location filename="../TaskTransform.cpp" line="442"/>
       <source>Move to Other Object</source>
       <translation>ຍ້າຍໄປຫາວັດຖຸອື່ນ</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="451"/>
-      <location filename="../TaskTransform.cpp" line="466"/>
+      <location filename="../TaskTransform.cpp" line="450"/>
+      <location filename="../TaskTransform.cpp" line="465"/>
       <source>Select object, face, edge…</source>
-      <translation type="unfinished">Select object, face, edge…</translation>
+      <translation>ເລືອກວັດຖຸ, ໜ້າພຽງ, ຂອບ...</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="452"/>
-      <location filename="../TaskTransform.cpp" line="458"/>
-      <location filename="../TaskTransform.cpp" line="467"/>
+      <location filename="../TaskTransform.cpp" line="451"/>
+      <location filename="../TaskTransform.cpp" line="457"/>
+      <location filename="../TaskTransform.cpp" line="466"/>
       <source>Cancel</source>
       <translation>ຍົກເລີກ</translation>
     </message>
@@ -12841,22 +12838,22 @@ the region are non-opaque.</source>
   <context>
     <name>Gui::Application</name>
     <message>
-      <location filename="../Application.cpp" line="493"/>
+      <location filename="../Application.cpp" line="496"/>
       <source>Built-in Parameters</source>
       <translation>ຕົວປ່ຽນທີ່ຕິດຕັ້ງມາໃນຕົວ</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="467"/>
+      <location filename="../Application.cpp" line="470"/>
       <source>Theme Parameters</source>
       <translation>ຕົວປ່ຽນຂອງຮູບແບບ</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="502"/>
+      <location filename="../Application.cpp" line="505"/>
       <source>Theme Parameters - Fallback</source>
       <translation>ຕົວປ່ຽນຂອງຮູບແບບ - ສຳຮອງ</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="514"/>
+      <location filename="../Application.cpp" line="517"/>
       <source>User Parameters</source>
       <translation>ຕົວປ່ຽນຂອງຜູ້ໃຊ້</translation>
     </message>
@@ -13445,12 +13442,12 @@ Proceed?</source>
   <context>
     <name>StdCmdGroup</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="132"/>
+      <location filename="../CommandStructure.cpp" line="131"/>
       <source>New Group</source>
       <translation>ກຸ່ມໃໝ່</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="133"/>
+      <location filename="../CommandStructure.cpp" line="132"/>
       <source>Creates a group, which is a general-purpose container to group objects in the tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</source>
       <translation>ສ້າງກຸ່ມ, ເຊິ່ງແມ່ນບ່ອນເກັບວັດຖຸເພື່ອຈັດກຸ່ມໃນມຸມມອງແບບຕົ້ນໄມ້, ໂດຍບໍ່ສົນໃຈປະເພດຂໍ້ມູນ. ມັນເປັນພຽງໂຟນເດີເພື່ອຈັດລະບຽບວັດຖຸໃນໂມເດວ.</translation>
     </message>
@@ -13458,12 +13455,12 @@ Proceed?</source>
   <context>
     <name>StdCmdVarSet</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="204"/>
+      <location filename="../CommandStructure.cpp" line="203"/>
       <source>Variable Set</source>
       <translation>ຊຸດຕົວປ່ຽນ</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="206"/>
+      <location filename="../CommandStructure.cpp" line="205"/>
       <source>Creates a variable set, which is an object that maintains a set of properties to be used as variables</source>
       <translation>ສ້າງຊຸດຕົວປ່ຽນ, ເຊິ່ງແມ່ນວັດຖຸທີ່ເກັບຮັກສາຊຸດຄຸນສົມບັດເພື່ອໃຊ້ເປັນຕົວປ່ຽນ</translation>
     </message>
@@ -13471,12 +13468,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewSaveCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="249"/>
+      <location filename="../CommandView.cpp" line="250"/>
       <source>Save Current Camera</source>
       <translation>ບັນທຶກມຸມກ້ອງປັດຈຸບັນ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="250"/>
+      <location filename="../CommandView.cpp" line="251"/>
       <source>Saves the current camera settings</source>
       <translation>ບັນທຶກການຕັ້ງຄ່າມຸມກ້ອງປັດຈຸບັນ</translation>
     </message>
@@ -13484,12 +13481,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewRestoreCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="275"/>
+      <location filename="../CommandView.cpp" line="276"/>
       <source>Restore Saved Camera</source>
       <translation>ຄືນຄ່າມຸມກ້ອງທີ່ບັນທຶກໄວ້</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="276"/>
+      <location filename="../CommandView.cpp" line="277"/>
       <source>Restores the saved camera settings</source>
       <translation>ຄືນຄ່າການຕັ້ງຄ່າມຸມກ້ອງທີ່ບັນທຶກໄວ້</translation>
     </message>
@@ -13497,12 +13494,12 @@ Proceed?</source>
   <context>
     <name>StdCmdToggleClipPlane</name>
     <message>
-      <location filename="../CommandView.cpp" line="676"/>
+      <location filename="../CommandView.cpp" line="677"/>
       <source>Clippin&amp;g View</source>
       <translation>ມຸມມອງຕັດສ່ວນ (Clipping)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="677"/>
+      <location filename="../CommandView.cpp" line="678"/>
       <source>Toggles clipping of the active view</source>
       <translation>ເປີດ/ປິດ ການຕັດສ່ວນຂອງມຸມມອງທີ່ໃຊ້ງານຢູ່</translation>
     </message>
@@ -13510,12 +13507,12 @@ Proceed?</source>
   <context>
     <name>StdCmdDrawStyle</name>
     <message>
-      <location filename="../CommandView.cpp" line="762"/>
+      <location filename="../CommandView.cpp" line="763"/>
       <source>&amp;Draw Style</source>
       <translation>ຮູບແບບການແຕ້ມ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="763"/>
+      <location filename="../CommandView.cpp" line="764"/>
       <source>Changes the draw style of the objects</source>
       <translation>ປ່ຽນຮູບແບບການແຕ້ມຂອງວັດຖຸ</translation>
     </message>
@@ -13523,12 +13520,12 @@ Proceed?</source>
   <context>
     <name>StdCmdToggleVisibility</name>
     <message>
-      <location filename="../CommandView.cpp" line="969"/>
+      <location filename="../CommandView.cpp" line="970"/>
       <source>Toggle &amp;Visibility</source>
       <translation>ເປີດ/ປິດ ການເບິ່ງເຫັນ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="970"/>
+      <location filename="../CommandView.cpp" line="971"/>
       <source>Toggles the visibility of the selection</source>
       <translation>ເປີດ/ປິດ ການເບິ່ງເຫັນຂອງສິ່ງທີ່ເລືອກ</translation>
     </message>
@@ -13536,12 +13533,12 @@ Proceed?</source>
   <context>
     <name>StdCmdToggleTransparency</name>
     <message>
-      <location filename="../CommandView.cpp" line="1003"/>
+      <location filename="../CommandView.cpp" line="1004"/>
       <source>Toggle Transparenc&amp;y</source>
       <translation>ເປີດ/ປິດ ຄວາມໂປ່ງໃສ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1005"/>
+      <location filename="../CommandView.cpp" line="1006"/>
       <source>Toggles the transparency of the selected objects. Transparency can be fine-tuned in the appearance task dialog</source>
       <translation>ເປີດ/ປິດ ຄວາມໂປ່ງໃສຂອງວັດຖຸທີ່ເລືອກ. ຄວາມໂປ່ງໃສສາມາດປັບລະອຽດໄດ້ໃນກ່ອງຂໍ້ຄວາມລັກສະນະປະກົດ</translation>
     </message>
@@ -13549,12 +13546,12 @@ Proceed?</source>
   <context>
     <name>StdCmdToggleSelectability</name>
     <message>
-      <location filename="../CommandView.cpp" line="1116"/>
+      <location filename="../CommandView.cpp" line="1117"/>
       <source>Toggle Se&amp;lectability</source>
       <translation>ເປີດ/ປິດ ການເລືອກໄດ້</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1117"/>
+      <location filename="../CommandView.cpp" line="1118"/>
       <source>Toggles the property of the objects to get selected in the 3D view</source>
       <translation>ເປີດ/ປິດ ຄຸນສົມບັດຂອງວັດຖຸທີ່ຈະຖືກເລືອກໃນມຸມມອງ 3D</translation>
     </message>
@@ -13562,12 +13559,12 @@ Proceed?</source>
   <context>
     <name>StdCmdShowSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1178"/>
+      <location filename="../CommandView.cpp" line="1179"/>
       <source>Sho&amp;w Selection</source>
       <translation>ສະແດງສິ່ງທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1179"/>
+      <location filename="../CommandView.cpp" line="1180"/>
       <source>Shows all selected objects</source>
       <translation>ສະແດງວັດຖຸທີ່ເລືອກທັງໝົດ</translation>
     </message>
@@ -13575,12 +13572,12 @@ Proceed?</source>
   <context>
     <name>StdCmdHideSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1206"/>
+      <location filename="../CommandView.cpp" line="1207"/>
       <source>&amp;Hide Selection</source>
       <translation>ເຊື່ອງສິ່ງທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1207"/>
+      <location filename="../CommandView.cpp" line="1208"/>
       <source>Hides all selected objects</source>
       <translation>ເຊື່ອງວັດຖຸທີ່ເລືອກທັງໝົດ</translation>
     </message>
@@ -13588,12 +13585,12 @@ Proceed?</source>
   <context>
     <name>StdCmdSelectVisibleObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1234"/>
+      <location filename="../CommandView.cpp" line="1235"/>
       <source>&amp;Select Visible Objects</source>
       <translation>ເລືອກວັດຖຸທີ່ເບິ່ງເຫັນ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1235"/>
+      <location filename="../CommandView.cpp" line="1236"/>
       <source>Selects all visible objects in the active document</source>
       <translation>ເລືອກວັດຖຸທີ່ເບິ່ງເຫັນທັງໝົດໃນເອກະສານທີ່ໃຊ້ງານຢູ່</translation>
     </message>
@@ -13601,12 +13598,12 @@ Proceed?</source>
   <context>
     <name>StdCmdToggleObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1278"/>
+      <location filename="../CommandView.cpp" line="1279"/>
       <source>To&amp;ggle All Objects</source>
       <translation>ເປີດ/ປິດ ວັດຖຸທັງໝົດ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1279"/>
+      <location filename="../CommandView.cpp" line="1280"/>
       <source>Toggles the visibility of all objects in the active document</source>
       <translation>ເປີດ/ປິດ ການເບິ່ງເຫັນຂອງວັດຖຸທັງໝົດໃນເອກະສານທີ່ໃຊ້ງານຢູ່</translation>
     </message>
@@ -13614,12 +13611,12 @@ Proceed?</source>
   <context>
     <name>StdCmdShowObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1330"/>
+      <location filename="../CommandView.cpp" line="1331"/>
       <source>Show &amp;All Objects</source>
       <translation>ສະແດງວັດຖຸທັງໝົດ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1331"/>
+      <location filename="../CommandView.cpp" line="1332"/>
       <source>Shows all objects in the document</source>
       <translation>ສະແດງວັດຖຸທັງໝົດໃນເອກະສານ</translation>
     </message>
@@ -13627,12 +13624,12 @@ Proceed?</source>
   <context>
     <name>StdCmdHideObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1372"/>
+      <location filename="../CommandView.cpp" line="1373"/>
       <source>Hide All &amp;Objects</source>
       <translation>ເຊື່ອງວັດຖຸທັງໝົດ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1373"/>
+      <location filename="../CommandView.cpp" line="1374"/>
       <source>Hides all objects in the document</source>
       <translation>ເຊື່ອງວັດຖຸທັງໝົດໃນເອກະສານ</translation>
     </message>
@@ -13640,12 +13637,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewRotateRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="1723"/>
+      <location filename="../CommandView.cpp" line="1724"/>
       <source>Rotates &amp;Right</source>
       <translation>ໝຸນໄປທາງຂວາ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1724"/>
+      <location filename="../CommandView.cpp" line="1725"/>
       <source>Rotates the view by 90° clockwise</source>
       <translation>ໝຸນມຸມມອງໄປ 90 ອົງສາ ຕາມເຂັມໂມງ</translation>
     </message>
@@ -13653,12 +13650,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewFitAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="1748"/>
+      <location filename="../CommandView.cpp" line="1749"/>
       <source>&amp;Fit All</source>
       <translation>ຈັດໃຫ້ພໍດີທັງໝົດ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1749"/>
+      <location filename="../CommandView.cpp" line="1750"/>
       <source>Fits all content into the 3D view</source>
       <translation>ຈັດເນື້ອຫາທັງໝົດໃຫ້ພໍດີກັບມຸມມອງ 3D</translation>
     </message>
@@ -13666,12 +13663,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewFitSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1777"/>
+      <location filename="../CommandView.cpp" line="1778"/>
       <source>Fit &amp;Selection</source>
       <translation>ຈັດໃຫ້ພໍດີກັບສິ່ງທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1778"/>
+      <location filename="../CommandView.cpp" line="1779"/>
       <source>Fits the selected content into the 3D view</source>
       <translation>ຈັດເນື້ອຫາທີ່ເລືອກໃຫ້ພໍດີກັບມຸມມອງ 3D</translation>
     </message>
@@ -13679,12 +13676,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewGroup</name>
     <message>
-      <location filename="../CommandView.cpp" line="1807"/>
+      <location filename="../CommandView.cpp" line="1808"/>
       <source>Standard &amp;Views</source>
       <translation>ມຸມມອງມາດຕະຖານ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1808"/>
+      <location filename="../CommandView.cpp" line="1809"/>
       <source>Changes to a standard view</source>
       <translation>ປ່ຽນໄປໃຊ້ມຸມມອງມາດຕະຖານ</translation>
     </message>
@@ -13692,12 +13689,12 @@ Proceed?</source>
   <context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1975"/>
+      <location filename="../CommandView.cpp" line="1976"/>
       <source>D&amp;ocument Window</source>
       <translation>ວິນໂດເອກະສານ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1976"/>
+      <location filename="../CommandView.cpp" line="1977"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
       <translation>ສະແດງມຸມມອງທີ່ໃຊ້ງານຢູ່ແບບເຕັມຈໍ, ແຍກວິນໂດ ຫຼື ແບບຕິດໃນໜ້າຈໍ</translation>
     </message>
@@ -13705,12 +13702,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewVR</name>
     <message>
-      <location filename="../CommandView.cpp" line="2086"/>
+      <location filename="../CommandView.cpp" line="2087"/>
       <source>FreeCAD VR</source>
       <translation>FreeCAD VR</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2087"/>
+      <location filename="../CommandView.cpp" line="2088"/>
       <source>Extends the FreeCAD 3D Window to a VR device</source>
       <translation>ຂະຫຍາຍວິນໂດ 3D ຂອງ FreeCAD ໄປຍັງອຸປະກອນ VR</translation>
     </message>
@@ -13718,12 +13715,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewCreate</name>
     <message>
-      <location filename="../CommandView.cpp" line="2361"/>
+      <location filename="../CommandView.cpp" line="2360"/>
       <source>New 3D View</source>
       <translation>ມຸມມອງ 3D ໃໝ່</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2362"/>
+      <location filename="../CommandView.cpp" line="2361"/>
       <source>Opens a new 3D view window for the active document</source>
       <translation>ເປີດວິນໂດມຸມມອງ 3D ໃໝ່ສຳລັບເອກະສານທີ່ໃຊ້ງານຢູ່</translation>
     </message>
@@ -13731,12 +13728,12 @@ Proceed?</source>
   <context>
     <name>StdCmdToggleNavigation</name>
     <message>
-      <location filename="../CommandView.cpp" line="2390"/>
+      <location filename="../CommandView.cpp" line="2389"/>
       <source>Toggle Navigation/&amp;Edit Mode</source>
       <translation>ສະຫຼັບ ໂໝດນຳທາງ/ແກ້ໄຂ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2391"/>
+      <location filename="../CommandView.cpp" line="2390"/>
       <source>Toggles between navigation and edit mode</source>
       <translation>ສະຫຼັບໄປມາລະຫວ່າງໂໝດນຳທາງ ແລະ ໂໝດແກ້ໄຂ</translation>
     </message>
@@ -13744,12 +13741,12 @@ Proceed?</source>
   <context>
     <name>StdCmdAxisCross</name>
     <message>
-      <location filename="../CommandView.cpp" line="2438"/>
+      <location filename="../CommandView.cpp" line="2437"/>
       <source>Toggle A&amp;xis Cross</source>
       <translation>ເປີດ/ປິດ ເສັ້ນແກນຕັດກັນ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2439"/>
+      <location filename="../CommandView.cpp" line="2438"/>
       <source>Toggles the axis cross at the origin</source>
       <translation>ເປີດ/ປິດ ເສັ້ນແກນຕັດກັນຢູ່ຈຸດກຳເນີດ</translation>
     </message>
@@ -13757,12 +13754,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewExample3</name>
     <message>
-      <location filename="../CommandView.cpp" line="2544"/>
+      <location filename="../CommandView.cpp" line="2543"/>
       <source>Inventor Example #3</source>
       <translation>ຕົວຢ່າງ Inventor #3</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2545"/>
+      <location filename="../CommandView.cpp" line="2544"/>
       <source>Shows an animated texture</source>
       <translation>ສະແດງພື້ນຜິວແບບເຄື່ອນໄຫວ</translation>
     </message>
@@ -13770,12 +13767,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
-      <location filename="../CommandView.cpp" line="2573"/>
+      <location filename="../CommandView.cpp" line="2572"/>
       <source>Issue Camera &amp;Position</source>
       <translation>ສົ່ງຄ່າຕຳແໜ່ງມຸມກ້ອງ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2574"/>
+      <location filename="../CommandView.cpp" line="2573"/>
       <source>Issues the camera position to the console and to a macro, to easily recall this position</source>
       <translation>ສົ່ງຄ່າຕຳແໜ່ງມຸມກ້ອງໄປຍັງຄອນໂຊລ ແລະ ມາໂຄຣ ເພື່ອເອີ້ນໃຊ້ຄືນໄດ້ງ່າຍ</translation>
     </message>
@@ -13783,12 +13780,12 @@ Proceed?</source>
   <context>
     <name>StdViewBoxZoom</name>
     <message>
-      <location filename="../CommandView.cpp" line="2826"/>
+      <location filename="../CommandView.cpp" line="2825"/>
       <source>&amp;Box Zoom</source>
       <translation>ຊູມແບບກ່ອງ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2827"/>
+      <location filename="../CommandView.cpp" line="2826"/>
       <source>Activates the box zoom tool</source>
       <translation>ເປີດໃຊ້ເຄື່ອງມືຊູມແບບກ່ອງ</translation>
     </message>
@@ -13796,12 +13793,12 @@ Proceed?</source>
   <context>
     <name>StdBoxSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2860"/>
+      <location filename="../CommandView.cpp" line="2859"/>
       <source>&amp;Box Selection</source>
       <translation>ເລືອກແບບກ່ອງ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2861"/>
+      <location filename="../CommandView.cpp" line="2860"/>
       <source>Activates the box selection tool</source>
       <translation>ເປີດໃຊ້ເຄື່ອງມືເລືອກແບບກ່ອງ</translation>
     </message>
@@ -13809,12 +13806,12 @@ Proceed?</source>
   <context>
     <name>StdBoxElementSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2927"/>
+      <location filename="../CommandView.cpp" line="2926"/>
       <source>Bo&amp;x Element Selection</source>
       <translation>ເລືອກອົງປະກອບແບບກ່ອງ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2928"/>
+      <location filename="../CommandView.cpp" line="2927"/>
       <source>Activates box element selection</source>
       <translation>ເປີດໃຊ້ການເລືອກອົງປະກອບແບບກ່ອງ</translation>
     </message>
@@ -13822,12 +13819,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2983"/>
+      <location filename="../CommandView.cpp" line="2982"/>
       <source>&amp;Go to Selection</source>
       <translation>ໄປຫາສິ່ງທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2984"/>
+      <location filename="../CommandView.cpp" line="2983"/>
       <source>Scrolls to the first selected item</source>
       <translation>ເລື່ອນໄປຫາລາຍການທຳອິດທີ່ເລືອກ</translation>
     </message>
@@ -13835,12 +13832,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTreeCollapse</name>
     <message>
-      <location filename="../CommandView.cpp" line="3008"/>
+      <location filename="../CommandView.cpp" line="3007"/>
       <source>Collapse Selected Items</source>
       <translation>ຫຍໍ້ລາຍການທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3009"/>
+      <location filename="../CommandView.cpp" line="3008"/>
       <source>Collapses the currently selected tree items</source>
       <translation>ຫຍໍ້ລາຍການໃນຜັງຕົ້ນໄມ້ທີ່ເລືອກໄວ້ໃນປັດຈຸບັນ</translation>
     </message>
@@ -13848,12 +13845,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTreeExpand</name>
     <message>
-      <location filename="../CommandView.cpp" line="3034"/>
+      <location filename="../CommandView.cpp" line="3033"/>
       <source>Expand Selected Items</source>
       <translation>ຂະຫຍາຍລາຍການທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3035"/>
+      <location filename="../CommandView.cpp" line="3034"/>
       <source>Expands the currently selected tree items</source>
       <translation>ຂະຫຍາຍລາຍການໃນຜັງຕົ້ນໄມ້ທີ່ເລືອກໄວ້ໃນປັດຈຸບັນ</translation>
     </message>
@@ -13861,12 +13858,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTreeSelectAllInstances</name>
     <message>
-      <location filename="../CommandView.cpp" line="3060"/>
+      <location filename="../CommandView.cpp" line="3059"/>
       <source>Select All Instances</source>
       <translation>ເລືອກທຸກອິນສະແຕນສ໌ (Instances)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3061"/>
+      <location filename="../CommandView.cpp" line="3060"/>
       <source>Selects all instances of the currently selected object</source>
       <translation>ເລືອກທຸກອິນສະແຕນສ໌ຂອງວັດຖຸທີ່ເລືອກໄວ້ໃນປັດຈຸບັນ</translation>
     </message>
@@ -13874,12 +13871,12 @@ Proceed?</source>
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
-      <location filename="../CommandView.cpp" line="3128"/>
+      <location filename="../CommandView.cpp" line="3127"/>
       <source>Scene I&amp;nspector</source>
       <translation>ຕົວນຳກວດສາກ (Scene Inspector)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3129"/>
+      <location filename="../CommandView.cpp" line="3128"/>
       <source>Opens the scene inspector</source>
       <translation>ເປີດຕົວນຳກວດສາກ</translation>
     </message>
@@ -13887,12 +13884,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
-      <location filename="../CommandView.cpp" line="3162"/>
+      <location filename="../CommandView.cpp" line="3161"/>
       <source>Text&amp;ure Mapping</source>
       <translation>ການກຳນົດພື້ນຜິວ (Texture Mapping)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3163"/>
+      <location filename="../CommandView.cpp" line="3162"/>
       <source>Maps textures to shapes</source>
       <translation>ກຳນົດພື້ນຜິວໃຫ້ກັບຮູບຊົງ</translation>
     </message>
@@ -13900,12 +13897,12 @@ Proceed?</source>
   <context>
     <name>StdCmdDemoMode</name>
     <message>
-      <location filename="../CommandView.cpp" line="3188"/>
+      <location filename="../CommandView.cpp" line="3187"/>
       <source>View &amp;Turntable</source>
       <translation>ມຸມມອງແທ່ນໝຸນ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3189"/>
+      <location filename="../CommandView.cpp" line="3188"/>
       <source>Opens a turntable view</source>
       <translation>ເປີດມຸມມອງແບບແທ່ນໝຸນ</translation>
     </message>
@@ -13913,12 +13910,12 @@ Proceed?</source>
   <context>
     <name>StdCmdSelBack</name>
     <message>
-      <location filename="../CommandView.cpp" line="3218"/>
+      <location filename="../CommandView.cpp" line="3217"/>
       <source>Selection &amp;Back</source>
       <translation>ຍ້ອນກັບການເລືອກ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3220"/>
+      <location filename="../CommandView.cpp" line="3219"/>
       <source>Restores the previous tree view selection. Only works if tree RecordSelection mode is switched on.</source>
       <translation>ຄືນຄ່າການເລືອກໃນມຸມມອງຜັງຕົ້ນໄມ້ກ່ອນໜ້າ. ໃຊ້ໄດ້ສະເພາະເມື່ອເປີດໂໝດ RecordSelection ເທົ່ານັ້ນ.</translation>
     </message>
@@ -13926,12 +13923,12 @@ Proceed?</source>
   <context>
     <name>StdCmdSelForward</name>
     <message>
-      <location filename="../CommandView.cpp" line="3252"/>
+      <location filename="../CommandView.cpp" line="3251"/>
       <source>Selection &amp;Forward</source>
       <translation>ໄປຂ້າງໜ້າການເລືອກ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3254"/>
+      <location filename="../CommandView.cpp" line="3253"/>
       <source>Restores the next tree view selection. Only works if tree RecordSelection mode is switched on.</source>
       <translation>ຄືນຄ່າການເລືອກໃນມຸມມອງຜັງຕົ້ນໄມ້ຖັດໄປ. ໃຊ້ໄດ້ສະເພາະເມື່ອເປີດໂໝດ RecordSelection ເທົ່ານັ້ນ.</translation>
     </message>
@@ -13939,12 +13936,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSingleDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3310"/>
+      <location filename="../CommandView.cpp" line="3309"/>
       <source>&amp;Single Document</source>
       <translation>ເອກະສານດ່ຽວ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3311"/>
+      <location filename="../CommandView.cpp" line="3310"/>
       <source>Displays only the active document in the tree view</source>
       <translation>ສະແດງສະເພາະເອກະສານທີ່ໃຊ້ງານຢູ່ເທົ່ານັ້ນໃນມຸມມອງຜັງຕົ້ນໄມ້</translation>
     </message>
@@ -13952,12 +13949,12 @@ Proceed?</source>
   <context>
     <name>StdTreeMultiDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3327"/>
+      <location filename="../CommandView.cpp" line="3326"/>
       <source>&amp;Multi Document</source>
       <translation>ຫຼາຍເອກະສານ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3328"/>
+      <location filename="../CommandView.cpp" line="3327"/>
       <source>Displays all documents in the tree view</source>
       <translation>ສະແດງທຸກເອກະສານໃນມຸມມອງຜັງຕົ້ນໄມ້</translation>
     </message>
@@ -13965,12 +13962,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSyncView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3387"/>
+      <location filename="../CommandView.cpp" line="3386"/>
       <source>Sync View</source>
       <translation>ຊິງຄ໌ມຸມມອງ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3388"/>
+      <location filename="../CommandView.cpp" line="3387"/>
       <source>Switches to the 3D view containing the selected item from the tree view</source>
       <translation>ສະຫຼັບໄປຍັງມຸມມອງ 3D ທີ່ມີລາຍການທີ່ເລືອກຈາກມຸມມອງຜັງຕົ້ນໄມ້</translation>
     </message>
@@ -13978,12 +13975,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSyncSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3407"/>
+      <location filename="../CommandView.cpp" line="3406"/>
       <source>Sync Selection</source>
       <translation>ຊິງຄ໌ການເລືອກ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3408"/>
+      <location filename="../CommandView.cpp" line="3407"/>
       <source>Expands the tree item when the corresponding object is selected in the 3D view</source>
       <translation>ຂະຫຍາຍລາຍການໃນຜັງຕົ້ນໄມ້ເມື່ອມີການເລືອກວັດຖຸທີ່ກ່ຽວຂ້ອງໃນມຸມມອງ 3D</translation>
     </message>
@@ -13991,12 +13988,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSyncPlacement</name>
     <message>
-      <location filename="../CommandView.cpp" line="3427"/>
+      <location filename="../CommandView.cpp" line="3426"/>
       <source>Sync Placement</source>
       <translation>ຊິງຄ໌ການວາງຕຳແໜ່ງ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3429"/>
+      <location filename="../CommandView.cpp" line="3428"/>
       <source>Adjusts the placement on drag-and-drop of objects across coordinate systems (e.g. in part containers)</source>
       <translation>ປັບການວາງຕຳແໜ່ງເມື່ອລາກ ແລະ ວາງວັດຖຸຂ້າມລະບົບພິກັດ (ເຊັ່ນ ໃນບ່ອນເກັບຊິ້ນສ່ວນ)</translation>
     </message>
@@ -14004,12 +14001,12 @@ Proceed?</source>
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3466"/>
+      <location filename="../CommandView.cpp" line="3465"/>
       <source>Record Selection</source>
       <translation>ບັນທຶກການເລືອກ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3468"/>
+      <location filename="../CommandView.cpp" line="3467"/>
       <source>Records the selection in the tree view in order to go back/forward using the navigation buttons</source>
       <translation>ບັນທຶກການເລືອກໃນມຸມມອງຜັງຕົ້ນໄມ້ເພື່ອຍ້ອນກັບ/ໄປຂ້າງໜ້າໂດຍໃຊ້ປຸ່ມນຳທາງ</translation>
     </message>
@@ -14017,12 +14014,12 @@ Proceed?</source>
   <context>
     <name>StdTreeDrag</name>
     <message>
-      <location filename="../CommandView.cpp" line="3485"/>
+      <location filename="../CommandView.cpp" line="3484"/>
       <source>Initiate &amp;Dragging</source>
       <translation>ເລີ່ມການລາກ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3486"/>
+      <location filename="../CommandView.cpp" line="3485"/>
       <source>Initiates dragging of the currently selected tree items</source>
       <translation>ເລີ່ມການລາກລາຍການຜັງຕົ້ນໄມ້ທີ່ເລືອກໄວ້ໃນປັດຈຸບັນ</translation>
     </message>
@@ -14030,12 +14027,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTreeViewActions</name>
     <message>
-      <location filename="../CommandView.cpp" line="3518"/>
+      <location filename="../CommandView.cpp" line="3517"/>
       <source>Tree View Actions</source>
       <translation>ການດຳເນີນການມຸມມອງຜັງຕົ້ນໄມ້</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3519"/>
+      <location filename="../CommandView.cpp" line="3518"/>
       <source>Tree view behavior options and actions</source>
       <translation>ທາງເລືອກພຶດຕິກຳ ແລະ ການດຳເນີນການຂອງມຸມມອງຜັງຕົ້ນໄມ້</translation>
     </message>
@@ -14043,12 +14040,12 @@ Proceed?</source>
   <context>
     <name>StdCmdSelBoundingBox</name>
     <message>
-      <location filename="../CommandView.cpp" line="3563"/>
+      <location filename="../CommandView.cpp" line="3562"/>
       <source>&amp;Bounding Box</source>
       <translation>ຂອບເຂດວັດຖຸ (Bounding Box)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3564"/>
+      <location filename="../CommandView.cpp" line="3563"/>
       <source>Shows selection bounding box</source>
       <translation>ສະແດງຂອບເຂດຂອງສິ່ງທີ່ເລືອກ</translation>
     </message>
@@ -14056,12 +14053,12 @@ Proceed?</source>
   <context>
     <name>StdCmdDockOverlayAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3610"/>
+      <location filename="../CommandView.cpp" line="3609"/>
       <source>Toggle Overl&amp;ay for All Panels</source>
       <translation>ເປີດ/ປິດ ການວາງຊ້ອນສຳລັບທຸກແຜງ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3611"/>
+      <location filename="../CommandView.cpp" line="3610"/>
       <source>Toggles overlay mode for all docked panels</source>
       <translation>ເປີດ/ປິດ ໂໝດວາງຊ້ອນສຳລັບທຸກແຜງທີ່ຕິດຢູ່</translation>
     </message>
@@ -14069,12 +14066,12 @@ Proceed?</source>
   <context>
     <name>StdCmdDockOverlayTransparentAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3633"/>
+      <location filename="../CommandView.cpp" line="3632"/>
       <source>Toggle Tra&amp;nsparent Panels</source>
       <translation>ເປີດ/ປິດ ຄວາມໂປ່ງໃສຂອງແຜງ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3634"/>
+      <location filename="../CommandView.cpp" line="3633"/>
       <source>Toggles transparent mode for all docked overlay panels.
 This makes the docked panels stay transparent at all times.</source>
       <translation>ເປີດ/ປິດ ໂໝດໂປ່ງໃສສຳລັບທຸກແຜງວາງຊ້ອນທີ່ຕິດຢູ່.
@@ -14084,12 +14081,12 @@ This makes the docked panels stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggle</name>
     <message>
-      <location filename="../CommandView.cpp" line="3659"/>
+      <location filename="../CommandView.cpp" line="3658"/>
       <source>Toggle &amp;Overlay</source>
       <translation>ເປີດ/ປິດ ການວາງຊ້ອນ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3660"/>
+      <location filename="../CommandView.cpp" line="3659"/>
       <source>Toggles overlay mode for the docked window under the cursor</source>
       <translation>ເປີດ/ປິດ ໂໝດວາງຊ້ອນສຳລັບວິນໂດທີ່ຕິດຢູ່ກ້ອງຕົວກະພິບ (Cursor)</translation>
     </message>
@@ -14097,12 +14094,12 @@ This makes the docked panels stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="3682"/>
+      <location filename="../CommandView.cpp" line="3681"/>
       <source>Toggle Tran&amp;sparent Mode</source>
       <translation>ເປີດ/ປິດ ໂໝດໂປ່ງໃສ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3683"/>
+      <location filename="../CommandView.cpp" line="3682"/>
       <source>Toggles transparent mode for the docked panel under cursor.
 This makes the docked panel stay transparent at all times.</source>
       <translation>ເປີດ/ປິດ ໂໝດໂປ່ງໃສສຳລັບແຜງທີ່ຕິດຢູ່ກ້ອງຕົວກະພິບ.
@@ -14112,12 +14109,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="3708"/>
+      <location filename="../CommandView.cpp" line="3707"/>
       <source>Toggle &amp;Left</source>
       <translation>ເປີດ/ປິດ ເບື້ອງຊ້າຍ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3709"/>
+      <location filename="../CommandView.cpp" line="3708"/>
       <source>Toggles the visibility of the left overlay panel</source>
       <translation>ເປີດ/ປິດ ການເບິ່ງເຫັນຂອງແຜງວາງຊ້ອນເບື້ອງຊ້າຍ</translation>
     </message>
@@ -14125,12 +14122,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="3733"/>
+      <location filename="../CommandView.cpp" line="3732"/>
       <source>Toggle &amp;Right</source>
       <translation>ເປີດ/ປິດ ເບື້ອງຂວາ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3734"/>
+      <location filename="../CommandView.cpp" line="3733"/>
       <source>Toggles the visibility of the right overlay panel</source>
       <translation>ເປີດ/ປິດ ການເບິ່ງເຫັນຂອງແຜງວາງຊ້ອນເບື້ອງຂວາ</translation>
     </message>
@@ -14138,12 +14135,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleTop</name>
     <message>
-      <location filename="../CommandView.cpp" line="3758"/>
+      <location filename="../CommandView.cpp" line="3757"/>
       <source>Toggle &amp;Top</source>
       <translation>ເປີດ/ປິດ ເບື້ອງເທິງ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3759"/>
+      <location filename="../CommandView.cpp" line="3758"/>
       <source>Toggles the visibility of the top overlay panel</source>
       <translation>ເປີດ/ປິດ ການເບິ່ງເຫັນຂອງແຜງວາງຊ້ອນເບື້ອງເທິງ</translation>
     </message>
@@ -14151,12 +14148,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleBottom</name>
     <message>
-      <location filename="../CommandView.cpp" line="3783"/>
+      <location filename="../CommandView.cpp" line="3782"/>
       <source>Toggle &amp;Bottom</source>
       <translation>ເປີດ/ປິດ ເບື້ອງລຸ່ມ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3784"/>
+      <location filename="../CommandView.cpp" line="3783"/>
       <source>Toggles the visibility of the bottom overlay panel</source>
       <translation>ເປີດ/ປິດ ການເບິ່ງເຫັນຂອງແຜງວາງຊ້ອນເບື້ອງລຸ່ມ</translation>
     </message>
@@ -14164,12 +14161,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayMouseTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="3808"/>
+      <location filename="../CommandView.cpp" line="3807"/>
       <source>Bypass &amp;Mouse Events in Overlay Panels</source>
       <translation>ຂ້າມເຫດການເມົາໃນແຜງວາງຊ້ອນ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3809"/>
+      <location filename="../CommandView.cpp" line="3808"/>
       <source>Bypasses all mouse events in docked overlay panels</source>
       <translation>ຂ້າມທຸກເຫດການເມົາໃນແຜງວາງຊ້ອນທີ່ຕິດຢູ່</translation>
     </message>
@@ -14177,12 +14174,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlay</name>
     <message>
-      <location filename="../CommandView.cpp" line="3854"/>
+      <location filename="../CommandView.cpp" line="3853"/>
       <source>Overlay Docked Panel</source>
       <translation>ແຜງວາງຊ້ອນທີ່ຕິດຢູ່</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3855"/>
+      <location filename="../CommandView.cpp" line="3854"/>
       <source>Sets the docked panel in overlay mode</source>
       <translation>ຕັ້ງຄ່າແຜງທີ່ຕິດຢູ່ໃຫ້ຢູ່ໃນໂໝດວາງຊ້ອນ</translation>
     </message>
@@ -14190,12 +14187,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdStoreWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3988"/>
+      <location filename="../CommandView.cpp" line="3987"/>
       <source>St&amp;ore Working View</source>
       <translation>ບັນທຶກມຸມມອງການເຮັດວຽກ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3989"/>
+      <location filename="../CommandView.cpp" line="3988"/>
       <source>Stores a temporary working view for the current document</source>
       <translation>ບັນທຶກມຸມມອງການເຮັດວຽກຊົ່ວຄາວສຳລັບເອກະສານປັດຈຸບັນ</translation>
     </message>
@@ -14203,12 +14200,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdRecallWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="4016"/>
+      <location filename="../CommandView.cpp" line="4015"/>
       <source>R&amp;ecall Working View</source>
       <translation>ເອີ້ນໃຊ້ຄືນມຸມມອງການເຮັດວຽກ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4017"/>
+      <location filename="../CommandView.cpp" line="4016"/>
       <source>Recalls a previously stored temporary working view</source>
       <translation>ເອີ້ນໃຊ້ມຸມມອງການເຮັດວຽກຊົ່ວຄາວທີ່ເຄີຍບັນທຶກໄວ້</translation>
     </message>
@@ -14216,12 +14213,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdAlignToSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="4044"/>
+      <location filename="../CommandView.cpp" line="4043"/>
       <source>&amp;Align to Selection</source>
       <translation>ຈັດວາງໃຫ້ກົງກັບສິ່ງທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4045"/>
+      <location filename="../CommandView.cpp" line="4044"/>
       <source>Aligns the camera view to the selected elements in the 3D view</source>
       <translation>ຈັດວາງມຸມກ້ອງໃຫ້ກົງກັບອົງປະກອບທີ່ເລືອກໃນມຸມມອງ 3D</translation>
     </message>
@@ -14322,7 +14319,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="4313"/>
+      <location filename="../Tree.cpp" line="4317"/>
       <source>Tree View</source>
       <translation>ມຸມມອງຜັງຕົ້ນໄມ້</translation>
     </message>
@@ -14330,48 +14327,48 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::Dialog::DlgExpressionInput</name>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="77"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="79"/>
       <source>Revert to last calculated value (as constant)</source>
       <translation>ກັບໄປໃຊ້ຄ່າທີ່ຄິດໄລ່ຄັ້ງຫຼ້າສຸດ (ເປັນຄ່າຄົງທີ່)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="402"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="404"/>
       <source> (Warning: unit discarded)</source>
       <translation> (ຄຳເຕືອນ: ຫົວໜ່ວຍຖືກຍົກເລີກ)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="508"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="510"/>
       <source>Invalid property name: %1</source>
       <translation>ຊື່ຄຸນສົມບັດບໍ່ຖືກຕ້ອງ: %1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="512"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="514"/>
       <source>Unknown object</source>
       <translation>ບໍ່ຮູ້ຈັກວັດຖຸ</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="518"/>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="967"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="520"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="925"/>
       <source>the name cannot be empty</source>
       <translation>ຊື່ບໍ່ສາມາດວ່າງໄດ້</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="528"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="530"/>
       <source>%1 is a unit</source>
       <translation>%1 ແມ່ນຫົວໜ່ວຍ</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="533"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="535"/>
       <source>%1 is a constant</source>
       <translation>%1 ແມ່ນຄ່າຄົງທີ່</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="539"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="541"/>
       <source>%1 already exists</source>
       <translation>%1 ມີຢູ່ແລ້ວ</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="963"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="921"/>
       <source>Invalid group name: %1</source>
       <translation>ຊື່ກຸ່ມບໍ່ຖືກຕ້ອງ: %1</translation>
     </message>
@@ -14488,17 +14485,17 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="304"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="306"/>
       <source>Value out of range (%1 out of [%2, %3])</source>
       <translation>ຄ່າຢູ່ນອກຂອບເຂດ (%1 ຢູ່ນອກ [%2, %3])</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="387"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="389"/>
       <source>Not a Number</source>
       <translation>ບໍ່ແມ່ນຕົວເລກ</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="395"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="397"/>
       <source>Unit mismatch between result and required unit</source>
       <translation>ຫົວໜ່ວຍບໍ່ກົງກັນລະຫວ່າງຜົນໄດ້ຮັບ ແລະ ຫົວໜ່ວຍທີ່ຕ້ອງການ</translation>
     </message>
@@ -14506,12 +14503,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdClarifySelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="4072"/>
+      <location filename="../CommandView.cpp" line="4071"/>
       <source>Clarify Selection</source>
       <translation>ເຮັດໃຫ້ການເລືອກຊັດເຈນ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4073"/>
+      <location filename="../CommandView.cpp" line="4072"/>
       <source>Displays a context menu at the mouse cursor to select overlapping or obstructed geometry in the 3D view.
 </source>
       <translation>ສະແດງເມນູລັດຢູ່ຈຸດທີ່ເມົາຊີ້ເພື່ອເລືອກເລຂາຄະນິດທີ່ວາງຊ້ອນກັນ ຫຼື ຖືກບັງຢູ່ໃນມຸມມອງ 3D.
@@ -14619,7 +14616,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>FileFormat</name>
     <message>
-      <location filename="../FreeCADGuiInit.py" line="470"/>
+      <location filename="../FreeCADGuiInit.py" line="463"/>
       <source>Portable Document Format</source>
       <translation>ໄຟລ໌ PDF</translation>
     </message>
@@ -14727,51 +14724,6 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
-    <name>StdCmdAnnotationLabel</name>
-    <message>
-      <location filename="../CommandStd.cpp" line="983"/>
-      <source>Tools</source>
-      <translation>ເຄື່ອງມື</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="984"/>
-      <source>Annotation Label</source>
-      <translation>ປ້າຍຄຳອະທິບາຍ</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="985"/>
-      <source>Creates a new annotation label at the picked location in the 3D view</source>
-      <translation>ສ້າງປ້າຍຄຳອະທິບາຍໃໝ່ຢູ່ຈຸດທີ່ເລືອກໃນມຸມມອງ 3D</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdToggleBottomPanels</name>
-    <message>
-      <location filename="../CommandView.cpp" line="3890"/>
-      <source>Toggle Bottom Panels</source>
-      <translation>ເປີດ/ປິດ ແຜງດ້ານລຸ່ມ</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="3891"/>
-      <source>Toggles the bottom dock panels</source>
-      <translation>ເປີດ/ປິດ ແຜງທີ່ຕິດຢູ່ດ້ານລຸ່ມ</translation>
-    </message>
-  </context>
-  <context>
-    <name>FileDialog</name>
-    <message>
-      <location filename="../FileDialog.cpp" line="578"/>
-      <source>Save As</source>
-      <translation>ບັນທຶກເປັນ</translation>
-    </message>
-    <message>
-      <location filename="../FileDialog.cpp" line="713"/>
-      <location filename="../FileDialog.cpp" line="808"/>
-      <source>Open</source>
-      <translation>ເປີດ</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdToggleSuppress</name>
     <message>
       <location filename="../CommandFeat.cpp" line="240"/>
@@ -14795,6 +14747,51 @@ treated as shortcut key sequence 'F, F'.</source>
       <location filename="../Widgets.cpp" line="1905"/>
       <source>Value</source>
       <translation>ຄ່າ (Value)</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileDialog</name>
+    <message>
+      <location filename="../FileDialog.cpp" line="578"/>
+      <source>Save As</source>
+      <translation>ບັນທຶກເປັນ</translation>
+    </message>
+    <message>
+      <location filename="../FileDialog.cpp" line="713"/>
+      <location filename="../FileDialog.cpp" line="808"/>
+      <source>Open</source>
+      <translation>ເປີດ</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdAnnotationLabel</name>
+    <message>
+      <location filename="../CommandStd.cpp" line="983"/>
+      <source>Tools</source>
+      <translation>ເຄື່ອງມື</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="984"/>
+      <source>Annotation Label</source>
+      <translation>ປ້າຍຄຳອະທິບາຍ</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="985"/>
+      <source>Creates a new annotation label at the picked location in the 3D view</source>
+      <translation>ສ້າງປ້າຍຄຳອະທິບາຍໃໝ່ຢູ່ຈຸດທີ່ເລືອກໃນມຸມມອງ 3D</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleBottomPanels</name>
+    <message>
+      <location filename="../CommandView.cpp" line="3889"/>
+      <source>Toggle Bottom Panels</source>
+      <translation>ເປີດ/ປິດ ແຜງດ້ານລຸ່ມ</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="3890"/>
+      <source>Toggles the bottom dock panels</source>
+      <translation>ເປີດ/ປິດ ແຜງທີ່ຕິດຢູ່ດ້ານລຸ່ມ</translation>
     </message>
   </context>
   <context>
