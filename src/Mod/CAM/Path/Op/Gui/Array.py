@@ -19,18 +19,19 @@
 #                                                                              #
 ################################################################################
 
-import DraftVecUtils
 import FreeCAD
 import FreeCADGui
 import Path
 import PathScripts.PathUtils as PathUtils
-import Path.Base.Util as PathUtil
-from Path.Dressup.Utils import toolController
+from DraftVecUtils import rotate2D
+from Path.Base.Util import coolantModeForOp
+from Path.Base.Util import toolControllerForOp
 from Path.Op.Util import getCycleTimeEstimate
 import tsp_solver
 
 import random
 import math
+import time
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -66,7 +67,36 @@ class ObjectArray:
             "Path",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "The tool controller that will be used to calculate the toolpath\nShould be identical for all base operations",
+                "The tool controller that will be used to calculate the toolpath",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyLinkListHidden",
+            "ArrayGroup",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "List of child array objects"),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "Combine",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "If operations with identical tool controller and without coolant:"
+                "\ncombine by copies"
+                "\n\nIf operations with different tool controllers or with coolant:"
+                "\ncombine operations with same tool controller and coolant mode, "
+                "\nbut only if operations placed one by one in tree",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "ExpandArray",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Split path by elements even all base operations without coolant"
+                " and with identical tool controller",
             ),
         )
 
@@ -197,13 +227,14 @@ class ObjectArray:
         obj.Active = True
         obj.Type = ("Linear1D", "Linear2D", "Points", "Polar")
         obj.PointsSorting = ("Automatic", "Manual")
-        obj.Copies = (0, 0, 99999, 1)
-        obj.CopiesX = (0, 0, 99999, 1)
-        obj.CopiesY = (0, 0, 99999, 1)
+        obj.Copies = (1, 1, 99999, 1)
+        obj.CopiesX = (1, 1, 99999, 1)
+        obj.CopiesY = (1, 1, 99999, 1)
         obj.JitterSeed = (0, 0, 2147483647, 1)
         obj.JitterMagnitude = FreeCAD.Vector(10, 10, 0)
         obj.JitterAngle = 10
 
+        self.group = []
         self.setEditorModes(obj)
         obj.Proxy = self
 
@@ -215,6 +246,7 @@ class ObjectArray:
 
     def setEditorModes(self, obj):
         obj.setEditorMode("ToolController", 2)  # hidden
+        obj.setEditorMode("ArrayGroup", 3)  # hidden and read-only
         obj.setEditorMode("CycleTime", 1)  # read-only
 
         angleMode = centreMode = copiesXMode = copiesYMode = swapDirectionMode = 2
@@ -245,12 +277,22 @@ class ObjectArray:
         obj.setEditorMode("JitterSeed", jitterMode)
         obj.setEditorMode("JitterAngle", jitterMode)
 
+        expandMode = 0 if self.isLegacy(obj) else 2
+        obj.setEditorMode("ExpandArray", expandMode)
+
+        combineMode = 0 if obj.ArrayGroup else 2
+        obj.setEditorMode("Combine", combineMode)
+
     def onChanged(self, obj, prop):
-        if prop in ("Type", "UseJitter") and not obj.Document.Restoring:
+        if prop in ("Path", "ExpandArray", "Type", "UseJitter") and not obj.Document.Restoring:
             self.setEditorModes(obj)
 
         if prop == "Active" and obj.ViewObject:
             obj.ViewObject.signalChangeIcon()
+
+        if prop == "Active":
+            for op in obj.ArrayGroup:
+                op.Active = obj.Active
 
     def onDocumentRestored(self, obj):
         """onDocumentRestored(obj) ... Called automatically when document is restored."""
@@ -279,6 +321,7 @@ class ObjectArray:
             obj.setGroupOfProperty("CopiesY", "Pattern")
             obj.setGroupOfProperty("Copies", "Pattern")
             obj.setGroupOfProperty("Offset", "Pattern")
+            obj.setGroupOfProperty("Angle", "Pattern")
             obj.setGroupOfProperty("Type", "Pattern")
 
         if not hasattr(obj, "CycleTime"):
@@ -288,8 +331,6 @@ class ObjectArray:
                 "Path",
                 QT_TRANSLATE_NOOP("App::Property", "Operations cycle time estimation"),
             )
-            obj.CycleTime = getCycleTimeEstimate(obj)
-
         if not hasattr(obj, "ReverseDirection"):
             obj.addProperty(
                 "App::PropertyBool",
@@ -338,22 +379,55 @@ class ObjectArray:
             )
             obj.PointsSorting = ("Automatic", "Manual")
 
+        if not hasattr(obj, "ArrayGroup"):
+            obj.addProperty(
+                "App::PropertyLinkListHidden",
+                "ArrayGroup",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "List of child array objects"),
+            )
+            expressions = dict(obj.ExpressionEngine)
+            for prop in ("Copies", "CopiesX", "CopiesY"):
+                if expr := expressions.get(prop):
+                    obj.setExpression(prop, f"{expr} + 1")
+                else:
+                    val = getattr(obj, prop, 0)
+                    setattr(obj, prop, val + 1)
+        if not hasattr(obj, "Combine"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "Combine",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "If operations with identical tool controller and without coolant:"
+                    "\ncombine by copies"
+                    "\n\nIf operations with different tool controllers or with coolant:"
+                    "\ncombine operations with same tool controller and coolant mode, "
+                    "\nbut only if operations placed one by one in tree",
+                ),
+            )
+        if not hasattr(obj, "ExpandArray"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "ExpandArray",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Split path by elements even all base operations without coolant and with identical tool controller",
+                ),
+            )
+            obj.ExpandArray = True
+
         self.setEditorModes(obj)
 
     def execute(self, obj):
-        # backwards compatibility for PathArrays created before support for multiple bases
-        if isinstance(obj.Base, list):
-            base = obj.Base
-        else:
-            base = [obj.Base]
-
-        # Do not generate paths and clear current Path data
-        # if operation not Active or no base operations or operations not compatible
-        if not obj.Active or len(base) == 0 or not self.isBaseCompatible(obj):
+        if not obj.Active or not self.isBaseCompatible(obj):
+            self.cleanArrayGroup(obj, 0)
             obj.Path = Path.Path()
             return
 
-        obj.ToolController = toolController(base[0])
+        obj.ToolController = toolControllerForOp(obj.Base[0])
 
         # Prepare random function
         jitterAngle = jitterMagnitude = None
@@ -364,57 +438,260 @@ class ObjectArray:
             if obj.JitterAngle:
                 jitterAngle = obj.JitterAngle
 
-        pa = PathArray(
-            obj.Base,
-            obj.Type,
-            obj.Copies,
-            obj.Offset,
-            obj.CopiesX,
-            obj.CopiesY,
-            obj.Angle.Value,
-            obj.Centre,
-            obj.SwapDirection,
-            obj.ReverseDirection,
-            jitterMagnitude,
-            jitterAngle,
-            obj.PointsSource,
-            obj.PointsOrigin,
-            obj.PointsSorting,
-        )
+        args = {
+            "base": obj.Base,
+            "arrayType": obj.Type,
+            "copies": obj.Copies - 1,
+            "offsetVector": obj.Offset,
+            "copiesX": obj.CopiesX - 1,
+            "copiesY": obj.CopiesY - 1,
+            "angle": obj.Angle.Value,
+            "centre": obj.Centre,
+            "swapDirection": obj.SwapDirection,
+            "reverse": obj.ReverseDirection,
+            "jitterMagnitude": jitterMagnitude,
+            "jitterAngle": jitterAngle,
+            "pointsSource": obj.PointsSource,
+            "pointsOrigin": obj.PointsOrigin,
+            "pointsSorting": obj.PointsSorting,
+        }
 
-        obj.Path = pa.getPath()
-        obj.CycleTime = getCycleTimeEstimate(obj)
+        pathArray = PathArray(**args).getPath()
+        if not pathArray:
+            self.cleanArrayGroup(obj, 0)
+            obj.Path = Path.Path()
+            obj.CycleTime = "0"
+            return
+
+        if self.isLegacy(obj) and not obj.ExpandArray:
+            # old type of array
+            self.cleanArrayGroup(obj, 0)
+            self.group = []
+            cmds = [cmd for op in pathArray for cmd in op["path"].Commands]
+            obj.Path = Path.Path(cmds)
+            obj.CycleTime = getCycleTimeEstimate(obj)
+        else:  # new type of array with separated copies
+            self.group = pathArray
+            if obj.Combine:
+                self.processGroupCompound(obj)
+            else:
+                self.processGroup(obj)
+            self.processGroupCycleTime(obj)
+            obj.Path = Path.Path()  # trigger to recompute elements in Group
 
     def isBaseCompatible(self, obj):
+        """Check compatibility of base operations
+        for array with multi tool controllers and coolant"""
         if not obj.Base:
             return False
-        tcs = []
-        cms = []
-        for sel in obj.Base:
-            if not sel.isDerivedFrom("Path::Feature"):
+
+        for base in obj.Base:
+            if not base.isDerivedFrom("Path::Feature"):
                 return False
-            tcs.append(toolController(sel))
-            cms.append(PathUtil.coolantModeForOp(sel))
 
-        if tcs == {None} or len(set(tcs)) > 1:
-            Path.Log.warning(
-                translate(
-                    "PathArray",
-                    "Arrays of toolpaths having different tool controllers or tool controller not selected.",
+            if not toolControllerForOp(base):
+                Path.Log.warning(
+                    translate("PathArray", "Tool controller not selected for operation %s")
+                    % base.Label
                 )
-            )
-            return False
+                return False
 
-        if set(cms) != {"None"}:
-            Path.Log.warning(
-                translate(
-                    "PathArray",
-                    "Arrays not compatible with coolant modes.",
-                )
-            )
+        return True
+
+    def isLegacy(self, obj):
+        """Check compatibility of base operations for old type of array,
+        identical tool controller and no coolant"""
+        tc0 = toolControllerForOp(obj.Base[0]) if obj.Base else None
+        if any(toolControllerForOp(b) != tc0 or coolantModeForOp(b) != "None" for b in obj.Base):
             return False
 
         return True
+
+    def cleanArrayGroup(self, obj, amount):
+        """Keep only needed amount of child elements in array"""
+        while len(obj.ArrayGroup) > amount:
+            op = obj.ArrayGroup[-1]
+            obj.ArrayGroup = obj.ArrayGroup[:-1]
+            op.Document.removeObject(op.Name)
+
+    def prepareArrayGroup(self, obj):
+        """Clean each child element in array"""
+        for op in obj.ArrayGroup:
+            op.Base = []
+            op.PathTemp = Path.Path()
+            op.Label = "empty"
+
+    def addNewArrayElement(self, obj):
+        """Create new Path Array object"""
+        new = obj.Document.addObject("Path::FeaturePython", "Array")
+        ObjectArrayChild(new)
+        ViewProviderArrayChild(new.ViewObject)
+        obj.ArrayGroup = obj.ArrayGroup + [new]
+
+        return new
+
+    def processGroup(self, obj):
+        """Create chield element for each repeat"""
+        if not self.group:
+            # no copies, remove all child elements
+            self.cleanArrayGroup(obj, 0)
+            return
+
+        self.prepareArrayGroup(obj)
+        counterCopies = 0
+        for i, op in enumerate(self.group):
+            if i >= len(obj.ArrayGroup):
+                self.addNewArrayElement(obj)
+
+            if op["opName"] == obj.Base[0].Name:
+                counterCopies += 1
+                prefix = f"Array_{counterCopies}_"
+
+            baseOp = obj.Document.getObject(op["opName"])
+            obj.ArrayGroup[i].Label = f"{prefix}{baseOp.Label}_{i:03d}"
+            obj.ArrayGroup[i].Base = [baseOp.Name]
+            obj.ArrayGroup[i].ToolController = toolControllerForOp(baseOp)
+            obj.ArrayGroup[i].CoolantMode = coolantModeForOp(baseOp)
+            obj.ArrayGroup[i].PathTemp = op["path"]
+
+            if obj.ArrayGroup[i].Active:
+                obj.ArrayGroup[i].Path = op["path"]
+            else:
+                obj.ArrayGroup[i].Path = Path.Path()
+
+        self.cleanArrayGroup(obj, len(self.group))
+
+    def processGroupCompound(self, obj):
+        """Combine elements with same tool controller and coolant mode which placed in sequence"""
+        if not self.group:
+            # no copies, remove all child elements
+            self.cleanArrayGroup(obj, 0)
+            return
+
+        self.prepareArrayGroup(obj)
+        prefix = ""
+        counterCopies = 0
+        i = 0
+        lastToolController = None
+        lastCoolant = None
+        for op in self.group:
+            baseOp = obj.Document.getObject(op["opName"])
+            toolController = toolControllerForOp(baseOp)
+            coolantMode = coolantModeForOp(baseOp)
+
+            if counterCopies:
+                if (
+                    op["opName"] == obj.Base[0].Name
+                    or lastToolController != toolController
+                    or lastCoolant != coolantMode
+                ):  # switch to next child element
+                    i += 1
+
+            if i > len(obj.ArrayGroup) - 1:
+                self.addNewArrayElement(obj)
+
+            cmName = f"_{coolantMode}" if coolantMode != "None" else ""
+            if op["opName"] == obj.Base[0].Name:
+                counterCopies += 1
+                prefix = f"Array_{counterCopies}"
+
+            obj.ArrayGroup[i].Label = f"{prefix}{cmName}_{toolController.Label}"
+            obj.ArrayGroup[i].ToolController = toolController
+            obj.ArrayGroup[i].CoolantMode = coolantMode
+
+            obj.ArrayGroup[i].Base += [op["opName"]]
+            obj.ArrayGroup[i].PathTemp.addCommands(op["path"].Commands)
+
+            if obj.ArrayGroup[i].Active:
+                obj.ArrayGroup[i].Path = obj.ArrayGroup[i].PathTemp
+            else:
+                obj.ArrayGroup[i].Path = Path.Path()
+
+            lastToolController = toolController
+            lastCoolant = coolantMode
+
+        self.cleanArrayGroup(obj, i + 1)
+
+    def processGroupCycleTime(self, obj):
+        """Get total cycle time for Array with child elements"""
+        seconds = 0
+        errorStr = ""
+        for op in obj.ArrayGroup:
+            result = getCycleTimeEstimate(op, formatted=False)
+            if isinstance(result, (int, float)):
+                seconds += result
+            else:
+                errorStr = f" ({op.Label}: {result})"
+        timeStr = time.strftime("%H:%M:%S", time.gmtime(seconds))
+        obj.CycleTime = f"{timeStr}{errorStr}"
+
+
+class ObjectArrayChild:
+    def __init__(self, obj):
+        obj.addProperty(
+            "App::PropertyBool",
+            "Active",
+            "Path",
+            "Make False, to prevent operation from generating code",
+        )
+        obj.addProperty(
+            "App::PropertyLink",
+            "ToolController",
+            "Path",
+            "The tool controller that will be used to calculate the toolpath",
+        )
+        obj.addProperty(
+            "App::PropertyString",
+            "CoolantMode",
+            "Path",
+            "Coolant mode for this operation",
+        )
+        obj.addProperty(
+            "Path::PropertyPath",
+            "PathTemp",
+            "Path",
+            "Temporary storage of the tool path if element not active",
+        )
+        obj.addProperty(
+            "App::PropertyString",
+            "CycleTime",
+            "Path",
+            "Operations cycle time estimation",
+        )
+        obj.addProperty(
+            "App::PropertyStringList",
+            "Base",
+            "Path",
+            "Name of the base operations",
+        )
+        obj.Active = True
+        obj.Proxy = self
+        obj.setEditorMode("ToolController", 1)  # read-only
+        obj.setEditorMode("CoolantMode", 1)  # read-only
+        obj.setEditorMode("CycleTime", 1)  # read-only
+        obj.setEditorMode("Base", 1)  # read-only
+
+    def dumps(self):
+        return None
+
+    def loads(self, state):
+        return None
+
+    def onChanged(self, obj, prop):
+        if prop == "Path":
+            obj.CycleTime = getCycleTimeEstimate(obj)
+
+        if prop == "Active" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
+
+    def onDocumentRestored(self, obj):
+        return
+
+    def execute(self, obj):
+        if obj.Active:
+            obj.Path = obj.PathTemp
+        else:
+            obj.Path = Path.Path()
 
 
 class PathArray:
@@ -459,26 +736,25 @@ class PathArray:
     def getPath(self):
         """getPath() ... Call this method on an instance of the class to generate and return
         path data for the requested path array."""
-
-        commands = []
+        pathGroup = []
 
         self.jitterCentre = FreeCAD.Vector()
         if self.jitterAngle:
             self.jitterCentre = self.getBasePathCenter(self.base)
 
-        if self.arrayType == "Polar":
-            self.getPolarArray(commands)
+        if self.arrayType == "Linear1D":
+            self.getLinear1DArray(pathGroup)
         elif self.arrayType == "Linear2D":
             if self.swapDirection:
-                self.getLinear2DXYArray(commands)
+                self.getLinear2DXYArray(pathGroup)
             else:
-                self.getLinear2DYXArray(commands)
+                self.getLinear2DYXArray(pathGroup)
+        elif self.arrayType == "Polar":
+            self.getPolarArray(pathGroup)
         elif self.arrayType == "Points":
-            self.getPointsArray(commands)
-        else:
-            self.getLinear1DArray(commands)
+            self.getPointsArray(pathGroup)
 
-        return Path.Path(commands)
+        return pathGroup
 
     def calculateJitter(self, pos):
         """calculateJitter(pos) ...
@@ -525,7 +801,7 @@ class PathArray:
 
         return FreeCAD.Vector()
 
-    def getLinear1DArray(self, commands):
+    def getLinear1DArray(self, pathGroup):
         """Array type Linear1D"""
         for i in reversed(range(self.copies)) if self.reverse else range(self.copies):
             pos = FreeCAD.Vector(
@@ -541,9 +817,15 @@ class PathArray:
                 pl.rotate(self.jitterCentre, FreeCAD.Vector(0, 0, 1), alpha)
                 path = PathUtils.getPathWithPlacement(b)
                 path = PathUtils.applyPlacementToPath(pl, path)
-                commands.extend(path.Commands)
 
-    def getLinear2DXYArray(self, commands):
+                pathGroup.append(
+                    {
+                        "path": Path.Path(path.Commands),
+                        "opName": b.Name,
+                    }
+                )
+
+    def getLinear2DXYArray(self, pathGroup):
         """Array type Linear2D with initial X direction"""
         rngX = list(reversed(range(self.copiesX + 1))) if self.reverse else range(self.copiesX + 1)
         rngY = reversed(range(self.copiesY + 1)) if self.reverse else range(self.copiesY + 1)
@@ -571,9 +853,15 @@ class PathArray:
                         pl.rotate(self.jitterCentre, FreeCAD.Vector(0, 0, 1), alpha)
                         path = PathUtils.getPathWithPlacement(b)
                         path = PathUtils.applyPlacementToPath(pl, path)
-                        commands.extend(path.Commands)
 
-    def getLinear2DYXArray(self, commands):
+                        pathGroup.append(
+                            {
+                                "path": Path.Path(path.Commands),
+                                "opName": b.Name,
+                            }
+                        )
+
+    def getLinear2DYXArray(self, pathGroup):
         """Array type Linear2D with initial Y direction"""
         rngX = reversed(range(self.copiesX + 1)) if self.reverse else range(self.copiesX + 1)
         rngY = list(reversed(range(self.copiesY + 1))) if self.reverse else range(self.copiesY + 1)
@@ -601,9 +889,15 @@ class PathArray:
                         pl.rotate(self.jitterCentre, FreeCAD.Vector(0, 0, 1), alpha)
                         path = PathUtils.getPathWithPlacement(b)
                         path = PathUtils.applyPlacementToPath(pl, path)
-                        commands.extend(path.Commands)
 
-    def getPolarArray(self, commands):
+                        pathGroup.append(
+                            {
+                                "path": Path.Path(path.Commands),
+                                "opName": b.Name,
+                            }
+                        )
+
+    def getPolarArray(self, pathGroup):
         """Array type Polar"""
         if not self.copies:
             return
@@ -627,9 +921,15 @@ class PathArray:
             for b in self.base:
                 path = PathUtils.getPathWithPlacement(b)
                 path = PathUtils.applyPlacementToPath(pl, path)
-                commands.extend(path.Commands)
 
-    def getPointsArray(self, commands):
+                pathGroup.append(
+                    {
+                        "path": Path.Path(path.Commands),
+                        "opName": b.Name,
+                    }
+                )
+
+    def getPointsArray(self, pathGroup):
         """Array type Points"""
         originPoint = FreeCAD.Vector()
         originAngle = 0
@@ -706,12 +1006,8 @@ class PathArray:
             routes = []
             for i, pos in enumerate(points):
                 origin = originPoint + pos["point"]
-                dirStartOffset = DraftVecUtils.rotate(
-                    dirStart, math.radians(pos["angle"]), FreeCAD.Vector(0, 0, 1)
-                )
-                dirEndOffset = DraftVecUtils.rotate(
-                    dirEnd, math.radians(pos["angle"]), FreeCAD.Vector(0, 0, 1)
-                )
+                dirStartOffset = rotate2D(dirStart, math.radians(pos["angle"]))
+                dirEndOffset = rotate2D(dirEnd, math.radians(pos["angle"]))
                 routes.append(
                     {
                         "startX": origin.x + dirStartOffset.x,
@@ -737,7 +1033,13 @@ class PathArray:
                 pl.rotate(originPoint, FreeCAD.Vector(0, 0, 1), pos["angle"])
                 path = PathUtils.getPathWithPlacement(b)
                 path = PathUtils.applyPlacementToPath(pl, path)
-                commands.extend(path.Commands)
+
+                pathGroup.append(
+                    {
+                        "path": Path.Path(path.Commands),
+                        "opName": b.Name,
+                    }
+                )
 
     def getPointsAngle(self, p1, p2=FreeCAD.Vector()):
         """return angle between vector (direction) and Y-axis"""
@@ -805,13 +1107,43 @@ class ViewProviderArray:
         return None
 
     def onChanged(self, vobj, prop):
-        return None
+        if prop == "Visibility" and not self.obj.Document.Restoring:
+            for op in self.obj.ArrayGroup:
+                op.Visibility = vobj.Visibility
 
     def claimChildren(self):
-        return []
+        return [base for base in self.obj.ArrayGroup]
 
     def onDelete(self, vobj, args):
-        return True
+        for op in self.obj.ArrayGroup:
+            op.Document.removeObject(op.Name)
+        self.obj.Document.removeObject(self.obj.Name)
+
+    def getIcon(self):
+        if self.obj.Active:
+            return ":/icons/CAM_ArrayMTC.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
+
+
+class ViewProviderArrayChild:
+
+    def __init__(self, vobj):
+        self.attach(vobj)
+        vobj.Proxy = self
+
+    def attach(self, vobj):
+        self.vobj = vobj
+        self.obj = vobj.Object
+
+    def dumps(self):
+        return None
+
+    def loads(self, state):
+        return None
+
+    def onChanged(self, vobj, prop):
+        return
 
     def getIcon(self):
         if self.obj.Active:
@@ -823,34 +1155,30 @@ class ViewProviderArray:
 class CommandPathArray:
     def GetResources(self):
         return {
-            "Pixmap": "CAM_Array",
+            "Pixmap": "CAM_ArrayMTC",
             "MenuText": QT_TRANSLATE_NOOP("CAM_Array", "Array"),
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_Array", "Creates an array from selected toolpaths"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "CAM_Array",
+                "Creates an array with multiple tool controllers and coolant modes",
+            ),
         }
 
     def IsActive(self):
         selection = FreeCADGui.Selection.getSelection()
         if not selection:
             return False
-        tcs = []
+
         for sel in selection:
             if not sel.isDerivedFrom("Path::Feature"):
                 return False
-            tc = toolController(sel)
-            if tc:
-                # Active only for operations with identical tool controller
-                tcs.append(tc)
-                if len(set(tcs)) != 1:
-                    return False
-            else:
+
+            if not toolControllerForOp(sel):
+                # Active only for operations with tool controller
                 return False
-            if PathUtil.coolantModeForOp(sel) != "None":
-                # Active only for operations without cooling
-                return False
+
         return True
 
     def Activated(self):
-
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
 
@@ -862,8 +1190,7 @@ class CommandPathArray:
                 )
                 return
 
-        # if everything is ok, execute and register the transaction in the
-        # undo/redo stack
+        # if everything is ok, execute and register the transaction in the undo/redo stack
         FreeCAD.ActiveDocument.openTransaction("Create Array")
         FreeCADGui.addModule("Path.Op.Gui.Array")
         FreeCADGui.addModule("PathScripts.PathUtils")
