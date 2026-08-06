@@ -21,6 +21,8 @@
 # *                                                                         *
 # ***************************************************************************
 
+import math
+
 import FreeCAD
 import Path
 from CAMTests.PathTestUtils import PathTestBase
@@ -139,3 +141,46 @@ G0 Z0.500000
         path = Path.Path(commands)
 
         self.assertEqual(path.Length, 2)
+
+    def test_ramp_cycle_time(self):
+        """
+        Test that getCycleTime for a ramp move uses F feed rate, not the default
+        vertical or horizontal feed rate.
+
+        The test path starts with a G1 setting the feed, then a G0 setting the
+        rapid feed, then does the ramp. The ramp should use the feed from the G1
+        """
+
+        h_feed = 600.0 / 60
+        v_feed = 300.0 / 60
+        h_rapid = 3000.0 / 60
+        v_rapid = 1500.0 / 60
+
+        g1_length = 5.0
+        g0_length = 5.0
+
+        dx = 3
+        dz = -4
+        ramp_length = math.hypot(dx, dz)
+
+        def check_ramp_cycle_time(feed):
+            with self.subTest(feed=feed):
+                path = Path.Path(
+                    [
+                        Path.Command("G1", {"X": g1_length, "F": feed}),
+                        Path.Command("G0", {"Y": g0_length, "F": h_rapid}),
+                        Path.Command("G1", {"X": g1_length + dx, "Z": dz, "F": feed}),
+                    ]
+                )
+                t = path.getCycleTime(h_feed, v_feed, h_rapid, v_rapid)
+
+                t_g1 = g1_length / feed
+                t_g0 = g0_length / h_rapid
+                t_ramp = ramp_length / feed
+                t_expected = t_g1 + t_g0 + t_ramp
+
+                self.assertAlmostEqual(t, t_expected)
+
+        check_ramp_cycle_time(h_feed)
+        check_ramp_cycle_time(v_feed)
+        check_ramp_cycle_time((h_feed + v_feed) / 2)
