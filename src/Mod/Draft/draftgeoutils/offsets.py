@@ -268,8 +268,8 @@ def offsetWire(
         # for backward compatibility with previous getNormal implementation
         if norm is None:
             norm = App.Vector(0, 0, 1)
-
     nedges = []
+    orgNedges = []
     if occ:
         length = abs(dvec.Length)
         if not length:
@@ -464,6 +464,11 @@ def offsetWire(
             # TODO arc always in counter-clockwise directinon
             # ... ( not necessarily 'reversed')
             if curOrientation == "Reversed":
+                # save in a list the nedge before reversing
+                if not nedge.isClosed():
+                    orgNedges.append(nedge)
+                else:
+                    orgNedges.append(None)
                 if not isinstance(curredge.Curve, (Part.Circle, Part.Ellipse)):
                     # assume straight line, reverse it
                     nedge = Part.Edge(nedge.Vertexes[1], nedge.Vertexes[0])
@@ -479,6 +484,8 @@ def offsetWire(
                     ).toShape()
                     # TODO any better solution than to calculate midpoint
                     # of arc to reverse?
+            else:
+                orgNedges.append(None)
 
         elif offsetMode in ["BasewireMode"]:
             if not (curOrientation == firstOrientation) != (curDir == firstDir):
@@ -505,6 +512,11 @@ def offsetWire(
                 elif curAlign == "Center":
                     nedge = offset(curredge, delta, trim=True)
             if curOrientation == "Reversed":
+                # save in a list the nedge before reversing
+                if not nedge.isClosed():
+                    orgNedges.append(nedge)
+                else:
+                    orgNedges.append(None)
                 if not isinstance(curredge.Curve, (Part.Circle, Part.Ellipse)):
                     # assume straight line, reverse it
                     nedge = Part.Edge(nedge.Vertexes[1], nedge.Vertexes[0])
@@ -520,6 +532,9 @@ def offsetWire(
                     ).toShape()
                     # TODO any better solution than to calculate midpoint
                     # of arc to reverse?
+            else:
+                orgNedges.append(None)
+
         else:
             print(" something wrong ")
             return None
@@ -549,7 +564,7 @@ def offsetWire(
         return w
     else:
         if wireNedge:
-            return (wire, connectEdgesF, connectEdges, nedges)
+            return (wire, connectEdgesF, connectEdges, nedges, orgNedges)
         else:
             return wire
 
