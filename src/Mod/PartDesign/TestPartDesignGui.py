@@ -312,10 +312,14 @@ class ProjectOnSurfaceGuiTestCases(unittest.TestCase):
         add_support = task_widget.findChild(QtGui.QToolButton, "buttonAddSupport")
         projection_list = task_widget.findChild(QtGui.QListWidget, "listProjection")
         support_list = task_widget.findChild(QtGui.QListWidget, "listSupport")
+        height_edit = task_widget.findChild(QtGui.QWidget, "spinHeight")
+        offset_edit = task_widget.findChild(QtGui.QWidget, "spinOffset")
         self.assertIsNotNone(add_projection)
         self.assertIsNotNone(add_support)
         self.assertIsNotNone(projection_list)
         self.assertIsNotNone(support_list)
+        self.assertIsNotNone(height_edit)
+        self.assertIsNotNone(offset_edit)
         self.assertEqual(projection_list.count(), 2)
         self.assertEqual(support_list.count(), 2)
 
@@ -327,6 +331,14 @@ class ProjectOnSurfaceGuiTestCases(unittest.TestCase):
         self.assertEqual(projection.SupportFaces[1][0], cylinder2)
         self.assertEqual(projection.Mode, "All")
         self.assertGreater(len(projection.Shape.Edges), 0)
+
+        # QuantitySpinBox exposes rawValue as a Qt property. Changing it here
+        # exercises the same valueChanged connection used by interactive edits.
+        height_edit.setProperty("rawValue", 2.0)
+        offset_edit.setProperty("rawValue", 1.25)
+        Gui.updateGui()
+        self.assertAlmostEqual(projection.Height, 2.0)
+        self.assertAlmostEqual(projection.Offset, 1.25)
 
         add_projection.click()
         Gui.Selection.setPreselection(empty_sketch)

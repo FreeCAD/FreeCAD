@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cstring>
 #include <functional>
+#include <limits>
 
 #include <QApplication>
 #include <QMessageBox>
@@ -145,6 +146,49 @@ TaskProjectOnSurface::TaskProjectOnSurface(
         feature->Mode.setValue(mode);
         updateFeature();
     });
+
+    // Height and Offset are inherited directly from Part::ProjectOnSurface.
+    // QuantitySpinBox provides FreeCAD's normal unit parsing and expression
+    // button, while bind() associates each editor with its document property.
+    if (!vp.expired()) {
+        auto* feature = vp->getObject<PartDesign::ProjectOnSurface>();
+
+        ui->spinHeight->setUnit(Base::Unit::Length);
+        ui->spinHeight->setMinimum(0.0);
+        ui->spinHeight->setValue(feature->Height.getValue());
+        ui->spinHeight->bind(feature->Height);
+
+        ui->spinOffset->setUnit(Base::Unit::Length);
+        // A signed offset is useful: positive values follow the automatically
+        // oriented source normal, while negative values move the other way.
+        ui->spinOffset->setMinimum(-std::numeric_limits<double>::max());
+        ui->spinOffset->setMaximum(std::numeric_limits<double>::max());
+        ui->spinOffset->setValue(feature->Offset.getValue());
+        ui->spinOffset->bind(feature->Offset);
+    }
+
+    connect(
+        ui->spinHeight,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        [this](double value) {
+            if (!vp.expired()) {
+                vp->getObject<PartDesign::ProjectOnSurface>()->Height.setValue(value);
+                updateFeature();
+            }
+        }
+    );
+    connect(
+        ui->spinOffset,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        [this](double value) {
+            if (!vp.expired()) {
+                vp->getObject<PartDesign::ProjectOnSurface>()->Offset.setValue(value);
+                updateFeature();
+            }
+        }
+    );
 
     updateUI();
 }
