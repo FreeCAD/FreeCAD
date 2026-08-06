@@ -25,6 +25,7 @@
 #include <FCConfig.h>
 
 #include <BRepFilletAPI_MakeFillet.hxx>
+#include <ChFiDS_ErrorStatus.hxx>
 #include <Precision.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
@@ -112,6 +113,62 @@ App::DocumentObjectExecReturn* Fillet::execute()
             return new App::DocumentObjectExecReturn(fullErrMsg);
         }
         Edges.setValues(edges);
+
+        // Explicitly build so OCC diagnostics are available on failure.
+        mkFillet.Build();
+        if (!mkFillet.IsDone()) {
+            int nFaulty = mkFillet.NbFaultyContours();
+            if (nFaulty > 0) {
+                int ic = mkFillet.FaultyContour(1);
+                switch (mkFillet.StripeStatus(ic)) {
+                    case ChFiDS_WalkingFailure:
+                        return new App::DocumentObjectExecReturn(
+                            "Fillet failed: could not trace the blending surface along this edge. "
+                            "The radius may be too large or the edge geometry too complex. "
+                            "Try reducing the radius or selecting fewer edges."
+                        );
+                    case ChFiDS_StartsolFailure:
+                        return new App::DocumentObjectExecReturn(
+                            "Fillet failed to start on selected edge: the radius may be too large. "
+                            "Reduce the radius or fillet this edge separately."
+                        );
+                    case ChFiDS_TwistedSurface:
+                        return new App::DocumentObjectExecReturn(
+                            "Fillet failed: the blending surface would be self-intersecting. "
+                            "Try reducing the radius or selecting a different edge."
+                        );
+                    case ChFiDS_Error:
+                        return new App::DocumentObjectExecReturn(
+                            "Fillet failed: OCC internal geometry error. "
+                            "Check that selected edges are valid and the shape has no defects."
+                        );
+                    default:
+                        break;
+                }
+                return new App::DocumentObjectExecReturn(
+                    "Fillet failed on selected edge(s). Reduce the radius or fillet edges "
+                    "individually."
+                );
+            }
+            if (mkFillet.NbFaultyVertices() > 0) {
+                return new App::DocumentObjectExecReturn(
+                    "Fillet failed at one or more vertices. "
+                    "The radius may be causing conflicts where edges meet. "
+                    "Try reducing the radius or filleting edges individually."
+                );
+            }
+            if (mkFillet.HasResult()) {
+                return new App::DocumentObjectExecReturn(
+                    "Fillet partially applied: some edges failed. Reduce the radius or fillet "
+                    "individually."
+                );
+            }
+            return new App::DocumentObjectExecReturn(
+                "Fillet failed: the radius may be too large or incompatible with the selected "
+                "edges. "
+                "Reduce the radius or select fewer edges."
+            );
+        }
 
         TopoDS_Shape shape = mkFillet.Shape();
         if (shape.IsNull()) {
