@@ -32,7 +32,6 @@
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
 
-#include "RadialMenu.h"
 #include "Utils.h"
 #include "Workbench.h"
 #include "WorkflowManager.h"
@@ -147,7 +146,6 @@ void Workbench::activated()
 {
     Gui::Workbench::activated();
 
-    PartDesignGui::setRadialMenuShortcutEnabled(true);
     WorkflowManager::init();
 
     std::vector<Gui::TaskView::TaskWatcher*> Watcher;
@@ -179,8 +177,6 @@ void Workbench::activated()
 
     const char* Face[] = {
         "PartDesign_NewSketch",
-        "PartDesign_Pad",
-        "PartDesign_Pocket",
         "PartDesign_Fillet",
         "PartDesign_Chamfer",
         "PartDesign_Draft",
@@ -379,7 +375,6 @@ void Workbench::activated()
 
 void Workbench::deactivated()
 {
-    PartDesignGui::setRadialMenuShortcutEnabled(false);
     removeTaskWatcher();
     // reset the active Body
     Gui::Command::doCommand(Gui::Command::Doc, "import PartDesignGui");
@@ -449,7 +444,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
               << "PartDesign_Thickness";
 
     *part << "PartDesign_Body"
-          << "PartDesign_RadialMenu"
           << "Separator"
           << "PartDesign_ShapeBinder"
           << "PartDesign_SubShapeBinder"

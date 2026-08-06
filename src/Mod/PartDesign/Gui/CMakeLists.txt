@@ -216,8 +216,6 @@ SET(PartDesignGuiModule_SRCS
     EnumFlags.h
     Resources/PartDesign.qrc
     PreCompiled.h
-    RadialMenu.cpp
-    RadialMenu.h
     SketchWorkflow.cpp
     SketchWorkflow.h
     StyleParameters.h
