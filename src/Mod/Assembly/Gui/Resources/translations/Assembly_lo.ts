@@ -30,12 +30,12 @@
   <context>
     <name>Assembly_SolveAssembly</name>
     <message>
-      <location filename="../../../CommandSolveAssembly.py" line="49"/>
+      <location filename="../../../CommandSolveAssembly.py" line="48"/>
       <source>Solve Assembly</source>
       <translation>ປະມວນຜົນຊຸດປະກອບ</translation>
     </message>
     <message>
-      <location filename="../../../CommandSolveAssembly.py" line="54"/>
+      <location filename="../../../CommandSolveAssembly.py" line="53"/>
       <source>Solves the currently active assembly.</source>
       <translation>ປະມວນຜົນການປະກອບທີ່ກຳລັງເຮັດວຽກຢູ່ປັດຈຸບັນ.</translation>
     </message>
@@ -43,12 +43,12 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../../InitGui.py" line="75"/>
+      <location filename="../../../InitGui.py" line="82"/>
       <source>Assembly</source>
       <translation type="unfinished">Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="147"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="145"/>
       <source>Active object</source>
       <translation>ວັດຖຸທີ່ກຳລັງເຮັດວຽກ</translation>
     </message>
@@ -86,17 +86,17 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="112"/>
+      <location filename="../../../InitGui.py" line="120"/>
       <source>Assembly</source>
       <translation>ການປະກອບ</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="113"/>
+      <location filename="../../../InitGui.py" line="121"/>
       <source>Assembly Joints</source>
       <translation>ຂໍ້ຕໍ່ຊຸດປະກອບ</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="116"/>
+      <location filename="../../../InitGui.py" line="124"/>
       <source>&amp;Assembly</source>
       <translation>&amp;ຊຸດປະກອບ</translation>
     </message>
@@ -517,42 +517,47 @@ SLOPE ກຳນົດຄວາມຊັນຂອງການປ່ຽນລະ�
       <translation>ເກີດຂໍ້ຜິດພາດໃນຂະນະທີ່ບັນທຶກພາບເຄື່ອນໄຫວ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1184"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1186"/>
       <source>PyAv is not installed. It is required for video export.</source>
       <translation>ບໍ່ໄດ້ຕິດຕັ້ງ PyAv. ມັນຈຳເປັນສຳລັບການສົ່ງອອກວິດີໂອ.</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="160"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1205"/>
+      <source>Unknown video export format</source>
+      <translation>ຮູບແບບການສົ່ງອອກວິດີໂອທີ່ບໍ່ຮູ້ຈັກ</translation>
+    </message>
+    <message>
+      <location filename="../../../InitGui.py" line="168"/>
       <source>Create</source>
       <translation>ສ້າງ</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="176"/>
+      <location filename="../../../InitGui.py" line="184"/>
       <source>Activate</source>
       <translation>ເປີດໃຊ້</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="210"/>
+      <location filename="../../../InitGui.py" line="218"/>
       <source>Insert</source>
       <translation>ແຊກ</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="221"/>
+      <location filename="../../../InitGui.py" line="229"/>
       <source>Grounding</source>
       <translation>ການຍຶດຕິດກັບພື້ນ</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="248"/>
+      <location filename="../../../InitGui.py" line="256"/>
       <source>Constraints</source>
       <translation>ຂໍ້ກຳນົດບັງຄັບ</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="264"/>
+      <location filename="../../../InitGui.py" line="272"/>
       <source>Tools</source>
       <translation>ເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="277"/>
+      <location filename="../../../InitGui.py" line="285"/>
       <source>Simulation</source>
       <translation>ການຈຳລອງ</translation>
     </message>
@@ -741,6 +746,26 @@ SLOPE ກຳນົດຄວາມຊັນຂອງການປ່ຽນລະ�
       <location filename="../../../CommandCreateSimulation.py" line="337"/>
       <source>The type of the motion</source>
       <translation>ປະເພດຂອງການເຄື່ອນໄຫວ</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="113"/>
+      <source>List of components captured in this snapshot.</source>
+      <translation>ລາຍການຂອງສ່ວນປະກອບທີ່ຖືກບັນທຶກໄວ້ໃນພາບບັນທຶກສະຖານະນີ້.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="124"/>
+      <source>List of corresponding placements for the components.</source>
+      <translation>ລາຍການການຈັດວາງທີ່ກ່ຽວຂ້ອງສຳລັບສ່ວນປະກອບຕ່າງໆ.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="135"/>
+      <source>List of visibility states for the components.</source>
+      <translation>ລາຍການສະຖານະການເບິ່ງເຫັນສຳລັບສ່ວນປະກອບຕ່າງໆ.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="146"/>
+      <source>If true, applying the snapshot will solve the assembly after restoring the placements.</source>
+      <translation>ຫາກເປັນຈິງ, ການນຳໃຊ້ພາບບັນທຶກສະຖານະຈະຄຳນວນການປະກອບຄືນໃໝ່ ຫຼັງຈາກກູ້ຄືນການຈັດວາງແລ້ວ.</translation>
     </message>
   </context>
   <context>
@@ -949,59 +974,59 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="215"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="213"/>
       <source>The object is associated to one or more joints.</source>
       <translation>ວັດຖຸນີ້ກ່ຽວຂ້ອງກັບຂໍ້ຕໍ່ໜຶ່ງອັນ ຫຼື ຫຼາຍກວ່ານັ້ນ.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="217"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="215"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>ທ່ານຕ້ອງການຍ້າຍວັດຖຸ ແລະ ລຶບຂໍ້ຕໍ່ທີ່ກ່ຽວຂ້ອງອອກບໍ?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1090"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1088"/>
       <source>Move part</source>
       <translation>ຍ້າຍຊິ້ນສ່ວນ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1807"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1805"/>
       <source>Empty Assembly</source>
       <translation>ຊຸດປະກອບຫວ່າງເປົ່າ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1819"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1817"/>
       <source>Over-constrained:</source>
       <translation>ຂໍ້ກຳນົດເກີນຂອບເຂດ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1827"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1825"/>
       <source>Malformed joints:</source>
       <translation>ຂໍ້ຕໍ່ທີ່ຜິດຮູບແບບ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1792"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1790"/>
       <source>and %1 more</source>
       <translation>ແລະ ອີກ %1 ລາຍການ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1851"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1849"/>
       <source>Solver failed to converge</source>
       <translation>ຕົວປະມວນຜົນບໍ່ສາມາດຊອກຫາຄຳຕອບທີ່ເໝາະສົມໄດ້</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1859"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1857"/>
       <source>Under-constrained:</source>
       <translation>ຂໍ້ກຳນົດບໍ່ພຽງພໍ:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1861"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1859"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n ອົງສາອິດສະລະ</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1865"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1863"/>
       <source>Fully constrained</source>
       <translation>ກຳນົດຂໍ້ບັງຄັບຄົບຖ້ວນ</translation>
     </message>
@@ -1009,12 +1034,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointScrew</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="318"/>
+      <location filename="../../../CommandCreateJoint.py" line="317"/>
       <source>Screw Joint</source>
       <translation>ຂໍ້ຕໍ່ສະກູ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="324"/>
+      <location filename="../../../CommandCreateJoint.py" line="323"/>
       <source>&lt;p&gt;Creates a screw joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</source>
       <translation>&lt;p&gt;ສ້າງຂໍ້ຕໍ່ສະກູທີ່ເຊື່ອມໂຍງຊິ້ນສ່ວນທີ່ມີຂໍ້ຕໍ່ແບບເລື່ອນ ເຂົ້າກັບຊິ້ນສ່ວນທີ່ມີຂໍ້ຕໍ່ແບບໝູນຮອບ&lt;/p&gt;&lt;p&gt;ເລືອກລະບົບພິກັດອັນດຽວກັບຂໍ້ຕໍ່ແບບໝູນຮອບ ແລະ ແບບເລື່ອນ. ລັດສະໝີໄລຍະຫ່າງຈະກຳນົດອັດຕາສ່ວນການເຄື່ອນໄຫວລະຫວ່າງການໝູນຂອງສະກູ ແລະ ການເລື່ອນຂອງຊິ້ນສ່ວນ.&lt;/p&gt;</translation>
     </message>
@@ -1022,12 +1047,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointGearBelt</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="391"/>
+      <location filename="../../../CommandCreateJoint.py" line="390"/>
       <source>Gears/Belt Joint</source>
       <translation>ຂໍ້ຕໍ່ເຟືອງ/ສາຍພານ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="396"/>
+      <location filename="../../../CommandCreateJoint.py" line="395"/>
       <source>&lt;p&gt;Creates a gears or belt joint that links 2 rotating gears together&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
       <translation>&lt;p&gt;ສ້າງຂໍ້ຕໍ່ເຟືອງ ຫຼື ສາຍພານ ທີ່ເຊື່ອມໂຍງ 2 ເຟືອງໝູນເຂົ້າກັນ&lt;/p&gt;&lt;p&gt;ເລືອກລະບົບພິກັດດຽວກັນກັບຂໍ້ຕໍ່ແບບໝູນຮອບ.&lt;/p&gt;</translation>
     </message>
@@ -1136,7 +1161,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="690"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="704"/>
       <source>Joints</source>
       <translation>ຂໍ້ຕໍ່</translation>
     </message>
@@ -1324,12 +1349,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointFixed</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="77"/>
+      <location filename="../../../CommandCreateJoint.py" line="76"/>
       <source>Fixed Joint</source>
       <translation>ຂໍ້ຕໍ່ແບບຄົງທີ່</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="83"/>
+      <location filename="../../../CommandCreateJoint.py" line="82"/>
       <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
       <translation>&lt;p&gt;1 - ຖ້າຊຸດປະກອບກຳລັງເຮັດວຽກ: ສ້າງຂໍ້ຕໍ່ທີ່ລັອກສອງຊິ້ນສ່ວນເຂົ້າກັນແບບຄົງທີ່, ປ້ອງກັນການເຄື່ອນໄຫວ ຫຼື ການໝູນທຸກປະເພດ&lt;/p&gt;&lt;p&gt;2 - ຖ້າຊິ້ນສ່ວນກຳລັງເຮັດວຽກ: ຈັດວາງຊິ້ນສ່ວນຍ່ອຍໂດຍການຈັບຄູ່ລະບົບພິກັດທີ່ເລືອກ. ຊິ້ນສ່ວນທີສອງທີ່ເລືອກຈະເປັນຝ່າຍເຄື່ອນຍ້າຍ.&lt;/p&gt;</translation>
     </message>
@@ -1337,12 +1362,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointRevolute</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="104"/>
+      <location filename="../../../CommandCreateJoint.py" line="103"/>
       <source>Revolute Joint</source>
       <translation>ຂໍ້ຕໍ່ແບບໝູນຮອບ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="109"/>
+      <location filename="../../../CommandCreateJoint.py" line="108"/>
       <source>Creates a revolute joint allowing rotation around a single axis between selected parts</source>
       <translation>ສ້າງຂໍ້ຕໍ່ແບບໝູນຮອບທີ່ອະນຸຍາດໃຫ້ໝູນຮອບແກນດຽວລະຫວ່າງຊິ້ນສ່ວນທີ່ເລືອກ</translation>
     </message>
@@ -1350,12 +1375,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointCylindrical</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="127"/>
+      <location filename="../../../CommandCreateJoint.py" line="126"/>
       <source>Cylindrical Joint</source>
       <translation>ຂໍ້ຕໍ່ແບບຊົງກະບອກ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="132"/>
+      <location filename="../../../CommandCreateJoint.py" line="131"/>
       <source>Creates a cylindrical joint that allows rotation around and translation along a single axis between assembled parts</source>
       <translation>ສ້າງຂໍ້ຕໍ່ແບບຊົງກະບອກທີ່ອະນຸຍາດໃຫ້ທັງໝູນຮອບ ແລະ ເຄື່ອນຍ້າຍຕາມແກນດຽວລະຫວ່າງຊິ້ນສ່ວນທີ່ປະກອບເຂົ້າກັນ</translation>
     </message>
@@ -1363,12 +1388,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointSlider</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="150"/>
+      <location filename="../../../CommandCreateJoint.py" line="149"/>
       <source>Slider Joint</source>
       <translation>ຂໍ້ຕໍ່ແບບເລື່ອນ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="155"/>
+      <location filename="../../../CommandCreateJoint.py" line="154"/>
       <source>Creates a slider joint that allows linear movement along a single axis, but restricts rotation between selected parts</source>
       <translation>ສ້າງຂໍ້ຕໍ່ແບບເລື່ອນທີ່ອະນຸຍາດໃຫ້ເຄື່ອນທີ່ຕາມເສັ້ນຊື່ໃນແກນດຽວ, ແຕ່ຈຳກັດການໝູນລະຫວ່າງຊິ້ນສ່ວນທີ່ເລືອກ</translation>
     </message>
@@ -1376,12 +1401,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointBall</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="173"/>
+      <location filename="../../../CommandCreateJoint.py" line="172"/>
       <source>Ball Joint</source>
       <translation>ຂໍ້ຕໍ່ກົມ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="178"/>
+      <location filename="../../../CommandCreateJoint.py" line="177"/>
       <source>Creates a ball joint that connects parts at a point, allowing unrestricted movement as long as the connection points remain in contact</source>
       <translation>ສ້າງຂໍ້ຕໍ່ກົມທີ່ເຊື່ອມຕໍ່ຊິ້ນສ່ວນຢູ່ທີ່ຈຸດໜຶ່ງ, ອະນຸຍາດໃຫ້ເຄື່ອນໄຫວໄດ້ຢ່າງອິດສະລະ ຕາບໃດທີ່ຈຸດເຊື່ອມຕໍ່ຍັງສຳຜັດກັນຢູ່</translation>
     </message>
@@ -1389,12 +1414,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointDistance</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="196"/>
+      <location filename="../../../CommandCreateJoint.py" line="195"/>
       <source>Distance Joint</source>
       <translation>ຂໍ້ຕໍ່ແບບໄລຍະຫ່າງ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="203"/>
+      <location filename="../../../CommandCreateJoint.py" line="202"/>
       <source>&lt;p&gt;Creates a distance joint that fixes the distance between the selected objects&lt;/p&gt;&lt;p&gt;Creates one of several different joints based on the selection. For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.&lt;/p&gt;</source>
       <translation>&lt;p&gt;ສ້າງຂໍ້ຕໍ່ແບບໄລຍະຫ່າງທີ່ກຳນົດໄລຍະຫ່າງຄົງທີ່ລະຫວ່າງວັດຖຸທີ່ເລືອກ&lt;/p&gt;&lt;p&gt;ສາມາດສ້າງຂໍ້ຕໍ່ໄດ້ຫຼາຍຮູບແບບຂຶ້ນກັບການເລືອກ. ຕົວຢ່າງ: ຖ້າກຳນົດໄລຍະຫ່າງເປັນ 0 ລະຫວ່າງໜ້າພຽງ ແລະ ຊົງກະບອກ ຈະກາຍເປັນຂໍ້ຕໍ່ແບບສຳຜັດ (Tangent). ຖ້າກຳນົດເປັນ 0 ລະຫວ່າງໜ້າພຽງ ຈະເຮັດໃຫ້ພວກມັນຢູ່ໜ້າພຽງດຽວກັນ (Co-planar).&lt;/p&gt;</translation>
     </message>
@@ -1402,12 +1427,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointParallel</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="221"/>
+      <location filename="../../../CommandCreateJoint.py" line="220"/>
       <source>Parallel Joint</source>
       <translation>ຂໍ້ຕໍ່ແບບຂະໜານ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="226"/>
+      <location filename="../../../CommandCreateJoint.py" line="225"/>
       <source>Creates a parallel joint that makes the Z-axis of the selected coordinate systems parallel</source>
       <translation>ສ້າງຂໍ້ຕໍ່ແບບຂະໜານທີ່ເຮັດໃຫ້ແກນ Z ຂອງລະບົບພິກັດທີ່ເລືອກຂະໜານກັນ</translation>
     </message>
@@ -1415,12 +1440,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointPerpendicular</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="246"/>
+      <location filename="../../../CommandCreateJoint.py" line="245"/>
       <source>Perpendicular Joint</source>
       <translation>ຂໍ້ຕໍ່ແບບຕັ້ງສາກ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="251"/>
+      <location filename="../../../CommandCreateJoint.py" line="250"/>
       <source>Creates a perpendicular joint that makes the Z-axis of the selected coordinate systems perpendicular</source>
       <translation>ສ້າງຂໍ້ຕໍ່ແບບຕັ້ງສາກທີ່ເຮັດໃຫ້ແກນ Z ຂອງລະບົບພິກັດທີ່ເລືອກຕັ້ງສາກກັນ</translation>
     </message>
@@ -1428,12 +1453,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointAngle</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="269"/>
+      <location filename="../../../CommandCreateJoint.py" line="268"/>
       <source>Angle Joint</source>
       <translation>ຂໍ້ຕໍ່ແບບມຸມ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="274"/>
+      <location filename="../../../CommandCreateJoint.py" line="273"/>
       <source>Creates an angle joint that fixes the angle between the Z-axis of the selected coordinate systems</source>
       <translation>ສ້າງຂໍ້ຕໍ່ແບບມຸມທີ່ກຳນົດມຸມຄົງທີ່ລະຫວ່າງແກນ Z ຂອງລະບົບພິກັດທີ່ເລືອກ</translation>
     </message>
@@ -1441,12 +1466,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointRackPinion</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="294"/>
+      <location filename="../../../CommandCreateJoint.py" line="293"/>
       <source>Rack and Pinion Joint</source>
       <translation>ຂໍ້ຕໍ່ເຟືອງຂັບແລະເຟືອງສະພານ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="300"/>
+      <location filename="../../../CommandCreateJoint.py" line="299"/>
       <source>&lt;p&gt;Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</source>
       <translation>&lt;p&gt;ສ້າງຂໍ້ຕໍ່ເຟືອງຂັບ ແລະ ເຟືອງສະພານ ທີ່ເຊື່ອມໂຍງຊິ້ນສ່ວນທີ່ມີຂໍ້ຕໍ່ແບບເລື່ອນເຂົ້າກັບຊິ້ນສ່ວນທີ່ມີຂໍ້ຕໍ່ແບບໝູນຮອບ&lt;/p&gt;&lt;p&gt;ເລືອກລະບົບພິກັດດຽວກັນກັບຂໍ້ຕໍ່ແບບໝູນຮອບ ແລະ ແບບເລື່ອນ. ລັດສະໝີໄລຍະຫ່າງຈະກຳນົດອັດຕາສ່ວນການເຄື່ອນໄຫວລະຫວ່າງເຟືອງຂັບ ແລະ ເຟືອງສະພານ.&lt;/p&gt;</translation>
     </message>
@@ -1454,12 +1479,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointGears</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="342"/>
+      <location filename="../../../CommandCreateJoint.py" line="341"/>
       <source>Gears Joint</source>
       <translation>ຂໍ້ຕໍ່ເຟືອງ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="348"/>
+      <location filename="../../../CommandCreateJoint.py" line="347"/>
       <source>&lt;p&gt;Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
       <translation>&lt;p&gt;ສ້າງຂໍ້ຕໍ່ເຟືອງທີ່ເຊື່ອມໂຍງ 2 ເຟືອງໝູນເຂົ້າກັນ. ພວກມັນຈະມີທິດທາງການໝູນທີ່ກົງກັນຂ້າມກັນ.&lt;/p&gt;&lt;p&gt;ເລືອກລະບົບພິກັດດຽວກັນກັບຂໍ້ຕໍ່ແບບໝູນຮອບ.&lt;/p&gt;</translation>
     </message>
@@ -1467,12 +1492,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointBelt</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="366"/>
+      <location filename="../../../CommandCreateJoint.py" line="365"/>
       <source>Belt Joint</source>
       <translation>ຂໍ້ຕໍ່ສາຍພານ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="372"/>
+      <location filename="../../../CommandCreateJoint.py" line="371"/>
       <source>&lt;p&gt;Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
       <translation>&lt;p&gt;ສ້າງຂໍ້ຕໍ່ສາຍພານທີ່ເຊື່ອມໂຍງ 2 ວັດຖຸໝູນເຂົ້າກັນ. ພວກມັນຈະມີທິດທາງການໝູນໄປໃນທາງດຽວກັນ.&lt;/p&gt;&lt;p&gt;ເລືອກລະບົບພິກັດດຽວກັນກັບຂໍ້ຕໍ່ແບບໝູນຮອບ.&lt;/p&gt;</translation>
     </message>
@@ -1480,12 +1505,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_ToggleGrounded</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="431"/>
+      <location filename="../../../CommandCreateJoint.py" line="430"/>
       <source>Toggle Grounded</source>
       <translation>ສະຫຼັບການຍຶດຕິດກັບພື້ນ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="437"/>
+      <location filename="../../../CommandCreateJoint.py" line="436"/>
       <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.</source>
       <translation>&lt;p&gt;ສະຫຼັບການຍຶດຕິດກັບພື້ນຂອງຊິ້ນສ່ວນ.&lt;/p&gt;&lt;p&gt;ການຍຶດຕິດກັບພື້ນຈະລັອກຕຳແໜ່ງຂອງຊິ້ນສ່ວນໃນຊຸດປະກອບແບບຖາວອນ, ປ້ອງກັນການເຄື່ອນໄຫວ ຫຼື ການໝູນທຸກປະເພດ.</translation>
     </message>
@@ -1564,6 +1589,29 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
       <source>Selects these malformed joints</source>
       <translation>ເລືອກຂໍ້ຕໍ່ເຫຼົ່ານີ້ທີ່ຜິດຮູບແບບ</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_Snapshot</name>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="49"/>
+      <source>Snapshot</source>
+      <translation>ພາບບັນທຶກສະຖານະ</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="53"/>
+      <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
+      <translation>ບັນທຶກສະຖານະການປະກອບໃນປັດຈຸບັນ (ການຈັດວາງ ແລະ ການເບິ່ງເຫັນ). ການດັບເບີລຄລິກໃສ່ວັດຖຸພາບບັນທຶກສະຖານະ ຈະກູ້ຄືນການປະກອບໃຫ້ກັບໄປສູ່ສະຖານະນັ້ນ.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="70"/>
+      <source>Create Snapshot</source>
+      <translation>ສ້າງພາບບັນທຶກສະຖານະ</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="249"/>
+      <source>Restore Snapshot</source>
+      <translation>ກູ້ຄືນພາບບັນທຶກສະຖານະ</translation>
     </message>
   </context>
   <context>

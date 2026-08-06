@@ -156,9 +156,9 @@ public:
     float inactiveOpacity = 0.5;
     SbVec2s posOffset = SbVec2s(0, 0);
 
-    Base::Color xColor;
-    Base::Color yColor;
-    Base::Color zColor;
+    Base::Color xColor {1.0F, 0.0F, 0.0F};
+    Base::Color yColor {0.0F, 1.0F, 0.0F};
+    Base::Color zColor {0.0F, 0.0F, 1.0F};
 
     bool prepared = false;
     static vector<string> commands;
@@ -375,6 +375,7 @@ void NaviCubeImplementation::setLabels(const std::vector<std::string>& labels)
 
 NaviCubeImplementation::NaviCubeImplementation(Gui::View3DInventorViewer* viewer)
     : baseColor {226, 232, 239}
+    , emphaseColor {0, 0, 0}
     , hiliteColor {170, 226, 255}
 {
     soNaviCube = new Gui::SoNaviCube();

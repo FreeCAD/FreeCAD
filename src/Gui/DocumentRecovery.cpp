@@ -648,12 +648,9 @@ void DocumentRecovery::onDeleteSection()
 {
     QMessageBox msgBox(this);
     msgBox.setIcon(QMessageBox::Warning);
-    msgBox.setWindowTitle(tr("Cleanup"));
-    msgBox.setText(tr("Delete the selected transient directories?"));
-    msgBox.setInformativeText(
-        tr("When deleting the selected transient directory it is not possible to recover any files "
-           "afterwards.")
-    );
+    msgBox.setWindowTitle(tr("Delete"));
+    msgBox.setText(tr("Delete the selected recovery documents?"));
+    msgBox.setInformativeText(tr("Recovery documents cannot be restored after deletion."));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
     int ret = msgBox.exec();
@@ -685,8 +682,8 @@ void DocumentRecovery::onButtonCleanupClicked()
     QMessageBox msgBox(this);
     msgBox.setIcon(QMessageBox::Warning);
     msgBox.setWindowTitle(tr("Cleanup"));
-    msgBox.setText(tr("Delete all transient directories?"));
-    msgBox.setInformativeText(tr("When deleting all transient directories it is not possible to recover any files afterwards."));
+    msgBox.setText(tr("Delete all recovery documents?"));
+    msgBox.setInformativeText(tr("Recovery documents cannot be restored after deletion."));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
     int ret = msgBox.exec();
@@ -703,7 +700,7 @@ void DocumentRecovery::onButtonCleanupClicked()
     handler.checkForPreviousCrashes(
         std::bind(&DocumentRecovery::cleanup, this, sp::_1, sp::_2, sp::_3)
     );
-    DlgCheckableMessageBox::showMessage(tr("Delete"), tr("Transient directories deleted."));
+    DlgCheckableMessageBox::showMessage(tr("Cleanup"), tr("Recovery documents deleted."));
     reject();
 }
 

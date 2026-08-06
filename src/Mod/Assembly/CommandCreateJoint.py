@@ -33,7 +33,6 @@ if App.GuiUp:
 import JointObject
 from JointObject import TaskAssemblyCreateJoint
 import UtilsAssembly
-import Assembly_rc
 
 # translate = App.Qt.translate
 

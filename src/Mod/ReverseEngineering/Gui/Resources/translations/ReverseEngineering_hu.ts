@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="246"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="247"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="141"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="142"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="362"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="363"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="314"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="315"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="102"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="103"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="531"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="532"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="596"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="597"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="419"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="420"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../Command.cpp" line="481"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="482"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="451"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="452"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="633"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="634"/>
@@ -237,8 +237,8 @@
       <translation>Elhelyezés</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="152"/>
       <location filename="../../FitBSplineSurface.cpp" line="242"/>
+      <location filename="../../FitBSplineCurve.cpp" line="152"/>
       <source>Fit B-spline</source>
       <translation>B-görbe illesztése</translation>
     </message>
@@ -588,17 +588,17 @@
     <message>
       <location filename="../../Workbench.cpp" line="35"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Reverse Engineering</source>
-      <translation type="unfinished">&amp;Reverse Engineering</translation>
+      <translation>&amp;Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>Surface Reconstruction</source>
-      <translation type="unfinished">Surface Reconstruction</translation>
+      <translation>Felület helyreállítása</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
@@ -608,7 +608,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>Approximation</source>
-      <translation type="unfinished">Approximation</translation>
+      <translation>Közelítés</translation>
     </message>
   </context>
   <context>
@@ -641,7 +641,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>
       <source>Equidistant</source>
-      <translation type="unfinished">Equidistant</translation>
+      <translation>Egyenlő távolságú</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>
@@ -724,7 +724,7 @@
     <message>
       <location filename="../../Command.cpp" line="67"/>
       <source>Reverse Engineering</source>
-      <translation>Fordított tervezés</translation>
+      <translation>Visszafejtés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="68"/>

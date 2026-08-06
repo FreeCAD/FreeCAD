@@ -78,9 +78,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         self.updateQuantitySpinBoxes()
 
-        self.setupToolController(obj, self.form.toolController)
-        self.setupCoolant(obj, self.form.coolantController)
-
         enums = [t[1] for t in self.propEnums["Reference1"]]
         if "Reference1" in self.ENUMS:
             enums = self.ENUMS["Reference1"]
@@ -114,8 +111,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's properties"""
         debugMsg("getFields()")
-        self.updateToolController(obj, self.form.toolController)
-        self.updateCoolant(obj, self.form.coolantController)
 
         val = obj.getEnumerationsOfProperty("Reference1")[self.form.geo1Reference.currentIndex()]
         obj.Reference1 = val
@@ -137,8 +132,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         debugMsg("getSignalsForUpdate()")
         signals = []
-        signals.append(self.form.toolController.currentIndexChanged)
-        signals.append(self.form.coolantController.currentIndexChanged)
         signals.append(self.form.geo1Extension.editingFinished)
         signals.append(self.form.geo1Reference.currentIndexChanged)
         signals.append(self.form.geo2Extension.editingFinished)
