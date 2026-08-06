@@ -53,6 +53,8 @@
 #include <Mod/Part/App/FaceMakerCheese.h>
 
 #include "FeatureHelix.h"
+#include "App/Document.h"
+#include "Mod/Part/App/TopoShapeOpCode.h"
 
 using namespace PartDesign;
 
@@ -70,7 +72,7 @@ const App::PropertyAngle::Constraints Helix::floatAngle = {-89.0, 89.0, 1.0};
 
 Helix::Helix()
 {
-    addSubType = FeatureAddSub::Additive;
+    defineAdditive();
     auto initialMode = HelixMode::pitch_height_angle;
 
     const char* group = "Helix";
@@ -181,16 +183,6 @@ Helix::Helix()
         )
     );
     ADD_PROPERTY_TYPE(
-        Outside,
-        (false),
-        group,
-        App::Prop_None,
-        QT_TRANSLATE_NOOP(
-            "App::Property",
-            "If set, the result will be the intersection of the profile and the preexisting body."
-        )
-    );
-    ADD_PROPERTY_TYPE(
         HasBeenEdited,
         (false),
         group,
@@ -210,6 +202,13 @@ Helix::Helix()
         QT_TRANSLATE_NOOP("App::Property", "Fusion Tolerance for the Helix, increase if helical shape does not merge nicely with part.")
     );
     Tolerance.setConstraints(&floatTolerance);
+    ADD_PROPERTY_TYPE(
+        Outside,
+        (false),
+        group,
+        App::Prop_Hidden,
+        QT_TRANSLATE_NOOP("App::Property", "deprecated, do not use")
+    );
 
     setReadWriteStatusForMode(initialMode);
 }
@@ -230,7 +229,7 @@ App::DocumentObjectExecReturn* Helix::execute()
     }
 
     // Validate and normalize parameters
-    HelixMode mode = static_cast<HelixMode>(Mode.getValue());
+    auto mode = static_cast<HelixMode>(Mode.getValue());
     if (mode == HelixMode::pitch_height_angle) {
         if (Pitch.getValue() < Precision::Confusion()) {
             return new App::DocumentObjectExecReturn(
@@ -410,7 +409,7 @@ App::DocumentObjectExecReturn* Helix::execute()
 
         if (base.isNull()) {
 
-            if (getAddSubType() == FeatureAddSub::Subtractive) {
+            if (getAddSubType() == FeatureAddSub::Type::Subtractive) {
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Error: There is nothing to subtract")
                 );
@@ -429,83 +428,35 @@ App::DocumentObjectExecReturn* Helix::execute()
             return App::DocumentObject::StdReturn;
         }
 
-        if (getAddSubType() == FeatureAddSub::Additive) {
+        Part::TopoShape boolOp(0, getDocument()->getStringHasher());
+        boolOp.makeElementBoolean(getBooleanMaker(), {base, result});
 
-            FCBRepAlgoAPI_Fuse mkFuse(base.getShape(), result);
-            if (!mkFuse.IsDone()) {
-                return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Error: Adding the helix failed")
-                );
-            }
-
-            if (!isSingleSolidRuleSatisfied(mkFuse.Shape())) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
-                    "Exception",
-                    "Result has multiple solids: enable 'Allow Compound' in the active body."
-                ));
-            }
-
-            // we have to get the solids (fuse sometimes creates compounds)
-            TopoShape boolOp = this->getSolid(mkFuse.Shape());
-
-            // lets check if the result is a solid
-            if (boolOp.isNull()) {
-                return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid")
-                );
-            }
-
-            // store shape before refinement
-            this->rawShape = boolOp;
-            boolOp = refineShapeIfActive(boolOp, RefineErrorPolicy::Warn);
-            Shape.setValue(getSolid(boolOp));
-        }
-        else if (getAddSubType() == FeatureAddSub::Subtractive) {
-
-            TopoShape boolOp;
-
-            TopoDS_Shape rawBoolOp;
-            if (Outside.getValue()) {  // are we subtracting the inside or the outside of the profile.
-                FCBRepAlgoAPI_Common mkCom(result, base.getShape());
-                if (!mkCom.IsDone()) {
-                    return new App::DocumentObjectExecReturn(
-                        QT_TRANSLATE_NOOP("Exception", "Error: Intersecting the helix failed")
-                    );
-                }
-                rawBoolOp = mkCom.Shape();
-            }
-            else {
-                FCBRepAlgoAPI_Cut mkCut(base.getShape(), result);
-                if (!mkCut.IsDone()) {
-                    return new App::DocumentObjectExecReturn(
-                        QT_TRANSLATE_NOOP("Exception", "Error: Subtracting the helix failed")
-                    );
-                }
-                rawBoolOp = mkCut.Shape();
-            }
-
-            if (!isSingleSolidRuleSatisfied(rawBoolOp)) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
-                    "Exception",
-                    "Result has multiple solids: enable 'Allow Compound' in the active body."
-                ));
-            }
-
-            boolOp = this->getSolid(rawBoolOp);
-
-            // lets check if the result is a solid
-            if (boolOp.isNull()) {
-                return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid")
-                );
-            }
-
-            // store shape before refinement
-            this->rawShape = boolOp;
-            boolOp = refineShapeIfActive(boolOp, RefineErrorPolicy::Warn);
-            Shape.setValue(getSolid(boolOp));
+        if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                "Exception",
+                "Result has multiple solids: enable 'Allow Compound' in the active body."
+            ));
         }
 
+        TopoShape solid = getSolid(boolOp);
+        // lets check if the result is a solid
+        if (solid.isNull()) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid")
+            );
+        }
+
+        // store shape before refinement
+        this->rawShape = solid;
+        solid = refineShapeIfActive(solid);
+        if (!isSingleSolidRuleSatisfied(solid.getShape())) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                "Exception",
+                "Result has multiple solids: enable 'Allow Compound' in the active body."
+            ));
+        }
+
+        Shape.setValue(solid);
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
@@ -794,7 +745,20 @@ void Helix::onChanged(const App::Property* prop)
         setReadWriteStatusForMode(inputMode);
     }
 
+    // Reflect Operation property value to deprectated Outside
+    if (prop == &Operation && addSubType == Type::Subtractive) {
+        Outside.setValue(strcmp(Operation.getValueAsString(), "Common") == 0);
+    }
+
     ProfileBased::onChanged(prop);
+}
+
+void Helix::onDocumentRestored()
+{
+    // Reflect deprectated Outside property value to Operation
+    if (addSubType == Type::Subtractive) {
+        Operation.setValue(Outside.getValue() ? "Common" : "Subtractive");
+    }
 }
 
 void Helix::setReadWriteStatusForMode(HelixMode inputMode)
@@ -853,13 +817,11 @@ void Helix::setReadWriteStatusForMode(HelixMode inputMode)
 PROPERTY_SOURCE(PartDesign::AdditiveHelix, PartDesign::Helix)
 AdditiveHelix::AdditiveHelix()
 {
-    addSubType = Additive;
-    Outside.setStatus(App::Property::Hidden, true);
+    defineAdditive();
 }
 
 PROPERTY_SOURCE(PartDesign::SubtractiveHelix, PartDesign::Helix)
 SubtractiveHelix::SubtractiveHelix()
 {
-    addSubType = Subtractive;
-    Outside.setStatus(App::Property::Hidden, false);
+    defineSubtractive();
 }

@@ -242,6 +242,7 @@ class TestHelix(unittest.TestCase):
             helix.Height = helix.Turns * helix.Pitch
             helix.Angle = 0
             helix.Mode = 0
+            helix.Tolerance = 0.12
             self.Doc.recompute()
 
             self.assertTrue(helix.Shape.isValid())
