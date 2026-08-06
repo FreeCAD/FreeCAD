@@ -165,6 +165,7 @@ public:
         std::string& name,
         const std::vector<App::DocumentObject*>& excludeJoints = {}
     );
+    App::DocumentObject* getJointOfPartForUngroundedDrag(App::DocumentObject* part, std::string& name);
     std::unordered_set<App::DocumentObject*> getGroundedParts();
     std::unordered_set<App::DocumentObject*> fixGroundedParts();
     void fixGroundedPart(App::DocumentObject* obj, Base::Placement& plc, std::string& jointName);
@@ -256,6 +257,8 @@ public:
     fastsignals::signal<void()> signalSolverUpdate;
 
 private:
+    void prepareMbdForIslandDrag(std::vector<App::DocumentObject*> dragParts);
+
     std::shared_ptr<MbD::ASMTAssembly> mbdAssembly;
 
     std::unordered_map<App::DocumentObject*, MbDPartData> objectPartMap;
