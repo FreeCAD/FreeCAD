@@ -447,24 +447,16 @@ void Document::exportGraphviz(std::ostream& out) const
             GlobalVertexList[getId(docObj)] = vertex_no++;
 
             // If node is in main graph, style it with rounded corners. If not, make it invisible.
+            auto& props = get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]];
             if (!GraphList[docObj]) {
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["style"] = "filled";
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["shape"] = "Mrecord";
-                // Set node label
-                if (name == label) {
-                    get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] = name;
-                }
-                else {
-                    get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] =
-                        name + "&#92;n(" + label + ")";
-                }
+                props["style"] = "rounded,filled";
+                props["shape"] = "box";
+                props["label"] = name == label ? name : name + "&#92;n(" + label + ")";
             }
             else {
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["style"] = "invis";
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["fixedsize"] =
-                    "true";
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["width"] = "0";
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["height"] = "0";
+                props["style"] = "invis";
+                props["shape"] = "point";
+                props["margin"] = "0";
             }
 
             // Add expressions and its dependencies
