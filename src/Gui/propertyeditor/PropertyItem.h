@@ -1367,6 +1367,7 @@ protected:
 protected Q_SLOTS:
     void onLinkActivated(const QString&);
     void onEditClicked();
+    void onSecondaryActivated();
     void onLinkChanged();
 
 Q_SIGNALS:
@@ -1374,6 +1375,7 @@ Q_SIGNALS:
 
 private:
     QLabel* label;
+    QPushButton* secondaryButton;
     QPushButton* editButton;
     QVariant link;
     App::DocumentObjectT objProp;
