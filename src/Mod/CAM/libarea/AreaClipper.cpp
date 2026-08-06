@@ -525,10 +525,8 @@ void CArea::NaiveOffset(double offset)
 
 // Convert the input CCurve to clipper, populating metadata.
 //
-// Parameter edgeTags may be empty. If non-empty, there must be as many entries
-// as edges in the curve. Tags are meant to track positive/negative offset edges
-// from NaiveOffset, and are stored appropriately in the metadata. If tags are
-// not provided, all edges are tagged as positive offset edges.
+// Edge tags are read from curve.m_edgeTags. If that list is empty, all edges
+// are treated as if they were tagged 1 (positive offset edge).
 Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
 {
     if (!curve.m_vertices.size()) {
