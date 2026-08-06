@@ -176,6 +176,9 @@ inline const QStringList nonEditModeToolbarNames()
 
 void Workbench::activated()
 {
+#ifdef FC_DEBUG
+    Base::Console().message("Workbench::activated ENTRY\n");
+#endif
     /* When the workbench is activated, it may happen that we are in edit mode or not.
      * If we are not in edit mode, the function enterEditMode (called by the ViewProvider) takes
      * care to save the state of toolbars outside of edit mode. We cannot do it here, as we are
@@ -202,10 +205,16 @@ void Workbench::activated()
             Gui::ToolBarManager::State::ForceHidden
         );
     }
+#ifdef FC_DEBUG
+    Base::Console().message("Workbench::activated EXIT\n");
+#endif
 }
 
 void Workbench::enterEditMode()
 {
+#ifdef FC_DEBUG
+    Base::Console().message("Workbench::enterEditMode ENTRY\n");
+#endif
     /* Ensure the state left by the non-edit mode toolbars is saved (in case of changing to edit
      * mode) without changing workbench
      */
@@ -222,10 +231,20 @@ void Workbench::enterEditMode()
         nonEditModeToolbarNames(),
         Gui::ToolBarManager::State::ForceHidden
     );
+
+    // inEditMode = true;
+
+#ifdef FC_DEBUG
+    Base::Console().message("Workbench::enterEditMode EXIT\n");
+#endif
 }
 
 void Workbench::leaveEditMode()
 {
+#ifdef FC_DEBUG
+    Base::Console().message("Workbench::leaveEditMode ENTRY\n");
+#endif
+
     /* Ensure the state left by the edit mode toolbars is saved (in case of changing to edit mode)
      * without changing workbench.
      *
@@ -250,6 +269,10 @@ void Workbench::leaveEditMode()
         nonEditModeToolbarNames(),
         Gui::ToolBarManager::State::RestoreDefault
     );
+
+#ifdef FC_DEBUG
+    Base::Console().message("Workbench::leaveEditMode EXIT bottom\n");
+#endif
 }
 
 namespace SketcherGui

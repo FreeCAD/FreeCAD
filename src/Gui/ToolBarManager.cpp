@@ -1271,6 +1271,33 @@ ToolBarItem::DefaultVisibility ToolBarManager::getToolbarPolicy(const QToolBar* 
 
 void ToolBarManager::setState(const QList<QString>& names, State state)
 {
+#ifdef FC_DEBUG
+    QString stateStr;
+    switch (state) {
+        case State::SaveState:
+            stateStr = "SaveState";
+            break;
+        case State::RestoreDefault:
+            stateStr = "RestoreDefault";
+            break;
+        case State::ForceAvailable:
+            stateStr = "ForceAvailable";
+            break;
+        case State::ForceHidden:
+            stateStr = "ForceHidden";
+            break;
+        default:
+            stateStr = "Unknown";
+            break;
+    }
+    Base::Console().message(
+        "ToolBarManager::setState [%s] for %d toolbars: %s\n",
+        stateStr.toUtf8().constData(),
+        (int)names.size(),
+        names.join(QStringLiteral(", ")).toUtf8().constData()
+    );
+#endif
+
     for (auto& name : names) {
         setState(name, state);
     }
@@ -1279,7 +1306,16 @@ void ToolBarManager::setState(const QList<QString>& names, State state)
 void ToolBarManager::setState(const QString& name, State state)
 {
     auto visibility = [this, name](bool defaultvalue) {
-        return hPref->GetBool(name.toStdString().c_str(), defaultvalue);
+        bool result = hPref->GetBool(name.toStdString().c_str(), defaultvalue);
+#ifdef FC_DEBUG
+        Base::Console().message(
+            "  visibility(%s, default=%d) = %d\n",
+            name.toUtf8().constData(),
+            defaultvalue,
+            result
+        );
+#endif
+        return result;
     };
 
     auto saveVisibility = [this, visibility, name](bool value, ToolBarItem::DefaultVisibility policy) {
